@@ -182,7 +182,7 @@ export class HelloController {
   @get('/messages')
   async list(@param.query.number('limit') limit = 10): Promise<HelloMessage[]> {
     if (limit > 100) limit = 100; // your logic
-    return await this.repository.find({limit}); // a CRUD method from our repository
+    return this.repository.find({limit}); // a CRUD method from our repository
   }
 }
 ```
@@ -265,7 +265,7 @@ export class HelloController {
     } else if (limit > 100) {
       limit = 100;
     }
-    return await this.repo.find({limit});
+    return this.repo.find({limit});
   }
 }
 ```

@@ -3,8 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {inject, Context} from '@loopback/context';
-import {Server, Application, CoreBindings} from '@loopback/core';
+import {Context, inject} from '@loopback/context';
+import {Application, CoreBindings, Server} from '@loopback/core';
 import * as express from 'express';
 import * as http from 'http';
 import pEvent from 'p-event';
@@ -34,12 +34,12 @@ export class RPCServer extends Context implements Server {
       (this.config && this.config.port) || 3000,
     );
     this._listening = true;
-    return await pEvent(this._server, 'listening');
+    return pEvent(this._server, 'listening');
   }
   async stop(): Promise<void> {
     this._server.close();
     this._listening = false;
-    return await pEvent(this._server, 'close');
+    return pEvent(this._server, 'close');
   }
 }
 

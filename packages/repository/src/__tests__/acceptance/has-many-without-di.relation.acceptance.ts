@@ -37,7 +37,7 @@ describe('HasMany relation', () => {
       customerId: number,
       orderData: Partial<Order>,
     ): Promise<Order> {
-      return await customerRepo.orders(customerId).create(orderData);
+      return customerRepo.orders(customerId).create(orderData);
     }
     const order = await createCustomerOrders(existingCustomerId, {
       description: 'order 1',
@@ -56,10 +56,10 @@ describe('HasMany relation', () => {
       customerId: number,
       orderData: Partial<Order>,
     ): Promise<Order> {
-      return await customerRepo.orders(customerId).create(orderData);
+      return customerRepo.orders(customerId).create(orderData);
     }
     async function findCustomerOrders(customerId: number) {
-      return await customerRepo.orders(customerId).find();
+      return customerRepo.orders(customerId).find();
     }
 
     const order = await createCustomerOrders(existingCustomerId, {

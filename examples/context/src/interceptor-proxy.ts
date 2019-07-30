@@ -65,7 +65,7 @@ class TracingInterceptor implements Provider<Interceptor> {
         reqId,
       );
     }
-    return await next();
+    return next();
   }
 }
 

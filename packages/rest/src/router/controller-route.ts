@@ -136,12 +136,7 @@ export class ControllerRoute<T> extends BaseRoute {
       );
     }
     // Invoke the method with dependency injection
-    return await invokeMethod(
-      controller,
-      this._methodName,
-      requestContext,
-      args,
-    );
+    return invokeMethod(controller, this._methodName, requestContext, args);
   }
 }
 

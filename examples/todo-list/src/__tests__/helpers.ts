@@ -115,21 +115,21 @@ export async function givenTodoInstance(
   todoRepo: TodoRepository,
   todo?: Partial<Todo>,
 ) {
-  return await todoRepo.create(givenTodo(todo));
+  return todoRepo.create(givenTodo(todo));
 }
 
 export async function givenTodoListInstance(
   todoListRepo: TodoListRepository,
   data?: Partial<TodoList>,
 ) {
-  return await todoListRepo.create(givenTodoList(data));
+  return todoListRepo.create(givenTodoList(data));
 }
 
 export async function givenTodoListImageInstance(
   todoListImageRepo: TodoListImageRepository,
   data?: Partial<TodoListImage>,
 ) {
-  return await todoListImageRepo.create(givenTodoListImage(data));
+  return todoListImageRepo.create(givenTodoListImage(data));
 }
 
 export async function givenEmptyDatabase() {

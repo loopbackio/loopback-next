@@ -194,36 +194,34 @@ describe('HasMany relation', () => {
       customerId: number,
       orderData: Partial<Order>,
     ): Promise<Order> {
-      return await this.customerRepository.orders(customerId).create(orderData);
+      return this.customerRepository.orders(customerId).create(orderData);
     }
 
     async findCustomerOrders(customerId: number) {
-      return await this.customerRepository.orders(customerId).find();
+      return this.customerRepository.orders(customerId).find();
     }
 
     async patchCustomerOrders(customerId: number, order: Partial<Order>) {
-      return await this.customerRepository.orders(customerId).patch(order);
+      return this.customerRepository.orders(customerId).patch(order);
     }
 
     async deleteCustomerOrders(customerId: number) {
-      return await this.customerRepository.orders(customerId).delete();
+      return this.customerRepository.orders(customerId).delete();
     }
 
     async getParentCustomer(customerId: number) {
-      return await this.customerRepository.parent(customerId);
+      return this.customerRepository.parent(customerId);
     }
 
     async createCustomerChildren(
       customerId: number,
       customerData: Partial<Customer>,
     ) {
-      return await this.customerRepository
-        .customers(customerId)
-        .create(customerData);
+      return this.customerRepository.customers(customerId).create(customerData);
     }
 
     async findCustomerChildren(customerId: number) {
-      return await this.customerRepository.customers(customerId).find();
+      return this.customerRepository.customers(customerId).find();
     }
   }
 

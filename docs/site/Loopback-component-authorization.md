@@ -542,7 +542,7 @@ decorator as below.
   },
 })
 async create(@requestBody() role: Role): Promise<Role> {
-  return await this.roleRepository.create(role);
+  return this.roleRepository.create(role);
 }
 ```
 

@@ -12,7 +12,7 @@ async function discoverModelNames(ds, options) {
       ds.on('connected', resolve);
     });
   }
-  return await ds.discoverModelDefinitions(options);
+  return ds.discoverModelDefinitions(options);
 }
 
 /**

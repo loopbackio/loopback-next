@@ -78,7 +78,7 @@ export class DefaultHasOneRepository<
     options?: Options,
   ): Promise<TargetEntity> {
     const targetRepository = await this.getTargetRepository();
-    return await targetRepository.create(
+    return targetRepository.create(
       constrainDataObject(targetModelData, this.constraint),
       options,
     );
@@ -116,7 +116,7 @@ export class DefaultHasOneRepository<
     options?: Options,
   ): Promise<Count> {
     const targetRepository = await this.getTargetRepository();
-    return await targetRepository.updateAll(
+    return targetRepository.updateAll(
       constrainDataObject(dataObject, this.constraint),
       constrainWhere({}, this.constraint),
       options,

@@ -209,7 +209,7 @@ export class TodoController {
       todo.remindAtGeo = `${geo[0].y},${geo[0].x}`;
     }
 
-    return await this.todoRepo.create(todo);
+    return this.todoRepo.create(todo);
   }
 
   // other endpoints remain unchanged

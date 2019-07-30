@@ -48,7 +48,7 @@ export class TodoListController {
     })
     todoList: Omit<TodoList, 'id'>,
   ): Promise<TodoList> {
-    return await this.todoListRepository.create(todoList);
+    return this.todoListRepository.create(todoList);
   }
 
   @get('/todo-lists/count', {
@@ -63,7 +63,7 @@ export class TodoListController {
     @param.query.object('where', getWhereSchemaFor(TodoList))
     where?: Where<TodoList>,
   ): Promise<Count> {
-    return await this.todoListRepository.count(where);
+    return this.todoListRepository.count(where);
   }
 
   @get('/todo-lists', {
@@ -85,7 +85,7 @@ export class TodoListController {
     @param.query.object('filter', getFilterSchemaFor(TodoList))
     filter?: Filter<TodoList>,
   ): Promise<TodoList[]> {
-    return await this.todoListRepository.find(filter);
+    return this.todoListRepository.find(filter);
   }
 
   @patch('/todo-lists', {
@@ -108,7 +108,7 @@ export class TodoListController {
     @param.query.object('where', getWhereSchemaFor(TodoList))
     where?: Where<TodoList>,
   ): Promise<Count> {
-    return await this.todoListRepository.updateAll(todoList, where);
+    return this.todoListRepository.updateAll(todoList, where);
   }
 
   @get('/todo-lists/{id}', {
@@ -128,7 +128,7 @@ export class TodoListController {
     @param.query.object('filter', getFilterSchemaFor(TodoList))
     filter?: Filter<TodoList>,
   ): Promise<TodoList> {
-    return await this.todoListRepository.findById(id, filter);
+    return this.todoListRepository.findById(id, filter);
   }
 
   @patch('/todo-lists/{id}', {

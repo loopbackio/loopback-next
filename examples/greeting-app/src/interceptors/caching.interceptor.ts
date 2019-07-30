@@ -37,7 +37,7 @@ export class CachingInterceptor implements Provider<Interceptor> {
       /* istanbul ignore if */
       if (!httpReq) {
         // Not http request
-        return await next();
+        return next();
       }
       const key = httpReq.path;
       const lang = httpReq.acceptsLanguages(['en', 'zh']) || 'en';

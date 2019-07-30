@@ -4,14 +4,13 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {inject} from '@loopback/core';
-import {get, param, HttpErrors} from '@loopback/rest';
-
+import {get, HttpErrors, param} from '@loopback/rest';
 import {
-  CalculatorService,
-  CalculatorParameters,
   AddResponse,
-  MultiplyResponse,
+  CalculatorParameters,
+  CalculatorService,
   DivideResponse,
+  MultiplyResponse,
   SubtractResponse,
 } from '../services/calculator.service';
 
@@ -26,7 +25,7 @@ export class CalculatorController {
     @param.path.integer('intA') intA: number,
     @param.path.integer('intB') intB: number,
   ): Promise<MultiplyResponse> {
-    return await this.calculatorService.multiply(<CalculatorParameters>{
+    return this.calculatorService.multiply(<CalculatorParameters>{
       intA,
       intB,
     });
@@ -36,7 +35,7 @@ export class CalculatorController {
     @param.path.integer('intA') intA: number,
     @param.path.integer('intB') intB: number,
   ): Promise<AddResponse> {
-    return await this.calculatorService.add(<CalculatorParameters>{
+    return this.calculatorService.add(<CalculatorParameters>{
       intA,
       intB,
     });
@@ -47,7 +46,7 @@ export class CalculatorController {
     @param.path.integer('intA') intA: number,
     @param.path.integer('intB') intB: number,
   ): Promise<SubtractResponse> {
-    return await this.calculatorService.subtract(<CalculatorParameters>{
+    return this.calculatorService.subtract(<CalculatorParameters>{
       intA,
       intB,
     });
@@ -62,7 +61,7 @@ export class CalculatorController {
     if (intB === 0) {
       throw new HttpErrors.PreconditionFailed('Cannot divide by zero');
     }
-    return await this.calculatorService.divide(<CalculatorParameters>{
+    return this.calculatorService.divide(<CalculatorParameters>{
       intA,
       intB,
     });

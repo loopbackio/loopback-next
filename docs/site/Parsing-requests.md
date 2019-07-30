@@ -33,7 +33,7 @@ class TodoController {
     @param.path.number('id') id: number,
     @requestBody() todo: Todo,
   ): Promise<boolean> {
-    return await this.todoRepo.replaceById(id, todo);
+    return this.todoRepo.replaceById(id, todo);
   }
 }
 ```
@@ -74,7 +74,7 @@ async replaceTodo(
   // NO need to do the "string to number" convertion now,
   // coercion automatically handles it for you.
   id = +id;
-  return await this.todoRepo.replaceById(id, todo);
+  return this.todoRepo.replaceById(id, todo);
 }
 ```
 
@@ -157,7 +157,7 @@ import {Todo} from './models';
     @param.path.number('id') id: number,
     @requestBody() todo: Todo,
   ): Promise<boolean> {
-    return await this.todoRepo.replaceById(id, todo);
+    return this.todoRepo.replaceById(id, todo);
   }
 ...
 ```

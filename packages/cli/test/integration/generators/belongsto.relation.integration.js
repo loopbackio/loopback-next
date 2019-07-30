@@ -282,14 +282,14 @@ context('check if the controller file created ', () => {
           /content: \{\n {10}'application\/json': \{\n/,
           /async getCustomer\(\n {4}\@param\.path\.number\('id'\) id: typeof Order\.prototype\.id,\n/,
           /\)\: Promise<Customer> \{\n/,
-          /return await this\.orderRepository\.customer\(id\);\n {2}\}\n/,
+          /return this\.orderRepository\.customer\(id\);\n {2}\}\n/,
         ];
         const getOrdersClassByCustomerClassIdRegEx = [
           /\@get\('\/order-classes\/{id}\/customer-class', \{\n {4}responses: \{\n {6}'200': \{\n/,
           /content: \{\n {10}'application\/json': \{\n/,
           /async getCustomerClass\(\n {4}\@param\.path\.number\('id'\) id: typeof OrderClass\.prototype\.orderNumber,\n/,
           /\)\: Promise<CustomerClass> \{\n/,
-          /return await this\.orderClassRepository\.customerClass\(id\);\n {2}\}\n/,
+          /return this\.orderClassRepository\.customerClass\(id\);\n {2}\}\n/,
         ];
 
         const getOrdersClassTypeByCustomerClassTypeIdRegEx = [
@@ -297,7 +297,7 @@ context('check if the controller file created ', () => {
           /content: \{\n {10}'application\/json': \{\n/,
           /async getCustomerClassType\(\n {4}\@param\.path\.string\('id'\) id: typeof OrderClassType\.prototype\.orderString,\n/,
           /\)\: Promise<CustomerClassType> \{\n/,
-          /return await this\.orderClassTypeRepository\.customerClassType\(id\);\n {2}\}\n/,
+          /return this\.orderClassTypeRepository\.customerClassType\(id\);\n {2}\}\n/,
         ];
 
         const getRegEx = [

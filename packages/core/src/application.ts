@@ -153,7 +153,7 @@ export class Application extends Context implements LifeCycleObserver {
       const ctor = target as Constructor<T>;
       key = `${CoreBindings.SERVERS}.${ctor.name}`;
     }
-    return await this.get<T>(key);
+    return this.get<T>(key);
   }
 
   /**
@@ -173,7 +173,7 @@ export class Application extends Context implements LifeCycleObserver {
   }
 
   private async getLifeCycleObserverRegistry() {
-    return await this.get(CoreBindings.LIFE_CYCLE_OBSERVER_REGISTRY);
+    return this.get(CoreBindings.LIFE_CYCLE_OBSERVER_REGISTRY);
   }
 
   /**

@@ -67,7 +67,7 @@ export function givenCoffeeShop() {
 export async function givenUser() {
   const User = lb3app.models.User;
 
-  return await User.create({
+  return User.create({
     email: 'sample@email.com',
     password: 'L00pBack!',
   });

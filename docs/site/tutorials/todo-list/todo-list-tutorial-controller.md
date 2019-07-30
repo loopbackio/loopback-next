@@ -187,7 +187,7 @@ export class TodoListTodoController {
     })
     todo: Omit<Todo, 'id'>,
   ) {
-    return await this.todoListRepo.todos(id).create(todo);
+    return this.todoListRepo.todos(id).create(todo);
   }
 }
 ```
@@ -243,7 +243,7 @@ export class TodoListTodoController {
     })
     todo: Omit<Todo, 'id'>,
   ): Promise<Todo> {
-    return await this.todoListRepo.todos(id).create(todo);
+    return this.todoListRepo.todos(id).create(todo);
   }
 
   @get('/todo-lists/{id}/todos', {
@@ -262,7 +262,7 @@ export class TodoListTodoController {
     @param.path.number('id') id: number,
     @param.query.object('filter') filter?: Filter<Todo>,
   ): Promise<Todo[]> {
-    return await this.todoListRepo.todos(id).find(filter);
+    return this.todoListRepo.todos(id).find(filter);
   }
 
   @patch('/todo-lists/{id}/todos', {
@@ -285,7 +285,7 @@ export class TodoListTodoController {
     todo: Partial<Todo>
     @param.query.object('where', getWhereSchemaFor(Todo)) where?: Where<Todo>,
   ): Promise<Count> {
-    return await this.todoListRepo.todos(id).patch(todo, where);
+    return this.todoListRepo.todos(id).patch(todo, where);
   }
 
   @del('/todo-lists/{id}/todos', {
@@ -300,7 +300,7 @@ export class TodoListTodoController {
     @param.path.number('id') id: number,
     @param.query.object('where', getWhereSchemaFor(Todo)) where?: Where<Todo>,
   ): Promise<Count> {
-    return await this.todoListRepo.todos(id).delete(where);
+    return this.todoListRepo.todos(id).delete(where);
   }
 }
 ```

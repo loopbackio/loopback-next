@@ -66,7 +66,7 @@ export async function cache<T>(
   });
   if (!req || req.method.toLowerCase() !== 'get') {
     // The method is not invoked by an http request, no caching
-    return await next();
+    return next();
   }
   const url = req.url;
   const cachedValue = cachedResults.get(url);

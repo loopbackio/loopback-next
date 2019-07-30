@@ -206,7 +206,7 @@ module.exports = class BaseGenerator extends Generator {
         return;
       }
       // Non-express mode, continue to prompt
-      return await super.prompt(questions);
+      return super.prompt(questions);
     }
 
     const answers = Object.assign({}, this.options);

@@ -44,7 +44,7 @@ export class <%= className %>Controller {
     })
     <%= modelVariableName %>: Omit<<%= modelName %>, '<%= id %>'>,
   ): Promise<<%= modelName %>> {
-    return await this.<%= repositoryNameCamel %>.create(<%= modelVariableName %>);
+    return this.<%= repositoryNameCamel %>.create(<%= modelVariableName %>);
   }
 
   @get('<%= httpPathName %>/count', {
@@ -58,7 +58,7 @@ export class <%= className %>Controller {
   async count(
     @param.query.object('where', getWhereSchemaFor(<%= modelName %>)) where?: Where<<%= modelName %>>,
   ): Promise<Count> {
-    return await this.<%= repositoryNameCamel %>.count(where);
+    return this.<%= repositoryNameCamel %>.count(where);
   }
 
   @get('<%= httpPathName %>', {
@@ -76,7 +76,7 @@ export class <%= className %>Controller {
   async find(
     @param.query.object('filter', getFilterSchemaFor(<%= modelName %>)) filter?: Filter<<%= modelName %>>,
   ): Promise<<%= modelName %>[]> {
-    return await this.<%= repositoryNameCamel %>.find(filter);
+    return this.<%= repositoryNameCamel %>.find(filter);
   }
 
   @patch('<%= httpPathName %>', {
@@ -98,7 +98,7 @@ export class <%= className %>Controller {
     <%= modelVariableName %>: <%= modelName %>,
     @param.query.object('where', getWhereSchemaFor(<%= modelName %>)) where?: Where<<%= modelName %>>,
   ): Promise<Count> {
-    return await this.<%= repositoryNameCamel %>.updateAll(<%= modelVariableName %>, where);
+    return this.<%= repositoryNameCamel %>.updateAll(<%= modelVariableName %>, where);
   }
 
   @get('<%= httpPathName %>/{id}', {
@@ -110,7 +110,7 @@ export class <%= className %>Controller {
     },
   })
   async findById(@param.path.<%= idType %>('id') id: <%= idType %>): Promise<<%= modelName %>> {
-    return await this.<%= repositoryNameCamel %>.findById(id);
+    return this.<%= repositoryNameCamel %>.findById(id);
   }
 
   @patch('<%= httpPathName %>/{id}', {

@@ -501,7 +501,7 @@ module.exports = function(projGenerator, props, projectType) {
       // eslint-disable-next-line require-atomic-updates
       gen.prompt = sinon.stub(gen, 'prompt');
       gen.prompt.resolves(prompts);
-      return await gen[fnName]();
+      return gen[fnName]();
     }
   };
 };

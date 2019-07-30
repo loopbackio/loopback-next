@@ -49,7 +49,7 @@ export class NoteController {
     })
     note: Omit<Note, 'id'>,
   ): Promise<Note> {
-    return await this.noteRepository.create(note);
+    return this.noteRepository.create(note);
   }
 
   @get('/notes/count', {
@@ -63,7 +63,7 @@ export class NoteController {
   async count(
     @param.query.object('where', getWhereSchemaFor(Note)) where?: Where<Note>,
   ): Promise<Count> {
-    return await this.noteRepository.count(where);
+    return this.noteRepository.count(where);
   }
 
   @get('/notes', {
@@ -82,7 +82,7 @@ export class NoteController {
     @param.query.object('filter', getFilterSchemaFor(Note))
     filter?: Filter<Note>,
   ): Promise<Note[]> {
-    return await this.noteRepository.find(filter);
+    return this.noteRepository.find(filter);
   }
 
   @patch('/notes', {
@@ -104,7 +104,7 @@ export class NoteController {
     note: Partial<Note>,
     @param.query.object('where', getWhereSchemaFor(Note)) where?: Where<Note>,
   ): Promise<Count> {
-    return await this.noteRepository.updateAll(note, where);
+    return this.noteRepository.updateAll(note, where);
   }
 
   @get('/notes/{id}', {
@@ -116,7 +116,7 @@ export class NoteController {
     },
   })
   async findById(@param.path.number('id') id: number): Promise<Note> {
-    return await this.noteRepository.findById(id);
+    return this.noteRepository.findById(id);
   }
 
   @patch('/notes/{id}', {

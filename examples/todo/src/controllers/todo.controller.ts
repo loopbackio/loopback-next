@@ -53,7 +53,7 @@ export class TodoController {
       // eslint-disable-next-line require-atomic-updates
       todo.remindAtGeo = `${geo[0].y},${geo[0].x}`;
     }
-    return await this.todoRepo.create(todo);
+    return this.todoRepo.create(todo);
   }
 
   @get('/todos/{id}', {
@@ -68,7 +68,7 @@ export class TodoController {
     @param.path.number('id') id: number,
     @param.query.boolean('items') items?: boolean,
   ): Promise<Todo> {
-    return await this.todoRepo.findById(id);
+    return this.todoRepo.findById(id);
   }
 
   @get('/todos', {
@@ -87,7 +87,7 @@ export class TodoController {
     @param.query.object('filter', getFilterSchemaFor(Todo))
     filter?: Filter<Todo>,
   ): Promise<Todo[]> {
-    return await this.todoRepo.find(filter);
+    return this.todoRepo.find(filter);
   }
 
   @put('/todos/{id}', {
