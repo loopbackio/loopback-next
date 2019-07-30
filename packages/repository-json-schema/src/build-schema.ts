@@ -71,7 +71,7 @@ export function buildModelCacheKey<T extends object>(
  * @param ctor - Contructor of class to get JSON Schema from
  */
 export function getJsonSchema<T extends object>(
-  ctor: Function,
+  ctor: Function & {prototype: T},
   options?: JsonSchemaOptions<T>,
 ): JSONSchema {
   // In the near future the metadata will be an object with
@@ -124,7 +124,7 @@ export function getJsonSchema<T extends object>(
  * @param options - Additional options
  */
 export function getJsonSchemaRef<T extends object>(
-  modelCtor: Function,
+  modelCtor: Function & {prototype: T},
   options?: JsonSchemaOptions<T>,
 ): JSONSchema {
   const schemaWithDefinitions = getJsonSchema(modelCtor, options);
@@ -297,7 +297,7 @@ function getTitleSuffix<T extends object>(options: JsonSchemaOptions<T> = {}) {
  * @param ctor - Constructor of class to convert from
  */
 export function modelToJsonSchema<T extends object>(
-  ctor: Function,
+  ctor: Function & {prototype: T},
   jsonSchemaOptions: JsonSchemaOptions<T> = {},
 ): JSONSchema {
   const options = {...jsonSchemaOptions};

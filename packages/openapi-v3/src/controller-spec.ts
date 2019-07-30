@@ -374,7 +374,7 @@ export function getControllerSpec(constructor: Function): ControllerSpec {
  * @param options - Additional options
  */
 export function getModelSchemaRef<T extends object>(
-  modelCtor: Function,
+  modelCtor: Function & {prototype: T},
   options?: JsonSchemaOptions<T>,
 ): SchemaRef {
   const jsonSchema = getJsonSchemaRef(modelCtor, options);
