@@ -257,7 +257,6 @@ children:
   url: Crafting-LoopBack-4.html
   output: 'web, pdf'
 
-
 - title: 'Tutorials'
   url: Tutorials.html
   output: 'web, pdf'
@@ -413,6 +412,194 @@ children:
 
   - title: 'Download examples'
     url: Download-examples.html
+    output: 'web, pdf'
+
+- title: 'Connectors reference'
+  url: Connectors-reference.html
+  output: 'web'
+  children:
+
+  - title: 'Memory connector'
+    url: Memory-connector.html
+    output: 'web, pdf'
+
+  - title: 'Database connectors'
+    url: Database-connectors.html
+    output: 'web'
+    children:
+
+    - title: 'Cassandra connector'
+      url: Cassandra-connector.html
+      output: 'web, pdf'
+
+    - title: 'Cloudant connector'
+      url: Cloudant-connector.html
+      output: 'web, pdf'
+
+    - title: 'DashDB connector'
+      url: DashDB.html
+      output: 'web, pdf'
+
+    - title: 'DB2 connector'
+      url: DB2-connector.html
+      output: 'web, pdf'
+
+    - title: 'DB2 for iSeries connector'
+      url: DB2-iSeries-connector.html
+      output: 'web, pdf'
+
+    - title: 'DB2 for z/OS'
+      url: DB2-for-z-OS.html
+      output: 'web, pdf'
+
+    - title: Informix connector
+      url: Informix.html
+      output: 'web, pdf'
+
+    - title: 'MongoDB connector'
+      url: MongoDB-connector.html
+      output: 'web, pdf'
+      children:
+
+      - title: 'MongoDB Connector Tutorial'
+        url: Connecting-to-MongoDB.html
+        output: 'web, pdf'
+
+      - title: 'Using MongoLab'
+        url: Using-MongoLab.html
+        output: 'web, pdf'
+
+    - title: 'MySQL connector'
+      url: MySQL-connector.html
+      output: 'web, pdf'
+      children:
+
+      - title: 'MySQL Connector Tutorial'
+        url: Connecting-to-MySQL.html
+        output: 'web, pdf'
+
+    - title: 'Oracle connector'
+      url: Oracle-connector.html
+      output: 'web, pdf'
+      children:
+
+      - title: 'Installing the Oracle connector'
+        url: Installing-the-Oracle-connector.html
+        output: 'web, pdf'
+
+      - title: 'Oracle connector tutorial'
+        url: Connecting-to-Oracle.html
+        output: 'web, pdf'
+
+    - title: 'PostgreSQL connector'
+      url: PostgreSQL-connector.html
+      output: 'web, pdf'
+      children:
+
+      - title: 'PostgreSQL connector tutorial'
+        url: Connecting-to-PostgreSQL.html
+        output: 'web, pdf'
+
+    - title: 'Redis connector'
+      url: Redis-connector.html
+      output: 'web, pdf'
+
+    - title: 'Redis key-value connector'
+      url: kv-redis-connector.html
+      output: 'web, pdf'
+      children:
+
+      - title: 'KV connector example'
+        url: Example-kv-connector.html
+        output: 'web, pdf'
+
+    - title: 'SQL Server connector'
+      url: SQL-Server-connector.html
+      output: 'web, pdf'
+      children:
+
+      - title: 'SQL Server connector tutorial'
+        url: Connecting-to-Microsoft-SQL-Server.html
+        output: 'web, pdf'
+
+    - title: 'SQLite3 connector'
+      url: SQLite3.html
+      output: 'web, pdf'
+
+    - title: 'z/OS Connect Enterprise Edition connector'
+      url: zOSconnectEE.html
+      output: 'web, pdf'
+
+  - title: 'Other connectors'
+    url: Other-connectors.html
+    output: 'web'
+    children:
+
+    - title: 'Email connector'
+      url: Email-connector.html
+      output: 'web, pdf'
+
+    - title: 'JSON RPC connector'
+      url: JSON-RPC-connector.html
+      output: 'web, pdf'
+
+    - title: 'MQ Light connector'
+      url: MQLight-connector.html
+      output: 'web, pdf'
+
+    - title: 'Push connector'
+      url: Push-connector.html
+      output: 'web, pdf'
+
+    - title: 'Remote connector'
+      url: Remote-connector.html
+      output: 'web, pdf'
+      children:
+
+      - title: 'Remote connector example'
+        url: Remote-connector-example.html
+        output: 'web, pdf'
+
+      - title: 'Strong Remoting'
+        url: Strong-Remoting.html
+        output: 'web, pdf'
+
+    - title: 'REST connector'
+      url: REST-connector.html
+      output: 'web, pdf'
+      children:
+
+      - title: 'REST connector example'
+        url: REST-connector-example.html
+        output: 'web, pdf'
+
+    - title: 'SOAP connector'
+      url: SOAP-connector.html
+      output: 'web, pdf'
+      children:
+
+      - title: 'Strong-soap'
+        url: Strong-soap.html
+        output: 'web, pdf'
+
+      - title: 'SOAP connector example'
+        url: SOAP-Connector-example.html
+        output: 'web, pdf'
+
+      - title: 'Connecting to SOAP web services'
+        url: Connecting-to-SOAP.html
+        output: 'web, pdf'
+
+    - title: 'Storage connector'
+      url: Storage-connector.html
+      output: 'web, pdf'
+
+    - title: 'Swagger connector'
+      url: Swagger-connector.html
+      output: 'web, pdf'
+
+  - title: 'Community connectors'
+    url: Community-connectors.html
     output: 'web, pdf'
 
 - title: 'API docs'
