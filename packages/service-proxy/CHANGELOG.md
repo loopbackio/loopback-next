@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/service-proxy@1.2.7...@loopback/service-proxy@1.3.0) (2019-07-31)
+
+
+### Features
+
+* **core:** add app.service() to register service classes or providers ([88eff77](https://github.com/strongloop/loopback-next/commit/88eff77))
+
+
+
+
+
 ## [1.2.7](https://github.com/strongloop/loopback-next/compare/@loopback/service-proxy@1.2.6...@loopback/service-proxy@1.2.7) (2019-07-26)
 
 **Note:** Version bump only for package @loopback/service-proxy

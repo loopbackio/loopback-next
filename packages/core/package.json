@@ -1,6 +1,6 @@
 {
   "name": "@loopback/core",
-  "version": "1.8.7",
+  "version": "1.9.0",
   "description": "LoopBack 4 core",
   "engines": {
     "node": ">=8.9"
@@ -19,13 +19,13 @@
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
-    "@loopback/context": "^1.21.0",
+    "@loopback/context": "^1.21.1",
     "debug": "^4.1.1"
   },
   "devDependencies": {
-    "@loopback/build": "^2.0.5",
-    "@loopback/eslint-config": "^2.0.2",
-    "@loopback/testlab": "^1.7.1",
+    "@loopback/build": "^2.0.6",
+    "@loopback/eslint-config": "^3.0.0",
+    "@loopback/testlab": "^1.7.2",
     "@types/debug": "^4.1.4",
     "@types/node": "^10.14.14"
   },

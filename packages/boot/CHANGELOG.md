@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.5.0](https://github.com/strongloop/loopback-next/compare/@loopback/boot@1.4.6...@loopback/boot@1.5.0) (2019-07-31)
+
+
+### Features
+
+* **boot:** improve service booter to load classes decorated with [@bind](https://github.com/bind) ([48e01f4](https://github.com/strongloop/loopback-next/commit/48e01f4))
+* **boot:** introduce `[@booter](https://github.com/booter)` to decorate booter classes ([f27b517](https://github.com/strongloop/loopback-next/commit/f27b517))
+* **boot:** use [@config](https://github.com/config) to inject options for booters ([016812d](https://github.com/strongloop/loopback-next/commit/016812d))
+
+
+
+
+
 ## [1.4.6](https://github.com/strongloop/loopback-next/compare/@loopback/boot@1.4.5...@loopback/boot@1.4.6) (2019-07-26)
 
 **Note:** Version bump only for package @loopback/boot

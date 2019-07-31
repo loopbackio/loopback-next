@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.28.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.27.0...@loopback/docs@1.28.0) (2019-07-31)
+
+
+### Features
+
+* add Connector docs to LB4 docs ([2d7066c](https://github.com/strongloop/loopback-next/commit/2d7066c))
+
+
+
+
+
 # [1.27.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.26.1...@loopback/docs@1.27.0) (2019-07-26)
 
 

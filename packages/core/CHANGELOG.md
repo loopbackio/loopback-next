@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.9.0](https://github.com/strongloop/loopback-next/compare/@loopback/core@1.8.7...@loopback/core@1.9.0) (2019-07-31)
+
+
+### Features
+
+* **boot:** improve service booter to load classes decorated with [@bind](https://github.com/bind) ([48e01f4](https://github.com/strongloop/loopback-next/commit/48e01f4))
+* **core:** add app.service() to register service classes or providers ([88eff77](https://github.com/strongloop/loopback-next/commit/88eff77))
+
+
+
+
+
 ## [1.8.7](https://github.com/strongloop/loopback-next/compare/@loopback/core@1.8.6...@loopback/core@1.8.7) (2019-07-26)
 
 **Note:** Version bump only for package @loopback/core

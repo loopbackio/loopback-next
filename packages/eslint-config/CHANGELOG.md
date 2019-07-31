@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/eslint-config@2.0.2...@loopback/eslint-config@3.0.0) (2019-07-31)
+
+
+### Features
+
+* **eslint-config:** enable "no-return-await" rule ([e28a3c3](https://github.com/strongloop/loopback-next/commit/e28a3c3))
+
+
+### BREAKING CHANGES
+
+* **eslint-config:** "return await" is no longer allowed, just return the
+promise without awaiting its resolution.
+
+
+
+
+
 ## [2.0.2](https://github.com/strongloop/loopback-next/compare/@loopback/eslint-config@2.0.1...@loopback/eslint-config@2.0.2) (2019-07-26)
 
 **Note:** Version bump only for package @loopback/eslint-config

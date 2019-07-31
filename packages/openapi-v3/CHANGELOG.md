@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.1](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@1.9.0...@loopback/openapi-v3@1.9.1) (2019-07-31)
+
+
+### Bug Fixes
+
+* enforce JsonSchemaOptions type when building model schema ([9bbc932](https://github.com/strongloop/loopback-next/commit/9bbc932))
+
+
+
+
+
 # [1.9.0](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@1.8.0...@loopback/openapi-v3@1.9.0) (2019-07-26)
 
 
