@@ -21,4 +21,5 @@ export const MYSQL_FEATURES: Partial<CrudFeatures> = {
   idType: 'number',
   freeFormProperties: false,
   emptyValue: null,
+  supportsTransactions: true,
 };

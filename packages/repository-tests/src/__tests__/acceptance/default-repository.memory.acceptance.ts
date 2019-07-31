@@ -16,6 +16,7 @@ describe('DefaultCrudRepository + memory connector', () => {
     DefaultCrudRepository as CrudRepositoryCtor,
     {
       idType: 'number',
+      supportsTransactions: false,
     },
   );
 });
