@@ -23,7 +23,7 @@
     "@loopback/build": "^1.7.1",
     "@loopback/repository": "^1.10.0",
     "@types/debug": "^4.1.4",
-    "@types/node": "^10.14.13"
+    "@types/node": "^10.14.14"
   },
   "dependencies": {
     "@loopback/testlab": "^1.7.1",
