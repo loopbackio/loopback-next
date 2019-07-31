@@ -8,6 +8,8 @@ permalink: /doc/en/lb4/Discovering-models.html
 
 ## Synopsis
 
+Please note that the code below will not work without creating .js connector files. Also not that lb4 will only create .ts connector files. Your on your own, good luck.
+
 LoopBack makes it simple to create models from an existing relational database.
 This process is called _discovery_ and is supported by the following connectors:
 
