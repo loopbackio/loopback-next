@@ -8,6 +8,7 @@
 
 acceptance/repository-mongodb/* @bajtos
 acceptance/repository-mysql/* @bajtos
+
 packages/authentication/* @bajtos @raymondfeng
 packages/boot/* @raymondfeng @hacksparrow
 packages/booter-lb3app/* @bajtos @nabdelgadir
@@ -28,6 +29,9 @@ packages/rest/* @bajtos @raymondfeng
 packages/service-proxy/* @raymondfeng
 packages/testlab/* @bajtos
 packages/tsdocs/* @raymondfeng
+
+extensions/health/* @raymondfeng
+
 examples/todo/* @bajtos @hacksparrow
 examples/context/* @raymondfeng
 examples/express-composition/* @nabdelgadir
@@ -37,4 +41,6 @@ examples/lb3-application/* @bajtos @nabdelgadir
 examples/log-extension/* @hacksparrow
 examples/rpc-server/* @hacksparrow
 examples/soap-calculator/* @marioestradarosa
+
 docs/* @bajtos @raymondfeng @hacksparrow @b-admike @jannyHou
+benchmark/* @bajtos @raymondfeng
