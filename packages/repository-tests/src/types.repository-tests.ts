@@ -8,6 +8,7 @@ import {
   EntityCrudRepository,
   juggler,
   Options,
+  TransactionalEntityRepository,
 } from '@loopback/repository';
 
 /**
@@ -46,6 +47,14 @@ export interface CrudFeatures {
    * Default: `undefined`
    */
   emptyValue: undefined | null;
+  /**
+   * Does the connector support using transactions for performing CRUD
+   * operations atomically and being able to commit or rollback the changes?
+   * SQL databases usually support transactions
+   *
+   * Default: `false`
+   */
+  supportsTransactions: boolean;
 }
 
 /**
@@ -60,6 +69,19 @@ export type CrudRepositoryCtor = new <
   entityClass: typeof Entity & {prototype: T},
   dataSource: juggler.DataSource,
 ) => EntityCrudRepository<T, ID, Relations>;
+
+/**
+ * A constructor of a class implementing TransactionalRepository interface,
+ * accepting the Entity class (constructor) and a dataSource instance.
+ */
+export type TransactionalRepositoryCtor = new <
+  T extends Entity,
+  ID,
+  Relations extends object
+>(
+  entityClass: typeof Entity & {prototype: T},
+  dataSource: juggler.DataSource,
+) => TransactionalEntityRepository<T, ID, Relations>;
 
 /**
  * Additional properties added to Mocha TestContext/SuiteContext.

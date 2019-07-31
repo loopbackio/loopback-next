@@ -17,6 +17,7 @@ import {DataSource} from '../datasource';
 import {EntityNotFoundError} from '../errors';
 import {Entity, Model, ValueObject} from '../model';
 import {Filter, Where} from '../query';
+import {IsolationLevel, Transaction} from '../transaction';
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
@@ -35,6 +36,34 @@ export interface ExecutableRepository<T extends Model> extends Repository<T> {
     parameters: NamedParameters | PositionalParameters,
     options?: Options,
   ): Promise<AnyObject>;
+}
+
+/**
+ * A type for CRUD repositories that are backed by IDs and support
+ * Transactions
+ */
+export type TransactionalEntityRepository<
+  T extends Entity,
+  ID,
+  Relations extends object = {}
+> = TransactionalRepository<T> & EntityCrudRepository<T, ID>;
+/**
+ * Repository Interface for Repositories that support Transactions
+ *
+ * @export
+ * @interface TransactionalRepository
+ * @extends {Repository<T>}
+ * @template T
+ */
+export interface TransactionalRepository<T extends Entity>
+  extends Repository<T> {
+  /**
+   * Begin a new Transaction
+   * @param options - Options for the operations
+   * @returns Promise<Transaction> Promise that resolves to a new Transaction
+   * object
+   */
+  beginTransaction(options?: IsolationLevel | Options): Promise<Transaction>;
 }
 
 /**

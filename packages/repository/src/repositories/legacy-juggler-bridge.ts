@@ -29,8 +29,12 @@ import {
   HasOneDefinition,
   HasOneRepositoryFactory,
 } from '../relations';
+import {IsolationLevel, Transaction} from '../transaction';
 import {isTypeResolver, resolveType} from '../type-resolver';
-import {EntityCrudRepository} from './repository';
+import {
+  EntityCrudRepository,
+  TransactionalEntityRepository,
+} from './repository';
 
 export namespace juggler {
   /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -40,6 +44,10 @@ export namespace juggler {
   export import PersistedModel = legacy.PersistedModel;
   export import KeyValueModel = legacy.KeyValueModel;
   export import PersistedModelClass = legacy.PersistedModelClass;
+  // eslint-disable-next-line no-shadow
+  export import Transaction = legacy.Transaction;
+  // eslint-disable-next-line no-shadow
+  export import IsolationLevel = legacy.IsolationLevel;
 }
 
 function isModelClass(
@@ -459,5 +467,28 @@ export class DefaultCrudRepository<
 
   protected toEntities<R extends T>(models: juggler.PersistedModel[]): R[] {
     return models.map(m => this.toEntity<R>(m));
+  }
+}
+
+/**
+ * Default implementation of CRUD repository using legacy juggler model
+ * and data source with beginTransaction() method for connectors which
+ * support Transactions
+ */
+
+export class DefaultTransactionalRepository<
+  T extends Entity,
+  ID,
+  Relations extends object = {}
+> extends DefaultCrudRepository<T, ID, Relations>
+  implements TransactionalEntityRepository<T, ID, Relations> {
+  async beginTransaction(
+    options?: IsolationLevel | Options,
+  ): Promise<Transaction> {
+    const dsOptions: juggler.IsolationLevel | Options = options || {};
+    // juggler.Transaction still has the Promise/Callback variants of the
+    // Transaction methods
+    // so we need it cast it back
+    return (await this.dataSource.beginTransaction(dsOptions)) as Transaction;
   }
 }

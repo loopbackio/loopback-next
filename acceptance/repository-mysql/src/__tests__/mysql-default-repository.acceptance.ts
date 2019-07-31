@@ -3,18 +3,18 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {DefaultCrudRepository} from '@loopback/repository';
+import {DefaultTransactionalRepository} from '@loopback/repository';
 import {
   CrudRepositoryCtor,
   crudRepositoryTestSuite,
 } from '@loopback/repository-tests';
 import {MYSQL_CONFIG, MYSQL_FEATURES} from './mysql.datasource';
 
-describe('MySQL + DefaultCrudRepository', () => {
+describe('MySQL + DefaultTransactionalRepository', () => {
   crudRepositoryTestSuite(
     MYSQL_CONFIG,
     // Workaround for https://github.com/microsoft/TypeScript/issues/31840
-    DefaultCrudRepository as CrudRepositoryCtor,
+    DefaultTransactionalRepository as CrudRepositoryCtor,
     MYSQL_FEATURES,
   );
 });

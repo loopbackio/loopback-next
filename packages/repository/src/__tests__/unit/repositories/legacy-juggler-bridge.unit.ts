@@ -7,6 +7,7 @@ import {expect} from '@loopback/testlab';
 import {
   bindModel,
   DefaultCrudRepository,
+  DefaultTransactionalRepository,
   Entity,
   EntityNotFoundError,
   juggler,
@@ -14,6 +15,8 @@ import {
   ModelDefinition,
   property,
 } from '../../..';
+import {CrudConnectorStub} from '../crud-connector.stub';
+const TransactionClass = require('loopback-datasource-juggler').Transaction;
 
 describe('legacy loopback-datasource-juggler', () => {
   let ds: juggler.DataSource;
@@ -415,5 +418,51 @@ describe('DefaultCrudRepository', () => {
     await expect(repo.execute('query', [])).to.be.rejectedWith(
       'execute() must be implemented by the connector',
     );
+  });
+});
+
+describe('DefaultTransactionalRepository', () => {
+  let ds: juggler.DataSource;
+  class Note extends Entity {
+    static definition = new ModelDefinition({
+      name: 'Note',
+      properties: {
+        title: 'string',
+        content: 'string',
+        id: {name: 'id', type: 'number', id: true},
+      },
+    });
+
+    title?: string;
+    content?: string;
+    id: number;
+
+    constructor(data: Partial<Note>) {
+      super(data);
+    }
+  }
+
+  beforeEach(() => {
+    ds = new juggler.DataSource({
+      name: 'db',
+      connector: 'memory',
+    });
+  });
+
+  it('throws an error when beginTransaction() not implemented', async () => {
+    const repo = new DefaultTransactionalRepository(Note, ds);
+    await expect(repo.beginTransaction({})).to.be.rejectedWith(
+      'beginTransaction must be function implemented by the connector',
+    );
+  });
+  it('calls connector beginTransaction() when available', async () => {
+    const crudDs = new juggler.DataSource({
+      name: 'db',
+      connector: CrudConnectorStub,
+    });
+
+    const repo = new DefaultTransactionalRepository(Note, crudDs);
+    const res = await repo.beginTransaction();
+    expect(res).to.be.instanceOf(TransactionClass);
   });
 });
