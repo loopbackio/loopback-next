@@ -7,7 +7,7 @@ import {MetadataInspector, ParameterDecoratorFactory} from '@loopback/context';
 import {JsonSchemaOptions} from '@loopback/repository-json-schema';
 import * as _ from 'lodash';
 import {inspect} from 'util';
-import {isComplexType, getModelSchemaRef} from '../controller-spec';
+import {getModelSchemaRef, isComplexType} from '../controller-spec';
 import {resolveSchema} from '../generate-schema';
 import {OAI3Keys} from '../keys';
 import {RequestBodyObject, REQUEST_BODY_INDEX, SchemaObject} from '../types';
@@ -98,10 +98,6 @@ function _requestBody2<T extends object>(
     const paramTypes = (methodSig && methodSig.parameterTypes) || [];
 
     const paramType = paramTypes[index];
-
-    // // preserve backward compatibility
-    // if (modelCtor)
-    //   schemaOptions = Object.assign({}, schemaOptions);
 
     // Assumption: the paramType is always the type to be configured
     let schema: SchemaObject;
