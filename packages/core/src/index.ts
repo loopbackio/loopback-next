@@ -14,3 +14,4 @@ export * from './keys';
 export * from './lifecycle';
 export * from './lifecycle-registry';
 export * from './server';
+export * from './service';

@@ -74,6 +74,10 @@ children:
       url: Using-database-transactions.html
       output: 'web, pdf'
 
+  - title: 'Services'
+    url: Services.html
+    output: 'web, pdf'
+
   - title: 'Interceptors'
     url: Interceptors.html
     output: 'web, pdf'
@@ -114,6 +118,10 @@ children:
 
     - title: 'Authentication Decorator'
       url: Decorators_authenticate.html
+      output: 'web, pdf'
+
+    - title: 'Service Decorators'
+      url: Decorators_service.html
       output: 'web, pdf'
 
     - title: 'Repository Decorators'
