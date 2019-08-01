@@ -120,6 +120,10 @@ export namespace CoreTags {
    * Binding tag for services
    */
   export const SERVICE = 'service';
+  /**
+   * Binding tag for the service interface
+   */
+  export const SERVICE_INTERFACE = 'serviceInterface';
 
   /**
    * Binding tag for life cycle observers

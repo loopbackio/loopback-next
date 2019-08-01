@@ -6,12 +6,9 @@
 import {
   Binding,
   BindingScope,
-  bindingTemplateFor,
   Constructor,
   Context,
-  ContextTags,
   createBindingFromClass,
-  isProviderClass,
   Provider,
 } from '@loopback/context';
 import * as debugFactory from 'debug';
@@ -24,6 +21,7 @@ import {
 } from './lifecycle';
 import {LifeCycleObserverRegistry} from './lifecycle-registry';
 import {Server} from './server';
+import {createServiceBinding, ServiceOptions} from './service';
 const debug = debugFactory('loopback:core:application');
 
 /**
@@ -310,25 +308,10 @@ export class Application extends Context implements LifeCycleObserver {
    */
   public service<S>(
     cls: Constructor<S> | Constructor<Provider<S>>,
-    name?: string,
+    name?: string | ServiceOptions,
   ): Binding<S> {
-    if (!name && isProviderClass(cls)) {
-      // Trim `Provider` from the default service name
-      // This is needed to keep backward compatibility
-      const templateFn = bindingTemplateFor(cls);
-      const template = Binding.bind<S>('template').apply(templateFn);
-      if (
-        template.tagMap[ContextTags.PROVIDER] &&
-        !template.tagMap[ContextTags.NAME]
-      ) {
-        // The class is a provider and no `name` tag is found
-        name = cls.name.replace(/Provider$/, '');
-      }
-    }
-    const binding = createBindingFromClass(cls, {
-      name,
-      type: 'service',
-    });
+    const options = typeof name === 'string' ? {name} : name;
+    const binding = createServiceBinding(cls, options);
     this.add(binding);
     return binding;
   }

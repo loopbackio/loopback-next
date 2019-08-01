@@ -7,6 +7,7 @@ import {
   bind,
   Binding,
   BindingScope,
+  BindingTag,
   Context,
   inject,
   Provider,
@@ -250,6 +251,21 @@ describe('Application', () => {
       expect(findKeysByTag(app, CoreTags.SERVICE)).to.containEql(binding.key);
     });
 
+    it('binds a service with custom interface - string', () => {
+      const binding = app.service(MyService, {interface: 'MyService'});
+      expect(Array.from(binding.tagNames)).to.containEql(CoreTags.SERVICE);
+      expect(binding.tagMap[CoreTags.SERVICE_INTERFACE]).to.eql('MyService');
+    });
+
+    it('binds a service with custom interface - symbol', () => {
+      const MyServiceInterface = Symbol('MyService');
+      const binding = app.service(MyService, {interface: MyServiceInterface});
+      expect(Array.from(binding.tagNames)).to.containEql(CoreTags.SERVICE);
+      expect(binding.tagMap[CoreTags.SERVICE_INTERFACE]).to.eql(
+        MyServiceInterface,
+      );
+    });
+
     it('binds a singleton service', () => {
       @bind({scope: BindingScope.SINGLETON})
       class MySingletonService {}
@@ -295,7 +311,7 @@ describe('Application', () => {
     }
   });
 
-  function findKeysByTag(ctx: Context, tag: string | RegExp) {
+  function findKeysByTag(ctx: Context, tag: BindingTag | RegExp) {
     return ctx.findByTag(tag).map(binding => binding.key);
   }
 });
