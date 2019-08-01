@@ -20,6 +20,12 @@ describe('spike - requestBody decorator', () => {
     class Product extends Entity {
       @property({
         type: 'string',
+        id: true,
+      })
+      id: string;
+
+      @property({
+        type: 'string',
       })
       name: string;
       @belongsTo(() => Category)
@@ -143,6 +149,7 @@ describe('spike - requestBody decorator', () => {
       expect(referenceSchema).to.have.properties({
         title: 'ProductPartial',
         properties: {
+          id: {type: 'string'},
           categoryId: {type: 'number'},
           name: {type: 'string'},
         },
@@ -190,6 +197,7 @@ describe('spike - requestBody decorator', () => {
           },
         });
       });
+
       it('omits the 1st parameter', () => {
         class TestController {
           @post('/Test')
@@ -213,6 +221,39 @@ describe('spike - requestBody decorator', () => {
         const referenceSchema = testSpec1.components!.schemas!.TestPartial;
         expect(referenceSchema).to.have.properties({
           title: 'TestPartial',
+          properties: {
+            name: {type: 'string'},
+          },
+        });
+      });
+
+      // FIXIT: This test should fail
+      // The type check should detect the generic type `Random`
+      // is different from the second parameter `Test`
+      it('catches type conflict', () => {
+        class Random {}
+        class TestController {
+          @post('/Test')
+          create(@requestBody2<Random>({required: true}, Test) test: Test) {}
+        }
+
+        const testSpec3 = getControllerSpec(TestController);
+
+        const requestBodySpecForCreate =
+          testSpec3.paths['/Test']['post'].requestBody;
+        expect(requestBodySpecForCreate).to.have.properties({
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/Test',
+              },
+            },
+          },
+        });
+
+        const referenceSchema = testSpec3.components!.schemas!.Test;
+        expect(referenceSchema).to.have.properties({
+          title: 'Test',
           properties: {
             name: {type: 'string'},
           },

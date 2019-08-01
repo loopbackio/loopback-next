@@ -7,7 +7,7 @@ import {MetadataInspector, ParameterDecoratorFactory} from '@loopback/context';
 import {JsonSchemaOptions} from '@loopback/repository-json-schema';
 import * as _ from 'lodash';
 import {inspect} from 'util';
-import {getModelSchemaRef, isComplexType} from '../controller-spec';
+import {getModelSchemaRef, isComplexType} from '..';
 import {resolveSchema} from '../generate-schema';
 import {OAI3Keys} from '../keys';
 import {RequestBodyObject, REQUEST_BODY_INDEX, SchemaObject} from '../types';
@@ -24,14 +24,38 @@ function isRequestBodySpec<T extends object>(
   );
 }
 
+// overload
+export function requestBody2<T extends object>(
+  spec: Partial<RequestBodyObject>,
+  schemaOptions?: JsonSchemaOptions<T>,
+): (target: object, member: string, index: number) => void;
+
+// overload
+export function requestBody2<T extends object>(
+  model: Function & {prototype: T},
+  schemaOptions?: JsonSchemaOptions<T>,
+): (target: object, member: string, index: number) => void;
+
+// overload
+export function requestBody2<T extends object>(
+  spec: Partial<RequestBodyObject>,
+  model: Function & {prototype: T},
+  schemaOptions?: JsonSchemaOptions<T>,
+): (target: object, member: string, index: number) => void;
+
+// overload
+export function requestBody2<T extends object>(
+  schemaOptions?: JsonSchemaOptions<T>,
+): (target: object, member: string, index: number) => void;
+
 export function requestBody2<T extends object>(
   specOrModelOrOptions?:
     | Partial<RequestBodyObject>
-    | Function
+    | Function & {prototype: T}
     | JsonSchemaOptions<T>,
-  modelOrOptions?: Function | JsonSchemaOptions<T>,
+  modelOrOptions?: Function & {prototype: T} | JsonSchemaOptions<T>,
   schemaOptions?: JsonSchemaOptions<T>,
-) {
+): (target: object, member: string, index: number) => void {
   if (typeof specOrModelOrOptions == 'function') {
     // omit the 1st param
     // @requestBody(modelCtor, schemaOptions)
@@ -69,11 +93,11 @@ export function requestBody2<T extends object>(
 }
 
 // `name` is provided to avoid generating the same schema
-function _requestBody2<T extends object>(
+export function _requestBody2<T extends object>(
   requestBodySpecification?: Partial<RequestBodyObject>,
-  modelCtor?: Function,
+  modelCtor?: Function & {prototype: T},
   schemaOptions?: JsonSchemaOptions<T>,
-) {
+): (target: object, member: string, index: number) => void {
   return function(target: object, member: string, index: number) {
     debug('@newRequestBody() on %s.%s', target.constructor.name, member);
     debug('  parameter index: %s', index);
@@ -83,31 +107,24 @@ function _requestBody2<T extends object>(
         '  schemaOptions: %s',
         inspect(requestBodySpecification, {depth: null}),
       );
-
     // Use 'application/json' as default content if `requestBody` is undefined
     const requestBodySpec = Object.assign(
       {},
       requestBodySpecification || {content: {}},
     );
-
     if (_.isEmpty(requestBodySpec.content))
       requestBodySpec.content = {'application/json': {}};
-
     // Get the design time method parameter metadata
     const methodSig = MetadataInspector.getDesignTypeForMethod(target, member);
     const paramTypes = (methodSig && methodSig.parameterTypes) || [];
-
     const paramType = paramTypes[index];
-
     // Assumption: the paramType is always the type to be configured
     let schema: SchemaObject;
-
     if (isComplexType(modelCtor || paramType)) {
       schema = getModelSchemaRef(modelCtor || paramType, schemaOptions);
     } else {
       schema = resolveSchema(modelCtor || paramType);
     }
-
     /* istanbul ignore if */
     if (debug.enabled)
       debug('  inferred schema: %s', inspect(schema, {depth: null}));
@@ -117,13 +134,11 @@ function _requestBody2<T extends object>(
       }
       return c;
     });
-
     // The default position for request body argument is 0
     // if not, add extension 'x-parameter-index' to specify the position
     if (index !== 0) {
       requestBodySpec[REQUEST_BODY_INDEX] = index;
     }
-
     /* istanbul ignore if */
     if (debug.enabled)
       debug('  final spec: ', inspect(requestBodySpec, {depth: null}));
