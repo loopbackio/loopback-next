@@ -58,24 +58,28 @@ export function requestBody2<T extends object>(
 ): (target: object, member: string, index: number) => void {
   if (typeof specOrModelOrOptions == 'function') {
     // omit the 1st param
-    // @requestBody(modelCtor, schemaOptions)
+    // @requestBody(model, schemaOptions)
     if (modelOrOptions && typeof modelOrOptions == 'object')
       return _requestBody2(
         {},
         specOrModelOrOptions,
         modelOrOptions as JsonSchemaOptions<T>,
       );
-    // @requestBody(modelCtor)
+    // @requestBody(model)
     return _requestBody2({}, specOrModelOrOptions);
   } else if (specOrModelOrOptions && isRequestBodySpec(specOrModelOrOptions)) {
     // 1st param is spec
     if (modelOrOptions && typeof modelOrOptions == 'object')
       // omit the 2nd param
       // @requestBody(spec, schemaOptions)
-      return _requestBody2(specOrModelOrOptions, undefined, modelOrOptions);
+      return _requestBody2(
+        specOrModelOrOptions,
+        undefined,
+        modelOrOptions as JsonSchemaOptions<T>,
+      );
     // @requestBody(spec)
-    // @requestBody(spec, modelCtor)
-    // @requestBody(spec, modelCtor, schemaOptions)
+    // @requestBody(spec, model)
+    // @requestBody(spec, model, schemaOptions)
     return _requestBody2(specOrModelOrOptions, modelOrOptions, schemaOptions);
   } else if (specOrModelOrOptions !== undefined) {
     // omit 1st and 2nd params
@@ -95,7 +99,7 @@ export function requestBody2<T extends object>(
 // `name` is provided to avoid generating the same schema
 export function _requestBody2<T extends object>(
   requestBodySpecification?: Partial<RequestBodyObject>,
-  modelCtor?: Function & {prototype: T},
+  model?: Function & {prototype: T},
   schemaOptions?: JsonSchemaOptions<T>,
 ): (target: object, member: string, index: number) => void {
   return function(target: object, member: string, index: number) {
@@ -120,10 +124,10 @@ export function _requestBody2<T extends object>(
     const paramType = paramTypes[index];
     // Assumption: the paramType is always the type to be configured
     let schema: SchemaObject;
-    if (isComplexType(modelCtor || paramType)) {
-      schema = getModelSchemaRef(modelCtor || paramType, schemaOptions);
+    if (isComplexType(model || paramType)) {
+      schema = getModelSchemaRef(model || paramType, schemaOptions);
     } else {
-      schema = resolveSchema(modelCtor || paramType);
+      schema = resolveSchema(model || paramType);
     }
     /* istanbul ignore if */
     if (debug.enabled)
