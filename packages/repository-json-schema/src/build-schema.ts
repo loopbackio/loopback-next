@@ -332,6 +332,9 @@ export function modelToJsonSchema<T extends object>(
 
   for (const p in meta.properties) {
     if (options.exclude && options.exclude.includes(p as keyof T)) {
+      result.not = (result.not as JSONSchema) || {};
+      result.not.anyOf = result.not.anyOf || [];
+      result.not.anyOf.push({required: [p]});
       continue;
     }
 

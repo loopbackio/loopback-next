@@ -67,6 +67,15 @@ describe('TodoApplication', () => {
       .expect(422);
   });
 
+  it('rejects requests with input that contains excluded properties', async () => {
+    const todo = givenTodo();
+    todo.id = 1;
+    await client
+      .post('/todos')
+      .send(todo)
+      .expect(422);
+  });
+
   it('creates an address-based reminder', async function() {
     // Increase the timeout to accommodate slow network connections
     // eslint-disable-next-line no-invalid-this
