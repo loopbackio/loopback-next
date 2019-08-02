@@ -115,8 +115,8 @@ export function compareByOrder(
  *
  * @param orderOfPhases - An array of phase names as the predefined order
  */
-export function sortBindingsByPhase(
-  bindings: Readonly<Binding<unknown>>[],
+export function sortBindingsByPhase<T = unknown>(
+  bindings: Readonly<Binding<T>>[],
   phaseTagName?: string,
   orderOfPhases?: (string | symbol)[],
 ) {
