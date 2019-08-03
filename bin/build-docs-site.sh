@@ -11,6 +11,11 @@
 # Set `-e` so that non-zero exit code from any step will be honored
 set -e
 
+if ! [ -x "$(command -v bundle)" ]; then
+  echo 'Error: You must have Bundler installed (http://bundler.io)' >&2
+  exit 1
+fi
+
 # Set `-v` (verbose) for travis build
 if [ -n "$TRAVIS" ]; then
   set -v
