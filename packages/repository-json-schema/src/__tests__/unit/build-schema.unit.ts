@@ -269,9 +269,9 @@ describe('build-schema', () => {
       expect(key).to.equal('modelPartial');
     });
 
-    it('returns "excluding[id,_rev]" when a single option "exclude" is set', () => {
+    it('returns "excluding_id-_rev_" when a single option "exclude" is set', () => {
       const key = buildModelCacheKey({exclude: ['id', '_rev']});
-      expect(key).to.equal('modelExcluding[id,_rev]');
+      expect(key).to.equal('modelExcluding_id-_rev_');
     });
 
     it('does not include "exclude" in concatenated option names if it is empty', () => {
@@ -283,9 +283,9 @@ describe('build-schema', () => {
       expect(key).to.equal('modelPartialWithRelations');
     });
 
-    it('returns "optional[id,_rev]" when "optional" is set with two items', () => {
+    it('returns "optional_id-_rev_" when "optional" is set with two items', () => {
       const key = buildModelCacheKey({optional: ['id', '_rev']});
-      expect(key).to.equal('modelOptional[id,_rev]');
+      expect(key).to.equal('modelOptional_id-_rev_');
     });
 
     it('does not include "optional" in concatenated option names if it is empty', () => {
@@ -302,7 +302,7 @@ describe('build-schema', () => {
         partial: true,
         optional: ['name'],
       });
-      expect(key).to.equal('modelOptional[name]');
+      expect(key).to.equal('modelOptional_name_');
     });
 
     it('includes "partial" in option names if "optional" is empty', () => {
@@ -322,7 +322,7 @@ describe('build-schema', () => {
         includeRelations: true,
       });
       expect(key).to.equal(
-        'modelOptional[name]Excluding[id,_rev]WithRelations',
+        'modelOptional_name_Excluding_id-_rev_WithRelations',
       );
     });
 

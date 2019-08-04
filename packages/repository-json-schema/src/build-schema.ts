@@ -14,6 +14,7 @@ import {
 } from '@loopback/repository';
 import * as debugFactory from 'debug';
 import {JSONSchema6 as JSONSchema} from 'json-schema';
+import {inspect} from 'util';
 import {JSON_SCHEMA_KEY, MODEL_TYPE_KEYS} from './keys';
 const debug = debugFactory('loopback:repository-json-schema:build-schema');
 
@@ -290,21 +291,57 @@ function buildSchemaTitle<T extends object>(
   return title + getTitleSuffix(options);
 }
 
+/**
+ * Checks the options and generates a descriptive suffix using compatible chars
+ * @param options json schema options
+ */
 function getTitleSuffix<T extends object>(options: JsonSchemaOptions<T> = {}) {
   let suffix = '';
+
   if (options.optional && options.optional.length) {
-    suffix += 'Optional[' + options.optional + ']';
+    suffix += `Optional_${options.optional.join('-')}_`;
   } else if (options.partial) {
     suffix += 'Partial';
   }
   if (options.exclude && options.exclude.length) {
-    suffix += 'Excluding[' + options.exclude + ']';
+    suffix += `Excluding_${options.exclude.join('-')}_`;
   }
   if (options.includeRelations) {
     suffix += 'WithRelations';
   }
 
   return suffix;
+}
+
+function stringifyOptions(modelSettings: object = {}) {
+  return inspect(modelSettings, {
+    depth: Infinity,
+    maxArrayLength: Infinity,
+    breakLength: Infinity,
+  });
+}
+
+function isEmptyJson(obj: object) {
+  return !(obj && Object.keys(obj).length);
+}
+
+/**
+ * Checks the options and generates a descriptive suffix
+ * @param options json schema options
+ */
+function getDescriptionSuffix<T extends object>(
+  rawOptions: JsonSchemaOptions<T> = {},
+) {
+  const options = {...rawOptions};
+
+  delete options.visited;
+  if (options.optional && !options.optional.length) {
+    delete options.optional;
+  }
+
+  return !isEmptyJson(options)
+    ? `(Schema options: ${stringifyOptions(options)})`
+    : '';
 }
 
 // NOTE(shimks) no metadata for: union, optional, nested array, any, enum,
@@ -345,8 +382,14 @@ export function modelToJsonSchema<T extends object>(
   const result: JSONSchema = {title};
   options.visited[title] = result;
 
+  const descriptionSuffix = getDescriptionSuffix(options);
+
   if (meta.description) {
-    result.description = meta.description;
+    const formatSuffix = descriptionSuffix ? ` ${descriptionSuffix}` : '';
+
+    result.description = meta.description + formatSuffix;
+  } else if (descriptionSuffix) {
+    result.description = descriptionSuffix;
   }
 
   for (const p in meta.properties) {
