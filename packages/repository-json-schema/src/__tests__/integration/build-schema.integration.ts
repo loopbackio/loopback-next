@@ -770,6 +770,7 @@ describe('build-schema', () => {
         definitions: {
           ProductWithRelations: {
             title: 'ProductWithRelations',
+            description: `(Schema options: { includeRelations: true })`,
             properties: {
               id: {type: 'number'},
               categoryId: {type: 'number'},
@@ -785,6 +786,7 @@ describe('build-schema', () => {
           },
         },
         title: 'CategoryWithRelations',
+        description: `(Schema options: { includeRelations: true })`,
       };
       const jsonSchema = getJsonSchema(Category, {includeRelations: true});
       expect(jsonSchema).to.deepEqual(expectedSchema);
@@ -809,6 +811,7 @@ describe('build-schema', () => {
         definitions: {
           ProductWithRelations: {
             title: 'ProductWithRelations',
+            description: `(Schema options: { includeRelations: true })`,
             properties: {
               id: {type: 'number'},
               categoryId: {type: 'number'},
@@ -825,6 +828,7 @@ describe('build-schema', () => {
           },
         },
         title: 'CategoryWithoutPropWithRelations',
+        description: `(Schema options: { includeRelations: true })`,
       };
 
       // To check for case when there are no other properties than relational
@@ -988,7 +992,10 @@ describe('build-schema', () => {
           name: {type: 'string'},
           description: {type: 'string'},
         });
-        expect(excludeIdSchema.title).to.equal('ProductExcluding[id]');
+        expect(excludeIdSchema.title).to.equal('ProductExcluding_id_');
+        expect(excludeIdSchema.description).to.endWith(
+          `(Schema options: { exclude: [ 'id' ] })`,
+        );
       });
 
       it('excludes multiple properties when the option "exclude" is set to exclude multiple properties', () => {
@@ -1007,7 +1014,10 @@ describe('build-schema', () => {
           description: {type: 'string'},
         });
         expect(excludeIdAndNameSchema.title).to.equal(
-          'ProductExcluding[id,name]',
+          'ProductExcluding_id-name_',
+        );
+        expect(excludeIdAndNameSchema.description).to.endWith(
+          `(Schema options: { exclude: [ 'id', 'name' ] })`,
         );
       });
 
@@ -1050,7 +1060,10 @@ describe('build-schema', () => {
 
         const optionalIdSchema = getJsonSchema(Product, {optional: ['id']});
         expect(optionalIdSchema.required).to.deepEqual(['name']);
-        expect(optionalIdSchema.title).to.equal('ProductOptional[id]');
+        expect(optionalIdSchema.title).to.equal('ProductOptional_id_');
+        expect(optionalIdSchema.description).to.endWith(
+          `(Schema options: { optional: [ 'id' ] })`,
+        );
       });
 
       it('makes multiple properties optional when the option "optional" includes multiple properties', () => {
@@ -1063,7 +1076,10 @@ describe('build-schema', () => {
         });
         expect(optionalIdAndNameSchema.required).to.equal(undefined);
         expect(optionalIdAndNameSchema.title).to.equal(
-          'ProductOptional[id,name]',
+          'ProductOptional_id-name_',
+        );
+        expect(optionalIdAndNameSchema.description).to.endWith(
+          `(Schema options: { optional: [ 'id', 'name' ] })`,
         );
       });
 
@@ -1087,14 +1103,20 @@ describe('build-schema', () => {
           optional: ['name'],
         });
         expect(optionalNameSchema.required).to.deepEqual(['id']);
-        expect(optionalNameSchema.title).to.equal('ProductOptional[name]');
+        expect(optionalNameSchema.title).to.equal('ProductOptional_name_');
+        expect(optionalNameSchema.description).to.endWith(
+          `(Schema options: { optional: [ 'name' ] })`,
+        );
 
         optionalNameSchema = getJsonSchema(Product, {
           partial: false,
           optional: ['name'],
         });
         expect(optionalNameSchema.required).to.deepEqual(['id']);
-        expect(optionalNameSchema.title).to.equal('ProductOptional[name]');
+        expect(optionalNameSchema.title).to.equal('ProductOptional_name_');
+        expect(optionalNameSchema.description).to.endWith(
+          `(Schema options: { optional: [ 'name' ] })`,
+        );
       });
 
       it('uses "partial" option, if provided, when "optional" option is set but empty', () => {
@@ -1108,6 +1130,23 @@ describe('build-schema', () => {
         });
         expect(optionalNameSchema.required).to.equal(undefined);
         expect(optionalNameSchema.title).to.equal('ProductPartial');
+      });
+
+      it('can work with "optional" and "exclude" options together', () => {
+        const originalSchema = getJsonSchema(Product);
+        expect(originalSchema.required).to.deepEqual(['id', 'name']);
+        expect(originalSchema.title).to.equal('Product');
+
+        const bothOptionsSchema = getJsonSchema(Product, {
+          exclude: ['id'],
+          optional: ['name'],
+        });
+        expect(bothOptionsSchema.title).to.equal(
+          'ProductOptional_name_Excluding_id_',
+        );
+        expect(bothOptionsSchema.description).to.endWith(
+          `(Schema options: { exclude: [ 'id' ], optional: [ 'name' ] })`,
+        );
       });
     });
 
