@@ -154,8 +154,7 @@ export class Todo extends Entity {
   @property({
     type: 'string',
   })
-  remindAtAddress?: string; // address,city,zipcode
-
+  remindAtAddress?: string; // address,city,zipcode ie. 1 New Orchard Road Armonk, New York - if address not found, will throw 500 TypeError: Cannot read property 'y' of undefined
   @property({
     type: 'string',
   })
