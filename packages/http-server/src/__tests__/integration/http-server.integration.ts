@@ -135,7 +135,7 @@ describe('HttpServer (integration)', () => {
       .to.have.property('address')
       .which.is.an.Object();
     await server.stop();
-    expect(server.address).to.be.undefined();
+    expect(server.address).to.be.null();
   });
 
   it('exports listening', async () => {

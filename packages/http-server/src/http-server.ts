@@ -50,7 +50,7 @@ export type HttpProtocol = 'http' | 'https'; // Will be extended to `http2` in t
 export class HttpServer {
   private _listening: boolean = false;
   private _protocol: HttpProtocol;
-  private _address: string | AddressInfo;
+  private _address: string | AddressInfo | null;
   private requestListener: RequestListener;
   readonly server: http.Server | https.Server;
   private serverOptions: HttpServerOptions;
@@ -132,12 +132,12 @@ export class HttpServer {
    * URL of the HTTP / HTTPS server
    */
   public get url(): string {
-    if (typeof this._address === 'string') {
+    if (typeof this._address === 'string' || this._address == null) {
       /* istanbul ignore if */
       if (isWin32()) {
-        return this._address;
+        return this._address || '';
       }
-      const basePath = encodeURIComponent(this._address);
+      const basePath = encodeURIComponent(this._address || '');
       return `${this.protocol}+unix://${basePath}`;
     }
     let host = this.host;
@@ -160,8 +160,8 @@ export class HttpServer {
   /**
    * Address of the HTTP / HTTPS server
    */
-  public get address(): string | AddressInfo | undefined {
-    return this._listening ? this._address : undefined;
+  public get address(): string | AddressInfo | null {
+    return this._listening ? this._address : null;
   }
 }
 
