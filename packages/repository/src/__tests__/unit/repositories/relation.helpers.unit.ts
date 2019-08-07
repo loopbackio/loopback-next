@@ -19,27 +19,46 @@ describe('findByForeignKeys', () => {
     await productRepo.deleteAll();
   });
 
-  it('returns an empty array when no instances have the foreign key value', async () => {
+  it('returns an empty array when no foreign keys are passed in', async () => {
+    const fkIds: number[] = [];
     await productRepo.create({id: 1, name: 'product', categoryId: 1});
-    const products = await findByForeignKeys(productRepo, 'categoryId', [2]);
+    const products = await findByForeignKeys(productRepo, 'categoryId', fkIds);
     expect(products).to.be.empty();
   });
 
+  it('returns an empty array when no instances have the foreign key value', async () => {
+    await productRepo.create({id: 1, name: 'product', categoryId: 1});
+    const products = await findByForeignKeys(productRepo, 'categoryId', 2);
+    expect(products).to.be.empty();
+  });
+
+  it('returns an empty array when no instances have the foreign key values', async () => {
+    await productRepo.create({id: 1, name: 'product', categoryId: 1});
+    const products = await findByForeignKeys(productRepo, 'categoryId', [2, 3]);
+    expect(products).to.be.empty();
+  });
   it('returns all instances that have the foreign key value', async () => {
     const pens = await productRepo.create({name: 'pens', categoryId: 1});
     const pencils = await productRepo.create({name: 'pencils', categoryId: 1});
-    const products = await findByForeignKeys(productRepo, 'categoryId', [1]);
+    const products = await findByForeignKeys(productRepo, 'categoryId', 1);
     expect(products).to.deepEqual([pens, pencils]);
   });
 
   it('does not include instances with different foreign key values', async () => {
     const pens = await productRepo.create({name: 'pens', categoryId: 1});
     const pencils = await productRepo.create({name: 'pencils', categoryId: 2});
-    const products = await findByForeignKeys(productRepo, 'categoryId', [1]);
+    const products = await findByForeignKeys(productRepo, 'categoryId', 1);
     expect(products).to.deepEqual([pens]);
     expect(products).to.not.containDeep(pencils);
   });
 
+  it('includes instances when there is one value in the array of foreign key values', async () => {
+    const pens = await productRepo.create({name: 'pens', categoryId: 1});
+    const pencils = await productRepo.create({name: 'pencils', categoryId: 2});
+    const products = await findByForeignKeys(productRepo, 'categoryId', [2]);
+    expect(products).to.deepEqual([pencils]);
+    expect(products).to.not.containDeep(pens);
+  });
   it('returns all instances that have any of multiple foreign key values', async () => {
     const pens = await productRepo.create({name: 'pens', categoryId: 1});
     const pencils = await productRepo.create({name: 'pencils', categoryId: 2});
@@ -61,6 +80,18 @@ describe('findByForeignKeys', () => {
     expect(errorMessage).to.eql('scope is not supported');
   });
 
+  it('does not throw an error if scope is passed in and is undefined or empty', async () => {
+    let products = await findByForeignKeys(
+      productRepo,
+      'categoryId',
+      [1],
+      undefined,
+      {},
+    );
+    expect(products).to.be.empty();
+    products = await findByForeignKeys(productRepo, 'categoryId', 1, {}, {});
+    expect(products).to.be.empty();
+  });
   /******************* HELPERS *******************/
 
   @model()

@@ -11,19 +11,18 @@ import {Entity, EntityCrudRepository, Filter, Options, Where} from '..';
  *
  * @param targetRepository - The target repository where the model instances are found
  * @param fkName - Name of the foreign key
- * @param fkValues - Array of the values of the foreign keys to be included
+ * @param fkValues - One value or array of values of the foreign key to be included
  * @param scope - Additional scope constraints (not currently supported)
  * @param options - Options for the operations
  */
 export async function findByForeignKeys<
   Target extends Entity,
-  TargetID,
   TargetRelations extends object,
-  ForeignKey
+  ForeignKey extends StringKeyOf<Target>
 >(
-  targetRepository: EntityCrudRepository<Target, TargetID, TargetRelations>,
-  fkName: StringKeyOf<Target>,
-  fkValues: ForeignKey[],
+  targetRepository: EntityCrudRepository<Target, unknown, TargetRelations>,
+  fkName: ForeignKey,
+  fkValues: Target[ForeignKey][] | Target[ForeignKey],
   scope?: Filter<Target>,
   options?: Options,
 ): Promise<(Target & TargetRelations)[]> {
@@ -33,12 +32,19 @@ export async function findByForeignKeys<
     throw new Error('scope is not supported');
   }
 
-  const where = ({
-    [fkName]: fkValues.length === 1 ? fkValues[0] : {inq: fkValues},
-  } as unknown) as Where<Target>;
+  let value;
+
+  if (Array.isArray(fkValues)) {
+    if (fkValues.length === 0) return [];
+    value = fkValues.length === 1 ? fkValues[0] : {inq: fkValues};
+  } else {
+    value = fkValues;
+  }
+
+  const where = ({[fkName]: value} as unknown) as Where<Target>;
   const targetFilter = {where};
 
   return targetRepository.find(targetFilter, options);
 }
 
-export type StringKeyOf<T> = Extract<keyof T, string>;
+type StringKeyOf<T> = Extract<keyof T, string>;
