@@ -4,9 +4,8 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {DefaultCrudRepository, findByForeignKeys, juggler} from '../../..';
-import {model, property} from '../../../decorators';
-import {Entity} from '../../../model';
+import {findByForeignKeys} from '../../../..';
+import {ProductRepository, testdb} from './relations-helpers-fixtures';
 
 describe('findByForeignKeys', () => {
   let productRepo: ProductRepository;
@@ -37,6 +36,7 @@ describe('findByForeignKeys', () => {
     const products = await findByForeignKeys(productRepo, 'categoryId', [2, 3]);
     expect(products).to.be.empty();
   });
+
   it('returns all instances that have the foreign key value', async () => {
     const pens = await productRepo.create({name: 'pens', categoryId: 1});
     const pencils = await productRepo.create({name: 'pencils', categoryId: 1});
@@ -59,6 +59,7 @@ describe('findByForeignKeys', () => {
     expect(products).to.deepEqual([pencils]);
     expect(products).to.not.containDeep(pens);
   });
+
   it('returns all instances that have any of multiple foreign key values', async () => {
     const pens = await productRepo.create({name: 'pens', categoryId: 1});
     const pencils = await productRepo.create({name: 'pencils', categoryId: 2});
@@ -69,15 +70,9 @@ describe('findByForeignKeys', () => {
   });
 
   it('throws error if scope is passed in and is non-empty', async () => {
-    let errorMessage;
-    try {
-      await findByForeignKeys(productRepo, 'categoryId', [1], {
-        limit: 1,
-      });
-    } catch (error) {
-      errorMessage = error.message;
-    }
-    expect(errorMessage).to.eql('scope is not supported');
+    await expect(
+      findByForeignKeys(productRepo, 'categoryId', [1], {limit: 1}),
+    ).to.be.rejectedWith('scope is not supported');
   });
 
   it('does not throw an error if scope is passed in and is undefined or empty', async () => {
@@ -91,30 +86,5 @@ describe('findByForeignKeys', () => {
     expect(products).to.be.empty();
     products = await findByForeignKeys(productRepo, 'categoryId', 1, {}, {});
     expect(products).to.be.empty();
-  });
-  /******************* HELPERS *******************/
-
-  @model()
-  class Product extends Entity {
-    @property({id: true})
-    id: number;
-    @property()
-    name: string;
-    @property()
-    categoryId: number;
-  }
-
-  class ProductRepository extends DefaultCrudRepository<
-    Product,
-    typeof Product.prototype.id
-  > {
-    constructor(dataSource: juggler.DataSource) {
-      super(Product, dataSource);
-    }
-  }
-
-  const testdb: juggler.DataSource = new juggler.DataSource({
-    name: 'db',
-    connector: 'memory',
   });
 });
