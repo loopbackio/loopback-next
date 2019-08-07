@@ -26,7 +26,7 @@
     "@loopback/build": "^2.0.6",
     "@loopback/eslint-config": "^3.0.0",
     "@loopback/testlab": "^1.7.2",
-    "@types/node": "^10.14.14"
+    "@types/node": "^10.14.15"
   },
   "keywords": [
     "LoopBack",

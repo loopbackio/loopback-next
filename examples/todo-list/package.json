@@ -53,7 +53,7 @@
     "@loopback/repository": "^1.8.0",
     "@loopback/testlab": "^1.7.2",
     "@types/lodash": "^4.14.136",
-    "@types/node": "^10.14.14",
+    "@types/node": "^10.14.15",
     "@typescript-eslint/eslint-plugin": "^1.13.0",
     "@typescript-eslint/parser": "^1.13.0",
     "eslint": "^6.1.0",

@@ -28,7 +28,7 @@
     "@loopback/eslint-config": "^3.0.0",
     "@loopback/testlab": "^1.7.2",
     "@types/debug": "^4.1.4",
-    "@types/node": "^10.14.14",
+    "@types/node": "^10.14.15",
     "@types/request-promise-native": "^1.0.16",
     "@types/rimraf": "^2.0.2",
     "delay": "^4.3.0"
