@@ -3,9 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {Constructor, inject, Provider} from '@loopback/context';
 import {expect} from '@loopback/testlab';
-import {Constructor, Provider, inject} from '@loopback/context';
-
 import {Application, ControllerClass} from '../..';
 
 describe('Bootstrapping the application', () => {
@@ -52,6 +51,35 @@ describe('Bootstrapping the application', () => {
       app.component(ProductComponent);
 
       expect(app.find('controllers.*').map(b => b.key)).to.eql([
+        'controllers.ProductController',
+      ]);
+    });
+
+    it('allows parent context', async () => {
+      class ProductController {}
+
+      class ProductComponent {
+        controllers: ControllerClass[] = [ProductController];
+      }
+
+      const parent = new Application();
+      parent.component(ProductComponent);
+
+      const app = new Application(parent);
+
+      expect(app.find('controllers.*').map(b => b.key)).to.eql([
+        'controllers.ProductController',
+      ]);
+
+      const app2 = new Application({}, parent);
+
+      expect(app2.find('controllers.*').map(b => b.key)).to.eql([
+        'controllers.ProductController',
+      ]);
+
+      const app3 = new Application();
+
+      expect(app3.find('controllers.*').map(b => b.key)).to.not.containEql([
         'controllers.ProductController',
       ]);
     });

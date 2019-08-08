@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Binding, BindingAddress, Constructor} from '@loopback/context';
+import {Binding, BindingAddress, Constructor, Context} from '@loopback/context';
 import {Application, ApplicationConfig, Server} from '@loopback/core';
 import {OpenApiSpec, OperationObject} from '@loopback/openapi-v3';
 import {PathParams} from 'express-serve-static-core';
@@ -68,8 +68,21 @@ export class RestApplication extends Application implements HttpServerLike {
     return this.restServer.requestHandler;
   }
 
-  constructor(config: ApplicationConfig = {}) {
-    super(config);
+  /**
+   * Create a REST application with the given parent context
+   * @param parent - Parent context
+   */
+  constructor(parent: Context);
+  /**
+   * Create a REST application with the given configuration and parent context
+   * @param config - Application configuration
+   * @param parent - Parent context
+   */
+  // eslint-disable-next-line @typescript-eslint/unified-signatures
+  constructor(config?: ApplicationConfig, parent?: Context);
+
+  constructor(configOrParent?: ApplicationConfig | Context, parent?: Context) {
+    super(configOrParent, parent);
     this.component(RestComponent);
   }
 
