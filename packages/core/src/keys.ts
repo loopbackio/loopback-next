@@ -4,7 +4,12 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {BindingKey} from '@loopback/context';
-import {Application, ApplicationMetadata, ControllerClass} from './application';
+import {
+  Application,
+  ApplicationConfig,
+  ApplicationMetadata,
+  ControllerClass,
+} from './application';
 import {
   LifeCycleObserverOptions,
   LifeCycleObserverRegistry,
@@ -25,7 +30,7 @@ export namespace CoreBindings {
   /**
    * Binding key for application configuration
    */
-  export const APPLICATION_CONFIG = BindingKey.create<object>(
+  export const APPLICATION_CONFIG = BindingKey.create<ApplicationConfig>(
     'application.config',
   );
 

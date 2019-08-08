@@ -32,8 +32,29 @@ const debug = debugFactory('loopback:core:application');
  * and models.
  */
 export class Application extends Context implements LifeCycleObserver {
-  constructor(public options: ApplicationConfig = {}) {
-    super('application');
+  public readonly options: ApplicationConfig;
+
+  /**
+   * Create an application with the given parent context
+   * @param parent - Parent context
+   */
+  constructor(parent: Context);
+  /**
+   * Create an application with the given configuration and parent context
+   * @param config - Application configuration
+   * @param parent - Parent context
+   */
+  // eslint-disable-next-line @typescript-eslint/unified-signatures
+  constructor(config?: ApplicationConfig, parent?: Context);
+
+  constructor(configOrParent?: ApplicationConfig | Context, parent?: Context) {
+    super(
+      configOrParent instanceof Context ? configOrParent : parent,
+      'application',
+    );
+
+    if (configOrParent instanceof Context) configOrParent = {};
+    this.options = configOrParent || {};
 
     // Bind the life cycle observer registry
     this.bind(CoreBindings.LIFE_CYCLE_OBSERVER_REGISTRY)
@@ -42,7 +63,7 @@ export class Application extends Context implements LifeCycleObserver {
     // Bind to self to allow injection of application context in other modules.
     this.bind(CoreBindings.APPLICATION_INSTANCE).to(this);
     // Make options available to other modules as well.
-    this.bind(CoreBindings.APPLICATION_CONFIG).to(options);
+    this.bind(CoreBindings.APPLICATION_CONFIG).to(this.options);
   }
 
   /**
