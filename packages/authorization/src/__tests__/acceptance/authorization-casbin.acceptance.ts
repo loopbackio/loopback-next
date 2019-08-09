@@ -18,6 +18,7 @@ import {
   Authorizer,
 } from '../..';
 import {AuthorizationTags} from '../../keys';
+import {AuthenticationBindings, UserProfile} from '@loopback/authentication';
 
 describe('Authorization', () => {
   let app: Application;
@@ -26,7 +27,7 @@ describe('Authorization', () => {
   let events: string[];
 
   before(givenApplicationAndAuthorizer);
-  beforeEach(givenRequestContext);
+  beforeEach(() => givenRequestContext());
 
   it('allows placeOrder for everyone', async () => {
     const orderId = await invokeMethod(controller, 'placeOrder', reqCtx, [
@@ -42,6 +43,7 @@ describe('Authorization', () => {
   });
 
   it('allows cancelOrder for customer_service', async () => {
+    givenRequestContext({id: 'customer_service', name: 'customer_service'});
     const orderId = await controller.placeOrder({
       customerId: 'bob',
       productId: 'product-a',
@@ -56,7 +58,7 @@ describe('Authorization', () => {
   });
 
   it('denies cancelOrder for bob', async () => {
-    givenRequestContext({name: 'bob'});
+    givenRequestContext({id: 'bob', name: 'bob'});
     const orderId = await controller.placeOrder({
       customerId: 'bob',
       productId: 'product-a',
@@ -111,10 +113,12 @@ describe('Authorization', () => {
       .tag(AuthorizationTags.AUTHORIZER);
   }
 
-  function givenRequestContext(user = {name: 'alice'}) {
+  function givenRequestContext(
+    user: UserProfile = {id: 'alice', name: 'alice'},
+  ) {
     events = [];
     reqCtx = new Context(app);
-    reqCtx.bind('current.user').to(user);
+    reqCtx.bind(AuthenticationBindings.CURRENT_USER).to(user);
     controller = new OrderController();
   }
 
@@ -161,6 +165,6 @@ describe('Authorization', () => {
       __dirname,
       '../../../fixtures/casbin/rbac_policy.csv',
     );
-    return await casbin.newEnforcer(conf, policy);
+    return casbin.newEnforcer(conf, policy);
   }
 });

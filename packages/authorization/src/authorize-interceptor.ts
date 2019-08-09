@@ -18,7 +18,14 @@ import {
 import * as debugFactory from 'debug';
 import {getAuthorizeMetadata} from './decorators/authorize';
 import {AuthorizationTags} from './keys';
-import {AuthorizationContext, AuthorizationDecision, Authorizer} from './types';
+import {
+  AuthorizationContext,
+  AuthorizationDecision,
+  Authorizer,
+  AuthorizationError,
+  Principal,
+} from './types';
+import {AuthenticationBindings, UserProfile} from '@loopback/authentication';
 
 const debug = debugFactory('loopback:authorization:interceptor');
 
@@ -41,33 +48,46 @@ export class AuthorizationInterceptor implements Provider<Interceptor> {
     );
     if (!metadata) {
       debug('No authorization metadata is found %s', description);
-      return await next();
+      const result = await next();
+      return result;
     }
     debug('Authorization metadata for %s', description, metadata);
-    const user = await invocationCtx.get<{name: string}>('current.user', {
-      optional: true,
-    });
+
+    // retrieve it from authentication module
+    const user = await invocationCtx.get<UserProfile>(
+      AuthenticationBindings.CURRENT_USER,
+      {
+        optional: true,
+      },
+    );
+
     debug('Current user', user);
+
     const authorizationCtx: AuthorizationContext = {
-      principals: user ? [{name: user.name, type: 'USER'}] : [],
+      principals: user ? [userToPrinciple(user)] : [],
       roles: [],
       scopes: [],
       resource: invocationCtx.targetName,
       invocationContext: invocationCtx,
     };
+
     debug('Security context for %s', description, authorizationCtx);
     let authorizers = await loadAuthorizers(
       invocationCtx,
       metadata.voters || [],
     );
+
     authorizers = authorizers.concat(this.authorizers);
     for (const fn of authorizers) {
       const decision = await fn(authorizationCtx, metadata);
+      // we can add another interceptor to process the error
       if (decision === AuthorizationDecision.DENY) {
-        throw new Error('Access denied');
+        const error = new AuthorizationError('Access denied');
+        error.statusCode = 401;
+        throw error;
       }
     }
-    return await next();
+    return next();
   }
 }
 
@@ -87,4 +107,15 @@ async function loadAuthorizers(
     }
   }
   return authorizerFunctions;
+}
+
+// This is a workaround before we extract a common layer
+// for authentication and authorization.
+function userToPrinciple(user: UserProfile): Principal {
+  return {
+    name: user.name || user.id,
+    id: user.id,
+    email: user.email,
+    type: 'USER',
+  };
 }

@@ -1,6 +1,6 @@
 {
   "name": "@loopback/authorization",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "A LoopBack component for authorization support.",
   "engines": {
     "node": ">=8.9"
@@ -27,7 +27,9 @@
   "devDependencies": {
     "@loopback/build": "^2.0.3",
     "@loopback/testlab": "^1.6.3",
+    "@loopback/authentication": "^2.1.8",
     "@types/debug": "^4.1.4",
+    "@types/node": "10.14.15",
     "casbin": "^3.0.1"
   },
   "keywords": [

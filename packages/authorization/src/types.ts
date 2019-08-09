@@ -183,14 +183,16 @@ export interface AuthorizationContext {
 /**
  * A function to decide if access to the target should be allowed or denied
  */
-export type Authorizer =
+export type Authorizer<
+  T extends AuthorizationMetadata = AuthorizationMetadata
+> =
   /**
    * @param context: Context information for authorization
    * @param metadata: Metadata representing requirements for authorization
    */
   (
     context: AuthorizationContext,
-    metadata: AuthorizationMetadata,
+    metadata: T,
   ) => Promise<AuthorizationDecision>;
 
 /**
@@ -232,4 +234,21 @@ export interface Enforcer {
    * @param request
    */
   enforce(request: AuthorizationRequest): Promise<AuthorizationDecision>;
+}
+
+/**
+ * The custom error class that describes the error thrown by
+ * the authorization module.
+ * Should be extracted to the common layer shared by authentication
+ * and authorization.
+ */
+export class AuthorizationError extends Error {
+  /**
+   * Machine readable code, can be understood by any clients
+   */
+  code?: string;
+  /**
+   * The status code for HTTP requests
+   */
+  statusCode?: number;
 }
