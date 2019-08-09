@@ -70,6 +70,33 @@ export class MyController {
 }
 ```
 
+## Extract common layer(TBD)
+
+`@loopback/authentication` and `@loopback/authorization` shares the client
+information from the request. Therefore we need another module with
+types/interfaces that describe the client, like `principles`, `userProfile`,
+etc... A draft PR is created for this module: see branch
+https://github.com/strongloop/loopback-next/tree/security/packages/security
+
+Since the common module is still in progress, as the first release of
+`@loopback/authorization`, we have two choices to inject a user in the
+interceptor:
+
+- `@loopback/authorization` requires `@loopback/authentication` as a dependency.
+  The interceptor injects the current user using
+  `AuthenticationBindings.CURRENT_USER`. Then we remove this dependency in the
+  common layer PR, two auth modules will depend on `@loopback/security`.
+
+  - This is what's been done in my refactor PR, `Principle` and `UserProfile`
+    are still decoupled, I added a convertor function to turn a user profile
+    into a principle.
+
+- The interceptor injects the user using another key not related to
+  `@loopback/authentication`.(_Which means the code that injects the user stays
+  as it is in https://github.com/strongloop/loopback-next/pull/1205_). Then we
+  unify the user set and injection in the common layer PR: same as the 1st
+  choice, two auth modules will depend on `@loopback/security`.
+
 ## Related resources
 
 ## Contributions

@@ -16,6 +16,7 @@ import {
   EVERYONE,
 } from '../..';
 import {AuthorizationTags} from '../../keys';
+import {AuthenticationBindings} from '@loopback/authentication';
 
 describe('Authorization', () => {
   let app: Application;
@@ -86,7 +87,9 @@ describe('Authorization', () => {
   function givenRequestContext() {
     events = [];
     reqCtx = new Context(app);
-    reqCtx.bind('current.user').to({name: 'user-01'});
+    reqCtx
+      .bind(AuthenticationBindings.CURRENT_USER)
+      .to({id: 'user-01', name: 'user-01'});
     controller = new OrderController();
   }
 
