@@ -101,6 +101,12 @@ export interface RequestBodyValidationOptions extends ajv.Options {
    * to skip the default cache.
    */
   compiledSchemaCache?: SchemaValidatorCache;
+  /**
+   * Enable additional AJV keywords from https://github.com/epoberezkin/ajv-keywords
+   * - `true`: Add all keywords from `ajv-keywords`
+   * - `string[]`: Add an array of keywords from `ajv-keywords`
+   */
+  ajvKeywords?: true | string[];
 }
 
 /* eslint-disable @typescript-eslint/no-explicit-any */

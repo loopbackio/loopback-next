@@ -38,7 +38,7 @@ describe('Validation at REST level', () => {
     @property({required: false, type: 'string', jsonSchema: {nullable: true}})
     description?: string | null;
 
-    @property({required: true})
+    @property({required: true, jsonSchema: {range: [0, 100]}})
     price: number;
 
     constructor(data: Partial<Product>) {
@@ -115,6 +115,7 @@ describe('Validation at REST level', () => {
       givenAnAppAndAClient(ProductController, {
         nullable: false,
         compiledSchemaCache: new WeakMap(),
+        ajvKeywords: ['range'],
       }),
     );
     after(() => app.stop());
@@ -147,6 +148,99 @@ describe('Validation at REST level', () => {
             'The request body is invalid. See error object `details` property for more info.',
           name: 'UnprocessableEntityError',
           statusCode: 422,
+        },
+      });
+    });
+
+    it('rejects requests with price out of range', async () => {
+      const DATA = {
+        name: 'iPhone',
+        description: 'iPhone',
+        price: 200,
+      };
+      const res = await client
+        .post('/products')
+        .send(DATA)
+        .expect(422);
+
+      expect(res.body).to.eql({
+        error: {
+          statusCode: 422,
+          name: 'UnprocessableEntityError',
+          message:
+            'The request body is invalid. See error object `details` property for more info.',
+          code: 'VALIDATION_FAILED',
+          details: [
+            {
+              path: '.price',
+              code: 'maximum',
+              message: 'should be <= 100',
+              info: {comparison: '<=', limit: 100, exclusive: false},
+            },
+            {
+              path: '.price',
+              code: 'range',
+              message: 'should pass "range" keyword validation',
+              info: {keyword: 'range'},
+            },
+          ],
+        },
+      });
+    });
+  });
+
+  context('with request body validation options - {ajvKeywords: true}', () => {
+    class ProductController {
+      @post('/products')
+      async create(
+        @requestBody({required: true}) data: Product,
+      ): Promise<Product> {
+        return new Product(data);
+      }
+    }
+
+    before(() =>
+      givenAnAppAndAClient(ProductController, {
+        nullable: false,
+        compiledSchemaCache: new WeakMap(),
+        $data: true,
+        ajvKeywords: true,
+      }),
+    );
+    after(() => app.stop());
+
+    it('rejects requests with price out of range', async () => {
+      const DATA = {
+        name: 'iPhone',
+        description: 'iPhone',
+        price: 200,
+      };
+      const res = await client
+        .post('/products')
+        .send(DATA)
+        .expect(422);
+
+      expect(res.body).to.eql({
+        error: {
+          statusCode: 422,
+          name: 'UnprocessableEntityError',
+          message:
+            'The request body is invalid. See error object `details` property for more info.',
+          code: 'VALIDATION_FAILED',
+          details: [
+            {
+              path: '.price',
+              code: 'maximum',
+              message: 'should be <= 100',
+              info: {comparison: '<=', limit: 100, exclusive: false},
+            },
+            {
+              path: '.price',
+              code: 'range',
+              message: 'should pass "range" keyword validation',
+              info: {keyword: 'range'},
+            },
+          ],
         },
       });
     });
