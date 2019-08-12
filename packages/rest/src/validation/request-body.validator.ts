@@ -19,6 +19,8 @@ import {RequestBodyValidationOptions, SchemaValidatorCache} from '../types';
 const toJsonSchema = require('openapi-schema-to-json-schema');
 const debug = debugModule('loopback:rest:validation');
 
+const ajvKeywords = require('ajv-keywords');
+
 /**
  * Check whether the request body is valid according to the provided OpenAPI schema.
  * The JSON schema is generated from the OpenAPI schema which is typically defined
@@ -182,6 +184,12 @@ function createValidator(
   );
   debug('AJV options', options);
   const ajv = new AJV(options);
+
+  if (options.ajvKeywords === true) {
+    ajvKeywords(ajv);
+  } else if (Array.isArray(options.ajvKeywords)) {
+    ajvKeywords(ajv, options.ajvKeywords);
+  }
 
   return ajv.compile(schemaWithRef);
 }
