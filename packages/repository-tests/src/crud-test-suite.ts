@@ -50,14 +50,37 @@ export function crudRepositoryTestSuite(
       }),
     );
 
+    let testFiles = [];
+
     const testRoot = path.resolve(__dirname, 'crud');
-    let testFiles = fs.readdirSync(testRoot);
+    testFiles = fs.readdirSync(testRoot);
     testFiles = testFiles.filter(function(it) {
       return (
         !!require.extensions[path.extname(it).toLowerCase()] &&
         /\.suite\.[^.]+$/.test(it)
       );
     });
+
+    // relations folder tests
+    const folders = ['acceptance'];
+
+    for (const folder of folders) {
+      const relationsTestRoot = path.resolve(
+        __dirname,
+        `crud/relations/${folder}`,
+      );
+      let folderTestFiles = fs.readdirSync(relationsTestRoot);
+      folderTestFiles = folderTestFiles.filter(function(it) {
+        return (
+          !!require.extensions[path.extname(it).toLowerCase()] &&
+          /\.acceptance\.[^.]+$/.test(it)
+        );
+      });
+      folderTestFiles.forEach(file => {
+        file = `relations/${folder}/` + file;
+        testFiles.push(file);
+      });
+    }
 
     for (const ix in testFiles) {
       const name = testFiles[ix];

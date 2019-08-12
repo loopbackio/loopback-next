@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Entity, model, property} from '@loopback/repository';
-import {EntityCrudRepository} from '@loopback/repository/src';
+import {EntityCrudRepository} from '@loopback/repository';
 import {expect, skipIf, toJSON} from '@loopback/testlab';
 import {Suite} from 'mocha';
 import {

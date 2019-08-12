@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Entity, model, property} from '@loopback/repository';
-import {AnyObject, EntityCrudRepository} from '@loopback/repository/src';
+import {AnyObject, EntityCrudRepository} from '@loopback/repository';
 import {expect, toJSON} from '@loopback/testlab';
 import {
   deleteAllModelsInDefaultDataSource,
