@@ -47,6 +47,7 @@ export interface CrudFeatures {
    * Default: `undefined`
    */
   emptyValue: undefined | null;
+
   /**
    * Does the connector support using transactions for performing CRUD
    * operations atomically and being able to commit or rollback the changes?

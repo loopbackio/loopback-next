@@ -1,18 +1,26 @@
 // Copyright IBM Corp. 2019. All Rights Reserved.
-// Node module: @loopback/repository
+// Node module: @loopback/repository-tests
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Entity, hasMany, model, property} from '../../..';
+import {
+  Entity,
+  EntityCrudRepository,
+  hasMany,
+  HasManyRepositoryFactory,
+  model,
+  property,
+} from '@loopback/repository';
+import {MixedIdType} from '../../../../helpers.repository-tests';
 import {Order, OrderWithRelations} from './order.model';
 
 @model()
 export class Shipment extends Entity {
   @property({
-    type: 'number',
     id: true,
+    generated: true,
   })
-  id: number;
+  id: MixedIdType;
 
   @property({type: 'string'})
   name: string;
@@ -30,3 +38,9 @@ export interface ShipmentRelations {
 }
 
 export type ShipmentWithRelations = Shipment & ShipmentRelations;
+
+export interface ShipmentRepository
+  extends EntityCrudRepository<Shipment, typeof Shipment.prototype.id> {
+  // define additional members like relation methods here
+  orders: HasManyRepositoryFactory<Order, MixedIdType>;
+}

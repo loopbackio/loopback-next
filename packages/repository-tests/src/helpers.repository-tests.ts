@@ -40,3 +40,9 @@ export function withCrudCtx(
 export const deleteAllModelsInDefaultDataSource = withCrudCtx(ctx => {
   ctx.dataSource.deleteAllModels();
 });
+
+/**
+ * A union type between string and number to use since MongoDB and MySQL use
+ * different id types.
+ */
+export type MixedIdType = string | number;
