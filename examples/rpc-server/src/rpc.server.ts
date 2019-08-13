@@ -11,7 +11,7 @@ import pEvent from 'p-event';
 import {rpcRouter} from './rpc.router';
 
 export class RPCServer extends Context implements Server {
-  private _listening: boolean = false;
+  private _listening = false;
   _server: http.Server;
   expressServer: express.Application;
 

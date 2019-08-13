@@ -301,7 +301,7 @@ describe('Application', () => {
 });
 
 class FakeServer extends Context implements Server {
-  listening: boolean = false;
+  listening = false;
   constructor() {
     super();
   }

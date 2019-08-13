@@ -10,7 +10,7 @@ import {bind, BindingScope, Provider} from '@loopback/core';
   scope: BindingScope.SINGLETON,
 })
 export class BindableGreetingService {
-  greet(whom: string = 'world') {
+  greet(whom = 'world') {
     return Promise.resolve(`Hello ${whom}`);
   }
 }
@@ -23,7 +23,7 @@ export class DateProvider implements Provider<Date> {
 }
 
 export class NotBindableGreetingService {
-  greet(whom: string = 'world') {
+  greet(whom = 'world') {
     return Promise.resolve(`Hello ${whom}`);
   }
 }

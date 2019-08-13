@@ -88,7 +88,7 @@ describe('constructor injection', () => {
   it('allows optional property injection with default value', () => {
     class TestClass {
       @inject('optional-binding-key', {optional: true})
-      public fooBar: string = 'fooBar';
+      public fooBar = 'fooBar';
     }
 
     const test = instantiateClass(TestClass, ctx) as TestClass;

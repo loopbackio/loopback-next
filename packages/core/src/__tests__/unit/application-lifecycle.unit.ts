@@ -194,7 +194,7 @@ class ObservingComponentWithServers implements Component, LifeCycleObserver {
 }
 
 class ObservingServer extends Context implements Server {
-  listening: boolean = false;
+  listening = false;
   constructor() {
     super();
   }

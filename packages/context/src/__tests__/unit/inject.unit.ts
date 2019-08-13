@@ -97,7 +97,7 @@ describe('function argument injection', () => {
   // https://github.com/strongloop/loopback-next/issues/2946
   it('allows custom decorator that returns a new constructor', () => {
     class HelloController {
-      name: string = 'Leonard';
+      name = 'Leonard';
     }
 
     const mixinDecorator = () => <C extends Constructor<object>>(

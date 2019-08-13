@@ -19,7 +19,7 @@ import {RestServerConfig, RestServerResolvedConfig} from '../rest.server';
 export function aBodySpec(
   schema: SchemaObject | ReferenceObject,
   options: Partial<RequestBodyObject> = {},
-  mediaType: string = 'application/json',
+  mediaType = 'application/json',
 ): RequestBodyObject {
   const spec = Object.assign({}, options);
   spec.content = spec.content || {};

@@ -165,7 +165,7 @@ describe('Basic Authentication', () => {
   });
   it('returns error when undefined user profile returned from authentication strategy', async () => {
     class BadBasicStrategy implements AuthenticationStrategy {
-      name: string = 'badbasic';
+      name = 'badbasic';
       async authenticate(request: Request): Promise<UserProfile | undefined> {
         return undefined;
       }
