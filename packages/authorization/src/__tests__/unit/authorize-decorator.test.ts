@@ -8,7 +8,7 @@ import {
   AUTHENTICATED,
   authorize,
   EVERYONE,
-  getAuthorizeMetadata,
+  getAuthorizationMetadata,
   UNAUTHENTICATED,
 } from '../..';
 
@@ -23,13 +23,13 @@ describe('Authentication', () => {
         update() {}
       }
 
-      let metaData = getAuthorizeMetadata(TestClass, 'getSecret');
+      let metaData = getAuthorizationMetadata(TestClass, 'getSecret');
       expect(metaData).to.eql({
         allowedRoles: ['ADMIN'],
         scopes: ['secret.read'],
       });
 
-      metaData = getAuthorizeMetadata(TestClass, 'update');
+      metaData = getAuthorizationMetadata(TestClass, 'update');
       expect(metaData).to.eql({
         allowedRoles: ['OWNER'],
         scopes: ['data.update'],
@@ -45,13 +45,13 @@ describe('Authentication', () => {
         update() {}
       }
 
-      let metaData = getAuthorizeMetadata(TestClass, 'getSecret');
+      let metaData = getAuthorizationMetadata(TestClass, 'getSecret');
       expect(metaData).to.eql({
         allowedRoles: ['ADMIN'],
         scopes: ['secret.read'],
       });
 
-      metaData = getAuthorizeMetadata(TestClass, 'update');
+      metaData = getAuthorizationMetadata(TestClass, 'update');
       expect(metaData).to.eql({
         allowedRoles: ['OWNER'],
         scopes: ['data.update'],
@@ -68,13 +68,13 @@ describe('Authentication', () => {
         update() {}
       }
 
-      let metaData = getAuthorizeMetadata(TestClass, 'getSecret');
+      let metaData = getAuthorizationMetadata(TestClass, 'getSecret');
       expect(metaData).to.eql({
         allowedRoles: ['ADMIN'],
         scopes: ['secret.read'],
       });
 
-      metaData = getAuthorizeMetadata(TestClass, 'update');
+      metaData = getAuthorizationMetadata(TestClass, 'update');
       expect(metaData).to.eql({
         allowedRoles: ['OWNER'],
         scopes: ['data.update'],
@@ -87,7 +87,7 @@ describe('Authentication', () => {
         getSecret() {}
       }
 
-      const metaData = getAuthorizeMetadata(TestClass, 'getSecret');
+      const metaData = getAuthorizationMetadata(TestClass, 'getSecret');
       expect(metaData).to.eql({
         allowedRoles: [EVERYONE],
       });
@@ -99,7 +99,7 @@ describe('Authentication', () => {
         getSecret() {}
       }
 
-      const metaData = getAuthorizeMetadata(TestClass, 'getSecret');
+      const metaData = getAuthorizationMetadata(TestClass, 'getSecret');
       expect(metaData).to.eql({
         allowedRoles: [EVERYONE],
         deniedRoles: ['xyz'],
@@ -112,7 +112,7 @@ describe('Authentication', () => {
         getSecret() {}
       }
 
-      const metaData = getAuthorizeMetadata(TestClass, 'getSecret');
+      const metaData = getAuthorizationMetadata(TestClass, 'getSecret');
       expect(metaData).to.eql({
         deniedRoles: [EVERYONE],
       });
@@ -124,7 +124,7 @@ describe('Authentication', () => {
         getSecret() {}
       }
 
-      const metaData = getAuthorizeMetadata(TestClass, 'getSecret');
+      const metaData = getAuthorizationMetadata(TestClass, 'getSecret');
       expect(metaData).to.eql({
         allowedRoles: ['xyz'],
         deniedRoles: [EVERYONE],
@@ -137,7 +137,7 @@ describe('Authentication', () => {
         getSecret() {}
       }
 
-      const metaData = getAuthorizeMetadata(TestClass, 'getSecret');
+      const metaData = getAuthorizationMetadata(TestClass, 'getSecret');
       expect(metaData).to.eql({
         allowedRoles: [AUTHENTICATED],
       });
@@ -149,7 +149,7 @@ describe('Authentication', () => {
         getSecret() {}
       }
 
-      const metaData = getAuthorizeMetadata(TestClass, 'getSecret');
+      const metaData = getAuthorizationMetadata(TestClass, 'getSecret');
       expect(metaData).to.eql({
         deniedRoles: [UNAUTHENTICATED],
       });
@@ -168,7 +168,7 @@ describe('Authentication', () => {
         getSecret() {}
       }
 
-      const metaData = getAuthorizeMetadata(TestClass, 'getSecret');
+      const metaData = getAuthorizationMetadata(TestClass, 'getSecret');
       expect(metaData).to.deepEqual({
         voters: ['v1', 'v2'],
         allowedRoles: ['a1', 'a3', 'a2'],
