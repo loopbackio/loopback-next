@@ -128,7 +128,7 @@ describe('Interception proxy', () => {
 
   it('accesses static properties on the proxy', () => {
     class MyController {
-      static count: number = 0;
+      static count = 0;
     }
 
     const proxyForClass = createProxyWithInterceptors(MyController, ctx);

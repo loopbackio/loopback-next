@@ -50,7 +50,7 @@ export interface BindingComparator {
  * @param orderOfPhases - An array of phase names as the predefined order
  */
 export function compareBindingsByTag(
-  phaseTagName: string = 'phase',
+  phaseTagName = 'phase',
   orderOfPhases: (string | symbol)[] = [],
 ): BindingComparator {
   return (a: Readonly<Binding<unknown>>, b: Readonly<Binding<unknown>>) => {

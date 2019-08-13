@@ -6,7 +6,7 @@
 // NOTE(bajtos) At the moment, ServiceBooter recognizes only service providers.
 // This class is used by tests to verify that non-provider classes are ignored.
 export class GreetingService {
-  greet(whom: string = 'world') {
+  greet(whom = 'world') {
     return Promise.resolve(`Hello ${whom}`);
   }
 }

@@ -15,7 +15,7 @@ class InfoController {
     return msg;
   }
 
-  hello(@inject('user', {optional: true}) user: string = 'Mary'): string {
+  hello(@inject('user', {optional: true}) user = 'Mary'): string {
     const msg = `Hello ${user}`;
     debug(msg);
     return msg;
@@ -27,10 +27,7 @@ class InfoController {
     return msg;
   }
 
-  greetWithDefault(
-    prefix: string = '***',
-    @inject('user') user: string,
-  ): string {
+  greetWithDefault(prefix = '***', @inject('user') user: string): string {
     const msg = `[${prefix}] Hello ${user}`;
     debug(msg);
     return msg;

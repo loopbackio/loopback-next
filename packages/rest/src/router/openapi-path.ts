@@ -19,7 +19,7 @@ const INVALID_VARNAME_PATTERN = /\{([^\}]*[^\w\}][^\}]*)\}/;
  * Validate the path to be compatible with OpenAPI path template. No parameter
  * modifier, custom pattern, or unnamed parameter is allowed.
  */
-export function validateApiPath(path: string = '/') {
+export function validateApiPath(path = '/') {
   let tokens = pathToRegExp.parse(path);
   if (tokens.some(t => typeof t === 'object')) {
     throw new Error(

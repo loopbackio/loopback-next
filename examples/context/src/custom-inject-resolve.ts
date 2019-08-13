@@ -36,7 +36,7 @@ class Greeter {
   constructor(@inject('', {}, resolve) private name: string) {}
 
   @inject('', {}, resolve)
-  prefix: string = '';
+  prefix = '';
 
   hello() {
     return `[${this.prefix}] Hello, ${this.name}`;
