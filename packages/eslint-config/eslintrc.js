@@ -29,6 +29,8 @@ module.exports = {
      * See https://github.com/typescript-eslint/typescript-eslint/issues/389
      */
     project: getProjectFile(),
+    // See https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/parser#configuration
+    createDefaultProgram: true,
     ecmaFeatures: {
       ecmaVersion: 2017,
       jsx: false,
@@ -141,6 +143,9 @@ module.exports = {
     '@typescript-eslint/no-floating-promises': 'error',
 
     'no-void': 'error', // tslint:no-void-expression: [true, 'ignore-arrow-function-shorthand'],
+
+    '@typescript-eslint/no-empty-function': 'off',
+    '@typescript-eslint/consistent-type-assertions': 'off',
   },
 };
 
