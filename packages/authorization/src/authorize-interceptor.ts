@@ -16,7 +16,7 @@ import {
   Provider,
 } from '@loopback/context';
 import * as debugFactory from 'debug';
-import {getAuthorizeMetadata} from './decorators/authorize';
+import {getAuthorizationMetadata} from './decorators/authorize';
 import {AuthorizationTags} from './keys';
 import {
   AuthorizationContext,
@@ -42,7 +42,7 @@ export class AuthorizationInterceptor implements Provider<Interceptor> {
 
   async intercept(invocationCtx: InvocationContext, next: Next) {
     const description = debug.enabled ? invocationCtx.description : '';
-    const metadata = getAuthorizeMetadata(
+    const metadata = getAuthorizationMetadata(
       invocationCtx.target,
       invocationCtx.methodName,
     );

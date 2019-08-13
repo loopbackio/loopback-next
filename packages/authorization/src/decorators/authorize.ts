@@ -197,7 +197,7 @@ export namespace authorize {
  * @param target Target object/class
  * @param methodName Target method
  */
-export function getAuthorizeMetadata(
+export function getAuthorizationMetadata(
   target: object,
   methodName: string,
 ): AuthorizationMetadata | undefined {
