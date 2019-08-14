@@ -30,7 +30,7 @@
     "@loopback/authentication": "^2.1.8",
     "@types/debug": "^4.1.4",
     "@types/node": "10.14.15",
-    "casbin": "^3.0.1"
+    "casbin": "^3.0.3"
   },
   "keywords": [
     "LoopBack",
