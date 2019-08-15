@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.11.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.10.1...@loopback/repository@1.11.0) (2019-08-15)
+
+
+### Bug Fixes
+
+* fixup findByForeignKeys ([e26e7b7](https://github.com/strongloop/loopback-next/commit/e26e7b7))
+
+
+### Features
+
+* **repository:** add function findByForeignKeys ([f5eaf1d](https://github.com/strongloop/loopback-next/commit/f5eaf1d))
+* **repository:** expose beginTransaction() API ([0471315](https://github.com/strongloop/loopback-next/commit/0471315))
+
+
+
+
+
 ## [1.10.1](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.10.0...@loopback/repository@1.10.1) (2019-07-31)
 
 **Note:** Version bump only for package @loopback/repository

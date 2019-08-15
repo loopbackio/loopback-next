@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.7.2](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo@1.7.1...@loopback/example-todo@1.7.2) (2019-08-15)
+
+
+### Bug Fixes
+
+* **repository-json-schema:** make exclude option reject properties ([35027c4](https://github.com/strongloop/loopback-next/commit/35027c4))
+
+
+
+
+
 ## [1.7.1](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo@1.7.0...@loopback/example-todo@1.7.1) (2019-07-31)
 
 **Note:** Version bump only for package @loopback/example-todo

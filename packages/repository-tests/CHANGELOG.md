@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository-tests@0.3.1...@loopback/repository-tests@0.4.0) (2019-08-15)
+
+
+### Features
+
+* **repository:** add function findByForeignKeys ([f5eaf1d](https://github.com/strongloop/loopback-next/commit/f5eaf1d))
+* **repository:** expose beginTransaction() API ([0471315](https://github.com/strongloop/loopback-next/commit/0471315))
+
+
+
+
+
 ## [0.3.1](https://github.com/strongloop/loopback-next/compare/@loopback/repository-tests@0.3.0...@loopback/repository-tests@0.3.1) (2019-07-31)
 
 **Note:** Version bump only for package @loopback/repository-tests

@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/eslint-config@3.0.0...@loopback/eslint-config@4.0.0) (2019-08-15)
+
+
+### Features
+
+* **eslint-config:** upgrade to @typescript-eslint/eslint-plugin 2.0.0 ([1ec5b2f](https://github.com/strongloop/loopback-next/commit/1ec5b2f))
+
+
+### BREAKING CHANGES
+
+* **eslint-config:** @typescript-eslint/parser and @typescript-eslint/eslint-plugin
+2.0.0 may have introduced breaking changes for recommended rules and configuration
+
+
+
+
+
 # [3.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/eslint-config@2.0.2...@loopback/eslint-config@3.0.0) (2019-07-31)
 
 

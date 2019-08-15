@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.29.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.28.0...@loopback/docs@1.29.0) (2019-08-15)
+
+
+### Features
+
+* **repository:** expose beginTransaction() API ([0471315](https://github.com/strongloop/loopback-next/commit/0471315))
+
+
+
+
+
 # [1.28.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.27.0...@loopback/docs@1.28.0) (2019-07-31)
 
 
