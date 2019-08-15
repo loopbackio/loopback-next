@@ -609,7 +609,7 @@ export class Binding<T = BoundValue> {
    *   .to({port: 3000});
    * ```
    *
-   * @typeparam T Generic type for the configuration value (not the binding to
+   * @typeParam T Generic type for the configuration value (not the binding to
    * be configured)
    *
    * @param key - Key for the binding to be configured

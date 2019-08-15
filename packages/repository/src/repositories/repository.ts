@@ -50,10 +50,7 @@ export type TransactionalEntityRepository<
 /**
  * Repository Interface for Repositories that support Transactions
  *
- * @export
- * @interface TransactionalRepository
- * @extends {Repository<T>}
- * @template T
+ * @typeParam T Generic type for the Entity
  */
 export interface TransactionalRepository<T extends Entity>
   extends Repository<T> {
