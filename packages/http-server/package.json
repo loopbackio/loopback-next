@@ -1,6 +1,6 @@
 {
   "name": "@loopback/http-server",
-  "version": "1.4.8",
+  "version": "1.4.9",
   "description": "A wrapper for creating HTTP/HTTPS servers",
   "engines": {
     "node": ">=8.9"
@@ -20,7 +20,7 @@
   },
   "devDependencies": {
     "@loopback/build": "^2.0.7",
-    "@loopback/core": "^1.9.1",
+    "@loopback/core": "^1.9.2",
     "@loopback/eslint-config": "^4.0.0",
     "@loopback/testlab": "^1.7.3",
     "@types/node": "^10.14.15"
