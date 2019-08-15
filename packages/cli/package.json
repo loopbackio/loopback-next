@@ -1,6 +1,6 @@
 {
   "name": "@loopback/cli",
-  "version": "1.21.1",
+  "version": "1.21.2",
   "description": "Yeoman generator for LoopBack 4",
   "homepage": "https://github.com/strongloop/loopback-next/tree/master/packages/cli",
   "author": "IBM Corp.",
@@ -93,7 +93,7 @@
       "@loopback/authentication": "^2.1.9",
       "@loopback/boot": "^1.5.1",
       "@loopback/build": "^2.0.7",
-      "@loopback/cli": "^1.21.1",
+      "@loopback/cli": "^1.21.2",
       "@loopback/context": "^1.21.2",
       "@loopback/core": "^1.9.1",
       "@loopback/metadata": "^1.2.9",
@@ -103,7 +103,7 @@
       "@loopback/repository": "^1.11.0",
       "@loopback/rest": "^1.16.7",
       "@loopback/testlab": "^1.7.3",
-      "@loopback/docs": "^1.29.0",
+      "@loopback/docs": "^1.29.1",
       "glob": "^7.1.4",
       "@loopback/example-hello-world": "^1.2.9",
       "@loopback/example-log-extension": "^1.2.9",
@@ -132,7 +132,7 @@
       "eslint-config-prettier": "^6.0.0",
       "@loopback/repository-tests": "^0.4.0",
       "@loopback/extension-health": "^0.2.1",
-      "@loopback/authorization": "^0.1.0"
+      "@loopback/authorization": "^0.1.1"
     }
   },
   "copyright.owner": "IBM Corp.",
