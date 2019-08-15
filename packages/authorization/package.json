@@ -5,6 +5,9 @@
   "engines": {
     "node": ">=8.9"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
     "build": "lb-tsc",
