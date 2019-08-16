@@ -252,3 +252,19 @@ export class AuthorizationError extends Error {
    */
   statusCode?: number;
 }
+
+export interface AuthorizationOptions {
+  /**
+   * Default decision if all authorizers vote for ABSTAIN
+   * If not set, default to `AuthorizationDecision.DENY`
+   */
+  defaultDecision?: AuthorizationDecision.DENY | AuthorizationDecision.ALLOW;
+  /**
+   * Controls if Allow/Deny vote takes precedence and override other votes.
+   * If not set, default to `AuthorizationDecision.DENY`.
+   *
+   * Once a vote matches the `precedence`, it becomes the final decision. The
+   * rest of votes will be skipped.
+   */
+  precedence?: AuthorizationDecision.DENY | AuthorizationDecision.ALLOW;
+}

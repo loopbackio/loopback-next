@@ -3,10 +3,13 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {AuthenticationBindings, UserProfile} from '@loopback/authentication';
 import {
   asGlobalInterceptor,
   bind,
   BindingAddress,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  config,
   Context,
   filterByTag,
   inject,
@@ -17,24 +20,35 @@ import {
 } from '@loopback/context';
 import * as debugFactory from 'debug';
 import {getAuthorizationMetadata} from './decorators/authorize';
-import {AuthorizationTags} from './keys';
+import {AuthorizationBindings, AuthorizationTags} from './keys';
 import {
   AuthorizationContext,
   AuthorizationDecision,
-  Authorizer,
   AuthorizationError,
+  AuthorizationOptions,
+  Authorizer,
   Principal,
 } from './types';
-import {AuthenticationBindings, UserProfile} from '@loopback/authentication';
 
 const debug = debugFactory('loopback:authorization:interceptor');
 
 @bind(asGlobalInterceptor('authorization'))
 export class AuthorizationInterceptor implements Provider<Interceptor> {
+  private options: AuthorizationOptions;
+
   constructor(
     @inject(filterByTag(AuthorizationTags.AUTHORIZER))
     private authorizers: Authorizer[],
-  ) {}
+    @config({fromBinding: AuthorizationBindings.COMPONENT})
+    options: AuthorizationOptions = {},
+  ) {
+    this.options = {
+      defaultDecision: AuthorizationDecision.DENY,
+      precedence: AuthorizationDecision.DENY,
+      ...options,
+    };
+    debug('Authorization options', this.options);
+  }
 
   value(): Interceptor {
     return this.intercept.bind(this);
@@ -77,15 +91,39 @@ export class AuthorizationInterceptor implements Provider<Interceptor> {
       metadata.voters || [],
     );
 
+    let finalDecision = this.options.defaultDecision;
     authorizers = authorizers.concat(this.authorizers);
     for (const fn of authorizers) {
       const decision = await fn(authorizationCtx, metadata);
+      debug('Decision', decision);
+      // Reset the final decision if an explicit Deny or Allow is voted
+      if (decision && decision !== AuthorizationDecision.ABSTAIN) {
+        finalDecision = decision;
+      }
       // we can add another interceptor to process the error
-      if (decision === AuthorizationDecision.DENY) {
+      if (
+        decision === AuthorizationDecision.DENY &&
+        this.options.precedence === AuthorizationDecision.DENY
+      ) {
+        debug('Access denied');
         const error = new AuthorizationError('Access denied');
         error.statusCode = 401;
         throw error;
       }
+      if (
+        decision === AuthorizationDecision.ALLOW &&
+        this.options.precedence === AuthorizationDecision.ALLOW
+      ) {
+        debug('Access allowed');
+        break;
+      }
+    }
+    debug('Final decision', finalDecision);
+    // Handle the final decision
+    if (finalDecision === AuthorizationDecision.DENY) {
+      const error = new AuthorizationError('Access denied');
+      error.statusCode = 401;
+      throw error;
     }
     return next();
   }
