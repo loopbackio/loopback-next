@@ -1,4 +1,4 @@
-# loopback-next
+<img src="https://raw.githubusercontent.com/strongloop/loopback.io/gh-pages/images/branding/logo/blue/loopback-sm.png" alt="LoopBack4 logo" width="400"/>
 
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/strongloop/loopback)
 [![Travis Build Status](https://travis-ci.org/strongloop/loopback-next.svg?branch=master)](https://travis-ci.org/strongloop/loopback-next)
@@ -30,13 +30,13 @@ Check the
 for all the API usages in each package.
 
 [LoopBack 3](https://loopback.io/doc/en/lb3/) became active LTS version, and
-[LoopBack 2](https://loopback.io/doc/en/lb2/) became maintenance LTS version.
+[LoopBack 2](https://loopback.io/doc/en/lb2/) has reached end-of-life.
 
-| Version    | Status          | Published | EOL                  |
-| ---------- | --------------- | --------- | -------------------- |
-| LoopBack 4 | Current         | Oct 2018  | Apr 2021 _(minimum)_ |
-| Loopback 3 | Active LTS      | Dec 2016  | Dec 2020             |
-| Loopback 2 | Maintenance LTS | Jul 2014  | Apr 2019             |
+| Version    | Status      | Published | EOL                  |
+| ---------- | ----------- | --------- | -------------------- |
+| LoopBack 4 | Current     | Oct 2018  | Apr 2021 _(minimum)_ |
+| LoopBack 3 | Active LTS  | Dec 2016  | Dec 2020             |
+| LoopBack 2 | End-of-Life | Jul 2014  | Apr 2019             |
 
 Please refer to our
 [Long Term Support Policy](https://loopback.io/doc/en/contrib/Long-term-support.html)
