@@ -21,7 +21,7 @@
     "@loopback/metadata": "^1.2.9",
     "debug": "^4.1.1",
     "p-event": "^4.1.0",
-    "uuid": "^3.3.2"
+    "uuid": "^3.3.3"
   },
   "devDependencies": {
     "@loopback/build": "^2.0.7",
