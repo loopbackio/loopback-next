@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.11.1...@loopback/repository@1.12.0) (2019-08-19)
+
+
+### Features
+
+* **repository:** add InclusionResolver type and includeRelatedModels helper function ([c9c39c9](https://github.com/strongloop/loopback-next/commit/c9c39c9))
+
+
+
+
+
 ## [1.11.1](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.11.0...@loopback/repository@1.11.1) (2019-08-15)
 
 **Note:** Version bump only for package @loopback/repository

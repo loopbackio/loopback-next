@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.17.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@1.16.8...@loopback/rest@1.17.0) (2019-08-19)
+
+
+### Features
+
+* **rest:** add support for ajv-keywords ([f7bb80d](https://github.com/strongloop/loopback-next/commit/f7bb80d))
+
+
+
+
+
 ## [1.16.8](https://github.com/strongloop/loopback-next/compare/@loopback/rest@1.16.7...@loopback/rest@1.16.8) (2019-08-15)
 
 **Note:** Version bump only for package @loopback/rest
