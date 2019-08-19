@@ -29,7 +29,7 @@
     "@types/express-serve-static-core": "^4.16.9",
     "@types/http-errors": "^1.6.2",
     "@types/on-finished": "^2.3.1",
-    "@types/serve-static": "1.13.2",
+    "@types/serve-static": "1.13.3",
     "@types/type-is": "^1.6.2",
     "ajv": "^6.10.2",
     "ajv-keywords": "^3.4.1",
