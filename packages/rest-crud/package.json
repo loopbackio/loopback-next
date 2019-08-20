@@ -1,0 +1,46 @@
+{
+  "name": "@loopback/rest-crud",
+  "version": "0.0.1",
+  "description": "REST API controller implementing default CRUD semantics",
+  "engines": {
+    "node": ">=8.9"
+  },
+  "main": "index",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "lb-tsc",
+    "clean": "lb-clean loopback-rest-crud*.tgz dist tsconfig.build.tsbuildinfo package",
+    "pretest": "npm run build",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
+    "verify": "npm pack && tar xf loopback-rest-crud*.tgz && tree package && npm run clean"
+  },
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "license": "MIT",
+  "devDependencies": {
+    "@loopback/build": "^1.7.1",
+    "@loopback/repository": "^1.12.0",
+    "@loopback/rest": "^1.17.0",
+    "@loopback/testlab": "^1.7.4",
+    "@types/node": "^10.14.15"
+  },
+  "peerDependencies": {
+    "@loopback/repository": "^1.12.0",
+    "@loopback/rest": "^1.17.0"
+  },
+  "files": [
+    "README.md",
+    "index.js",
+    "index.d.ts",
+    "dist",
+    "src",
+    "!*/__tests__"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "packages/rest-crud"
+  }
+}
