@@ -17,7 +17,7 @@ import {
 } from '../common-types';
 import {EntityNotFoundError} from '../errors';
 import {Entity, Model, PropertyType} from '../model';
-import {Filter, Where} from '../query';
+import {Filter, Inclusion, Where} from '../query';
 import {
   BelongsToAccessor,
   BelongsToDefinition,
@@ -28,6 +28,7 @@ import {
   HasManyRepositoryFactory,
   HasOneDefinition,
   HasOneRepositoryFactory,
+  includeRelatedModels,
   InclusionResolver,
 } from '../relations';
 import {IsolationLevel, Transaction} from '../transaction';
@@ -359,18 +360,30 @@ export class DefaultCrudRepository<
     filter?: Filter<T>,
     options?: Options,
   ): Promise<(T & Relations)[]> {
+    const include = filter && filter.include;
     const models = await ensurePromise(
-      this.modelClass.find(filter as legacy.Filter, options),
+      this.modelClass.find(this.normalizeFilter(filter), options),
     );
-    return this.toEntities(models);
+    const entities = this.toEntities(models);
+    return this.includeRelatedModels(entities, include, options);
   }
 
-  async findOne(filter?: Filter<T>, options?: Options): Promise<T | null> {
+  async findOne(
+    filter?: Filter<T>,
+    options?: Options,
+  ): Promise<(T & Relations) | null> {
     const model = await ensurePromise(
-      this.modelClass.findOne(filter as legacy.Filter, options),
+      this.modelClass.findOne(this.normalizeFilter(filter), options),
     );
     if (!model) return null;
-    return this.toEntity(model);
+    const entity = this.toEntity(model);
+    const include = filter && filter.include;
+    const resolved = await this.includeRelatedModels(
+      [entity],
+      include,
+      options,
+    );
+    return resolved[0];
   }
 
   async findById(
@@ -378,13 +391,20 @@ export class DefaultCrudRepository<
     filter?: Filter<T>,
     options?: Options,
   ): Promise<T & Relations> {
+    const include = filter && filter.include;
     const model = await ensurePromise(
-      this.modelClass.findById(id, filter as legacy.Filter, options),
+      this.modelClass.findById(id, this.normalizeFilter(filter), options),
     );
     if (!model) {
       throw new EntityNotFoundError(this.entityClass, id);
     }
-    return this.toEntity<T & Relations>(model);
+    const entity = this.toEntity(model);
+    const resolved = await this.includeRelatedModels(
+      [entity],
+      include,
+      options,
+    );
+    return resolved[0];
   }
 
   update(entity: T, options?: Options): Promise<void> {
@@ -473,6 +493,46 @@ export class DefaultCrudRepository<
 
   protected toEntities<R extends T>(models: juggler.PersistedModel[]): R[] {
     return models.map(m => this.toEntity<R>(m));
+  }
+
+  /**
+   * Register an inclusion resolver for the related model name.
+   *
+   * @param relationName - Name of the relation defined on the source model
+   * @param resolver - Resolver function for getting related model entities
+   */
+  registerInclusionResolver(
+    relationName: string,
+    resolver: InclusionResolver<T, Entity>,
+  ) {
+    this.inclusionResolvers.set(relationName, resolver);
+  }
+
+  /**
+   * Returns model instances that include related models of this repository
+   * that have a registered resolver.
+   *
+   * @param entities - An array of entity instances or data
+   * @param include -Inclusion filter
+   * @param options - Options for the operations
+   */
+  protected async includeRelatedModels(
+    entities: T[],
+    include?: Inclusion<T>[],
+    options?: Options,
+  ): Promise<(T & Relations)[]> {
+    return includeRelatedModels<T, Relations>(this, entities, include, options);
+  }
+
+  /**
+   * Removes juggler's "include" filter as it does not apply to LoopBack 4
+   * relations.
+   *
+   * @param filter - Query filter
+   */
+  protected normalizeFilter(filter?: Filter<T>): legacy.Filter | undefined {
+    if (!filter) return undefined;
+    return {...filter, include: undefined} as legacy.Filter;
   }
 }
 
