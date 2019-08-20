@@ -15,11 +15,13 @@ const SANDBOX_FILES = require('../../fixtures/relation').SANDBOX_FILES2;
 const SANDBOX_FILES3 = require('../../fixtures/relation').SANDBOX_FILES3;
 const SANDBOX_FILES4 = require('../../fixtures/relation').SANDBOX_FILES4;
 const SANDBOX_FILES5 = require('../../fixtures/relation').SANDBOX_FILES5;
+const SANDBOX_FILES6 = require('../../fixtures/relation').SANDBOX_FILES6;
 const testUtils = require('../../test-utils');
 
 // Test Sandbox
 const SANDBOX_PATH = path.resolve(__dirname, '..', '.sandbox');
 const CONTROLLER_PATH = 'src/controllers';
+const MODEL_PATH = 'src/models';
 const sandbox = new TestSandbox(SANDBOX_PATH);
 
 describe('lb4 relation', function() {
@@ -254,7 +256,7 @@ describe('lb4 relation', function() {
   });
 
   context('Execute relation when property already exist in the model', () => {
-    it('rejects relation when property already exist in the model', () => {
+    it('rejects relation when relation already exist in the model', () => {
       const prompt = {
         relationType: 'hasMany',
         sourceModel: 'Customer',
@@ -271,8 +273,33 @@ describe('lb4 relation', function() {
           )
           .withPrompts(prompt),
       ).to.be.rejectedWith(
-        /property orders already exist in the model Customer/,
+        /relational property orders already exist in the model Customer/,
       );
+    });
+    it('update property decorator when property already exist in the model', async () => {
+      const prompt = {
+        relationType: 'belongsTo',
+        sourceModel: 'Order',
+        destinationModel: 'Customer',
+      };
+
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(SANDBOX_PATH, () =>
+          testUtils.givenLBProject(SANDBOX_PATH, {
+            additionalFiles: SANDBOX_FILES6,
+          }),
+        )
+        .withPrompts(prompt);
+
+      const expectedFile = path.join(
+        SANDBOX_PATH,
+        MODEL_PATH,
+        'order.model.ts',
+      );
+
+      const relationalPropertyRegEx = /\@belongsTo\(\(\) \=\> Customer\)/;
+      assert.fileContent(expectedFile, relationalPropertyRegEx);
     });
   });
 });

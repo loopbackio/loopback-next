@@ -623,3 +623,43 @@ exports.SANDBOX_FILES4 = [
     ),
   },
 ];
+
+exports.SANDBOX_FILES6 = [
+  {
+    path: MODEL_APP_PATH,
+    file: 'customer.model.ts',
+    content: fs.readFileSync(require.resolve('./models/customer5.model.ts'), {
+      encoding: 'utf-8',
+    }),
+  },
+  {
+    path: MODEL_APP_PATH,
+    file: 'order.model.ts',
+    content: fs.readFileSync(
+      require.resolve('./models/order-with-fk.model.ts'),
+      {
+        encoding: 'utf-8',
+      },
+    ),
+  },
+  {
+    path: REPOSITORY_APP_PATH,
+    file: 'customer.repository.ts',
+    content: fs.readFileSync(
+      require.resolve('./repositories/customer.repository.ts'),
+      {
+        encoding: 'utf-8',
+      },
+    ),
+  },
+  {
+    path: REPOSITORY_APP_PATH,
+    file: 'order.repository.ts',
+    content: fs.readFileSync(
+      require.resolve('./repositories/order.repository.ts'),
+      {
+        encoding: 'utf-8',
+      },
+    ),
+  },
+];
