@@ -113,12 +113,23 @@ exports.doesPropertyExist = function(classObj, propertyName) {
 
 exports.doesRelationExist = function(classObj, propertyName) {
   if (this.doesPropertyExist(classObj, propertyName)) {
-    throw new Error(
-      'property ' +
-        propertyName +
-        ' already exist in the model ' +
-        classObj.getName(),
-    );
+    // If the property is decorated by `@property()`,
+    // turn it to be a relational property decorated by `@belongsTo()`
+    const decorators = classObj.getProperty(propertyName).getDecorators();
+    const hasPropertyDecorator =
+      decorators.length > 0 && decorators[0].getName() === 'property';
+    // If it's already decorated by a relational decorator,
+    // throw error
+    if (!hasPropertyDecorator) {
+      throw new Error(
+        'relational property ' +
+          propertyName +
+          ' already exist in the model ' +
+          classObj.getName(),
+      );
+    }
+
+    this.deleteProperty(classObj.getProperty(propertyName));
   }
 };
 
@@ -175,6 +186,10 @@ exports.addForeignKey = function(foreignKey, sourceModelPrimaryKeyType) {
 exports.addProperty = function(classOBj, property) {
   classOBj.insertProperty(this.getPropertiesCount(classOBj), property);
   classOBj.insertText(this.getPropertyStartPos(classOBj), '\n');
+};
+
+exports.deleteProperty = function(propObj) {
+  propObj.remove();
 };
 
 exports.getPropertiesCount = function(classObj) {
