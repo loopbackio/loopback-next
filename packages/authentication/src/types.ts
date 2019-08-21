@@ -5,6 +5,7 @@
 
 import {addExtension, Constructor, Context} from '@loopback/core';
 import {Request} from '@loopback/rest';
+import {UserProfile} from '@loopback/security';
 import {AuthenticationBindings} from './keys';
 
 /**
@@ -13,16 +14,6 @@ import {AuthenticationBindings} from './keys';
  */
 export interface AuthenticateFn {
   (request: Request): Promise<UserProfile | undefined>;
-}
-
-/**
- * interface definition of a user profile
- * http://openid.net/specs/openid-connect-core-1_0.html#StandardClaims
- */
-export interface UserProfile {
-  id: string;
-  name?: string;
-  email?: string;
 }
 
 /**

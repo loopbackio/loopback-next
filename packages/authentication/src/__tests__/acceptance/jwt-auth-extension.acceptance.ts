@@ -7,13 +7,12 @@ import {inject} from '@loopback/context';
 import {Application} from '@loopback/core';
 import {get, post} from '@loopback/openapi-v3';
 import {Request, RestServer} from '@loopback/rest';
+import {SecurityBindings, securityId, UserProfile} from '@loopback/security';
 import {Client, createClientForHandler, expect} from '@loopback/testlab';
 import {
   authenticate,
-  AuthenticationBindings,
   AuthenticationStrategy,
   registerAuthenticationStrategy,
-  UserProfile,
 } from '../..';
 import {
   createBearerAuthorizationHeaderValue,
@@ -62,12 +61,11 @@ describe('JWT Authentication', () => {
 
       @get('/whoAmI')
       @authenticate('jwt')
-      whoAmI(
-        @inject(AuthenticationBindings.CURRENT_USER) userProfile: UserProfile,
-      ) {
+      whoAmI(@inject(SecurityBindings.USER) userProfile: UserProfile) {
         if (!userProfile) return 'userProfile is undefined';
-        if (!userProfile.id) return 'userProfile id is undefined';
-        return userProfile.id;
+        if (!userProfile[securityId])
+          return 'userProfile securityId is undefined';
+        return userProfile[securityId];
       }
     }
 
@@ -109,9 +107,7 @@ describe('JWT Authentication', () => {
 
       @get('/whoAmI')
       @authenticate('jwt')
-      whoAmI(
-        @inject(AuthenticationBindings.CURRENT_USER) userProfile: UserProfile,
-      ) {
+      whoAmI(@inject(SecurityBindings.USER) userProfile: UserProfile) {
         if (!userProfile) return 'userProfile is undefined';
         if (!userProfile.id) return 'userProfile id is undefined';
         return userProfile.id;
@@ -159,9 +155,7 @@ describe('JWT Authentication', () => {
 
       @get('/whoAmI')
       @authenticate('jwt')
-      whoAmI(
-        @inject(AuthenticationBindings.CURRENT_USER) userProfile: UserProfile,
-      ) {
+      whoAmI(@inject(SecurityBindings.USER) userProfile: UserProfile) {
         if (!userProfile) return 'userProfile is undefined';
         if (!userProfile.id) return 'userProfile id is undefined';
         return userProfile.id;
@@ -212,9 +206,7 @@ describe('JWT Authentication', () => {
 
       @get('/whoAmI')
       @authenticate('jwt')
-      whoAmI(
-        @inject(AuthenticationBindings.CURRENT_USER) userProfile: UserProfile,
-      ) {
+      whoAmI(@inject(SecurityBindings.USER) userProfile: UserProfile) {
         if (!userProfile) return 'userProfile is undefined';
         if (!userProfile.id) return 'userProfile id is undefined';
         return userProfile.id;
@@ -251,9 +243,7 @@ describe('JWT Authentication', () => {
 
       @get('/whoAmI')
       @authenticate('jwt')
-      whoAmI(
-        @inject(AuthenticationBindings.CURRENT_USER) userProfile: UserProfile,
-      ) {
+      whoAmI(@inject(SecurityBindings.USER) userProfile: UserProfile) {
         if (!userProfile) return 'userProfile is undefined';
         if (!userProfile.id) return 'userProfile id is undefined';
         return userProfile.id;
@@ -282,9 +272,7 @@ describe('JWT Authentication', () => {
 
       @get('/whoAmI')
       @authenticate('jwt')
-      whoAmI(
-        @inject(AuthenticationBindings.CURRENT_USER) userProfile: UserProfile,
-      ) {
+      whoAmI(@inject(SecurityBindings.USER) userProfile: UserProfile) {
         if (!userProfile) return 'userProfile is undefined';
         if (!userProfile.id) return 'userProfile id is undefined';
         return userProfile.id;
@@ -313,9 +301,7 @@ describe('JWT Authentication', () => {
 
       @get('/whoAmI')
       @authenticate('jwt')
-      whoAmI(
-        @inject(AuthenticationBindings.CURRENT_USER) userProfile: UserProfile,
-      ) {
+      whoAmI(@inject(SecurityBindings.USER) userProfile: UserProfile) {
         if (!userProfile) return 'userProfile is undefined';
         if (!userProfile.id) return 'userProfile id is undefined';
         return userProfile.id;

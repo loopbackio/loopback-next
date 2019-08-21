@@ -5,7 +5,8 @@
 
 import {Application} from '@loopback/core';
 import {RestComponent} from '@loopback/rest';
-import {AuthenticationComponent, UserProfile} from '../..';
+import {securityId, UserProfile} from '@loopback/security';
+import {AuthenticationComponent} from '../..';
 import {User} from './users/user';
 import {UserRepository} from './users/user.repository';
 
@@ -102,9 +103,9 @@ export function createBearerAuthorizationHeaderValue(
 }
 
 export function createUserProfile(user: User): UserProfile {
-  const userProfile = {id: '', name: ''};
+  const userProfile: UserProfile = {[securityId]: '', name: ''};
 
-  if (user.id) userProfile.id = user.id;
+  if (user.id) userProfile[securityId] = user.id;
 
   let userName = '';
   if (user.firstName) userName = user.firstName;

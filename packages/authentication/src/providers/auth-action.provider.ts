@@ -5,11 +5,11 @@
 
 import {Getter, inject, Provider, Setter} from '@loopback/context';
 import {Request} from '@loopback/rest';
+import {SecurityBindings, UserProfile} from '@loopback/security';
 import {AuthenticationBindings} from '../keys';
 import {
   AuthenticateFn,
   AuthenticationStrategy,
-  UserProfile,
   USER_PROFILE_NOT_FOUND,
 } from '../types';
 /**
@@ -27,7 +27,7 @@ export class AuthenticateActionProvider implements Provider<AuthenticateFn> {
     // is executed.
     @inject.getter(AuthenticationBindings.STRATEGY)
     readonly getStrategy: Getter<AuthenticationStrategy>,
-    @inject.setter(AuthenticationBindings.CURRENT_USER)
+    @inject.setter(SecurityBindings.USER)
     readonly setCurrentUser: Setter<UserProfile>,
   ) {}
 

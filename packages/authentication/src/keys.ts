@@ -5,8 +5,9 @@
 
 import {BindingKey} from '@loopback/context';
 import {MetadataAccessor} from '@loopback/metadata';
+import {SecurityBindings} from '@loopback/security';
 import {AuthenticationMetadata} from './decorators';
-import {AuthenticateFn, AuthenticationStrategy, UserProfile} from './types';
+import {AuthenticateFn, AuthenticationStrategy} from './types';
 
 /**
  * Binding keys used by this component.
@@ -86,27 +87,11 @@ export namespace AuthenticationBindings {
     'authentication.operationMetadata',
   );
 
-  /**
-   * Key used to inject the user instance retrieved by the
-   * authentication function
-   *
-   * @example
-   * ```ts
-   * class MyController {
-   *   constructor(
-   *     @inject(AuthenticationBindings.CURRENT_USER) private user: UserProfile,
-   *   ) {}
-   *
-   * // ... routes that may need authentication
-   * ```
-   * }
-   */
-  export const CURRENT_USER = BindingKey.create<UserProfile | undefined>(
-    'authentication.currentUser',
-  );
-
   export const AUTHENTICATION_STRATEGY_EXTENSION_POINT_NAME =
     'authentication.strategies';
+
+  // Make `CURRENT_USER` the alias of the security bindings
+  export const CURRENT_USER = SecurityBindings.USER;
 }
 
 /**

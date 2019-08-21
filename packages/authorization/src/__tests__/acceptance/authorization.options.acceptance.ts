@@ -3,18 +3,18 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {AuthenticationBindings} from '@loopback/authentication';
 import {Context, invokeMethod, Provider} from '@loopback/context';
 import {Application} from '@loopback/core';
+import {SecurityBindings, securityId} from '@loopback/security';
 import {expect} from '@loopback/testlab';
-import {
-  AuthorizationComponent,
-  AuthorizationDecision,
-  authorize,
-  Authorizer,
-} from '../..';
+import {AuthorizationComponent} from '../../authorization-component';
+import {authorize} from '../../decorators/authorize';
 import {AuthorizationTags} from '../../keys';
-import {AuthorizationOptions} from '../../types';
+import {
+  AuthorizationDecision,
+  AuthorizationOptions,
+  Authorizer,
+} from '../../types';
 
 const Deny = AuthorizationDecision.DENY;
 const Allow = AuthorizationDecision.ALLOW;
@@ -143,8 +143,8 @@ describe('Authorization', () => {
     app = new Application();
     reqCtx = new Context(app);
     reqCtx
-      .bind(AuthenticationBindings.CURRENT_USER)
-      .to({id: 'user-01', name: 'user-01'});
+      .bind(SecurityBindings.USER)
+      .to({[securityId]: 'user-01', name: 'user-01'});
     controller = new OrderController();
   }
 

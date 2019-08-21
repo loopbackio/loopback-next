@@ -47,7 +47,9 @@ export interface Team extends Principal {}
 
 export interface ClientApplication extends Principal {}
 
-export interface Role extends Principal {}
+export interface Role extends Principal {
+  name: string;
+}
 
 /**
  * Security attributes used to authenticate the subject. Such credentials
@@ -126,6 +128,15 @@ export interface Subject {
   /**
    * An array of principals. It can include information about the current user,
    * the client application, and granted authorities.
+   *
+   * `Subject` represents both security state and operations for a single
+   * application user.
+   *
+   * Such operations include:
+   * - authentication (login)
+   * - authorization (access control)
+   * - session access
+   * - logout
    */
   principals: Set<TypedPrincipal>;
 

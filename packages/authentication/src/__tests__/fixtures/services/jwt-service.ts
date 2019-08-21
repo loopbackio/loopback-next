@@ -5,9 +5,9 @@
 
 import {inject} from '@loopback/context';
 import {HttpErrors} from '@loopback/rest';
+import {securityId, UserProfile} from '@loopback/security';
 import {promisify} from 'util';
 import {TokenService} from '../../../services/token.service';
-import {UserProfile} from '../../../types';
 import {JWTAuthenticationStrategyBindings} from '../keys';
 const jwt = require('jsonwebtoken');
 const signAsync = promisify(jwt.sign);
@@ -33,6 +33,7 @@ export class JWTService implements TokenService {
     try {
       // decode user profile from token
       userProfile = await verifyAsync(token, this.jwtSecret);
+      userProfile[securityId] = userProfile.id;
     } catch (error) {
       throw new HttpErrors.Unauthorized(
         `Error verifying token : ${error.message}`,
@@ -50,7 +51,7 @@ export class JWTService implements TokenService {
     }
 
     const userInfoForToken = {
-      id: userProfile.id,
+      id: userProfile[securityId],
     };
 
     // Generate a JSON Web Token

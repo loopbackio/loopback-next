@@ -4,6 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {BindingAddress, InvocationContext} from '@loopback/context';
+import {Principal, Role} from '@loopback/security';
 
 /**
  * Built-in roles
@@ -57,97 +58,6 @@ export interface AuthorizationMetadata {
    * Define the access scopes
    */
   scopes?: string[];
-}
-
-/**
- * Represent a user, an application, or a device
- */
-export interface Principal {
-  /**
-   * Name/id
-   */
-  name: string;
-  /**
-   * Type - user/application/device etc
-   */
-  type: string;
-
-  // organization/realm/domain/tenant
-  // team/group
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [attribute: string]: any;
-}
-
-/**
- * Represent a group of principals that have the same authority. There are two
- * types of roles:
- *
- * - explicit
- * - implicit
- *
- */
-export interface Role {
-  /**
-   * Name/id
-   */
-  name: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [attribute: string]: any;
-}
-
-/**
- * `Subject` represents both security state and operations for a single
- * application user.
- *
- * Such operations include:
- * - authentication (login)
- * - authorization (access control)
- * - session access
- * - logout
- */
-export interface Subject {
-  principals: Principal[];
-  roles: Role[];
-  scopes: string[];
-}
-
-/**
- * `Permission` defines an action/access against a protected resource. It's
- * the `what` for authorization.
- *
- * There are three levels of permissions
- *
- * - Resource level (Order, User)
- * - Instance level (Order-0001, User-1001)
- * - Property level (User-0001.email)
- *
- * @example
- * - create a user
- * - read email of a user
- * - change email of a user
- * - cancel an order
- */
-export interface Permission {
-  /**
-   * Action or access of a protected resources, such as `read`, `create`,
-   * `update`, or `delete`
-   */
-  action: string;
-
-  /**
-   * Type of protected resource, such as `Order` or `Customer`
-   */
-  resourceType: string;
-  /**
-   * Identity of a protected resource instance, such as `order-0001` or
-   * `customer-101`
-   */
-  resourceInstance?: string;
-  /**
-   * Property of a protected resource type/instance, such as `email`
-   */
-  resourceProperty?: string;
 }
 
 /**

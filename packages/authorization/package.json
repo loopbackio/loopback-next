@@ -24,10 +24,10 @@
   "dependencies": {
     "@loopback/context": "^1.21.4",
     "@loopback/core": "^1.9.3",
+    "@loopback/security": "^0.0.1",
     "debug": "^4.1.1"
   },
   "devDependencies": {
-    "@loopback/authentication": "^2.1.11",
     "@loopback/build": "^2.0.8",
     "@loopback/testlab": "^1.7.4",
     "@types/debug": "^4.1.4",

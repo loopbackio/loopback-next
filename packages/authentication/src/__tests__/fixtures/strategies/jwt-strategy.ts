@@ -5,7 +5,8 @@
 
 import {inject} from '@loopback/context';
 import {HttpErrors, Request} from '@loopback/rest';
-import {AuthenticationStrategy, UserProfile} from '../../../types';
+import {UserProfile} from '@loopback/security';
+import {AuthenticationStrategy} from '../../../types';
 import {JWTAuthenticationStrategyBindings} from '../keys';
 import {JWTService} from '../services/jwt-service';
 

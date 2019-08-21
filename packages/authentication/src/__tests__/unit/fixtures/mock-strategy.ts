@@ -4,7 +4,8 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Request} from '@loopback/rest';
-import {AuthenticationStrategy, UserProfile} from '../../../types';
+import {UserProfile} from '@loopback/security';
+import {AuthenticationStrategy} from '../../../types';
 
 class AuthenticationError extends Error {
   statusCode?: number;
