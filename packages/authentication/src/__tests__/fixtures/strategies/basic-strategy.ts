@@ -5,7 +5,8 @@
 
 import {inject} from '@loopback/context';
 import {HttpErrors, Request} from '@loopback/rest';
-import {AuthenticationStrategy, UserProfile} from '../../../types';
+import {UserProfile} from '@loopback/security';
+import {AuthenticationStrategy} from '../../../types';
 import {BasicAuthenticationStrategyBindings} from '../keys';
 import {BasicAuthenticationUserService} from '../services/basic-auth-user-service';
 

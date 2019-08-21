@@ -5,8 +5,9 @@
 
 import {Context, instantiateClass} from '@loopback/context';
 import {Request} from '@loopback/rest';
+import {securityId, UserProfile} from '@loopback/security';
 import {expect} from '@loopback/testlab';
-import {AuthenticateFn, AuthenticationBindings, UserProfile} from '../../..';
+import {AuthenticateFn, AuthenticationBindings} from '../../..';
 import {AuthenticateActionProvider} from '../../../providers';
 import {AuthenticationStrategy} from '../../../types';
 import {MockStrategy} from '../fixtures/mock-strategy';
@@ -30,7 +31,7 @@ describe('AuthenticateActionProvider', () => {
     let strategy: MockStrategy;
     let currentUser: UserProfile | undefined;
 
-    const mockUser: UserProfile = {name: 'user-name', id: 'mock-id'};
+    const mockUser: UserProfile = {name: 'user-name', [securityId]: 'mock-id'};
 
     beforeEach(givenAuthenticateActionProvider);
 

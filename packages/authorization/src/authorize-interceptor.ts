@@ -3,7 +3,6 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {AuthenticationBindings, UserProfile} from '@loopback/authentication';
 import {
   asGlobalInterceptor,
   bind,
@@ -18,6 +17,12 @@ import {
   Next,
   Provider,
 } from '@loopback/context';
+import {
+  Principal,
+  SecurityBindings,
+  securityId,
+  UserProfile,
+} from '@loopback/security';
 import * as debugFactory from 'debug';
 import {getAuthorizationMetadata} from './decorators/authorize';
 import {AuthorizationBindings, AuthorizationTags} from './keys';
@@ -27,7 +32,6 @@ import {
   AuthorizationError,
   AuthorizationOptions,
   Authorizer,
-  Principal,
 } from './types';
 
 const debug = debugFactory('loopback:authorization:interceptor');
@@ -68,12 +72,9 @@ export class AuthorizationInterceptor implements Provider<Interceptor> {
     debug('Authorization metadata for %s', description, metadata);
 
     // retrieve it from authentication module
-    const user = await invocationCtx.get<UserProfile>(
-      AuthenticationBindings.CURRENT_USER,
-      {
-        optional: true,
-      },
-    );
+    const user = await invocationCtx.get<UserProfile>(SecurityBindings.USER, {
+      optional: true,
+    });
 
     debug('Current user', user);
 
@@ -151,8 +152,8 @@ async function loadAuthorizers(
 // for authentication and authorization.
 function userToPrinciple(user: UserProfile): Principal {
   return {
-    name: user.name || user.id,
-    id: user.id,
+    name: user.name || user[securityId],
+    [securityId]: user.id,
     email: user.email,
     type: 'USER',
   };

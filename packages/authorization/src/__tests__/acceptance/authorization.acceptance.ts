@@ -5,6 +5,7 @@
 
 import {Context, invokeMethod, Provider} from '@loopback/context';
 import {Application} from '@loopback/core';
+import {SecurityBindings, securityId} from '@loopback/security';
 import {expect} from '@loopback/testlab';
 import {
   AuthorizationComponent,
@@ -16,7 +17,6 @@ import {
   EVERYONE,
 } from '../..';
 import {AuthorizationTags} from '../../keys';
-import {AuthenticationBindings} from '@loopback/authentication';
 
 describe('Authorization', () => {
   let app: Application;
@@ -88,8 +88,8 @@ describe('Authorization', () => {
     events = [];
     reqCtx = new Context(app);
     reqCtx
-      .bind(AuthenticationBindings.CURRENT_USER)
-      .to({id: 'user-01', name: 'user-01'});
+      .bind(SecurityBindings.USER)
+      .to({[securityId]: 'user-01', name: 'user-01'});
     controller = new OrderController();
   }
 

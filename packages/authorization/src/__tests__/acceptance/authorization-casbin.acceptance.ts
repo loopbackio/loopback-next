@@ -5,6 +5,7 @@
 
 import {Context, inject, invokeMethod, Provider} from '@loopback/context';
 import {Application} from '@loopback/core';
+import {SecurityBindings, securityId, UserProfile} from '@loopback/security';
 import {expect} from '@loopback/testlab';
 import * as casbin from 'casbin';
 import * as path from 'path';
@@ -18,7 +19,6 @@ import {
   Authorizer,
 } from '../..';
 import {AuthorizationTags} from '../../keys';
-import {AuthenticationBindings, UserProfile} from '@loopback/authentication';
 
 describe('Authorization', () => {
   let app: Application;
@@ -43,7 +43,10 @@ describe('Authorization', () => {
   });
 
   it('allows cancelOrder for customer_service', async () => {
-    givenRequestContext({id: 'customer_service', name: 'customer_service'});
+    givenRequestContext({
+      [securityId]: 'customer_service',
+      name: 'customer_service',
+    });
     const orderId = await controller.placeOrder({
       customerId: 'bob',
       productId: 'product-a',
@@ -58,7 +61,7 @@ describe('Authorization', () => {
   });
 
   it('denies cancelOrder for bob', async () => {
-    givenRequestContext({id: 'bob', name: 'bob'});
+    givenRequestContext({[securityId]: 'bob', name: 'bob'});
     const orderId = await controller.placeOrder({
       customerId: 'bob',
       productId: 'product-a',
@@ -114,11 +117,11 @@ describe('Authorization', () => {
   }
 
   function givenRequestContext(
-    user: UserProfile = {id: 'alice', name: 'alice'},
+    user: UserProfile = {[securityId]: 'alice', name: 'alice'},
   ) {
     events = [];
     reqCtx = new Context(app);
-    reqCtx.bind(AuthenticationBindings.CURRENT_USER).to(user);
+    reqCtx.bind(SecurityBindings.USER).to(user);
     controller = new OrderController();
   }
 

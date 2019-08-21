@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {UserProfile} from '../types';
+import {UserProfile} from '@loopback/security';
 
 /**
  * A service for performing the login action in an authentication strategy.

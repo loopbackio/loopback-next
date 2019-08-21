@@ -8,13 +8,9 @@ import {Application} from '@loopback/core';
 import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
 import {api, get} from '@loopback/openapi-v3';
 import {Request, RestServer} from '@loopback/rest';
+import {SecurityBindings, securityId, UserProfile} from '@loopback/security';
 import {Client, createClientForHandler} from '@loopback/testlab';
-import {
-  authenticate,
-  AuthenticationBindings,
-  registerAuthenticationStrategy,
-  UserProfile,
-} from '../..';
+import {authenticate, registerAuthenticationStrategy} from '../..';
 import {AuthenticationStrategy} from '../../types';
 import {
   createBasicAuthorizationHeaderValue,
@@ -218,11 +214,11 @@ describe('Basic Authentication', () => {
 
       @authenticate('basic')
       async whoAmI(
-        @inject(AuthenticationBindings.CURRENT_USER) userProfile: UserProfile,
+        @inject(SecurityBindings.USER) userProfile: UserProfile,
       ): Promise<string> {
         if (!userProfile) return 'userProfile is undefined';
-        if (!userProfile.id) return 'userProfile id is undefined';
-        return userProfile.id;
+        if (!userProfile[securityId]) return 'userProfile id is undefined';
+        return userProfile[securityId];
       }
     }
     app.controller(MyController);
