@@ -22,7 +22,7 @@
     "eslint": "^6.2.1",
     "eslint-config-prettier": "^6.1.0",
     "eslint-plugin-eslint-plugin": "^2.1.0",
-    "eslint-plugin-mocha": "^6.0.0",
+    "eslint-plugin-mocha": "^6.1.0",
     "husky": "^3.0.4",
     "lerna": "^3.16.4",
     "typescript": "~3.5.3"
