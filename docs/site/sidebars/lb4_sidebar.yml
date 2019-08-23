@@ -646,6 +646,15 @@ children:
     url: Testing-your-application.html
     output: 'web, pdf'
 
+- title: 'Contribute to LoopBack 4'
+  url: code-contrib-lb4.html
+  output: 'web, pdf'
+  children:
+
+    - title: 'Submitting a pull request to LoopBack 4'
+      url: submitting_a_pr.html
+      output: 'web, pdf'
+
 - title: 'Reference'
   url: Reference.html
   output: 'web, pdf'
