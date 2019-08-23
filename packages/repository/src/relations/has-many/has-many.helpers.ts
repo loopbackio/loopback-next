@@ -7,7 +7,7 @@ import * as debugFactory from 'debug';
 import {camelCase} from 'lodash';
 import {InvalidRelationError} from '../../errors';
 import {isTypeResolver} from '../../type-resolver';
-import {HasManyDefinition} from '../relation.types';
+import {HasManyDefinition, RelationType} from '../relation.types';
 
 const debug = debugFactory('loopback:repository:has-many-helpers');
 
@@ -30,6 +30,11 @@ export type HasManyResolvedDefinition = HasManyDefinition & {
 export function resolveHasManyMetadata(
   relationMeta: HasManyDefinition,
 ): HasManyResolvedDefinition {
+  if ((relationMeta.type as RelationType) !== RelationType.hasMany) {
+    const reason = 'relation type must be HasMany';
+    throw new InvalidRelationError(reason, relationMeta);
+  }
+
   if (!isTypeResolver(relationMeta.target)) {
     const reason = 'target must be a type resolver';
     throw new InvalidRelationError(reason, relationMeta);

@@ -45,6 +45,16 @@ export function givenBoundCrudRepositories(
     async () => addressRepo,
   );
 
+  // register the inclusionResolvers here for customerRepo
+  customerRepo.inclusionResolvers.set(
+    'orders',
+    customerRepo.orders.inclusionResolver,
+  );
+  customerRepo.inclusionResolvers.set(
+    'customers',
+    customerRepo.customers.inclusionResolver,
+  );
+
   const orderRepoClass = createOrderRepo(repositoryClass);
   const orderRepo: OrderRepository = new orderRepoClass(
     db,
@@ -69,5 +79,10 @@ export function givenBoundCrudRepositories(
     async () => customerRepo,
   );
 
-  return {customerRepo, orderRepo, shipmentRepo, addressRepo};
+  return {
+    customerRepo,
+    orderRepo,
+    shipmentRepo,
+    addressRepo,
+  };
 }

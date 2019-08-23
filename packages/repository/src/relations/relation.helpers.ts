@@ -169,6 +169,39 @@ export function flattenTargetsOfOneToOneRelation<
 }
 
 /**
+ * Returns an array of instances. The order of arrays is based on
+ * as a result of one to many relation. The order of arrays is based on
+ * the order of sourceIds
+ *
+ * @param sourceIds - One value or array of values of the target key
+ * @param targetEntities - target entities that satisfy targetKey's value (ids).
+ * @param targetKey - name of the target key
+ *
+ * @return
+ */
+export function flattenTargetsOfOneToManyRelation<Target extends Entity>(
+  sourceIds: unknown[],
+  targetEntities: Target[],
+  targetKey: StringKeyOf<Target>,
+): (Target[] | undefined)[] {
+  debug('flattenTargetsOfOneToManyRelation');
+  debug('sourceIds', sourceIds);
+  debug('sourceId types', sourceIds.map(i => typeof i));
+  debug('targetEntities', targetEntities);
+  debug('targetKey', targetKey);
+
+  const lookup = buildLookupMap<unknown, Target, Target[]>(
+    targetEntities,
+    targetKey,
+    reduceAsArray,
+  );
+
+  debug('lookup map', lookup);
+
+  return flattenMapByKeys(sourceIds, lookup);
+}
+
+/**
  * Returns an array of instances from the target map. The order of arrays is based on
  * the order of sourceIds
  *

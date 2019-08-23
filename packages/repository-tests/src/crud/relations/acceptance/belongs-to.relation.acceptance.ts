@@ -98,10 +98,12 @@ export function belongsToRelationAcceptance(
         name: 'Order McForder',
       });
       const order = await orderRepo.create({
-        customerId: deletedCustomer.id, // does not exist
-        description: 'Order of a fictional customer',
+        customerId: deletedCustomer.id,
+        description: 'custotmer will be deleted',
       });
       await customerRepo.deleteAll();
+
+      await orderRepo.deleteAll();
 
       await expect(findCustomerOfOrder(order.id)).to.be.rejectedWith(
         EntityNotFoundError,
