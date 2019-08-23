@@ -7,8 +7,9 @@ import * as debugFactory from 'debug';
 import {DataObject} from '../../common-types';
 import {Entity} from '../../model';
 import {EntityCrudRepository} from '../../repositories/repository';
-import {Getter, HasManyDefinition} from '../relation.types';
+import {Getter, HasManyDefinition, InclusionResolver} from '../relation.types';
 import {resolveHasManyMetadata} from './has-many.helpers';
+import {createHasManyInclusionResolver} from './has-many.inclusion-resolver';
 import {
   DefaultHasManyRepository,
   HasManyRepository,
@@ -16,9 +17,20 @@ import {
 
 const debug = debugFactory('loopback:repository:has-many-repository-factory');
 
-export type HasManyRepositoryFactory<Target extends Entity, ForeignKeyType> = (
-  fkValue: ForeignKeyType,
-) => HasManyRepository<Target>;
+export interface HasManyRepositoryFactory<
+  Target extends Entity,
+  ForeignKeyType
+> {
+  /**
+   * Invoke the function to obtain HasManyRepository.
+   */
+  (fkValue: ForeignKeyType): HasManyRepository<Target>;
+
+  /**
+   * Use `resolver` property to obtain an InclusionResolver for this relation.
+   */
+  inclusionResolver: InclusionResolver<Entity, Target>;
+}
 
 /**
  * Enforces a constraint on a repository based on a relationship contract
@@ -43,7 +55,9 @@ export function createHasManyRepositoryFactory<
 ): HasManyRepositoryFactory<Target, ForeignKeyType> {
   const meta = resolveHasManyMetadata(relationMetadata);
   debug('Resolved HasMany relation metadata: %o', meta);
-  return function(fkValue: ForeignKeyType) {
+  const result: HasManyRepositoryFactory<Target, ForeignKeyType> = function(
+    fkValue: ForeignKeyType,
+  ) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const constraint: any = {[meta.keyTo]: fkValue};
     return new DefaultHasManyRepository<
@@ -52,4 +66,9 @@ export function createHasManyRepositoryFactory<
       EntityCrudRepository<Target, TargetID>
     >(targetRepositoryGetter, constraint as DataObject<Target>);
   };
+  result.inclusionResolver = createHasManyInclusionResolver(
+    meta,
+    targetRepositoryGetter,
+  );
+  return result;
 }
