@@ -3,6 +3,7 @@ lang: en
 title: "Add TodoList and TodoList's Todo Controller"
 keywords: LoopBack 4.0, LoopBack 4
 sidebar: lb4_sidebar
+lb4_editme_path: strongloop/loopback-next/blob/master/docs/site/tutorials/todo-list
 permalink: /doc/en/lb4/todo-list-tutorial-controller.html
 summary:
   LoopBack 4 TodoList Application Tutorial - Add TodoList and TodoList's Todo

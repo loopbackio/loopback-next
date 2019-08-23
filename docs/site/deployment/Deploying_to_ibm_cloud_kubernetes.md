@@ -4,6 +4,7 @@ title: 'Deploying to Kubernetes on IBM Cloud'
 keywords:
   LoopBack 4.0, LoopBack 4, Kubernetes, IBM Cloud, Docker, Container Registry
 sidebar: lb4_sidebar
+lb4_editme_path: strongloop/loopback-next/blob/master/docs/site/deployment
 permalink: /doc/en/lb4/deploying_to_ibm_cloud_kubernetes.html
 ---
 

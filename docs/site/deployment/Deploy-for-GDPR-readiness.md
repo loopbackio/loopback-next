@@ -5,6 +5,7 @@ keywords: LoopBack, GDPR
 tags: gdpr
 lang: en
 sidebar: lb4_sidebar
+lb4_editme_path: strongloop/loopback-next/blob/master/docs/site/deployment
 permalink: /doc/en/lb4/Deploy-for-GDPR-readiness.html
 summary: LoopBack considerations for GDPR readiness.
 ---

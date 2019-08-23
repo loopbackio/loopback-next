@@ -3,6 +3,7 @@ lang: en
 title: 'Deploying to IBM Cloud'
 keywords: LoopBack
 sidebar: lb4_sidebar
+lb4_editme_path: strongloop/loopback-next/blob/master/docs/site/deployment
 permalink: /doc/en/lb4/Deploying-to-IBM-Cloud.html
 ---
 

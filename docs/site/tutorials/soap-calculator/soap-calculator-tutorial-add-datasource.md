@@ -3,6 +3,7 @@ lang: en
 title: 'Add a Datasource'
 keywords: LoopBack 4.0, LoopBack 4
 sidebar: lb4_sidebar
+lb4_editme_path: strongloop/loopback-next/blob/master/docs/site/tutorials/soap-calculator
 permalink: /doc/en/lb4/soap-calculator-tutorial-add-datasource.html
 ---
 

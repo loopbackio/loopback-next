@@ -3,6 +3,7 @@ lang: en
 title: 'Running on relational databases'
 keywords: LoopBack 4.0, LoopBack 4
 sidebar: lb4_sidebar
+lb4_editme_path: strongloop/loopback-next/blob/master/docs/site/tutorials/todo-list
 permalink: /doc/en/lb4/todo-list-tutorial-sqldb.html
 summary:
   LoopBack 4 TodoList Application Tutorial - Running on Relational Databases

@@ -3,6 +3,7 @@ lang: en
 title: 'Integrate with a geo-coding service'
 keywords: LoopBack 4.0, LoopBack 4
 sidebar: lb4_sidebar
+lb4_editme_path: strongloop/loopback-next/blob/master/docs/site/tutorials/todo
 permalink: /doc/en/lb4/todo-tutorial-geocoding-service.html
 summary:
   LoopBack 4 Todo Application Tutorial - Integrate with a geo-coding service

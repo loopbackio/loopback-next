@@ -3,6 +3,7 @@ lang: en
 title: 'Dependency Injection Decorators'
 keywords: LoopBack 4.0, LoopBack-Next
 sidebar: lb4_sidebar
+lb4_editme_path: strongloop/loopback-next/blob/master/docs/site/decorators
 permalink: /doc/en/lb4/Decorators_inject.html
 ---
 

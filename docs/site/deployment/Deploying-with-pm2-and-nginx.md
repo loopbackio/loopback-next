@@ -3,6 +3,7 @@ lang: en
 title: 'Deploying with pm2 and nginx'
 keywords: LoopBack, pm2, nginx
 sidebar: lb4_sidebar
+lb4_editme_path: strongloop/loopback-next/blob/master/docs/site/deployment
 permalink: /doc/en/lb4/deploying-with-pm2-and-nginx.html
 ---
 
