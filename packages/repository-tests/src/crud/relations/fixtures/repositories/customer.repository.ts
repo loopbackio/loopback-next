@@ -49,8 +49,8 @@ export function createCustomerRepo(repoClass: CrudRepositoryCtor) {
       addressRepositoryGetter: Getter<typeof repoClass.prototype>,
     ) {
       super(Customer, db);
-      // create a has-many relation from this public method
       const ordersMeta = this.entityClass.definition.relations['orders'];
+      // create a has-many relation through this public method
       this.orders = createHasManyRepositoryFactory(
         ordersMeta as HasManyDefinition,
         orderRepositoryGetter,

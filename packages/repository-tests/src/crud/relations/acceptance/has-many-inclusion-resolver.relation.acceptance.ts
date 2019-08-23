@@ -23,7 +23,7 @@ import {
 } from '../fixtures/models';
 import {givenBoundCrudRepositories} from '../helpers';
 
-export function belongsToInclusionResolverAcceptance(
+export function hasManyInclusionResolverAcceptance(
   dataSourceOptions: DataSourceOptions,
   repositoryClass: CrudRepositoryCtor,
   features: CrudFeatures,
@@ -31,7 +31,7 @@ export function belongsToInclusionResolverAcceptance(
   skipIf<[(this: Suite) => void], void>(
     !features.supportsInclusionResolvers,
     describe,
-    'BelongsTo inclusion resolvers - acceptance',
+    'HasMany inclusion resolvers - acceptance',
     suite,
   );
   function suite() {
@@ -48,7 +48,7 @@ export function belongsToInclusionResolverAcceptance(
           repositoryClass,
           features,
         ));
-        expect(orderRepo.customer.inclusionResolver).to.be.Function();
+        expect(customerRepo.orders.inclusionResolver).to.be.Function();
 
         await ctx.dataSource.automigrate([Customer.name, Order.name]);
       }),
@@ -59,78 +59,95 @@ export function belongsToInclusionResolverAcceptance(
       await orderRepo.deleteAll();
     });
 
-    it('throws an error if it tries to query nonexists relation names', async () => {
+    it('throws an error if tries to query nonexists relation names', async () => {
       const customer = await customerRepo.create({name: 'customer'});
       await orderRepo.create({
         description: 'an order',
         customerId: customer.id,
       });
       await expect(
-        orderRepo.find({include: [{relation: 'shipment'}]}),
+        customerRepo.find({include: [{relation: 'managers'}]}),
       ).to.be.rejectedWith(
-        `Invalid "filter.include" entries: {"relation":"shipment"}`,
+        `Invalid "filter.include" entries: {"relation":"managers"}`,
       );
     });
 
     it('returns single model instance including single related instance', async () => {
       const thor = await customerRepo.create({name: 'Thor'});
-      const order = await orderRepo.create({
-        description: 'Mjolnir',
+      const thorOrder = await orderRepo.create({
         customerId: thor.id,
+        description: "Thor's Mjolnir",
       });
-      const result = await orderRepo.find({
-        include: [{relation: 'customer'}],
+      const result = await customerRepo.find({
+        include: [{relation: 'orders'}],
       });
 
-      const expected = {
-        ...order,
-        isShipped: features.emptyValue,
-        // eslint-disable-next-line @typescript-eslint/camelcase
-        shipment_id: features.emptyValue,
-        customer: {
+      expect(toJSON(result)).to.deepEqual([
+        toJSON({
           ...thor,
           parentId: features.emptyValue,
-        },
-      };
-      expect(toJSON(result)).to.deepEqual([toJSON(expected)]);
+          orders: [
+            {
+              ...thorOrder,
+              isShipped: features.emptyValue,
+              // eslint-disable-next-line @typescript-eslint/camelcase
+              shipment_id: features.emptyValue,
+            },
+          ],
+        }),
+      ]);
     });
 
     it('returns multiple model instances including related instances', async () => {
       const thor = await customerRepo.create({name: 'Thor'});
       const odin = await customerRepo.create({name: 'Odin'});
-      const thorOrder = await orderRepo.create({
-        description: "Thor's Mjolnir",
+      const thorOrderMjolnir = await orderRepo.create({
         customerId: thor.id,
+        description: 'Mjolnir',
       });
-      const odinOrder = await orderRepo.create({
-        description: "Odin's Coffee Maker",
+      const thorOrderPizza = await orderRepo.create({
+        customerId: thor.id,
+        description: 'Pizza',
+      });
+      const odinOrderCoffee = await orderRepo.create({
         customerId: odin.id,
+        description: 'Coffee',
       });
 
-      const result = await orderRepo.find({
-        include: [{relation: 'customer'}],
+      const result = await customerRepo.find({
+        include: [{relation: 'orders'}],
       });
 
       const expected = [
         {
-          ...thorOrder,
-          isShipped: features.emptyValue,
-          // eslint-disable-next-line @typescript-eslint/camelcase
-          shipment_id: features.emptyValue,
-          customer: {
-            ...thor,
-            parentId: features.emptyValue,
-          },
+          ...thor,
+          orders: [
+            {
+              ...thorOrderMjolnir,
+              isShipped: features.emptyValue,
+              // eslint-disable-next-line @typescript-eslint/camelcase
+              shipment_id: features.emptyValue,
+            },
+            {
+              ...thorOrderPizza,
+              isShipped: features.emptyValue,
+              // eslint-disable-next-line @typescript-eslint/camelcase
+              shipment_id: features.emptyValue,
+            },
+          ],
+          parentId: features.emptyValue,
         },
         {
-          ...odinOrder,
-          isShipped: features.emptyValue,
-          // eslint-disable-next-line @typescript-eslint/camelcase
-          shipment_id: features.emptyValue,
-          customer: {
-            ...odin,
-            parentId: features.emptyValue,
-          },
+          ...odin,
+          parentId: features.emptyValue,
+          orders: [
+            {
+              ...odinOrderCoffee,
+              isShipped: features.emptyValue,
+              // eslint-disable-next-line @typescript-eslint/camelcase
+              shipment_id: features.emptyValue,
+            },
+          ],
         },
       ];
       expect(toJSON(result)).to.deepEqual(toJSON(expected));
@@ -140,28 +157,54 @@ export function belongsToInclusionResolverAcceptance(
       const thor = await customerRepo.create({name: 'Thor'});
       const odin = await customerRepo.create({name: 'Odin'});
       await orderRepo.create({
-        description: "Thor's Mjolnir",
         customerId: thor.id,
+        description: 'Mjolnir',
+      });
+      await orderRepo.create({
+        customerId: thor.id,
+        description: 'Pizza',
       });
       const odinOrder = await orderRepo.create({
-        description: "Odin's Coffee Maker",
         customerId: odin.id,
+        description: 'Coffee',
       });
 
-      const result = await orderRepo.findById(odinOrder.id, {
-        include: [{relation: 'customer'}],
+      const result = await customerRepo.findById(odin.id, {
+        include: [{relation: 'orders'}],
       });
       const expected = {
-        ...odinOrder,
-        isShipped: features.emptyValue,
-        // eslint-disable-next-line @typescript-eslint/camelcase
-        shipment_id: features.emptyValue,
-        customer: {
-          ...odin,
-          parentId: features.emptyValue,
-        },
+        ...odin,
+        parentId: features.emptyValue,
+        orders: [
+          {
+            ...odinOrder,
+            isShipped: features.emptyValue,
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            shipment_id: features.emptyValue,
+          },
+        ],
       };
       expect(toJSON(result)).to.deepEqual(toJSON(expected));
+    });
+
+    it('throws when navigational properties are present when updating model instance', async () => {
+      const created = await customerRepo.create({name: 'customer'});
+      const customerId = created.id;
+
+      await orderRepo.create({
+        description: 'pizza',
+        customerId,
+      });
+
+      const found = await customerRepo.findById(customerId, {
+        include: [{relation: 'orders'}],
+      });
+      expect(found.orders).to.have.lengthOf(1);
+
+      found.name = 'updated name';
+      await expect(customerRepo.save(found)).to.be.rejectedWith(
+        'The `Customer` instance is not valid. Details: `orders` is not defined in the model (value: undefined).',
+      );
     });
     // scope for inclusion is not supported yet
     it('throws error if the inclusion query contains a non-empty scope', async () => {
@@ -171,8 +214,8 @@ export function belongsToInclusionResolverAcceptance(
         customerId: customer.id,
       });
       await expect(
-        orderRepo.find({
-          include: [{relation: 'customer', scope: {limit: 1}}],
+        customerRepo.find({
+          include: [{relation: 'orders', scope: {limit: 1}}],
         }),
       ).to.be.rejectedWith(`scope is not supported`);
     });
@@ -184,12 +227,12 @@ export function belongsToInclusionResolverAcceptance(
         customerId: customer.id,
       });
       // unregister the resolver
-      orderRepo.inclusionResolvers.delete('customer');
+      customerRepo.inclusionResolvers.delete('orders');
 
       await expect(
-        orderRepo.find({include: [{relation: 'customer'}]}),
+        customerRepo.find({include: [{relation: 'orders'}]}),
       ).to.be.rejectedWith(
-        `Invalid "filter.include" entries: {"relation":"customer"}`,
+        `Invalid "filter.include" entries: {"relation":"orders"}`,
       );
     });
   }

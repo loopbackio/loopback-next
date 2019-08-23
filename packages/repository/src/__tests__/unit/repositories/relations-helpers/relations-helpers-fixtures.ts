@@ -124,7 +124,7 @@ export class Category extends Entity {
   }
 }
 interface CategoryRelations {
-  products?: Product[];
+  products?: ProductWithRelations;
 }
 type CategoryWithRelations = Category & CategoryRelations;
 
