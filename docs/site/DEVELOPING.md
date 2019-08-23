@@ -2,8 +2,8 @@
 lang: en
 title: 'Contributing code in LoopBack 4'
 keywords: LoopBack 4.0, contributing, community
-sidebar: contrib_sidebar
-permalink: /doc/en/contrib/code-contrib-lb4.html
+sidebar: lb4_sidebar
+permalink: /doc/en/lb4/code-contrib-lb4.html
 toc: false
 ---
 
