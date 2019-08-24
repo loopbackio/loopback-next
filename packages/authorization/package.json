@@ -32,7 +32,7 @@
     "@loopback/testlab": "^1.7.4",
     "@types/debug": "^4.1.4",
     "@types/node": "10.14.16",
-    "casbin": "^3.0.3"
+    "casbin": "^3.0.4"
   },
   "keywords": [
     "LoopBack",
