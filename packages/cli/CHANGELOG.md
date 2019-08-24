@@ -3,6 +3,41 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.21.4](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.21.3...@loopback/cli@1.21.4) (2019-08-19)
+
+**Note:** Version bump only for package @loopback/cli
+
+
+
+
+
+## [1.21.3](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.21.2...@loopback/cli@1.21.3) (2019-08-15)
+
+**Note:** Version bump only for package @loopback/cli
+
+
+
+
+
+## [1.21.2](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.21.1...@loopback/cli@1.21.2) (2019-08-15)
+
+**Note:** Version bump only for package @loopback/cli
+
+
+
+
+
+## [1.21.1](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.21.0...@loopback/cli@1.21.1) (2019-08-15)
+
+
+### Bug Fixes
+
+* set foreignkey to be optional in the requestbody of hasmany relation ([d46ea18](https://github.com/strongloop/loopback-next/commit/d46ea18))
+
+
+
+
+
 # [1.21.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.20.0...@loopback/cli@1.21.0) (2019-07-31)
 
 

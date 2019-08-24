@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.8](https://github.com/strongloop/loopback-next/compare/@loopback/tsdocs@1.2.7...@loopback/tsdocs@1.2.8) (2019-08-19)
+
+**Note:** Version bump only for package @loopback/tsdocs
+
+
+
+
+
+## [1.2.7](https://github.com/strongloop/loopback-next/compare/@loopback/tsdocs@1.2.6...@loopback/tsdocs@1.2.7) (2019-08-15)
+
+**Note:** Version bump only for package @loopback/tsdocs
+
+
+
+
+
 ## [1.2.6](https://github.com/strongloop/loopback-next/compare/@loopback/tsdocs@1.2.5...@loopback/tsdocs@1.2.6) (2019-07-31)
 
 **Note:** Version bump only for package @loopback/tsdocs

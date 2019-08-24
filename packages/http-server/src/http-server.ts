@@ -48,7 +48,7 @@ export type HttpProtocol = 'http' | 'https'; // Will be extended to `http2` in t
  * HTTP / HTTPS server used by LoopBack's RestServer
  */
 export class HttpServer {
-  private _listening: boolean = false;
+  private _listening = false;
   private _protocol: HttpProtocol;
   private _address: string | AddressInfo;
   private requestListener: RequestListener;

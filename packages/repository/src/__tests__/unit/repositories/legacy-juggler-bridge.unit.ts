@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {expect} from '@loopback/testlab';
+import {expect, toJSON} from '@loopback/testlab';
 import {
   bindModel,
   DefaultCrudRepository,
@@ -15,6 +15,21 @@ import {
   ModelDefinition,
   property,
 } from '../../..';
+import {
+  belongsTo,
+  BelongsToAccessor,
+  BelongsToDefinition,
+  createBelongsToAccessor,
+  createHasManyRepositoryFactory,
+  createHasOneRepositoryFactory,
+  hasMany,
+  HasManyDefinition,
+  HasManyRepositoryFactory,
+  hasOne,
+  HasOneDefinition,
+  HasOneRepositoryFactory,
+  InclusionResolver,
+} from '../../../relations';
 import {CrudConnectorStub} from '../crud-connector.stub';
 const TransactionClass = require('loopback-datasource-juggler').Transaction;
 
@@ -274,6 +289,190 @@ describe('DefaultCrudRepository', () => {
     });
   });
 
+  context('find* methods including relations', () => {
+    @model()
+    class Author extends Entity {
+      @property({id: true})
+      id?: number;
+      @property()
+      name: string;
+      @belongsTo(() => Folder)
+      folderId: number;
+    }
+
+    @model()
+    class Folder extends Entity {
+      @property({id: true})
+      id?: number;
+      @property()
+      name: string;
+      @hasMany(() => File)
+      files: File[];
+      @hasOne(() => Author)
+      author: Author;
+    }
+
+    @model()
+    class File extends Entity {
+      @property({id: true})
+      id?: number;
+      @property()
+      title: string;
+      @belongsTo(() => Folder)
+      folderId: number;
+    }
+
+    let folderRepo: DefaultCrudRepository<Folder, unknown, {}>;
+    let fileRepo: DefaultCrudRepository<File, unknown, {}>;
+    let authorRepo: DefaultCrudRepository<Author, unknown, {}>;
+
+    let folderFiles: HasManyRepositoryFactory<File, typeof Folder.prototype.id>;
+    let fileFolder: BelongsToAccessor<Folder, typeof File.prototype.id>;
+    let folderAuthor: HasOneRepositoryFactory<
+      Author,
+      typeof Folder.prototype.id
+    >;
+
+    before(() => {
+      ds = new juggler.DataSource({
+        name: 'db',
+        connector: 'memory',
+      });
+      folderRepo = new DefaultCrudRepository(Folder, ds);
+      fileRepo = new DefaultCrudRepository(File, ds);
+      authorRepo = new DefaultCrudRepository(Author, ds);
+    });
+
+    before(() => {
+      // using a variable instead of a repository property
+      folderFiles = createHasManyRepositoryFactory(
+        Folder.definition.relations.files as HasManyDefinition,
+        async () => fileRepo,
+      );
+      folderAuthor = createHasOneRepositoryFactory(
+        Folder.definition.relations.author as HasOneDefinition,
+        async () => authorRepo,
+      );
+      fileFolder = createBelongsToAccessor(
+        File.definition.relations.folder as BelongsToDefinition,
+        async () => folderRepo,
+        fileRepo,
+      );
+    });
+
+    beforeEach(async () => {
+      await folderRepo.deleteAll();
+      await fileRepo.deleteAll();
+      await authorRepo.deleteAll();
+    });
+
+    it('implements Repository.find() with included models', async () => {
+      const createdFolders = await folderRepo.createAll([
+        {name: 'f1', id: 1},
+        {name: 'f2', id: 2},
+      ]);
+      const files = await fileRepo.createAll([
+        {id: 1, title: 'file1', folderId: 1},
+        {id: 2, title: 'file2', folderId: 3},
+      ]);
+
+      folderRepo.registerInclusionResolver('files', hasManyResolver);
+
+      const folders = await folderRepo.find({include: [{relation: 'files'}]});
+
+      expect(toJSON(folders)).to.deepEqual([
+        {...createdFolders[0].toJSON(), files: [toJSON(files[0])]},
+        {...createdFolders[1].toJSON(), files: []},
+      ]);
+    });
+
+    it('implements Repository.findById() with included models', async () => {
+      const folders = await folderRepo.createAll([
+        {name: 'f1', id: 1},
+        {name: 'f2', id: 2},
+      ]);
+      const createdFile = await fileRepo.create({
+        id: 1,
+        title: 'file1',
+        folderId: 1,
+      });
+
+      fileRepo.registerInclusionResolver('folder', belongsToResolver);
+
+      const file = await fileRepo.findById(1, {
+        include: [{relation: 'folder'}],
+      });
+
+      expect(file.toJSON()).to.deepEqual({
+        ...createdFile.toJSON(),
+        folder: folders[0].toJSON(),
+      });
+    });
+
+    it('implements Repository.findOne() with included models', async () => {
+      const folders = await folderRepo.createAll([
+        {name: 'f1', id: 1},
+        {name: 'f2', id: 2},
+      ]);
+      const createdAuthor = await authorRepo.create({
+        id: 1,
+        name: 'a1',
+        folderId: 1,
+      });
+
+      folderRepo.registerInclusionResolver('author', hasOneResolver);
+
+      const folder = await folderRepo.findOne({
+        include: [{relation: 'author'}],
+      });
+
+      expect(folder!.toJSON()).to.deepEqual({
+        ...folders[0].toJSON(),
+        author: createdAuthor.toJSON(),
+      });
+    });
+
+    // stub resolvers
+
+    const hasManyResolver: InclusionResolver<Folder, File> = async entities => {
+      const files = [];
+      for (const entity of entities) {
+        const file = await folderFiles(entity.id).find();
+        files.push(file);
+      }
+
+      return files;
+    };
+
+    const belongsToResolver: InclusionResolver<
+      File,
+      Folder
+    > = async entities => {
+      const folders = [];
+
+      for (const file of entities) {
+        const folder = await fileFolder(file.folderId);
+        folders.push(folder);
+      }
+
+      return folders;
+    };
+
+    const hasOneResolver: InclusionResolver<
+      Folder,
+      Author
+    > = async entities => {
+      const authors = [];
+
+      for (const folder of entities) {
+        const author = await folderAuthor(folder.id).get();
+        authors.push(author);
+      }
+
+      return authors;
+    };
+  });
+
   it('implements Repository.delete()', async () => {
     const repo = new DefaultCrudRepository(Note, ds);
     const note = await repo.create({title: 't3', content: 'c3'});
@@ -418,6 +617,21 @@ describe('DefaultCrudRepository', () => {
     await expect(repo.execute('query', [])).to.be.rejectedWith(
       'execute() must be implemented by the connector',
     );
+  });
+
+  it('has the property inclusionResolvers', () => {
+    const repo = new DefaultCrudRepository(Note, ds);
+    expect(repo.inclusionResolvers).to.be.instanceof(Map);
+  });
+
+  it('implements Repository.registerInclusionResolver()', () => {
+    const repo = new DefaultCrudRepository(Note, ds);
+    const resolver: InclusionResolver<Note, Entity> = async entities => {
+      return entities;
+    };
+    repo.registerInclusionResolver('notes', resolver);
+    const setResolver = repo.inclusionResolvers.get('notes');
+    expect(setResolver).to.eql(resolver);
   });
 });
 

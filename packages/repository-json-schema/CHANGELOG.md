@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.5](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@1.9.4...@loopback/repository-json-schema@1.9.5) (2019-08-19)
+
+**Note:** Version bump only for package @loopback/repository-json-schema
+
+
+
+
+
+## [1.9.4](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@1.9.3...@loopback/repository-json-schema@1.9.4) (2019-08-15)
+
+**Note:** Version bump only for package @loopback/repository-json-schema
+
+
+
+
+
+## [1.9.3](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@1.9.2...@loopback/repository-json-schema@1.9.3) (2019-08-15)
+
+
+### Bug Fixes
+
+* **repository-json-schema:** make exclude option reject properties ([35027c4](https://github.com/strongloop/loopback-next/commit/35027c4))
+
+
+
+
+
 ## [1.9.2](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@1.9.1...@loopback/repository-json-schema@1.9.2) (2019-07-31)
 
 

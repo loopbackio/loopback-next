@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {expect} from '@loopback/testlab';
+import {expect, skipIf} from '@loopback/testlab';
 import {
   asGlobalInterceptor,
   Context,
@@ -125,25 +125,36 @@ describe('globalInterceptors', () => {
     ]);
   });
 
-  it('sorts by binding order without group tags', () => {
-    ctx
-      .bind('globalInterceptors.authInterceptor')
-      .to(authInterceptor)
-      .apply(asGlobalInterceptor());
+  // See https://v8.dev/blog/array-sort
+  function isSortStable() {
+    // v8 7.0 or above
+    return +process.versions.v8.split('.')[0] >= 7;
+  }
 
-    ctx
-      .bind('globalInterceptors.logInterceptor')
-      .to(logInterceptor)
-      .apply(asGlobalInterceptor());
+  skipIf(
+    !isSortStable(),
+    it,
+    'sorts by binding order without group tags',
+    async () => {
+      ctx
+        .bind('globalInterceptors.authInterceptor')
+        .to(authInterceptor)
+        .apply(asGlobalInterceptor());
 
-    const invocationCtx = givenInvocationContext();
+      ctx
+        .bind('globalInterceptors.logInterceptor')
+        .to(logInterceptor)
+        .apply(asGlobalInterceptor());
 
-    const keys = invocationCtx.getGlobalInterceptorBindingKeys();
-    expect(keys).to.eql([
-      'globalInterceptors.authInterceptor',
-      'globalInterceptors.logInterceptor',
-    ]);
-  });
+      const invocationCtx = givenInvocationContext();
+
+      const keys = invocationCtx.getGlobalInterceptorBindingKeys();
+      expect(keys).to.eql([
+        'globalInterceptors.authInterceptor',
+        'globalInterceptors.logInterceptor',
+      ]);
+    },
+  );
 
   it('applies asGlobalInterceptor', () => {
     const binding = ctx

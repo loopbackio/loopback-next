@@ -15,7 +15,7 @@ export interface BasicAuthenticationStrategyCredentials {
 }
 
 export class BasicAuthenticationStrategy implements AuthenticationStrategy {
-  name: string = 'basic';
+  name = 'basic';
 
   constructor(
     @inject(BasicAuthenticationStrategyBindings.USER_SERVICE)

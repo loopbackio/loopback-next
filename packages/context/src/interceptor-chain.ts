@@ -49,7 +49,7 @@ export type GenericInterceptorOrKey<C extends Context = Context> =
  * Invocation state of an interceptor chain
  */
 class InterceptorChainState<C extends Context = Context> {
-  private _index: number = 0;
+  private _index = 0;
   /**
    * Create a state for the interceptor chain
    * @param interceptors - Interceptor functions or binding keys

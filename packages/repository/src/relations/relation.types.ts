@@ -3,7 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {Options} from '../common-types';
 import {Entity} from '../model';
+import {Inclusion} from '../query';
 import {TypeResolver} from '../type-resolver';
 
 export enum RelationType {
@@ -108,3 +110,25 @@ export type RelationMetadata =
 
 // Re-export Getter so that users don't have to import from @loopback/context
 export {Getter} from '@loopback/context';
+
+/**
+ * @returns An array of resolved values, the items must be ordered in the same
+ * way as `sourceEntities`. The resolved value can be one of:
+ * - `undefined` when no target model(s) were found
+ * - `Entity` for relations targeting a single model
+ * - `Entity[]` for relations targeting multiple models
+ */
+export type InclusionResolver<S extends Entity, T extends Entity> = (
+  /**
+   * List of source models as returned by the first database query.
+   */
+  sourceEntities: S[],
+  /**
+   * Inclusion requested by the user (e.g. scope constraints to apply).
+   */
+  inclusion: Inclusion,
+  /**
+   * Generic options object, e.g. carrying the Transaction object.
+   */
+  options?: Options,
+) => Promise<(T | undefined)[] | (T[] | undefined)[]>;

@@ -227,6 +227,7 @@ export class Context extends EventEmitter {
   private handleNotificationError(err: unknown) {
     // Bubbling up the error event over the context chain
     // until we find an error listener
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
     let ctx: Context | undefined = this;
     while (ctx) {
       if (ctx.listenerCount('error') === 0) {

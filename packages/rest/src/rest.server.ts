@@ -766,7 +766,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
    * Configure the `basePath` for the rest server
    * @param path - Base path
    */
-  basePath(path: string = '') {
+  basePath(path = '') {
     if (this._requestHandler) {
       throw new Error(
         'Base path cannot be set as the request handler has been created',

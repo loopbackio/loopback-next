@@ -113,7 +113,7 @@ describe('RepositoryMixin', () => {
 
     it('skips datasources not implementing schema migrations', async () => {
       class OtherDataSource implements DataSource {
-        name: string = 'other';
+        name = 'other';
         connector = undefined;
         settings = {};
       }

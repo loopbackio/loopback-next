@@ -51,6 +51,7 @@ module.exports = class HasManyRelationGenerator extends BaseRelationGenerator {
     this.artifactInfo.sourceModelPrimaryKeyType =
       options.sourceModelPrimaryKeyType;
     this.artifactInfo.targetModelPrimaryKey = options.targetModelPrimaryKey;
+    this.artifactInfo.foreignKeyName = options.foreignKeyName;
 
     const source = this.templatePath(CONTROLLER_TEMPLATE_PATH_HAS_MANY);
 

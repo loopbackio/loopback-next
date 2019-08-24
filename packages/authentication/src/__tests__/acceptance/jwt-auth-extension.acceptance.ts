@@ -404,7 +404,7 @@ describe('JWT Authentication', () => {
 
   it('returns error when undefined user profile returned from authentication strategy', async () => {
     class BadJWTStrategy implements AuthenticationStrategy {
-      name: string = 'badjwt';
+      name = 'badjwt';
       async authenticate(request: Request): Promise<UserProfile | undefined> {
         return undefined;
       }

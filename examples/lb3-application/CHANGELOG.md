@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.11](https://github.com/strongloop/loopback-next/compare/@loopback/example-lb3-application@1.1.10...@loopback/example-lb3-application@1.1.11) (2019-08-19)
+
+**Note:** Version bump only for package @loopback/example-lb3-application
+
+
+
+
+
+## [1.1.10](https://github.com/strongloop/loopback-next/compare/@loopback/example-lb3-application@1.1.9...@loopback/example-lb3-application@1.1.10) (2019-08-15)
+
+**Note:** Version bump only for package @loopback/example-lb3-application
+
+
+
+
+
+## [1.1.9](https://github.com/strongloop/loopback-next/compare/@loopback/example-lb3-application@1.1.8...@loopback/example-lb3-application@1.1.9) (2019-08-15)
+
+**Note:** Version bump only for package @loopback/example-lb3-application
+
+
+
+
+
 ## [1.1.8](https://github.com/strongloop/loopback-next/compare/@loopback/example-lb3-application@1.1.7...@loopback/example-lb3-application@1.1.8) (2019-07-31)
 
 **Note:** Version bump only for package @loopback/example-lb3-application

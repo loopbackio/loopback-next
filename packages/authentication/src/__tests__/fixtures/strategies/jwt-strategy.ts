@@ -10,7 +10,7 @@ import {JWTAuthenticationStrategyBindings} from '../keys';
 import {JWTService} from '../services/jwt-service';
 
 export class JWTAuthenticationStrategy implements AuthenticationStrategy {
-  name: string = 'jwt';
+  name = 'jwt';
 
   constructor(
     @inject(JWTAuthenticationStrategyBindings.TOKEN_SERVICE)

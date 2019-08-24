@@ -374,7 +374,7 @@ describe('HttpHandler', () => {
        * A mock-up xml parser
        */
       class XmlBodyParser implements BodyParser {
-        name: string = 'xml';
+        name = 'xml';
         supports(mediaType: string) {
           return !!is(mediaType, 'xml');
         }

@@ -58,7 +58,10 @@ export class <%= controllerClassName %> {
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(<%= targetModelClassName %>, {exclude: ['<%= targetModelPrimaryKey %>']}),
+          schema: getModelSchemaRef(<%= targetModelClassName %>, {
+            exclude: ['<%= targetModelPrimaryKey %>'],
+            optional: ['<%= foreignKeyName %>']
+          }),
         },
       },
     }) <%= targetModelRequestBody %>: Omit<<%= targetModelClassName %>, '<%= targetModelPrimaryKey %>'>,
