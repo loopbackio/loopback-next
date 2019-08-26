@@ -144,11 +144,15 @@ import {
   UserProfile,
   authenticate,
 } from '@loopback/authentication';
+import {SecurityBindings} from '@loopback/security';
 import {get} from '@loopback/rest';
 
 export class WhoAmIController {
   constructor(
-    @inject(AuthenticationBindings.CURRENT_USER)
+    // After extracting the CURRENT_USER key to module `@loopback/security`,
+    // `AuthenticationBindings.CURRENT_USER` is turned to an alias of
+    // `SecurityBindings.USER`
+    @inject(SecurityBindings.USER)
     private userProfile: UserProfile,
   ) {}
 
@@ -160,7 +164,7 @@ export class WhoAmIController {
 }
 ```
 
-{% include note.html content="If only <b>some</b> of the controller methods are decorated with the <b>@authenticate</b> decorator, then the injection decorator for CURRENT_USER in the controller's constructor must be specified as <b>@inject(AuthenticationBindings.CURRENT_USER, {optional:true})</b> to avoid a binding error when an unauthenticated endpoint is accessed. Alternatively, do not inject CURRENT_USER in the controller <b>constructor</b>, but in the controller <b>methods</b> which are actually decorated with the <b>@authenticate</b> decorator. See [Method Injection](Dependency-injection.md#method-injection), [Constructor Injection](Dependency-injection.md#constructor-injection) and [Optional Dependencies](Dependency-injection.md#optional-dependencies) for details.
+{% include note.html content="If only <b>some</b> of the controller methods are decorated with the <b>@authenticate</b> decorator, then the injection decorator for CURRENT_USER in the controller's constructor must be specified as <b>@inject(SecurityBindings.USER, {optional:true})</b> to avoid a binding error when an unauthenticated endpoint is accessed. Alternatively, do not inject CURRENT_USER in the controller <b>constructor</b>, but in the controller <b>methods</b> which are actually decorated with the <b>@authenticate</b> decorator. See [Method Injection](Dependency-injection.md#method-injection), [Constructor Injection](Dependency-injection.md#constructor-injection) and [Optional Dependencies](Dependency-injection.md#optional-dependencies) for details.
 " %}
 
 An example of the decorator when options **are** specified looks like this:
@@ -175,7 +179,7 @@ To avoid repeating the same options in the <b>@authenticate</b> decorator for ma
 
 After a request is successfully authenticated, the current user profile is
 available on the request context. You can obtain it via dependency injection by
-using the `AuthenticationBindings.CURRENT_USER` binding key.
+using the `SecurityBindings.USER` binding key.
 
 Parameters of the `@authenticate` decorator can be obtained via dependency
 injection using the `AuthenticationBindings.METADATA` binding key. It returns
@@ -269,7 +273,7 @@ export class AuthenticateActionProvider implements Provider<AuthenticateFn> {
     // is executed.
     @inject.getter(AuthenticationBindings.STRATEGY)
     readonly getStrategy: Getter<AuthenticationStrategy>,
-    @inject.setter(AuthenticationBindings.CURRENT_USER)
+    @inject.setter(SecurityBindings.USER)
     readonly setCurrentUser: Setter<UserProfile>,
   ) {}
 
@@ -317,8 +321,8 @@ was specified for this endpoint, the action immediately returns. If an
 authentication strategy **was** specified for this endpoint, its
 `authenticate(request)` function is called. If a user profile is returned, this
 means the user was authenticated successfully, and the user profile is added to
-the request context (via the `AuthenticationBindings.CURRENT_USER` binding);
-otherwise an error is thrown.
+the request context (via the `SecurityBindings.USER` binding); otherwise an
+error is thrown.
 
 Here is an example of a custom sequence which utilizes the `authentication`
 action.
@@ -703,7 +707,7 @@ import {get} from '@loopback/rest';
 
 export class WhoAmIController {
   constructor(
-    @inject(AuthenticationBindings.CURRENT_USER)
+    @inject(SecurityBindings.USER)
     private userProfile: UserProfile,
   ) {}
 
