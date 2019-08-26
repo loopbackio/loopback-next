@@ -222,7 +222,7 @@ a user can print out his/her user profile by performing a `GET` request on the
   })
   @authenticate('jwt')
   async printCurrentUser(
-    @inject(AuthenticationBindings.CURRENT_USER)
+    @inject(SecurityBindings.USER)
     currentUserProfile: UserProfile,
   ): Promise<UserProfile> {
     return currentUserProfile;
@@ -231,7 +231,7 @@ a user can print out his/her user profile by performing a `GET` request on the
   // ...
 ```
 
-{% include note.html content="Since this controller method is obtaining CURRENT_USER via [method injection](../../Dependency-injection.md#method-injection) (instead of [constructor injection](../../Dependency-injection.md#constructor-injection)) and this method is decorated with the <b>@authenticate</b> decorator, there is no need to specify <b>@inject(AuthenticationBindings.CURRENT_USER, {optional:true})</b>. See [Using the Authentication Decorator](../../Loopback-component-authentication.md#using-the-authentication-decorator) for details.
+{% include note.html content="Since this controller method is obtaining CURRENT_USER via [method injection](../../Dependency-injection.md#method-injection) (instead of [constructor injection](../../Dependency-injection.md#constructor-injection)) and this method is decorated with the <b>@authenticate</b> decorator, there is no need to specify <b>@inject(SecurityBindings.USER, {optional:true})</b>. See [Using the Authentication Decorator](../../Loopback-component-authentication.md#using-the-authentication-decorator) for details.
 " %}
 
 The `/users/me` endpoint is decorated with
@@ -255,12 +255,11 @@ function to authenticate the request.
 
 If the provided JWT token is valid, then `JWTAuthenticationStrategy`'s
 `authenticate(request)` function returns the user profile. `AuthenticateFn` then
-places the user profile on the request context using the
-`AuthenticationBindings.CURRENT_USER` binding key. The user profile is available
-to the `printCurrentUser()` controller function in a variable
-`currentUserProfile: UserProfile` through dependency injection via the same
-`AuthenticationBindings.CURRENT_USER` binding key. The user profile is returned
-in the response.
+places the user profile on the request context using the `SecurityBindings.USER`
+binding key. The user profile is available to the `printCurrentUser()`
+controller function in a variable `currentUserProfile: UserProfile` through
+dependency injection via the same `SecurityBindings.USER` binding key. The user
+profile is returned in the response.
 
 If the JWT token is missing/expired/invalid, then `JWTAuthenticationStrategy`'s
 `authenticate(request)` function fails and an

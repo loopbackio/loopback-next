@@ -3,8 +3,6 @@
 Common types/interfaces for LoopBack 4 security including authentication and
 authorization.
 
-## Overview
-
 ## Installation
 
 ```shell
