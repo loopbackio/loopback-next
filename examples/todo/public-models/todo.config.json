@@ -1,0 +1,6 @@
+{
+  "model": "Todo",
+  "pattern": "CrudRest",
+  "dataSource": "db",
+  "basePath": "/todos"
+}

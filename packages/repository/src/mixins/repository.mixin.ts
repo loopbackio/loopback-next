@@ -8,6 +8,7 @@ import {Application} from '@loopback/core';
 import * as debugFactory from 'debug';
 import {Class} from '../common-types';
 import {SchemaMigrationOptions} from '../datasource';
+import {Model} from '../model';
 import {juggler, Repository} from '../repositories';
 
 const debug = debugFactory('loopback:repository:mixin');
@@ -86,6 +87,22 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async getRepository<R extends Repository<any>>(repo: Class<R>): Promise<R> {
       return this.get(`repositories.${repo.name}`);
+    }
+
+    /**
+     * Register a model for dependency injection.
+     * @param modelClass The model or entity to add, e.g. `Product`.
+     * @param name Optional name to use for building the binding key,
+     * e.g. `BaseProduct`.
+     */
+    model<M extends Model>(
+      modelClass: Class<M>,
+      name: string = modelClass.name,
+    ) {
+      const key = `models.${name}`;
+      return this.bind(key)
+        .to(modelClass)
+        .tag('model');
     }
 
     /**
@@ -231,6 +248,10 @@ export interface ApplicationWithRepositories extends Application {
   ): Binding<R>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getRepository<R extends Repository<any>>(repo: Class<R>): Promise<R>;
+  model<M extends Model>(
+    modelClass: Class<M>,
+    name?: string,
+  ): Binding<Class<M>>;
   dataSource<D extends juggler.DataSource>(
     dataSource: Class<D> | D,
     name?: string,

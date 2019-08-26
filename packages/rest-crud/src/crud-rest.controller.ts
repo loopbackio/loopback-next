@@ -32,6 +32,7 @@ import {
   ResponsesObject,
   SchemaObject,
 } from '@loopback/rest';
+import assert = require('assert');
 
 // Ideally, this file should simply `export class CrudRestController<...>{}`
 // Unfortunately, that's not possible for several reasons.
@@ -75,6 +76,8 @@ export interface CrudRestController<
    * @param data Model data
    */
   create(data: Omit<T, IdName>): Promise<T>;
+
+  // TODO(bajtos) define other methods like `deleteById`, etc.
 }
 
 /**
@@ -254,8 +257,14 @@ export function defineCrudRestController<
     }
   }
 
-  // See https://github.com/microsoft/TypeScript/issues/14607
-  return CrudRestControllerImpl;
+  const controllerName = modelName + 'Controller';
+  const defineNamedController = new Function(
+    'CrudRestController',
+    `return class ${controllerName} extends CrudRestController {}`,
+  );
+  const controller = defineNamedController(CrudRestControllerImpl);
+  assert.equal(controller.name, controllerName);
+  return controller;
 }
 
 function getIdSchema<T extends Entity>(

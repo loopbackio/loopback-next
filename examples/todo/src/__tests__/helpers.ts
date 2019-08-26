@@ -3,12 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {HttpCachingProxy} from '@loopback/http-caching-proxy';
-import {merge} from 'lodash';
-import * as path from 'path';
-import * as GEO_CODER_CONFIG from '../datasources/geocoder.datasource.json';
+import {EntityCrudRepository} from '@loopback/repository';
 import {Todo} from '../models/index';
-import {GeoPoint} from '../services/geocoder.service';
 
 /*
  ==============================================================================
@@ -46,28 +42,7 @@ export function givenTodo(todo?: Partial<Todo>) {
   return new Todo(data);
 }
 
-export const aLocation = {
-  address: '1 New Orchard Road, Armonk, 10504',
-  geopoint: <GeoPoint>{y: 41.109653, x: -73.72467},
-  get geostring() {
-    return `${this.geopoint.y},${this.geopoint.x}`;
-  },
-};
-
-export function getProxiedGeoCoderConfig(proxy: HttpCachingProxy) {
-  return merge({}, GEO_CODER_CONFIG, {
-    options: {
-      proxy: proxy.url,
-      tunnel: false,
-    },
-  });
-}
-
-export {HttpCachingProxy};
-export async function givenCachingProxy() {
-  const proxy = new HttpCachingProxy({
-    cachePath: path.resolve(__dirname, '.http-cache'),
-  });
-  await proxy.start();
-  return proxy;
-}
+export type TodoRepository = EntityCrudRepository<
+  Todo,
+  typeof Todo.prototype.id
+>;

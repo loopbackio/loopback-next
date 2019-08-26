@@ -3,12 +3,12 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {TodoListApplication} from '../..';
 import {
+  Client,
   createRestAppClient,
   givenHttpServerConfig,
-  Client,
 } from '@loopback/testlab';
+import {TodoListApplication} from '../..';
 
 export async function setupApplication(): Promise<AppWithClient> {
   const app = new TodoListApplication({

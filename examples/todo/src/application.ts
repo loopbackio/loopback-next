@@ -4,16 +4,18 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {BootMixin} from '@loopback/boot';
+import {RestBooter} from '@loopback/booter-rest';
 import {ApplicationConfig} from '@loopback/core';
-import {RestExplorerComponent} from '@loopback/rest-explorer';
 import {RepositoryMixin} from '@loopback/repository';
 import {RestApplication} from '@loopback/rest';
-import {ServiceMixin} from '@loopback/service-proxy';
+import {CrudRestComponent} from '@loopback/rest-crud';
+import {RestExplorerComponent} from '@loopback/rest-explorer';
 import * as path from 'path';
+import {Todo} from './models';
 import {MySequence} from './sequence';
 
 export class TodoListApplication extends BootMixin(
-  ServiceMixin(RepositoryMixin(RestApplication)),
+  RepositoryMixin(RestApplication),
 ) {
   constructor(options: ApplicationConfig = {}) {
     super(options);
@@ -26,6 +28,9 @@ export class TodoListApplication extends BootMixin(
 
     this.component(RestExplorerComponent);
 
+    this.component(CrudRestComponent);
+    this.booters(RestBooter);
+
     this.projectRoot = __dirname;
     // Customize @loopback/boot Booter Conventions here
     this.bootOptions = {
@@ -36,5 +41,12 @@ export class TodoListApplication extends BootMixin(
         nested: true,
       },
     };
+  }
+
+  async boot(): Promise<void> {
+    // temporary workaround for missing Model booter
+    this.model(Todo);
+
+    return super.boot();
   }
 }

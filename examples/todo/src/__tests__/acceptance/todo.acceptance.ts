@@ -13,23 +13,12 @@ import {
 } from '@loopback/testlab';
 import {TodoListApplication} from '../../application';
 import {Todo} from '../../models/';
-import {TodoRepository} from '../../repositories/';
-import {
-  aLocation,
-  getProxiedGeoCoderConfig,
-  givenCachingProxy,
-  givenTodo,
-  HttpCachingProxy,
-} from '../helpers';
+import {givenTodo, TodoRepository} from '../helpers';
 
 describe('TodoApplication', () => {
   let app: TodoListApplication;
   let client: Client;
   let todoRepo: TodoRepository;
-
-  let cachingProxy: HttpCachingProxy;
-  before(async () => (cachingProxy = await givenCachingProxy()));
-  after(() => cachingProxy.stop());
 
   before(givenRunningApplicationWithCustomConfiguration);
   after(() => app.stop());
@@ -74,24 +63,6 @@ describe('TodoApplication', () => {
       .post('/todos')
       .send(todo)
       .expect(422);
-  });
-
-  it('creates an address-based reminder', async function() {
-    // Increase the timeout to accommodate slow network connections
-    // eslint-disable-next-line no-invalid-this
-    this.timeout(30000);
-
-    const todo = givenTodo({remindAtAddress: aLocation.address});
-    const response = await client
-      .post('/todos')
-      .send(todo)
-      .expect(200);
-    todo.remindAtGeo = aLocation.geostring;
-
-    expect(response.body).to.containEql(todo);
-
-    const result = await todoRepo.findById(response.body.id);
-    expect(result).to.containEql(todo);
   });
 
   context('when dealing with a single persisted todo', () => {
@@ -209,17 +180,12 @@ describe('TodoApplication', () => {
       connector: 'memory',
     });
 
-    // Override Geocoder datasource to use a caching proxy to speed up tests.
-    app
-      .bind('datasources.config.geocoder')
-      .to(getProxiedGeoCoderConfig(cachingProxy));
-
     // Start Application
     await app.start();
   }
 
   async function givenTodoRepository() {
-    todoRepo = await app.getRepository(TodoRepository);
+    todoRepo = await app.get<TodoRepository>('repositories.TodoRepository');
   }
 
   async function givenTodoInstance(todo?: Partial<Todo>) {

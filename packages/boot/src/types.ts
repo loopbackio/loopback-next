@@ -12,6 +12,13 @@ import {BootTags} from './keys';
  */
 export type ArtifactOptions = {
   /**
+   * Modify the rootDir provided by the application. Useful to escape `dist`
+   * directory and load artifacts from the project root.
+   * Example value: `../`;
+   */
+  rootDir?: string;
+
+  /**
    * Array of directories to check for artifacts.
    * Paths must be relative. Defaults to ['controllers']
    */

@@ -36,7 +36,7 @@ export class BaseArtifactBooter implements Booter {
   /**
    * Project root relative to which all other paths are resolved
    */
-  readonly projectRoot: string;
+  projectRoot: string;
   /**
    * Relative paths of directories to be searched
    */
@@ -79,6 +79,10 @@ export class BaseArtifactBooter implements Booter {
    * NOTE: All properties are configured even if all aren't used.
    */
   async configure() {
+    if (this.options.rootDir) {
+      this.projectRoot = path.resolve(this.projectRoot, this.options.rootDir);
+    }
+
     this.dirs = this.options.dirs
       ? Array.isArray(this.options.dirs)
         ? this.options.dirs
