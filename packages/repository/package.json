@@ -21,7 +21,7 @@
     "@loopback/build": "^2.0.8",
     "@loopback/eslint-config": "^4.0.1",
     "@loopback/testlab": "^1.7.4",
-    "@types/lodash": "^4.14.137",
+    "@types/lodash": "^4.14.138",
     "@types/node": "^10.14.16"
   },
   "dependencies": {
