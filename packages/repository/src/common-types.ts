@@ -49,7 +49,11 @@ export interface AnyObject {
  * An extension of the built-in Partial<T> type which allows partial values
  * in deeply nested properties too.
  */
-export type DeepPartial<T> = {[P in keyof T]?: DeepPartial<T[P]>};
+// FIXME(rfeng): https://github.com/microsoft/TypeScript/issues/21592#issuecomment-496723647
+// export type DeepPartial<T> = {[P in keyof T]?: DeepPartial<T[P]>};
+export type DeepPartial<T> = {
+  [P in keyof T]?: T[P] extends never ? DeepPartial<T[P]> : DeepPartial<T[P]>;
+};
 
 /**
  * Type alias for strongly or weakly typed objects of T
