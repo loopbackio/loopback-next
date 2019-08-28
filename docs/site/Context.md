@@ -15,6 +15,8 @@ permalink: /doc/en/lb4/Context.html
 - An [inversion of control](https://en.wikipedia.org/wiki/Inversion_of_control)
   container used to inject dependencies into your code
 
+![Context](imgs/loopback-context.png)
+
 ### Why is it important?
 
 - You can use the context as a way to give loopback more "info" so that other
@@ -24,6 +26,8 @@ permalink: /doc/en/lb4/Context.html
   [Dependency Injection](Dependency-injection.md) and decorators).
 - You have full access to updated/real-time application and request state at all
   times.
+
+![IoC Container](imgs/loopback-ioc.png)
 
 ## How to create a context?
 
@@ -132,6 +136,10 @@ class MySequence extends DefaultSequence {
 - `this.ctx` is available to your sequence
 - allows you to craft your response using resources from the app in addition to
   the resources available to the request in real-time (right when you need it)
+
+The context hierarchy is illustrated in the diagram below:
+
+![Context Hierarchy](imgs/loopback-context-hierarchy.png)
 
 ## Storing and retrieving items from a Context
 
