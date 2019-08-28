@@ -45,6 +45,8 @@ artifacts. For example:
 - [Booters](Booting-an-Application.md#booters) can be contributed by a Component
   by adding `BootMixin` from `@loopback/boot` to your Application
 
+![Components](imgs/loopback-component.png)
+
 {% include note.html content="
 Always check a component's instructions to see if it requires the use
 of a Mixin. A Mixin may automatically register a Component, saving you the
