@@ -1,0 +1,65 @@
+{
+  "name": "@loopback/example-metrics-prometheus",
+  "version": "0.0.1",
+  "description": "Standalone examples for @loopback/metrics",
+  "main": "index.js",
+  "engines": {
+    "node": ">=8.9"
+  },
+  "author": "IBM Corp.",
+  "scripts": {
+    "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
+    "build": "lb-tsc",
+    "build:watch": "lb-tsc --watch",
+    "clean": "lb-clean *example-metrics-prometheus*.tgz dist tsconfig.build.tsbuildinfo package",
+    "verify": "npm pack && tar xf *example-metrics-prometheus*.tgz && tree package && npm run clean",
+    "lint": "npm run prettier:check && npm run eslint",
+    "lint:fix": "npm run eslint:fix && npm run prettier:fix",
+    "prettier:cli": "lb-prettier \"**/*.ts\" \"**/*.js\"",
+    "prettier:check": "npm run prettier:cli -- -l",
+    "prettier:fix": "npm run prettier:cli -- --write",
+    "eslint": "lb-eslint --report-unused-disable-directives .",
+    "eslint:fix": "npm run eslint -- --fix",
+    "pretest": "npm run clean && npm run build",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
+    "posttest": "npm run lint",
+    "test:dev": "lb-mocha dist/__tests__/**/*.js && npm run posttest",
+    "prestart": "npm run build",
+    "start": "node .",
+    "demo": "./bin/demo.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "examples/metrics-prometheus"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@loopback/boot": "^1.5.10",
+    "@loopback/core": "^1.10.6",
+    "@loopback/extension-metrics": "^0.0.1",
+    "@loopback/rest": "^1.17.0"
+  },
+  "devDependencies": {
+    "@loopback/build": "^2.0.8",
+    "@loopback/eslint-config": "^4.0.1",
+    "@loopback/testlab": "^1.7.4",
+    "@types/node": "^10.14.16",
+    "@typescript-eslint/eslint-plugin": "^2.0.0",
+    "@typescript-eslint/parser": "^2.0.0",
+    "eslint": "^6.2.2",
+    "eslint-config-prettier": "^6.1.0",
+    "eslint-plugin-eslint-plugin": "^2.1.0",
+    "eslint-plugin-mocha": "^6.1.0",
+    "typescript": "~3.5.3"
+  },
+  "keywords": [
+    "loopback",
+    "LoopBack",
+    "example",
+    "tutorial"
+  ]
+}
