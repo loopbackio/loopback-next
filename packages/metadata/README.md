@@ -28,6 +28,7 @@ function myClassDecorator(spec: MyClassMetadata): ClassDecorator {
   return ClassDecoratorFactory.createDecorator<MyClassMetadata>(
     'metadata-key-for-my-class-decorator',
     spec,
+    {decoratorName: '@myClassDecorator'},
   );
 }
 ```
@@ -209,6 +210,8 @@ functions. There are two flags for the options:
   Sometimes we use shared spec for the decoration, but the decorator function
   might need to mutate the object. Cloning the input spec makes it safe to use
   the same spec (`template`) to decorate different members. Default to `true`.
+- decoratorName: Name for the decorator such as `@inject` for error and
+  debugging messages.
 
 ### Customize inheritance of metadata
 
