@@ -28,6 +28,12 @@ export interface DecoratorOptions {
    * Default to `true`.
    */
   cloneInputSpec?: boolean;
+
+  /**
+   * Name of the decorator for debugging purpose, such as `@inject`
+   */
+  decoratorName?: string;
+
   [name: string]: any;
 }
 
@@ -58,6 +64,8 @@ export class DecoratorFactory<
   M extends T | MetadataMap<T> | MetadataMap<T[]>, // Type of the metadata
   D extends DecoratorType // Type of the decorator
 > {
+  protected decoratorName: string;
+
   /**
    * A constant to reference the target of a decoration
    */
@@ -73,12 +81,17 @@ export class DecoratorFactory<
   constructor(
     protected key: string,
     protected spec: T,
-    protected options?: DecoratorOptions,
+    protected options: DecoratorOptions = {},
   ) {
     this.options = Object.assign(
-      {allowInheritance: true, cloneInputSpec: true},
+      {
+        allowInheritance: true,
+        cloneInputSpec: true,
+      },
       options,
     );
+    const defaultDecoratorName = this.constructor.name.replace(/Factory$/, '');
+    this.decoratorName = this.options.decoratorName || defaultDecoratorName;
     if (this.options.cloneInputSpec) {
       this.spec = DecoratorFactory.cloneDeep(spec);
     }
@@ -219,7 +232,9 @@ export class DecoratorFactory<
     member?: string | symbol,
     descriptorOrIndex?: TypedPropertyDescriptor<any> | number,
   ): M {
-    throw new Error('mergeWithInherited() is not implemented');
+    throw new Error(
+      `mergeWithInherited() is not implemented for ${this.decoratorName}`,
+    );
   }
 
   /**
@@ -241,7 +256,31 @@ export class DecoratorFactory<
     member?: string | symbol,
     descriptorOrIndex?: TypedPropertyDescriptor<any> | number,
   ): M {
-    throw new Error('mergeWithOwn() is not implemented');
+    throw new Error(
+      `mergeWithOwn() is not implemented for ${this.decoratorName}`,
+    );
+  }
+
+  /**
+   * Create an error to report if the decorator is applied to the target more
+   * than once
+   * @param target - Decoration target
+   * @param member - Optional property or method
+   * @param descriptorOrIndex - Optional parameter index or method descriptor
+   */
+  protected duplicateDecorationError(
+    target: Object,
+    member?: string | symbol,
+    descriptorOrIndex?: TypedPropertyDescriptor<any> | number,
+  ) {
+    const targetName = DecoratorFactory.getTargetName(
+      target,
+      member,
+      descriptorOrIndex,
+    );
+    return new Error(
+      `${this.decoratorName} cannot be applied more than once on ${targetName}`,
+    );
   }
 
   /**
@@ -249,7 +288,7 @@ export class DecoratorFactory<
    * implement this method.
    */
   create(): D {
-    throw new Error('create() is not implemented');
+    throw new Error(`create() is not implemented for ${this.decoratorName}`);
   }
 
   /**
@@ -368,10 +407,7 @@ export class ClassDecoratorFactory<T> extends DecoratorFactory<
     descriptorOrIndex?: TypedPropertyDescriptor<any> | number,
   ) {
     if (ownMetadata != null) {
-      throw new Error(
-        'Decorator cannot be applied more than once on ' +
-          DecoratorFactory.getTargetName(target),
-      );
+      throw this.duplicateDecorationError(target, member, descriptorOrIndex);
     }
     return this.withTarget(this.spec, target);
   }
@@ -426,9 +462,10 @@ export class PropertyDecoratorFactory<T> extends DecoratorFactory<
   ) {
     ownMetadata = ownMetadata || {};
     if (ownMetadata[propertyName!] != null) {
-      const targetName = DecoratorFactory.getTargetName(target, propertyName);
-      throw new Error(
-        'Decorator cannot be applied more than once on ' + targetName,
+      throw this.duplicateDecorationError(
+        target,
+        propertyName,
+        descriptorOrParameterIndex,
       );
     }
     ownMetadata[propertyName!] = this.withTarget(this.spec, target);
@@ -491,10 +528,7 @@ export class MethodDecoratorFactory<T> extends DecoratorFactory<
     ownMetadata = ownMetadata || {};
     const methodMeta = ownMetadata[methodName!];
     if (this.getTarget(methodMeta) === target) {
-      throw new Error(
-        'Decorator cannot be applied more than once on ' +
-          DecoratorFactory.getTargetName(target, methodName, methodDescriptor),
-      );
+      throw this.duplicateDecorationError(target, methodName, methodDescriptor);
     }
     // Set the method metadata
     ownMetadata[methodName!] = this.withTarget(this.spec, target);
@@ -584,10 +618,7 @@ export class ParameterDecoratorFactory<T> extends DecoratorFactory<
     const methodMeta = this.getOrInitMetadata(ownMetadata, target, methodName);
     const index = parameterIndex as number;
     if (this.getTarget(methodMeta[index]) === target) {
-      throw new Error(
-        'Decorator cannot be applied more than once on ' +
-          DecoratorFactory.getTargetName(target, methodName, parameterIndex),
-      );
+      throw this.duplicateDecorationError(target, methodName, parameterIndex);
     }
     // Set the parameter metadata
     methodMeta[index] = this.withTarget(
@@ -674,7 +705,7 @@ export class MethodParameterDecoratorFactory<T> extends DecoratorFactory<
         methodDescriptor,
       );
       throw new Error(
-        `The decorator is used more than ${numOfParams} time(s) on ${method}`,
+        `${this.decoratorName} is used more than ${numOfParams} time(s) on ${method}`,
       );
     }
     return index;
