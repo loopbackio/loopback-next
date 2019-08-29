@@ -6,12 +6,12 @@
 import {expect} from '@loopback/testlab';
 import {
   bind,
+  Binding,
   BindingScope,
   BindingScopeAndTags,
-  Constructor,
-  Binding,
-  bindingTemplateFor,
   BindingTemplate,
+  bindingTemplateFor,
+  Constructor,
   Provider,
 } from '../..';
 
@@ -113,6 +113,35 @@ describe('@bind', () => {
 
     expect(inspectScopeAndTags(MyController)).to.eql({
       tags: {rest: 'rest', name: 'my-controller'},
+      scope: BindingScope.SINGLETON,
+    });
+  });
+
+  it('allows the decorator to be applied multiple times', () => {
+    const spec: BindingTemplate = binding => {
+      binding.tag('rest').inScope(BindingScope.SINGLETON);
+    };
+
+    @bind(spec)
+    @bind({tags: [{name: 'my-controller'}]})
+    class MyController {}
+
+    expect(inspectScopeAndTags(MyController)).to.eql({
+      tags: {rest: 'rest', name: 'my-controller'},
+      scope: BindingScope.SINGLETON,
+    });
+  });
+
+  it('allows the decorator to override metadata from others', () => {
+    @bind({scope: BindingScope.SINGLETON, tags: {rest: 'rest', grpc: false}})
+    @bind({
+      scope: BindingScope.TRANSIENT,
+      tags: {name: 'my-controller', grpc: true},
+    })
+    class MyController {}
+
+    expect(inspectScopeAndTags(MyController)).to.eql({
+      tags: {rest: 'rest', name: 'my-controller', grpc: false},
       scope: BindingScope.SINGLETON,
     });
   });

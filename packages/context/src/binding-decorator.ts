@@ -6,12 +6,12 @@
 import {ClassDecoratorFactory} from '@loopback/metadata';
 import {
   asBindingTemplate,
+  asClassOrProvider,
   asProvider,
   BindingMetadata,
   BindingSpec,
   BINDING_METADATA_KEY,
   isProviderClass,
-  asClassOrProvider,
   removeNameAndKeyTags,
 } from './binding-inspector';
 import {Provider} from './provider';
@@ -35,6 +35,13 @@ class BindDecoratorFactory extends ClassDecoratorFactory<BindingMetadata> {
       this.withTarget(this.spec, target);
       return this.spec;
     }
+  }
+
+  mergeWithOwn(ownMetadata: BindingMetadata) {
+    return {
+      templates: [...ownMetadata.templates, ...this.spec.templates],
+      target: this.spec.target,
+    };
   }
 
   withTarget(spec: BindingMetadata, target: Function) {
