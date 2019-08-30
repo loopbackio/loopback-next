@@ -17,7 +17,9 @@ export const RELATIONS_KEY = 'loopback:relations';
  */
 export function relation(definition?: Object) {
   // Apply relation definition to the model class
-  return PropertyDecoratorFactory.createDecorator(RELATIONS_KEY, definition);
+  return PropertyDecoratorFactory.createDecorator(RELATIONS_KEY, definition, {
+    decoratorName: '@relation',
+  });
 }
 
 /**
@@ -46,7 +48,9 @@ export function getModelRelations(
  */
 export function embedsOne(definition?: Object) {
   const rel = Object.assign({type: RelationType.embedsOne}, definition);
-  return PropertyDecoratorFactory.createDecorator(RELATIONS_KEY, rel);
+  return PropertyDecoratorFactory.createDecorator(RELATIONS_KEY, rel, {
+    decoratorName: '@embedsOne',
+  });
 }
 
 /**
@@ -56,7 +60,9 @@ export function embedsOne(definition?: Object) {
  */
 export function embedsMany(definition?: Object) {
   const rel = Object.assign({type: RelationType.embedsMany}, definition);
-  return PropertyDecoratorFactory.createDecorator(RELATIONS_KEY, rel);
+  return PropertyDecoratorFactory.createDecorator(RELATIONS_KEY, rel, {
+    decoratorName: '@embedsMany',
+  });
 }
 
 /**
@@ -66,7 +72,9 @@ export function embedsMany(definition?: Object) {
  */
 export function referencesOne(definition?: Object) {
   const rel = Object.assign({type: RelationType.referencesOne}, definition);
-  return PropertyDecoratorFactory.createDecorator(RELATIONS_KEY, rel);
+  return PropertyDecoratorFactory.createDecorator(RELATIONS_KEY, rel, {
+    decoratorName: '@referencesOne',
+  });
 }
 
 /**
@@ -76,5 +84,7 @@ export function referencesOne(definition?: Object) {
  */
 export function referencesMany(definition?: Object) {
   const rel = Object.assign({type: RelationType.referencesMany}, definition);
-  return PropertyDecoratorFactory.createDecorator(RELATIONS_KEY, rel);
+  return PropertyDecoratorFactory.createDecorator(RELATIONS_KEY, rel, {
+    decoratorName: '@referencesMany',
+  });
 }

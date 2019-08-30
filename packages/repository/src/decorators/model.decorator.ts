@@ -48,6 +48,7 @@ export function model(definition?: Partial<ModelDefinitionSyntax>) {
     const decorator = ClassDecoratorFactory.createDecorator(
       MODEL_KEY,
       definition,
+      {decoratorName: '@model'},
     );
 
     decorator(target);
@@ -111,6 +112,7 @@ export function property(definition?: Partial<PropertyDefinition>) {
   return PropertyDecoratorFactory.createDecorator(
     MODEL_PROPERTIES_KEY,
     Object.assign({}, definition),
+    {decoratorName: '@property'},
   );
 }
 

@@ -119,6 +119,7 @@ export function requestBody(requestBodySpec?: Partial<RequestBodyObject>) {
     ParameterDecoratorFactory.createDecorator<RequestBodyObject>(
       OAI3Keys.REQUEST_BODY_KEY,
       requestBodySpec as RequestBodyObject,
+      {decoratorName: '@requestBody'},
     )(target, member, index);
   };
 }

@@ -71,6 +71,7 @@ export function param(paramSpec: ParameterObject) {
     ParameterDecoratorFactory.createDecorator<ParameterObject>(
       OAI3Keys.PARAMETERS_KEY,
       paramSpec,
+      {decoratorName: '@param'},
     )(target, member, index);
   };
 }

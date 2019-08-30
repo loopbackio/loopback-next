@@ -4,8 +4,8 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
-  MetadataInspector,
   Constructor,
+  MetadataInspector,
   MethodDecoratorFactory,
 } from '@loopback/context';
 import {AUTHENTICATION_METADATA_KEY} from '../keys';
@@ -31,6 +31,7 @@ export function authenticate(strategyName: string, options?: object) {
       strategy: strategyName,
       options: options || {},
     },
+    {decoratorName: '@authenticate'},
   );
 }
 
