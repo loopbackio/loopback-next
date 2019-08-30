@@ -74,6 +74,7 @@ export class Lb3AppBooter implements Booter {
   private async loadAndBootTheApp() {
     debug('Loading LB3 app from', this.appPath);
     const lb3App = require(this.appPath);
+    lb3App.set('lb4', this.options.mode);
 
     debug(
       'If your LB3 app does not boot correctly then make sure it is using loopback-boot version 3.2.1 or higher.',
