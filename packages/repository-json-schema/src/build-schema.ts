@@ -405,7 +405,9 @@ export function modelToJsonSchema<T extends object>(
       delete schema.definitions;
     }
 
-    result.definitions[name] = schema;
+    if (result.definitions) {
+      result.definitions[name] = schema;
+    }
   }
   return result;
 }

@@ -1082,5 +1082,27 @@ describe('build-schema', () => {
         expect(optionalNameSchema.title).to.equal('ProductPartial');
       });
     });
+
+    it('can generate a schema involving recursive entities', () => {
+      @model()
+      class Category extends Entity {
+        @property({id: true})
+        id: number;
+
+        @hasMany(() => Category)
+        subCategories?: Category[];
+      }
+      const schema = getJsonSchema(Category, {includeRelations: true});
+      expect(schema.properties).to.deepEqual({
+        id: {type: 'number'},
+        subCategories: {
+          type: 'array',
+          items: {
+            $ref: '#/definitions/CategoryWithRelations',
+          },
+        },
+      });
+      expect(schema.title).to.equal('CategoryWithRelations');
+    });
   });
 });
