@@ -109,6 +109,7 @@ export function authorize(spec: AuthorizationMetadata) {
       return AuthorizeMethodDecoratorFactory.createDecorator(
         AUTHORIZATION_METHOD_KEY,
         spec,
+        {decoratorName: '@authorize'},
       )(target, method, methodDescriptor!);
     }
     if (typeof target === 'function' && !method && !methodDescriptor) {
@@ -116,6 +117,7 @@ export function authorize(spec: AuthorizationMetadata) {
       return AuthorizeClassDecoratorFactory.createDecorator(
         AUTHORIZATION_CLASS_KEY,
         spec,
+        {decoratorName: '@authorize'},
       )(target);
     }
     // Not on a class or method

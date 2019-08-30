@@ -84,5 +84,6 @@ export function operation(verb: string, path: string, spec?: OperationObject) {
       path,
       spec,
     },
+    {decoratorName: '@operation'},
   );
 }
