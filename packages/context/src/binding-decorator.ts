@@ -83,6 +83,7 @@ export function bind(...specs: BindingSpec[]): ClassDecorator {
     const decorator = BindDecoratorFactory.createDecorator(
       BINDING_METADATA_KEY,
       spec,
+      {decoratorName: '@bind'},
     );
     decorator(target);
   };
