@@ -263,6 +263,7 @@ export function intercept(...interceptorOrKeys: InterceptorOrKey[]) {
       return InterceptMethodDecoratorFactory.createDecorator(
         INTERCEPT_METHOD_KEY,
         interceptorOrKeys,
+        {decoratorName: '@intercept'},
       )(target, method, methodDescriptor!);
     }
     if (typeof target === 'function' && !method && !methodDescriptor) {
@@ -270,6 +271,7 @@ export function intercept(...interceptorOrKeys: InterceptorOrKey[]) {
       return InterceptClassDecoratorFactory.createDecorator(
         INTERCEPT_CLASS_KEY,
         interceptorOrKeys,
+        {decoratorName: '@intercept'},
       )(target);
     }
     // Not on a class or method

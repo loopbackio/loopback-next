@@ -146,7 +146,7 @@ export function inject(
         },
         // Do not deep clone the spec as only metadata is mutable and it's
         // shallowly cloned
-        {cloneInputSpec: false},
+        {cloneInputSpec: false, decoratorName: injectionMetadata.decorator},
       );
       paramDecorator(target, member!, methodDescriptorOrParameterIndex);
     } else if (member) {
@@ -182,7 +182,7 @@ export function inject(
         },
         // Do not deep clone the spec as only metadata is mutable and it's
         // shallowly cloned
-        {cloneInputSpec: false},
+        {cloneInputSpec: false, decoratorName: injectionMetadata.decorator},
       );
       propDecorator(target, member!);
     } else {

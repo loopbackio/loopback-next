@@ -131,6 +131,17 @@ describe('function argument injection', () => {
     const meta = describeInjectedArguments(Test);
     expect(meta.map(m => m.bindingSelector)).to.deepEqual(['controller']);
   });
+
+  it('reports error if @inject is applied more than once', () => {
+    expect(() => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      class TestClass {
+        constructor(@inject('foo') @inject('bar') foo: string) {}
+      }
+    }).to.throw(
+      '@inject cannot be applied more than once on TestClass.constructor[0]',
+    );
+  });
 });
 
 describe('property injection', () => {
@@ -180,6 +191,19 @@ describe('property injection', () => {
         foo() {}
       }
     }).to.throw(/@inject cannot be used on a method/);
+  });
+
+  it('reports error if @inject.* is applied more than once', () => {
+    expect(() => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      class TestClass {
+        constructor() {}
+
+        @inject.getter('foo') @inject('bar') foo: string;
+      }
+    }).to.throw(
+      '@inject.getter cannot be applied more than once on TestClass.prototype.foo',
+    );
   });
 
   it('supports inheritance without overriding property', () => {

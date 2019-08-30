@@ -59,6 +59,19 @@ describe('Context bindings - injecting configuration for bound artifacts', () =>
     expect(server1.configObj).to.eql({port: 3000});
   });
 
+  it('reports error if @config.* is applied more than once', () => {
+    expect(() => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      class TestClass {
+        constructor() {}
+
+        @config('foo') @config('bar') foo: string;
+      }
+    }).to.throw(
+      '@config cannot be applied more than once on TestClass.prototype.foo',
+    );
+  });
+
   it('allows propertyPath for injection', async () => {
     class RestServerWithPort {
       constructor(@config('port') public port: number) {}
