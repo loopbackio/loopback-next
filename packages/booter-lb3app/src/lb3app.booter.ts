@@ -101,7 +101,11 @@ export class Lb3AppBooter implements Booter {
       // swagger2openapi options
     });
 
-    return result.openapi as OpenApiSpec;
+    let spec = result.openapi as OpenApiSpec;
+    if (typeof this.options.specTransformer === 'function') {
+      spec = this.options.specTransformer(spec);
+    }
+    return spec;
   }
 
   private mountFullApp(lb3App: Lb3Application, spec: OpenApiSpec) {
@@ -128,6 +132,7 @@ export interface Lb3AppBooterOptions {
   path: string;
   mode: 'fullApp' | 'restRouter';
   restApiRoot: string;
+  specTransformer?: (spec: OpenApiSpec) => OpenApiSpec;
 }
 
 interface Lb3Application extends ExpressApplication {
