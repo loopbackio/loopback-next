@@ -27,6 +27,7 @@ import {
   ParameterObject,
   patch,
   post,
+  put,
   requestBody,
   ResponsesObject,
   SchemaObject,
@@ -229,6 +230,18 @@ export function defineCrudRestController<
         // with no explicit type-casts required
         data as DataObject<T>,
       );
+    }
+
+    @put('/{id}', {
+      responses: {
+        '204': {description: `${modelName} was updated`},
+      },
+    })
+    async replaceById(
+      @param(idPathParam) id: IdType,
+      @body(modelCtor) data: T,
+    ): Promise<void> {
+      await this.repository.replaceById(id, data);
     }
 
     @del('/{id}', {

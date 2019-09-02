@@ -213,6 +213,41 @@ describe('CrudRestController for a simple Product model', () => {
     });
   });
 
+  describe('replaceById', () => {
+    beforeEach(seedData);
+
+    it('replaces model with the given id', async () => {
+      const newData = Object.assign({}, pen.toJSON(), PATCH_DATA);
+      await client
+        .put(`/products/${pen.id}`)
+        .send(newData)
+        .expect(204);
+
+      const stored = await repo.find();
+      expect(toJSON(stored)).to.deepEqual([
+        {...newData},
+        {...toJSON(pencil) /* pencil was not modified */},
+      ]);
+    });
+
+    // TODO(bajtos) to fully verify this functionality, we should create
+    // a new test suite that will configure a PK with a different name
+    // and type, e.g. `pk: string` instead of `id: number`.
+    it('uses correct schema for the id parameter', async () => {
+      const spec = app.restServer.getApiSpec();
+      const findByIdOp = spec.paths['/products/{id}']['patch'];
+      expect(findByIdOp).to.containDeep({
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            schema: {type: 'number'},
+          },
+        ],
+      });
+    });
+  });
+
   describe('deleteById', () => {
     beforeEach(seedData);
 
