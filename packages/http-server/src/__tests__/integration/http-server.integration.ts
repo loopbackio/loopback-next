@@ -15,7 +15,7 @@ import * as fs from 'fs';
 import {IncomingMessage, Server, ServerResponse} from 'http';
 import * as os from 'os';
 import * as path from 'path';
-import {HttpOptions, HttpServer, HttpServerOptions} from '../../';
+import {HttpOptions, HttpServer, HttpsOptions} from '../../';
 
 describe('HttpServer (integration)', () => {
   let server: HttpServer | undefined;
@@ -181,10 +181,7 @@ describe('HttpServer (integration)', () => {
   });
 
   it('supports HTTPS protocol with a pfx file', async () => {
-    const serverOptions = givenHttpServerConfig({
-      usePfx: true,
-    });
-    const httpsServer: HttpServer = givenHttpsServer(serverOptions);
+    const httpsServer: HttpServer = givenHttpsServer({usePfx: true});
     await httpsServer.start();
     const response = await httpsGetAsync(httpsServer.url);
     expect(response.statusCode).to.equal(200);
@@ -279,7 +276,10 @@ describe('HttpServer (integration)', () => {
     usePfx?: boolean;
     host?: string;
   }): HttpServer {
-    const options: HttpServerOptions = {protocol: 'https', host};
+    const options = givenHttpServerConfig<HttpsOptions>({
+      protocol: 'https',
+      host,
+    });
     const certDir = path.resolve(__dirname, '../../../fixtures');
     if (usePfx) {
       const pfxPath = path.join(certDir, 'pfx.pfx');
