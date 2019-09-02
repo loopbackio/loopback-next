@@ -672,13 +672,12 @@ paths:
   it('supports HTTPS protocol with key and certificate files', async () => {
     const keyPath = path.join(FIXTURES, 'key.pem');
     const certPath = path.join(FIXTURES, 'cert.pem');
-    const options = {
+    const serverOptions = givenHttpServerConfig({
       port: 0,
       protocol: 'https',
       key: fs.readFileSync(keyPath),
       cert: fs.readFileSync(certPath),
-    };
-    const serverOptions = givenHttpServerConfig(options);
+    });
     const server = await givenAServer({rest: serverOptions});
     server.handler(dummyRequestHandler);
     await server.start();
@@ -689,13 +688,12 @@ paths:
 
   it('supports HTTPS protocol with a pfx file', async () => {
     const pfxPath = path.join(FIXTURES, 'pfx.pfx');
-    const options = {
+    const serverOptions = givenHttpServerConfig({
       port: 0,
-      protocol: 'https',
+      protocol: 'https' as 'https',
       pfx: fs.readFileSync(pfxPath),
       passphrase: 'loopback4',
-    };
-    const serverOptions = givenHttpServerConfig(options);
+    });
     const server = await givenAServer({rest: serverOptions});
     server.handler(dummyRequestHandler);
     await server.start();
@@ -756,13 +754,12 @@ paths:
   it('honors HTTPS config binding after instantiation', async () => {
     const keyPath = path.join(FIXTURES, 'key.pem');
     const certPath = path.join(FIXTURES, 'cert.pem');
-    const options = {
+    const serverOptions = givenHttpServerConfig({
       port: 0,
       protocol: 'https',
       key: undefined,
       cert: undefined,
-    };
-    const serverOptions = givenHttpServerConfig(options);
+    });
     const server = await givenAServer({rest: serverOptions});
 
     server.handler(dummyRequestHandler);
