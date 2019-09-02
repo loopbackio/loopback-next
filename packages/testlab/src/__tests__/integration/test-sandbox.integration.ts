@@ -3,9 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {TestSandbox, expect} from '../..';
+import {pathExists, readFile, remove, writeJSON} from 'fs-extra';
 import {resolve} from 'path';
-import {remove, pathExists, readFile, writeJSON} from 'fs-extra';
+import {expect, TestSandbox} from '../..';
 
 const FIXTURES = resolve(__dirname, '../../../fixtures');
 
@@ -63,6 +63,14 @@ describe('TestSandbox integration tests', () => {
     );
 
     expect(fileContents.pop()).to.equal(sourceMapString);
+  });
+
+  it('creates a JSON file in the sandbox', async () => {
+    await sandbox.writeJsonFile('data.json', {key: 'value'});
+    const fullPath = resolve(path, 'data.json');
+    expect(await pathExists(fullPath)).to.be.True();
+    const content = await readFile(fullPath, 'utf-8');
+    expect(content).to.equal('{\n  "key": "value"\n}\n');
   });
 
   it('resets the sandbox', async () => {
