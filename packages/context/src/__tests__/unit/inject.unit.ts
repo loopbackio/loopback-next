@@ -29,6 +29,16 @@ describe('function argument injection', () => {
     expect(meta.map(m => m.bindingSelector)).to.deepEqual(['foo']);
   });
 
+  it('allows decorator to be explicitly invoked for class ctor args', () => {
+    class TestClass {
+      constructor(foo: string) {}
+    }
+    inject('foo')(TestClass, undefined, 0);
+
+    const meta = describeInjectedArguments(TestClass);
+    expect(meta.map(m => m.bindingSelector)).to.deepEqual(['foo']);
+  });
+
   it('can retrieve information about injected method arguments', () => {
     class TestClass {
       test(@inject('foo') foo: string) {}

@@ -124,7 +124,7 @@ export function inject(
   }
   return function markParameterOrPropertyAsInjected(
     target: Object,
-    member: string,
+    member: string | undefined,
     methodDescriptorOrParameterIndex?:
       | TypedPropertyDescriptor<BoundValue>
       | number,
