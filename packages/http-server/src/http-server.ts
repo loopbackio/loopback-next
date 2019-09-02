@@ -92,7 +92,10 @@ export class HttpServer {
     this.server.listen(this.serverOptions);
     await pEvent(this.server, 'listening');
     this._listening = true;
-    this._address = this.server.address();
+
+    const address = this.server.address();
+    assert(address != null);
+    this._address = address!;
   }
 
   /**
