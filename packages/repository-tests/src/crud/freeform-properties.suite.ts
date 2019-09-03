@@ -7,6 +7,7 @@ import {Entity, model, property} from '@loopback/repository';
 import {EntityCrudRepository} from '@loopback/repository';
 import {expect, skipIf, toJSON} from '@loopback/testlab';
 import {Suite} from 'mocha';
+import {MixedIdType} from '../helpers.repository-tests';
 import {
   withCrudCtx,
   deleteAllModelsInDefaultDataSource,
@@ -37,7 +38,7 @@ export function freeformPropertiesSuite(
           id: true,
           description: 'The unique identifier for a product',
         })
-        id: number | string;
+        id: MixedIdType;
 
         @property({type: 'string', required: true})
         name: string;
