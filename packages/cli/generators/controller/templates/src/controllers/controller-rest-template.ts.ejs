@@ -40,12 +40,12 @@ export class <%= className %>Controller {
         'application/json': {
           schema: getModelSchemaRef(<%= modelName %>, {
             title: 'New<%= modelName %>',
-            exclude: ['<%= id %>'],
+            <%if (idOmitted) {%>exclude: ['<%= id %>'],<% } %>
           }),
         },
       },
     })
-    <%= modelVariableName %>: Omit<<%= modelName %>, '<%= id %>'>,
+    <%= modelVariableName %>: <% if (!idOmitted) { -%><%= modelName %><% } else { -%>Omit<<%= modelName %>, '<%= id %>'><% } -%>,
   ): Promise<<%= modelName %>> {
     return this.<%= repositoryNameCamel %>.create(<%= modelVariableName %>);
   }
