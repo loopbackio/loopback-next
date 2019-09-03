@@ -6,5 +6,6 @@
 export * from './authentication.component';
 export * from './decorators';
 export * from './keys';
+export * from './providers';
 export * from './services';
 export * from './types';
