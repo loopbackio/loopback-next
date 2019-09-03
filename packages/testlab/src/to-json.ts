@@ -3,6 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+/* eslint-disable @typescript-eslint/unified-signatures */
+
 // Important! Date.prototype.toJSON() returns a string.
 export function toJSON(value: Date): string;
 
