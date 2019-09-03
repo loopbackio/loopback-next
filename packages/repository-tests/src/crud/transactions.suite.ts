@@ -14,7 +14,7 @@ import {
 } from '@loopback/repository';
 import {expect, skipIf, toJSON} from '@loopback/testlab';
 import {Suite} from 'mocha';
-import {withCrudCtx} from '../helpers.repository-tests';
+import {withCrudCtx, MixedIdType} from '../helpers.repository-tests';
 import {
   CrudFeatures,
   CrudTestContext,
@@ -42,7 +42,7 @@ export function transactionSuite(
           generated: true,
           description: 'The unique identifier for a product',
         })
-        id: number | string;
+        id: MixedIdType;
 
         @property({type: 'string', required: true})
         name: string;

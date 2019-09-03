@@ -6,6 +6,7 @@
 import {Entity, model, property} from '@loopback/repository';
 import {AnyObject, EntityCrudRepository} from '@loopback/repository';
 import {expect, toJSON} from '@loopback/testlab';
+import {MixedIdType} from '../helpers.repository-tests';
 import {
   deleteAllModelsInDefaultDataSource,
   withCrudCtx,
@@ -31,7 +32,7 @@ export function createSuiteForReplaceById(
       generated: true,
       description: 'The unique identifier for a product',
     })
-    id: number | string;
+    id: MixedIdType;
 
     @property({type: 'string', required: true})
     name: string;
