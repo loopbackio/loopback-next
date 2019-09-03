@@ -78,7 +78,6 @@ export class RestApplication extends Application implements HttpServerLike {
    * @param config - Application configuration
    * @param parent - Parent context
    */
-  // eslint-disable-next-line @typescript-eslint/unified-signatures
   constructor(config?: ApplicationConfig, parent?: Context);
 
   constructor(configOrParent?: ApplicationConfig | Context, parent?: Context) {
