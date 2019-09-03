@@ -29,9 +29,9 @@ export class AuthenticationStrategyProvider
   implements Provider<AuthenticationStrategy | undefined> {
   constructor(
     @extensions()
-    private authenticationStrategies: Getter<AuthenticationStrategy[]>,
+    protected authenticationStrategies: Getter<AuthenticationStrategy[]>,
     @inject(AuthenticationBindings.METADATA)
-    private metadata?: AuthenticationMetadata,
+    protected metadata?: AuthenticationMetadata,
   ) {}
   async value(): Promise<AuthenticationStrategy | undefined> {
     if (!this.metadata) {
