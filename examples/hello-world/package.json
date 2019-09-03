@@ -51,7 +51,7 @@
     "eslint-config-prettier": "^6.1.0",
     "eslint-plugin-eslint-plugin": "^2.1.0",
     "eslint-plugin-mocha": "^6.1.0",
-    "typescript": "~3.5.3"
+    "typescript": "~3.6.2"
   },
   "keywords": [
     "loopback",
