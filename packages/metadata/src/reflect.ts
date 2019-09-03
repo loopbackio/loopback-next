@@ -6,7 +6,6 @@
 import 'reflect-metadata';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/unified-signatures */
 
 /*
  * namespaced wrapper to handle reflect api
