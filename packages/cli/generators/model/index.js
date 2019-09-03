@@ -411,6 +411,13 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
           default: false,
         },
         {
+          name: 'generated',
+          message: `Is ${chalk.yellow(this.propName)} generated automatically?`,
+          type: 'confirm',
+          default: true,
+          when: answers => answers.id,
+        },
+        {
           name: 'default',
           message: `Default value ${chalk.yellow('[leave blank for none]')}:`,
           when: answers => {
@@ -431,6 +438,8 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
       Object.assign(this.artifactInfo.properties[this.propName], answers);
 
       // We prompt for `id` only once per model using idFieldSet flag.
+      // and 'generated' flag makes sure id is defined, especially for database like MySQL
+      // Skipped the test for `generated` for now.
       if (answers.id) {
         this.idFieldSet = true;
       }
