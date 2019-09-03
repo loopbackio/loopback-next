@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.18.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@1.17.0...@loopback/rest@1.18.0) (2019-09-03)
+
+
+### Bug Fixes
+
+* make givenHttpServerConfig typing compatible with TypeScript 3.6 ([1edbc0b](https://github.com/strongloop/loopback-next/commit/1edbc0b))
+
+
+### Features
+
+* **core:** allow application to accept a parent context ([ee50007](https://github.com/strongloop/loopback-next/commit/ee50007))
+
+
+
+
+
 # [1.17.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@1.16.8...@loopback/rest@1.17.0) (2019-08-19)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.11](https://github.com/strongloop/loopback-next/compare/@loopback/http-server@1.4.10...@loopback/http-server@1.4.11) (2019-09-03)
+
+
+### Bug Fixes
+
+* make givenHttpServerConfig typing compatible with TypeScript 3.6 ([1edbc0b](https://github.com/strongloop/loopback-next/commit/1edbc0b))
+
+
+
+
+
 ## [1.4.10](https://github.com/strongloop/loopback-next/compare/@loopback/http-server@1.4.9...@loopback/http-server@1.4.10) (2019-08-19)
 
 **Note:** Version bump only for package @loopback/http-server

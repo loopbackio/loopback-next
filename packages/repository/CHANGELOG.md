@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.13.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.12.0...@loopback/repository@1.13.0) (2019-09-03)
+
+
+### Features
+
+* **repository:** add inclusionResolvers to DefaultCrudRepository ([642c4b6](https://github.com/strongloop/loopback-next/commit/642c4b6))
+
+
+
+
+
 # [1.12.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.11.1...@loopback/repository@1.12.0) (2019-08-19)
 
 

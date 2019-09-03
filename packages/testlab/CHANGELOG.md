@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.7.5](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@1.7.4...@loopback/testlab@1.7.5) (2019-09-03)
+
+
+### Bug Fixes
+
+* make givenHttpServerConfig typing compatible with TypeScript 3.6 ([1edbc0b](https://github.com/strongloop/loopback-next/commit/1edbc0b))
+
+
+
+
+
 ## [1.7.4](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@1.7.3...@loopback/testlab@1.7.4) (2019-08-19)
 
 **Note:** Version bump only for package @loopback/testlab

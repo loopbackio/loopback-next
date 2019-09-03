@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.4.3](https://github.com/strongloop/loopback-next/compare/@loopback/repository-tests@0.4.2...@loopback/repository-tests@0.4.3) (2019-09-03)
+
+
+### Bug Fixes
+
+* **repository-tests:** unify the usage of MixedIdType for all tests ([0548651](https://github.com/strongloop/loopback-next/commit/0548651))
+
+
+
+
+
 ## [0.4.2](https://github.com/strongloop/loopback-next/compare/@loopback/repository-tests@0.4.1...@loopback/repository-tests@0.4.2) (2019-08-19)
 
 **Note:** Version bump only for package @loopback/repository-tests

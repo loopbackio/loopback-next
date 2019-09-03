@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.10.0](https://github.com/strongloop/loopback-next/compare/@loopback/core@1.9.3...@loopback/core@1.10.0) (2019-09-03)
+
+
+### Features
+
+* **core:** allow application to accept a parent context ([ee50007](https://github.com/strongloop/loopback-next/commit/ee50007))
+
+
+
+
+
 ## [1.9.3](https://github.com/strongloop/loopback-next/compare/@loopback/core@1.9.2...@loopback/core@1.9.3) (2019-08-19)
 
 **Note:** Version bump only for package @loopback/core

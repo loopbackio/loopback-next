@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.30.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.29.3...@loopback/docs@1.30.0) (2019-09-03)
+
+
+### Bug Fixes
+
+* **docs:** add contributing guide to LB4 docs ([d88e9e2](https://github.com/strongloop/loopback-next/commit/d88e9e2))
+* **docs:** add diagrams to concepts ([5d90653](https://github.com/strongloop/loopback-next/commit/5d90653))
+
+
+### Features
+
+* **docs:** add diagrams for context/binding/component ([22fce21](https://github.com/strongloop/loopback-next/commit/22fce21))
+* **rest-crud:** initial implementation ([4374160](https://github.com/strongloop/loopback-next/commit/4374160))
+
+
+
+
+
 ## [1.29.3](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.29.2...@loopback/docs@1.29.3) (2019-08-19)
 
 **Note:** Version bump only for package @loopback/docs

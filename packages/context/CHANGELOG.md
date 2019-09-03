@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.22.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.21.4...@loopback/context@1.22.0) (2019-09-03)
+
+
+### Features
+
+* **context:** add decorator name for [@inject](https://github.com/inject).*, [@config](https://github.com/config).*, [@intercept](https://github.com/intercept) errors ([48e3231](https://github.com/strongloop/loopback-next/commit/48e3231))
+* **context:** allow [@bind](https://github.com/bind) to be applied on the same class multiple times ([ad4d22c](https://github.com/strongloop/loopback-next/commit/ad4d22c))
+
+
+
+
+
 ## [1.21.4](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.21.3...@loopback/context@1.21.4) (2019-08-19)
 
 **Note:** Version bump only for package @loopback/context
