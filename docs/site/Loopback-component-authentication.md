@@ -139,12 +139,8 @@ authentication strategy in later sections)
 
 ```ts
 import {inject} from '@loopback/context';
-import {
-  AuthenticationBindings,
-  UserProfile,
-  authenticate,
-} from '@loopback/authentication';
-import {SecurityBindings} from '@loopback/security';
+import {AuthenticationBindings, authenticate} from '@loopback/authentication';
+import {SecurityBindings, securityId, UserProfile} from '@loopback/security';
 import {get} from '@loopback/rest';
 
 export class WhoAmIController {
@@ -159,7 +155,10 @@ export class WhoAmIController {
   @authenticate('basic')
   @get('/whoami')
   whoAmI(): string {
-    return this.userProfile.id;
+    // `securityId` is Symbol to represent the security id of the user,
+    // typically the user id. You can find more information of `securityId` in
+    // https://loopback.io/doc/en/lb4/Security
+    return this.userProfile[securityId];
   }
 }
 ```
@@ -701,6 +700,7 @@ import {inject} from '@loopback/context';
 import {
   AuthenticationBindings,
   UserProfile,
+  securityId,
   authenticate,
 } from '@loopback/authentication';
 import {get} from '@loopback/rest';
@@ -714,7 +714,7 @@ export class WhoAmIController {
   @authenticate('basic')
   @get('/whoami')
   whoAmI(): string {
-    return this.userProfile.id;
+    return this.userProfile[securityId];
   }
 
   @authenticate('basic', {gatherStatistics: false})
