@@ -159,7 +159,7 @@ import {AuthorizeFn, AuthorizationMetadata, UserPermissionsFn} from './types';
 /**
  * Binding keys used by this component.
  */
-export namespace AuthorizatonBindings {
+export namespace AuthorizationBindings {
   export const AUTHORIZE_ACTION = BindingKey.create<AuthorizeFn>(
     'userAuthorization.actions.authorize',
   );
@@ -240,14 +240,14 @@ export function getAuthorizeMetadata(
 ```ts
 import {Getter, inject, Provider} from '@loopback/context';
 
-import {AuthorizatonBindings} from '../keys';
+import {AuthorizationBindings} from '../keys';
 import {AuthorizationMetadata, AuthorizeFn} from '../types';
 
 import {intersection} from 'lodash';
 
 export class AuthorizeActionProvider implements Provider<AuthorizeFn> {
   constructor(
-    @inject.getter(AuthorizatonBindings.METADATA)
+    @inject.getter(AuthorizationBindings.METADATA)
     private readonly getMetadata: Getter<AuthorizationMetadata>,
   ) {}
 
@@ -322,7 +322,7 @@ context.
 
 ```ts
 import {Component, ProviderMap} from '@loopback/core';
-import {AuthorizatonBindings} from './keys';
+import {AuthorizationBindings} from './keys';
 import {AuthorizeActionProvider} from './providers/authorization-action.provider';
 import {AuthorizationMetadataProvider} from './providers/authorization-metadata.provider';
 import {UserPermissionsProvider} from './providers/user-permissions.provider';
@@ -332,9 +332,9 @@ export class AuthorizationComponent implements Component {
 
   constructor() {
     this.providers = {
-      [AuthorizatonBindings.AUTHORIZE_ACTION.key]: AuthorizeActionProvider,
-      [AuthorizatonBindings.METADATA.key]: AuthorizationMetadataProvider,
-      [AuthorizatonBindings.USER_PERMISSIONS.key]: UserPermissionsProvider,
+      [AuthorizationBindings.AUTHORIZE_ACTION.key]: AuthorizeActionProvider,
+      [AuthorizationBindings.METADATA.key]: AuthorizationMetadataProvider,
+      [AuthorizationBindings.USER_PERMISSIONS.key]: UserPermissionsProvider,
     };
   }
 }
@@ -475,7 +475,7 @@ import {
 } from '@loopback/rest';
 import {AuthenticationBindings, AuthenticateFn} from './authenticate';
 import {
-  AuthorizatonBindings,
+  AuthorizationBindings,
   AuthorizeFn,
   AuthorizeErrorKeys,
 } from './authorization';
@@ -491,9 +491,9 @@ export class MySequence implements SequenceHandler {
     @inject(SequenceActions.REJECT) public reject: Reject,
     @inject(AuthenticationBindings.AUTH_ACTION)
     protected authenticateRequest: AuthenticateFn,
-    @inject(AuthorizatonBindings.USER_PERMISSIONS)
+    @inject(AuthorizationBindings.USER_PERMISSIONS)
     protected fetchUserPermissons: UserPermissionsFn,
-    @inject(AuthorizatonBindings.AUTHORIZE_ACTION)
+    @inject(AuthorizationBindings.AUTHORIZE_ACTION)
     protected checkAuthorization: AuthorizeFn,
   ) {}
 
