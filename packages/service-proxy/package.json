@@ -31,7 +31,7 @@
   "dependencies": {
     "@loopback/context": "^1.22.0",
     "@loopback/core": "^1.10.0",
-    "loopback-datasource-juggler": "^4.12.0"
+    "loopback-datasource-juggler": "^4.12.1"
   },
   "files": [
     "README.md",
