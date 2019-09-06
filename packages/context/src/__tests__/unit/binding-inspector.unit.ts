@@ -206,6 +206,18 @@ describe('createBindingFromClass()', () => {
     expect(binding.key).to.eql('services.MyService');
   });
 
+  it('includes class name in error messages', () => {
+    expect(() => {
+      // Reproduce a problem that @bajtos encountered when the project
+      // was not built correctly and somehow `@bind` was called with `undefined`
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      @bind(undefined as any)
+      class MyClass {}
+
+      return createBindingFromClass(MyClass);
+    }).to.throw(/(while building binding for class MyClass)/);
+  });
+
   function givenBindingFromClass(
     cls: Constructor<unknown>,
     ctx: Context = new Context(),
