@@ -22,10 +22,10 @@ plugins to build repository & controller classes at runtime.
 ## Basic use
 
 Create `src/public-models` directory in your project. For each model you want to
-expose via REST API, add a new `.ts` file that's exporting the model
+expose via REST API, add a new `.config.ts` file that's exporting the model
 configuration.
 
-Example:
+Example (`src/public-models/product.config.ts`):
 
 ```ts
 import {ModelApiConfig} from '@loopback/rest-crud';
@@ -195,27 +195,46 @@ Same as for models. Use DI in the initial implementation. Add support for
 
 ## Tasks
 
-TBD, this is a preliminary & incomplete list.
+1. Add `app.model(Model, name)` API to RepositoryMixin.
 
-- Add `app.model(Model, name)` API to RepositoryMixin.
+- Q: Do we want to introduce `@model()` decorator for configuring dependency
+  injection? (Similar to `@repository`.)
 
-  - Q: Do we want to introduce `@model()` decorator for configuring dependency
-    injection? (Similar to `@repository`.)
+  A: No, that would clash with `@model` exported by `@loopback/repository`.
 
-    A: No, that would clash with `@model` exported by `@loopback/repository`.
+- Q: Do we want to rework scaffolded repositories to receive the model class via
+  DI?
 
-  - Q: Do we want to rework scaffolded repositories to receive the model class
-    via DI?
+  A: I feel that's preliminary at this point. Let's wait until we have a
+  (real-world) use case for that.
 
-    A: I feel that's preliminary at this point. Let's wait until we have a
-    (real-world) use case for that.
+2. Implement model booter to scan `dist/models/**/*.model.js` files and register
+   them by calling `app.model`.
 
-- Implement model booter to scan `dist/models/**/*.model.js` files and register
-  them by calling `app.model`.
+3. Implement `sandbox.writeTextFile` helper, include test coverage.
 
-- Improve rest-crud to create a named controller class.
+4. Improve `@loopback/rest-crud` to create a named controller class (modify
+   `defineCrudRestController`)
 
-TBD: stories for the actual implementation
+5. Add `defineRepositoryClass` to `@loopback/rest-crud`, this function should
+   create a named repository class for the given Model class.
+
+6. Implement Model API booter & builder.
+
+   - Add a new package `@loopback/model-api-builder`, copy the contents from
+     this spike. Improve README with basic documentation for users (extension
+     developers building custom Model API Builders).
+
+   - Add `ModelApiBooter` to `@loopback/boot`
+
+7. Add `CrudRestApiBuilder` to `@loopback/rest-crud`. Modify `README`, rework
+   "Basic use" to show how to the package together with `ModelApiBooter` to go
+   from a model to REST API. Move the current content of "basic use" into a new
+   section, e.g. "Advanced use".
+
+8. Create a new example app based on the modified version of `examples/todo`
+   shown in the spike. The app should have a single `Todo` model and use
+   `ModelApiBooter` to expose the model via REST API.
 
 ### Out of scope
 
