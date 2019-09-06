@@ -19,6 +19,27 @@ In this Spike, I am demonstrating a PoC implementation of an extensible booter
 that processed model configuration files in JSON formats and uses 3rd-party
 plugins to build repository & controller classes at runtime.
 
+## Basic use
+
+Create `src/public-models` directory in your project. For each model you want to
+expose via REST API, add a new `.ts` file that's exporting the model
+configuration.
+
+Example:
+
+```ts
+import {ModelApiConfig} from '@loopback/rest-crud';
+
+module.exports = <ModelApiConfig>{
+  model: 'Product',
+  pattern: 'CrudRest',
+  dataSource: 'db',
+  basePath: '/products',
+};
+```
+
+## Implementation
+
 The solution has the following high-level parts:
 
 1. A new package `@loopback/model-api-builder` defines the contract for plugins
@@ -58,7 +79,7 @@ In my proposal, model-config files are in JSON format to make programmatic edits
 easier. This has a downside in TypeScript projects - these config files must
 live outside `src` because TypeScript does not copy arbitrary JSON files.
 
-### Extensibility & customization options
+## Extensibility & customization options
 
 The proposed design enables the following opportunities to extend and customize
 the default behavior of API endpoints:
@@ -97,38 +118,54 @@ The CRUD REST API builder:
 The remaining changes are small tweaks & improvements of existing packages to
 better support this spike.
 
-## Open questions:
+## ~~Open~~ questions answered:
 
-- Where to keep model config files?
+**Q: Where to keep model config files?**
 
-  - `/public-models/product.config.json` (JSON, must be outside src)
-  - `/src/public-models/product-config.ts` (TS, can be inside src, more
-    flexible)
+- `/public-models/product.config.json` (JSON, must be outside src)
+- `/src/public-models/product-config.ts` (TS, can be inside src, more flexible)
 
-- Load models via DI, or rather let config files to load them via require?
+**Answer:**
 
-  ```ts
-  // in src/public-models/product-config.ts
-  {
-    model: require('../models/product.model').Product,
-    // ...
-  }
-  ```
+Let's keep them as TS files in `src/public-models`. I feel this is more
+consistent with the approach we use for all other artifacts (models,
+repositories, etc.). It also enables application developers to conditionally
+customize model config, e.g. depending on `process.env` variables.
 
-- If we use TS files, then we can get rid of the extension point too
+**Q: Load models via DI, or rather let config files to load them via require?**
 
-  ```ts
-  // in src/public-models/product-config.ts
-  {
-    model: require('../models/product.model').Product,
-    pattern: require('@loopback/rest-crud').CrudRestApiBuilder,
-    basePath: '/products',
-    dataSource: 'db',
+```ts
+// in src/public-models/product-config.ts
+{
+  model: require('../models/product.model').Product,
+  // ...
+}
+```
 
-    // alternatively:
-    dataSource: require('../datasources/db.datasource').DbDataSource,
-  }
-  ```
+**Answer**
+
+Load models via DI for consistency. We can add support for loading models via
+`require` later, based on user demand. The change will be backwards-compatible.
+
+**Q: If we use TS files, then we can get rid of the extension point too**
+
+```ts
+// in src/public-models/product-config.ts
+{
+  model: require('../models/product.model').Product,
+  pattern: require('@loopback/rest-crud').CrudRestApiBuilder,
+  basePath: '/products',
+  dataSource: 'db',
+
+  // alternatively:
+  dataSource: require('../datasources/db.datasource').DbDataSource,
+}
+```
+
+**Answer:**
+
+Same as for models. Use DI in the initial implementation. Add support for
+`require`-based approach later, based on user demand.
 
 ## Tasks
 
@@ -136,22 +173,21 @@ TBD, this is a preliminary & incomplete list.
 
 - Add `app.model(Model, name)` API to RepositoryMixin.
 
-  - Do we want to introduce `@model()` decorator for configuring dependency
+  - Q: Do we want to introduce `@model()` decorator for configuring dependency
     injection? (Similar to `@repository`.)
-  - Do we want to rework scaffolded repositories to receive the model class via
-    DI?
+
+    A: No, that would clash with `@model` exported by `@loopback/repository`.
+
+  - Q: Do we want to rework scaffolded repositories to receive the model class
+    via DI?
+
+    A: I feel that's preliminary at this point. Let's wait until we have a
+    (real-world) use case for that.
 
 - Implement model booter to scan `dist/models/**/*.model.js` files and register
   them by calling `app.model`.
 
-- Implement `sandbox.writeJsonFile` in `@loopback/testlab`.
-
-- Add support for artifact option `rootDir` to `@loopback/boot`.
-
 - Improve rest-crud to create a named controller class.
-
-- Improve `@loopback/metadata` and `@loopback/context` per changes made in this
-  spike
 
 TBD: stories for the actual implementation
 

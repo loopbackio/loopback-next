@@ -5,6 +5,7 @@
 
 import {BootMixin} from '@loopback/boot';
 import {ApplicationConfig} from '@loopback/core';
+import {ModelApiConfig} from '@loopback/model-api-builder';
 import {
   DefaultCrudRepository,
   Entity,
@@ -49,18 +50,23 @@ describe('rest booter acceptance tests', () => {
     app.model(Product);
 
     // Write model-config file to specify how to expose the model via API
-    await sandbox.writeJsonFile('public-models/product.config.json', {
+    const cfg: ModelApiConfig = {
       model: 'Product',
       pattern: 'CrudRest',
       dataSource: 'db',
       basePath: '/products',
-    });
+    };
+    await sandbox.writeTextFile(
+      'dist/public-models/product.config.js',
+      `module.exports = ${JSON.stringify(cfg, null, 2)}`,
+    );
 
+    // Boot & start the application
     await app.boot();
     await app.start();
-
     const client = createRestAppClient(app);
 
+    // Verify that we have REST API for our model
     const created = await client
       .post('/products')
       .send({name: 'a name'})
@@ -68,7 +74,7 @@ describe('rest booter acceptance tests', () => {
     const found = await client.get('/products').expect(200);
     expect(found.body).to.deepEqual([{id: created.body.id, name: 'a name'}]);
 
-    // verify that we have a repository class to use e.g. in tests
+    // Verify that we have a repository class to use e.g. in tests
     const repo = await app.get<
       DefaultCrudRepository<Product, typeof Product.prototype.id>
     >('repositories.ProductRepository');

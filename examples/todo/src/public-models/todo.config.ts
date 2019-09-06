@@ -1,0 +1,13 @@
+// Copyright IBM Corp. 2018,2019. All Rights Reserved.
+// Node module: @loopback/example-todo
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
+import {ModelApiConfig} from '@loopback/rest-crud';
+
+module.exports = <ModelApiConfig>{
+  model: 'Todo',
+  pattern: 'CrudRest',
+  dataSource: 'db',
+  basePath: '/todos',
+};

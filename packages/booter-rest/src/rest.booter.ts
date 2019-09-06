@@ -19,16 +19,14 @@ import {
 } from '@loopback/core';
 import {
   ModelApiBuilder,
+  ModelApiConfig,
   MODEL_API_BUILDER_PLUGINS,
 } from '@loopback/model-api-builder';
 import {ApplicationWithRepositories, Model} from '@loopback/repository';
 import * as debugFactory from 'debug';
-import * as fs from 'fs';
 import * as path from 'path';
-import {promisify} from 'util';
 
 const debug = debugFactory('loopback:boot:rest-booter');
-const readFile = promisify(fs.readFile);
 
 @booter('rest')
 @extensionPoint(MODEL_API_BUILDER_PLUGINS)
@@ -70,7 +68,7 @@ export class RestBooter extends BaseArtifactBooter {
   }
 
   async setupModel(configFile: string): Promise<void> {
-    const cfg = JSON.parse(await readFile(configFile, {encoding: 'utf-8'}));
+    const cfg: ModelApiConfig = require(configFile);
     debug(
       'Loaded model config from %s',
       path.relative(this.projectRoot, configFile),
@@ -103,9 +101,7 @@ export class RestBooter extends BaseArtifactBooter {
  * Default ArtifactOptions for ControllerBooter.
  */
 export const RestDefaults: ArtifactOptions = {
-  // public-models should live outside of "dist"
-  rootDir: '../',
   dirs: ['public-models'],
-  extensions: ['.config.json'],
+  extensions: ['.config.js'],
   nested: true,
 };
