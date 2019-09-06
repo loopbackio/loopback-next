@@ -1,14 +1,8 @@
 // Copyright IBM Corp. 2019. All Rights Reserved.
-// Node module: @loopback/booter-rest
+// Node module: @loopback/boot
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {
-  ArtifactOptions,
-  BaseArtifactBooter,
-  BootBindings,
-  booter,
-} from '@loopback/boot';
 import {
   config,
   CoreBindings,
@@ -25,12 +19,15 @@ import {
 import {ApplicationWithRepositories, Model} from '@loopback/repository';
 import * as debugFactory from 'debug';
 import * as path from 'path';
+import {BootBindings} from '../keys';
+import {ArtifactOptions, booter} from '../types';
+import {BaseArtifactBooter} from './base-artifact.booter';
 
-const debug = debugFactory('loopback:boot:rest-booter');
+const debug = debugFactory('loopback:boot:model-api');
 
-@booter('rest')
+@booter('modelApi')
 @extensionPoint(MODEL_API_BUILDER_PLUGINS)
-export class RestBooter extends BaseArtifactBooter {
+export class ModelApiBooter extends BaseArtifactBooter {
   constructor(
     @inject(CoreBindings.APPLICATION_INSTANCE)
     public app: ApplicationWithRepositories,

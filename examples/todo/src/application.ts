@@ -4,7 +4,6 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {BootMixin} from '@loopback/boot';
-import {RestBooter} from '@loopback/booter-rest';
 import {ApplicationConfig} from '@loopback/core';
 import {RepositoryMixin} from '@loopback/repository';
 import {RestApplication} from '@loopback/rest';
@@ -29,7 +28,6 @@ export class TodoListApplication extends BootMixin(
     this.component(RestExplorerComponent);
 
     this.component(CrudRestComponent);
-    this.booters(RestBooter);
 
     this.projectRoot = __dirname;
     // Customize @loopback/boot Booter Conventions here

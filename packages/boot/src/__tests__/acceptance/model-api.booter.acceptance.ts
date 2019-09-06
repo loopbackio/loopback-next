@@ -1,9 +1,8 @@
 // Copyright IBM Corp. 2019. All Rights Reserved.
-// Node module: @loopback/booter-rest
+// Node module: @loopback/boot
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {BootMixin} from '@loopback/boot';
 import {ApplicationConfig} from '@loopback/core';
 import {ModelApiConfig} from '@loopback/model-api-builder';
 import {
@@ -24,7 +23,7 @@ import {
   toJSON,
 } from '@loopback/testlab';
 import {resolve} from 'path';
-import {RestBooter} from '../../rest.booter';
+import {BootMixin, ModelApiBooter} from '../..';
 
 describe('rest booter acceptance tests', () => {
   let app: BooterApp;
@@ -86,7 +85,7 @@ describe('rest booter acceptance tests', () => {
     constructor(options?: ApplicationConfig) {
       super(options);
       this.projectRoot = sandbox.path + '/dist';
-      this.booters(RestBooter);
+      this.booters(ModelApiBooter);
       this.component(CrudRestComponent);
     }
   }
