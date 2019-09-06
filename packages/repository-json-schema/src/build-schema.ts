@@ -397,7 +397,7 @@ export function modelToJsonSchema<T extends object>(
     result.definitions = result.definitions || {};
 
     // promote nested definition to the top level
-    if (schema.definitions) {
+    if (result !== schema && schema.definitions) {
       for (const key in schema.definitions) {
         if (key === title) continue;
         result.definitions[key] = schema.definitions[key];

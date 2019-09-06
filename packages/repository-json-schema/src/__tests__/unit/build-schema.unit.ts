@@ -4,6 +4,9 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
+  Model,
+  model,
+  property,
   PropertyDefinition,
   RelationDefinitionBase,
   RelationType,
@@ -13,6 +16,7 @@ import {
   buildModelCacheKey,
   getNavigationalPropertyForRelation,
   metaToJsonProperty,
+  modelToJsonSchema,
   stringTypeToWrapper,
 } from '../..';
 
@@ -196,6 +200,39 @@ describe('build-schema', () => {
         format: 'email',
         maxLength: 50,
         minLength: 5,
+      });
+    });
+  });
+
+  describe('modelToJsonSchema', () => {
+    it('allows recursive model definition', () => {
+      @model()
+      class ReportState extends Model {
+        @property.array(ReportState, {})
+        states: ReportState[];
+
+        @property({
+          type: 'string',
+        })
+        benchmarkId?: string;
+
+        @property({
+          type: 'string',
+        })
+        color?: string;
+
+        constructor(data?: Partial<ReportState>) {
+          super(data);
+        }
+      }
+      const schema = modelToJsonSchema(ReportState, {});
+      expect(schema.properties).to.containEql({
+        states: {
+          type: 'array',
+          items: {$ref: '#/definitions/ReportState'},
+        },
+        benchmarkId: {type: 'string'},
+        color: {type: 'string'},
       });
     });
   });
