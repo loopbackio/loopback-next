@@ -4,11 +4,14 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {MetadataAccessor, MetadataInspector} from '@loopback/metadata';
+import * as debugFactory from 'debug';
 import {Binding, BindingScope, BindingTag, BindingTemplate} from './binding';
 import {BindingAddress} from './binding-key';
 import {ContextTags} from './keys';
 import {Provider} from './provider';
 import {Constructor} from './value-promise';
+
+const debug = debugFactory('loopback:context:binding-inspector');
 
 /**
  * Binding metadata from `@bind`
@@ -63,10 +66,11 @@ export function isProviderClass(
 export function asProvider(
   target: Constructor<Provider<unknown>>,
 ): BindingTemplate {
-  return binding =>
+  return function bindAsProvider(binding) {
     binding.toProvider(target).tag(ContextTags.PROVIDER, {
       [ContextTags.TYPE]: ContextTags.PROVIDER,
     });
+  };
 }
 
 /**
@@ -78,7 +82,7 @@ export function asClassOrProvider(
   target: Constructor<unknown>,
 ): BindingTemplate {
   // Add a template to bind to a class or provider
-  return binding => {
+  return function bindAsClassOrProvider(binding) {
     if (isProviderClass(target)) {
       asProvider(target)(binding);
     } else {
@@ -94,7 +98,7 @@ export function asClassOrProvider(
 export function asBindingTemplate(
   scopeAndTags: BindingScopeAndTags,
 ): BindingTemplate {
-  return binding => {
+  return function applyBindingScopeAndTag(binding) {
     if (scopeAndTags.scope) {
       binding.inScope(scopeAndTags.scope);
     }
@@ -140,10 +144,11 @@ export function bindingTemplateFor<T = unknown>(
   cls: Constructor<T | Provider<T>>,
 ): BindingTemplate<T> {
   const spec = getBindingMetadata(cls);
+  debug('class %s has binding metadata', cls.name, spec);
   const templateFunctions = (spec && spec.templates) || [
     asClassOrProvider(cls),
   ];
-  return binding => {
+  return function applyBindingTemplatesFromMetadata(binding) {
     for (const t of templateFunctions) {
       binding.apply(t);
     }
@@ -215,12 +220,23 @@ export function createBindingFromClass<T = unknown>(
   cls: Constructor<T | Provider<T>>,
   options: BindingFromClassOptions = {},
 ): Binding<T> {
-  const templateFn = bindingTemplateFor(cls);
-  let key = options.key;
-  if (!key) {
-    key = buildBindingKey(cls, options);
+  debug('create binding from class %s with options', cls.name, options);
+  try {
+    const templateFn = bindingTemplateFor(cls);
+    const key = buildBindingKey(cls, options);
+    const binding = Binding.bind<T>(key).apply(templateFn);
+    applyClassBindingOptions(binding, options);
+    return binding;
+  } catch (err) {
+    err.message += ` (while building binding for class ${cls.name})`;
+    throw err;
   }
-  const binding = Binding.bind<T>(key).apply(templateFn);
+}
+
+function applyClassBindingOptions<T>(
+  binding: Binding<T>,
+  options: BindingFromClassOptions,
+) {
   if (options.name) {
     binding.tag({name: options.name});
   }
@@ -230,7 +246,6 @@ export function createBindingFromClass<T = unknown>(
   if (options.defaultScope) {
     binding.applyDefaultScope(options.defaultScope);
   }
-  return binding;
 }
 
 /**
@@ -272,11 +287,13 @@ function buildBindingKey(
   cls: Constructor<unknown>,
   options: BindingFromClassOptions = {},
 ) {
+  if (options.key) return options.key;
+
   const templateFn = bindingTemplateFor(cls);
   // Create a temporary binding
   const bindingTemplate = new Binding('template').apply(templateFn);
   // Is there a `key` tag?
-  let key: string = options.key || bindingTemplate.tagMap[ContextTags.KEY];
+  let key: string = bindingTemplate.tagMap[ContextTags.KEY];
   if (key) return key;
 
   let namespace =
