@@ -3,6 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import * as debugFactory from 'debug';
 import {AnyObject, Options} from '../../common-types';
 import {Entity} from '../../model';
 import {Filter, Inclusion} from '../../query';
@@ -15,9 +16,11 @@ import {
 import {Getter, HasManyDefinition, InclusionResolver} from '../relation.types';
 import {resolveHasManyMetadata} from './has-many.helpers';
 
+const debug = debugFactory('loopback:repository:has-many-inclusion-resolver');
+
 /**
  * Creates hasMany resolver for the relation.
- * 
+ *
  * @param meta - metadata of the hasMany relation
  * @param getTargetRepo - Target repo
  */
@@ -41,9 +44,15 @@ export function createHasManyInclusionResolver<
   ): Promise<((Target & TargetRelations)[] | undefined)[]> {
     if (!entities.length) return [];
 
+    debug('Fetching target models for entities:', entities);
+    debug('Relation metadata:', relationMeta);
+
     const sourceKey = relationMeta.keyFrom;
     const sourceIds = entities.map(e => (e as AnyObject)[sourceKey]);
     const targetKey = relationMeta.keyTo as StringKeyOf<Target>;
+
+    debug('Parameters:', {sourceKey, sourceIds, targetKey});
+    debug('sourceId types', sourceIds.map(i => typeof i));
 
     const targetRepo = await getTargetRepo();
     const targetsFound = await findByForeignKeys(
@@ -54,10 +63,15 @@ export function createHasManyInclusionResolver<
       options,
     );
 
-    return flattenTargetsOfOneToManyRelation(
+    debug('Targets found:', targetsFound);
+
+    const result = flattenTargetsOfOneToManyRelation(
       sourceIds,
       targetsFound,
       targetKey,
     );
+
+    debug('fetchHasManyModels result', result);
+    return result;
   };
 }

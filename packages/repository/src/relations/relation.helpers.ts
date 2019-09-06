@@ -46,7 +46,14 @@ export async function findByForeignKeys<
 
   if (Array.isArray(fkValues)) {
     if (fkValues.length === 0) return [];
-    value = fkValues.length === 1 ? fkValues[0] : {inq: fkValues};
+    value =
+      fkValues.length === 1
+        ? fkValues[0]
+        : {
+            // Create a copy to prevent query coercion algorithm
+            // inside connectors from modifying the original values
+            inq: [...fkValues],
+          };
   } else {
     value = fkValues;
   }
@@ -135,7 +142,7 @@ function isInclusionAllowed<T extends Entity, Relations extends object = {}>(
 
 /**
  * Returns an array of arrays. Each nested array has one or more instances
- * as a result of one to many relation. The order of arrays is based on 
+ * as a result of one to many relation. The order of arrays is based on
  * the order of sourceIds
  *
  * @param sourceIds - One value or array of values of the target key
@@ -149,17 +156,25 @@ export function flattenTargetsOfOneToManyRelation<Target extends Entity>(
   targetEntities: Target[],
   targetKey: StringKeyOf<Target>,
 ): (Target[] | undefined)[] {
+  debug('flattenTargetsOfOneToManyRelation');
+  debug('sourceIds', sourceIds);
+  debug('sourceId types', sourceIds.map(i => typeof i));
+  debug('targetEntities', targetEntities);
+  debug('targetKey', targetKey);
+
   const lookup = buildLookupMap<unknown, Target, Target[]>(
     targetEntities,
     targetKey,
     reduceAsArray,
   );
 
+  debug('lookup map', lookup);
+
   return flattenMapByKeys(sourceIds, lookup);
 }
 
 /**
- * Returns an array of instances from the target map. The order of arrays is based on 
+ * Returns an array of instances from the target map. The order of arrays is based on
  * the order of sourceIds
  *
  * @param sourceIds - One value or array of values (of the target key)
@@ -180,8 +195,8 @@ export function flattenMapByKeys<T>(
 }
 
 /**
- * Returns a map which maps key values(ids) to instances. The instances can be  
- * grouped by different strategies. 
+ * Returns a map which maps key values(ids) to instances. The instances can be
+ * grouped by different strategies.
  *
  * @param list - an array of instances
  * @param keyName - key name of the source
