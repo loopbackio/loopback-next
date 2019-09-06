@@ -21,6 +21,7 @@ describe('tsdocs', function() {
   this.timeout(10000);
 
   const API_MD_FILES = [
+    'index.md',
     'pkg1.md',
     // It was `'pkg1.pet._constructor_.md'` before
     // https://github.com/microsoft/web-build-tools/pull/1410
@@ -103,7 +104,7 @@ describe('tsdocs', function() {
     });
 
     const files = await fs.readdir(SITE_APIDOCS_ROOT);
-    expect(files.sort()).to.eql(['index.md', ...API_MD_FILES]);
+    expect(files.sort()).to.eql(API_MD_FILES);
 
     for (const f of files) {
       const md = await fs.readFile(path.join(SITE_APIDOCS_ROOT, f), 'utf-8');
@@ -111,22 +112,28 @@ describe('tsdocs', function() {
       expect(md).to.match(/sidebar\: lb4_sidebar/);
     }
 
-    const index = await fs.readFile(
+    let index = await fs.readFile(
       path.join(SITE_APIDOCS_ROOT, 'index.md'),
       'utf-8',
     );
-    expect(index).to.eql(`---
+    // Remove \r
+    index = index.replace(/\r/gm, '');
+    expect(index).to.containEql(`---
 lang: en
-title: 'API docs'
+title: 'API docs: index'
 keywords: LoopBack 4.0, LoopBack 4
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/apidocs.index.html
----
+---`);
 
-## API Docs
-- [pkg1](pkg1.md)
-- [pkg2](pkg2.md)
+    expect(index).to.containEql('[Home](./index.md)');
+    expect(index).to.containEql('## Packages');
 
+    expect(index).to.containEql(`
+|  Package | Description |
+|  --- | --- |
+|  [pkg1](./pkg1.md) |  |
+|  [pkg2](./pkg2.md) |  |
 `);
 
     const constructorDoc = await fs.readFile(
