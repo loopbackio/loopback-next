@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.8.0](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@1.7.5...@loopback/testlab@1.8.0) (2019-09-06)
+
+
+### Features
+
+* **testlab:** add TestLab.writeJsonFile ([baa993b](https://github.com/strongloop/loopback-next/commit/baa993b))
+
+
+
+
+
 ## [1.7.5](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@1.7.4...@loopback/testlab@1.7.5) (2019-09-03)
 
 

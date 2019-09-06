@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@2.2.0...@loopback/authentication@3.0.0) (2019-09-06)
+
+
+### Bug Fixes
+
+* **authentication:** add breaking change notice ([4122488](https://github.com/strongloop/loopback-next/commit/4122488))
+
+
+### BREAKING CHANGES
+
+* **authentication:** PR #3590 rewrote type UserProfile, add the missing
+* **authentication:** tag here to amend the one in #3590
+
+
+
+
+
 # [2.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@2.1.11...@loopback/authentication@2.2.0) (2019-09-03)
 
 

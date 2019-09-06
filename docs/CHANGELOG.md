@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.30.0...@loopback/docs@2.0.0) (2019-09-06)
+
+
+### Bug Fixes
+
+* **docs:** typo in example ([030360b](https://github.com/strongloop/loopback-next/commit/030360b))
+
+
+### Documentation
+
+* update the user profile related docs ([0475fe6](https://github.com/strongloop/loopback-next/commit/0475fe6))
+
+
+### BREAKING CHANGES
+
+* PR #3590 rewrote type UserProfile, add the missing
+* tag here to amend the one in #3590
+
+
+
+
+
 # [1.30.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.29.3...@loopback/docs@1.30.0) (2019-09-03)
 
 

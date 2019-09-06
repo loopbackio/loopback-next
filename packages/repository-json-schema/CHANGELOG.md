@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.7](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@1.9.6...@loopback/repository-json-schema@1.9.7) (2019-09-06)
+
+
+### Bug Fixes
+
+* **repository-json-schema:** allow recursive model definitions ([1221e0b](https://github.com/strongloop/loopback-next/commit/1221e0b))
+
+
+
+
+
 ## [1.9.6](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@1.9.5...@loopback/repository-json-schema@1.9.6) (2019-09-03)
 
 **Note:** Version bump only for package @loopback/repository-json-schema

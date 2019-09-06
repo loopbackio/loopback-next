@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.22.1](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.22.0...@loopback/context@1.22.1) (2019-09-06)
+
+
+### Bug Fixes
+
+* **context:** allow `inject` to be explicitly invoked for class ctor args ([6a0d4f2](https://github.com/strongloop/loopback-next/commit/6a0d4f2))
+
+
+
+
+
 # [1.22.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.21.4...@loopback/context@1.22.0) (2019-09-03)
 
 
