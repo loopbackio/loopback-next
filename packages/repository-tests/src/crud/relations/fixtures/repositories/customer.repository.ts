@@ -50,6 +50,8 @@ export function createCustomerRepo(repoClass: CrudRepositoryCtor) {
     ) {
       super(Customer, db);
       // create a has-many relation from this public method
+      // if the class extends from DefaultCrud, it can use getRelationDefinition() to
+      // check and get valid mata from entities.
       const ordersMeta = this.entityClass.definition.relations['orders'];
       this.orders = createHasManyRepositoryFactory(
         ordersMeta as HasManyDefinition,
