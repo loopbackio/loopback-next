@@ -11,8 +11,6 @@ import {
   DEFAULT_APIDOCS_EXTRACTION_PATH,
   DEFAULT_APIDOCS_GENERATION_PATH,
   getPackagesWithTsDocs,
-  getUnscopedPackageName,
-  LernaPackage,
 } from './helper';
 
 const debug = debugFactory('loopback:tsdocs');
@@ -40,58 +38,8 @@ export async function updateApiDocs(options: ApiDocsOptions = {}) {
 
   const found = await addJekyllMetadata(packages[0].rootPath, options);
   if (found) {
-    await generateIndex(packages, options);
+    // await generateIndex(packages, options);
   }
-}
-
-/**
- * Generate `index.md` for apidocs
- *
- * @param packages - Lerna packages
- * @param options - Apidocs options
- */
-async function generateIndex(
-  packages: LernaPackage[],
-  options: ApiDocsOptions,
-) {
-  const lernaRootDir = packages[0].rootPath;
-  const apiDocs = [
-    `---
-lang: en
-title: 'API docs'
-keywords: LoopBack 4.0, LoopBack 4
-sidebar: lb4_sidebar
-permalink: /doc/en/lb4/apidocs.index.html
----
-
-## API Docs`,
-  ];
-
-  for (const pkg of packages) {
-    const pkgName = getUnscopedPackageName(pkg.name);
-    apiDocs.push(`- [${pkg.name}](${pkgName}.md)`);
-  }
-
-  apiDocs.push('\n');
-
-  /* istanbul ignore if  */
-  if (options.dryRun) {
-    console.log(apiDocs.join('\n'));
-    return;
-  }
-
-  const apiDocsIndex = path.join(
-    lernaRootDir,
-    options.apiDocsGenerationPath!,
-    'index.md',
-  );
-
-  /* istanbul ignore if  */
-  if (!options.silent) {
-    console.log('Generating %s', path.relative(process.cwd(), apiDocsIndex));
-  }
-  await fs.ensureDir(path.resolve(apiDocsIndex, '..'));
-  await fs.writeFile(apiDocsIndex, apiDocs.join('\n'));
 }
 
 /**
@@ -113,9 +61,9 @@ async function addJekyllMetadata(
   const apiFiles = await fs.readdir(apiDocsRoot);
   for (const f of apiFiles) {
     /* istanbul ignore if  */
-    if (!f.endsWith('.md') || f === 'index.md') continue;
+    if (!f.endsWith('.md')) continue;
     const name = f.replace(/\.md$/, '');
-    const isPackage = f.match(/^[^\.]+.md$/);
+    const isPackage = f.match(/^[^\.]+.md$/) && f !== 'index.md';
 
     /* istanbul ignore if  */
     if (!options.silent) {
