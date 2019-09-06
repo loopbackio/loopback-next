@@ -94,6 +94,32 @@ the default behavior of API endpoints:
   additional model-config options to further tweak the behavior of API
   endpoints.
 
+**Question:**
+
+Could you elaborate more about how to customize the controller functions? Like
+applying interceptors and authentication/authorization? By creating plugins?
+
+**Answer:**
+
+First of all, if you want to customize controller functions, then your project
+has most likely outgrown the simplicity offered by `@loopback/rest-crud` and
+it's time to scaffold a controller class using `lb4 controller`.
+
+Having said that, if you want to apply the same customization to multiple
+models/controllers, for example if you want to apply the same
+authentication/authorization rules, then you can:
+
+1. Fork `@loopback/rest` into your own package, or perhaps just copy the few
+   relevant files into your project.
+2. Modify the controller class as you like.
+3. You can also change the way how repositories are created (if needed).
+4. Modify the ModelApiBuilder copied from `@loobpack/rest` - give it a different
+   pattern name (not `CrudRest`).
+5. Bind your modified `ModelApiBuilder` to your app, so that the booter can find
+   it.
+6. In your model-config files, replace the `pattern` value from `CrudRest` to
+   the new builder name you choose in the step 4.
+
 ## How to review the spike
 
 I have updated `examples/todo` application to leverage this new functionality,
