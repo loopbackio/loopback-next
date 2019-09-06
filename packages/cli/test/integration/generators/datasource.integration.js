@@ -159,7 +159,24 @@ function checkBasicDataSourceFiles() {
   assert.file(expectedIndexFile);
   assert.noFile(path.join(SANDBOX_PATH, 'node_modules/memory'));
 
-  assert.fileContent(expectedTSFile, /import {inject} from '@loopback\/core';/);
+  /*
+  import {
+    inject,
+    lifeCycleObserver,
+    LifeCycleObserver,
+    ValueOrPromise,
+  } from '@loopback/core';
+  */
+  assert.fileContent(
+    expectedTSFile,
+    `import {
+  inject,
+  lifeCycleObserver,
+  LifeCycleObserver,
+  ValueOrPromise,
+} from '@loopback/core';`,
+  );
+
   assert.fileContent(
     expectedTSFile,
     /import {juggler} from '@loopback\/repository';/,
@@ -168,10 +185,12 @@ function checkBasicDataSourceFiles() {
     expectedTSFile,
     /import \* as config from '.\/ds.datasource.json';/,
   );
+  assert.fileContent(expectedTSFile, /@lifeCycleObserver\('datasource'\)/);
   assert.fileContent(
     expectedTSFile,
-    /export class DsDataSource extends juggler.DataSource {/,
+    /export class DsDataSource extends juggler.DataSource/,
   );
+  assert.fileContent(expectedTSFile, /implements LifeCycleObserver {/);
   assert.fileContent(expectedTSFile, /static dataSourceName = 'ds';/);
   assert.fileContent(expectedTSFile, /constructor\(/);
   assert.fileContent(
@@ -180,6 +199,7 @@ function checkBasicDataSourceFiles() {
   );
   assert.fileContent(expectedTSFile, /\) \{/);
   assert.fileContent(expectedTSFile, /super\(dsConfig\);/);
+  assert.fileContent(expectedTSFile, /stop\(\)\: ValueOrPromise<void>/);
 
   assert.fileContent(expectedIndexFile, /export \* from '.\/ds.datasource';/);
 }
