@@ -44,12 +44,12 @@ And voilà! We now have a set of basic APIs for todo-lists, just like that!
 In order to get our related `Todo`s for each `TodoList`, let's update the
 `schema`.
 
-In `src/models/todo-list.controller.ts`, first import `getModelSchemaRef` from
+In `src/controllers/todo-list.controller.ts`, first import `getModelSchemaRef` from
 `@loopback/rest`.
 
 Then update the following `schema`s in `responses`'s `content`:
 
-{% include code-caption.html content="src/models/todo-list.controller.ts" %}
+{% include code-caption.html content="src/controllers/todo-list.controller.ts" %}
 
 ```ts
 @get('/todo-lists', {
@@ -86,7 +86,7 @@ async findById(/*...*/) {/*...*/}
 
 Let's also update it in the `TodoController`:
 
-{% include code-caption.html content="src/models/todo.controller.ts" %}
+{% include code-caption.html content="src/controllers/todo.controller.ts" %}
 
 ```ts
 @get('/todos', {
