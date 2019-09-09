@@ -3,9 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {ModelApiConfig} from '@loopback/rest-crud';
+import {CrudRestApiConfig} from '@loopback/rest-crud';
 
-module.exports = <ModelApiConfig>{
+module.exports = <CrudRestApiConfig>{
   model: 'Todo',
   pattern: 'CrudRest',
   dataSource: 'db',

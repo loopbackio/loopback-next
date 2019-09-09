@@ -14,8 +14,6 @@ export type ModelApiConfig = {
   pattern: string;
   // E.g. 'db'
   dataSource: string;
-  // E.g. '/products'
-  basePath: string;
 
   [patternSpecificSetting: string]: unknown;
 };

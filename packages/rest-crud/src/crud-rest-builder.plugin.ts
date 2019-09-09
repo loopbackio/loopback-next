@@ -22,6 +22,11 @@ import {defineRepositoryClass} from './repository-builder';
 
 const debug = debugFactory('loopback:boot:crud-rest');
 
+export interface CrudRestApiConfig extends ModelApiConfig {
+  // E.g. '/products'
+  basePath: string;
+}
+
 @bind(asModelApiBuilder)
 export class CrudRestApiBuilder implements ModelApiBuilder {
   readonly pattern: string = 'CrudRest';
@@ -29,11 +34,19 @@ export class CrudRestApiBuilder implements ModelApiBuilder {
   build(
     application: ApplicationWithRepositories,
     modelClass: typeof Model & {prototype: Model},
-    config: ModelApiConfig,
+    cfg: ModelApiConfig,
   ): Promise<void> {
+    const modelName = modelClass.name;
+    const config = cfg as CrudRestApiConfig;
+    if (!config.basePath) {
+      throw new Error(
+        `Missing required field "basePath" in configuration for model ${modelName}.`,
+      );
+    }
+
     if (!(modelClass.prototype instanceof Entity)) {
       throw new Error(
-        `CrudRestController requires an Entity, Models are not supported. (Model name: ${modelClass.name})`,
+        `CrudRestController requires an Entity, Models are not supported. (Model name: ${modelName})`,
       );
     }
     const entityClass = modelClass as typeof Entity & {prototype: Entity};
@@ -54,7 +67,7 @@ export class CrudRestApiBuilder implements ModelApiBuilder {
 
 function setupCrudRepository(
   entityClass: typeof Entity & {prototype: Entity},
-  modelConfig: ModelApiConfig,
+  modelConfig: CrudRestApiConfig,
 ): Class<EntityCrudRepository<Entity, unknown>> {
   const repositoryClass = defineRepositoryClass(entityClass);
 
@@ -69,7 +82,7 @@ function setupCrudRepository(
 
 function setupCrudRestController(
   entityClass: typeof Entity & {prototype: Entity},
-  modelConfig: ModelApiConfig,
+  modelConfig: CrudRestApiConfig,
 ): ControllerClass {
   const controllerClass = defineCrudRestController(
     entityClass,
