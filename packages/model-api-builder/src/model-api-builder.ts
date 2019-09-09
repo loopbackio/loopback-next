@@ -17,7 +17,7 @@ export const MODEL_API_BUILDER_PLUGINS = 'model-api-builders';
  */
 export interface ModelApiBuilder {
   readonly pattern: string; // e.g. CrudRest
-  setup(
+  build(
     application: ApplicationWithRepositories,
     modelClass: typeof Model & {prototype: Model},
     config: ModelApiConfig,

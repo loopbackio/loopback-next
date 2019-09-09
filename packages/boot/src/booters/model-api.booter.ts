@@ -77,7 +77,7 @@ export class ModelApiBooter extends BaseArtifactBooter {
     );
 
     const builder = await this.getApiBuilderForPattern(cfg.pattern);
-    await builder.setup(this.app, modelClass, cfg);
+    await builder.build(this.app, modelClass, cfg);
   }
 
   async getApiBuilderForPattern(pattern: string): Promise<ModelApiBuilder> {

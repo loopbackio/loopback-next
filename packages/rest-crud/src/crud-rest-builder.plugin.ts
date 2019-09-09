@@ -26,7 +26,7 @@ const debug = debugFactory('loopback:boot:crud-rest');
 export class CrudRestApiBuilder implements ModelApiBuilder {
   readonly pattern: string = 'CrudRest';
 
-  setup(
+  build(
     application: ApplicationWithRepositories,
     modelClass: typeof Model & {prototype: Model},
     config: ModelApiConfig,

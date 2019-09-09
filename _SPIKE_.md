@@ -45,7 +45,7 @@ The solution has the following high-level parts:
 1. A new package `@loopback/model-api-builder` defines the contract for plugins
    (extensions) contributing repository & controller builders.
 
-2. A new booter `RestBooter` that loads all JSON files from
+2. A new booter `ModelApiBooter` that loads all JSON files from
    `/public-models/{model-name}.config.json`, resolves model name into a model
    class (via Application context), finds model api builder using
    Extension/ExtensionPoint pattern and delegates the remaining work to the
