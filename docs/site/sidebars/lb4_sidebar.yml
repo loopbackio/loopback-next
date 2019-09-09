@@ -384,6 +384,10 @@ children:
     url: DataSource-generator.html
     output: 'web, pdf'
 
+  - title: 'Import models from LoopBack 3'
+    url: Importing-LB3-models.html
+    output: 'web, pdf'
+
   - title: 'Model generator'
     url: Model-generator.html
     output: 'web, pdf'

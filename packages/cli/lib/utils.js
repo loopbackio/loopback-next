@@ -564,6 +564,7 @@ exports.dataSourceToJSONFileName = function(dataSourceClass) {
 };
 
 exports.stringifyModelSettings = function(modelSettings) {
+  if (!modelSettings || !Object.keys(modelSettings).length) return '';
   return stringifyObject(
     {settings: modelSettings},
     {
