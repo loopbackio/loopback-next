@@ -60,12 +60,16 @@ export class AuthorizationInterceptor implements Provider<Interceptor> {
 
   async intercept(invocationCtx: InvocationContext, next: Next) {
     const description = debug.enabled ? invocationCtx.description : '';
-    const metadata = getAuthorizationMetadata(
+    let metadata = getAuthorizationMetadata(
       invocationCtx.target,
       invocationCtx.methodName,
     );
     if (!metadata) {
-      debug('No authorization metadata is found %s', description);
+      debug('No authorization metadata is found for %s', description);
+    }
+    metadata = metadata || this.options.defaultMetadata;
+    if (!metadata) {
+      debug('Authorization is skipped for %s', description);
       const result = await next();
       return result;
     }
