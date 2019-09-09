@@ -177,4 +177,10 @@ export interface AuthorizationOptions {
    * rest of votes will be skipped.
    */
   precedence?: AuthorizationDecision.DENY | AuthorizationDecision.ALLOW;
+  /**
+   * Default authorization metadata if a method is not decorated with `@authorize`.
+   * If not set, no authorization will be enforced for those methods that are
+   * not associated with authorization metadata.
+   */
+  defaultMetadata?: AuthorizationMetadata;
 }
