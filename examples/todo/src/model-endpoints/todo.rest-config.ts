@@ -4,9 +4,10 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {CrudRestApiConfig} from '@loopback/rest-crud';
+import {Todo} from '../models';
 
 module.exports = <CrudRestApiConfig>{
-  model: 'Todo',
+  model: Todo,
   pattern: 'CrudRest',
   dataSource: 'db',
   basePath: '/todos',

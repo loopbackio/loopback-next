@@ -21,17 +21,18 @@ plugins to build repository & controller classes at runtime.
 
 ## Basic use
 
-Create `src/public-models` directory in your project. For each model you want to
-expose via REST API, add a new `.config.ts` file that's exporting the model
-configuration.
+Create `src/model-endpoints` directory in your project. For each model you want
+to expose via REST API, add a new `.rest-config.ts` file that's exporting the
+model configuration.
 
-Example (`src/public-models/product.config.ts`):
+Example (`src/public-models/product.rest-config.ts`):
 
 ```ts
 import {CrudRestApiConfig} from '@loopback/rest-crud';
+import {Product} from '../models';
 
 module.exports = <CrudRestApiConfig>{
-  model: 'Product',
+  model: Product,
   pattern: 'CrudRest',
   dataSource: 'db',
   basePath: '/products',
@@ -46,10 +47,12 @@ The solution has the following high-level parts:
    (extensions) contributing repository & controller builders.
 
 2. A new booter `ModelApiBooter` that loads all JSON files from
-   `/public-models/{model-name}.config.json`, resolves model name into a model
-   class (via Application context), finds model api builder using
-   Extension/ExtensionPoint pattern and delegates the remaining work to the
-   plugin.
+   `/model-endpoints/{model-name}.{api-flavour}-config.json`, resolves model
+   name into a model class (via Application context), finds model api builder
+   using Extension/ExtensionPoint pattern and delegates the remaining work to
+   the plugin. The string `{api-flavour}` will be `rest` for the initial
+   implementation, but we will also support values like `grpc` or `graphql` for
+   protocols that may be implemented in the future.
 
 3. An official model-api-builder plugin for building CRUD REST APIs using
    `DefaultCrudRepository` implementation. The plugin is implemented inside the
@@ -75,10 +78,6 @@ stack traces include model name in function names. (Compare
 `ProductController.replaceById` with `CrudRestControllerImpl.replaceById` -
 which one is more useful?)
 
-In my proposal, model-config files are in JSON format to make programmatic edits
-easier. This has a downside in TypeScript projects - these config files must
-live outside `src` because TypeScript does not copy arbitrary JSON files.
-
 ## Extensibility & customization options
 
 The proposed design enables the following opportunities to extend and customize
@@ -91,7 +90,7 @@ the default behavior of API endpoints:
   repository & controller builders provided by LB4 by their own logic.
 
 - Model configuration schema is extensible, individual plugins can define
-  additional model-config options to further tweak the behavior of API
+  additional model-endpoints options to further tweak the behavior of API
   endpoints.
 
 **Question:**
@@ -117,8 +116,8 @@ authentication/authorization rules, then you can:
    pattern name (not `CrudRest`).
 5. Bind your modified `ModelApiBuilder` to your app, so that the booter can find
    it.
-6. In your model-config files, replace the `pattern` value from `CrudRest` to
-   the new builder name you choose in the step 4.
+6. In your model-endpoints config files, replace the `pattern` value from
+   `CrudRest` to the new builder name you choose in the step 4.
 
 ## How to review the spike
 
@@ -148,35 +147,59 @@ better support this spike.
 
 **Q: Where to keep model config files?**
 
-- `/public-models/product.config.json` (JSON, must be outside src)
-- `/src/public-models/product-config.ts` (TS, can be inside src, more flexible)
+- `/model-endpoints/product.rest-config.json` (JSON, must be outside src)
+- `/src/model-endpoints/product.rest-config.ts` (TS, can be inside src, more
+  flexible)
 
 **Answer:**
 
-Let's keep them as TS files in `src/public-models`. I feel this is more
+Let's keep them as TS files in `src/model-endpoints`. I feel this is more
 consistent with the approach we use for all other artifacts (models,
 repositories, etc.). It also enables application developers to conditionally
 customize model config, e.g. depending on `process.env` variables.
 
 **Q: Load models via DI, or rather let config files to load them via require?**
 
+When models are loaded via DI, the config file specifies model as a string name:
+
 ```ts
-// in src/public-models/product-config.ts
-{
-  model: require('../models/product.model').Product,
+module.exports = {
+  model: 'Product',
+};
+```
+
+When models are imported directly, the config file specifies model as a class:
+
+```ts
+import {Product} from '../models/product.model');
+
+module.exports = {
+  model: Product,
   // ...
-}
+};
 ```
 
 **Answer**
 
-Load models via DI for consistency. We can add support for loading models via
-`require` later, based on user demand. The change will be backwards-compatible.
+Originally, I was proposing to load models via DI for consistency, leveraging a
+new model booter to load & bind model classes from source code.
+
+It turns out such approach has a catch: to make it work, we need the ModelBooter
+to be executed before ModelApiBooter, otherwise ModelApiBooter won't find the
+models in the application context. The current boot implementation does not
+support booter dependencies and I am concerned that it may be a non-trivial task
+that would unnecessarily delay delivery of the model-api-booter feature.
+
+For the initial release of model-api-booter, I am proposing to import model
+classes directly.
+
+We can add support for loading model classes via DI later, based on user demand.
+Such change will be backwards-compatible.
 
 **Q: If we use TS files, then we can get rid of the extension point too**
 
 ```ts
-// in src/public-models/product-config.ts
+// in src/models-endpoints/product.rest-config.ts
 {
   model: require('../models/product.model').Product,
   pattern: require('@loopback/rest-crud').CrudRestApiBuilder,
@@ -190,36 +213,20 @@ Load models via DI for consistency. We can add support for loading models via
 
 **Answer:**
 
-Same as for models. Use DI in the initial implementation. Add support for
-`require`-based approach later, based on user demand.
+Let's use DI for consistency. We can add support for `require`-based approach
+later, based on user demand.
 
 ## Tasks
 
-1. Add `app.model(Model, name)` API to RepositoryMixin.
+1. Implement `sandbox.writeTextFile` helper, include test coverage.
 
-- Q: Do we want to introduce `@model()` decorator for configuring dependency
-  injection? (Similar to `@repository`.)
-
-  A: No, that would clash with `@model` exported by `@loopback/repository`.
-
-- Q: Do we want to rework scaffolded repositories to receive the model class via
-  DI?
-
-  A: I feel that's preliminary at this point. Let's wait until we have a
-  (real-world) use case for that.
-
-2. Implement model booter to scan `dist/models/**/*.model.js` files and register
-   them by calling `app.model`.
-
-3. Implement `sandbox.writeTextFile` helper, include test coverage.
-
-4. Improve `@loopback/rest-crud` to create a named controller class (modify
+2. Improve `@loopback/rest-crud` to create a named controller class (modify
    `defineCrudRestController`)
 
-5. Add `defineRepositoryClass` to `@loopback/rest-crud`, this function should
+3. Add `defineRepositoryClass` to `@loopback/rest-crud`, this function should
    create a named repository class for the given Model class.
 
-6. Implement Model API booter & builder.
+4. Implement Model API booter & builder.
 
    - Add a new package `@loopback/model-api-builder`, copy the contents from
      this spike. Improve README with basic documentation for users (extension
@@ -227,12 +234,12 @@ Same as for models. Use DI in the initial implementation. Add support for
 
    - Add `ModelApiBooter` to `@loopback/boot`
 
-7. Add `CrudRestApiBuilder` to `@loopback/rest-crud`. Modify `README`, rework
+5. Add `CrudRestApiBuilder` to `@loopback/rest-crud`. Modify `README`, rework
    "Basic use" to show how to the package together with `ModelApiBooter` to go
    from a model to REST API. Move the current content of "basic use" into a new
    section, e.g. "Advanced use".
 
-8. Create a new example app based on the modified version of `examples/todo`
+6. Create a new example app based on the modified version of `examples/todo`
    shown in the spike. The app should have a single `Todo` model and use
    `ModelApiBooter` to expose the model via REST API.
 

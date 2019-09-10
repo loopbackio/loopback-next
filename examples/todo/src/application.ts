@@ -10,7 +10,6 @@ import {RestApplication} from '@loopback/rest';
 import {CrudRestComponent} from '@loopback/rest-crud';
 import {RestExplorerComponent} from '@loopback/rest-explorer';
 import * as path from 'path';
-import {Todo} from './models';
 import {MySequence} from './sequence';
 
 export class TodoListApplication extends BootMixin(
@@ -39,12 +38,5 @@ export class TodoListApplication extends BootMixin(
         nested: true,
       },
     };
-  }
-
-  async boot(): Promise<void> {
-    // temporary workaround for missing Model booter
-    this.model(Todo);
-
-    return super.boot();
   }
 }

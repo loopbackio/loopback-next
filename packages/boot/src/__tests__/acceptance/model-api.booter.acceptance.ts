@@ -4,13 +4,9 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {ApplicationConfig} from '@loopback/core';
-import {ModelApiConfig} from '@loopback/model-api-builder';
 import {
   DefaultCrudRepository,
-  Entity,
   juggler,
-  model,
-  property,
   RepositoryMixin,
 } from '@loopback/repository';
 import {RestApplication} from '@loopback/rest';
@@ -24,6 +20,7 @@ import {
 } from '@loopback/testlab';
 import {resolve} from 'path';
 import {BootMixin, ModelApiBooter} from '../..';
+import {Product} from '../fixtures/product.model';
 
 describe('rest booter acceptance tests', () => {
   let app: BooterApp;
@@ -36,28 +33,22 @@ describe('rest booter acceptance tests', () => {
   afterEach(stopApp);
 
   it('exposes models via CRUD REST API', async () => {
-    // Define the model. While we could do this via ModelBooter, it's usually
-    // easier to do so directly from code - the test is easier to read.
-    @model()
-    class Product extends Entity {
-      @property({id: true})
-      id: number;
+    await sandbox.copyFile(
+      resolve(__dirname, '../fixtures/product.model.js'),
+      'models/product.model.js',
+    );
 
-      @property({required: true})
-      name: string;
-    }
-    app.model(Product);
-
-    // Write model-config file to specify how to expose the model via API
-    const cfg: ModelApiConfig = {
-      model: 'Product',
-      pattern: 'CrudRest',
-      dataSource: 'db',
-      basePath: '/products',
-    };
     await sandbox.writeTextFile(
-      'dist/public-models/product.config.js',
-      `module.exports = ${JSON.stringify(cfg, null, 2)}`,
+      'model-endpoints/product.rest-config.js',
+      `
+const {Product} = require('../models/product.model');
+module.exports = {
+  model: Product,
+  pattern: 'CrudRest',
+  dataSource: 'db',
+  basePath: '/products',
+};
+      `,
     );
 
     // Boot & start the application
@@ -84,14 +75,13 @@ describe('rest booter acceptance tests', () => {
   class BooterApp extends BootMixin(RepositoryMixin(RestApplication)) {
     constructor(options?: ApplicationConfig) {
       super(options);
-      this.projectRoot = sandbox.path + '/dist';
+      this.projectRoot = sandbox.path;
       this.booters(ModelApiBooter);
       this.component(CrudRestComponent);
     }
   }
 
   async function givenAppWithDataSource() {
-    await sandbox.mkdir('dist');
     app = new BooterApp({
       rest: givenHttpServerConfig(),
     });

@@ -16,7 +16,7 @@ import {
   ModelApiConfig,
   MODEL_API_BUILDER_PLUGINS,
 } from '@loopback/model-api-builder';
-import {ApplicationWithRepositories, Model} from '@loopback/repository';
+import {ApplicationWithRepositories} from '@loopback/repository';
 import * as debugFactory from 'debug';
 import * as path from 'path';
 import {BootBindings} from '../keys';
@@ -72,9 +72,12 @@ export class ModelApiBooter extends BaseArtifactBooter {
       cfg,
     );
 
-    const modelClass = await this.app.get<typeof Model & {prototype: Model}>(
-      `models.${cfg.model}`,
-    );
+    const modelClass = cfg.model;
+    if (typeof modelClass !== 'function') {
+      throw new Error(
+        `Invalid "model" field. Expected a Model class, found ${modelClass}`,
+      );
+    }
 
     const builder = await this.getApiBuilderForPattern(cfg.pattern);
     await builder.build(this.app, modelClass, cfg);
@@ -98,7 +101,7 @@ export class ModelApiBooter extends BaseArtifactBooter {
  * Default ArtifactOptions for ControllerBooter.
  */
 export const RestDefaults: ArtifactOptions = {
-  dirs: ['public-models'],
-  extensions: ['.config.js'],
+  dirs: ['model-endpoints'],
+  extensions: ['-config.js'],
   nested: true,
 };
