@@ -3,8 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {ApplicationConfig} from '@loopback/core';
 import {TodoListApplication} from './application';
+import {ApplicationConfig} from '@loopback/core';
 
 export async function main(options: ApplicationConfig = {}) {
   const app = new TodoListApplication(options);
@@ -17,6 +17,7 @@ export async function main(options: ApplicationConfig = {}) {
 }
 
 // re-exports for our benchmark, not needed for the tutorial itself
-export * from '@loopback/rest';
-export * from './models';
 export {TodoListApplication};
+
+export * from './models';
+export * from '@loopback/rest';
