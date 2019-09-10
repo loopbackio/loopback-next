@@ -1,3 +1,119 @@
+## Q4 2019 Roadmap
+
+### Overview
+
+In Q4 2019, here are the stories we would like to focus on:
+
+- wrap up on authentication and authorization stories
+- continue with `Inclusion of Related Models` epic
+- add more support for declarative support - From model definition to REST API
+  with no custom repository/controller classes
+- revisit the migration story targeting to have a migration guide
+
+### Scope
+
+#### Authentication
+
+- Token based authentication in API Explorer (Spike done in Q3)
+- Refactoring, https://github.com/strongloop/loopback-next/issues/1996
+
+#### Authorization
+
+- Update authorization tutorial
+  https://github.com/strongloop/loopback-next/issues/3694
+- Add authorization to shopping example,
+  https://github.com/strongloop/loopback-next/issues/3695
+
+#### Inclusion of related models
+
+Finish the MVP scope as tracked by Epic
+https://github.com/strongloop/loopback-next/issues/1352
+
+- Reject create/update requests when data contains navigational properties
+  https://github.com/strongloop/loopback-next/issues/3439
+- Add inclusion resolvers to lb4 relation CLI
+  https://github.com/strongloop/loopback-next/issues/3451
+- Verify relation type in resolve{Relation}Metadata
+  https://github.com/strongloop/loopback-next/issues/3440
+- Run repository tests for PostgreSQL
+  https://github.com/strongloop/loopback-next/issues/3436
+- Run repository tests for Cloudant
+  https://github.com/strongloop/loopback-next/issues/3437
+- Blog post: announce Inclusion of related models
+  https://github.com/strongloop/loopback-next/issues/3452
+
+See the post-MVP Epic for the list of stories out of scope of the initial
+release: https://github.com/strongloop/loopback-next/issues/3585
+
+#### From model definition to REST API with no custom repository/controller classes
+
+The Epic: https://github.com/strongloop/loopback-next/issues/2036
+
+- Improve `defineCrudRestController` to create a named controller class
+  https://github.com/strongloop/loopback-next/issues/3732
+- Add `defineCrudRepositoryClass` - a helper to create a named repository class
+  https://github.com/strongloop/loopback-next/issues/3733
+- Model API booter & builder
+  https://github.com/strongloop/loopback-next/issues/3736
+- Add CrudRestApiBuilder to `@loopback/rest-crud`
+  https://github.com/strongloop/loopback-next/issues/3737
+- Example app showing CrudRestApiBuilder
+  https://github.com/strongloop/loopback-next/issues/3738
+
+Stretch goals:
+
+- From relation definition to REST API with auto-generated repository/controller
+  classes https://github.com/strongloop/loopback-next/issues/2483
+- From datasource config to Service REST API with no proxy/controller classes
+  https://github.com/strongloop/loopback-next/issues/3717
+
+#### Migration guide
+
+The Epic: https://github.com/strongloop/loopback-next/issues/453
+
+- Spike 1: General runtime - see
+  https://github.com/strongloop/loopback-next/issues/3718
+- Spike 2: Authentication & authorization - see
+  https://github.com/strongloop/loopback-next/issues/3719
+- Prioritize & plan follow-up issues identified in the spikes
+
+#### ObjectID Coercion
+
+The Epic: https://github.com/strongloop/loopback-next/issues/3720
+
+- `Model.toObject()` should preserve prototypes (e.g. `Date` and `ObjectID`
+  values) https://github.com/strongloop/loopback-next/issues/3607
+- Spike https://github.com/strongloop/loopback-next/issues/3456
+
+#### Production deployment/logging/monitoring, https://github.com/strongloop/loopback-next/issues/1054
+
+- Blog post showing the microservice version of shopping example and mention
+  what's the gaps, https://github.com/strongloop/loopback-next/issues/3715
+
+#### Test/Enable Node.js 12 support for connectors - https://github.com/strongloop/loopback-next/issues/3072
+
+- loopback-connector-kv-redis
+- loopback-connector-grpc
+
+#### Preparation of CASCON workshop and poster
+
+- Workshop "Write scalable and extensible Node.js applications using LoopBack
+  4", https://pheedloop.com/cascon/site/sessions/?id=OhNsKW
+- Poster "REST APIs with LoopBack 4 and OpenAPI 3",
+  https://pheedloop.com/cascon/site/sessions/?id=DugCzZ
+
+#### Infrastructure
+
+- Fix CI for loopback@3.x. https://github.com/strongloop/loopback/issues/4252
+
+### Stretch Goals
+
+- Review extensions that are upvoted by lots of people.  
+  https://github.com/strongloop/loopback-next/issues/512
+- Support ENUM type, https://github.com/strongloop/loopback-next/issues/3033
+
+---
+
 ## Q3 Roadmap
 
 ### Overview
