@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "Root",
   "scripts": {
-    "clean": "../../../../node_modules/.bin/lerna run clean",
-    "bootstrap": "../../../../node_modules/.bin/lerna bootstrap",
-    "build": "npm -s run bootstrap && npm -s run clean && ../../../../node_modules/.bin/lerna run build"
+    "clean": "node run-lerna run clean",
+    "bootstrap": "node run-lerna bootstrap",
+    "build": "npm -s run bootstrap && npm -s run clean && node run-lerna run build"
   },
   "author": "",
   "license": "MIT",
