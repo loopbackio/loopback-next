@@ -128,7 +128,7 @@ like. Take a look at how acceptance level tests are accessing the repository
 created by `rest-crud` plugin.
 
 The booter is implemented in
-[`packages/booter-rest/src/rest.booter.ts`](https://github.com/strongloop/loopback-next/blob/spike/crud-rest-booter/packages/booter-rest/src/rest.booter.ts).
+[`packages/boot/src/model-api.booter.ts`](https://github.com/strongloop/loopback-next/blob/spike/crud-rest-booter/packages/boot/src/booters/model-api.booter.ts).
 Initially, I created a new package for this booter, but on the second thought, I
 think this booter is generic enough to be included in `@loopback/boot` under a
 different name `ModelApiBooter`.
@@ -136,7 +136,7 @@ different name `ModelApiBooter`.
 The plugin (extension) contract is defined in two files:
 
 - [`packages/model-api-builder/src/model-api-builder.ts`](https://github.com/strongloop/loopback-next/blob/spike/crud-rest-booter/packages/model-api-builder/src/model-api-builder.ts)
-- [`loopback-next/packages/model-api-builder/src/model-api-config.ts`](https://github.com/strongloop/loopback-next/blob/spike/crud-rest-booter/packages/model-api-builder/src/model-api-config.ts)
+- [`packages/model-api-builder/src/model-api-config.ts`](https://github.com/strongloop/loopback-next/blob/spike/crud-rest-booter/packages/model-api-builder/src/model-api-config.ts)
 
 The CRUD REST API builder:
 [`packages/rest-crud/src/crud-rest-builder.plugin.ts`](https://github.com/strongloop/loopback-next/blob/spike/crud-rest-booter/packages/rest-crud/src/crud-rest-builder.plugin.ts)
