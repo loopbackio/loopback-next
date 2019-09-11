@@ -270,12 +270,8 @@ on constructor to avoid "Circular dependency" error (see
 
 ## Querying related models
 
-LoopBack 4 has the concept of an `inclusion resolver` in relations, which helps
-to query data through an `include` filter. An inclusion resolver is a function
-that can fetch target models for the given list of source model instances.
-LoopBack 4 creates a different inclusion resolver for each relation type.
-
-The following is an example for using BelongsTo inclusion resolvers:
+A `belongsTo` relation has an `inclusionResolver` function as a property. It
+fetches target models for the given list of source model instances.
 
 Use the relation between `Customer` and `Order` we show above, an `Order`
 belongs to a `Customer`.

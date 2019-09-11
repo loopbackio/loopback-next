@@ -103,8 +103,6 @@ export function belongsToRelationAcceptance(
       });
       await customerRepo.deleteAll();
 
-      await orderRepo.deleteAll();
-
       await expect(findCustomerOfOrder(order.id)).to.be.rejectedWith(
         EntityNotFoundError,
       );

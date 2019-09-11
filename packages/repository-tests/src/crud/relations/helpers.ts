@@ -54,6 +54,10 @@ export function givenBoundCrudRepositories(
     'customers',
     customerRepo.customers.inclusionResolver,
   );
+  customerRepo.inclusionResolvers.set(
+    'address',
+    customerRepo.address.inclusionResolver,
+  );
 
   const orderRepoClass = createOrderRepo(repositoryClass);
   const orderRepo: OrderRepository = new orderRepoClass(
