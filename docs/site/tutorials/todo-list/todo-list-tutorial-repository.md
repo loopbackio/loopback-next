@@ -87,69 +87,51 @@ export class TodoListRepository extends DefaultCrudRepository<
 
 ### Inclusion of Related Models
 
-To get the related `Todo` object for each `TodoList`, we have to override the
-`find` and `findById` functions.
+To get the related `Todo` objects for each `TodoList`, we can use register a
+custom
+[`InclusionResolver`](https://loopback.io/doc/en/lb4/apidocs.repository.inclusionresolver.html)
+in the `TodoList` repository.
 
-First add the following imports:
-
-```ts
-import {Filter, Options} from '@loopback/repository';
-import {TodoListWithRelations} from '../models';
-```
-
-Add the following two functions after the constructor:
-
-{% include code-caption.html content="src/repositories/todo-list.repository.ts" %}
+First, add the following import:
 
 ```ts
-async find(
-  filter?: Filter<TodoList>,
-  options?: Options,
-): Promise<TodoListWithRelations[]> {
-  // Prevent juggler for applying "include" filter
-  // Juggler is not aware of LB4 relations
-  const include = filter && filter.include;
-  filter = {...filter, include: undefined};
-  const result = await super.find(filter, options);
+import {InclusionResolver} from '@loopback/repository';
+```
 
-  // poor-mans inclusion resolver, this should be handled by DefaultCrudRepo
-  // and use `inq` operator to fetch related todos in fewer DB queries
-  // this is a temporary implementation, please see
-  // https://github.com/strongloop/loopback-next/issues/3195
-  if (include && include.length && include[0].relation === 'todos') {
-    await Promise.all(
-      result.map(async r => {
-        r.todos = await this.todos(r.id).find();
-      }),
-    );
-  }
+Next, in the constructor, add the following custom resolver:
 
-  return result;
-}
+```ts
+export class TodoListRepository extends DefaultCrudRepository</*..*/> {
+  // ...
+  constructor(
+    //db, relation factories setup
 
-async findById(
-  id: typeof TodoList.prototype.id,
-  filter?: Filter<TodoList>,
-  options?: Options,
-): Promise<TodoListWithRelations> {
-  // Prevent juggler for applying "include" filter
-  // Juggler is not aware of LB4 relations
-  const include = filter && filter.include;
-  filter = {...filter, include: undefined};
+    // add the following code to build a custom resolver
+    const todosResolver: InclusionResolver<TodoList, Todo> = async todoLists => {
+      const todos: Todo[][] = [];
+      for (const todoList of todoLists) {
+        const todo = await this.todos(todoList.id).find();
+        todos.push(todo);
+      }
 
-  const result = await super.findById(id, filter, options);
-
-  // poor-mans inclusion resolver, this should be handled by DefaultCrudRepo
-  // and use `inq` operator to fetch related todos in fewer DB queries
-  // this is a temporary implementation, please see
-  // https://github.com/strongloop/loopback-next/issues/3195
-  if (include && include.length && include[0].relation === 'todos') {
-    result.todos = await this.todos(result.id).find();
-  }
-
-  return result;
+      return todos;
+    };
+    // the resolver needs to be registered before using
+    this.registerInclusionResolver('todos', todosResolver);
+  )
 }
 ```
+
+After that, we need to register this resolver to the repository class, which we
+can do as follows:
+
+```ts
+this.registerInclusionResolver('todos', todosResolver);
+```
+
+{% include note.html content="
+This is a temporary implementation until we implement our relation resolvers. See [GitHub issue #3450](https://github.com/strongloop/loopback-next/issues/3450) for details.
+" %}
 
 Now when you get a `TodoList`, a `todos` property will be included that contains
 your related `Todo`s, for example:
@@ -174,53 +156,30 @@ Let's do the same on the `TodoRepository`:
 {% include code-caption.html content="src/repositories/todo.repository.ts" %}
 
 ```ts
-async find(
-  filter?: Filter<Todo>,
-  options?: Options,
-): Promise<TodoWithRelations[]> {
-  // Prevent juggler for applying "include" filter
-  // Juggler is not aware of LB4 relations
-  const include = filter && filter.include;
-  filter = {...filter, include: undefined};
+// .. other imports
+import {InclusionResolver} from '@loopback/repository';
+```
 
-  const result = await super.find(filter, options);
+```ts
+export class TodoRepository extends DefaultCrudRepository</*..*/> {
+  // ...
+  constructor(
+    //db, factories setup
 
-  // poor-mans inclusion resolver, this should be handled by DefaultCrudRepo
-    // and use `inq` operator to fetch related todo-lists in fewer DB queries
-    // this is a temporary implementation, please see
-    // https://github.com/strongloop/loopback-next/issues/3195
-  if (include && include.length && include[0].relation === 'todoList') {
-    await Promise.all(
-      result.map(async r => {
-        r.todoList = await this.todoList(r.id);
-      }),
-    );
-  }
+    // add the following code to build/register a custom resolver
+    const todoListResolver: InclusionResolver<Todo, TodoList> = async todos => {
+      const todoLists = [];
 
-  return result;
-}
+      for (const todo of todos) {
+        const todoList = await this.todoList(todo.id);
+        todoLists.push(todoList);
+      }
 
-async findById(
-  id: typeof Todo.prototype.id,
-  filter?: Filter<Todo>,
-  options?: Options,
-): Promise<TodoWithRelations> {
-  // Prevent juggler for applying "include" filter
-  // Juggler is not aware of LB4 relations
-  const include = filter && filter.include;
-  filter = {...filter, include: undefined};
+      return todoLists;
+    };
 
-  const result = await super.findById(id, filter, options);
-
-  // poor-mans inclusion resolver, this should be handled by DefaultCrudRepo
-  // and use `inq` operator to fetch related todo-lists in fewer DB queries
-  // this is a temporary implementation, please see
-  // https://github.com/strongloop/loopback-next/issues/3195
-  if (include && include.length && include[0].relation === 'todoList') {
-    result.todoList = await this.todoList(result.id);
-  }
-
-  return result;
+    this.registerInclusionResolver('todoList', todoListResolver);
+  )
 }
 ```
 
