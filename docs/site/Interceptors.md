@@ -56,7 +56,7 @@ method level interceptors. For example, the following code registers a global
 app
   .bind('caching-interceptor')
   .toProvider(CachingInterceptorProvider)
-  .apply(asGlobalInterceptor);
+  .apply(asGlobalInterceptor('caching'));
 ```
 
 Global interceptors are also executed for route handler functions without a
@@ -340,8 +340,17 @@ import {asGlobalInterceptor} from '@loopback/context';
 app
   .bind('interceptors.MetricsInterceptor')
   .toProvider(MetricsInterceptorProvider)
-  .apply(asGlobalInterceptor);
+  .apply(asGlobalInterceptor('metrics'));
 ```
+
+Please note `asGlobalInterceptor` is a factory function to create binding
+templates that mark bindings of global interceptors. It takes an optional
+`group` name to control the order of invocation. For example:
+
+- `asGlobalInterceptor('metrics')`: mark a binding as a global interceptor in
+  the `metrics` group
+- - `asGlobalInterceptor()`: mark a binding as a global interceptor in the
+    default group
 
 ### Order of invocation for interceptors
 
