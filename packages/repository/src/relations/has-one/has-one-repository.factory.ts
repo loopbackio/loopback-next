@@ -7,16 +7,27 @@ import * as debugFactory from 'debug';
 import {DataObject} from '../../common-types';
 import {Entity} from '../../model';
 import {EntityCrudRepository} from '../../repositories/repository';
-import {Getter, HasOneDefinition} from '../relation.types';
+import {Getter, HasOneDefinition, InclusionResolver} from '../relation.types';
 import {resolveHasOneMetadata} from './has-one.helpers';
+import {createHasOneInclusionResolver} from './has-one.inclusion-resolver';
 import {DefaultHasOneRepository, HasOneRepository} from './has-one.repository';
 
 const debug = debugFactory('loopback:repository:has-one-repository-factory');
 
-export type HasOneRepositoryFactory<Target extends Entity, ForeignKeyType> = (
-  fkValue: ForeignKeyType,
-) => HasOneRepository<Target>;
+export interface HasOneRepositoryFactory<
+  Target extends Entity,
+  ForeignKeyType
+> {
+  /**
+   * Invoke the function to obtain HasOneRepository.
+   */
+  (fkValue: ForeignKeyType): HasOneRepository<Target>;
 
+  /**
+   * Use `resolver` property to obtain an InclusionResolver for this relation.
+   */
+  inclusionResolver: InclusionResolver<Entity, Target>;
+}
 /**
  * Enforces a constraint on a repository based on a relationship contract
  * between models. For example, if a Customer model is related to an Address model
@@ -40,7 +51,9 @@ export function createHasOneRepositoryFactory<
 ): HasOneRepositoryFactory<Target, ForeignKeyType> {
   const meta = resolveHasOneMetadata(relationMetadata);
   debug('Resolved HasOne relation metadata: %o', meta);
-  return function(fkValue: ForeignKeyType) {
+  const result: HasOneRepositoryFactory<Target, ForeignKeyType> = function(
+    fkValue: ForeignKeyType,
+  ) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const constraint: any = {[meta.keyTo]: fkValue};
     return new DefaultHasOneRepository<
@@ -49,4 +62,9 @@ export function createHasOneRepositoryFactory<
       EntityCrudRepository<Target, TargetID>
     >(targetRepositoryGetter, constraint as DataObject<Target>);
   };
+  result.inclusionResolver = createHasOneInclusionResolver(
+    meta,
+    targetRepositoryGetter,
+  );
+  return result;
 }

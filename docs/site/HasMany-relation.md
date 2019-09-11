@@ -317,10 +317,8 @@ issue](https://github.com/strongloop/loopback-next/issues/1179) to follow the di
 
 ## Querying related models
 
-LoopBack 4 has the concept of an `inclusion resolver` in relations, which helps
-to query data through an `include` filter. An inclusion resolver is a function
-that can fetch target models for the given list of source model instances.
-LoopBack 4 creates a different inclusion resolver for each relation type.
+A `hasMany` relation has an `inclusionResolver` function as a property. It
+fetches target models for the given list of source model instances.
 
 Use the relation between `Customer` and `Order` we show above, a `Customer` has
 many `Order`s.
