@@ -7,17 +7,11 @@ import {Getter, inject} from '@loopback/core';
 import {
   BelongsToAccessor,
   DefaultCrudRepository,
-  Filter,
-  Options,
+  InclusionResolver,
   repository,
 } from '@loopback/repository';
 import {DbDataSource} from '../datasources';
-import {
-  TodoList,
-  TodoListImage,
-  TodoListImageRelations,
-  TodoListImageWithRelations,
-} from '../models';
+import {TodoList, TodoListImage, TodoListImageRelations} from '../models';
 import {TodoListRepository} from './todo-list.repository';
 
 export class TodoListImageRepository extends DefaultCrudRepository<
@@ -39,55 +33,23 @@ export class TodoListImageRepository extends DefaultCrudRepository<
       'todoList',
       todoListRepositoryGetter,
     );
-  }
 
-  async find(
-    filter?: Filter<TodoListImage>,
-    options?: Options,
-  ): Promise<TodoListImageWithRelations[]> {
-    // Prevent juggler for applying "include" filter
-    // Juggler is not aware of LB4 relations
-    const include = filter && filter.include;
-    filter = {...filter, include: undefined};
+    // this is a temporary implementation until
+    // https://github.com/strongloop/loopback-next/issues/3450 is landed
+    const todoListResolver: InclusionResolver<
+      TodoListImage,
+      TodoList
+    > = async images => {
+      const todoLists = [];
 
-    const result = await super.find(filter, options);
+      for (const image of images) {
+        const todoList = await this.todoList(image.id);
+        todoLists.push(todoList);
+      }
 
-    // poor-mans inclusion resolver, this should be handled by DefaultCrudRepo
-    // and use `inq` operator to fetch related todo-lists in fewer DB queries
-    // this is a temporary implementation, please see
-    // https://github.com/strongloop/loopback-next/issues/3195
-    if (include && include.length && include[0].relation === 'todoList') {
-      await Promise.all(
-        result.map(async r => {
-          // eslint-disable-next-line require-atomic-updates
-          r.todoList = await this.todoList(r.id);
-        }),
-      );
-    }
+      return todoLists;
+    };
 
-    return result;
-  }
-
-  async findById(
-    id: typeof TodoListImage.prototype.id,
-    filter?: Filter<TodoListImage>,
-    options?: Options,
-  ): Promise<TodoListImageWithRelations> {
-    // Prevent juggler for applying "include" filter
-    // Juggler is not aware of LB4 relations
-    const include = filter && filter.include;
-    filter = {...filter, include: undefined};
-
-    const result = await super.findById(id, filter, options);
-
-    // poor-mans inclusion resolver, this should be handled by DefaultCrudRepo
-    // and use `inq` operator to fetch related todo-lists in fewer DB queries
-    // this is a temporary implementation, please see
-    // https://github.com/strongloop/loopback-next/issues/3195
-    if (include && include.length && include[0].relation === 'todoList') {
-      result.todoList = await this.todoList(result.id);
-    }
-
-    return result;
+    this.registerInclusionResolver('todoList', todoListResolver);
   }
 }
