@@ -142,6 +142,33 @@ function isInclusionAllowed<T extends Entity, Relations extends object = {}>(
 }
 
 /**
+ * Returns an array of instances. The order of arrays is based on
+ * the order of sourceIds
+ *
+ * @param sourceIds - One value or array of values of the target key
+ * @param targetEntities - target entities that satisfy targetKey's value (ids).
+ * @param targetKey - name of the target key
+ *
+ * @return
+ */
+export function flattenTargetsOfOneToOneRelation<
+  SourceWithRelations extends Entity,
+  Target extends Entity
+>(
+  sourceIds: unknown[],
+  targetEntities: Target[],
+  targetKey: StringKeyOf<Target>,
+): (Target | undefined)[] {
+  const lookup = buildLookupMap<unknown, Target, Target>(
+    targetEntities,
+    targetKey,
+    reduceAsSingleItem,
+  );
+
+  return flattenMapByKeys(sourceIds, lookup);
+}
+
+/**
  * Returns an array of instances from the target map. The order of arrays is based on
  * the order of sourceIds
  *
@@ -235,8 +262,8 @@ export function reduceAsSingleItem<T>(_acc: T | undefined, it: T) {
 
 /**
  * Dedupe an array
- * @param {Array} input - an array of sourceIds
- * @returns {Array} an array with unique items
+ * @param input - an array of sourceIds
+ * @returns an array with unique items
  */
 export function deduplicate<T>(input: T[]): T[] {
   const uniqArray: T[] = [];

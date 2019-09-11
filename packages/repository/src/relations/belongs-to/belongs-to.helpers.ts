@@ -2,10 +2,11 @@
 // Node module: @loopback/repository
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
+
 import * as debugFactory from 'debug';
 import {InvalidRelationError} from '../../errors';
 import {isTypeResolver} from '../../type-resolver';
-import {BelongsToDefinition} from '../relation.types';
+import {BelongsToDefinition, RelationType} from '../relation.types';
 
 const debug = debugFactory('loopback:repository:belongs-to-helpers');
 
@@ -23,6 +24,11 @@ export type BelongsToResolvedDefinition = BelongsToDefinition & {keyTo: string};
  * @internal
  */
 export function resolveBelongsToMetadata(relationMeta: BelongsToDefinition) {
+  if ((relationMeta.type as RelationType) !== RelationType.belongsTo) {
+    const reason = 'relation type must be BelongsTo';
+    throw new InvalidRelationError(reason, relationMeta);
+  }
+
   if (!isTypeResolver(relationMeta.target)) {
     const reason = 'target must be a type resolver';
     throw new InvalidRelationError(reason, relationMeta);

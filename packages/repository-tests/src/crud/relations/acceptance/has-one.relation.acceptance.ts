@@ -41,6 +41,7 @@ export function hasOneRelationAcceptance(
         ({customerRepo, addressRepo} = givenBoundCrudRepositories(
           ctx.dataSource,
           repositoryClass,
+          features,
         ));
         const models = [Customer, Address];
         await ctx.dataSource.automigrate(models.map(m => m.name));
