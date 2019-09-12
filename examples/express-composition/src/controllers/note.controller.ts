@@ -43,7 +43,7 @@ export class NoteController {
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(Note, {exclude: ['id']}),
+          schema: getModelSchemaRef(Note, {title: 'NewNote', exclude: ['id']}),
         },
       },
     })

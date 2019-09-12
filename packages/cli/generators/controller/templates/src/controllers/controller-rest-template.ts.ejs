@@ -38,7 +38,10 @@ export class <%= className %>Controller {
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(<%= modelName %>, {exclude: ['<%= id %>']}),
+          schema: getModelSchemaRef(<%= modelName %>, {
+            title: 'New<%= modelName %>',
+            exclude: ['<%= id %>'],
+          }),
         },
       },
     })

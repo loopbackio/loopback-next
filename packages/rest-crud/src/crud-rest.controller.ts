@@ -152,7 +152,10 @@ export function defineCrudRestController<
       ...response.model(200, `${modelName} instance created`, modelCtor),
     })
     async create(
-      @body(modelCtor, {exclude: modelCtor.getIdProperties() as (keyof T)[]})
+      @body(modelCtor, {
+        title: `New${modelName}`,
+        exclude: modelCtor.getIdProperties() as (keyof T)[],
+      })
       data: Omit<T, IdName>,
     ): Promise<T> {
       return this.repository.create(
