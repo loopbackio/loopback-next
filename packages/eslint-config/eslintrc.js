@@ -146,6 +146,7 @@ module.exports = {
 
     '@typescript-eslint/no-empty-function': 'off',
     '@typescript-eslint/consistent-type-assertions': 'off',
+    '@typescript-eslint/no-misused-promises': 'error',
   },
 };
 

@@ -171,7 +171,7 @@ describe('RestApplication (integration)', () => {
     await client.get(response.header.location).expect(200, 'Hi');
   });
 
-  context('mounting an Express router on a LoopBack application', async () => {
+  context('mounting an Express router on a LoopBack application', () => {
     beforeEach('set up RestApplication', async () => {
       givenApplication();
       await restApp.start();
