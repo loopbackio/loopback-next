@@ -148,6 +148,10 @@ export class DefaultCrudRepository<
       return model as typeof juggler.PersistedModel;
     }
 
+    // To handle circular reference back to the same model,
+    // we create a placeholder model that will be replaced by real one later
+    dataSource.getModel(definition.name, true /* forceCreate */);
+
     // We need to convert property definitions from PropertyDefinition
     // to plain data object because of a juggler limitation
     const properties: {[name: string]: object} = {};
