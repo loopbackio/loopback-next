@@ -181,7 +181,7 @@ export class TodoListTodoController {
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(Todo, {exclude: ['id']}),
+          schema: getModelSchemaRef(Todo, {title: 'NewTodo', exclude: ['id']}),
         },
       },
     })
@@ -237,7 +237,7 @@ export class TodoListTodoController {
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(Todo, {exclude: ['id']}),
+          schema: getModelSchemaRef(Todo, {title: 'NewTodo', exclude: ['id']}),
         },
       },
     })

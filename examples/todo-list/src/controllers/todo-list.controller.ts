@@ -42,7 +42,10 @@ export class TodoListController {
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(TodoList, {exclude: ['id']}),
+          schema: getModelSchemaRef(TodoList, {
+            title: 'NewTodoList',
+            exclude: ['id'],
+          }),
         },
       },
     })

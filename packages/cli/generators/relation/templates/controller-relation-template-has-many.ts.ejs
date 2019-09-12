@@ -59,6 +59,7 @@ export class <%= controllerClassName %> {
       content: {
         'application/json': {
           schema: getModelSchemaRef(<%= targetModelClassName %>, {
+            title: 'New <%= targetModelClassName %>In<%= sourceModelClassName %>',
             exclude: ['<%= targetModelPrimaryKey %>'],
             optional: ['<%= foreignKeyName %>']
           }),
