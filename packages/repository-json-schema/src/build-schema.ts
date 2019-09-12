@@ -19,6 +19,15 @@ const debug = debugFactory('loopback:repository-json-schema:build-schema');
 
 export interface JsonSchemaOptions<T extends object> {
   /**
+   * The title to use in the generated schema.
+   *
+   * When using options like `exclude`, the auto-generated title can be
+   * difficult to read for humans. Use this option to change the title to
+   * a more meaningful value.
+   */
+  title?: string;
+
+  /**
    * Set this flag if you want the schema to define navigational properties
    * for model relations.
    */
@@ -62,7 +71,7 @@ export function buildModelCacheKey<T extends object>(
   // New key schema: use the same suffix as we use for schema title
   // For example: "modelPartialWithRelations"
   // Note this new key schema preserves the old key "modelWithRelations"
-  return 'model' + getTitleSuffix(options);
+  return 'model' + (options.title || '') + getTitleSuffix(options);
 }
 
 /**
@@ -271,6 +280,16 @@ export function getNavigationalPropertyForRelation(
   }
 }
 
+function buildSchemaTitle<T extends object>(
+  ctor: Function & {prototype: T},
+  meta: ModelDefinition,
+  options: JsonSchemaOptions<T>,
+) {
+  if (options.title) return options.title;
+  const title = meta.title || ctor.name;
+  return title + getTitleSuffix(options);
+}
+
 function getTitleSuffix<T extends object>(options: JsonSchemaOptions<T> = {}) {
   let suffix = '';
   if (options.optional && options.optional.length) {
@@ -319,7 +338,7 @@ export function modelToJsonSchema<T extends object>(
     return {};
   }
 
-  const title = (meta.title || ctor.name) + getTitleSuffix(options);
+  const title = buildSchemaTitle(ctor, meta, options);
 
   if (options.visited[title]) return options.visited[title];
 

@@ -630,6 +630,34 @@ describe('build-schema', () => {
         expect(schema).to.deepEqual(expectedSchema);
       });
     });
+
+    it('uses title from model metadata instead of model name', () => {
+      @model({title: 'MyCustomer'})
+      class Customer {}
+
+      const schema = modelToJsonSchema(Customer, {
+        // trigger build of a custom title
+        partial: true,
+      });
+
+      expect(schema.title).to.equal('MyCustomerPartial');
+    });
+
+    it('uses title from options instead of model name and computed suffix', () => {
+      @model({title: 'ShouldBeIgnored'})
+      class TestModel {
+        @property()
+        id: string;
+      }
+
+      const schema = modelToJsonSchema(TestModel, {
+        title: 'NewTestModel',
+        partial: true,
+        exclude: ['id'],
+      });
+
+      expect(schema.title).to.equal('NewTestModel');
+    });
   });
 
   describe('getJsonSchema', () => {
@@ -1081,6 +1109,22 @@ describe('build-schema', () => {
         expect(optionalNameSchema.required).to.equal(undefined);
         expect(optionalNameSchema.title).to.equal('ProductPartial');
       });
+    });
+
+    it('creates new cache entry for each custom title', () => {
+      @model()
+      class TestModel {}
+
+      // populate the cache
+      getJsonSchema(TestModel, {title: 'First'});
+      getJsonSchema(TestModel, {title: 'Second'});
+
+      // obtain cached instances & verify the title
+      const schema1 = getJsonSchema(TestModel, {title: 'First'});
+      expect(schema1.title).to.equal('First');
+
+      const schema2 = getJsonSchema(TestModel, {title: 'Second'});
+      expect(schema2.title).to.equal('Second');
     });
   });
 });
