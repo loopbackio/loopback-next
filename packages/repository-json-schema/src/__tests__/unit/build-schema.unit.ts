@@ -325,5 +325,10 @@ describe('build-schema', () => {
         'modelOptional[name]Excluding[id,_rev]WithRelations',
       );
     });
+
+    it('includes custom title', () => {
+      const key = buildModelCacheKey({title: 'NewProduct', partial: true});
+      expect(key).to.equal('modelNewProductPartial');
+    });
   });
 });
