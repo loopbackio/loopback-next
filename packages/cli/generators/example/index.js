@@ -116,8 +116,8 @@ module.exports = class extends BaseGenerator {
     return super.install();
   }
 
-  end() {
-    if (!super.end()) return false;
+  async end() {
+    await super.end();
     this.log();
     this.log(`The example was cloned to ${chalk.green(this.outDir)}.`);
     this.log();
