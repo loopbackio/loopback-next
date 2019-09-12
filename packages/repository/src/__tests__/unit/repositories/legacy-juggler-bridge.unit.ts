@@ -210,6 +210,35 @@ describe('DefaultCrudRepository', () => {
       expect(User.definition.properties.roles.itemType).to.equal(Role);
       expect(User.definition.properties.address.type).to.equal(Address);
     });
+
+    it('handles recursive model references', () => {
+      @model()
+      class ReportState extends Entity {
+        @property({id: true})
+        id: string;
+
+        @property.array(ReportState, {})
+        states: ReportState[];
+
+        @property({
+          type: 'string',
+        })
+        benchmarkId?: string;
+
+        @property({
+          type: 'string',
+        })
+        color?: string;
+
+        constructor(data?: Partial<ReportState>) {
+          super(data);
+        }
+      }
+      const repo = new DefaultCrudRepository(ReportState, ds);
+      const definition = repo.modelClass.definition;
+      const typeOfStates = definition.properties.states.type;
+      expect(typeOfStates).to.eql([repo.modelClass]);
+    });
   });
 
   it('shares the backing PersistedModel across repo instances', () => {
