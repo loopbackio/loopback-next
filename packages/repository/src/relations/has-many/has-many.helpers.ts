@@ -15,7 +15,10 @@ const debug = debugFactory('loopback:repository:has-many-helpers');
  * Relation definition with optional metadata (e.g. `keyTo`) filled in.
  * @internal
  */
-export type HasManyResolvedDefinition = HasManyDefinition & {keyTo: string};
+export type HasManyResolvedDefinition = HasManyDefinition & {
+  keyFrom: string;
+  keyTo: string;
+};
 
 /**
  * Resolves given hasMany metadata if target is specified to be a resolver.
@@ -49,6 +52,13 @@ export function resolveHasManyMetadata(
     throw new InvalidRelationError(reason, relationMeta);
   }
 
+  const keyFrom = sourceModel.getIdProperties()[0];
+
+  if (relationMeta.keyTo) {
+    // The explict cast is needed because of a limitation of type inference
+    return Object.assign(relationMeta, {keyFrom}) as HasManyResolvedDefinition;
+  }
+
   debug(
     'Resolved model %s from given metadata: %o',
     targetModel.modelName,
@@ -62,5 +72,5 @@ export function resolveHasManyMetadata(
     throw new InvalidRelationError(reason, relationMeta);
   }
 
-  return Object.assign(relationMeta, {keyTo: defaultFkName});
+  return Object.assign(relationMeta, {keyFrom, keyTo: defaultFkName});
 }
