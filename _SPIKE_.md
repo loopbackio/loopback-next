@@ -28,10 +28,10 @@ model configuration.
 Example (`src/public-models/product.rest-config.ts`):
 
 ```ts
-import {CrudRestApiConfig} from '@loopback/rest-crud';
+import {ModelCrudRestApiConfig} from '@loopback/rest-crud';
 import {Product} from '../models';
 
-module.exports = <CrudRestApiConfig>{
+module.exports = <ModelCrudRestApiConfig>{
   model: Product,
   pattern: 'CrudRest',
   dataSource: 'db',

@@ -22,7 +22,7 @@ import {defineRepositoryClass} from './repository-builder';
 
 const debug = debugFactory('loopback:boot:crud-rest');
 
-export interface CrudRestApiConfig extends ModelApiConfig {
+export interface ModelCrudRestApiConfig extends ModelApiConfig {
   // E.g. '/products'
   basePath: string;
 }
@@ -37,7 +37,7 @@ export class CrudRestApiBuilder implements ModelApiBuilder {
     cfg: ModelApiConfig,
   ): Promise<void> {
     const modelName = modelClass.name;
-    const config = cfg as CrudRestApiConfig;
+    const config = cfg as ModelCrudRestApiConfig;
     if (!config.basePath) {
       throw new Error(
         `Missing required field "basePath" in configuration for model ${modelName}.`,
@@ -67,7 +67,7 @@ export class CrudRestApiBuilder implements ModelApiBuilder {
 
 function setupCrudRepository(
   entityClass: typeof Entity & {prototype: Entity},
-  modelConfig: CrudRestApiConfig,
+  modelConfig: ModelCrudRestApiConfig,
 ): Class<EntityCrudRepository<Entity, unknown>> {
   const repositoryClass = defineRepositoryClass(entityClass);
 
@@ -82,7 +82,7 @@ function setupCrudRepository(
 
 function setupCrudRestController(
   entityClass: typeof Entity & {prototype: Entity},
-  modelConfig: CrudRestApiConfig,
+  modelConfig: ModelCrudRestApiConfig,
 ): ControllerClass {
   const controllerClass = defineCrudRestController(
     entityClass,
