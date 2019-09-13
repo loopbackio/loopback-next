@@ -24,6 +24,10 @@ export class Product extends Entity {
   name: string;
   @belongsTo(() => Category)
   categoryId: number;
+
+  constructor(data: Partial<Product>) {
+    super(data);
+  }
 }
 
 export class ProductRepository extends DefaultCrudRepository<
@@ -55,6 +59,9 @@ export class Category extends Entity {
   name: string;
   @hasMany(() => Product, {keyTo: 'categoryId'})
   products?: Product[];
+  constructor(data: Partial<Category>) {
+    super(data);
+  }
 }
 interface CategoryRelations {
   products?: Product[];
@@ -85,3 +92,11 @@ export const testdb: juggler.DataSource = new juggler.DataSource({
   name: 'db',
   connector: 'memory',
 });
+
+export function createCategory(properties: Partial<Category>) {
+  return new Category(properties as Category);
+}
+
+export function createProduct(properties: Partial<Product>) {
+  return new Product(properties as Product);
+}
