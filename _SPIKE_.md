@@ -220,11 +220,17 @@ later, based on user demand.
 
 1. Implement `sandbox.writeTextFile` helper, include test coverage.
 
+   --> https://github.com/strongloop/loopback-next/issues/3731
+
 2. Improve `@loopback/rest-crud` to create a named controller class (modify
    `defineCrudRestController`)
 
+   --> https://github.com/strongloop/loopback-next/issues/3732
+
 3. Add `defineRepositoryClass` to `@loopback/rest-crud`, this function should
    create a named repository class for the given Model class.
+
+   --> https://github.com/strongloop/loopback-next/issues/3733
 
 4. Implement Model API booter & builder.
 
@@ -234,14 +240,20 @@ later, based on user demand.
 
    - Add `ModelApiBooter` to `@loopback/boot`
 
+   --> https://github.com/strongloop/loopback-next/issues/3736
+
 5. Add `CrudRestApiBuilder` to `@loopback/rest-crud`. Modify `README`, rework
    "Basic use" to show how to the package together with `ModelApiBooter` to go
    from a model to REST API. Move the current content of "basic use" into a new
    section, e.g. "Advanced use".
 
+   --> https://github.com/strongloop/loopback-next/issues/3737
+
 6. Create a new example app based on the modified version of `examples/todo`
    shown in the spike. The app should have a single `Todo` model and use
    `ModelApiBooter` to expose the model via REST API.
+
+   --> https://github.com/strongloop/loopback-next/issues/3738
 
 ### Out of scope
 
