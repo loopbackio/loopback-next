@@ -3,6 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import * as assert from 'assert';
 import * as debugFactory from 'debug';
 import * as _ from 'lodash';
 import {
@@ -46,7 +47,14 @@ export async function findByForeignKeys<
 
   if (Array.isArray(fkValues)) {
     if (fkValues.length === 0) return [];
-    value = fkValues.length === 1 ? fkValues[0] : {inq: fkValues};
+    value =
+      fkValues.length === 1
+        ? fkValues[0]
+        : {
+            // Create a copy to prevent query coercion algorithm
+            // inside connectors from modifying the original values
+            inq: [...fkValues],
+          };
   } else {
     value = fkValues;
   }
@@ -57,7 +65,7 @@ export async function findByForeignKeys<
   return targetRepository.find(targetFilter, options);
 }
 
-type StringKeyOf<T> = Extract<keyof T, string>;
+export type StringKeyOf<T> = Extract<keyof T, string>;
 
 /**
  * Returns model instances that include related models that have a registered
@@ -131,4 +139,136 @@ function isInclusionAllowed<T extends Entity, Relations extends object = {}>(
   const allowed = targetRepository.inclusionResolvers.has(relationName);
   debug('isInclusionAllowed for %j (relation %s)? %s', include, allowed);
   return allowed;
+}
+
+/**
+ * Returns an array of instances from the target map. The order of arrays is based on
+ * the order of sourceIds
+ *
+ * @param sourceIds - One value or array of values (of the target key)
+ * @param targetMap - a map that matches sourceIds with instances
+ */
+export function flattenMapByKeys<T>(
+  sourceIds: unknown[],
+  targetMap: Map<unknown, T>,
+): (T | undefined)[] {
+  const result: (T | undefined)[] = new Array(sourceIds.length);
+  // mongodb: use string as key of targetMap, and convert sourceId to strings
+  // to make sure it gets the related instances.
+  sourceIds.forEach((id, index) => {
+    const key = normalizeKey(id);
+    const target = targetMap.get(key);
+    result[index] = target;
+  });
+
+  return result;
+}
+
+/**
+ * Returns a map which maps key values(ids) to instances. The instances can be
+ * grouped by different strategies.
+ *
+ * @param list - an array of instances
+ * @param keyName - key name of the source
+ * @param reducer - a strategy to reduce inputs to single item or array
+ */
+export function buildLookupMap<Key, InType, OutType = InType>(
+  list: InType[],
+  keyName: StringKeyOf<InType>,
+  reducer: (accumulator: OutType | undefined, current: InType) => OutType,
+): Map<Key, OutType> {
+  const lookup = new Map<Key, OutType>();
+  for (const entity of list) {
+    // get a correct key value
+    const key = getKeyValue(entity, keyName) as Key;
+    // these 3 steps are to set up the map, the map differs according to the reducer.
+    const original = lookup.get(key);
+    const reduced = reducer(original, entity);
+    lookup.set(key, reduced);
+  }
+  return lookup;
+}
+
+/**
+ * Returns value of a keyName. Aims to resolve ObjectId problem of Mongo.
+ *
+ * @param model - target model
+ * @param keyName - target key that gets the value from
+ */
+export function getKeyValue(model: AnyObject, keyName: string) {
+  return normalizeKey(model[keyName]);
+}
+
+/**
+ * Workaround for MongoDB, where the connector returns ObjectID
+ * values even for properties configured with "type: string".
+ *
+ * @param rawKey
+ */
+export function normalizeKey(rawKey: unknown) {
+  if (isBsonType(rawKey)) {
+    return rawKey.toString();
+  }
+  return rawKey;
+}
+
+/**
+ * Returns an array of instances. For HasMany relation usage.
+ *
+ * @param acc
+ * @param it
+ */
+export function reduceAsArray<T>(acc: T[] | undefined, it: T) {
+  if (acc) acc.push(it);
+  else acc = [it];
+  return acc;
+}
+/**
+ * Returns a single of an instance. For HasOne and BelongsTo relation usage.
+ *
+ * @param _acc
+ * @param it
+ */
+export function reduceAsSingleItem<T>(_acc: T | undefined, it: T) {
+  return it;
+}
+
+/**
+ * Dedupe an array
+ * @param {Array} input - an array of sourceIds
+ * @returns {Array} an array with unique items
+ */
+export function deduplicate<T>(input: T[]): T[] {
+  const uniqArray: T[] = [];
+  if (!input) {
+    return uniqArray;
+  }
+  assert(Array.isArray(input), 'array argument is required');
+
+  const comparableArray = input.map(item => normalizeKey(item));
+  for (let i = 0, n = comparableArray.length; i < n; i++) {
+    if (comparableArray.indexOf(comparableArray[i]) === i) {
+      uniqArray.push(input[i]);
+    }
+  }
+  return uniqArray;
+}
+
+/**
+ * Checks if the value is BsonType (mongodb)
+ * It uses a general way to check the type ,so that it can detect
+ * different versions of bson that might be used in the code base.
+ * Might need to update in the future.
+ *
+ * @param value
+ */
+export function isBsonType(value: unknown): value is object {
+  if (typeof value !== 'object' || !value) return false;
+
+  // bson@1.x stores _bsontype on ObjectID instance, bson@4.x on prototype
+  return check(value) || check(value.constructor.prototype);
+
+  function check(target: unknown) {
+    return Object.prototype.hasOwnProperty.call(target, '_bsontype');
+  }
 }
