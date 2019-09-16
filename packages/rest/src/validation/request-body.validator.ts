@@ -137,7 +137,7 @@ function validateValueAgainstSchema(
     return;
   }
 
-  const validationErrors = validate.errors;
+  let validationErrors = validate.errors as AJV.ErrorObject[];
 
   /* istanbul ignore if */
   if (debug.enabled) {
@@ -146,6 +146,10 @@ function validateValueAgainstSchema(
       util.inspect(body, {depth: null}),
       util.inspect(validationErrors),
     );
+  }
+
+  if (typeof options.ajvErrorTransformer === 'function') {
+    validationErrors = options.ajvErrorTransformer(validationErrors);
   }
 
   const error = RestHttpErrors.invalidRequestBody();
