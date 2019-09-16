@@ -9,7 +9,6 @@ import {
   AuthenticationBindings,
   AuthenticationComponent,
   AUTHENTICATION_STRATEGY_NOT_FOUND,
-  UserProfile,
   USER_PROFILE_NOT_FOUND,
 } from '@loopback/authentication';
 import {inject} from '@loopback/context';
@@ -28,6 +27,7 @@ import {
   Send,
   SequenceHandler,
 } from '@loopback/rest';
+import {SecurityBindings, securityId, UserProfile} from '@loopback/security';
 import {Client, createClientForHandler} from '@loopback/testlab';
 import {BasicStrategy} from 'passport-http';
 import {StrategyAdapter} from '../../strategy-adapter';
@@ -80,10 +80,19 @@ describe('Basic Authentication', () => {
 
   function givenUserRepository() {
     users = new UserRepository({
-      joe: {profile: {id: 'joe'}, password: '12345'},
-      Simpson: {profile: {id: 'sim123'}, password: 'alpha'},
-      Flinstone: {profile: {id: 'Flint'}, password: 'beta'},
-      George: {profile: {id: 'Curious'}, password: 'gamma'},
+      joe: {profile: {[securityId]: 'joe', id: 'joe'}, password: '12345'},
+      Simpson: {
+        profile: {[securityId]: 'sim123', id: 'sim123'},
+        password: 'alpha',
+      },
+      Flinstone: {
+        profile: {[securityId]: 'Flint', id: 'Flint'},
+        password: 'beta',
+      },
+      George: {
+        profile: {[securityId]: 'Curious', id: 'Curious'},
+        password: 'gamma',
+      },
     });
   }
 
@@ -134,9 +143,7 @@ describe('Basic Authentication', () => {
 
     @api(apispec)
     class MyController {
-      constructor(
-        @inject(AuthenticationBindings.CURRENT_USER) private user: UserProfile,
-      ) {}
+      constructor(@inject(SecurityBindings.USER) private user: UserProfile) {}
 
       @authenticate(AUTH_STRATEGY_NAME)
       async whoAmI(): Promise<string> {

@@ -3,8 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {AuthenticationStrategy, UserProfile} from '@loopback/authentication';
+import {AuthenticationStrategy} from '@loopback/authentication';
 import {HttpErrors, Request} from '@loopback/rest';
+import {UserProfile} from '@loopback/security';
 import {Strategy} from 'passport';
 
 const passportRequestMixin = require('passport/lib/http/request');

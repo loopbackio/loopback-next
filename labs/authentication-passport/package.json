@@ -39,7 +39,7 @@
     "url": "https://github.com/strongloop/loopback-next.git"
   },
   "dependencies": {
-    "@loopback/authentication": "^2.0.0",
+    "@loopback/authentication": "^3.0.0",
     "@loopback/context": "^1.16.0",
     "@loopback/core": "^1.7.1",
     "@loopback/metadata": "^1.1.5",
@@ -56,6 +56,7 @@
     "@types/node": "^10.14.8",
     "@types/passport": "^1.0.0",
     "@types/passport-http": "^0.3.8",
-    "passport-http": "^0.3.0"
+    "passport-http": "^0.3.0",
+    "@loopback/security": "^0.1.1"
   }
 }
