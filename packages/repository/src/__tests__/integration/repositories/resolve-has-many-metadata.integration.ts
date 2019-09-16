@@ -46,7 +46,7 @@ describe('keyTo and keyFrom with resolveHasManyMetadata', () => {
     });
   });
 
-  it('infers keyTo if is it not provided', () => {
+  it('infers keyTo if it is not provided', () => {
     const meta = resolveHasManyMetadata(Category.definition.relations[
       'things'
     ] as HasManyDefinition);
@@ -62,7 +62,7 @@ describe('keyTo and keyFrom with resolveHasManyMetadata', () => {
     });
   });
 
-  it('throws if both keyFrom and keyTo are not provided', async () => {
+  it('throws if keyFrom, keyTo, and default foreign key name are not provided', async () => {
     let error;
 
     try {
@@ -79,6 +79,24 @@ describe('keyTo and keyFrom with resolveHasManyMetadata', () => {
     );
 
     expect(error.code).to.eql('INVALID_RELATION_DEFINITION');
+  });
+
+  it('resolves metadata if keyTo and keyFrom are not provided, but default foreign key is', async () => {
+    Category.definition.addProperty('categoryId', {type: 'number'});
+
+    const meta = resolveHasManyMetadata(Category.definition.relations[
+      'categories'
+    ] as HasManyDefinition);
+
+    expect(meta).to.eql({
+      name: 'categories',
+      type: 'hasMany',
+      targetsMany: true,
+      source: Category,
+      keyFrom: 'id',
+      target: () => Category,
+      keyTo: 'categoryId',
+    });
   });
 
   /******  HELPERS *******/
