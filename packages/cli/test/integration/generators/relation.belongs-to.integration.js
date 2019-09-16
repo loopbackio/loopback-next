@@ -41,11 +41,8 @@ describe('lb4 relation', function() {
   // eslint-disable-next-line no-invalid-this
   this.timeout(50000);
 
-  beforeEach('reset sandbox', async () => {
+  it("rejects relation when destination model doesn't have primary Key", async () => {
     await sandbox.reset();
-  });
-
-  it("rejects relation when destination model doesn't have primary Key", () => {
     const prompt = {
       relationType: 'belongsTo',
       sourceModel: 'Customer',
@@ -64,7 +61,8 @@ describe('lb4 relation', function() {
     ).to.be.rejectedWith(/Target model primary key does not exist/);
   });
 
-  it('rejects relation when models does not exist', () => {
+  it('rejects relation when models does not exist', async () => {
+    await sandbox.reset();
     const prompt = {
       relationType: 'belongsTo',
       sourceModel: 'Customer',
@@ -86,6 +84,7 @@ describe('lb4 relation', function() {
   });
 
   it('updates property decorator when property already exist in the model', async () => {
+    await sandbox.reset();
     const prompt = {
       relationType: 'belongsTo',
       sourceModel: 'Order',
@@ -116,7 +115,7 @@ describe('lb4 relation', function() {
     assert.fileContent(expectedFile, relationalPropertyRegEx);
   });
 
-  context('generate model relation - ', () => {
+  context('generate model relation', () => {
     const expectedImport = /import {Entity, model, property, belongsTo} from \'\@loopback\/repository\';\n/;
     const expectedDecoretor = [
       /@belongsTo\(\(\) => Customer\)\n {2}myCustomer: number;\n/,
@@ -145,7 +144,14 @@ describe('lb4 relation', function() {
     ];
 
     promptArray.forEach(function(multiItemPrompt, i) {
-      it('add import belongsTo, import for target model and belongsTo decorator  ', async () => {
+      describe('answers ' + JSON.stringify(multiItemPrompt), () => {
+        suite(multiItemPrompt, i);
+      });
+    });
+
+    function suite(multiItemPrompt, i) {
+      before(async function runGeneratorWithAnswers() {
+        await sandbox.reset();
         await testUtils
           .executeGenerator(generator)
           .inDir(SANDBOX_PATH, () =>
@@ -154,7 +160,9 @@ describe('lb4 relation', function() {
             }),
           )
           .withPrompts(multiItemPrompt);
+      });
 
+      it('add import belongsTo, import for target model and belongsTo decorator  ', async () => {
         const expectedSourceFile = path.join(
           SANDBOX_PATH,
           MODEL_APP_PATH,
@@ -165,10 +173,10 @@ describe('lb4 relation', function() {
         assert.fileContent(expectedSourceFile, expectedImport);
         assert.fileContent(expectedSourceFile, expectedDecoretor[i]);
       });
-    });
+    }
   });
 
-  context('generate model relation with custom relation name - ', () => {
+  context('generate model relation with custom relation name', () => {
     const expectedDecoretor = [
       /@belongsTo\(\(\) => Customer\)\n {2}customerPK: number;\n/,
       /@belongsTo\(\(\) => CustomerClass\)\n {2}customerPK: number;\n/,
@@ -196,7 +204,14 @@ describe('lb4 relation', function() {
       },
     ];
     promptArray.forEach(function(multiItemPrompt, i) {
-      it('relation name should be customerPK', async () => {
+      describe('answers ' + JSON.stringify(multiItemPrompt), () => {
+        suite(multiItemPrompt, i);
+      });
+    });
+
+    function suite(multiItemPrompt, i) {
+      before(async function runGeneratorWithAnswers() {
+        await sandbox.reset();
         await testUtils
           .executeGenerator(generator)
           .inDir(SANDBOX_PATH, () =>
@@ -205,7 +220,9 @@ describe('lb4 relation', function() {
             }),
           )
           .withPrompts(multiItemPrompt);
+      });
 
+      it('relation name should be customerPK', async () => {
         const expectedSourceFile = path.join(
           SANDBOX_PATH,
           MODEL_APP_PATH,
@@ -214,7 +231,7 @@ describe('lb4 relation', function() {
 
         assert.fileContent(expectedSourceFile, expectedDecoretor[i]);
       });
-    });
+    }
   });
 
   context('generate model relation with default relation name', () => {
@@ -247,7 +264,14 @@ describe('lb4 relation', function() {
       },
     ];
     promptArray.forEach(function(multiItemPrompt, i) {
-      it('relation name should be ' + defaultRelationName[i], async () => {
+      describe('answers ' + JSON.stringify(multiItemPrompt), () => {
+        suite(multiItemPrompt, i);
+      });
+    });
+
+    function suite(multiItemPrompt, i) {
+      before(async function runGeneratorWithAnswers() {
+        await sandbox.reset();
         await testUtils
           .executeGenerator(generator)
           .inDir(SANDBOX_PATH, () =>
@@ -256,7 +280,9 @@ describe('lb4 relation', function() {
             }),
           )
           .withPrompts(multiItemPrompt);
+      });
 
+      it('relation name should be ' + defaultRelationName[i], async () => {
         const expectedSourceFile = path.join(
           SANDBOX_PATH,
           MODEL_APP_PATH,
@@ -265,284 +291,299 @@ describe('lb4 relation', function() {
 
         assert.fileContent(expectedSourceFile, expectedDecoretor[i]);
       });
-    });
+    }
   });
-});
-context('check if the controller file created ', () => {
-  const promptArray = [
-    {
-      relationType: 'belongsTo',
-      sourceModel: 'Order',
-      destinationModel: 'Customer',
-    },
-    {
-      relationType: 'belongsTo',
-      sourceModel: 'OrderClass',
-      destinationModel: 'CustomerClass',
-    },
-    {
-      relationType: 'belongsTo',
-      sourceModel: 'OrderClassType',
-      destinationModel: 'CustomerClassType',
-    },
-  ];
-  const controllerClass = [
-    /class OrderCustomerController/,
-    /class OrderClassCustomerClassController/,
-    /class OrderClassTypeCustomerClassTypeController/,
-  ];
-  const controllerConstructor = [
-    /constructor\(\n {4}\@repository\(OrderRepository\)\n {4}public orderRepository: OrderRepository,\n {2}\) \{ \}\n/,
-    /constructor\(\n {4}\@repository\(OrderClassRepository\)\n {4}public orderClassRepository: OrderClassRepository,\n {2}\) \{ \}\n/,
-    /constructor\(\n {4}\@repository\(OrderClassTypeRepository\)\n {4}public orderClassTypeRepository: OrderClassTypeRepository,\n {2}\) \{ \}\n/,
-  ];
-  const indexExport = [
-    /export \* from '.\/order-customer.controller';/,
-    /export \* from '.\/order-class-customer-class.controller';/,
-    /export \* from '.\/order-class-type-customer-class-type.controller';/,
-  ];
-  const sourceClassnames = ['Customer', 'CustomerClass', 'CustomerClassType'];
-  const targetClassnames = ['Order', 'OrderClass', 'OrderClassType'];
-  promptArray.forEach(function(multiItemPrompt, i) {
-    it('new controller file created', async () => {
-      await testUtils
-        .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {
-            additionalFiles: SANDBOX_FILES,
-          }),
-        )
-        .withPrompts(multiItemPrompt);
 
-      const expectedControllerFile = path.join(
-        SANDBOX_PATH,
-        CONTROLLER_PATH,
-        controllerFileName[i],
-      );
-      assert.file(expectedControllerFile);
-    }).timeout(10000);
-    it('controller with belongsTo class and constructor', async () => {
-      const expectedControllerFile = path.join(
-        SANDBOX_PATH,
-        CONTROLLER_PATH,
-        controllerFileName[i],
-      );
-      assert.fileContent(expectedControllerFile, controllerClass[i]);
-      assert.fileContent(expectedControllerFile, controllerConstructor[i]);
+  context('check if the controller file created ', () => {
+    const promptArray = [
+      {
+        relationType: 'belongsTo',
+        sourceModel: 'Order',
+        destinationModel: 'Customer',
+      },
+      {
+        relationType: 'belongsTo',
+        sourceModel: 'OrderClass',
+        destinationModel: 'CustomerClass',
+      },
+      {
+        relationType: 'belongsTo',
+        sourceModel: 'OrderClassType',
+        destinationModel: 'CustomerClassType',
+      },
+    ];
+    const controllerClass = [
+      /class OrderCustomerController/,
+      /class OrderClassCustomerClassController/,
+      /class OrderClassTypeCustomerClassTypeController/,
+    ];
+    const controllerConstructor = [
+      /constructor\(\n {4}\@repository\(OrderRepository\)\n {4}public orderRepository: OrderRepository,\n {2}\) \{ \}\n/,
+      /constructor\(\n {4}\@repository\(OrderClassRepository\)\n {4}public orderClassRepository: OrderClassRepository,\n {2}\) \{ \}\n/,
+      /constructor\(\n {4}\@repository\(OrderClassTypeRepository\)\n {4}public orderClassTypeRepository: OrderClassTypeRepository,\n {2}\) \{ \}\n/,
+    ];
+    const indexExport = [
+      /export \* from '.\/order-customer.controller';/,
+      /export \* from '.\/order-class-customer-class.controller';/,
+      /export \* from '.\/order-class-type-customer-class-type.controller';/,
+    ];
+    const sourceClassnames = ['Customer', 'CustomerClass', 'CustomerClassType'];
+    const targetClassnames = ['Order', 'OrderClass', 'OrderClassType'];
+    promptArray.forEach(function(multiItemPrompt, i) {
+      describe('answers ' + JSON.stringify(multiItemPrompt), () => {
+        suite(multiItemPrompt, i);
+      });
     });
-    it('the new controller file added to index.ts file', async () => {
-      const expectedControllerIndexFile = path.join(
-        SANDBOX_PATH,
-        CONTROLLER_PATH,
-        'index.ts',
-      );
 
-      assert.fileContent(expectedControllerIndexFile, indexExport[i]);
-    });
-    it(
-      'controller GET Array of ' +
-        targetClassnames[i] +
-        "'s belonging to " +
-        sourceClassnames[i],
-      async () => {
-        const getOrdersByCustomerIdRegEx = [
-          /\@get\('\/orders\/{id}\/customer', \{\n {4}responses: \{\n {6}'200': \{\n/,
-          /content: \{\n {10}'application\/json': \{\n/,
-          /async getCustomer\(\n {4}\@param\.path\.number\('id'\) id: typeof Order\.prototype\.id,\n/,
-          /\)\: Promise<Customer> \{\n/,
-          /return this\.orderRepository\.customer\(id\);\n {2}\}\n/,
-        ];
-        const getOrdersClassByCustomerClassIdRegEx = [
-          /\@get\('\/order-classes\/{id}\/customer-class', \{\n {4}responses: \{\n {6}'200': \{\n/,
-          /content: \{\n {10}'application\/json': \{\n/,
-          /async getCustomerClass\(\n {4}\@param\.path\.number\('id'\) id: typeof OrderClass\.prototype\.orderNumber,\n/,
-          /\)\: Promise<CustomerClass> \{\n/,
-          /return this\.orderClassRepository\.customerClass\(id\);\n {2}\}\n/,
-        ];
+    function suite(multiItemPrompt, i) {
+      before(async function runGeneratorWithAnswers() {
+        await sandbox.reset();
+        await testUtils
+          .executeGenerator(generator)
+          .inDir(SANDBOX_PATH, () =>
+            testUtils.givenLBProject(SANDBOX_PATH, {
+              additionalFiles: SANDBOX_FILES,
+            }),
+          )
+          .withPrompts(multiItemPrompt);
+      });
 
-        const getOrdersClassTypeByCustomerClassTypeIdRegEx = [
-          /\@get\('\/order-class-types\/{id}\/customer-class-type', \{\n {4}responses: \{\n {6}'200': \{\n/,
-          /content: \{\n {10}'application\/json': \{\n/,
-          /async getCustomerClassType\(\n {4}\@param\.path\.string\('id'\) id: typeof OrderClassType\.prototype\.orderString,\n/,
-          /\)\: Promise<CustomerClassType> \{\n/,
-          /return this\.orderClassTypeRepository\.customerClassType\(id\);\n {2}\}\n/,
-        ];
-
-        const getRegEx = [
-          getOrdersByCustomerIdRegEx,
-          getOrdersClassByCustomerClassIdRegEx,
-          getOrdersClassTypeByCustomerClassTypeIdRegEx,
-        ];
-
+      it('new controller file created', async () => {
         const expectedControllerFile = path.join(
           SANDBOX_PATH,
           CONTROLLER_PATH,
           controllerFileName[i],
         );
-        getRegEx[i].forEach(regex => {
-          assert.fileContent(expectedControllerFile, regex);
-        });
-      },
-    );
-  });
-});
+        assert.file(expectedControllerFile);
+      });
 
-context('check source class repository ', () => {
-  const promptArray = [
-    {
-      relationType: 'belongsTo',
-      sourceModel: 'Order',
-      destinationModel: 'Customer',
-    },
-    {
-      relationType: 'belongsTo',
-      sourceModel: 'OrderClass',
-      destinationModel: 'CustomerClass',
-    },
-    {
-      relationType: 'belongsTo',
-      sourceModel: 'OrderClassType',
-      destinationModel: 'CustomerClassType',
-    },
-  ];
+      it('controller with belongsTo class and constructor', async () => {
+        const expectedControllerFile = path.join(
+          SANDBOX_PATH,
+          CONTROLLER_PATH,
+          controllerFileName[i],
+        );
+        assert.fileContent(expectedControllerFile, controllerClass[i]);
+        assert.fileContent(expectedControllerFile, controllerConstructor[i]);
+      });
 
-  const sourceClassnames = ['Order', 'OrderClass', 'OrderClassType'];
+      it('the new controller file added to index.ts file', async () => {
+        const expectedControllerIndexFile = path.join(
+          SANDBOX_PATH,
+          CONTROLLER_PATH,
+          'index.ts',
+        );
 
-  promptArray.forEach(function(multiItemPrompt, i) {
-    it(sourceClassnames[i] + ' repostitory has all imports', async () => {
-      await testUtils
-        .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {
-            additionalFiles: SANDBOX_FILES,
-          }),
-        )
-        .withPrompts(multiItemPrompt);
+        assert.fileContent(expectedControllerIndexFile, indexExport[i]);
+      });
 
-      const repositoryBasicImports = [
-        /import \{DefaultCrudRepository, repository, BelongsToAccessor\} from \'@loopback\/repository\';\n/,
-        /import \{inject, Getter\} from '\@loopback\/core';/,
-      ];
+      it(
+        'controller GET Array of ' +
+          targetClassnames[i] +
+          "'s belonging to " +
+          sourceClassnames[i],
+        async () => {
+          const getOrdersByCustomerIdRegEx = [
+            /\@get\('\/orders\/{id}\/customer', \{\n {4}responses: \{\n {6}'200': \{\n/,
+            /content: \{\n {10}'application\/json': \{\n/,
+            /async getCustomer\(\n {4}\@param\.path\.number\('id'\) id: typeof Order\.prototype\.id,\n/,
+            /\)\: Promise<Customer> \{\n/,
+            /return this\.orderRepository\.customer\(id\);\n {2}\}\n/,
+          ];
+          const getOrdersClassByCustomerClassIdRegEx = [
+            /\@get\('\/order-classes\/{id}\/customer-class', \{\n {4}responses: \{\n {6}'200': \{\n/,
+            /content: \{\n {10}'application\/json': \{\n/,
+            /async getCustomerClass\(\n {4}\@param\.path\.number\('id'\) id: typeof OrderClass\.prototype\.orderNumber,\n/,
+            /\)\: Promise<CustomerClass> \{\n/,
+            /return this\.orderClassRepository\.customerClass\(id\);\n {2}\}\n/,
+          ];
 
-      const repositoryClassImport = [
-        /import \{CustomerRepository\} from '\.\/customer\.repository';/,
-        /import \{Order, Customer\} from '\.\.\/models';/,
-      ];
-      const repositoryMultiWordClassImport = [
-        /import \{CustomerClassRepository\} from '\.\/customer-class\.repository';/,
-        /import \{OrderClass, CustomerClass\} from '\.\.\/models';/,
-      ];
+          const getOrdersClassTypeByCustomerClassTypeIdRegEx = [
+            /\@get\('\/order-class-types\/{id}\/customer-class-type', \{\n {4}responses: \{\n {6}'200': \{\n/,
+            /content: \{\n {10}'application\/json': \{\n/,
+            /async getCustomerClassType\(\n {4}\@param\.path\.string\('id'\) id: typeof OrderClassType\.prototype\.orderString,\n/,
+            /\)\: Promise<CustomerClassType> \{\n/,
+            /return this\.orderClassTypeRepository\.customerClassType\(id\);\n {2}\}\n/,
+          ];
 
-      const repositoryTypeClassImport = [
-        /import \{CustomerClassTypeRepository\} from '\.\/customer-class-type\.repository';/,
-        /import \{OrderClassType, CustomerClassType\} from '\.\.\/models';/,
-      ];
+          const getRegEx = [
+            getOrdersByCustomerIdRegEx,
+            getOrdersClassByCustomerClassIdRegEx,
+            getOrdersClassTypeByCustomerClassTypeIdRegEx,
+          ];
 
-      const sourceRepositoryFile = path.join(
-        SANDBOX_PATH,
-        REPOSITORY_APP_PATH,
-        repositoryFileName[i],
+          const expectedControllerFile = path.join(
+            SANDBOX_PATH,
+            CONTROLLER_PATH,
+            controllerFileName[i],
+          );
+          getRegEx[i].forEach(regex => {
+            assert.fileContent(expectedControllerFile, regex);
+          });
+        },
       );
-
-      repositoryBasicImports.forEach(regex => {
-        assert.fileContent(sourceRepositoryFile, regex);
-      });
-
-      const importRegEx = [
-        repositoryClassImport,
-        repositoryMultiWordClassImport,
-        repositoryTypeClassImport,
-      ];
-
-      importRegEx[i].forEach(regex => {
-        assert.fileContent(sourceRepositoryFile, regex);
-      });
-    }).timeout(10000);
-
-    it('repository has updated constructor', async () => {
-      const singleWordClassConstractor = [
-        /public readonly customer: BelongsToAccessor<Customer, typeof Order\.prototype\.id>;\n/,
-        /constructor\(@inject\('datasources\.db'\) dataSource: DbDataSource, @repository\.getter\('CustomerRepository'\) protected customerRepositoryGetter: Getter<CustomerRepository>,\) \{\n/,
-        /super\(Order, dataSource\);\n {4}this\.customer = this\.createBelongsToAccessorFor\('customer', customerRepositoryGetter,\);\n {2}\}\n/,
-      ];
-
-      const multiWordClassConstractor = [
-        /public readonly customerClass: BelongsToAccessor<CustomerClass, typeof OrderClass\.prototype\.orderNumber>;\n/,
-        /constructor\(@inject\('datasources\.myDB'\) dataSource: MyDBDataSource, @repository\.getter\('CustomerClassRepository'\) protected customerClassRepositoryGetter: Getter<CustomerClassRepository>,\) \{\n/,
-        /super\(OrderClass, dataSource\);\n {4}this\.customerClass = this\.createBelongsToAccessorFor\('customerClassCustNumber', customerClassRepositoryGetter,\);\n {2}\}\n/,
-      ];
-
-      const typeClassConstractor = [
-        /public readonly customerClassType: BelongsToAccessor<CustomerClassType, typeof OrderClassType\.prototype\.orderString>;\n/,
-        /constructor\(@inject\('datasources\.myDB'\) dataSource: MyDBDataSource, @repository\.getter\('CustomerClassTypeRepository'\) protected customerClassTypeRepositoryGetter: Getter<CustomerClassTypeRepository>,\) \{\n/,
-        /super\(OrderClassType, dataSource\);\n {4}this\.customerClassType = this\.createBelongsToAccessorFor\('customerClassTypeCustNumber', customerClassTypeRepositoryGetter,\);\n {2}\}\n/,
-      ];
-
-      const sourceRepositoryFile = path.join(
-        SANDBOX_PATH,
-        REPOSITORY_APP_PATH,
-        repositoryFileName[i],
-      );
-
-      const updateConstructorRegEx = [
-        singleWordClassConstractor,
-        multiWordClassConstractor,
-        typeClassConstractor,
-      ];
-      updateConstructorRegEx[i].forEach(regex => {
-        assert.fileContent(sourceRepositoryFile, regex);
-      });
-    });
+    }
   });
-  // Verify is property name that already exist will overwriting.
-  context('generate model relation - ', () => {
-    const expectedDecoretor = [
-      /@belongsTo\(\(\) => Customer\)\n {2}myCustomer: number;\n/,
-      /@belongsTo\(\(\) => CustomerClass\)\n {2}myCustomer: number;\n/,
-      /@belongsTo\(\(\) => CustomerClassType\)\n {2}myCustomer: number;\n/,
-    ];
-    const promptList = [
+
+  context('check source class repository ', () => {
+    const promptArray = [
       {
         relationType: 'belongsTo',
         sourceModel: 'Order',
         destinationModel: 'Customer',
-        relationName: 'myCustomer',
+      },
+      {
+        relationType: 'belongsTo',
+        sourceModel: 'OrderClass',
+        destinationModel: 'CustomerClass',
+      },
+      {
+        relationType: 'belongsTo',
+        sourceModel: 'OrderClassType',
+        destinationModel: 'CustomerClassType',
       },
     ];
 
-    it('Verify is property name that already exist will overwriting ', async () => {
-      await testUtils
-        .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {
-            additionalFiles: SANDBOX_FILES,
-          }),
-        )
-        .withPrompts(promptList[0]);
-      await testUtils
-        .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {
-            additionalFiles: SANDBOX_FILES,
-          }),
-        )
-        .withPrompts(promptList[0]);
+    const sourceClassnames = ['Order', 'OrderClass', 'OrderClassType'];
 
-      const expectedSourceFile = path.join(
-        SANDBOX_PATH,
-        MODEL_APP_PATH,
-        sourceFileName[0],
-      );
-
-      assert.file(expectedSourceFile);
-      assert.fileContent(expectedSourceFile, expectedDecoretor[0]);
-
-      fs.readFile(expectedSourceFile, (err, data) => {
-        if (err) throw err;
-        const indexOfFirstRelation = data.indexOf('@belongsTo');
-        const lastIndexOfRelation = data.lastIndexOf('@belongsTo');
-        assert.equal(indexOfFirstRelation, lastIndexOfRelation);
+    promptArray.forEach(function(multiItemPrompt, i) {
+      describe('answers ' + JSON.stringify(multiItemPrompt), () => {
+        suite(multiItemPrompt, i);
       });
-    }).timeout(20000);
+    });
+
+    function suite(multiItemPrompt, i) {
+      before(async function runGeneratorWithAnswers() {
+        await sandbox.reset();
+        await testUtils
+          .executeGenerator(generator)
+          .inDir(SANDBOX_PATH, () =>
+            testUtils.givenLBProject(SANDBOX_PATH, {
+              additionalFiles: SANDBOX_FILES,
+            }),
+          )
+          .withPrompts(multiItemPrompt);
+      });
+
+      it(sourceClassnames[i] + ' repostitory has all imports', async () => {
+        const repositoryBasicImports = [
+          /import \{DefaultCrudRepository, repository, BelongsToAccessor\} from \'@loopback\/repository\';\n/,
+          /import \{inject, Getter\} from '\@loopback\/core';/,
+        ];
+
+        const repositoryClassImport = [
+          /import \{CustomerRepository\} from '\.\/customer\.repository';/,
+          /import \{Order, Customer\} from '\.\.\/models';/,
+        ];
+        const repositoryMultiWordClassImport = [
+          /import \{CustomerClassRepository\} from '\.\/customer-class\.repository';/,
+          /import \{OrderClass, CustomerClass\} from '\.\.\/models';/,
+        ];
+
+        const repositoryTypeClassImport = [
+          /import \{CustomerClassTypeRepository\} from '\.\/customer-class-type\.repository';/,
+          /import \{OrderClassType, CustomerClassType\} from '\.\.\/models';/,
+        ];
+
+        const sourceRepositoryFile = path.join(
+          SANDBOX_PATH,
+          REPOSITORY_APP_PATH,
+          repositoryFileName[i],
+        );
+
+        repositoryBasicImports.forEach(regex => {
+          assert.fileContent(sourceRepositoryFile, regex);
+        });
+
+        const importRegEx = [
+          repositoryClassImport,
+          repositoryMultiWordClassImport,
+          repositoryTypeClassImport,
+        ];
+
+        importRegEx[i].forEach(regex => {
+          assert.fileContent(sourceRepositoryFile, regex);
+        });
+      });
+
+      it('repository has updated constructor', async () => {
+        const singleWordClassConstractor = [
+          /public readonly customer: BelongsToAccessor<Customer, typeof Order\.prototype\.id>;\n/,
+          /constructor\(@inject\('datasources\.db'\) dataSource: DbDataSource, @repository\.getter\('CustomerRepository'\) protected customerRepositoryGetter: Getter<CustomerRepository>,\) \{\n/,
+          /super\(Order, dataSource\);\n {4}this\.customer = this\.createBelongsToAccessorFor\('customer', customerRepositoryGetter,\);\n {2}\}\n/,
+        ];
+
+        const multiWordClassConstractor = [
+          /public readonly customerClass: BelongsToAccessor<CustomerClass, typeof OrderClass\.prototype\.orderNumber>;\n/,
+          /constructor\(@inject\('datasources\.myDB'\) dataSource: MyDBDataSource, @repository\.getter\('CustomerClassRepository'\) protected customerClassRepositoryGetter: Getter<CustomerClassRepository>,\) \{\n/,
+          /super\(OrderClass, dataSource\);\n {4}this\.customerClass = this\.createBelongsToAccessorFor\('customerClassCustNumber', customerClassRepositoryGetter,\);\n {2}\}\n/,
+        ];
+
+        const typeClassConstractor = [
+          /public readonly customerClassType: BelongsToAccessor<CustomerClassType, typeof OrderClassType\.prototype\.orderString>;\n/,
+          /constructor\(@inject\('datasources\.myDB'\) dataSource: MyDBDataSource, @repository\.getter\('CustomerClassTypeRepository'\) protected customerClassTypeRepositoryGetter: Getter<CustomerClassTypeRepository>,\) \{\n/,
+          /super\(OrderClassType, dataSource\);\n {4}this\.customerClassType = this\.createBelongsToAccessorFor\('customerClassTypeCustNumber', customerClassTypeRepositoryGetter,\);\n {2}\}\n/,
+        ];
+
+        const sourceRepositoryFile = path.join(
+          SANDBOX_PATH,
+          REPOSITORY_APP_PATH,
+          repositoryFileName[i],
+        );
+
+        const updateConstructorRegEx = [
+          singleWordClassConstractor,
+          multiWordClassConstractor,
+          typeClassConstractor,
+        ];
+        updateConstructorRegEx[i].forEach(regex => {
+          assert.fileContent(sourceRepositoryFile, regex);
+        });
+      });
+    }
+
+    context('generate model relation for existing property name', () => {
+      const expectedDecoretor = [
+        /@belongsTo\(\(\) => Customer\)\n {2}myCustomer: number;\n/,
+        /@belongsTo\(\(\) => CustomerClass\)\n {2}myCustomer: number;\n/,
+        /@belongsTo\(\(\) => CustomerClassType\)\n {2}myCustomer: number;\n/,
+      ];
+      const promptList = [
+        {
+          relationType: 'belongsTo',
+          sourceModel: 'Order',
+          destinationModel: 'Customer',
+          relationName: 'myCustomer',
+        },
+      ];
+
+      it('Verify is property name that already exist will overwriting ', async () => {
+        await sandbox.reset();
+        await testUtils
+          .executeGenerator(generator)
+          .inDir(SANDBOX_PATH, () =>
+            testUtils.givenLBProject(SANDBOX_PATH, {
+              additionalFiles: SANDBOX_FILES,
+            }),
+          )
+          .withPrompts(promptList[0]);
+
+        const expectedSourceFile = path.join(
+          SANDBOX_PATH,
+          MODEL_APP_PATH,
+          sourceFileName[0],
+        );
+
+        assert.file(expectedSourceFile);
+        assert.fileContent(expectedSourceFile, expectedDecoretor[0]);
+
+        fs.readFile(expectedSourceFile, (err, data) => {
+          if (err) throw err;
+          const indexOfFirstRelation = data.indexOf('@belongsTo');
+          const lastIndexOfRelation = data.lastIndexOf('@belongsTo');
+          assert.equal(indexOfFirstRelation, lastIndexOfRelation);
+        });
+      });
+    });
   });
 });
