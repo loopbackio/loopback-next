@@ -7,13 +7,15 @@
 
 const path = require('path');
 const assert = require('yeoman-assert');
-const testlab = require('@loopback/testlab');
+const {expect, TestSandbox} = require('@loopback/testlab');
 const fs = require('fs');
 
-const TestSandbox = testlab.TestSandbox;
-
 const generator = path.join(__dirname, '../../../generators/relation');
-const SANDBOX_FILES = require('../../fixtures/relation').SANDBOX_FILES;
+const {
+  SANDBOX_FILES,
+  SANDBOX_FILES3,
+  SANDBOX_FILES6,
+} = require('../../fixtures/relation');
 const testUtils = require('../../test-utils');
 
 // Test Sandbox
@@ -47,7 +49,70 @@ describe('lb4 relation', function() {
     await sandbox.reset();
   });
 
-  // special cases regardless of the repository type
+  it("rejects relation when destination model doesn't have primary Key", () => {
+    const prompt = {
+      relationType: 'belongsTo',
+      sourceModel: 'Customer',
+      destinationModel: 'Nokey',
+    };
+
+    return expect(
+      testUtils
+        .executeGenerator(generator)
+        .inDir(SANDBOX_PATH, () =>
+          testUtils.givenLBProject(SANDBOX_PATH, {
+            additionalFiles: SANDBOX_FILES,
+          }),
+        )
+        .withPrompts(prompt),
+    ).to.be.rejectedWith(/Target model primary key does not exist/);
+  });
+
+  it('rejects relation when models does not exist', () => {
+    const prompt = {
+      relationType: 'belongsTo',
+      sourceModel: 'Customer',
+      destinationModel: 'Nokey',
+    };
+
+    return expect(
+      testUtils
+        .executeGenerator(generator)
+        .inDir(SANDBOX_PATH, () =>
+          testUtils.givenLBProject(SANDBOX_PATH, {
+            additionalFiles: SANDBOX_FILES3,
+          }),
+        )
+        .withPrompts(prompt),
+    ).to.be.rejectedWith(/No models found/);
+  });
+
+  it('updates property decorator when property already exist in the model', async () => {
+    const prompt = {
+      relationType: 'belongsTo',
+      sourceModel: 'Order',
+      destinationModel: 'Customer',
+    };
+
+    await testUtils
+      .executeGenerator(generator)
+      .inDir(SANDBOX_PATH, () =>
+        testUtils.givenLBProject(SANDBOX_PATH, {
+          additionalFiles: SANDBOX_FILES6,
+        }),
+      )
+      .withPrompts(prompt);
+
+    const expectedFile = path.join(
+      SANDBOX_PATH,
+      MODEL_APP_PATH,
+      'order.model.ts',
+    );
+
+    const relationalPropertyRegEx = /\@belongsTo\(\(\) \=\> Customer\)/;
+    assert.fileContent(expectedFile, relationalPropertyRegEx);
+  });
+
   context('generate model relation - ', () => {
     const expectedImport = /import {Entity, model, property, belongsTo} from \'\@loopback\/repository\';\n/;
     const expectedDecoretor = [

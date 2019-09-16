@@ -7,11 +7,10 @@
 
 const path = require('path');
 const assert = require('yeoman-assert');
-const testlab = require('@loopback/testlab');
-const TestSandbox = testlab.TestSandbox;
+const {expect, TestSandbox} = require('@loopback/testlab');
 
 const generator = path.join(__dirname, '../../../generators/relation');
-const SANDBOX_FILES = require('../../fixtures/relation').SANDBOX_FILES;
+const {SANDBOX_FILES, SANDBOX_FILES5} = require('../../fixtures/relation');
 const testUtils = require('../../test-utils');
 
 // Test Sandbox
@@ -44,12 +43,52 @@ const repositoryFileName = [
   'customer-class-type.repository.ts',
 ];
 
-describe('lb4 relation', function() {
+describe('lb4 relation HasMany', function() {
   // eslint-disable-next-line no-invalid-this
   this.timeout(30000);
 
   beforeEach('reset sandbox', async () => {
     await sandbox.reset();
+  });
+
+  it("rejects relation when source model doesn't have primary Key", () => {
+    const prompt = {
+      relationType: 'hasMany',
+      sourceModel: 'Nokey',
+      destinationModel: 'Customer',
+    };
+
+    return expect(
+      testUtils
+        .executeGenerator(generator)
+        .inDir(SANDBOX_PATH, () =>
+          testUtils.givenLBProject(SANDBOX_PATH, {
+            additionalFiles: SANDBOX_FILES,
+          }),
+        )
+        .withPrompts(prompt),
+    ).to.be.rejectedWith(/Source model primary key does not exist\./);
+  });
+
+  it('rejects relation when relation already exist in the model', () => {
+    const prompt = {
+      relationType: 'hasMany',
+      sourceModel: 'Customer',
+      destinationModel: 'Order',
+    };
+
+    return expect(
+      testUtils
+        .executeGenerator(generator)
+        .inDir(SANDBOX_PATH, () =>
+          testUtils.givenLBProject(SANDBOX_PATH, {
+            additionalFiles: SANDBOX_FILES5,
+          }),
+        )
+        .withPrompts(prompt),
+    ).to.be.rejectedWith(
+      /relational property orders already exist in the model Customer/,
+    );
   });
 
   // special cases regardless of the repository type
