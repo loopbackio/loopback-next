@@ -46,7 +46,7 @@ describe('keyTo and keyFrom with resolveHasOneMetadata', () => {
     });
   });
 
-  it('infers keyTo if is it not provided', () => {
+  it('infers keyTo if it is not provided', () => {
     const meta = resolveHasOneMetadata(Category.definition.relations[
       'thing'
     ] as HasOneDefinition);
@@ -62,7 +62,7 @@ describe('keyTo and keyFrom with resolveHasOneMetadata', () => {
     });
   });
 
-  it('throws if both keyFrom and keyTo are not provided', async () => {
+  it('throws if keyFrom, keyTo, and default foreign key name are not provided', async () => {
     let error;
 
     try {
@@ -79,6 +79,24 @@ describe('keyTo and keyFrom with resolveHasOneMetadata', () => {
     );
 
     expect(error.code).to.eql('INVALID_RELATION_DEFINITION');
+  });
+
+  it('resolves metadata if keyTo and keyFrom are not provided, but default foreign key is', async () => {
+    Category.definition.addProperty('categoryId', {type: 'number'});
+
+    const meta = resolveHasOneMetadata(Category.definition.relations[
+      'category'
+    ] as HasOneDefinition);
+
+    expect(meta).to.eql({
+      name: 'category',
+      type: 'hasOne',
+      targetsMany: false,
+      source: Category,
+      keyFrom: 'id',
+      target: () => Category,
+      keyTo: 'categoryId',
+    });
   });
 
   /******  HELPERS *******/
