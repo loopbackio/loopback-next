@@ -246,6 +246,64 @@ describe('Validation at REST level', () => {
     });
   });
 
+  context(
+    'with request body validation options - {ajvErrorTransformer: [Function]}',
+    () => {
+      class ProductController {
+        @post('/products')
+        async create(
+          @requestBody({required: true}) data: Product,
+        ): Promise<Product> {
+          return new Product(data);
+        }
+      }
+
+      before(() =>
+        givenAnAppAndAClient(ProductController, {
+          nullable: false,
+          compiledSchemaCache: new WeakMap(),
+          $data: true,
+          ajvErrorTransformer: errors => {
+            return errors.map(e => ({
+              ...e,
+              message: `(translated) ${e.message}`,
+            }));
+          },
+        }),
+      );
+      after(() => app.stop());
+
+      it('transforms error messages provided by AJV', async () => {
+        const DATA = {
+          name: 'iPhone',
+          description: 'iPhone',
+        };
+        const res = await client
+          .post('/products')
+          .send(DATA)
+          .expect(422);
+
+        expect(res.body).to.eql({
+          error: {
+            statusCode: 422,
+            name: 'UnprocessableEntityError',
+            message:
+              'The request body is invalid. See error object `details` property for more info.',
+            code: 'VALIDATION_FAILED',
+            details: [
+              {
+                path: '',
+                code: 'required',
+                message: "(translated) should have required property 'price'",
+                info: {missingProperty: 'price'},
+              },
+            ],
+          },
+        });
+      });
+    },
+  );
+
   // A request body schema can be provided explicitly by the user
   // as an inlined content[type].schema property.
   context('for fully-specified request body', () => {
