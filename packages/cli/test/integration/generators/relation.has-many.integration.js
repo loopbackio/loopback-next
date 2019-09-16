@@ -10,7 +10,7 @@ const assert = require('yeoman-assert');
 const {expect, TestSandbox} = require('@loopback/testlab');
 
 const generator = path.join(__dirname, '../../../generators/relation');
-const {SANDBOX_FILES, SANDBOX_FILES5} = require('../../fixtures/relation');
+const {SANDBOX_FILES, SourceEntries} = require('../../fixtures/relation');
 const testUtils = require('../../test-utils');
 
 // Test Sandbox
@@ -82,7 +82,12 @@ describe('lb4 relation HasMany', function() {
         .executeGenerator(generator)
         .inDir(SANDBOX_PATH, () =>
           testUtils.givenLBProject(SANDBOX_PATH, {
-            additionalFiles: SANDBOX_FILES5,
+            additionalFiles: [
+              SourceEntries.CustomerModelWithOrdersProperty,
+              SourceEntries.OrderModel,
+              SourceEntries.CustomerRepository,
+              SourceEntries.OrderRepository,
+            ],
           }),
         )
         .withPrompts(prompt),

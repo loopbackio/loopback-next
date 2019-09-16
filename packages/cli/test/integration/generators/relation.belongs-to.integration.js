@@ -11,11 +11,7 @@ const {expect, TestSandbox} = require('@loopback/testlab');
 const fs = require('fs');
 
 const generator = path.join(__dirname, '../../../generators/relation');
-const {
-  SANDBOX_FILES,
-  SANDBOX_FILES3,
-  SANDBOX_FILES6,
-} = require('../../fixtures/relation');
+const {SANDBOX_FILES, SourceEntries} = require('../../fixtures/relation');
 const testUtils = require('../../test-utils');
 
 // Test Sandbox
@@ -80,7 +76,9 @@ describe('lb4 relation', function() {
         .executeGenerator(generator)
         .inDir(SANDBOX_PATH, () =>
           testUtils.givenLBProject(SANDBOX_PATH, {
-            additionalFiles: SANDBOX_FILES3,
+            additionalFiles: [
+              // no model/repository files in this project
+            ],
           }),
         )
         .withPrompts(prompt),
@@ -98,7 +96,12 @@ describe('lb4 relation', function() {
       .executeGenerator(generator)
       .inDir(SANDBOX_PATH, () =>
         testUtils.givenLBProject(SANDBOX_PATH, {
-          additionalFiles: SANDBOX_FILES6,
+          additionalFiles: [
+            SourceEntries.CustomerModelWithOrdersProperty,
+            SourceEntries.OrderModelModelWithCustomerIdProperty,
+            SourceEntries.CustomerRepository,
+            SourceEntries.OrderRepository,
+          ],
         }),
       )
       .withPrompts(prompt);

@@ -205,8 +205,6 @@ exports.SANDBOX_FILES2 = [
   SourceEntries.IndexOfControllers,
 ];
 
-exports.SANDBOX_FILES3 = [];
-
 exports.SANDBOX_FILES4 = [
   {
     path: CONTROLLER_PATH,
@@ -220,20 +218,6 @@ exports.SANDBOX_FILES4 = [
   },
   SourceEntries.CustomerModel,
   SourceEntries.OrderModel,
-  SourceEntries.CustomerRepository,
-  SourceEntries.OrderRepository,
-];
-
-exports.SANDBOX_FILES5 = [
-  SourceEntries.CustomerModelWithOrdersProperty,
-  SourceEntries.OrderModel,
-  SourceEntries.CustomerRepository,
-  SourceEntries.OrderRepository,
-];
-
-exports.SANDBOX_FILES6 = [
-  SourceEntries.CustomerModelWithOrdersProperty,
-  SourceEntries.OrderModelModelWithCustomerIdProperty,
   SourceEntries.CustomerRepository,
   SourceEntries.OrderRepository,
 ];
