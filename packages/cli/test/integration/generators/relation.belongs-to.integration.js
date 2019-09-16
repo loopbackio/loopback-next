@@ -577,12 +577,10 @@ describe('lb4 relation', function() {
         assert.file(expectedSourceFile);
         assert.fileContent(expectedSourceFile, expectedDecoretor[0]);
 
-        fs.readFile(expectedSourceFile, (err, data) => {
-          if (err) throw err;
-          const indexOfFirstRelation = data.indexOf('@belongsTo');
-          const lastIndexOfRelation = data.lastIndexOf('@belongsTo');
-          assert.equal(indexOfFirstRelation, lastIndexOfRelation);
-        });
+        const data = fs.readFileSync(expectedSourceFile);
+        const indexOfFirstRelation = data.indexOf('@belongsTo');
+        const lastIndexOfRelation = data.lastIndexOf('@belongsTo');
+        assert.equal(indexOfFirstRelation, lastIndexOfRelation);
       });
     });
   });
