@@ -18,6 +18,8 @@ const tests = require('../lib/artifact-generator')(generator);
 const baseTests = require('../lib/base-generator')(generator);
 const testUtils = require('../../test-utils');
 
+const {expectFileToMatchSnapshot} = require('../../snapshots');
+
 // Test Sandbox
 const SANDBOX_PATH = path.resolve(__dirname, '..', '.sandbox');
 const sandbox = new TestSandbox(SANDBOX_PATH);
@@ -34,7 +36,7 @@ const restCLIInput = {
 };
 
 // Expected File Name
-const expectedFile = path.join(
+const filePath = path.join(
   SANDBOX_PATH,
   '/src/controllers/product-review.controller.ts',
 );
@@ -75,7 +77,6 @@ describe('lb4 controller', () => {
         .inDir(SANDBOX_PATH, () => testUtils.givenLBProject(SANDBOX_PATH))
         .withPrompts(basicCLIInput);
 
-      assert.file(expectedFile);
       checkBasicContents();
     });
 
@@ -85,7 +86,7 @@ describe('lb4 controller', () => {
         .inDir(SANDBOX_PATH, () => testUtils.givenLBProject(SANDBOX_PATH))
         .withArguments('productReview');
 
-      assert.file(expectedFile);
+      assert.file(filePath);
       checkBasicContents();
     });
   });
@@ -240,39 +241,7 @@ describe('lb4 controller', () => {
  * Helper function to check the contents of a basic controller
  */
 function checkBasicContents() {
-  assert.fileContent(expectedFile, /class ProductReviewController/);
-  assert.fileContent(expectedFile, /constructor\(\) {}/);
-}
-
-function checkCreateContentsWithIdOmitted() {
-  const postCreateRegEx = [
-    /\@post\('\/product-reviews', {/,
-    /responses: {/,
-    /'200': {/,
-    /description: 'ProductReview model instance'/,
-    /content: {'application\/json': {schema: getModelSchemaRef\(ProductReview\)}},\s{1,}},\s{1,}},\s{1,}}\)/,
-    /async create\(\s+\@requestBody\({\s+content: {\s+'application\/json': {\s+schema: getModelSchemaRef\(ProductReview, {\s+title: 'NewProductReview',\s+exclude: \['productId'\],\s+}\),\s+},\s+},\s+}\)\s+productReview: Omit<ProductReview, 'productId'>,\s+\)/,
-  ];
-  postCreateRegEx.forEach(regex => {
-    assert.fileContent(expectedFile, regex);
-  });
-}
-
-/**
- * Check the contents for operation 'create' when id is not required.
- */
-function checkCreateContents() {
-  const postCreateRegEx = [
-    /\@post\('\/product-reviews', {/,
-    /responses: {/,
-    /'200': {/,
-    /description: 'ProductReview model instance'/,
-    /content: {'application\/json': {schema: getModelSchemaRef\(ProductReview\)}},\s{1,}},\s{1,}},\s{1,}}\)/,
-    /async create\(\s+\@requestBody\({\s+content: {\s+'application\/json': {\s+schema: getModelSchemaRef\(ProductReview, {\s+title: 'NewProductReview',\s+}\),\s+},\s+},\s+}\)\s+productReview: ProductReview,\s+\)/,
-  ];
-  postCreateRegEx.forEach(regex => {
-    assert.fileContent(expectedFile, regex);
-  });
+  expectFileToMatchSnapshot(filePath);
 }
 
 /**
@@ -282,107 +251,7 @@ function checkCreateContents() {
  * target functions)
  */
 function checkRestCrudContents(options) {
-  assert.fileContent(expectedFile, /class ProductReviewController/);
-
-  // Repository and injection
-  assert.fileContent(expectedFile, /\@repository\(BarRepository\)/);
-  assert.fileContent(expectedFile, /barRepository \: BarRepository/);
-
-  // Assert that the decorators are present in the correct groupings!
-  // @post - create
-  if (options && options.idOmitted) {
-    checkCreateContentsWithIdOmitted();
-  } else {
-    checkCreateContents();
-  }
-
-  // @get - count
-  const getCountRegEx = [
-    /\@get\('\/product-reviews\/count', {/,
-    /responses: {/,
-    /'200': {/,
-    /description: 'ProductReview model count'/,
-    /content: {'application\/json': {schema: CountSchema}},\s{1,}},\s{1,}},\s{1,}}\)/,
-    /async count\(\s+\@param\.query\.object\('where', getWhereSchemaFor\(ProductReview\)\) where\?: Where<ProductReview>(|,\s+)\)/,
-  ];
-  getCountRegEx.forEach(regex => {
-    assert.fileContent(expectedFile, regex);
-  });
-
-  // @get - find
-  const getFindRegEx = [
-    /\@get\('\/product-reviews', {/,
-    /responses: {/,
-    /'200': {/,
-    /description: 'Array of ProductReview model instances'/,
-    /content: {'application\/json': {schema: getModelSchemaRef\(ProductReview\)}},\s{1,}},\s{1,}},\s{1,}}\)/,
-    /async find\(\s*\@param\.query\.object\('filter', getFilterSchemaFor\(ProductReview\)\) filter\?: Filter<ProductReview>(|,\s+)\)/,
-  ];
-  getFindRegEx.forEach(regex => {
-    assert.fileContent(expectedFile, regex);
-  });
-
-  // @patch - updateAll
-  const patchUpdateAllRegEx = [
-    /\@patch\('\/product-reviews', {/,
-    /responses: {/,
-    /'200': {/,
-    /description: 'ProductReview PATCH success count'/,
-    /content: {'application\/json': {schema: CountSchema}},\s{1,}},\s{1,}},\s{1,}}\)/,
-    /async updateAll\(\s+\@requestBody\({\s+content: {\s+'application\/json': {\s+schema: getModelSchemaRef\(ProductReview, {partial: true}\),\s+},\s+},\s+}\)\s+productReview: ProductReview,\s{1,} @param\.query\.object\('where', getWhereSchemaFor\(ProductReview\)\) where\?: Where<ProductReview>(|,\s+)\)/,
-  ];
-  patchUpdateAllRegEx.forEach(regex => {
-    assert.fileContent(expectedFile, regex);
-  });
-
-  // @get - findById
-  const getFindByIdRegEx = [
-    /\@get\('\/product-reviews\/{id}', {/,
-    /responses: {/,
-    /'200': {/,
-    /description: 'ProductReview model instance'/,
-    /content: {'application\/json': {schema: getModelSchemaRef\(ProductReview\)}},\s{1,}},\s{1,}},\s{1,}}\)/,
-    /async findById\(\@param.path.number\('id'\)/,
-  ];
-  getFindByIdRegEx.forEach(regex => {
-    assert.fileContent(expectedFile, regex);
-  });
-
-  // @patch - updateById
-  const patchUpdateByIdRegEx = [
-    /\@patch\('\/product-reviews\/{id}'/,
-    /responses: {/,
-    /'204': {/,
-    /description: 'ProductReview PATCH success'/,
-    /async updateById\(\s+\@param.path.number\('id'\) id: number,\s+\@requestBody\({\s+content: {\s+'application\/json': {\s+schema: getModelSchemaRef\(ProductReview, {partial: true}\),\s+},\s+},\s+}\)\s+productReview: ProductReview,\s+\)/,
-  ];
-  patchUpdateByIdRegEx.forEach(regex => {
-    assert.fileContent(expectedFile, regex);
-  });
-
-  // @put - replaceById
-  const putReplaceByIdRegEx = [
-    /\@put\('\/product-reviews\/{id}'/,
-    /responses: {/,
-    /'204': {/,
-    /description: 'ProductReview PUT success'/,
-    /async replaceById\(\s{1,}\@param.path.number\('id'\) id: number,\s{1,}\@requestBody\(\) productReview: ProductReview,\s+\)/,
-  ];
-  putReplaceByIdRegEx.forEach(regex => {
-    assert.fileContent(expectedFile, regex);
-  });
-
-  // @del - deleteById
-  const deleteByIdRegEx = [
-    /\@del\('\/product-reviews\/{id}', {/,
-    /responses: {/,
-    /'204': {/,
-    /description: 'ProductReview DELETE success'/,
-    /async deleteById\(\@param.path.number\('id'\) id: number\)/,
-  ];
-  deleteByIdRegEx.forEach(regex => {
-    assert.fileContent(expectedFile, regex);
-  });
+  expectFileToMatchSnapshot(filePath);
 }
 
 /**
@@ -391,31 +260,31 @@ function checkRestCrudContents(options) {
  */
 function checkRestPaths(restUrl) {
   assert.fileContent(
-    expectedFile,
+    filePath,
     new RegExp(/@post\('/.source + restUrl + /', {/.source),
   );
   assert.fileContent(
-    expectedFile,
+    filePath,
     new RegExp(/@get\('/.source + restUrl + /\/count', {/.source),
   );
   assert.fileContent(
-    expectedFile,
+    filePath,
     new RegExp(/@get\('/.source + restUrl + /', {/.source),
   );
   assert.fileContent(
-    expectedFile,
+    filePath,
     new RegExp(/@patch\('/.source + restUrl + /', {/.source),
   );
   assert.fileContent(
-    expectedFile,
+    filePath,
     new RegExp(/@get\('/.source + restUrl + /\/{id}', {/.source),
   );
   assert.fileContent(
-    expectedFile,
+    filePath,
     new RegExp(/@patch\('/.source + restUrl + /\/{id}', {/.source),
   );
   assert.fileContent(
-    expectedFile,
+    filePath,
     new RegExp(/@del\('/.source + restUrl + /\/{id}', {/.source),
   );
 }
