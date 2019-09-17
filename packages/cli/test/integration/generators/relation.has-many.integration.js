@@ -438,7 +438,7 @@ describe('lb4 relation HasMany', function() {
         assert.file(expectedControllerFile);
       });
 
-      it('controller with hasMany class and constractor', async () => {
+      it('controller with hasMany class and constructor', async () => {
         const expectedControllerFile = path.join(
           SANDBOX_PATH,
           CONTROLLER_PATH,
@@ -525,6 +525,7 @@ describe('lb4 relation HasMany', function() {
             /},\n . {2}},\n .}\)\n {2}async create\(\n/,
             /\@param\.path\.number\('id'\) id: typeof Customer\.prototype\.id,\n/,
             /\@requestBody\(\{\s+content: {\s+'application\/json': {\s+schema: getModelSchemaRef\(Order, {\n/,
+            /title: 'NewOrderInCustomer',\n/,
             /exclude: \['id'\],\n/,
             /optional: \['customerId'\]\n/,
             /}\),\s+},\s+},\s+}\) order: Omit<Order, 'id'>,\n/,
@@ -538,6 +539,7 @@ describe('lb4 relation HasMany', function() {
             /},\n . {2}},\n .}\)\n {2}async create\(\n/,
             /\@param\.path\.number\('id'\) id: typeof CustomerClass\.prototype\.custNumber,\n/,
             /\@requestBody\(\{\s+content: {\s+'application\/json': {\s+schema: getModelSchemaRef\(OrderClass, {\n/,
+            /title: 'NewOrderClassInCustomerClass',\n/,
             /exclude: \['orderNumber'\],\n/,
             /optional: \['customerClassCustNumber'\]\n/,
             /}\),\s+},\s+},\s+}\) orderClass: Omit<OrderClass, 'orderNumber'>,\n/,
@@ -551,6 +553,7 @@ describe('lb4 relation HasMany', function() {
             /},\n . {2}},\n .}\)\n {2}async create\(\n/,
             /\@param\.path\.number\('id'\) id: typeof CustomerClassType\.prototype\.custNumber,\n/,
             /\@requestBody\(\{\s+content: {\s+'application\/json': {\s+schema: getModelSchemaRef\(OrderClassType, {\n/,
+            /title: 'NewOrderClassTypeInCustomerClassType',\n/,
             /exclude: \['orderString'\],\n/,
             /optional: \['customerClassTypeCustNumber'\]\n/,
             /}\),\s+},\s+},\s+}\) orderClassType: Omit<OrderClassType, 'orderString'>,\n/,
