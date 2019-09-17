@@ -29,18 +29,17 @@ describe('keyTo and keyFrom with resolveHasOneMetadata', () => {
     });
   });
 
-  it('resolves metadata using keyTo, but not keyFrom', () => {
+  it('infers keyFrom if it is not provided', () => {
     const meta = resolveHasOneMetadata(Category.definition.relations[
       'item'
     ] as HasOneDefinition);
-
-    expect(meta).to.not.have.property('keyFrom');
 
     expect(meta).to.eql({
       name: 'item',
       type: 'hasOne',
       targetsMany: false,
       source: Category,
+      keyFrom: 'id',
       target: () => Item,
       keyTo: 'categoryId',
     });

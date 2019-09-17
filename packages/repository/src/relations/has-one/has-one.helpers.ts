@@ -39,13 +39,6 @@ export function resolveHasOneMetadata(
   const targetModelProperties =
     targetModel.definition && targetModel.definition.properties;
 
-  // Make sure that if it already keys to the foreign key property,
-  // the key exists in the target model
-  if (relationMeta.keyTo && targetModelProperties[relationMeta.keyTo]) {
-    // The explicit cast is needed because of a limitation of type inference
-    return relationMeta as HasOneResolvedDefinition;
-  }
-
   const sourceModel = relationMeta.source;
   if (!sourceModel || !sourceModel.modelName) {
     const reason = 'source model must be defined';
@@ -54,8 +47,10 @@ export function resolveHasOneMetadata(
 
   const keyFrom = sourceModel.getIdProperties()[0];
 
-  if (relationMeta.keyTo) {
-    // The explict cast is needed because of a limitation of type inference
+  // Make sure that if it already keys to the foreign key property,
+  // the key exists in the target model
+  if (relationMeta.keyTo && targetModelProperties[relationMeta.keyTo]) {
+    // The explicit cast is needed because of a limitation of type inference
     return Object.assign(relationMeta, {keyFrom}) as HasOneResolvedDefinition;
   }
 
