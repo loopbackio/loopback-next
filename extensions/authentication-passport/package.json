@@ -1,0 +1,61 @@
+{
+  "name": "@loopback/authentication-passport",
+  "version": "0.1.0",
+  "description": "A package creating adapters between the passport module and @loopback/authentication",
+  "engines": {
+    "node": ">=8.9"
+  },
+  "scripts": {
+    "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
+    "build:apidocs": "lb-apidocs",
+    "build": "lb-tsc",
+    "clean": "lb-clean loopback-authentication-passport*.tgz dist tsconfig.build.tsbuildinfo package",
+    "pretest": "npm run build",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
+    "unit": "lb-mocha \"dist/__tests__/unit/**/*.js\"",
+    "verify": "npm pack && tar xf loopback-authentication-passport*.tgz && tree package && npm run clean"
+  },
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "license": "MIT",
+  "keywords": [
+    "Passport",
+    "Authentication",
+    "TypeScript"
+  ],
+  "files": [
+    "README.md",
+    "index.js",
+    "index.d.ts",
+    "dist",
+    "src",
+    "!*/__tests__"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git"
+  },
+  "dependencies": {
+    "@loopback/authentication": "^2.0.0",
+    "@loopback/context": "^1.16.0",
+    "@loopback/core": "^1.7.1",
+    "@loopback/metadata": "^1.1.5",
+    "@loopback/openapi-v3": "^1.4.0",
+    "@loopback/rest": "^1.11.2",
+    "passport": "^0.4.0",
+    "util-promisifyall": "^1.0.6"
+  },
+  "devDependencies": {
+    "@loopback/build": "^2.0.10",
+    "@loopback/openapi-spec-builder": "^1.1.11",
+    "@loopback/testlab": "^1.2.10",
+    "@loopback/eslint-config": "^4.0.2",
+    "@types/node": "^10.14.8",
+    "@types/passport": "^1.0.0",
+    "@types/passport-http": "^0.3.8",
+    "passport-http": "^0.3.0"
+  }
+}
