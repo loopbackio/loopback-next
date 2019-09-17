@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/eslint-config@4.0.2...@loopback/eslint-config@4.1.0) (2019-09-17)
+
+
+### Features
+
+* **eslint-config:** enable "no-misused-promises" rule ([88d5494](https://github.com/strongloop/loopback-next/commit/88d5494))
+
+
+
+
+
 ## [4.0.2](https://github.com/strongloop/loopback-next/compare/@loopback/eslint-config@4.0.1...@loopback/eslint-config@4.0.2) (2019-09-03)
 
 **Note:** Version bump only for package @loopback/eslint-config

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/authorization@0.2.2...@loopback/authorization@0.3.0) (2019-09-17)
+
+
+### Features
+
+* **authorization:** add support for default authorization metadata ([7034bb0](https://github.com/strongloop/loopback-next/commit/7034bb0))
+
+
+
+
+
 ## [0.2.2](https://github.com/strongloop/loopback-next/compare/@loopback/authorization@0.2.1...@loopback/authorization@0.2.2) (2019-09-06)
 
 **Note:** Version bump only for package @loopback/authorization

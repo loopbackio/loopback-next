@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-express-composition@1.5.6...@loopback/example-express-composition@1.6.0) (2019-09-17)
+
+
+### Features
+
+* use descriptive title to describe schema of POST (create) request bodies ([8f49a45](https://github.com/strongloop/loopback-next/commit/8f49a45))
+
+
+
+
+
 ## [1.5.6](https://github.com/strongloop/loopback-next/compare/@loopback/example-express-composition@1.5.5...@loopback/example-express-composition@1.5.6) (2019-09-06)
 
 **Note:** Version bump only for package @loopback/example-express-composition

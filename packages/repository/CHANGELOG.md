@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.14.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.13.1...@loopback/repository@1.14.0) (2019-09-17)
+
+
+### Features
+
+* **repository:** add keyFrom to resolved relation metadata ([fb4c5c8](https://github.com/strongloop/loopback-next/commit/fb4c5c8))
+
+
+
+
+
 ## [1.13.1](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.13.0...@loopback/repository@1.13.1) (2019-09-06)
 
 **Note:** Version bump only for package @loopback/repository

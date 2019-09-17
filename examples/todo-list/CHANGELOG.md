@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.10.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo-list@1.9.6...@loopback/example-todo-list@1.10.0) (2019-09-17)
+
+
+### Features
+
+* **example-todo-list:** leverage temporary resolvers ([31dd7bf](https://github.com/strongloop/loopback-next/commit/31dd7bf))
+* use descriptive title to describe schema of POST (create) request bodies ([8f49a45](https://github.com/strongloop/loopback-next/commit/8f49a45))
+
+
+
+
+
 ## [1.9.6](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo-list@1.9.5...@loopback/example-todo-list@1.9.6) (2019-09-06)
 
 **Note:** Version bump only for package @loopback/example-todo-list

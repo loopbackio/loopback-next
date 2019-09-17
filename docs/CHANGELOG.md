@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@2.0.0...@loopback/docs@2.1.0) (2019-09-17)
+
+
+### Features
+
+* **example-todo-list:** leverage temporary resolvers ([31dd7bf](https://github.com/strongloop/loopback-next/commit/31dd7bf))
+* use descriptive title to describe schema of POST (create) request bodies ([8f49a45](https://github.com/strongloop/loopback-next/commit/8f49a45))
+
+
+
+
+
 # [2.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.30.0...@loopback/docs@2.0.0) (2019-09-06)
 
 

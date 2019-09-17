@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.22.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.21.6...@loopback/cli@1.22.0) (2019-09-17)
+
+
+### Bug Fixes
+
+* **cli:** exclude *.tsbuildinfo from Docker image ([581a0f3](https://github.com/strongloop/loopback-next/commit/581a0f3))
+* model with id required ([270e13e](https://github.com/strongloop/loopback-next/commit/270e13e))
+* **cli:** fix schema title for POST operation in relation controllers ([34a2077](https://github.com/strongloop/loopback-next/commit/34a2077))
+
+
+### Features
+
+* **cli:** add lifecycle support for datasources ([8573173](https://github.com/strongloop/loopback-next/commit/8573173))
+* use descriptive title to describe schema of POST (create) request bodies ([8f49a45](https://github.com/strongloop/loopback-next/commit/8f49a45))
+* **eslint-config:** enable "no-misused-promises" rule ([88d5494](https://github.com/strongloop/loopback-next/commit/88d5494))
+
+
+
+
+
 ## [1.21.6](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.21.5...@loopback/cli@1.21.6) (2019-09-06)
 
 **Note:** Version bump only for package @loopback/cli

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/booter-lb3app@1.2.13...@loopback/booter-lb3app@1.3.0) (2019-09-17)
+
+
+### Features
+
+* **booter-lb3app:** add specTransformer ([8a51aa1](https://github.com/strongloop/loopback-next/commit/8a51aa1))
+
+
+
+
+
 ## [1.2.13](https://github.com/strongloop/loopback-next/compare/@loopback/booter-lb3app@1.2.12...@loopback/booter-lb3app@1.2.13) (2019-09-06)
 
 **Note:** Version bump only for package @loopback/booter-lb3app

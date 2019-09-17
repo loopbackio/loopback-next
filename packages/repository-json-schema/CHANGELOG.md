@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.10.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@1.9.7...@loopback/repository-json-schema@1.10.0) (2019-09-17)
+
+
+### Features
+
+* **repository-json-schema:** introduce new option "title" ([7664b3e](https://github.com/strongloop/loopback-next/commit/7664b3e))
+
+
+
+
+
 ## [1.9.7](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@1.9.6...@loopback/repository-json-schema@1.9.7) (2019-09-06)
 
 
