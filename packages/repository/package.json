@@ -24,7 +24,7 @@
     "@types/lodash": "^4.14.138",
     "@types/node": "^10.14.18",
     "@types/bson": "^4.0.0",
-    "bson": "1.0.6"
+    "bson": "1.1.1"
   },
   "dependencies": {
     "@loopback/context": "^1.23.0",
