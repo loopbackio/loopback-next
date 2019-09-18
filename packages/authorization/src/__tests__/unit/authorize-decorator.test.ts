@@ -155,6 +155,16 @@ describe('Authentication', () => {
       });
     });
 
+    it('can skip authorization with a flag', () => {
+      class TestClass {
+        @authorize.skip()
+        getSecret() {}
+      }
+
+      const metaData = getAuthorizationMetadata(TestClass, 'getSecret');
+      expect(metaData).to.eql({skip: true});
+    });
+
     it('can stack decorators to target method', () => {
       class TestClass {
         @authorize.allow('a1', 'a2')

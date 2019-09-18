@@ -88,6 +88,7 @@ export class AuthorizeMethodDecoratorFactory extends MethodDecoratorFactory<
     return list;
   }
 }
+
 /**
  * Decorator `@authorize` to mark methods that require authorization
  *
@@ -191,6 +192,11 @@ export namespace authorize {
    * Deny unauthenticated users
    */
   export const denyUnauthenticated = () => deny(UNAUTHENTICATED);
+
+  /**
+   * Skip authorization
+   */
+  export const skip = () => authorize({skip: true});
 }
 
 /**
