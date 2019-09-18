@@ -3,9 +3,12 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {AuthenticationStrategy} from '@loopback/authentication';
-import {UserProfile} from '@loopback/security';
+import {
+  AuthenticationStrategy,
+  convertUserToUserProfileFn,
+} from '@loopback/authentication';
 import {HttpErrors, Request} from '@loopback/rest';
+import {UserProfile} from '@loopback/security';
 import {Strategy} from 'passport';
 
 const passportRequestMixin = require('passport/lib/http/request');
@@ -18,12 +21,16 @@ const passportRequestMixin = require('passport/lib/http/request');
  *   4. provides state methods to the strategy instance
  * see: https://github.com/jaredhanson/passport
  */
-export class StrategyAdapter implements AuthenticationStrategy {
+export class StrategyAdapter<U> implements AuthenticationStrategy {
   /**
    * @param strategy instance of a class which implements a passport-strategy;
    * @description http://passportjs.org/
    */
-  constructor(private readonly strategy: Strategy, readonly name: string) {}
+  constructor(
+    private readonly strategy: Strategy,
+    readonly name: string,
+    private userConverter?: convertUserToUserProfileFn<U>,
+  ) {}
 
   /**
    * The function to invoke the contained passport strategy.
@@ -33,6 +40,7 @@ export class StrategyAdapter implements AuthenticationStrategy {
    * @param request The incoming request.
    */
   authenticate(request: Request): Promise<UserProfile> {
+    const self = this;
     return new Promise<UserProfile>((resolve, reject) => {
       // mix-in passport additions like req.logIn and req.logOut
       for (const key in passportRequestMixin) {
@@ -44,8 +52,16 @@ export class StrategyAdapter implements AuthenticationStrategy {
       const strategy = Object.create(this.strategy);
 
       // add success state handler to strategy instance
-      strategy.success = function(user: UserProfile) {
-        resolve(user);
+      // as a generic adapter, it is agnostic of the type of
+      // the custom user, so loose the type restriction here
+      // to be `any`
+      strategy.success = function(user: any) {
+        if (self.userConverter) {
+          const userProfile = self.userConverter(user);
+          resolve(userProfile);
+        } else {
+          resolve(user);
+        }
       };
 
       // add failure state handler to strategy instance

@@ -98,10 +98,18 @@ describe('Basic Authentication', () => {
   function verify(username: string, password: string, cb: Function) {
     users.find(username, password, cb);
   }
+
+  function converter(user: UserProfileInDB): UserProfile {
+    let userProfile = Object.assign({}, user, {[securityId]: user.id});
+    delete userProfile.id;
+    return userProfile;
+  }
+
   const basicStrategy = new BasicStrategy(verify);
   const basicAuthStrategy = new StrategyAdapter(
     basicStrategy,
     AUTH_STRATEGY_NAME,
+    converter
   );
 
   async function givenAServer() {
@@ -216,9 +224,10 @@ describe('Basic Authentication', () => {
   }
 });
 
+type UserProfileInDB = Omit<UserProfile, typeof securityId> & {id: string};
 class UserRepository {
   constructor(
-    readonly list: {[key: string]: {profile: UserProfile; password: string}},
+    readonly list: {[key: string]: {profile: UserProfileInDB; password: string}},
   ) {}
   find(username: string, password: string, cb: Function): void {
     const userList = this.list;

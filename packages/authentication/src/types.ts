@@ -35,6 +35,10 @@ export interface AuthenticateFn {
   (request: Request): Promise<UserProfile | undefined>;
 }
 
+export interface convertUserToUserProfileFn<U> {
+  (user: U): UserProfile;
+}
+
 /**
  * Options for authentication component
  */
