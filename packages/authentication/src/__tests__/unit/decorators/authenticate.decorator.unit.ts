@@ -30,5 +30,46 @@ describe('Authentication', () => {
       const metaData = getAuthenticateMetadata(TestClass, 'whoAmI');
       expect(metaData).to.eql({strategy: 'my-strategy', options: {}});
     });
+
+    it('adds authenticate metadata to target class', () => {
+      @authenticate('my-strategy', {option1: 'value1', option2: 'value2'})
+      class TestClass {
+        whoAmI() {}
+      }
+
+      const metaData = getAuthenticateMetadata(TestClass, 'whoAmI');
+      expect(metaData).to.eql({
+        strategy: 'my-strategy',
+        options: {option1: 'value1', option2: 'value2'},
+      });
+    });
+
+    it('overrides class level metadata by method level', () => {
+      @authenticate('my-strategy', {option1: 'value1', option2: 'value2'})
+      class TestClass {
+        @authenticate('another-strategy', {
+          option1: 'valueA',
+          option2: 'value2',
+        })
+        whoAmI() {}
+      }
+
+      const metaData = getAuthenticateMetadata(TestClass, 'whoAmI');
+      expect(metaData).to.eql({
+        strategy: 'another-strategy',
+        options: {option1: 'valueA', option2: 'value2'},
+      });
+    });
+  });
+
+  it('can skip authentication', () => {
+    @authenticate('my-strategy', {option1: 'value1', option2: 'value2'})
+    class TestClass {
+      @authenticate.skip()
+      whoAmI() {}
+    }
+
+    const metaData = getAuthenticateMetadata(TestClass, 'whoAmI');
+    expect(metaData).to.be.undefined();
   });
 });

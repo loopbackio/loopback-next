@@ -95,9 +95,22 @@ export namespace AuthenticationBindings {
 }
 
 /**
- * The key used to store log-related via @loopback/metadata and reflection.
+ * The key used to store method-level metadata for `@authenticate`
  */
-export const AUTHENTICATION_METADATA_KEY = MetadataAccessor.create<
+export const AUTHENTICATION_METADATA_METHOD_KEY = MetadataAccessor.create<
   AuthenticationMetadata,
   MethodDecorator
->('authentication.operationsMetadata');
+>('authentication:method');
+
+/**
+ * Alias for AUTHENTICATION_METADATA_METHOD_KEY to keep it backward compatible
+ */
+export const AUTHENTICATION_METADATA_KEY = AUTHENTICATION_METADATA_METHOD_KEY;
+
+/**
+ * The key used to store class-level metadata for `@authenticate`
+ */
+export const AUTHENTICATION_METADATA_CLASS_KEY = MetadataAccessor.create<
+  AuthenticationMetadata,
+  ClassDecorator
+>('authentication:class');
