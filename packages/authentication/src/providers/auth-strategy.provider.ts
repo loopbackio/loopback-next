@@ -5,9 +5,9 @@
 
 import {BindingScope, Getter, inject} from '@loopback/context';
 import {extensionPoint, extensions, Provider} from '@loopback/core';
-import {AuthenticationMetadata} from '../decorators/authenticate.decorator';
 import {AuthenticationBindings} from '../keys';
 import {
+  AuthenticationMetadata,
   AuthenticationStrategy,
   AUTHENTICATION_STRATEGY_NOT_FOUND,
 } from '../types';

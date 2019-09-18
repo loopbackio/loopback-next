@@ -21,6 +21,22 @@ describe('Authentication', () => {
       });
     });
 
+    it('can add authenticate metadata to target method with an object', () => {
+      class TestClass {
+        @authenticate({
+          strategy: 'my-strategy',
+          options: {option1: 'value1', option2: 'value2'},
+        })
+        whoAmI() {}
+      }
+
+      const metaData = getAuthenticateMetadata(TestClass, 'whoAmI');
+      expect(metaData).to.eql({
+        strategy: 'my-strategy',
+        options: {option1: 'value1', option2: 'value2'},
+      });
+    });
+
     it('can add authenticate metadata to target method without options', () => {
       class TestClass {
         @authenticate('my-strategy')
@@ -70,6 +86,16 @@ describe('Authentication', () => {
     }
 
     const metaData = getAuthenticateMetadata(TestClass, 'whoAmI');
-    expect(metaData).to.be.undefined();
+    expect(metaData).to.containEql({skip: true});
+  });
+
+  it('can skip authentication at class level', () => {
+    @authenticate.skip()
+    class TestClass {
+      whoAmI() {}
+    }
+
+    const metaData = getAuthenticateMetadata(TestClass, 'whoAmI');
+    expect(metaData).to.containEql({skip: true});
   });
 });

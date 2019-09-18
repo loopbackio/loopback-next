@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Component, ProviderMap} from '@loopback/core';
+import {bind, Component, ContextTags, ProviderMap} from '@loopback/core';
 import {AuthenticationBindings} from './keys';
 import {
   AuthenticateActionProvider,
@@ -11,6 +11,7 @@ import {
   AuthMetadataProvider,
 } from './providers';
 
+@bind({tags: {[ContextTags.KEY]: AuthenticationBindings.COMPONENT}})
 export class AuthenticationComponent implements Component {
   providers?: ProviderMap;
 

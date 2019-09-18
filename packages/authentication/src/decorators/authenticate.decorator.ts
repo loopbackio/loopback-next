@@ -15,15 +15,7 @@ import {
   AUTHENTICATION_METADATA_KEY,
   AUTHENTICATION_METADATA_METHOD_KEY,
 } from '../keys';
-
-/**
- * Authentication metadata stored via Reflection API
- */
-export interface AuthenticationMetadata {
-  strategy: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  options?: {[name: string]: any};
-}
+import {AuthenticationMetadata} from '../types';
 
 class AuthenticateClassDecoratorFactory extends ClassDecoratorFactory<
   AuthenticationMetadata
@@ -32,10 +24,14 @@ class AuthenticateClassDecoratorFactory extends ClassDecoratorFactory<
 /**
  * Mark a controller method as requiring authenticated user.
  *
- * @param strategyName - The name of the authentication strategy to use.
+ * @param strategyNameOrMetadata - The name of the authentication strategy to use
+ * or the authentication metadata object.
  * @param options - Additional options to configure the authentication.
  */
-export function authenticate(strategyName: string, options?: object) {
+export function authenticate(
+  strategyNameOrMetadata: string | AuthenticationMetadata,
+  options?: object,
+) {
   return function authenticateDecoratorForClassOrMethod(
     // Class or a prototype
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -46,14 +42,17 @@ export function authenticate(strategyName: string, options?: object) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     methodDescriptor?: TypedPropertyDescriptor<any>,
   ) {
+    let spec: AuthenticationMetadata;
+    if (typeof strategyNameOrMetadata === 'object') {
+      spec = strategyNameOrMetadata;
+    } else {
+      spec = {strategy: strategyNameOrMetadata, options: options || {}};
+    }
     if (method && methodDescriptor) {
       // Method
       return MethodDecoratorFactory.createDecorator<AuthenticationMetadata>(
         AUTHENTICATION_METADATA_KEY,
-        {
-          strategy: strategyName,
-          options: options || {},
-        },
+        spec,
         {decoratorName: '@authenticate'},
       )(target, method, methodDescriptor);
     }
@@ -61,10 +60,7 @@ export function authenticate(strategyName: string, options?: object) {
       // Class
       return AuthenticateClassDecoratorFactory.createDecorator(
         AUTHENTICATION_METADATA_CLASS_KEY,
-        {
-          strategy: strategyName,
-          options: options || {},
-        },
+        spec,
         {decoratorName: '@authenticate'},
       )(target);
     }
@@ -80,7 +76,7 @@ export namespace authenticate {
   /**
    * `@authenticate.skip()` - a sugar decorator to skip authentication
    */
-  export const skip = () => authenticate('', {skip: true});
+  export const skip = () => authenticate({strategy: '', skip: true});
 }
 
 /**
@@ -99,13 +95,11 @@ export function getAuthenticateMetadata(
     targetClass.prototype,
     methodName,
   );
-  if (metadata && metadata.options && metadata.options.skip) return undefined;
   if (metadata) return metadata;
   // Check if the class level has `@authenticate`
   metadata = MetadataInspector.getClassMetadata<AuthenticationMetadata>(
     AUTHENTICATION_METADATA_CLASS_KEY,
     targetClass,
   );
-  if (metadata && metadata.options && metadata.options.skip) return undefined;
   return metadata;
 }

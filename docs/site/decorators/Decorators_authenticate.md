@@ -8,7 +8,8 @@ permalink: /doc/en/lb4/Decorators_authenticate.html
 
 ## Authentication Decorator
 
-Syntax: `@authenticate(strategyName: string, options?: object)`
+Syntax: `@authenticate(strategyName: string, options?: object)` or
+`@authenticate(metadata: AuthenticationMetadata)`
 
 Marks a controller method as needing an authenticated user. This decorator
 requires a strategy name as a parameter.
@@ -20,6 +21,7 @@ Here's an example using 'BasicStrategy': to authenticate user in function
 
 ```ts
 import {inject} from '@loopback/context';
+import {securityId} from '@loopback/security';
 import {
   AuthenticationBindings,
   UserProfile,
@@ -35,15 +37,17 @@ export class WhoAmIController {
   @authenticate('BasicStrategy')
   @get('/whoami')
   whoAmI(): string {
-    return this.user.id;
+    return this.user[securityId];
   }
 }
 ```
 
-Please note that `@authenticate` can also be applied at class level for all
-methods within the class. In the code below, `whoAmI` is protected with
-`BasicStrategy` (inherited from the class level) while `hello` does not require
-authentication (skipped by `@authenticate.skip`).
+To configure a default authentication for all methods within a class,
+`@authenticate` can also be applied at the class level. In the code below,
+`whoAmI` is protected with `BasicStrategy` even though there is no
+`@authenticate` is present for the method itself. The configuration is inherited
+from the class. The `hello` method does not require authentication as it's
+skipped by `@authenticate.skip`.
 
 ```ts
 @authenticate('BasicStrategy')
@@ -54,7 +58,7 @@ export class WhoAmIController {
 
   @get('/whoami')
   whoAmI(): string {
-    return this.user.id;
+    return this.user[securityId];
   }
 
   @authenticate.skip()

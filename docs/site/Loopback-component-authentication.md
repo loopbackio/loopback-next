@@ -96,7 +96,7 @@ export class AuthenticationComponent implements Component {
 ```
 
 As you can see, there are a few [providers](Creating-components.md#providers)
-which make up the bulk of the authenticaton component.
+which make up the bulk of the authentication component.
 
 Essentially
 
@@ -123,6 +123,12 @@ The decorator's syntax is:
 
 ```ts
 @authenticate(strategyName: string, options?: object)
+```
+
+or
+
+```ts
+@authenticate(metadata: AuthenticationMetadata)
 ```
 
 The **strategyName** is the **unique** name of the authentication strategy.
@@ -186,6 +192,18 @@ data of type `AuthenticationMetadata` provided by `AuthMetadataProvider`. The
 `AuthenticationStrategyProvider`, discussed in a later section, makes use of
 `AuthenticationMetadata` to figure out what **name** you specified as a
 parameter in the `@authenticate` decorator of a specific controller endpoint.
+
+## Default authentication metadata
+
+In some cases, it's desirable to have a default authentication enforcement for
+methods that are not explicitly decorated with `@authenticate`. To do so, we can
+simply configure the authentication component with `defaultMetadata` as follows:
+
+```ts
+app
+  .configure(AuthenticationBindings.COMPONENT)
+  .to({defaultMetadata: {strategy: 'xyz'}});
+```
 
 ## Adding an Authentication Action to a Custom Sequence
 
