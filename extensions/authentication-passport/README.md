@@ -1,12 +1,19 @@
 # Passport Strategy Adapter
 
-_Important: We strongly suggest that users understand LoopBack's
+_Important: We strongly recommend that users learn LoopBack's
 [authentication system](https://loopback.io/doc/en/lb4/Loopback-component-authentication.html)
-before using this module_
+before using this module._
 
 This is an adapter module created for plugging in
 [`passport`](https://www.npmjs.com/package/passport) based strategies to the
-authentication system in `@loopback/authentication@2.x`.
+authentication system in `@loopback/authentication@3.x`.
+
+## Stability: :warning:Experimental:warning:
+
+> Experimental packages provide early access to advanced or experimental
+> functionality to get community feedback. Such modules are published to npm
+> using `0.x.y` versions. Their APIs and functionality may be subject to
+> breaking changes in future releases.
 
 ## Installation
 
@@ -16,7 +23,7 @@ npm i @loopback/authentication-passport --save
 
 ## Background
 
-`@loopback/authentication@2.x` allows users to register authentication
+`@loopback/authentication@3.x` allows users to register authentication
 strategies that implement the interface
 [`AuthenticationStrategy`](https://apidocs.strongloop.com/@loopback%2fdocs/authentication.html#AuthenticationStrategy)
 
@@ -48,8 +55,8 @@ function verify(username: string, password: string, cb: Function) {
 const basicStrategy = new BasicStrategy(verify);
 ```
 
-It's a similar configuration as you do when adding a strategy to a `passport` by
-calling `passport.use()`.
+It's a similar configuration as you add a strategy to a `passport` by calling
+`passport.use()`.
 
 2. Apply the adapter to the strategy
 
@@ -120,7 +127,7 @@ This part is same as registering a non-passport based strategy. Please make sure
 you follow the documentation
 [adding-an-authentication-action-to-a-custom-sequence](https://loopback.io/doc/en/lb4/Loopback-component-authentication.html#adding-an-authentication-action-to-a-custom-sequence)
 to rewrite your sequence. You can also find a sample implementation in
-[this example tutorial](https://loopback.io/doc/en/lb4/Authentication-Tutorial.html#creating-a-custom-sequence-and-adding-the-authentication-action)
+[this example tutorial](https://loopback.io/doc/en/lb4/Authentication-Tutorial.html#creating-a-custom-sequence-and-adding-the-authentication-action).
 
 ### With Provider
 
@@ -242,4 +249,4 @@ This part is same as registering a non-passport based strategy. Please make sure
 you follow the documentation
 [adding-an-authentication-action-to-a-custom-sequence](https://loopback.io/doc/en/lb4/Loopback-component-authentication.html#adding-an-authentication-action-to-a-custom-sequence)
 to rewrite your sequence. You can also find a sample implementation in
-[this example tutorial](https://loopback.io/doc/en/lb4/Authentication-Tutorial.html#creating-a-custom-sequence-and-adding-the-authentication-action)
+[this example tutorial](https://loopback.io/doc/en/lb4/Authentication-Tutorial.html#creating-a-custom-sequence-and-adding-the-authentication-action).
