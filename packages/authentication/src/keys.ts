@@ -6,13 +6,21 @@
 import {BindingKey} from '@loopback/context';
 import {MetadataAccessor} from '@loopback/metadata';
 import {SecurityBindings} from '@loopback/security';
-import {AuthenticationMetadata} from './decorators';
-import {AuthenticateFn, AuthenticationStrategy} from './types';
+import {AuthenticationComponent} from './authentication.component';
+import {
+  AuthenticateFn,
+  AuthenticationMetadata,
+  AuthenticationStrategy,
+} from './types';
 
 /**
  * Binding keys used by this component.
  */
 export namespace AuthenticationBindings {
+  export const COMPONENT = BindingKey.create<AuthenticationComponent>(
+    'components.AuthenticationComponent',
+  );
+
   /**
    * Key used to bind an authentication strategy to the context for the
    * authentication function to use.
