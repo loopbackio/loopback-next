@@ -58,6 +58,10 @@ export interface AuthorizationMetadata {
    * Define the access scopes
    */
   scopes?: string[];
+  /**
+   * A flag to skip authorization
+   */
+  skip?: boolean;
 }
 
 /**
