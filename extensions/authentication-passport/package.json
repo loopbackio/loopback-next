@@ -36,7 +36,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/strongloop/loopback-next.git"
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "packages/authentication"
   },
   "dependencies": {
     "@loopback/authentication": "^2.0.0",
