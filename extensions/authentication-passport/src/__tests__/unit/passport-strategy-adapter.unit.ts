@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {UserProfile} from '@loopback/authentication';
+import {UserProfile, securityId} from '@loopback/security';
 import {HttpErrors, Request} from '@loopback/rest';
 import {expect} from '@loopback/testlab';
 import {AuthenticateOptions} from 'passport';
@@ -11,7 +11,7 @@ import {StrategyAdapter} from '../..';
 import {MockPassportStrategy} from './fixtures/mock-passport-strategy';
 
 describe('Strategy Adapter', () => {
-  const mockUser: UserProfile = {name: 'user-name', id: 'mock-id'};
+  const mockUser: UserProfile = {name: 'user-name', [securityId]: 'mock-id'};
 
   describe('authenticate()', () => {
     it('calls the authenticate method of the strategy', async () => {
