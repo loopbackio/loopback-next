@@ -75,10 +75,20 @@ export interface OrderRelations {
 export type OrderWithRelations = Order & OrderRelations;
 ```
 
+
 The definition of the `belongsTo` relation is inferred by using the `@belongsTo`
 decorator. The decorator takes in a function resolving the target model class
 constructor and designates the relation type. It also calls `property()` to
 ensure that the decorated property is correctly defined.
+Usage of belongsTo relation is similar to legacy datasource juggler.
+
+The `@belongsTo` decorator takes three parameters :
+  - the `target model class`,
+  - the `relation definition` - has three attributes, keyFrom, keyTo, name
+    - `keyFrom` is a property name on the "source" model (e.g. Order.customerId). keyFrom attribute has become a dummy parameter and is not relevant any more with the recent changes to use the decorated target as the actual keyFrom value.
+    - `keyTo` is a property name on the "target" model, typically the primary key of the "target" model.
+    - `name` is the relation name.
+  - the `property definition`, this creates a property decorator implicitly. The name attribute in the definition can be used to customize datasource column name.
 
 A usage of the decorator with a custom primary key of the target model for the
 above example is as follows:
@@ -86,7 +96,11 @@ above example is as follows:
 ```ts
 class Order extends Entity {
   // constructor, properties, etc.
-  @belongsTo(() => Customer, {keyTo: 'pk'})
+  @belongsTo(
+    () => Customer,
+    { keyFrom: 'customerId', keyTo: 'id', name: 'customer' },
+    { name: 'customer_id' }
+  )
   customerId: number;
 }
 
@@ -94,6 +108,26 @@ export interface OrderRelations {
   customer?: CustomerWithRelations;
 }
 ```
+
+The above example can also be trimmed as follows,
+- keyFrom defaults to `{decorated-property-name}`
+- keyTo is `id`
+- the relation name defaults to `{decorated-property-name}` after stripping the trailing `Id` suffix.
+- The standard naming convention for the foreign key property in the source model is `relation name` + `Id`. (e.g. Order.customerId). If the property name in the source model has to be customized then the relation name ( `name` attribute in the relation definition) has to be stated explicitly. Also, the corresponding `hasMany` relation in the `target` model has to be modified with the correct `keyTo` value.
+
+
+```ts
+class Order extends Entity {
+  // constructor, properties, etc.
+  @belongsTo(() => Customer, { keyTo: 'id' }),
+  customerId: number;
+}
+
+export interface OrderRelations {
+  customer?: CustomerWithRelations;
+}
+```
+
 
 ## Configuring a belongsTo relation
 
