@@ -9,7 +9,6 @@ import {
   ReadinessCheck,
   ShutdownCheck,
   StartupCheck,
-  State,
 } from '@cloudnative/health';
 import {
   ContextView,
@@ -67,18 +66,7 @@ export class HealthObserver implements LifeCycleObserver {
     }
 
     this.eventEmitter.emit('startup');
-    await this.waitUntilUp();
     await this.startupCheck;
-  }
-
-  // Workaround an issue in @cloudnative/health - the `startupComplete` flag is
-  // only set to `true` if `getStatus` is called and the status is `UP`
-  private async waitUntilUp() {
-    let state = State.STARTING;
-    while (state !== State.UP) {
-      const status = await this.healthChecker.getStatus();
-      state = status.status;
-    }
   }
 
   stop() {
