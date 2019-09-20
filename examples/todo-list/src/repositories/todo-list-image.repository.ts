@@ -7,7 +7,6 @@ import {Getter, inject} from '@loopback/core';
 import {
   BelongsToAccessor,
   DefaultCrudRepository,
-  InclusionResolver,
   repository,
 } from '@loopback/repository';
 import {DbDataSource} from '../datasources';
@@ -29,27 +28,12 @@ export class TodoListImageRepository extends DefaultCrudRepository<
     protected todoListRepositoryGetter: Getter<TodoListRepository>,
   ) {
     super(TodoListImage, dataSource);
+
     this.todoList = this.createBelongsToAccessorFor(
       'todoList',
       todoListRepositoryGetter,
     );
 
-    // this is a temporary implementation until
-    // https://github.com/strongloop/loopback-next/issues/3450 is landed
-    const todoListResolver: InclusionResolver<
-      TodoListImage,
-      TodoList
-    > = async images => {
-      const todoLists = [];
-
-      for (const image of images) {
-        const todoList = await this.todoList(image.id);
-        todoLists.push(todoList);
-      }
-
-      return todoLists;
-    };
-
-    this.registerInclusionResolver('todoList', todoListResolver);
+    this.registerInclusionResolver('todoList', this.todoList.inclusionResolver);
   }
 }

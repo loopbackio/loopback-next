@@ -87,51 +87,23 @@ export class TodoListRepository extends DefaultCrudRepository<
 
 ### Inclusion of Related Models
 
-To get the related `Todo` objects for each `TodoList`, we can use register a
-custom
-[`InclusionResolver`](https://loopback.io/doc/en/lb4/apidocs.repository.inclusionresolver.html)
-in the `TodoList` repository.
+To get the related `Todo` objects for each `TodoList`, we can register the
+inclusion resolver that comes with the
+[`HasManyRepositoryFactory`](https://loopback.io/doc/en/lb4/apidocs.repository.hasmanyrepository.html).
+We need to register this resolver to the repository class, which we can do as
+follows:
 
-First, add the following import:
-
-```ts
-import {InclusionResolver} from '@loopback/repository';
-```
-
-Next, in the constructor, add the following custom resolver:
+{% include code-caption.html content="src/repositories/todo-list.repository.ts" %}
 
 ```ts
-export class TodoListRepository extends DefaultCrudRepository</*..*/> {
-  // ...
-  constructor(
-    //db, relation factories setup
+this.todos = this.createHasManyRepositoryFactoryFor(
+  'todos',
+  todoRepositoryGetter,
+);
 
-    // add the following code to build a custom resolver
-    const todosResolver: InclusionResolver<TodoList, Todo> = async todoLists => {
-      const todos: Todo[][] = [];
-      for (const todoList of todoLists) {
-        const todo = await this.todos(todoList.id).find();
-        todos.push(todo);
-      }
-
-      return todos;
-    };
-    // the resolver needs to be registered before using
-    this.registerInclusionResolver('todos', todosResolver);
-  )
-}
+// Add this line to register the resolver
+this.registerInclusionResolver('todos', this.todos.inclusionResolver);
 ```
-
-After that, we need to register this resolver to the repository class, which we
-can do as follows:
-
-```ts
-this.registerInclusionResolver('todos', todosResolver);
-```
-
-{% include note.html content="
-This is a temporary implementation until we implement our relation resolvers. See [GitHub issue #3450](https://github.com/strongloop/loopback-next/issues/3450) for details.
-" %}
 
 Now when you get a `TodoList`, a `todos` property will be included that contains
 your related `Todo`s, for example:
@@ -151,36 +123,22 @@ your related `Todo`s, for example:
 }
 ```
 
-Let's do the same on the `TodoRepository`:
+On the other end, the
+[`BelongsToAccessor`](https://loopback.io/doc/en/lb4/apidocs.repository.belongstoaccessor.html)
+also comes with an inclusion resolver property that we can register on the
+`TodoRepository`. So, let's register this resolver to the `TodoRepository`
+similar to how we did it for the `TodoListRepository`:
 
 {% include code-caption.html content="src/repositories/todo.repository.ts" %}
 
 ```ts
-// .. other imports
-import {InclusionResolver} from '@loopback/repository';
-```
+this.todoList = this.createBelongsToAccessorFor(
+  'todoList',
+  todoListRepositoryGetter,
+);
 
-```ts
-export class TodoRepository extends DefaultCrudRepository</*..*/> {
-  // ...
-  constructor(
-    //db, factories setup
-
-    // add the following code to build/register a custom resolver
-    const todoListResolver: InclusionResolver<Todo, TodoList> = async todos => {
-      const todoLists = [];
-
-      for (const todo of todos) {
-        const todoList = await this.todoList(todo.id);
-        todoLists.push(todoList);
-      }
-
-      return todoLists;
-    };
-
-    this.registerInclusionResolver('todoList', todoListResolver);
-  )
-}
+// Add this line to register the resolver
+this.registerInclusionResolver('todoList', this.todoList.inclusionResolver);
 ```
 
 We're now ready to expose `TodoList` and its related `Todo` API through the
