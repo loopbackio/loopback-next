@@ -44,6 +44,10 @@ export namespace RestBindings {
    */
   export const PORT = BindingKey.create<number>('rest.port');
   /**
+   * Binding key for setting and injecting the socket path of the RestServer
+   */
+  export const PATH = BindingKey.create<string | undefined>('rest.path');
+  /**
    * Binding key for setting and injecting the URL of RestServer
    */
   export const URL = BindingKey.create<string>('rest.url');
