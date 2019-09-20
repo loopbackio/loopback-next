@@ -7,7 +7,6 @@ import {Getter, inject} from '@loopback/core';
 import {
   BelongsToAccessor,
   DefaultCrudRepository,
-  InclusionResolver,
   juggler,
   repository,
 } from '@loopback/repository';
@@ -35,20 +34,6 @@ export class TodoRepository extends DefaultCrudRepository<
       'todoList',
       todoListRepositoryGetter,
     );
-
-    // this is a temporary implementation until
-    // https://github.com/strongloop/loopback-next/issues/3450 is landed
-    const todoListResolver: InclusionResolver<Todo, TodoList> = async todos => {
-      const todoLists = [];
-
-      for (const todo of todos) {
-        const todoList = await this.todoList(todo.id);
-        todoLists.push(todoList);
-      }
-
-      return todoLists;
-    };
-
-    this.registerInclusionResolver('todoList', todoListResolver);
+    this.registerInclusionResolver('todoList', this.todoList.inclusionResolver);
   }
 }
