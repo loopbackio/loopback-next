@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {OperationObject, OpenApiSpec} from '@loopback/rest';
+import {OpenApiSpec, OperationObject} from '@loopback/rest';
 import {Client, expect} from '@loopback/testlab';
 import * as _ from 'lodash';
 import {
@@ -213,6 +213,23 @@ describe('booter-lb3app', () => {
       const spec = app.restServer.getApiSpec();
       const createOp: OperationObject = spec.paths['/api/CoffeeShops'].post;
       expect(createOp.summary).to.eql('just a very simple modification');
+    });
+  });
+
+  context('binding LoopBack 3 datasources', () => {
+    before(async () => {
+      ({app, client} = await setupApplication({
+        lb3app: {path: '../fixtures/app-with-model'},
+      }));
+    });
+
+    it('binds datasource to the context', async () => {
+      const expected = require('../../../fixtures/app-with-model').dataSources
+        .memory;
+      const dsBindings = app.findByTag('datasource');
+      const key = dsBindings[0].key;
+      const ds = await app.get(key);
+      expect(ds).to.eql(expected);
     });
   });
 });
