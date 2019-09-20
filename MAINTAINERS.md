@@ -5,7 +5,7 @@ on particular package, please see the [CODEOWNERS file](CODEOWNERS).
 
 Core maintainers:
 
-- Biniam Admikew ([@b-admike](https://github.com/b-admike))
+- Deepak Rajamohan ([@deepakrkris](https://github.com/deepakrkris))
 - Diana Lau ([@dhmlau](https://github.com/dhmlau))
 - Dominique Emond ([@emonddr](https://github.com/emonddr))
 - Janny Hou ([@jannyhou](https://github.com/jannyhou))
