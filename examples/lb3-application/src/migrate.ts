@@ -11,10 +11,6 @@ export async function migrate(args: string[]) {
 
   const app = new CoffeeShopApplication();
   await app.boot();
-  console.warn(
-    'Skipping migration of models from LB3 application (not supported yet).',
-  );
-  console.warn('See https://github.com/strongloop/loopback-next/issues/2825');
   await app.migrateSchema({existingSchema});
 
   // Connectors usually keep a pool of opened connections,
