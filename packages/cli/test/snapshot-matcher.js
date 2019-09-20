@@ -14,6 +14,7 @@ This is an initial experimental version. In the (near) future, we should
 move this file to a standalone package so that all Mocha users can use it.
 */
 
+const chalk = require('chalk');
 const assert = require('assert');
 const path = require('path');
 
@@ -43,6 +44,7 @@ module.exports = {
  */
 function initializeSnapshots(snapshotDir) {
   let currentTest;
+  let snapshotErrors = false;
 
   beforeEach(function setupSnapshots() {
     // eslint-disable-next-line no-invalid-this
@@ -51,8 +53,24 @@ function initializeSnapshots(snapshotDir) {
   });
 
   if (!process.env.UPDATE_SNAPSHOTS) {
+    process.on('exit', function printSnapshotHelp() {
+      if (!snapshotErrors) return;
+      console.log(
+        chalk.red(`
+Some of the snapshot-based tests have failed. Please carefully inspect
+the differences to prevent possible regressions. If the changes are
+intentional, run the tests again with \`UPDATE_SNAPSHOTS=1\` environment
+variable to update snapshots.
+        `),
+      );
+    });
     return function expectToMatchSnapshot(actual) {
-      matchSnapshot(snapshotDir, currentTest, actual);
+      try {
+        matchSnapshot(snapshotDir, currentTest, actual);
+      } catch (err) {
+        snapshotErrors = true;
+        throw err;
+      }
     };
   }
 
@@ -83,7 +101,7 @@ function matchSnapshot(snapshotDir, currentTest, actualValue) {
   if (!(key in snapshotData)) {
     throw new Error(
       `No snapshot found for ${JSON.stringify(key)}.\n` +
-        'Run the tests with UPDATE_SNAPSHOTS=1 in the environment ' +
+        'Run the tests with `UPDATE_SNAPSHOTS=1` environment variable ' +
         'to create and update snapshot files.',
     );
   }
@@ -153,7 +171,7 @@ function loadSnapshotData(snapshotFile) {
     if (err.code === 'MODULE_NOT_FOUND') {
       throw new Error(
         `Snapshot file ${snapshotFile} was not found.\n` +
-          'Run the tests with UPDATE_SNAPSHOTS=1 in the environment ' +
+          'Run the tests with `UPDATE_SNAPSHOTS=1` environment variable ' +
           'to create and update snapshot files.',
       );
     }
