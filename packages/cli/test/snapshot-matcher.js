@@ -75,11 +75,12 @@ variable to update snapshots.
   }
 
   const snapshots = Object.create(null);
-  after(function updateSnapshots() {
-    for (const f in snapshots) {
+  after(async function updateSnapshots() {
+    const tasks = Object.entries(snapshots).map(([f, data]) => {
       const snapshotFile = buildSnapshotFilePath(snapshotDir, f);
-      writeSnapshotData(snapshotFile, snapshots[f]);
-    }
+      return writeSnapshotData(snapshotFile, data);
+    });
+    await Promise.all(tasks);
   });
 
   return function expectToRecordSnapshot(actual) {
@@ -200,7 +201,7 @@ function writeSnapshotData(snapshotFile, snapshots) {
 
   const content = header + entries.join('\n');
   mkdirp.sync(path.dirname(snapshotFile));
-  writeFileAtomic.sync(snapshotFile, content, {encoding: 'utf-8'});
+  return writeFileAtomic(snapshotFile, content, {encoding: 'utf-8'});
 }
 
 function buildSnapshotCode(key, value) {
