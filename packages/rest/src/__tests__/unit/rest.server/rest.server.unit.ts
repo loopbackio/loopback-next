@@ -94,6 +94,26 @@ describe('RestServer', () => {
       expect(server.getSync(RestBindings.HOST)).to.equal('my-host');
     });
 
+    it('honors unix socket path', async () => {
+      const path = '/var/run/loopback.sock';
+      const app = new Application({
+        rest: {path},
+      });
+      app.component(RestComponent);
+      const server = await app.getServer(RestServer);
+      expect(server.getSync(RestBindings.PATH)).to.equal(path);
+    });
+
+    it('honors named pipe path', async () => {
+      const path = '\\\\.\\pipe\\loopback';
+      const app = new Application({
+        rest: {path},
+      });
+      app.component(RestComponent);
+      const server = await app.getServer(RestServer);
+      expect(server.getSync(RestBindings.PATH)).to.equal(path);
+    });
+
     it('honors basePath in config', async () => {
       const app = new Application({
         rest: {port: 0, basePath: '/api'},

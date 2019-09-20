@@ -192,6 +192,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
 
     this.bind(RestBindings.PORT).to(this.config.port);
     this.bind(RestBindings.HOST).to(config.host);
+    this.bind(RestBindings.PATH).to(config.path);
     this.bind(RestBindings.PROTOCOL).to(config.protocol || 'http');
     this.bind(RestBindings.HTTPS_OPTIONS).to(config as ServerOptions);
 
@@ -791,12 +792,13 @@ export class RestServer extends Context implements Server, HttpServerLike {
 
     const port = await this.get(RestBindings.PORT);
     const host = await this.get(RestBindings.HOST);
+    const path = await this.get(RestBindings.PATH);
     const protocol = await this.get(RestBindings.PROTOCOL);
     const httpsOptions = await this.get(RestBindings.HTTPS_OPTIONS);
 
     const serverOptions = {};
     if (protocol === 'https') Object.assign(serverOptions, httpsOptions);
-    Object.assign(serverOptions, {port, host, protocol});
+    Object.assign(serverOptions, {port, host, protocol, path});
 
     this._httpServer = new HttpServer(this.requestHandler, serverOptions);
 
@@ -942,6 +944,7 @@ export type RestServerOptions = Partial<RestServerResolvedOptions>;
 
 export interface RestServerResolvedOptions {
   port: number;
+  path?: string;
 
   /**
    * Base path for API/static routes
