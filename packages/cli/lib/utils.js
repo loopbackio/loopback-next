@@ -119,6 +119,17 @@ exports.logNamingIssues = function(name, log) {
   }
 };
 
+exports.logClassCreation = function(type, typePlural, name, log) {
+  log(
+    `${exports.toClassName(type)} ${chalk.yellow(
+      name,
+    )} will be created in src/${typePlural}/${chalk.yellow(
+      exports.toFileName(name) + '.' + `${type}.ts`,
+    )}`,
+  );
+  log();
+};
+
 /**
  * Validate project directory to not exist
  */
