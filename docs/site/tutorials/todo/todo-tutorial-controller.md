@@ -38,6 +38,7 @@ Controller Todo will be created in src/controllers/todo.controller.ts
 ? What is the name of your CRUD repository? TodoRepository
 ? What is the name of ID property? id
 ? What is the type of your ID? number
+? Is the id omitted when creating a new instance? Yes
 ? What is the base HTTP path name of the CRUD operations? /todos
    create src/controllers/todo.controller.ts
    update src/controllers/index.ts
