@@ -23,7 +23,7 @@
     "@loopback/build": "^1.7.1",
     "@loopback/repository": "^1.14.0",
     "@types/debug": "^4.1.5",
-    "@types/lodash": "^4.14.138",
+    "@types/lodash": "^4.14.139",
     "@types/node": "^10.14.18",
     "lodash": "^4.17.15"
   },

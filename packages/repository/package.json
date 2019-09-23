@@ -21,7 +21,7 @@
     "@loopback/build": "^2.0.11",
     "@loopback/eslint-config": "^4.1.0",
     "@loopback/testlab": "^1.8.1",
-    "@types/lodash": "^4.14.138",
+    "@types/lodash": "^4.14.139",
     "@types/node": "^10.14.18",
     "@types/bson": "^4.0.0",
     "bson": "4.0.2"
