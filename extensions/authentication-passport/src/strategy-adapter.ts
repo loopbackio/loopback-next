@@ -5,19 +5,18 @@
 
 import {
   AuthenticationStrategy,
-  convertUserToUserProfileFn,
+  UserToUserProfileConverterFn,
 } from '@loopback/authentication';
 import {HttpErrors, Request} from '@loopback/rest';
 import {UserProfile} from '@loopback/security';
 import {Strategy} from 'passport';
 
 const passportRequestMixin = require('passport/lib/http/request');
-
 /**
  * Adapter class to invoke passport-strategy
  *   1. provides express dependencies to the passport strategies
  *   2. provides shimming of requests for passport authentication
- *   3. provides lifecycle similar to express to the passport-strategy
+ *   3. provides life-cycle similar to express to the passport-strategy
  *   4. provides state methods to the strategy instance
  * see: https://github.com/jaredhanson/passport
  */
@@ -29,7 +28,10 @@ export class StrategyAdapter<U> implements AuthenticationStrategy {
   constructor(
     private readonly strategy: Strategy,
     readonly name: string,
-    private userConverter?: convertUserToUserProfileFn<U>,
+    // The default converter returns an user as user profile
+    private userConverter: UserToUserProfileConverterFn<U> = (u: unknown) => {
+      return u as UserProfile;
+    },
   ) {}
 
   /**
@@ -54,14 +56,10 @@ export class StrategyAdapter<U> implements AuthenticationStrategy {
       // add success state handler to strategy instance
       // as a generic adapter, it is agnostic of the type of
       // the custom user, so loose the type restriction here
-      // to be `any`
-      strategy.success = function(user: any) {
-        if (self.userConverter) {
-          const userProfile = self.userConverter(user);
-          resolve(userProfile);
-        } else {
-          resolve(user);
-        }
+      // to be `unknown`
+      strategy.success = function(user: unknown) {
+        const userProfile = self.userConverter(user as U);
+        resolve(userProfile);
       };
 
       // add failure state handler to strategy instance

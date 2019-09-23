@@ -28,6 +28,7 @@ import {
   Send,
   SequenceHandler,
 } from '@loopback/rest';
+import {securityId, UserProfile} from '@loopback/security';
 import {Client, createClientForHandler} from '@loopback/testlab';
 import {BasicStrategy} from 'passport-http';
 import {StrategyAdapter} from '../../strategy-adapter';
@@ -101,7 +102,6 @@ describe('Basic Authentication', () => {
 
   function converter(user: UserProfileInDB): UserProfile {
     let userProfile = Object.assign({}, user, {[securityId]: user.id});
-    delete userProfile.id;
     return userProfile;
   }
 
@@ -109,7 +109,7 @@ describe('Basic Authentication', () => {
   const basicAuthStrategy = new StrategyAdapter(
     basicStrategy,
     AUTH_STRATEGY_NAME,
-    converter
+    converter,
   );
 
   async function givenAServer() {
@@ -227,7 +227,9 @@ describe('Basic Authentication', () => {
 type UserProfileInDB = Omit<UserProfile, typeof securityId> & {id: string};
 class UserRepository {
   constructor(
-    readonly list: {[key: string]: {profile: UserProfileInDB; password: string}},
+    readonly list: {
+      [key: string]: {profile: UserProfileInDB; password: string};
+    },
   ) {}
   find(username: string, password: string, cb: Function): void {
     const userList = this.list;
