@@ -56,7 +56,7 @@
     "@loopback/testlab": "^1.2.10",
     "@loopback/eslint-config": "^4.0.2",
     "@types/node": "^10.14.8",
-    "@types/passport": "^1.0.0",
+    "@types/passport": "^1.0.1",
     "@types/passport-http": "^0.3.8",
     "passport-http": "^0.3.0"
   }
