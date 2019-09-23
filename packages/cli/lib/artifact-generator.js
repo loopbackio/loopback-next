@@ -7,7 +7,6 @@
 const BaseGenerator = require('./base-generator');
 const debug = require('./debug')('artifact-generator');
 const utils = require('./utils');
-const updateIndex = require('./update-index');
 const path = require('path');
 const chalk = require('chalk');
 
@@ -103,16 +102,7 @@ module.exports = class ArtifactGenerator extends BaseGenerator {
       return;
     }
 
-    // Check all files being generated to ensure they succeeded
-    const generationStatus = !!Object.entries(
-      this.conflicter.generationStatus,
-    ).find(([key, val]) => {
-      // If a file was modified, update the indexes and say stuff about it
-      return val !== 'skip' && val !== 'identical';
-    });
-    debug(`Generation status: ${generationStatus}`);
-
-    if (generationStatus) {
+    if (this._isGenerationSuccessful()) {
       await this._updateIndexFiles();
 
       const classes = this.artifactInfo.name
@@ -171,20 +161,7 @@ module.exports = class ArtifactGenerator extends BaseGenerator {
     }
 
     for (const idx of this.artifactInfo.indexesToBeUpdated) {
-      await updateIndex(idx.dir, idx.file);
-      // Output for users
-      const updateDirRelPath = path.relative(
-        this.artifactInfo.relPath,
-        idx.dir,
-      );
-
-      const outPath = path.join(
-        this.artifactInfo.relPath,
-        updateDirRelPath,
-        'index.ts',
-      );
-
-      this.log(chalk.green('   update'), `${outPath}`);
+      await this._updateIndexFile(idx.dir, idx.file);
     }
   }
 };
