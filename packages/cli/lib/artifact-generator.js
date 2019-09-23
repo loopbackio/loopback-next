@@ -69,18 +69,7 @@ module.exports = class ArtifactGenerator extends BaseGenerator {
    * remind user the input might get changed if it contains _ or accented char
    **/
   promptWarningMsgForName() {
-    if (this.artifactInfo.name.includes('_')) {
-      this.log(
-        chalk.red('>>> ') +
-          `Underscores _ in the class name will get removed: ${this.artifactInfo.name}`,
-      );
-    }
-    if (this.artifactInfo.name.match(/[\u00C0-\u024F\u1E00-\u1EFF]/)) {
-      this.log(
-        chalk.red('>>> ') +
-          `Accented chars in the class name will get replaced: ${this.artifactInfo.name}`,
-      );
-    }
+    utils.logNamingIssues(this.artifactInfo.name, this.log.bind(this));
   }
 
   /**
