@@ -32,7 +32,7 @@
     "@loopback/eslint-config": "^4.1.0",
     "@loopback/openapi-spec-builder": "^1.2.13",
     "@loopback/testlab": "^1.8.1",
-    "@types/node": "^10.14.18",
+    "@types/node": "^10.14.19",
     "jsonwebtoken": "^8.5.1"
   },
   "keywords": [
