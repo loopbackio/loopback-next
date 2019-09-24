@@ -17,12 +17,7 @@ import {
   Next,
   Provider,
 } from '@loopback/context';
-import {
-  Principal,
-  SecurityBindings,
-  securityId,
-  UserProfile,
-} from '@loopback/security';
+import {SecurityBindings, UserProfile} from '@loopback/security';
 import * as debugFactory from 'debug';
 import {getAuthorizationMetadata} from './decorators/authorize';
 import {AuthorizationBindings, AuthorizationTags} from './keys';
@@ -83,7 +78,7 @@ export class AuthorizationInterceptor implements Provider<Interceptor> {
     debug('Current user', user);
 
     const authorizationCtx: AuthorizationContext = {
-      principals: user ? [userToPrinciple(user)] : [],
+      principals: user ? [user] : [],
       roles: [],
       scopes: [],
       resource: invocationCtx.targetName,
@@ -150,15 +145,4 @@ async function loadAuthorizers(
     }
   }
   return authorizerFunctions;
-}
-
-// This is a workaround before we extract a common layer
-// for authentication and authorization.
-function userToPrinciple(user: UserProfile): Principal {
-  return {
-    name: user.name || user[securityId],
-    [securityId]: user.id,
-    email: user.email,
-    type: 'USER',
-  };
 }
