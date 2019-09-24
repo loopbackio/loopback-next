@@ -132,6 +132,7 @@ function isInclusionAllowed<T extends Entity, Relations extends object = {}>(
   include: Inclusion,
 ): boolean {
   const relationName = include.relation;
+  console.log(relationName);
   if (!relationName) {
     debug('isInclusionAllowed for %j? No: missing relation name', include);
     return false;

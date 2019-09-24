@@ -29,7 +29,7 @@ export class TodoList extends Entity {
   })
   color?: string;
 
-  @hasMany(() => Todo)
+  @hasMany(() => Todo, {keyTo: "listId"})
   todos?: Todo[];
 
   @hasOne(() => TodoListImage)

@@ -44,7 +44,7 @@ export class TodoListTodoController {
           schema: getModelSchemaRef(Todo, {
             title: 'NewTodoInTodoList',
             exclude: ['id'],
-            optional: ['todoListId'],
+            optional: ['listId'],
           }),
         },
       },

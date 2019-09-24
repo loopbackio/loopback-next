@@ -29,7 +29,7 @@ describe('TodoListRepository', () => {
 
   it('includes Todos in find method result', async () => {
     const list = await givenTodoListInstance(todoListRepo);
-    const todo = await givenTodoInstance(todoRepo, {todoListId: list.id});
+    const todo = await givenTodoInstance(todoRepo, {listId: list.id});
 
     const response = await todoListRepo.find({
       include: [{relation: 'todos'}],
@@ -45,7 +45,7 @@ describe('TodoListRepository', () => {
 
   it('includes Todos in findById result', async () => {
     const list = await givenTodoListInstance(todoListRepo);
-    const todo = await givenTodoInstance(todoRepo, {todoListId: list.id});
+    const todo = await givenTodoInstance(todoRepo, {listId: list.id});
 
     const response = await todoListRepo.findById(list.id, {
       include: [{relation: 'todos'}],

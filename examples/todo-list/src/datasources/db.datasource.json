@@ -1,6 +1,11 @@
 {
-  "name": "db",
-  "connector": "memory",
-  "localStorage": "",
+  "name": "mainconnection",
+  "connector": "postgresql",
+  "url": "",
+  "host": "127.0.0.1",
+  "port": 5432,
+  "user": "postgres",
+  "password": "password",
+  "database": "postgres",
   "file": "./data/db.json"
 }

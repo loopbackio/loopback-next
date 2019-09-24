@@ -30,8 +30,8 @@ export class Todo extends Entity {
   })
   isComplete: boolean;
 
-  @belongsTo(() => TodoList)
-  todoListId: number;
+  @belongsTo(() => TodoList, { keyFrom: "todo_id", keyTo: "id", name: "todoList" }, { name: "todo_id" })
+  listId: number;
 
   getId() {
     return this.id;

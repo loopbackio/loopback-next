@@ -42,7 +42,7 @@ describe('TodoListApplication', () => {
   });
 
   it('creates todo for a todoList', async () => {
-    const todo = givenTodo({todoListId: undefined});
+    const todo = givenTodo({listId: undefined});
     const response = await client
       .post(`/todo-lists/${persistedTodoList.id}/todos`)
       .send(todo)
@@ -232,7 +232,7 @@ describe('TodoListApplication', () => {
     todo?: Partial<Todo>,
   ) {
     const data = givenTodo(todo);
-    delete data.todoListId;
+    delete data.listId;
     return todoListRepo.todos(id).create(data);
   }
 

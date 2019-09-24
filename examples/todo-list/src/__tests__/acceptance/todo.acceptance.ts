@@ -133,7 +133,7 @@ describe('TodoListApplication', () => {
 
     it('returns the owning todo-list', async () => {
       const list = await givenTodoListInstance(todoListRepo);
-      const todo = await givenTodoInstance(todoRepo, {todoListId: list.id});
+      const todo = await givenTodoInstance(todoRepo, {listId: list.id});
 
       await client.get(`/todos/${todo.id}/todo-list`).expect(200, toJSON(list));
     });
@@ -155,7 +155,7 @@ describe('TodoListApplication', () => {
 
   it('includes TodoList in query result', async () => {
     const list = await givenTodoListInstance(todoListRepo);
-    const todo = await givenTodoInstance(todoRepo, {todoListId: list.id});
+    const todo = await givenTodoInstance(todoRepo, {listId: list.id});
     const filter = JSON.stringify({include: [{relation: 'todoList'}]});
 
     const response = await client.get('/todos').query({filter: filter});

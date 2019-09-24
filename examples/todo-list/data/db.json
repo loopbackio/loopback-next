@@ -1,7 +1,7 @@
 {
   "ids": {
     "Todo": 5,
-    "TodoList": 3
+    "TodoList": 4
   },
   "models": {
     "Todo": {
@@ -12,7 +12,8 @@
     },
     "TodoList": {
       "1": "{\"title\":\"Sith lord's check list\",\"lastModified\":\"a long time ago\",\"id\":1}",
-      "2": "{\"title\":\"My daily chores\",\"lastModified\":\"2018-07-13\",\"id\":2}"
+      "2": "{\"title\":\"My daily chores\",\"lastModified\":\"2018-07-13\",\"id\":2}",
+      "3": "{\"title\":\"item1\",\"color\":\"green\",\"id\":3}"
     }
   }
 }
