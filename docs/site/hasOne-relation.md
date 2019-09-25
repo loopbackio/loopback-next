@@ -36,13 +36,13 @@ To add a `hasOne` relation to your LoopBack application and expose its related
 routes, you need to perform the following steps:
 
 1.  Decorate properties on the source and target models with `@hasOne` and
-    `@belongsTo` to let LoopBack gather the neccessary metadata.
+    `@belongsTo` to let LoopBack gather the necessary metadata.
 2.  Modify the source model repository class to provide access to a constrained
     target model repository.
 3.  Call the constrained target model repository CRUD APIs in your controller
     methods.
 
-Right now, LoopBack collects the neccessary metadata and exposes the relation
+Right now, LoopBack collects the necessary metadata and exposes the relation
 APIs for the `hasOne` relation, but does not guarantee referential integrity.
 This has to be set up by the user or DBA in the underlying database and an
 example is shown below on how to do it with MySQL.
@@ -122,28 +122,101 @@ export interface AccountRelations {
 export type AccountWithRelations = Account & AccountRelations;
 ```
 
+### Relation Metadata
+
 The definition of the `hasOne` relation is inferred by using the `@hasOne`
 decorator. The decorator takes in a function resolving the target model class
 constructor and optionally a has one relation definition object which can e.g.
 contain a custom foreign key to be stored as the relation metadata. The
 decorator logic also designates the relation type and tries to infer the foreign
-key on the target model (`keyTo` in the relation metadata) to a default value
-(source model name appended with `id` in camel case, same as LoopBack 3).
+key.
 
-The decorated property name is used as the relation name and stored as part of
-the source model definition's relation metadata.
+LB4 uses three `keyFrom`, `keyTo` and `name` fields in the `hasMany` relation
+metadata to configure relations. The relation metadata has its own default
+values for these three fields:
 
-A usage of the decorator with a custom foreign key name for the above example is
-as follows:
+<table>
+  <thead>
+    <tr>
+      <th>Field Name</th>
+      <th>Description</th>
+      <th>Default Value</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>keyFrom</code></td>
+      <td>the primary key of the source model</td>
+      <td>the id property of the source model</td>
+      <td><code>Supplier.id</code></td>
+    </tr>
+    <tr>
+      <td><code>keyTo</code></td>
+      <td>the foreign key of the target model</td>
+      <td>the source model name appended with `id` in camel case</td>
+      <td><code>Account.supplierId</code></td>
+    </tr>
+    <tr>
+      <td><code>name</code></td>
+      <td>the name of the relation</td>
+      <td>decorated property name</td>
+      <td><code>Supplier.account</code></td>
+    </tr>
+
+  </tbody>
+</table>
+
+We recommend to use default values. If you'd like to customize foreign key name,
+you'll need to specify some fields through the relation decorators.
+
+For customizing the foreign key name, `keyTo` field needs to be specified via
+`@hasOne` decorator. The following example shows how to customize the foreign
+key name as `suppId` instead of `supplierId`:
 
 ```ts
 // import statements
-class Supplier extends Entity {
+@model()
+export class Supplier extends Entity {
   // constructor, properties, etc.
   @hasOne(() => Account, {keyTo: 'suppId'})
   account?: Account;
 }
 ```
+
+Notice that if you decorate the corresponding foreign key of the target model
+with `@belongsTo`, you also need to specify the `belongTo` relation name in the
+`name` field of its relation metadata. See [BelongsTo](BelongsTo-relation.md)
+for more details.
+
+```ts
+// import statements
+@model()
+export class Account extends Entity {
+  // constructor, properties, etc.
+
+  // specify the belongsTo relation name if a customized name is used here
+  @belongsTo(() => Supplier, {name: 'supplier'}) // specify the belongsTo relation name
+  suppId: number; // customized foreign key name
+}
+```
+
+If you need to use _different names for models and database columns_, to use
+`suppAccount` as db column name instead of `account` for example, the following
+setting would allow you to do so:
+
+```ts
+// import statements
+@model()
+export class Supplier extends Entity {
+  // constructor, properties, etc.
+  @hasOne(() => Supplier, {keyFrom: 'account'}, {name: 'suppAccount'})
+  account: number;
+}
+```
+
+_Notice: the `name` field in the third parameter is not part of the relation
+metadata. It's part of property definition._
 
 ## Setting up your database for hasOne relation - MySQL
 
