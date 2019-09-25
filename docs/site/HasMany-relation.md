@@ -44,7 +44,8 @@ routes, you need to perform the following steps:
 This section describes how to define a `hasMany` relation at the model level
 using the `@hasMany` decorator. The relation constrains the target repository by
 the foreign key property on its associated model. The following example shows
-how to define a `hasMany` relation on a source model `Customer`.
+how to define a `hasMany` relation on a source model `Customer` and a target
+model `Order`.
 
 {% include code-caption.html content="/src/models/customer.model.ts" %}
 
@@ -85,7 +86,9 @@ inferred properly as an array of the target model instances.
 
 The decorated property name is used as the relation name and stored as part of
 the source model definition's relation metadata. The property type metadata is
-also preserved as an array of type `Order` as part of the decoration.
+also preserved as an array of type `Order` as part of the decoration. (Check
+[Relation Metadata](HasMany-relation.md#relation-metadata) section below for
+more details)
 
 A usage of the decorator with a custom foreign key name for the above example is
 as follows:
@@ -177,6 +180,107 @@ export interface OrderRelations {
 
 export type OrderWithRelations = Order & OrderRelations;
 ```
+
+### Relation Metadata
+
+LB4 uses three `keyFrom`, `keyTo` and `name` fields in the `hasMany` relation
+metadata to configure relations. The relation metadata has its own default
+values for these three fields:
+
+<table>
+  <thead>
+    <tr>
+      <th>Field Name</th>
+      <th>Description</th>
+      <th>Default Value</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>keyFrom</code></td>
+      <td>the primary key of the source model</td>
+      <td>the id property of the source model</td>
+      <td><code>Customer.id</code></td>
+    </tr>
+    <tr>
+      <td><code>keyTo</code></td>
+      <td>the foreign key of the target model</td>
+      <td>the source model name appended with `id` in camel case</td>
+      <td><code>Order.customerId</code></td>
+    </tr>
+    <tr>
+      <td><code>name</code></td>
+      <td>the name of the relation</td>
+      <td>decorated property name</td>
+      <td><code>Customer.orders</code></td>
+    </tr>
+
+  </tbody>
+</table>
+
+We recommend to use default values. If you'd like to customize foreign key name,
+you'll need to specify some fields through the relation decorator.
+
+For customizing the foreign key name, `keyTo` field needs to be specified via
+`@hasMany` decorator. The following example shows how to customize the foreign
+key name as `my_customer_id` instead of `customerId`:
+
+```ts
+// import statements
+@model()
+export class Customer extends Entity {
+  // constructor, properties, etc.
+  @hasMany(() => Order, {keyTo: 'my_customer_id'})
+  orders: Order[];
+}
+```
+
+```ts
+// import statements
+@model()
+export class Order extends Entity {
+  // constructor, properties, etc.
+  @property({
+    type: 'number',
+  })
+  my_customer_id: number; // customized foreign key name
+}
+```
+
+Notice that if you decorate the corresponding foreign key of the target model
+with `@belongsTo`, you also need to specify the `belongsTo` relation name in the
+`name` field of its relation metadata. See [BelongsTo](BelongsTo-relation.md)
+for more details.
+
+```ts
+// import statements
+@model()
+export class Order extends Entity {
+  // constructor, properties, etc.
+
+  // specify the belongsTo relation name if a customized name is used here
+  @belongsTo(() => Customer, {name: 'customer'}) // the name of this belongsTo relation
+  my_customer_id: number; // customized foreign key name
+}
+```
+
+If you need to use _different names for models and database columns_, to use
+`my_orders` as db column name other than `orders` for example, the following
+setting would allow you to do so:
+
+```ts
+// import statements
+@model()
+export class Customer extends Entity {
+  // constructor, properties, etc.
+  @hasMany(() => Order, {keyFrom: 'orders'}, {name: 'my_orders'})
+  orders: Order[];
+}
+```
+
+_Notice: the `name` field in the third parameter is not part of the relation
+metadata. It's part of property definition._
 
 ## Configuring a hasMany relation
 
