@@ -11,12 +11,18 @@ import {
   AuthenticateFn,
   AuthenticationMetadata,
   AuthenticationStrategy,
+  UserProfileFactory,
 } from './types';
 
 /**
  * Binding keys used by this component.
  */
 export namespace AuthenticationBindings {
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  export const USER_PROFILE_FACTORY = BindingKey.create<
+    UserProfileFactory<any>
+  >('authentication.userProfile.factory');
+
   export const COMPONENT = BindingKey.create<AuthenticationComponent>(
     'components.AuthenticationComponent',
   );

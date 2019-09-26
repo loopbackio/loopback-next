@@ -35,7 +35,7 @@ export interface AuthenticateFn {
   (request: Request): Promise<UserProfile | undefined>;
 }
 
-export interface UserToUserProfileConverterFn<U> {
+export interface UserProfileFactory<U> {
   (user: U): UserProfile;
 }
 

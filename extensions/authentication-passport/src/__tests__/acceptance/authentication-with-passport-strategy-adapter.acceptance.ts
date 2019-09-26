@@ -11,7 +11,6 @@ import {
   AUTHENTICATION_STRATEGY_NOT_FOUND,
   USER_PROFILE_NOT_FOUND,
 } from '@loopback/authentication';
-import {UserProfile, securityId} from '@loopback/security';
 import {inject} from '@loopback/context';
 import {Application, CoreTags} from '@loopback/core';
 import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
@@ -47,17 +46,17 @@ describe('Basic Authentication', () => {
   it('authenticates successfully for correct credentials', async () => {
     const client = whenIMakeRequestTo(server);
     const credential =
-      users.list.joe.profile[securityId] + ':' + users.list.joe.password;
+      users.list.joe.profile.id + ':' + users.list.joe.password;
     const hash = Buffer.from(credential).toString('base64');
     await client
       .get('/whoAmI')
       .set('Authorization', 'Basic ' + hash)
-      .expect(users.list.joe.profile[securityId]);
+      .expect(users.list.joe.profile.id);
   });
 
   it('returns error for invalid credentials', async () => {
     const client = whenIMakeRequestTo(server);
-    const credential = users.list.Simpson.profile[securityId] + ':' + 'invalid';
+    const credential = users.list.Simpson.profile.id + ':' + 'invalid';
     const hash = Buffer.from(credential).toString('base64');
     await client
       .get('/whoAmI')
@@ -82,10 +81,10 @@ describe('Basic Authentication', () => {
   // FIXME: In a real database the column/field won't be a symbol
   function givenUserRepository() {
     users = new UserRepository({
-      joe: {profile: {[securityId]: 'joe'}, password: '12345'},
-      Simpson: {profile: {[securityId]: 'sim123'}, password: 'alpha'},
-      Flinstone: {profile: {[securityId]: 'Flint'}, password: 'beta'},
-      George: {profile: {[securityId]: 'Curious'}, password: 'gamma'},
+      joe: {profile: {id: 'joe'}, password: '12345'},
+      Simpson: {profile: {id: 'sim123'}, password: 'alpha'},
+      Flinstone: {profile: {id: 'Flint'}, password: 'beta'},
+      George: {profile: {id: 'Curious'}, password: 'gamma'},
     });
   }
 
@@ -101,7 +100,7 @@ describe('Basic Authentication', () => {
   }
 
   function converter(user: UserProfileInDB): UserProfile {
-    let userProfile = Object.assign({}, user, {[securityId]: user.id});
+    const userProfile = Object.assign({}, user, {[securityId]: user.id});
     return userProfile;
   }
 
@@ -234,7 +233,7 @@ class UserRepository {
   find(username: string, password: string, cb: Function): void {
     const userList = this.list;
     function search(key: string) {
-      return userList[key].profile[securityId] === username;
+      return userList[key].profile.id === username;
     }
     const found = Object.keys(userList).find(search);
     if (!found) return cb(null, false);

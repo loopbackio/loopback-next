@@ -6,10 +6,15 @@
 import {BindingKey} from '@loopback/context';
 import {BasicAuthenticationUserService} from './services/basic-auth-user-service';
 import {JWTService} from './services/jwt-service';
+import {MyUserRepository} from './user-profile-spike/user.repository';
 import {UserRepository} from './users/user.repository';
 
 export const USER_REPO = BindingKey.create<UserRepository>(
   'authentication.user.repo',
+);
+
+export const MY_USER_REPO = BindingKey.create<MyUserRepository>(
+  'authentication.myuser.repo',
 );
 
 export namespace BasicAuthenticationStrategyBindings {

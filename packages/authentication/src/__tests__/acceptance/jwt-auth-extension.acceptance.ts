@@ -11,19 +11,35 @@ import {SecurityBindings, securityId, UserProfile} from '@loopback/security';
 import {Client, createClientForHandler, expect} from '@loopback/testlab';
 import {
   authenticate,
+  AuthenticationBindings,
   AuthenticationStrategy,
   registerAuthenticationStrategy,
 } from '../..';
+import {UserProfileFactory} from '../../types';
 import {
   createBearerAuthorizationHeaderValue,
   createUserProfile,
   getApp,
   getUserRepository,
 } from '../fixtures/helper';
-import {JWTAuthenticationStrategyBindings, USER_REPO} from '../fixtures/keys';
+import {
+  JWTAuthenticationStrategyBindings,
+  MY_USER_REPO,
+  USER_REPO,
+} from '../fixtures/keys';
 import {MyAuthenticationSequence} from '../fixtures/sequences/authentication.sequence';
 import {JWTService} from '../fixtures/services/jwt-service';
 import {JWTAuthenticationStrategy} from '../fixtures/strategies/jwt-strategy';
+import {
+  MyUser,
+  MyUserProfileFactory,
+} from '../fixtures/user-profile-spike/user';
+import {
+  getMyUserRepository,
+  MyUserRepository,
+  MY_USER_1,
+  SAMPLE_USER_MIN_SET,
+} from '../fixtures/user-profile-spike/user.repository';
 import {User} from '../fixtures/users/user';
 import {UserRepository} from '../fixtures/users/user.repository';
 
@@ -39,6 +55,60 @@ describe('JWT Authentication', () => {
   beforeEach(givenAServer);
   beforeEach(givenAuthenticatedSequence);
   beforeEach(givenProviders);
+
+  it('test user profile factory', async () => {
+    let injectedUserProfile: UserProfile = {[securityId]: ''};
+    class MyUserController {
+      constructor(
+        @inject(JWTAuthenticationStrategyBindings.TOKEN_SERVICE)
+        public tokenService: JWTService,
+        @inject(MY_USER_REPO)
+        public users: MyUserRepository,
+        @inject(AuthenticationBindings.USER_PROFILE_FACTORY)
+        public userProfileFactory: UserProfileFactory<MyUser>,
+      ) {}
+
+      @post('/myLogin')
+      async logIn() {
+        //
+        // ...Other code for verifying a valid user (e.g. basic or local strategy)...
+        //
+
+        // Now with a valid userProfile, let's create a JSON web token
+        return this.tokenService.generateTokenForEntireUserProfile(
+          this.userProfileFactory(MY_USER_1),
+        );
+      }
+
+      @get('/myWhoAmI')
+      @authenticate('jwt')
+      whoAmI(@inject(SecurityBindings.USER) userProfile: UserProfile) {
+        injectedUserProfile = userProfile;
+        if (!userProfile) return 'userProfile is undefined';
+        if (!userProfile[securityId])
+          return 'userProfile identity is undefined';
+        return userProfile[securityId];
+      }
+    }
+
+    app.controller(MyUserController);
+
+    token = (await whenIMakeRequestTo(server)
+      .post('/myLogin')
+      .expect(200)).text;
+
+    expect(token).to.be.not.null();
+    expect(token).to.be.String();
+
+    const id = (await whenIMakeRequestTo(server)
+      .get('/myWhoAmI')
+      .set('Authorization', createBearerAuthorizationHeaderValue(token))
+      .expect(200)).text;
+
+    expect(id).to.equal(joeUser.id);
+
+    expect(injectedUserProfile).to.containEql(SAMPLE_USER_MIN_SET);
+  });
 
   it('authenticates successfully with valid token', async () => {
     class InfoController {
@@ -63,9 +133,8 @@ describe('JWT Authentication', () => {
       @authenticate('jwt')
       whoAmI(@inject(SecurityBindings.USER) userProfile: UserProfile) {
         if (!userProfile) return 'userProfile is undefined';
-        if (!userProfile[securityId])
-          return 'userProfile securityId is undefined';
-        return userProfile[securityId];
+        if (!userProfile.id) return 'userProfile id is undefined';
+        return userProfile.id;
       }
     }
 
@@ -86,7 +155,7 @@ describe('JWT Authentication', () => {
     expect(id).to.equal(joeUser.id);
   });
 
-  it(`returns error for missing Authorization header`, async () => {
+  it('returns error for missing Authorization header', async () => {
     class InfoController {
       constructor(
         @inject(JWTAuthenticationStrategyBindings.TOKEN_SERVICE)
@@ -458,6 +527,10 @@ describe('JWT Authentication', () => {
     testUsers = getUserRepository();
     joeUser = testUsers.list['joe888'];
     server.bind(USER_REPO).to(testUsers);
+    server.bind(MY_USER_REPO).to(getMyUserRepository());
+    server
+      .bind(AuthenticationBindings.USER_PROFILE_FACTORY)
+      .to(MyUserProfileFactory);
   }
 
   function whenIMakeRequestTo(restServer: RestServer): Client {

@@ -5,7 +5,7 @@
 
 import {
   AuthenticationStrategy,
-  UserToUserProfileConverterFn,
+  UserProfileFactory,
 } from '@loopback/authentication';
 import {HttpErrors, Request} from '@loopback/rest';
 import {UserProfile} from '@loopback/security';
@@ -29,7 +29,7 @@ export class StrategyAdapter<U> implements AuthenticationStrategy {
     private readonly strategy: Strategy,
     readonly name: string,
     // The default converter returns an user as user profile
-    private userConverter: UserToUserProfileConverterFn<U> = (u: unknown) => {
+    private userProfileFactory: UserProfileFactory<U> = (u: unknown) => {
       return u as UserProfile;
     },
   ) {}
@@ -42,7 +42,7 @@ export class StrategyAdapter<U> implements AuthenticationStrategy {
    * @param request The incoming request.
    */
   authenticate(request: Request): Promise<UserProfile> {
-    const self = this;
+    const userProfileFactory = this.userProfileFactory;
     return new Promise<UserProfile>((resolve, reject) => {
       // mix-in passport additions like req.logIn and req.logOut
       for (const key in passportRequestMixin) {
@@ -58,7 +58,7 @@ export class StrategyAdapter<U> implements AuthenticationStrategy {
       // the custom user, so loose the type restriction here
       // to be `unknown`
       strategy.success = function(user: unknown) {
-        const userProfile = self.userConverter(user as U);
+        const userProfile = userProfileFactory(user as U);
         resolve(userProfile);
       };
 

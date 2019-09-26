@@ -39,7 +39,6 @@ export class JWTService implements TokenService {
         `Error verifying token : ${error.message}`,
       );
     }
-
     return userProfile;
   }
 
@@ -58,6 +57,28 @@ export class JWTService implements TokenService {
     let token: string;
     try {
       token = await signAsync(userInfoForToken, this.jwtSecret, {
+        expiresIn: Number(this.jwtExpiresIn),
+      });
+    } catch (error) {
+      throw new HttpErrors.Unauthorized(`Error encoding token : ${error}`);
+    }
+
+    return token;
+  }
+
+  async generateTokenForEntireUserProfile(
+    userProfile: UserProfile | undefined,
+  ): Promise<string> {
+    if (!userProfile) {
+      throw new HttpErrors.Unauthorized(
+        'Error generating token : userProfile is null',
+      );
+    }
+
+    // Generate a JSON Web Token
+    let token: string;
+    try {
+      token = await signAsync(userProfile, this.jwtSecret, {
         expiresIn: Number(this.jwtExpiresIn),
       });
     } catch (error) {
