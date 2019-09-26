@@ -8,7 +8,7 @@
 'use strict';
 
 exports[`cli lists available commands 1`] = `
-Available commands: 
+Available commands:
   lb4 app
   lb4 extension
   lb4 controller
@@ -27,7 +27,7 @@ Available commands:
 
 
 exports[`cli prints commands with --help 1`] = `
-Available commands: 
+Available commands:
   lb4 app
   lb4 extension
   lb4 controller
