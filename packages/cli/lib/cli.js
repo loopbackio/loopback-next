@@ -120,7 +120,7 @@ function printVersions(log) {
  * @param log - Log function
  */
 function printCommands(env, log) {
-  log('Available commands: ');
+  log('Available commands:');
   const list = Object.keys(env.getGeneratorsMeta())
     .filter(name => /^loopback4:/.test(name))
     .map(name => name.replace(/^loopback4:/, '  lb4 '));

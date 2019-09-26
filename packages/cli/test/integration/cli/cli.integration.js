@@ -42,6 +42,6 @@ describe('cli', () => {
   it('does not print commands with --help for a given command', () => {
     const entries = [];
     main({help: true, _: ['app']}, getLog(entries), true);
-    expect(entries).to.not.containEql('Available commands: ');
+    expect(entries).to.not.containEql('Available commands:');
   });
 });
