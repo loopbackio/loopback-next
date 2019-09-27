@@ -37,7 +37,7 @@
     "@loopback/rest": "^1.19.0",
     "@types/byline": "^4.2.31",
     "@types/debug": "^4.1.5",
-    "@types/request-promise-native": "^1.0.16",
+    "@types/request-promise-native": "^1.0.17",
     "autocannon": "^4.1.1",
     "byline": "^5.0.0",
     "debug": "^4.1.1",
