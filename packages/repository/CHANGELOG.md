@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.15.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.14.0...@loopback/repository@1.15.0) (2019-09-27)
+
+
+### Bug Fixes
+
+* **repository:** allow model classes with recursive type references ([0094ded](https://github.com/strongloop/loopback-next/commit/0094ded)), closes [/github.com/strongloop/loopback-next/issues/3671#issuecomment-529376105](https://github.com//github.com/strongloop/loopback-next/issues/3671/issues/issuecomment-529376105)
+
+
+### Features
+
+* **repository:** implement inclusion resolver for belongsTo relation ([fc3d5b6](https://github.com/strongloop/loopback-next/commit/fc3d5b6))
+* **repository:** implement inclusion resolver for hasOne relation ([8dfdf58](https://github.com/strongloop/loopback-next/commit/8dfdf58))
+* **repository:** implement inclusionResolver for hasMany ([4cf9a70](https://github.com/strongloop/loopback-next/commit/4cf9a70))
+
+
+
+
+
 # [1.14.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.13.1...@loopback/repository@1.14.0) (2019-09-17)
 
 

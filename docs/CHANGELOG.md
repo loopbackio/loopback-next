@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@2.1.1...@loopback/docs@2.2.0) (2019-09-27)
+
+
+### Bug Fixes
+
+* **docs:** add `--port=3001` for openapi-to-graphql ([cf178c5](https://github.com/strongloop/loopback-next/commit/cf178c5))
+* migrate LB3 models mounted on LB4 app ([7d36f6d](https://github.com/strongloop/loopback-next/commit/7d36f6d))
+
+
+### Features
+
+* **authentication:** allow `[@authenticate](https://github.com/authenticate)` to be applied at class level ([89dbbaa](https://github.com/strongloop/loopback-next/commit/89dbbaa))
+* **authentication:** allow defaultMetadata for methods not decorated with [@authenticate](https://github.com/authenticate) ([8d21834](https://github.com/strongloop/loopback-next/commit/8d21834))
+* **cli:** add new command `import-lb3-model` (EXPERIMENTAL) ([2e465e6](https://github.com/strongloop/loopback-next/commit/2e465e6))
+* **example-todo-list:** use real relation resolvers ([39468e0](https://github.com/strongloop/loopback-next/commit/39468e0))
+* **repository:** implement inclusion resolver for belongsTo relation ([fc3d5b6](https://github.com/strongloop/loopback-next/commit/fc3d5b6))
+* **repository:** implement inclusion resolver for hasOne relation ([8dfdf58](https://github.com/strongloop/loopback-next/commit/8dfdf58))
+* **repository:** implement inclusionResolver for hasMany ([4cf9a70](https://github.com/strongloop/loopback-next/commit/4cf9a70))
+
+
+
+
+
 ## [2.1.1](https://github.com/strongloop/loopback-next/compare/@loopback/docs@2.1.0...@loopback/docs@2.1.1) (2019-09-17)
 
 **Note:** Version bump only for package @loopback/docs

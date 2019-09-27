@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@3.0.1...@loopback/authentication@3.1.0) (2019-09-27)
+
+
+### Features
+
+* **authentication:** allow `[@authenticate](https://github.com/authenticate)` to be applied at class level ([89dbbaa](https://github.com/strongloop/loopback-next/commit/89dbbaa))
+* **authentication:** allow defaultMetadata for methods not decorated with [@authenticate](https://github.com/authenticate) ([8d21834](https://github.com/strongloop/loopback-next/commit/8d21834))
+
+
+
+
+
 ## [3.0.1](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@3.0.0...@loopback/authentication@3.0.1) (2019-09-17)
 
 **Note:** Version bump only for package @loopback/authentication

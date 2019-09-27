@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.11.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo-list@1.10.0...@loopback/example-todo-list@1.11.0) (2019-09-27)
+
+
+### Features
+
+* **example-todo-list:** use real relation resolvers ([39468e0](https://github.com/strongloop/loopback-next/commit/39468e0))
+
+
+
+
+
 # [1.10.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo-list@1.9.6...@loopback/example-todo-list@1.10.0) (2019-09-17)
 
 

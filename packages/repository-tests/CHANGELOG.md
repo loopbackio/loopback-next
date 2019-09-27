@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.5.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository-tests@0.4.5...@loopback/repository-tests@0.5.0) (2019-09-27)
+
+
+### Features
+
+* **repository:** implement inclusion resolver for belongsTo relation ([fc3d5b6](https://github.com/strongloop/loopback-next/commit/fc3d5b6))
+* **repository:** implement inclusion resolver for hasOne relation ([8dfdf58](https://github.com/strongloop/loopback-next/commit/8dfdf58))
+* **repository:** implement inclusionResolver for hasMany ([4cf9a70](https://github.com/strongloop/loopback-next/commit/4cf9a70))
+
+
+
+
+
 ## [0.4.5](https://github.com/strongloop/loopback-next/compare/@loopback/repository-tests@0.4.4...@loopback/repository-tests@0.4.5) (2019-09-17)
 
 **Note:** Version bump only for package @loopback/repository-tests

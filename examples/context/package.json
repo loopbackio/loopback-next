@@ -1,6 +1,6 @@
 {
   "name": "@loopback/example-context",
-  "version": "1.2.14",
+  "version": "1.2.15",
   "description": "Standalone examples for @loopback/context",
   "main": "index.js",
   "engines": {
@@ -37,12 +37,12 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@loopback/context": "^1.23.0"
+    "@loopback/context": "^1.23.1"
   },
   "devDependencies": {
-    "@loopback/build": "^2.0.11",
-    "@loopback/eslint-config": "^4.1.0",
-    "@loopback/testlab": "^1.8.1",
+    "@loopback/build": "^2.0.12",
+    "@loopback/eslint-config": "^4.1.1",
+    "@loopback/testlab": "^1.9.0",
     "@types/node": "^10.14.19",
     "@typescript-eslint/eslint-plugin": "^2.3.1",
     "@typescript-eslint/parser": "^2.3.1",

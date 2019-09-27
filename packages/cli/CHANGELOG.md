@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.23.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.22.1...@loopback/cli@1.23.0) (2019-09-27)
+
+
+### Bug Fixes
+
+* **cli:** remove extra SPACE at EOL in help output ([aeaf793](https://github.com/strongloop/loopback-next/commit/aeaf793))
+
+
+### Features
+
+* **cli:** add new command `import-lb3-model` (EXPERIMENTAL) ([2e465e6](https://github.com/strongloop/loopback-next/commit/2e465e6))
+* **cli:** print help on updating snapshots when some snapshots were not matched ([c6959b8](https://github.com/strongloop/loopback-next/commit/c6959b8))
+* **cli:** write snapshot files in parallel ([a16ae34](https://github.com/strongloop/loopback-next/commit/a16ae34))
+
+
+
+
+
 ## [1.22.1](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.22.0...@loopback/cli@1.22.1) (2019-09-17)
 
 **Note:** Version bump only for package @loopback/cli
