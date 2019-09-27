@@ -73,6 +73,14 @@ describe('TestSandbox integration tests', () => {
     expect(content).to.equal('{\n  "key": "value"\n}\n');
   });
 
+  it('creates a text file in the sandbox', async () => {
+    await sandbox.writeTextFile('data.txt', 'Hello');
+    const fullPath = resolve(path, 'data.txt');
+    expect(await pathExists(fullPath)).to.be.True();
+    const content = await readFile(fullPath, 'utf-8');
+    expect(content).to.equal('Hello');
+  });
+
   it('resets the sandbox', async () => {
     const file = 'test.js';
     const resolvedFile = resolve(__dirname, '../fixtures/test.js');
