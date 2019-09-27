@@ -111,3 +111,13 @@ to:
 })
 id: string;
 ```
+
+### Some settings cannot be imported
+
+The following fields from model settings are not supported by LoopBack 4 and
+therefore ignored during import:
+
+- `acls`
+- `methods`
+- `mixins`
+- `validations`
