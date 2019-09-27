@@ -8,7 +8,6 @@ import {
   DefaultCrudRepository,
   HasManyRepositoryFactory,
   HasOneRepositoryFactory,
-  InclusionResolver,
   juggler,
   repository,
 } from '@loopback/repository';
@@ -38,50 +37,20 @@ export class TodoListRepository extends DefaultCrudRepository<
     protected todoListImageRepositoryGetter: Getter<TodoListImageRepository>,
   ) {
     super(TodoList, dataSource);
+
     this.todos = this.createHasManyRepositoryFactoryFor(
       'todos',
       todoRepositoryGetter,
     );
 
-    // this is a temporary implementation until
-    // https://github.com/strongloop/loopback-next/issues/3450 is landed
-    const todosResolver: InclusionResolver<
-      TodoList,
-      Todo
-    > = async todoLists => {
-      const todos: Todo[][] = [];
-      for (const todoList of todoLists) {
-        const todo = await this.todos(todoList.id).find();
-        todos.push(todo);
-      }
-
-      return todos;
-    };
-
-    this.registerInclusionResolver('todos', todosResolver);
+    this.registerInclusionResolver('todos', this.todos.inclusionResolver);
 
     this.image = this.createHasOneRepositoryFactoryFor(
       'image',
       todoListImageRepositoryGetter,
     );
 
-    // this is a temporary implementation until
-    // https://github.com/strongloop/loopback-next/issues/3450 is landed
-    const imageResolver: InclusionResolver<
-      TodoList,
-      TodoListImage
-    > = async todoLists => {
-      const images = [];
-
-      for (const todoList of todoLists) {
-        const image = await this.image(todoList.id).get();
-        images.push(image);
-      }
-
-      return images;
-    };
-
-    this.registerInclusionResolver('image', imageResolver);
+    this.registerInclusionResolver('image', this.image.inclusionResolver);
   }
 
   public findByTitle(title: string) {
