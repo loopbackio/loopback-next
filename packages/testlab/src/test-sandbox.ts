@@ -11,6 +11,7 @@ import {
   ensureDirSync,
   pathExists,
   remove,
+  writeFile,
   writeJson,
 } from 'fs-extra';
 import {parse, resolve} from 'path';
@@ -118,5 +119,18 @@ export class TestSandbox {
     const destDir = parse(dest).dir;
     await ensureDir(destDir);
     return writeJson(dest, data, {spaces: 2});
+  }
+
+  /**
+   * Creates a new file and writes the given data as a UTF-8-encoded text.
+   *
+   * @param dest - Destination filename, optionally including a relative path.
+   * @param data - The text to write.
+   */
+  async writeTextFile(dest: string, data: string): Promise<void> {
+    dest = resolve(this.path, dest);
+    const destDir = parse(dest).dir;
+    await ensureDir(destDir);
+    return writeFile(dest, data, {encoding: 'utf-8'});
   }
 }
