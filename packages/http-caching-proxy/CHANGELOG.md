@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.15](https://github.com/strongloop/loopback-next/compare/@loopback/http-caching-proxy@1.1.14...@loopback/http-caching-proxy@1.1.15) (2019-09-28)
+
+**Note:** Version bump only for package @loopback/http-caching-proxy
+
+
+
+
+
 ## [1.1.14](https://github.com/strongloop/loopback-next/compare/@loopback/http-caching-proxy@1.1.13...@loopback/http-caching-proxy@1.1.14) (2019-09-27)
 
 **Note:** Version bump only for package @loopback/http-caching-proxy

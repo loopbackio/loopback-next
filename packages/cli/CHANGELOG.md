@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.23.1](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.23.0...@loopback/cli@1.23.1) (2019-09-28)
+
+
+### Bug Fixes
+
+* **cli:** make sure properties are correctly generated ([369d58b](https://github.com/strongloop/loopback-next/commit/369d58b))
+
+
+
+
+
 # [1.23.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.22.1...@loopback/cli@1.23.0) (2019-09-27)
 
 

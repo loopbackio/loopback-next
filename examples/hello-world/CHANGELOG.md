@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.16](https://github.com/strongloop/loopback-next/compare/@loopback/example-hello-world@1.2.15...@loopback/example-hello-world@1.2.16) (2019-09-28)
+
+**Note:** Version bump only for package @loopback/example-hello-world
+
+
+
+
+
 ## [1.2.15](https://github.com/strongloop/loopback-next/compare/@loopback/example-hello-world@1.2.14...@loopback/example-hello-world@1.2.15) (2019-09-27)
 
 **Note:** Version bump only for package @loopback/example-hello-world
