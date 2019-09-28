@@ -481,7 +481,9 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
     const propDefs = this.artifactInfo.properties;
     this.artifactInfo.properties = {};
     for (const key in propDefs) {
-      this.artifactInfo.properties = createPropertyTemplateData(propDefs[key]);
+      this.artifactInfo.properties[key] = createPropertyTemplateData(
+        propDefs[key],
+      );
     }
 
     if (this.artifactInfo.modelSettings) {
