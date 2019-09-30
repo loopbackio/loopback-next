@@ -19,25 +19,20 @@ npm install --save @loopback/rest-crud
 
 2. Create a Repository class, e.g. using `lb4 repository` tool.
 
-3. Create a base REST CRUD controller class for your model.
+3. Create a REST CRUD controller class for your model.
 
    ```ts
-   const CrudRestController = defineCrudRestController<
+   const ProductController = defineCrudRestController<
      Product,
      typeof Product.prototype.id,
      'id'
    >(Product, {basePath: '/products'});
    ```
 
-4. Create a new subclass of the base controller class to configure repository
-   injection.
+4. Set up dependency injection for the ProductController.
 
    ```ts
-   class ProductController extends CrudRestController {
-     constructor(@repository(ProductRepository) repo: ProductRepository) {
-       super(repo);
-     }
-   }
+   inject('repositories.ProductRepository')(ProductController, undefined, 0);
    ```
 
 5. Register the controller with your application.
