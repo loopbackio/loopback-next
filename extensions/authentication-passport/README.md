@@ -131,8 +131,8 @@ to rewrite your sequence. You can also find a sample implementation in
 
 ### With Provider
 
-If you need to inject stuff (e.g. the verify function) when configuring the
-strategy, you may want to provide your strategy as a provider.
+If you need to inject stuff (e.g. the verify function, converter function) when
+configuring the strategy, you may want to provide your strategy as a provider.
 
 _Note: If you are not familiar with LoopBack providers, check the documentation
 in
@@ -173,6 +173,11 @@ import {AuthenticationStrategy} from '@loopback/authentication';
 class PassportBasicAuthProvider implements Provider<AuthenticationStrategy> {
   constructor(
     @inject('authentication.basic.verify') verifyFn: BasicVerifyFunction,
+    // If you want to inject a user profile factory function, you can
+    // - comment out the following code
+    // - add a generic type to class `PassportBasicAuthProvider<U>` as the custom User's type
+    // - remember to bind a user profile factory to key 'authentication.user.converter'
+    // @inject('authentication.user.converter') userProfileFactor: UserProfileFactory<U>
   );
   value(): AuthenticationStrategy {
     const basicStrategy = this.configuredBasicStrategy(verify);
@@ -190,6 +195,8 @@ class PassportBasicAuthProvider implements Provider<AuthenticationStrategy> {
   // You will need to decorate the APIs later with the same name
   convertToAuthStrategy(basic: BasicStrategy): AuthenticationStrategy {
     return new StrategyAdapter(basic, AUTH_STRATEGY_NAME);
+    // Or if you have a converter function:
+    // return new StrategyAdapter(basic, AUTH_STRATEGY_NAME, converter);
   }
 }
 ```

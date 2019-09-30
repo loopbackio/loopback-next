@@ -2,17 +2,17 @@
 
 connect to story https://github.com/strongloop/loopback-next/issues/2246
 
-I picked the `authentication-passport` module to start the spike for more
-flexible user profile because compared with the custom authentication
-strategies, users have less control to the returned user when using the passport
-adapter. I believe if we could find a solution for the passport based
-strategies, applying similar approach to a custom strategy would be easy.
+I picked the `authentication-passport` module to start the spike for a more
+flexible user profile because, compared with custom authentication strategies,
+users have less control over the returned user when using the passport adapter.
+I believe that if we could find a solution for the passport based strategies,
+applying a similar approach to a custom strategy would be easy.
 
 # Solution
 
-A converter function is introduced to be passed into the `StrategyAdapter`'s
-constructor. It takes in a custom user, converts it to a user profile described
-by `UserProfile` then returns it.
+A converter function is passed into the `StrategyAdapter`'s constructor. It
+takes in a custom user, converts it to a user profile described by
+`UserProfile`, and then returns it.
 
 # Example
 
@@ -25,8 +25,11 @@ See the corresponding change made in file
   instance into a user profile. It's provided in the constructor when creating
   the adapter.
 - The converter is invoked in the strategy's `authentication()` function to make
-  sure it returns a user profile in type `UserProfile`
+  sure it returns a user profile of type `UserProfile`
 - If the strategy is returned in a provider, you can inject the factory.
+  - I added an example in the
+    [create passport based strategy with provider](./README.md#with-provider)
+    section.
 
 # Token Based Authentication
 
@@ -35,8 +38,10 @@ profile factory in a token based authentication. Here is the scenario:
 
 - The app has a user model called `MyUser`, which has
 
-  - a property defined in `UserProfile` with same type
-  - a property defined in `UserProfile` with a different type
+  - a property which is also defined in `UserProfile` in the same type. E.g.
+    They both have `email` as string.
+  - a property which is also defined in `UserProfile` but in a different type.
+    E.g. `MyUser` has `id` as number while `UserProfile` has it as string.
   - a required property not defined in `UserProfile`
   - an optional property not defined in `UserProfile`
 
