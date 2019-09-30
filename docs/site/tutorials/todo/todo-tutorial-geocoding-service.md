@@ -14,7 +14,7 @@ To call other APIs and web services from LoopBack applications, we recommend to
 use Service Proxies as a design pattern for encapsulating low-level
 implementation details of communication with 3rd-party services and providing
 JavaScript/TypeScript API that's easy to consume e.g. from Controllers. See
-[Calling other APIs and web services](./Calling-other-APIs-and-Web-Services.md)
+[Calling other APIs and web services](../../Calling-other-APIs-and-Web-Services.md)
 for more details.
 
 In LoopBack, each service proxy is backed by a
