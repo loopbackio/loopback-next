@@ -4,6 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 export * from './client';
+export * from './docker';
 export * from './expect';
 export * from './http-error-logger';
 export * from './http-server-config';
