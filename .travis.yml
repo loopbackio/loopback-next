@@ -30,7 +30,7 @@ matrix:
       env: TASK=code-lint
       # Running Code Linter -- Requires @loopback/build so it's bootstrapped
       script:
-        - lerna bootstrap --scope @loopback/build --include-filtered-dependencies
+        - lerna bootstrap --scope @loopback/build --include-dependencies
         - npm run lint
     - node_js: "8"
       os: linux
@@ -47,8 +47,8 @@ matrix:
       services:
         - mongodb
       script:
-        - npm run postinstall -- --scope "@loopback/test-repository-mongodb" --include-filtered-dependencies
-        - npm run build -- --scope "@loopback/test-repository-mongodb" --include-filtered-dependencies
+        - npm run postinstall -- --scope "@loopback/test-repository-mongodb" --include-dependencies
+        - npm run build -- --scope "@loopback/test-repository-mongodb" --include-dependencies
         - cd acceptance/repository-mongodb && npm run mocha
     - node_js: "10"
       os: linux
@@ -64,9 +64,21 @@ matrix:
         - mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'test'@'localhost' WITH GRANT OPTION;FLUSH PRIVILEGES;"
         - mysql -e "GRANT SUPER ON *.* TO 'test'@'localhost' IDENTIFIED BY 'test';FLUSH PRIVILEGES;"
       script:
-        - npm run postinstall -- --scope "@loopback/test-repository-mysql" --include-filtered-dependencies
-        - npm run build -- --scope "@loopback/test-repository-mysql" --include-filtered-dependencies
+        - npm run postinstall -- --scope "@loopback/test-repository-mysql" --include-dependencies
+        - npm run build -- --scope "@loopback/test-repository-mysql" --include-dependencies
         - cd acceptance/repository-mysql && npm run mocha
+    - node_js: "10"
+      os: linux
+      env:
+        - TASK=test-repository-postgresql
+        - POSTGRESQL_USER=postgres
+      services:
+        - postgresql
+      script:
+        - npm run postinstall -- --scope "@loopback/test-repository-postgresql" --include-dependencies
+        - npm run build -- --scope "@loopback/test-repository-postgresql" --include-dependencies
+        - psql -U postgres -a -f acceptance/repository-postgresql/test/schema.sql
+        - cd acceptance/repository-postgresql && npm run mocha
 
 branches:
   only:

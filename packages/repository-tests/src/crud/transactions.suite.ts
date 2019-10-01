@@ -14,7 +14,7 @@ import {
 } from '@loopback/repository';
 import {expect, skipIf, toJSON} from '@loopback/testlab';
 import {Suite} from 'mocha';
-import {withCrudCtx, MixedIdType} from '../helpers.repository-tests';
+import {MixedIdType, withCrudCtx} from '../helpers.repository-tests';
 import {
   CrudFeatures,
   CrudTestContext,
@@ -24,6 +24,7 @@ import {
 
 // Core scenarios for testing CRUD functionalities of Transactional connectors
 // Please keep this file short, put any advanced scenarios to other files
+/* istanbul ignore file */
 export function transactionSuite(
   dataSourceOptions: DataSourceOptions,
   repositoryClass: TransactionalRepositoryCtor,
@@ -58,19 +59,22 @@ export function transactionSuite(
           typeof Product.prototype.id
         >;
         let tx: Transaction | undefined;
+        let ds: juggler.DataSource;
         before(
           withCrudCtx(async function setupRepository(ctx: CrudTestContext) {
-            repo = new repositoryClass(Product, ctx.dataSource);
-            await ctx.dataSource.automigrate(Product.name);
+            ds = ctx.dataSource;
+            repo = new repositoryClass(Product, ds);
+            await ds.automigrate(Product.name);
           }),
         );
         beforeEach(() => {
           tx = undefined;
         });
         afterEach(async () => {
-          // FIXME: replace tx.connection with tx.isActive when it become
+          // FIXME: replace tx.connection with tx.isActive when it becomes
           // available
           // see https://github.com/strongloop/loopback-next/issues/3471
+          tx = setTransactionToUndefined(tx);
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           if (tx !== undefined && (tx as any).connection) {
             await tx.rollback();
@@ -140,7 +144,7 @@ export function transactionSuite(
         it('should not use transaction with another repository', async () => {
           const ds2Options = Object.assign({}, dataSourceOptions);
           ds2Options.name = 'anotherDataSource';
-          ds2Options.database = ds2Options.database + '-new';
+          ds2Options.database = ds2Options.database + '_new';
           const ds2 = new juggler.DataSource(ds2Options);
           const anotherRepo = new repositoryClass(Product, ds2);
           await ds2.automigrate(Product.name);
@@ -170,6 +174,17 @@ export function transactionSuite(
           );
           expect(toJSON(created)).to.deepEqual(toJSON(foundOutsideTransaction));
         });
+
+        // temporary workaround for "Release called on client which has
+        // already been released to the pool." for PostgreSQL until
+        // tx.isActive is available
+        //FIXME: remove this once tx.isActive becomes available
+        // see https://github.com/strongloop/loopback-next/issues/3471
+        function setTransactionToUndefined(t: Transaction | undefined) {
+          return ds.connector && ds.connector.name === 'postgresql'
+            ? undefined
+            : t;
+        }
       });
     },
   );
