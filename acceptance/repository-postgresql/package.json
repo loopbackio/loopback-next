@@ -1,6 +1,6 @@
 {
-  "name": "@loopback/test-repository-mongodb",
-  "version": "0.4.8",
+  "name": "@loopback/test-repository-postgresql",
+  "version": "1.0.0",
   "description": "",
   "private": true,
   "engines": {
@@ -8,11 +8,11 @@
   },
   "scripts": {
     "build": "lb-tsc",
-    "clean": "lb-clean loopback-test-repository-mongodb*.tgz dist tsconfig.build.tsbuildinfo package",
+    "clean": "lb-clean loopback-test-repository-postgresql*.tgz dist tsconfig.build.tsbuildinfo package",
     "pretest": "npm run build",
     "test": "npm run mocha",
     "mocha": "lb-mocha \"dist/__tests__/**/*.js\"",
-    "verify": "npm pack && tar xf loopback-test-repository-mongodb*.tgz && tree package && npm run clean"
+    "verify": "npm pack && tar xf loopback-test-repository-postgresql*.tgz && tree package && npm run clean"
   },
   "author": "IBM Corp.",
   "copyright.owner": "IBM Corp.",
@@ -22,8 +22,8 @@
     "@loopback/eslint-config": "^4.1.2",
     "@loopback/repository": "^1.15.2",
     "@loopback/repository-tests": "^0.5.2",
-    "@types/node": "^10.14.22",
-    "loopback-connector-mongodb": "^5.0.1"
+    "@types/node": "^10.14.19",
+    "loopback-connector-postgresql": "^3.8.0"
   },
   "files": [
     "README.md",
@@ -36,6 +36,6 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/strongloop/loopback-next.git",
-    "directory": "acceptance/repository-mongodb"
+    "directory": "acceptance/repository-postgresql"
   }
 }

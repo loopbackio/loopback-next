@@ -2,7 +2,7 @@
   "name": "@loopback/test-repository-mysql",
   "version": "0.4.8",
   "description": "",
-  "private": "true",
+  "private": true,
   "engines": {
     "node": ">=8.9"
   },

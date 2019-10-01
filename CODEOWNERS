@@ -8,6 +8,7 @@
 
 acceptance/repository-mongodb/* @bajtos
 acceptance/repository-mysql/* @bajtos
+acceptance/repository-postgresql/* @nabdelgadir
 
 packages/authentication/* @bajtos @raymondfeng
 packages/boot/* @raymondfeng @hacksparrow
