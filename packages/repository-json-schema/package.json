@@ -49,5 +49,7 @@
     "type": "git",
     "url": "https://github.com/strongloop/loopback-next.git",
     "directory": "packages/repository-json-schema"
-  }
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts"
 }

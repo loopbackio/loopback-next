@@ -2,7 +2,7 @@
   "name": "@loopback/example-todo-list",
   "version": "1.11.1",
   "description": "Continuation of the todo example using relations in LoopBack 4.",
-  "main": "index.js",
+  "main": "dist/index.js",
   "engines": {
     "node": ">=8.9"
   },
@@ -73,5 +73,6 @@
     "models",
     "todo",
     "HasMany"
-  ]
+  ],
+  "types": "dist/index.d.ts"
 }

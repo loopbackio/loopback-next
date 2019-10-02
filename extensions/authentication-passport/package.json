@@ -59,5 +59,7 @@
     "@types/passport": "^1.0.1",
     "@types/passport-http": "^0.3.8",
     "passport-http": "^0.3.0"
-  }
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts"
 }

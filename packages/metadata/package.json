@@ -50,5 +50,7 @@
     "type": "git",
     "url": "https://github.com/strongloop/loopback-next.git",
     "directory": "packages/metadata"
-  }
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts"
 }

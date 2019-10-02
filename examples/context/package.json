@@ -2,7 +2,7 @@
   "name": "@loopback/example-context",
   "version": "1.2.16",
   "description": "Standalone examples for @loopback/context",
-  "main": "index.js",
+  "main": "dist/index.js",
   "engines": {
     "node": ">=8.9"
   },
@@ -57,5 +57,6 @@
     "LoopBack",
     "example",
     "tutorial"
-  ]
+  ],
+  "types": "dist/index.d.ts"
 }

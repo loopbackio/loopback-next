@@ -9,7 +9,7 @@
     "tutorial",
     "express"
   ],
-  "main": "index.js",
+  "main": "dist/index.js",
   "engines": {
     "node": ">=8.9"
   },
@@ -67,5 +67,6 @@
     "eslint-plugin-eslint-plugin": "^2.1.0",
     "eslint-plugin-mocha": "^6.1.1",
     "typescript": "~3.6.3"
-  }
+  },
+  "types": "dist/index.d.ts"
 }

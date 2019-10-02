@@ -5,7 +5,7 @@
   "engines": {
     "node": ">=8.9"
   },
-  "main": "index",
+  "main": "dist/index.js",
   "scripts": {
     "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
     "build": "lb-tsc",
@@ -46,5 +46,6 @@
     "type": "git",
     "url": "https://github.com/strongloop/loopback-next.git",
     "directory": "packages/repository"
-  }
+  },
+  "types": "dist/index.d.ts"
 }

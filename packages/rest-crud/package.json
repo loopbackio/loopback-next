@@ -5,7 +5,7 @@
   "engines": {
     "node": ">=8.9"
   },
-  "main": "index",
+  "main": "dist/index.js",
   "publishConfig": {
     "access": "public"
   },
@@ -42,5 +42,6 @@
     "type": "git",
     "url": "https://github.com/strongloop/loopback-next.git",
     "directory": "packages/rest-crud"
-  }
+  },
+  "types": "dist/index.d.ts"
 }

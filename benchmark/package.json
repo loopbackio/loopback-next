@@ -8,7 +8,7 @@
     "performance",
     "benchmark"
   ],
-  "main": "index.js",
+  "main": "dist/index.js",
   "engines": {
     "node": ">=8.9"
   },
@@ -58,5 +58,6 @@
     "type": "git",
     "url": "https://github.com/strongloop/loopback-next.git",
     "directory": "benchmark"
-  }
+  },
+  "types": "dist/index.d.ts"
 }

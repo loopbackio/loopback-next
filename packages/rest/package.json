@@ -75,5 +75,7 @@
     "type": "git",
     "url": "https://github.com/strongloop/loopback-next.git",
     "directory": "packages/rest"
-  }
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts"
 }

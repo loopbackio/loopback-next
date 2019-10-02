@@ -2,7 +2,7 @@
   "name": "@loopback/example-todo",
   "version": "1.8.2",
   "description": "Tutorial example on how to build an application with LoopBack 4.",
-  "main": "index.js",
+  "main": "dist/index.js",
   "engines": {
     "node": ">=8.9"
   },
@@ -70,5 +70,6 @@
     "CRUD",
     "models",
     "todo"
-  ]
+  ],
+  "types": "dist/index.d.ts"
 }

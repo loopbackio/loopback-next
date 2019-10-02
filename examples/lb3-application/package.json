@@ -2,7 +2,7 @@
   "name": "@loopback/example-lb3-application",
   "version": "1.1.16",
   "description": "Tutorial example on how to add existing an LB3 application to a LB4 project",
-  "main": "index.js",
+  "main": "dist/index.js",
   "engines": {
     "node": ">=8.9"
   },
@@ -70,5 +70,6 @@
     "loopback",
     "LoopBack",
     "example"
-  ]
+  ],
+  "types": "dist/index.d.ts"
 }
