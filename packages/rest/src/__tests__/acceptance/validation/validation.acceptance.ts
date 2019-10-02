@@ -29,6 +29,15 @@ describe('Validation at REST level', () => {
   let client: Client;
 
   @model()
+  class Category {
+    @property({required: true, type: 'string'})
+    name: string;
+
+    @property({required: false, type: 'string'})
+    description?: string;
+  }
+
+  @model()
   class Product {
     @property({required: true})
     name: string;
@@ -41,12 +50,18 @@ describe('Validation at REST level', () => {
     @property({required: true, jsonSchema: {range: [0, 100]}})
     price: number;
 
+    @property({required: true, type: Category})
+    category: Category;
+
     constructor(data: Partial<Product>) {
       Object.assign(this, data);
     }
   }
 
   const PRODUCT_SPEC: SchemaObject = jsonToSchemaObject(getJsonSchema(Product));
+  const CATEGORY_SPEC: SchemaObject = jsonToSchemaObject(
+    getJsonSchema(Category),
+  );
 
   // Add a schema that requires `description`
   const PRODUCT_SPEC_WITH_DESCRIPTION: SchemaObject = {
@@ -125,6 +140,7 @@ describe('Validation at REST level', () => {
         name: 'iPhone',
         description: null,
         price: 10,
+        category: {name: 'Phones'},
       };
       const res = await client
         .post('/products')
@@ -157,6 +173,7 @@ describe('Validation at REST level', () => {
         name: 'iPhone',
         description: 'iPhone',
         price: 200,
+        category: {name: 'Phones'},
       };
       const res = await client
         .post('/products')
@@ -214,6 +231,7 @@ describe('Validation at REST level', () => {
         name: 'iPhone',
         description: 'iPhone',
         price: 200,
+        category: {name: 'Phones'},
       };
       const res = await client
         .post('/products')
@@ -277,6 +295,7 @@ describe('Validation at REST level', () => {
         const DATA = {
           name: 'iPhone',
           description: 'iPhone',
+          category: {name: 'Phones'},
         };
         const res = await client
           .post('/products')
@@ -370,6 +389,7 @@ describe('Validation at REST level', () => {
       components: {
         schemas: {
           Product: PRODUCT_SPEC,
+          Category: CATEGORY_SPEC,
         },
       },
     })
@@ -400,6 +420,7 @@ describe('Validation at REST level', () => {
       name: 'Pencil',
       description: 'An optional description of a pencil',
       price: 10,
+      category: {name: 'Stationary'},
     };
     await client
       .post('/products')
@@ -412,6 +433,7 @@ describe('Validation at REST level', () => {
       name: 'Pencil',
       description: null,
       price: 10,
+      category: {name: 'Stationary'},
     };
     await client
       .post('/products')
@@ -421,7 +443,7 @@ describe('Validation at REST level', () => {
 
   async function serverAcceptsValidRequestBodyForUrlencoded() {
     const DATA =
-      'name=Pencil&price=10&description=An optional description of a pencil';
+      'name=Pencil&price=10&description=An optional description of a pencil&category[name]=Stationary';
     await client
       .post('/products')
       .set('Content-Type', 'application/x-www-form-urlencoded')
@@ -430,6 +452,7 @@ describe('Validation at REST level', () => {
         name: 'Pencil',
         description: 'An optional description of a pencil',
         price: 10,
+        category: {name: 'Stationary'},
       });
   }
 

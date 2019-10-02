@@ -22,6 +22,7 @@ describe('getJsonSchemaRef', () => {
       definitions: {
         MyModel: {
           title: 'MyModel',
+          type: 'object',
           properties: {
             name: {
               type: 'string',

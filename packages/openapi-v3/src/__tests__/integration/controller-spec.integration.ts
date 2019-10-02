@@ -74,11 +74,20 @@ describe('controller spec', () => {
       },
       components: {
         schemas: {
-          Bar: {title: 'Bar', properties: {name: {type: 'string'}}},
-          Baz: {title: 'Baz', properties: {name: {type: 'string'}}},
+          Bar: {
+            title: 'Bar',
+            type: 'object',
+            properties: {name: {type: 'string'}},
+          },
+          Baz: {
+            title: 'Baz',
+            type: 'object',
+            properties: {name: {type: 'string'}},
+          },
           Foo: {
             // guarantee `definition` is deleted
             title: 'Foo',
+            type: 'object',
             properties: {
               bar: {$ref: '#/components/schemas/Bar'},
               baz: {$ref: '#/components/schemas/Baz'},
@@ -404,6 +413,7 @@ describe('controller spec', () => {
           schemas: {
             Todo: {
               title: 'Todo',
+              type: 'object',
               properties: {
                 title: {
                   type: 'string',
@@ -444,6 +454,7 @@ describe('controller spec', () => {
       expect(globalSchemas).to.deepEqual({
         Todo: {
           title: 'Todo',
+          type: 'object',
           properties: {
             title: {
               type: 'string',
@@ -478,6 +489,7 @@ describe('controller spec', () => {
           schemas: {
             Todo: {
               title: 'Todo',
+              type: 'object',
               properties: {
                 title: {
                   type: 'string',
@@ -504,6 +516,7 @@ describe('controller spec', () => {
       expect(globalSchemas).to.deepEqual({
         Todo: {
           title: 'Todo',
+          type: 'object',
           properties: {
             title: {
               type: 'string',
@@ -528,6 +541,7 @@ describe('controller spec', () => {
         },
       },
       title: 'MyModel',
+      type: 'object',
     };
 
     it('generates schema for response content', () => {
@@ -770,6 +784,7 @@ describe('controller spec', () => {
       expect(globalSchemas).to.deepEqual({
         MyModel: {
           title: 'MyModel',
+          type: 'object',
           properties: {
             name: {
               type: 'string',
