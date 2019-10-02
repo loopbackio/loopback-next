@@ -362,7 +362,7 @@ export class CustomerRepository extends DefaultCrudRepository {
     );
 
     // add this line to register inclusion resolver
-    this.registerInclusion('orders', this.orders.inclusionResolver);
+    this.registerInclusionResolver('orders', this.orders.inclusionResolver);
   }
 }
 ```

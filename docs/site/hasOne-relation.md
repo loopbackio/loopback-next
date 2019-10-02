@@ -340,7 +340,7 @@ export class SupplierRepository extends DefaultCrudRepository {
       accountRepositoryGetter,
     );
     // add this line to register inclusion resolver
-    this.registerInclusion('account', this.account.inclusionResolver);
+    this.registerInclusionResolver('account', this.account.inclusionResolver);
   }
 }
 ```
