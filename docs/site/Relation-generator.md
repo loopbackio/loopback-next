@@ -60,6 +60,17 @@ lb4 relation --sourceModel=<sourceModel>
 
 - `<relationName>` - Name of the relation that will be created.
 
+After setting up the definition for the relation, you need to confirm if you
+want to register the inclusion resolver for this relation:
+
+```ts
+? Allow <sourceModel> queries to include data from related <destinationModel> instances? (Y/n)
+```
+
+Check the site [Relations](HasMany-relation.md) and the
+[Querying Related Models](HasMany-relation.md#querying-related-models) section
+in each relation for more use cases.
+
 ### Interactive Prompts
 
 The tool will prompt you for:

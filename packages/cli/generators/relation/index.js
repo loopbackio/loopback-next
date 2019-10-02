@@ -73,6 +73,13 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
       required: false,
       description: 'Relation name',
     });
+
+    this.option('registerInclusionResolver', {
+      type: Boolean,
+      required: false,
+      description:
+        'Allow <sourceModel> queries to include data from related <destinationModel>',
+    });
     this.artifactInfo = {
       type: 'relation',
       rootDir: utils.sourceRootDir,
@@ -372,6 +379,24 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
       Object.assign(this.artifactInfo, props);
       return props;
     });
+  }
+
+  async promptRegisterInclusionResolver() {
+    const props = await this.prompt([
+      {
+        type: 'confirm',
+        name: 'registerInclusionResolver',
+        message: `Allow ${chalk.yellow(
+          this.artifactInfo.sourceModel,
+        )} queries to include data from related ${chalk.yellow(
+          this.artifactInfo.destinationModel,
+        )} instances?`,
+        default: true,
+      },
+    ]);
+    debug(`props after inclusion resolver promps: ${inspect(props)}`);
+    Object.assign(this.artifactInfo, props);
+    return props;
   }
 
   async scaffold() {

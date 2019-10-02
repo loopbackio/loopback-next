@@ -26,13 +26,14 @@ export class OrderRepository extends DefaultCrudRepository<
   constructor(@inject('datasources.db') dataSource: DbDataSource, @repository.getter('CustomerRepository') protected customerRepositoryGetter: Getter<CustomerRepository>,) {
     super(Order, dataSource);
     this.customer = this.createBelongsToAccessorFor('customer', customerRepositoryGetter,);
+    this.registerInclusionResolver('customer', this.customer.inclusionResolver);
   }
 }
 
 `;
 
 exports[
-  `lb4 relation checks generated source class repository  answers {"relationType":"belongsTo","sourceModel":"OrderClass","destinationModel":"CustomerClass"} generates OrderClass repository file with different inputs 1`
+  `lb4 relation checks generated source class repository  answers {"relationType":"belongsTo","sourceModel":"OrderClass","destinationModel":"CustomerClass","registerInclusionResolver":true} generates OrderClass repository file with different inputs 1`
 ] = `
 import {DefaultCrudRepository, repository, BelongsToAccessor} from '@loopback/repository';
 import {OrderClass, CustomerClass} from '../models';
@@ -50,13 +51,14 @@ export class OrderClassRepository extends DefaultCrudRepository<
   constructor(@inject('datasources.myDB') dataSource: MyDBDataSource, @repository.getter('CustomerClassRepository') protected customerClassRepositoryGetter: Getter<CustomerClassRepository>,) {
     super(OrderClass, dataSource);
     this.customerClass = this.createBelongsToAccessorFor('customerClassCustNumber', customerClassRepositoryGetter,);
+    this.registerInclusionResolver('customerClass', this.customerClass.inclusionResolver);
   }
 }
 
 `;
 
 exports[
-  `lb4 relation checks generated source class repository  answers {"relationType":"belongsTo","sourceModel":"OrderClassType","destinationModel":"CustomerClassType"} generates OrderClassType repository file with different inputs 1`
+  `lb4 relation checks generated source class repository  answers {"relationType":"belongsTo","sourceModel":"OrderClassType","destinationModel":"CustomerClassType","registerInclusionResolver":false} generates OrderClassType repository file with different inputs 1`
 ] = `
 import {DefaultCrudRepository, repository, BelongsToAccessor} from '@loopback/repository';
 import {OrderClassType, CustomerClassType} from '../models';

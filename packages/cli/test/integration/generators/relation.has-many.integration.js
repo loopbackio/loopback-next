@@ -338,11 +338,13 @@ describe('lb4 relation HasMany', function() {
         relationType: 'hasMany',
         sourceModel: 'CustomerClass',
         destinationModel: 'OrderClass',
+        registerInclusionResolver: true,
       },
       {
         relationType: 'hasMany',
         sourceModel: 'CustomerClassType',
         destinationModel: 'OrderClassType',
+        registerInclusionResolver: false,
       },
     ];
 
