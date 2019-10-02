@@ -126,7 +126,7 @@ export type InclusionResolver<S extends Entity, T extends Entity> = (
   /**
    * Inclusion requested by the user (e.g. scope constraints to apply).
    */
-  inclusion: Inclusion,
+  inclusion: Inclusion<T>,
   /**
    * Generic options object, e.g. carrying the Transaction object.
    */

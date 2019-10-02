@@ -104,7 +104,9 @@ export class DefaultCrudRepository<
 
   public readonly inclusionResolvers: Map<
     string,
-    InclusionResolver<T, Entity>
+    // FIXME(rfeng): TypeScript does not allow us to define any subtype of Entity
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    InclusionResolver<T, any>
   > = new Map();
 
   /**
@@ -505,9 +507,9 @@ export class DefaultCrudRepository<
    * @param relationName - Name of the relation defined on the source model
    * @param resolver - Resolver function for getting related model entities
    */
-  registerInclusionResolver(
+  registerInclusionResolver<R extends Entity>(
     relationName: string,
-    resolver: InclusionResolver<T, Entity>,
+    resolver: InclusionResolver<T, R>,
   ) {
     this.inclusionResolvers.set(relationName, resolver);
   }
