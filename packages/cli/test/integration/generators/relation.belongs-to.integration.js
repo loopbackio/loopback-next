@@ -343,11 +343,13 @@ describe('lb4 relation', function() {
         relationType: 'belongsTo',
         sourceModel: 'OrderClass',
         destinationModel: 'CustomerClass',
+        registerInclusionResolver: true,
       },
       {
         relationType: 'belongsTo',
         sourceModel: 'OrderClassType',
         destinationModel: 'CustomerClassType',
+        registerInclusionResolver: false,
       },
     ];
 

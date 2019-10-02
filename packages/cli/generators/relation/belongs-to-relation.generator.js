@@ -103,7 +103,7 @@ module.exports = class BelongsToRelationGenerator extends BaseRelationGenerator 
 
   getBelongsTo(className, relationName, fktype) {
     return {
-      decorators: [{name: 'belongsTo', arguments: ['() => ' + className]}],
+      decorators: [{name: 'belongsTo', arguments: [`() =>  ${className}`]}],
       name: relationName,
       type: fktype,
     };
@@ -132,26 +132,31 @@ module.exports = class BelongsToRelationGenerator extends BaseRelationGenerator 
 
   _getRepositoryRelationPropertyType() {
     return (
-      'BelongsToAccessor<' +
-      utils.toClassName(this.artifactInfo.dstModelClass) +
-      ', typeof ' +
-      utils.toClassName(this.artifactInfo.srcModelClass) +
-      '.prototype.' +
-      this.artifactInfo.srcModelPrimaryKey +
-      '>'
+      `BelongsToAccessor<` +
+      `${utils.toClassName(this.artifactInfo.dstModelClass)}` +
+      `, typeof ${utils.toClassName(this.artifactInfo.srcModelClass)}` +
+      `.prototype.${this.artifactInfo.srcModelPrimaryKey}>`
     );
   }
 
   _addCreatorToRepositoryConstructor(classConstructor) {
+    const relationPropertyName = this._getRepositoryRelationPropertyName();
     const statement =
-      'this.' +
-      this._getRepositoryRelationPropertyName() +
-      ' = ' +
-      "this.createBelongsToAccessorFor('" +
-      this.artifactInfo.relationName.replace(/Id$/, '') +
-      "', " +
-      utils.camelCase(this.artifactInfo.dstRepositoryClassName) +
-      'Getter,);';
+      `this.${relationPropertyName} = ` +
+      `this.createBelongsToAccessorFor('` +
+      `${this.artifactInfo.relationName.replace(/Id$/, '')}',` +
+      ` ${utils.camelCase(this.artifactInfo.dstRepositoryClassName)}` +
+      `Getter,);`;
     classConstructor.insertStatements(1, statement);
+  }
+
+  _registerInclusionResolverForRelation(classConstructor, options) {
+    const relationPropertyName = this._getRepositoryRelationPropertyName();
+    if (options.registerInclusionResolver) {
+      const statement =
+        `this.registerInclusionResolver(` +
+        `'${relationPropertyName}', this.${relationPropertyName}.inclusionResolver);`;
+      classConstructor.insertStatements(2, statement);
+    }
   }
 };

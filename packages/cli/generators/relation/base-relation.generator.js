@@ -70,6 +70,7 @@ module.exports = class BaseRelationGenerator extends ArtifactGenerator {
     );
     this._addParametersToRepositoryConstructor(classConstructor);
     this._addCreatorToRepositoryConstructor(classConstructor);
+    this._registerInclusionResolverForRelation(classConstructor, options);
     await this.artifactInfo.srcRepositoryFileObj.save();
   }
 
@@ -130,6 +131,11 @@ module.exports = class BaseRelationGenerator extends ArtifactGenerator {
   }
 
   _addCreatorToRepositoryConstructor(classConstructor) {
+    /* istanbul ignore next */
+    throw new Error('Not implemented');
+  }
+
+  _registerInclusionResolverForRelation(classConstructor, options) {
     /* istanbul ignore next */
     throw new Error('Not implemented');
   }

@@ -137,14 +137,12 @@ module.exports = class HasManyRelationGenerator extends BaseRelationGenerator {
     let relationDecorator = [
       {
         name: 'hasMany',
-        arguments: [
-          '() => ' + className + " ,{keyTo: '" + foreignKeyName + "'}",
-        ],
+        arguments: [`() => ${className}, {keyTo: '${foreignKeyName}'}`],
       },
     ];
     if (isDefaultForeignKey) {
       relationDecorator = [
-        {name: 'hasMany', arguments: ['() => ' + className]},
+        {name: 'hasMany', arguments: [`() => ${className}`]},
       ];
     }
 
@@ -172,28 +170,29 @@ module.exports = class HasManyRelationGenerator extends BaseRelationGenerator {
   }
 
   _getRepositoryRelationPropertyType() {
-    return (
-      'HasManyRepositoryFactory<' +
-      utils.toClassName(this.artifactInfo.dstModelClass) +
-      ', typeof ' +
-      utils.toClassName(this.artifactInfo.srcModelClass) +
-      '.prototype.' +
-      this.artifactInfo.srcModelPrimaryKey +
-      '>'
-    );
+    return `HasManyRepositoryFactory<${utils.toClassName(
+      this.artifactInfo.dstModelClass,
+    )}, typeof ${utils.toClassName(
+      this.artifactInfo.srcModelClass,
+    )}.prototype.${this.artifactInfo.srcModelPrimaryKey}>`;
   }
 
   _addCreatorToRepositoryConstructor(classConstructor) {
     const relationPropertyName = this._getRepositoryRelationPropertyName();
     const statement =
-      'this.' +
-      relationPropertyName +
-      ' = ' +
-      "this.createHasManyRepositoryFactoryFor('" +
-      relationPropertyName +
-      "', " +
-      utils.camelCase(this.artifactInfo.dstRepositoryClassName) +
-      'Getter,);';
+      `this.${relationPropertyName} = ` +
+      `this.createHasManyRepositoryFactoryFor('${relationPropertyName}', ` +
+      `${utils.camelCase(this.artifactInfo.dstRepositoryClassName)}Getter,);`;
     classConstructor.insertStatements(1, statement);
+  }
+
+  _registerInclusionResolverForRelation(classConstructor, options) {
+    const relationPropertyName = this._getRepositoryRelationPropertyName();
+    if (options.registerInclusionResolver) {
+      const statement =
+        `this.registerInclusionResolver(` +
+        `'${relationPropertyName}', this.${relationPropertyName}.inclusionResolver);`;
+      classConstructor.insertStatements(2, statement);
+    }
   }
 };

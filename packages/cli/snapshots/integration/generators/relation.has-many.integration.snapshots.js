@@ -26,13 +26,14 @@ export class CustomerRepository extends DefaultCrudRepository<
   constructor(@inject('datasources.db') dataSource: DbDataSource, @repository.getter('OrderRepository') protected orderRepositoryGetter: Getter<OrderRepository>,) {
     super(Customer, dataSource);
     this.orders = this.createHasManyRepositoryFactoryFor('orders', orderRepositoryGetter,);
+    this.registerInclusionResolver('orders', this.orders.inclusionResolver);
   }
 }
 
 `;
 
 exports[
-  `lb4 relation HasMany checks generated source class repository answers {"relationType":"hasMany","sourceModel":"CustomerClass","destinationModel":"OrderClass"} generates CustomerClass repository file with different inputs 1`
+  `lb4 relation HasMany checks generated source class repository answers {"relationType":"hasMany","sourceModel":"CustomerClass","destinationModel":"OrderClass","registerInclusionResolver":true} generates CustomerClass repository file with different inputs 1`
 ] = `
 import {DefaultCrudRepository, repository, HasManyRepositoryFactory} from '@loopback/repository';
 import {CustomerClass, OrderClass} from '../models';
@@ -50,13 +51,14 @@ export class CustomerClassRepository extends DefaultCrudRepository<
   constructor(@inject('datasources.myDB') dataSource: MyDBDataSource, @repository.getter('OrderClassRepository') protected orderClassRepositoryGetter: Getter<OrderClassRepository>,) {
     super(CustomerClass, dataSource);
     this.orderClasses = this.createHasManyRepositoryFactoryFor('orderClasses', orderClassRepositoryGetter,);
+    this.registerInclusionResolver('orderClasses', this.orderClasses.inclusionResolver);
   }
 }
 
 `;
 
 exports[
-  `lb4 relation HasMany checks generated source class repository answers {"relationType":"hasMany","sourceModel":"CustomerClassType","destinationModel":"OrderClassType"} generates CustomerClassType repository file with different inputs 1`
+  `lb4 relation HasMany checks generated source class repository answers {"relationType":"hasMany","sourceModel":"CustomerClassType","destinationModel":"OrderClassType","registerInclusionResolver":false} generates CustomerClassType repository file with different inputs 1`
 ] = `
 import {DefaultCrudRepository, repository, HasManyRepositoryFactory} from '@loopback/repository';
 import {CustomerClassType, OrderClassType} from '../models';
@@ -447,7 +449,7 @@ export class Customer extends Entity {
   })
   name?: string;
 
-  @hasMany(() => Order ,{keyTo: 'mykey'})
+  @hasMany(() => Order, {keyTo: 'mykey'})
   orders: Order[];
 
   constructor(data?: Partial<Customer>) {
@@ -507,7 +509,7 @@ export class CustomerClass extends Entity {
   })
   name?: string;
 
-  @hasMany(() => OrderClass ,{keyTo: 'mykey'})
+  @hasMany(() => OrderClass, {keyTo: 'mykey'})
   orderClasses: OrderClass[];
 
   constructor(data?: Partial<CustomerClass>) {
@@ -566,7 +568,7 @@ export class CustomerClassType extends Entity {
   })
   name?: string;
 
-  @hasMany(() => OrderClassType ,{keyTo: 'mykey'})
+  @hasMany(() => OrderClassType, {keyTo: 'mykey'})
   orderClassTypes: OrderClassType[];
 
   constructor(data?: Partial<CustomerClassType>) {
@@ -686,7 +688,7 @@ export class CustomerClass extends Entity {
   })
   name?: string;
 
-  @hasMany(() => OrderClass ,{keyTo: 'customerClassCustNumber'})
+  @hasMany(() => OrderClass, {keyTo: 'customerClassCustNumber'})
   myOrders: OrderClass[];
 
   constructor(data?: Partial<CustomerClass>) {
@@ -745,7 +747,7 @@ export class CustomerClassType extends Entity {
   })
   name?: string;
 
-  @hasMany(() => OrderClassType ,{keyTo: 'customerClassTypeCustNumber'})
+  @hasMany(() => OrderClassType, {keyTo: 'customerClassTypeCustNumber'})
   myOrders: OrderClassType[];
 
   constructor(data?: Partial<CustomerClassType>) {
@@ -834,7 +836,7 @@ export class CustomerClass extends Entity {
   })
   name?: string;
 
-  @hasMany(() => OrderClass ,{keyTo: 'customerClassCustNumber'})
+  @hasMany(() => OrderClass, {keyTo: 'customerClassCustNumber'})
   orderClasses: OrderClass[];
 
   constructor(data?: Partial<CustomerClass>) {
@@ -863,7 +865,7 @@ export class CustomerClassType extends Entity {
   })
   name?: string;
 
-  @hasMany(() => OrderClassType ,{keyTo: 'customerClassTypeCustNumber'})
+  @hasMany(() => OrderClassType, {keyTo: 'customerClassTypeCustNumber'})
   orderClassTypes: OrderClassType[];
 
   constructor(data?: Partial<CustomerClassType>) {
