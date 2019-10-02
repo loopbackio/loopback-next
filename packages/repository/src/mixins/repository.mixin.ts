@@ -29,12 +29,6 @@ const debug = debugFactory('loopback:repository:mixin');
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function RepositoryMixin<T extends Class<any>>(superClass: T) {
   return class extends superClass {
-    // A mixin class has to take in a type any[] argument!
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    constructor(...args: any[]) {
-      super(...args);
-    }
-
     /**
      * Add a repository to this application.
      *
