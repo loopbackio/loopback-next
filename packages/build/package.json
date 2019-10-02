@@ -33,7 +33,7 @@
 		"prettier": "^1.18.2",
 		"rimraf": "^3.0.0",
 		"source-map-support": "^0.5.16",
-		"typescript": "~3.6.4"
+		"typescript": "~3.7.1-rc"
 	},
 	"bin": {
 		"lb-tsc": "./bin/compile-package.js",

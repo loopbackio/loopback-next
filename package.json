@@ -26,7 +26,7 @@
     "fs-extra": "^8.1.0",
     "husky": "^3.0.9",
     "lerna": "^3.18.3",
-    "typescript": "~3.6.4"
+    "typescript": "~3.7.1-rc"
   },
   "scripts": {
     "postinstall": "lerna bootstrap",
