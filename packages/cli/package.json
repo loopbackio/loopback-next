@@ -26,7 +26,7 @@
     "@loopback/eslint-config": "^4.1.1",
     "@loopback/testlab": "^1.9.1",
     "@types/ejs": "^2.6.3",
-    "@types/node": "^10.14.19",
+    "@types/node": "^10.14.20",
     "glob": "^7.1.4",
     "loopback-datasource-juggler": "^4.13.0",
     "mem-fs": "^1.1.3",
