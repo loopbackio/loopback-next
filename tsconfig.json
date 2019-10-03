@@ -164,6 +164,9 @@
       "path": "packages/openapi-v3/tsconfig.json"
     },
     {
+      "path": "packages/pubsub/tsconfig.json"
+    },
+    {
       "path": "packages/repository-json-schema/tsconfig.json"
     },
     {
