@@ -76,8 +76,7 @@ index.js
 index.ts
 package.json
 tsconfig.json
-eslint.build.json
-eslint.json
+.eslintrc.js
 .mocharc.json
 ```
 
@@ -87,8 +86,7 @@ eslint.json
 | `index.js`                                               | Top-level file connecting components of the application.                                                                                                                                                                                                                                                                                                                 |
 | `package.json`                                           | Your application's package manifest. See [package.json](https://docs.npmjs.com/files/package.json) for details.                                                                                                                                                                                                                                                          |
 | `tsconfig.json`                                          | The TypeScript project configuration. See [tsconfig.json](http://www.typescriptlang.org/docs/handbook/tsconfig-json.html) for details.                                                                                                                                                                                                                                   |
-| `eslint.json`                                            | [ESLint configuration](https://palantir.github.io/eslint/usage/eslint-json/)                                                                                                                                                                                                                                                                                             |
-| `eslint.build.json`                                      | [ESLint configuration (build only)](https://palantir.github.io/eslint/usage/eslint-json/)                                                                                                                                                                                                                                                                                |
+| `.eslintrc.js`                                            | [ESLint configuration](https://eslint.org/docs/user-guide/configuring)                                                                                                                                                                                                                                                                                             |
 | `README.md`                                              | The Markdown-based README generated for your application.                                                                                                                                                                                                                                                                                                                |
 | `LICENSE`                                                | A copy of the MIT license. If you do not wish to use this license, please delete this file.                                                                                                                                                                                                                                                                              |
 | `src/application.ts`                                     | The application class, which extends [`RestApplication`](https://loopback.io/doc/en/lb4/apidocs.rest.restapplication.html) by default. This is the root of your application, and is where your application will be configured. It also extends [`RepositoryMixin`](https://loopback.io/doc/en/lb4/apidocs.repository.repositorymixin.html) which defines the datasource. |
