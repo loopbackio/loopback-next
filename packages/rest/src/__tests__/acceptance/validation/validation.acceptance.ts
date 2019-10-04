@@ -99,6 +99,21 @@ describe('Validation at REST level', () => {
         .expect(400);
     });
 
+    it('rejects requests with empty required object', async () => {
+      const DATA = {
+        name: 'iPhone',
+        description: null,
+        price: 10,
+        category: null,
+      };
+
+      await client
+        .post('/products')
+        .type('json')
+        .send(DATA)
+        .expect(422);
+    });
+
     it('rejects requests with empty json body', async () => {
       await client
         .post('/products')
