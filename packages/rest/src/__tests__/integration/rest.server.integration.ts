@@ -143,6 +143,17 @@ describe('RestServer (integration)', () => {
     await server.stop();
   });
 
+  it('disables listening if noListen is set to true', async () => {
+    const server = await givenAServer({rest: {listenOnStart: false, port: 0}});
+    await server.start();
+    // No port is assigned
+    expect(server.getSync(RestBindings.PORT)).to.eql(0);
+    // No server url is set
+    expect(server.url).to.be.undefined();
+    expect(server.listening).to.be.false();
+    await server.stop();
+  });
+
   it('does not throw an error when stopping an app that has not been started', async () => {
     const server = await givenAServer();
     await expect(server.stop()).to.fulfilled();
