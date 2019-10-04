@@ -853,6 +853,13 @@ export class RestServer extends Context implements Server, HttpServerLike {
     const protocol = await this.get(RestBindings.PROTOCOL);
     const httpsOptions = await this.get(RestBindings.HTTPS_OPTIONS);
 
+    if (this.config.listenOnStart === false) {
+      debug(
+        'RestServer is not listening as listenOnStart flag is set to false.',
+      );
+      return;
+    }
+
     const serverOptions = {};
     if (protocol === 'https') Object.assign(serverOptions, httpsOptions);
     Object.assign(serverOptions, {port, host, protocol, path});
@@ -1015,6 +1022,13 @@ export interface RestServerResolvedOptions {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   expressSettings: {[name: string]: any};
   router: RestRouterOptions;
+
+  /**
+   * Set this flag to `false` to not listen on connections when the REST server
+   * is started. It's useful to mount a LoopBack REST server as a route to the
+   * facade Express application. If not set, the value is default to `true`.
+   */
+  listenOnStart?: boolean;
 }
 
 /**
@@ -1039,6 +1053,7 @@ const DEFAULT_CONFIG: RestServerResolvedConfig = {
   },
   expressSettings: {},
   router: {},
+  listenOnStart: true,
 };
 
 function resolveRestServerConfig(
