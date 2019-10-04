@@ -85,12 +85,14 @@ export const USER_PROFILE_NOT_FOUND = 'USER_PROFILE_NOT_FOUND';
  * Registers an authentication strategy as an extension of the
  * AuthenticationBindings.AUTHENTICATION_STRATEGY_EXTENSION_POINT_NAME extension
  * point.
+ * @param context - Context object
+ * @param strategyClass - Class for the authentication strategy
  */
 export function registerAuthenticationStrategy(
   context: Context,
   strategyClass: Constructor<AuthenticationStrategy>,
 ) {
-  addExtension(
+  return addExtension(
     context,
     AuthenticationBindings.AUTHENTICATION_STRATEGY_EXTENSION_POINT_NAME,
     strategyClass,
