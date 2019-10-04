@@ -79,11 +79,11 @@ application, follow these steps:
    Try http://[::1]:3000/ping
    ```
 
-2. In a browser, navigate to [http://[::1]:3000](http://127.0.0.1:3000) or
+1. In a browser, navigate to [http://[::1]:3000](http://127.0.0.1:3000) or
    [http://127.0.0.1:3000](http://127.0.0.1:3000), and click on `/explorer` to
    open the `API Explorer`.
 
-3. In the `UserController` section, click on `POST /users`, click on
+1. In the `UserController` section, click on `POST /users`, click on
    `'Try it out'`, specify:
 
    ```ts
@@ -98,7 +98,7 @@ application, follow these steps:
 
    and click on `'Execute'` to **add** a new user named `'User One'`.
 
-4. In the `UserController` section, click on `POST /users/login`, click on
+1. In the `UserController` section, click on `POST /users/login`, click on
    `'Try it out'`, specify:
 
    ```ts
@@ -120,20 +120,46 @@ application, follow these steps:
    }
    ```
 
-5. Perform a `GET` request on the secured endpoint `/users/me` making sure to
-   provide the JWT token in the `Authorization` header. If authentication
-   succeeds, the
-   [user profile](https://github.com/strongloop/loopback-next/blob/master/packages/authentication/src/types.ts)
+1. Scroll to the top of the API Explorer, and you should see an `Authorize`
+   button. This is the place where you can set the JWT token.
+
+   ![](../../imgs/api_explorer_authorize_button.png)
+
+1. Click on the `Authorize` button, and a dialog opens up.
+
+   ![](../../imgs/api_explorer_auth_token_dialog1.png)
+
+1. In the `bearerAuth` value field, enter the token string you obtained earlier,
+   and press the `Authorize` button. This JWT token is now available for the
+   `/users/me` endpoint we will interact with next. Press the `Close` button to
+   dismiss the dialog.
+
+   ![](../../imgs/api_explorer_auth_token_dialog2.png)
+
+   {% include note.html content="The <b>Logout</b> button allows you to enter a new value; if needed." %}
+
+1. Scroll down to the `UserController` section to find `GET /users/me`
+
+   ![](../../imgs/api_explorer_usercontroller_section1.png)
+
+   Notice it has a **lock** icon and the other endpoints in this section do not.
+   This is because this endpoint specified an operation-level
+   `security requirement object` in the OpenAPI specification. (For details, see
+   the
+   [Specifying the Security Settings in the OpenAPI Specification](#specifying-the-security-settings-in-the-openapi-specification)
+   section.)
+
+1. Expand the `GET /users/me` section, and click on `Try it out`. There is no
+   data to specify, so simply click on `Execute`. The JWT token you specified
+   earlier was automatically placed in the `Authorization` header of the
+   request.
+
+   If authentication succeeds, the
+   [user profile](https://github.com/strongloop/loopback-next/blob/master/packages/security/src/types.ts)
    of the currently authenticated user will be returned in the response. If
    authentication fails due to a missing/invalid/expired token, an
    [HTTP 401 UnAuthorized](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401)
    is thrown.
-
-   ```sh
-   curl -X GET \
-   --header 'Authorization: Bearer some.token.value' \
-   http://127.0.0.1:3000/users/me
-   ```
 
    The response is:
 
@@ -225,6 +251,8 @@ a user can print out his/her user profile by performing a `GET` request on the
     @inject(SecurityBindings.USER)
     currentUserProfile: UserProfile,
   ): Promise<UserProfile> {
+    currentUserProfile.id = currentUserProfile[securityId];
+    delete currentUserProfile[securityId];
     return currentUserProfile;
   }
 
@@ -292,7 +320,8 @@ Authentication is **not** part of the default sequence of actions, so you must
 create a custom sequence and add the authentication action.
 
 The custom sequence `MyAuthenticationSequence` in
-`loopback4-example-shopping/packages/shopping/src/sequence.ts` implements the
+[loopback4-example-shopping/packages/shopping/src/sequence.ts](https://github.com/strongloop/loopback4-example-shopping/blob/master/packages/shopping/src/sequence.ts)
+implements the
 [SequenceHandler](https://github.com/strongloop/loopback-next/blob/master/packages/rest/src/sequence.ts)
 interface.
 
@@ -382,7 +411,7 @@ reached.
 
 To add the custom sequence `MyAuthenticationSequence` in the application, we
 must code the following in
-`loopback4-example-shopping/packages/shopping/src/application.ts`:
+[loopback4-example-shopping/packages/shopping/src/application.ts](https://github.com/strongloop/loopback4-example-shopping/blob/master/packages/shopping/src/application.ts):
 
 ```ts
 export class ShoppingApplication extends BootMixin(
@@ -414,11 +443,9 @@ was implemented as follows:
 ```ts
 import {inject} from '@loopback/context';
 import {HttpErrors, Request} from '@loopback/rest';
-import {
-  AuthenticationStrategy,
-  UserProfile,
-  TokenService,
-} from '@loopback/authentication';
+import {AuthenticationStrategy, TokenService} from '@loopback/authentication';
+import {UserProfile} from '@loopback/security';
+
 import {TokenServiceBindings} from '../keys';
 
 export class JWTAuthenticationStrategy implements AuthenticationStrategy {
@@ -482,7 +509,7 @@ This token service is explained in a later section.
 To register the custom authentication strategy `JWTAuthenticationStrategy` with
 the **name** `'jwt'` as a part of the authentication framework, we need to code
 the following in
-`loopback4-example-shopping/packages/shopping/src/application.ts`.
+[loopback4-example-shopping/packages/shopping/src/application.ts](https://github.com/strongloop/loopback4-example-shopping/blob/master/packages/shopping/src/application.ts).
 
 ```ts
 import {registerAuthenticationStrategy} from '@loopback/authentication';
@@ -502,7 +529,7 @@ export class ShoppingApplication extends BootMixin(
 ### Creating a Token Service
 
 The token service `JWTService` in
-`loopback4-example-shopping/packages/shopping/src/services/jwt-service.ts`
+[loopback4-example-shopping/packages/shopping/src/services/jwt-service.ts](https://github.com/strongloop/loopback4-example-shopping/blob/master/packages/shopping/src/services/jwt-service.ts)
 implements an **optional** helper
 [TokenService](https://github.com/strongloop/loopback-next/blob/master/packages/authentication/src/services/token.service.ts)
 interface.
@@ -511,7 +538,8 @@ interface.
 import {inject} from '@loopback/context';
 import {HttpErrors} from '@loopback/rest';
 import {promisify} from 'util';
-import {TokenService, UserProfile} from '@loopback/authentication';
+import {TokenService} from '@loopback/authentication';
+import {UserProfile} from '@loopback/security';
 import {TokenServiceBindings} from '../keys';
 
 const jwt = require('jsonwebtoken');
@@ -583,7 +611,7 @@ injected via the `TokenServiceBindings.TOKEN_SECRET` and the
 
 The `async generateToken(userProfile: UserProfile): Promise<string>` function
 takes in a user profile of type
-[UserProfile](https://github.com/strongloop/loopback-next/blob/master/packages/authentication/src/types.ts),
+[UserProfile](https://github.com/strongloop/loopback-next/blob/master/packages/security/src/types.ts),
 generates a JWT token of type `string` using: the **user profile** as the
 payload, **jwtSecret** and **jwtExpiresIn**.
 
@@ -593,7 +621,7 @@ the token which is a user profile of type `UserProfile`.
 
 To bind the JWT `secret`, `expires in` values and the `JWTService` class to
 binding keys, we need to code the following in
-`loopback4-example-shopping/packages/shopping/src/application.ts`:
+[loopback4-example-shopping/packages/shopping/src/application.ts](https://github.com/strongloop/loopback4-example-shopping/blob/master/packages/shopping/src/application.ts):
 
 ```ts
 export class ShoppingApplication extends BootMixin(
@@ -630,14 +658,14 @@ In the code above, `TOKEN_SECRET_VALUE` has a value of `'myjwts3cr3t'` and
 
 `JWTService` is used in two places within the application:
 `JWTAuthenticationStrategy` in
-`loopback4-example-shopping/packages/shopping/src/authentication-strategies/jwt-strategy.ts`,
+[loopback4-example-shopping/packages/shopping/src/authentication-strategies/jwt-strategy.ts](https://github.com/strongloop/loopback4-example-shopping/blob/master/packages/shopping/src/authentication-strategies/jwt-strategy.ts),
 and `UserController` in
-`loopback4-example-shopping/packages/shopping/src/controllers/user.controller.ts`.
+[loopback4-example-shopping/packages/shopping/src/controllers/user.controller.ts](https://github.com/strongloop/loopback4-example-shopping/blob/master/packages/shopping/src/controllers/user.controller.ts).
 
 ### Creating a User Service
 
 The user service `MyUserService` in
-`loopback4-example-shopping/packages/shopping/src/services/user-service.ts`
+[loopback4-example-shopping/packages/shopping/src/services/user-service.ts](https://github.com/strongloop/loopback4-example-shopping/blob/master/packages/shopping/src/services/user-service.ts)
 implements an **optional** helper
 [UserService](https://github.com/strongloop/loopback-next/blob/master/packages/authentication/src/services/user.service.ts)
 interface.
@@ -694,16 +722,16 @@ It searches through an injected user repository of type `UserRepository`.
 
 The `convertToUserProfile(user: User): UserProfile` function takes in a **user**
 of type `User` and returns a user profile of type
-[UserProfile](https://github.com/strongloop/loopback-next/blob/master/packages/authentication/src/types.ts).
+[UserProfile](https://github.com/strongloop/loopback-next/blob/master/packages/security/src/types.ts).
 A user profile, in this case, is the minimum set of user properties which
-indentify an authenticated user.
+identify an authenticated user.
 
 `MyUserService` is used in by `UserController` in
-`loopback4-example-shopping/packages/shopping/src/controllers/user.controller.ts`.
+[loopback4-example-shopping/packages/shopping/src/controllers/user.controller.ts](https://github.com/strongloop/loopback4-example-shopping/blob/master/packages/shopping/src/controllers/user.controller.ts).
 
 To bind the `MyUserService` class, and the password hashing utility it uses, to
 binding keys, we need to code the following in
-`loopback4-example-shopping/packages/shopping/src/application.ts`:
+[loopback4-example-shopping/packages/shopping/src/application.ts](https://github.com/strongloop/loopback4-example-shopping/blob/master/packages/shopping/src/application.ts):
 
 ```ts
 export class ShoppingApplication extends BootMixin(
@@ -736,7 +764,7 @@ export class ShoppingApplication extends BootMixin(
 ### Adding Users
 
 In the `UserController` class in the
-`loopback4-example-shopping/packages/shopping/src/controllers/user.controller.ts`,
+[loopback4-example-shopping/packages/shopping/src/controllers/user.controller.ts](https://github.com/strongloop/loopback4-example-shopping/blob/master/packages/shopping/src/controllers/user.controller.ts),
 users can be added by performing a `POST` request to the `/users` endpoint which
 is handled by the `create()` function.
 
@@ -781,7 +809,7 @@ password values are in an acceptable format.
 ### Issuing a JWT Token on Successful Login
 
 In the `UserController` class in the
-`loopback4-example-shopping/packages/shopping/src/controllers/user.controller.ts`,
+[loopback4-example-shopping/packages/shopping/src/controllers/user.controller.ts](https://github.com/strongloop/loopback4-example-shopping/blob/master/packages/shopping/src/controllers/user.controller.ts),
 a user can `log in` by performing a `POST` request, containing an `email` and
 `password`, to the `/users/login` endpoint which is handled by the `login()`
 function.
@@ -844,10 +872,291 @@ The user service is then called to create a slimmer user profile from the user
 object. Then this user profile is used as the payload of the JWT token created
 by the token service. The token is returned in the response.
 
+### Specifying the Security Settings in the OpenAPI Specification
+
+In the shopping cart application, only one endpoint, `GET /users/me` is secured
+with a custom JWT authentication strategy. In order to be able to `set` and
+`use` a JWT token in the `API Explorer` (as opposed to using a REST API client),
+it is necessary to specify
+[security scheme object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#security-scheme-object)
+and
+[security requirement object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#securityRequirementObject)
+information in the application's OpenAPI specification.
+
+In
+[loopback4-example-shopping/packages/shopping/src/utils/security-spec.ts](https://github.com/strongloop/loopback4-example-shopping/blob/master/packages/shopping/src/utils/security-spec.ts)
+we defined the following:
+
+```ts
+import {SecuritySchemeObject, ReferenceObject} from '@loopback/openapi-v3';
+
+export const OPERATION_SECURITY_SPEC = [{bearerAuth: []}];
+export type SecuritySchemeObjects = {
+  [securityScheme: string]: SecuritySchemeObject | ReferenceObject;
+};
+export const SECURITY_SCHEME_SPEC: SecuritySchemeObjects = {
+  bearerAuth: {
+    type: 'http',
+    scheme: 'bearer',
+    bearerFormat: 'JWT',
+  },
+};
+```
+
+`SECURITY_SCHEME_SPEC` is a map of security scheme object definitions that are
+defined globally for the application. For our purposes, it only contains a
+single security scheme object that contains the
+[bearerAuth](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#jwt-bearer-sample)
+definition.
+
+`OPERATION_SECURITY_SPEC` is an **operation-level**
+[security requirement object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#securityRequirementObject)
+that references the `bearerAuth` security scheme object definition. It is used
+by the `/users/me` endpoint in
+[loopback4-example-shopping/packages/shopping/src/controllers/user.controller.ts](https://github.com/strongloop/loopback4-example-shopping/blob/master/packages/shopping/src/controllers/user.controller.ts).
+
+Notice the line
+
+```
+security: OPERATION_SECURITY_SPEC,
+```
+
+in the code below:
+
+```ts
+@get('/users/me', {
+  security: OPERATION_SECURITY_SPEC,
+  responses: {
+    '200': {
+      description: 'The current user profile',
+      content: {
+        'application/json': {
+          schema: UserProfileSchema,
+        },
+      },
+    },
+  },
+})
+@authenticate('jwt')
+async printCurrentUser(
+  @inject(SecurityBindings.USER)
+  currentUserProfile: UserProfile,
+): Promise<UserProfile> {
+  currentUserProfile.id = currentUserProfile[securityId];
+  delete currentUserProfile[securityId];
+  return currentUserProfile;
+}
+```
+
+[loopback4-example-shopping/packages/shopping/src/application.ts](https://github.com/strongloop/loopback4-example-shopping/blob/master/packages/shopping/src/application.ts)
+contributes the `security scheme object` definitions to the OpenAPI
+specification in the following manner:
+
+```ts
+import {SECURITY_SCHEME_SPEC} from './utils/security-spec';
+
+export class ShoppingApplication extends BootMixin(
+  ServiceMixin(RepositoryMixin(RestApplication)),
+) {
+  constructor(options?: ApplicationConfig) {
+    super(options);
+
+    this.api({
+      openapi: '3.0.0',
+      info: {title: pkg.name, version: pkg.version},
+      paths: {},
+      components: {securitySchemes: SECURITY_SCHEME_SPEC},
+      servers: [{url: '/'}],
+    });
+// ...
+```
+
+Later, when you visit
+[http://[::1]:3000/openapi.json](http://[::1]:3000/openapi.json) while the
+application is running, search for the text `bearerAuth`. You should find these
+two occurrences:
+
+```
+"components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+```
+
+and
+
+```
+"/users/me": {
+      "get": {
+        "x-controller-name": "UserController",
+        "x-operation-name": "printCurrentUser",
+        "tags": [
+          "UserController"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+```
+
+Later, when you visit [http://[::1]:3000/explorer/](http://[::1]:3000/explorer/)
+while the application is running, you should see an `Authorize` button at the
+top.
+
+![](../../imgs/api_explorer_authorize_button.png)
+
+as well as a **lock** icon on the `GET /users/me` endpoint in the
+`UserController` section
+
+![](../../imgs/api_explorer_usercontroller_section1.png)
+
+### How to Specify A Single OpenAPI Specification Security Requirement Object For All Endpoints
+
+Currently, the `loopback4-example-shopping` application does not implement this,
+but there is a way to specify the same OpenAPI specification security
+requirement object to **all** endpoints of your application.
+
+The security scheme object definition is still defined in `components` section,
+but the `security` property value is set at the **top** level instead of the
+**operation** level.
+
+```
+"components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+  // ...
+},
+"security": [
+    {
+      "bearerAuth": []
+    }
+  ]
+```
+
+To accomplish this, we only need to make some minor changes to the code examples
+provided earlier.
+
+In
+[loopback4-example-shopping/packages/shopping/src/utils/security-spec.ts](https://github.com/strongloop/loopback4-example-shopping/blob/master/packages/shopping/src/utils/security-spec.ts),
+we simply rename `OPERATION_SECURITY_SPEC` to `SECURITY_SPEC`.
+
+```ts
+import {SecuritySchemeObject, ReferenceObject} from '@loopback/openapi-v3';
+
+export const SECURITY_SPEC = [{bearerAuth: []}];
+export type SecuritySchemeObjects = {
+  [securityScheme: string]: SecuritySchemeObject | ReferenceObject;
+};
+export const SECURITY_SCHEME_SPEC: SecuritySchemeObjects = {
+  bearerAuth: {
+    type: 'http',
+    scheme: 'bearer',
+    bearerFormat: 'JWT',
+  },
+};
+```
+
+In
+[loopback4-example-shopping/packages/shopping/src/controllers/user.controller.ts](https://github.com/strongloop/loopback4-example-shopping/blob/master/packages/shopping/src/controllers/user.controller.ts),
+we remove the line:
+
+```
+security: SECURITY_SPEC_OPERATION,
+```
+
+from the `/users/me` endpoint:
+
+```ts
+@get('/users/me', {
+  responses: {
+    '200': {
+      description: 'The current user profile',
+      content: {
+        'application/json': {
+          schema: UserProfileSchema,
+        },
+      },
+    },
+  },
+})
+@authenticate('jwt')
+async printCurrentUser(
+  @inject(SecurityBindings.USER)
+  currentUserProfile: UserProfile,
+): Promise<UserProfile> {
+  currentUserProfile.id = currentUserProfile[securityId];
+  delete currentUserProfile[securityId];
+  return currentUserProfile;
+}
+```
+
+In
+[loopback4-example-shopping/packages/shopping/src/application.ts](https://github.com/strongloop/loopback4-example-shopping/blob/master/packages/shopping/src/application.ts),
+we simply add the line
+
+```
+security: SECURITY_SPEC
+```
+
+to the call to `this.api({...})`. This basically means the security requirement
+object definition, `bearerAuth`, will be applied to all endpoints.
+
+```ts
+import {SECURITY_SCHEME_SPEC, SECURITY_SPEC} from './utils/security-spec';
+
+export class ShoppingApplication extends BootMixin(
+  ServiceMixin(RepositoryMixin(RestApplication)),
+) {
+  constructor(options?: ApplicationConfig) {
+    super(options);
+
+    this.api({
+      openapi: '3.0.0',
+      info: {title: pkg.name, version: pkg.version},
+      paths: {},
+      components: {securitySchemes: SECURITY_SCHEME_SPEC},
+      servers: [{url: '/'}],
+      security: SECURITY_SPEC
+    });
+// ...
+```
+
+Visiting [http://[::1]:3000/explorer/](http://[::1]:3000/explorer/) while the
+application is running, you should still see an `Authorize` button at the top as
+before.
+
+![](../../imgs/api_explorer_authorize_button.png)
+
+But now, **all** the endpoints have the lock icon.
+
+![](../../imgs/api_explorer_all_sections_lock_icons1.png)
+
+This means that you can set the JWT token once via the
+`Authorize button/dialog`, and the token will be available to all the endpoints
+your interact with.
+
+There are plans to allow contributions to the OpenAPI specification via an
+extensionPoint/extensions pattern (
+[Issue #3854](https://github.com/strongloop/loopback-next/issues/3854) );
+including having authentication strategies automatically contribute security
+scheme/requirement object information (
+[Issue #3669](https://github.com/strongloop/loopback-next/issues/3669) ).
+
 ### Summary
 
 We've gone through the steps that were used to add JWT `authentication` to the
-`loopback4-example-shopping` application.
+`loopback4-example-shopping` application, and add
+`security scheme/requirement object` settings to its OpenAPI specification.
 
 The final `ShoppingApplication` class in
 [loopback4-example-shopping/packages/shopping/src/application.ts](https://github.com/strongloop/loopback4-example-shopping/blob/master/packages/shopping/src/application.ts)
@@ -860,6 +1169,10 @@ import {RepositoryMixin} from '@loopback/repository';
 import {RestApplication} from '@loopback/rest';
 import {ServiceMixin} from '@loopback/service-proxy';
 import {MyAuthenticationSequence} from './sequence';
+import {
+  RestExplorerBindings,
+  RestExplorerComponent,
+} from '@loopback/rest-explorer';
 import {
   TokenServiceBindings,
   UserServiceBindings,
@@ -876,6 +1189,7 @@ import {
 import {PasswordHasherBindings} from './keys';
 import {BcryptHasher} from './services/hash.password.bcryptjs';
 import {JWTAuthenticationStrategy} from './authentication-strategies/jwt-strategy';
+import {SECURITY_SCHEME_SPEC} from './utils/security-spec';
 
 /**
  * Information from package.json
@@ -895,6 +1209,14 @@ export class ShoppingApplication extends BootMixin(
   constructor(options?: ApplicationConfig) {
     super(options);
 
+    this.api({
+      openapi: '3.0.0',
+      info: {title: pkg.name, version: pkg.version},
+      paths: {},
+      components: {securitySchemes: SECURITY_SCHEME_SPEC},
+      servers: [{url: '/'}],
+    });
+
     this.setUpBindings();
 
     // Bind authentication component related elements
@@ -907,6 +1229,12 @@ export class ShoppingApplication extends BootMixin(
 
     // Set up default home page
     this.static('/', path.join(__dirname, '../public'));
+
+    // Customize @loopback/rest-explorer configuration here
+    this.bind(RestExplorerBindings.CONFIG).to({
+      path: '/explorer',
+    });
+    this.component(RestExplorerComponent);
 
     this.projectRoot = __dirname;
     // Customize @loopback/boot Booter Conventions here
