@@ -43,6 +43,31 @@ related routes, you need to perform the following steps:
 This section describes how to define a `belongsTo` relation at the model level
 using the `@belongsTo` decorator to define the constraining foreign key.
 
+The definition of the `belongsTo` relation is inferred by using the `@belongsTo`
+decorator. The decorator takes in a function resolving the target model class
+constructor and designates the relation type. It also calls `property()` to
+ensure that the decorated property is correctly defined.
+
+The `@belongsTo` decorator takes three parameters:
+
+- `target model class` (required)
+- `relation definition` (optional) - has three attributes, keyFrom, keyTo, name
+  - `keyFrom` is the property name of the foreign key on the "source" model. It
+    is always set to the decorated property name (in the given example it is,
+    "customerId" property on Order model).
+  - `keyTo` is the property name of the foreign key on the "target" model, it is
+    typically the primary key of the "target" model. `keyTo` attribute defaults
+    to the id property on the target model (in the given example, "id" property
+    on Customer).
+  - `name` is the name of the relation as defined in the repository. The
+    relation name is used in the repository constructor to define a
+    [BelongsToAccessor](#configuring-a-belongsto-relation) and map it to the
+    relation using a
+    [inclusion resolver](#enabledisable-the-inclusion-resolvers).
+- `property definition` (optional) - creates a property decorator implicitly.
+  The name attribute in the definition can be used to customize datasource
+  column name.
+
 {% include code-caption.html content="/src/models/order.model.ts" %}
 
 ```ts
@@ -75,18 +100,51 @@ export interface OrderRelations {
 export type OrderWithRelations = Order & OrderRelations;
 ```
 
-The definition of the `belongsTo` relation is inferred by using the `@belongsTo`
-decorator. The decorator takes in a function resolving the target model class
-constructor and designates the relation type. It also calls `property()` to
-ensure that the decorated property is correctly defined.
+The standard naming convention for the foreign key property in the source model
+is `relation name` + `Id` (for example, Order.customerId).
 
-A usage of the decorator with a custom primary key of the target model for the
-above example is as follows:
+- If the foreign key property name in the source model has to be customized, the
+  relation name has to be explicitly specified in the `name` attribute of the
+  relation definition. In addition, if you have a corresponding `hasMany` or
+  `hasOne` relation in the target model (for example, a Customer has many
+  Orders), the `keyTo` attribute of that corresponding relation needs to be
+  stated explicitly. Check the relation metadata in
+  [hasMany](https://loopback.io/doc/en/lb4/HasMany-relation.html#relation-metadata)
+  and
+  [hasOne](https://loopback.io/doc/en/lb4/hasOne-relation.html#relation-metadata)
+  for more details.
+- In the following example, the foreign key property name is customized as
+  `cust_Id` instead of `customerId`. so the relation definition in the second
+  argument is explicitly passed to the `belongsTo` decorator.
 
 ```ts
 class Order extends Entity {
   // constructor, properties, etc.
-  @belongsTo(() => Customer, {keyTo: 'pk'})
+  @belongsTo(() => Customer, {keyFrom: 'cust_Id', name: 'customer'})
+  cust_Id: number;
+}
+```
+
+In the following example, the db column name of the foreign key is customized by
+passing the property definition in the third argument to the `belongsTo`
+decorator.
+
+```ts
+class Order extends Entity {
+  // constructor, properties, etc.
+  @belongsTo(() => Customer, {keyFrom: 'customerId'}, {name: 'customer_id'})
+  customerId: number;
+}
+```
+
+The `keyTo` attribute in the relation definition has to be stated explicitly,
+when the property of the target model for the belongsTo relation is not the id
+property in the target model.
+
+```ts
+class Order extends Entity {
+  // constructor, properties, etc.
+  @belongsTo(() => Customer, { keyTo: 'customized_target_property' }),
   customerId: number;
 }
 
