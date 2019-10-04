@@ -465,6 +465,33 @@ The property decorator leverages LoopBack's
 [metadata package](https://github.com/strongloop/loopback-next/tree/master/packages/metadata)
 to determine the type of a particular property.
 
+{% include note.html content=" Currently, property types must be specified
+explicitly either on the property itself or via the `type` option of the
+property decorator. Aliased types or types that extracted from a class or
+interface (e.g. `public name: OtherClass['otherProperty']`) will not work
+properly and will result in the property type being resolved as an empty object
+rather than the intended type in the generated OpenAPI specifcation. This is due
+to a limitation and flaw in the way TypeScript currently generates the metadata
+that is used to generate the OpenAPI specification for the application.
+
+Example:
+
+```ts
+export class StandardUser {
+  public email: string;
+  public anotherProperty: boolean;
+}
+
+@model()
+export class UserModel {
+  @property()
+  public email: StandardUser['email']; // => results in \"__metadata(\"design:type\", Object)\" instead of \"__metadata(\"design:type\", String)\"
+}
+```
+
+(see [Issue #3863](https://github.com/strongloop/loopback-next/issues/3863) for
+more details) " %}
+
 ```ts
 @model()
 class Product extends Entity {
