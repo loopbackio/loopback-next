@@ -4,3 +4,4 @@
 // License text available at https://opensource.org/licenses/MIT
 
 export * from './crud-rest.controller';
+export * from './repository-builder';
