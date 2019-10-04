@@ -715,12 +715,8 @@ option value for the `/whoami` endpoint.
 
 ```ts
 import {inject} from '@loopback/context';
-import {
-  AuthenticationBindings,
-  UserProfile,
-  securityId,
-  authenticate,
-} from '@loopback/authentication';
+import {AuthenticationBindings, authenticate} from '@loopback/authentication';
+import {UserProfile, securityId} from '@loopback/security';
 import {get} from '@loopback/rest';
 
 export class WhoAmIController {
@@ -754,11 +750,11 @@ Here is the updated `BasicAuthenticationStrategy`:
 ```ts
 import {
   AuthenticationStrategy,
-  UserProfile,
   TokenService,
   AuthenticationMetadata,
   AuthenticationBindings,
 } from '@loopback/authentication';
+import {UserProfile} from '@loopback/security';
 import {Getter} from '@loopback/core';
 
 export interface Credentials {
