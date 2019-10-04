@@ -473,6 +473,8 @@ class Product extends Entity {
 }
 ```
 
+> NOTE: Currently, property types must be specified explicitly either on the property itself or via the `type` option of the property decorator. Aliased types or types that extracted from a class or interface (e.g. `public name: OtherClass["otherProperty"]`) will not work properly and will result in the property type being resolved as an empty object rather than the intended type in the generated OpenAPI specifcation. This is due to a limitation and flaw in the way TypeScript currently generates the metadata that is used to generate the OpenAPI specification for the application. (see [Issue #3863](https://github.com/strongloop/loopback-next/issues/3863))
+
 ### Array Property Decorator
 
 There is a limitation to the metadata that can be automatically inferred by
