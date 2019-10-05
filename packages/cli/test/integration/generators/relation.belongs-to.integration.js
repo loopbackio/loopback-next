@@ -115,25 +115,22 @@ describe('lb4 relation', function() {
     assert.fileContent(expectedFile, relationalPropertyRegEx);
   });
 
-  context('generate model relation', () => {
+  context('generates model relation with default values', () => {
     const promptArray = [
       {
         relationType: 'belongsTo',
         sourceModel: 'Order',
         destinationModel: 'Customer',
-        relationName: 'myCustomer',
       },
       {
         relationType: 'belongsTo',
         sourceModel: 'OrderClass',
         destinationModel: 'CustomerClass',
-        relationName: 'myCustomer',
       },
       {
         relationType: 'belongsTo',
         sourceModel: 'OrderClassType',
         destinationModel: 'CustomerClassType',
-        relationName: 'myCustomer',
       },
     ];
 
@@ -156,7 +153,7 @@ describe('lb4 relation', function() {
           .withPrompts(multiItemPrompt);
       });
 
-      it('add import belongsTo, import for target model and belongsTo decorator  ', async () => {
+      it('has correct default imports', async () => {
         const sourceFilePath = path.join(
           SANDBOX_PATH,
           MODEL_APP_PATH,
@@ -169,7 +166,51 @@ describe('lb4 relation', function() {
     }
   });
 
-  context('generate model relation with custom relation name', () => {
+  context('generates model relation for existing property name', () => {
+    const promptList = [
+      {
+        relationType: 'belongsTo',
+        sourceModel: 'Order',
+        destinationModel: 'Customer',
+        relationName: 'myRelation',
+      },
+      {
+        relationType: 'belongsTo',
+        sourceModel: 'OrderClass',
+        destinationModel: 'CustomerClass',
+        relationName: 'myRelation',
+      },
+      {
+        relationType: 'belongsTo',
+        sourceModel: 'OrderClassType',
+        destinationModel: 'CustomerClassType',
+        relationName: 'myRelation',
+      },
+    ];
+
+    it('Verifies if property name that already existed will be overwritten ', async () => {
+      await sandbox.reset();
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(SANDBOX_PATH, () =>
+          testUtils.givenLBProject(SANDBOX_PATH, {
+            additionalFiles: SANDBOX_FILES,
+          }),
+        )
+        .withPrompts(promptList[0]);
+
+      const sourceFilePath = path.join(
+        SANDBOX_PATH,
+        MODEL_APP_PATH,
+        sourceFileName[0],
+      );
+
+      assert.file(sourceFilePath);
+      expectFileToMatchSnapshot(sourceFilePath);
+    });
+  });
+
+  context('generates model relation with custom relation name', () => {
     const promptArray = [
       {
         relationType: 'belongsTo',
@@ -222,63 +263,7 @@ describe('lb4 relation', function() {
     }
   });
 
-  context('generate model relation with default relation name', () => {
-    const defaultRelationName = [
-      'customerId',
-      'customerClassCustNumber',
-      'customerClassTypeCustNumber',
-    ];
-
-    const promptArray = [
-      {
-        relationType: 'belongsTo',
-        sourceModel: 'Order',
-        destinationModel: 'Customer',
-      },
-      {
-        relationType: 'belongsTo',
-        sourceModel: 'OrderClass',
-        destinationModel: 'CustomerClass',
-      },
-      {
-        relationType: 'belongsTo',
-        sourceModel: 'OrderClassType',
-        destinationModel: 'CustomerClassType',
-      },
-    ];
-    promptArray.forEach(function(multiItemPrompt, i) {
-      describe('answers ' + JSON.stringify(multiItemPrompt), () => {
-        suite(multiItemPrompt, i);
-      });
-    });
-
-    function suite(multiItemPrompt, i) {
-      before(async function runGeneratorWithAnswers() {
-        await sandbox.reset();
-        await testUtils
-          .executeGenerator(generator)
-          .inDir(SANDBOX_PATH, () =>
-            testUtils.givenLBProject(SANDBOX_PATH, {
-              additionalFiles: SANDBOX_FILES,
-            }),
-          )
-          .withPrompts(multiItemPrompt);
-      });
-
-      it('relation name should be ' + defaultRelationName[i], async () => {
-        const sourceFilePath = path.join(
-          SANDBOX_PATH,
-          MODEL_APP_PATH,
-          sourceFileName[i],
-        );
-
-        assert.file(sourceFilePath);
-        expectFileToMatchSnapshot(sourceFilePath);
-      });
-    }
-  });
-
-  context('check if the controller file created ', () => {
+  context('checks if the controller file created ', () => {
     const promptArray = [
       {
         relationType: 'belongsTo',
@@ -297,8 +282,6 @@ describe('lb4 relation', function() {
       },
     ];
 
-    const sourceClassnames = ['Customer', 'CustomerClass', 'CustomerClassType'];
-    const targetClassnames = ['Order', 'OrderClass', 'OrderClassType'];
     promptArray.forEach(function(multiItemPrompt, i) {
       describe('answers ' + JSON.stringify(multiItemPrompt), () => {
         suite(multiItemPrompt, i);
@@ -327,7 +310,7 @@ describe('lb4 relation', function() {
         assert.file(filePath);
       });
 
-      it('controller with belongsTo class and constructor', async () => {
+      it('checks controller content with belongsTo relation', async () => {
         const filePath = path.join(
           SANDBOX_PATH,
           CONTROLLER_PATH,
@@ -346,26 +329,10 @@ describe('lb4 relation', function() {
 
         expectFileToMatchSnapshot(indexFilePath);
       });
-
-      it(
-        'controller GET Array of ' +
-          targetClassnames[i] +
-          "'s belonging to " +
-          sourceClassnames[i],
-        async () => {
-          const filePath = path.join(
-            SANDBOX_PATH,
-            CONTROLLER_PATH,
-            controllerFileName[i],
-          );
-
-          expectFileToMatchSnapshot(filePath);
-        },
-      );
     }
   });
 
-  context('check source class repository ', () => {
+  context('checks generated source class repository ', () => {
     const promptArray = [
       {
         relationType: 'belongsTo',
@@ -405,58 +372,21 @@ describe('lb4 relation', function() {
           .withPrompts(multiItemPrompt);
       });
 
-      it(sourceClassnames[i] + ' repostitory has all imports', async () => {
-        const sourceFilePath = path.join(
-          SANDBOX_PATH,
-          REPOSITORY_APP_PATH,
-          repositoryFileName[i],
-        );
+      it(
+        'generates ' +
+          sourceClassnames[i] +
+          ' repository file with different inputs',
+        async () => {
+          const sourceFilePath = path.join(
+            SANDBOX_PATH,
+            REPOSITORY_APP_PATH,
+            repositoryFileName[i],
+          );
 
-        assert.file(sourceFilePath);
-        expectFileToMatchSnapshot(sourceFilePath);
-      });
-
-      it('repository has updated constructor', async () => {
-        const sourceFilePath = path.join(
-          SANDBOX_PATH,
-          REPOSITORY_APP_PATH,
-          repositoryFileName[i],
-        );
-
-        expectFileToMatchSnapshot(sourceFilePath);
-      });
-    }
-
-    context('generate model relation for existing property name', () => {
-      const promptList = [
-        {
-          relationType: 'belongsTo',
-          sourceModel: 'Order',
-          destinationModel: 'Customer',
-          relationName: 'myCustomer',
+          assert.file(sourceFilePath);
+          expectFileToMatchSnapshot(sourceFilePath);
         },
-      ];
-
-      it('Verify is property name that already exist will overwriting ', async () => {
-        await sandbox.reset();
-        await testUtils
-          .executeGenerator(generator)
-          .inDir(SANDBOX_PATH, () =>
-            testUtils.givenLBProject(SANDBOX_PATH, {
-              additionalFiles: SANDBOX_FILES,
-            }),
-          )
-          .withPrompts(promptList[0]);
-
-        const sourceFilePath = path.join(
-          SANDBOX_PATH,
-          MODEL_APP_PATH,
-          sourceFileName[0],
-        );
-
-        assert.file(sourceFilePath);
-        expectFileToMatchSnapshot(sourceFilePath);
-      });
-    });
+      );
+    }
   });
 });
