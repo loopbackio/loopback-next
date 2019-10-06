@@ -4,7 +4,10 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {belongsTo, Entity, hasMany, hasOne, model, property} from '../../..';
-import {Address, AddressWithRelations} from './address.model';
+import {
+  Address,
+  AddressWithRelations,
+} from '@loopback/repository-tests/dist/crud/relations/fixtures/models/address.model';
 import {Order, OrderWithRelations} from './order.model';
 import {Seller} from './seller.model';
 

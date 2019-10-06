@@ -5,7 +5,10 @@
 
 import {belongsTo, Entity, model, property} from '../../..';
 import {Customer, CustomerWithRelations} from './customer.model';
-import {Shipment, ShipmentWithRelations} from './shipment.model';
+import {
+  Shipment,
+  ShipmentWithRelations,
+} from '@loopback/repository-tests/dist/crud/relations/fixtures/models/shipment.model';
 import {Seller} from './seller.model';
 
 @model()

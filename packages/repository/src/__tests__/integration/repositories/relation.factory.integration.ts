@@ -25,7 +25,7 @@ import {
   ModelDefinition,
   RelationType,
 } from '../../..';
-import {Seller} from '../../fixtures/models';
+import {Seller} from '../../fixtures/models/seller.model';
 
 // Given a Customer and Order models - see definitions at the bottom
 let db: juggler.DataSource;

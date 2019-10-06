@@ -10,8 +10,15 @@ import {
   juggler,
   repository,
 } from '../../..';
-import {Customer, Seller, Order} from '../models';
-import {CustomerRepository, OrderRepository} from '../repositories';
+import {
+  Customer,
+  Order,
+} from '@loopback/repository-tests/dist/crud/relations/fixtures/models';
+import {Seller} from '../models/seller.model';
+import {
+  CustomerRepository,
+  OrderRepository,
+} from '@loopback/repository-tests/dist/crud/relations/fixtures/repositories';
 
 export class SellerRepository extends DefaultCrudRepository<
   Seller,

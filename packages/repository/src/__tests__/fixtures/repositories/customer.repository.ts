@@ -13,10 +13,16 @@ import {
   repository,
 } from '../../..';
 import {HasOneRepositoryFactory} from '../../../';
-import {Address, Customer, CustomerRelations, Order, Seller} from '../models';
-import {AddressRepository} from './address.repository';
+import {
+  Address,
+  Customer,
+  CustomerRelations,
+  Order,
+} from '@loopback/repository-tests/dist/crud/relations/fixtures/models';
+import {Seller} from '../models/seller.model';
+import {AddressRepository} from '@loopback/repository-tests/dist/crud/relations/fixtures/repositories/address.repository';
 import {SellerRepository} from './seller.repository';
-import {OrderRepository} from './order.repository';
+import {OrderRepository} from '@loopback/repository-tests/dist/crud/relations/fixtures/repositories/order.repository';
 
 export class CustomerRepository extends DefaultCrudRepository<
   Customer,

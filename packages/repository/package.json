@@ -20,6 +20,7 @@
   "devDependencies": {
     "@loopback/build": "^2.0.13",
     "@loopback/eslint-config": "^4.1.1",
+    "@loopback/repository-tests": "^0.5.1",
     "@loopback/testlab": "^1.9.1",
     "@types/bson": "^4.0.0",
     "@types/lodash": "^4.14.141",
