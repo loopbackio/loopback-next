@@ -14,7 +14,6 @@ import {
 import {MixedIdType} from '../../../../helpers.repository-tests';
 import {Customer, CustomerWithRelations} from './customer.model';
 import {Shipment, ShipmentWithRelations} from './shipment.model';
-import {Seller} from './seller.model';
 
 @model()
 export class Order extends Entity {
@@ -26,9 +25,9 @@ export class Order extends Entity {
 
   @property({
     type: 'string',
-    required: false,
+    required: true,
   })
-  description?: string;
+  description: string;
 
   @property({
     type: 'boolean',
@@ -41,9 +40,6 @@ export class Order extends Entity {
 
   @belongsTo(() => Shipment, {name: 'shipment'})
   shipment_id: MixedIdType;
-
-  @belongsTo(() => Seller)
-  sellerId: number;
 }
 
 export interface OrderRelations {
