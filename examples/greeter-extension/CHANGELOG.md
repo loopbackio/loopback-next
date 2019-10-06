@@ -3,6 +3,38 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.16](https://github.com/strongloop/loopback-next/compare/@loopback/example-greeter-extension@1.3.15...@loopback/example-greeter-extension@1.3.16) (2019-09-28)
+
+**Note:** Version bump only for package @loopback/example-greeter-extension
+
+
+
+
+
+## [1.3.15](https://github.com/strongloop/loopback-next/compare/@loopback/example-greeter-extension@1.3.14...@loopback/example-greeter-extension@1.3.15) (2019-09-27)
+
+**Note:** Version bump only for package @loopback/example-greeter-extension
+
+
+
+
+
+## [1.3.14](https://github.com/strongloop/loopback-next/compare/@loopback/example-greeter-extension@1.3.13...@loopback/example-greeter-extension@1.3.14) (2019-09-17)
+
+**Note:** Version bump only for package @loopback/example-greeter-extension
+
+
+
+
+
+## [1.3.13](https://github.com/strongloop/loopback-next/compare/@loopback/example-greeter-extension@1.3.12...@loopback/example-greeter-extension@1.3.13) (2019-09-06)
+
+**Note:** Version bump only for package @loopback/example-greeter-extension
+
+
+
+
+
 ## [1.3.12](https://github.com/strongloop/loopback-next/compare/@loopback/example-greeter-extension@1.3.11...@loopback/example-greeter-extension@1.3.12) (2019-09-03)
 
 **Note:** Version bump only for package @loopback/example-greeter-extension

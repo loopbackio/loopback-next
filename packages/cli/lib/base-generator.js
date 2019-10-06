@@ -12,6 +12,7 @@ const path = require('path');
 const fs = require('fs');
 const debug = require('./debug')('base-generator');
 const semver = require('semver');
+const updateIndex = require('./update-index');
 
 /**
  * Base Generator for LoopBack 4
@@ -443,5 +444,35 @@ module.exports = class BaseGenerator extends Generator {
       return;
     }
     await this._runLintFix();
+  }
+
+  // Check all files being generated to ensure they succeeded
+  _isGenerationSuccessful() {
+    const generationStatus = !!Object.entries(
+      this.conflicter.generationStatus,
+    ).find(([key, val]) => {
+      // If a file was modified, update the indexes and say stuff about it
+      return val !== 'skip' && val !== 'identical';
+    });
+    debug(`Generation status: ${generationStatus}`);
+    return generationStatus;
+  }
+
+  async _updateIndexFile(dir, file) {
+    await updateIndex(dir, file);
+
+    // Output for users
+    const updateDirRelPath = path.relative(
+      this.artifactInfo.relPath,
+      this.artifactInfo.outDir,
+    );
+
+    const outPath = path.join(
+      this.artifactInfo.relPath,
+      updateDirRelPath,
+      'index.ts',
+    );
+
+    this.log(chalk.green('   update'), `${outPath}`);
   }
 };

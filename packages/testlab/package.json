@@ -1,6 +1,6 @@
 {
   "name": "@loopback/testlab",
-  "version": "1.7.5",
+  "version": "1.9.1",
   "description": "A collection of test utilities we use to write LoopBack tests.",
   "engines": {
     "node": ">=8.9"
@@ -16,23 +16,23 @@
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
-    "@hapi/shot": "^4.1.1",
+    "@hapi/shot": "^4.1.2",
     "@types/express": "^4.17.1",
     "@types/fs-extra": "^8.0.0",
     "@types/shot": "^4.0.0",
-    "@types/sinon": "^7.0.13",
+    "@types/sinon": "^7.5.0",
     "@types/supertest": "^2.0.8",
     "express": "^4.17.1",
     "fs-extra": "^8.1.0",
     "oas-validator": "^3.3.1",
     "should": "^13.2.3",
-    "sinon": "^7.4.2",
+    "sinon": "^7.5.0",
     "supertest": "^4.0.2"
   },
   "devDependencies": {
-    "@loopback/build": "^2.0.9",
-    "@loopback/eslint-config": "^4.0.2",
-    "@types/node": "^10.14.17"
+    "@loopback/build": "^2.0.13",
+    "@loopback/eslint-config": "^4.1.1",
+    "@types/node": "^10.14.20"
   },
   "files": [
     "README.md",

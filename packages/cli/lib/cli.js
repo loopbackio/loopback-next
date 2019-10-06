@@ -62,6 +62,10 @@ function setupGenerators() {
     path.join(__dirname, '../generators/datasource'),
     PREFIX + 'datasource',
   );
+  env.register(
+    path.join(__dirname, '../generators/import-lb3-models'),
+    PREFIX + 'import-lb3-models',
+  );
   env.register(path.join(__dirname, '../generators/model'), PREFIX + 'model');
   env.register(
     path.join(__dirname, '../generators/repository'),
@@ -120,7 +124,7 @@ function printVersions(log) {
  * @param log - Log function
  */
 function printCommands(env, log) {
-  log('Available commands: ');
+  log('Available commands:');
   const list = Object.keys(env.getGeneratorsMeta())
     .filter(name => /^loopback4:/.test(name))
     .map(name => name.replace(/^loopback4:/, '  lb4 '));

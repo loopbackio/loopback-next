@@ -53,6 +53,14 @@ For a tutorial on how to add **JWT** authentication to an application, see
 For some background on our design decisions, please read
 [Multiple Authentication strategies](./docs/authentication-system.md).
 
+## Note
+
+Starting from version `@loobpack/authentication@3.0.0`, `UserProfile` needs to
+be imported from @loopback/security and it's not backward compatible with the
+one exported from `@loobpack/authentication@2.x`. Make sure you follow the
+[new tutorial](https://loopback.io/doc/en/lb4/Loopback-component-authentication.html)
+to build the authentication system.
+
 ## Contributions
 
 - [Guidelines](https://github.com/strongloop/loopback-next/blob/master/docs/CONTRIBUTING.md)

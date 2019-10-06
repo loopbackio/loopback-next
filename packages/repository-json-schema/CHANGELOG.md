@@ -3,6 +3,47 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.2](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@1.10.1...@loopback/repository-json-schema@1.10.2) (2019-09-28)
+
+**Note:** Version bump only for package @loopback/repository-json-schema
+
+
+
+
+
+## [1.10.1](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@1.10.0...@loopback/repository-json-schema@1.10.1) (2019-09-27)
+
+
+### Bug Fixes
+
+* **repository-json-schema:** generate schema title compatible with validation in azure ([b518876](https://github.com/strongloop/loopback-next/commit/b518876))
+
+
+
+
+
+# [1.10.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@1.9.7...@loopback/repository-json-schema@1.10.0) (2019-09-17)
+
+
+### Features
+
+* **repository-json-schema:** introduce new option "title" ([7664b3e](https://github.com/strongloop/loopback-next/commit/7664b3e))
+
+
+
+
+
+## [1.9.7](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@1.9.6...@loopback/repository-json-schema@1.9.7) (2019-09-06)
+
+
+### Bug Fixes
+
+* **repository-json-schema:** allow recursive model definitions ([1221e0b](https://github.com/strongloop/loopback-next/commit/1221e0b))
+
+
+
+
+
 ## [1.9.6](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@1.9.5...@loopback/repository-json-schema@1.9.6) (2019-09-03)
 
 **Note:** Version bump only for package @loopback/repository-json-schema

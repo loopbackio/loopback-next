@@ -87,14 +87,14 @@ You can join the team by posting a comment to
 
 ### Project Maintainers
 
-|                                                  |                                                  |                                                            |
-| :----------------------------------------------: | :----------------------------------------------: | :--------------------------------------------------------: |
-|                  Biniam Admikew                  |                    Diana Lau                     |                         Janny Hou                          |
-|    [![b-admike]](http://github.com/b-admike)     |      [![dhmlau]](http://github.com/dhmlau)       |         [![jannyhou]](http://github.com/jannyHou)          |
-|                    Hage Yaapa                    |                 Nora Abdelgadir                  |                       Mario Estrada                        |
-| [![hacksparrow]](https://github.com/hacksparrow) | [![nabdelgadir]](https://github.com/nabdelgadir) | [![marioestradarosa]](https://github.com/marioestradarosa) |
-|                   Hugo Da Roit                   |                 Dominique Emond                  |                         Agnes Lin                          |
-|        [![yaty]](https://github.com/yaty)        |     [![emonddr]](https://github.com/emonddr)     |         [![agnes512]](https://github.com/agnes512)         |
+|                                                  |                                                            |                                                  |
+| :----------------------------------------------: | :--------------------------------------------------------: | :----------------------------------------------: |
+|                    Diana Lau                     |                         Janny Hou                          |                    Hage Yaapa                    |
+|      [![dhmlau]](http://github.com/dhmlau)       |         [![jannyhou]](http://github.com/jannyHou)          | [![hacksparrow]](https://github.com/hacksparrow) |
+|                 Nora Abdelgadir                  |                       Mario Estrada                        |                   Hugo Da Roit                   |
+| [![nabdelgadir]](https://github.com/nabdelgadir) | [![marioestradarosa]](https://github.com/marioestradarosa) |        [![yaty]](https://github.com/yaty)        |
+|                 Dominique Emond                  |                         Agnes Lin                          |                 Deepak Rajamohan                 |
+|     [![emonddr]](https://github.com/emonddr)     |         [![agnes512]](https://github.com/agnes512)         | [![deepakrkris]](https://github.com/deepakrkris) |
 
 See
 [all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
@@ -106,7 +106,6 @@ See
 [raymondfeng]: https://avatars0.githubusercontent.com/u/540892?v=3&s=60
 [bajtos]: https://avatars2.githubusercontent.com/u/1140553?v=3&s=60
 [ritch]: https://avatars2.githubusercontent.com/u/462228?v=3&s=60
-[b-admike]: https://avatars0.githubusercontent.com/u/13950637?v=3&s=60
 [dhmlau]: https://avatars2.githubusercontent.com/u/25489897?v=3&s=60
 [jannyhou]: https://avatars2.githubusercontent.com/u/12554153?v=3&s=60
 [hacksparrow]: https://avatars2.githubusercontent.com/u/950112?v=3&s=60
@@ -115,3 +114,4 @@ See
 [yaty]: https://avatars3.githubusercontent.com/u/11981803?v=3&s=60
 [emonddr]: https://avatars0.githubusercontent.com/u/6864736??v=3&s=60
 [agnes512]: https://avatars3.githubusercontent.com/u/50331796?v=3&s=60
+[deepakrkris]: https://avatars0.githubusercontent.com/u/7688315?v=3&s=60

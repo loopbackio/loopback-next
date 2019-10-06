@@ -3,6 +3,38 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.17](https://github.com/strongloop/loopback-next/compare/@loopback/example-soap-calculator@1.6.16...@loopback/example-soap-calculator@1.6.17) (2019-09-28)
+
+**Note:** Version bump only for package @loopback/example-soap-calculator
+
+
+
+
+
+## [1.6.16](https://github.com/strongloop/loopback-next/compare/@loopback/example-soap-calculator@1.6.15...@loopback/example-soap-calculator@1.6.16) (2019-09-27)
+
+**Note:** Version bump only for package @loopback/example-soap-calculator
+
+
+
+
+
+## [1.6.15](https://github.com/strongloop/loopback-next/compare/@loopback/example-soap-calculator@1.6.14...@loopback/example-soap-calculator@1.6.15) (2019-09-17)
+
+**Note:** Version bump only for package @loopback/example-soap-calculator
+
+
+
+
+
+## [1.6.14](https://github.com/strongloop/loopback-next/compare/@loopback/example-soap-calculator@1.6.13...@loopback/example-soap-calculator@1.6.14) (2019-09-06)
+
+**Note:** Version bump only for package @loopback/example-soap-calculator
+
+
+
+
+
 ## [1.6.13](https://github.com/strongloop/loopback-next/compare/@loopback/example-soap-calculator@1.6.12...@loopback/example-soap-calculator@1.6.13) (2019-09-03)
 
 **Note:** Version bump only for package @loopback/example-soap-calculator

@@ -62,6 +62,20 @@ export class Lb3AppBooter implements Booter {
       this.mountRoutesOnly(lb3App, spec);
     }
 
+    const dataSources = lb3App.dataSources;
+    if (dataSources) {
+      const visited: unknown[] = [];
+      Object.keys(dataSources).forEach(key => {
+        const ds = dataSources[key];
+        if (visited.includes(ds)) return;
+        visited.push(ds);
+        this.app
+          .bind(`datasources.lb3-${key}`)
+          .to(ds)
+          .tag('datasource');
+      });
+    }
+
     // TODO(bajtos) Listen for the following events to update the OpenAPI spec:
     // - modelRemoted
     // - modelDeleted
@@ -101,7 +115,11 @@ export class Lb3AppBooter implements Booter {
       // swagger2openapi options
     });
 
-    return result.openapi as OpenApiSpec;
+    let spec = result.openapi as OpenApiSpec;
+    if (typeof this.options.specTransformer === 'function') {
+      spec = this.options.specTransformer(spec);
+    }
+    return spec;
   }
 
   private mountFullApp(lb3App: Lb3Application, spec: OpenApiSpec) {
@@ -128,8 +146,10 @@ export interface Lb3AppBooterOptions {
   path: string;
   mode: 'fullApp' | 'restRouter';
   restApiRoot: string;
+  specTransformer?: (spec: OpenApiSpec) => OpenApiSpec;
 }
 
 interface Lb3Application extends ExpressApplication {
   handler(name: 'rest'): ExpressRequestHandler;
+  dataSources?: {[name: string]: unknown};
 }

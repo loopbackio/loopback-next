@@ -28,6 +28,13 @@ export class RestExplorerComponent implements Component {
 
     this.registerControllerRoute('get', explorerPath, 'indexRedirect');
     this.registerControllerRoute('get', explorerPath + '/', 'index');
+    if (restExplorerConfig.useSelfHostedSpec !== false) {
+      this.registerControllerRoute(
+        'get',
+        explorerPath + '/openapi.json',
+        'spec',
+      );
+    }
 
     application.static(explorerPath, swaggerUI.getAbsoluteFSPath());
 

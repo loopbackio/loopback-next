@@ -96,7 +96,7 @@ export class AuthenticationComponent implements Component {
 ```
 
 As you can see, there are a few [providers](Creating-components.md#providers)
-which make up the bulk of the authenticaton component.
+which make up the bulk of the authentication component.
 
 Essentially
 
@@ -125,6 +125,12 @@ The decorator's syntax is:
 @authenticate(strategyName: string, options?: object)
 ```
 
+or
+
+```ts
+@authenticate(metadata: AuthenticationMetadata)
+```
+
 The **strategyName** is the **unique** name of the authentication strategy.
 
 When the **options** object is specified, it must be relevant to that particular
@@ -139,12 +145,8 @@ authentication strategy in later sections)
 
 ```ts
 import {inject} from '@loopback/context';
-import {
-  AuthenticationBindings,
-  UserProfile,
-  authenticate,
-} from '@loopback/authentication';
-import {SecurityBindings} from '@loopback/security';
+import {AuthenticationBindings, authenticate} from '@loopback/authentication';
+import {SecurityBindings, securityId, UserProfile} from '@loopback/security';
 import {get} from '@loopback/rest';
 
 export class WhoAmIController {
@@ -159,7 +161,10 @@ export class WhoAmIController {
   @authenticate('basic')
   @get('/whoami')
   whoAmI(): string {
-    return this.userProfile.id;
+    // `securityId` is Symbol to represent the security id of the user,
+    // typically the user id. You can find more information of `securityId` in
+    // https://loopback.io/doc/en/lb4/Security
+    return this.userProfile[securityId];
   }
 }
 ```
@@ -187,6 +192,18 @@ data of type `AuthenticationMetadata` provided by `AuthMetadataProvider`. The
 `AuthenticationStrategyProvider`, discussed in a later section, makes use of
 `AuthenticationMetadata` to figure out what **name** you specified as a
 parameter in the `@authenticate` decorator of a specific controller endpoint.
+
+## Default authentication metadata
+
+In some cases, it's desirable to have a default authentication enforcement for
+methods that are not explicitly decorated with `@authenticate`. To do so, we can
+simply configure the authentication component with `defaultMetadata` as follows:
+
+```ts
+app
+  .configure(AuthenticationBindings.COMPONENT)
+  .to({defaultMetadata: {strategy: 'xyz'}});
+```
 
 ## Adding an Authentication Action to a Custom Sequence
 
@@ -701,6 +718,7 @@ import {inject} from '@loopback/context';
 import {
   AuthenticationBindings,
   UserProfile,
+  securityId,
   authenticate,
 } from '@loopback/authentication';
 import {get} from '@loopback/rest';
@@ -714,7 +732,7 @@ export class WhoAmIController {
   @authenticate('basic')
   @get('/whoami')
   whoAmI(): string {
-    return this.userProfile.id;
+    return this.userProfile[securityId];
   }
 
   @authenticate('basic', {gatherStatistics: false})

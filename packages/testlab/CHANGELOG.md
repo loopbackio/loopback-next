@@ -3,6 +3,44 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.1](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@1.9.0...@loopback/testlab@1.9.1) (2019-09-28)
+
+**Note:** Version bump only for package @loopback/testlab
+
+
+
+
+
+# [1.9.0](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@1.8.1...@loopback/testlab@1.9.0) (2019-09-27)
+
+
+### Features
+
+* implement TestSandbox.writeTextFile ([59ca3a0](https://github.com/strongloop/loopback-next/commit/59ca3a0))
+
+
+
+
+
+## [1.8.1](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@1.8.0...@loopback/testlab@1.8.1) (2019-09-17)
+
+**Note:** Version bump only for package @loopback/testlab
+
+
+
+
+
+# [1.8.0](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@1.7.5...@loopback/testlab@1.8.0) (2019-09-06)
+
+
+### Features
+
+* **testlab:** add TestLab.writeJsonFile ([baa993b](https://github.com/strongloop/loopback-next/commit/baa993b))
+
+
+
+
+
 ## [1.7.5](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@1.7.4...@loopback/testlab@1.7.5) (2019-09-03)
 
 

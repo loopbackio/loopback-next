@@ -3,6 +3,41 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.16](https://github.com/strongloop/loopback-next/compare/@loopback/example-lb3-application@1.1.15...@loopback/example-lb3-application@1.1.16) (2019-09-28)
+
+**Note:** Version bump only for package @loopback/example-lb3-application
+
+
+
+
+
+## [1.1.15](https://github.com/strongloop/loopback-next/compare/@loopback/example-lb3-application@1.1.14...@loopback/example-lb3-application@1.1.15) (2019-09-27)
+
+
+### Bug Fixes
+
+* migrate LB3 models mounted on LB4 app ([7d36f6d](https://github.com/strongloop/loopback-next/commit/7d36f6d))
+
+
+
+
+
+## [1.1.14](https://github.com/strongloop/loopback-next/compare/@loopback/example-lb3-application@1.1.13...@loopback/example-lb3-application@1.1.14) (2019-09-17)
+
+**Note:** Version bump only for package @loopback/example-lb3-application
+
+
+
+
+
+## [1.1.13](https://github.com/strongloop/loopback-next/compare/@loopback/example-lb3-application@1.1.12...@loopback/example-lb3-application@1.1.13) (2019-09-06)
+
+**Note:** Version bump only for package @loopback/example-lb3-application
+
+
+
+
+
 ## [1.1.12](https://github.com/strongloop/loopback-next/compare/@loopback/example-lb3-application@1.1.11...@loopback/example-lb3-application@1.1.12) (2019-09-03)
 
 **Note:** Version bump only for package @loopback/example-lb3-application

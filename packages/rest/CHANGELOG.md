@@ -3,6 +3,46 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.20.1](https://github.com/strongloop/loopback-next/compare/@loopback/rest@1.20.0...@loopback/rest@1.20.1) (2019-09-28)
+
+**Note:** Version bump only for package @loopback/rest
+
+
+
+
+
+# [1.20.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@1.19.0...@loopback/rest@1.20.0) (2019-09-27)
+
+
+### Features
+
+* **rest:** added support for sockets and pipes to RestServer ([e48ebb8](https://github.com/strongloop/loopback-next/commit/e48ebb8))
+* **rest:** allow developers to transform AJV error objects ([8c05b57](https://github.com/strongloop/loopback-next/commit/8c05b57))
+* self host oas spec by default on relative path in explorer ([887556e](https://github.com/strongloop/loopback-next/commit/887556e))
+
+
+
+
+
+# [1.19.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@1.18.1...@loopback/rest@1.19.0) (2019-09-17)
+
+
+### Features
+
+* **eslint-config:** enable "no-misused-promises" rule ([88d5494](https://github.com/strongloop/loopback-next/commit/88d5494))
+
+
+
+
+
+## [1.18.1](https://github.com/strongloop/loopback-next/compare/@loopback/rest@1.18.0...@loopback/rest@1.18.1) (2019-09-06)
+
+**Note:** Version bump only for package @loopback/rest
+
+
+
+
+
 # [1.18.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@1.17.0...@loopback/rest@1.18.0) (2019-09-03)
 
 

@@ -14,10 +14,20 @@ import {
 } from '@loopback/repository';
 import * as debugFactory from 'debug';
 import {JSONSchema6 as JSONSchema} from 'json-schema';
+import {inspect} from 'util';
 import {JSON_SCHEMA_KEY, MODEL_TYPE_KEYS} from './keys';
 const debug = debugFactory('loopback:repository-json-schema:build-schema');
 
 export interface JsonSchemaOptions<T extends object> {
+  /**
+   * The title to use in the generated schema.
+   *
+   * When using options like `exclude`, the auto-generated title can be
+   * difficult to read for humans. Use this option to change the title to
+   * a more meaningful value.
+   */
+  title?: string;
+
   /**
    * Set this flag if you want the schema to define navigational properties
    * for model relations.
@@ -62,7 +72,7 @@ export function buildModelCacheKey<T extends object>(
   // New key schema: use the same suffix as we use for schema title
   // For example: "modelPartialWithRelations"
   // Note this new key schema preserves the old key "modelWithRelations"
-  return 'model' + getTitleSuffix(options);
+  return 'model' + (options.title || '') + getTitleSuffix(options);
 }
 
 /**
@@ -271,21 +281,67 @@ export function getNavigationalPropertyForRelation(
   }
 }
 
+function buildSchemaTitle<T extends object>(
+  ctor: Function & {prototype: T},
+  meta: ModelDefinition,
+  options: JsonSchemaOptions<T>,
+) {
+  if (options.title) return options.title;
+  const title = meta.title || ctor.name;
+  return title + getTitleSuffix(options);
+}
+
+/**
+ * Checks the options and generates a descriptive suffix using compatible chars
+ * @param options json schema options
+ */
 function getTitleSuffix<T extends object>(options: JsonSchemaOptions<T> = {}) {
   let suffix = '';
+
   if (options.optional && options.optional.length) {
-    suffix += 'Optional[' + options.optional + ']';
+    suffix += `Optional_${options.optional.join('-')}_`;
   } else if (options.partial) {
     suffix += 'Partial';
   }
   if (options.exclude && options.exclude.length) {
-    suffix += 'Excluding[' + options.exclude + ']';
+    suffix += `Excluding_${options.exclude.join('-')}_`;
   }
   if (options.includeRelations) {
     suffix += 'WithRelations';
   }
 
   return suffix;
+}
+
+function stringifyOptions(modelSettings: object = {}) {
+  return inspect(modelSettings, {
+    depth: Infinity,
+    maxArrayLength: Infinity,
+    breakLength: Infinity,
+  });
+}
+
+function isEmptyJson(obj: object) {
+  return !(obj && Object.keys(obj).length);
+}
+
+/**
+ * Checks the options and generates a descriptive suffix
+ * @param options json schema options
+ */
+function getDescriptionSuffix<T extends object>(
+  rawOptions: JsonSchemaOptions<T> = {},
+) {
+  const options = {...rawOptions};
+
+  delete options.visited;
+  if (options.optional && !options.optional.length) {
+    delete options.optional;
+  }
+
+  return !isEmptyJson(options)
+    ? `(Schema options: ${stringifyOptions(options)})`
+    : '';
 }
 
 // NOTE(shimks) no metadata for: union, optional, nested array, any, enum,
@@ -319,15 +375,21 @@ export function modelToJsonSchema<T extends object>(
     return {};
   }
 
-  const title = (meta.title || ctor.name) + getTitleSuffix(options);
+  const title = buildSchemaTitle(ctor, meta, options);
 
   if (options.visited[title]) return options.visited[title];
 
   const result: JSONSchema = {title};
   options.visited[title] = result;
 
+  const descriptionSuffix = getDescriptionSuffix(options);
+
   if (meta.description) {
-    result.description = meta.description;
+    const formatSuffix = descriptionSuffix ? ` ${descriptionSuffix}` : '';
+
+    result.description = meta.description + formatSuffix;
+  } else if (descriptionSuffix) {
+    result.description = descriptionSuffix;
   }
 
   for (const p in meta.properties) {
@@ -397,7 +459,7 @@ export function modelToJsonSchema<T extends object>(
     result.definitions = result.definitions || {};
 
     // promote nested definition to the top level
-    if (schema.definitions) {
+    if (result !== schema && schema.definitions) {
       for (const key in schema.definitions) {
         if (key === title) continue;
         result.definitions[key] = schema.definitions[key];

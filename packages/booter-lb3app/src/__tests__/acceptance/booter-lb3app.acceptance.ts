@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {OperationObject} from '@loopback/rest';
+import {OpenApiSpec, OperationObject} from '@loopback/rest';
 import {Client, expect} from '@loopback/testlab';
 import * as _ from 'lodash';
 import {
@@ -187,6 +187,49 @@ describe('booter-lb3app', () => {
 
     it('does not get route defined outside a model', async () => {
       await client.get('/coffee').expect(404);
+    });
+  });
+
+  context('using specTransformer to modify OpenAPI spec', () => {
+    before(async () => {
+      ({app, client} = await setupApplication({
+        lb3app: {
+          path: '../fixtures/lb3app/server/server',
+          specTransformer: (spec: OpenApiSpec): OpenApiSpec =>
+            _.merge(spec, {
+              paths: {
+                '/CoffeeShops': {
+                  post: {
+                    summary: 'just a very simple modification',
+                  },
+                },
+              },
+            }),
+        },
+      }));
+    });
+
+    it('does apply the spec modification', () => {
+      const spec = app.restServer.getApiSpec();
+      const createOp: OperationObject = spec.paths['/api/CoffeeShops'].post;
+      expect(createOp.summary).to.eql('just a very simple modification');
+    });
+  });
+
+  context('binding LoopBack 3 datasources', () => {
+    before(async () => {
+      ({app, client} = await setupApplication({
+        lb3app: {path: '../fixtures/app-with-model'},
+      }));
+    });
+
+    it('binds datasource to the context', async () => {
+      const expected = require('../../../fixtures/app-with-model').dataSources
+        .memory;
+      const dsBindings = app.findByTag('datasource');
+      const key = dsBindings[0].key;
+      const ds = await app.get(key);
+      expect(ds).to.eql(expected);
     });
   });
 });

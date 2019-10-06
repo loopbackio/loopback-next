@@ -26,6 +26,7 @@ import {
   Response,
   Send,
 } from './types';
+import {RestServer} from './rest.server';
 
 /**
  * RestServer-specific bindings
@@ -44,6 +45,10 @@ export namespace RestBindings {
    */
   export const PORT = BindingKey.create<number>('rest.port');
   /**
+   * Binding key for setting and injecting the socket path of the RestServer
+   */
+  export const PATH = BindingKey.create<string | undefined>('rest.path');
+  /**
    * Binding key for setting and injecting the URL of RestServer
    */
   export const URL = BindingKey.create<string>('rest.url');
@@ -57,6 +62,11 @@ export namespace RestBindings {
   export const HTTPS_OPTIONS = BindingKey.create<https.ServerOptions>(
     'rest.httpsOptions',
   );
+
+  /**
+   * Binding key for the server itself
+   */
+  export const SERVER = BindingKey.create<RestServer>('servers.RestServer');
 
   /**
    * Internal binding key for basePath

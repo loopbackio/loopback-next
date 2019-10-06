@@ -118,6 +118,27 @@ export class MyController {
 }
 ```
 
+Please note that `@authorize` can also be applied at class level for all methods
+within the class. In the code below, `numOfViews` is protected with
+`BasicStrategy` (inherited from the class level) while `hello` does not require
+authorization (skipped by `@authorize.skip`).
+
+```ts
+@authorize({allow: ['ADMIN']})
+export class MyController {
+  @get('/number-of-views')
+  numOfViews(): number {
+    return 100;
+  }
+
+  @authorize.skip()
+  @get('/hello')
+  hello(): string {
+    return 'Hello';
+  }
+}
+```
+
 ## Extract common layer(TBD)
 
 `@loopback/authentication` and `@loopback/authorization` shares the client

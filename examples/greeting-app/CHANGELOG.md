@@ -3,6 +3,41 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.2](https://github.com/strongloop/loopback-next/compare/@loopback/example-greeting-app@1.2.1...@loopback/example-greeting-app@1.2.2) (2019-09-28)
+
+**Note:** Version bump only for package @loopback/example-greeting-app
+
+
+
+
+
+## [1.2.1](https://github.com/strongloop/loopback-next/compare/@loopback/example-greeting-app@1.2.0...@loopback/example-greeting-app@1.2.1) (2019-09-27)
+
+**Note:** Version bump only for package @loopback/example-greeting-app
+
+
+
+
+
+# [1.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-greeting-app@1.1.13...@loopback/example-greeting-app@1.2.0) (2019-09-17)
+
+
+### Features
+
+* **eslint-config:** enable "no-misused-promises" rule ([88d5494](https://github.com/strongloop/loopback-next/commit/88d5494))
+
+
+
+
+
+## [1.1.13](https://github.com/strongloop/loopback-next/compare/@loopback/example-greeting-app@1.1.12...@loopback/example-greeting-app@1.1.13) (2019-09-06)
+
+**Note:** Version bump only for package @loopback/example-greeting-app
+
+
+
+
+
 ## [1.1.12](https://github.com/strongloop/loopback-next/compare/@loopback/example-greeting-app@1.1.11...@loopback/example-greeting-app@1.1.12) (2019-09-03)
 
 **Note:** Version bump only for package @loopback/example-greeting-app

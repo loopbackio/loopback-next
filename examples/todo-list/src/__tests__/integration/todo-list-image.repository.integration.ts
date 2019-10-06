@@ -63,4 +63,20 @@ describe('TodoListImageRepository', () => {
       todoList: toJSON(list),
     });
   });
+
+  it('includes TodoList in findOne result', async () => {
+    const list = await givenTodoListInstance(todoListRepo, {});
+    const image = await givenTodoListImageInstance(todoListImageRepo, {
+      todoListId: list.id,
+    });
+
+    const response = await todoListImageRepo.findOne({
+      include: [{relation: 'todoList'}],
+    });
+
+    expect(toJSON(response)).to.deepEqual({
+      ...toJSON(image),
+      todoList: toJSON(list),
+    });
+  });
 });

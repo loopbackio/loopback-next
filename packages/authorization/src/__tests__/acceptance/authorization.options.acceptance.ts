@@ -72,29 +72,58 @@ const matrix3: DecisionMatrix = [
   [{defaultDecision: Allow}, [Abstain, Abstain, Abstain], Allow],
 ];
 
+const matrix4: DecisionMatrix = [
+  [{defaultMetadata: {}}, [Abstain, Abstain, Abstain], Deny],
+  [
+    {defaultMetadata: {}, defaultDecision: Deny},
+    [Abstain, Abstain, Abstain],
+    Deny,
+  ],
+  [
+    {defaultMetadata: {}, defaultDecision: Allow},
+    [Abstain, Abstain, Abstain],
+    Allow,
+  ],
+];
+
+// Decisions controlled by options.defaultDecision
+const matrix5: DecisionMatrix = [
+  [{}, [Abstain, Abstain, Abstain], Allow],
+  [{defaultDecision: Deny}, [Abstain, Abstain, Abstain], Allow],
+  [{defaultDecision: Allow}, [Abstain, Abstain, Abstain], Allow],
+];
+
 describe('Authorization', () => {
   let app: Application;
   let controller: OrderController;
   let reqCtx: Context;
 
   it('always use explicit decisions', async () => {
-    await runTest(matrix1);
+    await testCancelOrder(matrix1);
   });
 
   it('honors decisions and options.precedence', async () => {
-    await runTest(matrix2);
+    await testCancelOrder(matrix2);
   });
 
   it('honors decisions and options.defaultDecision', async () => {
-    await runTest(matrix3);
+    await testCancelOrder(matrix3);
   });
 
-  async function runTest(matrix: DecisionMatrix) {
+  it('honors decisions with options.defaultMetadata', async () => {
+    await testPlaceOrder(matrix4);
+  });
+
+  it('honors decisions without options.defaultMetadata', async () => {
+    await testPlaceOrder(matrix5);
+  });
+
+  async function testCancelOrder(matrix: DecisionMatrix) {
     let index = 0;
     for (const row of matrix) {
       givenRequestContext();
       setupAuthorization(row[0], ...row[1]);
-      const finalDecision = await run();
+      const finalDecision = await cancelOrder();
       const expectedDecision = row[2];
       expect(`${index}:${finalDecision}`).to.equal(
         `${index}:${expectedDecision}`,
@@ -103,10 +132,35 @@ describe('Authorization', () => {
     }
   }
 
-  async function run() {
+  async function testPlaceOrder(matrix: DecisionMatrix) {
+    let index = 0;
+    for (const row of matrix) {
+      givenRequestContext();
+      setupAuthorization(row[0], ...row[1]);
+      const finalDecision = await placeOrder();
+      const expectedDecision = row[2];
+      expect(`${index}:${finalDecision}`).to.equal(
+        `${index}:${expectedDecision}`,
+      );
+      index++;
+    }
+  }
+
+  async function cancelOrder() {
     let finalDecision = Deny;
     try {
-      await invokeMethod(controller, 'handleOrder', reqCtx, ['order-01']);
+      await invokeMethod(controller, 'cancelOrder', reqCtx, ['order-01']);
+      finalDecision = Allow;
+    } catch (err) {
+      finalDecision = Deny;
+    }
+    return finalDecision;
+  }
+
+  async function placeOrder() {
+    let finalDecision = Deny;
+    try {
+      await invokeMethod(controller, 'placeOrder', reqCtx, ['prod-01', 10]);
       finalDecision = Allow;
     } catch (err) {
       finalDecision = Deny;
@@ -116,8 +170,14 @@ describe('Authorization', () => {
 
   class OrderController {
     @authorize({})
-    async handleOrder(orderId: string) {
+    async cancelOrder(orderId: string) {
       return orderId;
+    }
+
+    // This method is not decorated with `@authorize`. The decision depends on
+    // authorizationOptions.defaultMetadata
+    async placeOrder(productId: string, quantity: number) {
+      return '001';
     }
   }
 

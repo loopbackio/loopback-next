@@ -15,6 +15,7 @@ import {Application, CoreBindings, Server} from '@loopback/core';
 import {HttpServer, HttpServerOptions} from '@loopback/http-server';
 import {
   getControllerSpec,
+  OpenAPIObject,
   OpenApiSpec,
   OperationObject,
   ServerObject,
@@ -192,6 +193,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
 
     this.bind(RestBindings.PORT).to(this.config.port);
     this.bind(RestBindings.HOST).to(config.host);
+    this.bind(RestBindings.PATH).to(config.path);
     this.bind(RestBindings.PROTOCOL).to(config.protocol || 'http');
     this.bind(RestBindings.HTTPS_OPTIONS).to(config as ServerOptions);
 
@@ -260,25 +262,50 @@ export class RestServer extends Context implements Server, HttpServerLike {
    */
   protected _setupOpenApiSpecEndpoints() {
     if (this.config.openApiSpec.disabled) return;
-    // NOTE(bajtos) Regular routes are handled through Sequence.
-    // IMO, this built-in endpoint should not run through a Sequence,
-    // because it's not part of the application API itself.
-    // E.g. if the app implements access/audit logs, I don't want
-    // this endpoint to trigger a log entry. If the server implements
-    // content-negotiation to support XML clients, I don't want the OpenAPI
-    // spec to be converted into an XML response.
     const mapping = this.config.openApiSpec.endpointMapping!;
     // Serving OpenAPI spec
     for (const p in mapping) {
-      this._expressApp.get(p, (req, res) =>
-        this._serveOpenApiSpec(req, res, mapping[p]),
-      );
+      this.addOpenApiSpecEndpoint(p, mapping[p]);
     }
 
     const explorerPaths = ['/swagger-ui', '/explorer'];
     this._expressApp.get(explorerPaths, (req, res, next) =>
       this._redirectToSwaggerUI(req, res, next),
     );
+  }
+
+  /**
+   * Add a new non-controller endpoint hosting a form of the OpenAPI spec.
+   *
+   * @param path Path at which to host the copy of the OpenAPI
+   * @param form Form that should be renedered from that path
+   */
+  addOpenApiSpecEndpoint(path: string, form: OpenApiSpecForm) {
+    if (this._expressApp) {
+      // if the app is already started, try to hot-add it
+      // this only actually "works" mid-startup, once this._handleHttpRequest
+      // has been added to express, adding any later routes won't work
+
+      // NOTE(bajtos) Regular routes are handled through Sequence.
+      // IMO, this built-in endpoint should not run through a Sequence,
+      // because it's not part of the application API itself.
+      // E.g. if the app implements access/audit logs, I don't want
+      // this endpoint to trigger a log entry. If the server implements
+      // content-negotiation to support XML clients, I don't want the OpenAPI
+      // spec to be converted into an XML response.
+      this._expressApp.get(path, (req, res) =>
+        this._serveOpenApiSpec(req, res, form),
+      );
+    } else {
+      // if the app is not started, add the mapping to the config
+      const mapping = this.config.openApiSpec.endpointMapping!;
+      if (path in mapping) {
+        throw new Error(
+          `The path ${path} is already configured for OpenApi hosting`,
+        );
+      }
+      mapping[path] = form;
+    }
   }
 
   protected _handleHttpRequest(request: Request, response: Response) {
@@ -398,21 +425,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
     );
 
     specForm = specForm || {version: '3.0.0', format: 'json'};
-    let specObj = this.getApiSpec();
-    if (this.config.openApiSpec.setServersFromRequest) {
-      specObj = Object.assign({}, specObj);
-      specObj.servers = [{url: requestContext.requestedBaseUrl}];
-    }
-
-    const basePath = requestContext.basePath;
-    if (specObj.servers && basePath) {
-      for (const s of specObj.servers) {
-        // Update the default server url to honor `basePath`
-        if (s.url === '/') {
-          s.url = basePath;
-        }
-      }
-    }
+    const specObj = this.getApiSpec(requestContext);
 
     if (specForm.format === 'json') {
       const spec = JSON.stringify(specObj, null, 2);
@@ -674,9 +687,20 @@ export class RestServer extends Context implements Server, HttpServerLike {
    *  - `app.controller(MyController)`
    *  - `app.route(route)`
    *  - `app.route('get', '/greet', operationSpec, MyController, 'greet')`
+   *
+   * If the optional `requestContext` is provided, then the `servers` list
+   * in the returned spec will be updated to work in that context.
+   * Specifically:
+   * 1. if `config.openApi.setServersFromRequest` is enabled, the servers
+   * list will be replaced with the context base url
+   * 2. Any `servers` entries with a path of `/` will have that path
+   * replaced with `requestContext.basePath`
+   *
+   * @param requestContext - Optional context to update the `servers` list
+   * in the returned spec
    */
-  getApiSpec(): OpenApiSpec {
-    const spec = this.getSync<OpenApiSpec>(RestBindings.API_SPEC);
+  getApiSpec(requestContext?: RequestContext): OpenApiSpec {
+    let spec = this.getSync<OpenApiSpec>(RestBindings.API_SPEC);
     const defs = this.httpHandler.getApiDefinitions();
 
     // Apply deep clone to prevent getApiSpec() callers from
@@ -688,6 +712,40 @@ export class RestServer extends Context implements Server, HttpServerLike {
     }
 
     assignRouterSpec(spec, this._externalRoutes.routerSpec);
+
+    if (requestContext) {
+      spec = this.updateSpecFromRequest(spec, requestContext);
+    }
+
+    return spec;
+  }
+
+  /**
+   * Update or rebuild OpenAPI Spec object to be appropriate for the context of a specific request for the spec, leveraging both app config and request path information.
+   *
+   * @param spec base spec object from which to start
+   * @param requestContext request to use to infer path information
+   * @returns Updated or rebuilt spec object to use in the context of the request
+   */
+  private updateSpecFromRequest(
+    spec: OpenAPIObject,
+    requestContext: RequestContext,
+  ) {
+    if (this.config.openApiSpec.setServersFromRequest) {
+      spec = Object.assign({}, spec);
+      spec.servers = [{url: requestContext.requestedBaseUrl}];
+    }
+
+    const basePath = requestContext.basePath;
+    if (spec.servers && basePath) {
+      for (const s of spec.servers) {
+        // Update the default server url to honor `basePath`
+        if (s.url === '/') {
+          s.url = basePath;
+        }
+      }
+    }
+
     return spec;
   }
 
@@ -791,12 +849,13 @@ export class RestServer extends Context implements Server, HttpServerLike {
 
     const port = await this.get(RestBindings.PORT);
     const host = await this.get(RestBindings.HOST);
+    const path = await this.get(RestBindings.PATH);
     const protocol = await this.get(RestBindings.PROTOCOL);
     const httpsOptions = await this.get(RestBindings.HTTPS_OPTIONS);
 
     const serverOptions = {};
     if (protocol === 'https') Object.assign(serverOptions, httpsOptions);
-    Object.assign(serverOptions, {port, host, protocol});
+    Object.assign(serverOptions, {port, host, protocol, path});
 
     this._httpServer = new HttpServer(this.requestHandler, serverOptions);
 
@@ -942,6 +1001,7 @@ export type RestServerOptions = Partial<RestServerResolvedOptions>;
 
 export interface RestServerResolvedOptions {
   port: number;
+  path?: string;
 
   /**
    * Base path for API/static routes
@@ -985,8 +1045,7 @@ function resolveRestServerConfig(
   config: RestServerConfig,
 ): RestServerResolvedConfig {
   const result: RestServerResolvedConfig = Object.assign(
-    {},
-    DEFAULT_CONFIG,
+    cloneDeep(DEFAULT_CONFIG),
     config,
   );
 
@@ -1000,8 +1059,11 @@ function resolveRestServerConfig(
     result.host = undefined;
   }
 
-  if (!result.openApiSpec.endpointMapping)
-    result.openApiSpec.endpointMapping = OPENAPI_SPEC_MAPPING;
+  if (!result.openApiSpec.endpointMapping) {
+    // mapping may be mutated by addOpenApiSpecEndpoint, be sure that doesn't
+    // pollute the default mapping configuration
+    result.openApiSpec.endpointMapping = cloneDeep(OPENAPI_SPEC_MAPPING);
+  }
 
   result.apiExplorer = normalizeApiExplorerConfig(config.apiExplorer);
 

@@ -506,6 +506,47 @@ paths:
     await test.get('/explorer').expect(404);
   });
 
+  it('can add openApiSpec endpoints before express initialization', async () => {
+    const server = await givenAServer();
+    server.addOpenApiSpecEndpoint('/custom-openapi.json', {
+      version: '3.0.0',
+      format: 'json',
+    });
+
+    const test = createClientForHandler(server.requestHandler);
+    await test.get('/custom-openapi.json').expect(200);
+  });
+
+  // this doesn't work: once the generic routes have been added to express to
+  // direct requests at controllers, adding OpenAPI spec routes after that
+  // no longer works in the sense that express won't ever try those routes
+  // https://github.com/strongloop/loopback-next/issues/433 will make changes
+  // that make it possible to enable this test
+  it.skip('can add openApiSpec endpoints after express initialization', async () => {
+    const server = await givenAServer();
+    const test = createClientForHandler(server.requestHandler);
+    server.addOpenApiSpecEndpoint('/custom-openapi.json', {
+      version: '3.0.0',
+      format: 'json',
+    });
+
+    await test.get('/custom-openapi.json').expect(200);
+  });
+
+  it('rejects duplicate additions of openApiSpec endpoints', async () => {
+    const server = await givenAServer();
+    server.addOpenApiSpecEndpoint('/custom-openapi.json', {
+      version: '3.0.0',
+      format: 'json',
+    });
+    expect(() =>
+      server.addOpenApiSpecEndpoint('/custom-openapi.json', {
+        version: '3.0.0',
+        format: 'yaml',
+      }),
+    ).to.throw(/already configured/);
+  });
+
   it('exposes "GET /explorer" endpoint', async () => {
     const app = new Application();
     app.component(RestComponent);

@@ -14,6 +14,8 @@ const utils = require('../../lib/utils');
 const chalk = require('chalk');
 const path = require('path');
 
+const {createPropertyTemplateData} = require('./property-definition');
+
 const PROMPT_BASE_MODEL_CLASS = 'Please select the model base class';
 const ERROR_NO_MODELS_FOUND = 'Model was not found in';
 
@@ -411,6 +413,13 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
           default: false,
         },
         {
+          name: 'generated',
+          message: `Is ${chalk.yellow(this.propName)} generated automatically?`,
+          type: 'confirm',
+          default: true,
+          when: answers => answers.id,
+        },
+        {
           name: 'default',
           message: `Default value ${chalk.yellow('[leave blank for none]')}:`,
           when: answers => {
@@ -431,6 +440,8 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
       Object.assign(this.artifactInfo.properties[this.propName], answers);
 
       // We prompt for `id` only once per model using idFieldSet flag.
+      // and 'generated' flag makes sure id is defined, especially for database like MySQL
+      // Skipped the test for `generated` for now.
       if (answers.id) {
         this.idFieldSet = true;
       }
@@ -467,56 +478,13 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
       this.artifactInfo.modelBaseClass,
     );
 
-    // Set up types for Templating
-    const TS_TYPES = ['string', 'number', 'object', 'boolean', 'any'];
-    const NON_TS_TYPES = ['geopoint', 'date'];
-    Object.values(this.artifactInfo.properties).forEach(val => {
-      // Default tsType is the type property
-      val.tsType = val.type;
-
-      // Override tsType based on certain type values
-      if (val.type === 'array') {
-        if (TS_TYPES.includes(val.itemType)) {
-          val.tsType = `${val.itemType}[]`;
-        } else if (val.type === 'buffer') {
-          val.tsType = 'Buffer[]';
-        } else {
-          val.tsType = 'string[]';
-        }
-      } else if (val.type === 'buffer') {
-        val.tsType = 'Buffer';
-      }
-
-      if (NON_TS_TYPES.includes(val.tsType)) {
-        val.tsType = 'string';
-      }
-
-      if (
-        val.defaultValue &&
-        NON_TS_TYPES.concat(['string', 'any']).includes(val.type)
-      ) {
-        val.defaultValue = `'${val.defaultValue}'`;
-      }
-
-      // Convert Type to include '' for template
-      val.type = `'${val.type}'`;
-      if (val.itemType) {
-        val.itemType = `'${val.itemType}'`;
-      }
-
-      // If required is false, we can delete it as that's the default assumption
-      // for this field if not present. This helps to avoid polluting the
-      // decorator with redundant properties.
-      if (!val.required) {
-        delete val.required;
-      }
-
-      // We only care about marking the `id` field as `id` and not fields that
-      // are not the id so if this is false we delete it similar to `required`.
-      if (!val.id) {
-        delete val.id;
-      }
-    });
+    const propDefs = this.artifactInfo.properties;
+    this.artifactInfo.properties = {};
+    for (const key in propDefs) {
+      this.artifactInfo.properties[key] = createPropertyTemplateData(
+        propDefs[key],
+      );
+    }
 
     if (this.artifactInfo.modelSettings) {
       this.artifactInfo.modelSettings = utils.stringifyModelSettings(

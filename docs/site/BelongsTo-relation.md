@@ -267,3 +267,107 @@ DO NOT declare
 `@repository.getter(CategoryRepository) protected categoryRepositoryGetter: Getter<CategoryRepository>`
 on constructor to avoid "Circular dependency" error (see
 [issue #2118](https://github.com/strongloop/loopback-next/issues/2118))
+
+## Querying related models
+
+A `belongsTo` relation has an `inclusionResolver` function as a property. It
+fetches target models for the given list of source model instances.
+
+Use the relation between `Customer` and `Order` we show above, an `Order`
+belongs to a `Customer`.
+
+After setting up the relation in the repository class, the inclusion resolver
+allows users to retrieve all orders along with their related customers through
+the following code:
+
+```ts
+orderRepo.find({include: [{relation: 'customer'}]});
+```
+
+### Enable/disable the inclusion resolvers:
+
+- Base repository classes have a public property `inclusionResolvers`, which
+  maintains a map containing inclusion resolvers for each relation.
+- The `inclusionResolver` of a certain relation is built when the source
+  repository class calls the `createBelongsToAccessorFor` function in the
+  constructor with the relation name.
+- Call `registerInclusionResolver` to add the resolver of that relation to the
+  `inclusionResolvers` map. (As we realized in LB3, not all relations are
+  allowed to be traversed. Users can decide to which resolvers can be added.)
+  The first parameter is the name of the relation.
+
+The following code snippet shows how to register the inclusion resolver for the
+belongsTo relation 'customer':
+
+```ts
+export class OrderRepository extends DefaultCrudRepository {
+  customer: BelongsToAccessor<Customer, typeof Order.prototype.id>;
+
+  constructor(
+    dataSource: juggler.DataSource,
+    customerRepositoryGetter: Getter<CustomerRepository>,
+  ) {
+    super(Order, dataSource);
+
+    // we already have this line to create a BelongsToRepository factory
+    this.customer = this.createBelongsToAccessorFor(
+      'customer',
+      customerRepositoryGetter,
+    );
+
+    // add this line to register inclusion resolver.
+    this.registerInclusionResolver('customer', this.customer.inclusionResolver);
+  }
+}
+```
+
+- We can simply include the relation in queries via `find()`, `findOne()`, and
+  `findById()` methods. Example:
+
+  ```ts
+  orderRepository.find({include: [{relation: 'customer'}]});
+  ```
+
+  which returns:
+
+  ```ts
+  [
+    {
+      id: 1,
+      description: 'Mjolnir',
+      customerId: 1,
+      customer: {
+        id: 12,
+        name: 'Thor',
+      },
+    },
+    {
+      id: 2,
+      description: 'Shield',
+      customer: {
+        id: 10,
+        name: 'Captain',
+      },
+    },
+    {
+      id: 3,
+      description: 'Rocket Raccoon',
+      customerId: 1,
+      customer: {
+        id: 12,
+        name: 'Thor',
+      },
+    },
+  ];
+  ```
+
+- You can delete a relation from `inclusionResolvers` to disable the inclusion
+  for a certain relation. e.g
+  `orderRepository.inclusionResolvers.delete('customer')`
+
+{% include note.html content="
+Inclusion with custom scope:
+Besides specifying the relation name to include, it's also possible to specify additional scope constraints.
+However, this feature is not supported yet. Check our GitHub issue for more information:
+[Include related models with a custom scope](https://github.com/strongloop/loopback-next/issues/3453).
+" %}

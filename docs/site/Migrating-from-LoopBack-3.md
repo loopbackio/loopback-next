@@ -38,6 +38,10 @@ application to OpenAPI v3 and adds it to the LoopBack 4 project's OpenAPI v3
 spec.
 " %}
 
+Scaffolded LoopBack 4 apps come with a `migrate` npm script, which can be run
+using `npm run migrate`. This command will migrate all the LoopBack 3 models
+along with the LoopBack 4 models.
+
 ### Options
 
 [`Lb3AppBooterComponent`](https://loopback.io/doc/en/lb4/apidocs.booter-lb3app.lb3appbootercomponent.html)

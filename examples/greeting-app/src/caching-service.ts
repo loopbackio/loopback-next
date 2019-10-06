@@ -30,10 +30,12 @@ export class CachingService {
   ) {
     // Use a view so that we can listen on `refresh` events, which are emitted
     // when the configuration binding is updated in the context.
-    optionsView.on('refresh', async () => {
+    optionsView.on('refresh', () => {
       debug('Restarting the service as configuration changes...');
-      await this.stop();
-      await this.start();
+      this.restart().catch(err => {
+        console.error('Cannot restart the caching service.', err);
+        process.exit(1);
+      });
     });
   }
 
@@ -116,8 +118,8 @@ export class CachingService {
     await this.clear();
     const ttl = await this.getTTL();
     debug('TTL: %d', ttl);
-    this.timer = setInterval(async () => {
-      await this.sweep();
+    this.timer = setInterval(() => {
+      this.sweep().catch(console.warn);
     }, ttl);
   }
 
@@ -131,5 +133,14 @@ export class CachingService {
       clearInterval(this.timer);
     }
     await this.clear();
+  }
+
+  /**
+   * This method may be used to restart the service (and may be triggered by a
+   * 'refresh' event)
+   */
+  async restart(): Promise<void> {
+    await this.stop();
+    await this.start();
   }
 }

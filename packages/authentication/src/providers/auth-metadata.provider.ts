@@ -3,9 +3,11 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Constructor, inject, Provider} from '@loopback/context';
+import {config, Constructor, inject, Provider} from '@loopback/context';
 import {CoreBindings} from '@loopback/core';
-import {AuthenticationMetadata, getAuthenticateMetadata} from '../decorators';
+import {getAuthenticateMetadata} from '../decorators';
+import {AuthenticationBindings} from '../keys';
+import {AuthenticationMetadata, AuthenticationOptions} from '../types';
 
 /**
  * Provides authentication metadata of a controller method
@@ -18,6 +20,8 @@ export class AuthMetadataProvider
     private readonly controllerClass: Constructor<{}>,
     @inject(CoreBindings.CONTROLLER_METHOD_NAME, {optional: true})
     private readonly methodName: string,
+    @config({fromBinding: AuthenticationBindings.COMPONENT})
+    private readonly options: AuthenticationOptions = {},
   ) {}
 
   /**
@@ -25,6 +29,14 @@ export class AuthMetadataProvider
    */
   value(): AuthenticationMetadata | undefined {
     if (!this.controllerClass || !this.methodName) return;
-    return getAuthenticateMetadata(this.controllerClass, this.methodName);
+    const metadata = getAuthenticateMetadata(
+      this.controllerClass,
+      this.methodName,
+    );
+    // Skip authentication if `skip` is `true`
+    if (metadata && metadata.skip) return undefined;
+    if (metadata) return metadata;
+    // Fall back to default metadata
+    return this.options.defaultMetadata;
   }
 }

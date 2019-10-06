@@ -6,6 +6,97 @@ const CONFIG_PATH = '.';
 const DUMMY_CONTENT = '--DUMMY VALUE--';
 const fs = require('fs');
 
+const SourceEntries = {
+  CustomerModel: {
+    path: MODEL_APP_PATH,
+    file: 'customer.model.ts',
+    content: readSourceFile('./models/customer.model.ts'),
+  },
+  CustomerModelWithOrdersProperty: {
+    path: MODEL_APP_PATH,
+    file: 'customer.model.ts',
+    content: readSourceFile('./models/customer5.model.ts'),
+  },
+  CustomerRepository: {
+    path: REPOSITORY_APP_PATH,
+    file: 'customer.repository.ts',
+    content: readSourceFile('./repositories/customer.repository.ts'),
+  },
+
+  CustomerClassModel: {
+    path: MODEL_APP_PATH,
+    file: 'customer-class.model.ts',
+    content: readSourceFile('./models/customer-class.model.ts'),
+  },
+  CustomerClassRepository: {
+    path: REPOSITORY_APP_PATH,
+    file: 'customer-class.repository.ts',
+    content: readSourceFile('./repositories/customer-class.repository.ts'),
+  },
+
+  CustomerClassTypeModel: {
+    path: MODEL_APP_PATH,
+    file: 'customer-class-type.model.ts',
+    content: readSourceFile('./models/customer-class-type.model.ts'),
+  },
+  CustomerClassTypeRepository: {
+    path: REPOSITORY_APP_PATH,
+    file: 'customer-class-type.repository.ts',
+    content: readSourceFile('./repositories/customer-class-type.repository.ts'),
+  },
+
+  OrderModel: {
+    path: MODEL_APP_PATH,
+    file: 'order.model.ts',
+    content: readSourceFile('./models/order.model.ts'),
+  },
+  OrderModelModelWithCustomerIdProperty: {
+    path: MODEL_APP_PATH,
+    file: 'order.model.ts',
+    content: readSourceFile('./models/order-with-fk.model.ts'),
+  },
+  OrderRepository: {
+    path: REPOSITORY_APP_PATH,
+    file: 'order.repository.ts',
+    content: readSourceFile('./repositories/order.repository.ts'),
+  },
+
+  OrderClassModel: {
+    path: MODEL_APP_PATH,
+    file: 'order-class.model.ts',
+    content: readSourceFile('./models/order-class.model.ts'),
+  },
+  OrderClassRepository: {
+    path: REPOSITORY_APP_PATH,
+    file: 'order-class.repository.ts',
+    content: readSourceFile('./repositories/order-class.repository.ts'),
+  },
+
+  OrderClassTypeModel: {
+    path: MODEL_APP_PATH,
+    file: 'order-class-type.model.ts',
+    content: readSourceFile('./models/order-class-type.model.ts'),
+  },
+  OrderClassTypeRepository: {
+    path: REPOSITORY_APP_PATH,
+    file: 'order-class-type.repository.ts',
+    content: readSourceFile('./repositories/order-class-type.repository.ts'),
+  },
+
+  NoKeyModel: {
+    path: MODEL_APP_PATH,
+    file: 'nokey.model.ts',
+    content: readSourceFile('./models/nokey.model.ts'),
+  },
+
+  IndexOfControllers: {
+    path: CONTROLLER_PATH,
+    file: 'index.ts',
+    content: readSourceFile('./controllers/index.ts'),
+  },
+};
+exports.SourceEntries = SourceEntries;
+
 exports.SANDBOX_FILES = [
   {
     path: CONFIG_PATH,
@@ -70,596 +161,67 @@ exports.SANDBOX_FILES = [
     file: 'sqlite3.datasource.ts',
     content: DUMMY_CONTENT,
   },
-  {
-    path: REPOSITORY_APP_PATH,
-    file: 'customer.repository.ts',
-    content: fs.readFileSync(
-      require.resolve('./repositories/customer.repository.ts'),
-      {
-        encoding: 'utf-8',
-      },
-    ),
-  },
-  {
-    path: REPOSITORY_APP_PATH,
-    file: 'order.repository.ts',
-    content: fs.readFileSync(
-      require.resolve('./repositories/order.repository.ts'),
-      {
-        encoding: 'utf-8',
-      },
-    ),
-  },
-  {
-    path: REPOSITORY_APP_PATH,
-    file: 'customer-class.repository.ts',
-    content: fs.readFileSync(
-      require.resolve('./repositories/customer-class.repository.ts'),
-      {
-        encoding: 'utf-8',
-      },
-    ),
-  },
-  {
-    path: REPOSITORY_APP_PATH,
-    file: 'order-class.repository.ts',
-    content: fs.readFileSync(
-      require.resolve('./repositories/order-class.repository.ts'),
-      {
-        encoding: 'utf-8',
-      },
-    ),
-  },
-
-  {
-    path: REPOSITORY_APP_PATH,
-    file: 'customer-class-type.repository.ts',
-    content: fs.readFileSync(
-      require.resolve('./repositories/customer-class-type.repository.ts'),
-      {
-        encoding: 'utf-8',
-      },
-    ),
-  },
-  {
-    path: REPOSITORY_APP_PATH,
-    file: 'order-class-type.repository.ts',
-    content: fs.readFileSync(
-      require.resolve('./repositories/order-class-type.repository.ts'),
-      {
-        encoding: 'utf-8',
-      },
-    ),
-  },
+  SourceEntries.CustomerRepository,
+  SourceEntries.OrderRepository,
+  SourceEntries.CustomerClassRepository,
+  SourceEntries.OrderClassRepository,
+  SourceEntries.CustomerClassTypeRepository,
+  SourceEntries.OrderClassTypeRepository,
   {
     path: DATASOURCE_APP_PATH,
     file: 'restdb.datasource.ts',
     content: DUMMY_CONTENT,
   },
-  {
-    path: MODEL_APP_PATH,
-    file: 'customer.model.ts',
-    content: fs.readFileSync(require.resolve('./models/customer.model.ts'), {
-      encoding: 'utf-8',
-    }),
-  },
-  {
-    path: MODEL_APP_PATH,
-    file: 'order.model.ts',
-    content: fs.readFileSync(require.resolve('./models/order.model.ts'), {
-      encoding: 'utf-8',
-    }),
-  },
-  {
-    path: MODEL_APP_PATH,
-    file: 'nokey.model.ts',
-    content: fs.readFileSync(require.resolve('./models/nokey.model.ts'), {
-      encoding: 'utf-8',
-    }),
-  },
-  {
-    path: MODEL_APP_PATH,
-    file: 'customer-class.model.ts',
-    content: fs.readFileSync(
-      require.resolve('./models/customer-class.model.ts'),
-      {
-        encoding: 'utf-8',
-      },
-    ),
-  },
-  {
-    path: MODEL_APP_PATH,
-    file: 'order-class.model.ts',
-    content: fs.readFileSync(require.resolve('./models/order-class.model.ts'), {
-      encoding: 'utf-8',
-    }),
-  },
-
-  {
-    path: MODEL_APP_PATH,
-    file: 'customer-class-type.model.ts',
-    content: fs.readFileSync(
-      require.resolve('./models/customer-class-type.model.ts'),
-      {
-        encoding: 'utf-8',
-      },
-    ),
-  },
-  {
-    path: MODEL_APP_PATH,
-    file: 'order-class-type.model.ts',
-    content: fs.readFileSync(
-      require.resolve('./models/order-class-type.model.ts'),
-      {
-        encoding: 'utf-8',
-      },
-    ),
-  },
+  SourceEntries.CustomerModel,
+  SourceEntries.OrderModel,
+  SourceEntries.NoKeyModel,
+  SourceEntries.CustomerClassModel,
+  SourceEntries.OrderClassModel,
+  SourceEntries.CustomerClassTypeModel,
+  SourceEntries.OrderClassTypeModel,
 ];
+
 exports.SANDBOX_FILES2 = [
-  {
-    path: CONTROLLER_PATH,
-    file: 'customer.controller.ts',
-    content: fs.readFileSync(
-      require.resolve('./controllers/customer.controller.ts'),
-      {
-        encoding: 'utf-8',
-      },
-    ),
-  },
-  {
-    path: REPOSITORY_APP_PATH,
-    file: 'customer.repository.ts',
-    content: fs.readFileSync(
-      require.resolve('./repositories/customer.repository.ts'),
-      {
-        encoding: 'utf-8',
-      },
-    ),
-  },
-  {
-    path: REPOSITORY_APP_PATH,
-    file: 'order.repository.ts',
-    content: fs.readFileSync(
-      require.resolve('./repositories/order.repository.ts'),
-      {
-        encoding: 'utf-8',
-      },
-    ),
-  },
-  {
-    path: REPOSITORY_APP_PATH,
-    file: 'customer-class.repository.ts',
-    content: fs.readFileSync(
-      require.resolve('./repositories/customer-class.repository.ts'),
-      {
-        encoding: 'utf-8',
-      },
-    ),
-  },
-  {
-    path: REPOSITORY_APP_PATH,
-    file: 'order-class.repository.ts',
-    content: fs.readFileSync(
-      require.resolve('./repositories/order-class.repository.ts'),
-      {
-        encoding: 'utf-8',
-      },
-    ),
-  },
+  SourceEntries.CustomerRepository,
+  SourceEntries.OrderRepository,
+  SourceEntries.CustomerClassRepository,
+  SourceEntries.OrderClassRepository,
+  SourceEntries.CustomerClassTypeRepository,
+  SourceEntries.OrderClassTypeRepository,
 
-  {
-    path: REPOSITORY_APP_PATH,
-    file: 'customer-class-type.repository.ts',
-    content: fs.readFileSync(
-      require.resolve('./repositories/customer-class-type.repository.ts'),
-      {
-        encoding: 'utf-8',
-      },
-    ),
-  },
-  {
-    path: REPOSITORY_APP_PATH,
-    file: 'order-class-type.repository.ts',
-    content: fs.readFileSync(
-      require.resolve('./repositories/order-class-type.repository.ts'),
-      {
-        encoding: 'utf-8',
-      },
-    ),
-  },
   {
     path: DATASOURCE_APP_PATH,
     file: 'restdb.datasource.ts',
     content: DUMMY_CONTENT,
   },
-  {
-    path: MODEL_APP_PATH,
-    file: 'customer.model.ts',
-    content: fs.readFileSync(require.resolve('./models/customer.model.ts'), {
-      encoding: 'utf-8',
-    }),
-  },
-  {
-    path: MODEL_APP_PATH,
-    file: 'order.model.ts',
-    content: fs.readFileSync(require.resolve('./models/order.model.ts'), {
-      encoding: 'utf-8',
-    }),
-  },
-  {
-    path: MODEL_APP_PATH,
-    file: 'nokey.model.ts',
-    content: fs.readFileSync(require.resolve('./models/nokey.model.ts'), {
-      encoding: 'utf-8',
-    }),
-  },
-  {
-    path: MODEL_APP_PATH,
-    file: 'customer-class.model.ts',
-    content: fs.readFileSync(
-      require.resolve('./models/customer-class.model.ts'),
-      {
-        encoding: 'utf-8',
-      },
-    ),
-  },
-  {
-    path: MODEL_APP_PATH,
-    file: 'order-class.model.ts',
-    content: fs.readFileSync(require.resolve('./models/order-class.model.ts'), {
-      encoding: 'utf-8',
-    }),
-  },
 
-  {
-    path: MODEL_APP_PATH,
-    file: 'customer-class-type.model.ts',
-    content: fs.readFileSync(
-      require.resolve('./models/customer-class-type.model.ts'),
-      {
-        encoding: 'utf-8',
-      },
-    ),
-  },
-  {
-    path: MODEL_APP_PATH,
-    file: 'order-class-type.model.ts',
-    content: fs.readFileSync(
-      require.resolve('./models/order-class-type.model.ts'),
-      {
-        encoding: 'utf-8',
-      },
-    ),
-  },
-  {
-    path: CONTROLLER_PATH,
-    file: 'index.ts',
-    content: fs.readFileSync(require.resolve('./controllers/index.ts'), {
-      encoding: 'utf-8',
-    }),
-  },
+  SourceEntries.CustomerModel,
+  SourceEntries.OrderModel,
+  SourceEntries.NoKeyModel,
+  SourceEntries.CustomerClassModel,
+  SourceEntries.OrderClassModel,
+  SourceEntries.CustomerClassTypeModel,
+
+  SourceEntries.IndexOfControllers,
 ];
-
-exports.SANDBOX_FILES3 = [];
 
 exports.SANDBOX_FILES4 = [
   {
     path: CONTROLLER_PATH,
     file: 'order-customer.controller.ts',
-    content: fs.readFileSync(
-      require.resolve('./controllers/order-customer.controller.ts'),
-      {
-        encoding: 'utf-8',
-      },
-    ),
+    content: readSourceFile('./controllers/order-customer.controller.ts'),
   },
   {
     path: CONTROLLER_PATH,
     file: 'index.ts',
-    content: fs.readFileSync(require.resolve('./controllers/index4.ts'), {
-      encoding: 'utf-8',
-    }),
+    content: readSourceFile('./controllers/index4.ts'),
   },
-  {
-    path: MODEL_APP_PATH,
-    file: 'customer.model.ts',
-    content: fs.readFileSync(require.resolve('./models/customer.model.ts'), {
-      encoding: 'utf-8',
-    }),
-  },
-  {
-    path: MODEL_APP_PATH,
-    file: 'order.model.ts',
-    content: fs.readFileSync(require.resolve('./models/order.model.ts'), {
-      encoding: 'utf-8',
-    }),
-  },
-  {
-    path: REPOSITORY_APP_PATH,
-    file: 'customer.repository.ts',
-    content: fs.readFileSync(
-      require.resolve('./repositories/customer.repository.ts'),
-      {
-        encoding: 'utf-8',
-      },
-    ),
-  },
-  {
-    path: REPOSITORY_APP_PATH,
-    file: 'order.repository.ts',
-    content: fs.readFileSync(
-      require.resolve('./repositories/order.repository.ts'),
-      {
-        encoding: 'utf-8',
-      },
-    ),
-  },
+  SourceEntries.CustomerModel,
+  SourceEntries.OrderModel,
+  SourceEntries.CustomerRepository,
+  SourceEntries.OrderRepository,
 ];
 
-exports.SANDBOX_FILES5 = [
-  {
-    path: MODEL_APP_PATH,
-    file: 'customer.model.ts',
-    content: fs.readFileSync(require.resolve('./models/customer5.model.ts'), {
-      encoding: 'utf-8',
-    }),
-  },
-  {
-    path: MODEL_APP_PATH,
-    file: 'order.model.ts',
-    content: fs.readFileSync(require.resolve('./models/order.model.ts'), {
-      encoding: 'utf-8',
-    }),
-  },
-  {
-    path: REPOSITORY_APP_PATH,
-    file: 'customer.repository.ts',
-    content: fs.readFileSync(
-      require.resolve('./repositories/customer.repository.ts'),
-      {
-        encoding: 'utf-8',
-      },
-    ),
-  },
-  {
-    path: REPOSITORY_APP_PATH,
-    file: 'order.repository.ts',
-    content: fs.readFileSync(
-      require.resolve('./repositories/order.repository.ts'),
-      {
-        encoding: 'utf-8',
-      },
-    ),
-  },
-];
-exports.SANDBOX_FILES2 = [
-  {
-    path: REPOSITORY_APP_PATH,
-    file: 'customer.repository.ts',
-    content: fs.readFileSync(
-      require.resolve('./repositories/customer.repository.ts'),
-      {
-        encoding: 'utf-8',
-      },
-    ),
-  },
-  {
-    path: REPOSITORY_APP_PATH,
-    file: 'order.repository.ts',
-    content: fs.readFileSync(
-      require.resolve('./repositories/order.repository.ts'),
-      {
-        encoding: 'utf-8',
-      },
-    ),
-  },
-  {
-    path: REPOSITORY_APP_PATH,
-    file: 'customer-class.repository.ts',
-    content: fs.readFileSync(
-      require.resolve('./repositories/customer-class.repository.ts'),
-      {
-        encoding: 'utf-8',
-      },
-    ),
-  },
-  {
-    path: REPOSITORY_APP_PATH,
-    file: 'order-class.repository.ts',
-    content: fs.readFileSync(
-      require.resolve('./repositories/order-class.repository.ts'),
-      {
-        encoding: 'utf-8',
-      },
-    ),
-  },
-
-  {
-    path: REPOSITORY_APP_PATH,
-    file: 'customer-class-type.repository.ts',
-    content: fs.readFileSync(
-      require.resolve('./repositories/customer-class-type.repository.ts'),
-      {
-        encoding: 'utf-8',
-      },
-    ),
-  },
-  {
-    path: REPOSITORY_APP_PATH,
-    file: 'order-class-type.repository.ts',
-    content: fs.readFileSync(
-      require.resolve('./repositories/order-class-type.repository.ts'),
-      {
-        encoding: 'utf-8',
-      },
-    ),
-  },
-  {
-    path: DATASOURCE_APP_PATH,
-    file: 'restdb.datasource.ts',
-    content: DUMMY_CONTENT,
-  },
-  {
-    path: MODEL_APP_PATH,
-    file: 'customer.model.ts',
-    content: fs.readFileSync(require.resolve('./models/customer.model.ts'), {
-      encoding: 'utf-8',
-    }),
-  },
-  {
-    path: MODEL_APP_PATH,
-    file: 'order.model.ts',
-    content: fs.readFileSync(require.resolve('./models/order.model.ts'), {
-      encoding: 'utf-8',
-    }),
-  },
-  {
-    path: MODEL_APP_PATH,
-    file: 'nokey.model.ts',
-    content: fs.readFileSync(require.resolve('./models/nokey.model.ts'), {
-      encoding: 'utf-8',
-    }),
-  },
-  {
-    path: MODEL_APP_PATH,
-    file: 'customer-class.model.ts',
-    content: fs.readFileSync(
-      require.resolve('./models/customer-class.model.ts'),
-      {
-        encoding: 'utf-8',
-      },
-    ),
-  },
-  {
-    path: MODEL_APP_PATH,
-    file: 'order-class.model.ts',
-    content: fs.readFileSync(require.resolve('./models/order-class.model.ts'), {
-      encoding: 'utf-8',
-    }),
-  },
-
-  {
-    path: MODEL_APP_PATH,
-    file: 'customer-class-type.model.ts',
-    content: fs.readFileSync(
-      require.resolve('./models/customer-class-type.model.ts'),
-      {
-        encoding: 'utf-8',
-      },
-    ),
-  },
-  {
-    path: MODEL_APP_PATH,
-    file: 'order-class-type.model.ts',
-    content: fs.readFileSync(
-      require.resolve('./models/order-class-type.model.ts'),
-      {
-        encoding: 'utf-8',
-      },
-    ),
-  },
-  {
-    path: CONTROLLER_PATH,
-    file: 'index.ts',
-    content: fs.readFileSync(require.resolve('./controllers/index.ts'), {
-      encoding: 'utf-8',
-    }),
-  },
-];
-
-exports.SANDBOX_FILES3 = [];
-
-exports.SANDBOX_FILES4 = [
-  {
-    path: CONTROLLER_PATH,
-    file: 'order-customer.controller.ts',
-    content: fs.readFileSync(
-      require.resolve('./controllers/order-customer.controller.ts'),
-      {
-        encoding: 'utf-8',
-      },
-    ),
-  },
-  {
-    path: CONTROLLER_PATH,
-    file: 'index.ts',
-    content: fs.readFileSync(require.resolve('./controllers/index4.ts'), {
-      encoding: 'utf-8',
-    }),
-  },
-  {
-    path: MODEL_APP_PATH,
-    file: 'customer.model.ts',
-    content: fs.readFileSync(require.resolve('./models/customer.model.ts'), {
-      encoding: 'utf-8',
-    }),
-  },
-  {
-    path: MODEL_APP_PATH,
-    file: 'order.model.ts',
-    content: fs.readFileSync(require.resolve('./models/order.model.ts'), {
-      encoding: 'utf-8',
-    }),
-  },
-  {
-    path: REPOSITORY_APP_PATH,
-    file: 'customer.repository.ts',
-    content: fs.readFileSync(
-      require.resolve('./repositories/customer.repository.ts'),
-      {
-        encoding: 'utf-8',
-      },
-    ),
-  },
-  {
-    path: REPOSITORY_APP_PATH,
-    file: 'order.repository.ts',
-    content: fs.readFileSync(
-      require.resolve('./repositories/order.repository.ts'),
-      {
-        encoding: 'utf-8',
-      },
-    ),
-  },
-];
-
-exports.SANDBOX_FILES6 = [
-  {
-    path: MODEL_APP_PATH,
-    file: 'customer.model.ts',
-    content: fs.readFileSync(require.resolve('./models/customer5.model.ts'), {
-      encoding: 'utf-8',
-    }),
-  },
-  {
-    path: MODEL_APP_PATH,
-    file: 'order.model.ts',
-    content: fs.readFileSync(
-      require.resolve('./models/order-with-fk.model.ts'),
-      {
-        encoding: 'utf-8',
-      },
-    ),
-  },
-  {
-    path: REPOSITORY_APP_PATH,
-    file: 'customer.repository.ts',
-    content: fs.readFileSync(
-      require.resolve('./repositories/customer.repository.ts'),
-      {
-        encoding: 'utf-8',
-      },
-    ),
-  },
-  {
-    path: REPOSITORY_APP_PATH,
-    file: 'order.repository.ts',
-    content: fs.readFileSync(
-      require.resolve('./repositories/order.repository.ts'),
-      {
-        encoding: 'utf-8',
-      },
-    ),
-  },
-];
+function readSourceFile(relativePath) {
+  return fs.readFileSync(require.resolve(relativePath), {encoding: 'utf-8'});
+}

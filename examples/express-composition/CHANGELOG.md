@@ -3,6 +3,44 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.7.1](https://github.com/strongloop/loopback-next/compare/@loopback/example-express-composition@1.7.0...@loopback/example-express-composition@1.7.1) (2019-09-28)
+
+**Note:** Version bump only for package @loopback/example-express-composition
+
+
+
+
+
+# [1.7.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-express-composition@1.6.0...@loopback/example-express-composition@1.7.0) (2019-09-27)
+
+
+### Features
+
+* self host oas spec by default on relative path in explorer ([887556e](https://github.com/strongloop/loopback-next/commit/887556e))
+
+
+
+
+
+# [1.6.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-express-composition@1.5.6...@loopback/example-express-composition@1.6.0) (2019-09-17)
+
+
+### Features
+
+* use descriptive title to describe schema of POST (create) request bodies ([8f49a45](https://github.com/strongloop/loopback-next/commit/8f49a45))
+
+
+
+
+
+## [1.5.6](https://github.com/strongloop/loopback-next/compare/@loopback/example-express-composition@1.5.5...@loopback/example-express-composition@1.5.6) (2019-09-06)
+
+**Note:** Version bump only for package @loopback/example-express-composition
+
+
+
+
+
 ## [1.5.5](https://github.com/strongloop/loopback-next/compare/@loopback/example-express-composition@1.5.4...@loopback/example-express-composition@1.5.5) (2019-09-03)
 
 **Note:** Version bump only for package @loopback/example-express-composition

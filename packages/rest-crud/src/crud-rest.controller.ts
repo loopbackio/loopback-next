@@ -32,6 +32,7 @@ import {
   ResponsesObject,
   SchemaObject,
 } from '@loopback/rest';
+import assert = require('assert');
 
 // Ideally, this file should simply `export class CrudRestController<...>{}`
 // Unfortunately, that's not possible for several reasons.
@@ -107,17 +108,17 @@ export interface CrudRestControllerOptions {
  * Example usage:
  *
  * ```ts
- * const CrudRestController = defineCrudRestController<
- *   Product,
- *   typeof Product.prototype.id,
- *   'id'
+ * const ProductController = defineCrudRestController<
+ * Product,
+ * typeof Product.prototype.id,
+ * 'id'
  * >(Product, {basePath: '/products'});
  *
- * class ProductController extends CrudRestController {
- *   constructor() {
- *    super(repo);
- *   }
- * }
+ * inject('repositories.ProductRepository')(
+ *  ProductController,
+ *   undefined,
+ *   0,
+ * );
  *
  * app.controller(ProductController);
  * ```
@@ -152,7 +153,10 @@ export function defineCrudRestController<
       ...response.model(200, `${modelName} instance created`, modelCtor),
     })
     async create(
-      @body(modelCtor, {exclude: modelCtor.getIdProperties() as (keyof T)[]})
+      @body(modelCtor, {
+        title: `New${modelName}`,
+        exclude: modelCtor.getIdProperties() as (keyof T)[],
+      })
       data: Omit<T, IdName>,
     ): Promise<T> {
       return this.repository.create(
@@ -254,8 +258,14 @@ export function defineCrudRestController<
     }
   }
 
-  // See https://github.com/microsoft/TypeScript/issues/14607
-  return CrudRestControllerImpl;
+  const controllerName = modelName + 'Controller';
+  const defineNamedController = new Function(
+    'controllerClass',
+    `return class ${controllerName} extends controllerClass {}`,
+  );
+  const controller = defineNamedController(CrudRestControllerImpl);
+  assert.equal(controller.name, controllerName);
+  return controller;
 }
 
 function getIdSchema<T extends Entity>(

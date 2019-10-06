@@ -17,7 +17,7 @@ const exists = util.promisify(fs.exists);
  * @param {*} file The new file to be exported from index.ts
  */
 module.exports = async function(dir, file) {
-  debug(`Updating index ${path.join(dir, file)}`);
+  debug(`Updating index with ${path.join(dir, file)}`);
   const indexFile = path.join(dir, 'index.ts');
   if (!file.endsWith('.ts')) {
     throw new Error(`${file} must be a TypeScript (.ts) file`);

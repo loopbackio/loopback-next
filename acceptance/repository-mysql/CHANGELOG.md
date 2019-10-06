@@ -3,6 +3,38 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.4.7](https://github.com/strongloop/loopback-next/compare/@loopback/test-repository-mysql@0.4.6...@loopback/test-repository-mysql@0.4.7) (2019-09-28)
+
+**Note:** Version bump only for package @loopback/test-repository-mysql
+
+
+
+
+
+## [0.4.6](https://github.com/strongloop/loopback-next/compare/@loopback/test-repository-mysql@0.4.5...@loopback/test-repository-mysql@0.4.6) (2019-09-27)
+
+**Note:** Version bump only for package @loopback/test-repository-mysql
+
+
+
+
+
+## [0.4.5](https://github.com/strongloop/loopback-next/compare/@loopback/test-repository-mysql@0.4.4...@loopback/test-repository-mysql@0.4.5) (2019-09-17)
+
+**Note:** Version bump only for package @loopback/test-repository-mysql
+
+
+
+
+
+## [0.4.4](https://github.com/strongloop/loopback-next/compare/@loopback/test-repository-mysql@0.4.3...@loopback/test-repository-mysql@0.4.4) (2019-09-06)
+
+**Note:** Version bump only for package @loopback/test-repository-mysql
+
+
+
+
+
 ## [0.4.3](https://github.com/strongloop/loopback-next/compare/@loopback/test-repository-mysql@0.4.2...@loopback/test-repository-mysql@0.4.3) (2019-09-03)
 
 **Note:** Version bump only for package @loopback/test-repository-mysql

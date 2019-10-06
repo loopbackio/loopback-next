@@ -3,6 +3,38 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.4](https://github.com/strongloop/loopback-next/compare/@loopback/metadata@1.3.3...@loopback/metadata@1.3.4) (2019-09-28)
+
+**Note:** Version bump only for package @loopback/metadata
+
+
+
+
+
+## [1.3.3](https://github.com/strongloop/loopback-next/compare/@loopback/metadata@1.3.2...@loopback/metadata@1.3.3) (2019-09-27)
+
+**Note:** Version bump only for package @loopback/metadata
+
+
+
+
+
+## [1.3.2](https://github.com/strongloop/loopback-next/compare/@loopback/metadata@1.3.1...@loopback/metadata@1.3.2) (2019-09-17)
+
+**Note:** Version bump only for package @loopback/metadata
+
+
+
+
+
+## [1.3.1](https://github.com/strongloop/loopback-next/compare/@loopback/metadata@1.3.0...@loopback/metadata@1.3.1) (2019-09-06)
+
+**Note:** Version bump only for package @loopback/metadata
+
+
+
+
+
 # [1.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/metadata@1.2.10...@loopback/metadata@1.3.0) (2019-09-03)
 
 

@@ -7,6 +7,6 @@
   "license": "MIT",
   "scripts": {
     "build": "lb-tsc",
-    "clean": "lb-clean dist"
+    "clean": "lb-clean dist *.tsbuildinfo"
   }
 }

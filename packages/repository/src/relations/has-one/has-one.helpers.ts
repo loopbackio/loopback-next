@@ -7,7 +7,7 @@ import * as debugFactory from 'debug';
 import {camelCase} from 'lodash';
 import {InvalidRelationError} from '../../errors';
 import {isTypeResolver} from '../../type-resolver';
-import {HasOneDefinition} from '../relation.types';
+import {HasOneDefinition, RelationType} from '../relation.types';
 
 const debug = debugFactory('loopback:repository:has-one-helpers');
 
@@ -15,7 +15,10 @@ const debug = debugFactory('loopback:repository:has-one-helpers');
  * Relation definition with optional metadata (e.g. `keyTo`) filled in.
  * @internal
  */
-export type HasOneResolvedDefinition = HasOneDefinition & {keyTo: string};
+export type HasOneResolvedDefinition = HasOneDefinition & {
+  keyFrom: string;
+  keyTo: string;
+};
 
 /**
  * Resolves given hasOne metadata if target is specified to be a resolver.
@@ -27,6 +30,11 @@ export type HasOneResolvedDefinition = HasOneDefinition & {keyTo: string};
 export function resolveHasOneMetadata(
   relationMeta: HasOneDefinition,
 ): HasOneResolvedDefinition {
+  if ((relationMeta.type as RelationType) !== RelationType.hasOne) {
+    const reason = 'relation type must be HasOne';
+    throw new InvalidRelationError(reason, relationMeta);
+  }
+
   if (!isTypeResolver(relationMeta.target)) {
     const reason = 'target must be a type resolver';
     throw new InvalidRelationError(reason, relationMeta);
@@ -36,17 +44,19 @@ export function resolveHasOneMetadata(
   const targetModelProperties =
     targetModel.definition && targetModel.definition.properties;
 
-  // Make sure that if it already keys to the foreign key property,
-  // the key exists in the target model
-  if (relationMeta.keyTo && targetModelProperties[relationMeta.keyTo]) {
-    // The explicit cast is needed because of a limitation of type inference
-    return relationMeta as HasOneResolvedDefinition;
-  }
-
   const sourceModel = relationMeta.source;
   if (!sourceModel || !sourceModel.modelName) {
     const reason = 'source model must be defined';
     throw new InvalidRelationError(reason, relationMeta);
+  }
+
+  const keyFrom = sourceModel.getIdProperties()[0];
+
+  // Make sure that if it already keys to the foreign key property,
+  // the key exists in the target model
+  if (relationMeta.keyTo && targetModelProperties[relationMeta.keyTo]) {
+    // The explicit cast is needed because of a limitation of type inference
+    return Object.assign(relationMeta, {keyFrom}) as HasOneResolvedDefinition;
   }
 
   debug(
@@ -62,5 +72,5 @@ export function resolveHasOneMetadata(
     throw new InvalidRelationError(reason, relationMeta);
   }
 
-  return Object.assign(relationMeta, {keyTo: defaultFkName});
+  return Object.assign(relationMeta, {keyFrom, keyTo: defaultFkName});
 }

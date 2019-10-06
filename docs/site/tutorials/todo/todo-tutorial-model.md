@@ -59,6 +59,7 @@ Enter an empty property name when done
 ? Property type: number
 ? Is id the ID property? Yes
 ? Is it required?: No
+? Is id generated automatically? No
 ? Default value [leave blank for none]:
 
 Let's add another property to Todo

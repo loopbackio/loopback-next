@@ -17,12 +17,7 @@ import {
   Next,
   Provider,
 } from '@loopback/context';
-import {
-  Principal,
-  SecurityBindings,
-  securityId,
-  UserProfile,
-} from '@loopback/security';
+import {SecurityBindings, UserProfile} from '@loopback/security';
 import * as debugFactory from 'debug';
 import {getAuthorizationMetadata} from './decorators/authorize';
 import {AuthorizationBindings, AuthorizationTags} from './keys';
@@ -33,6 +28,7 @@ import {
   AuthorizationOptions,
   Authorizer,
 } from './types';
+import {createPrincipalFromUserProfile} from './util';
 
 const debug = debugFactory('loopback:authorization:interceptor');
 
@@ -60,12 +56,16 @@ export class AuthorizationInterceptor implements Provider<Interceptor> {
 
   async intercept(invocationCtx: InvocationContext, next: Next) {
     const description = debug.enabled ? invocationCtx.description : '';
-    const metadata = getAuthorizationMetadata(
+    let metadata = getAuthorizationMetadata(
       invocationCtx.target,
       invocationCtx.methodName,
     );
     if (!metadata) {
-      debug('No authorization metadata is found %s', description);
+      debug('No authorization metadata is found for %s', description);
+    }
+    metadata = metadata || this.options.defaultMetadata;
+    if (!metadata || (metadata && metadata.skip)) {
+      debug('Authorization is skipped for %s', description);
       const result = await next();
       return result;
     }
@@ -79,7 +79,7 @@ export class AuthorizationInterceptor implements Provider<Interceptor> {
     debug('Current user', user);
 
     const authorizationCtx: AuthorizationContext = {
-      principals: user ? [userToPrinciple(user)] : [],
+      principals: user ? [createPrincipalFromUserProfile(user)] : [],
       roles: [],
       scopes: [],
       resource: invocationCtx.targetName,
@@ -146,15 +146,4 @@ async function loadAuthorizers(
     }
   }
   return authorizerFunctions;
-}
-
-// This is a workaround before we extract a common layer
-// for authentication and authorization.
-function userToPrinciple(user: UserProfile): Principal {
-  return {
-    name: user.name || user[securityId],
-    [securityId]: user.id,
-    email: user.email,
-    type: 'USER',
-  };
 }

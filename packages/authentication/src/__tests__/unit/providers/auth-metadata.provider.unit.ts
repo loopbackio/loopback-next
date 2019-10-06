@@ -3,10 +3,11 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {expect} from '@loopback/testlab';
-import {CoreBindings} from '@loopback/core';
 import {Context, Provider} from '@loopback/context';
-import {AuthenticationMetadata, authenticate} from '../../..';
+import {CoreBindings} from '@loopback/core';
+import {expect} from '@loopback/testlab';
+import {authenticate, AuthenticationMetadata} from '../../..';
+import {AuthenticationBindings} from '../../../keys';
 import {AuthMetadataProvider} from '../../../providers';
 
 describe('AuthMetadataProvider', () => {
@@ -15,6 +16,9 @@ describe('AuthMetadataProvider', () => {
   class TestController {
     @authenticate('my-strategy', {option1: 'value1', option2: 'value2'})
     whoAmI() {}
+
+    @authenticate.skip()
+    hello() {}
   }
 
   class ControllerWithNoMetadata {
@@ -51,6 +55,35 @@ describe('AuthMetadataProvider', () => {
         });
       });
 
+      it('returns undefined for a method decorated with @authenticate.skip', async () => {
+        const context: Context = new Context();
+        context.bind(CoreBindings.CONTROLLER_CLASS).to(TestController);
+        context.bind(CoreBindings.CONTROLLER_METHOD_NAME).to('hello');
+        context
+          .bind(CoreBindings.CONTROLLER_METHOD_META)
+          .toProvider(AuthMetadataProvider);
+        const authMetadata = await context.get(
+          CoreBindings.CONTROLLER_METHOD_META,
+        );
+        expect(authMetadata).to.be.undefined();
+      });
+
+      it('returns undefined for a method decorated with @authenticate.skip even with default metadata', async () => {
+        const context: Context = new Context();
+        context.bind(CoreBindings.CONTROLLER_CLASS).to(TestController);
+        context.bind(CoreBindings.CONTROLLER_METHOD_NAME).to('hello');
+        context
+          .bind(CoreBindings.CONTROLLER_METHOD_META)
+          .toProvider(AuthMetadataProvider);
+        context
+          .configure(AuthenticationBindings.COMPONENT)
+          .to({defaultMetadata: {strategy: 'xyz'}});
+        const authMetadata = await context.get(
+          CoreBindings.CONTROLLER_METHOD_META,
+        );
+        expect(authMetadata).to.be.undefined();
+      });
+
       it('returns undefined if no auth metadata is defined', async () => {
         const context: Context = new Context();
         context
@@ -64,6 +97,24 @@ describe('AuthMetadataProvider', () => {
           CoreBindings.CONTROLLER_METHOD_META,
         );
         expect(authMetadata).to.be.undefined();
+      });
+
+      it('returns default metadata if no auth metadata is defined', async () => {
+        const context: Context = new Context();
+        context
+          .bind(CoreBindings.CONTROLLER_CLASS)
+          .to(ControllerWithNoMetadata);
+        context.bind(CoreBindings.CONTROLLER_METHOD_NAME).to('whoAmI');
+        context
+          .configure(AuthenticationBindings.COMPONENT)
+          .to({defaultMetadata: {strategy: 'xyz'}});
+        context
+          .bind(CoreBindings.CONTROLLER_METHOD_META)
+          .toProvider(AuthMetadataProvider);
+        const authMetadata = await context.get(
+          CoreBindings.CONTROLLER_METHOD_META,
+        );
+        expect(authMetadata).to.be.eql({strategy: 'xyz'});
       });
 
       it('returns undefined when the class or method is missing', async () => {

@@ -52,6 +52,7 @@ export function belongsToRelationAcceptance(
         ({customerRepo, orderRepo, shipmentRepo} = givenBoundCrudRepositories(
           ctx.dataSource,
           repositoryClass,
+          features,
         ));
         const models = [Customer, Order, Shipment];
         await ctx.dataSource.automigrate(models.map(m => m.name));
@@ -93,15 +94,20 @@ export function belongsToRelationAcceptance(
     });
 
     it('throws EntityNotFound error when the related model does not exist', async () => {
-      const order = await orderRepo.create({
-        customerId: 999, // does not exist
-        description: 'Order of a fictional customer',
+      const deletedCustomer = await customerRepo.create({
+        name: 'Order McForder',
       });
+      const order = await orderRepo.create({
+        customerId: deletedCustomer.id,
+        description: 'custotmer will be deleted',
+      });
+      await customerRepo.deleteAll();
 
       await expect(findCustomerOfOrder(order.id)).to.be.rejectedWith(
         EntityNotFoundError,
       );
     });
+
     // helpers
     function givenAccessor() {
       findCustomerOfOrder = createBelongsToAccessor(

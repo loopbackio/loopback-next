@@ -17,6 +17,7 @@ const generator = path.join(__dirname, '../../../generators/datasource');
 const tests = require('../lib/artifact-generator')(generator);
 const baseTests = require('../lib/base-generator')(generator);
 const testUtils = require('../../test-utils');
+const {expectFileToMatchSnapshot} = require('../../snapshots');
 
 // Test Sandbox
 const SANDBOX_PATH = path.resolve(__dirname, '..', '.sandbox');
@@ -105,6 +106,7 @@ describe('lb4 datasource integration', () => {
         .withPrompts(basicCLIInput);
 
       checkBasicDataSourceFiles();
+
       assert.jsonFileContent(expectedJSONFile, basicCLIInput);
     });
 
@@ -159,27 +161,7 @@ function checkBasicDataSourceFiles() {
   assert.file(expectedIndexFile);
   assert.noFile(path.join(SANDBOX_PATH, 'node_modules/memory'));
 
-  assert.fileContent(expectedTSFile, /import {inject} from '@loopback\/core';/);
-  assert.fileContent(
-    expectedTSFile,
-    /import {juggler} from '@loopback\/repository';/,
-  );
-  assert.fileContent(
-    expectedTSFile,
-    /import \* as config from '.\/ds.datasource.json';/,
-  );
-  assert.fileContent(
-    expectedTSFile,
-    /export class DsDataSource extends juggler.DataSource {/,
-  );
-  assert.fileContent(expectedTSFile, /static dataSourceName = 'ds';/);
-  assert.fileContent(expectedTSFile, /constructor\(/);
-  assert.fileContent(
-    expectedTSFile,
-    /\@inject\('datasources.config.ds', \{optional: true\}\)/,
-  );
-  assert.fileContent(expectedTSFile, /\) \{/);
-  assert.fileContent(expectedTSFile, /super\(dsConfig\);/);
+  expectFileToMatchSnapshot(expectedTSFile);
 
   assert.fileContent(expectedIndexFile, /export \* from '.\/ds.datasource';/);
 }

@@ -40,6 +40,7 @@ export function hasManyRelationAcceptance(
         ({customerRepo, orderRepo} = givenBoundCrudRepositories(
           ctx.dataSource,
           repositoryClass,
+          features,
         ));
         await ctx.dataSource.automigrate([Customer.name, Order.name]);
       }),

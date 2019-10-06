@@ -38,6 +38,7 @@ Controller Todo will be created in src/controllers/todo.controller.ts
 ? What is the name of your CRUD repository? TodoRepository
 ? What is the name of ID property? id
 ? What is the type of your ID? number
+? Is the id omitted when creating a new instance? Yes
 ? What is the base HTTP path name of the CRUD operations? /todos
    create src/controllers/todo.controller.ts
    update src/controllers/index.ts
@@ -53,7 +54,7 @@ that a new controller instance is created for each request. As a result, we want
 to inject our `TodoRepository` since the creation of these instances is more
 complex and expensive than making new controller instances.
 
-{% include note.html content="You can customize the lifecycle of _all_ bindings in LoopBack 4! Controllers can easily be made to use singleton lifecycles to minimize startup costs. For more information, see the [Dependency injection](Dependency-injection.md) section of our docs.
+{% include note.html content="You can customize the lifecycle of _all_ bindings in LoopBack 4! Controllers can easily be made to use singleton lifecycles to minimize startup costs. For more information, see the [Dependency injection](../../Dependency-injection.md) section of our docs.
 " %}
 
 In this example, there are two new decorators to provide LoopBack with metadata

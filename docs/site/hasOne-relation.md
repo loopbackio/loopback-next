@@ -295,3 +295,87 @@ certain properties from the JSON/OpenAPI spec schema built for the `requestBody`
 payload. See its [GitHub
 issue](https://github.com/strongloop/loopback-next/issues/1179) to follow the discussion.
 " %}
+
+## Querying related models
+
+A `hasOne` relation has an `inclusionResolver` function as a property. It
+fetches target models for the given list of source model instances.
+
+Using the relation between `Supplier` and `Account` we have shown above, a
+`Supplier` has one `Account`.
+
+After setting up the relation in the repository class, the inclusion resolver
+allows users to retrieve all suppliers along with their related account
+instances through the following code:
+
+```ts
+supplierRepository.find({include: [{relation: 'account'}]});
+```
+
+### Enable/disable the inclusion resolvers:
+
+- Base repository classes have a public property `inclusionResolvers`, which
+  maintains a map containing inclusion resolvers for each relation.
+- The `inclusionResolver` of a certain relation is built when the source
+  repository class calls the `createHasOneRepositoryFactoryFor` function in the
+  constructor with the relation name.
+- Call `registerInclusionResolver` to add the resolver of that relation to the
+  `inclusionResolvers` map. (As we realized in LB3, not all relations are
+  allowed to be traversed. Users can decide to which resolvers can be added.)
+
+The following code snippet shows how to register the inclusion resolver for the
+hasOne relation 'account':
+
+```ts
+export class SupplierRepository extends DefaultCrudRepository {
+  account: HasOneRepositoryFactory<Account, typeof Supplier.prototype.id>;
+  constructor(
+    dataSource: juggler.DataSource,
+    accountRepositoryGetter: Getter<AccountRepository>,
+  ) {
+    super(Supplier, dataSource);
+    // we already have this line to create a HasOneRepository factory
+    this.account = this.createHasOneRepositoryFactoryFor(
+      'account',
+      accountRepositoryGetter,
+    );
+    // add this line to register inclusion resolver
+    this.registerInclusionResolver('account', this.account.inclusionResolver);
+  }
+}
+```
+
+- We can simply include the relation in queries via `find()`, `findOne()`, and
+  `findById()` methods. Example:
+
+  ```ts
+  supplierRepository.find({include: [{relation: 'account'}]});
+  ```
+
+  which returns:
+
+  ```ts
+  [
+    {
+      id: 1,
+      name: 'Thor',
+      account: {accountManager: 'Odin', supplierId: 1},
+    },
+    {
+      id: 5,
+      name: 'Loki',
+      account: {accountManager: 'Frigga', supplierId: 5},
+    },
+  ];
+  ```
+
+- You can delete a relation from `inclusionResolvers` to disable the inclusion
+  for a certain relation. e.g
+  `supplierRepository.inclusionResolvers.delete('account')`
+
+{% include note.html content="
+Inclusion with custom scope:
+Besides specifying the relation name to include, it's also possible to specify additional scope constraints.
+However, this feature is not supported yet. Check our GitHub issue for more information:
+[Include related models with a custom scope](https://github.com/strongloop/loopback-next/issues/3453).
+" %}

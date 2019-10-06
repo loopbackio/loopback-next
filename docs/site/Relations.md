@@ -31,7 +31,10 @@ introduction of [repositories](Repositories.md), we aim to simplify the approach
 to relations by creating constrained repositories. This means that certain
 constraints need to be honoured by the target model repository based on the
 relation definition, and thus we produce a constrained version of it as a
-navigational property on the source repository.
+navigational property on the source repository. Additionally, we also introduce
+the concept of the `inclusion resolver` in relations, which helps to query data
+over different relations. LoopBack 4 creates a different inclusion resolver for
+each relation type.
 
 Here are the currently supported relations:
 

@@ -3,6 +3,41 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.1](https://github.com/strongloop/loopback-next/compare/@loopback/rest-explorer@1.4.0...@loopback/rest-explorer@1.4.1) (2019-09-28)
+
+**Note:** Version bump only for package @loopback/rest-explorer
+
+
+
+
+
+# [1.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest-explorer@1.3.7...@loopback/rest-explorer@1.4.0) (2019-09-27)
+
+
+### Features
+
+* self host oas spec by default on relative path in explorer ([887556e](https://github.com/strongloop/loopback-next/commit/887556e))
+
+
+
+
+
+## [1.3.7](https://github.com/strongloop/loopback-next/compare/@loopback/rest-explorer@1.3.6...@loopback/rest-explorer@1.3.7) (2019-09-17)
+
+**Note:** Version bump only for package @loopback/rest-explorer
+
+
+
+
+
+## [1.3.6](https://github.com/strongloop/loopback-next/compare/@loopback/rest-explorer@1.3.5...@loopback/rest-explorer@1.3.6) (2019-09-06)
+
+**Note:** Version bump only for package @loopback/rest-explorer
+
+
+
+
+
 ## [1.3.5](https://github.com/strongloop/loopback-next/compare/@loopback/rest-explorer@1.3.4...@loopback/rest-explorer@1.3.5) (2019-09-03)
 
 **Note:** Version bump only for package @loopback/rest-explorer

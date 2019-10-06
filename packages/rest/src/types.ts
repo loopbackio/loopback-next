@@ -107,6 +107,11 @@ export interface RequestBodyValidationOptions extends ajv.Options {
    * - `string[]`: Add an array of keywords from `ajv-keywords`
    */
   ajvKeywords?: true | string[];
+  /**
+   * A function that transform the `ErrorObject`s reported by AJV.
+   * This could be used for error messages customization, localization, etc.
+   */
+  ajvErrorTransformer?: (errors: ajv.ErrorObject[]) => ajv.ErrorObject[];
 }
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
