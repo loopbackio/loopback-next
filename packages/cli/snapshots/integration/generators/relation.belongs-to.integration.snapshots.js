@@ -233,7 +233,7 @@ export * from './order-class-type-customer-class-type.controller';
 `;
 
 exports[
-  `lb4 relation generates model relation for existing property name Verifies if property name that already existed will be overwritten  1`
+  `lb4 relation generates model relation for existing property name verifies that a preexisting property will be overwritten 1`
 ] = `
 import {Entity, model, property, belongsTo} from '@loopback/repository';
 import {Customer} from './customer.model';
