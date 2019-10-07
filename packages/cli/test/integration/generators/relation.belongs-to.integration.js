@@ -188,7 +188,7 @@ describe('lb4 relation', function() {
       },
     ];
 
-    it('Verifies if property name that already existed will be overwritten ', async () => {
+    it('verifies that a preexisting property will be overwritten', async () => {
       await sandbox.reset();
       await testUtils
         .executeGenerator(generator)

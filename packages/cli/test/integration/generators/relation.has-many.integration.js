@@ -307,7 +307,7 @@ describe('lb4 relation HasMany', function() {
           .withPrompts(multiItemPrompt);
       });
 
-      it('new controller file has benn created', async () => {
+      it('new controller file has been created', async () => {
         const filePath = path.join(
           SANDBOX_PATH,
           CONTROLLER_PATH,
