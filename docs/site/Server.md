@@ -290,20 +290,21 @@ for more details.
 
 ### `rest` options
 
-| Property          | Type                     | Purpose                                                                                                   |
-| ----------------- | ------------------------ | --------------------------------------------------------------------------------------------------------- |
-| host              | string                   | Specify the hostname or ip address on which the RestServer will listen for traffic.                       |
-| port              | number                   | Specify the port on which the RestServer listens for traffic.                                             |
-| protocol          | string (http/https)      | Specify the protocol on which the RestServer listens for traffic.                                         |
-| basePath          | string                   | Specify the base path that RestServer exposes http endpoints.                                             |
-| key               | string                   | Specify the SSL private key for https.                                                                    |
-| cert              | string                   | Specify the SSL certificate for https.                                                                    |
-| cors              | CorsOptions              | Specify the CORS options.                                                                                 |
-| sequence          | SequenceHandler          | Use a custom SequenceHandler to change the behavior of the RestServer for the request-response lifecycle. |
-| openApiSpec       | OpenApiSpecOptions       | Customize how OpenAPI spec is served                                                                      |
-| apiExplorer       | ApiExplorerOptions       | Customize how API explorer is served                                                                      |
-| requestBodyParser | RequestBodyParserOptions | Customize how request body is parsed                                                                      |
-| router            | RouterOptions            | Customize how trailing slashes are used for routing                                                       |
+| Property          | Type                      | Purpose                                                                                                   |
+| ----------------- | ------------------------- | --------------------------------------------------------------------------------------------------------- |
+| host              | string                    | Specify the hostname or ip address on which the RestServer will listen for traffic.                       |
+| port              | number                    | Specify the port on which the RestServer listens for traffic.                                             |
+| protocol          | string (http/https)       | Specify the protocol on which the RestServer listens for traffic.                                         |
+| basePath          | string                    | Specify the base path that RestServer exposes http endpoints.                                             |
+| key               | string                    | Specify the SSL private key for https.                                                                    |
+| cert              | string                    | Specify the SSL certificate for https.                                                                    |
+| cors              | CorsOptions               | Specify the CORS options.                                                                                 |
+| sequence          | SequenceHandler           | Use a custom SequenceHandler to change the behavior of the RestServer for the request-response lifecycle. |
+| openApiSpec       | OpenApiSpecOptions        | Customize how OpenAPI spec is served                                                                      |
+| apiExplorer       | ApiExplorerOptions        | Customize how API explorer is served                                                                      |
+| requestBodyParser | RequestBodyParserOptions  | Customize how request body is parsed                                                                      |
+| router            | RouterOptions             | Customize how trailing slashes are used for routing                                                       |
+| listenOnStart     | boolean (default to true) | Control if the server should listen on http/https when it's started                                       |
 
 ## Add servers to application instance
 
