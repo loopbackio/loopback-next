@@ -234,11 +234,21 @@ export class ExpressServer {
     await this.lbApp.boot();
   }
 
-  async start() {
+  public async start() {
+    await this.lbApp.start();
     const port = this.lbApp.restServer.config.port || 3000;
     const host = this.lbApp.restServer.config.host || '127.0.0.1';
-    const server = this.app.listen(port, host);
-    await pEvent(server, 'listening');
+    this.server = this.app.listen(port, host);
+    await pEvent(this.server, 'listening');
+  }
+
+  // For testing purposes
+  public async stop() {
+    if (!this.server) return;
+    await this.lbApp.stop();
+    this.server.close();
+    await pEvent(this.server, 'close');
+    this.server = undefined;
   }
 }
 ```
@@ -261,6 +271,37 @@ export async function main(options: ApplicationConfig = {}) {
   console.log('Server is running at http://127.0.0.1:3000');
 }
 ```
+
+{% include code-caption.html content="index.js" %}
+
+```js
+const application = require('./dist');
+
+module.exports = application;
+
+if (require.main === module) {
+  // Run the application
+  const config = {
+    rest: {
+      port: +process.env.PORT || 3000,
+      host: process.env.HOST || 'localhost',
+      openApiSpec: {
+        // useful when used with OpenAPI-to-GraphQL to locate your application
+        setServersFromRequest: true,
+      },
+      // Use the LB4 application as a route. It should not be listening.
+      listenOnStart: false,
+    },
+  };
+  application.main(config).catch(err => {
+    console.error('Cannot start the application.', err);
+    process.exit(1);
+  });
+}
+```
+
+Please note `listenOnStart` is set to `false` to instruct the LB4 application is
+not listening on HTTP when it's started as the Express server will be listening.
 
 Now let's start the application and visit <http://127.0.0.1:3000>:
 
