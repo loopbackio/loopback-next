@@ -20,7 +20,7 @@
 		"@types/node": "^10.14.20",
 		"@typescript-eslint/eslint-plugin": "^2.3.2",
 		"@typescript-eslint/parser": "^2.3.2",
-		"cross-spawn": "^7.0.0",
+		"cross-spawn": "^7.0.1",
 		"debug": "^4.1.1",
 		"eslint": "^6.5.1",
 		"eslint-config-prettier": "^6.4.0",
