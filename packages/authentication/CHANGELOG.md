@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@3.1.1...@loopback/authentication@3.2.0) (2019-10-07)
+
+
+### Features
+
+* **authentication:** return binding for registerAuthenticationStrategy ([051eeb8](https://github.com/strongloop/loopback-next/commit/051eeb8))
+
+
+
+
+
 ## [3.1.1](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@3.1.0...@loopback/authentication@3.1.1) (2019-09-28)
 
 **Note:** Version bump only for package @loopback/authentication

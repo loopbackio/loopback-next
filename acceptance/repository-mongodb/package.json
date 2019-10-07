@@ -1,6 +1,6 @@
 {
   "name": "@loopback/test-repository-mongodb",
-  "version": "0.4.7",
+  "version": "0.4.8",
   "description": "",
   "private": "true",
   "engines": {
@@ -19,9 +19,9 @@
   "license": "MIT",
   "devDependencies": {
     "@loopback/build": "^1.7.1",
-    "@loopback/eslint-config": "^4.1.1",
-    "@loopback/repository": "^1.15.1",
-    "@loopback/repository-tests": "^0.5.1",
+    "@loopback/eslint-config": "^4.1.2",
+    "@loopback/repository": "^1.15.2",
+    "@loopback/repository-tests": "^0.5.2",
     "@types/node": "^10.14.20",
     "loopback-connector-mongodb": "^5.0.1"
   },

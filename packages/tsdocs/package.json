@@ -1,6 +1,6 @@
 {
   "name": "@loopback/tsdocs",
-  "version": "1.3.3",
+  "version": "1.3.4",
   "description": "LoopBack's TypeScript docs based on Microsoft api-extractor and api-documenter",
   "engines": {
     "node": ">=8.9"
@@ -27,9 +27,9 @@
     "fs-extra": "^8.1.0"
   },
   "devDependencies": {
-    "@loopback/build": "^2.0.13",
-    "@loopback/eslint-config": "^4.1.1",
-    "@loopback/testlab": "^1.9.1",
+    "@loopback/build": "^2.0.14",
+    "@loopback/eslint-config": "^4.1.2",
+    "@loopback/testlab": "^1.9.2",
     "@types/debug": "^4.1.5",
     "@types/fs-extra": "^8.0.0",
     "@types/node": "^10.14.20",

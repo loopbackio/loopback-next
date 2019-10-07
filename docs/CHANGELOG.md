@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@2.2.1...@loopback/docs@2.3.0) (2019-10-07)
+
+
+### Bug Fixes
+
+* **docs:** add content to usage-scenario page ([bfa0be8](https://github.com/strongloop/loopback-next/commit/bfa0be8))
+
+
+### Features
+
+* **docs:** add 2019Q4 roadmap ([512d37d](https://github.com/strongloop/loopback-next/commit/512d37d))
+
+
+
+
+
 ## [2.2.1](https://github.com/strongloop/loopback-next/compare/@loopback/docs@2.2.0...@loopback/docs@2.2.1) (2019-09-28)
 
 **Note:** Version bump only for package @loopback/docs

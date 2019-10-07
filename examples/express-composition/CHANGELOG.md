@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.8.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-express-composition@1.7.1...@loopback/example-express-composition@1.8.0) (2019-10-07)
+
+
+### Features
+
+* **example-express-composition:** add code path to allow life cycle observers ([8d3401d](https://github.com/strongloop/loopback-next/commit/8d3401d))
+
+
+
+
+
 ## [1.7.1](https://github.com/strongloop/loopback-next/compare/@loopback/example-express-composition@1.7.0...@loopback/example-express-composition@1.7.1) (2019-09-28)
 
 **Note:** Version bump only for package @loopback/example-express-composition
