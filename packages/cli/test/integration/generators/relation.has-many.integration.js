@@ -97,7 +97,7 @@ describe('lb4 relation HasMany', function() {
   });
 
   // special cases regardless of the repository type
-  context('generates model relation with default values', () => {
+  context('generate model relation', () => {
     const promptArray = [
       {
         relationType: 'hasMany',
@@ -135,7 +135,7 @@ describe('lb4 relation HasMany', function() {
           .withPrompts(multiItemPrompt);
       });
 
-      it('has correct default imports', async () => {
+      it('add import hasMany, import for target model and hasMany decorator', async () => {
         const sourceFilePath = path.join(
           SANDBOX_PATH,
           MODEL_APP_PATH,
@@ -147,7 +147,7 @@ describe('lb4 relation HasMany', function() {
     }
   });
 
-  context('generates model relation with custom relation name', () => {
+  context('generate model relation with custom relation name', () => {
     const promptArray = [
       {
         relationType: 'hasMany',
@@ -208,7 +208,7 @@ describe('lb4 relation HasMany', function() {
     }
   });
 
-  context('generates model relation with custom foreignKey', () => {
+  context('generate model relation with custom foreignKey', () => {
     const promptArray = [
       {
         relationType: 'hasMany',
@@ -269,7 +269,56 @@ describe('lb4 relation HasMany', function() {
     }
   });
 
-  context('checks if the controller file created ', () => {
+  context('generate model relation with default relation name', () => {
+    const promptArray = [
+      {
+        relationType: 'hasMany',
+        sourceModel: 'Customer',
+        destinationModel: 'Order',
+      },
+      {
+        relationType: 'hasMany',
+        sourceModel: 'CustomerClass',
+        destinationModel: 'OrderClass',
+      },
+      {
+        relationType: 'hasMany',
+        sourceModel: 'CustomerClassType',
+        destinationModel: 'OrderClassType',
+      },
+    ];
+
+    const defaultRelationName = ['orders', 'orderClasses', 'orderClassTypes'];
+    promptArray.forEach(function(multiItemPrompt, i) {
+      describe('answers ' + JSON.stringify(multiItemPrompt), () => {
+        suite(multiItemPrompt, i);
+      });
+    });
+
+    function suite(multiItemPrompt, i) {
+      it('relation name should be ' + defaultRelationName[i], async () => {
+        await testUtils
+          .executeGenerator(generator)
+          .inDir(SANDBOX_PATH, () =>
+            testUtils.givenLBProject(SANDBOX_PATH, {
+              additionalFiles: SANDBOX_FILES,
+            }),
+          )
+          .withPrompts(multiItemPrompt);
+
+        const sourceFilePath = path.join(
+          SANDBOX_PATH,
+          MODEL_APP_PATH,
+          sourceFileName[i],
+        );
+
+        assert.file(sourceFilePath);
+        expectFileToMatchSnapshot(sourceFilePath);
+      });
+    }
+  });
+
+  context('check if the controller file created ', () => {
     const promptArray = [
       {
         relationType: 'hasMany',
@@ -307,7 +356,7 @@ describe('lb4 relation HasMany', function() {
           .withPrompts(multiItemPrompt);
       });
 
-      it('new controller file has benn created', async () => {
+      it('new controller file created', async () => {
         const filePath = path.join(
           SANDBOX_PATH,
           CONTROLLER_PATH,
@@ -327,7 +376,7 @@ describe('lb4 relation HasMany', function() {
     }
   });
 
-  context('checks generated source class repository', () => {
+  context('check source class repository ', () => {
     const promptArray = [
       {
         relationType: 'hasMany',
@@ -367,9 +416,9 @@ describe('lb4 relation HasMany', function() {
       });
 
       it(
-        'generates ' +
+        'checks if ' +
           sourceClassnames[i] +
-          ' repository file with different inputs',
+          ' repository has generated correctly',
         async () => {
           const sourceFilePath = path.join(
             SANDBOX_PATH,
