@@ -19,6 +19,10 @@ children:
   url: Getting-started.html
   output: 'web, pdf'
 
+- title: 'Inside a LoopBack Application'
+  url: Inside-LoopBack-Application.html
+  output: 'web, pdf'
+
 - title: 'Key concepts'
   url: Concepts.html
   output: 'web, pdf'
