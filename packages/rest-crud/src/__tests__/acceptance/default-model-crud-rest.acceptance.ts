@@ -79,10 +79,22 @@ describe('CrudRestController for a simple Product model', () => {
     });
 
     it('rejects request with `id` value', async () => {
-      await client
+      const {body} = await client
         .post('/products')
         .send({id: 1, name: 'a name'})
         .expect(422);
+
+      expect(body.error).to.containDeep({
+        code: 'VALIDATION_FAILED',
+        details: [
+          {
+            path: '',
+            code: 'additionalProperties',
+            message: 'should NOT have additional properties',
+            info: {additionalProperty: 'id'},
+          },
+        ],
+      });
     });
   });
 

@@ -1046,9 +1046,6 @@ describe('build-schema', () => {
             description: {type: 'string'},
           },
           additionalProperties: false,
-          not: {
-            anyOf: [{required: ['id']}],
-          },
           description: `(Schema options: { exclude: [ 'id' ] })`,
         });
       });
@@ -1071,9 +1068,6 @@ describe('build-schema', () => {
             description: {type: 'string'},
           },
           additionalProperties: false,
-          not: {
-            anyOf: [{required: ['id']}, {required: ['name']}],
-          },
           description: `(Schema options: { exclude: [ 'id', 'name' ] })`,
         });
       });
