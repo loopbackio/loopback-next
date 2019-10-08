@@ -459,18 +459,21 @@ export function modelToJsonSchema<T extends object>(
 
   function includeReferencedSchema(name: string, schema: JSONSchema) {
     if (!schema || !Object.keys(schema).length) return;
-    result.definitions = result.definitions || {};
 
     // promote nested definition to the top level
     if (result !== schema && schema.definitions) {
       for (const key in schema.definitions) {
         if (key === title) continue;
+        result.definitions = result.definitions || {};
         result.definitions[key] = schema.definitions[key];
       }
       delete schema.definitions;
     }
 
-    result.definitions[name] = schema;
+    if (result !== schema) {
+      result.definitions = result.definitions || {};
+      result.definitions[name] = schema;
+    }
   }
   return result;
 }

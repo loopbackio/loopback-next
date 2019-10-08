@@ -5,7 +5,12 @@
 
 import {JsonSchema} from '@loopback/repository-json-schema';
 import * as _ from 'lodash';
-import {ReferenceObject, SchemaObject, SchemasObject} from './types';
+import {
+  isSchemaObject,
+  ReferenceObject,
+  SchemaObject,
+  SchemasObject,
+} from './types';
 
 /**
  * Custom LoopBack extension: a reference to Schema object that's bundled
@@ -32,9 +37,25 @@ export type SchemaRef = ReferenceObject & {definitions: SchemasObject};
 /**
  * Converts JSON Schemas into a SchemaObject
  * @param json - JSON Schema to convert from
+ * @param visited - A map to keep track of mapped json schemas to handle
+ * circular references
  */
-export function jsonToSchemaObject(json: JsonSchema): SchemaObject | SchemaRef {
-  const result: SchemaObject = {};
+export function jsonToSchemaObject(
+  json: JsonSchema,
+  visited: Map<JsonSchema, SchemaObject | SchemaRef> = new Map(),
+): SchemaObject | SchemaRef {
+  // A flag to check if a schema object is fully converted
+  const converted = 'x-loopback-converted';
+  const schema = visited.get(json);
+  if (schema != null && isSchemaObject(schema) && schema[converted] === false) {
+    return {$ref: `#/components/schemas/${json.title}`};
+  }
+  if (schema != null) return schema;
+
+  const result: SchemaObject = {
+    [converted]: false,
+  };
+  visited.set(json, result);
   const propsToIgnore = [
     'anyOf',
     'oneOf',
@@ -58,19 +79,19 @@ export function jsonToSchemaObject(json: JsonSchema): SchemaObject | SchemaRef {
       }
       case 'allOf': {
         result.allOf = _.map(json.allOf, item =>
-          jsonToSchemaObject(item as JsonSchema),
+          jsonToSchemaObject(item as JsonSchema, visited),
         );
         break;
       }
       case 'definitions': {
         result.definitions = _.mapValues(json.definitions, def =>
-          jsonToSchemaObject(jsonOrBooleanToJSON(def)),
+          jsonToSchemaObject(jsonOrBooleanToJSON(def), visited),
         );
         break;
       }
       case 'properties': {
         result.properties = _.mapValues(json.properties, item =>
-          jsonToSchemaObject(jsonOrBooleanToJSON(item)),
+          jsonToSchemaObject(jsonOrBooleanToJSON(item), visited),
         );
         break;
       }
@@ -80,13 +101,14 @@ export function jsonToSchemaObject(json: JsonSchema): SchemaObject | SchemaRef {
         } else {
           result.additionalProperties = jsonToSchemaObject(
             json.additionalProperties!,
+            visited,
           );
         }
         break;
       }
       case 'items': {
         const items = Array.isArray(json.items) ? json.items[0] : json.items;
-        result.items = jsonToSchemaObject(jsonOrBooleanToJSON(items!));
+        result.items = jsonToSchemaObject(jsonOrBooleanToJSON(items!), visited);
         break;
       }
       case '$ref': {
@@ -110,6 +132,7 @@ export function jsonToSchemaObject(json: JsonSchema): SchemaObject | SchemaRef {
     }
   }
 
+  delete result[converted];
   return result;
 }
 

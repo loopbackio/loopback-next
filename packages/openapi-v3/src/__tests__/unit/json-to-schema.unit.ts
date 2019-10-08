@@ -139,6 +139,135 @@ describe('jsonToSchemaObject', () => {
     expect(jsonToSchemaObject(inputDef)).to.eql(expectedDef);
   });
 
+  it('handles circular references with $ref', () => {
+    const schemaJson: JsonSchema = {
+      title: 'ReportState',
+      properties: {
+        // ReportState[]
+        states: {type: 'array', items: {$ref: '#/definitions/ReportState'}},
+        benchmarkId: {type: 'string'},
+        color: {type: 'string'},
+      },
+    };
+    const schema = jsonToSchemaObject(schemaJson);
+    expect(schema).to.eql({
+      title: 'ReportState',
+      properties: {
+        states: {
+          type: 'array',
+          items: {$ref: '#/components/schemas/ReportState'},
+        },
+        benchmarkId: {type: 'string'},
+        color: {type: 'string'},
+      },
+    });
+  });
+
+  it('handles circular references with object', () => {
+    const schemaJson: JsonSchema = {
+      title: 'ReportState',
+      properties: {
+        benchmarkId: {type: 'string'},
+        color: {type: 'string'},
+      },
+    };
+    // Add states: ReportState[]
+    schemaJson.properties!.states = {type: 'array', items: schemaJson};
+    const schema = jsonToSchemaObject(schemaJson);
+    expect(schema).to.eql({
+      title: 'ReportState',
+      properties: {
+        states: {
+          type: 'array',
+          items: {$ref: '#/components/schemas/ReportState'},
+        },
+        benchmarkId: {type: 'string'},
+        color: {type: 'string'},
+      },
+    });
+  });
+
+  it('handles indirect circular references with $ref', () => {
+    const schemaJson: JsonSchema = {
+      title: 'ReportState',
+      properties: {
+        parentState: {$ref: '#/definitions/ParentState'},
+        benchmarkId: {type: 'string'},
+        color: {type: 'string'},
+      },
+      definitions: {
+        ParentState: {
+          title: 'ParentState',
+          properties: {
+            timestamp: {type: 'string'},
+            state: {$ref: '#/definitions/ReportState'},
+          },
+        },
+      },
+    };
+    const schema = jsonToSchemaObject(schemaJson);
+    expect(schema).to.eql({
+      title: 'ReportState',
+      properties: {
+        parentState: {$ref: '#/components/schemas/ParentState'},
+        benchmarkId: {type: 'string'},
+        color: {type: 'string'},
+      },
+      definitions: {
+        ParentState: {
+          title: 'ParentState',
+          properties: {
+            timestamp: {type: 'string'},
+            state: {$ref: '#/components/schemas/ReportState'},
+          },
+        },
+      },
+    });
+  });
+
+  it('handles indirect circular references with object', () => {
+    const parentStateSchema: JsonSchema = {
+      title: 'ParentState',
+      properties: {
+        timestamp: {type: 'string'},
+        // state: {$ref: '#/definitions/ReportState'},
+      },
+    };
+
+    const schemaJson: JsonSchema = {
+      title: 'ReportState',
+      properties: {
+        parentState: {$ref: '#/definitions/ParentState'},
+        benchmarkId: {type: 'string'},
+        color: {type: 'string'},
+      },
+      definitions: {
+        ParentState: parentStateSchema,
+      },
+    };
+
+    parentStateSchema.properties!.state = schemaJson;
+
+    const schema = jsonToSchemaObject(schemaJson);
+    expect(schema).to.eql({
+      title: 'ReportState',
+      properties: {
+        parentState: {$ref: '#/components/schemas/ParentState'},
+        benchmarkId: {type: 'string'},
+        color: {type: 'string'},
+      },
+      definitions: {
+        ParentState: {
+          title: 'ParentState',
+          properties: {
+            timestamp: {type: 'string'},
+            state: {$ref: '#/components/schemas/ReportState'},
+          },
+        },
+      },
+    });
+  });
+
   it('errors if type is an array and items is missing', () => {
     expect.throws(
       () => {
