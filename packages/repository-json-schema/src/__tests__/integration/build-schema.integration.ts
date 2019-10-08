@@ -355,6 +355,7 @@ describe('build-schema', () => {
                   type: 'string',
                 },
               },
+              additionalProperties: false,
             },
           });
           expectValidJsonSchema(jsonSchema);
@@ -411,6 +412,7 @@ describe('build-schema', () => {
                   type: 'string',
                 },
               },
+              additionalProperties: false,
             },
           });
           expectValidJsonSchema(jsonSchema);
@@ -483,6 +485,7 @@ describe('build-schema', () => {
                   type: 'string',
                 },
               },
+              additionalProperties: false,
             },
           });
           expectValidJsonSchema(jsonSchema);
@@ -535,6 +538,7 @@ describe('build-schema', () => {
                 },
                 customerId: {type: 'number'},
               },
+              additionalProperties: false,
             },
           });
         });
@@ -574,6 +578,7 @@ describe('build-schema', () => {
                   type: 'string',
                 },
               },
+              additionalProperties: false,
             },
             CustomTypeBar: {
               title: 'CustomTypeBar',
@@ -585,6 +590,7 @@ describe('build-schema', () => {
                   },
                 },
               },
+              additionalProperties: false,
             },
           });
           expectValidJsonSchema(jsonSchema);
@@ -613,6 +619,7 @@ describe('build-schema', () => {
             items: {$ref: '#/definitions/Product'},
           },
         },
+        additionalProperties: false,
         definitions: {
           Product: {
             title: 'Product',
@@ -621,6 +628,7 @@ describe('build-schema', () => {
                 $ref: '#/definitions/Category',
               },
             },
+            additionalProperties: false,
           },
         },
       };
@@ -628,6 +636,38 @@ describe('build-schema', () => {
       it('handles circular references', () => {
         const schema = modelToJsonSchema(Category);
         expect(schema).to.deepEqual(expectedSchema);
+      });
+    });
+
+    context('additionalProperties', () => {
+      it('assumes "strict: true" when not set', () => {
+        @model()
+        class DefaultModel {}
+
+        const schema = modelToJsonSchema(DefaultModel);
+        expect(schema).to.containDeep({
+          additionalProperties: false,
+        });
+      });
+
+      it('respects model setting "strict: true"', () => {
+        @model({settings: {strict: true}})
+        class StrictModel {}
+
+        const schema = modelToJsonSchema(StrictModel);
+        expect(schema).to.containDeep({
+          additionalProperties: false,
+        });
+      });
+
+      it('respects model setting "strict: false"', () => {
+        @model({settings: {strict: false}})
+        class FreeFormModel {}
+
+        const schema = modelToJsonSchema(FreeFormModel);
+        expect(schema).to.containDeep({
+          additionalProperties: true,
+        });
       });
     });
 
@@ -729,6 +769,7 @@ describe('build-schema', () => {
             items: {$ref: '#/definitions/Product'},
           },
         },
+        additionalProperties: false,
         definitions: {
           Product: {
             title: 'Product',
@@ -737,6 +778,7 @@ describe('build-schema', () => {
                 $ref: '#/definitions/Category',
               },
             },
+            additionalProperties: false,
           },
         },
       };
@@ -776,6 +818,7 @@ describe('build-schema', () => {
               categoryId: {type: 'number'},
               category: {$ref: '#/definitions/CategoryWithRelations'},
             },
+            additionalProperties: false,
           },
         },
         properties: {
@@ -785,6 +828,7 @@ describe('build-schema', () => {
             items: {$ref: '#/definitions/ProductWithRelations'},
           },
         },
+        additionalProperties: false,
         title: 'CategoryWithRelations',
         description: `(Schema options: { includeRelations: true })`,
       };
@@ -819,6 +863,7 @@ describe('build-schema', () => {
                 $ref: '#/definitions/CategoryWithoutPropWithRelations',
               },
             },
+            additionalProperties: false,
           },
         },
         properties: {
@@ -827,6 +872,7 @@ describe('build-schema', () => {
             items: {$ref: '#/definitions/ProductWithRelations'},
           },
         },
+        additionalProperties: false,
         title: 'CategoryWithoutPropWithRelations',
         description: `(Schema options: { includeRelations: true })`,
       };
@@ -866,6 +912,7 @@ describe('build-schema', () => {
               categoryId: {type: 'number'},
               category: {$ref: '#/definitions/CategoryWithRelations'},
             },
+            additionalProperties: false,
           },
         },
         properties: {
@@ -876,6 +923,7 @@ describe('build-schema', () => {
             items: {$ref: '#/definitions/ProductWithRelations'},
           },
         },
+        additionalProperties: false,
         title: 'CategoryWithRelations',
       };
       MetadataInspector.defineMetadata(
@@ -915,6 +963,7 @@ describe('build-schema', () => {
               categoryId: {type: 'number'},
               category: {$ref: '#/definitions/CategoryWithRelations'},
             },
+            additionalProperties: false,
           },
         },
         properties: {
@@ -925,6 +974,7 @@ describe('build-schema', () => {
             items: {$ref: '#/definitions/ProductWithRelations'},
           },
         },
+        additionalProperties: false,
         title: 'CategoryWithRelations',
       };
       MetadataInspector.defineMetadata(
@@ -939,6 +989,7 @@ describe('build-schema', () => {
         properties: {
           id: {type: 'number'},
         },
+        additionalProperties: false,
         title: 'Category',
       });
     });
@@ -994,6 +1045,7 @@ describe('build-schema', () => {
             name: {type: 'string'},
             description: {type: 'string'},
           },
+          additionalProperties: false,
           not: {
             anyOf: [{required: ['id']}],
           },
@@ -1018,6 +1070,7 @@ describe('build-schema', () => {
           properties: {
             description: {type: 'string'},
           },
+          additionalProperties: false,
           not: {
             anyOf: [{required: ['id']}, {required: ['name']}],
           },
