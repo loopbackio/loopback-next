@@ -30,6 +30,9 @@ describe('Validation at REST level', () => {
 
   @model()
   class Product {
+    @property()
+    id: number;
+
     @property({required: true})
     name: string;
 
@@ -55,6 +58,47 @@ describe('Validation at REST level', () => {
   PRODUCT_SPEC_WITH_DESCRIPTION.required = PRODUCT_SPEC.required!.concat(
     'description',
   );
+
+  context('with properties excluded from schema', () => {
+    before(() => {
+      const schema: SchemaObject = jsonToSchemaObject(
+        getJsonSchema(Product, {exclude: ['id']}),
+      );
+
+      class ProductController {
+        @post('/products')
+        async create(
+          @requestBody(aBodySpec(schema))
+          data: object,
+        ): Promise<Product> {
+          return new Product(data);
+        }
+      }
+
+      return givenAnAppAndAClient(ProductController);
+    });
+    after(() => app.stop());
+
+    it('rejects request bodies containing excluded properties', async () => {
+      const {body} = await client
+        .post('/products')
+        .type('json')
+        .send({id: 1, name: 'a-product-name', price: 1})
+        .expect(422);
+
+      expect(body.error).to.containEql({
+        code: 'VALIDATION_FAILED',
+        details: [
+          {
+            path: '',
+            code: 'additionalProperties',
+            message: 'should NOT have additional properties',
+            info: {additionalProperty: 'id'},
+          },
+        ],
+      });
+    });
+  });
 
   // This is the standard use case that most LB4 applications should use.
   // The request body specification is inferred from a decorated model class.
