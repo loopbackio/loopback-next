@@ -49,7 +49,7 @@
     "@loopback/build": "^2.0.14",
     "@loopback/testlab": "^1.9.2",
     "@types/mocha": "^5.2.7",
-    "@types/node": "^10.14.20",
+    "@types/node": "^10.14.21",
     "mocha": "^6.2.1",
     "p-event": "^4.1.0",
     "source-map-support": "^0.5.13"
