@@ -77,11 +77,27 @@ describe('jsonToSchemaObject', () => {
     });
 
     it('is converted properly when it is "false"', () => {
-      const noAdditionalDef: JsonSchema = {
+      const jsonSchema: JsonSchema = {
         additionalProperties: false,
       };
-      const expectedDef: SchemaObject = {};
-      propertyConversionTest(noAdditionalDef, expectedDef);
+
+      const openApiSchema = jsonToSchemaObject(jsonSchema);
+
+      expect(openApiSchema).to.deepEqual({
+        additionalProperties: false,
+      });
+    });
+
+    it('is converted properly when it is "true"', () => {
+      const jsonSchema: JsonSchema = {
+        additionalProperties: true,
+      };
+
+      const openApiSchema = jsonToSchemaObject(jsonSchema);
+
+      expect(openApiSchema).to.deepEqual({
+        additionalProperties: true,
+      });
     });
   });
 
@@ -106,6 +122,7 @@ describe('jsonToSchemaObject', () => {
           type: 'string',
         },
       },
+      additionalProperties: false,
       default: 'Default string',
     };
     const expectedDef: SchemaObject = {
@@ -116,6 +133,7 @@ describe('jsonToSchemaObject', () => {
           type: 'string',
         },
       },
+      additionalProperties: false,
       default: 'Default string',
     };
     expect(jsonToSchemaObject(inputDef)).to.eql(expectedDef);

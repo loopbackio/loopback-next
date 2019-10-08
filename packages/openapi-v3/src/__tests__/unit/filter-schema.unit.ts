@@ -3,9 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {getFilterSchemaFor} from '../..';
 import {Entity, model, property} from '@loopback/repository';
 import {expect} from '@loopback/testlab';
+import {getFilterSchemaFor} from '../..';
 
 describe('filterSchema', () => {
   @model({
@@ -24,6 +24,7 @@ describe('filterSchema', () => {
       properties: {
         where: {
           type: 'object',
+          additionalProperties: true,
         },
         fields: {
           type: 'object',
@@ -31,12 +32,14 @@ describe('filterSchema', () => {
             id: {type: 'boolean'},
             age: {type: 'boolean'},
           },
+          additionalProperties: false,
         },
         offset: {type: 'integer', minimum: 0},
         limit: {type: 'integer', minimum: 0},
         skip: {type: 'integer', minimum: 0},
         order: {type: 'array', items: {type: 'string'}},
       },
+      additionalProperties: false,
     });
   });
 });

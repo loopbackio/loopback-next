@@ -74,8 +74,16 @@ describe('controller spec', () => {
       },
       components: {
         schemas: {
-          Bar: {title: 'Bar', properties: {name: {type: 'string'}}},
-          Baz: {title: 'Baz', properties: {name: {type: 'string'}}},
+          Bar: {
+            title: 'Bar',
+            properties: {name: {type: 'string'}},
+            additionalProperties: false,
+          },
+          Baz: {
+            title: 'Baz',
+            properties: {name: {type: 'string'}},
+            additionalProperties: false,
+          },
           Foo: {
             // guarantee `definition` is deleted
             title: 'Foo',
@@ -83,6 +91,7 @@ describe('controller spec', () => {
               bar: {$ref: '#/components/schemas/Bar'},
               baz: {$ref: '#/components/schemas/Baz'},
             },
+            additionalProperties: false,
           },
         },
       },
@@ -527,6 +536,7 @@ describe('controller spec', () => {
           type: 'string',
         },
       },
+      additionalProperties: false,
       title: 'MyModel',
     };
 
@@ -775,6 +785,7 @@ describe('controller spec', () => {
               type: 'string',
             },
           },
+          additionalProperties: false,
         },
       });
     });
