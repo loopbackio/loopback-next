@@ -234,6 +234,8 @@ describe('build-schema', () => {
         benchmarkId: {type: 'string'},
         color: {type: 'string'},
       });
+      // No circular references in definitions
+      expect(schema.definitions).to.be.undefined();
     });
   });
 
