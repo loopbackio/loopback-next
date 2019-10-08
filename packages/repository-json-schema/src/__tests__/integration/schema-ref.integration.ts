@@ -27,6 +27,7 @@ describe('getJsonSchemaRef', () => {
               type: 'string',
             },
           },
+          additionalProperties: false,
         },
       },
     });

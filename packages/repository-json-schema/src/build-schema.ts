@@ -439,6 +439,8 @@ export function modelToJsonSchema<T extends object>(
     includeReferencedSchema(referenceType.name, propSchema);
   }
 
+  result.additionalProperties = meta.settings.strict === false;
+
   if (options.includeRelations) {
     for (const r in meta.relations) {
       result.properties = result.properties || {};
