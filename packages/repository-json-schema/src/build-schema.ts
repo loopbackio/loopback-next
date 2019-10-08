@@ -366,6 +366,7 @@ export function modelToJsonSchema<T extends object>(
     delete options.partial;
   }
 
+  debug('Creating schema for model %s', ctor.name);
   debug('JSON schema options: %o', options);
 
   const meta: ModelDefinition | {} = ModelMetadataHelper.getModelMetadata(ctor);
@@ -374,6 +375,8 @@ export function modelToJsonSchema<T extends object>(
   if (!(meta instanceof ModelDefinition)) {
     return {};
   }
+
+  debug('Model settings', meta.settings);
 
   const title = buildSchemaTitle(ctor, meta, options);
 
@@ -440,6 +443,7 @@ export function modelToJsonSchema<T extends object>(
   }
 
   result.additionalProperties = meta.settings.strict === false;
+  debug('  additionalProperties?', result.additionalProperties);
 
   if (options.includeRelations) {
     for (const r in meta.relations) {
