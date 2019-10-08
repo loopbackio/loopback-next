@@ -75,7 +75,9 @@ export function jsonToSchemaObject(json: JsonSchema): SchemaObject | SchemaRef {
         break;
       }
       case 'additionalProperties': {
-        if (typeof json.additionalProperties !== 'boolean') {
+        if (typeof json.additionalProperties === 'boolean') {
+          result.additionalProperties = json.additionalProperties;
+        } else {
           result.additionalProperties = jsonToSchemaObject(
             json.additionalProperties!,
           );

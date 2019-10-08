@@ -3,16 +3,16 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {expect, validateApiSpec} from '@loopback/testlab';
 import {Application} from '@loopback/core';
-import {
-  RestServer,
-  RestComponent,
-  createControllerFactoryForClass,
-} from '../../..';
-import {get, post, requestBody} from '@loopback/openapi-v3';
 import {anOpenApiSpec, anOperationSpec} from '@loopback/openapi-spec-builder';
+import {get, post, requestBody} from '@loopback/openapi-v3';
 import {model, property} from '@loopback/repository';
+import {expect, validateApiSpec} from '@loopback/testlab';
+import {
+  createControllerFactoryForClass,
+  RestComponent,
+  RestServer,
+} from '../../..';
 
 describe('RestServer.getApiSpec()', () => {
   let app: Application;
@@ -277,6 +277,7 @@ describe('RestServer.getApiSpec()', () => {
             type: 'string',
           },
         },
+        additionalProperties: false,
       },
     });
   });
