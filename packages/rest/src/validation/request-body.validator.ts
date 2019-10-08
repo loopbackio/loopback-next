@@ -4,6 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
+  isReferenceObject,
   ReferenceObject,
   RequestBodyObject,
   SchemaObject,
@@ -53,7 +54,15 @@ export function validateRequestBody(
   const schema = body.schema;
   /* istanbul ignore if */
   if (debug.enabled) {
-    debug('Request body schema: %j', util.inspect(schema, {depth: null}));
+    debug('Request body schema:', util.inspect(schema, {depth: null}));
+    if (
+      schema &&
+      isReferenceObject(schema) &&
+      schema.$ref.startsWith('#/components/schemas/')
+    ) {
+      const ref = schema.$ref.slice('#/components/schemas/'.length);
+      debug('  referencing:', util.inspect(globalSchemas[ref], {depth: null}));
+    }
   }
   if (!schema) return;
 
