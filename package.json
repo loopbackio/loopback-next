@@ -51,7 +51,7 @@
     "prettier:fix": "npm run prettier:cli -- --write",
     "clean": "lerna run clean && node packages/build/bin/run-clean \"packages/*/dist\" \"extensions/*/dist\" \"examples/*/dist\" \"benchmark/dist\"",
     "clean:lerna": "lerna clean",
-    "build": "node bin/run-lerna run build",
+    "build": "node bin/run-lerna run build --sort",
     "build:full": "lerna clean && node packages/build/bin/run-clean \"node_modules\" && npm install && npm run clean && npm run build",
     "pretest": "npm run clean && npm run build",
     "test": "node packages/build/bin/run-nyc npm run mocha --scripts-prepend-node-path",
