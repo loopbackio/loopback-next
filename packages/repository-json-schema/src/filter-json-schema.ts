@@ -34,7 +34,8 @@ export function getFilterJsonSchemaFor(modelCtor: typeof Model): JsonSchema {
 
       limit: {
         type: 'integer',
-        minimum: 0,
+        minimum: 1,
+        examples: [100],
       },
 
       skip: {
