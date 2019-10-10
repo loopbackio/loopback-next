@@ -149,6 +149,19 @@ describe('jsonToSchemaObject', () => {
     );
   });
 
+  it('copies first example from examples', () => {
+    const itemsDef: JsonSchema = {
+      type: 'integer',
+      examples: [100, 500],
+    };
+    const expectedItems: SchemaObject = {
+      type: 'integer',
+      example: 100,
+      examples: [100, 500],
+    };
+    propertyConversionTest(itemsDef, expectedItems);
+  });
+
   // Helper function to check conversion of JSON Schema properties
   // to Swagger versions
   function propertyConversionTest(property: object, expected: object) {

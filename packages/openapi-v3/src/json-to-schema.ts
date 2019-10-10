@@ -96,6 +96,13 @@ export function jsonToSchemaObject(json: JsonSchema): SchemaObject | SchemaRef {
         );
         break;
       }
+      case 'examples': {
+        if (Array.isArray(json.examples)) {
+          result.examples = json.examples;
+          result.example = json.examples[0];
+        }
+        break;
+      }
       default: {
         result[property] = json[property as keyof JsonSchema];
         break;

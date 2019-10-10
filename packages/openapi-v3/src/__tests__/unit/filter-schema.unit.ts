@@ -35,7 +35,7 @@ describe('filterSchema', () => {
           additionalProperties: false,
         },
         offset: {type: 'integer', minimum: 0},
-        limit: {type: 'integer', minimum: 0},
+        limit: {type: 'integer', minimum: 1, example: 100, examples: [100]},
         skip: {type: 'integer', minimum: 0},
         order: {type: 'array', items: {type: 'string'}},
       },
