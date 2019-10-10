@@ -988,14 +988,17 @@ describe('build-schema', () => {
         expect(originalSchema.title).to.equal('Product');
 
         const excludeIdSchema = getJsonSchema(Product, {exclude: ['id']});
-        expect(excludeIdSchema.properties).to.deepEqual({
-          name: {type: 'string'},
-          description: {type: 'string'},
+        expect(excludeIdSchema).to.deepEqual({
+          title: 'ProductExcluding_id_',
+          properties: {
+            name: {type: 'string'},
+            description: {type: 'string'},
+          },
+          not: {
+            anyOf: [{required: ['id']}],
+          },
+          description: `(Schema options: { exclude: [ 'id' ] })`,
         });
-        expect(excludeIdSchema.title).to.equal('ProductExcluding_id_');
-        expect(excludeIdSchema.description).to.endWith(
-          `(Schema options: { exclude: [ 'id' ] })`,
-        );
       });
 
       it('excludes multiple properties when the option "exclude" is set to exclude multiple properties', () => {
@@ -1010,15 +1013,16 @@ describe('build-schema', () => {
         const excludeIdAndNameSchema = getJsonSchema(Product, {
           exclude: ['id', 'name'],
         });
-        expect(excludeIdAndNameSchema.properties).to.deepEqual({
-          description: {type: 'string'},
+        expect(excludeIdAndNameSchema).to.deepEqual({
+          title: 'ProductExcluding_id-name_',
+          properties: {
+            description: {type: 'string'},
+          },
+          not: {
+            anyOf: [{required: ['id']}, {required: ['name']}],
+          },
+          description: `(Schema options: { exclude: [ 'id', 'name' ] })`,
         });
-        expect(excludeIdAndNameSchema.title).to.equal(
-          'ProductExcluding_id-name_',
-        );
-        expect(excludeIdAndNameSchema.description).to.endWith(
-          `(Schema options: { exclude: [ 'id', 'name' ] })`,
-        );
       });
 
       it(`doesn't exclude properties when the option "exclude" is set to exclude no properties`, () => {
