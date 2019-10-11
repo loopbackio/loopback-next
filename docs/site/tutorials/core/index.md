@@ -28,24 +28,14 @@ extensible and composable so that developers can easily leverage, customize, and
 extend the core to create meaningful user experiences with great flexibility and
 productivity.
 
-## Part 1: [Introduction of the application scenario](./1-introduction.md)
-
-## Part 2: [Architectural challenges](./2-architecture.md)
-
-## Part 3: [Manage artifacts](./3-context-in-action.md)
-
-## Part 4: [Dependency injection](./4-dependency-injection.md)
-
-## Part 5: [Extension point and extension](./5-extension-point-extension.md)
-
-## Part 6: [Interception and observation](./6-interception.md)
-
-## Part 7: [Interception and observation](./7-observation.md)
-
-## Part 8: [Configuration](./8-configuration.md)
-
-## Part 9: [Boot by convention](./9-boot-by-convention.md)
-
-## Part 10: [Advanced recipes](./10-advanced-recipes.md)
-
-## Part 11: [Architectural summary](./11-summary.md)
+- Part 1: [Introduction of the application scenario](./1-introduction.md)
+- Part 2: [Architectural challenges](./2-architecture.md)
+- Part 3: [Manage artifacts](./3-context-in-action.md)
+- Part 4: [Dependency injection](./4-dependency-injection.md)
+- Part 5: [Extension point and extension](./5-extension-point-extension.md)
+- Part 6: [Interception and observation](./6-interception.md)
+- Part 7: [Interception and observation](./7-observation.md)
+- Part 8: [Configuration](./8-configuration.md)
+- Part 9: [Boot by convention](./9-boot-by-convention.md)
+- Part 10: [Advanced recipes](./10-advanced-recipes.md)
+- Part 11: [Architectural summary](./11-summary.md)

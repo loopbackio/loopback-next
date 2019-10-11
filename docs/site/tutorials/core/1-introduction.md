@@ -1,4 +1,12 @@
-# Introduction (#1)
+---
+lang: en
+title: 'Introduction of the application scenario'
+keywords: LoopBack 4.0, LoopBack 4
+sidebar: lb4_sidebar
+permalink: /doc/en/lb4/core-tutorial-part1.html
+---
+
+# Introduction
 
 At the core of LoopBack 4, we provide a powerful Inversion of Control and
 Dependency Injection container in TypeScript that serves as the foundation to
@@ -23,7 +31,7 @@ requirements:
    - English: Hello, Raymond!
    - Chinese: Raymond，你好！
 
-2. It should be easy to add support for a new language, such as French
+2. It should be easy to add support for a new language, such as French.
 
 3. A REST API is provided to access the service via
    `http://<server>:<port>/greet/<name>`. It will receive a response based on

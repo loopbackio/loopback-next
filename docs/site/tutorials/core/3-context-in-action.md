@@ -1,4 +1,10 @@
-# Context in action
+---
+lang: en
+title: 'Context in action'
+keywords: LoopBack 4.0, LoopBack 4
+sidebar: lb4_sidebar
+permalink: /doc/en/lb4/core-tutorial-part3.html
+---
 
 In the traditional modular design, we often declare various artifacts as
 classes/interfaces in separate files and use `export/import` to reference from
@@ -55,37 +61,86 @@ export class GreetingApplication extends BootMixin(RestApplication) {
 
 ## Providing values for artifacts
 
-https://github.com/strongloop/loopback-next/blob/master/examples/context/src/binding-types.ts
+Fhere are different ways to supply the value for the artifacts in LoopBack.
+Artifacts can be services, repositories, configuration, etc.
 
-1. As a constant value
+Here are the different ways:
 
-2. To be created by a factory function
+1. As a constant value.
 
-3. To be instantiated from a class
+   The constant value can be a string, number or any other types.
 
-4. To be created from a provider class
+2. To be created by a factory function.
+
+   For example, a function to get the current time.
+
+3. To be instantiated from a class.
+
+   A class can be aservice, controller or other LoopBack artifacts.
+
+4. To be created from a provider class.
+
+   Since plain functions do not accept injections, you can create a wrapper
+   class that has the ability to accept injection. For example, you can use
+   create a provider class that recevies injection of a HTTP request.
 
 5. As an alias to another binding
 
+   This is a convenient way to allow a binding pointing to another one.
+
+The
+[binding-types.ts](https://github.com/strongloop/loopback-next/blob/master/examples/context/src/binding-types.ts)
+in `example-context` example shows various ways to provide values for a binding.
+
+For details, see the
+[Binding documentation page](https://loopback.io/doc/en/lb4/Binding.html).
+
 ## Resolving artifacts by key
 
-https://github.com/strongloop/loopback-next/blob/master/examples/context/src/find-bindings.ts
+The
+[find-bindings.ts](https://github.com/strongloop/loopback-next/blob/master/examples/context/src/find-bindings.ts)
+in the `example-context` example shows different flavors of finding bindings in
+a context
 
 ## Discovering artifacts by filter
 
+For the cases that we don't know the binding keys ahead of time, we can match
+the bindings by using the filter function.
+
+For example, controllers can be used for REST APIs, GraphQL APIs, web sockets,
+etc. We can discover all the controllers that has the OpenAPI decorators by
+having a filter function to differentiate different types of controllers.
+
 ## Binding scopes
 
-1. Transient
-2. Singleton
-3. Context
+There are three binding scopes:
+
+1. Transient - a new instance of binding is created for each request.
+2. Singleton - there is only a single instance of the binding.
+3. Context - for a given context in the hierarchy, there is only a single
+   instance for a given binding key.
 
 ## Watching artifacts
 
-https://github.com/strongloop/loopback-next/blob/master/examples/context/src/context-observation.ts
+The context view gives us control when an binding is being added or moreved.
+This also allows the support of dynamic extension points. For the
+[greeting-app example](https://github.com/strongloop/loopback-next/tree/master/examples/greeting-app),
+after the application has started, more greeters can be added, and there is no
+need to add all the greeters up front.
+
+To see an example, go to:
+https://github.com/strongloop/loopback-next/blob/master/examples/context/src/context-observation.ts.
 
 ## Contributing multiple artifacts via components
 
+[Components](https://loopback.io/doc/en/lb4/Components.html) can be considered
+as a collection of binding added to the context. For example, for an
+authentication component, an authentication stategy and an authentication action
+can be added to a component.
+
+See
 https://github.com/strongloop/loopback-next/blob/master/examples/greeter-extension/src/component.ts
+as an example.
 
 ```ts
 /**
@@ -102,5 +157,3 @@ export class GreetingComponent implements Component {
   ];
 }
 ```
-
-https://github.com/strongloop/loopback-next/tree/master/examples/context
