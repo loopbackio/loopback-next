@@ -73,8 +73,10 @@ separated from the code responsible for implementing client side APIs.
 
 <tr>
   <td>Programming Language</td>
-  <td>Built with JavaScript ES5<br>Node.js callback</td>
-  <td>TypeScript 2.6.x & JavaScript ES2016/2017<br>Promise & Async/Await</td>
+  <td>Built with JavaScript ES5<br>Node.js callbacks</td>
+  <td>Modern TypeScript with latest JavaScript features
+    <br>Promises & async/await, ES2016/2017 and beyond
+  </td>
 </tr>
 
 <tr>
@@ -84,9 +86,18 @@ separated from the code responsible for implementing client side APIs.
 </tr>
 
 <tr>
+  <td>Tooling</td>
+  <td><code>loopback-cli</code> and API Connect UI</td>
+  <td><a href="Command-line-interface.html"><code>@loopback/cli</code></a></td>
+</tr>
+
+<tr>
   <td>Model Definition</td>
   <td>Models can be defined with JavaScript or JSON</td>
-  <td>Models can be defined with TypeScript/JavaScript/JSON(TBA)</td>
+  <td>Models can be defined with TypeScript;
+    <br>TBD: JavaScript - see
+    <a href="https://github.com/strongloop/loopback-next/issues/560">loopback-next#560</a>
+  </td>
 </tr>
 
 <tr>
@@ -94,17 +105,17 @@ separated from the code responsible for implementing client side APIs.
   <td>A model can be attached to a datasource backed by a connector that
     implements CRUD operations
   </td>
-  <td><a href="https://github.com/strongloop/loopback-next/tree/master/packages/repository">Repositories</a>
-    are introduced to represent persistence related operations; a repository
-    binds a model metadata to a datasource
+  <td><a href="Repositories.html">Repositories</a> are introduced to represent
+    persistence related operations; a repository binds a model metadata
+    to a datasource
   </td>
 </tr>
 
 <tr>
   <td>Model Relation</td>
   <td>Relations can be defined between models</td>
-  <td>(TBA) Relations can be defined between models but they will be realized
-    between repositories
+  <td>Relations can be defined between models; queries and persistence are
+    implemented at repository level
   </td>
 </tr>
 
@@ -122,31 +133,35 @@ separated from the code responsible for implementing client side APIs.
 <tr>
   <td>API Spec</td>
   <td>Swagger 2.0</td>
-  <td>OpenAPI Spec 3.0 and potentially other API specs such as GraphQL, gRPC, etc.</td>
+  <td>OpenAPI Spec v3 and potentially other API specs such as GraphQL, gRPC, etc.</td>
 </tr>
 
 <tr>
   <td>API Explorer</td>
-  <td>Built-in UI based on swagger-ui (/explorer)</td>
-  <td>(Beta) Expose OpenAPI specs and a browser redirect to Swagger UI hosted
-    by loopback.io
-  </td>
+  <td>Built-in UI based on swagger-ui v2 (<code>/explorer</code>)</td>
+  <td>Built-in UI based on swagger-ui v3 (<code>/explorer</code>)</td>
 </tr>
 
 <tr>
   <td>DataSource</td>
-  <td>JSON and JS</td>
-  <td>JSON/JS/TypeScript</td>
+  <td>JSON</td>
+  <td>TypeScript and JSON;
+    <br>TBD: JavaScript - see
+    <a href="https://github.com/strongloop/loopback-next/issues/560">loopback-next#560</a>
+  </td>
 </tr>
 
 <tr>
-  <td>Connector</td>
-  <td>Plain JS</td>
-  <td>JS and TypeScript (TBA)</td>
+  <td>Connectors</td>
+  <td>Plain JavaScript, ES5 with callbacks</td>
+  <td>Plain JavaScript, ES5 with callbacks;
+    <br>TBD: TypeScript with async/await - see
+    <a href="https://github.com/strongloop/loopback-next/issues/889">loopback-next#889</a>
+  </td>
 </tr>
 
 <tr>
-  <td>Mixin</td>
+  <td>Mixins</td>
   <td>Use a utility to add methods from the mixin to the target model class</td>
   <td>Use ES2015 mixin classes pattern supported by
     <a href="https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-2.html">TypeScript 2.2 and above</a>
@@ -156,25 +171,30 @@ separated from the code responsible for implementing client side APIs.
 <tr>
   <td>Middleware</td>
   <td>Express middleware with phase-based registration and ordering</td>
-  <td>Sequence consisting of actions</td>
+  <td>Sequence consisting of actions;
+    <br>TBD: support for Express middleware, see
+    <a href="https://github.com/strongloop/loopback-next/issues/1293">loopback-next#1293</a>
+    and
+    <a href="https://github.com/strongloop/loopback-next/issues/2035">loopback-next#2035</a>.
+  </td>
 </tr>
 
 <tr>
   <td>Boot script</td>
   <td>Scripts to be invoked during bootstrapping</td>
-  <td>(TBD)</td>
+  <td><a href="Life-cycle.html">Life cycle events and observers</a></td>
 </tr>
 
 <tr>
   <td>Remote hooks</td>
   <td>Before/After hooks for remote methods</td>
-  <td>Sequence/actions</td>
+  <td><a href="Interceptors.html">Interceptors</a></td>
 </tr>
 
 <tr>
   <td>CRUD operation hooks</td>
   <td>Hooks for CRUD operations</td>
-  <td>Sequence/actions</td>
+  <td>(TBD)</td>
 </tr>
 
 <tr>
@@ -186,8 +206,7 @@ separated from the code responsible for implementing client side APIs.
 <tr>
   <td>Authentication</td>
   <td>User model as the login provider<br>loopback-component-passport</td>
-  <td>(TBA) Authentication component
-    (<a href="https://github.com/strongloop/loopback-next/tree/master/packages/authentication">@loopback/authentication</a>)
+  <td><a href="Loopback-component-authentication.html">Authentication component</a>
     with extensibility to strategy providers
   </td>
 </tr>
@@ -197,7 +216,9 @@ separated from the code responsible for implementing client side APIs.
   <td>Use built-in User/Application/AccessToken model for identity and
     ACL/Role/RoleMapping for authorization
   </td>
-  <td>(TBD) Authorization component</td>
+  <td><a href="Loopback-component-authorization.html">Authorization component</a>
+    (work in progress).
+  </td>
 </tr>
 
 <tr>
@@ -209,9 +230,58 @@ separated from the code responsible for implementing client side APIs.
 </tr>
 
 <tr>
-  <td>Tooling</td>
-  <td>loopback-cli and API Connect UI</td>
-  <td><a href="https://github.com/strongloop/loopback-next/tree/master/packages/cli">@loopback/cli</a></td>
+  <td>Storage component</td>
+  <td><a href="/doc/en/lb3/Storage-component.html"><code>loopback-compontent-storage</code></a>
+  </td>
+  <td>not available</td>
+</tr>
+
+<tr>
+  <td>Push notifications</td>
+  <td><a href="/doc/en/lb3/Push-notifications.html"><code>loopback-component-push</code></a>
+  </td>
+  <td>not available</td>
+</tr>
+
+<tr>
+  <td>OAuth 2.0 provider</td>
+  <td><a href="/doc/en/lb3/OAuth-2.0.html"><code>loopback-component-oauth2</code></a>
+  </td>
+  <td>(TBD)</td>
+</tr>
+
+<tr>
+  <td>3rd-party logins via Passport</td>
+  <td><a href="/doc/en/lb3/Third-party-login-using-Passport.html"><code>loopback-component-passport</code></a>
+  </td>
+  <td><a href="https://github.com/strongloop/loopback-next/tree/master/extensions/authentication-passport"><code>@loopback/authentication-passport</code></a>
+    <br>(EXPERIMENTAL)
+  </td>
+</tr>
+
+<tr>
+  <td>Offline synchronization</td>
+  <td><a href="/doc/en/lb3/Synchronization.html">Synchronization component</a>
+    (EXPERIMENTAL)
+  </td>
+  <td>not available</td>
+</tr>
+
+<tr>
+  <td>Client SDKs</td>
+  <td>
+    <a href="/doc/en/lb3/AngularJS-JavaScript-SDK.html">AngularJS (1.x)</a>,
+    <a href="/doc/en/lb3/Android-SDK.html">Android</a>,
+    <a href="/doc/en/lb3/iOS-SDK.html">iOS</a>,
+    <a href="/doc/en/lb3/Xamarin-SDK.html">Xamarin</a>,
+    <a href="/doc/en/lb3/LoopBack-in-the-client.html">Isomorphic JavaScript</a>
+  </td>
+  <td>
+    OpenAPI code generators, e.g.
+    <a href="https://swagger.io/tools/swagger-codegen/"><code>swagger-codegen</code></a>,
+    <a href="https://github.com/OpenAPITools/openapi-generator"><code>openapi-generator</code></a> or
+    <a href="https://github.com/cyclosproject/ng-openapi-gen"><code>ng-openapi-gen</code></a>
+  </td>
 </tr>
 
 </tbody>
@@ -235,7 +305,7 @@ Some of the highlights of LoopBack 4 include:
   - Models: define schemas for business objects
   - Services: interact with existing REST APIs, SOAP Web Services, and other
     forms of services/microservices
-- Refactor the ORM into separate modules for different concerns
+- Refactor the ORM into separate modules for different concerns (TBD)
 
 As LoopBack 4 continues to grow, more features are continuously added. You can
 check out our [blog](https://strongloop.com/strongblog/tag_LoopBack.html) to
