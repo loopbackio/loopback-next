@@ -76,7 +76,7 @@ Here are the different ways:
 
 3. To be instantiated from a class.
 
-   A class can be aservice, controller or other LoopBack artifacts.
+   A class can be a service, controller or other LoopBack artifacts.
 
 4. To be created from a provider class.
 
@@ -120,6 +120,9 @@ There are three binding scopes:
 3. Context - for a given context in the hierarchy, there is only a single
    instance for a given binding key.
 
+For details, see
+https://loopback.io/doc/en/lb4/Binding.html#configure-the-scope.
+
 ## Watching artifacts
 
 The context view gives us control when an binding is being added or moreved.
@@ -128,8 +131,11 @@ This also allows the support of dynamic extension points. For the
 after the application has started, more greeters can be added, and there is no
 need to add all the greeters up front.
 
-To see an example, go to:
-https://github.com/strongloop/loopback-next/blob/master/examples/context/src/context-observation.ts.
+See the
+[Context documentation page](https://loopback.io/doc/en/lb4/Context.html#context-observers)
+and
+[example](https://github.com/strongloop/loopback-next/blob/master/examples/context/src/context-observation.ts)
+for more details.
 
 ## Contributing multiple artifacts via components
 
