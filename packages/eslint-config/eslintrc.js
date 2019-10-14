@@ -35,6 +35,7 @@ module.exports = {
       ecmaVersion: 2017,
       jsx: false,
     },
+    noWatch: true,
   },
   extends: [
     'eslint:recommended',
