@@ -45,21 +45,21 @@ describe('lb4 service (local)', () => {
             additionalFiles: SANDBOX_FILES,
           }),
         )
-        .withArguments('myService --type class');
+        .withArguments('myTest --type class');
       const expectedFile = path.join(
         SANDBOX_PATH,
         SERVICE_APP_PATH,
-        'my-service.service.ts',
+        'my-test.service.ts',
       );
       assert.file(expectedFile);
-      assert.fileContent(expectedFile, /export class MyService {/);
+      assert.fileContent(expectedFile, /export class MyTestService {/);
       assert.file(INDEX_FILE);
-      assert.fileContent(INDEX_FILE, /export \* from '.\/my-service.service';/);
+      assert.fileContent(INDEX_FILE, /export \* from '.\/my-test.service';/);
     });
 
     it('generates a basic local service class from the prompts', async () => {
       const multiItemPrompt = {
-        name: 'myService',
+        name: 'myTest',
         serviceType: 'class',
       };
       await testUtils
@@ -74,12 +74,12 @@ describe('lb4 service (local)', () => {
       const expectedFile = path.join(
         SANDBOX_PATH,
         SERVICE_APP_PATH,
-        'my-service.service.ts',
+        'my-test.service.ts',
       );
       assert.file(expectedFile);
-      assert.fileContent(expectedFile, /export class MyService {/);
+      assert.fileContent(expectedFile, /export class MyTestService {/);
       assert.file(INDEX_FILE);
-      assert.fileContent(INDEX_FILE, /export \* from '.\/my-service.service';/);
+      assert.fileContent(INDEX_FILE, /export \* from '.\/my-test.service';/);
     });
 
     it('generates a basic local service provider from command line arguments', async () => {
