@@ -620,17 +620,91 @@ children:
   url: apidocs.index.html
   output: 'web, pdf'
 
-- title: 'For LoopBack 3.x users'
-  url: LoopBack-3.x.html
+- title: 'Migration guide'
+  url: 'migration-overview.html'
   output: 'web, pdf'
   children:
 
-  - title: 'Understanding the differences between LoopBack 3 and LoopBack 4'
+  - title: 'Understanding the differences'
     url: Understanding-the-differences.html
     output: 'web, pdf'
 
-  - title: 'Migrating from LoopBack 3'
-    url: Migrating-from-LoopBack-3.html
+  - title: 'Mounting a LoopBack 3 application'
+    url: migration-mounting-lb3app.html
+    output: 'web, pdf'
+
+  - title: 'Express middleware'
+    url: migration-express-middleware.html
+    output: 'web, pdf'
+
+  - title: 'Datasources'
+    url: migration-datasources.html
+    output: 'web, pdf'
+
+  - title: 'Migrating models'
+    url: migration-models-overview.html
+    output: 'web, pdf'
+    children:
+
+    - title: 'Model definitions and built-in APIs'
+      url: migration-models-core.html
+      output: 'web, pdf'
+
+    - title: 'Relations'
+      url: migration-models-relations.html
+      output: 'web, pdf'
+
+    - title: 'Custom methods'
+      url: migration-models-methods.html
+      output: 'web, pdf'
+
+    - title: 'Remoting hooks'
+      url: migration-models-remoting-hooks.html
+      output: 'web, pdf'
+
+    - title: 'CRUD operation hooks'
+      url: migration-models-operation-hooks.html
+      output: 'web, pdf'
+
+    - title: 'Mixins'
+      url: migration-models-mixins.html
+      output: 'web, pdf'
+
+  - title: 'Boot scripts'
+    url: migration-boot-scripts.html
+    output: 'web, pdf'
+
+  - title: 'Authentication & authorization'
+    url: migration-auth-overview.html
+    output: 'web, pdf'
+    children:
+
+    - title: 'Built-in models'
+      url: migration-auth-built-in.html
+      output: 'web, pdf'
+
+    - title: 'Passport'
+      url: migration-auth-passport.html
+      output: 'web, pdf'
+
+    - title: 'OAuth2 Provider'
+      url: migration-auth-oauth2.html
+      output: 'web, pdf'
+
+  - title: 'CLI'
+    url: migration-cli.html
+    output: 'web, pdf'
+
+  - title: 'Components and extensions'
+    url: migration-extensions.html
+    output: 'web, pdf'
+
+  - title: 'Clients (API consumers)'
+    url: migration-clients.html
+    output: 'web, pdf'
+
+  - title: 'Features not planned'
+    url: migration-not-planned.html
     output: 'web, pdf'
 
 - title: 'Best practices'

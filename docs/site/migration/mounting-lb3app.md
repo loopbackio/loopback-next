@@ -1,16 +1,19 @@
 ---
 lang: en
-title: 'Migrating from LoopBack 3'
-keywords: LoopBack 4.0, LoopBack 4, LoopBack 3
+title: 'Mounting a LoopBack 3 application'
+keywords: LoopBack 4.0, LoopBack 4, LoopBack 3, Migration
 sidebar: lb4_sidebar
-permalink: /doc/en/lb4/Migrating-from-LoopBack-3.html
+permalink: /doc/en/lb4/migration-mounting-lb3app.html
 ---
 
-For current LoopBack 3 users who want to migrate to LoopBack 4, LoopBack 4
-offers a way to mount your LoopBack 3 application in a LoopBack 4 project. By
-adding your application this way, the application's REST API is included in the
-OpenAPI spec provided by the LoopBack 4 application. This also means that the
-LoopBack 3 application's models can be used with the LoopBack 4 REST API
+Migrating from LoopBack version 3 to version 4 is a big task because so many
+things have changed between the versions. To make this process easier, we
+implemented a feature allowing users to run their existing LoopBack 3
+application as a component of the new LoopBack 4 project.
+
+By adding your application this way, the application's REST API is included in
+the OpenAPI spec provided by the LoopBack 4 application. This also means that
+the LoopBack 3 application's models can be used with the LoopBack 4 REST API
 Explorer.
 
 ## Mounting the LoopBack 3 Application in a LoopBack 4 Project
@@ -53,7 +56,8 @@ the rest routes. Default `mode` is the full application (`fullApp`).
 ```ts
 this.bootOptions = {
   lb3app: {
-    mode: 'restRouter', // only REST routes are mounted
+    // only REST routes are mounted
+    mode: 'restRouter',
   },
 };
 ```
@@ -66,7 +70,8 @@ you can modify the `path`. Default `path` is `../lb3app/server/server`.
 ```ts
 this.bootOptions = {
   lb3app: {
-    path: '../coffee-shop/server/server', // server file is found under this path
+    // server file is found under this path
+    path: '../coffee-shop/server/server',
   },
 };
 ```
