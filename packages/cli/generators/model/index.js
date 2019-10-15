@@ -418,13 +418,16 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
           message: 'Is it required?:',
           type: 'confirm',
           default: false,
-          when: answers => !answers.generated
+          when: answers => !answers.generated,
         },
         {
           name: 'default',
           message: `Default value ${chalk.yellow('[leave blank for none]')}:`,
           when: answers => {
-            return ![null, 'buffer', 'any'].includes(answers.type) && !answers.generated;
+            return (
+              ![null, 'buffer', 'any'].includes(answers.type) &&
+              !answers.generated
+            );
           },
         },
       ];
