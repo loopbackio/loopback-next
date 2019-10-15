@@ -973,6 +973,12 @@ export interface OpenApiSpecOptions {
    * Configure servers for OpenAPI spec
    */
   servers?: ServerObject[];
+
+  /**
+   * Configure initial object for OpenAPI spec
+   */
+  initialObject?: OpenAPIObject;
+
   /**
    * Set this flag to disable the endpoint for OpenAPI spec
    */

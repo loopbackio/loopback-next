@@ -201,6 +201,25 @@ describe('RestServer', () => {
         const expressApp = server.expressApp;
         expect(expressApp.get('strict routing')).to.equal(true);
       });
+      it('honors openApiSpec.initialObject in config', async () => {
+        const spec = {
+          info: {
+            name: 'Test',
+            version: '1.0.0-beta.0',
+          },
+        };
+
+        const app = new Application({
+          rest: {
+            openApiSpec: {
+              initialObject: spec,
+            },
+          },
+        });
+        app.component(RestComponent);
+        const server = await app.getServer(RestServer);
+        expect(server.getSync(RestBindings.API_SPEC).info).to.equal(spec.info);
+      });
     });
   });
 

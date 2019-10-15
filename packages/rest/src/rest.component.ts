@@ -14,12 +14,12 @@ import {
 import {createEmptyApiSpec} from '@loopback/openapi-v3';
 import {
   JsonBodyParser,
+  RawBodyParser,
   RequestBodyParser,
   StreamBodyParser,
   TextBodyParser,
   UrlEncodedBodyParser,
 } from './body-parsers';
-import {RawBodyParser} from './body-parsers/body-parser.raw';
 import {RestBindings} from './keys';
 import {
   BindElementProvider,
@@ -89,6 +89,10 @@ export class RestComponent implements Component {
   ) {
     app.bind(RestBindings.SEQUENCE).toClass(DefaultSequence);
     const apiSpec = createEmptyApiSpec();
+    // Merge the OpenAPI spec from the config into the empty one
+    if (config && config.openApiSpec && config.openApiSpec.initialObject) {
+      Object.assign(apiSpec, config.openApiSpec.initialObject);
+    }
     // Merge the OpenAPI `servers` spec from the config into the empty one
     if (config && config.openApiSpec && config.openApiSpec.servers) {
       Object.assign(apiSpec, {servers: config.openApiSpec.servers});
