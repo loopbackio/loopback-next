@@ -1,11 +1,17 @@
-# Extension point and extensions
+---
+lang: en
+title: 'Extension point and extensions'
+keywords: LoopBack 4.0, LoopBack 4
+sidebar: lb4_sidebar
+permalink: /doc/en/lb4/core-tutorial-part5.html
+---
 
-[Extension Point/extension pattern](https://wiki.eclipse.org/FAQ_What_are_extensions_and_extension_points%3F),
-which promotes loose coupling and offers great extensibility.
+[Extension Point/extension pattern](https://wiki.eclipse.org/FAQ_What_are_extensions_and_extension_points%3F)
+promotes loose coupling and offers great extensibility.
 
-We'll use the following scenario to walk through important steps to organize the
-`greet` service that allows extensible languages - each of them being supported
-by a `Greeter` extension.
+We'll use the following scenario to walk through the important steps to organize
+the `greet` service that allows extensible languages - each of them being
+supported by a `Greeter` extension.
 
 ![greeters](../../imgs/tutorials/core/greeters.png)
 
@@ -17,12 +23,13 @@ Various constructs from LoopBack 4, such as `Context`, `@inject.*`, and
 In our scenario, we want to allow other modules to extend or customize how
 people are greeted in different languages. To achieve that, we declare the
 `greeter` extension point, which declares a contract as TypeScript interfaces
-that extensions must conform to.
+that extensions must conform.
 
 ### Define interface for extensions
 
 An extension point interacts with unknown number of extensions. It needs to
-define one or more interfaces as contracts that each extension must implement.
+define one or more interfaces as the contracts that each extension must
+implements.
 
 ```ts
 /**
@@ -69,6 +76,8 @@ import {extensionPoint} from '@loopback/core';
 @extensionPoint(GREETER_EXTENSION_POINT_NAME)
 export class GreetingService {}
 ```
+
+TODO: if not specify the name, what is the default name?
 
 #### Access extensions for a given extension point
 
@@ -205,8 +214,10 @@ template function, which is equivalent as configuring a binding with
  * A binding template for greeter extensions
  * @param binding
  */
-export const asGreeter: BindingTemplate = binding =>
-  binding.inScope(BindingScope.SINGLETON).tag({extensionFor: 'greeter'});
+export const asGreeter: BindingTemplate = binding => {
+  extensionFor(GREETER_EXTENSION_POINT_NAME)(binding);
+  binding.tag({namespace: 'greeters'});
+};
 ```
 
 ## Register an extension point
@@ -221,7 +232,8 @@ app
   .inScope(BindingScope.SINGLETON);
 ```
 
-**NOTE**: Your extension point may choose to use a different binding scope.
+**NOTE**: Your extension point may choose to use a different
+[binding scope](https://loopback.io/doc/en/lb4/apidocs.context.bindingscope.html).
 
 The process can be automated with a component:
 
@@ -247,16 +259,21 @@ export class GreetingComponent implements Component {
 
 ## Register extensions
 
-To connect an extension to an extension point, we just have to bind the
-extension to the `Context` and tag the binding with
-`{extensionFor: 'greeters'}`.
+There are different ways to register the extensions.
+
+### Method 1
+
+Bind the extension to the `Context` and tag the binding with
+`{extensionFor: 'greeters'}`. For example:
 
 ```ts
 import {addExtension} from '@loopback/core';
 addExtension(app, 'greeters', FrenchGreeter);
 ```
 
-Or:
+### Method 2
+
+Bind the extension with the binding key to the application , for example:
 
 ```ts
 app
@@ -265,11 +282,15 @@ app
   .apply(asGreeter);
 ```
 
-Or:
+### Method 3
+
+Add the binding class to the application, for example:
 
 ```ts
 app.add(createBindingFromClass(FrenchGreeter));
 ```
+
+### Method 4
 
 The registration can be done using a component too:
 
@@ -290,28 +311,28 @@ involved to achieve that.
 
 1. Declare an injection for the configuration for your extension point class:
 
-```ts
-export class GreetingService {
-  constructor(
-    // ...
-    private getGreeters: Getter<Greeter[]>,
-    /**
-     * An extension point should be able to receive its options via dependency
-     * injection.
-     */
-    @config()
-    public readonly options?: GreetingServiceOptions,
-  ) {}
-}
-```
+   ```ts
+   export class GreetingService {
+     constructor(
+       // ...
+       private getGreeters: Getter<Greeter[]>,
+       /**
+        * An extension point should be able to receive its options via dependency
+        * injection.
+        */
+       @config()
+       public readonly options?: GreetingServiceOptions,
+     ) {}
+   }
+   ```
 
 2. Set configuration for the extension point
 
-```ts
-// Configure the extension point
-import {GREETING_SERVICE} from './keys';
-app.configure(GREETING_SERVICE).to({color: 'blue'});
-```
+   ```ts
+   // Configure the extension point
+   import {GREETING_SERVICE} from './keys';
+   app.configure(GREETING_SERVICE).to({color: 'blue'});
+   ```
 
 ## Configure an extension
 
@@ -320,23 +341,23 @@ configure an extension point.
 
 1. Declare an injection for the configuration in the extension class
 
-```ts
-export class ChineseGreeter implements Greeter {
-  language = 'zh';
+   ```ts
+   export class ChineseGreeter implements Greeter {
+     language = 'zh';
 
-  constructor(
-    /**
-     * Inject the configuration for ChineseGreeter
-     */
-    @config()
-    private options: ChineseGreeterOptions = {nameFirst: true},
-  ) {}
-}
-```
+     constructor(
+       /**
+        * Inject the configuration for ChineseGreeter
+        */
+       @config()
+       private options: ChineseGreeterOptions = {nameFirst: true},
+     ) {}
+   }
+   ```
 
 2. Set configuration for the extension
 
-```ts
-// Configure the ChineseGreeter
-app.configure('greeters.ChineseGreeter').to({nameFirst: false});
-```
+   ```ts
+   // Configure the ChineseGreeter
+   app.configure('greeters.ChineseGreeter').to({nameFirst: false});
+   ```
