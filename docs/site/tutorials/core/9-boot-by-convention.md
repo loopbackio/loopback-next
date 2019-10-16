@@ -1,9 +1,16 @@
-# Discover and load artifacts by convention (#8)
+---
+lang: en
+title: 'Discover and load artifacts by convention'
+keywords: LoopBack 4.0, LoopBack 4
+sidebar: lb4_sidebar
+permalink: /doc/en/lb4/core-tutorial-part9.html
+---
 
-We start to see various types of artifacts being added to the application. Such
-artifacts needed to be loaded and registered with the application so that they
-can be used for composition. It can be achieved by calling `Context` APIs or
-helper methods on the application object:
+There are various types of artifacts being added to the application, such as
+controller, interceptor, observer. Such artifacts need to be loaded and
+registered with the application so that they can be used for composition. It can
+be achieved by calling `Context` APIs or helper methods on the application
+object:
 
 ```ts
 import {createBindingFromClass, BindingScope} from '@loopback/context';
