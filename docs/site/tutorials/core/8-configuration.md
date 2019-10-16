@@ -1,6 +1,15 @@
-# Configuration
+---
+lang: en
+title: 'Configuration'
+keywords: LoopBack 4.0, LoopBack 4
+sidebar: lb4_sidebar
+permalink: /doc/en/lb4/core-tutorial-part8.html
+---
 
-![greeters](../../imgs/tutorials/core/greeters.png)
+Configuration is applied to extension points, extensions and services.
+
+Taking the ChineseGreeter as an example. We can inject the configuration to
+specify the greeting phrase or the name should come first.
 
 ```ts
 /**
@@ -19,6 +28,9 @@ export class ChineseGreeter implements Greeter {
   ) {}
 
 ```
+
+In order to do that, we use the `@config` decorator to make the extension point
+to be able to receive its options.
 
 ```ts
 export class GreetingService {
