@@ -10,7 +10,7 @@ permalink: /doc/en/lb4/core-tutorial-part5.html
 promotes loose coupling and offers great extensibility.
 
 We'll use the following scenario to walk through the important steps to organize
-the `greet` service that allows extensible languages - each of them being
+the `GreetingService` that allows extensible languages - each of them being
 supported by a `Greeter` extension.
 
 ![greeters](../../imgs/tutorials/core/greeters.png)
@@ -67,7 +67,8 @@ export class GreetingService {
 }
 ```
 
-To customize metadata such as `name` for the extension point, we can use
+By default, the name of the extension point is the same as the class name. To
+customize metadata such as `name` for the extension point, we can use
 `@extensionPoint` to decorate the class, such as:
 
 ```ts
@@ -76,8 +77,6 @@ import {extensionPoint} from '@loopback/core';
 @extensionPoint(GREETER_EXTENSION_POINT_NAME)
 export class GreetingService {}
 ```
-
-TODO: if not specify the name, what is the default name?
 
 #### Access extensions for a given extension point
 
