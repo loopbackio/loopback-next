@@ -38,7 +38,7 @@
     "@loopback/testlab": "^1.9.2",
     "@types/debug": "^4.1.5",
     "@types/lodash": "^4.14.144",
-    "@types/node": "^10.14.21",
+    "@types/node": "^10.14.22",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
     "helmet": "^3.21.1",
