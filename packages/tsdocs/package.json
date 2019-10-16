@@ -31,7 +31,7 @@
     "@loopback/eslint-config": "^4.1.2",
     "@loopback/testlab": "^1.9.2",
     "@types/debug": "^4.1.5",
-    "@types/fs-extra": "^8.0.0",
+    "@types/fs-extra": "^8.0.1",
     "@types/node": "^10.14.22",
     "p-event": "^4.1.0"
   },
