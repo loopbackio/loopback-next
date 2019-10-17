@@ -8,7 +8,7 @@ permalink: /doc/en/lb4/core-tutorial-part8.html
 
 Configuration is applied to extension points, extensions and services.
 
-Taking the ChineseGreeter as an example. We can inject the configuration to
+Taking the ChineseGreeter as an example, we can inject the configuration to
 specify the greeting phrase or the name should come first.
 
 ```ts
@@ -29,8 +29,10 @@ export class ChineseGreeter implements Greeter {
 
 ```
 
-In order to do that, we use the `@config` decorator to make the extension point
-to be able to receive its options.
+The code snippet below shows two examples:
+
+1. `ChineseGreeter` that allows the style configuration
+2. `GreetingService` that takes some options
 
 ```ts
 export class GreetingService {

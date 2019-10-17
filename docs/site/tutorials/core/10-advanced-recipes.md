@@ -6,8 +6,8 @@ sidebar: lb4_sidebar
 permalink: /doc/en/lb4/core-tutorial-part9.html
 ---
 
-There are a few advanced usage of the LoopBack core modules that are not covered
-by the Greeter Extension and Greeter Application example.
+There are a few advanced usages of the LoopBack core modules that are not
+covered by the Greeter Extension and Greeter Application example.
 
 # Create your own decorator
 
@@ -70,10 +70,12 @@ allows you to resolve the value asynchronous and returns a `Promise`.
 
 When `ValueOrPromise` is being used in a value provider, if the value is
 produced synchronously, a value will be returned, otherwise a Promise will be
-return. When you are chaining multiple value and if any of them is a Promise,
-you'll be getting a Promise.
+return. When multiple dependencies are involved to resolve the value for a
+binding, a `Promise` will be returned if at least one of the bindings produces a
+`Promise`.
 
-Using the `ChineseGreeter` as an example:
+Using the `ChineseGreeter` as an example, it has a dependency of the
+configuration object to be injected as instructed by `@config`.
 
 ```ts
 /**
@@ -104,23 +106,25 @@ There are two ways to configure the greeter.
 
 **Option 1**
 
-We call `app.getSync('greeters.ChineseGreeter')` or
-`app.get('greeters.ChineseGreeter')` to get the `ChineseGreeter`.
-
 ```ts
 app.configure('greeters.ChineseGreeter').to({nameFirst: false});
 ```
 
-**Option 2**
+We call `app.getSync('greeters.ChineseGreeter')` or
+`app.get('greeters.ChineseGreeter')` to get the `ChineseGreeter`.
 
-We can only call `app.get('greeters.ChineseGreeter')` because the configuration
-dependencies is asynchronous.
+**Option 2**
 
 ```ts
 app
   .configure('greeters.ChineseGreeter')
   .toDynamicValue(async () => ({nameFirst: false}));
 ```
+
+We can only call `app.get('greeters.ChineseGreeter')` because the configuration
+dependencies is asynchronous. Please note `app.getSync()` will throw an
+exception to indicate that the ChineseGreeter binding cannot be resolved
+synchronously.
 
 # More examples
 
