@@ -26,7 +26,7 @@ matching the caching keys, the corresponding value in the cache will be used.
 
 ## How is caching enforced
 
-All HTT requests are being intercepted by the
+All HTTP requests are being intercepted by the
 [`CachingInterceptor`](https://github.com/strongloop/loopback-next/blob/master/examples/greeting-app/src/interceptors/caching.interceptor.ts).
 As mentioned above, the CachingService is using the HTTP path URL, which we can
 obtain from the `InvocationContext`, as part of the caching key. If no matching
