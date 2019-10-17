@@ -471,6 +471,7 @@ exports.getDataSourceConnectorName = function(datasourcesDir, dataSourceClass) {
     jsonFileContent = JSON.parse(fs.readFileSync(datasourceJSONFile, 'utf8'));
   } catch (err) {
     debug(`Error reading file ${datasourceJSONFile}: ${err.message}`);
+    err.message = `Cannot load ${datasourceJSONFile}: ${err.message}`;
     throw err;
   }
 
@@ -510,6 +511,7 @@ exports.isConnectorOfType = function(
     jsonFileContent = JSON.parse(fs.readFileSync(datasourceJSONFile, 'utf8'));
   } catch (err) {
     debug(`Error reading file ${datasourceJSONFile}: ${err.message}`);
+    err.message = `Cannot load  ${datasourceJSONFile}: ${err.message}`;
     throw err;
   }
 
@@ -548,6 +550,7 @@ exports.getDataSourceName = function(datasourcesDir, dataSourceClass) {
     jsonFileContent = JSON.parse(fs.readFileSync(datasourceJSONFile, 'utf8'));
   } catch (err) {
     debug(`Error reading file ${datasourceJSONFile}: ${err.message}`);
+    err.message = `Cannot load ${datasourceJSONFile}: ${err.message}`;
     throw err;
   }
 
