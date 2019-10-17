@@ -73,16 +73,54 @@ produced synchronously, a value will be returned, otherwise a Promise will be
 return. When you are chaining multiple value and if any of them is a Promise,
 you'll be getting a Promise.
 
-TODO:
+Using the `ChineseGreeter` as an example:
 
-example1: bind the key to a class and that class has dependneicnes, and the dep
-can be resolved asynchronously. ChineseGreeter dep on configuration. config the
-binding with a constant value -> ChineseGreeter class can be instantiated async
+```ts
+/**
+ * A greeter implementation for Chinese.
+ */
+@bind(asGreeter)
+export class ChineseGreeter implements Greeter {
+  language = 'zh';
 
-example 2: Class requires some value to be injected asynchronously. e.g. return
-a promise from a configuration. ChineseGreeter cannot be instantiated async.
+  constructor(
+    /**
+     * Inject the configuration for ChineseGreeter
+     */
+    @config()
+    private options: ChineseGreeterOptions = {nameFirst: true},
+  ) {}
 
-https://github.com/strongloop/loopback-next/blob/master/examples/context/src/value-promise.ts
+  greet(name: string) {
+    if (this.options && this.options.nameFirst === false) {
+      return `你好，${name}！`;
+    }
+    return `${name}，你好！`;
+  }
+}
+```
+
+There are two ways to configure the greeter.
+
+**Option 1**
+
+We call `app.getSync('greeters.ChineseGreeter')` or
+`app.get('greeters.ChineseGreeter')` to get the `ChineseGreeter`.
+
+```ts
+app.configure('greeters.ChineseGreeter').to({nameFirst: false});
+```
+
+**Option 2**
+
+We can only call `app.get('greeters.ChineseGreeter')` because the configuration
+dependencies is asynchronous.
+
+```ts
+app
+  .configure('greeters.ChineseGreeter')
+  .toDynamicValue(async () => ({nameFirst: false}));
+```
 
 # More examples
 

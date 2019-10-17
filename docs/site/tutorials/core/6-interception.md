@@ -65,5 +65,11 @@ return async (
 For complete code sample, see
 [caching.intercepter.ts](https://github.com/strongloop/loopback-next/blob/master/examples/greeting-app/src/interceptors/caching.interceptor.ts).
 
-FIXME: not sure what it is used for
-https://github.com/strongloop/loopback-next/blob/master/examples/context/src/interceptor-proxy.ts
+### Create a proxy to apply interceptors
+
+By default, requests are proxied between REST server and controller methods but
+not between controllers and their repository/service dependencies. See
+[Create a proxy for interceptors documentation page](https://loopback.io/doc/en/lb4/Interceptors.html#create-a-proxy-to-apply-interceptors)
+and
+[standalone example](https://github.com/strongloop/loopback-next/blob/master/examples/context/src/interceptor-proxy.ts)
+for more details.
