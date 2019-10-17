@@ -30,6 +30,16 @@ describe('booter-lb3app', () => {
     if (app) await app.stop();
   });
 
+  it('throws error if lb3 app is not found', async () => {
+    await expect(
+      setupApplication({
+        lb3app: {
+          path: '../fixtures/lb3app/wrong/server',
+        },
+      }),
+    ).to.be.rejectedWith(/Cannot find module/);
+  });
+
   context('generated OpenAPI spec', () => {
     it('uses different request-body schema for "create" operation', () => {
       const spec = app.restServer.getApiSpec();
