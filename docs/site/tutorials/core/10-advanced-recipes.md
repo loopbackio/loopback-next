@@ -3,7 +3,7 @@ lang: en
 title: 'Advanced Recipes'
 keywords: LoopBack 4.0, LoopBack 4
 sidebar: lb4_sidebar
-permalink: /doc/en/lb4/core-tutorial-part9.html
+permalink: /doc/en/lb4/core-tutorial-part10.html
 ---
 
 There are a few advanced usages of the LoopBack core modules that are not
