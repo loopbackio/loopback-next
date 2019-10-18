@@ -34,6 +34,11 @@ export function createSuiteForReplaceById(
     })
     id: MixedIdType;
 
+    // cloudant needs this property to do replacement method
+    // see cloudant README file for more details
+    @property({type: 'string', required: false})
+    _rev: string;
+
     @property({type: 'string', required: true})
     name: string;
 
@@ -71,9 +76,20 @@ export function createSuiteForReplaceById(
       await repo.replaceById(created.id, created);
 
       const found = await repo.findById(created.id);
+      // For connectors that use revision token, _rev gets changed after replacement
+      // opertations. So the _rev value varies based on the flag `hasRevisionToken`.
+      let revisionToken;
+      /* istanbul ignore if */
+      if (features.hasRevisionToken) {
+        revisionToken = found._rev;
+      } else {
+        revisionToken = features.emptyValue;
+      }
+
       expect(toJSON(found)).to.deepEqual(
         toJSON({
           id: created.id,
+          _rev: revisionToken,
           name: 'new name',
           description: features.emptyValue,
         }),
@@ -100,9 +116,20 @@ export function createSuiteForReplaceById(
       await repo.replaceById(created.id, created);
 
       const found = await repo.findById(created.id);
+      // For connectors that use revision token, _rev gets changed after replacement
+      // opertations. So the _rev value varies based on the flag `hasRevisionToken`.
+      let revisionToken;
+      /* istanbul ignore if */
+      if (features.hasRevisionToken) {
+        revisionToken = found._rev;
+      } else {
+        revisionToken = features.emptyValue;
+      }
+
       expect(toJSON(found)).to.deepEqual(
         toJSON({
           id: created.id,
+          _rev: revisionToken,
           name: 'new name',
           description: features.emptyValue,
         }),

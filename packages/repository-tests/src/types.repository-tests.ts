@@ -64,6 +64,14 @@ export interface CrudFeatures {
    * Default: `true`
    */
   supportsInclusionResolvers: boolean;
+
+  /**
+   * Does the connector have the revision token for replacement operations?
+   * (Cloudant)
+   *
+   * Default: `false`
+   */
+  hasRevisionToken: boolean;
 }
 
 /**

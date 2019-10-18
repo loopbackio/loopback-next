@@ -34,6 +34,7 @@ export function crudRepositoryTestSuite(
     emptyValue: undefined,
     supportsTransactions: true,
     supportsInclusionResolvers: true,
+    hasRevisionToken: false,
     ...partialFeatures,
   };
 
