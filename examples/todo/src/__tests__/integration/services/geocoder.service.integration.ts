@@ -7,9 +7,11 @@ import {expect} from '@loopback/testlab';
 import {GeocoderDataSource} from '../../../datasources/geocoder.datasource';
 import {GeocoderService, GeocoderServiceProvider} from '../../../services';
 import {
+  aLocation,
   getProxiedGeoCoderConfig,
   givenCachingProxy,
   HttpCachingProxy,
+  isGeoCoderServiceAvailable,
 } from '../../helpers';
 
 describe('GeoLookupService', function() {
@@ -23,15 +25,16 @@ describe('GeoLookupService', function() {
   let service: GeocoderService;
   before(givenGeoService);
 
-  it('resolves an address to a geo point', async () => {
-    const points = await service.geocode('1 New Orchard Road, Armonk, 10504');
+  let available = true;
+  before(async () => {
+    available = await isGeoCoderServiceAvailable(service);
+  });
 
-    expect(points).to.deepEqual([
-      {
-        y: 41.109653,
-        x: -73.72467,
-      },
-    ]);
+  it('resolves an address to a geo point', async () => {
+    if (!available) return;
+    const points = await service.geocode(aLocation.address);
+
+    expect(points).to.deepEqual([aLocation.geopoint]);
   });
 
   async function givenGeoService() {
