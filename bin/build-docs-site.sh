@@ -45,7 +45,7 @@ pushd $REPO_ROOT/sandbox/loopback.io/ >/dev/null
 bundle install
 
 # Run npm build script to fetch readme files and generate jekyll site
-npm run build
+# npm run build
 
 popd >/dev/null
 if [ "$1" == "--verify" ]; then
