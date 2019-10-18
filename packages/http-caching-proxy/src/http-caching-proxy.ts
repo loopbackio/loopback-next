@@ -17,7 +17,7 @@ import * as makeRequest from 'request-promise-native';
 
 const cacache = require('cacache');
 
-const debug = debugFactory('loopback:caching-proxy');
+const debug = debugFactory('loopback:http-caching-proxy');
 
 export interface ProxyOptions {
   /**
@@ -38,11 +38,23 @@ export interface ProxyOptions {
    * Default: 0 (let the system pick a free port)
    */
   port?: number;
+
+  /**
+   * A flag if the error should be logged
+   */
+  logError?: boolean;
+
+  /**
+   * Timeout to connect to the target service
+   */
+  timeout?: number;
 }
 
 const DEFAULT_OPTIONS = {
   port: 0,
   ttl: 24 * 60 * 60 * 1000,
+  logError: true,
+  timeout: 0,
 };
 
 interface CachedMetadata {
@@ -113,7 +125,7 @@ export class HttpCachingProxy {
     const onerror = (error: Error) => {
       this.logError(request, error);
       response.statusCode = error.name === 'RequestError' ? 502 : 500;
-      response.end();
+      response.end(error.message);
     };
 
     try {
@@ -174,6 +186,7 @@ export class HttpCachingProxy {
     clientRequest: IncomingMessage,
     clientResponse: ServerResponse,
   ) {
+    debug('Forward request to %s %s', clientRequest.method, clientRequest.url);
     const backendResponse = await makeRequest({
       resolveWithFullResponse: true,
       simple: false,
@@ -182,6 +195,7 @@ export class HttpCachingProxy {
       uri: clientRequest.url!,
       headers: clientRequest.headers,
       body: clientRequest,
+      timeout: this._options.timeout || undefined,
     });
 
     debug(
@@ -226,11 +240,20 @@ export class HttpCachingProxy {
   }
 
   public logError(request: IncomingMessage, error: Error) {
-    console.log(
-      'Cannot proxy %s %s.',
-      request.method,
-      request.url,
-      error.stack || error,
-    );
+    if (this._options.logError) {
+      console.error(
+        'Cannot proxy %s %s.',
+        request.method,
+        request.url,
+        error.stack || error,
+      );
+    } else {
+      debug(
+        'Cannot proxy %s %s.',
+        request.method,
+        request.url,
+        error.stack || error,
+      );
+    }
   }
 }
