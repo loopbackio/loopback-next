@@ -4,7 +4,8 @@
     "headers": {
       "accept": "application/json",
       "content-type": "application/json"
-    }
+    },
+    "timeout": 15000
   },
   "operations": [
     {

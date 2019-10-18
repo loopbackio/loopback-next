@@ -8,7 +8,7 @@ import {merge} from 'lodash';
 import * as path from 'path';
 import * as GEO_CODER_CONFIG from '../datasources/geocoder.datasource.json';
 import {Todo} from '../models/index';
-import {GeoPoint} from '../services/geocoder.service';
+import {GeocoderService, GeoPoint} from '../services/geocoder.service';
 
 /*
  ==============================================================================
@@ -67,7 +67,21 @@ export {HttpCachingProxy};
 export async function givenCachingProxy() {
   const proxy = new HttpCachingProxy({
     cachePath: path.resolve(__dirname, '.http-cache'),
+    logError: false,
+    timeout: 5000,
   });
   await proxy.start();
   return proxy;
+}
+
+export async function isGeoCoderServiceAvailable(service: GeocoderService) {
+  try {
+    await service.geocode(aLocation.address);
+    return true;
+  } catch (err) {
+    if (err.statusCode === 502) {
+      return false;
+    }
+    throw err;
+  }
 }

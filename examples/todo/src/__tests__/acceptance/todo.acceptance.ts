@@ -14,12 +14,14 @@ import {
 import {TodoListApplication} from '../../application';
 import {Todo} from '../../models/';
 import {TodoRepository} from '../../repositories/';
+import {GeocoderService} from '../../services';
 import {
   aLocation,
   getProxiedGeoCoderConfig,
   givenCachingProxy,
   givenTodo,
   HttpCachingProxy,
+  isGeoCoderServiceAvailable,
 } from '../helpers';
 
 describe('TodoApplication', () => {
@@ -33,6 +35,14 @@ describe('TodoApplication', () => {
 
   before(givenRunningApplicationWithCustomConfiguration);
   after(() => app.stop());
+
+  let available = true;
+  before(async function() {
+    // eslint-disable-next-line no-invalid-this
+    this.timeout(30 * 1000);
+    const service = await app.get<GeocoderService>('services.GeocoderService');
+    available = await isGeoCoderServiceAvailable(service);
+  });
 
   before(givenTodoRepository);
   before(() => {
@@ -77,6 +87,7 @@ describe('TodoApplication', () => {
   });
 
   it('creates an address-based reminder', async function() {
+    if (!available) return;
     // Increase the timeout to accommodate slow network connections
     // eslint-disable-next-line no-invalid-this
     this.timeout(30000);
