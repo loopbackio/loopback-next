@@ -6,6 +6,7 @@
 
 * @bajtos @raymondfeng
 
+acceptance/repository-cloudant/* @agnes512
 acceptance/repository-mongodb/* @bajtos
 acceptance/repository-mysql/* @bajtos
 acceptance/repository-postgresql/* @nabdelgadir
