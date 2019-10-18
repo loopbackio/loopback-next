@@ -39,7 +39,7 @@ describe('HttpCachingProxy', () => {
   });
 
   it('proxies HTTP requests', async function() {
-    // Increase the timeout to accomodate slow network connections
+    // Increase the timeout to accommodate slow network connections
     // eslint-disable-next-line no-invalid-this
     this.timeout(30000);
 
@@ -54,8 +54,37 @@ describe('HttpCachingProxy', () => {
     expect(result.body).to.containEql('example');
   });
 
+  it('reports error for HTTP requests', async function() {
+    // Increase the timeout to accommodate slow network connections
+    // eslint-disable-next-line no-invalid-this
+    this.timeout(30000);
+
+    await givenRunningProxy({logError: false});
+    await expect(
+      makeRequest({
+        uri: 'http://does-not-exist.example.com',
+        proxy: proxy.url,
+        resolveWithFullResponse: true,
+      }),
+    ).to.be.rejectedWith(
+      /502 - "Error\: getaddrinfo ENOTFOUND does-not-exist\.example\.com/,
+    );
+  });
+
+  it('reports timeout error for HTTP requests', async function() {
+    await givenRunningProxy({logError: false, timeout: 1});
+    await expect(
+      makeRequest({
+        uri:
+          'http://www.mocky.io/v2/5dade5e72d0000a542e4bd9c?mocky-delay=1000ms',
+        proxy: proxy.url,
+        resolveWithFullResponse: true,
+      }),
+    ).to.be.rejectedWith(/502 - "Error: ETIMEDOUT"/);
+  });
+
   it('proxies HTTPs requests (no tunneling)', async function() {
-    // Increase the timeout to accomodate slow network connections
+    // Increase the timeout to accommodate slow network connections
     // eslint-disable-next-line no-invalid-this
     this.timeout(30000);
 
@@ -165,8 +194,7 @@ describe('HttpCachingProxy', () => {
   });
 
   it('handles the case where backend service is not running', async () => {
-    await givenRunningProxy();
-    proxy.logError = (request, error) => {}; // no-op
+    await givenRunningProxy({logError: false});
 
     await expect(
       makeRequest({uri: 'http://127.0.0.1:1/', proxy: proxy.url}),
