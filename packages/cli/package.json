@@ -27,7 +27,7 @@
     "@loopback/testlab": "^1.9.2",
     "@types/ejs": "^2.6.3",
     "@types/node": "^10.14.22",
-    "glob": "^7.1.4",
+    "glob": "^7.1.5",
     "loopback-datasource-juggler": "^4.13.0",
     "mem-fs": "^1.1.3",
     "mem-fs-editor": "^6.0.0",
