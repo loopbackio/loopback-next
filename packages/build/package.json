@@ -27,7 +27,7 @@
 		"eslint-plugin-eslint-plugin": "^2.1.0",
 		"eslint-plugin-mocha": "^6.2.0",
 		"fs-extra": "^8.1.0",
-		"glob": "^7.1.4",
+		"glob": "^7.1.5",
 		"mocha": "^6.2.2",
 		"nyc": "^14.1.1",
 		"prettier": "^1.18.2",
