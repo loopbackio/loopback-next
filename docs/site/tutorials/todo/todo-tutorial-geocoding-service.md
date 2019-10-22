@@ -196,19 +196,33 @@ property and convert it to GPS coordinates stored in `remindAtGeo`.
 export class TodoController {
   // constructor, etc.
 
-  @post('/todos')
-  async createTodo(@requestBody() todo: Todo) {
-    if (!todo.title) {
-      throw new HttpErrors.BadRequest('title is required');
-    }
-
+  @post('/todos', {
+    responses: {
+      '200': {
+        description: 'Todo model instance',
+        content: {'application/json': {schema: getModelSchemaRef(Todo)}},
+      },
+    },
+  })
+  async createTodo(
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(Todo, {title: 'NewTodo', exclude: ['id']}),
+        },
+      },
+    })
+    todo: Omit<Todo, 'id'>,
+  ): Promise<Todo> {
     if (todo.remindAtAddress) {
       // TODO handle "address not found"
       const geo = await this.geoService.geocode(todo.remindAtAddress);
-      // Encode the coordinates as "lat,lng"
+      // Encode the coordinates as "lat,lng" (Google Maps API format). See also
+      // https://stackoverflow.com/q/7309121/69868
+      // https://gis.stackexchange.com/q/7379
+      // eslint-disable-next-line require-atomic-updates
       todo.remindAtGeo = `${geo[0].y},${geo[0].x}`;
     }
-
     return this.todoRepo.create(todo);
   }
 
