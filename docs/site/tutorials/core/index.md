@@ -14,9 +14,9 @@ teams, and releases. If you are building on an open framework or large-scale
 application, you probably have increasing number of **hmm** moments in deciding
 between **Be less opinionated** and **Don't repeat yourself**.
 
-To set foundation to build LoopBack 4, we have developed an extensible and
-composable core in TypeScript with set of design patterns into the framework to
-help you create open APIs or applications that are positioned to scale in
+To set a solid foundation to build LoopBack 4, we have developed an extensible
+and composable core in TypeScript with set of design patterns into the framework
+to help you create open APIs or applications that are positioned to scale in
 various perspectives.
 
 This is a series of tutorials to illustrate how to leverage core modules from
