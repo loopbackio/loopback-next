@@ -67,7 +67,10 @@ describe('HttpCachingProxy', () => {
         resolveWithFullResponse: true,
       }),
     ).to.be.rejectedWith(
-      /502 - "Error\: getaddrinfo ENOTFOUND does-not-exist\.example\.com/,
+      // The error can be
+      // '502 - "Error: getaddrinfo EAI_AGAIN does-not-exist.example.com:80"'
+      // '502 - "Error: getaddrinfo ENOTFOUND does-not-exist.example.com'
+      /502 - "Error\: getaddrinfo/,
     );
   });
 
