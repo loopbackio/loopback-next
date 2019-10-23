@@ -23,6 +23,7 @@
     "eslint-config-prettier": "^6.4.0",
     "eslint-plugin-eslint-plugin": "^2.1.0",
     "eslint-plugin-mocha": "^6.2.0",
+    "fs-extra": "^8.1.0",
     "husky": "^3.0.9",
     "lerna": "^3.18.3",
     "typescript": "~3.6.4"
@@ -32,7 +33,7 @@
     "update-packages": "npm run -s update-package-locks",
     "prerelease": "npm run build:full && npm run mocha && npm run lint",
     "release": "lerna version && lerna publish from-git --yes",
-    "update-package-locks": "lerna clean && lerna bootstrap --no-ci",
+    "update-package-locks": "node bin/rebuild-package-locks",
     "update-template-deps": "node bin/update-template-deps -f",
     "update-all-deps": "npm update && lerna exec -- npm update && npm run update-package-locks",
     "sync-dev-deps": "node bin/sync-dev-deps",
