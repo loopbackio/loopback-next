@@ -845,10 +845,10 @@ paths:
   it('creates a redirect route with a custom status code', async () => {
     const server = await givenAServer();
     server.controller(DummyController);
-    server.redirect('/page/html', '/html', 304);
+    server.redirect('/page/html', '/html', 307);
     const response = await createClientForHandler(server.requestHandler)
       .get('/page/html')
-      .expect(304);
+      .expect(307);
     await createClientForHandler(server.requestHandler)
       .get(response.header.location)
       .expect(200, 'Hi');

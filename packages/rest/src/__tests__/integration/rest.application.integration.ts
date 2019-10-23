@@ -164,10 +164,10 @@ describe('RestApplication (integration)', () => {
     }
     restApp.controller(PingController);
 
-    restApp.redirect('/custom/ping', '/ping', 304);
+    restApp.redirect('/custom/ping', '/ping', 307);
     await restApp.start();
     client = createRestAppClient(restApp);
-    const response = await client.get('/custom/ping').expect(304);
+    const response = await client.get('/custom/ping').expect(307);
     await client.get(response.header.location).expect(200, 'Hi');
   });
 
