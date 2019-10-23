@@ -18,8 +18,8 @@ these core modules can be used independently as a platform to develop large
 scale Node.js projects that require flexibility, extensibility, and
 composability.
 
-To help our users leverage the core packages, we create a series of tutorials to
-explain why such features matter and how to use them for your development.
+To help our users leverage the core packages, we created a series of tutorials
+to explain why such features matter and how to use them for your development.
 
 ## Sample scenario
 

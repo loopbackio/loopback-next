@@ -60,9 +60,9 @@ The following key modules are used by the LoopBack framework to offer API and
 Microservice capabilities. They can be used independently as a base platform to
 build large scale applications in TypeScript and Node.js.
 
-- @loopback/metadata
-- @loopback/context
-- @loopback/core
+- [@loopback/metadata](https://www.npmjs.com/package/@loopback/metadata)
+- [@loopback/context](https://www.npmjs.com/package/@loopback/context)
+- [@loopback/core](https://www.npmjs.com/package/@loopback/core)
 
 ## Design goals
 
