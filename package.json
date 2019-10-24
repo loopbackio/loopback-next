@@ -37,7 +37,7 @@
     "update-template-deps": "node bin/update-template-deps -f",
     "update-all-deps": "npm update && lerna exec -- npm update && npm run update-package-locks",
     "sync-dev-deps": "node bin/sync-dev-deps",
-    "version": "npm run update-template-deps && npm run update-package-locks && git add \"**/package-lock.json\"",
+    "version": "npm run update-template-deps && npm run update-package-locks && git add \"**/package-lock.json\" package-lock.json",
     "outdated": "npm outdated --depth 0 && lerna exec --no-bail \"npm outdated --depth 0\"",
     "tsdocs": "lerna run --scope @loopback/tsdocs build:tsdocs",
     "coverage:ci": "node packages/build/bin/run-nyc report --reporter=text-lcov | coveralls",
