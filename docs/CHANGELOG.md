@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@2.3.0...@loopback/docs@2.4.0) (2019-10-24)
+
+
+### Bug Fixes
+
+* **docs:** add links ([b50cd6a](https://github.com/strongloop/loopback-next/commit/b50cd6ae9950eacb9ecde761d00db9e471ce9ad8))
+* **docs:** apply feedback ([1048156](https://github.com/strongloop/loopback-next/commit/1048156a9e93219fc20ccdf149e7c3bd686006f1))
+* **docs:** todoTutorial ([f424c23](https://github.com/strongloop/loopback-next/commit/f424c2313661580e1803191a24d8bbb38faf4858)), closes [#3977](https://github.com/strongloop/loopback-next/issues/3977)
+
+
+### Features
+
+* **cli:** add inclusion resolver to lb4 relation ([199e1bc](https://github.com/strongloop/loopback-next/commit/199e1bc84a6c57fe650db9588bdb121d27eca7a3))
+* **docs:** add tutorial for large scale app ([beef92c](https://github.com/strongloop/loopback-next/commit/beef92cee9a1b6c8be9e9d0958fb983d7d59c272))
+* **test-repository-postgresql:** run repository tests for postgresql ([8d029c4](https://github.com/strongloop/loopback-next/commit/8d029c46d97f5486f0a04e7f8c58e2d573b74900))
+
+
+
+
+
 # [2.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@2.2.1...@loopback/docs@2.3.0) (2019-10-07)
 
 

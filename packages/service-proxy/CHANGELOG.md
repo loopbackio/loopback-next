@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.10](https://github.com/strongloop/loopback-next/compare/@loopback/service-proxy@1.3.9...@loopback/service-proxy@1.3.10) (2019-10-24)
+
+**Note:** Version bump only for package @loopback/service-proxy
+
+
+
+
+
 ## [1.3.9](https://github.com/strongloop/loopback-next/compare/@loopback/service-proxy@1.3.8...@loopback/service-proxy@1.3.9) (2019-10-07)
 
 **Note:** Version bump only for package @loopback/service-proxy

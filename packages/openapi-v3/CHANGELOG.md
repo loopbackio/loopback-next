@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.10.0](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@1.9.10...@loopback/openapi-v3@1.10.0) (2019-10-24)
+
+
+### Bug Fixes
+
+* allow json schema with circular refs to be converted to OpenAPI schema ([cd5ca92](https://github.com/strongloop/loopback-next/commit/cd5ca92c368ae35bc10d8847b3b0d379f7196544))
+* **openapi-v3:** preserve `additionalProperties: false` ([bc7691b](https://github.com/strongloop/loopback-next/commit/bc7691b0963ee297922bd4d9652a0eccf763f085))
+
+
+### Features
+
+* **openapi-v3:** copy first example from examples to schema ([0c7843a](https://github.com/strongloop/loopback-next/commit/0c7843abd82b391557d807e7bbd80e4c7b2ae8fd))
+
+
+
+
+
 ## [1.9.10](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@1.9.9...@loopback/openapi-v3@1.9.10) (2019-10-07)
 
 **Note:** Version bump only for package @loopback/openapi-v3

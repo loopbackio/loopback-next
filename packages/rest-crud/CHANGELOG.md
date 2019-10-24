@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.5.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest-crud@0.4.0...@loopback/rest-crud@0.5.0) (2019-10-24)
+
+
+### Features
+
+* simplify model schema with excluded properties ([b554ac8](https://github.com/strongloop/loopback-next/commit/b554ac8a08a518f112d111ebabcac48279ada7f8))
+
+
+
+
+
 # [0.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest-crud@0.3.2...@loopback/rest-crud@0.4.0) (2019-10-07)
 
 

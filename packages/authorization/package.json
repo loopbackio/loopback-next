@@ -1,6 +1,6 @@
 {
   "name": "@loopback/authorization",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "A LoopBack component for authorization support.",
   "engines": {
     "node": ">=8.9"
@@ -22,14 +22,14 @@
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
-    "@loopback/context": "^1.23.3",
-    "@loopback/core": "^1.10.5",
-    "@loopback/security": "^0.1.5",
+    "@loopback/context": "^1.23.4",
+    "@loopback/core": "^1.10.6",
+    "@loopback/security": "^0.1.6",
     "debug": "^4.1.1"
   },
   "devDependencies": {
-    "@loopback/build": "^2.0.14",
-    "@loopback/testlab": "^1.9.2",
+    "@loopback/build": "^2.0.15",
+    "@loopback/testlab": "^1.9.3",
     "@types/debug": "^4.1.4",
     "@types/node": "10.17.0",
     "casbin": "^3.0.4"

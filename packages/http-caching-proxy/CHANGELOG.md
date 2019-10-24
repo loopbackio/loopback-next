@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/http-caching-proxy@1.1.16...@loopback/http-caching-proxy@1.2.0) (2019-10-24)
+
+
+### Features
+
+* **http-caching-proxy:** add timeout and improve error logging ([72cd177](https://github.com/strongloop/loopback-next/commit/72cd17722174690355b220fd4127112b0edc67f2))
+
+
+
+
+
 ## [1.1.16](https://github.com/strongloop/loopback-next/compare/@loopback/http-caching-proxy@1.1.15...@loopback/http-caching-proxy@1.1.16) (2019-10-07)
 
 **Note:** Version bump only for package @loopback/http-caching-proxy
