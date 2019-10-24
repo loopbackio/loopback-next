@@ -89,3 +89,10 @@ We are going to use the
 [Greeter Extension](https://github.com/strongloop/loopback-next/tree/master/examples/greeter-extension)
 to illustrate how LoopBack can help you to build large scale Node.js
 applications.
+
+---
+
+Previous:
+[Part 1 - Introduction of the application scenario](./1-introduction.md)
+
+Next: [Part 3 - Manage artifacts](./3-context-in-action.md)

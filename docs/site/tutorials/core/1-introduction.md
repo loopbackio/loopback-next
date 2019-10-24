@@ -79,3 +79,9 @@ There are dependencies between such artifacts, such as:
 
 Some of the artifacts can be configurable, either statically at startup time or
 dynamically when the application is running.
+
+---
+
+Previous: [Index](./index.md)
+
+Next: [Part 2 - Architectural challenges](./2-architecture.md)

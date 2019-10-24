@@ -37,3 +37,7 @@ productivity.
 - Part 9: [Boot by convention](./9-boot-by-convention.md)
 - Part 10: [Advanced recipes](./10-advanced-recipes.md)
 - Part 11: [Architectural summary](./11-summary.md)
+
+---
+
+Next: [Introduction of the application scenario](./1-introduction.md)
