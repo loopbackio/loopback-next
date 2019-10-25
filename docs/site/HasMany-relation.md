@@ -190,9 +190,9 @@ values for these three fields:
 <table>
   <thead>
     <tr>
-      <th>Field Name</th>
-      <th>Description</th>
-      <th>Default Value</th>
+      <th width="95">Field Name</th>
+      <th width="260">Description</th>
+      <th width="260">Default Value</th>
       <th>Example</th>
     </tr>
   </thead>
@@ -421,6 +421,14 @@ issue](https://github.com/strongloop/loopback-next/issues/1179) to follow the di
 
 ## Querying related models
 
+Different from LB3, LB4 creates a different inclusion resolver for each relation
+type to query related models. Each **relation** has its own inclusion resolver
+`inclusionResolver`. And each **repository** has a built-in property
+`inclusionResolvers` as a registry for its inclusionResolvers. Here is a diagram
+to show the idea:
+
+![inclusion](./imgs/relation-inclusion.png)
+
 A `hasMany` relation has an `inclusionResolver` function as a property. It
 fetches target models for the given list of source model instances.
 
@@ -429,10 +437,16 @@ many `Order`s.
 
 After setting up the relation in the repository class, the inclusion resolver
 allows users to retrieve all customers along with their related orders through
-the following code:
+the following code at the repository level:
 
 ```ts
 customerRepo.find({include: [{relation: 'orders'}]});
+```
+
+or use APIs with controllers:
+
+```
+GET http://localhost:3000/customers?filter[include][][relation]=orders
 ```
 
 ### Enable/disable the inclusion resolvers:
@@ -472,10 +486,19 @@ export class CustomerRepository extends DefaultCrudRepository {
 ```
 
 - We can simply include the relation in queries via `find()`, `findOne()`, and
-  `findById()` methods. Example:
+  `findById()` methods. For example, these queries return all customers with
+  their `Order`s:
+
+  if you process data at the repository level:
 
   ```ts
   customerRepository.find({include: [{relation: 'orders'}]});
+  ```
+
+  this is the same as the url:
+
+  ```
+  GET http://localhost:3000/customers?filter[include][][relation]=orders
   ```
 
   which returns:
@@ -497,6 +520,10 @@ export class CustomerRepository extends DefaultCrudRepository {
     },
   ];
   ```
+
+  Here is a diagram to make this more intuitive:
+
+  ![Graph](./imgs/hasMany-relation-graph.png)
 
 - You can delete a relation from `inclusionResolvers` to disable the inclusion
   for a certain relation. e.g

@@ -138,9 +138,9 @@ values for these three fields:
 <table>
   <thead>
     <tr>
-      <th>Field Name</th>
-      <th>Description</th>
-      <th>Default Value</th>
+      <th width="95">Field Name</th>
+      <th width="260">Description</th>
+      <th width="260">Default Value</th>
       <th>Example</th>
     </tr>
   </thead>
@@ -371,6 +371,14 @@ issue](https://github.com/strongloop/loopback-next/issues/1179) to follow the di
 
 ## Querying related models
 
+Different from LB3, LB4 creates a different inclusion resolver for each relation
+type to query related models. Each **relation** has its own inclusion resolver
+`inclusionResolver`. And each **repository** has a built-in property
+`inclusionResolvers` as a registry for its inclusionResolvers. Here is a diagram
+to show the idea:
+
+![inclusion](./imgs/relation-inclusion.png)
+
 A `hasOne` relation has an `inclusionResolver` function as a property. It
 fetches target models for the given list of source model instances.
 
@@ -379,10 +387,16 @@ Using the relation between `Supplier` and `Account` we have shown above, a
 
 After setting up the relation in the repository class, the inclusion resolver
 allows users to retrieve all suppliers along with their related account
-instances through the following code:
+instances through the following code at the repository level:
 
 ```ts
 supplierRepository.find({include: [{relation: 'account'}]});
+```
+
+or use APIs with controllers:
+
+```
+GET http://localhost:3000/suppliers?filter[include][][relation]=account
 ```
 
 ### Enable/disable the inclusion resolvers:
@@ -419,10 +433,19 @@ export class SupplierRepository extends DefaultCrudRepository {
 ```
 
 - We can simply include the relation in queries via `find()`, `findOne()`, and
-  `findById()` methods. Example:
+  `findById()` methods. For example, these queries return all suppliers with
+  their `Account`:
+
+  if you process data at the repository level:
 
   ```ts
   supplierRepository.find({include: [{relation: 'account'}]});
+  ```
+
+  this is the same as the url:
+
+  ```
+  GET http://localhost:3000/suppliers?filter[include][][relation]=account
   ```
 
   which returns:
@@ -441,6 +464,10 @@ export class SupplierRepository extends DefaultCrudRepository {
     },
   ];
   ```
+
+  Here is a diagram to make this more intuitive:
+
+  ![Graph](./imgs/hasOne-relation-graph.png)
 
 - You can delete a relation from `inclusionResolvers` to disable the inclusion
   for a certain relation. e.g
