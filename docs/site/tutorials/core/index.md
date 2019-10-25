@@ -6,8 +6,6 @@ sidebar: lb4_sidebar
 permalink: /doc/en/lb4/core-tutorial.html
 ---
 
-# Build large scale Node.js projects with LoopBack 4
-
 It's super easy to start developing in Node.js, but challenges will get in the
 way as your project grows with more and more modules, components, developers,
 teams, and releases. If you are building on an open framework or large-scale
