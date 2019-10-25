@@ -328,6 +328,14 @@ on constructor to avoid "Circular dependency" error (see
 
 ## Querying related models
 
+Different from LB3, LB4 creates a different inclusion resolver for each relation
+type to query related models. Each **relation** has its own inclusion resolver
+`inclusionResolver`. And each **repository** has a built-in property
+`inclusionResolvers` as a registry for its inclusionResolvers. Here is a diagram
+to show the idea:
+
+![inclusion](./imgs/relation-inclusion.png)
+
 A `belongsTo` relation has an `inclusionResolver` function as a property. It
 fetches target models for the given list of source model instances.
 
@@ -336,10 +344,16 @@ belongs to a `Customer`.
 
 After setting up the relation in the repository class, the inclusion resolver
 allows users to retrieve all orders along with their related customers through
-the following code:
+the following code at the repository level:
 
 ```ts
 orderRepo.find({include: [{relation: 'customer'}]});
+```
+
+or use APIs with controllers:
+
+```
+GET http://localhost:3000/orders?filter[include][][relation]=customer
 ```
 
 ### Enable/disable the inclusion resolvers:
@@ -380,10 +394,19 @@ export class OrderRepository extends DefaultCrudRepository {
 ```
 
 - We can simply include the relation in queries via `find()`, `findOne()`, and
-  `findById()` methods. Example:
+  `findById()` methods. For example, these queries return all orders with their
+  `Customer`:
+
+  if you process data at the repository level:
 
   ```ts
   orderRepository.find({include: [{relation: 'customer'}]});
+  ```
+
+  this is the same as the url:
+
+  ```
+  GET http://localhost:3000/orders?filter[include][][relation]=customer
   ```
 
   which returns:
@@ -418,6 +441,10 @@ export class OrderRepository extends DefaultCrudRepository {
     },
   ];
   ```
+
+  Here is a diagram to make this more intuitive:
+
+  ![Graph](./imgs/belongsTo-relation-graph.png)
 
 - You can delete a relation from `inclusionResolvers` to disable the inclusion
   for a certain relation. e.g
