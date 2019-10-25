@@ -6,8 +6,6 @@ sidebar: lb4_sidebar
 permalink: /doc/en/lb4/core-tutorial-part2.html
 ---
 
-## Architectual challenges in building large scale Node.js applications
-
 There are interesting challenges in building complex Node.js projects such as an
 open framework or a large-scale application that involves many modules,
 components and teams. As platform developers, we love to have the foundation to

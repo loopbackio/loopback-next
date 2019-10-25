@@ -6,8 +6,6 @@ sidebar: lb4_sidebar
 permalink: /doc/en/lb4/core-tutorial-part1.html
 ---
 
-# Introduction
-
 At the core of LoopBack 4, we provide a powerful
 [Inversion of Control](https://loopback.io/doc/en/lb4/Context.html) and
 [Dependency Injection](https://loopback.io/doc/en/lb4/Dependency-injection.html)
