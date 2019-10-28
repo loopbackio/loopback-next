@@ -32,7 +32,7 @@
 		"nyc": "^14.1.1",
 		"prettier": "^1.18.2",
 		"rimraf": "^3.0.0",
-		"source-map-support": "^0.5.13",
+		"source-map-support": "^0.5.15",
 		"typescript": "~3.6.4"
 	},
 	"bin": {
