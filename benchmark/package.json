@@ -52,7 +52,7 @@
     "@types/node": "^10.17.0",
     "mocha": "^6.2.2",
     "p-event": "^4.1.0",
-    "source-map-support": "^0.5.15"
+    "source-map-support": "^0.5.16"
   },
   "repository": {
     "type": "git",
