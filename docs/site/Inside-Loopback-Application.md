@@ -84,7 +84,7 @@ Similar to this we can breakdown further use cases into API requirements.
   - The mobile/web app submits the order and resets the shopping cart.
   - User takes a look at all the previous orders.
 
-![example shopping](https://github.com/strongloop/loopback4-example-shopping/blob/master/example-shopping.png)
+![example shopping](imgs/example-shopping.png)
 
 In the example,
 
