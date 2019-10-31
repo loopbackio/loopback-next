@@ -87,7 +87,8 @@ describe('TodoApplication', () => {
   });
 
   it('creates an address-based reminder', async function() {
-    if (!available) return;
+    // eslint-disable-next-line no-invalid-this
+    if (!available) return this.skip();
     // Increase the timeout to accommodate slow network connections
     // eslint-disable-next-line no-invalid-this
     this.timeout(30000);
