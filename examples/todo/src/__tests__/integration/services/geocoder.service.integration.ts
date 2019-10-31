@@ -30,8 +30,10 @@ describe('GeoLookupService', function() {
     available = await isGeoCoderServiceAvailable(service);
   });
 
-  it('resolves an address to a geo point', async () => {
-    if (!available) return;
+  it('resolves an address to a geo point', async function() {
+    // eslint-disable-next-line no-invalid-this
+    if (!available) return this.skip();
+
     const points = await service.geocode(aLocation.address);
 
     expect(points).to.deepEqual([aLocation.geopoint]);
