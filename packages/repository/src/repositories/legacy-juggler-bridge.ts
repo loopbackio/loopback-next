@@ -104,9 +104,7 @@ export class DefaultCrudRepository<
 
   public readonly inclusionResolvers: Map<
     string,
-    // FIXME(rfeng): TypeScript does not allow us to define any subtype of Entity
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    InclusionResolver<T, any>
+    InclusionResolver<T, Entity>
   > = new Map();
 
   /**
