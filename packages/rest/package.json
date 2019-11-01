@@ -25,7 +25,7 @@
     "@loopback/openapi-v3": "^1.10.0",
     "@types/body-parser": "^1.17.1",
     "@types/cors": "^2.8.6",
-    "@types/express": "^4.17.1",
+    "@types/express": "^4.17.2",
     "@types/express-serve-static-core": "^4.16.10",
     "@types/http-errors": "^1.6.2",
     "@types/on-finished": "^2.3.1",
