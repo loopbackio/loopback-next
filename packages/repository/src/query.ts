@@ -170,8 +170,18 @@ export type Fields<MT = AnyObject> = {[P in keyof MT]?: boolean};
  * `{relation: 'aRelationName', scope: {<AFilterObject>}}`
  */
 export interface Inclusion<MT extends object = AnyObject> {
+  // ^^^ TODO(semver-major): remove the generic argument <MT>
+
   relation: string;
-  scope?: Filter<MT>;
+
+  // Technically, we should restrict the filter to target model.
+  // That is unfortunately rather difficult to achieve, because
+  // an Entity does not provide type information about related models.
+  // We could use {ModelName}WithRelations interface for first-level inclusion,
+  // but that won't handle second-level (and deeper) inclusions.
+  // To keep things simple, we allow any filter here, effectively turning off
+  // compiler checks.
+  scope?: Filter<AnyObject>;
 }
 
 /**
