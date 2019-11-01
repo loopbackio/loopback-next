@@ -218,7 +218,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
   }
 
   protected _setupRequestHandlerIfNeeded() {
-    if (this._expressApp) return;
+    if (this._expressApp != null) return;
     this._expressApp = express();
     this._applyExpressSettings();
     this._requestHandler = this._expressApp;
@@ -825,7 +825,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
    * @param path - Base path
    */
   basePath(path = '') {
-    if (this._requestHandler) {
+    if (this._requestHandler != null) {
       throw new Error(
         'Base path cannot be set as the request handler has been created',
       );
