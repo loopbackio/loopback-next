@@ -248,8 +248,9 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
 
     // This part at the end is just for the ArtifactGenerator
     // end message to output something nice, before it was "Discover undefined was created in src/models/"
+    this.artifactInfo.type = 'Models';
     this.artifactInfo.name = this.artifactInfo.modelDefinitions
-      .map(d => utils.getModelFileName(d.name))
+      .map(d => d.name)
       .join(',');
   }
 
