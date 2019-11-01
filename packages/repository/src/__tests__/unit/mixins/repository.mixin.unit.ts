@@ -3,8 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Application, BindingScope, Component, bind} from '@loopback/core';
+import {Application, bind, BindingScope, Component} from '@loopback/core';
 import {expect, sinon} from '@loopback/testlab';
+import {Callback, PromiseOrVoid} from 'loopback-datasource-juggler';
 import {
   Class,
   DataSource,
@@ -177,8 +178,19 @@ describe('RepositoryMixin', () => {
       updateStub = sinon.stub().resolves();
 
       DataSourceStub = class extends juggler.DataSource {
-        automigrate = migrateStub;
-        autoupdate = updateStub;
+        automigrate(
+          models: string | string[],
+          callback?: Callback,
+        ): PromiseOrVoid {
+          return migrateStub(models, callback);
+        }
+
+        autoupdate(
+          models: string | string[],
+          callback?: Callback,
+        ): PromiseOrVoid {
+          return updateStub(models, callback);
+        }
       };
     }
   });
