@@ -25,7 +25,7 @@
     "@loopback/openapi-v3": "^1.10.0",
     "@loopback/rest": "^1.22.0",
     "@loopback/security": "^0.1.6",
-    "@types/express": "^4.17.1"
+    "@types/express": "^4.17.2"
   },
   "devDependencies": {
     "@loopback/build": "^2.0.15",
