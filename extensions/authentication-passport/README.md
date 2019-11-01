@@ -8,13 +8,6 @@ This is an adapter module created for plugging in
 [`passport`](https://www.npmjs.com/package/passport) based strategies to the
 authentication system in `@loopback/authentication@3.x`.
 
-## Stability: :warning:Experimental:warning:
-
-> Experimental packages provide early access to advanced or experimental
-> functionality to get community feedback. Such modules are published to npm
-> using `0.x.y` versions. Their APIs and functionality may be subject to
-> breaking changes in future releases.
-
 ## Installation
 
 ```sh
