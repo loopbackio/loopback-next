@@ -143,7 +143,7 @@ describe('RestServer', () => {
         // Force the `getter` function to be triggered by referencing
         // `server.requestHandler` so that the servers has `requestHandler`
         // populated to prevent `basePath` to be set.
-        if (server.requestHandler) {
+        if (server.requestHandler != null) {
           server.basePath('/api');
         }
       }).to.throw(
