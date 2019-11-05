@@ -286,7 +286,6 @@ describe('jsonToSchemaObject', () => {
     const expectedItems: SchemaObject = {
       type: 'integer',
       example: 100,
-      examples: [100, 500],
     };
     propertyConversionTest(itemsDef, expectedItems);
   });

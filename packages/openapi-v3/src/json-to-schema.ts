@@ -120,7 +120,6 @@ export function jsonToSchemaObject(
       }
       case 'examples': {
         if (Array.isArray(json.examples)) {
-          result.examples = json.examples;
           result.example = json.examples[0];
         }
         break;
