@@ -187,7 +187,7 @@ export class TodoController {
 }
 ```
 
-Modify `createTodo` method to look up the address provided in `remindAtAddress`
+Modify `create` method to look up the address provided in `remindAtAddress`
 property and convert it to GPS coordinates stored in `remindAtGeo`.
 
 {% include code-caption.html content="src/controllers/todo.controller.ts" %}
@@ -204,7 +204,7 @@ export class TodoController {
       },
     },
   })
-  async createTodo(
+  async create(
     @requestBody({
       content: {
         'application/json': {
