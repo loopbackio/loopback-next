@@ -328,6 +328,7 @@ describe('lb4 repository', function() {
       const files = SANDBOX_FILES.filter(
         e =>
           e.path !== 'src/datasources' ||
+          e.file.includes('sqlite3.config.') ||
           e.file.includes('sqlite3.datasource.'),
       );
       const basicPrompt = {
