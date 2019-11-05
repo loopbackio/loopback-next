@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Options} from '../common-types';
+import {AnyObject, Options} from '../common-types';
 import {Entity} from '../model';
 import {Inclusion} from '../query';
 import {TypeResolver} from '../type-resolver';
@@ -126,7 +126,7 @@ export type InclusionResolver<S extends Entity, T extends Entity> = (
   /**
    * Inclusion requested by the user (e.g. scope constraints to apply).
    */
-  inclusion: Inclusion,
+  inclusion: Inclusion<AnyObject>,
   /**
    * Generic options object, e.g. carrying the Transaction object.
    */
