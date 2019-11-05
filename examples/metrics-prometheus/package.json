@@ -50,11 +50,11 @@
     "@types/node": "^10.17.5",
     "@typescript-eslint/eslint-plugin": "^2.7.0",
     "@typescript-eslint/parser": "^2.7.0",
-    "eslint": "^6.2.2",
-    "eslint-config-prettier": "^6.1.0",
+    "eslint": "^6.6.0",
+    "eslint-config-prettier": "^6.5.0",
     "eslint-plugin-eslint-plugin": "^2.1.0",
-    "eslint-plugin-mocha": "^6.1.0",
-    "typescript": "~3.5.3"
+    "eslint-plugin-mocha": "^6.2.1",
+    "typescript": "~3.7.2"
   },
   "keywords": [
     "loopback",
