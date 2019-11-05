@@ -3,3 +3,5 @@ dist/
 coverage/
 /sandbox
 **/*.d.ts
+/docs/_preview
+/docs/_loopback.io
