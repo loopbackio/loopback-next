@@ -5,7 +5,7 @@
 
 import {inject} from '@loopback/core';
 import {juggler} from '@loopback/repository';
-import * as config from './ds.datasource.json';
+import * as config from './ds.config.json';
 
 export class DsDataSource extends juggler.DataSource {
   static dataSourceName = 'ds';

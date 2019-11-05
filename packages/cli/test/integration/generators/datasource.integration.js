@@ -64,7 +64,7 @@ const expectedTSFile = path.join(
 
 const expectedJSONFile = path.join(
   SANDBOX_PATH,
-  'src/datasources/ds.datasource.json',
+  'src/datasources/ds.config.json',
 );
 
 const expectedIndexFile = path.join(SANDBOX_PATH, 'src/datasources/index.ts');

@@ -312,7 +312,7 @@ better flexibility, we split the datasource definition into two files. The json
 file captures the configuration properties and it can be possibly overridden by
 dependency injection.
 
-1. redis.datasource.json
+1. redis.config.json
 
 ```json
 {
@@ -328,14 +328,14 @@ dependency injection.
 2. redis.datasource.ts
 
 The class uses a configuration object to set up a datasource for the Redis
-instance. By default, the configuration is loaded from `redis.datasource.json`.
-We can override it by binding a new object to `datasources.config.redis` for a
+instance. By default, the configuration is loaded from `redis.config.json`. We
+can override it by binding a new object to `datasources.config.redis` for a
 context.
 
 ```ts
 import {inject} from '@loopback/core';
 import {juggler, AnyObject} from '@loopback/repository';
-import * as config from './redis.datasource.json';
+import * as config from './redis.config.json';
 
 export class RedisDataSource extends juggler.DataSource {
   static dataSourceName = 'redis';

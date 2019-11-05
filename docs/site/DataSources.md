@@ -20,7 +20,7 @@ It is recommended to use the [`lb4 datasource` command](DataSource-generator.md)
 provided by the CLI to generate a DataSource. The CLI will prompt for all
 necessary connector information and create the following files:
 
-- `${dataSource.dataSourceName}.datasource.json` containing the connector
+- `${dataSource.dataSourceName}.config.json` containing the connector
   configuration
 - `${dataSource.dataSourceName}.datasource.ts` containing a class extending
   `juggler.DataSource`. This class can be used to override the default
@@ -37,7 +37,7 @@ Example DataSource Class:
 ```ts
 import {inject} from '@loopback/core';
 import {juggler} from '@loopback/repository';
-import * as config from './db.datasource.json';
+import * as config from './db.config.json';
 
 export class DbDataSource extends juggler.DataSource {
   static dataSourceName = 'db';

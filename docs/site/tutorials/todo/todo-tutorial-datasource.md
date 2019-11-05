@@ -39,7 +39,7 @@ lb4 datasource
 ? window.localStorage key to use for persistence (browser only):
 ? Full path to file for persistence (server only): ./data/db.json
 
-  create src/datasources/db.datasource.json
+  create src/datasources/db.config.json
   create src/datasources/db.datasource.ts
   update src/datasources/index.ts
 
