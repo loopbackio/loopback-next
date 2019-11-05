@@ -32,3 +32,6 @@ packages/tsdocs/fixtures/monorepo/packages/pkg1/docs
 # ESLint cache
 .eslintcache
 
+# Docs preview
+docs/_loopback.io/
+docs/_preview/

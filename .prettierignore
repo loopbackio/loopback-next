@@ -2,6 +2,8 @@
 /coverage
 /docs/apidocs
 /docs/site/apidocs
+/docs/_loopback.io/
+/docs/_preview/
 packages/cli/generators/*/templates
 packages/cli/snapshots/
 packages/tsdocs/fixtures/monorepo/docs
