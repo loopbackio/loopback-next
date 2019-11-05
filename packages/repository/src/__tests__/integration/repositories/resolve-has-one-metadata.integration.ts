@@ -12,92 +12,109 @@ import {
 } from '../../..';
 import {resolveHasOneMetadata} from '../../../relations/has-one/has-one.helpers';
 
-describe('keyTo and keyFrom with resolveHasOneMetadata', () => {
-  it('resolves metadata using keyTo and keyFrom', () => {
-    const meta = resolveHasOneMetadata(Category.definition.relations[
-      'product'
-    ] as HasOneDefinition);
-
-    expect(meta).to.eql({
+describe('resolveHasOneMetadata', () => {
+  it('throws if the wrong metadata type is used', async () => {
+    const metadata: unknown = {
       name: 'product',
-      type: 'hasOne',
-      targetsMany: false,
+      type: RelationType.hasMany,
+      targetsMany: true,
       source: Category,
-      keyFrom: 'id',
       target: () => Product,
-      keyTo: 'categoryId',
-    });
+    };
+
+    expect(() => {
+      resolveHasOneMetadata(metadata as HasOneDefinition);
+    }).to.throw(
+      /Invalid hasMany definition for Category#product: relation type must be HasOne/,
+    );
   });
 
-  it('infers keyFrom if it is not provided', () => {
-    const meta = resolveHasOneMetadata(Category.definition.relations[
-      'item'
-    ] as HasOneDefinition);
+  describe('keyTo and keyFrom with resolveHasOneMetadata', () => {
+    it('resolves metadata using keyTo and keyFrom', () => {
+      const meta = resolveHasOneMetadata(Category.definition.relations[
+        'product'
+      ] as HasOneDefinition);
 
-    expect(meta).to.eql({
-      name: 'item',
-      type: 'hasOne',
-      targetsMany: false,
-      source: Category,
-      keyFrom: 'id',
-      target: () => Item,
-      keyTo: 'categoryId',
+      expect(meta).to.eql({
+        name: 'product',
+        type: 'hasOne',
+        targetsMany: false,
+        source: Category,
+        keyFrom: 'id',
+        target: () => Product,
+        keyTo: 'categoryId',
+      });
     });
-  });
 
-  it('infers keyTo if it is not provided', () => {
-    const meta = resolveHasOneMetadata(Category.definition.relations[
-      'thing'
-    ] as HasOneDefinition);
+    it('infers keyFrom if it is not provided', () => {
+      const meta = resolveHasOneMetadata(Category.definition.relations[
+        'item'
+      ] as HasOneDefinition);
 
-    expect(meta).to.eql({
-      name: 'thing',
-      type: 'hasOne',
-      targetsMany: false,
-      source: Category,
-      keyFrom: 'id',
-      target: () => Thing,
-      keyTo: 'categoryId',
+      expect(meta).to.eql({
+        name: 'item',
+        type: 'hasOne',
+        targetsMany: false,
+        source: Category,
+        keyFrom: 'id',
+        target: () => Item,
+        keyTo: 'categoryId',
+      });
     });
-  });
 
-  it('throws if keyFrom, keyTo, and default foreign key name are not provided', async () => {
-    let error;
+    it('infers keyTo if it is not provided', () => {
+      const meta = resolveHasOneMetadata(Category.definition.relations[
+        'thing'
+      ] as HasOneDefinition);
 
-    try {
-      resolveHasOneMetadata(Category.definition.relations[
+      expect(meta).to.eql({
+        name: 'thing',
+        type: 'hasOne',
+        targetsMany: false,
+        source: Category,
+        keyFrom: 'id',
+        target: () => Thing,
+        keyTo: 'categoryId',
+      });
+    });
+
+    it('throws if keyFrom, keyTo, and default foreign key name are not provided', async () => {
+      let error;
+
+      try {
+        resolveHasOneMetadata(Category.definition.relations[
+          'category'
+        ] as HasOneDefinition);
+      } catch (err) {
+        error = err;
+      }
+
+      expect(error.message).to.eql(
+        'Invalid hasOne definition for Category#category: target model Category' +
+          ' is missing definition of foreign key categoryId',
+      );
+
+      expect(error.code).to.eql('INVALID_RELATION_DEFINITION');
+    });
+
+    it('resolves metadata if keyTo and keyFrom are not provided, but default foreign key is', async () => {
+      Category.definition.addProperty('categoryId', {type: 'number'});
+
+      const meta = resolveHasOneMetadata(Category.definition.relations[
         'category'
       ] as HasOneDefinition);
-    } catch (err) {
-      error = err;
-    }
 
-    expect(error.message).to.eql(
-      'Invalid hasOne definition for Category#category: target model Category' +
-        ' is missing definition of foreign key categoryId',
-    );
-
-    expect(error.code).to.eql('INVALID_RELATION_DEFINITION');
-  });
-
-  it('resolves metadata if keyTo and keyFrom are not provided, but default foreign key is', async () => {
-    Category.definition.addProperty('categoryId', {type: 'number'});
-
-    const meta = resolveHasOneMetadata(Category.definition.relations[
-      'category'
-    ] as HasOneDefinition);
-
-    expect(meta).to.eql({
-      name: 'category',
-      type: 'hasOne',
-      targetsMany: false,
-      source: Category,
-      keyFrom: 'id',
-      target: () => Category,
-      keyTo: 'categoryId',
+      expect(meta).to.eql({
+        name: 'category',
+        type: 'hasOne',
+        targetsMany: false,
+        source: Category,
+        keyFrom: 'id',
+        target: () => Category,
+        keyTo: 'categoryId',
+      });
     });
   });
-
   /******  HELPERS *******/
 
   class Category extends Entity {}
