@@ -5,6 +5,7 @@
 
 import {Context, invokeMethodWithInterceptors} from '@loopback/context';
 import {OperationObject} from '@loopback/openapi-v3';
+import {RestBindings} from '../keys';
 import {OperationArgs, OperationRetval} from '../types';
 import {BaseRoute} from './base-route';
 
@@ -23,7 +24,7 @@ export class Route extends BaseRoute {
   }
 
   updateBindings(requestContext: Context) {
-    // no-op
+    requestContext.bind(RestBindings.OPERATION_SPEC_CURRENT).to(this.spec);
   }
 
   async invokeHandler(

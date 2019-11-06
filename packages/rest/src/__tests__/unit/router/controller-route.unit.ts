@@ -3,15 +3,16 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {
-  ControllerRoute,
-  createControllerFactoryForClass,
-  createControllerFactoryForBinding,
-  ControllerFactory,
-} from '../../..';
-import {expect} from '@loopback/testlab';
+import {BindingScope, Context, CoreBindings} from '@loopback/core';
 import {anOperationSpec} from '@loopback/openapi-spec-builder';
-import {Context, CoreBindings, BindingScope} from '@loopback/core';
+import {expect} from '@loopback/testlab';
+import {
+  ControllerFactory,
+  ControllerRoute,
+  createControllerFactoryForBinding,
+  createControllerFactoryForClass,
+  RestBindings,
+} from '../../..';
 
 describe('ControllerRoute', () => {
   it('rejects routes with no methodName', () => {
@@ -103,6 +104,12 @@ describe('ControllerRoute', () => {
       expect(
         await requestCtx.get(CoreBindings.CONTROLLER_METHOD_NAME),
       ).to.equal('greet');
+      expect(await requestCtx.get(RestBindings.OPERATION_SPEC_CURRENT)).to.eql({
+        'x-controller-name': 'MyController',
+        'x-operation-name': 'greet',
+        tags: ['MyController'],
+        responses: {'200': {description: 'An undocumented response body.'}},
+      });
     });
 
     it('binds current controller to the request context as singleton', async () => {
