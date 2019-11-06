@@ -6,11 +6,12 @@
 import {BindingKey, Context} from '@loopback/context';
 import {CoreBindings} from '@loopback/core';
 import {HttpProtocol} from '@loopback/http-server';
-import {OpenApiSpec} from '@loopback/openapi-v3';
+import {OpenApiSpec, OperationObject} from '@loopback/openapi-v3';
 import * as https from 'https';
 import {ErrorWriterOptions} from 'strong-error-handler';
 import {BodyParser, RequestBodyParser} from './body-parsers';
 import {HttpHandler} from './http-handler';
+import {RestServer} from './rest.server';
 import {RestRouter, RestRouterOptions} from './router';
 import {SequenceHandler} from './sequence';
 import {
@@ -26,7 +27,6 @@ import {
   Response,
   Send,
 } from './types';
-import {RestServer} from './rest.server';
 
 /**
  * RestServer-specific bindings
@@ -156,6 +156,14 @@ export namespace RestBindings {
    * Binding key for setting and injecting an OpenAPI spec
    */
   export const API_SPEC = BindingKey.create<OpenApiSpec>('rest.apiSpec');
+
+  /**
+   * Binding key for setting and injecting an OpenAPI operation spec
+   */
+  export const OPERATION_SPEC_CURRENT = BindingKey.create<OperationObject>(
+    'rest.operationSpec.current',
+  );
+
   /**
    * Binding key for setting and injecting a Sequence
    */

@@ -14,6 +14,7 @@ import {
 import {CoreBindings} from '@loopback/core';
 import {OperationObject} from '@loopback/openapi-v3';
 import * as HttpErrors from 'http-errors';
+import {RestBindings} from '../keys';
 import {OperationArgs, OperationRetval} from '../types';
 import {BaseRoute} from './base-route';
 
@@ -121,6 +122,7 @@ export class ControllerRoute<T> extends BaseRoute {
     requestContext
       .bind(CoreBindings.CONTROLLER_METHOD_NAME)
       .to(this._methodName);
+    requestContext.bind(RestBindings.OPERATION_SPEC_CURRENT).to(this.spec);
   }
 
   async invokeHandler(
