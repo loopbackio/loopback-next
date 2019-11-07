@@ -6,9 +6,6 @@ sidebar: lb4_sidebar
 permalink: /doc/en/lb4/migration-models-overview.html
 ---
 
-**FIXME:** Explain at high level how to migrate models from a LB3 app to a LB4
-project. Refer to sub-sections for model details.
-
 In LoopBack 3, models are the cornerstone. They describe shape of data (schema),
 provide persistence-related behavior and implement public (REST) API. Besides
 this core functionality, there are many ways how to extend the built-in
