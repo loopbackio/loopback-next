@@ -17,7 +17,7 @@ describe('resolveHasManyMetadata', () => {
     const metadata: unknown = {
       name: 'category',
       type: RelationType.hasOne,
-      targetsMany: true,
+      targetsMany: false,
       source: Category,
       target: () => Category,
     };
@@ -31,9 +31,18 @@ describe('resolveHasManyMetadata', () => {
 
   describe('keyTo and keyFrom with resolveHasManyMetadata', () => {
     it('resolves metadata using keyTo and keyFrom', () => {
-      const meta = resolveHasManyMetadata(Category.definition.relations[
-        'products'
-      ] as HasManyDefinition);
+      const metadata = {
+        name: 'products',
+        type: RelationType.hasMany,
+        targetsMany: true,
+
+        source: Category,
+        keyFrom: 'id',
+
+        target: () => Product,
+        keyTo: 'categoryId',
+      };
+      const meta = resolveHasManyMetadata(metadata as HasManyDefinition);
 
       expect(meta).to.eql({
         name: 'products',
@@ -47,65 +56,95 @@ describe('resolveHasManyMetadata', () => {
     });
 
     it('infers keyFrom if it is not provided', () => {
-      const meta = resolveHasManyMetadata(Category.definition.relations[
-        'items'
-      ] as HasManyDefinition);
+      const metadata = {
+        name: 'products',
+        type: RelationType.hasMany,
+        targetsMany: true,
+
+        source: Category,
+        // no keyFrom
+
+        target: () => Product,
+        keyTo: 'categoryId',
+      };
+      const meta = resolveHasManyMetadata(metadata as HasManyDefinition);
 
       expect(meta).to.eql({
-        name: 'items',
+        name: 'products',
         type: 'hasMany',
         targetsMany: true,
         source: Category,
         keyFrom: 'id',
-        target: () => Item,
+        target: () => Product,
         keyTo: 'categoryId',
       });
     });
 
     it('infers keyTo if it is not provided', () => {
-      const meta = resolveHasManyMetadata(Category.definition.relations[
-        'things'
-      ] as HasManyDefinition);
+      const metadata = {
+        name: 'products',
+        type: RelationType.hasMany,
+        targetsMany: true,
+
+        source: Category,
+        keyFrom: 'id',
+
+        target: () => Product,
+        // no keyTo
+      };
+
+      const meta = resolveHasManyMetadata(metadata as HasManyDefinition);
 
       expect(meta).to.eql({
-        name: 'things',
+        name: 'products',
         type: 'hasMany',
         targetsMany: true,
         source: Category,
         keyFrom: 'id',
-        target: () => Thing,
+        target: () => Product,
         keyTo: 'categoryId',
       });
     });
 
     it('throws if keyFrom, keyTo, and default foreign key name are not provided', async () => {
-      let error;
+      const metadata = {
+        name: 'categories',
+        type: RelationType.hasMany,
+        targetsMany: true,
 
-      try {
-        resolveHasManyMetadata(Category.definition.relations[
-          'categories'
-        ] as HasManyDefinition);
-      } catch (err) {
-        error = err;
-      }
+        source: Category,
+        // no keyFrom
 
-      expect(error.message).to.eql(
-        'Invalid hasMany definition for Category#categories: target model ' +
-          'Category is missing definition of foreign key categoryId',
+        target: () => Category,
+        // no keyTo
+      };
+
+      expect(() => {
+        resolveHasManyMetadata(metadata as HasManyDefinition);
+      }).to.throw(
+        /Invalid hasMany definition for Category#categories: target model Category is missing definition of foreign key categoryId/,
       );
-
-      expect(error.code).to.eql('INVALID_RELATION_DEFINITION');
     });
 
     it('resolves metadata if keyTo and keyFrom are not provided, but default foreign key is', async () => {
       Category.definition.addProperty('categoryId', {type: 'number'});
 
-      const meta = resolveHasManyMetadata(Category.definition.relations[
-        'categories'
-      ] as HasManyDefinition);
+      const metadata = {
+        name: 'category',
+        type: RelationType.hasMany,
+        targetsMany: true,
+
+        source: Category,
+        // no keyFrom
+
+        target: () => Category,
+        // no keyTo
+      };
+
+      const meta = resolveHasManyMetadata(metadata as HasManyDefinition);
 
       expect(meta).to.eql({
-        name: 'categories',
+        name: 'category',
         type: 'hasMany',
         targetsMany: true,
         source: Category,
@@ -119,86 +158,15 @@ describe('resolveHasManyMetadata', () => {
 
   class Category extends Entity {}
 
-  Category.definition = new ModelDefinition('Category')
-    .addProperty('id', {type: 'number', id: true, required: true})
-    .addRelation(<HasManyDefinition>{
-      name: 'products',
-      type: RelationType.hasMany,
-      targetsMany: true,
-
-      source: Category,
-      keyFrom: 'id',
-
-      target: () => Product,
-      keyTo: 'categoryId',
-    })
-    .addRelation(<HasManyDefinition>{
-      name: 'items',
-      type: RelationType.hasMany,
-      targetsMany: true,
-
-      source: Category,
-      // no keyFrom
-
-      target: () => Item,
-      keyTo: 'categoryId',
-    })
-    .addRelation(<HasManyDefinition>{
-      name: 'things',
-      type: RelationType.hasMany,
-      targetsMany: true,
-
-      source: Category,
-      keyFrom: 'id',
-
-      target: () => Thing,
-      // no keyTo
-    })
-    .addRelation(<HasManyDefinition>{
-      name: 'categories',
-      type: RelationType.hasMany,
-      targetsMany: true,
-
-      source: Category,
-      // no keyFrom
-
-      target: () => Category,
-      // no keyTo
-    })
-    // need <unknown> to avoid Type 'RelationType.hasOne' is not comparable
-    // to type 'RelationType.hasMany'
-    .addRelation(<HasManyDefinition>(<unknown>{
-      name: 'category',
-      type: RelationType.hasOne,
-      targetsMany: true,
-      source: Category,
-      // no keyFrom
-      target: () => Category,
-    }));
+  Category.definition = new ModelDefinition('Category').addProperty('id', {
+    type: 'number',
+    id: true,
+    required: true,
+  });
 
   class Product extends Entity {}
 
   Product.definition = new ModelDefinition('Product')
-    .addProperty('id', {
-      type: 'number',
-      id: true,
-      required: true,
-    })
-    .addProperty('categoryId', {type: 'number'});
-
-  class Item extends Entity {}
-
-  Item.definition = new ModelDefinition('Item')
-    .addProperty('id', {
-      type: 'number',
-      id: true,
-      required: true,
-    })
-    .addProperty('categoryId', {type: 'number'});
-
-  class Thing extends Entity {}
-
-  Thing.definition = new ModelDefinition('Thing')
     .addProperty('id', {
       type: 'number',
       id: true,
