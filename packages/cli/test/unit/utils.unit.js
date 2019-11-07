@@ -495,7 +495,7 @@ describe('Utils', () => {
   describe('dataSourceToJSONFileName', () => {
     it('returns the datasource json file name', () => {
       expect(utils.dataSourceToJSONFileName('MapDS')).to.equal(
-        'map-ds.config.json',
+        'map-ds.datasource.config.json',
       );
     });
   });

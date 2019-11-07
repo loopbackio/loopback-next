@@ -21,7 +21,7 @@ exports.SANDBOX_FILES = [
   },
   {
     path: DATASOURCE_APP_PATH,
-    file: 'dbkv.config.json',
+    file: 'dbkv.datasource.config.json',
     content: JSON.stringify({
       name: 'dbkv',
       connector: 'kv-redis',
@@ -34,7 +34,7 @@ exports.SANDBOX_FILES = [
   },
   {
     path: DATASOURCE_APP_PATH,
-    file: 'dbmem.config.json',
+    file: 'dbmem.datasource.config.json',
     content: JSON.stringify({
       name: 'dbmem',
       connector: 'memory',
@@ -42,7 +42,7 @@ exports.SANDBOX_FILES = [
   },
   {
     path: DATASOURCE_APP_PATH,
-    file: 'my-ds.config.json',
+    file: 'my-ds.datasource.config.json',
     content: JSON.stringify({
       name: 'MyDS',
       connector: 'memory',
@@ -55,7 +55,7 @@ exports.SANDBOX_FILES = [
   },
   {
     path: DATASOURCE_APP_PATH,
-    file: 'restdb.config.json',
+    file: 'restdb.datasource.config.json',
     content: JSON.stringify({
       name: 'restdb',
       connector: 'rest',
@@ -63,7 +63,7 @@ exports.SANDBOX_FILES = [
   },
   {
     path: DATASOURCE_APP_PATH,
-    file: 'sqlite3.config.json',
+    file: 'sqlite3.datasource.config.json',
     content: JSON.stringify({
       name: 'sqlite3',
       connector: 'loopback-connector-sqlite3',
