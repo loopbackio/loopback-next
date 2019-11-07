@@ -33,7 +33,7 @@ Our commit messages are formatted according to
 [Conventional Commits](https://conventionalcommits.org/).
 
 Please read the
-[Commit Message Format](https://loopback.io/doc/en/contrib/code-contrib-lb4.html#commit-message-guidelines)
+[Commit Message Format](https://loopback.io/doc/en/lb4/code-contrib-lb4.html#commit-message-guidelines)
 guidelines to correctly format your commit messages.
 
 To change an existing commit please refer to
@@ -209,7 +209,7 @@ Our commit messages are formatted according to
 [Conventional Commits](https://conventionalcommits.org/).
 
 Please read the
-[Commit Message Format](https://loopback.io/doc/en/contrib/code-contrib-lb4.html#commit-message-guidelines)
+[Commit Message Format](https://loopback.io/doc/en/lb4/code-contrib-lb4.html#commit-message-guidelines)
 guidelines to correctly format your commit messages.
 
 To help with abiding by the rules of commit messages, please use the
@@ -514,7 +514,7 @@ When a project maintainer is satisfied with the pull request, he/she will
 
 - [Contributing to docs](https://loopback.io/doc/en/contrib/doc-contrib.html)
 
-- [Commit Message Format](https://loopback.io/doc/en/contrib/code-contrib-lb4.html#commit-message-guidelines)
+- [Commit Message Format](https://loopback.io/doc/en/lb4/code-contrib-lb4.html#commit-message-guidelines)
 
 - [Agreeing to the CLA](https://loopback.io/doc/en/contrib/code-contrib.html#agreeing-to-the-cla)
 
