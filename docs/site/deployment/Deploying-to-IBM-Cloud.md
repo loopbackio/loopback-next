@@ -69,10 +69,10 @@ Cloudant connector, so data is persisted.
 
 ### Step 3: Updating your DataSource
 
-Update `db.config.json` to use the Cloudant connector. The value for the `url`
-property is just a placeholder and does not need to have the correct credential
-because we will be binding the app with the Cloudant service once it's pushed to
-IBM Cloud.
+Update `db.datasource.config.json` to use the Cloudant connector. The value for
+the `url` property is just a placeholder and does not need to have the correct
+credential because we will be binding the app with the Cloudant service once
+it's pushed to IBM Cloud.
 
 ```js
 {
@@ -106,7 +106,7 @@ $ npm i loopback-connector-cloudant
    import {TodoListApplication} from './application';
    import {ApplicationConfig} from '@loopback/core';
    // --------- ADD THIS SNIPPET ---------
-   const datasourceDb = require('./datasources/db.config.json');
+   const datasourceDb = require('./datasources/db.datasource.config.json');
    const cfenv = require('cfenv');
    const appEnv = cfenv.getAppEnv();
    // --------- ADD THIS SNIPPET ---------

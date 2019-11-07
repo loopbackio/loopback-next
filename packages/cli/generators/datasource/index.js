@@ -240,7 +240,7 @@ module.exports = class DataSourceGenerator extends ArtifactGenerator {
     this.artifactInfo.className = utils.toClassName(this.artifactInfo.name);
     this.artifactInfo.fileName = utils.toFileName(this.artifactInfo.name);
     // prettier-ignore
-    this.artifactInfo.jsonFileName = `${this.artifactInfo.fileName}.config.json`;
+    this.artifactInfo.jsonFileName = `${this.artifactInfo.fileName}.datasource.config.json`;
     // prettier-ignore
     this.artifactInfo.outFile = `${this.artifactInfo.fileName}.datasource.ts`;
 

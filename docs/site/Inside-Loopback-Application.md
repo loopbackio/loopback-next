@@ -258,9 +258,9 @@ We need appropriate drivers to connect with the backend datasources.
 > to provide easy to use CRUD operations and connection configurations.
 
 In the example,
-[Redis datasource definition](https://github.com/strongloop/loopback4-example-shopping/blob/master/packages/shopping/src/datasources/redis.config.json)
+[Redis datasource definition](https://github.com/strongloop/loopback4-example-shopping/blob/master/packages/shopping/src/datasources/redis.datasource.config.json)
 uses the LoopBack `kv-redis` connector and
-[MongoDB datasource definition](https://github.com/strongloop/loopback4-example-shopping/blob/master/packages/shopping/src/datasources/mongo.config.json)
+[MongoDB datasource definition](https://github.com/strongloop/loopback4-example-shopping/blob/master/packages/shopping/src/datasources/mongo.datasource.config.json)
 uses the LoopBack `mongodb` connector.
 
 ## Application startup

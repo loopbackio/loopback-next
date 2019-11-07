@@ -562,7 +562,8 @@ exports.getDataSourceName = function(datasourcesDir, dataSourceClass) {
 
 exports.dataSourceToJSONFileName = function(dataSourceClass) {
   return path.join(
-    toFileName(dataSourceClass.replace('Datasource', '')) + '.config.json',
+    toFileName(dataSourceClass.replace('Datasource', '')) +
+      '.datasource.config.json',
   );
 };
 

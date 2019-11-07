@@ -67,7 +67,7 @@ JSON configuration file and a .ts file with the Datasource name and added an
 entry inside the index.ts file.
 
 ```sh
-   create src/datasources/calculator.config.json
+   create src/datasources/calculator.datasource.config.json
    create src/datasources/calculator.datasource.ts
    update src/datasources/index.ts
 
@@ -103,10 +103,10 @@ bind the Node.js method _Multiply_.
  }
 ```
 
-Edit the file `src/datasources/calculator.config.json` and add the following
-configuration after the `remoteEnabled: true,` property as follows:
+Edit the file `src/datasources/calculator.datasource.config.json` and add the
+following configuration after the `remoteEnabled: true,` property as follows:
 
-{% include code-caption.html content="src/datasources/calculator.config.json" %}
+{% include code-caption.html content="src/datasources/calculator.datasource.config.json" %}
 
 ```ts
 "operations": {
