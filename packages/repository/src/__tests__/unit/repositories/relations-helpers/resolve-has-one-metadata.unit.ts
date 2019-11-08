@@ -9,8 +9,8 @@ import {
   HasOneDefinition,
   ModelDefinition,
   RelationType,
-} from '../../..';
-import {resolveHasOneMetadata} from '../../../relations/has-one/has-one.helpers';
+} from '../../../..';
+import {resolveHasOneMetadata} from '../../../../relations/has-one/has-one.helpers';
 
 describe('resolveHasOneMetadata', () => {
   it('throws if the wrong metadata type is used', async () => {

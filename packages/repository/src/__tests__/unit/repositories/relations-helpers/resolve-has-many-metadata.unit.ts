@@ -9,8 +9,8 @@ import {
   HasManyDefinition,
   ModelDefinition,
   RelationType,
-} from '../../..';
-import {resolveHasManyMetadata} from '../../../relations/has-many/has-many.helpers';
+} from '../../../..';
+import {resolveHasManyMetadata} from '../../../../relations/has-many/has-many.helpers';
 
 describe('resolveHasManyMetadata', () => {
   it('throws if the wrong metadata type is used', async () => {
