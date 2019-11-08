@@ -64,7 +64,7 @@
     "swagger2openapi": "^5.3.1",
     "tildify": "^2.0.0",
     "ts-morph": "^4.3.3",
-    "typescript": "~3.6.4",
+    "typescript": "~3.7.2",
     "unicode-10.0.0": "^0.7.5",
     "untildify": "^4.0.0",
     "update-notifier": "^3.0.1",

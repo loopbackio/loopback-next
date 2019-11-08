@@ -52,7 +52,7 @@
     "eslint-config-prettier": "^6.5.0",
     "eslint-plugin-eslint-plugin": "^2.1.0",
     "eslint-plugin-mocha": "^6.2.1",
-    "typescript": "~3.6.4"
+    "typescript": "~3.7.2"
   },
   "dependencies": {
     "@loopback/context": "^1.23.4",
