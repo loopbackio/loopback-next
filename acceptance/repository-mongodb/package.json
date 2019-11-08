@@ -22,7 +22,7 @@
     "@loopback/eslint-config": "^4.1.3",
     "@loopback/repository": "^1.15.3",
     "@loopback/repository-tests": "^0.6.0",
-    "@types/node": "^10.17.4",
+    "@types/node": "^10.17.5",
     "loopback-connector-mongodb": "^5.2.0"
   },
   "files": [
