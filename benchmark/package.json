@@ -43,7 +43,7 @@
     "debug": "^4.1.1",
     "path-to-regexp": "^3.1.0",
     "request": "^2.88.0",
-    "request-promise-native": "^1.0.7"
+    "request-promise-native": "^1.0.8"
   },
   "devDependencies": {
     "@loopback/build": "^2.0.15",

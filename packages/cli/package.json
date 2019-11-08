@@ -33,7 +33,7 @@
     "mem-fs-editor": "^6.0.0",
     "mock-stdin": "^0.3.1",
     "request": "^2.88.0",
-    "request-promise-native": "^1.0.7",
+    "request-promise-native": "^1.0.8",
     "rimraf": "^3.0.0",
     "sinon": "^7.5.0",
     "yeoman-assert": "^3.1.1",
