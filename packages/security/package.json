@@ -30,7 +30,7 @@
     "@loopback/build": "^2.0.15",
     "@loopback/testlab": "^1.9.3",
     "@types/debug": "^4.1.4",
-    "@types/node": "^10.17.4"
+    "@types/node": "^10.17.5"
   },
   "keywords": [
     "LoopBack",
