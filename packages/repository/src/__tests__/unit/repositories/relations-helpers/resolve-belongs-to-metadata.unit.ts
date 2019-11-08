@@ -4,8 +4,8 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {BelongsToDefinition, Entity, RelationType} from '../../..';
-import {resolveBelongsToMetadata} from '../../../relations/belongs-to/belongs-to.helpers';
+import {BelongsToDefinition, Entity, RelationType} from '../../../..';
+import {resolveBelongsToMetadata} from '../../../../relations/belongs-to/belongs-to.helpers';
 
 describe('resolveBelongsToMetadata', () => {
   it('throws if the wrong metadata type is used', async () => {
