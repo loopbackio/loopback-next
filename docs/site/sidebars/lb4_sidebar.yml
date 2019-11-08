@@ -367,6 +367,55 @@ children:
     url: Authentication-Tutorial.html
     output: 'web, pdf'
 
+  - title: 'Build large scale Node.js projects with LoopBack 4'
+    url: core-tutorial.html
+    output: 'web, pdf'
+    children:
+
+      - title: 'Introduction of the application scenario'
+        url: core-tutorial-part1.html
+        output: 'web, pdf'
+
+      - title: 'Architectural challenges'
+        url: core-tutorial-part2.html
+        output: 'web, pdf'
+
+      - title: 'Context in action'
+        url: core-tutorial-part3.html
+        output: 'web, pdf'
+
+      - title: 'Dependency injection'
+        url: core-tutorial-part4.html
+        output: 'web, pdf'
+
+      - title: 'Extension point and extensions'
+        url: core-tutorial-part5.html
+        output: 'web, pdf'
+
+      - title: 'Interception'
+        url: core-tutorial-part6.html
+        output: 'web, pdf'
+
+      - title: 'Observation of life cycle events'
+        url: core-tutorial-part7.html
+        output: 'web, pdf'
+
+      - title: 'Configuration'
+        url: core-tutorial-part8.html
+        output: 'web, pdf'
+
+      - title: 'Discover and load artifacts by convention'
+        url: core-tutorial-part9.html
+        output: 'web, pdf'
+
+      - title: 'Advanced Recipes'
+        url: core-tutorial-part10.html
+        output: 'web, pdf'
+
+      - title: 'Summary'
+        url: core-tutorial-part11.html
+        output: 'web, pdf'
+
 - title: 'Examples'
   url: Examples.html
   output: 'web, pdf'
