@@ -23,6 +23,7 @@ Available commands:
   lb4 interceptor
   lb4 discover
   lb4 relation
+  lb4 update
 `;
 
 
@@ -42,4 +43,5 @@ Available commands:
   lb4 interceptor
   lb4 discover
   lb4 relation
+  lb4 update
 `;

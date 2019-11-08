@@ -9,6 +9,44 @@ const sinon = require('sinon');
 const chalk = require('chalk');
 const testUtils = require('../../test-utils');
 const fs = require('mem-fs-editor').create(require('mem-fs').create());
+const pkgJson = require('../../../package.json');
+
+/**
+ * Get current versions for `@loopback/context` and `@loopback/core` from
+ * the template
+ */
+const contextVer = pkgJson.config.templateDependencies['@loopback/context'];
+const coreVer = pkgJson.config.templateDependencies['@loopback/core'];
+const buildVer = pkgJson.config.templateDependencies['@loopback/build'];
+
+/***
+ * Parse version range (for example, `'^1.24.3'`) to an object such as
+ * `{major: 1, minor: 24, patch: 3}`
+ *
+ * @param {string} versionRange
+ */
+function parseVersion(versionRange) {
+  const result = /(\^|\~)(\d+)\.(\d+)\.(\d+)/.exec(versionRange);
+  return {major: +result[2], minor: +result[3], patch: +result[4]};
+}
+
+/**
+ * Get a new patch version for compatible semver
+ * @param {string} versionRange
+ */
+function getNewPatch(versionRange) {
+  const ver = parseVersion(versionRange);
+  return `${ver.major}.${ver.minor}.${+ver.patch + 1}`;
+}
+
+/**
+ * Get a new major version for incompatible semver
+ * @param {string} versionRange
+ */
+function getNewMajor(versionRange) {
+  const ver = parseVersion(versionRange);
+  return `${+ver.major + 1}.${ver.minor}.${+ver.patch}`;
+}
 
 module.exports = function suiteCheckLoopBackProject(generator) {
   describe('checkLoopBackProject', () => {
@@ -47,6 +85,102 @@ module.exports = function suiteCheckLoopBackProject(generator) {
     );
 
     testCheckLoopBack(
+      'throws an error for incompatible patch versions with semver=false',
+      {
+        dependencies: {
+          '@loopback/context': getNewPatch(contextVer),
+          '@loopback/core': coreVer,
+        },
+      },
+      /Incompatible dependencies/,
+      {decision: 'abort', command: 'update', semver: false},
+    );
+
+    testCheckLoopBack(
+      'throws an error for incompatible major versions with semver=false',
+      {
+        dependencies: {
+          '@loopback/context': getNewMajor(contextVer),
+          '@loopback/core': coreVer,
+        },
+      },
+      /Incompatible dependencies/,
+      {decision: 'abort', command: 'update', semver: false},
+    );
+
+    testCheckLoopBack(
+      'allows compatible patch versions with semver=true',
+      {
+        dependencies: {
+          '@loopback/context': getNewPatch(contextVer),
+          '@loopback/core': coreVer,
+        },
+      },
+      [
+        chalk.green(
+          `The project dependencies are compatible with @loopback/cli@${pkgJson.version}`,
+        ),
+      ],
+      {decision: 'upgrade', command: 'update', semver: true},
+    );
+
+    testCheckLoopBack(
+      'throws an error for incompatible major versions with semver=true',
+      {
+        dependencies: {
+          '@loopback/context': getNewMajor(contextVer),
+          '@loopback/core': coreVer,
+        },
+      },
+      /Incompatible dependencies/,
+      {decision: 'abort', command: 'update', semver: false},
+    );
+
+    testCheckLoopBack(
+      'upgrades older versions',
+      {
+        dependencies: {
+          '@loopback/context': '^0.1.0',
+          '@loopback/core': '^0.1.0',
+        },
+        devDependencies: {
+          '@loopback/build': '^0.1.0',
+        },
+      },
+      [
+        `- Dependency @loopback/context: ^0.1.0 => ${contextVer}`,
+        `- Dependency @loopback/core: ^0.1.0 => ${coreVer}`,
+        `- DevDependency @loopback/build: ^0.1.0 => ${buildVer}`,
+      ],
+      {decision: 'upgrade'},
+    );
+
+    testCheckLoopBack(
+      'skip older versions',
+      {
+        dependencies: {
+          '@loopback/context': '^0.1.0',
+          '@loopback/core': '^0.1.0',
+        },
+        devDependencies: {
+          '@loopback/build': '^0.1.0',
+        },
+      },
+      [
+        '@loopback/build',
+        '^0.1.0',
+        `${buildVer}`,
+        '@loopback/context',
+        '^0.1.0',
+        `${contextVer}`,
+        '@loopback/core',
+        '^0.1.0',
+        `${coreVer}`,
+      ],
+      {decision: 'continue'},
+    );
+
+    testCheckLoopBack(
       'allows */x/X for version range',
       {
         devDependencies: {'@types/node': '*'},
@@ -62,14 +196,22 @@ module.exports = function suiteCheckLoopBackProject(generator) {
       await gen.checkLoopBackProject();
     });
 
-    function testCheckLoopBack(testName, obj, expected) {
+    function testCheckLoopBack(
+      testName,
+      obj,
+      expected,
+      options = {decision: 'abort'},
+    ) {
       it(testName, async () => {
         let logs = [];
         gen.log = function(...args) {
           logs = logs.concat(args);
         };
+        gen.command = options.command;
+        gen.options = gen.options || {};
+        gen.options.semver = options.semver;
         gen.prompt = async () => ({
-          ignoreIncompatibleDependencies: false,
+          decision: options.decision,
         });
         gen.fs.readJSON.returns(obj);
         await gen.checkLoopBackProject();
@@ -77,6 +219,14 @@ module.exports = function suiteCheckLoopBackProject(generator) {
           assert(gen.exitGeneration == null);
           return;
         }
+        // expected is an array of messages
+        if (Array.isArray(expected)) {
+          for (const i of expected) {
+            assert.notEqual(logs.indexOf(i), -1, `${i} not found in the log`);
+          }
+          return;
+        }
+        // expected is a string for error
         assert(gen.exitGeneration instanceof Error);
         assert(gen.exitGeneration.message.match(expected));
         gen.end();
