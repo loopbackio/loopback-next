@@ -10,6 +10,7 @@ const debug = require('./debug')();
 const path = require('path');
 const yeoman = require('yeoman-environment');
 const PREFIX = 'loopback4:';
+const {printVersions} = require('./version-helper');
 
 /**
  * Parse arguments and run corresponding command
@@ -99,23 +100,8 @@ function setupGenerators() {
     path.join(__dirname, '../generators/relation'),
     PREFIX + 'relation',
   );
+  env.register(path.join(__dirname, '../generators/update'), PREFIX + 'update');
   return env;
-}
-
-/**
- * Print @loopback/* versions
- */
-function printVersions(log) {
-  const pkg = require('../package.json');
-  const ver = pkg.version;
-  log('@loopback/cli version: %s', ver);
-  const deps = pkg.config.templateDependencies;
-  log('\n@loopback/* dependencies:');
-  for (const d in deps) {
-    if (d.startsWith('@loopback/') && d !== '@loopback/cli') {
-      log('  - %s: %s', d, deps[d]);
-    }
-  }
 }
 
 /**
