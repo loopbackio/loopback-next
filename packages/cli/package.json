@@ -63,7 +63,7 @@
     "swagger-parser": "^8.0.3",
     "swagger2openapi": "^5.3.1",
     "tildify": "^2.0.0",
-    "ts-morph": "^4.3.3",
+    "ts-morph": "^5.0.0",
     "typescript": "~3.6.4",
     "unicode-10.0.0": "^0.7.5",
     "untildify": "^4.0.0",
