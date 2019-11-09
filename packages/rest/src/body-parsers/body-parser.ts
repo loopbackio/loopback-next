@@ -40,7 +40,10 @@ export class RequestBodyParser {
   ) {
     this.parsers = sortParsers(parsers || []);
     if (debug.enabled) {
-      debug('Body parsers: ', this.parsers.map(p => p.name));
+      debug(
+        'Body parsers: ',
+        this.parsers.map(p => p.name),
+      );
     }
   }
 

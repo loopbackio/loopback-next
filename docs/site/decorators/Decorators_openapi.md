@@ -392,12 +392,14 @@ const schemaWithObjectPropOfMyModel = {
 
 export class SomeController {
   @post('/my-controller')
-  greetObjectProperty(@requestBody({
-    content: {'application/json': {schema: schemaWithObjectPropOfMyModel}},
-  })
-  body: {
-    myModel: MyModel;
-  }): string {
+  greetObjectProperty(
+    @requestBody({
+      content: {'application/json': {schema: schemaWithObjectPropOfMyModel}},
+    })
+    body: {
+      myModel: MyModel;
+    },
+  ): string {
     return `hello ${body.myModel.name}!`;
   }
 

@@ -71,17 +71,21 @@ describe('JWT Authentication', () => {
 
     app.controller(InfoController);
 
-    token = (await whenIMakeRequestTo(server)
-      .post('/login')
-      .expect(200)).text;
+    token = (
+      await whenIMakeRequestTo(server)
+        .post('/login')
+        .expect(200)
+    ).text;
 
     expect(token).to.be.not.null();
     expect(token).to.be.String();
 
-    const id = (await whenIMakeRequestTo(server)
-      .get('/whoAmI')
-      .set('Authorization', createBearerAuthorizationHeaderValue(token))
-      .expect(200)).text;
+    const id = (
+      await whenIMakeRequestTo(server)
+        .get('/whoAmI')
+        .set('Authorization', createBearerAuthorizationHeaderValue(token))
+        .expect(200)
+    ).text;
 
     expect(id).to.equal(joeUser.id);
   });
@@ -116,9 +120,11 @@ describe('JWT Authentication', () => {
 
     app.controller(InfoController);
 
-    token = (await whenIMakeRequestTo(server)
-      .post('/login')
-      .expect(200)).text;
+    token = (
+      await whenIMakeRequestTo(server)
+        .post('/login')
+        .expect(200)
+    ).text;
 
     expect(token).to.be.not.null();
     expect(token).to.be.String();
@@ -164,9 +170,11 @@ describe('JWT Authentication', () => {
 
     app.controller(InfoController);
 
-    token = (await whenIMakeRequestTo(server)
-      .post('/login')
-      .expect(200)).text;
+    token = (
+      await whenIMakeRequestTo(server)
+        .post('/login')
+        .expect(200)
+    ).text;
 
     expect(token).to.be.not.null();
     expect(token).to.be.String();
@@ -215,9 +223,11 @@ describe('JWT Authentication', () => {
 
     app.controller(InfoController);
 
-    token = (await whenIMakeRequestTo(server)
-      .post('/login')
-      .expect(200)).text;
+    token = (
+      await whenIMakeRequestTo(server)
+        .post('/login')
+        .expect(200)
+    ).text;
 
     expect(token).to.be.not.null();
     expect(token).to.be.String();

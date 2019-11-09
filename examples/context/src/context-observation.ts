@@ -54,7 +54,10 @@ export async function main() {
   // Create a context view on `requestCtx`
   const greetersView = requestCtx.createView(filterByKey(/^greeters\./));
   greetersView.on('refresh', () => {
-    console.log('[view.refresh] %j', greetersView.bindings.map(b => b.key));
+    console.log(
+      '[view.refresh] %j',
+      greetersView.bindings.map(b => b.key),
+    );
   });
 
   // Add EnglishGreeter to `appCtx`
