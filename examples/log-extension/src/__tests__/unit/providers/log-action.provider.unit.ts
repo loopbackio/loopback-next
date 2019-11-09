@@ -5,7 +5,7 @@
 
 import {Request} from '@loopback/rest';
 import {sinon} from '@loopback/testlab';
-import chalk from 'chalk';
+import * as chalk from 'chalk';
 import {
   HighResTime,
   log,
