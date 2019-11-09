@@ -186,7 +186,10 @@ export function flattenTargetsOfOneToManyRelation<Target extends Entity>(
 ): (Target[] | undefined)[] {
   debug('flattenTargetsOfOneToManyRelation');
   debug('sourceIds', sourceIds);
-  debug('sourceId types', sourceIds.map(i => typeof i));
+  debug(
+    'sourceId types',
+    sourceIds.map(i => typeof i),
+  );
   debug('targetEntities', targetEntities);
   debug('targetKey', targetKey);
 

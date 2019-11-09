@@ -26,8 +26,10 @@ class MyRepositoryProvider
   ) {}
 
   value(): ValueOrPromise<DefaultCrudRepository<Entity, string>> {
-    return new DefaultCrudRepository(this.myModel, this
-      .dataSource as juggler.DataSource);
+    return new DefaultCrudRepository(
+      this.myModel,
+      this.dataSource as juggler.DataSource,
+    );
   }
 }
 

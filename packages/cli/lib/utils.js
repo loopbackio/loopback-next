@@ -186,9 +186,7 @@ exports.validateUrlSlug = function(name) {
     urlSlug(name, separator, false),
   );
   if (!possibleSlugs.includes(name))
-    return `Invalid url slug. Suggested slug: ${backslashIfNeeded}${
-      possibleSlugs[0]
-    }`;
+    return `Invalid url slug. Suggested slug: ${backslashIfNeeded}${possibleSlugs[0]}`;
   return true;
 };
 

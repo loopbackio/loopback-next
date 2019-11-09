@@ -55,7 +55,10 @@ export function createHasManyInclusionResolver<
     const targetKey = relationMeta.keyTo as StringKeyOf<Target>;
 
     debug('Parameters:', {sourceKey, sourceIds, targetKey});
-    debug('sourceId types', sourceIds.map(i => typeof i));
+    debug(
+      'sourceId types',
+      sourceIds.map(i => typeof i),
+    );
 
     const targetRepo = await getTargetRepo();
     const targetsFound = await findByForeignKeys(

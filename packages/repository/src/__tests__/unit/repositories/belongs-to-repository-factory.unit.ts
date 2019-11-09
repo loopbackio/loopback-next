@@ -83,10 +83,9 @@ describe('createBelongsToAccessor', () => {
 
   it('throws an error when the target does not have any primary key', () => {
     class Product extends Entity {
-      static definition = new ModelDefinition('Product').addProperty(
-        'categoryId',
-        {type: Number},
-      );
+      static definition = new ModelDefinition(
+        'Product',
+      ).addProperty('categoryId', {type: Number});
     }
 
     class Category extends Entity {
