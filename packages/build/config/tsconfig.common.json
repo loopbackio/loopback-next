@@ -7,7 +7,6 @@
     "skipLibCheck": true,
     "strict": true,
 
-    // FIXME(bajtos) LB4 is not compatible with this setting yet
     "strictPropertyInitialization": false,
 
     "incremental": true,
