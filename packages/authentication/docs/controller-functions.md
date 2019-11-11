@@ -44,7 +44,7 @@ const RESPONSE_SPEC_FOR_JWT_LOGIN = {
 
 class LoginController{
   constructor(
-    @inject(AuthenticationBindings.CURRENT_USER) userProfile: UserProfile,
+    @inject(SecurityBindings.USER) userProfile: UserProfile,
     @inject(AuthenticationBindings.SERVICES.JWT_TOKEN) JWTtokenService: TokenService,
   ) {}
 

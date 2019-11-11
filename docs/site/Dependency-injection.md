@@ -33,7 +33,7 @@ export class AuthenticateActionProvider implements Provider<AuthenticateFn> {
     // is executed.
     @inject.getter(AuthenticationBindings.STRATEGY)
     readonly getStrategy: Getter<AuthenticationStrategy>,
-    @inject.setter(AuthenticationBindings.CURRENT_USER)
+    @inject.setter(SecurityBindings.USER)
     readonly setCurrentUser: Setter<UserProfile>,
   ) {}
 
@@ -206,7 +206,7 @@ dependencies as method arguments.
 
 ```ts
 class InfoController {
-  greet(@inject(AuthenticationBindings.CURRENT_USER) user: UserProfile) {
+  greet(@inject(SecurityBindings.USER) user: UserProfile) {
     return `Hello, ${user.name}`;
   }
 }

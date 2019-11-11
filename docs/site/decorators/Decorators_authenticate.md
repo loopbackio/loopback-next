@@ -21,18 +21,12 @@ Here's an example using 'BasicStrategy': to authenticate user in function
 
 ```ts
 import {inject} from '@loopback/context';
-import {securityId} from '@loopback/security';
-import {
-  AuthenticationBindings,
-  UserProfile,
-  authenticate,
-} from '@loopback/authentication';
+import {securityId, SecurityBindings, UserProfile} from '@loopback/security';
+import {authenticate} from '@loopback/authentication';
 import {get} from '@loopback/rest';
 
 export class WhoAmIController {
-  constructor(
-    @inject(AuthenticationBindings.CURRENT_USER) private user: UserProfile,
-  ) {}
+  constructor(@inject(SecurityBindings.USER) private user: UserProfile) {}
 
   @authenticate('BasicStrategy')
   @get('/whoami')
@@ -52,9 +46,7 @@ skipped by `@authenticate.skip`.
 ```ts
 @authenticate('BasicStrategy')
 export class WhoAmIController {
-  constructor(
-    @inject(AuthenticationBindings.CURRENT_USER) private user: UserProfile,
-  ) {}
+  constructor(@inject(SecurityBindings.USER) private user: UserProfile) {}
 
   @get('/whoami')
   whoAmI(): string {
@@ -69,7 +61,7 @@ export class WhoAmIController {
 }
 ```
 
-{% include note.html content="If only <b>some</b> of the controller methods are decorated with the <b>@authenticate</b> decorator, then the injection decorator for CURRENT_USER in the controller's constructor must be specified as <b>@inject(AuthenticationBindings.CURRENT_USER, {optional:true})</b> to avoid a binding error when an unauthenticated endpoint is accessed. Alternatively, do not inject CURRENT_USER in the controller <b>constructor</b>, but in the controller <b>methods</b> which are actually decorated with the <b>@authenticate</b> decorator. See [Method Injection](../Dependency-injection.md#method-injection), [Constructor Injection](../Dependency-injection.md#constructor-injection) and [Optional Dependencies](../Dependency-injection.md#optional-dependencies) for details.
+{% include note.html content="If only <b>some</b> of the controller methods are decorated with the <b>@authenticate</b> decorator, then the injection decorator for SecurityBindings.USER in the controller's constructor must be specified as <b>@inject(SecurityBindings.USER, {optional:true})</b> to avoid a binding error when an unauthenticated endpoint is accessed. Alternatively, do not inject SecurityBindings.USER in the controller <b>constructor</b>, but in the controller <b>methods</b> which are actually decorated with the <b>@authenticate</b> decorator. See [Method Injection](../Dependency-injection.md#method-injection), [Constructor Injection](../Dependency-injection.md#constructor-injection) and [Optional Dependencies](../Dependency-injection.md#optional-dependencies) for details.
 " %}
 
 For more information on authentication with LoopBack, visit

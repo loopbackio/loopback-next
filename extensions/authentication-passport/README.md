@@ -101,7 +101,7 @@ import {AUTH_STRATEGY_NAME} from './my-basic-auth-strategy';
 
 class MyController {
   constructor(
-    @inject(AuthenticationBindings.CURRENT_USER, {optional: true})
+    @inject(SecurityBindings.USER, {optional: true})
     private user: UserProfile,
   ) {}
 
@@ -223,9 +223,7 @@ function like:
 import {AUTH_STRATEGY_NAME} from './my-basic-auth-strategy';
 
 class MyController {
-  constructor(
-    @inject(AuthenticationBindings.CURRENT_USER) private user: UserProfile,
-  ) {}
+  constructor(@inject(SecurityBindings.USER) private user: UserProfile) {}
 
   // Define your strategy name as a constant so that
   // it is consistent with the name you provide in the adapter
