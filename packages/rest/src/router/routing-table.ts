@@ -9,9 +9,9 @@ import {
   ParameterObject,
   PathObject,
 } from '@loopback/openapi-v3';
-import * as assert from 'assert';
-import * as debugFactory from 'debug';
-import * as HttpErrors from 'http-errors';
+import assert from 'assert';
+import debugFactory from 'debug';
+import HttpErrors from 'http-errors';
 import {inspect} from 'util';
 import {Request} from '../types';
 import {

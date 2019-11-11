@@ -17,7 +17,7 @@ import {
   SequenceHandler,
 } from '@loopback/rest';
 import {Client, createClientForHandler, expect, sinon} from '@loopback/testlab';
-import * as chalk from 'chalk';
+import chalk from 'chalk';
 import {
   EXAMPLE_LOG_BINDINGS,
   HighResTime,

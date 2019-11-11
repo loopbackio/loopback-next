@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {DecoratorFactory} from '@loopback/metadata';
-import * as debugModule from 'debug';
+import debugModule from 'debug';
 import {Binding} from './binding';
 import {Injection} from './inject';
 import {BoundValue, tryWithFinally, ValueOrPromise} from './value-promise';

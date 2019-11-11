@@ -3,10 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import * as http from 'http';
-import {IncomingMessage} from 'http';
-import * as https from 'https';
-import * as url from 'url';
+import http, {IncomingMessage} from 'http';
+import https from 'https';
+import url from 'url';
 
 /**
  * Async wrapper for making HTTP GET requests

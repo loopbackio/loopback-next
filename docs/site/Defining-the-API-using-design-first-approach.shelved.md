@@ -235,7 +235,7 @@ npm install --save lodash
 {% include code-caption.html content="/apidefs/product.api.ts" %}
 
 ```ts
-import * as _ from 'lodash';
+import _ from 'lodash';
 
 // Assuming you have created the "base" schema elsewhere.
 // If there are no common properties between all of the endpoint objects,
@@ -336,8 +336,8 @@ put them all together to produce the final OpenAPI spec.
 
 ```ts
 import {ProductAPI, DealAPI, CategoryAPI} from '../apidefs';
-import * as OpenApiSpec from '@loopback/openapi-spec';
-import * as _ from 'lodash';
+import OpenApiSpec from '@loopback/openapi-spec';
+import _ from 'lodash';
 
 // Import API fragments here
 

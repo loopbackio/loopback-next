@@ -4,8 +4,8 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {IConfigFile} from '@microsoft/api-extractor';
-import * as fs from 'fs-extra';
-import * as path from 'path';
+import fs from 'fs-extra';
+import path from 'path';
 
 const Project = require('@lerna/project');
 

@@ -10,14 +10,14 @@
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import * as express from 'express';
+import express from 'express';
 import {IncomingMessage, ServerResponse} from 'http';
 import {
   Listener as ShotListener,
   RequestOptions as ShotRequestOptions,
   ResponseObject,
 } from 'shot'; // <-- workaround for missing type-defs for @hapi/shot
-import * as util from 'util';
+import util from 'util';
 
 const inject: (
   dispatchFunc: ShotListener,

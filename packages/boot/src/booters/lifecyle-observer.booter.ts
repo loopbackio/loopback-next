@@ -10,7 +10,7 @@ import {
   isLifeCycleObserverClass,
   LifeCycleObserver,
 } from '@loopback/core';
-import * as debugFactory from 'debug';
+import debugFactory from 'debug';
 import {BootBindings} from '../keys';
 import {ArtifactOptions, booter} from '../types';
 import {BaseArtifactBooter} from './base-artifact.booter';

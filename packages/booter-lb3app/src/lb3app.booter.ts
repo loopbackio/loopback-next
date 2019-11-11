@@ -11,10 +11,10 @@ import {
   rebaseOpenApiSpec,
   RestApplication,
 } from '@loopback/rest';
-import * as debugFactory from 'debug';
+import debugFactory from 'debug';
 import {Application as ExpressApplication} from 'express';
 import pEvent from 'p-event';
-import * as path from 'path';
+import path from 'path';
 
 const {generateSwaggerSpec} = require('loopback-swagger');
 const swagger2openapi = require('swagger2openapi');

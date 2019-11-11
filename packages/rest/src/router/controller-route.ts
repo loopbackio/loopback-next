@@ -13,7 +13,7 @@ import {
 } from '@loopback/context';
 import {CoreBindings} from '@loopback/core';
 import {OperationObject} from '@loopback/openapi-v3';
-import * as HttpErrors from 'http-errors';
+import HttpErrors from 'http-errors';
 import {RestBindings} from '../keys';
 import {OperationArgs, OperationRetval} from '../types';
 import {BaseRoute, RouteSource} from './base-route';

@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Context, inject, Injection} from '@loopback/context';
-import * as assert from 'assert';
+import assert from 'assert';
 import {Class} from '../common-types';
 import {DataSource} from '../datasource';
 import {Entity, Model} from '../model';

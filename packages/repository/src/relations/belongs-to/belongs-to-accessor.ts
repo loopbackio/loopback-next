@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import * as debugFactory from 'debug';
+import debugFactory from 'debug';
 import {DataObject} from '../../common-types';
 import {Entity} from '../../model';
 import {EntityCrudRepository} from '../../repositories/repository';
@@ -13,8 +13,8 @@ import {
   InclusionResolver,
 } from '../relation.types';
 import {resolveBelongsToMetadata} from './belongs-to.helpers';
-import {DefaultBelongsToRepository} from './belongs-to.repository';
 import {createBelongsToInclusionResolver} from './belongs-to.inclusion-resolver';
+import {DefaultBelongsToRepository} from './belongs-to.repository';
 
 const debug = debugFactory('loopback:repository:belongs-to-accessor');
 

@@ -3,9 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import * as debugFactory from 'debug';
-import * as fs from 'fs-extra';
-import * as path from 'path';
+import debugFactory from 'debug';
+import fs from 'fs-extra';
+import path from 'path';
 import {
   ApiDocsOptions,
   DEFAULT_APIDOCS_EXTRACTION_PATH,

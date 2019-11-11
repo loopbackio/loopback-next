@@ -12,7 +12,7 @@ import {
   httpsGetAsync,
   supertest,
 } from '@loopback/testlab';
-import * as express from 'express';
+import express from 'express';
 import {RequestContext} from '../../request-context';
 import {RestApplication} from '../../rest.application';
 import {RestServer, RestServerConfig} from '../../rest.server';

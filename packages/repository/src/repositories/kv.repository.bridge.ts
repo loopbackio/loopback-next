@@ -3,14 +3,11 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import * as legacy from 'loopback-datasource-juggler';
-
-import {Options, DataObject} from '../common-types';
+import legacy from 'loopback-datasource-juggler';
+import {DataObject, Options} from '../common-types';
 import {Entity} from '../model';
-
-import {KeyValueRepository, KeyValueFilter} from './kv.repository';
-
-import {juggler, ensurePromise} from './legacy-juggler-bridge';
+import {KeyValueFilter, KeyValueRepository} from './kv.repository';
+import {ensurePromise, juggler} from './legacy-juggler-bridge';
 
 /**
  * Polyfill for Symbol.asyncIterator

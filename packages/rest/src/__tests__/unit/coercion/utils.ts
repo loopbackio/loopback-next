@@ -9,8 +9,8 @@ import {
   ShotRequestOptions,
   stubExpressContext,
 } from '@loopback/testlab';
-import * as HttpErrors from 'http-errors';
-import * as qs from 'qs';
+import HttpErrors from 'http-errors';
+import qs from 'qs';
 import {format} from 'util';
 import {
   createResolvedRoute,

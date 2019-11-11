@@ -3,8 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import * as request from 'request-promise-native';
 import {Todo} from '@loopback/example-todo';
+import request from 'request-promise-native';
 
 export class Client {
   constructor(private url: string) {}

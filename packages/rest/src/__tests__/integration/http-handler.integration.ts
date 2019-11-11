@@ -17,8 +17,8 @@ import {
   createUnexpectedHttpErrorLogger,
   expect,
 } from '@loopback/testlab';
-import * as express from 'express';
-import * as HttpErrors from 'http-errors';
+import express from 'express';
+import HttpErrors from 'http-errors';
 import {is} from 'type-is';
 import {
   BodyParser,

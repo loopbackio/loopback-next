@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import * as debugFactory from 'debug';
+import debugFactory from 'debug';
 import {InvalidRelationError} from '../../errors';
 import {isTypeResolver} from '../../type-resolver';
 import {BelongsToDefinition, RelationType} from '../relation.types';

@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {MetadataInspector, ParameterDecoratorFactory} from '@loopback/context';
-import * as _ from 'lodash';
+import _ from 'lodash';
 import {inspect} from 'util';
 import {resolveSchema} from '../generate-schema';
 import {OAI3Keys} from '../keys';

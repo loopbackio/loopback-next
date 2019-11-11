@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import * as debugFactory from 'debug';
+import debugFactory from 'debug';
 import {BindingAddress, BindingKey} from './binding-key';
 import {Context} from './context';
 import {createProxyWithInterceptors} from './interception-proxy';

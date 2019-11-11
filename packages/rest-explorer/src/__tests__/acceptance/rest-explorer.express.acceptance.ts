@@ -9,7 +9,7 @@ import {
   createClientForHandler,
   givenHttpServerConfig,
 } from '@loopback/testlab';
-import * as express from 'express';
+import express from 'express';
 import {
   RestExplorerBindings,
   RestExplorerComponent,

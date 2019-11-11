@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {ParameterObject} from '@loopback/openapi-v3';
-import * as qs from 'qs';
+import qs from 'qs';
 import {RestHttpErrors} from '../../..';
 import {test} from './utils';
 

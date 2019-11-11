@@ -12,7 +12,7 @@ import {
   instantiateClass,
 } from '@loopback/context';
 import {isReferenceObject, OperationObject} from '@loopback/openapi-v3';
-import * as debugModule from 'debug';
+import debugModule from 'debug';
 import {is} from 'type-is';
 import {RestHttpErrors} from '../rest-http-error';
 import {Request} from '../types';

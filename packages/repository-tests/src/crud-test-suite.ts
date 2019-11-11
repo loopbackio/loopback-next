@@ -4,9 +4,9 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {juggler} from '@loopback/repository';
-import * as debugFactory from 'debug';
-import * as fs from 'fs';
-import * as path from 'path';
+import debugFactory from 'debug';
+import fs from 'fs';
+import path from 'path';
 import {withCrudCtx} from './helpers.repository-tests';
 import {
   CrudFeatures,

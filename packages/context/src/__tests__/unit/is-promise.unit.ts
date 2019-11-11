@@ -3,8 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import * as bluebird from 'bluebird';
 import {expect} from '@loopback/testlab';
+import bluebird from 'bluebird';
 import {isPromiseLike} from '../..';
 
 describe('isPromise', () => {

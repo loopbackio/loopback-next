@@ -297,7 +297,7 @@ import {
   LevelMetadata,
   LogWriterFn,
 } from '../types';
-import * as chalk from 'chalk';
+import chalk from 'chalk';
 
 export class LogActionProvider implements Provider<LogFn> {
   // LogWriteFn is an optional dependency and it falls back to `logToConsole`

@@ -5,10 +5,9 @@
 
 import {anOperationSpec} from '@loopback/openapi-spec-builder';
 import {Client, createRestAppClient, expect} from '@loopback/testlab';
-import * as express from 'express';
-import {Request, Response} from 'express';
-import * as fs from 'fs';
-import * as path from 'path';
+import express, {Request, Response} from 'express';
+import fs from 'fs';
+import path from 'path';
 import {
   get,
   RestApplication,

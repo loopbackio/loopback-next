@@ -3,9 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import * as util from 'util';
-import {Type} from './type';
+import util from 'util';
 import {Options} from '../common-types';
+import {Type} from './type';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 

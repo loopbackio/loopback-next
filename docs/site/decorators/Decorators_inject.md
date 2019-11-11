@@ -29,8 +29,8 @@ results of functions that return those values!) in other areas of your code.
 
 ```ts
 import {Application} from '@loopback/core';
-import * as fs from 'fs-extra';
-import * as path from 'path';
+import fs from 'fs-extra';
+import path from 'path';
 
 export class MyApp extends RestApplication {
   constructor() {

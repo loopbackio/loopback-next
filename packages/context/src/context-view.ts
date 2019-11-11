@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import * as debugFactory from 'debug';
+import debugFactory from 'debug';
 import {EventEmitter} from 'events';
 import {promisify} from 'util';
 import {Binding} from './binding';

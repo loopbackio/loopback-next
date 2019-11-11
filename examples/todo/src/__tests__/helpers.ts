@@ -5,8 +5,8 @@
 
 import {HttpCachingProxy} from '@loopback/http-caching-proxy';
 import {merge} from 'lodash';
-import * as path from 'path';
-import * as GEO_CODER_CONFIG from '../datasources/geocoder.datasource.config.json';
+import path from 'path';
+import GEO_CODER_CONFIG from '../datasources/geocoder.datasource.config.json';
 import {Todo} from '../models/index';
 import {GeocoderService, GeoPoint} from '../services/geocoder.service';
 

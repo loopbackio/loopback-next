@@ -21,9 +21,9 @@ import {
   ServerObject,
 } from '@loopback/openapi-v3';
 import {AssertionError} from 'assert';
-import * as cors from 'cors';
-import * as debugFactory from 'debug';
-import * as express from 'express';
+import cors from 'cors';
+import debugFactory from 'debug';
+import express from 'express';
 import {PathParams} from 'express-serve-static-core';
 import {IncomingMessage, ServerResponse} from 'http';
 import {ServerOptions} from 'https';
@@ -74,7 +74,7 @@ export interface HttpServerLike {
 
 const SequenceActions = RestBindings.SequenceActions;
 
-// NOTE(bajtos) we cannot use `import * as cloneDeep from 'lodash/cloneDeep'
+// NOTE(bajtos) we cannot use `import cloneDeep from 'lodash/cloneDeep'
 // because it produces the following TypeScript error:
 //  Module '"(...)/node_modules/@types/lodash/cloneDeep/index"' resolves to
 //  a non-module entity and cannot be imported using this construct.

@@ -160,7 +160,7 @@ certificate chain variant.
 
 ```ts
 import {RestApplication, RestServer, RestBindings} from '@loopback/rest';
-import * as fs from 'fs';
+import fs from 'fs';
 
 export async function main() {
   const options = {

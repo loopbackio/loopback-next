@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {JsonSchema} from '@loopback/repository-json-schema';
-import * as _ from 'lodash';
+import _ from 'lodash';
 import {
   isSchemaObject,
   ReferenceObject,

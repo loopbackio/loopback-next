@@ -6,7 +6,7 @@
 import {Constructor, Getter, inject, Provider} from '@loopback/context';
 import {CoreBindings} from '@loopback/core';
 import {OperationArgs, Request} from '@loopback/rest';
-import * as chalk from 'chalk';
+import chalk from 'chalk';
 import {getLogMetadata} from '../decorators';
 import {EXAMPLE_LOG_BINDINGS, LOG_LEVEL} from '../keys';
 import {

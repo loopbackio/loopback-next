@@ -139,7 +139,7 @@ Create a new file **src/server.ts** to create your Express class:
 {% include code-caption.html content="src/server.ts" %}
 
 ```ts
-import * as express from 'express';
+import express from 'express';
 
 export class ExpressServer {
   constructor() {}
@@ -152,7 +152,7 @@ instance:
 ```ts
 import {NoteApplication} from './application';
 import {ApplicationConfig} from '@loopback/core';
-import * as express from 'express';
+import express from 'express';
 
 export class ExpressServer {
   private app: express.Application;
@@ -185,7 +185,7 @@ Then, we can add some custom Express routes, as follows:
 
 ```ts
 import {Request, Response} from 'express';
-import * as path from 'path';
+import path from 'path';
 
 export class ExpressServer {
   private app: express.Application;

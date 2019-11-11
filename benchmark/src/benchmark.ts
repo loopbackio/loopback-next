@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import * as byline from 'byline';
+import byline from 'byline';
 import {ChildProcess, spawn} from 'child_process';
 import pEvent, {Emitter} from 'p-event';
 import {Autocannon, EndpointStats} from './autocannon';

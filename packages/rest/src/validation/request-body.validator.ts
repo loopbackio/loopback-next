@@ -10,10 +10,10 @@ import {
   SchemaObject,
   SchemasObject,
 } from '@loopback/openapi-v3';
-import * as AJV from 'ajv';
-import * as debugModule from 'debug';
-import * as _ from 'lodash';
-import * as util from 'util';
+import AJV from 'ajv';
+import debugModule from 'debug';
+import _ from 'lodash';
+import util from 'util';
 import {HttpErrors, RequestBody, RestHttpErrors} from '..';
 import {RequestBodyValidationOptions, SchemaValidatorCache} from '../types';
 

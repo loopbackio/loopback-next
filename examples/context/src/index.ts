@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import * as fs from 'fs';
+import fs from 'fs';
 import {promisify} from 'util';
 const readdirAsync = promisify(fs.readdir);
 

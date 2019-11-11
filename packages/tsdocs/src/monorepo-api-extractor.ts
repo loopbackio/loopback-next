@@ -13,9 +13,9 @@ import {
   ExtractorResult,
   IConfigFile,
 } from '@microsoft/api-extractor';
-import * as debugFactory from 'debug';
-import * as fs from 'fs-extra';
-import * as path from 'path';
+import debugFactory from 'debug';
+import fs from 'fs-extra';
+import path from 'path';
 import {
   DEFAULT_APIDOCS_EXTRACTION_PATH,
   ExtractorOptions,

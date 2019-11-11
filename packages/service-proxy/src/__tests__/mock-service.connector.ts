@@ -3,8 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import legacy from 'loopback-datasource-juggler';
 import {juggler} from '..';
-import * as legacy from 'loopback-datasource-juggler';
 
 /**
  * A mockup service connector

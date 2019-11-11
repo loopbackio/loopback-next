@@ -3,9 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import parser from 'body-parser';
+import express from 'express';
 import {RPCServer} from './rpc.server';
-import * as express from 'express';
-import * as parser from 'body-parser';
 
 export function rpcRouter(server: RPCServer) {
   const jsonParser = parser.json();

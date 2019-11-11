@@ -11,8 +11,8 @@ import {
   MetadataMap,
   MethodDecoratorFactory,
 } from '@loopback/metadata';
-import * as assert from 'assert';
-import * as debugFactory from 'debug';
+import assert from 'assert';
+import debugFactory from 'debug';
 import {Binding, BindingTemplate} from './binding';
 import {bind} from './binding-decorator';
 import {filterByTag} from './binding-filter';

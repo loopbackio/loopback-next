@@ -14,7 +14,7 @@ import {
   ValueOrPromise,
 } from '@loopback/context';
 import {RestBindings} from '@loopback/rest';
-import * as debugFactory from 'debug';
+import debugFactory from 'debug';
 import {CachingService} from '../caching-service';
 import {CACHING_SERVICE} from '../keys';
 

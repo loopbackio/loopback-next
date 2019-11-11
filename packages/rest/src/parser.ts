@@ -10,7 +10,7 @@ import {
   REQUEST_BODY_INDEX,
   SchemasObject,
 } from '@loopback/openapi-v3';
-import * as debugFactory from 'debug';
+import debugFactory from 'debug';
 import {RequestBody, RequestBodyParser} from './body-parsers';
 import {coerceParameter} from './coercion/coerce-parameter';
 import {RestHttpErrors} from './rest-http-error';

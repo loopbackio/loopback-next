@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {MetadataAccessor, MetadataInspector} from '@loopback/metadata';
-import * as debugFactory from 'debug';
+import debugFactory from 'debug';
 import {Binding, BindingScope, BindingTag, BindingTemplate} from './binding';
 import {BindingAddress} from './binding-key';
 import {ContextTags} from './keys';

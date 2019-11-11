@@ -5,10 +5,10 @@
 
 import {BootMixin} from '@loopback/boot';
 import {ApplicationConfig} from '@loopback/core';
-import {RestExplorerComponent} from '@loopback/rest-explorer';
 import {RepositoryMixin} from '@loopback/repository';
 import {RestApplication} from '@loopback/rest';
-import * as path from 'path';
+import {RestExplorerComponent} from '@loopback/rest-explorer';
+import path from 'path';
 import {MySequence} from './sequence';
 
 export class TodoListApplication extends BootMixin(

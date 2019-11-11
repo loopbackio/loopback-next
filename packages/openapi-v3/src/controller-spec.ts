@@ -9,7 +9,7 @@ import {
   getJsonSchemaRef,
   JsonSchemaOptions,
 } from '@loopback/repository-json-schema';
-import * as _ from 'lodash';
+import _ from 'lodash';
 import {resolveSchema} from './generate-schema';
 import {jsonToSchemaObject, SchemaRef} from './json-to-schema';
 import {OAI3Keys} from './keys';

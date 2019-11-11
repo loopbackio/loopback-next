@@ -5,7 +5,7 @@
 
 import {Binding, BoundValue} from '@loopback/context';
 import {ReferenceObject, SchemaObject} from '@loopback/openapi-v3';
-import * as ajv from 'ajv';
+import ajv from 'ajv';
 import {
   Options,
   OptionsJson,

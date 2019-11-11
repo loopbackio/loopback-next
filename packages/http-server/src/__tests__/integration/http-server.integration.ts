@@ -12,11 +12,11 @@ import {
   supertest,
 } from '@loopback/testlab';
 import {EventEmitter} from 'events';
-import * as fs from 'fs';
+import fs from 'fs';
 import {Agent, IncomingMessage, Server, ServerResponse} from 'http';
-import * as os from 'os';
+import os from 'os';
 import pEvent from 'p-event';
-import * as path from 'path';
+import path from 'path';
 import {HttpOptions, HttpServer, HttpsOptions} from '../../';
 import {HttpServerOptions} from '../../http-server';
 

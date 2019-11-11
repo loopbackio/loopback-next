@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {bind, BindingScope, config, ContextView} from '@loopback/core';
-import * as debugFactory from 'debug';
+import debugFactory from 'debug';
 import {Message} from './types';
 const debug = debugFactory('greeter-extension');
 

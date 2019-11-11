@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import * as debugFactory from 'debug';
+import debugFactory from 'debug';
 import {
   createServer,
   IncomingMessage,
@@ -13,7 +13,7 @@ import {
 } from 'http';
 import {AddressInfo} from 'net';
 import pEvent from 'p-event';
-import * as makeRequest from 'request-promise-native';
+import makeRequest from 'request-promise-native';
 
 const cacache = require('cacache');
 

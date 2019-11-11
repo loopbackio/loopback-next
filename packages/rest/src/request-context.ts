@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Context} from '@loopback/context';
-import * as onFinished from 'on-finished';
+import onFinished from 'on-finished';
 import {RestBindings} from './keys';
 import {RestServerResolvedConfig} from './rest.server';
 import {HandlerContext, Request, Response} from './types';
