@@ -55,7 +55,7 @@
     "mkdirp": "^0.5.1",
     "natural-compare": "^1.4.0",
     "p-event": "^4.1.0",
-    "pacote": "^10.1.1",
+    "pacote": "^10.1.2",
     "pluralize": "^8.0.0",
     "regenerate": "^1.4.0",
     "semver": "^6.3.0",
