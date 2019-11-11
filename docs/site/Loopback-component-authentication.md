@@ -151,9 +151,8 @@ import {get} from '@loopback/rest';
 
 export class WhoAmIController {
   constructor(
-    // After extracting the CURRENT_USER key to module `@loopback/security`,
-    // `AuthenticationBindings.CURRENT_USER` is turned to an alias of
-    // `SecurityBindings.USER`
+    // `AuthenticationBindings.CURRENT_USER` is now an alias of
+    // `SecurityBindings.USER` in @loopback/security
     @inject(SecurityBindings.USER)
     private userProfile: UserProfile,
   ) {}
@@ -169,7 +168,7 @@ export class WhoAmIController {
 }
 ```
 
-{% include note.html content="If only <b>some</b> of the controller methods are decorated with the <b>@authenticate</b> decorator, then the injection decorator for CURRENT_USER in the controller's constructor must be specified as <b>@inject(SecurityBindings.USER, {optional:true})</b> to avoid a binding error when an unauthenticated endpoint is accessed. Alternatively, do not inject CURRENT_USER in the controller <b>constructor</b>, but in the controller <b>methods</b> which are actually decorated with the <b>@authenticate</b> decorator. See [Method Injection](Dependency-injection.md#method-injection), [Constructor Injection](Dependency-injection.md#constructor-injection) and [Optional Dependencies](Dependency-injection.md#optional-dependencies) for details.
+{% include note.html content="If only <b>some</b> of the controller methods are decorated with the <b>@authenticate</b> decorator, then the injection decorator for SecurityBindings.USER in the controller's constructor must be specified as <b>@inject(SecurityBindings.USER, {optional:true})</b> to avoid a binding error when an unauthenticated endpoint is accessed. Alternatively, do not inject SecurityBindings.USER in the controller <b>constructor</b>, but in the controller <b>methods</b> which are actually decorated with the <b>@authenticate</b> decorator. See [Method Injection](Dependency-injection.md#method-injection), [Constructor Injection](Dependency-injection.md#constructor-injection) and [Optional Dependencies](Dependency-injection.md#optional-dependencies) for details.
 " %}
 
 An example of the decorator when options **are** specified looks like this:

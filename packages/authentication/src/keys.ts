@@ -98,7 +98,7 @@ export namespace AuthenticationBindings {
   export const AUTHENTICATION_STRATEGY_EXTENSION_POINT_NAME =
     'authentication.strategies';
 
-  // Make `CURRENT_USER` the alias of the security bindings
+  // Make `CURRENT_USER` the alias of SecurityBindings.USER for backward compatibility
   export const CURRENT_USER = SecurityBindings.USER;
 }
 

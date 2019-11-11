@@ -11,7 +11,6 @@ import {
   AUTHENTICATION_STRATEGY_NOT_FOUND,
   USER_PROFILE_NOT_FOUND,
 } from '@loopback/authentication';
-import {UserProfile, securityId} from '@loopback/security';
 import {inject} from '@loopback/context';
 import {Application, CoreTags} from '@loopback/core';
 import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
@@ -28,6 +27,7 @@ import {
   Send,
   SequenceHandler,
 } from '@loopback/rest';
+import {SecurityBindings, securityId, UserProfile} from '@loopback/security';
 import {Client, createClientForHandler} from '@loopback/testlab';
 import {BasicStrategy} from 'passport-http';
 import {StrategyAdapter} from '../../strategy-adapter';
@@ -136,9 +136,7 @@ describe('Basic Authentication', () => {
 
     @api(apispec)
     class MyController {
-      constructor(
-        @inject(AuthenticationBindings.CURRENT_USER) private user: UserProfile,
-      ) {}
+      constructor(@inject(SecurityBindings.USER) private user: UserProfile) {}
 
       @authenticate(AUTH_STRATEGY_NAME)
       async whoAmI(): Promise<string> {
