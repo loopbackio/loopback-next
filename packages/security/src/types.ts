@@ -36,7 +36,7 @@ export class TypedPrincipal implements Principal {
  */
 export interface UserProfile extends Principal {
   // `email` and `name` are added to be identical with the
-  // current `UserProfile` being exported from `@loopback/authentication`
+  // `UserProfile` that previously was exported by `@loopback/authentication`
   email?: string;
   name?: string;
 }
