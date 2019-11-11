@@ -4,8 +4,8 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import * as debugModule from 'debug';
-import {Context, inject, invokeMethod, BindingKey} from '../..';
+import debugModule from 'debug';
+import {BindingKey, Context, inject, invokeMethod} from '../..';
 const debug = debugModule('loopback:context:test');
 
 class InfoController {

@@ -27,7 +27,7 @@ directory named `public` at `/`.
 {% include code-caption.html content="src/application.ts" %}
 
 ```ts
-import * as path from 'path';
+import path from 'path';
 
 export class TodoListApplication extends BootMixin(
   ServiceMixin(RepositoryMixin(RestApplication)),

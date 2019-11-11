@@ -6,7 +6,7 @@
 import {readFileSync} from 'fs';
 import {ServerOptions as HttpsServerOptions} from 'https';
 import {ListenOptions} from 'net';
-import * as path from 'path';
+import path from 'path';
 
 const FIXTURES = path.resolve(__dirname, '../fixtures');
 const DUMMY_TLS_CONFIG = {

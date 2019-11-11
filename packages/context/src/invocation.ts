@@ -4,8 +4,8 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {DecoratorFactory} from '@loopback/metadata';
-import * as assert from 'assert';
-import * as debugFactory from 'debug';
+import assert from 'assert';
+import debugFactory from 'debug';
 import {Context} from './context';
 import {invokeMethodWithInterceptors} from './interceptor';
 import {resolveInjectedArguments} from './resolver';

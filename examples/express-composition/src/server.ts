@@ -4,11 +4,10 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {ApplicationConfig} from '@loopback/core';
-import * as express from 'express';
-import {Request, Response} from 'express';
-import * as http from 'http';
+import express, {Request, Response} from 'express';
+import http from 'http';
 import pEvent from 'p-event';
-import * as path from 'path';
+import path from 'path';
 import {NoteApplication} from './application';
 
 export class ExpressServer {

@@ -12,7 +12,7 @@ import {
   RelationMetadata,
   resolveType,
 } from '@loopback/repository';
-import * as debugFactory from 'debug';
+import debugFactory from 'debug';
 import {JSONSchema6 as JSONSchema} from 'json-schema';
 import {inspect} from 'util';
 import {JSON_SCHEMA_KEY, MODEL_TYPE_KEYS} from './keys';

@@ -3,14 +3,13 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import * as assert from 'assert';
-import * as http from 'http';
-import {IncomingMessage, ServerResponse} from 'http';
-import * as https from 'https';
+import assert from 'assert';
+import http, {IncomingMessage, ServerResponse} from 'http';
+import https from 'https';
 import {AddressInfo, ListenOptions} from 'net';
-import * as os from 'os';
+import os from 'os';
 import pEvent from 'p-event';
-import * as stoppable from 'stoppable';
+import stoppable from 'stoppable';
 
 /**
  * Request listener function for http/https requests

@@ -9,11 +9,10 @@ import {
   OperationObject,
   SchemasObject,
 } from '@loopback/openapi-v3';
-import * as express from 'express';
-import {RequestHandler} from 'express';
+import express, {RequestHandler} from 'express';
 import {PathParams} from 'express-serve-static-core';
-import * as HttpErrors from 'http-errors';
-import * as onFinished from 'on-finished';
+import HttpErrors from 'http-errors';
+import onFinished from 'on-finished';
 import {ServeStaticOptions} from 'serve-static';
 import {promisify} from 'util';
 import {RequestContext} from '../request-context';

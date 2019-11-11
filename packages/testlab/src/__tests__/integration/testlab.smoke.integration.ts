@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import * as assert from 'assert';
+import assert from 'assert';
 import * as testlab from '../..';
 
 describe('testlab smoke test', () => {

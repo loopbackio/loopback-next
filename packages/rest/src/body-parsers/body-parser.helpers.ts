@@ -9,7 +9,7 @@ import {
   OptionsText,
   OptionsUrlencoded,
 } from 'body-parser';
-import * as debugModule from 'debug';
+import debugModule from 'debug';
 import {HttpError} from 'http-errors';
 import {Request, RequestBodyParserOptions, Response} from '../types';
 

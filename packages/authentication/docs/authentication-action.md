@@ -1,7 +1,7 @@
 ### Auth action
 
 ```ts
-import * as HttpErrors from 'http-errors';
+import HttpErrors from 'http-errors';
 
 async action(request: Request): Promise<UserProfile | undefined> {
     const authStrategy = await this.getAuthStrategy();

@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect, toJSON} from '@loopback/testlab';
-import * as _ from 'lodash';
+import _ from 'lodash';
 import {
   CrudFeatures,
   CrudRepositoryCtor,

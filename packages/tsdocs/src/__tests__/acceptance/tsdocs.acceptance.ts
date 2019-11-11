@@ -4,9 +4,9 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import * as fs from 'fs-extra';
+import fs from 'fs-extra';
 import pEvent from 'p-event';
-import * as path from 'path';
+import path from 'path';
 import {runExtractorForMonorepo, updateApiDocs} from '../..';
 import {runExtractorForPackage} from '../../monorepo-api-extractor';
 

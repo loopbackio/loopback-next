@@ -13,12 +13,12 @@ import {
   skipOnTravis,
   supertest,
 } from '@loopback/testlab';
-import * as fs from 'fs';
+import fs from 'fs';
 import {IncomingMessage, ServerResponse} from 'http';
-import * as yaml from 'js-yaml';
-import * as path from 'path';
+import yaml from 'js-yaml';
+import path from 'path';
 import {is} from 'type-is';
-import * as util from 'util';
+import util from 'util';
 import {
   BodyParser,
   get,

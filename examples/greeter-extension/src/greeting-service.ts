@@ -5,7 +5,7 @@
 
 import {config, Getter} from '@loopback/context';
 import {extensionPoint, extensions} from '@loopback/core';
-import * as chalk from 'chalk';
+import chalk from 'chalk';
 import {Greeter, GREETER_EXTENSION_POINT_NAME} from './types';
 
 /**

@@ -4,8 +4,8 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Constructor} from '@loopback/context';
-import * as debugFactory from 'debug';
-import * as path from 'path';
+import debugFactory from 'debug';
+import path from 'path';
 import {ArtifactOptions, Booter} from '../types';
 import {discoverFiles, loadClassesFromFiles} from './booter-utils';
 

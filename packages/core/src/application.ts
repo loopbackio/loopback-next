@@ -11,9 +11,9 @@ import {
   createBindingFromClass,
   Provider,
 } from '@loopback/context';
-import * as assert from 'assert';
-import * as debugFactory from 'debug';
+import assert from 'assert';
 import pEvent from 'p-event';
+import debugFactory from 'debug';
 import {Component, mountComponent} from './component';
 import {CoreBindings, CoreTags} from './keys';
 import {

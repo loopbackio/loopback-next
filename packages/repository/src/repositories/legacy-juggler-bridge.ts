@@ -4,8 +4,8 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Getter} from '@loopback/context';
-import * as assert from 'assert';
-import * as legacy from 'loopback-datasource-juggler';
+import assert from 'assert';
+import legacy from 'loopback-datasource-juggler';
 import {
   AnyObject,
   Command,

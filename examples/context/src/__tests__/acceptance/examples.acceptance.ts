@@ -5,7 +5,7 @@
 
 import {expect} from '@loopback/testlab';
 import {readFileSync} from 'fs';
-import * as path from 'path';
+import path from 'path';
 import {format} from 'util';
 import {main} from '../..';
 

@@ -5,13 +5,13 @@
 
 import {expect} from '@loopback/testlab';
 import delay from 'delay';
-import * as http from 'http';
+import http from 'http';
 import {AddressInfo} from 'net';
 import pEvent from 'p-event';
-import * as path from 'path';
-import * as makeRequest from 'request-promise-native';
-import * as rimrafCb from 'rimraf';
-import * as util from 'util';
+import path from 'path';
+import makeRequest from 'request-promise-native';
+import rimrafCb from 'rimraf';
+import util from 'util';
 import {HttpCachingProxy, ProxyOptions} from '../../http-caching-proxy';
 
 const CACHE_DIR = path.join(__dirname, '.cache');

@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import * as Ajv from 'ajv';
+import Ajv from 'ajv';
 import {JsonSchema} from '../..';
 
 export function expectValidJsonSchema(schema: JsonSchema) {

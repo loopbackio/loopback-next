@@ -8,7 +8,7 @@ import {Application} from '@loopback/core';
 import {SecurityBindings, securityId, UserProfile} from '@loopback/security';
 import {expect} from '@loopback/testlab';
 import * as casbin from 'casbin';
-import * as path from 'path';
+import path from 'path';
 import {
   AuthorizationComponent,
   AuthorizationContext,

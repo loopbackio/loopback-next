@@ -4,8 +4,8 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {DecoratorFactory} from '@loopback/metadata';
-import * as assert from 'assert';
-import * as debugModule from 'debug';
+import assert from 'assert';
+import debugModule from 'debug';
 import {BindingScope} from './binding';
 import {isBindingAddress} from './binding-filter';
 import {BindingAddress} from './binding-key';

@@ -5,7 +5,7 @@
 
 import {Context, inject, resolveList} from '@loopback/context';
 import {Application, CoreBindings} from '@loopback/core';
-import * as debugModule from 'debug';
+import debugModule from 'debug';
 import {resolve} from 'path';
 import {BootBindings, BootTags} from './keys';
 import {_bindBooter} from './mixins';

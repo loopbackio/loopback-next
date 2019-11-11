@@ -3,9 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import * as assert from 'assert';
-import * as debugFactory from 'debug';
-import * as _ from 'lodash';
+import assert from 'assert';
+import debugFactory from 'debug';
+import _ from 'lodash';
 import {
   AnyObject,
   Entity,

@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect, sinon} from '@loopback/testlab';
-import * as express from 'express';
+import express from 'express';
 import {routeHandler} from '../../rpc.router';
 import {RPCServer} from '../../rpc.server';
 

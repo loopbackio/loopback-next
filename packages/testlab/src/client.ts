@@ -7,7 +7,7 @@
  * HTTP client utilities
  */
 
-import * as http from 'http';
+import http from 'http';
 import supertest = require('supertest');
 
 export {supertest};

@@ -12,7 +12,7 @@ import {
   createRestAppClient,
   givenHttpServerConfig,
 } from '@loopback/testlab';
-import * as path from 'path';
+import path from 'path';
 import {Lb3AppBooterComponent} from '../lb3app.booter.component';
 const lb3app = require('../../fixtures/lb3app/server/server');
 

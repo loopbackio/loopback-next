@@ -11,7 +11,7 @@ import {
   expect,
   givenHttpServerConfig,
 } from '@loopback/testlab';
-import * as express from 'express';
+import express from 'express';
 import {RestComponent} from '../../rest.component';
 import {
   HttpRequestListener,

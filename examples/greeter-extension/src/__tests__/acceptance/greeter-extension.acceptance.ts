@@ -5,7 +5,7 @@
 
 import {bind, createBindingFromClass} from '@loopback/core';
 import {expect} from '@loopback/testlab';
-import * as chalk from 'chalk';
+import chalk from 'chalk';
 import {
   asGreeter,
   Greeter,

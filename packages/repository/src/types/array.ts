@@ -3,8 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import util from 'util';
 import {Type} from './type';
-import * as util from 'util';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 

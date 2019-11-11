@@ -5,7 +5,7 @@
 
 import {OpenApiSpec} from '@loopback/rest';
 import {Client, expect} from '@loopback/testlab';
-import * as _ from 'lodash';
+import _ from 'lodash';
 import {CoffeeShopApplication} from '../../application';
 import {givenCoffeeShop, setupApplication} from './test-helper';
 

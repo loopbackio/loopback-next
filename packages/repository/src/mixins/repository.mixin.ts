@@ -5,7 +5,7 @@
 
 import {Binding, BindingScope, createBindingFromClass} from '@loopback/context';
 import {Application} from '@loopback/core';
-import * as debugFactory from 'debug';
+import debugFactory from 'debug';
 import {Class} from '../common-types';
 import {SchemaMigrationOptions} from '../datasource';
 import {juggler, Repository} from '../repositories';

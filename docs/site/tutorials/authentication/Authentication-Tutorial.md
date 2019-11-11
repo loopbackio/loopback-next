@@ -1222,7 +1222,7 @@ import {
 import {JWTService} from './services/jwt-service';
 import {MyUserService} from './services/user-service';
 
-import * as path from 'path';
+import path from 'path';
 import {
   AuthenticationComponent,
   registerAuthenticationStrategy,

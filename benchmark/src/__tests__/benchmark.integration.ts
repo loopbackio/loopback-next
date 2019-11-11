@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import * as request from 'request-promise-native';
+import request from 'request-promise-native';
 import {Benchmark} from '..';
 import {Autocannon, EndpointStats} from '../autocannon';
 

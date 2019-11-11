@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import * as express from 'express';
+import express from 'express';
 import {Server} from 'http';
 import pEvent from 'p-event';
 

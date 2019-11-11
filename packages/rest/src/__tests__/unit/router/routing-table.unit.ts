@@ -10,7 +10,7 @@ import {
   ShotRequestOptions,
   stubExpressContext,
 } from '@loopback/testlab';
-import * as HttpErrors from 'http-errors';
+import HttpErrors from 'http-errors';
 import {
   ControllerRoute,
   RegExpRouter,

@@ -5,8 +5,8 @@
 
 import {Context, inject} from '@loopback/context';
 import {Application, CoreBindings, Server} from '@loopback/core';
-import * as express from 'express';
-import * as http from 'http';
+import express from 'express';
+import http from 'http';
 import pEvent from 'p-event';
 import {rpcRouter} from './rpc.router';
 

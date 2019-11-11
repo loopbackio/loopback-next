@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import * as HttpErrors from 'http-errors';
+import HttpErrors from 'http-errors';
 
 export namespace RestHttpErrors {
   export function invalidData<T, Props extends object = {}>(

@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {isReferenceObject, ParameterObject} from '@loopback/openapi-v3';
-import * as debugModule from 'debug';
+import debugModule from 'debug';
 import {RestHttpErrors} from '../';
 import {parseJson} from '../parse-json';
 import {

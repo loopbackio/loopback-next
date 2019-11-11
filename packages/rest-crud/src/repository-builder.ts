@@ -9,7 +9,7 @@ import {
   EntityCrudRepository,
   juggler,
 } from '@loopback/repository';
-import * as assert from 'assert';
+import assert from 'assert';
 
 /**
  * Create (define) a repository class for the given model.

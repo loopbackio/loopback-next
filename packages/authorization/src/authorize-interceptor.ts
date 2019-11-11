@@ -18,7 +18,7 @@ import {
   Provider,
 } from '@loopback/context';
 import {SecurityBindings, UserProfile} from '@loopback/security';
-import * as debugFactory from 'debug';
+import debugFactory from 'debug';
 import {getAuthorizationMetadata} from './decorators/authorize';
 import {AuthorizationBindings, AuthorizationTags} from './keys';
 import {
