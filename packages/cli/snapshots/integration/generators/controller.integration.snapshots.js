@@ -80,7 +80,10 @@ export class ProductReviewController {
         description: 'Array of ProductReview model instances',
         content: {
           'application/json': {
-            schema: {type: 'array', items: getModelSchemaRef(ProductReview)},
+            schema: {
+              type: 'array',
+              items: getModelSchemaRef(ProductReview, {includeRelations: true}),
+            },
           },
         },
       },
@@ -118,12 +121,19 @@ export class ProductReviewController {
     responses: {
       '200': {
         description: 'ProductReview model instance',
-        content: {'application/json': {schema: getModelSchemaRef(ProductReview)}},
+        content: {
+          'application/json': {
+            schema: getModelSchemaRef(ProductReview, {includeRelations: true}),
+          },
+        },
       },
     },
   })
-  async findById(@param.path.number('id') id: number): Promise<ProductReview> {
-    return this.barRepository.findById(id);
+  async findById(
+    @param.path.number('id') id: number,
+    @param.query.object('filter', getFilterSchemaFor(ProductReview)) filter?: Filter<ProductReview>
+  ): Promise<ProductReview> {
+    return this.barRepository.findById(id, filter);
   }
 
   @patch('/product-reviews/{id}', {
@@ -249,7 +259,10 @@ export class ProductReviewController {
         description: 'Array of ProductReview model instances',
         content: {
           'application/json': {
-            schema: {type: 'array', items: getModelSchemaRef(ProductReview)},
+            schema: {
+              type: 'array',
+              items: getModelSchemaRef(ProductReview, {includeRelations: true}),
+            },
           },
         },
       },
@@ -287,12 +300,19 @@ export class ProductReviewController {
     responses: {
       '200': {
         description: 'ProductReview model instance',
-        content: {'application/json': {schema: getModelSchemaRef(ProductReview)}},
+        content: {
+          'application/json': {
+            schema: getModelSchemaRef(ProductReview, {includeRelations: true}),
+          },
+        },
       },
     },
   })
-  async findById(@param.path.number('id') id: number): Promise<ProductReview> {
-    return this.barRepository.findById(id);
+  async findById(
+    @param.path.number('id') id: number,
+    @param.query.object('filter', getFilterSchemaFor(ProductReview)) filter?: Filter<ProductReview>
+  ): Promise<ProductReview> {
+    return this.barRepository.findById(id, filter);
   }
 
   @patch('/product-reviews/{id}', {

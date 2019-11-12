@@ -231,14 +231,24 @@ from the path object.
   responses: {
     '200': {
       description: 'Note model instance',
-      content: {'application/json': {schema: getModelSchemaRef(Note)}},
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(Note, {includeRelations: true}),
+        },
+      },
     },
   },
 })
-async findById(@param.path.string('id') id: string): Promise<Note> {
-  return this.noteRepository.findById(id);
+async findById(
+  @param.path.string('id') id: string,
+  @param.query.object('filter', getFilterSchemaFor(Note)) filter?: Filter<Note>
+): Promise<Note> {
+  return this.noteRepository.findById(id, filter);
 }
 ```
+
+(Notice: the filter for `findById()` method only supports the `include` clause
+for now.)
 
 You can also specify a parameter which is an object value encoded as a JSON
 string or in multiple nested keys. For a JSON string, a sample value would be
@@ -378,7 +388,7 @@ details.
   ```
 
 During development and testing, it may be useful to see all error details in the
-HTTP responsed returned by the server. This behavior can be enabled by enabling
+HTTP response returned by the server. This behavior can be enabled by enabling
 the `debug` flag in error-handler configuration as shown in the code example
 below. See strong-error-handler
 [docs](https://github.com/strongloop/strong-error-handler#options) for a list of

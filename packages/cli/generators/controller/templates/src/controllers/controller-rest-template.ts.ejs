@@ -70,7 +70,10 @@ export class <%= className %>Controller {
         description: 'Array of <%= modelName %> model instances',
         content: {
           'application/json': {
-            schema: {type: 'array', items: getModelSchemaRef(<%= modelName %>)},
+            schema: {
+              type: 'array',
+              items: getModelSchemaRef(<%= modelName %>, {includeRelations: true}),
+            },
           },
         },
       },
@@ -108,12 +111,19 @@ export class <%= className %>Controller {
     responses: {
       '200': {
         description: '<%= modelName %> model instance',
-        content: {'application/json': {schema: getModelSchemaRef(<%= modelName %>)}},
+        content: {
+          'application/json': {
+            schema: getModelSchemaRef(<%= modelName %>, {includeRelations: true}),
+          },
+        },
       },
     },
   })
-  async findById(@param.path.<%= idType %>('id') id: <%= idType %>): Promise<<%= modelName %>> {
-    return this.<%= repositoryNameCamel %>.findById(id);
+  async findById(
+    @param.path.<%= idType %>('id') id: <%= idType %>,
+    @param.query.object('filter', getFilterSchemaFor(<%= modelName %>)) filter?: Filter<<%= modelName %>>
+  ): Promise<<%= modelName %>> {
+    return this.<%= repositoryNameCamel %>.findById(id, filter);
   }
 
   @patch('<%= httpPathName %>/{id}', {
