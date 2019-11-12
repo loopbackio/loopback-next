@@ -1,3 +1,59 @@
+## Q1 2020 Roadmap
+
+### Overview
+
+- Migration: it will continue to be our focus, including filling up the details
+  to the migration guide and adding tooling to make migration easier.
+- Tackle issues labelled as `bug` or `developer experience`
+- Issue cleanup: take some time to triage open issues and possibly some smaller
+  enhancements that we never get the time to do.
+
+### Scope
+
+#### Migration
+
+- Migration guide https://github.com/strongloop/loopback-next/issues/453
+  - continue the work in Q4 2019 for migrating:
+    - boot scripts
+    - model mixins
+    - remoting hooks
+- Tooling:
+  - improve existing commands like `import-lb3-models`
+  - add new commands (e.g. import datasources).
+
+#### Authentication
+
+- Auth0 example: Create a more realistic example than
+  https://github.com/raymondfeng/loopback4-example-auth0.
+
+#### API Connect / LoopBack 4 Integration
+
+- Spike on getting APIs created from LB4 imported into APIC,
+  https://github.com/strongloop/loopback-next/issues/4115
+
+#### Open Issues with `bug` or `developer experience` labels
+
+- Would like to put more time in tackling those. Will plan it as part of the
+  monthly milestone planning.
+
+### Stretch Goals
+
+#### From model definition to REST API with no custom repository/controller classes https://github.com/strongloop/loopback-next/issues/2036
+
+- Add CrudRestApiBuilder to @loopback/rest-crud #3737
+- Example app showing CrudRestApiBuilder #3738
+
+#### Robust handling of ObjectID type for MongoDB https://github.com/strongloop/loopback-next/issues/3720
+
+- Spike: robust handling of ObjectID type for MongoDB,
+  https://github.com/strongloop/loopback-next/issues/3456
+
+#### Shopping example app
+
+- clean up authentication and authorization
+
+---
+
 ## Q4 2019 Roadmap
 
 ### Overview
