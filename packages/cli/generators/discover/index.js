@@ -161,6 +161,10 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
         when:
           this.discoveringModels === undefined &&
           !this.artifactInfo.modelDefinitions,
+        // Require at least one model to be selected
+        // This prevents users from accidentally pressing ENTER instead of SPACE
+        // to select a model from the list
+        validate: result => !!result.length,
       },
     ];
 

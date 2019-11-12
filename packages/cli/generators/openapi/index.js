@@ -102,6 +102,10 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
         message: 'Select controllers to be generated:',
         type: 'checkbox',
         choices: choices,
+        // Require at least one item to be selected
+        // This prevents users from accidentally pressing ENTER instead of SPACE
+        // to select an item from the list
+        validate: result => !!result.length,
       },
     ];
     const selections =
