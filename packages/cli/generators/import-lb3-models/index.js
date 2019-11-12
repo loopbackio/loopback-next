@@ -80,6 +80,9 @@ Learn more at https://loopback.io/doc/en/lb4/Importing-LB3-models.html
         message: 'Select models to import:',
         type: 'checkbox',
         choices: modelNames,
+        // Require at least one model to be selected
+        // This prevents users from accidentally pressing ENTER instead of SPACE
+        // to select a model from the list
         validate: result => !!result.length,
         // TODO: add a CLI flag to supply these names programmatically
       },
