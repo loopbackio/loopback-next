@@ -202,12 +202,19 @@ export class TodoController {
     responses: {
       '200': {
         description: 'Todo model instance',
-        content: {'application/json': {schema: getModelSchemaRef(Todo)}},
+        content: {
+          'application/json': {
+            schema: getModelSchemaRef(Todo, {includeRelations: true}),
+          },
+        },
       },
     },
   })
-  async findById(@param.path.number('id') id: number): Promise<Todo> {
-    return this.todoRepository.findById(id);
+  async findById(
+    @param.path.number('id') id: number,
+    @param.query.object('filter', getFilterSchemaFor(Todo)) filter?: Filter<Todo>
+  ): Promise<Todo> {
+    return this.todoRepository.findById(id, filter);
   }
 
   @patch('/todos/{id}', {
