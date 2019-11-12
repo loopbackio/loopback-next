@@ -3,9 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {Key, pathToRegexp} from 'path-to-regexp';
 import {PathParameterValues} from '../types';
 import {toExpressPath} from './openapi-path';
-import pathToRegexp = require('path-to-regexp');
 
 /**
  * A Node in the trie
@@ -217,7 +217,7 @@ function createNode<T>(
 
   // Check if the key has variables such as `{var}`
   const path = toExpressPath(key);
-  const params: pathToRegexp.Key[] = [];
+  const params: Key[] = [];
   const re = pathToRegexp(path, params);
 
   if (params.length) {

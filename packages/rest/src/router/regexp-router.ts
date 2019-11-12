@@ -12,7 +12,7 @@ import {RestRouterOptions} from './rest-router';
 import {createResolvedRoute, ResolvedRoute, RouteEntry} from './route-entry';
 import {compareRoute} from './route-sort';
 import {BaseRouter} from './router-base';
-import pathToRegExp = require('path-to-regexp');
+import {pathToRegexp, Key} from 'path-to-regexp';
 
 const debug = require('debug')('loopback:rest:router:regexp');
 
@@ -21,7 +21,7 @@ const debug = require('debug')('loopback:rest:router:regexp');
  */
 interface RegExpRouteEntry extends RouteEntry {
   regexp: RegExp;
-  keys: pathToRegExp.Key[];
+  keys: Key[];
 }
 
 /**
@@ -48,8 +48,8 @@ export class RegExpRouter extends BaseRouter {
 
   protected addRouteWithPathVars(route: RouteEntry) {
     const path = toExpressPath(route.path);
-    const keys: pathToRegExp.Key[] = [];
-    const regexp = pathToRegExp(path, keys, {
+    const keys: Key[] = [];
+    const regexp = pathToRegexp(path, keys, {
       strict: this.options.strict,
       end: true,
     });

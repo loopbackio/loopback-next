@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import pathToRegExp = require('path-to-regexp');
+import {parse} from 'path-to-regexp';
 
 /**
  * OpenAPI spec 3.x does not specify the valid forms of path templates.
@@ -20,7 +20,7 @@ const INVALID_VARNAME_PATTERN = /\{([^\}]*[^\w\}][^\}]*)\}/;
  * modifier, custom pattern, or unnamed parameter is allowed.
  */
 export function validateApiPath(path = '/') {
-  let tokens = pathToRegExp.parse(path);
+  let tokens = parse(path);
   if (tokens.some(t => typeof t === 'object')) {
     throw new Error(
       `Invalid path template: '${path}'. Please use {param} instead of ':param'`,
@@ -35,7 +35,7 @@ export function validateApiPath(path = '/') {
   }
 
   const regexpPath = toExpressPath(path);
-  tokens = pathToRegExp.parse(regexpPath);
+  tokens = parse(regexpPath);
   for (const token of tokens) {
     if (typeof token === 'string') continue;
     if (typeof token.name === 'number') {
