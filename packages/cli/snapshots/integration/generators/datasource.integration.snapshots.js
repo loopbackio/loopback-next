@@ -15,7 +15,7 @@ import {
   ValueOrPromise,
 } from '@loopback/core';
 import {juggler} from '@loopback/repository';
-import * as config from './ds.datasource.config.json';
+import config from './ds.datasource.config.json';
 
 @lifeCycleObserver('datasource')
 export class DsDataSource extends juggler.DataSource
@@ -56,7 +56,7 @@ import {
   ValueOrPromise,
 } from '@loopback/core';
 import {juggler} from '@loopback/repository';
-import * as config from './ds.datasource.config.json';
+import config from './ds.datasource.config.json';
 
 @lifeCycleObserver('datasource')
 export class DsDataSource extends juggler.DataSource
@@ -97,7 +97,7 @@ import {
   ValueOrPromise,
 } from '@loopback/core';
 import {juggler} from '@loopback/repository';
-import * as config from './ds.datasource.config.json';
+import config from './ds.datasource.config.json';
 
 @lifeCycleObserver('datasource')
 export class DsDataSource extends juggler.DataSource
@@ -138,7 +138,7 @@ import {
   ValueOrPromise,
 } from '@loopback/core';
 import {juggler} from '@loopback/repository';
-import * as config from './ds.datasource.config.json';
+import config from './ds.datasource.config.json';
 
 @lifeCycleObserver('datasource')
 export class DsDataSource extends juggler.DataSource
@@ -179,7 +179,7 @@ import {
   ValueOrPromise,
 } from '@loopback/core';
 import {juggler} from '@loopback/repository';
-import * as config from './ds.datasource.config.json';
+import config from './ds.datasource.config.json';
 
 @lifeCycleObserver('datasource')
 export class DsDataSource extends juggler.DataSource

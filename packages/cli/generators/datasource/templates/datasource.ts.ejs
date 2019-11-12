@@ -5,7 +5,7 @@ import {
   ValueOrPromise,
 } from '@loopback/core';
 import {juggler} from '@loopback/repository';
-import * as config from './<%= jsonFileName %>';
+import config from './<%= jsonFileName %>';
 
 @lifeCycleObserver('datasource')
 export class <%= className %>DataSource extends juggler.DataSource
