@@ -3,8 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {parse, Token} from 'path-to-regexp';
 import {RouteEntry} from './route-entry';
-import pathToRegExp = require('path-to-regexp');
 
 /**
  * Sorting order for http verbs
@@ -31,8 +31,8 @@ export function compareRoute(
   // First check the path tokens
   const path1 = route1.path.replace(/{([^}]*)}(\/|$)/g, ':$1$2');
   const path2 = route2.path.replace(/{([^}]*)}(\/|$)/g, ':$1$2');
-  const tokensForPath1: pathToRegExp.Token[] = parse(path1);
-  const tokensForPath2: pathToRegExp.Token[] = parse(path2);
+  const tokensForPath1: Token[] = toTokens(path1);
+  const tokensForPath2: Token[] = toTokens(path2);
 
   const length =
     tokensForPath1.length > tokensForPath2.length
@@ -59,9 +59,9 @@ export function compareRoute(
  *
  * @param path - Parse a path template into tokens
  */
-function parse(path: string) {
-  const tokens: pathToRegExp.Token[] = [];
-  pathToRegExp.parse(path).forEach(p => {
+function toTokens(path: string) {
+  const tokens: Token[] = [];
+  parse(path).forEach(p => {
     if (typeof p === 'string') {
       // The string can be /orders/count
       tokens.push(...p.split('/').filter(Boolean));
