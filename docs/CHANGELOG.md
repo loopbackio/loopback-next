@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.5.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@2.4.0...@loopback/docs@2.5.0) (2019-11-12)
+
+
+### Bug Fixes
+
+* **docs:** add sidebar for core-tutorial ([ef94d50](https://github.com/strongloop/loopback-next/commit/ef94d507e28d7353dce15afcff5c7351852a9d91))
+* **docs:** fix import statements in docs ([05b4bee](https://github.com/strongloop/loopback-next/commit/05b4beede234c8d9f9b6a5a9c95f458d6d0fec8a))
+* **docs:** fix inconsistent naming for todo tutorial ([d065e7d](https://github.com/strongloop/loopback-next/commit/d065e7d4d62cae586cde1306d987d4967b2ef64a))
+* **docs:** remove duplicate title ([3ca8602](https://github.com/strongloop/loopback-next/commit/3ca86022fc957d17f6a899fcee089bd84ae4c228))
+
+
+### Features
+
+* **cli:** generate datasource json with '.config.json` extension ([51d8f7b](https://github.com/strongloop/loopback-next/commit/51d8f7b20ec59f888fd6d0634efb47d111f00ef7))
+* **docs:** add boot and advanced topics ([15bfad9](https://github.com/strongloop/loopback-next/commit/15bfad9dbaedde7ff7bd23d51b1921efe26391a9))
+* **docs:** add core-tutorial group 3 ([af07a78](https://github.com/strongloop/loopback-next/commit/af07a786f8904f1225694b824d3fcd37c65e06f3))
+* **docs:** core tutorial part 2 ([7433324](https://github.com/strongloop/loopback-next/commit/7433324c4a4faaa8597d3853d201730d65f5b8e0))
+
+
+
+
+
 # [2.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@2.3.0...@loopback/docs@2.4.0) (2019-10-24)
 
 

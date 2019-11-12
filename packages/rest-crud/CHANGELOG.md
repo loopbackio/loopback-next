@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.6.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest-crud@0.5.0...@loopback/rest-crud@0.6.0) (2019-11-12)
+
+
+### Features
+
+* add defineCrudRepositoryClass ([8e3e21d](https://github.com/strongloop/loopback-next/commit/8e3e21d41c7df7a52e9420da09d09881c97cb771))
+
+
+
+
+
 # [0.5.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest-crud@0.4.0...@loopback/rest-crud@0.5.0) (2019-10-24)
 
 

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.23.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@1.22.0...@loopback/rest@1.23.0) (2019-11-12)
+
+
+### Bug Fixes
+
+* **rest:** improve null check to avoid compilation errors with TypeScript 3.7 ([ab47ef6](https://github.com/strongloop/loopback-next/commit/ab47ef63adc01b170ddc537ca973da631c5a8d8f))
+
+
+### Features
+
+* **rest:** bind operation spec to the request context ([55311df](https://github.com/strongloop/loopback-next/commit/55311df23e8b4a22968b5c0edd826323538ba163))
+
+
+
+
+
 # [1.22.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@1.21.0...@loopback/rest@1.22.0) (2019-10-24)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.1](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@1.10.0...@loopback/openapi-v3@1.10.1) (2019-11-12)
+
+
+### Bug Fixes
+
+* **openapi-v3:** remove examples from schema ([c819f92](https://github.com/strongloop/loopback-next/commit/c819f92b647a5baf651b4aeec6636dd2f2e70771))
+
+
+
+
+
 # [1.10.0](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@1.9.10...@loopback/openapi-v3@1.10.0) (2019-10-24)
 
 

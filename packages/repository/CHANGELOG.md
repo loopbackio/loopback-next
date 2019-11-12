@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.15.4](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.15.3...@loopback/repository@1.15.4) (2019-11-12)
+
+
+### Bug Fixes
+
+* **repository:** fix compilation errors with TypeScript 3.7.2 ([d62612d](https://github.com/strongloop/loopback-next/commit/d62612d08e34f4d32b5a3d1645aa0420fecea3b3))
+* **repository:** improve stub typing to avoid compilation errors with TypeScript 3.7 ([29cf103](https://github.com/strongloop/loopback-next/commit/29cf103c780312cf15bf8e1dd189394ae7540fe4))
+* **repository:** improve typings for model inclusion ([eb1a0ae](https://github.com/strongloop/loopback-next/commit/eb1a0ae7a433e566f413a7e3c518b3aeff5374c4))
+
+
+
+
+
 ## [1.15.3](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.15.2...@loopback/repository@1.15.3) (2019-10-24)
 
 **Note:** Version bump only for package @loopback/repository

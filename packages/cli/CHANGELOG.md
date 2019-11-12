@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.25.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.24.0...@loopback/cli@1.25.0) (2019-11-12)
+
+
+### Bug Fixes
+
+* **cli:** improve message for model discovery code generation ([15c11d4](https://github.com/strongloop/loopback-next/commit/15c11d4b6644182b4bd5fc6be34fe805104fc3ca))
+* update error message when failing to read datasource, to include filename ([6663733](https://github.com/strongloop/loopback-next/commit/6663733586ec3a98816f63a887c28b3debf51e4c)), closes [#3965](https://github.com/strongloop/loopback-next/issues/3965)
+
+
+### Features
+
+* **cli:** generate datasource json with '.config.json` extension ([51d8f7b](https://github.com/strongloop/loopback-next/commit/51d8f7b20ec59f888fd6d0634efb47d111f00ef7))
+* **cli:** improve UX of multi-item selection ([077f38c](https://github.com/strongloop/loopback-next/commit/077f38ceccb2e1568aed69dbe00e298b30106c30))
+* **cli:** recognize PK properties defined as `{id: 1}` ([1094509](https://github.com/strongloop/loopback-next/commit/10945093e17b260686e532804f71965d7b156606))
+
+
+
+
+
 # [1.24.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.23.2...@loopback/cli@1.24.0) (2019-10-24)
 
 

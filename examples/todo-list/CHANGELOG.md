@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo-list@1.11.3...@loopback/example-todo-list@1.12.0) (2019-11-12)
+
+
+### Features
+
+* **cli:** generate datasource json with '.config.json` extension ([51d8f7b](https://github.com/strongloop/loopback-next/commit/51d8f7b20ec59f888fd6d0634efb47d111f00ef7))
+
+
+
+
+
 ## [1.11.3](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo-list@1.11.2...@loopback/example-todo-list@1.11.3) (2019-10-24)
 
 **Note:** Version bump only for package @loopback/example-todo-list

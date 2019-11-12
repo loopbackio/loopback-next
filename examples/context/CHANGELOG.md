@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.19](https://github.com/strongloop/loopback-next/compare/@loopback/example-context@1.2.18...@loopback/example-context@1.2.19) (2019-11-12)
+
+**Note:** Version bump only for package @loopback/example-context
+
+
+
+
+
 ## [1.2.18](https://github.com/strongloop/loopback-next/compare/@loopback/example-context@1.2.17...@loopback/example-context@1.2.18) (2019-10-24)
 
 **Note:** Version bump only for package @loopback/example-context

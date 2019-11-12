@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.19](https://github.com/strongloop/loopback-next/compare/@loopback/example-greeter-extension@1.3.18...@loopback/example-greeter-extension@1.3.19) (2019-11-12)
+
+**Note:** Version bump only for package @loopback/example-greeter-extension
+
+
+
+
+
 ## [1.3.18](https://github.com/strongloop/loopback-next/compare/@loopback/example-greeter-extension@1.3.17...@loopback/example-greeter-extension@1.3.18) (2019-10-24)
 
 **Note:** Version bump only for package @loopback/example-greeter-extension
