@@ -1,0 +1,56 @@
+{
+  "name": "@loopback/extension-logging",
+  "version": "0.0.1",
+  "description": "LoopBack Logging for Fluentd",
+  "engines": {
+    "node": ">=8.9"
+  },
+  "scripts": {
+    "build": "lb-tsc",
+    "clean": "lb-clean loopback-extension-logging*.tgz dist tsconfig.build.tsbuildinfo package",
+    "pretest": "npm run build",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
+    "verify": "npm pack && tar xf loopback-extension-logging*.tgz && tree package && npm run clean"
+  },
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "license": "MIT",
+  "dependencies": {
+    "@loopback/context": "^1.23.3",
+    "@loopback/core": "^1.10.5",
+    "@loopback/rest": "^1.21.0",
+    "fluent-logger": "^3.3.1",
+    "winston": "^3.2.1",
+    "winston-transport": "^4.3.0"
+  },
+  "devDependencies": {
+    "@loopback/build": "^2.0.14",
+    "@loopback/eslint-config": "^4.1.2",
+    "@loopback/testlab": "^1.9.2",
+    "@types/node": "^10.17.5",
+    "p-event": "^4.1.0"
+  },
+  "keywords": [
+    "LoopBack",
+    "Cloud Native",
+    "Fluentd",
+    "Logging"
+  ],
+  "files": [
+    "README.md",
+    "index.js",
+    "index.d.ts",
+    "dist",
+    "src",
+    "!*/__tests__",
+    "templates"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "extensions/logging"
+  }
+}
