@@ -7,6 +7,7 @@
 
 const semver = require('semver');
 const chalk = require('chalk');
+const latestVersion = require('latest-version');
 
 const cliPkg = require('../package.json');
 const templateDeps = cliPkg.config.templateDependencies;
@@ -15,7 +16,7 @@ const templateDeps = cliPkg.config.templateDependencies;
  * Print @loopback/* versions
  * @param log - A function to log information
  */
-function printVersions(log) {
+function printVersions(log = console.log) {
   const ver = cliPkg.version;
   log('@loopback/cli version: %s', ver);
   log('\n@loopback/* dependencies:');
@@ -30,13 +31,14 @@ function printVersions(log) {
  * Check project dependencies against module versions from the cli template
  * @param generator - Yeoman generator instance
  */
-function checkDependencies(generator) {
+async function checkDependencies(generator) {
   const pkg = generator.fs.readJSON(generator.destinationPath('package.json'));
   generator.packageJson = pkg;
 
   if (!pkg) {
     if (generator.command === 'update') {
       printVersions(generator.log);
+      await checkCliVersion(generator.log);
       return;
     }
     const err = new Error(
@@ -164,7 +166,7 @@ function updateDependencies(generator) {
 async function checkLoopBackProject(generator) {
   if (generator.shouldExit()) return false;
 
-  const incompatibleDeps = checkDependencies(generator);
+  const incompatibleDeps = await checkDependencies(generator);
   if (incompatibleDeps == null) return;
   if (Object.keys(incompatibleDeps) === 0) return;
 
@@ -204,7 +206,27 @@ async function checkLoopBackProject(generator) {
   generator.exit(new Error('Incompatible dependencies'));
 }
 
+/**
+ * Check if the current cli is out of date
+ * @param log - Log function
+ */
+async function checkCliVersion(log = console.log) {
+  const latestCliVersion = await latestVersion('@loopback/cli');
+  if (latestCliVersion !== cliPkg.version) {
+    const current = chalk.grey(cliPkg.version);
+    const latest = chalk.green(latestCliVersion);
+    const cmd = chalk.cyan(`npm i -g ${cliPkg.name}`);
+    const message = `
+Update available ${current} ${chalk.reset(' → ')} ${latest}
+Run ${cmd} to update.`;
+    log(message);
+  } else {
+    log(chalk.green(`${cliPkg.name}@${cliPkg.version} is up to date.`));
+  }
+}
+
 exports.printVersions = printVersions;
+exports.checkCliVersion = checkCliVersion;
 exports.checkDependencies = checkDependencies;
 exports.updateDependencies = updateDependencies;
 exports.checkLoopBackProject = checkLoopBackProject;
