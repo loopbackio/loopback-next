@@ -214,9 +214,7 @@ describe('lb4 controller', () => {
             }),
           )
           .withPrompts(restCLIInputComplete),
-      ).to.be.rejectedWith(
-        /ENOENT: no such file or directory, scandir(.*?)models\b/,
-      );
+      ).to.be.rejectedWith(/No models found in .*[\/\\]models\b/);
     });
 
     it('fails when no repository directory present', () => {
@@ -230,9 +228,7 @@ describe('lb4 controller', () => {
             }),
           )
           .withPrompts(restCLIInputComplete),
-      ).to.be.rejectedWith(
-        /ENOENT: no such file or directory, scandir(.*?)repositories\b/,
-      );
+      ).to.be.rejectedWith(/No repositories found in .*[\/\\]repositories\b/);
     });
   });
 });

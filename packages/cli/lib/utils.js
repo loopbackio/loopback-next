@@ -224,13 +224,21 @@ exports.findArtifactPaths = async function(dir, artifactType, reader) {
   const readdir = reader || readdirAsync;
   debug(`Finding artifact paths at: ${dir}`);
 
-  // Wrapping readdir in case it's not a promise.
-  const files = await readdir(dir);
-  return _.filter(files, f => {
-    return (
-      _.endsWith(f, `${artifactType}.js`) || _.endsWith(f, `${artifactType}.ts`)
+  try {
+    // Wrapping readdir in case it's not a promise.
+    const files = await readdir(dir);
+    return files.filter(
+      f =>
+        _.endsWith(f, `${artifactType}.js`) ||
+        _.endsWith(f, `${artifactType}.ts`),
     );
-  });
+  } catch (err) {
+    if (err.code === 'ENOENT') {
+      // Target directory was not found (e.g. "src/models" does not exist yet).
+      return [];
+    }
+    throw err;
+  }
 };
 /**
  * Parses the files of the target directory and returns matching JavaScript
