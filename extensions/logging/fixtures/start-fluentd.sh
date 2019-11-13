@@ -4,8 +4,10 @@ $BASE_DIR/stop-fluentd.sh
 
 FLUENTD__CONTAINER_NAME="fluentd_lb4"
 pushd $BASE_DIR >/dev/null
+ROOT_DIR=$(pwd)
+rm -rf $ROOT_DIR/logs/*
 docker pull fluent/fluentd:v1.7.4-debian-1.0
 docker run --name $FLUENTD__CONTAINER_NAME -d \
-  -p 24224:24224 -p 9880:9880 -v $(pwd):/fluentd/etc \
+  -p 24224:24224 -p 9880:9880 -v $ROOT_DIR/etc:/fluentd/etc \
   -e FLUENTD_CONF=fluentd.conf fluent/fluentd
 popd >/dev/null
