@@ -311,11 +311,11 @@ export namespace inject {
    * @param metadata - Metadata for the injection
    */
   export const binding = function injectBinding(
-    bindingKey: BindingAddress,
+    bindingKey?: BindingAddress,
     metadata?: InjectBindingMetadata,
   ) {
     metadata = Object.assign({decorator: '@inject.binding'}, metadata);
-    return inject(bindingKey, metadata, resolveAsBinding);
+    return inject(bindingKey || '', metadata, resolveAsBinding);
   };
 
   /**
@@ -440,14 +440,21 @@ function resolveAsSetter(ctx: Context, injection: Injection) {
       `@inject.setter (${targetName}) does not allow BindingFilter.`,
     );
   }
+  if (bindingSelector === '') {
+    throw new Error('Binding key is not set for @inject.setter');
+  }
   // No resolution session should be propagated into the setter
   return function setter(value: unknown) {
     const binding = findOrCreateBindingForInjection(ctx, injection);
-    binding.to(value);
+    binding!.to(value);
   };
 }
 
-function resolveAsBinding(ctx: Context, injection: Injection) {
+function resolveAsBinding(
+  ctx: Context,
+  injection: Injection,
+  session: ResolutionSession,
+) {
   const targetName = assertTargetType(injection, Binding);
   const bindingSelector = injection.bindingSelector;
   if (!isBindingAddress(bindingSelector)) {
@@ -455,13 +462,16 @@ function resolveAsBinding(ctx: Context, injection: Injection) {
       `@inject.binding (${targetName}) does not allow BindingFilter.`,
     );
   }
-  return findOrCreateBindingForInjection(ctx, injection);
+  return findOrCreateBindingForInjection(ctx, injection, session);
 }
 
 function findOrCreateBindingForInjection(
   ctx: Context,
   injection: Injection<unknown>,
+  session?: ResolutionSession,
 ) {
+  if (injection.bindingSelector === '')
+    return session && session.currentBinding;
   const bindingCreation =
     injection.metadata &&
     (injection.metadata as InjectBindingMetadata).bindingCreation;
