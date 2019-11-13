@@ -204,6 +204,20 @@ export class HelloController {
 }
 ```
 
+If the `bindingKey` is not specified, the current binding from the resolution
+session is injected.
+
+```ts
+export class HelloController {
+  @inject.binding() private myBinding: Binding<string>;
+
+  @get('/hello')
+  async greet() {
+    return `Hello from ${this.myBinding.key}`;
+  }
+}
+```
+
 The `@inject.binding` takes an optional `metadata` object which can contain
 `bindingCreation` to control how underlying binding is resolved or created based
 on the following values:

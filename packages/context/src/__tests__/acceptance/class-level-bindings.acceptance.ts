@@ -352,6 +352,16 @@ describe('Context bindings - Injecting dependencies of classes', () => {
       expect(ctx.getSync(HASH_KEY)).to.equal('a-value');
     });
 
+    it('throws error if binding key is empty', async () => {
+      class InvalidStore {
+        constructor(@inject.setter('') public setter: Setter<string>) {}
+      }
+      ctx.bind(STORE_KEY).toClass(InvalidStore);
+      return expect(ctx.get<InvalidStore>(STORE_KEY)).to.be.rejectedWith(
+        /Binding key is not set for @inject\.setter/,
+      );
+    });
+
     it('injects a setter function that uses an existing binding', () => {
       // Create a binding for hash key
       ctx
@@ -561,6 +571,18 @@ describe('Context bindings - Injecting dependencies of classes', () => {
         }
         return StoreWithInjectBindingMetadata;
       }
+    });
+  });
+
+  describe('@inject.binding without binding key', () => {
+    class Store {
+      constructor(@inject.binding() public binding: Binding<string>) {}
+    }
+
+    it('injects a binding', () => {
+      ctx.bind(STORE_KEY).toClass(Store);
+      const store = ctx.getSync<Store>(STORE_KEY);
+      expect(store.binding).to.equal(ctx.getBinding(STORE_KEY));
     });
   });
 
