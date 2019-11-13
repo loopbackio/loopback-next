@@ -22,7 +22,7 @@
     "@loopback/eslint-config": "^4.1.4",
     "@loopback/testlab": "^1.9.4",
     "@types/bson": "^4.0.0",
-    "@types/lodash": "^4.14.146",
+    "@types/lodash": "^4.14.147",
     "@types/node": "^10.17.5",
     "bson": "4.0.2"
   },
