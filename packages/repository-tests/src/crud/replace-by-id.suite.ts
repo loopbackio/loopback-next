@@ -34,6 +34,11 @@ export function createSuiteForReplaceById(
     })
     id: MixedIdType;
 
+    // cloudant needs this property to do replacement method
+    // see cloundant README file for more details
+    @property({type: 'string', required: false})
+    _rev: string;
+
     @property({type: 'string', required: true})
     name: string;
 
@@ -71,7 +76,9 @@ export function createSuiteForReplaceById(
       await repo.replaceById(created.id, created);
 
       const found = await repo.findById(created.id);
-      expect(toJSON(found)).to.deepEqual(
+      // use containDeep instead of deepEqual because cloudant changes _rev value after
+      // replacement
+      expect(toJSON(found)).to.containDeep(
         toJSON({
           id: created.id,
           name: 'new name',
@@ -100,7 +107,9 @@ export function createSuiteForReplaceById(
       await repo.replaceById(created.id, created);
 
       const found = await repo.findById(created.id);
-      expect(toJSON(found)).to.deepEqual(
+      // use containDeep instead of deepEqual because cloudant changes _rev value after
+      // replacement
+      expect(toJSON(found)).to.containDeep(
         toJSON({
           id: created.id,
           name: 'new name',
