@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.5.1](https://github.com/strongloop/loopback-next/compare/@loopback/docs@2.5.0...@loopback/docs@2.5.1) (2019-11-13)
+
+
+### Bug Fixes
+
+* **docs:** rename 5-extension-point-extensions.md to match references ([a586541](https://github.com/strongloop/loopback-next/commit/a58654187a974cd21f7ec448c229c4cb08c4e136))
+
+
+
+
+
 # [2.5.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@2.4.0...@loopback/docs@2.5.0) (2019-11-12)
 
 
