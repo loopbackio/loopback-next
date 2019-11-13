@@ -28,7 +28,8 @@
     "@loopback/eslint-config": "^4.1.2",
     "@loopback/testlab": "^1.9.2",
     "@types/node": "^10.17.5",
-    "p-event": "^4.1.0"
+    "p-event": "^4.1.0",
+    "testcontainers": "^2.1.0"
   },
   "keywords": [
     "LoopBack",
