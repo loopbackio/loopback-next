@@ -90,7 +90,7 @@ matrix:
         # - source cloudant-config.sh
         - npm run postinstall -- --scope "@loopback/test-repository-cloudant" --include-dependencies
         - npm run build -- --scope "@loopback/test-repository-cloudant" --include-dependencies
-        - cd acceptance/repository-cloudant && ls -a && npm run mocha
+        - cd acceptance/repository-cloudant && ls -a && npm run test
 
 branches:
   only:
