@@ -132,6 +132,17 @@ const apiExplorerOptions = await ctx.get('apiExplorer.options'); // => {path: '/
 
 ### Configure the scope
 
+A binding provides values for requests such as `ctx.get()`, `ctx.getSync()`, and
+dependency injections. The binding scope controls whether a binding returns a
+new value or share the same value for multiple requests within the same context
+hierarchy. For example, `value1` and `value2` in the code below can be different
+or the same depending on the scope of Binding(`my-key`).
+
+```ts
+const value1 = await ctx.get('my-key');
+const value2 = ctx.getSync('my-key');
+```
+
 We allow a binding to be resolved within a context using one of the following
 scopes:
 
@@ -147,6 +158,162 @@ binding.inScope(BindingScope.SINGLETON);
 ```
 
 The binding scope can be accessed via `binding.scope`.
+
+### Choose the right scope
+
+The binding scope should be determined by answers to the following questions:
+
+1. Do you need to have a new value from the binding for each request?
+2. Does the resolved value for a binding hold or access states that are request
+   specific?
+
+Please note that the binding scope has no effect on bindings created with
+`to()`. For example:
+
+```ts
+ctx.bind('my-name').to('John Smith');
+```
+
+The `my-name` binding will always resolve to `'John Smith'`.
+
+The binding scope will impact values provided by `toDynamicValue`, `toClass`,
+and `toProvider`.
+
+Let's say we need to have a binding that gives us the current date.
+
+```ts
+ctx.bind('current-date').toDynamicValue(() => new Date());
+const d1 = ctx.getSync('current-date');
+const d2 = ctx.getSync('current-date');
+// d1 !== d2
+```
+
+By default, the binding scope is `TRANSIENT`. In the code above, `d1` and `d2`
+are resolved by calling `new Date()` for each `getSync('current-date')`. Two
+different dates are assigned to `d1` and `d2` to reflect the corresponding date
+for each resolution.
+
+Now you can guess the code snippet below will produce the same date for `d1` and
+`d2`, which is not desirable.
+
+```ts
+ctx
+  .bind('current-date')
+  .toDynamicValue(() => new Date())
+  .inScope(BindingScope.SINGLETON);
+const d1 = ctx.getSync<Date>('current-date');
+const d2 = ctx.getSync<Date>('current-date');
+// d1 === d2
+```
+
+The `SINGLETON` scope is useful for some use cases, such as:
+
+1.  Share states in a single instance across multiple consumers of the binding
+
+    ```ts
+    export class GlobalCounter {
+      public count = 0;
+    }
+
+    ctx
+      .bind('global-counter')
+      .toClass(GlobalCounter)
+      .inScope(BindingScope.SINGLETON);
+    const c1: GlobalCounter = await ctx.get('global-counter');
+    c1.count++; // c1.count is now 1
+    const c2: GlobalCounter = await ctx.get('global-counter');
+    // c2 is the same instance as c1
+    // c2.count is 1 too
+    ```
+
+2.  Prevent creation of multiple instances if one single instance can be shared
+    as the consumers do not need to hold or access different states
+
+    For example, the following `GreetingController` implementation does not
+    access any information beyond the method parameters which are passed in as
+    arguments. A shared instance of `GreetingController` can invoke `greet` with
+    different arguments, such as `c1.greet('John')` and `c1.greet('Jane')`.
+
+    ```ts
+    // Mark the controller class a candidate for singleton binding
+    @bind({scope: BindingScope.SINGLETON})
+    export class GreetingController {
+      greet(name: string) {
+        return `Hello, ${name}`;
+      }
+    }
+    ```
+
+    `GreetingController` is a good candidate to use `SINGLETON` so that only one
+    instance is created within the application context and it can be shared by
+    all requests. The scope eliminates the overhead to instantiate
+    `GreetingController` per request.
+
+    ```ts
+    // createBindingFromClass() respects `@bind` and sets the binding scope to `SINGLETON'
+    const binding = ctx.add(createBindingFromClass(GreetingController));
+    const c1 = ctx.getSync(binding.key);
+    const c2 = ctx.getSync(binding.key);
+    // c2 is the same instance as c1
+    c1.greet('John'); // invoke c1.greet for 'John' => 'Hello, John'
+    c2.greet('Jane'); // invoke c2.greet for 'Jane' => 'Hello, Jane'
+    ```
+
+**Rule of thumb**: Use `TRANSIENT` as the safe default and choose `SINGLETON` if
+you want to share the same instance for all consumers without breaking
+concurrent requests.
+
+Let's look at another use case that we need to access the information from the
+current request, such as http url or logged in user:
+
+```ts
+export class GreetingCurrentUserController {
+  @inject(SecurityBindings.USER)
+  private currentUserProfile: UserProfile;
+
+  greet() {
+    return `Hello, ${this.currentUserProfile.name}`;
+  }
+}
+```
+
+Instances of `GreetingCurrentUserController` depend on `currentUserProfile`,
+which is injected as a property. We have to use `TRANSIENT` scope so that a new
+instance is created per request to hold the logged in user for each request.
+
+The constraint of being transient can be lifted by using method parameter
+injection to move the request-specific injection to parameters per method
+invocation.
+
+```ts
+export class SingletonGreetingCurrentUserController {
+  greet(@inject(SecurityBindings.USER) currentUserProfile: UserProfile) {
+    return `Hello, ${this.currentUserProfile.name}`;
+  }
+}
+```
+
+The new implementation above does not hold request specific states as properties
+in its instances anymore and thus it's qualified to be in `SINGLETON` scope.
+
+```ts
+ctx
+  .bind('controllers.SingletonGreetingCurrentUserController')
+  .toClass(SingletonGreetingCurrentUserController)
+  .inScope(BindingScope.SINGLETON);
+```
+
+A single instance of `SingletonGreetingCurrentUserController` is created within
+the context that contains the binding. But the `greet` method can still be
+invoked with different request contexts, each of which has its own logged in
+user. Method parameter injections are fulfilled with the request context, which
+can be different from the context (such as `application`) used to instantiate
+the class as a singleton.
+
+{% include note.html content="
+To understand the difference between `@bind()` and `ctx.bind()`, see
+[Configure binding attributes for a class](#configure-binding-attributes-for-a-class).
+" %}
 
 ### Describe tags
 
@@ -267,6 +434,29 @@ parameter of `BindingFromClassOptions` type with the following settings:
 
 - defaultScope: Default scope if the binding does not have an explicit scope
   set. The `scope` from `@bind` of the bound class takes precedence.
+
+{% include note.html content=" The `@bind` decorator only adds metadata to the
+class. It does NOT automatically bind the class to a context. To bind a class
+with `@bind` decoration, the following step needs to happen explicitly or
+implicitly (by a booter).
+
+```ts
+const binding = createBindingFromClass(AClassOrProviderWithBindDecoration);
+ctx.add(binding);
+```
+
+The metadata added by `@bind` is **NOT** inspected/honored by `toClass` or
+`toProvider`. Be warned that the example below does NOT set up the binding per
+`@bind` decoration:
+
+```ts
+const binding = ctx.bind('my-key').toClass(MyService);
+// The binding is NOT configured based on the `@bind` decoration on MyService.
+// The scope is BindingScope.TRANSIENT (not BindingScope.SINGLETON).
+// There is no tag named 'service' for the binding either.
+```
+
+" %}
 
 ### Encoding value types in binding keys
 
