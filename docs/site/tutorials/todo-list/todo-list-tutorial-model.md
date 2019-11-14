@@ -40,9 +40,8 @@ Enter an empty property name when done
 
 ? Enter the property name: id
 ? Property type: number
-? Is ID field? Yes
-? Required?: No
-? Default value [leave blank for none]:
+? Is id the ID property? Yes
+? Is id generated automatically? Yes
 
 Let's add another property to TodoList
 Enter an empty property name when done
@@ -68,61 +67,6 @@ Enter an empty property name when done
    update src/models/index.ts
 
 Model TodoList was created in src/models/
-```
-
-Now that we have our new model, we need to define its relation with the `Todo`
-model. Add the following import statements and property to the `TodoList` model
-and update the `TodoListRelations` interface to include `todos`:
-
-{% include code-caption.html content="src/models/todo-list.model.ts" %}
-
-```ts
-import {hasMany} from '@loopback/repository';
-import {Todo, TodoWithRelations} from './todo.model';
-
-@model()
-export class TodoList extends Entity {
-  // ...properties defined by the CLI...
-
-  @hasMany(() => Todo)
-  todos?: Todo[];
-
-  // ...constructor def...
-}
-
-export interface TodoListRelations {
-  todos?: TodoWithRelations[];
-}
-
-export type TodoListWithRelations = TodoList & TodoListRelations;
-```
-
-The `@hasMany()` decorator defines this property. As the decorator's name
-suggests, `@hasMany()` informs LoopBack 4 that a todo list can have many todo
-items.
-
-To complement `TodoList`'s relationship to `Todo`, we'll add in the `todoListId`
-property on the `Todo` model to define the relation on both ends, along with
-updating the `TodoRelations` interface to include `todoList`:
-
-{% include code-caption.html content="src/models/todo.model.ts" %}
-
-```ts
-@model()
-export class Todo extends Entity {
-  // ...properties defined by the CLI...
-
-  @belongsTo(() => TodoList)
-  todoListId: number;
-
-  // ...constructor def...
-}
-
-export interface TodoRelations {
-  todoList?: TodoListWithRelations;
-}
-
-export type TodoWithRelations = Todo & TodoRelations;
 ```
 
 Once the models have been completely configured, it's time to move on to adding

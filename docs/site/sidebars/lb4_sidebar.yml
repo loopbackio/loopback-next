@@ -322,6 +322,10 @@ children:
       url: todo-list-tutorial-repository.html
       output: 'web, pdf'
 
+    - title: 'Add Model Relations'
+      url: todo-list-tutorial-relations.html
+      output: 'web, pdf'
+
     - title: 'Add TodoList Controller'
       url: todo-list-tutorial-controller.html
       output: 'web, pdf'
