@@ -15,7 +15,7 @@ const ms = require('ms');
 const fs = require('fs-extra');
 
 // // we don't pass any node flags, so we can call _mocha instead the wrapper
-const mochaBin = require.resolve('mocha/bin/_mocha');
+// const mochaBin = require.resolve('mocha/bin/_mocha');
 
 process.env.CLOUDANT_DATABASE = 'testdb';
 process.env.CLOUDANT_PASSWORD = 'pass';
