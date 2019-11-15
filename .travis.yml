@@ -87,7 +87,7 @@ matrix:
       install: npm ci --ignore-scripts && npm run docker:setup && source cloudant-config.sh && pwd
 
       before_script:
-        - npm run postinstall -- --scope "@loopback/test-repository-cloudant" --include-dependencies
+        - npm run postinstall -- --include-dependencies
         - npm run build
       script:
         - source cloudant-config.sh
