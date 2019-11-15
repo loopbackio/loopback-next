@@ -4,9 +4,9 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Application, BindingKey} from '@loopback/core';
+import {LoggingBindings, LoggingComponent} from '@loopback/extension-logging';
 import {expect} from '@loopback/testlab';
 import {promisify} from 'util';
-import {LoggingBindings, LoggingComponent} from '../..';
 import {readLog} from '../fixtures/fluentd.docker';
 
 const sleep = promisify(setTimeout);
@@ -22,7 +22,7 @@ describe('LoggingComponent', () => {
     const sender = await app.get(LoggingBindings.FLUENT_SENDER);
     sender.emit({greeting: 'Hello, LoopBack!'});
     await sleep(100);
-    await assertLogFiles(/LoopBack\s+\{"greeting"\:"Hello, LoopBack!"\}/);
+    await expectLogsToMatch(/LoopBack\s+\{"greeting"\:"Hello, LoopBack!"\}/);
   });
 
   it('binds a winston transport for fluent', async function() {
@@ -30,7 +30,7 @@ describe('LoggingComponent', () => {
     const logger = await app.get(LoggingBindings.WINSTON_LOGGER);
     logger.log('info', 'Hello, LoopBack!');
     await sleep(100);
-    await assertLogFiles(
+    await expectLogsToMatch(
       /LoopBack\s+\{"level"\:"info","message":"Hello, LoopBack!"\}/,
     );
   });
@@ -46,10 +46,10 @@ describe('LoggingComponent', () => {
   });
 
   /**
-   * Read `bin/.sandbox/loopback` directory for log files
+   * Read fluentd log files to match against the given regular exp
    * @param regex A regular expression for assertion
    */
-  async function assertLogFiles(regex: RegExp) {
+  async function expectLogsToMatch(regex: RegExp) {
     const content = await readLog();
     expect(content).match(regex);
   }
@@ -57,7 +57,7 @@ describe('LoggingComponent', () => {
   async function givenAppWithCustomConfig() {
     app = givenApplication();
     app.configure(LoggingBindings.FLUENT_SENDER).to({
-      host: process.env.FLUENTD_SERVICE_HOST || 'localhost',
+      host: process.env.FLUENTD_SERVICE_HOST || '127.0.0.1',
       port: +(process.env.FLUENTD_SERVICE_PORT_TCP || 0) || 24224,
       timeout: 3.0,
       reconnectInterval: 600000, // 10 minutes
