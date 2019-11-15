@@ -84,12 +84,10 @@ matrix:
       os: linux
       env:
         - TASK=test-repository-cloudant
-      install: cd acceptance/repository-cloudant && npm ci --ignore-scripts && npm run docker:setup && source cloudant-config.sh && pwd
+      install: npm ci --ignore-scripts && npm run docker:setup && source cloudant-config.sh && pwd
 
-      before_script:
-        - cd ../.. && npm run postinstall -- --scope "@loopback/test-repository-cloudant" --include-dependencies
       script:
-        # - npm run postinstall -- --scope "@loopback/test-repository-cloudant" --include-dependencies
+        - npm run postinstall -- --scope "@loopback/test-repository-cloudant" --include-dependencies
         - npm run build -- --scope "@loopback/test-repository-cloudant" --include-dependencies
         - source cloudant-config.sh
         - cd acceptance/repository-cloudant && npm run mocha
