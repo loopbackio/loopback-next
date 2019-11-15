@@ -18,7 +18,7 @@
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "devDependencies": {
-    "@loopback/build": "^1.7.1",
+    "@loopback/build": "^2.0.16",
     "@loopback/eslint-config": "^4.1.4",
     "@loopback/repository": "^1.15.4",
     "@loopback/repository-tests": "^0.6.1",
