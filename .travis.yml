@@ -15,7 +15,7 @@ script:
   - npm run test:ci
 
 env: TASK=test
-install: npm ci --ignore-scripts && npm run docker:setup && source cloudant-config.sh && pwd
+install: npm ci --ignore-scripts
 
 after_success:
   - if [[ "${TRAVIS_OS_NAME}" == "linux" ]] && [[ $(echo $TRAVIS_NODE_VERSION | cut -d'.' -f1) == "10" ]]; then npm run coverage:ci; fi
@@ -84,7 +84,7 @@ matrix:
       os: linux
       env:
         - TASK=test-repository-cloudant
-      # install: npm ci --ignore-scripts && npm run docker:setup && source cloudant-config.sh && pwd
+      install: npm ci --ignore-scripts && npm run clean && npm run docker:setup && source cloudant-config.sh && pwd
 
       before_script:
         - npm run postinstall -- --scope "@loopback/test-repository-cloudant" --include-dependencies
