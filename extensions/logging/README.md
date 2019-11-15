@@ -89,19 +89,6 @@ ctx
   .apply(extensionFor(WINSTON_FORMAT));
 ```
 
-## Start fluentd as a Docker container for testing
-
-For mocha tests, we use
-[testcontainers](https://github.com/testcontainers/testcontainers-node) to
-start/stop the fluentd docker container automatically.
-
-There are also scripts in `fixtures` directory:
-
-- start-fluentd.sh
-- stop-fluentd.sh
-
-The fluentd configuration is read from `fixtures/etc/fluentd.conf`.
-
 ## Contributions
 
 - [Guidelines](https://github.com/strongloop/loopback-next/blob/master/docs/CONTRIBUTING.md)
@@ -110,6 +97,9 @@ The fluentd configuration is read from `fixtures/etc/fluentd.conf`.
 ## Tests
 
 Run `npm test` from the root folder.
+
+The acceptance test against fluentd is available as a separate package at
+`acceptance/extension-logging-fluentd`.
 
 ## Contributors
 

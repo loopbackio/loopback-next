@@ -10,7 +10,9 @@ import {GenericContainer, StartedTestContainer} from 'testcontainers';
 export const ROOT_DIR = path.join(__dirname, '../../../fixtures');
 export const ETC_DIR = path.join(ROOT_DIR, 'etc');
 
+/* eslint-disable require-atomic-updates */
 async function startFluentd() {
+  if (process.env.FLUENTD_SERVICE_HOST != null) return;
   const container = await new GenericContainer(
     'fluent/fluentd',
     'v1.7.4-debian-1.0',
@@ -30,7 +32,7 @@ async function startFluentd() {
   return container;
 }
 
-let fluentd: StartedTestContainer;
+let fluentd: StartedTestContainer | undefined;
 
 /* eslint-disable no-invalid-this */
 /**
@@ -54,6 +56,7 @@ after(async function() {
 });
 
 export async function readLog() {
+  if (fluentd == null) return '';
   const result = await fluentd.exec([
     '/bin/sh',
     '-c',
