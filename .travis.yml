@@ -89,8 +89,8 @@ matrix:
       before_script:
         - npm run postinstall -- --scope "@loopback/test-repository-cloudant" --include-dependencies
         - npm run build -- --scope "@loopback/test-repository-cloudant" --include-dependencies
-        - source cloudant-config.sh
       script:
+        - source cloudant-config.sh
         - cd acceptance/repository-cloudant && npm run mocha
 
 branches:
