@@ -11,11 +11,14 @@ import {
   skipOnTravis,
   supertest,
 } from '@loopback/testlab';
+import {EventEmitter} from 'events';
 import * as fs from 'fs';
-import {IncomingMessage, Server, ServerResponse} from 'http';
+import {Agent, IncomingMessage, Server, ServerResponse} from 'http';
 import * as os from 'os';
+import pEvent from 'p-event';
 import * as path from 'path';
 import {HttpOptions, HttpServer, HttpsOptions} from '../../';
+import {HttpServerOptions} from '../../http-server';
 
 describe('HttpServer (integration)', () => {
   let server: HttpServer | undefined;
@@ -47,6 +50,51 @@ describe('HttpServer (integration)', () => {
     await server.start();
     await server.stop();
     await expect(httpGetAsync(server.url)).to.be.rejectedWith(/ECONNREFUSED/);
+  });
+
+  it('stops server with grace period and inflight request', async () => {
+    const serverOptions = givenHttpServerConfig() as HttpServerOptions;
+    serverOptions.gracePeriodForClose = 1000;
+    const {emitter, deferredRequestHandler} = createDeferredRequestHandler();
+    server = new HttpServer(deferredRequestHandler, serverOptions);
+    await server.start();
+    const agent = new Agent({keepAlive: true});
+    // Send a request with keep-alive
+    const req = httpGetAsync(server.url, agent);
+    // Wait until the request is accepted by the server
+    await pEvent(server.server, 'request');
+    // Stop the server
+    const stop = server.stop();
+    // Now notify the request to finish in next cycle with setImmediate
+    setImmediate(() => {
+      emitter.emit('finish');
+    });
+    // The in-flight task can finish before the grace period
+    await req;
+    // Wait until the server is stopped
+    await stop;
+    // No more new connections are accepted
+    await expect(httpGetAsync(server.url)).to.be.rejectedWith(/ECONNREFUSED/);
+  });
+
+  it('stops server with shorter grace period and inflight request', async () => {
+    const serverOptions = givenHttpServerConfig() as HttpServerOptions;
+    serverOptions.gracePeriodForClose = 10;
+    const {deferredRequestHandler} = createDeferredRequestHandler();
+    server = new HttpServer(deferredRequestHandler, serverOptions);
+    await server.start();
+    const agent = new Agent({keepAlive: true});
+    // Send a request with keep-alive
+    const req = httpGetAsync(server.url, agent);
+    // Wait until the request is accepted by the server
+    await pEvent(server.server, 'request');
+    // Stop the server
+    await server.stop();
+    // No more new connections are accepted
+    await expect(httpGetAsync(server.url)).to.be.rejectedWith(/ECONNREFUSED/);
+    // We never send `finish` to the pending request
+    // The inflight request is aborted as it takes longer than the grace period
+    await expect(req).to.be.rejectedWith(/socket hang up/);
   });
 
   it('exports original port', async () => {
@@ -262,6 +310,21 @@ describe('HttpServer (integration)', () => {
     res: ServerResponse,
   ): void {
     res.end();
+  }
+
+  /**
+   * Create a request handler to simulate long-running requests. The request
+   * is only processed once the emitter receives `finish` signal.
+   */
+  function createDeferredRequestHandler() {
+    const emitter = new EventEmitter();
+    function deferredRequestHandler(
+      req: IncomingMessage,
+      res: ServerResponse,
+    ): void {
+      emitter.on('finish', () => res.end());
+    }
+    return {emitter, deferredRequestHandler};
   }
 
   async function stopServer() {
