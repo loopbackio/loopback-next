@@ -22,6 +22,46 @@ import {
 } from '../..';
 
 describe('Application life cycle', () => {
+  describe('state', () => {
+    it('updates application state', async () => {
+      const app = new Application();
+      expect(app.state).to.equal('created');
+      const start = app.start();
+      expect(app.state).to.equal('starting');
+      await start;
+      expect(app.state).to.equal('started');
+      const stop = app.stop();
+      expect(app.state).to.equal('stopping');
+      await stop;
+      expect(app.state).to.equal('stopped');
+    });
+
+    it('allows application.stop when it is created', async () => {
+      const app = new Application();
+      await app.stop(); // no-op
+      expect(app.state).to.equal('created');
+    });
+
+    it('rejects application.stop when it is stopping', async () => {
+      const app = new Application();
+      await app.start();
+      const stop = app.stop();
+      await expect(app.stop()).to.be.rejectedWith(
+        /Cannot stop the application as it is stopping\. Valid states are started,stopped,created\./,
+      );
+      await stop;
+    });
+
+    it('rejects application.start when it is not created or stopped', async () => {
+      const app = new Application();
+      const start = app.start();
+      await expect(app.start()).to.be.rejectedWith(
+        /Cannot start the application as it is starting\. Valid states are created,stopped,started\./,
+      );
+      await start;
+    });
+  });
+
   describe('start', () => {
     it('starts all injected servers', async () => {
       const app = new Application();
