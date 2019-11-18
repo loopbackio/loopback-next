@@ -32,6 +32,8 @@ const debug = debugFactory('loopback:core:application');
 export class Application extends Context implements LifeCycleObserver {
   public readonly options: ApplicationConfig;
 
+  private _isShuttingDown = false;
+
   /**
    * Create an application with the given parent context
    * @param parent - Parent context
@@ -61,6 +63,12 @@ export class Application extends Context implements LifeCycleObserver {
     this.bind(CoreBindings.APPLICATION_INSTANCE).to(this);
     // Make options available to other modules as well.
     this.bind(CoreBindings.APPLICATION_CONFIG).to(this.options);
+
+    const shutdownConfig = this.options.shutdown || {};
+    this.setupShutdown(
+      shutdownConfig.signals || ['SIGTERM'],
+      shutdownConfig.gracePeriod,
+    );
   }
 
   /**
@@ -315,12 +323,63 @@ export class Application extends Context implements LifeCycleObserver {
     this.add(binding);
     return binding;
   }
+
+  /**
+   * Set up signals that are captured to shutdown the application
+   * @param signals - An array of signals to be trapped
+   * @param gracePeriod - A grace period in ms before forced exit
+   */
+  protected setupShutdown(signals: NodeJS.Signals[], gracePeriod?: number) {
+    const cleanup = async (signal: string) => {
+      const kill = () => {
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
+        signals.forEach(sig => process.removeListener(sig, cleanup));
+        process.kill(process.pid, signal);
+      };
+      debug('Signal %s received for process %d', signal, process.pid);
+      if (!this._isShuttingDown) {
+        this._isShuttingDown = true;
+        let timer;
+        if (typeof gracePeriod === 'number' && !isNaN(gracePeriod)) {
+          timer = setTimeout(kill, gracePeriod);
+        }
+        try {
+          await this.stop();
+        } finally {
+          if (timer != null) clearTimeout(timer);
+          kill();
+        }
+      }
+    };
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
+    signals.forEach(sig => process.on(sig, cleanup));
+  }
 }
+
+/**
+ * Options to set up application shutdown
+ */
+export type ShutdownOptions = {
+  /**
+   * An array of signals to be trapped for graceful shutdown
+   */
+  signals?: NodeJS.Signals[];
+  /**
+   * Period in milliseconds to wait for the grace shutdown to finish before
+   * exiting the process
+   */
+  gracePeriod?: number;
+};
 
 /**
  * Configuration for application
  */
 export interface ApplicationConfig {
+  /**
+   * Configuration for signals that shut down the application
+   */
+  shutdown?: ShutdownOptions;
+
   /**
    * Other properties
    */
