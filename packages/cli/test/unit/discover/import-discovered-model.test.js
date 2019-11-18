@@ -1,0 +1,154 @@
+// Copyright IBM Corp. 2019. All Rights Reserved.
+// Node module: @loopback/cli
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
+'use strict';
+
+const {expect} = require('@loopback/testlab');
+const {
+  importDiscoveredModel,
+} = require('../../../generators/discover/import-discovered-model');
+
+describe('importDiscoveredModel', () => {
+  it('imports empty schema', () => {
+    const modelData = importDiscoveredModel({
+      name: 'Schema',
+      schema: 'aSchema',
+      properties: {},
+    });
+    expect(modelData).to.deepEqual({
+      name: 'Schema',
+      className: 'Schema',
+      modelBaseClass: 'Entity',
+      isModelBaseBuiltin: true,
+
+      settings: {},
+      modelSettings: '',
+
+      properties: {},
+      allowAdditionalProperties: true,
+    });
+  });
+
+  it('imports Date properties', () => {
+    const discoveredModel = {
+      name: 'TestModel',
+      properties: {
+        createdAt: {
+          type: 'Date',
+          required: false,
+          length: null,
+          precision: null,
+          scale: null,
+        },
+      },
+    };
+    const modelData = importDiscoveredModel(discoveredModel);
+    expect(modelData.properties)
+      .to.have.property('createdAt')
+      .deepEqual({
+        type: 'Date',
+        tsType: 'Date',
+        required: false,
+      });
+  });
+
+  it('imports Number properties', () => {
+    const discoveredModel = {
+      name: 'TestModel',
+      properties: {
+        counter: {
+          type: 'Number',
+          required: false,
+          length: null,
+          precision: null,
+          scale: null,
+        },
+      },
+    };
+    const modelData = importDiscoveredModel(discoveredModel);
+    expect(modelData.properties)
+      .to.have.property('counter')
+      .deepEqual({
+        type: 'Number',
+        tsType: 'Number',
+        required: false,
+      });
+  });
+
+  it('imports String properties', () => {
+    const discoveredModel = {
+      name: 'TestModel',
+      properties: {
+        title: {
+          type: 'String',
+          required: false,
+          length: null,
+          precision: null,
+          scale: null,
+        },
+      },
+    };
+
+    const modelData = importDiscoveredModel(discoveredModel);
+    expect(modelData.properties)
+      .to.have.property('title')
+      .deepEqual({
+        type: 'String',
+        tsType: 'String',
+        required: false,
+      });
+  });
+
+  it('imports Boolean properties', () => {
+    const discoveredModel = {
+      name: 'TestModel',
+      properties: {
+        active: {
+          type: 'Boolean',
+          required: false,
+          length: null,
+          precision: null,
+          scale: null,
+        },
+      },
+    };
+
+    const modelData = importDiscoveredModel(discoveredModel);
+    expect(modelData.properties)
+      .to.have.property('active')
+      .deepEqual({
+        type: 'Boolean',
+        tsType: 'Boolean',
+        required: false,
+      });
+  });
+
+  it('imports numeric primary key', () => {
+    const discoveredModel = {
+      name: 'TestModel',
+      properties: {
+        id: {
+          type: 'Number',
+          required: false,
+          length: null,
+          precision: null,
+          scale: 0,
+          id: 1,
+        },
+      },
+    };
+
+    const modelData = importDiscoveredModel(discoveredModel);
+    expect(modelData.properties)
+      .to.have.property('id')
+      .deepEqual({
+        type: 'Number',
+        tsType: 'Number',
+        required: false,
+        scale: 0,
+        id: 1,
+      });
+  });
+});

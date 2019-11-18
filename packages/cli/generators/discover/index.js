@@ -4,6 +4,8 @@ const modelMaker = require('../../lib/model-discoverer');
 const debug = require('../../lib/debug')('discover-generator');
 const utils = require('../../lib/utils');
 const modelDiscoverer = require('../../lib/model-discoverer');
+const {importDiscoveredModel} = require('./import-discovered-model');
+
 const rootDir = 'src';
 
 module.exports = class DiscoveryGenerator extends ArtifactGenerator {
@@ -216,19 +218,13 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
     // eslint-disable-next-line @typescript-eslint/prefer-for-of
     for (let i = 0; i < this.artifactInfo.modelDefinitions.length; i++) {
       const modelDefinition = this.artifactInfo.modelDefinitions[i];
-      Object.entries(modelDefinition.properties).forEach(([k, v]) =>
-        modelDiscoverer.sanitizeProperty(v),
+      const templateData = importDiscoveredModel(modelDefinition);
+
+      debug(
+        'Generating model %s from template data',
+        modelDefinition.name,
+        templateData,
       );
-      modelDefinition.isModelBaseBuiltin = true;
-      modelDefinition.modelBaseClass = 'Entity';
-      modelDefinition.className = utils.pascalCase(modelDefinition.name);
-      // These last two are so that the template doesn't error out if they aren't there
-      modelDefinition.allowAdditionalProperties = true;
-      // modelDefinition.modelSettings = modelDefinition.settings || {};
-      modelDefinition.modelSettings = utils.stringifyModelSettings(
-        modelDefinition.settings || {},
-      );
-      debug(`Generating: ${modelDefinition.name}`);
 
       const fullPath = path.resolve(
         this.options.outDir || this.artifactInfo.outDir,
@@ -239,7 +235,7 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
       this.copyTemplatedFiles(
         modelDiscoverer.MODEL_TEMPLATE_PATH,
         fullPath,
-        modelDefinition,
+        templateData,
       );
 
       this.artifactInfo.indexesToBeUpdated.push({

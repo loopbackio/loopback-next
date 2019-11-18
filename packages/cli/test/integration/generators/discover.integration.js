@@ -17,6 +17,13 @@ require('../lib/base-generator')(generator);
 const testUtils = require('../../test-utils');
 const basicModelFileChecks = require('../lib/file-check').basicModelFileChecks;
 
+// In this test suite we invoke the full generator with mocked prompts
+// and inspect the generated model file(s).
+// Such tests are slow to run, we strive to keep only few of them.
+// Use unit tests to verify the conversion from discovered model schema
+// to LB4 model template data, see
+// tests/unit/discovery/import-discovered-model.test.ts
+
 // Test Sandbox
 const SANDBOX_PATH = path.resolve(__dirname, '../.sandbox');
 const SANDBOX_FILES = require('../../fixtures/discover').SANDBOX_FILES;
