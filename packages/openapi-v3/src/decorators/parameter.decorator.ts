@@ -214,6 +214,11 @@ export namespace param {
         in: 'query',
         style: 'deepObject',
         explode: true,
+        content: {
+          'application/json': {
+            schema,
+          },
+        },
         schema,
         ...spec,
       });

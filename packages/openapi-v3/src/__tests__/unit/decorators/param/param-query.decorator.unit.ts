@@ -235,6 +235,11 @@ describe('Routing metadata for parameters', () => {
           type: 'object',
           additionalProperties: true,
         },
+        content: {
+          'application/json': {
+            schema: {type: 'object', additionalProperties: true},
+          },
+        },
       };
       expectSpecToBeEqual(MyController, expectedParamSpec);
     });
@@ -258,6 +263,17 @@ describe('Routing metadata for parameters', () => {
         in: 'query',
         style: 'deepObject',
         explode: true,
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
+              properties: {
+                where: {type: 'object', additionalProperties: true},
+                limit: {type: 'number'},
+              },
+            },
+          },
+        },
         schema: {
           type: 'object',
           properties: {
@@ -305,6 +321,11 @@ describe('Routing metadata for parameters', () => {
       schema: {
         type: 'object',
         additionalProperties: true,
+      },
+      content: {
+        'application/json': {
+          schema: {type: 'object', additionalProperties: true},
+        },
       },
     };
     expectSpecToBeEqual(MyController, expectedParamSpec);
