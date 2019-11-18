@@ -14,7 +14,7 @@ const {
 const {sanitizeProperty} = require('../../lib/model-discoverer');
 const {
   createPropertyTemplateData,
-  BUILTIN_TYPES,
+  findBuiltinType,
 } = require('../model/property-definition');
 const chalk = require('chalk');
 
@@ -109,7 +109,7 @@ function migratePropertyType(typeDef) {
     typeDef = typeDef.name.toString();
   }
 
-  const builtin = BUILTIN_TYPES.find(t => t === typeDef.toLowerCase());
+  const builtin = findBuiltinType(typeDef);
   if (builtin) typeDef = builtin;
 
   // TODO: handle anonymous object types (nested properties)

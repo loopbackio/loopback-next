@@ -11,6 +11,7 @@ const BUILTIN_TYPES = [...TS_TYPES, ...NON_TS_TYPES];
 
 module.exports = {
   createPropertyTemplateData,
+  findBuiltinType,
   BUILTIN_TYPES,
 };
 
@@ -70,4 +71,15 @@ function createPropertyTemplateData(val) {
   }
 
   return val;
+}
+
+/**
+ * Check if the type is a built-in type, return the canonical type name in
+ * such case (e.g. convert 'String' to 'string').
+ *
+ * @param {string} typeName Property type name, e.g. 'String' or 'Address'
+ * @returns {string|undefined}  Built-in type name (e.g. 'string') or undefined
+ */
+function findBuiltinType(typeName) {
+  return BUILTIN_TYPES.find(t => t === typeName.toLowerCase());
 }
