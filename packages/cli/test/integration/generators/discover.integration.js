@@ -8,9 +8,8 @@
 // Imports
 const path = require('path');
 const assert = require('yeoman-assert');
-const testlab = require('@loopback/testlab');
-
-const {expect, TestSandbox} = testlab;
+const {expect, TestSandbox} = require('@loopback/testlab');
+const {expectFileToMatchSnapshot} = require('../../snapshots');
 
 const generator = path.join(__dirname, '../../../generators/discover');
 require('../lib/artifact-generator')(generator);
@@ -65,10 +64,10 @@ describe('generator-loopback4:discover', tests);*/
 
 describe('lb4 discover integration', () => {
   describe('model discovery', () => {
-    beforeEach('creates dist/datasources', async () => {
+    beforeEach('reset sandbox', async () => {
+      await sandbox.reset();
       await sandbox.mkdir('dist/datasources');
     });
-    beforeEach('reset sandbox', () => sandbox.reset());
 
     it('generates all models without prompts using --all --dataSource', async function() {
       // eslint-disable-next-line no-invalid-this
@@ -83,9 +82,10 @@ describe('lb4 discover integration', () => {
         .withOptions(baseOptions);
 
       basicModelFileChecks(defaultExpectedTestModel, defaultExpectedIndexFile);
-      assert.file(defaultExpectedSchemaModel);
-      assert.file(defaultExpectedViewModel);
+      expectFileToMatchSnapshot(defaultExpectedSchemaModel);
+      expectFileToMatchSnapshot(defaultExpectedViewModel);
     });
+
     it('uses a different --outDir if provided', async () => {
       await testUtils
         .executeGenerator(generator)
@@ -97,7 +97,9 @@ describe('lb4 discover integration', () => {
         .withOptions(outDirOptions);
 
       basicModelFileChecks(movedExpectedTestModel, movedExpectedIndexFile);
+      expectFileToMatchSnapshot(movedExpectedTestModel);
     });
+
     it('excludes models based on the --views and --schema options', async () => {
       await testUtils
         .executeGenerator(generator)
@@ -112,6 +114,7 @@ describe('lb4 discover integration', () => {
       assert.noFile(defaultExpectedTestModel);
       assert.file(defaultExpectedSchemaModel);
     });
+
     it('will fail gracefully if you specify a --dataSource which does not exist', async () => {
       return expect(
         testUtils

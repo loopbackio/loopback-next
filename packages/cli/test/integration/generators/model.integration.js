@@ -8,10 +8,8 @@
 // Imports
 const path = require('path');
 const assert = require('yeoman-assert');
-const testlab = require('@loopback/testlab');
-
-const expect = testlab.expect;
-const TestSandbox = testlab.TestSandbox;
+const {expect, TestSandbox} = require('@loopback/testlab');
+const {expectFileToMatchSnapshot} = require('../../snapshots');
 
 const generator = path.join(__dirname, '../../../generators/model');
 const tests = require('../lib/artifact-generator')(generator);
@@ -82,7 +80,7 @@ describe('lb4 model integration', () => {
     assert.file(expectedModelFile);
   });
 
-  it('will discover a model through a datasource', async () => {
+  it('discovers a model from a datasource', async () => {
     await testUtils
       .executeGenerator(generator)
       .inDir(SANDBOX_PATH, () =>
@@ -91,8 +89,9 @@ describe('lb4 model integration', () => {
         }),
       )
       .withArguments('--dataSource mem --table Test');
-    assert.file(expectedModelFile);
+    expectFileToMatchSnapshot(expectedModelFile);
   });
+
   it('will fail gracefully if datasource discovery does not find the model ', async () => {
     return expect(
       testUtils
