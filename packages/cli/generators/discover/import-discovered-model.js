@@ -7,6 +7,10 @@
 
 const {pascalCase, stringifyModelSettings} = require('../../lib/utils');
 const {sanitizeProperty} = require('../../lib/model-discoverer');
+const {
+  createPropertyTemplateData,
+  findBuiltinType,
+} = require('../model/property-definition');
 
 module.exports = {
   importDiscoveredModel,
@@ -54,8 +58,13 @@ function importModelProperties(discoveredProps) {
 }
 
 function importPropertyDefinition(discoveredDefinition) {
-  const templateData = {...discoveredDefinition};
-  // TODO: handle String->string typename conversion, etc.
-  sanitizeProperty(templateData);
-  return templateData;
+  const propDef = {
+    ...discoveredDefinition,
+  };
+
+  const builtinType = findBuiltinType(propDef.type);
+  if (builtinType) propDef.type = builtinType;
+
+  sanitizeProperty(propDef);
+  return createPropertyTemplateData(propDef);
 }

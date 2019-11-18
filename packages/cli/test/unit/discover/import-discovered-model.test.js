@@ -48,9 +48,8 @@ describe('importDiscoveredModel', () => {
     expect(modelData.properties)
       .to.have.property('createdAt')
       .deepEqual({
-        type: 'Date',
-        tsType: 'Date',
-        required: false,
+        type: `'date'`,
+        tsType: 'string',
       });
   });
 
@@ -71,9 +70,8 @@ describe('importDiscoveredModel', () => {
     expect(modelData.properties)
       .to.have.property('counter')
       .deepEqual({
-        type: 'Number',
-        tsType: 'Number',
-        required: false,
+        type: `'number'`,
+        tsType: 'number',
       });
   });
 
@@ -83,7 +81,6 @@ describe('importDiscoveredModel', () => {
       properties: {
         title: {
           type: 'String',
-          required: false,
           length: null,
           precision: null,
           scale: null,
@@ -95,9 +92,8 @@ describe('importDiscoveredModel', () => {
     expect(modelData.properties)
       .to.have.property('title')
       .deepEqual({
-        type: 'String',
-        tsType: 'String',
-        required: false,
+        type: `'string'`,
+        tsType: 'string',
       });
   });
 
@@ -119,9 +115,8 @@ describe('importDiscoveredModel', () => {
     expect(modelData.properties)
       .to.have.property('active')
       .deepEqual({
-        type: 'Boolean',
-        tsType: 'Boolean',
-        required: false,
+        type: `'boolean'`,
+        tsType: 'boolean',
       });
   });
 
@@ -144,9 +139,8 @@ describe('importDiscoveredModel', () => {
     expect(modelData.properties)
       .to.have.property('id')
       .deepEqual({
-        type: 'Number',
-        tsType: 'Number',
-        required: false,
+        type: `'number'`,
+        tsType: 'number',
         scale: 0,
         id: 1,
       });
