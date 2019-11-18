@@ -3,10 +3,10 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {givenHttpServerConfig, TestSandbox, expect} from '@loopback/testlab';
+import {CoreBindings} from '@loopback/core';
+import {expect, givenHttpServerConfig, TestSandbox} from '@loopback/testlab';
 import {resolve} from 'path';
 import {BooterApp} from '../fixtures/application';
-import {CoreBindings} from '@loopback/core';
 
 describe('application metadata booter acceptance tests', () => {
   let app: BooterApp;
@@ -36,6 +36,7 @@ describe('application metadata booter acceptance tests', () => {
     app = new MyApp({
       rest: givenHttpServerConfig(),
     });
+    await app.start();
   }
 
   async function stopApp() {

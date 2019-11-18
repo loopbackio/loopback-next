@@ -11,6 +11,7 @@ import {
   createBindingFromClass,
   Provider,
 } from '@loopback/context';
+import * as assert from 'assert';
 import * as debugFactory from 'debug';
 import {Component, mountComponent} from './component';
 import {CoreBindings, CoreTags} from './keys';
@@ -33,6 +34,24 @@ export class Application extends Context implements LifeCycleObserver {
   public readonly options: ApplicationConfig;
 
   private _isShuttingDown = false;
+  private _state = 'created';
+
+  /**
+   * Get the state of the application. The initial state is `created` and it can
+   * transition as follows by `start` and `stop`:
+   *
+   * 1. start
+   *   - created -> starting -> started
+   *   - stopped -> starting -> started
+   *   - started -> started (no-op)
+   * 2. stop
+   *   - started -> stopping -> stopped
+   *   - created -> created (no-op)
+   *   - stopped -> stopped (no-op)
+   */
+  public get state() {
+    return this._state;
+  }
 
   /**
    * Create an application with the given parent context
@@ -182,20 +201,44 @@ export class Application extends Context implements LifeCycleObserver {
     return this.get<T>(key);
   }
 
-  /**
-   * Start the application, and all of its registered observers.
-   */
-  public async start(): Promise<void> {
-    const registry = await this.getLifeCycleObserverRegistry();
-    await registry.start();
+  private assertValidStates(op: string, ...states: string[]) {
+    assert(
+      states.includes(this._state),
+      `Cannot ${op} the application as it is ${this._state}. Valid states are ${states}.`,
+    );
   }
 
   /**
-   * Stop the application instance and all of its registered observers.
+   * Start the application, and all of its registered observers. The application
+   * state is checked to ensure the integrity of `start`.
+   *
+   * If the application is already started, no operation is performed.
+   */
+  public async start(): Promise<void> {
+    this.assertValidStates('start', 'created', 'stopped', 'started');
+    // No-op if it's started
+    if (this._state === 'started') return;
+    this._state = 'starting';
+    const registry = await this.getLifeCycleObserverRegistry();
+    await registry.start();
+    this._state = 'started';
+  }
+
+  /**
+   * Stop the application instance and all of its registered observers. The
+   * application state is checked to ensure the integrity of `stop`.
+   *
+   * If the application is already stopped or not started, no operation is
+   * performed.
    */
   public async stop(): Promise<void> {
+    this.assertValidStates('stop', 'started', 'stopped', 'created');
+    // No-op if it's created or stopped
+    if (this._state === 'created' || this._state === 'stopped') return;
+    this._state = 'stopping';
     const registry = await this.getLifeCycleObserverRegistry();
     await registry.stop();
+    this._state = 'stopped';
   }
 
   private async getLifeCycleObserverRegistry() {
