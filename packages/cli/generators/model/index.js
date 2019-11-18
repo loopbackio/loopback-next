@@ -161,6 +161,7 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
         views: true,
       },
     );
+    await this.artifactInfo.dataSource.disconnect();
 
     if (!schemaDef) {
       this.exit(
