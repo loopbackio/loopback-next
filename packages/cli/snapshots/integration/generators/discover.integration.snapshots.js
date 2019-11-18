@@ -63,36 +63,32 @@ import {Entity, model, property} from '@loopback/repository';
 @model()
 export class Test extends Entity {
   @property({
-    type: Date,
-    required: false,
+    type: 'date',
   })
-  dateTest?: Date;
+  dateTest?: string;
 
   @property({
-    type: Number,
-    required: false,
+    type: 'number',
   })
-  numberTest?: Number;
+  numberTest?: number;
 
   @property({
-    type: String,
-    required: false,
+    type: 'string',
   })
-  stringTest?: String;
+  stringTest?: string;
 
   @property({
-    type: Boolean,
-    required: false,
+    type: 'boolean',
   })
-  booleanText?: Boolean;
+  booleanText?: boolean;
 
   @property({
-    type: Number,
+    type: 'number',
     required: true,
     scale: 0,
     id: 1,
   })
-  id: Number;
+  id: number;
 
   // Define well-known properties here
 
