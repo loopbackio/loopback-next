@@ -14,7 +14,10 @@ const utils = require('../../lib/utils');
 const chalk = require('chalk');
 const path = require('path');
 
-const {createPropertyTemplateData} = require('./property-definition');
+const {
+  createPropertyTemplateData,
+  findBuiltinType,
+} = require('./property-definition');
 
 const PROMPT_BASE_MODEL_CLASS = 'Please select the model base class';
 const ERROR_NO_MODELS_FOUND = 'Model was not found in';
@@ -466,9 +469,11 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
 
     debug('scaffolding');
 
-    Object.entries(this.artifactInfo.properties).forEach(([k, v]) =>
-      modelDiscoverer.sanitizeProperty(v),
-    );
+    Object.entries(this.artifactInfo.properties).forEach(([k, v]) => {
+      const builtinType = findBuiltinType(v.type);
+      if (builtinType) v.type = builtinType;
+      modelDiscoverer.sanitizeProperty(v);
+    });
 
     // Data for templates
     this.artifactInfo.outFile = utils.getModelFileName(this.artifactInfo.name);

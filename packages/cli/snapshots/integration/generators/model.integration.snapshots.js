@@ -13,32 +13,32 @@ import {Entity, model, property} from '@loopback/repository';
 @model()
 export class Test extends Entity {
   @property({
-    type: 'Date',
+    type: 'date',
   })
-  dateTest?: Date;
+  dateTest?: string;
 
   @property({
-    type: 'Number',
+    type: 'number',
   })
-  numberTest?: Number;
+  numberTest?: number;
 
   @property({
-    type: 'String',
+    type: 'string',
   })
-  stringTest?: String;
+  stringTest?: string;
 
   @property({
-    type: 'Boolean',
+    type: 'boolean',
   })
-  booleanText?: Boolean;
+  booleanText?: boolean;
 
   @property({
-    type: 'Number',
+    type: 'number',
     required: true,
     scale: 0,
     id: 1,
   })
-  id: Number;
+  id: number;
 
 
   constructor(data?: Partial<Test>) {
