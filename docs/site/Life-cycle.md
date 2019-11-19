@@ -14,6 +14,87 @@ to control the transition of states of `Application`.
 - start(): Start the application
 - stop(): Stop the application
 
+## Application states
+
+The initial state of an application is `created` when it's instantiated. The
+state can transition as follows by `start` and `stop`:
+
+1. start()
+
+- created -> starting -> started
+- stopped -> starting -> started
+- started -> started (no-op)
+
+The `start` throws an error if it's called with an invalid application state,
+such as `starting` and `stopping`.
+
+2. stop()
+
+- started -> stopping -> stopped
+- created -> created (no-op)
+- stopped -> stopped (no-op)
+
+The `stop` throws an error if it's called with an invalid application state,
+such as `starting` and `stopping`.
+
+## Graceful shutdown
+
+Node.js will normally exit with a `0` status code when no more async operations
+are pending. But it's typical that a LoopBack 4 application creates connections
+to backend resources and listens on network interfaces for incoming requests. In
+such cases, the process keeps alive unless it receives a signal to shutdown. For
+example, pressing `Ctrl+C` or using a `kill` command.
+
+When the LoopBack 4 application is running inside a managed container, such as a
+Kubernetes Pod, there is a protocol between the container and the application
+process. The use case is supported by configuring the application with the
+`shutdown` option:
+
+```ts
+/**
+ * Options to set up application shutdown
+ */
+export type ShutdownOptions = {
+  /**
+   * An array of signals to be trapped for graceful shutdown
+   */
+  signals?: NodeJS.Signals[];
+  /**
+   * Period in milliseconds to wait for the grace shutdown to finish before
+   * exiting the process
+   */
+  gracePeriod?: number;
+};
+
+/**
+ * Configuration for application
+ */
+export interface ApplicationConfig {
+  /**
+   * Configuration for signals that shut down the application
+   */
+  shutdown?: ShutdownOptions;
+}
+```
+
+For example, the following application captures `SIGINT` to gracefully shutdown:
+
+```ts
+const app = new Application({
+  shutdown: {
+    signals: ['SIGINT'],
+  },
+});
+// Schedule some work such as a timer or database connection
+await app.start();
+```
+
+When the application is running inside a terminal, it can respond to `Ctrl+C`,
+which sends `SIGINT` to the process. The application calls `stop` first before
+it exits with the captured signal.
+
+## Participate in the application start/stop
+
 It's often desirable for various types of artifacts to participate in the life
 cycles and perform related processing upon `start` and `stop`. Good examples of
 such artifacts are:
