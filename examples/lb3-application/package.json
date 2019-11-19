@@ -55,7 +55,7 @@
     "@loopback/eslint-config": "^4.1.4",
     "@loopback/rest": "^1.11.1",
     "@loopback/testlab": "^1.9.4",
-    "@types/lodash": "^4.14.148",
+    "@types/lodash": "^4.14.149",
     "@types/node": "^10.17.5",
     "@typescript-eslint/eslint-plugin": "^2.7.0",
     "@typescript-eslint/parser": "^2.7.0",
