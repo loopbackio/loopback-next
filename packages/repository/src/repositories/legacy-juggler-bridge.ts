@@ -339,14 +339,18 @@ export class DefaultCrudRepository<
   }
 
   async create(entity: DataObject<T>, options?: Options): Promise<T> {
-    const model = await ensurePromise(this.modelClass.create(entity, options));
+    // perform persist hook
+    const data = await this.entityToData(entity, options);
+    const model = await ensurePromise(this.modelClass.create(data, options));
     return this.toEntity(model);
   }
 
   async createAll(entities: DataObject<T>[], options?: Options): Promise<T[]> {
-    const models = await ensurePromise(
-      this.modelClass.create(entities, options),
+    // perform persist hook
+    const data = await Promise.all(
+      entities.map(e => this.entityToData(e, options)),
     );
+    const models = await ensurePromise(this.modelClass.create(data, options));
     return this.toEntities(models);
   }
 
@@ -415,7 +419,9 @@ export class DefaultCrudRepository<
     return this.updateById(entity.getId(), entity, options);
   }
 
-  delete(entity: T, options?: Options): Promise<void> {
+  async delete(entity: T, options?: Options): Promise<void> {
+    // perform persist hook
+    await this.entityToData(entity, options);
     return this.deleteById(entity.getId(), options);
   }
 
@@ -425,8 +431,9 @@ export class DefaultCrudRepository<
     options?: Options,
   ): Promise<Count> {
     where = where ?? {};
+    const persistedData = await this.entityToData(data, options);
     const result = await ensurePromise(
-      this.modelClass.updateAll(where, data, options),
+      this.modelClass.updateAll(where, persistedData, options),
     );
     return {count: result.count};
   }
@@ -451,7 +458,8 @@ export class DefaultCrudRepository<
     options?: Options,
   ): Promise<void> {
     try {
-      await ensurePromise(this.modelClass.replaceById(id, data, options));
+      const payload = await this.entityToData(data, options);
+      await ensurePromise(this.modelClass.replaceById(id, payload, options));
     } catch (err) {
       if (err.statusCode === 404) {
         throw new EntityNotFoundError(this.entityClass, id);
@@ -526,6 +534,60 @@ export class DefaultCrudRepository<
     options?: Options,
   ): Promise<(T & Relations)[]> {
     return includeRelatedModels<T, Relations>(this, entities, include, options);
+  }
+
+  /**
+   * This function works as a persist hook.
+   * It converts an entity from the CRUD operations' caller
+   * to a persistable data that can will be stored in the
+   * back-end database.
+   *
+   * User can extend `DefaultCrudRepository` then override this
+   * function to execute custom persist hook.
+   * @param entity The entity passed from CRUD operations' caller.
+   * @param options
+   */
+  protected async entityToData<R extends T>(
+    entity: R | DataObject<R>,
+    options = {},
+  ): Promise<legacy.ModelData<legacy.PersistedModel>> {
+    return this.ensurePersistable(entity, options);
+  }
+
+  /** Converts an entity object to a JSON object to check if it contains navigational property.
+   * Throws an error if `entity` contains navigational property.
+   *
+   * @param entity The entity passed from CRUD operations' caller.
+   * @param options
+   */
+  protected ensurePersistable<R extends T>(
+    entity: R | DataObject<R>,
+    options = {},
+  ): legacy.ModelData<legacy.PersistedModel> {
+    // FIXME(bajtos) Ideally, we should call toJSON() to convert R to data object
+    // Unfortunately that breaks replaceById for MongoDB connector, where we
+    // would call replaceId with id *argument* set to ObjectID value but
+    // id *property* set to string value.
+    /*
+    const data: AnyObject =
+      typeof entity.toJSON === 'function' ? entity.toJSON() : {...entity};
+    */
+
+    // proposal solution from agnes: delete the id property in the
+    // target data when runs replaceById
+
+    const data: AnyObject = new this.entityClass(entity);
+
+    const def = this.entityClass.definition;
+    for (const r in def.relations) {
+      const relName = def.relations[r].name;
+      if (relName in data) {
+        throw new Error(
+          `Navigational properties are not allowed in model data (model "${this.entityClass.modelName}" property "${relName}")`,
+        );
+      }
+    }
+    return data;
   }
 
   /**

@@ -49,6 +49,7 @@ export function hasOneRelationAcceptance(
     );
 
     beforeEach(async () => {
+      await customerRepo.deleteAll();
       await addressRepo.deleteAll();
       existingCustomerId = (await givenPersistedCustomerInstance()).id;
     });

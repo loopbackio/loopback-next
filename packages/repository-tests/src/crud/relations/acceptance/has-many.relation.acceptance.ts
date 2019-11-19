@@ -174,7 +174,7 @@ export function hasManyRelationAcceptance(
       );
     });
 
-    it('does not create an array of the related model', async () => {
+    it('throws when tries to create() an instance with navigational property', async () => {
       await expect(
         customerRepo.create({
           name: 'a customer',
@@ -184,7 +184,84 @@ export function hasManyRelationAcceptance(
             },
           ],
         }),
-      ).to.be.rejectedWith(/`orders` is not defined/);
+      ).to.be.rejectedWith(
+        'Navigational properties are not allowed in model data (model "Customer" property "orders")',
+      );
+    });
+
+    it('throws when tries to createAll() instancese with navigational properties', async () => {
+      await expect(
+        customerRepo.createAll([
+          {
+            name: 'a customer',
+            orders: [{description: 'order 1'}],
+          },
+          {
+            name: 'a customer',
+            address: {street: '1 Amedee Bonnet'},
+          },
+        ]),
+      ).to.be.rejectedWith(
+        'Navigational properties are not allowed in model data (model "Customer" property "orders")',
+      );
+    });
+
+    it('throws when the instance contains navigational property when operates update()', async () => {
+      const created = await customerRepo.create({name: 'customer'});
+      await orderRepo.create({
+        description: 'pizza',
+        customerId: created.id,
+      });
+
+      const found = await customerRepo.findById(created.id, {
+        include: [{relation: 'orders'}],
+      });
+      expect(found.orders).to.have.lengthOf(1);
+
+      found.name = 'updated name';
+      await expect(customerRepo.update(found)).to.be.rejectedWith(
+        /Navigational properties are not allowed.*"orders"/,
+      );
+    });
+
+    it('throws when the instancees contain navigational property when operates updateAll()', async () => {
+      await customerRepo.create({name: 'Mario'});
+      await customerRepo.create({name: 'Luigi'});
+
+      await expect(
+        customerRepo.updateAll({
+          name: 'Nintendo',
+          orders: [{description: 'Switch'}],
+        }),
+      ).to.be.rejectedWith(/Navigational properties are not allowed.*"orders"/);
+    });
+
+    it('throws when the instance contains navigational property when operates updateById()', async () => {
+      const customer = await customerRepo.create({name: 'Mario'});
+
+      await expect(
+        customerRepo.updateById(customer.id, {
+          name: 'Luigi',
+          orders: [{description: 'Nintendo'}],
+        }),
+      ).to.be.rejectedWith(/Navigational properties are not allowed.*"orders"/);
+    });
+
+    it('throws when the instance contains navigational property when operates delete()', async () => {
+      const customer = await customerRepo.create({name: 'customer'});
+
+      await orderRepo.create({
+        description: 'pizza',
+        customerId: customer.id,
+      });
+
+      const found = await customerRepo.findById(customer.id, {
+        include: [{relation: 'orders'}],
+      });
+
+      await expect(customerRepo.delete(found)).to.be.rejectedWith(
+        'Navigational properties are not allowed in model data (model "Customer" property "orders")',
+      );
     });
 
     context('when targeting the source model', () => {
