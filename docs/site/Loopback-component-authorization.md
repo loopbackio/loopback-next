@@ -403,7 +403,7 @@ more steps to go.
 {% include code-caption.html content="/src/application.ts" %}
 
 ```ts
-this.component(AuthenticationComponent);
+this.component(AuthorizationComponent);
 ```
 
 - Add permissions array to the role model.
