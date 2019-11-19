@@ -41,11 +41,11 @@ describe('primitive types', () => {
   });
 
   it('maps date', () => {
-    expectMapping({type: 'string', format: 'date'}, 'Date');
+    expectMapping({type: 'string', format: 'date'}, 'string');
   });
 
   it('maps date-time', () => {
-    expectMapping({type: 'string', format: 'date'}, 'Date');
+    expectMapping({type: 'string', format: 'date-time'}, 'Date');
   });
 
   it('maps password', () => {

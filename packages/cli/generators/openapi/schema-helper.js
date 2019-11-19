@@ -244,6 +244,8 @@ function mapPrimitiveType(schema, options) {
     case 'string':
       switch (schema.format) {
         case 'date':
+          jsType = 'string';
+          break;
         case 'date-time':
           jsType = 'Date';
           break;
