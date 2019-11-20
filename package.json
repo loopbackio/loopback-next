@@ -25,7 +25,7 @@
     "eslint-plugin-mocha": "^6.2.1",
     "fs-extra": "^8.1.0",
     "husky": "^3.1.0",
-    "lerna": "^3.18.5",
+    "lerna": "^3.19.0",
     "typescript": "~3.7.2"
   },
   "scripts": {
