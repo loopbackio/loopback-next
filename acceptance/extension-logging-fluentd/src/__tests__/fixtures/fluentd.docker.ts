@@ -10,7 +10,6 @@ import {GenericContainer, StartedTestContainer} from 'testcontainers';
 export const ROOT_DIR = path.join(__dirname, '../../../fixtures');
 export const ETC_DIR = path.join(ROOT_DIR, 'etc');
 
-/* eslint-disable require-atomic-updates */
 async function startFluentd() {
   if (process.env.FLUENTD_SERVICE_HOST != null) return;
   const container = await new GenericContainer(

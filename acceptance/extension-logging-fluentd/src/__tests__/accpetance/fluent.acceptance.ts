@@ -57,8 +57,8 @@ describe('LoggingComponent', () => {
   async function givenAppWithCustomConfig() {
     app = givenApplication();
     app.configure(LoggingBindings.FLUENT_SENDER).to({
-      host: process.env.FLUENTD_SERVICE_HOST || '127.0.0.1',
-      port: +(process.env.FLUENTD_SERVICE_PORT_TCP || 0) || 24224,
+      host: process.env.FLUENTD_SERVICE_HOST ?? '127.0.0.1',
+      port: +(process.env.FLUENTD_SERVICE_PORT_TCP ?? 24224),
       timeout: 3.0,
       reconnectInterval: 600000, // 10 minutes
     });

@@ -9,6 +9,8 @@ import {LoggingBindings} from './keys';
 const fluent = require('fluent-logger');
 import TransportStream = require('winston-transport');
 
+export {FluentSender} from 'fluent-logger';
+
 /**
  * Provider for FluentSender
  */
@@ -51,7 +53,7 @@ export class FluentTransportProvider implements Provider<TransportStream> {
         `Fluent is not configured. Please configure ${this.binding.key}.`,
       );
     }
-    const cls = fluent.support.winstonTransport();
-    return new cls('LoopBack', options);
+    const winstonTransportClass = fluent.support.winstonTransport();
+    return new winstonTransportClass('LoopBack', options);
   }
 }

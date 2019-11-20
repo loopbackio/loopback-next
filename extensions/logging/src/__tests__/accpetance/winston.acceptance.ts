@@ -6,12 +6,14 @@
 import {Context} from '@loopback/context';
 import {extensionFor} from '@loopback/core';
 import {expect} from '@loopback/testlab';
-import {format, LoggerOptions, transports} from 'winston';
 import {
-  Format,
+  format,
   LoggingBindings,
-  TransformableInfo,
+  WinstonFormat,
+  WinstonLoggerOptions,
   WinstonLoggerProvider,
+  WinstonLogRecord,
+  WinstonTransports,
   WINSTON_FORMAT,
   WINSTON_TRANSPORT,
 } from '../..';
@@ -23,7 +25,7 @@ describe('Winston Logger', () => {
 
   it('creates a winston logger', async () => {
     ctx.bind(LoggingBindings.WINSTON_LOGGER).toProvider(WinstonLoggerProvider);
-    ctx.configure<LoggerOptions>(LoggingBindings.WINSTON_LOGGER).to({
+    ctx.configure<WinstonLoggerOptions>(LoggingBindings.WINSTON_LOGGER).to({
       level: 'info',
       format: format.json(),
       defaultMeta: {framework: 'LoopBack'},
@@ -34,12 +36,12 @@ describe('Winston Logger', () => {
 
   it('creates a winston logger with transports', async () => {
     ctx.bind(LoggingBindings.WINSTON_LOGGER).toProvider(WinstonLoggerProvider);
-    ctx.configure<LoggerOptions>(LoggingBindings.WINSTON_LOGGER).to({
+    ctx.configure<WinstonLoggerOptions>(LoggingBindings.WINSTON_LOGGER).to({
       level: 'info',
       format: format.json(),
       defaultMeta: {framework: 'LoopBack'},
     });
-    const consoleTransport = new transports.Console({
+    const consoleTransport = new WinstonTransports.Console({
       level: 'info',
       format: format.combine(format.colorize(), format.simple()),
     });
@@ -53,12 +55,12 @@ describe('Winston Logger', () => {
 
   it('creates a winston logger with formats', async () => {
     ctx.bind(LoggingBindings.WINSTON_LOGGER).toProvider(WinstonLoggerProvider);
-    ctx.configure<LoggerOptions>(LoggingBindings.WINSTON_LOGGER).to({
+    ctx.configure<WinstonLoggerOptions>(LoggingBindings.WINSTON_LOGGER).to({
       level: 'info',
       defaultMeta: {framework: 'LoopBack'},
     });
-    const logs: TransformableInfo[] = [];
-    const myFormat: Format = format((info, opts) => {
+    const logs: WinstonLogRecord[] = [];
+    const myFormat: WinstonFormat = format((info, opts) => {
       logs.push(info);
       return false;
     })();

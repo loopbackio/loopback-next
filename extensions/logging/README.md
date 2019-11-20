@@ -11,6 +11,10 @@ This module contains a component provides logging facilities based on
 > using `0.x.y` versions. Their APIs and functionality may be subject to
 > breaking changes in future releases.
 
+## Architecture overview
+
+![logging-component](logging-component.png)
+
 ## Installation
 
 ```sh
@@ -34,21 +38,71 @@ In the constructor, add the component to your application:
 this.component(LoggingComponent);
 ```
 
-The component contributes bindings with keys listed below:
+Now your application can add a controller as follows to leverage the logging
+facilities:
 
-- LoggingBindings.FLUENT_SENDER - A fluent sender
-- LoggingBindings.WINSTON_LOGGER - A winston logger
-- LoggingBindings.WINSTON_TRANSPORT_FLUENT - A fluent transport for winston
+```ts
+import {inject} from '@loopback/context';
+import {Logger, logInvocation} from '@loopback/extension-logging';
+import {get, param} from '@loopback/rest';
+
+class MyController {
+  // Inject a winston logger
+  @inject(LoggingBindings.WINSTON_LOGGER)
+  private logger: Logger;
+
+  // http access is logged by a global interceptor
+  @get('/greet/{name}')
+  // log the `greet` method invocations
+  @logInvocation()
+  greet(@param.path.string('name') name: string) {
+    return `Hello, ${name}`;
+  }
+
+  @get('/hello/{name}')
+  hello(@param.path.string('name') name: string) {
+    // Use the winston logger explicitly
+    this.logger.log('info', `greeting ${name}`);
+    return `Hello, ${name}`;
+  }
+}
+```
+
+## Configure the logging component
+
+The logging component can be configured as follows:
+
+```ts
+app.configure(LoggingBindings.COMPONENT).to({
+  enableFluent: false, // default to true
+  enableHttpAccessLog: true, // default to true
+});
+```
+
+- `enableFluent`: Enable logs to be sent to Fluentd
+- `enableHttpAccessLog`: Enable all http requests to be logged via a global
+  interceptor
+
+The component contributes bindings with keys declared under `LoggingBindings`
+namespace as follows:
+
+- FLUENT_SENDER - A fluent sender
+- WINSTON_LOGGER - A winston logger
+- WINSTON_TRANSPORT_FLUENT - A fluent transport for winston
+- WINSTON_INTERCEPTOR - A local interceptor set by `@logInvocation` to log
+  method invocations
+- WINSTON_HTTP_ACCESS_LOGGER - A global interceptor that logs http access with
+  [Morgan](https://github.com/expressjs/morgan) format
 
 The fluent sender and transport for winston can be configured against
-`LoggingBindings.FLUENT_SENDER`:
+`FLUENT_SENDER`:
 
 ```ts
 import {LoggingBindings} from '@loopback/extension-logging';
 
 app.configure(LoggingBindings.FLUENT_SENDER).to({
-  host: process.env.FLUENTD_SERVICE_HOST || 'localhost',
-  port: +(process.env.FLUENTD_SERVICE_PORT_TCP || 0) || 24224,
+  host: process.env.FLUENTD_SERVICE_HOST ?? 'localhost',
+  port: +(process.env.FLUENTD_SERVICE_PORT_TCP ?? 24224),
   timeout: 3.0,
   reconnectInterval: 600000, // 10 minutes
 });
@@ -75,9 +129,17 @@ points:
 ```ts
 import {extensionFor} from '@loopback/core';
 import {format} from 'winston';
-import {WINSTON_FORMAT, WINSTON_TRANSPORT} from '@loopback/extension-logging';
+import {
+  WINSTON_FORMAT,
+  WINSTON_TRANSPORT,
+  WinstonFormat,
+  WinstonTransports,
+} from '@loopback/extension-logging';
 
-const myFormat: Format = ...;
+const myFormat: WinstonFormat = format((info, opts) => {
+  console.log(info);
+  return false;
+})();
 
 ctx
   .bind('logging.winston.formats.myFormat')
@@ -87,6 +149,29 @@ ctx
   .bind('logging.winston.formats.colorize')
   .to(format.colorize())
   .apply(extensionFor(WINSTON_FORMAT));
+
+const consoleTransport = new WinstonTransports.Console({
+  level: 'info',
+  format: format.combine(format.colorize(), format.simple()),
+});
+ctx
+  .bind('logging.winston.transports.console')
+  .to(consoleTransport)
+  .apply(extensionFor(WINSTON_TRANSPORT));
+```
+
+If no transport is contributed, the winston logger uses the
+[console transport](https://github.com/winstonjs/winston/blob/master/docs/transports.md#console-transport).
+
+No default format is configured for the winston logger.
+
+The access log interceptor can also be configured to customize
+[Morgan format and options](https://github.com/expressjs/morgan#morganformat-options):
+
+```ts
+ctx
+  .configure(LoggingBindings.WINSTON_HTTP_ACCESS_LOGGER)
+  .to({format: 'combined'});
 ```
 
 ## Contributions

@@ -14,18 +14,48 @@ import {
 } from 'winston';
 import * as Transport from 'winston-transport';
 
-export {Format, TransformableInfo} from 'logform';
+/**
+ * Re-export logform/winston types
+ */
+export {
+  Format as WinstonFormat,
+  TransformableInfo as WinstonLogRecord,
+} from 'logform';
+export {
+  format,
+  Logger as WinstonLogger,
+  LoggerOptions as WinstonLoggerOptions,
+  transports as WinstonTransports,
+} from 'winston';
 
+/**
+ * An extension point for winston transports
+ */
 export const WINSTON_TRANSPORT = 'logging.winston.transport';
 
+/**
+ * An extension point for winston formats
+ */
 export const WINSTON_FORMAT = 'logging.winston.format';
 
+/**
+ * A provider class that creates WinstonLogger instances
+ */
 export class WinstonLoggerProvider implements Provider<Logger> {
   constructor(
+    /**
+     * Getter for transports
+     */
     @extensions(WINSTON_TRANSPORT)
     private transports: Getter<Transport[]>,
+    /**
+     * Getter for formats
+     */
     @extensions(WINSTON_FORMAT)
     private formats: Getter<Format[]>,
+    /**
+     * Configuration for the logger
+     */
     @config() private options: LoggerOptions = {},
   ) {}
 

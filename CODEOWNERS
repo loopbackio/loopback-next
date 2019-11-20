@@ -35,6 +35,8 @@ packages/testlab/* @bajtos
 packages/tsdocs/* @raymondfeng
 
 extensions/health/* @raymondfeng
+extensions/logging/* @raymondfeng
+extensions/metrics/* @raymondfeng
 
 examples/todo/* @bajtos @hacksparrow
 examples/context/* @raymondfeng
