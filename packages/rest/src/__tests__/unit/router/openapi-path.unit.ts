@@ -4,13 +4,13 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-
 import {validateApiPath} from '../../..';
 
 describe('validateApiPath', () => {
-  const INVALID_PARAM = /Invalid path template: '.+'. Please use \{param\} instead of '\:param'/;
-  const NO_PARAM_MODIFIER = /Parameter modifier is not allowed in path/;
+  const INVALID_PARAM = /Invalid path template: '.+'. Please use \{\w+\} instead of '\:\w+'/;
+  const NO_PARAM_MODIFIER = /Parameter modifier '.+' is not allowed in path/;
   const INVALID_PARAM_NAME = /Invalid parameter name '.+' found in path/;
+  const UNNAMED_PARAM = /Unnamed parameter is not allowed in path/;
 
   it('allows /{foo}/bar', () => {
     const path = validateApiPath('/{foo}/bar');
@@ -67,7 +67,7 @@ describe('validateApiPath', () => {
   });
 
   it('disallows /foo/(.*)', () => {
-    disallows('/foo/(.*)');
+    disallows('/foo/(.*)', UNNAMED_PARAM);
   });
 
   it('disallows /{foo}+', () => {
@@ -83,7 +83,7 @@ describe('validateApiPath', () => {
   });
 
   it('disallows /{foo}(\\d+)', () => {
-    disallows('/{foo}(\\d+)');
+    disallows('/{foo}(\\d+)', UNNAMED_PARAM);
   });
 
   it('disallows /{$123}', () => {
