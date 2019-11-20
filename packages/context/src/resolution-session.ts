@@ -321,6 +321,10 @@ export class ResolutionSession {
   getResolutionPath() {
     return this.stack.map(i => ResolutionSession.describe(i)).join(' --> ');
   }
+
+  toString() {
+    return this.getResolutionPath();
+  }
 }
 
 /**

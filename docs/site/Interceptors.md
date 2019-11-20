@@ -514,6 +514,7 @@ bindings. It extends `Context` with additional properties as follows:
   (for instance methods)
 - `methodName` (`string`): Method name
 - `args` (`InvocationArgs`, i.e., `any[]`): An array of arguments
+- `source`: Source information about the invoker of the invocation
 
 ```ts
 /**
@@ -533,6 +534,7 @@ export class InvocationContext extends Context {
     public readonly target: object,
     public readonly methodName: string,
     public readonly args: InvocationArgs, // any[]
+    public readonly source?: InvocationSource,
   ) {
     super(parent);
   }
@@ -541,6 +543,48 @@ export class InvocationContext extends Context {
 
 It's possible for an interceptor to mutate items in the `args` array to pass in
 transformed input to downstream interceptors and the target method.
+
+### Source for an invocation
+
+The `source` property of `InvocationContext` is defined as `InvocationSource`:
+
+```ts
+/**
+ * An interface to represent the caller of the invocation
+ */
+export interface InvocationSource<T = unknown> {
+  /**
+   * Type of the invoker, such as `proxy` and `route`
+   */
+  readonly type: string;
+  /**
+   * Metadata for the source, such as `ResolutionSession`
+   */
+  readonly value: T;
+}
+```
+
+The `source` describes the caller that invokes a method with interceptors.
+Interceptors can be invoked in the following cases:
+
+1. A route to a controller method
+
+   - The source describes the REST Route
+
+2. A controller to a repository/service with injected proxy
+
+   - The source describes a ResolutionSession that tracks a stack of bindings
+     and injections
+
+3. A controller/repository/service method invoked explicitly with
+   `invokeMethodWithInterceptors()` or `invokeMethod`
+
+   - The source can be set by the caller of `invokeMethodWithInterceptors()` or
+     `invokeMethod`
+
+The implementation of an interceptor can check `source` to decide if its logic
+should apply. For example, a global interceptor that provides caching for REST
+APIs should only run if the source is from a REST Route.
 
 ### Logic around `next`
 
