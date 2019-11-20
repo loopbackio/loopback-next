@@ -7,7 +7,7 @@ import {Context, invokeMethodWithInterceptors} from '@loopback/context';
 import {OperationObject} from '@loopback/openapi-v3';
 import {RestBindings} from '../keys';
 import {OperationArgs, OperationRetval} from '../types';
-import {BaseRoute} from './base-route';
+import {BaseRoute, RouteSource} from './base-route';
 
 export class Route extends BaseRoute {
   constructor(
@@ -33,6 +33,12 @@ export class Route extends BaseRoute {
   ): Promise<OperationRetval> {
     // Use `invokeMethodWithInterceptors` to invoke the handler function so
     // that global interceptors are applied
-    return invokeMethodWithInterceptors(requestContext, this, '_handler', args);
+    return invokeMethodWithInterceptors(
+      requestContext,
+      this,
+      '_handler',
+      args,
+      {source: new RouteSource(this)},
+    );
   }
 }

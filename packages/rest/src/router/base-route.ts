@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Context} from '@loopback/context';
+import {Context, InvocationSource} from '@loopback/context';
 import {OperationObject} from '@loopback/openapi-v3';
 import {OperationArgs, OperationRetval} from '../types';
 import {RouteEntry} from './route-entry';
@@ -37,5 +37,17 @@ export abstract class BaseRoute implements RouteEntry {
 
   describe(): string {
     return `"${this.verb} ${this.path}"`;
+  }
+
+  toString() {
+    return `${this.constructor.name} - ${this.verb} ${this.path}`;
+  }
+}
+
+export class RouteSource implements InvocationSource<RouteEntry> {
+  type = 'route';
+  constructor(readonly value: RouteEntry) {}
+  toString() {
+    return `${this.value.verb} ${this.value.path}`;
   }
 }

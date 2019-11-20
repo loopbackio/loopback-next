@@ -12,6 +12,7 @@ import {
   createControllerFactoryForBinding,
   createControllerFactoryForClass,
   RestBindings,
+  RouteSource,
 } from '../../..';
 
 describe('ControllerRoute', () => {
@@ -85,6 +86,20 @@ describe('ControllerRoute', () => {
     );
 
     expect(route._controllerName).to.eql('my-controller');
+  });
+
+  it('implements toString', () => {
+    const spec = anOperationSpec().build();
+    const route = new MyRoute(
+      'get',
+      '/greet',
+      spec,
+      MyController,
+      myControllerFactory,
+      'greet',
+    );
+    expect(route.toString()).to.equal('MyRoute - get /greet');
+    expect(new RouteSource(route).toString()).to.equal('get /greet');
   });
 
   describe('updateBindings()', () => {

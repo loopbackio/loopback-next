@@ -419,6 +419,33 @@ describe('Interceptor', () => {
       }).to.throw(/skipInterceptors is not allowed/);
     });
 
+    it('can set source information', async () => {
+      const controller = givenController();
+      ctx.bind('name').to('Jane');
+      const source = {
+        type: 'path',
+        value: 'rest',
+        toString: () => 'path:rest',
+      };
+      const msg = await invokeMethodWithInterceptors(
+        ctx,
+        controller,
+        'greetWithDI',
+        // No name is passed in here as it will be provided by the injection
+        [],
+        {
+          source,
+          skipParameterInjection: false,
+        },
+      );
+      // `Jane` is bound to `name` in the current context
+      expect(msg).to.equal('Hello, Jane');
+      expect(events).to.eql([
+        'log: [path:rest] before-greetWithDI',
+        'log: [path:rest] after-greetWithDI',
+      ]);
+    });
+
     function givenController() {
       class MyController {
         // Apply `log` to an async instance method with parameter injection
@@ -682,9 +709,10 @@ describe('Interceptor', () => {
   };
 
   const log: Interceptor = async (invocationCtx, next) => {
-    events.push('log: before-' + invocationCtx.methodName);
+    const source = invocationCtx.source ? `[${invocationCtx.source}] ` : '';
+    events.push(`log: ${source}before-${invocationCtx.methodName}`);
     const result = await next();
-    events.push('log: after-' + invocationCtx.methodName);
+    events.push(`log: ${source}after-${invocationCtx.methodName}`);
     return result;
   };
 

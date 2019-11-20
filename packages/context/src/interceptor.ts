@@ -305,6 +305,7 @@ export function invokeMethodWithInterceptors(
     target,
     methodName,
     args,
+    options.source,
   );
 
   invocationCtx.assertMethodExists();

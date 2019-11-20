@@ -78,6 +78,10 @@ describe('ResolutionSession', () => {
       'a --> @MyController.constructor[0] --> b',
     );
 
+    expect(session.toString()).to.eql(
+      'a --> @MyController.constructor[0] --> b',
+    );
+
     expect(session.popBinding()).to.be.exactly(bindingB);
     expect(session.popInjection()).to.be.exactly(injection);
     expect(session.popBinding()).to.be.exactly(bindingA);
