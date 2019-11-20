@@ -41,7 +41,7 @@
     "autocannon": "^4.4.0",
     "byline": "^5.0.0",
     "debug": "^4.1.1",
-    "path-to-regexp": "^5.0.0",
+    "path-to-regexp": "^6.0.0",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.8"
   },

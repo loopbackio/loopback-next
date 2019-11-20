@@ -42,7 +42,7 @@
     "lodash": "^4.17.15",
     "on-finished": "^2.3.0",
     "openapi-schema-to-json-schema": "^2.2.0",
-    "path-to-regexp": "^5.0.0",
+    "path-to-regexp": "^6.0.0",
     "qs": "^6.9.1",
     "strong-error-handler": "^3.4.0",
     "type-is": "^1.6.18",
