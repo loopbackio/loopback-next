@@ -48,12 +48,36 @@ export class InterceptedInvocationContext extends InvocationContext {
    */
   getGlobalInterceptorBindingKeys(): string[] {
     const bindings: Readonly<Binding<Interceptor>>[] = this.find(
-      filterByTag(ContextTags.GLOBAL_INTERCEPTOR),
+      binding =>
+        filterByTag(ContextTags.GLOBAL_INTERCEPTOR)(binding) &&
+        // Only include interceptors that match the source type of the invocation
+        this.applicableTo(binding),
     );
     this.sortGlobalInterceptorBindings(bindings);
     const keys = bindings.map(b => b.key);
     debug('Global interceptor binding keys:', keys);
     return keys;
+  }
+
+  /**
+   * Check if the binding for a global interceptor matches the source type
+   * of the invocation
+   * @param binding - Binding
+   */
+  private applicableTo(binding: Readonly<Binding<unknown>>) {
+    const sourceType = this.source?.type;
+    // Unknown source type, always apply
+    if (sourceType == null) return true;
+    const allowedSource: string | string[] =
+      binding.tagMap[ContextTags.GLOBAL_INTERCEPTOR_SOURCE];
+    return (
+      // No tag, always apply
+      allowedSource == null ||
+      // source matched
+      allowedSource === sourceType ||
+      // source included in the string[]
+      (Array.isArray(allowedSource) && allowedSource.includes(sourceType))
+    );
   }
 
   /**

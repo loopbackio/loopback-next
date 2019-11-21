@@ -15,6 +15,7 @@ import {
   InterceptedInvocationContext,
   Interceptor,
   InterceptorOrKey,
+  InvocationSource,
   mergeInterceptors,
   Provider,
 } from '../..';
@@ -190,6 +191,68 @@ describe('globalInterceptors', () => {
     });
   });
 
+  it('includes interceptors that match the source type', () => {
+    ctx
+      .bind('globalInterceptors.authInterceptor')
+      .to(authInterceptor)
+      .apply(asGlobalInterceptor('auth'))
+      // Allows `route` source type explicitly
+      .tag({[ContextTags.GLOBAL_INTERCEPTOR_SOURCE]: 'route'});
+
+    ctx
+      .bind('globalInterceptors.logInterceptor')
+      .to(logInterceptor)
+      .apply(asGlobalInterceptor('log'));
+    // No source type is tagged - always apply
+
+    const invocationCtx = givenInvocationContext('route');
+
+    const keys = invocationCtx.getGlobalInterceptorBindingKeys();
+    expect(keys).to.eql([
+      'globalInterceptors.authInterceptor',
+      'globalInterceptors.logInterceptor',
+    ]);
+  });
+
+  it('excludes interceptors that do not match the source type', () => {
+    ctx
+      .bind('globalInterceptors.authInterceptor')
+      .to(authInterceptor)
+      .apply(asGlobalInterceptor('auth'))
+      // Do not apply for `proxy` source type
+      .tag({[ContextTags.GLOBAL_INTERCEPTOR_SOURCE]: 'route'});
+
+    ctx
+      .bind('globalInterceptors.logInterceptor')
+      .to(logInterceptor)
+      .apply(asGlobalInterceptor('log'));
+
+    const invocationCtx = givenInvocationContext('proxy');
+
+    const keys = invocationCtx.getGlobalInterceptorBindingKeys();
+    expect(keys).to.eql(['globalInterceptors.logInterceptor']);
+  });
+
+  it('excludes interceptors that do not match the source type - with array', () => {
+    ctx
+      .bind('globalInterceptors.authInterceptor')
+      .to(authInterceptor)
+      .apply(asGlobalInterceptor('auth'))
+      // Do not apply for `proxy` source type
+      .tag({[ContextTags.GLOBAL_INTERCEPTOR_SOURCE]: 'route'});
+
+    ctx
+      .bind('globalInterceptors.logInterceptor')
+      .to(logInterceptor)
+      .apply(asGlobalInterceptor('log'))
+      .tag({[ContextTags.GLOBAL_INTERCEPTOR_SOURCE]: ['route', 'proxy']});
+
+    const invocationCtx = givenInvocationContext('proxy');
+
+    const keys = invocationCtx.getGlobalInterceptorBindingKeys();
+    expect(keys).to.eql(['globalInterceptors.logInterceptor']);
+  });
+
   class MyController {
     greet(name: string) {
       return `Hello, ${name}`;
@@ -200,9 +263,20 @@ describe('globalInterceptors', () => {
     ctx = new Context();
   }
 
-  function givenInvocationContext() {
-    return new InterceptedInvocationContext(ctx, new MyController(), 'greet', [
-      'John',
-    ]);
+  function givenInvocationContext(source?: string) {
+    let invocationSource: InvocationSource<string> | undefined = undefined;
+    if (source != null) {
+      invocationSource = {
+        type: source,
+        value: source,
+      };
+    }
+    return new InterceptedInvocationContext(
+      ctx,
+      new MyController(),
+      'greet',
+      ['John'],
+      invocationSource,
+    );
   }
 });

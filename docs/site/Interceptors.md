@@ -586,6 +586,32 @@ The implementation of an interceptor can check `source` to decide if its logic
 should apply. For example, a global interceptor that provides caching for REST
 APIs should only run if the source is from a REST Route.
 
+A global interceptor can also be tagged with
+`ContextTags.GLOBAL_INTERCEPTOR_SOURCE` using a value of string or string array
+to indicate if it should be applied to source types of invocations. If the tag
+is not present, the interceptor applies to invocations of any source type. For
+example:
+
+```ts
+ctx
+  .bind('globalInterceptors.authInterceptor')
+  .to(authInterceptor)
+  .apply(asGlobalInterceptor('auth'))
+  // Do not apply for `proxy` source type
+  .tag({[ContextTags.GLOBAL_INTERCEPTOR_SOURCE]: 'route'});
+```
+
+The tag can also be declared for the provider class.
+
+```ts
+@globalInterceptor('log', {
+  tags: {[ContextTags.GLOBAL_INTERCEPTOR_SOURCE]: ['proxy']},
+})
+export class LogInterceptor implements Provider<Interceptor> {
+  // ...
+}
+```
+
 ### Logic around `next`
 
 An interceptor will receive the `next` parameter, which is a function to execute
