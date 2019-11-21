@@ -565,16 +565,18 @@ exports.dataSourceToJSONFileName = function(dataSourceClass) {
   );
 };
 
+exports.stringifyObject = function(data, options = {}) {
+  return stringifyObject(data, {
+    indent: '  ', // two spaces
+    singleQuotes: true,
+    inlineCharacterLimit: 80,
+    ...options,
+  });
+};
+
 exports.stringifyModelSettings = function(modelSettings) {
   if (!modelSettings || !Object.keys(modelSettings).length) return '';
-  return stringifyObject(
-    {settings: modelSettings},
-    {
-      indent: '  ', // two spaces
-      singleQuotes: true,
-      inlineCharacterLimit: 80,
-    },
-  );
+  return exports.stringifyObject({settings: modelSettings});
 };
 
 // literal strings with artifacts directory locations
