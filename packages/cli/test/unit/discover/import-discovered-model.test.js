@@ -145,4 +145,33 @@ describe('importDiscoveredModel', () => {
         id: 1,
       });
   });
+
+  it('converts connector metadata to TypeScript object', () => {
+    const discoveredModel = {
+      name: 'TestModel',
+      properties: {
+        title: {
+          type: 'String',
+          required: false,
+          postgresql: {
+            columnName: 'title',
+            dataType: 'text',
+            dataLength: null,
+            dataPrecision: null,
+            dataScale: null,
+            nullable: 'NO',
+          },
+        },
+      },
+    };
+
+    const modelData = importDiscoveredModel(discoveredModel);
+    expect(modelData.properties)
+      .to.have.property('title')
+      .deepEqual({
+        type: `'string'`,
+        tsType: 'string',
+        postgresql: `{columnName: 'title', dataType: 'text', dataLength: null, dataPrecision: null, dataScale: null, nullable: 'NO'}`,
+      });
+  });
 });

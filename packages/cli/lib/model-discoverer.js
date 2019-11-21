@@ -1,6 +1,7 @@
 const debug = require('./debug')('model-discoverer');
 const fs = require('fs');
 const path = require('path');
+const {stringifyObject} = require('../lib/utils');
 
 /**
  * Given a datasource and discovery options,
@@ -85,8 +86,11 @@ const sanitizeProperty = function(o) {
     }
 
     // If you are an object or array, stringify so you don't appear as [object [object]
-    if (v === Object(v)) {
-      o[k] = JSON.stringify(o[k]);
+    if (typeof v === 'object' && v !== null) {
+      o[k] = stringifyObject(o[k], {
+        // don't break lines to avoid formatting problems in the model template
+        inlineCharacterLimit: Infinity,
+      });
     }
   });
 
