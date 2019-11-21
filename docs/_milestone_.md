@@ -29,6 +29,8 @@
 
   - [ ] [3]Optimize query by reading partition key from payload
         https://github.com/strongloop/loopback-connector-cloudant/issues/217
+  - [ ] Blog post
+        https://github.com/strongloop/loopback-connector-cloudant/issues/231
 
 - [ ] From model definition to REST API with no custom repository/controller
       classes https://github.com/strongloop/loopback-next/issues/2036
