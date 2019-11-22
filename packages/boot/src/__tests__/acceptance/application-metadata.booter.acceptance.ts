@@ -16,8 +16,6 @@ describe('application metadata booter acceptance tests', () => {
   beforeEach('reset sandbox', () => sandbox.reset());
   beforeEach(getApp);
 
-  afterEach(stopApp);
-
   it('binds content of package.json to application metadata', async () => {
     await app.boot();
     const metadata = await app.get(CoreBindings.APPLICATION_METADATA);
@@ -36,14 +34,5 @@ describe('application metadata booter acceptance tests', () => {
     app = new MyApp({
       rest: givenHttpServerConfig(),
     });
-    await app.start();
-  }
-
-  async function stopApp() {
-    try {
-      await app.stop();
-    } catch (err) {
-      console.log(`Stopping the app threw an error: ${err}`);
-    }
   }
 });
