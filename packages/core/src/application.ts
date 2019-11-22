@@ -33,7 +33,14 @@ const debug = debugFactory('loopback:core:application');
 export class Application extends Context implements LifeCycleObserver {
   public readonly options: ApplicationConfig;
 
+  /**
+   * A flag to indicate that the application is being shut down
+   */
   private _isShuttingDown = false;
+
+  /**
+   * State of the application
+   */
   private _state = 'created';
 
   /**
@@ -41,13 +48,19 @@ export class Application extends Context implements LifeCycleObserver {
    * transition as follows by `start` and `stop`:
    *
    * 1. start
-   *   - created -> starting -> started
-   *   - stopped -> starting -> started
+   *   - !started -> starting -> started
    *   - started -> started (no-op)
    * 2. stop
    *   - started -> stopping -> stopped
-   *   - created -> created (no-op)
-   *   - stopped -> stopped (no-op)
+   *   - !started -> stopped (no-op)
+   *
+   * Two types of states are expected:
+   * - stable, such as `started` and `stopped`
+   * - in process, such as `booting` and `starting`
+   *
+   * Operations such as `start` and `stop` can only be called at a stable state.
+   * The logic should immediately set the state to a new one indicating work in
+   * process, such as `starting` and `stopping`.
    */
   public get state() {
     return this._state;
@@ -202,11 +215,24 @@ export class Application extends Context implements LifeCycleObserver {
   }
 
   /**
-   * Assert start/stop is performed within valid states
-   * @param op - The operation name: start or stop
-   * @param states - An array of valid states
+   * Assert there is no other operation is in progress, i.e., the state is not
+   * `*ing`, such as `starting` or `stopping`.
+   *
+   * @param op - The operation name, such as 'boot', 'start', or 'stop'
    */
-  private assertValidStates(op: string, states: string[]) {
+  protected assertNotInProcess(op: string) {
+    assert(
+      !this._state.endsWith('ing'),
+      `Cannot ${op} the application as it is ${this._state}.`,
+    );
+  }
+
+  /**
+   * Assert current state of the application to be one of the expected values
+   * @param op - The operation name, such as 'boot', 'start', or 'stop'
+   * @param states - Valid states
+   */
+  protected assertInStates(op: string, ...states: string[]) {
     assert(
       states.includes(this._state),
       `Cannot ${op} the application as it is ${this._state}. Valid states are ${states}.`,
@@ -217,7 +243,7 @@ export class Application extends Context implements LifeCycleObserver {
    * Transition the application to a new state and emit an event
    * @param state - The new state
    */
-  private setState(state: string) {
+  protected setState(state: string) {
     const oldState = this._state;
     this._state = state;
     this.emit('stateChanged', {from: oldState, to: this._state});
@@ -230,7 +256,7 @@ export class Application extends Context implements LifeCycleObserver {
    * If the application is already started, no operation is performed.
    */
   public async start(): Promise<void> {
-    this.assertValidStates('start', ['created', 'stopped', 'started']);
+    this.assertNotInProcess('start');
     // No-op if it's started
     if (this._state === 'started') return;
     this.setState('starting');
@@ -247,9 +273,9 @@ export class Application extends Context implements LifeCycleObserver {
    * performed.
    */
   public async stop(): Promise<void> {
-    this.assertValidStates('stop', ['started', 'stopped', 'created']);
+    this.assertNotInProcess('stop');
     // No-op if it's created or stopped
-    if (this._state === 'created' || this._state === 'stopped') return;
+    if (this._state !== 'started') return;
     this.setState('stopping');
     const registry = await this.getLifeCycleObserverRegistry();
     await registry.stop();

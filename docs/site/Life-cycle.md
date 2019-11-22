@@ -16,26 +16,34 @@ to control the transition of states of `Application`.
 
 ## Application states
 
-The initial state of an application is `created` when it's instantiated. The
-state can transition as follows by `start` and `stop`:
+The initial state of application is `created`. There are two types of states
+expected:
 
-1. start()
+- Stable, such as `started` and `stopped`
+- In process, such as `booting` and `starting`
 
-- created -> starting -> started
-- stopped -> starting -> started
-- started -> started (no-op)
+Operations can only be called at a stable state. The logic of each operation
+should immediately set the state to a new one indicating work in process, for
+example, `start()` sets `starting` and `stop()` sets `stopping`. Calling an
+operation in an in-process state will throw an error.
 
-The `start` throws an error if it's called with an invalid application state,
-such as `starting` and `stopping`.
+The state can transition as follows by operations including `boot`, `start`, and
+`stop`:
 
-2. stop()
+1.  boot()
 
-- started -> stopping -> stopped
-- created -> created (no-op)
-- stopped -> stopped (no-op)
+    - !booted -> booting -> booted
+    - booted -> booted (no-op)
 
-The `stop` throws an error if it's called with an invalid application state,
-such as `starting` and `stopping`.
+2.  start()
+
+    - !started -> starting -> started
+    - started -> started (no-op)
+
+3.  stop()
+
+    - started -> stopping -> stopped
+    - !started -> stopped (no-op)
 
 Each state transition emits a `stateChanged` event with data for the `from` and
 `to` states. For example:
