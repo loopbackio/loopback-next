@@ -72,7 +72,7 @@ describe('Application life cycle', () => {
       await app.start();
       const stop = app.stop();
       await expect(app.stop()).to.be.rejectedWith(
-        /Cannot stop the application as it is stopping\. Valid states are started,stopped,created\./,
+        /Cannot stop the application as it is stopping\./,
       );
       await stop;
     });
@@ -81,7 +81,7 @@ describe('Application life cycle', () => {
       const app = new Application();
       const start = app.start();
       await expect(app.start()).to.be.rejectedWith(
-        /Cannot start the application as it is starting\. Valid states are created,stopped,started\./,
+        /Cannot start the application as it is starting\./,
       );
       await start;
     });
