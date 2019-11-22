@@ -37,6 +37,17 @@ such as `starting` and `stopping`.
 The `stop` throws an error if it's called with an invalid application state,
 such as `starting` and `stopping`.
 
+Each state transition emits a `stateChanged` event with data for the `from` and
+`to` states. For example:
+
+```ts
+app.on('stateChanged', data => {
+  console.log(data);
+});
+```
+
+The `data` is an object such as `{from: 'starting', to: 'started'}`.
+
 ## Graceful shutdown
 
 Node.js will normally exit with a `0` status code when no more async operations

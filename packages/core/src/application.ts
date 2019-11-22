@@ -201,11 +201,26 @@ export class Application extends Context implements LifeCycleObserver {
     return this.get<T>(key);
   }
 
-  private assertValidStates(op: string, ...states: string[]) {
+  /**
+   * Assert start/stop is performed within valid states
+   * @param op - The operation name: start or stop
+   * @param states - An array of valid states
+   */
+  private assertValidStates(op: string, states: string[]) {
     assert(
       states.includes(this._state),
       `Cannot ${op} the application as it is ${this._state}. Valid states are ${states}.`,
     );
+  }
+
+  /**
+   * Transition the application to a new state and emit an event
+   * @param state - The new state
+   */
+  private setState(state: string) {
+    const oldState = this._state;
+    this._state = state;
+    this.emit('stateChanged', {from: oldState, to: this._state});
   }
 
   /**
@@ -215,13 +230,13 @@ export class Application extends Context implements LifeCycleObserver {
    * If the application is already started, no operation is performed.
    */
   public async start(): Promise<void> {
-    this.assertValidStates('start', 'created', 'stopped', 'started');
+    this.assertValidStates('start', ['created', 'stopped', 'started']);
     // No-op if it's started
     if (this._state === 'started') return;
-    this._state = 'starting';
+    this.setState('starting');
     const registry = await this.getLifeCycleObserverRegistry();
     await registry.start();
-    this._state = 'started';
+    this.setState('started');
   }
 
   /**
@@ -232,13 +247,13 @@ export class Application extends Context implements LifeCycleObserver {
    * performed.
    */
   public async stop(): Promise<void> {
-    this.assertValidStates('stop', 'started', 'stopped', 'created');
+    this.assertValidStates('stop', ['started', 'stopped', 'created']);
     // No-op if it's created or stopped
     if (this._state === 'created' || this._state === 'stopped') return;
-    this._state = 'stopping';
+    this.setState('stopping');
     const registry = await this.getLifeCycleObserverRegistry();
     await registry.stop();
-    this._state = 'stopped';
+    this.setState('stopped');
   }
 
   private async getLifeCycleObserverRegistry() {
