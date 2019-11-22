@@ -180,12 +180,22 @@ export class Binding<T = BoundValue> {
   private _getValue: ValueGetter<T>;
 
   private _valueConstructor?: Constructor<T>;
+  private _providerConstructor?: Constructor<Provider<T>>;
+
   /**
-   * For bindings bound via toClass, this property contains the constructor
-   * function
+   * For bindings bound via `toClass()`, this property contains the constructor
+   * function of the class
    */
   public get valueConstructor(): Constructor<T> | undefined {
     return this._valueConstructor;
+  }
+
+  /**
+   * For bindings bound via `toProvider()`, this property contains the
+   * constructor function of the provider class
+   */
+  public get providerConstructor(): Constructor<Provider<T>> | undefined {
+    return this._providerConstructor;
   }
 
   constructor(key: BindingAddress<T>, public isLocked: boolean = false) {
@@ -494,6 +504,7 @@ export class Binding<T = BoundValue> {
       debug('Bind %s to provider %s', this.key, providerClass.name);
     }
     this._type = BindingType.PROVIDER;
+    this._providerConstructor = providerClass;
     this._setValueGetter((ctx, options) => {
       const providerOrPromise = instantiateClass<Provider<T>>(
         providerClass,
@@ -576,9 +587,8 @@ export class Binding<T = BoundValue> {
   /**
    * Convert to a plain JSON object
    */
-  toJSON(): Object {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const json: {[name: string]: any} = {
+  toJSON(): object {
+    const json: Record<string, unknown> = {
       key: this.key,
       scope: this.scope,
       tags: this.tagMap,
@@ -586,6 +596,12 @@ export class Binding<T = BoundValue> {
     };
     if (this.type != null) {
       json.type = this.type;
+    }
+    if (this._valueConstructor != null) {
+      json.valueConstructor = this._valueConstructor.name;
+    }
+    if (this._providerConstructor != null) {
+      json.providerConstructor = this._providerConstructor.name;
     }
     return json;
   }
