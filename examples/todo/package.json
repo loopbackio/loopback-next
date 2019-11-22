@@ -58,7 +58,7 @@
     "eslint": "^6.6.0",
     "eslint-config-prettier": "^6.7.0",
     "eslint-plugin-eslint-plugin": "^2.1.0",
-    "eslint-plugin-mocha": "^6.2.1",
+    "eslint-plugin-mocha": "^6.2.2",
     "lodash": "^4.17.15",
     "typescript": "~3.7.2"
   },
