@@ -12,8 +12,7 @@ interface Route {
 }
 
 describe('Trie', () => {
-  // eslint-disable-next-line no-empty-character-class
-  const pattern = /^([^\/]+?)[\/]?(?=[]|$)/i;
+  const pattern = /^([^\/#\?]+?)[\/#\?]?$/i;
   it('creates nodes', () => {
     const trie = givenTrie();
     const getOrders = givenRoute('get', '/orders');
