@@ -36,6 +36,31 @@ describe('Application life cycle', () => {
       expect(app.state).to.equal('stopped');
     });
 
+    it('emits state change events', async () => {
+      const app = new Application();
+      const events: string[] = [];
+      app.on('stateChanged', event => {
+        events.push(`${event.from} -> ${event.to}`);
+      });
+      const start = app.start();
+      expect(events).to.eql(['created -> starting']);
+      await start;
+      expect(events).to.eql(['created -> starting', 'starting -> started']);
+      const stop = app.stop();
+      expect(events).to.eql([
+        'created -> starting',
+        'starting -> started',
+        'started -> stopping',
+      ]);
+      await stop;
+      expect(events).to.eql([
+        'created -> starting',
+        'starting -> started',
+        'started -> stopping',
+        'stopping -> stopped',
+      ]);
+    });
+
     it('allows application.stop when it is created', async () => {
       const app = new Application();
       await app.stop(); // no-op
