@@ -189,6 +189,12 @@ describe('Binding', () => {
       const b = ctx.bind('provider_key').toProvider(MyProvider);
       expect(b.type).to.equal(BindingType.PROVIDER);
     });
+
+    it('sets the providerConstructor', () => {
+      ctx.bind('msg').to('hello');
+      const b = ctx.bind('provider_key').toProvider(MyProvider);
+      expect(b.providerConstructor).to.equal(MyProvider);
+    });
   });
 
   describe('toAlias(bindingKeyWithPath)', () => {

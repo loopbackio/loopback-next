@@ -968,10 +968,26 @@ export class Context extends EventEmitter {
   /**
    * Create a plain JSON object for the context
    */
-  toJSON(): Object {
-    const json: {[key: string]: Object} = {};
+  toJSON(): object {
+    const bindings: Record<string, object> = {};
     for (const [k, v] of this.registry) {
-      json[k] = v.toJSON();
+      bindings[k] = v.toJSON();
+    }
+    return bindings;
+  }
+
+  /**
+   * Inspect the context and dump out a JSON object representing the context
+   * hierarchy
+   */
+  // TODO(rfeng): Evaluate https://nodejs.org/api/util.html#util_custom_inspection_functions_on_objects
+  inspect(): object {
+    const json: Record<string, unknown> = {
+      name: this.name,
+      bindings: this.toJSON(),
+    };
+    if (this._parent) {
+      json.parent = this._parent.inspect();
     }
     return json;
   }

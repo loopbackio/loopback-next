@@ -13,6 +13,7 @@ import {
   Context,
   ContextEventObserver,
   isPromiseLike,
+  Provider,
 } from '../..';
 
 /**
@@ -790,8 +791,82 @@ describe('Context', () => {
     });
   });
 
-  describe('toJSON()', () => {
+  describe('toJSON() and inspect()', () => {
+    beforeEach(setupBindings);
+
+    const expectedBindings = {
+      a: {
+        key: 'a',
+        scope: BindingScope.TRANSIENT,
+        tags: {},
+        isLocked: true,
+        type: BindingType.CONSTANT,
+      },
+      b: {
+        key: 'b',
+        scope: BindingScope.SINGLETON,
+        tags: {X: 'X', Y: 'Y'},
+        isLocked: false,
+        type: BindingType.DYNAMIC_VALUE,
+      },
+      c: {
+        key: 'c',
+        scope: BindingScope.TRANSIENT,
+        tags: {Z: 'Z', a: 1},
+        isLocked: false,
+        type: BindingType.CONSTANT,
+      },
+      d: {
+        key: 'd',
+        scope: BindingScope.TRANSIENT,
+        tags: {},
+        isLocked: false,
+        type: BindingType.CLASS,
+        valueConstructor: 'MyService',
+      },
+      e: {
+        key: 'e',
+        scope: BindingScope.TRANSIENT,
+        tags: {},
+        isLocked: false,
+        type: BindingType.PROVIDER,
+        providerConstructor: 'MyServiceProvider',
+      },
+    };
+
     it('converts to plain JSON object', () => {
+      expect(ctx.toJSON()).to.eql(expectedBindings);
+    });
+
+    it('inspects as plain JSON object', () => {
+      expect(ctx.inspect()).to.eql({
+        name: 'app',
+        bindings: expectedBindings,
+      });
+    });
+
+    it('inspects as plain JSON object to include parent', () => {
+      const childCtx = new TestContext(ctx, 'server');
+      childCtx.bind('foo').to('foo-value');
+
+      expect(childCtx.inspect()).to.eql({
+        name: 'server',
+        bindings: childCtx.toJSON(),
+        parent: {
+          name: 'app',
+          bindings: expectedBindings,
+        },
+      });
+    });
+
+    class MyService {}
+    class MyServiceProvider implements Provider<MyService> {
+      value() {
+        return new MyService();
+      }
+    }
+
+    function setupBindings() {
       ctx
         .bind('a')
         .to('1')
@@ -805,33 +880,13 @@ describe('Context', () => {
         .bind('c')
         .to(3)
         .tag('Z', {a: 1});
-      expect(ctx.toJSON()).to.eql({
-        a: {
-          key: 'a',
-          scope: BindingScope.TRANSIENT,
-          tags: {},
-          isLocked: true,
-          type: BindingType.CONSTANT,
-        },
-        b: {
-          key: 'b',
-          scope: BindingScope.SINGLETON,
-          tags: {X: 'X', Y: 'Y'},
-          isLocked: false,
-          type: BindingType.DYNAMIC_VALUE,
-        },
-        c: {
-          key: 'c',
-          scope: BindingScope.TRANSIENT,
-          tags: {Z: 'Z', a: 1},
-          isLocked: false,
-          type: BindingType.CONSTANT,
-        },
-      });
-    });
+
+      ctx.bind('d').toClass(MyService);
+      ctx.bind('e').toProvider(MyServiceProvider);
+    }
   });
 
   function createContext() {
-    ctx = new TestContext();
+    ctx = new TestContext('app');
   }
 });
