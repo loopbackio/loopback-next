@@ -193,9 +193,7 @@ so it is important to add the component in the `ShoppingApplication` class in
 [loopback4-example-shopping/packages/shopping/src/application.ts](https://github.com/strongloop/loopback4-example-shopping/blob/master/packages/shopping/src/application.ts).
 
 ```ts
-import {
-  AuthenticationComponent
-} from '@loopback/authentication';
+import {AuthenticationComponent} from '@loopback/authentication';
 
 export class ShoppingApplication extends BootMixin(
   ServiceMixin(RepositoryMixin(RestApplication)),
@@ -209,6 +207,9 @@ export class ShoppingApplication extends BootMixin(
     this.component(AuthenticationComponent);
 
     // ...
+  }
+  // ...
+}
 ```
 
 ### Securing an Endpoint with the Authentication Decorator
