@@ -10,7 +10,7 @@ const debug = require('../../lib/debug')('datasource-generator');
 const chalk = require('chalk');
 const path = require('path');
 const utils = require('../../lib/utils');
-const connectors = require('./connectors.json');
+const connectors = require('../../lib/connectors.json');
 
 /**
  * DataSource Generator -- CLI
