@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.6.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@2.5.1...@loopback/docs@2.6.0) (2019-11-25)
+
+
+### Bug Fixes
+
+* **docs:** remove forgotten FIXME comment ([56201a3](https://github.com/strongloop/loopback-next/commit/56201a3b382f6fb2975b1be562f6506015ca49d3))
+* **docs:** update TodoList tutorial ([947835d](https://github.com/strongloop/loopback-next/commit/947835de58c9f53571fca154dd1a3925f63b337f))
+
+
+### Features
+
+* **cli:** add lb4 update command to check/update project dependencies ([54d1896](https://github.com/strongloop/loopback-next/commit/54d1896f63705b6938fe74ba2c21ad0b4d9bea23))
+* **cli:** update controller template to enable filter for findById endpoint ([b0ce84b](https://github.com/strongloop/loopback-next/commit/b0ce84b79158cadf2f53bbe627da4d8196f0543f))
+* **context:** allow current binding to be injected with `[@inject](https://github.com/inject).binding` ([c01b4c6](https://github.com/strongloop/loopback-next/commit/c01b4c6b4dcc5c7ac79832bda144b1ec0da191b1))
+* **core:** add [@service](https://github.com/service) decorator to inject a service by class/interface ([1d80904](https://github.com/strongloop/loopback-next/commit/1d80904b670724b00cb6a2965b8472f44d23eed0))
+* **docs:** explain justification of binding scopes and add examples ([1e00300](https://github.com/strongloop/loopback-next/commit/1e003008856c77cb580dcee871c6dbd47cbe4f35))
+* **docs:** migration guide for model relations ([0f96f2b](https://github.com/strongloop/loopback-next/commit/0f96f2b2a9ba064367ceb50a90ece2d470b51e23))
+* **repository-tests:** run repository-tests on cloudant ([a54c588](https://github.com/strongloop/loopback-next/commit/a54c588e3f59b273c22d008bf591184f5339effe))
+
+
+
+
+
 ## [2.5.1](https://github.com/strongloop/loopback-next/compare/@loopback/docs@2.5.0...@loopback/docs@2.5.1) (2019-11-13)
 
 

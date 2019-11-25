@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.26.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.25.1...@loopback/cli@1.26.0) (2019-11-25)
+
+
+### Bug Fixes
+
+* **cli:** disconnect the datasource after the model was discovered ([ad30c61](https://github.com/strongloop/loopback-next/commit/ad30c61e8f35795bef6c2aef893884e520561832))
+* **cli:** emit correct property definitions for built-in types ([6a972db](https://github.com/strongloop/loopback-next/commit/6a972db819aab9f831a26da4f2f81abe3c26efe7))
+* **cli:** emit correct property definitions for built-in types ([9d34f23](https://github.com/strongloop/loopback-next/commit/9d34f23bd8eadaed9a38ca95339384bddce041b2))
+* **cli:** handle missing target artifact dir ([ba34838](https://github.com/strongloop/loopback-next/commit/ba348384b045d6976e257f09cdc610766568abfa))
+* **cli:** updated OAS 'Date' JS Type Mapping to 'string' ([839caa9](https://github.com/strongloop/loopback-next/commit/839caa92038d5ba8548106cd4136ee40d9abf679))
+
+
+### Features
+
+* **cli:** add `connectors.json` ([802529e](https://github.com/strongloop/loopback-next/commit/802529ed0ba1e3a9f9ef417b4b8b4a7459589682))
+* use stringifyObject instead of JSON.stringify for connector metadata ([da60ee7](https://github.com/strongloop/loopback-next/commit/da60ee79d48a7ec11f510ccdbecc878e28651237))
+* **cli:** add lb4 update command to check/update project dependencies ([54d1896](https://github.com/strongloop/loopback-next/commit/54d1896f63705b6938fe74ba2c21ad0b4d9bea23))
+* **cli:** add the ability to check latest cli version ([869d1e4](https://github.com/strongloop/loopback-next/commit/869d1e4b19ba5483521a632a9c8af4b39ca7254f))
+* **cli:** update controller template to enable filter for findById endpoint ([b0ce84b](https://github.com/strongloop/loopback-next/commit/b0ce84b79158cadf2f53bbe627da4d8196f0543f))
+
+
+
+
+
 ## [1.25.1](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.25.0...@loopback/cli@1.25.1) (2019-11-13)
 
 **Note:** Version bump only for package @loopback/cli

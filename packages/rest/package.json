@@ -1,6 +1,6 @@
 {
   "name": "@loopback/rest",
-  "version": "1.23.0",
+  "version": "1.24.0",
   "description": "",
   "engines": {
     "node": ">=8.9"
@@ -19,10 +19,10 @@
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
-    "@loopback/context": "^1.23.5",
-    "@loopback/core": "^1.10.7",
-    "@loopback/http-server": "^1.4.18",
-    "@loopback/openapi-v3": "^1.10.1",
+    "@loopback/context": "^1.24.0",
+    "@loopback/core": "^1.11.0",
+    "@loopback/http-server": "^1.4.19",
+    "@loopback/openapi-v3": "^1.10.2",
     "@types/body-parser": "^1.17.1",
     "@types/cors": "^2.8.6",
     "@types/express": "^4.17.2",
@@ -49,11 +49,11 @@
     "validator": "^12.1.0"
   },
   "devDependencies": {
-    "@loopback/build": "^2.0.16",
-    "@loopback/eslint-config": "^4.1.4",
-    "@loopback/openapi-spec-builder": "^1.2.18",
-    "@loopback/repository": "^1.15.4",
-    "@loopback/testlab": "^1.9.4",
+    "@loopback/build": "^2.1.0",
+    "@loopback/eslint-config": "^4.1.5",
+    "@loopback/openapi-spec-builder": "^1.2.19",
+    "@loopback/repository": "^1.15.5",
+    "@loopback/testlab": "^1.9.5",
     "@types/debug": "^4.1.5",
     "@types/js-yaml": "^3.12.1",
     "@types/lodash": "^4.14.149",

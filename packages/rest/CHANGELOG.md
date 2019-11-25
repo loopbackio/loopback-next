@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.24.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@1.23.0...@loopback/rest@1.24.0) (2019-11-25)
+
+
+### Features
+
+* **rest:** upgrade to path-to-regexp 6.x and improve error messages ([ad44209](https://github.com/strongloop/loopback-next/commit/ad4420954e3d3c18d4a52ca7511985d026efcdc6))
+
+
+
+
+
 # [1.23.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@1.22.0...@loopback/rest@1.23.0) (2019-11-12)
 
 

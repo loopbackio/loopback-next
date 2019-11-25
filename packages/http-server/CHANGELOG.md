@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.19](https://github.com/strongloop/loopback-next/compare/@loopback/http-server@1.4.18...@loopback/http-server@1.4.19) (2019-11-25)
+
+**Note:** Version bump only for package @loopback/http-server
+
+
+
+
+
 ## [1.4.18](https://github.com/strongloop/loopback-next/compare/@loopback/http-server@1.4.17...@loopback/http-server@1.4.18) (2019-11-12)
 
 **Note:** Version bump only for package @loopback/http-server

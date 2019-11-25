@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.24.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.23.5...@loopback/context@1.24.0) (2019-11-25)
+
+
+### Features
+
+* **context:** allow current binding to be injected with `[@inject](https://github.com/inject).binding` ([c01b4c6](https://github.com/strongloop/loopback-next/commit/c01b4c6b4dcc5c7ac79832bda144b1ec0da191b1))
+* **context:** improve context/binding with inspect/toJSON for metadata dumping ([ac399f7](https://github.com/strongloop/loopback-next/commit/ac399f7f105eea402ef1932bd96093baad0a009f))
+* **core:** add [@service](https://github.com/service) decorator to inject a service by class/interface ([1d80904](https://github.com/strongloop/loopback-next/commit/1d80904b670724b00cb6a2965b8472f44d23eed0))
+
+
+
+
+
 ## [1.23.5](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.23.4...@loopback/context@1.23.5) (2019-11-12)
 
 **Note:** Version bump only for package @loopback/context

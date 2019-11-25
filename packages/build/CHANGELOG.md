@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/build@2.0.16...@loopback/build@2.1.0) (2019-11-25)
+
+
+### Features
+
+* **build:** add an option to control resolution of CLI module from project dependencies ([0715a91](https://github.com/strongloop/loopback-next/commit/0715a91d0eef02c7e259cbd1b62a09010995c796))
+
+
+
+
+
 ## [2.0.16](https://github.com/strongloop/loopback-next/compare/@loopback/build@2.0.15...@loopback/build@2.0.16) (2019-11-12)
 
 **Note:** Version bump only for package @loopback/build

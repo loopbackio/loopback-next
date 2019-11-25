@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.7.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository-tests@0.6.1...@loopback/repository-tests@0.7.0) (2019-11-25)
+
+
+### Features
+
+* **repository-tests:** run repository-tests on cloudant ([a54c588](https://github.com/strongloop/loopback-next/commit/a54c588e3f59b273c22d008bf591184f5339effe))
+
+
+
+
+
 ## [0.6.1](https://github.com/strongloop/loopback-next/compare/@loopback/repository-tests@0.6.0...@loopback/repository-tests@0.6.1) (2019-11-12)
 
 **Note:** Version bump only for package @loopback/repository-tests
