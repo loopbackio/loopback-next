@@ -86,7 +86,7 @@ application, follow these steps:
 1. In the `UserController` section, click on `POST /users`, click on
    `'Try it out'`, specify:
 
-   ```ts
+   ```json
    {
    "id": "1",
    "email": "user1@example.com",
@@ -101,7 +101,7 @@ application, follow these steps:
 1. In the `UserController` section, click on `POST /users/login`, click on
    `'Try it out'`, specify:
 
-   ```ts
+   ```json
    {
      "email":    "user1@example.com",
      "password": "thel0ngp@55w0rd"
@@ -114,7 +114,7 @@ application, follow these steps:
 
    For example:
 
-   ```ts
+   ```json
    {
      "token": "some.token.value"
    }
@@ -163,7 +163,7 @@ application, follow these steps:
 
    The response is:
 
-   ```sh
+   ```json
    {"id":"1","name":"User One"}
    ```
 
