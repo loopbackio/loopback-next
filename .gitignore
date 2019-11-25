@@ -12,7 +12,6 @@ examples/*/dist
 benchmark/dist
 **/package
 .sandbox
-packages/cli/generators/datasource/connectors.json
 packages/tsdocs/fixtures/monorepo/docs
 packages/tsdocs/fixtures/monorepo/packages/pkg1/docs
 /docs/site/readmes

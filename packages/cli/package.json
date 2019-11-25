@@ -75,7 +75,6 @@
     "yeoman-generator": "^4.2.0"
   },
   "scripts": {
-    "build": "node ./bin/download-connector-list.js",
     "test": "lb-mocha \"test/**/*.js\"",
     "smoke-test": "lb-mocha --allow-console-logs \"smoke-test/**/*.smoke.js\""
   },

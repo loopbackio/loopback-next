@@ -1,0 +1,872 @@
+{
+  "memory": {
+    "name": "memory",
+    "description": "In-memory db",
+    "baseModel": "PersistedModel",
+    "features": {
+      "discovery": false,
+      "migration": false
+    },
+    "settings": {
+      "localStorage": {
+        "type": "string",
+        "message": "window.localStorage key to use for persistence (browser only)"
+      },
+      "file": {
+        "type": "string",
+        "message": "Full path to file for persistence (server only)"
+      }
+    },
+    "supportedByStrongLoop": true
+  },
+  "kv-memory": {
+    "name": "kv-memory",
+    "description": "In-memory key-value connector",
+    "baseModel": "KeyValueModel",
+    "features": {
+      "discovery": false,
+      "migration": false
+    },
+    "supportedByStrongLoop": true
+  },
+  "ibm-object-storage": {
+    "name": "ibm-object-storage",
+    "description": "IBM Object Storage",
+    "baseModel": "Model",
+    "features": {
+      "discovery": false,
+      "migration": false
+    },
+    "settings": {
+      "authUrl": {
+        "type": "string"
+      },
+      "tenantId": {
+        "type": "string"
+      },
+      "domainId": {
+        "type": "string"
+      },
+      "username": {
+        "type": "string"
+      },
+      "password": {
+        "type": "password"
+      },
+      "region": {
+        "type": "string"
+      }
+    },
+    "package": {
+      "name": "loopback-component-storage",
+      "version": "^3.5.0"
+    },
+    "supportedByStrongLoop": true
+  },
+  "db2": {
+    "name": "db2",
+    "description": "IBM DB2",
+    "baseModel": "PersistedModel",
+    "features": {
+      "discovery": true,
+      "migration": true
+    },
+    "settings": {
+      "dsn": {
+        "type": "string",
+        "message": "Connection String dsn to override other settings (eg: DATABASE=MY_DB;HOSTNAME=MY_HOST;PORT=MY_PORT;PROTOCOL=TCPIP;UID=MY_UID;PWD=MY_PWD))"
+      },
+      "host": {
+        "type": "string"
+      },
+      "port": {
+        "type": "number"
+      },
+      "user": {
+        "type": "string"
+      },
+      "password": {
+        "type": "password"
+      },
+      "database": {
+        "type": "string"
+      },
+      "schema": {
+        "type": "string"
+      }
+    },
+    "package": {
+      "name": "loopback-connector-db2",
+      "version": "^2.1.1"
+    },
+    "supportedByStrongLoop": true
+  },
+  "dashdb": {
+    "name": "dashdb",
+    "description": "IBM DashDB",
+    "baseModel": "PersistedModel",
+    "features": {
+      "discovery": true,
+      "migration": true
+    },
+    "settings": {
+      "dsn": {
+        "type": "string",
+        "message": "Connection String dsn to override other settings (eg: DATABASE=MY_DB;HOSTNAME=MY_HOST;PORT=MY_PORT;PROTOCOL=TCPIP;UID=MY_UID;PWD=MY_PWD))"
+      },
+      "host": {
+        "type": "string"
+      },
+      "port": {
+        "type": "number"
+      },
+      "user": {
+        "type": "string"
+      },
+      "password": {
+        "type": "password"
+      },
+      "database": {
+        "type": "string"
+      }
+    },
+    "package": {
+      "name": "loopback-connector-dashdb",
+      "version": "^2.0.2"
+    },
+    "supportedByStrongLoop": true
+  },
+  "mqlight": {
+    "name": "mqlight",
+    "description": "IBM MQ Light",
+    "baseModel": "Model",
+    "features": {
+      "discovery": false,
+      "migration": false
+    },
+    "settings": {
+      "service": {
+        "type": "string",
+        "message": "URL string for MQ Light service"
+      },
+      "user": {
+        "type": "string"
+      },
+      "password": {
+        "type": "password"
+      }
+    },
+    "package": {
+      "name": "loopback-connector-mqlight",
+      "version": "^3.1.0"
+    },
+    "supportedByStrongLoop": true
+  },
+  "cloudant": {
+    "name": "cloudant",
+    "description": "IBM Cloudant DB",
+    "baseModel": "PersistedModel",
+    "features": {
+      "discovery": false,
+      "migration": true
+    },
+    "settings": {
+      "url": {
+        "type": "string",
+        "message": "Connection String url to override other settings (eg: https://username:password@host)"
+      },
+      "database": {
+        "type": "string"
+      },
+      "username": {
+        "type": "string"
+      },
+      "password": {
+        "type": "password"
+      },
+      "modelIndex": {
+        "type": "string",
+        "message": "Specify the model name to document mapping, defaults to `loopback__model__name`"
+      }
+    },
+    "package": {
+      "name": "loopback-connector-cloudant",
+      "version": "^2.2.0"
+    },
+    "supportedByStrongLoop": true
+  },
+  "couchdb2": {
+    "name": "couchdb2",
+    "description": "Couchdb 2.x",
+    "baseModel": "PersistedModel",
+    "features": {
+      "discovery": false,
+      "migration": true
+    },
+    "settings": {
+      "url": {
+        "type": "string",
+        "message": "Connection String url to override other settings (eg: https://username:password@host)"
+      },
+      "database": {
+        "type": "string"
+      },
+      "username": {
+        "type": "string"
+      },
+      "password": {
+        "type": "password"
+      },
+      "modelIndex": {
+        "type": "string",
+        "message": "Specify the model name to document mapping, defaults to `loopback__model__name`"
+      }
+    },
+    "package": {
+      "name": "loopback-connector-couchdb2",
+      "version": "^1.3.0"
+    },
+    "supportedByStrongLoop": true
+  },
+  "db2z": {
+    "name": "db2z",
+    "description": "IBM DB2 for z/OS",
+    "baseModel": "PersistedModel",
+    "features": {
+      "discovery": true,
+      "migration": true
+    },
+    "settings": {
+      "dsn": {
+        "type": "string",
+        "message": "Connection String dsn to override other settings (eg: DATABASE=MY_DB;HOSTNAME=MY_HOST;PORT=MY_PORT;PROTOCOL=TCPIP;UID=MY_UID;PWD=MY_PWD))"
+      },
+      "host": {
+        "type": "string"
+      },
+      "port": {
+        "type": "number"
+      },
+      "user": {
+        "type": "string"
+      },
+      "password": {
+        "type": "password"
+      },
+      "database": {
+        "type": "string"
+      }
+    },
+    "package": {
+      "name": "loopback-connector-db2z",
+      "version": "^2.0.0"
+    },
+    "supportedByStrongLoop": true
+  },
+  "kv-extreme-scale": {
+    "name": "kv-extreme-scale",
+    "description": "IBM WebSphere eXtreme Scale key-value connector",
+    "baseModel": "KeyValueModel",
+    "features": {
+      "discovery": false,
+      "migration": false
+    },
+    "settings": {
+      "url": {
+        "type": "string",
+        "message": "Connection String url to override other settings (eg: https://user:pass@host:port/wxsdata/v1/grids/$GRID_NAME)"
+      },
+      "strictSSL": {
+        "type": "boolean",
+        "message": "Use SSL for connections to the grid"
+      }
+    },
+    "package": {
+      "name": "loopback-connector-kv-extreme-scale",
+      "version": "^1.0.1"
+    },
+    "supportedByStrongLoop": true
+  },
+  "cassandra": {
+    "name": "cassandra",
+    "description": "Cassandra",
+    "baseModel": "PersistedModel",
+    "features": {
+      "discovery": true,
+      "migration": true
+    },
+    "settings": {
+      "host": {
+        "type": "string"
+      },
+      "port": {
+        "type": "number",
+        "default": 9042
+      },
+      "user": {
+        "type": "string"
+      },
+      "password": {
+        "type": "password"
+      },
+      "database": {
+        "type": "string"
+      },
+      "connectTimeout": {
+        "type": "number",
+        "default": 30000,
+        "message": "connectTimeout(ms)"
+      },
+      "readTimeout": {
+        "type": "number",
+        "default": 30000,
+        "message": "readTimeout(ms)"
+      }
+    },
+    "package": {
+      "name": "loopback-connector-cassandra",
+      "version": "^1.7.0"
+    },
+    "supportedByStrongLoop": true
+  },
+  "grpc": {
+    "name": "grpc",
+    "description": "gRPC",
+    "baseModel": "Model",
+    "features": {
+      "discovery": false,
+      "migration": false
+    },
+    "package": {
+      "name": "loopback-connector-grpc",
+      "version": "^1.3.0"
+    },
+    "settings": {
+      "spec": {
+        "type": "string",
+        "message": "HTTP URL/path to gRPC spec file (file name extension .yaml/.yml or .json)"
+      },
+      "validate": {
+        "type": "boolean",
+        "message": "Validate spec against gRPC specification 2.0?"
+      },
+      "security": {
+        "type": "object",
+        "message": "Security config for making authenticated requests to API"
+      }
+    },
+    "supportedByStrongLoop": true
+  },
+  "kv-redis": {
+    "name": "kv-redis",
+    "description": "Redis key-value connector",
+    "baseModel": "KeyValueModel",
+    "features": {
+      "discovery": false,
+      "migration": false
+    },
+    "settings": {
+      "url": {
+        "type": "string",
+        "message": "Connection String url to override other settings (eg: redis://user:pass@host:port/db)"
+      },
+      "host": {
+        "type": "string"
+      },
+      "port": {
+        "type": "number"
+      },
+      "password": {
+        "type": "password"
+      },
+      "db": {
+        "type": "number"
+      }
+    },
+    "package": {
+      "name": "loopback-connector-kv-redis",
+      "version": "^3.0.0"
+    },
+    "supportedByStrongLoop": true
+  },
+  "mongodb": {
+    "name": "mongodb",
+    "description": "MongoDB",
+    "baseModel": "PersistedModel",
+    "features": {
+      "discovery": false,
+      "migration": true
+    },
+    "settings": {
+      "url": {
+        "type": "string",
+        "message": "Connection String url to override other settings (eg: mongodb://username:password@hostname:port/database)"
+      },
+      "host": {
+        "type": "string"
+      },
+      "port": {
+        "type": "number"
+      },
+      "user": {
+        "type": "string"
+      },
+      "password": {
+        "type": "password"
+      },
+      "database": {
+        "type": "string"
+      },
+      "useNewUrlParser": {
+        "type": "boolean",
+        "message": "Feature supported by MongoDB v3.1.0 and above"
+      }
+    },
+    "package": {
+      "name": "loopback-connector-mongodb",
+      "version": "^4.0.0"
+    },
+    "supportedByStrongLoop": true
+  },
+  "mysql": {
+    "name": "mysql",
+    "description": "MySQL",
+    "baseModel": "PersistedModel",
+    "features": {
+      "discovery": true,
+      "migration": true
+    },
+    "settings": {
+      "url": {
+        "type": "string",
+        "message": "Connection String url to override other settings (eg: mysql://user:pass@host/db)"
+      },
+      "host": {
+        "type": "string"
+      },
+      "port": {
+        "type": "number"
+      },
+      "user": {
+        "type": "string"
+      },
+      "password": {
+        "type": "password"
+      },
+      "database": {
+        "type": "string"
+      }
+    },
+    "package": {
+      "name": "loopback-connector-mysql",
+      "version": "^5.3.0"
+    },
+    "supportedByStrongLoop": true
+  },
+  "postgresql": {
+    "name": "postgresql",
+    "description": "PostgreSQL",
+    "baseModel": "PersistedModel",
+    "features": {
+      "discovery": true,
+      "migration": true
+    },
+    "settings": {
+      "url": {
+        "type": "string",
+        "message": "Connection String url to override other settings (eg: postgres://username:password@localhost/database)"
+      },
+      "host": {
+        "type": "string"
+      },
+      "port": {
+        "type": "number"
+      },
+      "user": {
+        "type": "string"
+      },
+      "password": {
+        "type": "password"
+      },
+      "database": {
+        "type": "string"
+      }
+    },
+    "package": {
+      "name": "loopback-connector-postgresql",
+      "version": "^3.4.0"
+    },
+    "supportedByStrongLoop": true
+  },
+  "oracle": {
+    "name": "oracle",
+    "description": "Oracle",
+    "baseModel": "PersistedModel",
+    "features": {
+      "discovery": true,
+      "migration": true
+    },
+    "settings": {
+      "tns": {
+        "type": "string",
+        "message": "Connection String tns (eg: DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=MY_HOST)(PORT=MY_PORT))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=MY_DB)))"
+      },
+      "host": {
+        "type": "string"
+      },
+      "port": {
+        "type": "number"
+      },
+      "user": {
+        "type": "string"
+      },
+      "password": {
+        "type": "password"
+      },
+      "database": {
+        "type": "string"
+      }
+    },
+    "package": {
+      "name": "loopback-connector-oracle",
+      "version": "^4.1.0"
+    },
+    "supportedByStrongLoop": true
+  },
+  "mssql": {
+    "name": "mssql",
+    "description": "Microsoft SQL",
+    "baseModel": "PersistedModel",
+    "features": {
+      "discovery": true,
+      "migration": true
+    },
+    "settings": {
+      "url": {
+        "type": "string",
+        "message": "Connection String url to override other settings (eg: mssql://username:password@localhost/database)"
+      },
+      "host": {
+        "type": "string"
+      },
+      "port": {
+        "type": "number"
+      },
+      "user": {
+        "type": "string"
+      },
+      "password": {
+        "type": "password"
+      },
+      "database": {
+        "type": "string"
+      }
+    },
+    "package": {
+      "name": "loopback-connector-mssql",
+      "version": "^3.3.0"
+    },
+    "supportedByStrongLoop": true
+  },
+  "openapi": {
+    "name": "openapi",
+    "description": "OpenAPI",
+    "baseModel": "Model",
+    "features": {
+      "discovery": false,
+      "migration": false
+    },
+    "package": {
+      "name": "loopback-connector-openapi",
+      "version": "^4.0.1"
+    },
+    "settings": {
+      "spec": {
+        "type": "string",
+        "message": "HTTP URL/path to Swagger spec file (file name extension .yaml/.yml or .json)"
+      },
+      "validate": {
+        "type": "boolean",
+        "message": "Validate spec against Swagger spec 2.0?"
+      },
+      "authorizations": {
+        "type": "object",
+        "message": "Security config for making authenticated requests to API"
+      },
+      "positional": {
+        "type": "boolean",
+        "message": "Use positional parameters instead of named parameters?"
+      }
+    },
+    "supportedByStrongLoop": true
+  },
+  "rest": {
+    "name": "rest",
+    "description": "REST services",
+    "baseModel": "Model",
+    "features": {
+      "discovery": false,
+      "migration": false
+    },
+    "settings": {
+      "baseURL": {
+        "type": "string",
+        "message": "Base URL for the REST service"
+      },
+      "options": {
+        "type": "object",
+        "message": "Default options for the request"
+      },
+      "operations": {
+        "type": "array",
+        "message": "An array of operation templates"
+      },
+      "crud": {
+        "type": "boolean",
+        "default": false,
+        "message": "Use default CRUD mapping"
+      }
+    },
+    "package": {
+      "name": "loopback-connector-rest",
+      "version": "^3.2.0"
+    },
+    "supportedByStrongLoop": true
+  },
+  "soap": {
+    "name": "soap",
+    "description": "SOAP webservices",
+    "baseModel": "Model",
+    "features": {
+      "discovery": false,
+      "migration": false
+    },
+    "package": {
+      "name": "loopback-connector-soap",
+      "version": "^4.3.0"
+    },
+    "settings": {
+      "url": {
+        "type": "string",
+        "message": "URL to the SOAP web service endpoint"
+      },
+      "wsdl": {
+        "type": "string",
+        "message": "HTTP URL or local file system path to the WSDL file"
+      },
+      "remotingEnabled": {
+        "type": "boolean",
+        "message": "Expose operations as REST APIs"
+      },
+      "operations": {
+        "type": "object",
+        "message": "Maps WSDL binding operations to Node.js methods"
+      }
+    },
+    "supportedByStrongLoop": true
+  },
+  "couchbase": {
+    "name": "couchbase",
+    "description": "Couchbase",
+    "baseModel": "PersistedModel",
+    "features": {
+      "discovery": false,
+      "migration": false
+    },
+    "settings": {
+      "host": {
+        "type": "string"
+      },
+      "port": {
+        "type": "number"
+      },
+      "n1qlport": {
+        "type": "number"
+      },
+      "name": {
+        "type": "string",
+        "message": "The name of the datasource"
+      },
+      "connectionTimeout": {
+        "type": "number"
+      },
+      "operationTimeout": {
+        "type": "number"
+      },
+      "env": {
+        "type": "string",
+        "message": "Environment variable for debugging"
+      }
+    },
+    "package": {
+      "name": "loopback-connector-couchbase",
+      "version": "^1.0.6"
+    },
+    "supportedByStrongLoop": false
+  },
+  "neo4j": {
+    "name": "neo4j",
+    "description": "Neo4j",
+    "baseModel": "PersistedModel",
+    "features": {
+      "discovery": false,
+      "migration": false
+    },
+    "package": {
+      "name": "loopback-connector-neo4j",
+      "version": "^0.1.3"
+    },
+    "supportedByStrongLoop": false
+  },
+  "twilio": {
+    "name": "twilio",
+    "description": "Twilio Connector",
+    "baseModel": "Model",
+    "features": {
+      "discovery": false,
+      "migration": false
+    },
+    "settings": {
+      "accountSid": {
+        "type": "string",
+        "message": "Twilio Account Sid"
+      },
+      "authToken": {
+        "type": "string",
+        "message": "Twilio Account AuthToken"
+      }
+    },
+    "package": {
+      "name": "loopback-connector-twilio",
+      "version": "^1.0.0"
+    },
+    "supportedByStrongLoop": false
+  },
+  "kafka": {
+    "name": "kafka",
+    "description": "Kafka",
+    "baseModel": "PersistedModel",
+    "features": {
+      "discovery": false,
+      "migration": false
+    },
+    "package": {
+      "name": "loopback-connector-kafka",
+      "version": "^0.2.1"
+    },
+    "supportedByStrongLoop": false
+  },
+  "saphana": {
+    "name": "saphana",
+    "description": "SAP HANA",
+    "baseModel": "PersistedModel",
+    "features": {
+      "discovery": true,
+      "migration": true
+    },
+    "settings": {
+      "host": {
+        "type": "string"
+      },
+      "port": {
+        "type": "number"
+      },
+      "user": {
+        "type": "string"
+      },
+      "password": {
+        "type": "password"
+      },
+      "database": {
+        "type": "string"
+      }
+    },
+    "package": {
+      "name": "loopback-connector-saphana",
+      "version": "^0.7.2"
+    },
+    "supportedByStrongLoop": false
+  },
+  "mail": {
+    "name": "mail",
+    "description": "Email",
+    "baseModel": "Email",
+    "features": {
+      "discovery": false,
+      "migration": false
+    },
+    "settings": {
+      "transports": {
+        "type": "array",
+        "message": "An array of transport configuration objects"
+      }
+    },
+    "supportedByStrongLoop": true
+  },
+  "es": {
+    "name": "es",
+    "description": "ElasticSearch",
+    "baseModel": "PersistedModel",
+    "features": {
+      "discovery": false,
+      "migration": false
+    },
+    "settings": {
+      "index": {
+        "type": "string",
+        "message": "ElasticSearch Index"
+      },
+      "hosts": {
+        "type": "array",
+        "message": "Hosts array"
+      },
+      "apiVersion": {
+        "type": "string",
+        "message": "API Version to use (ex: 2.2)"
+      },
+      "defaultSize": {
+        "type": "string",
+        "message": "Default results size"
+      },
+      "mappings": {
+        "type": "array",
+        "message": "Array of field mappings"
+      },
+      "settings": {
+        "type": "object",
+        "message": "Settings object"
+      }
+    },
+    "package": {
+      "name": "loopback-connector-es",
+      "version": "^1.4.1"
+    },
+    "supportedByStrongLoop": false
+  },
+  "zosconnectee": {
+    "name": "zosconnectee",
+    "description": "z/OS Connect Enterprise Edition",
+    "baseModel": "Model",
+    "features": {
+      "discovery": false,
+      "migration": false
+    },
+    "settings": {
+      "baseURL": {
+        "type": "string",
+        "message": "Base URL of the z/OS Connect Enterprise Edition server"
+      },
+      "user": {
+        "type": "string"
+      },
+      "password": {
+        "type": "password"
+      }
+    },
+    "package": {
+      "name": "loopback-connector-zosconnectee",
+      "version": "^1.0.0"
+    },
+    "supportedByStrongLoop": true
+  }
+}
