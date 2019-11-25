@@ -56,14 +56,62 @@ function getConfigFile(name, defaultName) {
 
 /**
  * Resolve the path of the cli command
- * @param {string} cli
+ * @param {string} cli CLI module path
+ * @param {object} options Options for module resolution
+ * - `resolveFromProjectFirst`: Try to resolve the CLI path from the package
+ *   dependencies of the current project first instead of `@loopback/build`
  */
-function resolveCLI(cli) {
-  const modulePath = './node_modules/' + cli;
-  try {
-    return require.resolve(path.join(getPackageDir(), modulePath));
-  } catch (e) {
+function resolveCLI(cli, options = {resolveFromProjectFirst: true}) {
+  const {resolveFromProjectFirst = true} = options;
+  if (resolveFromProjectFirst === false) {
     return require.resolve(cli);
+  }
+  try {
+    const pkgDir = getPackageDir();
+    const resolved = resolveCLIFromProject(cli, pkgDir);
+    if (resolved != null) return resolved;
+  } catch (e) {
+    // Ignore errors
+  }
+  return require.resolve(cli);
+}
+
+/**
+ * Parse the package name from the cli module path
+ * @param {string} cli CLI module path, such as `typescript/lib/tsc`
+ */
+function getPackageName(cli) {
+  const paths = cli.split('/');
+  if (paths[0].startsWith('@')) {
+    // The package name is `@<org>/<pkg>`
+    return `${paths[0]}/${paths[1]}`;
+  } else {
+    // The package name is `<pkg>`
+    return paths[0];
+  }
+}
+
+/**
+ * Resolve the cli from the current project
+ * @param {string} cli CLI module path, such as `typescript/lib/tsc`
+ * @param {string} projectRootDir The root directory for the project
+ */
+function resolveCLIFromProject(cli, projectRootDir = getPackageDir()) {
+  const cliPkg = getPackageName(cli);
+  debug(`Trying to resolve CLI module '%s' from %s`, cliPkg, projectRootDir);
+  // Try to load `package.json` for the current project
+  const pkg = require(path.join(projectRootDir, 'package.json'));
+  if (
+    (pkg.devDependencies && pkg.devDependencies[cliPkg]) ||
+    (pkg.dependencies && pkg.dependencies[cliPkg])
+  ) {
+    // The cli package is found in the project dependencies
+    const modulePath = './node_modules/' + cli;
+    const cliModule = require.resolve(path.join(projectRootDir, modulePath));
+    debug(`Resolved CLI module '%s': %s`, cliPkg, cliModule);
+    return cliModule;
+  } else {
+    debug(`CLI module '%s' is not found in dependencies`, cliPkg);
   }
 }
 
@@ -77,7 +125,7 @@ function resolveCLI(cli) {
  * to true, the command itself will be returned without running it
  */
 function runCLI(cli, args, options) {
-  cli = resolveCLI(cli);
+  cli = resolveCLI(cli, options && options.resolveFromProjectFirst);
   args = [cli].concat(args);
   debug('%s', args.join(' '));
   // Keep it backward compatible as dryRun
@@ -196,3 +244,5 @@ exports.runCLI = runCLI;
 exports.runShell = runShell;
 exports.isOptionSet = isOptionSet;
 exports.mochaConfiguredForProject = mochaConfiguredForProject;
+exports.resolveCLIFromProject = resolveCLIFromProject;
+exports.getPackageName = getPackageName;
