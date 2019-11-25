@@ -8,6 +8,7 @@
 const assert = require('assert');
 const path = require('path');
 const fs = require('fs-extra');
+const utils = require('../../bin/utils');
 
 describe('build', function() {
   // eslint-disable-next-line no-invalid-this
@@ -193,6 +194,24 @@ describe('build', function() {
     });
 
     after(() => delete process.env.LERNA_ROOT_PATH);
+  });
+
+  describe('resolveCLIFromProject()', () => {
+    it('returns undefined if the CLI is not found in project deps', () => {
+      assert.equal(
+        utils.resolveCLIFromProject('mocha/bin/mocha', projectDir),
+        undefined,
+      );
+    });
+
+    it('throws error if the CLI cannot be resolved', () => {
+      try {
+        utils.resolveCLIFromProject('typescript/bin/tsc', projectDir);
+        assert.fail('typescript/bin/tsc should not be resolved');
+      } catch (err) {
+        assert(err.message.match(/Cannot find module/));
+      }
+    });
   });
 });
 
