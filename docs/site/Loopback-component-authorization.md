@@ -8,40 +8,32 @@ permalink: /doc/en/lb4/Loopback-component-authorization.html
 
 ## Overview
 
-Authorization decides if a user can perform certain action on a resource. Every
-protected API endpoint needs to be restricted by specific permissions. Clients
-authenticate to get a token (JWT or similar) which they pass as authorization
-header in every API call. Every user has a set of permissions. These permissions
-can be included in the token as `scopes` and `roles`. The user identity is
-deducted from the incoming request by the `Authentication Component` as a
-`Principal`.
-
-LoopBack's authorization package,
-[@loopback/authorization](https://github.com/strongloop/loopback-next/tree/master/packages/authorization)
-provides various features and provisions to check access rights of a `Principal`
-on a API endpoint.
+Authorization decides if a subject can perform specific action on an object. Every
+protected API endpoint can restrict access based on roles or permissions.
+Clients authenticate to get a token (JWT or similar) which they pass as authorization
+header in every API call. User permissions are included in the token as `scopes` and `roles`.
+The user identity is deducted from the incoming request by the `Authentication Component` as `Principal`.
 
 ## Design
 
-LoopBack provides a highly extensible authorization module. It has an internal
-component which depends on user provided `Authorizers` to enforce access control
-policies on API endpoints.
+LoopBack's highly extensible authorization package
+[@loopback/authorization](https://github.com/strongloop/loopback-next/tree/master/packages/authorization)
+provides various features and provisions to check access rights of a `Principal` on a API endpoint.
 
-- [Authorization Component](##Authorization-Component)
+It provides,
+- a decorator `to annotate controller methods` with authorization metadata ([see, Configuring API Endpoints](##Configuring-API-Endpoints)) which consists of the following
+  - type of the protected resource (such as customer or order)
+  - allowed roles and denied roles (to provide ACL based rules)
+  - scopes (oauth scopes such as `delete public images` or `register user`)
+  - voters (supply a list of functions to vote on a decision)
 
-  - Authorization Interceptor
-
-- [Configuring API Endpoints](##Configuring-API-Endpoints)
-
-  - Authorization Decorator
-  - Authorization Metadata
-
-- [Programming Access Policies](##Programming-Access-Policies)
-  - Authorizers
-  - Voters
-  - Authorization Providers
+- an interceptor to enforce authorization with `user provided voters/authorizers` ([see, Programming Access Policies](##Programming-Access-Policies)) on API calls using,
+  - authorization metadata added by the decorator on the target controller method (roles, scopes, voters)
+  - a Principal/Subject deducted from the incoming request
+  - [a decision matrix](##Authorization-by-decision-matrix)
 
 ![Authorization](./imgs/authorization.png)
+
 
 ## Authorization Component
 
@@ -185,7 +177,7 @@ object of type `AuthorizationDecision`. If the type returned is
 `authorize()` function's criteria.
 
 
-## Authorization by voting and decision matrix
+## Authorization by decision matrix
 
 The final decision is controlled by voting results from authorizers and options
 for the authorization component.
