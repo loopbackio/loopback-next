@@ -7,6 +7,8 @@
   - `Inclusion of related models`
   - `Production deployment`
 - Complete the spikes for the migration guide
+- Community Support: focus on triaging and PR reviews in
+  `loopback-connector-mongodb` and/or `loopback-connector-postgresql`
 
 ## Goals
 
@@ -24,12 +26,10 @@
   - [ ] [3]Add user profile factory for authentication modules
         https://github.com/strongloop/loopback-next/issues/3846
 
-- [ ] [Epic] Add Support for Partitioned Database
+- [ ] Add Support for Partitioned Database
       https://github.com/strongloop/loopback-connector-cloudant/issues/219
 
-  - [ ] [3]Optimize query by reading partition key from payload
-        https://github.com/strongloop/loopback-connector-cloudant/issues/217
-  - [ ] Blog post
+  - [ ] [3] Blog post
         https://github.com/strongloop/loopback-connector-cloudant/issues/231
 
 - [ ] From model definition to REST API with no custom repository/controller
@@ -56,6 +56,8 @@
   - [ ] Id deleted on update on MongoDB #3267
   - [ ] TodoList tutorial - GET ​/todos​/{id}​/todo-list gives unexpected
         response #4147
+  - [ ] lb4 repository,model,controller commands generate artifacts with 'lint'
+        issues https://github.com/strongloop/loopback-next/issues/4205
 
 - [ ] Inclusion of Related Models (Post MVP)
 
