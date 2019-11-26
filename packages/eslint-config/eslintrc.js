@@ -148,7 +148,18 @@ module.exports = {
     '@typescript-eslint/no-empty-function': 'off',
     '@typescript-eslint/consistent-type-assertions': 'off',
     '@typescript-eslint/no-misused-promises': 'error',
+
+    '@typescript-eslint/prefer-optional-chain': 'error',
   },
+
+  overrides: [
+    {
+      files: ['**/*.js'],
+      rules: {
+        '@typescript-eslint/prefer-optional-chain': 'off',
+      },
+    },
+  ],
 };
 
 /**
