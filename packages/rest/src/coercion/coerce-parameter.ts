@@ -96,7 +96,7 @@ function coerceDatetime(
   if (typeof data === 'object' || isEmpty(data))
     throw RestHttpErrors.invalidData(data, spec.name);
 
-  if (options && options.dateOnly) {
+  if (options?.dateOnly) {
     if (!matchDateFormat(data))
       throw RestHttpErrors.invalidData(data, spec.name);
   } else {
@@ -131,7 +131,7 @@ function coerceInteger(
   const coercedInt = Number(data);
   if (isNaN(coercedInt!)) throw RestHttpErrors.invalidData(data, spec.name);
 
-  if (options && options.isLong) {
+  if (options?.isLong) {
     if (!Number.isInteger(coercedInt))
       throw RestHttpErrors.invalidData(data, spec.name);
   } else {

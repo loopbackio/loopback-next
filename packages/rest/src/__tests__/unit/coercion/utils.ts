@@ -132,7 +132,7 @@ function buildTestName<T>(
   expectedResult: T,
   opts?: TestOptions,
 ): string {
-  if (opts && opts.testName) return opts.testName;
+  if (opts?.testName) return opts.testName;
 
   const inputString = getPrettyString(rawValue);
   if (expectedResult instanceof HttpErrors.HttpError)

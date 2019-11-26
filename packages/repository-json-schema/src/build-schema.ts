@@ -88,7 +88,7 @@ export function getJsonSchema<T extends object>(
   // different titles as keys
   const cached = MetadataInspector.getClassMetadata(JSON_SCHEMA_KEY, ctor);
   const key = buildModelCacheKey(options);
-  let schema = cached && cached[key];
+  let schema = cached?.[key];
 
   if (!schema) {
     // Create new json schema from model

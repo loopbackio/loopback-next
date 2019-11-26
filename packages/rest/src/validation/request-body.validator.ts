@@ -38,7 +38,7 @@ export function validateRequestBody(
   globalSchemas: SchemasObject = {},
   options: RequestBodyValidationOptions = {},
 ) {
-  const required = requestBodySpec && requestBodySpec.required;
+  const required = requestBodySpec?.required;
 
   if (required && body.value == null) {
     const err = Object.assign(

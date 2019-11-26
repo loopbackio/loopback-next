@@ -470,8 +470,7 @@ function findOrCreateBindingForInjection(
   injection: Injection<unknown>,
   session?: ResolutionSession,
 ) {
-  if (injection.bindingSelector === '')
-    return session && session.currentBinding;
+  if (injection.bindingSelector === '') return session?.currentBinding;
   const bindingCreation =
     injection.metadata &&
     (injection.metadata as InjectBindingMetadata).bindingCreation;

@@ -110,7 +110,7 @@ export function service(
             `More than one bindings found for ${serviceTypeName}`,
           );
         } else {
-          if (metadata && metadata.optional) {
+          if (metadata?.optional) {
             return undefined;
           }
           throw new Error(

@@ -268,7 +268,7 @@ export class ResolutionSession {
     const binding = top.value;
     /* istanbul ignore if */
     if (debugSession.enabled) {
-      debugSession('Exit binding:', binding && binding.toJSON());
+      debugSession('Exit binding:', binding?.toJSON());
       debugSession('Resolution path:', this.getResolutionPath() || '<empty>');
     }
     return binding;

@@ -26,10 +26,9 @@ export namespace RestHttpErrors {
     contentType: string,
     allowedTypes: string[] = [],
   ) {
-    const msg =
-      allowedTypes && allowedTypes.length
-        ? `Content-type ${contentType} does not match [${allowedTypes}].`
-        : `Content-type ${contentType} is not supported.`;
+    const msg = allowedTypes?.length
+      ? `Content-type ${contentType} does not match [${allowedTypes}].`
+      : `Content-type ${contentType} is not supported.`;
     return Object.assign(new HttpErrors.UnsupportedMediaType(msg), {
       code: 'UNSUPPORTED_MEDIA_TYPE',
       contentType: contentType,

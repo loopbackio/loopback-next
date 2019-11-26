@@ -109,7 +109,7 @@ export abstract class BaseRouter implements RestRouter {
  */
 function normalizeVerb(verb: string) {
   // Use lower case, default to `get`
-  return (verb && verb.toLowerCase()) || 'get';
+  return verb?.toLowerCase() || 'get';
 }
 
 /**

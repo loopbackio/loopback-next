@@ -154,6 +154,6 @@ export class RoutingTable {
 
 function describeOperationParameters(opSpec: OperationObject) {
   return ((opSpec.parameters as ParameterObject[]) || [])
-    .map(p => (p && p.name) || '')
+    .map(p => p?.name || '')
     .join(', ');
 }
