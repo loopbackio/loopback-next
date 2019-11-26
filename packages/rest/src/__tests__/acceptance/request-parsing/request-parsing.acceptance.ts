@@ -123,8 +123,7 @@ describe('request parsing', () => {
         if (parser === 'stream') {
           parsedRequestBodyValue = request.body;
         }
-        const parserName =
-          typeof parser === 'string' ? parser : parser && parser.name;
+        const parserName = typeof parser === 'string' ? parser : parser?.name;
         return {key: 'new-value', parser: parserName};
       }
     }

@@ -52,7 +52,7 @@ export class Validator {
    */
   isRequired(opts?: ValidationOptions) {
     if (this.ctx.parameterSpec.required) return true;
-    if (opts && opts.required) return true;
+    if (opts?.required) return true;
     return false;
   }
 

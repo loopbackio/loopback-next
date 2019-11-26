@@ -51,7 +51,7 @@ export function instantiateClass<T>(
   /* istanbul ignore if */
   if (debug.enabled) {
     debug('Instantiating %s', getTargetName(ctor));
-    if (nonInjectedArgs && nonInjectedArgs.length) {
+    if (nonInjectedArgs?.length) {
       debug('Non-injected arguments:', nonInjectedArgs);
     }
   }
@@ -93,7 +93,7 @@ function resolveContext(
   injection: Readonly<Injection>,
   session?: ResolutionSession,
 ) {
-  const currentBinding = session && session.currentBinding;
+  const currentBinding = session?.currentBinding;
   if (
     currentBinding == null ||
     currentBinding.scope !== BindingScope.SINGLETON

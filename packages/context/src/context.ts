@@ -350,7 +350,7 @@ export class Context extends EventEmitter {
     const keyExists = this.registry.has(key);
     if (keyExists) {
       existingBinding = this.registry.get(key);
-      const bindingIsLocked = existingBinding && existingBinding.isLocked;
+      const bindingIsLocked = existingBinding?.isLocked;
       if (bindingIsLocked)
         throw new Error(`Cannot rebind key "${key}" to a locked binding`);
     }
@@ -502,7 +502,7 @@ export class Context extends EventEmitter {
     const binding = this.registry.get(key);
     // If not found, return `false`
     if (binding == null) return false;
-    if (binding && binding.isLocked)
+    if (binding?.isLocked)
       throw new Error(`Cannot unbind key "${key}" of a locked binding`);
     this.registry.delete(key);
     this.emit('unbind', binding, this);
@@ -885,7 +885,7 @@ export class Context extends EventEmitter {
       return this._parent.getBinding<ValueType>(key, options);
     }
 
-    if (options && options.optional) return undefined;
+    if (options?.optional) return undefined;
     throw new Error(
       `The key '${key}' is not bound to any value in context ${this.name}`,
     );

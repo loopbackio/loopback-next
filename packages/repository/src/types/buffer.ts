@@ -47,7 +47,7 @@ export class BufferType implements Type<Buffer> {
 
   serialize(value: Buffer | null | undefined, options?: Options) {
     if (value == null) return value;
-    const encoding = (options && options.encoding) || 'base64';
+    const encoding = options?.encoding || 'base64';
     return value.toString(encoding);
   }
 }

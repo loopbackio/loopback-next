@@ -18,7 +18,7 @@ export class InvalidRelationError<Props extends object = {}> extends Error {
     extraProperties?: Props,
   ) {
     const {name, type, source} = relationMeta;
-    const model = (source && source.modelName) || '<Unknown Model>';
+    const model = source?.modelName || '<Unknown Model>';
     const message = `Invalid ${type} definition for ${model}#${name}: ${reason}`;
     super(message);
 

@@ -285,8 +285,8 @@ describe('DefaultCrudRepository', () => {
       order: ['content DESC'],
     });
     expect(note).to.not.be.null();
-    expect(note && note.title).to.eql('t1');
-    expect(note && note.content).to.eql('c2');
+    expect(note?.title).to.eql('t1');
+    expect(note?.content).to.eql('c2');
   });
   it('returns null if Repository.findOne() does not return a value', async () => {
     const repo = new DefaultCrudRepository(Note, ds);
@@ -306,7 +306,7 @@ describe('DefaultCrudRepository', () => {
       const repo = new DefaultCrudRepository(Note, ds);
       const note = await repo.create({title: 'a-title', content: 'a-content'});
       const result = await repo.findById(note.id);
-      expect(result && result.toJSON()).to.eql(note.toJSON());
+      expect(result?.toJSON()).to.eql(note.toJSON());
     });
 
     it('throws when the instance does not exist', async () => {

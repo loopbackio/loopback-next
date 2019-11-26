@@ -93,7 +93,7 @@ export function requestBody(requestBodySpec?: Partial<RequestBodyObject>) {
 
     // Get the design time method parameter metadata
     const methodSig = MetadataInspector.getDesignTypeForMethod(target, member);
-    const paramTypes = (methodSig && methodSig.parameterTypes) || [];
+    const paramTypes = methodSig?.parameterTypes || [];
 
     const paramType = paramTypes[index];
     const schema = resolveSchema(paramType);

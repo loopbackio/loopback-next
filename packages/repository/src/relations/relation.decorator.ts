@@ -33,7 +33,7 @@ export function getModelRelations(
 ): RelationDefinitionMap {
   // Build model definitions if `@model` is missing
   const modelDef = buildModelDefinition(modelCtor);
-  return (modelDef && modelDef.relations) || {};
+  return modelDef?.relations || {};
 }
 
 //

@@ -34,7 +34,7 @@ export class AuthMetadataProvider
       this.methodName,
     );
     // Skip authentication if `skip` is `true`
-    if (metadata && metadata.skip) return undefined;
+    if (metadata?.skip) return undefined;
     if (metadata) return metadata;
     // Fall back to default metadata
     return this.options.defaultMetadata;

@@ -90,7 +90,7 @@ export class RestComponent implements Component {
     app.bind(RestBindings.SEQUENCE).toClass(DefaultSequence);
     const apiSpec = createEmptyApiSpec();
     // Merge the OpenAPI `servers` spec from the config into the empty one
-    if (config && config.openApiSpec && config.openApiSpec.servers) {
+    if (config?.openApiSpec?.servers) {
       Object.assign(apiSpec, {servers: config.openApiSpec.servers});
     }
     app.bind(RestBindings.API_SPEC).to(apiSpec);

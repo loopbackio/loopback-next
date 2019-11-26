@@ -68,7 +68,7 @@ export class Bootstrapper {
 
     // Bind booters passed in as a part of BootOptions
     // We use _bindBooter so this Class can be used without the Mixin
-    if (execOptions && execOptions.booters) {
+    if (execOptions?.booters) {
       execOptions.booters.forEach(booter => _bindBooter(this.app, booter));
     }
 

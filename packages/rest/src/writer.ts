@@ -31,7 +31,7 @@ export function writeResultToResponse(
   }
 
   const isStream =
-    result instanceof Readable || typeof (result && result.pipe) === 'function';
+    result instanceof Readable || typeof result?.pipe === 'function';
 
   if (isStream) {
     response.setHeader('Content-Type', 'application/octet-stream');

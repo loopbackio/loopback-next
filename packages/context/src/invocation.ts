@@ -189,7 +189,7 @@ function invokeTargetMethodWithInjection(
   /* istanbul ignore if */
   if (debug.enabled) {
     debug('Invoking method %s', methodName);
-    if (nonInjectedArgs && nonInjectedArgs.length) {
+    if (nonInjectedArgs?.length) {
       debug('Non-injected arguments:', nonInjectedArgs);
     }
   }

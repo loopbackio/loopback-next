@@ -164,7 +164,7 @@ describe('resolveMap', () => {
 
   it('does not set a key with value undefined', () => {
     const source = {a: 'x', b: undefined};
-    const result = resolveMap(source, v => v && v.toUpperCase());
+    const result = resolveMap(source, v => v?.toUpperCase());
     expect(result).to.not.have.property('b');
     expect(result).to.eql({a: 'X'});
   });
@@ -180,7 +180,7 @@ describe('resolveMap', () => {
   it('does not set a key with promise resolved to undefined', async () => {
     const source = {a: 'x', b: undefined};
     const result = await resolveMap(source, v =>
-      Promise.resolve(v && v.toUpperCase()),
+      Promise.resolve(v?.toUpperCase()),
     );
     expect(result).to.not.have.property('b');
     expect(result).to.eql({a: 'X'});
@@ -325,21 +325,20 @@ describe('resolveUntil', () => {
 
 describe('transformValueOrPromise', () => {
   it('transforms a value', () => {
-    const result = transformValueOrPromise('a', v => v && v.toUpperCase());
+    const result = transformValueOrPromise('a', v => v?.toUpperCase());
     expect(result).to.eql('A');
   });
 
   it('transforms a promise', async () => {
-    const result = await transformValueOrPromise(
-      Promise.resolve('a'),
-      v => v && v.toUpperCase(),
+    const result = await transformValueOrPromise(Promise.resolve('a'), v =>
+      v?.toUpperCase(),
     );
     expect(result).to.eql('A');
   });
 
   it('transforms a value to promise', async () => {
     const result = await transformValueOrPromise('a', v =>
-      Promise.resolve(v && v.toUpperCase()),
+      Promise.resolve(v?.toUpperCase()),
     );
     expect(result).to.eql('A');
   });

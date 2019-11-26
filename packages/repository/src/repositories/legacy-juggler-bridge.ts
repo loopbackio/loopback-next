@@ -364,7 +364,7 @@ export class DefaultCrudRepository<
     filter?: Filter<T>,
     options?: Options,
   ): Promise<(T & Relations)[]> {
-    const include = filter && filter.include;
+    const include = filter?.include;
     const models = await ensurePromise(
       this.modelClass.find(this.normalizeFilter(filter), options),
     );
@@ -381,7 +381,7 @@ export class DefaultCrudRepository<
     );
     if (!model) return null;
     const entity = this.toEntity(model);
-    const include = filter && filter.include;
+    const include = filter?.include;
     const resolved = await this.includeRelatedModels(
       [entity],
       include,
@@ -395,7 +395,7 @@ export class DefaultCrudRepository<
     filter?: Filter<T>,
     options?: Options,
   ): Promise<T & Relations> {
-    const include = filter && filter.include;
+    const include = filter?.include;
     const model = await ensurePromise(
       this.modelClass.findById(id, this.normalizeFilter(filter), options),
     );

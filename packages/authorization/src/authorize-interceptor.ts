@@ -64,7 +64,7 @@ export class AuthorizationInterceptor implements Provider<Interceptor> {
       debug('No authorization metadata is found for %s', description);
     }
     metadata = metadata || this.options.defaultMetadata;
-    if (!metadata || (metadata && metadata.skip)) {
+    if (!metadata || metadata?.skip) {
       debug('Authorization is skipped for %s', description);
       const result = await next();
       return result;

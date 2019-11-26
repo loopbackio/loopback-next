@@ -37,7 +37,7 @@ export function param(paramSpec: ParameterObject) {
     paramSpec = paramSpec || {};
     // Get the design time method parameter metadata
     const methodSig = MetadataInspector.getDesignTypeForMethod(target, member);
-    const paramTypes = (methodSig && methodSig.parameterTypes) || [];
+    const paramTypes = methodSig?.parameterTypes || [];
 
     // Map design-time parameter type to the OpenAPI param type
 
