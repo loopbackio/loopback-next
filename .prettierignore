@@ -15,6 +15,7 @@ packages/*/dist
 extensions/*/dist
 examples/*/dist
 benchmark/dist
+appsody/*/dist
 sandbox/**/*
 *.json
 CHANGELOG.md

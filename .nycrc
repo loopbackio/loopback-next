@@ -3,12 +3,14 @@
     "packages/*/dist",
     "extensions/*/dist",
     "packages/cli/",
+    "appsody/base/dist",
     "examples/*/dist"
   ],
   "exclude": [
     "packages/*/dist/__tests__/",
     "packages/cli/test/",
     "extensions/*/dist/__tests__/",
+    "appsody/base/dist/__tests__/",
     "examples/*/dist/__tests__/",
     "**/.sandbox/"
   ],
