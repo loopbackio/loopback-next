@@ -32,7 +32,14 @@ export function coerceParameter(
   data: string | undefined | object,
   spec: ParameterObject,
 ) {
+  if (!spec.schema && spec.content) {
+    const content = spec.content;
+    const jsonSpec = content['application/json'];
+    spec.schema = jsonSpec.schema;
+  }
+
   const schema = spec.schema;
+
   if (!schema || isReferenceObject(schema)) {
     debug(
       'The parameter with schema %s is not coerced since schema' +
@@ -172,7 +179,7 @@ function parseJsonIfNeeded(
 ): string | object | undefined {
   if (typeof data !== 'string') return data;
 
-  if (spec.in !== 'query' || spec.style !== 'deepObject') {
+  if (spec.in !== 'query' || (spec.style !== 'deepObject' && !spec.content)) {
     debug(
       'Skipping JSON.parse, argument %s is not in:query style:deepObject',
       spec.name,

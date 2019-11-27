@@ -229,12 +229,6 @@ describe('Routing metadata for parameters', () => {
       const expectedParamSpec = <ParameterObject>{
         name: 'filter',
         in: 'query',
-        style: 'deepObject',
-        explode: true,
-        schema: {
-          type: 'object',
-          additionalProperties: true,
-        },
         content: {
           'application/json': {
             schema: {type: 'object', additionalProperties: true},
@@ -261,8 +255,6 @@ describe('Routing metadata for parameters', () => {
       const expectedParamSpec: ParameterObject = {
         name: 'filter',
         in: 'query',
-        style: 'deepObject',
-        explode: true,
         content: {
           'application/json': {
             schema: {
@@ -272,13 +264,6 @@ describe('Routing metadata for parameters', () => {
                 limit: {type: 'number'},
               },
             },
-          },
-        },
-        schema: {
-          type: 'object',
-          properties: {
-            where: {type: 'object', additionalProperties: true},
-            limit: {type: 'number'},
           },
         },
       };
@@ -316,12 +301,6 @@ describe('Routing metadata for parameters', () => {
       name: 'filter',
       in: 'query',
       description: 'Search criteria',
-      style: 'deepObject',
-      explode: true,
-      schema: {
-        type: 'object',
-        additionalProperties: true,
-      },
       content: {
         'application/json': {
           schema: {type: 'object', additionalProperties: true},
