@@ -27,6 +27,14 @@ For a description of an `Authorization` process, please see [Authorization](Loop
 This document describes the details of the LoopBack 4 `Authentication` component
 from the `@loopback/authentication` package.
 
+{% include note.html content="
+If you just want to get started with authentication quickly,
+please see the minimalist [session tokens
+tutorial](tutorials/authentication/Quick-Authentication-Tutorial-Session-Tokens.md)
+or the complete [JSON Web Tokens
+tutorial](tutorials/authentication/Authentication-Tutorial.md).
+" %}
+
 Here is a **high level** overview of the authentication component.
 
 ![authentication_overview_highlevel](./imgs/authentication_overview_highlevel.png)
