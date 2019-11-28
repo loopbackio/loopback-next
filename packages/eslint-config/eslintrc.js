@@ -150,6 +150,7 @@ module.exports = {
     '@typescript-eslint/no-misused-promises': 'error',
 
     '@typescript-eslint/prefer-optional-chain': 'error',
+    '@typescript-eslint/no-untyped-public-signature': 'error',
   },
 
   overrides: [
@@ -157,6 +158,13 @@ module.exports = {
       files: ['**/*.js'],
       rules: {
         '@typescript-eslint/prefer-optional-chain': 'off',
+        '@typescript-eslint/no-untyped-public-signature': 'off',
+      },
+    },
+    {
+      files: ['**/__tests__/**/*.ts'],
+      rules: {
+        '@typescript-eslint/no-untyped-public-signature': 'off',
       },
     },
   ],
