@@ -65,7 +65,7 @@ export function config(
   propertyPath?: string | ConfigInjectionMetadata,
   metadata?: ConfigInjectionMetadata,
 ) {
-  propertyPath = propertyPath || '';
+  propertyPath = propertyPath ?? '';
   if (typeof propertyPath === 'object') {
     metadata = propertyPath;
     propertyPath = '';
@@ -87,7 +87,7 @@ export namespace config {
     propertyPath?: string | ConfigInjectionMetadata,
     metadata?: ConfigInjectionMetadata,
   ) {
-    propertyPath = propertyPath || '';
+    propertyPath = propertyPath ?? '';
     if (typeof propertyPath === 'object') {
       metadata = propertyPath;
       propertyPath = '';
@@ -109,7 +109,7 @@ export namespace config {
     propertyPath?: string | ConfigInjectionMetadata,
     metadata?: ConfigInjectionMetadata,
   ) {
-    propertyPath = propertyPath || '';
+    propertyPath = propertyPath ?? '';
     if (typeof propertyPath === 'object') {
       metadata = propertyPath;
       propertyPath = '';

@@ -57,7 +57,7 @@ export class RoutingTable {
 
     debug('Registering Controller with API %s', inspect(spec, {depth: null}));
 
-    const basePath = spec.basePath || '/';
+    const basePath = spec.basePath ?? '/';
     for (const p in spec.paths) {
       for (const verb in spec.paths[p]) {
         const opSpec: OperationObject = spec.paths[p][verb];

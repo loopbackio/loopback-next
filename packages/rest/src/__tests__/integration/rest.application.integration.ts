@@ -285,7 +285,7 @@ describe('RestApplication (integration)', () => {
   });
 
   function givenApplication(options?: {rest: RestServerConfig}) {
-    options = options || {rest: {port: 0, host: '127.0.0.1'}};
+    options = options ?? {rest: {port: 0, host: '127.0.0.1'}};
     restApp = new RestApplication(options);
   }
 });

@@ -125,7 +125,7 @@ function validateValueAgainstSchema(
 ) {
   let validate: AJV.ValidateFunction | undefined;
 
-  const cache = options.compiledSchemaCache || DEFAULT_COMPILED_SCHEMA_CACHE;
+  const cache = options.compiledSchemaCache ?? DEFAULT_COMPILED_SCHEMA_CACHE;
   const key = getKeyForOptions(options);
 
   let validatorMap: Map<string, AJV.ValidateFunction> | undefined;
@@ -136,7 +136,7 @@ function validateValueAgainstSchema(
 
   if (!validate) {
     validate = createValidator(schema, globalSchemas, options);
-    validatorMap = validatorMap || new Map();
+    validatorMap = validatorMap ?? new Map();
     validatorMap.set(key, validate);
     cache.set(schema, validatorMap);
   }

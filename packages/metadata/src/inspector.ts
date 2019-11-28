@@ -111,7 +111,7 @@ export class MetadataInspector {
     methodName?: string,
     options?: InspectionOptions,
   ): T | undefined {
-    methodName = methodName || '';
+    methodName = methodName ?? '';
     const meta: MetadataMap<T> = options?.ownMetadataOnly
       ? Reflector.getOwnMetadata(key.toString(), target)
       : Reflector.getMetadata(key.toString(), target);
@@ -171,7 +171,7 @@ export class MetadataInspector {
     methodName?: string,
     options?: InspectionOptions,
   ): T[] | undefined {
-    methodName = methodName || '';
+    methodName = methodName ?? '';
     const meta: MetadataMap<T[]> = options?.ownMetadataOnly
       ? Reflector.getOwnMetadata(key.toString(), target)
       : Reflector.getMetadata(key.toString(), target);

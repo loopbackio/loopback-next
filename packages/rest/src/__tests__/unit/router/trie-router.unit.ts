@@ -221,7 +221,7 @@ describe('trie router with options', () => {
     });
 
     function testNonStrictRouter(path: string, expected?: string) {
-      expected = expected || path;
+      expected = expected ?? path;
       const req = givenRequest({method: 'get', url: path});
       const route = router.find(req);
       expect(getRouteInfo(route)).to.containEql({

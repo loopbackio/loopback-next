@@ -91,7 +91,7 @@ export class DecoratorFactory<
       options,
     );
     const defaultDecoratorName = this.constructor.name.replace(/Factory$/, '');
-    this.decoratorName = this.options.decoratorName || defaultDecoratorName;
+    this.decoratorName = this.options.decoratorName ?? defaultDecoratorName;
     if (this.options.cloneInputSpec) {
       this.spec = DecoratorFactory.cloneDeep(spec);
     }

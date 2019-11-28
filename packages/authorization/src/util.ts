@@ -18,7 +18,7 @@ import {Principal, securityId, UserProfile} from '@loopback/security';
 export function createPrincipalFromUserProfile(user: UserProfile): Principal {
   return {
     ...user,
-    name: user.name || user[securityId],
+    name: user.name ?? user[securityId],
     type: 'USER',
   };
 }

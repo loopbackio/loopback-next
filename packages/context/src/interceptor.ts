@@ -67,7 +67,7 @@ export class InterceptedInvocationContext extends InvocationContext {
     const orderedGroups =
       this.getSync(ContextBindings.GLOBAL_INTERCEPTOR_ORDERED_GROUPS, {
         optional: true,
-      }) || [];
+      }) ?? [];
     return sortBindingsByPhase(
       bindings,
       ContextTags.GLOBAL_INTERCEPTOR_GROUP,
@@ -88,11 +88,11 @@ export class InterceptedInvocationContext extends InvocationContext {
         INTERCEPT_METHOD_KEY,
         this.target,
         this.methodName,
-      ) || [];
+      ) ?? [];
     const targetClass =
       typeof this.target === 'function' ? this.target : this.target.constructor;
     const classInterceptors =
-      MetadataInspector.getClassMetadata(INTERCEPT_CLASS_KEY, targetClass) ||
+      MetadataInspector.getClassMetadata(INTERCEPT_CLASS_KEY, targetClass) ??
       [];
     // Inserting class level interceptors before method level ones
     interceptors = mergeInterceptors(classInterceptors, interceptors);

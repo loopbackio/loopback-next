@@ -65,7 +65,7 @@ export class Validator {
   isAbsent(value: any) {
     if (value === '' || value === undefined) return true;
 
-    const schema: SchemaObject = this.ctx.parameterSpec.schema || {};
+    const schema: SchemaObject = this.ctx.parameterSpec.schema ?? {};
     if (schema.type === 'object' && value === 'null') return true;
 
     return false;

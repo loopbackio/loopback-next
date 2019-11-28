@@ -8,7 +8,7 @@ import {Benchmark, Options} from './benchmark';
 export {Benchmark, Options};
 
 export async function main() {
-  const duration = process.env.DURATION || '30';
+  const duration = process.env.DURATION ?? '30';
   const options: Options = {
     duration: +duration,
   };

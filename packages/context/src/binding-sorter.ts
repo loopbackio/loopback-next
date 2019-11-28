@@ -85,8 +85,8 @@ export function compareByOrder(
   b: string | symbol | undefined | null,
   order: (string | symbol)[] = [],
 ) {
-  a = a || '';
-  b = b || '';
+  a = a ?? '';
+  b = b ?? '';
   const i1 = order.indexOf(a);
   const i2 = order.indexOf(b);
   if (i1 !== -1 || i2 !== -1) {

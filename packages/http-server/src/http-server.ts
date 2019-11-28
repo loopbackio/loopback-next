@@ -96,7 +96,7 @@ export class HttpServer {
       // Remove `port` so that `path` is honored
       delete this.serverOptions.port;
     }
-    this._protocol = serverOptions ? serverOptions.protocol || 'http' : 'http';
+    this._protocol = serverOptions ? serverOptions.protocol ?? 'http' : 'http';
     if (this._protocol === 'https') {
       this.server = https.createServer(
         this.serverOptions as https.ServerOptions,

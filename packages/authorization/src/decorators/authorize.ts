@@ -78,7 +78,7 @@ export class AuthorizeMethodDecoratorFactory extends MethodDecoratorFactory<
 
   private merge<T>(src?: T[], target?: T[]): T[] {
     const list: T[] = [];
-    const set = new Set<T>(src || []);
+    const set = new Set<T>(src ?? []);
     if (target) {
       for (const i of target) {
         set.add(i);

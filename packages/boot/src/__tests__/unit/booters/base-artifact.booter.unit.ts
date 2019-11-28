@@ -75,6 +75,6 @@ describe('base-artifact booter unit tests', () => {
   });
 
   function givenBaseBooter(options?: ArtifactOptions) {
-    return new BaseArtifactBooter(__dirname, options || TEST_OPTIONS);
+    return new BaseArtifactBooter(__dirname, options ?? TEST_OPTIONS);
   }
 });

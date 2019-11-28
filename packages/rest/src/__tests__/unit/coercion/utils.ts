@@ -122,7 +122,7 @@ export function test<T>(
       expectedResult,
       caller,
       expectError: expectedResult instanceof HttpErrors.HttpError,
-      opts: opts || {},
+      opts: opts ?? {},
     });
   });
 }

@@ -143,7 +143,7 @@ describe('Trie', () => {
     const resolved = trie.match(route);
     expect(resolved).not.is.undefined();
     expect(resolved!.node).to.containEql({value});
-    params = params || {};
+    params = params ?? {};
     expect(resolved!.params).to.eql(params);
   }
 

@@ -64,7 +64,7 @@ export class ControllerRoute<T> extends BaseRoute {
     methodName?: string,
   ) {
     const controllerName = spec['x-controller-name'] || controllerCtor.name;
-    methodName = methodName || spec['x-operation-name'];
+    methodName = methodName ?? spec['x-operation-name'];
 
     if (!methodName) {
       throw new Error(
@@ -90,7 +90,7 @@ export class ControllerRoute<T> extends BaseRoute {
     );
 
     this._controllerFactory =
-      controllerFactory || createControllerFactoryForClass(controllerCtor);
+      controllerFactory ?? createControllerFactoryForClass(controllerCtor);
     this._controllerCtor = controllerCtor;
     this._controllerName = controllerName || controllerCtor.name;
     this._methodName = methodName;

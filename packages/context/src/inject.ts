@@ -315,7 +315,7 @@ export namespace inject {
     metadata?: InjectBindingMetadata,
   ) {
     metadata = Object.assign({decorator: '@inject.binding'}, metadata);
-    return inject(bindingKey || '', metadata, resolveAsBinding);
+    return inject(bindingKey ?? '', metadata, resolveAsBinding);
   };
 
   /**
@@ -395,7 +395,7 @@ export function assertTargetType(
   const targetName = ResolutionSession.describeInjection(injection).targetName;
   const targetType = inspectTargetType(injection);
   if (targetType && targetType !== expectedType) {
-    expectedTypeName = expectedTypeName || expectedType.name;
+    expectedTypeName = expectedTypeName ?? expectedType.name;
     throw new Error(
       `The type of ${targetName} (${targetType.name}) is not ${expectedTypeName}`,
     );
@@ -553,7 +553,7 @@ export function describeInjectedArguments(
   target: Object,
   method?: string,
 ): Readonly<Injection>[] {
-  method = method || '';
+  method = method ?? '';
 
   // Try to read from cache
   const cache =
@@ -563,7 +563,7 @@ export function describeInjectedArguments(
       {
         ownMetadataOnly: true,
       },
-    ) || {};
+    ) ?? {};
   let meta: Readonly<Injection>[] = cache[method];
   if (meta) return meta;
 
@@ -584,7 +584,7 @@ export function describeInjectedArguments(
       target,
       method,
       options,
-    ) || [];
+    ) ?? [];
 
   // Cache the result
   cache[method] = meta;
@@ -695,6 +695,6 @@ export function describeInjectedProperties(
     MetadataInspector.getAllPropertyMetadata<Readonly<Injection>>(
       PROPERTIES_KEY,
       target,
-    ) || {};
+    ) ?? {};
   return metadata;
 }

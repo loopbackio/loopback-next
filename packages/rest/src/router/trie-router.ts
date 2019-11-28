@@ -42,7 +42,7 @@ export class TrieRouter extends BaseRouter {
       const route = found.node.value!;
       if (route) {
         debug('Route found: %s', inspect(route, {depth: 5}));
-        return createResolvedRoute(route, found.params || {});
+        return createResolvedRoute(route, found.params ?? {});
       }
     }
     return undefined;

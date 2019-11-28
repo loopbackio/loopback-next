@@ -72,7 +72,7 @@ export function buildModelCacheKey<T extends object>(
   // New key schema: use the same suffix as we use for schema title
   // For example: "modelPartialWithRelations"
   // Note this new key schema preserves the old key "modelWithRelations"
-  return 'model' + (options.title || '') + getTitleSuffix(options);
+  return 'model' + (options.title ?? '') + getTitleSuffix(options);
 }
 
 /**
@@ -357,8 +357,8 @@ export function modelToJsonSchema<T extends object>(
   jsonSchemaOptions: JsonSchemaOptions<T> = {},
 ): JSONSchema {
   const options = {...jsonSchemaOptions};
-  options.visited = options.visited || {};
-  options.optional = options.optional || [];
+  options.visited = options.visited ?? {};
+  options.optional = options.optional ?? [];
   const partial = options.partial && !options.optional.length;
 
   if (options.partial && !partial) {
@@ -404,7 +404,7 @@ export function modelToJsonSchema<T extends object>(
       continue;
     }
 
-    result.properties = result.properties || {};
+    result.properties = result.properties ?? {};
     result.properties[p] = result.properties[p] || {};
 
     const metaProperty = Object.assign({}, meta.properties[p]);
@@ -416,7 +416,7 @@ export function modelToJsonSchema<T extends object>(
     const optional = options.optional.includes(p as keyof T);
 
     if (metaProperty.required && !(partial || optional)) {
-      result.required = result.required || [];
+      result.required = result.required ?? [];
       result.required.push(p);
     }
 
@@ -444,7 +444,7 @@ export function modelToJsonSchema<T extends object>(
 
   if (options.includeRelations) {
     for (const r in meta.relations) {
-      result.properties = result.properties || {};
+      result.properties = result.properties ?? {};
       const relMeta = meta.relations[r];
       const targetType = resolveType(relMeta.target);
       const targetSchema = getJsonSchema(targetType, options);
@@ -464,14 +464,14 @@ export function modelToJsonSchema<T extends object>(
     if (result !== schema && schema.definitions) {
       for (const key in schema.definitions) {
         if (key === title) continue;
-        result.definitions = result.definitions || {};
+        result.definitions = result.definitions ?? {};
         result.definitions[key] = schema.definitions[key];
       }
       delete schema.definitions;
     }
 
     if (result !== schema) {
-      result.definitions = result.definitions || {};
+      result.definitions = result.definitions ?? {};
       result.definitions[name] = schema;
     }
   }

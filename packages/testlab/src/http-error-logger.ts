@@ -27,7 +27,7 @@ export function createUnexpectedHttpErrorLogger(
       req.method,
       req.url,
       statusCode,
-      err.stack || err,
+      err.stack ?? err,
     );
   };
 }

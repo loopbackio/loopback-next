@@ -194,7 +194,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
     this.bind(RestBindings.PORT).to(this.config.port);
     this.bind(RestBindings.HOST).to(config.host);
     this.bind(RestBindings.PATH).to(config.path);
-    this.bind(RestBindings.PROTOCOL).to(config.protocol || 'http');
+    this.bind(RestBindings.PROTOCOL).to(config.protocol ?? 'http');
     this.bind(RestBindings.HTTPS_OPTIONS).to(config as ServerOptions);
 
     if (config.requestBodyParser) {
@@ -424,7 +424,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
       this.config,
     );
 
-    specForm = specForm || {version: '3.0.0', format: 'json'};
+    specForm = specForm ?? {version: '3.0.0', format: 'json'};
     const specObj = this.getApiSpec(requestContext);
 
     if (specForm.format === 'json') {
@@ -707,7 +707,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
     // accidentally modifying our internal routing data
     spec.paths = cloneDeep(this.httpHandler.describeApiPaths());
     if (defs) {
-      spec.components = spec.components || {};
+      spec.components = spec.components ?? {};
       spec.components.schemas = cloneDeep(defs);
     }
 
@@ -928,7 +928,7 @@ export function createBodyParserBinding(
   key?: BindingAddress<BodyParser>,
 ): Binding<BodyParser> {
   const address =
-    key || `${RestBindings.REQUEST_BODY_PARSER}.${parserClass.name}`;
+    key ?? `${RestBindings.REQUEST_BODY_PARSER}.${parserClass.name}`;
   return Binding.bind<BodyParser>(address)
     .toClass(parserClass)
     .inScope(BindingScope.TRANSIENT)
@@ -1093,11 +1093,11 @@ function resolveRestServerConfig(
 function normalizeApiExplorerConfig(
   input: ApiExplorerOptions | undefined,
 ): ApiExplorerOptions {
-  const config = input || {};
-  const url = config.url || 'https://explorer.loopback.io';
+  const config = input ?? {};
+  const url = config.url ?? 'https://explorer.loopback.io';
 
   config.httpUrl =
-    config.httpUrl || config.url || 'http://explorer.loopback.io';
+    config.httpUrl ?? config.url ?? 'http://explorer.loopback.io';
 
   config.url = url;
 

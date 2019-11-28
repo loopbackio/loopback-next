@@ -162,7 +162,7 @@ export function createServiceBinding<S>(
   const binding = createBindingFromClass(cls, {
     name,
     type: CoreTags.SERVICE,
-  }).apply(asService(options.interface || cls));
+  }).apply(asService(options.interface ?? cls));
   return binding;
 }
 

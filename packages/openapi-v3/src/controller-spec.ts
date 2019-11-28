@@ -81,7 +81,7 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
     MetadataInspector.getAllMethodMetadata<RestEndpoint>(
       OAI3Keys.METHODS_KEY,
       constructor.prototype,
-    ) || {};
+    ) ?? {};
 
   endpoints = DecoratorFactory.cloneDeep(endpoints);
   for (const op in endpoints) {
@@ -121,7 +121,7 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
       const responseObject: ResponseObject | ReferenceObject =
         operationSpec.responses[code];
       if (isReferenceObject(responseObject)) continue;
-      const content = responseObject.content || {};
+      const content = responseObject.content ?? {};
       for (const c in content) {
         debug('  processing response code %s with content-type %', code, c);
         processSchemaExtensions(spec, content[c].schema);

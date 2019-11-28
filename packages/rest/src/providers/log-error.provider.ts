@@ -21,7 +21,7 @@ export class LogErrorProvider implements Provider<LogError> {
       req.method,
       req.url,
       statusCode,
-      err.stack || err,
+      err.stack ?? err,
     );
   }
 }

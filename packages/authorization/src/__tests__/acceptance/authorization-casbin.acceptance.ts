@@ -145,7 +145,7 @@ describe('Authorization', () => {
       events.push(authorizationCtx.resource);
       const request: AuthorizationRequest = {
         subject: authorizationCtx.principals[0].name,
-        object: metadata.resource || authorizationCtx.resource,
+        object: metadata.resource ?? authorizationCtx.resource,
         action: (metadata.scopes && metadata.scopes[0]) || 'execute',
       };
       const allow = await this.enforcer.enforce(

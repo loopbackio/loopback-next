@@ -9,11 +9,11 @@ const connector = require('loopback-connector-postgresql');
 
 export const POSTGRESQL_CONFIG: DataSourceOptions = {
   connector,
-  host: process.env.POSTGRESQL_HOST || 'localhost',
-  port: process.env.POSTGRESQL_PORT || 5432,
-  database: process.env.POSTGRESQL_DATABASE || 'repository_tests',
-  username: process.env.POSTGRESQL_USER || 'root',
-  password: process.env.POSTGRESQL_PASSWORD || 'pass',
+  host: process.env.POSTGRESQL_HOST ?? 'localhost',
+  port: process.env.POSTGRESQL_PORT ?? 5432,
+  database: process.env.POSTGRESQL_DATABASE ?? 'repository_tests',
+  username: process.env.POSTGRESQL_USER ?? 'root',
+  password: process.env.POSTGRESQL_PASSWORD ?? 'pass',
 };
 
 export const POSTGRESQL_FEATURES: Partial<CrudFeatures> = {

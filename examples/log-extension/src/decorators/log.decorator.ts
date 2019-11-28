@@ -43,6 +43,6 @@ export function getLogMetadata(
       EXAMPLE_LOG_METADATA_KEY,
       controllerClass.prototype,
       methodName,
-    ) || {level: LOG_LEVEL.OFF}
+    ) ?? {level: LOG_LEVEL.OFF}
   );
 }

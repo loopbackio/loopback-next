@@ -97,12 +97,12 @@ export class ExplorerController {
     if (this.useSelfHostedSpec) {
       return './' + ExplorerController.OPENAPI_RELATIVE_URL;
     }
-    const openApiConfig = restConfig.openApiSpec || {};
-    const endpointMapping = openApiConfig.endpointMapping || {};
+    const openApiConfig = restConfig.openApiSpec ?? {};
+    const endpointMapping = openApiConfig.endpointMapping ?? {};
     const endpoint = Object.keys(endpointMapping).find(k =>
       isOpenApiV3Json(endpointMapping[k]),
     );
-    return endpoint || '/openapi.json';
+    return endpoint ?? '/openapi.json';
   }
 }
 

@@ -53,7 +53,7 @@ describe('getFilterJsonSchemaFor', () => {
     const filter = {where: 'invalid-where'};
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     ajv.validate(customerFilterSchema, filter);
-    expect(ajv.errors || []).to.containDeep([
+    expect(ajv.errors ?? []).to.containDeep([
       {
         keyword: 'type',
         dataPath: '.where',
@@ -66,7 +66,7 @@ describe('getFilterJsonSchemaFor', () => {
     const filter = {fields: 'invalid-fields'};
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     ajv.validate(customerFilterSchema, filter);
-    expect(ajv.errors || []).to.containDeep([
+    expect(ajv.errors ?? []).to.containDeep([
       {
         keyword: 'type',
         dataPath: '.fields',
@@ -79,7 +79,7 @@ describe('getFilterJsonSchemaFor', () => {
     const filter = {include: 'invalid-include'};
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     ajv.validate(customerFilterSchema, filter);
-    expect(ajv.errors || []).to.containDeep([
+    expect(ajv.errors ?? []).to.containDeep([
       {
         keyword: 'type',
         dataPath: '.include',
@@ -89,7 +89,7 @@ describe('getFilterJsonSchemaFor', () => {
   });
 
   it('leaves out "include" for models with no relations', () => {
-    const filterProperties = Object.keys(orderFilterSchema.properties || {});
+    const filterProperties = Object.keys(orderFilterSchema.properties ?? {});
     expect(filterProperties).to.not.containEql('include');
   });
 
@@ -97,7 +97,7 @@ describe('getFilterJsonSchemaFor', () => {
     const filter = {offset: 'invalid-offset'};
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     ajv.validate(customerFilterSchema, filter);
-    expect(ajv.errors || []).to.containDeep([
+    expect(ajv.errors ?? []).to.containDeep([
       {
         keyword: 'type',
         dataPath: '.offset',
@@ -110,7 +110,7 @@ describe('getFilterJsonSchemaFor', () => {
     const filter = {limit: 'invalid-limit'};
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     ajv.validate(customerFilterSchema, filter);
-    expect(ajv.errors || []).to.containDeep([
+    expect(ajv.errors ?? []).to.containDeep([
       {
         keyword: 'type',
         dataPath: '.limit',
@@ -123,7 +123,7 @@ describe('getFilterJsonSchemaFor', () => {
     const filter = {skip: 'invalid-skip'};
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     ajv.validate(customerFilterSchema, filter);
-    expect(ajv.errors || []).to.containDeep([
+    expect(ajv.errors ?? []).to.containDeep([
       {
         keyword: 'type',
         dataPath: '.skip',
@@ -136,7 +136,7 @@ describe('getFilterJsonSchemaFor', () => {
     const filter = {order: 'invalid-order'};
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     ajv.validate(customerFilterSchema, filter);
-    expect(ajv.errors || []).to.containDeep([
+    expect(ajv.errors ?? []).to.containDeep([
       {
         keyword: 'type',
         dataPath: '.order',

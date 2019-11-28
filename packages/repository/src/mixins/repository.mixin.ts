@@ -110,13 +110,17 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
     ): Binding<D> {
       // We have an instance of
       if (dataSource instanceof juggler.DataSource) {
-        const key = `datasources.${name || dataSource.name}`;
+        // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+        name = name || dataSource.name;
+        const key = `datasources.${name}`;
         return this.bind(key)
           .to(dataSource)
           .tag('datasource');
       } else if (typeof dataSource === 'function') {
+        // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+        name = name || dataSource.dataSourceName;
         const binding = createBindingFromClass(dataSource, {
-          name: name || dataSource.dataSourceName,
+          name,
           namespace: 'datasources',
           type: 'datasource',
           defaultScope: BindingScope.SINGLETON,

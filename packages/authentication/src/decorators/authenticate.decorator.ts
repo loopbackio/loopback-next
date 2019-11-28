@@ -46,7 +46,7 @@ export function authenticate(
     if (typeof strategyNameOrMetadata === 'object') {
       spec = strategyNameOrMetadata;
     } else {
-      spec = {strategy: strategyNameOrMetadata, options: options || {}};
+      spec = {strategy: strategyNameOrMetadata, options: options ?? {}};
     }
     if (method && methodDescriptor) {
       // Method

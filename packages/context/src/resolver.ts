@@ -201,7 +201,7 @@ export function resolveInjectedArguments(
   // Example value:
   //   [ , 'key1', , 'key2']
   const injectedArgs = describeInjectedArguments(target, method);
-  const extraArgs = nonInjectedArgs || [];
+  const extraArgs = nonInjectedArgs ?? [];
 
   let argLength = DecoratorFactory.getNumberOfParameters(target, method);
 

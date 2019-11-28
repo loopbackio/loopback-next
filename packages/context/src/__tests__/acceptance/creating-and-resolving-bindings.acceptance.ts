@@ -94,7 +94,7 @@ describe('Context bindings - Creating and resolving bindings', () => {
       function createDynamicBinding() {
         const data = ['a', 'b', 'c'];
         ctx.bind('data').toDynamicValue(function() {
-          return data.shift() || '(empty)';
+          return data.shift() ?? '(empty)';
         });
       }
     });
