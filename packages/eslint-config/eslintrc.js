@@ -152,6 +152,7 @@ module.exports = {
     '@typescript-eslint/prefer-optional-chain': 'error',
     '@typescript-eslint/prefer-nullish-coalescing': 'error',
     '@typescript-eslint/no-extra-non-null-assertion': 'error',
+    '@typescript-eslint/return-await': 'error',
   },
 
   overrides: [
