@@ -87,7 +87,7 @@ export function ServiceMixin<T extends Class<any>>(superClass: T) {
      * app.component(ProductComponent);
      * ```
      */
-    public component(component: Class<unknown>, name?: string) {
+    public component(component: Class<unknown>, name?: string): void {
       super.component(component, name);
       this.mountComponentServices(component);
     }
@@ -99,7 +99,7 @@ export function ServiceMixin<T extends Class<any>>(superClass: T) {
      *
      * @param component - The component to mount services of
      */
-    mountComponentServices(component: Class<unknown>) {
+    mountComponentServices(component: Class<unknown>): void {
       const componentKey = `components.${component.name}`;
       const compInstance = this.getSync(componentKey);
 
@@ -197,5 +197,5 @@ export class ServiceMixinDoc {
    *
    * @param component - The component to mount services of
    */
-  mountComponentServices(component: Class<unknown>) {}
+  mountComponentServices(component: Class<unknown>): void {}
 }

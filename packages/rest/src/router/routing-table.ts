@@ -46,7 +46,7 @@ export class RoutingTable {
     spec: ControllerSpec,
     controllerCtor: ControllerClass<T>,
     controllerFactory?: ControllerFactory<T>,
-  ) {
+  ): void {
     assert(
       typeof spec === 'object' && !!spec,
       'API specification must be a non-null object',
@@ -74,7 +74,7 @@ export class RoutingTable {
     }
   }
 
-  static joinPath(basePath: string, path: string) {
+  static joinPath(basePath: string, path: string): string {
     const fullPath = [basePath, path]
       .join('/') // Join by /
       .replace(/(\/){2,}/g, '/') // Remove extra /
@@ -87,7 +87,7 @@ export class RoutingTable {
    * Register a route
    * @param route - A route entry
    */
-  registerRoute(route: RouteEntry) {
+  registerRoute(route: RouteEntry): void {
     // TODO(bajtos) handle the case where opSpec.parameters contains $ref
     // See https://github.com/strongloop/loopback-next/issues/435
     /* istanbul ignore if */

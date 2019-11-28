@@ -280,7 +280,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
    * @param path Path at which to host the copy of the OpenAPI
    * @param form Form that should be renedered from that path
    */
-  addOpenApiSpecEndpoint(path: string, form: OpenApiSpecForm) {
+  addOpenApiSpecEndpoint(path: string, form: OpenApiSpecForm): void {
     if (this._expressApp) {
       // if the app is already started, try to hot-add it
       // this only actually "works" mid-startup, once this._handleHttpRequest
@@ -658,7 +658,11 @@ export class RestServer extends Context implements Server, HttpServerLike {
    * @param rootDir - The root directory from which to serve static assets
    * @param options - Options for serve-static
    */
-  static(path: PathParams, rootDir: string, options?: ServeStaticOptions) {
+  static(
+    path: PathParams,
+    rootDir: string,
+    options?: ServeStaticOptions,
+  ): void {
     this._externalRoutes.registerAssets(path, rootDir, options);
   }
 
@@ -767,7 +771,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
    *
    * @param value - The sequence to invoke for each incoming request.
    */
-  public sequence(value: Constructor<SequenceHandler>) {
+  public sequence(value: Constructor<SequenceHandler>): void {
     this.bind(RestBindings.SEQUENCE).toClass(value);
   }
 
@@ -783,7 +787,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
    *
    * @param handlerFn - The handler to invoke for each incoming request.
    */
-  public handler(handlerFn: SequenceFunction) {
+  public handler(handlerFn: SequenceFunction): void {
     class SequenceFromFunction extends DefaultSequence {
       // NOTE(bajtos) Unfortunately, we have to duplicate the constructor
       // in order for our DI/IoC framework to inject constructor arguments
@@ -824,7 +828,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
    * Configure the `basePath` for the rest server
    * @param path - Base path
    */
-  basePath(path = '') {
+  basePath(path = ''): void {
     if (this._requestHandler != null) {
       throw new Error(
         'Base path cannot be set as the request handler has been created',
@@ -877,7 +881,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
   /**
    * Stop this REST API's HTTP/HTTPS server.
    */
-  async stop() {
+  async stop(): Promise<void> {
     // Kill the server instance.
     if (!this._httpServer) return;
     await this._httpServer.stop();

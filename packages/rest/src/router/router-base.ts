@@ -5,9 +5,9 @@
 
 import {Request} from '../types';
 import {getPathVariables} from './openapi-path';
+import {RestRouter, RestRouterOptions} from './rest-router';
 import {createResolvedRoute, ResolvedRoute, RouteEntry} from './route-entry';
 import {compareRoute} from './route-sort';
-import {RestRouter, RestRouterOptions} from './rest-router';
 
 /**
  * Base router implementation that only handles path without variables
@@ -24,7 +24,7 @@ export abstract class BaseRouter implements RestRouter {
     return this.getKey(route.verb, route.path);
   }
 
-  add(route: RouteEntry) {
+  add(route: RouteEntry): void {
     if (!getPathVariables(route.path)) {
       const key = this.getKeyForRoute(route);
       this.routesWithoutPathVars[key] = route;
@@ -37,7 +37,7 @@ export abstract class BaseRouter implements RestRouter {
     return this.getKey(request.method, request.path);
   }
 
-  find(request: Request) {
+  find(request: Request): ResolvedRoute | undefined {
     if (this.options.strict) {
       return this.findRoute(request.method, request.path);
     }
@@ -63,7 +63,7 @@ export abstract class BaseRouter implements RestRouter {
     else return this.findRouteWithPathVars(verb, path);
   }
 
-  list() {
+  list(): RouteEntry[] {
     let routes = Object.values(this.routesWithoutPathVars);
     routes = routes.concat(this.listRoutesWithPathVars());
     // Sort the routes so that they show up in OpenAPI spec in order

@@ -49,7 +49,7 @@ export class ExternalExpressRoutes {
     path: PathParams,
     rootDir: string,
     options?: ServeStaticOptions,
-  ) {
+  ): void {
     this._staticRoutes.use(path, express.static(rootDir, options));
   }
 
@@ -57,7 +57,7 @@ export class ExternalExpressRoutes {
     basePath: string,
     router: ExpressRequestHandler,
     spec: RouterSpec = {paths: {}},
-  ) {
+  ): void {
     this._externalRoutes.use(basePath, router);
 
     spec = rebaseOpenApiSpec(spec, basePath);

@@ -53,7 +53,7 @@ export class Trie<T> {
    * @param pathTemplate - The path template,
    * @param value - Value of the route
    */
-  create(routeTemplate: string, value: T) {
+  create(routeTemplate: string, value: T): Node<T> {
     const keys = routeTemplate.split('/').filter(Boolean);
     return createNode(keys, 0, value, this.root);
   }

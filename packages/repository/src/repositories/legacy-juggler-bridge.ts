@@ -508,7 +508,7 @@ export class DefaultCrudRepository<
   registerInclusionResolver(
     relationName: string,
     resolver: InclusionResolver<T, Entity>,
-  ) {
+  ): void {
     this.inclusionResolvers.set(relationName, resolver);
   }
 

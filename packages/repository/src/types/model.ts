@@ -17,7 +17,7 @@ export class ModelType<T extends Model> extends ObjectType<T> {
     super(modelClass);
   }
 
-  serialize(value: T | null | undefined) {
+  serialize(value: T | null | undefined): object | null | undefined {
     if (value == null) return value;
     return value.toJSON();
   }

@@ -23,7 +23,7 @@ export class Route extends BaseRoute {
     return this._handler.name || super.describe();
   }
 
-  updateBindings(requestContext: Context) {
+  updateBindings(requestContext: Context): void {
     requestContext.bind(RestBindings.OPERATION_SPEC_CURRENT).to(this.spec);
   }
 

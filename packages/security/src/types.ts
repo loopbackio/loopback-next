@@ -26,7 +26,7 @@ export class TypedPrincipal implements Principal {
     public readonly principal: Principal,
     public readonly type: string,
   ) {}
-  get [securityId]() {
+  get [securityId](): string {
     return `${this.type}:${this.principal[securityId]}`;
   }
 }
@@ -94,7 +94,7 @@ export class Permission {
    */
   resourceId?: string;
 
-  get [securityId]() {
+  get [securityId](): string {
     const resIds: string[] = [];
     resIds.push(this.resourceType);
     if (this.resourceProperty) {
@@ -161,29 +161,29 @@ export class DefaultSubject implements Subject {
   readonly authorities = new Set<Permission>();
   readonly credentials = new Set<Credential>();
 
-  addUser(...users: UserProfile[]) {
+  addUser(...users: UserProfile[]): void {
     for (const user of users) {
       this.principals.add(new TypedPrincipal(user, 'USER'));
     }
   }
 
-  addApplication(app: ClientApplication) {
+  addApplication(app: ClientApplication): void {
     this.principals.add(new TypedPrincipal(app, 'APPLICATION'));
   }
 
-  addAuthority(...authorities: Permission[]) {
+  addAuthority(...authorities: Permission[]): void {
     for (const authority of authorities) {
       this.authorities.add(authority);
     }
   }
 
-  addCredential(...credentials: Credential[]) {
+  addCredential(...credentials: Credential[]): void {
     for (const credential of credentials) {
       this.credentials.add(credential);
     }
   }
 
-  getPrincipal(type: string) {
+  getPrincipal(type: string): Principal | undefined {
     let principal: Principal | undefined;
     for (const p of this.principals) {
       if (p.type === type) {
@@ -194,7 +194,7 @@ export class DefaultSubject implements Subject {
     return principal;
   }
 
-  get user() {
+  get user(): UserProfile | undefined {
     return this.getPrincipal('USER') as UserProfile | undefined;
   }
 }

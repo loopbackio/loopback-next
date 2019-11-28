@@ -149,7 +149,7 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
      * app.component(ProductComponent);
      * ```
      */
-    public component(component: Class<unknown>, name?: string) {
+    public component(component: Class<unknown>, name?: string): void {
       super.component(component, name);
       this.mountComponentRepositories(component);
     }
@@ -161,7 +161,7 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
      *
      * @param component - The component to mount repositories of
      */
-    mountComponentRepositories(component: Class<unknown>) {
+    mountComponentRepositories(component: Class<unknown>): void {
       const componentKey = `components.${component.name}`;
       const compInstance = this.getSync(componentKey);
 

@@ -5,6 +5,7 @@
 
 import {inject} from '@loopback/context';
 import {
+  OpenApiSpec,
   OpenApiSpecForm,
   RequestContext,
   RestBindings,
@@ -45,7 +46,7 @@ export class ExplorerController {
     this.openApiSpecUrl = this.getOpenApiSpecUrl(restConfig);
   }
 
-  indexRedirect() {
+  indexRedirect(): void {
     const {request, response} = this.requestContext;
     let url = request.originalUrl || request.url;
     // be safe against path-modifying reverse proxies by generating the redirect
@@ -57,7 +58,7 @@ export class ExplorerController {
     response.redirect(301, url);
   }
 
-  index() {
+  index(): void {
     let openApiSpecUrl = this.openApiSpecUrl;
 
     // if using self-hosted openapi spec, then the path to use is always the
@@ -89,7 +90,7 @@ export class ExplorerController {
       .send(homePage);
   }
 
-  spec() {
+  spec(): OpenApiSpec {
     return this.restServer.getApiSpec(this.requestContext);
   }
 

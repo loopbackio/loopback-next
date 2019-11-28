@@ -18,7 +18,7 @@ export class Pet {
    * @param msg - Message for the greeting
    * @returns The description
    */
-  greet(msg: string) {
+  greet(msg: string): string {
     return `[${msg}] ${this.name}:${this.kind}`;
   }
 }

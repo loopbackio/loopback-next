@@ -37,7 +37,7 @@ export class RedirectRoute implements RouteEntry, ResolvedRoute {
     response.redirect(this.statusCode, this.targetLocation);
   }
 
-  updateBindings(requestContext: RequestContext) {
+  updateBindings(requestContext: RequestContext): void {
     // no-op
   }
 

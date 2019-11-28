@@ -100,7 +100,7 @@ export class ControllerRoute<T> extends BaseRoute {
     return `${this._controllerName}.${this._methodName}`;
   }
 
-  updateBindings(requestContext: Context) {
+  updateBindings(requestContext: Context): void {
     /*
      * Bind current controller to the request context in `SINGLETON` scope.
      * Within the same request, we always get the same instance of the
