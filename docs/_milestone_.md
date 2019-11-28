@@ -8,7 +8,8 @@
   - `Production deployment`
 - Complete the spikes for the migration guide
 - Community Support: focus on triaging and PR reviews in
-  `loopback-connector-mongodb` and/or `loopback-connector-postgresql`
+  `loopback-datasource-juggler` and/or `loopback-connector-postgresql`
+- Time off for Christmas and New Year!
 
 ## Goals
 
