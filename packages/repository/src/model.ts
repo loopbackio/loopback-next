@@ -90,8 +90,8 @@ export class ModelDefinition {
       }
     }
 
-    this.settings = settings || new Map();
-    this.relations = relations || {};
+    this.settings = settings ?? new Map();
+    this.relations = relations ?? {};
   }
 
   /**

@@ -424,7 +424,7 @@ export class DefaultCrudRepository<
     where?: Where<T>,
     options?: Options,
   ): Promise<Count> {
-    where = where || {};
+    where = where ?? {};
     const result = await ensurePromise(
       this.modelClass.updateAll(where, data, options),
     );
@@ -555,7 +555,7 @@ export class DefaultTransactionalRepository<
   async beginTransaction(
     options?: IsolationLevel | Options,
   ): Promise<Transaction> {
-    const dsOptions: juggler.IsolationLevel | Options = options || {};
+    const dsOptions: juggler.IsolationLevel | Options = options ?? {};
     // juggler.Transaction still has the Promise/Callback variants of the
     // Transaction methods
     // so we need it cast it back

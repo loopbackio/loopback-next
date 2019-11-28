@@ -26,7 +26,7 @@ export class MetricsPushObserver implements LifeCycleObserver {
     this.gateway = new Pushgateway(gwConfig.url);
     this.interval = setInterval(() => {
       this.gateway.pushAdd({jobName: 'loopback'}, () => {});
-    }, gwConfig.interval || 5000);
+    }, gwConfig.interval ?? 5000);
   }
 
   stop() {

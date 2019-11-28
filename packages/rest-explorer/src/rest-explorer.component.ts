@@ -24,7 +24,7 @@ export class RestExplorerComponent implements Component {
     @config()
     restExplorerConfig: RestExplorerConfig = {},
   ) {
-    const explorerPath = restExplorerConfig.path || '/explorer';
+    const explorerPath = restExplorerConfig.path ?? '/explorer';
 
     this.registerControllerRoute('get', explorerPath, 'indexRedirect');
     this.registerControllerRoute('get', explorerPath + '/', 'index');

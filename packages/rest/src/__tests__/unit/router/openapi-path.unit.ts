@@ -95,6 +95,6 @@ describe('validateApiPath', () => {
   });
 
   function disallows(path: string, pattern?: RegExp) {
-    expect(() => validateApiPath(path)).to.throw(pattern || INVALID_PARAM);
+    expect(() => validateApiPath(path)).to.throw(pattern ?? INVALID_PARAM);
   }
 });

@@ -64,7 +64,7 @@ export class Bootstrapper {
     execOptions?: BootExecutionOptions,
     ctx?: Context,
   ): Promise<Context> {
-    const bootCtx = ctx || new Context(this.app);
+    const bootCtx = ctx ?? new Context(this.app);
 
     // Bind booters passed in as a part of BootOptions
     // We use _bindBooter so this Class can be used without the Mixin

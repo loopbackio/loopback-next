@@ -22,9 +22,9 @@ export class RequestContext extends Context implements HandlerContext {
    */
   get requestedProtocol(): string {
     return (
-      (this.request.get('x-forwarded-proto') || '').split(',')[0] ||
-      this.request.protocol ||
-      this.serverConfig.protocol ||
+      ((this.request.get('x-forwarded-proto') ?? '').split(',')[0] ||
+        this.request.protocol ||
+        this.serverConfig.protocol) ??
       'http'
     );
   }
@@ -36,7 +36,7 @@ export class RequestContext extends Context implements HandlerContext {
    */
   get basePath(): string {
     const request = this.request;
-    let basePath = this.serverConfig.basePath || '';
+    let basePath = this.serverConfig.basePath ?? '';
     if (request.baseUrl && request.baseUrl !== '/') {
       if (!basePath || request.baseUrl.endsWith(basePath)) {
         // Express has already applied basePath to baseUrl
@@ -67,16 +67,16 @@ export class RequestContext extends Context implements HandlerContext {
     // 127.0.0.1:3000
     // 127.0.0.1
     let {host, port} = parseHostAndPort(
-      request.get('x-forwarded-host') || request.headers.host,
+      request.get('x-forwarded-host') ?? request.headers.host,
     );
 
-    const forwardedPort = (request.get('x-forwarded-port') || '').split(',')[0];
+    const forwardedPort = (request.get('x-forwarded-port') ?? '').split(',')[0];
     port = forwardedPort || port;
 
     if (!host) {
       // No host detected from http headers
       // Use the configured values or the local network address
-      host = config.host || request.socket.localAddress;
+      host = config.host ?? request.socket.localAddress;
       port = (config.port || request.socket.localPort).toString();
     }
 
@@ -122,10 +122,10 @@ export class RequestContext extends Context implements HandlerContext {
 }
 
 function parseHostAndPort(host: string | undefined) {
-  host = host || '';
+  host = host ?? '';
   host = host.split(',')[0];
   const portPattern = /:([0-9]+)$/;
-  const port = (host.match(portPattern) || [])[1] || '';
+  const port = (host.match(portPattern) ?? [])[1] || '';
   host = host.replace(portPattern, '');
   return {host, port};
 }

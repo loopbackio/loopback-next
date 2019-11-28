@@ -35,7 +35,7 @@ export class BufferType implements Type<Buffer> {
     if (value == null) return value;
     if (Buffer.isBuffer(value)) return value as Buffer;
     if (typeof value === 'string') {
-      options = options || {};
+      options = options ?? {};
       const encoding = options.encoding || 'utf-8';
       return Buffer.from(value, encoding);
     } else if (Array.isArray(value)) {

@@ -32,7 +32,7 @@ export function httpsGetAsync(
   agent?: https.Agent,
 ): Promise<IncomingMessage> {
   agent =
-    agent ||
+    agent ??
     new https.Agent({
       rejectUnauthorized: false,
     });

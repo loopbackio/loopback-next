@@ -67,7 +67,7 @@ export function extensionPoint(name: string, ...specs: BindingSpec[]) {
 export function extensions(extensionPointName?: string) {
   return inject('', {decorator: '@extensions'}, (ctx, injection, session) => {
     extensionPointName =
-      extensionPointName ||
+      extensionPointName ??
       inferExtensionPointName(injection.target, session.currentBinding);
 
     const bindingFilter = extensionFilter(extensionPointName);

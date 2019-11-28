@@ -86,7 +86,7 @@ export function requestBody(requestBodySpec?: Partial<RequestBodyObject>) {
       debug('  options: %s', inspect(requestBodySpec, {depth: null}));
 
     // Use 'application/json' as default content if `requestBody` is undefined
-    requestBodySpec = requestBodySpec || {content: {}};
+    requestBodySpec = requestBodySpec ?? {content: {}};
 
     if (_.isEmpty(requestBodySpec.content))
       requestBodySpec.content = {'application/json': {}};

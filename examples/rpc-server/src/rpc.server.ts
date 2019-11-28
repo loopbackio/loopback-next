@@ -20,7 +20,7 @@ export class RPCServer extends Context implements Server {
     @inject('rpcServer.config') public config?: RPCServerConfig,
   ) {
     super(app);
-    this.config = config || {};
+    this.config = config ?? {};
     this.expressServer = express();
     rpcRouter(this);
   }

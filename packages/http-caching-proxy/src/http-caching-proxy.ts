@@ -245,14 +245,14 @@ export class HttpCachingProxy {
         'Cannot proxy %s %s.',
         request.method,
         request.url,
-        error.stack || error,
+        error.stack ?? error,
       );
     } else {
       debug(
         'Cannot proxy %s %s.',
         request.method,
         request.url,
-        error.stack || error,
+        error.stack ?? error,
       );
     }
   }

@@ -103,7 +103,7 @@ class AsyncKeyIteratorImpl implements AsyncIterator<string> {
   next() {
     const key = ensurePromise<string | undefined>(this.keys.next());
     return key.then(k => {
-      return {done: k === undefined, value: k || ''};
+      return {done: k === undefined, value: k ?? ''};
     });
   }
 }

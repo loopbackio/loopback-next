@@ -41,9 +41,9 @@ export type PropertyMap = MetadataMap<PropertyDefinition>;
  */
 export function model(definition?: Partial<ModelDefinitionSyntax>) {
   return function(target: Function & {definition?: ModelDefinition}) {
-    definition = definition || {};
+    definition = definition ?? {};
     const def: ModelDefinitionSyntax = Object.assign(definition, {
-      name: definition.name || target.name,
+      name: definition.name ?? target.name,
     });
     const decorator = ClassDecoratorFactory.createDecorator(
       MODEL_KEY,
@@ -78,10 +78,10 @@ export function buildModelDefinition(
   ) {
     return target.definition;
   }
-  const modelDef = new ModelDefinition(def || {name: target.name});
+  const modelDef = new ModelDefinition(def ?? {name: target.name});
   const prototype = target.prototype;
   const propertyMap: PropertyMap =
-    MetadataInspector.getAllPropertyMetadata(MODEL_PROPERTIES_KEY, prototype) ||
+    MetadataInspector.getAllPropertyMetadata(MODEL_PROPERTIES_KEY, prototype) ??
     {};
   for (const p in propertyMap) {
     const propertyDef = propertyMap[p];
@@ -93,7 +93,7 @@ export function buildModelDefinition(
   }
   target.definition = modelDef;
   const relationMeta: RelationDefinitionMap =
-    MetadataInspector.getAllPropertyMetadata(RELATIONS_KEY, prototype) || {};
+    MetadataInspector.getAllPropertyMetadata(RELATIONS_KEY, prototype) ?? {};
   const relations: RelationDefinitionMap = {};
   // Build an object keyed by relation names
   Object.values(relationMeta).forEach(r => {

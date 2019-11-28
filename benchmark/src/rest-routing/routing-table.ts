@@ -71,7 +71,7 @@ function givenRouter(router: RestRouter, spec: OpenApiSpec, count: number) {
   class TestController {}
 
   return (log?: (...args: unknown[]) => void) => {
-    log = log || (() => {});
+    log = log ?? (() => {});
     log('Creating %s, %d', name, count);
     let start = process.hrtime();
 

@@ -51,7 +51,7 @@ export class Application extends Context implements LifeCycleObserver {
     );
 
     if (configOrParent instanceof Context) configOrParent = {};
-    this.options = configOrParent || {};
+    this.options = configOrParent ?? {};
 
     // Bind the life cycle observer registry
     this.bind(CoreBindings.LIFE_CYCLE_OBSERVER_REGISTRY)
@@ -81,7 +81,7 @@ export class Application extends Context implements LifeCycleObserver {
    * ```
    */
   controller(controllerCtor: ControllerClass, name?: string): Binding {
-    debug('Adding controller %s', name || controllerCtor.name);
+    debug('Adding controller %s', name ?? controllerCtor.name);
     const binding = createBindingFromClass(controllerCtor, {
       name,
       namespace: CoreBindings.CONTROLLERS,
@@ -114,7 +114,7 @@ export class Application extends Context implements LifeCycleObserver {
     ctor: Constructor<T>,
     name?: string,
   ): Binding<T> {
-    debug('Adding server %s', name || ctor.name);
+    debug('Adding server %s', name ?? ctor.name);
     const binding = createBindingFromClass(ctor, {
       name,
       namespace: CoreBindings.SERVERS,
@@ -217,7 +217,7 @@ export class Application extends Context implements LifeCycleObserver {
    * ```
    */
   public component(componentCtor: Constructor<Component>, name?: string) {
-    debug('Adding component: %s', name || componentCtor.name);
+    debug('Adding component: %s', name ?? componentCtor.name);
     const binding = createBindingFromClass(componentCtor, {
       name,
       namespace: CoreBindings.COMPONENTS,
@@ -253,7 +253,7 @@ export class Application extends Context implements LifeCycleObserver {
     ctor: Constructor<T>,
     name?: string,
   ): Binding<T> {
-    debug('Adding life cycle observer %s', name || ctor.name);
+    debug('Adding life cycle observer %s', name ?? ctor.name);
     const binding = createBindingFromClass(ctor, {
       name,
       namespace: CoreBindings.LIFE_CYCLE_OBSERVERS,

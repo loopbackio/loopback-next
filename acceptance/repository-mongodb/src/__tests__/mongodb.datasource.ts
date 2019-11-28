@@ -9,9 +9,9 @@ const connector = require('loopback-connector-mongodb');
 
 export const MONGODB_CONFIG: DataSourceOptions = {
   connector,
-  host: process.env.MONGODB_HOST || 'localhost',
-  port: process.env.MONGODB_PORT || 27017,
-  database: process.env.MONGODB_DATABASE || 'repository_tests',
+  host: process.env.MONGODB_HOST ?? 'localhost',
+  port: process.env.MONGODB_PORT ?? 27017,
+  database: process.env.MONGODB_DATABASE ?? 'repository_tests',
 };
 
 export const MONGODB_FEATURES: Partial<CrudFeatures> = {

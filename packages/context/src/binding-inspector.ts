@@ -145,7 +145,7 @@ export function bindingTemplateFor<T = unknown>(
 ): BindingTemplate<T> {
   const spec = getBindingMetadata(cls);
   debug('class %s has binding metadata', cls.name, spec);
-  const templateFunctions = spec?.templates || [asClassOrProvider(cls)];
+  const templateFunctions = spec?.templates ?? [asClassOrProvider(cls)];
   return function applyBindingTemplatesFromMetadata(binding) {
     for (const t of templateFunctions) {
       binding.apply(t);
@@ -295,7 +295,7 @@ function buildBindingKey(
   if (key) return key;
 
   let namespace =
-    options.namespace || bindingTemplate.tagMap[ContextTags.NAMESPACE];
+    options.namespace ?? bindingTemplate.tagMap[ContextTags.NAMESPACE];
   if (!namespace) {
     const namespaces = Object.assign(
       {},
@@ -303,17 +303,17 @@ function buildBindingKey(
       options.typeNamespaceMapping,
     );
     // Derive the key from type + name
-    let type = options.type || bindingTemplate.tagMap[ContextTags.TYPE];
+    let type = options.type ?? bindingTemplate.tagMap[ContextTags.TYPE];
     if (!type) {
       type =
-        bindingTemplate.tagNames.find(t => namespaces[t] != null) ||
+        bindingTemplate.tagNames.find(t => namespaces[t] != null) ??
         ContextTags.CLASS;
     }
     namespace = getNamespace(type, namespaces);
   }
 
   const name =
-    options.name || bindingTemplate.tagMap[ContextTags.NAME] || cls.name;
+    options.name ?? (bindingTemplate.tagMap[ContextTags.NAME] || cls.name);
   key = `${namespace}.${name}`;
 
   return key;

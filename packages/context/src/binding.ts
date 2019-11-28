@@ -165,7 +165,7 @@ export class Binding<T = BoundValue> {
    */
   public get scope(): BindingScope {
     // Default to TRANSIENT if not set
-    return this._scope || BindingScope.TRANSIENT;
+    return this._scope ?? BindingScope.TRANSIENT;
   }
 
   private _type?: BindingType;

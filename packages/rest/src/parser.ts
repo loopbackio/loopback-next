@@ -75,7 +75,7 @@ function buildOperationArguments(
 
   const paramArgs: OperationArgs = [];
 
-  for (const paramSpec of operationSpec.parameters || []) {
+  for (const paramSpec of operationSpec.parameters ?? []) {
     if (isReferenceObject(paramSpec)) {
       // TODO(bajtos) implement $ref parameters
       // See https://github.com/strongloop/loopback-next/issues/435

@@ -22,7 +22,7 @@ export function aBodySpec(
   mediaType = 'application/json',
 ): RequestBodyObject {
   const spec = Object.assign({}, options);
-  spec.content = spec.content || {};
+  spec.content = spec.content ?? {};
   Object.assign(spec.content, {
     [mediaType]: {
       schema: schema,

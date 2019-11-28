@@ -93,7 +93,7 @@ export class ResolutionSession {
     binding: Readonly<Binding>,
     session?: ResolutionSession,
   ): ResolutionSession {
-    session = session || new ResolutionSession();
+    session = session ?? new ResolutionSession();
     session.pushBinding(binding);
     return session;
   }
@@ -125,7 +125,7 @@ export class ResolutionSession {
     injection: Readonly<Injection>,
     session?: ResolutionSession,
   ): ResolutionSession {
-    session = session || new ResolutionSession();
+    session = session ?? new ResolutionSession();
     session.pushInjection(injection);
     return session;
   }
@@ -363,5 +363,5 @@ export function asResolutionOptions(
   if (optionsOrSession instanceof ResolutionSession) {
     return {session: optionsOrSession};
   }
-  return optionsOrSession || {};
+  return optionsOrSession ?? {};
 }
