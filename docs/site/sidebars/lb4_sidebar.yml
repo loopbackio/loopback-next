@@ -375,6 +375,10 @@ children:
     url: express-with-lb4-rest-tutorial.html
     output: 'web, pdf'
 
+  - title: 'Quick introduction to authentication with session tokens'
+    url: Quick-Authentication-Tutorial-Session-Tokens.html
+    output: 'web, pdf'
+
   - title: 'How to secure your LoopBack 4 application with JWT authentication'
     url: Authentication-Tutorial.html
     output: 'web, pdf'
