@@ -70,6 +70,14 @@ describe('boot-strapper unit tests', () => {
     // No-op
     await app.boot();
     expect(app.state).to.eql('booted');
+    const start = app.start();
+    expect(app.state).to.equal('starting');
+    await start;
+    expect(app.state).to.equal('started');
+    const stop = app.stop();
+    expect(app.state).to.equal('stopping');
+    await stop;
+    expect(app.state).to.equal('stopped');
   });
 
   it('throws error with in-process application states', async () => {
