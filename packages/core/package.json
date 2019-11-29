@@ -20,7 +20,8 @@
   "license": "MIT",
   "dependencies": {
     "@loopback/context": "^1.24.0",
-    "debug": "^4.1.1"
+    "debug": "^4.1.1",
+    "p-event": "^4.1.0"
   },
   "devDependencies": {
     "@loopback/build": "^2.1.0",
