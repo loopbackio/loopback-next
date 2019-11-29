@@ -61,29 +61,47 @@ describe('Application life cycle', () => {
       ]);
     });
 
+    it('emits state events', async () => {
+      const app = new Application();
+      const events: string[] = [];
+      for (const e of ['starting', 'started', 'stopping', 'stopped']) {
+        app.on(e, event => {
+          events.push(e);
+        });
+      }
+      const start = app.start();
+      expect(events).to.eql(['starting']);
+      await start;
+      expect(events).to.eql(['starting', 'started']);
+      const stop = app.stop();
+      expect(events).to.eql(['starting', 'started', 'stopping']);
+      await stop;
+      expect(events).to.eql(['starting', 'started', 'stopping', 'stopped']);
+    });
+
     it('allows application.stop when it is created', async () => {
       const app = new Application();
       await app.stop(); // no-op
       expect(app.state).to.equal('created');
     });
 
-    it('rejects application.stop when it is stopping', async () => {
+    it('await application.stop when it is stopping', async () => {
       const app = new Application();
       await app.start();
       const stop = app.stop();
-      await expect(app.stop()).to.be.rejectedWith(
-        /Cannot stop the application as it is stopping\./,
-      );
+      const stopAgain = app.stop();
       await stop;
+      await stopAgain;
+      expect(app.state).to.equal('stopped');
     });
 
-    it('rejects application.start when it is not created or stopped', async () => {
+    it('await application.start when it is starting', async () => {
       const app = new Application();
       const start = app.start();
-      await expect(app.start()).to.be.rejectedWith(
-        /Cannot start the application as it is starting\./,
-      );
+      const startAgain = app.start();
       await start;
+      await startAgain;
+      expect(app.state).to.equal('started');
     });
   });
 

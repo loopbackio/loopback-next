@@ -13,6 +13,7 @@ import {
 } from '@loopback/context';
 import * as assert from 'assert';
 import * as debugFactory from 'debug';
+import pEvent from 'p-event';
 import {Component, mountComponent} from './component';
 import {CoreBindings, CoreTags} from './keys';
 import {
@@ -246,7 +247,14 @@ export class Application extends Context implements LifeCycleObserver {
   protected setState(state: string) {
     const oldState = this._state;
     this._state = state;
-    this.emit('stateChanged', {from: oldState, to: this._state});
+    if (oldState !== state) {
+      this.emit('stateChanged', {from: oldState, to: this._state});
+      this.emit(state);
+    }
+  }
+
+  protected async awaitState(state: string) {
+    await pEvent(this, state);
   }
 
   /**
@@ -256,6 +264,7 @@ export class Application extends Context implements LifeCycleObserver {
    * If the application is already started, no operation is performed.
    */
   public async start(): Promise<void> {
+    if (this._state === 'starting') return this.awaitState('started');
     this.assertNotInProcess('start');
     // No-op if it's started
     if (this._state === 'started') return;
@@ -273,6 +282,7 @@ export class Application extends Context implements LifeCycleObserver {
    * performed.
    */
   public async stop(): Promise<void> {
+    if (this._state === 'stopping') return this.awaitState('stopped');
     this.assertNotInProcess('stop');
     // No-op if it's created or stopped
     if (this._state !== 'started') return;

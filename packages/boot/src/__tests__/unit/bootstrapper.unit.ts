@@ -80,13 +80,12 @@ describe('boot-strapper unit tests', () => {
     expect(app.state).to.equal('stopped');
   });
 
-  it('throws error with in-process application states', async () => {
+  it('awaits booted if the application is booting', async () => {
     const boot = app.boot();
     expect(app.state).to.eql('booting');
-    await expect(app.boot()).to.be.rejectedWith(
-      /Cannot boot the application as it is booting\./,
-    );
+    const bootAgain = app.boot();
     await boot;
+    await bootAgain;
     expect(app.state).to.eql('booted');
   });
 
