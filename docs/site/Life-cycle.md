@@ -8,9 +8,10 @@ permalink: /doc/en/lb4/Life-cycle.html
 
 ## Overview
 
-A LoopBack application has its own life cycles at runtime. There are two methods
-to control the transition of states of `Application`.
+A LoopBack application has its own life cycles at runtime. There are a few
+methods to control the transition of states of `Application`.
 
+- boot(): Boot the application
 - start(): Start the application
 - stop(): Stop the application
 
@@ -19,13 +20,15 @@ to control the transition of states of `Application`.
 The initial state of application is `created`. There are two types of states
 expected:
 
-- Stable, such as `started` and `stopped`
-- In process, such as `booting` and `starting`
+- Stable, such as `created`, `booted`, `started`, and `stopped`
+- In process, such as `booting`, `starting`, and `stopping`
 
 Operations can only be called at a stable state. The logic of each operation
 should immediately set the state to a new one indicating work in process, for
-example, `start()` sets `starting` and `stop()` sets `stopping`. Calling an
-operation in an in-process state will throw an error.
+example, `start()` sets `starting` and `stop()` sets `stopping`. Calling a
+different operation in an in-process state will throw an error. If the same
+operation is in process, it awaits the operation to finish without performing
+any logic.
 
 The state can transition as follows by operations including `boot`, `start`, and
 `stop`:
@@ -33,17 +36,21 @@ The state can transition as follows by operations including `boot`, `start`, and
 1.  boot()
 
     - !booted -> booting -> booted
-    - booted -> booted (no-op)
+    - booting | booted -> booted (no-op)
 
 2.  start()
 
     - !started -> starting -> started
-    - started -> started (no-op)
+    - starting | started -> started (no-op)
 
 3.  stop()
 
     - started -> stopping -> stopped
-    - !started -> stopped (no-op)
+    - stopping | !started -> stopped (no-op)
+
+State transitions are illustrated in the diagram below:
+
+![application states](imgs/application-states.png)
 
 Each state transition emits a `stateChanged` event with data for the `from` and
 `to` states. For example:
