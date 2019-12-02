@@ -464,6 +464,11 @@ export class RestServer extends Context implements Server, HttpServerLike {
     response.redirect(302, fullUrl);
   }
 
+  // workaround for https://github.com/strongloop/loopback-next/issues/433
+  invalidateRoutingCache(): void {
+    delete this._httpHandler;
+  }
+
   /**
    * Register a controller class with this server.
    *
@@ -482,6 +487,9 @@ export class RestServer extends Context implements Server, HttpServerLike {
    *
    */
   controller(controllerCtor: ControllerClass<ControllerInstance>): Binding {
+    this.invalidateRoutingCache();
+    // FIXME(bajtos) This code is never used, a typical LB4 app is binding
+    // controller via `app.controller()` API
     return this.bind('controllers.' + controllerCtor.name).toClass(
       controllerCtor,
     );
@@ -564,6 +572,8 @@ export class RestServer extends Context implements Server, HttpServerLike {
     controllerFactory?: ControllerFactory<T>,
     methodName?: string,
   ): Binding {
+    this.invalidateRoutingCache();
+
     if (typeof routeOrVerb === 'object') {
       const r = routeOrVerb;
       // Encode the path to escape special chars
@@ -702,6 +712,9 @@ export class RestServer extends Context implements Server, HttpServerLike {
   getApiSpec(requestContext?: RequestContext): OpenApiSpec {
     let spec = this.getSync<OpenApiSpec>(RestBindings.API_SPEC);
     const defs = this.httpHandler.getApiDefinitions();
+
+    // Apply shallow-clone to prevent modification of user-provided API_SPEC
+    spec = {...spec};
 
     // Apply deep clone to prevent getApiSpec() callers from
     // accidentally modifying our internal routing data

@@ -133,6 +133,11 @@ export class RestApplication extends Application implements HttpServerLike {
     this.restServer.basePath(path);
   }
 
+  controller<T>(controllerCtor: ControllerClass<T>, name?: string): Binding {
+    this.restServer.invalidateRoutingCache();
+    return super.controller(controllerCtor, name);
+  }
+
   /**
    * Register a new Controller-based route.
    *
