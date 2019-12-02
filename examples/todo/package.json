@@ -44,6 +44,7 @@
     "@loopback/rest": "^1.24.0",
     "@loopback/rest-explorer": "^1.4.5",
     "@loopback/service-proxy": "^1.3.12",
+    "loopback-connector-mysql": "^5.4.2",
     "loopback-connector-rest": "^3.6.0"
   },
   "devDependencies": {
