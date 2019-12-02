@@ -6,8 +6,6 @@ sidebar: lb4_sidebar
 permalink: /doc/en/lb4/migration-auth-passport.html
 ---
 
-{% include note.html content="
-This is a placeholder page, the task of adding content is tracked by the
-following GitHub issue:
-[loopback-next#3958](https://github.com/strongloop/loopback-next/issues/3958)
-" %}
+## Migrate from `loopback-component-passport`
+
+https://github.com/strongloop/loopback-next/tree/master/extensions/authentication-passport
