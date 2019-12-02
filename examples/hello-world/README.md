@@ -5,8 +5,10 @@ A simple hello-world application using LoopBack 4!
 ## Summary
 
 This project shows how to write the simplest LoopBack 4 application possible.
-Check out [src/application.ts](src/application.ts) to learn how we configured
-our application to always respond with "Hello World!".
+Check out
+[src/application.ts](https://github.com/strongloop/loopback-next/blob/master/examples/hello-world/src/application.ts)
+to learn how we configured our application to always respond with "Hello
+World!".
 
 ## Prerequisites
 
