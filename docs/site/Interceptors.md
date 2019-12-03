@@ -579,86 +579,86 @@ Here are some example interceptor functions:
 
 1. An asynchronous interceptor to log method invocations:
 
-```ts
-const log: Interceptor = async (invocationCtx, next) => {
-  console.log('log: before-' + invocationCtx.methodName);
-  // Wait until the interceptor/method chain returns
-  const result = await next();
-  console.log('log: after-' + invocationCtx.methodName);
-  return result;
-};
-```
+   ```ts
+   const log: Interceptor = async (invocationCtx, next) => {
+     console.log('log: before-' + invocationCtx.methodName);
+     // Wait until the interceptor/method chain returns
+     const result = await next();
+     console.log('log: after-' + invocationCtx.methodName);
+     return result;
+   };
+   ```
 
 2. An interceptor to catch and log errors:
 
-```ts
-const logError: Interceptor = async (invocationCtx, next) => {
-  console.log('logError: before-' + invocationCtx.methodName);
-  try {
-    const result = await next();
-    console.log('logError: after-' + invocationCtx.methodName);
-    return result;
-  } catch (err) {
-    console.log('logError: error-' + invocationCtx.methodName);
-    throw err;
-  }
-};
-```
+   ```ts
+   const logError: Interceptor = async (invocationCtx, next) => {
+     console.log('logError: before-' + invocationCtx.methodName);
+     try {
+       const result = await next();
+       console.log('logError: after-' + invocationCtx.methodName);
+       return result;
+     } catch (err) {
+       console.log('logError: error-' + invocationCtx.methodName);
+       throw err;
+     }
+   };
+   ```
 
 3. An interceptor to convert `name` arg to upper case:
 
-```ts
-const convertName: Interceptor = async (invocationCtx, next) => {
-  console.log('convertName:before-' + invocationCtx.methodName);
-  invocationCtx.args[0] = (invocationCtx.args[0] as string).toUpperCase();
-  const result = await next();
-  console.log('convertName: after-' + invocationCtx.methodName);
-  return result;
-};
-```
+   ```ts
+   const convertName: Interceptor = async (invocationCtx, next) => {
+     console.log('convertName:before-' + invocationCtx.methodName);
+     invocationCtx.args[0] = (invocationCtx.args[0] as string).toUpperCase();
+     const result = await next();
+     console.log('convertName: after-' + invocationCtx.methodName);
+     return result;
+   };
+   ```
 
 4. An provider class for an interceptor that performs parameter validation
 
-To leverage dependency injection, a provider class can be defined as the
-interceptor:
+   To leverage dependency injection, a provider class can be defined as the
+   interceptor:
 
-```ts
-/**
- * A binding provider class to produce an interceptor that validates the
- * `name` argument
- */
-class NameValidator implements Provider<Interceptor> {
-  constructor(@inject('valid-names') private validNames: string[]) {}
+   ```ts
+   /**
+    * A binding provider class to produce an interceptor that validates the
+    * `name` argument
+    */
+   class NameValidator implements Provider<Interceptor> {
+     constructor(@inject('valid-names') private validNames: string[]) {}
 
-  value() {
-    return this.intercept.bind(this);
-  }
+     value() {
+       return this.intercept.bind(this);
+     }
 
-  async intercept<T>(
-    invocationCtx: InvocationContext,
-    next: () => ValueOrPromise<T>,
-  ) {
-    const name = invocationCtx.args[0];
-    if (!this.validNames.includes(name)) {
-      throw new Error(
-        `Name '${name}' is not on the list of '${this.validNames}`,
-      );
-    }
-    return next();
-  }
-}
-```
+     async intercept<T>(
+       invocationCtx: InvocationContext,
+       next: () => ValueOrPromise<T>,
+     ) {
+       const name = invocationCtx.args[0];
+       if (!this.validNames.includes(name)) {
+         throw new Error(
+           `Name '${name}' is not on the list of '${this.validNames}`,
+         );
+       }
+       return next();
+     }
+   }
+   ```
 
 5. A synchronous interceptor to log method invocations:
 
-```ts
-const logSync: Interceptor = (invocationCtx, next) => {
-  console.log('logSync: before-' + invocationCtx.methodName);
-  // Calling `next()` without `await`
-  const result = next();
-  // It's possible that the statement below is executed before downstream
-  // interceptors or the target method finish
-  console.log('logSync: after-' + invocationCtx.methodName);
-  return result;
-};
-```
+   ```ts
+   const logSync: Interceptor = (invocationCtx, next) => {
+     console.log('logSync: before-' + invocationCtx.methodName);
+     // Calling `next()` without `await`
+     const result = next();
+     // It's possible that the statement below is executed before downstream
+     // interceptors or the target method finish
+     console.log('logSync: after-' + invocationCtx.methodName);
+     return result;
+   };
+   ```
