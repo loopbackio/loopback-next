@@ -30,8 +30,10 @@ matrix:
       os: linux
       env: TASK=code-lint
       # Running Code Linter -- Requires @loopback/build so it's bootstrapped
+      # We actually need to bootstrap all packages, otherwise typescript-eslint
+      # is not able to access type information for dependencies
       script:
-        - lerna bootstrap --scope @loopback/build --include-dependencies
+        - lerna bootstrap
         - npm run lint
     - node_js: "8"
       os: linux
