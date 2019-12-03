@@ -68,6 +68,50 @@ export interface HasManyDefinition extends RelationDefinitionBase {
   keyTo?: string;
 }
 
+/**
+ * A `hasManyThrough` relation defines a many-to-many connection with another model.
+ * This relation indicates that the declaring model can be matched with zero or more
+ * instances of another model by proceeding through a third model.
+ *
+ * Warning: The hasManyThrough interface is experimental and is subject to change.
+ * If backwards-incompatible changes are made, a new major version may not be
+ * released.
+ */
+export interface HasManyThroughDefinition extends RelationDefinitionBase {
+  type: RelationType.hasMany;
+  targetsMany: true;
+
+  /**
+   * The foreign key in the source model, e.g. Customer#id.
+   */
+  keyFrom: string;
+
+  /**
+   * The primary key of the target model, e.g Seller#id.
+   */
+  keyTo: string;
+
+  through: {
+    /**
+     * The through model of this relation.
+     *
+     * E.g. when a Customer has many Order instances and a Seller has many Order instances,
+     * then Order is through.
+     */
+    model: TypeResolver<Entity, typeof Entity>;
+
+    /**
+     * The foreign key of the source model defined in the through model, e.g. Order#customerId
+     */
+    keyFrom: string;
+
+    /**
+     * The foreign key of the target model defined in the through model, e.g. Order#sellerId
+     */
+    keyTo: string;
+  };
+}
+
 export interface BelongsToDefinition extends RelationDefinitionBase {
   type: RelationType.belongsTo;
   targetsMany: false;
@@ -102,6 +146,7 @@ export interface HasOneDefinition extends RelationDefinitionBase {
  */
 export type RelationMetadata =
   | HasManyDefinition
+  | HasManyThroughDefinition
   | BelongsToDefinition
   | HasOneDefinition
   // TODO(bajtos) add other relation types and remove RelationDefinitionBase once
