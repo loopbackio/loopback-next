@@ -97,9 +97,9 @@ export class Application extends Context implements LifeCycleObserver {
     // Make options available to other modules as well.
     this.bind(CoreBindings.APPLICATION_CONFIG).to(this.options);
 
-    const shutdownConfig = this.options.shutdown || {};
+    const shutdownConfig = this.options.shutdown ?? {};
     this.setupShutdown(
-      shutdownConfig.signals || ['SIGTERM'],
+      shutdownConfig.signals ?? ['SIGTERM'],
       shutdownConfig.gracePeriod,
     );
   }
