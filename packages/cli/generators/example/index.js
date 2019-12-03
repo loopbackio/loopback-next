@@ -104,7 +104,7 @@ module.exports = class extends BaseGenerator {
     const cwd = process.cwd();
     const absOutDir = await downloadAndExtractExample(this.exampleName, cwd);
     this.outDir = path.relative(cwd, absOutDir);
-    fs.rename(
+    return fs.rename(
       `${this.outDir}/tsconfig.build.json`,
       `${this.outDir}/tsconfig.json`,
     );
