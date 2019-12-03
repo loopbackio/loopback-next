@@ -217,63 +217,30 @@ Here are examples of some basic CRUD methods:
 
 1.  Create API Definition:
 
-```json
-{
-  "/accounts/create": {
-    "post": {
-      "x-operation-name": "createAccount",
-      "requestBody": {
-        "description": "The account instance to create.",
-        "required": true,
-        "content": {
-          "application/json": {
-            "schema": {
-              "type": "object"
-            }
-          }
-        }
-      },
-      "responses": {
-        "200": {
-          "description": "Account instance created",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Account"
+    ```json
+    {
+      "/accounts/create": {
+        "post": {
+          "x-operation-name": "createAccount",
+          "requestBody": {
+            "description": "The account instance to create.",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
               }
             }
-          }
-        }
-      }
-    }
-  }
-}
-```
-
-Create Controller method:
-
-```ts
-async createAccount(accountInstance: Account) {
-  return this.repository.create(accountInstance);
-}
-```
-
-2.  Find API Definition:
-
-```json
-{
-  "/accounts": {
-    "get": {
-      "x-operation-name": "getAccount",
-      "responses": {
-        "200": {
-          "description": "List of accounts",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/Account"
+          },
+          "responses": {
+            "200": {
+              "description": "Account instance created",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Account"
+                  }
                 }
               }
             }
@@ -281,17 +248,50 @@ async createAccount(accountInstance: Account) {
         }
       }
     }
-  }
-}
-```
+    ```
 
-Find Controller method:
+    Create Controller method:
 
-```ts
-async getAccount() {
-  return this.repository.find();
-}
-```
+    ```ts
+    async createAccount(accountInstance: Account) {
+      return this.repository.create(accountInstance);
+    }
+    ```
+
+2.  Find API Definition:
+
+    ```json
+    {
+      "/accounts": {
+        "get": {
+          "x-operation-name": "getAccount",
+          "responses": {
+            "200": {
+              "description": "List of accounts",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Account"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    ```
+
+    Find Controller method:
+
+    ```ts
+    async getAccount() {
+      return this.repository.find();
+    }
+    ```
 
 Don't forget to register the complete version of your OpenAPI spec through
 `app.api()`.
@@ -314,43 +314,43 @@ dependency injection.
 
 1. redis.datasource.config.json
 
-```json
-{
-  "name": "redis",
-  "connector": "kv-redis",
-  "host": "127.0.0.1",
-  "port": 6379,
-  "password": "",
-  "db": 0
-}
-```
+   ```json
+   {
+     "name": "redis",
+     "connector": "kv-redis",
+     "host": "127.0.0.1",
+     "port": 6379,
+     "password": "",
+     "db": 0
+   }
+   ```
 
 2. redis.datasource.ts
 
-The class uses a configuration object to set up a datasource for the Redis
-instance. By default, the configuration is loaded from
-`redis.datasource.config.json`. We can override it by binding a new object to
-`datasources.config.redis` for a context.
+   The class uses a configuration object to set up a datasource for the Redis
+   instance. By default, the configuration is loaded from
+   `redis.datasource.config.json`. We can override it by binding a new object to
+   `datasources.config.redis` for a context.
 
-```ts
-import {inject} from '@loopback/core';
-import {juggler, AnyObject} from '@loopback/repository';
-import * as config from './redis.datasource.config.json';
+   ```ts
+   import {inject} from '@loopback/core';
+   import {juggler, AnyObject} from '@loopback/repository';
+   import * as config from './redis.datasource.config.json';
 
-export class RedisDataSource extends juggler.DataSource {
-  static dataSourceName = 'redis';
+   export class RedisDataSource extends juggler.DataSource {
+     static dataSourceName = 'redis';
 
-  constructor(
-    @inject('datasources.config.redis', {optional: true})
-    dsConfig: AnyObject = config,
-  ) {
-    super(dsConfig);
-  }
-}
-```
+     constructor(
+       @inject('datasources.config.redis', {optional: true})
+       dsConfig: AnyObject = config,
+     ) {
+       super(dsConfig);
+     }
+   }
+   ```
 
-To generate the datasource automatically, use `lb4 datasource` command and
-select `Redis key-value connector (supported by StrongLoop)`.
+   To generate the datasource automatically, use `lb4 datasource` command and
+   select `Redis key-value connector (supported by StrongLoop)`.
 
 ### Define a KeyValueRepository
 
