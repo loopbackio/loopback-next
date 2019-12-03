@@ -27,6 +27,9 @@ LoopBack 4 comes with the following tutorials:
   Tutorial on mounting an existing LoopBack 3 application in a new LoopBack 4
   project.
 
+- **[core series](tutorials/core/index.md)**: A series of tutorials on building
+  large scale Node.js projects with LoopBack 4 core modules
+
 You can download any of the tutorial projects using our CLI tool `lb4`:
 
 ```sh
