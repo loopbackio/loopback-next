@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {MetadataInspector, ParameterDecoratorFactory} from '@loopback/context';
+import {MetadataInspector, ParameterDecoratorFactory} from '@loopback/core';
 import _ from 'lodash';
 import {inspect} from 'util';
 import {resolveSchema} from '../generate-schema';
