@@ -68,66 +68,66 @@ Here are some examples of the `query` and `mutation` calls:
 
 1. To get all the to-do instances, run this query command:
 
-```
- query{
-   todos {
-     id
-     title
-     desc
+   ```
+   query{
+     todos {
+       id
+       title
+       desc
+     }
    }
- }
-```
+   ```
 
-The expected output looks like this:
+   The expected output looks like this:
 
-```json
-{
-  "data": {
-    "todos": [
-      {
-        "id": 1,
-        "title": "Take over the galaxy",
-        "desc": "MWAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHA"
-      },
-      {
-        "id": 2,
-        "title": "destroy alderaan",
-        "desc": "Make sure there are no survivors left!"
-      },
-      {
-        "id": 3,
-        "title": "play space invaders",
-        "desc": "Become the very best!"
-      },
-      {"id": 4, "title": "crush rebel scum", "desc": "Every.Last.One."}
-    ]
-  }
-}
-```
+   ```json
+   {
+     "data": {
+       "todos": [
+         {
+           "id": 1,
+           "title": "Take over the galaxy",
+           "desc": "MWAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHA"
+         },
+         {
+           "id": 2,
+           "title": "destroy alderaan",
+           "desc": "Make sure there are no survivors left!"
+         },
+         {
+           "id": 3,
+           "title": "play space invaders",
+           "desc": "Become the very best!"
+         },
+         {"id": 4, "title": "crush rebel scum", "desc": "Every.Last.One."}
+       ]
+     }
+   }
+   ```
 
 2. Create a to-do instance and retrieve its ID and title in the response object
    using the following mutation command:
 
-```
- mutation {
-   todoControllerCreateTodo(todoInput: {
-     title: "Take over the universe"
-   }) {
-     id
-     title
+   ```
+   mutation {
+     todoControllerCreateTodo(newTodoInput: {
+       title: "Take over the universe"
+     }) {
+       id
+       title
+     }
    }
- }
-```
+   ```
 
-The expected output looks like this:
+   The expected output looks like this:
 
-```json
-{
-  "data": {
-    "todoControllerCreateTodo": {
-      "id": 5,
-      "title": "Take over the universe"
-    }
-  }
-}
-```
+   ```json
+   {
+     "data": {
+       "todoControllerCreateTodo": {
+         "id": 5,
+         "title": "Take over the universe"
+       }
+     }
+   }
+   ```
