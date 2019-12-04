@@ -40,3 +40,11 @@
 ## Stretch goals
 
 - [ ] Spike: migrate tests to Jest (ts-jest) #3159
+
+- PR reviews
+  - [ ] feat(extension-logging): add integration with winston and fluentd
+        logging, https://github.com/strongloop/loopback-next/pull/4117
+  - [ ] chore: enable esModuleInterop compiler option,
+        https://github.com/strongloop/loopback-next/pull/4091
+  - [ ] [RFC] feat: add base code for the image of Appsody LoopBack stack,
+        https://github.com/strongloop/loopback-next/pull/4250
