@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {ClassDecoratorFactory} from '@loopback/context';
+import {ClassDecoratorFactory} from '@loopback/core';
 import {ControllerSpec} from '../controller-spec';
 import {OAI3Keys} from '../keys';
 

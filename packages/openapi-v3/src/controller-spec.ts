@@ -3,13 +3,13 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {DecoratorFactory, MetadataInspector} from '@loopback/context';
+import {DecoratorFactory, MetadataInspector} from '@loopback/core';
 import {
   getJsonSchema,
   getJsonSchemaRef,
   JsonSchemaOptions,
 } from '@loopback/repository-json-schema';
-import _ from 'lodash';
+import {includes} from 'lodash';
 import {resolveSchema} from './generate-schema';
 import {jsonToSchemaObject, SchemaRef} from './json-to-schema';
 import {OAI3Keys} from './keys';
@@ -222,7 +222,7 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
     const paramTypes = opMetadata.parameterTypes;
 
     const isComplexType = (ctor: Function) =>
-      !_.includes([String, Number, Boolean, Array, Object], ctor);
+      !includes([String, Number, Boolean, Array, Object], ctor);
 
     for (const p of paramTypes) {
       if (isComplexType(p)) {

@@ -288,6 +288,10 @@ children:
     url: Extension-life-cycle.html
     output: 'web, pdf'
 
+  - title: 'Extending OpenAPI specification'
+    url: Extending-OpenAPI-specification.html
+    output: 'web, pdf'
+
   - title: 'Testing your extension'
     url: Testing-your-extension.html
     output: 'web, pdf'
