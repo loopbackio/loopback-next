@@ -449,7 +449,7 @@ or use APIs with controllers:
 GET http://localhost:3000/customers?filter[include][][relation]=orders
 ```
 
-### Enable/disable the inclusion resolvers:
+### Enable/disable the inclusion resolvers
 
 - Base repository classes have a public property `inclusionResolvers`, which
   maintains a map containing inclusion resolvers for each relation.
@@ -521,17 +521,148 @@ export class CustomerRepository extends DefaultCrudRepository {
   ];
   ```
 
-  Here is a diagram to make this more intuitive:
+{% include note.html content="The query syntax is a slightly different from LB3. We are also thinking about simplifying the query syntax. Check our GitHub issue for more information:
+[Simpler Syntax for Inclusion](https://github.com/strongloop/loopback-next/issues/3205)" %}
 
-  ![Graph](./imgs/hasMany-relation-graph.png)
+Here is a diagram to make this more intuitive:
+
+![Graph](./imgs/hasMany-relation-graph.png)
 
 - You can delete a relation from `inclusionResolvers` to disable the inclusion
   for a certain relation. e.g
   `customerRepository.inclusionResolvers.delete('orders')`
 
-{% include note.html content="
-Inclusion with custom scope:
-Besides specifying the relation name to include, it's also possible to specify additional scope constraints.
-However, this feature is not supported yet. Check our GitHub issue for more information:
-[Include related models with a custom scope](https://github.com/strongloop/loopback-next/issues/3453).
+### Query multiple relations
+
+It is possible to query several relations or nested include relations with
+custom scope. Once you have the inclusion resolver of each relation set up, the
+following queries would allow you traverse data differently:
+
+In our example, we have relations:
+
+- `Customer` _hasOne_ an `Address` - denoted as `address`.
+- `Customer` _hasMany_ `Order`s - denoted as `orders`.
+- `Order` _hasMany_ `Manufacturer` - denoted as `manufacturers`.
+
+To query **multiple relations**, for example, return all customers including
+their orders and address, in Node API:
+
+```ts
+customerRepo.find({include: [{relation: 'orders'}, {relation: 'address'}]});
+```
+
+Equivalently, with url, you can do:
+
+```
+GET http://localhost:3000/customers?filter[include][0][relation]=orders&filter[include][1][relation]=address
+```
+
+This gives
+
+```ts
+[
+  {
+    id: 1,
+    name: 'Thor',
+    addressId: 3
+    orders: [
+      {name: 'Mjolnir', customerId: 1},
+      {name: 'Rocket Raccoon', customerId: 1},
+    ],
+    address:{
+          id: 3
+          city: 'Thrudheim',
+          province: 'Asgard',
+          zipcode: '8200',
+    }
+  },
+  {
+    id: 2,
+    name: 'Captain',
+    orders: [{name: 'Shield', customerId: 2}], // doesn't have a related address
+  },
+]
+```
+
+To query **nested relations**, for example, return all customers including their
+orders and include orders' manufacturers , this can be done with filter:
+
+```ts
+customerRepo.find({
+  include: [
+    {
+      relation: 'orders',
+      scope: {
+        include: [{relation: 'manufacturers'}],
+      },
+    },
+  ],
+});
+```
+
+( You might use `encodeURIComponent(JSON.stringify(filter))` to convert the
+filter object to a query string.)
+
+<!-- FIXME: the url isn't being converted to JSON correctly. Add an example url once it's fixed
+
+Equivalently, with url, you can do:
+
+```
+// need to fix this
+ GET http://localhost:3000/customers?filter[include][0][relation]=orders&filter[include][0][scope]filter[include][0][relation]=manufacturers
+``` -->
+
+which gives
+
+```ts
+{
+  id: 1,
+  name: 'Thor',
+  addressId: 3
+  orders: [
+    {
+      name: 'Mjolnir',
+      customerId: 1
+    },
+    {
+      name: 'Rocket Raccoon',
+      customerId: 1,
+      manufacturers:[ // nested related models of orders
+        {
+          name: 'ToysRUs',
+          orderId: 1
+        },
+                {
+          name: 'ToysRThem',
+          orderId: 1
+        }
+      ]
+    },
+  ],
+}
+```
+
+You can also have other query clauses in the scope such as `where`, `limit`,
+etc.
+
+```ts
+customerRepo.find({
+  include: [
+    {
+      relation: 'orders',
+      scope: {
+        where: {name: 'ToysRUs'},
+        include: [{relation: 'manufacturers'}],
+      },
+    },
+  ],
+});
+```
+
+The `Where` clause above filters the result of `orders`.
+
+{% include tip.html content="Make sure that you have all inclusion resolvers that you need REGISTERED, and
+all relation names should be UNIQUE."%}
+
+{% include important.html content="There are some limitations of inclusion:. <br/><br/> We don’t support recursive inclusion of related models. Related GH issue: [Recursive inclusion of related models](https://github.com/strongloop/loopback-next/issues/3454). <br/><br/> It doesn’t split numbers of queries. Related GH issue: [Support inq splitting](https://github.com/strongloop/loopback-next/issues/3444). <br/><br/> It might not work well with ObjectId of MongoDB. Related GH issue: [Spike: robust handling of ObjectID type for MongoDB](https://github.com/strongloop/loopback-next/issues/3456).
 " %}

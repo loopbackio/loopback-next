@@ -347,20 +347,6 @@ export function hasManyInclusionResolverAcceptance(
       );
     });
 
-    // scope for inclusion is not supported yet
-    it('throws error if the inclusion query contains a non-empty scope', async () => {
-      const customer = await customerRepo.create({name: 'customer'});
-      await orderRepo.create({
-        description: 'an order',
-        customerId: customer.id,
-      });
-      await expect(
-        customerRepo.find({
-          include: [{relation: 'orders', scope: {limit: 1}}],
-        }),
-      ).to.be.rejectedWith(`scope is not supported`);
-    });
-
     it('throws error if the target repository does not have the registered resolver', async () => {
       const customer = await customerRepo.create({name: 'customer'});
       await orderRepo.create({

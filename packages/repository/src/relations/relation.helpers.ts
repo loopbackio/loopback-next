@@ -14,13 +14,14 @@ import {
   Inclusion,
   Options,
   Where,
+  FilterBuilder,
 } from '..';
 const debug = debugFactory('loopback:repository:relation-helpers');
 
 /**
  * Finds model instances that contain any of the provided foreign key values.
  *
- * @param targetRepository - The target repository where the model instances are found
+ * @param targetRepository - The target repository where the related model instances are found
  * @param fkName - Name of the foreign key
  * @param fkValues - One value or array of values of the foreign key to be included
  * @param scope - Additional scope constraints (not currently supported)
@@ -37,12 +38,6 @@ export async function findByForeignKeys<
   scope?: Filter<Target>,
   options?: Options,
 ): Promise<(Target & TargetRelations)[]> {
-  // throw error if scope is defined and non-empty
-  // see https://github.com/strongloop/loopback-next/issues/3453
-  if (scope && !_.isEmpty(scope)) {
-    throw new Error('scope is not supported');
-  }
-
   let value;
 
   if (Array.isArray(fkValues)) {
@@ -60,9 +55,15 @@ export async function findByForeignKeys<
   }
 
   const where = ({[fkName]: value} as unknown) as Where<Target>;
-  const targetFilter = {where};
 
-  return targetRepository.find(targetFilter, options);
+  if (scope && !_.isEmpty(scope)) {
+    // combine where clause to scope filter
+    scope = new FilterBuilder(scope).impose({where}).filter;
+  } else {
+    scope = {where} as Filter<Target>;
+  }
+
+  return targetRepository.find(scope, options);
 }
 
 export type StringKeyOf<T> = Extract<keyof T, string>;
