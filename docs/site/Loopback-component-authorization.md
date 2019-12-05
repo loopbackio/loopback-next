@@ -11,29 +11,38 @@ permalink: /doc/en/lb4/Loopback-component-authorization.html
 > Wikipedia: Authorization is the function of specifying access
 > rights/privileges to resources
 
-API clients authenticate to get a credential (can be a token, api-key, claim or
-cert). User permissions are included in the credential. When the client calls an
-API endpoint, they pass the credential in the request to claim their
-authenticity as well as access rights.
+LoopBack's highly extensible authorization package
+[@loopback/authorization](https://github.com/strongloop/loopback-next/tree/master/packages/authorization)
+provides various features and provisions to check access rights of a client on a
+API endpoint.
 
-- The client is identified from the credential, by the configured
-  `Authentication strategy` of the endpoint (see,
-  [Authentication](https://loopback.io/doc/en/lb4/Loopback-component-authentication.html)).
-- An authorizer's job is to check if the permissions associated with the client
-  satisfies the accessibility criteria of the endpoint.
+API clients login to get a credential (can be a token, api-key, claim or cert).
+When the client calls an API endpoint, they pass the credential in the request
+to identify themselves (Authentication) as well as claim their access rights
+(Authorization).
+
+LoopBack's authorization component checks if the permissions associated with the
+credential provided by the client satisfies the accessibility criteria defined
+by the users.
 
 ## Design
 
-LoopBack's highly extensible authorization package
-[@loopback/authorization](https://github.com/strongloop/loopback-next/tree/master/packages/authorization)
-provides various features and provisions to check access rights of a `Principal`
-on a API endpoint.
+A `Principal` could be a User, Application or Device. The `Principal` is
+identified from the credential provided by a client, by the configured
+`Authentication strategy` of the endpoint
+([see, LoopBack Authentication](https://loopback.io/doc/en/lb4/Loopback-component-authentication.html)).
+Access rights of the client is either associated with or included in the
+credential.
 
-The expectations from various stake holders (LoopBack, Security analysts,
-Developers) for implementation of the authorization features are given below in
-the [Chain of Responsibility](##Chain-of-Responsibility) section.
+The `Principal` is then used by LoopBack's authorization mechanism to enforce
+necessary privileges/access rights by using the permissions annotated by the
+`@authorize` decorator on the controller methods.
 
 ![Authorization](./imgs/authorization.png)
+
+The expectations from various stake holders (LoopBack, Architects, Developers)
+for implementation of the authorization features are given below in the
+[Chain of Responsibility](##Chain-of-Responsibility) section.
 
 ## Chain of Responsibility
 
@@ -64,14 +73,14 @@ approach authorization.
 
 `Developers` need to,
 
-- define `authorizer` and `voter` functions
-  ([see, Programming Access Policies](##Programming-Access-Policies))
-- decorate endpoints with authorization metadata
-  ([see, Configuring API Endpoints](##Configuring-API-Endpoints))
-- design security policies as decision matrix
-  ([see, Authorization by decision matrix](##Authorization-by-decision-matrix))
 - mount the authorization component
   ([see, Registering the Authorization Component](##Registering-the-Authorization-Component))
+- decorate endpoints with authorization metadata
+  ([see, Configuring API Endpoints](##Configuring-API-Endpoints))
+- define `authorizer` and `voter` functions
+  ([see, Programming Access Policies](##Programming-Access-Policies))
+- design security policies as decision matrix
+  ([see, Authorization by decision matrix](##Authorization-by-decision-matrix))
 - plug in external enforcer libraries
   ([see, Enforcer Libraries](##Enforcer-Libraries))
 
@@ -112,16 +121,6 @@ class.
   }
   ```
 
-The component binds an in-built interceptor (`Authorization Interceptor`) to all
-API calls.
-
-- The `Authorization interceptor` enforces authorization with user-provided
-  voters/authorizers on API calls using,
-  - authorization metadata added by the decorator on the target controller
-    method (roles, scopes, voters)
-  - a Principal/Subject deducted from the incoming request
-  - [a decision matrix](##Authorization-by-decision-matrix)
-
 The component also declares various
 [types](https://github.com/strongloop/loopback-next/blob/master/packages/authorization/src/types.ts)
 to use in defining necessary classes and inputs by developers.
@@ -146,6 +145,22 @@ to use in defining necessary classes and inputs by developers.
 
     - `AuthorizationError`: expected type of the error thrown by an
       `Authorizer`.
+
+## Authorization Interceptor
+
+The `Authorization Component` once registered binds an in-built interceptor to
+all API calls.
+
+The `Authorization interceptor` enforces authorization with user-provided
+`authorizers/voters`
+
+- The interceptor checks to see if an endpoint is annotated with an
+  authorization specification.
+- It collects all functions tagged as `Authorizer`. The interceptor also
+  collects `voters` provided in the `@authorize` decorator of the endpoint.
+- It executes each of the above collected functions provided by the user.
+- Based on the result of all functions it enforces access/privilege control
+  using [a decision matrix](##Authorization-by-decision-matrix).
 
 ## Configuring API Endpoints
 
@@ -211,15 +226,6 @@ following options:
 - `Voter` functions
   - voters are specific for the endpoint that is decorated with it
   - multiple voters can be configured for an endpoint
-
-The `Authorization interceptor` enforces authorization with user-provided
-voters/authorizers.
-- The interceptor checks to see if an endpoint is annotated with an
-  authorization specification.
-- It collects all functions tagged as `Authorizer`. The interceptor also
-  collects `voters` provided in the `@authorize` decorator of the endpoint.
-- It executes each of the above collected functions provided by the user.
-- Based on the result of all functions it enforces access/privilege control.
 
 > Usually the `authorize` functions are bound through a provider as below
 
