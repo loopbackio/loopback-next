@@ -118,16 +118,6 @@ describe('findByForeignKeys', () => {
     });
   });
 
-  // update the test when scope is supported
-  it('throws error if scope is passed in and is non-empty', async () => {
-    productRepo.stubs.find.resolves([]);
-    await expect(
-      findByForeignKeys(productRepo, 'categoryId', [1], {limit: 1}),
-    ).to.be.rejectedWith('scope is not supported');
-    sinon.assert.notCalled(productRepo.stubs.find);
-  });
-
-  // update the test when scope is supported
   it('does not throw an error if scope is passed in and is undefined or empty', async () => {
     const find = productRepo.stubs.find;
     find.resolves([]);
@@ -143,5 +133,24 @@ describe('findByForeignKeys', () => {
     products = await findByForeignKeys(productRepo, 'categoryId', 1, {}, {});
     expect(products).to.be.empty();
     sinon.assert.calledWithMatch(find, {});
+  });
+
+  it('checks if the custom scope is handled properly', async () => {
+    const find = productRepo.stubs.find;
+    find.resolves([]);
+    await productRepo.create({id: 1, name: 'product', categoryId: 1});
+    await productRepo.create({id: 2, name: 'product', categoryId: 1});
+    await findByForeignKeys(productRepo, 'categoryId', 1, {
+      where: {id: 2},
+      include: [{relation: 'nested inclusion'}],
+    });
+
+    sinon.assert.calledWithMatch(find, {
+      where: {
+        categoryId: 1,
+        id: 2,
+      },
+      include: [{relation: 'nested inclusion'}],
+    });
   });
 });

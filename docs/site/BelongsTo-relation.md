@@ -43,6 +43,8 @@ related routes, you need to perform the following steps:
 This section describes how to define a `belongsTo` relation at the model level
 using the `@belongsTo` decorator to define the constraining foreign key.
 
+### Relation Metadata
+
 The definition of the `belongsTo` relation is inferred by using the `@belongsTo`
 decorator. The decorator takes in a function resolving the target model class
 constructor and designates the relation type. It also calls `property()` to
@@ -356,7 +358,7 @@ or use APIs with controllers:
 GET http://localhost:3000/orders?filter[include][][relation]=customer
 ```
 
-### Enable/disable the inclusion resolvers:
+### Enable/disable the inclusion resolvers
 
 - Base repository classes have a public property `inclusionResolvers`, which
   maintains a map containing inclusion resolvers for each relation.
@@ -442,17 +444,22 @@ export class OrderRepository extends DefaultCrudRepository {
   ];
   ```
 
-  Here is a diagram to make this more intuitive:
+{% include note.html content="The query syntax is a slightly different from LB3. We are also thinking about simplifying the query syntax. Check our GitHub issue for more information: [Simpler Syntax for Inclusion](https://github.com/strongloop/loopback-next/issues/3205)" %}
 
-  ![Graph](./imgs/belongsTo-relation-graph.png)
+Here is a diagram to make this more intuitive:
+
+![Graph](./imgs/belongsTo-relation-graph.png)
 
 - You can delete a relation from `inclusionResolvers` to disable the inclusion
   for a certain relation. e.g
   `orderRepository.inclusionResolvers.delete('customer')`
 
-{% include note.html content="
-Inclusion with custom scope:
-Besides specifying the relation name to include, it's also possible to specify additional scope constraints.
-However, this feature is not supported yet. Check our GitHub issue for more information:
-[Include related models with a custom scope](https://github.com/strongloop/loopback-next/issues/3453).
+### Query multiple relations
+
+It is possible to query several relations or nested include relations with
+custom scope once you have the inclusion resolver of each relation set up.
+Check[HasMany - Query multiple relations](HasMany-relation.md#query-multiple-relations)
+for the usage and examples.
+
+{% include important.html content="There are some limitations of inclusion:. <br/><br/> We don’t support recursive inclusion of related models. Related GH issue: [Recursive inclusion of related models](https://github.com/strongloop/loopback-next/issues/3454). <br/><br/> It doesn’t split numbers of queries. Related GH issue: [Support inq splitting](https://github.com/strongloop/loopback-next/issues/3444). <br/><br/> It might not work well with ObjectId of MongoDB. Related GH issue: [Spike: robust handling of ObjectID type for MongoDB](https://github.com/strongloop/loopback-next/issues/3456).
 " %}
