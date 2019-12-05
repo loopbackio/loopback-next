@@ -35,6 +35,9 @@ node bin/build-jekyll-preview-config $SOURCE_DIR/_config.yml $JEKYLL_DIR/_config
 echo "Copying LB4 readmes"
 node bin/copy-readmes
 
+echo "Copying LB4 changelogs"
+node bin/copy-changelogs
+
 echo "Copyping Gemfile, index.html and data files"
 rm -rf $JEKYLL_DIR/{_data,_includes,_layouts}
 cp -r $SOURCE_DIR/Gemfile* $JEKYLL_DIR/

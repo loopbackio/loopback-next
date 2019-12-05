@@ -832,6 +832,10 @@ children:
       url: submitting_a_pr.html
       output: 'web, pdf'
 
+- title: 'Change logs'
+  url: changelog.index.html
+  output: 'web, pdf'
+
 - title: 'Reference'
   url: Reference.html
   output: 'web, pdf'
