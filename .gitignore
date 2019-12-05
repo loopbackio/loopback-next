@@ -15,6 +15,8 @@ benchmark/dist
 packages/tsdocs/fixtures/monorepo/docs
 packages/tsdocs/fixtures/monorepo/packages/pkg1/docs
 /docs/site/readmes
+/docs/site/changelogs
+/docs/site/CHANGELOG.md
 /docs/apidocs/reports-temp
 /docs/apidocs/models
 *.tsbuildinfo
