@@ -5,7 +5,6 @@
 
 import {Application, bind, BindingScope, Component} from '@loopback/core';
 import {expect, sinon} from '@loopback/testlab';
-import {Callback, PromiseOrVoid} from 'loopback-datasource-juggler';
 import {
   Class,
   DataSource,
@@ -178,18 +177,12 @@ describe('RepositoryMixin', () => {
       updateStub = sinon.stub().resolves();
 
       DataSourceStub = class extends juggler.DataSource {
-        automigrate(
-          models: string | string[],
-          callback?: Callback,
-        ): PromiseOrVoid {
-          return migrateStub(models, callback);
+        automigrate(models: string | string[]): Promise<void> {
+          return migrateStub(models);
         }
 
-        autoupdate(
-          models: string | string[],
-          callback?: Callback,
-        ): PromiseOrVoid {
-          return updateStub(models, callback);
+        autoupdate(models: string | string[]): Promise<void> {
+          return updateStub(models);
         }
       };
     }
