@@ -103,3 +103,14 @@ export const CountSchema = {
   title: 'loopback.count',
   properties: {count: {type: 'number'}},
 };
+
+/**
+ * Type helper to infer prototype from a constructor function.
+ *
+ * Example: `PrototypeOf<typeof Entity>` is resolved to `Entity`.
+ */
+export type PrototypeOf<Ctor extends Function> = Ctor extends {
+  prototype: infer Proto;
+}
+  ? Proto
+  : never;
