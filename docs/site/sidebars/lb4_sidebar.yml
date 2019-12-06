@@ -237,6 +237,11 @@ children:
   - title: 'Authentication'
     url: Loopback-component-authentication.html
     output: 'web, pdf'
+    children:
+
+    - title: 'Passport Adapter for Authentication'
+      url: Authentication-passport.html
+      output: 'web, pdf'
 
   - title: 'Authorization'
     url: Loopback-component-authorization.html
@@ -246,22 +251,12 @@ children:
     url: Boot-and-Mount-a-LoopBack-3-application.html
     output: 'web, pdf'
 
-- title: 'Using Extensions'
-  url: Using-extensions.html
-  output: 'web, pdf'
-
-  children:
-
   - title: 'Health check'
     url: Health.html
     output: 'web, pdf'
 
   - title: 'Metrics for Prometheus'
     url: Metrics.html
-    output: 'web, pdf'
-
-  - title: 'Passport Adapter for Authentication'
-    url: Authentication-passport.html
     output: 'web, pdf'
 
 - title: 'Extending LoopBack 4'
