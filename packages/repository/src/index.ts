@@ -7,6 +7,7 @@ export * from './common-types';
 export * from './connectors';
 export * from './datasource';
 export * from './decorators';
+export * from './define-model-class';
 export * from './errors';
 export * from './mixins';
 export * from './model';
