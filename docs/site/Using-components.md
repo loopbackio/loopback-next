@@ -6,7 +6,7 @@ sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Using-components.html
 ---
 
-Components serve as a vehicle to group 3rd-party contributions to allow easier
+Components serve as a vehicle to group third-party contributions to allow easier
 extensibility of your Application, see [Components](Components.md) for more
 details.
 
@@ -20,7 +20,7 @@ Install the following dependencies:
 npm install --save @loopback/authentication
 ```
 
-Load the component in your application:
+To load the component in your application:
 
 ```ts
 import {RestApplication} from '@loopback/rest';
@@ -31,3 +31,37 @@ const app = new RestApplication();
 // authenticated requests in a Sequence.
 app.component(AuthenticationComponent);
 ```
+
+## Available components
+
+LoopBack ships the following components:
+
+### BootComponent
+
+- [@loopback/boot](Booting-an-Application.md)
+
+### RestComponent
+
+- [@loopback/rest](Server.md)
+
+### RestExplorerComponent
+
+- [@loopback/rest-explorer](Self-hosted-rest-api-explorer.md)
+
+### AuthenticationComponent
+
+- [@loopback/authentication](Loopback-component-authentication.md)
+
+### AuthorizationComponent
+
+- [@loopback/authorization](Loopback-component-authorization.md)
+
+### Lb3AppBooterComponent
+
+- [@loopback/booter-lb3app](Boot-and-Mount-a-LoopBack-3-application.md)
+
+### Cloud native extensions
+
+- Health check: [@loopback/extension-health](Health.md) (Experimental)
+- Metrics for Prometheus: [@loopback/extension-metrics](Metrics.md)
+  (Experimental)
