@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import assert from 'assert';
-const autocannon = require('autocannon');
+import autocannon from 'autocannon';
 
 export interface EndpointStats {
   requestsPerSecond: number;
@@ -17,7 +17,7 @@ export class Autocannon {
   async execute(
     title: string,
     urlPath: string,
-    options?: object,
+    options: Omit<autocannon.Options, 'url'> = {},
   ): Promise<EndpointStats> {
     const defaults = {
       url: this.buildUrl(urlPath),

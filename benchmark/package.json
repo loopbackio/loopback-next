@@ -48,6 +48,7 @@
   "devDependencies": {
     "@loopback/build": "^3.0.0",
     "@loopback/testlab": "^1.10.0",
+    "@types/autocannon": "^4.1.0",
     "@types/mocha": "^5.2.7",
     "@types/node": "^10.17.9",
     "mocha": "^6.2.2",
