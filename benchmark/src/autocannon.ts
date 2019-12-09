@@ -19,12 +19,17 @@ export class Autocannon {
     urlPath: string,
     options: Omit<autocannon.Options, 'url'> = {},
   ): Promise<EndpointStats> {
-    const defaults = {
+    const config = {
       url: this.buildUrl(urlPath),
       duration: this.duration,
       title,
+      ...options,
+      headers: {
+        'content-type': 'application/json',
+        ...options.headers,
+      },
     };
-    const config = Object.assign(defaults, options);
+
     const data = await autocannon(config);
     assert.equal(
       data.non2xx,
