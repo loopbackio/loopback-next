@@ -29,6 +29,13 @@ the one that LoopBack 4 authentication system wants.
 
 ## Usage
 
+For the examples that follow, we will be using `passport-http`, so be sure to
+install these modules:
+
+```
+npm i passport-http @types/passport-http --save
+```
+
 ### Simple Usage
 
 1. Create an instance of the passport strategy
@@ -51,11 +58,53 @@ const basicStrategy = new BasicStrategy(verify);
 It's a similar configuration as you add a strategy to a `passport` by calling
 `passport.use()`.
 
-2. Apply the adapter to the strategy
+2. Supply a _user profile factory_ which converts a user to a user profile. It
+   must abide by the `UserProfileFactory` interface supplied by
+   `@loopback/authentication@3.x`.
+
+It is shown below for your convenience.
+
+```ts
+export interface UserProfileFactory<U> {
+  (user: U): UserProfile;
+}
+```
+
+A default user profile factory is provided for you in the StrategyAdapter
+constructor, but it does very little. It simply returns the user model as-is.
+
+```ts
+private userProfileFactory: UserProfileFactory<U> = (u: unknown) => {
+      return u as UserProfile;
+},
+```
+
+So it is recommended you provide a more meaningful mapping.
+
+An example of a user profile factory converting a specific user type `MyUser` to
+type `UserProfile` is shown below.
+
+```ts
+//In file 'my.userprofile.factory.ts'
+
+import {UserProfileFactory} from '@loopback/authentication';
+import {securityId, UserProfile} from '@loopback/security';
+
+export const myUserProfileFactory: UserProfileFactory<MyUser> = function (user: MyUser): UserProfile {
+    const userProfile = {[securityId]: user.id};
+    return userProfile;
+    }
+}
+```
+
+3. Apply the adapter to the strategy
 
 ```ts
 // In file 'my-basic-auth-strategy.ts'
 import {BasicStrategy} from 'passport-http';
+import {UserProfileFactory} from '@loopback/authentication';
+import {securityId, UserProfile} from '@loopback/security';
+import {myUserProfileFactory} from '<path to user profile factory>';
 
 function verify(username: string, password: string, cb: Function) {
   users.find(username, password, cb);
@@ -72,10 +121,12 @@ export const basicAuthStrategy = new StrategyAdapter(
   // `const AUTH_STRATEGY_NAME = 'basic'`.
   // You will need to decorate the APIs later with the same name.
   AUTH_STRATEGY_NAME,
+  // Provide a user profile factory
+  myUserProfileFactory,
 );
 ```
 
-3. Register(bind) the strategy to app
+4. Register(bind) the strategy to app
 
 ```ts
 import {Application, CoreTags} from '@loopback/core';
@@ -91,13 +142,15 @@ app
   });
 ```
 
-4. Decorate your endpoint
+5. Decorate your endpoint
 
 To authenticate your request with the basic strategy, decorate your controller
 function like:
 
 ```ts
 import {AUTH_STRATEGY_NAME} from './my-basic-auth-strategy';
+import {SecurityBindings, UserProfile} from '@loopback/security';
+import {authenticate} from '@loopback/authentication';
 
 class MyController {
   constructor(
@@ -114,7 +167,7 @@ class MyController {
 }
 ```
 
-5. Add the authentication action to your sequence
+6. Add the authentication action to your sequence
 
 This part is same as registering a non-passport based strategy. Please make sure
 you follow the documentation
@@ -124,8 +177,9 @@ to rewrite your sequence. You can also find a sample implementation in
 
 ### With Provider
 
-If you need to inject stuff (e.g. the verify function) when configuring the
-strategy, you may want to provide your strategy as a provider.
+If you need to inject stuff (e.g. the verify function, user profile factory
+function) when configuring the strategy, you may want to provide your strategy
+as a provider.
 
 _Note: If you are not familiar with LoopBack providers, check the documentation
 in
@@ -137,6 +191,9 @@ Use `passport-http` as the example again:
 
 ```ts
 // Create a file named `my-basic-auth-strategy.ts` to define your strategy below
+
+import {AuthenticationStrategy} from '@loopback/authentication';
+import {Provider} from '@loopback/core';
 
 class PassportBasicAuthProvider implements Provider<AuthenticationStrategy> {
   value(): AuthenticationStrategy {
@@ -157,18 +214,28 @@ The Provider should have two functions:
 So a full implementation of the provider is:
 
 ```ts
-// In file 'my-basic-auth-strategy.ts'
+// In file 'providers/my-basic-auth-strategy.ts'
 
 import {BasicStrategy, BasicVerifyFunction} from 'passport-http';
 import {StrategyAdapter} from `@loopback/passport-adapter`;
-import {AuthenticationStrategy} from '@loopback/authentication';
+import {
+  AuthenticationStrategy,
+  AuthenticationBindings,
+} from '@loopback/authentication';
+import {Provider} from '@loopback/core';
+import {inject} from '@loopback/context';
 
-class PassportBasicAuthProvider implements Provider<AuthenticationStrategy> {
+export class PassportBasicAuthProvider<MyUser>
+  implements Provider<AuthenticationStrategy> {
   constructor(
-    @inject('authentication.basic.verify') verifyFn: BasicVerifyFunction,
-  );
+    @inject('authentication.basic.verify')
+    private verifyFn: BasicVerifyFunction,
+    @inject(AuthenticationBindings.USER_PROFILE_FACTORY)
+    private myUserProfileFactory: UserProfileFactory<MyUser>,
+  ) {}
+
   value(): AuthenticationStrategy {
-    const basicStrategy = this.configuredBasicStrategy(verify);
+    const basicStrategy = this.configuredBasicStrategy(this.verifyFn);
     return this.convertToAuthStrategy(basicStrategy);
   }
 
@@ -181,16 +248,75 @@ class PassportBasicAuthProvider implements Provider<AuthenticationStrategy> {
   // You'd better define your strategy name as a constant, like
   // `const AUTH_STRATEGY_NAME = 'basic'`
   // You will need to decorate the APIs later with the same name
+  // Pass in the user profile factory
   convertToAuthStrategy(basic: BasicStrategy): AuthenticationStrategy {
-    return new StrategyAdapter(basic, AUTH_STRATEGY_NAME);
+    return new StrategyAdapter(
+      basic,
+      AUTH_STRATEGY_NAME,
+      this.myUserProfileFactory,
+    );
   }
 }
 ```
 
-2. Register the strategy provider
+2. Create a provider for the verify function.
 
-Register the strategy provider in your LoopBack application so that the
-authentication system can look for your strategy by name and invoke it:
+Here is an example provider named VerifyFunctionProvider which has a `value()`
+method that returns a function of type BasicVerifyFunction.
+
+```ts
+// In file 'providers/verifyfn.provider.ts'
+
+import {Provider} from '@loopback/core';
+import {repository} from '@loopback/repository';
+import {BasicVerifyFunction} from 'passport-http';
+import {INVALID_USER_CREDENTIALS_MESSAGE} from '../keys';
+
+export class VerifyFunctionProvider implements Provider<BasicVerifyFunction> {
+  constructor(@repository('users') private userRepo: MyUserRepository) {}
+
+  value(): BasicVerifyFunction {
+    const myThis = this;
+
+    return async function(username: string, password: string, cb: Function) {
+      let user: MyUser;
+
+      try {
+        //find user with specific username
+        const users: MyUser[] = await myThis.userRepo.find({
+          where: {username: username},
+        });
+
+        // if no user found with this username, throw an error.
+        if (users.length < 1) {
+          let error = new Error(INVALID_USER_CREDENTIALS_MESSAGE); //assign 401 in sequence
+          throw error;
+        }
+
+        //verify given password matches the user's password
+        user = users[0];
+        if (user.password !== password) {
+          let error = new Error(INVALID_USER_CREDENTIALS_MESSAGE); //assign 401 in sequence
+          throw error;
+        }
+
+        //return null for error, and the valid user
+        cb(null, user);
+      } catch (error) {
+        //return the error, and null for the user
+        cb(error, null);
+      }
+    };
+  }
+}
+```
+
+3. Register(bind) the providers
+
+Register **VerifyFunctionProvider** which is required by
+**PassportBasicAuthProvider**. Then register **PassportBasicAuthProvider** in
+your LoopBack application so that the authentication system can look for your
+strategy by name and invoke it.
 
 ```ts
 // In the main file
@@ -198,29 +324,46 @@ authentication system can look for your strategy by name and invoke it:
 import {addExtension} from '@loopback/core';
 import {MyApplication} from '<path_to_your_app>';
 import {PassportBasicAuthProvider} from '<path_to_the_provider>';
+import {VerifyFunctionProvider} from '<path_to_the_provider>';
 import {
   AuthenticationBindings,
-  registerAuthenticationStrategy,
+  AuthenticationComponent,
 } from '@loopback/authentication';
 
 const app = new MyApplication();
 
-// In a real app the function would be imported from a community module
-function verify(username: string, password: string, cb: Function) {
-  users.find(username, password, cb);
-}
+//load the authentication component
+app.component(AuthenticationComponent);
 
-app.bind('authentication.basic.verify').to(verify);
-registerAuthenticationStrategy(app, PassportBasicAuthProvider);
+// bind the user repo
+app.bind('repositories.users').toClass(MyUserRepository);
+
+// bind the authenticated sequence (mentioned later in this document)
+app.sequence(MyAuthenticationSequence);
+
+// the verify function for passport-http
+app.bind('authentication.basic.verify').toProvider(VerifyFunctionProvider);
+
+// register PassportBasicAuthProvider as a custom authentication strategy
+addExtension(
+  app,
+  AuthenticationBindings.AUTHENTICATION_STRATEGY_EXTENSION_POINT_NAME,
+  PassportBasicAuthProvider,
+  {
+    namespace:
+      AuthenticationBindings.AUTHENTICATION_STRATEGY_EXTENSION_POINT_NAME,
+  },
+);
 ```
 
-3. Decorate your endpoint
+4. Decorate your endpoint
 
 To authenticate your request with the basic strategy, decorate your controller
 function like:
 
 ```ts
 import {AUTH_STRATEGY_NAME} from './my-basic-auth-strategy';
+import {authenticate} from '@loopback/authentication';
 
 class MyController {
   constructor(@inject(SecurityBindings.USER) private user: UserProfile) {}
@@ -234,7 +377,7 @@ class MyController {
 }
 ```
 
-4. Add the authentication action to your sequence
+5. Add the authentication action to your sequence
 
 This part is same as registering a non-passport based strategy. Please make sure
 you follow the documentation

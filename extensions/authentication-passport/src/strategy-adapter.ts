@@ -3,9 +3,12 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {AuthenticationStrategy} from '@loopback/authentication';
-import {UserProfile} from '@loopback/security';
+import {
+  AuthenticationStrategy,
+  UserProfileFactory,
+} from '@loopback/authentication';
 import {HttpErrors, Request} from '@loopback/rest';
+import {UserProfile} from '@loopback/security';
 import {Strategy} from 'passport';
 
 const passportRequestMixin = require('passport/lib/http/request');
@@ -14,16 +17,23 @@ const passportRequestMixin = require('passport/lib/http/request');
  * Adapter class to invoke passport-strategy
  *   1. provides express dependencies to the passport strategies
  *   2. provides shimming of requests for passport authentication
- *   3. provides lifecycle similar to express to the passport-strategy
+ *   3. provides life-cycle similar to express to the passport-strategy
  *   4. provides state methods to the strategy instance
  * see: https://github.com/jaredhanson/passport
  */
-export class StrategyAdapter implements AuthenticationStrategy {
+export class StrategyAdapter<U> implements AuthenticationStrategy {
   /**
    * @param strategy instance of a class which implements a passport-strategy;
    * @description http://passportjs.org/
    */
-  constructor(private readonly strategy: Strategy, readonly name: string) {}
+  constructor(
+    private readonly strategy: Strategy,
+    readonly name: string,
+    // The default user profile factory that takes in a user and returns a user profile
+    private userProfileFactory: UserProfileFactory<U> = (u: unknown) => {
+      return u as UserProfile;
+    },
+  ) {}
 
   /**
    * The function to invoke the contained passport strategy.
@@ -33,6 +43,7 @@ export class StrategyAdapter implements AuthenticationStrategy {
    * @param request The incoming request.
    */
   authenticate(request: Request): Promise<UserProfile> {
+    const userProfileFactory = this.userProfileFactory;
     return new Promise<UserProfile>((resolve, reject) => {
       // mix-in passport additions like req.logIn and req.logOut
       for (const key in passportRequestMixin) {
@@ -43,9 +54,13 @@ export class StrategyAdapter implements AuthenticationStrategy {
       // create a prototype chain of an instance of a passport strategy
       const strategy = Object.create(this.strategy);
 
-      // add success state handler to strategy instance
-      strategy.success = function(user: UserProfile) {
-        resolve(user);
+      // add success state handler to strategy instance.
+      // as a generic adapter, it is agnostic of the type of
+      // the custom user, so loosen the type restriction here
+      // to be `unknown`
+      strategy.success = function(user: unknown) {
+        const userProfile = userProfileFactory(user as U);
+        resolve(userProfile);
       };
 
       // add failure state handler to strategy instance

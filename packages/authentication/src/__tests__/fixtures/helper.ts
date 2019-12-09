@@ -3,20 +3,18 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Application} from '@loopback/core';
-import {RestComponent} from '@loopback/rest';
+import {RestApplication} from '@loopback/rest';
 import {securityId, UserProfile} from '@loopback/security';
 import {AuthenticationComponent} from '../..';
+import {UserProfileFactory} from '../../types';
 import {User} from './users/user';
 import {UserRepository} from './users/user.repository';
-
 /**
  * Returns an application that has loaded the authentication and rest components
  */
-export function getApp(): Application {
-  const app = new Application();
+export function getApp(): RestApplication {
+  const app = new RestApplication();
   app.component(AuthenticationComponent);
-  app.component(RestComponent);
   return app;
 }
 
@@ -102,10 +100,20 @@ export function createBearerAuthorizationHeaderValue(
   return prefix + token;
 }
 
-export function createUserProfile(user: User): UserProfile {
-  const userProfile: UserProfile = {[securityId]: '', name: ''};
+/**
+ * Convert a User instance to an object in type UserProfile
+ * @param user
+ */
 
-  if (user.id) userProfile[securityId] = user.id;
+export const myUserProfileFactory: UserProfileFactory<User> = function(
+  user: User,
+): UserProfile {
+  const userProfile: UserProfile = {[securityId]: '', name: '', id: ''};
+
+  if (user.id) {
+    userProfile.id = user.id;
+    userProfile[securityId] = user.id;
+  }
 
   let userName = '';
   if (user.firstName) userName = user.firstName;
@@ -114,4 +122,4 @@ export function createUserProfile(user: User): UserProfile {
   userProfile.name = userName;
 
   return userProfile;
-}
+};
