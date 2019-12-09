@@ -47,7 +47,7 @@
     "@loopback/openapi-v3": "^1.10.3",
     "@loopback/rest": "^1.25.0",
     "@loopback/security": "^0.1.9",
-    "passport": "^0.4.0",
+    "passport": "^0.4.1",
     "util-promisifyall": "^1.0.6"
   },
   "devDependencies": {
