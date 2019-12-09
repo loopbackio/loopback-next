@@ -4,7 +4,8 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {inject} from '@loopback/core';
-import {juggler, AnyObject} from '@loopback/repository';
+import {AnyObject} from '@loopback/repository';
+import {juggler} from '@loopback/service-proxy';
 import * as config from './geocoder.datasource.json';
 
 export class GeocoderDataSource extends juggler.DataSource {

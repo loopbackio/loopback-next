@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {inject} from '@loopback/core';
-import {juggler} from '@loopback/repository';
+import {juggler} from '@loopback/service-proxy';
 import * as config from './calculator.datasource.json';
 
 export class CalculatorDataSource extends juggler.DataSource {
