@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import byline from 'byline';
-import {ChildProcess, spawn} from 'child_process';
+import {ChildProcess, fork} from 'child_process';
 import pEvent, {Emitter} from 'p-event';
 import {Autocannon, EndpointStats} from './autocannon';
 import {Client} from './client';
@@ -90,22 +90,33 @@ export class Benchmark {
 
 function startWorker() {
   return new Promise<{worker: ChildProcess; url: string}>((resolve, reject) => {
-    const child = spawn(
-      process.execPath,
-      ['--expose-gc', require.resolve('./worker')],
-      {
-        stdio: ['pipe', 'pipe', process.stderr],
-      },
-    );
+    const lines: string[] = [];
+    const child = fork(require.resolve('./worker'), [], {
+      execArgv: ['--expose-gc'],
+      stdio: ['pipe', 'pipe', process.stderr, 'ipc'],
+    });
 
     child.once('error', reject);
-    child.once('exit', (code, signal) =>
-      reject(new Error(`Child exited with code ${code} signal ${signal}`)),
-    );
+
+    child.on('message', msg => {
+      debug('Worker setup done, url is', msg.url);
+      resolve({worker: child, url: msg.url});
+    });
+
+    child.once('exit', (code, signal) => {
+      const msg = [
+        `Child exited with code ${code} signal ${signal}.`,
+        ...lines,
+      ].join('\n');
+      reject(new Error(msg));
+    });
 
     const reader = byline.createStream(child.stdout);
-    reader.once('data', line => resolve({worker: child, url: line.toString()}));
-    reader.on('data', line => debug('[worker] %s', line.toString()));
+    reader.on('data', line => {
+      const str = line.toString();
+      debug('[worker] %s', str);
+      lines.push(str);
+    });
   });
 }
 

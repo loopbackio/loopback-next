@@ -21,7 +21,10 @@ async function main() {
   await app.start();
 
   // Tell the master thread what is our URL
-  console.log(app.restServer.url);
+  console.log('Server listening at', app.restServer.url);
+  if (process.send) {
+    process.send({url: app.restServer.url});
+  }
 }
 
 main().catch(err => {
