@@ -5,7 +5,7 @@
 
 import {CoreBindings, inject} from '@loopback/core';
 import {
-  AnyObject,
+  defineModelClass,
   Entity,
   juggler,
   model,
@@ -15,7 +15,6 @@ import {
 } from '@loopback/repository';
 import {getModelSchemaRef, post, requestBody} from '@loopback/rest';
 import {
-  CrudRestControllerOptions,
   defineCrudRepositoryClass,
   defineCrudRestController,
 } from '@loopback/rest-crud';
@@ -42,7 +41,7 @@ class DiscoverRequest extends Model {
   }
 }
 
-@model({settings: {strict: false}})
+@model()
 class DiscoverResponse extends Model {
   @property({
     type: 'object',
@@ -87,18 +86,37 @@ export class ModelAdminController {
     );
 
     for (const table of tableNames) {
-      console.log('Discovering table %j', table);
-
-      const modelDef = await discoverModelDefinition(ds, table);
-
-      const modelClass = defineModelClass(Entity, modelDef);
-      const basePath = '/' + modelDef.name;
-      bootModelApi(this.app, ds.name, modelClass, {basePath});
-
+      const basePath = await this.discoverAndPublish(ds, table);
       result.endpoints[table] = basePath;
     }
 
     return result;
+  }
+
+  async discoverAndPublish(ds: juggler.DataSource, table: string) {
+    console.log('Discovering table %j', table);
+
+    // Step 1: discover model definition from the database schema
+    const modelDef = await discoverModelDefinition(ds, table);
+
+    // Step 2: define a model class using the discovered definition
+    const ModelClass = defineModelClass(Entity, modelDef);
+    console.log('Defined model %s', ModelClass.name);
+
+    // Step 3: define a repository class adding CRUD behavior to our model
+    const RepositoryClass = defineCrudRepositoryClass(ModelClass);
+    inject(`datasources.${ds.name}`)(RepositoryClass, undefined, 0);
+    const repoBinding = this.app.repository(RepositoryClass);
+    console.log('Defined repository %s', RepositoryClass.name);
+
+    // Step 4: Optionally, expose the new model via REST API
+    const basePath = '/' + modelDef.name;
+    const ControllerClass = defineCrudRestController(ModelClass, {basePath});
+    inject(repoBinding.key)(ControllerClass, undefined, 0);
+    this.app.controller(ControllerClass);
+    console.log('Defined controller %s', ControllerClass.name);
+
+    return basePath;
   }
 }
 
@@ -134,109 +152,70 @@ async function discoverModelDefinition(
   ds: juggler.DataSource,
   table: string,
 ): Promise<ModelDefinition> {
-  // FIXME(bajtos) fix discoverSchemas, it does not return PromiseOrVoid
-  const discoveredModels = (await ds.discoverSchemas(table)) as AnyObject;
+  const jugglerDef = await ds.discoverSchema(table);
   /* Example output from MySQL:
      {
-       'test.CoffeeShop': {
-         name: 'Coffeeshop',
-         options: {
-           idInjection: false,
-           mysql: {schema: 'test', table: 'CoffeeShop'},
-         },
-         properties: {
-           id: {
-             type: 'Number',
-             required: true,
-             length: null,
-             precision: 10,
-             scale: 0,
-             id: 1,
-             mysql: {
-               columnName: 'id',
-               dataType: 'int',
-               dataLength: null,
-               dataPrecision: 10,
-               dataScale: 0,
-               nullable: 'N',
-             },
-           },
-           name: {
-             type: 'String',
-             required: false,
-             length: 512,
-             precision: null,
-             scale: null,
-             mysql: {
-               columnName: 'name',
-               dataType: 'varchar',
-               dataLength: 512,
-               dataPrecision: null,
-               dataScale: null,
-               nullable: 'Y',
-             },
-           },
-           city: {
-             type: 'String',
-             required: false,
-             length: 512,
-             precision: null,
-             scale: null,
-             mysql: {
-               columnName: 'city',
-               dataType: 'varchar',
-               dataLength: 512,
-               dataPrecision: null,
-               dataScale: null,
-               nullable: 'Y',
-             },
-           },
-       }}}
+        name: 'Coffeeshop',
+        options: {
+          idInjection: false,
+          mysql: {schema: 'test', table: 'CoffeeShop'},
+        },
+        properties: {
+          id: {
+            type: 'Number',
+            required: true,
+            length: null,
+            precision: 10,
+            scale: 0,
+            id: 1,
+            mysql: {
+              columnName: 'id',
+              dataType: 'int',
+              dataLength: null,
+              dataPrecision: 10,
+              dataScale: 0,
+              nullable: 'N',
+            },
+          },
+          name: {
+            type: 'String',
+            required: false,
+            length: 512,
+            precision: null,
+            scale: null,
+            mysql: {
+              columnName: 'name',
+              dataType: 'varchar',
+              dataLength: 512,
+              dataPrecision: null,
+              dataScale: null,
+              nullable: 'Y',
+            },
+          },
+          city: {
+            type: 'String',
+            required: false,
+            length: 512,
+            precision: null,
+            scale: null,
+            mysql: {
+              columnName: 'city',
+              dataType: 'varchar',
+              dataLength: 512,
+              dataPrecision: null,
+              dataScale: null,
+              nullable: 'Y',
+            },
+          },
+       }}
      */
-  const jugglerDef = discoveredModels[Object.keys(discoveredModels)[0]];
 
   return new ModelDefinition({
     name: jugglerDef.name,
     // TODO: convert from juggler/LB3 style to LB4
-    // For example, we need to transform array-type definitions.
+    // For example, we need to transform array-type definitions from
+    // {type: ['string']} to {type: 'array', itemType: 'string'}
     properties: jugglerDef.properties,
     settings: jugglerDef.options,
   });
-}
-
-// TODO: move this function to '@loopback/repository'
-function defineModelClass<T extends typeof Model>(
-  base: T /* Model or Entity */,
-  definition: ModelDefinition,
-): T {
-  const modelName = definition.name;
-  const defineNamedModelClass = new Function(
-    'BaseClass',
-    `return class ${modelName} extends BaseClass {}`,
-  );
-  const modelClass = defineNamedModelClass(base) as T;
-  assert.equal(modelClass.name, modelName);
-  modelClass.definition = definition;
-  console.log('Defined model class %s', definition.name);
-  return modelClass;
-}
-
-// This will be implemented by
-// https://github.com/strongloop/loopback-next/issues/2036
-// In particular https://github.com/strongloop/loopback-next/issues/3737
-function bootModelApi(
-  app: TodoListApplication,
-  dsName: string,
-  modelClass: typeof Entity,
-  options: CrudRestControllerOptions,
-) {
-  const RepositoryClass = defineCrudRepositoryClass(modelClass);
-  inject(`datasources.${dsName}`)(RepositoryClass, undefined, 0);
-  const repoBinding = app.repository(RepositoryClass);
-  console.log('Defined repository %s', RepositoryClass.name);
-
-  const ControllerClass = defineCrudRestController(modelClass, options);
-  inject(repoBinding.key)(ControllerClass, undefined, 0);
-  app.controller(ControllerClass);
-  console.log('Defined controller %s', ControllerClass.name);
 }
