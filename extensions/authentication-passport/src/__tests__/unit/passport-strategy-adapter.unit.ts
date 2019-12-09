@@ -3,8 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {UserProfile, securityId} from '@loopback/security';
 import {HttpErrors, Request} from '@loopback/rest';
+import {securityId, UserProfile} from '@loopback/security';
 import {expect} from '@loopback/testlab';
 import {AuthenticateOptions} from 'passport';
 import {StrategyAdapter} from '../..';
