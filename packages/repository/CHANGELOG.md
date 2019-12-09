@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.16.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.15.5...@loopback/repository@1.16.0) (2019-12-09)
+
+
+### Bug Fixes
+
+* **repository:** fix DeepPartial<AnyObject> ([0f97811](https://github.com/strongloop/loopback-next/commit/0f97811256304ab048a93858f7a86229bc662e7a))
+
+
+### Features
+
+* **repository:** add `defineModelClass` helper ([4d844d1](https://github.com/strongloop/loopback-next/commit/4d844d1a6812ebbe18e30d646e7bc854974a1f76))
+* **repository:** add title property to Count schema definition ([a91c989](https://github.com/strongloop/loopback-next/commit/a91c9897f48365b9c888fd08075c82de44774331))
+* **repository:** enable inclusion with custom scope ([4a0d595](https://github.com/strongloop/loopback-next/commit/4a0d595f65a2c80c89e2ca1263d235e4d23cd730))
+* **repository:** rejects create/update operations for navigational properties ([01de327](https://github.com/strongloop/loopback-next/commit/01de3275be7c6dd8e9c50ffeb64c23d6d7ec9e51))
+
+
+
+
+
 ## [1.15.5](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.15.4...@loopback/repository@1.15.5) (2019-11-25)
 
 **Note:** Version bump only for package @loopback/repository

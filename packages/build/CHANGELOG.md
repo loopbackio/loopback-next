@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/build@2.1.0...@loopback/build@3.0.0) (2019-12-09)
+
+
+### Features
+
+* **build:** enable esModuleInterop compiler option ([3090073](https://github.com/strongloop/loopback-next/commit/309007346b72fec3ee127db5032d5cb3aa191c5d))
+
+
+### BREAKING CHANGES
+
+* **build:** The flag impacts how `import` is handled by the TypeScript
+compiler. The new behavior is:
+
+- A namespace import (i.e. import * as foo from "foo") is now correctly flagged as uncallable. Calling it will result in an error.
+- Default imports to CommonJS/AMD/UMD are now allowed (e.g. import fs from "fs"), and should work as expected.
+
+For existing projects, namespace imports (import * as express from "express"; express();) will need to be converted to default imports (import express from "express"; express();).
+
+See https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-7.html#support-for-import-d-from-cjs-from-commonjs-modules-with---esmoduleinterop
+
+
+
+
+
 # [2.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/build@2.0.16...@loopback/build@2.1.0) (2019-11-25)
 
 

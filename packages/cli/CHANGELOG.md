@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.27.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.26.0...@loopback/cli@1.27.0) (2019-12-09)
+
+
+### Features
+
+* **cli:** add default option for gracePeriodForClose to configure http/https close ([5a243e2](https://github.com/strongloop/loopback-next/commit/5a243e280868c4b83d7b5685f326a44baf5cbd9a))
+* **cli:** update templates to enable esModuleInterop and default imports from non-ES modules ([83e628b](https://github.com/strongloop/loopback-next/commit/83e628bdf5834102aa9042e52a3d7e608d2d1754))
+
+
+
+
+
 # [1.26.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.25.1...@loopback/cli@1.26.0) (2019-11-25)
 
 

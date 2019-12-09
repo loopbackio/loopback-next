@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.25.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.24.0...@loopback/context@1.25.0) (2019-12-09)
+
+
+### Features
+
+* **context:** allow global interceptors to be applied based on source types ([77cbd01](https://github.com/strongloop/loopback-next/commit/77cbd019027e1441339735326bcfb86a23df8b66))
+* **context:** make it possible to set source information for interceptions ([2a1ccb4](https://github.com/strongloop/loopback-next/commit/2a1ccb409a889d8b30b03ddf3284c9e9d5554e27))
+
+
+
+
+
 # [1.24.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.23.5...@loopback/context@1.24.0) (2019-11-25)
 
 

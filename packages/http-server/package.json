@@ -1,6 +1,6 @@
 {
   "name": "@loopback/http-server",
-  "version": "1.4.19",
+  "version": "1.5.0",
   "description": "A wrapper for creating HTTP/HTTPS servers",
   "engines": {
     "node": ">=8.9"
@@ -20,10 +20,10 @@
     "stoppable": "^1.1.0"
   },
   "devDependencies": {
-    "@loopback/build": "^2.1.0",
-    "@loopback/core": "^1.11.0",
-    "@loopback/eslint-config": "^4.1.5",
-    "@loopback/testlab": "^1.9.5",
+    "@loopback/build": "^3.0.0",
+    "@loopback/core": "^1.12.0",
+    "@loopback/eslint-config": "^5.0.0",
+    "@loopback/testlab": "^1.10.0",
     "@types/node": "^10.17.6",
     "@types/stoppable": "^1.1.0"
   },

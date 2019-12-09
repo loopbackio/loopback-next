@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0](https://github.com/strongloop/loopback-next/compare/@loopback/core@1.11.0...@loopback/core@1.12.0) (2019-12-09)
+
+
+### Features
+
+* **core:** allow application to trap shutdown signals ([2130634](https://github.com/strongloop/loopback-next/commit/213063424c2690aa7ef3f4494d8fc2a7e593b883))
+* **core:** emit stateChanged events for application state transitions ([5257a8f](https://github.com/strongloop/loopback-next/commit/5257a8f68525921028b98a340c75758725d256b9))
+* **core:** enable start/stop/boot to be idempotent ([b614a78](https://github.com/strongloop/loopback-next/commit/b614a7825be1dc1875556388443f72385525fa29))
+* **core:** improve application states for start/stop ([01dac15](https://github.com/strongloop/loopback-next/commit/01dac151260e6c743cc77863f6495a85d19d338c))
+* **core:** simplify state management by checking in process states ([874d2b3](https://github.com/strongloop/loopback-next/commit/874d2b385dd8c1dbf3d3980118898c6b99f145aa))
+
+
+
+
+
 # [1.11.0](https://github.com/strongloop/loopback-next/compare/@loopback/core@1.10.7...@loopback/core@1.11.0) (2019-11-25)
 
 

@@ -3,6 +3,40 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/eslint-config@4.1.5...@loopback/eslint-config@5.0.0) (2019-12-09)
+
+
+### Features
+
+* **eslint-config:** add @typescript-eslint/prefer-nullish-coalescing rule ([b608120](https://github.com/strongloop/loopback-next/commit/b608120dbf67e1f93eabd6fa5efe1f6e6630084a))
+* **eslint-config:** add typescript-eslint/prefer-optional-chain rule ([bd1252a](https://github.com/strongloop/loopback-next/commit/bd1252a4367db8212f8b48c06fcc7434a2456b12))
+* **eslint-config:** enable no-extra-non-null-assertion ([d74a688](https://github.com/strongloop/loopback-next/commit/d74a68889fb48d7a1cb7034cb5a8fa8587853b5e))
+* **eslint-config:** enable return-await ([be6b38b](https://github.com/strongloop/loopback-next/commit/be6b38b75b2f4c937b742398c9edcbb6c2d1d7c0))
+
+
+### BREAKING CHANGES
+
+* **eslint-config:** The linter will reject code using `return await`
+ouside of `try` blocks or forgetting to `await` before returning
+from inside a `try` block.
+Migration guide: use `return` outside of `try` blocks and `return await`
+inside `try` blocks.
+
+Signed-off-by: Miroslav Bajtoš <mbajtoss@gmail.com>
+* **eslint-config:** the `@typescript-eslint/prefer-nullish-coalescing` rule prefers
+nullish coalescing, for example, `ttl ?? 5000` over `ttl || 5000`.
+
+See https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html#nullish-coalescing
+* **eslint-config:** the `@typescript-eslint/prefer-optional-chain` rule will
+report violations if optional chaining is not used. For example, it prefers
+`options?.ttl` over `options && options.ttl`.
+
+See https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html#optional-chaining
+
+
+
+
+
 ## [4.1.5](https://github.com/strongloop/loopback-next/compare/@loopback/eslint-config@4.1.4...@loopback/eslint-config@4.1.5) (2019-11-25)
 
 **Note:** Version bump only for package @loopback/eslint-config

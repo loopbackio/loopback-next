@@ -3,6 +3,34 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.7.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@2.6.0...@loopback/docs@2.7.0) (2019-12-09)
+
+
+### Bug Fixes
+
+* **docs:** fix formatting ([f25457c](https://github.com/strongloop/loopback-next/commit/f25457cd51bbae6ec52bc76273e9af0bd6a1c60c))
+* **docs:** improve TypeScript snippets to fix syntax highlighting ([5bf50b7](https://github.com/strongloop/loopback-next/commit/5bf50b7544573111e693096a9668f73d0ab18e49))
+* **docs:** update graphql mutation command ([237efc9](https://github.com/strongloop/loopback-next/commit/237efc93236476b2e364e6a92cd378e045ae4546))
+* **docs:** use `json` instead of `ts` syntax for JSON snippets ([759dc6f](https://github.com/strongloop/loopback-next/commit/759dc6fd22dcaa3e8039852a34b8f6886802f7cc))
+
+
+### Features
+
+* **context:** allow global interceptors to be applied based on source types ([77cbd01](https://github.com/strongloop/loopback-next/commit/77cbd019027e1441339735326bcfb86a23df8b66))
+* **context:** make it possible to set source information for interceptions ([2a1ccb4](https://github.com/strongloop/loopback-next/commit/2a1ccb409a889d8b30b03ddf3284c9e9d5554e27))
+* **core:** emit stateChanged events for application state transitions ([5257a8f](https://github.com/strongloop/loopback-next/commit/5257a8f68525921028b98a340c75758725d256b9))
+* **core:** simplify state management by checking in process states ([874d2b3](https://github.com/strongloop/loopback-next/commit/874d2b385dd8c1dbf3d3980118898c6b99f145aa))
+* **docs:** add a diagram for application state transitions ([4ccc5ac](https://github.com/strongloop/loopback-next/commit/4ccc5ac0fa243691bc34389c44ba0e684f12c556))
+* **docs:** add sections to cover application states and shutdown hooks ([93e8bb1](https://github.com/strongloop/loopback-next/commit/93e8bb1ae639eaa235ed1a48b2c2609f35652a77))
+* **docs:** expose docs for extension modules ([2bb7d09](https://github.com/strongloop/loopback-next/commit/2bb7d093192464446802ef3313fb2da9ae9cbaf4))
+* **docs:** update Authentication Tutorial with UserCredentials ([7494d68](https://github.com/strongloop/loopback-next/commit/7494d68459f653232dc310626ce6378712df2bf0))
+* **http-server:** use stoppable to handle http keep-alive gracefully ([c5fc495](https://github.com/strongloop/loopback-next/commit/c5fc495639301a494313afb33c5d156b427257e0))
+* **repository:** enable inclusion with custom scope ([4a0d595](https://github.com/strongloop/loopback-next/commit/4a0d595f65a2c80c89e2ca1263d235e4d23cd730))
+
+
+
+
+
 # [2.6.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@2.5.1...@loopback/docs@2.6.0) (2019-11-25)
 
 

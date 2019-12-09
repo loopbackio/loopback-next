@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0](https://github.com/strongloop/loopback-next/compare/@loopback/boot@1.5.12...@loopback/boot@1.6.0) (2019-12-09)
+
+
+### Features
+
+* **boot:** set up booting and booted states for boot() ([96c9313](https://github.com/strongloop/loopback-next/commit/96c93134db0509ce7d97ce6c5451377bed4fc6fe))
+* **core:** enable start/stop/boot to be idempotent ([b614a78](https://github.com/strongloop/loopback-next/commit/b614a7825be1dc1875556388443f72385525fa29))
+* **core:** improve application states for start/stop ([01dac15](https://github.com/strongloop/loopback-next/commit/01dac151260e6c743cc77863f6495a85d19d338c))
+
+
+
+
+
 ## [1.5.12](https://github.com/strongloop/loopback-next/compare/@loopback/boot@1.5.11...@loopback/boot@1.5.12) (2019-11-25)
 
 **Note:** Version bump only for package @loopback/boot

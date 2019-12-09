@@ -1,6 +1,6 @@
 {
   "name": "@loopback/test-repository-cloudant",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "",
   "private": true,
   "engines": {
@@ -20,9 +20,9 @@
   "license": "MIT",
   "devDependencies": {
     "@loopback/build": "^1.7.1",
-    "@loopback/eslint-config": "^4.1.5",
-    "@loopback/repository": "^1.15.5",
-    "@loopback/repository-tests": "^0.7.0",
+    "@loopback/eslint-config": "^5.0.0",
+    "@loopback/repository": "^1.16.0",
+    "@loopback/repository-tests": "^0.8.0",
     "@types/node": "^10.17.6",
     "async": "^3.1.0",
     "debug": "^4.1.1",

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.8.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository-tests@0.7.0...@loopback/repository-tests@0.8.0) (2019-12-09)
+
+
+### Features
+
+* **repository:** enable inclusion with custom scope ([4a0d595](https://github.com/strongloop/loopback-next/commit/4a0d595f65a2c80c89e2ca1263d235e4d23cd730))
+* **repository:** rejects create/update operations for navigational properties ([01de327](https://github.com/strongloop/loopback-next/commit/01de3275be7c6dd8e9c50ffeb64c23d6d7ec9e51))
+
+
+
+
+
 # [0.7.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository-tests@0.6.1...@loopback/repository-tests@0.7.0) (2019-11-25)
 
 
