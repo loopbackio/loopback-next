@@ -23,7 +23,7 @@
     "@loopback/repository": "^1.15.5",
     "@loopback/repository-tests": "^0.7.0",
     "@types/node": "^10.17.6",
-    "loopback-connector-postgresql": "^3.8.0"
+    "loopback-connector-postgresql": "^3.8.1"
   },
   "files": [
     "README.md",
