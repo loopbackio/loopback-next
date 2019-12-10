@@ -60,7 +60,7 @@ export function TimeStampMixin<T extends Class<any>>(baseClass: T) {
     public createdAt: Date;
     constructor(...args: any[]) {
       super(args);
-      this.createTS = new Date();
+      this.createdAt = new Date();
     }
     printTimeStamp() {
       console.log('Instance created at: ' + this.createdAt);
