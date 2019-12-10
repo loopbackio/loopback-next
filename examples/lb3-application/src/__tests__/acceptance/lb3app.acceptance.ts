@@ -6,13 +6,13 @@
 import {OpenApiSpec} from '@loopback/rest';
 import {Client, expect} from '@loopback/testlab';
 import _ from 'lodash';
-import {CoffeeShopApplication} from '../../application';
+import {ExpressServer} from '../../server';
 import {givenCoffeeShop, setupApplication} from './test-helper';
 
 const lb3App = require('../../../lb3app/server/server');
 
 describe('CoffeeShopApplication', () => {
-  let app: CoffeeShopApplication;
+  let app: ExpressServer;
   let client: Client;
 
   before('setupApplication', async () => {
@@ -138,7 +138,7 @@ describe('CoffeeShopApplication', () => {
     let apiSpec: OpenApiSpec;
 
     before(async () => {
-      apiSpec = app.restServer.getApiSpec();
+      apiSpec = app.lbApp.restServer.getApiSpec();
     });
 
     it('has the same properties in both the LB3 and LB4 specs', () => {
@@ -198,22 +198,20 @@ describe('CoffeeShopApplication', () => {
     it('appends the basePath and transfers the paths from the LB3 spec to the LB4 spec', () => {
       const paths = Object.keys(apiSpec.paths);
       expect(paths).to.have.length(32);
-
       // some of the expected paths
       expect(paths).to.containDeep([
-        '/api/Users/{id}/accessTokens/{fk}',
-        '/api/Users',
-        '/api/Users/{id}/exists',
-        '/api/Users/login',
-        '/api/CoffeeShops',
-        '/api/CoffeeShops/{id}',
-        '/api/CoffeeShops/greet',
+        '/Users/{id}/accessTokens/{fk}',
+        '/Users',
+        '/Users/{id}/exists',
+        '/Users/login',
+        '/CoffeeShops',
+        '/CoffeeShops/{id}',
+        '/CoffeeShops/greet',
       ]);
     });
 
     it("transfers the path's details", () => {
-      const CoffeeShopsEndpoint = apiSpec.paths['/api/CoffeeShops'];
-
+      const CoffeeShopsEndpoint = apiSpec.paths['/CoffeeShops'];
       expect(CoffeeShopsEndpoint).to.have.properties([
         'post',
         'patch',

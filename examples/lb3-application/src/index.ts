@@ -4,16 +4,13 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {ApplicationConfig} from '@loopback/core';
-import {CoffeeShopApplication} from './application';
+import {ExpressServer} from './server';
+
+export {ExpressServer};
 
 export async function main(options: ApplicationConfig = {}) {
-  const app = new CoffeeShopApplication(options);
-  await app.boot();
-  await app.start();
-
-  const url = app.restServer.url;
-  console.log(`Server is running at ${url}`);
-  return app;
+  const server = new ExpressServer(options);
+  await server.boot();
+  await server.start();
+  console.log(`Server is running at ${server.url}`);
 }
-
-export {CoffeeShopApplication};
