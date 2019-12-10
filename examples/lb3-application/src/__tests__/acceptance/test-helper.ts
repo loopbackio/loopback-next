@@ -3,29 +3,25 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {
-  Client,
-  createRestAppClient,
-  givenHttpServerConfig,
-} from '@loopback/testlab';
-import {CoffeeShopApplication} from '../../application';
+import {Client, givenHttpServerConfig, supertest} from '@loopback/testlab';
+import {ExpressServer} from '../../server';
 const lb3app = require('../../../lb3app/server/server');
 
 export async function setupApplication(): Promise<AppWithClient> {
-  const app = new CoffeeShopApplication({
+  const app = new ExpressServer({
     rest: givenHttpServerConfig(),
   });
 
   await app.boot();
   await app.start();
 
-  const client = createRestAppClient(app);
+  const client = supertest(app.url);
 
   return {app, client};
 }
 
 export interface AppWithClient {
-  app: CoffeeShopApplication;
+  app: ExpressServer;
   client: Client;
 }
 
