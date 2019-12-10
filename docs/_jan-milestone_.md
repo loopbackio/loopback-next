@@ -10,6 +10,11 @@
 
 ## Goals
 
+- [ ] Migration guide between LB3 and LB4 MVP #453
+
+  - [ ] [3] How to migrate datasources from LB3 to LB4 #3946
+  - [ ] [3] How to migrate boot scripts #3957
+
 - [ ] Improve developer experience
 
   - [ ] [3] Expose isActive() method in Transaction interface #3471
@@ -22,17 +27,6 @@
         'lb4 example todo-list' #4161
   - [ ] [Needs Estimates] lb3 - Relations on uuid
         https://github.com/strongloop/loopback/issues/4287
-
-- [ ] Migration guide between LB3 and LB4 MVP #453
-
-  - [ ] [3] How to migrate datasources from LB3 to LB4 #3946
-  - [ ] [3] How to migrate boot scripts #3957
-
-- [ ] From model definition to REST API with no custom repository/controller
-      classes #2036
-
-  - [ ] [3]Add CrudRestApiBuilder to @loopback/rest-crud #3737
-  - [ ] [3]Example app showing CrudRestApiBuilder #3738
 
 - [ ] [3][spike] API Connect / LoopBack 4 integration #4115
 
