@@ -111,9 +111,11 @@ LoopBack 4 apps.
 
 ## Migrating Express middleware from LB3 app
 
-1. Update config.json First off, edit the LB3 app's `config.json` file.
+1. Update config.json
 
-   Remove these properties, they are not required anymore:
+   First off, edit the LB3 app's `config.json` file.
+
+   Remove these properties, as they are not required anymore:
 
    ```json
    "host": "0.0.0.0",
