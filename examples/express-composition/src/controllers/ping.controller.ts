@@ -15,6 +15,7 @@ const PING_RESPONSE: ResponseObject = {
     'application/json': {
       schema: {
         type: 'object',
+        title: 'PingResponse',
         properties: {
           greeting: {type: 'string'},
           date: {type: 'string'},
