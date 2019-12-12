@@ -31,6 +31,13 @@
 - Spike on getting APIs created from LB4 imported into APIC,
   https://github.com/strongloop/loopback-next/issues/4115
 
+#### Create models & REST APIs dynamically at runtime
+
+- Dynamic binding/rebinding of controllers after app start #433
+- How to build models, repositories and controllers dynamically at runtime #4296
+- Docs for exposing REST API of a Model with no custom classes #2740 (stretch
+  goal)
+
 #### Open Issues with `bug` or `developer experience` labels
 
 - Would like to put more time in tackling those. Will plan it as part of the
