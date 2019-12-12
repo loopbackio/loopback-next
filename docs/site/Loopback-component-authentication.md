@@ -64,6 +64,10 @@ To utilize `authentication` in an application `application.ts`, you must load
 the authentication component named `AuthenticationComponent`.
 
 ```ts
+import {AuthenticationComponent} from '@loopback/authentication';
+
+//...
+
 export class MyApplication extends BootMixin(
   ServiceMixin(RepositoryMixin(RestApplication)),
 ) {
