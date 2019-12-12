@@ -1,0 +1,45 @@
+{
+  "name": "@loopback/model-api-builder",
+  "version": "1.0.0",
+  "description": "Types and helpers for packages contributing Model API builders.",
+  "engines": {
+    "node": ">=8.9"
+  },
+  "main": "index",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "lb-tsc",
+    "clean": "lb-clean loopback-model-api-builder-plugin*.tgz dist tsconfig.build.tsbuildinfo package",
+    "pretest": "npm run build",
+    "test": "",
+    "verify": "npm pack && tar xf loopback-model-api-builder-plugin*.tgz && tree package && npm run clean"
+  },
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "license": "MIT",
+  "peerDependencies": {
+    "@loopback/core": "^1.12.0",
+    "@loopback/repository": "^1.16.0"
+  },
+  "devDependencies": {
+    "@loopback/build": "^1.7.1",
+    "@loopback/core": "^1.12.0",
+    "@loopback/repository": "^1.16.0",
+    "@types/node": "^10.17.9"
+  },
+  "files": [
+    "README.md",
+    "index.js",
+    "index.d.ts",
+    "dist",
+    "src",
+    "!*/__tests__"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "packages/model-api-builder"
+  }
+}
