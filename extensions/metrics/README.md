@@ -3,7 +3,7 @@
 This module contains a component that reports metrics of Node.js, LoopBack
 framework, and your application to [Prometheus](https://prometheus.io/).
 
-## Stability: :warning:Experimental:warning:
+## Stability: ⚠️Experimental⚠️
 
 > Experimental packages provide early access to advanced or experimental
 > functionality to get community feedback. Such modules are published to npm
