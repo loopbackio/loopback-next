@@ -465,7 +465,7 @@ has-many relation 'orders':
 
 ```ts
 export class CustomerRepository extends DefaultCrudRepository {
-  products: HasManyRepositoryFactory<Order, typeof Customer.prototype.id>;
+  orders: HasManyRepositoryFactory<Order, typeof Customer.prototype.id>;
 
   constructor(
     dataSource: juggler.DataSource,
