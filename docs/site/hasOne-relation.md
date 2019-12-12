@@ -131,7 +131,7 @@ contain a custom foreign key to be stored as the relation metadata. The
 decorator logic also designates the relation type and tries to infer the foreign
 key.
 
-LB4 uses three `keyFrom`, `keyTo` and `name` fields in the `hasMany` relation
+LB4 uses three `keyFrom`, `keyTo` and `name` fields in the `hasOne` relation
 metadata to configure relations. The relation metadata has its own default
 values for these three fields:
 
