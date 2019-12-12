@@ -11,6 +11,7 @@ import {
   DataSourceBooter,
   InterceptorProviderBooter,
   LifeCycleObserverBooter,
+  ModelApiBooter,
   RepositoryBooter,
   ServiceBooter,
 } from './booters';
@@ -33,6 +34,7 @@ export class BootComponent implements Component {
     DataSourceBooter,
     LifeCycleObserverBooter,
     InterceptorProviderBooter,
+    ModelApiBooter,
   ];
 
   /**

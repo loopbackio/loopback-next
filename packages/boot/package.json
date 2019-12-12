@@ -24,6 +24,7 @@
   "dependencies": {
     "@loopback/context": "^1.25.0",
     "@loopback/core": "^1.12.0",
+    "@loopback/model-api-builder": "^1.0.0",
     "@loopback/repository": "^1.16.0",
     "@loopback/service-proxy": "^1.3.13",
     "@types/debug": "^4.1.5",
