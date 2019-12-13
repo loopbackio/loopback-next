@@ -73,16 +73,16 @@ approach authorization.
 
 `Developers` need to,
 
-- mount the authorization component
-  ([see, Registering the Authorization Component](##Registering-the-Authorization-Component))
-- decorate endpoints with authorization metadata
-  ([see, Configuring API Endpoints](##Configuring-API-Endpoints))
-- define `authorizer` and `voter` functions
-  ([see, Programming Access Policies](##Programming-Access-Policies))
-- design security policies as decision matrix
-  ([see, Authorization by decision matrix](##Authorization-by-decision-matrix))
-- plug in external enforcer libraries
-  ([see, Enforcer Libraries](##Enforcer-Libraries))
+- mount the authorization component, see
+  [Registering the Authorization Component](#registering-the-authorization-component)
+- decorate endpoints with authorization metadata, see
+  [Configuring API Endpoints](#configuring-api-endpoints)
+- define `authorizer` and `voter` functions, see
+  [Programming Access Policies](#programming-access-policies)
+- design security policies as decision matrix, see
+  [Authorization by decision matrix](#authorization-by-decision-matrix)
+- plug in external enforcer libraries, see
+  [Enforcer Libraries](#enforcer-libraries)
 
 ## Registering the Authorization Component
 
@@ -125,26 +125,25 @@ The component also declares various
 [types](https://github.com/strongloop/loopback-next/blob/master/packages/authorization/src/types.ts)
 to use in defining necessary classes and inputs by developers.
 
-    - `Authorizer`: A class implementing access policies. Accepts
-      `AuthorizationContext` and `AuthorizationMetadata` as input and returns an
-      `AuthorizationDecision`.
+- `Authorizer`: A class implementing access policies. Accepts
+  `AuthorizationContext` and `AuthorizationMetadata` as input and returns an
+  `AuthorizationDecision`.
 
-    - `AuthorizationDecision`: expected type to be returned by an `Authorizer`
+- `AuthorizationDecision`: expected type to be returned by an `Authorizer`
 
-    - `AuthorizationMetadata`: expected type of the authorization spec passed to
-      the decorator used to annotate a controller method. Also provided as input
-      parameter to the `Authorizer`.
+- `AuthorizationMetadata`: expected type of the authorization spec passed to the
+  decorator used to annotate a controller method. Also provided as input
+  parameter to the `Authorizer`.
 
-    - `AuthorizationContext`: contains current principal invoking an endpoint,
-      request context and expected roles and scopes.
+- `AuthorizationContext`: contains current principal invoking an endpoint,
+  request context and expected roles and scopes.
 
-    - `Enforcer`: type of extension classes that provide authorization services
-      for an `Authorizer`.
+- `Enforcer`: type of extension classes that provide authorization services for
+  an `Authorizer`.
 
-    - `AuthorizationRequest`: type of the input provided to an `Enforcer`.
+- `AuthorizationRequest`: type of the input provided to an `Enforcer`.
 
-    - `AuthorizationError`: expected type of the error thrown by an
-      `Authorizer`.
+- `AuthorizationError`: expected type of the error thrown by an `Authorizer`.
 
 ## Authorization Interceptor
 
