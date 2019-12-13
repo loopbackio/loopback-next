@@ -95,6 +95,8 @@ You can join the team by posting a comment to
 | [![nabdelgadir]](https://github.com/nabdelgadir) | [![marioestradarosa]](https://github.com/marioestradarosa) |        [![yaty]](https://github.com/yaty)        |
 |                 Dominique Emond                  |                         Agnes Lin                          |                 Deepak Rajamohan                 |
 |     [![emonddr]](https://github.com/emonddr)     |         [![agnes512]](https://github.com/agnes512)         | [![deepakrkris]](https://github.com/deepakrkris) |
+|                  Denny Bartelt                   |                    Douglas McConnachie                     |                  Rifa Achrinza                   |
+|     [![derdeka]](https://github.com/derdeka)     |         [![dougal83]](https://github.com/dougal83)         |    [![achrinza]](https://github.com/achrinza)    |
 
 See
 [all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
@@ -115,3 +117,6 @@ See
 [emonddr]: https://avatars0.githubusercontent.com/u/6864736??v=3&s=60
 [agnes512]: https://avatars3.githubusercontent.com/u/50331796?v=3&s=60
 [deepakrkris]: https://avatars0.githubusercontent.com/u/7688315?v=3&s=60
+[derdeka]: https://avatars3.githubusercontent.com/u/13640166?v=3&s=60
+[dougal83]: https://avatars0.githubusercontent.com/u/2735881?v=3&s=60
+[achrinza]: https://avatars3.githubusercontent.com/u/25147899?v=3&s=60
