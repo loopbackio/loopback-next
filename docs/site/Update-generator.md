@@ -1,19 +1,17 @@
 ---
 lang: en
-title: 'Update generator'
+title: 'Update project dependencies'
 keywords: LoopBack 4.0, LoopBack 4
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Update-generator.html
 ---
 
-{% include content/generator-create-app.html lang=page.lang %}
-
 ### Synopsis
 
-The `lb4 update` command runs against a LoopBack 4 project and checks
-dependencies against the installed `@loopback/cli`. By default, it checks for
-exact match. Use `--semver` option to check compatibility using semver
-semantics.
+The `lb4 update` command runs inside a LoopBack 4 project and checks
+dependencies against the current version of `@loopback/cli`. By default, it
+checks for exact match. Use `--semver` option to check compatibility using
+semver semantics.
 
 ```sh
 lb4 update [options]
