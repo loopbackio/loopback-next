@@ -510,6 +510,10 @@ children:
     url: Download-examples.html
     output: 'web, pdf'
 
+  - title: 'Update project dependencies'
+    url: Update-generator.html
+    output: 'web, pdf'
+
 - title: 'Connectors reference'
   url: Connectors-reference.html
   output: 'web'
