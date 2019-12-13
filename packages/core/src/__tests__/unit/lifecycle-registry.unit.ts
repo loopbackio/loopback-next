@@ -104,12 +104,14 @@ describe('LifeCycleRegistry', () => {
     registry.setParallel(true);
     await registry.start();
     expect(events.length).to.equal(4);
-    expect(events).to.eql([
-      'g1-2-start',
-      'g1-1-start',
-      'g2-2-start',
-      'g2-1-start',
-    ]);
+
+    // 1st group: g1-1, g1-2
+    const group1 = events.slice(0, 2);
+    expect(group1.sort()).to.eql(['g1-1-start', 'g1-2-start']);
+
+    // 2nd group: g2-1, g2-2
+    const group2 = events.slice(2, 4);
+    expect(group2.sort()).to.eql(['g2-1-start', 'g2-2-start']);
   });
 
   it('runs all registered observers within the same group in serial', async () => {
