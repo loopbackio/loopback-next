@@ -192,7 +192,12 @@ describe('model decorator', () => {
         column: 'QTY',
       },
     });
-    expect(meta.id).to.eql({type: 'string', id: true, generated: true});
+    expect(meta.id).to.eql({
+      type: 'string',
+      id: true,
+      generated: true,
+      useDefaultIdType: false,
+    });
     expect(meta.isShipped).to.eql({type: Boolean});
   });
 

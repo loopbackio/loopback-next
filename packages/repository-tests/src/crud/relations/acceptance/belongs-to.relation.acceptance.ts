@@ -91,7 +91,7 @@ export function belongsToRelationAcceptance(
         description: 'Order that is shipped Tuesday morning',
       });
       const result = await orderRepo.shipment(order.id);
-      expect(result).to.deepEqual(shipment);
+      expect(toJSON(result)).to.deepEqual(toJSON(shipment));
     });
 
     it('returns undefined if the source instance does not have the foreign key', async () => {

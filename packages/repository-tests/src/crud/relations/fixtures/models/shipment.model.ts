@@ -19,6 +19,7 @@ export class Shipment extends Entity {
   @property({
     id: true,
     generated: true,
+    useDefaltIdType: true,
   })
   id: MixedIdType;
 

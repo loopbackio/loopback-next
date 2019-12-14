@@ -14,8 +14,8 @@ import {
 import {expect, toJSON} from '@loopback/testlab';
 import {
   deleteAllModelsInDefaultDataSource,
-  withCrudCtx,
   MixedIdType,
+  withCrudCtx,
 } from '../helpers.repository-tests';
 import {
   CrudFeatures,
@@ -91,6 +91,7 @@ export function nestedModelsPropertiesSuite(
       @property({
         id: true,
         generated: true,
+        useDefaultIdType: true,
       })
       id: MixedIdType;
 

@@ -106,6 +106,16 @@ export class ModelDefinition {
     const definition = (definitionOrType as PropertyDefinition).type
       ? (definitionOrType as PropertyDefinition)
       : {type: definitionOrType};
+
+    if (
+      definition.id === true &&
+      definition.generated === true &&
+      definition.type !== undefined &&
+      definition.useDefaultIdType === undefined
+    ) {
+      definition.useDefaultIdType = false;
+    }
+
     this.properties[name] = definition;
     return this;
   }
