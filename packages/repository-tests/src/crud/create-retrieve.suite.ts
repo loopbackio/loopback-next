@@ -12,9 +12,9 @@ import {
   property,
 } from '@loopback/repository';
 import {expect, toJSON} from '@loopback/testlab';
-import {MixedIdType} from '../helpers.repository-tests';
 import {
   deleteAllModelsInDefaultDataSource,
+  MixedIdType,
   withCrudCtx,
 } from '../helpers.repository-tests';
 import {
@@ -89,7 +89,7 @@ export function createRetrieveSuite(
       const pens = await repo.create({name: 'Pens', categoryId: 1});
       const pencils = await repo.create({name: 'Pencils', categoryId: 2});
       const products = await findByForeignKeys(repo, 'categoryId', [1]);
-      expect(products).deepEqual([pens]);
+      expect(toJSON(products)).deepEqual(toJSON([pens]));
       expect(products).to.not.containDeep(pencils);
     });
 
@@ -97,7 +97,7 @@ export function createRetrieveSuite(
       const pens = await repo.create({name: 'Pens', categoryId: 1});
       const pencils = await repo.create({name: 'Pencils', categoryId: 2});
       const products = await findByForeignKeys(repo, 'categoryId', [1, 2]);
-      expect(products).deepEqual([pens, pencils]);
+      expect(toJSON(products)).deepEqual(toJSON([pens, pencils]));
     });
   });
 }

@@ -16,6 +16,8 @@ import {
   withCrudCtx,
 } from '../../../helpers.repository-tests';
 import {
+  Address,
+  AddressRepository,
   Customer,
   CustomerRepository,
   Order,
@@ -36,6 +38,7 @@ export function hasManyInclusionResolverAcceptance(
   );
   function suite() {
     before(deleteAllModelsInDefaultDataSource);
+    let addressRepo: AddressRepository;
     let customerRepo: CustomerRepository;
     let orderRepo: OrderRepository;
 
@@ -43,14 +46,18 @@ export function hasManyInclusionResolverAcceptance(
       withCrudCtx(async function setupRepository(ctx: CrudTestContext) {
         // this helper should create the inclusion resolvers and also
         // register inclusion resolvers for us
-        ({customerRepo, orderRepo} = givenBoundCrudRepositories(
+        ({customerRepo, orderRepo, addressRepo} = givenBoundCrudRepositories(
           ctx.dataSource,
           repositoryClass,
           features,
         ));
         expect(customerRepo.orders.inclusionResolver).to.be.Function();
 
-        await ctx.dataSource.automigrate([Customer.name, Order.name]);
+        await ctx.dataSource.automigrate([
+          Customer.name,
+          Order.name,
+          Address.name,
+        ]);
       }),
     );
 
@@ -63,7 +70,14 @@ export function hasManyInclusionResolverAcceptance(
       const parent = await customerRepo.create({name: 'parent'});
       const customer = await customerRepo.create({
         name: 'customer',
-        parentId: parent.id,
+        //parentId: parent.id,
+      });
+      const address = await addressRepo.create({
+        street: '8200 Warden',
+        city: 'Markham',
+        province: 'On',
+        zipcode: '8200',
+        customerId: parent.id,
       });
       const order = await orderRepo.create({
         description: 'an order',
@@ -71,7 +85,7 @@ export function hasManyInclusionResolverAcceptance(
       });
 
       const result = await customerRepo.find({
-        include: [{relation: 'orders'}, {relation: 'customers'}],
+        include: [{relation: 'orders'}, {relation: 'address'}],
       });
       const expected = [
         {
@@ -84,16 +98,11 @@ export function hasManyInclusionResolverAcceptance(
               shipmentInfo: features.emptyValue,
             },
           ],
-          customers: [
-            {
-              ...customer,
-              parentId: parent.id,
-            },
-          ],
+          address: address,
         },
         {
           ...customer,
-          parentId: parent.id, // doesn't have any related models
+          parentId: features.emptyValue, //parent.id, // doesn't have any related models
         },
       ];
       expect(toJSON(result)).to.deepEqual(toJSON(expected));

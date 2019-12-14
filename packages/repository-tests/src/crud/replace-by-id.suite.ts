@@ -35,6 +35,7 @@ export function createSuiteForReplaceById(
       type: features.idType,
       id: true,
       generated: true,
+      useDefaultIdType: true,
       description: 'The unique identifier for a product',
     })
     id: MixedIdType;
