@@ -33,7 +33,7 @@ again, you can use the LoopBack 4 CLI tool to catch up to where this tutorial
 will continue from:
 
 ```sh
-lb4 example todo-list
+lb4 example todo
 ```
 
 It should be noted that this tutorial does not assume the
