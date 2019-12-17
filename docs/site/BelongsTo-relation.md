@@ -155,6 +155,8 @@ export interface OrderRelations {
 }
 ```
 
+{% include important.html content="LB4 doesn't support composite keys for now. e.g joining two tables with more than one source key. Related GitHub issue: [Composite primary/foreign keys](https://github.com/strongloop/loopback-next/issues/1830)" %}
+
 ## Configuring a belongsTo relation
 
 The configuration and resolution of a `belongsTo` relation takes place at the
@@ -461,5 +463,5 @@ custom scope once you have the inclusion resolver of each relation set up.
 Check[HasMany - Query multiple relations](HasMany-relation.md#query-multiple-relations)
 for the usage and examples.
 
-{% include important.html content="There are some limitations of inclusion:. <br/><br/> We don’t support recursive inclusion of related models. Related GH issue: [Recursive inclusion of related models](https://github.com/strongloop/loopback-next/issues/3454). <br/><br/> It doesn’t split numbers of queries. Related GH issue: [Support inq splitting](https://github.com/strongloop/loopback-next/issues/3444). <br/><br/> It might not work well with ObjectId of MongoDB. Related GH issue: [Spike: robust handling of ObjectID type for MongoDB](https://github.com/strongloop/loopback-next/issues/3456).
+{% include important.html content="There are some limitations of inclusion:. <br/>We don’t support recursive inclusion of related models. Related GH issue: [Recursive inclusion of related models](https://github.com/strongloop/loopback-next/issues/3454). <br/>It doesn’t split numbers of queries. Related GH issue: [Support inq splitting](https://github.com/strongloop/loopback-next/issues/3444). <br/>It might not work well with ObjectId of MongoDB. Related GH issue: [Spike: robust handling of ObjectID type for MongoDB](https://github.com/strongloop/loopback-next/issues/3456).
 " %}
