@@ -184,10 +184,10 @@ export class Supplier extends Entity {
 }
 ```
 
-Notice that if you decorate the corresponding foreign key of the target model
-with `@belongsTo`, you also need to specify the `belongTo` relation name in the
-`name` field of its relation metadata. See [BelongsTo](BelongsTo-relation.md)
-for more details.
+Notice that if you decorate the corresponding customized foreign key of the
+target model with `@belongsTo`, you also need to specify the `belongTo` relation
+name in the `name` field of its relation metadata. See
+[BelongsTo](BelongsTo-relation.md) for more details.
 
 ```ts
 // import statements
@@ -200,6 +200,54 @@ export class Account extends Entity {
   suppId: number; // customized foreign key name
 }
 ```
+
+If you need to use another attribute other than the id property to be the source
+key, customizing `keyFrom` field would allow you to do so:
+
+```ts
+export class Supplier extends Entity {
+  @property({
+    type: 'number',
+    id: true,
+  })
+  id: number;
+
+  // if you'd like to use this property as the source id
+  // of a certain relation that relates to a model `Foo`
+  @property({
+    type: 'number',
+  })
+  supplier_id: number; // not primary key
+
+  @hasOne(() => Account)
+  account?: Account;
+
+  @hasOne(() => Manufacturer, {keyFrom: 'supplier_id'})
+  manufacturer ?: Manufacturer;
+
+  // ..constructor
+  }
+}
+```
+
+Notice that if you decorate the corresponding foreign key of the target model
+with `@belongsTo`, you also need to specify the `keyTo` field of its relation
+metadata. See [BelongsTo](BelongsTo-relation.md#relation-metadata) for more
+details.
+
+```ts
+// import statements
+@model()
+export class Manufacturer extends Entity {
+  // constructor, properties, etc.
+
+  // specify the keyTo if the source key is not the id property
+  @belongsTo(() => Supplier, {keyTo: 'supplier_id'})
+  supplierId: number; // default foreign key name
+}
+```
+
+{% include important.html content="LB4 doesn't support composite keys for now. e.g joining two tables with more than one source key. Related GitHub issue: [Composite primary/foreign keys](https://github.com/strongloop/loopback-next/issues/1830)" %}
 
 If you need to use _different names for models and database columns_, to use
 `suppAccount` as db column name instead of `account` for example, the following
@@ -482,5 +530,5 @@ custom scope once you have the inclusion resolver of each relation set up.
 Check[HasMany - Query multiple relations](HasMany-relation.md#query-multiple-relations)
 for the usage and examples.
 
-{% include important.html content="There are some limitations of inclusion:. <br/><br/> We don’t support recursive inclusion of related models. Related GH issue: [Recursive inclusion of related models](https://github.com/strongloop/loopback-next/issues/3454). <br/><br/> It doesn’t split numbers of queries. Related GH issue: [Support inq splitting](https://github.com/strongloop/loopback-next/issues/3444). <br/><br/> It might not work well with ObjectId of MongoDB. Related GH issue: [Spike: robust handling of ObjectID type for MongoDB](https://github.com/strongloop/loopback-next/issues/3456).
+{% include important.html content="There are some limitations of inclusion:. <br/>We don’t support recursive inclusion of related models. Related GH issue: [Recursive inclusion of related models](https://github.com/strongloop/loopback-next/issues/3454). <br/>It doesn’t split numbers of queries. Related GH issue: [Support inq splitting](https://github.com/strongloop/loopback-next/issues/3444). <br/>It might not work well with ObjectId of MongoDB. Related GH issue: [Spike: robust handling of ObjectID type for MongoDB](https://github.com/strongloop/loopback-next/issues/3456).
 " %}

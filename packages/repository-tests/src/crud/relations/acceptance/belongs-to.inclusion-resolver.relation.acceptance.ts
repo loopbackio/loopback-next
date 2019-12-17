@@ -85,8 +85,7 @@ export function belongsToInclusionResolverAcceptance(
       const expected = {
         ...order,
         isShipped: features.emptyValue,
-        // eslint-disable-next-line @typescript-eslint/camelcase
-        shipment_id: features.emptyValue,
+        shipmentInfo: features.emptyValue,
         customer: {
           ...thor,
           parentId: features.emptyValue,
@@ -115,8 +114,7 @@ export function belongsToInclusionResolverAcceptance(
         {
           ...thorOrder,
           isShipped: features.emptyValue,
-          // eslint-disable-next-line @typescript-eslint/camelcase
-          shipment_id: features.emptyValue,
+          shipmentInfo: features.emptyValue,
           customer: {
             ...thor,
             parentId: features.emptyValue,
@@ -125,8 +123,7 @@ export function belongsToInclusionResolverAcceptance(
         {
           ...odinOrder,
           isShipped: features.emptyValue,
-          // eslint-disable-next-line @typescript-eslint/camelcase
-          shipment_id: features.emptyValue,
+          shipmentInfo: features.emptyValue,
           customer: {
             ...odin,
             parentId: features.emptyValue,
@@ -154,8 +151,7 @@ export function belongsToInclusionResolverAcceptance(
       const expected = {
         ...odinOrder,
         isShipped: features.emptyValue,
-        // eslint-disable-next-line @typescript-eslint/camelcase
-        shipment_id: features.emptyValue,
+        shipmentInfo: features.emptyValue,
         customer: {
           ...odin,
           parentId: features.emptyValue,
