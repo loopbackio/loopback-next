@@ -29,7 +29,7 @@
     "@loopback/build": "^3.0.0",
     "@loopback/eslint-config": "^5.0.0",
     "@loopback/testlab": "^1.10.0",
-    "@types/node": "^10.17.9"
+    "@types/node": "^10.17.11"
   },
   "files": [
     "README.md",
