@@ -28,18 +28,29 @@
   - [ ] [Needs Estimates] lb3 - Relations on uuid
         https://github.com/strongloop/loopback/issues/4287
 
+- [ ] Create models & REST APIs dynamically at runtime
+
+  - [ ] [Needs estimates] Dynamic binding/rebinding of controllers after app
+        start #433
+
+- Update dependencies
+
+  - [ ] [Needs estimates] chore: update dependency change-case to v4 #4233
+  - [ ] [Needs estimates] update dependency ts-morph to v6 #4274
+
 - [ ] [3][spike] API Connect / LoopBack 4 integration #4115
 
-- [ ] [Needs estimates] chore: update dependency change-case to v4 #4233
-
 ## Stretch goals
-
-- [ ] Spike: migrate tests to Jest (ts-jest) #3159
 
 - [ ] Migration guide between LB3 and LB4 MVP #453
 
   - [ ] [3] How to migrate user-defined model methods #3949
   - [ ] [5] How to migrate remoting hooks #3950
+
+- [ ] Create models & REST APIs dynamically at runtime
+
+  - [ ] How to build models, repositories and controllers dynamically at runtime
+        #4296
 
 - Bugs
 
@@ -48,7 +59,7 @@
   - [ ] [needs discussion] Column names in lowercase using lb4 discover method -
         SQL connector #3343
 
-- PR reviews
+* PR reviews
   - [ ] feat(extension-logging): add integration with winston and fluentd
         logging, https://github.com/strongloop/loopback-next/pull/4117
   - [ ] chore: enable esModuleInterop compiler option,
