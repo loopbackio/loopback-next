@@ -9,6 +9,7 @@
   },
   "editor.codeActionsOnSave": {
     "source.organizeImports": true,
+    "source.fixAll.eslint": true
   },
   "files.exclude": {
     "**/.DS_Store": true,
@@ -27,7 +28,6 @@
   "files.insertFinalNewline": true,
   "files.trimTrailingWhitespace": true,
   "typescript.tsdk": "./packages/build/node_modules/typescript/lib",
-  "eslint.autoFixOnSave": true,
   "eslint.run": "onSave",
   "eslint.nodePath": "./packages/build/node_modules",
   "eslint.validate": [
