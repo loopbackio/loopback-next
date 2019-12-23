@@ -8,6 +8,7 @@ import {expect} from '@loopback/testlab';
 import Ajv from 'ajv';
 import {JsonSchema} from '../..';
 import {
+  getFieldsJsonSchemaFor,
   getFilterJsonSchemaFor,
   getWhereJsonSchemaFor,
 } from '../../filter-json-schema';
@@ -145,12 +146,82 @@ describe('getFilterJsonSchemaFor', () => {
     ]);
   });
 
+  it('returns "title" when no options were provided', () => {
+    expect(orderFilterSchema.title).to.equal('Order.Filter');
+  });
+
+  it('returns "include.title" when no options were provided', () => {
+    expect(customerFilterSchema.properties)
+      .to.have.propertyByPath(...['include', 'title'])
+      .to.equal('Customer.IncludeFilter');
+  });
+
+  it('returns "scope.title" when no options were provided', () => {
+    expect(customerFilterSchema.properties)
+      .to.have.propertyByPath(
+        ...['include', 'items', 'properties', 'scope', 'title'],
+      )
+      .to.equal('Customer.ScopeFilter');
+  });
+
   function expectSchemaToAllowFilter<T>(schema: JsonSchema, value: T) {
     const isValid = ajv.validate(schema, value);
     const SUCCESS_MSG = 'Filter instance is valid according to Filter schema';
     const result = isValid ? SUCCESS_MSG : ajv.errorsText(ajv.errors!);
     expect(result).to.equal(SUCCESS_MSG);
   }
+});
+
+describe('getFilterJsonSchemaForOptionsSetTitle', () => {
+  let customerFilterSchema: JsonSchema;
+
+  beforeEach(() => {
+    customerFilterSchema = getFilterJsonSchemaFor(Customer, {setTitle: true});
+  });
+
+  it('returns "title" when a single option "setTitle" is set', () => {
+    expect(customerFilterSchema.title).to.equal('Customer.Filter');
+  });
+
+  it('returns "include.title" when a single option "setTitle" is set', () => {
+    expect(customerFilterSchema.properties)
+      .to.have.propertyByPath(...['include', 'title'])
+      .to.equal('Customer.IncludeFilter');
+  });
+
+  it('returns "scope.title" when a single option "setTitle" is set', () => {
+    expect(customerFilterSchema.properties)
+      .to.have.propertyByPath(
+        ...['include', 'items', 'properties', 'scope', 'title'],
+      )
+      .to.equal('Customer.ScopeFilter');
+  });
+});
+
+describe('getFilterJsonSchemaForOptionsUnsetTitle', () => {
+  let customerFilterSchema: JsonSchema;
+
+  beforeEach(() => {
+    customerFilterSchema = getFilterJsonSchemaFor(Customer, {setTitle: false});
+  });
+
+  it('"title" undefined when a single option "setTitle" is false', () => {
+    expect(customerFilterSchema.title).to.equal(undefined);
+  });
+
+  it('"include.title" undefined when single option "setTitle" is false', () => {
+    expect(customerFilterSchema.properties)
+      .to.have.propertyByPath(...['include', 'title'])
+      .to.equal(undefined);
+  });
+
+  it('"scope.title" undefined when single option "setTitle" is false', () => {
+    expect(customerFilterSchema.properties)
+      .to.have.propertyByPath(
+        ...['include', 'items', 'properties', 'scope', 'title'],
+      )
+      .to.equal(undefined);
+  });
 });
 
 describe('getWhereJsonSchemaFor', () => {
@@ -168,6 +239,51 @@ describe('getWhereJsonSchemaFor', () => {
     const SUCCESS_MSG = 'Where schema is a valid JSON Schema';
     const result = isValid ? SUCCESS_MSG : ajv.errorsText(ajv.errors!);
     expect(result).to.equal(SUCCESS_MSG);
+  });
+
+  it('returns "title" when no options were provided', () => {
+    expect(customerWhereSchema.title).to.equal('Customer.WhereFilter');
+  });
+});
+
+describe('getWhereJsonSchemaForOptions', () => {
+  let customerWhereSchema: JsonSchema;
+
+  it('returns "title" when a single option "setTitle" is set', () => {
+    customerWhereSchema = getWhereJsonSchemaFor(Customer, {
+      setTitle: true,
+    });
+    expect(customerWhereSchema.title).to.equal('Customer.WhereFilter');
+  });
+
+  it('leaves out "title" when a single option "setTitle" is false', () => {
+    customerWhereSchema = getWhereJsonSchemaFor(Customer, {
+      setTitle: false,
+    });
+    expect(customerWhereSchema.title).to.equal(undefined);
+  });
+});
+
+describe('getFieldsJsonSchemaFor', () => {
+  let customerFieldsSchema: JsonSchema;
+
+  it('returns "title" when no options were provided', () => {
+    customerFieldsSchema = getFieldsJsonSchemaFor(Customer);
+    expect(customerFieldsSchema.title).to.equal('Customer.Fields');
+  });
+
+  it('returns "title" when a single option "setTitle" is set', () => {
+    customerFieldsSchema = getFieldsJsonSchemaFor(Customer, {
+      setTitle: true,
+    });
+    expect(customerFieldsSchema.title).to.equal('Customer.Fields');
+  });
+
+  it('leaves out "title" when a single option "setTitle" is false', () => {
+    customerFieldsSchema = getFieldsJsonSchemaFor(Customer, {
+      setTitle: false,
+    });
+    expect(customerFieldsSchema.title).to.equal(undefined);
   });
 });
 
