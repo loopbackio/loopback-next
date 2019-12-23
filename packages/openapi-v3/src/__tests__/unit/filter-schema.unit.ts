@@ -21,13 +21,16 @@ describe('filterSchema', () => {
     const schema = getFilterSchemaFor(MyUserModel);
     expect(MyUserModel.definition.name).to.eql('my-user-model');
     expect(schema).to.eql({
+      title: 'my-user-modelFilter',
       properties: {
         where: {
           type: 'object',
+          title: 'my-user-modelWhere',
           additionalProperties: true,
         },
         fields: {
           type: 'object',
+          title: 'my-user-modelFields',
           properties: {
             id: {type: 'boolean'},
             age: {type: 'boolean'},

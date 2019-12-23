@@ -9,7 +9,10 @@ import {JSONSchema6 as JsonSchema} from 'json-schema';
 @model({settings: {strict: false}})
 class EmptyModel extends Model {}
 
-const scopeFilter = getFilterJsonSchemaFor(EmptyModel);
+const scopeFilter = {
+  ...getFilterJsonSchemaFor(EmptyModel),
+  title: 'ScopeFilter', // TODO(dougal83) base title on model
+};
 
 /**
  * Build a JSON schema describing the format of the "filter" object
@@ -22,6 +25,10 @@ const scopeFilter = getFilterJsonSchemaFor(EmptyModel);
  */
 export function getFilterJsonSchemaFor(modelCtor: typeof Model): JsonSchema {
   const schema: JsonSchema = {
+    title:
+      modelCtor.modelName === 'EmptyModel'
+        ? undefined
+        : `${modelCtor.modelName}Filter`,
     properties: {
       where: getWhereJsonSchemaFor(modelCtor),
 
@@ -58,6 +65,8 @@ export function getFilterJsonSchemaFor(modelCtor: typeof Model): JsonSchema {
 
   if (hasRelations) {
     schema.properties!.include = {
+      // TODO(dougal83) base title on model
+      title: 'Include',
       type: 'array',
       items: {
         type: 'object',
@@ -85,6 +94,10 @@ export function getFilterJsonSchemaFor(modelCtor: typeof Model): JsonSchema {
  */
 export function getWhereJsonSchemaFor(modelCtor: typeof Model): JsonSchema {
   const schema: JsonSchema = {
+    title:
+      modelCtor.modelName === 'EmptyModel'
+        ? undefined
+        : `${modelCtor.modelName}Where`,
     type: 'object',
     // TODO(bajtos) enumerate "model" properties and operators like "and"
     // See https://github.com/strongloop/loopback-next/issues/1748
@@ -102,7 +115,12 @@ export function getWhereJsonSchemaFor(modelCtor: typeof Model): JsonSchema {
 
 export function getFieldsJsonSchemaFor(modelCtor: typeof Model): JsonSchema {
   const schema: JsonSchema = {
+    title:
+      modelCtor.modelName === 'EmptyModel'
+        ? undefined
+        : `${modelCtor.modelName}Fields`,
     type: 'object',
+
     properties: Object.assign(
       {},
       ...Object.keys(modelCtor.definition.properties).map(k => ({
