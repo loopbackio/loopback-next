@@ -220,7 +220,6 @@ export class TodoController {
       // Encode the coordinates as "lat,lng" (Google Maps API format). See also
       // https://stackoverflow.com/q/7309121/69868
       // https://gis.stackexchange.com/q/7379
-      // eslint-disable-next-line require-atomic-updates
       todo.remindAtGeo = `${geo[0].y},${geo[0].x}`;
     }
     return this.todoRepo.create(todo);
