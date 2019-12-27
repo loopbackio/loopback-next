@@ -23,7 +23,7 @@
     "@loopback/testlab": "^1.10.0",
     "@types/bson": "^4.0.1",
     "@types/lodash": "^4.14.149",
-    "@types/node": "^10.17.12",
+    "@types/node": "^10.17.13",
     "bson": "4.0.2"
   },
   "dependencies": {
