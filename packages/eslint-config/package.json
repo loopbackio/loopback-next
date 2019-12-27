@@ -24,5 +24,8 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "devDependencies": {
+    "@types/http-status": "^1.1.2"
   }
 }

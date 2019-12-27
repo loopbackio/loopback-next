@@ -5,7 +5,11 @@
 
 import {MetadataAccessor} from '@loopback/core';
 import {ControllerSpec, RestEndpoint} from './controller-spec';
-import {ParameterObject, RequestBodyObject} from './types';
+import {
+  ParameterObject,
+  RequestBodyObject,
+  ResponseDecoratorMetadata,
+} from './types';
 
 export namespace OAI3Keys {
   /**
@@ -15,6 +19,46 @@ export namespace OAI3Keys {
     Partial<RestEndpoint>,
     MethodDecorator
   >('openapi-v3:methods');
+
+  /**
+   * Metadata key used to set or retrieve `@deprecated` metadata on a method.
+   */
+  export const DEPRECATED_METHOD_KEY = MetadataAccessor.create<
+    boolean,
+    MethodDecorator
+  >('openapi-v3:methods:deprecated');
+
+  /**
+   * Metadata key used to set or retrieve `@deprecated` metadata on a class
+   */
+  export const DEPRECATED_CLASS_KEY = MetadataAccessor.create<
+    boolean,
+    ClassDecorator
+  >('openapi-v3:class:deprecated');
+
+  /**
+   * Metadata key used to set or retrieve `@deprecated` metadata on a method.
+   */
+  export const TAGS_METHOD_KEY = MetadataAccessor.create<
+    string[],
+    MethodDecorator
+  >('openapi-v3:methods:tags');
+
+  /**
+   * Metadata key used to set or retrieve `@deprecated` metadata on a class
+   */
+  export const TAGS_CLASS_KEY = MetadataAccessor.create<
+    string[],
+    ClassDecorator
+  >('openapi-v3:class:tags');
+
+  /**
+   * Metadata key used to add to or retrieve an endpoint's responses
+   */
+  export const RESPONSE_METHOD_KEY = MetadataAccessor.create<
+    ResponseDecoratorMetadata,
+    MethodDecorator
+  >('openapi-v3:methods:response');
 
   /**
    * Metadata key used to set or retrieve `param` decorator metadata

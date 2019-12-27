@@ -10,6 +10,7 @@ import {
   JsonSchemaOptions,
 } from '@loopback/repository-json-schema';
 import {includes} from 'lodash';
+import {buildResponsesFromMetadata} from './build-responses-from-metadata';
 import {resolveSchema} from './generate-schema';
 import {jsonToSchemaObject, SchemaRef} from './json-to-schema';
 import {OAI3Keys} from './keys';
@@ -22,9 +23,11 @@ import {
   PathObject,
   ReferenceObject,
   RequestBodyObject,
+  ResponseDecoratorMetadata,
   ResponseObject,
   SchemaObject,
   SchemasObject,
+  TagsDecoratorMetadata,
 } from './types';
 
 const debug = require('debug')('loopback:openapi3:metadata:controller-spec');
@@ -77,6 +80,48 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
     spec = {paths: {}};
   }
 
+  const isClassDeprecated = MetadataInspector.getClassMetadata<boolean>(
+    OAI3Keys.DEPRECATED_CLASS_KEY,
+    constructor,
+  );
+
+  const classTags = MetadataInspector.getClassMetadata<TagsDecoratorMetadata>(
+    OAI3Keys.TAGS_CLASS_KEY,
+    constructor,
+  );
+
+  if (isClassDeprecated) {
+    debug('  using class-level @deprecated()');
+  }
+
+  if (classTags) {
+    debug('  using class-level @tags()');
+  }
+
+  if (isClassDeprecated || classTags) {
+    for (const path of Object.keys(spec.paths)) {
+      for (const method of Object.keys(spec.paths[path])) {
+        if (isClassDeprecated) {
+          spec.paths[path][method].deprecated = true;
+        }
+
+        if (classTags) {
+          if (
+            classTags.append &&
+            spec.paths[path][method].tags &&
+            spec.paths[path][method].tags.length
+          ) {
+            spec.paths[path][method].tags = spec.paths[path][
+              method
+            ].tags.concat(classTags.tags);
+          } else {
+            spec.paths[path][method].tags = classTags.tags;
+          }
+        }
+      }
+    }
+  }
+
   let endpoints =
     MetadataInspector.getAllMethodMetadata<RestEndpoint>(
       OAI3Keys.METHODS_KEY,
@@ -90,6 +135,24 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
     const endpoint = endpoints[op];
     const verb = endpoint.verb!;
     const path = endpoint.path!;
+
+    const isMethodDeprecated = MetadataInspector.getMethodMetadata<boolean>(
+      OAI3Keys.DEPRECATED_METHOD_KEY,
+      constructor.prototype,
+      op,
+    );
+
+    const methodTags = MetadataInspector.getMethodMetadata<
+      TagsDecoratorMetadata
+    >(OAI3Keys.TAGS_METHOD_KEY, constructor.prototype, op);
+
+    if (isMethodDeprecated) {
+      debug('  using method-level deprecation via @deprecated()');
+    }
+
+    if (methodTags) {
+      debug('  using method-level tags via @tags()');
+    }
 
     let endpointName = '';
     /* istanbul ignore if */
@@ -106,13 +169,55 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
     };
 
     let operationSpec = endpoint.spec;
+
+    const decoratedResponses = MetadataInspector.getMethodMetadata<
+      ResponseDecoratorMetadata
+    >(OAI3Keys.RESPONSE_METHOD_KEY, constructor.prototype, op);
+
     if (!operationSpec) {
-      // The operation was defined via @operation(verb, path) with no spec
-      operationSpec = {
-        responses: defaultResponse,
-      };
+      if (decoratedResponses) {
+        operationSpec = buildResponsesFromMetadata(decoratedResponses);
+      } else {
+        // The operation was defined via @operation(verb, path) with no spec
+        operationSpec = {
+          responses: defaultResponse,
+        };
+      }
       endpoint.spec = operationSpec;
+    } else if (decoratedResponses) {
+      operationSpec = buildResponsesFromMetadata(
+        decoratedResponses,
+        operationSpec,
+      );
     }
+
+    // Prescedence: method decorator > class decorator > operationSpec > undefined
+    const deprecationSpec =
+      isMethodDeprecated ??
+      isClassDeprecated ??
+      operationSpec.deprecated ??
+      false;
+
+    if (deprecationSpec) {
+      operationSpec.deprecated = true;
+    }
+
+    if (classTags && !operationSpec.tags) {
+      operationSpec.tags = classTags.tags;
+    }
+
+    if (methodTags) {
+      if (
+        methodTags.append &&
+        operationSpec.tags &&
+        operationSpec.tags.length
+      ) {
+        operationSpec.tags = operationSpec.tags.concat(methodTags.tags);
+      } else {
+        operationSpec.tags = methodTags.tags;
+      }
+    }
+
     debug('  operation for method %s: %j', op, endpoint);
 
     debug('  spec responses for method %s: %o', op, operationSpec.responses);
@@ -233,6 +338,8 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
   return spec;
 }
 
+declare type MixKey = 'allOf' | 'anyOf' | 'oneOf';
+const SCHEMA_ARR_KEYS: MixKey[] = ['allOf', 'anyOf', 'oneOf'];
 /**
  * Resolve the x-ts-type in the schema object
  * @param spec - Controller spec
@@ -248,24 +355,50 @@ function processSchemaExtensions(
   assignRelatedSchemas(spec, schema.definitions);
   delete schema.definitions;
 
-  if (isReferenceObject(schema)) return;
-
-  const tsType = schema[TS_TYPE_KEY];
-  debug('  %s => %o', TS_TYPE_KEY, tsType);
-  if (tsType) {
-    schema = resolveSchema(tsType, schema);
-    if (schema.$ref) generateOpenAPISchema(spec, tsType);
-
-    // We don't want a Function type in the final spec.
-    delete schema[TS_TYPE_KEY];
-    return;
+  /**
+   * check if we have been provided a `not`
+   * `not` is valid in many cases- here we're checking for
+   * `not: { schema: {'x-ts-type': SomeModel }}
+   */
+  if (schema.not) {
+    processSchemaExtensions(spec, schema.not);
   }
-  if (schema.type === 'array') {
-    processSchemaExtensions(spec, schema.items);
-  } else if (schema.type === 'object') {
-    if (schema.properties) {
-      for (const p in schema.properties) {
-        processSchemaExtensions(spec, schema.properties[p]);
+
+  /**
+   *  check for schema.allOf, schema.oneOf, schema.anyOf arrays first.
+   *  You cannot provide BOTH a defnintion AND one of these keywords.
+   */
+  const hasOwn = (prop: string) =>
+    Object.prototype.hasOwnProperty.call(schema, prop);
+
+  if (SCHEMA_ARR_KEYS.some(k => hasOwn(k))) {
+    SCHEMA_ARR_KEYS.forEach((k: MixKey) => {
+      if (schema?.[k] && Array.isArray(schema[k])) {
+        schema[k].forEach((r: (SchemaObject | ReferenceObject)[]) => {
+          processSchemaExtensions(spec, r);
+        });
+      }
+    });
+  } else {
+    if (isReferenceObject(schema)) return;
+
+    const tsType = schema[TS_TYPE_KEY];
+    debug('  %s => %o', TS_TYPE_KEY, tsType);
+    if (tsType) {
+      schema = resolveSchema(tsType, schema);
+      if (schema.$ref) generateOpenAPISchema(spec, tsType);
+
+      // We don't want a Function type in the final spec.
+      delete schema[TS_TYPE_KEY];
+      return;
+    }
+    if (schema.type === 'array') {
+      processSchemaExtensions(spec, schema.items);
+    } else if (schema.type === 'object') {
+      if (schema.properties) {
+        for (const p in schema.properties) {
+          processSchemaExtensions(spec, schema.properties[p]);
+        }
       }
     }
   }

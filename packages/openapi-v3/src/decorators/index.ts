@@ -4,6 +4,9 @@
 // License text available at https://opensource.org/licenses/MIT
 
 export * from './api.decorator';
+export * from './deprecated.decorator';
 export * from './operation.decorator';
 export * from './parameter.decorator';
 export * from './request-body.decorator';
+export * from './response.decorator';
+export * from './tags.decorator';

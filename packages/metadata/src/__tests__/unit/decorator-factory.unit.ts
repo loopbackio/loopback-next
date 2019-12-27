@@ -8,6 +8,7 @@ import {
   ClassDecoratorFactory,
   DecoratorFactory,
   MethodDecoratorFactory,
+  MethodMultiDecoratorFactory,
   MethodParameterDecoratorFactory,
   ParameterDecoratorFactory,
   PropertyDecoratorFactory,
@@ -520,6 +521,167 @@ describe('MethodDecoratorFactory for static methods', () => {
     }).to.throw(
       /Decorator cannot be applied more than once on MyController\.myMethod\(\)/,
     );
+  });
+});
+
+describe('MethodMultiDecoratorFactory', () => {
+  function methodMultiDecorator(spec: object | object[]): MethodDecorator {
+    if (Array.isArray(spec)) {
+      return MethodMultiDecoratorFactory.createDecorator('test', spec);
+    } else {
+      return MethodMultiDecoratorFactory.createDecorator('test', [spec]);
+    }
+  }
+
+  class BaseController {
+    @methodMultiDecorator({x: 1})
+    public myMethod() {}
+
+    @methodMultiDecorator({foo: 1})
+    @methodMultiDecorator({foo: 2})
+    @methodMultiDecorator([{foo: 3}, {foo: 4}])
+    public multiMethod() {}
+  }
+
+  class SubController extends BaseController {
+    @methodMultiDecorator({y: 2})
+    public myMethod() {}
+
+    @methodMultiDecorator({bar: 1})
+    @methodMultiDecorator([{bar: 2}, {bar: 3}])
+    public multiMethod() {}
+  }
+
+  describe('single-decorator methods', () => {
+    it('applies metadata to a method', () => {
+      const meta = Reflector.getOwnMetadata('test', BaseController.prototype);
+      expect(meta.myMethod).to.eql([{x: 1}]);
+    });
+
+    it('merges with base method metadata', () => {
+      const meta = Reflector.getOwnMetadata('test', SubController.prototype);
+      expect(meta.myMethod).to.eql([{x: 1}, {y: 2}]);
+    });
+
+    it('does not mutate base method metadata', () => {
+      const meta = Reflector.getOwnMetadata('test', BaseController.prototype);
+      expect(meta.myMethod).to.eql([{x: 1}]);
+    });
+  });
+
+  describe('multi-decorator methods', () => {
+    it('applies metadata to a method', () => {
+      const meta = Reflector.getOwnMetadata('test', BaseController.prototype);
+      expect(meta.multiMethod).to.containDeep([
+        {foo: 4},
+        {foo: 3},
+        {foo: 2},
+        {foo: 1},
+      ]);
+    });
+
+    it('merges with base method metadata', () => {
+      const meta = Reflector.getOwnMetadata('test', SubController.prototype);
+      expect(meta.multiMethod).to.containDeep([
+        {foo: 4},
+        {foo: 3},
+        {foo: 2},
+        {foo: 1},
+        {bar: 3},
+        {bar: 2},
+        {bar: 1},
+      ]);
+    });
+
+    it('does not mutate base method metadata', () => {
+      const meta = Reflector.getOwnMetadata('test', BaseController.prototype);
+      expect(meta.multiMethod).to.containDeep([
+        {foo: 1},
+        {foo: 2},
+        {foo: 3},
+        {foo: 4},
+      ]);
+    });
+  });
+});
+describe('MethodMultiDecoratorFactory for static methods', () => {
+  function methodMultiDecorator(spec: object | object[]): MethodDecorator {
+    if (Array.isArray(spec)) {
+      return MethodMultiDecoratorFactory.createDecorator('test', spec);
+    } else {
+      return MethodMultiDecoratorFactory.createDecorator('test', [spec]);
+    }
+  }
+
+  class BaseController {
+    @methodMultiDecorator({x: 1})
+    static myMethod() {}
+
+    @methodMultiDecorator({foo: 1})
+    @methodMultiDecorator({foo: 2})
+    @methodMultiDecorator([{foo: 3}, {foo: 4}])
+    static multiMethod() {}
+  }
+
+  class SubController extends BaseController {
+    @methodMultiDecorator({y: 2})
+    static myMethod() {}
+
+    @methodMultiDecorator({bar: 1})
+    @methodMultiDecorator([{bar: 2}, {bar: 3}])
+    static multiMethod() {}
+  }
+
+  describe('single-decorator methods', () => {
+    it('applies metadata to a method', () => {
+      const meta = Reflector.getOwnMetadata('test', BaseController);
+      expect(meta.myMethod).to.eql([{x: 1}]);
+    });
+
+    it('merges with base method metadata', () => {
+      const meta = Reflector.getOwnMetadata('test', SubController);
+      expect(meta.myMethod).to.eql([{x: 1}, {y: 2}]);
+    });
+
+    it('does not mutate base method metadata', () => {
+      const meta = Reflector.getOwnMetadata('test', BaseController);
+      expect(meta.myMethod).to.eql([{x: 1}]);
+    });
+  });
+
+  describe('multi-decorator methods', () => {
+    it('applies metadata to a method', () => {
+      const meta = Reflector.getOwnMetadata('test', BaseController);
+      expect(meta.multiMethod).to.containDeep([
+        {foo: 4},
+        {foo: 3},
+        {foo: 2},
+        {foo: 1},
+      ]);
+    });
+
+    it('merges with base method metadata', () => {
+      const meta = Reflector.getOwnMetadata('test', SubController);
+      expect(meta.multiMethod).to.containDeep([
+        {foo: 4},
+        {foo: 3},
+        {foo: 2},
+        {foo: 1},
+        {bar: 3},
+        {bar: 2},
+        {bar: 1},
+      ]);
+    });
+
+    it('does not mutate base method metadata', () => {
+      const meta = Reflector.getOwnMetadata('test', BaseController);
+      expect(meta.multiMethod).to.containDeep([
+        {foo: 1},
+        {foo: 2},
+        {foo: 3},
+        {foo: 4},
+      ]);
+    });
   });
 });
 

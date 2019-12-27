@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {OpenAPIObject} from 'openapi3-ts';
+import {OpenAPIObject, ReferenceObject, SchemaObject} from 'openapi3-ts';
 /*
  * OpenApiSpec - A typescript representation of OpenApi 3.0.0
  */
@@ -28,3 +28,23 @@ export function createEmptyApiSpec(): OpenApiSpec {
     servers: [{url: '/'}],
   };
 }
+
+export interface TagsDecoratorMetadata {
+  tags: string[];
+  append: boolean;
+}
+
+export declare type ResponseModelOrSpec =
+  | Function
+  | Function[]
+  | SchemaObject
+  | ReferenceObject;
+
+export interface ResponseDecoratorMetadataItem {
+  responseCode: number;
+  contentType: string;
+  responseModelOrSpec: ResponseModelOrSpec;
+  description: string;
+}
+
+export declare type ResponseDecoratorMetadata = ResponseDecoratorMetadataItem[];

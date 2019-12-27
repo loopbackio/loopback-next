@@ -1,6 +1,6 @@
 {
   "name": "@loopback/example-todo",
-  "version": "1.9.2",
+  "version": "1.9.4",
   "description": "Tutorial example on how to build an application with LoopBack 4.",
   "main": "index.js",
   "engines": {
