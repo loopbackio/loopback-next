@@ -221,7 +221,7 @@ describe('Routing metadata for parameters', () => {
   });
 
   describe('@param.query.object', () => {
-    it('sets in:query style:deepObject and a default schema', () => {
+    it('sets in:query and content["application/json"]', () => {
       class MyController {
         @get('/greet')
         greet(@param.query.object('filter') filter: object) {}
@@ -229,11 +229,10 @@ describe('Routing metadata for parameters', () => {
       const expectedParamSpec = <ParameterObject>{
         name: 'filter',
         in: 'query',
-        style: 'deepObject',
-        explode: true,
-        schema: {
-          type: 'object',
-          additionalProperties: true,
+        content: {
+          'application/json': {
+            schema: {type: 'object', additionalProperties: true},
+          },
         },
       };
       expectSpecToBeEqual(MyController, expectedParamSpec);
@@ -256,13 +255,15 @@ describe('Routing metadata for parameters', () => {
       const expectedParamSpec: ParameterObject = {
         name: 'filter',
         in: 'query',
-        style: 'deepObject',
-        explode: true,
-        schema: {
-          type: 'object',
-          properties: {
-            where: {type: 'object', additionalProperties: true},
-            limit: {type: 'number'},
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
+              properties: {
+                where: {type: 'object', additionalProperties: true},
+                limit: {type: 'number'},
+              },
+            },
           },
         },
       };
@@ -300,11 +301,10 @@ describe('Routing metadata for parameters', () => {
       name: 'filter',
       in: 'query',
       description: 'Search criteria',
-      style: 'deepObject',
-      explode: true,
-      schema: {
-        type: 'object',
-        additionalProperties: true,
+      content: {
+        'application/json': {
+          schema: {type: 'object', additionalProperties: true},
+        },
       },
     };
     expectSpecToBeEqual(MyController, expectedParamSpec);

@@ -204,6 +204,16 @@ describe('TodoListApplication', () => {
     });
   });
 
+  it('exploded filter conditions work', async () => {
+    const list = await givenTodoListInstance(todoListRepo);
+    await givenTodoInstance(todoRepo, {title: 'todo1', todoListId: list.id});
+    await givenTodoInstance(todoRepo, {title: 'todo2', todoListId: list.id});
+    await givenTodoInstance(todoRepo, {title: 'todo3', todoListId: list.id});
+
+    const response = await client.get('/todos').query('filter[limit]=2');
+    expect(response.body).to.have.length(2);
+  });
+
   /*
    ============================================================================
    TEST HELPERS
