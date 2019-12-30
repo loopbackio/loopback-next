@@ -277,7 +277,7 @@ export class Customer extends Entity {
   id: number;
 
   // if you'd like to use this property as the source id
-  // of a certain relation that relates to a model `Foo`
+  // of a certain relation that relates to a model `Review`
   @property({
     type: 'number',
   })
@@ -311,7 +311,7 @@ export class Review extends Entity {
 }
 ```
 
-{% include important.html content="LB4 doesn't support composite keys for now. e.g joining two tables with more than one source key. Related GitHub issue: [Composite primary/foreign keys](https://github.com/strongloop/loopback-next/issues/1830)" %}
+{% include important.html content="It is user's responsibility to make sure the non-id source key doesn't have duplicate value. Besides, LB4 doesn't support composite keys for now. e.g joining two tables with more than one source key. Related GitHub issue: [Composite primary/foreign keys](https://github.com/strongloop/loopback-next/issues/1830)" %}
 
 If you need to use _different names for models and database columns_, to use
 `my_orders` as db column name other than `orders` for example, the following
