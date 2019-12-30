@@ -65,9 +65,34 @@ export class Validator {
   isAbsent(value: any) {
     if (value === '' || value === undefined) return true;
 
+    const spec: ParameterObject = this.ctx.parameterSpec;
     const schema: SchemaObject = this.ctx.parameterSpec.schema ?? {};
-    if (schema.type === 'object' && value === 'null') return true;
+    const valueIsNull = value === 'null' || value === null;
 
+    if (this.isUrlEncodedJsonParam()) {
+      // is this an url encoded Json object query parameter?
+      // check for NULL values
+      if (valueIsNull) return true;
+    } else if (spec.schema) {
+      // if parameter spec contains schema object, check if supplied value is NULL
+      if (schema.type === 'object' && valueIsNull) return true;
+    }
+
+    return false;
+  }
+
+  /**
+   * Return `true` if defined specification is for a url encoded Json object query parameter
+   *
+   * for url encoded Json object query parameters,
+   * schema is defined under content['application/json']
+   */
+  isUrlEncodedJsonParam() {
+    const spec: ParameterObject = this.ctx.parameterSpec;
+
+    if (spec.in === 'query' && spec.content?.['application/json']?.schema) {
+      return true;
+    }
     return false;
   }
 }

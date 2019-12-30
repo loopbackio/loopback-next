@@ -193,6 +193,17 @@ describe('TodoApplication', () => {
       .expect(200, [toJSON(todoInProgress)]);
   });
 
+  it('exploded filter conditions work', async () => {
+    await givenTodoInstance({title: 'wake up', isComplete: true});
+    await givenTodoInstance({
+      title: 'go to sleep',
+      isComplete: false,
+    });
+
+    const response = await client.get('/todos').query('filter[limit]=2');
+    expect(response.body).to.have.length(2);
+  });
+
   /*
    ============================================================================
    TEST HELPERS

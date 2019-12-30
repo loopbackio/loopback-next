@@ -50,8 +50,11 @@ export function param(paramSpec: ParameterObject) {
         // generate schema if `paramSpec` has `schema` but without `type`
         (isSchemaObject(paramSpec.schema) && !paramSpec.schema.type)
       ) {
-        // please note `resolveSchema` only adds `type` and `format` for `schema`
-        paramSpec.schema = resolveSchema(paramType, paramSpec.schema);
+        // If content explicitly mentioned do not resolve schema
+        if (!paramSpec.content) {
+          // please note `resolveSchema` only adds `type` and `format` for `schema`
+          paramSpec.schema = resolveSchema(paramType, paramSpec.schema);
+        }
       }
     }
 
@@ -212,9 +215,11 @@ export namespace param {
       return param({
         name,
         in: 'query',
-        style: 'deepObject',
-        explode: true,
-        schema,
+        content: {
+          'application/json': {
+            schema,
+          },
+        },
         ...spec,
       });
     },
