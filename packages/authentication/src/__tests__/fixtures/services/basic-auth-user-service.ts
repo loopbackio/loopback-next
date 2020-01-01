@@ -6,8 +6,9 @@
 import {inject} from '@loopback/context';
 import {HttpErrors} from '@loopback/rest';
 import {UserProfile} from '@loopback/security';
+import {AuthenticationBindings} from '../../../';
 import {UserService} from '../../../services/user.service';
-import {createUserProfile} from '../helper';
+import {UserProfileFactory} from '../../../types';
 import {USER_REPO} from '../keys';
 import {BasicAuthenticationStrategyCredentials} from '../strategies/basic-strategy';
 import {User} from '../users/user';
@@ -18,6 +19,8 @@ export class BasicAuthenticationUserService
   constructor(
     @inject(USER_REPO)
     private userRepository: UserRepository,
+    @inject(AuthenticationBindings.USER_PROFILE_FACTORY)
+    public userProfileFactory: UserProfileFactory<User>,
   ) {}
 
   async verifyCredentials(
@@ -58,6 +61,6 @@ export class BasicAuthenticationUserService
       throw new HttpErrors.Unauthorized(`'user id' is null`);
     }
 
-    return createUserProfile(user);
+    return this.userProfileFactory(user);
   }
 }

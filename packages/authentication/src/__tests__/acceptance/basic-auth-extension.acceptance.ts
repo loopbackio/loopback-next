@@ -10,12 +10,17 @@ import {api, get} from '@loopback/openapi-v3';
 import {Request, RestServer} from '@loopback/rest';
 import {SecurityBindings, securityId, UserProfile} from '@loopback/security';
 import {Client, createClientForHandler} from '@loopback/testlab';
-import {authenticate, registerAuthenticationStrategy} from '../..';
+import {
+  authenticate,
+  AuthenticationBindings,
+  registerAuthenticationStrategy,
+} from '../..';
 import {AuthenticationStrategy} from '../../types';
 import {
   createBasicAuthorizationHeaderValue,
   getApp,
   getUserRepository,
+  myUserProfileFactory,
 } from '../fixtures/helper';
 import {BasicAuthenticationStrategyBindings, USER_REPO} from '../fixtures/keys';
 import {MyAuthenticationSequence} from '../fixtures/sequences/authentication.sequence';
@@ -239,6 +244,10 @@ describe('Basic Authentication', () => {
     users = getUserRepository();
     joeUser = users.list['joe888'];
     server.bind(USER_REPO).to(users);
+
+    server
+      .bind(AuthenticationBindings.USER_PROFILE_FACTORY)
+      .to(myUserProfileFactory);
   }
 
   function whenIMakeRequestTo(restServer: RestServer): Client {

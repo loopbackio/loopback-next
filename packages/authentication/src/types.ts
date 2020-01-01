@@ -28,6 +28,14 @@ export interface AuthenticationMetadata {
 }
 
 /**
+ * interface definition of a factory function which
+ * accepts a user definition and returns the user profile
+ */
+export interface UserProfileFactory<U> {
+  (user: U): UserProfile;
+}
+
+/**
  * interface definition of a function which accepts a request
  * and returns an authenticated user
  */

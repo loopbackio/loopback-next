@@ -33,7 +33,7 @@ export class JWTService implements TokenService {
     try {
       // decode user profile from token
       userProfile = await verifyAsync(token, this.jwtSecret);
-      userProfile[securityId] = userProfile.id;
+      userProfile[securityId] = userProfile.id; //because [securityId] is a Symbol and couldn't be saved in the token, we need recreate it here.
     } catch (error) {
       throw new HttpErrors.Unauthorized(
         `Error verifying token : ${error.message}`,
@@ -50,14 +50,10 @@ export class JWTService implements TokenService {
       );
     }
 
-    const userInfoForToken = {
-      id: userProfile[securityId],
-    };
-
     // Generate a JSON Web Token
     let token: string;
     try {
-      token = await signAsync(userInfoForToken, this.jwtSecret, {
+      token = await signAsync(userProfile, this.jwtSecret, {
         expiresIn: Number(this.jwtExpiresIn),
       });
     } catch (error) {
