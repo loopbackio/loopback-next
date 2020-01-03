@@ -199,7 +199,7 @@ with `ADMIN` role, while authorization for remote method `hello()` is skipped by
 `@authorize.skip()`.
 
 ```ts
-@authorize({allow: ['ADMIN']})
+@authorize({allowedRoles: ['ADMIN']})
 export class MyController {
   @get('/number-of-views')
   numOfViews(): number {
