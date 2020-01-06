@@ -74,6 +74,8 @@ module.exports = class HasManyRelationGenerator extends BaseRelationGenerator {
   }
 
   async generateModels(options) {
+    // for repo to generate relation name
+    this.artifactInfo.relationName = options.relationName;
     const modelDir = this.artifactInfo.modelDir;
     const sourceModel = options.sourceModel;
 
@@ -166,7 +168,7 @@ module.exports = class HasManyRelationGenerator extends BaseRelationGenerator {
   }
 
   _getRepositoryRelationPropertyName() {
-    return utils.pluralize(utils.camelCase(this.artifactInfo.dstModelClass));
+    return this.artifactInfo.relationName;
   }
 
   _getRepositoryRelationPropertyType() {

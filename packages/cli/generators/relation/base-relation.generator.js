@@ -40,11 +40,11 @@ module.exports = class BaseRelationGenerator extends ArtifactGenerator {
 
   async generateAll(options) {
     this._setupGenerator();
-    await this.generateControllers(options);
-    this._setupGenerator();
     await this.generateModels(options);
     this._setupGenerator();
     await this.generateRepositories(options);
+    this._setupGenerator();
+    await this.generateControllers(options);
   }
 
   async generateControllers(options) {
@@ -98,13 +98,8 @@ module.exports = class BaseRelationGenerator extends ArtifactGenerator {
       type: this._getRepositoryRelationPropertyType(),
     };
 
-    if (relationUtils.doesPropertyExist(classDeclaration, property.name)) {
-      throw new Error(
-        'property ' + property.name + ' already exist in the repository.',
-      );
-    } else {
-      relationUtils.addProperty(classDeclaration, property);
-    }
+    // already checked the existence of property before
+    relationUtils.addProperty(classDeclaration, property);
   }
 
   _addParametersToRepositoryConstructor(classConstructor) {
@@ -112,9 +107,8 @@ module.exports = class BaseRelationGenerator extends ArtifactGenerator {
       utils.camelCase(this.artifactInfo.dstRepositoryClassName) + 'Getter';
 
     if (relationUtils.doesParameterExist(classConstructor, parameterName)) {
-      throw new Error(
-        'Parameter ' + parameterName + ' already exist in the constructor.',
-      );
+      // no need to check if the getter already exists
+      return;
     }
 
     classConstructor.addParameter({
