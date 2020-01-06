@@ -141,6 +141,71 @@ exports.validateNotExisting = function(projDir) {
 };
 
 /**
+ * validate source key or foreign key for relations
+ */
+/* istanbul ignore next */
+exports.validateKeyName = function(name) {
+  if (!name || name === '') {
+    return 'Key name cannot be empty';
+  }
+  if (!isNaN(name.charAt(0))) {
+    return util.format('Key name cannot start with a number: %s', name);
+  }
+  if (name.includes('.')) {
+    return util.format('Key name cannot contain .: %s', name);
+  }
+  if (name.includes(' ')) {
+    return util.format('Key name cannot contain spaces: %s', name);
+  }
+  if (name.includes('-')) {
+    return util.format('Key name cannot contain hyphens: %s', name);
+  }
+  if (name.match(/[\/@\s\+%:]/)) {
+    return util.format(
+      'Key name cannot contain special characters (/@+%: ): %s',
+      name,
+    );
+  }
+  return true;
+};
+
+/**
+ * checks if the belongsTo relation has the same relation name and source key name,
+ * which is an invalid case.
+ */
+/* istanbul ignore next */
+exports.validateRelationName = function(name, type, foreignKeyName) {
+  if (!name || name === '') {
+    return 'Relation name cannot be empty';
+  }
+  if (type === 'belongsTo' && name === foreignKeyName) {
+    return util.format(
+      'Relation name cannot be the same as the source key name: %s',
+      name,
+    );
+  }
+  if (!isNaN(name.charAt(0))) {
+    return util.format('Relation name cannot start with a number: %s', name);
+  }
+  if (name.includes('.')) {
+    return util.format('Relation name cannot contain .: %s', name);
+  }
+  if (name.includes(' ')) {
+    return util.format('Relation name cannot contain spaces: %s', name);
+  }
+  if (name.includes('-')) {
+    return util.format('Relation name cannot contain hyphens: %s', name);
+  }
+  if (name.match(/[\/@\s\+%:]/)) {
+    return util.format(
+      'Relation name cannot contain special characters (/@+%: ): %s',
+      name,
+    );
+  }
+  return true;
+};
+
+/**
  * Converts a name to class name after validation
  */
 exports.toClassName = function(name) {
