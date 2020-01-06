@@ -29,7 +29,7 @@ export type BoundValue = any;
  */
 export type ValueOrPromise<T> = T | PromiseLike<T>;
 
-export type MapObject<T> = {[name: string]: T};
+export type MapObject<T> = Record<string, T>;
 
 /**
  * Check whether a value is a Promise-like instance.
