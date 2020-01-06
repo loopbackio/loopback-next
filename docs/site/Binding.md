@@ -515,7 +515,7 @@ returning themselves. This allows binding consumers to omit the expected value
 type when calling `.get()` and `.getSync()`.
 
 When we rewrite the failing snippet resolving HOST names to use the new API, the
-TypeScript compiler immediatelly tells us about the problem:
+TypeScript compiler immediately tells us about the problem:
 
 ```ts
 const host = await ctx.get(RestBindings.HOST);
@@ -523,4 +523,33 @@ const records = await resolve(host);
 // Compiler complains:
 // - cannot convert string | undefined to string
 //  - cannot convert undefined to string
+```
+
+### Binding events
+
+A binding can emit `changed` events upon changes triggered by methods such as
+`tag`, `inScope`, `to`, and `toClass`.
+
+The binding listener function signature is described as:
+
+```ts
+/**
+ * Event listeners for binding events
+ */
+export type BindingEventListener = (
+  binding: Binding<unknown>,
+  event: string,
+) => void;
+```
+
+Now we can register a binding listener to be triggered when tags are changed:
+
+```ts
+const bindingListener: BindingEventListener = (binding, event) => {
+  if (event === 'tag') {
+    console.log('Binding tags for %s %j', binding.key, binding.tagMap);
+  }
+});
+
+binding.on('changed', bindingListener);
 ```

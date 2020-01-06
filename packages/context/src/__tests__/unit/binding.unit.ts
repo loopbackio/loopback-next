@@ -78,6 +78,15 @@ describe('Binding', () => {
         /Tag must be a string or an object \(but not array\):/,
       );
     });
+
+    it('triggers changed event', () => {
+      const events: unknown[] = [];
+      binding.on('changed', (b, op) => {
+        events.push({binding: b, op});
+      });
+      binding.tag('t1');
+      expect(events).to.eql([{binding, op: 'tag'}]);
+    });
   });
 
   describe('inScope', () => {
@@ -98,6 +107,15 @@ describe('Binding', () => {
     it('sets the transient binding scope', () => {
       binding.inScope(BindingScope.TRANSIENT);
       expect(binding.scope).to.equal(BindingScope.TRANSIENT);
+    });
+
+    it('triggers changed event', () => {
+      const events: unknown[] = [];
+      binding.on('changed', (b, op) => {
+        events.push({binding: b, op});
+      });
+      binding.inScope(BindingScope.TRANSIENT);
+      expect(events).to.eql([{binding, op: 'scope'}]);
     });
   });
 
@@ -125,6 +143,15 @@ describe('Binding', () => {
       expect(binding.type).to.equal(BindingType.CONSTANT);
     });
 
+    it('triggers changed event', () => {
+      const events: unknown[] = [];
+      binding.on('changed', (b, op) => {
+        events.push({binding: b, op});
+      });
+      binding.to('value');
+      expect(events).to.eql([{binding, op: 'value'}]);
+    });
+
     it('rejects promise values', () => {
       expect(() => binding.to(Promise.resolve('value'))).to.throw(
         /Promise instances are not allowed.*toDynamicValue/,
@@ -150,6 +177,15 @@ describe('Binding', () => {
       expect(value).to.equal('hello');
       expect(b.type).to.equal(BindingType.DYNAMIC_VALUE);
     });
+
+    it('triggers changed event', () => {
+      const events: unknown[] = [];
+      binding.on('changed', (b, op) => {
+        events.push({binding: b, op});
+      });
+      binding.toDynamicValue(() => Promise.resolve('hello'));
+      expect(events).to.eql([{binding, op: 'value'}]);
+    });
   });
 
   describe('toClass(cls)', () => {
@@ -159,6 +195,15 @@ describe('Binding', () => {
       expect(b.type).to.equal(BindingType.CLASS);
       const myService = await ctx.get<MyService>('myService');
       expect(myService.getMessage()).to.equal('hello world');
+    });
+
+    it('triggers changed event', () => {
+      const events: unknown[] = [];
+      binding.on('changed', (b, op) => {
+        events.push({binding: b, op});
+      });
+      binding.toClass(MyService);
+      expect(events).to.eql([{binding, op: 'value'}]);
     });
   });
 
@@ -194,6 +239,15 @@ describe('Binding', () => {
       ctx.bind('msg').to('hello');
       const b = ctx.bind('provider_key').toProvider(MyProvider);
       expect(b.providerConstructor).to.equal(MyProvider);
+    });
+
+    it('triggers changed event', () => {
+      const events: unknown[] = [];
+      binding.on('changed', (b, op) => {
+        events.push({binding: b, op});
+      });
+      binding.toProvider(MyProvider);
+      expect(events).to.eql([{binding, op: 'value'}]);
     });
   });
 
@@ -259,6 +313,15 @@ describe('Binding', () => {
         .bind('child.options')
         .toAlias('parent.options#child');
       expect(childBinding.type).to.equal(BindingType.ALIAS);
+    });
+
+    it('triggers changed event', () => {
+      const events: unknown[] = [];
+      binding.on('changed', (b, op) => {
+        events.push({binding: b, op});
+      });
+      binding.toAlias('parent.options#child');
+      expect(events).to.eql([{binding, op: 'value'}]);
     });
   });
 
