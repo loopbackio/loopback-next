@@ -295,7 +295,7 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
       this.artifactInfo.modelDir,
       utils.getModelFileName(this.artifactInfo.destinationModel),
     );
-    const df = project.addExistingSourceFile(destinationFile);
+    const df = project.addSourceFileAtPath(destinationFile);
     const cl = relationUtils.getClassObj(
       df,
       this.artifactInfo.destinationModel,
