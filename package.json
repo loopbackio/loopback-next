@@ -9,6 +9,7 @@
     "node": ">=8.9"
   },
   "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "devDependencies": {
     "@commitlint/cli": "^8.3.5",
@@ -24,8 +25,9 @@
     "eslint-plugin-eslint-plugin": "^2.2.1",
     "eslint-plugin-mocha": "^6.2.2",
     "fs-extra": "^8.1.0",
-    "husky": "^3.1.0",
+    "husky": "^4.2.1",
     "lerna": "^3.20.2",
+    "lint-staged": "^10.0.2",
     "typescript": "~3.7.5"
   },
   "scripts": {
@@ -69,10 +71,19 @@
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
-  "copyright.owner": "IBM Corp.",
   "husky": {
     "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-commit": "lint-staged"
     }
+  },
+  "lint-staged": {
+    "*.{ts,js}": [
+      "node packages/build/bin/run-eslint --report-unused-disable-directives --fix",
+      "node packages/build/bin/run-prettier --write"
+    ],
+    "*.md": [
+      "node packages/build/bin/run-prettier --write"
+    ]
   }
 }
