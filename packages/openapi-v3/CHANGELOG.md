@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.11.0](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@1.10.3...@loopback/openapi-v3@1.11.0) (2020-01-07)
+
+
+### Features
+
+* openapi spec contributor extension point ([9fee3f3](https://github.com/strongloop/loopback-next/commit/9fee3f342ff76d65d1899ddf1dbf7a257c85ea26))
+
+
+
+
+
 ## [1.10.3](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@1.10.2...@loopback/openapi-v3@1.10.3) (2019-12-09)
 
 **Note:** Version bump only for package @loopback/openapi-v3

@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.10](https://github.com/strongloop/loopback-next/compare/@loopback/security@0.1.9...@loopback/security@0.1.10) (2020-01-07)
+
+**Note:** Version bump only for package @loopback/security
+
+
+
+
+
 ## [0.1.9](https://github.com/strongloop/loopback-next/compare/@loopback/security@0.1.8...@loopback/security@0.1.9) (2019-12-09)
 
 **Note:** Version bump only for package @loopback/security

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.10.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-express-composition@1.9.2...@loopback/example-express-composition@1.10.0) (2020-01-07)
+
+
+### Features
+
+* add title property to ping response schema definition ([b8b7490](https://github.com/strongloop/loopback-next/commit/b8b7490ce29d0973208ba38c3365de9091b7a795))
+
+
+
+
+
 ## [1.9.2](https://github.com/strongloop/loopback-next/compare/@loopback/example-express-composition@1.9.1...@loopback/example-express-composition@1.9.2) (2019-12-09)
 
 **Note:** Version bump only for package @loopback/example-express-composition

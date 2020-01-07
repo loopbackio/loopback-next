@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/authentication-passport@1.0.6...@loopback/authentication-passport@1.1.0) (2020-01-07)
+
+
+### Features
+
+* add user profile factory interface ([0630194](https://github.com/strongloop/loopback-next/commit/0630194539ba7971ca6c6579ebb9d986e6340a41))
+
+
+
+
+
 ## [1.0.6](https://github.com/strongloop/loopback-next/compare/@loopback/authentication-passport@1.0.5...@loopback/authentication-passport@1.0.6) (2019-12-09)
 
 **Note:** Version bump only for package @loopback/authentication-passport

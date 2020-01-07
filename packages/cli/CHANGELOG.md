@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.28.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.27.0...@loopback/cli@1.28.0) (2020-01-07)
+
+
+### Features
+
+* add title property to ping response schema definition ([b8b7490](https://github.com/strongloop/loopback-next/commit/b8b7490ce29d0973208ba38c3365de9091b7a795))
+
+
+
+
+
 # [1.27.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.26.0...@loopback/cli@1.27.0) (2019-12-09)
 
 
