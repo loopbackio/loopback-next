@@ -11,10 +11,10 @@
   },
   "scripts": {
     "build": "lb-tsc",
-    "clean": "lb-clean loopback-model-api-builder-plugin*.tgz dist tsconfig.build.tsbuildinfo package",
+    "clean": "lb-clean loopback-model-api-builder*.tgz dist tsconfig.build.tsbuildinfo package",
     "pretest": "npm run build",
     "test": "",
-    "verify": "npm pack && tar xf loopback-model-api-builder-plugin*.tgz && tree package && npm run clean"
+    "verify": "npm pack && tar xf loopback-model-api-builder*.tgz && tree package && npm run clean"
   },
   "author": "IBM Corp.",
   "copyright.owner": "IBM Corp.",
