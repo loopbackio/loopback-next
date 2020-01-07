@@ -1,6 +1,6 @@
 {
   "name": "@loopback/example-todo-list",
-  "version": "1.12.3",
+  "version": "1.12.4",
   "description": "Continuation of the todo example using relations in LoopBack 4.",
   "main": "index.js",
   "engines": {
@@ -36,7 +36,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@loopback/boot": "^1.7.0",
+    "@loopback/boot": "^1.7.1",
     "@loopback/context": "^1.25.1",
     "@loopback/core": "^1.12.1",
     "@loopback/openapi-v3": "^1.11.0",

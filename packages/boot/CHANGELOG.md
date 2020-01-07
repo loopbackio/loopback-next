@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.7.1](https://github.com/strongloop/loopback-next/compare/@loopback/boot@1.7.0...@loopback/boot@1.7.1) (2020-01-07)
+
+**Note:** Version bump only for package @loopback/boot
+
+
+
+
+
 # [1.7.0](https://github.com/strongloop/loopback-next/compare/@loopback/boot@1.6.0...@loopback/boot@1.7.0) (2020-01-07)
 
 

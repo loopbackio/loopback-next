@@ -1,6 +1,6 @@
 {
   "name": "@loopback/example-metrics-prometheus",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Standalone examples for @loopback/metrics",
   "main": "index.js",
   "engines": {
@@ -38,7 +38,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@loopback/boot": "^1.7.0",
+    "@loopback/boot": "^1.7.1",
     "@loopback/core": "^1.12.1",
     "@loopback/extension-metrics": "^0.1.3",
     "@loopback/rest": "^1.25.1"
