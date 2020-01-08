@@ -21,7 +21,7 @@
     "loopback": "^3.26.0",
     "loopback-swagger": "^5.8.0",
     "p-event": "^4.1.0",
-    "swagger2openapi": "^5.3.1"
+    "swagger2openapi": "^5.3.2"
   },
   "peerDependencies": {
     "@loopback/boot": "^1.2.2",
