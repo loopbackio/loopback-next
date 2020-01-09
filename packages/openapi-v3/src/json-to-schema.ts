@@ -56,13 +56,7 @@ export function jsonToSchemaObject(
     [converted]: false,
   };
   visited.set(json, result);
-  const propsToIgnore = [
-    'anyOf',
-    'oneOf',
-    'additionalItems',
-    'defaultProperties',
-    'typeof',
-  ];
+  const propsToIgnore = ['additionalItems', 'defaultProperties', 'typeof'];
   for (const property in json) {
     if (propsToIgnore.includes(property)) {
       continue;
@@ -79,6 +73,18 @@ export function jsonToSchemaObject(
       }
       case 'allOf': {
         result.allOf = _.map(json.allOf, item =>
+          jsonToSchemaObject(item as JsonSchema, visited),
+        );
+        break;
+      }
+      case 'anyOf': {
+        result.anyOf = _.map(json.anyOf, item =>
+          jsonToSchemaObject(item as JsonSchema, visited),
+        );
+        break;
+      }
+      case 'oneOf': {
+        result.oneOf = _.map(json.oneOf, item =>
           jsonToSchemaObject(item as JsonSchema, visited),
         );
         break;

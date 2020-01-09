@@ -19,8 +19,6 @@ describe('jsonToSchemaObject', () => {
 
   it('ignores non-compatible JSON schema properties', () => {
     const nonCompatibleDef = {
-      anyOf: [],
-      oneOf: [],
       additionalItems: {
         anyOf: [],
       },
@@ -39,6 +37,26 @@ describe('jsonToSchemaObject', () => {
       allOf: [expectedType, expectedType],
     };
     propertyConversionTest(allOfDef, expectedAllOf);
+  });
+
+  it('converts anyOf', () => {
+    const anyOfDef: JsonSchema = {
+      anyOf: [typeDef, typeDef],
+    };
+    const expectedAnyOf: SchemaObject = {
+      anyOf: [expectedType, expectedType],
+    };
+    propertyConversionTest(anyOfDef, expectedAnyOf);
+  });
+
+  it('converts oneOf', () => {
+    const oneOfDef: JsonSchema = {
+      oneOf: [typeDef, typeDef],
+    };
+    const expectedOneOf: SchemaObject = {
+      oneOf: [expectedType, expectedType],
+    };
+    propertyConversionTest(oneOfDef, expectedOneOf);
   });
 
   it('converts definitions', () => {
