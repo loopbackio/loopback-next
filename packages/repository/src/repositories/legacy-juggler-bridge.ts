@@ -573,17 +573,23 @@ export class DefaultCrudRepository<
       typeof entity.toJSON === 'function' ? entity.toJSON() : {...entity};
     */
 
-    // proposal solution from agnes: delete the id property in the
-    // target data when runs replaceById
-
     const data: AnyObject = new this.entityClass(entity);
 
     const def = this.entityClass.definition;
+    const props = def.properties;
     for (const r in def.relations) {
       const relName = def.relations[r].name;
       if (relName in data) {
+        let invalidNameMsg = '';
+        if (relName in props) {
+          invalidNameMsg =
+            ` The error might be invoked by belongsTo relations, please make sure the relation name is not the same as` +
+            ` the property name.`;
+        }
         throw new Error(
-          `Navigational properties are not allowed in model data (model "${this.entityClass.modelName}" property "${relName}")`,
+          `Navigational properties are not allowed in model data (model "${this.entityClass.modelName}"` +
+            ` property "${relName}"), please remove it.` +
+            invalidNameMsg,
         );
       }
     }

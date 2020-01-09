@@ -221,7 +221,7 @@ export function hasManyRelationAcceptance(
           ],
         }),
       ).to.be.rejectedWith(
-        'Navigational properties are not allowed in model data (model "Customer" property "orders")',
+        'Navigational properties are not allowed in model data (model "Customer" property "orders"), please remove it.',
       );
     });
 
@@ -238,7 +238,7 @@ export function hasManyRelationAcceptance(
           },
         ]),
       ).to.be.rejectedWith(
-        'Navigational properties are not allowed in model data (model "Customer" property "orders")',
+        'Navigational properties are not allowed in model data (model "Customer" property "orders"), please remove it.',
       );
     });
 
@@ -296,7 +296,7 @@ export function hasManyRelationAcceptance(
       });
 
       await expect(customerRepo.delete(found)).to.be.rejectedWith(
-        'Navigational properties are not allowed in model data (model "Customer" property "orders")',
+        'Navigational properties are not allowed in model data (model "Customer" property "orders"), please remove it.',
       );
     });
 

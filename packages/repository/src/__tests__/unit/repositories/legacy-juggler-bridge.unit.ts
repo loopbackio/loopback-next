@@ -351,9 +351,20 @@ describe('DefaultCrudRepository', () => {
       folderId: number;
     }
 
+    @model()
+    class Account extends Entity {
+      @property({id: true})
+      id?: number;
+      @property()
+      name: string;
+      @belongsTo(() => Author, {name: 'author'})
+      author: number;
+    }
+
     let folderRepo: DefaultCrudRepository<Folder, unknown, {}>;
     let fileRepo: DefaultCrudRepository<File, unknown, {}>;
     let authorRepo: DefaultCrudRepository<Author, unknown, {}>;
+    let accountRepo: DefaultCrudRepository<Account, unknown, {}>;
 
     let folderFiles: HasManyRepositoryFactory<File, typeof Folder.prototype.id>;
     let fileFolder: BelongsToAccessor<Folder, typeof File.prototype.id>;
@@ -370,6 +381,7 @@ describe('DefaultCrudRepository', () => {
       folderRepo = new DefaultCrudRepository(Folder, ds);
       fileRepo = new DefaultCrudRepository(File, ds);
       authorRepo = new DefaultCrudRepository(Author, ds);
+      accountRepo = new DefaultCrudRepository(Account, ds);
     });
 
     before(() => {
@@ -461,18 +473,37 @@ describe('DefaultCrudRepository', () => {
         });
       });
 
-      it('throws if the target data passes to CRUD methods contains nav properties', async () => {
-        // a unit test for entityToData, which is invoked by create() method
-        // it would be the same of other CRUD methods.
-        await expect(
-          folderRepo.create({
-            name: 'f1',
-            files: [{title: 'nav property'}],
-          }),
-        ).to.be.rejectedWith(
-          'Navigational properties are not allowed in model data (model "Folder" property "files")',
-        );
-      });
+      context(
+        'throws if the target data passes to CRUD methods contains nav properties',
+        () => {
+          it('error message warns about the nav properties', async () => {
+            // a unit test for entityToData, which is invoked by create() method
+            // it would be the same of other CRUD methods.
+            await expect(
+              folderRepo.create({
+                name: 'f1',
+                files: [{title: 'nav property'}],
+              }),
+            ).to.be.rejectedWith(
+              'Navigational properties are not allowed in model data (model "Folder" property "files"), please remove it.',
+            );
+          });
+
+          it('error msg also warns about property and relation names in belongsTo relation', async () => {
+            // the belongsTo relation has the same property name as the relation name.
+            await expect(
+              accountRepo.create({
+                name: 'acoount 1',
+                author: 1, // same as the relation name
+              }),
+            ).to.be.rejectedWith(
+              'Navigational properties are not allowed in model data (model "Account" property "author"), please remove it.' +
+                ' The error might be invoked by belongsTo relations, please make sure the relation name is not the same as' +
+                ' the property name.',
+            );
+          });
+        },
+      );
 
       // stub resolvers
       const hasManyResolver: InclusionResolver<
