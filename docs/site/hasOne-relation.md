@@ -154,7 +154,7 @@ values for these three fields:
     <tr>
       <td><code>keyTo</code></td>
       <td>the foreign key of the target model</td>
-      <td>the source model name appended with `id` in camel case</td>
+      <td>the source model name appended with `Id` in camel case</td>
       <td><code>Account.supplierId</code></td>
     </tr>
     <tr>
