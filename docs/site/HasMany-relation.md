@@ -80,7 +80,7 @@ decorator. The decorator takes in a function resolving the target model class
 constructor and optionally a custom foreign key to store the relation metadata.
 The decorator logic also designates the relation type and tries to infer the
 foreign key on the target model (`keyTo` in the relation metadata) to a default
-value (source model name appended with `id` in camel case, same as LoopBack 3).
+value (source model name appended with `Id` in camel case, same as LoopBack 3).
 It also calls `property.array()` to ensure that the type of the property is
 inferred properly as an array of the target model instances.
 
@@ -206,7 +206,7 @@ values for these three fields:
     <tr>
       <td><code>keyTo</code></td>
       <td>the foreign key of the target model</td>
-      <td>the source model name appended with `id` in camel case</td>
+      <td>the source model name appended with `Id` in camel case</td>
       <td><code>Order.customerId</code></td>
     </tr>
     <tr>
@@ -219,8 +219,8 @@ values for these three fields:
   </tbody>
 </table>
 
-We recommend to use default values. If you'd like to customize foreign key name,
-you'll need to specify some fields through the relation decorator.
+We recommend to use default values. If you'd like to customize the foreign key
+name, you'll need to specify some fields through the relation decorator.
 
 For customizing the foreign key name, `keyTo` field needs to be specified via
 `@hasMany` decorator. The following example shows how to customize the foreign
@@ -231,6 +231,7 @@ key name as `my_customer_id` instead of `customerId`:
 @model()
 export class Customer extends Entity {
   // constructor, properties, etc.
+
   @hasMany(() => Order, {keyTo: 'my_customer_id'})
   orders: Order[];
 }
@@ -241,6 +242,7 @@ export class Customer extends Entity {
 @model()
 export class Order extends Entity {
   // constructor, properties, etc.
+
   @property({
     type: 'number',
   })
