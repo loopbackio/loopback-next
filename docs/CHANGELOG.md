@@ -3,6 +3,37 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.8.1](https://github.com/strongloop/loopback-next/compare/@loopback/docs@2.8.0...@loopback/docs@2.8.1) (2020-01-07)
+
+**Note:** Version bump only for package @loopback/docs
+
+
+
+
+
+# [2.8.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@2.7.0...@loopback/docs@2.8.0) (2020-01-07)
+
+
+### Bug Fixes
+
+* **docs:** add import authentication component ([ab694f6](https://github.com/strongloop/loopback-next/commit/ab694f6132816ad6ebd307b84cf4e85091e17b6d))
+* **docs:** add section from miroslav ([80a03df](https://github.com/strongloop/loopback-next/commit/80a03df5f8a0801d7cd6c5aedfbfb01b0cb17da0))
+* **docs:** fix anchor link in authorization page ([bcbd04b](https://github.com/strongloop/loopback-next/commit/bcbd04b4e2f85d527620d6a14861f44d944e2d8c))
+* **docs:** fix typo in 6-interception.md ([1df8cd1](https://github.com/strongloop/loopback-next/commit/1df8cd17f731a7af84284e0149e5d2749e6e3608))
+* **docs:** update Mixin.md ([e71a00f](https://github.com/strongloop/loopback-next/commit/e71a00f1aae2e73a037ed6ffd26fc00b7790304f))
+
+
+### Features
+
+* **docs:** add 2020Q1 roadmap ([65b6278](https://github.com/strongloop/loopback-next/commit/65b6278aa30888321eff62f0e0ba15ef64b01d72))
+* add model-api-builder and model-api-booter ([bacadcc](https://github.com/strongloop/loopback-next/commit/bacadcc22f6c813ee384d1d040f518190d9aae17))
+* openapi spec contributor extension point ([9fee3f3](https://github.com/strongloop/loopback-next/commit/9fee3f342ff76d65d1899ddf1dbf7a257c85ea26))
+* **repository:** allow custom keyFrom for hasmany/hasone ([58efff9](https://github.com/strongloop/loopback-next/commit/58efff9e166fbe1fc820fe6168e18b5c7d9630ce))
+
+
+
+
+
 # [2.7.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@2.6.0...@loopback/docs@2.7.0) (2019-12-09)
 
 

@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.23](https://github.com/strongloop/loopback-next/compare/@loopback/benchmark@1.3.22...@loopback/benchmark@1.3.23) (2020-01-07)
+
+**Note:** Version bump only for package @loopback/benchmark
+
+
+
+
+
+## [1.3.22](https://github.com/strongloop/loopback-next/compare/@loopback/benchmark@1.3.21...@loopback/benchmark@1.3.22) (2020-01-07)
+
+
+### Bug Fixes
+
+* **benchmark:** handle worker startup errors ([ff02524](https://github.com/strongloop/loopback-next/commit/ff02524f8ae9448017e9de4731ebb8d41c10e789))
+* **benchmark:** make "create todo" scenario pass ([ee32b7d](https://github.com/strongloop/loopback-next/commit/ee32b7db23b3c086ce8a35b60c79207f2058aff9))
+
+
+
+
+
 ## [1.3.21](https://github.com/strongloop/loopback-next/compare/@loopback/benchmark@1.3.20...@loopback/benchmark@1.3.21) (2019-12-09)
 
 **Note:** Version bump only for package @loopback/benchmark

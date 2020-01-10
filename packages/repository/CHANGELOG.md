@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.17.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.16.0...@loopback/repository@1.17.0) (2020-01-07)
+
+
+### Bug Fixes
+
+* **repository:** belongsto accessor should return undefined if foreign key is not included ([cbdba15](https://github.com/strongloop/loopback-next/commit/cbdba1554fe103109a21e20c48cd3a0edcf8fffb))
+
+
+### Features
+
+* **repository:** add interface for hasManyThrough ([ced2643](https://github.com/strongloop/loopback-next/commit/ced26437c6fa8bd34fa897325730610ec017bc16))
+* **repository:** allow custom keyFrom for hasmany/hasone ([58efff9](https://github.com/strongloop/loopback-next/commit/58efff9e166fbe1fc820fe6168e18b5c7d9630ce))
+
+
+
+
+
 # [1.16.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.15.5...@loopback/repository@1.16.0) (2019-12-09)
 
 

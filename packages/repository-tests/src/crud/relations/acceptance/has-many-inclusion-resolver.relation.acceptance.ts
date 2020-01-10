@@ -20,6 +20,7 @@ import {
   CustomerRepository,
   Order,
   OrderRepository,
+  ShipmentRepository,
 } from '../fixtures/models';
 import {givenBoundCrudRepositories} from '../helpers';
 
@@ -38,12 +39,13 @@ export function hasManyInclusionResolverAcceptance(
     before(deleteAllModelsInDefaultDataSource);
     let customerRepo: CustomerRepository;
     let orderRepo: OrderRepository;
+    let shipmentRepo: ShipmentRepository;
 
     before(
       withCrudCtx(async function setupRepository(ctx: CrudTestContext) {
         // this helper should create the inclusion resolvers and also
         // register inclusion resolvers for us
-        ({customerRepo, orderRepo} = givenBoundCrudRepositories(
+        ({customerRepo, orderRepo, shipmentRepo} = givenBoundCrudRepositories(
           ctx.dataSource,
           repositoryClass,
           features,
@@ -57,6 +59,7 @@ export function hasManyInclusionResolverAcceptance(
     beforeEach(async () => {
       await customerRepo.deleteAll();
       await orderRepo.deleteAll();
+      await shipmentRepo.deleteAll();
     });
 
     it('throws an error if tries to query nonexists relation names', async () => {
@@ -90,8 +93,7 @@ export function hasManyInclusionResolverAcceptance(
             {
               ...thorOrder,
               isShipped: features.emptyValue,
-              // eslint-disable-next-line @typescript-eslint/camelcase
-              shipment_id: features.emptyValue,
+              shipmentInfo: features.emptyValue,
             },
           ],
         }),
@@ -125,14 +127,12 @@ export function hasManyInclusionResolverAcceptance(
             {
               ...thorOrderMjolnir,
               isShipped: features.emptyValue,
-              // eslint-disable-next-line @typescript-eslint/camelcase
-              shipment_id: features.emptyValue,
+              shipmentInfo: features.emptyValue,
             },
             {
               ...thorOrderPizza,
               isShipped: features.emptyValue,
-              // eslint-disable-next-line @typescript-eslint/camelcase
-              shipment_id: features.emptyValue,
+              shipmentInfo: features.emptyValue,
             },
           ],
           parentId: features.emptyValue,
@@ -144,8 +144,7 @@ export function hasManyInclusionResolverAcceptance(
             {
               ...odinOrderCoffee,
               isShipped: features.emptyValue,
-              // eslint-disable-next-line @typescript-eslint/camelcase
-              shipment_id: features.emptyValue,
+              shipmentInfo: features.emptyValue,
             },
           ],
         },
@@ -179,12 +178,43 @@ export function hasManyInclusionResolverAcceptance(
           {
             ...odinOrder,
             isShipped: features.emptyValue,
-            // eslint-disable-next-line @typescript-eslint/camelcase
-            shipment_id: features.emptyValue,
+            shipmentInfo: features.emptyValue,
           },
         ],
       };
       expect(toJSON(result)).to.deepEqual(toJSON(expected));
+    });
+
+    it('returns related models with non-id property as a source key(keyFrom)', async () => {
+      const shipment = await shipmentRepo.create({
+        name: 'non-id prop as keyFrom relation',
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        shipment_id: 999,
+      });
+      const order = await orderRepo.create({
+        // foreign key is a non-id property
+        shipmentInfo: shipment.shipment_id,
+        description: 'foreign key not id property',
+      });
+
+      const found = await shipmentRepo.find({
+        include: [{relation: 'shipmentOrders'}],
+      });
+
+      expect(toJSON(found)).containDeep(
+        toJSON([
+          {
+            ...shipment,
+            shipmentOrders: [
+              {
+                ...order,
+                isShipped: features.emptyValue,
+                customerId: features.emptyValue,
+              },
+            ],
+          },
+        ]),
+      );
     });
 
     skipIf(
@@ -219,8 +249,7 @@ export function hasManyInclusionResolverAcceptance(
             {
               ...odinPizza,
               isShipped: features.emptyValue,
-              // eslint-disable-next-line @typescript-eslint/camelcase
-              shipment_id: features.emptyValue,
+              shipmentInfo: features.emptyValue,
             },
           ],
         };
@@ -268,8 +297,7 @@ export function hasManyInclusionResolverAcceptance(
               {
                 ...odinPizza,
                 isShipped: features.emptyValue,
-                // eslint-disable-next-line @typescript-eslint/camelcase
-                shipment_id: features.emptyValue,
+                shipmentInfo: features.emptyValue,
               },
             ],
           },
@@ -309,8 +337,7 @@ export function hasManyInclusionResolverAcceptance(
             {
               ...odinPizza,
               isShipped: features.emptyValue,
-              // eslint-disable-next-line @typescript-eslint/camelcase
-              shipment_id: features.emptyValue,
+              shipmentInfo: features.emptyValue,
             },
           ],
         },
