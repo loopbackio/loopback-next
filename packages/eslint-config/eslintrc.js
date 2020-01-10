@@ -154,6 +154,7 @@ module.exports = {
     '@typescript-eslint/prefer-nullish-coalescing': 'error',
     '@typescript-eslint/no-extra-non-null-assertion': 'error',
     '@typescript-eslint/return-await': 'error',
+    '@typescript-eslint/no-throw-literal': 'error',
   },
 
   overrides: [
