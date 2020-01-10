@@ -40,14 +40,14 @@ exports.getModelPropertyType = function(modelDir, modelName, propertyName) {
   const project = new this.AstLoopBackProject();
 
   const modelFile = path.join(modelDir, utils.getModelFileName(modelName));
-  const sf = project.addExistingSourceFile(modelFile);
+  const sf = project.addSourceFileAtPath(modelFile);
   const co = this.getClassObj(sf, modelName);
   return this.getPropertyType(co, propertyName);
 };
 
 exports.addFileToProject = function(project, dir, modelName) {
   const fileName = path.resolve(dir, utils.getModelFileName(modelName));
-  return project.addExistingSourceFile(fileName);
+  return project.addSourceFileAtPath(fileName);
 };
 
 exports.getClassObj = function(fileName, modelName) {
@@ -72,7 +72,7 @@ exports.addExportController = async function(
   };
 
   if (generator.fs.exists(fileName)) {
-    pFile = project.addExistingSourceFile(fileName);
+    pFile = project.addSourceFileAtPath(fileName);
     // Exported declarations is now a `Map<string, Declaration[]>`
     const exportedDeclarations = pFile.getExportedDeclarations();
     for (const declarations of exportedDeclarations.values()) {

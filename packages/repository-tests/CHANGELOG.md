@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.9.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository-tests@0.8.0...@loopback/repository-tests@0.9.0) (2020-01-07)
+
+
+### Bug Fixes
+
+* **repository:** belongsto accessor should return undefined if foreign key is not included ([cbdba15](https://github.com/strongloop/loopback-next/commit/cbdba1554fe103109a21e20c48cd3a0edcf8fffb))
+
+
+### Features
+
+* **repository:** allow custom keyFrom for hasmany/hasone ([58efff9](https://github.com/strongloop/loopback-next/commit/58efff9e166fbe1fc820fe6168e18b5c7d9630ce))
+
+
+
+
+
 # [0.8.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository-tests@0.7.0...@loopback/repository-tests@0.8.0) (2019-12-09)
 
 

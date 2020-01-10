@@ -234,7 +234,7 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
       debug(`Artifact output filename set to: ${this.artifactInfo.outFile}`);
     }
     this.artifactInfo.modelVariableName = utils.toVarName(
-      this.artifactInfo.modelName,
+      this.artifactInfo.modelName || '',
     );
 
     // renames the file

@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.23](https://github.com/strongloop/loopback-next/compare/@loopback/example-lb3-application@1.1.22...@loopback/example-lb3-application@1.1.23) (2020-01-07)
+
+**Note:** Version bump only for package @loopback/example-lb3-application
+
+
+
+
+
+## [1.1.22](https://github.com/strongloop/loopback-next/compare/@loopback/example-lb3-application@1.1.21...@loopback/example-lb3-application@1.1.22) (2020-01-07)
+
+
+### Bug Fixes
+
+* fixed formatting issues ([02f3a7d](https://github.com/strongloop/loopback-next/commit/02f3a7d859e82a381a495f41597f6a7e7b1f18bc))
+
+
+
+
+
 ## [1.1.21](https://github.com/strongloop/loopback-next/compare/@loopback/example-lb3-application@1.1.20...@loopback/example-lb3-application@1.1.21) (2019-12-09)
 
 **Note:** Version bump only for package @loopback/example-lb3-application

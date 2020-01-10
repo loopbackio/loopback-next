@@ -81,8 +81,7 @@ export function hasManyInclusionResolverAcceptance(
             {
               ...order,
               isShipped: features.emptyValue,
-              // eslint-disable-next-line @typescript-eslint/camelcase
-              shipment_id: features.emptyValue,
+              shipmentInfo: features.emptyValue,
             },
           ],
           customers: [
@@ -121,8 +120,7 @@ export function hasManyInclusionResolverAcceptance(
             {
               ...o2,
               isShipped: features.emptyValue,
-              // eslint-disable-next-line @typescript-eslint/camelcase
-              shipment_id: features.emptyValue,
+              shipmentInfo: features.emptyValue,
             },
           ],
         },
@@ -156,8 +154,7 @@ export function hasManyInclusionResolverAcceptance(
             {
               ...o2,
               isShipped: features.emptyValue,
-              // eslint-disable-next-line @typescript-eslint/camelcase
-              shipment_id: features.emptyValue,
+              shipmentInfo: features.emptyValue,
               customer: {...customer, parentId: features.emptyValue},
             },
           ],

@@ -53,6 +53,12 @@ export function createBelongsToAccessor<
     const primaryKey = meta.keyTo;
     const sourceModel = await sourceRepository.findById(sourceId);
     const foreignKeyValue = sourceModel[foreignKey as keyof Source];
+    // workaround to check referential integrity.
+    // should be removed once the memory connector ref integrity is done
+    // GH issue: https://github.com/strongloop/loopback-next/issues/2333
+    if (!foreignKeyValue) {
+      return (undefined as unknown) as Target;
+    }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const constraint: any = {[primaryKey]: foreignKeyValue};
     const constrainedRepo = new DefaultBelongsToRepository(

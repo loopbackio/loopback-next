@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@3.2.4...@loopback/authentication@3.3.0) (2020-01-07)
+
+
+### Features
+
+* add user profile factory interface ([0630194](https://github.com/strongloop/loopback-next/commit/0630194539ba7971ca6c6579ebb9d986e6340a41))
+
+
+
+
+
 ## [3.2.4](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@3.2.3...@loopback/authentication@3.2.4) (2019-12-09)
 
 **Note:** Version bump only for package @loopback/authentication

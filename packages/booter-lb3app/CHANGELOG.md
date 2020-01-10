@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.9](https://github.com/strongloop/loopback-next/compare/@loopback/booter-lb3app@1.3.8...@loopback/booter-lb3app@1.3.9) (2020-01-07)
+
+**Note:** Version bump only for package @loopback/booter-lb3app
+
+
+
+
+
+## [1.3.8](https://github.com/strongloop/loopback-next/compare/@loopback/booter-lb3app@1.3.7...@loopback/booter-lb3app@1.3.8) (2020-01-07)
+
+**Note:** Version bump only for package @loopback/booter-lb3app
+
+
+
+
+
 ## [1.3.7](https://github.com/strongloop/loopback-next/compare/@loopback/booter-lb3app@1.3.6...@loopback/booter-lb3app@1.3.7) (2019-12-09)
 
 **Note:** Version bump only for package @loopback/booter-lb3app

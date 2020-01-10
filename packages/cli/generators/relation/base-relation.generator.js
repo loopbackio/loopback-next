@@ -158,7 +158,7 @@ module.exports = class BaseRelationGenerator extends ArtifactGenerator {
     this.artifactInfo.srcRepositoryClassName =
       utils.toClassName(options.sourceModel) + 'Repository';
 
-    this.artifactInfo.srcRepositoryFileObj = new relationUtils.AstLoopBackProject().addExistingSourceFile(
+    this.artifactInfo.srcRepositoryFileObj = new relationUtils.AstLoopBackProject().addSourceFileAtPath(
       this.artifactInfo.srcRepositoryFile,
     );
 

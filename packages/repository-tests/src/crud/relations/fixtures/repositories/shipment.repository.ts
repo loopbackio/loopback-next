@@ -20,7 +20,7 @@ export function createShipmentRepo(repoClass: CrudRepositoryCtor) {
     typeof Shipment.prototype.id,
     ShipmentRelations
   > {
-    public readonly orders: HasManyRepositoryFactory<
+    public readonly shipmentOrders: HasManyRepositoryFactory<
       Order,
       typeof Shipment.prototype.id
     >;
@@ -30,11 +30,11 @@ export function createShipmentRepo(repoClass: CrudRepositoryCtor) {
       orderRepositoryGetter: Getter<typeof repoClass.prototype>,
     ) {
       super(Shipment, db);
-      const ordersMeta = this.entityClass.definition.relations[
+      const shipmentOrdersMeta = this.entityClass.definition.relations[
         'shipmentOrders'
       ];
-      this.orders = createHasManyRepositoryFactory(
-        ordersMeta as HasManyDefinition,
+      this.shipmentOrders = createHasManyRepositoryFactory(
+        shipmentOrdersMeta as HasManyDefinition,
         orderRepositoryGetter,
       );
     }

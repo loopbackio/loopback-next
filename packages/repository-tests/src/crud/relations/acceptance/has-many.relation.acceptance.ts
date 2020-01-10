@@ -21,6 +21,7 @@ import {
   CustomerRepository,
   Order,
   OrderRepository,
+  ShipmentRepository,
 } from '../fixtures/models';
 import {givenBoundCrudRepositories} from '../helpers';
 
@@ -33,11 +34,12 @@ export function hasManyRelationAcceptance(
     before(deleteAllModelsInDefaultDataSource);
     let customerRepo: CustomerRepository;
     let orderRepo: OrderRepository;
+    let shipmentRepo: ShipmentRepository;
     let existingCustomerId: MixedIdType;
 
     before(
       withCrudCtx(async function setupRepository(ctx: CrudTestContext) {
-        ({customerRepo, orderRepo} = givenBoundCrudRepositories(
+        ({customerRepo, orderRepo, shipmentRepo} = givenBoundCrudRepositories(
           ctx.dataSource,
           repositoryClass,
           features,
@@ -49,6 +51,7 @@ export function hasManyRelationAcceptance(
     beforeEach(async () => {
       await customerRepo.deleteAll();
       await orderRepo.deleteAll();
+      await shipmentRepo.deleteAll();
     });
 
     beforeEach(async () => {
@@ -72,8 +75,7 @@ export function hasManyRelationAcceptance(
         toJSON({
           ...order,
           isShipped: features.emptyValue,
-          // eslint-disable-next-line @typescript-eslint/camelcase
-          shipment_id: features.emptyValue,
+          shipmentInfo: features.emptyValue,
         }),
       );
     });
@@ -90,8 +92,7 @@ export function hasManyRelationAcceptance(
       expect(toJSON(foundOrders)).to.containEql(
         toJSON({
           ...order,
-          // eslint-disable-next-line @typescript-eslint/camelcase
-          shipment_id: features.emptyValue,
+          shipmentInfo: features.emptyValue,
           isShipped: features.emptyValue,
         }),
       );
@@ -101,6 +102,41 @@ export function hasManyRelationAcceptance(
         where: {customerId: existingCustomerId},
       });
       expect(toJSON(persisted)).to.deepEqual(toJSON(foundOrders));
+    });
+
+    it('can find an instance of the related model with non-id property as a source key(keyFrom)', async () => {
+      const shipment = await shipmentRepo.create({
+        name: 'non-id prop as keyFrom relation',
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        shipment_id: 999,
+      });
+      const order = await orderRepo.create({
+        shipmentInfo: shipment.shipment_id,
+        description: 'foreign key not id property',
+      });
+
+      const found = await shipmentRepo
+        .shipmentOrders(order.shipmentInfo)
+        .find();
+
+      expect(toJSON(found)).containDeep(
+        toJSON([
+          {
+            ...order,
+            isShipped: features.emptyValue,
+            customerId: features.emptyValue,
+          },
+        ]),
+      );
+
+      const persisted = await orderRepo.findById(order.id);
+      expect(toJSON(persisted)).to.deepEqual(
+        toJSON({
+          ...order,
+          isShipped: features.emptyValue,
+          customerId: features.emptyValue,
+        }),
+      );
     });
 
     it('can patch many instances', async () => {

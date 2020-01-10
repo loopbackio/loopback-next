@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.9](https://github.com/strongloop/loopback-next/compare/@loopback/example-greeting-app@1.2.8...@loopback/example-greeting-app@1.2.9) (2020-01-07)
+
+**Note:** Version bump only for package @loopback/example-greeting-app
+
+
+
+
+
+## [1.2.8](https://github.com/strongloop/loopback-next/compare/@loopback/example-greeting-app@1.2.7...@loopback/example-greeting-app@1.2.8) (2020-01-07)
+
+**Note:** Version bump only for package @loopback/example-greeting-app
+
+
+
+
+
 ## [1.2.7](https://github.com/strongloop/loopback-next/compare/@loopback/example-greeting-app@1.2.6...@loopback/example-greeting-app@1.2.7) (2019-12-09)
 
 **Note:** Version bump only for package @loopback/example-greeting-app

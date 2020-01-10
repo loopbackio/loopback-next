@@ -83,6 +83,11 @@ export function givenBoundCrudRepositories(
     async () => orderRepo,
   );
 
+  shipmentRepo.inclusionResolvers.set(
+    'shipmentOrders',
+    shipmentRepo.shipmentOrders.inclusionResolver,
+  );
+
   const addressRepoClass = createAddressRepo(repositoryClass);
   const addressRepo: AddressRepository = new addressRepoClass(
     db,
