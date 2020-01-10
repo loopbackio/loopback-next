@@ -4,14 +4,12 @@
 // License text available at https://opensource.org/licenses/MIT
 import {MethodMultiDecoratorFactory} from '@loopback/core';
 import * as httpStatus from 'http-status';
-import {ExampleObject} from 'openapi3-ts';
 import {OAI3Keys} from '../keys';
 import {ResponseModelOrSpec} from '../types';
 
 export interface ResponseOptions {
   contentType?: string;
   description?: string;
-  examples?: ExampleObject;
 }
 export function response(
   responseCode: number,
