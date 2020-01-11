@@ -141,6 +141,9 @@ const app = new RestApplication({
 });
 ```
 
+{% include note.html content="To completely disable API Explorer, we also need
+to [disable the self-hosted REST API Explorer extension](./Self-hosted-REST-API-Explorer.md#disable-self-hosted-api-explorer)." %}
+
 ### Use a self-hosted API Explorer
 
 Hosting the API Explorer at an external URL has a few downsides, for example a
