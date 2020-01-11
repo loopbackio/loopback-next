@@ -16,9 +16,10 @@ This process is called _discovery_ and is supported by the following connectors:
 - Oracle
 - PostgreSQL
 - SQL Server
-- IBM DB2
 - IBM DashDB
-- IBM DB2 for z/OS
+- IBM Db2 (for Linux, Unix, Windows)
+- IBM Db2 for i
+- IBM Db2 for z/OS
 - [SAP HANA](https://www.npmjs.org/package/loopback-connector-saphana) - Not
   officially supported;
 
