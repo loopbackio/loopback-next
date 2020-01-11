@@ -65,7 +65,7 @@
   },
   "db2": {
     "name": "db2",
-    "description": "IBM DB2",
+    "description": "IBM Db2 (for Linux, Unix, Windows)",
     "baseModel": "PersistedModel",
     "features": {
       "discovery": true,
@@ -98,6 +98,74 @@
     "package": {
       "name": "loopback-connector-db2",
       "version": "^2.1.1"
+    },
+    "supportedByStrongLoop": true
+  },
+  "db2i": {
+    "name": "ibmi",
+    "description": "IBM Db2 for i",
+    "baseModel": "PersistedModel",
+    "features": {
+      "discovery": true,
+      "migration": true
+    },
+    "settings": {
+      "dsn": {
+        "type": "string",
+        "message": "ODBC DSN to use for the connection"
+      },
+      "connectionString": {
+        "type": "string",
+        "message": "ODBC connection string for connecting to the database (eg: DSN=*LOCAL;UID=MY_UID;PWD=MY_PWD)"
+      },
+      "username": {
+        "type": "string"
+      },
+      "password": {
+        "type": "password"
+      },
+      "schema": {
+        "type": "string"
+      }
+    },
+    "package": {
+      "name": "loopback-connector-ibmi",
+      "version": "^1.0.0"
+    },
+    "supportedByStrongLoop": true
+  },
+  "db2z": {
+    "name": "db2z",
+    "description": "IBM Db2 for z/OS",
+    "baseModel": "PersistedModel",
+    "features": {
+      "discovery": true,
+      "migration": true
+    },
+    "settings": {
+      "dsn": {
+        "type": "string",
+        "message": "Connection String dsn to override other settings (eg: DATABASE=MY_DB;HOSTNAME=MY_HOST;PORT=MY_PORT;PROTOCOL=TCPIP;UID=MY_UID;PWD=MY_PWD))"
+      },
+      "host": {
+        "type": "string"
+      },
+      "port": {
+        "type": "number"
+      },
+      "user": {
+        "type": "string"
+      },
+      "password": {
+        "type": "password"
+      },
+      "database": {
+        "type": "string"
+      }
+    },
+    "package": {
+      "name": "loopback-connector-db2z",
+      "version": "^2.0.0"
     },
     "supportedByStrongLoop": true
   },
@@ -225,41 +293,6 @@
     "package": {
       "name": "loopback-connector-couchdb2",
       "version": "^1.3.0"
-    },
-    "supportedByStrongLoop": true
-  },
-  "db2z": {
-    "name": "db2z",
-    "description": "IBM DB2 for z/OS",
-    "baseModel": "PersistedModel",
-    "features": {
-      "discovery": true,
-      "migration": true
-    },
-    "settings": {
-      "dsn": {
-        "type": "string",
-        "message": "Connection String dsn to override other settings (eg: DATABASE=MY_DB;HOSTNAME=MY_HOST;PORT=MY_PORT;PROTOCOL=TCPIP;UID=MY_UID;PWD=MY_PWD))"
-      },
-      "host": {
-        "type": "string"
-      },
-      "port": {
-        "type": "number"
-      },
-      "user": {
-        "type": "string"
-      },
-      "password": {
-        "type": "password"
-      },
-      "database": {
-        "type": "string"
-      }
-    },
-    "package": {
-      "name": "loopback-connector-db2z",
-      "version": "^2.0.0"
     },
     "supportedByStrongLoop": true
   },

@@ -549,16 +549,16 @@ children:
       url: DashDB.html
       output: 'web, pdf'
 
-    - title: 'DB2 connector'
+    - title: 'IBM Db2 (for Linux, Unix, Windows) connector'
       url: DB2-connector.html
       output: 'web, pdf'
 
-    - title: 'DB2 for iSeries connector'
-      url: DB2-iSeries-connector.html
+    - title: 'IBM Db2 for i connector'
+      url: DB2-for-i-connector.html
       output: 'web, pdf'
 
-    - title: 'DB2 for z/OS'
-      url: DB2-for-z-OS.html
+    - title: 'IBM Db2 for z/OS connector'
+      url: DB2-for-z-OS-connector.html
       output: 'web, pdf'
 
     - title: Informix connector
