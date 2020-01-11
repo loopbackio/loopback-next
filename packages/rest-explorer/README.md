@@ -90,6 +90,22 @@ Note also that you cannot use a url-relative path for the `servers` entry, as
 the Swagger UI does not support that (yet). You may use a _host_-relative path
 however.
 
+### Disable Self-Hosted API Explorer
+
+To disable the self-hosted API Explorer, remove the component from the
+constructor of your custom Application class. Typically the component will be
+located in `./src/application.ts` and consist of two items, for example:
+
+```ts
+this.bind(RestExplorerBindings.CONFIG).to({
+  path: '/openapi/ui',
+});
+this.component(RestExplorerComponent);
+```
+
+{% include note.html content="To completely disable API Explorer, we also need
+to [disable the redirect to the externally hosted API Explorer](./Server.html#disable-redirect-to-api-explorer)." %}
+
 #### Summary
 
 For some common scenarios, here are recommended configurations to have the
