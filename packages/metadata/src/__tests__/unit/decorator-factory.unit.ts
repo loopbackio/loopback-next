@@ -525,7 +525,7 @@ describe('MethodDecoratorFactory for static methods', () => {
 });
 
 describe('MethodMultiDecoratorFactory', () => {
-  function methodMultiDecorator(spec: object | object[]): MethodDecorator {
+  function methodMultiArrayDecorator(spec: object | object[]): MethodDecorator {
     if (Array.isArray(spec)) {
       return MethodMultiDecoratorFactory.createDecorator('test', spec);
     } else {
@@ -533,22 +533,30 @@ describe('MethodMultiDecoratorFactory', () => {
     }
   }
 
+  function methodMultiDecorator(spec: object): MethodDecorator {
+    return MethodMultiDecoratorFactory.createDecorator('test', spec);
+  }
+
   class BaseController {
-    @methodMultiDecorator({x: 1})
+    @methodMultiArrayDecorator({x: 1})
     public myMethod() {}
 
-    @methodMultiDecorator({foo: 1})
-    @methodMultiDecorator({foo: 2})
-    @methodMultiDecorator([{foo: 3}, {foo: 4}])
+    @methodMultiArrayDecorator({foo: 1})
+    @methodMultiArrayDecorator({foo: 2})
+    @methodMultiArrayDecorator([{foo: 3}, {foo: 4}])
     public multiMethod() {}
+
+    @methodMultiDecorator({a: 'a'})
+    @methodMultiDecorator({b: 'b'})
+    public checkDecorator() {}
   }
 
   class SubController extends BaseController {
-    @methodMultiDecorator({y: 2})
+    @methodMultiArrayDecorator({y: 2})
     public myMethod() {}
 
-    @methodMultiDecorator({bar: 1})
-    @methodMultiDecorator([{bar: 2}, {bar: 3}])
+    @methodMultiArrayDecorator({bar: 1})
+    @methodMultiArrayDecorator([{bar: 2}, {bar: 3}])
     public multiMethod() {}
   }
 
@@ -570,6 +578,11 @@ describe('MethodMultiDecoratorFactory', () => {
   });
 
   describe('multi-decorator methods', () => {
+    it('applies to non-array decorator creation', () => {
+      const meta = Reflector.getOwnMetadata('test', BaseController.prototype);
+      expect(meta.checkDecorator).to.containDeep([{a: 'a'}, {b: 'b'}]);
+    });
+
     it('applies metadata to a method', () => {
       const meta = Reflector.getOwnMetadata('test', BaseController.prototype);
       expect(meta.multiMethod).to.containDeep([
@@ -605,7 +618,7 @@ describe('MethodMultiDecoratorFactory', () => {
   });
 });
 describe('MethodMultiDecoratorFactory for static methods', () => {
-  function methodMultiDecorator(spec: object | object[]): MethodDecorator {
+  function methodMultiArrayDecorator(spec: object | object[]): MethodDecorator {
     if (Array.isArray(spec)) {
       return MethodMultiDecoratorFactory.createDecorator('test', spec);
     } else {
@@ -613,22 +626,30 @@ describe('MethodMultiDecoratorFactory for static methods', () => {
     }
   }
 
+  function methodMultiDecorator(spec: object): MethodDecorator {
+    return MethodMultiDecoratorFactory.createDecorator('test', spec);
+  }
+
   class BaseController {
-    @methodMultiDecorator({x: 1})
+    @methodMultiArrayDecorator({x: 1})
     static myMethod() {}
 
-    @methodMultiDecorator({foo: 1})
-    @methodMultiDecorator({foo: 2})
-    @methodMultiDecorator([{foo: 3}, {foo: 4}])
+    @methodMultiArrayDecorator({foo: 1})
+    @methodMultiArrayDecorator({foo: 2})
+    @methodMultiArrayDecorator([{foo: 3}, {foo: 4}])
     static multiMethod() {}
+
+    @methodMultiDecorator({a: 'a'})
+    @methodMultiDecorator({b: 'b'})
+    static checkDecorator() {}
   }
 
   class SubController extends BaseController {
-    @methodMultiDecorator({y: 2})
+    @methodMultiArrayDecorator({y: 2})
     static myMethod() {}
 
-    @methodMultiDecorator({bar: 1})
-    @methodMultiDecorator([{bar: 2}, {bar: 3}])
+    @methodMultiArrayDecorator({bar: 1})
+    @methodMultiArrayDecorator([{bar: 2}, {bar: 3}])
     static multiMethod() {}
   }
 
@@ -658,6 +679,11 @@ describe('MethodMultiDecoratorFactory for static methods', () => {
         {foo: 2},
         {foo: 1},
       ]);
+    });
+
+    it('applies to non-array decorator creation', () => {
+      const meta = Reflector.getOwnMetadata('test', BaseController);
+      expect(meta.checkDecorator).to.containDeep([{a: 'a'}, {b: 'b'}]);
     });
 
     it('merges with base method metadata', () => {

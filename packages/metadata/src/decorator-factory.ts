@@ -817,21 +817,6 @@ export class MethodParameterDecoratorFactory<T> extends DecoratorFactory<
 export class MethodMultiDecoratorFactory<T> extends MethodDecoratorFactory<
   T[]
 > {
-  private getOrInitMetadata(
-    meta: MetadataMap<T[]>,
-    target: Object,
-    methodName?: string,
-  ) {
-    const method = methodName ? methodName : '';
-    let methodMeta = meta[method];
-    if (methodMeta == null) {
-      // Initialize the method metadata
-      methodMeta = [];
-      meta[method] = methodMeta;
-    }
-    return methodMeta;
-  }
-
   protected mergeWithInherited(
     inheritedMetadata: MetadataMap<T[]>,
     target: Object,

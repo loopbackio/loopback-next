@@ -92,4 +92,20 @@ describe('deprecation decorator', () => {
     expect(actualSpec.paths['/greet'].get.deprecated).to.be.undefined();
     expect(actualSpec.paths['/echo'].get.deprecated).to.be.undefined();
   });
+
+  it('Does not allow a member variable to be decorated', () => {
+    const shouldThrow = () => {
+      class MyController {
+        @deprecated()
+        public foo: string;
+
+        @get('/greet')
+        greet() {}
+      }
+
+      return getControllerSpec(MyController);
+    };
+
+    expect(shouldThrow).to.throw(/^\@deprecated cannot be used on a property:/);
+  });
 });

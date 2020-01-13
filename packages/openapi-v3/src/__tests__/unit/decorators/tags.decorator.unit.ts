@@ -83,4 +83,20 @@ describe('@tags decorator', () => {
     expect(actualSpec.paths['/greet'].get.tags).to.eql(['Foo']);
     expect(actualSpec.paths['/echo'].get.tags).to.eql(['Foo', 'Bar']);
   });
+
+  it('Does not allow a member variable to be decorated', () => {
+    const shouldThrow = () => {
+      class MyController {
+        @tags(['foo', 'bar'])
+        public foo: string;
+
+        @get('/greet')
+        greet() {}
+      }
+
+      return getControllerSpec(MyController);
+    };
+
+    expect(shouldThrow).to.throw(/^\@tags cannot be used on a property:/);
+  });
 });
