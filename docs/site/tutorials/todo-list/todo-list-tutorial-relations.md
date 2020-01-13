@@ -11,7 +11,7 @@ summary: LoopBack 4 TodoList Application Tutorial - Add TodoList Repository
 
 We are going to add the model relation to indicate the relation that `TodoList`
 _hasMany_ `Todo` using the
-[`lb4 relation` command](https://loopback.io/doc/en/lb4/Relation-generator.html).
+[`lb4 relation` command](../../Relation-generator.md).
 
 ```sh
 $ lb4 relation
@@ -19,7 +19,7 @@ $ lb4 relation
 ? Please select source model TodoList
 ? Please select target model Todo
 ? Foreign key name to define on the target model todoListId
-? Source property name for the relation getter todos
+? Source property name for the relation getter (will be the relation name) todos
 ? Allow TodoList queries to include data from related Todo instances? Yes
    create src/controllers/todo-list-todo.controller.ts
 
@@ -34,7 +34,8 @@ $ lb4 relation
 ? Please select the relation type belongsTo
 ? Please select source model Todo
 ? Please select target model TodoList
-? Source property name for the relation getter todoListId
+? Foreign key name to define on the source model todoListId
+? Relation name todoList
 ? Allow Todo queries to include data from related TodoList instances? Yes
    create src/controllers/todo-todo-list.controller.ts
 
@@ -42,13 +43,65 @@ Relation BelongsTo was created in src/
 ```
 
 {% include note.html content="
-we use **default** foreign key and source property names in this case.
-If you'd like to customize them, please check `Relation Metadata`
-https://loopback.io/doc/en/lb4/HasMany-relation.html#relation-metadata and other
+We use **default** foreign key and source property names in this case.
+If you'd like to customize them, please check [Relation Metadata](
+../../HasMany-relation.md#relation-metadata) and other
 relations as well.
 " %}
 
-### Behind the scene
+### Update Sample Data
+
+Now that we have the relations between the `Todo` and `TodoList` models, we can
+update the data we have in `data/db.json` to reflect this relation.
+
+First let's add two sample `TodoList`s:
+
+```json
+{
+  "ids": {
+    "Todo": 5,
+    "TodoList": 3
+  },
+  "models": {
+    "Todo": {
+      "1": "{\"title\":\"Take over the galaxy\",\"desc\":\"MWAHAHAHAHAHAHAHAHAHAHAHAHAMWAHAHAHAHAHAHAHAHAHAHAHAHA\",\"id\":1}",
+      "2": "{\"title\":\"destroy alderaan\",\"desc\":\"Make sure there are no survivors left!\",\"id\":2}",
+      "3": "{\"title\":\"play space invaders\",\"desc\":\"Become the very best!\",\"id\":3}",
+      "4": "{\"title\":\"crush rebel scum\",\"desc\":\"Every.Last.One.\",\"id\":4}"
+    },
+    "TodoList": {
+      "1": "{\"title\":\"Sith lord's check list\",\"lastModified\":\"a long time ago\",\"id\":1}",
+      "2": "{\"title\":\"My daily chores\",\"lastModified\":\"2018-07-13\",\"id\":2}"
+    }
+  }
+}
+```
+
+Next, let's add a `todoListId` property to the `Todo`s with the `id`s of the new
+`TodoList`s we added:
+
+```json
+{
+  "ids": {
+    "Todo": 5,
+    "TodoList": 3
+  },
+  "models": {
+    "Todo": {
+      "1": "{\"title\":\"Take over the galaxy\",\"desc\":\"MWAHAHAHAHAHAHAHAHAHAHAHAHAMWAHAHAHAHAHAHAHAHAHAHAHAHA\",\"todoListId\":1,\"id\":1}",
+      "2": "{\"title\":\"destroy alderaan\",\"desc\":\"Make sure there are no survivors left!\",\"todoListId\":1,\"id\":2}",
+      "3": "{\"title\":\"play space invaders\",\"desc\":\"Become the very best!\",\"todoListId\":2,\"id\":3}",
+      "4": "{\"title\":\"crush rebel scum\",\"desc\":\"Every.Last.One.\",\"todoListId\":1,\"id\":4}"
+    },
+    "TodoList": {
+      "1": "{\"title\":\"Sith lord's check list\",\"lastModified\":\"a long time ago\",\"id\":1}",
+      "2": "{\"title\":\"My daily chores\",\"lastModified\":\"2018-07-13\",\"id\":2}"
+    }
+  }
+}
+```
+
+### Behind the scenes
 
 If you want to understand the code changes introduced from the relation
 generator command, read on the details in this section; otherwise, you are ready
@@ -66,7 +119,7 @@ export class TodoList extends Entity {
   // ...properties defined by the CLI...
 
   @hasMany(() => Todo)
-  todos?: Todo[];
+  todos: Todo[];
 
   // ...constructor def...
 }
@@ -87,11 +140,57 @@ export class Todo extends Entity {
 
 #### Inclusion of Related Models
 
-When we ran the `lb4 relation` command, we accepted the default of `Yes` to the
-prompt:
+You'll notice there's a `TodoRelations` interface in the `Todo` model class file
+as well as a `TodoWithRelations` type defined.
+
+{% include code-caption.html content="src/models/todo.model.ts" %}
+
+```ts
+export interface TodoRelations {
+  // describe navigational properties here
+}
+
+export type TodoWithRelations = Todo & TodoRelations;
+```
+
+In the `TodoRelations` interface, we want to describe a `todoList` as a
+navigational property. We can do that as follows:
+
+{% include code-caption.html content="src/models/todo.model.ts" %}
+
+```ts
+// add TodoListWithRelations to the following import
+import {TodoList, TodoListWithRelations} from './todo-list.model';
+```
+
+```ts
+export interface TodoRelations {
+  // add the following line
+  todoList?: TodoListWithRelations;
+}
+```
+
+Let's add a `todo` navigational property to the `TodoList` model as well:
+
+{% include code-caption.html content="src/models/todo-list.model.ts" %}
+
+```ts
+// add TodoWithRelations to the following import
+import {Todo, TodoWithRelations} from './todo.model';
+```
+
+```ts
+export interface TodoRelations {
+  // add the following line
+  todos?: TodoWithRelations[];
+}
+```
+
+Further, when we ran the `lb4 relation` command, we accepted the default of
+`Yes` to the prompt:
 
 ```sh
-? Allow Order queries to include data from related Customer instances? (Y/n)
+? Allow Todo queries to include data from related TodoList instances? (Y/n)
 ```
 
 This registers the `inclusionResolver` for the relation(s) you were working with
@@ -147,6 +246,12 @@ this.todoList = this.createBelongsToAccessorFor(
 // this line enables inclusion for this relation
 this.registerInclusionResolver('todoList', this.todoList.inclusionResolver);
 ```
+
+There's an additional relation type LoopBack 4 supports, which is
+[`hasOne`](../../hasOne-relation.md). If you're interested in trying it out, see
+[Add TodoListImage Relation](todo-list-tutorial-has-one-relation.md). This is
+not required for the application, so if you'd like to skip it, see the
+[navigation](#navigation) for the last step.
 
 ### Navigation
 

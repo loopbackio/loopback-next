@@ -9,10 +9,10 @@ summary: LoopBack 4 Todo Application Tutorial - Add a Controller
 
 ### Controllers
 
-In LoopBack 4, controllers handle the request-response lifecycle for your API.
-Each function on a controller can be addressed individually to handle an
-incoming request (like a POST request to `/todos`), to perform business logic,
-and to return a response.
+In LoopBack 4, [controllers](../../Controllers.md) handle the request-response
+lifecycle for your API. Each function on a controller can be addressed
+individually to handle an incoming request (like a POST request to `/todos`), to
+perform business logic, and to return a response.
 
 `Controller` is a class that implements operations defined by application's API.
 It implements an application's business logic and acts as a bridge between the
@@ -75,6 +75,9 @@ Some additional things to note about this example:
 - LoopBack's `@param.path` and `@param.query` also provide subdecorators for
   specifying the type of certain value primitives, such as
   `@param.path.number('id')`.
+
+To view the completed file, see the
+[`Todo` example](https://github.com/strongloop/loopback-next/blob/master/examples/todo/src/controllers/todo.controller.ts).
 
 Now that we've wired up the controller, our last step is to tie it all into the
 [Application](todo-tutorial-putting-it-together.md)!

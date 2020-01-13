@@ -12,8 +12,9 @@ summary:
 ### Controllers with related models
 
 Defining business logic to handle requests to related models isn't too different
-from handling requests for standalone models. We'll create controllers to handle
-requests for todo-lists and todo items under a todo-list.
+from handling requests for standalone models. We'll create
+[controllers](../../Controllers.md) to handle requests for todo-lists and todo
+items under a todo-list.
 
 ### Create TodoList controller
 
@@ -30,12 +31,16 @@ Controller TodoList will be created in src/controllers/todo-list.controller.ts
 ? What is the name of your CRUD repository? TodoListRepository
 ? What is the name of ID property? id
 ? What is the type of your ID? number
+? Is the id omitted when creating a new instance? Yes
 ? What is the base HTTP path name of the CRUD operations? /todo-lists
    create src/controllers/todo-list.controller.ts
    update src/controllers/index.ts
 
 Controller TodoList was created in src/controllers/
 ```
+
+To view the completed file, see the
+[`TodoList` example](https://github.com/strongloop/loopback-next/blob/master/examples/todo-list/src/controllers/todo-list.controller.ts).
 
 And voilà! We now have a set of basic APIs for todo-lists, just like that!
 
@@ -122,192 +127,51 @@ async findTodos(/*...*/) {/*...*/}
 async findTodoById(/*...*/) {/*...*/}
 ```
 
-### Create TodoList's Todo controller
+#### Relation Controllers
 
-For the controller handling `Todos` of a `TodoList`, we'll start with an empty
-controller:
+Earlier when we used `lb4 relation` to create the two relations between `Todo`
+and `TodoList`, you may have noticed
+`src/controllers/todo-todo-list.controller.ts` and
+`src/controllers/todo-list-todo.controller.ts` were created. These files contain
+a set of API for the relations.
 
-```sh
-$ lb4 controller
-? Controller class name: TodoListTodo
-Controller TodoListTodo will be created in src/controllers/todo-list-todo.controller.ts
+Relation controllers act in a similar manner to normal controllers, except they
+modify the relational property. For example, in the
+`src/controllers/todo-list-todo.controller.ts` file, we can do requests to the
+endpoint `/todo-lists/{id}/todos`, which we'll see in the
+[Try it out](#try-it-out) section.
 
-? What kind of controller would you like to generate? Empty Controller
-   create src/controllers/todo-list-todo.controller.ts
-   update src/controllers/index.ts
+As `src/controllers/todo-todo-list.controller.ts` only contains one method, we
+can move it to the `Todo` controller and delete that file:
 
-Controller TodoListTodo was created in src/controllers/
-```
-
-Let's add in an injection for our `TodoListRepository`:
-
-{% include code-caption.html content="src/controllers/todo-list-todo.controller.ts" %}
+{% include code-caption.html content="src/models/todo.controller.ts" %}
 
 ```ts
-import {repository} from '@loopback/repository';
-import {TodoListRepository} from '../repositories';
+export class TodoController {
+  constructor() // ...
+  {}
 
-export class TodoListTodoController {
-  constructor(
-    @repository(TodoListRepository) protected todoListRepo: TodoListRepository,
-  ) {}
-}
-```
+  // other controller methods
 
-We're now ready to add in some routes for our todo requests. To call the CRUD
-methods on a todo-list's todo items, we'll first need to create a constrained
-`TodoRepository`. We can achieve this by using our repository instance's `todos`
-factory function that we defined earlier in `TodoListRepository`.
-
-The `POST` request from `/todo-lists/{id}/todos` should look similar to the
-following request:
-
-{% include code-caption.html content="src/controllers/todo-list-todo.controller.ts" %}
-
-```ts
-import {repository} from '@loopback/repository';
-import {TodoListRepository} from '../repositories';
-import {post, param, requestBody} from '@loopback/rest';
-import {Todo} from '../models';
-
-export class TodoListTodoController {
-  constructor(
-    @repository(TodoListRepository) protected todoListRepo: TodoListRepository,
-  ) {}
-
-  @post('/todo-lists/{id}/todos')
-  async create(
-    @param.path.number('id') id: number,
-    @requestBody({
-      content: {
-        'application/json': {
-          schema: getModelSchemaRef(Todo, {title: 'NewTodo', exclude: ['id']}),
-        },
-      },
-    })
-    todo: Omit<Todo, 'id'>,
-  ) {
-    return this.todoListRepo.todos(id).create(todo);
-  }
-}
-```
-
-Using our constraining factory as we did with the `POST` request, we'll define
-the controller methods for the rest of the HTTP verbs for the route. The
-completed controller should look as follows:
-
-{% include code-caption.html content="src/controllers/todo-list-todo.controller.ts" %}
-
-```ts
-import {
-  Count,
-  CountSchema,
-  Filter,
-  repository,
-  Where,
-} from '@loopback/repository';
-import {
-  del,
-  get,
-  getModelSchemaRef,
-  getWhereSchemaFor,
-  param,
-  patch,
-  post,
-  requestBody,
-} from '@loopback/rest';
-import {Todo} from '../models';
-import {TodoListRepository} from '../repositories';
-
-export class TodoListTodoController {
-  constructor(
-    @repository(TodoListRepository) protected todoListRepo: TodoListRepository,
-  ) {}
-
-  @post('/todo-lists/{id}/todos', {
+  @get('/todos/{id}/todo-list', {
     responses: {
       '200': {
-        description: 'TodoList.Todo model instance',
-        content: {'application/json': {schema: getModelSchemaRef(Todo)}},
-      },
-    },
-  })
-  async create(
-    @param.path.number('id') id: number,
-    @requestBody({
-      content: {
-        'application/json': {
-          schema: getModelSchemaRef(Todo, {title: 'NewTodo', exclude: ['id']}),
-        },
-      },
-    })
-    todo: Omit<Todo, 'id'>,
-  ): Promise<Todo> {
-    return this.todoListRepo.todos(id).create(todo);
-  }
-
-  @get('/todo-lists/{id}/todos', {
-    responses: {
-      '200': {
-        description: "Array of Todo's belonging to TodoList",
+        description: 'TodoList belonging to Todo',
         content: {
           'application/json': {
-            schema: {type: 'array', items: getModelSchemaRef(Todo)},
+            schema: {type: 'array', items: getModelSchemaRef(TodoList)},
           },
         },
       },
     },
   })
-  async find(
-    @param.path.number('id') id: number,
-    @param.query.object('filter') filter?: Filter<Todo>,
-  ): Promise<Todo[]> {
-    return this.todoListRepo.todos(id).find(filter);
-  }
-
-  @patch('/todo-lists/{id}/todos', {
-    responses: {
-      '200': {
-        description: 'TodoList.Todo PATCH success count',
-        content: {'application/json': {schema: CountSchema}},
-      },
-    },
-  })
-  async patch(
-    @param.path.number('id') id: number,
-    @requestBody({
-      content: {
-        'application/json': {
-          schema: getModelSchemaRef(Todo, {partial: true}),
-        },
-      },
-    })
-    todo: Partial<Todo>
-    @param.query.object('where', getWhereSchemaFor(Todo)) where?: Where<Todo>,
-  ): Promise<Count> {
-    return this.todoListRepo.todos(id).patch(todo, where);
-  }
-
-  @del('/todo-lists/{id}/todos', {
-    responses: {
-      '200': {
-        description: 'TodoList.Todo DELETE success count',
-        content: {'application/json': {schema: CountSchema}},
-      },
-    },
-  })
-  async delete(
-    @param.path.number('id') id: number,
-    @param.query.object('where', getWhereSchemaFor(Todo)) where?: Where<Todo>,
-  ): Promise<Count> {
-    return this.todoListRepo.todos(id).delete(where);
+  async getTodoList(
+    @param.path.number('id') id: typeof Todo.prototype.id,
+  ): Promise<TodoList> {
+    return this.todoRepository.todoList(id);
   }
 }
 ```
-
-Check out our `TodoList` example to see the full source code generated for the
-`TodoListTodo` controller:
-[src/controllers/todo-list-todo.controller.ts](https://github.com/strongloop/loopback-next/blob/master/examples/todo-list/src/controllers/todo-list-todo.controller.ts)
 
 ### Try it out
 
@@ -324,13 +188,22 @@ Here are some new requests you can try out:
 
 - `POST /todo-lists` with a body of `{ "title": "grocery list" }`.
 - `POST /todo-lists/{id}/todos` using the ID you got back from the previous
-  `POST` request and a body for a todo. Notice that response body you get back
-  contains property `todoListId` with the ID from before.
-- `GET /todo-lists/{id}/todos` and see if you get the todo you created from
-  before.
+  `POST` request and this body: `{ "title": "get eggs", "isComplete": false}`.
+  Notice that response body you get back contains property `todoListId` with the
+  ID from before.
+- `GET /todo-lists/{id}/todos` with the ID from before, and see if you get the
+  todo you created from before.
+- `GET /todo-lists/{id}` with the ID from before, with the following filter
+  `{include: [{relation: 'todos'}]}`, and see if you get a `todos` property with
+  the todo created before. **Note**: this filter won't work through the API
+  explorer (See this
+  [GitHub issue](https://github.com/strongloop/loopback-next/issues/2208) for
+  details). Use the following url to test this endpoint (remember to replace
+  `{id}` with the ID from before):
+  http://localhost:3000/todo-lists/{id}?filter[include][][relation]=todos
 
 And there you have it! You now have the power to define APIs for related models!
 
 ### Navigation
 
-Previous step: [Add TodoList repository](todo-list-tutorial-repository.md)
+Previous step: [Add Model Relations](todo-list-tutorial-relations.md)

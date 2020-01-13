@@ -52,6 +52,8 @@ Here are some requests you can try:
 
 That's it! You've just created your first LoopBack 4 application!
 
+_Note: Use **CTRL+C** to stop the application_
+
 ### Where to go from here
 
 There are still a ton of features you can use to build on top of the
