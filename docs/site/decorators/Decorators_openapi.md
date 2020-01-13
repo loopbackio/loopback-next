@@ -430,3 +430,61 @@ export class SomeController {
 When the OpenAPI spec is generated, the `xs-ts-type` is mapped to
 `{$ref: '#/components/schemas/MyModel'}` and a corresponding schema is added to
 `components.schemas.MyModel` of the spec.
+
+## Convenience Decorators
+
+While you can supply a fully valid OpenAPI specification for the class-level
+`@api` decorator, and full operation OpenAPI specification for `@operation` and
+the other convenience decorators, there are also a number of utility decorators
+that allow you to supply specific OpenAPI information without requiring you to
+use verbose JSON.
+
+## Shortcuts for the OpenAPI Spec (OAS) Objects
+
+All of the above are direct exports of `@loopback/openapi-v3`, but they are also
+available under the `oas` namespace:
+
+```ts
+import {oas} from '@loopback/openapi-v3';
+
+@oas.api({})
+class MyController {
+  @oas.get('/greet/{id}')
+  public greet(@oas.param('id') id: string) {}
+}
+```
+
+This namespace contains decorators that are specific to the OpenAPI
+specification, but are also similar to other well-known decorators available,
+such as `@deprecated()`
+
+### @oas.tags
+
+[API document](https://loopback.io/doc/en/lb4/apidocs.openapi-v3.tags.html),
+[OpenAPI Operation Specification](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#operation-object)
+
+This decorator can be applied to a controller class and to controller class
+methods. It will set the `tags` array string property of the Operation Object.
+When applied to a class, it will mark all operation methods of that class with
+those tags. Usage on both the class and method will combine the tags.
+
+```ts
+@oas.tags('Foo', 'Bar')
+class MyController {
+  @oas.get('/greet')
+  public async greet() {
+    // tags will be [Foo, Bar]
+  }
+
+  @oas.tags('Baz')
+  @oas.get('/echo')
+  public async echo() {
+    // tags will be [Foo, Bar, Baz]
+  }
+}
+```
+
+This decorator does not affect the top-level `tags` section defined in the
+[OpenAPI Tag Object specification](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#tag-object).
+This decorator only affects the spec partial generated at the class level. You
+may find that your final tags also include a tag for the controller name.

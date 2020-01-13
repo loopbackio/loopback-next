@@ -28,3 +28,7 @@ export function createEmptyApiSpec(): OpenApiSpec {
     servers: [{url: '/'}],
   };
 }
+
+export interface TagsDecoratorMetadata {
+  tags: string[];
+}
