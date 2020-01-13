@@ -46,7 +46,7 @@ describe('lb4 relation', function() {
     const prompt = {
       relationType: 'belongsTo',
       sourceModel: 'Customer',
-      destinationModel: 'Nokey',
+      destinationModel: 'NoKey',
     };
 
     return expect(
@@ -66,7 +66,7 @@ describe('lb4 relation', function() {
     const prompt = {
       relationType: 'belongsTo',
       sourceModel: 'Customer',
-      destinationModel: 'Nokey',
+      destinationModel: 'NoKey',
     };
 
     return expect(
@@ -122,16 +122,6 @@ describe('lb4 relation', function() {
         sourceModel: 'Order',
         destinationModel: 'Customer',
       },
-      {
-        relationType: 'belongsTo',
-        sourceModel: 'OrderClass',
-        destinationModel: 'CustomerClass',
-      },
-      {
-        relationType: 'belongsTo',
-        sourceModel: 'OrderClassType',
-        destinationModel: 'CustomerClassType',
-      },
     ];
 
     promptArray.forEach(function(multiItemPrompt, i) {
@@ -172,24 +162,28 @@ describe('lb4 relation', function() {
         relationType: 'belongsTo',
         sourceModel: 'Order',
         destinationModel: 'Customer',
-        relationName: 'myRelation',
+        foreignKeyName: 'customerId',
       },
       {
-        relationType: 'belongsTo',
-        sourceModel: 'OrderClass',
-        destinationModel: 'CustomerClass',
-        relationName: 'myRelation',
-      },
-      {
-        relationType: 'belongsTo',
-        sourceModel: 'OrderClassType',
-        destinationModel: 'CustomerClassType',
-        relationName: 'myRelation',
+        relationType: 'hasMany',
+        sourceModel: 'Customer',
+        destinationModel: 'Order',
+        foreignKeyName: 'customerId',
+        relationName: 'orders',
       },
     ];
 
     it('verifies that a preexisting property will be overwritten', async () => {
       await sandbox.reset();
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(SANDBOX_PATH, () =>
+          testUtils.givenLBProject(SANDBOX_PATH, {
+            additionalFiles: SANDBOX_FILES,
+          }),
+        )
+        .withPrompts(promptList[1]);
+
       await testUtils
         .executeGenerator(generator)
         .inDir(SANDBOX_PATH, () =>
@@ -216,19 +210,14 @@ describe('lb4 relation', function() {
         relationType: 'belongsTo',
         sourceModel: 'Order',
         destinationModel: 'Customer',
-        relationName: 'customerPK',
+        foreignKeyName: 'customerId',
+        relationName: 'my_customer',
       },
       {
         relationType: 'belongsTo',
         sourceModel: 'OrderClass',
         destinationModel: 'CustomerClass',
-        relationName: 'customerPK',
-      },
-      {
-        relationType: 'belongsTo',
-        sourceModel: 'OrderClassType',
-        destinationModel: 'CustomerClassType',
-        relationName: 'customerPK',
+        relationName: 'my_customer',
       },
     ];
     promptArray.forEach(function(multiItemPrompt, i) {
@@ -250,7 +239,7 @@ describe('lb4 relation', function() {
           .withPrompts(multiItemPrompt);
       });
 
-      it('relation name should be customerPK', async () => {
+      it('relation name should be my_customer', async () => {
         const sourceFilePath = path.join(
           SANDBOX_PATH,
           MODEL_APP_PATH,
@@ -274,11 +263,7 @@ describe('lb4 relation', function() {
         relationType: 'belongsTo',
         sourceModel: 'OrderClass',
         destinationModel: 'CustomerClass',
-      },
-      {
-        relationType: 'belongsTo',
-        sourceModel: 'OrderClassType',
-        destinationModel: 'CustomerClassType',
+        relationName: 'my_customer',
       },
     ];
 
@@ -343,12 +328,14 @@ describe('lb4 relation', function() {
         relationType: 'belongsTo',
         sourceModel: 'OrderClass',
         destinationModel: 'CustomerClass',
+        relationName: 'customer',
         registerInclusionResolver: true,
       },
       {
         relationType: 'belongsTo',
         sourceModel: 'OrderClassType',
         destinationModel: 'CustomerClassType',
+        relationName: 'customer',
         registerInclusionResolver: false,
       },
     ];

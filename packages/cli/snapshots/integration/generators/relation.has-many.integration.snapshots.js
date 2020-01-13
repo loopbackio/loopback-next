@@ -263,7 +263,7 @@ export class CustomerClassOrderClassController {
           schema: getModelSchemaRef(OrderClass, {
             title: 'NewOrderClassInCustomerClass',
             exclude: ['orderNumber'],
-            optional: ['customerClassCustNumber']
+            optional: ['customerClassId']
           }),
         },
       },
@@ -379,7 +379,7 @@ export class CustomerClassTypeOrderClassTypeController {
           schema: getModelSchemaRef(OrderClassType, {
             title: 'NewOrderClassTypeInCustomerClassType',
             exclude: ['orderString'],
-            optional: ['customerClassTypeCustNumber']
+            optional: ['customerClassTypeId']
           }),
         },
       },
@@ -688,7 +688,7 @@ export class CustomerClass extends Entity {
   })
   name?: string;
 
-  @hasMany(() => OrderClass, {keyTo: 'customerClassCustNumber'})
+  @hasMany(() => OrderClass)
   myOrders: OrderClass[];
 
   constructor(data?: Partial<CustomerClass>) {
@@ -719,7 +719,7 @@ export class OrderClass extends Entity {
   @property({
     type: 'number',
   })
-  customerClassCustNumber?: number;
+  customerClassId?: number;
 
   constructor(data?: Partial<OrderClass>) {
     super(data);
@@ -747,7 +747,7 @@ export class CustomerClassType extends Entity {
   })
   name?: string;
 
-  @hasMany(() => OrderClassType, {keyTo: 'customerClassTypeCustNumber'})
+  @hasMany(() => OrderClassType)
   myOrders: OrderClassType[];
 
   constructor(data?: Partial<CustomerClassType>) {
@@ -778,7 +778,7 @@ export class OrderClassType extends Entity {
   @property({
     type: 'number',
   })
-  customerClassTypeCustNumber?: number;
+  customerClassTypeId?: number;
 
   constructor(data?: Partial<OrderClassType>) {
     super(data);
@@ -836,7 +836,7 @@ export class CustomerClass extends Entity {
   })
   name?: string;
 
-  @hasMany(() => OrderClass, {keyTo: 'customerClassCustNumber'})
+  @hasMany(() => OrderClass)
   orderClasses: OrderClass[];
 
   constructor(data?: Partial<CustomerClass>) {
@@ -865,7 +865,7 @@ export class CustomerClassType extends Entity {
   })
   name?: string;
 
-  @hasMany(() => OrderClassType, {keyTo: 'customerClassTypeCustNumber'})
+  @hasMany(() => OrderClassType)
   orderClassTypes: OrderClassType[];
 
   constructor(data?: Partial<CustomerClassType>) {

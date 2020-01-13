@@ -47,12 +47,12 @@ describe('lb4 relation HasMany', function() {
   // eslint-disable-next-line no-invalid-this
   this.timeout(30000);
 
-  it("rejects relation when source model doesn't have primary Key", async () => {
+  it('rejects relation when the corresponding repository does not exist', async () => {
     await sandbox.reset();
 
     const prompt = {
       relationType: 'hasMany',
-      sourceModel: 'Nokey',
+      sourceModel: 'NoRepo',
       destinationModel: 'Customer',
     };
 
@@ -65,10 +65,12 @@ describe('lb4 relation HasMany', function() {
           }),
         )
         .withPrompts(prompt),
-    ).to.be.rejectedWith(/Source model primary key does not exist\./);
+    ).to.be.rejectedWith(
+      /NoRepoRepository class does not exist\. Please create repository first with \"lb4 repository\" command\./,
+    );
   });
 
-  it('rejects relation when relation already exist in the model', async () => {
+  it('rejects relation when source key already exist in the model', async () => {
     await sandbox.reset();
 
     const prompt = {
@@ -94,6 +96,37 @@ describe('lb4 relation HasMany', function() {
     ).to.be.rejectedWith(
       /relational property orders already exist in the model Customer/,
     );
+  });
+
+  context('Execute relation with existing relation name', () => {
+    it('rejects if the relation name already exists in the repository', async () => {
+      await sandbox.reset();
+
+      const prompt = {
+        relationType: 'hasMany',
+        sourceModel: 'Order',
+        destinationModel: 'Customer',
+        relationName: 'myCustomer',
+      };
+
+      return expect(
+        testUtils
+          .executeGenerator(generator)
+          .inDir(SANDBOX_PATH, () =>
+            testUtils.givenLBProject(SANDBOX_PATH, {
+              additionalFiles: [
+                SourceEntries.CustomerModel,
+                SourceEntries.OrderModel,
+                SourceEntries.CustomerRepository,
+                SourceEntries.OrderRepository,
+              ],
+            }),
+          )
+          .withPrompts(prompt),
+      ).to.be.rejectedWith(
+        `relation myCustomer already exists in the repository OrderRepository.`,
+      );
+    });
   });
 
   // special cases regardless of the repository type
