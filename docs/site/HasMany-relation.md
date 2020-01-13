@@ -181,6 +181,11 @@ export interface OrderRelations {
 export type OrderWithRelations = Order & OrderRelations;
 ```
 
+LB4 also provides an CLI tool `lb4 relation` to generate `hasMany` relation for
+you. Before you check out the
+[`Relation Generator`](https://loopback.io/doc/en/lb4/Relation-generator.html)
+page, read on to learn how you can define relations to meet your requirements.
+
 ### Relation Metadata
 
 LB4 uses three `keyFrom`, `keyTo` and `name` fields in the `hasMany` relation

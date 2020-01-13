@@ -32,7 +32,8 @@ lb4 relation [options]
 - `--relationType`: Relation type.
 - `--sourceModel`: Source model.
 - `--destinationModel`: Destination model.
-- `--foreignKeyName`: Destination model foreign key name.
+- `--foreignKeyName`: Destination/Source model foreign key name for
+  HasMany/BelongsTo relation, respectively.
 - `--relationName`: Relation name.
 - `-c`, `--config`: JSON file name or value to configure options.
 - `-y`, `--yes`: Skip all confirmation prompts with default or provided value.
@@ -88,18 +89,31 @@ The tool will prompt you for:
 - **Name of the `target` model.** _(targetModel)_ Prompts a list of available
   models to choose from as the target model of the relation.
 
-- **Name of the `Source property`.** _(relationName)_ Prompts for the Source
-  property name. Note: Leave blank to use the default.
+- **Name of the `foreign key`.** _(relationName)_ Prompts a property name that
+  references the primary key property of the another model. Note: Leave blank to
+  use the default.
+
+  Default values: `<foreignKeyName>` + `Id` in camelCase, e.g `categoryId`
+
+- **Name of the `relation`.** _(relationName)_ Prompts for the Source property
+  name. Note: Leave blank to use the default.
 
   Default values:
 
-  - `<targetModel><targetModelPrimaryKey>` for `belongsTo` relations, e.g.
-    `categoryId`
   - plural form of `<targetModel>` for `hasMany` relations, e.g. `products`
+  - Based on the foreign key for `belongsTo` relations, e.g. when the foreign
+    key is the default name, e.g `categoryId`, the default relation name is
+    `category`.
 
-- **Name of Foreign key** _(foreignKeyName)_ to be created in target model. For
-  hasMany relation type only, default: `<sourceModel><sourceModelPrimaryKey>`.
-  Note: Leave blank to use the default.
+{% include warning.html content="Based on your input, the default foreign key name might be the same as the default relation name, especially for belongsTo relation. Please name them differently to avoid a known issue [Navigational Property Error](https://github.com/strongloop/loopback-next/issues/4392)
+" lang=page.lang %}
+
+The generator has some limitations. It only asks the most basic factors for
+generating relations. For example, it uses the id property as the source key.
+LB4 allows you customize the source key name, the foreign key name, the relation
+name, and even the DB column name. Check the
+[Relation Metadata](HasMany-relation.md#relation-metadata) section in each
+relation to learn how you can define relations.
 
 ### Output
 
