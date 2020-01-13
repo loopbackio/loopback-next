@@ -8,6 +8,7 @@ import {
   ClassDecoratorFactory,
   DecoratorFactory,
   MethodDecoratorFactory,
+  MethodMultiDecoratorFactory,
   MethodParameterDecoratorFactory,
   ParameterDecoratorFactory,
   PropertyDecoratorFactory,
@@ -520,6 +521,193 @@ describe('MethodDecoratorFactory for static methods', () => {
     }).to.throw(
       /Decorator cannot be applied more than once on MyController\.myMethod\(\)/,
     );
+  });
+});
+
+describe('MethodMultiDecoratorFactory', () => {
+  function methodMultiArrayDecorator(spec: object | object[]): MethodDecorator {
+    if (Array.isArray(spec)) {
+      return MethodMultiDecoratorFactory.createDecorator('test', spec);
+    } else {
+      return MethodMultiDecoratorFactory.createDecorator('test', [spec]);
+    }
+  }
+
+  function methodMultiDecorator(spec: object): MethodDecorator {
+    return MethodMultiDecoratorFactory.createDecorator('test', spec);
+  }
+
+  class BaseController {
+    @methodMultiArrayDecorator({x: 1})
+    public myMethod() {}
+
+    @methodMultiArrayDecorator({foo: 1})
+    @methodMultiArrayDecorator({foo: 2})
+    @methodMultiArrayDecorator([{foo: 3}, {foo: 4}])
+    public multiMethod() {}
+
+    @methodMultiDecorator({a: 'a'})
+    @methodMultiDecorator({b: 'b'})
+    public checkDecorator() {}
+  }
+
+  class SubController extends BaseController {
+    @methodMultiArrayDecorator({y: 2})
+    public myMethod() {}
+
+    @methodMultiArrayDecorator({bar: 1})
+    @methodMultiArrayDecorator([{bar: 2}, {bar: 3}])
+    public multiMethod() {}
+  }
+
+  describe('single-decorator methods', () => {
+    it('applies metadata to a method', () => {
+      const meta = Reflector.getOwnMetadata('test', BaseController.prototype);
+      expect(meta.myMethod).to.eql([{x: 1}]);
+    });
+
+    it('merges with base method metadata', () => {
+      const meta = Reflector.getOwnMetadata('test', SubController.prototype);
+      expect(meta.myMethod).to.eql([{x: 1}, {y: 2}]);
+    });
+
+    it('does not mutate base method metadata', () => {
+      const meta = Reflector.getOwnMetadata('test', BaseController.prototype);
+      expect(meta.myMethod).to.eql([{x: 1}]);
+    });
+  });
+
+  describe('multi-decorator methods', () => {
+    it('applies to non-array decorator creation', () => {
+      const meta = Reflector.getOwnMetadata('test', BaseController.prototype);
+      expect(meta.checkDecorator).to.containDeep([{a: 'a'}, {b: 'b'}]);
+    });
+
+    it('applies metadata to a method', () => {
+      const meta = Reflector.getOwnMetadata('test', BaseController.prototype);
+      expect(meta.multiMethod).to.containDeep([
+        {foo: 4},
+        {foo: 3},
+        {foo: 2},
+        {foo: 1},
+      ]);
+    });
+
+    it('merges with base method metadata', () => {
+      const meta = Reflector.getOwnMetadata('test', SubController.prototype);
+      expect(meta.multiMethod).to.containDeep([
+        {foo: 4},
+        {foo: 3},
+        {foo: 2},
+        {foo: 1},
+        {bar: 3},
+        {bar: 2},
+        {bar: 1},
+      ]);
+    });
+
+    it('does not mutate base method metadata', () => {
+      const meta = Reflector.getOwnMetadata('test', BaseController.prototype);
+      expect(meta.multiMethod).to.containDeep([
+        {foo: 1},
+        {foo: 2},
+        {foo: 3},
+        {foo: 4},
+      ]);
+    });
+  });
+});
+describe('MethodMultiDecoratorFactory for static methods', () => {
+  function methodMultiArrayDecorator(spec: object | object[]): MethodDecorator {
+    if (Array.isArray(spec)) {
+      return MethodMultiDecoratorFactory.createDecorator('test', spec);
+    } else {
+      return MethodMultiDecoratorFactory.createDecorator('test', [spec]);
+    }
+  }
+
+  function methodMultiDecorator(spec: object): MethodDecorator {
+    return MethodMultiDecoratorFactory.createDecorator('test', spec);
+  }
+
+  class BaseController {
+    @methodMultiArrayDecorator({x: 1})
+    static myMethod() {}
+
+    @methodMultiArrayDecorator({foo: 1})
+    @methodMultiArrayDecorator({foo: 2})
+    @methodMultiArrayDecorator([{foo: 3}, {foo: 4}])
+    static multiMethod() {}
+
+    @methodMultiDecorator({a: 'a'})
+    @methodMultiDecorator({b: 'b'})
+    static checkDecorator() {}
+  }
+
+  class SubController extends BaseController {
+    @methodMultiArrayDecorator({y: 2})
+    static myMethod() {}
+
+    @methodMultiArrayDecorator({bar: 1})
+    @methodMultiArrayDecorator([{bar: 2}, {bar: 3}])
+    static multiMethod() {}
+  }
+
+  describe('single-decorator methods', () => {
+    it('applies metadata to a method', () => {
+      const meta = Reflector.getOwnMetadata('test', BaseController);
+      expect(meta.myMethod).to.eql([{x: 1}]);
+    });
+
+    it('merges with base method metadata', () => {
+      const meta = Reflector.getOwnMetadata('test', SubController);
+      expect(meta.myMethod).to.eql([{x: 1}, {y: 2}]);
+    });
+
+    it('does not mutate base method metadata', () => {
+      const meta = Reflector.getOwnMetadata('test', BaseController);
+      expect(meta.myMethod).to.eql([{x: 1}]);
+    });
+  });
+
+  describe('multi-decorator methods', () => {
+    it('applies metadata to a method', () => {
+      const meta = Reflector.getOwnMetadata('test', BaseController);
+      expect(meta.multiMethod).to.containDeep([
+        {foo: 4},
+        {foo: 3},
+        {foo: 2},
+        {foo: 1},
+      ]);
+    });
+
+    it('applies to non-array decorator creation', () => {
+      const meta = Reflector.getOwnMetadata('test', BaseController);
+      expect(meta.checkDecorator).to.containDeep([{a: 'a'}, {b: 'b'}]);
+    });
+
+    it('merges with base method metadata', () => {
+      const meta = Reflector.getOwnMetadata('test', SubController);
+      expect(meta.multiMethod).to.containDeep([
+        {foo: 4},
+        {foo: 3},
+        {foo: 2},
+        {foo: 1},
+        {bar: 3},
+        {bar: 2},
+        {bar: 1},
+      ]);
+    });
+
+    it('does not mutate base method metadata', () => {
+      const meta = Reflector.getOwnMetadata('test', BaseController);
+      expect(meta.multiMethod).to.containDeep([
+        {foo: 1},
+        {foo: 2},
+        {foo: 3},
+        {foo: 4},
+      ]);
+    });
   });
 });
 
