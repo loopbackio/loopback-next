@@ -28,7 +28,7 @@ $ lb4 app
  ◉ Enable mocha: install mocha to run tests
  ◉ Enable loopbackBuild: use @loopback/build helpers (e.g. lb-eslint)
  ◉ Enable vscode: add VSCode config files
-❯◯ Enable docker: include Dockerfile and .dockerignore
+ ◉ Enable docker: include Dockerfile and .dockerignore
  ◉ Enable repositories: include repository imports and RepositoryMixin
  ◉ Enable services: include service-proxy imports and ServiceMixin
  # npm will install dependencies now
@@ -36,8 +36,7 @@ $ lb4 app
 ```
 
 For this tutorial, when prompted with the options for enabling certain project
-features (LoopBack's build, eslint, mocha, etc.), leave them all enabled except
-for `docker`.
+features (LoopBack's build, eslint, mocha, etc.), leave them all enabled.
 
 ### Structure
 
@@ -80,6 +79,8 @@ tsconfig.json
 .prettierrc
 .mocharc.json
 ```
+
+Note that there might be extra files not listed here.
 
 | File                                                     | Purpose                                                                                                                                                                                                                                                                                                                                                                  |
 | -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |

@@ -354,6 +354,11 @@ children:
     - title: 'Add Model Relations'
       url: todo-list-tutorial-relations.html
       output: 'web, pdf'
+      children:
+
+      - title: 'Add a HasOne Relation'
+        url: todo-list-tutorial-has-one-relation.html
+        output: 'web, pdf'
 
     - title: 'Add TodoList Controller'
       url: todo-list-tutorial-controller.html

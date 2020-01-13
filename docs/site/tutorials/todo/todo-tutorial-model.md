@@ -22,7 +22,7 @@ name, type, and other constraints.
 Models are used for data exchange on the wire or between different systems.
 
 For more information about Models and how they are used in LoopBack, see
-[Models](https://loopback.io/doc/en/lb4/Model.html).
+[Models](../../Model.md).
 
 {% include note.html content="LoopBack 3 treated models as the 'center' of operations; in LoopBack 4, that is no longer the case. While LoopBack 4 provides many of the helper methods and decorators that allow you to utilize models in a similar way, you are no longer _required_ to do so!
 " %}
@@ -48,7 +48,7 @@ these steps:
 ```sh
 lb4 model
 ? Model class name: todo
-? Please select the model base class: Entity
+? Please select the model base class Entity (A persisted model with an ID)
 ? Allow additional (free-form) properties? No
 Model Todo will be created in src/models/todo.model.ts
 
@@ -58,8 +58,8 @@ Enter an empty property name when done
 ? Enter the property name: id
 ? Property type: number
 ? Is id the ID property? Yes
-? Is it required?: No
 ? Is id generated automatically? No
+? Is it required?: No
 ? Default value [leave blank for none]:
 
 Let's add another property to Todo
@@ -96,6 +96,9 @@ Enter an empty property name when done
 
 Model Todo was created in src/models/
 ```
+
+To view the completed file, see the
+[`Todo` example](https://github.com/strongloop/loopback-next/blob/master/examples/todo/src/models/todo.model.ts).
 
 Now that we have our model, it's time to add a
 [datasource](todo-tutorial-datasource.md) so we can perform real CRUD
