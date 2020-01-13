@@ -29,7 +29,7 @@ export class <%= controllerClassName %> {
   @get('/<%= sourceModelPath %>/{id}/<%= targetModelPath %>', {
     responses: {
       '200': {
-        description: 'Array of <%= targetModelClassName %>\'s belonging to <%= sourceModelClassName %>',
+        description: 'Array of <%= sourceModelClassName %> has many <%= targetModelClassName %>',
         content: {
           'application/json': {
             schema: {type: 'array', items: getModelSchemaRef(<%= targetModelClassName %>)},

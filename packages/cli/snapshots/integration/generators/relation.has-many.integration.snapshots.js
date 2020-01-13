@@ -115,7 +115,7 @@ export class CustomerOrderController {
   @get('/customers/{id}/orders', {
     responses: {
       '200': {
-        description: 'Array of Order\\'s belonging to Customer',
+        description: 'Array of Customer has many Order',
         content: {
           'application/json': {
             schema: {type: 'array', items: getModelSchemaRef(Order)},
@@ -231,7 +231,7 @@ export class CustomerClassOrderClassController {
   @get('/customer-classes/{id}/order-classes', {
     responses: {
       '200': {
-        description: 'Array of OrderClass\\'s belonging to CustomerClass',
+        description: 'Array of CustomerClass has many OrderClass',
         content: {
           'application/json': {
             schema: {type: 'array', items: getModelSchemaRef(OrderClass)},
@@ -347,7 +347,7 @@ export class CustomerClassTypeOrderClassTypeController {
   @get('/customer-class-types/{id}/order-class-types', {
     responses: {
       '200': {
-        description: 'Array of OrderClassType\\'s belonging to CustomerClassType',
+        description: 'Array of CustomerClassType has many OrderClassType',
         content: {
           'application/json': {
             schema: {type: 'array', items: getModelSchemaRef(OrderClassType)},

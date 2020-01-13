@@ -43,6 +43,11 @@ related routes, you need to perform the following steps:
 This section describes how to define a `belongsTo` relation at the model level
 using the `@belongsTo` decorator to define the constraining foreign key.
 
+LB4 also provides an CLI tool `lb4 relation` to generate `belongsTo` relation
+for you. Before you check out the
+[`Relation Generator`](https://loopback.io/doc/en/lb4/Relation-generator.html)
+page, read on to learn how you can define relations to meet your requirements.
+
 ### Relation Metadata
 
 LB4 uses three `keyFrom`, `keyTo` and `name` fields in the `belongsTo` relation
