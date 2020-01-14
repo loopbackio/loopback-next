@@ -132,9 +132,10 @@ const arrayOfSpecs = MetadataInspector.getMethodMetadata<object>(
 // [{z: 3}, {y: 2}, {x: 1}]
 ```
 
-Typescript applies decorators in reverse order per class, from the parent down.
-In cases when an array is passed as metadata, it will be reversed to respect
-this order.
+Typescript
+[applies decorators in reverse order](https://www.typescriptlang.org/docs/handbook/decorators.html)
+per class, from the parent down. The metadata array resurned by `getOwnMetadata`
+will be in this order:
 
 ```ts
 class Parent {
@@ -144,7 +145,7 @@ class Parent {
 }
 
 class Child extends Parent {
-  @myMultiMethodDecorator(['C', 'D']) // [fourth, third]
+  @myMultiMethodDecorator(['C', 'D']) // [third, fourth]
   public greet() {}
 }
 
@@ -153,7 +154,7 @@ class Grandchild extends Child {
   @myMultiMethodDecorator('F') // fifth
   public greet() {}
 }
-// getMethodMetadata = ['B', 'A', 'D', 'C', 'F', 'E']
+// getMethodMetadata = ['B', 'A', 'C', 'D', 'F', 'E']
 ```
 
 You can also create a decorator that takes an object that can contain an array:
