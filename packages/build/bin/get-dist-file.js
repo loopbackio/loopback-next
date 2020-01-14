@@ -8,13 +8,14 @@
 ========
 This is used in the launch.json to enable you to debug a test file written in
 typescript.  This function attempts to convert the passed typescript file to
-the best-gust output javascript file.
+the best-guess output javascript file.
 
 It walks up the filesystem from the current file, stops at package.json, and
 looks in `dist`
 
-Ideally, we could use the typescript compiler and tsconfig.json to get the
-explicit output file instead of trying to guess it.
+Ideally, we could somehow use the typescript compiler and tsconfig.json to get
+the explicit output file instead of trying to guess it, but there might be
+overhead.
 
 Ex:
 ```jsonc
@@ -41,7 +42,7 @@ Ex:
 }
 ```
 
-For your personal projects, you can sub directlry from loopback:
+For your personal projects, you can invoke directly from @loopback/build:
 ```
 "$(node ${workspaceRoot}/node_modules/@loopback/build/bin/get-dist-file ${file})"
 ```
