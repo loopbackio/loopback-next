@@ -33,6 +33,19 @@ describe('lb4 service (remote)', () => {
           .inDir(SANDBOX_PATH, () => testUtils.givenLBProject(SANDBOX_PATH)),
       ).to.be.rejectedWith(/No datasources found/);
     });
+
+    it('does not accept a datasource file with no name property', async () => {
+      return expect(
+        testUtils
+          .executeGenerator(generator)
+          .inDir(SANDBOX_PATH, () =>
+            testUtils.givenLBProject(SANDBOX_PATH, {
+              additionalFiles: SANDBOX_FILES,
+            }),
+          )
+          .withArguments('myService --datasource no-name'),
+      ).to.be.rejectedWith(/Datasource config does not have `name` property/);
+    });
   });
 
   describe('valid generation of services', () => {
