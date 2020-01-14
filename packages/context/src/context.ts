@@ -54,6 +54,29 @@ import {iterator, multiple} from 'p-event';
 const debug = debugFactory('loopback:context');
 
 /**
+ * Events emitted by a context
+ */
+export type ContextEvent = {
+  /**
+   * Source context that emits the event
+   */
+  context: Context;
+  /**
+   * Binding that is being added/removed/updated
+   */
+  binding: Readonly<Binding<unknown>>;
+  /**
+   * Event type
+   */
+  type: string; // 'bind' or 'unbind'
+};
+
+/**
+ * Synchronous listener for context events
+ */
+export type ContextEventListener = (event: ContextEvent) => void;
+
+/**
  * Context provides an implementation of Inversion of Control (IoC) container
  */
 export class Context extends EventEmitter {
@@ -75,17 +98,9 @@ export class Context extends EventEmitter {
   protected configResolver: ConfigurationResolver;
 
   /**
-   * Event listeners for parent context keyed by event names. It keeps track
-   * of listeners from this context against its parent so that we can remove
-   * these listeners when this context is closed.
+   * A listener to watch parent context events
    */
-  protected _parentEventListeners:
-    | Map<
-        string,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (...args: any[]) => void
-      >
-    | undefined;
+  protected parentEventListener?: ContextEventListener;
 
   /**
    * A list of registered context observers. The Set will be created when the
@@ -161,8 +176,19 @@ export class Context extends EventEmitter {
   private setupEventHandlersIfNeeded() {
     if (this.notificationQueue != null) return;
 
-    this.addParentEventListener('bind');
-    this.addParentEventListener('unbind');
+    if (this._parent != null) {
+      /**
+       * Add an event listener to its parent context so that this context will
+       * be notified of parent events, such as `bind` or `unbind`.
+       */
+      this.parentEventListener = event => {
+        this.handleParentEvent(event);
+      };
+
+      // Listen on the parent context events
+      this._parent.on('bind', this.parentEventListener!);
+      this._parent.on('unbind', this.parentEventListener!);
+    }
 
     // The following are two async functions. Returned promises are ignored as
     // they are long-running background tasks.
@@ -178,46 +204,45 @@ export class Context extends EventEmitter {
   }
 
   /**
-   * Add an event listener to its parent context so that this context will
-   * be notified of parent events, such as `bind` or `unbind`.
-   * @param event - Event name
+   * A strongly-typed method to emit context events
+   * @param type Event type
+   * @param event Context event
    */
-  private addParentEventListener(event: string) {
-    if (this._parent == null) return;
+  private emitEvent<T extends ContextEvent>(type: string, event: T) {
+    this.emit(type, event);
+  }
 
-    // Keep track of parent event listeners so that we can remove them
-    this._parentEventListeners = this._parentEventListeners ?? new Map();
-    if (this._parentEventListeners.has(event)) return;
+  /**
+   * Emit an `error` event
+   * @param err Error
+   */
+  private emitError(err: unknown) {
+    this.emit('error', err);
+  }
 
-    const parentEventListener = (
-      binding: Readonly<Binding<unknown>>,
-      context: Context,
-    ) => {
-      // Propagate the event to this context only if the binding key does not
-      // exist in this context. The parent binding is shadowed if there is a
-      // binding with the same key in this one.
-      if (this.contains(binding.key)) {
-        this._debug(
-          'Event %s %s is not re-emitted from %s to %s',
-          event,
-          binding.key,
-          context.name,
-          this.name,
-        );
-        return;
-      }
+  private handleParentEvent(event: ContextEvent) {
+    const {binding, context, type} = event;
+    // Propagate the event to this context only if the binding key does not
+    // exist in this context. The parent binding is shadowed if there is a
+    // binding with the same key in this one.
+    if (this.contains(binding.key)) {
       this._debug(
-        'Re-emitting %s %s from %s to %s',
-        event,
+        'Event %s %s is not re-emitted from %s to %s',
+        type,
         binding.key,
         context.name,
         this.name,
       );
-      this.emit(event, binding, context);
-    };
-    this._parentEventListeners.set(event, parentEventListener);
-    // Listen on the parent context events
-    this._parent.on(event, parentEventListener);
+      return;
+    }
+    this._debug(
+      'Re-emitting %s %s from %s to %s',
+      type,
+      binding.key,
+      context.name,
+      this.name,
+    );
+    this.emitEvent(type, event);
   }
 
   /**
@@ -236,13 +261,13 @@ export class Context extends EventEmitter {
         continue;
       }
       this._debug('Emitting error to context %s', ctx.name, err);
-      ctx.emit('error', err);
+      ctx.emitError(err);
       return;
     }
     // No context with error listeners found
     this._debug('No error handler is configured for the context chain', err);
     // Let it crash now by emitting an error event
-    this.emit('error', err);
+    this.emitError(err);
   }
 
   /**
@@ -264,24 +289,24 @@ export class Context extends EventEmitter {
   private async processNotifications() {
     const events = this.notificationQueue;
     if (events == null) return;
-    for await (const {eventType, binding, context, observers} of events) {
+    for await (const {type, binding, context, observers} of events) {
       // The loop will happen asynchronously upon events
       try {
         // The execution of observers happen in the Promise micro-task queue
-        await this.notifyObservers(eventType, binding, context, observers);
+        await this.notifyObservers({type, binding, context}, observers);
         this.pendingNotifications--;
         this._debug(
           'Observers notified for %s of binding %s',
-          eventType,
+          type,
           binding.key,
         );
-        this.emit('observersNotified', {eventType, binding});
+        this.emitEvent('observersNotified', {type, binding, context});
       } catch (err) {
         this.pendingNotifications--;
         this._debug('Error caught from observers', err);
         // Errors caught from observers. Emit it to the current context.
         // If no error listeners are registered, crash the process.
-        this.emit('error', err);
+        this.emitError(err);
       }
     }
   }
@@ -292,8 +317,8 @@ export class Context extends EventEmitter {
    * @param eventTypes - Context event types
    */
   private setupNotification(...eventTypes: ContextEventType[]) {
-    for (const eventType of eventTypes) {
-      this.on(eventType, (binding, context) => {
+    for (const type of eventTypes) {
+      this.on(type, ({binding, context}) => {
         // No need to schedule notifications if no observers are present
         if (!this.observers || this.observers.size === 0) return;
         // Track pending events
@@ -301,8 +326,8 @@ export class Context extends EventEmitter {
         // Take a snapshot of current observers to ensure notifications of this
         // event will only be sent to current ones. Emit a new event to notify
         // current context observers.
-        this.emit('notification', {
-          eventType,
+        this.emitEvent('notification', {
+          type,
           binding,
           context,
           observers: new Set(this.observers),
@@ -357,9 +382,13 @@ export class Context extends EventEmitter {
     this.registry.set(key, binding);
     if (existingBinding !== binding) {
       if (existingBinding != null) {
-        this.emit('unbind', existingBinding, this);
+        this.emitEvent('unbind', {
+          binding: existingBinding,
+          context: this,
+          type: 'unbind',
+        });
       }
-      this.emit('bind', binding, this);
+      this.emitEvent('bind', {binding, context: this, type: 'bind'});
     }
     return this;
   }
@@ -505,7 +534,7 @@ export class Context extends EventEmitter {
     if (binding?.isLocked)
       throw new Error(`Cannot unbind key "${key}" of a locked binding`);
     this.registry.delete(key);
-    this.emit('unbind', binding, this);
+    this.emitEvent('unbind', {binding, context: this, type: 'unbind'});
     return true;
   }
 
@@ -548,11 +577,10 @@ export class Context extends EventEmitter {
       });
       this.notificationQueue = undefined;
     }
-    if (this._parent && this._parentEventListeners) {
-      for (const [event, listener] of this._parentEventListeners) {
-        this._parent.removeListener(event, listener);
-      }
-      this._parentEventListeners = undefined;
+    if (this._parent && this.parentEventListener) {
+      this._parent.removeListener('bind', this.parentEventListener);
+      this._parent.removeListener('unbind', this.parentEventListener);
+      this.parentEventListener = undefined;
     }
   }
 
@@ -585,24 +613,21 @@ export class Context extends EventEmitter {
    * APIs such as `ctx.bind('key').to(...).tag(...);` and give observers the
    * fully populated binding.
    *
-   * @param eventType - Event names: `bind` or `unbind`
-   * @param binding - Binding bound or unbound
-   * @param context - Owner context
+   * @param event - Context event
    * @param observers - Current set of context observers
    */
   protected async notifyObservers(
-    eventType: ContextEventType,
-    binding: Readonly<Binding<unknown>>,
-    context: Context,
+    event: ContextEvent,
     observers = this.observers,
   ) {
     if (!observers || observers.size === 0) return;
 
+    const {type, binding, context} = event;
     for (const observer of observers) {
       if (typeof observer === 'function') {
-        await observer(eventType, binding, context);
+        await observer(type, binding, context);
       } else if (!observer.filter || observer.filter(binding)) {
-        await observer.observe(eventType, binding, context);
+        await observer.observe(type, binding, context);
       }
     }
   }

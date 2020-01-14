@@ -5,8 +5,8 @@
 
 import {Binding} from './binding';
 import {BindingFilter} from './binding-filter';
+import {Context, ContextEvent} from './context';
 import {ValueOrPromise} from './value-promise';
-import {Context} from './context';
 
 /**
  * Context event types. We support `bind` and `unbind` for now but
@@ -67,21 +67,9 @@ export interface Subscription {
 /**
  * Event data for observer notifications
  */
-export type Notification = {
-  /**
-   * Context event type - bind/unbind
-   */
-  eventType: ContextEventType;
-  /**
-   * Binding added/removed
-   */
-  binding: Readonly<Binding<unknown>>;
-  /**
-   * Owner context for the binding
-   */
-  context: Context;
+export interface Notification extends ContextEvent {
   /**
    * A snapshot of observers when the original event is emitted
    */
   observers: Set<ContextEventObserver>;
-};
+}
