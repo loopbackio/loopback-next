@@ -11,9 +11,15 @@ import {
   ConfigurationResolver,
   DefaultConfigurationResolver,
 } from './binding-config';
-import {BindingFilter, filterByKey, filterByTag} from './binding-filter';
+import {
+  BindingFilter,
+  filterByKey,
+  filterByTag,
+  isBindingTagFilter,
+} from './binding-filter';
 import {BindingAddress, BindingKey} from './binding-key';
 import {BindingComparator} from './binding-sorter';
+import {ContextEvent, ContextEventListener} from './context-event';
 import {
   ContextEventObserver,
   ContextEventType,
@@ -21,6 +27,7 @@ import {
   Notification,
   Subscription,
 } from './context-observer';
+import {ContextTagIndexer} from './context-tag-indexer';
 import {ContextView} from './context-view';
 import {ContextBindings} from './keys';
 import {
@@ -54,29 +61,6 @@ import {iterator, multiple} from 'p-event';
 const debug = debugFactory('loopback:context');
 
 /**
- * Events emitted by a context
- */
-export type ContextEvent = {
-  /**
-   * Source context that emits the event
-   */
-  context: Context;
-  /**
-   * Binding that is being added/removed/updated
-   */
-  binding: Readonly<Binding<unknown>>;
-  /**
-   * Event type
-   */
-  type: string; // 'bind' or 'unbind'
-};
-
-/**
- * Synchronous listener for context events
- */
-export type ContextEventListener = (event: ContextEvent) => void;
-
-/**
  * Context provides an implementation of Inversion of Control (IoC) container
  */
 export class Context extends EventEmitter {
@@ -89,6 +73,11 @@ export class Context extends EventEmitter {
    * Key to binding map as the internal registry
    */
   protected readonly registry: Map<string, Binding> = new Map();
+
+  /**
+   * Indexer for bindings by tag
+   */
+  protected readonly tagIndexer: ContextTagIndexer;
 
   /**
    * Parent context
@@ -154,6 +143,7 @@ export class Context extends EventEmitter {
     }
     this._parent = _parent;
     this.name = name ?? uuidv1();
+    this.tagIndexer = new ContextTagIndexer(this);
   }
 
   /**
@@ -587,6 +577,7 @@ export class Context extends EventEmitter {
       this._parent.removeListener('unbind', this.parentEventListener);
       this.parentEventListener = undefined;
     }
+    this.tagIndexer.close();
   }
 
   /**
@@ -688,6 +679,11 @@ export class Context extends EventEmitter {
   find<ValueType = BoundValue>(
     pattern?: string | RegExp | BindingFilter,
   ): Readonly<Binding<ValueType>>[] {
+    // Optimize if the binding filter is for tags
+    if (typeof pattern === 'function' && isBindingTagFilter(pattern)) {
+      return this._findByTagIndex(pattern.bindingTagPattern);
+    }
+
     const bindings: Readonly<Binding<ValueType>>[] = [];
     const filter = filterByKey(pattern);
 
@@ -717,6 +713,18 @@ export class Context extends EventEmitter {
     tagFilter: BindingTag | RegExp,
   ): Readonly<Binding<ValueType>>[] {
     return this.find(filterByTag(tagFilter));
+  }
+
+  /**
+   * Find bindings by tag leveraging indexes
+   * @param tag - Tag name pattern or name/value pairs
+   */
+  protected _findByTagIndex<ValueType = BoundValue>(
+    tag: BindingTag | RegExp,
+  ): Readonly<Binding<ValueType>>[] {
+    const currentBindings = this.tagIndexer.findByTagIndex(tag);
+    const parentBindings = this._parent && this._parent?._findByTagIndex(tag);
+    return this._mergeWithParent(currentBindings, parentBindings);
   }
 
   protected _mergeWithParent<ValueType>(

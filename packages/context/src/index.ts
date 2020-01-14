@@ -12,6 +12,7 @@ export * from './binding-inspector';
 export * from './binding-key';
 export * from './binding-sorter';
 export * from './context';
+export * from './context-event';
 export * from './context-observer';
 export * from './context-view';
 export * from './inject';
