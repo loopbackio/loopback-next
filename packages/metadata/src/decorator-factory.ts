@@ -849,13 +849,13 @@ export class MethodMultiDecoratorFactory<T> extends MethodDecoratorFactory<
   private _mergeArray(result: T[], methodMeta: T | T[]) {
     if (!result) {
       if (Array.isArray(methodMeta)) {
-        result = methodMeta;
+        result = methodMeta.reverse();
       } else {
         result = [methodMeta];
       }
     } else {
       if (Array.isArray(methodMeta)) {
-        result.push(...methodMeta);
+        result.push(...methodMeta.reverse());
       } else {
         result.push(methodMeta);
       }
