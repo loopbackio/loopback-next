@@ -1,3 +1,4 @@
+This branch is just created to test the snyk setting, will be deleted
 <img src="https://raw.githubusercontent.com/strongloop/loopback.io/gh-pages/images/branding/logo/blue/loopback-sm.png" alt="LoopBack4 logo" width="400"/>
 
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/strongloop/loopback)
