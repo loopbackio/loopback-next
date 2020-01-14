@@ -10,9 +10,9 @@
  * {@link https://github.com/Microsoft/tsdoc | tsdoc} based API docs
  * for `@loopback/*` packages within
  * {@link https://github.com/strongloop/loopback-next | loopback-next} monorepo
- * managed by {@link https://github.com/lerna/lerna | lerna}.
+ * managed by {@link https://github.com/lerna/lerna | Lerna}.
  *
- * It's built on top of {@link https://api-extractor.com | MicroSoft AP Extractor}:
+ * It's built on top of {@link https://api-extractor.com | Microsoft API Extractor}:
  *
  * - {@link https://github.com/Microsoft/web-build-tools/tree/master/apps/api-extractor | api-extractor}
  * - {@link https://github.com/Microsoft/web-build-tools/tree/master/apps/api-documenter | api-documenter}
