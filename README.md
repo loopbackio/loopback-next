@@ -25,8 +25,7 @@ Learn about the latest and greatest
 by using it for your next project. Start by having a look at
 [Getting Started](https://loopback.io/doc/en/lb4/Getting-started.html).
 
-Check the
-[API documentation](https://apidocs.loopback.io/@loopback%2fdocs/apidocs.html)
+Check the [API documentation](https://loopback.io/doc/en/lb4/apidocs.index.html)
 for all the API usages in each package.
 
 [LoopBack 3](https://loopback.io/doc/en/lb3/) became active LTS version, and
