@@ -142,7 +142,7 @@ describe('close', () => {
         .expect(200);
     }
     expect(observedCtx.contains('req.originalUrl'));
-    expect(server.listenerCount('bind')).to.eql(1);
+    expect(server.listenerCount('bind')).to.eql(2);
   });
 });
 

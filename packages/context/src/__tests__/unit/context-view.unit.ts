@@ -7,6 +7,7 @@ import {expect} from '@loopback/testlab';
 import {
   Binding,
   BindingScope,
+  BindingTag,
   compareBindingsByTag,
   Context,
   ContextView,
@@ -16,7 +17,7 @@ import {
 
 describe('ContextView', () => {
   let app: Context;
-  let server: Context;
+  let server: ServerContext;
 
   let bindings: Binding<unknown>[];
   let taggedAsFoo: ContextView;
@@ -25,6 +26,11 @@ describe('ContextView', () => {
 
   it('tracks bindings', () => {
     expect(taggedAsFoo.bindings).to.eql(bindings);
+  });
+
+  it('leverages findByTag for binding tag filter', () => {
+    expect(taggedAsFoo.bindings).to.eql(bindings);
+    expect(server.findByTagInvoked).to.be.true();
   });
 
   it('sorts matched bindings', () => {
@@ -199,9 +205,21 @@ describe('ContextView', () => {
     taggedAsFoo = server.createView(filterByTag('foo'));
   }
 
+  class ServerContext extends Context {
+    findByTagInvoked = false;
+    constructor(parent: Context, name: string) {
+      super(parent, name);
+    }
+
+    _findByTagIndex(tag: BindingTag) {
+      this.findByTagInvoked = true;
+      return super._findByTagIndex(tag);
+    }
+  }
+
   function givenContext() {
     app = new Context('app');
-    server = new Context(app, 'server');
+    server = new ServerContext(app, 'server');
     bindings.push(
       server
         .bind('bar')

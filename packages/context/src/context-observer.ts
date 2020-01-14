@@ -5,7 +5,8 @@
 
 import {Binding} from './binding';
 import {BindingFilter} from './binding-filter';
-import {Context, ContextEvent} from './context';
+import {Context} from './context';
+import {ContextEvent} from './context-event';
 import {ValueOrPromise} from './value-promise';
 
 /**

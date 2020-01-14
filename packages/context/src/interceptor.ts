@@ -15,7 +15,6 @@ import assert from 'assert';
 import debugFactory from 'debug';
 import {Binding, BindingTemplate} from './binding';
 import {bind} from './binding-decorator';
-import {filterByTag} from './binding-filter';
 import {BindingSpec} from './binding-inspector';
 import {sortBindingsByPhase} from './binding-sorter';
 import {Context} from './context';
@@ -47,12 +46,14 @@ export class InterceptedInvocationContext extends InvocationContext {
    * ContextTags.GLOBAL_INTERCEPTOR)
    */
   getGlobalInterceptorBindingKeys(): string[] {
-    const bindings: Readonly<Binding<Interceptor>>[] = this.find(
-      binding =>
-        filterByTag(ContextTags.GLOBAL_INTERCEPTOR)(binding) &&
-        // Only include interceptors that match the source type of the invocation
-        this.applicableTo(binding),
+    let bindings: Readonly<Binding<Interceptor>>[] = this.findByTag(
+      ContextTags.GLOBAL_INTERCEPTOR,
     );
+    bindings = bindings.filter(binding =>
+      // Only include interceptors that match the source type of the invocation
+      this.applicableTo(binding),
+    );
+
     this.sortGlobalInterceptorBindings(bindings);
     const keys = bindings.map(b => b.key);
     debug('Global interceptor binding keys:', keys);
