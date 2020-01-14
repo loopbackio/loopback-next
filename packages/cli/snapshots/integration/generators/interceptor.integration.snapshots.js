@@ -205,8 +205,10 @@ import {
  * This class will be bound to the application as an \`Interceptor\` during
  * \`boot\`
  */
-@bind({tags: {namespace: 'interceptors', name: 'myInterceptor'}})
+@bind({tags: {key: MyInterceptorInterceptor.BINDING_KEY}})
 export class MyInterceptorInterceptor implements Provider<Interceptor> {
+  static readonly BINDING_KEY = \`interceptors.\${MyInterceptorInterceptor.name}\`;
+
   /*
   constructor() {}
   */
@@ -266,8 +268,10 @@ import {
  * This class will be bound to the application as an \`Interceptor\` during
  * \`boot\`
  */
-@bind({tags: {namespace: 'interceptors', name: 'myInterceptor'}})
+@bind({tags: {key: MyInterceptorInterceptor.BINDING_KEY}})
 export class MyInterceptorInterceptor implements Provider<Interceptor> {
+  static readonly BINDING_KEY = \`interceptors.\${MyInterceptorInterceptor.name}\`;
+
   /*
   constructor() {}
   */

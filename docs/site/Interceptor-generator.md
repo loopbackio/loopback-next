@@ -121,8 +121,10 @@ import {
  * This class will be bound to the application as a global `Interceptor` during
  * `boot`
  */
-@bind({tags: {namespace: 'interceptors', name: 'test'}})
+@bind({tags: {key: TestInterceptor.BINDING_KEY}})
 export class TestInterceptor implements Provider<Interceptor> {
+  static readonly BINDING_KEY = `interceptors.${TestInterceptor.name}`;
+
   /*
   constructor() {}
   */
