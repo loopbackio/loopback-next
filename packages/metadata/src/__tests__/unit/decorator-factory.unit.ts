@@ -525,12 +525,8 @@ describe('MethodDecoratorFactory for static methods', () => {
 });
 
 describe('MethodMultiDecoratorFactory', () => {
-  function methodMultiArrayDecorator(spec: object | object[]): MethodDecorator {
-    if (Array.isArray(spec)) {
-      return MethodMultiDecoratorFactory.createDecorator('test', spec);
-    } else {
-      return MethodMultiDecoratorFactory.createDecorator('test', [spec]);
-    }
+  function methodMultiArrayDecorator(...spec: object[]): MethodDecorator {
+    return MethodMultiDecoratorFactory.createDecorator('test', spec);
   }
 
   function methodMultiDecorator(spec: object): MethodDecorator {
@@ -543,7 +539,7 @@ describe('MethodMultiDecoratorFactory', () => {
 
     @methodMultiArrayDecorator({foo: 1})
     @methodMultiArrayDecorator({foo: 2})
-    @methodMultiArrayDecorator([{foo: 3}, {foo: 4}])
+    @methodMultiArrayDecorator({foo: 3}, {foo: 4})
     public multiMethod() {}
 
     @methodMultiDecorator({a: 'a'})
@@ -556,7 +552,7 @@ describe('MethodMultiDecoratorFactory', () => {
     public myMethod() {}
 
     @methodMultiArrayDecorator({bar: 1})
-    @methodMultiArrayDecorator([{bar: 2}, {bar: 3}])
+    @methodMultiArrayDecorator({bar: 2}, {bar: 3})
     public multiMethod() {}
   }
 
@@ -608,12 +604,8 @@ describe('MethodMultiDecoratorFactory', () => {
   });
 });
 describe('MethodMultiDecoratorFactory for static methods', () => {
-  function methodMultiArrayDecorator(spec: object | object[]): MethodDecorator {
-    if (Array.isArray(spec)) {
-      return MethodMultiDecoratorFactory.createDecorator('test', spec);
-    } else {
-      return MethodMultiDecoratorFactory.createDecorator('test', [spec]);
-    }
+  function methodMultiArrayDecorator(...spec: object[]): MethodDecorator {
+    return MethodMultiDecoratorFactory.createDecorator('test', spec);
   }
 
   function methodMultiDecorator(spec: object): MethodDecorator {
@@ -626,7 +618,7 @@ describe('MethodMultiDecoratorFactory for static methods', () => {
 
     @methodMultiArrayDecorator({foo: 1})
     @methodMultiArrayDecorator({foo: 2})
-    @methodMultiArrayDecorator([{foo: 3}, {foo: 4}])
+    @methodMultiArrayDecorator({foo: 3}, {foo: 4})
     static multiMethod() {}
 
     @methodMultiDecorator({a: 'a'})
@@ -639,7 +631,7 @@ describe('MethodMultiDecoratorFactory for static methods', () => {
     static myMethod() {}
 
     @methodMultiArrayDecorator({bar: 1})
-    @methodMultiArrayDecorator([{bar: 2}, {bar: 3}])
+    @methodMultiArrayDecorator({bar: 2}, {bar: 3})
     static multiMethod() {}
   }
 

@@ -177,7 +177,7 @@ function geometry(...points: Point[]): MethodDecorator {
 
 class MyGeoController {
   @geometry({x: 1})
-  @geometry([{x: 2}, {y: 3}])
+  @geometry({x: 2}, {y: 3})
   @geometry({z: 5})
   public abstract() {}
 }
