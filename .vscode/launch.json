@@ -20,22 +20,6 @@
     },
     {
       "type": "node",
-      "request": "launch",
-      "name": "Debug Current Test File",
-      "program": "${workspaceRoot}/packages/build/node_modules/.bin/_mocha",
-      "cwd": "${workspaceRoot}",
-      "autoAttachChildProcesses": true,
-      "args": [
-        "--config",
-        "${workspaceRoot}/packages/build/config/.mocharc.json",
-        "-t",
-        "0",
-        "$(node ${workspaceRoot}/packages/build/bin/get-dist-file ${file})"
-      ],
-      "disableOptimisticBPs": true
-    },
-    {
-      "type": "node",
       "request": "attach",
       "name": "Attach to Process",
       "port": 5858
