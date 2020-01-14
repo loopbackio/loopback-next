@@ -428,4 +428,45 @@ describe('model', () => {
       firstName: 'Test User',
     });
   });
+
+  it('converts to json using custom json keys', () => {
+    const accountDef = new ModelDefinition('Account');
+    accountDef
+      .addProperty('accountId', {type: 'number', json: {name: 'account_id'}})
+      .addProperty('isActive', {type: 'number', json: {name: 'is_active'}})
+      .addProperty('createdAt', {type: 'string', json: {name: 'created_at'}})
+      .addProperty('updatedAt', {type: 'string', json: {name: 'updated-at'}});
+
+    class Account extends Entity {
+      static definition = accountDef;
+      accountId: number;
+      isActive: number;
+      createdAt: string;
+      updatedAt: string;
+
+      constructor(data?: Partial<Account>) {
+        super(data);
+      }
+    }
+
+    function createAccount() {
+      const account = new Account();
+      account.accountId = 1;
+      account.isActive = 0;
+      account.createdAt = '2018-09-28T10:55:51.603Z';
+      account.updatedAt = '2018-09-29T10:55:51.603Z';
+      return account;
+    }
+
+    const account = createAccount();
+    expect(account.toJSON()).to.eql({
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      account_id: 1,
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      is_active: 0,
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      created_at: '2018-09-28T10:55:51.603Z',
+      'updated-at': '2018-09-29T10:55:51.603Z',
+    });
+  });
 });
