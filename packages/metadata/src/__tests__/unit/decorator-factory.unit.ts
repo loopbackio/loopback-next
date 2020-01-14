@@ -585,25 +585,25 @@ describe('MethodMultiDecoratorFactory', () => {
 
     it('applies metadata to a method', () => {
       const meta = Reflector.getOwnMetadata('test', BaseController.prototype);
-      expect(meta.multiMethod).to.eql([{foo: 4}, {foo: 3}, {foo: 2}, {foo: 1}]);
+      expect(meta.multiMethod).to.eql([{foo: 3}, {foo: 4}, {foo: 2}, {foo: 1}]);
     });
 
     it('merges with base method metadata', () => {
       const meta = Reflector.getOwnMetadata('test', SubController.prototype);
       expect(meta.multiMethod).to.eql([
-        {foo: 4},
         {foo: 3},
+        {foo: 4},
         {foo: 2},
         {foo: 1},
-        {bar: 3},
         {bar: 2},
+        {bar: 3},
         {bar: 1},
       ]);
     });
 
     it('does not mutate base method metadata', () => {
       const meta = Reflector.getOwnMetadata('test', BaseController.prototype);
-      expect(meta.multiMethod).to.eql([{foo: 4}, {foo: 3}, {foo: 2}, {foo: 1}]);
+      expect(meta.multiMethod).to.eql([{foo: 3}, {foo: 4}, {foo: 2}, {foo: 1}]);
     });
   });
 });
@@ -663,7 +663,7 @@ describe('MethodMultiDecoratorFactory for static methods', () => {
   describe('multi-decorator methods', () => {
     it('applies metadata to a method', () => {
       const meta = Reflector.getOwnMetadata('test', BaseController);
-      expect(meta.multiMethod).to.eql([{foo: 4}, {foo: 3}, {foo: 2}, {foo: 1}]);
+      expect(meta.multiMethod).to.eql([{foo: 3}, {foo: 4}, {foo: 2}, {foo: 1}]);
     });
 
     it('applies to non-array decorator creation', () => {
@@ -674,19 +674,19 @@ describe('MethodMultiDecoratorFactory for static methods', () => {
     it('merges with base method metadata', () => {
       const meta = Reflector.getOwnMetadata('test', SubController);
       expect(meta.multiMethod).to.eql([
-        {foo: 4},
         {foo: 3},
+        {foo: 4},
         {foo: 2},
         {foo: 1},
-        {bar: 3},
         {bar: 2},
+        {bar: 3},
         {bar: 1},
       ]);
     });
 
     it('does not mutate base method metadata', () => {
       const meta = Reflector.getOwnMetadata('test', BaseController);
-      expect(meta.multiMethod).to.eql([{foo: 4}, {foo: 3}, {foo: 2}, {foo: 1}]);
+      expect(meta.multiMethod).to.eql([{foo: 3}, {foo: 4}, {foo: 2}, {foo: 1}]);
     });
   });
 });
