@@ -71,4 +71,16 @@ exports.SANDBOX_FILES = [
     file: 'restdb.datasource.ts',
     content: DUMMY_CONTENT,
   },
+  {
+    path: DATASOURCE_APP_PATH,
+    file: 'no-name.datasource.config.json',
+    content: JSON.stringify({
+      connector: 'rest',
+    }),
+  },
+  {
+    path: DATASOURCE_APP_PATH,
+    file: 'no-name.datasource.ts',
+    content: DUMMY_CONTENT,
+  },
 ];
