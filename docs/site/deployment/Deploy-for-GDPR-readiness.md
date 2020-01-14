@@ -88,10 +88,6 @@ theft of computer equipment or storage media.
 
 **LoopBack Overview**
 
-_Please note that LoopBack 4 is in developer preview and not ready for
-production. For production, use
-[LoopBack 3](https://loopback.io/doc/en/lb3/index.html)._
-
 LoopBack is an open source Node.js framework that allows you to create REST APIs
 and connect to the backend resources, such as database and Web services.
 
