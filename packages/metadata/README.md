@@ -129,11 +129,32 @@ const arrayOfSpecs = MetadataInspector.getMethodMetadata<object>(
   op,
 );
 
-// [{x:1}, {y:2}, {z: 3}]
+// [{z: 3}, {y: 2}, {x: 1}]
 ```
 
-Note that the order of items is **not** guaranteed and should be treated as
-unsorted.
+Typescript applies decorators in reverse order per class, from the parent down.
+In cases when an array is passed as metadata, it will be reversed to respect
+this order.
+
+```ts
+class Parent {
+  @myMultiMethodDecorator('A') // second
+  @myMultiMethodDecorator('B') // first
+  public greet() {}
+}
+
+class Child extends Parent {
+  @myMultiMethodDecorator(['C', 'D']) // [fourth, third]
+  public greet() {}
+}
+
+class Grandchild extends Child {
+  @myMultiMethodDecorator('E') // sixth
+  @myMultiMethodDecorator('F') // fifth
+  public greet() {}
+}
+// getMethodMetadata = ['B', 'A', 'D', 'C', 'F', 'E']
+```
 
 You can also create a decorator that takes an object that can contain an array:
 
@@ -146,16 +167,16 @@ interface Point {
 interface GeometryMetadata {
   points: Point[];
 }
-function geometry(points: Point | Point[]): MethodDecorator {
+function geometry(...points: Point[]): MethodDecorator {
   return MethodMultiDecoratorFactory.createDecorator<GeometryMetadata>(
     'metadata-key-for-my-method-multi-decorator',
-    points: Array.isArray(points) ? points : [points],
+    points,
   );
 }
 
 class MyGeoController {
   @geometry({x: 1})
-  @geometry([{x:2}, {y:3}])
+  @geometry([{x: 2}, {y: 3}])
   @geometry({z: 5})
   public abstract() {}
 }
