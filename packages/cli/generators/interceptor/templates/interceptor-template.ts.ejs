@@ -19,9 +19,13 @@ import {
 <% if (isGlobal) { -%>
 @globalInterceptor('<%= group %>', {tags: {name: '<%= name %>'}})
 <% } else { -%>
-@bind({tags: {namespace: 'interceptors', name: '<%= name %>'}})
+@bind({tags: {key: <%= className %>.BINDING_KEY}})
 <% } -%>
 export class <%= className %> implements Provider<Interceptor> {
+<% if (!isGlobal) { -%>
+  static readonly BINDING_KEY = `interceptors.${<%= className %>.name}`;
+
+<% } -%>
   /*
   constructor() {}
   */
