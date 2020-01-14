@@ -178,9 +178,11 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
 
       requestBody = requestBodies[0];
       debug('  requestBody for method %s: %j', op, requestBody);
+      /* istanbul ignore else */
       if (requestBody) {
         operationSpec.requestBody = requestBody;
 
+        /* istanbul ignore else */
         const content = requestBody.content || {};
         for (const mediaType in content) {
           processSchemaExtensions(spec, content[mediaType].schema);
@@ -233,6 +235,9 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
   return spec;
 }
 
+declare type MixKey = 'allOf' | 'anyOf' | 'oneOf';
+const SCHEMA_ARR_KEYS: MixKey[] = ['allOf', 'anyOf', 'oneOf'];
+
 /**
  * Resolve the x-ts-type in the schema object
  * @param spec - Controller spec
@@ -248,24 +253,51 @@ function processSchemaExtensions(
   assignRelatedSchemas(spec, schema.definitions);
   delete schema.definitions;
 
-  if (isReferenceObject(schema)) return;
-
-  const tsType = schema[TS_TYPE_KEY];
-  debug('  %s => %o', TS_TYPE_KEY, tsType);
-  if (tsType) {
-    schema = resolveSchema(tsType, schema);
-    if (schema.$ref) generateOpenAPISchema(spec, tsType);
-
-    // We don't want a Function type in the final spec.
-    delete schema[TS_TYPE_KEY];
-    return;
+  /**
+   * check if we have been provided a `not`
+   * `not` is valid in many cases- here we're checking for
+   * `not: { schema: {'x-ts-type': SomeModel }}
+   */
+  if (schema.not) {
+    processSchemaExtensions(spec, schema.not);
   }
-  if (schema.type === 'array') {
-    processSchemaExtensions(spec, schema.items);
-  } else if (schema.type === 'object') {
-    if (schema.properties) {
-      for (const p in schema.properties) {
-        processSchemaExtensions(spec, schema.properties[p]);
+
+  /**
+   *  check for schema.allOf, schema.oneOf, schema.anyOf arrays first.
+   *  You cannot provide BOTH a defnintion AND one of these keywords.
+   */
+  /* istanbul ignore else */
+  const hasOwn = (prop: string) => schema?.hasOwnProperty(prop);
+
+  if (SCHEMA_ARR_KEYS.some(k => hasOwn(k))) {
+    SCHEMA_ARR_KEYS.forEach((k: MixKey) => {
+      /* istanbul ignore else */
+      if (schema?.[k] && Array.isArray(schema[k])) {
+        schema[k].forEach((r: (SchemaObject | ReferenceObject)[]) => {
+          processSchemaExtensions(spec, r);
+        });
+      }
+    });
+  } else {
+    if (isReferenceObject(schema)) return;
+
+    const tsType = schema[TS_TYPE_KEY];
+    debug('  %s => %o', TS_TYPE_KEY, tsType);
+    if (tsType) {
+      schema = resolveSchema(tsType, schema);
+      if (schema.$ref) generateOpenAPISchema(spec, tsType);
+
+      // We don't want a Function type in the final spec.
+      delete schema[TS_TYPE_KEY];
+      return;
+    }
+    if (schema.type === 'array') {
+      processSchemaExtensions(spec, schema.items);
+    } else if (schema.type === 'object') {
+      if (schema.properties) {
+        for (const p in schema.properties) {
+          processSchemaExtensions(spec, schema.properties[p]);
+        }
       }
     }
   }
