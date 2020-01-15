@@ -32,9 +32,6 @@
   "eslint.nodePath": "./packages/build/node_modules",
   "eslint.validate": [
     "javascript",
-    {
-        "language": "typescript",
-        "autoFix": true
-    }
+    "typescript"
   ]
 }
