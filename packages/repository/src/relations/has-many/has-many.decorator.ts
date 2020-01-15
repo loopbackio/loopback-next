@@ -5,7 +5,7 @@
 
 import {Entity, EntityResolver} from '../../model';
 import {relation} from '../relation.decorator';
-import {HasManyDefinition, RelationType} from '../relation.types';
+import {HasManyDefinition, RelationType, HasManyThroughDefinition} from '../relation.types';
 
 /**
  * Decorator for hasMany
@@ -17,7 +17,7 @@ import {HasManyDefinition, RelationType} from '../relation.types';
  */
 export function hasMany<T extends Entity>(
   targetResolver: EntityResolver<T>,
-  definition?: Partial<HasManyDefinition>,
+  definition?: Partial<HasManyDefinition | HasManyThroughDefinition>,
 ) {
   return function(decoratedTarget: object, key: string) {
     const meta: HasManyDefinition = Object.assign(
