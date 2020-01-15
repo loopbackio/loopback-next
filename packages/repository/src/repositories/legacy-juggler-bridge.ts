@@ -30,6 +30,9 @@ import {
   HasOneRepositoryFactory,
   includeRelatedModels,
   InclusionResolver,
+  HasManyThroughDefinition,
+  HasManyThroughRepositoryFactory,
+  createHasManyThroughRepositoryFactory,
 } from '../relations';
 import {IsolationLevel, Transaction} from '../transaction';
 import {isTypeResolver, resolveType} from '../type-resolver';
@@ -274,6 +277,29 @@ export class DefaultCrudRepository<
     return createHasManyRepositoryFactory<Target, TargetID, ForeignKeyType>(
       meta as HasManyDefinition,
       targetRepoGetter,
+    );
+  }
+
+  protected createHasManyThroughRepositoryFactoryFor<
+    TargetEntiy extends Entity,
+    TargetID,
+    ThroughEntity extends Entity,
+    ThroughID,
+  >(
+    relationName: string,
+    targetRepositoryGetter: Getter<EntityCrudRepository<TargetEntiy, TargetID>>,
+    throughRepositoryGetter: Getter<EntityCrudRepository<ThroughEntity, ThroughID>>,
+  ): HasManyThroughRepositoryFactory<TargetEntiy, TargetID, ThroughEntity, ThroughID> {
+    const meta = this.entityClass.definition.relations[relationName];
+    return createHasManyThroughRepositoryFactory<
+      TargetEntiy,
+      TargetID,
+      ThroughEntity,
+      ThroughID
+    >(
+      meta as HasManyThroughDefinition,
+      targetRepositoryGetter,
+      throughRepositoryGetter,
     );
   }
 
