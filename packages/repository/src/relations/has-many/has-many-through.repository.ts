@@ -3,7 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {Getter} from '@loopback/core';
 import {Count, DataObject, Entity, Filter, Options, Where} from '../..';
+import {EntityCrudRepository} from '../../repositories';
 
 /**
  * CRUD operations for a target repository of a HasManyThrough relation
@@ -97,4 +99,76 @@ export interface HasManyThroughRepository<
       throughOptions?: Options;
     },
   ): Promise<void>;
+}
+
+export class DefaultHasManyThroughRepository<
+  TargetEntity extends Entity,
+  TargetID,
+  TargetRepository extends EntityCrudRepository<TargetEntity, TargetID>,
+  ThroughEntity extends Entity,
+  ThroughID,
+  ThroughRepository extends EntityCrudRepository<ThroughEntity, ThroughID>,
+  > implements HasManyThroughRepository<TargetEntity, TargetID, ThroughEntity> {
+
+  constructor(
+    public targetRepositoryGetter: Getter<TargetRepository>,
+    public throughRepositoryGetter: Getter<ThroughRepository>,
+  ) {}
+
+  async create(
+    targetModelData: DataObject<TargetEntity>,
+    options?: Options & {
+      throughData?: DataObject<ThroughEntity>;
+      throughOptions?: Options;
+    },
+  ): Promise<TargetEntity> {
+    throw new Error("Method not implemented.");
+  }
+
+  async find(
+    filter?: Filter<TargetEntity>,
+    options?: Options & {
+      throughOptions?: Options;
+    },
+  ): Promise<TargetEntity[]> {
+    throw new Error("Method not implemented.");
+  }
+
+  async delete(
+    where?: Where<TargetEntity>,
+    options?: Options & {
+      throughOptions?: Options;
+    },
+  ): Promise<Count> {
+    throw new Error("Method not implemented.");
+  }
+
+  async patch(
+    dataObject: DataObject<TargetEntity>,
+    where?: Where<TargetEntity>,
+    options?: Options & {
+      throughOptions?: Options;
+    },
+  ): Promise<Count> {
+    throw new Error("Method not implemented.");
+  }
+
+  async link(
+    targetModelId: TargetID,
+    options?: Options & {
+      throughData?: DataObject<ThroughEntity>;
+      throughOptions?: Options;
+    },
+  ): Promise<TargetEntity> {
+    throw new Error("Method not implemented.");
+  }
+
+  async unlink(
+    targetModelId: TargetID,
+    options?: Options & {
+      throughOptions?: Options;
+    },
+  ): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
 }
