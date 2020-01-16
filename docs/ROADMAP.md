@@ -1,3 +1,38 @@
+## 2020 Goals and Focus
+
+### Goal#1 - Enable as many LoopBack 3 users to migrate to LoopBack 4 as possible
+
+With LoopBack 3 going end-of-life at the end of 2020, we are continuing to focus
+on the following areas:
+
+- finish the migration guide to help LB3 users to migrate their applications to
+  LB4
+- offer some level of tooling support to make the migration easier
+- fill in feature parity gaps by either implementing the features in LB4 or
+  recommending a solution using existing libraries
+- Integrate LoopBack 4 into IBM API Connect
+
+### Goal#2 - Keep adopting latest technologies to stay relevant
+
+While enhancing our core code base, we'd like to continue to explore the
+possibility of using and/or integrating latest technologies with LoopBack 4.
+
+Some of the areas we'd like to explore, but not limited to:
+
+- messaging and pub/sub event style, e.g. Kafka, MQTT
+- cloud native integration
+- native support on GraphQL
+- modernize the connector infrastructure and code base
+
+### Goal#3: Nurture our community and encourage more contributions
+
+Community contributions are vital to us. It not only accelerates our
+development, but also helps building deep LoopBack knowledge in the community.
+
+We would like to encourage community contributions by make available to the
+community a list of GH issues that we want to finish in a short term by using
+the `help wanted` and `2020Qx` labels.
+
 ## Q1 2020 Roadmap
 
 ### Overview
