@@ -136,16 +136,18 @@ forbid additional properties that are not specified in the type definition. The
 persistence layer respects this constraint and configures underlying
 PersistedModel classes to enforce `strict` mode.
 
-To create a model that allows both well-defined but also arbitrary extra
-properties, you need to disable `strict` mode in model settings through the CLI
-and tell TypeScript to allow arbitrary additional properties to be set on model
-instances.
+LB4 supports creating a model that allows both well-defined but also arbitrary
+extra properties for **NoSQL** databases such as MongoDB. You need to disable
+`strict` mode in model settings. Besides modifying model settings directly, it
+can also be done through the CLI by setting `allowed free-from properties` to
+true by saying yes when given this prompt and telling TypeScript to allow
+arbitrary additional properties to be set on model instances.
 
 ```ts
 @model({settings: {strict: false}})
 class MyFlexibleModel extends Entity {
   @property({id: true})
-  id: number;
+  id: string;
 
   // Define well-known properties here
 
@@ -255,10 +257,10 @@ now:
       Specifies whether the model accepts only predefined properties or not. One of:
       <ul>
       <li><code>true</code>: Only properties defined in the model are accepted. Use if you want to ensure the model accepts only predefined properties.
-      If you try to save a model instance with properties that are not predefined, LoopBack throws a ValidationError.
+      If you try to save a model instance with properties that are not predefined, LoopBack throws a ValidationError. In addition, SQL databases only support this mode.
       </li>
       <li><code>false</code>: The model is an open model and accepts all properties, including ones not predefined in the model.
-        This mode is useful to store free-form JSON data to a schema-less database such as MongoDB.
+        This mode is useful to store free-form JSON data to a schema-less database such as MongoDB and supported by such databases only.
       </li>
       <li><code>"filter"</code>: Only properties defined in the model are accepted.
       If you load or save a model instance with properties that are not predefined, LoopBack will ignore them. This is particularly useful when dealing with old data that you wish to lose without a migration script.
