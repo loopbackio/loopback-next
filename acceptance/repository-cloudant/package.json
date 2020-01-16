@@ -30,7 +30,7 @@
     "lodash": "^4.17.11",
     "loopback-connector-cloudant": "2.3.2",
     "ms": "2.1.2",
-    "typescript": "~3.7.4"
+    "typescript": "~3.7.5"
   },
   "files": [
     "README.md",
