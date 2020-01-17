@@ -143,6 +143,11 @@ export class Context extends EventEmitter {
    */
   constructor(_parent?: Context | string, name?: string) {
     super();
+    // The number of listeners can grow with the number of child contexts
+    // For example, each request can add a listener to the RestServer and the
+    // listener is removed when the request processing is finished.
+    // See https://github.com/strongloop/loopback-next/issues/4363
+    this.setMaxListeners(Infinity);
     if (typeof _parent === 'string') {
       name = _parent;
       _parent = undefined;

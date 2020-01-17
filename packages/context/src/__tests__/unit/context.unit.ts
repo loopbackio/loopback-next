@@ -781,6 +781,17 @@ describe('Context', () => {
     });
   });
 
+  describe('maxListeners', () => {
+    it('defaults to Infinity', () => {
+      expect(ctx.getMaxListeners()).to.equal(Infinity);
+    });
+
+    it('can be changed', () => {
+      ctx.setMaxListeners(128);
+      expect(ctx.getMaxListeners()).to.equal(128);
+    });
+  });
+
   describe('toJSON() and inspect()', () => {
     beforeEach(setupBindings);
 
