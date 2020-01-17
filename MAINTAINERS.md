@@ -19,3 +19,6 @@ Community maintainers:
 - Hugo Da Roit ([@Yaty](https://github.com/Yaty))
 - Mario Estrada ([@marioestradarosa](https://github.com/marioestradarosa))
 - TN ([@thinusn](https://github.com/thinusn))
+- Denny Bartelt ([@derdeka](https://github.com/derdeka))
+- Douglas McConnachie ([@dougal83](https://github.com/dougal83))
+- Rifa Achrinza ([@achrinza](https://github.com/achrinza))
