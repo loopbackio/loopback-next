@@ -6,6 +6,9 @@ sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Relations.html
 ---
 
+{% include note.html content="There are certain limitations to
+`Inclusion Resolver`. See [Limitations](Relations.md#limitations)." %}
+
 ## Overview
 
 Individual models are easy to understand and work with. But in reality, models
@@ -56,3 +59,39 @@ application.
 
 To generate a `HasMany` or `BelongsTo` relation through the CLI, see
 [Relation generator](Relation-generator.md).
+
+## Limitations
+
+### Modifying related models' navigational properties
+
+Navigational properties of related models cannot be created, updated, saved,
+deleted or replaced, via the parent model. See its
+[GitHub pull request](https://github.com/strongloop/loopback-next/pull/4148).
+
+### Creating a model alongside its related models
+
+Creating related models must be created separately after the parent model is
+created. See its
+[GitHub issue](https://github.com/strongloop/loopback-next/issues/4435).
+
+### Filtering by parent model
+
+[Where filters](https://loopback.io/doc/en/lb3/Where-filter.html) such as those
+used by model queries (`create()`, `find()`, `replaceById()`, and so on) cannot
+be used to filter a model by the value of its parent model. See its
+[GitHub issue](https://github.com/strongloop/loopback-next/issues/4299).
+
+### Recursive inclusion of related models
+
+We don’t support recursive inclusion of related models. Related GH issue:
+[Recursive inclusion of related models](https://github.com/strongloop/loopback-next/issues/3454).
+
+### Splitting numbers of queries
+
+It doesn’t split numbers of queries. Related GH issue:
+[Support inq splitting](https://github.com/strongloop/loopback-next/issues/3444).
+
+### Handling of MongoDB `ObjectID` type
+
+It might not work well with ObjectID of MongoDB. Related GH issue:
+[Spike: robust handling of ObjectID type for MongoDB](https://github.com/strongloop/loopback-next/issues/3456).

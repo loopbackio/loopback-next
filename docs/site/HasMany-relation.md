@@ -15,6 +15,8 @@ Using this relation with NoSQL databases will result in unexpected behavior,
 such as the ability to create a relation with a model that does not exist. We are [working on a solution](https://github.com/strongloop/loopback-next/issues/2341) to better handle this. It is fine to use this relation with NoSQL databases for purposes such as navigating related models, where the referential integrity is not critical.
 " %}
 
+{% include note.html content="There are some limitations to `Inclusion Resolver`. See [Limitations](Relations.md#limitations)." %}
+
 A `hasMany` relation denotes a one-to-many connection of a model to another
 model through referential integrity. The referential integrity is enforced by a
 foreign key constraint on the target model which usually references a primary
@@ -718,6 +720,3 @@ The `Where` clause above filters the result of `orders`.
 
 {% include tip.html content="Make sure that you have all inclusion resolvers that you need REGISTERED, and
 all relation names should be UNIQUE."%}
-
-{% include important.html content="There are some limitations of inclusion:. <br/>We don’t support recursive inclusion of related models. Related GH issue: [Recursive inclusion of related models](https://github.com/strongloop/loopback-next/issues/3454). <br/>It doesn’t split numbers of queries. Related GH issue: [Support inq splitting](https://github.com/strongloop/loopback-next/issues/3444). <br/>It might not work well with ObjectId of MongoDB. Related GH issue: [Spike: robust handling of ObjectID type for MongoDB](https://github.com/strongloop/loopback-next/issues/3456).
-" %}
