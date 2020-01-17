@@ -6,6 +6,8 @@ sidebar: lb4_sidebar
 permalink: /doc/en/lb4/BelongsTo-relation.html
 ---
 
+{% include note.html content="There are some limitations to `Inclusion Resolver`. See [Limitations](Relations.md#limitations)." %}
+
 ## Overview
 
 {% include note.html content="
@@ -516,6 +518,3 @@ It is possible to query several relations or nested include relations with
 custom scope once you have the inclusion resolver of each relation set up.
 Check[HasMany - Query multiple relations](HasMany-relation.md#query-multiple-relations)
 for the usage and examples.
-
-{% include important.html content="There are some limitations of inclusion:. <br/>We don’t support recursive inclusion of related models. Related GH issue: [Recursive inclusion of related models](https://github.com/strongloop/loopback-next/issues/3454). <br/>It doesn’t split numbers of queries. Related GH issue: [Support inq splitting](https://github.com/strongloop/loopback-next/issues/3444). <br/>It might not work well with ObjectId of MongoDB. Related GH issue: [Spike: robust handling of ObjectID type for MongoDB](https://github.com/strongloop/loopback-next/issues/3456).
-" %}
