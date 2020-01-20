@@ -109,7 +109,7 @@ LoopBack allows externally hosted API Explorer UI to render the OpenAPI
 endpoints for a REST server. Such URLs can be specified with `rest.apiExplorer`:
 
 - url: URL for the hosted API Explorer UI, default to
-  `https://loopback.io/api-explorer`.
+  `https://explorer.loopback.io`.
 - httpUrl: URL for the API explorer served over plain http to deal with mixed
   content security imposed by browsers as the spec is exposed over `http` by
   default. See https://github.com/strongloop/loopback-next/issues/1603. Default
