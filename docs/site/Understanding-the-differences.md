@@ -42,6 +42,8 @@ model definitions, migrating their application incrementally.
 
 ## Concept/feature mapping
 
+{% include note.html content="See the [GitHub issue](https://github.com/strongloop/loopback-next/issues/1920) for a full list of features that have not been migrated to LoopBack 4." %}
+
 In Loopback 3.x (and earlier), models were responsible for both accessing data
 in other systems (databases, SOAP services, etc.) and providing the
 application's external REST API. This made it easy to quickly build a REST

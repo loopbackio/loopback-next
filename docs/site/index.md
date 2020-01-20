@@ -15,6 +15,8 @@ multiple repos, as in v3. However, examples and externally-developed components
 will be in separate repositories.
 '%}
 
+{% include important.html content="Certain features from LoopBack 3 may still be a work in progress or are not planned to be migrated to LoopBack 4. See [Understanding the differences](understanding-the-differences.md)." %}
+
 LoopBack is a highly extensible, open-source Node.js and TypeScript framework
 based on Express that enables you to quickly create APIs and microservices
 composed from backend systems such as databases and SOAP or REST services.
