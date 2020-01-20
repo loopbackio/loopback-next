@@ -11,6 +11,7 @@ export class TodoListImage extends Entity {
   @property({
     type: 'number',
     id: true,
+    generated: false,
   })
   id: number;
 

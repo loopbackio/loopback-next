@@ -15,6 +15,7 @@ export class TodoList extends Entity {
   @property({
     type: 'number',
     id: true,
+    generated: false,
   })
   id: number;
 
@@ -30,10 +31,10 @@ export class TodoList extends Entity {
   color?: string;
 
   @hasMany(() => Todo)
-  todos?: Todo[];
+  todos: Todo[];
 
   @hasOne(() => TodoListImage)
-  image?: TodoListImage;
+  image: TodoListImage;
 
   constructor(data?: Partial<TodoList>) {
     super(data);

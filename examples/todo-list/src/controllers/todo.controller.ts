@@ -19,7 +19,9 @@ import {Todo, TodoList} from '../models';
 import {TodoRepository} from '../repositories';
 
 export class TodoController {
-  constructor(@repository(TodoRepository) protected todoRepo: TodoRepository) {}
+  constructor(
+    @repository(TodoRepository) protected todoRepository: TodoRepository,
+  ) {}
 
   @post('/todos', {
     responses: {
@@ -39,7 +41,7 @@ export class TodoController {
     })
     todo: Omit<Todo, 'id'>,
   ): Promise<Todo> {
-    return this.todoRepo.create(todo);
+    return this.todoRepository.create(todo);
   }
 
   @get('/todos/{id}', {
@@ -59,7 +61,7 @@ export class TodoController {
     @param.query.object('filter', getFilterSchemaFor(Todo))
     filter?: Filter<Todo>,
   ): Promise<Todo> {
-    return this.todoRepo.findById(id, filter);
+    return this.todoRepository.findById(id, filter);
   }
 
   @get('/todos', {
@@ -81,7 +83,7 @@ export class TodoController {
     @param.query.object('filter', getFilterSchemaFor(Todo))
     filter?: Filter<Todo>,
   ): Promise<Todo[]> {
-    return this.todoRepo.find(filter);
+    return this.todoRepository.find(filter);
   }
 
   @put('/todos/{id}', {
@@ -95,7 +97,7 @@ export class TodoController {
     @param.path.number('id') id: number,
     @requestBody() todo: Todo,
   ): Promise<void> {
-    await this.todoRepo.replaceById(id, todo);
+    await this.todoRepository.replaceById(id, todo);
   }
 
   @patch('/todos/{id}', {
@@ -116,7 +118,7 @@ export class TodoController {
     })
     todo: Partial<Todo>,
   ): Promise<void> {
-    await this.todoRepo.updateById(id, todo);
+    await this.todoRepository.updateById(id, todo);
   }
 
   @del('/todos/{id}', {
@@ -127,7 +129,7 @@ export class TodoController {
     },
   })
   async deleteTodo(@param.path.number('id') id: number): Promise<void> {
-    await this.todoRepo.deleteById(id);
+    await this.todoRepository.deleteById(id);
   }
 
   @get('/todos/{id}/todo-list', {
@@ -139,6 +141,6 @@ export class TodoController {
     },
   })
   async findOwningList(@param.path.number('id') id: number): Promise<TodoList> {
-    return this.todoRepo.todoList(id);
+    return this.todoRepository.todoList(id);
   }
 }
