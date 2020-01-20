@@ -255,7 +255,6 @@ separated from the code responsible for implementing client side APIs.
   <td><a href="/doc/en/lb3/Third-party-login-using-Passport.html"><code>loopback-component-passport</code></a>
   </td>
   <td><a href="https://github.com/strongloop/loopback-next/tree/master/extensions/authentication-passport"><code>@loopback/authentication-passport</code></a>
-    <br>(EXPERIMENTAL)
   </td>
 </tr>
 
