@@ -18,12 +18,12 @@ import {
 } from '@loopback/rest';
 import {Todo} from '../models';
 import {TodoRepository} from '../repositories';
-import {GeocoderService} from '../services';
+import {Geocoder} from '../services';
 
 export class TodoController {
   constructor(
-    @repository(TodoRepository) protected todoRepo: TodoRepository,
-    @inject('services.GeocoderService') protected geoService: GeocoderService,
+    @repository(TodoRepository) protected todoRepository: TodoRepository,
+    @inject('services.Geocoder') protected geoService: Geocoder,
   ) {}
 
   @post('/todos', {
@@ -52,7 +52,7 @@ export class TodoController {
       // https://gis.stackexchange.com/q/7379
       todo.remindAtGeo = `${geo[0].y},${geo[0].x}`;
     }
-    return this.todoRepo.create(todo);
+    return this.todoRepository.create(todo);
   }
 
   @get('/todos/{id}', {
@@ -67,7 +67,7 @@ export class TodoController {
     @param.path.number('id') id: number,
     @param.query.boolean('items') items?: boolean,
   ): Promise<Todo> {
-    return this.todoRepo.findById(id);
+    return this.todoRepository.findById(id);
   }
 
   @get('/todos', {
@@ -86,7 +86,7 @@ export class TodoController {
     @param.query.object('filter', getFilterSchemaFor(Todo))
     filter?: Filter<Todo>,
   ): Promise<Todo[]> {
-    return this.todoRepo.find(filter);
+    return this.todoRepository.find(filter);
   }
 
   @put('/todos/{id}', {
@@ -100,7 +100,7 @@ export class TodoController {
     @param.path.number('id') id: number,
     @requestBody() todo: Todo,
   ): Promise<void> {
-    await this.todoRepo.replaceById(id, todo);
+    await this.todoRepository.replaceById(id, todo);
   }
 
   @patch('/todos/{id}', {
@@ -121,7 +121,7 @@ export class TodoController {
     })
     todo: Partial<Todo>,
   ): Promise<void> {
-    await this.todoRepo.updateById(id, todo);
+    await this.todoRepository.updateById(id, todo);
   }
 
   @del('/todos/{id}', {
@@ -132,6 +132,6 @@ export class TodoController {
     },
   })
   async deleteTodo(@param.path.number('id') id: number): Promise<void> {
-    await this.todoRepo.deleteById(id);
+    await this.todoRepository.deleteById(id);
   }
 }

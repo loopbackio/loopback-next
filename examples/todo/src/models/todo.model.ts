@@ -10,6 +10,7 @@ export class Todo extends Entity {
   @property({
     type: 'number',
     id: true,
+    generated: false,
   })
   id?: number;
 

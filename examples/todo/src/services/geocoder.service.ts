@@ -1,11 +1,11 @@
-// Copyright IBM Corp. 2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2020. All Rights Reserved.
 // Node module: @loopback/example-todo
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {getService, juggler} from '@loopback/service-proxy';
 import {inject, Provider} from '@loopback/core';
-import {GeocoderDataSource} from '../datasources/geocoder.datasource';
+import {getService} from '@loopback/service-proxy';
+import {GeocoderDataSource} from '../datasources';
 
 export interface GeoPoint {
   /**
@@ -19,17 +19,18 @@ export interface GeoPoint {
   x: number;
 }
 
-export interface GeocoderService {
+export interface Geocoder {
   geocode(address: string): Promise<GeoPoint[]>;
 }
 
-export class GeocoderServiceProvider implements Provider<GeocoderService> {
+export class GeocoderProvider implements Provider<Geocoder> {
   constructor(
+    // geocoder must match the name property in the datasource json file
     @inject('datasources.geocoder')
-    protected dataSource: juggler.DataSource = new GeocoderDataSource(),
+    protected dataSource: GeocoderDataSource = new GeocoderDataSource(),
   ) {}
 
-  value(): Promise<GeocoderService> {
+  value(): Promise<Geocoder> {
     return getService(this.dataSource);
   }
 }

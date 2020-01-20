@@ -8,7 +8,7 @@ import {merge} from 'lodash';
 import path from 'path';
 import GEO_CODER_CONFIG from '../datasources/geocoder.datasource.config.json';
 import {Todo} from '../models/index';
-import {GeocoderService, GeoPoint} from '../services/geocoder.service';
+import {Geocoder, GeoPoint} from '../services/geocoder.service';
 
 /*
  ==============================================================================
@@ -74,7 +74,7 @@ export async function givenCachingProxy() {
   return proxy;
 }
 
-export async function isGeoCoderServiceAvailable(service: GeocoderService) {
+export async function isGeoCoderServiceAvailable(service: Geocoder) {
   try {
     await service.geocode(aLocation.address);
     return true;
