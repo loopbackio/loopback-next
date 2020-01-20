@@ -7,14 +7,14 @@
 
 const path = require('path');
 const assert = require('yeoman-assert');
+const {TestSandbox} = require('@loopback/testlab');
+const {expectFileToMatchSnapshot} = require('../../snapshots');
+
 const generator = path.join(__dirname, '../../../generators/openapi');
 const specPath = path.join(
   __dirname,
   '../../fixtures/openapi/3.0/petstore-expanded.yaml',
 );
-
-const testlab = require('@loopback/testlab');
-const TestSandbox = testlab.TestSandbox;
 
 // Test Sandbox
 const SANDBOX_PATH = path.resolve(__dirname, '../.sandbox');
@@ -30,12 +30,11 @@ describe('openapi-generator specific files', function() {
   // eslint-disable-next-line no-invalid-this
   this.timeout(10000);
 
-  const index = path.resolve(SANDBOX_PATH, 'src/controllers/index.ts');
+  const controIndex = path.resolve(SANDBOX_PATH, 'src/controllers/index.ts');
   const controller = path.resolve(
     SANDBOX_PATH,
     'src/controllers/open-api.controller.ts',
   );
-
   const petModel = path.resolve(SANDBOX_PATH, 'src/models/pet.model.ts');
   const newPetModel = path.resolve(SANDBOX_PATH, 'src/models/new-pet.model.ts');
   const errorModel = path.resolve(SANDBOX_PATH, 'src/models/error.model.ts');
@@ -49,33 +48,20 @@ describe('openapi-generator specific files', function() {
       .executeGenerator(generator)
       .inDir(SANDBOX_PATH, () => testUtils.givenLBProject(SANDBOX_PATH))
       .withPrompts(props);
+
+    assert.file(controIndex);
+    expectFileToMatchSnapshot(controIndex);
+
     assert.file(controller);
-
-    assert.fileContent(controller, 'export class OpenApiController {');
-    assert.fileContent(controller, `@operation('get', '/pets')`);
-    assert.fileContent(
-      controller,
-      `async findPets(@param({name: 'tags', in: 'query'}) tags: string[], ` +
-        `@param({name: 'limit', in: 'query'}) limit: number): Promise<Pet[]>`,
-    );
-
-    assert.fileContent(index, `export * from './open-api.controller';`);
+    expectFileToMatchSnapshot(controller);
 
     assert.file(petModel);
-    assert.fileContent(petModel, `import {NewPet} from './new-pet.model';`);
-    assert.fileContent(
-      petModel,
-      `export type Pet = NewPet & {
-  id: number;
-};`,
-    );
+    expectFileToMatchSnapshot(petModel);
+
     assert.file(newPetModel);
-    assert.fileContent(newPetModel, `export class NewPet {`);
-    assert.fileContent(newPetModel, `@model({name: 'NewPet'})`);
-    assert.fileContent(newPetModel, `@property({required: true})`);
-    assert.fileContent(newPetModel, `name: string;`);
-    assert.fileContent(newPetModel, `@property()`);
-    assert.fileContent(newPetModel, `tag?: string`);
+    expectFileToMatchSnapshot(newPetModel);
+
     assert.file(errorModel);
+    expectFileToMatchSnapshot(errorModel);
   });
 });
