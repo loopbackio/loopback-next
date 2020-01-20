@@ -5,7 +5,7 @@
 
 import {expect} from '@loopback/testlab';
 import {GeocoderDataSource} from '../../../datasources/geocoder.datasource';
-import {GeocoderService, GeocoderServiceProvider} from '../../../services';
+import {Geocoder, GeocoderProvider} from '../../../services';
 import {
   aLocation,
   getProxiedGeoCoderConfig,
@@ -22,7 +22,7 @@ describe('GeoLookupService', function() {
   before(async () => (cachingProxy = await givenCachingProxy()));
   after(() => cachingProxy.stop());
 
-  let service: GeocoderService;
+  let service: Geocoder;
   before(givenGeoService);
 
   let available = true;
@@ -42,6 +42,6 @@ describe('GeoLookupService', function() {
   async function givenGeoService() {
     const config = getProxiedGeoCoderConfig(cachingProxy);
     const dataSource = new GeocoderDataSource(config);
-    service = await new GeocoderServiceProvider(dataSource).value();
+    service = await new GeocoderProvider(dataSource).value();
   }
 });

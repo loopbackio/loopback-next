@@ -13,12 +13,12 @@ import {
 import {TodoController} from '../../../controllers';
 import {Todo} from '../../../models/index';
 import {TodoRepository} from '../../../repositories';
-import {GeocoderService} from '../../../services';
+import {Geocoder} from '../../../services';
 import {aLocation, givenTodo} from '../../helpers';
 
 describe('TodoController', () => {
   let todoRepo: StubbedInstanceWithSinonAccessor<TodoRepository>;
-  let geoService: GeocoderService;
+  let geoService: Geocoder;
 
   let geocode: sinon.SinonStub;
 

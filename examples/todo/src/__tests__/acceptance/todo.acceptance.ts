@@ -14,7 +14,7 @@ import {
 import {TodoListApplication} from '../../application';
 import {Todo} from '../../models/';
 import {TodoRepository} from '../../repositories/';
-import {GeocoderService} from '../../services';
+import {Geocoder} from '../../services';
 import {
   aLocation,
   getProxiedGeoCoderConfig,
@@ -40,7 +40,7 @@ describe('TodoApplication', () => {
   before(async function() {
     // eslint-disable-next-line no-invalid-this
     this.timeout(30 * 1000);
-    const service = await app.get<GeocoderService>('services.GeocoderService');
+    const service = await app.get<Geocoder>('services.Geocoder');
     available = await isGeoCoderServiceAvailable(service);
   });
 
