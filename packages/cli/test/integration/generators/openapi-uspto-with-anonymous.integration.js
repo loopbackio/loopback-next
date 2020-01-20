@@ -23,7 +23,8 @@ const props = {
 };
 
 describe('openapi-generator specific files', () => {
-  const index = path.resolve(SANDBOX_PATH, 'src/controllers/index.ts');
+  const modelIndex = path.resolve(SANDBOX_PATH, 'src/models/index.ts');
+  const controIndex = path.resolve(SANDBOX_PATH, 'src/controllers/index.ts');
   const searchController = path.resolve(
     SANDBOX_PATH,
     'src/controllers/search.controller.ts',
@@ -63,7 +64,10 @@ describe('openapi-generator specific files', () => {
     assert.file(performSearchResponseBodyModel);
     expectFileToMatchSnapshot(performSearchResponseBodyModel);
 
-    assert.file(index);
-    expectFileToMatchSnapshot(index);
+    assert.file(modelIndex);
+    expectFileToMatchSnapshot(modelIndex);
+
+    assert.file(controIndex);
+    expectFileToMatchSnapshot(controIndex);
   });
 });

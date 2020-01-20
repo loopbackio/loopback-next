@@ -8,12 +8,20 @@
 'use strict';
 
 exports[`openapi-generator specific files generates all the proper files 1`] = `
-export * from './open-api.controller';
+export * from './pet.model';
+export * from './new-pet.model';
+export * from './error.model';
 
 `;
 
 
 exports[`openapi-generator specific files generates all the proper files 2`] = `
+export * from './open-api.controller';
+
+`;
+
+
+exports[`openapi-generator specific files generates all the proper files 3`] = `
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {operation, param, requestBody} from '@loopback/rest';
 import {Pet} from '../models/pet.model';
@@ -85,7 +93,7 @@ Sed tempus felis lobortis leo pulvinar rutrum. Nam mattis velit nisl, eu condime
 `;
 
 
-exports[`openapi-generator specific files generates all the proper files 3`] = `
+exports[`openapi-generator specific files generates all the proper files 4`] = `
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {NewPet} from './new-pet.model';
 /**
@@ -100,7 +108,7 @@ export type Pet = NewPet & {
 `;
 
 
-exports[`openapi-generator specific files generates all the proper files 4`] = `
+exports[`openapi-generator specific files generates all the proper files 5`] = `
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {model, property} from '@loopback/repository';
 
@@ -130,11 +138,18 @@ export class NewPet {
 
 }
 
+export interface NewPetRelations {
+  // describe navigational properties here
+}
+
+export type NewPetWithRelations = NewPet & NewPetRelations;
+
+
 
 `;
 
 
-exports[`openapi-generator specific files generates all the proper files 5`] = `
+exports[`openapi-generator specific files generates all the proper files 6`] = `
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {model, property} from '@loopback/repository';
 
@@ -163,6 +178,13 @@ export class Error {
   message: string;
 
 }
+
+export interface ErrorRelations {
+  // describe navigational properties here
+}
+
+export type ErrorWithRelations = Error & ErrorRelations;
+
 
 
 `;

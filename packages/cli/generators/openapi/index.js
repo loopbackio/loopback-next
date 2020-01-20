@@ -12,6 +12,8 @@ const {validateUrlOrFile, escapeComment} = require('./utils');
 const {getControllerFileName} = require('./spec-helper');
 
 const updateIndex = require('../../lib/update-index');
+const MODEL = 'models';
+const CONTROLLER = 'controllers';
 
 module.exports = class OpenApiGenerator extends BaseGenerator {
   // Note: arguments and options should be defined in the constructor.
@@ -122,8 +124,9 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
   async scaffold() {
     if (this.shouldExit()) return false;
     this._generateModels();
+    await this._updateIndex(MODEL);
     this._generateControllers();
-    await this._updateIndex();
+    await this._updateIndex(CONTROLLER);
   }
 
   _generateControllers() {
@@ -161,13 +164,26 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
     }
   }
 
-  async _updateIndex() {
-    const targetDir = this.destinationPath(`src/controllers`);
-    for (const c of this.selectedControllers) {
-      // Check all files being generated to ensure they succeeded
-      const status = this.conflicter.generationStatus[c.fileName];
-      if (status !== 'skip' && status !== 'identical') {
-        await updateIndex(targetDir, c.fileName);
+  // update index file for models and controllers
+  async _updateIndex(dir) {
+    if (dir === MODEL) {
+      const targetDir = this.destinationPath(`src/${MODEL}`);
+      for (const m of this.modelSpecs) {
+        // Check all files being generated to ensure they succeeded
+        const status = this.conflicter.generationStatus[m.fileName];
+        if (status !== 'skip' && status !== 'identical') {
+          await updateIndex(targetDir, m.fileName);
+        }
+      }
+    }
+    if (dir === CONTROLLER) {
+      const targetDir = this.destinationPath(`src/${CONTROLLER}`);
+      for (const c of this.selectedControllers) {
+        // Check all files being generated to ensure they succeeded
+        const status = this.conflicter.generationStatus[c.fileName];
+        if (status !== 'skip' && status !== 'identical') {
+          await updateIndex(targetDir, c.fileName);
+        }
       }
     }
   }

@@ -91,6 +91,12 @@ export class MetadataController {
 
 
 exports[`openapi-generator specific files generates all the proper files 3`] = `
+export * from './data-set-list.model';
+
+`;
+
+
+exports[`openapi-generator specific files generates all the proper files 4`] = `
 export * from './metadata.controller';
 export * from './search.controller';
 
@@ -141,6 +147,12 @@ export class MetadataController {
 
 
 exports[`openapi-generator specific files skips controllers not selected 2`] = `
+export * from './data-set-list.model';
+
+`;
+
+
+exports[`openapi-generator specific files skips controllers not selected 3`] = `
 export * from './metadata.controller';
 
 `;
