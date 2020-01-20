@@ -40,3 +40,10 @@ export class <%- className %> {
   <%_ } -%>
 }
 
+export interface <%= className %>Relations {
+  // describe navigational properties here
+}
+
+export type <%= className %>WithRelations = <%= className %> & <%= className %>Relations;
+
+

@@ -23,7 +23,8 @@ const props = {
 };
 
 describe('openapi-generator specific files', () => {
-  const index = path.resolve(SANDBOX_PATH, 'src/controllers/index.ts');
+  const modelIndex = path.resolve(SANDBOX_PATH, 'src/models/index.ts');
+  const controIndex = path.resolve(SANDBOX_PATH, 'src/controllers/index.ts');
   const searchController = path.resolve(
     SANDBOX_PATH,
     'src/controllers/search.controller.ts',
@@ -32,7 +33,7 @@ describe('openapi-generator specific files', () => {
     SANDBOX_PATH,
     'src/controllers/metadata.controller.ts',
   );
-  before('reset sandbox', async () => {
+  after('reset sandbox', async () => {
     await sandbox.reset();
   });
 
@@ -47,8 +48,11 @@ describe('openapi-generator specific files', () => {
     assert.file(metadataController);
     expectFileToMatchSnapshot(metadataController);
 
-    assert.file(index);
-    expectFileToMatchSnapshot(index);
+    assert.file(modelIndex);
+    expectFileToMatchSnapshot(modelIndex);
+
+    assert.file(controIndex);
+    expectFileToMatchSnapshot(controIndex);
   });
 
   it('skips controllers not selected', async () => {
@@ -64,7 +68,10 @@ describe('openapi-generator specific files', () => {
 
     assert.noFile(searchController);
 
-    assert.file(index);
-    expectFileToMatchSnapshot(index);
+    assert.file(modelIndex);
+    expectFileToMatchSnapshot(modelIndex);
+
+    assert.file(controIndex);
+    expectFileToMatchSnapshot(controIndex);
   });
 });

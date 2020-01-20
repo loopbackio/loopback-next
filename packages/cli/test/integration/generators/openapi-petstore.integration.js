@@ -30,6 +30,7 @@ describe('openapi-generator specific files', function() {
   // eslint-disable-next-line no-invalid-this
   this.timeout(10000);
 
+  const modelIndex = path.resolve(SANDBOX_PATH, 'src/models/index.ts');
   const controIndex = path.resolve(SANDBOX_PATH, 'src/controllers/index.ts');
   const controller = path.resolve(
     SANDBOX_PATH,
@@ -48,6 +49,9 @@ describe('openapi-generator specific files', function() {
       .executeGenerator(generator)
       .inDir(SANDBOX_PATH, () => testUtils.givenLBProject(SANDBOX_PATH))
       .withPrompts(props);
+
+    assert.file(modelIndex);
+    expectFileToMatchSnapshot(modelIndex);
 
     assert.file(controIndex);
     expectFileToMatchSnapshot(controIndex);

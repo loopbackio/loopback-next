@@ -120,6 +120,13 @@ export class PerformSearchRequestBody {
 
 }
 
+export interface PerformSearchRequestBodyRelations {
+  // describe navigational properties here
+}
+
+export type PerformSearchRequestBodyWithRelations = PerformSearchRequestBody & PerformSearchRequestBodyRelations;
+
+
 
 `;
 
@@ -145,6 +152,14 @@ export type PerformSearchResponseBody = {
 
 
 exports[`openapi-generator specific files generates all the proper files 5`] = `
+export * from './data-set-list.model';
+export * from './perform-search-request-body.model';
+export * from './perform-search-response-body.model';
+
+`;
+
+
+exports[`openapi-generator specific files generates all the proper files 6`] = `
 export * from './metadata.controller';
 export * from './search.controller';
 
