@@ -141,11 +141,31 @@ export type BindingTag = TagMap | string;
 export type BindingTemplate<T = unknown> = (binding: Binding<T>) => void;
 
 /**
+ * Information for a binding event
+ */
+export type BindingEvent = {
+  /**
+   * Event type
+   */
+  type: string;
+  /**
+   * Source binding that emits the event
+   */
+  binding: Readonly<Binding<unknown>>;
+  /**
+   * Operation that triggers the event
+   */
+  operation: string;
+};
+
+/**
  * Event listeners for binding events
  */
 export type BindingEventListener = (
-  binding: Binding<unknown>,
-  event: string,
+  /**
+   * Binding event
+   */
+  event: BindingEvent,
 ) => void;
 
 type ValueGetter<T> = (
@@ -335,6 +355,15 @@ export class Binding<T = BoundValue> extends EventEmitter {
   }
 
   /**
+   * Emit a `changed` event
+   * @param operation - Operation that makes changes
+   */
+  private emitChangedEvent(operation: string) {
+    const event: BindingEvent = {binding: this, operation, type: 'changed'};
+    this.emit('changed', event);
+  }
+
+  /**
    * Tag the binding with names or name/value objects. A tag has a name and
    * an optional value. If not supplied, the tag name is used as the value.
    *
@@ -372,7 +401,7 @@ export class Binding<T = BoundValue> extends EventEmitter {
         Object.assign(this.tagMap, t);
       }
     }
-    this.emit('changed', this, 'tag');
+    this.emitChangedEvent('tag');
     return this;
   }
 
@@ -390,7 +419,7 @@ export class Binding<T = BoundValue> extends EventEmitter {
   inScope(scope: BindingScope): this {
     if (this._scope !== scope) this._clearCache();
     this._scope = scope;
-    this.emit('changed', this, 'scope');
+    this.emitChangedEvent('scope');
     return this;
   }
 
@@ -421,7 +450,7 @@ export class Binding<T = BoundValue> extends EventEmitter {
       }
       return getValue(ctx, options);
     };
-    this.emit('changed', this, 'value');
+    this.emitChangedEvent('value');
   }
 
   /**
