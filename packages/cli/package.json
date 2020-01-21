@@ -28,7 +28,7 @@
     "@types/ejs": "^3.0.0",
     "@types/node": "^10.17.13",
     "glob": "^7.1.6",
-    "loopback-datasource-juggler": "^4.17.0",
+    "loopback-datasource-juggler": "^4.18.0",
     "mem-fs": "^1.1.3",
     "mem-fs-editor": "^6.0.0",
     "mock-stdin": "^1.0.0",
