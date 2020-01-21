@@ -534,18 +534,38 @@ The binding listener function signature is described as:
 
 ```ts
 /**
+ * Information for a binding event
+ */
+export type BindingEvent = {
+  /**
+   * Event type
+   */
+  type: string;
+  /**
+   * Source binding that emits the event
+   */
+  binding: Readonly<Binding<unknown>>;
+  /**
+   * Operation that triggers the event
+   */
+  operation: string;
+};
+
+/**
  * Event listeners for binding events
  */
 export type BindingEventListener = (
-  binding: Binding<unknown>,
-  event: string,
+  /**
+   * Binding event
+   */
+  event: BindingEvent,
 ) => void;
 ```
 
 Now we can register a binding listener to be triggered when tags are changed:
 
 ```ts
-const bindingListener: BindingEventListener = (binding, event) => {
+const bindingListener: BindingEventListener = ({binding, operation}) => {
   if (event === 'tag') {
     console.log('Binding tags for %s %j', binding.key, binding.tagMap);
   }

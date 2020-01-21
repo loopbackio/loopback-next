@@ -6,6 +6,7 @@
 import {expect, sinon, SinonSpy} from '@loopback/testlab';
 import {
   Binding,
+  BindingEvent,
   BindingScope,
   BindingType,
   Context,
@@ -80,12 +81,9 @@ describe('Binding', () => {
     });
 
     it('triggers changed event', () => {
-      const events: unknown[] = [];
-      binding.on('changed', (b, op) => {
-        events.push({binding: b, op});
-      });
+      const events = listenOnBinding();
       binding.tag('t1');
-      expect(events).to.eql([{binding, op: 'tag'}]);
+      assertEvents(events, 'tag');
     });
   });
 
@@ -110,12 +108,9 @@ describe('Binding', () => {
     });
 
     it('triggers changed event', () => {
-      const events: unknown[] = [];
-      binding.on('changed', (b, op) => {
-        events.push({binding: b, op});
-      });
+      const events = listenOnBinding();
       binding.inScope(BindingScope.TRANSIENT);
-      expect(events).to.eql([{binding, op: 'scope'}]);
+      assertEvents(events, 'scope');
     });
   });
 
@@ -144,12 +139,9 @@ describe('Binding', () => {
     });
 
     it('triggers changed event', () => {
-      const events: unknown[] = [];
-      binding.on('changed', (b, op) => {
-        events.push({binding: b, op});
-      });
+      const events = listenOnBinding();
       binding.to('value');
-      expect(events).to.eql([{binding, op: 'value'}]);
+      assertEvents(events, 'value');
     });
 
     it('rejects promise values', () => {
@@ -179,12 +171,9 @@ describe('Binding', () => {
     });
 
     it('triggers changed event', () => {
-      const events: unknown[] = [];
-      binding.on('changed', (b, op) => {
-        events.push({binding: b, op});
-      });
+      const events = listenOnBinding();
       binding.toDynamicValue(() => Promise.resolve('hello'));
-      expect(events).to.eql([{binding, op: 'value'}]);
+      assertEvents(events, 'value');
     });
   });
 
@@ -198,12 +187,9 @@ describe('Binding', () => {
     });
 
     it('triggers changed event', () => {
-      const events: unknown[] = [];
-      binding.on('changed', (b, op) => {
-        events.push({binding: b, op});
-      });
+      const events = listenOnBinding();
       binding.toClass(MyService);
-      expect(events).to.eql([{binding, op: 'value'}]);
+      assertEvents(events, 'value');
     });
   });
 
@@ -242,12 +228,9 @@ describe('Binding', () => {
     });
 
     it('triggers changed event', () => {
-      const events: unknown[] = [];
-      binding.on('changed', (b, op) => {
-        events.push({binding: b, op});
-      });
+      const events = listenOnBinding();
       binding.toProvider(MyProvider);
-      expect(events).to.eql([{binding, op: 'value'}]);
+      assertEvents(events, 'value');
     });
   });
 
@@ -316,12 +299,9 @@ describe('Binding', () => {
     });
 
     it('triggers changed event', () => {
-      const events: unknown[] = [];
-      binding.on('changed', (b, op) => {
-        events.push({binding: b, op});
-      });
+      const events = listenOnBinding();
       binding.toAlias('parent.options#child');
-      expect(events).to.eql([{binding, op: 'value'}]);
+      assertEvents(events, 'value');
     });
   });
 
@@ -453,6 +433,18 @@ describe('Binding', () => {
   function givenBinding() {
     ctx = new Context();
     binding = new Binding(key);
+  }
+
+  function listenOnBinding() {
+    const events: BindingEvent[] = [];
+    binding.on('changed', (event: BindingEvent) => {
+      events.push(event);
+    });
+    return events;
+  }
+
+  function assertEvents(events: BindingEvent[], operation: string) {
+    expect(events).to.eql([{binding, operation, type: 'changed'}]);
   }
 
   class MyProvider implements Provider<string> {
