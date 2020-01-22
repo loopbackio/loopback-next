@@ -1,7 +1,7 @@
-// Copyright IBM Corp. 2017,2019. All Rights Reserved.
-// Node module: loopback-connector-cloudant
-// This file is licensed under the Artistic License 2.0.
-// License text available at https://opensource.org/licenses/Artistic-2.0
+// Copyright IBM Corp. 2019. All Rights Reserved.
+// Node module: @loopback/test-repository-cloudant
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
 
 'use strict';
 
@@ -38,7 +38,10 @@ let containerToDelete = null;
 
 async.waterfall(
   [
-    dockerStart('ibmcom/couchdb3:latest'),
+    // The tag 'latest' fails on creating the instance because the image got updated.
+    // Using the stable one here to pass tests.
+    // Reverse back to latest once it's fixed.
+    dockerStart('ibmcom/couchdb3:preview-1575988511'),
     sleep(ms('2s')),
     setCloudantEnv,
     waitFor('/_all_dbs'),
