@@ -542,6 +542,186 @@ class MyOtherController {
 }
 ```
 
+### @oas.response
+
+[API document](https://loopback.io/doc/en/lb4/apidocs.openapi-v3.oas.response.html),
+[OpenAPI Response Specification](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#response-object)
+
+This decorator lets you easily add response specifications using `Models` from
+`@loopback/repository`. The convenience decorator sets the `content-type` to
+`application/json`, and the response description to the string value in the
+`http-status` module. The models become references through the `x-ts-type`
+schema extention.
+
+```ts
+@model()
+class SuccessModel extends Model {
+  constructor(err: Partial<SuccessModel>) {
+    super(err);
+  }
+  @property({default: 'Hi there!'})
+  message: string;
+}
+
+class GenericError extends Model {
+  @property()
+  message: string;
+}
+
+class MyController {
+  @oas.get('/greet')
+  @oas.response(200, SuccessModel)
+  @oas.response(500, GenericError)
+  greet() {
+    return new SuccessModel({message: 'Hello, world!'});
+  }
+}
+```
+
+```json
+{
+  "paths": {
+    "/greet": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+#### Using many models
+
+For a given response code, it's possible to have a path that could return one of
+many errors. The `@oas.response` decorator lets you pass multiple Models as
+arguments. They're combined using an `anyOf` keyword.
+
+```ts
+class FooNotFound extends Model {
+  @property()
+  message: string;
+}
+
+class BarNotFound extends Model {
+  @property()
+  message: string;
+}
+
+class BazNotFound extends Model {
+  @property()
+  message: string;
+}
+
+class MyController {
+  @oas.get('/greet/{foo}/{bar}')
+  @oas.response(404, FooNotFound, BarNotFound)
+  @oas.response(404, BazNotFound)
+  greet() {
+    return new SuccessModel({message: 'Hello, world!'});
+  }
+}
+```
+
+```json
+{
+  "paths": {
+    "/greet": {
+      "get": {
+        "responses": {
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {"$ref": "#/components/schemas/FooNotFound"},
+                    {"$ref": "#/components/schemas/BarNotFound"},
+                    {"$ref": "#/components/schemas/BazNotFound"}
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+#### Using ReferenceObject, ResponseObjects, ContentObjects
+
+You don't have to use loopback `Models` to use this convenience decorator. Valid
+`ReferenceObjects`, `ContentObjects`, and `ResponseObjects` are also valid.
+
+```ts
+class MyController {
+  // this is a valid SchemaObject
+  @oas.get('/schema-object')
+  @oas.response(200, {
+    type: 'object',
+    properties: {
+      message: 'string',
+    },
+    required: 'string',
+  })
+  returnFromSchemaObject() {
+    return {message: 'Hello, world!'};
+  }
+
+  // this is a valid ResponseObject
+  @oas.get('/response-object')
+  @oas.response(200, {
+    content: {
+      'application/pdf': {
+        schema: {
+          type: 'string',
+          format: 'base64',
+        },
+      },
+    },
+  })
+  returnFromResponseObject() {
+    return {message: 'Hello, world!'};
+  }
+
+  // this is a valid ResponseObject
+  @oas.get('/reference-object')
+  @oas.response(200, {$ref: '#/path/to/schema'})
+  returnFromResponseObject() {
+    return {message: 'Hello, world!'};
+  }
+}
+```
+
+#### Using more options
+
+The `@oas.response` convenience decorator makes some assumptions for you in
+order to provide a level of convenience. The `@operation` decorator and the
+method convenience decorators let you write a full, complete, and completely
+valid `OperationObject`.
+
 ### @oas.tags
 
 [API document](https://loopback.io/doc/en/lb4/apidocs.openapi-v3.tags.html),

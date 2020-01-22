@@ -5,7 +5,11 @@
 
 import {MetadataAccessor} from '@loopback/core';
 import {ControllerSpec, RestEndpoint} from './controller-spec';
-import {ParameterObject, RequestBodyObject} from './types';
+import {
+  ParameterObject,
+  RequestBodyObject,
+  ResponseDecoratorMetadata,
+} from './types';
 
 export namespace OAI3Keys {
   /**
@@ -31,6 +35,14 @@ export namespace OAI3Keys {
     boolean,
     ClassDecorator
   >('openapi-v3:class:deprecated');
+
+  /*
+   * Metadata key used to add to or retrieve an endpoint's responses
+   */
+  export const RESPONSE_METHOD_KEY = MetadataAccessor.create<
+    ResponseDecoratorMetadata,
+    MethodDecorator
+  >('openapi-v3:methods:response');
 
   /**
    * Metadata key used to set or retrieve `param` decorator metadata

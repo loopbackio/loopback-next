@@ -10,6 +10,7 @@ import {
   JsonSchemaOptions,
 } from '@loopback/repository-json-schema';
 import {includes} from 'lodash';
+import {buildResponsesFromMetadata} from './build-responses-from-metadata';
 import {resolveSchema} from './generate-schema';
 import {jsonToSchemaObject, SchemaRef} from './json-to-schema';
 import {OAI3Keys} from './keys';
@@ -22,6 +23,7 @@ import {
   PathObject,
   ReferenceObject,
   RequestBodyObject,
+  ResponseDecoratorMetadata,
   ResponseObject,
   SchemaObject,
   SchemasObject,
@@ -165,12 +167,26 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
     };
 
     let operationSpec = endpoint.spec;
+
+    const decoratedResponses = MetadataInspector.getMethodMetadata<
+      ResponseDecoratorMetadata
+    >(OAI3Keys.RESPONSE_METHOD_KEY, constructor.prototype, op);
+
     if (!operationSpec) {
-      // The operation was defined via @operation(verb, path) with no spec
-      operationSpec = {
-        responses: defaultResponse,
-      };
+      if (decoratedResponses) {
+        operationSpec = buildResponsesFromMetadata(decoratedResponses);
+      } else {
+        // The operation was defined via @operation(verb, path) with no spec
+        operationSpec = {
+          responses: defaultResponse,
+        };
+      }
       endpoint.spec = operationSpec;
+    } else if (decoratedResponses) {
+      operationSpec = buildResponsesFromMetadata(
+        decoratedResponses,
+        operationSpec,
+      );
     }
 
     if (classTags && !operationSpec.tags) {
