@@ -38,7 +38,7 @@ let containerToDelete = null;
 
 async.waterfall(
   [
-    dockerStart('ibmcom/couchdb3:latest'),
+    dockerStart('ibmcom/couchdb3:preview-1575988511'),
     sleep(ms('2s')),
     setCloudantEnv,
     waitFor('/_all_dbs'),
@@ -47,7 +47,7 @@ async.waterfall(
     listUser(),
     exportENV(),
   ],
-  function(testErr) {
+  function (testErr) {
     if (testErr) {
       console.error('error running tests:', testErr);
       process.exit(1);
@@ -63,7 +63,7 @@ function sleep(n) {
     const next = args.pop();
     // prepend `null` to indicate no error
     args.unshift(null);
-    setTimeout(function() {
+    setTimeout(function () {
       // eslint-disable-next-line prefer-spread
       next.apply(null, args);
     }, n);
@@ -73,9 +73,9 @@ function sleep(n) {
 function dockerStart(imgName) {
   return function pullAndStart(next) {
     console.log('pulling image: %s', imgName);
-    docker.pull(imgName, function(err, stream) {
+    docker.pull(imgName, function (err, stream) {
       // eslint-disable-next-line no-shadow
-      docker.modem.followProgress(stream, function(err, output) {
+      docker.modem.followProgress(stream, function (err, output) {
         if (err) {
           return next(err);
         }
@@ -88,7 +88,7 @@ function dockerStart(imgName) {
             },
           },
           // eslint-disable-next-line no-shadow
-          function(err, container) {
+          function (err, container) {
             console.log(
               'recording container for later cleanup: ',
               container.id,
@@ -98,7 +98,7 @@ function dockerStart(imgName) {
               return next(err);
             }
             // eslint-disable-next-line no-shadow
-            container.start(function(err, data) {
+            container.start(function (err, data) {
               next(err, container);
             });
           },
@@ -109,7 +109,7 @@ function dockerStart(imgName) {
 }
 
 function setCloudantEnv(container, next) {
-  container.inspect(function(err, c) {
+  container.inspect(function (err, c) {
     // if swarm, Node.Ip will be set to actual node's IP
     // if not swarm, but remote docker, use docker host's IP
     // if local docker, use localhost
@@ -161,10 +161,10 @@ function waitFor(path) {
         next(err || new Error('failed to contact Cloudant'));
       }
       http
-        .get(opts, function(res) {
+        .get(opts, function (res) {
           res.pipe(devNull());
           res.on('error', tryAgain);
-          res.on('end', function() {
+          res.on('end', function () {
             if (res.statusCode === 200) {
               setImmediate(next, null, container);
             } else {
@@ -198,10 +198,10 @@ function createAdmin() {
       body: data,
     };
 
-    const req = http.request(opts, function(res) {
+    const req = http.request(opts, function (res) {
       res.pipe(devNull());
       res.on('error', next);
-      res.on('end', function() {
+      res.on('end', function () {
         setImmediate(next, null, container);
       });
     });
@@ -221,10 +221,10 @@ function createDB(db) {
     };
     console.log('creating db: %j', db);
     http
-      .request(opts, function(res) {
+      .request(opts, function (res) {
         res.pipe(devNull());
         res.on('error', next);
-        res.on('end', function() {
+        res.on('end', function () {
           setImmediate(next, null, container);
         });
       })
@@ -245,7 +245,7 @@ function listUser() {
     };
     // console.log('creating db: %j', db);
     http
-      .request(opts, function(res) {
+      .request(opts, function (res) {
         res.pipe(devNull());
         res.on('error', next);
 
@@ -255,7 +255,7 @@ function listUser() {
           rawData += chunk;
         });
 
-        res.on('end', function() {
+        res.on('end', function () {
           try {
             const parsedData = JSON.parse(rawData);
             console.log(parsedData);
@@ -302,7 +302,7 @@ function exportENV() {
 function dockerCleanup(next) {
   if (containerToDelete) {
     console.log('cleaning up container: %s', containerToDelete.id);
-    containerToDelete.remove({force: true}, function(err) {
+    containerToDelete.remove({ force: true }, function (err) {
       next(err);
     });
   } else {
@@ -314,7 +314,7 @@ function dockerCleanup(next) {
 // streams so that they 'end' properly, like sometimes-empty http responses.
 function devNull() {
   return new require('stream').Writable({
-    write: function(_chunk, _encoding, cb) {
+    write: function (_chunk, _encoding, cb) {
       return cb(null);
     },
   });
