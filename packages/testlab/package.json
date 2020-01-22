@@ -26,7 +26,7 @@
     "fs-extra": "^8.1.0",
     "oas-validator": "^3.3.2",
     "should": "^13.2.3",
-    "sinon": "^8.1.0",
+    "sinon": "^8.1.1",
     "supertest": "^4.0.2"
   },
   "devDependencies": {
