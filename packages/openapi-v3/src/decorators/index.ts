@@ -14,6 +14,7 @@ import {deprecated} from './deprecated.decorator';
 import {del, get, operation, patch, post, put} from './operation.decorator';
 import {param} from './parameter.decorator';
 import {requestBody} from './request-body.decorator';
+import {response} from './response.decorator';
 import {tags} from './tags.decorator';
 
 export const oas = {
@@ -35,5 +36,6 @@ export const oas = {
 
   // oas convenience decorators
   deprecated,
+  response,
   tags,
 };

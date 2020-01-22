@@ -2,8 +2,13 @@
 // Node module: @loopback/openapi-v3
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
-
-import {OpenAPIObject} from 'openapi3-ts';
+import {Model} from '@loopback/repository';
+import {
+  OpenAPIObject,
+  ReferenceObject,
+  ResponseObject,
+  SchemaObject,
+} from 'openapi3-ts';
 /*
  * OpenApiSpec - A typescript representation of OpenApi 3.0.0
  */
@@ -32,3 +37,18 @@ export function createEmptyApiSpec(): OpenApiSpec {
 export interface TagsDecoratorMetadata {
   tags: string[];
 }
+
+export type ResponseModelOrSpec =
+  | typeof Model
+  | SchemaObject
+  | ResponseObject
+  | ReferenceObject;
+
+export interface ResponseDecoratorMetadataItem {
+  responseCode: number;
+  contentType: string;
+  responseModelOrSpec: ResponseModelOrSpec;
+  description: string;
+}
+
+export type ResponseDecoratorMetadata = ResponseDecoratorMetadataItem[];
