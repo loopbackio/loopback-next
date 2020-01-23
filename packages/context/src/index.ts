@@ -14,6 +14,7 @@ export * from './binding-sorter';
 export * from './context';
 export * from './context-event';
 export * from './context-observer';
+export * from './context-subscription';
 export * from './context-view';
 export * from './inject';
 export * from './inject-config';

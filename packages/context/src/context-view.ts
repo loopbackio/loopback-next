@@ -10,11 +10,8 @@ import {Binding} from './binding';
 import {BindingFilter} from './binding-filter';
 import {BindingComparator} from './binding-sorter';
 import {Context} from './context';
-import {
-  ContextEventType,
-  ContextObserver,
-  Subscription,
-} from './context-observer';
+import {ContextEventType, ContextObserver} from './context-observer';
+import {Subscription} from './context-subscription';
 import {Getter} from './inject';
 import {ResolutionSession} from './resolution-session';
 import {isPromiseLike, resolveList, ValueOrPromise} from './value-promise';

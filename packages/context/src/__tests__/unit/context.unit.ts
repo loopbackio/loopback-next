@@ -11,8 +11,6 @@ import {
   BindingScope,
   BindingType,
   Context,
-  ContextEventListener,
-  ContextEventObserver,
   isPromiseLike,
   Provider,
 } from '../..';
@@ -22,10 +20,14 @@ import {
  * for assertions
  */
 class TestContext extends Context {
-  observers: Set<ContextEventObserver> | undefined;
+  get observers() {
+    return this.subscriptionManager.observers;
+  }
 
   // Make parentEventListener public for testing purpose
-  parentEventListener: ContextEventListener;
+  get parentEventListener() {
+    return this.subscriptionManager.parentContextEventListener;
+  }
 
   get parent() {
     return this._parent;

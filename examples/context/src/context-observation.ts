@@ -35,7 +35,7 @@ class RequestContext extends Context {
    * Wait until the context event queue is empty or an error is thrown
    */
   waitUntilObserversNotified(): Promise<void> {
-    return this.waitUntilPendingNotificationsDone(100);
+    return this.subscriptionManager.waitUntilPendingNotificationsDone(100);
   }
 }
 

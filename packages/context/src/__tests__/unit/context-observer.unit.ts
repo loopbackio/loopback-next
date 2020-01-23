@@ -12,7 +12,6 @@ import {
   ContextEventType,
   ContextObserver,
   filterByTag,
-  ContextEventListener,
 } from '../..';
 
 const setImmediateAsync = promisify(setImmediate);
@@ -22,14 +21,15 @@ const setImmediateAsync = promisify(setImmediate);
  * for assertions
  */
 class TestContext extends Context {
-  // Make parentEventListener public for testing purpose
-  parentEventListener: ContextEventListener;
+  get parentEventListener() {
+    return this.subscriptionManager.parentContextEventListener;
+  }
 
   /**
    * Wait until the context event queue is empty or an error is thrown
    */
   waitUntilObserversNotified(): Promise<void> {
-    return this.waitUntilPendingNotificationsDone(100);
+    return this.subscriptionManager.waitUntilPendingNotificationsDone(100);
   }
 }
 
