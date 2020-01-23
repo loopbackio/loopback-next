@@ -15,6 +15,7 @@ import {
 import {Application, CoreBindings, Server} from '@loopback/core';
 import {HttpServer, HttpServerOptions} from '@loopback/http-server';
 import {
+  ConsolidationEnhancer,
   getControllerSpec,
   OASEnhancerService,
   OAS_ENHANCER_SERVICE,
@@ -741,6 +742,8 @@ export class RestServer extends Context implements Server, HttpServerLike {
     if (requestContext) {
       spec = this.updateSpecFromRequest(spec, requestContext);
     }
+    const consolidationEnhancer = new ConsolidationEnhancer();
+    spec = consolidationEnhancer.modifySpec(spec);
 
     // Apply OAS enhancers to the OpenAPI specification
     this.OASEnhancer.spec = spec;

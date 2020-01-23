@@ -3,6 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+export * from './consolidate-schema.enhancer';
 export * from './extensions/security.spec.extension';
 export * from './keys';
 export * from './spec-enhancer.service';
