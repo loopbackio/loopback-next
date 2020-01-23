@@ -139,6 +139,11 @@ export interface ApiDocsOptions {
    * A flag to generate default package documentation
    */
   generateDefaultPackageDoc?: boolean;
+
+  /**
+   * Package metadata
+   */
+  lernaPackages?: Record<string, LernaPackage>;
 }
 
 /**

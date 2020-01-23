@@ -123,6 +123,7 @@ lang: en
 title: 'API docs: index'
 keywords: LoopBack 4.0, LoopBack 4
 sidebar: lb4_sidebar
+editurl: https://github.com/strongloop/loopback-next
 permalink: /doc/en/lb4/apidocs.index.html
 ---`);
 
@@ -141,6 +142,9 @@ permalink: /doc/en/lb4/apidocs.index.html
       'utf-8',
     );
     expect(constructorDoc).to.not.match(/\.\(constructor\)\.md/);
+    expect(constructorDoc).to.match(
+      /editurl\: https\:\/\/github\.com\/strongloop\/loopback\-next\/tree\/master\/packages\/pkg1/,
+    );
 
     const pkgDoc = await fs.readFile(
       path.join(SITE_APIDOCS_ROOT, 'pkg1.md'),
@@ -148,6 +152,9 @@ permalink: /doc/en/lb4/apidocs.index.html
     );
     expect(pkgDoc).to.match(
       /\[pkg1\]\(https\:\/\/github\.com\/strongloop\/loopback\-next\/tree\/master\/packages\/pkg1\)/,
+    );
+    expect(pkgDoc).to.match(
+      /editurl\: https\:\/\/github\.com\/strongloop\/loopback\-next\/tree\/master\/packages\/pkg1/,
     );
   });
 });
