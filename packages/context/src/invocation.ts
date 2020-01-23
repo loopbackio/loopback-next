@@ -55,9 +55,7 @@ export class InvocationContext extends Context {
    * @param args - An array of arguments
    */
   constructor(
-    // Make `parent` public so that the interceptor can add bindings to
-    // the request context, for example, tracing id
-    public readonly parent: Context,
+    parent: Context,
     public readonly target: object,
     public readonly methodName: string,
     public readonly args: InvocationArgs,

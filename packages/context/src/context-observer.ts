@@ -6,7 +6,6 @@
 import {Binding} from './binding';
 import {BindingFilter} from './binding-filter';
 import {Context} from './context';
-import {ContextEvent} from './context-event';
 import {ValueOrPromise} from './value-promise';
 
 /**
@@ -49,28 +48,3 @@ export interface ContextObserver {
  * Context event observer type - An instance of `ContextObserver` or a function
  */
 export type ContextEventObserver = ContextObserver | ContextObserverFn;
-
-/**
- * Subscription of context events. It's modeled after
- * https://github.com/tc39/proposal-observable.
- */
-export interface Subscription {
-  /**
-   * unsubscribe
-   */
-  unsubscribe(): void;
-  /**
-   * Is the subscription closed?
-   */
-  closed: boolean;
-}
-
-/**
- * Event data for observer notifications
- */
-export interface Notification extends ContextEvent {
-  /**
-   * A snapshot of observers when the original event is emitted
-   */
-  observers: Set<ContextEventObserver>;
-}
