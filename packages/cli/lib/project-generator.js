@@ -10,6 +10,7 @@ const utils = require('./utils');
 const chalk = require('chalk');
 const cliVersion = require('../package.json').version;
 const path = require('path');
+const g = require('./globalize');
 
 module.exports = class ProjectGenerator extends BaseGenerator {
   // Note: arguments and options should be defined in the constructor.
@@ -21,21 +22,21 @@ module.exports = class ProjectGenerator extends BaseGenerator {
     this.buildOptions = [
       {
         name: 'eslint',
-        description: 'add a linter with pre-configured lint rules',
+        description: g.f('add a linter with pre-configured lint rules'),
       },
       {
         name: 'prettier',
-        description: 'install prettier to format code conforming to rules',
+        description: g.f('install prettier to format code conforming to rules'),
       },
       {
         name: 'mocha',
-        description: 'install mocha to run tests',
+        description: g.f('install mocha to run tests'),
       },
       {
         name: 'loopbackBuild',
-        description: 'use @loopback/build helpers (e.g. lb-eslint)',
+        description: g.f('use @loopback/build helpers (e.g. lb-eslint)'),
       },
-      {name: 'vscode', description: 'add VSCode config files'},
+      {name: 'vscode', description: g.f('add VSCode config files')},
     ];
   }
 
@@ -43,47 +44,47 @@ module.exports = class ProjectGenerator extends BaseGenerator {
     this.argument('name', {
       type: String,
       required: false,
-      description: 'Project name for the ' + this.projectType,
+      description: g.f('Project name for the %s', this.projectType),
     });
 
     this.option('description', {
       type: String,
-      description: 'Description for the ' + this.projectType,
+      description: g.f('Description for the %s', this.projectType),
     });
 
     this.option('outdir', {
       type: String,
-      description: 'Project root directory for the ' + this.projectType,
+      description: g.f('Project root directory for the %s', this.projectType),
     });
 
     this.option('eslint', {
       type: Boolean,
-      description: 'Enable eslint',
+      description: g.f('Enable eslint'),
     });
 
     this.option('prettier', {
       type: Boolean,
-      description: 'Enable prettier',
+      description: g.f('Enable prettier'),
     });
 
     this.option('mocha', {
       type: Boolean,
-      description: 'Enable mocha',
+      description: g.f('Enable mocha'),
     });
 
     this.option('loopbackBuild', {
       type: Boolean,
-      description: 'Use @loopback/build',
+      description: g.f('Use @loopback/build'),
     });
 
     this.option('vscode', {
       type: Boolean,
-      description: 'Use preconfigured VSCode settings',
+      description: g.f('Use preconfigured VSCode settings'),
     });
 
     this.option('private', {
       type: Boolean,
-      description: 'Mark the project private (excluded from npm publish)',
+      description: g.f('Mark the project private (excluded from npm publish)'),
     });
 
     this._setupRenameTransformer();
@@ -132,7 +133,7 @@ module.exports = class ProjectGenerator extends BaseGenerator {
       {
         type: 'input',
         name: 'name',
-        message: 'Project name:',
+        message: g.f('Project name:'),
         when: this.projectInfo.name == null,
         default:
           this.options.name || utils.toFileName(path.basename(process.cwd())),
@@ -141,7 +142,7 @@ module.exports = class ProjectGenerator extends BaseGenerator {
       {
         type: 'input',
         name: 'description',
-        message: 'Project description:',
+        message: g.f('Project description:'),
         when: this.projectInfo.description == null,
         default: this.options.name || this.appname,
       },
@@ -158,7 +159,7 @@ module.exports = class ProjectGenerator extends BaseGenerator {
       {
         type: 'input',
         name: 'outdir',
-        message: 'Project root directory:',
+        message: g.f('Project root directory:'),
         when:
           this.projectInfo.outdir == null ||
           // prompts if option was set to a directory that already exists
@@ -191,7 +192,7 @@ module.exports = class ProjectGenerator extends BaseGenerator {
     const prompts = [
       {
         name: 'settings',
-        message: 'Select features to enable in the project',
+        message: g.f('Select features to enable in the project'),
         type: 'checkbox',
         choices: choices,
         // Skip if all features are enabled by cli options
