@@ -11,6 +11,7 @@ import {
   DEFAULT_APIDOCS_EXTRACTION_PATH,
   DEFAULT_APIDOCS_GENERATION_PATH,
   getPackagesWithTsDocs,
+  getUnscopedPackageName,
   LernaPackage,
 } from './helper';
 
@@ -40,7 +41,7 @@ export async function updateApiDocs(options: ApiDocsOptions = {}) {
   const packagesByName: Record<string, LernaPackage> = {};
 
   for (const pkg of packages) {
-    packagesByName[pkg.name] = pkg;
+    packagesByName[getUnscopedPackageName(pkg.name)] = pkg;
   }
 
   options.lernaPackages = packagesByName;
