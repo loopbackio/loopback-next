@@ -82,6 +82,11 @@ module.exports = class ProjectGenerator extends BaseGenerator {
       description: g.f('Use preconfigured VSCode settings'),
     });
 
+    this.option('skipGit', {
+      type: Boolean,
+      description: 'Do not create a local git repository',
+    });
+
     this.option('private', {
       type: Boolean,
       description: g.f('Mark the project private (excluded from npm publish)'),
@@ -114,7 +119,7 @@ module.exports = class ProjectGenerator extends BaseGenerator {
       projectType: this.projectType,
       dependencies: utils.getDependencies(),
     };
-    this.projectOptions = ['name', 'description', 'outdir', 'private'].concat(
+    this.projectOptions = ['name', 'description', 'outdir', 'git', 'private'].concat(
       this.buildOptions,
     );
     this.projectOptions.forEach(n => {
@@ -166,6 +171,24 @@ module.exports = class ProjectGenerator extends BaseGenerator {
           utils.validateNotExisting(this.projectInfo.outdir) !== true,
         validate: utils.validateNotExisting,
         default: utils.toFileName(this.projectInfo.name),
+      },
+    ];
+
+    return this.prompt(prompts).then(props => {
+      Object.assign(this.projectInfo, props);
+    });
+  }
+
+  promptProjectGit() {
+    if (this.shouldExit()) return false;
+    const prompts = [
+      {
+        type: 'confirm',
+        name: 'git',
+        message: 'Create local Git repository:',
+        when: !this.options.skipGit && this.projectInfo.git == null,
+        validate: utils.validateNotExisting,
+        default: true,
       },
     ];
 
@@ -270,6 +293,14 @@ module.exports = class ProjectGenerator extends BaseGenerator {
 
     if (!this.projectInfo.vscode) {
       this.fs.delete(this.destinationPath('.vscode'));
+    }
+  }
+
+  end() {
+    if (this.projectInfo.git) {
+      this.spawnCommandSync('git', ['init', '--quiet']);
+      this.spawnCommandSync('git', ['add', '--all']);
+      this.spawnCommandSync('git', ['commit', '-m "initial commit"']);
     }
   }
 };

@@ -55,6 +55,10 @@ module.exports = class ExtensionGenerator extends ProjectGenerator {
     });
   }
 
+  promptProjectGit() {
+    return super.promptProjectGit();
+  }
+
   promptOptions() {
     return super.promptOptions();
   }

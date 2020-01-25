@@ -100,6 +100,10 @@ module.exports = class AppGenerator extends ProjectGenerator {
     });
   }
 
+  promptProjectGit() {
+    return super.promptProjectGit();
+  }
+
   promptOptions() {
     if (this.shouldExit()) return;
     return super.promptOptions();
