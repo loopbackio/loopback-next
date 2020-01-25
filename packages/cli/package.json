@@ -153,7 +153,9 @@
       "@loopback/example-rest-crud": "^1.1.1",
       "@loopback/apiconnect": "^0.1.1",
       "@loopback/example-validation-app": "^1.1.1",
-      "@loopback/cron": "^0.1.0"
+      "@loopback/cron": "^0.1.0",
+      "husky": "^4.2.3",
+      "lint-staged": "^10.0.9"
     }
   },
   "copyright.owner": "IBM Corp.",

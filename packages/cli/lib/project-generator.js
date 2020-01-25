@@ -29,6 +29,10 @@ module.exports = class ProjectGenerator extends BaseGenerator {
         description: g.f('install prettier to format code conforming to rules'),
       },
       {
+        name: 'lint-staged',
+        description: 'Run linters on git staged files',
+      },
+      {
         name: 'mocha',
         description: g.f('install mocha to run tests'),
       },
@@ -119,9 +123,13 @@ module.exports = class ProjectGenerator extends BaseGenerator {
       projectType: this.projectType,
       dependencies: utils.getDependencies(),
     };
-    this.projectOptions = ['name', 'description', 'outdir', 'git', 'private'].concat(
-      this.buildOptions,
-    );
+    this.projectOptions = [
+      'name',
+      'description',
+      'outdir',
+      'git',
+      'private',
+    ].concat(this.buildOptions);
     this.projectOptions.forEach(n => {
       if (typeof n === 'object') {
         n = n.name;
@@ -276,6 +284,14 @@ module.exports = class ProjectGenerator extends BaseGenerator {
 
     if (!this.projectInfo.prettier) {
       this.fs.delete(this.destinationPath('.prettier*'));
+    }
+
+    if (
+      !this.projectInfo.git ||
+      !this.projectInfo.eslint & !this.projectInfo.prettier ||
+      !this.projectInfo['lint-staged']
+    ) {
+      this.fs.delete(this.destinationPath('.lintstagedrc.ejs'));
     }
 
     if (!this.projectInfo.loopbackBuild) {

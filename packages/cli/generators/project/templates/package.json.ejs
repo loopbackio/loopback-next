@@ -72,6 +72,13 @@
     "src",
     "!*/__tests__"
   ],
+<% if (project['lint-staged']) { -%>
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+<% }%>
   "dependencies": {
     "@loopback/boot": "<%= project.dependencies['@loopback/boot'] -%>",
     "@loopback/context": "<%= project.dependencies['@loopback/context'] -%>",
@@ -106,6 +113,10 @@
     "eslint-config-prettier": "<%= project.dependencies['eslint-config-prettier'] -%>",
     "eslint-plugin-eslint-plugin": "<%= project.dependencies['eslint-plugin-eslint-plugin'] -%>",
     "eslint-plugin-mocha": "<%= project.dependencies['eslint-plugin-mocha'] -%>",
+    <% } -%>
+    <% if (project['lint-staged']) { -%>
+    "husky": "<% project.dependencies['husky'] -%>",
+    "lint-staged": "<%= project.dependencies['lint-staged'] -%>",
     <% } -%>
     "typescript": "<%= project.dependencies['typescript'] -%>"
   }

@@ -1,0 +1,10 @@
+{
+  "*.{ts,js}": [
+    <% if (project.eslint) { -%>
+    "lb-eslint --report-unused-disable-directives --fix",
+    <% } -%>
+    <% if (project.prettier) { -%>
+    "lb-prettier --write"
+    <% } -%>
+  ]
+}

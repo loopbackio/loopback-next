@@ -371,7 +371,7 @@ exports.renameEJS = function () {
 
     // extname already contains a leading '.'
     const fileName = `${basename}${extname}`;
-    const result = fileName.match(/(.+)(.ts|.json|.js|.md|.html)\.ejs$/);
+    const result = fileName.match(/(.+)(rc|.ts|.json|.js|.md|.html)\.ejs$/);
     if (result) {
       extname = result[2];
       basename = result[1];
