@@ -5,12 +5,20 @@
 
 import assert from 'assert';
 import {
+  CallbackObject,
+  ComponentsObject,
+  ExampleObject,
+  HeaderObject,
   ISpecificationExtension,
+  LinkObject,
   OpenAPIObject,
   OperationObject,
   ParameterObject,
+  ReferenceObject,
   RequestBodyObject,
   ResponseObject,
+  SchemaObject,
+  SecuritySchemeObject,
 } from 'openapi3-ts';
 
 /**
@@ -27,6 +35,13 @@ export function anOpenApiSpec() {
  */
 export function anOperationSpec() {
   return new OperationSpecBuilder();
+}
+
+/**
+ * Create a new instance of ComponentsSpecBuilder.
+ */
+export function aComponentsSpec() {
+  return new ComponentsSpecBuilder();
 }
 
 export class BuilderBase<T extends ISpecificationExtension> {
@@ -121,6 +136,17 @@ export class OpenApiSpecBuilder extends BuilderBase<OpenAPIObject> {
     if (operationName) spec.withOperationName(operationName);
 
     return this.withOperation(verb, path, spec);
+  }
+
+  /**
+   * Define a new ComponentsObject.
+   *
+   * @param spec - Specification of the components.
+   */
+  withComponents(spec: ComponentsObject | ComponentsSpecBuilder): this {
+    if (spec instanceof ComponentsSpecBuilder) spec = spec.build();
+    if (!this._spec.components) this._spec.components = spec;
+    return this;
   }
 }
 
@@ -228,6 +254,141 @@ export class OperationSpecBuilder extends BuilderBase<OperationObject> {
     if (!this._spec.tags) this._spec.tags = [];
     if (typeof tags === 'string') tags = [tags];
     this._spec.tags.push(...tags);
+    return this;
+  }
+}
+
+/**
+ * A builder for creating ComponentsObject specifications.
+ */
+export class ComponentsSpecBuilder extends BuilderBase<ComponentsObject> {
+  constructor() {
+    super({});
+  }
+
+  /**
+   * Define a component schema.
+   *
+   * @param name - The name of the schema
+   * @param schema - Specification of the schema
+   *
+   */
+  withSchema(name: string, schema: SchemaObject | ReferenceObject): this {
+    if (!this._spec.schemas) this._spec.schemas = {};
+    this._spec.schemas[name] = schema;
+    return this;
+  }
+
+  /**
+   * Define a component response.
+   *
+   * @param name - The name of the response
+   * @param response - Specification of the response
+   *
+   */
+  withResponse(name: string, response: ResponseObject | ReferenceObject): this {
+    if (!this._spec.responses) this._spec.responses = {};
+    this._spec.responses[name] = response;
+    return this;
+  }
+
+  /**
+   * Define a component parameter.
+   *
+   * @param name - The name of the parameter
+   * @param parameter - Specification of the parameter
+   *
+   */
+  withParameter(
+    name: string,
+    parameter: ParameterObject | ReferenceObject,
+  ): this {
+    if (!this._spec.parameters) this._spec.parameters = {};
+    this._spec.parameters[name] = parameter;
+    return this;
+  }
+
+  /**
+   * Define a component example.
+   *
+   * @param name - The name of the example
+   * @param example - Specification of the example
+   *
+   */
+  withExample(name: string, example: ExampleObject | ReferenceObject): this {
+    if (!this._spec.examples) this._spec.examples = {};
+    this._spec.examples[name] = example;
+    return this;
+  }
+
+  /**
+   * Define a component request body.
+   *
+   * @param name - The name of the request body
+   * @param requestBody - Specification of the request body
+   *
+   */
+  withRequestBody(
+    name: string,
+    requestBody: RequestBodyObject | ReferenceObject,
+  ): this {
+    if (!this._spec.requestBodies) this._spec.requestBodies = {};
+    this._spec.requestBodies[name] = requestBody;
+    return this;
+  }
+
+  /**
+   * Define a component header.
+   *
+   * @param name - The name of the header
+   * @param header - Specification of the header
+   *
+   */
+  withHeader(name: string, header: HeaderObject | ReferenceObject): this {
+    if (!this._spec.headers) this._spec.headers = {};
+    this._spec.headers[name] = header;
+    return this;
+  }
+
+  /**
+   * Define a component security scheme.
+   *
+   * @param name - The name of the security scheme
+   * @param securityScheme - Specification of the security scheme
+   *
+   */
+  withSecurityScheme(
+    name: string,
+    securityScheme: SecuritySchemeObject | ReferenceObject,
+  ): this {
+    if (!this._spec.securitySchemes) this._spec.securitySchemes = {};
+    this._spec.securitySchemes[name] = securityScheme;
+    return this;
+  }
+
+  /**
+   * Define a component link.
+   *
+   * @param name - The name of the link
+   * @param link - Specification of the link
+   *
+   */
+  withLink(name: string, link: LinkObject | ReferenceObject): this {
+    if (!this._spec.links) this._spec.links = {};
+    this._spec.links[name] = link;
+    return this;
+  }
+
+  /**
+   * Define a component callback.
+   *
+   * @param name - The name of the callback
+   * @param callback - Specification of the callback
+   *
+   */
+  withCallback(name: string, callback: CallbackObject | ReferenceObject): this {
+    if (!this._spec.callbacks) this._spec.callbacks = {};
+    this._spec.callbacks[name] = callback;
     return this;
   }
 }

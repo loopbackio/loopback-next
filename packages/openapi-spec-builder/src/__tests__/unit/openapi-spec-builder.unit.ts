@@ -5,7 +5,11 @@
 
 import {expect} from '@loopback/testlab';
 import {ParameterObject} from 'openapi3-ts';
-import {anOpenApiSpec, anOperationSpec} from '../../openapi-spec-builder';
+import {
+  aComponentsSpec,
+  anOpenApiSpec,
+  anOperationSpec,
+} from '../../openapi-spec-builder';
 
 describe('OpenAPI Spec Builder', () => {
   describe('anOpenApiSpec', () => {
@@ -39,6 +43,14 @@ describe('OpenAPI Spec Builder', () => {
           get: opSpec,
         },
       });
+    });
+
+    it('adds components', () => {
+      const comSpec = aComponentsSpec().build();
+      const spec = anOpenApiSpec()
+        .withComponents(comSpec)
+        .build();
+      expect(spec.components).to.containEql(comSpec);
     });
   });
 
@@ -146,6 +158,101 @@ describe('OpenAPI Spec Builder', () => {
         .withParameter(apiKey, limit)
         .build();
       expect(spec.parameters).to.eql([apiKey, limit]);
+    });
+  });
+
+  describe('aComponentsSpec', () => {
+    it('creates an empty spec', () => {
+      const spec = aComponentsSpec().build();
+      expect(spec).to.eql({});
+    });
+
+    it('adds a spec to schemas', () => {
+      const spec = aComponentsSpec()
+        .withSchema('TestSchema', {type: 'object'})
+        .build();
+      expect(spec.schemas).to.eql({
+        TestSchema: {type: 'object'},
+      });
+    });
+
+    it('adds a spec to responses', () => {
+      const spec = aComponentsSpec()
+        .withResponse('TestResponse', {description: 'test'})
+        .build();
+      expect(spec.responses).to.eql({
+        TestResponse: {description: 'test'},
+      });
+    });
+
+    it('adds a spec to parameters', () => {
+      const spec = aComponentsSpec()
+        .withParameter('TestParameter', {name: 'test', in: 'path'})
+        .build();
+      expect(spec.parameters).to.eql({
+        TestParameter: {name: 'test', in: 'path'},
+      });
+    });
+
+    it('adds a spec to examples', () => {
+      const spec = aComponentsSpec()
+        .withExample('TestExample', {description: 'test', anyProp: {}})
+        .build();
+      expect(spec.examples).to.eql({
+        TestExample: {description: 'test', anyProp: {}},
+      });
+    });
+
+    it('adds a spec to requestBodies', () => {
+      const spec = aComponentsSpec()
+        .withRequestBody('TestRequestBody', {content: {'application/json': {}}})
+        .build();
+      expect(spec.requestBodies).to.eql({
+        TestRequestBody: {content: {'application/json': {}}},
+      });
+    });
+
+    it('adds a spec to headers', () => {
+      const spec = aComponentsSpec()
+        .withHeader('TestHeader', {description: 'test'})
+        .build();
+      expect(spec.headers).to.eql({
+        TestHeader: {description: 'test'},
+      });
+    });
+
+    it('adds a spec to securitySchemes', () => {
+      const spec = aComponentsSpec()
+        .withSecurityScheme('TestSecurityScheme', {type: 'http'})
+        .build();
+      expect(spec.securitySchemes).to.eql({
+        TestSecurityScheme: {type: 'http'},
+      });
+    });
+
+    it('adds a spec to links', () => {
+      const spec = aComponentsSpec()
+        .withLink('TestLink', {description: 'test', anyProp: {}})
+        .build();
+      expect(spec.links).to.eql({
+        TestLink: {description: 'test', anyProp: {}},
+      });
+    });
+
+    it('adds a spec to callbacks', () => {
+      const spec = aComponentsSpec()
+        .withCallback('TestCallback', {anyProp: {}})
+        .build();
+      expect(spec.callbacks).to.eql({
+        TestCallback: {anyProp: {}},
+      });
+    });
+
+    it('adds an extension', () => {
+      const spec = aComponentsSpec()
+        .withExtension('x-loopback-test', 'test')
+        .build();
+      expect(spec).to.containEql({'x-loopback-test': 'test'});
     });
   });
 });
