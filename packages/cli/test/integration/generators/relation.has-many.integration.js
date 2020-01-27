@@ -313,11 +313,7 @@ describe('lb4 relation HasMany', function() {
         relationType: 'hasMany',
         sourceModel: 'CustomerClass',
         destinationModel: 'OrderClass',
-      },
-      {
-        relationType: 'hasMany',
-        sourceModel: 'CustomerClassType',
-        destinationModel: 'OrderClassType',
+        relationName: 'myOrders',
       },
     ];
 

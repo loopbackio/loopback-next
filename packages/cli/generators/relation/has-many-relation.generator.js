@@ -44,9 +44,8 @@ module.exports = class HasManyRelationGenerator extends BaseRelationGenerator {
     this.artifactInfo.targetModelRequestBody = utils.camelCase(
       this.artifactInfo.targetModelName,
     );
-    this.artifactInfo.relationPropertyName = utils.pluralize(
-      utils.camelCase(options.destinationModel),
-    );
+    this.artifactInfo.relationPropertyName = options.relationName;
+
     this.artifactInfo.sourceModelPrimaryKey = options.sourceModelPrimaryKey;
     this.artifactInfo.sourceModelPrimaryKeyType =
       options.sourceModelPrimaryKeyType;
