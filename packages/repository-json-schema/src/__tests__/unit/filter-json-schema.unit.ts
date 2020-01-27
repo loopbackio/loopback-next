@@ -156,6 +156,12 @@ describe('getFilterJsonSchemaFor', () => {
       .to.equal('Customer.IncludeFilter');
   });
 
+  it('returns "include.items.title" when no options were provided', () => {
+    expect(customerFilterSchema.properties)
+      .to.have.propertyByPath(...['include', 'items', 'title'])
+      .to.equal('Customer.IncludeFilter.Items');
+  });
+
   it('returns "scope.title" when no options were provided', () => {
     expect(customerFilterSchema.properties)
       .to.have.propertyByPath(
@@ -189,6 +195,12 @@ describe('getFilterJsonSchemaForOptionsSetTitle', () => {
       .to.equal('Customer.IncludeFilter');
   });
 
+  it('returns "include.items.title" when a single option "setTitle" is set', () => {
+    expect(customerFilterSchema.properties)
+      .to.have.propertyByPath(...['include', 'items', 'title'])
+      .to.equal('Customer.IncludeFilter.Items');
+  });
+
   it('returns "scope.title" when a single option "setTitle" is set', () => {
     expect(customerFilterSchema.properties)
       .to.have.propertyByPath(
@@ -212,6 +224,12 @@ describe('getFilterJsonSchemaForOptionsUnsetTitle', () => {
   it('"include.title" undefined when single option "setTitle" is false', () => {
     expect(customerFilterSchema.properties)
       .to.have.propertyByPath(...['include', 'title'])
+      .to.equal(undefined);
+  });
+
+  it('"include.items.title"  undefined when single option "setTitle" is false', () => {
+    expect(customerFilterSchema.properties)
+      .to.have.propertyByPath(...['include', 'items', 'title'])
       .to.equal(undefined);
   });
 
