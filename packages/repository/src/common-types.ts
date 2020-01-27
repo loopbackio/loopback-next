@@ -100,7 +100,7 @@ export interface Count {
  */
 export const CountSchema = {
   type: 'object',
-  title: 'loopback.count',
+  title: 'loopback.Count',
   properties: {count: {type: 'number'}},
 };
 
