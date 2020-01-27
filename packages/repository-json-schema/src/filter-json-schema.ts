@@ -101,6 +101,10 @@ export function getFilterJsonSchemaFor(
           : undefined,
       type: 'array',
       items: {
+        title:
+          options.setTitle !== false
+            ? `${modelCtor.modelName}.IncludeFilter.Items`
+            : undefined,
         type: 'object',
         properties: {
           // TODO(bajtos) restrict values to relations defined by "model"
