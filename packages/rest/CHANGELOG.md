@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.26.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@1.25.1...@loopback/rest@1.26.0) (2020-01-27)
+
+
+### Features
+
+* **context:** index bindings by tag to speed up matching by tag ([566b9d9](https://github.com/strongloop/loopback-next/commit/566b9d9a35ce52d9aeefe17e36f91c9714616b21))
+
+
+
+
+
 ## [1.25.1](https://github.com/strongloop/loopback-next/compare/@loopback/rest@1.25.0...@loopback/rest@1.25.1) (2020-01-07)
 
 **Note:** Version bump only for package @loopback/rest

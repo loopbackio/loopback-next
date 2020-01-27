@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.2](https://github.com/strongloop/loopback-next/compare/@loopback/model-api-builder@1.1.1...@loopback/model-api-builder@1.1.2) (2020-01-27)
+
+**Note:** Version bump only for package @loopback/model-api-builder
+
+
+
+
+
 ## [1.1.1](https://github.com/strongloop/loopback-next/compare/@loopback/model-api-builder@1.1.0...@loopback/model-api-builder@1.1.1) (2020-01-07)
 
 

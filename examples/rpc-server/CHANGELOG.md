@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.23](https://github.com/strongloop/loopback-next/compare/@loopback/example-rpc-server@1.2.22...@loopback/example-rpc-server@1.2.23) (2020-01-27)
+
+**Note:** Version bump only for package @loopback/example-rpc-server
+
+
+
+
+
 ## [1.2.22](https://github.com/strongloop/loopback-next/compare/@loopback/example-rpc-server@1.2.21...@loopback/example-rpc-server@1.2.22) (2020-01-07)
 
 **Note:** Version bump only for package @loopback/example-rpc-server

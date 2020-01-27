@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@1.11.0...@loopback/openapi-v3@1.12.0) (2020-01-27)
+
+
+### Features
+
+* support x-ts-type in anyOf/allOf/oneOf/not ([28fcc54](https://github.com/strongloop/loopback-next/commit/28fcc545e42d4c5ae88215436b873a78a3fb6c8d))
+* **openapi-v3:** add support for `anyOf` and `oneOf` on the `jsonToSchemaObject` utility ([72ba132](https://github.com/strongloop/loopback-next/commit/72ba1321a85112a3e085d62fe573f60f79d5c64c)), closes [#3524](https://github.com/strongloop/loopback-next/issues/3524)
+* **repository-json-schema:** add title to filter schemas ([6105883](https://github.com/strongloop/loopback-next/commit/6105883967ca5853cc8990f423d9febd1eb07101))
+
+
+
+
+
 # [1.11.0](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@1.10.3...@loopback/openapi-v3@1.11.0) (2020-01-07)
 
 

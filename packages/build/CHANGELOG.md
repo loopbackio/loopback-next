@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/build@3.0.1...@loopback/build@3.1.0) (2020-01-27)
+
+
+### Bug Fixes
+
+* remove updated debug config for PR ([15e8d34](https://github.com/strongloop/loopback-next/commit/15e8d34ad628ecb5b8fafe02441c73362a873e8c))
+* typos ([852f198](https://github.com/strongloop/loopback-next/commit/852f198ae7cb2c7d8801d7222cc574d04757404c))
+
+
+### Features
+
+* adds MultiMethodDecoratorFactory ([bf6c787](https://github.com/strongloop/loopback-next/commit/bf6c7872bb8ce492b43ab8f57a641dcbb341e96e))
+
+
+
+
+
 ## [3.0.1](https://github.com/strongloop/loopback-next/compare/@loopback/build@3.0.0...@loopback/build@3.0.1) (2020-01-07)
 
 **Note:** Version bump only for package @loopback/build

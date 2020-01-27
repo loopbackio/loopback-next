@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.4.8](https://github.com/strongloop/loopback-next/compare/@loopback/authorization@0.4.7...@loopback/authorization@0.4.8) (2020-01-27)
+
+
+### Bug Fixes
+
+* update authorization doc ([52a6d71](https://github.com/strongloop/loopback-next/commit/52a6d71c078f98de19c421587e7fe97e812414c8))
+
+
+
+
+
 ## [0.4.7](https://github.com/strongloop/loopback-next/compare/@loopback/authorization@0.4.6...@loopback/authorization@0.4.7) (2020-01-07)
 
 **Note:** Version bump only for package @loopback/authorization

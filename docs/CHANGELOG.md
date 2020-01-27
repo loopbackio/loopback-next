@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.9.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@2.8.1...@loopback/docs@2.9.0) (2020-01-27)
+
+
+### Bug Fixes
+
+* **docs:** add 2020 goals to roadmap ([9200ef3](https://github.com/strongloop/loopback-next/commit/9200ef3179f39cadfb4c732c528b156f79bae324))
+* **docs:** fix formatting for datasource migrations ([fd2196b](https://github.com/strongloop/loopback-next/commit/fd2196b79ab208b8850c5b0f79dbb4475353266a))
+
+
+### Features
+
+* **cli:** add static BINDING_KEY prop to non-global interceptors ([5fbd95f](https://github.com/strongloop/loopback-next/commit/5fbd95f47f67207d7e0430d8c08e2a9738e685ae))
+* **context:** make bindings as event emitters to report changes ([dddddb9](https://github.com/strongloop/loopback-next/commit/dddddb96fd6908a8d4caad8868e43d3d0bb742f6))
+* **context:** use BindingEvent for binding event listeners ([ae5febc](https://github.com/strongloop/loopback-next/commit/ae5febc35679f4d77b9970ecc26a71938a1c972e))
+* **docs:** migration guide for remoting hooks ([52cd1df](https://github.com/strongloop/loopback-next/commit/52cd1df5aea4a1aa04e5a504fa5862a3e25adc97))
+* **docs:** update docs for context event handling ([607dc0a](https://github.com/strongloop/loopback-next/commit/607dc0a3550880437568a36f3049e1de66ec73ae))
+
+
+
+
+
 ## [2.8.1](https://github.com/strongloop/loopback-next/compare/@loopback/docs@2.8.0...@loopback/docs@2.8.1) (2020-01-07)
 
 **Note:** Version bump only for package @loopback/docs

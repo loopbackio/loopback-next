@@ -3,6 +3,54 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.25.1...@loopback/context@2.0.0) (2020-01-27)
+
+
+### Features
+
+* **context:** add ContextEventListener and tidy up parent event handling ([beb41a7](https://github.com/strongloop/loopback-next/commit/beb41a7b105cf1aea64982e3f43f4d5a8128581f))
+* **context:** index bindings by tag to speed up matching by tag ([566b9d9](https://github.com/strongloop/loopback-next/commit/566b9d9a35ce52d9aeefe17e36f91c9714616b21))
+* **context:** keep binding tag pattern for BindingTagFilter ([856b62d](https://github.com/strongloop/loopback-next/commit/856b62d7053c22ebe0f6acf6a1904e524175429c))
+* **context:** make bindings as event emitters to report changes ([dddddb9](https://github.com/strongloop/loopback-next/commit/dddddb96fd6908a8d4caad8868e43d3d0bb742f6))
+* **context:** refactor context observer subscription into a new class ([31ad9a5](https://github.com/strongloop/loopback-next/commit/31ad9a55bbd068cd8e41347fca5caaf0ae5eb6e7))
+* **context:** set max listeners to Infinity by default ([0741e3b](https://github.com/strongloop/loopback-next/commit/0741e3b1293065a04f1ecd9dbda09df074a5dd34))
+* **context:** use BindingEvent for binding event listeners ([ae5febc](https://github.com/strongloop/loopback-next/commit/ae5febc35679f4d77b9970ecc26a71938a1c972e))
+
+
+### BREAKING CHANGES
+
+* **context:** Context events are now emitted as `ContextEvent` objects
+instead of positional arguments. Context listener functions must switch from
+the old style to new style as follows:
+
+1. Old style
+
+```ts
+ctx.on('bind', (binding, context) => {
+// ...
+});
+```
+
+2. New style
+
+```ts
+ctx.on('bind', (event: ContextEvent) => {
+// ...
+});
+```
+
+Or:
+
+```ts
+ctx.on('bind', ({binding, context, type}) => {
+// ...
+});
+```
+
+
+
+
+
 ## [1.25.1](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.25.0...@loopback/context@1.25.1) (2020-01-07)
 
 **Note:** Version bump only for package @loopback/context

@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.29.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.28.1...@loopback/cli@1.29.0) (2020-01-27)
+
+
+### Bug Fixes
+
+* **cli:** disgard any changes if lb4 `relation` fails ([08dc87c](https://github.com/strongloop/loopback-next/commit/08dc87ca3f654f3669c5ffb130e1e4cbf0dcebef))
+* **cli:** fix has many relation controller attribute ([5aa83df](https://github.com/strongloop/loopback-next/commit/5aa83df2fe3c38165174328d26726690f6cbafb5))
+* **cli:** index file should be updated. Add relation interface to model template ([7fd9b88](https://github.com/strongloop/loopback-next/commit/7fd9b88626a7d1b4a227077a4334fdbd00edea0d))
+* **cli:** reject datasources with no name property for service generator ([cc871e5](https://github.com/strongloop/loopback-next/commit/cc871e509b5c3a0de2ac0dc1108332285aa808a4))
+
+
+### Features
+
+* **cli:** add static BINDING_KEY prop to non-global interceptors ([5fbd95f](https://github.com/strongloop/loopback-next/commit/5fbd95f47f67207d7e0430d8c08e2a9738e685ae))
+
+
+
+
+
 ## [1.28.1](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.28.0...@loopback/cli@1.28.1) (2020-01-07)
 
 **Note:** Version bump only for package @loopback/cli

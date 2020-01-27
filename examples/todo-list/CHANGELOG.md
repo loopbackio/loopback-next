@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.12.5](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo-list@1.12.4...@loopback/example-todo-list@1.12.5) (2020-01-27)
+
+
+### Bug Fixes
+
+* **example-todo-list:** use latest cli code ([a02b814](https://github.com/strongloop/loopback-next/commit/a02b8144ae90e2c4f1bd5375782f8bd89a81801d))
+
+
+
+
+
 ## [1.12.4](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo-list@1.12.3...@loopback/example-todo-list@1.12.4) (2020-01-07)
 
 **Note:** Version bump only for package @loopback/example-todo-list
