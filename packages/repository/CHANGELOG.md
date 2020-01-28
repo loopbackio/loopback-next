@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.18.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.17.0...@loopback/repository@1.18.0) (2020-01-27)
+
+
+### Bug Fixes
+
+* **repository:** make the navigational property err msg more clear ([2d493bc](https://github.com/strongloop/loopback-next/commit/2d493bc0387b9f595b82ee149fb83405f4073424))
+
+
+### Features
+
+* **repository:** add interface for hasManyThrough repository ([a242785](https://github.com/strongloop/loopback-next/commit/a24278522c46337887592e864031de891d08f30d)), closes [/github.com/strongloop/loopback-next/pull/2359#issuecomment-559719080](https://github.com//github.com/strongloop/loopback-next/pull/2359/issues/issuecomment-559719080)
+
+
+
+
+
 # [1.17.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.16.0...@loopback/repository@1.17.0) (2020-01-07)
 
 

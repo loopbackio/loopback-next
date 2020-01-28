@@ -152,14 +152,24 @@ describe('getFilterJsonSchemaFor', () => {
 
   it('returns "include.title" when no options were provided', () => {
     expect(customerFilterSchema.properties)
-      .to.have.propertyByPath(...['include', 'title'])
+      .to.have.propertyByPath('include', 'title')
       .to.equal('Customer.IncludeFilter');
+  });
+
+  it('returns "include.items.title" when no options were provided', () => {
+    expect(customerFilterSchema.properties)
+      .to.have.propertyByPath('include', 'items', 'title')
+      .to.equal('Customer.IncludeFilter.Items');
   });
 
   it('returns "scope.title" when no options were provided', () => {
     expect(customerFilterSchema.properties)
       .to.have.propertyByPath(
-        ...['include', 'items', 'properties', 'scope', 'title'],
+        'include',
+        'items',
+        'properties',
+        'scope',
+        'title',
       )
       .to.equal('Customer.ScopeFilter');
   });
@@ -185,14 +195,24 @@ describe('getFilterJsonSchemaForOptionsSetTitle', () => {
 
   it('returns "include.title" when a single option "setTitle" is set', () => {
     expect(customerFilterSchema.properties)
-      .to.have.propertyByPath(...['include', 'title'])
+      .to.have.propertyByPath('include', 'title')
       .to.equal('Customer.IncludeFilter');
+  });
+
+  it('returns "include.items.title" when a single option "setTitle" is set', () => {
+    expect(customerFilterSchema.properties)
+      .to.have.propertyByPath('include', 'items', 'title')
+      .to.equal('Customer.IncludeFilter.Items');
   });
 
   it('returns "scope.title" when a single option "setTitle" is set', () => {
     expect(customerFilterSchema.properties)
       .to.have.propertyByPath(
-        ...['include', 'items', 'properties', 'scope', 'title'],
+        'include',
+        'items',
+        'properties',
+        'scope',
+        'title',
       )
       .to.equal('Customer.ScopeFilter');
   });
@@ -205,22 +225,26 @@ describe('getFilterJsonSchemaForOptionsUnsetTitle', () => {
     customerFilterSchema = getFilterJsonSchemaFor(Customer, {setTitle: false});
   });
 
-  it('"title" undefined when a single option "setTitle" is false', () => {
-    expect(customerFilterSchema.title).to.equal(undefined);
+  it('no title when a single option "setTitle" is false', () => {
+    expect(customerFilterSchema).to.not.have.property('title');
   });
 
-  it('"include.title" undefined when single option "setTitle" is false', () => {
+  it('no title on include when single option "setTitle" is false', () => {
     expect(customerFilterSchema.properties)
-      .to.have.propertyByPath(...['include', 'title'])
-      .to.equal(undefined);
+      .property('include')
+      .to.not.have.property('title');
   });
 
-  it('"scope.title" undefined when single option "setTitle" is false', () => {
+  it('no title on include.items when single option "setTitle" is false', () => {
     expect(customerFilterSchema.properties)
-      .to.have.propertyByPath(
-        ...['include', 'items', 'properties', 'scope', 'title'],
-      )
-      .to.equal(undefined);
+      .propertyByPath('include', 'items')
+      .to.not.have.property('title');
+  });
+
+  it('no title on scope when single option "setTitle" is false', () => {
+    expect(customerFilterSchema.properties)
+      .propertyByPath('include', 'items', 'properties', 'scope')
+      .to.not.have.property('title');
   });
 });
 
@@ -260,7 +284,7 @@ describe('getWhereJsonSchemaForOptions', () => {
     customerWhereSchema = getWhereJsonSchemaFor(Customer, {
       setTitle: false,
     });
-    expect(customerWhereSchema.title).to.equal(undefined);
+    expect(customerWhereSchema).to.not.have.property('title');
   });
 });
 
@@ -283,7 +307,39 @@ describe('getFieldsJsonSchemaFor', () => {
     customerFieldsSchema = getFieldsJsonSchemaFor(Customer, {
       setTitle: false,
     });
-    expect(customerFieldsSchema.title).to.equal(undefined);
+    expect(customerFieldsSchema).to.not.have.property('title');
+  });
+});
+
+describe('single option setTitle override original value', () => {
+  let customerFieldsSchema: JsonSchema;
+
+  it('returns builtin "title" when no options were provided', () => {
+    customerFieldsSchema = {
+      title: 'Test Title',
+      ...getFieldsJsonSchemaFor(Customer),
+    };
+    expect(customerFieldsSchema.title).to.equal('Customer.Fields');
+  });
+
+  it('returns builtin "title" when a single option "setTitle" is set', () => {
+    customerFieldsSchema = {
+      title: 'Test Title',
+      ...getFieldsJsonSchemaFor(Customer, {
+        setTitle: true,
+      }),
+    };
+    expect(customerFieldsSchema.title).to.equal('Customer.Fields');
+  });
+
+  it('returns original "title" when a single option "setTitle" is false', () => {
+    customerFieldsSchema = {
+      title: 'Test Title',
+      ...getFieldsJsonSchemaFor(Customer, {
+        setTitle: false,
+      }),
+    };
+    expect(customerFieldsSchema.title).to.equal('Test Title');
   });
 });
 

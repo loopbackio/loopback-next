@@ -8,7 +8,7 @@ import {JSONSchema6 as JsonSchema} from 'json-schema';
 
 export interface FilterSchemaOptions {
   /**
-   * Set this flag if you want the schema to include title property.
+   * Set this flag if you want the schema to set generated title property.
    *
    * By default the setting is enabled. (e.g. {setTitle: true})
    *
@@ -34,10 +34,9 @@ export function getScopeFilterJsonSchemaFor(
 
   const schema: JsonSchema = {
     ...getFilterJsonSchemaFor(EmptyModel, {setTitle: false}),
-    title:
-      options.setTitle !== false
-        ? `${modelCtor.modelName}.ScopeFilter`
-        : undefined,
+    ...(options.setTitle !== false && {
+      title: `${modelCtor.modelName}.ScopeFilter`,
+    }),
   };
 
   return schema;
@@ -57,8 +56,9 @@ export function getFilterJsonSchemaFor(
   options: FilterSchemaOptions = {},
 ): JsonSchema {
   const schema: JsonSchema = {
-    title:
-      options.setTitle !== false ? `${modelCtor.modelName}.Filter` : undefined,
+    ...(options.setTitle !== false && {
+      title: `${modelCtor.modelName}.Filter`,
+    }),
     properties: {
       where: getWhereJsonSchemaFor(modelCtor, options),
 
@@ -95,12 +95,14 @@ export function getFilterJsonSchemaFor(
 
   if (hasRelations) {
     schema.properties!.include = {
-      title:
-        options.setTitle !== false
-          ? `${modelCtor.modelName}.IncludeFilter`
-          : undefined,
+      ...(options.setTitle !== false && {
+        title: `${modelCtor.modelName}.IncludeFilter`,
+      }),
       type: 'array',
       items: {
+        ...(options.setTitle !== false && {
+          title: `${modelCtor.modelName}.IncludeFilter.Items`,
+        }),
         type: 'object',
         properties: {
           // TODO(bajtos) restrict values to relations defined by "model"
@@ -129,10 +131,9 @@ export function getWhereJsonSchemaFor(
   options: FilterSchemaOptions = {},
 ): JsonSchema {
   const schema: JsonSchema = {
-    title:
-      options.setTitle !== false
-        ? `${modelCtor.modelName}.WhereFilter`
-        : undefined,
+    ...(options.setTitle !== false && {
+      title: `${modelCtor.modelName}.WhereFilter`,
+    }),
     type: 'object',
     // TODO(bajtos) enumerate "model" properties and operators like "and"
     // See https://github.com/strongloop/loopback-next/issues/1748
@@ -154,8 +155,9 @@ export function getFieldsJsonSchemaFor(
   options: FilterSchemaOptions = {},
 ): JsonSchema {
   const schema: JsonSchema = {
-    title:
-      options.setTitle !== false ? `${modelCtor.modelName}.Fields` : undefined,
+    ...(options.setTitle !== false && {
+      title: `${modelCtor.modelName}.Fields`,
+    }),
     type: 'object',
 
     properties: Object.assign(

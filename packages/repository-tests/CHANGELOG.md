@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.9.1](https://github.com/strongloop/loopback-next/compare/@loopback/repository-tests@0.9.0...@loopback/repository-tests@0.9.1) (2020-01-27)
+
+
+### Bug Fixes
+
+* **repository:** make the navigational property err msg more clear ([2d493bc](https://github.com/strongloop/loopback-next/commit/2d493bc0387b9f595b82ee149fb83405f4073424))
+
+
+
+
+
 # [0.9.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository-tests@0.8.0...@loopback/repository-tests@0.9.0) (2020-01-07)
 
 

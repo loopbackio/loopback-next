@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/tsdocs@1.3.9...@loopback/tsdocs@1.4.0) (2020-01-27)
+
+
+### Bug Fixes
+
+* **tsdocs:** use unscoped package name as the key to locate the url ([9de1133](https://github.com/strongloop/loopback-next/commit/9de1133ecdaaf7625ba3cf740567dc6190fa9a52))
+
+
+### Features
+
+* **tsdocs:** fix package url and add editurl to page metadata ([d69a068](https://github.com/strongloop/loopback-next/commit/d69a0686097fdc8d5120686a4aa9c6fc21f10948))
+
+
+
+
+
 ## [1.3.9](https://github.com/strongloop/loopback-next/compare/@loopback/tsdocs@1.3.8...@loopback/tsdocs@1.3.9) (2020-01-07)
 
 **Note:** Version bump only for package @loopback/tsdocs

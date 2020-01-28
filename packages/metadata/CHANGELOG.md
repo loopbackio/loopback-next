@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/metadata@1.3.10...@loopback/metadata@1.4.0) (2020-01-27)
+
+
+### Bug Fixes
+
+* clarify the decorator application order ([ab0dc3d](https://github.com/strongloop/loopback-next/commit/ab0dc3d9f1dedb6b61ccf5b4d63854a4f9dfa814))
+* ensure tests follow parameter patterns ([d9d8154](https://github.com/strongloop/loopback-next/commit/d9d815403b8b7c39aa71494f46b352c646324673))
+* makes multi-decorator behavior more predictable ([0e00068](https://github.com/strongloop/loopback-next/commit/0e00068ccee12e004a2684afcf8bec5d651a9a20))
+
+
+### Features
+
+* adds MultiMethodDecoratorFactory ([bf6c787](https://github.com/strongloop/loopback-next/commit/bf6c7872bb8ce492b43ab8f57a641dcbb341e96e))
+
+
+
+
+
 ## [1.3.10](https://github.com/strongloop/loopback-next/compare/@loopback/metadata@1.3.9...@loopback/metadata@1.3.10) (2020-01-07)
 
 **Note:** Version bump only for package @loopback/metadata

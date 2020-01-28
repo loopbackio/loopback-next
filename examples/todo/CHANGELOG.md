@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.5](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo@1.9.4...@loopback/example-todo@1.9.5) (2020-01-27)
+
+
+### Bug Fixes
+
+* **cli:** reject datasources with no name property for service generator ([cc871e5](https://github.com/strongloop/loopback-next/commit/cc871e509b5c3a0de2ac0dc1108332285aa808a4))
+* **example-todo:** use latest cli code ([a1f83f8](https://github.com/strongloop/loopback-next/commit/a1f83f84fab881c1a9308329fea33b96a2d98615))
+
+
+
+
+
 ## [1.9.4](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo@1.9.3...@loopback/example-todo@1.9.4) (2020-01-07)
 
 **Note:** Version bump only for package @loopback/example-todo

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-spec-builder@1.2.21...@loopback/openapi-spec-builder@1.3.0) (2020-01-27)
+
+
+### Features
+
+* **openapi-spec-builder:** add components ([6f89655](https://github.com/strongloop/loopback-next/commit/6f89655d093f93ffe9630205a48b237df5195ea0))
+
+
+
+
+
 ## [1.2.21](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-spec-builder@1.2.20...@loopback/openapi-spec-builder@1.2.21) (2020-01-07)
 
 **Note:** Version bump only for package @loopback/openapi-spec-builder
