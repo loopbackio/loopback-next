@@ -21,7 +21,7 @@
     "p-event": "^4.1.0",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.8",
-    "rimraf": "^3.0.0"
+    "rimraf": "^3.0.1"
   },
   "devDependencies": {
     "@loopback/build": "^3.1.0",
