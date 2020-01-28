@@ -5,7 +5,11 @@
 
 import {Entity, EntityResolver} from '../../model';
 import {relation} from '../relation.decorator';
-import {HasManyDefinition, RelationType, HasManyThroughDefinition} from '../relation.types';
+import {
+  HasManyDefinition,
+  RelationType,
+  HasManyThroughDefinition,
+} from '../relation.types';
 
 /**
  * Decorator for hasMany

@@ -284,12 +284,19 @@ export class DefaultCrudRepository<
     TargetEntiy extends Entity,
     TargetID,
     ThroughEntity extends Entity,
-    ThroughID,
+    ThroughID
   >(
     relationName: string,
     targetRepositoryGetter: Getter<EntityCrudRepository<TargetEntiy, TargetID>>,
-    throughRepositoryGetter: Getter<EntityCrudRepository<ThroughEntity, ThroughID>>,
-  ): HasManyThroughRepositoryFactory<TargetEntiy, TargetID, ThroughEntity, ThroughID> {
+    throughRepositoryGetter: Getter<
+      EntityCrudRepository<ThroughEntity, ThroughID>
+    >,
+  ): HasManyThroughRepositoryFactory<
+    TargetEntiy,
+    TargetID,
+    ThroughEntity,
+    ThroughID
+  > {
     const meta = this.entityClass.definition.relations[relationName];
     return createHasManyThroughRepositoryFactory<
       TargetEntiy,
