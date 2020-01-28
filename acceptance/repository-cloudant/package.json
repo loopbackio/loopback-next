@@ -23,7 +23,7 @@
     "@loopback/eslint-config": "^5.0.2",
     "@loopback/repository": "^1.18.0",
     "@loopback/repository-tests": "^0.9.1",
-    "@types/node": "^10.17.13",
+    "@types/node": "^10.17.14",
     "async": "^3.1.1",
     "debug": "^4.1.1",
     "dockerode": "^3.0.2",
