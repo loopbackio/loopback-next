@@ -23,16 +23,16 @@ import {
   BelongsToDefinition,
   createBelongsToAccessor,
   createHasManyRepositoryFactory,
+  createHasManyThroughRepositoryFactory,
   createHasOneRepositoryFactory,
   HasManyDefinition,
   HasManyRepositoryFactory,
+  HasManyThroughDefinition,
+  HasManyThroughRepositoryFactory,
   HasOneDefinition,
   HasOneRepositoryFactory,
   includeRelatedModels,
   InclusionResolver,
-  HasManyThroughDefinition,
-  HasManyThroughRepositoryFactory,
-  createHasManyThroughRepositoryFactory,
 } from '../relations';
 import {IsolationLevel, Transaction} from '../transaction';
 import {isTypeResolver, resolveType} from '../type-resolver';
@@ -284,7 +284,8 @@ export class DefaultCrudRepository<
     TargetEntiy extends Entity,
     TargetID,
     ThroughEntity extends Entity,
-    ThroughID
+    ThroughID,
+    ForeignKeyType
   >(
     relationName: string,
     targetRepositoryGetter: Getter<EntityCrudRepository<TargetEntiy, TargetID>>,
@@ -295,14 +296,15 @@ export class DefaultCrudRepository<
     TargetEntiy,
     TargetID,
     ThroughEntity,
-    ThroughID
+    ForeignKeyType
   > {
     const meta = this.entityClass.definition.relations[relationName];
     return createHasManyThroughRepositoryFactory<
       TargetEntiy,
       TargetID,
       ThroughEntity,
-      ThroughID
+      ThroughID,
+      ForeignKeyType
     >(
       meta as HasManyThroughDefinition,
       targetRepositoryGetter,
