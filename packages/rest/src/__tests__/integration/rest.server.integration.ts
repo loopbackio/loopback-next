@@ -23,6 +23,7 @@ import {
   BodyParser,
   ControllerRoute,
   get,
+  HttpErrors,
   post,
   Request,
   requestBody,
@@ -160,25 +161,49 @@ describe('RestServer (integration)', () => {
     await expect(server.stop()).to.fulfilled();
   });
 
-  it('responds with 500 when Sequence fails with unhandled error', async () => {
-    const server = await givenAServer();
-    server.handler((context, sequence) => {
-      return Promise.reject(new Error('unhandled test error'));
+  describe('unhandled error', () => {
+    let server: RestServer;
+    const consoleError = console.error;
+    let errorMsg = '';
+
+    // Patch `console.error`
+    before(async () => {
+      console.error = (format: unknown, ...args: unknown[]) => {
+        errorMsg = util.format(format, ...args);
+      };
+      server = await givenAServer();
     });
 
-    // Temporarily disable Mocha's handling of uncaught exceptions
-    const mochaListeners = process.listeners('uncaughtException');
-    process.removeAllListeners('uncaughtException');
-    process.once('uncaughtException', err => {
-      expect(err).to.have.property('message', 'unhandled test error');
-      for (const l of mochaListeners) {
-        process.on('uncaughtException', l);
-      }
+    // Restore `console.error`
+    after(() => {
+      console.error = consoleError;
     });
 
-    return createClientForHandler(server.requestHandler)
-      .get('/')
-      .expect(500);
+    it('responds with 500 when Sequence fails with unhandled error', async () => {
+      server.handler((context, sequence) => {
+        return Promise.reject(new Error('unhandled test error'));
+      });
+      await createClientForHandler(server.requestHandler)
+        .get('/')
+        .expect(500);
+      expect(errorMsg).to.match(
+        /Unhandled error in GET \/\: 500 Error\: unhandled test error/,
+      );
+    });
+
+    it('hangs up socket when Sequence fails with unhandled error and headers sent', async () => {
+      server.handler((context, sequence) => {
+        context.response.writeHead(200);
+        return Promise.reject(new Error('unhandled test error after sent'));
+      });
+
+      await expect(
+        createClientForHandler(server.requestHandler).get('/'),
+      ).to.be.rejectedWith(/socket hang up/);
+      expect(errorMsg).to.match(
+        /Unhandled error in GET \/\: 500 Error\: unhandled test error after sent/,
+      );
+    });
   });
 
   it('allows static assets to be mounted at /', async () => {
@@ -368,6 +393,33 @@ describe('RestServer (integration)', () => {
       .options('/')
       .expect(200)
       .expect('Access-Control-Max-Age', '1');
+  });
+
+  it('allows CORS configuration with origin function to reject', async () => {
+    const server = await givenAServer({
+      rest: {
+        port: 0,
+        cors: {
+          origin: (origin, callback) => {
+            process.nextTick(() => {
+              callback(new HttpErrors.Forbidden('Not allowed by CORS'));
+            });
+          },
+        },
+      },
+    });
+
+    server.handler(dummyRequestHandler);
+
+    await createClientForHandler(server.requestHandler)
+      .options('/')
+      .expect(403, {
+        error: {
+          statusCode: 403,
+          name: 'ForbiddenError',
+          message: 'Not allowed by CORS',
+        },
+      });
   });
 
   it('exposes "GET /openapi.json" endpoint', async () => {
