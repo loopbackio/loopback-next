@@ -53,7 +53,7 @@
     "lodash": "^4.17.15",
     "loopback": "^3.26.0",
     "minimist": "^1.2.0",
-    "mkdirp": "^0.5.1",
+    "mkdirp": "^1.0.3",
     "natural-compare": "^1.4.0",
     "p-event": "^4.1.0",
     "pacote": "^10.3.1",
