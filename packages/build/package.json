@@ -16,7 +16,7 @@
 	"license": "MIT",
 	"dependencies": {
 		"@loopback/eslint-config": "^5.0.2",
-		"@types/mocha": "^5.2.7",
+		"@types/mocha": "^7.0.1",
 		"@types/node": "^10.17.14",
 		"@typescript-eslint/eslint-plugin": "^2.18.0",
 		"@typescript-eslint/parser": "^2.18.0",
