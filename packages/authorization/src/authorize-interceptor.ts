@@ -10,8 +10,6 @@ import {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   config,
   Context,
-  filterByTag,
-  inject,
   Interceptor,
   InvocationContext,
   Next,
@@ -37,8 +35,6 @@ export class AuthorizationInterceptor implements Provider<Interceptor> {
   private options: AuthorizationOptions;
 
   constructor(
-    @inject(filterByTag(AuthorizationTags.AUTHORIZER))
-    private authorizers: Authorizer[],
     @config({fromBinding: AuthorizationBindings.COMPONENT})
     options: AuthorizationOptions = {},
   ) {
@@ -87,13 +83,12 @@ export class AuthorizationInterceptor implements Provider<Interceptor> {
     };
 
     debug('Security context for %s', description, authorizationCtx);
-    let authorizers = await loadAuthorizers(
+    const authorizers = await loadAuthorizers(
       invocationCtx,
       metadata.voters ?? [],
     );
 
     let finalDecision = this.options.defaultDecision;
-    authorizers = authorizers.concat(this.authorizers);
     for (const fn of authorizers) {
       const decision = await fn(authorizationCtx, metadata);
       debug('Decision', decision);
