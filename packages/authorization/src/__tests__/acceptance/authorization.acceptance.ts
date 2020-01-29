@@ -37,7 +37,7 @@ describe('Authorization', () => {
       },
     ]);
     expect(orderId).to.eql('order-1');
-    expect(events).to.containEql('OrderController.prototype.placeOrder');
+    expect(events).to.eql(['OrderController.prototype.placeOrder']);
   });
 
   it('denies cancelOrder for regular user', async () => {
@@ -45,7 +45,7 @@ describe('Authorization', () => {
       'order-01',
     ]);
     await expect(result).to.be.rejectedWith('Access denied');
-    expect(events).to.containEql('OrderController.prototype.cancelOrder');
+    expect(events).to.eql(['OrderController.prototype.cancelOrder']);
   });
 
   class Order {
