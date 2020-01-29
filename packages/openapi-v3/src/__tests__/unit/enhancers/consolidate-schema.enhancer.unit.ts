@@ -9,9 +9,9 @@ import {
   OperationSpecBuilder,
 } from '@loopback/openapi-spec-builder';
 import {expect} from '@loopback/testlab';
-import {ConsolidationEnhancer} from '../../..';
+import {ConsolidateSpecEnhancer} from '../../..';
 
-const consolidationEnhancer = new ConsolidationEnhancer();
+const specEnhancer = new ConsolidateSpecEnhancer();
 
 describe('consolidateSchemaObjects', () => {
   it('moves schema with title to component.schemas, replace with reference', () => {
@@ -64,7 +64,7 @@ describe('consolidateSchemaObjects', () => {
       )
       .build();
 
-    expect(consolidationEnhancer.modifySpec(inputSpec)).to.eql(expectedSpec);
+    expect(specEnhancer.modifySpec(inputSpec)).to.eql(expectedSpec);
   });
 
   it('ignores schema without title property', () => {
@@ -89,7 +89,7 @@ describe('consolidateSchemaObjects', () => {
       )
       .build();
 
-    expect(consolidationEnhancer.modifySpec(inputSpec)).to.eql(inputSpec);
+    expect(specEnhancer.modifySpec(inputSpec)).to.eql(inputSpec);
   });
 
   it('Avoids naming collision', () => {
@@ -161,6 +161,6 @@ describe('consolidateSchemaObjects', () => {
       )
       .build();
 
-    expect(consolidationEnhancer.modifySpec(inputSpec)).to.eql(expectedSpec);
+    expect(specEnhancer.modifySpec(inputSpec)).to.eql(expectedSpec);
   });
 });

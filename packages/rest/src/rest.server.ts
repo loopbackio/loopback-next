@@ -15,15 +15,19 @@ import {
 import {Application, CoreBindings, Server} from '@loopback/core';
 import {HttpServer, HttpServerOptions} from '@loopback/http-server';
 import {
-  ConsolidationEnhancer,
+  ConsolidateSpecEnhancer,
+  DeprecateSpecEnhancer,
   getControllerSpec,
   OASEnhancerService,
   OAS_ENHANCER_SERVICE,
   OpenAPIObject,
   OpenApiSpec,
   OperationObject,
+  PruneSpecEnhancer,
   SecuritySpecEnhancer,
   ServerObject,
+  StructureSpecEnhancer,
+  TagsSpecEnhancer,
 } from '@loopback/openapi-v3';
 import {AssertionError} from 'assert';
 import cors from 'cors';
@@ -236,10 +240,16 @@ export class RestServer extends Context implements Server, HttpServerLike {
       }).inScope(BindingScope.SINGLETON),
     );
     this._registerCoreSpecEnhancers();
+    // register example extensions
+    this.add(createBindingFromClass(PruneSpecEnhancer));
+    this.add(createBindingFromClass(DeprecateSpecEnhancer));
+    this.add(createBindingFromClass(TagsSpecEnhancer));
+    this.add(createBindingFromClass(StructureSpecEnhancer));
     this._OASEnhancer = this.getSync(OAS_ENHANCER_SERVICE);
   }
 
   private _registerCoreSpecEnhancers() {
+    this.add(createBindingFromClass(ConsolidateSpecEnhancer));
     this.add(createBindingFromClass(SecuritySpecEnhancer));
   }
 
@@ -742,12 +752,10 @@ export class RestServer extends Context implements Server, HttpServerLike {
     if (requestContext) {
       spec = this.updateSpecFromRequest(spec, requestContext);
     }
-    const consolidationEnhancer = new ConsolidationEnhancer();
-    spec = consolidationEnhancer.modifySpec(spec);
 
     // Apply OAS enhancers to the OpenAPI specification
     this.OASEnhancer.spec = spec;
-    spec = await this.OASEnhancer.applyEnhancerByName('security');
+    spec = await this.OASEnhancer.applyAllEnhancers();
 
     return spec;
   }

@@ -7,15 +7,15 @@ import {
   OpenApiSpec,
   ReferenceObject,
   SchemaObject,
-} from '../types';
-import {asSpecEnhancer, OASEnhancer} from './types';
+} from '../../types';
+import {asSpecEnhancer, OASEnhancer} from '../types';
 
 /**
  * A spec enhancer to consolidate OpenAPI specs
  *
  */
 @bind(asSpecEnhancer)
-export class ConsolidationEnhancer implements OASEnhancer {
+export class ConsolidateSpecEnhancer implements OASEnhancer {
   name = 'consolidate';
 
   modifySpec(spec: OpenApiSpec): OpenApiSpec {
