@@ -41,14 +41,16 @@
   - [ ] (3) Run shared tests from both v3 and v4 of juggler
         https://github.com/strongloop/loopback-connector-db2/issues/133
   - [ ] (3) Add CrudRestApiBuilder to `@loopback/rest-crud` #3737
-  - [ ] (8) Column names in lowercase using lb4 discover method - SQL connector
-        #3343
+  - [ ] :running: (8) Column names in lowercase using lb4 discover method - SQL
+        connector #3343
 
 - PR reviews:
   - [ ] feat: adds @deprecated convenience decorator #4415
   - [ ] feat: adds @tags convenience decorator #4416
   - [ ] feat: adds utility launch for debugging a single test file #4432
   - [ ] Preserve custom type of auto-generated id property #4270
+  - [ ] feat(extension-logging): add integration with winston and fluentd
+        logging #4117
 
 ### Stretch Goals
 
@@ -61,7 +63,7 @@
 
 - Bug fixes
 
-  - [ ] Authorizer triggers twice #4351
+  - [ ] :running: Authorizer triggers twice #4351
   - [ ] Belongs-To relation tries to resolve for foreign key NULL #4372
   - [ ] Log extension is not printing any logs #2173
 
