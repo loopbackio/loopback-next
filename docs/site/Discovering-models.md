@@ -43,3 +43,19 @@ placed. Default is `src/models`
 
 `--schema`: Specify the schema which the datasource will find the models to
 discover
+
+### Interactive Prompts
+
+Based on the option, the tool may prompt you for:
+
+- **Name of the connector to discover**: Prompts a list of available
+  connectors(datasources) to choose.
+- **Name of the models to discover**: Prompts choices of available models. The
+  answer can be multiple.
+- **Database column naming convention**: By default, LoopBack converts
+  discovered model properties to `camelCase`. This is recommended. You can
+  choose to keep them the same as the database column names. However, we
+  recommend to use LoopBack default convention. You might need to specify the
+  discovered property names in relation definition later. Check the
+  [Relation Metadata](HasMany-relation.md#relation-metadata) section in each
+  relation for details of customizing names.
