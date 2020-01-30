@@ -458,6 +458,44 @@ This namespace contains decorators that are specific to the OpenAPI
 specification, but are also similar to other well-known decorators available,
 such as `@deprecated()`
 
+### @oas.deprecated
+
+[API document](https://loopback.io/doc/en/lb4/apidocs.openapi-v3.deprecated.html),
+[OpenAPI Operation Specification](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#operation-object)
+
+This decorator can currently be applied to class and a class method. It will set
+the `deprecated` boolean property of the Operation Object. When applied to a
+class, it will mark all operation methods of that class as deprecated, unless a
+method overloads with `@oas.deprecated(false)`.
+
+This decorator does not currently support marking
+(parameters)[https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#parameter-object]
+as deprecated.
+
+```ts
+@oas.deprecated()
+class MyController {
+   @oas.get('/greet')
+   public async function greet() {
+    return 'Hello, World!'
+  }
+
+  @oas.get('/greet-v2')
+  @oas.deprecated(false)
+  public async function greetV2() {
+    return 'Hello, World!'
+  }
+}
+
+class MyOtherController {
+  @oas.get('/echo')
+  @oas.deprecated()
+  public async function echo() {
+    return 'Echo!'
+  }
+}
+```
+
 ### @oas.tags
 
 [API document](https://loopback.io/doc/en/lb4/apidocs.openapi-v3.tags.html),

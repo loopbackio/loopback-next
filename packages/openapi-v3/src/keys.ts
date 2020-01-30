@@ -17,6 +17,22 @@ export namespace OAI3Keys {
   >('openapi-v3:methods');
 
   /**
+   * Metadata key used to set or retrieve `@deprecated` metadata on a method.
+   */
+  export const DEPRECATED_METHOD_KEY = MetadataAccessor.create<
+    boolean,
+    MethodDecorator
+  >('openapi-v3:methods:deprecated');
+
+  /**
+   * Metadata key used to set or retrieve `@deprecated` metadata on a class
+   */
+  export const DEPRECATED_CLASS_KEY = MetadataAccessor.create<
+    boolean,
+    ClassDecorator
+  >('openapi-v3:class:deprecated');
+
+  /**
    * Metadata key used to set or retrieve `param` decorator metadata
    */
   export const PARAMETERS_KEY = MetadataAccessor.create<
