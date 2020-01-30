@@ -15,6 +15,11 @@ const modelList = [
     name:'View',
     view: true,
     schema: ''
+  },
+    {
+    name:'Naming',
+    view: true,
+    schema: 'Naming'
   }
 ];
 // In real model definitions, the schema is contained in options->connectorName->schema
@@ -68,6 +73,41 @@ const fullDefinitions = [
         'precision': null,
         'scale': 0,
         'id': 1,
+      },
+    },
+  },
+    {
+    'name': 'Naming',
+    'schema': 'Naming',
+    'properties': {
+      'ID': {
+        'type': 'Number',
+        'id': 1,
+        'required': true,
+        'length': null,
+        'precision': null,
+        'scale': null,
+      },
+      'snake_case': {
+        'type': 'Number',
+        'required': false,
+        'length': null,
+        'precision': null,
+        'scale': null,
+      },
+      'lowercase': {
+        'type': 'Boolean',
+        'required': false,
+        'length': null,
+        'precision': null,
+        'scale': null,
+      },
+      'camelCase': {
+        'type': 'Number',
+        'required': false,
+        'length': null,
+        'precision': null,
+        'scale': null,
       },
     },
   },

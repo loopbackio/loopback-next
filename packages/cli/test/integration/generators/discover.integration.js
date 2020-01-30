@@ -43,6 +43,11 @@ const schemaViewsOptions = {
   schema: 'aSchema',
   views: false,
 };
+const disableCamelCaseOptions = {
+  ...baseOptions,
+  schema: 'Naming',
+  disableCamelCase: true,
+};
 const missingDataSourceOptions = {
   dataSource: 'foo',
 };
@@ -59,6 +64,10 @@ const defaultExpectedSchemaModel = path.join(
 const defaultExpectedViewModel = path.join(
   SANDBOX_PATH,
   'src/models/view.model.ts',
+);
+const defaultExpectedNamingModel = path.join(
+  SANDBOX_PATH,
+  'src/models/naming.model.ts',
 );
 
 const defaultExpectedIndexFile = path.join(SANDBOX_PATH, 'src/models/index.ts');
@@ -120,6 +129,20 @@ describe('lb4 discover integration', () => {
       assert.noFile(defaultExpectedViewModel);
       assert.noFile(defaultExpectedTestModel);
       assert.file(defaultExpectedSchemaModel);
+    });
+
+    it('keeps model property names the same as the db column names', async () => {
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(SANDBOX_PATH, () =>
+          testUtils.givenLBProject(SANDBOX_PATH, {
+            additionalFiles: SANDBOX_FILES,
+          }),
+        )
+        .withOptions(disableCamelCaseOptions);
+
+      assert.file(defaultExpectedNamingModel);
+      expectFileToMatchSnapshot(defaultExpectedNamingModel);
     });
 
     it('will fail gracefully if you specify a --dataSource which does not exist', async () => {
