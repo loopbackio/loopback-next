@@ -17,6 +17,11 @@ const SourceEntries = {
     file: 'customer.model.ts',
     content: readSourceFile('./models/customer5.model.ts'),
   },
+  CustomerModelWithAddressProperty: {
+    path: MODEL_APP_PATH,
+    file: 'customer.model.ts',
+    content: readSourceFile('./models/customer6.model.ts'),
+  },
   CustomerRepository: {
     path: REPOSITORY_APP_PATH,
     file: 'customer.repository.ts',
@@ -81,6 +86,44 @@ const SourceEntries = {
     path: REPOSITORY_APP_PATH,
     file: 'order-class-type.repository.ts',
     content: readSourceFile('./repositories/order-class-type.repository.ts'),
+  },
+
+  AddressModel: {
+    path: MODEL_APP_PATH,
+    file: 'address.model.ts',
+    content: readSourceFile('./models/address.model.ts'),
+  },
+  AddressModelWithCustomerIdProperty: {
+    path: MODEL_APP_PATH,
+    file: 'address.model.ts',
+    content: readSourceFile('./models/address-with-fk.model.ts'),
+  },
+  AddressRepository: {
+    path: REPOSITORY_APP_PATH,
+    file: 'address.repository.ts',
+    content: readSourceFile('./repositories/address.repository.ts'),
+  },
+
+  AddressClassModel: {
+    path: MODEL_APP_PATH,
+    file: 'address-class.model.ts',
+    content: readSourceFile('./models/address-class.model.ts'),
+  },
+  AddressClassRepository: {
+    path: REPOSITORY_APP_PATH,
+    file: 'address-class.repository.ts',
+    content: readSourceFile('./repositories/address-class.repository.ts'),
+  },
+
+  AddressClassTypeModel: {
+    path: MODEL_APP_PATH,
+    file: 'address-class-type.model.ts',
+    content: readSourceFile('./models/address-class-type.model.ts'),
+  },
+  AddressClassTypeRepository: {
+    path: REPOSITORY_APP_PATH,
+    file: 'address-class-type.repository.ts',
+    content: readSourceFile('./repositories/address-class-type.repository.ts'),
   },
 
   NoKeyModel: {
@@ -175,10 +218,13 @@ exports.SANDBOX_FILES = [
   },
   SourceEntries.CustomerRepository,
   SourceEntries.OrderRepository,
+  SourceEntries.AddressRepository,
   SourceEntries.CustomerClassRepository,
   SourceEntries.OrderClassRepository,
+  SourceEntries.AddressClassRepository,
   SourceEntries.CustomerClassTypeRepository,
   SourceEntries.OrderClassTypeRepository,
+  SourceEntries.AddressClassTypeRepository,
   SourceEntries.NoKeyRepository,
   {
     path: DATASOURCE_APP_PATH,
@@ -187,21 +233,27 @@ exports.SANDBOX_FILES = [
   },
   SourceEntries.CustomerModel,
   SourceEntries.OrderModel,
+  SourceEntries.AddressModel,
   SourceEntries.NoKeyModel,
   SourceEntries.NoRepoModel,
   SourceEntries.CustomerClassModel,
   SourceEntries.OrderClassModel,
+  SourceEntries.AddressClassModel,
   SourceEntries.CustomerClassTypeModel,
   SourceEntries.OrderClassTypeModel,
+  SourceEntries.AddressClassTypeModel,
 ];
 
 exports.SANDBOX_FILES2 = [
   SourceEntries.CustomerRepository,
   SourceEntries.OrderRepository,
+  SourceEntries.AddressRepository,
   SourceEntries.CustomerClassRepository,
   SourceEntries.OrderClassRepository,
+  SourceEntries.AddressClassRepository,
   SourceEntries.CustomerClassTypeRepository,
   SourceEntries.OrderClassTypeRepository,
+  SourceEntries.AddressClassTypeRepository,
   SourceEntries.NoKeyRepository,
 
   {
@@ -212,10 +264,12 @@ exports.SANDBOX_FILES2 = [
 
   SourceEntries.CustomerModel,
   SourceEntries.OrderModel,
+  SourceEntries.AddressModel,
   SourceEntries.NoKeyModel,
   SourceEntries.NoRepoModel,
   SourceEntries.CustomerClassModel,
   SourceEntries.OrderClassModel,
+  SourceEntries.AddressClassModel,
   SourceEntries.CustomerClassTypeModel,
 
   SourceEntries.IndexOfControllers,
