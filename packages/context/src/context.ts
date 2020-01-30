@@ -108,9 +108,16 @@ export class Context extends EventEmitter {
       _parent = undefined;
     }
     this._parent = _parent;
-    this.name = name ?? uuidv1();
+    this.name = name ?? this.generateName();
     this.tagIndexer = new ContextTagIndexer(this);
     this.subscriptionManager = new ContextSubscriptionManager(this);
+  }
+
+  private generateName() {
+    const id = uuidv1();
+    let prefix = `${this.constructor.name}-`;
+    if (prefix === 'Context-') prefix = '';
+    return `${prefix}${id}`;
   }
 
   /**
