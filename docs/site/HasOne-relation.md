@@ -3,10 +3,8 @@ lang: en
 title: 'hasOne Relation'
 keywords: LoopBack 4.0, LoopBack 4
 sidebar: lb4_sidebar
-permalink: /doc/en/lb4/hasOne-relation.html
+permalink: /doc/en/lb4/HasOne-relation.html
 ---
-
-{% include note.html content="There are some limitations to `Inclusion Resolver`. See [Limitations](Relations.md#limitations)." %}
 
 ## Overview
 
@@ -17,49 +15,46 @@ Using this relation with NoSQL databases will result in unexpected behavior,
 such as the ability to create a relation with a model that does not exist. We are [working on a solution](https://github.com/strongloop/loopback-next/issues/2341) to better handle this. It is fine to use this relation with NoSQL databases for purposes such as navigating related models, where the referential integrity is not critical.
 " %}
 
+{% include note.html content="There are some limitations to `Inclusion Resolver`. See [Limitations](Relations.md#limitations)." %}
+
 A `hasOne` relation denotes a one-to-one connection of a model to another model
 through referential integrity. The referential integrity is enforced by a
-foreign key constraint on the target model which usually references a primary
-key on the source model and a unique constraint on the same column/key to ensure
-one-to-one mapping. This relation indicates that each instance of the declaring
-or source model has exactly one instance of the target model. Let's take an
-example where an application has models `Supplier` and `Account` and a
-`Supplier` can only have one `Account` on the system as illustrated in the
-diagram below.
+foreign key constraint on both the source model and the target model which
+usually references a primary key on the source model for the target model and
+primary key on the target model for the source model. This relation indicates
+that each instance of the declaring or source model belongs to exactly one
+instance of the target model. For example, in an application with suppliers and
+accounts, a supplier can have only one account as illustrated in the diagram
+below.
 
 ![hasOne relation illustration](./imgs/hasOne-relation-example.png)
 
 The diagram shows target model **Account** has property **supplierId** as the
 foreign key to reference the declaring model **Supplier's** primary key **id**.
-**supplierId** needs to also be used in a unique index to ensure each
-**Supplier** has only one related **Account** instance.
 
 To add a `hasOne` relation to your LoopBack application and expose its related
 routes, you need to perform the following steps:
 
-1.  Decorate properties on the source and target models with `@hasOne` and
-    `@belongsTo` to let LoopBack gather the necessary metadata.
-2.  Modify the source model repository class to provide access to a constrained
+1.  Add a property to your model to access related model instance.
+2.  Add a foreign key property in the target model referring to the source
+    model's id.
+3.  Modify the source model repository class to provide access to a constrained
     target model repository.
-3.  Call the constrained target model repository CRUD APIs in your controller
+4.  Call the constrained target model repository CRUD APIs in your controller
     methods.
-
-Right now, LoopBack collects the necessary metadata and exposes the relation
-APIs for the `hasOne` relation, but does not guarantee referential integrity.
-This has to be set up by the user or DBA in the underlying database and an
-example is shown below on how to do it with MySQL.
 
 ## Defining a hasOne Relation
 
 This section describes how to define a `hasOne` relation at the model level
 using the `@hasOne` decorator. The relation constrains the target repository by
-the foreign key property on its associated model. The `hasOne` relation is
-defined on a source model `Supplier` in the example below:
+the foreign key property on its associated model. The following example shows
+how to define a `hasOne` relation on a source model `Supplier` and a target
+model `Account`.
 
 {% include code-caption.html content="/src/models/supplier.model.ts" %}
 
 ```ts
-import {Account, AccountWithRelations} from './account.model';
+import {Account} from './account.model';
 import {Entity, property, hasOne} from '@loopback/repository';
 
 export class Supplier extends Entity {
@@ -82,37 +77,101 @@ export class Supplier extends Entity {
     super(data);
   }
 }
-
-export interface SupplierRelations {
-  account?: AccountWithRelations;
-}
-
-export type SupplierWithRelations = Supplier & SupplierRelations;
 ```
 
-On the other side of the relation, we'd need to declare a `belongsTo` relation
-since every `Account` has to belong to exactly one `Supplier`:
+The definition of the `hasOne` relation is inferred by using the `@hasOne`
+decorator. The decorator takes in a function resolving the target model class
+constructor and optionally a custom foreign key to store the relation metadata.
+The decorator logic also designates the relation type and tries to infer the
+foreign key on the target model (`keyTo` in the relation metadata) to a default
+value (source model name appended with `Id` in camel case, same as LoopBack 3).
+
+The decorated property name is used as the relation name and stored as part of
+the source model definition's relation metadata. The property type metadata is
+also preserved as a type of `Account` as part of the decoration. (Check
+[Relation Metadata](HasOne-relation.md#relation-metadata) section below for more
+details)
+
+A usage of the decorator with a custom foreign key name for the above example is
+as follows:
 
 ```ts
-import {Supplier, SupplierWithRelations} from './supplier.model';
-import {Entity, property, belongsTo} from '@loopback/repository';
+// import statements
+class Supplier extends Entity {
+  // constructor, properties, etc.
+  @hasOne(() => Account, {keyTo: 'supplierId'})
+  account?: Account;
+}
+```
 
+Add the source model's id as the foreign key property (`supplierId`) in the
+target model.
+
+{% include code-caption.html content="/src/models/account.model.ts" %}
+
+```ts
+import {Entity, model, property} from '@loopback/repository';
+
+@model()
 export class Account extends Entity {
   @property({
     type: 'number',
     id: true,
+    required: true,
   })
   id: number;
 
   @property({
     type: 'string',
+    required: true,
   })
-  accountManager: string;
+  name: string;
+
+  @property({
+    type: 'number',
+  })
+  supplierId?: number;
+
+  constructor(data?: Partial<Account>) {
+    super(data);
+  }
+}
+
+export interface AccountRelations {
+  // describe navigational properties here
+}
+
+export type AccountWithRelations = Account & AccountRelations;
+```
+
+The foreign key property (`supplierId`) in the target model can be added via a
+corresponding [belongsTo](BelongsTo-relation.md) relation, too.
+
+{% include code-caption.html content="/src/models/account.model.ts" %}
+
+```ts
+import {Entity, model, property, belongsTo} from '@loopback/repository';
+import {Supplier, SupplierWithRelations} from './supplier.model';
+
+@model()
+export class Account extends Entity {
+  @property({
+    type: 'number',
+    id: true,
+    required: true,
+  })
+  id: number;
+
+  @property({
+    type: 'string',
+    required: true,
+  })
+  name: string;
 
   @belongsTo(() => Supplier)
   supplierId: number;
 
-  constructor(data: Partial<Account>) {
+  constructor(data?: Partial<Account>) {
     super(data);
   }
 }
@@ -124,14 +183,12 @@ export interface AccountRelations {
 export type AccountWithRelations = Account & AccountRelations;
 ```
 
-### Relation Metadata
+LB4 also provides an CLI tool `lb4 relation` to generate `hasOne` relation for
+you. Before you check out the
+[`Relation Generator`](https://loopback.io/doc/en/lb4/Relation-generator.html)
+page, read on to learn how you can define relations to meet your requirements.
 
-The definition of the `hasOne` relation is inferred by using the `@hasOne`
-decorator. The decorator takes in a function resolving the target model class
-constructor and optionally a has one relation definition object which can e.g.
-contain a custom foreign key to be stored as the relation metadata. The
-decorator logic also designates the relation type and tries to infer the foreign
-key.
+### Relation Metadata
 
 LB4 uses three `keyFrom`, `keyTo` and `name` fields in the `hasOne` relation
 metadata to configure relations. The relation metadata has its own default
@@ -169,8 +226,8 @@ values for these three fields:
   </tbody>
 </table>
 
-We recommend to use default values. If you'd like to customize foreign key name,
-you'll need to specify some fields through the relation decorators.
+We recommend to use default values. If you'd like to customize the foreign key
+name, you'll need to specify some fields through the relation decorator.
 
 For customizing the foreign key name, `keyTo` field needs to be specified via
 `@hasOne` decorator. The following example shows how to customize the foreign
@@ -181,14 +238,28 @@ key name as `suppId` instead of `supplierId`:
 @model()
 export class Supplier extends Entity {
   // constructor, properties, etc.
+
   @hasOne(() => Account, {keyTo: 'suppId'})
-  account?: Account;
+  account: Account;
+}
+```
+
+```ts
+// import statements
+@model()
+export class Account extends Entity {
+  // constructor, properties, etc.
+
+  @property({
+    type: 'number',
+  })
+  suppId: number; // customized foreign key name
 }
 ```
 
 Notice that if you decorate the corresponding customized foreign key of the
-target model with `@belongsTo`, you also need to specify the `belongTo` relation
-name in the `name` field of its relation metadata. See
+target model with `@belongsTo`, you also need to specify the `belongsTo`
+relation name in the `name` field of its relation metadata. See
 [BelongsTo](BelongsTo-relation.md) for more details.
 
 ```ts
@@ -198,7 +269,7 @@ export class Account extends Entity {
   // constructor, properties, etc.
 
   // specify the belongsTo relation name if a customized name is used here
-  @belongsTo(() => Supplier, {name: 'supplier'}) // specify the belongsTo relation name
+  @belongsTo(() => Supplier, {name: 'supplier'}) // the name of this belongsTo relation
   suppId: number; // customized foreign key name
 }
 ```
@@ -215,17 +286,17 @@ export class Supplier extends Entity {
   id: number;
 
   // if you'd like to use this property as the source id
-  // of a certain relation that relates to a model `Manufacturer`
+  // of a certain relation that relates to a model `Review`
   @property({
     type: 'number',
   })
-  supplier_id: number; // not primary key
+  authorId: number; // not primary key
+
+  @hasOne(() => Review, {keyFrom: 'authorId'})
+  review: Review;
 
   @hasOne(() => Account)
-  account?: Account;
-
-  @hasOne(() => Manufacturer, {keyFrom: 'supplier_id'})
-  manufacturer ?: Manufacturer;
+  account: Account;
 
   // ..constructor
   }
@@ -240,11 +311,11 @@ details.
 ```ts
 // import statements
 @model()
-export class Manufacturer extends Entity {
+export class Review extends Entity {
   // constructor, properties, etc.
 
   // specify the keyTo if the source key is not the id property
-  @belongsTo(() => Supplier, {keyTo: 'supplier_id'})
+  @belongsTo(() => Supplier, {keyTo: 'authorId'})
   supplierId: number; // default foreign key name
 }
 ```
@@ -252,7 +323,7 @@ export class Manufacturer extends Entity {
 {% include important.html content="It is user's responsibility to make sure the non-id source key doesn't have duplicate value. Besides, LB4 doesn't support composite keys for now. e.g joining two tables with more than one source key. Related GitHub issue: [Composite primary/foreign keys](https://github.com/strongloop/loopback-next/issues/1830)" %}
 
 If you need to use _different names for models and database columns_, to use
-`suppAccount` as db column name instead of `account` for example, the following
+`my_account` as db column name other than `account` for example, the following
 setting would allow you to do so:
 
 ```ts
@@ -260,40 +331,13 @@ setting would allow you to do so:
 @model()
 export class Supplier extends Entity {
   // constructor, properties, etc.
-  @hasOne(() => Supplier, {keyFrom: 'account'}, {name: 'suppAccount'})
-  account: number;
+  @hasOne(() => Account, {keyFrom: 'account'}, {name: 'my_account'})
+  account: Account;
 }
 ```
 
 _Notice: the `name` field in the third parameter is not part of the relation
 metadata. It's part of property definition._
-
-## Setting up your database for hasOne relation - MySQL
-
-At the moment, LoopBack does not provide the means to enforce referential
-integrity for the `hasOne` relation. It is up to users to set this up at the
-database layer so constraints are not violated. Let's take MySQL as the backing
-database for our application. Given the `Supplier` has one `Account` scenario
-above, we need to run two SQL statements on the `Account` table for the database
-to enforce referential integrity and align with LoopBack's `hasOne` relation.
-
-1. Make `supplierId` property or column a foreign key which references the `id`
-   from Supplier model's `id` property:
-
-```sql
-ALTER TABLE <databaseName>.Account ADD FOREIGN KEY (supplierId) REFERENCES <databaseName>.Supplier(id);
-```
-
-2. Create a unique index for the same property `supplierId`, so that for each
-   `Supplier` instance, there is only one associated `Account` instance.
-
-```sql
-   ALTER TABLE <databaseName>.Account ADD UNIQUE INDEX supplierIndex (supplierId);
-```
-
-Before making the following changes, please follow the steps outlined in
-[Database Migrations](Database-migrations.md) to create the database schemas
-defined by the models in your application.
 
 ## Configuring a hasOne relation
 
@@ -304,17 +348,16 @@ repository, the following are required:
 
 - In the constructor of your source repository class, use
   [Dependency Injection](Dependency-injection.md) to receive a getter function
-  for obtaining an instance of the target repository. \_Note: We need a getter
+  for obtaining an instance of the target repository. _Note: We need a getter
   function, accepting a string repository name instead of a repository
   constructor, or a repository instance, in `Account` to break a cyclic
   dependency between a repository with a hasOne relation and a repository with
-  the matching belongsTo relation.
+  the matching belongsTo relation._
 
 - Declare a property with the factory function type
   `HasOneRepositoryFactory<targetModel, typeof sourceModel.prototype.id>` on the
   source repository class.
-
-- Call the `createHasOneRepositoryFactoryFor` function in the constructor of the
+- call the `createHasOneRepositoryFactoryFor` function in the constructor of the
   source repository class with the relation name (decorated relation property on
   the source model) and target repository instance and assign it the property
   mentioned above.
@@ -359,13 +402,27 @@ export class SupplierRepository extends DefaultCrudRepository<
 ```
 
 The following CRUD APIs are now available in the constrained target repository
-factory `Account` for instances of `supplierRepository`:
+factory `account` for instances of `SupplierRepository`:
 
-- `create` for creating an `Account` model instance belonging to `Supplier`
-  model instance
+- `create` for creating a target model instance belonging to `Supplier` model
+  instance
   ([API Docs](https://loopback.io/doc/en/lb4/apidocs.repository.hasonerepository.create.html))
-- `get` finding the target model instance belonging to `Supplier` model instance
-  ([API Docs](https://loopback.io/doc/en/lb4/apidocs.repository.hasonerepository.get.html))
+- `find` finding target model instance belonging to Supplier model instance
+  ([API Docs](https://loopback.io/doc/en/lb4/apidocs.repository.hasonerepository.find.html))
+- `delete` for deleting target model instance belonging to Supplier model
+  instance
+  ([API Docs](https://loopback.io/doc/en/lb4/apidocs.repository.hasonerepository.delete.html))
+- `patch` for patching target model instance belonging to Supplier model
+  instance
+  ([API Docs](https://loopback.io/doc/en/lb4/apidocs.repository.hasonerepository.patch.html))
+
+For **updating** (full replace of all properties on a `PUT` endpoint for
+instance) a target model you have to directly use this model repository. In this
+case, the caller must provide both the foreignKey value and the primary key
+(id). Since the caller already has access to the primary key of the target
+model, there is no need to go through the relation repository and the operation
+can be performed directly on `DefaultCrudRepository` for the target model
+(`AccountRepository` in our example).
 
 ## Using hasOne constrained repository in a controller
 
@@ -409,8 +466,8 @@ with the name following the pattern `__{methodName}__{relationName}__` (e.g.
 relation in LoopBack 4. First, it keeps controller classes smaller. Second, it
 creates a logical separation of ordinary repositories and relational
 repositories and thus the controllers which use them. Therefore, as shown above,
-don't add `Account`-related methods to `SupplierController`, but instead create
-a new `SupplierAccountController` class for them.
+don't add account-related methods to `SupplierController`, but instead create a
+new `SupplierAccountController` class for them.
 
 {% include note.html content="
 The type of `accountData` above will possibly change to `Partial<Account>` to exclude
@@ -432,15 +489,15 @@ to show the idea:
 A `hasOne` relation has an `inclusionResolver` function as a property. It
 fetches target models for the given list of source model instances.
 
-Using the relation between `Supplier` and `Account` we have shown above, a
-`Supplier` has one `Account`.
+Use the relation between `Supplier` and `Account` we use above, a `Supplier` has
+one `Account`.
 
 After setting up the relation in the repository class, the inclusion resolver
-allows users to retrieve all suppliers along with their related account
-instances through the following code at the repository level:
+allows users to retrieve all suppliers along with their related accounts through
+the following code at the repository level:
 
 ```ts
-supplierRepository.find({include: [{relation: 'account'}]});
+supplierRepo.find({include: [{relation: 'account'}]});
 ```
 
 or use APIs with controllers:
@@ -461,21 +518,24 @@ GET http://localhost:3000/suppliers?filter[include][][relation]=account
   allowed to be traversed. Users can decide to which resolvers can be added.)
 
 The following code snippet shows how to register the inclusion resolver for the
-hasOne relation 'account':
+has-one relation 'account':
 
 ```ts
 export class SupplierRepository extends DefaultCrudRepository {
   account: HasOneRepositoryFactory<Account, typeof Supplier.prototype.id>;
+
   constructor(
     dataSource: juggler.DataSource,
     accountRepositoryGetter: Getter<AccountRepository>,
   ) {
     super(Supplier, dataSource);
+
     // we already have this line to create a HasOneRepository factory
     this.account = this.createHasOneRepositoryFactoryFor(
       'account',
       accountRepositoryGetter,
     );
+
     // add this line to register inclusion resolver
     this.registerInclusionResolver('account', this.account.inclusionResolver);
   }
@@ -483,8 +543,8 @@ export class SupplierRepository extends DefaultCrudRepository {
 ```
 
 - We can simply include the relation in queries via `find()`, `findOne()`, and
-  `findById()` methods. For example, these queries return all suppliers with
-  their `Account`:
+  `findById()` methods. For example, these queries return all Suppliers with
+  their `Account`s:
 
   if you process data at the repository level:
 
@@ -508,14 +568,15 @@ export class SupplierRepository extends DefaultCrudRepository {
       account: {accountManager: 'Odin', supplierId: 1},
     },
     {
-      id: 5,
+      id: 2,
       name: 'Loki',
       account: {accountManager: 'Frigga', supplierId: 5},
     },
   ];
   ```
 
-{% include note.html content="The query syntax is a slightly different from LB3. We are also thinking about simplifying the query syntax. Check our GitHub issue for more information: [Simpler Syntax for Inclusion](https://github.com/strongloop/loopback-next/issues/3205)" %}
+{% include note.html content="The query syntax is a slightly different from LB3. We are also thinking about simplifying the query syntax. Check our GitHub issue for more information:
+[Simpler Syntax for Inclusion](https://github.com/strongloop/loopback-next/issues/3205)" %}
 
 Here is a diagram to make this more intuitive:
 
@@ -528,6 +589,131 @@ Here is a diagram to make this more intuitive:
 ### Query multiple relations
 
 It is possible to query several relations or nested include relations with
-custom scope once you have the inclusion resolver of each relation set up.
-Check[HasMany - Query multiple relations](HasMany-relation.md#query-multiple-relations)
-for the usage and examples.
+custom scope. Once you have the inclusion resolver of each relation set up, the
+following queries would allow you traverse data differently:
+
+In our example, we have relations:
+
+- `Customer` _hasOne_ an `Address` - denoted as `address`.
+- `Customer` _hasMany_ `Order`s - denoted as `orders`.
+- `Order` _hasMany_ `Manufacturer` - denoted as `manufacturers`.
+
+To query **multiple relations**, for example, return all Suppliers including
+their orders and address, in Node API:
+
+```ts
+customerRepo.find({include: [{relation: 'orders'}, {relation: 'address'}]});
+```
+
+Equivalently, with url, you can do:
+
+```
+GET http://localhost:3000/customers?filter[include][0][relation]=orders&filter[include][1][relation]=address
+```
+
+This gives
+
+```ts
+[
+  {
+    id: 1,
+    name: 'Thor',
+    addressId: 3
+    orders: [
+      {name: 'Mjolnir', customerId: 1},
+      {name: 'Rocket Raccoon', customerId: 1},
+    ],
+    address:{
+          id: 3
+          city: 'Thrudheim',
+          province: 'Asgard',
+          zipcode: '8200',
+    }
+  },
+  {
+    id: 2,
+    name: 'Captain',
+    orders: [{name: 'Shield', customerId: 2}], // doesn't have a related address
+  },
+]
+```
+
+To query **nested relations**, for example, return all Suppliers including their
+orders and include orders' manufacturers , this can be done with filter:
+
+```ts
+customerRepo.find({
+  include: [
+    {
+      relation: 'orders',
+      scope: {
+        include: [{relation: 'manufacturers'}],
+      },
+    },
+  ],
+});
+```
+
+( You might use `encodeURIComponent(JSON.stringify(filter))` to convert the
+filter object to a query string.)
+
+<!-- FIXME: the url isn't being converted to JSON correctly. Add an example url once it's fixed
+
+Equivalently, with url, you can do:
+
+```
+// need to fix this
+ GET http://localhost:3000/customers?filter[include][0][relation]=orders&filter[include][0][scope]filter[include][0][relation]=manufacturers
+``` -->
+
+which gives
+
+```ts
+{
+  id: 1,
+  name: 'Thor',
+  addressId: 3
+  orders: [
+    {
+      name: 'Mjolnir',
+      customerId: 1
+    },
+    {
+      name: 'Rocket Raccoon',
+      customerId: 1,
+      manufacturers:[ // nested related models of orders
+        {
+          name: 'ToysRUs',
+          orderId: 1
+        },
+                {
+          name: 'ToysRThem',
+          orderId: 1
+        }
+      ]
+    },
+  ],
+}
+```
+
+You can also have other query clauses in the scope such as `where`, `limit`,
+etc.
+
+```ts
+customerRepo.find({
+  include: [
+    {
+      relation: 'orders',
+      scope: {
+        where: {name: 'ToysRUs'},
+        include: [{relation: 'manufacturers'}],
+      },
+    },
+  ],
+});
+```
+
+The `Where` clause above filters the result of `orders`.
+
+{% include tip.html content="Make sure that you have all inclusion resolvers that you need REGISTERED, and
+all relation names should be UNIQUE."%}
