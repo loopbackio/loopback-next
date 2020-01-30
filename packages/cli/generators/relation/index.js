@@ -15,6 +15,7 @@ const relationUtils = require('./utils.generator');
 
 const BelongsToRelationGenerator = require('./belongs-to-relation.generator');
 const HasManyRelationGenerator = require('./has-many-relation.generator');
+const HasOneRelationGenerator = require('./has-one-relation.generator');
 
 const ERROR_INCORRECT_RELATION_TYPE = 'Incorrect relation type';
 const ERROR_MODEL_DOES_NOT_EXIST = 'model does not exist.';
@@ -139,6 +140,11 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
       case relationUtils.relationType.hasMany:
         defaultRelationName = utils.pluralize(
           utils.camelCase(this.artifactInfo.destinationModel),
+        );
+        break;
+      case relationUtils.relationType.hasOne:
+        defaultRelationName = utils.camelCase(
+          this.artifactInfo.destinationModel,
         );
         break;
     }
@@ -514,6 +520,9 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
         break;
       case relationUtils.relationType.hasMany:
         relationGenerator = new HasManyRelationGenerator(this.args, this.opts);
+        break;
+      case relationUtils.relationType.hasOne:
+        relationGenerator = new HasOneRelationGenerator(this.args, this.opts);
         break;
     }
 

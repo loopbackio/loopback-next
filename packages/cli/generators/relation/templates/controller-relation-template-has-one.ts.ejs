@@ -1,0 +1,110 @@
+import {
+  Count,
+  CountSchema,
+  Filter,
+  repository,
+  Where,
+} from '@loopback/repository';
+import {
+  del,
+  get,
+  getModelSchemaRef,
+  getWhereSchemaFor,
+  param,
+  patch,
+  post,
+  requestBody,
+} from '@loopback/rest';
+import {
+  <%= sourceModelClassName %>,
+  <%= targetModelClassName %>,
+} from '../models';
+import {<%= sourceRepositoryClassName %>} from '../repositories';
+
+export class <%= controllerClassName %> {
+  constructor(
+    @repository(<%= sourceRepositoryClassName %>) protected <%= paramSourceRepository %>: <%= sourceRepositoryClassName %>,
+  ) { }
+
+  @get('/<%= sourceModelPath %>/{id}/<%= targetModelPath %>', {
+    responses: {
+      '200': {
+        description: '<%= sourceModelClassName %> has one <%= targetModelClassName %>',
+        content: {
+          'application/json': {
+            schema: getModelSchemaRef(<%= targetModelClassName %>),
+          },
+        },
+      },
+    },
+  })
+  async get(
+    @param.path.<%= sourceModelPrimaryKeyType %>('id') id: <%= sourceModelPrimaryKeyType %>,
+    @param.query.object('filter') filter?: Filter<<%= targetModelClassName %>>,
+  ): Promise<<%= targetModelClassName %>> {
+    return this.<%= paramSourceRepository %>.<%= relationPropertyName %>(id).get(filter);
+  }
+
+  @post('/<%= sourceModelPath %>/{id}/<%= targetModelPath %>', {
+    responses: {
+      '200': {
+        description: '<%= sourceModelClassName %> model instance',
+        content: {'application/json': {schema: getModelSchemaRef(<%= targetModelClassName %>)}},
+      },
+    },
+  })
+  async create(
+    @param.path.<%= sourceModelPrimaryKeyType %>('id') id: typeof <%= sourceModelClassName %>.prototype.<%= sourceModelPrimaryKey %>,
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(<%= targetModelClassName %>, {
+            title: 'New<%= targetModelClassName %>In<%= sourceModelClassName %>',
+            exclude: ['<%= targetModelPrimaryKey %>'],
+            optional: ['<%= foreignKeyName %>']
+          }),
+        },
+      },
+    }) <%= targetModelRequestBody %>: Omit<<%= targetModelClassName %>, '<%= targetModelPrimaryKey %>'>,
+  ): Promise<<%= targetModelClassName %>> {
+    return this.<%= paramSourceRepository %>.<%= relationPropertyName %>(id).create(<%= targetModelRequestBody %>);
+  }
+
+  @patch('/<%= sourceModelPath %>/{id}/<%= targetModelPath %>', {
+    responses: {
+      '200': {
+        description: '<%= sourceModelClassName %>.<%= targetModelClassName %> PATCH success count',
+        content: {'application/json': {schema: CountSchema}},
+      },
+    },
+  })
+  async patch(
+    @param.path.<%= sourceModelPrimaryKeyType %>('id') id: <%= sourceModelPrimaryKeyType %>,
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(<%= targetModelClassName %>, {partial: true}),
+        },
+      },
+    })
+    <%= targetModelRequestBody %>: Partial<<%= targetModelClassName %>>,
+    @param.query.object('where', getWhereSchemaFor(<%= targetModelClassName %>)) where?: Where<<%= targetModelClassName %>>,
+  ): Promise<Count> {
+    return this.<%= paramSourceRepository %>.<%= relationPropertyName %>(id).patch(<%= targetModelRequestBody %>, where);
+  }
+
+  @del('/<%= sourceModelPath %>/{id}/<%= targetModelPath %>', {
+    responses: {
+      '200': {
+        description: '<%= sourceModelClassName %>.<%= targetModelClassName %> DELETE success count',
+        content: {'application/json': {schema: CountSchema}},
+      },
+    },
+  })
+  async delete(
+    @param.path.<%= sourceModelPrimaryKeyType %>('id') id: <%= sourceModelPrimaryKeyType %>,
+    @param.query.object('where', getWhereSchemaFor(<%= targetModelClassName %>)) where?: Where<<%= targetModelClassName %>>,
+  ): Promise<Count> {
+    return this.<%= paramSourceRepository %>.<%= relationPropertyName %>(id).delete(where);
+  }
+}

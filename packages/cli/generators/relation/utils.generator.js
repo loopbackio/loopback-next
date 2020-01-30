@@ -13,6 +13,7 @@ const utils = require('../../lib/utils');
 exports.relationType = {
   belongsTo: 'belongsTo',
   hasMany: 'hasMany',
+  hasOne: 'hasOne',
 };
 
 class AstLoopBackProject extends ast.Project {
