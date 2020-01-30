@@ -60,6 +60,7 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
    * @returns {*}
    */
   setOptions() {
+    /* istanbul ignore next */
     if (this.options.dataSource) {
       debug(`Data source specified: ${this.options.dataSource}`);
       this.artifactInfo.dataSource = modelMaker.loadDataSourceByName(
@@ -74,6 +75,7 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
    * Ensure CLI is being run in a LoopBack 4 project.
    */
   checkLoopBackProject() {
+    /* istanbul ignore next */
     if (this.shouldExit()) return;
     return super.checkLoopBackProject();
   }
@@ -83,6 +85,7 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
    */
   async loadAllDatasources() {
     // If we have a dataSourcePath then it is already loaded for us, we don't need load any
+    /* istanbul ignore next */
     if (this.artifactInfo.dataSource) {
       return;
     }
@@ -106,6 +109,7 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
    * Ask the user to select the data source from which to discover
    */
   promptDataSource() {
+    /* istanbul ignore next */
     if (this.shouldExit()) return;
     const prompts = [
       {
@@ -120,6 +124,7 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
     ];
 
     return this.prompt(prompts).then(answer => {
+      /* istanbul ignore next */
       if (!answer.dataSource) return;
       debug(`Datasource answer: ${JSON.stringify(answer)}`);
 
@@ -133,12 +138,16 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
    * Puts all discoverable models in this.modelChoices
    */
   async discoverModelInfos() {
+    /* istanbul ignore if */
     if (this.artifactInfo.modelDefinitions) return;
     debug(`Getting all models from ${this.artifactInfo.dataSource.name}`);
 
     this.modelChoices = await modelMaker.discoverModelNames(
       this.artifactInfo.dataSource,
-      {views: this.options.views, schema: this.options.schema},
+      {
+        views: this.options.views,
+        schema: this.options.schema,
+      },
     );
     debug(
       `Got ${this.modelChoices.length} models from ${this.artifactInfo.dataSource.name}`,
@@ -151,6 +160,7 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
    */
   promptModelChoices() {
     // If we are discovering all we don't need to prompt
+    /* istanbul ignore next */
     if (this.options.all) {
       this.discoveringModels = this.modelChoices;
     }
@@ -172,6 +182,7 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
     ];
 
     return this.prompt(prompts).then(answers => {
+      /* istanbul ignore next */
       if (!answers.discoveringModels) return;
       debug(`Models chosen: ${JSON.stringify(answers)}`);
       this.discoveringModels = [];
@@ -204,6 +215,7 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
         default: false,
       },
     ]).then(props => {
+      /* istanbul ignore next */
       if (!props.disableCamelCase) return;
       props.disableCamelCase = props.disableCamelCase !== 'camelCase';
 
