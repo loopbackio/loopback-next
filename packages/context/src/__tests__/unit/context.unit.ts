@@ -47,6 +47,13 @@ describe('Context constructor', () => {
     );
   });
 
+  it('adds subclass name as the prefix', () => {
+    const ctx = new TestContext();
+    expect(ctx.name).to.match(
+      /^TestContext-[0-9A-F]{8}-[0-9A-F]{4}-[1][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i,
+    );
+  });
+
   it('generates unique names for different instances', () => {
     const ctx1 = new Context();
     const ctx2 = new Context();
