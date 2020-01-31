@@ -13,6 +13,7 @@ const inspect = require('util').inspect;
 const utils = require('../../lib/utils');
 const chalk = require('chalk');
 const path = require('path');
+const g = require('../../lib/globalize');
 
 const {
   createPropertyTemplateData,
@@ -84,7 +85,7 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
     this.option('base', {
       type: String,
       required: false,
-      description: 'A valid based model',
+      description: g.f('A valid based model'),
     });
 
     // The base class can be specified:
@@ -97,22 +98,25 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
     this.option('dataSource', {
       type: String,
       required: false,
-      description:
+      description: g.f(
         'The name of the dataSource which contains this model and suppots model discovery',
+      ),
     });
 
     this.option('table', {
       type: String,
       required: false,
-      description:
+      description: g.f(
         'If discovering a model from a dataSource, specify the name of its table/view',
+      ),
     });
 
     this.option('schema', {
       type: String,
       required: false,
-      description:
+      description: g.f(
         'If discovering a model from a dataSource, specify the schema which contains it',
+      ),
     });
 
     return super._setupGenerator();
@@ -289,7 +293,7 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
     return this.prompt([
       {
         name: 'allowAdditionalProperties',
-        message: 'Allow additional (free-form) properties?',
+        message: g.f('Allow additional (free-form) properties?'),
         type: 'confirm',
         default: false,
         when: !this.artifactInfo.allowAdditionalProperties,
@@ -354,7 +358,7 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
     const prompts = [
       {
         name: 'propName',
-        message: 'Enter the property name:',
+        message: g.f('Enter the property name:'),
         validate: function(val) {
           if (val) {
             return utils.checkPropertyName(val);
@@ -383,13 +387,13 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
       const prompts = [
         {
           name: 'type',
-          message: 'Property type:',
+          message: g.f('Property type:'),
           type: 'list',
           choices: this.typeChoices,
         },
         {
           name: 'itemType',
-          message: 'Type of array items:',
+          message: g.f('Type of array items:'),
           type: 'list',
           choices: this.typeChoices.filter(choice => {
             return choice !== 'array';
@@ -419,7 +423,7 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
         },
         {
           name: 'required',
-          message: 'Is it required?:',
+          message: g.f('Is it required?:'),
           type: 'confirm',
           default: false,
           when: answers => !answers.generated,

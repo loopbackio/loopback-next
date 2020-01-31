@@ -11,6 +11,7 @@ const chalk = require('chalk');
 const path = require('path');
 const utils = require('../../lib/utils');
 const connectors = require('../../lib/connectors.json');
+const g = require('../../lib/globalize');
 
 /**
  * DataSource Generator -- CLI
@@ -134,7 +135,7 @@ module.exports = class DataSourceGenerator extends ArtifactGenerator {
       const prompts = [
         {
           name: 'customConnector',
-          message: "Enter the connector's package name:",
+          message: g.f("Enter the connector's package name:"),
           validate: utils.validate,
         },
       ];
@@ -151,7 +152,7 @@ module.exports = class DataSourceGenerator extends ArtifactGenerator {
    * connectors in the connectors.json list
    */
   promptConnectorConfig() {
-    debug('prompting for connector config');
+    debug(g.f('prompting for connector config'));
     if (this.shouldExit()) return;
     // Check to make sure connector is from connectors list (not custom)
     const settings =

@@ -11,6 +11,7 @@ const inspect = require('util').inspect;
 const path = require('path');
 const chalk = require('chalk');
 const utils = require('../../lib/utils');
+const g = require('../../lib/globalize');
 
 const VALID_CONNECTORS_FOR_SERVICE = ['Model'];
 
@@ -18,7 +19,7 @@ const REMOTE_SERVICE_TEMPLATE = 'remote-service-proxy-template.ts.ejs';
 const LOCAL_CLASS_TEMPLATE = 'local-service-class-template.ts.ejs';
 const LOCAL_PROVIDER_TEMPLATE = 'local-service-provider-template.ts.ejs';
 
-const PROMPT_MESSAGE_DATA_SOURCE = 'Please select the datasource';
+const PROMPT_MESSAGE_DATA_SOURCE = g.f('Please select the datasource');
 
 const ERROR_NO_DATA_SOURCES_FOUND = 'No datasources found at';
 
@@ -57,13 +58,13 @@ module.exports = class ServiceGenerator extends ArtifactGenerator {
     this.option('type', {
       type: String,
       required: false,
-      description: 'Service type - proxy, class or provider',
+      description: g.f('Service type - proxy, class or provider'),
     });
 
     this.option('datasource', {
       type: String,
       required: false,
-      description: 'A valid datasource name',
+      description: g.f('A valid datasource name'),
     });
 
     return super._setupGenerator();
@@ -82,7 +83,7 @@ module.exports = class ServiceGenerator extends ArtifactGenerator {
    * Ask for Service Type
    */
   async promptServiceType() {
-    debug('Prompting for service type');
+    debug(g.f('Prompting for service type'));
     if (this.shouldExit()) return;
 
     if (this.options.datasource) {
@@ -158,7 +159,7 @@ module.exports = class ServiceGenerator extends ArtifactGenerator {
   }
 
   async promptDataSourceName() {
-    debug('Prompting for a datasource ');
+    debug(g.f('Prompting for a datasource '));
     if (this.shouldExit()) return;
     if (!this._isRemoteProxy()) return;
     let datasourcesList;
