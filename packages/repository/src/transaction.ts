@@ -18,6 +18,11 @@ export interface Transaction {
   rollback(): Promise<void>;
 
   /**
+   * Check if the transaction has an active connection
+   */
+  isActive(): boolean;
+
+  /**
    * The transaction Identifier
    */
   id: string;

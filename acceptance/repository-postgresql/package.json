@@ -22,8 +22,8 @@
     "@loopback/eslint-config": "^5.0.2",
     "@loopback/repository": "^1.18.0",
     "@loopback/repository-tests": "^0.9.1",
-    "@types/node": "^10.17.13",
-    "loopback-connector-postgresql": "^3.8.1"
+    "@types/node": "^10.17.14",
+    "loopback-connector-postgresql": "^3.8.3"
   },
   "files": [
     "README.md",

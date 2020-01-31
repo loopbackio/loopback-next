@@ -25,6 +25,7 @@ import {
   ResponseObject,
   SchemaObject,
   SchemasObject,
+  TagsDecoratorMetadata,
 } from './types';
 
 const debug = require('debug')('loopback:openapi3:metadata:controller-spec');
@@ -77,6 +78,47 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
     spec = {paths: {}};
   }
 
+  const isClassDeprecated = MetadataInspector.getClassMetadata<boolean>(
+    OAI3Keys.DEPRECATED_CLASS_KEY,
+    constructor,
+  );
+
+  if (isClassDeprecated) {
+    debug('  using class-level @deprecated()');
+  }
+  const classTags = MetadataInspector.getClassMetadata<TagsDecoratorMetadata>(
+    OAI3Keys.TAGS_CLASS_KEY,
+    constructor,
+  );
+
+  if (classTags) {
+    debug('  using class-level @oas.tags()');
+  }
+
+  if (classTags || isClassDeprecated) {
+    for (const path of Object.keys(spec.paths)) {
+      for (const method of Object.keys(spec.paths[path])) {
+        /* istanbul ignore else */
+        if (isClassDeprecated) {
+          spec.paths[path][method].deprecated = true;
+        }
+        /* istanbul ignore else */
+        if (classTags) {
+          if (
+            spec.paths[path][method].tags &&
+            spec.paths[path][method].tags.length
+          ) {
+            spec.paths[path][method].tags = spec.paths[path][
+              method
+            ].tags.concat(classTags.tags);
+          } else {
+            spec.paths[path][method].tags = classTags.tags;
+          }
+        }
+      }
+    }
+  }
+
   let endpoints =
     MetadataInspector.getAllMethodMetadata<RestEndpoint>(
       OAI3Keys.METHODS_KEY,
@@ -90,6 +132,23 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
     const endpoint = endpoints[op];
     const verb = endpoint.verb!;
     const path = endpoint.path!;
+
+    const isMethodDeprecated = MetadataInspector.getMethodMetadata<boolean>(
+      OAI3Keys.DEPRECATED_METHOD_KEY,
+      constructor.prototype,
+      op,
+    );
+    if (isMethodDeprecated) {
+      debug('  using method-level deprecation via @deprecated()');
+    }
+
+    const methodTags = MetadataInspector.getMethodMetadata<
+      TagsDecoratorMetadata
+    >(OAI3Keys.TAGS_METHOD_KEY, constructor.prototype, op);
+
+    if (methodTags) {
+      debug('  using method-level tags via @oas.tags()');
+    }
 
     let endpointName = '';
     /* istanbul ignore if */
@@ -113,9 +172,33 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
       };
       endpoint.spec = operationSpec;
     }
+
+    if (classTags && !operationSpec.tags) {
+      operationSpec.tags = classTags.tags;
+    }
+
+    if (methodTags) {
+      if (operationSpec.tags && operationSpec.tags.length) {
+        operationSpec.tags = operationSpec.tags.concat(methodTags.tags);
+      } else {
+        operationSpec.tags = methodTags.tags;
+      }
+    }
+
     debug('  operation for method %s: %j', op, endpoint);
 
     debug('  spec responses for method %s: %o', op, operationSpec.responses);
+
+    // Prescedence: method decorator > class decorator > operationSpec > undefined
+    const deprecationSpec =
+      isMethodDeprecated ??
+      isClassDeprecated ??
+      operationSpec.deprecated ??
+      false;
+
+    if (deprecationSpec) {
+      operationSpec.deprecated = true;
+    }
 
     for (const code in operationSpec.responses) {
       const responseObject: ResponseObject | ReferenceObject =

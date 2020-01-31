@@ -31,7 +31,7 @@
     "@loopback/build": "^3.1.0",
     "@loopback/testlab": "^1.10.2",
     "@types/debug": "^4.1.4",
-    "@types/node": "10.17.13",
+    "@types/node": "10.17.14",
     "casbin": "^3.1.0"
   },
   "keywords": [

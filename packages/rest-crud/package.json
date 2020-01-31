@@ -24,7 +24,7 @@
     "@loopback/repository": "^1.18.0",
     "@loopback/rest": "^1.26.0",
     "@loopback/testlab": "^1.10.2",
-    "@types/node": "^10.17.13"
+    "@types/node": "^10.17.14"
   },
   "peerDependencies": {
     "@loopback/repository": "^1.12.0",

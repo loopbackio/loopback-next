@@ -33,7 +33,7 @@ lb4 relation [options]
 - `--sourceModel`: Source model.
 - `--destinationModel`: Destination model.
 - `--foreignKeyName`: Destination/Source model foreign key name for
-  HasMany/BelongsTo relation, respectively.
+  HasMany,HasOne/BelongsTo relation, respectively.
 - `--relationName`: Relation name.
 - `-c`, `--config`: JSON file name or value to configure options.
 - `-y`, `--yes`: Skip all confirmation prompts with default or provided value.
@@ -46,7 +46,7 @@ Defining lb4 relation in one command line interface (cli):
 ```sh
 lb4 relation --sourceModel=<sourceModel>
 --destinationModel=<destinationModel> --foreignKeyName=<foreignKeyName>
---relationType=<hasMany|belongsTo> [--relationName=<relationName>] [--format]
+--relationType=<hasMany|hasOne|belongsTo> [--relationName=<relationName>] [--format]
 ```
 
 - `<relationType>` - Type of the relation that will be created between the
@@ -81,6 +81,7 @@ The tool will prompt you for:
   source model and the target model. Supported relation types:
 
   - [HasMany](HasMany-relation.md)
+  - [HasOne](HasOne-relation.md)
   - [BelongsTo](BelongsTo-relation.md)
 
 - **Name of the `source` model.** _(sourceModel)_ Prompts a list of available

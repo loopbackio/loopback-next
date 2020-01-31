@@ -95,9 +95,9 @@ class.
 
   ```ts
   const options: AuthorizationOptions = {
-    precedence: AuthorizationDecisions.DENY;
-    defaultDecision: AuthorizationDecisions.DENY;
-  }
+    precedence: AuthorizationDecision.DENY,
+    defaultDecision: AuthorizationDecision.DENY,
+  };
 
   const binding = app.component(AuthorizationComponent);
   app.configure(binding.key).to(options);
