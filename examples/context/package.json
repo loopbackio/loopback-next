@@ -11,7 +11,7 @@
     "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
     "build": "lb-tsc",
     "build:watch": "lb-tsc --watch",
-    "clean": "lb-clean *example-context*.tgz dist tsconfig.build.tsbuildinfo package",
+    "clean": "lb-clean *example-context*.tgz dist *.tsbuildinfo package",
     "verify": "npm pack && tar xf *example-context*.tgz && tree package && npm run clean",
     "lint": "npm run prettier:check && npm run eslint",
     "lint:fix": "npm run eslint:fix && npm run prettier:fix",

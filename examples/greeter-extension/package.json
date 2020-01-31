@@ -9,7 +9,7 @@
   "scripts": {
     "build": "lb-tsc",
     "build:watch": "lb-tsc --watch",
-    "clean": "lb-clean *example-greeter-extension-*.tgz dist tsconfig.build.tsbuildinfo package",
+    "clean": "lb-clean *example-greeter-extension-*.tgz dist *.tsbuildinfo package",
     "lint": "npm run prettier:check && npm run eslint",
     "lint:fix": "npm run eslint:fix && npm run prettier:fix",
     "prettier:cli": "lb-prettier \"**/*.ts\" \"**/*.js\"",
