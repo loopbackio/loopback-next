@@ -5,8 +5,8 @@
 
 import {Application, createBindingFromClass} from '@loopback/core';
 import {OASEnhancerService, OAS_ENHANCER_SERVICE} from '../../../..';
+import {SecuritySpecEnhancer} from '../../../../enhancers/extensions/security.spec.extension';
 import {InfoSpecEnhancer} from './info.spec.extension';
-import {SecuritySpecEnhancer} from './security.spec.extension';
 
 export class SpecServiceApplication extends Application {
   constructor() {

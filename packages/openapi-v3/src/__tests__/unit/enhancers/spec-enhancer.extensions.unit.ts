@@ -34,7 +34,7 @@ describe('spec-enhancer-extension-point', () => {
       // the security scheme entry is added by the security enhancer
       components: {
         securitySchemes: {
-          bearerAuth: {
+          jwt: {
             type: 'http',
             scheme: 'bearer',
             bearerFormat: 'JWT',

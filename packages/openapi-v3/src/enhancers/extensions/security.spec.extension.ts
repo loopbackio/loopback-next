@@ -6,13 +6,9 @@
 import {bind} from '@loopback/core';
 import debugModule from 'debug';
 import {inspect} from 'util';
-import {
-  mergeOpenAPISpec,
-  ReferenceObject,
-  SecuritySchemeObject,
-} from '../../../..';
-import {asSpecEnhancer, OASEnhancer} from '../../../../enhancers/types';
-import {OpenApiSpec} from '../../../../types';
+import {mergeOpenAPISpec, ReferenceObject, SecuritySchemeObject} from '../..';
+import {OpenApiSpec} from '../../types';
+import {asSpecEnhancer, OASEnhancer} from '../types';
 const debug = debugModule('loopback:openapi:spec-enhancer');
 
 export type SecuritySchemeObjects = {
@@ -20,7 +16,7 @@ export type SecuritySchemeObjects = {
 };
 
 export const SECURITY_SCHEME_SPEC: SecuritySchemeObjects = {
-  bearerAuth: {
+  jwt: {
     type: 'http',
     scheme: 'bearer',
     bearerFormat: 'JWT',
@@ -28,7 +24,7 @@ export const SECURITY_SCHEME_SPEC: SecuritySchemeObjects = {
 };
 
 /**
- * A spec enhancer to add bearer token OpenAPI security entry to
+ * A spec enhancer to add jwt bearer token OpenAPI security entry to
  * `spec.component.securitySchemes`
  */
 @bind(asSpecEnhancer)
@@ -36,7 +32,10 @@ export class SecuritySpecEnhancer implements OASEnhancer {
   name = 'security';
 
   modifySpec(spec: OpenApiSpec): OpenApiSpec {
-    const patchSpec = {components: {securitySchemes: SECURITY_SCHEME_SPEC}};
+    if (spec?.components?.securitySchemes?.jwt) return spec;
+    const patchSpec = {
+      components: {securitySchemes: SECURITY_SCHEME_SPEC},
+    };
     const mergedSpec = mergeOpenAPISpec(spec, patchSpec);
     debug(`security spec extension, merged spec: ${inspect(mergedSpec)}`);
     return mergedSpec;
