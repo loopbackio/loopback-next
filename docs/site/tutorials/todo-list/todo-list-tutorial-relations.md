@@ -248,7 +248,7 @@ this.registerInclusionResolver('todoList', this.todoList.inclusionResolver);
 ```
 
 There's an additional relation type LoopBack 4 supports, which is
-[`hasOne`](../../hasOne-relation.md). If you're interested in trying it out, see
+[`hasOne`](../../HasOne-relation.md). If you're interested in trying it out, see
 [Add TodoListImage Relation](todo-list-tutorial-has-one-relation.md). This is
 not required for the application, so if you'd like to skip it, see the
 [navigation](#navigation) for the last step.

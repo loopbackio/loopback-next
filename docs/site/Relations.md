@@ -43,7 +43,7 @@ Here are the currently supported relations:
 
 - [HasMany](HasMany-relation.md)
 - [BelongsTo](BelongsTo-relation.md)
-- [HasOne](hasOne-relation.md)
+- [HasOne](HasOne-relation.md)
 
 {% include note.html content="
 The `hasMany` relation may alternatively be implemented using the
