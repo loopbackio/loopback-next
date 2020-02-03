@@ -6,7 +6,7 @@
 import debugFactory from 'debug';
 import {EventEmitter} from 'events';
 import {v1 as uuidv1} from 'uuid';
-import {Binding, BindingTag} from './binding';
+import {Binding, BindingInspectOptions, BindingTag} from './binding';
 import {
   ConfigurationResolver,
   DefaultConfigurationResolver,
@@ -24,6 +24,7 @@ import {ContextEventObserver, ContextObserver} from './context-observer';
 import {ContextSubscriptionManager, Subscription} from './context-subscription';
 import {ContextTagIndexer} from './context-tag-indexer';
 import {ContextView} from './context-view';
+import {JSONObject} from './json-types';
 import {ContextBindings} from './keys';
 import {
   asResolutionOptions,
@@ -781,8 +782,8 @@ export class Context extends EventEmitter {
   /**
    * Create a plain JSON object for the context
    */
-  toJSON(): object {
-    const bindings: Record<string, object> = {};
+  toJSON(): JSONObject {
+    const bindings: JSONObject = {};
     for (const [k, v] of this.registry) {
       bindings[k] = v.toJSON();
     }
@@ -792,18 +793,39 @@ export class Context extends EventEmitter {
   /**
    * Inspect the context and dump out a JSON object representing the context
    * hierarchy
+   * @param options - Options for inspect
    */
   // TODO(rfeng): Evaluate https://nodejs.org/api/util.html#util_custom_inspection_functions_on_objects
-  inspect(): object {
-    const json: Record<string, unknown> = {
-      name: this.name,
-      bindings: this.toJSON(),
+  inspect(options: ContextInspectOptions = {}): JSONObject {
+    options = {
+      includeParent: true,
+      includeInjections: false,
+      ...options,
     };
+    const bindings: JSONObject = {};
+    for (const [k, v] of this.registry) {
+      bindings[k] = v.inspect(options);
+    }
+    const json: JSONObject = {
+      name: this.name,
+      bindings,
+    };
+    if (!options.includeParent) return json;
     if (this._parent) {
-      json.parent = this._parent.inspect();
+      json.parent = this._parent.inspect(options);
     }
     return json;
   }
+}
+
+/**
+ * Options for context.inspect()
+ */
+export interface ContextInspectOptions extends BindingInspectOptions {
+  /**
+   * The flag to control if parent context should be inspected
+   */
+  includeParent?: boolean;
 }
 
 /**

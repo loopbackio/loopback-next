@@ -11,6 +11,7 @@ import {
   BindingScope,
   BindingType,
   Context,
+  inject,
   isPromiseLike,
   Provider,
 } from '../..';
@@ -898,10 +899,99 @@ describe('Context', () => {
       });
     });
 
-    class MyService {}
+    it('inspects as plain JSON object to not include parent', () => {
+      const childCtx = new TestContext(ctx, 'server');
+      childCtx.bind('foo').to('foo-value');
+
+      expect(childCtx.inspect({includeParent: false})).to.eql({
+        name: 'server',
+        bindings: childCtx.toJSON(),
+      });
+    });
+
+    it('inspects as plain JSON object to include injections', () => {
+      const childCtx = new TestContext(ctx, 'server');
+      childCtx.bind('foo').to('foo-value');
+
+      const expectedJSON = {
+        name: 'server',
+        bindings: {
+          foo: {
+            key: 'foo',
+            scope: 'Transient',
+            tags: {},
+            isLocked: false,
+            type: 'Constant',
+          },
+        },
+        parent: {
+          name: 'app',
+          bindings: {
+            a: {
+              key: 'a',
+              scope: 'Transient',
+              tags: {},
+              isLocked: true,
+              type: 'Constant',
+            },
+            b: {
+              key: 'b',
+              scope: 'Singleton',
+              tags: {X: 'X', Y: 'Y'},
+              isLocked: false,
+              type: 'DynamicValue',
+            },
+            c: {
+              key: 'c',
+              scope: 'Transient',
+              tags: {Z: 'Z', a: 1},
+              isLocked: false,
+              type: 'Constant',
+            },
+            d: {
+              key: 'd',
+              scope: 'Transient',
+              tags: {},
+              isLocked: false,
+              type: 'Class',
+              valueConstructor: 'MyService',
+              injections: {
+                constructorArguments: [
+                  {targetName: 'MyService.constructor[0]', bindingKey: 'x'},
+                ],
+              },
+            },
+            e: {
+              key: 'e',
+              scope: 'Transient',
+              tags: {},
+              isLocked: false,
+              type: 'Provider',
+              providerConstructor: 'MyServiceProvider',
+              injections: {
+                properties: {
+                  x: {
+                    targetName: 'MyServiceProvider.prototype.x',
+                    bindingKey: 'x',
+                  },
+                },
+              },
+            },
+          },
+        },
+      };
+      const json = childCtx.inspect({includeInjections: true});
+      expect(json).to.eql(expectedJSON);
+    });
+
+    class MyService {
+      constructor(@inject('x') private x: string) {}
+    }
     class MyServiceProvider implements Provider<MyService> {
+      @inject('x')
+      private x: string;
       value() {
-        return new MyService();
+        return new MyService(this.x);
       }
     }
 
