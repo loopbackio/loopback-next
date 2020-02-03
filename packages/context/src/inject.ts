@@ -18,11 +18,13 @@ import {
   BindingSelector,
   filterByTag,
   isBindingAddress,
+  isBindingTagFilter,
 } from './binding-filter';
 import {BindingAddress} from './binding-key';
 import {BindingComparator} from './binding-sorter';
 import {BindingCreationPolicy, Context} from './context';
 import {ContextView, createViewGetter} from './context-view';
+import {JSONObject} from './json-types';
 import {ResolutionOptions, ResolutionSession} from './resolution-session';
 import {BoundValue, ValueOrPromise} from './value-promise';
 
@@ -697,4 +699,67 @@ export function describeInjectedProperties(
       target,
     ) ?? {};
   return metadata;
+}
+
+/**
+ * Inspect injections for a binding created with `toClass` or `toProvider`
+ * @param binding - Binding object
+ */
+export function inspectInjections(binding: Readonly<Binding<unknown>>) {
+  const json: JSONObject = {};
+  const ctor = binding.valueConstructor ?? binding.providerConstructor;
+  if (ctor == null) return json;
+  const constructorInjections = describeInjectedArguments(ctor, '').map(
+    inspectInjection,
+  );
+  if (constructorInjections.length) {
+    json.constructorArguments = constructorInjections;
+  }
+  const propertyInjections = describeInjectedProperties(ctor.prototype);
+  const properties: JSONObject = {};
+  for (const p in propertyInjections) {
+    properties[p] = inspectInjection(propertyInjections[p]);
+  }
+  if (Object.keys(properties).length) {
+    json.properties = properties;
+  }
+  return json;
+}
+
+/**
+ * Inspect an injection
+ * @param injection - Injection information
+ */
+function inspectInjection(injection: Readonly<Injection<unknown>>) {
+  const injectionInfo = ResolutionSession.describeInjection(injection);
+  const descriptor: JSONObject = {};
+  if (injectionInfo.targetName) {
+    descriptor.targetName = injectionInfo.targetName;
+  }
+  if (isBindingAddress(injectionInfo.bindingSelector)) {
+    // Binding key
+    descriptor.bindingKey = injectionInfo.bindingSelector.toString();
+  } else if (isBindingTagFilter(injectionInfo.bindingSelector)) {
+    // Binding tag filter
+    descriptor.bindingTagPattern = JSON.parse(
+      JSON.stringify(injectionInfo.bindingSelector.bindingTagPattern),
+    );
+  } else {
+    // Binding filter function
+    descriptor.bindingFilter =
+      injectionInfo.bindingSelector?.name ?? '<function>';
+  }
+  // Inspect metadata
+  if (injectionInfo.metadata) {
+    if (
+      injectionInfo.metadata.decorator &&
+      injectionInfo.metadata.decorator !== '@inject'
+    ) {
+      descriptor.decorator = injectionInfo.metadata.decorator;
+    }
+    if (injectionInfo.metadata.optional) {
+      descriptor.optional = injectionInfo.metadata.optional;
+    }
+  }
+  return descriptor;
 }

@@ -7,7 +7,9 @@ import debugFactory from 'debug';
 import {EventEmitter} from 'events';
 import {BindingAddress, BindingKey} from './binding-key';
 import {Context} from './context';
+import {inspectInjections} from './inject';
 import {createProxyWithInterceptors} from './interception-proxy';
+import {JSONObject} from './json-types';
 import {ContextTags} from './keys';
 import {Provider} from './provider';
 import {
@@ -635,8 +637,8 @@ export class Binding<T = BoundValue> extends EventEmitter {
   /**
    * Convert to a plain JSON object
    */
-  toJSON(): object {
-    const json: Record<string, unknown> = {
+  toJSON(): JSONObject {
+    const json: JSONObject = {
       key: this.key,
       scope: this.scope,
       tags: this.tagMap,
@@ -653,6 +655,23 @@ export class Binding<T = BoundValue> extends EventEmitter {
     }
     if (this._alias != null) {
       json.alias = this._alias.toString();
+    }
+    return json;
+  }
+
+  /**
+   * Inspect the binding to return a json representation of the binding information
+   * @param options - Options to control what information should be included
+   */
+  inspect(options: BindingInspectOptions = {}): JSONObject {
+    options = {
+      includeInjections: false,
+      ...options,
+    };
+    const json = this.toJSON();
+    if (options.includeInjections) {
+      const injections = inspectInjections(this);
+      if (Object.keys(injections).length) json.injections = injections;
     }
     return json;
   }
@@ -686,6 +705,16 @@ export class Binding<T = BoundValue> extends EventEmitter {
       [ContextTags.CONFIGURATION_FOR]: key.toString(),
     });
   }
+}
+
+/**
+ * Options for binding.inspect()
+ */
+export interface BindingInspectOptions {
+  /**
+   * The flag to control if injections should be inspected
+   */
+  includeInjections?: boolean;
 }
 
 function createInterceptionProxyFromInstance<T>(
