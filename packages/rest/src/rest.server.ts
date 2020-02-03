@@ -425,7 +425,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
     );
 
     specForm = specForm ?? {version: '3.0.0', format: 'json'};
-    const specObj = this.getApiSpec(requestContext);
+    const specObj = await this.getApiSpec(requestContext);
 
     if (specForm.format === 'json') {
       const spec = JSON.stringify(specObj, null, 2);
@@ -699,8 +699,8 @@ export class RestServer extends Context implements Server, HttpServerLike {
    * @param requestContext - Optional context to update the `servers` list
    * in the returned spec
    */
-  getApiSpec(requestContext?: RequestContext): OpenApiSpec {
-    let spec = this.getSync<OpenApiSpec>(RestBindings.API_SPEC);
+  async getApiSpec(requestContext?: RequestContext): Promise<OpenApiSpec> {
+    let spec = await this.get<OpenApiSpec>(RestBindings.API_SPEC);
     const defs = this.httpHandler.getApiDefinitions();
 
     // Apply deep clone to prevent getApiSpec() callers from
