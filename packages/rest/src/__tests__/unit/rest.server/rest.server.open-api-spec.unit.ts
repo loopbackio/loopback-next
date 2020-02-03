@@ -21,10 +21,10 @@ describe('RestServer.getApiSpec()', () => {
   beforeEach(givenApplication);
 
   it('comes with a valid default spec', async () => {
-    await validateApiSpec(server.getApiSpec());
+    await validateApiSpec(await server.getApiSpec());
   });
 
-  it('honours API defined via app.api()', () => {
+  it('honours API defined via app.api()', async () => {
     server.api({
       openapi: '3.0.0',
       info: {
@@ -36,7 +36,7 @@ describe('RestServer.getApiSpec()', () => {
       'x-foo': 'bar',
     });
 
-    const spec = server.getApiSpec();
+    const spec = await server.getApiSpec();
     expect(spec).to.deepEqual({
       openapi: '3.0.0',
       info: {
@@ -81,11 +81,11 @@ describe('RestServer.getApiSpec()', () => {
     });
   });
 
-  it('returns routes registered via app.route(route)', () => {
+  it('returns routes registered via app.route(route)', async () => {
     function greet() {}
     server.route('get', '/greet', {responses: {}}, greet);
 
-    const spec = server.getApiSpec();
+    const spec = await server.getApiSpec();
     expect(spec.paths).to.eql({
       '/greet': {
         get: {
@@ -95,7 +95,7 @@ describe('RestServer.getApiSpec()', () => {
     });
   });
 
-  it('ignores routes marked as "x-visibility" via app.route(route)', () => {
+  it('ignores routes marked as "x-visibility" via app.route(route)', async () => {
     function greet() {}
     function meet() {}
     server.route(
@@ -105,7 +105,7 @@ describe('RestServer.getApiSpec()', () => {
       greet,
     );
     server.route('get', '/meet', {responses: {}, spec: {}}, meet);
-    const spec = server.getApiSpec();
+    const spec = await server.getApiSpec();
     expect(spec.paths).to.eql({
       '/meet': {
         get: {
@@ -116,7 +116,7 @@ describe('RestServer.getApiSpec()', () => {
     });
   });
 
-  it('returns routes registered via app.route(..., Controller, method)', () => {
+  it('returns routes registered via app.route(..., Controller, method)', async () => {
     class MyController {
       greet() {}
     }
@@ -130,7 +130,7 @@ describe('RestServer.getApiSpec()', () => {
       'greet',
     );
 
-    const spec = server.getApiSpec();
+    const spec = await server.getApiSpec();
     expect(spec.paths).to.eql({
       '/greet': {
         get: {
@@ -143,7 +143,7 @@ describe('RestServer.getApiSpec()', () => {
     });
   });
 
-  it('ignores routes marked as "x-visibility" via app.route(..., Controller, method)', () => {
+  it('ignores routes marked as "x-visibility" via app.route(..., Controller, method)', async () => {
     class GreetController {
       greet() {}
     }
@@ -170,7 +170,7 @@ describe('RestServer.getApiSpec()', () => {
       'meet',
     );
 
-    const spec = server.getApiSpec();
+    const spec = await server.getApiSpec();
     expect(spec.paths).to.eql({
       '/meet': {
         get: {
@@ -183,14 +183,14 @@ describe('RestServer.getApiSpec()', () => {
     });
   });
 
-  it('honors tags in the operation spec', () => {
+  it('honors tags in the operation spec', async () => {
     class MyController {
       @get('/greet', {responses: {'200': {description: ''}}, tags: ['MyTag']})
       greet() {}
     }
     app.controller(MyController);
 
-    const spec = server.getApiSpec();
+    const spec = await server.getApiSpec();
     expect(spec.paths).to.eql({
       '/greet': {
         get: {
@@ -204,7 +204,7 @@ describe('RestServer.getApiSpec()', () => {
     });
   });
 
-  it('emits all media types for request body', () => {
+  it('emits all media types for request body', async () => {
     const expectedOpSpec = anOperationSpec()
       .withRequestBody({
         description: 'Any object value.',
@@ -238,18 +238,18 @@ describe('RestServer.getApiSpec()', () => {
     }
     app.controller(MyController);
 
-    const spec = server.getApiSpec();
+    const spec = await server.getApiSpec();
     expect(spec.paths['/show-body'].post).to.containDeep(expectedOpSpec);
   });
 
-  it('returns routes registered via app.controller()', () => {
+  it('returns routes registered via app.controller()', async () => {
     class MyController {
       @get('/greet')
       greet() {}
     }
     app.controller(MyController);
 
-    const spec = server.getApiSpec();
+    const spec = await server.getApiSpec();
     expect(spec.paths).to.eql({
       '/greet': {
         get: {
@@ -265,7 +265,7 @@ describe('RestServer.getApiSpec()', () => {
     });
   });
 
-  it('returns definitions inferred via app.controller()', () => {
+  it('returns definitions inferred via app.controller()', async () => {
     @model()
     class MyModel {
       @property()
@@ -277,7 +277,7 @@ describe('RestServer.getApiSpec()', () => {
     }
     app.controller(MyController);
 
-    const spec = server.getApiSpec();
+    const spec = await server.getApiSpec();
     expect(spec.components && spec.components.schemas).to.deepEqual({
       MyModel: {
         title: 'MyModel',
@@ -291,7 +291,7 @@ describe('RestServer.getApiSpec()', () => {
     });
   });
 
-  it('preserves routes specified in app.api()', () => {
+  it('preserves routes specified in app.api()', async () => {
     function status() {}
     server.api(
       anOpenApiSpec()
@@ -305,7 +305,7 @@ describe('RestServer.getApiSpec()', () => {
     function greet() {}
     server.route('get', '/greet', {responses: {}}, greet);
 
-    const spec = server.getApiSpec();
+    const spec = await server.getApiSpec();
     expect(spec.paths).to.eql({
       '/greet': {
         get: {
