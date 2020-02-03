@@ -45,6 +45,15 @@ describe('RestServer.getApiSpec()', () => {
       servers: [{url: 'example.com:8080/api'}],
       paths: {},
       'x-foo': 'bar',
+      components: {
+        securitySchemes: {
+          jwt: {
+            bearerFormat: 'JWT',
+            scheme: 'bearer',
+            type: 'http',
+          },
+        },
+      },
     });
   });
 
