@@ -139,7 +139,7 @@ describe('RestApplication (integration)', () => {
       'x-foo': 'bar',
     });
 
-    const spec = restApp.restServer.getApiSpec();
+    const spec = await restApp.restServer.getApiSpec();
     expect(spec).to.deepEqual({
       openapi: '3.0.0',
       info: {
@@ -231,7 +231,7 @@ describe('RestApplication (integration)', () => {
       restApp.mountExpressRouter('/dogs', router, spec);
       await client.get('/dogs/hello').expect(200, 'Hello dogs!');
 
-      const openApiSpec = restApp.restServer.getApiSpec();
+      const openApiSpec = await restApp.restServer.getApiSpec();
       expect(openApiSpec.paths).to.deepEqual({
         '/dogs/hello': {
           get: {

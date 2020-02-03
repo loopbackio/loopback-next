@@ -138,7 +138,7 @@ describe('CoffeeShopApplication', () => {
     let apiSpec: OpenApiSpec;
 
     before(async () => {
-      apiSpec = app.lbApp.restServer.getApiSpec();
+      apiSpec = await app.lbApp.restServer.getApiSpec();
     });
 
     it('has the same properties in both the LB3 and LB4 specs', () => {

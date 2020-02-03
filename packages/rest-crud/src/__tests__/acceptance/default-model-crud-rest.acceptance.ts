@@ -126,7 +126,7 @@ describe('CrudRestController for a simple Product model', () => {
     // a new test suite that will configure a PK with a different name
     // and type, e.g. `pk: string` instead of `id: number`.
     it('uses correct schema for the id parameter', async () => {
-      const spec = app.restServer.getApiSpec();
+      const spec = await app.restServer.getApiSpec();
       const findByIdOp = spec.paths['/products/{id}'].get;
       expect(findByIdOp).to.containDeep({
         parameters: [
@@ -210,7 +210,7 @@ describe('CrudRestController for a simple Product model', () => {
     // a new test suite that will configure a PK with a different name
     // and type, e.g. `pk: string` instead of `id: number`.
     it('uses correct schema for the id parameter', async () => {
-      const spec = app.restServer.getApiSpec();
+      const spec = await app.restServer.getApiSpec();
       const findByIdOp = spec.paths['/products/{id}'].patch;
       expect(findByIdOp).to.containDeep({
         parameters: [
@@ -245,7 +245,7 @@ describe('CrudRestController for a simple Product model', () => {
     // a new test suite that will configure a PK with a different name
     // and type, e.g. `pk: string` instead of `id: number`.
     it('uses correct schema for the id parameter', async () => {
-      const spec = app.restServer.getApiSpec();
+      const spec = await app.restServer.getApiSpec();
       const findByIdOp = spec.paths['/products/{id}']['patch'];
       expect(findByIdOp).to.containDeep({
         parameters: [
@@ -278,7 +278,7 @@ describe('CrudRestController for a simple Product model', () => {
     // a new test suite that will configure a PK with a different name
     // and type, e.g. `pk: string` instead of `id: number`.
     it('uses correct schema for the id parameter', async () => {
-      const spec = app.restServer.getApiSpec();
+      const spec = await app.restServer.getApiSpec();
       const findByIdOp = spec.paths['/products/{id}']['delete'];
       expect(findByIdOp).to.containDeep({
         parameters: [
