@@ -9,11 +9,12 @@ import {
   Constructor,
   Context,
   createBindingFromClass,
+  JSONObject,
   Provider,
 } from '@loopback/context';
 import assert from 'assert';
-import pEvent from 'p-event';
 import debugFactory from 'debug';
+import pEvent from 'p-event';
 import {Component, mountComponent} from './component';
 import {CoreBindings, CoreTags} from './keys';
 import {
@@ -483,16 +484,6 @@ export interface ApplicationConfig {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type ControllerClass = Constructor<any>;
-
-/**
- * Type definition for JSON
- */
-export type JSONPrimitive = string | number | boolean | null;
-export type JSONValue = JSONPrimitive | JSONObject | JSONArray;
-export interface JSONObject {
-  [property: string]: JSONValue;
-}
-export interface JSONArray extends Array<JSONValue> {}
 
 /**
  * Type description for `package.json`
