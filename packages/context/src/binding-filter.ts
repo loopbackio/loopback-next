@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Binding, BindingTag} from './binding';
-import {BindingAddress} from './binding-key';
+import {BindingAddress, BindingKey} from './binding-key';
 import {MapObject} from './value-promise';
 
 /**
@@ -52,12 +52,14 @@ export type BindingSelector<ValueType = unknown> =
 
 /**
  * Type guard for binding address
- * @param bindingSelector
+ * @param bindingSelector - Binding key or filter function
  */
 export function isBindingAddress(
   bindingSelector: BindingSelector,
 ): bindingSelector is BindingAddress {
-  return typeof bindingSelector !== 'function';
+  return (
+    typeof bindingSelector === 'string' || bindingSelector instanceof BindingKey
+  );
 }
 
 /**

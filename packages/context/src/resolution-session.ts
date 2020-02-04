@@ -155,9 +155,7 @@ export class ResolutionSession {
    * Describe the injection for debugging purpose
    * @param injection - Injection object
    */
-  static describeInjection(injection?: Readonly<Injection>) {
-    /* istanbul ignore if */
-    if (injection == null) return {};
+  static describeInjection(injection: Readonly<Injection>) {
     const name = getTargetName(
       injection.target,
       injection.member,
@@ -166,8 +164,7 @@ export class ResolutionSession {
     return {
       targetName: name,
       bindingSelector: injection.bindingSelector,
-      // Cast to Object so that we don't have to expose InjectionMetadata
-      metadata: injection.metadata as object,
+      metadata: injection.metadata,
     };
   }
 
@@ -300,14 +297,14 @@ export class ResolutionSession {
    */
   getInjectionPath() {
     return this.injectionStack
-      .map(i => ResolutionSession.describeInjection(i)!.targetName)
+      .map(i => ResolutionSession.describeInjection(i).targetName)
       .join(' --> ');
   }
 
   private static describe(e: ResolutionElement) {
     switch (e.type) {
       case 'injection':
-        return '@' + ResolutionSession.describeInjection(e.value)!.targetName;
+        return '@' + ResolutionSession.describeInjection(e.value).targetName;
       case 'binding':
         return e.value.key;
     }
