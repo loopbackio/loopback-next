@@ -82,16 +82,17 @@ matrix:
         - npm run build -- --scope "@loopback/test-repository-postgresql" --include-dependencies
         - psql -U postgres -a -f acceptance/repository-postgresql/test/schema.sql
         - cd acceptance/repository-postgresql && npm run mocha
-    - node_js: "12"
-      os: linux
-      env:
-        - TASK=test-repository-cloudant
-      script:
-        # set up docker image and create admin for cloudant.
-        - npm run postinstall -- --scope "@loopback/test-repository-cloudant" --include-dependencies
-        - npm run build -- --scope "@loopback/test-repository-cloudant" --include-dependencies
-        - cd acceptance/repository-cloudant && npm run docker:setup
-        - source cloudant-config.sh && npm run mocha
+    # Revert the repo back once couchDB3 is released.
+    # - node_js: "12"
+    #   os: linux
+    #   env:
+    #     - TASK=test-repository-cloudant
+    #   script:
+    #     # set up docker image and create admin for cloudant.
+    #     - npm run postinstall -- --scope "@loopback/test-repository-cloudant" --include-dependencies
+    #     - npm run build -- --scope "@loopback/test-repository-cloudant" --include-dependencies
+    #     - cd acceptance/repository-cloudant && npm run docker:setup
+    #     - source cloudant-config.sh && npm run mocha
 
 branches:
   only:
