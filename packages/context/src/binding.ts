@@ -210,6 +210,7 @@ export class Binding<T = BoundValue> extends EventEmitter {
 
   private _valueConstructor?: Constructor<T>;
   private _providerConstructor?: Constructor<Provider<T>>;
+  private _alias?: BindingAddress<T>;
 
   /**
    * For bindings bound via `toClass()`, this property contains the constructor
@@ -595,6 +596,7 @@ export class Binding<T = BoundValue> extends EventEmitter {
       debug('Bind %s to alias %s', this.key, keyWithPath);
     }
     this._type = BindingType.ALIAS;
+    this._alias = keyWithPath;
     this._setValueGetter((ctx, options) => {
       return ctx.getValueOrPromise(keyWithPath, options);
     });
@@ -648,6 +650,9 @@ export class Binding<T = BoundValue> extends EventEmitter {
     }
     if (this._providerConstructor != null) {
       json.providerConstructor = this._providerConstructor.name;
+    }
+    if (this._alias != null) {
+      json.alias = this._alias.toString();
     }
     return json;
   }
