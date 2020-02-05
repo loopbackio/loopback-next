@@ -11,6 +11,7 @@ const inspect = require('util').inspect;
 const path = require('path');
 const chalk = require('chalk');
 const utils = require('../../lib/utils');
+const g = require('../../lib/globalize');
 
 // Exportable constants
 module.exports = class ControllerGenerator extends ArtifactGenerator {
@@ -52,7 +53,7 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
     this.option('controllerType', {
       type: String,
       required: false,
-      description: 'Type for the ' + this.artifactInfo.type,
+      description: g.f('Type for the %s', this.artifactInfo.type),
     });
 
     return super._setupGenerator();
@@ -73,7 +74,7 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
   }
 
   promptArtifactType() {
-    debug('Prompting for controller type');
+    debug(g.f('Prompting for controller type'));
     if (this.shouldExit()) return;
 
     super.promptWarningMsgForName();
@@ -88,7 +89,7 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
       {
         type: 'list',
         name: 'controllerType',
-        message: 'What kind of controller would you like to generate?',
+        message: g.f('What kind of controller would you like to generate?'),
         when: this.artifactInfo.controllerType === undefined,
         choices: [ControllerGenerator.BASIC, ControllerGenerator.REST],
         default: ControllerGenerator.BASIC,
@@ -150,8 +151,9 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
       {
         type: 'list',
         name: 'modelName',
-        message:
+        message: g.f(
           'What is the name of the model to use with this CRUD repository?',
+        ),
         choices: modelList,
         when: this.artifactInfo.modelName === undefined,
         default: modelList[0],
@@ -160,7 +162,7 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
       {
         type: 'list',
         name: 'repositoryName',
-        message: 'What is the name of your CRUD repository?',
+        message: g.f('What is the name of your CRUD repository?'),
         choices: repositoryList,
         when: this.artifactInfo.repositoryName === undefined,
         default: repositoryList[0],
@@ -169,14 +171,14 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
       {
         type: 'input',
         name: 'id',
-        message: 'What is the name of ID property?',
+        message: g.f('What is the name of ID property?'),
         when: this.artifactInfo.id === undefined,
         default: 'id',
       },
       {
         type: 'list',
         name: 'idType',
-        message: 'What is the type of your ID?',
+        message: g.f('What is the type of your ID?'),
         choices: ['number', 'string', 'object'],
         when: this.artifactInfo.idType === undefined,
         default: 'number',
@@ -184,13 +186,13 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
       {
         type: 'confirm',
         name: 'idOmitted',
-        message: 'Is the id omitted when creating a new instance?',
+        message: g.f('Is the id omitted when creating a new instance?'),
         default: true,
       },
       {
         type: 'input',
         name: 'httpPathName',
-        message: 'What is the base HTTP path name of the CRUD operations?',
+        message: g.f('What is the base HTTP path name of the CRUD operations?'),
         when: this.artifactInfo.httpPathName === undefined,
         default: answers =>
           utils.prependBackslash(

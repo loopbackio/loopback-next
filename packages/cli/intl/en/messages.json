@@ -1,0 +1,21 @@
+{
+  "0609b5861fff6ee8047b75494e76af9e": "What is the base HTTP path name of the CRUD operations?",
+  "0f97dcea7dc212c905400da264b09cfd": "Application {0} was created in {1}.",
+  "377a709c8cc8bff5d976a4e0da06ef47": "What is the name of ID property?",
+  "4670d311aa36fb13d626ec4ab55d4f19": "Next steps:",
+  "5226c72e763d99e9a316a9ce9875fde9": "Include Dockerfile and .dockerignore",
+  "542d9b2310d9bb9f8c4bf792dbb7d6cd": "Application class name:",
+  "5dd3fd8d55f85cec0f63ef7c370df454": "Prompting for controller type",
+  "70067103913204b5125f9192be23086c": "Is the id omitted when creating a new instance?",
+  "7bcd10e0c597ed32f22b06726d10cb2b": "What is the name of your CRUD repository?",
+  "7d35e6a282ed68a01b4badfddb9dd412": "Include service-proxy imports and ServiceMixin",
+  "815548e083b8b7ea5edd0e57df0bfd29": "Include repository imports and RepositoryMixin",
+  "a0057f1a34b70e6758a963af3253a482": "include repository imports and RepositoryMixin",
+  "a261957414bba63a85459b733f597acb": "Application class name",
+  "bfd42878b3c50994368322098aed9e42": "include Dockerfile and .dockerignore",
+  "c1f96ff7ee37bcc6aa150ae5d0dbc3bb": "What is the type of your ID?",
+  "c3eece87ffd6970cb83a75715824dce7": "include service-proxy imports and ServiceMixin",
+  "cdd5413fd110557d536620d714eea126": "What kind of controller would you like to generate?",
+  "d8448d2597b2832ab43abba46a595c42": "What is the name of the model to use with this CRUD repository?",
+  "d963128609dd73445bd8b96b6a34eb68": "Type for the {0}"
+}

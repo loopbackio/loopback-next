@@ -72,7 +72,8 @@
     "url-slug": "^2.2.0",
     "validate-npm-package-name": "^3.0.0",
     "write-file-atomic": "^3.0.1",
-    "yeoman-generator": "^4.5.0"
+    "yeoman-generator": "^4.5.0",
+    "strong-globalize": "^5.0.3"
   },
   "scripts": {
     "test": "lb-mocha \"test/**/*.js\"",
