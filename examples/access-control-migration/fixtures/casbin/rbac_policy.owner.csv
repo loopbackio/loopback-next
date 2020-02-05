@@ -1,0 +1,8 @@
+p, p1_owner, project1, show-balance
+p, p1_owner, project1, donate
+p, p1_owner, project1, withdraw
+g, u1, p1_owner
+p, p2_owner, project2, show-balance
+p, p2_owner, project2, donate
+p, p2_owner, project2, withdraw
+g, u2, p2_owner
