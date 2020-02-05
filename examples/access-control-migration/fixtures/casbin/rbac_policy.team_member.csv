@@ -1,0 +1,7 @@
+p, p1_team, project1, show-balance
+p, p1_team, project1, donate
+g, u1, p1_team
+g, u2, p1_team
+p, p2_team, project2, show-balance
+p, p2_team, project2, donate
+g, u2, p2_team

@@ -1,0 +1,28 @@
+{
+  "ids": {
+    "Project": 3,
+    "Team": 3,
+    "User": 4,
+    "UserCredentials": 4
+  },
+  "models": {
+    "Project": {
+      "1": "{\"id\":1,\"name\":\"project1\",\"balance\":90,\"ownerId\":1}",
+      "2": "{\"id\":2,\"name\":\"project2\",\"balance\":0,\"ownerId\":2}"
+    },
+    "Team": {
+      "1": "{\"id\":1,\"ownerId\":1,\"memberIds\":[1,2]}",
+      "2": "{\"id\":2,\"ownerId\":2,\"memberIds\":[2]}"
+    },
+    "User": {
+      "1": "{\"id\":1,\"username\":\"John\",\"email\":\"john@doe.com\"}",
+      "2": "{\"id\":2,\"username\":\"Jane\",\"email\":\"jane@doe.com\"}",
+      "3": "{\"id\":3,\"username\":\"Bob\",\"email\":\"bob@projects.com\"}"
+    },
+    "UserCredentials": {
+      "1": "{\"password\":\"$2a$10$Yn1/fMOjW6A.CdH7Yxb7weVFYmkcQJQBaYaiRScS6sw7ty3aL4lHu\",\"userId\":1,\"id\":1}",
+      "2": "{\"password\":\"$2a$10$Yn1/fMOjW6A.CdH7Yxb7weVFYmkcQJQBaYaiRScS6sw7ty3aL4lHu\",\"userId\":2,\"id\":2}",
+      "3": "{\"password\":\"$2a$10$Yn1/fMOjW6A.CdH7Yxb7weVFYmkcQJQBaYaiRScS6sw7ty3aL4lHu\",\"userId\":3,\"id\":3}"
+    }
+  }
+}
