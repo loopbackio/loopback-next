@@ -26,7 +26,7 @@
     "@types/node": "^10.17.14",
     "async": "^3.1.1",
     "debug": "^4.1.1",
-    "dockerode": "^3.0.2",
+    "dockerode": "^3.1.0",
     "lodash": "^4.17.11",
     "loopback-connector-cloudant": "2.4.0",
     "ms": "2.1.2",
