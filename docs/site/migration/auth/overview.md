@@ -26,3 +26,8 @@ authorization to secure the applications:
   authorize client applications and/or resource owners (i.e. users) to access
   protected API endpoints. The migration path is described in
   [Migrating OAuth2 provider](./oauth2.md).
+
+- [loopback-example-access-control](https://github.com/strongloop/loopback-example-access-control)
+  demonstrate authentication and authorization mechanisms in LoopBack. The
+  migration guide is described in
+  [Migrating access control example](./example.md).
