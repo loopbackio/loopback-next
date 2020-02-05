@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.11](https://github.com/strongloop/loopback-next/compare/@loopback/example-greeting-app@1.2.10...@loopback/example-greeting-app@1.2.11) (2020-02-05)
+
+
+### Bug Fixes
+
+* update clean script for examples to be compatible with `lb4 example` ([d9f5741](https://github.com/strongloop/loopback-next/commit/d9f574160f6edbf73a8f728cd3695ca69297148a))
+
+
+
+
+
 ## [1.2.10](https://github.com/strongloop/loopback-next/compare/@loopback/example-greeting-app@1.2.9...@loopback/example-greeting-app@1.2.10) (2020-01-27)
 
 **Note:** Version bump only for package @loopback/example-greeting-app

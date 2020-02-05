@@ -7,9 +7,11 @@ import {expect, sinon, SinonSpy} from '@loopback/testlab';
 import {
   Binding,
   BindingEvent,
+  BindingKey,
   BindingScope,
   BindingType,
   Context,
+  filterByTag,
   inject,
   Provider,
 } from '../..';
@@ -426,6 +428,155 @@ describe('Binding', () => {
         tags: {model: 'model', name: 'my-model'},
         isLocked: true,
         type: BindingType.CONSTANT,
+      });
+    });
+
+    it('converts a keyed binding with alias to plain JSON object', () => {
+      const myBinding = new Binding(key)
+        .inScope(BindingScope.TRANSIENT)
+        .toAlias(BindingKey.create('b', 'x'));
+      const json = myBinding.toJSON();
+      expect(json).to.eql({
+        key: key,
+        scope: BindingScope.TRANSIENT,
+        tags: {},
+        isLocked: false,
+        type: BindingType.ALIAS,
+        alias: 'b#x',
+      });
+    });
+  });
+
+  describe('inspect()', () => {
+    it('converts a keyed binding to plain JSON object', () => {
+      const json = binding.inspect();
+      expect(json).to.eql({
+        key: key,
+        scope: BindingScope.TRANSIENT,
+        tags: {},
+        isLocked: false,
+      });
+    });
+
+    it('converts a binding with more attributes to plain JSON object', () => {
+      const myBinding = new Binding(key, true)
+        .inScope(BindingScope.CONTEXT)
+        .tag('model', {name: 'my-model'})
+        .to('a');
+      const json = myBinding.inspect();
+      expect(json).to.eql({
+        key: key,
+        scope: BindingScope.CONTEXT,
+        tags: {model: 'model', name: 'my-model'},
+        isLocked: true,
+        type: BindingType.CONSTANT,
+      });
+    });
+
+    it('converts a binding with toDynamicValue to plain JSON object', () => {
+      const myBinding = new Binding(key)
+        .inScope(BindingScope.SINGLETON)
+        .tag('model', {name: 'my-model'})
+        .toDynamicValue(() => 'a');
+      const json = myBinding.inspect({includeInjections: true});
+      expect(json).to.eql({
+        key: key,
+        scope: BindingScope.SINGLETON,
+        tags: {model: 'model', name: 'my-model'},
+        isLocked: false,
+        type: BindingType.DYNAMIC_VALUE,
+      });
+    });
+
+    it('converts a binding with valueConstructor to plain JSON object', () => {
+      function myFilter(b: Readonly<Binding<unknown>>) {
+        return b.key.startsWith('timers.');
+      }
+
+      class MyController {
+        @inject('y', {optional: true})
+        private y: number | undefined;
+
+        @inject(filterByTag('task'))
+        private tasks: unknown[];
+
+        @inject(myFilter)
+        private timers: unknown[];
+
+        constructor(@inject('x') private x: string) {}
+      }
+      const myBinding = new Binding(key, true)
+        .tag('model', {name: 'my-model'})
+        .toClass(MyController);
+      const json = myBinding.inspect({includeInjections: true});
+      expect(json).to.eql({
+        key: key,
+        scope: BindingScope.TRANSIENT,
+        tags: {model: 'model', name: 'my-model'},
+        isLocked: true,
+        type: BindingType.CLASS,
+        valueConstructor: 'MyController',
+        injections: {
+          constructorArguments: [
+            {targetName: 'MyController.constructor[0]', bindingKey: 'x'},
+          ],
+          properties: {
+            y: {
+              targetName: 'MyController.prototype.y',
+              bindingKey: 'y',
+              optional: true,
+            },
+            tasks: {
+              targetName: 'MyController.prototype.tasks',
+              bindingTagPattern: 'task',
+            },
+            timers: {
+              targetName: 'MyController.prototype.timers',
+              bindingFilter: 'myFilter',
+            },
+          },
+        },
+      });
+    });
+
+    it('converts a binding with providerConstructor to plain JSON object', () => {
+      class MyProvider implements Provider<string> {
+        @inject('y')
+        private y: number;
+
+        @inject(filterByTag('task'))
+        private tasks: unknown[];
+
+        constructor(@inject('x') private x: string) {}
+
+        value() {
+          return `${this.x}: ${this.y}`;
+        }
+      }
+      const myBinding = new Binding(key, true)
+        .inScope(BindingScope.CONTEXT)
+        .tag('model', {name: 'my-model'})
+        .toProvider(MyProvider);
+      const json = myBinding.inspect({includeInjections: true});
+      expect(json).to.eql({
+        key: key,
+        scope: BindingScope.CONTEXT,
+        tags: {model: 'model', name: 'my-model'},
+        isLocked: true,
+        type: BindingType.PROVIDER,
+        providerConstructor: 'MyProvider',
+        injections: {
+          constructorArguments: [
+            {targetName: 'MyProvider.constructor[0]', bindingKey: 'x'},
+          ],
+          properties: {
+            y: {targetName: 'MyProvider.prototype.y', bindingKey: 'y'},
+            tasks: {
+              targetName: 'MyProvider.prototype.tasks',
+              bindingTagPattern: 'task',
+            },
+          },
+        },
       });
     });
   });

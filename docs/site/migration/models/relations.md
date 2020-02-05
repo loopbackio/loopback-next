@@ -61,7 +61,7 @@ The following relations are supported by LoopBack 4 and can be migrated from
 LoopBack 3:
 
 - [HasMany](../../HasMany-relation.md)
-- [HasOne](../../hasOne-relation.md)
+- [HasOne](../../HasOne-relation.md)
 - [BelongsTo](../../BelongsTo-relation.md)
 
 Other relations types are not supported yet, you can subscribe to our progress

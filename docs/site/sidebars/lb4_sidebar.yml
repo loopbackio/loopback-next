@@ -58,7 +58,7 @@ children:
       output: 'web, pdf'
 
     - title: 'HasOne Relation'
-      url: hasOne-relation.html
+      url: HasOne-relation.html
       output: 'web, pdf'
 
   - title: 'DataSources'

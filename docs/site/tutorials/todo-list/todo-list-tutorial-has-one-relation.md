@@ -9,7 +9,7 @@ summary: LoopBack 4 TodoList Application Tutorial - Add TodoListImage Relation
 
 We have that a `Todo` [`belongsTo`](../../BelongsTo-relation.md) a `TodoList`
 and a `TodoList` [`hasMany`](../../HasMany-relation.md) `Todo`s. Another type of
-relation we can add is [`hasOne`](../../hasOne-relation.md). To do so, let's add
+relation we can add is [`hasOne`](../../HasOne-relation.md). To do so, let's add
 `TodoListImage` such that each `TodoList` `hasOne` image. In parallel, a
 `TodoListImage` will belong to a `TodoList`, similar to how a `Todo` belongs to
 `TodoList`.
@@ -71,43 +71,41 @@ Repository TodoListImageRepository was created in src/repositories/
 
 ### Add the Relation
 
-{% include note.html content="
-We are working on adding `hasOne` to the CLI command `lb4 relation`. See [issue #2980](https://github.com/strongloop/loopback-next/issues/2980).
-" %}
+Adding a [`hasOne` relation](../../HasOne-relation.md) is similar to the HasMany
+relation. Let's use the [`lb4 relation` command](../../Relation-generator.md).
 
-Adding a [`hasOne` relation](../../hasOne-relation.md) is simple. First, let's
-add the relation to the model classes.
+```sh
+$ lb4 relation
+? Please select the relation type hasOne
+? Please select source model TodoList
+? Please select target model TodoListImage
+? Foreign key name to define on the target model todoListId
+? Source property name for the relation getter (will be the relation name) image
+? Allow TodoList queries to include data from related TodoListImage instances? Yes
+   create src/controllers/todo-list-todo-list-image.controller.ts
 
-In the `TodoListImage` model class, we'll start by adding a `todoListId`
-property to reference the `TodoList` this image belongs to:
-
-{% include code-caption.html content="src/models/todo-list-image.model.ts" %}
-
-```ts
-import {belongsTo} from '@loopback/repository';
-import {TodoList, TodoListWithRelations} from './todo-list.model';
-
-@model()
-export class TodoListImage extends Entity {
-  // ... other properties
-
-  @belongsTo(() => TodoList)
-  todoListId: number;
-
-  // ...
-}
-
-export interface TodoListImageRelations {
-  todoList?: TodoListWithRelations;
-}
+Relation HasMany was created in src/
 ```
 
-{% include note.html content="
-A `hasOne` relation from model A to model B does not need a `belongsTo` relation to exist from model B to model A.
-" %}
+Now, we're going to add the relation for `TodoListImage`. That is,
+`TodoListImage` _belongsTo_ `TodoList`:
 
-In the `TodoList` model class, we'll add an `image` property to represent the
-`TodoListImage` this `TodoList` has one of:
+```sh
+$ lb4 relation
+? Please select the relation type belongsTo
+? Please select source model TodoListImage
+? Please select target model TodoList
+? Foreign key name to define on the source model todoListId
+? Relation name todoList
+? Allow TodoListImage queries to include data from related TodoList instances? Yes
+   create src/controllers/todo-list-image-todo-list.controller.ts
+
+Relation BelongsTo was created in src/
+```
+
+Then you should see the new added property `image` is decorated with the
+decorator `@hasOne` in the `TodoList` to represent the `TodoListImage` this
+`TodoList` has:
 
 {% include code-caption.html content="src/models/todo-list.model.ts" %}
 
@@ -136,146 +134,39 @@ export interface TodoListRelations {
 }
 ```
 
-{% include note.html content="
-See the [`@hasOne`](../../hasOne-relation.md#relation-metadata) and [`@belongsTo`](../../BelongsTo-relation.md#relation-metadata) documentation for more information on how to customize the decorators.
-" %}
-
-Next, let's add the relation to the repository classes:
-
-{% include code-caption.html content="src/repositories/todo-list.repository.ts" %}
+If you check the `TodoListImage` model, you will find that the foreign key
+`todoListId` is being added and decorated with `@belongsTo`:
+{% include code-caption.html content="src/models/todo-list-image.model.ts" %}
 
 ```ts
-// Add the following imports
-import {HasOneRepositoryFactory} from '@loopback/repository';
-import {TodoListImage} from '../models';
-import {TodoListImageRepository} from './todo-list-image.repository';
+import {belongsTo} from '@loopback/repository';
+import {TodoList, TodoListWithRelations} from './todo-list.model';
 
-export class TodoListRepository extends DefaultCrudRepository<
-  TodoList,
-  typeof TodoList.prototype.id,
-  TodoListRelations
-> {
-  // other code
+@model()
+export class TodoListImage extends Entity {
+  // ... other properties
 
-  // Add the following
-  public readonly image: HasOneRepositoryFactory<
-    TodoListImage,
-    typeof TodoList.prototype.id
-  >;
+  @belongsTo(() => TodoList)
+  todoListId: number;
 
-  constructor(
-    // other code
+  // ...
+}
 
-    // Add the following
-    @repository.getter('TodoListImageRepository')
-    protected todoListImageRepositoryGetter: Getter<TodoListImageRepository>,
-  ) {
-    // other code
-
-    // Add the following
-    this.image = this.createHasOneRepositoryFactoryFor(
-      'image',
-      todoListImageRepositoryGetter,
-    );
-
-    this.registerInclusionResolver('image', this.image.inclusionResolver);
-  }
+export interface TodoListImageRelations {
+  todoList?: TodoListWithRelations;
 }
 ```
 
-```ts
-import {BelongsToAccessor} from '@loopback/repository';
-import {TodoList} from '../models';
-import {TodoListRepository} from './todo-list.repository';
-
-export class TodoListImageRepository extends DefaultCrudRepository<
-  TodoListImage,
-  typeof TodoListImage.prototype.id,
-  TodoListImageRelations
-> {
-  // Add the following
-  public readonly todoList: BelongsToAccessor<
-    TodoList,
-    typeof TodoListImage.prototype.id
-  >;
-  constructor(
-    // other code
-
-    // Add the following line
-    protected todoListRepositoryGetter: Getter<TodoListRepository>,
-  ) {
-    // other code
-
-    // Add the following
-    this.todoList = this.createBelongsToAccessorFor(
-      'todoList',
-      todoListRepositoryGetter,
-    );
-
-    this.registerInclusionResolver('todoList', this.todoList.inclusionResolver);
-  }
-}
-```
+Try to create instances and traverse the data as what we showed in the previous
+step yourself!
 
 {% include note.html content="
-We use **default** foreign key and source property names in this case.
-If you'd like to customize them, please check [`Relation Metadata`](
-../../hasOne-relation.md#relation-metadata).
+A `hasOne` relation from model A to model B does not need a `belongsTo` relation to exist from model B to model A.
 " %}
 
-### Create the Controller
-
-Create a new file `src/controllers/todo-list-image.controller.ts`. We only want
-to access a `TodoListImage` through a `TodoList`, so we'll create `GET` and
-`POST` methods that allow for that as follows:
-
-{% include code-caption.html content="src/controllers/todo-list-image.controller.ts" %}
-
-```ts
-import {repository} from '@loopback/repository';
-import {get, getModelSchemaRef, param, post, requestBody} from '@loopback/rest';
-import {TodoListImage} from '../models';
-import {TodoListRepository} from '../repositories';
-
-export class TodoListImageController {
-  constructor(
-    @repository(TodoListRepository) protected todoListRepo: TodoListRepository,
-  ) {}
-
-  @post('/todo-lists/{id}/image', {
-    responses: {
-      '200': {
-        description: 'create todoListImage model instance',
-        content: {
-          'application/json': {schema: getModelSchemaRef(TodoListImage)},
-        },
-      },
-    },
-  })
-  async create(
-    @param.path.number('id') id: number,
-    @requestBody() image: TodoListImage,
-  ): Promise<TodoListImage> {
-    return this.todoListRepo.image(id).create(image);
-  }
-
-  @get('/todo-lists/{id}/image', {
-    responses: {
-      '200': {
-        description: 'The image belonging to the TodoList',
-        content: {
-          'application/json': {
-            schema: getModelSchemaRef(TodoListImage, {includeRelations: true}),
-          },
-        },
-      },
-    },
-  })
-  async find(@param.path.number('id') id: number): Promise<TodoListImage> {
-    return this.todoListRepo.image(id).get();
-  }
-}
-```
+{% include note.html content="
+See the [`@hasOne`](../../HasOne-relation.md#relation-metadata) and [`@belongsTo`](../../BelongsTo-relation.md#relation-metadata) documentation for more information on how to customize the decorators.
+" %}
 
 ### Navigation
 

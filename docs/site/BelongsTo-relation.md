@@ -176,11 +176,8 @@ export class Customer extends Entity {
 }
 ```
 
-Check the relation metadata in
-[hasMany](https://loopback.io/doc/en/lb4/HasMany-relation.html#relation-metadata)
-and
-[hasOne](https://loopback.io/doc/en/lb4/hasOne-relation.html#relation-metadata)
-for more details.
+Check the relation metadata in [hasMany](HasMany-relation.md#relation-metadata)
+and [hasOne](HasOne-relation.md#relation-metadata) for more details.
 
 If you need to use _different names for models and database columns_, to use
 `customer_id` as db column name other than `customerId` for example, passing the

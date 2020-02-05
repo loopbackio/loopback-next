@@ -1,0 +1,42 @@
+{
+  "name": "@loopback/test-extension-logging-fluentd",
+  "version": "0.0.1",
+  "description": "Acceptance test for extension-logging with fluentd",
+  "private": true,
+  "engines": {
+    "node": ">=8.9"
+  },
+  "scripts": {
+    "build": "lb-tsc",
+    "clean": "lb-clean loopback-test-extension-logging-fluentd*.tgz dist tsconfig.build.tsbuildinfo package",
+    "pretest": "npm run build",
+    "test": "npm run mocha",
+    "mocha": "lb-mocha \"dist/__tests__/**/*.js\"",
+    "verify": "npm pack && tar xf loopback-test-extension-logging-fluentd*.tgz && tree package && npm run clean"
+  },
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "license": "MIT",
+  "devDependencies": {
+    "@loopback/core": "^1.10.5",
+    "@loopback/testlab": "^1.9.2",
+    "@loopback/build": "^2.0.16",
+    "@loopback/eslint-config": "^4.1.4",
+    "@loopback/extension-logging": "^0.0.1",
+    "testcontainers": "^2.1.0",
+    "@types/node": "^10.17.5"
+  },
+  "files": [
+    "README.md",
+    "index.js",
+    "index.d.ts",
+    "dist",
+    "src",
+    "!*/__tests__"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "acceptance/extension-logging-fluentd"
+  }
+}

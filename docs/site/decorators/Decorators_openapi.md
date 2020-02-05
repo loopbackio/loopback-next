@@ -427,6 +427,52 @@ export class SomeController {
 }
 ```
 
+#### anyOf, allOf, oneOf, not
+
+The `x-ts-type` extention is also valid as a value in `allOf`, `anyOf`, `oneOf`,
+and `not` schema keys.
+
+```ts
+@model
+class FooModel extends Model {
+  @property()
+  foo: string;
+}
+
+@model
+class BarModel extends Model {
+  @property()
+  bar: string;
+}
+
+@model
+class BazModel extends Model {
+  @property()
+  baz: string;
+}
+
+class MyController {
+  @get('/some-value', {
+    responses: {
+      '200': {
+        description: 'returns a union of two values',
+        content: {
+          'application/json': {
+            schema: {
+              not: {'x-ts-type': BazModel},
+              allOf: [{'x-ts-type': FooModel}, {'x-ts-type': BarModel}],
+            },
+          },
+        },
+      },
+    },
+  })
+  getSomeValue() {
+    return {foo: 'foo', bar: 'bar'};
+  }
+}
+```
+
 When the OpenAPI spec is generated, the `xs-ts-type` is mapped to
 `{$ref: '#/components/schemas/MyModel'}` and a corresponding schema is added to
 `components.schemas.MyModel` of the spec.

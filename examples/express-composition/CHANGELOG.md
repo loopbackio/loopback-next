@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.3](https://github.com/strongloop/loopback-next/compare/@loopback/example-express-composition@1.10.2...@loopback/example-express-composition@1.10.3) (2020-02-05)
+
+
+### Bug Fixes
+
+* update clean script for examples to be compatible with `lb4 example` ([d9f5741](https://github.com/strongloop/loopback-next/commit/d9f574160f6edbf73a8f728cd3695ca69297148a))
+
+
+
+
+
 ## [1.10.2](https://github.com/strongloop/loopback-next/compare/@loopback/example-express-composition@1.10.1...@loopback/example-express-composition@1.10.2) (2020-01-27)
 
 **Note:** Version bump only for package @loopback/example-express-composition

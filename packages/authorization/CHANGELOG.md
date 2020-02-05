@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.4.9](https://github.com/strongloop/loopback-next/compare/@loopback/authorization@0.4.8...@loopback/authorization@0.4.9) (2020-02-05)
+
+
+### Bug Fixes
+
+* **authorization:** make sure an authorizer is only invoked once per request ([b29bbeb](https://github.com/strongloop/loopback-next/commit/b29bbeb35c0c34784aae683fe03003a3b239cb87))
+
+
+
+
+
 ## [0.4.8](https://github.com/strongloop/loopback-next/compare/@loopback/authorization@0.4.7...@loopback/authorization@0.4.8) (2020-01-27)
 
 
