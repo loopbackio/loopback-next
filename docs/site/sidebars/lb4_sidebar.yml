@@ -774,6 +774,10 @@ children:
     output: 'web, pdf'
     children:
 
+    - title: 'Access control example'
+      url: migration-auth-access-control-example.html
+      output: 'web, pdf'
+
     - title: 'Built-in models'
       url: migration-auth-built-in.html
       output: 'web, pdf'
