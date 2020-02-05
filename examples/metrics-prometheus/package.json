@@ -1,6 +1,6 @@
 {
   "name": "@loopback/example-metrics-prometheus",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Standalone examples for @loopback/metrics",
   "main": "index.js",
   "engines": {
@@ -38,15 +38,15 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@loopback/boot": "^1.7.2",
-    "@loopback/core": "^1.12.2",
-    "@loopback/extension-metrics": "^0.1.4",
-    "@loopback/rest": "^1.26.0"
+    "@loopback/boot": "^1.7.3",
+    "@loopback/core": "^1.12.3",
+    "@loopback/extension-metrics": "^0.1.5",
+    "@loopback/rest": "^1.26.1"
   },
   "devDependencies": {
-    "@loopback/build": "^3.1.0",
-    "@loopback/eslint-config": "^5.0.2",
-    "@loopback/testlab": "^1.10.2",
+    "@loopback/build": "^3.1.1",
+    "@loopback/eslint-config": "^5.0.3",
+    "@loopback/testlab": "^1.10.3",
     "@types/node": "^10.17.14",
     "@typescript-eslint/eslint-plugin": "^2.19.0",
     "@typescript-eslint/parser": "^2.19.0",

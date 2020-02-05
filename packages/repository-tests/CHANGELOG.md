@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.10.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository-tests@0.9.1...@loopback/repository-tests@0.10.0) (2020-02-05)
+
+
+### Features
+
+* leverage isactive for transaction ([fc94437](https://github.com/strongloop/loopback-next/commit/fc9443787039d4a1db3008a0141f5693f95bfbd4))
+
+
+
+
+
 ## [0.9.1](https://github.com/strongloop/loopback-next/compare/@loopback/repository-tests@0.9.0...@loopback/repository-tests@0.9.1) (2020-01-27)
 
 

@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@2.0.0...@loopback/context@2.1.0) (2020-02-05)
+
+
+### Features
+
+* **context:** allow more options to inspect context/binding objects ([3be32a3](https://github.com/strongloop/loopback-next/commit/3be32a34a0109e4f4f2eb0fcfa60171bd66743a6))
+* **context:** improve context name with the subclass name as prefix ([42d2e1b](https://github.com/strongloop/loopback-next/commit/42d2e1b302e4c9f58df864c0ca01cb2ca181060a))
+* **context:** tidy up binding information for inspection ([15d698b](https://github.com/strongloop/loopback-next/commit/15d698b46841efc0c6bc12bdc89538db77371254))
+
+
+
+
+
 # [2.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.25.1...@loopback/context@2.0.0) (2020-01-27)
 
 

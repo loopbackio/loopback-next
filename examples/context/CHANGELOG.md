@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.1](https://github.com/strongloop/loopback-next/compare/@loopback/example-context@1.3.0...@loopback/example-context@1.3.1) (2020-02-05)
+
+
+### Bug Fixes
+
+* update clean script for examples to be compatible with `lb4 example` ([d9f5741](https://github.com/strongloop/loopback-next/commit/d9f574160f6edbf73a8f728cd3695ca69297148a))
+
+
+
+
+
 # [1.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-context@1.2.22...@loopback/example-context@1.3.0) (2020-01-27)
 
 

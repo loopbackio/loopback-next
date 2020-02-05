@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/http-caching-proxy@1.2.5...@loopback/http-caching-proxy@1.3.0) (2020-02-05)
+
+
+### Features
+
+* leverage isactive for transaction ([fc94437](https://github.com/strongloop/loopback-next/commit/fc9443787039d4a1db3008a0141f5693f95bfbd4))
+
+
+
+
+
 ## [1.2.5](https://github.com/strongloop/loopback-next/compare/@loopback/http-caching-proxy@1.2.4...@loopback/http-caching-proxy@1.2.5) (2020-01-27)
 
 **Note:** Version bump only for package @loopback/http-caching-proxy

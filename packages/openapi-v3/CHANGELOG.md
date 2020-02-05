@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.13.0](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@1.12.0...@loopback/openapi-v3@1.13.0) (2020-02-05)
+
+
+### Features
+
+* adds [@oas](https://github.com/oas).deprecated() decorator ([6b6b5f0](https://github.com/strongloop/loopback-next/commit/6b6b5f05d224053d6a9735a506841d19b7331dac))
+* adds [@oas](https://github.com/oas).tags convenience decorator ([a8722dc](https://github.com/strongloop/loopback-next/commit/a8722dc68838344684a5d3de76fa6915e08d2e56))
+
+
+
+
+
 # [1.12.0](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@1.11.0...@loopback/openapi-v3@1.12.0) (2020-01-27)
 
 

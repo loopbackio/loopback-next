@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.7.6](https://github.com/strongloop/loopback-next/compare/@loopback/example-soap-calculator@1.7.5...@loopback/example-soap-calculator@1.7.6) (2020-02-05)
+
+
+### Bug Fixes
+
+* update clean script for examples to be compatible with `lb4 example` ([d9f5741](https://github.com/strongloop/loopback-next/commit/d9f574160f6edbf73a8f728cd3695ca69297148a))
+
+
+
+
+
 ## [1.7.5](https://github.com/strongloop/loopback-next/compare/@loopback/example-soap-calculator@1.7.4...@loopback/example-soap-calculator@1.7.5) (2020-01-27)
 
 **Note:** Version bump only for package @loopback/example-soap-calculator

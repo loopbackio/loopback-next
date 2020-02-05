@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.30.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.29.0...@loopback/cli@1.30.0) (2020-02-05)
+
+
+### Features
+
+* leverage isactive for transaction ([fc94437](https://github.com/strongloop/loopback-next/commit/fc9443787039d4a1db3008a0141f5693f95bfbd4))
+* **cli:** add hasOne relation type to `lb4 relation` ([3046f3e](https://github.com/strongloop/loopback-next/commit/3046f3e9ca29225c2ca64567af0be337a6fa5b00))
+
+
+
+
+
 # [1.29.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.28.1...@loopback/cli@1.29.0) (2020-01-27)
 
 
