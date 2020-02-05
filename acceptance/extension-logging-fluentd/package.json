@@ -23,7 +23,7 @@
     "@loopback/build": "^2.0.16",
     "@loopback/eslint-config": "^4.1.4",
     "@loopback/extension-logging": "^0.0.1",
-    "testcontainers": "^2.1.0",
+    "testcontainers": "^2.3.1",
     "@types/node": "^10.17.5"
   },
   "files": [
