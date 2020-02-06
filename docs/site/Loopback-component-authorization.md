@@ -42,7 +42,7 @@ necessary privileges/access rights by using the permissions annotated by the
 
 The expectations from various stake holders (LoopBack, Architects, Developers)
 for implementation of the authorization features are given below in the
-[Chain of Responsibility](##Chain-of-Responsibility) section.
+[Chain of Responsibility](#chain-of-responsibility) section.
 
 ## Chain of Responsibility
 
@@ -104,9 +104,9 @@ class.
   ```
 
 - The authorization `options` are provided specifically for enforcing the
-  [decision matrix](##Authorization-by-decision-matrix), which is used to
-  combine voters from all `authorize` functions. The options are described per
-  the interface AuthorizationOptions.
+  [decision matrix](#authorization-by-decision-matrix), which is used to combine
+  voters from all `authorize` functions. The options are described per the
+  interface AuthorizationOptions.
 
   ```ts
   export interface AuthorizationOptions {
@@ -159,7 +159,7 @@ The `Authorization interceptor` enforces authorization with user-provided
   collects `voters` provided in the `@authorize` decorator of the endpoint.
 - It executes each of the above collected functions provided by the user.
 - Based on the result of all functions it enforces access/privilege control
-  using [a decision matrix](##Authorization-by-decision-matrix).
+  using [a decision matrix](#authorization-by-decision-matrix).
 
 ## Configuring API Endpoints
 
@@ -346,7 +346,7 @@ corresponding options.
   - if the `authorizer` function returns `ALLOW`, but voter 1 in authorize
     decorator returns `ABSTAIN` and voter 2 in decorator returns `DENY`.
   - In this case, if the options provided while
-    [registering the authorization component](#Authorization-Component),
+    [registering the authorization component](#authorization-component),
     provides precedence as `DENY`, then the access for the subject is denied to
     the endpoint.
 
