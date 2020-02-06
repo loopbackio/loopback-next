@@ -11,8 +11,11 @@ import {readLog} from '../fixtures/fluentd.docker';
 
 const sleep = promisify(setTimeout);
 
-describe('LoggingComponent', () => {
+describe('LoggingComponent', function() {
   let app: Application;
+
+  // eslint-disable-next-line no-invalid-this
+  this.timeout(10000);
 
   beforeEach(givenAppWithCustomConfig);
 
@@ -21,7 +24,7 @@ describe('LoggingComponent', () => {
     if (process.env.FLUENTD_SERVICE_PORT_TCP == null) return this.skip();
     const sender = await app.get(LoggingBindings.FLUENT_SENDER);
     sender.emit({greeting: 'Hello, LoopBack!'});
-    await sleep(100);
+    await sleep(500);
     await expectLogsToMatch(/LoopBack\s+\{"greeting"\:"Hello, LoopBack!"\}/);
   });
 
@@ -29,7 +32,7 @@ describe('LoggingComponent', () => {
     if (process.env.FLUENTD_SERVICE_PORT_TCP == null) return this.skip();
     const logger = await app.get(LoggingBindings.WINSTON_LOGGER);
     logger.log('info', 'Hello, LoopBack!');
-    await sleep(100);
+    await sleep(500);
     await expectLogsToMatch(
       /LoopBack\s+\{"level"\:"info","message":"Hello, LoopBack!"\}/,
     );
