@@ -4,7 +4,15 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {Binding, filterByKey, filterByTag, isBindingTagFilter} from '../..';
+import {
+  Binding,
+  BindingFilter,
+  BindingKey,
+  filterByKey,
+  filterByTag,
+  isBindingAddress,
+  isBindingTagFilter,
+} from '../..';
 
 const key = 'foo';
 
@@ -69,6 +77,33 @@ describe('BindingFilter', () => {
       binding.tag({controller: 'my-controller'});
       binding.tag({name: 'my-controller'});
       expect(filter(binding)).to.be.false();
+    });
+  });
+
+  describe('isBindingAddress', () => {
+    it('allows binding selector to be a string', () => {
+      expect(isBindingAddress('controllers.MyController')).to.be.true();
+    });
+
+    it('allows binding selector to be a BindingKey', () => {
+      expect(
+        isBindingAddress(BindingKey.create('controllers.MyController')),
+      ).to.be.true();
+    });
+
+    it('does not allow binding selector to be an object', () => {
+      const filter: BindingFilter = () => true;
+      expect(isBindingAddress(filter)).to.be.false();
+    });
+
+    it('allows binding selector to be a BindingKey by duck-typing', () => {
+      // Please note that TypeScript checks types by duck-typing
+      // See https://www.typescriptlang.org/docs/handbook/interfaces.html#introduction
+      const selector: BindingKey<unknown> = {
+        key: 'x',
+        deepProperty: () => BindingKey.create('y'),
+      };
+      expect(isBindingAddress(selector)).to.be.true();
     });
   });
 

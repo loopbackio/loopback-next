@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Binding, BindingTag} from './binding';
-import {BindingAddress, BindingKey} from './binding-key';
+import {BindingAddress} from './binding-key';
 import {MapObject} from './value-promise';
 
 /**
@@ -51,6 +51,18 @@ export type BindingSelector<ValueType = unknown> =
   | BindingFilter<ValueType>;
 
 /**
+ * Check if an object is a `BindingKey` by duck typing
+ * @param selector Binding selector
+ */
+function isBindingKey(selector: BindingSelector) {
+  if (selector == null || typeof selector !== 'object') return false;
+  return (
+    typeof selector.key === 'string' &&
+    typeof selector.deepProperty === 'function'
+  );
+}
+
+/**
  * Type guard for binding address
  * @param bindingSelector - Binding key or filter function
  */
@@ -58,7 +70,13 @@ export function isBindingAddress(
   bindingSelector: BindingSelector,
 ): bindingSelector is BindingAddress {
   return (
-    typeof bindingSelector === 'string' || bindingSelector instanceof BindingKey
+    typeof bindingSelector !== 'function' &&
+    (typeof bindingSelector === 'string' ||
+      // See https://github.com/strongloop/loopback-next/issues/4570
+      // `bindingSelector instanceof BindingKey` is not always reliable as the
+      // `@loopback/context` module might be loaded from multiple locations if
+      // `npm install` does not dedupe or there are mixed versions in the tree
+      isBindingKey(bindingSelector))
   );
 }
 
