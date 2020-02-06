@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.4](https://github.com/strongloop/loopback-next/compare/@loopback/example-express-composition@1.10.3...@loopback/example-express-composition@1.10.4) (2020-02-06)
+
+**Note:** Version bump only for package @loopback/example-express-composition
+
+
+
+
+
 ## [1.10.3](https://github.com/strongloop/loopback-next/compare/@loopback/example-express-composition@1.10.2...@loopback/example-express-composition@1.10.3) (2020-02-05)
 
 

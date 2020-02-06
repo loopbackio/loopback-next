@@ -1,6 +1,6 @@
 {
   "name": "@loopback/rest-crud",
-  "version": "0.6.5",
+  "version": "0.6.6",
   "description": "REST API controller implementing default CRUD semantics",
   "engines": {
     "node": ">=8.9"
@@ -21,8 +21,8 @@
   "license": "MIT",
   "devDependencies": {
     "@loopback/build": "^1.7.1",
-    "@loopback/repository": "^1.19.0",
-    "@loopback/rest": "^1.26.1",
+    "@loopback/repository": "^1.19.1",
+    "@loopback/rest": "^2.0.0",
     "@loopback/testlab": "^1.10.3",
     "@types/node": "^10.17.14"
   },

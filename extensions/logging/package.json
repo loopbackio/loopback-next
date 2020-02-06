@@ -1,6 +1,6 @@
 {
   "name": "@loopback/extension-logging",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "LoopBack Logging for Winston and Fluentd",
   "engines": {
     "node": ">=8.9"
@@ -16,9 +16,9 @@
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
-    "@loopback/context": "^2.1.0",
-    "@loopback/core": "^1.12.3",
-    "@loopback/rest": "^1.26.1",
+    "@loopback/context": "^2.1.1",
+    "@loopback/core": "^1.12.4",
+    "@loopback/rest": "^2.0.0",
     "fluent-logger": "^3.4.1",
     "morgan": "^1.9.1",
     "winston": "^3.2.1",

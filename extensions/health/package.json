@@ -1,6 +1,6 @@
 {
   "name": "@loopback/extension-health",
-  "version": "0.2.16",
+  "version": "0.2.17",
   "description": "LoopBack Health",
   "engines": {
     "node": ">=8.9"
@@ -18,8 +18,8 @@
   "license": "MIT",
   "dependencies": {
     "@cloudnative/health": "^2.1.2",
-    "@loopback/core": "^1.12.3",
-    "@loopback/rest": "^1.26.1",
+    "@loopback/core": "^1.12.4",
+    "@loopback/rest": "^2.0.0",
     "p-event": "^4.1.0"
   },
   "devDependencies": {

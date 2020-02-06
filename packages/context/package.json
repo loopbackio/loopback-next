@@ -1,6 +1,6 @@
 {
   "name": "@loopback/context",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "LoopBack's container for Inversion of Control",
   "engines": {
     "node": ">=8.9"

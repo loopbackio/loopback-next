@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.10.1](https://github.com/strongloop/loopback-next/compare/@loopback/repository-tests@0.10.0...@loopback/repository-tests@0.10.1) (2020-02-06)
+
+**Note:** Version bump only for package @loopback/repository-tests
+
+
+
+
+
 # [0.10.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository-tests@0.9.1...@loopback/repository-tests@0.10.0) (2020-02-05)
 
 

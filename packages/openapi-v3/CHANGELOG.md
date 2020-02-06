@@ -3,6 +3,101 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@1.13.0...@loopback/openapi-v3@2.0.0) (2020-02-06)
+
+
+### Bug Fixes
+
+* suport complex objects for query params in api explorer ([a4ef640](https://github.com/strongloop/loopback-next/commit/a4ef64037a80d1ff7df37ba7912909a1bfcdbf51))
+
+
+### BREAKING CHANGES
+
+* This fix has modified the api definitions described by the decorator
+'param.query.object', to support Open-API's `url-encoded` definition for json query
+parameters.
+
+Previously, such parameters were described with `exploded: true` and
+`style: deepObject`, i.e exploded encoding, which turned out to be problematic as explained and discussed in,
+https://github.com/swagger-api/swagger-js/issues/1385 and
+https://github.com/OAI/OpenAPI-Specification/issues/1706
+
+```json
+  {
+    "in": "query",
+    "style": "deepObject"
+    "explode": "true",
+    "schema": {}
+  }
+```
+
+Exploded encoding worked for simple json objects as below but not for complex objects.
+
+```
+   http://localhost:3000/todos?filter[limit]=2
+```
+
+To address these issues with exploded queries, this fix switches definition of json
+query params from the `exploded`, `deep-object` style to the `url-encoded` style
+definition in Open-API spec.
+
+LoopBack already supports receiving url-encoded payload for json query parameters.
+
+For instance, to filter api results from the GET '/todo-list' endpoint in the
+todo-list example with a specific relation, { "include": [ { "relation": "todo" } ] },
+the following url-encoded query parameter can be used,
+
+```
+   http://localhost:3000/todos?filter=%7B%22include%22%3A%5B%7B%22relation%22%3A%22todoList%22%7D%5D%7D
+```
+
+The above was possible because the coercion behavior in LoopBack performed json
+parsing for `deep object` style json query params before this fix. This fix has
+modified that behavior by removing json parsing. Since the `exploded` `deep-object`
+definition has been removed from the `param.query.object` decorator, this new
+behaviour remains just an internal source code aspect as of now.
+
+In effect, this fix only modifies the open api definitions generated from LoopBack
+APIs. The 'style' and 'explode' fields are removed and the 'schema' field is moved
+under 'content[application/json]'. This is the definition that supports url-encoding
+as per Open-API spec.
+
+```json
+  {
+    "in": "query"
+    "content": {
+      "application/json": {
+        "schema": {}
+      }
+    }
+  }
+```
+
+Certain client libraries (like swagger-ui or LoopBack's api explorer) necessiate
+using Open-API's `url-encoded` style definition for json query params to support
+"sending" url-encoded payload.
+
+All consumers of LoopBack APIs may need to regenerate api definitions, if their
+client libraries require them to do so for url-encoding.
+
+Otherwise there wouldn't be any significant impact on API consumers.
+
+To preserve compatibility with existing REST API clients, this change is backward
+compatible. All exploded queries like `?filter[limit]=1` will continue to work for
+json query params, despite the fact that they are described differently in the
+OpenAPI spec.
+
+Existing api clients will continue to work after an upgrade.
+
+The signature of the 'param.query.object' decorator has not changed.
+
+There is no code changes required in the LoopBack APIs after upgrading to this
+fix. No method signatures or data structures are impacted.
+
+
+
+
+
 # [1.13.0](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@1.12.0...@loopback/openapi-v3@1.13.0) (2020-02-05)
 
 

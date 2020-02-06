@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.26](https://github.com/strongloop/loopback-next/compare/@loopback/example-lb3-application@1.1.25...@loopback/example-lb3-application@1.1.26) (2020-02-06)
+
+**Note:** Version bump only for package @loopback/example-lb3-application
+
+
+
+
+
 ## [1.1.25](https://github.com/strongloop/loopback-next/compare/@loopback/example-lb3-application@1.1.24...@loopback/example-lb3-application@1.1.25) (2020-02-05)
 
 

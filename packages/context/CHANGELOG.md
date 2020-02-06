@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.1](https://github.com/strongloop/loopback-next/compare/@loopback/context@2.1.0...@loopback/context@2.1.1) (2020-02-06)
+
+
+### Bug Fixes
+
+* **context:** relax checking on instances of BindingKey class ([8668eb6](https://github.com/strongloop/loopback-next/commit/8668eb64b267e2644be87db92aeb86188d7e86f7))
+
+
+
+
+
 # [2.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@2.0.0...@loopback/context@2.1.0) (2020-02-05)
 
 

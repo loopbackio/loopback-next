@@ -1,6 +1,6 @@
 {
   "name": "@loopback/authentication",
-  "version": "3.3.2",
+  "version": "3.3.3",
   "description": "A LoopBack component for authentication support.",
   "engines": {
     "node": ">=8.9"
@@ -19,12 +19,12 @@
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
-    "@loopback/context": "^2.1.0",
-    "@loopback/core": "^1.12.3",
+    "@loopback/context": "^2.1.1",
+    "@loopback/core": "^1.12.4",
     "@loopback/metadata": "^1.4.1",
-    "@loopback/openapi-v3": "^1.13.0",
-    "@loopback/rest": "^1.26.1",
-    "@loopback/security": "^0.1.12",
+    "@loopback/openapi-v3": "^2.0.0",
+    "@loopback/rest": "^2.0.0",
+    "@loopback/security": "^0.1.13",
     "@types/express": "^4.17.2",
     "@types/lodash": "^4.14.149",
     "lodash": "^4.17.15"

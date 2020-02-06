@@ -1,6 +1,6 @@
 {
   "name": "@loopback/extension-metrics",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "LoopBack Metrics for Prometheus",
   "engines": {
     "node": ">=8.9"
@@ -16,9 +16,9 @@
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
-    "@loopback/context": "^2.1.0",
-    "@loopback/core": "^1.12.3",
-    "@loopback/rest": "^1.26.1",
+    "@loopback/context": "^2.1.1",
+    "@loopback/core": "^1.12.4",
+    "@loopback/rest": "^2.0.0",
     "prom-client": "^11.5.3"
   },
   "devDependencies": {
