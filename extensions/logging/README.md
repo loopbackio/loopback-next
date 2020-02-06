@@ -4,7 +4,7 @@ This module contains a component provides logging facilities based on
 [Winston](https://github.com/winstonjs/winston) and
 [Fluentd](https://github.com/fluent/fluent-logger-node).
 
-## Stability: :warning:Experimental:warning:
+## Stability: ⚠️Experimental⚠️
 
 > Experimental packages provide early access to advanced or experimental
 > functionality to get community feedback. Such modules are published to npm
