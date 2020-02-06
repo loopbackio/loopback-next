@@ -99,8 +99,8 @@ class.
     defaultDecision: AuthorizationDecision.DENY,
   };
 
-  const binding = app.component(AuthorizationComponent);
-  app.configure(binding.key).to(options);
+  app.configure(AuthorizationBindings.COMPONENT).to(options);
+  app.component(AuthorizationComponent);
   ```
 
 - The authorization `options` are provided specifically for enforcing the
