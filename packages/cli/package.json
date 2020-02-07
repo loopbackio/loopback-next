@@ -38,7 +38,8 @@
     "sinon": "^8.1.1",
     "yeoman-assert": "^3.1.1",
     "yeoman-environment": "^2.7.0",
-    "yeoman-test": "^2.1.0"
+    "yeoman-test": "^2.1.0",
+    "strong-globalize-cli": "6.0.5"
   },
   "dependencies": {
     "@phenomnomnominal/tsquery": "^4.0.0",
@@ -77,7 +78,8 @@
   },
   "scripts": {
     "test": "lb-mocha \"test/**/*.js\"",
-    "smoke-test": "lb-mocha --allow-console-logs \"smoke-test/**/*.smoke.js\""
+    "smoke-test": "lb-mocha --allow-console-logs \"smoke-test/**/*.smoke.js\"",
+    "build:globalize": "slt-globalize -e && git add \"intl/en/messages.json\""
   },
   "repository": {
     "type": "git",
