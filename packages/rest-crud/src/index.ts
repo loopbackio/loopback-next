@@ -3,5 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+export * from './crud-rest.api-builder';
+export * from './crud-rest.component';
 export * from './crud-rest.controller';
 export * from './repository-builder';
