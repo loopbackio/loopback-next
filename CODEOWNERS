@@ -91,6 +91,14 @@
 /docs/ @agnes512 @bajtos @deepakrkris @emonddr @jannyHou @hacksparrow @nabdelgadir @raymondfeng
 
 #
+# CLI (`lb4` infrastructure, commands not covered by functional areas below)
+#
+# - Issue label: CLI
+# - Primary owner(s): @agnes512
+# - Standby owner(s): @emonddr @nabdelgadir
+/packages/cli/ @agnes512 @emonddr @nabdelgadir
+
+#
 # Dependency Injection, Inversion of Control and related areas
 #
 # - Issue label: IoC/Context
@@ -193,14 +201,6 @@
 # The SOAP Calculator examples is a bit special, we want to preserve
 # Mario as the code owner of this specific subarea only
 /examples/soap-calculator/ @raymondfeng @marioestradarosa
-
-#
-# CLI (`lb4` infrastructure, commands not covered by functional areas above)
-#
-# - Issue label: CLI
-# - Primary owner(s): @agnes512
-# - Standby owner(s): @emonddr @nabdelgadir
-/packages/cli/ @agnes512 @emonddr @nabdelgadir
 
 #
 # `lb4 openapi` (scaffold an LB4 app from the given OpenAPI spec)
