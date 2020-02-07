@@ -60,7 +60,7 @@
     "@types/multer": "^1.4.2",
     "@types/node": "^10.17.14",
     "@types/on-finished": "^2.3.1",
-    "@types/qs": "^6.9.0",
+    "@types/qs": "^6.9.1",
     "multer": "^1.4.2"
   },
   "files": [
