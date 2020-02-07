@@ -20,25 +20,6 @@ import {
   TrieRouter,
 } from '../../..';
 
-describe('RoutingTable', () => {
-  it('joins basePath and path', () => {
-    expect(RoutingTable.joinPath('', 'a')).to.equal('/a');
-    expect(RoutingTable.joinPath('/', '')).to.equal('/');
-    expect(RoutingTable.joinPath('/', 'a')).to.equal('/a');
-    expect(RoutingTable.joinPath('/root', 'a')).to.equal('/root/a');
-    expect(RoutingTable.joinPath('root', 'a')).to.equal('/root/a');
-    expect(RoutingTable.joinPath('root/', '/a')).to.equal('/root/a');
-    expect(RoutingTable.joinPath('root/', '/a/')).to.equal('/root/a');
-    expect(RoutingTable.joinPath('/root/', '/a/')).to.equal('/root/a');
-    expect(RoutingTable.joinPath('/root//x', '/a')).to.equal('/root/x/a');
-    expect(RoutingTable.joinPath('/root/', '/')).to.equal('/root');
-    expect(RoutingTable.joinPath('/root/x', '/a/b')).to.equal('/root/x/a/b');
-    expect(RoutingTable.joinPath('//root//x', '//a///b////c')).to.equal(
-      '/root/x/a/b/c',
-    );
-  });
-});
-
 describe('RoutingTable with RegExpRouter', () => {
   runTestsWithRouter(new RegExpRouter());
 });

@@ -12,12 +12,16 @@ import {
   ValueOrPromise,
 } from '@loopback/context';
 import {CoreBindings} from '@loopback/core';
-import {OperationObject} from '@loopback/openapi-v3';
+import {ControllerSpec, OperationObject} from '@loopback/openapi-v3';
+import assert from 'assert';
+import debugFactory from 'debug';
 import HttpErrors from 'http-errors';
+import {inspect} from 'util';
 import {RestBindings} from '../keys';
 import {OperationArgs, OperationRetval} from '../types';
 import {BaseRoute, RouteSource} from './base-route';
 
+const debug = debugFactory('loopback:rest:controller-route');
 /*
  * A controller instance with open properties/methods
  */
@@ -182,4 +186,56 @@ export function createControllerFactoryForInstance<T>(
   controllerInst: T,
 ): ControllerFactory<T> {
   return ctx => controllerInst;
+}
+
+/**
+ * Create routes for a controller with the given spec
+ * @param spec - Controller spec
+ * @param controllerCtor - Controller class
+ * @param controllerFactory - Controller factory
+ */
+export function createRoutesForController<T>(
+  spec: ControllerSpec,
+  controllerCtor: ControllerClass<T>,
+  controllerFactory?: ControllerFactory<T>,
+) {
+  const routes: ControllerRoute<T>[] = [];
+  assert(
+    typeof spec === 'object' && !!spec,
+    'API specification must be a non-null object',
+  );
+  if (!spec.paths || !Object.keys(spec.paths).length) {
+    return routes;
+  }
+
+  debug(
+    'Creating route for controller with API %s',
+    inspect(spec, {depth: null}),
+  );
+
+  const basePath = spec.basePath ?? '/';
+  for (const p in spec.paths) {
+    for (const verb in spec.paths[p]) {
+      const opSpec: OperationObject = spec.paths[p][verb];
+      const fullPath = joinPath(basePath, p);
+      const route = new ControllerRoute(
+        verb,
+        fullPath,
+        opSpec,
+        controllerCtor,
+        controllerFactory,
+      );
+      routes.push(route);
+    }
+  }
+  return routes;
+}
+
+export function joinPath(basePath: string, path: string) {
+  const fullPath = [basePath, path]
+    .join('/') // Join by /
+    .replace(/(\/){2,}/g, '/') // Remove extra /
+    .replace(/\/$/, '') // Remove trailing /
+    .replace(/^(\/)?/, '/'); // Add leading /
+  return fullPath;
 }
