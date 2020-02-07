@@ -62,7 +62,7 @@
     "semver": "^7.1.2",
     "stringify-object": "^3.3.0",
     "swagger-parser": "^8.0.4",
-    "swagger2openapi": "^5.3.2",
+    "swagger2openapi": "^5.3.3",
     "tildify": "^2.0.0",
     "ts-morph": "^6.0.2",
     "typescript": "~3.7.5",
