@@ -11,9 +11,27 @@ import {
   ControllerRoute,
   createControllerFactoryForBinding,
   createControllerFactoryForClass,
+  joinPath,
   RestBindings,
   RouteSource,
 } from '../../..';
+
+describe('joinPath', () => {
+  it('joins basePath and path', () => {
+    expect(joinPath('', 'a')).to.equal('/a');
+    expect(joinPath('/', '')).to.equal('/');
+    expect(joinPath('/', 'a')).to.equal('/a');
+    expect(joinPath('/root', 'a')).to.equal('/root/a');
+    expect(joinPath('root', 'a')).to.equal('/root/a');
+    expect(joinPath('root/', '/a')).to.equal('/root/a');
+    expect(joinPath('root/', '/a/')).to.equal('/root/a');
+    expect(joinPath('/root/', '/a/')).to.equal('/root/a');
+    expect(joinPath('/root//x', '/a')).to.equal('/root/x/a');
+    expect(joinPath('/root/', '/')).to.equal('/root');
+    expect(joinPath('/root/x', '/a/b')).to.equal('/root/x/a/b');
+    expect(joinPath('//root//x', '//a///b////c')).to.equal('/root/x/a/b/c');
+  });
+});
 
 describe('ControllerRoute', () => {
   it('rejects routes with no methodName', () => {

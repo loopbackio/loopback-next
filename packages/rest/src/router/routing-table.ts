@@ -9,15 +9,13 @@ import {
   ParameterObject,
   PathObject,
 } from '@loopback/openapi-v3';
-import assert from 'assert';
 import debugFactory from 'debug';
 import HttpErrors from 'http-errors';
-import {inspect} from 'util';
 import {Request} from '../types';
 import {
   ControllerClass,
   ControllerFactory,
-  ControllerRoute,
+  createRoutesForController,
 } from './controller-route';
 import {ExternalExpressRoutes} from './external-express-routes';
 import {validateApiPath} from './openapi-path';
@@ -47,40 +45,14 @@ export class RoutingTable {
     controllerCtor: ControllerClass<T>,
     controllerFactory?: ControllerFactory<T>,
   ) {
-    assert(
-      typeof spec === 'object' && !!spec,
-      'API specification must be a non-null object',
+    const routes = createRoutesForController(
+      spec,
+      controllerCtor,
+      controllerFactory,
     );
-    if (!spec.paths || !Object.keys(spec.paths).length) {
-      return;
+    for (const route of routes) {
+      this.registerRoute(route);
     }
-
-    debug('Registering Controller with API %s', inspect(spec, {depth: null}));
-
-    const basePath = spec.basePath ?? '/';
-    for (const p in spec.paths) {
-      for (const verb in spec.paths[p]) {
-        const opSpec: OperationObject = spec.paths[p][verb];
-        const fullPath = RoutingTable.joinPath(basePath, p);
-        const route = new ControllerRoute(
-          verb,
-          fullPath,
-          opSpec,
-          controllerCtor,
-          controllerFactory,
-        );
-        this.registerRoute(route);
-      }
-    }
-  }
-
-  static joinPath(basePath: string, path: string) {
-    const fullPath = [basePath, path]
-      .join('/') // Join by /
-      .replace(/(\/){2,}/g, '/') // Remove extra /
-      .replace(/\/$/, '') // Remove trailing /
-      .replace(/^(\/)?/, '/'); // Add leading /
-    return fullPath;
   }
 
   /**

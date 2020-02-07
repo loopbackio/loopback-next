@@ -21,6 +21,7 @@ import {is} from 'type-is';
 import util from 'util';
 import {
   BodyParser,
+  ControllerRoute,
   get,
   post,
   Request,
@@ -827,6 +828,19 @@ paths:
     serverUrl = server.getSync(RestBindings.URL);
     const res = await httpsGetAsync(serverUrl);
     expect(res.statusCode).to.equal(200);
+    await server.stop();
+  });
+
+  it('register controller routes under routes.*', async () => {
+    const server = await givenAServer();
+    server.controller(DummyController);
+    await server.start();
+    const keys = server.find('routes.*').map(b => b.key);
+    expect(keys).to.eql(['routes.get %2Fhtml', 'routes.get %2Fendpoint']);
+    for (const key of keys) {
+      const controllerRoute = await server.get(key);
+      expect(controllerRoute).to.be.instanceOf(ControllerRoute);
+    }
     await server.stop();
   });
 

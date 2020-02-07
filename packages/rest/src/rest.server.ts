@@ -39,6 +39,7 @@ import {
   ControllerInstance,
   ControllerRoute,
   createControllerFactoryForBinding,
+  createRoutesForController,
   ExpressRequestHandler,
   ExternalExpressRoutes,
   RedirectRoute,
@@ -346,7 +347,15 @@ export class RestServer extends Context implements Server, HttpServerLike {
         this._httpHandler.registerApiDefinitions(apiSpec.components.schemas);
       }
       const controllerFactory = createControllerFactoryForBinding(b.key);
-      this._httpHandler.registerController(apiSpec, ctor, controllerFactory);
+      const routes = createRoutesForController(
+        apiSpec,
+        ctor,
+        controllerFactory,
+      );
+      for (const route of routes) {
+        this.bindRoute(route);
+        this._httpHandler.registerRoute(route);
+      }
     }
 
     for (const b of this.find('routes.*')) {
@@ -567,10 +576,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
     if (typeof routeOrVerb === 'object') {
       const r = routeOrVerb;
       // Encode the path to escape special chars
-      const encodedPath = encodeURIComponent(r.path).replace(/\./g, '%2E');
-      return this.bind(`routes.${r.verb} ${encodedPath}`)
-        .to(r)
-        .tag('route');
+      return this.bindRoute(r);
     }
 
     if (!path) {
@@ -618,6 +624,13 @@ export class RestServer extends Context implements Server, HttpServerLike {
         methodName,
       ),
     );
+  }
+
+  private bindRoute(r: RouteEntry, namespace = 'routes') {
+    const encodedPath = encodeURIComponent(r.path).replace(/\./g, '%2E');
+    return this.bind(`${namespace}.${r.verb} ${encodedPath}`)
+      .to(r)
+      .tag('route');
   }
 
   /**
