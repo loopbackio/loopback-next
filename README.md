@@ -96,6 +96,8 @@ You can join the team by posting a comment to
 |     [![emonddr]](https://github.com/emonddr)     |         [![agnes512]](https://github.com/agnes512)         | [![deepakrkris]](https://github.com/deepakrkris) |
 |                  Denny Bartelt                   |                    Douglas McConnachie                     |                  Rifa Achrinza                   |
 |     [![derdeka]](https://github.com/derdeka)     |         [![dougal83]](https://github.com/dougal83)         |    [![achrinza]](https://github.com/achrinza)    |
+|                 Francisco Buceta                 |                                                            |                                                  |
+|    [![frbuceta]](https://github.com/frbuceta)    |                                                            |                                                  |
 
 See
 [all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
@@ -119,3 +121,4 @@ See
 [derdeka]: https://avatars3.githubusercontent.com/u/13640166?v=3&s=60
 [dougal83]: https://avatars0.githubusercontent.com/u/2735881?v=3&s=60
 [achrinza]: https://avatars3.githubusercontent.com/u/25147899?v=3&s=60
+[frbuceta]: https://avatars2.githubusercontent.com/u/13822438?v=4&s=60
