@@ -1,3 +1,8 @@
+// Copyright IBM Corp. 2019. All Rights Reserved.
+// Node module: @loopback/authorization
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
 import {Principal, securityId, UserProfile} from '@loopback/security';
 
 // This is a workaround before we specify `TypedPrincipal` instead of
