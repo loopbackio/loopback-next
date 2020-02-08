@@ -37,6 +37,8 @@
     "loopback-application"
   ],
   "license": "MIT",
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
   "bugs": {
     "url": "https://github.com/strongloop/loopback-next/issues"
   },
