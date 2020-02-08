@@ -1,3 +1,8 @@
+// Copyright IBM Corp. 2019,2020. All Rights Reserved.
+// Node module: @loopback/cli
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
 const path = require('path');
 const ArtifactGenerator = require('../../lib/artifact-generator');
 const modelMaker = require('../../lib/model-discoverer');

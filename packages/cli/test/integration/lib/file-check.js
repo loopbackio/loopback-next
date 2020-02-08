@@ -1,3 +1,8 @@
+// Copyright IBM Corp. 2019. All Rights Reserved.
+// Node module: @loopback/cli
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
 const assert = require('yeoman-assert');
 
 // Checks to ensure expected files exist with the current file contents
