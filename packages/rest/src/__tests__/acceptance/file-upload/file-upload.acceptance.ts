@@ -35,14 +35,23 @@ describe('multipart/form-data', () => {
       .post('/show-body')
       .field('user', 'john')
       .field('email', 'john@example.com')
-      .attach('testFile', path.resolve(FIXTURES, 'file-upload-test.txt'), {
+      .attach('testFile1', path.resolve(FIXTURES, 'file-upload-test.txt'), {
         filename: 'file-upload-test.txt',
+        contentType: 'multipart/form-data',
+      })
+      .attach('testFile2', path.resolve(FIXTURES, 'assets/index.html'), {
+        filename: 'index.html',
         contentType: 'multipart/form-data',
       })
       .expect(200);
     expect(res.body.files[0]).containEql({
-      fieldname: 'testFile',
+      fieldname: 'testFile1',
       originalname: 'file-upload-test.txt',
+      mimetype: 'multipart/form-data',
+    });
+    expect(res.body.files[1]).containEql({
+      fieldname: 'testFile2',
+      originalname: 'index.html',
       mimetype: 'multipart/form-data',
     });
   });
