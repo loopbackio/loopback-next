@@ -99,7 +99,10 @@ module.exports = class BaseGenerator extends Generator {
         : ['Config:', this.options.config]),
     );
     try {
-      if (jsonFileOrValue === 'stdin' || !process.stdin.isTTY) {
+      if (
+        jsonFileOrValue === 'stdin' ||
+        (!jsonFileOrValue && !process.stdin.isTTY)
+      ) {
         debug('  enabling --yes and reading config from stdin');
         this.options['yes'] = true;
         opts = await this._readJSONFromStdin();
