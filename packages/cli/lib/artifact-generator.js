@@ -19,7 +19,6 @@ module.exports = class ArtifactGenerator extends BaseGenerator {
   }
 
   _setupGenerator() {
-    debug('Setting up generator');
     super._setupGenerator();
     this.argument('name', {
       type: String,

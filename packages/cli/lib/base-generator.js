@@ -14,6 +14,8 @@ const debug = require('./debug')('base-generator');
 const updateIndex = require('./update-index');
 const {checkLoopBackProject} = require('./version-helper');
 
+debug('Is stdin interactive (isTTY)?', process.stdin.isTTY);
+
 /**
  * Base Generator for LoopBack 4
  */
@@ -21,6 +23,7 @@ module.exports = class BaseGenerator extends Generator {
   // Note: arguments and options should be defined in the constructor.
   constructor(args, opts) {
     super(args, opts);
+    debug('Initializing generator', this.constructor.name);
     this.conflicter = new StatusConflicter(
       this.env.adapter,
       this.options.force,
@@ -32,6 +35,7 @@ module.exports = class BaseGenerator extends Generator {
    * Subclasses can extend _setupGenerator() to set up the generator
    */
   _setupGenerator() {
+    debug('Setting up generator', this.constructor.name);
     this.option('config', {
       type: String,
       alias: 'c',
@@ -59,6 +63,7 @@ module.exports = class BaseGenerator extends Generator {
    * Read a json document from stdin
    */
   async _readJSONFromStdin() {
+    debug('Reading JSON from stdin');
     if (process.stdin.isTTY) {
       this.log(
         chalk.green(
@@ -71,6 +76,10 @@ module.exports = class BaseGenerator extends Generator {
     let jsonStr;
     try {
       jsonStr = await readTextFromStdin();
+      debug(
+        'Result:',
+        jsonStr === undefined ? '(undefined)' : JSON.stringify(jsonStr),
+      );
       return JSON.parse(jsonStr);
     } catch (e) {
       if (!process.stdin.isTTY) {
@@ -83,15 +92,24 @@ module.exports = class BaseGenerator extends Generator {
   async setOptions() {
     let opts = {};
     const jsonFileOrValue = this.options.config;
+    debug(
+      'Loading generator options from CLI args and/or stdin.',
+      ...(this.option.config === undefined
+        ? ['(No config was provided.)']
+        : ['Config:', this.options.config]),
+    );
     try {
       if (jsonFileOrValue === 'stdin' || !process.stdin.isTTY) {
+        debug('  enabling --yes and reading config from stdin');
         this.options['yes'] = true;
         opts = await this._readJSONFromStdin();
       } else if (typeof jsonFileOrValue === 'string') {
         const jsonFile = path.resolve(process.cwd(), jsonFileOrValue);
         if (fs.existsSync(jsonFile)) {
+          debug('  reading config from file', jsonFile);
           opts = this.fs.readJSON(jsonFile);
         } else {
+          debug('  parsing config from string', jsonFileOrValue);
           // Try parse the config as stringified json
           opts = JSON.parse(jsonFileOrValue);
         }
@@ -201,13 +219,19 @@ module.exports = class BaseGenerator extends Generator {
     }
     if (!this.options['yes']) {
       if (!process.stdin.isTTY) {
-        const msg = 'The stdin is not a terminal. No prompt is allowed.';
+        const msg =
+          'The stdin is not a terminal. No prompt is allowed. ' +
+          'Use --config to provide answers to required prompts and ' +
+          '--yes to skip optional prompts with default answers';
         this.log(chalk.red(msg));
         this.exit(new Error(msg));
         return;
       }
       // Non-express mode, continue to prompt
-      return super.prompt(questions);
+      debug('Questions', questions);
+      const answers = await super.prompt(questions);
+      debug('Answers', answers);
+      return answers;
     }
 
     const answers = Object.assign({}, this.options);
@@ -224,7 +248,9 @@ module.exports = class BaseGenerator extends Generator {
         answers[q.name] = answer;
       } else {
         if (!process.stdin.isTTY) {
-          const msg = 'The stdin is not a terminal. No prompt is allowed.';
+          const msg =
+            'The stdin is not a terminal. No prompt is allowed. ' +
+            `(While resolving a required prompt ${JSON.stringify(q.name)}.)`;
           this.log(chalk.red(msg));
           this.exit(new Error(msg));
           return;
