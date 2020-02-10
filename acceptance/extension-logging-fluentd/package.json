@@ -24,7 +24,7 @@
     "@loopback/extension-logging": "^0.1.0",
     "@loopback/testlab": "^1.9.2",
     "@types/node": "^10.17.14",
-    "testcontainers": "^2.3.1"
+    "testcontainers": "^2.3.2"
   },
   "files": [
     "README.md",
