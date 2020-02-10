@@ -17,7 +17,7 @@ application onto [Kubernetes](http://kubernetes.io/) on the
 
 You’ll need the following:
 
-1. [Node.js 8.9 or higher](https://nodejs.org)
+1. [Node.js 10 or higher](https://nodejs.org)
 2. [Docker 18.06 or higher](https://docs.docker.com/install/)
 3. [Sign up for an IBM Cloud account](https://cloud.ibm.com/) if you don't have
    one already.

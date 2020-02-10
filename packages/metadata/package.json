@@ -3,7 +3,7 @@
   "version": "1.4.1",
   "description": "LoopBack's metadata utilities for reflection and decoration",
   "engines": {
-    "node": ">=8.9"
+    "node": ">=10"
   },
   "scripts": {
     "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",

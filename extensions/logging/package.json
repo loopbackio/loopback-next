@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "LoopBack Logging for Winston and Fluentd",
   "engines": {
-    "node": ">=8.9"
+    "node": ">=10"
   },
   "scripts": {
     "build": "lb-tsc",

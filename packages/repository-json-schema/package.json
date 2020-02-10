@@ -3,7 +3,7 @@
   "version": "1.12.2",
   "description": "Converts TS classes into JSON Schemas using TypeScript's reflection API",
   "engines": {
-    "node": ">=8.9"
+    "node": ">=10"
   },
   "scripts": {
     "build": "lb-tsc",

@@ -3,7 +3,7 @@
   "version": "1.12.4",
   "description": "LoopBack 4 core",
   "engines": {
-    "node": ">=8.9"
+    "node": ">=10"
   },
   "scripts": {
     "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",

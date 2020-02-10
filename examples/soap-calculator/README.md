@@ -17,7 +17,7 @@ you will be creating in blue.
 
 You'll need to make sure you have some things installed:
 
-- [Node.js](https://nodejs.org/en/) at v8.9 or greater
+- [Node.js](https://nodejs.org/en/) at v10 or greater
 
 Lastly, you'll need to install the LoopBack 4 CLI toolkit:
 

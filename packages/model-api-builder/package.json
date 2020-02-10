@@ -3,7 +3,7 @@
   "version": "1.1.4",
   "description": "Types and helpers for packages contributing Model API builders.",
   "engines": {
-    "node": ">=8.9"
+    "node": ">=10"
   },
   "main": "index",
   "publishConfig": {

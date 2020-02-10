@@ -9,7 +9,7 @@ summary: Write and run a LoopBack 4 "Hello World" project in TypeScript.
 
 ## Prerequisites
 
-Install [Node.js](https://nodejs.org/en/download/) (version 8.9 or higher) if it
+Install [Node.js](https://nodejs.org/en/download/) (version 10 or higher) if it
 is not already installed on your machine.
 
 ## Install LoopBack 4 CLI

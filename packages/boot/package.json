@@ -3,7 +3,7 @@
   "version": "1.7.4",
   "description": "A collection of Booters for LoopBack 4 Applications",
   "engines": {
-    "node": ">=8.9"
+    "node": ">=10"
   },
   "publishConfig": {
     "access": "public"

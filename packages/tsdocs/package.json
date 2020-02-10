@@ -3,7 +3,7 @@
   "version": "1.4.1",
   "description": "LoopBack's TypeScript docs based on Microsoft api-extractor and api-documenter",
   "engines": {
-    "node": ">=8.9"
+    "node": ">=10"
   },
   "private": true,
   "scripts": {

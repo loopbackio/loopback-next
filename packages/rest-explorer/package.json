@@ -3,7 +3,7 @@
   "version": "1.4.10",
   "description": "LoopBack's API Explorer",
   "engines": {
-    "node": ">=8.9"
+    "node": ">=10"
   },
   "scripts": {
     "build": "lb-tsc",
