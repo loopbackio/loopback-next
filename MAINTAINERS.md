@@ -23,5 +23,6 @@ Community maintainers:
 - Francisco Buceta ([@frbuceta](https://github.com/frbuceta))
 - Hugo Da Roit ([@Yaty](https://github.com/Yaty))
 - Mario Estrada ([@marioestradarosa](https://github.com/marioestradarosa))
+- Matthew Schnee ([@mschnee](https://github.com/mschnee))
 - Rifa Achrinza ([@achrinza](https://github.com/achrinza))
 - TN ([@thinusn](https://github.com/thinusn))
