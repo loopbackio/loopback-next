@@ -4,7 +4,7 @@
   "description": "Tutorial example on how to add existing an LB3 application to a LB4 project",
   "main": "index.js",
   "engines": {
-    "node": ">=8.9"
+    "node": ">=10"
   },
   "author": "IBM Corp.",
   "scripts": {

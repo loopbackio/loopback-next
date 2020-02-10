@@ -3,7 +3,7 @@
   "version": "0.10.1",
   "description": "Shared test-suite for repository based persistence",
   "engines": {
-    "node": ">=8.9"
+    "node": ">=10"
   },
   "main": "index",
   "publishConfig": {

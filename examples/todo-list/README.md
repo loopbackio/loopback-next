@@ -18,7 +18,7 @@ straight to our first step:
 If not, you'll need to make sure you have a couple of things installed before we
 get started:
 
-- [Node.js](https://nodejs.org/en/) at v8.9 or greater
+- [Node.js](https://nodejs.org/en/) at v10 or greater
 
 Next, you'll need to install the LoopBack 4 CLI toolkit:
 

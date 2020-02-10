@@ -3,7 +3,7 @@
   "version": "5.0.3",
   "description": "Shared configuration for ESLint",
   "engines": {
-    "node": ">=8.9"
+    "node": ">=10"
   },
   "main": "eslintrc.js",
   "author": "IBM Corp.",

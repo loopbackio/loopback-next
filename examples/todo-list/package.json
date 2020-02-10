@@ -4,7 +4,7 @@
   "description": "Continuation of the todo example using relations in LoopBack 4.",
   "main": "index.js",
   "engines": {
-    "node": ">=8.9"
+    "node": ">=10"
   },
   "author": "IBM Corp.",
   "scripts": {

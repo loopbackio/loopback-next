@@ -5,7 +5,7 @@
   "homepage": "https://github.com/strongloop/loopback-next/tree/master/docs",
   "author": "IBM Corp.",
   "engines": {
-    "node": ">=8.9"
+    "node": ">=10"
   },
   "files": [
     "**/*"

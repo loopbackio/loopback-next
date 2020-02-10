@@ -3,7 +3,7 @@
   "version": "0.1.6",
   "description": "LoopBack Metrics for Prometheus",
   "engines": {
-    "node": ">=8.9"
+    "node": ">=10"
   },
   "scripts": {
     "build": "lb-tsc",

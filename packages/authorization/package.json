@@ -3,7 +3,7 @@
   "version": "0.4.10",
   "description": "A LoopBack component for authorization support.",
   "engines": {
-    "node": ">=8.9"
+    "node": ">=10"
   },
   "publishConfig": {
     "access": "public"

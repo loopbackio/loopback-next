@@ -45,7 +45,7 @@ for more details.
 
 Make sure you have the following installed:
 
-- [Node.js](https://nodejs.org/en/download/) >= 8.9.0
+- [Node.js](https://nodejs.org/en/download/) >= 10
 
 Install LoopBack 4 CLI to help create new projects as follows:
 

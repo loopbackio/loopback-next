@@ -3,7 +3,7 @@
   "version": "0.6.6",
   "description": "REST API controller implementing default CRUD semantics",
   "engines": {
-    "node": ">=8.9"
+    "node": ">=10"
   },
   "main": "index",
   "publishConfig": {

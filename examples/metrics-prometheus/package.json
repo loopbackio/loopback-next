@@ -4,7 +4,7 @@
   "description": "Standalone examples for @loopback/metrics",
   "main": "index.js",
   "engines": {
-    "node": ">=8.9"
+    "node": ">=10"
   },
   "author": "IBM Corp.",
   "scripts": {

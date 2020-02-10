@@ -3,7 +3,7 @@
   "version": "1.10.3",
   "description": "A collection of test utilities we use to write LoopBack tests.",
   "engines": {
-    "node": ">=8.9"
+    "node": ">=10"
   },
   "scripts": {
     "build": "lb-tsc",

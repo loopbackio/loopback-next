@@ -14,7 +14,7 @@ LoopBack 4. You will experience how you can create REST APIs with just
 
 First, you'll need to install a supported version of Node:
 
-- [Node.js](https://nodejs.org/en/) at v8.9 or greater
+- [Node.js](https://nodejs.org/en/) at v10 or greater
 
 Additionally, this tutorial assumes that you are comfortable with certain
 technologies, languages and concepts.

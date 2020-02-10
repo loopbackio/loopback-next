@@ -3,7 +3,7 @@
   "version": "1.5.4",
   "description": "A wrapper for creating HTTP/HTTPS servers",
   "engines": {
-    "node": ">=8.9"
+    "node": ">=10"
   },
   "scripts": {
     "build": "lb-tsc",

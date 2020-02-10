@@ -4,7 +4,7 @@
   "description": "An example extension point/extensions for LoopBack 4",
   "main": "index.js",
   "engines": {
-    "node": ">=8.9"
+    "node": ">=10"
   },
   "scripts": {
     "build": "lb-tsc",

@@ -3,7 +3,7 @@
   "version": "2.1.1",
   "description": "LoopBack's container for Inversion of Control",
   "engines": {
-    "node": ">=8.9"
+    "node": ">=10"
   },
   "scripts": {
     "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",

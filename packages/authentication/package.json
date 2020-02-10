@@ -3,7 +3,7 @@
   "version": "3.3.3",
   "description": "A LoopBack component for authentication support.",
   "engines": {
-    "node": ">=8.9"
+    "node": ">=10"
   },
   "scripts": {
     "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",

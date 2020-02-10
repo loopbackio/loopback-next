@@ -7,7 +7,7 @@
     "loopback"
   ],
   "engines": {
-    "node": ">=8.9"
+    "node": ">=10"
   },
   "scripts": {
   },
