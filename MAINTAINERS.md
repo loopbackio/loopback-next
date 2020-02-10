@@ -1,7 +1,8 @@
 ## Project Maintainers
 
-Below is the list of maintainers for this repo (in alphabetical order). For SMEs
-on particular package, please see the [CODEOWNERS file](CODEOWNERS).
+Below is the list of maintainers for this repo (in alphabetical order). For
+[SMEs](https://en.wikipedia.org/wiki/Subject-matter_expert) on a particular
+package, please see the [CODEOWNERS file](CODEOWNERS).
 
 Core maintainers:
 
