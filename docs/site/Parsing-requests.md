@@ -80,32 +80,37 @@ async replaceTodo(
 
 #### Object values
 
+{% include note.html content="
+LoopBack has switched the definition of json query params from the `exploded`,
+`deep-object` style to the `url-encoded` style definition in Open API spec.
+" %}
+
 OpenAPI specification describes several ways how to encode object values into a
 string, see
 [Style Values](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#style-values)
 and
 [Style Examples](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#style-examples).
 
-At the moment, LoopBack supports object values for parameters in query strings
-with `style: "deepObject"` only. Please note that this style does not preserve
-encoding of primitive types, numbers and booleans are always parsed as strings.
+At the moment, LoopBack supports both url-encoded and exploded values for json
+query parameters. Please note that this style does not preserve the encoding of
+primitive types like numbers and booleans. They are always parsed as strings.
+
+To filter results from the GET `/todo-list` endpoint in the todo-list example
+with a relation, { "include": [ { "relation": "todo" } ] }, the following
+url-encoded query parameter can be used,
+
+```
+   http://localhost:3000/todos?filter=%7B%22include%22%3A%5B%7B%22relation%22%3A%22todoList%22%7D%5D%7D
+```
+
+As an extension to the url-encoded style, LoopBack also supports queries with
+exploded values for json query parameters.
 
 For example:
 
 ```
 GET /todos?filter[where][completed]=false
 // filter={where: {completed: 'false'}}
-```
-
-As an extension to the deep-object encoding described by OpenAPI, when the
-parameter is specified with `style: "deepObject"`, we allow clients to provide
-the object value as a JSON-encoded string too.
-
-For example:
-
-```
-GET /todos?filter={"where":{"completed":false}}
-// filter={where: {completed: false}}
 ```
 
 ### Validation
