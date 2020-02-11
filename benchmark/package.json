@@ -50,7 +50,7 @@
     "@loopback/testlab": "^1.10.3",
     "@types/autocannon": "^4.1.0",
     "@types/mocha": "^7.0.1",
-    "@types/node": "^10.17.14",
+    "@types/node": "^10.17.15",
     "mocha": "^7.0.1",
     "p-event": "^4.1.0",
     "source-map-support": "^0.5.16"
