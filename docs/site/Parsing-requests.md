@@ -393,7 +393,7 @@ it as a number: `{id: 1, name: 'Foo'}`. Then the error entry is:
 
 ```ts
 {
-  path: '.id',
+  path: '/id',
   code: 'type',
   message: 'should be string',
   info: {type: 'string'},

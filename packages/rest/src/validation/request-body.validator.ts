@@ -21,6 +21,7 @@ const toJsonSchema = require('openapi-schema-to-json-schema');
 const debug = debugModule('loopback:rest:validation');
 
 const ajvKeywords = require('ajv-keywords');
+const ajvErrors = require('ajv-errors');
 
 /**
  * Check whether the request body is valid according to the provided OpenAPI schema.
@@ -190,6 +191,7 @@ function createValidator(
     {},
     {
       allErrors: true,
+      jsonPointers: true,
       // nullable: support keyword "nullable" from Open API 3 specification.
       nullable: true,
     },
@@ -202,6 +204,12 @@ function createValidator(
     ajvKeywords(ajv);
   } else if (Array.isArray(options.ajvKeywords)) {
     ajvKeywords(ajv, options.ajvKeywords);
+  }
+
+  if (options.ajvErrors === true) {
+    ajvErrors(ajv);
+  } else if (options.ajvErrors?.constructor === Object) {
+    ajvErrors(ajv, options.ajvErrors);
   }
 
   return ajv.compile(schemaWithRef);
