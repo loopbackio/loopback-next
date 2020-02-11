@@ -93,6 +93,14 @@ export type SchemaValidatorCache = WeakMap<
 >;
 
 /**
+ * Options for AJV errors
+ */
+export type AjvErrorOptions = {
+  keepErrors: boolean;
+  singleError: boolean;
+};
+
+/**
  * Options for request body validation using AJV
  */
 export interface RequestBodyValidationOptions extends ajv.Options {
@@ -107,6 +115,13 @@ export interface RequestBodyValidationOptions extends ajv.Options {
    * - `string[]`: Add an array of keywords from `ajv-keywords`
    */
   ajvKeywords?: true | string[];
+  /**
+   * Enable custom error messages in JSON-Schema for AJV validator
+   * from https://github.com/epoberezkin/ajv-keywords
+   * - `true`: Add keyword `errorMessage` to AJV instance
+   * - `string[]`: Add an array of keywords from `ajv-keywords`
+   */
+  ajvErrors?: true | AjvErrorOptions;
   /**
    * A function that transform the `ErrorObject`s reported by AJV.
    * This could be used for error messages customization, localization, etc.

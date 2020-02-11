@@ -119,7 +119,7 @@ describe('validateRequestBody', () => {
   it('rejects data containing values of a wrong type', () => {
     const details: RestHttpErrors.ValidationErrorDetails[] = [
       {
-        path: '.isComplete',
+        path: '/isComplete',
         code: 'type',
         message: 'should be boolean',
         info: {type: 'boolean'},
@@ -146,7 +146,7 @@ describe('validateRequestBody', () => {
         info: {missingProperty: 'title'},
       },
       {
-        path: '.isComplete',
+        path: '/isComplete',
         code: 'type',
         message: 'should be boolean',
         info: {type: 'boolean'},
@@ -213,7 +213,7 @@ describe('validateRequestBody', () => {
   it('rejects invalid values for number properties', () => {
     const details: RestHttpErrors.ValidationErrorDetails[] = [
       {
-        path: '.count',
+        path: '/count',
         code: 'type',
         message: 'should be number',
         info: {type: 'number'},
@@ -237,7 +237,7 @@ describe('validateRequestBody', () => {
     it('primitive types', () => {
       const details: RestHttpErrors.ValidationErrorDetails[] = [
         {
-          path: '.orders[1]',
+          path: '/orders/1',
           code: 'type',
           message: 'should be string',
           info: {type: 'string'},
@@ -266,7 +266,7 @@ describe('validateRequestBody', () => {
     it('first level $ref', () => {
       const details: RestHttpErrors.ValidationErrorDetails[] = [
         {
-          path: '[1]',
+          path: '/1',
           code: 'required',
           message: "should have required property 'title'",
           info: {missingProperty: 'title'},
@@ -291,13 +291,13 @@ describe('validateRequestBody', () => {
     it('nested $ref in schema', () => {
       const details: RestHttpErrors.ValidationErrorDetails[] = [
         {
-          path: '.todos[1]',
+          path: '/todos/1',
           code: 'required',
           message: "should have required property 'title'",
           info: {missingProperty: 'title'},
         },
         {
-          path: '.todos[2].title',
+          path: '/todos/2/title',
           code: 'type',
           message: 'should be string',
           info: {type: 'string'},
@@ -333,7 +333,7 @@ describe('validateRequestBody', () => {
     it('nested $ref in reference', () => {
       const details: RestHttpErrors.ValidationErrorDetails[] = [
         {
-          path: '.accounts[0].address.city',
+          path: '/accounts/0/address/city',
           code: 'type',
           message: 'should be string',
           info: {type: 'string'},
