@@ -12,6 +12,8 @@ import {ServiceMixin} from '@loopback/service-proxy';
 import path from 'path';
 import {MySequence} from './sequence';
 
+const apiSpec = require('../api.json');
+
 export class TodoListApplication extends BootMixin(
   ServiceMixin(RepositoryMixin(RestApplication)),
 ) {
@@ -36,5 +38,7 @@ export class TodoListApplication extends BootMixin(
         nested: true,
       },
     };
+
+    this.api(apiSpec);
   }
 }
