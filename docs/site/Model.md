@@ -450,7 +450,8 @@ class Product extends Entity {
     jsonSchema: {
       maxLength: 30,
       minLength: 10,
-      errorMessage: 'name must be at least 10 characters and maximum 30 characters',
+      errorMessage:
+        'name must be at least 10 characters and maximum 30 characters',
     },
   })
   public name: string;
