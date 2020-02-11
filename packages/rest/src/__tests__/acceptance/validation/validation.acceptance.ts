@@ -423,6 +423,80 @@ describe('Validation at REST level', () => {
     });
   });
 
+  context(
+    'with request body validation options - {ajvErrors: {keepErrors: true}}',
+    () => {
+      class ProductController {
+        @post('/products')
+        async create(
+          @requestBody({required: true}) data: Product,
+        ): Promise<Product> {
+          return new Product(data);
+        }
+      }
+
+      before(() =>
+        givenAnAppAndAClient(ProductController, {
+          nullable: false,
+          compiledSchemaCache: new WeakMap(),
+          $data: true,
+          ajvKeywords: true,
+          ajvErrors: {
+            singleError: true,
+          },
+        }),
+      );
+      after(() => app.stop());
+
+      it('adds custom error message provided with jsonSchema', async () => {
+        const DATA = {
+          name: 'iPhone',
+          description: 'iPhone',
+          price: 200,
+        };
+        const res = await client
+          .post('/products')
+          .send(DATA)
+          .expect(422);
+
+        expect(res.body).to.eql({
+          error: {
+            statusCode: 422,
+            name: 'UnprocessableEntityError',
+            message:
+              'The request body is invalid. See error object `details` property for more info.',
+            code: 'VALIDATION_FAILED',
+            details: [
+              {
+                path: '/price',
+                code: 'maximum',
+                message: 'should be <= 100',
+                info: {comparison: '<=', limit: 100, exclusive: false},
+              },
+              {
+                path: '/price',
+                code: 'errorMessage',
+                message: 'price should be in range 0 to 100',
+                info: {
+                  errors: [
+                    {
+                      keyword: 'range',
+                      dataPath: '/price',
+                      schemaPath:
+                        '#/components/schemas/Product/properties/price/range',
+                      params: {keyword: 'range'},
+                      message: 'should pass "range" keyword validation',
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        });
+      });
+    },
+  );
+
   // A request body schema can be provided explicitly by the user
   // as an inlined content[type].schema property.
   context('for fully-specified request body', () => {
