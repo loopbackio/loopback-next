@@ -110,3 +110,7 @@ lb4 controller
 
 You can view the generated code for this example at:
 [hello-world](https://github.com/strongloop/loopback-next/tree/master/examples/hello-world)
+
+## For pre-existing projects or no CLI
+
+If you'd like to add loopback to a project, or avoid CLI's due to their unpredictable behavior, you can also create the files and write the code yourself.  To do so, there are no instructions, but if you look at [these examples](https://github.com/strongloop/loopback-next/tree/master/examples) long enough, you might figure it out.
