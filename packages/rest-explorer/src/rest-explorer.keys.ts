@@ -11,9 +11,18 @@ import {RestExplorerConfig} from './rest-explorer.types';
  * Binding keys used by this component.
  */
 export namespace RestExplorerBindings {
+  /**
+   * Binding key for RestExplorerComponent
+   */
   export const COMPONENT = BindingKey.create<RestExplorerComponent>(
     'components.RestExplorerComponent',
   );
+  /**
+   * Binding key for configuration of RestExplorerComponent.
+   *
+   * We recommend `ctx.configure(RestExplorerBindings.COMPONENT)` to be used
+   * instead of `ctx.bind(RestExplorerBindings.CONFIG)`.
+   */
   export const CONFIG = BindingKey.buildKeyForConfig<RestExplorerConfig>(
     COMPONENT,
   );

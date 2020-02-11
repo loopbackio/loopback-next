@@ -92,7 +92,7 @@ describe('REST Explorer mounted as an express router', () => {
     options.rest = givenHttpServerConfig(options.rest);
     const app = new RestApplication(options);
     if (explorerConfig) {
-      app.bind(RestExplorerBindings.CONFIG).to(explorerConfig);
+      app.configure(RestExplorerBindings.COMPONENT).to(explorerConfig);
     }
     app.component(RestExplorerComponent);
     server = await app.getServer(RestServer);

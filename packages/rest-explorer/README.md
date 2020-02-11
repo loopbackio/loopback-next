@@ -97,7 +97,7 @@ constructor of your custom Application class. Typically the component will be
 located in `./src/application.ts` and consist of two items, for example:
 
 ```ts
-this.bind(RestExplorerBindings.CONFIG).to({
+this.configure(RestExplorerBindings.COMPONENT).to({
   path: '/openapi/ui',
 });
 this.component(RestExplorerComponent);

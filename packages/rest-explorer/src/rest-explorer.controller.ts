@@ -3,7 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {inject} from '@loopback/context';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import {config, inject} from '@loopback/context';
 import {
   OpenApiSpecForm,
   RequestContext,
@@ -35,7 +36,7 @@ export class ExplorerController {
   constructor(
     @inject(RestBindings.CONFIG, {optional: true})
     restConfig: RestServerConfig = {},
-    @inject(RestExplorerBindings.CONFIG, {optional: true})
+    @config({fromBinding: RestExplorerBindings.COMPONENT})
     explorerConfig: RestExplorerConfig = {},
     @inject(RestBindings.BASE_PATH) private serverBasePath: string,
     @inject(RestBindings.SERVER) private restServer: RestServer,
