@@ -4,7 +4,8 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import request from 'request-promise-native';
+import {Options} from 'autocannon';
+import axios, {AxiosRequestConfig, Method} from 'axios';
 import {Benchmark} from '..';
 import {Autocannon, EndpointStats} from '../autocannon';
 
@@ -37,16 +38,15 @@ describe('Benchmark (SLOW)', function() {
     async execute(
       title: string,
       urlPath: string,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      options?: any,
+      options?: Omit<Options, 'url'>,
     ): Promise<EndpointStats> {
       if (!options) options = {};
 
-      const requestOptions: request.OptionsWithUrl = {
+      const requestOptions: AxiosRequestConfig = {
         url: this.buildUrl(urlPath),
-        method: options.method || 'GET',
-        json: true,
-        body: options.body ? JSON.parse(options.body) : undefined,
+        method: (options.method ?? 'GET') as Method,
+        responseType: 'json',
+        data: options.body ? JSON.parse(options.body as string) : undefined,
       };
 
       debug(
@@ -56,7 +56,7 @@ describe('Benchmark (SLOW)', function() {
       );
 
       // Verify that the server is implementing the requested URL
-      await request(requestOptions);
+      await axios(requestOptions);
 
       return DUMMY_STATS;
     }
