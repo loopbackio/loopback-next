@@ -372,6 +372,10 @@ export class RestServer extends Context implements Server, HttpServerLike {
         this._setupOperation(verb, path, routeSpec);
       }
     }
+    const globalSchemas = spec?.components?.schemas;
+    if (globalSchemas) {
+      this._httpHandler.registerApiDefinitions(globalSchemas);
+    }
   }
 
   private _setupOperation(verb: string, path: string, spec: OperationObject) {

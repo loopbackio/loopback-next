@@ -61,7 +61,17 @@ export function validateRequestBody(
       schema.$ref.startsWith('#/components/schemas/')
     ) {
       const ref = schema.$ref.slice('#/components/schemas/'.length);
-      debug('  referencing:', util.inspect(globalSchemas[ref], {depth: null}));
+      if (globalSchemas[ref]) {
+        debug(
+          '  referencing:',
+          util.inspect(globalSchemas[ref], {depth: null}),
+        );
+      } else {
+        debug(
+          '  invalid reference, target not found in global schemas',
+          Object.keys(globalSchemas),
+        );
+      }
     }
   }
   if (!schema) return;
