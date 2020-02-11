@@ -55,7 +55,7 @@
     "@loopback/eslint-config": "^5.0.3",
     "@loopback/testlab": "^1.10.3",
     "@types/mocha": "^7.0.1",
-    "@types/node": "^10.17.14",
+    "@types/node": "^10.17.15",
     "@typescript-eslint/eslint-plugin": "^2.19.2",
     "@typescript-eslint/parser": "^2.19.2",
     "eslint": "^6.8.0",

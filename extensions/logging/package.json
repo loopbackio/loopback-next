@@ -29,7 +29,7 @@
     "@loopback/eslint-config": "^5.0.3",
     "@loopback/testlab": "^1.10.3",
     "@types/morgan": "^1.7.37",
-    "@types/node": "^10.17.14",
+    "@types/node": "^10.17.15",
     "p-event": "^4.1.0"
   },
   "keywords": [
