@@ -201,6 +201,33 @@ class Product extends Entity {
 A full list of validation keywords could be found in the
 [documentation of AJV validation keywords](https://github.com/epoberezkin/ajv#validation-keywords).
 
+##### Custom Error Messages
+
+You can also specify custom error messages for the JSON schema validation rules
+in the model property decorator. The messages are added in field called `errorMessage`
+inside `jsonSchema` like:
+
+```ts
+@model()
+class Product extends Entity {
+  @property({
+    name: 'name',
+    description: "The product's common name.",
+    type: 'string',
+    // Specify the JSON validation rules here
+    jsonSchema: {
+      maxLength: 30,
+      minLength: 10,
+      errorMessage: 'name must be at least 10 characters and maximum 30 characters',
+    },
+  })
+  public name: string;
+}
+```
+
+A full list of options & usage scenarios could be found in the
+[documentation of AJV errors](https://github.com/epoberezkin/ajv-errors).
+
 One request body specification could contain multiple content types. Our
 supported content types are `json`, `urlencoded`, and `text`. The client should
 set `Content-Type` http header to `application/json`,
