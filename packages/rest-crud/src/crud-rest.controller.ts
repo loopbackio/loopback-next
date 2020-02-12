@@ -105,7 +105,7 @@ export interface CrudRestControllerOptions {
 /**
  * Create (define) a CRUD Controller class for the given model.
  *
- * Example usage:
+ * @example
  *
  * ```ts
  * const ProductController = defineCrudRestController<
