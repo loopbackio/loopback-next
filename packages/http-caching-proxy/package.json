@@ -19,7 +19,7 @@
     "cacache": "^14.0.0",
     "debug": "^4.1.1",
     "p-event": "^4.1.0",
-    "request": "^2.88.0",
+    "request": "^2.88.2",
     "request-promise-native": "^1.0.8",
     "rimraf": "^3.0.2"
   },
