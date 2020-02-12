@@ -33,6 +33,87 @@ We would like to encourage community contributions by make available to the
 community a list of GH issues that we want to finish in a short term by using
 the `help wanted` and `2020Qx` labels.
 
+## Q2 2020 Roadmap
+
+### Overview
+
+- Finish migration guide for both general runtime and authentication &
+  authorization.
+- Implement the feature parity tasks that are highly requested by users
+- Finish the APIC/LB integration
+- Continue with bugs and developer experience improvements
+
+### Scope
+
+#### Migration guide
+
+- Complete
+  [Migration guide between LB3 and LB4 MVP](https://github.com/strongloop/loopback-next/issues/453)
+- Migrate LB3 SDK client: Spike on migrating Angular client. Will ask for user
+  feedback if there is a need for Android/iOS/other SDK client.
+
+#### Features / Feature Parity with high user votes
+
+- [File upload with multipart/form-data](https://github.com/strongloop/loopback-next/issues/1873)
+- [Custom visual style of REST API Explorer](https://github.com/strongloop/loopback-next/issues/2023)
+- [ENUM type](https://github.com/strongloop/loopback-next/issues/3033): good
+  candidate to ask for community contribution
+- From model definition to REST API with no custom repository/controller classes
+  #2036
+- (stretch goal) From relation definition to REST API with auto-generated
+  repository/controller classes #2483
+
+#### API Connect/LB integration
+
+- Make sure there is documentation how one can import OpenAPIv3 from LoopBack
+  and import into API Connect. Documentation could be in loopback.io or API
+  Connect Knowledge Center
+- Update APIC toolkit to include LoopBack 4
+- Import API story:
+  - OpenAPI enhancer service with APIC OpenAPI enhancer extension
+  - Article to IBM Developer site
+  - Eventually test with shopping app #4498
+
+#### Tech debt / infrastructure
+
+- Replace "request" with something else
+  https://github.com/strongloop/loopback-next/issues/2672
+- Investigate the possibility to reduce build time, e.g.
+  [Use TypeScript project reference with 3.8](https://github.com/strongloop/loopback-next/issues/2609),
+  using yarn/pnpm instead of npm.
+- Investigate the possibility to reduce test time, e.g. run mocha tests in
+  parallel.
+
+#### Documentation Enhancement
+
+Includes migrating Useful LB3 Documentation to LB4.
+
+- Docs: Add "Working with Data" section #2527
+- Tutorial on file upload: with example repo and how to customize for your own
+  use case.
+- Running and debuggin apps
+  - debug string #4845
+  - error handling - how to configure http response to configure error. how to
+    report error from controller (see strong-error-handler) #4846
+- project layout reference
+  https://loopback.io/doc/en/lb3/Project-layout-reference.html #4847
+- (stretch goal) consider the possible rearrangement in sidebar items on
+  security advisories, contributing to LB, LTS to LB4 site
+
+#### LB4 adoption
+
+- Articles/materials that can help more users adopting LoopBack 4
+
+  - write an article about what LB can offer on top of Express #4852
+  - Write an article/docs on "from API to UI: LoopBack + Angular" - using client
+    generator #4849
+  - write an article about LB + TypeORM/Sequelize/Mongoose/Prisma. #4853 for
+    TypeORM
+
+- Building reusable workshop material - possibly for NodeConf.EU, CASCON, etc.
+
+---
+
 ## Q1 2020 Roadmap
 
 ### Overview
