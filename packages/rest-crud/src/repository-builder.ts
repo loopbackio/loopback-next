@@ -14,7 +14,7 @@ import assert from 'assert';
 /**
  * Create (define) a repository class for the given model.
  *
- * Example usage:
+ * @example
  *
  * ```ts
  * const ProductRepository = defineCrudRepositoryClass(Product);

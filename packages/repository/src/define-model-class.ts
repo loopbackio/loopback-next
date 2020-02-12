@@ -10,7 +10,7 @@ import {Model, ModelDefinition} from './model';
 /**
  * Create (define) a new model class with the given name and definition.
  *
- * Example usage:
+ * @remarks
  *
  * ```ts
  * const Product = defineModelClass(Entity, new ModelDefinition('Product'));
