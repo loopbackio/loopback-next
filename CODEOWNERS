@@ -88,7 +88,7 @@
 # For longer term, we may want to re-organize doc files around functional
 # areas (create a new subdirectory for each functional area), so that
 # we can assign more specific code owners to different doc pages.
-/docs/ @agnes512 @bajtos @deepakrkris @emonddr @jannyHou @hacksparrow @nabdelgadir @raymondfeng
+/docs @agnes512 @bajtos @deepakrkris @emonddr @jannyHou @hacksparrow @nabdelgadir @raymondfeng
 
 #
 # CLI (`lb4` infrastructure, commands not covered by functional areas below)
@@ -96,7 +96,7 @@
 # - Issue label: CLI
 # - Primary owner(s): @agnes512
 # - Standby owner(s): @emonddr @nabdelgadir
-/packages/cli/ @agnes512 @emonddr @nabdelgadir
+/packages/cli @agnes512 @emonddr @nabdelgadir
 
 #
 # Dependency Injection, Inversion of Control and related areas
@@ -104,10 +104,10 @@
 # - Issue label: IoC/Context
 # - Primary owner(s): @raymondfeng
 # - Standby owner(s): @deepakrkris @emonddr @jannyHou
-/packages/metadata/ @raymondfeng @deepakrkris @emonddr @jannyHou
-/packages/context/ @raymondfeng @deepakrkris @emonddr @jannyHou
-/examples/context/ @raymondfeng @deepakrkris @emonddr @jannyHou
-/packages/cli/generators/interceptor/ @raymondfeng @deepakrkris @emonddr @jannyHou
+/packages/metadata @raymondfeng @deepakrkris @emonddr @jannyHou
+/packages/context @raymondfeng @deepakrkris @emonddr @jannyHou
+/examples/context @raymondfeng @deepakrkris @emonddr @jannyHou
+/packages/cli/generators/interceptor @raymondfeng @deepakrkris @emonddr @jannyHou
 
 #
 # Framework core
@@ -115,9 +115,9 @@
 # - Issue label: Core
 # - Primary owner(s): @raymondfeng @deepakrkris
 # - Standby owner(s): n/a
-/packages/core/ @deepakrkris @raymondfeng
-/examples/rpc-server/ @deepakrkris @raymondfeng
-/packages/cli/generators/observer/ @deepakrkris @raymondfeng
+/packages/core @deepakrkris @raymondfeng
+/examples/rpc-server @deepakrkris @raymondfeng
+/packages/cli/generators/observer @deepakrkris @raymondfeng
 
 #
 # Infrastructure for extensions
@@ -126,9 +126,9 @@
 # - Primary owner(s): @raymondfeng @jannyHou
 # - Standby owner(s): @emonddr
 /packages/core/src/component.ts @emonddr @jannyHou @raymondfeng
-/examples/greeting-app/ @emonddr @jannyHou @raymondfeng
-/examples/log-extension/ @emonddr @jannyHou @raymondfeng
-/examples/greeter-extension/ @emonddr @jannyHou @raymondfeng
+/examples/greeting-app @emonddr @jannyHou @raymondfeng
+/examples/log-extension @emonddr @jannyHou @raymondfeng
+/examples/greeter-extension @emonddr @jannyHou @raymondfeng
 
 #
 # REST API (server-side)
@@ -136,11 +136,11 @@
 # - Issue label: REST
 # - Primary owner(s): @hacksparrow
 # - Standby owner(s): @deepakrkris @emonddr
-/packages/rest/ @deepakrkris @emonddr @hacksparrow
-/packages/http-server/ @deepakrkris @emonddr @hacksparrow
-/packages/cli/generators/controller/ @deepakrkris @emonddr @hacksparrow
-/examples/hello-world/ @deepakrkris @emonddr @hacksparrow
-/examples/express-composition/ @deepakrkris @emonddr @hacksparrow
+/packages/rest @deepakrkris @emonddr @hacksparrow
+/packages/http-server @deepakrkris @emonddr @hacksparrow
+/packages/cli/generators/controller @deepakrkris @emonddr @hacksparrow
+/examples/hello-world @deepakrkris @emonddr @hacksparrow
+/examples/express-composition @deepakrkris @emonddr @hacksparrow
 
 #
 # OpenAPI (server-side)
@@ -148,8 +148,8 @@
 # - Issue label: OpenAPI
 # - Primary owner(s): @jannyHou
 # - Standby owner(s): @deepakrkris @emonddr
-/packages/openapi-spec-builder/ @deepakrkris @emonddr @jannyHou
-/packages/openapi-v3/ @deepakrkris @emonddr @jannyHou
+/packages/openapi-spec-builder @deepakrkris @emonddr @jannyHou
+/packages/openapi-v3 @deepakrkris @emonddr @jannyHou
 /packages/rest/src/router/openapi-path.ts @deepakrkris @emonddr @jannyHou
 /packages/rest/src/__tests__/unit/router/rebase-openapi-spec.unit.ts
 /packages/rest/src/__tests__/unit/rest.server/rest.server.open-api-spec.unit.ts
@@ -159,7 +159,7 @@
 # - Issue label: API Explorer
 # - Primary owner(s): @hacksparrow
 # - Standby owner(s): n/a
-/packages/rest-explorer/ @hacksparrow
+/packages/rest-explorer @hacksparrow
 
 #
 # Models & Repository
@@ -168,13 +168,13 @@
 # - Primary owner(s): @agnes512
 # - Standby owner(s): @hacksparrow
 # Includes the following repos: loopback-datasource-juggler
-/packages/repository/ @agnes512 @hacksparrow
-/packages/repository-json-schema/ @agnes512 @hacksparrow
-/packages/repository-tests/ @agnes512 @hacksparrow
-/packages/cli/generators/repository/ @agnes512 @hacksparrow
-/packages/cli/generators/datasource/ @agnes512 @hacksparrow
-/packages/cli/generators/discover/ @agnes512 @hacksparrow
-/packages/cli/generators/model/ @agnes512 @hacksparrow
+/packages/repository @agnes512 @hacksparrow
+/packages/repository-json-schema @agnes512 @hacksparrow
+/packages/repository-tests @agnes512 @hacksparrow
+/packages/cli/generators/repository @agnes512 @hacksparrow
+/packages/cli/generators/datasource @agnes512 @hacksparrow
+/packages/cli/generators/discover @agnes512 @hacksparrow
+/packages/cli/generators/model @agnes512 @hacksparrow
 
 #
 # Model relations & repositories
@@ -182,12 +182,12 @@
 # - Issue label: Relations
 # - Primary owner(s): @agnes512
 # - Standby owner(s): @hacksparrow
-/packages/repository/src/relations/ @agnes512 @hacksparrow
-/packages/repository-tests/src/crud/relations/ @agnes512 @hacksparrow
+/packages/repository/src/relations @agnes512 @hacksparrow
+/packages/repository-tests/src/crud/relations @agnes512 @hacksparrow
 /packages/repository/src/__tests__/acceptance/has-many-without-di.*.ts @agnes512 @hacksparrowcceptance.ts
 /packages/repository/src/__tests__/integration/repositories/relation.factory.integration.ts @agnes512 @hacksparrow
 /packages/cli/generators/relation @agnes512 @hacksparrow
-/examples/todo-list/ @agnes512 @hacksparrow
+/examples/todo-list @agnes512 @hacksparrow
 
 #
 # Services (infrastructure for SOAP/REST clients)
@@ -196,11 +196,11 @@
 # - Primary owner(s): @raymondfeng
 # - Standby owner(s): n/a
 # Includes the following repos: loopback-connector-rest
-/packages/service-proxy/ @raymondfeng
-/packages/cli/generators/service/ @raymondfeng
+/packages/service-proxy @raymondfeng
+/packages/cli/generators/service @raymondfeng
 # The SOAP Calculator examples is a bit special, we want to preserve
 # Mario as the code owner of this specific subarea only
-/examples/soap-calculator/ @raymondfeng @marioestradarosa
+/examples/soap-calculator @raymondfeng @marioestradarosa
 
 #
 # `lb4 openapi` (scaffold an LB4 app from the given OpenAPI spec)
@@ -208,7 +208,7 @@
 # - Issue label: n/a
 # - Primary owner(s): @raymondfeng
 # - Standby owner(s): @jannyHou
-/packages/cli/generators/openapi/ @jannyHou @raymondfeng
+/packages/cli/generators/openapi @jannyHou @raymondfeng
 
 #
 # LB4 project conventions
@@ -216,10 +216,10 @@
 # - Issue label: n/a
 # - Primary owner(s): @nabdelgadir
 # - Standby owner(s): n/a
-/packages/cli/generators/project/ @nabdelgadir
-/packages/cli/generators/app/ @nabdelgadir
-/packages/cli/generators/extension/ @nabdelgadir
-/examples/todo/ @nabdelgadir
+/packages/cli/generators/project @nabdelgadir
+/packages/cli/generators/app @nabdelgadir
+/packages/cli/generators/extension @nabdelgadir
+/examples/todo @nabdelgadir
 
 #
 # Bootstrapper (core)
@@ -227,7 +227,7 @@
 # - Issue label: Boot
 # - Primary owner(s): @jannyHou
 # - Standby owner(s): n/a
-/packages/boot/ @jannyHou
+/packages/boot @jannyHou
 
 #
 # Migration from LB3
@@ -235,10 +235,10 @@
 # - Issue label: Migration
 # - Primary owner(s): @deepakrkris
 # - Standby owner(s): @nabdelgadir
-/packages/booter-lb3-app/ @deepakrkris @nabdelgadir
-/packages/cli/generators/import-lb3-models/ @deepakrkris @nabdelgadir
-/examples/lb3-application/ @deepakrkris @nabdelgadir
-/docs/site/migration/ @deepakrkris @nabdelgadir
+/packages/booter-lb3-app @deepakrkris @nabdelgadir
+/packages/cli/generators/import-lb3-models @deepakrkris @nabdelgadir
+/examples/lb3-application @deepakrkris @nabdelgadir
+/docs/site/migration @deepakrkris @nabdelgadir
 
 #
 # REST CRUD conventional API
@@ -246,9 +246,9 @@
 # - Issue label: n/a
 # - Primary owner(s): @nabdelgadir
 # - Standby owner(s): n/a
-/packages/model-api-builder/ @nabdelgadir
-/packages/rest-crud/ @nabdelgadir
-/packages/booter-rest/ @nabdelgadir
+/packages/model-api-builder @nabdelgadir
+/packages/rest-crud @nabdelgadir
+/packages/booter-rest @nabdelgadir
 
 #
 # Cloud Native tooling
@@ -256,11 +256,11 @@
 # - Issue label: CloudNative
 # - Primary owner(s): @jannyHou @raymondfeng
 # - Standby owner(s): @emonddr
-/extensions/metrics/ @emonddr @jannyHou @raymondfeng
-/extensions/health/ @emonddr @jannyHou @raymondfeng
-/extensions/logging/ @emonddr @jannyHou @raymondfeng
-/examples/metrics-prometheus/ @emonddr @jannyHou @raymondfeng
-/acceptance/extension-logging-fluentd/ @emonddr @jannyHou @raymondfeng
+/extensions/metrics @emonddr @jannyHou @raymondfeng
+/extensions/health @emonddr @jannyHou @raymondfeng
+/extensions/logging @emonddr @jannyHou @raymondfeng
+/examples/metrics-prometheus @emonddr @jannyHou @raymondfeng
+/acceptance/extension-logging-fluentd @emonddr @jannyHou @raymondfeng
 
 #
 # Authentication
@@ -268,9 +268,9 @@
 # - Issue label: Authentication
 # - Primary owner(s): @hacksparrow
 # - Standby owner(s): @emonddr @jannyHou
-/packages/authentication/ @emonddr @hacksparrow @jannyHou
-/packages/security/ @emonddr @hacksparrow @jannyHou
-/extensions/authentication-passport/ @emonddr @hacksparrow @jannyHou
+/packages/authentication @emonddr @hacksparrow @jannyHou
+/packages/security @emonddr @hacksparrow @jannyHou
+/extensions/authentication-passport @emonddr @hacksparrow @jannyHou
 
 #
 # Authorization
@@ -278,7 +278,7 @@
 # - Issue label: Authorization
 # - Primary owner(s): @hacksparrow
 # - Standby owner(s): @jannyHou
-/packages/authorization/ @hacksparrow @jannyHou
+/packages/authorization @hacksparrow @jannyHou
 
 #
 # Build & internal tooling
@@ -286,10 +286,10 @@
 # - Issue label: Internal Tooling
 # - Primary owner(s): @emonddr
 # - Standby owner(s): n/a
-/packages/build/ @emonddr
-/packages/eslint-config/ @emonddr
-/packages/tsdocs/ @emonddr
-/packages/cli/generators/update/ @emonddr
+/packages/build @emonddr
+/packages/eslint-config @emonddr
+/packages/tsdocs @emonddr
+/packages/cli/generators/update @emonddr
 
 #
 # Test helpers
@@ -297,8 +297,8 @@
 # - Issue label: Testlab
 # - Primary owner(s): @bajtos
 # - Standby owner(s): @nabdelgadir
-/packages/testlab/ @bajtos @nabdelgadir
-/packages/http-caching-proxy/ @bajtos @nabdelgadir
+/packages/testlab @bajtos @nabdelgadir
+/packages/http-caching-proxy @bajtos @nabdelgadir
 
 #
 # Benchmarks
@@ -306,7 +306,7 @@
 # - Issue label: n/a
 # - Primary owner(s): @bajtos
 # - Standby owner(s): n/a
-/benchmark/ @bajtos
+/benchmark @bajtos
 
 #
 # PostgreSQL
@@ -315,7 +315,7 @@
 # - Primary owner(s): @deepakrkris
 # - Standby owner(s): @agnes512
 # Includes the following repos: loopback-connector-postgresql
-/acceptance/repository-postgresql/ @agnes512 @deepakrkris
+/acceptance/repository-postgresql @agnes512 @deepakrkris
 
 #
 # MySQL
@@ -324,7 +324,7 @@
 # - Primary owner(s): @jannyHou
 # - Standby owner(s): @agnes512
 # Includes the following repos: loopback-connector-mysql
-/acceptance/repository-mysql/ @agnes512 @jannyHou
+/acceptance/repository-mysql @agnes512 @jannyHou
 
 #
 # MongoDB
@@ -333,7 +333,7 @@
 # - Primary owner(s): n/a
 # - Standby owner(s): @agnes512 @hacksparrow
 # Includes the following repos: loopback-connector-mongodb
-/acceptance/repository-mongodb/ @agnes512 @hacksparrow
+/acceptance/repository-mongodb @agnes512 @hacksparrow
 
 #
 # Cloudant & CouchDB2
@@ -345,7 +345,7 @@
 # - loopback-connector-cloudant
 # - loopback-connector-couchdb2
 # - (and other related/base connectors)
-/acceptance/repository-cloudant/ @agnes512 @jannyHou
+/acceptance/repository-cloudant @agnes512 @jannyHou
 
 # Redis (KeyValue)
 #
