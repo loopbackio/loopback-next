@@ -247,7 +247,7 @@ describe('lb4 model integration', () => {
       );
       assert.fileContent(
         expectedModelFile,
-        /export interface TestRelations {\n {2}\/\/ describe navigational properties here\n}/,
+        /export interface TestRelations {\r?\n {2}\/\/ describe navigational properties here\r?\n}/,
       );
     });
 
