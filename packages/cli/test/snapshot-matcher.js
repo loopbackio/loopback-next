@@ -107,7 +107,16 @@ function matchSnapshot(snapshotDir, currentTest, actualValue) {
     );
   }
 
-  assert.deepStrictEqual(actualValue, snapshotData[key]);
+  // When running on Windows, `actualValue` may be using `\r\n` as EOL.
+  // We are normalizing snapshot data to use `\n` as EOL, but depending on
+  // git settings, the content can be converted during git checkout to
+  // use `\r\n` instead.
+  // For maximum safety, we normalize line endings in both actual and expected
+  // values.
+  assert.deepStrictEqual(
+    normalizeNewlines(actualValue),
+    normalizeNewlines(snapshotData[key]),
+  );
 }
 
 function recordSnapshot(snapshots, currentTest, actualValue) {
