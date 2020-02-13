@@ -81,7 +81,10 @@ describe('lb4 model integration', () => {
     assert.file(expectedModelFile);
   });
 
-  it('discovers a model from a datasource', async () => {
+  it('discovers a model from a datasource', async function() {
+    // This test takes a bit longer to finish on Windows.
+    // eslint-disable-next-line no-invalid-this
+    this.timeout(3000);
     await testUtils
       .executeGenerator(generator)
       .inDir(SANDBOX_PATH, () =>
