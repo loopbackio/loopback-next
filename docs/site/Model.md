@@ -547,6 +547,39 @@ class Customer extends Entity {
 }
 ```
 
+Extra attributes for json schema can be supplied via the `jsonSchema` within the
+second parameter.
+
+```ts
+@model()
+class Customer extends Entity {
+  @property(String, {
+    jsonSchema: {
+      format: 'email',
+    },
+  })
+  email: string;
+}
+```
+
+For `@property.array`, the `jsonSchema` is for the item type instead of the
+array itself.
+
+```ts
+@model()
+class TestModel {
+  @property.array(String, {
+    jsonSchema: {
+      format: 'email',
+      minLength: 5,
+      maxLength: 50,
+      transform: ['toLowerCase'],
+    },
+  })
+  emails?: string[];
+}
+```
+
 ### JSON Schema inference
 
 Use the `@loopback/repository-json-schema module` to build a JSON schema from a

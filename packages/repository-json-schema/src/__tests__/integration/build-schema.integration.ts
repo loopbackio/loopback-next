@@ -218,6 +218,35 @@ describe('build-schema', () => {
         expectValidJsonSchema(jsonSchema);
       });
 
+      it('properly converts properties with array and json schema', () => {
+        @model()
+        class TestModel {
+          @property.array(String, {
+            jsonSchema: {
+              format: 'email',
+              minLength: 5,
+              maxLength: 50,
+              transform: ['toLowerCase'],
+            },
+          })
+          emails?: string[];
+        }
+
+        const jsonSchema = modelToJsonSchema(TestModel);
+        expect(jsonSchema.properties).to.eql({
+          emails: {
+            type: 'array',
+            items: {
+              type: 'string',
+              format: 'email',
+              minLength: 5,
+              maxLength: 50,
+              transform: ['toLowerCase'],
+            },
+          },
+        });
+      });
+
       it('properly converts properties with recursive arrays', () => {
         @model()
         class RecursiveArray {
