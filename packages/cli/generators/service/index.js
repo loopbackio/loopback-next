@@ -11,6 +11,7 @@ const inspect = require('util').inspect;
 const path = require('path');
 const chalk = require('chalk');
 const utils = require('../../lib/utils');
+const g = require('../../lib/globalize');
 
 const VALID_CONNECTORS_FOR_SERVICE = ['Model'];
 
@@ -18,9 +19,9 @@ const REMOTE_SERVICE_TEMPLATE = 'remote-service-proxy-template.ts.ejs';
 const LOCAL_CLASS_TEMPLATE = 'local-service-class-template.ts.ejs';
 const LOCAL_PROVIDER_TEMPLATE = 'local-service-provider-template.ts.ejs';
 
-const PROMPT_MESSAGE_DATA_SOURCE = 'Please select the datasource';
+const PROMPT_MESSAGE_DATA_SOURCE = g.f('Please select the datasource');
 
-const ERROR_NO_DATA_SOURCES_FOUND = 'No datasources found at';
+const ERROR_NO_DATA_SOURCES_FOUND = g.f('No datasources found at');
 
 const REMOTE_SERVICE_PROXY = 'proxy';
 const LOCAL_SERVICE_CLASS = 'class';
@@ -57,13 +58,13 @@ module.exports = class ServiceGenerator extends ArtifactGenerator {
     this.option('type', {
       type: String,
       required: false,
-      description: 'Service type - proxy, class or provider',
+      description: g.f('Service type - proxy, class or provider'),
     });
 
     this.option('datasource', {
       type: String,
       required: false,
-      description: 'A valid datasource name',
+      description: g.f('A valid datasource name'),
     });
 
     return super._setupGenerator();
@@ -109,18 +110,18 @@ module.exports = class ServiceGenerator extends ArtifactGenerator {
           type: 'list',
           name: 'serviceType',
           // capitalization
-          message: utils.toClassName(this.artifactInfo.type) + ' type:',
+          message: g.f('%s type:', utils.toClassName(this.artifactInfo.type)),
           choices: [
             {
-              name: 'Remote service proxy backed by a data source',
+              name: g.f('Remote service proxy backed by a data source'),
               value: REMOTE_SERVICE_PROXY,
             },
             {
-              name: 'Local service class bound to application context',
+              name: g.f('Local service class bound to application context'),
               value: LOCAL_SERVICE_CLASS,
             },
             {
-              name: 'Local service provider bound to application context',
+              name: g.f('Local service provider bound to application context'),
               value: LOCAL_SERVICE_PROVIDER,
             },
           ],
@@ -265,7 +266,7 @@ module.exports = class ServiceGenerator extends ArtifactGenerator {
         type: 'input',
         name: 'name',
         // capitalization
-        message: utils.toClassName(this.artifactInfo.type) + ' name:',
+        message: g.f('%s name:', utils.toClassName(this.artifactInfo.type)),
         when: !this.artifactInfo.name,
         validate: utils.validateClassName,
       },

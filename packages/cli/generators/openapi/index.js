@@ -14,6 +14,7 @@ const {getControllerFileName} = require('./spec-helper');
 const updateIndex = require('../../lib/update-index');
 const MODEL = 'models';
 const CONTROLLER = 'controllers';
+const g = require('../../lib/globalize');
 
 module.exports = class OpenApiGenerator extends BaseGenerator {
   // Note: arguments and options should be defined in the constructor.
@@ -23,26 +24,26 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
 
   _setupGenerator() {
     this.argument('url', {
-      description: 'URL or file path of the OpenAPI spec',
+      description: g.f('URL or file path of the OpenAPI spec'),
       required: false,
       type: String,
     });
 
     this.option('url', {
-      description: 'URL or file path of the OpenAPI spec',
+      description: g.f('URL or file path of the OpenAPI spec'),
       required: false,
       type: String,
     });
 
     this.option('validate', {
-      description: 'Validate the OpenAPI spec',
+      description: g.f('Validate the OpenAPI spec'),
       required: false,
       default: false,
       type: Boolean,
     });
 
     this.option('promote-anonymous-schemas', {
-      description: 'Promote anonymous schemas as models',
+      description: g.f('Promote anonymous schemas as models'),
       required: false,
       default: false,
       type: Boolean,
@@ -60,7 +61,7 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
     const prompts = [
       {
         name: 'url',
-        message: 'Enter the OpenAPI spec url or file path:',
+        message: g.f('Enter the OpenAPI spec url or file path:'),
         default: this.options.url,
         validate: validateUrlOrFile,
         when: this.options.url == null,
@@ -101,7 +102,7 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
     const prompts = [
       {
         name: 'controllerSelections',
-        message: 'Select controllers to be generated:',
+        message: g.f('Select controllers to be generated:'),
         type: 'checkbox',
         choices: choices,
         // Require at least one item to be selected

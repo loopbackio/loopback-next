@@ -11,6 +11,7 @@ const chalk = require('chalk');
 const utils = require('../../lib/utils');
 const modelDiscoverer = require('../../lib/model-discoverer');
 const {importDiscoveredModel} = require('./import-discovered-model');
+const g = require('../../lib/globalize');
 
 const rootDir = 'src';
 
@@ -21,31 +22,32 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
     this.option('dataSource', {
       type: String,
       alias: 'ds',
-      description: 'The name of the datasource to discover',
+      description: g.f('The name of the datasource to discover'),
     });
 
     this.option('views', {
       type: Boolean,
-      description: 'Boolean to discover views',
+      description: g.f('Boolean to discover views'),
       default: true,
     });
 
     this.option('schema', {
       type: String,
-      description: 'Schema to discover',
+      description: g.f('Schema to discover'),
       default: '',
     });
 
     this.option('all', {
       type: Boolean,
-      description: 'Discover all models without prompting users to select',
+      description: g.f('Discover all models without prompting users to select'),
       default: false,
     });
 
     this.option('outDir', {
       type: String,
-      description:
+      description: g.f(
         'Specify the directory into which the `model.model.ts` files will be placed',
+      ),
       default: undefined,
     });
   }
@@ -119,7 +121,7 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
     const prompts = [
       {
         name: 'dataSource',
-        message: `Select the connector to discover`,
+        message: g.f('Select the connector to discover'),
         type: 'list',
         choices: this.dataSourceChoices,
         when:
@@ -173,7 +175,7 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
     const prompts = [
       {
         name: 'discoveringModels',
-        message: `Select the models which to discover`,
+        message: g.f('Select the models which to discover'),
         type: 'checkbox',
         choices: this.modelChoices,
         when:
@@ -214,7 +216,9 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
     return this.prompt([
       {
         name: 'disableCamelCase',
-        message: `Select a convention to convert db column names(EXAMPLE_COLUMN) to model property names:`,
+        message: g.f(
+          'Select a convention to convert db column names(EXAMPLE_COLUMN) to model property names:',
+        ),
         type: 'list',
         choices: this.namingConvention,
         default: false,

@@ -9,6 +9,7 @@ const debug = require('./debug')('artifact-generator');
 const utils = require('./utils');
 const path = require('path');
 const chalk = require('chalk');
+const g = require('./globalize');
 
 module.exports = class ArtifactGenerator extends BaseGenerator {
   // Note: arguments and options should be defined in the constructor.
@@ -23,7 +24,7 @@ module.exports = class ArtifactGenerator extends BaseGenerator {
     this.argument('name', {
       type: String,
       required: false,
-      description: 'Name for the ' + this.artifactInfo.type,
+      description: g.f('Name for the %s', this.artifactInfo.type),
     });
   }
 
@@ -50,7 +51,10 @@ module.exports = class ArtifactGenerator extends BaseGenerator {
         type: 'input',
         name: 'name',
         // capitalization
-        message: utils.toClassName(this.artifactInfo.type) + ' class name:',
+        message: g.f(
+          '%s class name:',
+          utils.toClassName(this.artifactInfo.type),
+        ),
         when: this.artifactInfo.name === undefined,
         default: this.artifactInfo.defaultName,
         validate: utils.validateClassName,

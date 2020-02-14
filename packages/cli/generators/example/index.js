@@ -10,6 +10,7 @@ const chalk = require('chalk');
 const downloadAndExtractExample = require('./downloader');
 const path = require('path');
 const fs = require('fs-extra');
+const g = require('../../lib/globalize');
 
 const EXAMPLES = {
   todo: 'Tutorial example on how to build an application with LoopBack 4.',
@@ -46,7 +47,7 @@ module.exports = class extends BaseGenerator {
     this.projectType = 'example';
     this.argument('example-name', {
       type: String,
-      description: 'Name of the example to clone',
+      description: g.f('Name of the example to clone'),
       required: false,
     });
 
@@ -80,7 +81,7 @@ module.exports = class extends BaseGenerator {
     const prompts = [
       {
         name: 'name',
-        message: 'What example would you like to clone?',
+        message: g.f('What example would you like to clone?'),
         type: 'list',
         choices,
       },

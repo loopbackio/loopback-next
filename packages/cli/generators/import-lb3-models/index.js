@@ -14,6 +14,7 @@ const utils = require('../../lib/utils');
 const {loadLb3App} = require('./lb3app-loader');
 const {importLb3ModelDefinition} = require('./migrate-model');
 const {canImportModelName} = require('./model-names');
+const g = require('../../lib/globalize');
 
 module.exports = class Lb3ModelImporter extends BaseGenerator {
   constructor(args, opts) {
@@ -22,15 +23,20 @@ module.exports = class Lb3ModelImporter extends BaseGenerator {
     this.argument('lb3app', {
       type: String,
       required: true,
-      description:
+      description: g.f(
         'Path to your LoopBack 3.x application. ' +
-        'This can be a project directory (e.g. "my-lb3-app") or ' +
-        'the server file (e.g. "my-lb3-app/server/server.js").',
+          'This can be a project directory (e.g. "my-lb3-app") or ' +
+          'the server file (e.g. "my-lb3-app/server/server.js").',
+      ),
+      // description:
+      //   'Path to your LoopBack 3.x application. ' +
+      //   'This can be a project directory (e.g. "my-lb3-app") or ' +
+      //   'the server file (e.g. "my-lb3-app/server/server.js").',
     });
 
     this.option('outDir', {
       type: String,
-      description: 'Directory where to write the generated source file',
+      description: g.f('Directory where to write the generated source file'),
       default: 'src/models',
     });
   }
@@ -77,7 +83,7 @@ Learn more at https://loopback.io/doc/en/lb4/Importing-LB3-models.html
     const prompts = [
       {
         name: 'modelNames',
-        message: 'Select models to import:',
+        message: g.f('Select models to import:'),
         type: 'checkbox',
         choices: modelNames,
         // Require at least one model to be selected

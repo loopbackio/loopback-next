@@ -6,6 +6,7 @@
 'use strict';
 
 const BaseGenerator = require('../../lib/base-generator');
+const g = require('../../lib/globalize');
 
 module.exports = class UpdateGenerator extends BaseGenerator {
   // Note: arguments and options should be defined in the constructor.
@@ -19,7 +20,7 @@ module.exports = class UpdateGenerator extends BaseGenerator {
       type: Boolean,
       required: false,
       default: false,
-      description: 'Check version compatibility using semver semantics',
+      description: g.f('Check version compatibility using semver semantics'),
     });
     return super._setupGenerator();
   }

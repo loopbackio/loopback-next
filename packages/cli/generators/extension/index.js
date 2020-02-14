@@ -7,6 +7,7 @@
 const utils = require('../../lib/utils');
 
 const ProjectGenerator = require('../../lib/project-generator');
+const g = require('../../lib/globalize');
 
 module.exports = class ExtensionGenerator extends ProjectGenerator {
   // Note: arguments and options should be defined in the constructor.
@@ -19,7 +20,7 @@ module.exports = class ExtensionGenerator extends ProjectGenerator {
 
     this.option('componentName', {
       type: String,
-      description: 'Component name',
+      description: g.f('Component name'),
     });
 
     return super._setupGenerator();
@@ -43,7 +44,7 @@ module.exports = class ExtensionGenerator extends ProjectGenerator {
       {
         type: 'input',
         name: 'componentName',
-        message: 'Component class name:',
+        message: g.f('Component class name:'),
         when: this.projectInfo.componentName == null,
         default: utils.toClassName(this.projectInfo.name) + 'Component',
       },
