@@ -217,7 +217,7 @@ process.env.CI && !process.env.DEBUG
 
 /** For testing if the generator handles default values properly */
 describe('app-generator with default values', () => {
-  const rootDir = path.join(__dirname, '../../../..');
+  const rootDir = path.join(__dirname, '../../../../../');
   const defaultValProjPath = path.join(rootDir, 'sandbox/default-value-app');
   const sandbox = path.join(rootDir, 'sandbox');
   const pathToDefValApp = path.join(defaultValProjPath, 'default-value-app');
@@ -256,7 +256,7 @@ describe('app-generator with default values', () => {
  * Use differnt paths to test out the support of `~` when the test runs outside of home dir.
  */
 describe('app-generator with tilde project path', () => {
-  const rootDir = path.join(__dirname, '../../../..');
+  const rootDir = path.join(__dirname, '../../../../../');
   // tildify the path:
   let sandbox = path.join(rootDir, 'sandbox/tilde-path-app');
   let pathWithTilde = tildify(sandbox);
