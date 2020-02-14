@@ -151,8 +151,8 @@
 /packages/openapi-spec-builder @deepakrkris @emonddr @jannyHou
 /packages/openapi-v3 @deepakrkris @emonddr @jannyHou
 /packages/rest/src/router/openapi-path.ts @deepakrkris @emonddr @jannyHou
-/packages/rest/src/__tests__/unit/router/rebase-openapi-spec.unit.ts
-/packages/rest/src/__tests__/unit/rest.server/rest.server.open-api-spec.unit.ts
+/packages/rest/src/__tests__/unit/router/rebase-openapi-spec.unit.ts @deepakrkris @emonddr @jannyHou
+/packages/rest/src/__tests__/unit/rest.server/rest.server.open-api-spec.unit.ts @deepakrkris @emonddr @jannyHou
 
 # REST API Explorer
 #
@@ -184,7 +184,7 @@
 # - Standby owner(s): @hacksparrow
 /packages/repository/src/relations @agnes512 @hacksparrow
 /packages/repository-tests/src/crud/relations @agnes512 @hacksparrow
-/packages/repository/src/__tests__/acceptance/has-many-without-di.*.ts @agnes512 @hacksparrowcceptance.ts
+/packages/repository/src/__tests__/acceptance/has-many-without-di.relation.acceptance.ts @agnes512 @hacksparrow
 /packages/repository/src/__tests__/integration/repositories/relation.factory.integration.ts @agnes512 @hacksparrow
 /packages/cli/generators/relation @agnes512 @hacksparrow
 /examples/todo-list @agnes512 @hacksparrow
