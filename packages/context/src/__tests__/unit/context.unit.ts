@@ -909,6 +909,35 @@ describe('Context', () => {
       });
     });
 
+    it('inspects as plain JSON object with class name conflicts', () => {
+      const childCtx = new TestContext(ctx, 'server');
+
+      // We intentionally declare classes with colliding names to verify
+      // they are represented with unique names in JSON object produced
+      // by `inspect()`
+      class MyService {}
+      class MyServiceProvider implements Provider<MyService> {
+        value() {
+          return new MyService();
+        }
+      }
+      childCtx.bind('child.MyService').toClass(MyService);
+      childCtx.bind('child.MyServiceProvider').toProvider(MyServiceProvider);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const json = childCtx.inspect() as any;
+      expect(json.bindings['child.MyService'].valueConstructor).to.eql(
+        'MyService',
+      );
+      expect(
+        json.bindings['child.MyServiceProvider'].providerConstructor,
+      ).to.eql('MyServiceProvider');
+      const parentBindings = json.parent.bindings;
+      expect(parentBindings['d'].valueConstructor).to.eql('MyService #1');
+      expect(parentBindings['e'].providerConstructor).to.eql(
+        'MyServiceProvider #1',
+      );
+    });
+
     it('inspects as plain JSON object to include injections', () => {
       const childCtx = new TestContext(ctx, 'server');
       childCtx.bind('foo').to('foo-value');
