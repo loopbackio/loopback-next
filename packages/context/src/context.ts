@@ -34,6 +34,7 @@ import {
 } from './resolution-session';
 import {
   BoundValue,
+  Constructor,
   getDeepProperty,
   isPromiseLike,
   ValueOrPromise,
@@ -797,6 +798,20 @@ export class Context extends EventEmitter {
    */
   // TODO(rfeng): Evaluate https://nodejs.org/api/util.html#util_custom_inspection_functions_on_objects
   inspect(options: ContextInspectOptions = {}): JSONObject {
+    return this._inspect(options, new ClassNameMap());
+  }
+
+  /**
+   * Inspect the context hierarchy
+   * @param options - Options for inspect
+   * @param visitedClasses - A map to keep class to name so that we can have
+   * different names for classes with colliding names. The situation can happen
+   * when two classes with the same name are bound in different modules.
+   */
+  private _inspect(
+    options: ContextInspectOptions,
+    visitedClasses: ClassNameMap,
+  ): JSONObject {
     options = {
       includeParent: true,
       includeInjections: false,
@@ -804,7 +819,20 @@ export class Context extends EventEmitter {
     };
     const bindings: JSONObject = {};
     for (const [k, v] of this.registry) {
+      const ctor = v.valueConstructor ?? v.providerConstructor;
+      let name: string | undefined = undefined;
+      if (ctor != null) {
+        name = visitedClasses.visit(ctor);
+      }
       bindings[k] = v.inspect(options);
+      if (name != null) {
+        const binding = bindings[k] as JSONObject;
+        if (v.valueConstructor) {
+          binding.valueConstructor = name;
+        } else if (v.providerConstructor) {
+          binding.providerConstructor = name;
+        }
+      }
     }
     const json: JSONObject = {
       name: this.name,
@@ -812,9 +840,36 @@ export class Context extends EventEmitter {
     };
     if (!options.includeParent) return json;
     if (this._parent) {
-      json.parent = this._parent.inspect(options);
+      json.parent = this._parent._inspect(options, visitedClasses);
     }
     return json;
+  }
+}
+
+/**
+ * An internal utility class to handle class name conflicts
+ */
+class ClassNameMap {
+  private readonly classes = new Map<Constructor<unknown>, string>();
+  private readonly nameIndex = new Map<string, number>();
+
+  visit(ctor: Constructor<unknown>) {
+    let name = this.classes.get(ctor);
+    if (name == null) {
+      name = ctor.name;
+      // Now check if the name collides with another class
+      let index = this.nameIndex.get(name);
+      if (typeof index === 'number') {
+        // A conflict is found, mangle the name as `ClassName #1`
+        this.nameIndex.set(name, ++index);
+        name = `${name} #${index}`;
+      } else {
+        // The name is used for the 1st time
+        this.nameIndex.set(name, 0);
+      }
+      this.classes.set(ctor, name);
+    }
+    return name;
   }
 }
 
