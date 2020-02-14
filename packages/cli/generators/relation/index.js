@@ -17,26 +17,34 @@ const BelongsToRelationGenerator = require('./belongs-to-relation.generator');
 const HasManyRelationGenerator = require('./has-many-relation.generator');
 const HasOneRelationGenerator = require('./has-one-relation.generator');
 
-const ERROR_INCORRECT_RELATION_TYPE = 'Incorrect relation type';
-const ERROR_MODEL_DOES_NOT_EXIST = 'model does not exist.';
-const ERROR_NO_MODELS_FOUND = 'No models found in';
-const ERROR_SOURCE_MODEL_PRIMARY_KEY_DOES_NOT_EXIST =
-  'Source model primary key does not exist.';
-const ERROR_DESTINATION_MODEL_PRIMARY_KEY_DOES_NOT_EXIST =
-  'Target model primary key does not exist.';
-const ERROR_REPOSITORY_DOES_NOT_EXIST =
-  'class does not exist. Please create repository first with "lb4 repository" command.';
+const g = require('../../lib/globalize');
 
-const PROMPT_BASE_RELATION_CLASS = 'Please select the relation type';
-const PROMPT_MESSAGE_SOURCE_MODEL = 'Please select source model';
-const PROMPT_MESSAGE_TARGET_MODEL = 'Please select target model';
-const PROMPT_MESSAGE_PROPERTY_NAME =
-  'Source property name for the relation getter (will be the relation name)';
-const PROMPT_MESSAGE_RELATION_NAME = 'Relation name';
-const PROMPT_MESSAGE_FOREIGN_KEY_NAME =
-  'Foreign key name to define on the target model';
-const PROMPT_MESSAGE_FOREIGN_KEY_NAME_BELONGSTO =
-  'Foreign key name to define on the source model';
+const ERROR_INCORRECT_RELATION_TYPE = g.f('Incorrect relation type');
+const ERROR_MODEL_DOES_NOT_EXIST = g.f('model does not exist.');
+const ERROR_NO_MODELS_FOUND = g.f('No models found in');
+const ERROR_SOURCE_MODEL_PRIMARY_KEY_DOES_NOT_EXIST = g.f(
+  'Source model primary key does not exist.',
+);
+const ERROR_DESTINATION_MODEL_PRIMARY_KEY_DOES_NOT_EXIST = g.f(
+  'Target model primary key does not exist.',
+);
+const ERROR_REPOSITORY_DOES_NOT_EXIST = g.f(
+  'class does not exist. Please create repository first with "lb4 repository" command.',
+);
+
+const PROMPT_BASE_RELATION_CLASS = g.f('Please select the relation type');
+const PROMPT_MESSAGE_SOURCE_MODEL = g.f('Please select source model');
+const PROMPT_MESSAGE_TARGET_MODEL = g.f('Please select target model');
+const PROMPT_MESSAGE_PROPERTY_NAME = g.f(
+  'Source property name for the relation getter (will be the relation name)',
+);
+const PROMPT_MESSAGE_RELATION_NAME = g.f('Relation name');
+const PROMPT_MESSAGE_FOREIGN_KEY_NAME = g.f(
+  'Foreign key name to define on the target model',
+);
+const PROMPT_MESSAGE_FOREIGN_KEY_NAME_BELONGSTO = g.f(
+  'Foreign key name to define on the source model',
+);
 
 module.exports = class RelationGenerator extends ArtifactGenerator {
   constructor(args, opts) {
@@ -53,49 +61,50 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
     this.option('relationType', {
       type: String,
       required: false,
-      description: 'Relation type',
+      description: g.f('Relation type'),
     });
 
     this.option('sourceModel', {
       type: String,
       required: false,
-      description: 'Source model',
+      description: g.f('Source model'),
     });
 
     this.option('destinationModel', {
       type: String,
       required: false,
-      description: 'Destination model',
+      description: g.f('Destination model'),
     });
 
     this.option('defaultForeignKeyName', {
       type: String,
       required: false,
-      description: 'default foreign key name',
+      description: g.f('default foreign key name'),
     });
 
     this.option('foreignKeyName', {
       type: String,
       required: false,
-      description: 'Destination model foreign key name',
+      description: g.f('Destination model foreign key name'),
     });
 
     this.option('relationName', {
       type: String,
       required: false,
-      description: 'Relation name',
+      description: g.f('Relation name'),
     });
     this.option('defaultRelationName', {
       type: String,
       required: false,
-      description: 'Default relation name',
+      description: g.f('Default relation name'),
     });
 
     this.option('registerInclusionResolver', {
       type: Boolean,
       required: false,
-      description:
+      description: g.f(
         'Allow <sourceModel> queries to include data from related <destinationModel>',
+      ),
     });
     this.artifactInfo = {
       type: 'relation',

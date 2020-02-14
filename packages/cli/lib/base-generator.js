@@ -13,6 +13,7 @@ const fs = require('fs');
 const debug = require('./debug')('base-generator');
 const updateIndex = require('./update-index');
 const {checkLoopBackProject} = require('./version-helper');
+const g = require('./globalize');
 
 debug('Is stdin interactive (isTTY)?', process.stdin.isTTY);
 
@@ -39,19 +40,20 @@ module.exports = class BaseGenerator extends Generator {
     this.option('config', {
       type: String,
       alias: 'c',
-      description: 'JSON file name or value to configure options',
+      description: g.f('JSON file name or value to configure options'),
     });
 
     this.option('yes', {
       type: Boolean,
       alias: 'y',
-      description:
+      description: g.f(
         'Skip all confirmation prompts with default or provided value',
+      ),
     });
 
     this.option('format', {
       type: Boolean,
-      description: 'Format generated code using npm run lint:fix',
+      description: g.f('Format generated code using npm run lint:fix'),
     });
 
     this.artifactInfo = this.artifactInfo || {
@@ -368,7 +370,7 @@ module.exports = class BaseGenerator extends Generator {
     if (this.options.format) {
       const pkg = this.packageJson || {};
       if (pkg.scripts && pkg.scripts['lint:fix']) {
-        this.log("Running 'npm run lint:fix' to format the code...");
+        this.log(g.f("Running 'npm run lint:fix' to format the code..."));
         await this._runNpmScript(this.destinationRoot(), [
           'run',
           '-s',
@@ -376,7 +378,7 @@ module.exports = class BaseGenerator extends Generator {
         ]);
       } else {
         this.log(
-          chalk.red("No 'lint:fix' script is configured in package.json."),
+          chalk.red(g.f("No 'lint:fix' script is configured in package.json.")),
         );
       }
     }
@@ -388,7 +390,9 @@ module.exports = class BaseGenerator extends Generator {
   async end() {
     if (this.shouldExit()) {
       debug(this.exitGeneration);
-      this.log(chalk.red('Generation is aborted:', this.exitGeneration));
+      this.log(
+        chalk.red(g.f('Generation is aborted: %s', this.exitGeneration)),
+      );
       // Fail the process
       process.exitCode = 1;
       return;

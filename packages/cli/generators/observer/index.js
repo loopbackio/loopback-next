@@ -11,6 +11,7 @@ const path = require('path');
 const utils = require('../../lib/utils');
 
 const SCRIPT_TEMPLATE = 'observer-template.ts.ejs';
+const g = require('../../lib/globalize');
 
 module.exports = class ObserverGenerator extends ArtifactGenerator {
   // Note: arguments and options should be defined in the constructor.
@@ -20,7 +21,7 @@ module.exports = class ObserverGenerator extends ArtifactGenerator {
 
   _setupGenerator() {
     this.option('group', {
-      description: 'Name of the observer group for ordering',
+      description: g.f('Name of the observer group for ordering'),
       required: false,
       type: String,
     });
@@ -65,7 +66,7 @@ module.exports = class ObserverGenerator extends ArtifactGenerator {
         type: 'input',
         name: 'name',
         // capitalization
-        message: utils.toClassName(this.artifactInfo.type) + ' name:',
+        message: g.f('%s name:', utils.toClassName(this.artifactInfo.type)),
         when: !this.artifactInfo.name,
         validate: utils.validateClassName,
       },
@@ -89,7 +90,7 @@ module.exports = class ObserverGenerator extends ArtifactGenerator {
         type: 'input',
         name: 'group',
         // capitalization
-        message: utils.toClassName(this.artifactInfo.type) + ' group:',
+        message: g.f('%s group:', utils.toClassName(this.artifactInfo.type)),
         default: '',
         when: !this.artifactInfo.group,
       },
