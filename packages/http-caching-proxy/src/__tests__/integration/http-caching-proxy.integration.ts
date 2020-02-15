@@ -196,7 +196,10 @@ describe('HttpCachingProxy', () => {
     expect(result2).to.equal('2');
   });
 
-  it('handles the case where backend service is not running', async () => {
+  it('handles the case where backend service is not running', async function() {
+    // This test takes a bit longer to finish on windows.
+    // eslint-disable-next-line no-invalid-this
+    this.timeout(3000);
     await givenRunningProxy({logError: false});
 
     await expect(
