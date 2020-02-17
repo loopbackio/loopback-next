@@ -1,0 +1,25 @@
+{
+  "ids": {
+    "CoffeeShop": 3,
+    "Reviewer": 3,
+    "Review": 4
+  },
+  "models": {
+    "CoffeeShop": {
+      "1": "{\"name\":\"Bel Cafe\",\"city\":\"Vancouver\",\"id\":1}",
+      "2": "{\"name\":\"Three Bees Coffee House\",\"city\":\"San Mateo\",\"id\":2}",
+      "3": "{\"name\":\"Caffe Artigiano\",\"city\":\"Vancouver\",\"id\":3}"
+    },
+    "Reviewer": {
+      "1": "{\"id\":1}",
+      "2": "{\"id\":2}",
+      "3": "{\"id\":3}"
+    },
+    "Review": {
+      "1": "{\"date\":\"2020-02-17 12:00\",\"rating\":5,\"comments\":\"A very good coffee shop.\",\"publisherId\":1,\"coffeeShopId\":1,\"id\":1}",
+      "2": "{\"date\":\"2020-02-16 11:21\",\"rating\":5,\"comments\":\"Quite pleasant.\",\"publisherId\":2,\"coffeeShopId\":1,\"id\":2}",
+      "3": "{\"date\":\"2020-02-15 10:09\",\"rating\":4,\"comments\":\"It was ok.\",\"publisherId\":2,\"coffeeShopId\":2,\"id\":3}",
+      "4": "{\"date\":\"2020-02-14 08:45\",\"rating\":4,\"comments\":\"I go here everyday.\",\"publisherId\":3,\"coffeeShopId\":3,\"id\":4}"
+    }
+  }
+}
