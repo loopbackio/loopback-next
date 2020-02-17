@@ -1,0 +1,54 @@
+{
+  "name": "@loopback/context-explorer",
+  "version": "0.0.1",
+  "description": "LoopBack's Context/Binding Explorer",
+  "engines": {
+    "node": ">=10"
+  },
+  "scripts": {
+    "build": "lb-tsc",
+    "clean": "lb-clean loopback-explorer*.tgz dist tsconfig.build.tsbuildinfo package",
+    "pretest": "npm run build",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
+    "verify": "npm pack && tar xf loopback-context-explorer*.tgz && tree package && npm run clean"
+  },
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "license": "MIT",
+  "dependencies": {
+    "@loopback/context": "^3.2.0",
+    "@loopback/core": "^2.2.0",
+    "@loopback/rest": "^3.1.0",
+    "ts-graphviz": "^0.10.0",
+    "viz.js": "^2.1.2"
+  },
+  "devDependencies": {
+    "@loopback/build": "^5.0.0",
+    "@loopback/eslint-config": "^6.0.2",
+    "@loopback/testlab": "^3.0.0",
+    "@types/node": "^10.17.19"
+  },
+  "keywords": [
+    "LoopBack",
+    "Explorer",
+    "Context",
+    "Binding"
+  ],
+  "files": [
+    "README.md",
+    "index.js",
+    "index.d.ts",
+    "dist",
+    "src",
+    "!*/__tests__",
+    "templates"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "extensions/context-explorer"
+  }
+}
