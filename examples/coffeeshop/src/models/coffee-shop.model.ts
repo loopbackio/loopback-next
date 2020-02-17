@@ -1,4 +1,6 @@
-import {Entity, model, property} from '@loopback/repository';
+import {Entity, hasMany, model, property} from '@loopback/repository';
+import {Review, ReviewWithRelations} from './review.model';
+import {Reviewer, ReviewerWithRelations} from './reviewer.model';
 
 @model()
 export class CoffeeShop extends Entity {
@@ -20,13 +22,20 @@ export class CoffeeShop extends Entity {
   })
   city?: string;
 
+  @hasMany(() => Reviewer)
+  reviewers: Reviewer[];
+
+  @hasMany(() => Review)
+  reviews: Review[];
+
   constructor(data?: Partial<CoffeeShop>) {
     super(data);
   }
 }
 
 export interface CoffeeShopRelations {
-  // describe navigational properties here
+  reviewers?: ReviewerWithRelations[];
+  reviews?: ReviewWithRelations[];
 }
 
 export type CoffeeShopWithRelations = CoffeeShop & CoffeeShopRelations;

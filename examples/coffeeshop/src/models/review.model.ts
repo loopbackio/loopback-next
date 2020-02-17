@@ -1,4 +1,6 @@
-import {Entity, model, property} from '@loopback/repository';
+import {belongsTo, Entity, model, property} from '@loopback/repository';
+import {CoffeeShop, CoffeeShopWithRelations} from './coffee-shop.model';
+import {Reviewer, ReviewerWithRelations} from './reviewer.model';
 
 @model()
 export class Review extends Entity {
@@ -26,13 +28,20 @@ export class Review extends Entity {
   })
   comments: string;
 
+  @belongsTo(() => CoffeeShop)
+  coffeeShopId: number;
+
+  @belongsTo(() => Reviewer, {name: 'reviewer'})
+  publisherId: number;
+
   constructor(data?: Partial<Review>) {
     super(data);
   }
 }
 
 export interface ReviewRelations {
-  // describe navigational properties here
+  coffeeShop?: CoffeeShopWithRelations;
+  publisher?: ReviewerWithRelations;
 }
 
 export type ReviewWithRelations = Review & ReviewRelations;
