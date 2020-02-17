@@ -129,6 +129,7 @@
 /examples/greeting-app @emonddr @jannyHou @raymondfeng
 /examples/log-extension @emonddr @jannyHou @raymondfeng
 /examples/greeter-extension @emonddr @jannyHou @raymondfeng
+/docs/site/tutorials/core @emonddr @jannyHou @raymondfeng
 
 #
 # REST API (server-side)
@@ -188,6 +189,7 @@
 /packages/repository/src/__tests__/integration/repositories/relation.factory.integration.ts @agnes512 @hacksparrow
 /packages/cli/generators/relation @agnes512 @hacksparrow
 /examples/todo-list @agnes512 @hacksparrow
+/docs/site/tutorials/todo-list/ @agnes512 @hacksparrow
 
 #
 # Services (infrastructure for SOAP/REST clients)
@@ -201,6 +203,7 @@
 # The SOAP Calculator examples is a bit special, we want to preserve
 # Mario as the code owner of this specific subarea only
 /examples/soap-calculator @raymondfeng @marioestradarosa
+/docs/site/tutorials/soap-calculator @raymondfeng @marioestradarosa
 
 #
 # `lb4 openapi` (scaffold an LB4 app from the given OpenAPI spec)
@@ -220,6 +223,7 @@
 /packages/cli/generators/app @nabdelgadir
 /packages/cli/generators/extension @nabdelgadir
 /examples/todo @nabdelgadir
+/docs/site/tutorials/todo @nabdelgadir
 
 #
 # Bootstrapper (core)
@@ -271,6 +275,7 @@
 /packages/authentication @emonddr @hacksparrow @jannyHou
 /packages/security @emonddr @hacksparrow @jannyHou
 /extensions/authentication-passport @emonddr @hacksparrow @jannyHou
+/docs/site/tutorials/authentication @emonddr @hacksparrow @jannyHou
 
 #
 # Authorization
