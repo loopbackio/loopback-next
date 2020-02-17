@@ -2,3 +2,6 @@
 // Node module: @loopback/example-coffeeshop
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
+export * from './coffee-shop.repository';
+export * from './review.repository';
+export * from './reviewer.repository';

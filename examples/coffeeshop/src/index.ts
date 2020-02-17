@@ -17,7 +17,7 @@ export async function main(options: ApplicationConfig = {}) {
 }
 
 export * from '@loopback/rest';
-// export * from './models';
-// export * from './repositories';
+export * from './models';
+export * from './repositories';
 // re-exports for our benchmark, not needed for the tutorial itself
 export {CoffeeshopApplication};
