@@ -10,6 +10,7 @@ import {
   get,
   getFilterSchemaFor,
   getModelSchemaRef,
+  HttpErrors,
   param,
   patch,
   post,
@@ -45,8 +46,14 @@ export class TodoController {
     todo: Omit<Todo, 'id'>,
   ): Promise<Todo> {
     if (todo.remindAtAddress) {
-      // TODO(bajtos) handle "address not found"
       const geo = await this.geoService.geocode(todo.remindAtAddress);
+
+      if (!geo[0]) {
+        // address not found
+        throw new HttpErrors.BadRequest(
+          `Address not found: ${todo.remindAtAddress}`,
+        );
+      }
       // Encode the coordinates as "lat,lng" (Google Maps API format). See also
       // https://stackoverflow.com/q/7309121/69868
       // https://gis.stackexchange.com/q/7379

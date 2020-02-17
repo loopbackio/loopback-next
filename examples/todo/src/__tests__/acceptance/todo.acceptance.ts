@@ -106,6 +106,24 @@ describe('TodoApplication', () => {
     expect(result).to.containEql(todo);
   });
 
+  it('returns 400 if it cannot find an address', async function() {
+    // eslint-disable-next-line no-invalid-this
+    if (!available) return this.skip();
+    // Increase the timeout to accommodate slow network connections
+    // eslint-disable-next-line no-invalid-this
+    this.timeout(30000);
+
+    const todo = givenTodo({remindAtAddress: 'this address does not exist'});
+    const response = await client
+      .post('/todos')
+      .send(todo)
+      .expect(400);
+
+    expect(response.body.error.message).to.eql(
+      'Address not found: this address does not exist',
+    );
+  });
+
   context('when dealing with a single persisted todo', () => {
     let persistedTodo: Todo;
 
