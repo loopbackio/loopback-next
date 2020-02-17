@@ -263,7 +263,11 @@ describe('app-generator with tilde project path', () => {
   const cwd = process.cwd();
 
   // If the test runs outside $home directory
-  if (process.env.CI && !process.env.DEBUG && tildify(sandbox) === sandbox) {
+  const runsOutsideRoot =
+    process.env.CI && !process.env.DEBUG && tildify(sandbox) === sandbox
+      ? true
+      : false;
+  if (runsOutsideRoot) {
     sandbox = path.join(os.homedir(), '.lb4sandbox/tilde-path-app');
     pathWithTilde = '~/.lb4sandbox/tilde-path-app';
   }
@@ -295,7 +299,12 @@ describe('app-generator with tilde project path', () => {
     // eslint-disable-next-line no-invalid-this
     this.timeout(30 * 1000);
 
-    process.chdir(sandbox);
+    // Handle special case - Skipping... not inside the project root directory.
+    if (runsOutsideRoot) {
+      process.chdir(sandbox);
+    } else {
+      process.chdir(rootDir);
+    }
     build.clean(['node', 'run-clean', sandbox]);
     process.chdir(cwd);
   });
