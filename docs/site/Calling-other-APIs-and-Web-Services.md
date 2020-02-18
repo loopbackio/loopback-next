@@ -104,11 +104,11 @@ The next step is to edit the DataSource JSON file for `options` and
 The REST connector uses the
 [request module](https://www.npmjs.com/package/request) as the HTTP client. You
 can configure the same options as for the `request()` function. See details in
-[this documentation page](https://loopback.io/doc/en/lb3/REST-connector.html#configure-options-for-request).
+[this documentation page](https://loopback.io/doc/en/lb4/REST-connector.html#configure-options-for-request).
 
 The `template` object specifies the REST API invocation as a JSON template. You
 can find more details in the
-[Defining a custom method using a template page](https://loopback.io/doc/en/lb3/REST-connector.html#defining-a-custom-method-using-a-template).
+[Defining a custom method using a template page](https://loopback.io/doc/en/lb4/REST-connector.html#defining-a-custom-method-using-a-template).
 
 ```json
 {
@@ -223,9 +223,9 @@ Service interface.
 ## More examples
 
 - SOAP web service tutorial:
-  https://loopback.io/doc/en/lb4/soap-calculator-tutorial.html
+  [https://loopback.io/doc/en/lb4/soap-calculator-tutorial.html](https://loopback.io/doc/en/lb4/soap-calculator-tutorial.html)
 - REST service tutorial:
-  https://loopback.io/doc/en/lb4/todo-tutorial-geocoding-service.html
+  [https://loopback.io/doc/en/lb4/todo-tutorial-geocoding-service.html](https://loopback.io/doc/en/lb4/todo-tutorial-geocoding-service.html)
 
 ## Testing your application
 
