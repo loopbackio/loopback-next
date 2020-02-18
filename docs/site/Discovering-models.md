@@ -27,8 +27,9 @@ This process is called _discovery_ and is supported by the following connectors:
 Models can be discovered from a supported datasource by running the
 `lb4 discover` command.
 
-**The LoopBack project must be built and contain the built datasource files in
-`PROJECT_DIR/dist/datasources/*.js`**
+{% include important.html content="The LoopBack project must be built with
+`npm run build` to transpile the datasource files to `/dist/datasources/*.js`."
+%}
 
 ### Options
 
