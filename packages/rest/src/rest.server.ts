@@ -378,7 +378,6 @@ export class RestServer extends Context implements Server, HttpServerLike {
       );
       for (const route of routes) {
         this.bindRoute(route);
-        this._httpHandler.registerRoute(route);
       }
     }
 
@@ -414,7 +413,9 @@ export class RestServer extends Context implements Server, HttpServerLike {
 
     const controllerName = spec['x-controller-name'];
     if (typeof controllerName === 'string') {
-      const b = this.find(`controllers.${controllerName}`)[0];
+      const b = this.getBinding(`controllers.${controllerName}`, {
+        optional: true,
+      });
       if (!b) {
         throw new Error(
           `Unknown controller ${controllerName} used by "${verb} ${path}"`,
