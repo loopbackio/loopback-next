@@ -36,7 +36,7 @@ dependencies.
 - [git](https://git-scm.com/): Github's
   [Set Up Git](https://help.github.com/articles/set-up-git/) guide is a good
   source of information.
-- [Node.js 8.x (LTS)](https://nodejs.org/en/download/)
+- [Node.js 10.x (LTS)](https://nodejs.org/en/download/)
 
 You may want to configure your IDE or editor to get better support for
 TypeScript too.
