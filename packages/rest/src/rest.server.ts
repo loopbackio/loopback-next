@@ -9,7 +9,11 @@ import {
   BindingScope,
   Constructor,
   Context,
+  ContextObserver,
+  filterByKey,
+  filterByTag,
   inject,
+  Subscription,
 } from '@loopback/context';
 import {Application, CoreBindings, Server} from '@loopback/core';
 import {HttpServer, HttpServerOptions} from '@loopback/http-server';
@@ -32,7 +36,7 @@ import {ServeStaticOptions} from 'serve-static';
 import {writeErrorToResponse} from 'strong-error-handler';
 import {BodyParser, REQUEST_BODY_PARSER_TAG} from './body-parsers';
 import {HttpHandler} from './http-handler';
-import {RestBindings} from './keys';
+import {RestBindings, RestTags} from './keys';
 import {RequestContext} from './request-context';
 import {
   ControllerClass,
@@ -146,6 +150,12 @@ export class RestServer extends Context implements Server, HttpServerLike {
     this._setupHandlerIfNeeded();
     return this._httpHandler;
   }
+
+  /**
+   * Context event subscriptions for route related changes
+   */
+  private _routesEventSubscription: Subscription;
+
   protected _httpServer: HttpServer | undefined;
 
   protected _expressApp: express.Application;
@@ -338,12 +348,31 @@ export class RestServer extends Context implements Server, HttpServerLike {
   }
 
   protected _setupHandlerIfNeeded() {
-    // TODO(bajtos) support hot-reloading of controllers
-    // after the app started. The idea is to rebuild the HttpHandler
-    // instance whenever a controller was added/deleted.
-    // See https://github.com/strongloop/loopback-next/issues/433
     if (this._httpHandler) return;
 
+    // Watch for binding events
+    // See https://github.com/strongloop/loopback-next/issues/433
+    const routesObserver: ContextObserver = {
+      filter: binding =>
+        filterByKey(RestBindings.API_SPEC.key)(binding) ||
+        (filterByKey(/^(controllers|routes)\..+/)(binding) &&
+          // Exclude controller routes to avoid circular events
+          !filterByTag(RestTags.CONTROLLER_ROUTE)(binding)),
+      observe: () => {
+        // Rebuild the HttpHandler instance whenever a controller/route was
+        // added/deleted.
+        this._createHttpHandler();
+      },
+    };
+    this._routesEventSubscription = this.subscribe(routesObserver);
+
+    this._createHttpHandler();
+  }
+
+  /**
+   * Create an instance of HttpHandler and populates it with routes
+   */
+  private _createHttpHandler() {
     /**
      * Check if there is custom router in the context
      */
@@ -351,7 +380,13 @@ export class RestServer extends Context implements Server, HttpServerLike {
     const routingTable = new RoutingTable(router, this._externalRoutes);
 
     this._httpHandler = new HttpHandler(this, this.config, routingTable);
-    for (const b of this.find('controllers.*')) {
+
+    // Remove controller routes
+    for (const b of this.findByTag(RestTags.CONTROLLER_ROUTE)) {
+      this.unbind(b.key);
+    }
+
+    for (const b of this.find(`${CoreBindings.CONTROLLERS}.*`)) {
       const controllerName = b.key.replace(/^controllers\./, '');
       const ctor = b.valueConstructor;
       if (!ctor) {
@@ -377,11 +412,14 @@ export class RestServer extends Context implements Server, HttpServerLike {
         controllerFactory,
       );
       for (const route of routes) {
-        this.bindRoute(route);
+        const binding = this.bindRoute(route);
+        binding
+          .tag(RestTags.CONTROLLER_ROUTE)
+          .tag({[RestTags.CONTROLLER_BINDING]: b.key});
       }
     }
 
-    for (const b of this.find('routes.*')) {
+    for (const b of this.findByTag(RestTags.REST_ROUTE)) {
       // TODO(bajtos) should we support routes defined asynchronously?
       const route = this.getSync<RouteEntry>(b.key);
       this._httpHandler.registerRoute(route);
@@ -651,11 +689,13 @@ export class RestServer extends Context implements Server, HttpServerLike {
     );
   }
 
-  private bindRoute(r: RouteEntry, namespace = 'routes') {
+  private bindRoute(r: RouteEntry) {
+    const namespace = RestBindings.ROUTES;
     const encodedPath = encodeURIComponent(r.path).replace(/\./g, '%2E');
     return this.bind(`${namespace}.${r.verb} ${encodedPath}`)
       .to(r)
-      .tag('route');
+      .tag(RestTags.REST_ROUTE)
+      .tag({[RestTags.ROUTE_VERB]: r.verb, [RestTags.ROUTE_PATH]: r.path});
   }
 
   /**

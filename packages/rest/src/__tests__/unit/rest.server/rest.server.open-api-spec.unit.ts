@@ -13,6 +13,7 @@ import {
   RestComponent,
   RestServer,
 } from '../../..';
+import {RestTags} from '../../../keys';
 
 describe('RestServer.getApiSpec()', () => {
   let app: Application;
@@ -52,7 +53,11 @@ describe('RestServer.getApiSpec()', () => {
     function greet() {}
     const binding = server.route('get', '/greet', {responses: {}}, greet);
     expect(binding.key).to.eql('routes.get %2Fgreet');
-    expect(binding.tagNames).containEql('route');
+    expect(binding.tagNames).containEql(RestTags.REST_ROUTE);
+    expect(binding.tagMap).containEql({
+      [RestTags.ROUTE_VERB]: 'get',
+      [RestTags.ROUTE_PATH]: '/greet',
+    });
   });
 
   it('binds a route via app.route(..., Controller, method)', () => {
@@ -69,7 +74,11 @@ describe('RestServer.getApiSpec()', () => {
       'greet',
     );
     expect(binding.key).to.eql('routes.get %2Fgreet%2Ejson');
-    expect(binding.tagNames).containEql('route');
+    expect(binding.tagNames).containEql(RestTags.REST_ROUTE);
+    expect(binding.tagMap).containEql({
+      [RestTags.ROUTE_VERB]: 'get',
+      [RestTags.ROUTE_PATH]: '/greet.json',
+    });
   });
 
   it('returns routes registered via app.route(route)', () => {

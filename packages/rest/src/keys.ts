@@ -241,4 +241,40 @@ export namespace RestBindings {
       'rest.http.request.context',
     );
   }
+
+  /**
+   * Namespace for REST routes
+   */
+  export const ROUTES = 'routes';
+}
+
+/**
+ * Binding tags for RestServer
+ */
+export namespace RestTags {
+  /**
+   * Binding tag to identify REST routes
+   */
+  export const REST_ROUTE = 'restRoute';
+
+  /**
+   * Binding tag for the REST route verb
+   */
+  export const ROUTE_VERB = 'restRouteVerb';
+
+  /**
+   * Binding tag for the REST route path
+   */
+  export const ROUTE_PATH = 'restRoutePath';
+
+  /**
+   * Binding tag to identify controller based REST routes
+   */
+  export const CONTROLLER_ROUTE = 'controllerRoute';
+
+  /**
+   * Binding tag for controller route bindings to represent the controller
+   * binding key
+   */
+  export const CONTROLLER_BINDING = 'controllerBinding';
 }
