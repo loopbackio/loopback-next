@@ -58,7 +58,7 @@ Datasource Geocoder was created in src/datasources/
 
 Edit the newly created datasource configuration to configure Geocoder API
 endpoints. Configuration options provided by REST Connector are described in our
-docs here: [REST connector](/doc/en/lb3/REST-connector.html).
+docs here: [REST connector](/doc/en/lb4/REST-connector.html).
 
 {% include code-caption.html content="/src/datasources/geocoder.datasource.config.json" %}
 
