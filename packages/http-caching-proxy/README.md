@@ -58,13 +58,22 @@ await proxy.start();
 ```
 
 In your tests, configure the client library to use the caching proxy. Below is
-an example configuration for [request](https://www.npmjs.com/package/request):
+an example configuration for [axios](https://github.com/axios/axios):
 
 ```ts
-request = request.defaults({
-  proxy: proxy.url,
-  // Disable tunneling of HTTPS requests - this is required for HTTPS!
-  tunnel: false,
+const parsed = new URL(proxy.url);
+const proxyConfig = {
+  host: parsed.hostname,
+  port: parseInt(parsed.port),
+  protocol: parsed.protocol,
+  auth: {
+    username: parsed.username,
+    password: parsed.password,
+  },
+};
+const request = axios.create({
+  // Axios does not support proxy url directly
+  proxy: proxyConfig,
 });
 ```
 

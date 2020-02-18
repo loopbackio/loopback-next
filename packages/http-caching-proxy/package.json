@@ -16,11 +16,10 @@
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
+    "axios": "^0.19.2",
     "cacache": "^15.0.0",
     "debug": "^4.1.1",
     "p-event": "^4.1.0",
-    "request": "^2.88.2",
-    "request-promise-native": "^1.0.8",
     "rimraf": "^3.0.2"
   },
   "devDependencies": {
@@ -29,9 +28,10 @@
     "@loopback/testlab": "^1.10.3",
     "@types/debug": "^4.1.5",
     "@types/node": "^10.17.15",
-    "@types/request-promise-native": "^1.0.17",
     "@types/rimraf": "^2.0.3",
-    "delay": "^4.3.0"
+    "@types/tunnel": "0.0.1",
+    "delay": "^4.3.0",
+    "tunnel": "0.0.6"
   },
   "keywords": [
     "LoopBack",
