@@ -10,6 +10,7 @@ LoopBack 4 or other TypeScript modules, including:
 - lb-prettier: Run [`prettier`](https://github.com/prettier/prettier)
 - lb-mocha: Run [`mocha`](https://mochajs.org/) to execute test cases
 - lb-nyc: Run [`nyc`](https://github.com/istanbuljs/nyc)
+- lb-c8: Run [`c8`](https://github.com/bcoe/c8)
 
 These scripts first try to locate the CLI from target project dependencies and
 fall back to bundled ones in `@loopback/build`.

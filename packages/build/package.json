@@ -20,6 +20,7 @@
 		"@types/node": "^10.17.16",
 		"@typescript-eslint/eslint-plugin": "^2.21.0",
 		"@typescript-eslint/parser": "^2.21.0",
+		"c8": "7.1.0",
 		"cross-spawn": "^7.0.1",
 		"debug": "^4.1.1",
 		"eslint": "^6.8.0",
@@ -41,6 +42,7 @@
 		"lb-prettier": "./bin/run-prettier.js",
 		"lb-mocha": "./bin/run-mocha.js",
 		"lb-nyc": "./bin/run-nyc.js",
+		"lb-c8": "./bin/run-c8.js",
 		"lb-clean": "./bin/run-clean.js"
 	},
 	"scripts": {

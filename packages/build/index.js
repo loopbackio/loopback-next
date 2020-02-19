@@ -8,6 +8,7 @@
 exports.tsc = require('./bin/compile-package');
 exports.prettier = require('./bin/run-prettier');
 exports.nyc = require('./bin/run-nyc');
+exports.c8 = require('./bin/run-c8');
 exports.mocha = require('./bin/run-mocha');
 exports.clean = require('./bin/run-clean');
 
