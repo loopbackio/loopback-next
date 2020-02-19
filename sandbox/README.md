@@ -23,6 +23,7 @@ commands:
 ```sh
 cd loopback-next
 npm install
+npm run build
 cd sandbox/example
 node .
 ```

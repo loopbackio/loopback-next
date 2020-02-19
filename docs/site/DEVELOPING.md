@@ -14,6 +14,7 @@ See [Monorepo overview](./MONOREPO.md) for a list of all packages.
 
 - [Setting up development environment](#setting-up-development-environment)
 - [Building the project](#building-the-project)
+- [Utilizing the monorepo](#utilizing-the-monorepo)
 - [Running tests](#running-tests)
 - [Coding rules](#coding-rules)
 - [Working with dependencies](#working-with-dependencies)
@@ -79,6 +80,36 @@ npm run build
 Please note that we are automatically running the build from `pretest` script,
 therefore you should not need to run this command as part of your
 [red-green-refactor cycle](http://www.jamesshore.com/Blog/Red-Green-Refactor.html).
+
+## Utilizing the monorepo
+
+Source code from the monorepo can be utilized as LoopBack 4 packages that are
+not published to npm registry yet. This is useful to test or debug your
+applications or extensions with project dependencies on LoopBack 4 against a
+local git repo and branch of `loopback-next`.
+
+### Using monorepo packages as dependencies
+
+The `/sandbox` directory in the monorepo can be used to utilize the source code
+as symbolically-linked dependencies. See the
+[README](https://github.com/strongloop/loopback-next/blob/master/sandbox/README.md)
+for usage instructions.
+
+### Using the CLI via the monorepo
+
+The
+[CLI](https://github.com/strongloop/loopback-next/blob/master/packages/cli/bin/cli-main.js)
+can be invoked from the local `loopback-next` git repository:
+
+```bash
+./loopback-next/packages/cli/bin/cli-main.js
+```
+
+The arguments are the same as `lb4`. For example,
+`./loopback-next/packages/cli/bin/cli-main.js model` is the same as `lb4 model`.
+
+{% include important.html content="The LoopBack 4 packages must be built. See
+[Building the project](#building-the-project)" %}
 
 ## Running tests
 
