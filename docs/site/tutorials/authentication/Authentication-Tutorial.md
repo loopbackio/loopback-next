@@ -25,14 +25,14 @@ Here is a brief summary of the `JSON Web Token (JWT)` approach.
 In the **JSON Web Token (JWT)** authentication approach, when the user provides
 the **correct** credentials to a **login** endpoint, the server creates a JWT
 token and returns it in the response. The token is of type **string** and
-consists of 3 parts: the **header**, the **payload**, and the **signature**.
-Each part is encrypted using a **secret**, and the parts are separated by a
-period.
+consists of 3 parts: the **header**, the **payload**, and the **signature**. The
+**header** and **payload** are digitally signed with **secret**, and the parts
+are separated by a period.
 
 For example:
 
 ```ts
-// {encrypted-header}.{encrypted-payload}.{encrypted-signature}
+// {base64UrlEncode-header}.{base64UrlEncode-payload}.{encrypted-signature}
 eyJhbXVCJ9.eyJpZCI6Ij.I3wpRNCH4;
 // actual parts have been reduced in size for viewing purposes
 ```
