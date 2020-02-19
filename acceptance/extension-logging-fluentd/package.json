@@ -23,7 +23,7 @@
     "@loopback/eslint-config": "^4.1.4",
     "@loopback/extension-logging": "^0.1.0",
     "@loopback/testlab": "^1.9.2",
-    "@types/node": "^10.17.15",
+    "@types/node": "^10.17.16",
     "testcontainers": "^2.4.0"
   },
   "files": [
