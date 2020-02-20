@@ -22,13 +22,13 @@ import {Counter, Gauge, Histogram, register, Summary} from 'prom-client';
  */
 @bind(asGlobalInterceptor('metrics'), {scope: BindingScope.SINGLETON})
 export class MetricsInterceptor implements Provider<Interceptor> {
-  private static gauge: Gauge;
+  private static gauge: Gauge<'targetName'>;
 
-  private static histogram: Histogram;
+  private static histogram: Histogram<'targetName'>;
 
-  private static counter: Counter;
+  private static counter: Counter<'targetName'>;
 
-  private static summary: Summary;
+  private static summary: Summary<'targetName'>;
 
   private static setup() {
     // Check if the gauge is registered

@@ -26,7 +26,5 @@ export const DEFAULT_METRICS_OPTIONS: MetricsOptions = {
   endpoint: {
     basePath: '/metrics',
   },
-  defaultMetrics: {
-    timeout: 5000,
-  },
+  defaultMetrics: {},
 };

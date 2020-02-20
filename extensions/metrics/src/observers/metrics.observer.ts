@@ -12,8 +12,6 @@ import {DEFAULT_METRICS_OPTIONS, MetricsOptions} from '../types';
  * An observer to set default Node.js metrics collection
  */
 export class MetricsObserver implements LifeCycleObserver {
-  private interval: NodeJS.Timeout | undefined;
-
   constructor(
     @config({fromBinding: MetricsBindings.COMPONENT})
     private options: MetricsOptions = DEFAULT_METRICS_OPTIONS,
@@ -21,14 +19,10 @@ export class MetricsObserver implements LifeCycleObserver {
 
   start() {
     const defaultMetricsConfig = this.options.defaultMetrics;
-    this.interval = collectDefaultMetrics(defaultMetricsConfig);
+    collectDefaultMetrics(defaultMetricsConfig);
   }
 
   stop() {
-    if (this.interval) {
-      clearInterval(this.interval);
-      this.interval = undefined;
-      register.clear();
-    }
+    register.clear();
   }
 }
