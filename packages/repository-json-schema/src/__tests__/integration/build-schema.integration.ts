@@ -17,7 +17,6 @@ import {
   JsonSchema,
   JSON_SCHEMA_KEY,
   modelToJsonSchema,
-  MODEL_TYPE_KEYS,
 } from '../..';
 import {expectValidJsonSchema} from '../helpers/expect-valid-json-schema';
 
@@ -746,7 +745,7 @@ describe('build-schema', () => {
       };
       MetadataInspector.defineMetadata(
         JSON_SCHEMA_KEY,
-        {[MODEL_TYPE_KEYS.ModelOnly]: cachedSchema},
+        {modelOnly: cachedSchema},
         TestModel,
       );
       const jsonSchema = getJsonSchema(TestModel);
@@ -957,7 +956,7 @@ describe('build-schema', () => {
       };
       MetadataInspector.defineMetadata(
         JSON_SCHEMA_KEY,
-        {[MODEL_TYPE_KEYS.ModelWithRelations]: cachedSchema},
+        {modelWithRelations: cachedSchema},
         Category,
       );
       const jsonSchema = getJsonSchema(Category, {includeRelations: true});
@@ -1008,7 +1007,7 @@ describe('build-schema', () => {
       };
       MetadataInspector.defineMetadata(
         JSON_SCHEMA_KEY,
-        {[MODEL_TYPE_KEYS.ModelWithRelations]: cachedSchema},
+        {modelWithRelations: cachedSchema},
         Category,
       );
       const jsonSchema = getJsonSchema(Category);

@@ -15,7 +15,7 @@ import {
 import debugFactory from 'debug';
 import {JSONSchema6 as JSONSchema} from 'json-schema';
 import {inspect} from 'util';
-import {JSON_SCHEMA_KEY, MODEL_TYPE_KEYS} from './keys';
+import {JSON_SCHEMA_KEY} from './keys';
 const debug = debugFactory('loopback:repository-json-schema:build-schema');
 
 export interface JsonSchemaOptions<T extends object> {
@@ -66,7 +66,7 @@ export function buildModelCacheKey<T extends object>(
 ): string {
   // Backwards compatibility: preserve cache key "modelOnly"
   if (Object.keys(options).length === 0) {
-    return MODEL_TYPE_KEYS.ModelOnly;
+    return 'modelOnly';
   }
 
   // New key schema: use the same suffix as we use for schema title
