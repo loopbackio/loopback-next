@@ -12,18 +12,12 @@ import {MapObject} from './value-promise';
  * binding.
  *
  * @remarks
- * TODO(semver-major): We might change this type in the future to either remove
- * the `<ValueType>` or make it as type guard by asserting the matched binding
- * to be typed with `<ValueType>`.
- *
- * **NOTE**: Originally, we allow filters to be tied with a single value type.
+ * Originally, we allowed filters to be tied with a single value type.
  * This actually does not make much sense - the filter function is typically
  * invoked on all bindings to find those ones matching the given criteria.
  * Filters must be prepared to handle bindings of any value type. We learned
- * about this problem after enabling TypeScript's `strictFunctionTypes` check,
- * but decided to preserve `ValueType` argument for backwards compatibility.
- * The `<ValueType>` represents the value type for matched bindings but it's
- * not used for checking.
+ * about this problem after enabling TypeScript's `strictFunctionTypes` check.
+ * This aspect is resolved by typing the input argument as `Binding<unknown>`.
  *
  * Ideally, `BindingFilter` should be declared as a type guard as follows:
  * ```ts
@@ -38,17 +32,23 @@ import {MapObject} from './value-promise';
  * 1. `(binding: Readonly<Binding<unknown>>) => boolean`
  * 2. `(binding: Readonly<Binding<unknown>>) => binding is Readonly<Binding<ValueType>>`
  *
+ * If we described BindingFilter as a type-guard, then all filter implementations
+ * would have to be explicitly typed as type-guards too, which would make it
+ * tedious to write quick filter functions like `b => b.key.startsWith('services')`.
+ *
+ * To keep things simple and easy to use, we use `boolean` as the return type
+ * of a binding filter function.
  */
-export type BindingFilter<ValueType = unknown> = (
-  binding: Readonly<Binding<unknown>>,
-) => boolean;
+export interface BindingFilter {
+  (binding: Readonly<Binding<unknown>>): boolean;
+}
 
 /**
  * Select binding(s) by key or a filter function
  */
 export type BindingSelector<ValueType = unknown> =
   | BindingAddress<ValueType>
-  | BindingFilter<ValueType>;
+  | BindingFilter;
 
 /**
  * Check if an object is a `BindingKey` by duck typing
@@ -85,7 +85,7 @@ export function isBindingAddress(
  * uses the `bindingTagPattern` to optimize the matching of bindings by tag to
  * avoid expensive check for all bindings.
  */
-export interface BindingTagFilter extends BindingFilter<unknown> {
+export interface BindingTagFilter extends BindingFilter {
   /**
    * A special property on the filter function to provide access to the binding
    * tag pattern which can be utilized to optimize the matching of bindings by
