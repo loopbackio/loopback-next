@@ -530,7 +530,7 @@ export class DefaultCrudRepository<
    */
   protected async includeRelatedModels(
     entities: T[],
-    include?: Inclusion<T>[],
+    include?: Inclusion[],
     options?: Options,
   ): Promise<(T & Relations)[]> {
     return includeRelatedModels<T, Relations>(this, entities, include, options);

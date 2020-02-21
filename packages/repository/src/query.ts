@@ -169,9 +169,7 @@ export type Fields<MT = AnyObject> = {[P in keyof MT]?: boolean};
  * Example:
  * `{relation: 'aRelationName', scope: {<AFilterObject>}}`
  */
-export interface Inclusion<MT extends object = AnyObject> {
-  // ^^^ TODO(semver-major): remove the generic argument <MT>
-
+export interface Inclusion {
   relation: string;
 
   // Technically, we should restrict the filter to target model.
@@ -220,7 +218,7 @@ export interface Filter<MT extends object = AnyObject> {
   /**
    * To include related objects
    */
-  include?: Inclusion<MT>[];
+  include?: Inclusion[];
 }
 
 /**
@@ -561,7 +559,7 @@ export class FilterBuilder<MT extends object = AnyObject> {
    * @param i - A relation name, an array of relation names, or an `Inclusion`
    * object for the relation/scope definitions
    */
-  include(...i: (string | string[] | Inclusion<MT>)[]): this {
+  include(...i: (string | string[] | Inclusion)[]): this {
     if (this.filter.include == null) {
       this.filter.include = [];
     }
