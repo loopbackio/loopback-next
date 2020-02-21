@@ -37,7 +37,8 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@loopback/context": "^2.1.1"
+    "@loopback/context": "^2.1.1",
+    "tslib": "^1.11.0"
   },
   "devDependencies": {
     "@loopback/build": "^3.1.1",
