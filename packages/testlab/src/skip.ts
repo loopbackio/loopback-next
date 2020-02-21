@@ -74,39 +74,3 @@ export function skipOnTravis<ARGS extends unknown[], RETVAL>(
     return verb(name, ...args);
   }
 }
-
-/*** LEGACY API FOR BACKWARDS COMPATIBILITY ***/
-
-// TODO(semver-major) remove this code
-
-// Simplified test function type from Mocha
-export interface TestFn {
-  (this: TestContext): PromiseLike<unknown>;
-  (this: TestContext, done: Function): void;
-}
-
-// Type of "this" object provided by Mocha to test functions
-export interface TestContext {
-  skip(): this;
-  timeout(ms: number | string): this;
-  retries(n: number): this;
-  slow(ms: number): this;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [index: string]: any;
-}
-
-/**
- * Helper function for skipping tests on Travis env - legacy variant
- * supporting `it` only.
- *
- * @param expectation - The test name (the first argument of `it` function).
- * @param callback - The test function (the second argument of `it` function).
- *
- * @deprecated Use `skipOnTravis(it, name, fn)` instead.
- */
-export function itSkippedOnTravis(
-  expectation: string,
-  callback?: TestFn,
-): void {
-  skipOnTravis(it, expectation, callback);
-}
