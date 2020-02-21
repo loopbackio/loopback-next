@@ -100,6 +100,38 @@ Now you run the scripts, such as:
 npm run build
 ```
 
+5.  Run code coverage reports
+
+- `lb-nyc`
+
+  `lb-nyc` is a simple wrapper for [`nyc`](https://github.com/istanbuljs/nyc).
+
+  To customize the configuration:
+
+  - Create `.nycrc` in your project's root directory
+
+    ```json
+    {
+      "include": ["dist"],
+      "exclude": ["dist/__tests__/"],
+      "extension": [".js", ".ts"],
+      "reporter": ["text", "html"],
+      "exclude-after-remap": false
+    }
+    ```
+
+  - Update your `package.json` scripts:
+
+    ```json
+    "precoverage": "npm test",
+    "coverage": "open coverage/index.html",
+    "coverage:ci": "lb-nyc report --reporter=text-lcov | coveralls",
+    "test": "lb-nyc npm run mocha --scripts-prepend-node-path",
+    "test:ci": "lb-nyc npm run mocha --scripts-prepend-node-path"
+    ```
+
+    `converage:ci` sets up integration with [Coveralls](https://coveralls.io/).
+
 ## Contributions
 
 - [Guidelines](https://github.com/strongloop/loopback-next/blob/master/docs/CONTRIBUTING.md)
