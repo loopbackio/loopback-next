@@ -24,14 +24,12 @@ export interface RelationDefinitionBase {
    */
   type: RelationType;
 
-  // TODO(semver-major): We should make targetsMany as mandatory
-  // in next major release
   /**
    * True for relations targeting multiple instances (e.g. HasMany),
    * false for relations with a single target (e.g. BelongsTo, HasOne).
    * This property is needed by OpenAPI/JSON Schema generator.
    */
-  targetsMany?: boolean;
+  targetsMany: boolean;
 
   /**
    * The relation name, typically matching the name of the accessor property
