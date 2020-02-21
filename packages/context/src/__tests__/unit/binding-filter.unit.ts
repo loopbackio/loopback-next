@@ -5,6 +5,7 @@
 
 import {expect} from '@loopback/testlab';
 import {
+  ANY_TAG_VALUE,
   Binding,
   BindingFilter,
   BindingKey,
@@ -60,6 +61,24 @@ describe('BindingFilter', () => {
       binding.tag({controller: 'my-controller'});
       binding.tag({name: 'my-name'});
       expect(filter(binding)).to.be.true();
+    });
+
+    it('matches ANY_TAG_VALUE if the tag name exists', () => {
+      const filter = filterByTag({
+        controller: ANY_TAG_VALUE,
+        name: 'my-name',
+      });
+      binding.tag({name: 'my-name', controller: 'MyController'});
+      expect(filter(binding)).to.be.true();
+    });
+
+    it('does not match ANY_TAG_VALUE if the tag name does not exists', () => {
+      const filter = filterByTag({
+        controller: ANY_TAG_VALUE,
+        name: 'my-name',
+      });
+      binding.tag({name: 'my-name'});
+      expect(filter(binding)).to.be.false();
     });
 
     it('rejects bindings NOT MATCHING the provided tag map', () => {

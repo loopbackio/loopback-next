@@ -112,6 +112,22 @@ export function isBindingTagFilter(
 }
 
 /**
+ * A symbol that can be used to match binding tags by name regardless of the
+ * value.
+ *
+ * @example
+ *
+ * The following code matches bindings with tag `{controller: 'A'}` or
+ * `{controller: 'controller'}`. But if the tag name 'controller' does not
+ * exist for a binding, the binding will NOT be included.
+ *
+ * ```ts
+ * ctx.findByTag({controller: ANY_TAG_VALUE})
+ * ```
+ */
+export const ANY_TAG_VALUE = Symbol.for('loopback.AnyTagValue');
+
+/**
  * Create a binding filter for the tag pattern
  * @param tagPattern - Binding tag name, regexp, or object
  */
@@ -141,6 +157,7 @@ export function filterByTag(tagPattern: BindingTag | RegExp): BindingTagFilter {
     const tagMap = tagPattern as MapObject<unknown>;
     filter = b => {
       for (const t in tagPattern) {
+        if (tagMap[t] === ANY_TAG_VALUE) return t in b.tagMap;
         // One tag name/value does not match
         if (b.tagMap[t] !== tagMap[t]) return false;
       }
