@@ -90,6 +90,25 @@ describe('body parser', () => {
     });
   });
 
+  it('rejects top-level arrays in application/json', async () => {
+    const req = givenRequest({
+      url: '/',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      payload: [],
+    });
+    const spec = givenOperationWithRequestBody({
+      description: 'data',
+      content: {},
+    });
+    return expect(
+      requestBodyParser.loadRequestBodyIfNeeded(spec, req),
+    ).to.be.rejectedWith(
+      'The request body is invalid. See error object `details` property for more info.',
+    );
+  });
+
   it('allows text/json to be parsed', async () => {
     const req = givenRequest({
       url: '/',

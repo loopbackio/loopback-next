@@ -5,17 +5,19 @@
 
 import {inject} from '@loopback/context';
 import {json} from 'body-parser';
+import _ from 'lodash';
 import {is} from 'type-is';
 import {RestBindings} from '../keys';
+import {sanitizeJsonParse} from '../parse-json';
+import {RestHttpErrors} from '../rest-http-error';
 import {Request, RequestBodyParserOptions} from '../types';
 import {
   BodyParserMiddleware,
+  builtinParsers,
   getParserOptions,
   invokeBodyParserMiddleware,
-  builtinParsers,
 } from './body-parser.helpers';
 import {BodyParser, RequestBody} from './types';
-import {sanitizeJsonParse} from '../parse-json';
 
 export class JsonBodyParser implements BodyParser {
   name = builtinParsers.json;
@@ -36,6 +38,9 @@ export class JsonBodyParser implements BodyParser {
 
   async parse(request: Request): Promise<RequestBody> {
     let body = await invokeBodyParserMiddleware(this.jsonParser, request);
+
+    if (!_.isPlainObject(body)) throw RestHttpErrors.invalidRequestBody();
+
     // https://github.com/expressjs/body-parser/blob/master/lib/types/json.js#L71-L76
     const contentLength = request.get('content-length');
     if (contentLength != null && +contentLength === 0) {
