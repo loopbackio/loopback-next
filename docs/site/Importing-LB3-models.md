@@ -43,13 +43,6 @@ your project. It will help us to better prioritize which limitations to remove
 first.
 " %}
 
-### Connector-specific metadata in property definitions is not imported
-
-_The tracking GitHub issue:
-[loopback-next#3810](https://github.com/strongloop/loopback-next/issues/3810)_
-
-Workaround: Add this metadata manually to the generated file.
-
 ### Nested properties are not upgraded
 
 _The tracking GitHub issue:

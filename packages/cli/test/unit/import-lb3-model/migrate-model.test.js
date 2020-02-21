@@ -77,6 +77,74 @@ describe('importLb3ModelDefinition', () => {
     });
   });
 
+  context('model properties with db settings', () => {
+    let modelData;
+
+    const STRING_PROPERTY = {
+      type: 'String',
+      required: false,
+      length: 25,
+      precision: null,
+      scale: null,
+      postgresql: {
+        columnName: 'name',
+        dataType: 'character varying',
+        dataLength: 25,
+        dataPrecision: null,
+        dataScale: null,
+        nullable: 'YES',
+      },
+    };
+
+    const NUMERIC_PROPERTY = {
+      type: 'Number',
+      required: false,
+      length: null,
+      precision: 64,
+      scale: 0,
+      postgresql: {
+        columnName: 'count',
+        dataType: 'bigint',
+        dataLength: null,
+        dataPrecision: 64,
+        dataScale: 0,
+        nullable: 'YES',
+      },
+    };
+
+    before(function modelWithCustomDbSettings() {
+      const properties = {
+        name: STRING_PROPERTY,
+        count: NUMERIC_PROPERTY,
+      };
+      const MyModel = givenLb3Model('MyModel', properties, {});
+      modelData = importLb3ModelDefinition(MyModel, log);
+    });
+
+    it('connector metadata is migrated for string property', () => {
+      expect(modelData.properties)
+        .to.have.property('name')
+        .deepEqual({
+          type: `'string'`,
+          tsType: 'string',
+          length: 25,
+          postgresql: `{columnName: 'name', dataType: 'character varying', dataLength: 25, dataPrecision: null, dataScale: null, nullable: 'YES'}`,
+        });
+    });
+
+    it('connector metadata is migrated for numeric property', () => {
+      expect(modelData.properties)
+        .to.have.property('count')
+        .deepEqual({
+          type: `'number'`,
+          tsType: 'number',
+          precision: 64,
+          scale: 0,
+          postgresql: `{columnName: 'count', dataType: 'bigint', dataLength: null, dataPrecision: 64, dataScale: 0, nullable: 'YES'}`,
+        });
+    });
+  });
+
   context('array properties', () => {
     it('correctly converts short-hand definition', () => {
       const MyModel = givenLb3Model('MyModel', {
