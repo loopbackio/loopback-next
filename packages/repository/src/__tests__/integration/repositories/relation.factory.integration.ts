@@ -217,6 +217,7 @@ class Order extends Entity {
     .addRelation({
       name: 'customer',
       type: RelationType.belongsTo,
+      targetsMany: false,
       source: Order,
       target: () => Customer,
       keyFrom: 'customerId',
