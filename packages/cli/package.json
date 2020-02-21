@@ -96,6 +96,7 @@
       "rimraf": "^3.0.1",
       "source-map-support": "^0.5.16",
       "typescript": "~3.8.2",
+      "tslib": "^1.10.0",
       "@loopback/authentication": "^3.3.3",
       "@loopback/boot": "^1.7.4",
       "@loopback/build": "^3.1.1",

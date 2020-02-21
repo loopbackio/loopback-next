@@ -79,10 +79,11 @@
     "@loopback/openapi-v3": "<%= project.dependencies['@loopback/openapi-v3'] -%>",
     "@loopback/repository": "<%= project.dependencies['@loopback/repository'] -%>",
     "@loopback/rest": "<%= project.dependencies['@loopback/rest'] -%>",
-    "@loopback/rest-explorer": "<%= project.dependencies['@loopback/rest-explorer'] -%>"
+    "@loopback/rest-explorer": "<%= project.dependencies['@loopback/rest-explorer'] -%>",
 <% } else { -%>
-    "@loopback/core": "<%= project.dependencies['@loopback/core'] -%>"
+    "@loopback/core": "<%= project.dependencies['@loopback/core'] -%>",
 <% } -%>
+  "tslib": "<%= project.dependencies['tslib'] -%>"
   },
   "devDependencies": {
     "rimraf": "<%= project.dependencies['rimraf'] -%>",

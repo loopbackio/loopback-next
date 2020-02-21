@@ -84,13 +84,14 @@
     "@loopback/rest": "<%= project.dependencies['@loopback/rest'] -%>",
 <% if (project.services) { -%>
     "@loopback/rest-explorer": "<%= project.dependencies['@loopback/rest-explorer'] -%>",
-    "@loopback/service-proxy": "<%= project.dependencies['@loopback/service-proxy'] -%>"
+    "@loopback/service-proxy": "<%= project.dependencies['@loopback/service-proxy'] -%>",
 <% } else { -%>
-    "@loopback/rest-explorer": "<%= project.dependencies['@loopback/rest-explorer'] -%>"
+    "@loopback/rest-explorer": "<%= project.dependencies['@loopback/rest-explorer'] -%>",
 <% } -%>
 <% } else { /* NOT AN APPLICATION */-%>
-    "@loopback/core": "<%= project.dependencies['@loopback/core'] -%>"
+    "@loopback/core": "<%= project.dependencies['@loopback/core'] -%>",
 <% } -%>
+  "tslib": "<%= project.dependencies['tslib'] -%>"
   },
   "devDependencies": {
     "@loopback/build": "<%= project.dependencies['@loopback/build'] -%>",
