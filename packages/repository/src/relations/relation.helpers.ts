@@ -11,10 +11,10 @@ import {
   Entity,
   EntityCrudRepository,
   Filter,
+  FilterBuilder,
   Inclusion,
   Options,
   Where,
-  FilterBuilder,
 } from '..';
 const debug = debugFactory('loopback:repository:relation-helpers');
 
@@ -84,7 +84,7 @@ export async function includeRelatedModels<
 >(
   targetRepository: EntityCrudRepository<T, unknown, Relations>,
   entities: T[],
-  include?: Inclusion<T>[],
+  include?: Inclusion[],
   options?: Options,
 ): Promise<(T & Relations)[]> {
   const result = entities as (T & Relations)[];

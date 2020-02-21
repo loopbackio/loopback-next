@@ -42,7 +42,7 @@ export function createHasManyInclusionResolver<
 
   return async function fetchHasManyModels(
     entities: Entity[],
-    inclusion: Inclusion<AnyObject>,
+    inclusion: Inclusion,
     options?: Options,
   ): Promise<((Target & TargetRelations)[] | undefined)[]> {
     if (!entities.length) return [];
