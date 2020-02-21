@@ -20,7 +20,8 @@
   "dependencies": {
     "debug": "^4.1.1",
     "lodash": "^4.17.15",
-    "reflect-metadata": "^0.1.13"
+    "reflect-metadata": "^0.1.13",
+    "tslib": "^1.11.0"
   },
   "devDependencies": {
     "@loopback/build": "^3.1.1",

@@ -42,7 +42,8 @@
     "axios": "^0.19.2",
     "byline": "^5.0.0",
     "debug": "^4.1.1",
-    "path-to-regexp": "^6.1.0"
+    "path-to-regexp": "^6.1.0",
+    "tslib": "^1.11.0"
   },
   "devDependencies": {
     "@loopback/build": "^3.1.1",

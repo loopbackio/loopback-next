@@ -41,7 +41,8 @@
     "@loopback/boot": "^1.7.4",
     "@loopback/core": "^1.12.4",
     "@loopback/extension-metrics": "^0.1.6",
-    "@loopback/rest": "^2.0.0"
+    "@loopback/rest": "^2.0.0",
+    "tslib": "^1.11.0"
   },
   "devDependencies": {
     "@loopback/build": "^3.1.1",

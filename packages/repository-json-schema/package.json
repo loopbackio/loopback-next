@@ -27,7 +27,8 @@
     "@loopback/metadata": "^1.4.1",
     "@loopback/repository": "^1.19.1",
     "@types/json-schema": "^7.0.4",
-    "debug": "^4.1.1"
+    "debug": "^4.1.1",
+    "tslib": "^1.11.0"
   },
   "devDependencies": {
     "@loopback/build": "^3.1.1",
