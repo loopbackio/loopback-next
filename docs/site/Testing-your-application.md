@@ -980,3 +980,34 @@ that rejects anonymous requests for certain endpoints, then you can write a test
 making an anonymous request to those endpoints to verify that it's correctly
 rejected. These tests are essentially the same as the tests verifying
 implementation of individual endpoints as described in the previous section.
+
+# Code coverage
+
+`@loopback/build` contains a command line tool (`lb-nyc`) that acts as a wrapper
+for [`nyc`](https://github.com/istanbuljs/nyc).
+
+To set up code coverage:
+
+- Create `.nycrc` in your project's root directory
+
+  ```json
+  {
+    "include": ["dist"],
+    "exclude": ["dist/__tests__/"],
+    "extension": [".js", ".ts"],
+    "reporter": ["text", "html"],
+    "exclude-after-remap": false
+  }
+  ```
+
+- Update your `package.json` scripts:
+
+  ```json
+  "precoverage": "npm test",
+  "coverage": "open coverage/index.html",
+  "coverage:ci": "lb-nyc report --reporter=text-lcov | coveralls",
+  "test": "lb-nyc npm run mocha --scripts-prepend-node-path",
+  "test:ci": "lb-nyc npm run mocha --scripts-prepend-node-path"
+  ```
+
+  `converage:ci` sets up integration with [Coveralls](https://coveralls.io/).
