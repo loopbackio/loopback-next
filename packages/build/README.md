@@ -7,7 +7,6 @@ LoopBack 4 or other TypeScript modules, including:
   [`tsc`](https://www.typescriptlang.org/docs/handbook/compiler-options.html) to
   compile typescript files
 - lb-eslint: Run [`eslint`](https://typescript-eslint.io/)
-- lb-tslint: Run [`tslint`](https://github.com/palantir/tslint)
 - lb-prettier: Run [`prettier`](https://github.com/prettier/prettier)
 - lb-mocha: Run [`mocha`](https://mochajs.org/) to execute test cases
 - lb-nyc: Run [`nyc`](https://github.com/istanbuljs/nyc)
