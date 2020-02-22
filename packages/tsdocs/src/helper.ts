@@ -11,7 +11,7 @@ const Project = require('@lerna/project');
 
 /**
  * TypeScript definition for
- * {@link https://github.com/lerna/lerna/blob/master/core/package/index.js | Lerna Package)
+ * {@link https://github.com/lerna/lerna/blob/master/core/package/index.js | Lerna Package}
  */
 export interface LernaPackage {
   /**
