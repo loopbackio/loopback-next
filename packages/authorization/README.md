@@ -98,17 +98,17 @@ application. The authorization component can be configured with options:
 
 ```ts
 const options: AuthorizationOptions = {
-  precedence: AuthorizationDecisions.DENY;
-  defaultDecision: AuthorizationDecisions.DENY;
-}
+  precedence: AuthorizationDecisions.DENY,
+  defaultDecision: AuthorizationDecisions.DENY,
+};
 
 const binding = app.component(AuthorizationComponent);
 app.configure(binding.key).to(options);
 
-app.bind('authorizationProviders.my-authorizer-provider')
-      .toProvider(MyAuthorizationProvider)
-      .tag(AuthorizationTags.AUTHORIZER);
-
+app
+  .bind('authorizationProviders.my-authorizer-provider')
+  .toProvider(MyAuthorizationProvider)
+  .tag(AuthorizationTags.AUTHORIZER);
 ```
 
 After setting up the authorization system, you can create a user with role
