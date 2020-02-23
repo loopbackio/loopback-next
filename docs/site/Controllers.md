@@ -233,12 +233,12 @@ import {HttpErrors} from '@loopback/rest';
 const HttpError = HttpErrors.HttpError;
 
 describe('Hello Controller', () => {
-  it('returns 422 Unprocessable Entity for non-positive limit', () => {
+  it('returns 422 Unprocessable Entity for non natural number limit', () => {
     const repo = new HelloRepository(testdb);
     const controller = new HelloController(repo);
 
     return expect(controller.list(0.4)).to.be.rejectedWith(HttpError, {
-      message: 'limit is non-positive',
+      message: 'limit is not a natural number',
       statusCode: 422,
     });
   });
@@ -259,9 +259,9 @@ export class HelloController {
   // returns a list of our objects
   @get('/messages')
   async list(@param.query.number('limit') limit = 10): Promise<HelloMessage[]> {
-    // throw an error when the parameter is not a non-positive integer
+    // throw an error when the parameter is not a natural number
     if (!Number.isInteger(limit) || limit < 1) {
-      throw new HttpErrors.UnprocessableEntity('limit is non-positive');
+      throw new HttpErrors.UnprocessableEntity('limit is not a natural number');
     } else if (limit > 100) {
       limit = 100;
     }
