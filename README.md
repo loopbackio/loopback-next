@@ -76,6 +76,14 @@ See the following resources to get you started:
 You can join the team by posting a comment to
 [issue #110](https://github.com/strongloop/loopback-next/issues/110).
 
+### Security
+
+If you think you have discovered a new security issue with any StrongLoop
+package, **please do not report it on GitHub**. Instead, send an email to
+reachsl@us.ibm.com with a full description and steps to reproduce.
+
+See [SECURITY.md](SECURITY.md) for more details.
+
 ## Team
 
 ### Project Architects
