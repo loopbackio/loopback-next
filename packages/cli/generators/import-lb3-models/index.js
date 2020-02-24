@@ -48,6 +48,10 @@ module.exports = class Lb3ModelImporter extends BaseGenerator {
       this.destinationPath(),
       this.artifactInfo.outDir,
     );
+    this.artifactInfo.modelDir = path.resolve(
+      this.artifactInfo.rootDir,
+      utils.modelsDir,
+    );
     return super.setOptions();
   }
 
@@ -135,6 +139,23 @@ Learn more at https://loopback.io/doc/en/lb4/Importing-LB3-models.html
       this.log.bind(this),
     );
     debug('LB4 model data', templateData);
+
+    if (!templateData.isModelBaseBuiltin) {
+      const baseName = templateData.modelBaseClass;
+      debug(`model list dir ${this.artifactInfo.modelDir}`);
+      const targetModelList = await utils.getArtifactList(
+        this.artifactInfo.modelDir,
+        'model',
+      );
+      if (!targetModelList.includes(baseName)) {
+        this.exit(
+          `Model ${name} is inheriting from a custom model ${baseName} ` +
+            `that is not available in the target LB4 application. ` +
+            `Please import ${baseName} model first.`,
+        );
+        return;
+      }
+    }
 
     const fileName = utils.getModelFileName(name);
     const fullTargetPath = path.resolve(this.artifactInfo.relPath, fileName);
