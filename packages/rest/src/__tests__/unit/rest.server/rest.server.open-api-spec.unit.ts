@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Application} from '@loopback/core';
+import {Application, createBindingFromClass} from '@loopback/core';
 import {anOpenApiSpec, anOperationSpec} from '@loopback/openapi-spec-builder';
 import {get, post, requestBody} from '@loopback/openapi-v3';
 import {model, property} from '@loopback/repository';
@@ -14,6 +14,7 @@ import {
   RestServer,
 } from '../../..';
 import {RestTags} from '../../../keys';
+import {InfoSpecEnhancer} from './fixtures/info.spec.extension';
 
 describe('RestServer.getApiSpec()', () => {
   let app: Application;
@@ -318,6 +319,16 @@ describe('RestServer.getApiSpec()', () => {
         },
       },
     });
+  });
+
+  it('invokes registered oas enhancers', async () => {
+    const EXPECTED_SPEC_INFO = {
+      title: 'LoopBack Test Application',
+      version: '1.0.1',
+    };
+    server.add(createBindingFromClass(InfoSpecEnhancer));
+    const spec = await server.getApiSpec();
+    expect(spec.info).to.eql(EXPECTED_SPEC_INFO);
   });
 
   async function givenApplication() {
