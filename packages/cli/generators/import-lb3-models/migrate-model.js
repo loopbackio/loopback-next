@@ -16,6 +16,7 @@ const {
   createPropertyTemplateData,
   findBuiltinType,
 } = require('../model/property-definition');
+const {isDeepStrictEqual} = require('util');
 const chalk = require('chalk');
 
 module.exports = {
@@ -47,8 +48,15 @@ function importLb3ModelDefinition(modelCtor, log) {
     name: modelName,
     className: pascalCase(modelName),
     ...migrateBaseClass(modelCtor.settings.base),
-    properties: migrateModelProperties(modelCtor.definition.properties),
-    settings: migrateModelSettings(modelCtor.definition.settings, log),
+    properties: migrateModelProperties(
+      modelCtor.definition.properties,
+      modelCtor.base.definition.properties,
+    ),
+    settings: migrateModelSettings(
+      modelCtor.definition.settings,
+      modelCtor.base.definition.settings,
+      log,
+    ),
   };
 
   const settings = templateData.settings;
@@ -59,7 +67,7 @@ function importLb3ModelDefinition(modelCtor, log) {
   return templateData;
 }
 
-function migrateModelProperties(properties) {
+function migrateModelProperties(properties, inherited) {
   const templateData = {};
 
   // In LB 3.x, primary keys are typically contributed by connectors later in
@@ -72,6 +80,13 @@ function migrateModelProperties(properties) {
     });
 
   for (const prop in properties) {
+    const childProp = properties[prop];
+    const baseProp = inherited[prop];
+    if (baseProp && isDeepStrictEqual(childProp, baseProp)) {
+      delete templateData[prop];
+      continue;
+    }
+
     const def = migratePropertyDefinition(properties[prop]);
     templateData[prop] = createPropertyTemplateData(def);
   }
@@ -138,9 +153,13 @@ function migrateBaseClass(base) {
   };
 }
 
-function migrateModelSettings(settings = {}, log) {
+function migrateModelSettings(settings = {}, inherited = {}, log) {
   // Shallow-clone the object to prevent modification of external data
   settings = {...settings};
+
+  for (const key in inherited) {
+    if (isDeepStrictEqual(settings[key], inherited[key])) delete settings[key];
+  }
 
   // "strict" mode is enabled only when explicitly requested
   // LB3 models allow additional properties by default
