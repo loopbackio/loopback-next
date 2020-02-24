@@ -190,7 +190,7 @@ resolve them automatically.
 ```ts
 import {Provider} from '@loopback/context';
 import {Request, RestBindings} from '@loopback/rest';
-const uuid = require('uuid/v4');
+import {v4 as uuid} from 'uuid';
 
 class CorrelationIdProvider implements Provider<string> {
   constructor(@inject(RestBindings.Http.REQUEST) private request: Request) {}
