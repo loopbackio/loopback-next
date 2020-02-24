@@ -8,12 +8,7 @@
     "extensions"
   ],
   "exclude": [
-    "node_modules/**",
-    "acceptance/node_modules/**",
-    "benchmark/node_modules/**",
-    "examples/*/node_modules/**",
-    "packages/*/node_modules/**",
-    "extensions/*/node_modules/**",
+    "**/node_modules/**",
     "**/dist/**",
     "**/*.d.ts"
   ]
