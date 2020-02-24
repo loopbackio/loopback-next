@@ -6,8 +6,805 @@ sidebar: lb4_sidebar
 permalink: /doc/en/lb4/migration-models-mixins.html
 ---
 
-{% include note.html content="
-This is a placeholder page, the task of adding content is tracked by the
-following GitHub issue:
-[loopback-next#3951](https://github.com/strongloop/loopback-next/issues/3951)
-" %}
+## Introduction
+
+This document will guide you in migrating custom model mixins, and custom method
+mixins in LoopBack 3 to their equivalent implementations in LoopBack 4.
+
+For an understanding of how models in LoopBack 3 are now architectually
+decoupled into 3 classes (model, repository, and controller) please read
+[Migrating custom model methods](./methods.md).
+
+In LoopBack 3, it was easy to add property mixins and method
+[mixins](https://loopback.io/doc/en/lb3/Defining-mixins.html).
+
+In LoopBack 4, it is also easy and is accomplished by using a mixin class
+factory function.
+
+## LoopBack 3 Approach To Creating A Model Property Mixin
+
+In LoopBack 3, a developer is able to create a model property mixin by:
+
+- placing the mixin logic in a file in a mixins directory
+- updating the server/model-config.json file with the mixin directory location
+- updating the model's json file to include the mixin's name and a boolean
+
+As an example, we will create a mixin that adds a **category** property to a
+model.
+
+### Defining The Model Property Mixin category.js
+
+The developer defines a model property mixin in **common/mixins/category.js**
+which adds a required property named `category` to any model.
+
+{% include code-caption.html content="common/mixins/category.js" %}
+
+```js
+module.exports = function(Model, options) {
+  Model.defineProperty('category', {type: 'string', required: true});
+};
+```
+
+### Updating model-config.json
+
+The **server/model-config.json** needs to contain:
+
+- the locations of all **models**
+- the location of all **mixins**
+- the entry of the model that receives the mixin content (for this example
+  `Note`)
+
+{% include code-caption.html content="server/model-config.json" %}
+
+```
+{
+  "_meta": {
+    "sources": [
+      "loopback/common/models",
+      "loopback/server/models",
+      "../common/models",
+      "./models"
+    ],
+    "mixins": [
+      "loopback/common/mixins",
+      "loopback/server/mixins",
+      "../common/mixins",
+      "./mixins"
+    ]
+  },
+
+ // ... other entries
+
+  "Note": {
+    "dataSource": "db"
+  }
+}
+
+```
+
+### Applying The category.js Mixin To A Model
+
+To extend the model `Note` with the **category.js** mixin, we need to add a
+**mixins** section in **common/models/note.json** to indicate which mixins
+should be applied to it.
+
+{% include code-caption.html content="common/models/note.json" %}
+
+```json
+{
+  "name": "Note",
+  "properties": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "content": {
+      "type": "string"
+    }
+  },
+  "mixins": {
+    "Category": true
+  }
+}
+```
+
+Specifying a value of **true** for `Category` will apply the **category.js**
+property model mixin to the `Note` model. A value of **false** will not apply
+the mixin.
+
+## LoopBack 4 Approach To Creating A Model Property Mixin
+
+In LoopBack 4, a developer is able to create a model property mixin by:
+
+- placing the mixin class factory function in a separate file
+- generating a model using the CLI as usual
+- adjusting the model file to make use of the mixin class factory function
+
+### Defining The Model Property Mixin Class Factory Function
+
+This mixin class factory function `addCategoryPropertyMixin` in
+**src/mixins/categoryPropertyMixin.ts** adds the required property **category**
+to any model.
+
+{% include code-caption.html content="src/mixins/categoryPropertyMixin.ts" %}
+
+```ts
+import {Constructor} from '@loopback/context';
+
+import {property} from '@loopback/repository';
+
+export function addCategoryPropertyMixin<T extends Constructor<any>>(
+  superClass: T,
+) {
+  class MixedModel extends superClass {
+    @property({
+      type: 'string',
+      required: true,
+    })
+    category: string;
+
+    constructor(...args: any[]) {
+      super(...args);
+    }
+  }
+
+  return MixedModel;
+}
+```
+
+{% include note.html content="At the moment, [TypeScript does not allow decorators in class expressions](https://github.com/microsoft/TypeScript/issues/7342). This is why we need to declare the class with a name, and then return it." %}
+
+### Generating A Model Via The CLI
+
+A CLI-generated model named `Note` with 3 properties: **id**, **title**, and
+**content** would look like this:
+
+{% include code-caption.html content="src/models/note.model.ts" %}
+
+```ts
+import {Entity, model, property} from '@loopback/repository';
+
+@model()
+export class Note extends Entity {
+  @property({
+    type: 'number',
+    id: true,
+    generated: true,
+  })
+  id?: number;
+
+  @property({
+    type: 'string',
+    required: true,
+  })
+  title: string;
+
+  @property({
+    type: 'string',
+  })
+  content?: string;
+
+  constructor(data?: Partial<Note>) {
+    super(data);
+  }
+}
+
+export interface NoteRelations {
+  // describe navigational properties here
+}
+
+export type NoteWithRelations = Note & NoteRelations;
+```
+
+### Adjusting The Model File To Use addCategoryPropertyMixin
+
+Before we use the mixin class factory function:
+
+- rename this class to `TempNote`
+- remove the class' `export` directive
+- remove its **@model()** decorator
+- Leave the `NoteRelations` interface and the `NoteWithRelations` type alone for
+  now.
+
+{% include code-caption.html content="src/models/note.model.ts" %}
+
+```ts
+class TempNote extends Entity {
+  @property({
+    type: 'number',
+    id: true,
+    generated: true,
+  })
+  id?: number;
+
+  @property({
+    type: 'string',
+    required: true,
+  })
+  title: string;
+
+  @property({
+    type: 'string',
+  })
+  content?: string;
+
+  constructor(data?: Partial<TempNote>) {
+    super(data);
+  }
+}
+
+export interface NoteRelations {
+  // describe navigational properties here
+}
+
+export type NoteWithRelations = Note & NoteRelations;
+```
+
+Then,
+
+- import the `addCategoryPropertyMixin` mixin
+- declare a class `Note` which extends the class returned from the mixin
+  function that takes in the `TempNote` superclass an input
+- add the `export` directive and the **@model()** decorator to the `Note` class
+- move the `NoteRelations` interface and the `NoteWithRelations` type to the
+  bottom
+
+{% include code-caption.html content="src/models/note.model.ts" %}
+
+```ts
+import {Entity, model, property} from '@loopback/repository';
+import {addCategoryPropertyMixin} from '../mixins/categoryPropertyMixin';
+
+class TempNote extends Entity {
+  @property({
+    type: 'number',
+    id: true,
+    generated: true,
+  })
+  id?: number;
+
+  @property({
+    type: 'string',
+    required: true,
+  })
+  title: string;
+
+  @property({
+    type: 'string',
+  })
+  content?: string;
+
+  constructor(data?: Partial<TempNote>) {
+    super(data);
+  }
+}
+
+@model()
+export class Note extends addCategoryPropertyMixin(TempNote) {
+  constructor(data?: Partial<Note>) {
+    super(data);
+  }
+}
+
+export interface NoteRelations {
+  // describe navigational properties here
+}
+
+export type NoteWithRelations = Note & NoteRelations;
+```
+
+The required property `category` has now been added to the `Note` model via a
+mixin class factory function.
+
+## LoopBack 3 Approach To Creating A Custom Model Method And Remote Model Method Mixin
+
+The
+[Add a New Model Method And a New Endpoint](./methods.md#add-a-new-model-method-and-a-new-endpoint)
+section of the [Migrating custom model methods](./methods.md) document explains
+how a LoopBack 3 developer can define a custom model method named `findByTitle`
+on the `Note` model, and define a remote method to make it available as a new
+endpoint.
+
+In this section, we will show how a LoopBack 3 developer can define a mixin to
+accomplish this.
+
+In LoopBack 3, a developer is able to create a custom model method/remote method
+mixin by:
+
+- placing the mixin logic in a file in a mixins directory
+- updating the server/model-config.json file with the mixin directory location
+- updating the model's json file to include the mixin's name (and options object
+  or boolean)
+
+### Defining The Model Property Mixin findByTitle.js
+
+The developer defines a custom model method/remote method mixin in
+**common/mixins/findByTitle.js** which adds a custom method `findByTitle` to any
+model, and adds a corresponding remote method definition with path
+`/findByTitle` as well. An options property `returnArgumentName` makes it
+possible to customize the name of the return argument. If it is not specified,
+the return argument of 'items' is used as a default.
+
+{% include code-caption.html content="common/mixins/findByTitle.js" %}
+
+```js
+module.exports = function(Model, options) {
+  const returnArgumentName = options.returnArgumentName
+    ? options.returnArgumentName
+    : 'items';
+
+  Model.remoteMethod('findByTitle', {
+    http: {
+      path: '/findByTitle',
+      verb: 'get',
+    },
+    accepts: {arg: 'title', type: 'string'},
+    returns: {arg: returnArgumentName, type: [Model], root: true},
+  });
+
+  Model.findByTitle = function(title, cb) {
+    var titleFilter = {
+      where: {
+        title: title,
+      },
+    };
+    Model.find(titleFilter, function(err, foundItems) {
+      if (err) {
+        cb(err);
+      } else {
+        cb(null, foundItems);
+      }
+    });
+  };
+};
+```
+
+For a model named `Note`, this will expose an endpoint of `/Notes/findByTitle`.
+
+### Updating model-config.json
+
+The **server/model-config.json** needs to contain:
+
+- the locations of all **models**
+- the location of all **mixins**
+- the entry of the model that receives the mixin content (for this example Note)
+
+{% include code-caption.html content="server/model-config.json" %}
+
+```
+{
+  "_meta": {
+    "sources": [
+      "loopback/common/models",
+      "loopback/server/models",
+      "../common/models",
+      "./models"
+    ],
+    "mixins": [
+      "loopback/common/mixins",
+      "loopback/server/mixins",
+      "../common/mixins",
+      "./mixins"
+    ]
+  },
+
+ // ... other entries
+
+  "Note": {
+    "dataSource": "db"
+  }
+}
+
+```
+
+### Applying The findByTitle.js Mixin To A Model
+
+To extend the model `Note` with the **findByTitle.js** mixin, we need to add a
+**mixins** section in **common/models/note.json** to indicate which mixins
+should be applied to it.
+
+{% include code-caption.html content="common/models/note.json" %}
+
+```json
+{
+  "name": "Note",
+  "properties": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "content": {
+      "type": "string"
+    }
+  },
+
+  "mixins": {
+    "FindByTitle": {
+      "returnArgumentName": "notes"
+    },
+
+    "Category": true
+  }
+}
+```
+
+Specifying an options object for `FindByTitle` is the same as specifying a value
+of **true** as it will apply the **findByTitle.js** custom model method/remote
+method mixin to the `Note` model. A value of **false** will not apply the mixin.
+
+## LoopBack 4 Approach to Creating A Custom Model Method Mixin And Remote Model Method Mixin
+
+As mentioned in the previous section, the
+[Add a New Model Method And a New Endpoint](./methods.md#add-a-new-model-method-and-a-new-endpoint)
+section of the [Migrating custom model methods](./methods.md) document explains
+how a LoopBack 3 developer can define a custom model method named `findByTitle`
+on the `Note` model, and define a remote method to make it available as a new
+endpoint. It then shows how a LoopBack 4 developer can implement a `findByTitle`
+method on the `NoteRepository` and on the `NoteController` to accomplish the
+same thing.
+
+In this section, we will show how a LoopBack 4 developer can define two mixins (
+a repository mixin and a controller mixin) to add a `findByTitle` method to
+`NoteRepository` and `NoteController` respectively.
+
+In LoopBack 4, a developer is able to create a repository and controller method
+mixin by:
+
+- defining a common interface for both mixin class factory functions
+- placing the mixin class factory functions in separate files
+- generating a repository and controller using the CLI as usual
+- adjusting the repository and controller files to make use of its respective
+  mixin class factory function
+
+### Defining A Common Interface For The findByTitle Method
+
+Let's define a common interface `FindByTitleInterface` in
+**src/mixins/findByTitleInterface.ts**.
+
+{% include code-caption.html content="src/mixins/findByTitleInterface.ts" %}
+
+```ts
+import {Model} from '@loopback/repository';
+
+export interface FindByTitleInterface<M extends Model> {
+  findByTitle(title: string): Promise<M[]>;
+}
+```
+
+### Defining A Repository Mixin Class Factory Function
+
+In **src/mixins/findByTitleRepositoryMixin.ts**, let's define the mixin class
+factory function `FindByTitleRepositoryMixin` which adds the `findByTitle`
+method to any repository.
+
+{% include code-caption.html content="src/mixins/findByTitleRepositoryMixin.ts" %}
+
+```ts
+import {Constructor} from '@loopback/context';
+
+import {Model} from '@loopback/repository';
+import {FindByTitleInterface} from './findByTitleInterface';
+
+export function FindByTitleRepositoryMixin<
+  M extends Model,
+  T extends Constructor<any>
+>(superClass: T) {
+  return class extends superClass implements FindByTitleInterface<M> {
+    async findByTitle(title: string): Promise<M[]> {
+      const titleFilter = {
+        where: {
+          title: title,
+        },
+      };
+      const foundItems = await this.find(titleFilter);
+      return foundItems;
+    }
+  };
+}
+```
+
+### Generating A Repository Via The CLI
+
+A CLI-generated repository for a model `Note` would look like this:
+
+{% include code-caption.html content="src/repositories/note.repository.ts" %}
+
+```ts
+export class NoteRepository extends DefaultCrudRepository<
+  Note,
+  typeof Note.prototype.id,
+  NoteRelations
+> {
+  constructor(@inject('datasources.db') dataSource: DbDataSource) {
+    super(Note, dataSource);
+  }
+}
+```
+
+### Adjust NoteRepository To Use FindByTitleRepositoryMixin
+
+Import the `FindByTitleRepositoryMixin` mixin class factory function, and adjust
+the declaration of the `NoteRepository` class to extend the class returned from
+the mixin function that takes in the `DefaultCrudRepository` superclass an
+input.
+
+{% include code-caption.html content="src/repositories/note.repository.ts" %}
+
+```ts
+import {FindByTitleRepositoryMixin} from '../mixins/findByTitleRepositoryMixin';
+import {DefaultCrudRepository} from '@loopback/repository';
+import {Note, NoteRelations} from '../models';
+import {DbDataSource} from '../datasources';
+import {inject, Constructor} from '@loopback/core';
+
+export class NoteRepository extends FindByTitleRepositoryMixin<
+  Note,
+  Constructor<
+    DefaultCrudRepository<Note, typeof Note.prototype.id, NoteRelations>
+  >
+>(DefaultCrudRepository) {
+  constructor(@inject('datasources.db') dataSource: DbDataSource) {
+    super(Note, dataSource);
+  }
+}
+```
+
+We have now added the `findByTitle` method to a repository via a mixin class
+factory function.
+
+### Defining A Controller Mixin Class Factory Function
+
+In **src/mixins/findByTitleControllerMixin.ts**, let's define the mixin class
+factory function `FindByTitleControllerMixin` which adds the `findByTitle`
+method to any controller.
+
+{% include code-caption.html content="src/mixins/src/mixins/findByTitleControllerMixin.ts" %}
+
+```ts
+import {Constructor} from '@loopback/context';
+import {Model} from '@loopback/repository';
+import {FindByTitleInterface} from './findByTitleInterface';
+import {param, get, getModelSchemaRef} from '@loopback/rest';
+
+export interface FindByTitleControllerMixinParms {
+  basePath: string;
+  modelClass: Constructor<{}>;
+  modelClassName: string;
+}
+
+export function FindByTitleControllerMixin<
+  M extends Model,
+  T extends Constructor<any>
+>(superClass: T, parms: FindByTitleControllerMixinParms) {
+  class MixedController extends superClass implements FindByTitleInterface<M> {
+    constructor(...args: any[]) {
+      super(...args);
+    }
+
+    @get(parms.basePath + '/findByTitle/{title}', {
+      responses: {
+        '200': {
+          description: `Array of ${parms.modelClassName} model instances`,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'array',
+                items: getModelSchemaRef(parms.modelClass, {
+                  includeRelations: true,
+                }),
+              },
+            },
+          },
+        },
+      },
+    })
+    async findByTitle(@param.path.string('title') title: string): Promise<[M]> {
+      let foundItems = await this.repository.findByTitle(title);
+
+      return foundItems;
+    }
+  }
+
+  return MixedController;
+}
+```
+
+To customize certain portions of the OpenAPI description of the endpoint, the
+mixin class factory function needs to accept some input parameters. We defined
+an interface `FindByTitleControllerMixinParms` to allow for this.
+
+It is also a good idea to give the injected repository (in the controller super
+class) a generic name like `this.respository` to keep things simple in the mixin
+class factory function.
+
+### Generating A Controller Via The CLI
+
+A CLI-generated **controller** for the model `Note` would look like this: (To
+save space, only a **partial** implementation is shown)
+
+{% include code-caption.html content="src/controllers/note.controller.ts" %}
+
+```ts
+export class NoteController {
+  constructor(
+    @repository(NoteRepository)
+    public noteRepository: NoteRepository,
+  ) {}
+
+  @post('/notes', {
+    responses: {
+      '200': {
+        description: 'Note model instance',
+        content: {'application/json': {schema: getModelSchemaRef(Note)}},
+      },
+    },
+  })
+  async create(
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(Note, {
+            title: 'NewNote',
+            exclude: ['id'],
+          }),
+        },
+      },
+    })
+    note: Omit<Note, 'id'>,
+  ): Promise<Note> {
+    return this.noteRepository.create(note);
+  }
+
+  // ...
+  // remaining CRUD endpoints
+  // ...
+}
+```
+
+For a full example of a CLI-generated controller for a model `Todo`, see
+[TodoController ](https://github.com/strongloop/loopback-next/blob/master/examples/todo/src/controllers/todo.controller.ts).
+
+### Adjust NoteController To Use FindByTitleControllerMixin
+
+Before we use the mixin class factory function
+
+- remove the class' `export` directive
+- rename this class to `TempNoteController`
+- change the name of the injected repository from `noteRepository` to
+  `repository` to keep things simple for the mixin class factory function
+
+{% include code-caption.html content="src/controllers/note.controller.ts" %}
+
+```ts
+class TempNoteController {
+  constructor(
+    @repository(NoteRepository)
+    public repository: NoteRepository,
+  ) {}
+
+  @post('/notes', {
+    responses: {
+      '200': {
+        description: 'Note model instance',
+        content: {'application/json': {schema: getModelSchemaRef(Note)}},
+      },
+    },
+  })
+  async create(
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(Note, {
+            title: 'NewNote',
+            exclude: ['id'],
+          }),
+        },
+      },
+    })
+    note: Omit<Note, 'id'>,
+  ): Promise<Note> {
+    return this.repository.create(note);
+  }
+
+  // ...
+  // remaining CRUD endpoints (change repo name in these as well)
+  // ...
+}
+```
+
+The remaining steps are:
+
+- import the `FindByTitleControllerMixin` mixin class factory function
+- import the `FindByTitleControllerMixinParms` interface
+- prepare the input parameters for the mixin
+- declare a class `NoteController` which extends the class returned from the
+  mixin that takes `TempNoteController` superclass as input
+- add an `export` directive to `NoteController`
+- pass the input parameters into the mixin
+
+{% include code-caption.html content="src/controllers/note.controller.ts" %}
+
+```ts
+import {Note} from '../models';
+import {
+  FindByTitleControllerMixin,
+  FindByTitleControllerMixinParms,
+} from '../mixins/findByTitleControllerMixin';
+import {Constructor} from '@loopback/core';
+import {
+  Count,
+  CountSchema,
+  Filter,
+  repository,
+  Where,
+} from '@loopback/repository';
+import {
+  post,
+  param,
+  get,
+  getFilterSchemaFor,
+  getModelSchemaRef,
+  getWhereSchemaFor,
+  patch,
+  put,
+  del,
+  requestBody,
+} from '@loopback/rest';
+import {NoteRepository} from '../repositories';
+
+class TempNoteController {
+  constructor(
+    @repository(NoteRepository)
+    public repository: NoteRepository,
+  ) {}
+
+  @post('/notes', {
+    responses: {
+      '200': {
+        description: 'Note model instance',
+        content: {'application/json': {schema: getModelSchemaRef(Note)}},
+      },
+    },
+  })
+  async create(
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(Note, {
+            title: 'NewNote',
+            exclude: ['id'],
+          }),
+        },
+      },
+    })
+    note: Omit<Note, 'id'>,
+  ): Promise<Note> {
+    return this.repository.create(note);
+  }
+
+  // ...
+  // remaining CRUD endpoints
+  // ...
+}
+
+const mixinParms: FindByTitleControllerMixinParms = {
+  basePath: '/notes',
+  modelClass: Note,
+  modelClassName: 'Note',
+};
+
+export class NoteController extends FindByTitleControllerMixin<
+  Note,
+  Constructor<TempNoteController>
+>(TempNoteController, mixinParms) {}
+```
+
+We have now added the `findByTitle` method to a controller via a mixin class
+factory function.
+
+This will also expose an endpoint of `/notes/findByTitle/{title}`.
+
+## Summary
+
+As the examples above show, migrating mixins from LoopBack 3 to LoopBack 4 is
+relatively straightforward using class factory functions.
