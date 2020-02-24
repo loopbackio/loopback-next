@@ -16,8 +16,6 @@ import {
   RepositoryMixin,
 } from '../../..';
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 describe('RepositoryMixin', () => {
   it('mixed class has .repository()', () => {
     const myApp = new AppWithRepoMixin();
@@ -134,6 +132,7 @@ describe('RepositoryMixin', () => {
 
       const ds = new juggler.DataSource({name: 'db', connector: 'memory'});
       // FIXME(bajtos) typings for connectors are missing autoupdate/autoupgrade
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (ds.connector as any).automigrate = function(
         models: string[],
         cb: Function,
