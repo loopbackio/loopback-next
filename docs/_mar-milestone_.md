@@ -23,17 +23,24 @@
   - [ ] [5][migration/auth] Describe how to simulate ACLs with LB4 authorization
         #4522
 
-- [ ] Bugs
-
+- [ ] Miscellaneous
   - [ ] Belongs-To relation tries to resolve for foreign key NULL #4372
-
-- [ ] Internal Tooling
-  - [ ] Switch contribution method from CLA to DCO #2292
+  - [ ] How to build models, repositories and controllers dynamically at runtime
+        #4296
 
 ## Stretch Goals
 
-- [ ] Spike: robust handling of ObjectID type for MongoDB #3456
-- [ ] Broken anchor link https://github.com/strongloop/loopback.io/issues/907
+- [ ] Internal Tooling
+
+  - [ ] Switch contribution method from CLA to DCO #2292
+
+- Spikes
+
+  - [ ] Spike: robust handling of ObjectID type for MongoDB #3456
+
+- [ ] Bugs
+  - [ ] Broken anchor link https://github.com/strongloop/loopback.io/issues/907
+  - [ ] How to define a model @property that allows any scalar value? #4255
 
 ## Looking for community contributions
 
@@ -45,3 +52,4 @@ is our wish list for this month:_
       values) #3607
 - [ ] Add support for "include" and "fields" to findById (REST API) #1721
 - [ ] Complex OpenAPI Validations with @property #1624
+- [ ] Sugar decorators for Filter and Where parameters #1749
