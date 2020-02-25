@@ -31,7 +31,7 @@
     "@types/bluebird": "^3.5.29",
     "@types/debug": "^4.1.5",
     "@types/node": "^10.17.16",
-    "@types/uuid": "^3.4.7",
+    "@types/uuid": "^3.4.8",
     "bluebird": "^3.7.2"
   },
   "keywords": [
