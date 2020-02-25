@@ -60,24 +60,6 @@ _The tracking GitHub issue:
 
 Workaround: define relational metadata & navigational properties manually.
 
-### Models inheriting from custom base class
-
-_The tracking GitHub issue:
-[loopback-next#3813](https://github.com/strongloop/loopback-next/issues/3813)_
-
-Models inheriting from application-specific models (including LB3 built-in
-models like `User`) cannot be imported yet.
-
-Workaround:
-
-1. Modify your LB3 model to inherit from `Model`, `PersistedModel` or
-   `KeyValueModel`.
-
-2. Import the model to LB4
-
-3. Update the imported model to inherit for the desired application-specific
-   model.
-
 ### MongoDB's `ObjectID` type
 
 The tracking GitHub issue:
