@@ -3,6 +3,21 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+/**
+ * A common set of interfaces for interacting with databases.
+ *
+ * @remarks
+ * *NOTE:* This module is experimental and evolving. It is likely going to be
+ * refactored and decomposed into multiple modules as we refine the story based
+ * on the legacy loopback-datasource-juggler and connector modules from LoopBack
+ * 3.x.
+ *
+ * This module provides data access facilities to various databases and services
+ * as well as the constructs for modeling and accessing those data.
+ *
+ * @packageDocumentation
+ */
+
 export * from './common-types';
 export * from './connectors';
 export * from './datasource';

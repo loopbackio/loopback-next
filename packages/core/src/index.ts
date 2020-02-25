@@ -3,9 +3,18 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+/**
+ * The foundation of a LoopBack app.
+ *
+ * @remarks
+ * For a typical example of how to create a REST server with your application,
+ * see the {@link @loopback/rest#} package.
+ *
+ * @packageDocumentation
+ */
+
 // Re-export public Core API coming from dependencies
 export * from '@loopback/context';
-
 // Export APIs
 export * from './application';
 export * from './component';
