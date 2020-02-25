@@ -217,7 +217,10 @@ export abstract class Model {
     }
 
     const copyPropertyAsJson = (key: string) => {
-      json[key] = asJSON((this as AnyObject)[key]);
+      const val = asJSON((this as AnyObject)[key]);
+      if (val !== undefined) {
+        json[key] = val;
+      }
     };
 
     const json: AnyObject = {};

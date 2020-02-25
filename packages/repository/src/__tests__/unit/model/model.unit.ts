@@ -193,6 +193,12 @@ describe('model', () => {
     // notice that "extra" property was discarded from the output
   });
 
+  it('skips properties with undefined values', () => {
+    const customer = createCustomer();
+    delete customer.email;
+    expect(customer.toJSON()).to.eql({id: '123'});
+  });
+
   it('converts to json recursively', () => {
     const customer = createCustomerWithContact();
     expect(customer.toJSON()).to.eql({

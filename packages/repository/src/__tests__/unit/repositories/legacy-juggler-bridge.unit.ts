@@ -309,6 +309,13 @@ describe('DefaultCrudRepository', () => {
       expect(result?.toJSON()).to.eql(note.toJSON());
     });
 
+    it('returns the correct instance with fields', async () => {
+      const repo = new DefaultCrudRepository(Note, ds);
+      const note = await repo.create({title: 'a-title', content: 'a-content'});
+      const result = await repo.findById(note.id, {fields: {title: true}});
+      expect(result?.toJSON()).to.eql({title: 'a-title'});
+    });
+
     it('throws when the instance does not exist', async () => {
       const repo = new DefaultCrudRepository(Note, ds);
       await expect(repo.findById(999999)).to.be.rejectedWith({
@@ -656,7 +663,6 @@ describe('DefaultCrudRepository', () => {
     expect(result.toJSON()).to.eql({
       id: note.id,
       title: 't4',
-      content: undefined,
     });
   });
 
