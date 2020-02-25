@@ -3,6 +3,23 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+/**
+ * The REST API package for loopback-next.
+ *
+ * @remarks
+ * A REST server for LoopBack 4 application instances, complete with:
+ *
+ * - new custom routing engine (special thanks to @bajtos)!
+ * - tools for defining your application routes
+ * - OpenAPI 3.0 spec (openapi.json/openapi.yaml) generation using
+ *   @loopback/openapi-v3
+ * - a default sequence implementation to manage the request and response
+ *   lifecycle
+ *
+ *
+ * @packageDocumentation
+ */
+
 export * from '@loopback/openapi-v3';
 export * from './body-parsers';
 export * from './http-handler';
