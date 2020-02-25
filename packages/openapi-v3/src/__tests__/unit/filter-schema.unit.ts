@@ -46,6 +46,30 @@ describe('filterSchema', () => {
     });
   });
 
+  it('generate filter schema excluding where', () => {
+    const schema = getFilterSchemaFor(MyUserModel, {exclude: ['where']});
+    expect(MyUserModel.definition.name).to.eql('my-user-model');
+    expect(schema).to.eql({
+      title: 'my-user-model.Filter',
+      properties: {
+        fields: {
+          type: 'object',
+          title: 'my-user-model.Fields',
+          properties: {
+            id: {type: 'boolean'},
+            age: {type: 'boolean'},
+          },
+          additionalProperties: false,
+        },
+        offset: {type: 'integer', minimum: 0},
+        limit: {type: 'integer', minimum: 1, example: 100},
+        skip: {type: 'integer', minimum: 0},
+        order: {type: 'array', items: {type: 'string'}},
+      },
+      additionalProperties: false,
+    });
+  });
+
   @model({
     name: 'CustomUserModel',
   })

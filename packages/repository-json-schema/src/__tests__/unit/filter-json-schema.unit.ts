@@ -16,11 +16,15 @@ import {
 describe('getFilterJsonSchemaFor', () => {
   let ajv: Ajv.Ajv;
   let customerFilterSchema: JsonSchema;
+  let customerFilterExcludingWhereSchema: JsonSchema;
   let orderFilterSchema: JsonSchema;
 
   beforeEach(() => {
     ajv = new Ajv();
     customerFilterSchema = getFilterJsonSchemaFor(Customer);
+    customerFilterExcludingWhereSchema = getFilterJsonSchemaFor(Customer, {
+      exclude: ['where'],
+    });
     orderFilterSchema = getFilterJsonSchemaFor(Order);
   });
 
@@ -48,6 +52,21 @@ describe('getFilterJsonSchemaFor', () => {
     };
 
     expectSchemaToAllowFilter(customerFilterSchema, filter);
+  });
+
+  it('disallows "where"', () => {
+    const filter = {where: {name: 'John'}};
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    ajv.validate(customerFilterExcludingWhereSchema, filter);
+    expect(ajv.errors ?? []).to.containDeep([
+      {
+        keyword: 'additionalProperties',
+        dataPath: '',
+        schemaPath: '#/additionalProperties',
+        params: {additionalProperty: 'where'},
+        message: 'should NOT have additional properties',
+      },
+    ]);
   });
 
   it('describes "where" as an object', () => {
@@ -180,6 +199,24 @@ describe('getFilterJsonSchemaFor', () => {
     const result = isValid ? SUCCESS_MSG : ajv.errorsText(ajv.errors!);
     expect(result).to.equal(SUCCESS_MSG);
   }
+});
+
+describe('getFilterJsonSchemaFor - excluding where', () => {
+  let customerFilterSchema: JsonSchema;
+
+  it('excludes "where" using string[]', () => {
+    customerFilterSchema = getFilterJsonSchemaFor(Customer, {
+      exclude: ['where'],
+    });
+    expect(customerFilterSchema.properties).to.not.have.property('where');
+  });
+
+  it('excludes "where" using string', () => {
+    customerFilterSchema = getFilterJsonSchemaFor(Customer, {
+      exclude: 'where',
+    });
+    expect(customerFilterSchema.properties).to.not.have.property('where');
+  });
 });
 
 describe('getFilterJsonSchemaForOptionsSetTitle', () => {
