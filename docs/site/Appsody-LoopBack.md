@@ -31,7 +31,7 @@ It consists of 3 key components:
   for a developer to: scaffold, run, stop, debug, test, build, and deploy an
   application.
 
-![Appsody Flow](https://appsody.dev/static/2f908188a17e5e471158534326fc5665/0a44b/appsody_flow.png)
+![Appsody Flow](./imgs/appsody_flow.png)
 
 The LoopBack team has recently contributed the
 [Node.js LoopBack stack](https://github.com/appsody/stacks/tree/master/incubator/nodejs-loopback)
