@@ -17,6 +17,7 @@ const {
   findBuiltinType,
 } = require('../model/property-definition');
 const chalk = require('chalk');
+const {isDeepStrictEqual} = require('util');
 
 module.exports = {
   importLb3ModelDefinition,
@@ -43,12 +44,29 @@ function importLb3ModelDefinition(modelCtor, log) {
 
   logNamingIssues(modelName, log);
 
+  const baseDefinition = modelCtor.base.definition;
+  const baseProps = {...baseDefinition.properties};
+
+  // Core LB3 models like PersistedModel come with an id property that's
+  // injected by juggler. We don't want to inherit that property, because
+  // in LB4, we want models to define the id property explicitly.
+  if (isCoreModel(modelCtor.base)) {
+    delete baseProps.id;
+  }
+
   const templateData = {
     name: modelName,
     className: pascalCase(modelName),
     ...migrateBaseClass(modelCtor.settings.base),
-    properties: migrateModelProperties(modelCtor.definition.properties),
-    settings: migrateModelSettings(modelCtor.definition.settings, log),
+    properties: migrateModelProperties(
+      modelCtor.definition.properties,
+      baseProps,
+    ),
+    settings: migrateModelSettings(
+      modelCtor.definition.settings,
+      baseDefinition.settings,
+      log,
+    ),
   };
 
   const settings = templateData.settings;
@@ -59,7 +77,7 @@ function importLb3ModelDefinition(modelCtor, log) {
   return templateData;
 }
 
-function migrateModelProperties(properties) {
+function migrateModelProperties(properties = {}, inherited = {}) {
   const templateData = {};
 
   // In LB 3.x, primary keys are typically contributed by connectors later in
@@ -72,7 +90,16 @@ function migrateModelProperties(properties) {
     });
 
   for (const prop in properties) {
-    const def = migratePropertyDefinition(properties[prop]);
+    const propDef = properties[prop];
+
+    // Skip the property if it was inherited from the base model (the parent)
+    const baseProp = inherited[prop];
+    if (baseProp && isDeepStrictEqual(propDef, baseProp)) {
+      delete templateData[prop];
+      continue;
+    }
+
+    const def = migratePropertyDefinition(propDef);
     templateData[prop] = createPropertyTemplateData(def);
   }
 
@@ -138,13 +165,23 @@ function migrateBaseClass(base) {
   };
 }
 
-function migrateModelSettings(settings = {}, log) {
+function migrateModelSettings(settings = {}, inherited = {}, log) {
   // Shallow-clone the object to prevent modification of external data
   settings = {...settings};
 
   // "strict" mode is enabled only when explicitly requested
   // LB3 models allow additional properties by default
   settings.strict = settings.strict === true;
+
+  // Remove settings inherited from the base model
+  for (const key in inherited) {
+    // Always emit the value of 'strict' setting, make it explicit
+    if (key === 'strict') continue;
+
+    if (isDeepStrictEqual(settings[key], inherited[key])) {
+      delete settings[key];
+    }
+  }
 
   if (settings.forceId === 'auto') {
     // The value 'auto' is used when a parent model wants to let the child
@@ -202,4 +239,11 @@ function migrateModelSettings(settings = {}, log) {
   }
 
   return settings;
+}
+
+function isCoreModel(modelCtor) {
+  const name = modelCtor.modelName;
+  return (
+    name === 'Model' || name === 'PersistedModel' || name === 'KeyValueModel'
+  );
 }

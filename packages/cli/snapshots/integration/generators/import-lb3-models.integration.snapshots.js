@@ -11,13 +11,7 @@ exports[`lb4 import-lb3-models imports CoffeeShop model from lb3-example app 1`]
 import {Entity, model, property} from '@loopback/repository';
 
 @model({
-  settings: {
-    strict: false,
-    forceId: false,
-    replaceOnPUT: true,
-    validateUpsert: true,
-    idInjection: true
-  }
+  settings: {strict: false, forceId: false, validateUpsert: true, idInjection: true}
 })
 export class CoffeeShop extends Entity {
   @property({
@@ -68,70 +62,12 @@ exports[`lb4 import-lb3-models imports a model inheriting from a custom base cla
 import {model, property} from '@loopback/repository';
 import {UserBase} from '.';
 
-@model({
-  settings: {
-    strict: false,
-    replaceOnPUT: true,
-    caseSensitiveEmail: true,
-    hidden: ['password', 'verificationToken'],
-    maxTTL: 31556926,
-    ttl: 1209600,
-    customUserBaseSetting: true,
-    customCustomerSetting: true
-  }
-})
+@model({settings: {strict: false, customCustomerSetting: true}})
 export class Customer extends UserBase {
-  @property({
-    type: 'number',
-    id: 1,
-    generated: true,
-    updateOnly: true,
-  })
-  id?: number;
-
   @property({
     type: 'boolean',
   })
   isPreferred?: boolean;
-
-  @property({
-    type: 'boolean',
-    required: true,
-    default: false,
-  })
-  isAccountVerified: boolean;
-
-  @property({
-    type: 'string',
-  })
-  realm?: string;
-
-  @property({
-    type: 'string',
-  })
-  username?: string;
-
-  @property({
-    type: 'string',
-    required: true,
-  })
-  password: string;
-
-  @property({
-    type: 'string',
-    required: true,
-  })
-  email: string;
-
-  @property({
-    type: 'boolean',
-  })
-  emailVerified?: boolean;
-
-  @property({
-    type: 'string',
-  })
-  verificationToken?: string;
 
   // Define well-known properties here
 
@@ -157,64 +93,14 @@ exports[`lb4 import-lb3-models imports a model inheriting from a custom base cla
 import {model, property} from '@loopback/repository';
 import {User} from '.';
 
-@model({
-  settings: {
-    strict: false,
-    replaceOnPUT: true,
-    caseSensitiveEmail: true,
-    hidden: ['password', 'verificationToken'],
-    maxTTL: 31556926,
-    ttl: 1209600,
-    customUserBaseSetting: true
-  }
-})
+@model({settings: {strict: false, customUserBaseSetting: true}})
 export class UserBase extends User {
-  @property({
-    type: 'number',
-    id: 1,
-    generated: true,
-    updateOnly: true,
-  })
-  id?: number;
-
   @property({
     type: 'boolean',
     required: true,
     default: false,
   })
   isAccountVerified: boolean;
-
-  @property({
-    type: 'string',
-  })
-  realm?: string;
-
-  @property({
-    type: 'string',
-  })
-  username?: string;
-
-  @property({
-    type: 'string',
-    required: true,
-  })
-  password: string;
-
-  @property({
-    type: 'string',
-    required: true,
-  })
-  email: string;
-
-  @property({
-    type: 'boolean',
-  })
-  emailVerified?: boolean;
-
-  @property({
-    type: 'string',
-  })
-  verificationToken?: string;
 
   // Define well-known properties here
 
@@ -242,7 +128,6 @@ import {Entity, model, property} from '@loopback/repository';
 @model({
   settings: {
     strict: false,
-    replaceOnPUT: true,
     caseSensitiveEmail: true,
     hidden: ['password', 'verificationToken'],
     maxTTL: 31556926,

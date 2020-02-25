@@ -33,7 +33,6 @@ describe('importLb3ModelDefinition', () => {
       expect(toJSON(modelData.settings)).to.deepEqual({
         // By default, LB3 models are not strict
         strict: false,
-        replaceOnPUT: true,
       });
     });
 
@@ -325,6 +324,43 @@ describe('importLb3ModelDefinition', () => {
         mongodb: {
           collection: 'CustomCollectionName',
         },
+      });
+    });
+  });
+
+  context('inheritance', () => {
+    let Customer, modelData;
+    beforeEach(function defineCustomerInheritingFromUser() {
+      Customer = givenLb3Model(
+        'Customer',
+        {
+          isPreferred: {type: 'boolean', required: true},
+        },
+        {
+          base: 'User',
+          customCustomerSetting: true,
+        },
+      );
+      modelData = importLb3ModelDefinition(Customer, log);
+      log.resetHistory(); // ignore messages about ACLs & Relations
+    });
+
+    it('emits properties defined by the child model but not inherited', () => {
+      expect(Object.keys(modelData.properties)).to.deepEqual(['isPreferred']);
+      expect(modelData.properties)
+        .to.have.property('isPreferred')
+        .deepEqual({
+          type: `'boolean'`,
+          tsType: 'boolean',
+          required: true,
+        });
+    });
+
+    it('emits model-level settings defined by the model but not inherited', () => {
+      expect(toJSON(modelData.settings)).to.deepEqual({
+        // By default, LB3 models are not strict
+        strict: false,
+        customCustomerSetting: true,
       });
     });
   });
