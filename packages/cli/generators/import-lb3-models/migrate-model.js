@@ -132,11 +132,10 @@ function migrateBaseClass(base) {
     };
   }
 
-  // TODO: handle inheritance from application models
-  throw new Error(
-    'Models inheriting from app-specific models cannot be migrated yet. ' +
-      `Base model configured: ${baseModelName}`,
-  );
+  return {
+    modelBaseClass: baseModelName,
+    isModelBaseBuiltin: false,
+  };
 }
 
 function migrateModelSettings(settings = {}, log) {

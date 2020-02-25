@@ -220,13 +220,33 @@ describe('importLb3ModelDefinition', () => {
       });
     });
 
-    it('refuses to import model extending a non-LB4-built-in (for now)', () => {
-      // Note: User is a built-in model in LB3
-      const MyModel = givenLb3Model('MyModel', {}, {base: 'User'});
-      expect(() => importLb3ModelDefinition(MyModel, log)).to.throw(
-        'Models inheriting from app-specific models cannot be migrated yet. ' +
-          'Base model configured: User',
-      );
+    it('supports LB3 built-in base classes not available in LB4', () => {
+      const Customer = givenLb3Model('Customer', {}, {base: 'User'});
+      const modelData = importLb3ModelDefinition(Customer, log);
+
+      const options = getModelTemplateOptions(modelData);
+      expect(options).to.containDeep({
+        modelBaseClass: 'User',
+        isModelBaseBuiltin: false,
+      });
+
+      log.resetHistory(); // ignore messages about ACLs & Relations
+    });
+
+    it('supports custom base classes', () => {
+      const {model: Admin} = givenLb3BaseAndChildModels({
+        model: {name: 'Admin'},
+        base: {name: 'MyUserBase'},
+      });
+      const modelData = importLb3ModelDefinition(Admin, log);
+
+      const options = getModelTemplateOptions(modelData);
+      expect(options).to.containDeep({
+        modelBaseClass: 'MyUserBase',
+        isModelBaseBuiltin: false,
+      });
+
+      log.resetHistory(); // disable assertion in afterEach hook
     });
   });
 
@@ -430,6 +450,26 @@ function givenLb3Model(
   const ModelCtor = app.registry.createModel(name, properties, settings);
   app.model(ModelCtor, {dataSource: 'ds'});
   return ModelCtor;
+}
+
+function givenLb3BaseAndChildModels({
+  model,
+  base,
+  dataSourceConfig = {connector: 'memory'},
+}) {
+  const app = givenLb3App();
+  app.dataSource('ds', dataSourceConfig);
+  const BaseCtor = app.registry.createModel(
+    base.name,
+    base.properties,
+    base.settings,
+  );
+  const ModelCtor = app.registry.createModel(model.name, model.properties, {
+    base: base.name,
+    ...model.settings,
+  });
+  app.model(ModelCtor, {dataSource: 'ds'});
+  return {model: ModelCtor, base: BaseCtor};
 }
 
 function getModelTemplateOptions(templateData) {

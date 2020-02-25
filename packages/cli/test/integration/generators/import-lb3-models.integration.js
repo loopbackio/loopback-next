@@ -29,6 +29,10 @@ const COFFEE_SHOP_EXAMPLE = require.resolve(
   '../../../../../examples/lb3-application/lb3app/server/server',
 );
 
+const APP_USING_MODEL_INHERITANCE = require.resolve(
+  '../../fixtures/import-lb3-models/app-using-model-inheritance',
+);
+
 describe('lb4 import-lb3-models', function() {
   require('../lib/base-generator')(generator, {args: ['path-to-lb3-app']})();
 
@@ -90,5 +94,32 @@ describe('lb4 import-lb3-models', function() {
       'Unknown model name ModelDoesNotExist. Available models: Application, ' +
         'AccessToken, User, RoleMapping, Role, ACL, Scope, CoffeeShop.',
     );
+  });
+
+  it('imports a model inheriting from a custom base class', async () => {
+    const outDir = path.join(SANDBOX_PATH, 'models-with-inheritance');
+
+    await testUtils
+      .executeGenerator(generator)
+      .inDir(SANDBOX_PATH, () => testUtils.givenLBProject(SANDBOX_PATH))
+      .withArguments(APP_USING_MODEL_INHERITANCE)
+      .withPrompts({
+        modelNames: [
+          'Customer',
+          // FIXME: generator should include the following models automatically
+          'User',
+          'UserBase',
+        ],
+      })
+      .withOptions({outDir});
+
+    // Verify the source code generated for the selected model
+    expectFileToMatchSnapshot(`${outDir}/customer.model.ts`);
+
+    // Verify the source code generated for the custom base model
+    expectFileToMatchSnapshot(`${outDir}/user-base.model.ts`);
+
+    // Verify the source code generated for the imported LB3 user model
+    expectFileToMatchSnapshot(`${outDir}/user.model.ts`);
   });
 });
