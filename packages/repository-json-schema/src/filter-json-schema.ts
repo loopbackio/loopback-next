@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {getModelRelations, Model, model} from '@loopback/repository';
-import {JSONSchema6 as JsonSchema} from 'json-schema';
+import {JSONSchema6 as JsonSchema, JSONSchema6Definition} from 'json-schema';
 
 export interface FilterSchemaOptions {
   /**
@@ -14,6 +14,11 @@ export interface FilterSchemaOptions {
    *
    */
   setTitle?: boolean;
+
+  /**
+   * To exclude one or more property from `filter`
+   */
+  exclude?: string[] | string;
 }
 
 /**
@@ -50,43 +55,60 @@ export function getScopeFilterJsonSchemaFor(
  * a generic json schema allowing any "where" condition.
  *
  * @param modelCtor - The model constructor to build the filter schema for.
+ * @param options - Options to build the filter schema.
  */
 export function getFilterJsonSchemaFor(
   modelCtor: typeof Model,
   options: FilterSchemaOptions = {},
 ): JsonSchema {
+  let excluded: string[];
+  if (typeof options.exclude === 'string') {
+    excluded = [options.exclude];
+  } else {
+    excluded = options.exclude ?? [];
+  }
+  const properties: Record<string, JSONSchema6Definition> = {
+    offset: {
+      type: 'integer',
+      minimum: 0,
+    },
+
+    limit: {
+      type: 'integer',
+      minimum: 1,
+      examples: [100],
+    },
+
+    skip: {
+      type: 'integer',
+      minimum: 0,
+    },
+
+    order: {
+      type: 'array',
+      items: {
+        type: 'string',
+      },
+    },
+  };
+
+  if (!excluded.includes('where')) {
+    properties.where = getWhereJsonSchemaFor(modelCtor, options);
+  }
+  if (!excluded.includes('fields')) {
+    properties.fields = getFieldsJsonSchemaFor(modelCtor, options);
+  }
+
+  // Remove excluded properties
+  for (const p of excluded) {
+    delete properties[p];
+  }
+
   const schema: JsonSchema = {
     ...(options.setTitle !== false && {
       title: `${modelCtor.modelName}.Filter`,
     }),
-    properties: {
-      where: getWhereJsonSchemaFor(modelCtor, options),
-
-      fields: getFieldsJsonSchemaFor(modelCtor, options),
-
-      offset: {
-        type: 'integer',
-        minimum: 0,
-      },
-
-      limit: {
-        type: 'integer',
-        minimum: 1,
-        examples: [100],
-      },
-
-      skip: {
-        type: 'integer',
-        minimum: 0,
-      },
-
-      order: {
-        type: 'array',
-        items: {
-          type: 'string',
-        },
-      },
-    },
+    properties,
     additionalProperties: false,
   };
 

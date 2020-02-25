@@ -4,6 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
+  FilterSchemaOptions,
   getFilterJsonSchemaFor,
   getWhereJsonSchemaFor,
   Model,
@@ -19,9 +20,13 @@ import {SchemaObject} from './types';
  * a generic json schema allowing any "where" condition.
  *
  * @param modelCtor - The model constructor to build the filter schema for.
+ * @param options - Options to build the filter schema.
  */
-export function getFilterSchemaFor(modelCtor: typeof Model): SchemaObject {
-  const jsonSchema = getFilterJsonSchemaFor(modelCtor);
+export function getFilterSchemaFor(
+  modelCtor: typeof Model,
+  options?: FilterSchemaOptions,
+): SchemaObject {
+  const jsonSchema = getFilterJsonSchemaFor(modelCtor, options);
   const schema = jsonToSchemaObject(jsonSchema);
   return schema;
 }
