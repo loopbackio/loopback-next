@@ -48,6 +48,10 @@ module.exports = class Lb3ModelImporter extends BaseGenerator {
       this.destinationPath(),
       this.artifactInfo.outDir,
     );
+    this.artifactInfo.modelDir = path.resolve(
+      this.artifactInfo.rootDir,
+      utils.modelsDir,
+    );
     return super.setOptions();
   }
 
@@ -99,6 +103,14 @@ Learn more at https://loopback.io/doc/en/lb4/Importing-LB3-models.html
     this.modelNames = answers.modelNames;
   }
 
+  async loadExistingLb4Models() {
+    debug(`model list dir ${this.artifactInfo.modelDir}`);
+    this.existingLb4ModelNames = await utils.getArtifactList(
+      this.artifactInfo.modelDir,
+      'model',
+    );
+  }
+
   async migrateSelectedModels() {
     if (this.shouldExit()) return;
     this.modelFiles = [];
@@ -136,6 +148,20 @@ Learn more at https://loopback.io/doc/en/lb4/Importing-LB3-models.html
     );
     debug('LB4 model data', templateData);
 
+    if (!templateData.isModelBaseBuiltin) {
+      const baseName = templateData.modelBaseClass;
+      if (
+        !this.existingLb4ModelNames.includes(baseName) &&
+        !this.modelNames.includes(baseName)
+      ) {
+        this.log(
+          'Adding %s (base of %s) to the list of imported models.',
+          chalk.yellow(baseName),
+          chalk.yellow(name),
+        );
+        this.modelNames.push(baseName);
+      }
+    }
     const fileName = utils.getModelFileName(name);
     const fullTargetPath = path.resolve(this.artifactInfo.relPath, fileName);
     debug('Model %s output file', name, fullTargetPath);

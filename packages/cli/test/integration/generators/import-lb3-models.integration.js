@@ -104,12 +104,7 @@ describe('lb4 import-lb3-models', function() {
       .inDir(SANDBOX_PATH, () => testUtils.givenLBProject(SANDBOX_PATH))
       .withArguments(APP_USING_MODEL_INHERITANCE)
       .withPrompts({
-        modelNames: [
-          'Customer',
-          // FIXME: generator should include the following models automatically
-          'User',
-          'UserBase',
-        ],
+        modelNames: ['Customer'],
       })
       .withOptions({outDir});
 
