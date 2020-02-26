@@ -75,7 +75,7 @@
     "yeoman-generator": "^4.6.0"
   },
   "scripts": {
-    "test": "lb-mocha \"test/**/*.js\"",
+    "test": "lb-mocha --lang en_US.UTF-8 \"test/**/*.js\"",
     "smoke-test": "lb-mocha --allow-console-logs \"smoke-test/**/*.smoke.js\"",
     "build:globalize": "slt-globalize -e && git add \"intl/en/messages.json\""
   },
