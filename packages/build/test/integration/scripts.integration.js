@@ -266,6 +266,18 @@ describe('mocha', function() {
     );
   });
 
+  it('honors --lang option', () => {
+    const LANG = process.env.LANG;
+    const run = require('../../bin/run-mocha');
+    const command = run(
+      ['node', 'bin/run-mocha', '--lang', 'fr', '"dist/__tests__"'],
+      true,
+    );
+    assert.equal(process.env.LANG, 'fr');
+    assert(command.indexOf('--lang fr') === -1, '--lang fr should be removed');
+    process.env.LANG = LANG;
+  });
+
   it('loads .mocharc.json specific project file', () => {
     const run = require('../../bin/run-mocha');
     const buitInMochaOptsPath = path.join(
