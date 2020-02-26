@@ -4,6 +4,8 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {MetadataInspector, ParameterDecoratorFactory} from '@loopback/core';
+import {FilterSchemaOptions, Model} from '@loopback/repository-json-schema';
+import {getFilterSchemaFor, getWhereSchemaFor} from '../filter-schema';
 import {resolveSchema} from '../generate-schema';
 import {OAI3Keys} from '../keys';
 import {
@@ -437,6 +439,53 @@ export namespace param {
       schema: {type: 'array', items: itemSpec},
     });
   };
+
+  /**
+   * Sugar decorator for `filter` query parameter
+   *
+   * @example
+   * ```ts
+   * async find(
+   *   @param.filter(modelCtor)) filter?: Filter<T>,
+   * ): Promise<(T & Relations)[]> {
+   *   // ...
+   * }
+   * ```
+   * @param modelCtor - Model class
+   * @param options - Options to customize the parameter name or filter schema
+   *
+   */
+  export function filter(
+    modelCtor: typeof Model,
+    options?: string | (FilterSchemaOptions & {name?: string}),
+  ) {
+    let name = 'filter';
+    if (typeof options === 'string') {
+      name = options;
+      options = {};
+    }
+    name = options?.name ?? name;
+    return param.query.object(name, getFilterSchemaFor(modelCtor, options));
+  }
+
+  /**
+   * Sugar decorator for `where` query parameter
+   *
+   * @example
+   * ```ts
+   * async count(
+   *   @param.where(modelCtor)) where?: Where<T>,
+   * ): Promise<Count> {
+   *   // ...
+   * }
+   * ```
+   * @param modelCtor - Model class
+   * @param name - Custom name for the parameter, default to `where`
+   *
+   */
+  export function where(modelCtor: typeof Model, name = 'where') {
+    return param.query.object(name, getWhereSchemaFor(modelCtor));
+  }
 }
 
 interface ParamShortcutOptions {
