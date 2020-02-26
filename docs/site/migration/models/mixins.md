@@ -507,7 +507,7 @@ import {param, get, getModelSchemaRef} from '@loopback/rest';
 
 export interface FindByTitleControllerMixinOptions {
   basePath: string;
-  modelClass: Constructor<{}>;
+  modelClass: Constructor<object>;
   modelClassName: string;
 }
 
@@ -520,7 +520,7 @@ export function FindByTitleControllerMixin<
       super(...args);
     }
 
-    @get(options.basePath + '/findByTitle/{title}', {
+    @get(`${options.basePath}/findByTitle/{title}`, {
       responses: {
         '200': {
           description: `Array of ${options.modelClassName} model instances`,
