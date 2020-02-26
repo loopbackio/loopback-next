@@ -82,6 +82,10 @@ The **server/model-config.json** needs to contain:
 
 ```
 
+Please see
+[Reference mixins in model-config.js](https://loopback.io/doc/en/lb3/Defining-mixins.html#reference-mixins-in-model-configjs)
+for a short explanation of this file.
+
 ### Applying The category.js Mixin To A Model
 
 To extend the model `Note` with the **category.js** mixin, we need to add a
@@ -122,7 +126,7 @@ In LoopBack 4, a developer is able to create a model property mixin by:
 
 ### Defining The Model Property Mixin Class Factory Function
 
-This mixin class factory function `addCategoryPropertyMixin` in
+This mixin class factory function `AddCategoryPropertyMixin` in
 **src/mixins/categoryPropertyMixin.ts** adds the required property **category**
 to any model.
 
@@ -133,7 +137,7 @@ import {Constructor} from '@loopback/context';
 
 import {property} from '@loopback/repository';
 
-export function addCategoryPropertyMixin<T extends Constructor<any>>(
+export function AddCategoryPropertyMixin<T extends Constructor<any>>(
   superClass: T,
 ) {
   class MixedModel extends superClass {
@@ -196,7 +200,7 @@ export interface NoteRelations {
 export type NoteWithRelations = Note & NoteRelations;
 ```
 
-### Adjusting The Model File To Use addCategoryPropertyMixin
+### Adjusting The Model File To Use AddCategoryPropertyMixin
 
 Before we use the mixin class factory function:
 
@@ -242,7 +246,7 @@ export type NoteWithRelations = Note & NoteRelations;
 
 Then,
 
-- import the `addCategoryPropertyMixin` mixin
+- import the `AddCategoryPropertyMixin` mixin
 - declare a class `Note` which extends the class returned from the mixin
   function that takes in the `TempNote` superclass an input
 - add the `export` directive and the **@model()** decorator to the `Note` class
@@ -253,7 +257,7 @@ Then,
 
 ```ts
 import {Entity, model, property} from '@loopback/repository';
-import {addCategoryPropertyMixin} from '../mixins/categoryPropertyMixin';
+import {AddCategoryPropertyMixin} from '../mixins/categoryPropertyMixin';
 
 class TempNote extends Entity {
   @property({
@@ -280,7 +284,7 @@ class TempNote extends Entity {
 }
 
 @model()
-export class Note extends addCategoryPropertyMixin(TempNote) {
+export class Note extends AddCategoryPropertyMixin(TempNote) {
   constructor(data?: Partial<Note>) {
     super(data);
   }
@@ -316,7 +320,7 @@ mixin by:
 - updating the model's json file to include the mixin's name (and options object
   or boolean)
 
-### Defining The Model Property Mixin findByTitle.js
+### Defining The Model Method Mixin findByTitle.js
 
 The developer defines a custom model method/remote method mixin in
 **common/mixins/findByTitle.js** which adds a custom method `findByTitle` to any
@@ -361,41 +365,8 @@ module.exports = function(Model, options) {
 
 For a model named `Note`, this will expose an endpoint of `/Notes/findByTitle`.
 
-### Updating model-config.json
-
-The **server/model-config.json** needs to contain:
-
-- the locations of all **models**
-- the location of all **mixins**
-- the entry of the model that receives the mixin content (for this example Note)
-
-{% include code-caption.html content="server/model-config.json" %}
-
-```
-{
-  "_meta": {
-    "sources": [
-      "loopback/common/models",
-      "loopback/server/models",
-      "../common/models",
-      "./models"
-    ],
-    "mixins": [
-      "loopback/common/mixins",
-      "loopback/server/mixins",
-      "../common/mixins",
-      "./mixins"
-    ]
-  },
-
- // ... other entries
-
-  "Note": {
-    "dataSource": "db"
-  }
-}
-
-```
+Ensure **model-config.json** is set up properly as specified earlier in
+[Updating model-config.json](#updating-model-config.json)
 
 ### Applying The findByTitle.js Mixin To A Model
 
@@ -481,14 +452,16 @@ method to any repository.
 
 ```ts
 import {Constructor} from '@loopback/context';
-
 import {Model} from '@loopback/repository';
 import {FindByTitleInterface} from './findByTitleInterface';
-
+/*
+ * This function adds a new method 'findByTitle' to a repository class
+ * where 'M' is a model and 'R' is DefaultCrudRepository
+ */
 export function FindByTitleRepositoryMixin<
   M extends Model,
-  T extends Constructor<any>
->(superClass: T) {
+  R extends Constructor<any>
+>(superClass: R) {
   return class extends superClass implements FindByTitleInterface<M> {
     async findByTitle(title: string): Promise<M[]> {
       const titleFilter = {
@@ -496,8 +469,7 @@ export function FindByTitleRepositoryMixin<
           title: title,
         },
       };
-      const foundItems = await this.find(titleFilter);
-      return foundItems;
+      return await this.find(titleFilter);
     }
   };
 }
@@ -525,7 +497,7 @@ export class NoteRepository extends DefaultCrudRepository<
 
 Import the `FindByTitleRepositoryMixin` mixin class factory function, and adjust
 the declaration of the `NoteRepository` class to extend the class returned from
-the mixin function that takes in the `DefaultCrudRepository` superclass an
+the mixin function that takes in the `DefaultCrudRepository` superclass as
 input.
 
 {% include code-caption.html content="src/repositories/note.repository.ts" %}
@@ -599,9 +571,7 @@ export function FindByTitleControllerMixin<
       },
     })
     async findByTitle(@param.path.string('title') title: string): Promise<[M]> {
-      let foundItems = await this.repository.findByTitle(title);
-
-      return foundItems;
+      return await this.repository.findByTitle(title);
     }
   }
 
