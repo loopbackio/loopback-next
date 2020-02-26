@@ -28,7 +28,7 @@
 		"eslint-plugin-mocha": "^6.3.0",
 		"fs-extra": "^8.1.0",
 		"glob": "^7.1.6",
-		"mocha": "^7.0.1",
+		"mocha": "^7.1.0",
 		"nyc": "^15.0.0",
 		"prettier": "^1.19.1",
 		"rimraf": "^3.0.2",
