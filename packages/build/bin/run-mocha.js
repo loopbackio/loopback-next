@@ -52,6 +52,13 @@ function run(argv, options) {
     mochaOpts.splice(allowConsoleLogsIx, 1);
   }
 
+  // Allow `--lang en_US.UTF-8`
+  const lang = mochaOpts.indexOf('--lang');
+  if (lang !== -1) {
+    process.env.LANG = mochaOpts[lang + 1];
+    mochaOpts.splice(lang, 2);
+  }
+
   const args = [...mochaOpts];
 
   return utils.runCLI('mocha/bin/mocha', args, options);
