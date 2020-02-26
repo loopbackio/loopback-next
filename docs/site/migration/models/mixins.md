@@ -8,8 +8,9 @@ permalink: /doc/en/lb4/migration-models-mixins.html
 
 ## Introduction
 
-This document will guide you in migrating custom model mixins, and custom method
-mixins in LoopBack 3 to their equivalent implementations in LoopBack 4.
+This document will guide you in migrating custom model mixins, and custom
+method/remote method mixins in LoopBack 3 to their equivalent implementations in
+LoopBack 4.
 
 For an understanding of how models in LoopBack 3 are now architectually
 decoupled into 3 classes (model, repository, and controller) please read
@@ -120,9 +121,26 @@ the mixin.
 
 In LoopBack 4, a developer is able to create a model property mixin by:
 
+- creating a base model class which extends `Entity`
 - placing the mixin class factory function in a separate file
 - generating a model using the CLI as usual
 - adjusting the model file to make use of the mixin class factory function
+
+### Defining A BaseModel Class Which Extends Entity
+
+Let's define a base model class `BaseModel` in **src/models/baseModel.ts**. It
+will be used an input to the mixin later.
+
+{% include code-caption.html content="src/models/baseModel.ts" %}
+
+```ts
+import {Entity} from '@loopback/repository';
+export class BaseModel extends Entity {}
+```
+
+This is necessary because the
+[Entity](https://github.com/strongloop/loopback-next/blob/master/packages/repository/src/model.ts#L276)
+class is abstract and doesn't have a constructor.
 
 ### Defining The Model Property Mixin Class Factory Function
 
@@ -202,92 +220,43 @@ export type NoteWithRelations = Note & NoteRelations;
 
 ### Adjusting The Model File To Use AddCategoryPropertyMixin
 
-Before we use the mixin class factory function:
+The model file only requires a few adjustments:
 
-- rename this class to `TempNote`
-- remove the class' `export` directive
-- remove its **@model()** decorator
-- Leave the `NoteRelations` interface and the `NoteWithRelations` type alone for
-  now.
-
-{% include code-caption.html content="src/models/note.model.ts" %}
-
-```ts
-class TempNote extends Entity {
-  @property({
-    type: 'number',
-    id: true,
-    generated: true,
-  })
-  id?: number;
-
-  @property({
-    type: 'string',
-    required: true,
-  })
-  title: string;
-
-  @property({
-    type: 'string',
-  })
-  content?: string;
-
-  constructor(data?: Partial<TempNote>) {
-    super(data);
-  }
-}
-
-export interface NoteRelations {
-  // describe navigational properties here
-}
-
-export type NoteWithRelations = Note & NoteRelations;
-```
-
-Then,
-
+- import the `BaseModel` class
 - import the `AddCategoryPropertyMixin` mixin
-- declare a class `Note` which extends the class returned from the mixin
-  function that takes in the `TempNote` superclass an input
-- add the `export` directive and the **@model()** decorator to the `Note` class
-- move the `NoteRelations` interface and the `NoteWithRelations` type to the
-  bottom
+- Change the class declaration of `Note` so that it extends the class returned
+  from the mixin function which takes in the `BaseModel` superclass an input
 
 {% include code-caption.html content="src/models/note.model.ts" %}
 
 ```ts
-import {Entity, model, property} from '@loopback/repository';
+import {model, property} from '@loopback/repository';
 import {AddCategoryPropertyMixin} from '../mixins/categoryPropertyMixin';
-
-class TempNote extends Entity {
-  @property({
-    type: 'number',
-    id: true,
-    generated: true,
-  })
-  id?: number;
-
-  @property({
-    type: 'string',
-    required: true,
-  })
-  title: string;
-
-  @property({
-    type: 'string',
-  })
-  content?: string;
-
-  constructor(data?: Partial<TempNote>) {
-    super(data);
-  }
-}
+import {BaseModel} from './baseModel';
 
 @model()
-export class Note extends AddCategoryPropertyMixin(TempNote) {
+export class Note extends AddCategoryPropertyMixin(BaseModel) {
   constructor(data?: Partial<Note>) {
     super(data);
   }
+
+  @property({
+    type: 'number',
+    id: true,
+    generated: true,
+  })
+  id?: number;
+
+  @property({
+    type: 'string',
+    required: true,
+  })
+  title: string;
+
+  @property({
+    type: 'string',
+  })
+  content?: string;
 }
 
 export interface NoteRelations {
@@ -452,8 +421,10 @@ method to any repository.
 
 ```ts
 import {Constructor} from '@loopback/context';
+
 import {Model} from '@loopback/repository';
 import {FindByTitleInterface} from './findByTitleInterface';
+
 /*
  * This function adds a new method 'findByTitle' to a repository class
  * where 'M' is a model and 'R' is DefaultCrudRepository
@@ -495,10 +466,12 @@ export class NoteRepository extends DefaultCrudRepository<
 
 ### Adjust NoteRepository To Use FindByTitleRepositoryMixin
 
-Import the `FindByTitleRepositoryMixin` mixin class factory function, and adjust
-the declaration of the `NoteRepository` class to extend the class returned from
-the mixin function that takes in the `DefaultCrudRepository` superclass as
-input.
+The repository file only requires a few adjustments:
+
+- import the `FindByTitleRepositoryMixin` mixin class factory function
+- adjust the declaration of the `NoteRepository` class to extend the class
+  returned from the mixin function which takes in the `DefaultCrudRepository`
+  superclass as input.
 
 {% include code-caption.html content="src/repositories/note.repository.ts" %}
 
@@ -538,7 +511,7 @@ import {Model} from '@loopback/repository';
 import {FindByTitleInterface} from './findByTitleInterface';
 import {param, get, getModelSchemaRef} from '@loopback/rest';
 
-export interface FindByTitleControllerMixinParms {
+export interface FindByTitleControllerMixinOptions {
   basePath: string;
   modelClass: Constructor<{}>;
   modelClassName: string;
@@ -547,21 +520,21 @@ export interface FindByTitleControllerMixinParms {
 export function FindByTitleControllerMixin<
   M extends Model,
   T extends Constructor<any>
->(superClass: T, parms: FindByTitleControllerMixinParms) {
+>(superClass: T, options: FindByTitleControllerMixinOptions) {
   class MixedController extends superClass implements FindByTitleInterface<M> {
     constructor(...args: any[]) {
       super(...args);
     }
 
-    @get(parms.basePath + '/findByTitle/{title}', {
+    @get(options.basePath + '/findByTitle/{title}', {
       responses: {
         '200': {
-          description: `Array of ${parms.modelClassName} model instances`,
+          description: `Array of ${options.modelClassName} model instances`,
           content: {
             'application/json': {
               schema: {
                 type: 'array',
-                items: getModelSchemaRef(parms.modelClass, {
+                items: getModelSchemaRef(options.modelClass, {
                   includeRelations: true,
                 }),
               },
@@ -580,8 +553,8 @@ export function FindByTitleControllerMixin<
 ```
 
 To customize certain portions of the OpenAPI description of the endpoint, the
-mixin class factory function needs to accept some input parameters. We defined
-an interface `FindByTitleControllerMixinParms` to allow for this.
+mixin class factory function needs to accept some options. We defined an
+interface `FindByTitleControllerMixinOptions` to allow for this.
 
 It is also a good idea to give the injected repository (in the controller super
 class) a generic name like `this.respository` to keep things simple in the mixin
@@ -636,61 +609,17 @@ For a full example of a CLI-generated controller for a model `Todo`, see
 
 ### Adjust NoteController To Use FindByTitleControllerMixin
 
-Before we use the mixin class factory function
+The controller file only requires a few adjustments:
 
-- remove the class' `export` directive
-- rename this class to `TempNoteController`
+- import the `FindByTitleControllerMixinOptions` interface
+- import the `FindByTitleControllerMixin` mixin class factory function
+- prepare the options for the mixin
+- adjust the declaration of the `NoteController` class to extend the class
+  returned from the mixin function which takes in the `Object` superclass as
+  input.
+- pass the input options into the mixin
 - change the name of the injected repository from `noteRepository` to
   `repository` to keep things simple for the mixin class factory function
-
-{% include code-caption.html content="src/controllers/note.controller.ts" %}
-
-```ts
-class TempNoteController {
-  constructor(
-    @repository(NoteRepository)
-    public repository: NoteRepository,
-  ) {}
-
-  @post('/notes', {
-    responses: {
-      '200': {
-        description: 'Note model instance',
-        content: {'application/json': {schema: getModelSchemaRef(Note)}},
-      },
-    },
-  })
-  async create(
-    @requestBody({
-      content: {
-        'application/json': {
-          schema: getModelSchemaRef(Note, {
-            title: 'NewNote',
-            exclude: ['id'],
-          }),
-        },
-      },
-    })
-    note: Omit<Note, 'id'>,
-  ): Promise<Note> {
-    return this.repository.create(note);
-  }
-
-  // ...
-  // remaining CRUD endpoints (change repo name in these as well)
-  // ...
-}
-```
-
-The remaining steps are:
-
-- import the `FindByTitleControllerMixin` mixin class factory function
-- import the `FindByTitleControllerMixinParms` interface
-- prepare the input parameters for the mixin
-- declare a class `NoteController` which extends the class returned from the
-  mixin that takes `TempNoteController` superclass as input
-- add an `export` directive to `NoteController`
-- pass the input parameters into the mixin
 
 {% include code-caption.html content="src/controllers/note.controller.ts" %}
 
@@ -698,9 +627,10 @@ The remaining steps are:
 import {Note} from '../models';
 import {
   FindByTitleControllerMixin,
-  FindByTitleControllerMixinParms,
+  FindByTitleControllerMixinOptions,
 } from '../mixins/findByTitleControllerMixin';
 import {Constructor} from '@loopback/core';
+
 import {
   Count,
   CountSchema,
@@ -722,11 +652,22 @@ import {
 } from '@loopback/rest';
 import {NoteRepository} from '../repositories';
 
-class TempNoteController {
+const options: FindByTitleControllerMixinOptions = {
+  basePath: '/notes',
+  modelClass: Note,
+  modelClassName: 'Note',
+};
+
+export class NoteController extends FindByTitleControllerMixin<
+  Note,
+  Constructor<Object>
+>(Object, options) {
   constructor(
     @repository(NoteRepository)
     public repository: NoteRepository,
-  ) {}
+  ) {
+    super();
+  }
 
   @post('/notes', {
     responses: {
@@ -756,17 +697,6 @@ class TempNoteController {
   // remaining CRUD endpoints
   // ...
 }
-
-const mixinParms: FindByTitleControllerMixinParms = {
-  basePath: '/notes',
-  modelClass: Note,
-  modelClassName: 'Note',
-};
-
-export class NoteController extends FindByTitleControllerMixin<
-  Note,
-  Constructor<TempNoteController>
->(TempNoteController, mixinParms) {}
 ```
 
 We have now added the `findByTitle` method to a controller via a mixin class
