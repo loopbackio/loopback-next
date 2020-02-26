@@ -321,13 +321,7 @@ module.exports = function(Model, options) {
         title: title,
       },
     };
-    Model.find(titleFilter, function(err, foundItems) {
-      if (err) {
-        cb(err);
-      } else {
-        cb(null, foundItems);
-      }
-    });
+    Model.find(titleFilter, cb);
   };
 };
 ```
