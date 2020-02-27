@@ -17,7 +17,7 @@ import {
 } from '../common-types';
 import {EntityNotFoundError} from '../errors';
 import {Entity, Model, PropertyType} from '../model';
-import {Filter, Inclusion, Where} from '../query';
+import {Filter, Inclusion, Where, FilterExcludingWhere} from '../query';
 import {
   BelongsToAccessor,
   BelongsToDefinition,
@@ -396,7 +396,7 @@ export class DefaultCrudRepository<
 
   async findById(
     id: ID,
-    filter?: Filter<T>,
+    filter?: FilterExcludingWhere<T>,
     options?: Options,
   ): Promise<T & Relations> {
     const include = filter?.include;

@@ -222,6 +222,14 @@ export interface Filter<MT extends object = AnyObject> {
 }
 
 /**
+ * Filter without `where` property
+ */
+export type FilterExcludingWhere<MT extends object = AnyObject> = Omit<
+  Filter<MT>,
+  'where'
+>;
+
+/**
  * TypeGuard for Filter
  * @param candidate
  */
