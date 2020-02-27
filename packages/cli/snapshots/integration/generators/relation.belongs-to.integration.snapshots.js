@@ -7,9 +7,7 @@
 
 'use strict';
 
-exports[
-  `lb4 relation checks generated source class repository  answers {"relationType":"belongsTo","sourceModel":"Order","destinationModel":"Customer"} generates Order repository file with different inputs 1`
-] = `
+exports[`lb4 relation checks generated source class repository answers {"relationType":"belongsTo","sourceModel":"Order","destinationModel":"Customer"} generates Order repository file with different inputs 1`] = `
 import {DefaultCrudRepository, BelongsToAccessor, repository} from '@loopback/repository';
 import {Order, Customer} from '../models';
 import {DbDataSource} from '../datasources';
@@ -36,9 +34,8 @@ export class OrderRepository extends DefaultCrudRepository<
 
 `;
 
-exports[
-  `lb4 relation checks generated source class repository  answers {"relationType":"belongsTo","sourceModel":"OrderClass","destinationModel":"CustomerClass","relationName":"customer","registerInclusionResolver":true} generates OrderClass repository file with different inputs 1`
-] = `
+
+exports[`lb4 relation checks generated source class repository answers {"relationType":"belongsTo","sourceModel":"OrderClass","destinationModel":"CustomerClass","relationName":"customer","registerInclusionResolver":true} generates OrderClass repository file with different inputs 1`] = `
 import {DefaultCrudRepository, repository, BelongsToAccessor} from '@loopback/repository';
 import {OrderClass, CustomerClass} from '../models';
 import {MyDBDataSource} from '../datasources';
@@ -61,9 +58,8 @@ export class OrderClassRepository extends DefaultCrudRepository<
 
 `;
 
-exports[
-  `lb4 relation checks generated source class repository  answers {"relationType":"belongsTo","sourceModel":"OrderClassType","destinationModel":"CustomerClassType","relationName":"customer","registerInclusionResolver":false} generates OrderClassType repository file with different inputs 1`
-] = `
+
+exports[`lb4 relation checks generated source class repository answers {"relationType":"belongsTo","sourceModel":"OrderClassType","destinationModel":"CustomerClassType","relationName":"customer","registerInclusionResolver":false} generates OrderClassType repository file with different inputs 1`] = `
 import {DefaultCrudRepository, repository, BelongsToAccessor} from '@loopback/repository';
 import {OrderClassType, CustomerClassType} from '../models';
 import {MyDBDataSource} from '../datasources';
@@ -85,9 +81,8 @@ export class OrderClassTypeRepository extends DefaultCrudRepository<
 
 `;
 
-exports[
-  `lb4 relation checks if the controller file created  answers {"relationType":"belongsTo","sourceModel":"Order","destinationModel":"Customer"} checks controller content with belongsTo relation 1`
-] = `
+
+exports[`lb4 relation checks if the controller file created  answers {"relationType":"belongsTo","sourceModel":"Order","destinationModel":"Customer"} checks controller content with belongsTo relation 1`] = `
 import {
   repository,
 } from '@loopback/repository';
@@ -129,16 +124,14 @@ export class OrderCustomerController {
 
 `;
 
-exports[
-  `lb4 relation checks if the controller file created  answers {"relationType":"belongsTo","sourceModel":"Order","destinationModel":"Customer"} the new controller file added to index.ts file 1`
-] = `
+
+exports[`lb4 relation checks if the controller file created  answers {"relationType":"belongsTo","sourceModel":"Order","destinationModel":"Customer"} the new controller file added to index.ts file 1`] = `
 export * from './order-customer.controller';
 
 `;
 
-exports[
-  `lb4 relation checks if the controller file created  answers {"relationType":"belongsTo","sourceModel":"OrderClass","destinationModel":"CustomerClass","relationName":"my_customer"} checks controller content with belongsTo relation 1`
-] = `
+
+exports[`lb4 relation checks if the controller file created  answers {"relationType":"belongsTo","sourceModel":"OrderClass","destinationModel":"CustomerClass","relationName":"my_customer"} checks controller content with belongsTo relation 1`] = `
 import {
   repository,
 } from '@loopback/repository';
@@ -180,16 +173,14 @@ export class OrderClassCustomerClassController {
 
 `;
 
-exports[
-  `lb4 relation checks if the controller file created  answers {"relationType":"belongsTo","sourceModel":"OrderClass","destinationModel":"CustomerClass","relationName":"my_customer"} the new controller file added to index.ts file 1`
-] = `
+
+exports[`lb4 relation checks if the controller file created  answers {"relationType":"belongsTo","sourceModel":"OrderClass","destinationModel":"CustomerClass","relationName":"my_customer"} the new controller file added to index.ts file 1`] = `
 export * from './order-class-customer-class.controller';
 
 `;
 
-exports[
-  `lb4 relation generates model relation for existing property name verifies that a preexisting property will be overwritten 1`
-] = `
+
+exports[`lb4 relation generates model relation for existing property name verifies that a preexisting property will be overwritten 1`] = `
 import {Entity, model, property, belongsTo} from '@loopback/repository';
 import {Customer} from './customer.model';
 
@@ -217,9 +208,8 @@ export class Order extends Entity {
 
 `;
 
-exports[
-  `lb4 relation generates model relation with custom relation name answers {"relationType":"belongsTo","sourceModel":"Order","destinationModel":"Customer","foreignKeyName":"customerId","relationName":"my_customer"} relation name should be my_customer 1`
-] = `
+
+exports[`lb4 relation generates model relation with custom relation name answers {"relationType":"belongsTo","sourceModel":"Order","destinationModel":"Customer","foreignKeyName":"customerId","relationName":"my_customer"} relation name should be my_customer 1`] = `
 import {Entity, model, property, belongsTo} from '@loopback/repository';
 import {Customer} from './customer.model';
 
@@ -247,9 +237,8 @@ export class Order extends Entity {
 
 `;
 
-exports[
-  `lb4 relation generates model relation with custom relation name answers {"relationType":"belongsTo","sourceModel":"OrderClass","destinationModel":"CustomerClass","relationName":"my_customer"} relation name should be my_customer 1`
-] = `
+
+exports[`lb4 relation generates model relation with custom relation name answers {"relationType":"belongsTo","sourceModel":"OrderClass","destinationModel":"CustomerClass","relationName":"my_customer"} relation name should be my_customer 1`] = `
 import {Entity, model, property, belongsTo} from '@loopback/repository';
 import {CustomerClass} from './customer-class.model';
 
@@ -276,9 +265,8 @@ export class OrderClass extends Entity {
 
 `;
 
-exports[
-  `lb4 relation generates model relation with default values answers {"relationType":"belongsTo","sourceModel":"Order","destinationModel":"Customer"} has correct default imports 1`
-] = `
+
+exports[`lb4 relation generates model relation with default values answers {"relationType":"belongsTo","sourceModel":"Order","destinationModel":"Customer"} has correct default imports 1`] = `
 import {Entity, model, property, belongsTo} from '@loopback/repository';
 import {Customer} from './customer.model';
 
