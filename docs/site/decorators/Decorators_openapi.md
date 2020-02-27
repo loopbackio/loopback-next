@@ -794,3 +794,63 @@ This decorator does not affect the top-level `tags` section defined in the
 [OpenAPI Tag Object specification](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#tag-object).
 This decorator only affects the spec partial generated at the class level. You
 may find that your final tags also include a tag for the controller name.
+
+## Shortcuts for Filter and Where params
+
+CRUD APIs often expose REST endpoints that take `filter` and `where` query
+parameters. For example:
+
+```ts
+class TodoController {
+  async find(
+    @param.query.object('filter', getFilterSchemaFor(Todo))
+    filter?: Filter<Todo>,
+  ): Promise<Todo[]> {
+    return this.todoRepository.find(filter);
+  }
+
+  async findById(
+    @param.path.number('id') id: number,
+    @param.query.object('filter', getFilterSchemaFor(Todo))
+    filter?: Filter<Todo>,
+  ): Promise<Todo> {
+    return this.todoRepository.findById(id, filter);
+  }
+
+  async count(
+    @param.query.object('where', getWhereSchemaFor(Todo)) where?: Where<Todo>,
+  ): Promise<Count> {
+    return this.todoRepository.count(where);
+  }
+}
+```
+
+To simplify the parameter decoration for `filter` and `where`, we introduce two
+sugar decorators:
+
+- `@param.filter`: For a `filter` query parameter
+- `@param.where`: For a `where` query parameter
+
+Now the code from above can be refined as follows:
+
+```ts
+class TodoController {
+  async find(
+    @param.filter(Todo)
+    filter?: Filter<Todo>,
+  ): Promise<Todo[]> {
+    return this.todoRepository.find(filter);
+  }
+
+  async findById(
+    @param.path.number('id') id: number,
+    @param.filter(Todo, {exclude: 'where'}) filter?: FilterExcludingWhere<Todo>,
+  ): Promise<Todo> {
+    return this.todoRepository.findById(id, filter);
+  }
+
+  async count(@param.where(Todo) where?: Where<Todo>): Promise<Count> {
+    return this.todoRepository.count(where);
+  }
+}
+```
