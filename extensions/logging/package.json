@@ -21,7 +21,7 @@
     "@loopback/rest": "^2.0.0",
     "fluent-logger": "^3.4.1",
     "morgan": "^1.9.1",
-    "tslib": "^1.11.0",
+    "tslib": "^1.11.1",
     "winston": "^3.2.1",
     "winston-transport": "^4.3.0"
   },
