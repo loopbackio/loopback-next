@@ -241,7 +241,7 @@ from the path object.
 })
 async findById(
   @param.path.string('id') id: string,
-  @param.query.object('filter', getFilterSchemaFor(Note)) filter?: Filter<Note>
+  @param.filter(Note, {exclude: 'where'}) filter?: FilterExcludingWhere<Note>
 ): Promise<Note> {
   return this.noteRepository.findById(id, filter);
 }

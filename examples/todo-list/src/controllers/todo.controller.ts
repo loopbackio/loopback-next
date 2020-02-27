@@ -7,7 +7,6 @@ import {Filter, repository} from '@loopback/repository';
 import {
   del,
   get,
-  getFilterSchemaFor,
   getModelSchemaRef,
   param,
   patch,
@@ -58,7 +57,7 @@ export class TodoController {
   })
   async findTodoById(
     @param.path.number('id') id: number,
-    @param.query.object('filter', getFilterSchemaFor(Todo))
+    @param.filter(Todo)
     filter?: Filter<Todo>,
   ): Promise<Todo> {
     return this.todoRepository.findById(id, filter);
@@ -80,7 +79,7 @@ export class TodoController {
     },
   })
   async findTodos(
-    @param.query.object('filter', getFilterSchemaFor(Todo))
+    @param.filter(Todo)
     filter?: Filter<Todo>,
   ): Promise<Todo[]> {
     return this.todoRepository.find(filter);

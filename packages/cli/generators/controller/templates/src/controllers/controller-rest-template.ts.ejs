@@ -2,6 +2,7 @@ import {
   Count,
   CountSchema,
   Filter,
+  FilterExcludingWhere,
   repository,
   Where,
 } from '@loopback/repository';
@@ -59,7 +60,7 @@ export class <%= className %>Controller {
     },
   })
   async count(
-    @param.query.object('where', getWhereSchemaFor(<%= modelName %>)) where?: Where<<%= modelName %>>,
+    @param.where(<%= modelName %>) where?: Where<<%= modelName %>>,
   ): Promise<Count> {
     return this.<%= repositoryNameCamel %>.count(where);
   }
@@ -80,7 +81,7 @@ export class <%= className %>Controller {
     },
   })
   async find(
-    @param.query.object('filter', getFilterSchemaFor(<%= modelName %>)) filter?: Filter<<%= modelName %>>,
+    @param.filter(<%= modelName %>) filter?: Filter<<%= modelName %>>,
   ): Promise<<%= modelName %>[]> {
     return this.<%= repositoryNameCamel %>.find(filter);
   }
@@ -102,7 +103,7 @@ export class <%= className %>Controller {
       },
     })
     <%= modelVariableName %>: <%= modelName %>,
-    @param.query.object('where', getWhereSchemaFor(<%= modelName %>)) where?: Where<<%= modelName %>>,
+    @param.where(<%= modelName %>) where?: Where<<%= modelName %>>,
   ): Promise<Count> {
     return this.<%= repositoryNameCamel %>.updateAll(<%= modelVariableName %>, where);
   }
@@ -121,7 +122,7 @@ export class <%= className %>Controller {
   })
   async findById(
     @param.path.<%= idType %>('id') id: <%= idType %>,
-    @param.query.object('filter', getFilterSchemaFor(<%= modelName %>)) filter?: Filter<<%= modelName %>>
+    @param.filter(<%= modelName %>, {exclude: 'where'}) filter?: FilterExcludingWhere<<%= modelName %>>
   ): Promise<<%= modelName %>> {
     return this.<%= repositoryNameCamel %>.findById(id, filter);
   }
