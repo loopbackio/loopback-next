@@ -317,7 +317,7 @@ describe('lb4 relation', function() {
     }
   });
 
-  context('checks generated source class repository ', () => {
+  context('checks generated source class repository', () => {
     const promptArray = [
       {
         relationType: 'belongsTo',

@@ -7,9 +7,7 @@
 
 'use strict';
 
-exports[
-  `lb4 relation HasOne checks generated source class repository answers {"relationType":"hasOne","sourceModel":"Customer","destinationModel":"Address"} generates Customer repository file with different inputs 1`
-] = `
+exports[`lb4 relation HasOne checks generated source class repository answers {"relationType":"hasOne","sourceModel":"Customer","destinationModel":"Address"} generates Customer repository file with different inputs 1`] = `
 import {DefaultCrudRepository, repository, HasOneRepositoryFactory} from '@loopback/repository';
 import {Customer, Address} from '../models';
 import {DbDataSource} from '../datasources';
@@ -32,9 +30,8 @@ export class CustomerRepository extends DefaultCrudRepository<
 
 `;
 
-exports[
-  `lb4 relation HasOne checks generated source class repository answers {"relationType":"hasOne","sourceModel":"CustomerClass","destinationModel":"AddressClass","registerInclusionResolver":true} generates CustomerClass repository file with different inputs 1`
-] = `
+
+exports[`lb4 relation HasOne checks generated source class repository answers {"relationType":"hasOne","sourceModel":"CustomerClass","destinationModel":"AddressClass","registerInclusionResolver":true} generates CustomerClass repository file with different inputs 1`] = `
 import {DefaultCrudRepository, repository, HasOneRepositoryFactory} from '@loopback/repository';
 import {CustomerClass, AddressClass} from '../models';
 import {MyDBDataSource} from '../datasources';
@@ -57,9 +54,8 @@ export class CustomerClassRepository extends DefaultCrudRepository<
 
 `;
 
-exports[
-  `lb4 relation HasOne checks generated source class repository answers {"relationType":"hasOne","sourceModel":"CustomerClassType","destinationModel":"AddressClassType","registerInclusionResolver":false} generates CustomerClassType repository file with different inputs 1`
-] = `
+
+exports[`lb4 relation HasOne checks generated source class repository answers {"relationType":"hasOne","sourceModel":"CustomerClassType","destinationModel":"AddressClassType","registerInclusionResolver":false} generates CustomerClassType repository file with different inputs 1`] = `
 import {DefaultCrudRepository, repository, HasOneRepositoryFactory} from '@loopback/repository';
 import {CustomerClassType, AddressClassType} from '../models';
 import {MyDBDataSource} from '../datasources';
@@ -81,9 +77,8 @@ export class CustomerClassTypeRepository extends DefaultCrudRepository<
 
 `;
 
-exports[
-  `lb4 relation HasOne checks if the controller file created  answers {"relationType":"hasOne","sourceModel":"Customer","destinationModel":"Address"} checks controller content with hasOne relation 1`
-] = `
+
+exports[`lb4 relation HasOne checks if the controller file created  answers {"relationType":"hasOne","sourceModel":"Customer","destinationModel":"Address"} checks controller content with hasOne relation 1`] = `
 import {
   Count,
   CountSchema,
@@ -197,9 +192,8 @@ export class CustomerAddressController {
 
 `;
 
-exports[
-  `lb4 relation HasOne checks if the controller file created  answers {"relationType":"hasOne","sourceModel":"CustomerClass","destinationModel":"AddressClass","relationName":"myAddress"} checks controller content with hasOne relation 1`
-] = `
+
+exports[`lb4 relation HasOne checks if the controller file created  answers {"relationType":"hasOne","sourceModel":"CustomerClass","destinationModel":"AddressClass","relationName":"myAddress"} checks controller content with hasOne relation 1`] = `
 import {
   Count,
   CountSchema,
@@ -313,9 +307,8 @@ export class CustomerClassAddressClassController {
 
 `;
 
-exports[
-  `lb4 relation HasOne generates model relation with custom foreignKey answers {"relationType":"hasOne","sourceModel":"Customer","destinationModel":"Address","foreignKeyName":"mykey"} add the keyTo to the source model 1`
-] = `
+
+exports[`lb4 relation HasOne generates model relation with custom foreignKey answers {"relationType":"hasOne","sourceModel":"Customer","destinationModel":"Address","foreignKeyName":"mykey"} add the keyTo to the source model 1`] = `
 import {Entity, model, property, hasOne} from '@loopback/repository';
 import {Address} from './address.model';
 
@@ -343,9 +336,8 @@ export class Customer extends Entity {
 
 `;
 
-exports[
-  `lb4 relation HasOne generates model relation with custom foreignKey answers {"relationType":"hasOne","sourceModel":"Customer","destinationModel":"Address","foreignKeyName":"mykey"} add the keyTo to the source model 2`
-] = `
+
+exports[`lb4 relation HasOne generates model relation with custom foreignKey answers {"relationType":"hasOne","sourceModel":"Customer","destinationModel":"Address","foreignKeyName":"mykey"} add the keyTo to the source model 2`] = `
 import {Entity, model, property} from '@loopback/repository';
 
 @model()
@@ -374,9 +366,8 @@ export class Address extends Entity {
 
 `;
 
-exports[
-  `lb4 relation HasOne generates model relation with custom foreignKey answers {"relationType":"hasOne","sourceModel":"CustomerClass","destinationModel":"AddressClass","foreignKeyName":"mykey"} add the keyTo to the source model 1`
-] = `
+
+exports[`lb4 relation HasOne generates model relation with custom foreignKey answers {"relationType":"hasOne","sourceModel":"CustomerClass","destinationModel":"AddressClass","foreignKeyName":"mykey"} add the keyTo to the source model 1`] = `
 import {Entity, model, property, hasOne} from '@loopback/repository';
 import {AddressClass} from './address-class.model';
 
@@ -403,9 +394,8 @@ export class CustomerClass extends Entity {
 
 `;
 
-exports[
-  `lb4 relation HasOne generates model relation with custom foreignKey answers {"relationType":"hasOne","sourceModel":"CustomerClass","destinationModel":"AddressClass","foreignKeyName":"mykey"} add the keyTo to the source model 2`
-] = `
+
+exports[`lb4 relation HasOne generates model relation with custom foreignKey answers {"relationType":"hasOne","sourceModel":"CustomerClass","destinationModel":"AddressClass","foreignKeyName":"mykey"} add the keyTo to the source model 2`] = `
 import {Entity, model, property} from '@loopback/repository';
 
 @model()
@@ -433,9 +423,8 @@ export class AddressClass extends Entity {
 
 `;
 
-exports[
-  `lb4 relation HasOne generates model relation with custom foreignKey answers {"relationType":"hasOne","sourceModel":"CustomerClassType","destinationModel":"AddressClassType","foreignKeyName":"mykey"} add the keyTo to the source model 1`
-] = `
+
+exports[`lb4 relation HasOne generates model relation with custom foreignKey answers {"relationType":"hasOne","sourceModel":"CustomerClassType","destinationModel":"AddressClassType","foreignKeyName":"mykey"} add the keyTo to the source model 1`] = `
 import {Entity, model, property, hasOne} from '@loopback/repository';
 import {AddressClassType} from './address-class-type.model';
 
@@ -462,9 +451,8 @@ export class CustomerClassType extends Entity {
 
 `;
 
-exports[
-  `lb4 relation HasOne generates model relation with custom foreignKey answers {"relationType":"hasOne","sourceModel":"CustomerClassType","destinationModel":"AddressClassType","foreignKeyName":"mykey"} add the keyTo to the source model 2`
-] = `
+
+exports[`lb4 relation HasOne generates model relation with custom foreignKey answers {"relationType":"hasOne","sourceModel":"CustomerClassType","destinationModel":"AddressClassType","foreignKeyName":"mykey"} add the keyTo to the source model 2`] = `
 import {Entity, model, property} from '@loopback/repository';
 
 @model()
@@ -492,9 +480,8 @@ export class AddressClassType extends Entity {
 
 `;
 
-exports[
-  `lb4 relation HasOne generates model relation with custom relation name answers {"relationType":"hasOne","sourceModel":"Customer","destinationModel":"Address","relationName":"myAddress"} relation name should be myAddress 1`
-] = `
+
+exports[`lb4 relation HasOne generates model relation with custom relation name answers {"relationType":"hasOne","sourceModel":"Customer","destinationModel":"Address","relationName":"myAddress"} relation name should be myAddress 1`] = `
 import {Entity, model, property, hasOne} from '@loopback/repository';
 import {Address} from './address.model';
 
@@ -522,9 +509,8 @@ export class Customer extends Entity {
 
 `;
 
-exports[
-  `lb4 relation HasOne generates model relation with custom relation name answers {"relationType":"hasOne","sourceModel":"Customer","destinationModel":"Address","relationName":"myAddress"} relation name should be myAddress 2`
-] = `
+
+exports[`lb4 relation HasOne generates model relation with custom relation name answers {"relationType":"hasOne","sourceModel":"Customer","destinationModel":"Address","relationName":"myAddress"} relation name should be myAddress 2`] = `
 import {Entity, model, property} from '@loopback/repository';
 
 @model()
@@ -553,9 +539,8 @@ export class Address extends Entity {
 
 `;
 
-exports[
-  `lb4 relation HasOne generates model relation with custom relation name answers {"relationType":"hasOne","sourceModel":"CustomerClass","destinationModel":"AddressClass","relationName":"myAddress"} relation name should be myAddress 1`
-] = `
+
+exports[`lb4 relation HasOne generates model relation with custom relation name answers {"relationType":"hasOne","sourceModel":"CustomerClass","destinationModel":"AddressClass","relationName":"myAddress"} relation name should be myAddress 1`] = `
 import {Entity, model, property, hasOne} from '@loopback/repository';
 import {AddressClass} from './address-class.model';
 
@@ -582,9 +567,8 @@ export class CustomerClass extends Entity {
 
 `;
 
-exports[
-  `lb4 relation HasOne generates model relation with custom relation name answers {"relationType":"hasOne","sourceModel":"CustomerClass","destinationModel":"AddressClass","relationName":"myAddress"} relation name should be myAddress 2`
-] = `
+
+exports[`lb4 relation HasOne generates model relation with custom relation name answers {"relationType":"hasOne","sourceModel":"CustomerClass","destinationModel":"AddressClass","relationName":"myAddress"} relation name should be myAddress 2`] = `
 import {Entity, model, property} from '@loopback/repository';
 
 @model()
@@ -612,9 +596,8 @@ export class AddressClass extends Entity {
 
 `;
 
-exports[
-  `lb4 relation HasOne generates model relation with custom relation name answers {"relationType":"hasOne","sourceModel":"CustomerClassType","destinationModel":"AddressClassType","relationName":"myAddress"} relation name should be myAddress 1`
-] = `
+
+exports[`lb4 relation HasOne generates model relation with custom relation name answers {"relationType":"hasOne","sourceModel":"CustomerClassType","destinationModel":"AddressClassType","relationName":"myAddress"} relation name should be myAddress 1`] = `
 import {Entity, model, property, hasOne} from '@loopback/repository';
 import {AddressClassType} from './address-class-type.model';
 
@@ -641,9 +624,8 @@ export class CustomerClassType extends Entity {
 
 `;
 
-exports[
-  `lb4 relation HasOne generates model relation with custom relation name answers {"relationType":"hasOne","sourceModel":"CustomerClassType","destinationModel":"AddressClassType","relationName":"myAddress"} relation name should be myAddress 2`
-] = `
+
+exports[`lb4 relation HasOne generates model relation with custom relation name answers {"relationType":"hasOne","sourceModel":"CustomerClassType","destinationModel":"AddressClassType","relationName":"myAddress"} relation name should be myAddress 2`] = `
 import {Entity, model, property} from '@loopback/repository';
 
 @model()
@@ -671,9 +653,8 @@ export class AddressClassType extends Entity {
 
 `;
 
-exports[
-  `lb4 relation HasOne generates model relation with default values answers {"relationType":"hasOne","sourceModel":"Customer","destinationModel":"Address"} has correct default imports 1`
-] = `
+
+exports[`lb4 relation HasOne generates model relation with default values answers {"relationType":"hasOne","sourceModel":"Customer","destinationModel":"Address"} has correct default imports 1`] = `
 import {Entity, model, property, hasOne} from '@loopback/repository';
 import {Address} from './address.model';
 
@@ -701,9 +682,8 @@ export class Customer extends Entity {
 
 `;
 
-exports[
-  `lb4 relation HasOne generates model relation with default values answers {"relationType":"hasOne","sourceModel":"CustomerClass","destinationModel":"AddressClass"} has correct default imports 1`
-] = `
+
+exports[`lb4 relation HasOne generates model relation with default values answers {"relationType":"hasOne","sourceModel":"CustomerClass","destinationModel":"AddressClass"} has correct default imports 1`] = `
 import {Entity, model, property, hasOne} from '@loopback/repository';
 import {AddressClass} from './address-class.model';
 
@@ -730,9 +710,8 @@ export class CustomerClass extends Entity {
 
 `;
 
-exports[
-  `lb4 relation HasOne generates model relation with default values answers {"relationType":"hasOne","sourceModel":"CustomerClassType","destinationModel":"AddressClassType"} has correct default imports 1`
-] = `
+
+exports[`lb4 relation HasOne generates model relation with default values answers {"relationType":"hasOne","sourceModel":"CustomerClassType","destinationModel":"AddressClassType"} has correct default imports 1`] = `
 import {Entity, model, property, hasOne} from '@loopback/repository';
 import {AddressClassType} from './address-class-type.model';
 
