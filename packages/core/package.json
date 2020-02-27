@@ -22,7 +22,7 @@
     "@loopback/context": "^2.1.1",
     "debug": "^4.1.1",
     "p-event": "^4.1.0",
-    "tslib": "^1.11.0"
+    "tslib": "^1.11.1"
   },
   "devDependencies": {
     "@loopback/build": "^3.1.1",
