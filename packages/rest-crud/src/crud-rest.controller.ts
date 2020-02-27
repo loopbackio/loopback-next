@@ -10,6 +10,7 @@ import {
   Entity,
   EntityCrudRepository,
   Filter,
+  FilterExcludingWhere,
   Where,
 } from '@loopback/repository';
 import {
@@ -19,7 +20,6 @@ import {
   getFilterSchemaFor,
   getJsonSchema,
   getModelSchemaRef,
-  getWhereSchemaFor,
   JsonSchemaOptions,
   jsonToSchemaObject,
   MediaTypeObject,
@@ -172,7 +172,7 @@ export function defineCrudRestController<
       }),
     })
     async find(
-      @param.query.object('filter', getFilterSchemaFor(modelCtor))
+      @param.filter(modelCtor)
       filter?: Filter<T>,
     ): Promise<(T & Relations)[]> {
       return this.repository.find(filter);
@@ -185,8 +185,11 @@ export function defineCrudRestController<
     })
     async findById(
       @param(idPathParam) id: IdType,
-      @param.query.object('filter', getFilterSchemaFor(modelCtor))
-      filter?: Filter<T>,
+      @param.query.object(
+        'filter',
+        getFilterSchemaFor(modelCtor, {exclude: 'where'}),
+      )
+      filter?: FilterExcludingWhere<T>,
     ): Promise<T & Relations> {
       return this.repository.findById(id, filter);
     }
@@ -195,7 +198,7 @@ export function defineCrudRestController<
       ...response(200, `${modelName} count`, {schema: CountSchema}),
     })
     async count(
-      @param.query.object('where', getWhereSchemaFor(modelCtor))
+      @param.where(modelCtor)
       where?: Where<T>,
     ): Promise<Count> {
       return this.repository.count(where);
@@ -208,7 +211,7 @@ export function defineCrudRestController<
     })
     async updateAll(
       @body(modelCtor, {partial: true}) data: Partial<T>,
-      @param.query.object('where', getWhereSchemaFor(modelCtor))
+      @param.where(modelCtor)
       where?: Where<T>,
     ): Promise<Count> {
       return this.repository.updateAll(

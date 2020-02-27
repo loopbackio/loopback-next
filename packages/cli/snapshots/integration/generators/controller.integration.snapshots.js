@@ -12,6 +12,7 @@ import {
   Count,
   CountSchema,
   Filter,
+  FilterExcludingWhere,
   repository,
   Where,
 } from '@loopback/repository';
@@ -69,7 +70,7 @@ export class ProductReviewController {
     },
   })
   async count(
-    @param.query.object('where', getWhereSchemaFor(ProductReview)) where?: Where<ProductReview>,
+    @param.where(ProductReview) where?: Where<ProductReview>,
   ): Promise<Count> {
     return this.barRepository.count(where);
   }
@@ -90,7 +91,7 @@ export class ProductReviewController {
     },
   })
   async find(
-    @param.query.object('filter', getFilterSchemaFor(ProductReview)) filter?: Filter<ProductReview>,
+    @param.filter(ProductReview) filter?: Filter<ProductReview>,
   ): Promise<ProductReview[]> {
     return this.barRepository.find(filter);
   }
@@ -112,7 +113,7 @@ export class ProductReviewController {
       },
     })
     productReview: ProductReview,
-    @param.query.object('where', getWhereSchemaFor(ProductReview)) where?: Where<ProductReview>,
+    @param.where(ProductReview) where?: Where<ProductReview>,
   ): Promise<Count> {
     return this.barRepository.updateAll(productReview, where);
   }
@@ -131,7 +132,7 @@ export class ProductReviewController {
   })
   async findById(
     @param.path.number('id') id: number,
-    @param.query.object('filter', getFilterSchemaFor(ProductReview)) filter?: Filter<ProductReview>
+    @param.filter(ProductReview, {exclude: 'where'}) filter?: FilterExcludingWhere<ProductReview>
   ): Promise<ProductReview> {
     return this.barRepository.findById(id, filter);
   }
@@ -191,6 +192,7 @@ import {
   Count,
   CountSchema,
   Filter,
+  FilterExcludingWhere,
   repository,
   Where,
 } from '@loopback/repository';
@@ -248,7 +250,7 @@ export class ProductReviewController {
     },
   })
   async count(
-    @param.query.object('where', getWhereSchemaFor(ProductReview)) where?: Where<ProductReview>,
+    @param.where(ProductReview) where?: Where<ProductReview>,
   ): Promise<Count> {
     return this.barRepository.count(where);
   }
@@ -269,7 +271,7 @@ export class ProductReviewController {
     },
   })
   async find(
-    @param.query.object('filter', getFilterSchemaFor(ProductReview)) filter?: Filter<ProductReview>,
+    @param.filter(ProductReview) filter?: Filter<ProductReview>,
   ): Promise<ProductReview[]> {
     return this.barRepository.find(filter);
   }
@@ -291,7 +293,7 @@ export class ProductReviewController {
       },
     })
     productReview: ProductReview,
-    @param.query.object('where', getWhereSchemaFor(ProductReview)) where?: Where<ProductReview>,
+    @param.where(ProductReview) where?: Where<ProductReview>,
   ): Promise<Count> {
     return this.barRepository.updateAll(productReview, where);
   }
@@ -310,7 +312,7 @@ export class ProductReviewController {
   })
   async findById(
     @param.path.number('id') id: number,
-    @param.query.object('filter', getFilterSchemaFor(ProductReview)) filter?: Filter<ProductReview>
+    @param.filter(ProductReview, {exclude: 'where'}) filter?: FilterExcludingWhere<ProductReview>
   ): Promise<ProductReview> {
     return this.barRepository.findById(id, filter);
   }

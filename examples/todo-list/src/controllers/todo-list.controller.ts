@@ -7,6 +7,7 @@ import {
   Count,
   CountSchema,
   Filter,
+  FilterExcludingWhere,
   repository,
   Where,
 } from '@loopback/repository';
@@ -15,7 +16,6 @@ import {
   get,
   getFilterSchemaFor,
   getModelSchemaRef,
-  getWhereSchemaFor,
   param,
   patch,
   post,
@@ -63,7 +63,7 @@ export class TodoListController {
     },
   })
   async count(
-    @param.query.object('where', getWhereSchemaFor(TodoList))
+    @param.where(TodoList)
     where?: Where<TodoList>,
   ): Promise<Count> {
     return this.todoListRepository.count(where);
@@ -85,7 +85,7 @@ export class TodoListController {
     },
   })
   async find(
-    @param.query.object('filter', getFilterSchemaFor(TodoList))
+    @param.filter(TodoList)
     filter?: Filter<TodoList>,
   ): Promise<TodoList[]> {
     return this.todoListRepository.find(filter);
@@ -108,7 +108,7 @@ export class TodoListController {
       },
     })
     todoList: Partial<TodoList>,
-    @param.query.object('where', getWhereSchemaFor(TodoList))
+    @param.where(TodoList)
     where?: Where<TodoList>,
   ): Promise<Count> {
     return this.todoListRepository.updateAll(todoList, where);
@@ -128,8 +128,11 @@ export class TodoListController {
   })
   async findById(
     @param.path.number('id') id: number,
-    @param.query.object('filter', getFilterSchemaFor(TodoList))
-    filter?: Filter<TodoList>,
+    @param.query.object(
+      'filter',
+      getFilterSchemaFor(TodoList, {exclude: 'where'}),
+    )
+    filter?: FilterExcludingWhere<TodoList>,
   ): Promise<TodoList> {
     return this.todoListRepository.findById(id, filter);
   }
