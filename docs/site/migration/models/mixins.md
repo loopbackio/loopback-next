@@ -126,16 +126,16 @@ In LoopBack 4, a developer is able to create a model property mixin by:
 - generating a model using the CLI as usual
 - adjusting the model file to make use of the mixin class factory function
 
-### Defining A BaseModel Class Which Extends Entity
+### Defining A BaseEntity Class Which Extends Entity
 
-Let's define a base model class `BaseModel` in **src/models/baseModel.ts**. It
+Let's define a base model class `BaseEntity` in **src/models/baseEntity.ts**. It
 will be used an input to the mixin later.
 
-{% include code-caption.html content="src/models/baseModel.ts" %}
+{% include code-caption.html content="src/models/baseEntity.ts" %}
 
 ```ts
 import {Entity} from '@loopback/repository';
-export class BaseModel extends Entity {}
+export class BaseEntity extends Entity {}
 ```
 
 This is necessary because the
@@ -222,20 +222,20 @@ export type NoteWithRelations = Note & NoteRelations;
 
 The model file only requires a few adjustments:
 
-- import the `BaseModel` class
+- import the `BaseEntity` class
 - import the `AddCategoryPropertyMixin` mixin
 - Change the class declaration of `Note` so that it extends the class returned
-  from the mixin function which takes in the `BaseModel` superclass an input
+  from the mixin function which takes in the `BaseEntity` superclass an input
 
 {% include code-caption.html content="src/models/note.model.ts" %}
 
 ```ts
 import {model, property} from '@loopback/repository';
 import {AddCategoryPropertyMixin} from '../mixins/categoryPropertyMixin';
-import {BaseModel} from './baseModel';
+import {BaseEntity} from './baseEntity';
 
 @model()
-export class Note extends AddCategoryPropertyMixin(BaseModel) {
+export class Note extends AddCategoryPropertyMixin(BaseEntity) {
   constructor(data?: Partial<Note>) {
     super(data);
   }
