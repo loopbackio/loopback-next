@@ -27,7 +27,7 @@
     "@loopback/build": "^1.7.1",
     "@loopback/core": "^1.12.4",
     "@loopback/repository": "^1.19.1",
-    "@types/node": "^10.17.16"
+    "@types/node": "^10.17.17"
   },
   "files": [
     "README.md",

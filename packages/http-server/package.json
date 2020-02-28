@@ -25,7 +25,7 @@
     "@loopback/core": "^1.12.4",
     "@loopback/eslint-config": "^5.0.3",
     "@loopback/testlab": "^1.10.3",
-    "@types/node": "^10.17.16",
+    "@types/node": "^10.17.17",
     "@types/stoppable": "^1.1.0"
   },
   "files": [
