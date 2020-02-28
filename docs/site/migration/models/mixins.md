@@ -22,7 +22,12 @@ In LoopBack 3, it was easy to add property mixins and method
 In LoopBack 4, it is also easy and is accomplished by using a mixin class
 factory function.
 
-## LoopBack 3 Approach To Creating A Model Property Mixin
+## Creating a Property Mixin
+
+This section covers the approach that LoopBack 3 and LoopBack 4 can use to add a
+property to a model via a mixin.
+
+### LoopBack 3 Approach
 
 In LoopBack 3, a developer is able to create a model property mixin by:
 
@@ -33,7 +38,7 @@ In LoopBack 3, a developer is able to create a model property mixin by:
 As an example, we will create a mixin that adds a **category** property to a
 model.
 
-### Defining The Model Property Mixin category.js
+#### Defining The Model Property Mixin category.js
 
 The developer defines a model property mixin in **common/mixins/category.js**
 which adds a required property named `category` to any model.
@@ -46,7 +51,7 @@ module.exports = function(Model, options) {
 };
 ```
 
-### Updating model-config.json
+#### Updating model-config.json
 
 The **server/model-config.json** needs to contain:
 
@@ -87,7 +92,7 @@ Please see
 [Reference mixins in model-config.js](https://loopback.io/doc/en/lb3/Defining-mixins.html#reference-mixins-in-model-configjs)
 for a short explanation of this file.
 
-### Applying The category.js Mixin To A Model
+#### Applying The category.js Mixin To A Model
 
 To extend the model `Note` with the **category.js** mixin, we need to add a
 **mixins** section in **common/models/note.json** to indicate which mixins
@@ -117,7 +122,7 @@ Specifying a value of **true** for `Category` will apply the **category.js**
 property model mixin to the `Note` model. A value of **false** will not apply
 the mixin.
 
-## LoopBack 4 Approach To Creating A Model Property Mixin
+### LoopBack 4 Approach
 
 In LoopBack 4, a developer is able to create a model property mixin by:
 
@@ -126,7 +131,7 @@ In LoopBack 4, a developer is able to create a model property mixin by:
 - generating a model using the CLI as usual
 - adjusting the model file to make use of the mixin class factory function
 
-### Defining A BaseEntity Class Which Extends Entity
+#### Defining A BaseEntity Class Which Extends Entity
 
 Let's define a base model class `BaseEntity` in **src/models/baseEntity.ts**. It
 will be used an input to the mixin later.
@@ -142,7 +147,7 @@ This is necessary because the
 [Entity](https://github.com/strongloop/loopback-next/blob/master/packages/repository/src/model.ts#L276)
 class is abstract and doesn't have a constructor.
 
-### Defining The Model Property Mixin Class Factory Function
+#### Defining The Model Property Mixin Class Factory Function
 
 This mixin class factory function `AddCategoryPropertyMixin` in
 **src/mixins/categoryPropertyMixin.ts** adds the required property **category**
@@ -176,7 +181,7 @@ export function AddCategoryPropertyMixin<T extends Constructor<any>>(
 
 {% include note.html content="At the moment, [TypeScript does not allow decorators in class expressions](https://github.com/microsoft/TypeScript/issues/7342). This is why we need to declare the class with a name, and then return it." %}
 
-### Generating A Model Via The CLI
+#### Generating A Model Via The CLI
 
 A CLI-generated model named `Note` with 3 properties: **id**, **title**, and
 **content** would look like this:
@@ -218,7 +223,7 @@ export interface NoteRelations {
 export type NoteWithRelations = Note & NoteRelations;
 ```
 
-### Adjusting The Model File To Use AddCategoryPropertyMixin
+#### Adjusting The Model File To Use AddCategoryPropertyMixin
 
 The model file only requires a few adjustments:
 
@@ -269,7 +274,13 @@ export type NoteWithRelations = Note & NoteRelations;
 The required property `category` has now been added to the `Note` model via a
 mixin class factory function.
 
-## LoopBack 3 Approach To Creating A Custom Model Method And Remote Model Method Mixin
+## Creating A Custom Model Method And Remote Model Method Mixin
+
+This section covers the approach that LoopBack 3 can use to add a custom method
+/ remote method to a model via a mixin, and similarly how LoopBack 4 can add a
+custom method to a repository and controller via a mixin.
+
+### LoopBack 3 Approach
 
 The
 [Add a New Model Method And a New Endpoint](./methods.md#add-a-new-model-method-and-a-new-endpoint)
@@ -289,7 +300,7 @@ mixin by:
 - updating the model's json file to include the mixin's name (and options object
   or boolean)
 
-### Defining The Model Method Mixin findByTitle.js
+#### Defining The Model Method Mixin findByTitle.js
 
 The developer defines a custom model method/remote method mixin in
 **common/mixins/findByTitle.js** which adds a custom method `findByTitle` to any
@@ -331,7 +342,7 @@ For a model named `Note`, this will expose an endpoint of `/Notes/findByTitle`.
 Ensure **model-config.json** is set up properly as specified earlier in
 [Updating model-config.json](#updating-model-config.json)
 
-### Applying The findByTitle.js Mixin To A Model
+#### Applying The findByTitle.js Mixin To A Model
 
 To extend the model `Note` with the **findByTitle.js** mixin, we need to add a
 **mixins** section in **common/models/note.json** to indicate which mixins
@@ -366,7 +377,7 @@ Specifying an options object for `FindByTitle` is the same as specifying a value
 of **true** as it will apply the **findByTitle.js** custom model method/remote
 method mixin to the `Note` model. A value of **false** will not apply the mixin.
 
-## LoopBack 4 Approach to Creating A Custom Model Method Mixin And Remote Model Method Mixin
+### LoopBack 4 Approach
 
 As mentioned in the previous section, the
 [Add a New Model Method And a New Endpoint](./methods.md#add-a-new-model-method-and-a-new-endpoint)
@@ -390,7 +401,7 @@ mixin by:
 - adjusting the repository and controller files to make use of its respective
   mixin class factory function
 
-### Defining A Common Interface For The findByTitle Method
+#### Defining A Common Interface For The findByTitle Method
 
 Let's define a common interface `FindByTitleInterface` in
 **src/mixins/findByTitleInterface.ts**.
@@ -405,7 +416,7 @@ export interface FindByTitleInterface<M extends Model> {
 }
 ```
 
-### Defining A Repository Mixin Class Factory Function
+#### Defining A Repository Mixin Class Factory Function
 
 In **src/mixins/findByTitleRepositoryMixin.ts**, let's define the mixin class
 factory function `FindByTitleRepositoryMixin` which adds the `findByTitle`
@@ -436,7 +447,7 @@ export function FindByTitleRepositoryMixin<
 }
 ```
 
-### Generating A Repository Via The CLI
+#### Generating A Repository Via The CLI
 
 A CLI-generated repository for a model `Note` would look like this:
 
@@ -454,7 +465,7 @@ export class NoteRepository extends DefaultCrudRepository<
 }
 ```
 
-### Adjust NoteRepository To Use FindByTitleRepositoryMixin
+#### Adjust NoteRepository To Use FindByTitleRepositoryMixin
 
 The repository file only requires a few adjustments:
 
@@ -487,7 +498,7 @@ export class NoteRepository extends FindByTitleRepositoryMixin<
 We have now added the `findByTitle` method to a repository via a mixin class
 factory function.
 
-### Defining A Controller Mixin Class Factory Function
+#### Defining A Controller Mixin Class Factory Function
 
 In **src/mixins/findByTitleControllerMixin.ts**, let's define the mixin class
 factory function `FindByTitleControllerMixin` which adds the `findByTitle`
@@ -549,7 +560,7 @@ It is also a good idea to give the injected repository (in the controller super
 class) a generic name like `this.respository` to keep things simple in the mixin
 class factory function.
 
-### Generating A Controller Via The CLI
+#### Generating A Controller Via The CLI
 
 A CLI-generated **controller** for the model `Note` would look like this: (To
 save space, only a **partial** implementation is shown)
@@ -596,7 +607,7 @@ export class NoteController {
 For a full example of a CLI-generated controller for a model `Todo`, see
 [TodoController ](https://github.com/strongloop/loopback-next/blob/master/examples/todo/src/controllers/todo.controller.ts).
 
-### Adjust NoteController To Use FindByTitleControllerMixin
+#### Adjust NoteController To Use FindByTitleControllerMixin
 
 The controller file only requires a few adjustments:
 
