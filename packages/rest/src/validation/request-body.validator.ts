@@ -33,7 +33,7 @@ const ajvErrors = require('ajv-errors');
  * @param globalSchemas - The referenced schemas generated from `OpenAPISpec.components.schemas`.
  * @param options - Request body validation options for AJV
  */
-export function validateRequestBody(
+export async function validateRequestBody(
   body: RequestBody,
   requestBodySpec?: RequestBodyObject,
   globalSchemas: SchemasObject = {},
@@ -68,7 +68,7 @@ export function validateRequestBody(
   if (!schema) return;
 
   options = Object.assign({coerceTypes: !!body.coercionRequired}, options);
-  validateValueAgainstSchema(body.value, schema, globalSchemas, options);
+  await validateValueAgainstSchema(body.value, schema, globalSchemas, options);
 }
 
 /**
@@ -117,7 +117,7 @@ function getKeyForOptions(options: RequestBodyValidationOptions) {
  * @param globalSchemas - Schema references.
  * @param options - Request body validation options.
  */
-function validateValueAgainstSchema(
+async function validateValueAgainstSchema(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   body: any,
   schema: SchemaObject | ReferenceObject,
@@ -142,12 +142,17 @@ function validateValueAgainstSchema(
     cache.set(schema, validatorMap);
   }
 
-  if (validate(body)) {
-    debug('Request body passed AJV validation.');
-    return;
+  let validationErrors: AJV.ErrorObject[] = [];
+  try {
+    const validationResult = await validate(body);
+    // When body is optional & values is empty / null, ajv returns null
+    if (validationResult || validationResult === null) {
+      debug('Request body passed AJV validation.');
+      return;
+    }
+  } catch (error) {
+    validationErrors = error.errors;
   }
-
-  let validationErrors = validate.errors as AJV.ErrorObject[];
 
   /* istanbul ignore if */
   if (debug.enabled) {
@@ -211,6 +216,9 @@ function createValidator(
   } else if (options.ajvErrors?.constructor === Object) {
     ajvErrors(ajv, options.ajvErrors);
   }
+
+  // See https://ajv.js.org/#asynchronous-validation for async validation
+  schemaWithRef.$async = true;
 
   return ajv.compile(schemaWithRef);
 }
