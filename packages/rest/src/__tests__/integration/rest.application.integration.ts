@@ -15,6 +15,7 @@ import {
   RestServerConfig,
   RouterSpec,
 } from '../..';
+import {NoteController} from '../fixtures/controllers/note.controller';
 
 const ASSETS = path.resolve(__dirname, '../../../fixtures/assets');
 
@@ -168,6 +169,17 @@ describe('RestApplication (integration)', () => {
     client = createRestAppClient(restApp);
     const response = await client.get('/custom/ping').expect(307);
     await client.get(response.header.location).expect(200, 'Hi');
+  });
+
+  it('allows controllers built with mixins', async () => {
+    givenApplication();
+    restApp.controller(NoteController);
+    await restApp.start();
+    client = createRestAppClient(restApp);
+    await client
+      .get('/notes/findByTitle/groceries')
+      .expect(200)
+      .expect([{id: 1, title: 'groceries', content: 'eggs,bacon'}]);
   });
 
   context('mounting an Express router on a LoopBack application', () => {
