@@ -3,8 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Model} from '@loopback/repository';
+import {Entity} from '../../..';
 
-export interface FindByTitleInterface<M extends Model> {
-  findByTitle(title: string): Promise<M[]>;
-}
+/*
+ * Used for model mixin tests
+ */
+export class BaseEntity extends Entity {}

@@ -4,10 +4,9 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Constructor} from '@loopback/context';
-import {property} from '../../../index';
+import {Model, property} from '../../..';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function AddCategoryPropertyMixin<T extends Constructor<any>>(
+export function AddCategoryPropertyMixin<T extends Constructor<Model>>(
   superClass: T,
 ) {
   class MixedModel extends superClass {

@@ -9,8 +9,7 @@ import {MODEL_PROPERTIES_KEY} from '../../../';
 import {Note} from '../../fixtures/models/note.model';
 
 describe('add property to model via mixin', () => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let meta: MetadataMap<any>;
+  let meta: MetadataMap<unknown>;
 
   before(async () => {
     meta =

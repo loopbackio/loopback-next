@@ -6,7 +6,10 @@
 import {Constructor} from '@loopback/context';
 import {Model} from '@loopback/repository';
 import {get, getModelSchemaRef, param} from '../../../';
-import {FindByTitleInterface} from './findByTitleInterface';
+
+export interface FindByTitle<M extends Model> {
+  findByTitle(title: string): Promise<M[]>;
+}
 
 export interface FindByTitleControllerMixinOptions {
   basePath: string;
@@ -18,7 +21,7 @@ export function FindByTitleControllerMixin<
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   T extends Constructor<any>
 >(superClass: T, options: FindByTitleControllerMixinOptions) {
-  class MixedController extends superClass implements FindByTitleInterface<M> {
+  class MixedController extends superClass implements FindByTitle<M> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     constructor(...args: any[]) {
       super(...args);

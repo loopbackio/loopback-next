@@ -4,8 +4,8 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {model, property} from '../../../';
-import {BaseEntity} from '../../fixtures/mixins/baseEntity';
-import {AddCategoryPropertyMixin} from '../../fixtures/mixins/categoryPropertyMixin';
+import {BaseEntity} from '../mixins/base-entity';
+import {AddCategoryPropertyMixin} from '../mixins/category-property-mixin';
 
 @model()
 export class Note extends AddCategoryPropertyMixin(BaseEntity) {

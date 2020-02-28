@@ -4,18 +4,23 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Constructor} from '@loopback/context';
-import {CrudRepository, Model, Where} from '../../../index';
-import {FindByTitleInterface} from './findByTitleInterface';
+import {CrudRepository, Model, Where} from '../../..';
+
+export interface FindByTitle<M extends Model> {
+  findByTitle(title: string): Promise<M[]>;
+}
 
 /*
  * This function adds a new method 'findByTitle' to a repository class
- * where 'M' is a model and 'R' is DefaultCrudRepository
+ * where 'M' is a model
+ *
+ * @typeParam M - Model class
  */
-export function FindByTitleRepositoryMixin<
-  M extends Model & {title: string},
-  R extends Constructor<CrudRepository<M>>
->(superClass: R) {
-  return class extends superClass implements FindByTitleInterface<M> {
+
+export function FindByTitleRepositoryMixin<M extends Model & {title: string}>(
+  superClass: Constructor<CrudRepository<M>>,
+) {
+  return class extends superClass implements FindByTitle<M> {
     async findByTitle(title: string): Promise<M[]> {
       const where = {title} as Where<M>;
       const titleFilter = {where};
