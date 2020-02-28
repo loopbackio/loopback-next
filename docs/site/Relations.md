@@ -62,18 +62,6 @@ To generate a `HasMany`, `HasOne` or `BelongsTo` relation through the CLI, see
 
 ## Limitations
 
-### Modifying related models' navigational properties
-
-Navigational properties of related models cannot be created, updated, saved,
-deleted or replaced, via the parent model. See its
-[GitHub pull request](https://github.com/strongloop/loopback-next/pull/4148).
-
-### Creating a model alongside its related models
-
-Creating related models must be created separately after the parent model is
-created. See its
-[GitHub issue](https://github.com/strongloop/loopback-next/issues/4435).
-
 ### Filtering by parent model
 
 [Where filters](https://loopback.io/doc/en/lb3/Where-filter.html) such as those
@@ -83,7 +71,7 @@ be used to filter a model by the value of its parent model. See its
 
 ### Recursive inclusion of related models
 
-We don’t support recursive inclusion of related models. Related GH issue:
+We don’t support recursive inclusion of related models yet. Related GH issue:
 [Recursive inclusion of related models](https://github.com/strongloop/loopback-next/issues/3454).
 
 ### Splitting numbers of queries
