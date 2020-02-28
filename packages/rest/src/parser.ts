@@ -54,14 +54,14 @@ export async function parseOperationArgs(
   );
 }
 
-function buildOperationArguments(
+async function buildOperationArguments(
   operationSpec: OperationObject,
   request: Request,
   pathParams: PathParameterValues,
   body: RequestBody,
   globalSchemas: SchemasObject,
   options: RequestBodyValidationOptions = {},
-): OperationArgs {
+): Promise<OperationArgs> {
   let requestBodyIndex = -1;
   if (operationSpec.requestBody) {
     // the type of `operationSpec.requestBody` could be `RequestBodyObject`
@@ -88,7 +88,12 @@ function buildOperationArguments(
   }
 
   debug('Validating request body - value %j', body);
-  validateRequestBody(body, operationSpec.requestBody, globalSchemas, options);
+  await validateRequestBody(
+    body,
+    operationSpec.requestBody,
+    globalSchemas,
+    options,
+  );
 
   if (requestBodyIndex > -1) paramArgs.splice(requestBodyIndex, 0, body.value);
   return paramArgs;
