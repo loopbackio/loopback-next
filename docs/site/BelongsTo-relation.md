@@ -277,6 +277,13 @@ model instance (e.g. `order.id`) and returning back the related target model
 instance (e.g. a `Customer` the order belongs to). See also
 [API Docs](https://loopback.io/doc/en/lb4/apidocs.repository.belongstoaccessor.html)
 
+{% include note.html content="Notice that `OrderRepository.create()` expects an `Order` model only, navigational properties are not expected to be included in the target data. For instance, the following request will be rejected:
+`orderRepository.create({`
+`  id: 1,`
+`  customerId: 1`
+`  customer:{id: 1, name: 'rejected'}`
+`})`" %}
+
 ## Using BelongsToAccessor in a controller
 
 The same pattern used for ordinary repositories to expose their CRUD APIs via

@@ -416,6 +416,22 @@ factory `account` for instances of `SupplierRepository`:
   instance
   ([API Docs](https://loopback.io/doc/en/lb4/apidocs.repository.hasonerepository.patch.html))
 
+Here is an example of creating the related models:
+
+```ts
+const sup = await supplierRepository.create({id: 1, name: 'Tammy'});
+const accountData = {id: 1, supplierId: sup.id};
+// create the related account
+supplierRepository.account(sup.id).create(accountData);
+```
+
+{% include note.html content="Notice that `SupplierRepository.create()` expects a `Supplier` model only, navigational properties are not expected to be included in the target data. For instance, the following request will be rejected:
+`supplierRepository.create({`
+`  id: 1,`
+`  name:'invalid request',`
+`  account:{id: 1, supplierId: 1}`
+`})`" %}
+
 For **updating** (full replace of all properties on a `PUT` endpoint for
 instance) a target model you have to directly use this model repository. In this
 case, the caller must provide both the foreignKey value and the primary key
