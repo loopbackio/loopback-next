@@ -9,7 +9,7 @@ permalink: /doc/en/lb4/deploying_to_ibm_cloud_kubernetes.html
 
 ## Overview
 
-This tutorial shows how to deploy a [LoopBack4](http://v4.loopback.io/)
+This tutorial shows how to deploy a [LoopBack 4](https://loopback.io/)
 application onto [Kubernetes](http://kubernetes.io/) on the
 [IBM Cloud](http://cloud.ibm.com).
 
@@ -23,7 +23,7 @@ You’ll need the following:
    one already.
 4. [IBM Cloud CLI, Container registry CLI, etc](https://cloud.ibm.com/docs/cli/index.html#overview)
 5. [Kubernetes CLI (kubectl)](https://kubernetes.io/docs/reference/kubectl/overview/)
-6. [LoopBack 4 CLI](https://v4.loopback.io/getting-started.html)
+6. [LoopBack 4 CLI](https://loopback.io/getting-started.html)
 
 Let's install the LoopBack 4 CLI :
 
