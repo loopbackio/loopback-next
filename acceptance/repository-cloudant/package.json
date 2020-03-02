@@ -25,6 +25,7 @@
     "@loopback/repository-tests": "^0.10.1",
     "@types/node": "^10.17.17",
     "async": "^3.2.0",
+    "chalk": "^3.0.0",
     "debug": "^4.1.1",
     "dockerode": "^3.1.0",
     "lodash": "^4.17.11",
