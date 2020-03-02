@@ -407,8 +407,8 @@ factory `account` for instances of `SupplierRepository`:
 - `create` for creating a target model instance belonging to `Supplier` model
   instance
   ([API Docs](https://loopback.io/doc/en/lb4/apidocs.repository.hasonerepository.create.html))
-- `find` finding target model instance belonging to Supplier model instance
-  ([API Docs](https://loopback.io/doc/en/lb4/apidocs.repository.hasonerepository.find.html))
+- `get` gets target model instance belonging to Supplier model instance
+  ([API Docs](https://loopback.io/doc/en/lb4/apidocs.repository.hasonerepository.get.html))
 - `delete` for deleting target model instance belonging to Supplier model
   instance
   ([API Docs](https://loopback.io/doc/en/lb4/apidocs.repository.hasonerepository.delete.html))

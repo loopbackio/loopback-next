@@ -34,7 +34,8 @@ export interface HasOneRepository<Target extends Entity> {
    * Find the only target model instance that belongs to the declaring model.
    * @param filter - Query filter without a Where condition
    * @param options - Options for the operations
-   * @returns A promise of the target object or null if not found.
+   * @returns A promise resolved with the target object or rejected
+   * with an EntityNotFoundError when target model instance was not found.
    */
   get(
     filter?: Pick<Filter<Target>, Exclude<keyof Filter<Target>, 'where'>>,

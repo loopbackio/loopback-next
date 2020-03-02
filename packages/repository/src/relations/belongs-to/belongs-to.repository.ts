@@ -17,6 +17,8 @@ export interface BelongsToRepository<Target extends Entity> {
   /**
    * Gets the target model instance
    * @param options
+   * @returns A promise resolved with the target object or rejected
+   * with an EntityNotFoundError when target model instance was not found.
    */
   get(options?: Options): Promise<Target>;
 }
