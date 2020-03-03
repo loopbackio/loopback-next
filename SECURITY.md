@@ -1,5 +1,49 @@
 # Security Policy
 
+This document outlines the security procedures for the LoopBack project.
+
+- [Responsible Disclosure Policy](#responsible-disclosure-policy)
+  - [Reporting a Security Issue](#reporting-a-security-issue)
+- [Supported Versions](#supported-versions)
+- [Security Advisories](#security-advisories)
+
+This project participates in the Responsible Disclosure Policy program for the
+Node.js Security Ecosystem.
+
+- [Report a security vulnerability](https://hackerone.com/nodejs-ecosystem)
+
+## Responsible Disclosure Policy
+
+The LoopBack team and community take all security issues seriously. Thank you
+for improving the security of LoopBack. We appreciate your efforts and
+responsible disclosure and will make every effort to acknowledge your
+contributions.
+
+A responsible disclosure policy helps protect the project and its users from
+security vulnerabilities discovered in the project’s scope by employing a
+process where vulnerabilities are publicly disclosed after a reasonable time
+period to allow patching the vulnerability.
+
+All security bugs are taken seriously and are considered as top priority. Your
+efforts to responsibly disclose your findings are appreciated and will be taken
+into account to acknowledge your contributions.
+
+### Reporting a Security Issue
+
+Any security related issue should be reported to the
+[Node.js Ecosystem](https://hackerone.com/nodejs-ecosystem) program hosted on
+HackerOne which follows the
+[3rd party responsible disclosure process](https://github.com/nodejs/security-wg/blob/master/processes/third_party_vuln_process.md)
+set by the Node.js Security WG.
+
+One may also directly contact the project’s maintainers by emailing
+reachsl@us.ibm.com, but through the HackerOne program the Security WG members
+will take care of triaging the vulnerability and invite project maintainers to
+participate in the report.
+
+As an alternative method, vulnerabilities can also be reported by emailing
+security-ecosystem@nodejs.org.
+
 ## Supported Versions
 
 Please refer to our
@@ -44,16 +88,18 @@ for details.
 
 </details>
 
-Within LoopBack 4, fixes are not backported across semver major versions of a
-package.
+**Within LoopBack 4, fixes are not backported across semver major versions of a
+package.**
 
-## Security advisories
+We don't provide any
+[LTS version for LoopBack 4](https://github.com/strongloop/loopback-next/issues/4398)
+yet.
+
+## Security Advisories
 
 Security advisories can be found on the
 [LoopBack website](https://loopback.io/doc/en/sec/index.html).
 
-## Reporting a vulnerability
-
-If you think you have discovered a new security issue with any LoopBack 4
-package, **please do not report it on GitHub**. Instead, send an email to
-reachsl@us.ibm.com with a full description and steps to reproduce.
+These advisories have not been published to the
+[Node.js vulnerability database](https://github.com/nodejs/security-wg/blob/0bf201409d659e0cca19fc32815b5dabfde14406/processes/vuln_db.md)
+yet.
