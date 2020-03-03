@@ -4,13 +4,13 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Constructor} from '@loopback/context';
-import {CrudRepository, Entity, Where} from '../../..';
+import {CrudRepository, Model, Where} from '../../..';
 
 /**
  * An interface to allow finding notes by title
  */
-export interface FindByTitle<E extends Entity> {
-  findByTitle(title: string): Promise<E[]>;
+export interface FindByTitle<M extends Model> {
+  findByTitle(title: string): Promise<M[]>;
 }
 
 /*
@@ -19,17 +19,16 @@ export interface FindByTitle<E extends Entity> {
  *
  * @param superClass - Base class
  *
- * @typeParam E - Model class which extends Entity
+ * @typeParam M - Model class which extends Model
  * @typeParam R - Repository class
  */
-
 export function FindByTitleRepositoryMixin<
-  E extends Entity & {title: string},
-  R extends Constructor<CrudRepository<E>>
+  M extends Model & {title: string},
+  R extends Constructor<CrudRepository<M>>
 >(superClass: R) {
-  class MixedRepository extends superClass implements FindByTitle<E> {
-    async findByTitle(title: string): Promise<E[]> {
-      const where = {title} as Where<E>;
+  class MixedRepository extends superClass implements FindByTitle<M> {
+    async findByTitle(title: string): Promise<M[]> {
+      const where = {title} as Where<M>;
       const titleFilter = {where};
       return this.find(titleFilter);
     }
