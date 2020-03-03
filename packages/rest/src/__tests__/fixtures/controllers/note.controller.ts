@@ -1,4 +1,8 @@
-import {Constructor} from '@loopback/core';
+// Copyright IBM Corp. 2020. All Rights Reserved.
+// Node module: @loopback/rest
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
 import {getModelSchemaRef, post, requestBody} from '../../../';
 import {
   FindByTitleControllerMixin,
@@ -32,10 +36,10 @@ const options: FindByTitleControllerMixinOptions = {
   modelClass: Note,
 };
 
-export class NoteController extends FindByTitleControllerMixin<
-  Note,
-  Constructor<Object>
->(Object, options) {
+export class NoteController extends FindByTitleControllerMixin<Note>(
+  Object,
+  options,
+) {
   repository: StubRepo;
 
   constructor() {

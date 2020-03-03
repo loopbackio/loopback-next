@@ -7,6 +7,10 @@ import {Constructor} from '@loopback/core';
 import {DefaultCrudRepository, juggler} from '../../..';
 import {FindByTitleRepositoryMixin} from '../mixins/find-by-title-repo-mixin';
 import {Note, NoteRelations} from '../models/note.model';
+
+/**
+ * A repository for `Note` with `findByTitle`
+ */
 export class NoteRepository extends FindByTitleRepositoryMixin<
   Note,
   Constructor<

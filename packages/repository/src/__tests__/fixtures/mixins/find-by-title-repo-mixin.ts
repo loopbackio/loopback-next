@@ -6,15 +6,21 @@
 import {Constructor} from '@loopback/context';
 import {CrudRepository, Entity, Where} from '../../..';
 
+/**
+ * An interface to allow finding notes by title
+ */
 export interface FindByTitle<E extends Entity> {
   findByTitle(title: string): Promise<E[]>;
 }
 
 /*
  * This function adds a new method 'findByTitle' to a repository class
- * where 'E' is a model which extends Entity
+ * where 'E' is a model which extends Model
+ *
+ * @param superClass - Base class
  *
  * @typeParam E - Model class which extends Entity
+ * @typeParam R - Repository class
  */
 
 export function FindByTitleRepositoryMixin<

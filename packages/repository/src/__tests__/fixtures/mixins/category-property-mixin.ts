@@ -6,20 +6,26 @@
 import {Constructor} from '@loopback/context';
 import {Entity, property} from '../../..';
 
+/**
+ * A mixin factory to add `category` property
+ *
+ * @param superClass - Base Class
+ * @typeParam T - Model class
+ */
 export function AddCategoryPropertyMixin<T extends Constructor<Entity>>(
   superClass: T,
 ) {
   class MixedModel extends superClass {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    constructor(...args: any[]) {
+      super(...args);
+    }
+
     @property({
       type: 'string',
       required: true,
     })
     category: string;
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    constructor(...args: any[]) {
-      super(...args);
-    }
   }
   return MixedModel;
 }
