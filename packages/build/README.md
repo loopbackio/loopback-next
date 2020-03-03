@@ -132,6 +132,36 @@ npm run build
 
     `converage:ci` sets up integration with [Coveralls](https://coveralls.io/).
 
+## A note on console logs printed by tests
+
+We consider (console) logging from tests as a bad practice, because such logs
+usually clutter the test output and make it difficult to distinguish legitimate
+error messages from the noise.
+
+By default, `lb-mocha` detects when the tests and/or the application tested have
+printed console logs and fails the test run with the following message:
+
+```
+=== ATTENTION - INVALID USAGE OF CONSOLE LOGS DETECTED ===
+```
+
+If you need more information about behavior in the test, then the first choice
+should be to use a better or more descriptive error assertion. If that's not
+possible, then use debug statements to print additional information when
+explicitly requested.
+
+A typical situation is that a test is sending an HTTP request and the server
+responds with an error code as expected. However, because the server is
+configured to log failed requests, it will print a log also for requests where
+the failure was expected and intentional. The solution is to configure your REST
+server to suppress error messages for that specific error code only. Our
+`@loopback/testlab` module is providing a helper
+[`createUnexpectedHttpErrorLogger`](https://github.com/strongloop/loopback-next/tree/master/packages/testlab#createUnexpectedHttpErrorLogger)
+that makes this task super easy.
+
+Alternatively, it's also possible to disable detection of console logs by
+calling `lb-mocha` with `--allow-console-logs` argument.
+
 ## Contributions
 
 - [Guidelines](https://github.com/strongloop/loopback-next/blob/master/docs/CONTRIBUTING.md)
