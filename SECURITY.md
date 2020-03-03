@@ -59,6 +59,6 @@ Security advisories can be found on the
 
 ## Reporting a vulnerability
 
-If you think you have discovered a new security issue with any StrongLoop
+If you think you have discovered a new security issue with any LoopBack 4
 package, **please do not report it on GitHub**. Instead, send an email to
 reachsl@us.ibm.com with a full description and steps to reproduce.
