@@ -4,7 +4,8 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Constructor} from '@loopback/core';
-import {DefaultCrudRepository, juggler} from '../../..';
+import {DataSource} from 'loopback-datasource-juggler';
+import {DefaultCrudRepository} from '../../..';
 import {FindByTitleRepositoryMixin} from '../mixins/find-by-title-repo-mixin';
 import {Note, NoteRelations} from '../models/note.model';
 
@@ -17,7 +18,11 @@ export class NoteRepository extends FindByTitleRepositoryMixin<
     DefaultCrudRepository<Note, typeof Note.prototype.id, NoteRelations>
   >
 >(DefaultCrudRepository) {
-  constructor(dataSource: juggler.DataSource) {
+  constructor(
+    dataSource: DataSource = new DataSource({
+      connector: 'memory',
+    }),
+  ) {
     super(Note, dataSource);
   }
 }
