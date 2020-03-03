@@ -32,14 +32,20 @@ by using it for your next project. Start by having a look at
 Check the [API documentation](https://loopback.io/doc/en/lb4/apidocs.index.html)
 for all the API usages in each package.
 
-[LoopBack 3](https://loopback.io/doc/en/lb3/) became active LTS version, and
-[LoopBack 2](https://loopback.io/doc/en/lb2/) has reached end-of-life.
+### Long Term Support
 
-| Version    | Status      | Published | EOL                  |
-| ---------- | ----------- | --------- | -------------------- |
-| LoopBack 4 | Current     | Oct 2018  | Apr 2021 _(minimum)_ |
-| LoopBack 3 | Active LTS  | Dec 2016  | Dec 2020             |
-| LoopBack 2 | End-of-Life | Jul 2014  | Apr 2019             |
+We don't provide any LTS version for LoopBack 4 yet. Please join the discussion
+in [loopback-next#4398](https://github.com/strongloop/loopback-next/issues/4398)
+if you are interested in a version that's less frequently changed.
+
+We are providing Maintenance support for
+[LoopBack 3](https://loopback.io/doc/en/lb3/) until December 2020.
+
+| Version    | Status          | Published | EOL                  |
+| ---------- | --------------- | --------- | -------------------- |
+| LoopBack 4 | Current         | Oct 2018  | Apr 2022 _(minimum)_ |
+| LoopBack 3 | Maintenance LTS | Dec 2016  | Dec 2020             |
+| LoopBack 2 | End-of-Life     | Jul 2014  | Apr 2019             |
 
 Please refer to our
 [Long Term Support Policy](https://loopback.io/doc/en/contrib/Long-term-support.html)
