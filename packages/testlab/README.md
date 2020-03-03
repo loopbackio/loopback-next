@@ -350,7 +350,10 @@ import {RestApplication} from '@loopback/rest';
 describe('MyApp', () => {
   it('does not log a known 401 error to console', async () => {
     const app = new RestApplication();
+
     const errorLogger = createUnexpectedHttpErrorLogger(401);
+    // binds the custom error logger
+    app.bind(SequenceActions.LOG_ERROR).to(errorLogger);
 
     const spec = {
       responses: {
@@ -363,9 +366,8 @@ describe('MyApp', () => {
 
     app.route('get', '/', spec, throwUnauthorizedError);
 
-    // binds the custom error logger
-    app.bind(SequenceActions.LOG_ERROR).to(errorLogger);
     await app.start();
+    // make `GET /` request, assert that 401 is returned
   });
 });
 ```
