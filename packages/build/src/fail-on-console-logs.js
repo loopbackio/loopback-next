@@ -54,7 +54,11 @@ process.on('exit', code => {
   if (!problems.length) return;
   const log = originalConsole.log;
 
-  log('\n=== ATTENTION - INVALID USAGE OF CONSOLE LOGS DETECTED ===\n');
+  log(
+    '\n=== ATTENTION - INVALID USAGE OF CONSOLE LOGS DETECTED ===',
+    '\nLearn more at',
+    'https://github.com/strongloop/loopback-next/blob/master/packages/build/README.md#a-note-on-console-logs-printed-by-tests\n',
+  );
 
   for (const p of problems) {
     // print the first line of the console log
