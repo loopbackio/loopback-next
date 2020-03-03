@@ -4,24 +4,24 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Constructor} from '@loopback/context';
-import {Model} from '@loopback/repository';
+import {Entity} from '@loopback/repository';
 import {get, getModelSchemaRef, param} from '../../../';
 
-export interface FindByTitle<M extends Model> {
-  findByTitle(title: string): Promise<M[]>;
+export interface FindByTitle<E extends Entity> {
+  findByTitle(title: string): Promise<E[]>;
 }
 
 export interface FindByTitleControllerMixinOptions {
   basePath: string;
-  modelClass: typeof Model;
+  modelClass: typeof Entity;
 }
 
 export function FindByTitleControllerMixin<
-  M extends Model,
+  E extends Entity,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   T extends Constructor<any>
 >(superClass: T, options: FindByTitleControllerMixinOptions) {
-  class MixedController extends superClass implements FindByTitle<M> {
+  class MixedController extends superClass implements FindByTitle<E> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     constructor(...args: any[]) {
       super(...args);
@@ -44,7 +44,7 @@ export function FindByTitleControllerMixin<
         },
       },
     })
-    async findByTitle(@param.path.string('title') title: string): Promise<[M]> {
+    async findByTitle(@param.path.string('title') title: string): Promise<[E]> {
       return this.repository.findByTitle(title);
     }
   }

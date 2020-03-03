@@ -4,9 +4,9 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Constructor} from '@loopback/context';
-import {Model, property} from '../../..';
+import {Entity, property} from '../../..';
 
-export function AddCategoryPropertyMixin<T extends Constructor<Model>>(
+export function AddCategoryPropertyMixin<T extends Constructor<Entity>>(
   superClass: T,
 ) {
   class MixedModel extends superClass {

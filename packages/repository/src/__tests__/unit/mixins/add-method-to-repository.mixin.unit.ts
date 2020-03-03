@@ -32,6 +32,14 @@ describe('add method to crud repository via mixin', () => {
     expect(note.toJSON()).to.deepEqual({id: 1, ...noteData});
   });
 
+  // method from EntityCrudRepository
+  it(`non-mixin method 'findById' exists`, async () => {
+    expect(repo.findById).to.be.a.Function();
+    note = await repo.create(new Note(noteData));
+    const foundNote: Note = await repo.findById(note.id);
+    expect(foundNote).to.deepEqual(note);
+  });
+
   // method from mixin
   it(`mixin method 'findByTitle' exists`, async () => {
     expect(repo.findByTitle).to.be.a.Function();
