@@ -2,14 +2,9 @@
 
 ## Supported Versions
 
-LoopBack implements the
-[Module LTS policy](https://github.com/CloudNativeJS/ModuleLTS).
-
-| Version    | Supported          |
-| ---------- | ------------------ |
-| LoopBack 4 | :white_check_mark: |
-| LoopBack 3 | :white_check_mark: |
-| LoopBack 2 | :x:                |
+Please refer to our
+[Long Term Support Policy](https://loopback.io/doc/en/contrib/Long-term-support.html)
+for details.
 
 <details>
 <summary>Supported connectors</summary>
