@@ -87,12 +87,12 @@ export interface HasManyThroughDefinition extends RelationDefinitionBase {
   /**
    * The foreign key in the source model, e.g. Customer#id.
    */
-  keyFrom: string;
+  keyFrom?: string;
 
   /**
    * The primary key of the target model, e.g Seller#id.
    */
-  keyTo: string;
+  keyTo?: string;
 
   through: {
     /**
@@ -106,12 +106,12 @@ export interface HasManyThroughDefinition extends RelationDefinitionBase {
     /**
      * The foreign key of the source model defined in the through model, e.g. Order#customerId
      */
-    keyFrom: string;
+    keyFrom?: string;
 
     /**
      * The foreign key of the target model defined in the through model, e.g. Order#sellerId
      */
-    keyTo: string;
+    keyTo?: string;
   };
 }
 
