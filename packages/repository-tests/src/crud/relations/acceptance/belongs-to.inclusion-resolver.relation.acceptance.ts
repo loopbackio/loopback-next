@@ -160,6 +160,44 @@ export function belongsToInclusionResolverAcceptance(
       expect(toJSON(result)).to.deepEqual(toJSON(expected));
     });
 
+    it('queries entities with null foreign key', async () => {
+      const customer = await customerRepo.create({
+        name: 'Thor',
+      });
+
+      // order with customer relation
+      const order1 = await orderRepo.create({
+        customerId: customer.id,
+        description: 'Take Out',
+      });
+
+      // order without customer relation
+      const order2 = await orderRepo.create({
+        description: 'Dine in',
+      });
+
+      const expected = [
+        {
+          ...order1,
+          isShipped: features.emptyValue,
+          shipmentInfo: features.emptyValue,
+          customer: {
+            ...customer,
+            parentId: features.emptyValue,
+          },
+        },
+        {
+          ...order2,
+          customerId: features.emptyValue,
+          isShipped: features.emptyValue,
+          shipmentInfo: features.emptyValue,
+        },
+      ];
+
+      const result = await orderRepo.find({include: [{relation: 'customer'}]});
+      expect(toJSON(result)).to.deepEqual(toJSON(expected));
+    });
+
     it('throws error if the target repository does not have the registered resolver', async () => {
       const customer = await customerRepo.create({name: 'customer'});
       await orderRepo.create({
