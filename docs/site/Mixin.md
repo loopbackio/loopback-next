@@ -12,7 +12,7 @@ properties and methods.
 A good approach to apply mixins is defining them as sub-class factories. Then
 declare the new mixed class as:
 
-```js
+```ts
 class MixedClass extends MixinFoo(MixinBar(BaseClass)) {}
 ```
 
@@ -91,8 +91,8 @@ Now you can extend `SimpleController` with the two mixins:
 {% include code-caption.html content="src/controllers/using-mixin.controller.ts" %}
 
 ```ts
-import {timeStampMixin} from '../mixins/time-stamp.mixin.ts';
-import {loggerMixin} from '../mixins/logger.mixin.ts';
+import {TimeStampMixin} from '../mixins/time-stamp.mixin.ts';
+import {LoggerMixin} from '../mixins/logger.mixin.ts';
 
 class SimpleController {
   constructor() {}
