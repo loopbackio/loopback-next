@@ -13,6 +13,7 @@ import {
 } from '@loopback/repository';
 import {MixedIdType} from '../../../../helpers.repository-tests';
 import {Customer, CustomerWithRelations} from './customer.model';
+import {Seller} from './seller.model';
 import {Shipment, ShipmentWithRelations} from './shipment.model';
 
 @model()
@@ -38,6 +39,9 @@ export class Order extends Entity {
 
   @belongsTo(() => Customer)
   customerId: MixedIdType;
+
+  @belongsTo(() => Seller)
+  sellerId: MixedIdType;
 
   @belongsTo(() => Shipment, {keyTo: 'shipment_id', name: 'shipment'})
   shipmentInfo: number;

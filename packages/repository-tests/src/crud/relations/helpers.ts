@@ -12,6 +12,8 @@ import {
   CustomerRepository,
   Order,
   OrderRepository,
+  Seller,
+  SellerRepository,
   Shipment,
   ShipmentRepository,
 } from './fixtures/models';
@@ -19,6 +21,7 @@ import {
   createAddressRepo,
   createCustomerRepo,
   createOrderRepo,
+  createSellerRepo,
   createShipmentRepo,
 } from './fixtures/repositories';
 
@@ -28,6 +31,7 @@ export function givenBoundCrudRepositories(
   features: CrudFeatures,
 ) {
   Order.definition.properties.id.type = features.idType;
+  Seller.definition.properties.id.type = features.idType;
   Address.definition.properties.id.type = features.idType;
   Customer.definition.properties.id.type = features.idType;
   Shipment.definition.properties.id.type = features.idType;
@@ -49,6 +53,7 @@ export function givenBoundCrudRepositories(
     db,
     async () => orderRepo,
     async () => addressRepo,
+    async () => sellerRepo,
   );
 
   // register the inclusionResolvers here for customerRepo
@@ -64,6 +69,10 @@ export function givenBoundCrudRepositories(
     'address',
     customerRepo.address.inclusionResolver,
   );
+  // customerRepo.inclusionResolvers.set(
+  //   'sellers',
+  //   customerRepo.sellers.inclusionResolver,
+  // );
 
   const orderRepoClass = createOrderRepo(repositoryClass);
   const orderRepo: OrderRepository = new orderRepoClass(
@@ -94,10 +103,18 @@ export function givenBoundCrudRepositories(
     async () => customerRepo,
   );
 
+  const sellerRepoClass = createSellerRepo(repositoryClass);
+  const sellerRepo: SellerRepository = new sellerRepoClass(
+    db,
+    async () => customerRepo,
+    async () => orderRepo,
+  );
+
   return {
     customerRepo,
     orderRepo,
     shipmentRepo,
     addressRepo,
+    sellerRepo,
   };
 }

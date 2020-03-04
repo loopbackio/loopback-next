@@ -5,19 +5,21 @@
 
 import {
   belongsTo,
+  BelongsToAccessor,
   Entity,
   EntityCrudRepository,
   hasMany,
   HasManyRepositoryFactory,
+  HasManyThroughRepositoryFactory,
   hasOne,
   HasOneRepositoryFactory,
   model,
   property,
 } from '@loopback/repository';
-import {BelongsToAccessor} from '@loopback/repository/src';
 import {MixedIdType} from '../../../../helpers.repository-tests';
 import {Address, AddressWithRelations} from './address.model';
 import {Order, OrderWithRelations} from './order.model';
+import {Seller, SellerWithRelations} from './seller.model';
 
 @model()
 export class Customer extends Entity {
@@ -36,6 +38,13 @@ export class Customer extends Entity {
   @hasMany(() => Order)
   orders: Order[];
 
+  @hasMany(() => Seller, {
+    through: {
+      model: () => Order,
+    },
+  })
+  sellers: Seller[];
+
   @hasOne(() => Address)
   address: Address;
 
@@ -49,6 +58,7 @@ export class Customer extends Entity {
 export interface CustomerRelations {
   address?: AddressWithRelations;
   orders?: OrderWithRelations[];
+  sellers?: SellerWithRelations[];
   customers?: CustomerWithRelations[];
   parentCustomer?: CustomerWithRelations;
 }
@@ -60,6 +70,12 @@ export interface CustomerRepository
   // define additional members like relation methods here
   address: HasOneRepositoryFactory<Address, MixedIdType>;
   orders: HasManyRepositoryFactory<Order, MixedIdType>;
+  sellers: HasManyThroughRepositoryFactory<
+    Seller,
+    typeof Seller.prototype.id,
+    Order,
+    typeof Customer.prototype.id
+  >;
   customers: HasManyRepositoryFactory<Customer, MixedIdType>;
   parent: BelongsToAccessor<Customer, MixedIdType>;
 }
