@@ -17,6 +17,9 @@ defer to the owners of each individual module; the powers of the individual
 owner are kept in check by the ability of the community to fork and replace
 dependencies on the individual module and maintainer.
 
+The LoopBack project adopts the
+[Contributor Covenant version 2](CODE_OF_CONDUCT.md).
+
 ## [Reporting issues](http://loopback.io/doc/en/contrib/Reporting-issues.html)
 
 Issues in
