@@ -52,12 +52,13 @@ export function createBelongsToInclusionResolver<
     const sourceKey = relationMeta.keyFrom;
     const sourceIds = entities.map(e => (e as AnyObject)[sourceKey]);
     const targetKey = relationMeta.keyTo as StringKeyOf<Target>;
+    const dedupedSourceIds = deduplicate(sourceIds);
 
     const targetRepo = await getTargetRepo();
     const targetsFound = await findByForeignKeys(
       targetRepo,
       targetKey,
-      deduplicate(sourceIds),
+      dedupedSourceIds.filter(e => e),
       inclusion.scope as Filter<Target>,
       options,
     );
