@@ -3,10 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {
-  AuthenticationComponent,
-  registerAuthenticationStrategy,
-} from '@loopback/authentication';
+import {AuthenticationComponent} from '@loopback/authentication';
 import {
   AuthorizationComponent,
   AuthorizationTags,
@@ -18,18 +15,11 @@ import {RestApplication} from '@loopback/rest';
 import {RestExplorerComponent} from '@loopback/rest-explorer';
 import {ServiceMixin} from '@loopback/service-proxy';
 import path from 'path';
-import {
-  TokenServiceBindings,
-  TokenServiceConstants,
-  UserServiceBindings,
-} from './keys';
+import {JWTAuthenticationComponent} from './component/jwt-authentication-component';
+import {SECURITY_SCHEME_SPEC} from './component/security.spec';
 import {MySequence} from './sequence';
 import {CasbinAuthorizationProvider} from './services/casbin.authorizer';
 import {getCasbinEnforcerByName} from './services/casbin.enforcers';
-import {JWTAuthenticationStrategy} from './services/jwt.auth.strategy';
-import {JWTService} from './services/jwt.service';
-import {SECURITY_SCHEME_SPEC} from './services/security.spec';
-import {MyUserService} from './services/user.service';
 
 /**
  * Information from package.json
@@ -60,6 +50,7 @@ export class AccessControlApplication extends BootMixin(
     // Bind authentication component related elements
     this.component(AuthenticationComponent);
     this.component(AuthorizationComponent);
+    this.component(JWTAuthenticationComponent);
 
     this.projectRoot = __dirname;
     // Customize @loopback/boot Booter Conventions here
@@ -74,24 +65,11 @@ export class AccessControlApplication extends BootMixin(
   }
 
   setUpBindings(): void {
-    this.bind(TokenServiceBindings.TOKEN_SECRET).to(
-      TokenServiceConstants.TOKEN_SECRET_VALUE,
-    );
-    this.bind(TokenServiceBindings.TOKEN_EXPIRES_IN).to(
-      TokenServiceConstants.TOKEN_EXPIRES_IN_VALUE,
-    );
-    this.bind(TokenServiceBindings.TOKEN_SERVICE).toClass(JWTService);
-
-    this.bind(UserServiceBindings.USER_SERVICE).toClass(MyUserService);
-
     // authorization
     this.bind('casbin.enforcer.factory').to(getCasbinEnforcerByName);
     this.bind('authorizationProviders.casbin-provider')
       .toProvider(CasbinAuthorizationProvider)
       .tag(AuthorizationTags.AUTHORIZER);
-
-    // authentication
-    registerAuthenticationStrategy(this, JWTAuthenticationStrategy);
   }
 
   addSecuritySpec(): void {
