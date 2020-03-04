@@ -308,6 +308,14 @@
 /extensions/apiconnect @raymondfeng @deepakrkris
 
 #
+# TypeORM
+#
+# - Issue label: TypeORM
+# - Primary owner(s): @hacksparrow
+# - Standby owner(s): n/a
+/extensions/typeorm @hacksparrow
+
+#
 # Build & internal tooling
 #
 # - Issue label: Internal Tooling

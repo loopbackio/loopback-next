@@ -242,6 +242,13 @@ children:
       url: Database-migrations.html
       output: 'web, pdf'
 
+  - title: 'Using TypeORM'
+    output: 'web, pdf'
+    children:
+    - title: 'How to use TypeORM with LoopBack'
+      url: Using-typeorm-with-loopback.html
+      output: 'web, pdf'
+
   - title: 'Running and debugging apps'
     url: Running-and-debugging-apps.html
     output: 'web, pdf'
