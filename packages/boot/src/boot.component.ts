@@ -4,11 +4,11 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
-  BindingScope,
-  inject,
   Application,
+  BindingScope,
   Component,
   CoreBindings,
+  inject,
 } from '@loopback/core';
 import {
   ApplicationMetadataBooter,

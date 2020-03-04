@@ -7,7 +7,7 @@ import {Application, bind, BindingKey, ContextTags} from '@loopback/core';
 import {expect} from '@loopback/testlab';
 import {BootBindings, Booter, BootMixin} from '../../..';
 
-describe('BootMxiin unit tests', () => {
+describe('BootMixin unit tests', () => {
   let app: AppWithBootMixin;
 
   beforeEach(getApp);
