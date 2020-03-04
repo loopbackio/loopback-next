@@ -25,7 +25,7 @@ import {
 } from '../fixtures/models';
 import {givenBoundCrudRepositories} from '../helpers';
 
-export function hasManyRelationAcceptance(
+export function hasManyThroughRelationAcceptance(
   dataSourceOptions: DataSourceOptions,
   repositoryClass: CrudRepositoryCtor,
   features: CrudFeatures,
