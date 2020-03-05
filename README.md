@@ -83,7 +83,7 @@ You can join the team by posting a comment to
 
 ### Security
 
-If you think you have discovered a new security issue with any LoopBack 4
+If you think you have discovered a new security issue with any LoopBack
 package, **please do not report it on GitHub**. Instead, please refer to
 [SECURITY.md](SECURITY.md) on proper disclosure.
 

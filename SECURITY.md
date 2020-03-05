@@ -37,12 +37,12 @@ HackerOne which follows the
 set by the Node.js Security WG.
 
 One may also directly contact the project’s maintainers by emailing
-reachsl@us.ibm.com, but through the HackerOne program the Security WG members
+[reachsl@us.ibm.com](mailto:reachsl@us.ibm.com), but through the HackerOne program the Security WG members
 will take care of triaging the vulnerability and invite project maintainers to
 participate in the report.
 
 As an alternative method, vulnerabilities can also be reported by emailing
-security-ecosystem@nodejs.org.
+[security-ecosystem@nodejs.org](mailto:security-ecosystem@nodejs.org).
 
 ## Supported Versions
 
@@ -88,12 +88,9 @@ for details.
 
 </details>
 
-**Within LoopBack 4, fixes are not backported across semver major versions of a
-package.**
+**LoopBack 4 does not provide any Long Term Support version yet, fixes are not back-ported across semver major versions of a package.**
 
-We don't provide any
-[LTS version for LoopBack 4](https://github.com/strongloop/loopback-next/issues/4398)
-yet.
+Please join the discussion in [loopback-next#4398](https://github.com/strongloop/loopback-next/issues/4398) if you are interested in an LTS version.
 
 ## Security Advisories
 
