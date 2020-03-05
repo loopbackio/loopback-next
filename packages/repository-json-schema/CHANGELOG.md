@@ -3,6 +3,46 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@1.12.2...@loopback/repository-json-schema@2.0.0) (2020-03-05)
+
+
+### chore
+
+* remove support for Node.js v8.x ([4281d9d](https://github.com/strongloop/loopback-next/commit/4281d9df50f0715d32879e1442a90b643ec8f542))
+
+
+### Features
+
+* improve filter schema to allow exclusion ([be73660](https://github.com/strongloop/loopback-next/commit/be736601dcf91b8b322470fc08c9ed42260fa60c))
+* **repository-json-schema:** remove deprecated `MODEL_TYPE_KEYS` ([5bc2121](https://github.com/strongloop/loopback-next/commit/5bc21219ff3beb792c6d11ac12bfc1b58aee5c09))
+* add `tslib` as dependency ([a6e0b4c](https://github.com/strongloop/loopback-next/commit/a6e0b4ce7b862764167cefedee14c1115b25e0a4)), closes [#4676](https://github.com/strongloop/loopback-next/issues/4676)
+
+
+### BREAKING CHANGES
+
+* **repository-json-schema:** The following constants are no longer available:
+- `MODEL_TYPE_KEYS.ModelOnly`
+- `MODEL_TYPE_KEYS.ModelWithRelations`
+
+Please use the helper `buildModelCacheKey` to obtain the cache key
+for a given set of schema options.
+
+```diff
+- MODEL_TYPE_KEYS.ModelOnly
++ buildModelCacheKey()
+
+- MODEL_TYPE_KEYS.ModelWithRelations
++ buildModelCacheKey({includeRelations: true})
+```
+
+Signed-off-by: Miroslav Bajtoš <mbajtoss@gmail.com>
+* Node.js v8.x is now end of life. Please upgrade to version
+10 and above. See https://nodejs.org/en/about/releases.
+
+
+
+
+
 ## [1.12.2](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@1.12.1...@loopback/repository-json-schema@1.12.2) (2020-02-06)
 
 **Note:** Version bump only for package @loopback/repository-json-schema

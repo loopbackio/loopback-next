@@ -3,6 +3,34 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/boot@1.7.4...@loopback/boot@2.0.0) (2020-03-05)
+
+
+### Bug Fixes
+
+* **cli:** extract messages for generators ([2f572bd](https://github.com/strongloop/loopback-next/commit/2f572bd75883420e38bfaa780bc38445aec92e65))
+
+
+### chore
+
+* remove support for Node.js v8.x ([4281d9d](https://github.com/strongloop/loopback-next/commit/4281d9df50f0715d32879e1442a90b643ec8f542))
+
+
+### Features
+
+* add `tslib` as dependency ([a6e0b4c](https://github.com/strongloop/loopback-next/commit/a6e0b4ce7b862764167cefedee14c1115b25e0a4)), closes [#4676](https://github.com/strongloop/loopback-next/issues/4676)
+* **rest-crud:** add CrudRestApiBuilder ([bc5d56f](https://github.com/strongloop/loopback-next/commit/bc5d56fd4f10759756cd0ef6fbc922c02b5a9894))
+
+
+### BREAKING CHANGES
+
+* Node.js v8.x is now end of life. Please upgrade to version
+10 and above. See https://nodejs.org/en/about/releases.
+
+
+
+
+
 ## [1.7.4](https://github.com/strongloop/loopback-next/compare/@loopback/boot@1.7.3...@loopback/boot@1.7.4) (2020-02-06)
 
 **Note:** Version bump only for package @loopback/boot

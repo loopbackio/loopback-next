@@ -3,6 +3,34 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-express-composition@1.10.4...@loopback/example-express-composition@2.0.0) (2020-03-05)
+
+
+### Bug Fixes
+
+* remove ref for v4.loopback.io ([78f20c0](https://github.com/strongloop/loopback-next/commit/78f20c0ed4db5f3ce0d7b676449ba3b22526319e))
+
+
+### chore
+
+* remove support for Node.js v8.x ([4281d9d](https://github.com/strongloop/loopback-next/commit/4281d9df50f0715d32879e1442a90b643ec8f542))
+
+
+### Features
+
+* add `tslib` as dependency ([a6e0b4c](https://github.com/strongloop/loopback-next/commit/a6e0b4ce7b862764167cefedee14c1115b25e0a4)), closes [#4676](https://github.com/strongloop/loopback-next/issues/4676)
+* use [@param](https://github.com/param).filter and [@param](https://github.com/param).where decorators ([896ef74](https://github.com/strongloop/loopback-next/commit/896ef7485376b3aedcca01a40f828bf1ed9470ae))
+
+
+### BREAKING CHANGES
+
+* Node.js v8.x is now end of life. Please upgrade to version
+10 and above. See https://nodejs.org/en/about/releases.
+
+
+
+
+
 ## [1.10.4](https://github.com/strongloop/loopback-next/compare/@loopback/example-express-composition@1.10.3...@loopback/example-express-composition@1.10.4) (2020-02-06)
 
 **Note:** Version bump only for package @loopback/example-express-composition

@@ -3,6 +3,61 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-lb3-application@1.1.26...@loopback/example-lb3-application@2.0.0) (2020-03-05)
+
+
+### Bug Fixes
+
+* remove ref for v4.loopback.io ([78f20c0](https://github.com/strongloop/loopback-next/commit/78f20c0ed4db5f3ce0d7b676449ba3b22526319e))
+
+
+### chore
+
+* remove support for Node.js v8.x ([4281d9d](https://github.com/strongloop/loopback-next/commit/4281d9df50f0715d32879e1442a90b643ec8f542))
+
+
+### Code Refactoring
+
+* **rest:** make getApiSpec() async ([fe3df1b](https://github.com/strongloop/loopback-next/commit/fe3df1b85904ee8b8a005fa6eddf150d28ad2a08))
+
+
+### Features
+
+* add `tslib` as dependency ([a6e0b4c](https://github.com/strongloop/loopback-next/commit/a6e0b4ce7b862764167cefedee14c1115b25e0a4)), closes [#4676](https://github.com/strongloop/loopback-next/issues/4676)
+
+
+### BREAKING CHANGES
+
+* **rest:** Api specifications are now emitted as a Promise instead
+of a value object.  Calls to getApiSpec function must switch from
+the old style to new style as follows:
+
+1. Old style
+
+```ts
+function() {
+  // ...
+  const spec = restApp.restServer.getApiSpec();
+  // ...
+}
+```
+
+2. New style
+
+```ts
+async function() {
+  // ...
+  const spec = await restApp.restServer.getApiSpec();
+  // ...
+}
+```
+* Node.js v8.x is now end of life. Please upgrade to version
+10 and above. See https://nodejs.org/en/about/releases.
+
+
+
+
+
 ## [1.1.26](https://github.com/strongloop/loopback-next/compare/@loopback/example-lb3-application@1.1.25...@loopback/example-lb3-application@1.1.26) (2020-02-06)
 
 **Note:** Version bump only for package @loopback/example-lb3-application

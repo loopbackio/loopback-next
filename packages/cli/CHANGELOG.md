@@ -3,6 +3,50 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.30.1...@loopback/cli@2.0.0) (2020-03-05)
+
+
+### Bug Fixes
+
+* remove ref for v4.loopback.io ([78f20c0](https://github.com/strongloop/loopback-next/commit/78f20c0ed4db5f3ce0d7b676449ba3b22526319e))
+* **cli:** correct root directory in test ([f951052](https://github.com/strongloop/loopback-next/commit/f951052a12b82923b18f781c3b0292de0a2c8634)), closes [#4425](https://github.com/strongloop/loopback-next/issues/4425)
+* **cli:** extract messages for generators ([2f572bd](https://github.com/strongloop/loopback-next/commit/2f572bd75883420e38bfaa780bc38445aec92e65))
+* **cli:** extract messages for generators ([b264d60](https://github.com/strongloop/loopback-next/commit/b264d60752e8487c0649b1f47419dbc06a111384))
+* **cli:** ignore stdin when config is provided via CLI args ([3d64cfe](https://github.com/strongloop/loopback-next/commit/3d64cfebe19ae26b66ae7639a8ddffbf3dd54061))
+* **cli:** move `loopback` to devDependencies ([7701cab](https://github.com/strongloop/loopback-next/commit/7701cab4a18f37be62269d075045a0d0b8eb7d57))
+* **cli:** update tsconfig template excludes ([1fcc463](https://github.com/strongloop/loopback-next/commit/1fcc4633af333b56d0ba978e58fbc29778861215)), closes [/github.com/strongloop/loopback-next/pull/4707#issuecomment-590255940](https://github.com//github.com/strongloop/loopback-next/pull/4707/issues/issuecomment-590255940)
+* cleanup tilde-path-app post test ([4562a50](https://github.com/strongloop/loopback-next/commit/4562a5055c40ea91d33c4e1f29c08edcefa7fdef)), closes [#4652](https://github.com/strongloop/loopback-next/issues/4652)
+
+
+### chore
+
+* remove support for Node.js v8.x ([4281d9d](https://github.com/strongloop/loopback-next/commit/4281d9df50f0715d32879e1442a90b643ec8f542))
+
+
+### Features
+
+* use [@param](https://github.com/param).filter and [@param](https://github.com/param).where decorators ([896ef74](https://github.com/strongloop/loopback-next/commit/896ef7485376b3aedcca01a40f828bf1ed9470ae))
+* **cli:** add `tslib` as a template dependency ([267b074](https://github.com/strongloop/loopback-next/commit/267b074a93dc7483333486e2b381b3d7168ebc79)), closes [#4676](https://github.com/strongloop/loopback-next/issues/4676)
+* **cli:** add build:globalize option ([3c42077](https://github.com/strongloop/loopback-next/commit/3c4207730cd87e9399b18969c71515d44991e547))
+* **cli:** allow different naming convention for discover ([298e66e](https://github.com/strongloop/loopback-next/commit/298e66e7430406d2615f7826c770ee126ae56d18))
+* **cli:** automatically include base models when importing LB3 models ([9d5f8a7](https://github.com/strongloop/loopback-next/commit/9d5f8a771f475c1597bc5e1d22efc06e4940cbb7))
+* **cli:** import LB3 models with a custom base class ([aa3dc12](https://github.com/strongloop/loopback-next/commit/aa3dc12e32bd9c297742c9b54224644ea81f7526))
+* **cli:** improve logging from processing of config & options ([41a39c1](https://github.com/strongloop/loopback-next/commit/41a39c17a595bb92ea928d93318cc353e3e19218))
+* **cli:** skip inherited props & settings when importing a LB3 model ([97c8b05](https://github.com/strongloop/loopback-next/commit/97c8b0535f32dc5271d84fa8b66009126ddae8e1))
+* .vscode add typescript lint rules ([e8eb371](https://github.com/strongloop/loopback-next/commit/e8eb371af12ced96d0c87c88eae2be40b76c7911)), closes [#4584](https://github.com/strongloop/loopback-next/issues/4584)
+* add `tslib` as dependency ([a6e0b4c](https://github.com/strongloop/loopback-next/commit/a6e0b4ce7b862764167cefedee14c1115b25e0a4)), closes [#4676](https://github.com/strongloop/loopback-next/issues/4676)
+* lb3 migration tests for models customized with db metadata ([c58cc11](https://github.com/strongloop/loopback-next/commit/c58cc117b6e7a75e1920ce873a9cb4b98ff1058b))
+
+
+### BREAKING CHANGES
+
+* Node.js v8.x is now end of life. Please upgrade to version
+10 and above. See https://nodejs.org/en/about/releases.
+
+
+
+
+
 ## [1.30.1](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.30.0...@loopback/cli@1.30.1) (2020-02-06)
 
 **Note:** Version bump only for package @loopback/cli

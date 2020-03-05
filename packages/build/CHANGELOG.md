@@ -3,6 +3,36 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/build@3.1.1...@loopback/build@4.0.0) (2020-03-05)
+
+
+### chore
+
+* remove support for Node.js v8.x ([4281d9d](https://github.com/strongloop/loopback-next/commit/4281d9df50f0715d32879e1442a90b643ec8f542))
+
+
+### Features
+
+* **build:** add --lang flag to set LANG env var for lb-mocha ([a78bb84](https://github.com/strongloop/loopback-next/commit/a78bb846c43ed34f3fd9d8562ade037a1d29c2b9))
+* **build:** enable importHelpers ([e44f084](https://github.com/strongloop/loopback-next/commit/e44f084b6c8df762c0563b3716f13135f652b082)), closes [#4676](https://github.com/strongloop/loopback-next/issues/4676)
+* add `tslib` as dependency ([a6e0b4c](https://github.com/strongloop/loopback-next/commit/a6e0b4ce7b862764167cefedee14c1115b25e0a4)), closes [#4676](https://github.com/strongloop/loopback-next/issues/4676)
+
+
+### BREAKING CHANGES
+
+* **build:** enable importHelpers on the shared Typescript
+configuration file which requires `tslib` to be installed on dependent
+packages if the shared Typescript configuration is used.
+
+To migrate, run `npm install tslib` on the dependent package before
+updating to this version.
+* Node.js v8.x is now end of life. Please upgrade to version
+10 and above. See https://nodejs.org/en/about/releases.
+
+
+
+
+
 ## [3.1.1](https://github.com/strongloop/loopback-next/compare/@loopback/build@3.1.0...@loopback/build@3.1.1) (2020-02-05)
 
 **Note:** Version bump only for package @loopback/build

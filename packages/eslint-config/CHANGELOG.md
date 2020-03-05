@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/eslint-config@5.0.3...@loopback/eslint-config@6.0.0) (2020-03-05)
+
+
+### chore
+
+* remove support for Node.js v8.x ([4281d9d](https://github.com/strongloop/loopback-next/commit/4281d9df50f0715d32879e1442a90b643ec8f542))
+
+
+### Features
+
+* **eslint-config:** disallow non-null assertions after optional chain ([6fdc2b5](https://github.com/strongloop/loopback-next/commit/6fdc2b524b72a2cca08307e5d1a66c360c3ceb5a)), closes [#4675](https://github.com/strongloop/loopback-next/issues/4675)
+
+
+### BREAKING CHANGES
+
+* **eslint-config:** eslint rule
+`@typescript-eslint/no-non-null-asserted-optional-chain` is set to
+`error` which may break existing lint tests.
+* Node.js v8.x is now end of life. Please upgrade to version
+10 and above. See https://nodejs.org/en/about/releases.
+
+
+
+
+
 ## [5.0.3](https://github.com/strongloop/loopback-next/compare/@loopback/eslint-config@5.0.2...@loopback/eslint-config@5.0.3) (2020-02-05)
 
 **Note:** Version bump only for package @loopback/eslint-config

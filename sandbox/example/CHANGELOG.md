@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/sandbox-example@1.0.9...@loopback/sandbox-example@2.0.0) (2020-03-05)
+
+
+### chore
+
+* remove support for Node.js v8.x ([4281d9d](https://github.com/strongloop/loopback-next/commit/4281d9df50f0715d32879e1442a90b643ec8f542))
+
+
+### BREAKING CHANGES
+
+* Node.js v8.x is now end of life. Please upgrade to version
+10 and above. See https://nodejs.org/en/about/releases.
+
+
+
+
+
 ## [1.0.9](https://github.com/strongloop/loopback-next/compare/@loopback/sandbox-example@1.0.8...@loopback/sandbox-example@1.0.9) (2019-10-24)
 
 **Note:** Version bump only for package @loopback/sandbox-example

@@ -3,6 +3,58 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.7.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest-crud@0.6.6...@loopback/rest-crud@0.7.0) (2020-03-05)
+
+
+### chore
+
+* remove support for Node.js v8.x ([4281d9d](https://github.com/strongloop/loopback-next/commit/4281d9df50f0715d32879e1442a90b643ec8f542))
+
+
+### Code Refactoring
+
+* **rest:** make getApiSpec() async ([fe3df1b](https://github.com/strongloop/loopback-next/commit/fe3df1b85904ee8b8a005fa6eddf150d28ad2a08))
+
+
+### Features
+
+* add `tslib` as dependency ([a6e0b4c](https://github.com/strongloop/loopback-next/commit/a6e0b4ce7b862764167cefedee14c1115b25e0a4)), closes [#4676](https://github.com/strongloop/loopback-next/issues/4676)
+* use [@param](https://github.com/param).filter and [@param](https://github.com/param).where decorators ([896ef74](https://github.com/strongloop/loopback-next/commit/896ef7485376b3aedcca01a40f828bf1ed9470ae))
+* **rest-crud:** add CrudRestApiBuilder ([bc5d56f](https://github.com/strongloop/loopback-next/commit/bc5d56fd4f10759756cd0ef6fbc922c02b5a9894))
+
+
+### BREAKING CHANGES
+
+* **rest:** Api specifications are now emitted as a Promise instead
+of a value object.  Calls to getApiSpec function must switch from
+the old style to new style as follows:
+
+1. Old style
+
+```ts
+function() {
+  // ...
+  const spec = restApp.restServer.getApiSpec();
+  // ...
+}
+```
+
+2. New style
+
+```ts
+async function() {
+  // ...
+  const spec = await restApp.restServer.getApiSpec();
+  // ...
+}
+```
+* Node.js v8.x is now end of life. Please upgrade to version
+10 and above. See https://nodejs.org/en/about/releases.
+
+
+
+
+
 ## [0.6.6](https://github.com/strongloop/loopback-next/compare/@loopback/rest-crud@0.6.5...@loopback/rest-crud@0.6.6) (2020-02-06)
 
 **Note:** Version bump only for package @loopback/rest-crud

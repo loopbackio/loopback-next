@@ -1,6 +1,6 @@
 {
   "name": "@loopback/test-repository-mysql",
-  "version": "0.5.7",
+  "version": "0.6.0",
   "description": "",
   "private": true,
   "engines": {
@@ -18,10 +18,10 @@
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "devDependencies": {
-    "@loopback/build": "^3.1.1",
-    "@loopback/eslint-config": "^5.0.3",
-    "@loopback/repository": "^1.19.1",
-    "@loopback/repository-tests": "^0.10.1",
+    "@loopback/build": "^4.0.0",
+    "@loopback/eslint-config": "^6.0.0",
+    "@loopback/repository": "^2.0.0",
+    "@loopback/repository-tests": "^0.11.0",
     "@types/node": "^10.17.17",
     "loopback-connector-mysql": "^5.4.2",
     "tslib": "^1.11.1"

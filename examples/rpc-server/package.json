@@ -1,6 +1,6 @@
 {
   "name": "@loopback/example-rpc-server",
-  "version": "1.2.25",
+  "version": "2.0.0",
   "description": "A basic RPC server using a made-up protocol.",
   "keywords": [
     "loopback-application",
@@ -38,16 +38,16 @@
   "author": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
-    "@loopback/context": "^2.1.1",
-    "@loopback/core": "^1.12.4",
+    "@loopback/context": "^3.0.0",
+    "@loopback/core": "^2.0.0",
     "express": "^4.17.1",
     "p-event": "^4.1.0",
     "tslib": "^1.11.1"
   },
   "devDependencies": {
-    "@loopback/build": "^3.1.1",
-    "@loopback/eslint-config": "^5.0.3",
-    "@loopback/testlab": "^1.10.3",
+    "@loopback/build": "^4.0.0",
+    "@loopback/eslint-config": "^6.0.0",
+    "@loopback/testlab": "^2.0.0",
     "@types/express": "^4.17.3",
     "@types/node": "^10.17.17",
     "@typescript-eslint/eslint-plugin": "^2.22.0",

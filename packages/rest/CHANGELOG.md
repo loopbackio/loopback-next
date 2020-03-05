@@ -3,6 +3,70 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@2.0.0...@loopback/rest@3.0.0) (2020-03-05)
+
+
+### Bug Fixes
+
+* **cli:** extract messages for generators ([2f572bd](https://github.com/strongloop/loopback-next/commit/2f572bd75883420e38bfaa780bc38445aec92e65))
+* **rest:** improves error handling for express middleware ([02d0c91](https://github.com/strongloop/loopback-next/commit/02d0c91abb97830fd8652dde69ac4153720f3e75))
+
+
+### chore
+
+* remove support for Node.js v8.x ([4281d9d](https://github.com/strongloop/loopback-next/commit/4281d9df50f0715d32879e1442a90b643ec8f542))
+
+
+### Code Refactoring
+
+* **rest:** make getApiSpec() async ([fe3df1b](https://github.com/strongloop/loopback-next/commit/fe3df1b85904ee8b8a005fa6eddf150d28ad2a08))
+
+
+### Features
+
+* **rest:** add async validation support ([5b9a1ef](https://github.com/strongloop/loopback-next/commit/5b9a1efe03a9728dc707eb050c24b0ac7e23a1ec))
+* **rest:** add openapi enhancer service ([62d55eb](https://github.com/strongloop/loopback-next/commit/62d55ebd956910cbb487611673f21ec7088f3dcc)), closes [#4380](https://github.com/strongloop/loopback-next/issues/4380)
+* **rest:** add support for ajv-errors ([d151475](https://github.com/strongloop/loopback-next/commit/d151475d8fc91b4b02e0067c1db7069620143dd2))
+* **rest:** allow controllers/routes to be added/removed after server is started ([b604563](https://github.com/strongloop/loopback-next/commit/b6045636885268d9ea5d31287351ddbf0da53a7c))
+* add `tslib` as dependency ([a6e0b4c](https://github.com/strongloop/loopback-next/commit/a6e0b4ce7b862764167cefedee14c1115b25e0a4)), closes [#4676](https://github.com/strongloop/loopback-next/issues/4676)
+* **rest:** bind controller routes to the context ([a645b17](https://github.com/strongloop/loopback-next/commit/a645b17d0338e56f8182437d6ade20f27577203d))
+* **rest:** fixed AjvErrorOptions type & added test for ajvErrors: Object ([aa711d0](https://github.com/strongloop/loopback-next/commit/aa711d068b476292cdf27f673228746d21999c52))
+
+
+### BREAKING CHANGES
+
+* **rest:** Api specifications are now emitted as a Promise instead
+of a value object.  Calls to getApiSpec function must switch from
+the old style to new style as follows:
+
+1. Old style
+
+```ts
+function() {
+  // ...
+  const spec = restApp.restServer.getApiSpec();
+  // ...
+}
+```
+
+2. New style
+
+```ts
+async function() {
+  // ...
+  const spec = await restApp.restServer.getApiSpec();
+  // ...
+}
+```
+* **rest:** `validateRequestBody` is now an async function to allow asynchronous validations by custom Ajv keywords and formats. See https://ajv.js.org/#asynchronous-validation
+for more details.
+* Node.js v8.x is now end of life. Please upgrade to version
+10 and above. See https://nodejs.org/en/about/releases.
+
+
+
+
+
 # [2.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@1.26.1...@loopback/rest@2.0.0) (2020-02-06)
 
 

@@ -3,6 +3,44 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@2.11.0...@loopback/docs@3.0.0) (2020-03-05)
+
+
+### Bug Fixes
+
+* remove ref for v4.loopback.io ([78f20c0](https://github.com/strongloop/loopback-next/commit/78f20c0ed4db5f3ce0d7b676449ba3b22526319e))
+* **docs:** enhanced readability of error message in controllers ([e019744](https://github.com/strongloop/loopback-next/commit/e019744fea57ccdf4399de8d8e7aee785ebd5cdd))
+* **docs:** update Authentication-Tutorial.md ([b68c256](https://github.com/strongloop/loopback-next/commit/b68c256dc8808ae8746be2189ce5f1015ce6b5a2))
+* **docs:** update connector reference to lb4 link ([899aef9](https://github.com/strongloop/loopback-next/commit/899aef9a97c104f10664547ab2a7dfdbbe49d90d))
+* **example-todo:** throw if geocode address is not found ([72d2035](https://github.com/strongloop/loopback-next/commit/72d20359c1fb57f83f0244b8104583d45f3e238e))
+
+
+### chore
+
+* remove support for Node.js v8.x ([4281d9d](https://github.com/strongloop/loopback-next/commit/4281d9df50f0715d32879e1442a90b643ec8f542))
+
+
+### Features
+
+* support operation hooks ([8701cce](https://github.com/strongloop/loopback-next/commit/8701cce8b208c952e4d41f0570124e389506d808))
+* **docs:** add [@param](https://github.com/param).filter and [@param](https://github.com/param).where to OpenAPI decorators ([deba8b4](https://github.com/strongloop/loopback-next/commit/deba8b40102a787ef3c00ad42c2fe7c7cd43fd43))
+* add `tslib` as dependency ([a6e0b4c](https://github.com/strongloop/loopback-next/commit/a6e0b4ce7b862764167cefedee14c1115b25e0a4)), closes [#4676](https://github.com/strongloop/loopback-next/issues/4676)
+* adds [@response](https://github.com/response) decorator ([fe603ec](https://github.com/strongloop/loopback-next/commit/fe603ec815e6d6c446cc540860c2dc99d4b9a908))
+* use [@param](https://github.com/param).filter and [@param](https://github.com/param).where decorators ([896ef74](https://github.com/strongloop/loopback-next/commit/896ef7485376b3aedcca01a40f828bf1ed9470ae))
+* **cli:** import LB3 models with a custom base class ([aa3dc12](https://github.com/strongloop/loopback-next/commit/aa3dc12e32bd9c297742c9b54224644ea81f7526))
+* lb3 migration tests for models customized with db metadata ([c58cc11](https://github.com/strongloop/loopback-next/commit/c58cc117b6e7a75e1920ce873a9cb4b98ff1058b))
+* **rest:** add support for ajv-errors ([d151475](https://github.com/strongloop/loopback-next/commit/d151475d8fc91b4b02e0067c1db7069620143dd2))
+
+
+### BREAKING CHANGES
+
+* Node.js v8.x is now end of life. Please upgrade to version
+10 and above. See https://nodejs.org/en/about/releases.
+
+
+
+
+
 # [2.11.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@2.10.0...@loopback/docs@2.11.0) (2020-02-06)
 
 

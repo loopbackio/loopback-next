@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/http-server@1.5.4...@loopback/http-server@2.0.0) (2020-03-05)
+
+
+### Bug Fixes
+
+* extend test timeout for windows ([249198e](https://github.com/strongloop/loopback-next/commit/249198e41d6ad567f1582701c25abf29fc08c809)), closes [#4425](https://github.com/strongloop/loopback-next/issues/4425)
+
+
+### chore
+
+* remove support for Node.js v8.x ([4281d9d](https://github.com/strongloop/loopback-next/commit/4281d9df50f0715d32879e1442a90b643ec8f542))
+
+
+### Features
+
+* add `tslib` as dependency ([a6e0b4c](https://github.com/strongloop/loopback-next/commit/a6e0b4ce7b862764167cefedee14c1115b25e0a4)), closes [#4676](https://github.com/strongloop/loopback-next/issues/4676)
+
+
+### BREAKING CHANGES
+
+* Node.js v8.x is now end of life. Please upgrade to version
+10 and above. See https://nodejs.org/en/about/releases.
+
+
+
+
+
 ## [1.5.4](https://github.com/strongloop/loopback-next/compare/@loopback/http-server@1.5.3...@loopback/http-server@1.5.4) (2020-02-06)
 
 **Note:** Version bump only for package @loopback/http-server

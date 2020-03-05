@@ -3,6 +3,79 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.19.1...@loopback/repository@2.0.0) (2020-03-05)
+
+
+### chore
+
+* remove support for Node.js v8.x ([4281d9d](https://github.com/strongloop/loopback-next/commit/4281d9df50f0715d32879e1442a90b643ec8f542))
+
+
+### Features
+
+* constrain filter to exclude where for findById ([360d563](https://github.com/strongloop/loopback-next/commit/360d563361358dead0ac18198b2878aedb5f48c7))
+* support operation hooks ([8701cce](https://github.com/strongloop/loopback-next/commit/8701cce8b208c952e4d41f0570124e389506d808))
+* **repository:** make `targetsMany` property required ([cd4d43a](https://github.com/strongloop/loopback-next/commit/cd4d43abb0ebe56aa31939c14ae9d25021ad1e65))
+* **repository:** remove generic parameters from `Inclusion` type ([ed949e4](https://github.com/strongloop/loopback-next/commit/ed949e415ff0be1467b3029fb2e49c64a22c1b2e))
+* **repository:** skip undefined property values for toJSON ([70fc005](https://github.com/strongloop/loopback-next/commit/70fc005823ab4e5cf4b641d2d80668911a26012a))
+* add `tslib` as dependency ([a6e0b4c](https://github.com/strongloop/loopback-next/commit/a6e0b4ce7b862764167cefedee14c1115b25e0a4)), closes [#4676](https://github.com/strongloop/loopback-next/issues/4676)
+* preserve custom type of auto-generated id property ([dc7ff7f](https://github.com/strongloop/loopback-next/commit/dc7ff7f7829434de3436e9352b1d9cc43392db0e))
+
+
+### BREAKING CHANGES
+
+* **repository:** If you are building a custom relation type with its
+own definition interface, make sure the interface includes `targetsMany`
+property. Typically, the type of this property is hard-coded as `true`
+or `false`, depending on the relation type.
+
+```ts
+interface HasManyDefinition extends RelationDefinitionBase {
+  type: RelationType.hasMany;
+  targetsMany: true;
+  // etc.
+}
+
+export interface BelongsToDefinition extends RelationDefinitionBase {
+  type: RelationType.belongsTo;
+  targetsMany: false;
+  // etc.
+}
+```
+
+When creating an instance of a relation definition, make sure to include
+a value for `targetsMany` property.
+
+```ts
+new ModelDefinition('Order')
+  .addRelation({
+    name: 'customer',
+    type: RelationType.belongsTo,
+    targetsMany: false,
+    source: Order,
+    target: () => Customer,
+    keyFrom: 'customerId',
+    keyTo: 'id',
+  });
+```
+
+Signed-off-by: Miroslav Bajtoš <mbajtoss@gmail.com>
+* **repository:** The type `Inclusion` is no longer generic. Please
+update your code and remove any generic arguments provided for the type.
+
+```diff
+- Inclusion<MyModel>
++ Inclusion
+```
+
+Signed-off-by: Miroslav Bajtoš <mbajtoss@gmail.com>
+* Node.js v8.x is now end of life. Please upgrade to version
+10 and above. See https://nodejs.org/en/about/releases.
+
+
+
+
+
 ## [1.19.1](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.19.0...@loopback/repository@1.19.1) (2020-02-06)
 
 **Note:** Version bump only for package @loopback/repository

@@ -3,6 +3,40 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@2.1.1...@loopback/context@3.0.0) (2020-03-05)
+
+
+### chore
+
+* remove support for Node.js v8.x ([4281d9d](https://github.com/strongloop/loopback-next/commit/4281d9df50f0715d32879e1442a90b643ec8f542))
+
+
+### Features
+
+* **context:** allow tags to be matched by a given name with any value ([7cf053e](https://github.com/strongloop/loopback-next/commit/7cf053e49f46b93033c6b7c5e80daffe8406b2af))
+* **context:** remove generic parameters from `BindingFilter` type ([1ce33af](https://github.com/strongloop/loopback-next/commit/1ce33afeefc1c928085ed505adaa32cc06574a0c))
+* add `tslib` as dependency ([a6e0b4c](https://github.com/strongloop/loopback-next/commit/a6e0b4ce7b862764167cefedee14c1115b25e0a4)), closes [#4676](https://github.com/strongloop/loopback-next/issues/4676)
+* **context:** improve ctx.inspect() to allow classes with colliding names ([e7380fc](https://github.com/strongloop/loopback-next/commit/e7380fc467fe43fd801d8eca05e37745fc922aed))
+
+
+### BREAKING CHANGES
+
+* **context:** The type `BindingFilter` is no longer generic. Please
+update your code and remove any generic arguments provided for the type.
+
+```diff
+- BindingFilter<SomeType>
++ BindingFilter
+```
+
+Signed-off-by: Miroslav Bajtoš <mbajtoss@gmail.com>
+* Node.js v8.x is now end of life. Please upgrade to version
+10 and above. See https://nodejs.org/en/about/releases.
+
+
+
+
+
 ## [2.1.1](https://github.com/strongloop/loopback-next/compare/@loopback/context@2.1.0...@loopback/context@2.1.1) (2020-02-06)
 
 
