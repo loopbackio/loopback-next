@@ -10,7 +10,8 @@
   "files": [
     "bin",
     "lib",
-    "generators"
+    "generators",
+    "intl"
   ],
   "bin": {
     "lb4": "bin/cli-main.js"
