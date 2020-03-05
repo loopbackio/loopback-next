@@ -3,7 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+// Reexport `defineEntityCrudRepositoryClass` from `@loopback/repository` as
+// `defineCrudRepositoryClass` for backward-compatibility
+export {defineEntityCrudRepositoryClass as defineCrudRepositoryClass} from '@loopback/repository';
 export * from './crud-rest.api-builder';
 export * from './crud-rest.component';
 export * from './crud-rest.controller';
-export * from './repository-builder';

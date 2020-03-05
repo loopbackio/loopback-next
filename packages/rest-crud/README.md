@@ -64,9 +64,9 @@ class defined without the need for a repository or controller class file.
 
 If you would like more flexibility, e.g. if you would only like to define a
 default `CrudRest` controller or repository, you can use the two helper methods
-(`defineCrudRestController` and `defineCrudRepositoryClass`) exposed from
-`@loopback/rest-crud`. These functions will help you create controllers and
-respositories using code.
+(`defineCrudRestController` from `@loopback/rest-crud` and
+`defineEntityCrudRepositoryClass` from `@loopback/repository`). These functions
+will help you create controllers and repositories using code.
 
 For the examples in the following sections, we are also assuming a model named
 `Product`, and a datasource named `db` have already been created.
@@ -100,24 +100,28 @@ endpoints of an existing model with a respository.
 
 ### Creating a CRUD repository
 
-Use the `defineCrudRepositoryClass` method to create named repositories (based
-on the Model) for your app.
+Use the `defineEntityCrudRepositoryClass` method to create named repositories
+(based on the Model) for your app.
 
 Usage example:
 
 ```ts
-const ProductRepository = defineCrudRepositoryClass(Product);
+import {defineEntityCrudRepositoryClass} from '@loopback/repository';
+
+const ProductRepository = defineEntityCrudRepositoryClass(Product);
 this.repository(ProductRepository);
 inject('datasources.db')(ProductRepository, undefined, 0);
 ```
 
 ### Integrated example
 
-Here is an example of an app which uses `defineCrudRepositoryClass` and
+Here is an example of an app which uses `defineEntityCrudRepositoryClass` and
 `defineCrudRestController` to fulfill its repository and controller
 requirements.
 
 ```ts
+import {defineEntityCrudRepositoryClass} from '@loopback/repository';
+
 export class TryApplication extends BootMixin(
   ServiceMixin(RepositoryMixin(RestApplication)),
 ) {
@@ -128,7 +132,7 @@ export class TryApplication extends BootMixin(
   async boot(): Promise<void> {
     await super.boot();
 
-    const ProductRepository = defineCrudRepositoryClass(Product);
+    const ProductRepository = defineEntityCrudRepositoryClass(Product);
     const repoBinding = this.repository(ProductRepository);
 
     inject('datasources.db')(ProductRepository, undefined, 0);

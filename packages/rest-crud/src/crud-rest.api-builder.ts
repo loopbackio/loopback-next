@@ -18,12 +18,13 @@ import {
 import {
   ApplicationWithRepositories,
   Class,
+  defineEntityCrudRepositoryClass,
   Entity,
   EntityCrudRepository,
 } from '@loopback/repository';
 import {Model} from '@loopback/rest';
 import debugFactory from 'debug';
-import {defineCrudRepositoryClass, defineCrudRestController} from '.';
+import {defineCrudRestController} from '.';
 
 const debug = debugFactory('loopback:boot:crud-rest');
 
@@ -86,7 +87,7 @@ function setupCrudRepository(
   entityClass: typeof Entity & {prototype: Entity},
   config: ModelCrudRestApiConfig,
 ): Class<EntityCrudRepository<Entity, unknown>> {
-  const repositoryClass = defineCrudRepositoryClass(entityClass);
+  const repositoryClass = defineEntityCrudRepositoryClass(entityClass);
 
   injectFirstConstructorArg(
     repositoryClass,

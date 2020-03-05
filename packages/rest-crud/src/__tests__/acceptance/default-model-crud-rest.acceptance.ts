@@ -4,6 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
+  defineEntityCrudRepositoryClass,
   Entity,
   EntityCrudRepository,
   juggler,
@@ -18,7 +19,7 @@ import {
   givenHttpServerConfig,
   toJSON,
 } from '@loopback/testlab';
-import {defineCrudRepositoryClass, defineCrudRestController} from '../..';
+import {defineCrudRestController} from '../..';
 
 // In this test scenario, we create a product with a required & an optional
 // property and use the default model settings (strict mode, forceId).
@@ -287,7 +288,7 @@ describe('CrudRestController for a simple Product model', () => {
   async function setupTestScenario() {
     const db = new juggler.DataSource({connector: 'memory'});
 
-    const ProductRepository = defineCrudRepositoryClass(Product);
+    const ProductRepository = defineEntityCrudRepositoryClass(Product);
 
     repo = new ProductRepository(db);
 
