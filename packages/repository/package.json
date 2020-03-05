@@ -32,7 +32,7 @@
     "@types/debug": "^4.1.5",
     "debug": "^4.1.1",
     "lodash": "^4.17.15",
-    "loopback-datasource-juggler": "^4.19.1",
+    "loopback-datasource-juggler": "^4.19.2",
     "tslib": "^1.11.1"
   },
   "files": [
