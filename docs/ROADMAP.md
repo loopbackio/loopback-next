@@ -1,7 +1,5 @@
 ## 2020 Goals and Focus
 
-Test
-
 ### Goal#1 - Enable as many LoopBack 3 users to migrate to LoopBack 4 as possible
 
 With LoopBack 3 going end-of-life at the end of 2020, we are continuing to focus
