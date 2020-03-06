@@ -3,7 +3,7 @@
 [![Travis Build Status](https://travis-ci.com/strongloop/loopback-next.svg?branch=master)](https://travis-ci.com/strongloop/loopback-next)
 [![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/q8vp7wrdn2ak6801/branch/master?svg=true)](https://ci.appveyor.com/project/strongloop/loopback-next/branch/master)
 [![Coverage Status](https://coveralls.io/repos/github/strongloop/loopback-next/badge.svg?branch=master)](https://coveralls.io/github/strongloop/loopback-next?branch=master)
-[![Security Responsible Disclosure](https://img.shields.io/badge/Security-Responsible%20Disclosure-yellow.svg)](https://github.com/nodejs/security-wg/blob/master/SECURITY.md)
+[![Security Responsible Disclosure](https://img.shields.io/badge/Security-Responsible%20Disclosure-yellow.svg)](SECURITY.md)
 
 [![Twitter](https://img.shields.io/twitter/follow/strongloop.svg?style=social&label=Follow%20%40strongloop)](https://twitter.com/strongloop)
 [![Facebook](https://img.shields.io/badge/StrongLoop-white?logo=facebook&color=1877F2&logoColor=white)](https://www.facebook.com/strongloop)
@@ -83,8 +83,8 @@ You can join the team by posting a comment to
 
 ### Security
 
-If you think you have discovered a new security issue with any LoopBack
-package, **please do not report it on GitHub**. Instead, please refer to
+If you think you have discovered a new security issue with any LoopBack package,
+**please do not report it on GitHub**. Instead, please refer to
 [SECURITY.md](SECURITY.md) on proper disclosure.
 
 ## Team
