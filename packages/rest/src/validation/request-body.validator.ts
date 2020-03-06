@@ -10,18 +10,16 @@ import {
   SchemaObject,
   SchemasObject,
 } from '@loopback/openapi-v3';
-import AJV from 'ajv';
+import ajv from 'ajv';
 import debugModule from 'debug';
 import _ from 'lodash';
 import util from 'util';
 import {HttpErrors, RequestBody, RestHttpErrors} from '..';
 import {RequestBodyValidationOptions, SchemaValidatorCache} from '../types';
+import {AjvProvider} from './ajv.service';
 
 const toJsonSchema = require('openapi-schema-to-json-schema');
 const debug = debugModule('loopback:rest:validation');
-
-const ajvKeywords = require('ajv-keywords');
-const ajvErrors = require('ajv-errors');
 
 /**
  * Check whether the request body is valid according to the provided OpenAPI schema.
@@ -124,12 +122,12 @@ async function validateValueAgainstSchema(
   globalSchemas: SchemasObject = {},
   options: RequestBodyValidationOptions = {},
 ) {
-  let validate: AJV.ValidateFunction | undefined;
+  let validate: ajv.ValidateFunction | undefined;
 
   const cache = options.compiledSchemaCache ?? DEFAULT_COMPILED_SCHEMA_CACHE;
   const key = getKeyForOptions(options);
 
-  let validatorMap: Map<string, AJV.ValidateFunction> | undefined;
+  let validatorMap: Map<string, ajv.ValidateFunction> | undefined;
   if (cache.has(schema)) {
     validatorMap = cache.get(schema)!;
     validate = validatorMap.get(key);
@@ -142,7 +140,7 @@ async function validateValueAgainstSchema(
     cache.set(schema, validatorMap);
   }
 
-  let validationErrors: AJV.ErrorObject[] = [];
+  let validationErrors: ajv.ErrorObject[] = [];
   try {
     const validationResult = await validate(body);
     // When body is optional & values is empty / null, ajv returns null
@@ -183,7 +181,7 @@ function createValidator(
   schema: SchemaObject,
   globalSchemas?: SchemasObject,
   options?: RequestBodyValidationOptions,
-): AJV.ValidateFunction {
+): ajv.ValidateFunction {
   const jsonSchema = convertToJsonSchema(schema);
 
   const schemaWithRef = Object.assign({components: {}}, jsonSchema);
@@ -191,34 +189,11 @@ function createValidator(
     schemas: globalSchemas,
   };
 
-  // See https://github.com/epoberezkin/ajv#options
-  options = Object.assign(
-    {},
-    {
-      allErrors: true,
-      jsonPointers: true,
-      // nullable: support keyword "nullable" from Open API 3 specification.
-      nullable: true,
-    },
-    options,
-  );
-  debug('AJV options', options);
-  const ajv = new AJV(options);
-
-  if (options.ajvKeywords === true) {
-    ajvKeywords(ajv);
-  } else if (Array.isArray(options.ajvKeywords)) {
-    ajvKeywords(ajv, options.ajvKeywords);
-  }
-
-  if (options.ajvErrors === true) {
-    ajvErrors(ajv);
-  } else if (options.ajvErrors?.constructor === Object) {
-    ajvErrors(ajv, options.ajvErrors);
-  }
+  // FIXME(rfeng): We would prefer to inject the Ajv service
+  const ajvInst = new AjvProvider(options).value();
 
   // See https://ajv.js.org/#asynchronous-validation for async validation
   schemaWithRef.$async = true;
 
-  return ajv.compile(schemaWithRef);
+  return ajvInst.compile(schemaWithRef);
 }
