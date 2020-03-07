@@ -17,6 +17,7 @@
     "version": {
       "forcePublish": "@loopback/cli,@loopback/docs",
       "conventionalCommits": true,
+      "conventionalGraduate": true,
       "message": "chore: publish release"
     },
     "publish": {
