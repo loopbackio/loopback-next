@@ -1,0 +1,74 @@
+{
+  "name": "@loopback/example-rest-crud",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "engines": {
+    "node": ">=10"
+  },
+  "author": "IBM Corp.",
+  "scripts": {
+    "build": "lb-tsc",
+    "build:watch": "lb-tsc --watch",
+    "clean": "lb-clean *example-rest-crud*.tgz dist *.tsbuildinfo package",
+    "lint": "npm run prettier:check && npm run eslint",
+    "lint:fix": "npm run eslint:fix && npm run prettier:fix",
+    "prettier:cli": "lb-prettier \"**/*.ts\"",
+    "prettier:check": "npm run prettier:cli -- -l",
+    "prettier:fix": "npm run prettier:cli -- --write",
+    "eslint": "lb-eslint --report-unused-disable-directives .",
+    "eslint:fix": "npm run eslint -- --fix",
+    "pretest": "npm run build",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
+    "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js && npm run posttest",
+    "verify": "npm pack && tar xf loopback-rest-crud*.tgz && tree package && npm run clean",
+    "migrate": "node ./dist/migrate",
+    "prestart": "npm run build",
+    "start": "node ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "examples/rest-crud"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@loopback/boot": "^2.0.0",
+    "@loopback/context": "^3.0.0",
+    "@loopback/core": "^2.0.0",
+    "@loopback/openapi-v3": "^3.0.0",
+    "@loopback/repository": "^2.0.0",
+    "@loopback/rest": "^3.0.0",
+    "@loopback/rest-crud": "^0.7.0",
+    "@loopback/rest-explorer": "^2.0.0",
+    "loopback-connector-rest": "^3.6.0",
+    "tslib": "^1.11.1"
+  },
+  "devDependencies": {
+    "@loopback/build": "^4.0.0",
+    "@loopback/eslint-config": "^6.0.0",
+    "@loopback/http-caching-proxy": "^2.0.0",
+    "@loopback/testlab": "^2.0.0",
+    "@types/lodash": "^4.14.149",
+    "@types/node": "^10.17.17",
+    "@typescript-eslint/eslint-plugin": "^2.22.0",
+    "@typescript-eslint/parser": "^2.22.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-eslint-plugin": "^2.2.1",
+    "eslint-plugin-mocha": "^6.3.0",
+    "lodash": "^4.17.15",
+    "typescript": "~3.8.3"
+  },
+  "keywords": [
+    "loopback",
+    "LoopBack",
+    "example",
+    "CRUD",
+    "models",
+    "todo"
+  ]
+}

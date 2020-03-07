@@ -31,6 +31,9 @@ const EXAMPLES = {
   'lb3-application':
     'An example LoopBack 3 application mounted in a LoopBack 4 project.',
   'file-upload': 'An example showing how to expose APIs to upload files.',
+  'rest-crud':
+    'A simplified version of the Todo example that only requires a model and ' +
+    'a datasource.',
   'access-control-migration':
     'An access control example migrated from the LoopBack 3 repository ' +
     'loopback-example-access-control.',
