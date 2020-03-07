@@ -32,6 +32,10 @@ LoopBack 4 comes with the following example projects:
 - **[loopback4-example-shopping](https://github.com/strongloop/loopback4-example-shopping)**:
   An online e-commerce demo to validate/test the LoopBack 4 framework readiness.
 
+- **[rest-crud](https://github.com/strongloop/loopback-next/tree/master/examples/rest-crud)**:
+  An example showing how to use [`CrudRestComponent`] to define default
+  repository and controller classes for a model without creating those classes.
+
 You can download the example projects using our CLI tool `lb4`:
 
 ```sh

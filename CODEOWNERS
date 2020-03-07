@@ -253,6 +253,7 @@
 # - Standby owner(s): n/a
 /packages/model-api-builder @nabdelgadir
 /packages/rest-crud @nabdelgadir
+/examples/rest-crud @nabdelgadir
 
 #
 # Cloud Native tooling

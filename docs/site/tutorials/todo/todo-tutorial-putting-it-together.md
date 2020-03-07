@@ -77,6 +77,12 @@ Eager to continue learning about LoopBack 4? Check out our
 [Examples](../../Examples.md) and [Tutorials](../../Tutorials.md) sections to
 find examples for creating your own custom components, sequences and more!
 
+In fact, this example can be simplified to only defining the model and
+datasource, while still behaving the same. Using
+[`CrudRestComponent`](https://loopback.io/doc/en/lb4/apidocs.rest-crud.crudrestcomponent.html),
+the repository and controller classes can be omitted, as seen in the
+[rest-crud example](https://github.com/strongloop/loopback-next/tree/master/examples/rest-crud).
+
 ### Navigation
 
 Previous step: [Add a controller](todo-tutorial-controller.md)
