@@ -4,6 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
+  bind,
   BindingScope,
   BINDING_METADATA_KEY,
   Context,
@@ -12,8 +13,14 @@ import {
   MetadataInspector,
 } from '@loopback/context';
 import {expect} from '@loopback/testlab';
-import {addExtension, extensionPoint, extensions} from '../..';
-import {CoreTags} from '../../keys';
+import {
+  addExtension,
+  CoreTags,
+  extensionFilter,
+  extensionFor,
+  extensionPoint,
+  extensions,
+} from '../..';
 
 describe('extension point', () => {
   describe('@extensionPoint', () => {
@@ -145,6 +152,77 @@ describe('extension point', () => {
       expect(loadedLoggers).to.be.an.Array();
       expect(loadedLoggers.length).to.equal(1);
       expect(loadedLoggers[0]).to.be.instanceOf(ConsoleLogger);
+    });
+
+    it('allows an extension to contribute to multiple extension points', () => {
+      @bind(extensionFor('extensionPoint-1'), extensionFor('extensionPoint-2'))
+      class MyExtension {}
+      const binding = createBindingFromClass(MyExtension);
+      expect(binding.tagMap[CoreTags.EXTENSION_FOR]).to.eql([
+        'extensionPoint-1',
+        'extensionPoint-2',
+      ]);
+    });
+
+    it('allows an extension of multiple extension points with extensionFor', () => {
+      class MyExtension {}
+      const binding = ctx.bind('my-extension').toClass(MyExtension);
+      extensionFor('extensionPoint-1')(binding);
+      expect(binding.tagMap[CoreTags.EXTENSION_FOR]).to.eql('extensionPoint-1');
+
+      // Now we have two extension points
+      extensionFor('extensionPoint-2')(binding);
+      expect(binding.tagMap[CoreTags.EXTENSION_FOR]).to.eql([
+        'extensionPoint-1',
+        'extensionPoint-2',
+      ]);
+
+      // No duplication
+      extensionFor('extensionPoint-1')(binding);
+      expect(binding.tagMap[CoreTags.EXTENSION_FOR]).to.eql([
+        'extensionPoint-1',
+        'extensionPoint-2',
+      ]);
+    });
+
+    it('allows multiple extension points for extensionFilter', () => {
+      class MyExtension {}
+      const binding = ctx.bind('my-extension').toClass(MyExtension);
+      extensionFor('extensionPoint-1', 'extensionPoint-2')(binding);
+      expect(extensionFilter('extensionPoint-1')(binding)).to.be.true();
+      expect(extensionFilter('extensionPoint-2')(binding)).to.be.true();
+      expect(extensionFilter('extensionPoint-3')(binding)).to.be.false();
+    });
+
+    it('allows multiple extension points for @extensions', async () => {
+      @extensionPoint('extensionPoint-1')
+      class MyExtensionPoint1 {
+        @extensions() getMyExtensions: Getter<MyExtension[]>;
+      }
+
+      @extensionPoint('extensionPoint-2')
+      class MyExtensionPoint2 {
+        @extensions() getMyExtensions: Getter<MyExtension[]>;
+      }
+
+      @bind(extensionFor('extensionPoint-1', 'extensionPoint-2'))
+      class MyExtension {}
+
+      ctx.add(
+        createBindingFromClass(MyExtensionPoint1, {key: 'extensionPoint1'}),
+      );
+      ctx.add(
+        createBindingFromClass(MyExtensionPoint2, {key: 'extensionPoint2'}),
+      );
+      ctx.add(createBindingFromClass(MyExtension));
+      const ep1: MyExtensionPoint1 = await ctx.get('extensionPoint1');
+      const ep2: MyExtensionPoint2 = await ctx.get('extensionPoint2');
+      const extensionsFor1 = await ep1.getMyExtensions();
+      const extensionsFor2 = await ep2.getMyExtensions();
+      expect(extensionsFor1.length).to.eql(1);
+      expect(extensionsFor1[0]).to.be.instanceOf(MyExtension);
+      expect(extensionsFor2.length).to.eql(1);
+      expect(extensionsFor2[0]).to.be.instanceOf(MyExtension);
     });
 
     function givenContext() {
