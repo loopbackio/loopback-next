@@ -6,6 +6,7 @@
 import {
   bind,
   Binding,
+  BindingFilter,
   BindingFromClassOptions,
   BindingSpec,
   BindingTemplate,
@@ -15,6 +16,7 @@ import {
   createBindingFromClass,
   createViewGetter,
   filterByTag,
+  includesTagValue,
   inject,
 } from '@loopback/context';
 import {CoreTags} from './keys';
@@ -113,19 +115,42 @@ function inferExtensionPointName(
  * extension point
  * @param extensionPointName - Name of the extension point
  */
-export function extensionFilter(extensionPointName: string) {
+export function extensionFilter(extensionPointName: string): BindingFilter {
   return filterByTag({
-    [CoreTags.EXTENSION_FOR]: extensionPointName,
+    [CoreTags.EXTENSION_FOR]: includesTagValue(extensionPointName),
   });
 }
 
 /**
  * A factory function to create binding template for extensions of the given
  * extension point
- * @param extensionPointName - Name of the extension point
+ * @param extensionPointNames - Names of the extension point
  */
-export function extensionFor(extensionPointName: string): BindingTemplate {
-  return binding => binding.tag({[CoreTags.EXTENSION_FOR]: extensionPointName});
+export function extensionFor(
+  ...extensionPointNames: string[]
+): BindingTemplate {
+  return binding => {
+    if (extensionPointNames.length === 0) return;
+    let extensionPoints = binding.tagMap[CoreTags.EXTENSION_FOR];
+    // Normalize extensionPoints to string[]
+    if (extensionPoints == null) {
+      extensionPoints = [];
+    } else if (typeof extensionPoints === 'string') {
+      extensionPoints = [extensionPoints];
+    }
+
+    // Add extension points
+    for (const extensionPointName of extensionPointNames) {
+      if (!extensionPoints.includes(extensionPointName)) {
+        extensionPoints.push(extensionPointName);
+      }
+    }
+    if (extensionPoints.length === 1) {
+      // Keep the value as string for backward compatibility
+      extensionPoints = extensionPoints[0];
+    }
+    binding.tag({[CoreTags.EXTENSION_FOR]: extensionPoints});
+  };
 }
 
 /**
