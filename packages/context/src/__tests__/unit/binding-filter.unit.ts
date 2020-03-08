@@ -11,6 +11,7 @@ import {
   BindingKey,
   filterByKey,
   filterByTag,
+  includesTagValue,
   isBindingAddress,
   isBindingTagFilter,
 } from '../..';
@@ -63,6 +64,30 @@ describe('BindingFilter', () => {
       expect(filter(binding)).to.be.true();
     });
 
+    it('accepts bindings MATCHING the provided tag map with array values', () => {
+      const filter = filterByTag({
+        extensionFor: includesTagValue('greeting-service'),
+        name: 'my-name',
+      });
+      binding.tag({
+        extensionFor: ['greeting-service', 'anther-extension-point'],
+      });
+      binding.tag({name: 'my-name'});
+      expect(filter(binding)).to.be.true();
+    });
+
+    it('rejects bindings NOT MATCHING the provided tag map with array values', () => {
+      const filter = filterByTag({
+        extensionFor: includesTagValue('extension-point-3'),
+        name: 'my-name',
+      });
+      binding.tag({
+        extensionFor: ['extension-point-1', 'extension-point-2'],
+      });
+      binding.tag({name: 'my-name'});
+      expect(filter(binding)).to.be.false();
+    });
+
     it('matches ANY_TAG_VALUE if the tag name exists', () => {
       const filter = filterByTag({
         controller: ANY_TAG_VALUE,
@@ -78,6 +103,39 @@ describe('BindingFilter', () => {
         name: 'my-name',
       });
       binding.tag({name: 'my-name'});
+      expect(filter(binding)).to.be.false();
+    });
+
+    it('allows include tag value matcher - true for exact match', () => {
+      const filter = filterByTag({
+        controller: includesTagValue('MyController'),
+        name: 'my-name',
+      });
+      binding.tag({name: 'my-name', controller: 'MyController'});
+      expect(filter(binding)).to.be.true();
+    });
+
+    it('allows include tag value matcher - true for included match', () => {
+      const filter = filterByTag({
+        controller: includesTagValue('MyController'),
+        name: 'my-name',
+      });
+      binding.tag({
+        name: 'my-name',
+        controller: ['MyController', 'YourController'],
+      });
+      expect(filter(binding)).to.be.true();
+    });
+
+    it('allows include tag value matcher - false for no match', () => {
+      const filter = filterByTag({
+        controller: includesTagValue('XYZController'),
+        name: 'my-name',
+      });
+      binding.tag({
+        name: 'my-name',
+        controller: ['MyController', 'YourController'],
+      });
       expect(filter(binding)).to.be.false();
     });
 

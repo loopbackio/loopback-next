@@ -112,6 +112,19 @@ export function isBindingTagFilter(
 }
 
 /**
+ * A function to check if a given tag value is matched for `filterByTag`
+ */
+export interface TagValueMatcher {
+  /**
+   * Check if the given tag value matches the search criteria
+   * @param tagValue - Tag value from the binding
+   * @param tagName - Tag name
+   * @param tagMap - Tag map from the binding
+   */
+  (tagValue: unknown, tagName: string, tagMap: MapObject<unknown>): boolean;
+}
+
+/**
  * A symbol that can be used to match binding tags by name regardless of the
  * value.
  *
@@ -125,7 +138,24 @@ export function isBindingTagFilter(
  * ctx.findByTag({controller: ANY_TAG_VALUE})
  * ```
  */
-export const ANY_TAG_VALUE = Symbol.for('loopback.AnyTagValue');
+export const ANY_TAG_VALUE: TagValueMatcher = (tagValue, tagName, tagMap) =>
+  tagName in tagMap;
+
+/**
+ * Create a tag value matcher function that returns `true` if the target tag
+ * value equals to the item value or is an array that includes the item value.
+ * @param itemValue - Tag item value
+ */
+export function includesTagValue(itemValue: unknown): TagValueMatcher {
+  return tagValue => {
+    return (
+      // The tag value equals the item value
+      tagValue === itemValue ||
+      // The tag value contains the item value
+      (Array.isArray(tagValue) && tagValue.includes(itemValue))
+    );
+  };
+}
 
 /**
  * Create a binding filter for the tag pattern
@@ -156,10 +186,8 @@ export function filterByTag(tagPattern: BindingTag | RegExp): BindingTagFilter {
     // Match tag name/value pairs
     const tagMap = tagPattern as MapObject<unknown>;
     filter = b => {
-      for (const t in tagPattern) {
-        if (tagMap[t] === ANY_TAG_VALUE) return t in b.tagMap;
-        // One tag name/value does not match
-        if (b.tagMap[t] !== tagMap[t]) return false;
+      for (const t in tagMap) {
+        if (!matchTagValue(tagMap[t], t, b.tagMap)) return false;
       }
       // All tag name/value pairs match
       return true;
@@ -169,6 +197,20 @@ export function filterByTag(tagPattern: BindingTag | RegExp): BindingTagFilter {
   const tagFilter = filter as BindingTagFilter;
   tagFilter.bindingTagPattern = regex ?? tagPattern;
   return tagFilter;
+}
+
+function matchTagValue(
+  tagValueOrMatcher: unknown,
+  tagName: string,
+  tagMap: MapObject<unknown>,
+) {
+  const tagValue = tagMap[tagName];
+  if (tagValue === tagValueOrMatcher) return true;
+
+  if (typeof tagValueOrMatcher === 'function') {
+    return (tagValueOrMatcher as TagValueMatcher)(tagValue, tagName, tagMap);
+  }
+  return false;
 }
 
 /**
