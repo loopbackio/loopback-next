@@ -63,7 +63,7 @@
     "stringify-object": "^3.3.0",
     "strong-globalize": "^5.0.5",
     "swagger-parser": "^8.0.4",
-    "swagger2openapi": "^5.3.3",
+    "swagger2openapi": "^5.3.4",
     "tildify": "^2.0.0",
     "ts-morph": "^7.0.0",
     "typescript": "~3.8.3",
