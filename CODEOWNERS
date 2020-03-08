@@ -239,7 +239,7 @@
 # - Issue label: Migration
 # - Primary owner(s): @deepakrkris
 # - Standby owner(s): @nabdelgadir
-/packages/booter-lb3-app @deepakrkris @nabdelgadir
+/packages/booter-lb3app @deepakrkris @nabdelgadir
 /packages/cli/generators/import-lb3-models @deepakrkris @nabdelgadir
 /examples/lb3-application @deepakrkris @nabdelgadir
 /docs/site/migration @deepakrkris @nabdelgadir
