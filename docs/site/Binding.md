@@ -21,7 +21,7 @@ A binding typically has the following attributes:
   the context
 - tags: Tags are names or name/value pairs to describe or annotate a binding
 - value: Each binding must be configured with a type of value provider so that
-  it be resolved to a constant or calculated value
+  it can be resolved to a constant or calculated value
 
 ![Binding](imgs/binding.png)
 
