@@ -8,7 +8,8 @@ import debugModule from 'debug';
 import * as _ from 'lodash';
 import {inspect} from 'util';
 import {OpenApiSpec, SecuritySchemeObject} from '../types';
-import {OASEnhancer, OAS_ENHANCER_EXTENSION_POINT_NAME} from './types';
+import {OASEnhancerBindings} from './keys';
+import {OASEnhancer} from './types';
 const jsonmergepatch = require('json-merge-patch');
 
 const debug = debugModule('loopback:openapi:spec-enhancer');
@@ -28,7 +29,7 @@ export interface OASEnhancerServiceOptions {
  * A typical use of it would be generating the OpenAPI spec for the endpoints on a server
  * in the `@loopback/rest` module.
  */
-@extensionPoint(OAS_ENHANCER_EXTENSION_POINT_NAME)
+@extensionPoint(OASEnhancerBindings.OAS_ENHANCER_EXTENSION_POINT_NAME)
 export class OASEnhancerService {
   constructor(
     /**

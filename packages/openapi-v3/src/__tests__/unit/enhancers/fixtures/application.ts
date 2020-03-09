@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Application, createBindingFromClass} from '@loopback/core';
-import {OASEnhancerService, OAS_ENHANCER_SERVICE} from '../../../..';
+import {OASEnhancerBindings, OASEnhancerService} from '../../../..';
 import {InfoSpecEnhancer} from './info.spec.extension';
 import {SecuritySpecEnhancer} from './security.spec.extension';
 
@@ -13,7 +13,7 @@ export class SpecServiceApplication extends Application {
     super();
     this.add(
       createBindingFromClass(OASEnhancerService, {
-        key: OAS_ENHANCER_SERVICE,
+        key: OASEnhancerBindings.OAS_ENHANCER_SERVICE,
       }),
     );
     this.add(createBindingFromClass(SecuritySpecEnhancer));
@@ -23,6 +23,6 @@ export class SpecServiceApplication extends Application {
   async main() {}
 
   getSpecService() {
-    return this.get(OAS_ENHANCER_SERVICE);
+    return this.get(OASEnhancerBindings.OAS_ENHANCER_SERVICE);
   }
 }
