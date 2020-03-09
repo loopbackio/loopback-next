@@ -8,8 +8,11 @@
 import {TokenService, UserService} from '@loopback/authentication';
 import {inject} from '@loopback/context';
 import {post, requestBody} from '@loopback/rest';
-import {TokenServiceBindings, UserServiceBindings} from '../component/keys';
-import {Credentials} from '../component/user.service';
+import {
+  Credentials,
+  TokenServiceBindings,
+  UserServiceBindings,
+} from '../components/jwt-authentication';
 import {User} from '../models';
 
 const CredentialsSchema = {

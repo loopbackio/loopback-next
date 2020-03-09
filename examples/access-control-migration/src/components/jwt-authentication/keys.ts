@@ -2,8 +2,8 @@ import {TokenService, UserService} from '@loopback/authentication';
 import {BindingKey} from '@loopback/core';
 // The User model is imported from the application,
 // which makes the component not entirely independent
-import {User} from '../models/user.model';
-import {Credentials} from './user.service';
+import {User} from '../../models/user.model';
+import {Credentials} from './services/user.service';
 
 export namespace TokenServiceConstants {
   export const TOKEN_SECRET_VALUE = 'myjwts3cr3t';

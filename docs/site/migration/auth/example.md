@@ -157,21 +157,21 @@ retrieves the token from a request, decodes the user's information in it as
 decide the `principal`'s access later.
 
 To simplify the implementation for readers, we extracted the services and
-bindings into a component in folder `src/component`, it consists of the
-following files:
+bindings into a component in folder `src/components/jwt-authentication`, it
+consists of the following files:
 
 - creating the jwt authentication strategy to decode the user profile from
-  token. See
-  [file src/component/jwt.auth.strategy.ts](https://github.com/strongloop/loopback-next/tree/master/examples/access-control-migration/src/component/jwt.auth.strategy.ts).
-- creating the token service to organize utils for token operations. See
-  [file src/component/jwt.service.ts](https://github.com/strongloop/loopback-next/tree/master/examples/access-control-migration/src/component/jwt.service.ts).
-- creating user service to organize utils for user operations. see
-  [file src/component/user.service.ts](https://github.com/strongloop/loopback-next/tree/master/examples/access-control-migration/src/component/user.service.ts).
+  token. See file
+  [jwt.auth.strategy.ts](https://github.com/strongloop/loopback-next/tree/master/examples/access-control-migration/src/components/jwt-authentication/jwt.auth.strategy.ts).
+- creating the token service to organize utils for token operations. See file
+  [jwt.service.ts](https://github.com/strongloop/loopback-next/tree/master/examples/access-control-migration/src/components/jwt-authentication/jwt.service.ts).
+- creating user service to organize utils for user operations. see file
+  [user.service.ts](https://github.com/strongloop/loopback-next/tree/master/examples/access-control-migration/src/components/jwt-authentication/user.service.ts).
 - adding OpenAPI security specification to your app so that the explorer has an
-  Authorize button to setup the token for secured endpoints. See
-  [file src/component/security.spec.ts](https://github.com/strongloop/loopback-next/tree/master/examples/access-control-migration/src/component/security.spec.ts).
-- creating bindings for the above services. See
-  [file src/component/keys.ts](https://github.com/strongloop/loopback-next/blob/master/examples/access-control-migration/src/component/keys.ts).
+  Authorize button to setup the token for secured endpoints. See file
+  [security.spec.ts](https://github.com/strongloop/loopback-next/tree/master/examples/access-control-migration/src/components/jwt-authentication/security.spec.ts).
+- creating bindings for the above services. See file
+  [keys.ts](https://github.com/strongloop/loopback-next/blob/master/examples/access-control-migration/src/components/jwt-authentication/keys.ts).
 
 You can enable the jwt authentication by mounting the authentication component
 in the application constructor:
@@ -179,6 +179,9 @@ in the application constructor:
 {% include code-caption.html content="src/application.ts" %}
 
 ```ts
+// Add this line to import the component
+import {JWTAuthenticationComponent} from './components/jwt-authentication';
+
 export class AccessControlApplication extends BootMixin(
   ServiceMixin(RepositoryMixin(RestApplication)),
 ) {
@@ -300,7 +303,7 @@ document
 [Programming Access Policies](../../Loopback-component-authorization#programming-access-policies)_
 
 The complete authorizer file can be found in
-[services/casbin.authorizer.ts](https://github.com/strongloop/loopback-next/blob/master/examples/access-control-migration/src/services/casbin.authorizer.ts).
+[components/casbin-authorization/services/casbin.authorizer.ts](https://github.com/strongloop/loopback-next/blob/master/examples/access-control-migration/src/components/casbin-authorization/services/casbin.authorizer.ts).
 It retrieves the three required fields from the authorization context: subject
 from `principal`, `resource` as object, and action, to invoke casbin enforcers
 and make decision.
@@ -316,7 +319,7 @@ and therefore we define the pre-process logic in a voter to generate the
 resource name as `project${id}`, then passes it to the authorizer.
 
 The complete voter file can be found in file
-[services/assign-project-instance-id.voter.ts](https://github.com/strongloop/loopback-next/blob/master/examples/access-control-migration/src/services/assign-project-instance-id.voter.ts)
+[components/casbin-authorization/services/assign-project-instance-id.voter.ts](https://github.com/strongloop/loopback-next/blob/master/examples/access-control-migration/src/components/casbin-authorization/services/assign-project-instance-id.voter.ts)
 
 3. Create casbin enforcers
 
@@ -327,7 +330,7 @@ files per role. The authorizer will only invoke the enforcers for allowed
 role(s).
 
 The complete enforcer file can be found in file
-[services/casbin.enforcers.ts](https://github.com/strongloop/loopback-next/blob/master/examples/access-control-migration/src/services/casbin.enforcers.voter.ts)
+[components/casbin-authorization/services/casbin.enforcers.ts](https://github.com/strongloop/loopback-next/blob/master/examples/access-control-migration/src/components/casbin-authorization/services/casbin.enforcers.ts)
 
 4. Write casbin model and policies
 
@@ -336,7 +339,32 @@ Since the model and policy are already covered in section
 files are defined in folder
 [fixtures/casbin](https://github.com/strongloop/loopback-next/blob/master/examples/access-control-migration/fixtures/casbin).
 
-5. Casbin persistency and synchronize(2nd Phase implementation, TBD)
+5. Mount the casbin authorization system as a component
+
+The casbin authorizer, voter and enforcers above are packed under component
+'src/components/casbin-authorization'. You can export their bindings in a
+[component file](https://github.com/strongloop/loopback-next/blob/master/examples/access-control-migration/src/components/casbin-authorization/casbin-authorization-component.ts)
+and mount the component in the application constructor:
+
+{% include code-caption.html content="src/application.ts" %}
+
+```ts
+// Add this line to import the component
+import {CasbinAuthorizationComponent} from './components/casbin-authorization';
+
+export class AccessControlApplication extends BootMixin(
+  ServiceMixin(RepositoryMixin(RestApplication)),
+) {
+  constructor(options: ApplicationConfig = {}) {
+    // ...
+    // Add this line to mount the casin authorization component
+    this.component(CasbinAuthorizationComponent);
+    // ...
+  }
+}
+```
+
+6. Casbin persistency and synchronize(2nd Phase implementation, TBD)
 
 This will be supported at the 2nd phase of implementation. The plan is to have
 model or operation hooks to update the casbin policies when new data created. It

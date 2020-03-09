@@ -3,14 +3,14 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import _ from 'lodash';
-import {repository} from '@loopback/repository';
-import {param, get, getModelSchemaRef, patch} from '@loopback/rest';
-import {Project} from '../models';
-import {ProjectRepository} from '../repositories';
 import {authenticate} from '@loopback/authentication';
 import {authorize} from '@loopback/authorization';
-import {assignProjectInstanceId} from '../services/assign-project-instance-id.voter';
+import {repository} from '@loopback/repository';
+import {get, getModelSchemaRef, param, patch} from '@loopback/rest';
+import _ from 'lodash';
+import {assignProjectInstanceId} from '../components/casbin-authorization';
+import {Project} from '../models';
+import {ProjectRepository} from '../repositories';
 
 // TBD: refactor the ACLs to a separate file
 const RESOURCE_NAME = 'project';

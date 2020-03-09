@@ -6,14 +6,14 @@ import {
   CoreBindings,
   inject,
 } from '@loopback/core';
-import {JWTAuthenticationStrategy} from './jwt.auth.strategy';
-import {JWTService} from './jwt.service';
+import {JWTAuthenticationStrategy} from './services/jwt.auth.strategy';
+import {JWTService} from './services/jwt.service';
 import {
   TokenServiceBindings,
   TokenServiceConstants,
   UserServiceBindings,
 } from './keys';
-import {MyUserService} from './user.service';
+import {MyUserService} from './services/user.service';
 
 export class JWTAuthenticationComponent implements Component {
   bindings = [

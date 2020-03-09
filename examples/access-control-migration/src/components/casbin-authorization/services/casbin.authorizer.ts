@@ -12,7 +12,7 @@ import {
 } from '@loopback/authorization';
 import {inject, Provider} from '@loopback/core';
 import * as casbin from 'casbin';
-import {RESOURCE_ID} from '../keys';
+import {RESOURCE_ID} from '../../../keys';
 const debug = require('debug')('loopback:example:acl');
 const DEFAULT_SCOPE = 'execute';
 
