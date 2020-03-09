@@ -4,10 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {AuthenticationComponent} from '@loopback/authentication';
-import {
-  AuthorizationComponent,
-  AuthorizationTags,
-} from '@loopback/authorization';
+import {AuthorizationComponent} from '@loopback/authorization';
 import {BootMixin} from '@loopback/boot';
 import {ApplicationConfig, BindingKey} from '@loopback/core';
 import {RepositoryMixin} from '@loopback/repository';
@@ -15,11 +12,12 @@ import {RestApplication} from '@loopback/rest';
 import {RestExplorerComponent} from '@loopback/rest-explorer';
 import {ServiceMixin} from '@loopback/service-proxy';
 import path from 'path';
-import {JWTAuthenticationComponent} from './component/jwt-authentication-component';
-import {SECURITY_SCHEME_SPEC} from './component/security.spec';
+import {CasbinAuthorizationComponent} from './components/casbin-authorization';
+import {
+  JWTAuthenticationComponent,
+  SECURITY_SCHEME_SPEC,
+} from './components/jwt-authentication';
 import {MySequence} from './sequence';
-import {CasbinAuthorizationProvider} from './services/casbin.authorizer';
-import {getCasbinEnforcerByName} from './services/casbin.enforcers';
 
 /**
  * Information from package.json
@@ -43,14 +41,14 @@ export class AccessControlApplication extends BootMixin(
     // Set up default home page
     this.static('/', path.join(__dirname, '../public'));
 
-    this.setUpBindings();
     this.addSecuritySpec();
 
     this.component(RestExplorerComponent);
-    // Bind authentication component related elements
+    // Bind authentication and authorization related elements
     this.component(AuthenticationComponent);
     this.component(AuthorizationComponent);
     this.component(JWTAuthenticationComponent);
+    this.component(CasbinAuthorizationComponent);
 
     this.projectRoot = __dirname;
     // Customize @loopback/boot Booter Conventions here
@@ -62,14 +60,6 @@ export class AccessControlApplication extends BootMixin(
         nested: true,
       },
     };
-  }
-
-  setUpBindings(): void {
-    // authorization
-    this.bind('casbin.enforcer.factory').to(getCasbinEnforcerByName);
-    this.bind('authorizationProviders.casbin-provider')
-      .toProvider(CasbinAuthorizationProvider)
-      .tag(AuthorizationTags.AUTHORIZER);
   }
 
   addSecuritySpec(): void {

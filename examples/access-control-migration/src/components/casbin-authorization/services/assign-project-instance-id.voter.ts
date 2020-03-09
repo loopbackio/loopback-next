@@ -8,7 +8,7 @@ import {
   AuthorizationDecision,
   AuthorizationMetadata,
 } from '@loopback/authorization';
-import {RESOURCE_ID} from '../keys';
+import {RESOURCE_ID} from '../../../keys';
 
 /**
  * Instance level authorizer for known endpoints
