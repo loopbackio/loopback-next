@@ -6,6 +6,10 @@ sidebar: lb4_sidebar
 permalink: /doc/en/lb4/migration-models-operation-hooks.html
 ---
 
+{% include tip.html content="
+Missing instructions for your LoopBack 3 use case? Please report a [Migration docs issue](https://github.com/strongloop/loopback-next/issues/new?labels=question,Migration,Docs&template=Migration_docs.md) on GitHub to let us know.
+" %}
+
 Operation hooks are not supported in LoopBack 4 yet. See the
 [Operation hooks for models/repositories spike](https://github.com/strongloop/loopback-next/issues/1919)
 to follow the progress made on this subject.

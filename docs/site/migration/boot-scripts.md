@@ -6,6 +6,10 @@ sidebar: lb4_sidebar
 permalink: /doc/en/lb4/migration-boot-scripts.html
 ---
 
+{% include tip.html content="
+Missing instructions for your LoopBack 3 use case? Please report a [Migration docs issue](https://github.com/strongloop/loopback-next/issues/new?labels=question,Migration,Docs&template=Migration_docs.md) on GitHub to let us know.
+" %}
+
 In LoopBack 3, predefined boot scripts are organized in the `/server/boot`
 directory, and are executed right before the server starts to perform some
 custom application initialization. The same functionality can also be achieved
