@@ -7,7 +7,7 @@ import {bind, Context, createBindingFromClass} from '@loopback/context';
 import {
   asSpecEnhancer,
   OASEnhancer,
-  OAS_ENHANCER_EXTENSION_POINT_NAME,
+  OASEnhancerBindings,
   OpenApiSpec,
 } from '@loopback/openapi-v3';
 import {Request} from '@loopback/rest';
@@ -33,7 +33,7 @@ describe('registerAuthenticationStrategy', () => {
     expect(binding.tagMap).to.containEql({
       extensionFor: [
         AuthenticationBindings.AUTHENTICATION_STRATEGY_EXTENSION_POINT_NAME,
-        OAS_ENHANCER_EXTENSION_POINT_NAME,
+        OASEnhancerBindings.OAS_ENHANCER_EXTENSION_POINT_NAME,
       ],
     });
     expect(binding.key).to.eql(
@@ -46,11 +46,11 @@ describe('registerAuthenticationStrategy', () => {
     expect(binding.tagMap).to.containEql({
       extensionFor: [
         AuthenticationBindings.AUTHENTICATION_STRATEGY_EXTENSION_POINT_NAME,
-        OAS_ENHANCER_EXTENSION_POINT_NAME,
+        OASEnhancerBindings.OAS_ENHANCER_EXTENSION_POINT_NAME,
       ],
     });
     expect(binding.key).to.eql(
-      `${OAS_ENHANCER_EXTENSION_POINT_NAME}.MyAuthenticationStrategy`,
+      `${OASEnhancerBindings.OAS_ENHANCER_EXTENSION_POINT_NAME}.MyAuthenticationStrategy`,
     );
   });
 

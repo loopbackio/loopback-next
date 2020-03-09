@@ -5,6 +5,7 @@
 
 import {BindingTemplate, extensionFor} from '@loopback/core';
 import {OpenApiSpec} from '../types';
+import {OASEnhancerBindings} from './keys';
 
 /**
  * Typically an extension point defines an interface as the contract for
@@ -16,15 +17,10 @@ export interface OASEnhancer {
 }
 
 /**
- * Name/id of the OAS enhancer extension point
- */
-export const OAS_ENHANCER_EXTENSION_POINT_NAME = 'oas-enhancer';
-
-/**
  * A binding template for spec contributor extensions
  */
 export const asSpecEnhancer: BindingTemplate = binding => {
-  extensionFor(OAS_ENHANCER_EXTENSION_POINT_NAME)(binding);
+  extensionFor(OASEnhancerBindings.OAS_ENHANCER_EXTENSION_POINT_NAME)(binding);
   // is it ok to have a different namespace than the extension point name?
   binding.tag({namespace: 'oas-enhancer'});
 };

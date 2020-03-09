@@ -20,8 +20,8 @@ import {Application, CoreBindings, Server} from '@loopback/core';
 import {HttpServer, HttpServerOptions} from '@loopback/http-server';
 import {
   getControllerSpec,
+  OASEnhancerBindings,
   OASEnhancerService,
-  OAS_ENHANCER_SERVICE,
   OpenAPIObject,
   OpenApiSpec,
   OperationObject,
@@ -242,10 +242,10 @@ export class RestServer extends Context implements Server, HttpServerLike {
     if (this._OASEnhancer != null) return;
     this.add(
       createBindingFromClass(OASEnhancerService, {
-        key: OAS_ENHANCER_SERVICE,
+        key: OASEnhancerBindings.OAS_ENHANCER_SERVICE,
       }),
     );
-    this._OASEnhancer = this.getSync(OAS_ENHANCER_SERVICE);
+    this._OASEnhancer = this.getSync(OASEnhancerBindings.OAS_ENHANCER_SERVICE);
   }
 
   protected _setupRequestHandlerIfNeeded() {

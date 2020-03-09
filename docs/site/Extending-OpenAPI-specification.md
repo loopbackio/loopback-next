@@ -105,25 +105,25 @@ enhancer by name, or apply all enhancers automatically.
 ### Registering an Enhancer Service
 
 You can bind the OAS enhancer extension point to your app via key
-`OAS_ENHANCER_SERVICE`:
+`OASEnhancerBindings.OAS_ENHANCER_SERVICE`:
 
 ```ts
 import {RestApplication} from '@loopback/rest';
-import {OASEnhancerService, OAS_ENHANCER_SERVICE} from '@loopback/openapi-v3';
+import {OASEnhancerService, OASEnhancerBindings} from '@loopback/openapi-v3';
 
 class MyApplication extends RestApplication {
   constructor() {
     super();
     this.add(
       createBindingFromClass(OASEnhancerService, {
-        key: OAS_ENHANCER_SERVICE,
+        key: OASEnhancerBindings.OAS_ENHANCER_SERVICE,
       }),
     );
   }
 
   // define a function to return a spec service by the same key
   getSpecService() {
-    return this.get(OAS_ENHANCER_SERVICE);
+    return this.get(OASEnhancerBindings.OAS_ENHANCER_SERVICE);
   }
 }
 ```
