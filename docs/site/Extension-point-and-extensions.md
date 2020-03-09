@@ -53,7 +53,8 @@ decorators and functions are provided to ensure consistency and convention.
 - `extensionFilter`: creates a binding filter function to find extensions for
   the named extension point
 - `extensionFor`: creates a binding template function to set the binding to be
-  an extension for the named extension point
+  an extension for the named extension point(s). It can accept one or more
+  extension point names to contribute to given extension points
 - `addExtension`: registers an extension class to the context for the named
   extension point
 

@@ -337,6 +337,38 @@ binding.tag('controller', {name: 'MyController'});
 
 The binding tags can be accessed via `binding.tagMap` or `binding.tagNames`.
 
+Binding tags play an import role in discovering artifacts with matching tags.
+The `filterByTag` helper function and `context.findByTag` method can be used to
+match/find bindings by tag. The search criteria can be one of the followings:
+
+1. A tag name, such as `controller`
+2. A tag name wildcard or regular expression, such as `controller.*` or
+   `/controller/`
+3. An object contains tag name/value pairs, such as
+   `{name: 'my-controller', type: 'controller'}`. In addition to exact match,
+   the value for a tag name can be a function that determines if a given tag
+   value matches. For example,
+
+   ```ts
+   import {
+     ANY_TAG_VALUE, // Match any value if it exists
+     filterByTag,
+     includesTagValue, // Match tag value as an array that includes the item
+     TagValueMatcher,
+   } from '@loopback/context';
+   // Match a binding with a named service
+   ctx.find(filterByTag({name: ANY_TAG_VALUE, service: 'service'}));
+
+   // Match a binding as an extension for `my-extension-point`
+   ctx.find(
+     filterByTag({extensionFor: includesTagValue('my-extension-point')}),
+   );
+
+   // Match a binding with weight > 100
+   const weightMatcher: TagValueMatcher = tagValue => tagValue > 100;
+   ctx.find(filterByTag({weight: weightMatcher}));
+   ```
+
 ### Chain multiple steps
 
 The `Binding` fluent APIs allow us to chain multiple steps as follows:
