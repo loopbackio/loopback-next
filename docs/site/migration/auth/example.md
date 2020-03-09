@@ -154,24 +154,46 @@ strategy to verify a user's identity. The authentication setup is borrowed from
 The authentication system aims to understand **who sends the request**. It
 retrieves the token from a request, decodes the user's information in it as
 `principal`, then passes the `principal` to the authorization system which will
-decide the `principal`'s access later. You can enable the jwt authentication by:
+decide the `principal`'s access later.
+
+To simplify the implementation for readers, we extracted the services and
+bindings into a component in folder `src/component`, it consists of the
+following files:
 
 - creating the jwt authentication strategy to decode the user profile from
   token. See
-  [file src/services/jwt.auth.strategy.ts](https://github.com/strongloop/loopback-next/tree/master/examples/access-control-migration/src/services/jwt.auth.strategy.ts)
+  [file src/component/jwt.auth.strategy.ts](https://github.com/strongloop/loopback-next/tree/master/examples/access-control-migration/src/component/jwt.auth.strategy.ts).
 - creating the token service to organize utils for token operations. See
-  [file src/services/jwt.service.ts](https://github.com/strongloop/loopback-next/tree/master/examples/access-control-migration/src/services/jwt.service.ts)
+  [file src/component/jwt.service.ts](https://github.com/strongloop/loopback-next/tree/master/examples/access-control-migration/src/component/jwt.service.ts).
 - creating user service to organize utils for user operations. see
-  [file src/services/user.service.ts](https://github.com/strongloop/loopback-next/tree/master/examples/access-control-migration/src/services/user.service.ts)
+  [file src/component/user.service.ts](https://github.com/strongloop/loopback-next/tree/master/examples/access-control-migration/src/component/user.service.ts).
 - adding OpenAPI security specification to your app so that the explorer has an
   Authorize button to setup the token for secured endpoints. See
-  [file src/services/security.spec.ts](https://github.com/strongloop/loopback-next/tree/master/examples/access-control-migration/src/services/security.spec.ts)
-- setting up bindings for the services and mount the authentication module in
-  the application constructor. See
-  [the complete application file](https://github.com/strongloop/loopback-next/tree/master/examples/access-control-migration/src/application.ts)
-- decorating the 4 project endpoints (excluding the public `listProjects`) with
-  `@authenticate('jwt')`. See example for endpoint
-  [viewAll](https://github.com/strongloop/loopback-next/tree/master/examples/access-control-migration/src/controllers/project.controller.ts#L90)
+  [file src/component/security.spec.ts](https://github.com/strongloop/loopback-next/tree/master/examples/access-control-migration/src/component/security.spec.ts).
+- creating bindings for the above services. See
+  [file src/component/keys.ts](https://github.com/strongloop/loopback-next/blob/master/examples/access-control-migration/src/component/keys.ts).
+
+You can enable the jwt authentication by mounting the authentication component
+in the application constructor:
+
+{% include code-caption.html content="src/application.ts" %}
+
+```ts
+export class AccessControlApplication extends BootMixin(
+  ServiceMixin(RepositoryMixin(RestApplication)),
+) {
+  constructor(options: ApplicationConfig = {}) {
+    // ...
+    // Add this line to mount the jwt authentication component
+    this.component(JWTAuthenticationComponent);
+    // ...
+  }
+}
+```
+
+Finally decorate the 4 project endpoints (excluding the public `listProjects`)
+with `@authenticate('jwt')`. See example for endpoint
+[viewAll](https://github.com/strongloop/loopback-next/tree/master/examples/access-control-migration/src/controllers/project.controller.ts#L90)
 
 ### Setting up authorization
 
