@@ -6,6 +6,10 @@ sidebar: lb4_sidebar
 permalink: /doc/en/lb4/migration-auth-access-control-example.html
 ---
 
+{% include tip.html content="
+Missing instructions for your LoopBack 3 use case? Please report a [Migration docs issue](https://github.com/strongloop/loopback-next/issues/new?labels=question,Migration,Docs&template=Migration_docs.md) on GitHub to let us know.
+" %}
+
 This example is migrated from
 [loopback-example-access-control](https://github.com/strongloop/loopback-example-access-control),
 and uses the authentication and authorization system in LoopBack 4 to implement

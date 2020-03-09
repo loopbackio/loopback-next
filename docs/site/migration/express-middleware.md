@@ -6,6 +6,10 @@ sidebar: lb4_sidebar
 permalink: /doc/en/lb4/migration-express-middleware.html
 ---
 
+{% include tip.html content="
+Missing instructions for your LoopBack 3 use case? Please report a [Migration docs issue](https://github.com/strongloop/loopback-next/issues/new?labels=question,Migration,Docs&template=Migration_docs.md) on GitHub to let us know.
+" %}
+
 Migrating Express middleware from LoopBack 3 (LB3) application to LoopBack 4
 (LB4) application requires the use of a base Express application that will mount
 the LB4 application, which in turn mounts the LB3 application.
