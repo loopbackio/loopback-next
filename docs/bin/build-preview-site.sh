@@ -51,11 +51,17 @@ cp -r $SOURCE_DIR/doc/index.md $JEKYLL_DIR/doc
 
 echo "Setting up LB4 doc pages",
 rm -rf $JEKYLL_DIR/pages
-ln -s $PWD/site $JEKYLL_DIR/pages
+# Create hardlinks because Jekyll does not support symbolic links any more.
+# Use `pax` because `ln` does not support directory recursion.
+mkdir $JEKYLL_DIR/pages
+(TARGET="$PWD/$JEKYLL_DIR/pages" && cd "$PWD/site" && pax -rwlpe . $TARGET)
 
 echo "Setting up sidebar(s)"
 rm -rf $JEKYLL_DIR/_data/sidebars
-ln -s $PWD/site/sidebars $JEKYLL_DIR/_data/sidebars
+# Create hardlinks because Jekyll does not support symbolic links any more.
+# Use `pax` because `ln` does not support directory recursion.
+mkdir $JEKYLL_DIR/_data/sidebars
+(TARGET="$PWD/$JEKYLL_DIR/_data/sidebars" && cd "$PWD/site/sidebars" && pax -rwlpe . $TARGET)
 
 echo "Installing Ruby dependencies"
 (cd $JEKYLL_DIR && bundle install)
