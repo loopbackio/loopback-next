@@ -283,6 +283,7 @@
 # - Primary owner(s): @hacksparrow
 # - Standby owner(s): @jannyHou
 /packages/authorization @hacksparrow @jannyHou
+/examples/access-control-migration @hacksparrow @jannyHou
 
 #
 # Build & internal tooling
