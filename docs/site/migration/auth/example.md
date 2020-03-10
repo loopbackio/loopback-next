@@ -297,93 +297,95 @@ To make the tutorial concise, the code details is omitted here. You can find the
 ACLs and how the endpoints are decorated in file
 [src/controller/project.controller.ts](https://github.com/strongloop/loopback-next/tree/master/examples/access-control-migration/src/controllers/project.controller.ts)
 
-Next, we write the authorizer that calls casbin enforcers to make the decision
+Next, we write the authorizer that calls casbin enforcers to make the decision.
 
 1. Create an authorizer that retrieves the authorization metadata from context,
    then execute casbin enforcers to make decision.
 
-_If you are not familiar with the concept authorizer, you can learn it in the
-document
-[Programming Access Policies](../../Loopback-component-authorization#programming-access-policies)_
+   _If you are not familiar with the concept authorizer, you can learn it in the
+   document
+   [Programming Access Policies](../../Loopback-component-authorization#programming-access-policies)_
 
-The complete authorizer file can be found in
-[components/casbin-authorization/services/casbin.authorizer.ts](https://github.com/strongloop/loopback-next/blob/master/examples/access-control-migration/src/components/casbin-authorization/services/casbin.authorizer.ts).
-It retrieves the three required fields from the authorization context: subject
-from `principal`, `resource` as object, and action, to invoke casbin enforcers
-and make decision.
+   The complete authorizer file can be found in
+   [components/casbin-authorization/services/casbin.authorizer.ts](https://github.com/strongloop/loopback-next/blob/master/examples/access-control-migration/src/components/casbin-authorization/services/casbin.authorizer.ts).
+   It retrieves the three required fields from the authorization context:
+   subject from `principal`, `resource` as object, and action, to invoke casbin
+   enforcers and make decision.
 
 2. Create a voter for instance level endpoints to append the project id to the
    resource name
 
-Class level means operations applied to all projects like `/projects/*`, whereas
-instance level operation applies to a certain project like `/project{id}/*`. For
-instance level endpoints, the resource name should include the resource's `id`.
-Since the `id` comes from the request, the endpoint metadata cannot provide it
-and therefore we define the pre-process logic in a voter to generate the
-resource name as `project${id}`, then passes it to the authorizer.
+   Class level means operations applied to all projects like `/projects/*`,
+   whereas instance level operation applies to a certain project like
+   `/project{id}/*`. For instance level endpoints, the resource name should
+   include the resource's `id`. Since the `id` comes from the request, the
+   endpoint metadata cannot provide it and therefore we define the pre-process
+   logic in a voter to generate the resource name as `project${id}`, then passes
+   it to the authorizer.
 
-The complete voter file can be found in file
-[components/casbin-authorization/services/assign-project-instance-id.voter.ts](https://github.com/strongloop/loopback-next/blob/master/examples/access-control-migration/src/components/casbin-authorization/services/assign-project-instance-id.voter.ts)
+   The complete voter file can be found in file
+   [components/casbin-authorization/services/assign-project-instance-id.voter.ts](https://github.com/strongloop/loopback-next/blob/master/examples/access-control-migration/src/components/casbin-authorization/services/assign-project-instance-id.voter.ts)
 
 3. Create casbin enforcers
 
-A casbin enforcer is configured with a policy file. It compares the given data
-with the policy file and returns a decision when invoked. To optimize the scope
-and speed of the access check, this example splits the policies into separate
-files per role. The authorizer will only invoke the enforcers for allowed
-role(s).
+   A casbin enforcer is configured with a policy file. It compares the given
+   data with the policy file and returns a decision when invoked. To optimize
+   the scope and speed of the access check, this example splits the policies
+   into separate files per role. The authorizer will only invoke the enforcers
+   for allowed role(s).
 
-The complete enforcer file can be found in file
-[components/casbin-authorization/services/casbin.enforcers.ts](https://github.com/strongloop/loopback-next/blob/master/examples/access-control-migration/src/components/casbin-authorization/services/casbin.enforcers.ts)
+   The complete enforcer file can be found in file
+   [components/casbin-authorization/services/casbin.enforcers.ts](https://github.com/strongloop/loopback-next/blob/master/examples/access-control-migration/src/components/casbin-authorization/services/casbin.enforcers.ts)
 
 4. Write casbin model and policies
 
-Since the model and policy are already covered in section
-[Using Casbin](#using-casbin), we will not repeat it here. The corresponding
-files are defined in folder
-[fixtures/casbin](https://github.com/strongloop/loopback-next/blob/master/examples/access-control-migration/fixtures/casbin).
+   Since the model and policy are already covered in section
+   [Using Casbin](#using-casbin), we will not repeat it here. The corresponding
+   files are defined in folder
+   [fixtures/casbin](https://github.com/strongloop/loopback-next/blob/master/examples/access-control-migration/fixtures/casbin).
 
 5. Mount the casbin authorization system as a component
 
-The casbin authorizer, voter and enforcers above are packed under component
-'src/components/casbin-authorization'. You can export their bindings in a
-[component file](https://github.com/strongloop/loopback-next/blob/master/examples/access-control-migration/src/components/casbin-authorization/casbin-authorization-component.ts)
-and mount the component in the application constructor:
+   The casbin authorizer, voter and enforcers above are packed under component
+   'src/components/casbin-authorization'. You can export their bindings in a
+   [component file](https://github.com/strongloop/loopback-next/blob/master/examples/access-control-migration/src/components/casbin-authorization/casbin-authorization-component.ts)
+   and mount the component in the application constructor:
 
-{% include code-caption.html content="src/application.ts" %}
+   {% include code-caption.html content="src/application.ts" %}
 
-```ts
-// Add this line to import the component
-import {CasbinAuthorizationComponent} from './components/casbin-authorization';
+   ```ts
+   // Add this line to import the component
+   import {CasbinAuthorizationComponent} from './components/casbin-authorization';
 
-export class AccessControlApplication extends BootMixin(
-  ServiceMixin(RepositoryMixin(RestApplication)),
-) {
-  constructor(options: ApplicationConfig = {}) {
-    // ...
-    // Add this line to mount the casin authorization component
-    this.component(CasbinAuthorizationComponent);
-    // ...
-  }
-}
-```
+   export class AccessControlApplication extends BootMixin(
+     ServiceMixin(RepositoryMixin(RestApplication)),
+   ) {
+     constructor(options: ApplicationConfig = {}) {
+       // ...
+       // Add this line to mount the casin authorization component
+       this.component(CasbinAuthorizationComponent);
+       // ...
+     }
+   }
+   ```
 
 6. Casbin persistency and synchronize(2nd Phase implementation, TBD)
 
-This will be supported at the 2nd phase of implementation. The plan is to have
-model or operation hooks to update the casbin policies when new data created. It
-requires a persistent storage for casbin policies (see reference in
-[casbin policy persistence](https://github.com/casbin/casbin#policy-persistence)).
-Here is an overview of the hooks:
+   This will be supported at the 2nd phase of implementation. The plan is to
+   have model or operation hooks to update the casbin policies when new data
+   created. It requires a persistent storage for casbin policies (see reference
+   in
+   [casbin policy persistence](https://github.com/casbin/casbin#policy-persistence)).
+   Here is an overview of the hooks:
 
-- when create a new project
-  - create a set of p, project\${id}\_owner, action policies
-  - create a set of p, project\${id}\_team, action policies
-- add a new user to a team
-  - find the projects owned by the team owner, then create role inherit rules g,
-    u${id}, project${id}\_team
-- add a new endpoint(operation)
-  - for each of its allowed roles, add p, \${role}, action policy
+   - when create a new project
+     - create a set of p, project\${id}\_owner, action policies
+     - create a set of p, project\${id}\_team, action policies
+   - add a new user to a team
+     - find the projects owned by the team owner, then create role inherit rules
+       g, u${id}, project${id}\_team
+   - add a new endpoint(operation)
+     - for each of its allowed roles, add p, \${role}, action policy
 
 #### Summary
 
@@ -446,143 +448,16 @@ Try the 'team-member' role:
 
 ### Model Creation
 
-Create User Model
+Import model `User`, `Project`, `Team` from the LB3 application by the migration
+CLI:
 
 ```sh
-$ lb4 model
-? Model class name: User
-? Please select the model base class Entity (A persisted model with an ID)
-? Allow additional (free-form) properties? Yes
-Model User will be created in src/models/user.model.ts
-
-Lets add a property to User
-Enter an empty property name when done
-
-? Enter the property name: id
-? Property type: number
-? Is id the ID property? Yes
-? Is id generated automatically? No
-? Is it required?: Yes
-? Default value [leave blank for none]:
-
-Lets add another property to User
-Enter an empty property name when done
-
-? Enter the property name: username
-? Property type: string
-? Is it required?: Yes
-? Default value [leave blank for none]:
-
-Lets add another property to User
-Enter an empty property name when done
-
-? Enter the property name: email
-? Property type: string
-? Is it required?: Yes
-? Default value [leave blank for none]:
-
-Lets add another property to User
-Enter an empty property name when done
-
-? Enter the property name:
-   create src/models/user.model.ts
-   update src/models/index.ts
-
-Model User was created in src/models/
+$ lb4 import-lb3-models <path_to_loopback-example-access-control> --outDir src/models
 ```
 
-Create Team Model
+Choose model `User`, `Project`, `Team` for the prompt.
 
-```sh
-$ lb4 model
-? Model class name: Team
-? Please select the model base class Entity (A persisted model with an ID)
-? Allow additional (free-form) properties? Yes
-Model Team1 will be created in src/models/team.model.ts
-
-Lets add a property to Team
-Enter an empty property name when done
-
-? Enter the property name: id
-? Property type: number
-? Is id the ID property? Yes
-? Is id generated automatically? No
-? Is it required?: Yes
-? Default value [leave blank for none]:
-
-Lets add another property to Team
-Enter an empty property name when done
-
-? Enter the property name: ownerId
-? Property type: number
-? Is it required?: Yes
-? Default value [leave blank for none]:
-
-Lets add another property to Team
-Enter an empty property name when done
-
-? Enter the property name: memberIds
-? Property type: array
-? Type of array items: number
-? Is it required?: Yes
-? Default value [leave blank for none]:
-
-Lets add another property to Team
-Enter an empty property name when done
-
-? Enter the property name:
-   create src/models/team.model.ts
-   update src/models/index.ts
-
-Model Team was created in src/models/
-```
-
-Create Project Model
-
-```sh
-$ lb4 model
-? Model class name: Project
-? Please select the model base class Entity (A persisted model with an ID)
-? Allow additional (free-form) properties? Yes
-Model Project1 will be created in src/models/project.model.ts
-
-Lets add a property to Project
-Enter an empty property name when done
-
-? Enter the property name: id
-? Property type: number
-? Is id the ID property? Yes
-? Is id generated automatically? No
-? Is it required?: Yes
-? Default value [leave blank for none]:
-
-Lets add another property to Project
-Enter an empty property name when done
-
-? Enter the property name: name
-? Property type: string
-? Is it required?: Yes
-? Default value [leave blank for none]:
-
-Lets add another property to Project
-Enter an empty property name when done
-
-? Enter the property name: balance
-? Property type: number
-? Is it required?: Yes
-? Default value [leave blank for none]:
-
-Lets add another property to Project
-Enter an empty property name when done
-
-? Enter the property name:
-   create src/models/project.model.ts
-   update src/models/index.ts
-
-Model Project was created in src/models/
-```
-
-Create UserCredentials
+For model `UserCredentials`, you need to create it by `lb4 model`:
 
 ```sh
 $ lb4 model
@@ -627,7 +502,47 @@ Enter an empty property name when done
 Model UserCredentials was created in src/models/
 ```
 
-Create corresponding repositories
+Considering the difference between the original application and the migrated
+one, you need to adjust the properties a bit for the three migrated models.
+
+- For `Project`, open file `src/models/project.model.ts`
+
+  - decorate `ownerId` with `@belongsTo(() => User)` and remove the generated
+    `@property` decorator.
+  - `balance` should be a required property: change it from `balance?` to
+    `balance`
+
+- For `Team`, open file `src/models/team.model.ts`
+
+  - replace `memberId` with `memberIds` as an array:
+    ```ts
+      @property({
+        type: 'array',
+        itemType: 'number',
+        required: true,
+      })
+      memberIds: number[];
+    ```
+
+- For `User`, open file `src/models/user.model.ts`
+
+  - remove `password` because we have a `UserCredential` model created to
+    separate it from `User`
+
+- For all the three models above, allow generating their `id` field:
+  ```ts
+  @property({
+    type: 'number',
+    id: 1,
+    // change it from `true` to `false`
+    generated: false,
+    updateOnly: true,
+  })
+  // change it from optional `id?` to required `id`
+  id: number;
+  ```
+
+Create corresponding repositories:
 
 ```sh
 $ lb4 repository
@@ -635,6 +550,56 @@ $ lb4 repository
 ? Select the model(s) you want to generate a repository Project, Team, UserCredentials, User
 ? Please select the repository base class DefaultCrudRepository (Legacy juggler bridge)
 ```
+
+Create relations:
+
+- `Project` belongsTo `User`
+
+```sh
+lb4 relation
+? Please select the relation type belongsTo
+? Please select source model Project
+? Please select target model User
+? Foreign key name to define on the source model ownerId
+? Relation name owner
+? Allow Project queries to include data from related User instances? Yes
+```
+
+{% include tip.html content="
+Please delete the generated controller file `src/controllers/project-user.controller.ts` to keep the exposed endpoints clean.
+" %}
+
+- `User` hasOne `UserCredentials`
+
+```sh
+lb4 relation
+? Please select the relation type hasOne
+? Please select source model User
+? Please select target model UserCredentials
+? Foreign key name to define on the target model userId
+? Source property name for the relation getter (will be the relation name) userCredentials
+? Allow User queries to include data from related UserCredentials instances? Yes
+```
+
+{% include tip.html content="
+Please delete the generated controller file `src/controllers/user-user-credentials.controller.ts` to keep the exposed endpoints clean.
+" %}
+
+- `User` hasMany `Team`
+
+```sh
+lb4 relation
+? Please select the relation type hasMany
+? Please select source model User
+? Please select target model Team
+? Foreign key name to define on the target model ownerId
+? Source property name for the relation getter (will be the relation name) teams
+? Allow User queries to include data from related Team instances? Yes
+```
+
+{% include tip.html content="
+Please delete the generated controller file `src/controllers/user-team.controller.ts` to keep the exposed endpoints clean.
+" %}
 
 ### User Controller Creation
 

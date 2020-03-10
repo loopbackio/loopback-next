@@ -3,15 +3,15 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {Getter, inject} from '@loopback/core';
 import {
   DefaultCrudRepository,
-  repository,
   HasManyRepositoryFactory,
   HasOneRepositoryFactory,
+  repository,
 } from '@loopback/repository';
-import {User, UserRelations, Team, UserCredentials} from '../models';
 import {DbDataSource} from '../datasources';
-import {inject, Getter} from '@loopback/core';
+import {Team, User, UserCredentials, UserRelations} from '../models';
 import {TeamRepository} from './team.repository';
 import {UserCredentialsRepository} from './user-credentials.repository';
 
@@ -20,26 +20,31 @@ export class UserRepository extends DefaultCrudRepository<
   typeof User.prototype.id,
   UserRelations
 > {
-  public readonly teams: HasManyRepositoryFactory<
-    Team,
-    typeof User.prototype.id
-  >;
-
   public readonly userCredentials: HasOneRepositoryFactory<
     UserCredentials,
     typeof User.prototype.id
   >;
 
+  public readonly teams: HasManyRepositoryFactory<
+    Team,
+    typeof User.prototype.id
+  >;
+
   constructor(
     @inject('datasources.db') dataSource: DbDataSource,
-    @repository.getter('TeamRepository')
-    protected teamRepositoryGetter: Getter<TeamRepository>,
     @repository.getter('UserCredentialsRepository')
     protected userCredentialsRepositoryGetter: Getter<
       UserCredentialsRepository
     >,
+    @repository.getter('TeamRepository')
+    protected teamRepositoryGetter: Getter<TeamRepository>,
   ) {
     super(User, dataSource);
+    this.teams = this.createHasManyRepositoryFactoryFor(
+      'teams',
+      teamRepositoryGetter,
+    );
+    this.registerInclusionResolver('teams', this.teams.inclusionResolver);
     this.userCredentials = this.createHasOneRepositoryFactoryFor(
       'userCredentials',
       userCredentialsRepositoryGetter,
@@ -48,11 +53,6 @@ export class UserRepository extends DefaultCrudRepository<
       'userCredentials',
       this.userCredentials.inclusionResolver,
     );
-    this.teams = this.createHasManyRepositoryFactoryFor(
-      'teams',
-      teamRepositoryGetter,
-    );
-    this.registerInclusionResolver('teams', this.teams.inclusionResolver);
   }
 
   async findCredentials(
