@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2019. All Rights Reserved.
+// Copyright IBM Corp. 2019,2020. All Rights Reserved.
 // Node module: @loopback/authentication
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -452,6 +452,22 @@ describe('JWT Authentication', () => {
           code: 'USER_PROFILE_NOT_FOUND',
         },
       });
+  });
+
+  it('adds security scheme component to apiSpec', async () => {
+    const EXPECTED_SPEC = {
+      components: {
+        securitySchemes: {
+          jwt: {
+            type: 'http',
+            scheme: 'bearer',
+            bearerFormat: 'JWT',
+          },
+        },
+      },
+    };
+    const spec = await server.getApiSpec();
+    expect(spec).to.containDeep(EXPECTED_SPEC);
   });
 
   async function givenAServer() {

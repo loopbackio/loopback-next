@@ -1,9 +1,15 @@
-// Copyright IBM Corp. 2018,2019. All Rights Reserved.
+// Copyright IBM Corp. 2018,2020. All Rights Reserved.
 // Node module: @loopback/authentication
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {addExtension, Constructor, Context} from '@loopback/core';
+import {
+  addExtension,
+  BindingTemplate,
+  Constructor,
+  Context,
+  extensionFor,
+} from '@loopback/core';
 import {Request} from '@loopback/rest';
 import {UserProfile} from '@loopback/security';
 import {AuthenticationBindings} from './keys';
@@ -93,6 +99,7 @@ export const USER_PROFILE_NOT_FOUND = 'USER_PROFILE_NOT_FOUND';
  * Registers an authentication strategy as an extension of the
  * AuthenticationBindings.AUTHENTICATION_STRATEGY_EXTENSION_POINT_NAME extension
  * point.
+ *
  * @param context - Context object
  * @param strategyClass - Class for the authentication strategy
  */
@@ -110,3 +117,16 @@ export function registerAuthenticationStrategy(
     },
   );
 }
+
+/**
+ * A binding template for auth strategy contributor extensions
+ */
+export const asAuthStrategy: BindingTemplate = binding => {
+  extensionFor(
+    AuthenticationBindings.AUTHENTICATION_STRATEGY_EXTENSION_POINT_NAME,
+  )(binding);
+  binding.tag({
+    namespace:
+      AuthenticationBindings.AUTHENTICATION_STRATEGY_EXTENSION_POINT_NAME,
+  });
+};

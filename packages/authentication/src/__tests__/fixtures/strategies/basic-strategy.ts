@@ -1,12 +1,18 @@
-// Copyright IBM Corp. 2019. All Rights Reserved.
+// Copyright IBM Corp. 2019,2020. All Rights Reserved.
 // Node module: @loopback/authentication
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {inject} from '@loopback/context';
+import {bind, inject} from '@loopback/context';
+import {
+  asSpecEnhancer,
+  mergeSecuritySchemeToSpec,
+  OASEnhancer,
+  OpenApiSpec,
+} from '@loopback/openapi-v3';
 import {HttpErrors, Request} from '@loopback/rest';
 import {UserProfile} from '@loopback/security';
-import {AuthenticationStrategy} from '../../../types';
+import {asAuthStrategy, AuthenticationStrategy} from '../../../types';
 import {BasicAuthenticationStrategyBindings} from '../keys';
 import {BasicAuthenticationUserService} from '../services/basic-auth-user-service';
 
@@ -15,7 +21,9 @@ export interface BasicAuthenticationStrategyCredentials {
   password: string;
 }
 
-export class BasicAuthenticationStrategy implements AuthenticationStrategy {
+@bind(asAuthStrategy, asSpecEnhancer)
+export class BasicAuthenticationStrategy
+  implements AuthenticationStrategy, OASEnhancer {
   name = 'basic';
 
   constructor(
@@ -76,5 +84,12 @@ export class BasicAuthenticationStrategy implements AuthenticationStrategy {
     };
 
     return creds;
+  }
+
+  modifySpec(spec: OpenApiSpec): OpenApiSpec {
+    return mergeSecuritySchemeToSpec(spec, this.name, {
+      type: 'http',
+      scheme: 'basic',
+    });
   }
 }
