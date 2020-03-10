@@ -3,32 +3,32 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Entity, model, property, belongsTo} from '@loopback/repository';
+import {belongsTo, Entity, model, property} from '@loopback/repository';
 import {User} from './user.model';
 
 @model({settings: {strict: false}})
 export class Project extends Entity {
   @property({
     type: 'number',
-    id: true,
+    id: 1,
     generated: false,
+    updateOnly: true,
   })
   id: number;
 
   @property({
     type: 'string',
-    required: true,
   })
-  name: string;
+  name?: string;
 
   @property({
     type: 'number',
-    required: true,
   })
   balance: number;
 
   @belongsTo(() => User)
   ownerId: number;
+
   // Define well-known properties here
 
   // Indexer property to allow additional data

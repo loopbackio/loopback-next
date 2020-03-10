@@ -3,14 +3,14 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {Getter, inject} from '@loopback/core';
 import {
+  BelongsToAccessor,
   DefaultCrudRepository,
   repository,
-  BelongsToAccessor,
 } from '@loopback/repository';
-import {Project, ProjectRelations, User} from '../models';
 import {DbDataSource} from '../datasources';
-import {inject, Getter} from '@loopback/core';
+import {Project, ProjectRelations, User} from '../models';
 import {UserRepository} from './user.repository';
 
 export class ProjectRepository extends DefaultCrudRepository<
@@ -18,7 +18,7 @@ export class ProjectRepository extends DefaultCrudRepository<
   typeof Project.prototype.id,
   ProjectRelations
 > {
-  public readonly user: BelongsToAccessor<User, typeof Project.prototype.id>;
+  public readonly owner: BelongsToAccessor<User, typeof Project.prototype.id>;
 
   constructor(
     @inject('datasources.db') dataSource: DbDataSource,
@@ -26,7 +26,7 @@ export class ProjectRepository extends DefaultCrudRepository<
     protected userRepositoryGetter: Getter<UserRepository>,
   ) {
     super(Project, dataSource);
-    this.user = this.createBelongsToAccessorFor('owner', userRepositoryGetter);
-    this.registerInclusionResolver('user', this.user.inclusionResolver);
+    this.owner = this.createBelongsToAccessorFor('owner', userRepositoryGetter);
+    this.registerInclusionResolver('owner', this.owner.inclusionResolver);
   }
 }

@@ -9,8 +9,9 @@ import {Entity, model, property} from '@loopback/repository';
 export class Team extends Entity {
   @property({
     type: 'number',
-    id: true,
+    id: 1,
     generated: false,
+    updateOnly: true,
   })
   id: number;
 
@@ -20,9 +21,6 @@ export class Team extends Entity {
   })
   ownerId: number;
 
-  // REFACTOR
-  // The members should be specified by relation
-  // instead of using an array of Ids
   @property({
     type: 'array',
     itemType: 'number',
