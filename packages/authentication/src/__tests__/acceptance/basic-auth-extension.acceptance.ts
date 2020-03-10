@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2019. All Rights Reserved.
+// Copyright IBM Corp. 2019,2020. All Rights Reserved.
 // Node module: @loopback/authentication
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -9,7 +9,7 @@ import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
 import {api, get} from '@loopback/openapi-v3';
 import {Request, RestServer} from '@loopback/rest';
 import {SecurityBindings, securityId, UserProfile} from '@loopback/security';
-import {Client, createClientForHandler} from '@loopback/testlab';
+import {Client, createClientForHandler, expect} from '@loopback/testlab';
 import {
   authenticate,
   AuthenticationBindings,
@@ -164,6 +164,7 @@ describe('Basic Authentication', () => {
         },
       });
   });
+
   it('returns error when undefined user profile returned from authentication strategy', async () => {
     class BadBasicStrategy implements AuthenticationStrategy {
       name = 'badbasic';
@@ -193,6 +194,22 @@ describe('Basic Authentication', () => {
         },
       });
   });
+
+  it('adds security scheme component to apiSpec', async () => {
+    const EXPECTED_SPEC = {
+      components: {
+        securitySchemes: {
+          basic: {
+            type: 'http',
+            scheme: 'basic',
+          },
+        },
+      },
+    };
+    const spec = await server.getApiSpec();
+    expect(spec).to.containDeep(EXPECTED_SPEC);
+  });
+
   async function givenAServer() {
     app = getApp();
     server = await app.getServer(RestServer);

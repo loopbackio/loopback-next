@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2019. All Rights Reserved.
+// Copyright IBM Corp. 2019,2020. All Rights Reserved.
 // Node module: @loopback/openapi-v3
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -7,7 +7,7 @@ import {config, extensionPoint, extensions, Getter} from '@loopback/core';
 import debugModule from 'debug';
 import * as _ from 'lodash';
 import {inspect} from 'util';
-import {OpenApiSpec} from '../types';
+import {OpenApiSpec, SecuritySchemeObject} from '../types';
 import {OASEnhancer, OAS_ENHANCER_EXTENSION_POINT_NAME} from './types';
 const jsonmergepatch = require('json-merge-patch');
 
@@ -117,5 +117,29 @@ export function mergeOpenAPISpec(
   patchSpec: Partial<OpenApiSpec>,
 ) {
   const mergedSpec = jsonmergepatch.merge(currentSpec, patchSpec);
+  return mergedSpec;
+}
+
+/**
+ * Security scheme merge helper function to patch the current OpenAPI spec.
+ * It provides a direct route to add a security schema to the specs components.
+ * It returns a new merged object without modifying the original one.
+ *
+ * @param currentSpec The original spec
+ * @param schemeName The name of the security scheme to be added
+ * @param schemeSpec The security scheme spec body to be added,
+ */
+export function mergeSecuritySchemeToSpec(
+  spec: OpenApiSpec,
+  schemeName: string,
+  schemeSpec: SecuritySchemeObject,
+): OpenApiSpec {
+  const patchSpec = {
+    components: {
+      securitySchemes: {[schemeName]: schemeSpec},
+    },
+  };
+
+  const mergedSpec = mergeOpenAPISpec(spec, patchSpec);
   return mergedSpec;
 }
