@@ -1,0 +1,54 @@
+{
+  "name": "@loopback/apiconnect",
+  "version": "0.0.1",
+  "description": "An extension for IBM API Connect",
+  "engines": {
+    "node": ">=10"
+  },
+  "scripts": {
+    "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
+    "build:apidocs": "lb-apidocs",
+    "build": "lb-tsc",
+    "clean": "lb-clean loopback-apiconnect*.tgz dist tsconfig.build.tsbuildinfo package",
+    "pretest": "npm run build",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
+    "unit": "lb-mocha \"dist/__tests__/unit/**/*.js\"",
+    "verify": "npm pack && tar xf loopback-apiconnect*.tgz && tree package && npm run clean"
+  },
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "license": "MIT",
+  "keywords": [
+    "LoopBack",
+    "IBM API Connect"
+  ],
+  "files": [
+    "README.md",
+    "index.js",
+    "index.d.ts",
+    "dist",
+    "src",
+    "!*/__tests__"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "extensions/apiconnect"
+  },
+  "dependencies": {
+    "@loopback/context": "^3.0.0",
+    "@loopback/core": "^2.0.0",
+    "@loopback/openapi-v3": "^3.0.0",
+    "tslib": "^1.11.1"
+  },
+  "devDependencies": {
+    "@loopback/rest": "^3.0.0",
+    "@loopback/build": "^4.0.0",
+    "@loopback/eslint-config": "^6.0.0",
+    "@loopback/testlab": "^2.0.0",
+    "@types/node": "^10.17.17"
+  }
+}
