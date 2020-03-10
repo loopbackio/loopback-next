@@ -57,7 +57,7 @@
     "@loopback/openapi-spec-builder": "^2.0.0",
     "@loopback/testlab": "^2.0.0",
     "@types/node": "^10.17.17",
-    "@types/passport": "^1.0.2",
+    "@types/passport": "^1.0.3",
     "@types/passport-http": "^0.3.8",
     "passport-http": "^0.3.0"
   }
