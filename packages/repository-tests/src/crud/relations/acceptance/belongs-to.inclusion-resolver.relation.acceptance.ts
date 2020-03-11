@@ -98,10 +98,12 @@ export function belongsToInclusionResolverAcceptance(
       const thor = await customerRepo.create({id: 87654321, name: 'Thor'});
       const odin = await customerRepo.create({id: 87654322, name: 'Odin'});
       const thorOrder = await orderRepo.create({
+        id: 12345678,
         description: "Thor's Mjolnir",
         customerId: thor.id,
       });
       const odinOrder = await orderRepo.create({
+        id: 22345678,
         description: "Odin's Coffee Maker",
         customerId: odin.id,
       });
@@ -109,6 +111,7 @@ export function belongsToInclusionResolverAcceptance(
       const result = await orderRepo.find({
         include: [{relation: 'customer'}],
       });
+      console.log(result);
 
       const expected = [
         {
