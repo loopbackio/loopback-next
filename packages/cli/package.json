@@ -52,7 +52,7 @@
     "json5": "^2.1.1",
     "latest-version": "^5.1.0",
     "lodash": "^4.17.15",
-    "minimist": "^1.2.3",
+    "minimist": "^1.2.4",
     "mkdirp": "^1.0.3",
     "natural-compare": "^1.4.0",
     "p-event": "^4.1.0",
