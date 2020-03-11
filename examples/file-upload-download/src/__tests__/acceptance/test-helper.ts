@@ -1,9 +1,16 @@
-import {FileUploadApplication} from '../..';
+// Copyright IBM Corp. 2020. All Rights Reserved.
+// Node module: @loopback/example-file-upload-download
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
 import {
+  Client,
   createRestAppClient,
   givenHttpServerConfig,
-  Client,
+  TestSandbox,
 } from '@loopback/testlab';
+import path from 'path';
+import {FileUploadApplication} from '../..';
 
 export async function setupApplication(): Promise<AppWithClient> {
   const restConfig = givenHttpServerConfig({
@@ -29,4 +36,10 @@ export async function setupApplication(): Promise<AppWithClient> {
 export interface AppWithClient {
   app: FileUploadApplication;
   client: Client;
+}
+
+const SANDBOX = path.resolve(__dirname, '../../../.sandbox');
+export function getSandbox() {
+  const sandbox = new TestSandbox(SANDBOX);
+  return sandbox;
 }
