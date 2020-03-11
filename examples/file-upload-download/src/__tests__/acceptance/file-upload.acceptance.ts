@@ -1,21 +1,24 @@
-// Copyright IBM Corp. 2019. All Rights Reserved.
-// Node module: @loopback/rest
+// Copyright IBM Corp. 2020. All Rights Reserved.
+// Node module: @loopback/example-file-upload-download
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Client, expect} from '@loopback/testlab';
+import {Client, expect, TestSandbox} from '@loopback/testlab';
 import path from 'path';
 import {FileUploadApplication} from '../..';
-import {setupApplication} from './test-helper';
+import {getSandbox, setupApplication} from './test-helper';
 
 describe('file upload acceptance - multipart/form-data', () => {
+  let sandbox: TestSandbox;
   let client: Client;
   let app: FileUploadApplication;
 
+  before(resetSandbox);
   before(givenAClient);
   after(async () => {
     await app.stop();
   });
+  after(resetSandbox);
 
   it('supports file uploads', async () => {
     const FIXTURES = path.resolve(__dirname, '../../../fixtures');
@@ -46,5 +49,10 @@ describe('file upload acceptance - multipart/form-data', () => {
 
   async function givenAClient() {
     ({app, client} = await setupApplication());
+  }
+
+  async function resetSandbox() {
+    sandbox = getSandbox();
+    await sandbox.reset();
   }
 });
