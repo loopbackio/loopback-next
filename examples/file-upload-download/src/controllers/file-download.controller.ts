@@ -4,12 +4,14 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {inject} from '@loopback/context';
-import {get, param, Response, RestBindings} from '@loopback/rest';
+import {get, HttpErrors, param, Response, RestBindings} from '@loopback/rest';
 import fs from 'fs';
 import path from 'path';
 import {promisify} from 'util';
 
 const readdir = promisify(fs.readdir);
+
+const SANDBOX = path.resolve(__dirname, '../../.sandbox');
 
 /**
  * A controller to handle file downloads using multipart/form-data media type
@@ -32,9 +34,8 @@ export class FileDownloadController {
       },
     },
   })
-  async listFiles(@inject(RestBindings.Http.RESPONSE) response: Response) {
-    const sandbox = path.join(__dirname, '../../.sandbox');
-    const files = await readdir(sandbox);
+  async listFiles() {
+    const files = await readdir(SANDBOX);
     return files;
   }
 
@@ -43,8 +44,14 @@ export class FileDownloadController {
     @param.path.string('filename') fileName: string,
     @inject(RestBindings.Http.RESPONSE) response: Response,
   ) {
-    const file = path.join(__dirname, '../../.sandbox', fileName);
+    const file = validateFileName(fileName);
     response.download(file, fileName);
     return response;
   }
+}
+
+function validateFileName(fileName: string) {
+  const resolved = path.resolve(SANDBOX, fileName);
+  if (resolved.startsWith(SANDBOX)) return resolved;
+  throw new HttpErrors.BadRequest(`Invalid file name: ${fileName}`);
 }
