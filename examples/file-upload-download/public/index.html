@@ -60,24 +60,54 @@
     </style>
 
     <script>
+      /**
+       * Submit the upload form
+       */
+      function setupUploadForm() {
+        const formElem = document.getElementById('uploadForm');
+        formElem.onsubmit = async e => {
+          e.preventDefault();
+
+          const res = await fetch('/file-upload', {
+            method: 'POST',
+            body: new FormData(formElem),
+          });
+
+          const body = await res.json();
+          console.log('Response from upload', body);
+
+          await fetchFiles();
+        };
+      }
+
+      /**
+       * List uploaded files
+       */
       async function fetchFiles() {
         const res = await fetch('/file-download');
-        const files = JSON.parse(await res.text());
+        const files = await res.json();
+        console.log('Response from list', files);
         const list = files.map(
           f => `<li><a href="/file-download/${f}">${f}</a></li>\n`,
         );
         document.getElementById('fileList').innerHTML = list.join('');
       }
+
+      async function init() {
+        setupUploadForm();
+        await fetchFiles()
+      }
+
     </script>
   </head>
 
-  <body onload="fetchFiles()">
+  <body onload="init();">
     <div class="info">
       <h1>File upload and download</h1>
 
       <div id="upload">
         <h3>Upload files</h3>
-        <form method="POST" action="/file-upload" enctype="multipart/form-data">
+        <form id="uploadForm">
           <label for="files">Select files:</label>
           <input type="file" id="files" name="files" multiple /><br /><br />
           <label for="note">Note:</label>
@@ -88,14 +118,14 @@
             value="Note about the files"
           />
           <br /><br />
-          <input type="submit" onclick="fetchFiles()" />
+          <input type="submit" />
         </form>
       </div>
 
       <div id="download">
         <h3>Download files</h3>
-        <button onclick="fetchFiles()">List uploaded files</button>
         <ul id="fileList"></ul>
+        <button onclick="fetchFiles()">Refresh</button>
       </div>
 
       <h3>OpenAPI spec: <a href="/openapi.json">/openapi.json</a></h3>
