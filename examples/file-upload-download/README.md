@@ -53,6 +53,8 @@ npm start
 The application will start on port `3000`. Open http://localhost:3000 in your
 browser. You can try to upload a few files using the web UI or API explorer.
 
+![upload-download](upload-download.png)
+
 The uploaded files will be stored in `.sandbox` folder under the application
 root directory.
 
