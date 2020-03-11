@@ -23,7 +23,7 @@ import {Order, OrderWithRelations} from './order.model';
 export class Customer extends Entity {
   @property({
     id: true,
-    generated: true,
+    //generated: true,
     useDefaltIdType: true,
   })
   id: MixedIdType;

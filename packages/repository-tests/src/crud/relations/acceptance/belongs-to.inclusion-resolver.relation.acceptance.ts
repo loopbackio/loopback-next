@@ -94,9 +94,9 @@ export function belongsToInclusionResolverAcceptance(
       expect(toJSON(result)).to.deepEqual([toJSON(expected)]);
     });
 
-    it('returns multiple model instances including related instances', async () => {
-      const thor = await customerRepo.create({name: 'Thor'});
-      const odin = await customerRepo.create({name: 'Odin'});
+    it.only('returns multiple model instances including related instances', async () => {
+      const thor = await customerRepo.create({id: 87654321, name: 'Thor'});
+      const odin = await customerRepo.create({id: 87654322, name: 'Odin'});
       const thorOrder = await orderRepo.create({
         description: "Thor's Mjolnir",
         customerId: thor.id,

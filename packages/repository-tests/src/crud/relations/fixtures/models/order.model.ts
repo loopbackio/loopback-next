@@ -19,7 +19,7 @@ import {Shipment, ShipmentWithRelations} from './shipment.model';
 export class Order extends Entity {
   @property({
     id: true,
-    generated: true,
+    //generated: true,
     useDefaultIdType: true,
   })
   id: MixedIdType;
