@@ -782,8 +782,8 @@ children:
       url: migration-auth-access-control-example.html
       output: 'web, pdf'
 
-    - title: 'Built-in models'
-      url: migration-auth-built-in.html
+    - title: 'Built-in models and authentication'
+      url: migration-authentication.html
       output: 'web, pdf'
 
     - title: 'Passport'
