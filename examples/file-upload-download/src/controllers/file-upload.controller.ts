@@ -25,7 +25,7 @@ export class FileUploadController {
   constructor(
     @inject(FILE_UPLOAD_SERVICE) private handler: FileUploadHandler,
   ) {}
-  @post('/file-upload', {
+  @post('/files', {
     responses: {
       200: {
         content: {

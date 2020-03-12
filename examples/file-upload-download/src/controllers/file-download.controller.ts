@@ -17,7 +17,7 @@ const SANDBOX = path.resolve(__dirname, '../../.sandbox');
  * A controller to handle file downloads using multipart/form-data media type
  */
 export class FileDownloadController {
-  @get('/file-download', {
+  @get('/files', {
     responses: {
       200: {
         content: {
@@ -40,7 +40,7 @@ export class FileDownloadController {
     return files;
   }
 
-  @get('/file-download/{filename}', {
+  @get('/files/{filename}', {
     responses: {
       200: {
         content: {
@@ -66,8 +66,13 @@ export class FileDownloadController {
   }
 }
 
+/**
+ * Validate file names to prevent them goes beyond the designated directory
+ * @param fileName - File name
+ */
 function validateFileName(fileName: string) {
   const resolved = path.resolve(SANDBOX, fileName);
   if (resolved.startsWith(SANDBOX)) return resolved;
+  // The resolved file is outside sandbox
   throw new HttpErrors.BadRequest(`Invalid file name: ${fileName}`);
 }

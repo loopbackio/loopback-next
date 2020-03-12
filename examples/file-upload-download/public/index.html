@@ -68,7 +68,7 @@
         formElem.onsubmit = async e => {
           e.preventDefault();
 
-          const res = await fetch('/file-upload', {
+          const res = await fetch('/files', {
             method: 'POST',
             body: new FormData(formElem),
           });
@@ -84,20 +84,19 @@
        * List uploaded files
        */
       async function fetchFiles() {
-        const res = await fetch('/file-download');
+        const res = await fetch('/files');
         const files = await res.json();
         console.log('Response from list', files);
         const list = files.map(
-          f => `<li><a href="/file-download/${f}">${f}</a></li>\n`,
+          f => `<li><a href="/files/${f}">${f}</a></li>\n`,
         );
         document.getElementById('fileList').innerHTML = list.join('');
       }
 
       async function init() {
         setupUploadForm();
-        await fetchFiles()
+        await fetchFiles();
       }
-
     </script>
   </head>
 
@@ -115,7 +114,7 @@
             type="text"
             name="note"
             id="note"
-            value="Note about the files"
+            placeholder="Note about the files"
           />
           <br /><br />
           <input type="submit" />
