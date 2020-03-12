@@ -4,18 +4,18 @@ An example application to demonstrate file uploads and downloads for LoopBack 4
 
 ## Summary
 
-This application exposes `/file-upload` endpoint that accepts
+This application exposes `POST /files` endpoint that accepts
 `multipart/form-data` based file uploads. The uploaded files can be listed using
-`/file-download` and individual files can be downloaded using
-`/file-download/<filename>`.
+`GET /files` and individual files can be downloaded using
+`GET /files/<filename>`.
 
 ## Key artifacts
 
-- [FileUploadController](src/controllers/file-upload.controller.ts)
+- [FileUploadController](src/controllers/files.controller.ts)
 
-  - Expose `/file-upload` endpoint to allow file uploads
+  - Expose `POST /files` endpoint to allow file uploads
 
-- [FileUploadService - an Express middleware from multer](src/services/file-upload.service.ts)
+- [FileUploadService - an Express middleware from multer](src/services/files.service.ts)
 
   - A service provider that returns a configured `multer` request handler
 
@@ -37,10 +37,10 @@ This application exposes `/file-upload` endpoint that accepts
     this.configure(FILE_UPLOAD_SERVICE).to(multerOptions);
     ```
 
-- [FileDownloadController](src/controllers/file-download.controller.ts)
+- [FileDownloadController](src/controllers/files.controller.ts)
 
-  - Expose `/file-download` endpoint to list uploaded files
-  - Expose `/file-download/{filename}` endpoint to download a file
+  - Expose `GET /files` endpoint to list uploaded files
+  - Expose `GET /files/{filename}` endpoint to download a file
 
 ## Use
 

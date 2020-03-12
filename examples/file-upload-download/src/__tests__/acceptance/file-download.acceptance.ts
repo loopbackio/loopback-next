@@ -23,18 +23,18 @@ describe('file download acceptance', () => {
   after(resetSandbox);
 
   it('list files', async () => {
-    await client.get('/file-download').expect(200, []);
+    await client.get('/files').expect(200, []);
     await sandbox.writeJsonFile('test.json', {test: 'XYZ'});
-    await client.get('/file-download').expect(200, ['test.json']);
+    await client.get('/files').expect(200, ['test.json']);
   });
 
   it('reports 404 if file does not exist', async () => {
-    await client.get('/file-download/does-not-exst.txt').expect(404);
+    await client.get('/files/does-not-exist.txt').expect(404);
   });
 
   it('reports 400 if file name is resolved outside the sandbox', async () => {
     const badFileName = '%2Fbad-file.txt'; // `/bad-file.txt`
-    await client.get(`/file-download/${badFileName}`).expect(400, {
+    await client.get(`/files/${badFileName}`).expect(400, {
       error: {
         statusCode: 400,
         name: 'BadRequestError',
@@ -45,7 +45,7 @@ describe('file download acceptance', () => {
 
   it('reports 400 if file name is resolved outside the sandbox with ..', async () => {
     const badFileName = '%2E%2E%2Fbad-file.txt'; // `../bad-file.txt`
-    await client.get(`/file-download/${badFileName}`).expect(400, {
+    await client.get(`/files/${badFileName}`).expect(400, {
       error: {
         statusCode: 400,
         name: 'BadRequestError',
@@ -56,7 +56,7 @@ describe('file download acceptance', () => {
 
   it('download a file', async () => {
     await sandbox.writeJsonFile('test.json', {test: 'JSON'});
-    await client.get('/file-download/test.json').expect(200, {test: 'JSON'});
+    await client.get('/files/test.json').expect(200, {test: 'JSON'});
   });
 
   async function givenAClient() {

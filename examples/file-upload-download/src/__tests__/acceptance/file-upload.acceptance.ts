@@ -23,7 +23,7 @@ describe('file upload acceptance - multipart/form-data', () => {
   it('supports file uploads', async () => {
     const FIXTURES = path.resolve(__dirname, '../../../fixtures');
     const res = await client
-      .post('/file-upload')
+      .post('/files')
       .field('user', 'john')
       .field('email', 'john@example.com')
       .attach('testFile1', path.resolve(FIXTURES, 'file-upload-test.txt'), {
