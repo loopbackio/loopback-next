@@ -21,6 +21,7 @@ export class FileDownloadController {
     responses: {
       200: {
         content: {
+          // string[]
           'application/json': {
             schema: {
               type: 'array',
@@ -39,7 +40,22 @@ export class FileDownloadController {
     return files;
   }
 
-  @get('/file-download/{filename}')
+  @get('/file-download/{filename}', {
+    responses: {
+      200: {
+        content: {
+          // file
+          'application/octet-stream': {
+            schema: {
+              type: 'string',
+              format: 'binary', // This is required by OpenAPI spec 3.x
+            },
+          },
+        },
+        description: 'The file content',
+      },
+    },
+  })
   async downloadFile(
     @param.path.string('filename') fileName: string,
     @inject(RestBindings.Http.RESPONSE) response: Response,
