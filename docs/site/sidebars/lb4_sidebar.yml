@@ -199,6 +199,22 @@ children:
     url: File-upload-download.html
     output: 'web, pdf'
 
+  - title: 'Validation'
+    url: Validation.html
+    output: 'web, pdf'
+    children:
+      - title: 'Validation in REST Layer'
+        url: Validation-REST-layer.html
+        output: 'web, pdf'
+
+      - title: 'Validation in the Controller, Repository and Service Layer'
+        url: Validation-controller-repo-service-layer.html
+        output: 'web, pdf'
+
+      - title: 'Validation in ORM Layer'
+        url: Validation-ORM-layer.html
+        output: 'web, pdf'
+
 - title: 'Behind the Scene'
   url: Behind-the-scene.html
   output: 'web, pdf'
