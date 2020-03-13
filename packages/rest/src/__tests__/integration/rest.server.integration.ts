@@ -4,7 +4,11 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Application} from '@loopback/core';
-import {anOpenApiSpec, anOperationSpec} from '@loopback/openapi-spec-builder';
+import {
+  aComponentsSpec,
+  anOpenApiSpec,
+  anOperationSpec,
+} from '@loopback/openapi-spec-builder';
 import {
   createClientForHandler,
   createRestAppClient,
@@ -872,6 +876,160 @@ paths:
     serverUrl = server.getSync(RestBindings.URL);
     const res = await httpsGetAsync(serverUrl);
     expect(res.statusCode).to.equal(200);
+    await server.stop();
+  });
+
+  it('disables consolidator if openApiSpec.consolidate option is set to false', async () => {
+    const options = {openApiSpec: {consolidate: false}};
+    const server = await givenAServer({rest: options});
+
+    const EXPECTED_SPEC = anOpenApiSpec()
+      .withOperation(
+        'get',
+        '/',
+        anOperationSpec().withResponse(200, {
+          description: 'Example',
+          content: {
+            'application/json': {
+              schema: {
+                title: 'loopback.example',
+                properties: {
+                  test: {
+                    type: 'string',
+                  },
+                },
+              },
+            },
+          },
+        }),
+      )
+      .build();
+
+    server.route('get', '/', EXPECTED_SPEC.paths['/'].get, () => {});
+
+    await server.start();
+    const spec = await server.getApiSpec();
+    expect(spec).to.eql(EXPECTED_SPEC);
+    await server.stop();
+  });
+
+  it('runs consolidator if openApiSpec.consolidate option is set to true', async () => {
+    const options = {openApiSpec: {consolidate: true}};
+    const server = await givenAServer({rest: options});
+
+    const EXPECTED_SPEC = anOpenApiSpec()
+      .withOperation(
+        'get',
+        '/',
+        anOperationSpec().withResponse(200, {
+          description: 'Example',
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/loopback.example',
+              },
+            },
+          },
+        }),
+      )
+      .withComponents(
+        aComponentsSpec().withSchema('loopback.example', {
+          title: 'loopback.example',
+          properties: {
+            test: {
+              type: 'string',
+            },
+          },
+        }),
+      )
+      .build();
+
+    server.route(
+      'get',
+      '/',
+      anOperationSpec()
+        .withResponse(200, {
+          description: 'Example',
+          content: {
+            'application/json': {
+              schema: {
+                title: 'loopback.example',
+                properties: {
+                  test: {
+                    type: 'string',
+                  },
+                },
+              },
+            },
+          },
+        })
+        .build(),
+      () => {},
+    );
+
+    await server.start();
+    const spec = await server.getApiSpec();
+    expect(spec).to.eql(EXPECTED_SPEC);
+    await server.stop();
+  });
+
+  it('runs consolidator if openApiSpec.consolidate option is undefined', async () => {
+    const options = {openApiSpec: {consolidate: undefined}};
+    const server = await givenAServer({rest: options});
+
+    const EXPECTED_SPEC = anOpenApiSpec()
+      .withOperation(
+        'get',
+        '/',
+        anOperationSpec().withResponse(200, {
+          description: 'Example',
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/loopback.example',
+              },
+            },
+          },
+        }),
+      )
+      .withComponents(
+        aComponentsSpec().withSchema('loopback.example', {
+          title: 'loopback.example',
+          properties: {
+            test: {
+              type: 'string',
+            },
+          },
+        }),
+      )
+      .build();
+
+    server.route(
+      'get',
+      '/',
+      anOperationSpec()
+        .withResponse(200, {
+          description: 'Example',
+          content: {
+            'application/json': {
+              schema: {
+                title: 'loopback.example',
+                properties: {
+                  test: {
+                    type: 'string',
+                  },
+                },
+              },
+            },
+          },
+        })
+        .build(),
+      () => {},
+    );
+
+    await server.start();
+    const spec = await server.getApiSpec();
+    expect(spec).to.eql(EXPECTED_SPEC);
     await server.stop();
   });
 

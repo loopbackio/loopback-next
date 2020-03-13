@@ -42,6 +42,7 @@ import {
   RestServerConfig,
 } from './rest.server';
 import {DefaultSequence} from './sequence';
+import {ConsolidationEnhancer} from './spec-enhancers/consolidate.spec-enhancer';
 import {InfoSpecEnhancer} from './spec-enhancers/info.spec-enhancer';
 import {AjvFactoryProvider} from './validation/ajv-factory.provider';
 
@@ -85,6 +86,7 @@ export class RestComponent implements Component {
       RestBindings.REQUEST_BODY_PARSER_STREAM,
     ),
     createBindingFromClass(InfoSpecEnhancer),
+    createBindingFromClass(ConsolidationEnhancer),
   ];
   servers: {
     [name: string]: Constructor<Server>;

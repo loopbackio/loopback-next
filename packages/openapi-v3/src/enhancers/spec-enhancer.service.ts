@@ -71,10 +71,12 @@ export class OASEnhancerService {
    * Find an enhancer by its name
    * @param name The name of the enhancer you want to find
    */
-  async getEnhancerByName(name: string): Promise<OASEnhancer | undefined> {
+  async getEnhancerByName<T extends OASEnhancer = OASEnhancer>(
+    name: string,
+  ): Promise<T | undefined> {
     // Get the latest list of enhancers
     const enhancers = await this.getEnhancers();
-    return enhancers.find(e => e.name === name);
+    return enhancers.find(e => e.name === name) as T | undefined;
   }
 
   /**

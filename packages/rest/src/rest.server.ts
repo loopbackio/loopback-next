@@ -1061,6 +1061,12 @@ export interface OpenApiSpecOptions {
    * Set this flag to disable the endpoint for OpenAPI spec
    */
   disabled?: true;
+
+  /**
+   * Set this flag to `false` to disable OAS schema consolidation. If not set,
+   * the value defaults to `true`.
+   */
+  consolidate?: boolean;
 }
 
 export interface ApiExplorerOptions {
