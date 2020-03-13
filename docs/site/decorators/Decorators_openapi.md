@@ -357,6 +357,25 @@ class MyController {
 }
 ```
 
+#### @requestBody.file
+
+`@requestBody.file` marks a request body for `multipart/form-data` based file
+upload. For example,
+
+```ts
+import {post, requestBody} from '@loopback/openapi-v3';
+import {Request} from '@loopback/rest';
+class MyController {
+  @post('/pictures')
+  upload(
+    @requestBody.file()
+    request: Request,
+  ) {
+    // ...
+  }
+}
+```
+
 _We plan to support more `@requestBody` shortcuts in the future. You can track
 the feature in
 [story 1064](https://github.com/strongloop/loopback-next/issues/1064)._
@@ -753,6 +772,27 @@ class MyController {
   @oas.response(200, {$ref: '#/path/to/schema'})
   returnFromResponseObject() {
     return {message: 'Hello, world!'};
+  }
+}
+```
+
+#### Using @oas.response.file
+
+`@oas.response.file` is a shortcut decorator to describe response object for
+file download. For example:
+
+```ts
+import {oas, get, param} from '@loopback/openapi-v3';
+import {RestBindings, Response} from '@loopback/rest';
+
+class MyController {
+  @get('/files/{filename}')
+  @oas.response.file('image/jpeg', 'image/png')
+  download(
+    @param.path.string('filename') fileName: string,
+    @inject(RestBindings.Http.RESPONSE) response: Response,
+  ) {
+    // use response.download(...);
   }
 }
 ```
