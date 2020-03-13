@@ -4,7 +4,14 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {inject} from '@loopback/context';
-import {get, HttpErrors, param, Response, RestBindings} from '@loopback/rest';
+import {
+  get,
+  HttpErrors,
+  oas,
+  param,
+  Response,
+  RestBindings,
+} from '@loopback/rest';
 import fs from 'fs';
 import path from 'path';
 import {promisify} from 'util';
@@ -40,23 +47,9 @@ export class FileDownloadController {
     return files;
   }
 
-  @get('/files/{filename}', {
-    responses: {
-      200: {
-        content: {
-          // file
-          'application/octet-stream': {
-            schema: {
-              type: 'string',
-              format: 'binary', // This is required by OpenAPI spec 3.x
-            },
-          },
-        },
-        description: 'The file content',
-      },
-    },
-  })
-  async downloadFile(
+  @get('/files/{filename}')
+  @oas.response.file()
+  downloadFile(
     @param.path.string('filename') fileName: string,
     @inject(RestBindings.Http.RESPONSE) response: Response,
   ) {

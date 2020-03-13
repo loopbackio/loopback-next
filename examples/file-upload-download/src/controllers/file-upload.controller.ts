@@ -40,38 +40,7 @@ export class FileUploadController {
     },
   })
   async fileUpload(
-    @requestBody({
-      description: 'multipart/form-data for files/fields',
-      required: true,
-      content: {
-        // Media type for file upload
-        'multipart/form-data': {
-          // Skip body parsing
-          'x-parser': 'stream',
-          schema: {
-            type: 'object',
-            properties: {
-              file: {
-                type: 'string',
-                // This is required by OpenAPI spec 3.x for file upload
-                format: 'binary',
-              },
-              // Multiple file upload is not working with swagger-ui
-              // https://github.com/swagger-api/swagger-ui/issues/4600
-              /*
-              filename: {
-                type: 'array',
-                items: {
-                  type: 'string',
-                  format: 'binary',
-                },
-              },
-              */
-            },
-          },
-        },
-      },
-    })
+    @requestBody.file()
     request: Request,
     @inject(RestBindings.Http.RESPONSE) response: Response,
   ): Promise<object> {
