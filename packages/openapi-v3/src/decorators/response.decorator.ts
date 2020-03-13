@@ -41,7 +41,7 @@ function buildDecoratorReducer(
             | SchemaObject
             | ReferenceObject,
           contentType: ct,
-          description,
+          description: m.description ?? description,
         });
       });
     } else {
@@ -80,4 +80,48 @@ export function response(
     ),
     {decoratorName: '@response', allowInheritance: false},
   );
+}
+
+export namespace response {
+  /**
+   * Decorate the response as a file
+   *
+   * @example
+   * ```ts
+   * import {oas, get, param} from '@loopback/openapi-v3';
+   * import {RestBindings, Response} from '@loopback/rest';
+   *
+   * class MyController {
+   *   @get('/files/{filename}')
+   *   @oas.response.file('image/jpeg', 'image/png')
+   *   download(
+   *     @param.path.string('filename') fileName: string,
+   *     @inject(RestBindings.Http.RESPONSE) response: Response,
+   *   ) {
+   *     // use response.download(...);
+   *   }
+   * }
+   * ```
+   * @param mediaTypes - A list of media types for the file response. It's
+   * default to `['application/octet-stream']`.
+   */
+  export const file = (...mediaTypes: string[]) => {
+    if (mediaTypes.length === 0) {
+      mediaTypes = ['application/octet-stream'];
+    }
+    const responseWithContent: ResponseWithContent = {
+      content: {},
+      description: 'The file content',
+    };
+    for (const t of mediaTypes) {
+      responseWithContent.content[t] = {
+        schema: {
+          type: 'string',
+          format: 'binary', // This is required by OpenAPI spec 3.x
+        },
+      };
+    }
+
+    return response(200, responseWithContent);
+  };
 }

@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {getControllerSpec, requestBody, post} from '../../../../';
+import {getControllerSpec, post, requestBody} from '../../../../';
 
 describe('requestBody decorator - shortcuts', () => {
   context('array', () => {
@@ -13,10 +13,7 @@ describe('requestBody decorator - shortcuts', () => {
       class MyController {
         @post('/greeting')
         greet(
-          @requestBody.array(
-            {type: 'string'},
-            {description: description, required: false},
-          )
+          @requestBody.array({type: 'string'}, {description, required: false})
           name: string[],
         ) {}
       }
@@ -33,8 +30,39 @@ describe('requestBody decorator - shortcuts', () => {
 
       const requestBodySpec = actualSpec.paths['/greeting']['post'].requestBody;
       expect(requestBodySpec).to.have.properties({
-        description: description,
+        description,
         required: false,
+        content: expectedContent,
+      });
+    });
+  });
+
+  context('file', () => {
+    it('generates the correct schema spec for a file argument', () => {
+      const description = 'a picture';
+      class MyController {
+        @post('/pictures')
+        upload(
+          @requestBody.file({description, required: true})
+          request: unknown, // It should be `Request` from `@loopback/rest`
+        ) {}
+      }
+
+      const actualSpec = getControllerSpec(MyController);
+      const expectedContent = {
+        'multipart/form-data': {
+          'x-parser': 'stream',
+          schema: {
+            type: 'object',
+            properties: {file: {type: 'string', format: 'binary'}},
+          },
+        },
+      };
+
+      const requestBodySpec = actualSpec.paths['/pictures']['post'].requestBody;
+      expect(requestBodySpec).to.have.properties({
+        description,
+        required: true,
         content: expectedContent,
       });
     });
