@@ -144,10 +144,10 @@ export namespace requestBody {
    * @param properties - The requestBody properties other than `content`
    * @param itemSpec - the full item object
    */
-  export const array = function(
+  export const array = (
     itemSpec: SchemaObject | ReferenceObject,
     properties?: {description?: string; required?: boolean},
-  ) {
+  ) => {
     return requestBody({
       ...properties,
       content: {
@@ -155,6 +155,69 @@ export namespace requestBody {
           schema: {type: 'array', items: itemSpec},
         },
       },
+    });
+  };
+
+  /**
+   * Define a requestBody of `file` type. This is used to support
+   * multipart/form-data based file upload. Use `@requestBody` for other content
+   * types.
+   *
+   * {@link https://swagger.io/docs/specification/describing-request-body/file-upload | OpenAPI file upload}
+   *
+   * @example
+   * import {Request} from '@loopback/rest';
+   *
+   * ```ts
+   * class MyController {
+   *   @post('/pictures')
+   *   upload(
+   *     @requestBody.file()
+   *     request: Request,
+   *   ) {
+   *     // ...
+   *   }
+   * }
+   * ```
+   *
+   * @param properties - Optional description and required flag
+   */
+  export const file = (properties?: {
+    description?: string;
+    required?: boolean;
+  }) => {
+    return requestBody({
+      description: 'Request body for multipart/form-data based file upload',
+      required: true,
+      content: {
+        // Media type for file upload
+        'multipart/form-data': {
+          // Skip body parsing
+          'x-parser': 'stream',
+          schema: {
+            type: 'object',
+            properties: {
+              file: {
+                type: 'string',
+                // This is required by OpenAPI spec 3.x for file upload
+                format: 'binary',
+              },
+              // Multiple file upload is not working with swagger-ui
+              // https://github.com/swagger-api/swagger-ui/issues/4600
+              /*
+              files: {
+                type: 'array',
+                items: {
+                  type: 'string',
+                  format: 'binary',
+                },
+              },
+              */
+            },
+          },
+        },
+      },
+      ...properties,
     });
   };
 }

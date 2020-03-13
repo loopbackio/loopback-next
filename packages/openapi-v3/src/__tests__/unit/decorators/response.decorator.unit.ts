@@ -7,7 +7,7 @@ import {Model, model, property} from '@loopback/repository';
 import {expect} from '@loopback/testlab';
 import * as httpStatus from 'http-status';
 import {ResponseObject} from 'openapi3-ts';
-import {get, getControllerSpec, oas} from '../../..';
+import {get, getControllerSpec, oas, param} from '../../..';
 
 describe('@oas.response decorator', () => {
   it('allows a class to not be decorated with @oas.response at all', () => {
@@ -199,6 +199,55 @@ describe('@oas.response decorator', () => {
           'application/json'
         ].schema,
       ).to.eql({$ref: '#/components/schemas/SuccessModel'});
+    });
+  });
+
+  context('@oas.response.file', () => {
+    it('allows @oas.response.file with media types', () => {
+      class MyController {
+        @get('/files/{filename}')
+        @oas.response.file('image/jpeg', 'image/png')
+        download(@param.path.string('filename') fileName: string) {
+          // use response.download(...);
+        }
+      }
+
+      const actualSpec = getControllerSpec(MyController);
+      expect(actualSpec.paths['/files/{filename}'].get.responses['200']).to.eql(
+        {
+          description: 'The file content',
+          content: {
+            'image/jpeg': {
+              schema: {type: 'string', format: 'binary'},
+            },
+            'image/png': {
+              schema: {type: 'string', format: 'binary'},
+            },
+          },
+        },
+      );
+    });
+
+    it('allows @oas.response.file without media types', () => {
+      class MyController {
+        @get('/files/{filename}')
+        @oas.response.file()
+        download(@param.path.string('filename') filename: string) {
+          // use response.download(...);
+        }
+      }
+
+      const actualSpec = getControllerSpec(MyController);
+      expect(actualSpec.paths['/files/{filename}'].get.responses['200']).to.eql(
+        {
+          description: 'The file content',
+          content: {
+            'application/octet-stream': {
+              schema: {type: 'string', format: 'binary'},
+            },
+          },
+        },
+      );
     });
   });
 });
