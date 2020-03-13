@@ -191,8 +191,12 @@ children:
         url: Appsody-LoopBack.html
         output: 'web, pdf'
 
-  - title: 'Serving static files'
+  - title: 'Serving Static Files'
     url: Serving-static-files.html
+    output: 'web, pdf'
+
+  - title: 'Uploading and Downloading Files'
+    url: File-upload-download.html
     output: 'web, pdf'
 
 - title: 'Behind the Scene'
