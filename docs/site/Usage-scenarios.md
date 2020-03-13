@@ -14,4 +14,5 @@ databases, integrating to other infrastructures and calling other services.
 - [call other services](Calling-other-APIs-and-Web-Services.md)
 - [integrate with infrastructures](Integrate-with-infrastructures.md)
 - [serve static files](Serving-static-files.md)
+- [upload and download files](File-upload-download.md)
 - [deploy to cloud](Deployment.md)
