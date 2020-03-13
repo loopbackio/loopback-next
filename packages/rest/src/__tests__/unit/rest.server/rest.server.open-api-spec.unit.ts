@@ -14,6 +14,7 @@ import {
   RestServer,
 } from '../../..';
 import {RestTags} from '../../../keys';
+import {ConsolidationEnhancer} from '../../../spec-enhancers/consolidate.spec-enhancer';
 import {TestInfoSpecEnhancer} from './fixtures/info.spec.extension';
 
 describe('RestServer.getApiSpec()', () => {
@@ -319,6 +320,11 @@ describe('RestServer.getApiSpec()', () => {
         },
       },
     });
+  });
+
+  it('registers consolidate enhancer', async () => {
+    const enhancer = await server.OASEnhancer.getEnhancerByName('consolidate');
+    expect(enhancer).to.be.instanceOf(ConsolidationEnhancer);
   });
 
   it('invokes registered oas enhancers', async () => {
