@@ -20,8 +20,30 @@ LoopBack offers two ways to do this:
 - **Auto-update**: Change database schema objects if there is a difference
   between the objects and model definitions. Existing data will be kept.
 
-For connector-specific settings for defining model schemas and auto-migration,
-check out the specific connector under
+Part of the database schema definition can be specified via the model and/or
+property definition. For example, the following property setting is a common
+definition that indicates the data type and the length of a column and also uses
+a column name that is different from the property name:
+
+```ts
+export class MyModel extends Entity {
+  @property({
+    type: 'string',
+    required: false,
+    id: false,
+    postgresql: {
+      columnName: 'my_name',
+      dataType: 'VARCHAR',
+      dataLength: 20,
+      nullable: 'YES',
+    },
+  })
+  myName: string;
+}
+```
+
+For detailed connector-specific settings for defining model schemas and
+auto-migration, check out the specific connector under
 [Database Connectors](Database-connectors.md).
 
 {% include warning.html content="Auto-update will attempt to preserve data while
