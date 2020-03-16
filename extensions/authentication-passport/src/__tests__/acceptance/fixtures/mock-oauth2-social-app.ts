@@ -75,10 +75,12 @@ const registeredApps: AppRegistry = {
 /**
  * user registry
  */
-const users = [
+const users: MyUser[] = [
   {
     id: '1001',
     username: 'user1',
+    firstName: 'tinker',
+    lastName: 'bell',
     password: 'abc',
     email: 'usr1@lb.com',
     signingKey: 'AZeb==',
@@ -86,9 +88,20 @@ const users = [
   {
     id: '1002',
     username: 'user2',
+    firstName: 'rosetta',
+    lastName: 'fawn',
     password: 'xyz',
     email: 'usr2@lb2.com',
     signingKey: 'BuIx=+',
+  },
+  {
+    id: '1003',
+    username: 'testuser',
+    firstName: 'vidia',
+    lastName: 'zarina',
+    password: 'xyz',
+    email: 'test@example.com',
+    signingKey: 'HuYa=+',
   },
 ];
 
@@ -118,10 +131,17 @@ async function createJwt(
   const jti = Math.floor(Math.random() * Math.floor(1000));
   const token = jwt.sign(
     {
+      id: user.id,
+      userId: user.id,
       jti: jti,
       sub: user.id,
-      name: user.username,
+      name: '' + user.firstName + ' ' + user.lastName,
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      last_name: user.lastName,
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      first_name: user.firstName,
       email: user.email,
+      username: user.email,
       iss: 'sample oauth provider',
       exp: Math.floor(Date.now() / 1000) + 5 * 1000,
       iat: Math.floor(Date.now() / 1000),
@@ -233,7 +253,10 @@ app.get('/login', function (req, response) {
  * 4. redirects to callback url with access code
  */
 app.post('/login_submit', urlencodedParser, async function (req, res) {
-  const user = findUser(req.body.username, req.body.password);
+  const user: MyUser | undefined = findUser(
+    req.body.username,
+    req.body.password,
+  );
   if (user) {
     // get registered app
     const registeredApp = registeredApps[req.body.client_id];

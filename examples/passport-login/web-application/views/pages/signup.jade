@@ -1,0 +1,29 @@
+extends ../layouts/layout
+
+block content
+  .row
+    .col-md-6.col-md-offset-3
+      if user
+        h1 User Logged in!
+        h3 Hello #{user.username}
+        ul
+          li
+            a(href='/') Home
+          li
+            a(href='/auth/logout') Log Out
+      else
+        form(role='form', action='/users/signup', method='post')
+          .form-group
+            label(for='name') Your Name
+            input.form-control(type='text', name='name', placeholder='Enter your name')
+          .form-group
+            label(for='username') User Name
+            input.form-control(type='text', name='username', placeholder='Enter user name')
+          .form-group
+            label(for='email') Email address
+            input.form-control(type='email', name='email', placeholder='Enter your email address')
+          .form-group
+            label(for='password') Password
+            input.form-control(type='password', name='password', placeholder='Password')
+          button.btn.btn-default(type='submit') Submit
+        br
