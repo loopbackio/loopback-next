@@ -17,6 +17,7 @@ export interface MyUser {
   password?: string;
   email?: string;
   token?: string;
+  signingKey: string;
 }
 
 /**
@@ -61,12 +62,14 @@ const userRepository = new UserRepository({
     username: 'joesmith71',
     firstName: 'Joseph',
     lastName: 'Smith',
+    signingKey: 'AZeb==',
   },
   '1000': {
     id: '1000',
     username: 'simonsmith71',
     firstName: 'Simon',
     lastName: 'Smith',
+    signingKey: 'AZeb==',
   },
 });
 

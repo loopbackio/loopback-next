@@ -199,3 +199,28 @@ export type OperationRetval = any;
 
 export type GetFromContext = (key: string) => Promise<BoundValue>;
 export type BindElement = (key: string) => Binding;
+
+/**
+ * user profile to add in session
+ */
+export interface SessionUserProfile {
+  provider: string;
+  token: string;
+  email: string;
+  [attribute: string]: any;
+}
+
+/**
+ * interface to set variables in user session
+ */
+export interface Session {
+  profile: SessionUserProfile;
+  [key: string]: any;
+}
+
+/**
+ * extending express request type with a session field
+ */
+export interface RequestWithSession extends Request {
+  session: Session;
+}
