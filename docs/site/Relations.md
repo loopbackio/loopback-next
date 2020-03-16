@@ -69,11 +69,6 @@ used by model queries (`create()`, `find()`, `replaceById()`, and so on) cannot
 be used to filter a model by the value of its parent model. See its
 [GitHub issue](https://github.com/strongloop/loopback-next/issues/4299).
 
-### Recursive inclusion of related models
-
-We don’t support recursive inclusion of related models yet. Related GH issue:
-[Recursive inclusion of related models](https://github.com/strongloop/loopback-next/issues/3454).
-
 ### Splitting numbers of queries
 
 It doesn’t split numbers of queries. Related GH issue:
