@@ -1,4 +1,4 @@
-# @loopback/example-file-upload-download
+# @loopback/example-file-transfer
 
 An example application to demonstrate file uploads and downloads for LoopBack 4
 
