@@ -1,6 +1,6 @@
 {
   "name": "@loopback/test-extension-logging-fluentd",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Acceptance test for extension-logging with fluentd",
   "private": true,
   "engines": {
@@ -19,10 +19,10 @@
   "license": "MIT",
   "devDependencies": {
     "@loopback/build": "^2.0.16",
-    "@loopback/core": "^2.0.0",
+    "@loopback/core": "^2.1.0",
     "@loopback/eslint-config": "^4.1.4",
-    "@loopback/extension-logging": "^0.2.0",
-    "@loopback/testlab": "^2.0.0",
+    "@loopback/extension-logging": "^0.2.1",
+    "@loopback/testlab": "^2.0.1",
     "@types/node": "^10.17.17",
     "testcontainers": "^2.6.0",
     "tslib": "^1.11.1"

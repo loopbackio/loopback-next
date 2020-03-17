@@ -1,6 +1,6 @@
 {
   "name": "@loopback/model-api-builder",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Types and helpers for packages contributing Model API builders.",
   "engines": {
     "node": ">=10"
@@ -25,8 +25,8 @@
   },
   "devDependencies": {
     "@loopback/build": "^1.7.1",
-    "@loopback/core": "^2.0.0",
-    "@loopback/repository": "^2.0.0",
+    "@loopback/core": "^2.1.0",
+    "@loopback/repository": "^2.0.1",
     "@types/node": "^10.17.17"
   },
   "files": [

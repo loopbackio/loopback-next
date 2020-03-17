@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@3.0.0...@loopback/openapi-v3@3.1.0) (2020-03-17)
+
+
+### Features
+
+* **openapi-v3:** add sugar decorators for file requestBody/response ([e8c8f38](https://github.com/strongloop/loopback-next/commit/e8c8f38161b6b2c0ac93d047667649c97ba6eba9))
+* enable authStrategy to provide OASEnhancer ([df7dd2b](https://github.com/strongloop/loopback-next/commit/df7dd2b7852eef83a259d38819a0175fc408a5fc))
+
+
+
+
+
 # [3.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@2.0.0...@loopback/openapi-v3@3.0.0) (2020-03-05)
 
 

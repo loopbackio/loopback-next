@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.11.1](https://github.com/strongloop/loopback-next/compare/@loopback/repository-tests@0.11.0...@loopback/repository-tests@0.11.1) (2020-03-17)
+
+
+### Bug Fixes
+
+* filter null keys when including belongs-to relations in queries ([cccb37f](https://github.com/strongloop/loopback-next/commit/cccb37f43f3ccaf950c23759315b4dde41da4e8b))
+
+
+
+
+
 # [0.11.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository-tests@0.10.1...@loopback/repository-tests@0.11.0) (2020-03-05)
 
 

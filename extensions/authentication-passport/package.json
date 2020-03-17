@@ -1,6 +1,6 @@
 {
   "name": "@loopback/authentication-passport",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "A package creating adapters between the passport module and @loopback/authentication",
   "engines": {
     "node": ">=10"
@@ -40,22 +40,22 @@
     "directory": "extensions/authentication-passport"
   },
   "dependencies": {
-    "@loopback/authentication": "^4.0.0",
-    "@loopback/context": "^3.0.0",
-    "@loopback/core": "^2.0.0",
-    "@loopback/metadata": "^2.0.0",
-    "@loopback/openapi-v3": "^3.0.0",
-    "@loopback/rest": "^3.0.0",
-    "@loopback/security": "^0.2.0",
+    "@loopback/authentication": "^4.1.0",
+    "@loopback/context": "^3.1.0",
+    "@loopback/core": "^2.1.0",
+    "@loopback/metadata": "^2.0.1",
+    "@loopback/openapi-v3": "^3.1.0",
+    "@loopback/rest": "^3.0.1",
+    "@loopback/security": "^0.2.1",
     "passport": "^0.4.1",
     "tslib": "^1.11.1",
     "util-promisifyall": "^1.0.6"
   },
   "devDependencies": {
-    "@loopback/build": "^4.0.0",
-    "@loopback/eslint-config": "^6.0.0",
-    "@loopback/openapi-spec-builder": "^2.0.0",
-    "@loopback/testlab": "^2.0.0",
+    "@loopback/build": "^4.0.1",
+    "@loopback/eslint-config": "^6.0.1",
+    "@loopback/openapi-spec-builder": "^2.0.1",
+    "@loopback/testlab": "^2.0.1",
     "@types/node": "^10.17.17",
     "@types/passport": "^1.0.3",
     "@types/passport-http": "^0.3.8",

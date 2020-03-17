@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.1](https://github.com/strongloop/loopback-next/compare/@loopback/metadata@2.0.0...@loopback/metadata@2.0.1) (2020-03-17)
+
+**Note:** Version bump only for package @loopback/metadata
+
+
+
+
+
 # [2.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/metadata@1.4.1...@loopback/metadata@2.0.0) (2020-03-05)
 
 

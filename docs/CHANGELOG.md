@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.0.1...@loopback/docs@3.1.0) (2020-03-17)
+
+
+### Bug Fixes
+
+* **cli:** add ibmi, relocate db2z for affinity to other db2s ([76bb470](https://github.com/strongloop/loopback-next/commit/76bb470e8feba478796741d09b35fdb7549b79ab))
+* **docs:** add metrics-prometheus example to monorepo ([704bda9](https://github.com/strongloop/loopback-next/commit/704bda9bda1c264bf15d7ba60d96b22759b9eff5))
+* **docs:** fix typo for Binding.md ([1d79b49](https://github.com/strongloop/loopback-next/commit/1d79b490c53bc5939f9a507526b8a392397bef73))
+
+
+### Features
+
+* **docs:** add 20202Q2 roadmap ([1e768e1](https://github.com/strongloop/loopback-next/commit/1e768e18a133d59035f903fad706c76759988eb6))
+* **docs:** add docs for [@request](https://github.com/request)Body.file and [@oas](https://github.com/oas).respone.file ([c9d86cb](https://github.com/strongloop/loopback-next/commit/c9d86cb56adcc0049d53be798d7ef85c0411bf00))
+* **docs:** add docs for tag value matching ([3a77e32](https://github.com/strongloop/loopback-next/commit/3a77e32e0619a122d0a6a978c5a24fed28e71f0d))
+* **docs:** add file upload/download to usage scenarios ([0444120](https://github.com/strongloop/loopback-next/commit/0444120cda7119c66bc2170f4817e67d8dc9d312))
+* **docs:** describe LB3 features not planned in LB4 ([955812c](https://github.com/strongloop/loopback-next/commit/955812ceb8c8e36a716643b9cb72daf9263b2c5a))
+* **docs:** generate Jekyll friendly pages for CHANGELOG files ([fd38ff5](https://github.com/strongloop/loopback-next/commit/fd38ff5922363897fcad12d531532f15a5707ec8))
+* **example-file-upload-download:** add file download support ([12afd6b](https://github.com/strongloop/loopback-next/commit/12afd6b47ee1d371c68d03bd86c03d49b5f43b8d))
+* **example-rest-crud:** add example showing CrudRestApiBuilder ([ea37afb](https://github.com/strongloop/loopback-next/commit/ea37afb8d9e4ca9aef032b84e349e918d945e8ee))
+
+
+
+
+
 ## [3.0.1](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.0.0...@loopback/docs@3.0.1) (2020-03-05)
 
 **Note:** Version bump only for package @loopback/docs

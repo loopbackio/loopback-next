@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@4.0.0...@loopback/authentication@4.1.0) (2020-03-17)
+
+
+### Features
+
+* enable authStrategy to provide OASEnhancer ([df7dd2b](https://github.com/strongloop/loopback-next/commit/df7dd2b7852eef83a259d38819a0175fc408a5fc))
+* **authentication:** extend TokenService for revokeable tokens ([d8e9fbb](https://github.com/strongloop/loopback-next/commit/d8e9fbbc83cff964e278da9d004d98cb8a149e9f))
+
+
+
+
+
 # [4.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@3.3.3...@loopback/authentication@4.0.0) (2020-03-05)
 
 

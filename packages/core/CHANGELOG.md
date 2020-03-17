@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/core@2.0.0...@loopback/core@2.1.0) (2020-03-17)
+
+
+### Features
+
+* **core:** allow an extension to be used by multiple extension points ([5cc29d6](https://github.com/strongloop/loopback-next/commit/5cc29d630b97a02ba6ac7e5962bb2af2b314a89d))
+
+
+
+
+
 # [2.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/core@1.12.4...@loopback/core@2.0.0) (2020-03-05)
 
 

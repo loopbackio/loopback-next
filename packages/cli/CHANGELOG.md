@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@2.0.1...@loopback/cli@2.1.0) (2020-03-17)
+
+
+### Bug Fixes
+
+* **cli:** add ibmi, relocate db2z for affinity to other db2s ([76bb470](https://github.com/strongloop/loopback-next/commit/76bb470e8feba478796741d09b35fdb7549b79ab))
+* **cli:** add missing examples to CLI ([221d8d0](https://github.com/strongloop/loopback-next/commit/221d8d00973e28475aee7771c521fd06b2723ef4))
+
+
+### Features
+
+* **cli:** add translations for 14 languages ([31bc951](https://github.com/strongloop/loopback-next/commit/31bc951c405e3bf21bc10875bc1c8cc6a1bab794))
+* **example-file-upload-download:** add file download support ([12afd6b](https://github.com/strongloop/loopback-next/commit/12afd6b47ee1d371c68d03bd86c03d49b5f43b8d))
+* **example-rest-crud:** add example showing CrudRestApiBuilder ([ea37afb](https://github.com/strongloop/loopback-next/commit/ea37afb8d9e4ca9aef032b84e349e918d945e8ee))
+
+
+
+
+
 ## [2.0.1](https://github.com/strongloop/loopback-next/compare/@loopback/cli@2.0.0...@loopback/cli@2.0.1) (2020-03-05)
 
 

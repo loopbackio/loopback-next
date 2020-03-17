@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@3.0.0...@loopback/context@3.1.0) (2020-03-17)
+
+
+### Features
+
+* **context:** introduce TagValueMatcher for more flexible tag matching ([deaf2ed](https://github.com/strongloop/loopback-next/commit/deaf2eda29421e73244d3d27006b502c7dcc25e2))
+
+
+
+
+
 # [3.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@2.1.1...@loopback/context@3.0.0) (2020-03-05)
 
 
