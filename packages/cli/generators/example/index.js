@@ -33,7 +33,7 @@ const EXAMPLES = {
   'rest-crud':
     'A simplified version of the Todo example that only requires a model and ' +
     'a datasource.',
-  'file-upload-download':
+  'file-transfer':
     'An example showing how to expose APIs to upload/download files.',
   'access-control-migration':
     'An access control example migrated from the LoopBack 3 repository ' +

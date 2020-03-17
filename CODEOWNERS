@@ -142,7 +142,7 @@
 /packages/cli/generators/controller @deepakrkris @emonddr @hacksparrow
 /examples/hello-world @deepakrkris @emonddr @hacksparrow
 /examples/express-composition @deepakrkris @emonddr @hacksparrow
-/examples/file-upload-download @deepakrkris @emonddr @hacksparrow @raymondfeng
+/examples/file-transfer @deepakrkris @emonddr @hacksparrow @raymondfeng
 
 #
 # OpenAPI (server-side)
