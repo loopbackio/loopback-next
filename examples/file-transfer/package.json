@@ -11,8 +11,8 @@
     "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
     "build": "lb-tsc",
     "build:watch": "lb-tsc --watch",
-    "clean": "lb-clean *example-file-upload-download*.tgz dist *.tsbuildinfo package",
-    "verify": "npm pack && tar xf *example-file-upload-download*.tgz && tree package && npm run clean",
+    "clean": "lb-clean *example-file-transfer*.tgz dist *.tsbuildinfo package",
+    "verify": "npm pack && tar xf *example-file-transfer*.tgz && tree package && npm run clean",
     "lint": "npm run prettier:check && npm run eslint",
     "lint:fix": "npm run eslint:fix && npm run prettier:fix",
     "prettier:cli": "lb-prettier \"**/*.ts\" \"**/*.js\"",
@@ -29,7 +29,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/strongloop/loopback-next.git",
-    "directory": "examples/file-upload-download"
+    "directory": "examples/file-transfer"
   },
   "publishConfig": {
     "access": "public"
