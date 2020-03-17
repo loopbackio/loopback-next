@@ -18,7 +18,7 @@ import {HttpErrors, RequestBody, RestHttpErrors} from '..';
 import {RequestBodyValidationOptions, SchemaValidatorCache} from '../types';
 import {AjvProvider} from './ajv.service';
 
-const toJsonSchema = require('openapi-schema-to-json-schema');
+const toJsonSchema = require('@openapi-contrib/openapi-schema-to-json-schema');
 const debug = debugModule('loopback:rest:validation');
 
 /**
