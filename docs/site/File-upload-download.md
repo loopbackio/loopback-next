@@ -14,7 +14,7 @@ downloading files using LoopBack 4. It also illustrates how to build a simple
 Web UI to interact with such APIs.
 
 A fully-functional example is available at
-[@loopback/example-file-upload-download](https://github.com/strongloop/loopback-next/tree/master/examples/file-upload-download).
+[@loopback/example-file-transfer](https://github.com/strongloop/loopback-next/tree/master/examples/file-upload-download).
 We use code snippets from the example to walk through the key artifacts.
 
 ### File upload

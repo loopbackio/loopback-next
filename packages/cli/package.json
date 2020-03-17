@@ -149,7 +149,7 @@
       "@loopback/model-api-builder": "^2.0.1",
       "@loopback/extension-logging": "^0.2.1",
       "@loopback/example-access-control-migration": "^1.1.1",
-      "@loopback/example-file-upload-download": "^1.1.0",
+      "@loopback/example-file-transfer": "^1.1.0",
       "@loopback/example-rest-crud": "^1.1.0",
       "@loopback/apiconnect": "^0.1.0"
     }
