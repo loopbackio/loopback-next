@@ -20,6 +20,16 @@ const debug = debugFactory('loopback:context:view');
 const nextTick = promisify(process.nextTick);
 
 /**
+ * An event emitted by a `ContextView`
+ */
+export interface ContextViewEvent<T> extends ContextEvent {
+  /**
+   * Optional cached value for an `unbind` event
+   */
+  cachedValue?: T;
+}
+
+/**
  * `ContextView` provides a view for a given context chain to maintain a live
  * list of matching bindings and their resolved values within the context
  * hierarchy.
@@ -29,22 +39,56 @@ const nextTick = promisify(process.nextTick);
  * they are added/removed/updated after the application starts.
  *
  * `ContextView` is an event emitter that emits the following events:
+ * - 'bind': when a binding is added to the view
+ * - 'unbind': when a binding is removed from the view
  * - 'close': when the view is closed (stopped observing context events)
  * - 'refresh': when the view is refreshed as bindings are added/removed
  * - 'resolve': when the cached values are resolved and updated
  */
 export class ContextView<T = unknown> extends EventEmitter
   implements ContextObserver {
+  /**
+   * An array of cached bindings that matches the binding filter
+   */
   protected _cachedBindings: Readonly<Binding<T>>[] | undefined;
-  protected _cachedValues: T[] | undefined;
+  /**
+   * A map of cached values by binding
+   */
+  protected _cachedValues: Map<Readonly<Binding<T>>, T> | undefined;
   private _subscription: Subscription | undefined;
 
+  /**
+   * Create a context view
+   * @param context - Context object to watch
+   * @param filter - Binding filter to match bindings of interest
+   * @param comparator - Comparator to sort the matched bindings
+   */
   constructor(
-    protected readonly context: Context,
+    public readonly context: Context,
     public readonly filter: BindingFilter,
     public readonly comparator?: BindingComparator,
   ) {
     super();
+  }
+
+  /**
+   * Update the cached values keyed by binding
+   * @param values - An array of resolved values
+   */
+  private updateCachedValues(values: T[]) {
+    if (this._cachedBindings == null) return undefined;
+    this._cachedValues = new Map();
+    for (let i = 0; i < this._cachedBindings?.length; i++) {
+      this._cachedValues.set(this._cachedBindings[i], values[i]);
+    }
+    return this._cachedValues;
+  }
+
+  /**
+   * Get an array of cached values
+   */
+  private getCachedValues() {
+    return Array.from(this._cachedValues?.values() ?? []);
   }
 
   /**
@@ -91,7 +135,13 @@ export class ContextView<T = unknown> extends EventEmitter
     if (typeof this.comparator === 'function') {
       found.sort(this.comparator);
     }
-    this._cachedBindings = found;
+    /* istanbul ignore if */
+    if (debug.enabled) {
+      debug(
+        'Bindings found',
+        found.map(b => b.key),
+      );
+    }
     return found;
   }
 
@@ -103,12 +153,22 @@ export class ContextView<T = unknown> extends EventEmitter
     binding: Readonly<Binding<unknown>>,
     context: Context,
   ) {
-    const ctxEvent: ContextEvent = {
+    const ctxEvent: ContextViewEvent<T> = {
       context,
       binding,
       type: event,
     };
-    this.emit(event, ctxEvent);
+    debug('Observed event %s %s %s', event, binding.key, context.name);
+
+    if (event === 'unbind') {
+      const cachedValue = this._cachedValues?.get(
+        binding as Readonly<Binding<T>>,
+      );
+      this.emit(event, {...ctxEvent, cachedValue});
+    } else {
+      this.emit(event, ctxEvent);
+    }
+
     this.refresh();
   }
 
@@ -128,18 +188,22 @@ export class ContextView<T = unknown> extends EventEmitter
    */
   resolve(session?: ResolutionSession): ValueOrPromise<T[]> {
     debug('Resolving values');
-    if (this._cachedValues != null) return this._cachedValues;
-    let result = resolveList(this.bindings, b => {
+    if (this._cachedValues != null) {
+      return this.getCachedValues();
+    }
+    const bindings = this.bindings;
+    let result = resolveList(bindings, b => {
       return b.getValue(this.context, ResolutionSession.fork(session));
     });
     if (isPromiseLike(result)) {
       result = result.then(values => {
-        this._cachedValues = values;
+        this.updateCachedValues(values);
         this.emit('resolve', values);
         return values;
       });
     } else {
-      this._cachedValues = result;
+      // Clone the array so that the cached values won't be mutated
+      this.updateCachedValues(result);
       this.emit('resolve', result);
     }
     return result;
@@ -154,9 +218,9 @@ export class ContextView<T = unknown> extends EventEmitter
     // Wait for the next tick so that context event notification can be emitted
     await nextTick();
     if (this._cachedValues == null) {
-      this._cachedValues = await this.resolve(session);
+      return this.resolve(session);
     }
-    return this._cachedValues;
+    return this.getCachedValues();
   }
 
   /**
