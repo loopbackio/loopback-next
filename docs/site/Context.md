@@ -554,6 +554,8 @@ injection.
 
 A `ContextView` object can emit one of the following events:
 
+- 'bind': when a binding is added to the view
+- 'unbind': when a binding is removed from the view
 - 'refresh': when the view is refreshed as bindings are added/removed
 - 'resolve': when the cached values are resolved and updated
 - 'close': when the view is closed (stopped observing context events)

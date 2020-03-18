@@ -10,6 +10,7 @@ import {Binding} from './binding';
 import {BindingFilter} from './binding-filter';
 import {BindingComparator} from './binding-sorter';
 import {Context} from './context';
+import {ContextEvent} from './context-event';
 import {ContextEventType, ContextObserver} from './context-observer';
 import {Subscription} from './context-subscription';
 import {Getter} from './inject';
@@ -97,7 +98,17 @@ export class ContextView<T = unknown> extends EventEmitter
   /**
    * Listen on `bind` or `unbind` and invalidate the cache
    */
-  observe(event: ContextEventType, binding: Readonly<Binding<unknown>>) {
+  observe(
+    event: ContextEventType,
+    binding: Readonly<Binding<unknown>>,
+    context: Context,
+  ) {
+    const ctxEvent: ContextEvent = {
+      context,
+      binding,
+      type: event,
+    };
+    this.emit(event, ctxEvent);
     this.refresh();
   }
 
