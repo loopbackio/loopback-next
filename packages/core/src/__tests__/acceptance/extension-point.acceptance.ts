@@ -5,9 +5,12 @@
 
 import {
   bind,
+  Binding,
   BindingScope,
   BINDING_METADATA_KEY,
   Context,
+  ContextEvent,
+  ContextView,
   createBindingFromClass,
   Getter,
   MetadataInspector,
@@ -68,6 +71,69 @@ describe('extension point', () => {
       const greeterService = await ctx.get<GreetingService>('greeter-service');
       const greeters = await greeterService.greeters();
       assertGreeterExtensions(greeters);
+    });
+
+    it('injects a view of extensions', async () => {
+      @extensionPoint('greeters')
+      class GreetingService {
+        readonly bindings: Set<Readonly<Binding<unknown>>>;
+        constructor(
+          @extensions.view()
+          public readonly greetersView: ContextView<Greeter>,
+        ) {
+          this.bindings = new Set(this.greetersView.bindings);
+          // Track bind events
+          this.greetersView.on('bind', (event: ContextEvent) => {
+            this.bindings.add(event.binding);
+          });
+          // Track unbind events
+          this.greetersView.on('unbind', (event: ContextEvent) => {
+            this.bindings.delete(event.binding);
+          });
+        }
+      }
+
+      // `@extensionPoint` is a sugar decorator for `@bind`
+      const binding = createBindingFromClass(GreetingService, {
+        key: 'greeter-service',
+      });
+      ctx.add(binding);
+      const registeredBindings = registerGreeters('greeters');
+      const greeterService = await ctx.get<GreetingService>('greeter-service');
+      expect(Array.from(greeterService.bindings)).to.eql(registeredBindings);
+      let greeters = await greeterService.greetersView.values();
+      assertGreeterExtensions(greeters);
+      expect(greeters.length).to.equal(2);
+      ctx.unbind(registeredBindings[0].key);
+      greeters = await greeterService.greetersView.values();
+      expect(greeters.length).to.equal(1);
+      expect(Array.from(greeterService.bindings)).to.eql([
+        registeredBindings[1],
+      ]);
+    });
+
+    it('injects a list of extensions', async () => {
+      @extensionPoint('greeters')
+      class GreetingService {
+        @extensions.list()
+        public greeters: Greeter[];
+      }
+
+      // `@extensionPoint` is a sugar decorator for `@bind`
+      const binding = createBindingFromClass(GreetingService, {
+        key: 'greeter-service',
+      });
+      ctx.add(binding);
+      const registeredBindings = registerGreeters('greeters');
+      const greeterService = await ctx.get<GreetingService>('greeter-service');
+      expect(greeterService.greeters.length).to.eql(registeredBindings.length);
+      assertGreeterExtensions(greeterService.greeters);
+
+      const copy = Array.from(greeterService.greeters);
+      // Now unbind the 1st greeter
+      ctx.unbind(registeredBindings[0].key);
+      // The injected greeters are not impacted
+      expect(greeterService.greeters).to.eql(copy);
     });
 
     it('injects extensions based on `name` tag of the extension point binding', async () => {
@@ -230,12 +296,13 @@ describe('extension point', () => {
     }
 
     function registerGreeters(extensionPointName: string) {
-      addExtension(ctx, extensionPointName, EnglishGreeter, {
+      const g1 = addExtension(ctx, extensionPointName, EnglishGreeter, {
         namespace: 'greeters',
       });
-      addExtension(ctx, extensionPointName, ChineseGreeter, {
+      const g2 = addExtension(ctx, extensionPointName, ChineseGreeter, {
         namespace: 'greeters',
       });
+      return [g1, g2];
     }
   });
 

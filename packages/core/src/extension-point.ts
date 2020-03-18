@@ -4,6 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
+  assertTargetType,
   bind,
   Binding,
   BindingFilter,
@@ -13,11 +14,14 @@ import {
   Constructor,
   Context,
   ContextTags,
+  ContextView,
   createBindingFromClass,
   createViewGetter,
   filterByTag,
   includesTagValue,
   inject,
+  Injection,
+  ResolutionSession,
 } from '@loopback/context';
 import {CoreTags} from './keys';
 
@@ -68,11 +72,12 @@ export function extensionPoint(name: string, ...specs: BindingSpec[]) {
  */
 export function extensions(extensionPointName?: string) {
   return inject('', {decorator: '@extensions'}, (ctx, injection, session) => {
-    extensionPointName =
-      extensionPointName ??
-      inferExtensionPointName(injection.target, session.currentBinding);
-
-    const bindingFilter = extensionFilter(extensionPointName);
+    assertTargetType(injection, Function, 'Getter function');
+    const bindingFilter = filterByExtensionPoint(
+      injection,
+      session,
+      extensionPointName,
+    );
     return createViewGetter(
       ctx,
       bindingFilter,
@@ -80,6 +85,115 @@ export function extensions(extensionPointName?: string) {
       session,
     );
   });
+}
+
+export namespace extensions {
+  /**
+   * Inject a `ContextView` for extensions of the extension point. The view can
+   * then be listened on events such as `bind`, `unbind`, or `refresh` to react
+   * on changes of extensions.
+   *
+   * @example
+   * ```ts
+   * import {extensionPoint, extensions} from '@loopback/core';
+   *
+   * @extensionPoint(GREETER_EXTENSION_POINT_NAME)
+   * export class GreetingService {
+   *  constructor(
+   *    @extensions.view() // Inject a context view for extensions of the extension point
+   *    private greetersView: ContextView<Greeter>,
+   *    // ...
+   * ) {
+   *   // ...
+   * }
+   * ```
+   * @param extensionPointName - Name of the extension point. If not supplied, we
+   * use the `name` tag from the extension point binding or the class name of the
+   * extension point class. If a class needs to inject extensions from multiple
+   * extension points, use different `extensionPointName` for different types of
+   * extensions.
+   */
+  export function view(extensionPointName?: string) {
+    return inject(
+      '',
+      {decorator: '@extensions.view'},
+      (ctx, injection, session) => {
+        assertTargetType(injection, ContextView);
+        const bindingFilter = filterByExtensionPoint(
+          injection,
+          session,
+          extensionPointName,
+        );
+        return ctx.createView(
+          bindingFilter,
+          injection.metadata.bindingComparator,
+        );
+      },
+    );
+  }
+
+  /**
+   * Inject an array of resolved extension instances for the extension point.
+   * The list is a snapshot of registered extensions when the injection is
+   * fulfilled. Extensions added or removed afterward won't impact the list.
+   *
+   * @example
+   * ```ts
+   * import {extensionPoint, extensions} from '@loopback/core';
+   *
+   * @extensionPoint(GREETER_EXTENSION_POINT_NAME)
+   * export class GreetingService {
+   *  constructor(
+   *    @extensions.list() // Inject an array of extensions for the extension point
+   *    private greeters: Greeter[],
+   *    // ...
+   * ) {
+   *   // ...
+   * }
+   * ```
+   * @param extensionPointName - Name of the extension point. If not supplied, we
+   * use the `name` tag from the extension point binding or the class name of the
+   * extension point class. If a class needs to inject extensions from multiple
+   * extension points, use different `extensionPointName` for different types of
+   * extensions.
+   */
+  export function list(extensionPointName?: string) {
+    return inject(
+      '',
+      {decorator: '@extensions.instances'},
+      (ctx, injection, session) => {
+        assertTargetType(injection, Array);
+        const bindingFilter = filterByExtensionPoint(
+          injection,
+          session,
+          extensionPointName,
+        );
+        const viewForExtensions = new ContextView(
+          ctx,
+          bindingFilter,
+          injection.metadata.bindingComparator,
+        );
+        return viewForExtensions.resolve(session);
+      },
+    );
+  }
+}
+
+/**
+ * Create a binding filter for `@extensions.*`
+ * @param injection - Injection object
+ * @param session - Resolution session
+ * @param extensionPointName - Extension point name
+ */
+function filterByExtensionPoint(
+  injection: Readonly<Injection<unknown>>,
+  session: ResolutionSession,
+  extensionPointName?: string,
+) {
+  extensionPointName =
+    extensionPointName ??
+    inferExtensionPointName(injection.target, session.currentBinding);
+  return extensionFilter(extensionPointName);
 }
 
 /**
