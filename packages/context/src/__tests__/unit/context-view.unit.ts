@@ -4,13 +4,13 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
+import pEvent from 'p-event';
 import {
   Binding,
   BindingScope,
   BindingTag,
   compareBindingsByTag,
   Context,
-  ContextEvent,
   ContextView,
   createViewGetter,
   filterByTag,
@@ -125,6 +125,20 @@ describe('ContextView', () => {
     expect(await taggedAsFoo.values()).to.eql(['BAR', 'FOO']);
   });
 
+  it('returns a copy of cached values', async () => {
+    const values = await taggedAsFoo.values();
+    const valuesFromCache = await taggedAsFoo.values();
+    expect(values).to.not.equal(valuesFromCache); // Not the same array
+    expect(values).to.eql(valuesFromCache); // But with the same items
+  });
+
+  it('returns a copy of cached values for resolve()', async () => {
+    const values = await taggedAsFoo.resolve();
+    const valuesFromCache = await taggedAsFoo.resolve();
+    expect(values).to.not.equal(valuesFromCache); // Not the same array
+    expect(values).to.eql(valuesFromCache); // But with the same items
+  });
+
   describe('EventEmitter', () => {
     let events: string[] = [];
 
@@ -161,7 +175,7 @@ describe('ContextView', () => {
     });
 
     it('emits bind/unbind when bindings are changed', async () => {
-      const bindingEvents: ContextEvent[] = [];
+      const bindingEvents: {cachedValue?: unknown}[] = [];
       taggedAsFoo.on('bind', evt => {
         bindingEvents.push(evt);
       });
@@ -172,15 +186,48 @@ describe('ContextView', () => {
         .bind('xyz')
         .to('XYZ')
         .tag('foo');
-      await taggedAsFoo.values();
+      await pEvent(taggedAsFoo, 'bind');
+      let values = await taggedAsFoo.values();
+      expect(values.sort()).to.eql(['BAR', 'FOO', 'XYZ']);
       const context = server;
       expect(bindingEvents).to.eql([{type: 'bind', binding, context}]);
       server.unbind('xyz');
-      await taggedAsFoo.values();
+      await pEvent(taggedAsFoo, 'unbind');
+      values = await taggedAsFoo.values();
+      expect(values.sort()).to.eql(['BAR', 'FOO']);
       expect(bindingEvents).to.eql([
         {type: 'bind', binding, context},
-        {type: 'unbind', binding, context},
+        {type: 'unbind', binding, context, cachedValue: 'XYZ'},
       ]);
+    });
+
+    it('does bot emit bind/unbind when a shadowed binding is changed', async () => {
+      const bindingEvents: {cachedValue?: unknown}[] = [];
+      taggedAsFoo.on('bind', evt => {
+        bindingEvents.push(evt);
+      });
+      taggedAsFoo.on('unbind', evt => {
+        bindingEvents.push(evt);
+      });
+      // Add a `bar` binding to the parent context
+      app
+        .bind('bar')
+        .to('BAR from app')
+        .tag('foo');
+      // The newly added binding is shadowed. No `bind` event will be emitted
+      await expect(
+        pEvent(taggedAsFoo, 'bind', {timeout: 50}),
+      ).to.be.rejectedWith(/Promise timed out after 50 milliseconds/);
+      let values = await taggedAsFoo.values();
+      expect(values.sort()).to.eql(['BAR', 'FOO']);
+      expect(bindingEvents).to.eql([]);
+      app.unbind('bar');
+      await expect(
+        pEvent(taggedAsFoo, 'unbind', {timeout: 50}),
+      ).to.be.rejectedWith(/Promise timed out after 50 milliseconds/);
+      values = await taggedAsFoo.values();
+      expect(values.sort()).to.eql(['BAR', 'FOO']);
+      expect(bindingEvents).to.eql([]);
     });
 
     function setupListeners() {
