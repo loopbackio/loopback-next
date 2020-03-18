@@ -10,6 +10,7 @@ import {
   BindingTag,
   compareBindingsByTag,
   Context,
+  ContextEvent,
   ContextView,
   createViewGetter,
   filterByTag,
@@ -156,12 +157,35 @@ describe('ContextView', () => {
         .to('XYZ')
         .tag('foo');
       await taggedAsFoo.values();
-      expect(events).to.eql(['refresh', 'resolve']);
+      expect(events).to.eql(['bind', 'refresh', 'resolve']);
+    });
+
+    it('emits bind/unbind when bindings are changed', async () => {
+      const bindingEvents: ContextEvent[] = [];
+      taggedAsFoo.on('bind', evt => {
+        bindingEvents.push(evt);
+      });
+      taggedAsFoo.on('unbind', evt => {
+        bindingEvents.push(evt);
+      });
+      const binding = server
+        .bind('xyz')
+        .to('XYZ')
+        .tag('foo');
+      await taggedAsFoo.values();
+      const context = server;
+      expect(bindingEvents).to.eql([{type: 'bind', binding, context}]);
+      server.unbind('xyz');
+      await taggedAsFoo.values();
+      expect(bindingEvents).to.eql([
+        {type: 'bind', binding, context},
+        {type: 'unbind', binding, context},
+      ]);
     });
 
     function setupListeners() {
       events = [];
-      ['open', 'close', 'refresh', 'resolve'].forEach(t =>
+      ['open', 'close', 'refresh', 'resolve', 'bind', 'unbind'].forEach(t =>
         taggedAsFoo.on(t, () => events.push(t)),
       );
     }
