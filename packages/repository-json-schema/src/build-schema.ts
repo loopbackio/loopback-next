@@ -181,7 +181,8 @@ export function stringTypeToWrapper(type: string | Function): Function {
       wrapper = Array;
       break;
     }
-    case 'object': {
+    case 'object':
+    case 'any': {
       wrapper = Object;
       break;
     }
@@ -235,6 +236,8 @@ export function metaToJsonProperty(meta: PropertyDefinition): JSONSchema {
       type: 'string',
       format: 'date-time',
     });
+  } else if (propertyType === 'any') {
+    // no-op, the json schema for any type is {}
   } else if (isBuiltinType(resolvedType)) {
     Object.assign(propDef, {
       type: resolvedType.name.toLowerCase(),

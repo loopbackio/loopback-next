@@ -179,6 +179,24 @@ describe('build-schema', () => {
         expectValidJsonSchema(jsonSchema);
       });
 
+      it('properly converts any properties', () => {
+        @model()
+        class TestModel {
+          @property({
+            type: 'any',
+          })
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          anyProp: any;
+        }
+
+        const jsonSchema = modelToJsonSchema(TestModel);
+        expect(jsonSchema.properties).to.deepEqual({
+          anyProp: {},
+        });
+
+        expectValidJsonSchema(jsonSchema);
+      });
+
       it('properly converts primitive array properties', () => {
         @model()
         class TestModel {
