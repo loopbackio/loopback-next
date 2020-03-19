@@ -503,6 +503,10 @@ children:
     url: Repository-generator.html
     output: 'web, pdf'
 
+  - title: 'REST CRUD model endpoints generator'
+    url: Rest-Crud-generator.html
+    output: 'web, pdf'
+
   - title: 'Service generator'
     url: Service-generator.html
     output: 'web, pdf'

@@ -1,0 +1,20 @@
+import {Entity, model, property} from '@loopback/repository';
+
+    @model()
+    export class MultiWord extends Entity {
+      @property({
+        type: 'string',
+        id: true,
+        default: 0,
+      })
+      pk?: string;
+
+      @property({
+        type: 'string',
+      })
+      desc?: string;
+
+      constructor(data?: Partial<MultiWord>) {
+        super(data);
+      }
+    }

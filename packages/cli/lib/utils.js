@@ -496,6 +496,14 @@ exports.getRepositoryFileName = function(repositoryName) {
 };
 
 /**
+ * Returns the rest-config in the directory file format for the model endpoint
+ * @param {string} modelName
+ */
+exports.getRestConfigFileName = function(modelName) {
+  return `${toFileName(modelName)}.rest-config.ts`;
+};
+
+/**
  * Returns the serviceName in the directory file format for the service
  * @param {string} serviceName
  */
@@ -659,4 +667,5 @@ exports.servicesDir = 'services';
 exports.modelsDir = 'models';
 exports.observersDir = 'observers';
 exports.interceptorsDir = 'interceptors';
+exports.modelEndpointsDir = 'model-endpoints';
 exports.sourceRootDir = 'src';

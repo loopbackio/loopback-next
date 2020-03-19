@@ -24,6 +24,7 @@ Available commands:
   lb4 discover
   lb4 relation
   lb4 update
+  lb4 rest-crud
 `;
 
 
@@ -44,4 +45,5 @@ Available commands:
   lb4 discover
   lb4 relation
   lb4 update
+  lb4 rest-crud
 `;
