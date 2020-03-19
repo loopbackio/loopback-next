@@ -101,6 +101,14 @@ function setupGenerators() {
     PREFIX + 'relation',
   );
   env.register(path.join(__dirname, '../generators/update'), PREFIX + 'update');
+  env.register(
+    path.join(__dirname, '../generators/relation'),
+    PREFIX + 'relation',
+  );
+  env.register(
+    path.join(__dirname, '../generators/rest-crud'),
+    PREFIX + 'rest-crud',
+  );
   return env;
 }
 
