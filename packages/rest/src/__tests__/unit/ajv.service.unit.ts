@@ -39,6 +39,93 @@ describe('Ajv service', () => {
     expect(result).to.be.true();
   });
 
+  // possible values for type any
+  const TEST_VALUES = {
+    string: 'abc',
+    number: 123,
+    object: {random: 'random'},
+    array: [1, 2, 3],
+    null: null,
+  };
+
+  context('accepts any type with schema {}', () => {
+    for (const v in TEST_VALUES) {
+      testAnyTypeWith(v);
+    }
+
+    function testAnyTypeWith(value: string) {
+      it(`with value ${value}`, async () => {
+        const ajv = new AjvProvider().value();
+        const validator = ajv.compile({});
+        const result = await validator(value);
+        expect(result).to.be.true();
+      });
+    }
+  });
+
+  context('accepts any type with schema {} - property', () => {
+    for (const v in TEST_VALUES) {
+      testAnyTypeWith(v);
+    }
+
+    function testAnyTypeWith(value: string) {
+      it(`with value ${value}`, async () => {
+        const ajv = new AjvProvider().value();
+        const validator = ajv.compile({
+          type: 'object',
+          properties: {
+            name: {type: 'string'},
+            arbitraryProp: {},
+          },
+        });
+        const result = await validator({
+          name: 'Zoe',
+          arbitraryProp: value,
+        });
+        expect(result).to.be.true();
+      });
+    }
+  });
+
+  context('accepts any type with schema true', () => {
+    for (const v in TEST_VALUES) {
+      testAnyTypeWith(v);
+    }
+
+    function testAnyTypeWith(value: string) {
+      it(`with value ${value}`, async () => {
+        const ajv = new AjvProvider().value();
+        const validator = ajv.compile(true);
+        const result = await validator(value);
+        expect(result).to.be.true();
+      });
+    }
+  });
+
+  context('accepts any type with schema true - property', () => {
+    for (const v in TEST_VALUES) {
+      testAnyTypeWith(v);
+    }
+
+    function testAnyTypeWith(value: string) {
+      it(`with value ${value}`, async () => {
+        const ajv = new AjvProvider().value();
+        const validator = ajv.compile({
+          type: 'object',
+          properties: {
+            name: {type: 'string'},
+            arbitraryProp: true,
+          },
+        });
+        const result = await validator({
+          name: 'Zoe',
+          arbitraryProp: value,
+        });
+        expect(result).to.be.true();
+      });
+    }
+  });
+
   it('reports unknown format', async () => {
     const ajv = await ctx.get(AJV_SERVICE);
     expect(() => ajv.compile({type: 'string', format: 'gmail'})).to.throw(

@@ -51,6 +51,10 @@ describe('build-schema', () => {
       it('returns Object for "object"', () => {
         expect(stringTypeToWrapper('object')).to.eql(Object);
       });
+
+      it('returns AnyType for "any"', () => {
+        expect(stringTypeToWrapper('any')).to.eql(Object);
+      });
     });
 
     it('errors out if other types are given', () => {
@@ -174,6 +178,10 @@ describe('build-schema', () => {
         type: 'array',
         items: {$ref: '#/definitions/CustomType'},
       });
+    });
+
+    it('converts type any', () => {
+      expect(metaToJsonProperty({type: 'any'})).to.eql({});
     });
 
     it('keeps description on property', () => {

@@ -65,6 +65,14 @@ describe('TodoApplication', () => {
     expect(result).to.containDeep(todo);
   });
 
+  it('creates a todo with arbitrary property', async function () {
+    const todo = givenTodo({tag: {random: 'random'}});
+    const response = await client.post('/todos').send(todo).expect(200);
+    expect(response.body).to.containDeep(todo);
+    const result = await todoRepo.findById(response.body.id);
+    expect(result).to.containDeep(todo);
+  });
+
   it('rejects requests to create a todo with no title', async () => {
     const todo = givenTodo();
     delete todo.title;
