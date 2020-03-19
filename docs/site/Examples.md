@@ -6,35 +6,75 @@ sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Examples.html
 ---
 
-LoopBack 4 comes with the following example projects:
+LoopBack 4 comes with the following example projects.
+
+### Shopping example application showcasing LoopBack features
+
+- **[loopback4-example-shopping](https://github.com/strongloop/loopback4-example-shopping)**:
+  An online e-commerce demo to validate/test the LoopBack 4 framework readiness.
+
+### Examples for beginners
 
 - **[hello-world](https://github.com/strongloop/loopback-next/tree/master/examples/hello-world)**:
   An example showing how to set up a simple application using LoopBack 4.
+
+- **[todo](https://github.com/strongloop/loopback-next/tree/master/examples/todo)**:
+  Tutorial example on how to build an application with LoopBack 4. See
+  [tutorial instructions](https://loopback.io/doc/en/lb4/todo-tutorial.html).
+
+- **[todo-list](https://github.com/strongloop/loopback-next/tree/master/examples/todo-list)**:
+  Continuation of the todo example using relations in LoopBack 4. See
+  [tutorial instructions](https://loopback.io/doc/en/lb4/todo-list-tutorial.html).
+
+- **[soap-calculator](https://github.com/strongloop/loopback-next/tree/master/examples/soap-calculator)**:
+  An example on how to integrate SOAP web services. See
+  [tutorial instructions](https://loopback.io/doc/en/lb4/soap-calculator-tutorial.html).
+
+### Examples implementing/using extensions
+
+- **[greeter-extension](https://github.com/strongloop/loopback-next/tree/master/examples/greeter-extension)**:
+  An example showing how to implement the extension point/extension pattern.
+
+- **[log-extension](https://github.com/strongloop/loopback-next/tree/master/examples/log-extension)**:
+  An example showing how to write a complex log extension for LoopBack 4.
+
+- **[metrics-prometheus](https://github.com/strongloop/loopback-next/tree/master/examples/metrics-prometheus)**:
+  illustrate metrics provided by
+  [@loopback/extension-metrics extension](https://github.com/strongloop/loopback-next/blob/master/extensions/metrics)
+  and [Prometheus](https://prometheus.io/).
+
+### Examples with migration
+
+- **[lb3-application](https://github.com/strongloop/loopback-next/tree/master/examples/lb3-application)**:
+  An example demonstrating how to mount your existing LoopBack 3 application on
+  a new LoopBack 4 project.
+
+- **[access-control-migration](https://github.com/strongloop/loopback-next/blob/master/examples/access-control-migration)**:
+  An example demonstrating how to implement a Role Based Access Control (RBAC)
+  system.
+
+### Other examples
 
 - **[context](https://github.com/strongloop/loopback-next/tree/master/examples/context)**:
   Standalone examples showing how to use
   [`@loopback/context`](https://github.com/strongloop/loopback-next/tree/master/packages/context)
   as an Inversion of Control (IoC) and Dependency Injection (DI) container.
 
-- **[rpc-server](https://github.com/strongloop/loopback-next/tree/master/examples/rpc-server)**:
-  An example showing how to implement a made-up RPC protocol.
-
-- **[greeter-extension](https://github.com/strongloop/loopback-next/tree/master/examples/greeter-extension)**:
-  An example showing how to implement the extension point/extension pattern.
+- **[file-transfer](https://github.com/strongloop/loopback-next/tree/master/examples/file-transfer)**:
+  An example showing how to expose APIs to upload and download files.
 
 - **[greeting-app](https://github.com/strongloop/loopback-next/tree/master/examples/greeting-app)**:
   An example showing how to compose an application from component and
   controllers, interceptors, and observers.
 
-- **[file-transfer](https://github.com/strongloop/loopback-next/tree/master/examples/file-transfer)**:
-  An example showing how to expose APIs to upload files.
-
-- **[loopback4-example-shopping](https://github.com/strongloop/loopback4-example-shopping)**:
-  An online e-commerce demo to validate/test the LoopBack 4 framework readiness.
+- **[rpc-server](https://github.com/strongloop/loopback-next/tree/master/examples/rpc-server)**:
+  An example showing how to implement a made-up RPC protocol.
 
 - **[rest-crud](https://github.com/strongloop/loopback-next/tree/master/examples/rest-crud)**:
-  An example showing how to use [`CrudRestComponent`] to define default
-  repository and controller classes for a model without creating those classes.
+  An example showing how to use `CrudRestComponent` to define default repository
+  and controller classes for a model without creating those classes.
+
+## How to download examples
 
 You can download the example projects using our CLI tool `lb4`:
 
