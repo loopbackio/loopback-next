@@ -59,6 +59,17 @@
     "@types/node": "^10.17.17",
     "@types/passport": "^1.0.3",
     "@types/passport-http": "^0.3.8",
-    "passport-http": "^0.3.0"
+    "@types/passport-oauth2": "^1.4.8",
+    "@types/qs": "^6.9.1",
+    "axios": "^0.19.2",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "form-data": "^3.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.15",
+    "passport-http": "^0.3.0",
+    "passport-oauth2": "^1.5.0",
+    "qs": "^6.9.3",
+    "supertest": "^4.0.2"
   }
 }

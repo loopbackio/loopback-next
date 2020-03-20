@@ -7,7 +7,7 @@ import {
   AuthenticationStrategy,
   UserProfileFactory,
 } from '@loopback/authentication';
-import {HttpErrors, Request} from '@loopback/rest';
+import {HttpErrors, Request, RedirectRoute} from '@loopback/rest';
 import {UserProfile} from '@loopback/security';
 import {Strategy} from 'passport';
 
@@ -42,9 +42,9 @@ export class StrategyAdapter<U> implements AuthenticationStrategy {
    *     3. authenticate using the strategy
    * @param request The incoming request.
    */
-  authenticate(request: Request): Promise<UserProfile> {
+  authenticate(request: Request): Promise<UserProfile | RedirectRoute> {
     const userProfileFactory = this.userProfileFactory;
-    return new Promise<UserProfile>((resolve, reject) => {
+    return new Promise<UserProfile | RedirectRoute>((resolve, reject) => {
       // mix-in passport additions like req.logIn and req.logOut
       for (const key in passportRequestMixin) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -71,6 +71,14 @@ export class StrategyAdapter<U> implements AuthenticationStrategy {
       // add error state handler to strategy instance
       strategy.error = function (error: string) {
         reject(new HttpErrors.InternalServerError(error));
+      };
+
+      // handle redirection for oauth2 authorization flows
+      strategy.redirect = function (url: string, status: number) {
+        // resolve with redirect options
+        // the controller configured with the oauth2 strategy will have to handle actual redirection
+        const redirectOptions = new RedirectRoute('', url, status);
+        resolve(redirectOptions);
       };
 
       // authenticate

@@ -109,6 +109,26 @@ describe('AuthenticateActionProvider', () => {
         }
         expect(error).to.have.property('statusCode', 401);
       });
+
+      it('throws USER_PROFILE_NOT_FOUND error when userprofile not returned', async () => {
+        const context: Context = new Context();
+        context.bind(AuthenticationBindings.STRATEGY).to(strategy);
+        context
+          .bind(AuthenticationBindings.AUTH_ACTION)
+          .toProvider(AuthenticateActionProvider);
+        const authenticate = await context.get<AuthenticateFn>(
+          AuthenticationBindings.AUTH_ACTION,
+        );
+        const request = <Request>{};
+        request.headers = {testState: 'empty'};
+        let error;
+        try {
+          await authenticate(request);
+        } catch (err) {
+          error = err;
+        }
+        expect(error).to.have.property('code', 'USER_PROFILE_NOT_FOUND');
+      });
     });
 
     function givenAuthenticateActionProvider() {
@@ -117,6 +137,8 @@ describe('AuthenticateActionProvider', () => {
       provider = new AuthenticateActionProvider(
         () => Promise.resolve(strategy),
         u => (currentUser = u),
+        url => url,
+        status => status,
       );
       currentUser = undefined;
     }

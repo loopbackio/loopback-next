@@ -118,6 +118,16 @@ export namespace AuthenticationBindings {
 
   // Make `CURRENT_USER` the alias of SecurityBindings.USER for backward compatibility
   export const CURRENT_USER = SecurityBindings.USER;
+
+  // Redirect url for authenticating current user
+  export const AUTHENTICATION_REDIRECT_URL = BindingKey.create<string>(
+    'authentication.redirect.url',
+  );
+
+  // Authentication redirect status, usually 302 or 303, indicates a web client will redirect
+  export const AUTHENTICATION_REDIRECT_STATUS = BindingKey.create<number>(
+    'authentication.redirect.status',
+  );
 }
 
 /**

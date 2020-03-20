@@ -27,7 +27,7 @@ export class MockStrategy implements AuthenticationStrategy {
     return this.mockUser;
   }
 
-  async authenticate(req: Request): Promise<UserProfile> {
+  async authenticate(req: Request): Promise<UserProfile | undefined> {
     return this.verify(req);
   }
   /**
@@ -47,6 +47,12 @@ export class MockStrategy implements AuthenticationStrategy {
       const err = new AuthenticationError('authorization failed');
       err.statusCode = 401;
       throw err;
+    } else if (
+      request.headers &&
+      request.headers.testState &&
+      request.headers.testState === 'empty'
+    ) {
+      return;
     } else if (
       request.headers &&
       request.headers.testState &&
