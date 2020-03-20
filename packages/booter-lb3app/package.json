@@ -25,9 +25,9 @@
     "tslib": "^1.11.1"
   },
   "peerDependencies": {
-    "@loopback/boot": "^1.2.2",
-    "@loopback/core": "^1.5.0",
-    "@loopback/rest": "^1.10.3"
+    "@loopback/boot": "^1.2.2 || ^2.0.0",
+    "@loopback/core": "^1.5.0 || ^2.0.0",
+    "@loopback/rest": "^1.10.3 || ^2.0.0  || ^3.0.0"
   },
   "devDependencies": {
     "@loopback/boot": "^2.0.1",

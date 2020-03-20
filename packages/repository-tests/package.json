@@ -35,7 +35,7 @@
     "tslib": "^1.11.1"
   },
   "peerDependencies": {
-    "@loopback/repository": "^1.6.1"
+    "@loopback/repository": "^1.6.1 || ^2.0.0"
   },
   "files": [
     "README.md",

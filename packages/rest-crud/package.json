@@ -34,9 +34,9 @@
     "@types/node": "^10.17.17"
   },
   "peerDependencies": {
-    "@loopback/core": "^1.12.4",
-    "@loopback/repository": "^1.19.1",
-    "@loopback/rest": "^2.0.0"
+    "@loopback/core": "^1.12.4 || ^2.0.0",
+    "@loopback/repository": "^1.19.1 || ^2.0.0",
+    "@loopback/rest": "^2.0.0 || ^3.0.0"
   },
   "files": [
     "README.md",
