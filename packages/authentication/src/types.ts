@@ -10,7 +10,7 @@ import {
   Context,
   extensionFor,
 } from '@loopback/core';
-import {Request} from '@loopback/rest';
+import {Request, RedirectRoute} from '@loopback/rest';
 import {UserProfile} from '@loopback/security';
 import {AuthenticationBindings} from './keys';
 
@@ -87,7 +87,9 @@ export interface AuthenticationStrategy {
    *
    * @param request - Express request object
    */
-  authenticate(request: Request): Promise<UserProfile | undefined>;
+  authenticate(
+    request: Request,
+  ): Promise<UserProfile | RedirectRoute | undefined>;
 }
 
 export const AUTHENTICATION_STRATEGY_NOT_FOUND =

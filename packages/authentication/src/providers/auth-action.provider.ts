@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Getter, inject, Provider, Setter} from '@loopback/context';
-import {Request} from '@loopback/rest';
+import {Request, RedirectRoute} from '@loopback/rest';
 import {SecurityBindings, UserProfile} from '@loopback/security';
 import {AuthenticationBindings} from '../keys';
 import {
@@ -29,6 +29,10 @@ export class AuthenticateActionProvider implements Provider<AuthenticateFn> {
     readonly getStrategy: Getter<AuthenticationStrategy>,
     @inject.setter(SecurityBindings.USER)
     readonly setCurrentUser: Setter<UserProfile>,
+    @inject.setter(AuthenticationBindings.AUTHENTICATION_REDIRECT_URL)
+    readonly setRedirectUrl: Setter<string>,
+    @inject.setter(AuthenticationBindings.AUTHENTICATION_REDIRECT_STATUS)
+    readonly setRedirectStatus: Setter<number>,
   ) {}
 
   /**
@@ -49,8 +53,22 @@ export class AuthenticateActionProvider implements Provider<AuthenticateFn> {
       return undefined;
     }
 
-    const userProfile = await strategy.authenticate(request);
-    if (!userProfile) {
+    const authResponse = await strategy.authenticate(request);
+    let userProfile: UserProfile;
+
+    // response from `strategy.authenticate()` could return an object of type UserProfile or RedirectRoute
+    if (RedirectRoute.isRedirectRoute(authResponse)) {
+      const redirectOptions = authResponse;
+      // bind redirection url and status to the context
+      // controller should handle actual redirection
+      this.setRedirectUrl(redirectOptions.targetLocation);
+      this.setRedirectStatus(redirectOptions.statusCode);
+    } else if (authResponse) {
+      // if `strategy.authenticate()` returns an object of type UserProfile, set it as current user
+      userProfile = authResponse as UserProfile;
+      this.setCurrentUser(userProfile);
+      return userProfile;
+    } else if (!authResponse) {
       // important to throw a non-protocol-specific error here
       const error = new Error(
         `User profile not returned from strategy's authenticate function`,
@@ -60,8 +78,5 @@ export class AuthenticateActionProvider implements Provider<AuthenticateFn> {
       });
       throw error;
     }
-
-    this.setCurrentUser(userProfile);
-    return userProfile;
   }
 }
