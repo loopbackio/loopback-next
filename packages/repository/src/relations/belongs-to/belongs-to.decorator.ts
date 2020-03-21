@@ -22,7 +22,7 @@ export function belongsTo<T extends Entity>(
   definition?: Partial<BelongsToDefinition>,
   propertyDefinition?: Partial<PropertyDefinition>,
 ) {
-  return function(decoratedTarget: Entity, decoratedKey: string) {
+  return function (decoratedTarget: Entity, decoratedKey: string) {
     const propMeta: PropertyDefinition = Object.assign(
       {},
       // properties provided by the caller

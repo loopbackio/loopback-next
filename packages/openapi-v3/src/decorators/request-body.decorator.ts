@@ -78,7 +78,7 @@ export const REQUEST_BODY_INDEX = 'x-parameter-index';
  * ```
  */
 export function requestBody(requestBodySpec?: Partial<RequestBodyObject>) {
-  return function(target: object, member: string, index: number) {
+  return function (target: object, member: string, index: number) {
     debug('@requestBody() on %s.%s', target.constructor.name, member);
     debug('  parameter index: %s', index);
     /* istanbul ignore if */

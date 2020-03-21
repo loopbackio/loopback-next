@@ -266,10 +266,7 @@ addExtension(app, 'greeters', FrenchGreeter);
 Bind the extension with the binding key to the application , for example:
 
 ```ts
-app
-  .bind('greeters.FrenchGreeter')
-  .toClass(FrenchGreeter)
-  .apply(asGreeter);
+app.bind('greeters.FrenchGreeter').toClass(FrenchGreeter).apply(asGreeter);
 ```
 
 ### Method 3

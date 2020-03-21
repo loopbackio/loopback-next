@@ -11,7 +11,8 @@ export class GreetController {
   }
 
   hobbyHello(input: Person) {
-    return `${this.basicHello(input)} I heard you like ${input?.hobby ??
-      'underwater basket weaving'}.`;
+    return `${this.basicHello(input)} I heard you like ${
+      input?.hobby ?? 'underwater basket weaving'
+    }.`;
   }
 }

@@ -191,8 +191,9 @@ module.exports = class DataSourceGenerator extends ArtifactGenerator {
           break;
         default:
           console.warn(
-            `Using default input of type input for setting ${key} as ${setting.type ||
-              undefined} is not supported`,
+            `Using default input of type input for setting ${key} as ${
+              setting.type || undefined
+            } is not supported`,
           );
           // Default to input type
           question.type = 'input';

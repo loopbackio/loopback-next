@@ -23,7 +23,7 @@ export function getCrudContext(context: Mocha.Context) {
 export function withCrudCtx(
   fn: (context: CrudTestContext) => PromiseLike<unknown> | void,
 ): Mocha.AsyncFunc | Mocha.Func {
-  return function(this: Mocha.Context) {
+  return function (this: Mocha.Context) {
     // See https://github.com/typescript-eslint/typescript-eslint/issues/604
     // eslint-disable-next-line no-invalid-this
     return fn.call(this, getCrudContext(this));

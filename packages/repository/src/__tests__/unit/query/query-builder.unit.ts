@@ -28,28 +28,19 @@ describe('WhereBuilder', () => {
 
   it('builds where object with multiple clauses using the same key', () => {
     const whereBuilder = new WhereBuilder();
-    const where = whereBuilder
-      .gt('a', 2)
-      .lt('a', 4)
-      .build();
+    const where = whereBuilder.gt('a', 2).lt('a', 4).build();
     expect(where).to.eql({and: [{a: {gt: 2}}, {a: {lt: 4}}]});
   });
 
   it('builds where object with inq', () => {
     const whereBuilder = new WhereBuilder();
-    const where = whereBuilder
-      .inq('x', [1, 2, 3])
-      .inq('y', ['a', 'b'])
-      .build();
+    const where = whereBuilder.inq('x', [1, 2, 3]).inq('y', ['a', 'b']).build();
     expect(where).to.eql({x: {inq: [1, 2, 3]}, y: {inq: ['a', 'b']}});
   });
 
   it('builds where object with nin', () => {
     const whereBuilder = new WhereBuilder();
-    const where = whereBuilder
-      .nin('x', [1, 2, 3])
-      .nin('y', ['a', 'b'])
-      .build();
+    const where = whereBuilder.nin('x', [1, 2, 3]).nin('y', ['a', 'b']).build();
     expect(where).to.eql({x: {nin: [1, 2, 3]}, y: {nin: ['a', 'b']}});
   });
 
@@ -249,10 +240,7 @@ describe('FilterBuilder', () => {
 
   it('builds a filter object with multiple fields', () => {
     const filterBuilder = new FilterBuilder();
-    filterBuilder
-      .fields({a: true, b: false})
-      .fields('c')
-      .fields(['d', 'e']);
+    filterBuilder.fields({a: true, b: false}).fields('c').fields(['d', 'e']);
     const filter = filterBuilder.build();
     expect(filter).to.eql({
       fields: {

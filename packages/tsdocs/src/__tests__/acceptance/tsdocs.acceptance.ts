@@ -16,7 +16,7 @@ const MONOREPO_ROOT = path.join(__dirname, '../../../fixtures/monorepo');
 const APIDOCS_ROOT = path.join(MONOREPO_ROOT, 'docs/apidocs');
 const SITE_APIDOCS_ROOT = path.join(MONOREPO_ROOT, 'docs/site/apidocs');
 
-describe('tsdocs', function() {
+describe('tsdocs', function () {
   // eslint-disable-next-line no-invalid-this
   this.timeout(10000);
 

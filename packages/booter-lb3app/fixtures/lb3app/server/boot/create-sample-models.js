@@ -1,7 +1,7 @@
 'use strict';
 
-module.exports = function(app) {
-  app.dataSources.db.automigrate('CoffeeShop', function(err) {
+module.exports = function (app) {
+  app.dataSources.db.automigrate('CoffeeShop', function (err) {
     if (err) throw err;
 
     app.models.CoffeeShop.create(
@@ -19,7 +19,7 @@ module.exports = function(app) {
           city: 'Vancouver',
         },
       ],
-      function(err2, coffeeShops) {
+      function (err2, coffeeShops) {
         if (err2) throw err2;
       },
     );

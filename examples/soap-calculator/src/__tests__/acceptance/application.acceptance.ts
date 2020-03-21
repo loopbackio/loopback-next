@@ -6,7 +6,7 @@
 import {Client, createRestAppClient, expect} from '@loopback/testlab';
 import {SoapCalculatorApplication} from '../../application';
 
-describe('Application', function() {
+describe('Application', function () {
   let app: SoapCalculatorApplication;
   let client: Client;
 

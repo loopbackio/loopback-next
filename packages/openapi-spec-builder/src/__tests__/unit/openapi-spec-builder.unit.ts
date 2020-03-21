@@ -47,9 +47,7 @@ describe('OpenAPI Spec Builder', () => {
 
     it('adds components', () => {
       const comSpec = aComponentsSpec().build();
-      const spec = anOpenApiSpec()
-        .withComponents(comSpec)
-        .build();
+      const spec = anOpenApiSpec().withComponents(comSpec).build();
       expect(spec.components).to.containEql(comSpec);
     });
   });
@@ -70,16 +68,12 @@ describe('OpenAPI Spec Builder', () => {
     });
 
     it('sets controller name', () => {
-      const spec = anOperationSpec()
-        .withControllerName('MyController')
-        .build();
+      const spec = anOperationSpec().withControllerName('MyController').build();
       expect(spec).to.containEql({'x-controller-name': 'MyController'});
     });
 
     it('sets operation name', () => {
-      const spec = anOperationSpec()
-        .withOperationName('greet')
-        .build();
+      const spec = anOperationSpec().withOperationName('greet').build();
       expect(spec).to.containEql({'x-operation-name': 'greet'});
     });
 
@@ -99,16 +93,12 @@ describe('OpenAPI Spec Builder', () => {
     });
 
     it('does not set operationId without operation name', () => {
-      const spec = anOperationSpec()
-        .withControllerName('MyController')
-        .build();
+      const spec = anOperationSpec().withControllerName('MyController').build();
       expect(spec.operationId).to.be.undefined();
     });
 
     it('does not set operationId without controller name', () => {
-      const spec = anOperationSpec()
-        .withOperationName('greet')
-        .build();
+      const spec = anOperationSpec().withOperationName('greet').build();
       expect(spec.operationId).to.be.undefined();
     });
 
@@ -128,9 +118,7 @@ describe('OpenAPI Spec Builder', () => {
     });
 
     it('sets string response', () => {
-      const spec = anOperationSpec()
-        .withStringResponse(200)
-        .build();
+      const spec = anOperationSpec().withStringResponse(200).build();
       expect(spec.responses).to.eql({
         '200': {
           description: 'The string result.',
@@ -154,9 +142,7 @@ describe('OpenAPI Spec Builder', () => {
         in: 'query',
         schema: {type: 'number'},
       };
-      const spec = anOperationSpec()
-        .withParameter(apiKey, limit)
-        .build();
+      const spec = anOperationSpec().withParameter(apiKey, limit).build();
       expect(spec.parameters).to.eql([apiKey, limit]);
     });
   });

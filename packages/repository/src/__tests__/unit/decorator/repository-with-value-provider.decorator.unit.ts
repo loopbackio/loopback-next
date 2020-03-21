@@ -36,7 +36,7 @@ class MyRepositoryProvider
 describe('repository class', () => {
   let ctx: Context;
 
-  before(function() {
+  before(function () {
     const ds = new juggler.DataSource({
       name: 'db',
       connector: 'memory',

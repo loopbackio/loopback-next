@@ -45,12 +45,10 @@ describe('importDiscoveredModel', () => {
       },
     };
     const modelData = importDiscoveredModel(discoveredModel);
-    expect(modelData.properties)
-      .to.have.property('createdAt')
-      .deepEqual({
-        type: `'date'`,
-        tsType: 'string',
-      });
+    expect(modelData.properties).to.have.property('createdAt').deepEqual({
+      type: `'date'`,
+      tsType: 'string',
+    });
   });
 
   it('imports Number properties', () => {
@@ -67,12 +65,10 @@ describe('importDiscoveredModel', () => {
       },
     };
     const modelData = importDiscoveredModel(discoveredModel);
-    expect(modelData.properties)
-      .to.have.property('counter')
-      .deepEqual({
-        type: `'number'`,
-        tsType: 'number',
-      });
+    expect(modelData.properties).to.have.property('counter').deepEqual({
+      type: `'number'`,
+      tsType: 'number',
+    });
   });
 
   it('imports String properties', () => {
@@ -89,12 +85,10 @@ describe('importDiscoveredModel', () => {
     };
 
     const modelData = importDiscoveredModel(discoveredModel);
-    expect(modelData.properties)
-      .to.have.property('title')
-      .deepEqual({
-        type: `'string'`,
-        tsType: 'string',
-      });
+    expect(modelData.properties).to.have.property('title').deepEqual({
+      type: `'string'`,
+      tsType: 'string',
+    });
   });
 
   it('imports Boolean properties', () => {
@@ -112,12 +106,10 @@ describe('importDiscoveredModel', () => {
     };
 
     const modelData = importDiscoveredModel(discoveredModel);
-    expect(modelData.properties)
-      .to.have.property('active')
-      .deepEqual({
-        type: `'boolean'`,
-        tsType: 'boolean',
-      });
+    expect(modelData.properties).to.have.property('active').deepEqual({
+      type: `'boolean'`,
+      tsType: 'boolean',
+    });
   });
 
   it('imports numeric primary key', () => {
@@ -136,14 +128,12 @@ describe('importDiscoveredModel', () => {
     };
 
     const modelData = importDiscoveredModel(discoveredModel);
-    expect(modelData.properties)
-      .to.have.property('id')
-      .deepEqual({
-        type: `'number'`,
-        tsType: 'number',
-        scale: 0,
-        id: 1,
-      });
+    expect(modelData.properties).to.have.property('id').deepEqual({
+      type: `'number'`,
+      tsType: 'number',
+      scale: 0,
+      id: 1,
+    });
   });
 
   it('converts connector metadata to TypeScript object', () => {
@@ -166,12 +156,10 @@ describe('importDiscoveredModel', () => {
     };
 
     const modelData = importDiscoveredModel(discoveredModel);
-    expect(modelData.properties)
-      .to.have.property('title')
-      .deepEqual({
-        type: `'string'`,
-        tsType: 'string',
-        postgresql: `{columnName: 'title', dataType: 'text', dataLength: null, dataPrecision: null, dataScale: null, nullable: 'NO'}`,
-      });
+    expect(modelData.properties).to.have.property('title').deepEqual({
+      type: `'string'`,
+      tsType: 'string',
+      postgresql: `{columnName: 'title', dataType: 'text', dataLength: null, dataPrecision: null, dataScale: null, nullable: 'NO'}`,
+    });
   });
 });

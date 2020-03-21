@@ -30,14 +30,14 @@ class AstLoopBackProject extends ast.Project {
 }
 exports.AstLoopBackProject = AstLoopBackProject;
 
-exports.getModelPrimaryKeyProperty = async function(fs, modelDir, modelName) {
+exports.getModelPrimaryKeyProperty = async function (fs, modelDir, modelName) {
   const modelFile = path.join(modelDir, utils.getModelFileName(modelName));
 
   const fileContent = await fs.read(modelFile, {});
   return tsquery.getIdFromModel(fileContent);
 };
 
-exports.getModelPropertyType = function(modelDir, modelName, propertyName) {
+exports.getModelPropertyType = function (modelDir, modelName, propertyName) {
   const project = new this.AstLoopBackProject();
 
   const modelFile = path.join(modelDir, utils.getModelFileName(modelName));
@@ -46,20 +46,20 @@ exports.getModelPropertyType = function(modelDir, modelName, propertyName) {
   return this.getPropertyType(co, propertyName);
 };
 
-exports.addFileToProject = function(project, dir, modelName) {
+exports.addFileToProject = function (project, dir, modelName) {
   const fileName = path.resolve(dir, utils.getModelFileName(modelName));
   return project.addSourceFileAtPath(fileName);
 };
 
-exports.getClassObj = function(fileName, modelName) {
+exports.getClassObj = function (fileName, modelName) {
   return fileName.getClassOrThrow(modelName);
 };
 
-exports.getClassConstructor = function(classObj) {
+exports.getClassConstructor = function (classObj) {
   return classObj.getConstructors()[0];
 };
 
-exports.addExportController = async function(
+exports.addExportController = async function (
   generator,
   fileName,
   controllerClassName,
@@ -105,14 +105,14 @@ exports.addExportController = async function(
  * @return bool true on success, false on failure.
  */
 
-exports.doesPropertyExist = function(classObj, propertyName) {
+exports.doesPropertyExist = function (classObj, propertyName) {
   return classObj
     .getProperties()
     .map(x => x.getName())
     .includes(propertyName);
 };
 
-exports.doesRelationExist = function(classObj, propertyName) {
+exports.doesRelationExist = function (classObj, propertyName) {
   if (this.doesPropertyExist(classObj, propertyName)) {
     // If the property is decorated by `@property()`,
     // turn it to be a relational property decorated by `@belongsTo()`
@@ -143,11 +143,8 @@ exports.doesRelationExist = function(classObj, propertyName) {
  * @return string
  */
 
-exports.getPropertyType = function(classObj, propertyName) {
-  return classObj
-    .getProperty(propertyName)
-    .getType()
-    .getText();
+exports.getPropertyType = function (classObj, propertyName) {
+  return classObj.getProperty(propertyName).getType().getText();
 };
 
 /**
@@ -160,18 +157,18 @@ exports.getPropertyType = function(classObj, propertyName) {
  * @return bool true on success, false on failure.
  */
 
-exports.isValidPropertyType = function(classObj, propertyName, propertyType) {
+exports.isValidPropertyType = function (classObj, propertyName, propertyType) {
   return this.getPropertyType(classObj, propertyName) === propertyType;
 };
 
-exports.doesParameterExist = function(classConstructor, parameterName) {
+exports.doesParameterExist = function (classConstructor, parameterName) {
   return classConstructor
     .getParameters()
     .map(x => x.getName())
     .includes(parameterName);
 };
 
-exports.addForeignKey = function(foreignKey, sourceModelPrimaryKeyType) {
+exports.addForeignKey = function (foreignKey, sourceModelPrimaryKeyType) {
   return {
     decorators: [
       {
@@ -184,33 +181,33 @@ exports.addForeignKey = function(foreignKey, sourceModelPrimaryKeyType) {
   };
 };
 
-exports.addProperty = function(classOBj, property) {
+exports.addProperty = function (classOBj, property) {
   classOBj.insertProperty(this.getPropertiesCount(classOBj), property);
   classOBj.insertText(this.getPropertyStartPos(classOBj), '\n');
 };
 
-exports.deleteProperty = function(propObj) {
+exports.deleteProperty = function (propObj) {
   propObj.remove();
 };
 
-exports.getPropertiesCount = function(classObj) {
+exports.getPropertiesCount = function (classObj) {
   return classObj.getProperties().length;
 };
 
-exports.getPropertyStartPos = function(classObj) {
+exports.getPropertyStartPos = function (classObj) {
   return classObj
     .getChildSyntaxList()
     .getChildAtIndex(this.getPropertiesCount(classObj) - 1)
     .getPos();
 };
 
-exports.addRequiredImports = function(sourceFile, imports) {
+exports.addRequiredImports = function (sourceFile, imports) {
   for (const currentImport of imports) {
     this.addCurrentImport(sourceFile, currentImport);
   }
 };
 
-exports.getRequiredImports = function(targetModel, relationType) {
+exports.getRequiredImports = function (targetModel, relationType) {
   return [
     {
       name: targetModel,
@@ -223,7 +220,7 @@ exports.getRequiredImports = function(targetModel, relationType) {
   ];
 };
 
-exports.addCurrentImport = function(sourceFile, currentImport) {
+exports.addCurrentImport = function (sourceFile, currentImport) {
   if (!this.doesModuleExists(sourceFile, currentImport.module)) {
     sourceFile.addImportDeclaration({
       moduleSpecifier: currentImport.module,
@@ -236,11 +233,11 @@ exports.addCurrentImport = function(sourceFile, currentImport) {
   }
 };
 
-exports.doesModuleExists = function(sourceFile, moduleName) {
+exports.doesModuleExists = function (sourceFile, moduleName) {
   return sourceFile.getImportDeclaration(moduleName);
 };
 
-exports.doesImportExistInModule = function(sourceFile, currentImport) {
+exports.doesImportExistInModule = function (sourceFile, currentImport) {
   let identicalImport;
   const relevantImports = this.getNamedImportsFromModule(
     sourceFile,
@@ -255,7 +252,7 @@ exports.doesImportExistInModule = function(sourceFile, currentImport) {
   return identicalImport && identicalImport.length > 0;
 };
 
-exports.getNamedImportsFromModule = function(sourceFile, moduleName) {
+exports.getNamedImportsFromModule = function (sourceFile, moduleName) {
   const allImports = sourceFile.getImportDeclarations();
   return allImports.filter(imp => imp.getModuleSpecifierValue() === moduleName);
 };

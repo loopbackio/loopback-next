@@ -33,7 +33,7 @@ const APP_USING_MODEL_INHERITANCE = require.resolve(
   '../../fixtures/import-lb3-models/app-using-model-inheritance',
 );
 
-describe('lb4 import-lb3-models', function() {
+describe('lb4 import-lb3-models', function () {
   require('../lib/base-generator')(generator, {args: ['path-to-lb3-app']})();
 
   before(function preloadCoffeeShopExampleApp() {

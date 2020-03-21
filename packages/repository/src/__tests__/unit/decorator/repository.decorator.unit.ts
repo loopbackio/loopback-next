@@ -45,7 +45,7 @@ describe('repository decorator', () => {
     }
   }
 
-  before(function() {
+  before(function () {
     ds = new juggler.DataSource({
       name: 'db',
       connector: 'memory',

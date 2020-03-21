@@ -20,7 +20,7 @@ const REQUIRED_BOOLEAN_PARAM = {
   required: true,
 };
 
-describe('coerce param from string to boolean - required', function() {
+describe('coerce param from string to boolean - required', function () {
   context('valid values', () => {
     test(REQUIRED_BOOLEAN_PARAM, 'false', false);
     test(REQUIRED_BOOLEAN_PARAM, 'true', true);
@@ -40,7 +40,7 @@ describe('coerce param from string to boolean - required', function() {
   });
 });
 
-describe('coerce param from string to boolean - optional', function() {
+describe('coerce param from string to boolean - optional', function () {
   context('valid values', () => {
     test(BOOLEAN_PARAM, 'false', false);
     test(BOOLEAN_PARAM, 'true', true);

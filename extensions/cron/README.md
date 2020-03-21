@@ -55,10 +55,7 @@ const job = new CronJob({
 });
 
 // Bind the cron job as an extension for the scheduler
-app
-  .bind('cron.jobs.job1')
-  .to(job)
-  .apply(asCronJob);
+app.bind('cron.jobs.job1').to(job).apply(asCronJob);
 ```
 
 It's also possible to extend `CronJob`.

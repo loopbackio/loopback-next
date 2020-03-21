@@ -105,7 +105,7 @@ export function createBearerAuthorizationHeaderValue(
  * @param user
  */
 
-export const myUserProfileFactory: UserProfileFactory<User> = function(
+export const myUserProfileFactory: UserProfileFactory<User> = function (
   user: User,
 ): UserProfile {
   const userProfile: UserProfile = {[securityId]: '', name: '', id: ''};

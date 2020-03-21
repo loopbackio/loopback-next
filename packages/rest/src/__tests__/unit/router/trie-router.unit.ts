@@ -275,9 +275,7 @@ function addRoute(
   routes.push({
     verb,
     path,
-    spec: anOperationSpec()
-      .withOperationName(op)
-      .build(),
+    spec: anOperationSpec().withOperationName(op).build(),
     updateBindings: () => {},
     invokeHandler: async () => {},
     describe: () => op,

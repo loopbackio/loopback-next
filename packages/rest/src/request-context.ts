@@ -107,17 +107,11 @@ export class RequestContext extends Context implements HandlerContext {
   }
 
   private _setupBindings(request: Request, response: Response) {
-    this.bind(RestBindings.Http.REQUEST)
-      .to(request)
-      .lock();
+    this.bind(RestBindings.Http.REQUEST).to(request).lock();
 
-    this.bind(RestBindings.Http.RESPONSE)
-      .to(response)
-      .lock();
+    this.bind(RestBindings.Http.RESPONSE).to(response).lock();
 
-    this.bind(RestBindings.Http.CONTEXT)
-      .to(this)
-      .lock();
+    this.bind(RestBindings.Http.CONTEXT).to(this).lock();
   }
 }
 

@@ -47,10 +47,7 @@ describe('RepositoryMixin', () => {
 
   it('gets repository instance from app.getRepository()', async () => {
     const myApp = new AppWithRepoMixin();
-    myApp
-      .bind('repositories.NoteRepo')
-      .toClass(NoteRepo)
-      .tag('repository');
+    myApp.bind('repositories.NoteRepo').toClass(NoteRepo).tag('repository');
 
     const repoInstance = await myApp.getRepository(NoteRepo);
 
@@ -133,7 +130,7 @@ describe('RepositoryMixin', () => {
       const ds = new juggler.DataSource({name: 'db', connector: 'memory'});
       // FIXME(bajtos) typings for connectors are missing autoupdate/autoupgrade
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (ds.connector as any).automigrate = function(
+      (ds.connector as any).automigrate = function (
         models: string[],
         cb: Function,
       ) {

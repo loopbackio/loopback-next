@@ -51,7 +51,7 @@ export function createHasOneRepositoryFactory<
 ): HasOneRepositoryFactory<Target, ForeignKeyType> {
   const meta = resolveHasOneMetadata(relationMetadata);
   debug('Resolved HasOne relation metadata: %o', meta);
-  const result: HasOneRepositoryFactory<Target, ForeignKeyType> = function(
+  const result: HasOneRepositoryFactory<Target, ForeignKeyType> = function (
     fkValue: ForeignKeyType,
   ) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

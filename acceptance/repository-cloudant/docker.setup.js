@@ -54,16 +54,16 @@ async function createDB() {
 function dbRequest(opts) {
   // can be improved with axios
   http
-    .request(opts, function(res) {
+    .request(opts, function (res) {
       res.pipe(devNull());
-      res.on('error', function() {
+      res.on('error', function () {
         dbRequest(opts);
       });
-      res.on('end', function() {
+      res.on('end', function () {
         return;
       });
     })
-    .on('error', function() {
+    .on('error', function () {
       try {
         dbRequest(opts);
       } catch (error) {
@@ -92,7 +92,7 @@ function logStatus() {
 // streams so that they 'end' properly, like sometimes-empty http responses.
 function devNull() {
   return new require('stream').Writable({
-    write: function(_chunk, _encoding, cb) {
+    write: function (_chunk, _encoding, cb) {
       return cb(null);
     },
   });

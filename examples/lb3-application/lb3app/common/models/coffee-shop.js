@@ -7,8 +7,8 @@
 
 const debug = require('debug')('loopback:example:lb3application');
 
-module.exports = function(CoffeeShop) {
-  CoffeeShop.status = async function() {
+module.exports = function (CoffeeShop) {
+  CoffeeShop.status = async function () {
     const currentDate = new Date();
     const currentHour = currentDate.getHours();
     const OPEN_HOUR = 6;
@@ -33,7 +33,7 @@ module.exports = function(CoffeeShop) {
     },
   });
 
-  CoffeeShop.greet = async function() {
+  CoffeeShop.greet = async function () {
     return 'Hello from this Coffee Shop';
   };
   CoffeeShop.remoteMethod('greet', {

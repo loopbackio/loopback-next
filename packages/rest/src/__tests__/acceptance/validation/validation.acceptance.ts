@@ -128,26 +128,15 @@ describe('Validation at REST level', () => {
 
     it('rejects requests with no body', async () => {
       // An empty body is now parsed as `undefined`
-      await client
-        .post('/products')
-        .type('json')
-        .expect(400);
+      await client.post('/products').type('json').expect(400);
     });
 
     it('rejects requests with empty json body', async () => {
-      await client
-        .post('/products')
-        .type('json')
-        .send('{}')
-        .expect(422);
+      await client.post('/products').type('json').send('{}').expect(422);
     });
 
     it('rejects requests with null body', async () => {
-      await client
-        .post('/products')
-        .type('json')
-        .send('null')
-        .expect(400);
+      await client.post('/products').type('json').send('null').expect(400);
     });
   });
 
@@ -176,10 +165,7 @@ describe('Validation at REST level', () => {
         description: null,
         price: 10,
       };
-      const res = await client
-        .post('/products')
-        .send(DATA)
-        .expect(422);
+      const res = await client.post('/products').send(DATA).expect(422);
 
       expect(res.body).to.eql({
         error: {
@@ -208,10 +194,7 @@ describe('Validation at REST level', () => {
         description: 'iPhone',
         price: 200,
       };
-      const res = await client
-        .post('/products')
-        .send(DATA)
-        .expect(422);
+      const res = await client.post('/products').send(DATA).expect(422);
 
       expect(res.body).to.eql({
         error: {
@@ -265,10 +248,7 @@ describe('Validation at REST level', () => {
         description: 'iPhone',
         price: 200,
       };
-      const res = await client
-        .post('/products')
-        .send(DATA)
-        .expect(422);
+      const res = await client.post('/products').send(DATA).expect(422);
 
       expect(res.body).to.eql({
         error: {
@@ -328,10 +308,7 @@ describe('Validation at REST level', () => {
           name: 'iPhone',
           description: 'iPhone',
         };
-        const res = await client
-          .post('/products')
-          .send(DATA)
-          .expect(422);
+        const res = await client.post('/products').send(DATA).expect(422);
 
         expect(res.body).to.eql({
           error: {
@@ -381,10 +358,7 @@ describe('Validation at REST level', () => {
         description: 'iPhone',
         price: 200,
       };
-      const res = await client
-        .post('/products')
-        .send(DATA)
-        .expect(422);
+      const res = await client.post('/products').send(DATA).expect(422);
 
       expect(res.body).to.eql({
         error: {
@@ -454,10 +428,7 @@ describe('Validation at REST level', () => {
           description: 'iPhone',
           price: 200,
         };
-        const res = await client
-          .post('/products')
-          .send(DATA)
-          .expect(422);
+        const res = await client.post('/products').send(DATA).expect(422);
 
         expect(res.body).to.eql({
           error: {
@@ -548,10 +519,7 @@ describe('Validation at REST level', () => {
       const DATA = {
         name: 'iPhone',
       };
-      const res = await client
-        .post('/products')
-        .send(DATA)
-        .expect(422);
+      const res = await client.post('/products').send(DATA).expect(422);
 
       expect(res.body).to.eql({
         error: {
@@ -599,10 +567,7 @@ describe('Validation at REST level', () => {
       const DATA = {
         name: 'iPhone',
       };
-      const res = await client
-        .post('/products')
-        .send(DATA)
-        .expect(422);
+      const res = await client.post('/products').send(DATA).expect(422);
 
       expect(res.body).to.eql({
         error: {
@@ -723,10 +688,7 @@ describe('Validation at REST level', () => {
       description: 'An optional description of a pencil',
       price: 10,
     };
-    await client
-      .post('/products')
-      .send(DATA)
-      .expect(200, DATA);
+    await client.post('/products').send(DATA).expect(200, DATA);
   }
 
   async function serverAcceptsValidRequestBodyWithNull() {
@@ -735,10 +697,7 @@ describe('Validation at REST level', () => {
       description: null,
       price: 10,
     };
-    await client
-      .post('/products')
-      .send(DATA)
-      .expect(200, DATA);
+    await client.post('/products').send(DATA).expect(200, DATA);
   }
 
   async function serverAcceptsValidRequestBodyForUrlencoded() {

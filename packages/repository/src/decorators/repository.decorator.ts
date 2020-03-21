@@ -146,7 +146,7 @@ export function repository(
       ? modelOrRepo.name
       : (modelOrRepo as typeof Entity);
   const meta = new RepositoryMetadata(stringOrModel, dataSource);
-  return function(
+  return function (
     target: Object,
     key?: string,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

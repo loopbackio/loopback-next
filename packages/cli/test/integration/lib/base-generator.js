@@ -11,10 +11,10 @@ const path = require('path');
 const mockStdin = require('mock-stdin');
 const process = require('process');
 
-module.exports = function(generator, env = {}) {
+module.exports = function (generator, env = {}) {
   if (!env.args) env = {...env, args: []};
 
-  return function() {
+  return function () {
     describe('usage', () => {
       it('prints lb4', () => {
         process.chdir(path.resolve(__dirname, '..', '..', '..'));

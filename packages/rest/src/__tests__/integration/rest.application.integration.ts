@@ -36,10 +36,7 @@ describe('RestApplication (integration)', () => {
       .readFileSync(path.join(ASSETS, '', 'index.html'))
       .toString('utf-8');
     client = createRestAppClient(restApp);
-    await client
-      .get('/index.html')
-      .expect(200)
-      .expect(content);
+    await client.get('/index.html').expect(200).expect(content);
   });
 
   it('serves static assets from non-root path', async () => {
@@ -50,10 +47,7 @@ describe('RestApplication (integration)', () => {
       .readFileSync(path.join(ASSETS, 'index.html'))
       .toString('utf-8');
     client = createRestAppClient(restApp);
-    await client
-      .get('/public/index.html')
-      .expect(200)
-      .expect(content);
+    await client.get('/public/index.html').expect(200).expect(content);
   });
 
   it('returns 404 if asset is not found', async () => {
@@ -72,10 +66,7 @@ describe('RestApplication (integration)', () => {
       .readFileSync(path.join(ASSETS, 'index.html'))
       .toString('utf-8');
     client = createRestAppClient(restApp);
-    await client
-      .get('/index.html')
-      .expect(200)
-      .expect(content);
+    await client.get('/index.html').expect(200).expect(content);
   });
 
   it('adds new route', async () => {
@@ -93,10 +84,7 @@ describe('RestApplication (integration)', () => {
     });
     await restApp.start();
     client = createRestAppClient(restApp);
-    await client
-      .get('/greet')
-      .expect(200)
-      .expect('Hello');
+    await client.get('/greet').expect(200).expect('Hello');
   });
 
   it('honors basePath for static assets', async () => {
@@ -179,7 +167,7 @@ describe('RestApplication (integration)', () => {
 
     it('gives precedence to an external route over a static route', async () => {
       const router = express.Router();
-      router.get('/', function(_req: Request, res: Response) {
+      router.get('/', function (_req: Request, res: Response) {
         res.send('External dog');
       });
 
@@ -191,10 +179,10 @@ describe('RestApplication (integration)', () => {
 
     it('mounts an express Router without spec', async () => {
       const router = express.Router();
-      router.get('/poodle/', function(_req: Request, res: Response) {
+      router.get('/poodle/', function (_req: Request, res: Response) {
         res.send('Poodle!');
       });
-      router.get('/pug', function(_req: Request, res: Response) {
+      router.get('/pug', function (_req: Request, res: Response) {
         res.send('Pug!');
       });
       restApp.mountExpressRouter('/dogs', router);
@@ -248,7 +236,7 @@ describe('RestApplication (integration)', () => {
 
     it('mounts more than one express Router', async () => {
       const router = express.Router();
-      router.get('/poodle', function(_req: Request, res: Response) {
+      router.get('/poodle', function (_req: Request, res: Response) {
         res.send('Poodle!');
       });
 
@@ -256,7 +244,7 @@ describe('RestApplication (integration)', () => {
 
       const secondRouter = express.Router();
 
-      secondRouter.get('/persian', function(_req: Request, res: Response) {
+      secondRouter.get('/persian', function (_req: Request, res: Response) {
         res.send('Persian cat.');
       });
 
@@ -271,7 +259,7 @@ describe('RestApplication (integration)', () => {
     givenApplication();
 
     const router = express.Router();
-    router.get('/poodle', function(_req: Request, res: Response) {
+    router.get('/poodle', function (_req: Request, res: Response) {
       res.send('Poodle!');
     });
     restApp.mountExpressRouter('/dogs', router);

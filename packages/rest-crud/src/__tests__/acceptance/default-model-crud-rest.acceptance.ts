@@ -69,9 +69,7 @@ describe('CrudRestController for a simple Product model', () => {
 
       const created = response.body;
       expect(created).to.containEql({name: 'A pen'});
-      expect(created)
-        .to.have.property('id')
-        .of.type('number');
+      expect(created).to.have.property('id').of.type('number');
 
       const found = (await repo.find())[0];
       expect(toJSON(found)).to.deepEqual(created);
@@ -194,10 +192,7 @@ describe('CrudRestController for a simple Product model', () => {
     beforeEach(seedData);
 
     it('updates model with the given id', async () => {
-      await client
-        .patch(`/products/${pen.id}`)
-        .send(PATCH_DATA)
-        .expect(204);
+      await client.patch(`/products/${pen.id}`).send(PATCH_DATA).expect(204);
 
       const stored = await repo.find();
       expect(toJSON(stored)).to.deepEqual([
@@ -229,10 +224,7 @@ describe('CrudRestController for a simple Product model', () => {
 
     it('replaces model with the given id', async () => {
       const newData = Object.assign({}, pen.toJSON(), PATCH_DATA);
-      await client
-        .put(`/products/${pen.id}`)
-        .send(newData)
-        .expect(204);
+      await client.put(`/products/${pen.id}`).send(newData).expect(204);
 
       const stored = await repo.find();
       expect(toJSON(stored)).to.deepEqual([

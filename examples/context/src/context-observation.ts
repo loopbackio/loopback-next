@@ -62,18 +62,12 @@ export async function main() {
 
   // Add EnglishGreeter to `appCtx`
   console.log('Adding EnglishGreeter');
-  appCtx
-    .bind('greeters.EnglishGreeter')
-    .toClass(EnglishGreeter)
-    .tag('greeter');
+  appCtx.bind('greeters.EnglishGreeter').toClass(EnglishGreeter).tag('greeter');
 
   // Add ChineseGreeter to `appCtx`
   await setImmediateAsync();
   console.log('Adding ChineseGreeter');
-  appCtx
-    .bind('greeters.ChineseGreeter')
-    .toClass(ChineseGreeter)
-    .tag('greeter');
+  appCtx.bind('greeters.ChineseGreeter').toClass(ChineseGreeter).tag('greeter');
 
   // Remove ChineseGreeter from `appCtx`
   await setImmediateAsync();

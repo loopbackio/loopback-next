@@ -12,7 +12,7 @@ import {MockConnector} from '../mock-service.connector';
 describe('service-proxy', () => {
   let ds: juggler.DataSource;
 
-  before(function() {
+  before(function () {
     ds = new juggler.DataSource({
       name: 'mock',
       connector: MockConnector,

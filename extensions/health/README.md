@@ -68,10 +68,7 @@ import {LiveCheck, ReadyCheck, HealthTags} from '@loopback/extension-health';
 const myLiveCheck: LiveCheck = () => {
   return Promise.resolve();
 };
-app
-  .bind('health.MyLiveCheck')
-  .to(myLiveCheck)
-  .tag(HealthTags.LIVE_CHECK);
+app.bind('health.MyLiveCheck').to(myLiveCheck).tag(HealthTags.LIVE_CHECK);
 
 // Define a provider to check the liveness of a datasource
 class DBLiveCheckProvider implements Provider<LiveCheck> {
@@ -90,10 +87,7 @@ app
 const myReadyCheck: ReadyCheck = () => {
   return Promise.resolve();
 };
-app
-  .bind('health.MyReadyCheck')
-  .to(myReadyCheck)
-  .tag(HealthTags.READY_CHECK);
+app.bind('health.MyReadyCheck').to(myReadyCheck).tag(HealthTags.READY_CHECK);
 ```
 
 ## Contributions

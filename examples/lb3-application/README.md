@@ -234,7 +234,7 @@ LoopBack 4 apps.
        this.app.use('/api', this.lbApp.requestHandler);
 
        // Custom Express routes
-       this.app.get('/ping', function(_req: Request, res: Response) {
+       this.app.get('/ping', function (_req: Request, res: Response) {
          res.send('pong');
        });
 

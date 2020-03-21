@@ -204,7 +204,7 @@ module.exports = function suiteCheckLoopBackProject(generator) {
     ) {
       it(testName, async () => {
         let logs = [];
-        gen.log = function(...args) {
+        gen.log = function (...args) {
           logs = logs.concat(args);
         };
         gen.command = options.command;

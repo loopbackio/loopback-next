@@ -17,7 +17,7 @@ const exists = util.promisify(fs.exists);
  * @param {String} dir The directory in which index.ts is to be updated/created
  * @param {*} file The new file to be exported from index.ts
  */
-module.exports = async function(dir, file) {
+module.exports = async function (dir, file) {
   debug(`Updating index with ${path.join(dir, file)}`);
   const indexFile = path.join(dir, 'index.ts');
   if (!file.endsWith('.ts')) {

@@ -47,7 +47,7 @@ export class Benchmark {
       },
       options,
     );
-    this.logger = function() {};
+    this.logger = function () {};
     this.cannonFactory = url => new Autocannon(url, this.options.duration);
   }
 

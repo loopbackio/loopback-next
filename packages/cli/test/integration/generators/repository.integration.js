@@ -20,7 +20,7 @@ const testUtils = require('../../test-utils');
 const SANDBOX_PATH = path.resolve(__dirname, '..', '.sandbox');
 const sandbox = new TestSandbox(SANDBOX_PATH);
 
-describe('lb4 repository', function() {
+describe('lb4 repository', function () {
   // eslint-disable-next-line no-invalid-this
   this.timeout(30000);
 

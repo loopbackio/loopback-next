@@ -60,16 +60,10 @@ export async function main() {
   const ctx = new Context('app');
 
   // Add EnglishGreeter for now
-  ctx
-    .bind('greeters.EnglishGreeter')
-    .toClass(EnglishGreeter)
-    .tag('greeter');
+  ctx.bind('greeters.EnglishGreeter').toClass(EnglishGreeter).tag('greeter');
 
   // Add ChineseGreeter
-  ctx
-    .bind('greeters.ChineseGreeter')
-    .toClass(ChineseGreeter)
-    .tag('greeter');
+  ctx.bind('greeters.ChineseGreeter').toClass(ChineseGreeter).tag('greeter');
 
   // Find all greeters
   const greetersView = ctx.createView<Greeter>(filterByTag('greeter'));

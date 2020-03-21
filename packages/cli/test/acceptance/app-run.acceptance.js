@@ -11,7 +11,7 @@ const helpers = require('yeoman-test');
 const bootstrapCommandFactory = require('@lerna/bootstrap');
 const build = require('@loopback/build');
 
-describe('app-generator (SLOW)', function() {
+describe('app-generator (SLOW)', function () {
   const generator = path.join(__dirname, '../../generators/app');
   const rootDir = path.join(__dirname, '../../../..');
   const sandbox = path.join(rootDir, 'sandbox/sandbox-app');
@@ -44,7 +44,7 @@ describe('app-generator (SLOW)', function() {
     await lernaBootstrap(appName);
   });
 
-  it('passes `npm test` for the generated project', function() {
+  it('passes `npm test` for the generated project', function () {
     // Increase the timeout to 5 minutes,
     // the tests can take more than 2 seconds to run.
     // eslint-disable-next-line no-invalid-this
@@ -64,7 +64,7 @@ describe('app-generator (SLOW)', function() {
     });
   });
 
-  after(function() {
+  after(function () {
     // Increase the timeout to accommodate slow CI build machines
     // eslint-disable-next-line no-invalid-this
     this.timeout(30 * 1000);

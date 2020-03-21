@@ -24,7 +24,7 @@ describe('GreetingApplication', () => {
     client = createRestAppClient(app);
   });
 
-  it('gets a greeting in English', async function() {
+  it('gets a greeting in English', async function () {
     const response = await client
       .get('/greet/Raymond')
       .set('Accept-Language', 'en')
@@ -35,7 +35,7 @@ describe('GreetingApplication', () => {
     });
   });
 
-  it('gets a greeting in Chinese', async function() {
+  it('gets a greeting in Chinese', async function () {
     const response = await client
       .get('/greet/Raymond')
       .set('Accept-Language', 'zh')
@@ -46,7 +46,7 @@ describe('GreetingApplication', () => {
     });
   });
 
-  it('gets a greeting from cache', async function() {
+  it('gets a greeting from cache', async function () {
     app.configure(CACHING_SERVICE).to({ttl: 100});
     let response = await client
       .get('/greet/Raymond')

@@ -87,7 +87,7 @@ describe('UserProfileFactory', () => {
    *  - username
    */
   function givenUserProfileFactory1() {
-    userProfileFactory1 = function(user: User): UserProfile {
+    userProfileFactory1 = function (user: User): UserProfile {
       const userProfile: UserProfile = {
         [securityId]: '',
         name: '',
@@ -116,7 +116,7 @@ describe('UserProfileFactory', () => {
    *  - [securityId]
    */
   function givenUserProfileFactory2() {
-    userProfileFactory2 = function(user: User): UserProfile {
+    userProfileFactory2 = function (user: User): UserProfile {
       const userProfile: UserProfile = {[securityId]: ''};
       if (user.id) userProfile[securityId] = user.id;
       return userProfile;

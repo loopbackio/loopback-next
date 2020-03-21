@@ -50,7 +50,7 @@ which adds a required property named `category` to any model.
 {% include code-caption.html content="common/mixins/category.js" %}
 
 ```js
-module.exports = function(Model, options) {
+module.exports = function (Model, options) {
   Model.defineProperty('category', {type: 'string', required: true});
 };
 ```
@@ -316,7 +316,7 @@ the return argument of 'items' is used as a default.
 {% include code-caption.html content="common/mixins/findByTitle.js" %}
 
 ```js
-module.exports = function(Model, options) {
+module.exports = function (Model, options) {
   const returnArgumentName = options.returnArgumentName
     ? options.returnArgumentName
     : 'items';
@@ -330,7 +330,7 @@ module.exports = function(Model, options) {
     returns: {arg: returnArgumentName, type: [Model], root: true},
   });
 
-  Model.findByTitle = function(title, cb) {
+  Model.findByTitle = function (title, cb) {
     var titleFilter = {
       where: {
         title: title,

@@ -268,10 +268,7 @@ addExtension(app, 'greeters', FrenchGreeter);
 Or:
 
 ```ts
-app
-  .bind('greeters.FrenchGreeter')
-  .toClass(FrenchGreeter)
-  .apply(asGreeter);
+app.bind('greeters.FrenchGreeter').toClass(FrenchGreeter).apply(asGreeter);
 ```
 
 Or:

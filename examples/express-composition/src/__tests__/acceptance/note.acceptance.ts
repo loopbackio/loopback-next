@@ -29,12 +29,9 @@ describe('NoteApplication', () => {
     await server.stop();
   });
 
-  it('creates a note', async function() {
+  it('creates a note', async function () {
     const note = givenNote();
-    const response = await client
-      .post('/api/notes')
-      .send(note)
-      .expect(200);
+    const response = await client.post('/api/notes').send(note).expect(200);
     expect(response.body).to.containDeep(note);
     const result = await noteRepo.findById(response.body.id);
     expect(result).to.containDeep(note);
@@ -44,10 +41,7 @@ describe('NoteApplication', () => {
     const note = givenNote();
     let response = await client.get('/api/notes').expect(200);
     expect(response.body).to.be.empty();
-    await client
-      .post('/api/notes')
-      .send(note)
-      .expect(200);
+    await client.post('/api/notes').send(note).expect(200);
     response = await client.get('/api/notes').expect(200);
     expect(response.body).to.not.be.empty();
   });

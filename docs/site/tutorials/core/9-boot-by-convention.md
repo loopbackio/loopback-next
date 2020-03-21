@@ -22,10 +22,7 @@ import {CachingInterceptor} from './interceptors';
 // Use a helper method
 app.controller(GreetingController);
 // Use bind directly
-app
-  .bind(CACHING_SERVICE)
-  .toClass(CachingService)
-  .scope(BindingScope.SINGLETON);
+app.bind(CACHING_SERVICE).toClass(CachingService).scope(BindingScope.SINGLETON);
 // Use a helper method
 app.lifeCycleObserver(CachingObserver);
 // Use a helper method to create bindings and add them to the application

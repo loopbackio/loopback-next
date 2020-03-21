@@ -255,7 +255,7 @@ import express from 'express';
 const legacyApp = express();
 
 // your existing Express routes
-legacyApp.get('/pug', function(_req: Request, res: Response) {
+legacyApp.get('/pug', function (_req: Request, res: Response) {
   res.send('Pug!');
 });
 
