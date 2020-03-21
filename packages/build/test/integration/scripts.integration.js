@@ -141,7 +141,7 @@ describe('build', function() {
   it('runs prettier against ts files', done => {
     const run = require('../../bin/run-prettier');
     const childProcess = run(
-      ['node', 'bin/run-prettier', '**/src/*.ts', '--', '-l'],
+      ['node', 'bin/run-prettier', '-l', '**/src/*.ts'],
       {
         stdio: [process.stdin, 'ignore', process.stderr],
       },
