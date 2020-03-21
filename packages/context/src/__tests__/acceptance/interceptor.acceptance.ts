@@ -689,10 +689,7 @@ describe('Interceptor', () => {
         events.push('globalLog: after-' + invocationCtx.methodName);
         return result;
       };
-      ctx
-        .bind('globalLog')
-        .to(globalLog)
-        .apply(asGlobalInterceptor());
+      ctx.bind('globalLog').to(globalLog).apply(asGlobalInterceptor());
     }
   });
 

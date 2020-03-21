@@ -47,10 +47,7 @@ describe('Metrics (acceptance)', () => {
           prefix: 'myapp_',
         },
       });
-      await request
-        .get('/metrics')
-        .expect(200)
-        .expect('content-type', /text/);
+      await request.get('/metrics').expect(200).expect('content-type', /text/);
     });
   });
 

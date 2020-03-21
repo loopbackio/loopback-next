@@ -14,7 +14,7 @@ import {
   isGeoCoderServiceAvailable,
 } from '../../helpers';
 
-describe('GeoLookupService', function() {
+describe('GeoLookupService', function () {
   // eslint-disable-next-line no-invalid-this
   this.timeout(30 * 1000);
 
@@ -30,7 +30,7 @@ describe('GeoLookupService', function() {
     available = await isGeoCoderServiceAvailable(service);
   });
 
-  it('resolves an address to a geo point', async function() {
+  it('resolves an address to a geo point', async function () {
     // eslint-disable-next-line no-invalid-this
     if (!available) return this.skip();
 

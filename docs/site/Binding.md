@@ -374,10 +374,7 @@ match/find bindings by tag. The search criteria can be one of the followings:
 The `Binding` fluent APIs allow us to chain multiple steps as follows:
 
 ```ts
-context
-  .bind('my-key')
-  .to('my-value')
-  .tag('my-tag');
+context.bind('my-key').to('my-value').tag('my-tag');
 ```
 
 ### Apply a template function

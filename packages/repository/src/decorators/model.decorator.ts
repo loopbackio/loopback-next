@@ -40,7 +40,7 @@ export type PropertyMap = MetadataMap<PropertyDefinition>;
  * @returns A class decorator for `model`
  */
 export function model(definition?: Partial<ModelDefinitionSyntax>) {
-  return function(target: Function & {definition?: ModelDefinition}) {
+  return function (target: Function & {definition?: ModelDefinition}) {
     definition = definition ?? {};
     const def: ModelDefinitionSyntax = Object.assign(definition, {
       name: definition.name ?? target.name,
@@ -132,7 +132,7 @@ export namespace property {
     itemType: PropertyType,
     definition?: Partial<PropertyDefinition>,
   ) {
-    return function(target: object, propertyName: string) {
+    return function (target: object, propertyName: string) {
       const propType = MetadataInspector.getDesignTypeForProperty(
         target,
         propertyName,

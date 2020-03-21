@@ -148,8 +148,7 @@ can move it to the `Todo` controller and delete that file:
 
 ```ts
 export class TodoController {
-  constructor() // ...
-  {}
+  constructor() {} // ...
 
   // other controller methods
 

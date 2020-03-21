@@ -36,10 +36,7 @@ describe('ExpressApplication', () => {
   });
 
   it('gets hello world', async () => {
-    await client
-      .get('/hello')
-      .expect(200)
-      .expect('Hello world!');
+    await client.get('/hello').expect(200).expect('Hello world!');
   });
 
   it('redirects to "api/explorer" from "api/explorer"', async () => {

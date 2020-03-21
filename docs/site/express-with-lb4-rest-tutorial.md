@@ -195,10 +195,10 @@ export class ExpressServer {
     // earlier code
 
     // Custom Express routes
-    this.app.get('/', function(_req: Request, res: Response) {
+    this.app.get('/', function (_req: Request, res: Response) {
       res.sendFile(path.resolve('public/express.html'));
     });
-    this.app.get('/hello', function(_req: Request, res: Response) {
+    this.app.get('/hello', function (_req: Request, res: Response) {
       res.send('Hello world!');
     });
   }

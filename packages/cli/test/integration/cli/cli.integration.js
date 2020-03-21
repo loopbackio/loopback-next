@@ -12,7 +12,7 @@ const {expectToMatchSnapshot} = require('../../snapshots');
 
 function getLog(buffer) {
   buffer = buffer || [];
-  return function(format, ...params) {
+  return function (format, ...params) {
     buffer.push(util.format(format, ...params));
     return buffer;
   };

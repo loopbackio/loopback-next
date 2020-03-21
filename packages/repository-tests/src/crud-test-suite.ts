@@ -56,7 +56,7 @@ export function crudRepositoryTestSuite(
 
     const testRoot = path.resolve(__dirname, 'crud');
     testFiles = fs.readdirSync(testRoot);
-    testFiles = testFiles.filter(function(it) {
+    testFiles = testFiles.filter(function (it) {
       return (
         !!require.extensions[path.extname(it).toLowerCase()] &&
         /\.suite\.[^.]+$/.test(it)
@@ -72,7 +72,7 @@ export function crudRepositoryTestSuite(
         `crud/relations/${folder}`,
       );
       let folderTestFiles = fs.readdirSync(relationsTestRoot);
-      folderTestFiles = folderTestFiles.filter(function(it) {
+      folderTestFiles = folderTestFiles.filter(function (it) {
         return (
           !!require.extensions[path.extname(it).toLowerCase()] &&
           /\.acceptance\.[^.]+$/.test(it)

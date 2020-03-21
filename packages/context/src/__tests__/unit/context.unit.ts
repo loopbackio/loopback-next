@@ -188,10 +188,7 @@ describe('Context', () => {
     });
 
     it('cannot unbind a locked binding', () => {
-      ctx
-        .bind('foo')
-        .to('a')
-        .lock();
+      ctx.bind('foo').to('a').lock();
       expect(() => ctx.unbind('foo')).to.throw(
         `Cannot unbind key "foo" of a locked binding`,
       );
@@ -1025,19 +1022,13 @@ describe('Context', () => {
     }
 
     function setupBindings() {
-      ctx
-        .bind('a')
-        .to('1')
-        .lock();
+      ctx.bind('a').to('1').lock();
       ctx
         .bind('b')
         .toDynamicValue(() => 2)
         .inScope(BindingScope.SINGLETON)
         .tag('X', 'Y');
-      ctx
-        .bind('c')
-        .to(3)
-        .tag('Z', {a: 1});
+      ctx.bind('c').to(3).tag('Z', {a: 1});
 
       ctx.bind('d').toClass(MyService);
       ctx.bind('e').toProvider(MyServiceProvider);

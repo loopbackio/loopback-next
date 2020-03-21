@@ -360,7 +360,7 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
       {
         name: 'propName',
         message: g.f('Enter the property name:'),
-        validate: function(val) {
+        validate: function (val) {
           if (val) {
             return utils.checkPropertyName(val);
           } else {

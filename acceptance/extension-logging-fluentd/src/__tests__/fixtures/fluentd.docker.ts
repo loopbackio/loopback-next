@@ -37,7 +37,7 @@ let fluentd: StartedTestContainer | undefined;
 /**
  * Root-level before hook to start Fluentd container
  */
-before(async function() {
+before(async function () {
   // Do not run with non-linux CI
   if (process.env.CI && process.platform !== 'linux') return;
   this.timeout(30 * 1000);
@@ -49,7 +49,7 @@ before(async function() {
 /**
  * Root-level before hook to stop Fluentd container
  */
-after(async function() {
+after(async function () {
   this.timeout(30 * 1000);
   if (fluentd) await fluentd.stop();
 });

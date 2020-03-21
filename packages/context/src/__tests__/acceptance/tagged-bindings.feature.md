@@ -17,10 +17,7 @@
 let ctx = new Context();
 
 // create a tagged binding
-let binding = ctx
-  .bind('foo')
-  .to('bar')
-  .tag('controller');
+let binding = ctx.bind('foo').to('bar').tag('controller');
 
 console.log(binding.tagNames); // =>  ['controller']
 ```
@@ -37,10 +34,7 @@ console.log(binding.tagNames); // =>  ['controller']
 let ctx = new Context();
 
 // create a tagged binding
-let binding = ctx
-  .bind('foo')
-  .to('bar')
-  .tag('controller', 'rest');
+let binding = ctx.bind('foo').to('bar').tag('controller', 'rest');
 
 console.log(binding.tagNames); // =>  ['controller', 'rest']
 ```

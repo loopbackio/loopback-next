@@ -69,10 +69,7 @@ ctx
   .to(myService)
   .tag({[CoreTags.SERVICE_INTERFACE]: MyService});
 
-ctx
-  .bind('my-sub-service')
-  .toClass(MySubService)
-  .apply(asService(MyService));
+ctx.bind('my-sub-service').toClass(MySubService).apply(asService(MyService));
 ```
 
 The services can also be registered with `Application`:

@@ -36,7 +36,7 @@ const TransactionClass = require('loopback-datasource-juggler').Transaction;
 describe('legacy loopback-datasource-juggler', () => {
   let ds: juggler.DataSource;
 
-  before(function() {
+  before(function () {
     ds = new juggler.DataSource({
       name: 'db',
       connector: 'memory',
@@ -190,9 +190,7 @@ describe('DefaultCrudRepository', () => {
       });
 
       const rolesProperty = JugglerUser.definition.properties.roles;
-      expect(rolesProperty.type)
-        .to.be.an.Array()
-        .of.length(1);
+      expect(rolesProperty.type).to.be.an.Array().of.length(1);
 
       // FIXME(bajtos) PropertyDefinition in juggler does not allow array type!
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

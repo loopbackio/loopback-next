@@ -69,18 +69,9 @@ console.log(keys); // => ['my.foo', 'my.baz']
 const ctx = new Context();
 
 // bind some animals and tag them as dogs
-ctx
-  .bind('spot')
-  .to(new Dog())
-  .tag('dog');
-ctx
-  .bind('fido')
-  .to(new Dog())
-  .tag('dog');
-ctx
-  .bind('mew')
-  .to(new Dog())
-  .tag('cat');
+ctx.bind('spot').to(new Dog()).tag('dog');
+ctx.bind('fido').to(new Dog()).tag('dog');
+ctx.bind('mew').to(new Dog()).tag('cat');
 
 // find by dog tag
 const bindings = ctx.findByTag('dog');

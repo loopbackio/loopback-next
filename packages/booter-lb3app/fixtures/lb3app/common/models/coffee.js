@@ -1,3 +1,3 @@
 'use strict';
 
-module.exports = function(Coffee) {};
+module.exports = function (Coffee) {};

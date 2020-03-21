@@ -41,10 +41,7 @@ describe('ContextView', () => {
     class MyController {
       name = name;
     }
-    context
-      .bind(`controllers.${name}`)
-      .toClass(MyController)
-      .tag('controller');
+    context.bind(`controllers.${name}`).toClass(MyController).tag('controller');
   }
 
   async function getControllers() {

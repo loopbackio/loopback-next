@@ -24,7 +24,7 @@ const sandbox = new TestSandbox(SANDBOX_PATH);
 // See `relation-{type}.integration.ts` files for test cases specific
 // to different relation types.
 
-describe('lb4 relation', function() {
+describe('lb4 relation', function () {
   // eslint-disable-next-line no-invalid-this
   this.timeout(30000);
 

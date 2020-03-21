@@ -67,9 +67,7 @@ function runTestsWithRouter(router: RestRouter) {
     const route = table.find(request);
 
     expect(route).to.be.instanceOf(ControllerRoute);
-    expect(route)
-      .to.have.property('spec')
-      .containEql(spec.paths['/hello'].get);
+    expect(route).to.have.property('spec').containEql(spec.paths['/hello'].get);
     expect(route).to.have.property('pathParams');
     expect(route.describe()).to.equal('TestController.greet');
   });
@@ -98,9 +96,7 @@ function runTestsWithRouter(router: RestRouter) {
     const route = table.find(request);
 
     expect(route).to.be.instanceOf(ControllerRoute);
-    expect(route)
-      .to.have.property('spec')
-      .containEql(spec.paths['/hello'].get);
+    expect(route).to.have.property('spec').containEql(spec.paths['/hello'].get);
     expect(route).to.have.property('pathParams');
     expect(route.describe()).to.equal('TestController.greet');
   });

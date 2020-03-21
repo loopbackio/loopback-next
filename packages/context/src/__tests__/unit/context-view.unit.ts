@@ -65,14 +65,8 @@ describe('ContextView', () => {
 
   it('reloads bindings after refresh', async () => {
     taggedAsFoo.refresh();
-    const abcBinding = server
-      .bind('abc')
-      .to('ABC')
-      .tag('abc');
-    const xyzBinding = server
-      .bind('xyz')
-      .to('XYZ')
-      .tag('foo');
+    const abcBinding = server.bind('abc').to('ABC').tag('abc');
+    const xyzBinding = server.bind('xyz').to('XYZ').tag('foo');
     expect(taggedAsFoo.bindings).to.containEql(xyzBinding);
     // `abc` does not have the matching tag
     expect(taggedAsFoo.bindings).to.not.containEql(abcBinding);
@@ -80,14 +74,8 @@ describe('ContextView', () => {
   });
 
   it('reloads bindings if context bindings are added', async () => {
-    const abcBinding = server
-      .bind('abc')
-      .to('ABC')
-      .tag('abc');
-    const xyzBinding = server
-      .bind('xyz')
-      .to('XYZ')
-      .tag('foo');
+    const abcBinding = server.bind('abc').to('ABC').tag('abc');
+    const xyzBinding = server.bind('xyz').to('XYZ').tag('foo');
     expect(taggedAsFoo.bindings).to.containEql(xyzBinding);
     // `abc` does not have the matching tag
     expect(taggedAsFoo.bindings).to.not.containEql(abcBinding);
@@ -105,10 +93,7 @@ describe('ContextView', () => {
   });
 
   it('reloads bindings if parent context bindings are added', async () => {
-    const xyzBinding = app
-      .bind('xyz')
-      .to('XYZ')
-      .tag('foo');
+    const xyzBinding = app.bind('xyz').to('XYZ').tag('foo');
     expect(taggedAsFoo.bindings).to.containEql(xyzBinding);
     expect(await taggedAsFoo.values()).to.eql(['BAR', 'FOO', 'XYZ']);
   });
@@ -166,10 +151,7 @@ describe('ContextView', () => {
     });
 
     it('emits refresh & resolve when bindings are changed', async () => {
-      server
-        .bind('xyz')
-        .to('XYZ')
-        .tag('foo');
+      server.bind('xyz').to('XYZ').tag('foo');
       await taggedAsFoo.values();
       expect(events).to.eql(['bind', 'refresh', 'resolve']);
     });
@@ -182,10 +164,7 @@ describe('ContextView', () => {
       taggedAsFoo.on('unbind', evt => {
         bindingEvents.push(evt);
       });
-      const binding = server
-        .bind('xyz')
-        .to('XYZ')
-        .tag('foo');
+      const binding = server.bind('xyz').to('XYZ').tag('foo');
       await pEvent(taggedAsFoo, 'bind');
       let values = await taggedAsFoo.values();
       expect(values.sort()).to.eql(['BAR', 'FOO', 'XYZ']);
@@ -210,10 +189,7 @@ describe('ContextView', () => {
         bindingEvents.push(evt);
       });
       // Add a `bar` binding to the parent context
-      app
-        .bind('bar')
-        .to('BAR from app')
-        .tag('foo');
+      app.bind('bar').to('BAR from app').tag('foo');
       // The newly added binding is shadowed. No `bind` event will be emitted
       await expect(
         pEvent(taggedAsFoo, 'bind', {timeout: 50}),
@@ -242,14 +218,8 @@ describe('ContextView', () => {
     it('creates a getter function for the binding filter', async () => {
       const getter = createViewGetter(server, filterByTag('foo'));
       expect(await getter()).to.eql(['BAR', 'FOO']);
-      server
-        .bind('abc')
-        .to('ABC')
-        .tag('abc');
-      server
-        .bind('xyz')
-        .to('XYZ')
-        .tag('foo');
+      server.bind('abc').to('ABC').tag('abc');
+      server.bind('xyz').to('XYZ').tag('foo');
       expect(await getter()).to.eql(['BAR', 'XYZ', 'FOO']);
     });
 
@@ -258,14 +228,8 @@ describe('ContextView', () => {
         return a.key.localeCompare(b.key);
       });
       expect(await getter()).to.eql(['BAR', 'FOO']);
-      server
-        .bind('abc')
-        .to('ABC')
-        .tag('abc');
-      server
-        .bind('xyz')
-        .to('XYZ')
-        .tag('foo');
+      server.bind('abc').to('ABC').tag('abc');
+      server.bind('xyz').to('XYZ').tag('foo');
       expect(await getter()).to.eql(['BAR', 'FOO', 'XYZ']);
     });
   });
@@ -298,11 +262,6 @@ describe('ContextView', () => {
         .tag('foo', 'bar', {phase: 'a'})
         .inScope(BindingScope.SINGLETON),
     );
-    bindings.push(
-      app
-        .bind('foo')
-        .to('FOO')
-        .tag('foo', 'bar', {phase: 'b'}),
-    );
+    bindings.push(app.bind('foo').to('FOO').tag('foo', 'bar', {phase: 'b'}));
   }
 });

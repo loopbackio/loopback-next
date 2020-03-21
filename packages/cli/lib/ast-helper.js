@@ -14,7 +14,7 @@ const debug = require('./debug')('ast-query');
  * rootNodesFindID and childNodesFindID
  * @param {string} fileContent with a model.ts class
  */
-exports.getIdFromModel = function(fileContent) {
+exports.getIdFromModel = function (fileContent) {
   const ast = tsquery.ast(fileContent);
   for (const queryName in QUERIES) {
     debug('Trying %s', queryName);

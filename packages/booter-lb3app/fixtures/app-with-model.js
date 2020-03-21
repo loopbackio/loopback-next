@@ -13,6 +13,6 @@ app.get('/hello', (req, res) => {
   res.send('hello');
 });
 
-boot(app, __dirname, function(err) {
+boot(app, __dirname, function (err) {
   if (err) throw err;
 });

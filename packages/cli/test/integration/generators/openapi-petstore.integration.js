@@ -25,7 +25,7 @@ const props = {
   url: specPath,
 };
 
-describe('openapi-generator specific files', function() {
+describe('openapi-generator specific files', function () {
   // These tests take longer to execute, they used to time out on Travis CI
   // eslint-disable-next-line no-invalid-this
   this.timeout(10000);

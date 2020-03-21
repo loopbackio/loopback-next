@@ -20,7 +20,7 @@ const VALID_EXAMPLE = 'todo';
 const SANDBOX_PATH = path.resolve(__dirname, '..', '.sandbox');
 const sandbox = new TestSandbox(SANDBOX_PATH);
 
-describe('cloneExampleFromGitHub (SLOW)', function() {
+describe('cloneExampleFromGitHub (SLOW)', function () {
   // eslint-disable-next-line no-invalid-this
   this.timeout(20000);
 

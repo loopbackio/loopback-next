@@ -39,12 +39,10 @@ describe('HttpServer (integration)', () => {
     const serverOptions = givenHttpServerConfig();
     server = new HttpServer(dummyRequestHandler, serverOptions);
     await server.start();
-    await supertest(server.url)
-      .get('/')
-      .expect(200);
+    await supertest(server.url).get('/').expect(200);
   });
 
-  it('stops server', async function() {
+  it('stops server', async function () {
     // This test takes a bit longer to finish on windows.
     // eslint-disable-next-line no-invalid-this
     this.timeout(3000);
@@ -55,7 +53,7 @@ describe('HttpServer (integration)', () => {
     await expect(httpGetAsync(server.url)).to.be.rejectedWith(/ECONNREFUSED/);
   });
 
-  it('stops server with grace period and inflight request', async function() {
+  it('stops server with grace period and inflight request', async function () {
     // This test takes a bit longer to finish on windows.
     // eslint-disable-next-line no-invalid-this
     this.timeout(3000);
@@ -83,7 +81,7 @@ describe('HttpServer (integration)', () => {
     await expect(httpGetAsync(server.url)).to.be.rejectedWith(/ECONNREFUSED/);
   });
 
-  it('stops server with shorter grace period and inflight request', async function() {
+  it('stops server with shorter grace period and inflight request', async function () {
     // This test takes a bit longer to finish on windows.
     // eslint-disable-next-line no-invalid-this
     this.timeout(3000);
@@ -108,9 +106,7 @@ describe('HttpServer (integration)', () => {
 
   it('exports original port', async () => {
     server = new HttpServer(dummyRequestHandler, {port: 0});
-    expect(server)
-      .to.have.property('port')
-      .which.is.equal(0);
+    expect(server).to.have.property('port').which.is.equal(0);
   });
 
   it('exports reported port', async () => {
@@ -136,17 +132,13 @@ describe('HttpServer (integration)', () => {
 
   it('exports original host', async () => {
     server = new HttpServer(dummyRequestHandler);
-    expect(server)
-      .to.have.property('host')
-      .which.is.equal(undefined);
+    expect(server).to.have.property('host').which.is.equal(undefined);
   });
 
   it('exports reported host', async () => {
     server = new HttpServer(dummyRequestHandler);
     await server.start();
-    expect(server)
-      .to.have.property('host')
-      .which.is.a.String();
+    expect(server).to.have.property('host').which.is.a.String();
   });
 
   it('exports protocol', async () => {
@@ -170,9 +162,7 @@ describe('HttpServer (integration)', () => {
   it('exports address', async () => {
     server = new HttpServer(dummyRequestHandler);
     await server.start();
-    expect(server)
-      .to.have.property('address')
-      .which.is.an.Object();
+    expect(server).to.have.property('address').which.is.an.Object();
   });
 
   it('exports server before start', async () => {
@@ -188,9 +178,7 @@ describe('HttpServer (integration)', () => {
   it('resets address when server is stopped', async () => {
     server = new HttpServer(dummyRequestHandler);
     await server.start();
-    expect(server)
-      .to.have.property('address')
-      .which.is.an.Object();
+    expect(server).to.have.property('address').which.is.an.Object();
     await server.stop();
     expect(server.address).to.be.undefined();
   });
@@ -280,9 +268,7 @@ describe('HttpServer (integration)', () => {
     expect(server.host).to.be.undefined();
     expect(server.port).to.eql(0);
     expect(server.url).to.eql('http+unix://' + encodeURIComponent(socketPath));
-    await supertest(server.url)
-      .get('/')
-      .expect(200);
+    await supertest(server.url).get('/').expect(200);
   });
 
   it('supports HTTP over Windows named pipe', async () => {

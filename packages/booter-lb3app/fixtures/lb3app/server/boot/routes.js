@@ -1,6 +1,6 @@
-module.exports = function(app) {
+module.exports = function (app) {
   // Install a "/coffee" route that returns "shop"
-  app.get('/coffee', function(req, res) {
+  app.get('/coffee', function (req, res) {
     res.send('shop');
   });
 };

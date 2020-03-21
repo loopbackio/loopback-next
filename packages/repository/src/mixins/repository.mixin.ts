@@ -113,9 +113,7 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
         // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
         name = name || dataSource.name;
         const key = `datasources.${name}`;
-        return this.bind(key)
-          .to(dataSource)
-          .tag('datasource');
+        return this.bind(key).to(dataSource).tag('datasource');
       } else if (typeof dataSource === 'function') {
         // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
         name = name || dataSource.dataSourceName;

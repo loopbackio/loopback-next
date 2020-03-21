@@ -45,10 +45,7 @@ describe('Cron (acceptance)', () => {
       runOnInit: true,
       start: true,
     });
-    app
-      .bind('cron.jobs.job1')
-      .to(job)
-      .apply(asCronJob);
+    app.bind('cron.jobs.job1').to(job).apply(asCronJob);
     // The context event notification can happen before `await component.getJobs()`
     await sleep(1);
     const jobs = await component.getJobs();
@@ -136,10 +133,7 @@ describe('Cron (acceptance)', () => {
     job.onError(err => {
       errCaught = err;
     });
-    app
-      .bind('cron.jobs.job1')
-      .to(job)
-      .apply(asCronJob);
+    app.bind('cron.jobs.job1').to(job).apply(asCronJob);
     await sleep(100);
     expect((errCaught as Error).message).to.eql('Something wrong in the job');
   });

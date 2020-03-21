@@ -197,7 +197,7 @@ describe('Basic Authentication', () => {
   // a user instance into a user profile instance.
   // (A user profile should contain less data than a user)
   //
-  const myUserProfileFactory: UserProfileFactory<MyUser> = function(
+  const myUserProfileFactory: UserProfileFactory<MyUser> = function (
     user: MyUser,
   ): UserProfile {
     const userProfile = {[securityId]: user.id};
@@ -464,7 +464,7 @@ class VerifyFunctionProvider implements Provider<BasicVerifyFunction> {
   value(): BasicVerifyFunction {
     //eslint-disable-next-line
     const myThis = this;
-    return async function(username: string, password: string, cb: Function) {
+    return async function (username: string, password: string, cb: Function) {
       let user: MyUser | undefined;
 
       try {

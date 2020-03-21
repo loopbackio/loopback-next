@@ -59,7 +59,7 @@ export class MockConnector {
     }
 
     return {
-      geocode: async function(street: string, city: string, zipcode: string) {
+      geocode: async function (street: string, city: string, zipcode: string) {
         return {
           lat: 37.5669986,
           lng: -122.3237495,

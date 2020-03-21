@@ -16,7 +16,7 @@ const DUMMY_STATS: EndpointStats = {
   requestsPerSecond: 1000,
 };
 
-describe('Benchmark (SLOW)', function() {
+describe('Benchmark (SLOW)', function () {
   // Unfortunately, the todo app requires one second to start (or more on CI)
   // eslint-disable-next-line no-invalid-this
   this.timeout(10000);

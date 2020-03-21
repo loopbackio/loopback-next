@@ -30,7 +30,7 @@ let realWorldAPIs = [
 ];
 
 describe('Real-world APIs', () => {
-  before(async function() {
+  before(async function () {
     // Set env var `APIS` to `*` to test against apis.guru directory
     if (process.env.APIS !== 'all') return;
 
@@ -80,7 +80,7 @@ describe('Real-world APIs', () => {
     }
   });
 
-  it('generates all the proper files', async function() {
+  it('generates all the proper files', async function () {
     // eslint-disable-next-line no-invalid-this
     this.timeout(0);
     let count = 0;

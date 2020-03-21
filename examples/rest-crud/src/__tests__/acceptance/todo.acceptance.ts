@@ -32,12 +32,9 @@ describe('TodoApplication', () => {
     await todoRepo.deleteAll();
   });
 
-  it('creates a todo', async function() {
+  it('creates a todo', async function () {
     const todo = givenTodo();
-    const response = await client
-      .post('/todos')
-      .send(todo)
-      .expect(200);
+    const response = await client.post('/todos').send(todo).expect(200);
     expect(response.body).to.containDeep(todo);
     const result = await todoRepo.findById(response.body.id);
     expect(result).to.containDeep(todo);
@@ -46,19 +43,13 @@ describe('TodoApplication', () => {
   it('rejects requests to create a todo with no title', async () => {
     const todo = givenTodo();
     delete todo.title;
-    await client
-      .post('/todos')
-      .send(todo)
-      .expect(422);
+    await client.post('/todos').send(todo).expect(422);
   });
 
   it('rejects requests with input that contains excluded properties', async () => {
     const todo = givenTodo();
     todo.id = 1;
-    await client
-      .post('/todos')
-      .send(todo)
-      .expect(422);
+    await client.post('/todos').send(todo).expect(422);
   });
 
   context('when dealing with a single persisted todo', () => {
@@ -94,10 +85,7 @@ describe('TodoApplication', () => {
     });
 
     it('returns 404 when replacing a todo that does not exist', () => {
-      return client
-        .put('/todos/99999')
-        .send(givenTodo())
-        .expect(404);
+      return client.put('/todos/99999').send(givenTodo()).expect(404);
     });
 
     it('updates the todo by ID ', async () => {
@@ -120,10 +108,7 @@ describe('TodoApplication', () => {
     });
 
     it('deletes the todo', async () => {
-      await client
-        .del(`/todos/${persistedTodo.id}`)
-        .send()
-        .expect(204);
+      await client.del(`/todos/${persistedTodo.id}`).send().expect(204);
       await expect(todoRepo.findById(persistedTodo.id)).to.be.rejectedWith(
         EntityNotFoundError,
       );

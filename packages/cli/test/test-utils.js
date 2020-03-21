@@ -10,7 +10,7 @@ const path = require('path');
 const helpers = require('yeoman-test');
 const fs = require('fs-extra');
 
-exports.testSetUpGen = function(genName, arg) {
+exports.testSetUpGen = function (genName, arg) {
   arg = arg || {};
   const env = yeoman.createEnv();
   const name = genName.substring(genName.lastIndexOf(path.sep) + 1);
@@ -25,12 +25,12 @@ exports.testSetUpGen = function(genName, arg) {
  * @param {string} GeneratorOrNamespace
  * @param {object} [settings]
  */
-exports.executeGenerator = function(GeneratorOrNamespace, settings) {
+exports.executeGenerator = function (GeneratorOrNamespace, settings) {
   const runner = helpers.run(GeneratorOrNamespace, settings);
 
   // Override .then() and .catch() methods to detect our custom
   // "exit with error" handling
-  runner.toPromise = function() {
+  runner.toPromise = function () {
     return new Promise((resolve, reject) => {
       this.on('end', () => {
         if (this.generator.exitGeneration instanceof Error) {
@@ -66,7 +66,7 @@ exports.executeGenerator = function(GeneratorOrNamespace, settings) {
  * @property {boolean} includeSandboxFilesFixtures creates files specified in SANDBOX_FILES array
  * @param {array} additionalFiles specify files, directories and their content to be included as fixtures
  */
-exports.givenLBProject = function(rootDir, options) {
+exports.givenLBProject = function (rootDir, options) {
   options = options || {};
   const sandBoxFiles = options.additionalFiles || [];
 

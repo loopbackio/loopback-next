@@ -35,7 +35,7 @@ import {
  * @param paramSpec - Parameter specification.
  */
 export function param(paramSpec: ParameterObject) {
-  return function(target: object, member: string, index: number) {
+  return function (target: object, member: string, index: number) {
     paramSpec = paramSpec || {};
     // Get the design time method parameter metadata
     const methodSig = MetadataInspector.getDesignTypeForMethod(target, member);
@@ -202,7 +202,7 @@ export namespace param {
      * @param name - Parameter name
      * @param schema - Optional OpenAPI Schema describing the object value.
      */
-    object: function(
+    object: function (
       name: string,
       schema: SchemaObject | ReferenceObject = {
         type: 'object',
@@ -428,7 +428,7 @@ export namespace param {
    * @param source - Source of the parameter value
    * @param itemSpec - Item type for the array or the full item object
    */
-  export const array = function(
+  export const array = function (
     name: string,
     source: ParameterLocation,
     itemSpec: SchemaObject | ReferenceObject,

@@ -46,10 +46,7 @@ export async function main() {
   ctx.add(createBindingFromClass(EnglishGreeter, {namespace: 'greeters'}));
 
   // Add ChineseGreeter
-  ctx
-    .bind('greeters.ChineseGreeter')
-    .toClass(ChineseGreeter)
-    .tag('greeter');
+  ctx.bind('greeters.ChineseGreeter').toClass(ChineseGreeter).tag('greeter');
 
   const enlishGreeterBinding = ctx.getBinding('greeters.EnglishGreeter');
   console.log(enlishGreeterBinding.key);

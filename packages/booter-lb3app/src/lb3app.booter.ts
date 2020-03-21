@@ -69,10 +69,7 @@ export class Lb3AppBooter implements Booter {
         const ds = dataSources[key];
         if (visited.includes(ds)) return;
         visited.push(ds);
-        this.app
-          .bind(`datasources.lb3-${key}`)
-          .to(ds)
-          .tag('datasource');
+        this.app.bind(`datasources.lb3-${key}`).to(ds).tag('datasource');
       });
     }
 

@@ -32,18 +32,9 @@ describe('Context bindings - contexts inheritance', () => {
   });
 
   it('includes parent bindings when searching via findByTag()', () => {
-    parentCtx
-      .bind('foo')
-      .to('parent:foo')
-      .tag('a-tag');
-    parentCtx
-      .bind('bar')
-      .to('parent:bar')
-      .tag('a-tag');
-    childCtx
-      .bind('foo')
-      .to('child:foo')
-      .tag('a-tag');
+    parentCtx.bind('foo').to('parent:foo').tag('a-tag');
+    parentCtx.bind('bar').to('parent:bar').tag('a-tag');
+    childCtx.bind('foo').to('child:foo').tag('a-tag');
 
     const found = childCtx.findByTag('a-tag').map(b => b.getValue(childCtx));
     expect(found).to.deepEqual(['child:foo', 'parent:bar']);

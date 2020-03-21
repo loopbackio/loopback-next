@@ -11,6 +11,6 @@ const debug = require('debug');
  * to "loopback:cli".
  * @param {String=} scope The scope to use for the debug statement.
  */
-module.exports = function(scope) {
+module.exports = function (scope) {
   return debug(`loopback:cli${scope ? `:${scope}` : ''}`);
 };

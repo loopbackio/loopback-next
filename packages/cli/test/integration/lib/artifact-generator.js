@@ -9,8 +9,8 @@ const sinon = require('sinon');
 const testUtils = require('../../test-utils');
 const suiteCheckLoopBackProject = require('./check-loopback-project.suite');
 
-module.exports = function(artiGenerator) {
-  return function() {
+module.exports = function (artiGenerator) {
+  return function () {
     describe('_setupGenerator', () => {
       describe('args validation', () => {
         it('errors out if validation fails', () => {

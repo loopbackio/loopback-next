@@ -278,7 +278,7 @@ export class VerifyFunctionProvider implements Provider<BasicVerifyFunction> {
   value(): BasicVerifyFunction {
     const myThis = this;
 
-    return async function(username: string, password: string, cb: Function) {
+    return async function (username: string, password: string, cb: Function) {
       let user: MyUser;
 
       try {

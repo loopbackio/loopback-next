@@ -45,12 +45,9 @@ async function createAppProject(appName) {
 }
 
 async function generateOpenApiArtifacts(sandbox, spec) {
-  await helpers
-    .run(openapiGenerator)
-    .cd(sandbox)
-    .withPrompts({
-      url: spec,
-    });
+  await helpers.run(openapiGenerator).cd(sandbox).withPrompts({
+    url: spec,
+  });
 }
 
 function runNpmTest(sandbox) {

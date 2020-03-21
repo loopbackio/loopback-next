@@ -10,7 +10,7 @@ const path = require('path');
 const fs = require('fs-extra');
 const utils = require('../../bin/utils');
 
-describe('build', function() {
+describe('build', function () {
   // eslint-disable-next-line no-invalid-this
   this.timeout(30000);
   const cwd = process.cwd();
@@ -215,7 +215,7 @@ describe('build', function() {
   });
 });
 
-describe('mocha', function() {
+describe('mocha', function () {
   // eslint-disable-next-line no-invalid-this
   this.timeout(30000);
   const cwd = process.cwd();

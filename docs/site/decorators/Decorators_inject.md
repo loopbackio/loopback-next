@@ -264,14 +264,8 @@ class Store {
 
 const ctx = new Context();
 ctx.bind('store').toClass(Store);
-ctx
-  .bind('store.locations.sf')
-  .to('San Francisco')
-  .tag('store:location');
-ctx
-  .bind('store.locations.sj')
-  .to('San Jose')
-  .tag('store:location');
+ctx.bind('store.locations.sf').to('San Francisco').tag('store:location');
+ctx.bind('store.locations.sj').to('San Jose').tag('store:location');
 const store = ctx.getSync<Store>('store');
 console.log(store.locations); // ['San Francisco', 'San Jose']
 ```

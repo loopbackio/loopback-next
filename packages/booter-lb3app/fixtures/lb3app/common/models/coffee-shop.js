@@ -1,7 +1,7 @@
 'use strict';
 
-module.exports = function(CoffeeShop) {
-  CoffeeShop.status = function(cb) {
+module.exports = function (CoffeeShop) {
+  CoffeeShop.status = function (cb) {
     const currentDate = new Date();
     const currentHour = currentDate.getHours();
     const OPEN_HOUR = 6;
@@ -25,8 +25,8 @@ module.exports = function(CoffeeShop) {
       type: 'string',
     },
   });
-  CoffeeShop.getName = function(shopId, cb) {
-    CoffeeShop.findById(shopId, function(err, instance) {
+  CoffeeShop.getName = function (shopId, cb) {
+    CoffeeShop.findById(shopId, function (err, instance) {
       const response = 'Name of coffee shop is ' + instance.name;
       cb(null, response);
     });
@@ -41,8 +41,8 @@ module.exports = function(CoffeeShop) {
     },
     returns: {arg: 'name', type: 'string'},
   });
-  CoffeeShop.greet = function(cb) {
-    process.nextTick(function() {
+  CoffeeShop.greet = function (cb) {
+    process.nextTick(function () {
       cb(null, 'Hello from this Coffee Shop');
     });
   };

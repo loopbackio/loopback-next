@@ -58,10 +58,7 @@ describe('TodoListApplication', () => {
     });
 
     it('counts todoLists', async () => {
-      const response = await client
-        .get('/todo-lists/count')
-        .send()
-        .expect(200);
+      const response = await client.get('/todo-lists/count').send().expect(200);
       expect(response.body.count).to.eql(persistedTodoLists.length);
     });
 
@@ -74,10 +71,7 @@ describe('TodoListApplication', () => {
     });
 
     it('finds all todoLists', async () => {
-      const response = await client
-        .get('/todo-lists')
-        .send()
-        .expect(200);
+      const response = await client.get('/todo-lists').send().expect(200);
       expect(response.body).to.containDeep(persistedTodoLists);
     });
 

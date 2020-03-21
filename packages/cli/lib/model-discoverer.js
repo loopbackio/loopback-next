@@ -83,7 +83,7 @@ const MODEL_TEMPLATE_PATH = path.resolve(
   '../generators/model/templates/model.ts.ejs',
 );
 
-const sanitizeProperty = function(o) {
+const sanitizeProperty = function (o) {
   Object.entries(o).forEach(([k, v]) => {
     // Delete the null properties so the template doesn't spit out `key: ;`
     if (v === null) {

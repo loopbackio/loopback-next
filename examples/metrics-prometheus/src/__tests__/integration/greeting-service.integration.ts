@@ -22,13 +22,13 @@ describe('GreetingApplication', () => {
     client = createRestAppClient(app);
   });
 
-  it('gets greetings', async function() {
+  it('gets greetings', async function () {
     const response = await client.get('/greet/Raymond').expect(200);
     expect(response.body).to.be.an.Array();
     expect(response.body[0]).to.match(/Hello, Raymond/);
   });
 
-  it('reports metrics', async function() {
+  it('reports metrics', async function () {
     const response = await client.get('/metrics').expect(200);
     expect(response.text).to.match(
       /TYPE loopback_invocation_duration_seconds gauge/,

@@ -77,11 +77,7 @@ describe('JWT Authentication', () => {
 
     app.controller(InfoController);
 
-    token = (
-      await whenIMakeRequestTo(server)
-        .post('/login')
-        .expect(200)
-    ).text;
+    token = (await whenIMakeRequestTo(server).post('/login').expect(200)).text;
 
     expect(token).to.be.not.null();
     expect(token).to.be.String();
@@ -131,11 +127,7 @@ describe('JWT Authentication', () => {
 
     app.controller(InfoController);
 
-    token = (
-      await whenIMakeRequestTo(server)
-        .post('/login')
-        .expect(200)
-    ).text;
+    token = (await whenIMakeRequestTo(server).post('/login').expect(200)).text;
 
     expect(token).to.be.not.null();
     expect(token).to.be.String();
@@ -186,11 +178,7 @@ describe('JWT Authentication', () => {
 
     app.controller(InfoController);
 
-    token = (
-      await whenIMakeRequestTo(server)
-        .post('/login')
-        .expect(200)
-    ).text;
+    token = (await whenIMakeRequestTo(server).post('/login').expect(200)).text;
 
     expect(token).to.be.not.null();
     expect(token).to.be.String();
@@ -244,11 +232,7 @@ describe('JWT Authentication', () => {
 
     app.controller(InfoController);
 
-    token = (
-      await whenIMakeRequestTo(server)
-        .post('/login')
-        .expect(200)
-    ).text;
+    token = (await whenIMakeRequestTo(server).post('/login').expect(200)).text;
 
     expect(token).to.be.not.null();
     expect(token).to.be.String();

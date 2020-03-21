@@ -383,7 +383,7 @@ Consider the following LoopBack 3 remoting hook executed for `Comment.create`
 method to add `postedFromIpAddress` field to every new comment posted:
 
 ```js
-Comment.afterRemote('create', function(ctx, next) {
+Comment.afterRemote('create', function (ctx, next) {
   ctx.args[0].postedFromIpAddress = ctx.req.remoteAddress;
   next();
 });
@@ -416,10 +416,10 @@ Consider the following example from LoopBack 3 documentation:
 
 ```js
 // prevent password hashes from being sent to clients
-Customer.afterRemote('**', function(ctx, user, next) {
+Customer.afterRemote('**', function (ctx, user, next) {
   if (ctx.result) {
     if (Array.isArray(ctx.result)) {
-      ctx.result.forEach(function(result) {
+      ctx.result.forEach(function (result) {
         result.unsetAttribute('password');
       });
     } else {
@@ -460,7 +460,7 @@ Consider the following LoopBack 3 example rejecting requests from non-local
 addresses:
 
 ```js
-Customer.beforeRemote('**', function(ctx, next) {
+Customer.beforeRemote('**', function (ctx, next) {
   if (ctx.req.remoteAddress !== '127.0.0.1') {
     next(new HttpErrors.Forbidden());
   } else {
@@ -509,7 +509,7 @@ Consider the following LoopBack 3 example printing a warning whenever an
 anonymous (unauthenticated) request is made:
 
 ```js
-Customer.beforeRemote('*.save', function(ctx, unused, next) {
+Customer.beforeRemote('*.save', function (ctx, unused, next) {
   if (!ctx.req.accessToken) {
     console.warn('anonymous request!');
   }

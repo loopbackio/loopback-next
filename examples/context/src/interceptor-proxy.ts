@@ -100,10 +100,7 @@ export async function main() {
     `[${context.name}] ${count++}`;
   ctx.bind(REQUEST_ID_GENERATOR).to(reqUuidGenerator);
   ctx.bind(GREETER).toClass(Greeter);
-  ctx
-    .bind(CONVERTER)
-    .toClass(Converter)
-    .tag(BindingScope.SINGLETON);
+  ctx.bind(CONVERTER).toClass(Converter).tag(BindingScope.SINGLETON);
 
   const greeter = await ctx.get(GREETER, {asProxyWithInterceptors: true});
   console.log(await greeter!.greet('John'));

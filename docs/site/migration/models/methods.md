@@ -277,12 +277,12 @@ the model `Note`.
 {% include code-caption.html content="common/models/Note.js" %}
 
 ```js
-module.exports = function(Note) {
-  Note.on('dataSourceAttached', function(obj) {
+module.exports = function (Note) {
+  Note.on('dataSourceAttached', function (obj) {
     var find = Note.find;
     var cache = {};
 
-    Note.find = function(filter, options, cb) {
+    Note.find = function (filter, options, cb) {
       var key = '';
       if (filter) {
         key = JSON.stringify(filter);
@@ -290,12 +290,12 @@ module.exports = function(Note) {
       var cachedResults = cache[key];
       if (cachedResults) {
         console.log('serving from cache');
-        process.nextTick(function() {
+        process.nextTick(function () {
           cb(null, cachedResults);
         });
       } else {
         console.log('serving from db');
-        find.call(Note, function(err, results) {
+        find.call(Note, function (err, results) {
           if (!err) {
             cache[key] = results;
           }
@@ -401,7 +401,7 @@ end up being `/Notes/findByTitle`.
 {% include code-caption.html content="common/models/Note.js" %}
 
 ```js
-module.exports = function(Note) {
+module.exports = function (Note) {
   Note.remoteMethod('findByTitle', {
     http: {
       path: '/findByTitle',
@@ -411,13 +411,13 @@ module.exports = function(Note) {
     returns: {arg: 'note', type: [Note], root: true},
   });
 
-  Note.findByTitle = function(title, cb) {
+  Note.findByTitle = function (title, cb) {
     var titleFilter = {
       where: {
         title: title,
       },
     };
-    Note.find(titleFilter, function(err, foundNotes) {
+    Note.find(titleFilter, function (err, foundNotes) {
       if (err) {
         cb(err);
       } else {

@@ -28,7 +28,7 @@ describe('serviceProxy decorator', () => {
   let ctx: Context;
   let ds: juggler.DataSource;
 
-  before(function() {
+  before(function () {
     ds = new juggler.DataSource({
       name: 'db',
       connector: MockConnector,

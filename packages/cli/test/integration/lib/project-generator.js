@@ -13,8 +13,8 @@ const path = require('path');
 const deps = require('../../../lib/utils').getDependencies();
 const expect = require('@loopback/testlab').expect;
 
-module.exports = function(projGenerator, props, projectType) {
-  return function() {
+module.exports = function (projGenerator, props, projectType) {
+  return function () {
     // Increase the timeout to 60 seconds to accomodate
     // for possibly slow CI build machines
     // eslint-disable-next-line no-invalid-this

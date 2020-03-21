@@ -37,7 +37,7 @@ describe('coerce param from string to integer', () => {
   test(INT64_PARAM, '9223372036854775807', 9223372036854775807);
 });
 
-describe('coerce param from string to integer - required', function() {
+describe('coerce param from string to integer - required', function () {
   context('valid values', () => {
     test(REQUIRED_INTEGER_PARAM, '0', 0);
     test(REQUIRED_INTEGER_PARAM, '1', 1);
@@ -54,7 +54,7 @@ describe('coerce param from string to integer - required', function() {
   });
 });
 
-describe('coerce param from string to integer - optional', function() {
+describe('coerce param from string to integer - optional', function () {
   context('valid values', () => {
     test(INTEGER_PARAM, '0', 0);
     test(INTEGER_PARAM, '1', 1);

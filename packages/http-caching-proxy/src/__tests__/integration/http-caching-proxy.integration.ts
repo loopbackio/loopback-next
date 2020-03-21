@@ -44,7 +44,7 @@ describe('HttpCachingProxy', () => {
     expect(proxy.url).to.match(/not-running/);
   });
 
-  it('proxies HTTP requests', async function() {
+  it('proxies HTTP requests', async function () {
     // Increase the timeout to accommodate slow network connections
     // eslint-disable-next-line no-invalid-this
     this.timeout(30000);
@@ -58,7 +58,7 @@ describe('HttpCachingProxy', () => {
     expect(result.body).to.containEql('example');
   });
 
-  it('reports error for HTTP requests', async function() {
+  it('reports error for HTTP requests', async function () {
     // Increase the timeout to accommodate slow network connections
     // eslint-disable-next-line no-invalid-this
     this.timeout(30000);
@@ -76,7 +76,7 @@ describe('HttpCachingProxy', () => {
     );
   });
 
-  it('reports timeout error for HTTP requests', async function() {
+  it('reports timeout error for HTTP requests', async function () {
     await givenRunningProxy({logError: false, timeout: 1});
     await expect(
       makeRequest({
@@ -86,7 +86,7 @@ describe('HttpCachingProxy', () => {
     ).to.be.rejectedWith(/502 - "Error: timeout of 1ms exceeded/);
   });
 
-  it('proxies HTTPs requests (no tunneling)', async function() {
+  it('proxies HTTPs requests (no tunneling)', async function () {
     // Increase the timeout to accommodate slow network connections
     // eslint-disable-next-line no-invalid-this
     this.timeout(30000);
@@ -150,7 +150,7 @@ describe('HttpCachingProxy', () => {
   it('caches responses', async () => {
     await givenRunningProxy();
     let counter = 1;
-    stubServerHandler = function(req, res) {
+    stubServerHandler = function (req, res) {
       res.writeHead(201, {'x-counter': counter++});
       res.end(JSON.stringify({counter: counter++}));
     };
@@ -188,7 +188,7 @@ describe('HttpCachingProxy', () => {
     expect(result2.body).to.equal(2);
   });
 
-  it('handles the case where backend service is not running', async function() {
+  it('handles the case where backend service is not running', async function () {
     // This test takes a bit longer to finish on windows.
     // eslint-disable-next-line no-invalid-this
     this.timeout(3000);

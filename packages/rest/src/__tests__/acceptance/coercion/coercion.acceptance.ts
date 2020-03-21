@@ -68,10 +68,7 @@ describe('Coercion', () => {
 
   it('coerces parameter in query from string to number', async () => {
     spy = sinon.spy(MyController.prototype, 'createNumberFromQuery');
-    await client
-      .get('/create-number-from-query')
-      .query({num: 100})
-      .expect(200);
+    await client.get('/create-number-from-query').query({num: 100}).expect(200);
     sinon.assert.calledWithExactly(spy, 100);
   });
 

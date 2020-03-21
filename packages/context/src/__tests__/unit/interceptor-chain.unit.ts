@@ -115,14 +115,8 @@ describe('GenericInterceptorChain', () => {
   it('allows discovery of interceptors in context', async () => {
     const interceptor1 = givenNamedInterceptor('interceptor1');
     const interceptor2 = givenNamedInterceptor('interceptor2');
-    ctx
-      .bind('interceptor2')
-      .to(interceptor2)
-      .tag('my-interceptor-tag');
-    ctx
-      .bind('interceptor1')
-      .to(interceptor1)
-      .tag('my-interceptor-tag');
+    ctx.bind('interceptor2').to(interceptor2).tag('my-interceptor-tag');
+    ctx.bind('interceptor1').to(interceptor1).tag('my-interceptor-tag');
     interceptorChain = new GenericInterceptorChain(
       ctx,
       filterByTag('my-interceptor-tag'),

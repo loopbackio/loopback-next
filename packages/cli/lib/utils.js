@@ -47,7 +47,7 @@ exports.promisify = promisify;
  * taken from https://gist.github.com/mathiasbynens/6334847
  */
 function generateValidRegex() {
-  const get = function(what) {
+  const get = function (what) {
     return require('unicode-10.0.0/' + what + '/code-points.js');
   };
   const idStart = get('Binary_Property/ID_Start');
@@ -76,7 +76,7 @@ exports.validRegex = validRegex;
  * @param name
  * @returns {String|Boolean}
  */
-exports.validateClassName = function(name) {
+exports.validateClassName = function (name) {
   if (!name || name === '') {
     return 'Class name cannot be empty';
   }
@@ -104,7 +104,7 @@ exports.validateClassName = function(name) {
   return util.format('Class name is invalid: %s', name);
 };
 
-exports.logNamingIssues = function(name, log) {
+exports.logNamingIssues = function (name, log) {
   if (name.includes('_')) {
     log(
       chalk.red('>>> ') +
@@ -119,7 +119,7 @@ exports.logNamingIssues = function(name, log) {
   }
 };
 
-exports.logClassCreation = function(type, typePlural, name, log) {
+exports.logClassCreation = function (type, typePlural, name, log) {
   log(
     `${exports.toClassName(type)} ${chalk.yellow(
       name,
@@ -133,7 +133,7 @@ exports.logClassCreation = function(type, typePlural, name, log) {
 /**
  * Validate project directory to not exist
  */
-exports.validateNotExisting = function(projDir) {
+exports.validateNotExisting = function (projDir) {
   if (fs.existsSync(projDir)) {
     return util.format('Directory %s already exists.', projDir);
   }
@@ -144,7 +144,7 @@ exports.validateNotExisting = function(projDir) {
  * validate source key or foreign key for relations
  */
 /* istanbul ignore next */
-exports.validateKeyName = function(name) {
+exports.validateKeyName = function (name) {
   if (!name || name === '') {
     return 'Key name cannot be empty';
   }
@@ -174,7 +174,7 @@ exports.validateKeyName = function(name) {
  * which is an invalid case.
  */
 /* istanbul ignore next */
-exports.validateRelationName = function(name, type, foreignKeyName) {
+exports.validateRelationName = function (name, type, foreignKeyName) {
   if (!name || name === '') {
     return 'Relation name cannot be empty';
   }
@@ -208,7 +208,7 @@ exports.validateRelationName = function(name, type, foreignKeyName) {
 /**
  * Converts a name to class name after validation
  */
-exports.toClassName = function(name) {
+exports.toClassName = function (name) {
   if (name === '') return new Error('no input');
   if (typeof name != 'string' || name == null) return new Error('bad input');
   return pascalCase(camelCase(name));
@@ -224,7 +224,7 @@ exports.urlSlug = urlSlug;
 exports.untildify = untildify;
 exports.tildify = tildify;
 
-exports.validate = function(name) {
+exports.validate = function (name) {
   const isValid = validate(name).validForNewPackages;
   if (!isValid) return 'Invalid npm package name: ' + name;
   return isValid;
@@ -241,7 +241,7 @@ exports.prependBackslash = httpPath => httpPath.replace(/^\/?/, '/');
  * Allows slugs with backslash in front of them to be validated as well
  * @param {string} name Slug to validate
  */
-exports.validateUrlSlug = function(name) {
+exports.validateUrlSlug = function (name) {
   const backslashIfNeeded = name.charAt(0) === '/' ? '/' : '';
   if (backslashIfNeeded === '/') {
     name = name.substr(1);
@@ -285,7 +285,7 @@ exports.StatusConflicter = class StatusConflicter extends Conflicter {
  * paths. Must return a Promise.
  * @returns {Promise<string[]>} The filtered list of paths.
  */
-exports.findArtifactPaths = async function(dir, artifactType, reader) {
+exports.findArtifactPaths = async function (dir, artifactType, reader) {
   const readdir = reader || readdirAsync;
   debug(`Finding artifact paths at: ${dir}`);
 
@@ -316,7 +316,12 @@ exports.findArtifactPaths = async function(dir, artifactType, reader) {
  * @param {Function} reader An alternate function to replace the promisified
  * fs.readdir (useful for testing and for custom overrides).
  */
-exports.getArtifactList = async function(dir, artifactType, addSuffix, reader) {
+exports.getArtifactList = async function (
+  dir,
+  artifactType,
+  addSuffix,
+  reader,
+) {
   const paths = await exports.findArtifactPaths(dir, artifactType, reader);
   debug(`Filtering artifact paths: ${paths}`);
   return paths.map(p => {
@@ -332,7 +337,7 @@ exports.getArtifactList = async function(dir, artifactType, addSuffix, reader) {
  * Check package.json and dependencies.json to find out versions for generated
  * dependencies
  */
-exports.getDependencies = function() {
+exports.getDependencies = function () {
   const pkg = require('../package.json');
   let version = pkg.version;
   // First look for config.loopbackVersion
@@ -355,10 +360,10 @@ exports.getDependencies = function() {
 /**
  * Rename EJS files
  */
-exports.renameEJS = function() {
+exports.renameEJS = function () {
   const renameStream = new stream.Transform({objectMode: true});
 
-  renameStream._transform = function(file, enc, callback) {
+  renameStream._transform = function (file, enc, callback) {
     const filePath = file.relative;
     const dirname = path.dirname(filePath);
     let extname = path.extname(filePath);
@@ -382,7 +387,7 @@ exports.renameEJS = function() {
  * Get a validate function for object/array type
  * @param {String} type 'object' OR 'array'
  */
-exports.validateStringObject = function(type) {
+exports.validateStringObject = function (type) {
   return function validateStringified(val) {
     if (val === null || val === '') {
       return true;
@@ -410,7 +415,7 @@ exports.validateStringObject = function(type) {
 /**
  * Use readline to read text from stdin
  */
-exports.readTextFromStdin = function() {
+exports.readTextFromStdin = function () {
   const rl = readline.createInterface({
     input: process.stdin,
   });
@@ -445,7 +450,7 @@ exports.readTextFromStdin = function() {
  * @param {String} name The user input
  * @returns {String|Boolean}
  */
-exports.checkPropertyName = function(name) {
+exports.checkPropertyName = function (name) {
   const result = exports.validateRequiredName(name);
   if (result !== true) return result;
   if (RESERVED_PROPERTY_NAMES.includes(name)) {
@@ -460,7 +465,7 @@ exports.checkPropertyName = function(name) {
  * @param {String} name The user input
  * @returns {String|Boolean}
  */
-exports.validateRequiredName = function(name) {
+exports.validateRequiredName = function (name) {
   if (!name) {
     return 'Name is required';
   }
@@ -483,7 +488,7 @@ function validateValue(name, unallowedCharacters) {
  *  Returns the modelName in the directory file format for the model
  * @param {string} modelName
  */
-exports.getModelFileName = function(modelName) {
+exports.getModelFileName = function (modelName) {
   return `${toFileName(modelName)}.model.ts`;
 };
 
@@ -491,7 +496,7 @@ exports.getModelFileName = function(modelName) {
  * Returns the repositoryName in the directory file format for the repository
  * @param {string} repositoryName
  */
-exports.getRepositoryFileName = function(repositoryName) {
+exports.getRepositoryFileName = function (repositoryName) {
   return `${toFileName(repositoryName)}.repository.ts`;
 };
 
@@ -499,7 +504,7 @@ exports.getRepositoryFileName = function(repositoryName) {
  * Returns the rest-config in the directory file format for the model endpoint
  * @param {string} modelName
  */
-exports.getRestConfigFileName = function(modelName) {
+exports.getRestConfigFileName = function (modelName) {
   return `${toFileName(modelName)}.rest-config.ts`;
 };
 
@@ -507,7 +512,7 @@ exports.getRestConfigFileName = function(modelName) {
  * Returns the serviceName in the directory file format for the service
  * @param {string} serviceName
  */
-exports.getServiceFileName = function(serviceName) {
+exports.getServiceFileName = function (serviceName) {
   return `${toFileName(serviceName)}.service.ts`;
 };
 
@@ -515,7 +520,7 @@ exports.getServiceFileName = function(serviceName) {
  * Returns the observerName in the directory file format for the observer
  * @param {string} observerName
  */
-exports.getObserverFileName = function(observerName) {
+exports.getObserverFileName = function (observerName) {
   return `${toFileName(observerName)}.observer.ts`;
 };
 
@@ -523,7 +528,7 @@ exports.getObserverFileName = function(observerName) {
  * Returns the interceptorName in the directory file format for the interceptor
  * @param {string} interceptorName
  */
-exports.getInterceptorFileName = function(interceptorName) {
+exports.getInterceptorFileName = function (interceptorName) {
   return `${toFileName(interceptorName)}.interceptor.ts`;
 };
 
@@ -533,7 +538,10 @@ exports.getInterceptorFileName = function(interceptorName) {
  * @param {string} datasourcesDir path for sources
  * @param {string} dataSourceClass class name for the datasoure
  */
-exports.getDataSourceConnectorName = function(datasourcesDir, dataSourceClass) {
+exports.getDataSourceConnectorName = function (
+  datasourcesDir,
+  dataSourceClass,
+) {
   if (!dataSourceClass) {
     return false;
   }
@@ -568,7 +576,7 @@ exports.getDataSourceConnectorName = function(datasourcesDir, dataSourceClass) {
  * @param {string} datasourcesDir path for sources
  * @param {string} dataSourceClass class name for the datasoure
  */
-exports.isConnectorOfType = function(
+exports.isConnectorOfType = function (
   connectorType,
   datasourcesDir,
   dataSourceClass,
@@ -612,7 +620,7 @@ exports.isConnectorOfType = function(
  * @param {string} datasourcesDir path for sources
  * @param {string} dataSourceClass class name for the datasoure
  */
-exports.getDataSourceName = function(datasourcesDir, dataSourceClass) {
+exports.getDataSourceName = function (datasourcesDir, dataSourceClass) {
   if (!dataSourceClass) {
     return false;
   }
@@ -639,14 +647,14 @@ exports.getDataSourceName = function(datasourcesDir, dataSourceClass) {
   return result;
 };
 
-exports.dataSourceToJSONFileName = function(dataSourceClass) {
+exports.dataSourceToJSONFileName = function (dataSourceClass) {
   return path.join(
     toFileName(dataSourceClass.replace('Datasource', '')) +
       '.datasource.config.json',
   );
 };
 
-exports.stringifyObject = function(data, options = {}) {
+exports.stringifyObject = function (data, options = {}) {
   return stringifyObject(data, {
     indent: '  ', // two spaces
     singleQuotes: true,
@@ -655,7 +663,7 @@ exports.stringifyObject = function(data, options = {}) {
   });
 };
 
-exports.stringifyModelSettings = function(modelSettings) {
+exports.stringifyModelSettings = function (modelSettings) {
   if (!modelSettings || !Object.keys(modelSettings).length) return '';
   return exports.stringifyObject({settings: modelSettings});
 };

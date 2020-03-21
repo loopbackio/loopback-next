@@ -72,10 +72,7 @@ describe('Context with tag indexer', () => {
 
   describe('unbind', () => {
     it('removes indexes for a binding by tag', () => {
-      const binding = ctx
-        .bind('foo')
-        .to('bar')
-        .tag('a', {b: 1});
+      const binding = ctx.bind('foo').to('bar').tag('a', {b: 1});
       assertBindingIndexedByTag(binding, 'a', 'b');
       ctx.unbind(binding.key);
       assertBindingNotIndexedByTag(binding, 'a', 'b');

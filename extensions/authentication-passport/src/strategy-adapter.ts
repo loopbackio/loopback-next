@@ -58,18 +58,18 @@ export class StrategyAdapter<U> implements AuthenticationStrategy {
       // as a generic adapter, it is agnostic of the type of
       // the custom user, so loosen the type restriction here
       // to be `unknown`
-      strategy.success = function(user: unknown) {
+      strategy.success = function (user: unknown) {
         const userProfile = userProfileFactory(user as U);
         resolve(userProfile);
       };
 
       // add failure state handler to strategy instance
-      strategy.fail = function(challenge: string) {
+      strategy.fail = function (challenge: string) {
         reject(new HttpErrors.Unauthorized(challenge));
       };
 
       // add error state handler to strategy instance
-      strategy.error = function(error: string) {
+      strategy.error = function (error: string) {
         reject(new HttpErrors.InternalServerError(error));
       };
 

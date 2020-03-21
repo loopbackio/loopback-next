@@ -123,7 +123,7 @@ Following is an example for testing a decorator:
 
 ```ts
 export function test(file: string) {
-  return function(target: Object, methodName: string): void {
+  return function (target: Object, methodName: string): void {
     Reflector.defineMetadata(
       'example.msg.decorator.metadata.key',
       {file},

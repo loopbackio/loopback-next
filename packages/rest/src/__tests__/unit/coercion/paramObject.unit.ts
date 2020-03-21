@@ -26,7 +26,7 @@ const REQUIRED_ANY_OBJECT = {
   required: true,
 };
 
-describe('coerce object param - required', function() {
+describe('coerce object param - required', function () {
   context('valid values', () => {
     // Use JSON-encoded style, qs.stringify() omits empty objects
     test(REQUIRED_ANY_OBJECT, '{}', {});
@@ -91,7 +91,7 @@ describe('coerce object param - required', function() {
   }
 });
 
-describe('coerce object param - optional', function() {
+describe('coerce object param - optional', function () {
   context('valid values', () => {
     // Use JSON-encoded style, qs.stringify() omits empty objects
     test(OPTIONAL_ANY_OBJECT, '{}', {});

@@ -41,24 +41,20 @@ describe('importLb3ModelDefinition', () => {
     });
 
     it('normalizes custom property', () => {
-      expect(modelData.properties)
-        .to.have.property('name')
-        .deepEqual({
-          type: `'string'`,
-          tsType: 'string',
-        });
+      expect(modelData.properties).to.have.property('name').deepEqual({
+        type: `'string'`,
+        tsType: 'string',
+      });
     });
 
     it('handles id property injected by the connector', () => {
-      expect(modelData.properties)
-        .to.have.property('id')
-        .deepEqual({
-          type: `'number'`,
-          tsType: 'number',
-          id: 1,
-          generated: true,
-          updateOnly: true,
-        });
+      expect(modelData.properties).to.have.property('id').deepEqual({
+        type: `'number'`,
+        tsType: 'number',
+        id: 1,
+        generated: true,
+        updateOnly: true,
+      });
     });
 
     it('adds other data for the model template', () => {
@@ -121,26 +117,22 @@ describe('importLb3ModelDefinition', () => {
     });
 
     it('connector metadata is migrated for string property', () => {
-      expect(modelData.properties)
-        .to.have.property('name')
-        .deepEqual({
-          type: `'string'`,
-          tsType: 'string',
-          length: 25,
-          postgresql: `{columnName: 'name', dataType: 'character varying', dataLength: 25, dataPrecision: null, dataScale: null, nullable: 'YES'}`,
-        });
+      expect(modelData.properties).to.have.property('name').deepEqual({
+        type: `'string'`,
+        tsType: 'string',
+        length: 25,
+        postgresql: `{columnName: 'name', dataType: 'character varying', dataLength: 25, dataPrecision: null, dataScale: null, nullable: 'YES'}`,
+      });
     });
 
     it('connector metadata is migrated for numeric property', () => {
-      expect(modelData.properties)
-        .to.have.property('count')
-        .deepEqual({
-          type: `'number'`,
-          tsType: 'number',
-          precision: 64,
-          scale: 0,
-          postgresql: `{columnName: 'count', dataType: 'bigint', dataLength: null, dataPrecision: 64, dataScale: 0, nullable: 'YES'}`,
-        });
+      expect(modelData.properties).to.have.property('count').deepEqual({
+        type: `'number'`,
+        tsType: 'number',
+        precision: 64,
+        scale: 0,
+        postgresql: `{columnName: 'count', dataType: 'bigint', dataLength: null, dataPrecision: 64, dataScale: 0, nullable: 'YES'}`,
+      });
     });
   });
 
@@ -151,13 +143,11 @@ describe('importLb3ModelDefinition', () => {
       });
       const modelData = importLb3ModelDefinition(MyModel, log);
 
-      expect(modelData.properties)
-        .to.have.property('tags')
-        .deepEqual({
-          type: "'array'",
-          itemType: "'string'",
-          tsType: 'string[]',
-        });
+      expect(modelData.properties).to.have.property('tags').deepEqual({
+        type: "'array'",
+        itemType: "'string'",
+        tsType: 'string[]',
+      });
     });
 
     it('correctly converts long-style definition', () => {
@@ -169,14 +159,12 @@ describe('importLb3ModelDefinition', () => {
       });
       const modelData = importLb3ModelDefinition(MyModel, log);
 
-      expect(modelData.properties)
-        .to.have.property('counts')
-        .deepEqual({
-          type: "'array'",
-          itemType: "'number'",
-          tsType: 'number[]',
-          required: true,
-        });
+      expect(modelData.properties).to.have.property('counts').deepEqual({
+        type: "'array'",
+        itemType: "'number'",
+        tsType: 'number[]',
+        required: true,
+      });
     });
   });
 
@@ -347,13 +335,11 @@ describe('importLb3ModelDefinition', () => {
 
     it('emits properties defined by the child model but not inherited', () => {
       expect(Object.keys(modelData.properties)).to.deepEqual(['isPreferred']);
-      expect(modelData.properties)
-        .to.have.property('isPreferred')
-        .deepEqual({
-          type: `'boolean'`,
-          tsType: 'boolean',
-          required: true,
-        });
+      expect(modelData.properties).to.have.property('isPreferred').deepEqual({
+        type: `'boolean'`,
+        tsType: 'boolean',
+        required: true,
+      });
     });
 
     it('emits model-level settings defined by the model but not inherited', () => {
@@ -446,7 +432,7 @@ describe('importLb3ModelDefinition', () => {
       app.dataSource('ds', {connector: 'memory'});
 
       // Register a dummy mixin
-      app.registry.modelBuilder.mixins.define('timestamp', function(ctor) {});
+      app.registry.modelBuilder.mixins.define('timestamp', function (ctor) {});
 
       // Create a model using that mixin
       const DUMMY_MIXINS = {

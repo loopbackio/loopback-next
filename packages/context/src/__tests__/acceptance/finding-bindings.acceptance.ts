@@ -59,14 +59,8 @@ describe('Context bindings - Finding bindings', () => {
 
     function createTaggedBindings() {
       class Dog {}
-      ctx
-        .bind('spot')
-        .to(new Dog())
-        .tag('dog');
-      ctx
-        .bind('fido')
-        .to(new Dog())
-        .tag('dog');
+      ctx.bind('spot').to(new Dog()).tag('dog');
+      ctx.bind('fido').to(new Dog()).tag('dog');
     }
   });
 

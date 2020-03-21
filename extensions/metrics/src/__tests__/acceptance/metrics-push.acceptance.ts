@@ -12,7 +12,7 @@ import {PushGateway} from './mock-pushgateway';
 
 const gateway = new PushGateway();
 
-describe('Metrics (with push gateway)', function() {
+describe('Metrics (with push gateway)', function () {
   let gwUrl: string;
   before(async () => {
     const server = await gateway.start(0);

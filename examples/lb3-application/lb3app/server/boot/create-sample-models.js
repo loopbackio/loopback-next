@@ -7,7 +7,7 @@
 
 const debug = require('debug')('loopback:example:lb3application');
 
-module.exports = async function(app) {
+module.exports = async function (app) {
   await app.dataSources.db.automigrate('CoffeeShop');
 
   const coffeeShops = await app.models.CoffeeShop.create([

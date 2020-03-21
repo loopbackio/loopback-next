@@ -177,7 +177,7 @@ describe('app-generator with --applicationName', () => {
 
 // The test takes about 1 min to install dependencies
 function testFormat() {
-  before(function() {
+  before(function () {
     // eslint-disable-next-line no-invalid-this
     this.timeout(90 * 1000);
     return helpers
@@ -277,7 +277,7 @@ describe('app-generator with tilde project path', () => {
     outdir: pathWithTilde,
   };
 
-  before(async function() {
+  before(async function () {
     // Increase the timeout to accommodate slow CI build machines
     // eslint-disable-next-line no-invalid-this
     this.timeout(30 * 1000);
@@ -294,7 +294,7 @@ describe('app-generator with tilde project path', () => {
     // tilde-path-app should be created at this point
     assert.equal(fs.existsSync(sandbox), true);
   });
-  after(function() {
+  after(function () {
     // Increase the timeout to accommodate slow CI build machines
     // eslint-disable-next-line no-invalid-this
     this.timeout(30 * 1000);

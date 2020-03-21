@@ -61,10 +61,7 @@ describe('@inject.view', () => {
     expect(inst.view).to.be.instanceOf(ContextView);
     expect(await inst.view.values()).to.eql(['BAR', 'FOO']);
     // Add a new binding that matches the filter
-    ctx
-      .bind('xyz')
-      .to('XYZ')
-      .tag('foo');
+    ctx.bind('xyz').to('XYZ').tag('foo');
     // The view picks up the new binding
     expect(await inst.view.values()).to.eql(['BAR', 'XYZ', 'FOO']);
   });
@@ -80,11 +77,6 @@ function givenContext(bindings: Binding[] = []) {
       .tag('foo', 'bar')
       .inScope(BindingScope.SINGLETON),
   );
-  bindings.push(
-    parent
-      .bind('foo')
-      .to('FOO')
-      .tag('foo', 'bar'),
-  );
+  bindings.push(parent.bind('foo').to('FOO').tag('foo', 'bar'));
   return ctx;
 }

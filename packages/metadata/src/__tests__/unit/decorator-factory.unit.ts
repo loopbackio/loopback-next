@@ -20,7 +20,7 @@ describe('DecoratorFactory.cloneDeep', () => {
     class MyController {}
     const val = {
       target: MyController,
-      fn: function() {},
+      fn: function () {},
       spec: {x: 1},
     };
     const copy = DecoratorFactory.cloneDeep(val);

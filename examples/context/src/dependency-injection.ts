@@ -103,10 +103,7 @@ export async function main() {
   ctx.bind('currentLanguage').to('zh');
 
   // Add EnglishGreeter for now
-  ctx
-    .bind('greeters.EnglishGreeter')
-    .toClass(EnglishGreeter)
-    .tag('greeter');
+  ctx.bind('greeters.EnglishGreeter').toClass(EnglishGreeter).tag('greeter');
 
   // Get an instance of the greeting service
   const greetingService = await ctx.get(GREETING_SERVICE);
@@ -120,10 +117,7 @@ export async function main() {
   console.log(greeting);
 
   // Now add ChineseGreeter
-  ctx
-    .bind('greeters.ChineseGreeter')
-    .toClass(ChineseGreeter)
-    .tag('greeter');
+  ctx.bind('greeters.ChineseGreeter').toClass(ChineseGreeter).tag('greeter');
 
   greeting = await invokeMethod(greetingService, 'greet', ctx);
   console.log(greeting);

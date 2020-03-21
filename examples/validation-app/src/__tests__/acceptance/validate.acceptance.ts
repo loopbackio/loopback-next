@@ -28,37 +28,25 @@ describe('validate properties', () => {
   }
 
   it('can create CoffeeShop with valid properties', async () => {
-    await client
-      .post('/coffee-shops')
-      .send(validCoffeeShop)
-      .expect(200);
+    await client.post('/coffee-shops').send(validCoffeeShop).expect(200);
   });
 
   it('create CoffeeShop failed with city name exceeds length limit', async () => {
     const invalidCityNameCS = validCoffeeShop;
     invalidCityNameCS.city = 'Tooooooooooronto';
-    await client
-      .post('/coffee-shops')
-      .send(invalidCityNameCS)
-      .expect(422);
+    await client.post('/coffee-shops').send(invalidCityNameCS).expect(422);
   });
 
   it('create CoffeeShop failed with invalid phone number', async () => {
     const invalidPhoneNumCS = validCoffeeShop;
     invalidPhoneNumCS.phoneNum = '1111111111';
-    await client
-      .post('/coffee-shops')
-      .send(invalidPhoneNumCS)
-      .expect(422);
+    await client.post('/coffee-shops').send(invalidPhoneNumCS).expect(422);
   });
 
   it('create CoffeeShop failed with capacity exceeds limit', async () => {
     const invalidCapacityCS = validCoffeeShop;
     invalidCapacityCS.capacity = 10000;
-    await client
-      .post('/coffee-shops')
-      .send(invalidCapacityCS)
-      .expect(422);
+    await client.post('/coffee-shops').send(invalidCapacityCS).expect(422);
   });
 
   it('create CoffeeShop failed with invalid area code', async () => {
@@ -67,9 +55,6 @@ describe('validate properties', () => {
       phoneNum: '999-111-1111',
       capacity: 10,
     };
-    await client
-      .post('/coffee-shops')
-      .send(invalidAreaCodeCS)
-      .expect(422);
+    await client.post('/coffee-shops').send(invalidAreaCodeCS).expect(422);
   });
 });

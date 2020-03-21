@@ -62,9 +62,7 @@ describe('RestServer (integration)', () => {
           .to.have.property('url')
           .which.is.a.String()
           .match(/http|https\:\/\//);
-        await supertest(server.url)
-          .get('/')
-          .expect(200, 'Hello');
+        await supertest(server.url).get('/').expect(200, 'Hello');
       });
 
       it('includes basePath in the url property', async () => {
@@ -77,9 +75,7 @@ describe('RestServer (integration)', () => {
           .which.is.a.String()
           .match(/http|https\:\/\//);
         expect(server.url).to.match(/api$/);
-        await supertest(server.url)
-          .get('/')
-          .expect(200, 'Hello');
+        await supertest(server.url).get('/').expect(200, 'Hello');
       });
     });
 
@@ -93,9 +89,7 @@ describe('RestServer (integration)', () => {
           .to.have.property('rootUrl')
           .which.is.a.String()
           .match(/http|https\:\/\//);
-        await supertest(server.rootUrl)
-          .get('/api')
-          .expect(200, 'Hello');
+        await supertest(server.rootUrl).get('/api').expect(200, 'Hello');
       });
 
       it('does not include basePath in rootUrl', async () => {
@@ -107,9 +101,7 @@ describe('RestServer (integration)', () => {
           .to.have.property('rootUrl')
           .which.is.a.String()
           .match(/http|https\:\/\//);
-        await supertest(server.rootUrl)
-          .get('/api')
-          .expect(200, 'Hello');
+        await supertest(server.rootUrl).get('/api').expect(200, 'Hello');
       });
     });
   });
@@ -185,9 +177,7 @@ describe('RestServer (integration)', () => {
       server.handler((context, sequence) => {
         return Promise.reject(new Error('unhandled test error'));
       });
-      await createClientForHandler(server.requestHandler)
-        .get('/')
-        .expect(500);
+      await createClientForHandler(server.requestHandler).get('/').expect(500);
       expect(errorMsg).to.match(
         /Unhandled error in GET \/\: 500 Error\: unhandled test error/,
       );

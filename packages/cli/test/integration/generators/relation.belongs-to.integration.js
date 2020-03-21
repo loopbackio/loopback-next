@@ -37,7 +37,7 @@ const repositoryFileName = [
   'order-class-type.repository.ts',
 ];
 
-describe('lb4 relation', function() {
+describe('lb4 relation', function () {
   // eslint-disable-next-line no-invalid-this
   this.timeout(50000);
 
@@ -124,7 +124,7 @@ describe('lb4 relation', function() {
       },
     ];
 
-    promptArray.forEach(function(multiItemPrompt, i) {
+    promptArray.forEach(function (multiItemPrompt, i) {
       describe('answers ' + JSON.stringify(multiItemPrompt), () => {
         suite(multiItemPrompt, i);
       });
@@ -220,7 +220,7 @@ describe('lb4 relation', function() {
         relationName: 'my_customer',
       },
     ];
-    promptArray.forEach(function(multiItemPrompt, i) {
+    promptArray.forEach(function (multiItemPrompt, i) {
       describe('answers ' + JSON.stringify(multiItemPrompt), () => {
         suite(multiItemPrompt, i);
       });
@@ -267,7 +267,7 @@ describe('lb4 relation', function() {
       },
     ];
 
-    promptArray.forEach(function(multiItemPrompt, i) {
+    promptArray.forEach(function (multiItemPrompt, i) {
       describe('answers ' + JSON.stringify(multiItemPrompt), () => {
         suite(multiItemPrompt, i);
       });
@@ -342,7 +342,7 @@ describe('lb4 relation', function() {
 
     const sourceClassnames = ['Order', 'OrderClass', 'OrderClassType'];
 
-    promptArray.forEach(function(multiItemPrompt, i) {
+    promptArray.forEach(function (multiItemPrompt, i) {
       describe('answers ' + JSON.stringify(multiItemPrompt), () => {
         suite(multiItemPrompt, i);
       });

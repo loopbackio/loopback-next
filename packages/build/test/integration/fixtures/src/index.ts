@@ -7,7 +7,7 @@
  * log decorator
  */
 export function log() {
-  return function(target: object | Function) {};
+  return function (target: object | Function) {};
 }
 
 /**
