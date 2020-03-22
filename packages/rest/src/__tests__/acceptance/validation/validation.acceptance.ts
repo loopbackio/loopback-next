@@ -497,6 +497,135 @@ describe('Validation at REST level', () => {
     },
   );
 
+  context('with request body validation options - custom keywords', () => {
+    @model()
+    class ProductWithName {
+      @property()
+      id: number;
+
+      @property({required: true, jsonSchema: {validProductName: true}})
+      name: string;
+
+      constructor(data: Partial<ProductWithName>) {
+        Object.assign(this, data);
+      }
+    }
+
+    class ProductController {
+      @post('/products')
+      async create(
+        @requestBody({required: true}) data: ProductWithName,
+      ): Promise<ProductWithName> {
+        return new ProductWithName({id: 1, name: 'prod-1'});
+      }
+    }
+
+    before(() => givenAnAppAndAClient(ProductController));
+    after(() => app.stop());
+
+    it('allows async custom keyword', async () => {
+      app.bind(RestBindings.REQUEST_BODY_PARSER_OPTIONS).to({
+        validation: {
+          nullable: false,
+          logger: false, // Disable log warning - meta-schema not available
+          compiledSchemaCache: new WeakMap(),
+          $data: true,
+          ajvKeywords: true,
+          ajvErrors: {
+            singleError: true,
+          },
+          keywords: {
+            validProductName: {
+              async: true,
+              type: 'string',
+              validate: async (schema: unknown, data: string) => {
+                return data.startsWith('prod-');
+              },
+            },
+          },
+        },
+      });
+      const DATA = {
+        name: 'iPhone',
+      };
+      const res = await client
+        .post('/products')
+        .send(DATA)
+        .expect(422);
+
+      expect(res.body).to.eql({
+        error: {
+          statusCode: 422,
+          name: 'UnprocessableEntityError',
+          message:
+            'The request body is invalid. See error object `details` property for more info.',
+          code: 'VALIDATION_FAILED',
+          details: [
+            {
+              code: 'validProductName',
+              info: {
+                keyword: 'validProductName',
+              },
+              message: 'should pass "validProductName" keyword validation',
+              path: '/name',
+            },
+          ],
+        },
+      });
+    });
+
+    it('allows sync custom keyword', async () => {
+      app.bind(RestBindings.REQUEST_BODY_PARSER_OPTIONS).to({
+        validation: {
+          nullable: false,
+          logger: false, // Disable log warning - meta-schema not available
+          compiledSchemaCache: new WeakMap(),
+          $data: true,
+          ajvKeywords: true,
+          ajvErrors: {
+            singleError: true,
+          },
+          keywords: {
+            validProductName: {
+              async: false,
+              type: 'string',
+              validate: (schema: unknown, data: string) => {
+                return data.startsWith('prod-');
+              },
+            },
+          },
+        },
+      });
+      const DATA = {
+        name: 'iPhone',
+      };
+      const res = await client
+        .post('/products')
+        .send(DATA)
+        .expect(422);
+
+      expect(res.body).to.eql({
+        error: {
+          statusCode: 422,
+          name: 'UnprocessableEntityError',
+          message:
+            'The request body is invalid. See error object `details` property for more info.',
+          code: 'VALIDATION_FAILED',
+          details: [
+            {
+              code: 'validProductName',
+              info: {
+                keyword: 'validProductName',
+              },
+              message: 'should pass "validProductName" keyword validation',
+              path: '/name',
+            },
+          ],
+        },
+      });
+    });
+  });
+
   // A request body schema can be provided explicitly by the user
   // as an inlined content[type].schema property.
   context('for fully-specified request body', () => {

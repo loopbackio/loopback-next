@@ -179,15 +179,18 @@ async function validateValueAgainstSchema(
 
 function createValidator(
   schema: SchemaObject,
-  globalSchemas?: SchemasObject,
+  globalSchemas: SchemasObject = {},
   options?: RequestBodyValidationOptions,
 ): ajv.ValidateFunction {
   const jsonSchema = convertToJsonSchema(schema);
 
-  const schemaWithRef = Object.assign({components: {}}, jsonSchema);
-  schemaWithRef.components = {
-    schemas: globalSchemas,
-  };
+  // Clone global schemas to set `$async: true` flag
+  const schemas: SchemasObject = {};
+  for (const name in globalSchemas) {
+    // See https://github.com/strongloop/loopback-next/issues/4939
+    schemas[name] = {...globalSchemas[name], $async: true};
+  }
+  const schemaWithRef = {components: {schemas}, ...jsonSchema};
 
   // FIXME(rfeng): We would prefer to inject the Ajv service
   const ajvInst = new AjvProvider(options).value();
