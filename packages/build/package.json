@@ -30,7 +30,7 @@
 		"glob": "^7.1.6",
 		"mocha": "^7.1.1",
 		"nyc": "^15.0.0",
-		"prettier": "^2.0.0",
+		"prettier": "^2.0.2",
 		"rimraf": "^3.0.2",
 		"source-map-support": "^0.5.16",
 		"typescript": "~3.8.3"
