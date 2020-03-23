@@ -14,7 +14,7 @@ import {
   RestServer,
 } from '../../..';
 import {RestTags} from '../../../keys';
-import {InfoSpecEnhancer} from './fixtures/info.spec.extension';
+import {TestInfoSpecEnhancer} from './fixtures/info.spec.extension';
 
 describe('RestServer.getApiSpec()', () => {
   let app: Application;
@@ -326,7 +326,51 @@ describe('RestServer.getApiSpec()', () => {
       title: 'LoopBack Test Application',
       version: '1.0.1',
     };
-    server.add(createBindingFromClass(InfoSpecEnhancer));
+    server.add(createBindingFromClass(TestInfoSpecEnhancer));
+    const spec = await server.getApiSpec();
+    expect(spec.info).to.eql(EXPECTED_SPEC_INFO);
+  });
+
+  it('invokes info oas enhancers', async () => {
+    const EXPECTED_SPEC_INFO = {
+      title: 'MyApp - LoopBack Test Application',
+      version: '1.0.1',
+      contact: {
+        name: 'Barney Rubble',
+        email: 'b@rubble.com',
+        url: 'http://barnyrubble.tumblr.com/',
+      },
+    };
+    app.setMetadata({
+      name: 'MyApp',
+      description: 'LoopBack Test Application',
+      version: '1.0.1',
+      author: 'Barney Rubble <b@rubble.com> (http://barnyrubble.tumblr.com/)',
+    });
+    const spec = await server.getApiSpec();
+    expect(spec.info).to.eql(EXPECTED_SPEC_INFO);
+  });
+
+  it('invokes info oas enhancers with author object', async () => {
+    const EXPECTED_SPEC_INFO = {
+      title: 'MyApp',
+      version: '1.0.1',
+      contact: {
+        name: 'Barney Rubble',
+        email: 'b@rubble.com',
+        url: 'http://barnyrubble.tumblr.com/',
+      },
+    };
+    app.setMetadata({
+      name: 'MyApp',
+      version: '1.0.1',
+      description: '',
+      author: {
+        name: 'Barney Rubble',
+        email: 'b@rubble.com',
+        url: 'http://barnyrubble.tumblr.com/',
+      },
+    });
     const spec = await server.getApiSpec();
     expect(spec.info).to.eql(EXPECTED_SPEC_INFO);
   });
