@@ -3,7 +3,6 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Constructor} from '@loopback/context';
 import {expect} from '@loopback/testlab';
 import {
   AndClause,
@@ -29,10 +28,10 @@ import {
 describe('RepositoryClass builder', () => {
   describe('defineCrudRepositoryClass', () => {
     it('should generate CRUD repository class', async () => {
-      const AddressRepository = defineCrudRepositoryClass(
-        Address,
-        DummyCrudRepository,
-      );
+      const AddressRepository = defineCrudRepositoryClass<
+        typeof Address,
+        DummyCrudRepository<Address>
+      >(Address, DummyCrudRepository);
       // `CrudRepository.prototype.find` is inherited
       expect(AddressRepository.prototype.find).to.be.a.Function();
       // `DummyCrudRepository.prototype.findByTitle` is inherited
@@ -76,13 +75,14 @@ describe('RepositoryClass builder', () => {
       expect(ProductRepository.name).to.equal('ProductRepository');
       expect(ProductRepository.prototype.find).to.be.a.Function();
       expect(ProductRepository.prototype.findById).to.be.a.Function();
+      expect(ProductRepository.prototype.findByName).to.be.a.Function();
       expect(Object.getPrototypeOf(ProductRepository)).to.equal(
         BaseProductRepository,
       );
     });
   });
 
-  describe('defineEntityKeyValueRepositoryClass', () => {
+  describe('defineKeyValueRepositoryClass', () => {
     it('should generate key value repository class', async () => {
       const ProductRepository = defineKeyValueRepositoryClass(Product);
 
@@ -91,6 +91,26 @@ describe('RepositoryClass builder', () => {
       expect(Object.getPrototypeOf(ProductRepository)).to.equal(
         DefaultKeyValueRepository,
       );
+    });
+
+    it('supports custom base repository class', () => {
+      class MyKeyValueRepo<M extends Model> extends DefaultKeyValueRepository<
+        M
+      > {
+        async getByName(name: string): Promise<Product[]> {
+          throw new Error('not implemented');
+        }
+      }
+
+      const ProductRepository = defineKeyValueRepositoryClass<
+        typeof Product,
+        MyKeyValueRepo<Product>
+      >(Product, MyKeyValueRepo);
+
+      expect(ProductRepository.name).to.equal('ProductRepository');
+      expect(ProductRepository.prototype.get).to.be.a.Function();
+      expect(ProductRepository.prototype.getByName).to.be.a.Function();
+      expect(Object.getPrototypeOf(ProductRepository)).to.equal(MyKeyValueRepo);
     });
   });
 
@@ -117,7 +137,7 @@ describe('RepositoryClass builder', () => {
 
   class DummyCrudRepository<M extends Model> implements CrudRepository<M> {
     constructor(
-      private modelCtor: Constructor<M>,
+      private modelCtor: typeof Model & {prototype: M},
       private dataSource: juggler.DataSource,
     ) {}
     create(

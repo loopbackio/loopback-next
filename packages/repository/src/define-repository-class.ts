@@ -122,17 +122,15 @@ export function defineCrudRepositoryClass<
 export function defineEntityCrudRepositoryClass<
   E extends typeof Entity,
   IdType,
-  Relations extends object = {}
+  Relations extends object,
+  R extends EntityCrudRepository<PrototypeOf<E>, IdType, Relations>
 >(
   entityClass: E,
   baseRepositoryClass: BaseRepositoryClass<
     E,
-    EntityCrudRepository<PrototypeOf<E>, IdType, Relations>
-  > = DefaultCrudRepository as BaseRepositoryClass<
-    E,
-    EntityCrudRepository<PrototypeOf<E>, IdType, Relations>
-  >,
-): EntityCrudRepositoryClass<PrototypeOf<E>, IdType, Relations> {
+    R
+  > = (DefaultCrudRepository as unknown) as BaseRepositoryClass<E, R>,
+): CrudRepositoryClass<PrototypeOf<E>, R> {
   return defineCrudRepositoryClass(entityClass, baseRepositoryClass);
 }
 
@@ -192,5 +190,5 @@ export interface KeyValueRepositoryClass<
    * @param dataSource - DataSource object
    */
   new (dataSource: juggler.DataSource): R;
-  prototype: KeyValueRepository<M>;
+  prototype: R;
 }
