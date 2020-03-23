@@ -224,6 +224,7 @@
 /packages/cli/generators/app @nabdelgadir
 /packages/cli/generators/extension @nabdelgadir
 /examples/todo @nabdelgadir
+/examples/validation-app @dhmlau
 /docs/site/tutorials/todo @nabdelgadir
 
 #
