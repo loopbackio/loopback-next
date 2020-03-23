@@ -27,7 +27,8 @@ export class ApplicationMetadataBooter implements Booter {
 
   async configure() {
     try {
-      const pkg = require(path.resolve(this.projectRoot, 'package.json'));
+      // `this.projectRoot` points to `<project>/dist`
+      const pkg = require(path.resolve(this.projectRoot, '../package.json'));
       this.app.setMetadata(pkg);
     } catch (err) {
       debug('package.json not found', err);

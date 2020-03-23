@@ -27,10 +27,17 @@ describe('application metadata booter acceptance tests', () => {
   });
 
   async function getApp() {
+    // Add the following files
+    // - package.json
+    // - dist/application.js
     await sandbox.copyFile(resolve(__dirname, '../fixtures/package.json'));
-    await sandbox.copyFile(resolve(__dirname, '../fixtures/application.js'));
+    await sandbox.copyFile(
+      resolve(__dirname, '../fixtures/application.js'),
+      'dist/application.js',
+    );
 
-    const MyApp = require(resolve(SANDBOX_PATH, 'application.js')).BooterApp;
+    const MyApp = require(resolve(SANDBOX_PATH, 'dist/application.js'))
+      .BooterApp;
     app = new MyApp({
       rest: givenHttpServerConfig(),
     });
