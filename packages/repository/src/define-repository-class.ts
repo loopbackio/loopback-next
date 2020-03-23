@@ -3,8 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Constructor} from '@loopback/context';
 import assert from 'assert';
+import {PrototypeOf} from './common-types';
 import {Entity, Model} from './model';
 import {
   CrudRepository,
@@ -54,19 +54,16 @@ export interface EntityCrudRepositoryClass<
  * @typeParam M - Model class
  * @typeParam R - Repository class/interface
  */
-export interface BaseRepositoryClass<M extends Model, R extends Repository<M>> {
+export interface BaseRepositoryClass<
+  M extends typeof Model,
+  R extends Repository<PrototypeOf<M>>
+> {
   /**
    * The constructor for the generated repository class
    * @param modelClass - Model class
    * @param dataSource - DataSource object
    */
-  new (
-    // Make model class conditional of Model or Entity
-    modelClass: (M extends Entity ? typeof Entity : typeof Model) & {
-      prototype: M;
-    },
-    dataSource: juggler.DataSource,
-  ): R;
+  new (modelClass: M, dataSource: juggler.DataSource): R;
   prototype: R;
 }
 /**
@@ -84,12 +81,12 @@ export interface BaseRepositoryClass<M extends Model, R extends Repository<M>> {
  * @typeParam R - CRUD Repository class/interface
  */
 export function defineCrudRepositoryClass<
-  M extends Model,
-  R extends CrudRepository<M>
+  M extends typeof Model,
+  R extends CrudRepository<PrototypeOf<M>>
 >(
-  modelClass: Constructor<M> & {prototype: M},
+  modelClass: M,
   baseRepositoryClass: BaseRepositoryClass<M, R>,
-): CrudRepositoryClass<M, R> {
+): CrudRepositoryClass<PrototypeOf<M>, R> {
   const repoName = modelClass.name + 'Repository';
   const defineNamedRepo = new Function(
     'ModelCtor',
@@ -123,19 +120,19 @@ export function defineCrudRepositoryClass<
  * @typeParam Relations - Relations for the entity
  */
 export function defineEntityCrudRepositoryClass<
-  E extends Entity,
+  E extends typeof Entity,
   IdType,
   Relations extends object = {}
 >(
-  entityClass: Constructor<E> & {prototype: E},
+  entityClass: E,
   baseRepositoryClass: BaseRepositoryClass<
     E,
-    EntityCrudRepository<E, IdType, Relations>
-  > = (DefaultCrudRepository as unknown) as BaseRepositoryClass<
+    EntityCrudRepository<PrototypeOf<E>, IdType, Relations>
+  > = DefaultCrudRepository as BaseRepositoryClass<
     E,
-    EntityCrudRepository<E, IdType, Relations>
+    EntityCrudRepository<PrototypeOf<E>, IdType, Relations>
   >,
-): EntityCrudRepositoryClass<E, IdType, Relations> {
+): EntityCrudRepositoryClass<PrototypeOf<E>, IdType, Relations> {
   return defineCrudRepositoryClass(entityClass, baseRepositoryClass);
 }
 
@@ -148,7 +145,7 @@ export function defineEntityCrudRepositoryClass<
  * const ProductKeyValueRepository = defineKeyValueRepositoryClass(Product);
  * ```
  *
- * @param entityClass - An entity class such as `Product`.
+ * @param modelClass - An entity class such as `Product`.
  * @param baseRepositoryClass - Base KeyValue repository class.
  * Defaults to `DefaultKeyValueRepository`
  *
@@ -156,15 +153,15 @@ export function defineEntityCrudRepositoryClass<
  * @typeParam R - KeyValueRepository class/interface
  */
 export function defineKeyValueRepositoryClass<
-  M extends Model,
-  R extends KeyValueRepository<M> = KeyValueRepository<M>
+  M extends typeof Model,
+  R extends KeyValueRepository<PrototypeOf<M>>
 >(
-  entityClass: Constructor<M> & {prototype: M},
+  entityClass: M,
   baseRepositoryClass: BaseRepositoryClass<
     M,
     R
   > = (DefaultKeyValueRepository as unknown) as BaseRepositoryClass<M, R>,
-): KeyValueRepositoryClass<M, R> {
+): KeyValueRepositoryClass<PrototypeOf<M>, R> {
   const repoName = entityClass.name + 'Repository';
   const defineNamedRepo = new Function(
     'EntityCtor',
