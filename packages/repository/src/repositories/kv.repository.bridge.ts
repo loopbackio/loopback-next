@@ -5,7 +5,7 @@
 
 import legacy from 'loopback-datasource-juggler';
 import {DataObject, Options} from '../common-types';
-import {Entity} from '../model';
+import {Model} from '../model';
 import {KeyValueFilter, KeyValueRepository} from './kv.repository';
 import {ensurePromise, juggler} from './legacy-juggler-bridge';
 
@@ -22,7 +22,7 @@ if (!(Symbol as any).asyncIterator) {
 /**
  * An implementation of KeyValueRepository based on loopback-datasource-juggler
  */
-export class DefaultKeyValueRepository<T extends Entity>
+export class DefaultKeyValueRepository<T extends Model>
   implements KeyValueRepository<T> {
   /**
    * A legacy KeyValueModel class
@@ -34,7 +34,7 @@ export class DefaultKeyValueRepository<T extends Entity>
    * @param ds - Legacy DataSource
    */
   constructor(
-    private entityClass: typeof Entity & {prototype: T},
+    private entityClass: typeof Model & {prototype: T},
     ds: juggler.DataSource,
   ) {
     // KVModel class is placeholder to receive methods from KeyValueAccessObject
