@@ -74,6 +74,9 @@ LoopBack 4 comes with the following example projects.
   An example showing how to use `CrudRestComponent` to define default repository
   and controller classes for a model without creating those classes.
 
+- **[validation-app](https://github.com/strongloop/loopback-next/tree/master/examples/validation-app)**:
+  An example demonstrating how to add validations in a LoopBack application.
+
 ## How to download examples
 
 You can download the example projects using our CLI tool `lb4`:
