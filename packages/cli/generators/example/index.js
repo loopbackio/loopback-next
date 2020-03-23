@@ -39,6 +39,7 @@ const EXAMPLES = {
     'An access control example migrated from the LoopBack 3 repository ' +
     'loopback-example-access-control.',
   'metrics-prometheus': 'An example illustrating metrics using Prometheus.',
+  'validation-app': 'An example demonstrating how to add validations.',
 };
 Object.freeze(EXAMPLES);
 
