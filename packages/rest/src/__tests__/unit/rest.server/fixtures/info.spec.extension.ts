@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {bind} from '@loopback/core';
-import debugModule from 'debug';
+import debugFactory from 'debug';
 import {inspect} from 'util';
 import {
   asSpecEnhancer,
@@ -13,14 +13,14 @@ import {
   OpenApiSpec,
 } from '../../../..';
 
-const debug = debugModule('loopback:openapi:spec-enhancer');
+const debug = debugFactory('loopback:openapi:spec-enhancer');
 
 /**
  * A spec enhancer to add OpenAPI info spec
  */
 @bind(asSpecEnhancer)
-export class InfoSpecEnhancer implements OASEnhancer {
-  name = 'info';
+export class TestInfoSpecEnhancer implements OASEnhancer {
+  name = 'info-test';
 
   modifySpec(spec: OpenApiSpec): OpenApiSpec {
     const InfoPatchSpec = {

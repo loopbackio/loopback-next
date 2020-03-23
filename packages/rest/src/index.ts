@@ -17,6 +17,7 @@ export * from './rest.component';
 export * from './rest.server';
 export * from './router';
 export * from './sequence';
+export * from './spec-enhancers/info.spec-enhancer';
 export * from './types';
 export * from './validation/request-body.validator';
 export * from './writer';

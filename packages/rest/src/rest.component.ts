@@ -3,7 +3,12 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Binding, Constructor, inject} from '@loopback/context';
+import {
+  Binding,
+  Constructor,
+  createBindingFromClass,
+  inject,
+} from '@loopback/context';
 import {
   Application,
   Component,
@@ -37,6 +42,7 @@ import {
   RestServerConfig,
 } from './rest.server';
 import {DefaultSequence} from './sequence';
+import {InfoSpecEnhancer} from './spec-enhancers/info.spec-enhancer';
 
 export class RestComponent implements Component {
   providers: ProviderMap = {
@@ -76,6 +82,7 @@ export class RestComponent implements Component {
       StreamBodyParser,
       RestBindings.REQUEST_BODY_PARSER_STREAM,
     ),
+    createBindingFromClass(InfoSpecEnhancer),
   ];
   servers: {
     [name: string]: Constructor<Server>;
