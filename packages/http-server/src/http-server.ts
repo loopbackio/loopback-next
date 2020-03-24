@@ -33,7 +33,7 @@ export interface BaseHttpOptions extends ListenOptions {
    * Defaults to Infinity (don't force-close). If you want to immediately
    * destroy all sockets set its value to `0`.
    *
-   * @see https://www.npmjs.com/package/stoppable
+   * See {@link https://www.npmjs.com/package/stoppable | stoppable}
    */
   gracePeriodForClose?: number;
 }

@@ -7,7 +7,7 @@ import {intercept} from '@loopback/context';
 import {LoggingBindings} from '../keys';
 
 /**
- * @logInvocation decorator for method invocations.
+ * `@logInvocation` decorator for method invocations.
  *
  * @example
  * ```ts
