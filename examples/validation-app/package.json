@@ -26,8 +26,7 @@
     "docker:run": "docker run -p 3000:3000 -d validation-app",
     "migrate": "node ./dist/migrate",
     "prestart": "npm run build",
-    "start": "node -r source-map-support/register .",
-    "prepublishOnly": "npm run test"
+    "start": "node -r source-map-support/register ."
   },
   "repository": {
     "type": "git",
