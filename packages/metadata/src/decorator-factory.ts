@@ -792,9 +792,11 @@ export class MethodParameterDecoratorFactory<T> extends DecoratorFactory<
 
 /**
  *  Factory for an append-array of method-level decorators
- *  The @response metadata for a method is an array.
+ *  The `@response` metadata for a method is an array.
  *  Each item in the array should be a single value, containing
  *  a response code and a single spec or Model.  This should allow:
+ *
+ * @example
  * ```ts
  *  @response(200, MyFirstModel)
  *  @response(403, [NotAuthorizedReasonOne, NotAuthorizedReasonTwo])

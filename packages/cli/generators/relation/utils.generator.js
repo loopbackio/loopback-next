@@ -102,7 +102,7 @@ exports.addExportController = async function (
  * @param {classObj}
  * @param {propertyName} string
  *
- * @return bool true on success, false on failure.
+ * @returns bool true on success, false on failure.
  */
 
 exports.doesPropertyExist = function (classObj, propertyName) {
@@ -140,7 +140,7 @@ exports.doesRelationExist = function (classObj, propertyName) {
  * @param {classObj}
  * @param {propertyName} string
  *
- * @return string
+ * @returns string
  */
 
 exports.getPropertyType = function (classObj, propertyName) {
@@ -154,7 +154,7 @@ exports.getPropertyType = function (classObj, propertyName) {
  * @param {propertyName} string
  * @param {propertyType} string
  *
- * @return bool true on success, false on failure.
+ * @returns bool true on success, false on failure.
  */
 
 exports.isValidPropertyType = function (classObj, propertyName, propertyType) {
