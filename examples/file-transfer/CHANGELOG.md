@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.2](https://github.com/strongloop/loopback-next/compare/@loopback/example-file-transfer@1.1.1...@loopback/example-file-transfer@1.1.2) (2020-03-24)
+
+**Note:** Version bump only for package @loopback/example-file-transfer
+
+
+
+
+
 ## 1.1.1 (2020-03-17)
 
 **Note:** Version bump only for package @loopback/example-file-transfer

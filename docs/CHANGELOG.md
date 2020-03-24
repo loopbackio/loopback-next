@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.1.1...@loopback/docs@3.2.0) (2020-03-24)
+
+
+### Bug Fixes
+
+* **docs:** add validation-app to example list ([df0e186](https://github.com/strongloop/loopback-next/commit/df0e18637173f4be6ddbeedae3c6ef45e1a81b3e))
+* **docs:** update example list ([9cc7b18](https://github.com/strongloop/loopback-next/commit/9cc7b182add211d84a20db5f63fe0997ab010eda))
+
+
+### Features
+
+* **cli:** add `lb4 rest-crud` command to generate model endpoints from model/datasource ([38fd41e](https://github.com/strongloop/loopback-next/commit/38fd41e26cd5abf52e69d0b275a730b195be813a))
+* **context:** emit bind/unbind events on ContextView ([65e3d38](https://github.com/strongloop/loopback-next/commit/65e3d38a34b351929ba422de667bc236e9619ebe))
+* **core:** add more flavors of [@extensions](https://github.com/extensions) decorator ([192563a](https://github.com/strongloop/loopback-next/commit/192563a3f4cdb136b86d898760a33051436a56de))
+* **docs:** add readme reference for @loopback/rest-crud under `Using Components` ([029c5ba](https://github.com/strongloop/loopback-next/commit/029c5ba05cbf5f11bc3e5c533d86ea2b8a53af88))
+
+
+
+
+
 ## [3.1.1](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.1.0...@loopback/docs@3.1.1) (2020-03-17)
 
 **Note:** Version bump only for package @loopback/docs

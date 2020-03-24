@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/build@4.0.1...@loopback/build@5.0.0) (2020-03-24)
+
+
+### Features
+
+* update dependency prettier to v2 ([65bdee7](https://github.com/strongloop/loopback-next/commit/65bdee7b22ade4c7ba32499ce3939fa84b9c7c42))
+
+
+### BREAKING CHANGES
+
+* prettier@2.0.0 introduces breaking changes for certain rules.
+See https://prettier.io/blog/2020/03/21/2.0.0.html for more details.
+
+To reformat code using prettier, run `npm run prettier:fix`.
+
+
+
+
+
 ## [4.0.1](https://github.com/strongloop/loopback-next/compare/@loopback/build@4.0.0...@loopback/build@4.0.1) (2020-03-17)
 
 **Note:** Version bump only for package @loopback/build

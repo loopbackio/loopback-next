@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.2](https://github.com/strongloop/loopback-next/compare/@loopback/repository@2.0.1...@loopback/repository@2.0.2) (2020-03-24)
+
+
+### Bug Fixes
+
+* **repository-json-schema:** fix schema generation for model inheritance ([5417ed5](https://github.com/strongloop/loopback-next/commit/5417ed5fdbf0508f1882186d9cbff64ecfb10699))
+* update package locks ([cd2f6fa](https://github.com/strongloop/loopback-next/commit/cd2f6fa7a732afe4a16f4ccf8316ff3142959fe8))
+
+
+
+
+
 ## [2.0.1](https://github.com/strongloop/loopback-next/compare/@loopback/repository@2.0.0...@loopback/repository@2.0.1) (2020-03-17)
 
 

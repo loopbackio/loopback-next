@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/core@2.1.0...@loopback/core@2.2.0) (2020-03-24)
+
+
+### Features
+
+* **core:** add more flavors of [@extensions](https://github.com/extensions) decorator ([192563a](https://github.com/strongloop/loopback-next/commit/192563a3f4cdb136b86d898760a33051436a56de))
+
+
+
+
+
 # [2.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/core@2.0.0...@loopback/core@2.1.0) (2020-03-17)
 
 

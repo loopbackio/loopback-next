@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@2.1.1...@loopback/cli@2.2.0) (2020-03-24)
+
+
+### Bug Fixes
+
+* **cli:** add validation-app to example cli ([36a70b3](https://github.com/strongloop/loopback-next/commit/36a70b39062e3e8d467a3a820a51a58ffaefb613))
+* update package locks ([cd2f6fa](https://github.com/strongloop/loopback-next/commit/cd2f6fa7a732afe4a16f4ccf8316ff3142959fe8))
+
+
+### Features
+
+* **cli:** add `lb4 rest-crud` command to generate model endpoints from model/datasource ([38fd41e](https://github.com/strongloop/loopback-next/commit/38fd41e26cd5abf52e69d0b275a730b195be813a))
+
+
+
+
+
 ## [2.1.1](https://github.com/strongloop/loopback-next/compare/@loopback/cli@2.1.0...@loopback/cli@2.1.1) (2020-03-17)
 
 **Note:** Version bump only for package @loopback/cli

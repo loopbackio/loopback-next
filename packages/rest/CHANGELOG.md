@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@3.0.1...@loopback/rest@3.1.0) (2020-03-24)
+
+
+### Bug Fixes
+
+* **rest:** allow async custom keyword by setting {$async: true} to referenced schemas ([ede4bbd](https://github.com/strongloop/loopback-next/commit/ede4bbdba4d0bca3a558309118bc97924f48fd6e))
+* update package locks ([cd2f6fa](https://github.com/strongloop/loopback-next/commit/cd2f6fa7a732afe4a16f4ccf8316ff3142959fe8))
+
+
+### Features
+
+* **rest:** add info spec enhancer to build `info` for OpenAPI spec from application metadata ([a440ae2](https://github.com/strongloop/loopback-next/commit/a440ae248f8a51abb573ee3f1246be82e1d38817))
+
+
+
+
+
 ## [3.0.1](https://github.com/strongloop/loopback-next/compare/@loopback/rest@3.0.0...@loopback/rest@3.0.1) (2020-03-17)
 
 **Note:** Version bump only for package @loopback/rest

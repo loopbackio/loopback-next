@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@3.1.0...@loopback/context@3.2.0) (2020-03-24)
+
+
+### Features
+
+* **context:** emit bind/unbind events on ContextView ([65e3d38](https://github.com/strongloop/loopback-next/commit/65e3d38a34b351929ba422de667bc236e9619ebe))
+* **context:** improve context view for bind/unbind events ([6a5f90a](https://github.com/strongloop/loopback-next/commit/6a5f90aadb5f5ba213f2da7ea7843f488a09f95d))
+
+
+
+
+
 # [3.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@3.0.0...@loopback/context@3.1.0) (2020-03-17)
 
 
