@@ -28,7 +28,9 @@ export class ModelMetadataHelper {
     const classDef = MetadataInspector.getClassMetadata(
       MODEL_WITH_PROPERTIES_KEY,
       target,
-      options,
+      // https://github.com/strongloop/loopback-next/issues/4721
+      // The `target` can be a subclass for a base model
+      {...options, ownMetadataOnly: true},
     );
     // Return the cached value, if it exists.
     // XXX(kjdelisle): If we're going to support dynamic updates, then this
@@ -49,7 +51,7 @@ export class ModelMetadataHelper {
         // set ModelDefinition properties if they don't already exist
         const meta = new ModelDefinition(Object.assign({}, modelMeta));
 
-        // set properies lost from creating instance of ModelDefinition
+        // set properties lost from creating instance of ModelDefinition
         Object.assign(meta, modelMeta);
 
         meta.properties = Object.assign(

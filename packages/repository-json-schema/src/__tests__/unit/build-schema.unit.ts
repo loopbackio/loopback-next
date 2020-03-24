@@ -237,6 +237,48 @@ describe('build-schema', () => {
       // No circular references in definitions
       expect(schema.definitions).to.be.undefined();
     });
+
+    it('allows model inheritance', () => {
+      @model()
+      class User {
+        @property({id: true})
+        id: string;
+
+        @property({
+          type: 'string',
+          required: true,
+        })
+        name: string;
+      }
+
+      @model()
+      class NewUser extends User {
+        @property({
+          type: 'string',
+          required: true,
+        })
+        password: string;
+      }
+
+      const userSchema = modelToJsonSchema(User, {});
+      expect(userSchema).to.eql({
+        title: 'User',
+        properties: {id: {type: 'string'}, name: {type: 'string'}},
+        required: ['name'],
+        additionalProperties: false,
+      });
+      const newUserSchema = modelToJsonSchema(NewUser, {});
+      expect(newUserSchema).to.eql({
+        title: 'NewUser',
+        properties: {
+          id: {type: 'string'},
+          name: {type: 'string'},
+          password: {type: 'string'},
+        },
+        required: ['name', 'password'],
+        additionalProperties: false,
+      });
+    });
   });
 
   describe('getNavigationalPropertyForRelation', () => {
