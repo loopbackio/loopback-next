@@ -8,7 +8,10 @@
     "node": ">=10"
   },
   "files": [
-    "**/*"
+    "*.md",
+    "bin/",
+    "img/",
+    "site/"
   ],
   "keywords": [
     "LoopBack",
