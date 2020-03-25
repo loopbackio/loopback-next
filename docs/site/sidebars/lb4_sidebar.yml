@@ -259,6 +259,10 @@ children:
     url: Boot-and-Mount-a-LoopBack-3-application.html
     output: 'web, pdf'
 
+  - title: 'Running cron jobs'
+    url: Running-cron-jobs.html
+    output: 'web, pdf'
+
   - title: 'Health check'
     url: Health.html
     output: 'web, pdf'

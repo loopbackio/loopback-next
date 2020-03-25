@@ -46,7 +46,11 @@ LoopBack ships the following components:
 
 ### RestExplorerComponent
 
-- [@loopback/rest-explorer](Self-hosted-rest-api-explorer.md)
+- [@loopback/rest-explorer](Self-hosted-REST-API-Explorer.md)
+
+### CruRestComponent
+
+- [@loopback/rest-crud](Creating-CRUD-REST-apis.md)
 
 ### AuthenticationComponent
 
@@ -59,6 +63,10 @@ LoopBack ships the following components:
 ### Lb3AppBooterComponent
 
 - [@loopback/booter-lb3app](Boot-and-Mount-a-LoopBack-3-application.md)
+
+### CronComponent
+
+- [@loopback/cron](Running-cron-jobs.md)
 
 ### Cloud native extensions
 
