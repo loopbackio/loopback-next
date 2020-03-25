@@ -175,3 +175,84 @@ of 10 digits separated by `-` after the 3rd and 6th digits.
 ```
 
 {% include tip.html content="RegExp can be converted into a string with `.source` to avoid escaping backslashes" %}
+
+## Customize validation errors
+
+Since the error is being caught at the REST layer, the simplest way to customize
+the errors is to customize the
+[sequnce](https://loopback.io/doc/en/lb4/Sequence.html). It exists in all
+LoopBack applications scaffolded by using the `lb4` command and can be found in
+`src/sequence.ts`.
+
+Let's take a closer look at how to customize the error. A few things to note in
+the below code snippet:
+
+1. inject RestBindings.SequenceActions.LOG_ERROR for logging error and
+   RestBindings.ERROR_WRITER_OPTIONS for options
+2. customize error for particular endpoints
+3. create a new error with customized properties
+4. log the error using RestBindings.SequenceActions.LOG_ERROR
+
+{% include code-caption.html content="/src/sequence.ts" %}
+
+```ts
+export class MySequence implements SequenceHandler {
+  // 1. inject RestBindings.SequenceActions.LOG_ERROR for logging error
+  // and RestBindings.ERROR_WRITER_OPTIONS for options
+  constructor(
+    /*..*/
+    @inject(RestBindings.SequenceActions.LOG_ERROR)
+    protected logError: LogError,
+    @inject(RestBindings.ERROR_WRITER_OPTIONS, {optional: true})
+    protected errorWriterOptions?: ErrorWriterOptions,
+  ) {}
+
+  async handle(context: RequestContext) {
+    try {
+      // ...
+    } catch (err) {
+      this.handleError(context, err as HttpErrors.HttpError);
+    }
+  }
+
+  /**
+   * Handle errors
+   * If the request url is `/coffee-shops`, customize the error message.
+   */
+  handleError(context: RequestContext, err: HttpErrors.HttpError) {
+    // 2. customize error for particular endpoint
+    if (context.request.url === '/coffee-shops') {
+      // if this is a validation error
+      if (err.statusCode === 422) {
+        const customizedMessage = 'My customized validation error message';
+
+        let customizedProps = {};
+        if (this.errorWriterOptions?.debug) {
+          customizedProps = {stack: err.stack};
+        }
+
+        // 3. Create a new error with customized properties
+        // you can change the status code here too
+        const errorData = {
+          statusCode: 422,
+          message: customizedMessage,
+          resolution: 'Contact your admin for troubleshooting.',
+          code: 'VALIDATION_FAILED',
+          ...customizedProps,
+        };
+
+        context.response.status(422).send(errorData);
+
+        // 4. log the error using RestBindings.SequenceActions.LOG_ERROR
+        this.logError(err, err.statusCode, context.request);
+
+        // The error was handled
+        return;
+      }
+    }
+
+    // Otherwise fall back to the default error handler
+    this.reject(context, err);
+  }
+}
+```
