@@ -407,6 +407,82 @@ describe('build-schema', () => {
           expectValidJsonSchema(jsonSchema);
         });
 
+        it('properly converts decorated properties with {partial: true}', () => {
+          @model()
+          class CustomType {
+            @property()
+            prop: string;
+
+            @property({required: true})
+            requiredProp: string;
+          }
+
+          @model()
+          class TestModel {
+            @property(CustomType)
+            cusType: CustomType;
+          }
+
+          const jsonSchema = modelToJsonSchema(TestModel, {partial: true});
+          expect(jsonSchema.properties).to.deepEqual({
+            cusType: {$ref: '#/definitions/CustomType'},
+          });
+          expect(jsonSchema.definitions).to.deepEqual({
+            CustomType: {
+              title: 'CustomType',
+              properties: {
+                prop: {
+                  type: 'string',
+                },
+                requiredProp: {
+                  type: 'string',
+                },
+              },
+              required: ['requiredProp'],
+              additionalProperties: false,
+            },
+          });
+          expectValidJsonSchema(jsonSchema);
+        });
+
+        it("properly converts decorated properties with {partial: 'deep'}", () => {
+          @model()
+          class CustomType {
+            @property()
+            prop: string;
+
+            @property({required: true})
+            requiredProp: string;
+          }
+
+          @model()
+          class TestModel {
+            @property(CustomType)
+            cusType: CustomType;
+          }
+
+          const jsonSchema = modelToJsonSchema(TestModel, {partial: 'deep'});
+          expect(jsonSchema.properties).to.deepEqual({
+            cusType: {$ref: '#/definitions/CustomTypePartial'},
+          });
+          expect(jsonSchema.definitions).to.deepEqual({
+            CustomTypePartial: {
+              title: 'CustomTypePartial',
+              description: "(Schema options: { partial: 'deep' })",
+              properties: {
+                prop: {
+                  type: 'string',
+                },
+                requiredProp: {
+                  type: 'string',
+                },
+              },
+              additionalProperties: false,
+            },
+          });
+          expectValidJsonSchema(jsonSchema);
+        });
+
         it('properly converts undecorated custom array type properties', () => {
           class CustomType {
             prop: string;
@@ -455,6 +531,47 @@ describe('build-schema', () => {
               title: 'CustomType',
               properties: {
                 prop: {
+                  type: 'string',
+                },
+              },
+              additionalProperties: false,
+            },
+          });
+          expectValidJsonSchema(jsonSchema);
+        });
+
+        it('properly converts decorated custom array type properties with partial', () => {
+          @model()
+          class CustomType {
+            @property()
+            prop: string;
+
+            @property({required: true})
+            requiredProp: string;
+          }
+
+          @model()
+          class TestModel {
+            @property.array(CustomType)
+            cusType: CustomType[];
+          }
+
+          const jsonSchema = modelToJsonSchema(TestModel, {partial: 'deep'});
+          expect(jsonSchema.properties).to.deepEqual({
+            cusType: {
+              type: 'array',
+              items: {$ref: '#/definitions/CustomTypePartial'},
+            },
+          });
+          expect(jsonSchema.definitions).to.deepEqual({
+            CustomTypePartial: {
+              title: 'CustomTypePartial',
+              description: "(Schema options: { partial: 'deep' })",
+              properties: {
+                prop: {
+                  type: 'string',
+                },
+                requiredProp: {
                   type: 'string',
                 },
               },

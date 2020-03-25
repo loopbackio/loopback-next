@@ -38,8 +38,40 @@ export interface JsonSchemaOptions<T extends object> {
    * Set this flag to mark all model properties as optional. This is typically
    * used to describe request body of PATCH endpoints. This option will be
    * overridden by the "optional" option if it is set and non-empty.
+   *
+   * The flag also applies to nested model instances if its value is set to
+   * 'deep', such as:
+   *
+   * @example
+   * ```ts
+   * @model()
+   * class Address {
+   *  @property()
+   *  street: string;
+   *  @property()
+   *  city: string;
+   *  @property()
+   *  state: string;
+   *  @property()
+   *  zipCode: string;
+   * }
+   *
+   * @model()
+   * class Customer {
+   *   @property()
+   *   address: Address;
+   * }
+   *
+   * // The following schema allows properties of `customer` optional, but not
+   * // `customer.address`
+   * const schemaRef1 = getModelSchemaRef(Customer, {partial: true});
+   *
+   * // The following schema allows properties of `customer` and
+   * // `customer.address` optional
+   * const schemaRef2 = getModelSchemaRef(Customer, {partial: 'deep'});
+   * ```
    */
-  partial?: boolean;
+  partial?: boolean | 'deep';
 
   /**
    * List of model properties to exclude from the schema.
@@ -78,7 +110,7 @@ export function buildModelCacheKey<T extends object>(
 /**
  * Gets the JSON Schema of a TypeScript model/class by seeing if one exists
  * in a cache. If not, one is generated and then cached.
- * @param ctor - Contructor of class to get JSON Schema from
+ * @param ctor - Constructor of class to get JSON Schema from
  */
 export function getJsonSchema<T extends object>(
   ctor: Function & {prototype: T},
@@ -437,9 +469,28 @@ export function modelToJsonSchema<T extends object>(
       continue;
     }
 
-    const propSchema = getJsonSchema(referenceType, options);
+    const propOptions = {...options};
+    if (propOptions.partial !== 'deep') {
+      // Do not cascade `partial` to nested properties
+      delete propOptions.partial;
+    }
 
-    includeReferencedSchema(referenceType.name, propSchema);
+    const propSchema = getJsonSchema(referenceType, propOptions);
+
+    // JSONSchema6Definition allows both boolean and JSONSchema6 types
+    if (typeof result.properties[p] !== 'boolean') {
+      const prop = result.properties[p] as JSONSchema;
+      const propTitle = propSchema.title ?? referenceType.name;
+      const targetRef = {$ref: `#/definitions/${propTitle}`};
+
+      if (prop.type === 'array' && prop.items) {
+        // Update $ref for array type
+        prop.items = targetRef;
+      } else {
+        result.properties[p] = targetRef;
+      }
+      includeReferencedSchema(propTitle, propSchema);
+    }
   }
 
   result.additionalProperties = meta.settings.strict === false;
