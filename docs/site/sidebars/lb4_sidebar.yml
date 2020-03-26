@@ -320,6 +320,10 @@ children:
     url: Extending-OpenAPI-specification.html
     output: 'web, pdf'
 
+  - title: 'Extending Model API builder'
+    url: Extending-Model-API-builder.html
+    output: 'web, pdf'
+
   - title: 'Testing your extension'
     url: Testing-your-extension.html
     output: 'web, pdf'
