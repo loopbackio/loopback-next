@@ -810,6 +810,10 @@ children:
     url: Understanding-the-differences.html
     output: 'web, pdf'
 
+    - title: 'Request/response cycle'
+    url: LB3-vs-LB4-request-response-cycle.html
+    output: 'web, pdf'
+
   - title: 'Mounting a LoopBack 3 application'
     url: migration-mounting-lb3app.html
     output: 'web, pdf'
