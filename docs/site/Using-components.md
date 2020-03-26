@@ -48,7 +48,7 @@ LoopBack ships the following components:
 
 - [@loopback/rest-explorer](Self-hosted-REST-API-Explorer.md)
 
-### CruRestComponent
+### CrudRestComponent
 
 - [@loopback/rest-crud](Creating-CRUD-REST-apis.md)
 
