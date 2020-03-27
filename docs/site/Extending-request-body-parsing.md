@@ -152,6 +152,51 @@ export class XmlBodyParser implements BodyParser {
 }
 ```
 
+### Extend AJV with custom keywords and formats
+
+In addition to configure AJV options via the `validation` property backed by
+`RestBindings.REQUEST_BODY_PARSER_OPTIONS`, custom Ajv keywords and formats can
+also be contributed by bindings.
+
+#### Contribute a keyword
+
+```ts
+import {AjvKeyword, RestTags} from '@loopback/rest';
+
+ctx
+  .bind<AjvKeyword>('ajv.keywords.smallNumber')
+  .to({
+    name: 'smallNumber', // name of the keyword
+    type: 'number',
+    validate: (schema: unknown, data: number) => {
+      // The number is smaller than 10
+      return data < 10;
+    },
+  })
+  .tag(RestTags.AJV_KEYWORD);
+```
+
+This enables Ajv to use a schema like `{type: 'number', smallerNumber: true}`.
+
+#### Contribute a format
+
+```ts
+import {AjvFormat, RestTags} from '@loopback/rest';
+ctx
+  .bind<AjvFormat>('ajv.formats.int')
+  .to({
+    name: 'int', // Name of the format
+    type: 'number',
+    validate: (data: number) => {
+      // The number does not have a decimal point
+      return !String(data).includes('.');
+    },
+  })
+  .tag(RestTags.AJV_FORMAT);
+```
+
+Now Ajv can understand a schema like `{type: 'number', format: 'int'}`.
+
 ## Replace an existing parser
 
 An existing parser can be replaced by binding a different value to the
