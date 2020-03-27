@@ -54,6 +54,8 @@ That's it! You've just created your first LoopBack 4 application!
 
 _Note: Use **CTRL+C** to stop the application_
 
+Minor bug note: You may see 500 errors from the `GET /todos` in explorer - see [#issue 4977](https://github.com/strongloop/loopback-next/issues/4977), affects all projects invoking @param.filter(ModelHere)
+
 ### Where to go from here
 
 There are still a ton of features you can use to build on top of the
