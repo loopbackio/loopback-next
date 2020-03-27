@@ -39,6 +39,9 @@ The goals for this month would be to:
   - [ ] Docs: Add "Working with Data" section #2527
   - [ ] Docs: how to use OpenAPI connector #4488
 
+- PR reviews
+  - [ ] feat(repository): hasManyThrough #4438
+
 ## Stretch Goals
 
 - [ ] LB4 adoption
