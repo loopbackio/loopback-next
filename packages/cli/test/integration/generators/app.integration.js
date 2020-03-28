@@ -125,7 +125,7 @@ describe('app-generator specific files', () => {
   it('creates npm script "clean"', () => {
     assert.fileContent(
       'package.json',
-      '"clean": "lb-clean dist *.tsbuildinfo"',
+      '"clean": "lb-clean dist *.tsbuildinfo .eslintcache"',
     );
   });
 
