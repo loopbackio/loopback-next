@@ -13,7 +13,7 @@
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc --watch",
-    "clean": "rimraf dist *.tsbuildinfo",
+    "clean": "rimraf dist *.tsbuildinfo .eslintcache",
 <% if (project.prettier && project.eslint) { -%>
     "lint": "npm run prettier:check && npm run eslint",
     "lint:fix": "npm run eslint:fix && npm run prettier:fix",
@@ -46,10 +46,10 @@
     "test:dev": "mocha dist/__tests__/**/*.js",
 <% } -%>
 <% if (project.projectType === 'application') { -%>
-  <% if (project.docker) { -%>
+  <%_ if (project.docker) { -%>
     "docker:build": "docker build -t <%= project.name -%> .",
     "docker:run": "docker run -p 3000:3000 -d <%= project.name -%>",
-  <% } -%>
+  <%_ } -%>
     "migrate": "node ./dist/migrate",
     "start": "npm run build && node -r source-map-support/register .",
 <% } -%>
@@ -83,7 +83,7 @@
 <% } else { -%>
     "@loopback/core": "<%= project.dependencies['@loopback/core'] -%>",
 <% } -%>
-  "tslib": "<%= project.dependencies['tslib'] -%>"
+    "tslib": "<%= project.dependencies['tslib'] -%>"
   },
   "devDependencies": {
     "rimraf": "<%= project.dependencies['rimraf'] -%>",
@@ -110,7 +110,7 @@
     "eslint-config-prettier": "<%= project.dependencies['eslint-config-prettier'] -%>",
     "eslint-plugin-eslint-plugin": "<%= project.dependencies['eslint-plugin-eslint-plugin'] -%>",
     "eslint-plugin-mocha": "<%= project.dependencies['eslint-plugin-mocha'] -%>",
-  <% } -%>
+<% } -%>
     "typescript": "<%= project.dependencies['typescript'] -%>"
   }
 }
