@@ -5,6 +5,7 @@
 
 import assert from 'assert';
 import http, {IncomingMessage, ServerResponse} from 'http';
+import http2 from 'http2';
 import https from 'https';
 import {AddressInfo, ListenOptions} from 'net';
 import os from 'os';
@@ -17,6 +18,14 @@ import stoppable from 'stoppable';
 export type RequestListener = (
   req: IncomingMessage,
   res: ServerResponse,
+) => void;
+
+/**
+ * Request listener function for http2/https2 requests
+ */
+export type Http2RequestListener = (
+  req: http2.Http2ServerRequest,
+  res: http2.Http2ServerResponse,
 ) => void;
 
 /**
@@ -53,16 +62,36 @@ export interface HttpsOptions extends BaseHttpOptions, https.ServerOptions {
 }
 
 /**
+ * HTTP/2 HTTP server options
+ */
+export interface Http2Options extends BaseHttpOptions, http2.ServerOptions {
+  protocol: 'http2';
+}
+
+/**
+ * HTTP/2 HTTPS server options
+ */
+export interface Https2Options
+  extends BaseHttpOptions,
+    http2.SecureServerOptions {
+  protocol: 'https2';
+}
+
+/**
  * Possible server options
  *
  */
-export type HttpServerOptions = HttpOptions | HttpsOptions;
+export type HttpServerOptions =
+  | HttpOptions
+  | HttpsOptions
+  | Http2Options
+  | Https2Options;
 
 /**
  * Supported protocols
  *
  */
-export type HttpProtocol = 'http' | 'https'; // Will be extended to `http2` in the future
+export type HttpProtocol = 'http' | 'https' | 'http2' | 'https2';
 
 /**
  * HTTP / HTTPS server used by LoopBack's RestServer
@@ -71,8 +100,12 @@ export class HttpServer {
   private _listening = false;
   private _protocol: HttpProtocol;
   private _address: string | AddressInfo;
-  private requestListener: RequestListener;
-  readonly server: http.Server | https.Server;
+  private requestListener: RequestListener | Http2RequestListener;
+  readonly server:
+    | http.Server
+    | https.Server
+    | http2.Http2Server
+    | http2.Http2SecureServer;
   private _stoppable: stoppable.StoppableServer;
   private serverOptions: HttpServerOptions;
 
@@ -81,7 +114,7 @@ export class HttpServer {
    * @param serverOptions
    */
   constructor(
-    requestListener: RequestListener,
+    requestListener: RequestListener | Http2RequestListener,
     serverOptions?: HttpServerOptions,
   ) {
     this.requestListener = requestListener;
@@ -95,19 +128,47 @@ export class HttpServer {
       // Remove `port` so that `path` is honored
       delete this.serverOptions.port;
     }
-    this._protocol = serverOptions ? serverOptions.protocol ?? 'http' : 'http';
-    if (this._protocol === 'https') {
-      this.server = https.createServer(
-        this.serverOptions as https.ServerOptions,
-        this.requestListener,
-      );
-    } else {
-      this.server = http.createServer(this.requestListener);
+    this._protocol = serverOptions?.protocol ?? 'http';
+    switch (this._protocol) {
+      case 'https':
+        this.server = https.createServer(
+          this.serverOptions as https.ServerOptions,
+          this.requestListener as RequestListener,
+        );
+        break;
+      case 'http':
+        this.server = http.createServer(
+          this.requestListener as RequestListener,
+        );
+        break;
+      case 'http2':
+        this.server = http2.createServer(
+          this.requestListener as Http2RequestListener,
+        );
+        break;
+      case 'https2':
+        this.server = http2.createSecureServer(
+          this.requestListener as Http2RequestListener,
+        );
+        break;
     }
     // Set up graceful stop for http server
     if (typeof this.serverOptions.gracePeriodForClose === 'number') {
+      let serverNormalized;
+
+      switch (this._protocol) {
+        case 'http':
+        case 'http2':
+          serverNormalized = this.server as http.Server;
+          break;
+        case 'https':
+        case 'https2':
+          serverNormalized = this.server as https.Server;
+          break;
+      }
+
       this._stoppable = stoppable(
-        this.server,
+        serverNormalized,
         this.serverOptions.gracePeriodForClose,
       );
     }
