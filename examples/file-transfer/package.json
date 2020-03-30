@@ -51,7 +51,7 @@
     "@loopback/testlab": "^2.0.2",
     "@types/express-serve-static-core": "^4.17.3",
     "@types/multer": "^1.4.2",
-    "@types/node": "^10.17.17",
+    "@types/node": "^10.17.18",
     "@typescript-eslint/eslint-plugin": "^2.26.0",
     "@typescript-eslint/parser": "^2.26.0",
     "eslint": "^6.8.0",
