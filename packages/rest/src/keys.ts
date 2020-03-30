@@ -15,6 +15,7 @@ import {RestServer} from './rest.server';
 import {RestRouter, RestRouterOptions} from './router';
 import {SequenceHandler} from './sequence';
 import {
+  AjvFactory,
   BindElement,
   FindRoute,
   GetFromContext,
@@ -153,6 +154,13 @@ export namespace RestBindings {
   );
 
   /**
+   * Binding key for AJV
+   */
+  export const AJV_FACTORY = BindingKey.create<AjvFactory>(
+    bodyParserBindingKey('rest.ajvFactory'),
+  );
+
+  /**
    * Binding key for setting and injecting an OpenAPI spec
    */
   export const API_SPEC = BindingKey.create<OpenApiSpec>('rest.apiSpec');
@@ -277,4 +285,7 @@ export namespace RestTags {
    * binding key
    */
   export const CONTROLLER_BINDING = 'controllerBinding';
+
+  export const AJV_KEYWORD = 'ajvKeyword';
+  export const AJV_FORMAT = 'ajvFormat';
 }
