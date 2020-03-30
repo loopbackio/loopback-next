@@ -559,6 +559,10 @@ children:
     url: Update-generator.html
     output: 'web, pdf'
 
+  - title: 'Generate copyright/license headers'
+    url: Copyright-generator.html
+    output: 'web, pdf'
+
 - title: 'Connectors reference'
   url: Connectors-reference.html
   output: 'web'
