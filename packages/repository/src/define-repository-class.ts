@@ -7,24 +7,24 @@ import assert from 'assert';
 import {PrototypeOf} from './common-types';
 import {Entity, Model} from './model';
 import {
-  CrudRepository,
   DefaultCrudRepository,
   DefaultKeyValueRepository,
-  EntityCrudRepository,
   juggler,
-  KeyValueRepository,
   Repository,
 } from './repositories';
 
 /**
- * Signature for CrudRepository classes
+ * Signature for a Repository class bound to a given model. The constructor
+ * accepts only the dataSource to use for persistence.
+ *
+ * `define*` functions return a class implementing this interface.
  *
  * @typeParam M - Model class
  * @typeParam R - Repository class/interface
  */
-export interface CrudRepositoryClass<
+export interface NamedRepositoryClass<
   M extends Model,
-  R extends CrudRepository<M>
+  R extends Repository<M>
 > {
   /**
    * The constructor for the generated repository class
@@ -35,23 +35,19 @@ export interface CrudRepositoryClass<
 }
 
 /**
- * Signature for EntityCrudRepository classes
- *
- * @typeParam E - An entity class
- * @typeParam IdType - ID type for the entity
- * @typeParam Relations - Relations for the entity
- */
-export interface EntityCrudRepositoryClass<
-  E extends Entity,
-  IdType,
-  Relations extends object
-> extends CrudRepositoryClass<E, EntityCrudRepository<E, IdType, Relations>> {}
-
-/**
  * Signature for repository classes that can be used as the base class for
- * `define*` functions
+ * `define*` functions. The constructor of a base repository class accepts
+ * the target model constructor and the datasource to use.
  *
- * @typeParam M - Model class
+ * `define*` functions require a class implementing this interface on input.
+ *
+ * @typeParam M - Model class constructor, e.g `typeof Model`.
+ * **❗️IMPORTANT: The type argument `M` is describing the model constructor type
+ * (e.g. `typeof Model`), not the model instance type (`Model`) as is the case
+ * in other repository-related types. The constructor type is required
+ * to support custom repository classes requiring a Model subclass in the
+ * constructor arguments, e.g. `Entity` or a user-provided model.**
+ *
  * @typeParam R - Repository class/interface
  */
 export interface BaseRepositoryClass<
@@ -66,27 +62,45 @@ export interface BaseRepositoryClass<
   new (modelClass: M, dataSource: juggler.DataSource): R;
   prototype: R;
 }
+
 /**
- * Create (define) a CRUD repository class for the given model.
+ * Create (define) a repository class for the given model.
+ *
+ * See also `defineEntityCrudRepositoryClass` and `defineKeyValueRepositoryClass`
+ * for convenience wrappers providing repository class factory for the default
+ * CRUD and KeyValue implementations.
+ *
+ * **❗️IMPORTANT: The compiler (TypeScript 3.8) is not able to correctly infer
+ * generic arguments `M` and `R` from the class constructors provided in
+ * function arguments. You must always provide both M and R types explicitly.**
  *
  * @example
  *
  * ```ts
- * const AddressRepository = defineCrudRepositoryClass(Address);
+ * const AddressRepository = defineRepositoryClass<
+ *   typeof Address,
+ *   DefaultEntityCrudRepository<
+ *    Address,
+ *    typeof Address.prototype.id,
+ *    AddressRelations
+ *   >,
+ * >(Address, DefaultCrudRepository);
  * ```
  *
  * @param modelClass - A model class such as `Address`.
+ * @param baseRepositoryClass - Repository implementation to use as the base,
+ * e.g. `DefaultCrudRepository`.
  *
- * @typeParam M - Model class
- * @typeParam R - CRUD Repository class/interface
+ * @typeParam M - Model class constructor (e.g. `typeof Address`)
+ * @typeParam R - Repository class (e.g. `DefaultCrudRepository<Address, number>`)
  */
-export function defineCrudRepositoryClass<
+export function defineRepositoryClass<
   M extends typeof Model,
-  R extends CrudRepository<PrototypeOf<M>>
+  R extends Repository<PrototypeOf<M>>
 >(
   modelClass: M,
   baseRepositoryClass: BaseRepositoryClass<M, R>,
-): CrudRepositoryClass<PrototypeOf<M>, R> {
+): NamedRepositoryClass<PrototypeOf<M>, R> {
   const repoName = modelClass.name + 'Repository';
   const defineNamedRepo = new Function(
     'ModelCtor',
@@ -105,37 +119,39 @@ export function defineCrudRepositoryClass<
 
 /**
  * Create (define) an entity CRUD repository class for the given model.
+ * This function always uses `DefaultCrudRepository` as the base class,
+ * use `defineRepositoryClass` if you want to use your own base repository.
  *
  * @example
  *
  * ```ts
- * const ProductRepository = defineEntityCrudRepositoryClass(Product);
+ * const ProductRepository = defineEntityCrudRepositoryClass<
+ *   Product,
+ *   typeof Product.prototype.id,
+ *   ProductRelations
+ * >(Product);
  * ```
  *
  * @param entityClass - An entity class such as `Product`.
- * @param baseRepositoryClass - Base repository class. Defaults to `DefaultCrudRepository`
  *
  * @typeParam E - An entity class
  * @typeParam IdType - ID type for the entity
  * @typeParam Relations - Relations for the entity
  */
 export function defineEntityCrudRepositoryClass<
-  E extends typeof Entity,
+  E extends Entity,
   IdType,
-  Relations extends object,
-  R extends EntityCrudRepository<PrototypeOf<E>, IdType, Relations>
+  Relations extends object
 >(
-  entityClass: E,
-  baseRepositoryClass: BaseRepositoryClass<
-    E,
-    R
-  > = (DefaultCrudRepository as unknown) as BaseRepositoryClass<E, R>,
-): CrudRepositoryClass<PrototypeOf<E>, R> {
-  return defineCrudRepositoryClass(entityClass, baseRepositoryClass);
+  entityClass: typeof Entity & {prototype: E},
+): NamedRepositoryClass<E, DefaultCrudRepository<E, IdType, Relations>> {
+  return defineRepositoryClass(entityClass, DefaultCrudRepository);
 }
 
 /**
  * Create (define) a KeyValue repository class for the given entity.
+ * This function always uses `DefaultKeyValueRepository` as the base class,
+ * use `defineRepositoryClass` if you want to use your own base repository.
  *
  * @example
  *
@@ -144,51 +160,11 @@ export function defineEntityCrudRepositoryClass<
  * ```
  *
  * @param modelClass - An entity class such as `Product`.
- * @param baseRepositoryClass - Base KeyValue repository class.
- * Defaults to `DefaultKeyValueRepository`
- *
- * @typeParam M - Model class
- * @typeParam R - KeyValueRepository class/interface
- */
-export function defineKeyValueRepositoryClass<
-  M extends typeof Model,
-  R extends KeyValueRepository<PrototypeOf<M>>
->(
-  entityClass: M,
-  baseRepositoryClass: BaseRepositoryClass<
-    M,
-    R
-  > = (DefaultKeyValueRepository as unknown) as BaseRepositoryClass<M, R>,
-): KeyValueRepositoryClass<PrototypeOf<M>, R> {
-  const repoName = entityClass.name + 'Repository';
-  const defineNamedRepo = new Function(
-    'EntityCtor',
-    'BaseRepository',
-    `return class ${repoName} extends BaseRepository {
-      constructor(dataSource) {
-        super(EntityCtor, dataSource);
-      }
-    };`,
-  );
-
-  const repo = defineNamedRepo(entityClass, baseRepositoryClass);
-  assert.equal(repo.name, repoName);
-  return repo;
-}
-
-/**
- * Signature for KeyValueRepository classes
  *
  * @typeParam M - Model class
  */
-export interface KeyValueRepositoryClass<
-  M extends Model,
-  R extends KeyValueRepository<M> = KeyValueRepository<M>
-> {
-  /**
-   * The constructor for the generated key value repository class
-   * @param dataSource - DataSource object
-   */
-  new (dataSource: juggler.DataSource): R;
-  prototype: R;
+export function defineKeyValueRepositoryClass<M extends Model>(
+  modelClass: typeof Model & {prototype: M},
+): NamedRepositoryClass<M, DefaultKeyValueRepository<M>> {
+  return defineRepositoryClass(modelClass, DefaultKeyValueRepository);
 }

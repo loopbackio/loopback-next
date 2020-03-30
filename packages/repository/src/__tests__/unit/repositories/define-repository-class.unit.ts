@@ -5,30 +5,28 @@
 
 import {expect} from '@loopback/testlab';
 import {
-  AndClause,
   AnyObject,
-  Condition,
   Count,
   CrudRepository,
   DataObject,
   DefaultCrudRepository,
   DefaultKeyValueRepository,
-  defineCrudRepositoryClass,
   defineEntityCrudRepositoryClass,
   defineKeyValueRepositoryClass,
+  defineRepositoryClass,
   Entity,
   Filter,
   juggler,
   model,
   Model,
-  OrClause,
   property,
+  Where,
 } from '../../..';
 
 describe('RepositoryClass builder', () => {
-  describe('defineCrudRepositoryClass', () => {
-    it('should generate CRUD repository class', async () => {
-      const AddressRepository = defineCrudRepositoryClass<
+  describe('defineRepositoryClass', () => {
+    it('should generate custom repository class', async () => {
+      const AddressRepository = defineRepositoryClass<
         typeof Address,
         DummyCrudRepository<Address>
       >(Address, DummyCrudRepository);
@@ -56,32 +54,6 @@ describe('RepositoryClass builder', () => {
     });
   });
 
-  describe('defineEntityCrudRepositoryClass with custom base class', () => {
-    it('should generate entity CRUD repository class', async () => {
-      class BaseProductRepository extends DefaultCrudRepository<
-        Product,
-        number
-      > {
-        async findByName(name: string): Promise<Product[]> {
-          return this.find({where: {name}});
-        }
-      }
-
-      const ProductRepository = defineEntityCrudRepositoryClass(
-        Product,
-        BaseProductRepository,
-      );
-
-      expect(ProductRepository.name).to.equal('ProductRepository');
-      expect(ProductRepository.prototype.find).to.be.a.Function();
-      expect(ProductRepository.prototype.findById).to.be.a.Function();
-      expect(ProductRepository.prototype.findByName).to.be.a.Function();
-      expect(Object.getPrototypeOf(ProductRepository)).to.equal(
-        BaseProductRepository,
-      );
-    });
-  });
-
   describe('defineKeyValueRepositoryClass', () => {
     it('should generate key value repository class', async () => {
       const ProductRepository = defineKeyValueRepositoryClass(Product);
@@ -91,26 +63,6 @@ describe('RepositoryClass builder', () => {
       expect(Object.getPrototypeOf(ProductRepository)).to.equal(
         DefaultKeyValueRepository,
       );
-    });
-
-    it('supports custom base repository class', () => {
-      class MyKeyValueRepo<M extends Model> extends DefaultKeyValueRepository<
-        M
-      > {
-        async getByName(name: string): Promise<Product[]> {
-          throw new Error('not implemented');
-        }
-      }
-
-      const ProductRepository = defineKeyValueRepositoryClass<
-        typeof Product,
-        MyKeyValueRepo<Product>
-      >(Product, MyKeyValueRepo);
-
-      expect(ProductRepository.name).to.equal('ProductRepository');
-      expect(ProductRepository.prototype.get).to.be.a.Function();
-      expect(ProductRepository.prototype.getByName).to.be.a.Function();
-      expect(Object.getPrototypeOf(ProductRepository)).to.equal(MyKeyValueRepo);
     });
   });
 
@@ -160,19 +112,19 @@ describe('RepositoryClass builder', () => {
     }
     updateAll(
       dataObject: DataObject<M>,
-      where?: Condition<M> | AndClause<M> | OrClause<M> | undefined,
+      where?: Where<M> | undefined,
       options?: AnyObject | undefined,
     ): Promise<Count> {
       throw new Error('Method not implemented.');
     }
     deleteAll(
-      where?: Condition<M> | AndClause<M> | OrClause<M> | undefined,
+      where?: Where<M> | undefined,
       options?: AnyObject | undefined,
     ): Promise<Count> {
       throw new Error('Method not implemented.');
     }
     count(
-      where?: Condition<M> | AndClause<M> | OrClause<M> | undefined,
+      where?: Where<M> | undefined,
       options?: AnyObject | undefined,
     ): Promise<Count> {
       throw new Error('Method not implemented.');
