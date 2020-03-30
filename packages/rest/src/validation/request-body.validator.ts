@@ -10,13 +10,13 @@ import {
   SchemaObject,
   SchemasObject,
 } from '@loopback/openapi-v3';
-import ajv from 'ajv';
+import ajv, {Ajv} from 'ajv';
 import debugModule from 'debug';
 import _ from 'lodash';
 import util from 'util';
 import {HttpErrors, RequestBody, RestHttpErrors} from '..';
 import {RequestBodyValidationOptions, SchemaValidatorCache} from '../types';
-import {AjvProvider} from './ajv.service';
+import {AjvFactoryProvider} from './ajv-factory.provider';
 
 const toJsonSchema = require('@openapi-contrib/openapi-schema-to-json-schema');
 const debug = debugModule('loopback:rest:validation');
@@ -65,7 +65,7 @@ export async function validateRequestBody(
   }
   if (!schema) return;
 
-  options = Object.assign({coerceTypes: !!body.coercionRequired}, options);
+  options = {coerceTypes: !!body.coercionRequired, ...options};
   await validateValueAgainstSchema(body.value, schema, globalSchemas, options);
 }
 
@@ -134,7 +134,10 @@ async function validateValueAgainstSchema(
   }
 
   if (!validate) {
-    validate = createValidator(schema, globalSchemas, options);
+    const ajvFactory =
+      options.ajvFactory ?? new AjvFactoryProvider(options).value();
+    const ajvInst = ajvFactory(options);
+    validate = createValidator(schema, globalSchemas, ajvInst);
     validatorMap = validatorMap ?? new Map();
     validatorMap.set(key, validate);
     cache.set(schema, validatorMap);
@@ -177,10 +180,16 @@ async function validateValueAgainstSchema(
   throw error;
 }
 
+/**
+ * Create a validate function for the given schema
+ * @param schema - JSON schema for the target
+ * @param globalSchemas - Global schemas
+ * @param ajvInst - An instance of Ajv
+ */
 function createValidator(
   schema: SchemaObject,
   globalSchemas: SchemasObject = {},
-  options?: RequestBodyValidationOptions,
+  ajvInst: Ajv,
 ): ajv.ValidateFunction {
   const jsonSchema = convertToJsonSchema(schema);
 
@@ -191,9 +200,6 @@ function createValidator(
     schemas[name] = {...globalSchemas[name], $async: true};
   }
   const schemaWithRef = {components: {schemas}, ...jsonSchema};
-
-  // FIXME(rfeng): We would prefer to inject the Ajv service
-  const ajvInst = new AjvProvider(options).value();
 
   // See https://ajv.js.org/#asynchronous-validation for async validation
   schemaWithRef.$async = true;

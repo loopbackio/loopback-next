@@ -5,7 +5,7 @@
 
 import {Binding, BoundValue} from '@loopback/context';
 import {ReferenceObject, SchemaObject} from '@loopback/openapi-v3';
-import ajv from 'ajv';
+import ajv, {Ajv, FormatDefinition, KeywordDefinition} from 'ajv';
 import {
   Options,
   OptionsJson,
@@ -101,6 +101,21 @@ export type AjvErrorOptions = {
 };
 
 /**
+ * Factory function for Ajv instances
+ */
+export type AjvFactory = (options?: ajv.Options) => Ajv;
+
+/**
+ * Ajv keyword definition with a name
+ */
+export type AjvKeyword = KeywordDefinition & {name: string};
+
+/**
+ * Ajv format definition with a name
+ */
+export type AjvFormat = FormatDefinition & {name: string};
+
+/**
  * Options for request body validation using AJV
  */
 export interface RequestBodyValidationOptions extends ajv.Options {
@@ -127,6 +142,11 @@ export interface RequestBodyValidationOptions extends ajv.Options {
    * This could be used for error messages customization, localization, etc.
    */
   ajvErrorTransformer?: (errors: ajv.ErrorObject[]) => ajv.ErrorObject[];
+
+  /**
+   * A factory to create Ajv instance
+   */
+  ajvFactory?: (options: ajv.Options) => Ajv;
 }
 
 /* eslint-disable @typescript-eslint/no-explicit-any */

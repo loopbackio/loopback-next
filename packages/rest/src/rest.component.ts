@@ -43,6 +43,7 @@ import {
 } from './rest.server';
 import {DefaultSequence} from './sequence';
 import {InfoSpecEnhancer} from './spec-enhancers/info.spec-enhancer';
+import {AjvFactoryProvider} from './validation/ajv-factory.provider';
 
 export class RestComponent implements Component {
   providers: ProviderMap = {
@@ -54,6 +55,7 @@ export class RestComponent implements Component {
     [RestBindings.GET_FROM_CONTEXT.key]: GetFromContextProvider,
     [RestBindings.SequenceActions.PARSE_PARAMS.key]: ParseParamsProvider,
     [RestBindings.SequenceActions.SEND.key]: SendProvider,
+    [RestBindings.AJV_FACTORY.key]: AjvFactoryProvider,
   };
   /**
    * Add built-in body parsers
