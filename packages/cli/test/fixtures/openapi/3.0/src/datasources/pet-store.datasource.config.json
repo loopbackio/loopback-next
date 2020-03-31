@@ -1,7 +1,0 @@
-{
-  "name": "petStore",
-  "connector": "openapi",
-  "spec": "petstore-expanded.yaml",
-  "validate": false,
-  "positional": false
-}

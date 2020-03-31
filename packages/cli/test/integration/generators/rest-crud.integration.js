@@ -15,6 +15,7 @@ const TestSandbox = testlab.TestSandbox;
 const generator = path.join(__dirname, '../../../generators/rest-crud');
 const SANDBOX_FILES = require('../../fixtures/rest-crud').SANDBOX_FILES;
 const testUtils = require('../../test-utils');
+const {expectFileToMatchSnapshot} = require('../../snapshots');
 
 // Test Sandbox
 const sandbox = new TestSandbox(path.resolve(__dirname, '../.sandbox'));
@@ -235,6 +236,47 @@ describe('lb4 rest-crud', function () {
           .executeGenerator(generator)
           .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path)),
       ).to.be.rejectedWith(/No datasources found/);
+    });
+  });
+
+  describe('legacy JSON-based configuration', () => {
+    it('loads config from `{name}.datasource.config.json`', async () => {
+      const additionalFiles = [
+        ...SANDBOX_FILES,
+        {
+          path: 'src/datasources',
+          file: 'legacy.datasource.config.json',
+          content: JSON.stringify({
+            name: 'legacy',
+            connector: 'memory',
+          }),
+        },
+        {
+          path: 'src/datasources',
+          file: 'legacy.datasource.ts',
+          content: '// dummy source file',
+        },
+      ];
+
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {
+            additionalFiles: [...SANDBOX_FILES, ...additionalFiles],
+          }),
+        )
+        .withPrompts({
+          datasource: 'legacy',
+          modelNameList: ['DefaultModel'],
+        });
+
+      const expectedDefaultModelFile = path.join(
+        sandbox.path,
+        MODEL_ENDPOINT_PATH,
+        'default-model.rest-config.ts',
+      );
+
+      expectFileToMatchSnapshot(expectedDefaultModelFile);
     });
   });
 });

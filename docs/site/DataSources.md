@@ -20,27 +20,29 @@ It is recommended to use the [`lb4 datasource` command](DataSource-generator.md)
 provided by the CLI to generate a DataSource. The CLI will prompt for all
 necessary connector information and create the following files:
 
-- `${dataSource.dataSourceName}.datasource.config.json` containing the connector
-  configuration
 - `${dataSource.dataSourceName}.datasource.ts` containing a class extending
   `juggler.DataSource`. This class can be used to override the default
-  DataSource behaviour programaticaly. Note: The connector configuration stored
-  in the `.json` file is injected into this class using
-  [Dependency Injection](Dependency-injection.md).
+  DataSource behavior programmatically. Note: The connector configuration is
+  available in a static property `defaultConfig` and can be injected into the
+  class constructor using [Dependency Injection](Dependency-injection.md).
 
-Both the above files are generated in `src/datasources/` directory by the CLI.
-It will also update `src/datasources/index.ts` to export the new DataSource
-class.
+The above file is generated in `src/datasources/` directory by the CLI. CLI will
+also update `src/datasources/index.ts` to export the new DataSource class.
 
 Example DataSource Class:
 
 ```ts
 import {inject} from '@loopback/core';
 import {juggler} from '@loopback/repository';
-import config from './db.datasource.config.json';
+
+const config = {
+  name: 'db',
+  connector: 'memory',
+};
 
 export class DbDataSource extends juggler.DataSource {
   static dataSourceName = 'db';
+  static readonly defaultConfig = config;
 
   constructor(
     @inject('datasources.config.db', {optional: true})

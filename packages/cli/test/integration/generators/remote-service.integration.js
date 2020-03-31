@@ -15,6 +15,7 @@ const TestSandbox = testlab.TestSandbox;
 const generator = path.join(__dirname, '../../../generators/service');
 const SANDBOX_FILES = require('../../fixtures/service').SANDBOX_FILES;
 const testUtils = require('../../test-utils');
+const {expectFileToMatchSnapshot} = require('../../snapshots');
 
 // Test Sandbox
 const sandbox = new TestSandbox(path.resolve(__dirname, '../.sandbox'));
@@ -260,6 +261,41 @@ describe('lb4 service (remote)', () => {
       assert.fileContent(expectedFile, /value\(\): Promise\<Myservice\> {/);
       assert.file(INDEX_FILE);
       assert.fileContent(INDEX_FILE, /export \* from '.\/myservice.service';/);
+    });
+  });
+
+  describe('legacy JSON-based configuration', () => {
+    it('loads config from `{name}.datasource.config.json`', async () => {
+      const additionalFiles = [
+        ...SANDBOX_FILES,
+        {
+          path: 'src/datasources',
+          file: 'legacy.datasource.config.json',
+          content: JSON.stringify({
+            name: 'legacy',
+            connector: 'soap',
+          }),
+        },
+        {
+          path: 'src/datasources',
+          file: 'legacy.datasource.ts',
+          content: '// dummy source file',
+        },
+      ];
+
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {additionalFiles}),
+        )
+        .withArguments('myService --datasource legacy');
+
+      const expectedFile = path.join(
+        sandbox.path,
+        SERVICE_APP_PATH,
+        'my-service.service.ts',
+      );
+      expectFileToMatchSnapshot(expectedFile);
     });
   });
 });

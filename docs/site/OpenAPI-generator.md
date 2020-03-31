@@ -397,19 +397,6 @@ export class AccountController {
 If `--client` is specified, a datasource is generated to configure the
 connection to the endpoint that exposes an OpenAPI spec.
 
-{% include code-caption.html content="src/datasources/test2.datasource.config.json"
-%}
-
-```json
-{
-  "name": "test2",
-  "connector": "openapi",
-  "spec": "customer.yaml",
-  "validate": false,
-  "positional": true
-}
-```
-
 {% include code-caption.html content="src/datasources/test2.datasource.ts"
 %}
 
@@ -421,12 +408,20 @@ import {
   ValueOrPromise,
 } from '@loopback/core';
 import {juggler} from '@loopback/repository';
-import config from './test2.datasource.config.json';
+
+const config = {
+  name: 'test2',
+  connector: 'openapi',
+  spec: 'customer.yaml',
+  validate: false,
+  positional: true,
+};
 
 @lifeCycleObserver('datasource')
 export class Test2DataSource extends juggler.DataSource
   implements LifeCycleObserver {
   static dataSourceName = 'test2';
+  static readonly defaultConfig = config;
 
   constructor(
     @inject('datasources.config.test2', {optional: true})

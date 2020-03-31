@@ -517,6 +517,62 @@ describe('lb4 repository', function () {
       );
     });
   });
+
+  describe('legacy JSON-based configuration', () => {
+    it('loads config from `{name}.datasource.config.json`', async () => {
+      const additionalFiles = [
+        ...SANDBOX_FILES,
+        {
+          path: 'src/datasources',
+          file: 'legacy.datasource.config.json',
+          content: JSON.stringify({
+            name: 'legacy',
+            connector: 'memory',
+          }),
+        },
+        {
+          path: 'src/datasources',
+          file: 'legacy.datasource.ts',
+          content: '// dummy source file',
+        },
+      ];
+
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {additionalFiles}),
+        )
+        .withPrompts({
+          dataSourceClass: 'LegacyDatasource',
+          modelNameList: ['DefaultModel'],
+        });
+
+      const expectedFile = path.join(
+        sandbox.path,
+        REPOSITORY_APP_PATH,
+        'default-model.repository.ts',
+      );
+      assert.file(expectedFile);
+      assert.fileContent(
+        expectedFile,
+        /import {LegacyDataSource} from '..\/datasources';/,
+      );
+      assert.fileContent(
+        expectedFile,
+        /\@inject\('datasources.legacy'\) dataSource: LegacyDataSource,/,
+      );
+      assert.fileContent(
+        expectedFile,
+        /export class DefaultModelRepository extends DefaultCrudRepository\</,
+      );
+      assert.fileContent(expectedFile, /typeof DefaultModel.prototype.id/);
+      assert.file(INDEX_FILE);
+      assert.fileContent(
+        INDEX_FILE,
+        /export \* from '.\/default-model.repository';/,
+      );
+    });
+  });
 });
 
 // Sandbox constants

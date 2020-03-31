@@ -931,12 +931,20 @@ import {
   ValueOrPromise,
 } from '@loopback/core';
 import {juggler} from '@loopback/repository';
-import config from './pet-store.datasource.config.json';
+
+const config = {
+  name: 'petStore',
+  connector: 'openapi',
+  spec: '../../../fixtures/openapi/3.0/petstore-expanded.yaml',
+  validate: false,
+  positional: true
+};
 
 @lifeCycleObserver('datasource')
 export class PetStoreDataSource extends juggler.DataSource
   implements LifeCycleObserver {
   static dataSourceName = 'petStore';
+  static readonly defaultConfig = config;
 
   constructor(
     @inject('datasources.config.petStore', {optional: true})
@@ -1567,12 +1575,20 @@ import {
   ValueOrPromise,
 } from '@loopback/core';
 import {juggler} from '@loopback/repository';
-import config from './pet-store.datasource.config.json';
+
+const config = {
+  name: 'petStore',
+  connector: 'openapi',
+  spec: '../../../fixtures/openapi/3.0/petstore-expanded.yaml',
+  validate: false,
+  positional: true
+};
 
 @lifeCycleObserver('datasource')
 export class PetStoreDataSource extends juggler.DataSource
   implements LifeCycleObserver {
   static dataSourceName = 'petStore';
+  static readonly defaultConfig = config;
 
   constructor(
     @inject('datasources.config.petStore', {optional: true})

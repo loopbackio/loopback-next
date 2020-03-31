@@ -5,7 +5,7 @@
 
 const DATASOURCE_APP_PATH = 'src/datasources';
 const CONFIG_PATH = '.';
-const DUMMY_CONTENT = '--DUMMY VALUE--';
+const {getSourceForDataSourceClassWithConfig} = require('../../test-utils');
 
 exports.SANDBOX_FILES = [
   {
@@ -26,61 +26,41 @@ exports.SANDBOX_FILES = [
   },
   {
     path: DATASOURCE_APP_PATH,
-    file: 'myds.datasource.config.json',
-    content: JSON.stringify({
+    file: 'myds.datasource.ts',
+    content: getSourceForDataSourceClassWithConfig('MydsDataSource', {
       name: 'myds',
       connector: 'soap',
     }),
   },
   {
     path: DATASOURCE_APP_PATH,
-    file: 'map-ds.datasource.config.json',
-    content: JSON.stringify({
+    file: 'map-ds.datasource.ts',
+    content: getSourceForDataSourceClassWithConfig('MapdsDataSource', {
       name: 'MapDS',
       connector: 'soap',
     }),
   },
   {
     path: DATASOURCE_APP_PATH,
-    file: 'myds.datasource.ts',
-    content: DUMMY_CONTENT,
-  },
-  {
-    path: DATASOURCE_APP_PATH,
-    file: 'dbmem.datasource.config.json',
-    content: JSON.stringify({
+    file: 'dbmem.datasource.ts',
+    content: getSourceForDataSourceClassWithConfig('DbmemDataSource', {
       name: 'dbmem',
       connector: 'memory',
     }),
   },
   {
     path: DATASOURCE_APP_PATH,
-    file: 'dbmem.datasource.ts',
-    content: DUMMY_CONTENT,
-  },
-  {
-    path: DATASOURCE_APP_PATH,
-    file: 'restdb.datasource.config.json',
-    content: JSON.stringify({
+    file: 'restdb.datasource.ts',
+    content: getSourceForDataSourceClassWithConfig('RestdbDataSource', {
       name: 'restdb',
       connector: 'rest',
     }),
   },
   {
     path: DATASOURCE_APP_PATH,
-    file: 'restdb.datasource.ts',
-    content: DUMMY_CONTENT,
-  },
-  {
-    path: DATASOURCE_APP_PATH,
-    file: 'no-name.datasource.config.json',
-    content: JSON.stringify({
+    file: 'no-name.datasource.ts',
+    content: getSourceForDataSourceClassWithConfig('NoNameDataSource', {
       connector: 'rest',
     }),
-  },
-  {
-    path: DATASOURCE_APP_PATH,
-    file: 'no-name.datasource.ts',
-    content: DUMMY_CONTENT,
   },
 ];

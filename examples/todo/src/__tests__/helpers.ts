@@ -6,7 +6,7 @@
 import {HttpCachingProxy} from '@loopback/http-caching-proxy';
 import {merge} from 'lodash';
 import path from 'path';
-import GEO_CODER_CONFIG from '../datasources/geocoder.datasource.config.json';
+import {GeocoderDataSource} from '../datasources/geocoder.datasource';
 import {Todo} from '../models/index';
 import {Geocoder, GeoPoint} from '../services/geocoder.service';
 
@@ -55,7 +55,7 @@ export const aLocation = {
 };
 
 export function getProxiedGeoCoderConfig(proxy: HttpCachingProxy) {
-  return merge({}, GEO_CODER_CONFIG, {
+  return merge({}, GeocoderDataSource.defaultConfig, {
     options: {
       proxy: proxy.url,
       tunnel: false,

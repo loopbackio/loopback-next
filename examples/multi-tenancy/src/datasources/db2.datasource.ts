@@ -5,12 +5,17 @@ import {
   ValueOrPromise,
 } from '@loopback/core';
 import {juggler} from '@loopback/repository';
-import config from './db2.datasource.config.json';
+
+const config = {
+  name: 'db.xyz',
+  connector: 'memory',
+};
 
 @lifeCycleObserver('datasource')
 export class Db2DataSource extends juggler.DataSource
   implements LifeCycleObserver {
   static dataSourceName = 'db.xyz';
+  static readonly defaultConfig = config;
 
   constructor(
     @inject('datasources.config.db2', {optional: true})

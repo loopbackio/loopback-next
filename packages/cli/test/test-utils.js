@@ -9,6 +9,7 @@ const yeoman = require('yeoman-environment');
 const path = require('path');
 const helpers = require('yeoman-test');
 const fs = require('fs-extra');
+const {stringifyObject} = require('../lib/utils');
 
 exports.testSetUpGen = function (genName, arg) {
   arg = arg || {};
@@ -130,4 +131,34 @@ exports.givenLBProject = function (rootDir, options) {
       }
     }
   }
+};
+
+/**
+ * Create a TypeScript source code for a file defining a new datasource,
+ * e.g. `src/datasources/db.datasource.ts`.
+ *
+ * @param {string} className The name of the DataSource class to use, e.g.
+ * `DbDataSource`.
+ * @param {object} config DataSource configuration, e.g. `{connector: 'memory'}`.
+ * @returns {string}
+ */
+exports.getSourceForDataSourceClassWithConfig = function (className, config) {
+  return `
+import {inject} from '@loopback/core';
+import {juggler} from '@loopback/repository';
+
+const config = ${stringifyObject(config, {inlineCharacterLimit: 0})};
+
+export class ${className} extends juggler.DataSource {
+  static dataSourceName = config.name;
+  static readonly defaultConfig = config;
+
+  constructor(
+    @inject(\`datasources.config.${config.name}\`, {optional: true})
+    dsConfig: object = config,
+  ) {
+    super(dsConfig);
+  }
+}
+`;
 };

@@ -5,12 +5,14 @@ import {
   ValueOrPromise,
 } from '@loopback/core';
 import {juggler} from '@loopback/repository';
-import config from './<%= jsonFileName %>';
+
+const config = <%- dsConfigString %>;
 
 @lifeCycleObserver('datasource')
 export class <%= className %>DataSource extends juggler.DataSource
   implements LifeCycleObserver {
   static dataSourceName = '<%= name %>';
+  static readonly defaultConfig = config;
 
   constructor(
     @inject('datasources.config.<%= name %>', {optional: true})

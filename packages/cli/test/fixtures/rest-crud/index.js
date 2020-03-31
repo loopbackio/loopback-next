@@ -6,8 +6,8 @@
 const DATASOURCE_APP_PATH = 'src/datasources';
 const MODEL_APP_PATH = 'src/models';
 const CONFIG_PATH = '.';
-const DUMMY_CONTENT = '--DUMMY VALUE--';
 const fs = require('fs');
+const {getSourceForDataSourceClassWithConfig} = require('../../test-utils');
 
 exports.SANDBOX_FILES = [
   {
@@ -20,63 +20,43 @@ exports.SANDBOX_FILES = [
   },
   {
     path: DATASOURCE_APP_PATH,
-    file: 'dbkv.datasource.config.json',
-    content: JSON.stringify({
+    file: 'dbkv.datasource.ts',
+    content: getSourceForDataSourceClassWithConfig('DbkvDataSource', {
       name: 'dbkv',
       connector: 'kv-redis',
     }),
   },
   {
     path: DATASOURCE_APP_PATH,
-    file: 'dbkv.datasource.ts',
-    content: DUMMY_CONTENT,
-  },
-  {
-    path: DATASOURCE_APP_PATH,
-    file: 'dbmem.datasource.config.json',
-    content: JSON.stringify({
+    file: 'dbmem.datasource.ts',
+    content: getSourceForDataSourceClassWithConfig('DbmemDataSource', {
       name: 'dbmem',
       connector: 'memory',
     }),
   },
   {
     path: DATASOURCE_APP_PATH,
-    file: 'my-ds.datasource.config.json',
-    content: JSON.stringify({
+    file: 'my-ds.datasource.ts',
+    content: getSourceForDataSourceClassWithConfig('MyDsDataSource', {
       name: 'MyDS',
       connector: 'memory',
     }),
   },
   {
     path: DATASOURCE_APP_PATH,
-    file: 'dbmem.datasource.ts',
-    content: DUMMY_CONTENT,
-  },
-  {
-    path: DATASOURCE_APP_PATH,
-    file: 'restdb.datasource.config.json',
-    content: JSON.stringify({
+    file: 'restdb.datasource.ts',
+    content: getSourceForDataSourceClassWithConfig('RestdbDataSource', {
       name: 'restdb',
       connector: 'rest',
     }),
   },
   {
     path: DATASOURCE_APP_PATH,
-    file: 'sqlite3.datasource.config.json',
-    content: JSON.stringify({
+    file: 'sqlite3.datasource.ts',
+    content: getSourceForDataSourceClassWithConfig('Sqlite3DataSource', {
       name: 'sqlite3',
       connector: 'loopback-connector-sqlite3',
     }),
-  },
-  {
-    path: DATASOURCE_APP_PATH,
-    file: 'sqlite3.datasource.ts',
-    content: DUMMY_CONTENT,
-  },
-  {
-    path: DATASOURCE_APP_PATH,
-    file: 'restdb.datasource.ts',
-    content: DUMMY_CONTENT,
   },
   {
     path: MODEL_APP_PATH,

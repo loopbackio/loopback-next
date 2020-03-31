@@ -69,19 +69,19 @@ Cloudant connector, so data is persisted.
 
 ### Step 3: Updating your DataSource
 
-Update `db.datasource.config.json` to use the Cloudant connector. The value for
-the `url` property is just a placeholder and does not need to have the correct
-credential because we will be binding the app with the Cloudant service once
-it's pushed to IBM Cloud.
+Update `db.datasource.ts` to use the Cloudant connector. The value for the `url`
+property is just a placeholder and does not need to have the correct credential
+because we will be binding the app with the Cloudant service once it's pushed to
+IBM Cloud.
 
-```js
-{
-  "name": "db",
-  "connector": "cloudant",
-  "url": "http://admin:pass@localhost:8080",
-  "database": "todo",
-  "modelIndex": ""
-}
+```ts
+const config = {
+  name: 'db',
+  connector: 'cloudant',
+  url: 'http://admin:pass@localhost:8080',
+  database: 'todo',
+  modelIndex: '',
+};
 ```
 
 Install the `loopback-connector-cloudant` package.
@@ -106,14 +106,14 @@ $ npm i loopback-connector-cloudant
    import {TodoListApplication} from './application';
    import {ApplicationConfig} from '@loopback/core';
    // --------- ADD THIS SNIPPET ---------
-   const datasourceDb = require('./datasources/db.datasource.config.json');
+   import {DbDataSource} from './datasources/db.datasource';
    const cfenv = require('cfenv');
    const appEnv = cfenv.getAppEnv();
    // --------- ADD THIS SNIPPET ---------
 
    export async function main(options?: ApplicationConfig) {
      // --------- ADD THIS SNIPPET ---------
-     // Set the port assined for the app
+     // Set the port assigned for the app
      if (!options) options = {};
      if (!options.rest) options.rest = {};
      options.rest.port = appEnv.isLocal ? options.rest.port : appEnv.port;
@@ -126,10 +126,10 @@ $ npm i loopback-connector-cloudant
      // If running on IBM Cloud, we get the Cloudant service details from VCAP_SERVICES
      if (!appEnv.isLocal) {
        // 'myCloudant' is the name of the provisioned Cloudant service
-       const updatedDatasourceDb = Object.assign({}, datasourceDb, {
+       const dbConfig = Object.assign({}, DbDataSource.defaultConfig, {
          url: appEnv.getServiceURL('myCloudant'),
        });
-       app.bind('datasources.config.db').to(updatedDatasourceDb);
+       app.bind('datasources.config.db').to(dbConfig);
      }
      // --------- ADD THIS SNIPPET ---------
      await app.boot();
