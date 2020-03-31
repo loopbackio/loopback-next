@@ -10,7 +10,7 @@ The goals for this month would be to:
 
 - Aim at finish the
   [Migration guide epic](https://github.com/strongloop/loopback-next/issues/3935)
-  excpet for the
+  except for the
   [migrate LB3 components related tasks](https://github.com/strongloop/loopback-next/issues/3955).
 - Finish
   [From model definition to REST API with no custom repository/controller classes epic](https://github.com/strongloop/loopback-next/issues/3935)
@@ -19,16 +19,15 @@ The goals for this month would be to:
 
 - [ ] Migration guide #3935
 
+  - [ ] :running: Migration Guide: Discuss life cycle differences between LB3
+        and LB4 #3935
+  - [ ] :running: How to migrate apps using loopback-component-passport #3958
   - [ ] Migration Guide: Boot up #4838
   - [ ] Migration Guide: Custom validation #4837
   - [ ] Spike: How to migrate LB3 components #4099
   - [ ] How to map LB3 CLI commands to LB4 CLI #3953
   - [ ] Spike: How to migrate apps using loopback-component-oauth2 #3959
   - [ ] How to run LB3 app tests when the app is mounted in a LB4 project #3978
-
-- [ ] From model definition to REST API #3935
-
-  - [ ] Docs for exposing REST API of a Model with no custom classes #2740
 
 - [ ] APIC/LB integration
 
@@ -41,6 +40,8 @@ The goals for this month would be to:
 
 - PR reviews
   - [ ] feat(repository): hasManyThrough #4438
+  - [ ] Add tsdoc package documentation #4711
+  - [ ] feat(rest): add openapi schema consolidation #4365
 
 ## Stretch Goals
 
@@ -56,6 +57,7 @@ The goals for this month would be to:
   - [ ] Extract the jwt authentication to an extension module #4903
   - [ ] Custom visual style of REST API Explorer #2023
   - [ ] Spike: robust handling of ObjectID type for MongoDB #3456
+  - [ ] Enable TypeScript Project References #2609
 
 ## Looking for Community Contributions
 
