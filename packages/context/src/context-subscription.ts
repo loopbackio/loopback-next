@@ -5,6 +5,7 @@
 
 import debugFactory from 'debug';
 import {EventEmitter} from 'events';
+import {iterator, multiple} from 'p-event';
 import {Context} from './context';
 import {ContextEvent, ContextEventListener} from './context-event';
 import {
@@ -12,22 +13,8 @@ import {
   ContextEventType,
   ContextObserver,
 } from './context-observer';
-const debug = debugFactory('loopback:context:subscription');
 
-/**
- * Polyfill Symbol.asyncIterator as required by TypeScript for Node 8.x.
- * See https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-3.html
- */
-if (!Symbol.asyncIterator) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (Symbol as any).asyncIterator = Symbol.for('Symbol.asyncIterator');
-}
-/**
- * WARNING: This following import must happen after the polyfill. The
- * `auto-import` by an IDE such as VSCode may move the import before the
- * polyfill. It must be then fixed manually.
- */
-import {iterator, multiple} from 'p-event';
+const debug = debugFactory('loopback:context:subscription');
 
 /**
  * Subscription of context events. It's modeled after

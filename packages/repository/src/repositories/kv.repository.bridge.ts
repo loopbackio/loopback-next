@@ -10,16 +10,6 @@ import {KeyValueFilter, KeyValueRepository} from './kv.repository';
 import {ensurePromise, juggler} from './legacy-juggler-bridge';
 
 /**
- * Polyfill for Symbol.asyncIterator
- * See https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-3.html
- */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-if (!(Symbol as any).asyncIterator) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (Symbol as any).asyncIterator = Symbol.for('Symbol.asyncIterator');
-}
-
-/**
  * An implementation of KeyValueRepository based on loopback-datasource-juggler
  */
 export class DefaultKeyValueRepository<T extends Model>
