@@ -15,12 +15,19 @@ import {
   ValueOrPromise,
 } from '@loopback/core';
 import {juggler} from '@loopback/repository';
-import config from './ds.datasource.config.json';
+
+const config = {
+  name: 'ds',
+  connector: 'memory',
+  localStorage: undefined,
+  file: undefined
+};
 
 @lifeCycleObserver('datasource')
 export class DsDataSource extends juggler.DataSource
   implements LifeCycleObserver {
   static dataSourceName = 'ds';
+  static readonly defaultConfig = config;
 
   constructor(
     @inject('datasources.config.ds', {optional: true})
@@ -56,12 +63,19 @@ import {
   ValueOrPromise,
 } from '@loopback/core';
 import {juggler} from '@loopback/repository';
-import config from './ds.datasource.config.json';
+
+const config = {
+  name: 'ds',
+  connector: 'memory',
+  localStorage: undefined,
+  file: undefined
+};
 
 @lifeCycleObserver('datasource')
 export class DsDataSource extends juggler.DataSource
   implements LifeCycleObserver {
   static dataSourceName = 'ds';
+  static readonly defaultConfig = config;
 
   constructor(
     @inject('datasources.config.ds', {optional: true})
@@ -97,12 +111,24 @@ import {
   ValueOrPromise,
 } from '@loopback/core';
 import {juggler} from '@loopback/repository';
-import config from './ds.datasource.config.json';
+
+const config = {
+  name: 'ds',
+  connector: 'db2',
+  dsn: undefined,
+  host: undefined,
+  port: 100,
+  user: undefined,
+  password: undefined,
+  database: undefined,
+  schema: undefined
+};
 
 @lifeCycleObserver('datasource')
 export class DsDataSource extends juggler.DataSource
   implements LifeCycleObserver {
   static dataSourceName = 'ds';
+  static readonly defaultConfig = config;
 
   constructor(
     @inject('datasources.config.ds', {optional: true})
@@ -138,12 +164,26 @@ import {
   ValueOrPromise,
 } from '@loopback/core';
 import {juggler} from '@loopback/repository';
-import config from './ds.datasource.config.json';
+
+const config = {
+  name: 'ds',
+  connector: 'rest',
+  baseURL: undefined,
+  options: {
+    test: 'value'
+  },
+  operations: [
+    'get',
+    'post'
+  ],
+  crud: false
+};
 
 @lifeCycleObserver('datasource')
 export class DsDataSource extends juggler.DataSource
   implements LifeCycleObserver {
   static dataSourceName = 'ds';
+  static readonly defaultConfig = config;
 
   constructor(
     @inject('datasources.config.ds', {optional: true})
@@ -179,12 +219,22 @@ import {
   ValueOrPromise,
 } from '@loopback/core';
 import {juggler} from '@loopback/repository';
-import config from './ds.datasource.config.json';
+
+const config = {
+  name: 'ds',
+  connector: 'cloudant',
+  url: 'http://user:pass@host.com',
+  database: undefined,
+  username: 'user',
+  password: 'pass',
+  modelIndex: undefined
+};
 
 @lifeCycleObserver('datasource')
 export class DsDataSource extends juggler.DataSource
   implements LifeCycleObserver {
   static dataSourceName = 'ds';
+  static readonly defaultConfig = config;
 
   constructor(
     @inject('datasources.config.ds', {optional: true})

@@ -740,10 +740,10 @@ instance:
 
 ```ts
 import {merge} from 'lodash';
-import GEO_CODER_CONFIG from '../datasources/geo.datasource.config.json';
+import {GeocoderDataSource} from '../datasources/geocoder.datasource';
 
 function givenGeoService() {
-  const config = merge({}, GEO_CODER_CONFIG, {
+  const config = merge({}, GeocoderDataSource.defaultConfig, {
     // your config overrides
   });
   const dataSource = new GeoDataSource(config);
@@ -751,7 +751,7 @@ function givenGeoService() {
 }
 ```
 
-#### Test invidivudal service methods
+#### Test individual service methods
 
 With the service proxy instance available, integration tests can focus on
 executing individual methods with the right set of input parameters; and

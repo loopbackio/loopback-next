@@ -307,50 +307,42 @@ We can now access key-value stores such as [Redis](https://redis.io/) using the
 
 ### Define a KeyValue Datasource
 
-We first need to define a datasource to configure the key-value store. For
-better flexibility, we split the datasource definition into two files. The json
-file captures the configuration properties and it can be possibly overridden by
-dependency injection.
+We first need to define a datasource to configure the key-value store. The
+easiest option is to to generate the datasource automatically using
+`lb4 datasource` command and selecting
+`Redis key-value connector (supported by StrongLoop)`.
 
-1. redis.datasource.config.json
+The generated datasource file has two parts:
 
-   ```json
-   {
-     "name": "redis",
-     "connector": "kv-redis",
-     "host": "127.0.0.1",
-     "port": 6379,
-     "password": "",
-     "db": 0
-   }
-   ```
+1. A config object with the configuration options provided via CLI.
+2. A DataSource class accepting the configuration via Dependency Injection, with
+   a fall-back to the default config.
 
-2. redis.datasource.ts
+```ts
+import {inject} from '@loopback/core';
+import {juggler, AnyObject} from '@loopback/repository';
 
-   The class uses a configuration object to set up a datasource for the Redis
-   instance. By default, the configuration is loaded from
-   `redis.datasource.config.json`. We can override it by binding a new object to
-   `datasources.config.redis` for a context.
+const config = {
+  name: 'redis',
+  connector: 'kv-redis',
+  host: '127.0.0.1',
+  port: 6379,
+  password: '',
+  db: 0,
+};
 
-   ```ts
-   import {inject} from '@loopback/core';
-   import {juggler, AnyObject} from '@loopback/repository';
-   import config from './redis.datasource.config.json';
+export class RedisDataSource extends juggler.DataSource {
+  static dataSourceName = 'redis';
+  static readonly defaultConfig = config;
 
-   export class RedisDataSource extends juggler.DataSource {
-     static dataSourceName = 'redis';
-
-     constructor(
-       @inject('datasources.config.redis', {optional: true})
-       dsConfig: AnyObject = config,
-     ) {
-       super(dsConfig);
-     }
-   }
-   ```
-
-   To generate the datasource automatically, use `lb4 datasource` command and
-   select `Redis key-value connector (supported by StrongLoop)`.
+  constructor(
+    @inject('datasources.config.redis', {optional: true})
+    dsConfig: AnyObject = config,
+  ) {
+    super(dsConfig);
+  }
+}
+```
 
 ### Define a KeyValueRepository
 

@@ -67,7 +67,6 @@ JSON configuration file and a .ts file with the Datasource name and added an
 entry inside the index.ts file.
 
 ```sh
-   create src/datasources/calculator.datasource.config.json
    create src/datasources/calculator.datasource.ts
    update src/datasources/index.ts
 
@@ -85,9 +84,9 @@ SOAP port, which in this case is **CalculatorSoap** and the service
 - subtract
 - divide
 
-We need to configure in the Datasource JSON file, the corresponding Node.js
-methods for these remote SOAP operations. For simplicity, we will name the
-Node.js methods the same as their SOAP operation counterparts.
+In the DataSource file, we need to configure the corresponding Node.js methods
+for these remote SOAP operations. For simplicity, we will name the Node.js
+methods the same as their SOAP operation counterparts.
 
 For example, having the following property, we are configuring the SOAP operator
 Multiply that is reached in the port CalculatorSoap and Calculator service to
@@ -103,10 +102,10 @@ bind the Node.js method _Multiply_.
  }
 ```
 
-Edit the file `src/datasources/calculator.datasource.config.json` and add the
-following configuration after the `remoteEnabled: true,` property as follows:
+Edit the file `src/datasources/calculator.datasource.ts` and add the following
+configuration after the `remoteEnabled: true,` property as follows:
 
-{% include code-caption.html content="src/datasources/calculator.datasource.config.json" %}
+{% include code-caption.html content="src/datasources/calculator.datasource.ts" %}
 
 ```ts
 "operations": {

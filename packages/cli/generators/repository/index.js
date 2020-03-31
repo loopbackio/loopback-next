@@ -242,7 +242,7 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
       ? utils.toClassName(this.options.datasource) + 'Datasource'
       : '';
 
-    debug(`command line datasource is  ${cmdDatasourceName}`);
+    debug('command line datasource is %j', cmdDatasourceName);
 
     try {
       datasourcesList = await utils.getArtifactList(
@@ -251,18 +251,26 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
         true,
       );
       debug(
-        `datasourcesList from ${utils.sourceRootDir}/${utils.datasourcesDir} : ${datasourcesList}`,
+        'datasourcesList from %s/%s:',
+        utils.sourceRootDir,
+        utils.datasourcesDir,
+        datasourcesList,
       );
     } catch (err) {
       return this.exit(err);
     }
 
     const availableDatasources = datasourcesList.filter(item => {
-      debug(`data source inspecting item: ${item}`);
       const result = utils.isConnectorOfType(
         VALID_CONNECTORS_FOR_REPOSITORY,
         this.artifactInfo.datasourcesDir,
         item,
+      );
+      debug(
+        'has %s connector of type %o? %s',
+        item,
+        VALID_CONNECTORS_FOR_REPOSITORY,
+        result,
       );
       return result !== false;
     });

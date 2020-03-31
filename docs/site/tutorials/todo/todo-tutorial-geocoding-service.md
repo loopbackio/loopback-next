@@ -48,7 +48,6 @@ $ lb4 datasource
 ? Default options for the request:
 ? An array of operation templates:
 ? Use default CRUD mapping: No
-   create src/datasources/geocoder.datasource.config.json
    create src/datasources/geocoder.datasource.ts
  # npm will install dependencies now
     update src/datasources/index.ts
@@ -60,36 +59,41 @@ Edit the newly created datasource configuration to configure Geocoder API
 endpoints. Configuration options provided by REST Connector are described in our
 docs here: [REST connector](/doc/en/lb4/REST-connector.html).
 
-{% include code-caption.html content="/src/datasources/geocoder.datasource.config.json" %}
+{% include code-caption.html content="/src/datasources/geocoder.datasource.ts" %}
 
-```json
-{
-  "name": "geocoder",
-  "connector": "rest",
-  "options": {
-    "headers": {
-      "accept": "application/json",
-      "content-type": "application/json"
-    }
+```ts
+// (imports skipped for brevity)
+
+const config = {
+  name: 'geocoder',
+  connector: 'rest',
+  options: {
+    headers: {
+      accept: 'application/json',
+      'content-type': 'application/json',
+    },
   },
-  "operations": [
+  operations: [
     {
-      "template": {
-        "method": "GET",
-        "url": "https://geocoding.geo.census.gov/geocoder/locations/onelineaddress",
-        "query": {
-          "format": "{format=json}",
-          "benchmark": "Public_AR_Current",
-          "address": "{address}"
+      template: {
+        method: 'GET',
+        url:
+          'https://geocoding.geo.census.gov/geocoder/locations/onelineaddress',
+        query: {
+          format: '{format=json}',
+          benchmark: 'Public_AR_Current',
+          address: '{address}',
         },
-        "responsePath": "$.result.addressMatches[*].coordinates"
+        responsePath: '$.result.addressMatches[*].coordinates',
       },
-      "functions": {
-        "geocode": ["address"]
-      }
-    }
-  ]
-}
+      functions: {
+        geocode: ['address'],
+      },
+    },
+  ],
+};
+
+// (definition of DataSource class skipped for brevity)
 ```
 
 ### Implement a service provider
@@ -138,7 +142,7 @@ export interface Geocoder {
 
 export class GeocoderProvider implements Provider<Geocoder> {
   constructor(
-    // geocoder must match the name property in the datasource json file
+    // geocoder must match the name property in the datasource file
     @inject('datasources.geocoder')
     protected dataSource: GeocoderDataSource = new GeocoderDataSource(),
   ) {}

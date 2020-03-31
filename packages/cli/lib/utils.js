@@ -24,6 +24,7 @@ const urlSlug = require('url-slug');
 const validate = require('validate-npm-package-name');
 const Conflicter = require('yeoman-generator/lib/util/conflicter');
 const connectors = require('./connectors.json');
+const tsquery = require('./ast-helper');
 const stringifyObject = require('stringify-object');
 const camelCase = _.camelCase;
 const kebabCase = _.kebabCase;
@@ -297,7 +298,7 @@ exports.StatusConflicter = class StatusConflicter extends Conflicter {
  */
 exports.findArtifactPaths = async function (dir, artifactType, reader) {
   const readdir = reader || readdirAsync;
-  debug(`Finding artifact paths at: ${dir}`);
+  debug('Finding %j artifact paths at %s', artifactType, dir);
 
   try {
     // Wrapping readdir in case it's not a promise.
@@ -333,7 +334,7 @@ exports.getArtifactList = async function (
   reader,
 ) {
   const paths = await exports.findArtifactPaths(dir, artifactType, reader);
-  debug(`Filtering artifact paths: ${paths}`);
+  debug('Artifacts paths found:', paths);
   return paths.map(p => {
     const firstWord = _.first(_.split(_.last(_.split(p, path.sep)), '.'));
     const result = pascalCase(exports.toClassName(firstWord));
@@ -555,27 +556,8 @@ exports.getDataSourceConnectorName = function (
   if (!dataSourceClass) {
     return false;
   }
-  let result;
-  let jsonFileContent;
-
-  const datasourceJSONFile = path.join(
-    datasourcesDir,
-    exports.dataSourceToJSONFileName(dataSourceClass),
-  );
-
-  debug(`reading ${datasourceJSONFile}`);
-  try {
-    jsonFileContent = JSON.parse(fs.readFileSync(datasourceJSONFile, 'utf8'));
-  } catch (err) {
-    debug(`Error reading file ${datasourceJSONFile}: ${err.message}`);
-    err.message = `Cannot load ${datasourceJSONFile}: ${err.message}`;
-    throw err;
-  }
-
-  if (jsonFileContent.connector) {
-    result = jsonFileContent.connector;
-  }
-  return result;
+  const config = exports.getDataSourceConfig(datasourcesDir, dataSourceClass);
+  return config.connector;
 };
 
 /**
@@ -591,31 +573,18 @@ exports.isConnectorOfType = function (
   datasourcesDir,
   dataSourceClass,
 ) {
-  debug(`calling isConnectorType ${connectorType}`);
-  let jsonFileContent = '';
+  debug('calling isConnectorType %o for %s', connectorType, dataSourceClass);
 
   if (!dataSourceClass) {
     return false;
   }
 
-  const datasourceJSONFile = path.join(
-    datasourcesDir,
-    exports.dataSourceToJSONFileName(dataSourceClass),
-  );
-
-  debug(`reading ${datasourceJSONFile}`);
-  try {
-    jsonFileContent = JSON.parse(fs.readFileSync(datasourceJSONFile, 'utf8'));
-  } catch (err) {
-    debug(`Error reading file ${datasourceJSONFile}: ${err.message}`);
-    err.message = `Cannot load  ${datasourceJSONFile}: ${err.message}`;
-    throw err;
-  }
+  const config = exports.getDataSourceConfig(datasourcesDir, dataSourceClass);
 
   for (const connector of Object.values(connectors)) {
     const matchedConnector =
-      jsonFileContent.connector === connector.name ||
-      jsonFileContent.connector === `loopback-connector-${connector.name}`;
+      config.connector === connector.name ||
+      config.connector === `loopback-connector-${connector.name}`;
 
     if (matchedConnector) return connectorType.includes(connector.baseModel);
   }
@@ -623,6 +592,57 @@ exports.isConnectorOfType = function (
   // Maybe for other connectors that are not in the supported list
   return null;
 };
+
+/**
+ * Load the datasource configuration. Supports both the current TypeScript-based
+ * flavor and legacy JSON-based configuration.
+ * @param {string} datasourcesDir path for sources
+ * @param {string} dataSourceClass class name for the datasource
+ */
+exports.getDataSourceConfig = function getDataSourceConfig(
+  datasourcesDir,
+  dataSourceClass,
+) {
+  const config =
+    readDataSourceConfigFromTypeScript(datasourcesDir, dataSourceClass) ||
+    // Support legacy JSON-based configuration.
+    // TODO(semver-major) Print a deprecation warning for JSON-based datasources
+    // or stop supporting them entirely.
+    readDataSourceConfigFromJSON(datasourcesDir, dataSourceClass);
+
+  debug('datasource %s has config %o', dataSourceClass, config);
+  return config;
+};
+
+function readDataSourceConfigFromTypeScript(datasourcesDir, dataSourceClass) {
+  const srcFile = path.join(
+    datasourcesDir,
+    exports.dataSourceToArtifactFileName(dataSourceClass),
+  );
+  debug(
+    'Reading datasource config for class %s from %s',
+    dataSourceClass,
+    srcFile,
+  );
+
+  const fileContent = fs.readFileSync(srcFile, 'utf-8');
+  return tsquery.getDataSourceConfig(fileContent);
+}
+
+function readDataSourceConfigFromJSON(datasourcesDir, dataSourceClass) {
+  const datasourceJSONFile = path.join(
+    datasourcesDir,
+    exports.dataSourceToJSONFileName(dataSourceClass),
+  );
+
+  debug(`Reading datasource config from JSON file ${datasourceJSONFile}`);
+  try {
+    return JSON.parse(fs.readFileSync(datasourceJSONFile, 'utf8'));
+  } catch (err) {
+    err.message = `Cannot load ${datasourceJSONFile}: ${err.message}`;
+    throw err;
+  }
+}
 
 /**
  *
@@ -634,33 +654,20 @@ exports.getDataSourceName = function (datasourcesDir, dataSourceClass) {
   if (!dataSourceClass) {
     return false;
   }
-  let result;
-  let jsonFileContent;
-
-  const datasourceJSONFile = path.join(
-    datasourcesDir,
-    exports.dataSourceToJSONFileName(dataSourceClass),
-  );
-
-  debug(`reading ${datasourceJSONFile}`);
-  try {
-    jsonFileContent = JSON.parse(fs.readFileSync(datasourceJSONFile, 'utf8'));
-  } catch (err) {
-    debug(`Error reading file ${datasourceJSONFile}: ${err.message}`);
-    err.message = `Cannot load ${datasourceJSONFile}: ${err.message}`;
-    throw err;
-  }
-
-  if (jsonFileContent.name) {
-    result = jsonFileContent.name;
-  }
-  return result;
+  const config = exports.getDataSourceConfig(datasourcesDir, dataSourceClass);
+  return config.name;
 };
 
 exports.dataSourceToJSONFileName = function (dataSourceClass) {
   return path.join(
     toFileName(dataSourceClass.replace('Datasource', '')) +
       '.datasource.config.json',
+  );
+};
+
+exports.dataSourceToArtifactFileName = function (dataSourceClass) {
+  return (
+    toFileName(dataSourceClass.replace('Datasource', '')) + '.datasource.ts'
   );
 };
 

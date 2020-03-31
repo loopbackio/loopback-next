@@ -54,7 +54,7 @@ export interface CalculatorService {
 
 export class CalculatorServiceProvider implements Provider<CalculatorService> {
   constructor(
-    // calculator must match the name property in the datasource json file
+    // calculator must match the name property in the datasource file
     @inject('datasources.calculator')
     protected dataSource: CalculatorDataSource = new CalculatorDataSource(),
   ) {}
