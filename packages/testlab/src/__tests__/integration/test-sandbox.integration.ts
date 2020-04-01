@@ -111,7 +111,7 @@ describe('TestSandbox integration tests', () => {
     beforeEach(callSandboxDelete);
 
     it('throws an error when trying to call getPath()', () => {
-      expect(() => sandbox.getPath()).to.throw(ERR);
+      expect(() => sandbox.path).to.throw(ERR);
     });
 
     it('throws an error when trying to call mkdir()', async () => {
@@ -146,11 +146,11 @@ describe('TestSandbox integration tests', () => {
   }
 
   function givenPath() {
-    path = sandbox.getPath();
+    path = sandbox.path;
   }
 
   async function deleteSandbox() {
     if (!(await pathExists(path))) return;
-    await remove(sandbox.getPath());
+    await remove(sandbox.path);
   }
 });

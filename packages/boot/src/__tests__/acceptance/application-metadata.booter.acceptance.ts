@@ -10,7 +10,11 @@ import {BooterApp} from '../fixtures/application';
 
 describe('application metadata booter acceptance tests', () => {
   let app: BooterApp;
-  const sandbox = new TestSandbox(resolve(__dirname, '../../.sandbox'));
+  const sandbox = new TestSandbox(resolve(__dirname, '../../.sandbox'), {
+    // We intentionally use this flag so that `dist/application.js` can keep
+    // its relative path to satisfy import statements
+    subdir: false,
+  });
 
   beforeEach('reset sandbox', () => sandbox.reset());
   beforeEach(getApp);

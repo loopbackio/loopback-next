@@ -16,6 +16,7 @@ Test utilities to help writing LoopBack 4 tests:
 - Helpers for creating `supertest` clients for LoopBack applications
 - HTTP request/response stubs for writing tests without a listening HTTP server
 - Swagger/OpenAPI spec validation
+- Test sandbox
 
 ## Installation
 
@@ -55,8 +56,9 @@ Table of contents:
 - [httpGetAsync](#httpgetasync) - Async wrapper for HTTP GET requests.
 - [httpsGetAsync](#httpsgetasync) - Async wrapper for HTTPS GET requests.
 - [toJSON](#toJSON) - A helper to obtain JSON data representing a given object.
-- [createUnexpectedHttpErrorLogger](#createUnexpectedHttpErrorLogger) - An error
+- [createUnexpectedHttpErrorLogger](#createunexpectedhttprrrorlogger) - An error
   logger that only logs errors for unexpected HTTP statuses.
+- [TestSandbox](#testsandbox) - A sandbox directory for tests
 
 ### `expect`
 
@@ -370,6 +372,82 @@ describe('MyApp', () => {
     // make `GET /` request, assert that 401 is returned
   });
 });
+```
+
+### TestSandbox
+
+Many tests need use a temporary directory as the sandbox to mimic a tree of
+files. The `TestSandbox` class provides such facilities to create and manage a
+sandbox on the file system.
+
+#### Create a sandbox
+
+```ts
+// Create a sandbox as a unique temporary subdirectory under the rootPath
+const sandbox = new TestSandbox(rootPath);
+const sandbox = new TestSandbox(rootPath, {subdir: true});
+
+// Create a sandbox in the root path directly
+// This is same as the old behavior
+const sandbox = new TestSandbox(rootPath, {subdir: false});
+
+// Create a sandbox in the `test1` subdirectory of the root path
+const sandbox = new TestSandbox(rootPath, {subdir: 'test1'});
+
+// To access the target directory of a sandbox
+console.log(sandbox.path);
+```
+
+#### Reset a sandbox
+
+All files inside a sandbox will be removed when the sandbox is reset. We also
+try to remove cache from `require`.
+
+```ts
+await sandbox.reset();
+```
+
+#### Delete a sandbox
+
+Removes all files and mark the sandbox unusable.
+
+```ts
+await sandbox.delete();
+```
+
+#### Create a directory
+
+Recursively creates a directory within the sandbox.
+
+```ts
+await sandbox.mkdir(dir);
+```
+
+#### Copy a file
+
+Copies a file from src to the TestSandbox. If copying a `.js` file which has an
+accompanying `.js.map` file in the src file location, the dest file will have
+its sourceMappingURL updated to point to the original file as an absolute path
+so you don't need to copy the map file.
+
+```ts
+await sandbox.copyFile(src, dest);
+```
+
+#### Write a json file
+
+Creates a new file and writes the given data serialized as JSON.
+
+```ts
+await sandbox.writeJsonFile(dest, data);
+```
+
+#### Write a file
+
+Creates a new file and writes the given data as a UTF-8-encoded text.
+
+```ts
+await sandbox.writeFile(dest, data);
 ```
 
 ## Related resources
