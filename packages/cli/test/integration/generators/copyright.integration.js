@@ -11,7 +11,7 @@ const testlab = require('@loopback/testlab');
 const TestSandbox = testlab.TestSandbox;
 
 const generator = path.join(__dirname, '../../../generators/copyright');
-const {spdxLicenseList} = require('../../../generators/copyright/header');
+const {spdxLicenseList} = require('../../../generators/copyright/license');
 const SANDBOX_FILES = require('../../fixtures/copyright/single-package')
   .SANDBOX_FILES;
 const testUtils = require('../../test-utils');
@@ -70,6 +70,50 @@ describe('lb4 copyright', function () {
       '// Node module: myapp',
       `// This file is licensed under the ${spdxLicenseList['isc'].name}.`,
       `// License text available at ${spdxLicenseList['isc'].url}`,
+    );
+  });
+
+  it('updates LICENSE and package.json', async () => {
+    await testUtils
+      .executeGenerator(generator)
+      .inDir(SANDBOX_PATH, () =>
+        testUtils.givenLBProject(SANDBOX_PATH, {
+          excludePackageJSON: true,
+          additionalFiles: SANDBOX_FILES,
+        }),
+      )
+      .withOptions({
+        owner: 'ACME Inc.',
+        license: 'ISC',
+        gitOnly: false,
+        updateLicense: true,
+      });
+
+    assert.fileContent(
+      path.join(SANDBOX_PATH, 'package.json'),
+      '"license": "ISC"',
+    );
+    assert.fileContent(
+      path.join(SANDBOX_PATH, 'package.json'),
+      '"copyright.owner": "ACME Inc."',
+    );
+
+    /*
+    Copyright (c) ACME Inc. 2020. All Rights Reserved.
+    Node module: myapp
+
+    */
+    assert.fileContent(
+      path.join(SANDBOX_PATH, 'LICENSE'),
+      'This project is licensed under the ISC License, full text below.',
+    );
+    assert.fileContent(
+      path.join(SANDBOX_PATH, 'LICENSE'),
+      `Copyright (c) ACME Inc. ${year}. All Rights Reserved.`,
+    );
+    assert.fileContent(
+      path.join(SANDBOX_PATH, 'LICENSE'),
+      'Node module: myapp',
     );
   });
 });

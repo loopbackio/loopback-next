@@ -10,8 +10,6 @@ const cp = require('child_process');
 const util = require('util');
 const debug = require('debug')('loopback:cli:copyright:git');
 
-module.exports = git;
-
 const cache = new Map();
 
 /**
@@ -34,7 +32,8 @@ async function git(cwd, ...args) {
         .filter()
         .value();
       if (err) {
-        reject(err);
+        // reject(err);
+        resolve([]);
       } else {
         cache.set(key, stdout);
         debug('Stdout', stdout);
@@ -43,3 +42,33 @@ async function git(cwd, ...args) {
     });
   });
 }
+
+/**
+ * Inspect years for a given file based on git history
+ * @param {string} file - JS/TS file
+ */
+async function getYears(file) {
+  file = file || '.';
+  let dates = await git(
+    process.cwd(),
+    '--no-pager log --pretty=%%ai --all -- %s',
+    file,
+  );
+  debug('Dates for %s', file, dates);
+  if (_.isEmpty(dates)) {
+    // if the given path doesn't have any git history, assume it is new
+    dates = [new Date().toJSON()];
+  } else {
+    dates = [_.head(dates), _.last(dates)];
+  }
+  const years = _.map(dates, getYear);
+  return _.uniq(years).sort();
+}
+
+// assumes ISO-8601 (or similar) format
+function getYear(str) {
+  return str.slice(0, 4);
+}
+
+exports.git = git;
+exports.getYears = getYears;
