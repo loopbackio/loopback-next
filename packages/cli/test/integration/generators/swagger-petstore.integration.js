@@ -17,8 +17,7 @@ const testlab = require('@loopback/testlab');
 const TestSandbox = testlab.TestSandbox;
 
 // Test Sandbox
-const SANDBOX_PATH = path.resolve(__dirname, '../.sandbox');
-const sandbox = new TestSandbox(SANDBOX_PATH);
+const sandbox = new TestSandbox(path.resolve(__dirname, '../.sandbox'));
 const testUtils = require('../../test-utils');
 
 const props = {
@@ -26,15 +25,15 @@ const props = {
 };
 
 describe('openapi-generator specific files', () => {
-  const index = path.resolve(SANDBOX_PATH, 'src/controllers/index.ts');
+  const index = path.resolve(sandbox.path, 'src/controllers/index.ts');
   const controller = path.resolve(
-    SANDBOX_PATH,
+    sandbox.path,
     'src/controllers/open-api.controller.ts',
   );
 
-  const petModel = path.resolve(SANDBOX_PATH, 'src/models/pet.model.ts');
-  const newPetModel = path.resolve(SANDBOX_PATH, 'src/models/new-pet.model.ts');
-  const errorModel = path.resolve(SANDBOX_PATH, 'src/models/error.model.ts');
+  const petModel = path.resolve(sandbox.path, 'src/models/pet.model.ts');
+  const newPetModel = path.resolve(sandbox.path, 'src/models/new-pet.model.ts');
+  const errorModel = path.resolve(sandbox.path, 'src/models/error.model.ts');
 
   after('reset sandbox', async () => {
     await sandbox.reset();
@@ -43,7 +42,7 @@ describe('openapi-generator specific files', () => {
   it('generates all the proper files', async () => {
     await testUtils
       .executeGenerator(generator)
-      .inDir(SANDBOX_PATH, () => testUtils.givenLBProject(SANDBOX_PATH))
+      .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path))
       .withPrompts(props);
     assert.file(controller);
 

@@ -32,7 +32,7 @@ export class FileUploadApplication extends BootMixin(RestApplication) {
     this.component(RestExplorerComponent);
 
     // Configure file upload with multer options
-    this.configureFileUpload();
+    this.configureFileUpload(options.fileStorageDirectory);
 
     this.projectRoot = __dirname;
     // Customize @loopback/boot Booter Conventions here
@@ -49,11 +49,11 @@ export class FileUploadApplication extends BootMixin(RestApplication) {
   /**
    * Configure `multer` options for file upload
    */
-  protected configureFileUpload() {
+  protected configureFileUpload(destination?: string) {
     const multerOptions: multer.Options = {
       storage: multer.diskStorage({
         // Upload files to `.sandbox`
-        destination: path.join(__dirname, '../.sandbox'),
+        destination: destination ?? path.join(__dirname, '../.sandbox'),
         // Use the original file name as is
         filename: (req, file, cb) => {
           cb(null, file.originalname);

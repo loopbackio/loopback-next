@@ -26,8 +26,7 @@ import {
 
 describe('model API booter acceptance tests', () => {
   let app: BooterApp;
-  const SANDBOX_PATH = resolve(__dirname, '../../.sandbox');
-  const sandbox = new TestSandbox(SANDBOX_PATH);
+  const sandbox = new TestSandbox(resolve(__dirname, '../../.sandbox'));
 
   beforeEach('reset sandbox', () => sandbox.reset());
   beforeEach(givenAppWithDataSource);

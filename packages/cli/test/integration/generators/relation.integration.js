@@ -16,9 +16,8 @@ const SANDBOX_FILES4 = require('../../fixtures/relation').SANDBOX_FILES4;
 const testUtils = require('../../test-utils');
 
 // Test Sandbox
-const SANDBOX_PATH = path.resolve(__dirname, '..', '.sandbox');
 const CONTROLLER_PATH = 'src/controllers';
-const sandbox = new TestSandbox(SANDBOX_PATH);
+const sandbox = new TestSandbox(path.resolve(__dirname, '../.sandbox'));
 
 // In this test suite, we test scenarios that apply to all relation types
 // See `relation-{type}.integration.ts` files for test cases specific
@@ -37,8 +36,8 @@ describe('lb4 relation', function () {
       return expect(
         testUtils
           .executeGenerator(generator)
-          .inDir(SANDBOX_PATH, () =>
-            testUtils.givenLBProject(SANDBOX_PATH, {
+          .inDir(sandbox.path, () =>
+            testUtils.givenLBProject(sandbox.path, {
               additionalFiles: SANDBOX_FILES,
             }),
           )
@@ -53,8 +52,8 @@ describe('lb4 relation', function () {
       return expect(
         testUtils
           .executeGenerator(generator)
-          .inDir(SANDBOX_PATH, () =>
-            testUtils.givenLBProject(SANDBOX_PATH, {
+          .inDir(sandbox.path, () =>
+            testUtils.givenLBProject(sandbox.path, {
               additionalFiles: SANDBOX_FILES,
             }),
           )
@@ -68,8 +67,8 @@ describe('lb4 relation', function () {
       return expect(
         testUtils
           .executeGenerator(generator)
-          .inDir(SANDBOX_PATH, () =>
-            testUtils.givenLBProject(SANDBOX_PATH, {
+          .inDir(sandbox.path, () =>
+            testUtils.givenLBProject(sandbox.path, {
               additionalFiles: SANDBOX_FILES,
             }),
           )
@@ -85,8 +84,8 @@ describe('lb4 relation', function () {
       return expect(
         testUtils
           .executeGenerator(generator)
-          .inDir(SANDBOX_PATH, () =>
-            testUtils.givenLBProject(SANDBOX_PATH, {
+          .inDir(sandbox.path, () =>
+            testUtils.givenLBProject(sandbox.path, {
               additionalFiles: SANDBOX_FILES,
             }),
           )
@@ -100,8 +99,8 @@ describe('lb4 relation', function () {
       return expect(
         testUtils
           .executeGenerator(generator)
-          .inDir(SANDBOX_PATH, () =>
-            testUtils.givenLBProject(SANDBOX_PATH, {
+          .inDir(sandbox.path, () =>
+            testUtils.givenLBProject(sandbox.path, {
               additionalFiles: SANDBOX_FILES,
             }),
           )
@@ -120,8 +119,8 @@ describe('lb4 relation', function () {
       return expect(
         testUtils
           .executeGenerator(generator)
-          .inDir(SANDBOX_PATH, () =>
-            testUtils.givenLBProject(SANDBOX_PATH, {
+          .inDir(sandbox.path, () =>
+            testUtils.givenLBProject(sandbox.path, {
               additionalFiles: SANDBOX_FILES,
             }),
           )
@@ -140,14 +139,14 @@ describe('lb4 relation', function () {
 
       await testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {
             additionalFiles: SANDBOX_FILES,
           }),
         )
         .withPrompts(prompt);
       const expectedControllerIndexFile = path.join(
-        SANDBOX_PATH,
+        sandbox.path,
         CONTROLLER_PATH,
         'index.ts',
       );
@@ -169,14 +168,14 @@ describe('lb4 relation', function () {
 
       await testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {
             additionalFiles: SANDBOX_FILES4,
           }),
         )
         .withPrompts(prompt);
       const expectedControllerIndexFile = path.join(
-        SANDBOX_PATH,
+        sandbox.path,
         CONTROLLER_PATH,
         'index.ts',
       );

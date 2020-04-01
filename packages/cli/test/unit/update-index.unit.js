@@ -15,32 +15,31 @@ const expect = testlab.expect;
 const TestSandbox = testlab.TestSandbox;
 
 // Test Sandbox
-const SANDBOX_PATH = path.resolve(__dirname, '.sandbox');
-const sandbox = new TestSandbox(SANDBOX_PATH);
-const expectedFile = path.join(SANDBOX_PATH, 'index.ts');
+const sandbox = new TestSandbox(path.resolve(__dirname, '.sandbox'));
+const expectedFile = path.join(sandbox.path, 'index.ts');
 
 describe('update-index unit tests', () => {
   beforeEach('reset sandbox', () => sandbox.reset());
 
   it('creates index.ts when not present', async () => {
-    await updateIndex(SANDBOX_PATH, 'test.ts');
+    await updateIndex(sandbox.path, 'test.ts');
     assert.file(expectedFile);
     assert.fileContent(expectedFile, /export \* from '.\/test';/);
   });
 
   it('appends to existing index.ts when present', async () => {
     await writeFileAsync(
-      path.join(SANDBOX_PATH, 'index.ts'),
+      path.join(sandbox.path, 'index.ts'),
       `export * from './first';\n`,
     );
-    await updateIndex(SANDBOX_PATH, 'test.ts');
+    await updateIndex(sandbox.path, 'test.ts');
     assert.file(expectedFile);
     assert.fileContent(expectedFile, /export \* from '.\/first'/);
     assert.fileContent(expectedFile, /export \* from '.\/test'/);
   });
 
   it('throws an error when given a non-ts file', async () => {
-    await expect(updateIndex(SANDBOX_PATH, 'test.js')).to.be.rejectedWith(
+    await expect(updateIndex(sandbox.path, 'test.js')).to.be.rejectedWith(
       /test.js must be a TypeScript \(.ts\) file/,
     );
   });

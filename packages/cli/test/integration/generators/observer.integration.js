@@ -16,8 +16,7 @@ const SANDBOX_FILES = require('../../fixtures/observer').SANDBOX_FILES;
 const testUtils = require('../../test-utils');
 
 // Test Sandbox
-const SANDBOX_PATH = path.resolve(__dirname, '..', '.sandbox');
-const sandbox = new TestSandbox(SANDBOX_PATH);
+const sandbox = new TestSandbox(path.resolve(__dirname, '../.sandbox'));
 
 describe('lb4 observer', () => {
   beforeEach('reset sandbox', async () => {
@@ -28,8 +27,8 @@ describe('lb4 observer', () => {
     it('generates a basic observer from command line arguments', async () => {
       await testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {
             additionalFiles: SANDBOX_FILES,
           }),
         )
@@ -40,8 +39,8 @@ describe('lb4 observer', () => {
     it('generates a basic observer from CLI with group', async () => {
       await testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {
             additionalFiles: SANDBOX_FILES,
           }),
         )
@@ -52,8 +51,8 @@ describe('lb4 observer', () => {
     it('generates a observer from a config file', async () => {
       await testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {
             additionalFiles: SANDBOX_FILES,
           }),
         )
@@ -65,11 +64,11 @@ describe('lb4 observer', () => {
 
 // Sandbox constants
 const SCRIPT_APP_PATH = 'src/observers';
-const INDEX_FILE = path.join(SANDBOX_PATH, SCRIPT_APP_PATH, 'index.ts');
+const INDEX_FILE = path.join(sandbox.path, SCRIPT_APP_PATH, 'index.ts');
 
 function verifyGeneratedScript(group = '') {
   const expectedFile = path.join(
-    SANDBOX_PATH,
+    sandbox.path,
     SCRIPT_APP_PATH,
     'my-observer.observer.ts',
   );

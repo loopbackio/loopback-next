@@ -17,8 +17,7 @@ const SANDBOX_FILES = require('../../fixtures/rest-crud').SANDBOX_FILES;
 const testUtils = require('../../test-utils');
 
 // Test Sandbox
-const SANDBOX_PATH = path.resolve(__dirname, '..', '.sandbox');
-const sandbox = new TestSandbox(SANDBOX_PATH);
+const sandbox = new TestSandbox(path.resolve(__dirname, '../.sandbox'));
 
 describe('lb4 rest-crud', function () {
   // eslint-disable-next-line no-invalid-this
@@ -38,20 +37,20 @@ describe('lb4 rest-crud', function () {
 
       await testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {
             additionalFiles: SANDBOX_FILES,
           }),
         )
         .withPrompts(multiItemPrompt);
 
       const expectedMultiWordFile = path.join(
-        SANDBOX_PATH,
+        sandbox.path,
         MODEL_ENDPOINT_PATH,
         'multi-word.rest-config.ts',
       );
       const expectedDefaultModelFile = path.join(
-        SANDBOX_PATH,
+        sandbox.path,
         MODEL_ENDPOINT_PATH,
         'default-model.rest-config.ts',
       );
@@ -85,15 +84,15 @@ describe('lb4 rest-crud', function () {
 
       await testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {
             additionalFiles: SANDBOX_FILES,
           }),
         )
         .withPrompts(multiItemPrompt);
 
       const expectedFile = path.join(
-        SANDBOX_PATH,
+        sandbox.path,
         MODEL_ENDPOINT_PATH,
         'multi-word.rest-config.ts',
       );
@@ -117,15 +116,15 @@ describe('lb4 rest-crud', function () {
 
       await testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {
             additionalFiles: SANDBOX_FILES,
           }),
         )
         .withPrompts(singleModelPrompt);
 
       const expectedFile = path.join(
-        SANDBOX_PATH,
+        sandbox.path,
         MODEL_ENDPOINT_PATH,
         'multi-word.rest-config.ts',
       );
@@ -148,15 +147,15 @@ describe('lb4 rest-crud', function () {
       };
       await testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {
             additionalFiles: SANDBOX_FILES,
           }),
         )
         .withOptions(options);
 
       const expectedFile = path.join(
-        SANDBOX_PATH,
+        sandbox.path,
         MODEL_ENDPOINT_PATH,
         'multi-word.rest-config.ts',
       );
@@ -174,14 +173,14 @@ describe('lb4 rest-crud', function () {
     it('generates a rest-crud model endpoint from a config file', async () => {
       await testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {
             additionalFiles: SANDBOX_FILES,
           }),
         )
         .withArguments('--config myconfig.json');
       const expectedFile = path.join(
-        SANDBOX_PATH,
+        sandbox.path,
         MODEL_ENDPOINT_PATH,
         'decorator-defined.rest-config.ts',
       );
@@ -204,8 +203,8 @@ describe('lb4 rest-crud', function () {
       return expect(
         testUtils
           .executeGenerator(generator)
-          .inDir(SANDBOX_PATH, () =>
-            testUtils.givenLBProject(SANDBOX_PATH, {
+          .inDir(sandbox.path, () =>
+            testUtils.givenLBProject(sandbox.path, {
               additionalFiles: SANDBOX_FILES,
             }),
           )
@@ -221,8 +220,8 @@ describe('lb4 rest-crud', function () {
       return expect(
         testUtils
           .executeGenerator(generator)
-          .inDir(SANDBOX_PATH, () =>
-            testUtils.givenLBProject(SANDBOX_PATH, {
+          .inDir(sandbox.path, () =>
+            testUtils.givenLBProject(sandbox.path, {
               additionalFiles: SANDBOX_FILES,
             }),
           )
@@ -234,7 +233,7 @@ describe('lb4 rest-crud', function () {
       return expect(
         testUtils
           .executeGenerator(generator)
-          .inDir(SANDBOX_PATH, () => testUtils.givenLBProject(SANDBOX_PATH)),
+          .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path)),
       ).to.be.rejectedWith(/No datasources found/);
     });
   });
@@ -242,10 +241,10 @@ describe('lb4 rest-crud', function () {
 
 // Sandbox constants
 const MODEL_ENDPOINT_PATH = 'src/model-endpoints';
-const INDEX_FILE = path.join(SANDBOX_PATH, MODEL_ENDPOINT_PATH, 'index.ts');
+const INDEX_FILE = path.join(sandbox.path, MODEL_ENDPOINT_PATH, 'index.ts');
 
 function assertApplicationTsFileUpdated() {
-  const expectedAppFile = path.join(SANDBOX_PATH, 'src', 'application.ts');
+  const expectedAppFile = path.join(sandbox.path, 'src', 'application.ts');
   assert.fileContent(
     expectedAppFile,
     /import {CrudRestComponent} from '@loopback\/rest-crud';/,

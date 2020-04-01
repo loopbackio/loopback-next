@@ -10,8 +10,7 @@ import {BooterApp} from '../fixtures/application';
 
 describe('application metadata booter acceptance tests', () => {
   let app: BooterApp;
-  const SANDBOX_PATH = resolve(__dirname, '../../.sandbox');
-  const sandbox = new TestSandbox(SANDBOX_PATH);
+  const sandbox = new TestSandbox(resolve(__dirname, '../../.sandbox'));
 
   beforeEach('reset sandbox', () => sandbox.reset());
   beforeEach(getApp);
@@ -36,7 +35,7 @@ describe('application metadata booter acceptance tests', () => {
       'dist/application.js',
     );
 
-    const MyApp = require(resolve(SANDBOX_PATH, 'dist/application.js'))
+    const MyApp = require(resolve(sandbox.path, 'dist/application.js'))
       .BooterApp;
     app = new MyApp({
       rest: givenHttpServerConfig(),

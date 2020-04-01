@@ -20,8 +20,7 @@ const testUtils = require('../../test-utils');
 const {expectFileToMatchSnapshot} = require('../../snapshots');
 
 // Test Sandbox
-const SANDBOX_PATH = path.resolve(__dirname, '..', '.sandbox');
-const sandbox = new TestSandbox(SANDBOX_PATH);
+const sandbox = new TestSandbox(path.resolve(__dirname, '../.sandbox'));
 
 // CLI Inputs
 const basicCLIInput = {
@@ -58,16 +57,16 @@ const expectedComplexJSONOutput = {
 
 // Expected File Name
 const expectedTSFile = path.join(
-  SANDBOX_PATH,
+  sandbox.path,
   'src/datasources/ds.datasource.ts',
 );
 
 const expectedJSONFile = path.join(
-  SANDBOX_PATH,
+  sandbox.path,
   'src/datasources/ds.datasource.config.json',
 );
 
-const expectedIndexFile = path.join(SANDBOX_PATH, 'src/datasources/index.ts');
+const expectedIndexFile = path.join(sandbox.path, 'src/datasources/index.ts');
 
 // Base Tests
 describe('datasource-generator extending BaseGenerator', baseTests);
@@ -80,8 +79,8 @@ describe('lb4 datasource integration', () => {
     return expect(
       testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {excludePackageJSON: true}),
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {excludePackageJSON: true}),
         )
         .withPrompts(basicCLIInput),
     ).to.be.rejectedWith(/No package.json found in/);
@@ -91,8 +90,8 @@ describe('lb4 datasource integration', () => {
     return expect(
       testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {excludeLoopbackCore: true}),
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {excludeLoopbackCore: true}),
         )
         .withPrompts(basicCLIInput),
     ).to.be.rejectedWith(/No `@loopback\/core` package found/);
@@ -102,7 +101,7 @@ describe('lb4 datasource integration', () => {
     it('scaffolds correct file with input', async () => {
       await testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () => testUtils.givenLBProject(SANDBOX_PATH))
+        .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path))
         .withPrompts(basicCLIInput);
 
       checkBasicDataSourceFiles();
@@ -113,7 +112,7 @@ describe('lb4 datasource integration', () => {
     it('scaffolds correct file with args', async () => {
       await testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () => testUtils.givenLBProject(SANDBOX_PATH))
+        .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path))
         .withArguments('ds');
 
       checkBasicDataSourceFiles();
@@ -124,7 +123,7 @@ describe('lb4 datasource integration', () => {
   it('scaffolds correct file with cloudant input', async () => {
     await testUtils
       .executeGenerator(generator)
-      .inDir(SANDBOX_PATH, () => testUtils.givenLBProject(SANDBOX_PATH))
+      .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path))
       .withPrompts(cloudantCLIInput);
 
     checkBasicDataSourceFiles();
@@ -134,7 +133,7 @@ describe('lb4 datasource integration', () => {
   it('correctly coerces setting input of type number', async () => {
     await testUtils
       .executeGenerator(generator)
-      .inDir(SANDBOX_PATH, () => testUtils.givenLBProject(SANDBOX_PATH))
+      .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path))
       .withPrompts(numberCLIInput);
 
     checkBasicDataSourceFiles();
@@ -147,7 +146,7 @@ describe('lb4 datasource integration', () => {
   it('correctly coerces setting input of type object and array', async () => {
     await testUtils
       .executeGenerator(generator)
-      .inDir(SANDBOX_PATH, () => testUtils.givenLBProject(SANDBOX_PATH))
+      .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path))
       .withPrompts(complexCLIInput);
 
     checkBasicDataSourceFiles();
@@ -159,7 +158,7 @@ function checkBasicDataSourceFiles() {
   assert.file(expectedTSFile);
   assert.file(expectedJSONFile);
   assert.file(expectedIndexFile);
-  assert.noFile(path.join(SANDBOX_PATH, 'node_modules/memory'));
+  assert.noFile(path.join(sandbox.path, 'node_modules/memory'));
 
   expectFileToMatchSnapshot(expectedTSFile);
 

@@ -8,8 +8,7 @@ import {resolve} from 'path';
 import {discoverFiles, isClass, loadClassesFromFiles} from '../../..';
 
 describe('booter-utils unit tests', () => {
-  const SANDBOX_PATH = resolve(__dirname, '../../../.sandbox');
-  const sandbox = new TestSandbox(SANDBOX_PATH);
+  const sandbox = new TestSandbox(resolve(__dirname, '../../../.sandbox'));
 
   beforeEach('reset sandbox', () => sandbox.reset());
 
@@ -18,26 +17,26 @@ describe('booter-utils unit tests', () => {
 
     it('discovers files matching a nested glob pattern', async () => {
       const expected = [
-        resolve(SANDBOX_PATH, 'empty.artifact.js'),
-        resolve(SANDBOX_PATH, 'nested/multiple.artifact.js'),
+        resolve(sandbox.path, 'empty.artifact.js'),
+        resolve(sandbox.path, 'nested/multiple.artifact.js'),
       ];
       const glob = '/**/*.artifact.js';
 
-      const files = await discoverFiles(glob, SANDBOX_PATH);
+      const files = await discoverFiles(glob, sandbox.path);
       expect(files.sort()).to.eql(expected.sort());
     });
 
     it('discovers files matching a non-nested glob pattern', async () => {
-      const expected = [resolve(SANDBOX_PATH, 'empty.artifact.js')];
+      const expected = [resolve(sandbox.path, 'empty.artifact.js')];
       const glob = '/*.artifact.js';
 
-      const files = await discoverFiles(glob, SANDBOX_PATH);
+      const files = await discoverFiles(glob, sandbox.path);
       expect(files).to.eql(expected);
     });
 
     it('discovers no files for a unknown glob', async () => {
       const glob = '/xyz';
-      const files = await discoverFiles(glob, SANDBOX_PATH);
+      const files = await discoverFiles(glob, sandbox.path);
       expect(files).to.be.eql([]);
     });
 
@@ -64,7 +63,7 @@ describe('booter-utils unit tests', () => {
       await sandbox.copyFile(
         resolve(__dirname, '../../fixtures/multiple.artifact.js'),
       );
-      const files = [resolve(SANDBOX_PATH, 'multiple.artifact.js')];
+      const files = [resolve(sandbox.path, 'multiple.artifact.js')];
       const NUM_CLASSES = 2; // Number of classes in above file
 
       const classes = loadClassesFromFiles(files, sandbox.path);
@@ -77,7 +76,7 @@ describe('booter-utils unit tests', () => {
       await sandbox.copyFile(
         resolve(__dirname, '../../fixtures/empty.artifact.js'),
       );
-      const files = [resolve(SANDBOX_PATH, 'empty.artifact.js')];
+      const files = [resolve(sandbox.path, 'empty.artifact.js')];
 
       const classes = loadClassesFromFiles(files, sandbox.path);
       expect(classes).to.be.an.Array();
@@ -85,7 +84,7 @@ describe('booter-utils unit tests', () => {
     });
 
     it('throws an error given a non-existent file', async () => {
-      const files = [resolve(SANDBOX_PATH, 'fake.artifact.js')];
+      const files = [resolve(sandbox.path, 'fake.artifact.js')];
       expect(() => loadClassesFromFiles(files, sandbox.path)).to.throw(
         /Cannot find module/,
       );

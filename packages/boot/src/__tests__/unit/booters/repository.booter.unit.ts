@@ -13,8 +13,7 @@ import {resolve} from 'path';
 import {RepositoryBooter, RepositoryDefaults} from '../../..';
 
 describe('repository booter unit tests', () => {
-  const SANDBOX_PATH = resolve(__dirname, '../../../.sandbox');
-  const sandbox = new TestSandbox(SANDBOX_PATH);
+  const sandbox = new TestSandbox(resolve(__dirname, '../../../.sandbox'));
 
   const REPOSITORIES_PREFIX = 'repositories';
   const REPOSITORIES_TAG = 'repository';
@@ -38,11 +37,11 @@ describe('repository booter unit tests', () => {
 
     const booterInst = new RepositoryBooter(
       normalApp as ApplicationWithRepositories,
-      SANDBOX_PATH,
+      sandbox.path,
     );
 
     // Load uses discovered property
-    booterInst.discovered = [resolve(SANDBOX_PATH, 'multiple.artifact.js')];
+    booterInst.discovered = [resolve(sandbox.path, 'multiple.artifact.js')];
     await booterInst.load();
 
     sinon.assert.calledOnce(stub);
@@ -54,7 +53,7 @@ describe('repository booter unit tests', () => {
   });
 
   it(`uses RepositoryDefaults for 'options' if none are give`, () => {
-    const booterInst = new RepositoryBooter(app, SANDBOX_PATH);
+    const booterInst = new RepositoryBooter(app, sandbox.path);
     expect(booterInst.options).to.deepEqual(RepositoryDefaults);
   });
 
@@ -67,7 +66,7 @@ describe('repository booter unit tests', () => {
       nested: RepositoryDefaults.nested,
     });
 
-    const booterInst = new RepositoryBooter(app, SANDBOX_PATH, options);
+    const booterInst = new RepositoryBooter(app, sandbox.path, options);
     expect(booterInst.options).to.deepEqual(expected);
   });
 
@@ -79,11 +78,11 @@ describe('repository booter unit tests', () => {
     await sandbox.copyFile(
       resolve(__dirname, '../../fixtures/multiple.artifact.js'),
     );
-    const booterInst = new RepositoryBooter(app, SANDBOX_PATH);
+    const booterInst = new RepositoryBooter(app, sandbox.path);
     const NUM_CLASSES = 2; // 2 classes in above file.
 
     // Load uses discovered property
-    booterInst.discovered = [resolve(SANDBOX_PATH, 'multiple.artifact.js')];
+    booterInst.discovered = [resolve(sandbox.path, 'multiple.artifact.js')];
     await booterInst.load();
 
     const repos = app.findByTag(REPOSITORIES_TAG);
