@@ -8,10 +8,10 @@
 const path = require('path');
 const fs = require('fs-extra');
 const assert = require('yeoman-assert');
-const git = require('../../../generators/copyright/git');
+const {git} = require('../../../generators/copyright/git');
 
 const generator = path.join(__dirname, '../../../generators/copyright');
-const {spdxLicenseList} = require('../../../generators/copyright/header');
+const {spdxLicenseList} = require('../../../generators/copyright/license');
 const FIXTURES = path.join(__dirname, '../../fixtures/copyright');
 const LOCATION = 'single-package';
 const PROJECT_ROOT = path.join(FIXTURES, LOCATION);

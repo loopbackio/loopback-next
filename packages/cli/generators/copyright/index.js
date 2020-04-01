@@ -5,7 +5,8 @@
 
 'use strict';
 const BaseGenerator = require('../../lib/base-generator');
-const {updateFileHeaders, spdxLicenseList} = require('./header');
+const {updateFileHeaders} = require('./header');
+const {spdxLicenseList, updateLicense} = require('./license');
 const g = require('../../lib/globalize');
 const _ = require('lodash');
 const autocomplete = require('inquirer-autocomplete-prompt');
@@ -50,6 +51,11 @@ module.exports = class CopyrightGenerator extends BaseGenerator {
       required: false,
       description: g.f('License'),
     });
+    this.option('updateLicense', {
+      type: Boolean,
+      required: false,
+      description: g.f('Update license in package.json and LICENSE'),
+    });
     this.option('gitOnly', {
       type: Boolean,
       required: false,
@@ -66,6 +72,7 @@ module.exports = class CopyrightGenerator extends BaseGenerator {
       this.exit(`${pkgFile} does not exist.`);
       return;
     }
+    this.packageJson = pkg;
     let author = _.get(pkg, 'author');
     if (typeof author === 'object') {
       author = author.name;
@@ -120,7 +127,30 @@ module.exports = class CopyrightGenerator extends BaseGenerator {
       license: answers.license || this.options.license,
       log: this.log,
       gitOnly: this.options.gitOnly,
+      fs: this.fs,
     };
+  }
+
+  async updateLicense() {
+    if (this.shouldExit()) return;
+    const answers = await this.prompt([
+      {
+        type: 'confirm',
+        name: 'updateLicense',
+        message: g.f('Do you want to update package.json and LICENSE?'),
+        default: false,
+        when: this.options.updateLicense == null,
+      },
+    ]);
+    const updateLicenseFile =
+      (answers && answers.updateLicense) || this.options.updateLicense;
+    if (!updateLicenseFile) return;
+    this.headerOptions.updateLicense = updateLicenseFile;
+    await updateLicense(
+      this.destinationRoot(),
+      this.packageJson,
+      this.headerOptions,
+    );
   }
 
   async updateHeaders() {

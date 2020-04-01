@@ -4,14 +4,13 @@
 // License text available at https://opensource.org/licenses/MIT
 
 const _ = require('lodash');
-const git = require('./git');
+const {git, getYears} = require('./git');
 const path = require('path');
-const fs = require('fs-extra');
+const {FSE, jsOrTsFiles} = require('./fs');
 const chalk = require('chalk');
 const Project = require('@lerna/project');
 
-const {promisify} = require('util');
-const glob = promisify(require('glob'));
+const {spdxLicenseList} = require('./license');
 
 const debug = require('debug')('loopback:cli:copyright');
 
@@ -40,57 +39,19 @@ const ANY = COPYRIGHT.concat(LICENSE, CUSTOM_LICENSE).map(
   l => new RegExp(l.replace(/<%[^>]+%>/g, '.*')),
 );
 
-const spdxLicenses = require('spdx-license-list');
-const spdxLicenseList = {};
-for (const id in spdxLicenses) {
-  spdxLicenseList[id.toLowerCase()] = {id, ...spdxLicenses[id]};
-}
-
 /**
- * Inspect years for a given file based on git history
- * @param {string} file - JS/TS file
- */
-async function copyYears(file) {
-  file = file || '.';
-  let dates = await git(
-    process.cwd(),
-    '--no-pager log --pretty=%%ai --all -- %s',
-    file,
-  );
-  debug('Dates for %s', file, dates);
-  if (_.isEmpty(dates)) {
-    // if the given path doesn't have any git history, assume it is new
-    dates = [new Date().toJSON()];
-  } else {
-    dates = [_.head(dates), _.last(dates)];
-  }
-  const years = _.map(dates, getYear);
-  return _.uniq(years).sort();
-}
-
-// assumes ISO-8601 (or similar) format
-function getYear(str) {
-  return str.slice(0, 4);
-}
-
-/**
- * Copy header for a file
+ * Build header for a file
  * @param {string} file - JS/TS file
  * @param {object} pkg - Package json object
  * @param {object} options - Options
  */
-async function copyHeader(file, pkg, options) {
+async function buildHeader(file, pkg, options) {
   const license =
     options.license || _.get(pkg, 'license') || options.defaultLicense;
-  const years = await copyYears(file);
+  const years = await getYears(file);
   const params = expandLicense(license);
   params.years = years.join(',');
-  const owner =
-    options.copyrightOwner ||
-    _.get(pkg, 'copyright.owner') ||
-    _.get(pkg, 'author.name') ||
-    options.defaultCopyrightOwner ||
-    'Owner';
+  const owner = getCopyrightOwner(pkg, options);
 
   const name =
     options.copyrightIdentifer ||
@@ -107,6 +68,16 @@ async function copyHeader(file, pkg, options) {
   });
   debug('Params', params);
   return params.template(params);
+}
+
+function getCopyrightOwner(pkg, options) {
+  return (
+    options.copyrightOwner ||
+    _.get(pkg, 'copyright.owner') ||
+    _.get(pkg, 'author.name') ||
+    options.defaultCopyrightOwner ||
+    'Owner'
+  );
 }
 
 /**
@@ -137,7 +108,7 @@ function expandLicense(spdxLicense) {
  * @param {object} options - Options
  */
 async function formatHeader(file, pkg, options) {
-  const header = await copyHeader(file, pkg, options);
+  const header = await buildHeader(file, pkg, options);
   return header.split('\n').map(line => `// ${line}`);
 }
 
@@ -148,12 +119,13 @@ async function formatHeader(file, pkg, options) {
  * @param {object} options - Options
  */
 async function ensureHeader(file, pkg, options = {}) {
+  const fs = options.fs || FSE;
   const header = await formatHeader(file, pkg, options);
   debug('Header: %s', header);
-  const current = await fs.readFile(file, 'utf8');
+  const current = await fs.read(file, 'utf8');
   const content = mergeHeaderWithContent(header, current);
   if (!options.dryRun) {
-    await fs.writeFile(file, content, 'utf8');
+    await fs.write(file, content, 'utf8');
   } else {
     const log = options.log || console.log;
     log(file, header);
@@ -186,30 +158,6 @@ function headerOrBlankLine(line) {
 }
 
 /**
- * List all JS/TS files
- * @param {string[]} paths - Paths to search
- */
-async function jsOrTsFiles(cwd, paths = []) {
-  paths = [].concat(paths);
-  let globs;
-  if (paths.length === 0) {
-    globs = [glob('**/*.{js,ts}', {nodir: true, follow: false, cwd})];
-  } else {
-    globs = paths.map(p => {
-      if (/\/$/.test(p)) {
-        p += '**/*.{js,ts}';
-      } else if (!/[^*]\.(js|ts)$/.test(p)) {
-        p += '/**/*.{js,ts}';
-      }
-      return glob(p, {nodir: true, follow: false, cwd});
-    });
-  }
-  paths = await Promise.all(globs);
-  paths = _.flatten(paths);
-  return _.filter(paths, /\.(js|ts)$/);
-}
-
-/**
  * Update file headers for the given project
  * @param {string} projectRoot - Root directory of a package or a lerna monorepo
  * @param {object} options - Options
@@ -222,6 +170,7 @@ async function updateFileHeaders(projectRoot, options = {}) {
     ...options,
   };
 
+  const fs = options.fs || FSE;
   const isMonorepo = await fs.exists(path.join(projectRoot, 'lerna.json'));
   if (isMonorepo) {
     // List all packages for the monorepo
@@ -275,12 +224,13 @@ async function updateFileHeadersForSinglePackage(projectRoot, options) {
   debug('Project root: %s', projectRoot);
   const log = options.log || console.log;
   const pkgFile = path.join(projectRoot, 'package.json');
+  const fs = options.fs || FSE;
   const exists = await fs.exists(pkgFile);
   if (!exists) {
     log(chalk.red(`No package.json exists at ${projectRoot}`));
     return;
   }
-  const pkg = await fs.readJson(pkgFile);
+  const pkg = await fs.readJSON(pkgFile);
 
   log(
     'Updating project %s (%s)',
@@ -301,7 +251,7 @@ async function updateFileHeadersForSinglePackage(projectRoot, options) {
 }
 
 exports.updateFileHeaders = updateFileHeaders;
-exports.spdxLicenseList = spdxLicenseList;
+exports.getYears = getYears;
 
 if (require.main === module) {
   updateFileHeaders(process.cwd()).catch(err => {

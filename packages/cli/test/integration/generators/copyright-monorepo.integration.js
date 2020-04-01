@@ -14,7 +14,7 @@ const generator = path.join(__dirname, '../../../generators/copyright');
 const SANDBOX_FILES = require('../../fixtures/copyright/monorepo')
   .SANDBOX_FILES;
 const testUtils = require('../../test-utils');
-const {spdxLicenseList} = require('../../../generators/copyright/header');
+const {spdxLicenseList} = require('../../../generators/copyright/license');
 
 // Test Sandbox
 const SANDBOX_PATH = path.resolve(__dirname, '..', '.sandbox');
