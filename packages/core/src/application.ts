@@ -99,10 +99,7 @@ export class Application extends Context implements LifeCycleObserver {
     this.bind(CoreBindings.APPLICATION_CONFIG).to(this.options);
 
     const shutdownConfig = this.options.shutdown ?? {};
-    this.setupShutdown(
-      shutdownConfig.signals ?? ['SIGTERM'],
-      shutdownConfig.gracePeriod,
-    );
+    this.setupShutdown(shutdownConfig);
   }
 
   /**
@@ -424,7 +421,16 @@ export class Application extends Context implements LifeCycleObserver {
    * @param signals - An array of signals to be trapped
    * @param gracePeriod - A grace period in ms before forced exit
    */
-  protected setupShutdown(signals: NodeJS.Signals[], gracePeriod?: number) {
+  protected setupShutdown({
+    signals = ['SIGTERM'],
+    gracePeriod,
+  }: ShutdownOptions) {
+    // Increase the max listeners of process to be 256
+    // Mocha parallel testing reports more than 11 listeners are added
+    const numOfListeners = process.getMaxListeners();
+    if (numOfListeners < 256) {
+      process.setMaxListeners(256);
+    }
     const cleanup = async (signal: string) => {
       const kill = () => {
         // eslint-disable-next-line @typescript-eslint/no-misused-promises
