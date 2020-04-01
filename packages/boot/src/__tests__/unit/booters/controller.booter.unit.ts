@@ -9,8 +9,7 @@ import {resolve} from 'path';
 import {ControllerBooter, ControllerDefaults} from '../../..';
 
 describe('controller booter unit tests', () => {
-  const SANDBOX_PATH = resolve(__dirname, '../../../.sandbox');
-  const sandbox = new TestSandbox(SANDBOX_PATH);
+  const sandbox = new TestSandbox(resolve(__dirname, '../../../.sandbox'));
 
   const CONTROLLERS_PREFIX = 'controllers';
   const CONTROLLERS_TAG = 'controller';
@@ -21,7 +20,7 @@ describe('controller booter unit tests', () => {
   beforeEach(getApp);
 
   it(`constructor uses ControllerDefaults for 'options' if none are given`, () => {
-    const booterInst = new ControllerBooter(app, SANDBOX_PATH);
+    const booterInst = new ControllerBooter(app, sandbox.path);
     expect(booterInst.options).to.deepEqual(ControllerDefaults);
   });
 
@@ -34,7 +33,7 @@ describe('controller booter unit tests', () => {
       nested: ControllerDefaults.nested,
     });
 
-    const booterInst = new ControllerBooter(app, SANDBOX_PATH, options);
+    const booterInst = new ControllerBooter(app, sandbox.path, options);
     expect(booterInst.options).to.deepEqual(expected);
   });
 
@@ -46,11 +45,11 @@ describe('controller booter unit tests', () => {
     await sandbox.copyFile(
       resolve(__dirname, '../../fixtures/multiple.artifact.js'),
     );
-    const booterInst = new ControllerBooter(app, SANDBOX_PATH);
+    const booterInst = new ControllerBooter(app, sandbox.path);
     const NUM_CLASSES = 2; // 2 classes in above file.
 
     // Load uses discovered property
-    booterInst.discovered = [resolve(SANDBOX_PATH, 'multiple.artifact.js')];
+    booterInst.discovered = [resolve(sandbox.path, 'multiple.artifact.js')];
     await booterInst.load();
 
     const ctrls = app.findByTag(CONTROLLERS_TAG);

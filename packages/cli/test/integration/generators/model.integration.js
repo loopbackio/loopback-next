@@ -19,9 +19,8 @@ const testUtils = require('../../test-utils');
 const basicModelFileChecks = require('../lib/file-check').basicModelFileChecks;
 
 // Test Sandbox
-const SANDBOX_PATH = path.resolve(__dirname, '../.sandbox');
 const DISCOVER_SANDBOX_FILES = require('../../fixtures/discover').SANDBOX_FILES;
-const sandbox = new TestSandbox(SANDBOX_PATH);
+const sandbox = new TestSandbox(path.resolve(__dirname, '../.sandbox'));
 
 // Basic CLI Input
 const basicCLIInput = {
@@ -29,8 +28,8 @@ const basicCLIInput = {
 };
 
 // Expected File Paths & File Contents
-const expectedIndexFile = path.join(SANDBOX_PATH, 'src/models/index.ts');
-const expectedModelFile = path.join(SANDBOX_PATH, 'src/models/test.model.ts');
+const expectedIndexFile = path.join(sandbox.path, 'src/models/index.ts');
+const expectedModelFile = path.join(sandbox.path, 'src/models/test.model.ts');
 
 // Base Tests
 describe('model-generator extending BaseGenerator', baseTests);
@@ -43,8 +42,8 @@ describe('lb4 model integration', () => {
     return expect(
       testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {excludePackageJSON: true}),
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {excludePackageJSON: true}),
         )
         .withPrompts(basicCLIInput),
     ).to.be.rejectedWith(/No package.json found in/);
@@ -54,8 +53,8 @@ describe('lb4 model integration', () => {
     return expect(
       testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {excludeLoopbackCore: true}),
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {excludeLoopbackCore: true}),
         )
         .withPrompts(basicCLIInput),
     ).to.be.rejectedWith(/No `@loopback\/core` package found/);
@@ -65,8 +64,8 @@ describe('lb4 model integration', () => {
     return expect(
       testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {excludeLoopbackCore: false}),
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {excludeLoopbackCore: false}),
         )
         .withArguments('myNewModel --base InvalidModel'),
     ).to.be.rejectedWith(/Model was not found in/);
@@ -75,7 +74,7 @@ describe('lb4 model integration', () => {
   it('run if passed a valid base model from command line', async () => {
     await testUtils
       .executeGenerator(generator)
-      .inDir(SANDBOX_PATH, () => testUtils.givenLBProject(SANDBOX_PATH))
+      .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path))
       .withArguments('test --base Model');
 
     assert.file(expectedModelFile);
@@ -87,8 +86,8 @@ describe('lb4 model integration', () => {
     this.timeout(3000);
     await testUtils
       .executeGenerator(generator)
-      .inDir(SANDBOX_PATH, () =>
-        testUtils.givenLBProject(SANDBOX_PATH, {
+      .inDir(sandbox.path, () =>
+        testUtils.givenLBProject(sandbox.path, {
           additionalFiles: DISCOVER_SANDBOX_FILES,
         }),
       )
@@ -100,8 +99,8 @@ describe('lb4 model integration', () => {
     return expect(
       testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {
             additionalFiles: DISCOVER_SANDBOX_FILES,
           }),
         )
@@ -113,7 +112,7 @@ describe('lb4 model integration', () => {
     it('scaffolds correct files with input', async () => {
       await testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () => testUtils.givenLBProject(SANDBOX_PATH))
+        .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path))
         .withPrompts({
           name: 'test',
           propName: null,
@@ -125,9 +124,9 @@ describe('lb4 model integration', () => {
     it('creates "src/models" directory if it does not exist', async () => {
       await testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, async () => {
-          testUtils.givenLBProject(SANDBOX_PATH);
-          await remove(path.resolve(SANDBOX_PATH, 'src/models'));
+        .inDir(sandbox.path, async () => {
+          testUtils.givenLBProject(sandbox.path);
+          await remove(path.resolve(sandbox.path, 'src/models'));
         })
         .withPrompts({
           name: 'test',
@@ -140,7 +139,7 @@ describe('lb4 model integration', () => {
     it('scaffolds correct files with model base class', async () => {
       await testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () => testUtils.givenLBProject(SANDBOX_PATH))
+        .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path))
         .withPrompts({
           name: 'test',
           propName: null,
@@ -166,8 +165,8 @@ describe('lb4 model integration', () => {
     it('scaffolds correct files with model custom class', async () => {
       await testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {includeDummyModel: true}),
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {includeDummyModel: true}),
         )
         .withPrompts({
           name: 'test',
@@ -193,7 +192,7 @@ describe('lb4 model integration', () => {
     it('scaffolds model with strict setting disabled', async () => {
       await testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () => testUtils.givenLBProject(SANDBOX_PATH))
+        .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path))
         .withPrompts({
           name: 'test',
           propName: null,
@@ -226,7 +225,7 @@ describe('lb4 model integration', () => {
     it('scaffolds empty model relation interface and relation type', async () => {
       await testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () => testUtils.givenLBProject(SANDBOX_PATH))
+        .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path))
         .withPrompts({
           name: 'test',
           propName: null,
@@ -254,7 +253,7 @@ describe('lb4 model integration', () => {
     it('scaffolds correct files with args', async () => {
       await testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () => testUtils.givenLBProject(SANDBOX_PATH))
+        .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path))
         .withArguments('test')
         .withPrompts({
           propName: null,
@@ -269,7 +268,7 @@ describe('model generator using --config option', () => {
   it('create models with valid json', async () => {
     await testUtils
       .executeGenerator(generator)
-      .inDir(SANDBOX_PATH, () => testUtils.givenLBProject(SANDBOX_PATH))
+      .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path))
       .withArguments(['--config', '{"name":"test", "base":"Entity"}', '--yes']);
 
     basicModelFileChecks(expectedModelFile, expectedIndexFile);
@@ -279,7 +278,7 @@ describe('model generator using --config option', () => {
     return expect(
       testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () => testUtils.givenLBProject(SANDBOX_PATH))
+        .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path))
         .withArguments([
           '--config',
           '{"name":"test", "base":"InvalidBaseModel"}',
@@ -292,7 +291,7 @@ describe('model generator using --config option', () => {
     it('creates a model with valid settings', async () => {
       await testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () => testUtils.givenLBProject(SANDBOX_PATH))
+        .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path))
         .withArguments([
           '--config',
           '{"name":"test", "base":"Entity", \

@@ -48,7 +48,7 @@ describe('file upload acceptance - multipart/form-data', () => {
   });
 
   async function givenAClient() {
-    ({app, client} = await setupApplication());
+    ({app, client} = await setupApplication(sandbox.path));
   }
 
   async function resetSandbox() {

@@ -17,8 +17,7 @@ const path = require('path');
 const readFile = promisify(fs.readFile);
 
 const VALID_EXAMPLE = 'todo';
-const SANDBOX_PATH = path.resolve(__dirname, '..', '.sandbox');
-const sandbox = new TestSandbox(SANDBOX_PATH);
+const sandbox = new TestSandbox(path.resolve(__dirname, '../.sandbox'));
 
 describe('cloneExampleFromGitHub (SLOW)', function () {
   // eslint-disable-next-line no-invalid-this
@@ -27,7 +26,7 @@ describe('cloneExampleFromGitHub (SLOW)', function () {
   beforeEach('reset sandbox', () => sandbox.reset());
 
   it('extracts project files', async () => {
-    const outDir = await downloadAndExtractExample(VALID_EXAMPLE, SANDBOX_PATH);
+    const outDir = await downloadAndExtractExample(VALID_EXAMPLE, sandbox.path);
     const actualFiles = await glob('**', {
       cwd: outDir,
       ignore: 'node_modules/**',

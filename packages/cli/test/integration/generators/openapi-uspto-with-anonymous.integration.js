@@ -14,8 +14,7 @@ const generator = path.join(__dirname, '../../../generators/openapi');
 const specPath = path.join(__dirname, '../../fixtures/openapi/3.0/uspto.yaml');
 
 // Test Sandbox
-const SANDBOX_PATH = path.resolve(__dirname, '../.sandbox');
-const sandbox = new TestSandbox(SANDBOX_PATH);
+const sandbox = new TestSandbox(path.resolve(__dirname, '../.sandbox'));
 const testUtils = require('../../test-utils');
 
 const props = {
@@ -23,22 +22,22 @@ const props = {
 };
 
 describe('openapi-generator specific files', () => {
-  const modelIndex = path.resolve(SANDBOX_PATH, 'src/models/index.ts');
-  const controIndex = path.resolve(SANDBOX_PATH, 'src/controllers/index.ts');
+  const modelIndex = path.resolve(sandbox.path, 'src/models/index.ts');
+  const controIndex = path.resolve(sandbox.path, 'src/controllers/index.ts');
   const searchController = path.resolve(
-    SANDBOX_PATH,
+    sandbox.path,
     'src/controllers/search.controller.ts',
   );
   const metadataController = path.resolve(
-    SANDBOX_PATH,
+    sandbox.path,
     'src/controllers/metadata.controller.ts',
   );
   const performSearchRequestBodyModel = path.resolve(
-    SANDBOX_PATH,
+    sandbox.path,
     'src/models/perform-search-request-body.model.ts',
   );
   const performSearchResponseBodyModel = path.resolve(
-    SANDBOX_PATH,
+    sandbox.path,
     'src/models/perform-search-response-body.model.ts',
   );
 
@@ -49,7 +48,7 @@ describe('openapi-generator specific files', () => {
   it('generates all the proper files', async () => {
     await testUtils
       .executeGenerator(generator)
-      .inDir(SANDBOX_PATH, () => testUtils.givenLBProject(SANDBOX_PATH))
+      .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path))
       .withArguments('--promote-anonymous-schemas')
       .withPrompts(props);
     assert.file(searchController);

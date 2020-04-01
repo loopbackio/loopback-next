@@ -17,8 +17,7 @@ const testUtils = require('../../test-utils');
 const {spdxLicenseList} = require('../../../generators/copyright/license');
 
 // Test Sandbox
-const SANDBOX_PATH = path.resolve(__dirname, '..', '.sandbox');
-const sandbox = new TestSandbox(SANDBOX_PATH);
+const sandbox = new TestSandbox(path.resolve(__dirname, '../.sandbox'));
 
 const year = new Date().getFullYear();
 
@@ -33,8 +32,8 @@ describe('lb4 copyright for monorepo', function () {
   it('updates copyright/license headers', async () => {
     await testUtils
       .executeGenerator(generator)
-      .inDir(SANDBOX_PATH, () =>
-        testUtils.givenLBProject(SANDBOX_PATH, {
+      .inDir(sandbox.path, () =>
+        testUtils.givenLBProject(sandbox.path, {
           excludePackageJSON: true,
           additionalFiles: SANDBOX_FILES,
         }),
@@ -72,7 +71,7 @@ function assertHeader(fileNames, ...expected) {
     fileNames = [fileNames];
   }
   for (const f of fileNames) {
-    const file = path.join(SANDBOX_PATH, f);
+    const file = path.join(sandbox.path, f);
     for (const line of expected) {
       assert.fileContent(file, line);
     }

@@ -10,8 +10,7 @@ import {resolve} from 'path';
 import {ServiceBooter, ServiceDefaults} from '../../..';
 
 describe('service booter unit tests', () => {
-  const SANDBOX_PATH = resolve(__dirname, '../../../.sandbox');
-  const sandbox = new TestSandbox(SANDBOX_PATH);
+  const sandbox = new TestSandbox(resolve(__dirname, '../../../.sandbox'));
 
   const SERVICES_PREFIX = 'services';
   const SERVICES_TAG = 'service';
@@ -35,11 +34,11 @@ describe('service booter unit tests', () => {
 
     const booterInst = new ServiceBooter(
       normalApp as ApplicationWithServices,
-      SANDBOX_PATH,
+      sandbox.path,
     );
 
     booterInst.discovered = [
-      resolve(SANDBOX_PATH, 'service-provider.artifact.js'),
+      resolve(sandbox.path, 'service-provider.artifact.js'),
     ];
     await booterInst.load();
 
@@ -47,7 +46,7 @@ describe('service booter unit tests', () => {
   });
 
   it(`uses ServiceDefaults for 'options' if none are given`, () => {
-    const booterInst = new ServiceBooter(app, SANDBOX_PATH);
+    const booterInst = new ServiceBooter(app, sandbox.path);
     expect(booterInst.options).to.deepEqual(ServiceDefaults);
   });
 
@@ -60,7 +59,7 @@ describe('service booter unit tests', () => {
       nested: ServiceDefaults.nested,
     });
 
-    const booterInst = new ServiceBooter(app, SANDBOX_PATH, options);
+    const booterInst = new ServiceBooter(app, sandbox.path, options);
     expect(booterInst.options).to.deepEqual(expected);
   });
 
@@ -69,11 +68,11 @@ describe('service booter unit tests', () => {
     await sandbox.copyFile(
       resolve(__dirname, '../../fixtures/service-provider.artifact.js'),
     );
-    const booterInst = new ServiceBooter(app, SANDBOX_PATH);
+    const booterInst = new ServiceBooter(app, sandbox.path);
     const NUM_CLASSES = 1; // 1 class in above file.
 
     booterInst.discovered = [
-      resolve(SANDBOX_PATH, 'service-provider.artifact.js'),
+      resolve(sandbox.path, 'service-provider.artifact.js'),
     ];
     await booterInst.load();
 

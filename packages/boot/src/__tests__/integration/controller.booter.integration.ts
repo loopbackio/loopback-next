@@ -8,8 +8,7 @@ import {resolve} from 'path';
 import {BooterApp} from '../fixtures/application';
 
 describe('controller booter integration tests', () => {
-  const SANDBOX_PATH = resolve(__dirname, '../../.sandbox');
-  const sandbox = new TestSandbox(SANDBOX_PATH);
+  const sandbox = new TestSandbox(resolve(__dirname, '../../.sandbox'));
 
   // Remnants from Refactor -- need to add these to core
   const CONTROLLERS_PREFIX = 'controllers';
@@ -39,7 +38,7 @@ describe('controller booter integration tests', () => {
       'controllers/multiple.controller.js',
     );
 
-    const MyApp = require(resolve(SANDBOX_PATH, 'application.js')).BooterApp;
+    const MyApp = require(resolve(sandbox.path, 'application.js')).BooterApp;
     app = new MyApp();
   }
 });

@@ -15,12 +15,11 @@ const {SANDBOX_FILES, SourceEntries} = require('../../fixtures/relation');
 const testUtils = require('../../test-utils');
 
 // Test Sandbox
-const SANDBOX_PATH = path.resolve(__dirname, '..', '.sandbox');
 const MODEL_APP_PATH = 'src/models';
 const CONTROLLER_PATH = 'src/controllers';
 const REPOSITORY_APP_PATH = 'src/repositories';
 
-const sandbox = new TestSandbox(SANDBOX_PATH);
+const sandbox = new TestSandbox(path.resolve(__dirname, '../.sandbox'));
 
 const sourceFileName = [
   'customer.model.ts',
@@ -59,8 +58,8 @@ describe('lb4 relation HasOne', function () {
     return expect(
       testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {
             additionalFiles: SANDBOX_FILES,
           }),
         )
@@ -82,8 +81,8 @@ describe('lb4 relation HasOne', function () {
     return expect(
       testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {
             additionalFiles: [
               SourceEntries.CustomerModelWithAddressProperty,
               SourceEntries.AddressModel,
@@ -112,8 +111,8 @@ describe('lb4 relation HasOne', function () {
       return expect(
         testUtils
           .executeGenerator(generator)
-          .inDir(SANDBOX_PATH, () =>
-            testUtils.givenLBProject(SANDBOX_PATH, {
+          .inDir(sandbox.path, () =>
+            testUtils.givenLBProject(sandbox.path, {
               additionalFiles: [
                 SourceEntries.CustomerModel,
                 SourceEntries.AddressModel,
@@ -160,8 +159,8 @@ describe('lb4 relation HasOne', function () {
         await sandbox.reset();
         await testUtils
           .executeGenerator(generator)
-          .inDir(SANDBOX_PATH, () =>
-            testUtils.givenLBProject(SANDBOX_PATH, {
+          .inDir(sandbox.path, () =>
+            testUtils.givenLBProject(sandbox.path, {
               additionalFiles: SANDBOX_FILES,
             }),
           )
@@ -170,7 +169,7 @@ describe('lb4 relation HasOne', function () {
 
       it('has correct default imports', async () => {
         const sourceFilePath = path.join(
-          SANDBOX_PATH,
+          sandbox.path,
           MODEL_APP_PATH,
           sourceFileName[i],
         );
@@ -213,8 +212,8 @@ describe('lb4 relation HasOne', function () {
         await sandbox.reset();
         await testUtils
           .executeGenerator(generator)
-          .inDir(SANDBOX_PATH, () =>
-            testUtils.givenLBProject(SANDBOX_PATH, {
+          .inDir(sandbox.path, () =>
+            testUtils.givenLBProject(sandbox.path, {
               additionalFiles: SANDBOX_FILES,
             }),
           )
@@ -223,12 +222,12 @@ describe('lb4 relation HasOne', function () {
 
       it('relation name should be myAddress', async () => {
         const sourceFilePath = path.join(
-          SANDBOX_PATH,
+          sandbox.path,
           MODEL_APP_PATH,
           sourceFileName[i],
         );
         const targetFilePath = path.join(
-          SANDBOX_PATH,
+          sandbox.path,
           MODEL_APP_PATH,
           targetFileName[i],
         );
@@ -274,8 +273,8 @@ describe('lb4 relation HasOne', function () {
         await sandbox.reset();
         await testUtils
           .executeGenerator(generator)
-          .inDir(SANDBOX_PATH, () =>
-            testUtils.givenLBProject(SANDBOX_PATH, {
+          .inDir(sandbox.path, () =>
+            testUtils.givenLBProject(sandbox.path, {
               additionalFiles: SANDBOX_FILES,
             }),
           )
@@ -284,12 +283,12 @@ describe('lb4 relation HasOne', function () {
 
       it('add the keyTo to the source model', async () => {
         const sourceFilePath = path.join(
-          SANDBOX_PATH,
+          sandbox.path,
           MODEL_APP_PATH,
           sourceFileName[i],
         );
         const targetFilePath = path.join(
-          SANDBOX_PATH,
+          sandbox.path,
           MODEL_APP_PATH,
           targetFileName[i],
         );
@@ -328,8 +327,8 @@ describe('lb4 relation HasOne', function () {
         await sandbox.reset();
         await testUtils
           .executeGenerator(generator)
-          .inDir(SANDBOX_PATH, () =>
-            testUtils.givenLBProject(SANDBOX_PATH, {
+          .inDir(sandbox.path, () =>
+            testUtils.givenLBProject(sandbox.path, {
               additionalFiles: SANDBOX_FILES,
             }),
           )
@@ -338,7 +337,7 @@ describe('lb4 relation HasOne', function () {
 
       it('new controller file has been created', async () => {
         const filePath = path.join(
-          SANDBOX_PATH,
+          sandbox.path,
           CONTROLLER_PATH,
           controllerFileName[i],
         );
@@ -347,7 +346,7 @@ describe('lb4 relation HasOne', function () {
 
       it('checks controller content with hasOne relation', async () => {
         const filePath = path.join(
-          SANDBOX_PATH,
+          sandbox.path,
           CONTROLLER_PATH,
           controllerFileName[i],
         );
@@ -389,8 +388,8 @@ describe('lb4 relation HasOne', function () {
         await sandbox.reset();
         await testUtils
           .executeGenerator(generator)
-          .inDir(SANDBOX_PATH, () =>
-            testUtils.givenLBProject(SANDBOX_PATH, {
+          .inDir(sandbox.path, () =>
+            testUtils.givenLBProject(sandbox.path, {
               additionalFiles: SANDBOX_FILES,
             }),
           )
@@ -403,7 +402,7 @@ describe('lb4 relation HasOne', function () {
           ' repository file with different inputs',
         async () => {
           const sourceFilePath = path.join(
-            SANDBOX_PATH,
+            sandbox.path,
             REPOSITORY_APP_PATH,
             repositoryFileName[i],
           );

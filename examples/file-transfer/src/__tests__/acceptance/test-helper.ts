@@ -12,7 +12,9 @@ import {
 import path from 'path';
 import {FileUploadApplication} from '../..';
 
-export async function setupApplication(): Promise<AppWithClient> {
+export async function setupApplication(
+  fileStorageDirectory?: string,
+): Promise<AppWithClient> {
   const restConfig = givenHttpServerConfig({
     // Customize the server configuration here.
     // Empty values (undefined, '') will be ignored by the helper.
@@ -23,6 +25,7 @@ export async function setupApplication(): Promise<AppWithClient> {
 
   const app = new FileUploadApplication({
     rest: restConfig,
+    fileStorageDirectory,
   });
 
   await app.boot();
@@ -38,8 +41,7 @@ export interface AppWithClient {
   client: Client;
 }
 
-const SANDBOX = path.resolve(__dirname, '../../../.sandbox');
 export function getSandbox() {
-  const sandbox = new TestSandbox(SANDBOX);
+  const sandbox = new TestSandbox(path.resolve(__dirname, '../../../.sandbox'));
   return sandbox;
 }

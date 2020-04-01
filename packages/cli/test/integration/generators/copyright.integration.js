@@ -17,8 +17,7 @@ const SANDBOX_FILES = require('../../fixtures/copyright/single-package')
 const testUtils = require('../../test-utils');
 
 // Test Sandbox
-const SANDBOX_PATH = path.resolve(__dirname, '..', '.sandbox');
-const sandbox = new TestSandbox(SANDBOX_PATH);
+const sandbox = new TestSandbox(path.resolve(__dirname, '../.sandbox'));
 
 const year = new Date().getFullYear();
 
@@ -35,8 +34,8 @@ describe('lb4 copyright', function () {
   it.skip('updates copyright/license headers with prompts', async () => {
     await testUtils
       .executeGenerator(generator)
-      .inDir(SANDBOX_PATH, () =>
-        testUtils.givenLBProject(SANDBOX_PATH, {
+      .inDir(sandbox.path, () =>
+        testUtils.givenLBProject(sandbox.path, {
           excludePackageJSON: true,
           additionalFiles: SANDBOX_FILES,
         }),
@@ -56,8 +55,8 @@ describe('lb4 copyright', function () {
   it('updates copyright/license headers with options', async () => {
     await testUtils
       .executeGenerator(generator)
-      .inDir(SANDBOX_PATH, () =>
-        testUtils.givenLBProject(SANDBOX_PATH, {
+      .inDir(sandbox.path, () =>
+        testUtils.givenLBProject(sandbox.path, {
           excludePackageJSON: true,
           additionalFiles: SANDBOX_FILES,
         }),
@@ -76,8 +75,8 @@ describe('lb4 copyright', function () {
   it('updates LICENSE and package.json', async () => {
     await testUtils
       .executeGenerator(generator)
-      .inDir(SANDBOX_PATH, () =>
-        testUtils.givenLBProject(SANDBOX_PATH, {
+      .inDir(sandbox.path, () =>
+        testUtils.givenLBProject(sandbox.path, {
           excludePackageJSON: true,
           additionalFiles: SANDBOX_FILES,
         }),
@@ -90,11 +89,11 @@ describe('lb4 copyright', function () {
       });
 
     assert.fileContent(
-      path.join(SANDBOX_PATH, 'package.json'),
+      path.join(sandbox.path, 'package.json'),
       '"license": "ISC"',
     );
     assert.fileContent(
-      path.join(SANDBOX_PATH, 'package.json'),
+      path.join(sandbox.path, 'package.json'),
       '"copyright.owner": "ACME Inc."',
     );
 
@@ -104,15 +103,15 @@ describe('lb4 copyright', function () {
 
     */
     assert.fileContent(
-      path.join(SANDBOX_PATH, 'LICENSE'),
+      path.join(sandbox.path, 'LICENSE'),
       'This project is licensed under the ISC License, full text below.',
     );
     assert.fileContent(
-      path.join(SANDBOX_PATH, 'LICENSE'),
+      path.join(sandbox.path, 'LICENSE'),
       `Copyright (c) ACME Inc. ${year}. All Rights Reserved.`,
     );
     assert.fileContent(
-      path.join(SANDBOX_PATH, 'LICENSE'),
+      path.join(sandbox.path, 'LICENSE'),
       'Node module: myapp',
     );
   });
@@ -123,7 +122,7 @@ function assertHeader(fileNames, ...expected) {
     fileNames = [fileNames];
   }
   for (const f of fileNames) {
-    const file = path.join(SANDBOX_PATH, f);
+    const file = path.join(sandbox.path, f);
     for (const line of expected) {
       assert.fileContent(file, line);
     }

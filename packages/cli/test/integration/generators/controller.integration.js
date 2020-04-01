@@ -21,8 +21,7 @@ const testUtils = require('../../test-utils');
 const {expectFileToMatchSnapshot} = require('../../snapshots');
 
 // Test Sandbox
-const SANDBOX_PATH = path.resolve(__dirname, '..', '.sandbox');
-const sandbox = new TestSandbox(SANDBOX_PATH);
+const sandbox = new TestSandbox(path.resolve(__dirname, '../.sandbox'));
 
 // CLI Inputs
 const basicCLIInput = {
@@ -37,7 +36,7 @@ const restCLIInput = {
 
 // Expected File Name
 const filePath = path.join(
-  SANDBOX_PATH,
+  sandbox.path,
   '/src/controllers/product-review.controller.ts',
 );
 
@@ -52,8 +51,8 @@ describe('lb4 controller', () => {
     return expect(
       testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {excludePackageJSON: true}),
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {excludePackageJSON: true}),
         )
         .withPrompts(basicCLIInput),
     ).to.be.rejectedWith(/No package.json found in/);
@@ -63,8 +62,8 @@ describe('lb4 controller', () => {
     return expect(
       testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {excludeLoopbackCore: true}),
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {excludeLoopbackCore: true}),
         )
         .withPrompts(basicCLIInput),
     ).to.be.rejectedWith(/No `@loopback\/core` package found/);
@@ -74,7 +73,7 @@ describe('lb4 controller', () => {
     it('scaffolds correct file with input', async () => {
       await testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () => testUtils.givenLBProject(SANDBOX_PATH))
+        .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path))
         .withPrompts(basicCLIInput);
 
       checkBasicContents();
@@ -83,7 +82,7 @@ describe('lb4 controller', () => {
     it('scaffolds correct file with args', async () => {
       await testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () => testUtils.givenLBProject(SANDBOX_PATH))
+        .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path))
         .withArguments('productReview');
 
       assert.file(filePath);
@@ -104,8 +103,8 @@ describe('lb4 controller', () => {
     it('creates REST CRUD template with valid input - id omitted', async () => {
       await testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {
             includeDummyModel: true,
             includeDummyRepository: true,
           }),
@@ -118,8 +117,8 @@ describe('lb4 controller', () => {
     it('creates REST CRUD template with valid input', async () => {
       await testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {
             includeDummyModel: true,
             includeDummyRepository: true,
           }),
@@ -135,8 +134,8 @@ describe('lb4 controller', () => {
       it('defaults correctly', async () => {
         await testUtils
           .executeGenerator(generator)
-          .inDir(SANDBOX_PATH, () =>
-            testUtils.givenLBProject(SANDBOX_PATH, {
+          .inDir(sandbox.path, () =>
+            testUtils.givenLBProject(sandbox.path, {
               includeDummyModel: true,
               includeDummyRepository: true,
             }),
@@ -153,8 +152,8 @@ describe('lb4 controller', () => {
 
         await testUtils
           .executeGenerator(generator)
-          .inDir(SANDBOX_PATH, () =>
-            testUtils.givenLBProject(SANDBOX_PATH, {
+          .inDir(sandbox.path, () =>
+            testUtils.givenLBProject(sandbox.path, {
               includeDummyModel: true,
               includeDummyRepository: true,
             }),
@@ -176,8 +175,8 @@ describe('lb4 controller', () => {
       return expect(
         testUtils
           .executeGenerator(generator)
-          .inDir(SANDBOX_PATH, () =>
-            testUtils.givenLBProject(SANDBOX_PATH, {
+          .inDir(sandbox.path, () =>
+            testUtils.givenLBProject(sandbox.path, {
               includeDummyRepository: true,
             }),
           )
@@ -196,8 +195,8 @@ describe('lb4 controller', () => {
       return expect(
         testUtils
           .executeGenerator(generator)
-          .inDir(SANDBOX_PATH, () =>
-            testUtils.givenLBProject(SANDBOX_PATH, {includeDummyModel: true}),
+          .inDir(sandbox.path, () =>
+            testUtils.givenLBProject(sandbox.path, {includeDummyModel: true}),
           )
           .withPrompts(noRepositoryInput),
       ).to.be.rejectedWith(/No repositories found in /);
@@ -207,8 +206,8 @@ describe('lb4 controller', () => {
       return expect(
         testUtils
           .executeGenerator(generator)
-          .inDir(SANDBOX_PATH, () =>
-            testUtils.givenLBProject(SANDBOX_PATH, {
+          .inDir(sandbox.path, () =>
+            testUtils.givenLBProject(sandbox.path, {
               excludeModelsDir: true,
               includeDummyRepository: true,
             }),
@@ -221,8 +220,8 @@ describe('lb4 controller', () => {
       return expect(
         testUtils
           .executeGenerator(generator)
-          .inDir(SANDBOX_PATH, () =>
-            testUtils.givenLBProject(SANDBOX_PATH, {
+          .inDir(sandbox.path, () =>
+            testUtils.givenLBProject(sandbox.path, {
               excludeRepositoriesDir: true,
               includeDummyModel: true,
             }),

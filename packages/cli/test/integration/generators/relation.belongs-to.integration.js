@@ -15,11 +15,10 @@ const {SANDBOX_FILES, SourceEntries} = require('../../fixtures/relation');
 const testUtils = require('../../test-utils');
 
 // Test Sandbox
-const SANDBOX_PATH = path.resolve(__dirname, '..', '.sandbox');
 const MODEL_APP_PATH = 'src/models';
 const CONTROLLER_PATH = 'src/controllers';
 const REPOSITORY_APP_PATH = 'src/repositories';
-const sandbox = new TestSandbox(SANDBOX_PATH);
+const sandbox = new TestSandbox(path.resolve(__dirname, '../.sandbox'));
 
 const sourceFileName = [
   'order.model.ts',
@@ -52,8 +51,8 @@ describe('lb4 relation', function () {
     return expect(
       testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {
             additionalFiles: SANDBOX_FILES,
           }),
         )
@@ -72,8 +71,8 @@ describe('lb4 relation', function () {
     return expect(
       testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {
             additionalFiles: [
               // no model/repository files in this project
             ],
@@ -93,8 +92,8 @@ describe('lb4 relation', function () {
 
     await testUtils
       .executeGenerator(generator)
-      .inDir(SANDBOX_PATH, () =>
-        testUtils.givenLBProject(SANDBOX_PATH, {
+      .inDir(sandbox.path, () =>
+        testUtils.givenLBProject(sandbox.path, {
           additionalFiles: [
             SourceEntries.CustomerModelWithOrdersProperty,
             SourceEntries.OrderModelModelWithCustomerIdProperty,
@@ -106,7 +105,7 @@ describe('lb4 relation', function () {
       .withPrompts(prompt);
 
     const expectedFile = path.join(
-      SANDBOX_PATH,
+      sandbox.path,
       MODEL_APP_PATH,
       'order.model.ts',
     );
@@ -135,8 +134,8 @@ describe('lb4 relation', function () {
         await sandbox.reset();
         await testUtils
           .executeGenerator(generator)
-          .inDir(SANDBOX_PATH, () =>
-            testUtils.givenLBProject(SANDBOX_PATH, {
+          .inDir(sandbox.path, () =>
+            testUtils.givenLBProject(sandbox.path, {
               additionalFiles: SANDBOX_FILES,
             }),
           )
@@ -145,7 +144,7 @@ describe('lb4 relation', function () {
 
       it('has correct default imports', async () => {
         const sourceFilePath = path.join(
-          SANDBOX_PATH,
+          sandbox.path,
           MODEL_APP_PATH,
           sourceFileName[i],
         );
@@ -177,8 +176,8 @@ describe('lb4 relation', function () {
       await sandbox.reset();
       await testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {
             additionalFiles: SANDBOX_FILES,
           }),
         )
@@ -186,15 +185,15 @@ describe('lb4 relation', function () {
 
       await testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {
             additionalFiles: SANDBOX_FILES,
           }),
         )
         .withPrompts(promptList[0]);
 
       const sourceFilePath = path.join(
-        SANDBOX_PATH,
+        sandbox.path,
         MODEL_APP_PATH,
         sourceFileName[0],
       );
@@ -231,8 +230,8 @@ describe('lb4 relation', function () {
         await sandbox.reset();
         await testUtils
           .executeGenerator(generator)
-          .inDir(SANDBOX_PATH, () =>
-            testUtils.givenLBProject(SANDBOX_PATH, {
+          .inDir(sandbox.path, () =>
+            testUtils.givenLBProject(sandbox.path, {
               additionalFiles: SANDBOX_FILES,
             }),
           )
@@ -241,7 +240,7 @@ describe('lb4 relation', function () {
 
       it('relation name should be my_customer', async () => {
         const sourceFilePath = path.join(
-          SANDBOX_PATH,
+          sandbox.path,
           MODEL_APP_PATH,
           sourceFileName[i],
         );
@@ -278,8 +277,8 @@ describe('lb4 relation', function () {
         await sandbox.reset();
         await testUtils
           .executeGenerator(generator)
-          .inDir(SANDBOX_PATH, () =>
-            testUtils.givenLBProject(SANDBOX_PATH, {
+          .inDir(sandbox.path, () =>
+            testUtils.givenLBProject(sandbox.path, {
               additionalFiles: SANDBOX_FILES,
             }),
           )
@@ -288,7 +287,7 @@ describe('lb4 relation', function () {
 
       it('new controller file created', async () => {
         const filePath = path.join(
-          SANDBOX_PATH,
+          sandbox.path,
           CONTROLLER_PATH,
           controllerFileName[i],
         );
@@ -297,7 +296,7 @@ describe('lb4 relation', function () {
 
       it('checks controller content with belongsTo relation', async () => {
         const filePath = path.join(
-          SANDBOX_PATH,
+          sandbox.path,
           CONTROLLER_PATH,
           controllerFileName[i],
         );
@@ -307,7 +306,7 @@ describe('lb4 relation', function () {
 
       it('the new controller file added to index.ts file', async () => {
         const indexFilePath = path.join(
-          SANDBOX_PATH,
+          sandbox.path,
           CONTROLLER_PATH,
           'index.ts',
         );
@@ -353,8 +352,8 @@ describe('lb4 relation', function () {
         await sandbox.reset();
         await testUtils
           .executeGenerator(generator)
-          .inDir(SANDBOX_PATH, () =>
-            testUtils.givenLBProject(SANDBOX_PATH, {
+          .inDir(sandbox.path, () =>
+            testUtils.givenLBProject(sandbox.path, {
               additionalFiles: SANDBOX_FILES,
             }),
           )
@@ -367,7 +366,7 @@ describe('lb4 relation', function () {
           ' repository file with different inputs',
         async () => {
           const sourceFilePath = path.join(
-            SANDBOX_PATH,
+            sandbox.path,
             REPOSITORY_APP_PATH,
             repositoryFileName[i],
           );

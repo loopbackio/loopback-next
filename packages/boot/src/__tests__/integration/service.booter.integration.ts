@@ -8,8 +8,7 @@ import {resolve} from 'path';
 import {BooterApp} from '../fixtures/application';
 
 describe('service booter integration tests', () => {
-  const SANDBOX_PATH = resolve(__dirname, '../../.sandbox');
-  const sandbox = new TestSandbox(SANDBOX_PATH);
+  const sandbox = new TestSandbox(resolve(__dirname, '../../.sandbox'));
 
   const SERVICES_PREFIX = 'services';
   const SERVICES_TAG = 'service';
@@ -62,7 +61,7 @@ describe('service booter integration tests', () => {
       'services/bindable-classes.service.js',
     );
 
-    const MyApp = require(resolve(SANDBOX_PATH, 'application.js')).BooterApp;
+    const MyApp = require(resolve(sandbox.path, 'application.js')).BooterApp;
     app = new MyApp();
   }
 });

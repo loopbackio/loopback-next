@@ -12,8 +12,7 @@ const generator = path.join(__dirname, '../../../generators/import-lb3-models');
 const {expectFileToMatchSnapshot} = require('../../snapshots');
 const testUtils = require('../../test-utils');
 
-const SANDBOX_PATH = path.resolve(__dirname, '../.sandbox');
-const sandbox = new TestSandbox(SANDBOX_PATH);
+const sandbox = new TestSandbox(path.resolve(__dirname, '../.sandbox'));
 
 // In this test suite we invoke the full generator with mocked prompts
 // and inspect the generated model file(s).
@@ -48,14 +47,14 @@ describe('lb4 import-lb3-models', function () {
   it('imports CoffeeShop model from lb3-example app', async () => {
     await testUtils
       .executeGenerator(generator)
-      .inDir(SANDBOX_PATH, () => testUtils.givenLBProject(SANDBOX_PATH))
+      .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path))
       .withArguments(COFFEE_SHOP_EXAMPLE)
       .withPrompts({
         modelNames: ['CoffeeShop'],
       });
 
     // The default outDir is "src/models"
-    const outDir = path.join(SANDBOX_PATH, 'src/models');
+    const outDir = path.join(sandbox.path, 'src/models');
 
     // Verify the source code generated for the model
     expectFileToMatchSnapshot(`${outDir}/coffee-shop.model.ts`);
@@ -65,11 +64,11 @@ describe('lb4 import-lb3-models', function () {
   });
 
   it('honours `outDir` option', async () => {
-    const outDir = path.join(SANDBOX_PATH, 'my-models');
+    const outDir = path.join(sandbox.path, 'my-models');
 
     await testUtils
       .executeGenerator(generator)
-      .inDir(SANDBOX_PATH, () => testUtils.givenLBProject(SANDBOX_PATH))
+      .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path))
       .withArguments(COFFEE_SHOP_EXAMPLE)
       .withPrompts({
         modelNames: ['CoffeeShop'],
@@ -85,7 +84,7 @@ describe('lb4 import-lb3-models', function () {
     return expect(
       testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () => testUtils.givenLBProject(SANDBOX_PATH))
+        .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path))
         .withArguments(COFFEE_SHOP_EXAMPLE)
         .withPrompts({
           modelNames: ['ModelDoesNotExist'],
@@ -97,11 +96,11 @@ describe('lb4 import-lb3-models', function () {
   });
 
   it('imports a model inheriting from a custom base class', async () => {
-    const outDir = path.join(SANDBOX_PATH, 'models-with-inheritance');
+    const outDir = path.join(sandbox.path, 'models-with-inheritance');
 
     await testUtils
       .executeGenerator(generator)
-      .inDir(SANDBOX_PATH, () => testUtils.givenLBProject(SANDBOX_PATH))
+      .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path))
       .withArguments(APP_USING_MODEL_INHERITANCE)
       .withPrompts({
         modelNames: ['Customer'],

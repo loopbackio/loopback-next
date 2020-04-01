@@ -55,8 +55,9 @@ browser. You can try to upload a few files using the web UI or API explorer.
 
 ![upload-download](upload-download.png)
 
-The uploaded files will be stored in `.sandbox` folder under the application
-root directory.
+By default, the uploaded files will be stored in `.sandbox` folder under the
+application root directory. The directory can be configured via
+`fileStorageDirectory` of application config.
 
 ## Contributions
 

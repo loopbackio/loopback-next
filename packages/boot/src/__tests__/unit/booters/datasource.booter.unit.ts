@@ -13,8 +13,7 @@ import {resolve} from 'path';
 import {DataSourceBooter, DataSourceDefaults} from '../../..';
 
 describe('datasource booter unit tests', () => {
-  const SANDBOX_PATH = resolve(__dirname, '../../../.sandbox');
-  const sandbox = new TestSandbox(SANDBOX_PATH);
+  const sandbox = new TestSandbox(resolve(__dirname, '../../../.sandbox'));
 
   const DATASOURCES_PREFIX = 'datasources';
   const DATASOURCES_TAG = 'datasource';
@@ -38,10 +37,10 @@ describe('datasource booter unit tests', () => {
 
     const booterInst = new DataSourceBooter(
       normalApp as ApplicationWithRepositories,
-      SANDBOX_PATH,
+      sandbox.path,
     );
 
-    booterInst.discovered = [resolve(SANDBOX_PATH, 'datasource.artifact.js')];
+    booterInst.discovered = [resolve(sandbox.path, 'datasource.artifact.js')];
     await booterInst.load();
 
     sinon.assert.calledOnce(stub);
@@ -53,7 +52,7 @@ describe('datasource booter unit tests', () => {
   });
 
   it(`uses DataSourceDefaults for 'options' if none are given`, () => {
-    const booterInst = new DataSourceBooter(app, SANDBOX_PATH);
+    const booterInst = new DataSourceBooter(app, sandbox.path);
     expect(booterInst.options).to.deepEqual(DataSourceDefaults);
   });
 
@@ -66,7 +65,7 @@ describe('datasource booter unit tests', () => {
       nested: DataSourceDefaults.nested,
     });
 
-    const booterInst = new DataSourceBooter(app, SANDBOX_PATH, options);
+    const booterInst = new DataSourceBooter(app, sandbox.path, options);
     expect(booterInst.options).to.deepEqual(expected);
   });
 
@@ -75,10 +74,10 @@ describe('datasource booter unit tests', () => {
     await sandbox.copyFile(
       resolve(__dirname, '../../fixtures/datasource.artifact.js'),
     );
-    const booterInst = new DataSourceBooter(app, SANDBOX_PATH);
+    const booterInst = new DataSourceBooter(app, sandbox.path);
     const NUM_CLASSES = 1; // 1 class in above file.
 
-    booterInst.discovered = [resolve(SANDBOX_PATH, 'datasource.artifact.js')];
+    booterInst.discovered = [resolve(sandbox.path, 'datasource.artifact.js')];
     await booterInst.load();
 
     const datasources = app.findByTag(DATASOURCES_TAG);

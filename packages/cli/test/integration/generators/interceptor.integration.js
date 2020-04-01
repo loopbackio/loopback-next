@@ -15,14 +15,13 @@ const testUtils = require('../../test-utils');
 const {expectFileToMatchSnapshot} = require('../../snapshots');
 
 // Test Sandbox
-const SANDBOX_PATH = path.resolve(__dirname, '..', '.sandbox');
-const sandbox = new TestSandbox(SANDBOX_PATH);
+const sandbox = new TestSandbox(path.resolve(__dirname, '../.sandbox'));
 
 // Sandbox constants
 const SCRIPT_APP_PATH = 'src/interceptors';
-const INDEX_FILE = path.join(SANDBOX_PATH, SCRIPT_APP_PATH, 'index.ts');
+const INDEX_FILE = path.join(sandbox.path, SCRIPT_APP_PATH, 'index.ts');
 const GENERATED_FILE = path.join(
-  SANDBOX_PATH,
+  sandbox.path,
   SCRIPT_APP_PATH,
   'my-interceptor.interceptor.ts',
 );
@@ -36,8 +35,8 @@ describe('lb4 interceptor', () => {
     it('generates a basic interceptor from command line arguments', async () => {
       await testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {
             additionalFiles: SANDBOX_FILES,
           }),
         )
@@ -49,8 +48,8 @@ describe('lb4 interceptor', () => {
     it('generates a basic interceptor from CLI with group', async () => {
       await testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {
             additionalFiles: SANDBOX_FILES,
           }),
         )
@@ -62,8 +61,8 @@ describe('lb4 interceptor', () => {
     it('generates a interceptor from a config file', async () => {
       await testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {
             additionalFiles: SANDBOX_FILES,
           }),
         )
@@ -75,8 +74,8 @@ describe('lb4 interceptor', () => {
     it('generates a non-global interceptor from CLI', async () => {
       await testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {
             additionalFiles: SANDBOX_FILES,
           }),
         )
@@ -88,8 +87,8 @@ describe('lb4 interceptor', () => {
     it('generates a non-global interceptor with prompts', async () => {
       await testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {
             additionalFiles: SANDBOX_FILES,
           }),
         )

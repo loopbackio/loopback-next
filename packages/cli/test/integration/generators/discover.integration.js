@@ -25,9 +25,8 @@ const basicModelFileChecks = require('../lib/file-check').basicModelFileChecks;
 // tests/unit/discovery/import-discovered-model.test.ts
 
 // Test Sandbox
-const SANDBOX_PATH = path.resolve(__dirname, '../.sandbox');
 const SANDBOX_FILES = require('../../fixtures/discover').SANDBOX_FILES;
-const sandbox = new TestSandbox(SANDBOX_PATH);
+const sandbox = new TestSandbox(path.resolve(__dirname, '../.sandbox'));
 
 // CLI Inputs
 const baseOptions = {
@@ -54,25 +53,25 @@ const missingDataSourceOptions = {
 
 // Expected File Name
 const defaultExpectedTestModel = path.join(
-  SANDBOX_PATH,
+  sandbox.path,
   'src/models/test.model.ts',
 );
 const defaultExpectedSchemaModel = path.join(
-  SANDBOX_PATH,
+  sandbox.path,
   'src/models/schema.model.ts',
 );
 const defaultExpectedViewModel = path.join(
-  SANDBOX_PATH,
+  sandbox.path,
   'src/models/view.model.ts',
 );
 const defaultExpectedNamingModel = path.join(
-  SANDBOX_PATH,
+  sandbox.path,
   'src/models/naming.model.ts',
 );
 
-const defaultExpectedIndexFile = path.join(SANDBOX_PATH, 'src/models/index.ts');
-const movedExpectedTestModel = path.join(SANDBOX_PATH, 'src/test.model.ts');
-const movedExpectedIndexFile = path.join(SANDBOX_PATH, 'src/index.ts');
+const defaultExpectedIndexFile = path.join(sandbox.path, 'src/models/index.ts');
+const movedExpectedTestModel = path.join(sandbox.path, 'src/test.model.ts');
+const movedExpectedIndexFile = path.join(sandbox.path, 'src/index.ts');
 
 // Base Tests
 /*describe('discover-generator extending BaseGenerator', baseTests);
@@ -90,8 +89,8 @@ describe('lb4 discover integration', () => {
       this.timeout(10000);
       await testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {
             additionalFiles: SANDBOX_FILES,
           }),
         )
@@ -105,8 +104,8 @@ describe('lb4 discover integration', () => {
     it('uses a different --outDir if provided', async () => {
       await testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {
             additionalFiles: SANDBOX_FILES,
           }),
         )
@@ -119,8 +118,8 @@ describe('lb4 discover integration', () => {
     it('excludes models based on the --views and --schema options', async () => {
       await testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {
             additionalFiles: SANDBOX_FILES,
           }),
         )
@@ -134,8 +133,8 @@ describe('lb4 discover integration', () => {
     it('keeps model property names the same as the db column names', async () => {
       await testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {
             additionalFiles: SANDBOX_FILES,
           }),
         )
@@ -149,8 +148,8 @@ describe('lb4 discover integration', () => {
       return expect(
         testUtils
           .executeGenerator(generator)
-          .inDir(SANDBOX_PATH, () =>
-            testUtils.givenLBProject(SANDBOX_PATH, {
+          .inDir(sandbox.path, () =>
+            testUtils.givenLBProject(sandbox.path, {
               additionalFiles: SANDBOX_FILES,
             }),
           )

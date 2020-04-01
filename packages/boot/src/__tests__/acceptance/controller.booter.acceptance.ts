@@ -13,8 +13,7 @@ import {BooterApp} from '../fixtures/application';
 
 describe('controller booter acceptance tests', () => {
   let app: BooterApp;
-  const SANDBOX_PATH = resolve(__dirname, '../../.sandbox');
-  const sandbox = new TestSandbox(SANDBOX_PATH);
+  const sandbox = new TestSandbox(resolve(__dirname, '../../.sandbox'));
 
   beforeEach('reset sandbox', () => sandbox.reset());
   beforeEach(getApp);
@@ -40,7 +39,7 @@ describe('controller booter acceptance tests', () => {
       'controllers/multiple.controller.js',
     );
 
-    const MyApp = require(resolve(SANDBOX_PATH, 'application.js')).BooterApp;
+    const MyApp = require(resolve(sandbox.path, 'application.js')).BooterApp;
     app = new MyApp({
       rest: givenHttpServerConfig(),
     });
