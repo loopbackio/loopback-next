@@ -111,7 +111,7 @@ export class SampleComponent implements Component {
 
 To use the component, add it to your application class:
 
-{% include code-caption.html content="sample.api-builder.ts" %}
+{% include code-caption.html content="src/application.ts" %}
 
 ```ts
 // other imports
