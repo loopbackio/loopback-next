@@ -78,4 +78,8 @@ statements.
 
 ### LoopBack 3 vs LoopBack 4
 
-See [Differences between LoopBack v3 and v4](LoopBack-3.x.md).
+We recommend that current users migrate to LoopBack 4, which can be done through
+following the [migration guide](migration-overview.html) and new users start
+with LoopBack 4. See
+[Differences between LoopBack v3 and v4](Understanding-the-differences.md) if
+you're interested in the differences between the two versions.
