@@ -15,7 +15,7 @@ export async function setupExpressApplication(): Promise<AppWithClient> {
 
   const lbApp = server.lbApp;
 
-  const client = supertest('http://127.0.0.1:3000');
+  const client = supertest(server.app);
 
   return {server, client, lbApp};
 }

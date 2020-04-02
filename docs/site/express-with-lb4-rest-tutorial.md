@@ -155,8 +155,9 @@ import {ApplicationConfig} from '@loopback/core';
 import express from 'express';
 
 export class ExpressServer {
-  private app: express.Application;
-  private lbApp: NoteApplication;
+  public readonly app: express.Application;
+  public readonly lbApp: NoteApplication;
+  private server?: http.Server;
 
   constructor(options: ApplicationConfig = {}) {
     this.app = express();
@@ -223,8 +224,9 @@ Express application:
 import pEvent from 'p-event';
 
 export class ExpressServer {
-  private app: express.Application;
-  private lbApp: NoteApplication;
+  public readonly app: express.Application;
+  public readonly lbApp: NoteApplication;
+  private server?: http.Server;
 
   constructor(options: ApplicationConfig = {}) {
     //...
@@ -236,7 +238,7 @@ export class ExpressServer {
 
   public async start() {
     await this.lbApp.start();
-    const port = this.lbApp.restServer.config.port || 3000;
+    const port = this.lbApp.restServer.config.port ?? 3000;
     const host = this.lbApp.restServer.config.host || '127.0.0.1';
     this.server = this.app.listen(port, host);
     await pEvent(this.server, 'listening');
