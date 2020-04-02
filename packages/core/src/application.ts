@@ -26,6 +26,30 @@ import {LifeCycleObserverRegistry} from './lifecycle-registry';
 import {Server} from './server';
 import {createServiceBinding, ServiceOptions} from './service';
 const debug = debugFactory('loopback:core:application');
+const debugShutdown = debugFactory('loopback:core:application:shutdown');
+const debugWarning = debugFactory('loopback:core:application:warning');
+
+/**
+ * A helper function to build constructor args for `Context`
+ * @param configOrParent - Application config or parent context
+ * @param parent - Parent context if the first arg is application config
+ */
+function buildConstructorArgs(
+  configOrParent?: ApplicationConfig | Context,
+  parent?: Context,
+) {
+  let name: string | undefined;
+  let parentCtx: Context | undefined;
+
+  if (configOrParent instanceof Context) {
+    parentCtx = configOrParent;
+    name = undefined;
+  } else {
+    parentCtx = parent;
+    name = configOrParent?.name;
+  }
+  return [parentCtx, name];
+}
 
 /**
  * Application is the container for various types of artifacts, such as
@@ -39,6 +63,8 @@ export class Application extends Context implements LifeCycleObserver {
    * A flag to indicate that the application is being shut down
    */
   private _isShuttingDown = false;
+  private _shutdownOptions: ShutdownOptions;
+  private _signalListener: (signal: string) => Promise<void>;
 
   /**
    * State of the application
@@ -81,13 +107,14 @@ export class Application extends Context implements LifeCycleObserver {
   constructor(config?: ApplicationConfig, parent?: Context);
 
   constructor(configOrParent?: ApplicationConfig | Context, parent?: Context) {
-    super(
-      configOrParent instanceof Context ? configOrParent : parent,
-      'application',
-    );
+    // super() has to be first statement for a constructor
+    super(...buildConstructorArgs(configOrParent, parent));
 
-    if (configOrParent instanceof Context) configOrParent = {};
-    this.options = configOrParent ?? {};
+    this.options =
+      configOrParent instanceof Context ? {} : configOrParent ?? {};
+
+    // Configure debug
+    this._debug = debug;
 
     // Bind the life cycle observer registry
     this.bind(CoreBindings.LIFE_CYCLE_OBSERVER_REGISTRY)
@@ -98,11 +125,7 @@ export class Application extends Context implements LifeCycleObserver {
     // Make options available to other modules as well.
     this.bind(CoreBindings.APPLICATION_CONFIG).to(this.options);
 
-    const shutdownConfig = this.options.shutdown ?? {};
-    this.setupShutdown(
-      shutdownConfig.signals ?? ['SIGTERM'],
-      shutdownConfig.gracePeriod,
-    );
+    this._shutdownOptions = {signals: ['SIGTERM'], ...this.options.shutdown};
   }
 
   /**
@@ -123,7 +146,7 @@ export class Application extends Context implements LifeCycleObserver {
    * ```
    */
   controller(controllerCtor: ControllerClass, name?: string): Binding {
-    debug('Adding controller %s', name ?? controllerCtor.name);
+    this.debug('Adding controller %s', name ?? controllerCtor.name);
     const binding = createBindingFromClass(controllerCtor, {
       name,
       namespace: CoreBindings.CONTROLLERS,
@@ -156,7 +179,7 @@ export class Application extends Context implements LifeCycleObserver {
     ctor: Constructor<T>,
     name?: string,
   ): Binding<T> {
-    debug('Adding server %s', name ?? ctor.name);
+    this.debug('Adding server %s', name ?? ctor.name);
     const binding = createBindingFromClass(ctor, {
       name,
       namespace: CoreBindings.SERVERS,
@@ -270,6 +293,8 @@ export class Application extends Context implements LifeCycleObserver {
     // No-op if it's started
     if (this._state === 'started') return;
     this.setState('starting');
+    this.setupShutdown();
+
     const registry = await this.getLifeCycleObserverRegistry();
     await registry.start();
     this.setState('started');
@@ -288,6 +313,11 @@ export class Application extends Context implements LifeCycleObserver {
     // No-op if it's created or stopped
     if (this._state !== 'started') return;
     this.setState('stopping');
+    if (!this._isShuttingDown) {
+      // Explicit stop is called, let's remove signal listeners to avoid
+      // memory leak and max listener warning
+      this.removeSignalListener();
+    }
     const registry = await this.getLifeCycleObserverRegistry();
     await registry.stop();
     this.setState('stopped');
@@ -320,7 +350,7 @@ export class Application extends Context implements LifeCycleObserver {
    * ```
    */
   public component(componentCtor: Constructor<Component>, name?: string) {
-    debug('Adding component: %s', name ?? componentCtor.name);
+    this.debug('Adding component: %s', name ?? componentCtor.name);
     const binding = createBindingFromClass(componentCtor, {
       name,
       namespace: CoreBindings.COMPONENTS,
@@ -356,7 +386,7 @@ export class Application extends Context implements LifeCycleObserver {
     ctor: Constructor<T>,
     name?: string,
   ): Binding<T> {
-    debug('Adding life cycle observer %s', name ?? ctor.name);
+    this.debug('Adding life cycle observer %s', name ?? ctor.name);
     const binding = createBindingFromClass(ctor, {
       name,
       namespace: CoreBindings.LIFE_CYCLE_OBSERVERS,
@@ -421,17 +451,24 @@ export class Application extends Context implements LifeCycleObserver {
 
   /**
    * Set up signals that are captured to shutdown the application
-   * @param signals - An array of signals to be trapped
-   * @param gracePeriod - A grace period in ms before forced exit
    */
-  protected setupShutdown(signals: NodeJS.Signals[], gracePeriod?: number) {
-    const cleanup = async (signal: string) => {
+  protected setupShutdown() {
+    if (this._signalListener != null) {
+      this.registerSignalListener();
+      return this._signalListener;
+    }
+    const gracePeriod = this._shutdownOptions.gracePeriod;
+    this._signalListener = async (signal: string) => {
       const kill = () => {
-        // eslint-disable-next-line @typescript-eslint/no-misused-promises
-        signals.forEach(sig => process.removeListener(sig, cleanup));
+        this.removeSignalListener();
         process.kill(process.pid, signal);
       };
-      debug('Signal %s received for process %d', signal, process.pid);
+      debugShutdown(
+        '[%s] Signal %s received for process %d',
+        this.name,
+        signal,
+        process.pid,
+      );
       if (!this._isShuttingDown) {
         this._isShuttingDown = true;
         let timer;
@@ -446,8 +483,49 @@ export class Application extends Context implements LifeCycleObserver {
         }
       }
     };
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    signals.forEach(sig => process.on(sig, cleanup));
+    this.registerSignalListener();
+    return this._signalListener;
+  }
+
+  private registerSignalListener() {
+    const {signals = []} = this._shutdownOptions;
+    debugShutdown(
+      '[%s] Registering signal listeners on the process %d',
+      this.name,
+      process.pid,
+      signals,
+    );
+    signals.forEach(sig => {
+      if (process.getMaxListeners() <= process.listenerCount(sig)) {
+        if (debugWarning.enabled) {
+          debugWarning(
+            '[%s] %d %s listeners are added to process %d',
+            this.name,
+            process.listenerCount(sig),
+            sig,
+            process.pid,
+            new Error('MaxListenersExceededWarning'),
+          );
+        }
+      }
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
+      process.on(sig, this._signalListener);
+    });
+  }
+
+  private removeSignalListener() {
+    if (this._signalListener == null) return;
+    const {signals = []} = this._shutdownOptions;
+    debugShutdown(
+      '[%s] Removing signal listeners on the process %d',
+      this.name,
+      process.pid,
+      signals,
+    );
+    signals.forEach(sig =>
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
+      process.removeListener(sig, this._signalListener),
+    );
   }
 }
 
@@ -470,6 +548,10 @@ export type ShutdownOptions = {
  * Configuration for application
  */
 export interface ApplicationConfig {
+  /**
+   * Name of the application context
+   */
+  name?: string;
   /**
    * Configuration for signals that shut down the application
    */
