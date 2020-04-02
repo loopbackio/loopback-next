@@ -228,7 +228,6 @@ function mochaConfiguredForProject() {
     '.mocharc.json',
     '.mocharc.yaml',
     '.mocharc.yml',
-    'test/mocha.opts',
   ];
   return configFiles.some(f => {
     const configFile = path.join(getPackageDir(), f);
