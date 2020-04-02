@@ -11,6 +11,7 @@
       "program": "${workspaceRoot}/packages/build/node_modules/mocha/bin/_mocha",
       "runtimeArgs": ["-r", "${workspaceRoot}/packages/build/node_modules/source-map-support/register"],
       "cwd": "${workspaceRoot}",
+      "autoAttachChildProcesses": true,
       "args": [
         "--config",
         "${workspaceRoot}/packages/build/config/.mocharc.json",
@@ -26,6 +27,7 @@
       "program": "${workspaceRoot}/bin/mocha-current-file",
       "runtimeArgs": ["-r", "${workspaceRoot}/packages/build/node_modules/source-map-support/register"],
       "cwd": "${workspaceRoot}",
+      "autoAttachChildProcesses": true,
       "args": [
         "--config",
         "${workspaceRoot}/packages/build/config/.mocharc.json",
