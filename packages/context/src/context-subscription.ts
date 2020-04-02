@@ -208,7 +208,11 @@ export class ContextSubscriptionManager extends EventEmitter {
     this.setupNotification('bind', 'unbind');
 
     // Create an async iterator for the `notification` event as a queue
-    this.notificationQueue = iterator(this, 'notification');
+    this.notificationQueue = iterator(this, 'notification', {
+      // Do not end the iterator if an error event is emitted on the
+      // subscription manager
+      rejectionEvents: [],
+    });
 
     return this.processNotifications();
   }
@@ -257,11 +261,18 @@ export class ContextSubscriptionManager extends EventEmitter {
         );
         this.emitEvent('observersNotified', {type, binding, context});
       } catch (err) {
-        this.pendingNotifications--;
+        // Do not reduce the pending notification count so that errors
+        // can be captured by waitUntilPendingNotificationsDone
         this._debug('Error caught from observers', err);
-        // Errors caught from observers. Emit it to the current context.
-        // If no error listeners are registered, crash the process.
-        this.emitError(err);
+        // Errors caught from observers.
+        if (this.listenerCount('error') > 0) {
+          // waitUntilPendingNotificationsDone may be called
+          this.emitError(err);
+        } else {
+          // Emit it to the current context. If no error listeners are
+          // registered, crash the process.
+          this.handleNotificationError(err);
+        }
       }
     }
   }
@@ -300,6 +311,7 @@ export class ContextSubscriptionManager extends EventEmitter {
    */
   async waitUntilPendingNotificationsDone(timeout?: number) {
     const count = this.pendingNotifications;
+    debug('Number of pending notifications: %d', count);
     if (count === 0) return;
     await multiple(this, 'observersNotified', {count, timeout});
   }

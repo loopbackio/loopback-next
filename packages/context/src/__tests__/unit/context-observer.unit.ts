@@ -173,7 +173,7 @@ describe('Context', () => {
     it('reports error if an observer fails', () => {
       ctx.bind('bar').to('bar-value');
       return expect(ctx.waitUntilObserversNotified()).to.be.rejectedWith(
-        'something wrong',
+        'something wrong - async',
       );
     });
 
@@ -239,7 +239,7 @@ describe('Context', () => {
         filter: binding => binding.key === 'bar',
         observe: async () => {
           await setImmediateAsync();
-          throw new Error('something wrong');
+          throw new Error('something wrong - async');
         },
       };
       ctx.subscribe(nonMatchingObserver);
@@ -282,7 +282,7 @@ describe('Context', () => {
     });
 
     it('reports error on current context if an observer fails', async () => {
-      const err = new Error('something wrong');
+      const err = new Error('something wrong - 1');
       server.subscribe((event, binding) => {
         if (binding.key === 'bar') {
           return Promise.reject(err);
@@ -290,12 +290,13 @@ describe('Context', () => {
       });
       server.bind('bar').to('bar-value');
       // Please note the following code registers an `error` listener on `server`
+      // so that error events are caught before it is reported as unhandled.
       const obj = await pEvent(server, 'error');
       expect(obj).to.equal(err);
     });
 
     it('reports error on the first context with error listeners on the chain', async () => {
-      const err = new Error('something wrong');
+      const err = new Error('something wrong - 2');
       server.subscribe((event, binding) => {
         if (binding.key === 'bar') {
           return Promise.reject(err);
