@@ -24,7 +24,6 @@ function run(argv, options) {
     !utils.isOptionSet(
       mochaOpts,
       '--config', // mocha 6.x
-      '--opts', // legacy
       '--package', // mocha 6.x
       '--no-config', // mocha 6.x
     ) && !utils.mochaConfiguredForProject();
