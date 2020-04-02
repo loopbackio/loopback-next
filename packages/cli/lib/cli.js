@@ -109,6 +109,10 @@ function setupGenerators() {
     path.join(__dirname, '../generators/rest-crud'),
     PREFIX + 'rest-crud',
   );
+  env.register(
+    path.join(__dirname, '../generators/copyright'),
+    PREFIX + 'copyright',
+  );
   return env;
 }
 

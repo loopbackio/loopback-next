@@ -1,0 +1,2 @@
+// XYZ
+exports.xyz = {};

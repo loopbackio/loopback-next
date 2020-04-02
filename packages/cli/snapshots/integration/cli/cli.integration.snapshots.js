@@ -25,6 +25,7 @@ Available commands:
   lb4 relation
   lb4 update
   lb4 rest-crud
+  lb4 copyright
 `;
 
 
@@ -46,4 +47,5 @@ Available commands:
   lb4 relation
   lb4 update
   lb4 rest-crud
+  lb4 copyright
 `;
