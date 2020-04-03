@@ -12,7 +12,7 @@ import {
 } from '@loopback/rest-explorer';
 import multer from 'multer';
 import path from 'path';
-import {FILE_UPLOAD_SERVICE} from './keys';
+import {FILE_UPLOAD_SERVICE, STORAGE_DIRECTORY} from './keys';
 import {MySequence} from './sequence';
 
 export class FileUploadApplication extends BootMixin(RestApplication) {
@@ -50,10 +50,12 @@ export class FileUploadApplication extends BootMixin(RestApplication) {
    * Configure `multer` options for file upload
    */
   protected configureFileUpload(destination?: string) {
+    // Upload files to `dist/.sandbox` by default
+    destination = destination ?? path.join(__dirname, '../.sandbox');
+    this.bind(STORAGE_DIRECTORY).to(destination);
     const multerOptions: multer.Options = {
       storage: multer.diskStorage({
-        // Upload files to `.sandbox`
-        destination: destination ?? path.join(__dirname, '../.sandbox'),
+        destination,
         // Use the original file name as is
         filename: (req, file, cb) => {
           cb(null, file.originalname);
