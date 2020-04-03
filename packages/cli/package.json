@@ -44,7 +44,7 @@
   "dependencies": {
     "@lerna/project": "^3.18.0",
     "@phenomnomnominal/tsquery": "^4.0.0",
-    "camelcase-keys": "^6.2.1",
+    "camelcase-keys": "^6.2.2",
     "chalk": "^4.0.0",
     "change-case": "^4.1.1",
     "debug": "^4.1.1",
