@@ -95,13 +95,15 @@ describe('HttpServer (integration)', () => {
     const req = httpGetAsync(server.url, agent);
     // Wait until the request is accepted by the server
     await pEvent(server.server, 'request');
+    // Set up error handler for expected rejection before the event is emitted
+    const socketPromise = expect(req).to.be.rejectedWith(/socket hang up/);
     // Stop the server
     await server.stop();
     // No more new connections are accepted
     await expect(httpGetAsync(server.url)).to.be.rejectedWith(/ECONNREFUSED/);
     // We never send `finish` to the pending request
     // The inflight request is aborted as it takes longer than the grace period
-    await expect(req).to.be.rejectedWith(/socket hang up/);
+    await socketPromise;
   });
 
   it('exports original port', async () => {
