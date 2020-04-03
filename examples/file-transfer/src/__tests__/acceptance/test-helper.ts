@@ -42,6 +42,7 @@ export interface AppWithClient {
 }
 
 export function getSandbox() {
-  const sandbox = new TestSandbox(path.resolve(__dirname, '../../../.sandbox'));
+  // dist/.sandbox/<a unique temporary subdir>
+  const sandbox = new TestSandbox(path.resolve(__dirname, '../../.sandbox'));
   return sandbox;
 }

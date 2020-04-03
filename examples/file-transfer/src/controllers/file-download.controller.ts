@@ -15,15 +15,15 @@ import {
 import fs from 'fs';
 import path from 'path';
 import {promisify} from 'util';
+import {STORAGE_DIRECTORY} from '../keys';
 
 const readdir = promisify(fs.readdir);
-
-const SANDBOX = path.resolve(__dirname, '../../.sandbox');
 
 /**
  * A controller to handle file downloads using multipart/form-data media type
  */
 export class FileDownloadController {
+  constructor(@inject(STORAGE_DIRECTORY) private storageDirectory: string) {}
   @get('/files', {
     responses: {
       200: {
@@ -43,7 +43,7 @@ export class FileDownloadController {
     },
   })
   async listFiles() {
-    const files = await readdir(SANDBOX);
+    const files = await readdir(this.storageDirectory);
     return files;
   }
 
@@ -53,19 +53,19 @@ export class FileDownloadController {
     @param.path.string('filename') fileName: string,
     @inject(RestBindings.Http.RESPONSE) response: Response,
   ) {
-    const file = validateFileName(fileName);
+    const file = this.validateFileName(fileName);
     response.download(file, fileName);
     return response;
   }
-}
 
-/**
- * Validate file names to prevent them goes beyond the designated directory
- * @param fileName - File name
- */
-function validateFileName(fileName: string) {
-  const resolved = path.resolve(SANDBOX, fileName);
-  if (resolved.startsWith(SANDBOX)) return resolved;
-  // The resolved file is outside sandbox
-  throw new HttpErrors.BadRequest(`Invalid file name: ${fileName}`);
+  /**
+   * Validate file names to prevent them goes beyond the designated directory
+   * @param fileName - File name
+   */
+  private validateFileName(fileName: string) {
+    const resolved = path.resolve(this.storageDirectory, fileName);
+    if (resolved.startsWith(this.storageDirectory)) return resolved;
+    // The resolved file is outside sandbox
+    throw new HttpErrors.BadRequest(`Invalid file name: ${fileName}`);
+  }
 }

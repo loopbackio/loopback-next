@@ -12,3 +12,8 @@ import {FileUploadHandler} from './types';
 export const FILE_UPLOAD_SERVICE = BindingKey.create<FileUploadHandler>(
   'services.FileUpload',
 );
+
+/**
+ * Binding key for the storage directory
+ */
+export const STORAGE_DIRECTORY = BindingKey.create<string>('storage.directory');

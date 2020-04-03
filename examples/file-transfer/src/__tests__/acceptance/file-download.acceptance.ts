@@ -12,6 +12,7 @@ describe('file download acceptance', () => {
   let client: Client;
   let app: FileUploadApplication;
 
+  before(givenSandbox);
   before(givenAClient);
 
   beforeEach(resetSandbox);
@@ -59,12 +60,15 @@ describe('file download acceptance', () => {
     await client.get('/files/test.json').expect(200, {test: 'JSON'});
   });
 
+  function givenSandbox() {
+    sandbox = getSandbox();
+  }
+
   async function givenAClient() {
-    ({app, client} = await setupApplication());
+    ({app, client} = await setupApplication(sandbox.path));
   }
 
   async function resetSandbox() {
-    sandbox = getSandbox();
     await sandbox.reset();
   }
 });
