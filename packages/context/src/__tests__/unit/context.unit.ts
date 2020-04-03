@@ -4,6 +4,8 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
+import {Debugger} from 'debug';
+import {format} from 'util';
 import {
   Binding,
   BindingCreationPolicy,
@@ -44,14 +46,14 @@ describe('Context constructor', () => {
   it('generates uuid name if not provided', () => {
     const ctx = new Context();
     expect(ctx.name).to.match(
-      /^[0-9A-F]{8}-[0-9A-F]{4}-[1][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i,
+      /^[0-9A-F]{8}-[0-9A-F]{4}-[4][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i,
     );
   });
 
   it('adds subclass name as the prefix', () => {
     const ctx = new TestContext();
     expect(ctx.name).to.match(
-      /^TestContext-[0-9A-F]{8}-[0-9A-F]{4}-[1][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i,
+      /^TestContext-[0-9A-F]{8}-[0-9A-F]{4}-[4][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i,
     );
   });
 
@@ -825,6 +827,64 @@ describe('Context', () => {
     it('can be changed', () => {
       ctx.setMaxListeners(128);
       expect(ctx.getMaxListeners()).to.equal(128);
+    });
+  });
+
+  describe('debug', () => {
+    it('allows override of debug from subclasses', () => {
+      let debugOutput = '';
+      const myDebug = (formatter: string, ...args: unknown[]) => {
+        debugOutput = format(formatter, ...args);
+      };
+      myDebug.enabled = true;
+      class MyContext extends Context {
+        constructor() {
+          super('my-context');
+          this._debug = myDebug as Debugger;
+        }
+
+        debug(formatter: string, ...args: unknown[]) {
+          super.debug(formatter, ...args);
+        }
+      }
+
+      const myCtx = new MyContext();
+      myCtx.debug('%s %d', 'number of bindings', 10);
+      expect(debugOutput).to.eql(`[${myCtx.name}] number of bindings 10`);
+    });
+
+    it('sets up debug for subclasses with the class name', () => {
+      class MyContext extends Context {
+        constructor() {
+          super('my-context');
+        }
+
+        get debugFn() {
+          return this._debug;
+        }
+      }
+
+      const myCtx = new MyContext();
+      expect(myCtx.debugFn.namespace).to.eql('loopback:context:mycontext');
+    });
+
+    it('allows debug namespace for subclasses', () => {
+      class MyContext extends Context {
+        constructor() {
+          super('my-context');
+        }
+
+        getDebugNamespace() {
+          return 'myapp:my-context';
+        }
+
+        get debugFn() {
+          return this._debug;
+        }
+      }
+
+      const myCtx = new MyContext();
+      expect(myCtx.debugFn.namespace).to.eql('myapp:my-context');
     });
   });
 

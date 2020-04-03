@@ -3,9 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import debugFactory from 'debug';
+import debugFactory, {Debugger} from 'debug';
 import {EventEmitter} from 'events';
-import {v1 as uuidv1} from 'uuid';
+import {v4 as uuidv4} from 'uuid';
 import {Binding, BindingInspectOptions, BindingTag} from './binding';
 import {
   ConfigurationResolver,
@@ -40,8 +40,6 @@ import {
   ValueOrPromise,
 } from './value-promise';
 
-const debug = debugFactory('loopback:context');
-
 /**
  * Context provides an implementation of Inversion of Control (IoC) container
  */
@@ -75,6 +73,21 @@ export class Context extends EventEmitter {
    * Configuration resolver
    */
   protected configResolver: ConfigurationResolver;
+
+  /**
+   * A debug function which can be overridden by subclasses.
+   *
+   * @example
+   * ```ts
+   * import debugFactory from 'debug';
+   * const debug = debugFactory('loopback:context:application');
+   * export class Application extends Context {
+   *   super('application');
+   *   this._debug = debug;
+   * }
+   * ```
+   */
+  protected _debug: Debugger;
 
   /**
    * Create a new context.
@@ -113,13 +126,34 @@ export class Context extends EventEmitter {
     this.name = name ?? this.generateName();
     this.tagIndexer = new ContextTagIndexer(this);
     this.subscriptionManager = new ContextSubscriptionManager(this);
+    this._debug = debugFactory(this.getDebugNamespace());
+  }
+
+  /**
+   * Get the debug namespace for the context class. Subclasses can override
+   * this method to supply its own namespace.
+   *
+   * @example
+   * ```ts
+   * export class Application extends Context {
+   *   super('application');
+   * }
+   *
+   * protected getDebugNamespace() {
+   *   return 'loopback:context:application';
+   * }
+   * ```
+   */
+  protected getDebugNamespace() {
+    if (this.constructor === Context) return 'loopback:context';
+    const name = this.constructor.name.toLowerCase();
+    return `loopback:context:${name}`;
   }
 
   private generateName() {
-    const id = uuidv1();
-    let prefix = `${this.constructor.name}-`;
-    if (prefix === 'Context-') prefix = '';
-    return `${prefix}${id}`;
+    const id = uuidv4();
+    if (this.constructor === Context) return id;
+    return `${this.constructor.name}-${id}`;
   }
 
   /**
@@ -135,14 +169,14 @@ export class Context extends EventEmitter {
    * as the prefix
    * @param args - Arguments for the debug
    */
-  private _debug(...args: unknown[]) {
+  protected debug(...args: unknown[]) {
     /* istanbul ignore if */
-    if (!debug.enabled) return;
+    if (!this._debug.enabled) return;
     const formatter = args.shift();
     if (typeof formatter === 'string') {
-      debug(`[%s] ${formatter}`, this.name, ...args);
+      this._debug(`[%s] ${formatter}`, this.name, ...args);
     } else {
-      debug('[%s] ', this.name, formatter, ...args);
+      this._debug('[%s] ', this.name, formatter, ...args);
     }
   }
 
@@ -184,7 +218,7 @@ export class Context extends EventEmitter {
    */
   add(binding: Binding<unknown>): this {
     const key = binding.key;
-    this._debug('[%s] Adding binding: %s', key);
+    this.debug('[%s] Adding binding: %s', key);
     let existingBinding: Binding | undefined;
     const keyExists = this.registry.has(key);
     if (keyExists) {
@@ -261,14 +295,14 @@ export class Context extends EventEmitter {
         },
       );
       if (configResolver) {
-        debug(
+        this.debug(
           'Custom ConfigurationResolver is loaded from %s.',
           ContextBindings.CONFIGURATION_RESOLVER.toString(),
         );
         this.configResolver = configResolver;
       } else {
         // Fallback to DefaultConfigurationResolver
-        debug('DefaultConfigurationResolver is used.');
+        this.debug('DefaultConfigurationResolver is used.');
         this.configResolver = new DefaultConfigurationResolver(this);
       }
     }
@@ -340,7 +374,7 @@ export class Context extends EventEmitter {
    * @returns true if the binding key is found and removed from this context
    */
   unbind(key: BindingAddress): boolean {
-    this._debug('Unbind %s', key);
+    this.debug('Unbind %s', key);
     key = BindingKey.validate(key);
     const binding = this.registry.get(key);
     // If not found, return `false`
@@ -378,7 +412,7 @@ export class Context extends EventEmitter {
    * which is created per request.
    */
   close() {
-    this._debug('Closing context...');
+    this.debug('Closing context...');
     this.subscriptionManager.close();
     this.tagIndexer.close();
   }
@@ -577,7 +611,7 @@ export class Context extends EventEmitter {
     keyWithPath: BindingAddress<ValueType>,
     optionsOrSession?: ResolutionOptionsOrSession,
   ): Promise<ValueType | undefined> {
-    this._debug('Resolving binding: %s', keyWithPath);
+    this.debug('Resolving binding: %s', keyWithPath);
     return this.getValueOrPromise<ValueType | undefined>(
       keyWithPath,
       optionsOrSession,
@@ -645,7 +679,7 @@ export class Context extends EventEmitter {
     keyWithPath: BindingAddress<ValueType>,
     optionsOrSession?: ResolutionOptionsOrSession,
   ): ValueType | undefined {
-    this._debug('Resolving binding synchronously: %s', keyWithPath);
+    this.debug('Resolving binding synchronously: %s', keyWithPath);
 
     const valueOrPromise = this.getValueOrPromise<ValueType>(
       keyWithPath,
