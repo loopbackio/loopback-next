@@ -83,10 +83,39 @@ mapping of the WSDL binding operations and Node.js methods.
 For details, you can refer to the SOAP connector's operations property:
 https://github.com/strongloop/loopback-connector-soap#operations-property
 
-### Datasource for REST service
+### Datasource for REST service with OpenAPI specification
 
-When calling REST services, select `REST services` for connector. We'll leave
-the default for the last 3 prompts.
+When calling REST services which comes with the OpenAPI specification, select
+`OpenAPI` for connector. The [OpenAPI connector](OpenAPI-connector.html) will be
+used.
+
+```sh
+$ lb4 datasource
+? Datasource name: ds
+? Select the connector for ds: OpenAPI (supported by StrongLoop)
+? HTTP URL/path to Swagger spec file (file name extension .yaml/.yml or .json):
+petstore.json
+? Validate spec against Swagger spec 2.0?: No
+? Security config for making authenticated requests to API:
+? Use positional parameters instead of named parameters?: No
+   create src/datasources/ds.datasource.config.json
+   create src/datasources/ds.datasource.ts
+```
+
+For details regarding the prompts about authentication and positional
+parameters, see the [Authentication](OpenAPI-connector.html##authentication) and
+[Named parameters vs positional parameters](OpenAPI-connector.html#named-parameters-vs-positional-parameters)
+sections of the [OpenAPI connector page](OpenAPI-connector.html).
+
+{% include note.html content="
+Make sure the `url` in the `servers` property in the OpenAPI specification is an absolute path. If you cannot change the specification, you can save the OpenAPI spec and just modify the `url` value before creating a DataSource associated with it.
+" %}
+
+### Datasource for REST service without OpenAPI specification
+
+In the case where the REST services do not have a corresponding OpenAPI
+specification, select `REST services` for connector. We'll leave the default for
+the last 3 prompts.
 
 ```sh
 $ lb4 datasource
@@ -185,6 +214,9 @@ export interface GenericService {
 }
 ```
 
+For details on implementing the Services with OpenAPI DataSource, see the
+[OpenAPI connector page](OpenAPI-connector.html).
+
 ## Add a Controller
 
 Add a controller using the [Controller generator](Controller-generator.md) with
@@ -218,6 +250,31 @@ Service interface.
       intB,
     });
   }
+```
+
+For calling Services with OpenAPI DataSource,
+
+- the parameters need to be wrapped in a JSON object
+- the response includes the headers and the body
+
+See the code snippet below for illustration:
+
+```ts
+@get('/pets/{petId}', {
+    responses: {
+      '200': {
+        description: 'Pet model instance',
+        content: {'application/json': {schema: PetSchema}},
+      },
+    },
+  })
+  async findPetById(@param.path.number('petId') petId: number): Promise<Pet> {
+    // wrap the parameters in a JSON object
+    const response = await this.petStoreService.getPetById({petId: petId});
+    // we normally only return the response body
+    return response.body;
+  }
+}
 ```
 
 ## More examples
