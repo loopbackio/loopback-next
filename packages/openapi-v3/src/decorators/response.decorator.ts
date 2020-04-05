@@ -37,9 +37,8 @@ function buildDecoratorReducer(
       Object.keys(m.content ?? {}).forEach(ct => {
         r.push({
           responseCode,
-          responseModelOrSpec: m.content[ct].schema as
-            | SchemaObject
-            | ReferenceObject,
+          responseModelOrSpec:
+            m.content[ct].schema as SchemaObject | ReferenceObject,
           contentType: ct,
           description: m.description ?? description,
         });

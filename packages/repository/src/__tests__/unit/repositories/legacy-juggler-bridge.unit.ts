@@ -193,8 +193,9 @@ describe('DefaultCrudRepository', () => {
       expect(rolesProperty.type).to.be.an.Array().of.length(1);
 
       // FIXME(bajtos) PropertyDefinition in juggler does not allow array type!
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const rolesModel = (rolesProperty.type as any)[0] as typeof juggler.ModelBase;
+      const rolesModel =
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (rolesProperty.type as any)[0] as typeof juggler.ModelBase;
       expect(rolesModel).to.be.a.Function();
       expect(rolesModel).to.equal(ds.getModel('Role'));
 

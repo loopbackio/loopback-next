@@ -185,9 +185,10 @@ export class GenericInterceptorChain<C extends Context = Context> {
   private loadInterceptor(interceptor: GenericInterceptorOrKey<C>) {
     if (typeof interceptor === 'function') return interceptor;
     debug('Resolving interceptor binding %s', interceptor);
-    return this.context.getValueOrPromise(interceptor) as ValueOrPromise<
-      GenericInterceptor<C>
-    >;
+    return (
+      this.context.getValueOrPromise(interceptor) as
+      ValueOrPromise<GenericInterceptor<C>>
+    );
   }
 }
 

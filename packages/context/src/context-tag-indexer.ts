@@ -116,9 +116,9 @@ export class ContextTagIndexer {
       const bindingsByTag = this.bindingsIndexedByTag.get(t);
       if (bindingsByTag == null) break; // One of the tags is not found
       filter = filter ?? filterByTag(tag);
-      const matched = new Set(Array.from(bindingsByTag).filter(filter)) as Set<
-        Readonly<Binding<ValueType>>
-      >;
+      const matched =
+        new Set(Array.from(bindingsByTag).filter(filter)) as
+        Set<Readonly<Binding<ValueType>>>;
       if (!union && matched.size === 0) break; // One of the tag name/value is not found
       if (bindings == null) {
         // First set of bindings matching the tag
