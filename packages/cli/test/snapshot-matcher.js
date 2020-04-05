@@ -16,14 +16,88 @@ move this file to a standalone package so that all Mocha users can use it.
 
 const chalk = require('chalk');
 const assert = require('assert');
-const debug = require('debug')('test:snapshot-matcher');
 const path = require('path');
+const debug = require('debug')('loopback:cli:test:snapshot-matcher');
 
 const root = process.cwd();
+const shouldUpdateSnapshots = process.env.UPDATE_SNAPSHOTS;
+
+// Register root hooks for mocha
+const mochaHooks = {
+  // This global hook is called once, before the test suite starts.
+  // When running tests in parallel, it is invoked once for each test file.
+  beforeAll: resetGlobalState,
+
+  // This global hook is called per test
+  beforeEach: injectCurrentTest,
+
+  // This global hook is called once, after mocha is finished
+  // When running tests in parallel, it is invoked once for each test file.
+  afterAll: updateSnapshotFiles,
+};
 
 module.exports = {
   initializeSnapshots,
+  mochaHooks,
 };
+
+// A lookup table for snapshot-matcher instance data (state)
+// key: snapshot directory (snapshotDir)
+// value: matcher state {snapshotDir, snapshots, snapshotErrors}
+const snapshotMatchers = new Map();
+
+// The currently running test (an instance of `Mocha.Test`)
+let currentTest;
+
+/** @this {Mocha.Context} */
+function injectCurrentTest() {
+  currentTest = this.currentTest;
+  debug(
+    '[%d] Injecting current test %s',
+    process.pid,
+    getFullTestName(currentTest),
+  );
+  currentTest.__snapshotCounter = 1;
+}
+
+async function updateSnapshotFiles() {
+  if (!shouldUpdateSnapshots) return;
+  debug('[%d] Updating snapshots (writing to files)', process.pid);
+  for (const state of snapshotMatchers.values()) {
+    const tasks = Object.entries(state.snapshots).map(([f, data]) => {
+      const snapshotFile = buildSnapshotFilePath(state.snapshotDir, f);
+      return writeSnapshotData(snapshotFile, data);
+    });
+    await Promise.all(tasks);
+  }
+}
+
+function resetGlobalState() {
+  debug(
+    '[%d] Resetting snapshot matchers',
+    process.pid,
+    Array.from(snapshotMatchers.keys()),
+  );
+  currentTest = undefined;
+  for (const matcher of snapshotMatchers.values()) {
+    resetMatcherState(matcher);
+  }
+}
+
+function resetMatcherState(matcher) {
+  matcher.snapshotErrors = false;
+  matcher.snapshots = Object.create(null);
+  return matcher;
+}
+
+function getOrCreateMatcherForDir(snapshotDir) {
+  let matcher = snapshotMatchers.get(snapshotDir);
+  if (matcher == null) {
+    matcher = resetMatcherState({snapshotDir});
+    snapshotMatchers.set(snapshotDir, matcher);
+  }
+  return matcher;
+}
 
 /**
  * Create a function to match the given value against a pre-recorder snapshot.
@@ -56,25 +130,18 @@ function initializeSnapshots(snapshotDir) {
       .map(f => `\n${f}`)
       .join();
     debug(
-      'Initializing snapshot matcher, storing snapshots in %s%s',
+      '[%d] Initializing snapshot matcher, storing snapshots in %s%s',
+      process.pid,
       snapshotDir,
       stack,
     );
   }
 
-  let currentTest;
-  let snapshotErrors = false;
+  const matcher = getOrCreateMatcherForDir(snapshotDir);
 
-  /** @this {Mocha.Context} */
-  function setupSnapshots() {
-    currentTest = this.currentTest;
-    currentTest.__snapshotCounter = 1;
-  }
-  beforeEach(setupSnapshots);
-
-  if (!process.env.UPDATE_SNAPSHOTS) {
+  if (!shouldUpdateSnapshots) {
     process.on('exit', function printSnapshotHelp() {
-      if (!snapshotErrors) return;
+      if (!matcher.snapshotErrors) return;
       console.log(
         chalk.red(`
 Some of the snapshot-based tests have failed. Please carefully inspect
@@ -86,36 +153,30 @@ variable to update snapshots.
     });
     return function expectToMatchSnapshot(actual) {
       try {
-        matchSnapshot(snapshotDir, currentTest, actual);
+        matchSnapshot(matcher, actual);
       } catch (err) {
-        snapshotErrors = true;
+        matcher.snapshotErrors = true;
         throw err;
       }
     };
   }
 
-  const snapshots = Object.create(null);
-  after(async function updateSnapshots() {
-    const tasks = Object.entries(snapshots).map(([f, data]) => {
-      const snapshotFile = buildSnapshotFilePath(snapshotDir, f);
-      return writeSnapshotData(snapshotFile, data);
-    });
-    await Promise.all(tasks);
-  });
-
   return function expectToRecordSnapshot(actual) {
-    recordSnapshot(snapshots, currentTest, actual);
+    recordSnapshot(matcher, actual);
   };
 }
 
-function matchSnapshot(snapshotDir, currentTest, actualValue) {
+function matchSnapshot(matcher, actualValue) {
   assert(
     typeof actualValue === 'string',
     'Snapshot matcher supports string values only, but was called with ' +
       typeof actualValue,
   );
 
-  const snapshotFile = buildSnapshotFilePath(snapshotDir, currentTest.file);
+  const snapshotFile = buildSnapshotFilePath(
+    matcher.snapshotDir,
+    currentTest.file,
+  );
   const snapshotData = loadSnapshotData(snapshotFile);
   const key = buildSnapshotKey(currentTest);
 
@@ -141,7 +202,7 @@ function matchSnapshot(snapshotDir, currentTest, actualValue) {
   );
 }
 
-function recordSnapshot(snapshots, currentTest, actualValue) {
+function recordSnapshot(matcher, actualValue) {
   assert(
     typeof actualValue === 'string',
     'Snapshot matcher supports string values only, but was called with ' +
@@ -157,23 +218,26 @@ function recordSnapshot(snapshots, currentTest, actualValue) {
       path.relative(root, testFile),
     );
   }
-  if (!snapshots[testFile]) snapshots[testFile] = Object.create(null);
-  snapshots[testFile][key] = actualValue;
+
+  if (!matcher.snapshots[testFile]) {
+    matcher.snapshots[testFile] = Object.create(null);
+  }
+  matcher.snapshots[testFile][key] = actualValue;
 }
 
-function buildSnapshotKey(currentTest) {
-  const counter = currentTest.__snapshotCounter || 1;
-  currentTest.__snapshotCounter = counter + 1;
-  return `${getFullTestName(currentTest)} ${counter}`;
+function buildSnapshotKey(test) {
+  const counter = test.__snapshotCounter || 1;
+  test.__snapshotCounter = counter + 1;
+  return `${getFullTestName(test)} ${counter}`;
 }
 
-function getFullTestName(currentTest) {
-  let result = currentTest.title;
+function getFullTestName(test) {
+  let result = test.title;
   for (;;) {
-    if (!currentTest.parent) break;
-    currentTest = currentTest.parent;
-    if (currentTest.title) {
-      result = currentTest.title + ' ' + result;
+    if (!test.parent) break;
+    test = test.parent;
+    if (test.title) {
+      result = test.title + ' ' + result;
     }
   }
   return result;
