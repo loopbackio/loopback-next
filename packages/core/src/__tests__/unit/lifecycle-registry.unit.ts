@@ -161,9 +161,9 @@ describe('LifeCycleRegistry', () => {
       .bind(CoreBindings.LIFE_CYCLE_OBSERVER_REGISTRY)
       .toClass(TestObserverRegistry)
       .inScope(BindingScope.SINGLETON);
-    registry = (await context.get(
-      CoreBindings.LIFE_CYCLE_OBSERVER_REGISTRY,
-    )) as TestObserverRegistry;
+    registry =
+      (await context.get(CoreBindings.LIFE_CYCLE_OBSERVER_REGISTRY)) as
+      TestObserverRegistry;
   }
 
   function givenObserver(name: string, group = '') {

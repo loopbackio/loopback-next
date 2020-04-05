@@ -113,8 +113,10 @@ export function createProxyWithInterceptors<T extends object>(
   context?: Context,
   session?: ResolutionSession,
 ): AsyncProxy<T> {
-  return new Proxy(
-    target,
-    new InterceptionHandler(context, ResolutionSession.fork(session)),
-  ) as AsyncProxy<T>;
+  return (
+    new Proxy(
+      target,
+      new InterceptionHandler(context, ResolutionSession.fork(session)),
+    ) as AsyncProxy<T>
+  );
 }

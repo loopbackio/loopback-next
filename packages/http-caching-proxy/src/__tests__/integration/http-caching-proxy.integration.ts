@@ -269,11 +269,13 @@ describe('HttpCachingProxy', () => {
       (err as any).status = res.status;
       throw err;
     }
-    const patchedRes = Object.create(res) as AxiosResponse & {
-      statusCode: number;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      body: any;
-    };
+    const patchedRes =
+      Object.create(res) as
+      AxiosResponse & {
+        statusCode: number;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        body: any;
+      };
     patchedRes.statusCode = res.status;
     patchedRes.body = res.data;
     return patchedRes;
