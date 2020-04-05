@@ -747,6 +747,10 @@ children:
       url: Swagger-connector.html
       output: 'web, pdf'
 
+    - title: 'OpenAPI connector'
+      url: OpenAPI-connector.html
+      output: 'web, pdf'
+
   - title: 'Community connectors'
     url: Community-connectors.html
     output: 'web, pdf'
