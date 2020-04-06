@@ -100,7 +100,7 @@ describe('lb4 copyright', function () {
     /*
     Copyright (c) ACME Inc. 2020. All Rights Reserved.
     Node module: myapp
-
+    This project is licensed under the ISC License, full text below.
     */
     assert.fileContent(
       path.join(sandbox.path, 'LICENSE'),
@@ -108,7 +108,7 @@ describe('lb4 copyright', function () {
     );
     assert.fileContent(
       path.join(sandbox.path, 'LICENSE'),
-      `Copyright (c) ACME Inc. ${year}. All Rights Reserved.`,
+      `Copyright (c) ACME Inc. ${year}.`,
     );
     assert.fileContent(
       path.join(sandbox.path, 'LICENSE'),

@@ -24,7 +24,7 @@ function renderLicense({name, owner, years, license}) {
     license = spdxLicenseList[license.toLowerCase()];
   }
   const text = replaceCopyRight(license.licenseText, {owner, years});
-  return `Copyright (c) ${owner} ${years}. All Rights Reserved.
+  return `Copyright (c) ${owner} ${years}.
 Node module: ${name}
 This project is licensed under the ${license.name}, full text below.
 
