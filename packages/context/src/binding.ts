@@ -208,7 +208,7 @@ export class Binding<T = BoundValue> extends EventEmitter {
   }
 
   private _cache: WeakMap<Context, T>;
-  private _getValue: ValueGetter<T>;
+  private _getValue?: ValueGetter<T>;
 
   private _valueConstructor?: Constructor<T>;
   private _providerConstructor?: Constructor<Provider<T>>;
@@ -353,11 +353,11 @@ export class Binding<T = BoundValue> extends EventEmitter {
       }
     }
     const options = asResolutionOptions(optionsOrSession);
-    if (this._getValue) {
+    if (typeof this._getValue === 'function') {
       const result = ResolutionSession.runWithBinding(
         s => {
           const optionsWithSession = Object.assign({}, options, {session: s});
-          return this._getValue(ctx, optionsWithSession);
+          return this._getValue!(ctx, optionsWithSession);
         },
         this,
         options.session,
