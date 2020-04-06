@@ -125,14 +125,13 @@ describe('TodoController', () => {
     aTodoListWithId = givenTodoList({
       id: 1,
     });
-    aListOfTodoLists =
-      [
-        aTodoListWithId,
-        givenTodoList({
-          id: 2,
-          title: 'a lot of todos',
-        }),
-      ] as TodoList[];
+    aListOfTodoLists = [
+      aTodoListWithId,
+      givenTodoList({
+        id: 2,
+        title: 'a lot of todos',
+      }),
+    ] as TodoList[];
     aTodoListToPatchTo = givenTodoList({
       title: 'changed list of todos',
     });

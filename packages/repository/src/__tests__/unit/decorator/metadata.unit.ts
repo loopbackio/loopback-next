@@ -87,9 +87,10 @@ describe('Repository', () => {
     });
 
     it('returns cached metadata instead of recreating it', () => {
-      const classMeta =
-        MetadataInspector.getClassMetadata(MODEL_KEY, Phlange) as
-        ModelDefinition;
+      const classMeta = MetadataInspector.getClassMetadata(
+        MODEL_KEY,
+        Phlange,
+      ) as ModelDefinition;
       classMeta.properties = {
         foo: {
           type: String,
@@ -103,8 +104,9 @@ describe('Repository', () => {
         Phlange,
       );
 
-      const meta =
-        ModelMetadataHelper.getModelMetadata(Phlange) as ModelDefinition;
+      const meta = ModelMetadataHelper.getModelMetadata(
+        Phlange,
+      ) as ModelDefinition;
       expect(meta.properties).to.eql(classMeta.properties);
     });
   });

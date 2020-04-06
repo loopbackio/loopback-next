@@ -43,9 +43,9 @@ describe('constructor injection', () => {
 
     const theNonInjectedArg = 'BAZ';
 
-    const test =
-      instantiateClass(TestClass, ctx, undefined, [theNonInjectedArg]) as
-      TestClass;
+    const test = instantiateClass(TestClass, ctx, undefined, [
+      theNonInjectedArg,
+    ]) as TestClass;
     expect(test.foo).to.eql('FOO');
     expect(test.nonInjectedArg).to.eql('BAZ');
   });

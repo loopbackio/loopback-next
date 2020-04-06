@@ -134,14 +134,13 @@ describe('TodoController', () => {
 
     aTodo = givenTodo();
     aTodoWithId = givenTodo({id: 1});
-    aListOfTodos =
-      [
-        aTodoWithId,
-        givenTodo({
-          id: 2,
-          title: 'do another thing',
-        }),
-      ] as Todo[];
+    aListOfTodos = [
+      aTodoWithId,
+      givenTodo({
+        id: 2,
+        title: 'do another thing',
+      }),
+    ] as Todo[];
     aTodoToPatchTo = givenTodo({
       title: 'revised thing to do',
     });

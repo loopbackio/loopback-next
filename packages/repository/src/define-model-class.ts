@@ -55,8 +55,10 @@ export function defineModelClass<
     base.name,
     `return class ${modelName} extends ${base.name} {}`,
   );
-  const modelClass =
-    defineNamedModelClass(base) as DynamicModelCtor<BaseCtor, Props>;
+  const modelClass = defineNamedModelClass(base) as DynamicModelCtor<
+    BaseCtor,
+    Props
+  >;
   assert.equal(modelClass.name, modelName);
   modelClass.definition = definition;
   return modelClass;

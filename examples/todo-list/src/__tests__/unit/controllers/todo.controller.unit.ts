@@ -107,14 +107,13 @@ describe('TodoController', () => {
     aTodoWithId = givenTodo({
       id: 1,
     });
-    aListOfTodos =
-      [
-        aTodoWithId,
-        givenTodo({
-          id: 2,
-          title: 'so many things to do',
-        }),
-      ] as Todo[];
+    aListOfTodos = [
+      aTodoWithId,
+      givenTodo({
+        id: 2,
+        title: 'so many things to do',
+      }),
+    ] as Todo[];
     aChangedTodo = givenTodo({
       id: aTodoWithId.id,
       title: 'Do some important things',
