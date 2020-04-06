@@ -126,7 +126,7 @@ HTTP 422 error.
 ##### 3. InvokeMethod
 
 [InvokeMethod](https://loopback.io/doc/en/lb4/apidocs.rest.invokemethodprovider.html)
-is responsible for calling the enpoint handler, passing in the route found by
+is responsible for calling the endpoint handler, passing in the route found by
 `FindRoute` and the paremeters found by `ParseParams`.
 
 For non-controller endpoints, control is passed on to the respective handlers at
@@ -254,14 +254,14 @@ and call their methods.
 is an example of the use of interceptors to add additional functionality to the
 app." %}
 
-##### Walk through of a request
+##### Walkthrough of a request
 
 Now that we know all the components that may be involve in a request to a
 controller endpoint, let's walk through a request to an endpoint - `/ping`
 endpoint of a scaffolded LoopBack app.
 
 The `PingController` controller has a method named `ping()`, decorated with a
-`get()` decorator. This setup creates the `/ping` endpoint on the app.
+`@get()` decorator. This setup creates the `/ping` endpoint on the app.
 
 The app is configured to use the `MySequence` sequence.
 
@@ -288,4 +288,4 @@ custom Express routes, and non-controller endpoints added by components.
 Requests to non-controller endpoints are also intercepted by the app's sequence,
 but the control is handed over to the underlying Express middleware from the
 `InvokeMethod` phase, and never make it to `Send` unless the middleware calls
-`next()`. Unhandled error from Express middleware still reach `Reject`.
+`next()`. Unhandled errors from Express middleware still reach `Reject`.

@@ -241,6 +241,10 @@ children:
       url: Components.html
       output: 'web, pdf'
 
+    - title: 'Request/response cycle'
+      url: Request-response-cycle.html
+      output: 'web, pdf'
+
 - title: 'Booting an Application'
   url: Booting-an-Application.html
   output: 'web, pdf'
