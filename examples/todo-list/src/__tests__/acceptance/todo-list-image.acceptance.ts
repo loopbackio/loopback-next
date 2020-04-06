@@ -51,10 +51,14 @@ describe('TodoListApplication', () => {
       .send(todoListImage)
       .expect(200);
 
-    const expected = {...todoListImage, todoListId: persistedTodoList.id};
+    const expected = {
+      ...todoListImage,
+      todoListId: persistedTodoList.id,
+    };
     expect(response.body).to.containEql(expected);
 
     const created = await todoListImageRepo.findById(response.body.id);
+
     expect(toJSON(created)).to.deepEqual({id: response.body.id, ...expected});
   });
 
