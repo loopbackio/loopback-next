@@ -72,6 +72,39 @@ describe('lb4 copyright', function () {
     );
   });
 
+  it('updates copyright/license headers with options.exclude', async () => {
+    await testUtils
+      .executeGenerator(generator)
+      .inDir(sandbox.path, () =>
+        testUtils.givenLBProject(sandbox.path, {
+          excludePackageJSON: true,
+          additionalFiles: SANDBOX_FILES,
+        }),
+      )
+      .withOptions({
+        owner: 'ACME Inc.',
+        license: 'ISC',
+        gitOnly: false,
+        exclude: '**/*.js',
+      });
+
+    assertHeader(
+      ['src/application.ts'],
+      `// Copyright ACME Inc. ${year}. All Rights Reserved.`,
+      '// Node module: myapp',
+      `// This file is licensed under the ${spdxLicenseList['isc'].name}.`,
+      `// License text available at ${spdxLicenseList['isc'].url}`,
+    );
+
+    assertNoHeader(
+      ['lib/no-header.js'],
+      `// Copyright ACME Inc. ${year}. All Rights Reserved.`,
+      '// Node module: myapp',
+      `// This file is licensed under the ${spdxLicenseList['isc'].name}.`,
+      `// License text available at ${spdxLicenseList['isc'].url}`,
+    );
+  });
+
   it('updates LICENSE and package.json for ISC', async () => {
     await testUtils
       .executeGenerator(generator)
@@ -197,6 +230,18 @@ function assertHeader(fileNames, ...expected) {
     const file = path.join(sandbox.path, f);
     for (const line of expected) {
       assert.fileContent(file, line);
+    }
+  }
+}
+
+function assertNoHeader(fileNames, ...expected) {
+  if (typeof fileNames === 'string') {
+    fileNames = [fileNames];
+  }
+  for (const f of fileNames) {
+    const file = path.join(sandbox.path, f);
+    for (const line of expected) {
+      assert.noFileContent(file, line);
     }
   }
 }

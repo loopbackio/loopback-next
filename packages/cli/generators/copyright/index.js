@@ -62,6 +62,12 @@ module.exports = class CopyrightGenerator extends BaseGenerator {
       default: true,
       description: g.f('Only update git tracked files'),
     });
+    this.option('exclude', {
+      type: String,
+      required: false,
+      default: '',
+      description: g.f('Exclude files that match the pattern'),
+    });
     return super.setOptions();
   }
 
@@ -122,12 +128,16 @@ module.exports = class CopyrightGenerator extends BaseGenerator {
       },
     ]);
     answers = answers || {};
+    const exclude = this.options.exclude || '';
+    const excludePatterns = exclude.split(',').filter(p => p !== '');
+
     this.headerOptions = {
       copyrightOwner: answers.owner || this.options.owner,
       license: answers.license || this.options.license,
       log: this.log,
       gitOnly: this.options.gitOnly,
       fs: this.fs,
+      excludePatterns,
     };
   }
 

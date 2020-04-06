@@ -4,6 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 const _ = require('lodash');
+const Minimatch = require('minimatch').Minimatch;
 const {git, getYears} = require('./git');
 const path = require('path');
 const {FSE, jsOrTsFiles} = require('./fs');
@@ -245,6 +246,19 @@ async function updateFileHeadersForSinglePackage(projectRoot, options) {
     files = files.filter(options.filter);
   }
   debug('JS/TS files', files);
+  if (Array.isArray(options.excludePatterns)) {
+    debug('Exclude', options.excludePatterns);
+    files = files.filter(
+      f =>
+        !options.excludePatterns.some(p => {
+          const minimatch = new Minimatch(p, {dot: true});
+          const result = minimatch.match(f);
+          debug('Matching %s against %s:', f, p, result);
+          return result;
+        }),
+    );
+  }
+  debug('JS/TS files excluding %s:', options.excludePatterns, files);
   for (const file of files) {
     await ensureHeader(path.resolve(projectRoot, file), pkg, options);
   }
