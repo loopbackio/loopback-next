@@ -2,6 +2,7 @@
 // Node module: @loopback/openapi-v3
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
+
 import {Model} from '@loopback/repository';
 import {
   OpenAPIObject,
