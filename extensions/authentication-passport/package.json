@@ -59,7 +59,7 @@
     "@types/node": "^10.17.18",
     "@types/passport": "^1.0.3",
     "@types/passport-http": "^0.3.8",
-    "@types/passport-oauth2": "^1.4.8",
+    "@types/passport-oauth2": "^1.4.9",
     "@types/qs": "^6.9.1",
     "axios": "^0.19.2",
     "body-parser": "^1.19.0",
