@@ -3,6 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import assert from 'assert';
 import {readFileSync} from 'fs';
 import {ServerOptions as HttpsServerOptions} from 'https';
 import {ListenOptions} from 'net';
@@ -22,10 +23,22 @@ export interface HttpsOptions extends ListenOptions, HttpsServerOptions {
   protocol: 'https';
 }
 
-export type HostPort = {
+/**
+ * An object that requires host and port properties
+ */
+export interface HostPort {
   host: string;
   port: number;
-};
+}
+
+/**
+ * Assertion type guard for TypeScript to ensure `host` and `port` are set
+ * @param config - Host/port configuration
+ */
+function assertHostPort(config: Partial<HostPort>): asserts config is HostPort {
+  assert(config.host != null, 'host is not set');
+  assert(config.port != null, 'port is not set');
+}
 
 /**
  * Create an HTTP-server configuration that works well in test environments.
@@ -39,17 +52,22 @@ export type HostPort = {
 export function givenHttpServerConfig<T extends HttpOptions | HttpsOptions>(
   customConfig?: T,
 ): HostPort & T {
-  const defaults = {
-    host: '127.0.0.1',
-    port: 0,
-    protocol: undefined,
-  };
-  const config = Object.assign({}, defaults, customConfig);
-  if (config.host === undefined) config.host = defaults.host;
-  if (config.port === undefined) config.port = defaults.port;
-  if (isHttpsConfig(config)) {
+  const defaults: HostPort = {host: '127.0.0.1', port: 0};
+
+  if (isHttpsConfig(customConfig)) {
+    const config: T = {...customConfig};
+    if (config.host == null) config.host = defaults.host;
+    if (config.port == null) config.port = defaults.port;
     setupTlsConfig(config);
+    assertHostPort(config);
+    return config;
   }
+
+  assertHttpConfig(customConfig);
+  const config: T = {...customConfig};
+  if (config.host == null) config.host = defaults.host;
+  if (config.port == null) config.port = defaults.port;
+  assertHostPort(config);
   return config;
 }
 
@@ -59,8 +77,21 @@ function setupTlsConfig(config: HttpsServerOptions) {
   Object.assign(config, DUMMY_TLS_CONFIG);
 }
 
+/**
+ * Type guard to check if the parameter is `HttpsOptions`
+ */
 function isHttpsConfig(
-  config: HttpOptions | HttpsOptions,
+  config?: HttpOptions | HttpsOptions,
 ): config is HttpsOptions {
-  return config && config.protocol === 'https';
+  return config?.protocol === 'https';
+}
+
+/**
+ * Type guard to assert the parameter is `HttpOptions`
+ * @param config - Http config
+ */
+function assertHttpConfig(
+  config?: HttpOptions | HttpsOptions,
+): asserts config is HttpOptions {
+  assert(config?.protocol == null || config?.protocol === 'http');
 }
