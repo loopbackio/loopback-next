@@ -50,6 +50,10 @@ export function givenTodo(todo?: Partial<Todo>) {
   return new Todo(data);
 }
 
+export function givenTodoWithoutId(todo?: Partial<Todo>): Omit<Todo, 'id'> {
+  return givenTodo(todo);
+}
+
 /**
  * Generate a complete TodoList object for use with tests
  * @param todoList - A partial (or complete) TodoList object.
@@ -68,7 +72,9 @@ export function givenTodoList(todoList?: Partial<TodoList>) {
  * Generate a complete TodoListImage object for use with tests.
  * @param todoListImage - A partial (or complete) TodoListImage object.
  */
-export function givenTodoListImage(todoListImage?: Partial<TodoListImage>) {
+export function givenTodoListImage(
+  todoListImage?: Partial<TodoListImage>,
+): Omit<TodoListImage, 'id'> {
   const data = Object.assign(
     {
       value: 'A picture of a basket of fruits',
