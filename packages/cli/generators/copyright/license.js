@@ -23,7 +23,8 @@ function renderLicense({name, owner, years, license}) {
   if (typeof license === 'string') {
     license = spdxLicenseList[license.toLowerCase()];
   }
-  const text = replaceCopyRight(license.licenseText, {owner, years});
+  let text = replaceCopyRight(license.licenseText, {owner, years});
+  text = wrapText(text, 80);
   return `Copyright (c) ${owner} ${years}.
 Node module: ${name}
 This project is licensed under the ${license.name}, full text below.
@@ -65,12 +66,10 @@ THE SOFTWARE.
 
 function replaceCopyRight(text, {owner, years}) {
   // Copyright (c) <YEAR> <COPYRIGHT HOLDERS>
-  return text
-    .replace(
-      /Copyright \(c\) <[^<>]+> <[^<>]+>/gim,
-      `Copyright (c) ${owner} ${years}`,
-    )
-    .replace(/\n\n/gm, '\n');
+  return text.replace(
+    /Copyright \(c\) <[^<>]+> <[^<>]+>/gi,
+    `Copyright (c) ${owner} ${years}`,
+  );
 }
 
 async function updateLicense(projectRoot, pkg, options) {
@@ -92,6 +91,37 @@ async function updateLicense(projectRoot, pkg, options) {
       years: await getYears(projectRoot),
     }),
   );
+}
+
+/**
+ * Wrap a single line
+ * @param {string} line Text for the a line
+ * @param {number} maxLineLength - Maximum line length before wrapping
+ */
+function wrapLine(line, maxLineLength) {
+  if (line === '') return line;
+  let lineLength = 0;
+  const words = line.split(/\s+/g);
+  return words.reduce((result, word) => {
+    if (lineLength + word.length >= maxLineLength) {
+      lineLength = word.length;
+      return `${result}\n${word}`;
+    } else {
+      lineLength += word.length + (result ? 1 : 0);
+      return result ? `${result} ${word}` : `${word}`;
+    }
+  }, '');
+}
+
+/**
+ * Wrap the text into lines respecting the max line length
+ * @param {string} text - Text string
+ * @param {number} maxLineLength - Maximum line length before wrapping
+ */
+function wrapText(text, maxLineLength = 80) {
+  let lines = text.split('\n');
+  lines = lines.map(line => wrapLine(line, maxLineLength));
+  return lines.join('\n');
 }
 
 exports.renderLicense = renderLicense;
