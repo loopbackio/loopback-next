@@ -1,0 +1,68 @@
+{
+  "name": "@loopback/extension-authentication-jwt",
+  "version": "0.0.0",
+  "description": "Extension for the prototype of JWT authentication",
+  "engines": {
+    "node": ">=10"
+  },
+  "scripts": {
+    "build": "lb-tsc",
+    "clean": "lb-clean loopback-extension-authentication-jwt*.tgz dist tsconfig.build.tsbuildinfo package",
+    "pretest": "npm run build",
+    "test": "lb-mocha \"dist/__tests__/unit/*.js\" \"dist/__tests__/acceptance/*.js\"",
+    "verify": "npm pack && tar xf loopback-extension-authentication-jwt*.tgz && tree package && npm run clean"
+  },
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "license": "MIT",
+  "dependencies": {
+    "@loopback/authentication": "^4.1.1",
+    "@loopback/core": "^2.2.0",
+    "@loopback/openapi-v3": "^3.1.1",
+    "@loopback/rest": "^3.1.0",
+    "@loopback/rest-explorer": "^2.0.2",
+    "@loopback/security": "^0.2.2",
+    "@loopback/service-proxy": "^2.0.2",
+    "@types/bcryptjs": "2.4.2",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^8.5.1"
+  },
+  "devDependencies": {
+    "@loopback/build": "^5.0.0",
+    "@loopback/boot": "^2.0.2",
+    "@loopback/repository": "^2.0.2",
+    "@loopback/eslint-config": "^6.0.2",
+    "@loopback/testlab": "^2.0.2",
+    "@types/lodash": "^4.14.149",
+    "@types/node": "^10.17.18",
+    "@typescript-eslint/eslint-plugin": "^2.26.0",
+    "@typescript-eslint/parser": "^2.26.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.1",
+    "eslint-plugin-eslint-plugin": "^2.2.1",
+    "eslint-plugin-mocha": "^6.2.2",
+    "lodash": "^4.17.15",
+    "typescript": "~3.8.3"
+  },
+  "keywords": [
+    "LoopBack",
+    "Authentication",
+    "jsonwebtoken"
+  ],
+  "files": [
+    "README.md",
+    "index.js",
+    "index.d.ts",
+    "dist",
+    "src",
+    "!*/__tests__"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "extensions/health"
+  }
+}

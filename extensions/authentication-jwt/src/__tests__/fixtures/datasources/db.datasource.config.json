@@ -1,0 +1,4 @@
+{
+  "name": "db",
+  "connector": "memory"
+}
