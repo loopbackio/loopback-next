@@ -3,8 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {givenHttpServerConfig} from '../../http-server-config';
 import {expect} from '../../expect';
+import {givenHttpServerConfig, HttpOptions} from '../../http-server-config';
 
 describe('givenHttpServerConfig', () => {
   it('sets port to 0 by default', () => {
@@ -28,12 +28,20 @@ describe('givenHttpServerConfig', () => {
   });
 
   it('ignores custom port set to undefined', () => {
-    const config = givenHttpServerConfig({port: undefined});
+    // The type parameter <HttpOptions> is needed to avoid
+    // `error TS2339: Property 'port' does not exist on type 'never'.` reported
+    // by TypeScript 3.9.x. Otherwise, the inferred type of first argument
+    // is `{port: undefined}`.
+    const config = givenHttpServerConfig<HttpOptions>({port: undefined});
     expect(config.port).to.equal(0);
   });
 
   it('ignores custom host set to undefined', () => {
-    const config = givenHttpServerConfig({host: undefined});
+    // The type parameter <HttpOptions> is needed to avoid
+    // `error TS2339: Property 'host' does not exist on type 'never'.` reported
+    // by TypeScript 3.9.x. Otherwise, the inferred type of first argument
+    // is `{host: undefined}`.
+    const config = givenHttpServerConfig<HttpOptions>({host: undefined});
     expect(config.host).to.equal('127.0.0.1');
   });
 });
