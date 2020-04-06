@@ -1,3 +1,52 @@
 # <%= project.name %>
 
-[![LoopBack](https://github.com/strongloop/loopback-next/raw/master/docs/site/imgs/branding/Powered-by-LoopBack-Badge-(blue)-@2x.png)](http://loopback.io/)
+<% if (project.description) { -%>
+> <%= project.description %>
+<% } -%>
+
+This project was generated with [Loopback CLI](https://github.com/strongloop/loopback-next/tree/master/packages/cli) version <%= cliVersion %>.
+
+## First Steps
+
+### Starting the application
+
+Starting the application is as easy as:
+
+```sh
+npm start
+```
+
+### Using CLI Commands
+
+Refer to [Command-line interface](https://loopback.io/doc/en/lb4/Command-line-interface.html) for the full list of LoopBack 4 commands.
+
+### Adding Additional Dependencies
+
+Executing CLI commands will automatically update the dependencies in your package.json file and install them.
+
+If you need to install additional dependencies or dev dependencies, do so with
+
+```sh
+npm install --save
+```
+
+or
+
+```sh
+npm install --save-dev
+```
+
+The commands above will update the dependencies in your package.json file and install them.
+
+## Learn More
+
+To learn more about LoopBack 4, please refer to our [documentation](https://loopback.io/doc/en/lb4/). The developer guide can be found [here](https://github.com/strongloop/loopback-next/blob/master/docs/site/DEVELOPING.md).
+
+> We also encourage the community helping each other out!<br />
+We encourage the community to help each other out!
+
+## Support
+
+For community support, open an issue on [LoopBack repository](https://github.com/strongloop/loopback-next). You can also join the [LoopBack Slack workspace](http://loopbackio.slack.com/) via [this invitation link](https://join.slack.com/t/loopbackio/shared_invite/zt-8lbow73r-SKAKz61Vdao~_rGf91pcsw). We also encourage the community helping each other out!
+
+[![LoopBack](https://github.com/strongloop/loopback-next/raw/master/docs/site/imgs/branding/Powered-by-LoopBack-Badge-\(blue\)-@2x.png)](http://loopback.io/)

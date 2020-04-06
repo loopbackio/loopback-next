@@ -226,6 +226,7 @@ module.exports = class ProjectGenerator extends BaseGenerator {
       this.destinationPath(''),
       {
         project: this.projectInfo,
+        cliVersion,
       },
     );
 
