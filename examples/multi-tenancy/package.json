@@ -69,7 +69,7 @@
     "@types/node": "^10.17.21",
     "eslint": "^7.0.0",
     "source-map-support": "^0.5.19",
-    "typescript": "~3.8.3"
+    "typescript": "~3.9.2"
   },
   "copyright.owner": "IBM Corp."
 }
