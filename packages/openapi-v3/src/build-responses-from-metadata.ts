@@ -1,3 +1,8 @@
+// Copyright IBM Corp. 2020. All Rights Reserved.
+// Node module: @loopback/openapi-v3
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
 import {DecoratorFactory} from '@loopback/core';
 import {Model} from '@loopback/repository';
 import {
