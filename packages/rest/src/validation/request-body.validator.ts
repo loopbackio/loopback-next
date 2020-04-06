@@ -98,8 +98,9 @@ const DEFAULT_COMPILED_SCHEMA_CACHE: SchemaValidatorCache = new WeakMap();
 function getKeyForOptions(options: RequestBodyValidationOptions) {
   const ajvOptions: Record<string, unknown> = {};
   // Sort keys for options
-  const keys =
-    Object.keys(options).sort() as (keyof RequestBodyValidationOptions)[];
+  const keys = Object.keys(
+    options,
+  ).sort() as (keyof RequestBodyValidationOptions)[];
   for (const k of keys) {
     if (k === 'compiledSchemaCache') continue;
     ajvOptions[k] = options[k];

@@ -275,8 +275,9 @@ function getIdSchema<T extends Entity>(
   modelCtor: typeof Entity & {prototype: T},
 ): SchemaObject {
   const idProp = modelCtor.getIdProperties()[0];
-  const modelSchema =
-    jsonToSchemaObject(getJsonSchema(modelCtor)) as SchemaObject;
+  const modelSchema = jsonToSchemaObject(
+    getJsonSchema(modelCtor),
+  ) as SchemaObject;
   return (modelSchema.properties ?? {})[idProp] as SchemaObject;
 }
 

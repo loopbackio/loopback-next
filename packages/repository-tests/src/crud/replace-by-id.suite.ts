@@ -105,13 +105,12 @@ export function createSuiteForReplaceById(
     // the database is converted to JSON and client sends plain data object
     // encoded as JSON.
     it('replaces all model properties (using plain data object)', async () => {
-      const created =
-        toJSON(
-          await repo.create({
-            name: 'Pencil',
-            description: 'some description',
-          }),
-        ) as AnyObject;
+      const created = toJSON(
+        await repo.create({
+          name: 'Pencil',
+          description: 'some description',
+        }),
+      ) as AnyObject;
       expect(created.id).to.be.ok();
 
       created.name = 'new name';

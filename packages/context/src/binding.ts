@@ -724,15 +724,11 @@ function createInterceptionProxyFromInstance<T>(
 ) {
   return transformValueOrPromise(instOrPromise, inst => {
     if (typeof inst !== 'object') return inst;
-    return (
-      (createProxyWithInterceptors(
-        // Cast inst from `T` to `object`
-        (inst as unknown) as object,
-        context,
-        session,
-      ) as
-        unknown) as
-      T
-    );
+    return (createProxyWithInterceptors(
+      // Cast inst from `T` to `object`
+      (inst as unknown) as object,
+      context,
+      session,
+    ) as unknown) as T;
   });
 }
