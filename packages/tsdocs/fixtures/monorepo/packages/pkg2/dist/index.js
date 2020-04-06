@@ -4,6 +4,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Dog = void 0;
 const pkg1_1 = require("pkg1");
 /**
  * Dog
