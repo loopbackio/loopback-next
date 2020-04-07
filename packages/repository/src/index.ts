@@ -30,6 +30,7 @@ export * from './model';
 export * from './query';
 export * from './relations';
 export * from './repositories';
+export * from './define-repository-class';
 export * from './transaction';
 export * from './type-resolver';
 export * from './types';
