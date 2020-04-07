@@ -333,7 +333,8 @@ describe('RestServer.getApiSpec()', () => {
 
   it('invokes info oas enhancers', async () => {
     const EXPECTED_SPEC_INFO = {
-      title: 'MyApp - LoopBack Test Application',
+      title: 'MyApp',
+      description: 'LoopBack Test Application',
       version: '1.0.1',
       contact: {
         name: 'Barney Rubble',
@@ -354,6 +355,7 @@ describe('RestServer.getApiSpec()', () => {
   it('invokes info oas enhancers with author object', async () => {
     const EXPECTED_SPEC_INFO = {
       title: 'MyApp',
+      description: '',
       version: '1.0.1',
       contact: {
         name: 'Barney Rubble',
@@ -370,6 +372,22 @@ describe('RestServer.getApiSpec()', () => {
         email: 'b@rubble.com',
         url: 'http://barnyrubble.tumblr.com/',
       },
+    });
+    const spec = await server.getApiSpec();
+    expect(spec.info).to.eql(EXPECTED_SPEC_INFO);
+  });
+
+  it('invokes info oas enhancers without author', async () => {
+    const EXPECTED_SPEC_INFO = {
+      title: 'MyApp',
+      description: '',
+      version: '1.0.1',
+      contact: {},
+    };
+    app.setMetadata({
+      name: 'MyApp',
+      version: '1.0.1',
+      description: '',
     });
     const spec = await server.getApiSpec();
     expect(spec.info).to.eql(EXPECTED_SPEC_INFO);
