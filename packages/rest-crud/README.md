@@ -64,9 +64,9 @@ class defined without the need for a repository or controller class file.
 
 If you would like more flexibility, e.g. if you would only like to define a
 default `CrudRest` controller or repository, you can use the two helper methods
-(`defineCrudRestController` and `defineCrudRepositoryClass`) exposed from
-`@loopback/rest-crud`. These functions will help you create controllers and
-respositories using code.
+(`defineCrudRestController` from `@loopback/rest-crud` and
+`defineCrudRepositoryClass` from `@loopback/repository`). These functions will
+help you create controllers and repositories using code.
 
 For the examples in the following sections, we are also assuming a model named
 `Product`, and a datasource named `db` have already been created.
@@ -106,6 +106,8 @@ on the Model) for your app.
 Usage example:
 
 ```ts
+import {defineCrudRepositoryClass} from '@loopback/repository';
+
 const ProductRepository = defineCrudRepositoryClass(Product);
 this.repository(ProductRepository);
 inject('datasources.db')(ProductRepository, undefined, 0);
@@ -118,6 +120,8 @@ Here is an example of an app which uses `defineCrudRepositoryClass` and
 requirements.
 
 ```ts
+import {defineCrudRepositoryClass} from '@loopback/repository';
+
 export class TryApplication extends BootMixin(
   ServiceMixin(RepositoryMixin(RestApplication)),
 ) {
