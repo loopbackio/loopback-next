@@ -50,7 +50,7 @@
     "eslint": "node packages/build/bin/run-eslint --report-unused-disable-directives --cache .",
     "eslint:fix": "npm run eslint -- --fix",
     "prettier:cli": "node packages/build/bin/run-prettier \"**/*.ts\" \"**/*.js\" \"**/*.md\"",
-    "prettier:check": "npm run prettier:cli -- -l",
+    "prettier:check": "npm run prettier:cli -- --check",
     "prettier:fix": "npm run prettier:cli -- --write",
     "clean": "lerna run clean && node packages/build/bin/run-clean \"packages/*/dist\" \"extensions/*/dist\" \"examples/*/dist\" \"benchmark/dist\"",
     "clean:lerna": "lerna clean",
