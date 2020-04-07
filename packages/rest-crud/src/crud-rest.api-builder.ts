@@ -18,12 +18,13 @@ import {
 import {
   ApplicationWithRepositories,
   Class,
+  defineCrudRepositoryClass,
   Entity,
   EntityCrudRepository,
 } from '@loopback/repository';
 import {Model} from '@loopback/rest';
 import debugFactory from 'debug';
-import {defineCrudRepositoryClass, defineCrudRestController} from '.';
+import {defineCrudRestController} from '.';
 
 const debug = debugFactory('loopback:boot:crud-rest');
 

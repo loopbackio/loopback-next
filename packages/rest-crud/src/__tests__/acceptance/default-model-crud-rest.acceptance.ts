@@ -4,6 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
+  defineCrudRepositoryClass,
   Entity,
   EntityCrudRepository,
   juggler,
@@ -18,7 +19,7 @@ import {
   givenHttpServerConfig,
   toJSON,
 } from '@loopback/testlab';
-import {defineCrudRepositoryClass, defineCrudRestController} from '../..';
+import {defineCrudRestController} from '../..';
 
 // In this test scenario, we create a product with a required & an optional
 // property and use the default model settings (strict mode, forceId).
