@@ -29,6 +29,7 @@ const opts = minimist(process.argv.slice(2), {
   alias: {
     version: 'v', // --version or -v: print versions
     commands: 'l', // --commands or -l: print commands
+    help: 'h', // --help or -h: help
   },
 });
 
