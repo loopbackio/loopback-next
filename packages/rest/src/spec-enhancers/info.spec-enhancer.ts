@@ -43,13 +43,10 @@ export class InfoSpecEnhancer implements OASEnhancer {
     const contact: ContactObject = InfoSpecEnhancer.parseAuthor(
       this.pkg.author,
     );
-    let title = this.pkg.name;
-    if (this.pkg.description) {
-      title = `${title} - ${this.pkg.description}`;
-    }
     const patchSpec = {
       info: {
-        title,
+        title: this.pkg.name,
+        description: this.pkg.description,
         version: this.pkg.version,
         contact,
       },
