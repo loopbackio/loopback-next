@@ -42,6 +42,12 @@ Please note the command expects `git` is installed.
 `--gitOnly` : _(Optional)_ A flag to control if only git tracked files are
 updated. Default to `true`.
 
+`--updateLicense`: _(Optional)_ A flag to control if `package.json` and
+`LICENSE` files should be updated to reflect the selected license id.
+
+`--exclude`: _(Optional)_ One or more glob patterns with `,` delimiter to
+exclude files that match the patterns from being updated.
+
 ### Interactive Prompts
 
 The command prompts you for:

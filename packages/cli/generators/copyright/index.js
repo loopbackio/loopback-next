@@ -40,7 +40,7 @@ module.exports = class CopyrightGenerator extends BaseGenerator {
     this.env.adapter.promptModule.registerPrompt('autocomplete', autocomplete);
   }
 
-  setOptions() {
+  _setupGenerator() {
     this.option('owner', {
       type: String,
       required: false,
@@ -68,6 +68,9 @@ module.exports = class CopyrightGenerator extends BaseGenerator {
       default: '',
       description: g.f('Exclude files that match the pattern'),
     });
+  }
+
+  setOptions() {
     return super.setOptions();
   }
 
