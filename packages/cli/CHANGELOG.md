@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@2.2.1...@loopback/cli@2.3.0) (2020-04-08)
+
+
+### Bug Fixes
+
+* **cli:** allow `-h` for help ([f74092e](https://github.com/strongloop/loopback-next/commit/f74092eb20acd9e9ab1875c56ccbcb2e55f4c1da))
+* **cli:** make sure generated package.json is well formatted ([38be23f](https://github.com/strongloop/loopback-next/commit/38be23f46f02ea380f1290f12704078925d264cd))
+* **cli:** remove `All rights reserved.` from the header for LICENSE ([ce78b2a](https://github.com/strongloop/loopback-next/commit/ce78b2a81314aacb46b525121ecdfdbd97d0d94e))
+
+
+### Features
+
+* **cli:** add `lb4 copyright` to generate/update file headers ([abc6111](https://github.com/strongloop/loopback-next/commit/abc6111148a831f47308f4284215ac9564f3c12b))
+* **cli:** add `updateLicense` to `lb4 copyright` command ([535df04](https://github.com/strongloop/loopback-next/commit/535df04df75d39f2a5e36740ae1e0de27359af78))
+* **cli:** allow --exclude <glob-pattern> to not update headers for excluded files ([a81ce7e](https://github.com/strongloop/loopback-next/commit/a81ce7e1193f7408d30d984d0c3ddcec74f7c316))
+* **cli:** implement dark mode in the app template ([6939546](https://github.com/strongloop/loopback-next/commit/6939546d2b0cba59d8a70ce500dbf1b6e42d682b))
+* **cli:** print options for `lb4 copyright --help` and update docs ([f23ecb7](https://github.com/strongloop/loopback-next/commit/f23ecb741bcd589767d94acf2a394efddfe37ff6))
+* **cli:** wrap license text with a max line length of 80 chars ([a9046ed](https://github.com/strongloop/loopback-next/commit/a9046ed639076bf8e06a0952c0ae2a298f92c330))
+
+
+
+
+
 ## [2.2.1](https://github.com/strongloop/loopback-next/compare/@loopback/cli@2.2.0...@loopback/cli@2.2.1) (2020-03-24)
 
 **Note:** Version bump only for package @loopback/cli

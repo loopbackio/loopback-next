@@ -1,6 +1,6 @@
 {
   "name": "@loopback/test-repository-postgresql",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "",
   "private": true,
   "engines": {
@@ -18,10 +18,10 @@
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "devDependencies": {
-    "@loopback/build": "^5.0.0",
-    "@loopback/eslint-config": "^6.0.2",
-    "@loopback/repository": "^2.0.2",
-    "@loopback/repository-tests": "^0.11.2",
+    "@loopback/build": "^5.0.1",
+    "@loopback/eslint-config": "^6.0.3",
+    "@loopback/repository": "^2.1.0",
+    "@loopback/repository-tests": "^0.11.3",
     "@types/node": "^10.17.19",
     "loopback-connector-postgresql": "^3.9.1",
     "tslib": "^1.11.1"

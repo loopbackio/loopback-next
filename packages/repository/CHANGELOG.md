@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@2.0.2...@loopback/repository@2.1.0) (2020-04-08)
+
+
+### Bug Fixes
+
+* remove restriction to Entities from DefaultKeyValueRepository ([c30dce3](https://github.com/strongloop/loopback-next/commit/c30dce330fd6585ce8b0d33d3d6a5d2fd5fac906))
+
+
+### Features
+
+* remove Node.js 8.x polyfill for Symbol.asyncIterator ([eeb8772](https://github.com/strongloop/loopback-next/commit/eeb877276cf62d32856eb7227d78618ab4c93c2e))
+
+
+
+
+
 ## [2.0.2](https://github.com/strongloop/loopback-next/compare/@loopback/repository@2.0.1...@loopback/repository@2.0.2) (2020-03-24)
 
 

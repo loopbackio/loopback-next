@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.3](https://github.com/strongloop/loopback-next/compare/@loopback/http-server@2.0.2...@loopback/http-server@2.0.3) (2020-04-08)
+
+
+### Bug Fixes
+
+* **http-server:** ensure rejection handler is registered before the error event is emitted ([83e78d3](https://github.com/strongloop/loopback-next/commit/83e78d3d63d1af9d908ea0a2c6e5ae646b236847))
+
+
+
+
+
 ## [2.0.2](https://github.com/strongloop/loopback-next/compare/@loopback/http-server@2.0.1...@loopback/http-server@2.0.2) (2020-03-24)
 
 **Note:** Version bump only for package @loopback/http-server

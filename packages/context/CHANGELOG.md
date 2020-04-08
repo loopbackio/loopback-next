@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@3.2.0...@loopback/context@3.3.0) (2020-04-08)
+
+
+### Bug Fixes
+
+* **context:** fix context observer to catch errors by waitUntilPendingNotificationsDone ([3dad6c0](https://github.com/strongloop/loopback-next/commit/3dad6c0c22ef23506daf6f7d7ad28c247e6080c5))
+
+
+### Features
+
+* remove Node.js 8.x polyfill for Symbol.asyncIterator ([eeb8772](https://github.com/strongloop/loopback-next/commit/eeb877276cf62d32856eb7227d78618ab4c93c2e))
+
+
+
+
+
 # [3.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@3.1.0...@loopback/context@3.2.0) (2020-03-24)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.1.2](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@4.1.1...@loopback/authentication@4.1.2) (2020-04-08)
+
+
+### Bug Fixes
+
+* passport strategy adapter must support oauth2 flows ([67c2f02](https://github.com/strongloop/loopback-next/commit/67c2f02f74c08ee037827c0045e1f225d6ca8ede))
+
+
+
+
+
 ## [4.1.1](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@4.1.0...@loopback/authentication@4.1.1) (2020-03-24)
 
 

@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.2.1...@loopback/docs@3.3.0) (2020-04-08)
+
+
+### Bug Fixes
+
+* **docs:** add OpenAPI DataSource instructions ([3d196c6](https://github.com/strongloop/loopback-next/commit/3d196c67fd8a53492be1dfb10861bf9abd65d5f3))
+* **docs:** correct code caption ([d469a2e](https://github.com/strongloop/loopback-next/commit/d469a2e6af6d662abfe330c015449ff684346248))
+* **docs:** replace lb3 page with understanding differences between lb3 and lb4 ([e79901b](https://github.com/strongloop/loopback-next/commit/e79901bb0e0f2161d93e92d949dc8635034b6801))
+* **docs:** update sidebar for OpenAPI connector ([ee35635](https://github.com/strongloop/loopback-next/commit/ee356356e488e7e3163ca17a8f942b5468fa1fbf))
+* **example-express-composition:** use an assinged port number for testing ([9a0997f](https://github.com/strongloop/loopback-next/commit/9a0997f61d1afb2376cbca29fa46ad855b5a0801))
+
+
+### Features
+
+* **cli:** print options for `lb4 copyright --help` and update docs ([f23ecb7](https://github.com/strongloop/loopback-next/commit/f23ecb741bcd589767d94acf2a394efddfe37ff6))
+* **docs:** add docs for `lb4 copyright` command ([2032d87](https://github.com/strongloop/loopback-next/commit/2032d87b7db144247f649d431fd19efac782f8b5))
+* **docs:** add docs for Ajv extensibility ([a24ea4f](https://github.com/strongloop/loopback-next/commit/a24ea4f7fb9a0333f16282a8586d3ab75a77bd6c))
+* **docs:** add more components to `Using components` ([c6fe710](https://github.com/strongloop/loopback-next/commit/c6fe7109fface3c8020f1c7e9c64637e7aa3097f))
+* **docs:** add validation docs ([3506e5d](https://github.com/strongloop/loopback-next/commit/3506e5dee5ec71baa6a7f6a925a89a9812182abd))
+* **example-validation-app:** customize error ([d2a49a0](https://github.com/strongloop/loopback-next/commit/d2a49a0bfcec8f1e90fc3bba620f5439d053f38b))
+
+
+
+
+
 ## [3.2.1](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.2.0...@loopback/docs@3.2.1) (2020-03-24)
 
 **Note:** Version bump only for package @loopback/docs

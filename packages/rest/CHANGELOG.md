@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@3.1.0...@loopback/rest@3.2.0) (2020-04-08)
+
+
+### Bug Fixes
+
+* passport strategy adapter must support oauth2 flows ([67c2f02](https://github.com/strongloop/loopback-next/commit/67c2f02f74c08ee037827c0045e1f225d6ca8ede))
+
+
+### Features
+
+* **rest:** improve Ajv validation to allow extensions of keywords and formats ([afdee34](https://github.com/strongloop/loopback-next/commit/afdee346f5b56932d59ff600478116b75eac797d))
+* **rest:** use the description field in Openapi ([4ca321c](https://github.com/strongloop/loopback-next/commit/4ca321c01a128b14dcbc5336901899ee61ff1460))
+* support any type ([03ce221](https://github.com/strongloop/loopback-next/commit/03ce221bb41a2ecd296ba235fe342d488fa2d639))
+
+
+
+
+
 # [3.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@3.0.1...@loopback/rest@3.1.0) (2020-03-24)
 
 

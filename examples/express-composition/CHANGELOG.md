@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.3](https://github.com/strongloop/loopback-next/compare/@loopback/example-express-composition@2.0.2...@loopback/example-express-composition@2.0.3) (2020-04-08)
+
+
+### Bug Fixes
+
+* **example-express-composition:** use an assinged port number for testing ([9a0997f](https://github.com/strongloop/loopback-next/commit/9a0997f61d1afb2376cbca29fa46ad855b5a0801))
+
+
+
+
+
 ## [2.0.2](https://github.com/strongloop/loopback-next/compare/@loopback/example-express-composition@2.0.1...@loopback/example-express-composition@2.0.2) (2020-03-24)
 
 **Note:** Version bump only for package @loopback/example-express-composition

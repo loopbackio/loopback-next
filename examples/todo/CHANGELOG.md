@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo@3.0.2...@loopback/example-todo@3.1.0) (2020-04-08)
+
+
+### Features
+
+* support any type ([03ce221](https://github.com/strongloop/loopback-next/commit/03ce221bb41a2ecd296ba235fe342d488fa2d639))
+
+
+
+
+
 ## [3.0.2](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo@3.0.1...@loopback/example-todo@3.0.2) (2020-03-24)
 
 

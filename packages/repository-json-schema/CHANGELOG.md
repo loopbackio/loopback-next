@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@2.0.2...@loopback/repository-json-schema@2.1.0) (2020-04-08)
+
+
+### Bug Fixes
+
+* **repository-json-schema:** honor {partial: 'deep'} options for referenced types ([6685560](https://github.com/strongloop/loopback-next/commit/66855602cff3c2d58c68895e4aeb3da950d7f33f))
+
+
+### Features
+
+* support any type ([03ce221](https://github.com/strongloop/loopback-next/commit/03ce221bb41a2ecd296ba235fe342d488fa2d639))
+
+
+
+
+
 ## [2.0.2](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@2.0.1...@loopback/repository-json-schema@2.0.2) (2020-03-24)
 
 

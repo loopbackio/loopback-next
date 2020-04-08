@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.1](https://github.com/strongloop/loopback-next/compare/@loopback/sandbox-example@2.0.0...@loopback/sandbox-example@2.0.1) (2020-04-08)
+
+**Note:** Version bump only for package @loopback/sandbox-example
+
+
+
+
+
 # [2.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/sandbox-example@1.0.9...@loopback/sandbox-example@2.0.0) (2020-03-05)
 
 
