@@ -4,11 +4,13 @@
 // License text available at https://opensource.org/licenses/MIT
 
 /**
- * The foundation of a LoopBack app.
+ * The core foundation for LoopBack 4. It can also serve as the platform to
+ * build large-scale Node.js applications and frameworks.
  *
  * @remarks
- * For a typical example of how to create a REST server with your application,
- * see the {@link @loopback/rest#} package.
+ * For examples of how to leverage `@loopback/core` to build composable and
+ * extensible projects, check out the
+ * {@link https://loopback.io/doc/en/lb4/core-tutorial.html | core tutorial}.
  *
  * @packageDocumentation
  */

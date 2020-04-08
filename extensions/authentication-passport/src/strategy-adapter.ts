@@ -7,7 +7,7 @@ import {
   AuthenticationStrategy,
   UserProfileFactory,
 } from '@loopback/authentication';
-import {HttpErrors, Request, RedirectRoute} from '@loopback/rest';
+import {HttpErrors, RedirectRoute, Request} from '@loopback/rest';
 import {UserProfile} from '@loopback/security';
 import {Strategy} from 'passport';
 
@@ -23,8 +23,8 @@ const passportRequestMixin = require('passport/lib/http/request');
  */
 export class StrategyAdapter<U> implements AuthenticationStrategy {
   /**
-   * @param strategy instance of a class which implements a passport-strategy;
-   * @description http://passportjs.org/
+   * @param strategy instance of a class which implements a
+   * {@link http://passportjs.org/ | passport-strategy}.
    */
   constructor(
     private readonly strategy: Strategy,

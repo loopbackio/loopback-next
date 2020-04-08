@@ -38,9 +38,9 @@ import {Model, ModelDefinition} from './model';
  * @param base The base model to extend, typically Model or Entity.
  *  You can also use your own base class, e.g. `User`.
  * @param definition Definition of the model to create.
- * @template BaseCtor Constructor type of the base class,
+ * @typeParam BaseCtor Constructor type of the base class,
  *   e.g `typeof Model` or `typeof Entity`
- * @template Props Interface describing model properties,
+ * @typeParam Props Interface describing model properties,
  *   e.g. `{title: string}` or `AnyObject & {id: number}`.
  */
 export function defineModelClass<
