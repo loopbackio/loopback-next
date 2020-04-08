@@ -87,11 +87,14 @@ export const GENERATORS = 'cli.generators';
  */
 export const LOOPBACK_PREFIX = 'loopback4:';
 
+export interface Logger {
+  (message?: unknown, ...args: unknown[]): void;
+}
 /**
  * Options to run commands
  */
 export interface RunOptions {
-  log?: (message?: unknown, ...args: unknown[]) => void;
+  log?: Logger;
   dryRun: boolean;
 }
 
