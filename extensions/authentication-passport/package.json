@@ -56,7 +56,7 @@
     "@loopback/eslint-config": "^6.0.2",
     "@loopback/openapi-spec-builder": "^2.0.2",
     "@loopback/testlab": "^2.0.2",
-    "@types/node": "^10.17.18",
+    "@types/node": "^10.17.19",
     "@types/passport": "^1.0.3",
     "@types/passport-http": "^0.3.8",
     "@types/passport-oauth2": "^1.4.9",
