@@ -41,7 +41,15 @@
       "@microsoft/api-documenter"
     ],
     "groupName": "api-extractor packages"
-  }],
+  },
+  {
+    "packageNames": [
+      "@types/express",
+      "@types/express-serve-static-core"
+    ],
+    "groupName": "@types/express* packages"
+  }
+  ],
 
   "travis": {
     "enabled": true,
