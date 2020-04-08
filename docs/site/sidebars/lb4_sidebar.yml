@@ -128,6 +128,10 @@ children:
       url: Decorators_repository.html
       output: 'web, pdf'
 
+  - title: 'Mixins'
+    url: Mixin.html
+    output: 'web, pdf'
+
   - title: 'Error handling'
     url: Error-handling.html
     output: 'web, pdf'
