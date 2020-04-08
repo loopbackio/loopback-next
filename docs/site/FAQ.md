@@ -83,3 +83,117 @@ following the [migration guide](migration-overview.html) and new users start
 with LoopBack 4. See
 [Differences between LoopBack v3 and v4](Understanding-the-differences.md) if
 you're interested in the differences between the two versions.
+
+### How do I disable the API Explorer?
+
+LoopBack provides a self-hosted and a redirect to an
+[external API Explorer](https://explorer.loopback.io).
+
+Documentation to disable both API Explorers:
+
+- [Disable redirect to API Explorer](https://loopback.io/doc/en/lb4/Self-hosted-rest-api-explorer.html#disable-self-hosted-api-explorer)
+- [Disable Self-Hosted API Explorer](https://loopback.io/doc/en/lb4/Self-hosted-rest-api-explorer.html#disable-self-hosted-api-explorer)
+
+### How do I send a custom response?
+
+#### Return a custom response body
+
+The response is usually determined by value returned by the controller function
+that's invoked. A good example of this is the default `PingController`
+scaffolded with every LoopBack 4 application:
+
+```ts
+// Note: code shortened for bevity
+
+// Map to `GET /ping`
+@get('/ping', {
+  responses: {
+    '200': PING_RESPONSE,
+  },
+})
+ping(): object {
+  // Reply with a greeting, the current time, the url, and request headers
+  return {
+    greeting: 'Hello from LoopBack',
+    date: new Date(),
+    url: this.req.url,
+    headers: Object.assign({}, this.req.headers),
+  };
+}
+}
+
+```
+
+In this example, we can see that the `ping()` function returns a custom object.
+This would be reflected in the response body when an API consumer makes a
+request to `/ping`.
+
+#### Further customize the response
+
+Sometimes, other parts of the response needs to be modified (such as the HTTP
+headers). This can be accomplished by injecting the `Response` object into the
+controller:
+
+```ts
+import {inject} from '@loopback/context';
+import {get, Response, RestBindings} from '@loopback/rest';
+
+export class PingController {
+  constructor(@inject(RestBindings.Http.RESPONSE) private res: Response) {}
+
+  // Map to `GET /ping`
+  @get('/ping', {
+    responses: {
+      '200': {
+        description: 'Ping Response',
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
+              title: 'PingResponse',
+              properties: {
+                greeting: {type: 'string'},
+                additionalProperties: false,
+              },
+            },
+          },
+        },
+      },
+    },
+  })
+  ping(): object {
+    this.res.setHeader('x-secret-sauce', 'Sugar, spice and everything nice.');
+
+    // Reply with a greeting
+    return {
+      greeting: 'Hello from LoopBack',
+    };
+  }
+}
+```
+
+This will result in a custom response body and a new header, `x-secret-sauce`.
+
+{% include note.html content="While LoopBack 4 currently doesn't validate the server response against the OpenAPI Spec, it's a good idea to keep the `responses` object in-line with the actual responses (as shown in the code above) to prevent API consumers and OAS 3 generators from being misled into expecting a different response." %}
+
+### Where do I find the default binding keys?
+
+Binding keys used by `@loopback/*` packages are consolidated under
+[Reserved binding keys](https://loopback.io/doc/en/lb4/Reserved-binding-keys.html).
+
+### What is the difference between general and configuration bindings?
+
+Configuration bindings are APIs that leverage the general binding API to
+standardize the naming convention of the configuration binding keys needing to
+create a completely separate key. See
+[Configuration by convention](https://loopback.io/doc/en/lb4/Context.html#configuration-by-convention).
+
+### Can I attach an Express router?
+
+Yes. See
+[Mounting an Express router](https://loopback.io/doc/en/lb4/Routes.html#mounting-an-express-router)
+
+### Can I mount an Express middleware?
+
+LoopBack 4 doesn't have first-class support for Express middleware. However,
+[there are workarounds](https://github.com/strongloop/loopback-next/issues/1293).
