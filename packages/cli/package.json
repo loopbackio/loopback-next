@@ -28,7 +28,7 @@
     "@loopback/testlab": "^2.0.2",
     "@types/ejs": "^3.0.2",
     "@types/minimatch": "^3.0.3",
-    "@types/node": "^10.17.18",
+    "@types/node": "^10.17.19",
     "loopback": "^3.27.0",
     "loopback-datasource-juggler": "^4.19.2",
     "mem-fs": "^1.1.3",
