@@ -892,3 +892,7 @@ children:
   - title: 'Considerations for GDPR readiness'
     url: Deploy-for-GDPR-readiness.html
     output: 'web, pdf'
+
+- title: 'FAQ'
+  url: FAQ.html
+  output: 'web, pdf'
