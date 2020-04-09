@@ -24,7 +24,7 @@
     "eslint-plugin-eslint-plugin": "^2.2.1",
     "eslint-plugin-mocha": "^6.3.0",
     "fs-extra": "^9.0.0",
-    "husky": "^4.2.3",
+    "husky": "^4.2.4",
     "lerna": "^3.20.2",
     "open-cli": "^6.0.1",
     "typescript": "~3.8.3"
