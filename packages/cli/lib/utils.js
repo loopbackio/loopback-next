@@ -265,10 +265,20 @@ exports.StatusConflicter = class StatusConflicter extends Conflicter {
   }
 
   checkForCollision(filepath, contents, callback) {
-    super.checkForCollision(filepath, contents, (err, status) => {
-      const filename = filepath.split('/').pop();
+    // https://github.com/yeoman/generator/pull/1210
+    let options = filepath;
+    let cb = callback;
+    if (typeof contents === 'function') {
+      // The signature is `checkForCollision(options, cb)`
+      cb = contents;
+    } else {
+      // The signature is `checkForCollision(filepath, contents, cb)`
+      options = {path: filepath, contents};
+    }
+    super.checkForCollision(options, (err, status) => {
+      const filename = options.path.split('/').pop();
       this.generationStatus[filename] = status;
-      callback(err, status);
+      cb(err, status);
     });
   }
 };
