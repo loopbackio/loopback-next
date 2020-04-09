@@ -3,6 +3,7 @@
   "packages": [
     "acceptance/*",
     "benchmark",
+    "cli/*",
     "docs",
     "examples/*",
     "packages/*",

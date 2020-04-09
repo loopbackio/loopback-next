@@ -7,6 +7,7 @@ coverage
 **/*.tgz
 acceptance/*/dist
 packages/*/dist
+cli/*/dist
 extensions/*/dist
 examples/*/dist
 benchmark/dist
