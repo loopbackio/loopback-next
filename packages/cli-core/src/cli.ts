@@ -13,9 +13,10 @@ import {
   Getter,
 } from '@loopback/core';
 import camelCaseKeys from 'camelcase-keys';
-import {ParsedArgs} from 'minimist';
+import minimist, {ParsedArgs} from 'minimist';
 import yeoman from 'yeoman-environment';
-import {debug} from './debug';
+import {printVersions} from './cli-package';
+import {getDebug} from './debug';
 import {CLI_KEY} from './keys';
 import {
   GeneratorMetadata,
@@ -23,7 +24,6 @@ import {
   LOOPBACK_PREFIX,
   RunOptions,
 } from './types';
-import {printVersions} from './version-helper';
 
 /**
  * Cli class serving as an extension point for generators
@@ -33,7 +33,7 @@ import {printVersions} from './version-helper';
   scope: BindingScope.SINGLETON,
 })
 export class Cli {
-  protected env: yeoman.Options;
+  readonly env: yeoman.Options;
   /**
    *
    * @param getGenerators - A getter function to discover all generator
@@ -41,7 +41,9 @@ export class Cli {
    */
   constructor(
     @extensions() private getGenerators: Getter<GeneratorMetadata[]>,
-  ) {}
+  ) {
+    this.env = yeoman.createEnv();
+  }
 
   protected getNamespaceForGenerator(name: string) {
     return `${LOOPBACK_PREFIX}${name}`;
@@ -51,8 +53,7 @@ export class Cli {
    * Set up yeoman generators
    */
   async setupGenerators() {
-    const debugFn = debug('register');
-    this.env = yeoman.createEnv();
+    const debugFn = getDebug('register');
     const generators = await this.getGenerators();
     for (const generator of generators) {
       debugFn('Registering generator %s (%s)', generator.path, generator.name);
@@ -84,7 +85,7 @@ export class Cli {
     } else {
       args.unshift(command);
     }
-    const debugFn = debug();
+    const debugFn = getDebug();
     debugFn('invoking generator', args);
     // `yo` is adding flags converted to CamelCase
     const yoArgs = camelCaseKeys(parsedArgs, {
@@ -116,28 +117,64 @@ export class Cli {
   }
 }
 
+export class CliApplication extends Application {
+  cli: Cli;
+
+  get env() {
+    return this.cli?.env;
+  }
+
+  constructor() {
+    super({name: 'cli', shutdown: {signals: []}});
+    this.add(createBindingFromClass(Cli));
+  }
+
+  async start() {
+    await super.start();
+    this.cli = await this.get(CLI_KEY);
+    await this.cli.setupGenerators();
+  }
+
+  async run(parsedArgs: ParsedArgs, options?: RunOptions) {
+    options = {dryRun: false, log: console.log, ...options};
+    if (parsedArgs.version) {
+      printVersions(options.log);
+      return;
+    }
+
+    // list generators
+    if (parsedArgs.commands) {
+      this.cli.printCommands(options.log);
+      return;
+    }
+
+    await this.cli.runCommand(parsedArgs, options);
+  }
+
+  static parseArgs(...cliArgs: string[]): ParsedArgs {
+    if (cliArgs.length === 0) {
+      cliArgs = process.argv.slice(2);
+    }
+    const args = minimist(cliArgs, {
+      alias: {
+        version: 'v', // --version or -v: print versions
+        commands: 'l', // --commands or -l: print commands
+        help: 'h', // --help or -l: print help
+      },
+    });
+    return args;
+  }
+}
+
 /**
  * Main function to run CLI with minimist parsed args
  * @param parsedArgs - Parsed args by minimist
  * @param options - Options for the run
  */
-export async function main(parsedArgs: ParsedArgs, options?: RunOptions) {
-  options = {dryRun: false, log: console.log, ...options};
-  if (parsedArgs.version) {
-    printVersions(options.log);
-    return;
-  }
-
-  const app = new Application();
-  app.add(createBindingFromClass(Cli));
-  const cli = await app.get(CLI_KEY);
-  await cli.setupGenerators();
-
-  // list generators
-  if (parsedArgs.commands) {
-    cli.printCommands(options.log);
-    return;
-  }
-
-  await cli.runCommand(parsedArgs, options);
+export async function main(...cliArgs: string[]) {
+  const app = new CliApplication();
+  await app.start();
+  const parsedArgs = CliApplication.parseArgs(...cliArgs);
+  await app.run(parsedArgs, {dryRun: parsedArgs['dry-run']});
+  return app;
 }

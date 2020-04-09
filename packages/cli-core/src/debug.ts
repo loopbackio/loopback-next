@@ -11,6 +11,6 @@ import debugFactory from 'debug';
  * to "loopback:cli".
  * @param scope - The scope to use for the debug statement.
  */
-export function debug(scope = '') {
+export function getDebug(scope = '') {
   return debugFactory(`loopback:cli${scope ? `:${scope}` : ''}`);
 }

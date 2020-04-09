@@ -226,3 +226,28 @@ Run ${cmd} to update.`;
     log(chalk.green(`${cliPkg.name}@${cliPkg.version} is up to date.`));
   }
 }
+
+
+/**
+ * Check package.json and dependencies.json to find out versions for generated
+ * dependencies
+ */
+export function getDependencies() {
+  const pkg = cliPkg;
+  let version = pkg.version;
+  // First look for config.loopbackVersion
+  if (pkg.config && pkg.config.loopbackVersion) {
+    version = pkg.config.loopbackVersion;
+  }
+  // Set it to be `^x.y.0`
+  const loopbackVersion =
+    '^' + semver.major(version) + '.' + semver.minor(version) + '.0';
+
+  const deps: Record<string, string> = {};
+  const dependencies = (pkg.config && pkg.config.templateDependencies) || {};
+  for (const i in dependencies) {
+    // Default to loopback version if the version for a given dependency is ""
+    deps[i] = dependencies[i] || loopbackVersion;
+  }
+  return deps;
+}

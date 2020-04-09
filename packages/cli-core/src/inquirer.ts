@@ -11,8 +11,11 @@ import {
   DynamicQuestionProperty,
   ListChoiceMap,
   ListChoiceOptions,
+  PromptModule,
 } from 'inquirer';
 import {Answers, Question} from 'yeoman-generator';
+
+const Conflicter = require('yeoman-generator/lib/util/conflicter');
 
 /**
  * Check if a question can be skipped in `express` mode
@@ -148,4 +151,35 @@ export async function getDefaultAnswer<T extends Answers>(
     }
   }
   return defaultVal;
+}
+
+/**
+ * Extends conflicter so that it keeps track of conflict status
+ */
+export class StatusConflicter extends Conflicter {
+  constructor(
+    adapter: {
+      promptModule: PromptModule;
+    },
+    force: boolean,
+  ) {
+    super(adapter, force);
+    this.generationStatus = {}; // keeps track of file conflict history
+  }
+
+  checkForCollision(
+    filepath: string,
+    contents: unknown,
+    callback: (err: unknown, status: unknown) => void,
+  ) {
+    super.checkForCollision(
+      filepath,
+      contents,
+      (err: unknown, status: unknown) => {
+        const filename = filepath.split('/').pop();
+        this.generationStatus[filename!] = status;
+        callback(err, status);
+      },
+    );
+  }
 }

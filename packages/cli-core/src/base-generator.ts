@@ -10,15 +10,19 @@ import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
 import Generator, {Answers, Question} from 'yeoman-generator';
-import {debug as _debug} from './debug';
+import {checkLoopBackProject} from './cli-package';
+import {getDebug} from './debug';
 import {g} from './globalize';
-import {getDefaultAnswer, isQuestionOptional} from './inquirer';
+import {
+  getDefaultAnswer,
+  isQuestionOptional,
+  StatusConflicter,
+} from './inquirer';
 import {LoopBackGenerator} from './types';
 import {updateIndex} from './update-index';
-import {readTextFromStdin, StatusConflicter} from './utils';
-import {checkLoopBackProject} from './version-helper';
+import {readTextFromStdin} from './utils';
 
-const debug = _debug('base-generator');
+const debug = getDebug('base-generator');
 
 debug('Is stdin interactive (isTTY)?', process.stdin.isTTY);
 

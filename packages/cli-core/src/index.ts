@@ -8,4 +8,4 @@ export * from './debug';
 export * from './decorators';
 export * from './keys';
 export * from './types';
-export * from './version-helper';
+export * from './cli-package';

@@ -3,17 +3,17 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Application, createBindingFromClass} from '@loopback/core';
 import {expect} from '@loopback/testlab';
 import {format} from 'util';
-import {Cli, CLI_KEY} from '../../';
+import {CliApplication} from '../../cli';
 import {registerGenerator} from '../../types';
 import HelloGenerator from '../fixtures/generators/hello';
 
 describe('Cli', () => {
-  let app: Application;
+  let app: CliApplication;
 
   beforeEach(givenApp);
+  afterEach(() => app.stop());
 
   it('registers generators by constructor', async () => {
     registerGenerator(app, HelloGenerator);
@@ -29,18 +29,16 @@ describe('Cli', () => {
   });
 
   async function testCliCommand() {
-    const cli = await app.get(CLI_KEY);
-    const env = await cli.setupGenerators();
+    await app.start();
     let msg = '';
-    env.adapter.log = (formatter: string, ...args: unknown[]) => {
+    app.env.adapter.log = (formatter: string, ...args: unknown[]) => {
       msg = format(formatter, ...args);
     };
-    await cli.runCommand({_: ['hello', 'John']});
+    await app.run({_: ['hello', 'John']});
     expect(msg).to.eql('Hello, John.');
   }
 
   function givenApp() {
-    app = new Application();
-    app.add(createBindingFromClass(Cli));
+    app = new CliApplication();
   }
 });

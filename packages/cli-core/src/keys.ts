@@ -6,4 +6,7 @@
 import {BindingKey} from '@loopback/core';
 import type {Cli} from './cli';
 
+/**
+ * Binding key for Cli singleton
+ */
 export const CLI_KEY = BindingKey.create<Cli>('cli');

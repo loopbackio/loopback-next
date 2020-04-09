@@ -6,7 +6,7 @@
 import fs from 'fs';
 import path from 'path';
 import {promisify} from 'util';
-import {debug as _debug} from './debug';
+import {getDebug as _debug} from './debug';
 const debug = _debug('update-index');
 
 const appendFile = promisify(fs.appendFile);

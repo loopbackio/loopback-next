@@ -7,21 +7,18 @@ import {JSONObject} from '@loopback/core';
 import chalk from 'chalk';
 import {pascalCase} from 'change-case';
 import fs from 'fs';
-import inquirer from 'inquirer';
 import _, {camelCase, kebabCase, template} from 'lodash';
 import path from 'path';
 import readline from 'readline';
-import semver from 'semver';
 import stream from 'stream';
 import _stringifyObject from 'stringify-object';
 import util, {promisify} from 'util';
 import validateNpmPackageName from 'validate-npm-package-name';
-import {debug as debugFactory} from './debug';
+import {getDebug as debugFactory} from './debug';
 import {Logger} from './types';
 
 const regenerate = require('regenerate');
 export const urlSlug = require('url-slug');
-const Conflicter = require('yeoman-generator/lib/util/conflicter');
 
 const connectors: JSONObject = require('./connectors.json');
 const debug = debugFactory('utils');
@@ -39,16 +36,15 @@ export const toFileName = (name: string) => {
 
 const RESERVED_PROPERTY_NAMES = ['constructor'];
 
+const loadUnicode = (what: string) =>
+  require('unicode-10.0.0/' + what + '/code-points.js');
 /**
  * Returns a valid variable name regex;
  * taken from https://gist.github.com/mathiasbynens/6334847
  */
-function generateValidRegex() {
-  const get = function (what: string) {
-    return require('unicode-10.0.0/' + what + '/code-points.js');
-  };
-  const idStart = get('Binary_Property/ID_Start');
-  const idContinue = get('Binary_Property/ID_Continue');
+export function generateVariableNameRegex() {
+  const idStart = loadUnicode('Binary_Property/ID_Start');
+  const idContinue = loadUnicode('Binary_Property/ID_Continue');
   const compileRegex = template(
     '^(?:<%= identifierStart %>)(?:<%= identifierPart %>)*$',
   );
@@ -66,7 +62,7 @@ function generateValidRegex() {
   return new RegExp(regex);
 }
 
-export const validRegex = generateValidRegex();
+export const validRegex = generateVariableNameRegex();
 
 /**
  * validate application (module) name
@@ -253,37 +249,6 @@ export function validateUrlSlug(name: string) {
 }
 
 /**
- * Extends conflicter so that it keeps track of conflict status
- */
-export class StatusConflicter extends Conflicter {
-  constructor(
-    adapter: {
-      promptModule: inquirer.PromptModule;
-    },
-    force: boolean,
-  ) {
-    super(adapter, force);
-    this.generationStatus = {}; // keeps track of file conflict history
-  }
-
-  checkForCollision(
-    filepath: string,
-    contents: unknown,
-    callback: (err: unknown, status: unknown) => void,
-  ) {
-    super.checkForCollision(
-      filepath,
-      contents,
-      (err: unknown, status: unknown) => {
-        const filename = filepath.split('/').pop();
-        this.generationStatus[filename!] = status;
-        callback(err, status);
-      },
-    );
-  }
-}
-
-/**
  * Find all artifacts in the given path whose type matches the provided
  * filetype.
  * For example, a fileType of "model" will search the target path for matches to
@@ -345,30 +310,6 @@ export async function getArtifactList(
       ? toClassName(result) + toClassName(artifactType)
       : toClassName(result);
   });
-}
-
-/**
- * Check package.json and dependencies.json to find out versions for generated
- * dependencies
- */
-export function getDependencies() {
-  const pkg = require('../package.json');
-  let version = pkg.version;
-  // First look for config.loopbackVersion
-  if (pkg.config && pkg.config.loopbackVersion) {
-    version = pkg.config.loopbackVersion;
-  }
-  // Set it to be `^x.y.0`
-  const loopbackVersion =
-    '^' + semver.major(version) + '.' + semver.minor(version) + '.0';
-
-  const deps: Record<string, string> = {};
-  const dependencies = (pkg.config && pkg.config.templateDependencies) || {};
-  for (const i in dependencies) {
-    // Default to loopback version if the version for a given dependency is ""
-    deps[i] = dependencies[i] || loopbackVersion;
-  }
-  return deps;
 }
 
 /**
