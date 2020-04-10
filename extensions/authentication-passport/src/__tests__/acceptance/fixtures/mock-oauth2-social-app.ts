@@ -17,11 +17,10 @@
 
 'use strict';
 
+import bodyParser from 'body-parser';
 import express from 'express';
 import {Server} from 'http';
-const jwt = require('jsonwebtoken');
-const bodyParser = require('body-parser');
-const _ = require('lodash');
+import jwt from 'jsonwebtoken';
 import {MyUser} from './user-repository';
 
 const app = express();
@@ -78,14 +77,14 @@ const registeredApps: AppRegistry = {
  */
 const users = [
   {
-    id: 1001,
+    id: '1001',
     username: 'user1',
     password: 'abc',
     email: 'usr1@lb.com',
     signingKey: 'AZeb==',
   },
   {
-    id: 1002,
+    id: '1002',
     username: 'user2',
     password: 'xyz',
     email: 'usr2@lb2.com',
@@ -99,12 +98,9 @@ const users = [
  * @param {*} password
  */
 function findUser(username: string, password: string) {
-  const usr = _.filter(
-    users,
-    (user: MyUser) => user.username === username && user.password === password,
+  return users.find(
+    user => user.username === username && user.password === password,
   );
-  if (usr.length > 0) return usr[0];
-  return null;
 }
 
 /**
@@ -120,7 +116,7 @@ async function createJwt(
   clientId: string,
 ) {
   const jti = Math.floor(Math.random() * Math.floor(1000));
-  const token = await jwt.sign(
+  const token = jwt.sign(
     {
       jti: jti,
       sub: user.id,
@@ -149,13 +145,13 @@ async function createJwt(
  * @param {*} token
  */
 async function verifyToken(token: string) {
-  const unwrappedJwt: JWT = jwt.decode(token, {json: true, complete: true});
-  const tokenId: string = unwrappedJwt.payload.jti;
-  const registeredApp: App = registeredApps[unwrappedJwt.payload.client_id];
+  const unwrappedJwt = jwt.decode(token, {json: true, complete: true});
+  const tokenId: string = unwrappedJwt?.payload.jti;
+  const registeredApp: App = registeredApps[unwrappedJwt?.payload.client_id];
   if (registeredApp) {
-    const result = await jwt.verify(token, registeredApp[tokenId].signingKey);
+    const result = jwt.verify(token, registeredApp[tokenId].signingKey);
     if (result) {
-      return result;
+      return result as Record<string, unknown>;
     } else {
       throw new Error('invalid token');
     }
@@ -183,7 +179,7 @@ app.get('/oauth/dialog', function (req, res) {
       .send(JSON.stringify({error: 'redirect_uri not sent in query'}));
     return;
   }
-  if (registeredApps[req.query.client_id]) {
+  if (registeredApps[req.query.client_id as string]) {
     let params =
       '?client_id=' +
       req.query.client_id +
@@ -291,13 +287,15 @@ app.post('/oauth/token', urlencodedParser, function (req, res) {
  * returns token in exchange for access code
  */
 app.get('/oauth/token', function (req, res) {
-  if (registeredApps[req.query.client_id]) {
+  const clientId = req.query.client_id as string;
+  if (registeredApps[clientId]) {
     //&& apps[req.query.client_id].client_secret === req.query.client_secret
-    const oauthstates = registeredApps[req.query.client_id].tokens;
-    if (oauthstates[req.query.code]) {
+    const oauthstates = registeredApps[clientId].tokens;
+    const code = req.query.code as string;
+    if (oauthstates[code]) {
       res.setHeader('Content-Type', 'application/json');
       // eslint-disable-next-line @typescript-eslint/camelcase
-      res.send({access_token: oauthstates[req.query.code].token});
+      res.send({access_token: oauthstates[code].token});
     } else {
       res.sendStatus(401);
     }
@@ -314,7 +312,8 @@ app.get('/oauth/token', function (req, res) {
  */
 app.get('/verify', async function (req, res) {
   try {
-    const token = req.query.access_token || req.header('Authorization');
+    const token = (req.query.access_token ||
+      req.header('Authorization')) as string;
     const result = await verifyToken(token);
     const expirationTime = result.exp;
     res.setHeader('Content-Type', 'application/json');
