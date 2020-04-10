@@ -1,0 +1,80 @@
+{
+  "name": "@loopback/example-multi-tenancy",
+  "version": "0.0.1",
+  "description": "An example to demonstrate multi-tenancy with LoopBack 4",
+  "keywords": [
+    "loopback-application",
+    "loopback",
+    "multi-tenancy"
+  ],
+  "main": "index.js",
+  "engines": {
+    "node": ">=10"
+  },
+  "scripts": {
+    "build": "lb-tsc",
+    "build:watch": "lb-tsc --watch",
+    "lint": "npm run prettier:check && npm run eslint",
+    "lint:fix": "npm run eslint:fix && npm run prettier:fix",
+    "prettier:cli": "lb-prettier \"**/*.ts\" \"**/*.js\"",
+    "prettier:check": "npm run prettier:cli -- -l",
+    "prettier:fix": "npm run prettier:cli -- --write",
+    "eslint": "lb-eslint --report-unused-disable-directives .",
+    "eslint:fix": "npm run eslint -- --fix",
+    "pretest": "npm run clean && npm run build",
+    "test": "lb-mocha --allow-console-logs \"dist/__tests__\"",
+    "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js",
+    "docker:build": "docker build -t @loopback/example-multi-tenancy .",
+    "docker:run": "docker run -p 3000:3000 -d @loopback/example-multi-tenancy",
+    "migrate": "node ./dist/migrate",
+    "prestart": "npm run build",
+    "start": "node -r source-map-support/register .",
+    "clean": "lb-clean dist *.tsbuildinfo .eslintcache"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "examples/multi-tenancy"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "IBM Corp.",
+  "license": "MIT",
+  "files": [
+    "README.md",
+    "index.js",
+    "index.d.ts",
+    "dist",
+    "src",
+    "!*/__tests__"
+  ],
+  "dependencies": {
+    "@loopback/boot": "^2.0.3",
+    "@loopback/context": "^3.3.0",
+    "@loopback/core": "^2.2.1",
+    "@loopback/openapi-v3": "^3.1.2",
+    "@loopback/repository": "^2.1.0",
+    "@loopback/rest": "^3.2.0",
+    "@loopback/rest-explorer": "^2.0.3",
+    "@loopback/service-proxy": "^2.0.3",
+    "jsonwebtoken": "^8.5.1",
+    "tslib": "^1.10.0"
+  },
+  "devDependencies": {
+    "@loopback/build": "^5.0.1",
+    "@loopback/eslint-config": "^6.0.3",
+    "@loopback/testlab": "^3.0.0",
+    "@types/jsonwebtoken": "^8.3.9",
+    "@types/node": "^10.17.19",
+    "@typescript-eslint/eslint-plugin": "^2.27.0",
+    "@typescript-eslint/parser": "^2.27.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.1",
+    "eslint-plugin-eslint-plugin": "^2.2.1",
+    "eslint-plugin-mocha": "^6.3.0",
+    "source-map-support": "^0.5.16",
+    "typescript": "~3.8.3"
+  },
+  "copyright.owner": "IBM Corp."
+}
