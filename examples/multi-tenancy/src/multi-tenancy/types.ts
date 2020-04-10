@@ -21,6 +21,10 @@ export interface MultiTenancyAction {
   (requestContext: RequestContext): ValueOrPromise<Tenant | undefined>;
 }
 
+export interface MultiTenancyActionOptions {
+  strategyNames: string[];
+}
+
 /**
  * Interface for a multi-tenancy strategy to implement
  */

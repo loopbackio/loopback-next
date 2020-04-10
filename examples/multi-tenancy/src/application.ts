@@ -34,6 +34,10 @@ export class ExampleMultiTenancyApplication extends BootMixin(
     });
     this.component(RestExplorerComponent);
 
+    /*
+     * app.configure(MultiTenancyBindings.ACTION)
+     *   .to({strategyName: ['jwt', 'header', 'query']});
+     */
     this.component(MultiTenancyComponent);
 
     this.projectRoot = __dirname;

@@ -5,7 +5,7 @@
 
 import {Component, createBindingFromClass, extensionFor} from '@loopback/core';
 import {MultiTenancyActionProvider} from './actions/multi-tenancy-action.provider';
-import {MULTI_TENANCY_STRATEGIES} from './keys';
+import {MultiTenancyBindings, MULTI_TENANCY_STRATEGIES} from './keys';
 import {
   HeaderStrategy,
   HostStrategy,
@@ -15,24 +15,20 @@ import {
 
 export class MultiTenancyComponent implements Component {
   bindings = [
-    createBindingFromClass(MultiTenancyActionProvider),
-    ...MultiTenancyComponent.createStrategyBindings(),
+    createBindingFromClass(MultiTenancyActionProvider, {
+      key: MultiTenancyBindings.ACTION,
+    }),
+    createBindingFromClass(JWTStrategy).apply(
+      extensionFor(MULTI_TENANCY_STRATEGIES),
+    ),
+    createBindingFromClass(HeaderStrategy).apply(
+      extensionFor(MULTI_TENANCY_STRATEGIES),
+    ),
+    createBindingFromClass(QueryStrategy).apply(
+      extensionFor(MULTI_TENANCY_STRATEGIES),
+    ),
+    createBindingFromClass(HostStrategy).apply(
+      extensionFor(MULTI_TENANCY_STRATEGIES),
+    ),
   ];
-
-  static createStrategyBindings() {
-    return [
-      createBindingFromClass(JWTStrategy).apply(
-        extensionFor(MULTI_TENANCY_STRATEGIES),
-      ),
-      createBindingFromClass(HeaderStrategy).apply(
-        extensionFor(MULTI_TENANCY_STRATEGIES),
-      ),
-      createBindingFromClass(QueryStrategy).apply(
-        extensionFor(MULTI_TENANCY_STRATEGIES),
-      ),
-      createBindingFromClass(HostStrategy).apply(
-        extensionFor(MULTI_TENANCY_STRATEGIES),
-      ),
-    ];
-  }
 }

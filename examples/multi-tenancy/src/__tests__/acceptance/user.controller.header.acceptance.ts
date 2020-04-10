@@ -5,7 +5,10 @@
 
 import {Client, expect} from '@loopback/testlab';
 import {ExampleMultiTenancyApplication} from '../..';
-import {MultiTenancyBindings} from '../../multi-tenancy';
+import {
+  MultiTenancyActionOptions,
+  MultiTenancyBindings,
+} from '../../multi-tenancy';
 import {setupApplication} from './test-helper';
 
 describe('UserController with header-based multi-tenancy', () => {
@@ -14,7 +17,9 @@ describe('UserController with header-based multi-tenancy', () => {
 
   before('setupApplication', async () => {
     ({app, client} = await setupApplication());
-    app.bind(MultiTenancyBindings.STRATEGIES).to(['jwt', 'header', 'query']);
+    app
+      .configure<MultiTenancyActionOptions>(MultiTenancyBindings.ACTION)
+      .to({strategyNames: ['jwt', 'header', 'query']});
   });
 
   before('create users', async () => {

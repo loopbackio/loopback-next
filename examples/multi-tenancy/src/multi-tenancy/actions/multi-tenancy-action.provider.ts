@@ -3,12 +3,16 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {ContextTags, Getter, inject, Provider} from '@loopback/context';
+import {config, ContextTags, Getter, Provider} from '@loopback/context';
 import {extensionPoint, extensions} from '@loopback/core';
 import {RequestContext} from '@loopback/rest';
 import debugFactory from 'debug';
 import {MultiTenancyBindings, MULTI_TENANCY_STRATEGIES} from '../keys';
-import {MultiTenancyAction, MultiTenancyStrategy} from '../types';
+import {
+  MultiTenancyAction,
+  MultiTenancyActionOptions,
+  MultiTenancyStrategy,
+} from '../types';
 const debug = debugFactory('loopback:multi-tenancy:action');
 /**
  * Provides the multi-tenancy action for a sequence
@@ -23,8 +27,8 @@ export class MultiTenancyActionProvider
   constructor(
     @extensions()
     private readonly getMultiTenancyStrategies: Getter<MultiTenancyStrategy[]>,
-    @inject(MultiTenancyBindings.STRATEGIES, {optional: true})
-    private strategyNames = ['header'],
+    @config()
+    private options: MultiTenancyActionOptions = {strategyNames: ['header']},
   ) {}
 
   /**
@@ -54,15 +58,13 @@ export class MultiTenancyActionProvider
   }
 
   private async identifyTenancy(requestCtx: RequestContext) {
-    debug('Tenancy strategy names configured', this.strategyNames);
+    debug('Tenancy action is configured with', this.options);
+    const strategyNames = this.options.strategyNames;
     let strategies = await this.getMultiTenancyStrategies();
     strategies = strategies
-      .filter(s => this.strategyNames.includes(s.name))
+      .filter(s => strategyNames.includes(s.name))
       .sort((a, b) => {
-        return (
-          this.strategyNames.indexOf(a.name) -
-          this.strategyNames.indexOf(b.name)
-        );
+        return strategyNames.indexOf(a.name) - strategyNames.indexOf(b.name);
       });
     if (debug.enabled) {
       debug(
