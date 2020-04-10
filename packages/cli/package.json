@@ -66,7 +66,7 @@
     "semver": "^7.2.2",
     "spdx-license-list": "^6.1.0",
     "stringify-object": "^3.3.0",
-    "strong-globalize": "^5.0.5",
+    "strong-globalize": "^6.0.0",
     "swagger-parser": "^9.0.1",
     "swagger2openapi": "^6.0.2",
     "tildify": "^2.0.0",
