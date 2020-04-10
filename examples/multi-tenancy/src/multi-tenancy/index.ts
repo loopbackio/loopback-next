@@ -3,5 +3,6 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-export * from './ping.controller';
-export * from './user.controller';
+export * from './actions/multi-tenancy-action.provider';
+export * from './keys';
+export * from './types';

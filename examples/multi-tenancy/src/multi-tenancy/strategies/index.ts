@@ -3,5 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-export * from './ping.controller';
-export * from './user.controller';
+export * from './base-strategy';
+export * from './header-strategy';
+export * from './host-strategy';
+export * from './jwt-strategy';
+export * from './query-strategy';
