@@ -94,36 +94,36 @@ We group multiple registrations in `src/multi-tenancy/component.ts` using the
 ```ts
 export class MultiTenancyComponent implements Component {
   bindings = [
-    createBindingFromClass(MultiTenancyActionProvider),
-    ...MultiTenancyComponent.createStrategyBindings(),
+    // Add the action
+    createBindingFromClass(MultiTenancyActionProvider, {
+      key: MultiTenancyBindings.ACTION,
+    }),
+    // Add strategies
+    createBindingFromClass(JWTStrategy).apply(
+      extensionFor(MULTI_TENANCY_STRATEGIES),
+    ),
+    createBindingFromClass(HeaderStrategy).apply(
+      extensionFor(MULTI_TENANCY_STRATEGIES),
+    ),
+    createBindingFromClass(QueryStrategy).apply(
+      extensionFor(MULTI_TENANCY_STRATEGIES),
+    ),
+    createBindingFromClass(HostStrategy).apply(
+      extensionFor(MULTI_TENANCY_STRATEGIES),
+    ),
   ];
-
-  static createStrategyBindings() {
-    return [
-      createBindingFromClass(JWTStrategy).apply(
-        extensionFor(MULTI_TENANCY_STRATEGIES),
-      ),
-      createBindingFromClass(HeaderStrategy).apply(
-        extensionFor(MULTI_TENANCY_STRATEGIES),
-      ),
-      createBindingFromClass(QueryStrategy).apply(
-        extensionFor(MULTI_TENANCY_STRATEGIES),
-      ),
-      createBindingFromClass(HostStrategy).apply(
-        extensionFor(MULTI_TENANCY_STRATEGIES),
-      ),
-    ];
-  }
 }
 ```
 
 ### Configure what strategies to be used
 
-The `MultiTenancyBindings.STRATEGIES` binding configures what strategies are
-checked in order.
+The `MultiTenancyAction` can be configured with what strategies are checked in
+order.
 
 ```ts
-app.bind(MultiTenancyBindings.STRATEGIES).to(['jwt', 'header']);
+app
+  .configure<MultiTenancyActionOptions>(MultiTenancyBindings.ACTION)
+  .to({strategyNames: ['jwt', 'header', 'query']});
 ```
 
 ### Register MultiTenancyAction

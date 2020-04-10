@@ -14,10 +14,6 @@ export namespace MultiTenancyBindings {
   export const CURRENT_TENANT = BindingKey.create<Tenant>(
     'multi-tenancy.currentTenant',
   );
-
-  export const STRATEGIES = BindingKey.create<string[]>(
-    'multi-tenancy.strategies',
-  );
 }
 
 export const MULTI_TENANCY_STRATEGIES = 'multi-tenancy.strategies';
