@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.1](https://github.com/strongloop/loopback-next/compare/@loopback/cli@2.3.0...@loopback/cli@2.3.1) (2020-04-11)
+
+
+### Bug Fixes
+
+* **cli:** make the StatusConflicter compatible with the base Conflicter ([b6a1af9](https://github.com/strongloop/loopback-next/commit/b6a1af98ccb0705ee3a802df68bb590ec74473f5))
+* **cli:** remove unused imports from the crud controller template ([848272d](https://github.com/strongloop/loopback-next/commit/848272d980e94bc9f0878e678de12a336c0d8b8a))
+
+
+
+
+
 # [2.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@2.2.1...@loopback/cli@2.3.0) (2020-04-08)
 
 

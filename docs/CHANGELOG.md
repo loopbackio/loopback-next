@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.3.1](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.3.0...@loopback/docs@3.3.1) (2020-04-11)
+
+
+### Bug Fixes
+
+* **cli:** remove unused imports from the crud controller template ([848272d](https://github.com/strongloop/loopback-next/commit/848272d980e94bc9f0878e678de12a336c0d8b8a))
+
+
+
+
+
 # [3.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.2.1...@loopback/docs@3.3.0) (2020-04-08)
 
 

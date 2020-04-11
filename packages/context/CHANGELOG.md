@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@3.3.0...@loopback/context@3.4.0) (2020-04-11)
+
+
+### Features
+
+* **context:** expose debug method to subclasses ([f651e5b](https://github.com/strongloop/loopback-next/commit/f651e5be28efe624e83a7139152ed00554580dca))
+
+
+
+
+
 # [3.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@3.2.0...@loopback/context@3.3.0) (2020-04-08)
 
 

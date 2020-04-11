@@ -1,6 +1,6 @@
 {
   "name": "@loopback/service-proxy",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "Service integration for LoopBack 4",
   "engines": {
     "node": ">=10"
@@ -25,12 +25,12 @@
   "devDependencies": {
     "@loopback/build": "^5.0.1",
     "@loopback/eslint-config": "^6.0.3",
-    "@loopback/testlab": "^3.0.0",
+    "@loopback/testlab": "^3.0.1",
     "@types/node": "^10.17.19"
   },
   "dependencies": {
-    "@loopback/context": "^3.3.0",
-    "@loopback/core": "^2.2.1",
+    "@loopback/context": "^3.4.0",
+    "@loopback/core": "^2.3.0",
     "loopback-datasource-juggler": "^4.19.2",
     "tslib": "^1.11.1"
   },

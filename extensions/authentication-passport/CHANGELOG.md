@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.4](https://github.com/strongloop/loopback-next/compare/@loopback/authentication-passport@2.0.3...@loopback/authentication-passport@2.0.4) (2020-04-11)
+
+
+### Bug Fixes
+
+* **authentication-passport:** fix typing issues for oAuth2 mock app ([0d050de](https://github.com/strongloop/loopback-next/commit/0d050dea7058e652c9b885ba850fa50fb9506ee4))
+
+
+
+
+
 ## [2.0.3](https://github.com/strongloop/loopback-next/compare/@loopback/authentication-passport@2.0.2...@loopback/authentication-passport@2.0.3) (2020-04-08)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "@loopback/rest-crud",
-  "version": "0.7.3",
+  "version": "0.7.4",
   "description": "REST API controller implementing default CRUD semantics",
   "engines": {
     "node": ">=10"
@@ -20,23 +20,23 @@
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
-    "@loopback/model-api-builder": "^2.0.3",
+    "@loopback/model-api-builder": "^2.0.4",
     "debug": "^4.1.1",
     "tslib": "^1.11.1"
   },
   "devDependencies": {
     "@loopback/build": "^1.7.1",
-    "@loopback/core": "^2.2.1",
-    "@loopback/repository": "^2.1.0",
-    "@loopback/rest": "^3.2.0",
-    "@loopback/testlab": "^3.0.0",
+    "@loopback/core": "^2.3.0",
+    "@loopback/repository": "^2.1.1",
+    "@loopback/rest": "^3.2.1",
+    "@loopback/testlab": "^3.0.1",
     "@types/debug": "^4.1.5",
     "@types/node": "^10.17.19"
   },
   "peerDependencies": {
-    "@loopback/core": "^2.2.1",
-    "@loopback/repository": "^2.1.0",
-    "@loopback/rest": "^3.2.0"
+    "@loopback/core": "^2.3.0",
+    "@loopback/repository": "^2.1.1",
+    "@loopback/rest": "^3.2.1"
   },
   "files": [
     "README.md",

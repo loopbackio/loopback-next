@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/core@2.2.1...@loopback/core@2.3.0) (2020-04-11)
+
+
+### Features
+
+* **core:** improve application signal handler registration ([8086932](https://github.com/strongloop/loopback-next/commit/8086932b66a3aaad2fff6023231f983a43e1791a))
+
+
+
+
+
 ## [2.2.1](https://github.com/strongloop/loopback-next/compare/@loopback/core@2.2.0...@loopback/core@2.2.1) (2020-04-08)
 
 **Note:** Version bump only for package @loopback/core
