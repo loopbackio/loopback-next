@@ -383,7 +383,7 @@ Consider the following LoopBack 3 remoting hook executed for `Comment.create`
 method to add `postedFromIpAddress` field to every new comment posted:
 
 ```js
-Comment.afterRemote('create', function (ctx, next) {
+Comment.beforeRemote('create', function (ctx, next) {
   ctx.args[0].postedFromIpAddress = ctx.req.remoteAddress;
   next();
 });
