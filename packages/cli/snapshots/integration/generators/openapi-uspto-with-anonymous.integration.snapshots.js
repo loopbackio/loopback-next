@@ -7,7 +7,14 @@
 
 'use strict';
 
-exports[`openapi-generator specific files generates all the proper files 1`] = `
+exports[`openapi-generator uspto with anonymous generates all the proper files 1`] = `
+export * from './metadata.controller';
+export * from './search.controller';
+
+`;
+
+
+exports[`openapi-generator uspto with anonymous generates all the proper files 2`] = `
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {operation, param, requestBody} from '@loopback/rest';
 import {PerformSearchRequestBody} from '../models/perform-search-request-body.model';
@@ -15,19 +22,27 @@ import {PerformSearchResponseBody} from '../models/perform-search-response-body.
 
 /**
  * The controller class is generated from OpenAPI spec with operations tagged
- * by search
+ * by search.
+ *
  * Search a data set
  */
 export class SearchController {
   constructor() {}
 
   /**
-   * This API is based on Solr/Lucense Search. The data is indexed using SOLR. This GET API returns the list of all the searchable field names that are in the Solr Index. Please see the 'fields' attribute which returns an array of field names. Each field or a combination of fields can be searched using the Solr/Lucene Syntax. Please refer https://lucene.apache.org/core/3_6_2/queryparsersyntax.html#Overview for the query syntax. List of field names that are searchable can be determined using above GET api.
-   * 
-
+   * This API is based on Solr/Lucense Search. The data is indexed using SOLR.
+This GET API returns the list of all the searchable field names that are in
+the Solr Index. Please see the 'fields' attribute which returns an array of
+field names. Each field or a combination of fields can be searched using the
+Solr/Lucene Syntax. Please refer
+https://lucene.apache.org/core/3_6_2/queryparsersyntax.html#Overview for the
+query syntax. List of field names that are searchable can be determined
+using above GET api.
+   *
    * @param _requestBody 
    * @param version Version of the dataset.
-   * @param dataset Name of the dataset. In this case, the default value is oa_citations
+   * @param dataset Name of the dataset. In this case, the default value is
+oa_citations
    * @returns successful operation
    */
   @operation('post', '/{dataset}/{version}/records')
@@ -41,23 +56,23 @@ export class SearchController {
 `;
 
 
-exports[`openapi-generator specific files generates all the proper files 2`] = `
+exports[`openapi-generator uspto with anonymous generates all the proper files 3`] = `
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {operation, param, requestBody} from '@loopback/rest';
 import {DataSetList} from '../models/data-set-list.model';
 
 /**
  * The controller class is generated from OpenAPI spec with operations tagged
- * by metadata
+ * by metadata.
+ *
  * Find out about the data sets
  */
 export class MetadataController {
   constructor() {}
 
   /**
-   * 
-   * 
-
+   *
+   *
    * @returns Returns a list of data sets
    */
   @operation('get', '/')
@@ -66,12 +81,16 @@ export class MetadataController {
   }
 
   /**
-   * This GET API returns the list of all the searchable field names that are in the oa_citations. Please see the 'fields' attribute which returns an array of field names. Each field or a combination of fields can be searched using the syntax options shown below.
-   * 
-
-   * @param dataset Name of the dataset. In this case, the default value is oa_citations
+   * This GET API returns the list of all the searchable field names that are in
+the oa_citations. Please see the 'fields' attribute which returns an array
+of field names. Each field or a combination of fields can be searched using
+the syntax options shown below.
+   *
+   * @param dataset Name of the dataset. In this case, the default value is
+oa_citations
    * @param version Version of the dataset.
-   * @returns The dataset api for the given version is found and it is accessible to consume.
+   * @returns The dataset api for the given version is found and it is accessible
+to consume.
    */
   @operation('get', '/{dataset}/{version}/fields')
   async listSearchableFields(@param({name: 'dataset', in: 'path'}) dataset: string, @param({name: 'version', in: 'path'}) version: string): Promise<string> {
@@ -84,7 +103,15 @@ export class MetadataController {
 `;
 
 
-exports[`openapi-generator specific files generates all the proper files 3`] = `
+exports[`openapi-generator uspto with anonymous generates all the proper files 4`] = `
+export * from './data-set-list.model';
+export * from './perform-search-request-body.model';
+export * from './perform-search-response-body.model';
+
+`;
+
+
+exports[`openapi-generator uspto with anonymous generates all the proper files 5`] = `
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {model, property} from '@loopback/repository';
 
@@ -101,7 +128,11 @@ export class PerformSearchRequestBody {
   }
 
   /**
-   * Uses Lucene Query Syntax in the format of propertyName:value, propertyName:[num1 TO num2] and date range format: propertyName:[yyyyMMdd TO yyyyMMdd]. In the response please see the 'docs' element which has the list of record objects. Each record structure would consist of all the fields and their corresponding values.
+   * Uses Lucene Query Syntax in the format of propertyName:value,
+propertyName:[num1 TO num2] and date range format: propertyName:[yyyyMMdd TO
+yyyyMMdd]. In the response please see the 'docs' element which has the list
+of record objects. Each record structure would consist of all the fields and
+their corresponding values.
    */
   @property({required: true})
   criteria: string = '*:*';
@@ -113,7 +144,9 @@ export class PerformSearchRequestBody {
   start?: number = 0;
 
   /**
-   * Specify number of rows to be returned. If you run the search with default values, in the response you will see 'numFound' attribute which will tell the number of records available in the dataset.
+   * Specify number of rows to be returned. If you run the search with default
+values, in the response you will see 'numFound' attribute which will tell
+the number of records available in the dataset.
    */
   @property()
   rows?: number = 100;
@@ -131,7 +164,7 @@ export type PerformSearchRequestBodyWithRelations = PerformSearchRequestBody & P
 `;
 
 
-exports[`openapi-generator specific files generates all the proper files 4`] = `
+exports[`openapi-generator uspto with anonymous generates all the proper files 6`] = `
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * The model type is generated from OpenAPI schema - {
@@ -147,20 +180,5 @@ export type PerformSearchResponseBody = {
 };
 }[];
 
-
-`;
-
-
-exports[`openapi-generator specific files generates all the proper files 5`] = `
-export * from './data-set-list.model';
-export * from './perform-search-request-body.model';
-export * from './perform-search-response-body.model';
-
-`;
-
-
-exports[`openapi-generator specific files generates all the proper files 6`] = `
-export * from './metadata.controller';
-export * from './search.controller';
 
 `;

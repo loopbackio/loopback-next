@@ -32,7 +32,13 @@ export class <%- className %> {
 
   <%_ for (const p of _properties) { -%>
   /**
-   * <%- escapeComment(p.description) %>
+  <%_ const _comment = escapeComment(p.description);
+    if (_comment) {
+  -%>
+   * <%- _comment %>
+  <%_ } else { -%>
+   *
+  <%_ } -%>
    */
   <%- p.decoration %>
   <%- p.signature %>

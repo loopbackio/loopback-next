@@ -6,9 +6,8 @@
 'use strict';
 
 const path = require('path');
-const assert = require('yeoman-assert');
 const {TestSandbox} = require('@loopback/testlab');
-const {expectFileToMatchSnapshot} = require('../../snapshots');
+const {assertFilesToMatchSnapshot} = require('../../snapshots');
 
 const generator = path.join(__dirname, '../../../generators/openapi');
 const specPath = path.join(__dirname, '../../fixtures/openapi/3.0/uspto.yaml');
@@ -21,37 +20,24 @@ const props = {
   url: specPath,
 };
 
-describe('openapi-generator specific files', () => {
-  const modelIndex = path.resolve(sandbox.path, 'src/models/index.ts');
-  const controIndex = path.resolve(sandbox.path, 'src/controllers/index.ts');
-  const searchController = path.resolve(
-    sandbox.path,
-    'src/controllers/search.controller.ts',
-  );
-  const metadataController = path.resolve(
-    sandbox.path,
-    'src/controllers/metadata.controller.ts',
-  );
-  after('reset sandbox', async () => {
-    await sandbox.reset();
-  });
+describe('openapi-generator uspto', () => {
+  before('reset sandbox', () => sandbox.reset());
+  afterEach('reset sandbox', () => sandbox.reset());
 
   it('generates all the proper files', async () => {
     await testUtils
       .executeGenerator(generator)
       .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path))
       .withPrompts(props);
-    assert.file(searchController);
-    expectFileToMatchSnapshot(searchController);
 
-    assert.file(metadataController);
-    expectFileToMatchSnapshot(metadataController);
+    assertFiles(
+      {},
+      'src/controllers/index.ts',
+      'src/controllers/search.controller.ts',
+      'src/controllers/metadata.controller.ts',
+    );
 
-    assert.file(modelIndex);
-    expectFileToMatchSnapshot(modelIndex);
-
-    assert.file(controIndex);
-    expectFileToMatchSnapshot(controIndex);
+    assertFiles({}, 'src/models/index.ts');
   });
 
   it('skips controllers not selected', async () => {
@@ -62,15 +48,20 @@ describe('openapi-generator specific files', () => {
         url: specPath,
         controllerSelections: ['MetadataController'],
       });
-    assert.file(metadataController);
-    expectFileToMatchSnapshot(metadataController);
 
-    assert.noFile(searchController);
+    assertFiles(
+      {},
+      'src/controllers/index.ts',
+      'src/controllers/metadata.controller.ts',
+    );
 
-    assert.file(modelIndex);
-    expectFileToMatchSnapshot(modelIndex);
+    assertFiles({exists: false}, 'src/controllers/search.controller.ts');
 
-    assert.file(controIndex);
-    expectFileToMatchSnapshot(controIndex);
+    assertFiles({}, 'src/models/index.ts');
   });
 });
+
+function assertFiles(options, ...files) {
+  options = {rootPath: sandbox.path, ...options};
+  assertFilesToMatchSnapshot(options, ...files);
+}

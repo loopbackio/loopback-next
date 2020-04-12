@@ -6,9 +6,8 @@
 'use strict';
 
 const path = require('path');
-const assert = require('yeoman-assert');
 const {TestSandbox} = require('@loopback/testlab');
-const {expectFileToMatchSnapshot} = require('../../snapshots');
+const {assertFilesToMatchSnapshot} = require('../../snapshots');
 
 const generator = path.join(__dirname, '../../../generators/openapi');
 const specPath = path.join(
@@ -24,24 +23,13 @@ const props = {
   url: specPath,
 };
 
-describe('openapi-generator specific files', function () {
+describe('openapi-generator petstore', function () {
   // These tests take longer to execute, they used to time out on Travis CI
   // eslint-disable-next-line no-invalid-this
   this.timeout(10000);
 
-  const modelIndex = path.resolve(sandbox.path, 'src/models/index.ts');
-  const controIndex = path.resolve(sandbox.path, 'src/controllers/index.ts');
-  const controller = path.resolve(
-    sandbox.path,
-    'src/controllers/open-api.controller.ts',
-  );
-  const petModel = path.resolve(sandbox.path, 'src/models/pet.model.ts');
-  const newPetModel = path.resolve(sandbox.path, 'src/models/new-pet.model.ts');
-  const errorModel = path.resolve(sandbox.path, 'src/models/error.model.ts');
-
-  after('reset sandbox', async () => {
-    await sandbox.reset();
-  });
+  before('reset sandbox', () => sandbox.reset());
+  afterEach('reset sandbox', () => sandbox.reset());
 
   it('generates all the proper files', async () => {
     await testUtils
@@ -49,22 +37,24 @@ describe('openapi-generator specific files', function () {
       .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path))
       .withPrompts(props);
 
-    assert.file(modelIndex);
-    expectFileToMatchSnapshot(modelIndex);
+    const options = {};
+    assertFiles(
+      options,
+      'src/controllers/index.ts',
+      'src/controllers/open-api.controller.ts',
+    );
 
-    assert.file(controIndex);
-    expectFileToMatchSnapshot(controIndex);
-
-    assert.file(controller);
-    expectFileToMatchSnapshot(controller);
-
-    assert.file(petModel);
-    expectFileToMatchSnapshot(petModel);
-
-    assert.file(newPetModel);
-    expectFileToMatchSnapshot(newPetModel);
-
-    assert.file(errorModel);
-    expectFileToMatchSnapshot(errorModel);
+    assertFiles(
+      options,
+      'src/models/index.ts',
+      'src/models/pet.model.ts',
+      'src/models/new-pet.model.ts',
+      'src/models/error.model.ts',
+    );
   });
 });
+
+function assertFiles(options, ...files) {
+  options = {rootPath: sandbox.path, ...options};
+  assertFilesToMatchSnapshot(options, ...files);
+}
