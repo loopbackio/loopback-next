@@ -178,7 +178,8 @@ function escapePropertyName(name) {
  */
 function escapeComment(comment) {
   comment = comment || '';
-  return comment.replace(/\/\*/g, '\\/*').replace(/\*\//g, '*\\/');
+  comment = comment.replace(/\/\*/g, '\\/*').replace(/\*\//g, '*\\/');
+  return utils.wrapText(comment, 76);
 }
 
 function toJsonStr(val) {

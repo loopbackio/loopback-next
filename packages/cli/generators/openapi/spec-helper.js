@@ -16,6 +16,8 @@ const {
   escapeIdentifier,
 } = require('./utils');
 
+const {validRegex} = require('../../lib/utils');
+
 const HTTP_VERBS = [
   'get',
   'put',
@@ -188,28 +190,26 @@ function buildMethodSpec(controllerSpec, op, options) {
   const methodName = getMethodName(op.spec);
   const comments = [];
   let args = [];
+  let interfaceArgs = [];
+  const namedParameters = [];
   const parameters = op.spec.parameters;
   // Keep track of param names to avoid duplicates
   const paramNames = {};
+  const interfaceParamNames = {};
   if (parameters) {
     args = parameters.map(p => {
-      let name = escapeIdentifier(p.name);
-      if (name in paramNames) {
-        name = `${name}${paramNames[name]++}`;
-      } else {
-        paramNames[name] = 1;
-      }
-      registerAnonymousSchema([methodName, name], p.schema, options);
-      const pType = mapSchemaType(p.schema, options);
-      addImportsForType(pType);
-      comments.push(`@param ${name} ${p.description || ''}`);
-
-      // Normalize parameter name to match `\w`
-      let paramName = p.name;
-      if (p.in === 'path') {
-        paramName = paramName.replace(/[^\w]+/g, '_');
-      }
-      return `@param({name: '${paramName}', in: '${p.in}'}) ${name}: ${pType.signature}`;
+      const {paramName, paramType, argName} = buildParameter(
+        p,
+        paramNames,
+        comments,
+      );
+      return `@param({name: '${paramName}', in: '${p.in}'}) ${argName}: ${paramType.signature}`;
+    });
+    interfaceArgs = parameters.map(p => {
+      const param = buildParameter(p, interfaceParamNames);
+      namedParameters.push(param);
+      const {paramType, argName} = param;
+      return `${argName}: ${paramType.signature}`;
     });
   }
   if (op.spec.requestBody) {
@@ -248,6 +248,12 @@ function buildMethodSpec(controllerSpec, op, options) {
     args.unshift(
       `@requestBody(${bodySpec}) ${bodyParam}: ${bodyType.signature}`,
     );
+    interfaceArgs.unshift(`${bodyParam}: ${bodyType.signature}`);
+    namedParameters.unshift({
+      paramName: 'requestBody',
+      paramType: bodyType,
+      argName: bodyParam,
+    });
     comments.unshift(
       `@param ${bodyName} ${op.spec.requestBody.description || ''}`,
     );
@@ -289,7 +295,21 @@ function buildMethodSpec(controllerSpec, op, options) {
   const signature = `async ${methodName}(${args.join(', ')}): Promise<${
     returnType.signature
   }>`;
-  comments.unshift(op.spec.description || '', '\n');
+  const signatureForInterface = `${methodName}(${interfaceArgs.join(
+    ', ',
+  )}): Promise<${returnType.signature}>`;
+
+  const argTypes = namedParameters
+    .map(p => {
+      if (p.paramName.match(validRegex)) {
+        return `${p.paramName}: ${p.paramType.signature}`;
+      }
+      return `'${p.paramName}': ${p.paramType.signature}`;
+    })
+    .join('; ');
+  const signatureForNamedParams = `${methodName}(params: { ${argTypes} }): Promise<${returnType.signature}>`;
+
+  comments.unshift(op.spec.description || '', '');
 
   // Normalize path variable names to alphanumeric characters including the
   // underscore (Equivalent to [A-Za-z0-9_]). Please note `@loopback/rest`
@@ -302,11 +322,40 @@ function buildMethodSpec(controllerSpec, op, options) {
     comments,
     decoration: `@operation('${op.verb}', '${opPath}')`,
     signature,
+    signatureForInterface,
+    signatureForNamedParams,
   };
   if (op.spec['x-implementation']) {
     methodSpec.implementation = op.spec['x-implementation'];
   }
   return methodSpec;
+
+  /**
+   * Build the parameter
+   * @param {object} paramSpec
+   * @param {string[]} names
+   * @param {string[]} _comments
+   */
+  function buildParameter(paramSpec, names, _comments) {
+    let argName = escapeIdentifier(paramSpec.name);
+    if (argName in names) {
+      argName = `${argName}${names[argName]++}`;
+    } else {
+      names[argName] = 1;
+    }
+    registerAnonymousSchema([methodName, argName], paramSpec.schema, options);
+    const paramType = mapSchemaType(paramSpec.schema, options);
+    addImportsForType(paramType);
+    if (Array.isArray(_comments)) {
+      _comments.push(`@param ${argName} ${paramSpec.description || ''}`);
+    }
+    // Normalize parameter name to match `\w`
+    let paramName = paramSpec.name;
+    if (paramSpec.in === 'path') {
+      paramName = paramName.replace(/[^\w]+/g, '_');
+    }
+    return {paramName, paramType, argName};
+  }
 
   function addImportsForType(typeSpec) {
     if (typeSpec.className && typeSpec.import) {
@@ -338,6 +387,8 @@ function buildControllerSpecs(operationsMapByController, options) {
       tag: entry.tag || '',
       description: entry.description || '',
       className: controller,
+      // Class name for service proxy
+      serviceClassName: getBaseName(controller, 'Controller') + 'Service',
       imports: [],
     };
     controllerSpec.methods = entry.operations.map(op =>
@@ -358,17 +409,29 @@ function generateControllerSpecs(apiSpec, options) {
 }
 
 function getControllerFileName(controllerName) {
-  let name = controllerName;
-  if (controllerName.endsWith('Controller')) {
-    name = controllerName.substring(
-      0,
-      controllerName.length - 'Controller'.length,
-    );
-  }
+  const name = getBaseName(controllerName, 'Controller');
   return toFileName(name) + '.controller.ts';
+}
+
+/**
+ * Get the base name by trimming the suffix
+ * @param {string} fullName
+ * @param {string} suffix
+ */
+function getBaseName(fullName, suffix) {
+  if (fullName.endsWith(suffix)) {
+    return fullName.substring(0, fullName.length - suffix.length);
+  }
+  return fullName;
+}
+
+function getServiceFileName(serviceName) {
+  const name = getBaseName(serviceName, 'Service');
+  return toFileName(name) + '.service.ts';
 }
 
 module.exports = {
   getControllerFileName,
+  getServiceFileName,
   generateControllerSpecs,
 };

@@ -6,9 +6,8 @@
 'use strict';
 
 const path = require('path');
-const assert = require('yeoman-assert');
 const {TestSandbox} = require('@loopback/testlab');
-const {expectFileToMatchSnapshot} = require('../../snapshots');
+const {assertFilesToMatchSnapshot} = require('../../snapshots');
 
 const generator = path.join(__dirname, '../../../generators/openapi');
 const specPath = path.join(__dirname, '../../fixtures/openapi/3.0/uspto.yaml');
@@ -21,29 +20,9 @@ const props = {
   url: specPath,
 };
 
-describe('openapi-generator specific files', () => {
-  const modelIndex = path.resolve(sandbox.path, 'src/models/index.ts');
-  const controIndex = path.resolve(sandbox.path, 'src/controllers/index.ts');
-  const searchController = path.resolve(
-    sandbox.path,
-    'src/controllers/search.controller.ts',
-  );
-  const metadataController = path.resolve(
-    sandbox.path,
-    'src/controllers/metadata.controller.ts',
-  );
-  const performSearchRequestBodyModel = path.resolve(
-    sandbox.path,
-    'src/models/perform-search-request-body.model.ts',
-  );
-  const performSearchResponseBodyModel = path.resolve(
-    sandbox.path,
-    'src/models/perform-search-response-body.model.ts',
-  );
-
-  after('reset sandbox', async () => {
-    await sandbox.reset();
-  });
+describe('openapi-generator uspto with anonymous', () => {
+  before('reset sandbox', () => sandbox.reset());
+  afterEach('reset sandbox', () => sandbox.reset());
 
   it('generates all the proper files', async () => {
     await testUtils
@@ -51,22 +30,25 @@ describe('openapi-generator specific files', () => {
       .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path))
       .withArguments('--promote-anonymous-schemas')
       .withPrompts(props);
-    assert.file(searchController);
-    expectFileToMatchSnapshot(searchController);
 
-    assert.file(metadataController);
-    expectFileToMatchSnapshot(metadataController);
+    assertFiles(
+      {},
+      'src/controllers/index.ts',
+      'src/controllers/search.controller.ts',
+      'src/controllers/metadata.controller.ts',
+    );
 
-    assert.file(performSearchRequestBodyModel);
-    expectFileToMatchSnapshot(performSearchRequestBodyModel);
+    assertFiles(
+      {},
+      'src/models/index.ts',
 
-    assert.file(performSearchResponseBodyModel);
-    expectFileToMatchSnapshot(performSearchResponseBodyModel);
-
-    assert.file(modelIndex);
-    expectFileToMatchSnapshot(modelIndex);
-
-    assert.file(controIndex);
-    expectFileToMatchSnapshot(controIndex);
+      'src/models/perform-search-request-body.model.ts',
+      'src/models/perform-search-response-body.model.ts',
+    );
   });
 });
+
+function assertFiles(options, ...files) {
+  options = {rootPath: sandbox.path, ...options};
+  assertFilesToMatchSnapshot(options, ...files);
+}

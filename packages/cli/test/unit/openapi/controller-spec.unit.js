@@ -14,19 +14,20 @@ describe('openapi to controllers/models', () => {
   );
 
   it('generates models for customer', async () => {
-    const customerSepc = await loadAndBuildSpec(customer);
-    expect(customerSepc.controllerSpecs).to.eql([
+    const customerSpec = await loadAndBuildSpec(customer);
+    expect(customerSpec.controllerSpecs).to.eql([
       {
         tag: 'Customer',
         description: 'Customer resource',
         className: 'CustomerController',
+        serviceClassName: 'CustomerService',
         imports: ["import {Customer} from '../models/customer.model';"],
         methods: [
           {
             description: 'Returns all customers (/* customers */)',
             comments: [
               'Returns all customers (/* customers */)',
-              '\n',
+              '',
               '@param _if if condition',
               '@param limit maximum number of results to return',
               '@param accessToken Access token (/* access_token */)',
@@ -38,17 +39,25 @@ describe('openapi to controllers/models', () => {
               "string[], @param({name: 'limit', in: 'query'}) limit: number, " +
               "@param({name: 'access-token', in: 'query'}) accessToken: " +
               'string): Promise<Customer[]>',
+            signatureForInterface:
+              'getCustomers(_if: string[], limit: number, accessToken: string): Promise<Customer[]>',
+            signatureForNamedParams:
+              "getCustomers(params: { if: string[]; limit: number; 'access-token': string }): Promise<Customer[]>",
           },
           {
             description: 'Creates a new customer',
             comments: [
               'Creates a new customer',
-              '\n',
+              '',
               '@param _requestBody Customer to add',
               '@param accessToken Access token (/* access_token */)',
               '@returns customer response',
             ],
             decoration: "@operation('post', '/customers')",
+            signatureForInterface:
+              'createCustomer(_requestBody: Customer, accessToken: string): Promise<Customer>',
+            signatureForNamedParams:
+              "createCustomer(params: { requestBody: Customer; 'access-token': string }): Promise<Customer>",
             signature:
               'async createCustomer(@requestBody() _requestBody: Customer, ' +
               "@param({name: 'access-token', in: 'query'}) accessToken: " +
@@ -58,7 +67,7 @@ describe('openapi to controllers/models', () => {
             description: 'Returns a customer based on a single ID',
             comments: [
               'Returns a customer based on a single ID',
-              '\n',
+              '',
               '@param customerId ID of customer to fetch',
               '@returns customer response',
             ],
@@ -67,7 +76,11 @@ describe('openapi to controllers/models', () => {
               "async findCustomerById(@param({name: 'customer_id', " +
               "in: 'path'}) customerId: number): Promise<Customer>",
             implementation:
-              "return {id: id, 'first-name': 'John', last-name: 'Smith'};",
+              "return {id: customerId, 'first-name': 'John', 'last-name': 'Smith'};",
+            signatureForInterface:
+              'findCustomerById(customerId: number): Promise<Customer>',
+            signatureForNamedParams:
+              'findCustomerById(params: { customer_id: number }): Promise<Customer>',
           },
         ],
       },

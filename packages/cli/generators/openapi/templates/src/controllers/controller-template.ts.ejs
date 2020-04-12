@@ -10,17 +10,28 @@ imports.forEach(i => {
 
 /**
  * The controller class is generated from OpenAPI spec with operations tagged
- * by <%- tag %>
- * <%- escapeComment(description) %>
+ * by <%- tag || '<no-tag>' %>.
+ *
+<%_ const _comment = escapeComment(description);
+    if (_comment) {
+-%>
+ * <%- _comment %>
+<%_ } -%>
  */
 export class <%- className %> {
   constructor() {}
 
   <%_ for (const m of methods) { -%>
   /**
-  <%_ for (const c of m.comments) { -%>
-   * <%- escapeComment(c) %>
-  <%_ } -%>
+  <%_ for (const c of m.comments) {
+        const _comment = escapeComment(c);
+        if (_comment) {
+  -%>
+   * <%- _comment %>
+  <%_   } else { -%>
+   *
+  <%_   }
+    } -%>
    */
   <%- m.decoration %>
   <%- m.signature %> {
