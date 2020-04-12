@@ -413,7 +413,7 @@ module.exports = class BaseGenerator extends Generator {
   }
 
   async _updateIndexFile(dir, file) {
-    await updateIndex(dir, file);
+    await updateIndex(dir, file, this.fs);
 
     // Output for users
     const updateDirRelPath = path.relative(
