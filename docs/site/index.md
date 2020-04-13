@@ -5,7 +5,6 @@ toc: false
 keywords: LoopBack 4
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/index.html
-summary: LoopBack is a platform for building APIs and microservices in Node.js
 ---
 
 {% include see-also.html title="GitHub Repo" content=' LoopBack 4 framework code

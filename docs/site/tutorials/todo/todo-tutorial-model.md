@@ -4,7 +4,6 @@ title: 'Add the Todo Model'
 keywords: LoopBack 4.0, LoopBack 4
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/todo-tutorial-model.html
-summary: LoopBack 4 Todo Application Tutorial - Add the Todo Model
 ---
 
 ### Models

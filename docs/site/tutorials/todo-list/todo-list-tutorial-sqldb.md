@@ -4,8 +4,6 @@ title: 'Running on relational databases'
 keywords: LoopBack 4.0, LoopBack 4
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/todo-list-tutorial-sqldb.html
-summary:
-  LoopBack 4 TodoList Application Tutorial - Running on Relational Databases
 ---
 
 If you are running this example using a relational database, there are extra

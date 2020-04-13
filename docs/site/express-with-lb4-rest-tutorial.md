@@ -4,7 +4,6 @@ title: 'Creating an Express Application with LoopBack REST API'
 keywords: LoopBack 4.0, LoopBack 4
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/express-with-lb4-rest-tutorial.html
-summary: A simple Express application with LoopBack 4 REST API
 ---
 
 ## Overview

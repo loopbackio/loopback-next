@@ -4,7 +4,6 @@ title: 'Add Model Relations'
 keywords: LoopBack 4.0, LoopBack 4
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/todo-list-tutorial-relations.html
-summary: LoopBack 4 TodoList Application Tutorial - Add TodoList Repository
 ---
 
 ### Define the model relation

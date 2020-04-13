@@ -4,9 +4,6 @@ title: "Add TodoList and TodoList's Todo Controller"
 keywords: LoopBack 4.0, LoopBack 4
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/todo-list-tutorial-controller.html
-summary:
-  LoopBack 4 TodoList Application Tutorial - Add TodoList and TodoList's Todo
-  Controller
 ---
 
 ### Controllers with related models

@@ -4,7 +4,6 @@ title: 'Getting started'
 keywords: LoopBack 4.0, LoopBack 4
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Getting-started.html
-summary: Write and run a LoopBack 4 "Hello World" project in TypeScript.
 ---
 
 ## Prerequisites
