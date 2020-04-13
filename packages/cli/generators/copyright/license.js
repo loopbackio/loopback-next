@@ -6,6 +6,7 @@
 const path = require('path');
 const {FSE} = require('./fs');
 const {getYears} = require('./git');
+const {wrapText} = require('../../lib/utils');
 const spdxLicenses = require('spdx-license-list/full');
 const spdxLicenseList = {};
 for (const id in spdxLicenses) {
@@ -91,37 +92,6 @@ async function updateLicense(projectRoot, pkg, options) {
       years: await getYears(projectRoot),
     }),
   );
-}
-
-/**
- * Wrap a single line
- * @param {string} line Text for the a line
- * @param {number} maxLineLength - Maximum line length before wrapping
- */
-function wrapLine(line, maxLineLength) {
-  if (line === '') return line;
-  let lineLength = 0;
-  const words = line.split(/\s+/g);
-  return words.reduce((result, word) => {
-    if (lineLength + word.length >= maxLineLength) {
-      lineLength = word.length;
-      return `${result}\n${word}`;
-    } else {
-      lineLength += word.length + (result ? 1 : 0);
-      return result ? `${result} ${word}` : `${word}`;
-    }
-  }, '');
-}
-
-/**
- * Wrap the text into lines respecting the max line length
- * @param {string} text - Text string
- * @param {number} maxLineLength - Maximum line length before wrapping
- */
-function wrapText(text, maxLineLength = 80) {
-  let lines = text.split('\n');
-  lines = lines.map(line => wrapLine(line, maxLineLength));
-  return lines.join('\n');
 }
 
 exports.renderLicense = renderLicense;
