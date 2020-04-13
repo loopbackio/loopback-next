@@ -678,6 +678,40 @@ exports.stringifyModelSettings = function (modelSettings) {
   return exports.stringifyObject({settings: modelSettings});
 };
 
+/**
+ * Wrap a single line
+ * @param {string} line Text for the a line
+ * @param {number} maxLineLength - Maximum line length before wrapping
+ */
+function wrapLine(line, maxLineLength) {
+  if (line === '') return line;
+  let lineLength = 0;
+  const words = line.split(/\s+/g);
+  return words.reduce((result, word) => {
+    if (lineLength + word.length >= maxLineLength) {
+      lineLength = word.length;
+      return `${result}\n${word}`;
+    } else {
+      lineLength += word.length + (result ? 1 : 0);
+      return result ? `${result} ${word}` : `${word}`;
+    }
+  }, '');
+}
+
+/**
+ * Wrap the text into lines respecting the max line length
+ * @param {string} text - Text string
+ * @param {number} maxLineLength - Maximum line length before wrapping
+ */
+function wrapText(text, maxLineLength = 80) {
+  let lines = text.split('\n');
+  lines = lines.map(line => wrapLine(line, maxLineLength));
+  return lines.join('\n');
+}
+
+exports.wrapLine = wrapLine;
+exports.wrapText = wrapText;
+
 // literal strings with artifacts directory locations
 exports.repositoriesDir = 'repositories';
 exports.datasourcesDir = 'datasources';
