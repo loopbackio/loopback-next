@@ -38,7 +38,7 @@
     "sinon": "^9.0.2",
     "strong-globalize-cli": "7.0.0",
     "yeoman-assert": "^3.1.1",
-    "yeoman-environment": "^2.9.0",
+    "yeoman-environment": "^2.9.1",
     "yeoman-test": "~2.4.1"
   },
   "dependencies": {
