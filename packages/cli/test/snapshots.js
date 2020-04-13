@@ -20,7 +20,31 @@ function expectFileToMatchSnapshot(filePath) {
   expectToMatchSnapshot(content);
 }
 
+/**
+ * Assert a list of files to match snapshots
+ * @param {object} options Options
+ *   - exists: assert the file exists or not
+ *   - rootPath: rootPath for file names
+ * @param  {...string} files
+ */
+function assertFilesToMatchSnapshot(options, ...files) {
+  options = {exists: true, ...options};
+  if (options.rootPath) {
+    files = files.map(f => path.resolve(options.rootPath, f));
+  }
+
+  for (const f of files) {
+    if (options.exists === false) {
+      assert.noFile(f);
+      break;
+    }
+    assert.file(f);
+    expectFileToMatchSnapshot(f);
+  }
+}
+
 module.exports = {
   expectToMatchSnapshot,
   expectFileToMatchSnapshot,
+  assertFilesToMatchSnapshot,
 };
