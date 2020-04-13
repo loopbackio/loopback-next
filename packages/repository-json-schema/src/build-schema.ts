@@ -501,7 +501,16 @@ export function modelToJsonSchema<T extends object>(
       result.properties = result.properties ?? {};
       const relMeta = meta.relations[r];
       const targetType = resolveType(relMeta.target);
-      const targetSchema = getJsonSchema(targetType, options);
+
+      const targetOptions = {...options};
+      if (targetOptions.title) {
+        // `title` is the unique identity of a schema,
+        // it should be removed from the `options`
+        // when generating the relation schemas
+        delete targetOptions.title;
+      }
+
+      const targetSchema = getJsonSchema(targetType, targetOptions);
       const targetRef = {$ref: `#/definitions/${targetSchema.title}`};
       const propDef = getNavigationalPropertyForRelation(relMeta, targetRef);
 

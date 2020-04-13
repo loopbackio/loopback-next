@@ -4,6 +4,8 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
+  Entity,
+  hasMany,
   Model,
   model,
   property,
@@ -244,6 +246,61 @@ describe('build-schema', () => {
       });
       // No circular references in definitions
       expect(schema.definitions).to.be.undefined();
+    });
+
+    it('relation model definition does not inherit title from source model', () => {
+      @model()
+      class Child extends Entity {
+        @property({
+          type: 'string',
+        })
+        name?: string;
+      }
+      @model()
+      class Parent extends Entity {
+        @hasMany(() => Child)
+        children: Child[];
+
+        @property({
+          type: 'string',
+        })
+        benchmarkId?: string;
+
+        @property({
+          type: 'string',
+        })
+        color?: string;
+
+        constructor(data?: Partial<Parent>) {
+          super(data);
+        }
+      }
+      const schema = modelToJsonSchema(Parent, {
+        title: 'ParentWithItsChildren',
+        includeRelations: true,
+      });
+      expect(schema.properties).to.containEql({
+        children: {
+          type: 'array',
+          // The reference here should be `ChildWithRelations`,
+          // instead of `ParentWithItsChildren`
+          items: {$ref: '#/definitions/ChildWithRelations'},
+        },
+        benchmarkId: {type: 'string'},
+        color: {type: 'string'},
+      });
+      // The recursive calls should NOT inherit
+      // `title` from the previous call's `options`.
+      // So the `title` here is `ChildWithRelations`
+      // instead of `ParentWithItsChildren`.
+      expect(schema.definitions).to.containEql({
+        ChildWithRelations: {
+          title: 'ChildWithRelations',
+          description: '(Schema options: { includeRelations: true })',
+          properties: {name: {type: 'string'}},
+          additionalProperties: false,
+        },
+      });
     });
 
     it('allows model inheritance', () => {
