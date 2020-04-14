@@ -1,0 +1,111 @@
+name: Continous Integration
+on: [push, pull_request]
+
+env:
+  CI: true
+  NODE_OPTIONS: --max-old-space-size=4096
+
+jobs:
+  test:
+    name: Test
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node-version: [10, 12, 14]
+        include:
+          - os: macos-latest
+            node-version: 14
+      fail-fast: false
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Bootstrap project
+        run: |
+          npm ci --ignore-scripts
+          npm run postinstall
+      - name: Build project
+        run: npm run build
+      - uses: Yuri6037/Action-FakeTTY@v1.1
+      - name: Run tests
+        run: faketty npm run test:ci
+
+  test-benchmark:
+    name: Test Benchmark
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 14
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+      - name: Bootstrap benchmark tests
+        run: |
+          npm ci --ignore-scripts
+          npx lerna bootstrap --scope "@loopback/benchmark" --include-dependencies
+      - name: Run benchmark tests
+        run: |
+          cd benchmark && npm test
+
+  code-lint:
+    name: Code Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 14
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+      - name: Bootstrap project
+        run: |
+          npm ci --ignore-scripts
+          npm run postinstall
+      - name: Build project
+        run: npm run build
+      - name: Verify code linting
+        run: npm run lint
+      - name: Verify package metadata
+        run: npm run check-package-metadata
+
+  commit-lint:
+    name: Commit Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Un-shallow git tree
+        run: git fetch --prune --unshallow
+      - name: Use Node.js 14
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+      - name: Bootstrap project
+        run: |
+          npm ci --ignore-scripts
+          npm run postinstall
+      - name: Build project
+        run: npm run build
+      - name: Verify commit linting
+        run: npx commitlint --from origin/master --to HEAD --verbose
+
+  verify-docs:
+    name: Verify Docs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 14
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+      - name: Bootstrap project
+        run: |
+          npm ci --ignore-scripts
+          npm run postinstall
+      - name: Build project
+        run: npm run build
+      - name: Verify doc changes
+        run: ./bin/verify-doc-changes.sh
