@@ -142,6 +142,7 @@
 # - Standby owner(s): @deepakrkris @emonddr
 /packages/rest @deepakrkris @emonddr @hacksparrow
 /packages/http-server @deepakrkris @emonddr @hacksparrow
+/packages/express @raymondfeng
 /packages/cli/generators/controller @deepakrkris @emonddr @hacksparrow
 /examples/hello-world @deepakrkris @emonddr @hacksparrow
 /examples/express-composition @deepakrkris @emonddr @hacksparrow

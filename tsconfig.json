@@ -119,6 +119,9 @@
       "path": "packages/core/tsconfig.json"
     },
     {
+      "path": "packages/express/tsconfig.json"
+    },
+    {
       "path": "packages/http-caching-proxy/tsconfig.json"
     },
     {
