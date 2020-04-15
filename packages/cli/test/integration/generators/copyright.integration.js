@@ -70,6 +70,14 @@ describe('lb4 copyright', function () {
       `// This file is licensed under the ${spdxLicenseList['isc'].name}.`,
       `// License text available at ${spdxLicenseList['isc'].url}`,
     );
+
+    assertNoHeader(
+      ['node_modules/third-party.js'],
+      `// Copyright ACME Inc. ${year}. All Rights Reserved.`,
+      '// Node module: myapp',
+      `// This file is licensed under the ${spdxLicenseList['isc'].name}.`,
+      `// License text available at ${spdxLicenseList['isc'].url}`,
+    );
   });
 
   it('updates copyright/license headers with options.exclude', async () => {
@@ -97,7 +105,7 @@ describe('lb4 copyright', function () {
     );
 
     assertNoHeader(
-      ['lib/no-header.js'],
+      ['lib/no-header.js', 'node_modules/third-party.js'],
       `// Copyright ACME Inc. ${year}. All Rights Reserved.`,
       '// Node module: myapp',
       `// This file is licensed under the ${spdxLicenseList['isc'].name}.`,
