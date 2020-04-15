@@ -133,6 +133,7 @@ module.exports = class CopyrightGenerator extends BaseGenerator {
     answers = answers || {};
     const exclude = this.options.exclude || '';
     const excludePatterns = exclude.split(',').filter(p => p !== '');
+    excludePatterns.push('**/node_modules/**/*');
 
     this.headerOptions = {
       copyrightOwner: answers.owner || this.options.owner,
