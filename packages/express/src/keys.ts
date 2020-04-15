@@ -14,24 +14,3 @@ export namespace MiddlewareBindings {
     'middleware.http.context',
   );
 }
-
-/**
- * Default namespaces for middleware
- */
-export const MIDDLEWARE_NAMESPACE = 'middleware';
-
-/**
- * Default namespace for Express middleware based global interceptors
- */
-export const GLOBAL_MIDDLEWARE_INTERCEPTOR_NAMESPACE =
-  'globalInterceptors.middleware';
-
-/**
- * Default namespace for Express middleware based local interceptors
- */
-export const MIDDLEWARE_INTERCEPTOR_NAMESPACE = 'globalInterceptors.middleware';
-
-/**
- * Default order group name for Express middleware based global interceptors
- */
-export const DEFAULT_MIDDLEWARE_GROUP = 'middleware';

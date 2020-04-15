@@ -29,6 +29,5 @@ export * from './keys';
 export * from './middleware';
 export * from './middleware-interceptor';
 export * from './middleware-registry';
-export * from './mixins/middleware.mixin';
 export * from './providers/invoke-middleware.provider';
 export * from './types';

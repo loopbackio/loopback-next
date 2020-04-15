@@ -20,8 +20,8 @@ import {
 } from '@loopback/context';
 import {extensionFilter, extensionFor} from '@loopback/core';
 import debugFactory from 'debug';
-import {MIDDLEWARE_NAMESPACE} from './keys';
 import {
+  buildName,
   createInterceptor,
   defineInterceptorProvider,
   toInterceptor,
@@ -43,31 +43,21 @@ const debug = debugFactory('loopback:middleware');
 /**
  * An adapter function to create a LoopBack middleware that invokes the list
  * of Express middleware handler functions in the order of their positions
- * @example
- * ```ts
- * toMiddleware(fn);
- * toMiddleware(fn1, fn2, fn3);
- * ```
- * @param firstHandler - An Express middleware handler
- * @param additionalHandlers A list of Express middleware handler functions
+ *
+ * @param handlers A list of Express middleware handler functions
  * @returns A LoopBack middleware function that wraps the list of Express
  * middleware
  */
-export function toMiddleware(
-  firstHandler: ExpressRequestHandler,
-  ...additionalHandlers: ExpressRequestHandler[]
-): Middleware {
-  if (additionalHandlers.length === 0) return toInterceptor(firstHandler);
-  const handlers = [firstHandler, ...additionalHandlers];
+export function toMiddleware(...handlers: ExpressRequestHandler[]): Middleware {
   const middlewareList = handlers.map(handler =>
     toInterceptor<MiddlewareContext>(handler),
   );
   return (middlewareCtx, next) => {
-    if (middlewareList.length === 1) {
-      return middlewareList[0](middlewareCtx, next);
-    }
     const middlewareChain = new MiddlewareChain(middlewareCtx, middlewareList);
-    return middlewareChain.invokeInterceptors(next);
+    const result = middlewareChain.invokeInterceptors();
+    return transformValueOrPromise(result, val =>
+      val === middlewareCtx.response ? val : next(),
+    );
   };
 }
 
@@ -109,6 +99,11 @@ export function registerExpressMiddleware<CFG>(
   options = {injectConfiguration: true, ...options};
   options.chain = options.chain ?? DEFAULT_MIDDLEWARE_CHAIN;
   if (!options.injectConfiguration) {
+    let key = options.key;
+    if (!key) {
+      const name = buildName(middlewareFactory);
+      key = name ? `interceptors.${name}` : BindingKey.generate('interceptors');
+    }
     const middleware = createMiddleware(middlewareFactory, middlewareConfig);
     return registerMiddleware(ctx, middleware, options);
   }
@@ -116,7 +111,7 @@ export function registerExpressMiddleware<CFG>(
   const providerClass = defineInterceptorProvider<CFG, MiddlewareContext>(
     middlewareFactory,
     middlewareConfig,
-    options,
+    options.providerClassName,
   );
   return registerMiddleware(ctx, providerClass, options);
 }
@@ -154,7 +149,7 @@ export function registerMiddleware(
     ctx.add(binding);
     return binding;
   }
-  const key = options.key ?? BindingKey.generate(MIDDLEWARE_NAMESPACE);
+  const key = options.key ?? BindingKey.generate('middleware');
   return ctx
     .bind(key)
     .to(middleware as Middleware)
@@ -175,7 +170,7 @@ export function createMiddlewareBinding(
   options.chain = options.chain ?? DEFAULT_MIDDLEWARE_CHAIN;
   const binding = createBindingFromClass(middlewareProviderClass, {
     defaultScope: BindingScope.TRANSIENT,
-    namespace: MIDDLEWARE_NAMESPACE,
+    namespace: 'middleware',
     key: options.key,
   }).apply(asMiddleware(options));
   return binding;
@@ -249,10 +244,7 @@ export function invokeExpressMiddleware(
   middlewareCtx: MiddlewareContext,
   ...handlers: ExpressRequestHandler[]
 ): ValueOrPromise<boolean> {
-  if (handlers.length === 0) {
-    throw new Error('No Express middleware handler function is provided.');
-  }
-  const middleware = toMiddleware(handlers[0], ...handlers.slice(1));
+  const middleware = toMiddleware(...handlers);
   debug(
     'Invoke Express middleware for %s %s',
     middlewareCtx.request.method,
