@@ -3,17 +3,24 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {inject} from '@loopback/core';
 import {
   Client,
   createRestAppClient,
   expect,
   givenHttpServerConfig,
 } from '@loopback/testlab';
+import {OptionsUrlencoded} from 'body-parser';
+import crypto from 'crypto';
+import qs from 'qs';
 import {
+  getParserOptions,
   JsonBodyParser,
   post,
+  RawBodyParser,
   Request,
   requestBody,
+  RequestBodyParserOptions,
   RestApplication,
   RestBindings,
 } from '../../..';
@@ -21,8 +28,7 @@ import {
 describe('request parsing', () => {
   let client: Client;
   let app: RestApplication;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let parsedRequestBodyValue: any;
+  let parsedRequestBodyValue: unknown;
 
   beforeEach(givenAClient);
   afterEach(async () => {
@@ -63,12 +69,59 @@ describe('request parsing', () => {
     expect(invoked).to.be.true();
   });
 
+  it('invokes custom body parsers to calculate hash', async () => {
+    let invoked = false;
+    class UrlEncodedBodyParserForHash extends RawBodyParser {
+      private urlEncodedOptions: OptionsUrlencoded;
+      constructor(
+        @inject(RestBindings.REQUEST_BODY_PARSER_OPTIONS, {optional: true})
+        private options: RequestBodyParserOptions = {},
+      ) {
+        super(options);
+        this.urlEncodedOptions = getParserOptions('urlencoded', this.options);
+      }
+
+      async parse(request: Request) {
+        const body = await super.parse(request);
+        const buffer = body.value;
+        const hash = crypto.createHash('sha256').update(buffer).digest('hex');
+        // We cannot use UrlEncodedParser as `request.body` is set by `RawBodyParser`
+        const value = qs.parse(
+          buffer.toString('utf-8'),
+          this.urlEncodedOptions,
+        );
+        value.hash = hash;
+        invoked = true;
+        body.value = value;
+        return body;
+      }
+    }
+
+    app.controller(
+      givenBodyParamController(
+        '/show-body-encoded',
+        UrlEncodedBodyParserForHash,
+      ),
+      'Controller3',
+    );
+    await client
+      .post('/show-body-encoded')
+      .set('Content-Type', 'application/x-www-form-urlencoded')
+      .send({key: 'value'})
+      .expect(200, {
+        key: 'new-value',
+        parser: 'UrlEncodedBodyParserForHash',
+      });
+    expect(invoked).to.be.true();
+  });
+
   it('allows built-in body parsers to be removed', async () => {
     app.unbind(RestBindings.REQUEST_BODY_PARSER_JSON);
     await postRequest('/show-body', 415);
   });
 
   async function givenAClient() {
+    parsedRequestBodyValue = undefined;
     app = new RestApplication({rest: givenHttpServerConfig()});
     app.controller(
       givenBodyParamController('/show-body-json', 'json'),
@@ -85,7 +138,9 @@ describe('request parsing', () => {
       .set('Content-Type', 'application/json')
       .send({key: 'value'})
       .expect(expectedStatusCode);
-    expect(parsedRequestBodyValue).to.eql({key: 'value'});
+    if (expectedStatusCode === 200) {
+      expect(parsedRequestBodyValue).to.eql({key: 'value'});
+    }
     return res;
   }
 
@@ -110,6 +165,11 @@ describe('request parsing', () => {
           required: true,
           content: {
             'application/json': {
+              // Customize body parsing
+              'x-parser': parser,
+              schema: {type: 'object'},
+            },
+            'application/x-www-form-urlencoded': {
               // Customize body parsing
               'x-parser': parser,
               schema: {type: 'object'},
