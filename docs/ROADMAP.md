@@ -33,6 +33,44 @@ We would like to encourage community contributions by make available to the
 community a list of GH issues that we want to finish in a short term by using
 the `help wanted` and `2020Qx` labels.
 
+---
+
+## Q3 2020 Roadmap
+
+### Scope
+
+#### Documentation improvement
+
+_Details to be discussed in
+https://github.com/strongloop/loopback-next/issues/5113_
+
+- identify gaps and add documentation
+- reorganize documentation to make it easier to navigate
+- Fix docs issues:
+  https://github.com/strongloop/loopback-next/issues?q=is%3Aissue+is%3Aopen+label%3Adocs
+
+#### Feature parity
+
+- Model relations
+- Model relation ease of use improvements
+- LB4 equivalent of `lb soap` #5282
+- Execute raw NoSQL queries (e.g. MongoDB)
+  https://github.com/strongloop/loopback-next/issues/3342
+- https://github.com/strongloop/loopback-next/issues?q=is%3Aissue+is%3Aopen+label%3A%22feature+parity%22+sort%3Areactions-%2B1-desc
+
+#### Integration with other technologies/libraries
+
+- TypeORM integration, https://github.com/strongloop/loopback-next/issues/4853
+- Kafka integration, https://github.com/strongloop/loopback-next/issues/1925
+
+#### Bugs, developer experience, internal tooling
+
+- TS project reference, mocha parallel testing
+
+#### Switch from CLA to DCO
+
+---
+
 ## Q2 2020 Roadmap
 
 ### Overview
