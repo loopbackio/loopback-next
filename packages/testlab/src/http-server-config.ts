@@ -4,6 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {readFileSync} from 'fs';
+import http2 from 'http2';
 import {ServerOptions as HttpsServerOptions} from 'https';
 import {ListenOptions} from 'net';
 import path from 'path';
@@ -22,6 +23,16 @@ export interface HttpsOptions extends ListenOptions, HttpsServerOptions {
   protocol: 'https';
 }
 
+export interface Http2Options extends ListenOptions, http2.ServerOptions {
+  protocol: 'http2';
+}
+
+export interface Http2sOptions
+  extends ListenOptions,
+    http2.SecureServerOptions {
+  protocol: 'http2s';
+}
+
 export type HostPort = {
   host: string;
   port: number;
@@ -36,9 +47,9 @@ export type HostPort = {
  *
  * @param customConfig - Additional configuration options to apply.
  */
-export function givenHttpServerConfig<T extends HttpOptions | HttpsOptions>(
-  customConfig?: T,
-): HostPort & T {
+export function givenHttpServerConfig<
+  T extends HttpOptions | HttpsOptions | Http2Options | Http2sOptions
+>(customConfig?: T): HostPort & T {
   const defaults = {
     host: '127.0.0.1',
     port: 0,
