@@ -6,6 +6,7 @@
 import {
   expect,
   givenHttpServerConfig,
+  Http2sOptions,
   httpGetAsync,
   httpsGetAsync,
   skipOnTravis,
@@ -18,7 +19,7 @@ import os from 'os';
 import pEvent from 'p-event';
 import path from 'path';
 import {HttpOptions, HttpServer, HttpsOptions} from '../../';
-import {HttpServerOptions} from '../../http-server';
+import {Http2Options, HttpServerOptions} from '../../http-server';
 
 describe('HttpServer (integration)', () => {
   let server: HttpServer | undefined;
@@ -294,6 +295,13 @@ describe('HttpServer (integration)', () => {
     }).to.throw(/Named pipe test\.pipe does NOT start with/);
   });
 
+  it('supports HTTP/2 HTTP', async () => {
+    const http2Server = givenHttp2Server();
+    await http2Server.start();
+    const response = await httpGetAsync(http2Server.url);
+    expect(response.statusCode).to.equal(200);
+  });
+
   function getAddressFamily(httpServer: HttpServer) {
     if (!httpServer || !httpServer.address) return undefined;
     if (typeof httpServer.address === 'string') {
@@ -351,6 +359,27 @@ describe('HttpServer (integration)', () => {
       options.key = fs.readFileSync(keyPath);
       options.cert = fs.readFileSync(certPath);
     }
+    return new HttpServer(dummyRequestHandler, options);
+  }
+
+  function givenHttp2Server(): HttpServer {
+    const options = givenHttpServerConfig<Http2Options>({
+      protocol: 'http2',
+    });
+
+    return new HttpServer(dummyRequestHandler, options);
+  }
+
+  function givenHttp2sServer({
+    allowHttp1 = false,
+  }: {
+    allowHttp1: boolean;
+  }): HttpServer {
+    const options = givenHttpServerConfig<Http2sOptions>({
+      protocol: 'http2s',
+      allowHTTP1: allowHttp1,
+    });
+
     return new HttpServer(dummyRequestHandler, options);
   }
 });
