@@ -15,16 +15,18 @@ const debug = debugFactory('loopback:context:binding-inspector');
 
 /**
  * Binding metadata from `@bind`
+ *
+ * @typeParam T - Value type
  */
-export type BindingMetadata = {
+export type BindingMetadata<T = unknown> = {
   /**
    * An array of template functions to configure a binding
    */
-  templates: BindingTemplate[];
+  templates: BindingTemplate<T>[];
   /**
    * The target class where binding metadata is decorated
    */
-  target: Constructor<unknown>;
+  target: Constructor<T>;
 };
 
 /**
@@ -46,26 +48,30 @@ export type BindingScopeAndTags = {
 /**
  * Specification of parameters for `@bind()`
  */
-export type BindingSpec = BindingTemplate | BindingScopeAndTags;
+export type BindingSpec<T = unknown> = BindingTemplate<T> | BindingScopeAndTags;
 
 /**
  * Check if a class implements `Provider` interface
  * @param cls - A class
+ *
+ * @typeParam T - Value type
  */
-export function isProviderClass(
-  cls: Constructor<unknown>,
-): cls is Constructor<Provider<unknown>> {
-  return cls && typeof cls.prototype.value === 'function';
+export function isProviderClass<T>(
+  cls: Constructor<T | Provider<T>>,
+): cls is Constructor<Provider<T>> {
+  return typeof cls?.prototype?.value === 'function';
 }
 
 /**
  * A factory function to create a template function to bind the target class
  * as a `Provider`.
  * @param target - Target provider class
+ *
+ * @typeParam T - Value type
  */
-export function asProvider(
-  target: Constructor<Provider<unknown>>,
-): BindingTemplate {
+export function asProvider<T>(
+  target: Constructor<Provider<T>>,
+): BindingTemplate<T> {
   return function bindAsProvider(binding) {
     binding.toProvider(target).tag(ContextTags.PROVIDER, {
       [ContextTags.TYPE]: ContextTags.PROVIDER,
@@ -77,16 +83,18 @@ export function asProvider(
  * A factory function to create a template function to bind the target class
  * as a class or `Provider`.
  * @param target - Target class, which can be an implementation of `Provider`
+ *
+ * @typeParam T - Value type
  */
-export function asClassOrProvider(
-  target: Constructor<unknown>,
-): BindingTemplate {
+export function asClassOrProvider<T>(
+  target: Constructor<T | Provider<T>>,
+): BindingTemplate<T> {
   // Add a template to bind to a class or provider
   return function bindAsClassOrProvider(binding) {
     if (isProviderClass(target)) {
       asProvider(target)(binding);
     } else {
-      binding.toClass(target);
+      binding.toClass(target as Constructor<T>);
     }
   };
 }
@@ -94,10 +102,12 @@ export function asClassOrProvider(
 /**
  * Convert binding scope and tags as a template function
  * @param scopeAndTags - Binding scope and tags
+ *
+ * @typeParam T - Value type
  */
-export function asBindingTemplate(
+export function asBindingTemplate<T = unknown>(
   scopeAndTags: BindingScopeAndTags,
-): BindingTemplate {
+): BindingTemplate<T> {
   return function applyBindingScopeAndTag(binding) {
     if (scopeAndTags.scope) {
       binding.inScope(scopeAndTags.scope);
@@ -115,11 +125,13 @@ export function asBindingTemplate(
 /**
  * Get binding metadata for a class
  * @param target - The target class
+ *
+ * @typeParam T - Value type
  */
-export function getBindingMetadata(
+export function getBindingMetadata<T = unknown>(
   target: Function,
-): BindingMetadata | undefined {
-  return MetadataInspector.getClassMetadata<BindingMetadata>(
+): BindingMetadata<T> | undefined {
+  return MetadataInspector.getClassMetadata<BindingMetadata<T>>(
     BINDING_METADATA_KEY,
     target,
   );
@@ -139,8 +151,10 @@ export function removeNameAndKeyTags(binding: Binding<unknown>) {
  * Get the binding template for a class with binding metadata
  *
  * @param cls - A class with optional `@bind`
+ *
+ * @typeParam T - Value type
  */
-export function bindingTemplateFor<T = unknown>(
+export function bindingTemplateFor<T>(
   cls: Constructor<T | Provider<T>>,
 ): BindingTemplate<T> {
   const spec = getBindingMetadata(cls);
@@ -213,8 +227,10 @@ export type BindingFromClassOptions = {
  *
  * @param cls - A class. It can be either a plain class or  a value provider class
  * @param options - Options to customize the binding key
+ *
+ * @typeParam T - Value type
  */
-export function createBindingFromClass<T = unknown>(
+export function createBindingFromClass<T>(
   cls: Constructor<T | Provider<T>>,
   options: BindingFromClassOptions = {},
 ): Binding<T> {
@@ -280,9 +296,11 @@ function getNamespace(type: string, typeNamespaces = DEFAULT_TYPE_NAMESPACES) {
  *
  * @param cls - A class to be bound
  * @param options - Options to customize how to build the key
+ *
+ * @typeParam T - Value type
  */
-function buildBindingKey(
-  cls: Constructor<unknown>,
+function buildBindingKey<T>(
+  cls: Constructor<T | Provider<T>>,
   options: BindingFromClassOptions = {},
 ) {
   if (options.key) return options.key;
