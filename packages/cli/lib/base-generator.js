@@ -37,6 +37,34 @@ module.exports = class BaseGenerator extends Generator {
    */
   _setupGenerator() {
     debug('Setting up generator', this.constructor.name);
+    // For the options coming from Yeoman,
+    // overwrite the whole option object so that they can get translated.
+    this._options['help'] = {
+      type: Boolean,
+      alias: 'h',
+      description: g.f("Print the generator's options and usage"),
+    };
+    this._options['skip-cache'] = {
+      type: Boolean,
+      description: g.f('Do not remember prompt answers'),
+      default: false,
+    };
+    this._options['skip-install'] = {
+      type: Boolean,
+      description: g.f('Do not automatically install dependencies'),
+      default: false,
+    };
+    this._options['force-install'] = {
+      type: Boolean,
+      description: g.f('Fail on install dependencies error'),
+      default: false,
+    };
+
+    debug(
+      'Try overwrite yeoman messages globally',
+      this._options['help'].description,
+    );
+
     this.option('config', {
       type: String,
       alias: 'c',
