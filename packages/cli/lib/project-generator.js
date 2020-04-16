@@ -114,9 +114,13 @@ module.exports = class ProjectGenerator extends BaseGenerator {
       projectType: this.projectType,
       dependencies: utils.getDependencies(),
     };
-    this.projectOptions = ['name', 'description', 'outdir', 'private'].concat(
-      this.buildOptions,
-    );
+    this.projectOptions = [
+      'name',
+      'description',
+      'outdir',
+      'private',
+      'apiconnect',
+    ].concat(this.buildOptions);
     this.projectOptions.forEach(n => {
       if (typeof n === 'object') {
         n = n.name;

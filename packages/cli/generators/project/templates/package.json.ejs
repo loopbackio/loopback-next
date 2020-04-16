@@ -80,6 +80,9 @@
 <% if (project.repositories) { -%>
     "@loopback/repository": "<%= project.dependencies['@loopback/repository'] -%>",
 <% } -%>
+<% if (project.apiconnect) { -%>
+    "@loopback/apiconnect": "<%= project.dependencies['@loopback/apiconnect'] -%>",
+<% } -%>
     "@loopback/rest": "<%= project.dependencies['@loopback/rest'] -%>",
 <% if (project.services) { -%>
     "@loopback/rest-explorer": "<%= project.dependencies['@loopback/rest-explorer'] -%>",

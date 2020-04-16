@@ -6,8 +6,11 @@
 import {Application} from '@loopback/core';
 import {RestApplication, RestServer} from '@loopback/rest';
 import {expect} from '@loopback/testlab';
-import {ApiConnectBindings, ApiConnectComponent} from '../..';
-import {ApiConnectSpecOptions} from '../../apiconnect.spec-enhancer';
+import {
+  ApiConnectBindings,
+  ApiConnectComponent,
+  ApiConnectSpecOptions,
+} from '../..';
 
 describe('Extension for IBM API Connect - OASEnhancer', () => {
   let app: Application;
