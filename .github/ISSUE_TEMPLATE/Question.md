@@ -17,7 +17,7 @@ Please use one of the following resources for help:
 
 - https://stackoverflow.com/tags/loopbackjs
 - https://groups.google.com/forum/#!forum/loopbackjs
-- https://gitter.im/strongloop/loopback
+- https://join.slack.com/t/loopbackio/shared_invite/zt-8lbow73r-SKAKz61Vdao~_rGf91pcsw
 
 **Immediate support**
 

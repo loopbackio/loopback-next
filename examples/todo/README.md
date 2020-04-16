@@ -76,8 +76,9 @@ continue with this tutorial!
 
 ### Need help?
 
-Check out our [Gitter channel](https://gitter.im/strongloop/loopback) and ask
-for help with this tutorial.
+Check out our
+[Slack](https://join.slack.com/t/loopbackio/shared_invite/zt-8lbow73r-SKAKz61Vdao~_rGf91pcsw)
+and ask for help with this tutorial.
 
 ### Bugs/Feedback
 
