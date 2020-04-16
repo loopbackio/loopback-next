@@ -175,6 +175,32 @@ describe('app-generator with --applicationName', () => {
   });
 });
 
+describe('app-generator with --apiconnect', () => {
+  before(() => {
+    return helpers
+      .run(generator)
+      .withOptions({apiconnect: true})
+      .withPrompts(props);
+  });
+  it('adds imports for ApiConnectComponent', () => {
+    assert.fileContent(
+      'src/application.ts',
+      `
+import {
+  ApiConnectBindings,
+  ApiConnectComponent,
+  ApiConnectSpecOptions,
+} from '@loopback/apiconnect';
+`,
+    );
+    assert.fileContent(
+      'src/application.ts',
+      'this.component(ApiConnectComponent);',
+    );
+    assert.fileContent('package.json', '"@loopback/apiconnect"');
+  });
+});
+
 // The test takes about 1 min to install dependencies
 function testFormat() {
   before(function () {

@@ -11,6 +11,13 @@ import {RestApplication} from '@loopback/rest';
 <% if (project.services) { -%>
 import {ServiceMixin} from '@loopback/service-proxy';
 <% } -%>
+<% if (project.apiconnect) { -%>
+import {
+  ApiConnectBindings,
+  ApiConnectComponent,
+  ApiConnectSpecOptions,
+} from '@loopback/apiconnect';
+<% } -%>
 import path from 'path';
 import {MySequence} from './sequence';
 
@@ -37,6 +44,14 @@ export class <%= project.applicationName %> extends BootMixin(RestApplication) {
       path: '/explorer',
     });
     this.component(RestExplorerComponent);
+<%_ if (project.apiconnect) { -%>
+    this.component(ApiConnectComponent);
+    const apiConnectOptions: ApiConnectSpecOptions = {
+      targetUrl: 'http://localhost:3000/',
+    };
+    this.configure(ApiConnectBindings.API_CONNECT_SPEC_ENHANCER).to(
+      apiConnectOptions,
+<%_ } -%>
 
     this.projectRoot = __dirname;
     // Customize @loopback/boot Booter Conventions here

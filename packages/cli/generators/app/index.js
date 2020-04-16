@@ -49,6 +49,11 @@ module.exports = class AppGenerator extends ProjectGenerator {
       description: g.f('Include service-proxy imports and ServiceMixin'),
     });
 
+    this.option('apiconnect', {
+      type: Boolean,
+      description: g.f('Include ApiConnectComponent'),
+    });
+
     return super._setupGenerator();
   }
 
