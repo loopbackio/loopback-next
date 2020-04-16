@@ -344,7 +344,27 @@ function buildMethodSpec(controllerSpec, op, options) {
       names[argName] = 1;
     }
     registerAnonymousSchema([methodName, argName], paramSpec.schema, options);
-    const paramType = mapSchemaType(paramSpec.schema, options);
+    let propSchema = paramSpec.schema;
+    if (propSchema == null) {
+      /*
+        {
+          name: 'where',
+          in: 'query',
+          content: { 'application/json': { schema: [Object] } }
+        }
+        */
+      const content = paramSpec.content;
+      const json = content && content['application/json'];
+      propSchema = json && json.schema;
+      if (propSchema == null && content) {
+        for (const m of content) {
+          propSchema = content[m].schema;
+          if (propSchema) break;
+        }
+      }
+    }
+    propSchema = propSchema || {type: 'string'};
+    const paramType = mapSchemaType(propSchema, options);
     addImportsForType(paramType);
     if (Array.isArray(_comments)) {
       _comments.push(`@param ${argName} ${paramSpec.description || ''}`);

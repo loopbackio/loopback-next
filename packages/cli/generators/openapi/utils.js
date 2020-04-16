@@ -36,7 +36,7 @@ function isExtension(key) {
  */
 function debugJson(msg, obj) {
   if (debug.enabled) {
-    debug('%s: %s', msg, JSON.stringify(obj, null, 2));
+    debug('%s: %s', msg, util.inspect(obj, {depth: 10}));
   }
 }
 

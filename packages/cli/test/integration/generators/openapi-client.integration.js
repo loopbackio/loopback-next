@@ -75,7 +75,10 @@ describe('openapi-generator with --client', function () {
   });
 });
 
-it('generates files with --client for an existing datasource', async () => {
+it('generates files with --client for an existing datasource', async function () {
+  // These tests take longer to execute, they used to time out on Travis CI
+  // eslint-disable-next-line no-invalid-this
+  this.timeout(10000);
   await testUtils
     .executeGenerator(generator)
     .inDir(sandbox.path, () =>

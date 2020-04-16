@@ -55,10 +55,13 @@ pulvinar elit eu, euismod sapien.
    *
    * @param tags tags to filter by
    * @param limit maximum number of results to return
+   * @param where 
    * @returns pet response
    */
   @operation('get', '/pets')
-  async findPets(@param({name: 'tags', in: 'query'}) tags: string[], @param({name: 'limit', in: 'query'}) limit: number): Promise<Pet[]> {
+  async findPets(@param({name: 'tags', in: 'query'}) tags: string[], @param({name: 'limit', in: 'query'}) limit: number, @param({name: 'where', in: 'query'}) where: {
+  [additionalProperty: string]: any;
+}): Promise<Pet[]> {
     throw new Error('Not implemented');
   }
 
