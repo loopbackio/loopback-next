@@ -67,6 +67,10 @@ LoopBack 4 comes with the following example projects.
   An example showing how to compose an application from component and
   controllers, interceptors, and observers.
 
+- **[multi-tenancy](https://github.com/strongloop/loopback-next/tree/master/examples/multi-tenancy)**:
+  An example application to demonstrate how to implement multi-tenancy with
+  LoopBack 4.
+
 - **[rpc-server](https://github.com/strongloop/loopback-next/tree/master/examples/rpc-server)**:
   An example showing how to implement a made-up RPC protocol.
 

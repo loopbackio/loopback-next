@@ -129,6 +129,7 @@
 /examples/greeting-app @emonddr @jannyHou @raymondfeng
 /examples/log-extension @emonddr @jannyHou @raymondfeng
 /examples/greeter-extension @emonddr @jannyHou @raymondfeng
+/examples/multi-tenancy @raymondfeng
 /docs/site/tutorials/core @emonddr @jannyHou @raymondfeng
 
 #
