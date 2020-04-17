@@ -13,33 +13,43 @@ const fs = require('fs-extra');
 const g = require('../../lib/globalize');
 
 const EXAMPLES = {
-  todo: 'Tutorial example on how to build an application with LoopBack 4.',
-  'todo-list':
+  todo: g.f('Tutorial example on how to build an application with LoopBack 4.'),
+  'todo-list': g.f(
     'Continuation of the todo example using relations in LoopBack 4.',
-  'hello-world': 'A simple hello-world application using LoopBack 4.',
-  'log-extension': 'An example extension project for LoopBack 4.',
-  'rpc-server': 'A basic RPC server using a made-up protocol.',
-  'soap-calculator': 'An example on how to integrate SOAP web services.',
-  'express-composition':
+  ),
+  'hello-world': g.f('A simple hello-world application using LoopBack 4.'),
+  'log-extension': g.f('An example extension project for LoopBack 4.'),
+  'rpc-server': g.f('A basic RPC server using a made-up protocol.'),
+  'soap-calculator': g.f('An example on how to integrate SOAP web services.'),
+  'express-composition': g.f(
     'A simple Express application that uses LoopBack 4 REST API.',
-  context: 'Standalone examples showing how to use @loopback/context.',
-  'greeter-extension':
+  ),
+  context: g.f('Standalone examples showing how to use @loopback/context.'),
+  'greeter-extension': g.f(
     'An example showing how to implement the extension point/extension pattern.',
-  'greeting-app':
+  ),
+  'greeting-app': g.f(
     'An example showing how to compose an application from component and ' +
-    'controllers, interceptors, and observers.',
-  'lb3-application':
+      'controllers, interceptors, and observers.',
+  ),
+  'lb3-application': g.f(
     'An example LoopBack 3 application mounted in a LoopBack 4 project.',
-  'rest-crud':
+  ),
+  'rest-crud': g.f(
     'A simplified version of the Todo example that only requires a model and ' +
-    'a datasource.',
-  'file-transfer':
+      'a datasource.',
+  ),
+  'file-transfer': g.f(
     'An example showing how to expose APIs to upload/download files.',
-  'access-control-migration':
+  ),
+  'access-control-migration': g.f(
     'An access control example migrated from the LoopBack 3 repository ' +
-    'loopback-example-access-control.',
-  'metrics-prometheus': 'An example illustrating metrics using Prometheus.',
-  'validation-app': 'An example demonstrating how to add validations.',
+      'loopback-example-access-control.',
+  ),
+  'metrics-prometheus': g.f(
+    'An example illustrating metrics using Prometheus.',
+  ),
+  'validation-app': g.f('An example demonstrating how to add validations.'),
 };
 Object.freeze(EXAMPLES);
 
