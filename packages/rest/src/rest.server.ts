@@ -35,6 +35,7 @@ import {PathParams} from 'express-serve-static-core';
 import {IncomingMessage, ServerResponse} from 'http';
 import {ServerOptions} from 'https';
 import {safeDump} from 'js-yaml';
+import {cloneDeep} from 'lodash';
 import {ServeStaticOptions} from 'serve-static';
 import {writeErrorToResponse} from 'strong-error-handler';
 import {BodyParser, REQUEST_BODY_PARSER_TAG} from './body-parsers';
@@ -82,12 +83,6 @@ export interface HttpServerLike {
 }
 
 const SequenceActions = RestBindings.SequenceActions;
-
-// NOTE(bajtos) we cannot use `import cloneDeep from 'lodash/cloneDeep'
-// because it produces the following TypeScript error:
-//  Module '"(...)/node_modules/@types/lodash/cloneDeep/index"' resolves to
-//  a non-module entity and cannot be imported using this construct.
-const cloneDeep: <T>(value: T) => T = require('lodash/cloneDeep');
 
 /**
  * A REST API server for use with Loopback.
