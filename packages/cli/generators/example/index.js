@@ -50,6 +50,9 @@ const EXAMPLES = {
     'An example illustrating metrics using Prometheus.',
   ),
   'validation-app': g.f('An example demonstrating how to add validations.'),
+  'multi-tenancy': g.f(
+    'An example application to demonstrate how to implement multi-tenancy with LoopBack 4.',
+  ),
 };
 Object.freeze(EXAMPLES);
 
