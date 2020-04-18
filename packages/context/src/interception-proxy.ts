@@ -80,6 +80,7 @@ export class InterceptionHandler<T extends object> implements ProxyHandler<T> {
   constructor(
     private context = new Context(),
     private session?: ResolutionSession,
+    private source?: InvocationSource,
   ) {}
 
   get(target: T, propertyName: PropertyKey, receiver: unknown) {
@@ -94,7 +95,10 @@ export class InterceptionHandler<T extends object> implements ProxyHandler<T> {
           target,
           propertyName,
           args,
-          {source: this.session && new ProxySource(this.session)},
+          {
+            source:
+              this.source ?? (this.session && new ProxySource(this.session)),
+          },
         );
       };
     } else {
@@ -107,14 +111,17 @@ export class InterceptionHandler<T extends object> implements ProxyHandler<T> {
  * Create a proxy that applies interceptors for method invocations
  * @param target - Target class or object
  * @param context - Context object
+ * @param session - Resolution session
+ * @param source - Invocation source
  */
 export function createProxyWithInterceptors<T extends object>(
   target: T,
   context?: Context,
   session?: ResolutionSession,
+  source?: InvocationSource,
 ): AsyncProxy<T> {
   return new Proxy(
     target,
-    new InterceptionHandler(context, ResolutionSession.fork(session)),
+    new InterceptionHandler(context, ResolutionSession.fork(session), source),
   ) as AsyncProxy<T>;
 }
