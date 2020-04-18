@@ -52,7 +52,7 @@
     "@loopback/eslint-config": "^6.0.3",
     "@loopback/http-caching-proxy": "^2.0.4",
     "@loopback/testlab": "^3.0.1",
-    "@types/lodash": "^4.14.149",
+    "@types/lodash": "^4.14.150",
     "@types/node": "^10.17.20",
     "@typescript-eslint/eslint-plugin": "^2.28.0",
     "@typescript-eslint/parser": "^2.28.0",
