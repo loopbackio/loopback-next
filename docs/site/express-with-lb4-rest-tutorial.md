@@ -9,14 +9,15 @@ summary: A simple Express application with LoopBack 4 REST API
 
 ## Overview
 
-[Express](https://expressjs.com) is an unopinionated Node.js framework. LoopBack
-REST API can be mounted to an Express application and be used as middleware.
-This way the user can mix and match features from both frameworks to suit their
-needs.
+[Express](https://expressjs.com) is an un-opinionated Node.js framework.
+LoopBack REST API can be mounted to an Express application and be used as
+middleware. This way the user can mix and match features from both frameworks to
+suit their needs.
 
 {% include note.html content="
 If you want to use LoopBack as the host instead and mount your Express
 application on a LoopBack 4 application, see
+[Using Express Middleware](Express-middleware.md) and
 [Mounting an Express Router](Routes.md#mounting-an-express-router).
 " %}
 
