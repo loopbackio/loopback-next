@@ -1,0 +1,150 @@
+<head>
+  {% include analytics.html %}
+</head>
+
+<table width="750">
+  <thead>
+    <tr>
+      <th width="200">Commands</th>
+      <th>Description</th>
+      <th>Reason for difference from LB3</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <tr>
+      <td>
+        <code>lb4 repository</code>
+      </td>
+      <td> Create a repository for a model
+      </td>
+      <td> A new concept in LB4. A model's <a href="https://loopback.io/doc/en/lb4/Repositories.html">repository</a>> defines the CRUD operations. In LB3, the model defined the CRUD operations.
+      </td>
+
+    </tr>
+
+    <tr>
+      <td>
+        <code>lb4 controller</code>
+      </td>
+      <td> Create a controller for a model
+      </td>
+      <td> A new concept in LB4. A model's <a href="https://loopback.io/doc/en/lb4/Controllers.html">controller</a> defines its REST API endpoints. In LB3, the model's remote methods defined the REST API endpoints.
+      </td>
+
+    </tr>
+
+
+    <tr>
+      <td>
+        <code>lb4 import-lb3-models</code>
+      </td>
+      <td> Import models from an LB3 project into LB4
+      </td>
+      <td> A new utility command in LB4.
+      </td>
+
+    </tr>
+
+    <tr>
+      <td>
+        <code>lb4 rest-crud</code>
+      </td>
+      <td> Use this command against a model and datasource, and it creates a rest-crud configuration that allows you to avoid creating a repository and controller for the model
+      </td>
+      <td> A new utility command in LB4. In LB3, the model defined the CRUD operations and REST API endpoints; there was no need for a command like this. In fact, this LB4 command's purpose allows a user to avoid defining a repository and controller for a given model; similar to the user effort in LB3.
+      </td>
+
+    </tr>
+
+    <tr>
+      <td>
+        <code>lb4 service</code>
+      </td>
+      <td> Create a service
+      </td>
+      <td> A new concept in LB4. See <a href="https://loopback.io/doc/en/lb4/Services.html">Services</a> for more details.
+      </td>
+
+    </tr>
+
+    <tr>
+      <td>
+        <code>lb4 discover</code>
+      </td>
+      <td> Create models based on table definitions of database backends
+      </td>
+      <td> A new utility command in LB4. In LB3, <a href="https://loopback.io/doc/en/lb3/Discovering-models-from-relational-databases.html">discovery</a> was performed programmatically.
+      </td>
+
+    </tr>
+
+    <tr>
+      <td>
+        <code>lb4 observer</code>
+      </td>
+      <td> Create a lifecycle observer
+      </td>
+      <td> A new concept in LB4. See <a href="https://loopback.io/doc/en/lb4/Life-cycle.html">Life cycle events and observers</a> for more details.
+      </td>
+
+    </tr>
+
+    <tr>
+      <td>
+        <code>lb4 interceptor</code>
+      </td>
+      <td> Create an interceptor
+      </td>
+      <td> A new concept in LB4. See <a href="https://loopback.io/doc/en/lb4/Interceptors.html">Interceptors</a> for more details.
+      </td>
+
+    </tr>
+
+    <tr>
+      <td>
+        <code>lb4 extension</code>
+      </td>
+      <td> Create a new extension
+      </td>
+      <td> A new utility command in LB4. LB3 modules are stored in separate github repositories whereas LB4 modules are stored in a single repository (a monorepo). This LB4 command allows a contributor to easily add a new extension subdirectory to the monorepo.
+      </td>
+
+    </tr>
+
+    <tr>
+      <td>
+        <code>lb4 update</code>
+      </td>
+      <td> Update Loopback 4 project dependencies
+      </td>
+      <td> A new utility command in LB4.
+      </td>
+
+    </tr>
+
+    <tr>
+      <td>
+        <code>lb4 copyright</code>
+      </td>
+      <td> Add/Update Copyright headers in source code files
+      </td>
+      <td> A new utility command in LB4.
+      </td>
+
+    </tr>
+
+
+    <tr>
+      <td>
+        <code>lb4 example</code>
+      </td>
+      <td> Download LoopBack 4 examples
+      </td>
+      <td> A new utility command in LB4.
+      </td>
+
+    </tr>
+
+  </tbody>
+</table>
