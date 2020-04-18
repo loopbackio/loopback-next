@@ -145,7 +145,7 @@ export class Application extends Context implements LifeCycleObserver {
    * app.controller(MyController).lock();
    * ```
    */
-  controller(controllerCtor: ControllerClass, name?: string): Binding {
+  controller<T>(controllerCtor: ControllerClass<T>, name?: string): Binding<T> {
     this.debug('Adding controller %s', name ?? controllerCtor.name);
     const binding = createBindingFromClass(controllerCtor, {
       name,
@@ -349,7 +349,10 @@ export class Application extends Context implements LifeCycleObserver {
    * app.component(ProductComponent);
    * ```
    */
-  public component(componentCtor: Constructor<Component>, name?: string) {
+  public component<T extends Component = Component>(
+    componentCtor: Constructor<T>,
+    name?: string,
+  ) {
     this.debug('Adding component: %s', name ?? componentCtor.name);
     const binding = createBindingFromClass(componentCtor, {
       name,
@@ -565,7 +568,7 @@ export interface ApplicationConfig {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type ControllerClass = Constructor<any>;
+export type ControllerClass<T = any> = Constructor<T>;
 
 /**
  * Type description for `package.json`
