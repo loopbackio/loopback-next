@@ -103,6 +103,14 @@ children:
       url: Parsing-requests.html
       output: 'web, pdf'
 
+  - title: 'Middleware'
+    url: Middleware.html
+    output: 'web, pdf'
+
+  - title: 'Using Express Middleware'
+    url: Express-middleware.html
+    output: 'web, pdf'
+
   - title: 'Decorators'
     url: Decorators.html
     output: 'web, pdf'
