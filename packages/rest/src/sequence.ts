@@ -4,7 +4,8 @@
 // License text available at https://opensource.org/licenses/MIT
 
 const debug = require('debug')('loopback:rest:sequence');
-import {inject} from '@loopback/context';
+import {inject, ValueOrPromise} from '@loopback/context';
+import {InvokeMiddleware} from '@loopback/express';
 import {RestBindings} from './keys';
 import {RequestContext} from './request-context';
 import {FindRoute, InvokeMethod, ParseParams, Reject, Send} from './types';
@@ -18,7 +19,7 @@ const SequenceActions = RestBindings.SequenceActions;
 export type SequenceFunction = (
   context: RequestContext,
   sequence: DefaultSequence,
-) => Promise<void> | void;
+) => ValueOrPromise<void>;
 
 /**
  * A sequence handler is a class implementing sequence of actions
@@ -53,6 +54,13 @@ export interface SequenceHandler {
  * ```
  */
 export class DefaultSequence implements SequenceHandler {
+  /**
+   * Optional invoker for registered middleware in a chain.
+   * To be injected via SequenceActions.INVOKE_MIDDLEWARE.
+   */
+  @inject(SequenceActions.INVOKE_MIDDLEWARE, {optional: true})
+  protected invokeMiddleware: InvokeMiddleware = () => false;
+
   /**
    * Constructor: Injects findRoute, invokeMethod & logError
    * methods as promises.
@@ -95,6 +103,8 @@ export class DefaultSequence implements SequenceHandler {
   async handle(context: RequestContext): Promise<void> {
     try {
       const {request, response} = context;
+      // Invoke registered Express middleware
+      await this.invokeMiddleware(context);
       const route = this.findRoute(request);
       const args = await this.parseParams(request, route);
       const result = await this.invoke(route, args);

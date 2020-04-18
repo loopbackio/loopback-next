@@ -5,6 +5,7 @@
 
 import {BindingKey, Context} from '@loopback/context';
 import {CoreBindings} from '@loopback/core';
+import {InvokeMiddleware} from '@loopback/express';
 import {HttpProtocol} from '@loopback/http-server';
 import {OpenApiSpec, OperationObject} from '@loopback/openapi-v3';
 import https from 'https';
@@ -181,6 +182,12 @@ export namespace RestBindings {
    * Bindings for potential actions that could be used in a sequence
    */
   export namespace SequenceActions {
+    /**
+     * Binding key for setting and injecting a route finding function
+     */
+    export const INVOKE_MIDDLEWARE = BindingKey.create<InvokeMiddleware>(
+      'rest.sequence.actions.invokeMiddleware',
+    );
     /**
      * Binding key for setting and injecting a route finding function
      */

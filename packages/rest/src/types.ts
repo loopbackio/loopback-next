@@ -4,6 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Binding, BoundValue} from '@loopback/context';
+import {HandlerContext, Request, Response} from '@loopback/express';
 import {ReferenceObject, SchemaObject} from '@loopback/openapi-v3';
 import ajv, {Ajv, FormatDefinition, KeywordDefinition} from 'ajv';
 import {
@@ -12,19 +13,12 @@ import {
   OptionsText,
   OptionsUrlencoded,
 } from 'body-parser';
-import {Request, Response} from 'express';
 import {ResolvedRoute, RouteEntry} from './router';
 
-export {Request, Response};
-
 /**
- * An object holding HTTP request, response and other data
- * needed to handle an incoming HTTP request.
+ * Re-export types from `./middleware`
  */
-export interface HandlerContext {
-  readonly request: Request;
-  readonly response: Response;
-}
+export * from '@loopback/express';
 
 /**
  * Find a route matching the incoming request.
