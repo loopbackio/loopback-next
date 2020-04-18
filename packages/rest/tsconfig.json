@@ -30,6 +30,9 @@
     },
     {
       "path": "../openapi-v3/tsconfig.json"
+    },
+    {
+      "path": "../express/tsconfig.json"
     }
   ]
 }

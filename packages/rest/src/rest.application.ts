@@ -3,8 +3,20 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Binding, BindingAddress, Constructor, Context} from '@loopback/context';
+import {
+  Binding,
+  BindingAddress,
+  Constructor,
+  Context,
+  Provider,
+} from '@loopback/context';
 import {Application, ApplicationConfig, Server} from '@loopback/core';
+import {
+  ExpressMiddlewareFactory,
+  ExpressRequestHandler,
+  Middleware,
+  MiddlewareBindingOptions,
+} from '@loopback/express';
 import {OpenApiSpec, OperationObject} from '@loopback/openapi-v3';
 import {PathParams} from 'express-serve-static-core';
 import {ServeStaticOptions} from 'serve-static';
@@ -13,12 +25,7 @@ import {BodyParser} from './body-parsers';
 import {RestBindings} from './keys';
 import {RestComponent} from './rest.component';
 import {HttpRequestListener, HttpServerLike, RestServer} from './rest.server';
-import {
-  ControllerClass,
-  ControllerFactory,
-  ExpressRequestHandler,
-  RouteEntry,
-} from './router';
+import {ControllerClass, ControllerFactory, RouteEntry} from './router';
 import {RouterSpec} from './router/router-spec';
 import {SequenceFunction, SequenceHandler} from './sequence';
 
@@ -131,6 +138,80 @@ export class RestApplication extends Application implements HttpServerLike {
    */
   basePath(path = '') {
     this.restServer.basePath(path);
+  }
+
+  /**
+   * Bind an Express middleware to this server context
+   *
+   * @example
+   * ```ts
+   * import myExpressMiddlewareFactory from 'my-express-middleware';
+   * const myExpressMiddlewareConfig= {};
+   * const myExpressMiddleware = myExpressMiddlewareFactory(myExpressMiddlewareConfig);
+   * server.expressMiddleware('middleware.express.my', myExpressMiddleware);
+   * ```
+   * @param key - Middleware binding key
+   * @param middleware - Express middleware handler function(s)
+   *
+   */
+  expressMiddleware(
+    key: BindingAddress,
+    middleware: ExpressRequestHandler | ExpressRequestHandler[],
+    options?: MiddlewareBindingOptions,
+  ): Binding<Middleware>;
+
+  /**
+   * Bind an Express middleware to this server context
+   *
+   * @example
+   * ```ts
+   * import myExpressMiddlewareFactory from 'my-express-middleware';
+   * const myExpressMiddlewareConfig= {};
+   * server.expressMiddleware(myExpressMiddlewareFactory, myExpressMiddlewareConfig);
+   * ```
+   * @param middlewareFactory - Middleware module name or factory function
+   * @param middlewareConfig - Middleware config
+   * @param options - Options for registration
+   *
+   * @typeParam CFG - Configuration type
+   */
+  expressMiddleware<CFG>(
+    middlewareFactory: ExpressMiddlewareFactory<CFG>,
+    middlewareConfig?: CFG,
+    options?: MiddlewareBindingOptions,
+  ): Binding<Middleware>;
+
+  expressMiddleware<CFG>(
+    factoryOrKey: ExpressMiddlewareFactory<CFG> | BindingAddress<Middleware>,
+    configOrHandlers: CFG | ExpressRequestHandler | ExpressRequestHandler[],
+    options: MiddlewareBindingOptions = {},
+  ): Binding<Middleware> {
+    return this.restServer.expressMiddleware(
+      factoryOrKey,
+      configOrHandlers,
+      options,
+    );
+  }
+
+  /**
+   * Register a middleware function or provider class
+   *
+   * @example
+   * ```ts
+   * const log: Middleware = async (requestCtx, next) {
+   *   // ...
+   * }
+   * server.middleware(log);
+   * ```
+   *
+   * @param middleware - Middleware function or provider class
+   * @param options - Middleware binding options
+   */
+  middleware(
+    middleware: Middleware | Constructor<Provider<Middleware>>,
+    options: MiddlewareBindingOptions = {},
+  ): Binding<Middleware> {
+    return this.restServer.middleware(middleware, options);
   }
 
   /**

@@ -5,28 +5,23 @@
 
 import {Context} from '@loopback/context';
 import {
+  executeExpressRequestHandler,
+  ExpressRequestHandler,
+  Request,
+} from '@loopback/express';
+import {
   OpenApiSpec,
   OperationObject,
   SchemasObject,
 } from '@loopback/openapi-v3';
-import express, {RequestHandler} from 'express';
+import express from 'express';
 import {PathParams} from 'express-serve-static-core';
 import HttpErrors from 'http-errors';
-import onFinished from 'on-finished';
 import {ServeStaticOptions} from 'serve-static';
-import {promisify} from 'util';
 import {RequestContext} from '../request-context';
-import {
-  OperationArgs,
-  OperationRetval,
-  PathParameterValues,
-  Request,
-  Response,
-} from '../types';
+import {OperationArgs, OperationRetval, PathParameterValues} from '../types';
 import {ResolvedRoute, RouteEntry} from './route-entry';
 import {assignRouterSpec, RouterSpec} from './router-spec';
-
-export type ExpressRequestHandler = express.RequestHandler;
 
 /**
  * A registry of external, Express-style routes. These routes are invoked
@@ -99,14 +94,14 @@ class ExternalRoute implements RouteEntry, ResolvedRoute {
     {request, response}: RequestContext,
     args: OperationArgs,
   ): Promise<OperationRetval> {
-    let handled = await executeRequestHandler(
+    let handled = await executeExpressRequestHandler(
       this._externalRouter,
       request,
       response,
     );
     if (handled) return;
 
-    handled = await executeRequestHandler(
+    handled = await executeExpressRequestHandler(
       this._staticAssets,
       request,
       response,
@@ -141,36 +136,4 @@ export function rebaseOpenApiSpec<T extends Partial<OpenApiSpec>>(
   }
 
   return spec;
-}
-
-const onFinishedAsync = promisify(onFinished);
-
-/**
- * Execute an Express-style callback-based request handler.
- *
- * @param handler
- * @param request
- * @param response
- * @returns A promise resolved to:
- * - `true` when the request was handled
- * - `false` when the handler called `next()` to proceed to the next
- *    handler (middleware) in the chain.
- */
-function executeRequestHandler(
-  handler: RequestHandler,
-  request: Request,
-  response: Response,
-): Promise<boolean> {
-  const responseWritten = onFinishedAsync(response).then(() => true);
-  const handlerFinished = new Promise<boolean>((resolve, reject) => {
-    handler(request, response, err => {
-      if (err) {
-        reject(err);
-      } else {
-        // Express router called next, which means no route was matched
-        resolve(false);
-      }
-    });
-  });
-  return Promise.race([handlerFinished, responseWritten]);
 }

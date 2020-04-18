@@ -4,16 +4,21 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Context} from '@loopback/context';
-import onFinished from 'on-finished';
+import {
+  HandlerContext,
+  MiddlewareContext,
+  Request,
+  Response,
+} from '@loopback/express';
 import {RestBindings} from './keys';
 import {RestServerResolvedConfig} from './rest.server';
-import {HandlerContext, Request, Response} from './types';
 
 /**
  * A per-request Context combining an IoC container with handler context
  * (request, response, etc.).
  */
-export class RequestContext extends Context implements HandlerContext {
+export class RequestContext extends MiddlewareContext
+  implements HandlerContext {
   /**
    * Get the protocol used by the client to make the request.
    * Please note this protocol may be different from what we are observing
@@ -97,20 +102,13 @@ export class RequestContext extends Context implements HandlerContext {
     public readonly serverConfig: RestServerResolvedConfig,
     name?: string,
   ) {
-    super(parent, name);
-    this._setupBindings(request, response);
-    onFinished(this.response, () => {
-      // Close the request context when the http response is finished so that
-      // it can be recycled by GC
-      this.close();
-    });
+    super(request, response, parent, name);
   }
 
-  private _setupBindings(request: Request, response: Response) {
-    this.bind(RestBindings.Http.REQUEST).to(request).lock();
-
-    this.bind(RestBindings.Http.RESPONSE).to(response).lock();
-
+  protected setupBindings() {
+    super.setupBindings();
+    this.bind(RestBindings.Http.REQUEST).to(this.request).lock();
+    this.bind(RestBindings.Http.RESPONSE).to(this.response).lock();
     this.bind(RestBindings.Http.CONTEXT).to(this).lock();
   }
 }
