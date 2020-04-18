@@ -1,0 +1,104 @@
+<head>
+  {% include analytics.html %}
+</head>
+
+<table width="750">
+  <thead>
+    <tr>
+      <th width="200">Commands</th>
+      <th>Description</th>
+      <th>Workaround in LB4</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <tr>
+      <td>
+        <code>lb bluemix</code>
+      </td>
+      <td> Create a new application destined in Bluemix
+      </td>
+      <td> We have several tutorials on how to deploy a LoopBack 4 application to the IBM Cloud: <a href="https://loopback.io/doc/en/lb4/Deploying-to-IBM-Cloud.html">Deploying to Cloud Foundry on IBM Cloud</a>, <a href="https://loopback.io/doc/en/lb4/deploying_to_ibm_cloud_kubernetes.html">Deploying to Kubernetes on IBM Cloud</a>, <a href="https://loopback.io/doc/en/lb4/Appsody-LoopBack.html">Deploying to Kubernetes on IBM Cloud using Appsody</a>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <code>lb property</code>
+      </td>
+      <td>
+        Adds properties to an existing model
+      </td>
+      <td> Open the model file, and manually add a new property.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <code>lb acl</code>
+      </td>
+      <td>
+        Adds acl settings to models
+      </td>
+      <td> The <a href="https://github.com/strongloop/loopback-next/tree/master/examples/access-control-migration">access-control-migration</a> example demonstrates how to implement a Role Based Access Control (RBAC) system in LoopBack 4 using the <a href="https://loopback.io/doc/en/lb4/Loopback-component-authentication.html">AuthenticationComponent</a> and <a href="https://loopback.io/doc/en/lb4/Loopback-component-authorization.html">AuthorizationComponent</a> components. Also, see <a href="http://127.0.0.1:4001/doc/en/lb4/migration-auth-overview.html">Migrating authentication and authorization</a> for more details.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <code>lb remote-method</code>
+      </td>
+      <td>
+        Adds a new remote method to an application
+      </td>
+      <td> Open the model's controller file, add a new controller method, and decorate the new method with the appropriate <a href="https://loopback.io/doc/en/lb4/Decorators_openapi.html#commonly-used-operation-decorators">rest decorator</a> to define the new REST API endpoint. See <a href="https://loopback.io/doc/en/lb4/Controllers.html#writing-controller-methods">Writing controller methods</a> for more details. Depending on the purpose of this new controller method, you may also need to add a new method to the model's repository.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <code>lb middleware</code>
+      </td>
+      <td>
+        Add new middleware to the application
+      </td>
+      <td> There is <a href="https://github.com/strongloop/loopback-next/pull/5118">work in progress</a> to enable express middleware in the form of interceptors that you will need to create and register. Also, see <a href="http://127.0.0.1:4001/doc/en/lb4/migration-express-middleware.html">Migrating Express middleware</a> for more details.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <code>lb boot-script</code>
+      </td>
+      <td>
+        Creates a skeleton boot script in server/boot directory. Allows for customized intialization of anything during boot phase
+      </td>
+      <td> Create a <a href="https://loopback.io/doc/en/lb4/Life-cycle.html">lifecycle observer</a> to run custom code during different phases of the application's lifecycle; including startup. See <a href="https://loopback.io/doc/en/lb4/migration-boot-scripts.html">Migrating boot scripts</a> for more details.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <code>lb export-api-def</code>
+      </td>
+      <td>
+        Export the application's API definitions to a YAML or JSON file
+      </td>
+      <td> Visit the application's /openapi.json endpoint to access your OpenAPI specification in JSON format, or the /openapi.yaml endpoint for YAML. Alternatively, the OpenAPI specification file can also be accessed in code through the getApiSpec() function from your RestServer instance. Read <a href="https://loopback.io/doc/en/lb4/Defining-the-API-using-code-first-approach.html#reviewing-your-api-specification">Reviewing your API Specification</a> for more details.
+      </td>
+    </tr>
+
+
+    <tr>
+      <td>
+        <code>lb soap</code>
+      </td>
+      <td>
+        Create a SOAP client based on a SOAP service's WSDL file
+      </td>
+      <td> See <a href="https://loopback.io/doc/en/lb4/Calling-other-APIs-and-web-services.html">Calling other APIs and web services</a> for the simple steps required to connect to a SOAP service.
+      </td>
+    </tr>
+
+  </tbody>
+</table>
