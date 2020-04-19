@@ -30,7 +30,9 @@
     "typescript": "~3.8.3"
   },
   "scripts": {
-    "postinstall": "lerna bootstrap",
+    "bootstrap": "lerna bootstrap",
+    "postinstall": "npm run -s bootstrap && npm run -s update-ts-project-refs",
+    "update-ts-project-refs": "node bin/update-ts-project-refs.js -f",
     "update-packages": "npm run -s update-package-locks",
     "prerelease": "npm run build:full && npm run mocha && npm run lint",
     "release": "lerna version && lerna publish from-git --yes",
@@ -54,7 +56,7 @@
     "prettier:fix": "npm run prettier:cli -- --write",
     "clean": "lerna run clean && node packages/build/bin/run-clean \"packages/*/dist\" \"extensions/*/dist\" \"examples/*/dist\" \"benchmark/dist\"",
     "clean:lerna": "lerna clean",
-    "build": "node bin/run-lerna run build --sort",
+    "build": "node packages/build/bin/compile-package -b",
     "build:full": "npm ci --ignore-scripts && lerna bootstrap --ci && npm run clean && npm run build",
     "pretest": "npm run clean && npm run build",
     "test": "node packages/build/bin/run-nyc npm run mocha --scripts-prepend-node-path",

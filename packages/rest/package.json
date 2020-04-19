@@ -8,7 +8,7 @@
   "scripts": {
     "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
     "build": "lb-tsc",
-    "clean": "lb-clean loopback-rest*.tgz dist tsconfig.build.tsbuildinfo package",
+    "clean": "lb-clean loopback-rest*.tgz dist *.tsbuildinfo package",
     "pretest": "npm run build",
     "integration": "lb-mocha \"dist/__tests__/integration/**/*.js\"",
     "test": "lb-mocha \"dist/__tests__/**/*.js\"",

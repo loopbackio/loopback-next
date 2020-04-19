@@ -29,7 +29,7 @@
   },
   "scripts": {
     "build": "lb-tsc",
-    "clean": "lb-clean loopback-openapi-v3*.tgz dist tsconfig.build.tsbuildinfo package",
+    "clean": "lb-clean loopback-openapi-v3*.tgz dist *.tsbuildinfo package",
     "integration": "lb-mocha \"dist/__tests__/integration/**/*.js\"",
     "pretest": "npm run build",
     "test": "lb-mocha \"dist/__tests__/**/*.js\"",

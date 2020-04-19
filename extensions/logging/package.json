@@ -7,7 +7,7 @@
   },
   "scripts": {
     "build": "lb-tsc",
-    "clean": "lb-clean loopback-extension-logging*.tgz dist tsconfig.build.tsbuildinfo package",
+    "clean": "lb-clean loopback-extension-logging*.tgz dist *.tsbuildinfo package",
     "pretest": "npm run build",
     "test": "lb-mocha \"dist/__tests__/**/*.js\"",
     "verify": "npm pack && tar xf loopback-extension-logging*.tgz && tree package && npm run clean"
