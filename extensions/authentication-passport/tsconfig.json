@@ -7,15 +7,17 @@
     "composite": true
   },
   "include": [
-    "src/**/*",
-    "src/**/*.json"
+    "src"
   ],
   "references": [
+    {
+      "path": "../../packages/openapi-spec-builder/tsconfig.json"
+    },
     {
       "path": "../../packages/testlab/tsconfig.json"
     },
     {
-      "path": "../../packages/boot/tsconfig.json"
+      "path": "../../packages/authentication/tsconfig.json"
     },
     {
       "path": "../../packages/context/tsconfig.json"
@@ -24,19 +26,16 @@
       "path": "../../packages/core/tsconfig.json"
     },
     {
-      "path": "../../packages/openapi-v3/tsconfig.json"
+      "path": "../../packages/metadata/tsconfig.json"
     },
     {
-      "path": "../../packages/repository/tsconfig.json"
+      "path": "../../packages/openapi-v3/tsconfig.json"
     },
     {
       "path": "../../packages/rest/tsconfig.json"
     },
     {
-      "path": "../../packages/rest-explorer/tsconfig.json"
-    },
-    {
-      "path": "../../packages/service-proxy/tsconfig.json"
+      "path": "../../packages/security/tsconfig.json"
     }
   ]
 }

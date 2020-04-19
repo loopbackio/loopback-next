@@ -12,6 +12,12 @@
   ],
   "references": [
     {
+      "path": "../../packages/http-caching-proxy/tsconfig.json"
+    },
+    {
+      "path": "../../packages/repository/tsconfig.json"
+    },
+    {
       "path": "../../packages/testlab/tsconfig.json"
     },
     {
@@ -25,9 +31,6 @@
     },
     {
       "path": "../../packages/openapi-v3/tsconfig.json"
-    },
-    {
-      "path": "../../packages/repository/tsconfig.json"
     },
     {
       "path": "../../packages/rest/tsconfig.json"

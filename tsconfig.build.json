@@ -1,0 +1,19 @@
+{
+  "__comments__": [
+    "tsconfig.build.json is used by eslint to constrain files to be checked",
+    "tsconfig.json is used by tsc"
+  ],
+  "extends": "./packages/build/config/tsconfig.common.json",
+  "include": [
+    "acceptance",
+    "benchmark",
+    "examples",
+    "packages",
+    "extensions"
+  ],
+  "exclude": [
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/*.d.ts"
+  ]
+}

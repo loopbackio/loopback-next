@@ -27,16 +27,10 @@
       "path": "../../packages/openapi-v3/tsconfig.json"
     },
     {
-      "path": "../../packages/repository/tsconfig.json"
-    },
-    {
       "path": "../../packages/rest/tsconfig.json"
     },
     {
       "path": "../../packages/rest-explorer/tsconfig.json"
-    },
-    {
-      "path": "../../packages/service-proxy/tsconfig.json"
     }
   ]
 }

@@ -12,6 +12,9 @@
   ],
   "references": [
     {
+      "path": "../../packages/http-caching-proxy/tsconfig.json"
+    },
+    {
       "path": "../../packages/testlab/tsconfig.json"
     },
     {
@@ -33,10 +36,10 @@
       "path": "../../packages/rest/tsconfig.json"
     },
     {
-      "path": "../../packages/rest-explorer/tsconfig.json"
+      "path": "../../packages/rest-crud/tsconfig.json"
     },
     {
-      "path": "../../packages/service-proxy/tsconfig.json"
+      "path": "../../packages/rest-explorer/tsconfig.json"
     }
   ]
 }

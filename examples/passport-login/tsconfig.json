@@ -2,9 +2,57 @@
   "$schema": "http://json.schemastore.org/tsconfig",
   "extends": "@loopback/build/config/tsconfig.common.json",
   "compilerOptions": {
-    "experimentalDecorators": true,
     "outDir": "dist",
-    "rootDir": "src"
+    "experimentalDecorators": true,
+    "rootDir": "src",
+    "composite": true
   },
-  "include": ["src"]
+  "include": [
+    "src/**/*",
+    "src/**/*.json"
+  ],
+  "references": [
+    {
+      "path": "../../packages/http-caching-proxy/tsconfig.json"
+    },
+    {
+      "path": "../../packages/testlab/tsconfig.json"
+    },
+    {
+      "path": "../../packages/authentication/tsconfig.json"
+    },
+    {
+      "path": "../../extensions/authentication-passport/tsconfig.json"
+    },
+    {
+      "path": "../../packages/boot/tsconfig.json"
+    },
+    {
+      "path": "../../packages/context/tsconfig.json"
+    },
+    {
+      "path": "../../packages/core/tsconfig.json"
+    },
+    {
+      "path": "../../packages/openapi-v3/tsconfig.json"
+    },
+    {
+      "path": "../../packages/repository/tsconfig.json"
+    },
+    {
+      "path": "../../packages/rest/tsconfig.json"
+    },
+    {
+      "path": "../../packages/rest-crud/tsconfig.json"
+    },
+    {
+      "path": "../../packages/security/tsconfig.json"
+    },
+    {
+      "path": "../../packages/service-proxy/tsconfig.json"
+    },
+    {
+      "path": "../../packages/rest-explorer/tsconfig.json"
+    }
+  ]
 }
