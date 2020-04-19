@@ -24,7 +24,7 @@ requests versus Node function calls. In both cases, LoopBack models return JSON.
       <th>REST API</th>
     </tr>
   </thead>
-  <tbody>    
+  <tbody>
     <tr>
       <td>
         Find all model instances using specified filters.
@@ -223,7 +223,8 @@ the url would be:
 
 {% include important.html content=" A REST query must include the literal string
 \"filter\" in the URL query string. The Node.js API call does not include the
-literal string \"filter\" in the JSON."}
+literal string \"filter\" in the JSON.
+" %}
 
 {% include tip.html content="
 If you are trying [query filters](#filters) with curl, use the `-g` or `--globoff`  option to use brackets `[` and `]` in request URLs.
