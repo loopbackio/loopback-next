@@ -9,7 +9,7 @@
   "scripts": {
     "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
     "build": "lb-tsc",
-    "clean": "lb-clean loopback-service-proxy*.tgz dist tsconfig.build.tsbuildinfo package",
+    "clean": "lb-clean loopback-service-proxy*.tgz dist *.tsbuildinfo package",
     "integration": "lb-mocha \"dist/__tests__/integration/**/*.js\"",
     "pretest": "npm run build",
     "test": "lb-mocha \"dist/__tests__/**/*.js\"",

@@ -9,7 +9,7 @@
     "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
     "build:apidocs": "lb-apidocs",
     "build": "lb-tsc",
-    "clean": "lb-clean loopback-authentication-passport*.tgz dist tsconfig.build.tsbuildinfo package",
+    "clean": "lb-clean loopback-authentication-passport*.tgz dist *.tsbuildinfo package",
     "pretest": "npm run build",
     "test": "lb-mocha \"dist/__tests__/**/*.js\"",
     "unit": "lb-mocha \"dist/__tests__/unit/**/*.js\"",

@@ -9,7 +9,7 @@
   "scripts": {
     "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
     "build": "lb-tsc",
-    "clean": "lb-clean loopback-repository*.tgz dist tsconfig.build.tsbuildinfo package",
+    "clean": "lb-clean loopback-repository*.tgz dist *.tsbuildinfo package",
     "pretest": "npm run build",
     "test": "lb-mocha \"dist/__tests__/**/*.js\"",
     "verify": "npm pack && tar xf loopback-repository*.tgz && tree package && npm run clean"

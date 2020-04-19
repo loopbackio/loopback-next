@@ -8,7 +8,7 @@
   },
   "scripts": {
     "build": "lb-tsc",
-    "clean": "lb-clean loopback-test-repository-mysql*.tgz dist tsconfig.build.tsbuildinfo package",
+    "clean": "lb-clean loopback-test-repository-mysql*.tgz dist *.tsbuildinfo package",
     "pretest": "npm run build",
     "test": "npm run mocha",
     "mocha": "lb-mocha \"dist/__tests__/**/*.js\"",

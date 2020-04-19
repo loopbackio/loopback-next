@@ -11,7 +11,7 @@
   },
   "scripts": {
     "build": "lb-tsc",
-    "clean": "lb-clean loopback-model-api-builder*.tgz dist tsconfig.build.tsbuildinfo package",
+    "clean": "lb-clean loopback-model-api-builder*.tgz dist *.tsbuildinfo package",
     "pretest": "npm run build",
     "test": "",
     "verify": "npm pack && tar xf loopback-model-api-builder*.tgz && tree package && npm run clean"
