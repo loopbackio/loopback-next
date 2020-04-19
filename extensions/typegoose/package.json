@@ -1,0 +1,63 @@
+{
+  "name": "@loopback/typegoose",
+  "version": "0.0.1",
+  "description": "@loopback/typegoose",
+  "keywords": [
+    "loopback-extension",
+    "loopback"
+  ],
+  "main": "index.js",
+  "engines": {
+    "node": ">=10"
+  },
+  "scripts": {
+    "build": "lb-tsc",
+    "build:watch": "lb-tsc --watch",
+    "pretest": "npm run clean && npm run build",
+    "test": "lb-mocha --allow-console-logs \"dist/__tests__\"",
+    "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js",
+    "clean": "lb-clean dist *.tsbuildinfo .eslintcache"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "extensions/typegoose"
+  },
+  "author": "IBM Corp.",
+  "license": "MIT",
+  "files": [
+    "README.md",
+    "index.js",
+    "index.d.ts",
+    "dist",
+    "src",
+    "!*/__tests__"
+  ],
+  "dependencies": {
+    "@loopback/boot": "^2.0.4",
+    "@loopback/context": "^3.4.0",
+    "@loopback/core": "^2.3.0",
+    "@loopback/openapi-v3": "^3.1.3",
+    "@loopback/repository": "^2.1.1",
+    "@loopback/rest": "^3.2.1",
+    "@loopback/service-proxy": "^2.0.4",
+    "mongoose": "^5.9.10",
+    "tslib": "^1.10.0"
+  },
+  "devDependencies": {
+    "@loopback/build": "^5.0.1",
+    "@loopback/testlab": "^3.0.1",
+    "@typegoose/typegoose": "^6.4.0",
+    "@types/mongodb": "^3.5.9",
+    "@types/mongoose": "^5.7.12",
+    "@types/node": "^10.17.19",
+    "get-port": "^5.1.1",
+    "mongodb-memory-server": "^6.5.2",
+    "source-map-support": "^0.5.16",
+    "typescript": "~3.8.3"
+  },
+  "copyright.owner": "IBM Corp.",
+  "publishConfig": {
+    "access": "public"
+  }
+}
