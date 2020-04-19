@@ -12,7 +12,16 @@
   ],
   "references": [
     {
+      "path": "../../packages/http-caching-proxy/tsconfig.json"
+    },
+    {
       "path": "../../packages/testlab/tsconfig.json"
+    },
+    {
+      "path": "../../packages/authentication/tsconfig.json"
+    },
+    {
+      "path": "../../packages/authorization/tsconfig.json"
     },
     {
       "path": "../../packages/boot/tsconfig.json"
@@ -34,6 +43,9 @@
     },
     {
       "path": "../../packages/rest-explorer/tsconfig.json"
+    },
+    {
+      "path": "../../packages/security/tsconfig.json"
     },
     {
       "path": "../../packages/service-proxy/tsconfig.json"
