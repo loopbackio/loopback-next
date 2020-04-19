@@ -39,7 +39,7 @@ the application.
 
 {% include note.html content="
 Enable all options besides `docker`, unless you know what you are doing, see
-[The Getting Started guide](Getting-started.md) for more information.
+[The Getting Started guide](../../Getting-started.md) for more information.
 " %}
 
 ```sh

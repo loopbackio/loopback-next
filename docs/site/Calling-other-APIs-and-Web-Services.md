@@ -165,8 +165,6 @@ can find more details in the
 }
 ```
 
-Refer to the detailed information in [configure the options] and [templates].
-
 ## Add a service
 
 Add a service using the [Service generator](Service-generator.md) and specify

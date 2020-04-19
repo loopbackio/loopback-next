@@ -1017,7 +1017,7 @@ Later, when you visit
 application is running, search for the text `bearerAuth`. You should find these
 two occurrences:
 
-```
+```json
 "components": {
     "securitySchemes": {
       "bearerAuth": {
@@ -1030,7 +1030,7 @@ two occurrences:
 
 and
 
-```
+```json
 "/users/me": {
       "get": {
         "x-controller-name": "UserController",
@@ -1066,7 +1066,7 @@ The security scheme object definition is still defined in `components` section,
 but the `security` property value is set at the **top** level instead of the
 **operation** level.
 
-```
+```json
 "components": {
     "securitySchemes": {
       "bearerAuth": {

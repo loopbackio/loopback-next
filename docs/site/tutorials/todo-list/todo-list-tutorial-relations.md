@@ -44,8 +44,7 @@ Relation BelongsTo was created in src/
 
 {% include note.html content="
 We use **default** foreign key and source property names in this case.
-If you'd like to customize them, please check [Relation Metadata](
-../../HasMany-relation.md#relation-metadata) and other
+If you'd like to customize them, please check [Relation Metadata](../../HasMany-relation.md#relation-metadata) and other
 relations as well.
 " %}
 
