@@ -23,6 +23,7 @@ const path = require('path');
 const fs = require('fs');
 const glob = require('glob');
 const fse = require('fs-extra');
+const buildOptions = require('typescript').buildOpts;
 
 function run(argv, options) {
   if (options === true) {
@@ -102,9 +103,14 @@ function run(argv, options) {
   const args = [];
 
   const cwd = process.env.LERNA_ROOT_PATH || process.cwd();
-  if (tsConfigFile) {
-    // Make the config file relative the current directory
-    args.push('-p', path.relative(cwd, tsConfigFile));
+  if (tsConfigFile && fs.existsSync(tsConfigFile)) {
+    const tsconfig = require(tsConfigFile);
+    if (tsconfig.references) {
+      args.unshift('-b');
+    } else {
+      // Make the config file relative the current directory
+      args.push('-p', path.relative(cwd, tsConfigFile));
+    }
   }
 
   if (outDir) {
@@ -128,7 +134,69 @@ function run(argv, options) {
 
   args.push(...compilerOpts);
 
-  return utils.runCLI('typescript/lib/tsc', args, {cwd, ...options});
+  const validArgs = validArgsForBuild(args);
+
+  return utils.runCLI('typescript/lib/tsc', validArgs, {cwd, ...options});
+}
+
+/**
+ * `tsc -b` only accepts valid arguments. `npm run build -- --<other-arg>` may
+ * pass in extra arguments. We need to remove such arguments.
+ * @param {string[]} args An array of arguments
+ */
+function validArgsForBuild(args) {
+  const validBooleanOptions = [];
+  const validValueOptions = [];
+
+  // See https://github.com/microsoft/TypeScript/blob/v3.8.3/src/compiler/commandLineParser.ts#L122
+  buildOptions.forEach(opt => {
+    /**
+     * name: "help",
+     * shortName: "h",
+     * type: "boolean",
+     */
+    const options =
+      opt.type === 'boolean' ? validBooleanOptions : validValueOptions;
+    options.push(`--${opt.name}`);
+    if (opt.shortName) {
+      validBooleanOptions.push(`-${opt.shortName}`);
+    }
+  });
+  let validArgs = args;
+  if (args.includes('-b') || args.includes('--build')) {
+    validArgs = filterArgs(args, arg => {
+      if (validBooleanOptions.includes(arg)) return 1;
+      if (validValueOptions.includes(arg)) return 2;
+      return 0;
+    });
+    // `-b` has to be the first argument
+    validArgs.unshift('-b');
+  }
+  debug('Valid args for tsc -b', validArgs);
+  return validArgs;
+}
+
+/**
+ * Filter arguments by name from the args
+ * @param {string[]} args - Array of args
+ * @param {function} filter - (arg: string) => 0, 1, 2
+ */
+function filterArgs(args, filter) {
+  const validArgs = [];
+  let i = 0;
+  while (i < args.length) {
+    const length = filter(args[i]);
+    if (length === 0) {
+      i++;
+    } else if (length === 1) {
+      validArgs.push(args[i]);
+      i++;
+    } else if (length === 2) {
+      validArgs.push(args[i], args[i + 1]);
+      i += 2;
+    }
+  }
+  return validArgs;
 }
 
 module.exports = run;
