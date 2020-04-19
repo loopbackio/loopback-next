@@ -108,6 +108,7 @@
 /packages/context @raymondfeng @deepakrkris @emonddr @jannyHou
 /examples/context @raymondfeng @deepakrkris @emonddr @jannyHou
 /packages/cli/generators/interceptor @raymondfeng @deepakrkris @emonddr @jannyHou
+/extensions/context-explorer @raymondfeng @emonddr
 
 #
 # Framework core
@@ -126,6 +127,7 @@
 # - Primary owner(s): @raymondfeng @jannyHou
 # - Standby owner(s): @emonddr
 /packages/core/src/component.ts @emonddr @jannyHou @raymondfeng
+/extensions/cron @raymondfeng
 /examples/greeting-app @emonddr @jannyHou @raymondfeng
 /examples/log-extension @emonddr @jannyHou @raymondfeng
 /examples/greeter-extension @emonddr @jannyHou @raymondfeng
@@ -293,12 +295,13 @@
 # Build & internal tooling
 #
 # - Issue label: Internal Tooling
-# - Primary owner(s): @emonddr
-# - Standby owner(s): n/a
-/packages/build @emonddr
-/packages/eslint-config @emonddr
-/packages/tsdocs @emonddr
-/packages/cli/generators/update @emonddr
+# - Primary owner(s): @raymondfeng
+# - Standby owner(s): @emonddr @raymondfeng
+/packages/build @emonddr @raymondfeng
+/packages/eslint-config @emonddr @raymondfeng
+/packages/tsdocs @emonddr @raymondfeng
+/packages/cli/generators/update @emonddr @raymondfeng
+/packages/cli/generators/copyright @emonddr @raymondfeng
 
 #
 # Test helpers
