@@ -57,7 +57,7 @@
     "client-sessions": "^0.8.0",
     "debug": "4.1.1",
     "express": "4.17.1",
-    "express-session": "^1.17.0",
+    "express-session": "^1.17.1",
     "jade": "^1.7.0",
     "lodash": "^4.17.15",
     "p-event": "^4.1.0",
