@@ -118,8 +118,11 @@ module.exports = class extends BaseGenerator {
     if (this.shouldExit()) return;
     if (this.exampleName in EXAMPLES) return;
     this.exit(
-      `Invalid example name: ${this.exampleName}\n` +
-        'Run "lb4 example --help" to print the list of available example names.',
+      g.f(
+        'Invalid example name: %s\n' +
+          'Run "lb4 example --help" to print the list of available example names.',
+        this.exampleName,
+      ),
     );
   }
 
@@ -143,7 +146,7 @@ module.exports = class extends BaseGenerator {
   async end() {
     await super.end();
     this.log();
-    this.log(`The example was cloned to ${chalk.green(this.outDir)}.`);
+    this.log(g.f('The example was cloned to %s.', chalk.green(this.outDir)));
     this.log();
   }
 };

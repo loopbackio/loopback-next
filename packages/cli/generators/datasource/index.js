@@ -105,9 +105,10 @@ module.exports = class DataSourceGenerator extends ArtifactGenerator {
     const prompts = [
       {
         name: 'connector',
-        message: `Select the connector for ${chalk.yellow(
-          this.artifactInfo.name,
-        )}:`,
+        message: g.f(
+          'Select the connector for %s: ',
+          chalk.yellow(this.artifactInfo.name),
+        ),
         type: 'list',
         default: 'memory',
         choices: this.connectorChoices,
@@ -191,9 +192,11 @@ module.exports = class DataSourceGenerator extends ArtifactGenerator {
           break;
         default:
           console.warn(
-            `Using default input of type input for setting ${key} as ${
-              setting.type || undefined
-            } is not supported`,
+            g.f(
+              'Using default input of type input for setting %s as %s is not supported',
+              key,
+              setting.type || undefined,
+            ),
           );
           // Default to input type
           question.type = 'input';

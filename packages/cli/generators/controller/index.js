@@ -74,7 +74,7 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
   }
 
   promptArtifactType() {
-    debug(g.f('Prompting for controller type'));
+    debug('Prompting for controller type');
     if (this.shouldExit()) return;
 
     super.promptWarningMsgForName();
