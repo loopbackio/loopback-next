@@ -11,6 +11,7 @@ import {
   givenHttpServerConfig,
   toJSON,
 } from '@loopback/testlab';
+import morgan from 'morgan';
 import {TodoListApplication} from '../../application';
 import {Todo} from '../../models/';
 import {TodoRepository} from '../../repositories/';
@@ -181,6 +182,23 @@ describe('TodoApplication', () => {
 
     it('returns 404 when deleting a todo that does not exist', async () => {
       await client.del(`/todos/99999`).expect(404);
+    });
+  });
+
+  context('allows logging to be reconfigured', () => {
+    it('logs http requests', async () => {
+      const logs: string[] = [];
+      const logToArray = (str: string) => {
+        logs.push(str);
+      };
+      app.configure<morgan.Options>('middleware.morgan').to({
+        stream: {
+          write: logToArray,
+        },
+      });
+      await client.get('/todos');
+      expect(logs.length).to.eql(1);
+      expect(logs[0]).to.match(/"GET \/todos HTTP\/1\.1" 200 - "-"/);
     });
   });
 

@@ -9,6 +9,7 @@ import {RepositoryMixin} from '@loopback/repository';
 import {RestApplication} from '@loopback/rest';
 import {RestExplorerComponent} from '@loopback/rest-explorer';
 import {ServiceMixin} from '@loopback/service-proxy';
+import morgan from 'morgan';
 import path from 'path';
 import {MySequence} from './sequence';
 
@@ -36,5 +37,29 @@ export class TodoListApplication extends BootMixin(
         nested: true,
       },
     };
+
+    this.setupLogging();
+  }
+
+  private setupLogging() {
+    // Register `morgan` express middleware
+    // Create a middleware factory wrapper for `morgan(format, options)`
+    const morganFactory = (config?: morgan.Options) => {
+      this.debug('Morgan configuration', config);
+      return morgan('combined', config);
+    };
+
+    // Print out logs using `debug`
+    const defaultConfig: morgan.Options = {
+      stream: {
+        write: str => {
+          this._debug(str);
+        },
+      },
+    };
+    this.expressMiddleware(morganFactory, defaultConfig, {
+      injectConfiguration: 'watch',
+      key: 'middleware.morgan',
+    });
   }
 }
