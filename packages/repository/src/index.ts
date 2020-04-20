@@ -18,6 +18,7 @@
  * @packageDocumentation
  */
 
+export {JSONSchema7 as JsonSchema} from 'json-schema';
 export * from './common-types';
 export * from './connectors';
 export * from './datasource';
