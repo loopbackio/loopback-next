@@ -10,8 +10,8 @@ permalink: /doc/en/lb4/Decorators_openapi.html
 
 Route decorators are used to expose controller methods as REST API operations.
 If you are not familiar with the concept of Route or Controller, please see
-[LoopBack Route](Routes.md) and [LoopBack Controller](Controllers.md) to learn
-more about them.
+[LoopBack Route](../Routes.md) and [LoopBack Controller](../Controllers.md) to
+learn more about them.
 
 By calling a route decorator, you provide OpenAPI specification to describe the
 endpoint which the decorated method maps to. You can choose different decorators
@@ -61,7 +61,7 @@ app.controller(MyController);
 ```
 
 A more detailed explanation can be found in
-[Specifying Controller APIs](Controllers.md#specifying-controller-apis)
+[Specifying Controller APIs](../Controllers.md#specifying-controller-apis)
 
 ### Operation Decorator
 
@@ -186,7 +186,7 @@ class MyController {
 ```
 
 You can find specific use cases in
-[Writing Controller methods](Controllers.md#writing-controller-methods)
+[Writing Controller methods](../Controllers.md#writing-controller-methods)
 
 _The parameter location cookie is not supported yet, see_
 _(https://github.com/strongloop/loopback-next/issues/997)_
@@ -277,7 +277,7 @@ class User {
 ```
 
 _To learn more about decorating models and the corresponding OpenAPI schema, see
-[model decorators](Model.md#model-decorator)._
+[model decorators](../Model.md#model-decorator)._
 
 The model decorators allow type information of the model to be visible to the
 spec generator so that `@requestBody` can be used on the parameter:
@@ -605,7 +605,7 @@ class MyOtherController {
 
 ### @oas.response
 
-[API document](https://loopback.io/doc/en/lb4/apidocs.openapi-v3.oas.response.html),
+[API document](https://loopback.io/doc/en/lb4/apidocs.openapi-v3.oas.html#oas-variable),
 [OpenAPI Response Specification](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#response-object)
 
 This decorator lets you easily add response specifications using `Models` from
@@ -806,7 +806,7 @@ valid `OperationObject`.
 
 ### @oas.tags
 
-[API document](https://loopback.io/doc/en/lb4/apidocs.openapi-v3.tags.html),
+[API document](https://loopback.io/doc/en/lb4/apidocs.openapi-v3.oas.html#oas-variable),
 [OpenAPI Operation Specification](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#operation-object)
 
 This decorator can be applied to a controller class and to controller class

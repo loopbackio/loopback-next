@@ -296,7 +296,7 @@ Here are examples of some basic CRUD methods:
 Don't forget to register the complete version of your OpenAPI spec through
 `app.api()`.
 
-Please See [Testing Your Application](Testing-Your-Application.md) section in
+Please See [Testing Your Application](Testing-your-application.md) section in
 order to set up and write unit, acceptance, and integration tests for your
 application.
 

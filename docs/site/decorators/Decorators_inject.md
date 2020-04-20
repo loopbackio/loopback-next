@@ -20,7 +20,7 @@ The injected values are applied to a constructed instance, so it can only be
 used on non-static properties or constructor parameters of a Class.
 
 The `@inject` decorator allows you to inject dependencies bound to any
-implementation of the [Context](Context.md) object, such as an Application
+implementation of the [Context](../Context.md) object, such as an Application
 instance or a request context instance. You can bind values, class definitions,
 and provider functions to those contexts and then resolve the values (or the
 results of functions that return those values!) in other areas of your code.
@@ -329,5 +329,5 @@ const component = ctx.getSync<MyComponent>('my-component');
 injection if possible. Use `@inject.context` only when the code needs to access
 the current context object for advanced use cases.
 
-For more information, see the [Dependency Injection](Dependency-injection.md)
-section under [LoopBack Core Concepts](Concepts.md).
+For more information, see the [Dependency Injection](../Dependency-injection.md)
+section under [LoopBack Core Concepts](../Concepts.md).
