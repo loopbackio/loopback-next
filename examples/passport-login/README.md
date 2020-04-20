@@ -7,27 +7,31 @@ A tutorial for implementing authentication in LoopBack 4 using
 - [Prerequisites](#prerequisites)
 - [Install](#install-the-example-locally)
 - [Tutorial - Facebook](#Try-it-out-with-FaceBook)
+- [Tutorial - Google](#Try-it-out-with-Google)
 
 ## Overview
 
 This example demonstrates how to use the LoopBack 4 features (like
 `@authenticate` decorator, strategy providers, etc) with
-[passport strategies](http://passportjs.org). It includes the local strategy as
-well as oauth2 strategies to interact with external OAuth providers like
-facebook, google,etc.
+[passport strategies](http://passportjs.org). It includes the OAuth2 strategies
+to interact with external OAuth providers like Facebook, Google, etc as well as
+local and basic strategies.
+
+You can use this example to see how to,
 
 - Log in or Sign up into a LoopBack App using passport strategy modules
 - Log in via external apps like Facebook or link those external profiles with a
   LoopBack user (for example, a LoopBack user can have associated
-  facebook/google accounts to retrieve pictures).
+  Facebook/Google accounts to retrieve pictures).
+- Use basic or local passport strategy modules
 
 ## Prerequisites
 
 Before starting this tutorial, make sure you have Client-ids/Secrets from third
 party apps
 
-- [facebook](https://developers.facebook.com/apps)
-- [google](https://console.developers.google.com/project)
+- [Facebook](https://developers.facebook.com/apps)
+- [Google](https://console.developers.google.com/project)
 - [twitter](https://apps.twitter.com/) **Not yet implemented**
 
 ## Install the example locally
@@ -63,7 +67,7 @@ Open browser to http://localhost:3000
 
 1. Click on `Sign Up` from the header menu and register as a local user.
 2. If the email provided during registration, matches with your account in
-   facebook or google you can link those profiles with your local account.
+   Facebook or Google you can link those profiles with your local account.
 3. Click on `Login` from the header menu and enter registered email id and
    password. The `View account` page loads with user information.
 
@@ -72,7 +76,7 @@ Open browser to http://localhost:3000
 1. Click on `Login` from the header menu, You will see various buttons under
    `Other login options`.
    - [Facebook](#Try-it-out-with-FaceBook)
-   - [google](#Try-it-out-with-Google)
+   - [Google](#Try-it-out-with-Google)
    - `Twitter` - not yet implemented
 2. When you click on any login option, the page is redirected to that social
    app's login page. On successful login with the social app, the `View account`
@@ -87,7 +91,7 @@ Open browser to http://localhost:3000
 1. Click on `Login` from the header menu, You will see various buttons under
    `Other login options`.
    - [Facebook](#Try-it-out-with-FaceBook)
-   - [google](#Try-it-out-with-Google)
+   - [Google](#Try-it-out-with-Google)
    - `Twitter` - not yet implemented
 2. When you click on any login option, the page is redirected to that social
    app's login page. On successful login with the social app, the `View account`
@@ -102,7 +106,7 @@ Open browser to http://localhost:3000
 
 ### Create a test app and test user in FaceBook
 
-1. Login to facebook developer console: https://developers.facebook.com/apps
+1. Login to Facebook developer console: https://developers.facebook.com/apps
 2. Click on `My Apps` tab in the dashboard menu, and then select `Add a new App`
 3. This loads the `App creation` page. Pick the platform as `Website` and then
    enter app category, app name and "Site URL" (Skip the quick start)
@@ -125,7 +129,7 @@ Open browser to http://localhost:3000
 
 - Copy `oauth2-providers.template.json` from this example project's root to
   `oauth2-providers.json`
-- Update facebook oauth2 config with the values for `clientID/clientSecret` from
+- Update Facebook oauth2 config with the values for `clientID/clientSecret` from
   your test app.
 
   ```
@@ -145,26 +149,26 @@ Open browser to http://localhost:3000
   }
   ```
 
-The `profileFields` field above tells facebook details to return in profile data
+The `profileFields` field above tells Facebook details to return in profile data
 after authentication. For more information regarding the providers template, see
 http://loopback.io/doc/en/lb2/Configuring-providers.json.html.
 
 ### Log in with Facebook
 
-- Open your browser to the example app with, `http://localhost:3000`
-- Click on 'Log In' from the example app header menu
-- Click on 'Log In with Facebook' button
+- Open your browser to the example app with `http://localhost:3000`
+- Click `Log In` from the example app header menu
+- Click on `Log In with Facebook` button
 - FaceBook login page opens, enter test user-id and password
 - example app loads again on successful login
-- redirect to example app will fail if facebook did not return profile with
+- redirect to example app will fail if Facebook did not return profile with
   email-id
 
 ## Try it out with Google
 
-### Create test credentials in google
+### Create test credentials in Google
 
-1. Login to google developer console: https://console.developers.google.com You
-   may have to create a sample project if you are new to google developer
+1. Login to Google developer console: https://console.developers.google.com You
+   may have to create a sample project if you are new to Google developer
    console
 2. Click on `OAuth consent screen` from the left hand side navigation menu,
    select `External`, click `Create` button
@@ -181,8 +185,8 @@ http://loopback.io/doc/en/lb2/Configuring-providers.json.html.
 
 - Copy `oauth2-providers.template.json` from this example project's root to
   `oauth2-providers.json`
-- Update google oauth2 config with the values for `clientID/clientSecret` from
-  your google test app.
+- Update Google oauth2 config with the values for `clientID/clientSecret` from
+  your Google test app.
 
   ```
   "google-login": {
@@ -200,3 +204,11 @@ http://loopback.io/doc/en/lb2/Configuring-providers.json.html.
       "failureFlash": true
   }
   ```
+
+### Log in with Google
+
+- Open your browser to the example app with, `http://localhost:3000`
+- Click on `Log In` from the example app header menu
+- Click on `Log In with Google` button
+- Google login page opens, enter Google user-id and password
+- example app loads again on successful login
