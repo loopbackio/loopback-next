@@ -58,7 +58,7 @@
     "debug": "4.1.1",
     "express": "4.17.1",
     "express-session": "^1.17.1",
-    "jade": "^1.7.0",
+    "jade": "^1.11.0",
     "lodash": "^4.17.15",
     "p-event": "^4.1.0",
     "passport-facebook": "^3.0.0",
