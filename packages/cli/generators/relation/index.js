@@ -498,11 +498,11 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
       {
         type: 'confirm',
         name: 'registerInclusionResolver',
-        message: `Allow ${chalk.yellow(
-          this.artifactInfo.sourceModel,
-        )} queries to include data from related ${chalk.yellow(
-          this.artifactInfo.destinationModel,
-        )} instances?`,
+        message: g.f(
+          'Allow %s queries to include data from related %s instances? ',
+          chalk.yellow(this.artifactInfo.sourceModel),
+          chalk.yellow(this.artifactInfo.destinationModel),
+        ),
         default: true,
       },
     ]);

@@ -149,7 +149,7 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
         specPath: matchedDs.specPath,
       };
       this.log(
-        'Datasource %s - %s found for OpenAPI: %s',
+        g.f('Datasource %s - %s found for OpenAPI: %s'),
         this.options.datasource,
         this.dataSourceInfo.className,
         this.dataSourceInfo.specPath,
@@ -180,7 +180,7 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
         specPath: answers.dataSource.specPath,
       };
       this.log(
-        'Datasource %s - %s selected: %s',
+        g.f('Datasource %s - %s selected: %s'),
         this.dataSourceInfo.name,
         this.dataSourceInfo.className,
         this.dataSourceInfo.specPath,

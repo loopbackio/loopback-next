@@ -205,11 +205,11 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
   promptColNamingConvention() {
     this.namingConvention = [
       {
-        name: 'Camel case (exampleColumn) (Recommended)',
+        name: g.f('Camel case (exampleColumn) (Recommended)'),
         value: 'camelCase',
       },
       {
-        name: 'No conversion (EXAMPLE_COLUMN)',
+        name: g.f('No conversion (EXAMPLE_COLUMN)'),
         value: 'noCase',
       },
     ];
@@ -233,7 +233,9 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
       if (props.disableCamelCase) {
         this.log(
           chalk.red(
-            'By disabling Camel case, you might need to specify these customized names in relation definition.',
+            g.f(
+              'By disabling Camel case, you might need to specify these customized names in relation definition.',
+            ),
           ),
         );
       }
