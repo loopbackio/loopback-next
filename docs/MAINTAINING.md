@@ -10,7 +10,7 @@ far!
 - Commit (write) rights to `loopback-next` repo
 - Ability to review and land pull requests, edit/categorize/close issues
 
-## What are a maintainer's responsibilities?
+## What are responsibilities of a maintainer?
 
 We ask you to follow the existing processes, see
 http://loopback.io/doc/en/contrib/Governance.html. This means mostly:
