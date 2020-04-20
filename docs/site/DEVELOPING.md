@@ -71,9 +71,28 @@ for intra-dependencies:
 npm ci
 ```
 
+As part of `npm ci` or `npm i`, TypeScript project references are automatically
+updated for each package with in the monorepo.
+
 The next step is to compile all packages from TypeScript to JavaScript:
 
 ```sh
+npm run build
+```
+
+To force a clean build:
+
+```sh
+npm run clean && npm run build
+```
+
+Please note that `npm run clean` removes `dist`, `*.tsbuildinfo`, and other
+generated files from each package to clean the state for builds.
+
+To build an individual package:
+
+```sh
+cd <package-dir> // For example, cd `packages/context`.
 npm run build
 ```
 
@@ -183,8 +202,16 @@ from package-lock files.**
 If you ever end up with corrupted or out-of-date package locks, run the
 following commands to fix the problem:
 
+To rebuild `package-lock.json` for all packages.
+
 ```sh
-$ npm run update-package-locks
+npm update-package-locks
+```
+
+To update `package-lock.json` for a list of packages:
+
+```sh
+npm update-package-locks -- --scope <package-name-1> --scope <package-name-2>
 ```
 
 ### Adding dependencies
