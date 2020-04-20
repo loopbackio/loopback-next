@@ -97,6 +97,21 @@ export class Customer {
 }
 ```
 
+The `@model` decorator can take `jsonSchema` to customize the JSON schema
+inferred for the model class. For example,
+
+```ts
+@model({
+  jsonSchema: {
+    title: 'Customer',
+    required: ['email'],
+  },
+})
+export class Customer {
+  // ...
+}
+```
+
 ## Model Discovery
 
 LoopBack can automatically create model definitions by discovering the schema of
@@ -464,7 +479,7 @@ Here are general attributes for property definitions:
       <th>Description</th>
     </tr>
   </thead>
-  <tbody>    
+  <tbody>
     <tr>
       <td><code>default</code></td>
       <td>No</td>
@@ -585,7 +600,7 @@ id property settings that can be used for auto-migration / auto-update:
       <th>Description</th>
     </tr>
   </thead>
-  <tbody>   
+  <tbody>
     <tr>
       <td><code>generated</code></td>
       <td>No</td>
@@ -631,8 +646,8 @@ the database:
       <th width="100">Type</th>
       <th width="540">Description</th>
     </tr>
-  </thead>    
-  <tbody>    
+  </thead>
+  <tbody>
     <tr>
       <td><code>[connector name].schema</code></td>
       <td>String</td>
@@ -656,8 +671,8 @@ columns in the database:
       <th width="100">Type</th>
       <th width="540">Description</th>
     </tr>
-  </thead>    
-  <tbody>    
+  </thead>
+  <tbody>
     <tr>
       <td><code>columnName</code></td>
       <td>String</td>
@@ -908,7 +923,7 @@ class Product extends Entity {
 
 ## JSON Schema Inference
 
-Use the `@loopback/repository-json-schema module` to build a JSON schema from a
+Use the `@loopback/repository-json-schema` module to build a JSON schema from a
 decorated model. Type information is inferred from the `@model` and `@property`
 decorators. The `@loopback/repository-json-schema` module contains the
 `getJsonSchema` function to access the metadata stored by the decorators to

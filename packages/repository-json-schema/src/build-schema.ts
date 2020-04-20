@@ -13,7 +13,7 @@ import {
   resolveType,
 } from '@loopback/repository';
 import debugFactory from 'debug';
-import {JSONSchema6 as JSONSchema} from 'json-schema';
+import {JsonSchema} from './index';
 import {inspect} from 'util';
 import {JSON_SCHEMA_KEY} from './keys';
 const debug = debugFactory('loopback:repository-json-schema:build-schema');
@@ -87,7 +87,7 @@ export interface JsonSchemaOptions<T extends object> {
   /**
    * @internal
    */
-  visited?: {[key: string]: JSONSchema};
+  visited?: {[key: string]: JsonSchema};
 }
 
 /**
@@ -115,7 +115,7 @@ export function buildModelCacheKey<T extends object>(
 export function getJsonSchema<T extends object>(
   ctor: Function & {prototype: T},
   options?: JsonSchemaOptions<T>,
-): JSONSchema {
+): JsonSchema {
   // In the near future the metadata will be an object with
   // different titles as keys
   const cached = MetadataInspector.getClassMetadata(JSON_SCHEMA_KEY, ctor);
@@ -168,7 +168,7 @@ export function getJsonSchema<T extends object>(
 export function getJsonSchemaRef<T extends object>(
   modelCtor: Function & {prototype: T},
   options?: JsonSchemaOptions<T>,
-): JSONSchema {
+): JsonSchema {
   const schemaWithDefinitions = getJsonSchema(modelCtor, options);
   const key = schemaWithDefinitions.title;
 
@@ -245,9 +245,9 @@ export function isArrayType(type: string | Function) {
  * Converts property metadata into a JSON property definition
  * @param meta
  */
-export function metaToJsonProperty(meta: PropertyDefinition): JSONSchema {
-  const propDef: JSONSchema = {};
-  let result: JSONSchema;
+export function metaToJsonProperty(meta: PropertyDefinition): JsonSchema {
+  const propDef: JsonSchema = {};
+  let result: JsonSchema;
   let propertyType = meta.type as string | Function;
 
   if (isArrayType(propertyType) && meta.itemType) {
@@ -298,8 +298,8 @@ export function metaToJsonProperty(meta: PropertyDefinition): JSONSchema {
  */
 export function getNavigationalPropertyForRelation(
   relMeta: RelationMetadata,
-  targetRef: JSONSchema,
-): JSONSchema {
+  targetRef: JsonSchema,
+): JsonSchema {
   if (relMeta.targetsMany === true) {
     // Targets an array of object, like, hasMany
     return {
@@ -390,7 +390,7 @@ function getDescriptionSuffix<T extends object>(
 export function modelToJsonSchema<T extends object>(
   ctor: Function & {prototype: T},
   jsonSchemaOptions: JsonSchemaOptions<T> = {},
-): JSONSchema {
+): JsonSchema {
   const options = {...jsonSchemaOptions};
   options.visited = options.visited ?? {};
   options.optional = options.optional ?? [];
@@ -417,7 +417,7 @@ export function modelToJsonSchema<T extends object>(
 
   if (options.visited[title]) return options.visited[title];
 
-  const result: JSONSchema = {title};
+  const result: JsonSchema = {title};
   options.visited[title] = result;
 
   const descriptionSuffix = getDescriptionSuffix(options);
@@ -479,7 +479,7 @@ export function modelToJsonSchema<T extends object>(
 
     // JSONSchema6Definition allows both boolean and JSONSchema6 types
     if (typeof result.properties[p] !== 'boolean') {
-      const prop = result.properties[p] as JSONSchema;
+      const prop = result.properties[p] as JsonSchema;
       const propTitle = propSchema.title ?? referenceType.name;
       const targetRef = {$ref: `#/definitions/${propTitle}`};
 
@@ -520,7 +520,7 @@ export function modelToJsonSchema<T extends object>(
     }
   }
 
-  function includeReferencedSchema(name: string, schema: JSONSchema) {
+  function includeReferencedSchema(name: string, schema: JsonSchema) {
     if (!schema || !Object.keys(schema).length) return;
 
     // promote nested definition to the top level
@@ -537,6 +537,10 @@ export function modelToJsonSchema<T extends object>(
       result.definitions = result.definitions ?? {};
       result.definitions[name] = schema;
     }
+  }
+
+  if (meta.jsonSchema) {
+    Object.assign(result, meta.jsonSchema);
   }
   return result;
 }

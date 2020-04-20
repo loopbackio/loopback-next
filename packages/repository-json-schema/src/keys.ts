@@ -4,12 +4,12 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {MetadataAccessor} from '@loopback/metadata';
-import {JSONSchema6 as JSONSchema} from 'json-schema';
+import {JsonSchema} from './index';
 
 /**
  * Metadata key used to set or retrieve repository JSON Schema
  */
 export const JSON_SCHEMA_KEY = MetadataAccessor.create<
-  {[key: string]: JSONSchema},
+  {[key: string]: JsonSchema},
   ClassDecorator
 >('loopback:json-schema');

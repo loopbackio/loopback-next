@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {getModelRelations, Model, model} from '@loopback/repository';
-import {JSONSchema6 as JsonSchema, JSONSchema6Definition} from 'json-schema';
+import {JSONSchema7 as JsonSchema, JSONSchema7Definition} from 'json-schema';
 
 export interface FilterSchemaOptions {
   /**
@@ -67,7 +67,7 @@ export function getFilterJsonSchemaFor(
   } else {
     excluded = options.exclude ?? [];
   }
-  const properties: Record<string, JSONSchema6Definition> = {
+  const properties: Record<string, JSONSchema7Definition> = {
     offset: {
       type: 'integer',
       minimum: 0,

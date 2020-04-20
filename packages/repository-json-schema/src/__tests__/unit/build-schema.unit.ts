@@ -20,6 +20,7 @@ import {
   metaToJsonProperty,
   modelToJsonSchema,
   stringTypeToWrapper,
+  JsonSchema,
 } from '../..';
 
 describe('build-schema', () => {
@@ -215,6 +216,39 @@ describe('build-schema', () => {
   });
 
   describe('modelToJsonSchema', () => {
+    it('allows jsonSchema in model definition', () => {
+      @model({
+        jsonSchema: {
+          title: 'report-state',
+          required: ['color'],
+        } as JsonSchema,
+      })
+      class ReportState extends Model {
+        @property({
+          type: 'string',
+        })
+        benchmarkId?: string;
+
+        @property({
+          type: 'string',
+        })
+        color: string;
+
+        constructor(data?: Partial<ReportState>) {
+          super(data);
+        }
+      }
+      const schema = modelToJsonSchema(ReportState, {});
+      expect(schema.properties).to.containEql({
+        benchmarkId: {type: 'string'},
+        color: {type: 'string'},
+      });
+      expect(schema.required).to.eql(['color']);
+      expect(schema.title).to.eql('report-state');
+      // No circular references in definitions
+      expect(schema.definitions).to.be.undefined();
+    });
+
     it('allows recursive model definition', () => {
       @model()
       class ReportState extends Model {
