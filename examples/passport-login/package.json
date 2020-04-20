@@ -45,7 +45,7 @@
     "@loopback/rest-crud": "^0.7.4",
     "@loopback/security": "^0.2.3",
     "@loopback/service-proxy": "^2.0.4",
-    "@types/jsonwebtoken": "8.3.8",
+    "@types/jsonwebtoken": "8.3.9",
     "@types/lodash": "^4.14.149",
     "@types/passport-facebook": "^2.1.9",
     "@types/passport-google-oauth": "^1.0.41",
