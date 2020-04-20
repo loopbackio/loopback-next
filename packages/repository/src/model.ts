@@ -4,6 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {AnyObject, DataObject, Options} from './common-types';
+import {JsonSchema} from './index';
 import {RelationMetadata} from './relations';
 import {TypeResolver} from './type-resolver';
 import {Type} from './types';
@@ -15,6 +16,10 @@ import {Type} from './types';
  */
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
+export interface JsonSchemaWithExtensions extends JsonSchema {
+  [attributes: string]: any;
+}
 
 export type PropertyType =
   | string
@@ -30,7 +35,7 @@ export interface PropertyDefinition {
   type: PropertyType; // For example, 'string', String, or {}
   id?: boolean | number;
   json?: PropertyForm;
-  jsonSchema?: {[attribute: string]: any};
+  jsonSchema?: JsonSchemaWithExtensions;
   store?: PropertyForm;
   itemType?: PropertyType; // type of array
   [attribute: string]: any; // Other attributes
@@ -61,6 +66,7 @@ export interface ModelDefinitionSyntax {
   properties?: {[name: string]: PropertyDefinition | PropertyType};
   settings?: {[name: string]: any};
   relations?: RelationDefinitionMap;
+  jsonSchema?: JsonSchemaWithExtensions;
   [attribute: string]: any;
 }
 
