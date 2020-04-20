@@ -10,7 +10,7 @@ import {
   RequestWithSession,
   param,
 } from '@loopback/rest';
-import {authenticate} from '@loopback/authentication';
+import {authenticate, AuthenticationBindings} from '@loopback/authentication';
 import {inject} from '@loopback/core';
 import {SecurityBindings, UserProfile} from '@loopback/security';
 
@@ -28,9 +28,9 @@ export class Oauth2Controller {
    */
   loginToThirdParty(
     @param.path.string('provider') provider: string,
-    @inject('authentication.redirect.url')
+    @inject(AuthenticationBindings.AUTHENTICATION_REDIRECT_URL)
     redirectUrl: string,
-    @inject('authentication.redirect.status')
+    @inject(AuthenticationBindings.AUTHENTICATION_REDIRECT_STATUS)
     status: number,
     @inject(RestBindings.Http.RESPONSE)
     response: Response,
