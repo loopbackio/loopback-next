@@ -14,10 +14,7 @@
  * @packageDocumentation
  */
 
-export {Model} from '@loopback/repository';
+export {JsonSchema, Model} from '@loopback/repository';
 export * from './build-schema';
 export * from './filter-json-schema';
 export * from './keys';
-export {JsonSchema};
-
-import {JSONSchema6 as JsonSchema} from 'json-schema';
