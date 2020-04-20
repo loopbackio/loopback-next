@@ -31,7 +31,15 @@ async function loadSpec(specUrlStr, {log, validate} = {}) {
   }
 
   spec = _.cloneDeepWith(spec, o => {
-    if (o.$ref) {
+    /**
+     * A yaml object below produces `null` for `servers.url`
+     * ```yaml
+     * servers:
+     * - url:
+     *   description: null url for testing
+     * ```
+     */
+    if (o != null && o.$ref) {
       o['x-$ref'] = o.$ref;
     }
   });

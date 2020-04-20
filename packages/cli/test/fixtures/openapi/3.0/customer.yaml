@@ -6,6 +6,11 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+  - url:
+    description: null url for testing
+  - url: https://localhost:3000
+    description: Local laptop testing
 tags:
   - name: Customer
     description: Customer resource
