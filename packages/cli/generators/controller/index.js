@@ -21,11 +21,11 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
   }
 
   static get BASIC() {
-    return 'Empty Controller';
+    return g.f('Empty Controller');
   }
 
   static get REST() {
-    return 'REST Controller with CRUD functions';
+    return g.f('REST Controller with CRUD functions');
   }
 
   _setupGenerator() {
@@ -132,20 +132,21 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
     }
 
     if (_.isEmpty(modelList)) {
-      return this.exit(
-        `No models found in ${this.artifactInfo.modelDir}.
-        ${chalk.yellow(
-          'Please visit http://loopback.io/doc/en/lb4/Controller-generator.html for information on how models are discovered',
-        )}`,
+      const file = g.f('No models found in %s. ', this.artifactInfo.modelDir);
+      const site = g.f(
+        'Please visit http://loopback.io/doc/en/lb4/Controller-generator.html for information on how models are discovered.',
       );
+      return this.exit(file + chalk.yellow(site));
     }
     if (_.isEmpty(repositoryList)) {
-      return this.exit(
-        `No repositories found in ${this.artifactInfo.repositoryDir}.
-        ${chalk.yellow(
-          'Please visit http://loopback.io/doc/en/lb4/Controller-generator.html for information on how repositories are discovered',
-        )}`,
+      const file = g.f(
+        'No repositories found in %s. ',
+        this.artifactInfo.repositoryDir,
       );
+      const site = g.f(
+        'Please visit http://loopback.io/doc/en/lb4/Controller-generator.html for information on how repositories are discovered.',
+      );
+      return this.exit(file + chalk.yellow(site));
     }
     return this.prompt([
       {
