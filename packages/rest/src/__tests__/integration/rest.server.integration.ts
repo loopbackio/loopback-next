@@ -1033,6 +1033,31 @@ paths:
     await server.stop();
   });
 
+  it('keeps api spec components object', async () => {
+    const server = await givenAServer();
+
+    const EXPECTED_SPEC = anOpenApiSpec()
+      .withComponents(
+        aComponentsSpec().withParameter('limit', {
+          name: 'limit',
+          in: 'query',
+          description: 'Maximum number of items to return',
+          required: false,
+          schema: {
+            type: 'integer',
+          },
+        }),
+      )
+      .build();
+
+    server.api(EXPECTED_SPEC);
+
+    await server.start();
+    const spec = await server.getApiSpec();
+    expect(spec.components).to.eql(EXPECTED_SPEC.components);
+    await server.stop();
+  });
+
   it('registers controller routes under routes.*', async () => {
     const server = await givenAServer();
     server.controller(DummyController);

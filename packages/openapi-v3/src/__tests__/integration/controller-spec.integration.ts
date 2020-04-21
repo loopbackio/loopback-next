@@ -410,6 +410,17 @@ describe('controller spec', () => {
       @api({
         paths: {},
         components: {
+          parameters: {
+            limit: {
+              name: 'limit',
+              in: 'query',
+              description: 'Maximum number of items to return',
+              required: false,
+              schema: {
+                type: 'integer',
+              },
+            },
+          },
           schemas: {
             Todo: {
               title: 'Todo',
@@ -447,6 +458,19 @@ describe('controller spec', () => {
       const responseSpec = opSpec.responses['200'].content['application/json'];
       expect(responseSpec.schema).to.deepEqual({
         $ref: '#/definitions/Todo',
+      });
+
+      // We are not losing other components than schemas
+      expect(spec.components?.parameters).to.eql({
+        limit: {
+          name: 'limit',
+          in: 'query',
+          description: 'Maximum number of items to return',
+          required: false,
+          schema: {
+            type: 'integer',
+          },
+        },
       });
 
       const globalSchemas = (spec.components ?? {}).schemas;

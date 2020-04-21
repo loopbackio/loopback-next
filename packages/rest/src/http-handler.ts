@@ -4,7 +4,12 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Context} from '@loopback/context';
-import {ControllerSpec, PathObject, SchemasObject} from '@loopback/openapi-v3';
+import {
+  ComponentsObject,
+  ControllerSpec,
+  PathObject,
+  SchemasObject,
+} from '@loopback/openapi-v3';
 import {RestBindings} from './keys';
 import {RequestContext} from './request-context';
 import {RestServerResolvedConfig} from './rest.server';
@@ -19,7 +24,10 @@ import {SequenceHandler} from './sequence';
 import {Request, Response} from './types';
 
 export class HttpHandler {
-  protected _apiDefinitions: SchemasObject;
+  /**
+   * Shared OpenAPI spec objects as `components`
+   */
+  protected _openApiComponents: ComponentsObject;
 
   public handleRequest: (request: Request, response: Response) => Promise<void>;
 
@@ -43,12 +51,35 @@ export class HttpHandler {
     this._routes.registerRoute(route);
   }
 
+  /**
+   * @deprecated Use `registerApiComponents`
+   * @param defs Schemas
+   */
   registerApiDefinitions(defs: SchemasObject) {
-    this._apiDefinitions = Object.assign({}, this._apiDefinitions, defs);
+    this.registerApiComponents({schemas: defs});
   }
 
+  /**
+   * Merge components into the OpenApi spec
+   * @param defs - Components
+   */
+  registerApiComponents(defs: ComponentsObject) {
+    this._openApiComponents = this._openApiComponents ?? {};
+    for (const p in defs) {
+      // Merge each child, such as `schemas`, `parameters`, and `headers`
+      this._openApiComponents[p] = {...this._openApiComponents[p], ...defs[p]};
+    }
+  }
+
+  getApiComponents() {
+    return this._openApiComponents;
+  }
+
+  /**
+   * @deprecated Use `getApiComponents`
+   */
   getApiDefinitions() {
-    return this._apiDefinitions;
+    return this._openApiComponents?.schemas;
   }
 
   describeApiPaths(): PathObject {
