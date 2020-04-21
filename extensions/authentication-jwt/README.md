@@ -4,6 +4,14 @@ This module exports the jwt authentication strategy and its corresponding token
 and user service as a component. You can mount the component to get a prototype
 token based authentication system in your LoopBack 4 application.
 
+Please note this package has the user service is a reference implementation, not
+recommended for production. You can follow the guide in section
+[Customizing User](#customizing-user) to replace it.
+
+## Architecture Overview
+
+![extension-authentication-jwt](extension-authentication-jwt.png)
+
 ## Usage
 
 To use this component, you need to have an existing LoopBack 4 application and a
