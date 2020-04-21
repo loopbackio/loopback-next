@@ -127,7 +127,7 @@ class MyController {
 ### Parameter Decorator
 
 Syntax: see
-[API documentation](https://github.com/strongloop/loopback-next/tree/master/packages/openapi-v3/src/decorators/parameter.decorator.ts#L17-L29)
+[API documentation](https://loopback.io/doc/en/lb4/apidocs.openapi-v3.param.html)
 
 `@param` is applied to controller method parameters to generate an OpenAPI
 parameter specification for them.
@@ -236,7 +236,7 @@ GET /todos?filter[where][completed]=false
 ### RequestBody Decorator
 
 Syntax: see
-[API documentation](https://github.com/strongloop/loopback-next/tree/master/packages/openapi-v3/src/decorators/request-body.decorator.ts#L20-L79)
+[API documentation](https://loopback.io/doc/en/lb4/apidocs.openapi-v3.requestbody.html)
 
 `@requestBody()` is applied to a controller method parameter to generate OpenAPI
 requestBody specification for it.
