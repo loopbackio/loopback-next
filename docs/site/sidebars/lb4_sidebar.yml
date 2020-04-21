@@ -797,6 +797,10 @@ children:
     url: Understanding-the-differences.html
     output: 'web, pdf'
 
+  - title: 'Booting process'
+    url: LB3-vs-LB4-booting.html
+    output: 'web, pdf'
+
   - title: 'Request/response cycle'
     url: LB3-vs-LB4-request-response-cycle.html
     output: 'web, pdf'
