@@ -143,13 +143,17 @@ export class NewPet {
   /**
    *
    */
-  @property({required: true})
+  @property({required: true, jsonSchema: {
+  type: 'string',
+}})
   name: string;
 
   /**
    *
    */
-  @property()
+  @property({jsonSchema: {
+  type: 'string',
+}})
   tag?: string;
 
 }
@@ -184,13 +188,18 @@ export class Error {
   /**
    *
    */
-  @property({required: true})
+  @property({required: true, jsonSchema: {
+  type: 'integer',
+  format: 'int32',
+}})
   code: number;
 
   /**
    *
    */
-  @property({required: true})
+  @property({required: true, jsonSchema: {
+  type: 'string',
+}})
   message: string;
 
 }
@@ -342,13 +351,17 @@ export class NewPet {
   /**
    *
    */
-  @property({required: true})
+  @property({required: true, jsonSchema: {
+  type: 'string',
+}})
   name: string;
 
   /**
    *
    */
-  @property()
+  @property({jsonSchema: {
+  type: 'string',
+}})
   tag?: string;
 
 }
@@ -383,13 +396,18 @@ export class Error {
   /**
    *
    */
-  @property({required: true})
+  @property({required: true, jsonSchema: {
+  type: 'integer',
+  format: 'int32',
+}})
   code: number;
 
   /**
    *
    */
-  @property({required: true})
+  @property({required: true, jsonSchema: {
+  type: 'string',
+}})
   message: string;
 
 }
@@ -413,7 +431,7 @@ export * from './open-api.controller';
 
 exports[`openapi-generator with --client does not generates files for client with --no-client 2`] = `
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {operation, param, requestBody} from '@loopback/rest';
+import {api, operation, param, requestBody} from '@loopback/rest';
 import {Pet} from '../models/pet.model';
 import {NewPet} from '../models/new-pet.model';
 
@@ -422,6 +440,59 @@ import {NewPet} from '../models/new-pet.model';
  * by <no-tag>.
  *
  */
+@api({
+  components: {
+    schemas: {
+      Pet: {
+        allOf: [
+          {
+            $ref: '#/components/schemas/NewPet',
+          },
+          {
+            required: [
+              'id',
+            ],
+            properties: {
+              id: {
+                type: 'integer',
+                format: 'int64',
+              },
+            },
+          },
+        ],
+      },
+      NewPet: {
+        required: [
+          'name',
+        ],
+        properties: {
+          name: {
+            type: 'string',
+          },
+          tag: {
+            type: 'string',
+          },
+        },
+      },
+      Error: {
+        required: [
+          'code',
+          'message',
+        ],
+        properties: {
+          code: {
+            type: 'integer',
+            format: 'int32',
+          },
+          message: {
+            type: 'string',
+          },
+        },
+      },
+    },
+  },
+  paths: {},
+})
 export class OpenApiController {
   constructor() {}
 
@@ -456,8 +527,107 @@ pulvinar elit eu, euismod sapien.
    * @param where 
    * @returns pet response
    */
-  @operation('get', '/pets')
-  async findPets(@param({name: 'tags', in: 'query'}) tags: string[], @param({name: 'limit', in: 'query'}) limit: number, @param({name: 'where', in: 'query'}) where: {
+  @operation('get', '/pets', {
+  description: 'Returns all pets from the system that the user has access to\\nNam sed condimentum est. Maecenas tempor sagittis sapien, nec rhoncus sem sagittis sit amet. Aenean at gravida augue, ac iaculis sem. Curabitur odio lorem, ornare eget elementum nec, cursus id lectus. Duis mi turpis, pulvinar ac eros ac, tincidunt varius justo. In hac habitasse platea dictumst. Integer at adipiscing ante, a sagittis ligula. Aenean pharetra tempor ante molestie imperdiet. Vivamus id aliquam diam. Cras quis velit non tortor eleifend sagittis. Praesent at enim pharetra urna volutpat venenatis eget eget mauris. In eleifend fermentum facilisis. Praesent enim enim, gravida ac sodales sed, placerat id erat. Suspendisse lacus dolor, consectetur non augue vel, vehicula interdum libero. Morbi euismod sagittis libero sed lacinia.\\n\\nSed tempus felis lobortis leo pulvinar rutrum. Nam mattis velit nisl, eu condimentum ligula luctus nec. Phasellus semper velit eget aliquet faucibus. In a mattis elit. Phasellus vel urna viverra, condimentum lorem id, rhoncus nibh. Ut pellentesque posuere elementum. Sed a varius odio. Morbi rhoncus ligula libero, vel eleifend nunc tristique vitae. Fusce et sem dui. Aenean nec scelerisque tortor. Fusce malesuada accumsan magna vel tempus. Quisque mollis felis eu dolor tristique, sit amet auctor felis gravida. Sed libero lorem, molestie sed nisl in, accumsan tempor nisi. Fusce sollicitudin massa ut lacinia mattis. Sed vel eleifend lorem. Pellentesque vitae felis pretium, pulvinar elit eu, euismod sapien.\\n',
+  operationId: 'findPets',
+  parameters: [
+    {
+      name: 'tags',
+      in: 'query',
+      description: 'tags to filter by',
+      required: false,
+      style: 'form',
+      schema: {
+        type: 'array',
+        items: {
+          type: 'string',
+        },
+      },
+    },
+    {
+      name: 'limit',
+      in: 'query',
+      description: 'maximum number of results to return',
+      required: false,
+      schema: {
+        type: 'integer',
+        format: 'int32',
+      },
+    },
+    {
+      name: 'where',
+      in: 'query',
+      content: {
+        'application/json': {
+          schema: {
+            type: 'object',
+            'title"': 'TodoList.WhereFilter',
+            additionalProperties: true,
+          },
+        },
+      },
+    },
+  ],
+  responses: {
+    '200': {
+      description: 'pet response',
+      content: {
+        'application/json': {
+          schema: {
+            type: 'array',
+            items: {
+              $ref: '#/components/schemas/Pet',
+            },
+          },
+        },
+      },
+    },
+    default: {
+      description: 'unexpected error',
+      content: {
+        'application/json': {
+          schema: {
+            $ref: '#/components/schemas/Error',
+          },
+        },
+      },
+    },
+  },
+})
+  async findPets(@param({
+  name: 'tags',
+  in: 'query',
+  description: 'tags to filter by',
+  required: false,
+  style: 'form',
+  schema: {
+    type: 'array',
+    items: {
+      type: 'string',
+    },
+  },
+}) tags: string[], @param({
+  name: 'limit',
+  in: 'query',
+  description: 'maximum number of results to return',
+  required: false,
+  schema: {
+    type: 'integer',
+    format: 'int32',
+  },
+}) limit: number, @param({
+  name: 'where',
+  in: 'query',
+  content: {
+    'application/json': {
+      schema: {
+        type: 'object',
+        'title"': 'TodoList.WhereFilter',
+        additionalProperties: true,
+      },
+    },
+  },
+}) where: {
   [additionalProperty: string]: any;
 }): Promise<Pet[]> {
     throw new Error('Not implemented');
@@ -469,8 +639,54 @@ pulvinar elit eu, euismod sapien.
    * @param _requestBody Pet to add to the store
    * @returns pet response
    */
-  @operation('post', '/pets')
-  async addPet(@requestBody() _requestBody: NewPet): Promise<Pet> {
+  @operation('post', '/pets', {
+  description: 'Creates a new pet in the store.  Duplicates are allowed',
+  operationId: 'addPet',
+  requestBody: {
+    description: 'Pet to add to the store',
+    required: true,
+    content: {
+      'application/json': {
+        schema: {
+          $ref: '#/components/schemas/NewPet',
+        },
+      },
+    },
+  },
+  responses: {
+    '200': {
+      description: 'pet response',
+      content: {
+        'application/json': {
+          schema: {
+            $ref: '#/components/schemas/Pet',
+          },
+        },
+      },
+    },
+    default: {
+      description: 'unexpected error',
+      content: {
+        'application/json': {
+          schema: {
+            $ref: '#/components/schemas/Error',
+          },
+        },
+      },
+    },
+  },
+})
+  async addPet(@requestBody({
+  description: 'Pet to add to the store',
+  required: true,
+  content: {
+    'application/json': {
+      schema: {
+        $ref: '#/components/schemas/NewPet',
+      },
+    },
+  },
+}) _requestBody: NewPet): Promise<Pet> {
     throw new Error('Not implemented');
   }
 
@@ -481,8 +697,54 @@ pet
    * @param id ID of pet to fetch
    * @returns pet response
    */
-  @operation('get', '/pets/{id}')
-  async findPetById(@param({name: 'id', in: 'path'}) id: number): Promise<Pet> {
+  @operation('get', '/pets/{id}', {
+  description: 'Returns a user based on a single ID, if the user does not have access to the pet',
+  operationId: 'find pet by id',
+  parameters: [
+    {
+      name: 'id',
+      in: 'path',
+      description: 'ID of pet to fetch',
+      required: true,
+      schema: {
+        type: 'integer',
+        format: 'int64',
+      },
+    },
+  ],
+  responses: {
+    '200': {
+      description: 'pet response',
+      content: {
+        'application/json': {
+          schema: {
+            $ref: '#/components/schemas/Pet',
+          },
+        },
+      },
+    },
+    default: {
+      description: 'unexpected error',
+      content: {
+        'application/json': {
+          schema: {
+            $ref: '#/components/schemas/Error',
+          },
+        },
+      },
+    },
+  },
+})
+  async findPetById(@param({
+  name: 'id',
+  in: 'path',
+  description: 'ID of pet to fetch',
+  required: true,
+  schema: {
+    type: 'integer',
+    format: 'int64',
+  },
+}) id: number): Promise<Pet> {
     throw new Error('Not implemented');
   }
 
@@ -491,8 +753,47 @@ pet
    *
    * @param id ID of pet to delete
    */
-  @operation('delete', '/pets/{id}')
-  async deletePet(@param({name: 'id', in: 'path'}) id: number): Promise<any> {
+  @operation('delete', '/pets/{id}', {
+  description: 'deletes a single pet based on the ID supplied',
+  operationId: 'deletePet',
+  parameters: [
+    {
+      name: 'id',
+      in: 'path',
+      description: 'ID of pet to delete',
+      required: true,
+      schema: {
+        type: 'integer',
+        format: 'int64',
+      },
+    },
+  ],
+  responses: {
+    '204': {
+      description: 'pet deleted',
+    },
+    default: {
+      description: 'unexpected error',
+      content: {
+        'application/json': {
+          schema: {
+            $ref: '#/components/schemas/Error',
+          },
+        },
+      },
+    },
+  },
+})
+  async deletePet(@param({
+  name: 'id',
+  in: 'path',
+  description: 'ID of pet to delete',
+  required: true,
+  schema: {
+    type: 'integer',
+    format: 'int64',
+  },
+}) id: number): Promise<any> {
     throw new Error('Not implemented');
   }
 
@@ -544,13 +845,17 @@ export class NewPet {
   /**
    *
    */
-  @property({required: true})
+  @property({required: true, jsonSchema: {
+  type: 'string',
+}})
   name: string;
 
   /**
    *
    */
-  @property()
+  @property({jsonSchema: {
+  type: 'string',
+}})
   tag?: string;
 
 }
@@ -585,13 +890,18 @@ export class Error {
   /**
    *
    */
-  @property({required: true})
+  @property({required: true, jsonSchema: {
+  type: 'integer',
+  format: 'int32',
+}})
   code: number;
 
   /**
    *
    */
-  @property({required: true})
+  @property({required: true, jsonSchema: {
+  type: 'string',
+}})
   message: string;
 
 }
@@ -791,13 +1101,17 @@ export class NewPet {
   /**
    *
    */
-  @property({required: true})
+  @property({required: true, jsonSchema: {
+  type: 'string',
+}})
   name: string;
 
   /**
    *
    */
-  @property()
+  @property({jsonSchema: {
+  type: 'string',
+}})
   tag?: string;
 
 }
@@ -832,13 +1146,18 @@ export class Error {
   /**
    *
    */
-  @property({required: true})
+  @property({required: true, jsonSchema: {
+  type: 'integer',
+  format: 'int32',
+}})
   code: number;
 
   /**
    *
    */
-  @property({required: true})
+  @property({required: true, jsonSchema: {
+  type: 'string',
+}})
   message: string;
 
 }
@@ -862,7 +1181,7 @@ export * from './open-api.controller';
 
 exports[`openapi-generator with --client generates all files for both server and client 2`] = `
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {operation, param, requestBody} from '@loopback/rest';
+import {api, operation, param, requestBody} from '@loopback/rest';
 import {Pet} from '../models/pet.model';
 import {NewPet} from '../models/new-pet.model';
 
@@ -871,6 +1190,59 @@ import {NewPet} from '../models/new-pet.model';
  * by <no-tag>.
  *
  */
+@api({
+  components: {
+    schemas: {
+      Pet: {
+        allOf: [
+          {
+            $ref: '#/components/schemas/NewPet',
+          },
+          {
+            required: [
+              'id',
+            ],
+            properties: {
+              id: {
+                type: 'integer',
+                format: 'int64',
+              },
+            },
+          },
+        ],
+      },
+      NewPet: {
+        required: [
+          'name',
+        ],
+        properties: {
+          name: {
+            type: 'string',
+          },
+          tag: {
+            type: 'string',
+          },
+        },
+      },
+      Error: {
+        required: [
+          'code',
+          'message',
+        ],
+        properties: {
+          code: {
+            type: 'integer',
+            format: 'int32',
+          },
+          message: {
+            type: 'string',
+          },
+        },
+      },
+    },
+  },
+  paths: {},
+})
 export class OpenApiController {
   constructor() {}
 
@@ -905,8 +1277,107 @@ pulvinar elit eu, euismod sapien.
    * @param where 
    * @returns pet response
    */
-  @operation('get', '/pets')
-  async findPets(@param({name: 'tags', in: 'query'}) tags: string[], @param({name: 'limit', in: 'query'}) limit: number, @param({name: 'where', in: 'query'}) where: {
+  @operation('get', '/pets', {
+  description: 'Returns all pets from the system that the user has access to\\nNam sed condimentum est. Maecenas tempor sagittis sapien, nec rhoncus sem sagittis sit amet. Aenean at gravida augue, ac iaculis sem. Curabitur odio lorem, ornare eget elementum nec, cursus id lectus. Duis mi turpis, pulvinar ac eros ac, tincidunt varius justo. In hac habitasse platea dictumst. Integer at adipiscing ante, a sagittis ligula. Aenean pharetra tempor ante molestie imperdiet. Vivamus id aliquam diam. Cras quis velit non tortor eleifend sagittis. Praesent at enim pharetra urna volutpat venenatis eget eget mauris. In eleifend fermentum facilisis. Praesent enim enim, gravida ac sodales sed, placerat id erat. Suspendisse lacus dolor, consectetur non augue vel, vehicula interdum libero. Morbi euismod sagittis libero sed lacinia.\\n\\nSed tempus felis lobortis leo pulvinar rutrum. Nam mattis velit nisl, eu condimentum ligula luctus nec. Phasellus semper velit eget aliquet faucibus. In a mattis elit. Phasellus vel urna viverra, condimentum lorem id, rhoncus nibh. Ut pellentesque posuere elementum. Sed a varius odio. Morbi rhoncus ligula libero, vel eleifend nunc tristique vitae. Fusce et sem dui. Aenean nec scelerisque tortor. Fusce malesuada accumsan magna vel tempus. Quisque mollis felis eu dolor tristique, sit amet auctor felis gravida. Sed libero lorem, molestie sed nisl in, accumsan tempor nisi. Fusce sollicitudin massa ut lacinia mattis. Sed vel eleifend lorem. Pellentesque vitae felis pretium, pulvinar elit eu, euismod sapien.\\n',
+  operationId: 'findPets',
+  parameters: [
+    {
+      name: 'tags',
+      in: 'query',
+      description: 'tags to filter by',
+      required: false,
+      style: 'form',
+      schema: {
+        type: 'array',
+        items: {
+          type: 'string',
+        },
+      },
+    },
+    {
+      name: 'limit',
+      in: 'query',
+      description: 'maximum number of results to return',
+      required: false,
+      schema: {
+        type: 'integer',
+        format: 'int32',
+      },
+    },
+    {
+      name: 'where',
+      in: 'query',
+      content: {
+        'application/json': {
+          schema: {
+            type: 'object',
+            'title"': 'TodoList.WhereFilter',
+            additionalProperties: true,
+          },
+        },
+      },
+    },
+  ],
+  responses: {
+    '200': {
+      description: 'pet response',
+      content: {
+        'application/json': {
+          schema: {
+            type: 'array',
+            items: {
+              $ref: '#/components/schemas/Pet',
+            },
+          },
+        },
+      },
+    },
+    default: {
+      description: 'unexpected error',
+      content: {
+        'application/json': {
+          schema: {
+            $ref: '#/components/schemas/Error',
+          },
+        },
+      },
+    },
+  },
+})
+  async findPets(@param({
+  name: 'tags',
+  in: 'query',
+  description: 'tags to filter by',
+  required: false,
+  style: 'form',
+  schema: {
+    type: 'array',
+    items: {
+      type: 'string',
+    },
+  },
+}) tags: string[], @param({
+  name: 'limit',
+  in: 'query',
+  description: 'maximum number of results to return',
+  required: false,
+  schema: {
+    type: 'integer',
+    format: 'int32',
+  },
+}) limit: number, @param({
+  name: 'where',
+  in: 'query',
+  content: {
+    'application/json': {
+      schema: {
+        type: 'object',
+        'title"': 'TodoList.WhereFilter',
+        additionalProperties: true,
+      },
+    },
+  },
+}) where: {
   [additionalProperty: string]: any;
 }): Promise<Pet[]> {
     throw new Error('Not implemented');
@@ -918,8 +1389,54 @@ pulvinar elit eu, euismod sapien.
    * @param _requestBody Pet to add to the store
    * @returns pet response
    */
-  @operation('post', '/pets')
-  async addPet(@requestBody() _requestBody: NewPet): Promise<Pet> {
+  @operation('post', '/pets', {
+  description: 'Creates a new pet in the store.  Duplicates are allowed',
+  operationId: 'addPet',
+  requestBody: {
+    description: 'Pet to add to the store',
+    required: true,
+    content: {
+      'application/json': {
+        schema: {
+          $ref: '#/components/schemas/NewPet',
+        },
+      },
+    },
+  },
+  responses: {
+    '200': {
+      description: 'pet response',
+      content: {
+        'application/json': {
+          schema: {
+            $ref: '#/components/schemas/Pet',
+          },
+        },
+      },
+    },
+    default: {
+      description: 'unexpected error',
+      content: {
+        'application/json': {
+          schema: {
+            $ref: '#/components/schemas/Error',
+          },
+        },
+      },
+    },
+  },
+})
+  async addPet(@requestBody({
+  description: 'Pet to add to the store',
+  required: true,
+  content: {
+    'application/json': {
+      schema: {
+        $ref: '#/components/schemas/NewPet',
+      },
+    },
+  },
+}) _requestBody: NewPet): Promise<Pet> {
     throw new Error('Not implemented');
   }
 
@@ -930,8 +1447,54 @@ pet
    * @param id ID of pet to fetch
    * @returns pet response
    */
-  @operation('get', '/pets/{id}')
-  async findPetById(@param({name: 'id', in: 'path'}) id: number): Promise<Pet> {
+  @operation('get', '/pets/{id}', {
+  description: 'Returns a user based on a single ID, if the user does not have access to the pet',
+  operationId: 'find pet by id',
+  parameters: [
+    {
+      name: 'id',
+      in: 'path',
+      description: 'ID of pet to fetch',
+      required: true,
+      schema: {
+        type: 'integer',
+        format: 'int64',
+      },
+    },
+  ],
+  responses: {
+    '200': {
+      description: 'pet response',
+      content: {
+        'application/json': {
+          schema: {
+            $ref: '#/components/schemas/Pet',
+          },
+        },
+      },
+    },
+    default: {
+      description: 'unexpected error',
+      content: {
+        'application/json': {
+          schema: {
+            $ref: '#/components/schemas/Error',
+          },
+        },
+      },
+    },
+  },
+})
+  async findPetById(@param({
+  name: 'id',
+  in: 'path',
+  description: 'ID of pet to fetch',
+  required: true,
+  schema: {
+    type: 'integer',
+    format: 'int64',
+  },
+}) id: number): Promise<Pet> {
     throw new Error('Not implemented');
   }
 
@@ -940,8 +1503,47 @@ pet
    *
    * @param id ID of pet to delete
    */
-  @operation('delete', '/pets/{id}')
-  async deletePet(@param({name: 'id', in: 'path'}) id: number): Promise<any> {
+  @operation('delete', '/pets/{id}', {
+  description: 'deletes a single pet based on the ID supplied',
+  operationId: 'deletePet',
+  parameters: [
+    {
+      name: 'id',
+      in: 'path',
+      description: 'ID of pet to delete',
+      required: true,
+      schema: {
+        type: 'integer',
+        format: 'int64',
+      },
+    },
+  ],
+  responses: {
+    '204': {
+      description: 'pet deleted',
+    },
+    default: {
+      description: 'unexpected error',
+      content: {
+        'application/json': {
+          schema: {
+            $ref: '#/components/schemas/Error',
+          },
+        },
+      },
+    },
+  },
+})
+  async deletePet(@param({
+  name: 'id',
+  in: 'path',
+  description: 'ID of pet to delete',
+  required: true,
+  schema: {
+    type: 'integer',
+    format: 'int64',
+  },
+}) id: number): Promise<any> {
     throw new Error('Not implemented');
   }
 
@@ -1135,13 +1737,17 @@ export class NewPet {
   /**
    *
    */
-  @property({required: true})
+  @property({required: true, jsonSchema: {
+  type: 'string',
+}})
   name: string;
 
   /**
    *
    */
-  @property()
+  @property({jsonSchema: {
+  type: 'string',
+}})
   tag?: string;
 
 }
@@ -1176,13 +1782,18 @@ export class Error {
   /**
    *
    */
-  @property({required: true})
+  @property({required: true, jsonSchema: {
+  type: 'integer',
+  format: 'int32',
+}})
   code: number;
 
   /**
    *
    */
-  @property({required: true})
+  @property({required: true, jsonSchema: {
+  type: 'string',
+}})
   message: string;
 
 }

@@ -7,13 +7,7 @@
 
 'use strict';
 
-exports[`openapi-generator petstore generates all the proper files 1`] = `
-export * from './open-api.controller';
-
-`;
-
-
-exports[`openapi-generator petstore generates all the proper files 2`] = `
+exports[`openapi-generator specific files generates all the proper files 1`] = `
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {api, operation, param, requestBody} from '@loopback/rest';
 import {Pet} from '../models/pet.model';
@@ -28,6 +22,7 @@ import {NewPet} from '../models/new-pet.model';
   components: {
     schemas: {
       Pet: {
+        type: 'object',
         allOf: [
           {
             $ref: '#/components/schemas/NewPet',
@@ -46,6 +41,7 @@ import {NewPet} from '../models/new-pet.model';
         ],
       },
       NewPet: {
+        type: 'object',
         required: [
           'name',
         ],
@@ -59,6 +55,7 @@ import {NewPet} from '../models/new-pet.model';
         },
       },
       Error: {
+        type: 'object',
         required: [
           'code',
           'message',
@@ -108,7 +105,6 @@ pulvinar elit eu, euismod sapien.
    *
    * @param tags tags to filter by
    * @param limit maximum number of results to return
-   * @param where 
    * @returns pet response
    */
   @operation('get', '/pets', {
@@ -121,6 +117,7 @@ pulvinar elit eu, euismod sapien.
       description: 'tags to filter by',
       required: false,
       style: 'form',
+      explode: false,
       schema: {
         type: 'array',
         items: {
@@ -136,19 +133,6 @@ pulvinar elit eu, euismod sapien.
       schema: {
         type: 'integer',
         format: 'int32',
-      },
-    },
-    {
-      name: 'where',
-      in: 'query',
-      content: {
-        'application/json': {
-          schema: {
-            type: 'object',
-            'title"': 'TodoList.WhereFilter',
-            additionalProperties: true,
-          },
-        },
       },
     },
   ],
@@ -184,6 +168,7 @@ pulvinar elit eu, euismod sapien.
   description: 'tags to filter by',
   required: false,
   style: 'form',
+  explode: false,
   schema: {
     type: 'array',
     items: {
@@ -199,21 +184,7 @@ pulvinar elit eu, euismod sapien.
     type: 'integer',
     format: 'int32',
   },
-}) limit: number, @param({
-  name: 'where',
-  in: 'query',
-  content: {
-    'application/json': {
-      schema: {
-        type: 'object',
-        'title"': 'TodoList.WhereFilter',
-        additionalProperties: true,
-      },
-    },
-  },
-}) where: {
-  [additionalProperty: string]: any;
-}): Promise<Pet[]> {
+}) limit: number): Promise<Pet[]> {
     throw new Error('Not implemented');
   }
 
@@ -227,8 +198,6 @@ pulvinar elit eu, euismod sapien.
   description: 'Creates a new pet in the store.  Duplicates are allowed',
   operationId: 'addPet',
   requestBody: {
-    description: 'Pet to add to the store',
-    required: true,
     content: {
       'application/json': {
         schema: {
@@ -236,6 +205,8 @@ pulvinar elit eu, euismod sapien.
         },
       },
     },
+    description: 'Pet to add to the store',
+    required: true,
   },
   responses: {
     '200': {
@@ -261,8 +232,6 @@ pulvinar elit eu, euismod sapien.
   },
 })
   async addPet(@requestBody({
-  description: 'Pet to add to the store',
-  required: true,
   content: {
     'application/json': {
       schema: {
@@ -270,6 +239,8 @@ pulvinar elit eu, euismod sapien.
       },
     },
   },
+  description: 'Pet to add to the store',
+  required: true,
 }) _requestBody: NewPet): Promise<Pet> {
     throw new Error('Not implemented');
   }
@@ -387,15 +358,13 @@ pet
 `;
 
 
-exports[`openapi-generator petstore generates all the proper files 3`] = `
-export * from './pet.model';
-export * from './new-pet.model';
-export * from './error.model';
+exports[`openapi-generator specific files generates all the proper files 2`] = `
+export * from './open-api.controller';
 
 `;
 
 
-exports[`openapi-generator petstore generates all the proper files 4`] = `
+exports[`openapi-generator specific files generates all the proper files 3`] = `
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {NewPet} from './new-pet.model';
 /**
@@ -410,7 +379,7 @@ export type Pet = NewPet & {
 `;
 
 
-exports[`openapi-generator petstore generates all the proper files 5`] = `
+exports[`openapi-generator specific files generates all the proper files 4`] = `
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {model, property} from '@loopback/repository';
 
@@ -455,7 +424,7 @@ export type NewPetWithRelations = NewPet & NewPetRelations;
 `;
 
 
-exports[`openapi-generator petstore generates all the proper files 6`] = `
+exports[`openapi-generator specific files generates all the proper files 5`] = `
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {model, property} from '@loopback/repository';
 

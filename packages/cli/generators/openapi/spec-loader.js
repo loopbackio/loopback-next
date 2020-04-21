@@ -7,8 +7,7 @@
 const chalk = require('chalk');
 const SwaggerParser = require('swagger-parser');
 const swagger2openapi = require('swagger2openapi');
-const {debugJson} = require('./utils');
-const _ = require('lodash');
+const {debugJson, cloneSpecObject} = require('./utils');
 const {generateControllerSpecs} = require('./spec-helper');
 const {generateModelSpecs, registerNamedSchemas} = require('./schema-helper');
 
@@ -30,19 +29,7 @@ async function loadSpec(specUrlStr, {log, validate} = {}) {
     debugJson('OpenAPI spec loaded: ', spec);
   }
 
-  spec = _.cloneDeepWith(spec, o => {
-    /**
-     * A yaml object below produces `null` for `servers.url`
-     * ```yaml
-     * servers:
-     * - url:
-     *   description: null url for testing
-     * ```
-     */
-    if (o != null && o.$ref) {
-      o['x-$ref'] = o.$ref;
-    }
-  });
+  spec = cloneSpecObject(spec);
 
   // Validate and deference the spec
   if (validate) {

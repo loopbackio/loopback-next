@@ -12,6 +12,7 @@ const {
   titleCase,
   debugJson,
   toFileName,
+  printSpecObject,
   camelCase,
   escapeIdentifier,
 } = require('./utils');
@@ -119,6 +120,11 @@ function groupOperationsByController(apiSpec) {
             controllerSpec.description =
               getTagDescription(apiSpec, controllerSpec.tag) || '';
           }
+          const apiSpecJson = printSpecObject({
+            components: apiSpec.components,
+            paths: {},
+          });
+          controllerSpec.decoration = `@api(${apiSpecJson})`;
           operationsMapByController[c] = controllerSpec;
         } else {
           controllerSpec.operations.push(operation);
@@ -136,7 +142,9 @@ function groupOperationsByController(apiSpec) {
  * @param {object} opSpec OpenAPI operation spec
  */
 function getMethodName(opSpec) {
-  return opSpec['x-operation-name'] || escapeIdentifier(opSpec.operationId);
+  return camelCase(
+    opSpec['x-operation-name'] || escapeIdentifier(opSpec.operationId),
+  );
 }
 
 function registerAnonymousSchema(names, schema, typeRegistry) {
@@ -198,12 +206,9 @@ function buildMethodSpec(controllerSpec, op, options) {
   const interfaceParamNames = {};
   if (parameters) {
     args = parameters.map(p => {
-      const {paramName, paramType, argName} = buildParameter(
-        p,
-        paramNames,
-        comments,
-      );
-      return `@param({name: '${paramName}', in: '${p.in}'}) ${argName}: ${paramType.signature}`;
+      const {paramType, argName} = buildParameter(p, paramNames, comments);
+      const paramJson = printSpecObject(p);
+      return `@param(${paramJson}) ${argName}: ${paramType.signature}`;
     });
     interfaceArgs = parameters.map(p => {
       const param = buildParameter(p, interfaceParamNames);
@@ -244,9 +249,9 @@ function buildMethodSpec(controllerSpec, op, options) {
     }
     const bodyParam = bodyName; // + (op.spec.requestBody.required ? '' : '?');
     // Add body as the 1st param
-    const bodySpec = ''; // toJsonStr(op.spec.requestBody);
+    const bodySpecJson = printSpecObject(op.spec.requestBody);
     args.unshift(
-      `@requestBody(${bodySpec}) ${bodyParam}: ${bodyType.signature}`,
+      `@requestBody(${bodySpecJson}) ${bodyParam}: ${bodyType.signature}`,
     );
     interfaceArgs.unshift(`${bodyParam}: ${bodyType.signature}`);
     namedParameters.unshift({
@@ -317,10 +322,11 @@ function buildMethodSpec(controllerSpec, op, options) {
   const opPath = op.path.replace(/\{[^\}]+\}/g, varName =>
     varName.replace(/[^\w\{\}]+/g, '_'),
   );
+  const opSpecJson = printSpecObject(op.spec);
   const methodSpec = {
     description: op.spec.description,
     comments,
-    decoration: `@operation('${op.verb}', '${opPath}')`,
+    decoration: `@operation('${op.verb}', '${opPath}', ${opSpecJson})`,
     signature,
     signatureForInterface,
     signatureForNamedParams,
@@ -405,6 +411,7 @@ function buildControllerSpecs(operationsMapByController, options) {
     const entry = operationsMapByController[controller];
     const controllerSpec = {
       tag: entry.tag || '',
+      decoration: entry.decoration,
       description: entry.description || '',
       className: controller,
       // Class name for service proxy
