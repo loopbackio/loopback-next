@@ -10,7 +10,7 @@ const {TestSandbox} = require('@loopback/testlab');
 const {assertFilesToMatchSnapshot} = require('../../snapshots');
 
 const generator = path.join(__dirname, '../../../generators/openapi');
-const specPath = path.join(
+const specPath = path.resolve(
   __dirname,
   '../../fixtures/openapi/3.0/petstore-expanded.yaml',
 );

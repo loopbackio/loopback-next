@@ -12,6 +12,7 @@ const utils = require('../../lib/utils');
 const {parse} = require('url');
 const path = require('path');
 const semver = require('semver');
+const slash = require('slash');
 const {getControllerFileName, getServiceFileName} = require('./spec-helper');
 
 const updateIndex = require('../../lib/update-index');
@@ -20,6 +21,8 @@ const CONTROLLER = 'controllers';
 const DATASOURCE = 'datasources';
 const SERVICE = 'services';
 const g = require('../../lib/globalize');
+
+const isWindows = process.platform === 'win32';
 
 module.exports = class OpenApiGenerator extends BaseGenerator {
   // Note: arguments and options should be defined in the constructor.
@@ -285,8 +288,22 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
   async _generateDataSource() {
     let specPath = this.url;
     const parsed = parse(this.url);
-    if (parsed.protocol == null) {
+    if (
+      // Relative paths and UNIX paths don't have any protocol set
+      parsed.protocol == null ||
+      // Support absolute Windows paths, e.g. "C:\some\dir\api.yaml"
+      // When such path is parsed as a URL, we end up with the drive ("C:")
+      // recognized as the protocol.
+      (isWindows && parsed.protocol.match(/^[a-zA-Z]:$/))
+    ) {
       specPath = path.relative(this.destinationRoot(), this.url);
+      if (isWindows && !path.parse(specPath).root) {
+        // On Windows, convert the relative path to use Unix-style separator
+        // We need this behavior for our snapshot-based tests, but @bajtos
+        // thinks it is also nicer for users - at the end of the day,
+        // this is a spec URL and URLs always use forward-slash characters
+        specPath = slash(specPath);
+      }
     }
     this.dataSourceInfo.specPath = specPath;
     const dsConfig = {
