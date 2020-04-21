@@ -183,8 +183,9 @@ module.exports = class ProjectGenerator extends BaseGenerator {
     const choices = [];
     this.buildOptions.forEach(f => {
       if (this.options[f.name] == null) {
+        const name = g.f('Enable %s', f.name);
         choices.push({
-          name: `Enable ${f.name}: ${chalk.gray(f.description)}`,
+          name: `${name}: ${chalk.gray(f.description)}`,
           key: f.name,
           short: `Enable ${f.name}`,
           checked: true,

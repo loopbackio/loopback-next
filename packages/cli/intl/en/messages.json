@@ -47,6 +47,7 @@
   "59a4c6df82c2bbaf50592ee55982fe64": "use @loopback/build helpers (e.g. lb-eslint)",
   "5a0085f46605278c8b83284484cfa858": "Group name for ordering the global interceptor",
   "5a5169e28fedd5752a79ae01155f47a1": "License name:",
+  "5b6e1e532844d265ddfe06d8a15bdeba": "Enable {0}",
   "5bdddebdf72c7027a9e24aa500a35dd7": "Default value {0}:",
   "5d0490e5ebfdca22d238997aa3882bb9": "Enter the OpenAPI spec url or file path:",
   "5dd3fd8d55f85cec0f63ef7c370df454": "Prompting for controller type",
