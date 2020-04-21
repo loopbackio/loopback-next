@@ -416,8 +416,8 @@ export class RestServer extends Context implements Server, HttpServerLike {
       }
 
       debug('Registering controller %s', controllerName);
-      if (apiSpec.components && apiSpec.components.schemas) {
-        this._httpHandler.registerApiDefinitions(apiSpec.components.schemas);
+      if (apiSpec.components) {
+        this._httpHandler.registerApiComponents(apiSpec.components);
       }
       const controllerFactory = createControllerFactoryForBinding(b.key);
       const routes = createRoutesForController(
@@ -793,14 +793,14 @@ export class RestServer extends Context implements Server, HttpServerLike {
    */
   async getApiSpec(requestContext?: RequestContext): Promise<OpenApiSpec> {
     let spec = await this.get<OpenApiSpec>(RestBindings.API_SPEC);
-    const defs = this.httpHandler.getApiDefinitions();
+    const components = this.httpHandler.getApiComponents();
 
     // Apply deep clone to prevent getApiSpec() callers from
     // accidentally modifying our internal routing data
     spec.paths = cloneDeep(this.httpHandler.describeApiPaths());
-    if (defs) {
-      spec.components = spec.components ?? {};
-      spec.components.schemas = cloneDeep(defs);
+    if (components) {
+      const defs = cloneDeep(components);
+      spec.components = {...spec.components, ...defs};
     }
 
     assignRouterSpec(spec, this._externalRoutes.routerSpec);

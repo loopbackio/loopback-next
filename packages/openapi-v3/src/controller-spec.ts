@@ -408,12 +408,8 @@ function processSchemaExtensions(
  * @param tsType - TS Type
  */
 function generateOpenAPISchema(spec: ControllerSpec, tsType: Function) {
-  if (!spec.components) {
-    spec.components = {};
-  }
-  if (!spec.components.schemas) {
-    spec.components.schemas = {};
-  }
+  spec.components = spec.components ?? {};
+  spec.components.schemas = spec.components.schemas ?? {};
   if (tsType.name in spec.components.schemas) {
     // Preserve user-provided definitions
     debug('    skipping type %j as already defined', tsType.name || tsType);
@@ -443,12 +439,8 @@ function assignRelatedSchemas(
     '    assigning related schemas: ',
     definitions && Object.keys(definitions),
   );
-  if (!spec.components) {
-    spec.components = {};
-  }
-  if (!spec.components.schemas) {
-    spec.components.schemas = {};
-  }
+  spec.components = spec.components ?? {};
+  spec.components.schemas = spec.components.schemas ?? {};
   const outputSchemas = spec.components.schemas;
 
   for (const key in definitions) {
