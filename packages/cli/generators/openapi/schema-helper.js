@@ -9,7 +9,7 @@ const {
   isExtension,
   titleCase,
   escapePropertyName,
-  toJsonStr,
+  printSpecObject,
   toFileName,
 } = require('./utils');
 
@@ -37,7 +37,7 @@ function getTypeSpec(schema, options) {
 function getDefault(schema, options) {
   let defaultVal = '';
   if (options && options.includeDefault && schema.default !== undefined) {
-    defaultVal = ' = ' + toJsonStr(schema.default);
+    defaultVal = ' = ' + printSpecObject(schema.default);
   }
   return defaultVal;
 }
@@ -151,6 +151,7 @@ function mapObjectType(schema, options) {
     const properties = [];
     const required = schema.required || [];
     for (const p in schema.properties) {
+      const propSchema = {...schema.properties[p]};
       const suffix = required.includes(p) ? '' : '?';
       const propertyType = mapSchemaType(
         schema.properties[p],
@@ -161,10 +162,11 @@ function mapObjectType(schema, options) {
       // The property name might have chars such as `-`
       const propName = escapePropertyName(p);
 
-      let propDecoration = `@property()`;
+      const propSchemaJson = printSpecObject(propSchema);
+      let propDecoration = `@property({jsonSchema: ${propSchemaJson}})`;
 
       if (required.includes(p)) {
-        propDecoration = `@property({required: true})`;
+        propDecoration = `@property({required: true, jsonSchema: ${propSchemaJson}})`;
       }
 
       if (propertyType.itemType) {
@@ -177,7 +179,7 @@ function mapObjectType(schema, options) {
               getJSType(propertyType.itemType.name);
         if (itemType) {
           // Use `@property.array` for array types
-          propDecoration = `@property.array(${itemType})`;
+          propDecoration = `@property.array(${itemType}, {jsonSchema: ${propSchemaJson}})`;
           if (propertyType.itemType.className) {
             // The referenced item type is either a class or type
             collectImports(typeSpec, propertyType.itemType);
@@ -261,7 +263,7 @@ function mapPrimitiveType(schema, options) {
   }
   // Handle enums
   if (Array.isArray(schema.enum)) {
-    jsType = schema.enum.map(v => toJsonStr(v)).join(' | ');
+    jsType = schema.enum.map(v => printSpecObject(v)).join(' | ');
   }
   const typeSpec = getTypeSpec(schema, options);
   const defaultVal = getDefault(schema, options);

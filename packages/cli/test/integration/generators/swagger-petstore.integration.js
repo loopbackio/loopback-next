@@ -12,6 +12,7 @@ const specPath = path.join(
   __dirname,
   '../../fixtures/openapi/2.0/petstore-expanded-swagger.json',
 );
+const {expectFileToMatchSnapshot} = require('../../snapshots');
 
 const testlab = require('@loopback/testlab');
 const TestSandbox = testlab.TestSandbox;
@@ -46,32 +47,10 @@ describe('openapi-generator specific files', () => {
       .withPrompts(props);
     assert.file(controller);
 
-    assert.fileContent(controller, 'export class OpenApiController {');
-    assert.fileContent(controller, `@operation('get', '/pets')`);
-    assert.fileContent(
-      controller,
-      `async findPets(@param({name: 'tags', in: 'query'}) tags: string[], ` +
-        `@param({name: 'limit', in: 'query'}) limit: number): Promise<Pet[]>`,
-    );
-
-    assert.fileContent(index, `export * from './open-api.controller';`);
-
-    assert.file(petModel);
-    assert.fileContent(petModel, `import {NewPet} from './new-pet.model';`);
-    assert.fileContent(
-      petModel,
-      `export type Pet = NewPet & {
-  id: number;
-};`,
-    );
-    assert.file(newPetModel);
-    assert.fileContent(newPetModel, `export class NewPet {`);
-    assert.fileContent(newPetModel, `constructor(data?: Partial<NewPet>) {`);
-    assert.fileContent(newPetModel, `@model({name: 'NewPet'})`);
-    assert.fileContent(newPetModel, `@property({required: true})`);
-    assert.fileContent(newPetModel, `name: string;`);
-    assert.fileContent(newPetModel, `@property()`);
-    assert.fileContent(newPetModel, `tag?: string`);
-    assert.file(errorModel);
+    expectFileToMatchSnapshot(controller);
+    expectFileToMatchSnapshot(index);
+    expectFileToMatchSnapshot(petModel);
+    expectFileToMatchSnapshot(newPetModel);
+    expectFileToMatchSnapshot(errorModel);
   });
 });

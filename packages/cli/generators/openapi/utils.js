@@ -166,7 +166,7 @@ function escapeIdentifier(name) {
  */
 function escapePropertyName(name) {
   if (JS_KEYWORDS.includes(name) || !name.match(SAFE_IDENTIFER)) {
-    return toJsonStr(name);
+    return printSpecObject(name);
   }
   return name;
 }
@@ -182,8 +182,54 @@ function escapeComment(comment) {
   return utils.wrapText(comment, 76);
 }
 
-function toJsonStr(val) {
-  return json5.stringify(val, null, 2);
+/**
+ * Clone an OpenAPI spec. When a `$ref` is encountered, we store it as `x-$ref`
+ * and keep the stringified original value as `x-$original-value`. These
+ * metadata allows us to access the original object after `$ref` is resolved
+ * and dereferenced by the parser.
+ *
+ * @param {*} spec An OpenAPI spec object
+ */
+function cloneSpecObject(spec) {
+  return _.cloneDeepWith(spec, item => {
+    /**
+     * A yaml object below produces `null` for `servers.url`
+     * ```yaml
+     * servers:
+     * - url:
+     *   description: null url for testing
+     * ```
+     */
+    if (item != null && item.$ref) {
+      const copy = _.cloneDeep(item);
+      return {
+        ...copy,
+        // Store the original item in `x-$original`
+        'x-$original-value': json5.stringify(item, null, 2),
+        // Keep `$ref` as `x-$ref` as `$ref` will be removed during dereferencing
+        'x-$ref': item.$ref,
+      };
+    }
+  });
+}
+
+/**
+ * Print an OpenAPI spec object as JavaScript object literal. The original value
+ * is used if `$ref` is resolved.
+ * @param {*} specObject - An OpenAPI spec object such as `Parameter` or `Operation`.
+ */
+function printSpecObject(specObject) {
+  return json5.stringify(
+    specObject,
+    (key, value) => {
+      // Restore the original value from `x-$original-value`
+      if (value != null && value['x-$ref']) {
+        return json5.parse(value['x-$original-value']);
+      }
+      return value;
+    },
+    2,
+  );
 }
 
 module.exports = {
@@ -196,6 +242,7 @@ module.exports = {
   escapeIdentifier,
   escapePropertyName,
   escapeComment,
-  toJsonStr,
+  printSpecObject,
+  cloneSpecObject,
   validateUrlOrFile,
 };

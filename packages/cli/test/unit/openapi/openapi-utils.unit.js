@@ -5,6 +5,7 @@
 
 const expect = require('@loopback/testlab').expect;
 const utils = require('../../../generators/openapi/utils');
+const json5 = require('json5');
 
 describe('openapi utils', () => {
   it('escapes keywords for an identifier', () => {
@@ -48,4 +49,90 @@ describe('openapi utils', () => {
     expect(utils.escapeComment('abc */')).to.eql('abc *\\/');
     expect(utils.escapeComment('abc')).to.eql('abc');
   });
+
+  it('keeps x-$ref and x-$original-value in a cloned spec object', () => {
+    const {copy} = givenAClonedSpec();
+    const schema =
+      copy.paths['/create'].post.requestBody.content['application/json'].schema;
+    expect(schema['x-$ref']).to.eql(schema.$ref);
+    expect(schema['x-$original-value']).to.eql(
+      "{\n  $ref: '#/components/schemas/Customer',\n}",
+    );
+    const location =
+      copy.paths['/create'].post.responses['200'].headers.Location;
+    expect(location['x-$ref']).to.eql(location.$ref);
+    expect(location['x-$original-value']).to.eql(
+      "{\n  $ref: '#/components/headers/Location',\n}",
+    );
+  });
+
+  it('prints spec object', () => {
+    const {spec, copy} = givenAClonedSpec();
+    const str = utils.printSpecObject(copy);
+    expect(json5.parse(str)).to.eql(spec);
+  });
+
+  function givenAClonedSpec() {
+    const spec = {
+      openapi: '3.0.0',
+      paths: {
+        '/create': {
+          post: {
+            tags: ['Customer'],
+            operationId: 'create',
+            requestBody: {
+              content: {
+                'application/json': {
+                  schema: {
+                    $ref: '#/components/schemas/Customer',
+                  },
+                },
+              },
+            },
+            responses: {
+              '200': {
+                description: 'Success',
+                content: {
+                  'application/json': {
+                    schema: {
+                      $ref: '#/components/schemas/Customer',
+                    },
+                  },
+                },
+                headers: {
+                  Location: {
+                    $ref: '#/components/headers/Location',
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      components: {
+        schemas: {
+          Customer: {
+            description: 'Customer',
+            type: 'object',
+            additionalProperties: {
+              type: 'string',
+            },
+          },
+        },
+        headers: {
+          Location: {
+            name: 'Location',
+            in: 'header',
+            description: 'Location response header',
+            required: false,
+            schema: {
+              type: 'string',
+            },
+          },
+        },
+      },
+    };
+    const copy = utils.cloneSpecObject(spec);
+    return {spec, copy};
+  }
 });
