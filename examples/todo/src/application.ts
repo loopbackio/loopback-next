@@ -7,7 +7,7 @@ import {BootMixin} from '@loopback/boot';
 import {ApplicationConfig} from '@loopback/core';
 import {RepositoryMixin} from '@loopback/repository';
 import {RestApplication} from '@loopback/rest';
-import {RestExplorerComponent} from '@loopback/rest-explorer';
+import {RestExplorerBindings, RestExplorerComponent} from '@loopback/rest-explorer';
 import {ServiceMixin} from '@loopback/service-proxy';
 import path from 'path';
 import {MySequence} from './sequence';
@@ -24,6 +24,8 @@ export class TodoListApplication extends BootMixin(
     // Set up default home page
     this.static('/', path.join(__dirname, '../public'));
 
+    // customize the swagger-ui
+    this.bind(RestExplorerBindings.CONFIG).to({themesPath: '../../css'});
     this.component(RestExplorerComponent);
 
     this.projectRoot = __dirname;

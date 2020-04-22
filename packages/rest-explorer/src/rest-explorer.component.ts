@@ -7,6 +7,7 @@
 import {bind, config, ContextTags, inject} from '@loopback/context';
 import {Component, CoreBindings} from '@loopback/core';
 import {createControllerFactoryForClass, RestApplication} from '@loopback/rest';
+import * as path from 'path';
 import {ExplorerController} from './rest-explorer.controller';
 import {RestExplorerBindings} from './rest-explorer.keys';
 import {RestExplorerConfig} from './rest-explorer.types';
@@ -36,7 +37,15 @@ export class RestExplorerComponent implements Component {
       );
     }
 
-    application.static(explorerPath, swaggerUI.getAbsoluteFSPath());
+    const absolutePath = swaggerUI.getAbsoluteFSPath();
+    application.static(explorerPath, absolutePath);
+
+    // mount the `/themes` path if app provides it to customize the
+    // swagger-ui theme
+    if (restExplorerConfig.themesPath) {
+      const customThemesPath = path.join(absolutePath, restExplorerConfig.themesPath);
+      application.static(explorerPath + '/themes', customThemesPath);
+    }
 
     // Disable redirect to externally hosted API explorer
     application.restServer.config.apiExplorer = {disabled: true};

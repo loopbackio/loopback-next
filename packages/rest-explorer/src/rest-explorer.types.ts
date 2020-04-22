@@ -29,4 +29,8 @@ export type RestExplorerConfig = {
    * forwarded to the application behind the proxy.
    */
   useSelfHostedSpec?: false;
+  /**
+   * File path to customize the swagger-ui theme
+   */
+  themesPath?: string;
 };
