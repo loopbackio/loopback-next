@@ -742,19 +742,6 @@ children:
       url: Push-connector.html
       output: 'web, pdf'
 
-    - title: 'Remote connector'
-      url: Remote-connector.html
-      output: 'web, pdf'
-      children:
-
-      - title: 'Remote connector example'
-        url: Remote-connector-example.html
-        output: 'web, pdf'
-
-      - title: 'Strong Remoting'
-        url: Strong-Remoting.html
-        output: 'web, pdf'
-
     - title: 'REST connector'
       url: REST-connector.html
       output: 'web, pdf'
