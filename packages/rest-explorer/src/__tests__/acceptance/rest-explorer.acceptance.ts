@@ -10,6 +10,7 @@ import {
   expect,
   givenHttpServerConfig,
 } from '@loopback/testlab';
+import * as path from 'path';
 import {
   RestExplorerBindings,
   RestExplorerComponent,
@@ -147,6 +148,26 @@ describe('API Explorer (acceptance)', () => {
       await request.get('/explorer/openapi.json').expect(404);
       await request.get('/openapi/ui/openapi.json').expect(404);
     });
+
+    it('honors custom swagger theme file path', async () => {
+      await givenAppWithCustomExplorerConfig(undefined, {
+        swaggerThemeFile: '/theme-newspaper.css',
+      });
+
+      // assert the new theme file exists on server
+      await request
+        .get('/theme-newspaper.css')
+        .expect(200)
+        .expect('content-type', /text\/css/)
+        .expect(/Theme: Newspaper/);
+
+      // assert the explorer template injects the custom css file
+      await request
+        .get('/explorer/')
+        .expect(200)
+        .expect('content-type', /html/)
+        .expect(/\/theme-newspaper.css/);
+    });
   });
 
   context('with custom basePath', () => {
@@ -182,6 +203,9 @@ describe('API Explorer (acceptance)', () => {
     if (explorerConfig) {
       app.bind(RestExplorerBindings.CONFIG).to(explorerConfig);
     }
+    // Set up default home page to be '/fixtures' (relative to the dist folder).
+    // In a real application, default home page is usually the '/public' folder.
+    app.static('/', path.join(__dirname, '../../../src/__tests__/fixtures'));
     app.component(RestExplorerComponent);
     await app.start();
     request = createRestAppClient(app);
