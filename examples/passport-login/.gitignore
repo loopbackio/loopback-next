@@ -1,3 +1,6 @@
+# db backup file
+data/db.json
+
 # Logs
 logs
 *.log
