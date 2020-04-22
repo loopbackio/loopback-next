@@ -131,10 +131,11 @@ module.exports = class extends BaseGenerator {
     const cwd = process.cwd();
     const absOutDir = await downloadAndExtractExample(this.exampleName, cwd);
     this.outDir = path.relative(cwd, absOutDir);
-    return fs.rename(
-      `${this.outDir}/tsconfig.build.json`,
-      `${this.outDir}/tsconfig.json`,
-    );
+    const tsconfig = path.join(absOutDir, 'tsconfig.json');
+    const tsBuildConfig = path.join(absOutDir, 'tsconfig.build.json');
+    const exists = await fs.exists(tsconfig);
+    if (exists) return;
+    return fs.rename(tsBuildConfig, tsconfig);
   }
 
   install() {
