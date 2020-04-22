@@ -32,6 +32,7 @@ export class ExplorerController {
 
   private openApiSpecUrl: string;
   private useSelfHostedSpec: boolean;
+  private swaggerThemeFile: string;
 
   constructor(
     @inject(RestBindings.CONFIG, {optional: true})
@@ -44,6 +45,8 @@ export class ExplorerController {
   ) {
     this.useSelfHostedSpec = explorerConfig.useSelfHostedSpec !== false;
     this.openApiSpecUrl = this.getOpenApiSpecUrl(restConfig);
+    this.swaggerThemeFile =
+      explorerConfig.swaggerThemeFile ?? './swagger-ui.css';
   }
 
   indexRedirect() {
@@ -59,6 +62,7 @@ export class ExplorerController {
   }
 
   index() {
+    const swaggerThemeFile = this.swaggerThemeFile;
     let openApiSpecUrl = this.openApiSpecUrl;
 
     // if using self-hosted openapi spec, then the path to use is always the
@@ -81,6 +85,7 @@ export class ExplorerController {
     }
     const data = {
       openApiSpecUrl,
+      swaggerThemeFile,
     };
 
     const homePage = templateFn(data);

@@ -44,14 +44,6 @@ this.bind(RestExplorerBindings.CONFIG).to({
 });
 ```
 
-_NOTE: The Explorer UI's visual style is not customizable yet. Our recommended
-solution is to create a fork of this module, make any style changes in the fork
-and publish the modified module under a different name. The
-[GitHub issue #2023](https://github.com/strongloop/loopback-next/issues/2023) is
-requesting a configuration option for customizing the visual style, please
-up-vote the issue and/or join the discussion if you are interested in this
-feature._
-
 ### Advanced Configuration and Reverse Proxies
 
 By default, the component will add an additional OpenAPI spec endpoint, in the
@@ -138,6 +130,47 @@ standards-based means of getting a working explorer. A custom solution would be
 needed in this situation, such as passing a non-standard header from your
 reverse proxy to tell the app the external path, and custom code in your app to
 make the app and explorer aware of this.
+
+### Customizing Swagger UI Theme
+
+The Explorer UI’s visual style can be customized by configuring the
+`swaggerThemeFile` property. Here is the steps to do it:
+
+First, provide your own Swagger-UI theme file in a public folder. For example,
+in the
+[Todo example](https://github.com/strongloop/loopback-next/tree/master/examples/todo)
+application:
+
+Its `/public` folder is set up as the default home page with url `/`. Copy a
+swagger theme file `theme-newspaper.css` to be under `/public`.
+
+Then configure the `swaggerThemeFile` field to be the relative path to home page
+as `/theme-newspaper.css`:
+
+```ts
+export class TodoListApplication extends BootMixin(
+  ServiceMixin(RepositoryMixin(RestApplication)),
+) {
+  constructor(options: ApplicationConfig = {}) {
+    // ...
+
+    // customize the swagger-ui
+    this.configure(RestExplorerBindings.COMPONENT).to({
+      // Keep the theme file in the `public` dir of the app
+      // If required create a dir and keep the file, just specify the path
+      swaggerThemeFile: '/theme-newspaper.css',
+    });
+
+    // ...
+  }
+}
+```
+
+When the application runs, the explorer template will load the
+`theme-newspaper.css` file as its theme.
+
+Here is a repository that contains popular Swagger-UI themes:
+https://github.com/ostranme/swagger-ui-themes.
 
 ## Contributions
 

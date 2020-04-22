@@ -29,4 +29,7 @@ export type RestExplorerConfig = {
    * forwarded to the application behind the proxy.
    */
   useSelfHostedSpec?: false;
+
+  // Relative URL of the theme CSS file
+  swaggerThemeFile?: string;
 };
