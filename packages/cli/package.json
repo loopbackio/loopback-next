@@ -1,6 +1,6 @@
 {
   "name": "@loopback/cli",
-  "version": "2.4.1",
+  "version": "2.4.2",
   "description": "Yeoman generator for LoopBack 4",
   "homepage": "https://github.com/strongloop/loopback-next/tree/master/packages/cli",
   "author": "IBM Corp.",
@@ -106,7 +106,7 @@
       "@loopback/authentication": "^4.2.0",
       "@loopback/boot": "^2.1.0",
       "@loopback/build": "^5.1.0",
-      "@loopback/cli": "^2.4.1",
+      "@loopback/cli": "^2.4.2",
       "@loopback/context": "^3.5.0",
       "@loopback/core": "^2.4.0",
       "@loopback/metadata": "^2.1.0",
@@ -116,7 +116,7 @@
       "@loopback/repository": "^2.2.0",
       "@loopback/rest": "^3.3.0",
       "@loopback/testlab": "^3.1.0",
-      "@loopback/docs": "^3.4.1",
+      "@loopback/docs": "^3.4.2",
       "glob": "^7.1.6",
       "@loopback/example-hello-world": "^2.0.5",
       "@loopback/example-log-extension": "^2.0.5",
@@ -160,7 +160,7 @@
       "@loopback/example-validation-app": "^1.2.2",
       "@loopback/cron": "^0.2.0",
       "@loopback/example-multi-tenancy": "^0.1.0",
-      "@loopback/example-passport-login": "^1.1.1",
+      "@loopback/example-passport-login": "^1.1.2",
       "@loopback/extension-authentication-jwt": "^0.1.0",
       "@loopback/context-explorer": "^0.1.0"
     }
