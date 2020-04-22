@@ -30,7 +30,7 @@
     "@loopback/build": "^5.0.1",
     "@loopback/eslint-config": "^6.0.3",
     "@loopback/testlab": "^3.0.1",
-    "@types/node": "^10.17.20"
+    "@types/node": "^10.17.21"
   },
   "files": [
     "README.md",
