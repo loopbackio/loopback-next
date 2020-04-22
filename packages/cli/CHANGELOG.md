@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.4.3](https://github.com/strongloop/loopback-next/compare/@loopback/cli@2.4.2...@loopback/cli@2.4.3) (2020-04-22)
+
+
+### Bug Fixes
+
+* **cli:** examples now use tsconfig.json instead of tsconfig.build.json ([f01b4e9](https://github.com/strongloop/loopback-next/commit/f01b4e915a00266bca02ac519e12026e774e0c98))
+
+
+
+
+
 ## [2.4.2](https://github.com/strongloop/loopback-next/compare/@loopback/cli@2.4.1...@loopback/cli@2.4.2) (2020-04-22)
 
 **Note:** Version bump only for package @loopback/cli
