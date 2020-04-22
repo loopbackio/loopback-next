@@ -25,7 +25,7 @@
     "@types/http-status": "^1.1.2",
     "@types/json-merge-patch": "0.0.4",
     "@types/lodash": "^4.14.150",
-    "@types/node": "^10.17.20"
+    "@types/node": "^10.17.21"
   },
   "scripts": {
     "build": "lb-tsc",

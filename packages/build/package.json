@@ -17,7 +17,7 @@
 	"dependencies": {
 		"@loopback/eslint-config": "^6.0.3",
 		"@types/mocha": "^7.0.2",
-		"@types/node": "^10.17.20",
+		"@types/node": "^10.17.21",
 		"@typescript-eslint/eslint-plugin": "^2.29.0",
 		"@typescript-eslint/parser": "^2.29.0",
 		"cross-spawn": "^7.0.2",

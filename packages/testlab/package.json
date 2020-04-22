@@ -33,7 +33,7 @@
   "devDependencies": {
     "@loopback/build": "^5.0.1",
     "@loopback/eslint-config": "^6.0.3",
-    "@types/node": "^10.17.20"
+    "@types/node": "^10.17.21"
   },
   "files": [
     "README.md",
