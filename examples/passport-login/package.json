@@ -29,6 +29,9 @@
     "url": "https://github.com/strongloop/loopback-next.git",
     "directory": "examples/passport-login"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "author": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
