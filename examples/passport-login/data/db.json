@@ -1,12 +1,14 @@
 {
   "ids": {
-    "User": 5,
-    "UserIdentity": 1007,
-    "UserCredentials": 3
+    "User": 1,
+    "UserIdentity": 1,
+    "UserCredentials": 1
   },
   "models": {
-    "User": {},
-    "UserIdentity": {},
+    "User": {
+    },
+    "UserIdentity": {
+    },
     "UserCredentials": {}
   }
 }

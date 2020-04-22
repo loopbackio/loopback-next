@@ -7,6 +7,7 @@ import {ApplicationConfig} from '@loopback/core';
 import {ExpressServer} from './server';
 import * as path from 'path';
 import {oauth2ProfileFunction} from './authentication-strategies';
+import {RestApplication} from '@loopback/rest';
 
 export {ExpressServer};
 
@@ -38,25 +39,23 @@ export async function serverConfig(
 }
 
 /**
- * Setup and start express server
+ * bind resources to application
  * @param server
  */
-export async function setupServer(server: ExpressServer) {
-  const lbApp = server.lbApp;
-
+export async function setupApplication(
+  lbApp: RestApplication,
+  dbBackupFile?: string,
+) {
   lbApp.bind('datasources.config.db').to({
     name: 'db',
     connector: 'memory',
     localStorage: '',
-    file: path.resolve(__dirname, '../data/db.json'),
+    file: dbBackupFile ? path.resolve(__dirname, dbBackupFile) : undefined,
   });
 
   lbApp
     .bind('authentication.oauth2.profile.function')
     .to(oauth2ProfileFunction);
-
-  await server.boot();
-  await server.start();
 }
 
 /**
@@ -66,10 +65,13 @@ export async function setupServer(server: ExpressServer) {
 export async function startApplication(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   oauth2Providers: any,
+  dbBackupFile?: string,
 ): Promise<ExpressServer> {
   const config = await serverConfig(oauth2Providers);
   const server = new ExpressServer(config);
-  await setupServer(server);
+  await setupApplication(server.lbApp, dbBackupFile);
+  await server.boot();
+  await server.start();
   return server;
 }
 
@@ -83,6 +85,9 @@ export async function main() {
   } else {
     oauth2Providers = require('../oauth2-providers');
   }
-  const server: ExpressServer = await startApplication(oauth2Providers);
+  const server: ExpressServer = await startApplication(
+    oauth2Providers,
+    '../data/db.json',
+  );
   console.log(`Server is running at ${server.url}`);
 }
