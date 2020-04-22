@@ -40,21 +40,25 @@ module.exports = class BaseGenerator extends Generator {
     // For the options coming from Yeoman,
     // overwrite the whole option object so that they can get translated.
     this._options['help'] = {
+      name: 'help',
       type: Boolean,
       alias: 'h',
       description: g.f("Print the generator's options and usage"),
     };
     this._options['skip-cache'] = {
+      name: 'skip-cache',
       type: Boolean,
       description: g.f('Do not remember prompt answers'),
       default: false,
     };
     this._options['skip-install'] = {
+      name: 'skip-install',
       type: Boolean,
       description: g.f('Do not automatically install dependencies'),
       default: false,
     };
     this._options['force-install'] = {
+      name: 'force-install',
       type: Boolean,
       description: g.f('Fail on install dependencies error'),
       default: false,
