@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@3.2.1...@loopback/rest@3.3.0) (2020-04-22)
+
+
+### Features
+
+* **rest:** ensure OpenAPI spec components are merged ([2efa27b](https://github.com/strongloop/loopback-next/commit/2efa27b283d86258fe705914c557536abaf2c435))
+* migrate loopback-example-passport repo as lb4 example ([dd3c328](https://github.com/strongloop/loopback-next/commit/dd3c328a138621bb3f6ae770b4db83ba21ecc2d6))
+* update package.json and .travis.yml for builds ([cb2b8e6](https://github.com/strongloop/loopback-next/commit/cb2b8e6a18616dda7783c0193091039d4e608131))
+* **rest:** add openapi schema consolidation ([6a039ed](https://github.com/strongloop/loopback-next/commit/6a039edd4e056089bca8cf2acd4ed7ddab55d55e))
+
+
+
+
+
 ## [3.2.1](https://github.com/strongloop/loopback-next/compare/@loopback/rest@3.2.0...@loopback/rest@3.2.1) (2020-04-11)
 
 **Note:** Version bump only for package @loopback/rest

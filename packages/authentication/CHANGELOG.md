@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@4.1.3...@loopback/authentication@4.2.0) (2020-04-22)
+
+
+### Features
+
+* migrate loopback-example-passport repo as lb4 example ([dd3c328](https://github.com/strongloop/loopback-next/commit/dd3c328a138621bb3f6ae770b4db83ba21ecc2d6))
+* update package.json and .travis.yml for builds ([cb2b8e6](https://github.com/strongloop/loopback-next/commit/cb2b8e6a18616dda7783c0193091039d4e608131))
+
+
+
+
+
 ## [4.1.3](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@4.1.2...@loopback/authentication@4.1.3) (2020-04-11)
 
 **Note:** Version bump only for package @loopback/authentication

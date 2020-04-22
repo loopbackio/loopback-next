@@ -1,0 +1,12 @@
+# Change Log
+
+All notable changes to this project will be documented in this file.
+See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+# 0.1.0 (2020-04-22)
+
+
+### Features
+
+* update package.json and .travis.yml for builds ([cb2b8e6](https://github.com/strongloop/loopback-next/commit/cb2b8e6a18616dda7783c0193091039d4e608131))
+* **context-explorer:** add a component for context explorer ([f1c3557](https://github.com/strongloop/loopback-next/commit/f1c35574e346be72dec87b3d5fecabf9a7e37212))

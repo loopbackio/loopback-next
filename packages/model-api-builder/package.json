@@ -1,6 +1,6 @@
 {
   "name": "@loopback/model-api-builder",
-  "version": "2.0.4",
+  "version": "2.1.0",
   "description": "Types and helpers for packages contributing Model API builders.",
   "engines": {
     "node": ">=10"
@@ -20,13 +20,13 @@
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "peerDependencies": {
-    "@loopback/core": "^2.3.0",
-    "@loopback/repository": "^2.1.1"
+    "@loopback/core": "^2.4.0",
+    "@loopback/repository": "^2.2.0"
   },
   "devDependencies": {
     "@loopback/build": "^1.7.1",
-    "@loopback/core": "^2.3.0",
-    "@loopback/repository": "^2.1.1",
+    "@loopback/core": "^2.4.0",
+    "@loopback/repository": "^2.2.0",
     "@types/node": "^10.17.21"
   },
   "files": [

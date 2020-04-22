@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.3.1...@loopback/docs@3.4.0) (2020-04-22)
+
+
+### Bug Fixes
+
+* **docs:** correct path to Sequence.md ([54cc6e6](https://github.com/strongloop/loopback-next/commit/54cc6e6cdd4c6b9341bed07eb4a84ef56f3ae809))
+* **docs:** fix broken links ([65660d3](https://github.com/strongloop/loopback-next/commit/65660d3f658ef72b5a5a5df940cd168a5a29732f))
+* **docs:** fix broken links and formatting ([c1a1337](https://github.com/strongloop/loopback-next/commit/c1a1337f9fb91d9c4eb918e4315a57ccb31a52ae))
+
+
+### Features
+
+* **cli:** add --client option for `lb4 openapi` to generate service proxies ([63a18c8](https://github.com/strongloop/loopback-next/commit/63a18c8cae03c18954653cee36d1043833c03e54))
+* **docs:** update docs for TypeScript project refs ([6b24a63](https://github.com/strongloop/loopback-next/commit/6b24a6363a3713454a5276f34eab7dcd3e2cf05c))
+* **repository-json-schema:** allow jsonSchema for model definitions ([05370bc](https://github.com/strongloop/loopback-next/commit/05370bcc4cc7707ffd018cd6fbfc925935b05a8d))
+* add a script to scaffold and bootstrap a new package ([61669bd](https://github.com/strongloop/loopback-next/commit/61669bdac7dd06a61946f113b2c436b5e1526797))
+
+
+
+
+
 ## [3.3.1](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.3.0...@loopback/docs@3.3.1) (2020-04-11)
 
 

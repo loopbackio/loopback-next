@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@2.1.1...@loopback/repository-json-schema@2.2.0) (2020-04-22)
+
+
+### Bug Fixes
+
+* omit title for relation schemas ([694a9eb](https://github.com/strongloop/loopback-next/commit/694a9eb7aec9b8d6ef691e59b20d84224713dccf))
+
+
+### Features
+
+* **repository-json-schema:** allow jsonSchema for model definitions ([05370bc](https://github.com/strongloop/loopback-next/commit/05370bcc4cc7707ffd018cd6fbfc925935b05a8d))
+* update package.json and .travis.yml for builds ([cb2b8e6](https://github.com/strongloop/loopback-next/commit/cb2b8e6a18616dda7783c0193091039d4e608131))
+
+
+
+
+
 ## [2.1.1](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@2.1.0...@loopback/repository-json-schema@2.1.1) (2020-04-11)
 
 **Note:** Version bump only for package @loopback/repository-json-schema

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@2.1.1...@loopback/repository@2.2.0) (2020-04-22)
+
+
+### Features
+
+* **repository:** use JsonSchema to constrain property/model definitions ([5de2ae2](https://github.com/strongloop/loopback-next/commit/5de2ae2730d4cc08f86b9458947afbd2d71976c1))
+* update package.json and .travis.yml for builds ([cb2b8e6](https://github.com/strongloop/loopback-next/commit/cb2b8e6a18616dda7783c0193091039d4e608131))
+
+
+
+
+
 ## [2.1.1](https://github.com/strongloop/loopback-next/compare/@loopback/repository@2.1.0...@loopback/repository@2.1.1) (2020-04-11)
 
 **Note:** Version bump only for package @loopback/repository

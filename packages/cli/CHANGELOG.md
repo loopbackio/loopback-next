@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@2.3.1...@loopback/cli@2.4.0) (2020-04-22)
+
+
+### Bug Fixes
+
+* add global strings from controller generator ([c87bd07](https://github.com/strongloop/loopback-next/commit/c87bd07c833e02831a1d7c92d3d8e730f540159c))
+* fixes help menu undefined options ([25baa8f](https://github.com/strongloop/loopback-next/commit/25baa8f0870a48e5c1b2bd6dede64aee6bc18d11))
+* globalize app generator strings ([45e0172](https://github.com/strongloop/loopback-next/commit/45e0172863b3787e039ffbf588b925c60ac984e5))
+* globalize messages from artiface generator ([5d54b55](https://github.com/strongloop/loopback-next/commit/5d54b551fec4ded1737e3e29384ab4b694d65b65))
+* **cli:** check if the object is `null` for OpenAPI spec cloning ([ee13e9c](https://github.com/strongloop/loopback-next/commit/ee13e9c37fdcb7464477bcd969d0d82741a8d0cb))
+* globalize lb4 example strings ([98fe611](https://github.com/strongloop/loopback-next/commit/98fe6118a3fcfde906bccdabac176785bfa50d44))
+* overwrite generator options from yeoman ([ecfedee](https://github.com/strongloop/loopback-next/commit/ecfedeec7ab0ad7bbf739bb3d8d93f8946f72207))
+* **cli:** exclude `**/node_modules/**/*` from copyright header searching ([9d989bd](https://github.com/strongloop/loopback-next/commit/9d989bd7f7baadf2d8c8e0548d4702184e350054))
+* **cli:** fix property schema mapping for openapi specs ([b851aed](https://github.com/strongloop/loopback-next/commit/b851aed4886be50d03aefc022bd7d9c9089523ef))
+
+
+### Features
+
+* **cli:** add --client option for `lb4 openapi` to generate service proxies ([63a18c8](https://github.com/strongloop/loopback-next/commit/63a18c8cae03c18954653cee36d1043833c03e54))
+* **cli:** add `--apiconnect` option to enable ApiConnectComponent ([c2931d6](https://github.com/strongloop/loopback-next/commit/c2931d6cb8d5f4077c3e680885eee0eee929bd6d))
+* **cli:** allow generator fs to be used for updating index.ts ([3c7ca41](https://github.com/strongloop/loopback-next/commit/3c7ca41115948afc70a67a9f0d471949af8308f9))
+* **cli:** populate OpenAPI spec objects into generated code ([ae620d4](https://github.com/strongloop/loopback-next/commit/ae620d4ad5e2be4bf8dcaac9b4842166b9b76215))
+
+
+
+
+
 ## [2.3.1](https://github.com/strongloop/loopback-next/compare/@loopback/cli@2.3.0...@loopback/cli@2.3.1) (2020-04-11)
 
 

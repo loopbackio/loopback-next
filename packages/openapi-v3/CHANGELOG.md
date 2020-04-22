@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@3.1.3...@loopback/openapi-v3@3.2.0) (2020-04-22)
+
+
+### Features
+
+* **rest:** ensure OpenAPI spec components are merged ([2efa27b](https://github.com/strongloop/loopback-next/commit/2efa27b283d86258fe705914c557536abaf2c435))
+* update package.json and .travis.yml for builds ([cb2b8e6](https://github.com/strongloop/loopback-next/commit/cb2b8e6a18616dda7783c0193091039d4e608131))
+* **rest:** add openapi schema consolidation ([6a039ed](https://github.com/strongloop/loopback-next/commit/6a039edd4e056089bca8cf2acd4ed7ddab55d55e))
+
+
+
+
+
 ## [3.1.3](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@3.1.2...@loopback/openapi-v3@3.1.3) (2020-04-11)
 
 **Note:** Version bump only for package @loopback/openapi-v3

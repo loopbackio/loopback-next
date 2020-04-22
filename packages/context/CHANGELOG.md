@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.5.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@3.4.0...@loopback/context@3.5.0) (2020-04-22)
+
+
+### Features
+
+* update package.json and .travis.yml for builds ([cb2b8e6](https://github.com/strongloop/loopback-next/commit/cb2b8e6a18616dda7783c0193091039d4e608131))
+* **context:** allow explicit invocation source for proxies ([98115f2](https://github.com/strongloop/loopback-next/commit/98115f299e250f124791ff211ae686a4d8c964ce))
+* **context:** improve generic typing for binding inspection ([819fabb](https://github.com/strongloop/loopback-next/commit/819fabb04390ce8268c1dc7869253b01eafde4cb))
+
+
+
+
+
 # [3.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@3.3.0...@loopback/context@3.4.0) (2020-04-11)
 
 

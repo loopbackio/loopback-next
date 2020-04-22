@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/build@5.0.1...@loopback/build@5.1.0) (2020-04-22)
+
+
+### Features
+
+* **build:** update lb-tsc to support `-b` or `--build` ([d39b8d9](https://github.com/strongloop/loopback-next/commit/d39b8d9abdc3092ad99fc2885e7068816be27668))
+
+
+
+
+
 ## [5.0.1](https://github.com/strongloop/loopback-next/compare/@loopback/build@5.0.0...@loopback/build@5.0.1) (2020-04-08)
 
 **Note:** Version bump only for package @loopback/build

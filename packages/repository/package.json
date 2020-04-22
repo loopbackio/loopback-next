@@ -1,6 +1,6 @@
 {
   "name": "@loopback/repository",
-  "version": "2.1.1",
+  "version": "2.2.0",
   "description": "Repository based persistence for LoopBack 4",
   "engines": {
     "node": ">=10"
@@ -18,9 +18,9 @@
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "devDependencies": {
-    "@loopback/build": "^5.0.1",
-    "@loopback/eslint-config": "^6.0.3",
-    "@loopback/testlab": "^3.0.1",
+    "@loopback/build": "^5.1.0",
+    "@loopback/eslint-config": "^6.0.4",
+    "@loopback/testlab": "^3.1.0",
     "@types/bson": "^4.0.2",
     "@types/json-schema": "^7.0.4",
     "@types/lodash": "^4.14.150",
@@ -28,8 +28,8 @@
     "bson": "4.0.4"
   },
   "dependencies": {
-    "@loopback/context": "^3.4.0",
-    "@loopback/core": "^2.3.0",
+    "@loopback/context": "^3.5.0",
+    "@loopback/core": "^2.4.0",
     "@types/debug": "^4.1.5",
     "debug": "^4.1.1",
     "lodash": "^4.17.15",

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/core@2.3.0...@loopback/core@2.4.0) (2020-04-22)
+
+
+### Features
+
+* update package.json and .travis.yml for builds ([cb2b8e6](https://github.com/strongloop/loopback-next/commit/cb2b8e6a18616dda7783c0193091039d4e608131))
+* **core:** improve typing for `app.controller` and `app.component` ([ac4b1ea](https://github.com/strongloop/loopback-next/commit/ac4b1eac8c3643087b64a5d3a98b701c92e15cf1))
+
+
+
+
+
 # [2.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/core@2.2.1...@loopback/core@2.3.0) (2020-04-11)
 
 
