@@ -8,6 +8,7 @@
 const assert = require('yeoman-assert');
 const expect = require('@loopback/testlab').expect;
 const path = require('path');
+const {readJsonSync} = require('fs-extra');
 
 const generator = path.join(__dirname, '../../../generators/example');
 const baseTests = require('../lib/base-generator')(generator);
@@ -86,5 +87,29 @@ describe('lb4 example', function () {
           expect(err).to.match(/Invalid example name/);
         },
       );
+  });
+
+  it('removes project references from tsconfig', () => {
+    return testUtils
+      .executeGenerator(generator)
+      .withPrompts({name: VALID_EXAMPLE})
+      .then(() => {
+        const tsconfigFile = 'tsconfig.json';
+        const expectedConfig = readJsonSync(
+          require.resolve(
+            `../../../../../examples/${VALID_EXAMPLE}/${tsconfigFile}`,
+          ),
+        );
+        delete expectedConfig.references;
+        expectedConfig.compilerOptions.composite = false;
+
+        assert.file(tsconfigFile);
+
+        // IMPORTANT! We cannot use `assert.jsonFileContent` here
+        // because the helper only checks if the file contains all expected
+        // properties, it does not verify there is no additional data.
+        const actualConfig = readJsonSync(tsconfigFile);
+        expect(actualConfig).to.deepEqual(expectedConfig);
+      });
   });
 });
