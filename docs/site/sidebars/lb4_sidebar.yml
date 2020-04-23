@@ -158,40 +158,6 @@ children:
         url: Database-migrations.html
         output: 'web, pdf'
 
-      - title: 'Working with data'
-        url: Working-with-data.html
-        output: 'web, pdf'
-        children:
-
-        - title: 'Querying data'
-          url: Querying-data.html
-          output: 'web, pdf'
-          children:
-
-          - title: 'Fields filter'
-            url: Fields-filter.html
-            output: 'web, pdf'
-
-          - title: 'Include filter'
-            url: Include-filter.html
-            output: 'web, pdf'
-
-          - title: 'Limit filter'
-            url: Limit-filter.html
-            output: 'web, pdf'
-
-          - title: 'Order filter'
-            url: Order-filter.html
-            output: 'web, pdf'
-
-          - title: 'Skip filter'
-            url: Skip-filter.html
-            output: 'web, pdf'
-
-          - title: 'Where filter'
-            url: Where-filter.html
-            output: 'web, pdf'
-
   - title: 'Call Other Services'
     url: Calling-other-APIs-and-web-services.html
     output: 'web, pdf'
@@ -603,6 +569,40 @@ children:
 
   - title: 'Generate copyright/license headers'
     url: Copyright-generator.html
+    output: 'web, pdf'
+
+- title: 'Working with data'
+  url: Working-with-data.html
+  output: 'web, pdf'
+  children:
+
+  - title: 'Querying data'
+  url: Querying-data.html
+  output: 'web, pdf'
+  children:
+
+  - title: 'Fields filter'
+    url: Fields-filter.html
+    output: 'web, pdf'
+
+  - title: 'Include filter'
+    url: Include-filter.html
+    output: 'web, pdf'
+
+  - title: 'Limit filter'
+    url: Limit-filter.html
+    output: 'web, pdf'
+
+  - title: 'Order filter'
+    url: Order-filter.html
+    output: 'web, pdf'
+
+  - title: 'Skip filter'
+    url: Skip-filter.html
+    output: 'web, pdf'
+
+  - title: 'Where filter'
+    url: Where-filter.html
     output: 'web, pdf'
 
 - title: 'Connectors reference'
