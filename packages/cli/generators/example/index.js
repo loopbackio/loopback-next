@@ -132,10 +132,22 @@ module.exports = class extends BaseGenerator {
     const absOutDir = await downloadAndExtractExample(this.exampleName, cwd);
     this.outDir = path.relative(cwd, absOutDir);
     const tsconfig = path.join(absOutDir, 'tsconfig.json');
+
+    // Support older versions of examples that are using `tsconfig.build.json`
     const tsBuildConfig = path.join(absOutDir, 'tsconfig.build.json');
     const exists = await fs.exists(tsconfig);
-    if (exists) return;
-    return fs.rename(tsBuildConfig, tsconfig);
+    if (!exists) {
+      return fs.rename(tsBuildConfig, tsconfig);
+    }
+
+    // Recent versions of examples are using project references inside monorepo,
+    // see https://github.com/strongloop/loopback-next/pull/5155
+    // We must switch to standalone mode (no project references) when the code
+    // was checked out outside of our monorepo.
+    const tsconfigContent = await fs.readJson(tsconfig);
+    delete tsconfigContent.references;
+    tsconfigContent.compilerOptions.composite = false;
+    await fs.writeJson(tsconfig, tsconfigContent);
   }
 
   install() {
