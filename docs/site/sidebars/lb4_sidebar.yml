@@ -168,29 +168,29 @@ children:
           output: 'web, pdf'
           children:
 
-        - title: 'Fields filter'
-          url: Fields-filter.html
-          output: 'web, pdf'
+          - title: 'Fields filter'
+            url: Fields-filter.html
+            output: 'web, pdf'
 
-        - title: 'Include filter'
-          url: Include-filter.html
-          output: 'web, pdf'
+          - title: 'Include filter'
+            url: Include-filter.html
+            output: 'web, pdf'
 
-        - title: 'Limit filter'
-          url: Limit-filter.html
-          output: 'web, pdf'
+          - title: 'Limit filter'
+            url: Limit-filter.html
+            output: 'web, pdf'
 
-        - title: 'Order filter'
-          url: Order-filter.html
-          output: 'web, pdf'
+          - title: 'Order filter'
+            url: Order-filter.html
+            output: 'web, pdf'
 
-        - title: 'Skip filter'
-          url: Skip-filter.html
-          output: 'web, pdf'
+          - title: 'Skip filter'
+            url: Skip-filter.html
+            output: 'web, pdf'
 
-        - title: 'Where filter'
-          url: Where-filter.html
-          output: 'web, pdf'
+          - title: 'Where filter'
+            url: Where-filter.html
+            output: 'web, pdf'
 
   - title: 'Call Other Services'
     url: Calling-other-APIs-and-web-services.html
