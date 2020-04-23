@@ -25,15 +25,20 @@
  * `--yes` or `-y` is provide by the command, interactive prompts are skipped.
  *
  * 3. Tidy up the project
- * - Remove unused files
- * - Rename `tsconfig.json` to `tsconfig.build.json`
- * - Improve `package.json`
+ *    - Remove unused files
+ *    - Improve `package.json`
  *
- * 4. Run `lerna boostrap` on the newly added package to set up dependencies
+ * 4. Run `lerna bootstrap --scope <full-package-name>` to link its local
+ * dependencies.
+ *
+ * 5. Run `update-ts-project-refs` to update TypeScript project references
+ *
+ * 6. Remind to update `CODEOWNERS` and `docs/site/MONOREPO.md`
  */
 'use strict';
 
 const build = require('../packages/build');
+const {updateReferences} = require('./update-ts-project-refs');
 const path = require('path');
 const cwd = process.cwd();
 const fs = require('fs-extra');
@@ -101,6 +106,7 @@ async function main() {
   await scaffoldProject(project);
   await tidyupProject(project);
   await bootstrapProject(project);
+  await updateReferences({dryRun: false});
 
   promptActions(project);
 }
@@ -163,9 +169,6 @@ async function tidyupProject({repoRoot, projectDir}) {
   };
   fs.writeJsonSync('package.json', pkg);
 
-  // Move tsconfig.json to tsconfig.build.json
-  fs.moveSync('tsconfig.json', 'tsconfig.build.json');
-
   // Remove unused files
   build.clean([
     'node',
@@ -197,6 +200,9 @@ async function tidyupProject({repoRoot, projectDir}) {
   await waitForProcessExit(copyrightProcess);
 }
 
+/**
+ * Remind follow-up steps
+ */
 function promptActions({projectDir}) {
   console.log();
   console.log(

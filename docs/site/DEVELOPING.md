@@ -603,10 +603,14 @@ The script does the following steps:
 3.  Tidy up the project
 
     - Remove unused files
-    - Rename `tsconfig.json` to `tsconfig.build.json`
     - Improve `package.json`
 
-4.  Run `lerna boostrap` on the newly added package to set up dependencies
+4.  Run `lerna bootstrap --scope <full-package-name>` to link its local
+    dependencies.
+
+5.  Run `update-ts-project-refs` to update TypeScript project references
+
+6.  Remind to update `CODEOWNERS` and `docs/site/MONOREPO.md`
 
 If you would like to do it manually, follow steps below:
 
@@ -756,9 +760,9 @@ In the [`loopback-next`](https://github.com/strongloop/loopback-next) monorepo,
 
 This is why we have two sets of `tsconfig` files:
 
-- At monorepo root, there is `tsconfig.json` used by VS Code.
-- Inside each package, there is `tsconfig.build.json` used by `npm run build`
-  command.
+- At monorepo root, there is `tsconfig.json` used by VS Code and
+  `tsconfig.build.json` used by `eslint`.
+- Inside each package, there is `tsconfig.json` used by `npm run build` command.
 
 ## Renovate bot
 
