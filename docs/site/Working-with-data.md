@@ -4,7 +4,6 @@ title: 'Working with data'
 keywords: LoopBack 4.0, LoopBack 4
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Working-with-data.html
-summary: --
 ---
 
 In LoopBack 4, models describe the shape of data, repositories provide behavior
