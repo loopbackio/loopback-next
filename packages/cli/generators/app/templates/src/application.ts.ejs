@@ -51,6 +51,7 @@ export class <%= project.applicationName %> extends BootMixin(RestApplication) {
     };
     this.configure(ApiConnectBindings.API_CONNECT_SPEC_ENHANCER).to(
       apiConnectOptions,
+    );
 <%_ } -%>
 
     this.projectRoot = __dirname;
