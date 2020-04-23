@@ -13,6 +13,8 @@ const url = require('url');
 const utils = require('../../lib/utils');
 const debug = require('../../lib/debug')('openapi-generator');
 
+const toJsonSchema = require('@openapi-contrib/openapi-schema-to-json-schema');
+
 /**
  * Convert a string to title case
  * @param {string} str
@@ -232,6 +234,27 @@ function printSpecObject(specObject) {
   );
 }
 
+function restoreSpecObject(specObject) {
+  return _.cloneDeepWith(specObject, value => {
+    // Restore the original value from `x-$original-value`
+    if (value != null && value['x-$ref']) {
+      return json5.parse(value['x-$original-value']);
+    }
+    return value;
+  });
+}
+
+/**
+ * Convert OpenAPI schema to JSON schema
+ * @param {object} oasSchema - OpenAPI schema
+ */
+function asJsonSchema(oasSchema) {
+  const schema = restoreSpecObject(oasSchema);
+  const jsonSchema = toJsonSchema(schema);
+  delete jsonSchema['$schema'];
+  return printSpecObject(jsonSchema);
+}
+
 module.exports = {
   isExtension,
   titleCase,
@@ -244,5 +267,6 @@ module.exports = {
   escapeComment,
   printSpecObject,
   cloneSpecObject,
+  asJsonSchema,
   validateUrlOrFile,
 };
