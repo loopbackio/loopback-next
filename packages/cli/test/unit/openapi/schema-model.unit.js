@@ -11,6 +11,7 @@ const {
   generateModelSpecs,
 } = require('../../../generators/openapi/schema-helper');
 const path = require('path');
+const json5 = require('json5');
 const {expectToMatchSnapshot} = require('../../snapshots');
 
 describe('schema to model', () => {
@@ -37,23 +38,23 @@ describe('schema to model', () => {
   it('generates models for uspto', () => {
     const objectTypeMapping = new Map();
     const models = generateModelSpecs(usptoSpec, {objectTypeMapping});
-    expectToMatchSnapshot(JSON.stringify(models), null, 2);
+    expectToMatchSnapshot(json5.stringify(models), null, 2);
   });
 
   it('generates models for uspto with promoted anonymous schemas', () => {
     const models = usptoSpecAnonymous.modelSpecs;
-    expectToMatchSnapshot(JSON.stringify(models), null, 2);
+    expectToMatchSnapshot(json5.stringify(models), null, 2);
   });
 
   it('generates models for petstore', () => {
     const objectTypeMapping = new Map();
     const models = generateModelSpecs(petstoreSpec, {objectTypeMapping});
-    expectToMatchSnapshot(JSON.stringify(models), null, 2);
+    expectToMatchSnapshot(json5.stringify(models), null, 2);
   });
 
   it('generates models for customer', () => {
     const objectTypeMapping = new Map();
     const models = generateModelSpecs(customerSpec, {objectTypeMapping});
-    expectToMatchSnapshot(JSON.stringify(models), null, 2);
+    expectToMatchSnapshot(json5.stringify(models), null, 2);
   });
 });

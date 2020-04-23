@@ -3,6 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+const json5 = require('json5');
 const {loadAndBuildSpec} = require('../../../generators/openapi/spec-loader');
 const path = require('path');
 
@@ -17,7 +18,7 @@ describe('openapi to controllers/models', () => {
   it('generates models for customer', async () => {
     const customerSpec = await loadAndBuildSpec(customer);
     expectToMatchSnapshot(
-      JSON.stringify(customerSpec.controllerSpecs),
+      json5.stringify(customerSpec.controllerSpecs),
       null,
       2,
     );
