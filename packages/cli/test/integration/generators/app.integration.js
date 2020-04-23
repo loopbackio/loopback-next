@@ -21,6 +21,8 @@ const props = {
 };
 const {expect} = require('@loopback/testlab');
 
+const {assertFilesToMatchSnapshot} = require('../../snapshots');
+
 const tests = require('../lib/project-generator')(
   generator,
   props,
@@ -37,60 +39,15 @@ describe('app-generator specific files', () => {
     return helpers.run(generator).withPrompts(props);
   });
   it('generates all the proper files', () => {
-    assert.file('src/application.ts');
-    assert.fileContent(
+    assertFilesToMatchSnapshot(
+      {},
       'src/application.ts',
-      /class MyAppApplication extends BootMixin\(/,
-    );
-    assert.fileContent(
-      'src/application.ts',
-      /ServiceMixin\(RepositoryMixin\(RestApplication\)\)/,
-    );
-    assert.fileContent('src/application.ts', /constructor\(/);
-    assert.fileContent('src/application.ts', /this.projectRoot = __dirname/);
-
-    assert.file('index.js');
-    assert.fileContent('index.js', /openApiSpec: {/);
-    assert.fileContent('index.js', /setServersFromRequest: true/);
-
-    assert.file('src/index.ts');
-    assert.fileContent('src/index.ts', /new MyAppApplication/);
-    assert.fileContent('src/index.ts', /await app.start\(\);/);
-
-    assert.file('src/controllers/ping.controller.ts');
-    assert.fileContent(
+      'index.js',
+      'src/index.ts',
       'src/controllers/ping.controller.ts',
-      /export class PingController/,
-    );
-    assert.fileContent('src/controllers/ping.controller.ts', /@inject/);
-    assert.fileContent(
-      'src/controllers/ping.controller.ts',
-      /@get\('\/ping'\, \{/,
-    );
-    assert.fileContent('src/controllers/ping.controller.ts', /ping\(\)/);
-    assert.fileContent(
-      'src/controllers/ping.controller.ts',
-      /\'\@loopback\/rest\'/,
-    );
-    assert.fileContent(
       'src/__tests__/acceptance/ping.controller.acceptance.ts',
-      /describe\('PingController'/,
-    );
-    assert.fileContent(
       'src/__tests__/acceptance/home-page.acceptance.ts',
-      /describe\('HomePage'/,
-    );
-    assert.fileContent(
       'src/__tests__/acceptance/test-helper.ts',
-      /export async function setupApplication/,
-    );
-    assert.fileContent(
-      'src/__tests__/acceptance/test-helper.ts',
-      'process.env.HOST',
-    );
-    assert.fileContent(
-      'src/__tests__/acceptance/test-helper.ts',
-      '+process.env.PORT',
     );
     assert.jsonFileContent('.yo-rc.json', {
       '@loopback/cli': {
@@ -100,23 +57,11 @@ describe('app-generator specific files', () => {
   });
 
   it('generates database migration script', () => {
-    assert.fileContent(
-      'src/migrate.ts',
-      /import {MyAppApplication} from '\.\/application'/,
-    );
-
-    assert.fileContent(
-      'src/migrate.ts',
-      /const app = new MyAppApplication\(\);/,
-    );
-
-    assert.fileContent('src/migrate.ts', /export async function migrate/);
+    assertFilesToMatchSnapshot({}, 'src/migrate.ts');
   });
 
   it('generates docker files', () => {
-    assert.fileContent('Dockerfile', /FROM node:10-slim/);
-    assert.fileContent('.dockerignore', /node_modules/);
-    assert.fileContent('.dockerignore', '*.tsbuildinfo');
+    assertFilesToMatchSnapshot({}, 'Dockerfile', '.dockerignore');
 
     assert.fileContent('package.json', /"docker:build": "docker build/);
     assert.fileContent('package.json', /"docker:run": "docker run/);
@@ -163,15 +108,10 @@ describe('app-generator with --applicationName', () => {
       .withPrompts(props);
   });
   it('generates all the proper files', () => {
-    assert.file('src/application.ts');
-    assert.fileContent('src/application.ts', /class MyApp extends BootMixin\(/);
+    assertFilesToMatchSnapshot({}, 'src/application.ts');
   });
   it('generates the application with RepositoryMixin', () => {
-    assert.file('src/application.ts');
-    assert.fileContent(
-      'src/application.ts',
-      /RepositoryMixin\(RestApplication\)/,
-    );
+    assertFilesToMatchSnapshot({}, 'src/application.ts');
   });
 });
 
@@ -183,20 +123,7 @@ describe('app-generator with --apiconnect', () => {
       .withPrompts(props);
   });
   it('adds imports for ApiConnectComponent', () => {
-    assert.fileContent(
-      'src/application.ts',
-      `
-import {
-  ApiConnectBindings,
-  ApiConnectComponent,
-  ApiConnectSpecOptions,
-} from '@loopback/apiconnect';
-`,
-    );
-    assert.fileContent(
-      'src/application.ts',
-      'this.component(ApiConnectComponent);',
-    );
+    assertFilesToMatchSnapshot({}, 'src/application.ts');
     assert.fileContent('package.json', '"@loopback/apiconnect"');
   });
 });
