@@ -16,7 +16,7 @@
     "module": "commonjs",
     "esModuleInterop": true,
     "moduleResolution": "node",
-    "target": "es2017",
+    "target": "es2018",
     "sourceMap": true,
     "declaration": true,
     "importHelpers": true
