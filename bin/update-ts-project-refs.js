@@ -58,6 +58,7 @@ async function updateReferences(options) {
     return loadTsConfig(pkgLocation, dryRun) != null;
   });
 
+  let changed = false;
   for (const p of tsPackages) {
     const pkgLocation = p.pkg.location;
     const tsconfigMeta = loadTsConfig(pkgLocation, dryRun);
@@ -66,6 +67,8 @@ async function updateReferences(options) {
       path: path.join(path.relative(project.rootPath, pkgLocation), TSCONFIG),
     });
     const tsconfig = tsconfigMeta.tsconfig;
+    const originalTsconfigJson = JSON.stringify(tsconfig, null, 2);
+
     const refs = [];
     for (const d of p.localDependencies.keys()) {
       const depPkg = graph.get(d);
@@ -92,9 +95,14 @@ async function updateReferences(options) {
     const tsconfigJson = JSON.stringify(tsconfig, null, 2);
 
     if (!dryRun) {
-      // Using `-f` to overwrite tsconfig.json
-      fs.writeFileSync(tsconfigFile, tsconfigJson + '\n', {encoding: 'utf-8'});
-      debug('%s has been updated.', tsconfigFile);
+      if (originalTsconfigJson !== tsconfigJson) {
+        // Using `-f` to overwrite tsconfig.json
+        fs.writeFileSync(tsconfigFile, tsconfigJson + '\n', {
+          encoding: 'utf-8',
+        });
+        changed = true;
+        debug('%s has been updated.', tsconfigFile);
+      }
     } else {
       // Otherwise write to console
       console.log('- %s', p.pkg.name);
@@ -104,6 +112,8 @@ async function updateReferences(options) {
 
   const rootTsconfigFile = path.join(project.rootPath, 'tsconfig.json');
   const rootTsconfig = require(rootTsconfigFile);
+  const originalRootTsconfigJson = JSON.stringify(rootTsconfig, null, 2);
+
   rootTsconfig.compilerOptions = rootTsconfig.compilerOptions || {};
   rootTsconfig.compilerOptions.composite = true;
   rootTsconfig.references = rootRefs;
@@ -116,12 +126,19 @@ async function updateReferences(options) {
   // Convert to JSON
   const rootTsconfigJson = JSON.stringify(rootTsconfig, null, 2);
   if (!dryRun) {
-    // Using `-f` to overwrite tsconfig.json
-    fs.writeFileSync(rootTsconfigFile, rootTsconfigJson + '\n', {
-      encoding: 'utf-8',
-    });
-    debug('%s has been updated.', rootTsconfigFile);
-    console.log('TypeScript project references have been updated.');
+    if (originalRootTsconfigJson !== rootTsconfigJson) {
+      // Using `-f` to overwrite tsconfig.json
+      fs.writeFileSync(rootTsconfigFile, rootTsconfigJson + '\n', {
+        encoding: 'utf-8',
+      });
+      changed = true;
+      debug('%s has been updated.', rootTsconfigFile);
+    }
+    if (changed) {
+      console.log('TypeScript project references have been updated.');
+    } else {
+      console.log('TypeScript project references are up to date.');
+    }
   } else {
     console.log('\n%s', path.relative(project.rootPath, rootTsconfigFile));
     console.log(rootTsconfigJson);
