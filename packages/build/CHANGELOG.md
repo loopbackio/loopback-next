@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/build@5.1.0...@loopback/build@5.2.0) (2020-04-23)
+
+
+### Features
+
+* **build:** change the default compilation target to ES2018 (Node.js 10.x) ([a9df717](https://github.com/strongloop/loopback-next/commit/a9df717a86871c5dd220fa842dda31bd08b00cae))
+* **build:** enable all ES2020 features in TypeScript `lib` config ([be6f31d](https://github.com/strongloop/loopback-next/commit/be6f31d10bb4b0ede27805c4ed08f752a675efd1))
+
+
+
+
+
 # [5.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/build@5.0.1...@loopback/build@5.1.0) (2020-04-22)
 
 

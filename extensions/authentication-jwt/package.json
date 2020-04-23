@@ -1,6 +1,6 @@
 {
   "name": "@loopback/extension-authentication-jwt",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Extension for the prototype of JWT authentication",
   "engines": {
     "node": ">=10"
@@ -16,22 +16,22 @@
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
-    "@loopback/authentication": "^4.2.0",
-    "@loopback/core": "^2.4.0",
-    "@loopback/openapi-v3": "^3.2.0",
-    "@loopback/rest": "^3.3.0",
-    "@loopback/rest-explorer": "^2.1.0",
-    "@loopback/security": "^0.2.5",
-    "@loopback/service-proxy": "^2.1.0",
+    "@loopback/authentication": "^4.2.1",
+    "@loopback/core": "^2.4.1",
+    "@loopback/openapi-v3": "^3.2.1",
+    "@loopback/rest": "^3.3.1",
+    "@loopback/rest-explorer": "^2.1.1",
+    "@loopback/security": "^0.2.6",
+    "@loopback/service-proxy": "^2.1.1",
     "@types/bcryptjs": "2.4.2",
     "bcryptjs": "^2.4.3",
     "jsonwebtoken": "^8.5.1"
   },
   "devDependencies": {
-    "@loopback/boot": "^2.1.0",
-    "@loopback/build": "^5.1.0",
+    "@loopback/boot": "^2.1.1",
+    "@loopback/build": "^5.2.0",
     "@loopback/eslint-config": "^6.0.4",
-    "@loopback/repository": "^2.2.0",
+    "@loopback/repository": "^2.2.1",
     "@loopback/testlab": "^2.0.2",
     "@types/lodash": "^4.14.149",
     "@types/node": "^10.17.21",

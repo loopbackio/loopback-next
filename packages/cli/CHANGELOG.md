@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.4.4](https://github.com/strongloop/loopback-next/compare/@loopback/cli@2.4.3...@loopback/cli@2.4.4) (2020-04-23)
+
+
+### Bug Fixes
+
+* **cli:** fix the `lb4 app --apiconnect` code generation ([ca5135a](https://github.com/strongloop/loopback-next/commit/ca5135a539301633298a39b9738e308f2fce6c1b))
+* **cli:** remove project references from examples ([6359ed6](https://github.com/strongloop/loopback-next/commit/6359ed6f33b3ed4c5ce0c87aa077c02225cc7651)), closes [strongloop/loopback-next#5155](https://github.com/strongloop/loopback-next/issues/5155)
+
+
+
+
+
 ## [2.4.3](https://github.com/strongloop/loopback-next/compare/@loopback/cli@2.4.2...@loopback/cli@2.4.3) (2020-04-22)
 
 

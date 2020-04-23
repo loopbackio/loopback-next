@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.5.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.4.3...@loopback/docs@3.5.0) (2020-04-23)
+
+
+### Bug Fixes
+
+* **docs:** remove remote connector ([df0fcfc](https://github.com/strongloop/loopback-next/commit/df0fcfc53c4e75e6641fd3ce24a3029f2a6e51fd))
+
+
+### Features
+
+* update bin/create-package.js to be compatible with TypeScript project references ([eb057ef](https://github.com/strongloop/loopback-next/commit/eb057efb50e1152b257493a337f8911de663ddb6))
+
+
+
+
+
 ## [3.4.3](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.4.2...@loopback/docs@3.4.3) (2020-04-22)
 
 **Note:** Version bump only for package @loopback/docs
