@@ -138,3 +138,5 @@ if (require.main === module) {
     process.exit(1);
   });
 }
+
+exports.updateReferences = updateReferences;
