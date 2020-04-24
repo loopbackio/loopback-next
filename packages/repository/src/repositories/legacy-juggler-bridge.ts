@@ -16,8 +16,13 @@ import {
   PositionalParameters,
 } from '../common-types';
 import {EntityNotFoundError} from '../errors';
-import {Entity, Model, PropertyType} from '../model';
-import {Filter, Inclusion, Where, FilterExcludingWhere} from '../query';
+import {
+  Entity,
+  Model,
+  PropertyType,
+  rejectNavigationalPropertiesInData,
+} from '../model';
+import {Filter, FilterExcludingWhere, Inclusion, Where} from '../query';
 import {
   BelongsToAccessor,
   BelongsToDefinition,
@@ -109,8 +114,8 @@ export class DefaultCrudRepository<
 
   /**
    * Constructor of DefaultCrudRepository
-   * @param entityClass - Legacy entity class
-   * @param dataSource - Legacy data source
+   * @param entityClass - LoopBack 4 entity class
+   * @param dataSource - Legacy juggler data source
    */
   constructor(
     // entityClass should have type "typeof T", but that's not supported by TSC
@@ -589,25 +594,7 @@ export class DefaultCrudRepository<
     */
 
     const data: AnyObject = new this.entityClass(entity);
-
-    const def = this.entityClass.definition;
-    const props = def.properties;
-    for (const r in def.relations) {
-      const relName = def.relations[r].name;
-      if (relName in data) {
-        let invalidNameMsg = '';
-        if (relName in props) {
-          invalidNameMsg =
-            ` The error might be invoked by belongsTo relations, please make sure the relation name is not the same as` +
-            ` the property name.`;
-        }
-        throw new Error(
-          `Navigational properties are not allowed in model data (model "${this.entityClass.modelName}"` +
-            ` property "${relName}"), please remove it.` +
-            invalidNameMsg,
-        );
-      }
-    }
+    rejectNavigationalPropertiesInData(this.entityClass, data);
     return data;
   }
 

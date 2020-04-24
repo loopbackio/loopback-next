@@ -367,3 +367,37 @@ export class Event {
 export type EntityData = DataObject<Entity>;
 
 export type EntityResolver<T extends Entity> = TypeResolver<T, typeof Entity>;
+
+/**
+ * Check model data for navigational properties linking to related models.
+ * Throw a descriptive error if any such property is found.
+ *
+ * @param modelClass Model constructor, e.g. `Product`.
+ * @param entityData  Model instance or a plain-data object,
+ * e.g. `{name: 'pen'}`.
+ */
+export function rejectNavigationalPropertiesInData(
+  modelClass: typeof Entity,
+  data: Partial<Entity>,
+) {
+  const def = modelClass.definition;
+  const props = def.properties;
+
+  for (const r in def.relations) {
+    const relName = def.relations[r].name;
+    if (!(relName in data)) continue;
+
+    let msg =
+      'Navigational properties are not allowed in model data ' +
+      `(model "${modelClass.modelName}" property "${relName}"), ` +
+      'please remove it.';
+
+    if (relName in props) {
+      msg +=
+        ' The error might be invoked by belongsTo relations, please make' +
+        ' sure the relation name is not the same as the property name.';
+    }
+
+    throw new Error(msg);
+  }
+}
