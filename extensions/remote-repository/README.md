@@ -46,7 +46,8 @@ model. Pick `RemoteCrudRepository` as the base class.
 
 Run `lb4 relation` to establish relations between local and remote models.
 
-You can also run `lb4 controller` to expose your remote model via a REST API of your local app, effectively making the local app a (smart) proxy.
+You can also run `lb4 controller` to expose your remote model via a REST API of
+your local app, effectively making the local app a (smart) proxy.
 
 ## Known limitations
 
