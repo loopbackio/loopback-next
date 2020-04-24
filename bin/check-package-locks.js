@@ -11,17 +11,14 @@
 'use strict';
 
 const path = require('path');
-const fs = require('fs');
-const promisify = require('util').promisify;
-
-const readFile = promisify(fs.readFile);
-const exists = promisify(fs.exists);
+const fs = require('fs-extra');
 
 const Project = require('@lerna/project');
 
 async function checkPackageLocks() {
   const project = new Project(process.cwd());
   const packages = await project.getPackages();
+  const packageNames = packages.map(p => p.name);
   const rootPath = project.rootPath;
   const lockFiles = packages.map(p =>
     path.relative(rootPath, path.join(p.location, 'package-lock.json')),
@@ -46,6 +43,22 @@ async function checkPackageLocks() {
   console.error('\nRun the following command to fix the problems:');
   console.error('\n  $ npm run update-package-locks\n');
   return false;
+
+  async function checkLockFile(lockFile) {
+    const file = path.resolve(project.rootPath, lockFile);
+    const found = await fs.exists(file);
+    if (!found) return [];
+    let data = {};
+    try {
+      data = require(file);
+    } catch (err) {
+      return [err.message];
+    }
+    // Find dependency module names
+    const deps = Object.keys(data.dependencies || {});
+    // Local packages should not be included
+    return Object.keys(deps).filter(dep => packageNames.includes(dep));
+  }
 }
 
 if (require.main === module) {
@@ -55,14 +68,5 @@ if (require.main === module) {
       console.error(err);
       process.exit(2);
     },
-  );
-}
-
-async function checkLockFile(lockFile) {
-  const found = await exists(lockFile);
-  if (!found) return [];
-  const data = JSON.parse(await readFile(lockFile, 'utf-8'));
-  return Object.keys(data.dependencies || []).filter(dep =>
-    dep.startsWith('@loopback/'),
   );
 }
