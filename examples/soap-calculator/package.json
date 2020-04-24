@@ -64,7 +64,7 @@
     "eslint-plugin-eslint-plugin": "^2.2.1",
     "eslint-plugin-mocha": "^6.3.0",
     "mocha": "^7.1.1",
-    "source-map-support": "^0.5.18",
+    "source-map-support": "^0.5.19",
     "typescript": "~3.8.3"
   }
 }
