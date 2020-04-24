@@ -76,6 +76,18 @@ if you are interested.
 
 - Nice to have: support KeyValue persistence style.
 
+- Nice to have: document how custom subclasses can overwrite protected methods
+  to customize the way how remote endpoints are invoked. Few examples:
+
+  - `getEndpointName` allows users to change the way how model methods are
+    mapped to remote endpoints.
+
+  - `executeEndpoint` allows users to tweak the request parameters before the
+    HTTP request is made and process the HTTP response before it's returned to
+    CRUD methods.
+
+  - And so on.
+
 ## Contributions
 
 - [Guidelines](https://github.com/strongloop/loopback-next/blob/master/docs/CONTRIBUTING.md)
