@@ -436,7 +436,6 @@ export function modelToJsonSchema<T extends object>(
   debug('Model settings', meta.settings);
 
   const title = buildSchemaTitle(ctor, meta, options);
-
   if (options.visited[title]) return options.visited[title];
 
   const result: JsonSchema = {title};
@@ -496,6 +495,10 @@ export function modelToJsonSchema<T extends object>(
       // Do not cascade `partial` to nested properties
       delete propOptions.partial;
     }
+    // `title` is the unique identity of a schema,
+    // it should be removed from the `options`
+    // when generating the relation or property schemas
+    delete propOptions.title;
 
     const propSchema = getJsonSchema(referenceType, propOptions);
 
@@ -524,13 +527,11 @@ export function modelToJsonSchema<T extends object>(
       const relMeta = meta.relations[r];
       const targetType = resolveType(relMeta.target);
 
+      // `title` is the unique identity of a schema,
+      // it should be removed from the `options`
+      // when generating the relation or property schemas
       const targetOptions = {...options};
-      if (targetOptions.title) {
-        // `title` is the unique identity of a schema,
-        // it should be removed from the `options`
-        // when generating the relation schemas
-        delete targetOptions.title;
-      }
+      delete targetOptions.title;
 
       const targetSchema = getJsonSchema(targetType, targetOptions);
       const targetRef = {$ref: `#/definitions/${targetSchema.title}`};
