@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {BindingKey} from '@loopback/core';
-import {ReturnModelType} from '@typegoose/typegoose';
+import {mongoose, ReturnModelType} from '@typegoose/typegoose';
 import {
   AnyParamConstructor,
   ICustomOptions,
@@ -45,7 +45,7 @@ export interface TypegooseDiscriminator<
   schema: U;
 }
 
-export interface TypegooseConnectionOptions {
+export interface BaseTypegooseConnectionOptions {
   uri: string;
   connectionOptions?: ConnectionOptions;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -54,6 +54,17 @@ export interface TypegooseConnectionOptions {
   discriminators?: TypegooseDiscriminator<any, any>[];
 }
 
+export interface UriTypegooseConnectionOptions
+  extends BaseTypegooseConnectionOptions {
+  uri: string;
+}
+
+export interface ExistingTypegooseConnectionOptions
+  extends BaseTypegooseConnectionOptions {
+  connection: mongoose.Connection;
+}
+
 export type TypegooseConfig =
-  | TypegooseConnectionOptions
-  | TypegooseConnectionOptions[];
+  | ExistingTypegooseConnectionOptions
+  | UriTypegooseConnectionOptions
+  | Array<UriTypegooseConnectionOptions | ExistingTypegooseConnectionOptions>;

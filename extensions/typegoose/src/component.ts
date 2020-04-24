@@ -22,9 +22,31 @@ import {
 import debugFactory from 'debug';
 import {Connection, createConnection} from 'mongoose';
 import {TypegooseBindings} from './keys';
-import {TypegooseConfig, TypegooseConnectionOptions} from './types';
+import {
+  BaseTypegooseConnectionOptions,
+  ExistingTypegooseConnectionOptions,
+  TypegooseConfig,
+  UriTypegooseConnectionOptions,
+} from './types';
 
 const debug = debugFactory('loopback:typegoose');
+
+function isExistingConnectionOptions(
+  opts: BaseTypegooseConnectionOptions,
+): opts is ExistingTypegooseConnectionOptions {
+  // eslint-disable-next-line no-prototype-builtins
+  return opts.hasOwnProperty('connection');
+}
+
+function isUriConnectionOptions(
+  opts: BaseTypegooseConnectionOptions,
+): opts is UriTypegooseConnectionOptions {
+  return (
+    // eslint-disable-next-line no-prototype-builtins
+    opts.hasOwnProperty('uri') &&
+    typeof (opts as UriTypegooseConnectionOptions).uri === 'string'
+  );
+}
 
 @bind({
   tags: {[ContextTags.KEY]: TypegooseBindings.COMPONENT},
@@ -40,14 +62,17 @@ export class LoopbackTypegooseComponent
     protected application: Application,
     @config()
     readonly typegooseConfig: TypegooseConfig = [],
-  ) {}
+  ) {
+    debug('LoopbackTypegooseComponent:constructed()');
+  }
 
   async start() {
+    debug('LoopbackTypegooseComponent:start()');
     /**
      * You can have multiple connections and you can use schemas on different
      * connections to create connection-model instances.
      */
-    let connectionOptions: TypegooseConnectionOptions[];
+    let connectionOptions: BaseTypegooseConnectionOptions[];
 
     if (Array.isArray(this.typegooseConfig)) {
       connectionOptions = this.typegooseConfig;
@@ -57,10 +82,21 @@ export class LoopbackTypegooseComponent
 
     for (const connectionIndex in connectionOptions) {
       const connectionConfig = connectionOptions[connectionIndex];
-      const connection = await createConnection(
-        connectionConfig.uri,
-        connectionConfig.connectionOptions,
-      );
+      let connection: Connection;
+      if (isExistingConnectionOptions(connectionConfig)) {
+        debug(`Using existing connection`);
+        connection = connectionConfig.connection;
+      } else if (isUriConnectionOptions(connectionConfig)) {
+        debug(`Creating a new connection given a mongodb URI`);
+        connection = await createConnection(
+          connectionConfig.uri,
+          connectionConfig.connectionOptions,
+        );
+      } else {
+        throw new Error(
+          'Connection options must either include a connection `uri`, or an existing `connection`.',
+        );
+      }
       // Add the connection to our array.  We don't want to depend on
       // mongoose as a singleton since we could have multiple applications
       // or servers running, and the singleton would disconnect other
@@ -131,6 +167,7 @@ export class LoopbackTypegooseComponent
   }
 
   async stop() {
+    debug('LoopbackTypegooseComponent:stop()');
     for (const connection of this.mongooseConnections) {
       await connection.close();
     }

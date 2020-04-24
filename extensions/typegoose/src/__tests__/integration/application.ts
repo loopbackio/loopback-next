@@ -7,12 +7,13 @@ import {BootMixin} from '@loopback/boot';
 import {ApplicationConfig} from '@loopback/core';
 import {RestApplication} from '@loopback/rest';
 import {ServiceMixin} from '@loopback/service-proxy';
+import debugFactory from 'debug';
 import {LoopbackTypegooseComponent} from '../../component';
-import {TypegooseBindings} from '../../keys';
 import {MySequence} from './MySequence';
-import {BindingKeys, Schemas} from './schemas';
+import {configureTypegoose} from './schemas';
 import UserController from './user.controller';
 
+const debug = debugFactory('loopback:typegoose:integration-test');
 export interface TestApplicationConfig extends ApplicationConfig {
   mongoUri?: string;
 }
@@ -22,35 +23,15 @@ export class TestTypegooseApplication extends BootMixin(
 ) {
   constructor(options: ApplicationConfig = {}) {
     super(options);
-
     this.sequence(MySequence);
-    this.configureTypegoose(options.mongoUri);
-    this.component(LoopbackTypegooseComponent);
     this.controller(UserController);
-
     this.projectRoot = __dirname;
   }
 
-  configureTypegoose(uri: string) {
-    const schemas = [
-      {schema: Schemas.Event, bindingKey: BindingKeys.Connection1.Event},
-      {schema: Schemas.User, bindingKey: BindingKeys.Connection1.User},
-    ];
-    const discriminators = [
-      {
-        schema: Schemas.LoginEvent,
-        modelKey: BindingKeys.Connection1.Event,
-        bindingKey: BindingKeys.Connection1.LoginEvent,
-      },
-    ];
-
-    this.configure(TypegooseBindings.COMPONENT).to([
-      {
-        uri,
-        connectionOptions: {userNewUrlParser: true},
-        schemas,
-        discriminators,
-      },
-    ]);
+  async start() {
+    debug('TestApplicationConfig:start()');
+    await configureTypegoose(this, this.options.mongoUri);
+    this.component(LoopbackTypegooseComponent);
+    await super.start();
   }
 }
