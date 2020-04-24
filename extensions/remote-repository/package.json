@@ -1,0 +1,53 @@
+{
+  "name": "@loopback/remote-repository",
+  "version": "0.0.1",
+  "description": "Access models persisted by a remote LoopBack application",
+  "keywords": [
+    "loopback-extension",
+    "loopback"
+  ],
+  "main": "index.js",
+  "engines": {
+    "node": ">=10"
+  },
+  "scripts": {
+    "build": "lb-tsc",
+    "build:watch": "lb-tsc --watch",
+    "pretest": "npm run clean && npm run build",
+    "test": "lb-mocha --allow-console-logs \"dist/__tests__\"",
+    "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js",
+    "clean": "lb-clean dist *.tsbuildinfo .eslintcache"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "extensions/remote-repository"
+  },
+  "author": "IBM Corp.",
+  "license": "MIT",
+  "files": [
+    "README.md",
+    "index.js",
+    "index.d.ts",
+    "dist",
+    "src",
+    "!*/__tests__"
+  ],
+  "dependencies": {
+    "@loopback/boot": "^2.1.1",
+    "@loopback/context": "^3.5.1",
+    "@loopback/core": "^2.4.1",
+    "tslib": "^1.10.0"
+  },
+  "devDependencies": {
+    "@loopback/build": "^5.2.0",
+    "source-map-support": "^0.5.18",
+    "@loopback/testlab": "^3.1.1",
+    "@types/node": "^10.17.21",
+    "typescript": "~3.8.3"
+  },
+  "copyright.owner": "IBM Corp.",
+  "publishConfig": {
+    "access": "public"
+  }
+}

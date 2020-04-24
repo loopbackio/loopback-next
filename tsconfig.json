@@ -101,6 +101,9 @@
       "path": "extensions/metrics/tsconfig.json"
     },
     {
+      "path": "extensions/remote-repository/tsconfig.json"
+    },
+    {
       "path": "packages/authentication/tsconfig.json"
     },
     {
