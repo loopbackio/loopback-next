@@ -17,10 +17,10 @@ import {expect} from '@loopback/testlab';
 import {
   buildModelCacheKey,
   getNavigationalPropertyForRelation,
+  JsonSchema,
   metaToJsonProperty,
   modelToJsonSchema,
   stringTypeToWrapper,
-  JsonSchema,
 } from '../..';
 
 describe('build-schema', () => {
@@ -331,6 +331,59 @@ describe('build-schema', () => {
         ChildWithRelations: {
           title: 'ChildWithRelations',
           description: '(Schema options: { includeRelations: true })',
+          properties: {name: {type: 'string'}},
+          additionalProperties: false,
+        },
+      });
+    });
+
+    it('property definition does not inherit title from model', () => {
+      @model()
+      class Child extends Entity {
+        @property({
+          type: 'string',
+        })
+        name?: string;
+      }
+      @model()
+      class Parent extends Entity {
+        @property.array(Child)
+        children: Child[];
+
+        @property({
+          type: 'string',
+        })
+        benchmarkId?: string;
+
+        @property({
+          type: 'string',
+        })
+        color?: string;
+
+        constructor(data?: Partial<Parent>) {
+          super(data);
+        }
+      }
+      const schema = modelToJsonSchema(Parent, {
+        title: 'ParentWithPropertyChildren',
+      });
+      expect(schema.properties).to.containEql({
+        children: {
+          type: 'array',
+          // The reference here should be `Child`,
+          // instead of `ParentWithPropertyChildren`
+          items: {$ref: '#/definitions/Child'},
+        },
+        benchmarkId: {type: 'string'},
+        color: {type: 'string'},
+      });
+      // The recursive calls should NOT inherit
+      // `title` from the previous call's `options`.
+      // So the `title` here is `Child`
+      // instead of `ParentWithPropertyChildren`.
+      expect(schema.definitions).to.containEql({
+        Child: {
+          title: 'Child',
           properties: {name: {type: 'string'}},
           additionalProperties: false,
         },
