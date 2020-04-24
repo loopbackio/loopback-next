@@ -363,15 +363,17 @@ For example:
 }
 ``` -->
 
-1. Prohibits hidden/protected properties from being searched
-   [Hidden or protected properties](https://loopback.io/doc/en/lb3/Model-definition-JSON-file.html#hidden-properties)
-   can expose sensitive information if they are allowed to be searched. LoopBack
-   introduces `prohibitHiddenPropertiesInQuery` setting at datasource/model
-   level to control if hidden/protected properties can be used in the `where`
-   object. By default, its value is `true`. For example,
-   {% include code-caption.html content="datasources/db.datasources.config.json" %}
+#### Prohibits hidden/protected properties from being searched
 
-```json
+[Hidden or protected properties](https://loopback.io/doc/en/lb3/Model-definition-JSON-file.html#hidden-properties)
+can expose sensitive information if they are allowed to be searched. LoopBack
+introduces `prohibitHiddenPropertiesInQuery` setting at datasource/model level
+to control if hidden/protected properties can be used in the `where` object. By
+default, its value is `true`. For example,
+
+{% include code-caption.html content="datasources/db.datasources.config.json" %}
+
+```js
 {
   "db": {
     "name": "db",
@@ -406,8 +408,10 @@ console:
 Potential security alert: hidden/protected properties ["secret"] are used in query.
 ```
 
-2. Reports circular references If the filter object has circular references,
-   LoopBack throws an error as follows:
+#### Reports circular references
+
+If the filter object has circular references, LoopBack throws an error as
+follows:
 
 ```js
 {
@@ -417,15 +421,17 @@ Potential security alert: hidden/protected properties ["secret"] are used in que
 }
 ```
 
-3. Constrains the maximum depth of query and data objects Deep filter objects
-   may be mapped to very complex queries that can potentially break your
-   application. To mitigate such risks, LoopBack allows you to configure
-   `maxDepthOfQuery` and `maxDepthOfData` in datasource/model settings. The
-   default value is `12`. Please note the `depth` is calculated based on the
-   level of child properties of an JSON object. For example:
-   {% include code-caption.html content="datasources/db.datasources.config.json" %}
+#### Constrains the maximum depth of query and data objects
 
-```json
+Deep filter objects may be mapped to very complex queries that can potentially
+break your application. To mitigate such risks, LoopBack allows you to configure
+`maxDepthOfQuery` and `maxDepthOfData` in datasource/model settings. The default
+value is `12`. Please note the `depth` is calculated based on the level of child
+properties of an JSON object. For example:
+
+{% include code-caption.html content="datasources/db.datasources.config.json" %}
+
+```js
 {
   "db": {
     "name": "db",
