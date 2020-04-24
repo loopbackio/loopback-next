@@ -585,36 +585,39 @@ node bin/create-package.js
 
 The script does the following steps:
 
-1.  Determine the location and package name.
+1. Determine the parentDir and package name.
 
-    The first argument of the command can be one of the following:
+   The first argument can be one of the following:
 
-    - package-name
-    - @loopback/package-name
-    - extensions/package-name
-    - packages/package-name
+   - package-name
+   - @loopback/package-name
+   - extensions/package-name
+   - packages/package-name
 
-    If the location is not specified, it tries to guess by the current directory
-    and falls back to `extensions`.
+If the parentDir is not specified, it tries to guess by the current directory
+and falls back to `extensions`.
 
-2.  Run `lb4 extension` to scaffold the project without `npm install`. If
-    `--yes` or `-y` is provide by the command, interactive prompts are skipped.
+2. Run `lb4 extension` to scaffold the project without `npm install`. If
+   `--interactive` or `-i` is NOT provided by the command, interactive prompts
+   are skipped.
 
-3.  Tidy up the project
+3. Fix up the project
 
-    - Remove unused files
-    - Improve `package.json`
+   - Remove unused files
+   - Improve `package.json`
 
-4.  Run `lerna bootstrap --scope <full-package-name>` to link its local
-    dependencies.
+4. Run `lb4 copyright` to update `LICENSE` and copyright headers for `*.ts` and
+   `*.js`.
 
-5.  Run `update-ts-project-refs` to update TypeScript project references
+5. Run `lerna bootstrap --scope <full-package-name>` to link its local
+   dependencies.
 
-6.  Remind to update `CODEOWNERS` and `docs/site/MONOREPO.md`
+6. Run `update-ts-project-refs` to update TypeScript project references
 
-If you would like to do it manually, follow steps below:
+7. Remind to update `CODEOWNERS` and `docs/site/MONOREPO.md` If you would like
+   to do it manually, follow steps below:
 
-To add a new package, create a folder in
+To add a new package by hand, create a folder in
 [`packages`](https://github.com/strongloop/loopback-next/tree/master/packages)
 as the root directory of your module. For example,
 
