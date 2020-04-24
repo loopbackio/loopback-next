@@ -45,4 +45,6 @@ await orderRepository.find({limit: 5});
 
 `/orders?filter[limit]=5`
 
-Or stringified JSON format: `/orders?filter={"limit":5}`
+Or stringified JSON format:
+
+`/orders?filter={"limit":5}`

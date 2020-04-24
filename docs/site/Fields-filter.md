@@ -33,7 +33,7 @@ query will include **only** those you specifically include with filters.
 As a known bug, the option `<false>` does not work for url for now. Please include the properties you need or use the [stringified JSON format](Querying-data.html#using-stringified-json-in-rest-queries) to meet your requirement. The bug is tracked in the GH issue [#4992](https://github.com/strongloop/loopback-next/issues/4992)" %}
 
 <pre>
-filter[fields][<i>propertyName</i>]=<true>&filter[fields][<i>propertyName</i>]=<true>...
+filter[fields][<i>propertyName</i>]=true&filter[fields][<i>propertyName</i>]=true...
 </pre>
 
 Note that to include more than one field in REST, use multiple filters.
