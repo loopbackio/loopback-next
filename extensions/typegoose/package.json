@@ -4,7 +4,10 @@
   "description": "@loopback/typegoose",
   "keywords": [
     "loopback-extension",
-    "loopback"
+    "loopback",
+    "mongodb",
+    "mongoose",
+    "typegoose"
   ],
   "main": "index.js",
   "engines": {
