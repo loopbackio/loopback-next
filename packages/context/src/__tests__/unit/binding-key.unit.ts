@@ -58,4 +58,24 @@ describe('BindingKey', () => {
       });
     });
   });
+
+  describe('generate', () => {
+    it('generates binding key without namespace', () => {
+      const key1 = BindingKey.generate().key;
+      expect(key1).to.match(
+        /^[0-9A-F]{8}-[0-9A-F]{4}-[4][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i,
+      );
+      const key2 = BindingKey.generate().key;
+      expect(key1).to.not.eql(key2);
+    });
+
+    it('generates binding key with namespace', () => {
+      const key1 = BindingKey.generate('services').key;
+      expect(key1).to.match(
+        /^services\.[0-9A-F]{8}-[0-9A-F]{4}-[4][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i,
+      );
+      const key2 = BindingKey.generate('services').key;
+      expect(key1).to.not.eql(key2);
+    });
+  });
 });
