@@ -22,18 +22,22 @@
  * and falls back to `extensions`.
  *
  * 2. Run `lb4 extension` to scaffold the project without `npm install`. If
- * `--yes` or `-y` is provide by the command, interactive prompts are skipped.
+ * `--interactive` or `-i` is NOT provided by the command, interactive prompts
+ * are skipped.
  *
- * 3. Tidy up the project
+ * 3. Fix up the project
  *    - Remove unused files
  *    - Improve `package.json`
  *
- * 4. Run `lerna bootstrap --scope <full-package-name>` to link its local
+ * 4. Run `lb4 copyright` to update `LICENSE` and copyright headers for `*.ts`
+ * and `*.js`.
+ *
+ * 5. Run `lerna bootstrap --scope <full-package-name>` to link its local
  * dependencies.
  *
- * 5. Run `update-ts-project-refs` to update TypeScript project references
+ * 6. Run `update-ts-project-refs` to update TypeScript project references
  *
- * 6. Remind to update `CODEOWNERS` and `docs/site/MONOREPO.md`
+ * 7. Remind to update `CODEOWNERS` and `docs/site/MONOREPO.md`
  */
 'use strict';
 
@@ -103,15 +107,20 @@ async function main() {
     projectDir,
   };
 
-  await scaffoldProject(project);
-  await tidyupProject(project);
+  const interactive =
+    process.argv.includes('--interactive') || process.argv.includes('-i');
+  const options = {interactive};
+
+  await scaffoldProject(project, options);
+  await fixupProject(project);
+  await updateCopyrightAndLicense(project, options);
   await bootstrapProject(project);
   await updateReferences({dryRun: false});
 
   promptActions(project);
 }
 
-async function scaffoldProject({repoRoot, parentDir, name}) {
+async function scaffoldProject({repoRoot, parentDir, name}, options = {}) {
   process.chdir(path.join(repoRoot, parentDir));
   console.log('Adding project %s/%s...', parentDir, name);
   // Run `lb4 extension`
@@ -123,11 +132,15 @@ async function scaffoldProject({repoRoot, parentDir, name}) {
     '--no-vscode',
     '--no-eslint',
     '--no-prettier',
+    '--no-mocha',
+    '--loopbackBuild',
     '--skip-install',
   ];
-  if (process.argv.includes('--yes') || process.argv.includes('-y')) {
+
+  if (options.interactive !== true) {
     args.push('--yes');
   }
+
   const cliProcess = build.runCLI(
     path.join(repoRoot, 'packages/cli/bin/cli-main'),
     args,
@@ -148,7 +161,7 @@ async function bootstrapProject({repoRoot, name}) {
   await waitForProcessExit(shell);
 }
 
-async function tidyupProject({repoRoot, projectDir}) {
+async function fixupProject({repoRoot, projectDir}) {
   process.chdir(path.join(repoRoot, projectDir));
   // Update package.json
   let pkg = fs.readJsonSync('package.json');
@@ -167,7 +180,12 @@ async function tidyupProject({repoRoot, projectDir}) {
       directory: projectDir,
     },
   };
-  fs.writeJsonSync('package.json', pkg);
+
+  // Remove unused dependencies
+  delete pkg.dependencies['@loopback/boot'];
+  delete pkg.devDependencies['source-map-support'];
+
+  fs.writeJsonSync('package.json', pkg, {spaces: 2});
 
   // Remove unused files
   build.clean([
@@ -181,9 +199,13 @@ async function tidyupProject({repoRoot, projectDir}) {
     '.prettierrc',
     '.gitignore',
     '.mocharc.json',
+    '.yo-repository',
     '.yo-rc.json',
   ]);
+}
 
+async function updateCopyrightAndLicense({repoRoot, projectDir}, options = {}) {
+  process.chdir(path.join(repoRoot, projectDir));
   // Run `lb4 copyright`
   const copyrightArgs = [
     'copyright',
@@ -193,6 +215,10 @@ async function tidyupProject({repoRoot, projectDir}) {
     'MIT',
     '--no-gitOnly',
   ];
+
+  if (options.interactive !== true) {
+    copyrightArgs.push('--yes', '--force');
+  }
   const copyrightProcess = build.runCLI(
     path.join(repoRoot, 'packages/cli/bin/cli-main'),
     copyrightArgs,
