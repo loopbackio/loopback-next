@@ -11,8 +11,6 @@ for example, to paginate responses.
 
 Use `offset` as an alias for `skip`.
 
-{% include content/angular-methods-caveat.html lang=page.lang %}
-
 ### Node.js
 
 <pre>

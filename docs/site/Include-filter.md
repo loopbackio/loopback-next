@@ -17,8 +17,6 @@ The value of the include filter can be a string, an array, or an object.
 
 ### Node.js API
 
-{% include content/angular-methods-caveat.html lang=page.lang %}
-
 To query one relation:
 
 ```ts
@@ -255,19 +253,27 @@ model.
 
 Return all customers including their reviews:
 
-`/customers?filter[include][][relation]=reviews`
+```
+/customers?filter[include][][relation]=reviews
+```
 
 Return all customers including their reviews and also their orders:
 
-`/customers?filter[include][0][relation]=reviews?filter[include][1][relation]=orders`
+```
+/customers?filter[include][0][relation]=reviews?filter[include][1][relation]=orders
+```
 
 Return all customers whose age is 21, including their reviews:
 
-`/customers?filter[include][][relation]=reviews&filter[where][age]=21`
+```
+/customers?filter[include][][relation]=reviews&filter[where][age]=21
+```
 
 Return first two customers including their reviews:
 
-`/customers?filter[include][][relation]=reviews&filter[limit]=2`
+```
+/customers?filter[include][][relation]=reviews&filter[limit]=2
+```
 
 **See also**:
 [Querying related models](HasMany-relation.md#querying-related-models).

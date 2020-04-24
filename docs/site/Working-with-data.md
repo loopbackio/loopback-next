@@ -23,7 +23,7 @@ operations. The following is an overview of CRUD operations at different levels:
       <th width="120">Corresponding SQL<br>Operation</th>
     </tr>
   </thead>
-  <tbody>    
+  <tbody>
     <tr>
       <td>Create</td>
       <td>
@@ -81,5 +81,3 @@ See the following articles for more information:
   - [Where filter](Where-filter.html)
 - [Using database transactions](Using-database-transactions.html)
 - [Realtime server-sent events](Realtime-server-sent-events.html)
-
-{% include content/angular-methods-caveat.html lang=page.lang %}

@@ -14,19 +14,17 @@ descending (DESC) based on the specified property.
 
 ### Node.js API
 
-{% include content/angular-methods-caveat.html lang=page.lang %}
-
 Order by one property:
 
-<pre>
+```
 {order: '<i>propertyName</i> <ASC|DESC>'}
-</pre>
+```
 
 Order by two or more properties:
 
-<pre>
+```
 {order: ['<i>propertyName</i> <ASC|DESC>', '<i>propertyName</i> <ASC|DESC>',...]}
-</pre>
+```
 
 Where:
 
@@ -38,15 +36,15 @@ Where:
 
 Order by one property:
 
-<pre>
+```
 ?filter[order]=<i>propertyName<i>%20<ASC|DESC>
-</pre>
+```
 
 Order by two or more properties:
 
-<pre>
+```
 ?filter[order][0]=<i>propertyName</i> <ASC|DESC>&filter[order][1]=<i>propertyName</i> <ASC|DESC>...
-</pre>
+```
 
 Where:
 
@@ -76,8 +74,12 @@ await itemRepository.find({
 
 {% include code-caption.html content="REST" %}
 
-`/items?filter[order]=price%20DESC&filter[limit]=3`
+```
+/items?filter[order]=price%20DESC&filter[limit]=3
+```
 
 Or stringified JSON format:
 
-`/items?filter={"order":["price DESC"],"limit":3}`
+```
+/items?filter={"order":["price DESC"],"limit":3}
+```
