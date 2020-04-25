@@ -101,6 +101,7 @@ export interface Count {
 export const CountSchema = {
   type: 'object',
   title: 'loopback.Count',
+  'x-typescript-type': '@loopback/repository#Count',
   properties: {count: {type: 'number'}},
 };
 

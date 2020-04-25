@@ -9,6 +9,7 @@ import {
   getWhereJsonSchemaFor,
   Model,
 } from '@loopback/repository-json-schema';
+import {isSchemaObject} from 'openapi3-ts';
 import {jsonToSchemaObject} from './json-to-schema';
 import {SchemaObject} from './types';
 
@@ -28,6 +29,11 @@ export function getFilterSchemaFor(
 ): SchemaObject {
   const jsonSchema = getFilterJsonSchemaFor(modelCtor, options);
   const schema = jsonToSchemaObject(jsonSchema);
+  if (isSchemaObject(schema)) {
+    schema[
+      'x-typescript-type'
+    ] = `@loopback/repository#Filter<${modelCtor.name}>`;
+  }
   return schema;
 }
 
@@ -43,5 +49,10 @@ export function getFilterSchemaFor(
 export function getWhereSchemaFor(modelCtor: typeof Model): SchemaObject {
   const jsonSchema = getWhereJsonSchemaFor(modelCtor);
   const schema = jsonToSchemaObject(jsonSchema);
+  if (isSchemaObject(schema)) {
+    schema[
+      'x-typescript-type'
+    ] = `@loopback/repository#Where<${modelCtor.name}>`;
+  }
   return schema;
 }

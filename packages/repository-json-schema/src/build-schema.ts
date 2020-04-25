@@ -13,8 +13,8 @@ import {
   resolveType,
 } from '@loopback/repository';
 import debugFactory from 'debug';
-import {JsonSchema} from './index';
 import {inspect} from 'util';
+import {JsonSchema} from './index';
 import {JSON_SCHEMA_KEY} from './keys';
 const debug = debugFactory('loopback:repository-json-schema:build-schema');
 
@@ -361,10 +361,13 @@ function isEmptyJson(obj: object) {
 }
 
 /**
- * Checks the options and generates a descriptive suffix
- * @param options json schema options
+ * Checks the options and generates a descriptive suffix that contains the
+ * TypeScript type and options
+ * @param typeName - TypeScript's type name
+ * @param options - json schema options
  */
 function getDescriptionSuffix<T extends object>(
+  typeName: string,
   rawOptions: JsonSchemaOptions<T> = {},
 ) {
   const options = {...rawOptions};
@@ -374,8 +377,27 @@ function getDescriptionSuffix<T extends object>(
     delete options.optional;
   }
 
+  const type = typeName;
+  let tsType = type;
+  if (options.includeRelations) {
+    tsType = `${type}WithRelations`;
+  }
+  if (options.partial) {
+    tsType = `Partial<${tsType}>`;
+  }
+  if (options.exclude) {
+    const excludedProps = options.exclude.map(p => `'${p}'`);
+    tsType = `Omit<${tsType}, ${excludedProps.join(' | ')}>`;
+  }
+  if (options.optional) {
+    const optionalProps = options.optional.map(p => `'${p}'`);
+    tsType = `@loopback/repository-json-schema#Optional<${tsType}, ${optionalProps.join(
+      ' | ',
+    )}>`;
+  }
+
   return !isEmptyJson(options)
-    ? `(Schema options: ${stringifyOptions(options)})`
+    ? `(tsType: ${tsType}, schemaOptions: ${stringifyOptions(options)})`
     : '';
 }
 
@@ -420,7 +442,7 @@ export function modelToJsonSchema<T extends object>(
   const result: JsonSchema = {title};
   options.visited[title] = result;
 
-  const descriptionSuffix = getDescriptionSuffix(options);
+  const descriptionSuffix = getDescriptionSuffix(ctor.name, options);
 
   if (meta.description) {
     const formatSuffix = descriptionSuffix ? ` ${descriptionSuffix}` : '';

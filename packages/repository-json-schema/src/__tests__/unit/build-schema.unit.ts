@@ -17,10 +17,10 @@ import {expect} from '@loopback/testlab';
 import {
   buildModelCacheKey,
   getNavigationalPropertyForRelation,
+  JsonSchema,
   metaToJsonProperty,
   modelToJsonSchema,
   stringTypeToWrapper,
-  JsonSchema,
 } from '../..';
 
 describe('build-schema', () => {
@@ -330,7 +330,8 @@ describe('build-schema', () => {
       expect(schema.definitions).to.containEql({
         ChildWithRelations: {
           title: 'ChildWithRelations',
-          description: '(Schema options: { includeRelations: true })',
+          description:
+            '(tsType: ChildWithRelations, schemaOptions: { includeRelations: true })',
           properties: {name: {type: 'string'}},
           additionalProperties: false,
         },
