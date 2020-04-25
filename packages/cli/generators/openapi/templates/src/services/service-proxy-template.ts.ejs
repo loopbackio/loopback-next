@@ -1,6 +1,6 @@
 import {getService} from '@loopback/service-proxy';
 import {inject, Provider} from '@loopback/core';
-import {<%= dataSourceClassName %>} from '../datasources';
+import {<%- dataSourceClassName %>} from '../datasources';
 
 <%_
 imports.forEach(i => {
@@ -39,17 +39,42 @@ export interface <%- serviceClassName %> {
   <%_ } -%>
 }
 
-export class <%= serviceClassName %>Provider implements Provider<<%= serviceClassName %>> {
+export class <%- serviceClassName %>Provider implements Provider<<%- serviceClassName %>> {
   constructor(
-    // <%= dataSourceName %> must match the name property in the datasource json file
-    @inject('datasources.<%= dataSourceName %>')
-    protected dataSource: <%= dataSourceClassName %> = new <%= dataSourceClassName %>(),
+    // <%- dataSourceName %> must match the name property in the datasource json file
+    @inject('datasources.<%- dataSourceName %>')
+    protected dataSource: <%- dataSourceClassName %> = new <%- dataSourceClassName %>(),
   ) {}
 
-  async value(): Promise<<%= serviceClassName %>> {
-    const service = await getService<{apis: {<%= tag || 'default' %>: <%= serviceClassName %>}}>(
+  async value(): Promise<<%- serviceClassName %>> {
+    const service = await getService<{apis: {'<%- tag || 'default' %>': Record<string, Function>}}>(
       this.dataSource,
     );
-    return service.apis['<%= tag || 'default' %>'];
+    const proxy = service.apis['<%- tag || 'default' %>'];
+    return cast(proxy);
   }
+}
+
+
+/**
+ * Type for method names of <%- serviceClassName %>
+ */
+type ServiceMethod = keyof <%- serviceClassName %>;
+
+/**
+ * Map method names to operation ids for <%- serviceClassName %>
+ */
+const METHOD_OPERATION_MAPPING: Record<ServiceMethod, string> = <%- methodMappingObject %>;
+
+/**
+ * Cast the proxy to <%- serviceClassName %>
+ */
+function cast(proxy: Record<string, Function>): <%- serviceClassName %> {
+  const methods: Partial<Record<ServiceMethod, Function>> = {};
+  let m: ServiceMethod;
+  for (m in METHOD_OPERATION_MAPPING) {
+    const op = METHOD_OPERATION_MAPPING[m];
+    methods[m] = (...args: unknown[]) => proxy[op](...args);
+  }
+  return methods as <%- serviceClassName %>;
 }

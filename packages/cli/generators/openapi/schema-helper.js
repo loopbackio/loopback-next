@@ -202,7 +202,7 @@ function mapObjectType(schema, options) {
 
     // Handle `additionalProperties`
     if (schema.additionalProperties === true) {
-      propertySignatures.push('[additionalProperty: string]: any;');
+      propertySignatures.push('[additionalProperty: string]: unknown;');
     } else if (schema.additionalProperties) {
       propertySignatures.push(
         '[additionalProperty: string]: ' +

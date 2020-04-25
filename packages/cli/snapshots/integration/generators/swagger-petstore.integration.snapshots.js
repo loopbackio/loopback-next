@@ -8,7 +8,6 @@
 'use strict';
 
 exports[`openapi-generator specific files generates all the proper files 1`] = `
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {api, operation, param, requestBody} from '@loopback/rest';
 import {Pet} from '../models/pet.model';
 import {NewPet} from '../models/new-pet.model';
@@ -348,7 +347,7 @@ pet
     type: 'integer',
     format: 'int64',
   },
-}) id: number): Promise<any> {
+}) id: number): Promise<unknown> {
     throw new Error('Not implemented');
   }
 
@@ -365,7 +364,6 @@ export * from './open-api.controller';
 
 
 exports[`openapi-generator specific files generates all the proper files 3`] = `
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {NewPet} from './new-pet.model';
 /**
  * The model type is generated from OpenAPI schema - Pet
@@ -380,7 +378,6 @@ export type Pet = NewPet & {
 
 
 exports[`openapi-generator specific files generates all the proper files 4`] = `
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {model, property} from '@loopback/repository';
 
 /**
@@ -425,7 +422,6 @@ export type NewPetWithRelations = NewPet & NewPetRelations;
 
 
 exports[`openapi-generator specific files generates all the proper files 5`] = `
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {model, property} from '@loopback/repository';
 
 /**

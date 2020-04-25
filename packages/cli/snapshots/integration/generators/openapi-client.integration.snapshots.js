@@ -57,7 +57,7 @@ pulvinar elit eu, euismod sapien.
    * @returns pet response
    */
   findPets(params: { tags: string[]; limit: number; where: {
-  [additionalProperty: string]: any;
+  [additionalProperty: string]: unknown;
 } }): Promise<Pet[]>;
 
   /**
@@ -79,7 +79,7 @@ pet
    * deletes a single pet based on the ID supplied
    * @param id ID of pet to delete
    */
-  deletePet(params: { id: number }): Promise<any>;
+  deletePet(params: { id: number }): Promise<unknown>;
 
 }
 
@@ -91,11 +91,41 @@ export class OpenApiServiceProvider implements Provider<OpenApiService> {
   ) {}
 
   async value(): Promise<OpenApiService> {
-    const service = await getService<{apis: {default: OpenApiService}}>(
+    const service = await getService<{apis: {'default': Record<string, Function>}}>(
       this.dataSource,
     );
-    return service.apis['default'];
+    const proxy = service.apis['default'];
+    return cast(proxy);
   }
+}
+
+
+/**
+ * Type for method names of OpenApiService
+ */
+type ServiceMethod = keyof OpenApiService;
+
+/**
+ * Map method names to operation ids for OpenApiService
+ */
+const METHOD_OPERATION_MAPPING: Record<ServiceMethod, string> = {
+  findPets: 'findPets',
+  addPet: 'addPet',
+  findPetById: 'find pet by id',
+  deletePet: 'deletePet',
+};
+
+/**
+ * Cast the proxy to OpenApiService
+ */
+function cast(proxy: Record<string, Function>): OpenApiService {
+  const methods: Partial<Record<ServiceMethod, Function>> = {};
+  let m: ServiceMethod;
+  for (m in METHOD_OPERATION_MAPPING) {
+    const op = METHOD_OPERATION_MAPPING[m];
+    methods[m] = (...args: unknown[]) => proxy[op](...args);
+  }
+  return methods as OpenApiService;
 }
 
 `;
@@ -110,7 +140,6 @@ export * from './error.model';
 
 
 exports[`generates files with --client and --datasource for an existing datasource 4`] = `
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {NewPet} from './new-pet.model';
 /**
  * The model type is generated from OpenAPI schema - Pet
@@ -125,7 +154,6 @@ export type Pet = NewPet & {
 
 
 exports[`generates files with --client and --datasource for an existing datasource 5`] = `
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {model, property} from '@loopback/repository';
 
 /**
@@ -170,7 +198,6 @@ export type NewPetWithRelations = NewPet & NewPetRelations;
 
 
 exports[`generates files with --client and --datasource for an existing datasource 6`] = `
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {model, property} from '@loopback/repository';
 
 /**
@@ -265,7 +292,7 @@ pulvinar elit eu, euismod sapien.
    * @returns pet response
    */
   findPets(params: { tags: string[]; limit: number; where: {
-  [additionalProperty: string]: any;
+  [additionalProperty: string]: unknown;
 } }): Promise<Pet[]>;
 
   /**
@@ -287,7 +314,7 @@ pet
    * deletes a single pet based on the ID supplied
    * @param id ID of pet to delete
    */
-  deletePet(params: { id: number }): Promise<any>;
+  deletePet(params: { id: number }): Promise<unknown>;
 
 }
 
@@ -299,11 +326,41 @@ export class OpenApiServiceProvider implements Provider<OpenApiService> {
   ) {}
 
   async value(): Promise<OpenApiService> {
-    const service = await getService<{apis: {default: OpenApiService}}>(
+    const service = await getService<{apis: {'default': Record<string, Function>}}>(
       this.dataSource,
     );
-    return service.apis['default'];
+    const proxy = service.apis['default'];
+    return cast(proxy);
   }
+}
+
+
+/**
+ * Type for method names of OpenApiService
+ */
+type ServiceMethod = keyof OpenApiService;
+
+/**
+ * Map method names to operation ids for OpenApiService
+ */
+const METHOD_OPERATION_MAPPING: Record<ServiceMethod, string> = {
+  findPets: 'findPets',
+  addPet: 'addPet',
+  findPetById: 'find pet by id',
+  deletePet: 'deletePet',
+};
+
+/**
+ * Cast the proxy to OpenApiService
+ */
+function cast(proxy: Record<string, Function>): OpenApiService {
+  const methods: Partial<Record<ServiceMethod, Function>> = {};
+  let m: ServiceMethod;
+  for (m in METHOD_OPERATION_MAPPING) {
+    const op = METHOD_OPERATION_MAPPING[m];
+    methods[m] = (...args: unknown[]) => proxy[op](...args);
+  }
+  return methods as OpenApiService;
 }
 
 `;
@@ -318,7 +375,6 @@ export * from './error.model';
 
 
 exports[`generates files with --client for an existing datasource 4`] = `
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {NewPet} from './new-pet.model';
 /**
  * The model type is generated from OpenAPI schema - Pet
@@ -333,7 +389,6 @@ export type Pet = NewPet & {
 
 
 exports[`generates files with --client for an existing datasource 5`] = `
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {model, property} from '@loopback/repository';
 
 /**
@@ -378,7 +433,6 @@ export type NewPetWithRelations = NewPet & NewPetRelations;
 
 
 exports[`generates files with --client for an existing datasource 6`] = `
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {model, property} from '@loopback/repository';
 
 /**
@@ -430,7 +484,6 @@ export * from './open-api.controller';
 
 
 exports[`openapi-generator with --client does not generates files for client with --no-client 2`] = `
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {api, operation, param, requestBody} from '@loopback/rest';
 import {Pet} from '../models/pet.model';
 import {NewPet} from '../models/new-pet.model';
@@ -628,7 +681,7 @@ pulvinar elit eu, euismod sapien.
     },
   },
 }) where: {
-  [additionalProperty: string]: any;
+  [additionalProperty: string]: unknown;
 }): Promise<Pet[]> {
     throw new Error('Not implemented');
   }
@@ -793,7 +846,7 @@ pet
     type: 'integer',
     format: 'int64',
   },
-}) id: number): Promise<any> {
+}) id: number): Promise<unknown> {
     throw new Error('Not implemented');
   }
 
@@ -812,7 +865,6 @@ export * from './error.model';
 
 
 exports[`openapi-generator with --client does not generates files for client with --no-client 4`] = `
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {NewPet} from './new-pet.model';
 /**
  * The model type is generated from OpenAPI schema - Pet
@@ -827,7 +879,6 @@ export type Pet = NewPet & {
 
 
 exports[`openapi-generator with --client does not generates files for client with --no-client 5`] = `
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {model, property} from '@loopback/repository';
 
 /**
@@ -872,7 +923,6 @@ export type NewPetWithRelations = NewPet & NewPetRelations;
 
 
 exports[`openapi-generator with --client does not generates files for client with --no-client 6`] = `
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {model, property} from '@loopback/repository';
 
 /**
@@ -1023,7 +1073,7 @@ pulvinar elit eu, euismod sapien.
    * @returns pet response
    */
   findPets(tags: string[], limit: number, where: {
-  [additionalProperty: string]: any;
+  [additionalProperty: string]: unknown;
 }): Promise<Pet[]>;
 
   /**
@@ -1045,7 +1095,7 @@ pet
    * deletes a single pet based on the ID supplied
    * @param id ID of pet to delete
    */
-  deletePet(id: number): Promise<any>;
+  deletePet(id: number): Promise<unknown>;
 
 }
 
@@ -1057,11 +1107,41 @@ export class OpenApiServiceProvider implements Provider<OpenApiService> {
   ) {}
 
   async value(): Promise<OpenApiService> {
-    const service = await getService<{apis: {default: OpenApiService}}>(
+    const service = await getService<{apis: {'default': Record<string, Function>}}>(
       this.dataSource,
     );
-    return service.apis['default'];
+    const proxy = service.apis['default'];
+    return cast(proxy);
   }
+}
+
+
+/**
+ * Type for method names of OpenApiService
+ */
+type ServiceMethod = keyof OpenApiService;
+
+/**
+ * Map method names to operation ids for OpenApiService
+ */
+const METHOD_OPERATION_MAPPING: Record<ServiceMethod, string> = {
+  findPets: 'findPets',
+  addPet: 'addPet',
+  findPetById: 'find pet by id',
+  deletePet: 'deletePet',
+};
+
+/**
+ * Cast the proxy to OpenApiService
+ */
+function cast(proxy: Record<string, Function>): OpenApiService {
+  const methods: Partial<Record<ServiceMethod, Function>> = {};
+  let m: ServiceMethod;
+  for (m in METHOD_OPERATION_MAPPING) {
+    const op = METHOD_OPERATION_MAPPING[m];
+    methods[m] = (...args: unknown[]) => proxy[op](...args);
+  }
+  return methods as OpenApiService;
 }
 
 `;
@@ -1076,7 +1156,6 @@ export * from './error.model';
 
 
 exports[`openapi-generator with --client does not generates files for server with --no-server 6`] = `
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {NewPet} from './new-pet.model';
 /**
  * The model type is generated from OpenAPI schema - Pet
@@ -1091,7 +1170,6 @@ export type Pet = NewPet & {
 
 
 exports[`openapi-generator with --client does not generates files for server with --no-server 7`] = `
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {model, property} from '@loopback/repository';
 
 /**
@@ -1136,7 +1214,6 @@ export type NewPetWithRelations = NewPet & NewPetRelations;
 
 
 exports[`openapi-generator with --client does not generates files for server with --no-server 8`] = `
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {model, property} from '@loopback/repository';
 
 /**
@@ -1188,7 +1265,6 @@ export * from './open-api.controller';
 
 
 exports[`openapi-generator with --client generates all files for both server and client 2`] = `
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {api, operation, param, requestBody} from '@loopback/rest';
 import {Pet} from '../models/pet.model';
 import {NewPet} from '../models/new-pet.model';
@@ -1386,7 +1462,7 @@ pulvinar elit eu, euismod sapien.
     },
   },
 }) where: {
-  [additionalProperty: string]: any;
+  [additionalProperty: string]: unknown;
 }): Promise<Pet[]> {
     throw new Error('Not implemented');
   }
@@ -1551,7 +1627,7 @@ pet
     type: 'integer',
     format: 'int64',
   },
-}) id: number): Promise<any> {
+}) id: number): Promise<unknown> {
     throw new Error('Not implemented');
   }
 
@@ -1667,7 +1743,7 @@ pulvinar elit eu, euismod sapien.
    * @returns pet response
    */
   findPets(tags: string[], limit: number, where: {
-  [additionalProperty: string]: any;
+  [additionalProperty: string]: unknown;
 }): Promise<Pet[]>;
 
   /**
@@ -1689,7 +1765,7 @@ pet
    * deletes a single pet based on the ID supplied
    * @param id ID of pet to delete
    */
-  deletePet(id: number): Promise<any>;
+  deletePet(id: number): Promise<unknown>;
 
 }
 
@@ -1701,11 +1777,41 @@ export class OpenApiServiceProvider implements Provider<OpenApiService> {
   ) {}
 
   async value(): Promise<OpenApiService> {
-    const service = await getService<{apis: {default: OpenApiService}}>(
+    const service = await getService<{apis: {'default': Record<string, Function>}}>(
       this.dataSource,
     );
-    return service.apis['default'];
+    const proxy = service.apis['default'];
+    return cast(proxy);
   }
+}
+
+
+/**
+ * Type for method names of OpenApiService
+ */
+type ServiceMethod = keyof OpenApiService;
+
+/**
+ * Map method names to operation ids for OpenApiService
+ */
+const METHOD_OPERATION_MAPPING: Record<ServiceMethod, string> = {
+  findPets: 'findPets',
+  addPet: 'addPet',
+  findPetById: 'find pet by id',
+  deletePet: 'deletePet',
+};
+
+/**
+ * Cast the proxy to OpenApiService
+ */
+function cast(proxy: Record<string, Function>): OpenApiService {
+  const methods: Partial<Record<ServiceMethod, Function>> = {};
+  let m: ServiceMethod;
+  for (m in METHOD_OPERATION_MAPPING) {
+    const op = METHOD_OPERATION_MAPPING[m];
+    methods[m] = (...args: unknown[]) => proxy[op](...args);
+  }
+  return methods as OpenApiService;
 }
 
 `;
@@ -1720,7 +1826,6 @@ export * from './error.model';
 
 
 exports[`openapi-generator with --client generates all files for both server and client 8`] = `
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {NewPet} from './new-pet.model';
 /**
  * The model type is generated from OpenAPI schema - Pet
@@ -1735,7 +1840,6 @@ export type Pet = NewPet & {
 
 
 exports[`openapi-generator with --client generates all files for both server and client 9`] = `
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {model, property} from '@loopback/repository';
 
 /**
@@ -1780,7 +1884,6 @@ export type NewPetWithRelations = NewPet & NewPetRelations;
 
 
 exports[`openapi-generator with --client generates all files for both server and client 10`] = `
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {model, property} from '@loopback/repository';
 
 /**

@@ -15,7 +15,6 @@ export * from './search.controller';
 
 
 exports[`openapi-generator uspto with anonymous generates all the proper files 2`] = `
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {api, operation, param, requestBody} from '@loopback/rest';
 import {PerformSearchRequestBody} from '../models/perform-search-request-body.model';
 import {PerformSearchResponseBody} from '../models/perform-search-response-body.model';
@@ -223,7 +222,6 @@ oa_citations
 
 
 exports[`openapi-generator uspto with anonymous generates all the proper files 3`] = `
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {api, operation, param, requestBody} from '@loopback/rest';
 import {DataSetList} from '../models/data-set-list.model';
 
@@ -423,7 +421,6 @@ export * from './perform-search-response-body.model';
 
 
 exports[`openapi-generator uspto with anonymous generates all the proper files 5`] = `
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {model, property} from '@loopback/repository';
 
 /**
@@ -488,7 +485,6 @@ export type PerformSearchRequestBodyWithRelations = PerformSearchRequestBody & P
 
 
 exports[`openapi-generator uspto with anonymous generates all the proper files 6`] = `
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * The model type is generated from OpenAPI schema - {
   [additionalProperty: string]: {
