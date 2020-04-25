@@ -1,4 +1,4 @@
-# @loopback/extension-authentication-jwt
+# @loopback/authentication-jwt
 
 This module exports the jwt authentication strategy and its corresponding token
 and user service as a component. You can mount the component to get a prototype
@@ -10,7 +10,7 @@ recommended for production. You can follow the guide in section
 
 ## Architecture Overview
 
-![extension-authentication-jwt](extension-authentication-jwt.png)
+![authentication-jwt](authentication-jwt.png)
 
 ## Usage
 
@@ -83,7 +83,7 @@ import {AuthenticationComponent} from '@loopback/authentication';
 import {
   JWTAuthenticationComponent,
   SECURITY_SCHEME_SPEC,
-} from '@loopback/extension-authentication-jwt';
+} from '@loopback/authentication-jwt';
 
 export class TestApplication extends BootMixin(
   ServiceMixin(RepositoryMixin(RestApplication)),
@@ -289,7 +289,7 @@ provide your own `User` model and repository.
    ```ts
    import {CustomUserService} from './services/custom-user-service';
    import {MyUserRepository, MyUserCredentialsRepository} from './repositories';
-   import {UserServiceBindings} from '@loopback/extension-authentication-jwt';
+   import {UserServiceBindings} from '@loopback/authentication-jwt';
 
    export class TestApplication extends BootMixin(
      ServiceMixin(RepositoryMixin(RestApplication)),

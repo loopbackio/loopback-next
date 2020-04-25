@@ -1,5 +1,5 @@
 {
-  "name": "@loopback/extension-authentication-jwt",
+  "name": "@loopback/authentication-jwt",
   "version": "0.1.1",
   "description": "Extension for the prototype of JWT authentication",
   "engines": {
@@ -7,10 +7,10 @@
   },
   "scripts": {
     "build": "lb-tsc",
-    "clean": "lb-clean loopback-extension-authentication-jwt*.tgz dist tsconfig.build.tsbuildinfo package",
+    "clean": "lb-clean loopback-authentication-jwt*.tgz dist *.tsbuildinfo package",
     "pretest": "npm run build",
     "test": "lb-mocha \"dist/__tests__/unit/*.js\" \"dist/__tests__/acceptance/*.js\"",
-    "verify": "npm pack && tar xf loopback-extension-authentication-jwt*.tgz && tree package && npm run clean"
+    "verify": "npm pack && tar xf loopback-authentication-jwt*.tgz && tree package && npm run clean"
   },
   "author": "IBM Corp.",
   "copyright.owner": "IBM Corp.",
@@ -63,6 +63,6 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/strongloop/loopback-next.git",
-    "directory": "extensions/health"
+    "directory": "extensions/authentication-jwt"
   }
 }
