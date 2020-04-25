@@ -15,7 +15,6 @@ export * from './search.controller';
 
 
 exports[`openapi-generator uspto generates all the proper files 2`] = `
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {api, operation, param, requestBody} from '@loopback/rest';
 
 /**
@@ -229,7 +228,6 @@ oa_citations
 
 
 exports[`openapi-generator uspto generates all the proper files 3`] = `
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {api, operation, param, requestBody} from '@loopback/rest';
 import {DataSetList} from '../models/data-set-list.model';
 
@@ -433,7 +431,6 @@ export * from './metadata.controller';
 
 
 exports[`openapi-generator uspto skips controllers not selected 2`] = `
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {api, operation, param, requestBody} from '@loopback/rest';
 import {DataSetList} from '../models/data-set-list.model';
 

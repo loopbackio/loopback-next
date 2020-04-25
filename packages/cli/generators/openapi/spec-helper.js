@@ -196,6 +196,8 @@ function registerAnonymousSchema(names, schema, typeRegistry) {
  */
 function buildMethodSpec(controllerSpec, op, options) {
   const methodName = getMethodName(op.spec);
+  const opName = op.spec['x-operation-name'] || op.spec['operationId'];
+  controllerSpec.methodMapping[methodName] = opName;
   const comments = [];
   let args = [];
   let interfaceArgs = [];
@@ -227,7 +229,7 @@ function buildMethodSpec(controllerSpec, op, options) {
      *      schema:
      *        $ref: '#/components/schemas/NewPet'
      */
-    let bodyType = {signature: 'any'};
+    let bodyType = {signature: 'unknown'};
     const content = op.spec.requestBody.content;
     const contentType =
       content &&
@@ -263,7 +265,7 @@ function buildMethodSpec(controllerSpec, op, options) {
       `@param ${bodyName} ${op.spec.requestBody.description || ''}`,
     );
   }
-  let returnType = {signature: 'any'};
+  let returnType = {signature: 'unknown'};
   const responses = op.spec.responses;
   if (responses) {
     /**
@@ -417,9 +419,13 @@ function buildControllerSpecs(operationsMapByController, options) {
       // Class name for service proxy
       serviceClassName: getBaseName(controller, 'Controller') + 'Service',
       imports: [],
+      methodMapping: {},
     };
     controllerSpec.methods = entry.operations.map(op =>
       buildMethodSpec(controllerSpec, op, options),
+    );
+    controllerSpec.methodMappingObject = printSpecObject(
+      controllerSpec.methodMapping,
     );
     controllerSpecs.push(controllerSpec);
   }

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 <%_
 const _properties = locals.properties || [];
 if (_properties.length) {
@@ -46,10 +45,10 @@ export class <%- className %> {
   <%_ } -%>
 }
 
-export interface <%= className %>Relations {
+export interface <%- className %>Relations {
   // describe navigational properties here
 }
 
-export type <%= className %>WithRelations = <%= className %> & <%= className %>Relations;
+export type <%- className %>WithRelations = <%- className %> & <%- className %>Relations;
 
 
