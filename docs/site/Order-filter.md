@@ -14,8 +14,6 @@ descending (DESC) based on the specified property.
 
 ### Node.js API
 
-{% include content/angular-methods-caveat.html lang=page.lang %}
-
 Order by one property:
 
 <pre>

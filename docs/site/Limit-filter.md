@@ -11,8 +11,6 @@ summary:
 
 A *limit* filter limits the maximum number of records a query returns.
 
-{% include content/angular-methods-caveat.html lang=page.lang %}
-
 ### Node.js API
 
 <pre>

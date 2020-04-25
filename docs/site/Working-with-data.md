@@ -81,5 +81,3 @@ See the following articles for more information:
   - [Where filter](Where-filter.html)
 - [Using database transactions](Using-database-transactions.html)
 - [Realtime server-sent events](Realtime-server-sent-events.html)
-
-{% include content/angular-methods-caveat.html lang=page.lang %}

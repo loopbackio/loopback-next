@@ -85,8 +85,6 @@ app.start = function() {
 
 ## Node.js API
 
-{% include content/angular-methods-caveat.html lang=page.lang %}
-
 ### Where clause for queries
 
 For query methods such as `find()` or `findOne()`, use the first form below to
