@@ -14,6 +14,7 @@ export * from './open-api.service';
 
 
 exports[`generates files with --client and --datasource for an existing datasource 2`] = `
+import util from 'util';
 import {getService} from '@loopback/service-proxy';
 import {inject, Provider} from '@loopback/core';
 import {PetStoreDataSource} from '../datasources';
@@ -123,7 +124,26 @@ function cast(proxy: Record<string, Function>): OpenApiService {
   let m: ServiceMethod;
   for (m in METHOD_OPERATION_MAPPING) {
     const op = METHOD_OPERATION_MAPPING[m];
-    methods[m] = (...args: unknown[]) => proxy[op](...args);
+    methods[m] = async (...args: unknown[]) => {
+      const response = await proxy[op](...args);
+      /*
+       * {
+       *   url,
+       *   method,
+       *   status,
+       *   statusText,
+       *   headers, // See note below regarding headers
+       *
+       *   text,    // The textual content
+       *   body,    // The body object
+       * }
+       */
+      if (response.status < 400) {
+        return response.body;
+      }
+      const err = util.format('%O', response);
+      throw new Error(err);
+    }
   }
   return methods as OpenApiService;
 }
@@ -249,6 +269,7 @@ export * from './open-api.service';
 
 
 exports[`generates files with --client for an existing datasource 2`] = `
+import util from 'util';
 import {getService} from '@loopback/service-proxy';
 import {inject, Provider} from '@loopback/core';
 import {PetStoreDataSource} from '../datasources';
@@ -358,7 +379,26 @@ function cast(proxy: Record<string, Function>): OpenApiService {
   let m: ServiceMethod;
   for (m in METHOD_OPERATION_MAPPING) {
     const op = METHOD_OPERATION_MAPPING[m];
-    methods[m] = (...args: unknown[]) => proxy[op](...args);
+    methods[m] = async (...args: unknown[]) => {
+      const response = await proxy[op](...args);
+      /*
+       * {
+       *   url,
+       *   method,
+       *   status,
+       *   statusText,
+       *   headers, // See note below regarding headers
+       *
+       *   text,    // The textual content
+       *   body,    // The body object
+       * }
+       */
+      if (response.status < 400) {
+        return response.body;
+      }
+      const err = util.format('%O', response);
+      throw new Error(err);
+    }
   }
   return methods as OpenApiService;
 }
@@ -1030,6 +1070,7 @@ export * from './open-api.service';
 
 
 exports[`openapi-generator with --client does not generates files for server with --no-server 4`] = `
+import util from 'util';
 import {getService} from '@loopback/service-proxy';
 import {inject, Provider} from '@loopback/core';
 import {PetStoreDataSource} from '../datasources';
@@ -1139,7 +1180,26 @@ function cast(proxy: Record<string, Function>): OpenApiService {
   let m: ServiceMethod;
   for (m in METHOD_OPERATION_MAPPING) {
     const op = METHOD_OPERATION_MAPPING[m];
-    methods[m] = (...args: unknown[]) => proxy[op](...args);
+    methods[m] = async (...args: unknown[]) => {
+      const response = await proxy[op](...args);
+      /*
+       * {
+       *   url,
+       *   method,
+       *   status,
+       *   statusText,
+       *   headers, // See note below regarding headers
+       *
+       *   text,    // The textual content
+       *   body,    // The body object
+       * }
+       */
+      if (response.status < 400) {
+        return response.body;
+      }
+      const err = util.format('%O', response);
+      throw new Error(err);
+    }
   }
   return methods as OpenApiService;
 }
@@ -1700,6 +1760,7 @@ export * from './open-api.service';
 
 
 exports[`openapi-generator with --client generates all files for both server and client 6`] = `
+import util from 'util';
 import {getService} from '@loopback/service-proxy';
 import {inject, Provider} from '@loopback/core';
 import {PetStoreDataSource} from '../datasources';
@@ -1809,7 +1870,26 @@ function cast(proxy: Record<string, Function>): OpenApiService {
   let m: ServiceMethod;
   for (m in METHOD_OPERATION_MAPPING) {
     const op = METHOD_OPERATION_MAPPING[m];
-    methods[m] = (...args: unknown[]) => proxy[op](...args);
+    methods[m] = async (...args: unknown[]) => {
+      const response = await proxy[op](...args);
+      /*
+       * {
+       *   url,
+       *   method,
+       *   status,
+       *   statusText,
+       *   headers, // See note below regarding headers
+       *
+       *   text,    // The textual content
+       *   body,    // The body object
+       * }
+       */
+      if (response.status < 400) {
+        return response.body;
+      }
+      const err = util.format('%O', response);
+      throw new Error(err);
+    }
   }
   return methods as OpenApiService;
 }
