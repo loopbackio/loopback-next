@@ -17,8 +17,6 @@ The value of the include filter can be a string, an array, or an object.
 
 ### Node.js API
 
-{% include content/angular-methods-caveat.html lang=page.lang %}
-
 To query one relation:
 
 ```ts

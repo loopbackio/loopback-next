@@ -11,8 +11,6 @@ results.
 
 ### Node.js API
 
-{% include content/angular-methods-caveat.html lang=page.lang %}
-
 <pre>
 { fields: {<i>propertyName</i>: <true|false>, <i>propertyName</i>: <true|false>, ... } }
 </pre>
