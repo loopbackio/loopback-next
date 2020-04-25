@@ -1,6 +1,7 @@
 import util from 'util';
-import {getService} from '@loopback/service-proxy';
 import {inject, Provider} from '@loopback/core';
+import {HttpErrors} from '@loopback/rest';
+import {getService} from '@loopback/service-proxy';
 import {<%- dataSourceClassName %>} from '../datasources';
 
 <%_
@@ -92,8 +93,8 @@ function cast(proxy: Record<string, Function>): <%- serviceClassName %> {
       if (response.status < 400) {
         return response.body;
       }
-      const err = util.format('%O', response);
-      throw new Error(err);
+      const err = HttpErrors(response.status, response.statusText, response);
+      throw err;
     }
   }
   return methods as <%- serviceClassName %>;
