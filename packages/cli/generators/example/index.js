@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-('use strict');
+'use strict';
 
 const BaseGenerator = require('../../lib/base-generator');
 const chalk = require('chalk');
@@ -135,7 +135,7 @@ module.exports = class extends BaseGenerator {
 
     // Support older versions of examples that are using `tsconfig.build.json`
     const tsBuildConfig = path.join(absOutDir, 'tsconfig.build.json');
-    const exists = await fs.exists(tsconfig);
+    const exists = await fs.pathExists(tsconfig);
     if (!exists) {
       return fs.rename(tsBuildConfig, tsconfig);
     }
