@@ -79,7 +79,7 @@ https://lucene.apache.org/core/3_6_2/queryparsersyntax.html#Overview for the
 query syntax. List of field names that are searchable can be determined
 using above GET api.
    *
-   * @param _requestBody 
+   * @param _requestBody
    * @param version Version of the dataset.
    * @param dataset Name of the dataset. In this case, the default value is
 oa_citations

@@ -261,9 +261,9 @@ function buildMethodSpec(controllerSpec, op, options) {
       paramType: bodyType,
       argName: bodyParam,
     });
-    comments.unshift(
-      `@param ${bodyName} ${op.spec.requestBody.description || ''}`,
-    );
+    let bodyDescription = op.spec.requestBody.description || '';
+    bodyDescription = bodyDescription ? ` ${bodyDescription}` : '';
+    comments.unshift(`@param ${bodyName}${bodyDescription}`);
   }
   let returnType = {signature: 'unknown'};
   const responses = op.spec.responses;
