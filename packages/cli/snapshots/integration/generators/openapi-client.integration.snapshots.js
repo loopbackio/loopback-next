@@ -15,8 +15,9 @@ export * from './open-api.service';
 
 exports[`generates files with --client and --datasource for an existing datasource 2`] = `
 import util from 'util';
-import {getService} from '@loopback/service-proxy';
 import {inject, Provider} from '@loopback/core';
+import {HttpErrors} from '@loopback/rest';
+import {getService} from '@loopback/service-proxy';
 import {PetStoreDataSource} from '../datasources';
 
 import {Pet} from '../models/pet.model';
@@ -141,8 +142,8 @@ function cast(proxy: Record<string, Function>): OpenApiService {
       if (response.status < 400) {
         return response.body;
       }
-      const err = util.format('%O', response);
-      throw new Error(err);
+      const err = HttpErrors(response.status, response.statusText, response);
+      throw err;
     }
   }
   return methods as OpenApiService;
@@ -272,8 +273,9 @@ export * from './open-api.service';
 
 exports[`generates files with --client for an existing datasource 2`] = `
 import util from 'util';
-import {getService} from '@loopback/service-proxy';
 import {inject, Provider} from '@loopback/core';
+import {HttpErrors} from '@loopback/rest';
+import {getService} from '@loopback/service-proxy';
 import {PetStoreDataSource} from '../datasources';
 
 import {Pet} from '../models/pet.model';
@@ -398,8 +400,8 @@ function cast(proxy: Record<string, Function>): OpenApiService {
       if (response.status < 400) {
         return response.body;
       }
-      const err = util.format('%O', response);
-      throw new Error(err);
+      const err = HttpErrors(response.status, response.statusText, response);
+      throw err;
     }
   }
   return methods as OpenApiService;
@@ -1077,8 +1079,9 @@ export * from './open-api.service';
 
 exports[`openapi-generator with --client does not generates files for server with --no-server 4`] = `
 import util from 'util';
-import {getService} from '@loopback/service-proxy';
 import {inject, Provider} from '@loopback/core';
+import {HttpErrors} from '@loopback/rest';
+import {getService} from '@loopback/service-proxy';
 import {PetStoreDataSource} from '../datasources';
 
 import {Pet} from '../models/pet.model';
@@ -1203,8 +1206,8 @@ function cast(proxy: Record<string, Function>): OpenApiService {
       if (response.status < 400) {
         return response.body;
       }
-      const err = util.format('%O', response);
-      throw new Error(err);
+      const err = HttpErrors(response.status, response.statusText, response);
+      throw err;
     }
   }
   return methods as OpenApiService;
@@ -1769,8 +1772,9 @@ export * from './open-api.service';
 
 exports[`openapi-generator with --client generates all files for both server and client 6`] = `
 import util from 'util';
-import {getService} from '@loopback/service-proxy';
 import {inject, Provider} from '@loopback/core';
+import {HttpErrors} from '@loopback/rest';
+import {getService} from '@loopback/service-proxy';
 import {PetStoreDataSource} from '../datasources';
 
 import {Pet} from '../models/pet.model';
@@ -1895,8 +1899,8 @@ function cast(proxy: Record<string, Function>): OpenApiService {
       if (response.status < 400) {
         return response.body;
       }
-      const err = util.format('%O', response);
-      throw new Error(err);
+      const err = HttpErrors(response.status, response.statusText, response);
+      throw err;
     }
   }
   return methods as OpenApiService;
