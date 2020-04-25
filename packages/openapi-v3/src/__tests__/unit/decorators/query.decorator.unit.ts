@@ -32,6 +32,7 @@ describe('sugar decorators for filter and where', () => {
             schema: {
               type: 'object',
               title: 'MyModel.Filter',
+              'x-typescript-type': '@loopback/repository#Filter<MyModel>',
               properties: {
                 fields: {
                   title: 'MyModel.Fields',
@@ -67,6 +68,7 @@ describe('sugar decorators for filter and where', () => {
             schema: {
               type: 'object',
               title: 'MyModel.Filter',
+              'x-typescript-type': '@loopback/repository#Filter<MyModel>',
               properties: {
                 fields: {
                   title: 'MyModel.Fields',
@@ -109,6 +111,7 @@ describe('sugar decorators for filter and where', () => {
             schema: {
               type: 'object',
               title: 'MyModel.Filter',
+              'x-typescript-type': '@loopback/repository#Filter<MyModel>',
               properties: {
                 fields: {
                   title: 'MyModel.Fields',
@@ -139,6 +142,7 @@ describe('sugar decorators for filter and where', () => {
             schema: {
               type: 'object',
               title: 'MyModel.WhereFilter',
+              'x-typescript-type': '@loopback/repository#Where<MyModel>',
               additionalProperties: true,
             },
           },
