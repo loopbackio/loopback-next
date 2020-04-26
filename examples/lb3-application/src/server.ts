@@ -19,7 +19,7 @@ const helmet = require('helmet');
 export class ExpressServer {
   private app: express.Application;
   public readonly lbApp: CoffeeShopApplication;
-  private server?: http.Server;
+  public server?: http.Server;
   public url: String;
 
   constructor(options: ApplicationConfig = {}) {
