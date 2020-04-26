@@ -63,7 +63,7 @@ describe('LoopBack 3 style acceptance tests', function () {
 
     it('gets external route in application', function (done) {
       json('get', '/ping').expect(200, function (err, res) {
-        assert(res.body, 'pong');
+        assert.equal(res.text, 'pong');
         done();
       });
     });
@@ -81,7 +81,7 @@ describe('LoopBack 3 style acceptance tests', function () {
         err,
         user,
       ) {
-        assert(user.email, 'new@email.com');
+        assert.equal(user.email, 'new@email.com');
         User.login(
           {
             email: 'new@email.com',
@@ -89,7 +89,7 @@ describe('LoopBack 3 style acceptance tests', function () {
           },
           function (err2, token) {
             token.should.have.properties('ttl', 'userId', 'created', 'id');
-            assert(token.userId, user.id);
+            assert.equal(token.userId, user.id);
             User.logout(token.id);
             User.deleteById(user.id);
           },
@@ -100,7 +100,7 @@ describe('LoopBack 3 style acceptance tests', function () {
 
     it('rejects anonymous requests to protected endpoints', function (done) {
       json('get', '/api/CoffeeShops/greet').expect(401, function (err, res) {
-        assert(res.body.error.code, 'AUTHORIZATION_REQUIRED');
+        assert.equal(res.body.error.code, 'AUTHORIZATION_REQUIRED');
       });
       done();
     });
@@ -118,6 +118,7 @@ describe('LoopBack 3 style acceptance tests', function () {
             password: 'L00pBack!',
           },
           function (err2, token) {
+            assert.equal(token.userId, user.id);
             json(
               'get',
               `/api/CoffeeShops/greet?access_token=${token.id}`,

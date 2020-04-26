@@ -38,7 +38,7 @@ describe('LoopBack 3 style integration tests', function () {
 
   it('CoffeeShop.count', function (done) {
     CoffeeShop.count({}, function (err, count) {
-      assert(count, 3);
+      assert.equal(count, 5);
     });
     done();
   });
