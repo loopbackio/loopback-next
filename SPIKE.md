@@ -1,3 +1,5 @@
+# Run LB3 tests from LB4 when LB3 is mounted on the LB4 app
+
 Since LoopBack 4 offers a way to mount LoopBack 3 applications on a LoopBack 4
 project with the use of
 [`@loopback/booter-lb3app`](https://github.com/strongloop/loopback-next/tree/master/packages/booter-lb3app),
@@ -15,8 +17,9 @@ path to `test` entry in package.json:
 
 - `"test": "lb-mocha \"dist/**tests**/\*_/_.js\" \"lb3app/test/\*.js\""`
 
-In this case, the test folder lies is `/lb3app/test` from the root of the
-LoopBack 4 project.
+In this case, the test folder is
+[`/lb3app/test`](https://github.com/strongloop/loopback-next/tree/spike/lb3test/examples/lb3-application/lb3app/test)
+from the root of the LoopBack 4 project.
 
 This will run LoopBack 4 tests first then LoopBack 3 tests.
 
@@ -72,8 +75,10 @@ In your test file:
   ```
 
 - Example of this use can be seen in
-  `examples/lb3-application/lb3app/test/acceptance.js` which has the same tests
-  as `src/__tests__/acceptance/lb3app.acceptance.ts`, but in LB3 style.
+  [`examples/lb3-application/lb3app/test/acceptance.js`](https://github.com/strongloop/loopback-next/blob/spike/lb3test/examples/lb3-application/lb3app/test/acceptance.js)
+  which has the same tests as
+  [`src/__tests__/acceptance/lb3app.acceptance.ts`](https://github.com/strongloop/loopback-next/blob/spike/lb3test/examples/lb3-application/src/__tests__/acceptance/lb3app.acceptance.ts),
+  but in LB3 style.
 
 Now when you run `npm test` your LoopBack 3 tests should be run along with any
 LoopBack 4 tests you have.
@@ -88,7 +93,7 @@ https://loopback.io/doc/en/lb4/Testing-your-application.html.
 For the integration tests, LoopBack 3 models were bound to the LoopBack 4
 application in order to allow JavaScript API to call application logic such as
 `Model.create()`. This can be seen in
-`packages/booter-lb3app/src/lb3app.booter.ts`.
+[`packages/booter-lb3app/src/lb3app.booter.ts`](https://github.com/strongloop/loopback-next/blob/spike/lb3test/packages/booter-lb3app/src/lb3app.booter.ts#L76-L85).
 
 In order to retrieve the model from the application's context,
 `getValueOrPromise()` can be used as follows:
@@ -118,4 +123,4 @@ describe('LoopBack 3 style integration tests', function () {
 ```
 
 Example integration tests can be found in
-`examples/lb3-application/lb3app/test/acceptance.js`.
+[`examples/lb3-application/lb3app/test/integration.js`](https://github.com/strongloop/loopback-next/blob/spike/lb3test/examples/lb3-application/lb3app/test/integration.js).
