@@ -82,3 +82,40 @@ Optional: Another option is to migrate your tests to use LoopBack 4 style of
 testing, similar to `src/__tests__/acceptance/lb3app.acceptance.ts`.
 Documentation for LoopBack testing can be found in
 https://loopback.io/doc/en/lb4/Testing-your-application.html.
+
+## Integration Tests
+
+For the integration tests, LoopBack 3 models were bound to the LoopBack 4
+application in order to allow JavaScript API to call application logic such as
+`Model.create()`. This can be seen in
+`packages/booter-lb3app/src/lb3app.booter.ts`.
+
+In order to retrieve the model from the application's context,
+`getValueOrPromise()` can be used as follows:
+
+```ts
+describe('LoopBack 3 style integration tests', function () {
+  let app;
+  let CoffeeShop;
+
+  before(async function () {
+    app = new ExpressServer();
+    await app.boot();
+    await app.start();
+  });
+
+  before(() => {
+    // follow the syntax: models.lb3-{ModelName}
+    CoffeeShop = app.lbApp.getValueOrPromise('models.lb3-CoffeeShop');
+  });
+
+  after(async () => {
+    await app.stop();
+  });
+
+  // your tests here
+});
+```
+
+Example integration tests can be found in
+`examples/lb3-application/lb3app/test/acceptance.js`.
