@@ -114,7 +114,6 @@ describe('ContextGraph', () => {
         style = "filled,rounded",
         fillcolor = "cyan3",
       ];
-      "Class_Logger";
       "Binding_1_1" -> "Class_Logger" [
         style = "dashed",
       ];
@@ -166,8 +165,6 @@ describe('ContextGraph', () => {
         style = "filled,rounded",
         fillcolor = "cyan3",
       ];
-      "Class_Logger";
-      "Binding_0_0";
       "Binding_1_1" -> "Class_Logger" [
         style = "dashed",
       ];
