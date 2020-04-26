@@ -29,6 +29,12 @@ Register the component in Application's constructor:
 this.component(Lb3AppBooterComponent);
 ```
 
+By default, the LoopBack 3 models and datasources will be bond to the
+application with naming conventions as:
+
+- binding key for datasources: `lb3-datasources.{ds name}`
+- binding key for models: `lb3-models.{model name}`
+
 ## Contributions
 
 - [Guidelines](https://github.com/strongloop/loopback-next/blob/master/docs/CONTRIBUTING.md)

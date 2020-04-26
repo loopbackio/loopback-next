@@ -337,13 +337,205 @@ $ npm start
 Load [http://localhost:3000/](http://localhost:3000/) on your browser. This will
 load the Express app, with mounted LB3 and LB4 applications.
 
-### Need help?
+## Running LB3 tests from LB4
+
+You can run tests in an LoopBack 3 application from the LoopBack 4 application
+it mounted on with command `npm test`.
+
+We want the LoopBack 3 tests to use the LoopBack 4 server rather than the
+LoopBack 3 application. The following guide shows how to run
+
+- acceptance-level tests making HTTP calls to invoke application logic. e.g.
+  `POST /users/login`
+- integration-level tests that are using JS API to call application logic. e.g.
+  `MyModel.create()`
+
+### Adding LB3 Test Path in Command
+
+In order to run LoopBack 3's tests from their current folder, add LB3 tests'
+path to `test` entry in package.json:
+
+- `"test": "lb-mocha \"dist/**tests**/\*_/_.js\" \"lb3app/test/\*.js\""`
+
+In this case, the test folder is
+[`/lb3app/test`](https://github.com/strongloop/loopback-next/tree/spike/lb3test/examples/lb3-application/lb3app/test)
+from the root of the LoopBack 4 project.
+
+This will run LoopBack 4 tests first then LoopBack 3 tests.
+
+_To emphasize the setup steps and separate them from the test case details, all
+the comprehensive test code are extracted into function `runTests`._
+
+### Running Acceptance Tests
+
+First, move any LoopBack 3 test dependencies to `package.json`'s devDependencies
+and run:
+
+```sh
+npm install
+```
+
+In your test file:
+
+1. When launch the Express server
+
+- 1.1 Update to use the Express server when doing requests:
+
+  ```ts
+  // can use lb4's testlab's supertest as the dependency is already installed
+  const {supertest} = require('@loopback/testlab');
+  const assert = require('assert');
+  const should = require('should');
+  const {ExpressServer} = require('../../dist/server');
+
+  let app;
+
+  function jsonForExpressApp(verb, url) {
+    // use the express server, it mounts LoopBack 3 apis to
+    // base path '/api'
+    return supertest(app.server)
+      [verb]('/api' + url)
+      .set('Content-Type', 'application/json')
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/);
+  }
+  ```
+
+- 1.2 Boot and start the Express app in your before hook, and stop the app in
+  the after hook:
+
+  ```ts
+  describe('LoopBack 3 style tests - Launch Express server', function () {
+    before(async function () {
+      app = new ExpressServer();
+      await app.boot();
+      await app.start();
+    });
+
+    after(async () => {
+      await app.stop();
+    });
+
+    // your tests here
+    runTests();
+  });
+  ```
+
+2. When launch the LoopBack 4 application
+
+- 2.1 Update to use the LoopBack 4 server when doing requests:
+
+  ```ts
+  // can use lb4's testlab's supertest as the dependency is already installed
+  const {supertest} = require('@loopback/testlab');
+  const assert = require('assert');
+  const should = require('should');
+  const {CoffeeShopApplication} = require('../../dist/application');
+
+  let app;
+
+  function jsonForLB4(verb, url) {
+    // use the lb4 app's rest server
+    return supertest(app.restServer.url)
+      [verb](url)
+      .set('Content-Type', 'application/json')
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/);
+  }
+  ```
+
+- 2.2 Boot and start the LoopBack 4 app in your before hook, and stop the app in
+  the after hook:
+
+  ```ts
+  describe('LoopBack 3 style tests - launch LB4 app', function () {
+    before(async function () {
+      app = new CoffeeShopApplication();
+      await app.boot();
+      await app.start();
+    });
+
+    after(async () => {
+      await app.stop();
+    });
+
+    // your tests here
+    runTests();
+  });
+  ```
+
+Example of this use can be seen in
+[`test/acceptance.js`](https://github.com/strongloop/loopback-next/tree/master/examples/lb3-application/lb3app/test/acceptance.js)
+which has the same tests as
+[`src/__tests__/acceptance/lb3app.acceptance.ts`](https://github.com/strongloop/loopback-next/blob/spike/lb3test/examples/lb3-application/src/__tests__/acceptance/lb3app.acceptance.ts),
+but in LB3 style. And
+[`test/authentication.js`](https://github.com/strongloop/loopback-next/tree/master/examples/lb3-application/lb3app/test/authentication.js)
+
+Now when you run `npm test` your LoopBack 3 tests should be run along with any
+LoopBack 4 tests you have.
+
+Optional: Another option is to migrate your tests to use LoopBack 4 style of
+testing, similar to `src/__tests__/acceptance/lb3app.acceptance.ts`.
+Documentation for LoopBack testing can be found in
+https://loopback.io/doc/en/lb4/Testing-your-application.html.
+
+## Running Integration Tests
+
+For the integration tests, LoopBack 3 models were bound to the LoopBack 4
+application in order to allow JavaScript API to call application logic such as
+`Model.create()`. This can be seen in
+[`packages/booter-lb3app/src/lb3app.booter.ts`](https://github.com/strongloop/loopback-next/blob/spike/lb3test/packages/booter-lb3app/src/lb3app.booter.ts#L76-L85).
+
+In order to retrieve the model from the application's context, `get()` can be
+used as follows:
+
+```ts
+describe('LoopBack 3 style integration tests', function () {
+  let app;
+  let CoffeeShop;
+
+  before(async function () {
+    // If launch the LoopBack 4 application
+    // app = new CoffeeShopApplication();
+    app = new ExpressServer();
+    await app.boot();
+    await app.start();
+  });
+
+  before(() => {
+    // follow the syntax: lb3-models.{ModelName}
+    // If launch the LoopBack 4 application
+    // CoffeeShop = await app.get('lb3-models.CoffeeShop');
+    CoffeeShop = await app.lbApp.get('lb3-models.CoffeeShop');
+  });
+
+  after(async () => {
+    await app.stop();
+  });
+
+  // your tests here
+  runTests();
+});
+```
+
+The syntax for LB3 model's binding key is `lb3-models.{model name}`.
+
+Additionally, LB3 datasources are also bound to the LB4 application's context
+and can be retrieved with a key in the syntax `lb3-datasources.{ds name}`.
+
+Example integration tests can be found in
+[`examples/lb3-application/lb3app/test/integration.js`](https://github.com/strongloop/loopback-next/tree/master/examples/lb3-application/lb3app/test/integration.js).
+
+Example authentication tests can be found in
+[`examples/lb3-application/lb3app/test/authentication.js`](https://github.com/strongloop/loopback-next/tree/master/examples/lb3-application/lb3app/test/authentication.js).
+
+## Need help?
 
 Check out our
 [Slack](https://join.slack.com/t/loopbackio/shared_invite/zt-8lbow73r-SKAKz61Vdao~_rGf91pcsw)
 and ask for help with this tutorial.
 
-### Bugs/Feedback
+## Bugs/Feedback
 
 Open an issue in [loopback-next](https://github.com/strongloop/loopback-next)
 and we'll take a look.

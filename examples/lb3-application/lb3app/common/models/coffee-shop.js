@@ -38,6 +38,6 @@ module.exports = function (CoffeeShop) {
   };
   CoffeeShop.remoteMethod('greet', {
     http: {path: '/greet', verb: 'get'},
-    returns: {type: 'string'},
+    returns: {arg: 'greeting', type: 'string'},
   });
 };
