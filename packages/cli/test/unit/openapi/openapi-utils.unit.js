@@ -72,6 +72,84 @@ describe('openapi utils', () => {
     expect(json5.parse(str)).to.eql(spec);
   });
 
+  it('transforms true exclusiveMaximum and exclusiveMinimum', () => {
+    const openapiSchema = {
+      id: 'customer-schema',
+      $schema: 'http://json-schema.org/draft-04/schema#',
+      description: 'Customer',
+      type: 'object',
+      properties: {
+        name: {type: 'string'},
+        budget: {
+          type: 'number',
+          maximum: 100,
+          minimum: 1,
+          exclusiveMaximum: true,
+          exclusiveMinimum: true,
+        },
+      },
+      additionalProperties: {
+        type: 'string',
+      },
+    };
+    const jsonSchema = utils.toJsonSchema(openapiSchema);
+    expect(jsonSchema).to.eql({
+      $id: 'customer-schema',
+      description: 'Customer',
+      type: 'object',
+      properties: {
+        name: {type: 'string'},
+        budget: {
+          type: 'number',
+          exclusiveMaximum: 100,
+          exclusiveMinimum: 1,
+        },
+      },
+      additionalProperties: {
+        type: 'string',
+      },
+    });
+  });
+
+  it('transforms false exclusiveMaximum and exclusiveMinimum', () => {
+    const openapiSchema = {
+      id: 'customer-schema',
+      $schema: 'http://json-schema.org/draft-04/schema#',
+      description: 'Customer',
+      type: 'object',
+      properties: {
+        name: {type: 'string'},
+        budget: {
+          type: 'number',
+          maximum: 100,
+          minimum: 1,
+          exclusiveMaximum: false,
+          exclusiveMinimum: false,
+        },
+      },
+      additionalProperties: {
+        type: 'string',
+      },
+    };
+    const jsonSchema = utils.toJsonSchema(openapiSchema);
+    expect(jsonSchema).to.eql({
+      $id: 'customer-schema',
+      description: 'Customer',
+      type: 'object',
+      properties: {
+        name: {type: 'string'},
+        budget: {
+          type: 'number',
+          maximum: 100,
+          minimum: 1,
+        },
+      },
+      additionalProperties: {
+        type: 'string',
+      },
+    });
+  });
+
   function givenAClonedSpec() {
     const spec = {
       openapi: '3.0.0',
@@ -112,6 +190,8 @@ describe('openapi utils', () => {
       components: {
         schemas: {
           Customer: {
+            id: 'customer-schema',
+            $schema: 'http://json-schema.org/draft-04/schema#',
             description: 'Customer',
             type: 'object',
             additionalProperties: {
