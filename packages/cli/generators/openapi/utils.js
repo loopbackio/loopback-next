@@ -13,7 +13,10 @@ const url = require('url');
 const utils = require('../../lib/utils');
 const debug = require('../../lib/debug')('openapi-generator');
 
-const toJsonSchema = require('@openapi-contrib/openapi-schema-to-json-schema');
+/**
+ * Convert OpenAPI schema to JSON schema draft 4
+ */
+const oasToJsonSchema4 = require('@openapi-contrib/openapi-schema-to-json-schema');
 
 /**
  * Convert a string to title case
@@ -234,6 +237,10 @@ function printSpecObject(specObject) {
   );
 }
 
+/**
+ * Restore the OpenAPI spec object to its original value
+ * @param {object} specObject - OpenAPI spec object
+ */
 function restoreSpecObject(specObject) {
   return _.cloneDeepWith(specObject, value => {
     // Restore the original value from `x-$original-value`
@@ -245,13 +252,54 @@ function restoreSpecObject(specObject) {
 }
 
 /**
- * Convert OpenAPI schema to JSON schema
+ * Convert OpenAPI schema to JSON Schema Draft 7
  * @param {object} oasSchema - OpenAPI schema
  */
-function asJsonSchema(oasSchema) {
-  const schema = restoreSpecObject(oasSchema);
-  const jsonSchema = toJsonSchema(schema);
+function toJsonSchema(oasSchema) {
+  oasSchema = restoreSpecObject(oasSchema);
+  let jsonSchema = oasToJsonSchema4(oasSchema);
   delete jsonSchema['$schema'];
+  // See https://json-schema.org/draft-06/json-schema-release-notes.html
+  if (jsonSchema.id) {
+    // id => $id
+    jsonSchema.$id = jsonSchema.id;
+    delete jsonSchema.id;
+  }
+  jsonSchema = _.cloneDeepWith(jsonSchema, value => {
+    if (value == null) return value;
+    let changed = false;
+    if (typeof value.exclusiveMinimum === 'boolean') {
+      // exclusiveMinimum + minimum (boolean + number) => exclusiveMinimum (number)
+      if (value.exclusiveMinimum) {
+        value.exclusiveMinimum = value.minimum;
+        delete value.minimum;
+      } else {
+        delete value.exclusiveMinimum;
+      }
+      changed = true;
+    }
+    if (typeof value.exclusiveMaximum === 'boolean') {
+      // exclusiveMaximum + maximum (boolean + number) => exclusiveMaximum (number)
+      if (value.exclusiveMaximum) {
+        value.exclusiveMaximum = value.maximum;
+        delete value.maximum;
+      } else {
+        delete value.exclusiveMaximum;
+      }
+      changed = true;
+    }
+    return changed ? value : undefined;
+  });
+  return jsonSchema;
+}
+
+/**
+ * Convert OpenAPI schema to JSON schema draft 7 and print it as a JavaScript
+ * object literal
+ * @param {object} oasSchema - OpenAPI schema
+ */
+function printJsonSchema(oasSchema) {
+  const jsonSchema = toJsonSchema(oasSchema);
   return printSpecObject(jsonSchema);
 }
 
@@ -267,6 +315,7 @@ module.exports = {
   escapeComment,
   printSpecObject,
   cloneSpecObject,
-  asJsonSchema,
+  toJsonSchema,
+  printJsonSchema,
   validateUrlOrFile,
 };

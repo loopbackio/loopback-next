@@ -11,7 +11,7 @@ const {
   escapePropertyName,
   printSpecObject,
   toFileName,
-  asJsonSchema,
+  printJsonSchema,
 } = require('./utils');
 
 function setImport(typeSpec) {
@@ -163,7 +163,7 @@ function mapObjectType(schema, options) {
       // The property name might have chars such as `-`
       const propName = escapePropertyName(p);
 
-      const propSchemaJson = asJsonSchema(propSchema);
+      const propSchemaJson = printJsonSchema(propSchema);
 
       let propDecoration = `@property({jsonSchema: ${propSchemaJson}})`;
 
