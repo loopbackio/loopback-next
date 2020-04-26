@@ -242,4 +242,20 @@ describe('booter-lb3app', () => {
       expect(ds).to.eql(expected);
     });
   });
+
+  context('binding LoopBack 3 models', () => {
+    before(async () => {
+      ({app, client} = await setupApplication({
+        lb3app: {path: '../fixtures/app-with-model'},
+      }));
+    });
+
+    it('binds model to the context', async () => {
+      const expected = require('../../../fixtures/app-with-model').models.Color;
+      const modelBindings = app.findByTag('model');
+      const key = modelBindings[0].key;
+      const model = await app.get(key);
+      expect(model).to.eql(expected);
+    });
+  });
 });

@@ -73,6 +73,17 @@ export class Lb3AppBooter implements Booter {
       });
     }
 
+    const models = lb3App.models;
+    if (models) {
+      const visited: unknown[] = [];
+      Object.keys(models).forEach(key => {
+        const model = models[key];
+        if (visited.includes(model)) return;
+        visited.push(model);
+        this.app.bind(`models.lb3-${key}`).to(model).tag('model');
+      });
+    }
+
     // TODO(bajtos) Listen for the following events to update the OpenAPI spec:
     // - modelRemoted
     // - modelDeleted
@@ -149,4 +160,5 @@ export interface Lb3AppBooterOptions {
 interface Lb3Application extends ExpressApplication {
   handler(name: 'rest'): ExpressRequestHandler;
   dataSources?: {[name: string]: unknown};
+  models?: {[name: string]: unknown};
 }
