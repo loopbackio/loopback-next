@@ -19,7 +19,7 @@
     "eslint": "lb-eslint --report-unused-disable-directives .",
     "eslint:fix": "npm run eslint -- --fix",
     "pretest": "npm run build",
-    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\" \"lb3app/test/*.js\"",
     "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js && npm run posttest",
     "verify": "npm pack && tar xf loopback-lb3-application*.tgz && tree package && npm run clean",
     "migrate": "node ./dist/migrate",
