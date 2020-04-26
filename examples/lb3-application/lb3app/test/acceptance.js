@@ -7,6 +7,7 @@
 const lb3App = require('../server/server');
 const request = require('@loopback/testlab').supertest;
 const assert = require('assert');
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const should = require('should');
 const ExpressServer = require('../../dist/server').ExpressServer;
 
@@ -86,7 +87,7 @@ describe('LoopBack 3 style acceptance tests', function () {
             email: 'new@email.com',
             password: 'L00pBack!',
           },
-          function (err, token) {
+          function (err2, token) {
             token.should.have.properties('ttl', 'userId', 'created', 'id');
             assert(token.userId, user.id);
             User.logout(token.id);
@@ -116,11 +117,11 @@ describe('LoopBack 3 style acceptance tests', function () {
             email: 'new@email.com',
             password: 'L00pBack!',
           },
-          function (err, token) {
+          function (err2, token) {
             json(
               'get',
               `/api/CoffeeShops/greet?access_token=${token.id}`,
-            ).expect(200, function (err, res) {
+            ).expect(200, function (err3, res) {
               res.body.should.be.equal('Hello from this Coffee Shop');
             });
             User.logout(token.id);

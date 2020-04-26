@@ -6,6 +6,7 @@
 'use strict';
 
 const assert = require('assert');
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const should = require('should');
 const ExpressServer = require('../../dist/server').ExpressServer;
 
