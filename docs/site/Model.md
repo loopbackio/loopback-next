@@ -921,6 +921,34 @@ class Product extends Entity {
 }
 ```
 
+### ENUM Property
+
+{% include note.html content="
+Currently, the `enum` type is not supported; this is tracked in [GitHub issue #3033](https://github.com/strongloop/loopback-next/issues/3033). Below, we present a workaround for to allow you to use this type.
+" %}
+
+The `@property` decorator can take in `jsonSchema` to customize the JSON schema
+inferred for the model property. For `enum` type, it can be used as follows:
+
+```ts
+enum QueryLanguage {
+  JSON = 'json',
+  SQL = 'sql',
+  MONGO = 'mongo'
+}
+
+// ...
+
+@property({
+  type: 'string',
+  required: true,
+  jsonSchema: {
+    enum: Object.values(QueryLanguage),
+  },
+})
+queryLanguage: QueryLanguage;
+```
+
 ## JSON Schema Inference
 
 Use the `@loopback/repository-json-schema` module to build a JSON schema from a
@@ -1013,7 +1041,3 @@ However, this also means that the provided schema decorators will serve no
 purpose for these ORMs/ODMs. Some of these frameworks may also provide
 decorators with conflicting names (e.g. another `@model` decorator), which might
 warrant avoiding the provided juggler decorators.
-
-## FAQ
-
-Feel overwhelmed? Here are some examples of setting up models:
