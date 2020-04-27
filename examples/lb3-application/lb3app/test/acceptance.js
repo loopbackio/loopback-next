@@ -7,9 +7,8 @@
 const lb3App = require('../server/server');
 const request = require('@loopback/testlab').supertest;
 const assert = require('assert');
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const should = require('should');
 const ExpressServer = require('../../dist/server').ExpressServer;
+require('should');
 
 let app;
 
@@ -105,31 +104,28 @@ describe('LoopBack 3 style acceptance tests', function () {
       done();
     });
 
-    // keep getting unauthorized despite correct token, skipping for now
-    it.skip('makes an authenticated request', function (done) {
+    it('makes an authenticated request', function (done) {
       User.create({email: 'new@email.com', password: 'L00pBack!'}, function (
         err,
         user,
       ) {
         user.email.should.be.equal('new@email.com');
-        User.login(
-          {
+        json('post', '/api/users/login')
+          .send({
             email: 'new@email.com',
             password: 'L00pBack!',
-          },
-          function (err2, token) {
-            assert.equal(token.userId, user.id);
+          })
+          .expect(200, function (err2, token) {
+            assert(typeof token.body === 'object');
+            const accessToken = token.body.id;
             json(
               'get',
-              `/api/CoffeeShops/greet?access_token=${token.id}`,
+              `/api/CoffeeShops/greet?access_token=${accessToken}`,
             ).expect(200, function (err3, res) {
-              res.body.should.be.equal('Hello from this Coffee Shop');
+              res.body.greeting.should.be.equal('Hello from this Coffee Shop');
+              done();
             });
-            User.logout(token.id);
-            User.deleteById(user.id);
-          },
-        );
-        done();
+          });
       });
     });
   });

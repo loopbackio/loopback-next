@@ -90,7 +90,7 @@ describe('CoffeeShopApplication', () => {
         .get(`/api/CoffeeShops/greet?access_token=${token.id}`)
         .expect(200);
 
-      expect(response.body.undefined).to.eql('Hello from this Coffee Shop');
+      expect(response.body.greeting).to.eql('Hello from this Coffee Shop');
     });
 
     it('rejects anonymous requests to protected endpoints', async () => {

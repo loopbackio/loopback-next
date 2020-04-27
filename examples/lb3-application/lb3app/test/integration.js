@@ -6,9 +6,8 @@
 'use strict';
 
 const assert = require('assert');
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const should = require('should');
 const ExpressServer = require('../../dist/server').ExpressServer;
+require('should');
 
 describe('LoopBack 3 style integration tests', function () {
   let app;
