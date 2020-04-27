@@ -88,15 +88,15 @@
 # For longer term, we may want to re-organize doc files around functional
 # areas (create a new subdirectory for each functional area), so that
 # we can assign more specific code owners to different doc pages.
-/docs @agnes512 @bajtos @deepakrkris @emonddr @jannyHou @hacksparrow @nabdelgadir @raymondfeng
+/docs @agnes512 @bajtos @deepakrkris @emonddr @jannyHou @hacksparrow @raymondfeng
 
 #
 # CLI (`lb4` infrastructure, commands not covered by functional areas below)
 #
 # - Issue label: CLI
 # - Primary owner(s): @agnes512
-# - Standby owner(s): @emonddr @nabdelgadir
-/packages/cli @agnes512 @emonddr @nabdelgadir
+# - Standby owner(s): @emonddr
+/packages/cli @agnes512 @emonddr
 
 #
 # Dependency Injection, Inversion of Control and related areas
@@ -221,14 +221,14 @@
 # LB4 project conventions
 #
 # - Issue label: n/a
-# - Primary owner(s): @nabdelgadir
+# - Primary owner(s): @agnes512
 # - Standby owner(s): n/a
-/packages/cli/generators/project @nabdelgadir
-/packages/cli/generators/app @nabdelgadir
-/packages/cli/generators/extension @nabdelgadir
-/examples/todo @nabdelgadir
+/packages/cli/generators/project @agnes512
+/packages/cli/generators/app @agnes512
+/packages/cli/generators/extension @agnes512
+/examples/todo @agnes512
 /examples/validation-app @dhmlau
-/docs/site/tutorials/todo @nabdelgadir
+/docs/site/tutorials/todo @agnes512
 
 #
 # Bootstrapper (core)
@@ -243,21 +243,21 @@
 #
 # - Issue label: Migration
 # - Primary owner(s): @deepakrkris
-# - Standby owner(s): @nabdelgadir
-/packages/booter-lb3app @deepakrkris @nabdelgadir
-/packages/cli/generators/import-lb3-models @deepakrkris @nabdelgadir
-/examples/lb3-application @deepakrkris @nabdelgadir
-/docs/site/migration @deepakrkris @nabdelgadir
+# - Standby owner(s): @hacksparrow
+/packages/booter-lb3app @deepakrkris @hacksparrow
+/packages/cli/generators/import-lb3-models @deepakrkris @hacksparrow
+/examples/lb3-application @deepakrkris @hacksparrow
+/docs/site/migration @deepakrkris @hacksparrow
 
 #
 # REST CRUD conventional API
 #
 # - Issue label: n/a
-# - Primary owner(s): @nabdelgadir
-# - Standby owner(s): n/a
-/packages/model-api-builder @nabdelgadir
-/packages/rest-crud @nabdelgadir
-/examples/rest-crud @nabdelgadir
+# - Primary owner(s): @bajtos
+# - Standby owner(s): @hacksparrow
+/packages/model-api-builder @bajtos @hacksparrow
+/packages/rest-crud @bajtos
+/examples/rest-crud @bajtos
 
 #
 # Cloud Native tooling
@@ -276,11 +276,13 @@
 #
 # - Issue label: Authentication
 # - Primary owner(s): @hacksparrow
-# - Standby owner(s): @emonddr @jannyHou
+# - Standby owner(s): @emonddr @jannyHou @deepakrkris
 /packages/authentication @emonddr @hacksparrow @jannyHou
 /packages/security @emonddr @hacksparrow @jannyHou
 /extensions/authentication-passport @emonddr @hacksparrow @jannyHou
+/extensions/authentication-jwt @emonddr @hacksparrow @jannyHou
 /docs/site/tutorials/authentication @emonddr @hacksparrow @jannyHou
+/examples/passport-login @deepakrkris @emonddr
 
 #
 # Authorization
@@ -309,9 +311,9 @@
 #
 # - Issue label: Testlab
 # - Primary owner(s): @bajtos
-# - Standby owner(s): @nabdelgadir
-/packages/testlab @bajtos @nabdelgadir
-/packages/http-caching-proxy @bajtos @nabdelgadir
+# - Standby owner(s): @agnes512
+/packages/testlab @bajtos @agnes512
+/packages/http-caching-proxy @bajtos @agnes512
 
 #
 # Benchmarks
