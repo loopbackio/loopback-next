@@ -37,7 +37,7 @@
     "mock-stdin": "^1.0.0",
     "rimraf": "^3.0.2",
     "sinon": "^9.0.2",
-    "strong-globalize-cli": "7.0.0",
+    "strong-globalize-cli": "7.0.1",
     "yeoman-assert": "^3.1.1",
     "yeoman-environment": "^2.9.6",
     "yeoman-test": "~2.4.1"
