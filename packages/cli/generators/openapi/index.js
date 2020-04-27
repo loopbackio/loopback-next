@@ -89,10 +89,11 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
   async promptDataSourceName() {
     if (this.shouldExit()) return false;
     if (this.options.client !== true) return;
+    if (this.options.url) return;
 
     debug('Prompting for a datasource');
 
-    // grab the datasourcename from the command line
+    // grab the datasource from the command line
     const dsClass = this.options.datasource
       ? utils.toClassName(this.options.datasource) + 'DataSource'
       : '';
@@ -154,6 +155,8 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
       );
       return;
     }
+
+    if (dsClass) return;
 
     const answers = await this.prompt([
       {
