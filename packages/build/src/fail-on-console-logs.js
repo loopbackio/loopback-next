@@ -46,6 +46,10 @@ process.on('warning', warning => {
 });
 
 process.on('exit', code => {
+  // Don't complain about console logs when some of the tests have failed.
+  // It's a common practice to add temporary console logs while troubleshooting.
+  if (code) return;
+
   if (!warnings.length) {
     for (const w of warnings) {
       originalConsole.warn(w);
