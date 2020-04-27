@@ -7,7 +7,6 @@
 import {bind, config, ContextTags, inject} from '@loopback/context';
 import {Component, CoreBindings} from '@loopback/core';
 import {createControllerFactoryForClass, RestApplication} from '@loopback/rest';
-import {join as pathJoin} from 'path';
 import {ExplorerController} from './rest-explorer.controller';
 import {RestExplorerBindings} from './rest-explorer.keys';
 import {RestExplorerConfig} from './rest-explorer.types';
@@ -39,15 +38,6 @@ export class RestExplorerComponent implements Component {
 
     const absolutePath = swaggerUI.getAbsoluteFSPath();
     application.static(explorerPath, absolutePath);
-
-    // Mount custom assets to endpoint `/assets` if provided
-    if (restExplorerConfig.assetDir) {
-      const customAssetDir = pathJoin(
-        absolutePath,
-        restExplorerConfig.assetDir,
-      );
-      application.static(explorerPath + '/assets', customAssetDir);
-    }
 
     // Disable redirect to externally hosted API explorer
     application.restServer.config.apiExplorer = {disabled: true};

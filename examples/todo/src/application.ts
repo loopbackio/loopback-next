@@ -7,10 +7,7 @@ import {BootMixin} from '@loopback/boot';
 import {ApplicationConfig} from '@loopback/core';
 import {RepositoryMixin} from '@loopback/repository';
 import {RestApplication} from '@loopback/rest';
-import {
-  RestExplorerBindings,
-  RestExplorerComponent,
-} from '@loopback/rest-explorer';
+import {RestExplorerBindings, RestExplorerComponent} from '@loopback/rest-explorer';
 import {ServiceMixin} from '@loopback/service-proxy';
 import path from 'path';
 import {MySequence} from './sequence';
@@ -29,11 +26,9 @@ export class TodoListApplication extends BootMixin(
 
     // customize the swagger-ui
     this.bind(RestExplorerBindings.CONFIG).to({
-      // relative path to the swagger-ui-dist module
-      assetDir: '../../../../examples/todo/css',
-      // files under `assetDir` are mounted to endpoint
-      // `/assets`
-      swaggerThemePath: './assets/theme-newspaper.css',
+      // Keep the theme file in the `public` dir of the app
+      // If required create a dir and keep the file, just specify the path
+      swaggerThemeFile: '/theme-newspaper.css',
     });
     this.component(RestExplorerComponent);
 

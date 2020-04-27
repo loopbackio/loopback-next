@@ -30,20 +30,6 @@ export type RestExplorerConfig = {
    */
   useSelfHostedSpec?: false;
 
-  /**
-   * Mount custom asset directory to endpoint `/assets` on the server.
-   * It is the relative path to module swagger-ui-dist, which
-   * is under `@loopback/rest-explorer/node_modules`.
-   *
-   * Examples:
-   * path to swagger-ui themes provided in `@loopback/rest-explorer`:
-   * '../../css'
-   * path to assets provided in app:
-   * '../../../../<asset_folder_name>'
-   */
-  assetDir?: string;
-  /**
-   * The custom swagger-ui theme file's path.
-   */
-  swaggerThemePath?: string;
+  // Relative URL of the theme CSS file
+  swaggerThemeFile?: string;
 };
