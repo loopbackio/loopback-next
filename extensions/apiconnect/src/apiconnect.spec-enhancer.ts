@@ -3,7 +3,13 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {bind, config} from '@loopback/core';
+import {
+  ApplicationMetadata,
+  bind,
+  config,
+  CoreBindings,
+  inject,
+} from '@loopback/core';
 import {asSpecEnhancer, OASEnhancer, OpenAPIObject} from '@loopback/openapi-v3';
 
 /**
@@ -23,9 +29,18 @@ export class ApiConnectSpecEnhancer implements OASEnhancer {
 
   constructor(
     @config({optional: false}) private options: ApiConnectSpecOptions,
+    @inject(CoreBindings.APPLICATION_METADATA, {optional: true})
+    private appMetadata: ApplicationMetadata = {
+      name: 'LoopBack Application',
+      version: '1.0.0',
+      description: 'LoopBack 4 Application',
+    },
   ) {}
 
   modifySpec(spec: OpenAPIObject): OpenAPIObject {
+    // Add `x-ibm-name`
+    spec.info = {'x-ibm-name': this.appMetadata.name, ...spec.info};
+    // Add `x-ibm-configuration`
     spec['x-ibm-configuration'] = {
       assembly: {
         execute: [

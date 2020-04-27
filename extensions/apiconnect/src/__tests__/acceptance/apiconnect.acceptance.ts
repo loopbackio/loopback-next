@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Application} from '@loopback/core';
+import {Application, CoreBindings} from '@loopback/core';
 import {RestApplication, RestServer} from '@loopback/rest';
 import {expect} from '@loopback/testlab';
 import {
@@ -36,6 +36,28 @@ describe('Extension for IBM API Connect - OASEnhancer', () => {
         phase: 'realized',
         testable: true,
         gateway: 'datapower-api-gateway',
+      },
+    };
+    const spec = await server.getApiSpec();
+    expect(spec).to.containDeep(EXPECTED_SPEC);
+  });
+
+  it('adds x-ibm-name to apiSpec info', async () => {
+    app.setMetadata({name: 'lb4-app', version: '1.0.0', description: ''});
+    const EXPECTED_SPEC = {
+      info: {
+        'x-ibm-name': 'lb4-app',
+      },
+    };
+    const spec = await server.getApiSpec();
+    expect(spec).to.containDeep(EXPECTED_SPEC);
+  });
+
+  it('adds default x-ibm-name to apiSpec info', async () => {
+    app.unbind(CoreBindings.APPLICATION_METADATA);
+    const EXPECTED_SPEC = {
+      info: {
+        'x-ibm-name': 'LoopBack Application',
       },
     };
     const spec = await server.getApiSpec();
