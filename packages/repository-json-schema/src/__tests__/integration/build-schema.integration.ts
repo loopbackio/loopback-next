@@ -235,6 +235,34 @@ describe('build-schema', () => {
         expectValidJsonSchema(jsonSchema);
       });
 
+      it('properly converts properties with enum in json schema', () => {
+        enum QueryLanguage {
+          JSON = 'json',
+          SQL = 'sql',
+          MONGO = 'mongo',
+        }
+
+        @model()
+        class TestModel {
+          @property({
+            type: 'string',
+            required: true,
+            jsonSchema: {
+              enum: Object.values(QueryLanguage),
+            },
+          })
+          queryLanguage: QueryLanguage;
+        }
+
+        const jsonSchema = modelToJsonSchema(TestModel);
+        expect(jsonSchema.properties).to.eql({
+          queryLanguage: {
+            type: 'string',
+            enum: ['json', 'sql', 'mongo'],
+          },
+        });
+      });
+
       it('properly converts properties with array and json schema', () => {
         @model()
         class TestModel {
