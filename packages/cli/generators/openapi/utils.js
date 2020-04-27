@@ -247,7 +247,8 @@ function restoreSpecObject(specObject) {
     if (value != null && value['x-$ref']) {
       return json5.parse(value['x-$original-value']);
     }
-    return value;
+    // Return `undefined` so that child items are cloned too
+    return undefined;
   });
 }
 

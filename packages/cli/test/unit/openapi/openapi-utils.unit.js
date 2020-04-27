@@ -72,6 +72,21 @@ describe('openapi utils', () => {
     expect(json5.parse(str)).to.eql(spec);
   });
 
+  it('converts to json schema with array', () => {
+    const {spec} = givenAClonedSpec();
+    const jsonSchema = utils.toJsonSchema(spec.components.schemas.Customer);
+    expect(jsonSchema).to.eql({
+      description: 'Customer',
+      type: 'object',
+      properties: {
+        id: {type: 'string'},
+        name: {type: 'string'},
+        emails: {type: 'array', items: {$ref: '#/components/schemas/Email'}},
+      },
+      $id: 'customer-schema',
+    });
+  });
+
   it('transforms true exclusiveMaximum and exclusiveMinimum', () => {
     const openapiSchema = {
       id: 'customer-schema',
@@ -194,8 +209,23 @@ describe('openapi utils', () => {
             $schema: 'http://json-schema.org/draft-04/schema#',
             description: 'Customer',
             type: 'object',
-            additionalProperties: {
-              type: 'string',
+            properties: {
+              id: {type: 'string'},
+              name: {type: 'string'},
+              emails: {
+                type: 'array',
+                items: {
+                  $ref: '#/components/schemas/Email',
+                },
+              },
+            },
+          },
+          Email: {
+            description: 'Email',
+            type: 'object',
+            properties: {
+              label: {type: 'string'},
+              address: {type: 'string'},
             },
           },
         },
