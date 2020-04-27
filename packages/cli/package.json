@@ -26,7 +26,7 @@
     "@loopback/build": "^5.2.0",
     "@loopback/eslint-config": "^6.0.4",
     "@loopback/testlab": "^3.1.1",
-    "@types/ejs": "^3.0.2",
+    "@types/ejs": "^3.0.3",
     "@types/fs-extra": "^8.1.0",
     "@types/minimatch": "^3.0.3",
     "@types/node": "^10.17.21",
