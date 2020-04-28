@@ -17,7 +17,7 @@
   "license": "MIT",
   "dependencies": {
     "axios": "^0.19.2",
-    "cacache": "^15.0.0",
+    "cacache": "^15.0.3",
     "debug": "^4.1.1",
     "p-event": "^4.1.0",
     "rimraf": "^3.0.2",
