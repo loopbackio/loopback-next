@@ -6,25 +6,28 @@
 
 - [ ] Migration Guide
 
-  - [ ] How to migrate LB3 components #3955 _depends on the spike result in
-        #5004_
-  - [ ] How to run LB3 app tests when the app is mounted in a LB4 project #3978
-        _depends on the spike reuslt in #4099_
+  - [ ] Spike: How to migrate LB3 components #4099
+  - [ ] Spike: How to run LB3 app tests when the app is mounted in a LB4 project
+        #5004
+    - [ ] Follow up stories from #5004 if it's done in April.
 
 - [ ] Feature Parity
 
   - [ ] Model.toObject() should preserve prototypes (e.g. Date and ObjectID
         values) #3607
+  - [ ] 🏃Custom visual style of REST API Explorer #2023
 
 - [ ] Bugs
 
   - [ ] defining a nested array model property using @property.array decorator
         crashes the app #4754
 
-- [ ] Docs
+- [ ] Docs / Blogs
 
+  - [ ] :running: Blog on what LB can offer on top of Express #4852
   - [ ] [Docs] Add debug string information #4845
   - [ ] [Docs] Add "error handling" page #4846
+  - [ ] [Blog] Managing your APIs: From LoopBack to IBM API Connect #4901
 
 - [ ] Miscellaneous
 
@@ -42,7 +45,6 @@
 
 - [ ] Docs / Blogs
 
-  - [ ] [Blog] Managing your APIs: From LoopBack to IBM API Connect #4901
   - [ ] [Docs] Add "project layout reference" page #4847
   - [ ] [Docs] Postgresql connector docs should cover LB4 content #4877
   - [ ] [Docs] MongoDB connector docs should cover LB4 content #4879
@@ -53,10 +55,20 @@
         #4992
 
 - [ ] From relation definition to REST API #2483
+
   - [ ] [SPIKE] HasMany relation definition to REST API with auto-generated
         repository/controller classes #3896
+
+- [ ] 🏃Enable TypeScript Project References #2609
 
 ### Community Contribution
 
 - [ ] :running: [Spike] How to migrate Angular 1.x and 2+ LB3 client #4610
 - [ ] :running: Document how to send emails in LB4 #1979
+- [ ] :running: Polymorphic relation type #2487
+- [ ] Model.toObject() should preserve prototypes (e.g. Date and ObjectID
+      values) #3607
+- [ ] 🏃 Add bearer auth scheme as the default security scheme #4386
+- [ ] OpenAPI schema generation and model inheritance #3293
+- [ ] default values added for new required columns when running autoupdate()
+      strongloop/loopback-connector-postgresql#418
