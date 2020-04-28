@@ -738,10 +738,6 @@ children:
       url: MQLight-connector.html
       output: 'web, pdf'
 
-    - title: 'Push connector'
-      url: Push-connector.html
-      output: 'web, pdf'
-
     - title: 'REST connector'
       url: REST-connector.html
       output: 'web, pdf'
@@ -767,14 +763,6 @@ children:
       - title: 'Connecting to SOAP web services'
         url: Connecting-to-SOAP.html
         output: 'web, pdf'
-
-    - title: 'Storage connector'
-      url: Storage-connector.html
-      output: 'web, pdf'
-
-    - title: 'Swagger connector'
-      url: Swagger-connector.html
-      output: 'web, pdf'
 
     - title: 'OpenAPI connector'
       url: OpenAPI-connector.html
