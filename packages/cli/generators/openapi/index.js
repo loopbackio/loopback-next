@@ -484,10 +484,15 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
       pkgs.push('loopback-connector-openapi');
     } else {
       // `loopback-connector-openapi` exists - make sure its version range
-      // is >= 4.1.0
-      const minVersion = semver.minVersion(connectorVersionRange);
-      if (semver.lt(minVersion, '4.1.0')) {
-        pkgs.push('loopback-connector-openapi');
+      // is >= 4.2.0
+      try {
+        const minVersion = semver.minVersion(connectorVersionRange);
+        if (semver.lt(minVersion, '4.2.0')) {
+          pkgs.push('loopback-connector-openapi');
+        }
+      } catch (err) {
+        // The version can be a tarball
+        this.log(err);
       }
     }
     if (pkgs.length) this.npmInstall(pkgs, {save: true});
