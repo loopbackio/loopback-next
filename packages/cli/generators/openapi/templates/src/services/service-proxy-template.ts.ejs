@@ -1,5 +1,4 @@
 import {inject, Provider} from '@loopback/core';
-import {HttpErrors} from '@loopback/rest';
 import {getService} from '@loopback/service-proxy';
 import {<%- dataSourceClassName %>} from '../datasources';
 
@@ -48,53 +47,9 @@ export class <%- serviceClassName %>Provider implements Provider<<%- serviceClas
   ) {}
 
   async value(): Promise<<%- serviceClassName %>> {
-    const service = await getService<{apis: {'<%- tag || 'default' %>': Record<string, Function>}}>(
+    const service = await getService<{apis: {'<%- tag || 'default' %>': <%- serviceClassName %>}}>(
       this.dataSource,
     );
-    const proxy = service.apis['<%- tag || 'default' %>'];
-    return cast(proxy);
+    return service.apis['<%- tag || 'default' %>'];
   }
-}
-
-
-/**
- * Type for method names of <%- serviceClassName %>
- */
-type ServiceMethod = keyof <%- serviceClassName %>;
-
-/**
- * Map method names to operation ids for <%- serviceClassName %>
- */
-const METHOD_OPERATION_MAPPING: Record<ServiceMethod, string> = <%- methodMappingObject %>;
-
-/**
- * Cast the proxy to <%- serviceClassName %>
- */
-function cast(proxy: Record<string, Function>): <%- serviceClassName %> {
-  const methods: Partial<Record<ServiceMethod, Function>> = {};
-  let m: ServiceMethod;
-  for (m in METHOD_OPERATION_MAPPING) {
-    const op = METHOD_OPERATION_MAPPING[m];
-    methods[m] = async (...args: unknown[]) => {
-      const response = await proxy[op](...args);
-      /*
-       * {
-       *   url,
-       *   method,
-       *   status,
-       *   statusText,
-       *   headers, // See note below regarding headers
-       *
-       *   text,    // The textual content
-       *   body,    // The body object
-       * }
-       */
-      if (response.status < 400) {
-        return response.body;
-      }
-      const err = HttpErrors(response.status, response.statusText, response);
-      throw err;
-    }
-  }
-  return methods as <%- serviceClassName %>;
 }
