@@ -21,6 +21,7 @@ const CONTROLLER = 'controllers';
 const DATASOURCE = 'datasources';
 const SERVICE = 'services';
 const g = require('../../lib/globalize');
+const json5 = require('json5');
 
 const isWindows = process.platform === 'win32';
 
@@ -317,11 +318,7 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
       positional: this.dataSourceInfo.usePositionalParams !== false,
     };
 
-    this.dataSourceInfo.dsConfigString = utils.stringifyObject(dsConfig, {
-      // Prevent inlining the config into a single line, e.g.
-      // const config = {name: 'db', connector: 'memory'};
-      inlineCharacterLimit: 0,
-    });
+    this.dataSourceInfo.dsConfigString = json5.stringify(dsConfig, null, 2);
 
     const classTemplatePath = this.templatePath(
       'src/datasources/datasource.ts.ejs',
@@ -487,7 +484,7 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
       // is >= 4.2.0
       try {
         const minVersion = semver.minVersion(connectorVersionRange);
-        if (semver.lt(minVersion, '4.2.0')) {
+        if (semver.lt(minVersion, '4.3.0')) {
           pkgs.push('loopback-connector-openapi');
         }
       } catch (err) {

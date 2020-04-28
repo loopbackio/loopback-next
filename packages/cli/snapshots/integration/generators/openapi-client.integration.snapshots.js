@@ -15,7 +15,6 @@ export * from './open-api.service';
 
 exports[`generates files with --client and --datasource for an existing datasource 2`] = `
 import {inject, Provider} from '@loopback/core';
-import {HttpErrors} from '@loopback/rest';
 import {getService} from '@loopback/service-proxy';
 import {PetStoreDataSource} from '../datasources';
 
@@ -92,60 +91,11 @@ export class OpenApiServiceProvider implements Provider<OpenApiService> {
   ) {}
 
   async value(): Promise<OpenApiService> {
-    const service = await getService<{apis: {'default': Record<string, Function>}}>(
+    const service = await getService<{apis: {'default': OpenApiService}}>(
       this.dataSource,
     );
-    const proxy = service.apis['default'];
-    return cast(proxy);
+    return service.apis['default'];
   }
-}
-
-
-/**
- * Type for method names of OpenApiService
- */
-type ServiceMethod = keyof OpenApiService;
-
-/**
- * Map method names to operation ids for OpenApiService
- */
-const METHOD_OPERATION_MAPPING: Record<ServiceMethod, string> = {
-  findPets: 'findPets',
-  addPet: 'addPet',
-  findPetById: 'find pet by id',
-  deletePet: 'deletePet',
-};
-
-/**
- * Cast the proxy to OpenApiService
- */
-function cast(proxy: Record<string, Function>): OpenApiService {
-  const methods: Partial<Record<ServiceMethod, Function>> = {};
-  let m: ServiceMethod;
-  for (m in METHOD_OPERATION_MAPPING) {
-    const op = METHOD_OPERATION_MAPPING[m];
-    methods[m] = async (...args: unknown[]) => {
-      const response = await proxy[op](...args);
-      /*
-       * {
-       *   url,
-       *   method,
-       *   status,
-       *   statusText,
-       *   headers, // See note below regarding headers
-       *
-       *   text,    // The textual content
-       *   body,    // The body object
-       * }
-       */
-      if (response.status < 400) {
-        return response.body;
-      }
-      const err = HttpErrors(response.status, response.statusText, response);
-      throw err;
-    }
-  }
-  return methods as OpenApiService;
 }
 
 `;
@@ -272,7 +222,6 @@ export * from './open-api.service';
 
 exports[`generates files with --client for an existing datasource 2`] = `
 import {inject, Provider} from '@loopback/core';
-import {HttpErrors} from '@loopback/rest';
 import {getService} from '@loopback/service-proxy';
 import {PetStoreDataSource} from '../datasources';
 
@@ -349,60 +298,11 @@ export class OpenApiServiceProvider implements Provider<OpenApiService> {
   ) {}
 
   async value(): Promise<OpenApiService> {
-    const service = await getService<{apis: {'default': Record<string, Function>}}>(
+    const service = await getService<{apis: {'default': OpenApiService}}>(
       this.dataSource,
     );
-    const proxy = service.apis['default'];
-    return cast(proxy);
+    return service.apis['default'];
   }
-}
-
-
-/**
- * Type for method names of OpenApiService
- */
-type ServiceMethod = keyof OpenApiService;
-
-/**
- * Map method names to operation ids for OpenApiService
- */
-const METHOD_OPERATION_MAPPING: Record<ServiceMethod, string> = {
-  findPets: 'findPets',
-  addPet: 'addPet',
-  findPetById: 'find pet by id',
-  deletePet: 'deletePet',
-};
-
-/**
- * Cast the proxy to OpenApiService
- */
-function cast(proxy: Record<string, Function>): OpenApiService {
-  const methods: Partial<Record<ServiceMethod, Function>> = {};
-  let m: ServiceMethod;
-  for (m in METHOD_OPERATION_MAPPING) {
-    const op = METHOD_OPERATION_MAPPING[m];
-    methods[m] = async (...args: unknown[]) => {
-      const response = await proxy[op](...args);
-      /*
-       * {
-       *   url,
-       *   method,
-       *   status,
-       *   statusText,
-       *   headers, // See note below regarding headers
-       *
-       *   text,    // The textual content
-       *   body,    // The body object
-       * }
-       */
-      if (response.status < 400) {
-        return response.body;
-      }
-      const err = HttpErrors(response.status, response.statusText, response);
-      throw err;
-    }
-  }
-  return methods as OpenApiService;
 }
 
 `;
@@ -1020,21 +920,22 @@ export * from './pet-store.datasource';
 
 
 exports[`openapi-generator with --client does not generates files for server with --no-server 2`] = `
-import {inject, lifeCycleObserver, LifeCycleObserver} from '@loopback/core';
+import {
+  inject,
+  lifeCycleObserver,
+  LifeCycleObserver,
+} from '@loopback/core';
 import {juggler} from '@loopback/repository';
+import {HttpErrors} from '@loopback/rest';
 
 const config = {
   name: 'petStore',
   connector: 'openapi',
   spec: '../../../fixtures/openapi/3.0/petstore-expanded.yaml',
   validate: false,
-  positional: true
+  positional: true,
 };
 
-// Observe application's life cycle to disconnect the datasource when
-// application is stopped. This allows the application to be shut down
-// gracefully. The \`stop()\` method is inherited from \`juggler.DataSource\`.
-// Learn more at https://loopback.io/doc/en/lb4/Life-cycle.html
 @lifeCycleObserver('datasource')
 export class PetStoreDataSource extends juggler.DataSource
   implements LifeCycleObserver {
@@ -1045,10 +946,28 @@ export class PetStoreDataSource extends juggler.DataSource
     @inject('datasources.config.petStore', {optional: true})
     dsConfig: object = config,
   ) {
-    super(dsConfig);
+    super({transformResponse, ...dsConfig});
   }
 }
 
+/**
+ * Transform the http response into the return value
+ */
+function transformResponse(response: {
+  url: string,
+  method: string,
+  status: number,
+  statusText: string,
+  headers: object,
+  text: string,
+  body: unknown,
+}) {
+  if (response.status < 400) {
+    return response.body ?? response.text;
+  }
+  const err = HttpErrors(response.status, response.statusText, response);
+  throw err;
+}
 
 `;
 
@@ -1061,7 +980,6 @@ export * from './open-api.service';
 
 exports[`openapi-generator with --client does not generates files for server with --no-server 4`] = `
 import {inject, Provider} from '@loopback/core';
-import {HttpErrors} from '@loopback/rest';
 import {getService} from '@loopback/service-proxy';
 import {PetStoreDataSource} from '../datasources';
 
@@ -1138,60 +1056,11 @@ export class OpenApiServiceProvider implements Provider<OpenApiService> {
   ) {}
 
   async value(): Promise<OpenApiService> {
-    const service = await getService<{apis: {'default': Record<string, Function>}}>(
+    const service = await getService<{apis: {'default': OpenApiService}}>(
       this.dataSource,
     );
-    const proxy = service.apis['default'];
-    return cast(proxy);
+    return service.apis['default'];
   }
-}
-
-
-/**
- * Type for method names of OpenApiService
- */
-type ServiceMethod = keyof OpenApiService;
-
-/**
- * Map method names to operation ids for OpenApiService
- */
-const METHOD_OPERATION_MAPPING: Record<ServiceMethod, string> = {
-  findPets: 'findPets',
-  addPet: 'addPet',
-  findPetById: 'find pet by id',
-  deletePet: 'deletePet',
-};
-
-/**
- * Cast the proxy to OpenApiService
- */
-function cast(proxy: Record<string, Function>): OpenApiService {
-  const methods: Partial<Record<ServiceMethod, Function>> = {};
-  let m: ServiceMethod;
-  for (m in METHOD_OPERATION_MAPPING) {
-    const op = METHOD_OPERATION_MAPPING[m];
-    methods[m] = async (...args: unknown[]) => {
-      const response = await proxy[op](...args);
-      /*
-       * {
-       *   url,
-       *   method,
-       *   status,
-       *   statusText,
-       *   headers, // See note below regarding headers
-       *
-       *   text,    // The textual content
-       *   body,    // The body object
-       * }
-       */
-      if (response.status < 400) {
-        return response.body;
-      }
-      const err = HttpErrors(response.status, response.statusText, response);
-      throw err;
-    }
-  }
-  return methods as OpenApiService;
 }
 
 `;
@@ -1696,21 +1565,22 @@ export * from './pet-store.datasource';
 
 
 exports[`openapi-generator with --client generates all files for both server and client 4`] = `
-import {inject, lifeCycleObserver, LifeCycleObserver} from '@loopback/core';
+import {
+  inject,
+  lifeCycleObserver,
+  LifeCycleObserver,
+} from '@loopback/core';
 import {juggler} from '@loopback/repository';
+import {HttpErrors} from '@loopback/rest';
 
 const config = {
   name: 'petStore',
   connector: 'openapi',
   spec: '../../../fixtures/openapi/3.0/petstore-expanded.yaml',
   validate: false,
-  positional: true
+  positional: true,
 };
 
-// Observe application's life cycle to disconnect the datasource when
-// application is stopped. This allows the application to be shut down
-// gracefully. The \`stop()\` method is inherited from \`juggler.DataSource\`.
-// Learn more at https://loopback.io/doc/en/lb4/Life-cycle.html
 @lifeCycleObserver('datasource')
 export class PetStoreDataSource extends juggler.DataSource
   implements LifeCycleObserver {
@@ -1721,10 +1591,28 @@ export class PetStoreDataSource extends juggler.DataSource
     @inject('datasources.config.petStore', {optional: true})
     dsConfig: object = config,
   ) {
-    super(dsConfig);
+    super({transformResponse, ...dsConfig});
   }
 }
 
+/**
+ * Transform the http response into the return value
+ */
+function transformResponse(response: {
+  url: string,
+  method: string,
+  status: number,
+  statusText: string,
+  headers: object,
+  text: string,
+  body: unknown,
+}) {
+  if (response.status < 400) {
+    return response.body ?? response.text;
+  }
+  const err = HttpErrors(response.status, response.statusText, response);
+  throw err;
+}
 
 `;
 
@@ -1737,7 +1625,6 @@ export * from './open-api.service';
 
 exports[`openapi-generator with --client generates all files for both server and client 6`] = `
 import {inject, Provider} from '@loopback/core';
-import {HttpErrors} from '@loopback/rest';
 import {getService} from '@loopback/service-proxy';
 import {PetStoreDataSource} from '../datasources';
 
@@ -1814,60 +1701,11 @@ export class OpenApiServiceProvider implements Provider<OpenApiService> {
   ) {}
 
   async value(): Promise<OpenApiService> {
-    const service = await getService<{apis: {'default': Record<string, Function>}}>(
+    const service = await getService<{apis: {'default': OpenApiService}}>(
       this.dataSource,
     );
-    const proxy = service.apis['default'];
-    return cast(proxy);
+    return service.apis['default'];
   }
-}
-
-
-/**
- * Type for method names of OpenApiService
- */
-type ServiceMethod = keyof OpenApiService;
-
-/**
- * Map method names to operation ids for OpenApiService
- */
-const METHOD_OPERATION_MAPPING: Record<ServiceMethod, string> = {
-  findPets: 'findPets',
-  addPet: 'addPet',
-  findPetById: 'find pet by id',
-  deletePet: 'deletePet',
-};
-
-/**
- * Cast the proxy to OpenApiService
- */
-function cast(proxy: Record<string, Function>): OpenApiService {
-  const methods: Partial<Record<ServiceMethod, Function>> = {};
-  let m: ServiceMethod;
-  for (m in METHOD_OPERATION_MAPPING) {
-    const op = METHOD_OPERATION_MAPPING[m];
-    methods[m] = async (...args: unknown[]) => {
-      const response = await proxy[op](...args);
-      /*
-       * {
-       *   url,
-       *   method,
-       *   status,
-       *   statusText,
-       *   headers, // See note below regarding headers
-       *
-       *   text,    // The textual content
-       *   body,    // The body object
-       * }
-       */
-      if (response.status < 400) {
-        return response.body;
-      }
-      const err = HttpErrors(response.status, response.statusText, response);
-      throw err;
-    }
-  }
-  return methods as OpenApiService;
 }
 
 `;
