@@ -20,7 +20,7 @@ describe('LoopBack 3 style integration tests', function () {
   });
 
   before(() => {
-    CoffeeShop = app.lbApp.getValueOrPromise('models.lb3-CoffeeShop');
+    CoffeeShop = app.lbApp.getSync('lb3-models.CoffeeShop');
   });
 
   after(async () => {

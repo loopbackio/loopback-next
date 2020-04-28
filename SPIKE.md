@@ -3,8 +3,8 @@
 Since LoopBack 4 offers a way to mount LoopBack 3 applications on a LoopBack 4
 project with the use of
 [`@loopback/booter-lb3app`](https://github.com/strongloop/loopback-next/tree/master/packages/booter-lb3app),
-there should also be a way for users to run their tests as part of LoopBack 4's
-`npm test` command.
+there should also be a way for users to run their LoopBack 3 tests as part of
+LoopBack 4's `npm test` command.
 
 We want the LoopBack 3 tests to use the LoopBack 4 server rather than the
 LoopBack 3 application. This spike aims to test running both acceptance and
@@ -95,8 +95,8 @@ application in order to allow JavaScript API to call application logic such as
 `Model.create()`. This can be seen in
 [`packages/booter-lb3app/src/lb3app.booter.ts`](https://github.com/strongloop/loopback-next/blob/spike/lb3test/packages/booter-lb3app/src/lb3app.booter.ts#L76-L85).
 
-In order to retrieve the model from the application's context,
-`getValueOrPromise()` can be used as follows:
+In order to retrieve the model from the application's context, `getSync()` can
+be used as follows:
 
 ```ts
 describe('LoopBack 3 style integration tests', function () {
@@ -110,8 +110,8 @@ describe('LoopBack 3 style integration tests', function () {
   });
 
   before(() => {
-    // follow the syntax: models.lb3-{ModelName}
-    CoffeeShop = app.lbApp.getValueOrPromise('models.lb3-CoffeeShop');
+    // follow the syntax: lb3-models.{ModelName}
+    CoffeeShop = app.lbApp.getSync('lb3-models.CoffeeShop');
   });
 
   after(async () => {
@@ -119,6 +119,15 @@ describe('LoopBack 3 style integration tests', function () {
   });
 
   // your tests here
+});
+```
+
+Alternatively, `get()` can also be used in to retrieve the model asynchronously:
+
+```ts
+before(async () => {
+  // follow the syntax: lb3-models.{ModelName}
+  CoffeeShop = await app.lbApp.get('lb3-models.CoffeeShop');
 });
 ```
 

@@ -110,22 +110,20 @@ describe('LoopBack 3 style acceptance tests', function () {
         user,
       ) {
         user.email.should.be.equal('new@email.com');
-        json('post', '/api/users/login')
-          .send({
-            email: 'new@email.com',
-            password: 'L00pBack!',
-          })
-          .expect(200, function (err2, token) {
-            assert(typeof token.body === 'object');
-            const accessToken = token.body.id;
-            json(
-              'get',
-              `/api/CoffeeShops/greet?access_token=${accessToken}`,
-            ).expect(200, function (err3, res) {
+        User.login({email: 'new@email.com', password: 'L00pBack!'}, function (
+          err2,
+          token,
+        ) {
+          assert.equal(typeof token, 'object');
+          assert.equal(token.userId, user.id);
+          json('get', `/api/CoffeeShops/greet?access_token=${token.id}`).expect(
+            200,
+            function (err3, res) {
               res.body.greeting.should.be.equal('Hello from this Coffee Shop');
               done();
-            });
-          });
+            },
+          );
+        });
       });
     });
   });

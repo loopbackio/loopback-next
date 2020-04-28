@@ -80,7 +80,7 @@ export class Lb3AppBooter implements Booter {
         const model = models[key];
         if (visited.includes(model)) return;
         visited.push(model);
-        this.app.bind(`models.lb3-${key}`).to(model).tag('model');
+        this.app.bind(`lb3-models.${key}`).to(model).tag('lb3-model');
       });
     }
 
@@ -160,5 +160,6 @@ export interface Lb3AppBooterOptions {
 interface Lb3Application extends ExpressApplication {
   handler(name: 'rest'): ExpressRequestHandler;
   dataSources?: {[name: string]: unknown};
-  models?: {[name: string]: unknown};
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  models?: {[name: string]: any};
 }
