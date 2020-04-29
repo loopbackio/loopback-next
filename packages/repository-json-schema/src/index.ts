@@ -20,20 +20,25 @@ export * from './filter-json-schema';
 export * from './keys';
 
 /**
- * Optional
- * @desc From `T` make a set of properties by key `K` become optional
+ * Optional: From `T` make a set of properties by key `K` become optional
+ *
  * @example
- *    type Props = {
- *      name: string;
- *      age: number;
- *      visible: boolean;
- *    };
+ * ```ts
+ * type Props = {
+ *   name: string;
+ *   age: number;
+ *   visible: boolean;
+ * };
  *
- *    // Expect: { name?: string; age?: number; visible?: boolean; }
- *    type Props = Optional<Props>;
+ * // Expect: { name?: string; age?: number; visible?: boolean; }
+ * type Props = Optional<Props>;
  *
- *    // Expect: { name: string; age?: number; visible?: boolean; }
- *    type Props = Optional<Props, 'age' | 'visible'>;
+ * // Expect: { name: string; age?: number; visible?: boolean; }
+ * type Props = Optional<Props, 'age' | 'visible'>;
+ * ```
+ *
+ * @typeParam T - Type of the object
+ * @typeParam K - Keys of the object
  */
 export type Optional<T extends object, K extends keyof T = keyof T> = Omit<
   T,
