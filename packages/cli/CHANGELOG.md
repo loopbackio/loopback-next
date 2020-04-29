@@ -3,6 +3,36 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.5.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@2.4.4...@loopback/cli@2.5.0) (2020-04-29)
+
+
+### Bug Fixes
+
+* **authentication-jwt:** fix package.json and rename the package ([0973d18](https://github.com/strongloop/loopback-next/commit/0973d18ee4e94391367ee3510a9f0bc2eebaf4b7))
+* **cli:** clean up datasource/service code generation ([818121f](https://github.com/strongloop/loopback-next/commit/818121f69e78cf4d0e5d747b90ef6cfe32b68f4e))
+* **cli:** extract body from response object returned by openapi connector ([2895ad9](https://github.com/strongloop/loopback-next/commit/2895ad9d0c3a16af24f5335b055693900fdf1b16))
+* **cli:** fix eslint violation as `fs.exists` returns `void` ([c70839b](https://github.com/strongloop/loopback-next/commit/c70839b1a0f90a570eff4ac63dac3c64b01dae60))
+* **cli:** fix schema conversion with array types ([12718bf](https://github.com/strongloop/loopback-next/commit/12718bfd075de165586a92194b4650093c48c211))
+* **cli:** mitigate json schema to be draft 7 compatible ([0f6816a](https://github.com/strongloop/loopback-next/commit/0f6816af26267c6573e374b7ad7a90d43e2055f0))
+* **cli:** skip datasource selection with `--url` or non-matched `--datasource` ([352bf34](https://github.com/strongloop/loopback-next/commit/352bf34359b75efbbb77f9890db178391e908121))
+
+
+### Features
+
+* **cli:** update opencli templates to match the openapi connector ([a9965a3](https://github.com/strongloop/loopback-next/commit/a9965a39ba82b9297f2a0d98b47846eea4a69516))
+* remove hand-written datasource `stop()` method ([df4ee09](https://github.com/strongloop/loopback-next/commit/df4ee09482fa67522629c381a0de595ce12d9a1b))
+* **cli:** add translation for 10 languages ([c93735f](https://github.com/strongloop/loopback-next/commit/c93735fdc60fa959fc93ecc1c6251d654f673e8c))
+* **cli:** add translation for 4 left languages ([a2a9270](https://github.com/strongloop/loopback-next/commit/a2a9270401dc9818aafa2e040bc9180aad146afc))
+* **cli:** convert OpenAPI schema to JSON schema for model/property ([d0785dd](https://github.com/strongloop/loopback-next/commit/d0785ddd38c836d7495199f9a563f24931b0ec11))
+* **cli:** improve `lb4 openapi --client` to handle method name mapping ([c2f7ebd](https://github.com/strongloop/loopback-next/commit/c2f7ebd9bd4a734e66299fd7858bdfd737d35140))
+* **cli:** use forward-slash characters in spec URL on Windows ([89fc25f](https://github.com/strongloop/loopback-next/commit/89fc25fbc9ef3523a9306abcb39ce2054f7d2da7))
+* **cli:** uses `HttpErrors` for openapi service proxies ([0aa5e23](https://github.com/strongloop/loopback-next/commit/0aa5e237691e75b2959827b922f0432bc522391a))
+* move datasource config from JSON to TS files ([6105456](https://github.com/strongloop/loopback-next/commit/6105456deb6d7acadc3e46867558311dce2d005c))
+
+
+
+
+
 ## [2.4.4](https://github.com/strongloop/loopback-next/compare/@loopback/cli@2.4.3...@loopback/cli@2.4.4) (2020-04-23)
 
 

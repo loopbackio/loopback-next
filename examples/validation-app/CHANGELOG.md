@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-validation-app@1.2.3...@loopback/example-validation-app@1.3.0) (2020-04-29)
+
+
+### Features
+
+* move datasource config from JSON to TS files ([6105456](https://github.com/strongloop/loopback-next/commit/6105456deb6d7acadc3e46867558311dce2d005c))
+* remove hand-written datasource `stop()` method ([df4ee09](https://github.com/strongloop/loopback-next/commit/df4ee09482fa67522629c381a0de595ce12d9a1b))
+
+
+
+
+
 ## [1.2.3](https://github.com/strongloop/loopback-next/compare/@loopback/example-validation-app@1.2.2...@loopback/example-validation-app@1.2.3) (2020-04-23)
 
 **Note:** Version bump only for package @loopback/example-validation-app

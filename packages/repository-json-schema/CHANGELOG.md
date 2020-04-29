@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@2.2.1...@loopback/repository-json-schema@2.3.0) (2020-04-29)
+
+
+### Bug Fixes
+
+* **repository-json-schema:** avoid title inheritance ([723bc34](https://github.com/strongloop/loopback-next/commit/723bc3401753e4ba8f4e421e468c0bfca66582c8))
+
+
+### Features
+
+* populate x-typescript-type for openapi schema ([02a2633](https://github.com/strongloop/loopback-next/commit/02a26339e8a49b92148aa9c05179458a4bc85a70))
+
+
+
+
+
 ## [2.2.1](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@2.2.0...@loopback/repository-json-schema@2.2.1) (2020-04-23)
 
 **Note:** Version bump only for package @loopback/repository-json-schema

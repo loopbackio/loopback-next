@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/apiconnect@0.2.1...@loopback/apiconnect@0.3.0) (2020-04-29)
+
+
+### Features
+
+* **apiconnect:** add `x-ibm-name` to OpenAPI info object ([b6f11a5](https://github.com/strongloop/loopback-next/commit/b6f11a577084de9456c6bac879273f1b42ef81c6))
+
+
+
+
+
 ## [0.2.1](https://github.com/strongloop/loopback-next/compare/@loopback/apiconnect@0.2.0...@loopback/apiconnect@0.2.1) (2020-04-23)
 
 **Note:** Version bump only for package @loopback/apiconnect

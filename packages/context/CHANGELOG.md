@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.6.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@3.5.1...@loopback/context@3.6.0) (2020-04-29)
+
+
+### Features
+
+* **context:** add `BindingKey.generate` to generate unique binding keys ([9478d31](https://github.com/strongloop/loopback-next/commit/9478d319a472e1dca4122a29dbb414ce1525bdb0))
+
+
+
+
+
 ## [3.5.1](https://github.com/strongloop/loopback-next/compare/@loopback/context@3.5.0...@loopback/context@3.5.1) (2020-04-23)
 
 **Note:** Version bump only for package @loopback/context

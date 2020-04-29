@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@3.2.1...@loopback/openapi-v3@3.3.0) (2020-04-29)
+
+
+### Features
+
+* populate x-typescript-type for openapi schema ([02a2633](https://github.com/strongloop/loopback-next/commit/02a26339e8a49b92148aa9c05179458a4bc85a70))
+
+
+
+
+
 ## [3.2.1](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@3.2.0...@loopback/openapi-v3@3.2.1) (2020-04-23)
 
 **Note:** Version bump only for package @loopback/openapi-v3

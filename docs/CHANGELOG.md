@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.6.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.5.0...@loopback/docs@3.6.0) (2020-04-29)
+
+
+### Bug Fixes
+
+* **docs:** remove Angular SDK client content ([2594fba](https://github.com/strongloop/loopback-next/commit/2594fba5d024fa4d0ca81fa1da7b674d81f6f7ca))
+* fix querying data layout ([051fbd9](https://github.com/strongloop/loopback-next/commit/051fbd979d2318fce66e8288f6777c7595c02a46))
+
+
+### Features
+
+* move datasource config from JSON to TS files ([6105456](https://github.com/strongloop/loopback-next/commit/6105456deb6d7acadc3e46867558311dce2d005c))
+* remove hand-written datasource `stop()` method ([df4ee09](https://github.com/strongloop/loopback-next/commit/df4ee09482fa67522629c381a0de595ce12d9a1b))
+* remove unused dependencies and set non-interactive mode by default ([4b7888c](https://github.com/strongloop/loopback-next/commit/4b7888cfd278064064fdf09c5d49a5395d2b7fd5))
+
+
+
+
+
 # [3.5.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.4.3...@loopback/docs@3.5.0) (2020-04-23)
 
 

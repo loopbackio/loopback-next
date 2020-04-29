@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/build@5.2.0...@loopback/build@5.3.0) (2020-04-29)
+
+
+### Features
+
+* **build:** don't flag console logs when tests failed ([048e87e](https://github.com/strongloop/loopback-next/commit/048e87ec6bc705f73418adfed425b4db03c38aa8))
+
+
+
+
+
 # [5.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/build@5.1.0...@loopback/build@5.2.0) (2020-04-23)
 
 

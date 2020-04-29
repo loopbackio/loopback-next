@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-rest-crud@1.1.5...@loopback/example-rest-crud@1.2.0) (2020-04-29)
+
+
+### Features
+
+* move datasource config from JSON to TS files ([6105456](https://github.com/strongloop/loopback-next/commit/6105456deb6d7acadc3e46867558311dce2d005c))
+
+
+
+
+
 ## [1.1.5](https://github.com/strongloop/loopback-next/compare/@loopback/example-rest-crud@1.1.4...@loopback/example-rest-crud@1.1.5) (2020-04-23)
 
 **Note:** Version bump only for package @loopback/example-rest-crud
