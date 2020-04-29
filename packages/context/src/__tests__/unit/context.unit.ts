@@ -501,13 +501,10 @@ describe('Context', () => {
         .bind('foo')
         .toDynamicValue(() => count++)
         .inScope(BindingScope.SINGLETON);
-      let result = ctx.getSync('foo');
-      expect(result).to.equal(0);
-      result = ctx.getSync('foo');
-      expect(result).to.equal(0);
+      expectFooValue(ctx, 0);
       const childCtx = new Context(ctx);
-      result = childCtx.getSync('foo');
-      expect(result).to.equal(0);
+      expectFooValue(childCtx, 0);
+      expectFooValue(ctx, 0);
     });
 
     it('returns singleton value triggered by the child context', () => {
@@ -518,16 +515,32 @@ describe('Context', () => {
         .inScope(BindingScope.SINGLETON);
       const childCtx = new Context(ctx);
       // Calculate the singleton value at child level 1st
-      let result = childCtx.getSync('foo');
-      expect(result).to.equal(0);
+      expectFooValue(childCtx, 0);
       // Try twice from the parent ctx
-      result = ctx.getSync('foo');
-      expect(result).to.equal(0);
-      result = ctx.getSync('foo');
-      expect(result).to.equal(0);
+      expectFooValue(ctx, 0);
+      expectFooValue(ctx, 0);
       // Try again from the child ctx
-      result = childCtx.getSync('foo');
-      expect(result).to.equal(0);
+      expectFooValue(childCtx, 0);
+    });
+
+    it('refreshes singleton-scoped binding', () => {
+      let count = 0;
+      const binding = ctx
+        .bind('foo')
+        .toDynamicValue(() => count++)
+        .inScope(BindingScope.SINGLETON);
+      const childCtx = new Context(ctx);
+      // Calculate the singleton value at child level 1st
+      expectFooValue(childCtx, 0);
+      // Try from the parent ctx
+      expectFooValue(ctx, 0);
+      // Now refresh the binding
+      binding.refresh(childCtx);
+      // A new value is produced
+      expectFooValue(childCtx, 1);
+      // Try from the parent ctx
+      // The value stays the same as it's cached by the 1st call
+      expectFooValue(ctx, 1);
     });
 
     it('returns transient value', () => {
@@ -536,13 +549,10 @@ describe('Context', () => {
         .bind('foo')
         .toDynamicValue(() => count++)
         .inScope(BindingScope.TRANSIENT);
-      let result = ctx.getSync('foo');
-      expect(result).to.equal(0);
-      result = ctx.getSync('foo');
-      expect(result).to.equal(1);
+      expectFooValue(ctx, 0);
+      expectFooValue(ctx, 1);
       const childCtx = new Context(ctx);
-      result = childCtx.getSync('foo');
-      expect(result).to.equal(2);
+      expectFooValue(childCtx, 2);
     });
 
     it('returns context value', () => {
@@ -551,10 +561,9 @@ describe('Context', () => {
         .bind('foo')
         .toDynamicValue(() => count++)
         .inScope(BindingScope.CONTEXT);
-      let result = ctx.getSync('foo');
-      expect(result).to.equal(0);
-      result = ctx.getSync('foo');
-      expect(result).to.equal(0);
+      expectFooValue(ctx, 0);
+      // It's now cached
+      expectFooValue(ctx, 0);
     });
 
     it('returns context value from a child context', () => {
@@ -563,19 +572,37 @@ describe('Context', () => {
         .bind('foo')
         .toDynamicValue(() => count++)
         .inScope(BindingScope.CONTEXT);
-      let result = ctx.getSync('foo');
-      expect(result).to.equal(0);
+      expectFooValue(ctx, 0);
       const childCtx = new Context(ctx);
-      result = childCtx.getSync('foo');
-      expect(result).to.equal(1);
-      result = childCtx.getSync('foo');
-      expect(result).to.equal(1);
+      expectFooValue(childCtx, 1);
+      expectFooValue(childCtx, 1);
       const childCtx2 = new Context(ctx);
-      result = childCtx2.getSync('foo');
-      expect(result).to.equal(2);
-      result = childCtx.getSync('foo');
-      expect(result).to.equal(1);
+      expectFooValue(childCtx2, 2);
+      expectFooValue(childCtx, 1);
     });
+
+    it('refreshes context-scoped binding', () => {
+      let count = 0;
+      const binding = ctx
+        .bind('foo')
+        .toDynamicValue(() => count++)
+        .inScope(BindingScope.CONTEXT);
+      expectFooValue(ctx, 0);
+      const childCtx = new Context(ctx);
+      // New value for the childCtx
+      expectFooValue(childCtx, 1);
+      // Now it's cached
+      expectFooValue(childCtx, 1);
+      // Refresh the binding for childCtx
+      binding.refresh(childCtx);
+      expectFooValue(childCtx, 2);
+      // Parent value is not touched
+      expectFooValue(ctx, 0);
+    });
+
+    function expectFooValue(context: Context, val: number) {
+      expect(context.getSync('foo')).to.equal(val);
+    }
   });
 
   describe('getOwnerContext', () => {
