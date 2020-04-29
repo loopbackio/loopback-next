@@ -38,16 +38,16 @@ In your test file:
 
   ```ts
   // can use lb4's testlab's supertest as the dependency is already installed
-  const request = require('@loopback/testlab').supertest;
+  const supertest = require('@loopback/testlab').supertest;
   const assert = require('assert');
   const should = require('should');
   const ExpressServer = require('../../dist/server').ExpressServer;
 
   let app;
 
-  function json(verb, url) {
+  function request(verb, url) {
     // use the LB4 express server
-    return request(app.server)
+    return supertest(app.server)
       [verb](url)
       .set('Content-Type', 'application/json')
       .set('Accept', 'application/json')
@@ -133,3 +133,6 @@ before(async () => {
 
 Example integration tests can be found in
 [`examples/lb3-application/lb3app/test/integration.js`](https://github.com/strongloop/loopback-next/blob/spike/lb3test/examples/lb3-application/lb3app/test/integration.js).
+
+Example authentication tests can be found in
+[`examples/lb3-application/lb3app/test/authentication.js`](https://github.com/strongloop/loopback-next/blob/spike/lb3test/examples/lb3-application/lb3app/test/authentication.js).

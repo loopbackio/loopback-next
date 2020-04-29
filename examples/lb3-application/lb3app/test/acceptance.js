@@ -4,17 +4,16 @@
 // License text available at https://opensource.org/licenses/MIT
 
 'use strict';
-const lb3App = require('../server/server');
-const request = require('@loopback/testlab').supertest;
+const supertest = require('@loopback/testlab').supertest;
 const assert = require('assert');
 const ExpressServer = require('../../dist/server').ExpressServer;
 require('should');
 
 let app;
 
-function json(verb, url) {
+function request(verb, url) {
   // use the original app's server
-  return request(app.server)
+  return supertest(app.server)
     [verb](url)
     .set('Content-Type', 'application/json')
     .set('Accept', 'application/json')
@@ -34,7 +33,7 @@ describe('LoopBack 3 style acceptance tests', function () {
 
   context('basic REST calls for LoopBack 3 application', () => {
     it('creates and finds a CoffeeShop', function (done) {
-      json('post', '/api/CoffeeShops')
+      request('post', '/api/CoffeeShops')
         .send({
           name: 'Coffee Shop',
           city: 'Toronto',
@@ -51,7 +50,10 @@ describe('LoopBack 3 style acceptance tests', function () {
     });
 
     it("gets the CoffeeShop's status", function (done) {
-      json('get', '/api/CoffeeShops/status').expect(200, function (err, res) {
+      request('get', '/api/CoffeeShops/status').expect(200, function (
+        err,
+        res,
+      ) {
         res.body.status.should.be.equalOneOf(
           'We are open for business.',
           'Sorry, we are closed. Open daily from 6am to 8pm.',
@@ -61,69 +63,9 @@ describe('LoopBack 3 style acceptance tests', function () {
     });
 
     it('gets external route in application', function (done) {
-      json('get', '/ping').expect(200, function (err, res) {
+      request('get', '/ping').expect(200, function (err, res) {
         assert.equal(res.text, 'pong');
         done();
-      });
-    });
-  });
-
-  context('authentication', () => {
-    let User;
-
-    before(() => {
-      User = lb3App.models.User;
-    });
-
-    it('creates a User and logs them in and out', function (done) {
-      User.create({email: 'new@email.com', password: 'L00pBack!'}, function (
-        err,
-        user,
-      ) {
-        assert.equal(user.email, 'new@email.com');
-        User.login(
-          {
-            email: 'new@email.com',
-            password: 'L00pBack!',
-          },
-          function (err2, token) {
-            token.should.have.properties('ttl', 'userId', 'created', 'id');
-            assert.equal(token.userId, user.id);
-            User.logout(token.id);
-            User.deleteById(user.id);
-          },
-        );
-        done();
-      });
-    });
-
-    it('rejects anonymous requests to protected endpoints', function (done) {
-      json('get', '/api/CoffeeShops/greet').expect(401, function (err, res) {
-        assert.equal(res.body.error.code, 'AUTHORIZATION_REQUIRED');
-      });
-      done();
-    });
-
-    it('makes an authenticated request', function (done) {
-      User.create({email: 'new@email.com', password: 'L00pBack!'}, function (
-        err,
-        user,
-      ) {
-        user.email.should.be.equal('new@email.com');
-        User.login({email: 'new@email.com', password: 'L00pBack!'}, function (
-          err2,
-          token,
-        ) {
-          assert.equal(typeof token, 'object');
-          assert.equal(token.userId, user.id);
-          json('get', `/api/CoffeeShops/greet?access_token=${token.id}`).expect(
-            200,
-            function (err3, res) {
-              res.body.greeting.should.be.equal('Hello from this Coffee Shop');
-              done();
-            },
-          );
-        });
       });
     });
   });
