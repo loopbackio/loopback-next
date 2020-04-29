@@ -23,7 +23,7 @@ import {expectValidJsonSchema} from '../helpers/expect-valid-json-schema';
 describe('build-schema', () => {
   describe('modelToJsonSchema', () => {
     context('properties conversion', () => {
-      it('does not convert null or undefined property', () => {
+      it('reports error for null or undefined property', () => {
         @model()
         class TestModel {
           @property()
@@ -32,8 +32,24 @@ describe('build-schema', () => {
           undef: undefined;
         }
 
+        expect(() => modelToJsonSchema(TestModel)).to.throw(
+          /Property TestModel.nul does not have "type" in its definition/,
+        );
+      });
+
+      it('allows property of null type', () => {
+        @model()
+        class TestModel {
+          @property({type: 'null'})
+          nul: null;
+        }
+
         const jsonSchema = modelToJsonSchema(TestModel);
-        expect(jsonSchema.properties).to.not.have.keys(['nul', 'undef']);
+        expect(jsonSchema).to.eql({
+          title: 'TestModel',
+          properties: {nul: {type: 'null'}},
+          additionalProperties: false,
+        });
         expectValidJsonSchema(jsonSchema);
       });
 

@@ -8,6 +8,7 @@ import {
   isBuiltinType,
   ModelDefinition,
   ModelMetadataHelper,
+  Null,
   PropertyDefinition,
   RelationMetadata,
   resolveType,
@@ -226,6 +227,10 @@ export function stringTypeToWrapper(type: string | Function): Function {
       wrapper = Buffer;
       break;
     }
+    case 'null': {
+      wrapper = Null;
+      break;
+    }
     default: {
       throw new Error('Unsupported type: ' + type);
     }
@@ -426,12 +431,14 @@ export function modelToJsonSchema<T extends object>(
   debug('Creating schema for model %s', ctor.name);
   debug('JSON schema options: %o', options);
 
-  const meta: ModelDefinition | {} = ModelMetadataHelper.getModelMetadata(ctor);
+  const modelDef = ModelMetadataHelper.getModelMetadata(ctor);
 
   // returns an empty object if metadata is an empty object
-  if (!(meta instanceof ModelDefinition)) {
+  if (modelDef == null || Object.keys(modelDef).length === 0) {
     return {};
   }
+
+  const meta = modelDef as ModelDefinition;
 
   debug('Model settings', meta.settings);
 
@@ -453,11 +460,15 @@ export function modelToJsonSchema<T extends object>(
 
   for (const p in meta.properties) {
     if (options.exclude && options.exclude.includes(p as keyof T)) {
+      debug('Property % is excluded by %s', p, options.exclude);
       continue;
     }
 
-    if (!meta.properties[p].type) {
-      continue;
+    if (meta.properties[p].type == null) {
+      // Circular import of model classes can lead to this situation
+      throw new Error(
+        `Property ${ctor.name}.${p} does not have "type" in its definition`,
+      );
     }
 
     result.properties = result.properties ?? {};
