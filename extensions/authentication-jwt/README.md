@@ -8,6 +8,13 @@ Please note this package has the user service is a reference implementation, not
 recommended for production. You can follow the guide in section
 [Customizing User](#customizing-user) to replace it.
 
+## Stability: ⚠️Experimental⚠️
+
+> Experimental packages provide early access to advanced or experimental
+> functionality to get community feedback. Such modules are published to npm
+> using `0.x.y` versions. Their APIs and functionality may be subject to
+> breaking changes in future releases.
+
 ## Architecture Overview
 
 ![authentication-jwt](authentication-jwt.png)
