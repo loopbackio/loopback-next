@@ -10,7 +10,7 @@
   "0eee394c1a8c898184aa039420afc594": "Name of the example to clone",
   "0f64c35f7cb25ea8a068e157cfd3f283": "REST Controller with CRUD functions",
   "0f97dcea7dc212c905400da264b09cfd": "Application {0} was created in {1}.",
-  "114bb446343e91190ec9086623f58fd9": "Select the model(s) you want to generate a repository",
+  "114bb446343e91190ec9086623f58fd9": "Select the model(s) you want to generate a repository for",
   "1186c24b9452b67a24cb130b76dedffa": "No models found at",
   "12fb77f2e738ee14bda8660d5bcd894e": "The name of the dataSource which contains this model and suppots model discovery",
   "1449a22c7ecbec112a5e26179bea22fc": "Source model primary key does not exist.",
