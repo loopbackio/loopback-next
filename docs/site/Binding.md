@@ -315,6 +315,61 @@ To understand the difference between `@bind()` and `ctx.bind()`, see
 [Configure binding attributes for a class](#configure-binding-attributes-for-a-class).
 " %}
 
+### Refresh a binding with SINGLETON or CONTEXT scope
+
+`SINGLETON` and `CONTEXT` scopes can be used to minimize the number of value
+instances created for a given binding. But sometimes we would like to force
+reloading of a binding when its configuration or dependencies are changed. For
+example, a logging provider can be refreshed to pick up a new logging level. The
+same functionality can be achieved with `TRANSIENT` scope but with much more
+overhead.
+
+The `binding.refresh()` method invalidates the cache so that its value will be
+reloaded next time.
+
+**WARNING: The state held in the cached value will be gone.**
+
+```ts
+let logLevel = 1; // 'info'
+
+// Logging configuration
+export interface LoggingOptions {
+  level: number;
+}
+
+// A simple logger
+export class Logger {
+  constructor(@config() private options: LoggingOptions) {}
+
+  log(level: string, message: string) {
+    if (this.options.level >= level) {
+      console.log('[%d] %s', level, message);
+    }
+  }
+}
+
+// Bind the logger
+const binding = ctx
+  .bind('logger')
+  .toClass(Logger)
+  .inScope(BindingScope.SINGLETON);
+
+// Start with `info` level logging
+ctx.configure(binding.key).to({level: 1});
+const logger = await ctx.get<Logger>('logger');
+logger.log(1, 'info message'); // Prints to console
+logger.log(5, 'debug message'); // Does not print to console
+
+// Now change the configuration to enable debugging
+ctx.configure(binding.key).to({level: 5});
+// Force a refresh on the binding
+binding.refresh(ctx);
+
+const newLogger = await ctx.get<Logger>('logger');
+newLogger.log(1, 'info message'); // Prints to console
+newLogger.log(5, 'debug message'); // Prints to console too!
+```
+
 ### Describe tags
 
 Tags can be used to annotate bindings so that they can be grouped or searched.

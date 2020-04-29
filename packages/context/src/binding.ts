@@ -270,6 +270,28 @@ export class Binding<T = BoundValue> extends EventEmitter {
   }
 
   /**
+   * Invalidate the binding cache so that its value will be reloaded next time.
+   * This is useful to force reloading a singleton when its configuration or
+   * dependencies are changed.
+   * **WARNING**: The state held in the cached value will be gone.
+   *
+   * @param ctx - Context object
+   */
+  refresh(ctx: Context) {
+    if (!this._cache) return;
+    if (this.scope === BindingScope.SINGLETON) {
+      // Cache the value
+      const ownerCtx = ctx.getOwnerContext(this.key);
+      if (ownerCtx != null) {
+        this._cache.delete(ownerCtx);
+      }
+    } else if (this.scope === BindingScope.CONTEXT) {
+      // Cache the value at the current context
+      this._cache.delete(ctx);
+    }
+  }
+
+  /**
    * This is an internal function optimized for performance.
    * Users should use `@inject(key)` or `ctx.get(key)` instead.
    *
