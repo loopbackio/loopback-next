@@ -51,7 +51,7 @@ describe('build-schema', () => {
         expect(stringTypeToWrapper('date')).to.eql(Date);
       });
 
-      it('returns Object for "object"', () => {
+      it('returns  for "object"', () => {
         expect(stringTypeToWrapper('object')).to.eql(Object);
       });
 
@@ -429,6 +429,81 @@ describe('build-schema', () => {
           password: {type: 'string'},
         },
         required: ['name', 'password'],
+        additionalProperties: false,
+      });
+    });
+
+    it('allows nesting models', () => {
+      @model()
+      class Address {
+        @property()
+        street: string;
+
+        @property()
+        city: string;
+
+        @property()
+        state: string;
+      }
+
+      @model()
+      class Email {
+        @property()
+        label: string;
+
+        @property()
+        id: string;
+      }
+
+      @model()
+      class User {
+        @property({id: true})
+        id: string;
+
+        @property({
+          type: 'string',
+          required: true,
+        })
+        name: string;
+
+        @property({
+          type: Address,
+        })
+        address?: Address;
+
+        @property.array(Email)
+        emails: Email[];
+      }
+
+      const userSchema = modelToJsonSchema(User, {});
+      expect(userSchema).to.eql({
+        title: 'User',
+        properties: {
+          id: {type: 'string'},
+          name: {type: 'string'},
+          address: {$ref: '#/definitions/Address'},
+          emails: {type: 'array', items: {$ref: '#/definitions/Email'}},
+        },
+        required: ['name'],
+        definitions: {
+          Address: {
+            title: 'Address',
+            properties: {
+              street: {type: 'string'},
+              city: {type: 'string'},
+              state: {type: 'string'},
+            },
+            additionalProperties: false,
+          },
+          Email: {
+            title: 'Email',
+            properties: {
+              label: {type: 'string'},
+              id: {type: 'string'},
+            },
+            additionalProperties: false,
+          },
+        },
         additionalProperties: false,
       });
     });
