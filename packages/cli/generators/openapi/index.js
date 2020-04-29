@@ -315,7 +315,8 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
       connector: 'openapi',
       spec: this.dataSourceInfo.specPath,
       validate: false,
-      positional: this.dataSourceInfo.usePositionalParams !== false,
+      positional:
+        this.dataSourceInfo.usePositionalParams !== false ? 'bodyLast' : false,
     };
 
     this.dataSourceInfo.dsConfigString = json5.stringify(dsConfig, null, 2);
@@ -481,10 +482,10 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
       pkgs.push('loopback-connector-openapi');
     } else {
       // `loopback-connector-openapi` exists - make sure its version range
-      // is >= 4.2.0
+      // is >= 6.0.0
       try {
         const minVersion = semver.minVersion(connectorVersionRange);
-        if (semver.lt(minVersion, '4.3.0')) {
+        if (semver.lt(minVersion, '6.0.0')) {
           pkgs.push('loopback-connector-openapi');
         }
       } catch (err) {

@@ -79,10 +79,10 @@ https://lucene.apache.org/core/3_6_2/queryparsersyntax.html#Overview for the
 query syntax. List of field names that are searchable can be determined
 using above GET api.
    *
-   * @param _requestBody
    * @param version Version of the dataset.
    * @param dataset Name of the dataset. In this case, the default value is
 oa_citations
+   * @param _requestBody
    * @returns successful operation
    */
   @operation('post', '/{dataset}/{version}/records', {
@@ -165,7 +165,25 @@ oa_citations
     },
   },
 })
-  async performSearch(@requestBody({
+  async performSearch(@param({
+  name: 'version',
+  in: 'path',
+  description: 'Version of the dataset.',
+  required: true,
+  schema: {
+    type: 'string',
+    default: 'v1',
+  },
+}) version: string, @param({
+  name: 'dataset',
+  in: 'path',
+  description: 'Name of the dataset. In this case, the default value is oa_citations',
+  required: true,
+  schema: {
+    type: 'string',
+    default: 'oa_citations',
+  },
+}) dataset: string, @requestBody({
   content: {
     'application/x-www-form-urlencoded': {
       schema: {
@@ -193,25 +211,7 @@ oa_citations
       },
     },
   },
-}) _requestBody: PerformSearchRequestBody, @param({
-  name: 'version',
-  in: 'path',
-  description: 'Version of the dataset.',
-  required: true,
-  schema: {
-    type: 'string',
-    default: 'v1',
-  },
-}) version: string, @param({
-  name: 'dataset',
-  in: 'path',
-  description: 'Name of the dataset. In this case, the default value is oa_citations',
-  required: true,
-  schema: {
-    type: 'string',
-    default: 'oa_citations',
-  },
-}) dataset: string): Promise<PerformSearchResponseBody> {
+}) _requestBody: PerformSearchRequestBody): Promise<PerformSearchResponseBody> {
     throw new Error('Not implemented');
   }
 
@@ -421,18 +421,16 @@ export * from './perform-search-response-body.model';
 
 
 exports[`openapi-generator uspto with anonymous generates all the proper files 5`] = `
-import {model, property} from '@loopback/repository';
+import {model, property, Model} from '@loopback/repository';
 
 /**
  * The model class is generated from OpenAPI schema - performSearchRequestBody
  * performSearchRequestBody
  */
 @model({name: 'performSearchRequestBody'})
-export class PerformSearchRequestBody {
+export class PerformSearchRequestBody extends Model {
   constructor(data?: Partial<PerformSearchRequestBody>) {
-    if (data != null && typeof data === 'object') {
-      Object.assign(this, data);
-    }
+    super(data);
   }
 
   /**

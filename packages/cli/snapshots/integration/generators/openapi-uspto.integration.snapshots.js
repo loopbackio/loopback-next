@@ -77,10 +77,10 @@ https://lucene.apache.org/core/3_6_2/queryparsersyntax.html#Overview for the
 query syntax. List of field names that are searchable can be determined
 using above GET api.
    *
-   * @param _requestBody
    * @param version Version of the dataset.
    * @param dataset Name of the dataset. In this case, the default value is
 oa_citations
+   * @param _requestBody
    * @returns successful operation
    */
   @operation('post', '/{dataset}/{version}/records', {
@@ -163,7 +163,25 @@ oa_citations
     },
   },
 })
-  async performSearch(@requestBody({
+  async performSearch(@param({
+  name: 'version',
+  in: 'path',
+  description: 'Version of the dataset.',
+  required: true,
+  schema: {
+    type: 'string',
+    default: 'v1',
+  },
+}) version: string, @param({
+  name: 'dataset',
+  in: 'path',
+  description: 'Name of the dataset. In this case, the default value is oa_citations',
+  required: true,
+  schema: {
+    type: 'string',
+    default: 'oa_citations',
+  },
+}) dataset: string, @requestBody({
   content: {
     'application/x-www-form-urlencoded': {
       schema: {
@@ -195,25 +213,7 @@ oa_citations
   criteria: string;
   start?: number;
   rows?: number;
-}, @param({
-  name: 'version',
-  in: 'path',
-  description: 'Version of the dataset.',
-  required: true,
-  schema: {
-    type: 'string',
-    default: 'v1',
-  },
-}) version: string, @param({
-  name: 'dataset',
-  in: 'path',
-  description: 'Name of the dataset. In this case, the default value is oa_citations',
-  required: true,
-  schema: {
-    type: 'string',
-    default: 'oa_citations',
-  },
-}) dataset: string): Promise<{
+}): Promise<{
   [additionalProperty: string]: {
   
 };

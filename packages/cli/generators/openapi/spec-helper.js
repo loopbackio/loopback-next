@@ -250,20 +250,20 @@ function buildMethodSpec(controllerSpec, op, options) {
       addImportsForType(bodyType);
     }
     const bodyParam = bodyName; // + (op.spec.requestBody.required ? '' : '?');
-    // Add body as the 1st param
+    // Add body as the last param
     const bodySpecJson = printSpecObject(op.spec.requestBody);
-    args.unshift(
+    args.push(
       `@requestBody(${bodySpecJson}) ${bodyParam}: ${bodyType.signature}`,
     );
-    interfaceArgs.unshift(`${bodyParam}: ${bodyType.signature}`);
-    namedParameters.unshift({
+    interfaceArgs.push(`${bodyParam}: ${bodyType.signature}`);
+    namedParameters.push({
       paramName: 'requestBody',
       paramType: bodyType,
       argName: bodyParam,
     });
     let bodyDescription = op.spec.requestBody.description || '';
     bodyDescription = bodyDescription ? ` ${bodyDescription}` : '';
-    comments.unshift(`@param ${bodyName}${bodyDescription}`);
+    comments.push(`@param ${bodyName}${bodyDescription}`);
   }
   let returnType = {signature: 'unknown'};
   const responses = op.spec.responses;
