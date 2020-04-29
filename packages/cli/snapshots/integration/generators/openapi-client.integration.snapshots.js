@@ -124,18 +124,16 @@ export type Pet = NewPet & {
 
 
 exports[`generates files with --client and --datasource for an existing datasource 5`] = `
-import {model, property} from '@loopback/repository';
+import {model, property, Model} from '@loopback/repository';
 
 /**
  * The model class is generated from OpenAPI schema - NewPet
  * NewPet
  */
 @model({name: 'NewPet'})
-export class NewPet {
+export class NewPet extends Model {
   constructor(data?: Partial<NewPet>) {
-    if (data != null && typeof data === 'object') {
-      Object.assign(this, data);
-    }
+    super(data);
   }
 
   /**
@@ -168,18 +166,16 @@ export type NewPetWithRelations = NewPet & NewPetRelations;
 
 
 exports[`generates files with --client and --datasource for an existing datasource 6`] = `
-import {model, property} from '@loopback/repository';
+import {model, property, Model} from '@loopback/repository';
 
 /**
  * The model class is generated from OpenAPI schema - Error
  * Error
  */
 @model({name: 'Error'})
-export class Error {
+export class Error extends Model {
   constructor(data?: Partial<Error>) {
-    if (data != null && typeof data === 'object') {
-      Object.assign(this, data);
-    }
+    super(data);
   }
 
   /**
@@ -331,18 +327,16 @@ export type Pet = NewPet & {
 
 
 exports[`generates files with --client for an existing datasource 5`] = `
-import {model, property} from '@loopback/repository';
+import {model, property, Model} from '@loopback/repository';
 
 /**
  * The model class is generated from OpenAPI schema - NewPet
  * NewPet
  */
 @model({name: 'NewPet'})
-export class NewPet {
+export class NewPet extends Model {
   constructor(data?: Partial<NewPet>) {
-    if (data != null && typeof data === 'object') {
-      Object.assign(this, data);
-    }
+    super(data);
   }
 
   /**
@@ -375,18 +369,16 @@ export type NewPetWithRelations = NewPet & NewPetRelations;
 
 
 exports[`generates files with --client for an existing datasource 6`] = `
-import {model, property} from '@loopback/repository';
+import {model, property, Model} from '@loopback/repository';
 
 /**
  * The model class is generated from OpenAPI schema - Error
  * Error
  */
 @model({name: 'Error'})
-export class Error {
+export class Error extends Model {
   constructor(data?: Partial<Error>) {
-    if (data != null && typeof data === 'object') {
-      Object.assign(this, data);
-    }
+    super(data);
   }
 
   /**
@@ -823,18 +815,16 @@ export type Pet = NewPet & {
 
 
 exports[`openapi-generator with --client does not generates files for client with --no-client 5`] = `
-import {model, property} from '@loopback/repository';
+import {model, property, Model} from '@loopback/repository';
 
 /**
  * The model class is generated from OpenAPI schema - NewPet
  * NewPet
  */
 @model({name: 'NewPet'})
-export class NewPet {
+export class NewPet extends Model {
   constructor(data?: Partial<NewPet>) {
-    if (data != null && typeof data === 'object') {
-      Object.assign(this, data);
-    }
+    super(data);
   }
 
   /**
@@ -867,18 +857,16 @@ export type NewPetWithRelations = NewPet & NewPetRelations;
 
 
 exports[`openapi-generator with --client does not generates files for client with --no-client 6`] = `
-import {model, property} from '@loopback/repository';
+import {model, property, Model} from '@loopback/repository';
 
 /**
  * The model class is generated from OpenAPI schema - Error
  * Error
  */
 @model({name: 'Error'})
-export class Error {
+export class Error extends Model {
   constructor(data?: Partial<Error>) {
-    if (data != null && typeof data === 'object') {
-      Object.assign(this, data);
-    }
+    super(data);
   }
 
   /**
@@ -933,7 +921,7 @@ const config = {
   connector: 'openapi',
   spec: '../../../fixtures/openapi/3.0/petstore-expanded.yaml',
   validate: false,
-  positional: true,
+  positional: 'bodyLast',
 };
 
 @lifeCycleObserver('datasource')
@@ -1089,18 +1077,16 @@ export type Pet = NewPet & {
 
 
 exports[`openapi-generator with --client does not generates files for server with --no-server 7`] = `
-import {model, property} from '@loopback/repository';
+import {model, property, Model} from '@loopback/repository';
 
 /**
  * The model class is generated from OpenAPI schema - NewPet
  * NewPet
  */
 @model({name: 'NewPet'})
-export class NewPet {
+export class NewPet extends Model {
   constructor(data?: Partial<NewPet>) {
-    if (data != null && typeof data === 'object') {
-      Object.assign(this, data);
-    }
+    super(data);
   }
 
   /**
@@ -1133,18 +1119,16 @@ export type NewPetWithRelations = NewPet & NewPetRelations;
 
 
 exports[`openapi-generator with --client does not generates files for server with --no-server 8`] = `
-import {model, property} from '@loopback/repository';
+import {model, property, Model} from '@loopback/repository';
 
 /**
  * The model class is generated from OpenAPI schema - Error
  * Error
  */
 @model({name: 'Error'})
-export class Error {
+export class Error extends Model {
   constructor(data?: Partial<Error>) {
-    if (data != null && typeof data === 'object') {
-      Object.assign(this, data);
-    }
+    super(data);
   }
 
   /**
@@ -1578,7 +1562,7 @@ const config = {
   connector: 'openapi',
   spec: '../../../fixtures/openapi/3.0/petstore-expanded.yaml',
   validate: false,
-  positional: true,
+  positional: 'bodyLast',
 };
 
 @lifeCycleObserver('datasource')
@@ -1734,18 +1718,16 @@ export type Pet = NewPet & {
 
 
 exports[`openapi-generator with --client generates all files for both server and client 9`] = `
-import {model, property} from '@loopback/repository';
+import {model, property, Model} from '@loopback/repository';
 
 /**
  * The model class is generated from OpenAPI schema - NewPet
  * NewPet
  */
 @model({name: 'NewPet'})
-export class NewPet {
+export class NewPet extends Model {
   constructor(data?: Partial<NewPet>) {
-    if (data != null && typeof data === 'object') {
-      Object.assign(this, data);
-    }
+    super(data);
   }
 
   /**
@@ -1778,18 +1760,16 @@ export type NewPetWithRelations = NewPet & NewPetRelations;
 
 
 exports[`openapi-generator with --client generates all files for both server and client 10`] = `
-import {model, property} from '@loopback/repository';
+import {model, property, Model} from '@loopback/repository';
 
 /**
  * The model class is generated from OpenAPI schema - Error
  * Error
  */
 @model({name: 'Error'})
-export class Error {
+export class Error extends Model {
   constructor(data?: Partial<Error>) {
-    if (data != null && typeof data === 'object') {
-      Object.assign(this, data);
-    }
+    super(data);
   }
 
   /**

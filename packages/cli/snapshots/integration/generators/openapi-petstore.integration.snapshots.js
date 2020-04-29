@@ -409,18 +409,16 @@ export type Pet = NewPet & {
 
 
 exports[`openapi-generator petstore generates all the proper files 5`] = `
-import {model, property} from '@loopback/repository';
+import {model, property, Model} from '@loopback/repository';
 
 /**
  * The model class is generated from OpenAPI schema - NewPet
  * NewPet
  */
 @model({name: 'NewPet'})
-export class NewPet {
+export class NewPet extends Model {
   constructor(data?: Partial<NewPet>) {
-    if (data != null && typeof data === 'object') {
-      Object.assign(this, data);
-    }
+    super(data);
   }
 
   /**
@@ -453,18 +451,16 @@ export type NewPetWithRelations = NewPet & NewPetRelations;
 
 
 exports[`openapi-generator petstore generates all the proper files 6`] = `
-import {model, property} from '@loopback/repository';
+import {model, property, Model} from '@loopback/repository';
 
 /**
  * The model class is generated from OpenAPI schema - Error
  * Error
  */
 @model({name: 'Error'})
-export class Error {
+export class Error extends Model {
   constructor(data?: Partial<Error>) {
-    if (data != null && typeof data === 'object') {
-      Object.assign(this, data);
-    }
+    super(data);
   }
 
   /**
