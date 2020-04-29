@@ -52,6 +52,13 @@ export function isTypeResolver<T extends object>(
 }
 
 /**
+ * A boxed type for `null`
+ */
+export function Null() {
+  return null;
+}
+
+/**
  * Check if the provided function is a built-in type provided by JavaScript
  * and/or Node.js. E.g. `Number`, `Array`, `Buffer`, etc.
  */
@@ -67,6 +74,7 @@ export function isBuiltinType(fn: Function): boolean {
     fn === Date ||
     fn === RegExp ||
     fn === Buffer ||
+    fn === Null ||
     // function as a type
     fn === Function
   );
