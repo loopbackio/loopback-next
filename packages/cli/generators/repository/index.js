@@ -46,7 +46,7 @@ const REPOSITORY_KV_TEMPLATE = 'repository-kv-template.ts.ejs';
 const REPOSITORY_CRUD_TEMPLATE = 'repository-crud-default-template.ts.ejs';
 
 const PROMPT_MESSAGE_MODEL = g.f(
-  'Select the model(s) you want to generate a repository',
+  'Select the model(s) you want to generate a repository for',
 );
 const PROMPT_MESSAGE_DATA_SOURCE = g.f('Please select the datasource');
 const PROMPT_BASE_REPOSITORY_CLASS = g.f(
