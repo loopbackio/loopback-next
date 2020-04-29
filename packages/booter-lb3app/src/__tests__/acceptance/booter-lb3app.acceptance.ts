@@ -236,7 +236,7 @@ describe('booter-lb3app', () => {
     it('binds datasource to the context', async () => {
       const expected = require('../../../fixtures/app-with-model').dataSources
         .memory;
-      const dsBindings = app.findByTag('datasource');
+      const dsBindings = app.findByTag('lb3-datasource');
       const key = dsBindings[0].key;
       const ds = await app.get(key);
       expect(ds).to.eql(expected);
