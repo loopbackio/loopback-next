@@ -24,9 +24,14 @@ Migration of the following component is out of scope of this spike:
   - [API transports](#api-transports)
   - [Authentication & authorization](#authentication--authorization)
   - [Introspection](#introspection)
-- [Migration of component layout & instructions from mounting to an app](#migration-of-component-layout--instructions-from-mounting-to-an-app)
-  - [LB3 component layout & mounting](#lb3-component-layout--mounting)
-  - [Migration to LB4](#migration-to-lb4)
+- [Migration](#migration)
+  - [Migrate general aspects](#migrate-general-aspects)
+  - [Migrate Models, Entities and Repositories](#migrate-models-entities-and-repositories)
+  - [Migrate REST API](#migrate-rest-api)
+  - [Migrate Services (local and remote)](#migrate-services-local-and-remote)
+  - [Migrate API transports](#migrate-api-transports)
+  - [Migrate Authentication & authorization](#migrate-authentication--authorization)
+  - [Migrate Introspection](#migrate-introspection)
 - [Overview of existing LB3 components](#overview-of-existing-lb3-components)
   - [Push notifications](#push-notifications)
   - [Storage component](#storage-component)
@@ -51,16 +56,6 @@ coming from._
 1. Expected component module layout and exports. How to structure the extension
    code to receive user-provided configuration & target app instance. What are
    the instructions for adding a LB4 component to a LB4 app.
-
-   TODOs for the migration guide based on @raymondfeng comments:
-
-   - Describe what a LB3 component can contribute to the application when it's
-     mounted.
-   - Maybe a diagram would help if it shows the handshake between an application
-     and a component as well as typical artifacts exported from a component.
-   - To some extent, a LB3 application asks its components to extend/patch the
-     app. In contrast, a LB4 application imports bindings (representing the
-     component's contribution to the app) from its components.
 
 2. A context shared by all parts of the application, allowing different layers
    to store and retrieve values like "the current user". In LB3, we have
@@ -203,95 +198,50 @@ coming from._
     information necessary to configure reverse-proxy routing rules (Kong, nginx,
     etc.).
 
-## Migration of component layout & instructions from mounting to an app
+## Migration
 
-### LB3 component layout & mounting
+See [Migrating components](../site/migration/components/overview.md)
 
-A LB3 component is implemented as a function accepting the target app object and
-the configuration options.
+### Migrate general aspects
 
-```ts
-module.exports = function initializeComponent(loopbackApplication, options) {
-  // impl
-};
-```
+> Component layout & instructions for mounting to an app
 
-A component is typically added to a LB3 application by creating a new entry in
-`server/component-config.json`, see
-[LoopBack components](https://loopback.io/doc/en/lb3/LoopBack-components.html).
+See
+[Migrating component project layout](../site/migration/components/project-layout.md).
 
-For example:
+> Migrate context
 
-```json
-{
-  "loopback-explorer": {
-    "mountPath": "/explorer"
-  }
-}
-```
+See
+[Migrating access to current context](../site/migration/components/current-context.md).
 
-This allows the component to receive configuration. App developers can provide
-environment-specific configuration by using `component-config.{env}.json` files.
+> Migrate mixins
 
-### Migration to LB4
+See
+[Migrating components contributing Model mixins](../site/migration/components/mixins.md)
 
-- How to add a component to a LB4 application?
-- How to configure the component?
-- How can a component receive the configuration object and the target
-  application?
+### Migrate Models, Entities and Repositories
 
-See the existing solutions:
+TBD
 
-- https://github.com/strongloop/loopback-next/tree/master/extensions/logging#basic-use
-- https://github.com/strongloop/loopback-next/tree/master/extensions/logging#configure-the-logging-component
-- https://github.com/strongloop/loopback-next/tree/master/extensions/apiconnect#usage
-- https://github.com/strongloop/loopback-next/tree/master/extensions/health#basic-use
-- https://github.com/strongloop/loopback-next/tree/master/extensions/metrics#basic-use
+### Migrate REST API
 
-Here is the current convention for adding a component to a LB4 app & configuring
-it:
+TBD
 
-Start by importing the component class:
+### Migrate Services (local and remote)
 
-```ts
-import {MetricsComponent} from '@loopback/extension-metrics';
-```
+TBD
 
-In the constructor, add the component to your application:
+### Migrate API transports
 
-```ts
-this.component(MetricsComponent);
-```
+TBD
 
-Configure the component by adding the following code to the app:
+### Migrate Authentication & authorization
 
-```ts
-this.configure(MetricsBindings.COMPONENT).to({
-  // the configuration
-});
-```
+TBD
 
-Obtaining the target app & the custom configuration inside the component:
+### Migrate Introspection
 
-```ts
-import {Application, Component, CoreBindings} from '@loopback/core';
-import {bind, config, ContextTags, inject} from '@loopback/context';
-import {MetricsBindings} from './keys';
-import {DEFAULT_METRICS_OPTIONS, MetricsOptions} from './types';
-
-@bind({tags: {[ContextTags.KEY]: MetricsBindings.COMPONENT}})
-export class MetricsComponent implements Component {
-  constructor(
-    @inject(CoreBindings.APPLICATION_INSTANCE)
-    private application: Application,
-    @config()
-    options: MetricsOptions = DEFAULT_METRICS_OPTIONS,
-  ) {
-    // ...
-  }
-  // ...
-}
-```
+TBD
 
 ## Overview of existing LB3 components
 
@@ -374,7 +324,7 @@ LB3 models to formally describe these entities.
 ### Logging components
 
 _NOTE: We already have a Winston-based logging extension, see
-[@loopback/logging](./extensions/logging/README.md)._
+[@loopback/logging](../../extensions/logging/README.md)._
 
 https://www.npmjs.com/package/loopback-component-bunyan
 

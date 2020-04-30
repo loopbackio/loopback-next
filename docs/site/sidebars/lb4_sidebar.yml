@@ -153,7 +153,7 @@ children:
     url: Access-databases.html
     output: 'web, pdf'
     children:
-      
+
     - title: 'Working with data'
       url: Working-with-data.html
       output: 'web, pdf'
@@ -864,8 +864,21 @@ children:
     output: 'web, pdf'
 
   - title: 'Components and extensions'
-    url: migration-extensions.html
+    url: migration-extensions-overview.html
     output: 'web, pdf'
+    children:
+
+    - title: 'Project layout'
+      url: migration-extensions-project-layout.html
+      output: 'web, pdf'
+
+    - title: 'Current context'
+      url: migration-extensions-current-context.html
+      output: 'web, pdf'
+
+    - title: 'Mixins'
+      url: migration-extensions-mixins.html
+      output: 'web, pdf'
 
   - title: 'Clients (API consumers)'
     url: migration-clients.html
