@@ -7,8 +7,12 @@
 
 const expect = require('@loopback/testlab').expect;
 const util = require('util');
+const path = require('path');
 const main = require('../../../lib/cli');
-const {expectToMatchSnapshot} = require('../../snapshots');
+const {
+  expectToMatchSnapshot,
+  expectFileToMatchSnapshot,
+} = require('../../snapshots');
 
 function getLog(buffer) {
   buffer = buffer || [];
@@ -35,13 +39,21 @@ describe('cli', () => {
 
   it('prints commands with --help', () => {
     const entries = [];
-    main({help: true, _: []}, getLog(entries), true);
+    main({help: true, dryRun: true, _: []}, getLog(entries));
     expectToMatchSnapshot(entries.join('\n'));
   });
 
   it('does not print commands with --help for a given command', () => {
     const entries = [];
-    main({help: true, _: ['app']}, getLog(entries), true);
+    main({help: true, dryRun: true, _: ['app']}, getLog(entries));
     expect(entries).to.not.containEql('Available commands:');
+  });
+
+  it('saves command metadata to .yo-rc.json', () => {
+    const entries = [];
+    main({meta: true}, getLog(entries));
+    const logs = entries.join('');
+    expect(logs).to.match(/\.yo-rc\.json is up to date./);
+    expectFileToMatchSnapshot(path.join(__dirname, '../../../.yo-rc.json'));
   });
 });
