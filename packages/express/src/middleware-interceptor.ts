@@ -5,16 +5,20 @@
 
 import {
   asGlobalInterceptor,
+  Binding,
   BindingKey,
   BindingScope,
   config,
   Constructor,
   Context,
   ContextTags,
+  ContextView,
   createBindingFromClass,
   GenericInterceptor,
+  inject,
   Interceptor,
   InvocationContext,
+  NamespacedReflect,
   Provider,
 } from '@loopback/core';
 import assert from 'assert';
@@ -26,6 +30,7 @@ import {
   ExpressMiddlewareFactory,
   ExpressRequestHandler,
   MiddlewareContext,
+  MiddlewareCreationOptions,
   MiddlewareInterceptorBindingOptions,
   Request,
   Response,
@@ -125,7 +130,10 @@ export function createInterceptor<CFG, CTX extends Context = InvocationContext>(
  * Base class for MiddlewareInterceptor provider classes
  *
  * @example
- * ```
+ *
+ * To inject the configuration without automatic reloading:
+ *
+ * ```ts
  * class SpyInterceptorProvider extends ExpressMiddlewareInterceptorProvider<
  *   SpyConfig
  *   > {
@@ -135,17 +143,92 @@ export function createInterceptor<CFG, CTX extends Context = InvocationContext>(
  * }
  * ```
  *
+ * To inject the configuration without automatic reloading:
+ * ```ts
+ * class SpyInterceptorProvider extends ExpressMiddlewareInterceptorProvider<
+ *   SpyConfig
+ * > {
+ *   constructor(@config.view() configView?: ContextView<SpyConfig>) {
+ *     super(spy, configView);
+ *   }
+ * }
+ * ```
+ *
  * @typeParam CFG - Configuration type
  */
-export abstract class ExpressMiddlewareInterceptorProvider<CFG>
-  implements Provider<Interceptor> {
+export abstract class ExpressMiddlewareInterceptorProvider<
+  CFG,
+  CTX extends Context = InvocationContext
+> implements Provider<GenericInterceptor<CTX>> {
+  protected middlewareConfigView?: ContextView<CFG>;
+  protected middlewareConfig?: CFG;
+
   constructor(
     protected middlewareFactory: ExpressMiddlewareFactory<CFG>,
-    protected middlewareConfig?: CFG,
-  ) {}
+    middlewareConfig?: CFG | ContextView<CFG>,
+  ) {
+    if (middlewareConfig != null && middlewareConfig instanceof ContextView) {
+      this.middlewareConfigView = middlewareConfig;
+    } else {
+      this.middlewareConfig = middlewareConfig;
+    }
+    this.setupConfigView();
+  }
 
-  value() {
-    return createInterceptor(this.middlewareFactory, this.middlewareConfig);
+  // Inject current binding for debugging
+  @inject.binding()
+  private binding?: Binding<GenericInterceptor<CTX>>;
+
+  /**
+   * Cached interceptor instance. It has three states:
+   *
+   * - undefined: Not initialized
+   * - null: To be recreated as the configuration is changed
+   * - function: The interceptor function created from the latest configuration
+   */
+  private interceptor?: GenericInterceptor<CTX> | null;
+
+  private setupConfigView() {
+    if (this.middlewareConfigView) {
+      // Set up a listener to reset the cached interceptor function for the
+      // first time
+      this.middlewareConfigView.on('refresh', () => {
+        if (this.binding != null) {
+          debug(
+            'Configuration change is detected for binding %s.' +
+              ' The Express middleware handler function will be recreated.',
+            this.binding.key,
+          );
+        }
+        this.interceptor = null;
+      });
+    }
+  }
+
+  value(): GenericInterceptor<CTX> {
+    return async (ctx, next) => {
+      // Get the latest configuration
+      if (this.middlewareConfigView != null) {
+        this.middlewareConfig =
+          (await this.middlewareConfigView.singleValue()) ??
+          this.middlewareConfig;
+      }
+
+      if (this.interceptor == null) {
+        // Create a new interceptor for the first time or recreate it if it
+        // was reset to `null` when its configuration changed
+        debug(
+          'Creating interceptor for %s with config',
+          this.middlewareFactory.name,
+          this.middlewareConfig,
+        );
+        this.interceptor = createInterceptor(
+          this.middlewareFactory,
+          this.middlewareConfig,
+        );
+      }
+      return this.interceptor(ctx, next);
+    };
   }
 }
 
@@ -164,8 +247,9 @@ export function defineInterceptorProvider<
 >(
   middlewareFactory: ExpressMiddlewareFactory<CFG>,
   defaultMiddlewareConfig?: CFG,
-  className?: string,
+  options?: MiddlewareCreationOptions,
 ): Constructor<Provider<GenericInterceptor<CTX>>> {
+  let className = options?.providerClassName;
   className = buildName(middlewareFactory, className);
   assert(className, 'className is missing and it cannot be inferred.');
 
@@ -178,11 +262,11 @@ export function defineInterceptorProvider<
        constructor(middlewareConfig) {
          super(
            middlewareFactory,
-           middlewareConfig != null ? middlewareConfig: defaultMiddlewareConfig,
+           middlewareConfig,
          );
-       }
-       value() {
-         return createInterceptor(this.middlewareFactory, this.middlewareConfig);
+         if (this.middlewareConfig == null) {
+           this.middlewareConfig = defaultMiddlewareConfig;
+         }
        }
      };`,
   );
@@ -193,7 +277,14 @@ export function defineInterceptorProvider<
     ExpressMiddlewareInterceptorProvider,
     createInterceptor,
   );
-  config()(cls, '', 0);
+  if (options?.injectConfiguration === 'watch') {
+    // Inject the config view
+    config.view()(cls, '', 0);
+    new NamespacedReflect().metadata('design:paramtypes', [ContextView])(cls);
+  } else {
+    // Inject the config
+    config()(cls, '', 0);
+  }
   return cls;
 }
 
@@ -260,7 +351,7 @@ export function registerExpressMiddlewareInterceptor<CFG>(
   const providerClass = defineInterceptorProvider(
     middlewareFactory,
     middlewareConfig,
-    options.providerClassName,
+    options,
   );
   const binding = createMiddlewareInterceptorBinding<CFG>(
     providerClass,
@@ -288,7 +379,7 @@ export function createMiddlewareInterceptorBinding<CFG>(
     ...options,
   };
   const binding = createBindingFromClass(middlewareProviderClass, {
-    defaultScope: BindingScope.TRANSIENT,
+    defaultScope: BindingScope.SINGLETON,
     namespace: 'interceptors',
   });
   if (options.global) {

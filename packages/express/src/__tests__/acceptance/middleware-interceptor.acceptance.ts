@@ -7,6 +7,7 @@ import {
   config,
   Constructor,
   Context,
+  ContextView,
   createBindingFromClass,
   Interceptor,
   Provider,
@@ -59,11 +60,9 @@ describe('Middleware interceptor', () => {
     });
 
     it('defines a middleware interceptor provider class with name', () => {
-      const cls = defineInterceptorProvider(
-        spy,
-        undefined,
-        'SpyMiddlewareInterceptorProvider',
-      );
+      const cls = defineInterceptorProvider(spy, undefined, {
+        providerClassName: 'SpyMiddlewareInterceptorProvider',
+      });
       expect(cls.name).to.eql('SpyMiddlewareInterceptorProvider');
       assertProviderClass(cls);
     });
@@ -75,6 +74,30 @@ describe('Middleware interceptor', () => {
       const corsFn = ctx.getSync(binding.key);
       expect(corsFn).to.be.a.Function();
     }
+  });
+
+  context('defineInterceptorProvider with watch', () => {
+    let spyConfig: SpyConfig;
+    before(() => {
+      spyConfig = {
+        action: 'log',
+      };
+      helper = new TestHelper();
+    });
+    before(givenTestApp);
+    after(() => helper?.stop());
+
+    it('reloads config changes', async () => {
+      const providerClass = defineInterceptorProvider(spy, spyConfig, {
+        injectConfiguration: 'watch',
+      });
+      const binding = createMiddlewareInterceptorBinding(providerClass);
+      helper.app.add(binding);
+      await testLocalSpyLog(binding.key);
+
+      helper.app.configure(binding.key).to({action: 'mock'});
+      await testLocalSpyMock(binding.key);
+    });
   });
 
   function runTests(action: SpyAction, testFn: TestFunction) {
@@ -145,8 +168,8 @@ describe('Middleware interceptor', () => {
         class SpyInterceptorProvider extends ExpressMiddlewareInterceptorProvider<
           SpyConfig
         > {
-          constructor(@config() _spyConfig?: SpyConfig) {
-            super(spy, _spyConfig);
+          constructor(@config.view() configView?: ContextView<SpyConfig>) {
+            super(spy, configView);
           }
         }
         const binding = createMiddlewareInterceptorBinding(
@@ -172,5 +195,11 @@ describe('Middleware interceptor', () => {
     helper.bindController(interceptor);
 
     await helper.assertSpyLog();
+  }
+
+  async function testLocalSpyMock(interceptor: InterceptorOrKey) {
+    helper.bindController(interceptor);
+
+    await helper.assertSpyMock();
   }
 });

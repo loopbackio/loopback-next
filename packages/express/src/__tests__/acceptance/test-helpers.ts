@@ -81,7 +81,7 @@ export class TestHelper {
     spyBinding: Binding<unknown>,
     action: SpyAction = 'log',
   ) {
-    this.app.expressServer.configure<SpyConfig>(spyBinding.key).to({action});
+    this.app.configure<SpyConfig>(spyBinding.key).to({action});
   }
 
   async testSpyLog(spyBinding: Binding<unknown>) {
