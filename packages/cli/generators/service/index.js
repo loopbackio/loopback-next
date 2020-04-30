@@ -335,7 +335,14 @@ module.exports = class ServiceGenerator extends ArtifactGenerator {
     if (!deps['@loopback/service-proxy']) {
       pkgs.push('@loopback/service-proxy');
     }
-    if (pkgs.length) this.npmInstall(pkgs, {save: true});
+
+    if (pkgs.length === 0) return;
+
+    this.pkgManagerInstall(pkgs, {
+      npm: {
+        save: true,
+      },
+    });
   }
 
   async end() {

@@ -15,6 +15,8 @@ const updateIndex = require('./update-index');
 const {checkLoopBackProject} = require('./version-helper');
 const g = require('./globalize');
 
+const supportedPackageManagers = ['npm', 'yarn'];
+
 debug('Is stdin interactive (isTTY)?', process.stdin.isTTY);
 
 /**
@@ -86,6 +88,12 @@ module.exports = class BaseGenerator extends Generator {
     this.option('format', {
       type: Boolean,
       description: g.f('Format generated code using npm run lint:fix'),
+    });
+
+    this.option('packageManager', {
+      type: String,
+      description: g.f('Change the default package manager'),
+      alias: 'pm',
     });
 
     this.artifactInfo = this.artifactInfo || {
@@ -163,6 +171,15 @@ module.exports = class BaseGenerator extends Generator {
       if (this.options[o] == null) {
         this.options[o] = opts[o];
       }
+    }
+
+    const packageManager =
+      this.options.packageManager || this.config.get('packageManager') || 'npm';
+    if (!supportedPackageManagers.includes(packageManager)) {
+      const supported = supportedPackageManagers.join(' or ');
+      this.exit(
+        `Package manager '${packageManager}' is not supported. Use ${supported}.`,
+      );
     }
   }
 
@@ -321,15 +338,32 @@ module.exports = class BaseGenerator extends Generator {
   }
 
   /**
-   * Run `npm install` in the project
+   * Select pkgManager and install packages
+   * @param {String|Array} pkgs
+   * @param {Object} options
+   * @param {Object} spawnOpts
+   */
+  pkgManagerInstall(pkgs, options = {}, spawnOpts) {
+    const pm = this.config.get('packageManager') || this.options.packageManager;
+    if (pm === 'yarn') {
+      return this.yarnInstall(pkgs, options.yarn, spawnOpts);
+    }
+    this.npmInstall(pkgs, options.npm, spawnOpts);
+  }
+
+  /**
+   * Run `[pkgManager] install` in the project
    */
   install() {
     if (this.shouldExit()) return false;
-    const opts = this.options.npmInstall || {};
+    const opts = {
+      npm: this.options.npmInstall,
+      yarn: this.options.yarnInstall,
+    };
     const spawnOpts = Object.assign({}, this.options.spawn, {
       cwd: this.destinationRoot(),
     });
-    this.npmInstall(null, opts, spawnOpts);
+    this.pkgManagerInstall(null, opts, spawnOpts);
   }
 
   /**

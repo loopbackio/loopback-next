@@ -38,7 +38,11 @@ describe('lb4 copyright for monorepo', function () {
           additionalFiles: SANDBOX_FILES,
         }),
       )
-      .withOptions({gitOnly: false, owner: 'ACME Inc.', license: 'MIT'});
+      .withOptions({
+        gitOnly: false,
+        owner: 'ACME Inc.',
+        license: 'MIT',
+      });
     assertHeader(
       ['packages/pkg1/src/application.ts', 'packages/pkg1/lib/no-header.js'],
       `// Copyright ACME Inc. ${year}. All Rights Reserved.`,
