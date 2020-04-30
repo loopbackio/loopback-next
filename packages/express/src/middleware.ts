@@ -111,7 +111,7 @@ export function registerExpressMiddleware<CFG>(
   const providerClass = defineInterceptorProvider<CFG, MiddlewareContext>(
     middlewareFactory,
     middlewareConfig,
-    options.providerClassName,
+    options,
   );
   return registerMiddleware(ctx, providerClass, options);
 }

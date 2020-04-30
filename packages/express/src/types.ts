@@ -177,9 +177,10 @@ export interface MiddlewareCreationOptions {
    * lazily.
    *
    * - `true` (default): creates a provider class with `@config`
-   * - `false`: creates a dynamic value that creates the middleware
+   * - `false`: No configuration injection is supported
+   * - 'watch': creates a provider class with `@config.view`
    */
-  injectConfiguration?: boolean;
+  injectConfiguration?: boolean | 'watch';
   /**
    * Class name for the created provider class. It's only used if
    * `injectConfiguration` is not set to `false`.

@@ -58,7 +58,7 @@ export class TodoListApplication extends BootMixin(
       },
     };
     this.expressMiddleware(morganFactory, defaultConfig, {
-      injectConfiguration: true,
+      injectConfiguration: 'watch',
       key: 'middleware.morgan',
     });
   }

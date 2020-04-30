@@ -135,7 +135,7 @@ export class MyApplication extends RestApplication {
       {
         // Allow configuration to be injected to allow dynamic changes to
         // morgan logging by configuring `middleware.morgan` to a new value
-        injectConfiguration: true,
+        injectConfiguration: 'watch',
         key: 'middleware.morgan',
       },
     );
