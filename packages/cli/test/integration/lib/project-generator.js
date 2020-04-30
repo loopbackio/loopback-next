@@ -136,6 +136,13 @@ module.exports = function (projGenerator, props, projectType) {
           assert(helpText.match(/--vscode/));
           assert(helpText.match(/# Use preconfigured VSCode settings/));
         });
+
+        it('has packageManager option set up', () => {
+          const gen = testUtils.testSetUpGen(projGenerator);
+          const helpText = gen.help();
+          assert(helpText.match(/--packageManager/));
+          assert(helpText.match(/# Change the default package manager/));
+        });
       });
     });
 
@@ -493,6 +500,73 @@ module.exports = function (projGenerator, props, projectType) {
         assert.jsonFileContent('package.json', {
           name: props.name,
           description: props.name,
+        });
+      });
+    });
+
+    describe('set npm packageManager', () => {
+      before(() => {
+        return helpers.run(projGenerator).withOptions({
+          packageManager: 'npm',
+        });
+      });
+      it('check .yo-rc.json', () => {
+        assert.file('.yo-rc.json');
+        assert.jsonFileContent('.yo-rc.json', {
+          '@loopback/cli': {
+            packageManager: 'npm',
+          },
+        });
+      });
+    });
+
+    describe('set yarn packageManager', () => {
+      before(() => {
+        return helpers.run(projGenerator).withOptions({
+          packageManager: 'yarn',
+        });
+      });
+      it('check .yo-rc.json', () => {
+        assert.file('.yo-rc.json');
+        assert.jsonFileContent('.yo-rc.json', {
+          '@loopback/cli': {
+            packageManager: 'yarn',
+          },
+        });
+      });
+    });
+
+    describe('set invalid packageManager', () => {
+      it('get invalid error', () => {
+        const result = testUtils
+          .executeGenerator(projGenerator)
+          .withOptions({packageManager: 'invalidPkgManager'})
+          .toPromise();
+
+        return expect(result).to.be.rejectedWith(
+          /Package manager 'invalidPkgManager' is not supported\. Use npm or yarn\./,
+        );
+      });
+    });
+
+    describe('test yarn prompt', () => {
+      before(() => {
+        return helpers.run(projGenerator).withPrompts(
+          Object.assign(
+            {
+              yarn: true,
+            },
+            props,
+          ),
+        );
+      });
+
+      it('check .yo-rc.json', () => {
+        assert.file('.yo-rc.json');
+        assert.jsonFileContent('.yo-rc.json', {
+          '@loopback/cli': {
+            packageManager: 'yarn',
+          },
         });
       });
     });

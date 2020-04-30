@@ -493,7 +493,14 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
         this.log(err);
       }
     }
-    if (pkgs.length) this.npmInstall(pkgs, {save: true});
+
+    if (pkgs.length === 0) return;
+
+    this.pkgManagerInstall(pkgs, {
+      npm: {
+        save: true,
+      },
+    });
   }
 
   async end() {

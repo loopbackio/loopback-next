@@ -217,13 +217,35 @@ module.exports = class ProjectGenerator extends BaseGenerator {
     });
   }
 
+  promptYarnInstall() {
+    if (this.shouldExit()) return false;
+    const prompts = [
+      {
+        type: 'confirm',
+        name: 'yarn',
+        message: g.f('Yarn is available. Do you prefer to use it by default?'),
+        when:
+          !this.options.packageManager &&
+          this.spawnCommandSync('yarn', ['help'], {stdio: false}).status === 0,
+        default: false,
+      },
+    ];
+
+    return this.prompt(prompts).then(props => {
+      if (props.yarn) {
+        this.options.packageManager = 'yarn';
+      }
+    });
+  }
+
   scaffold() {
     if (this.shouldExit()) return false;
 
     this.destinationRoot(this.projectInfo.outdir);
 
-    // Store original cli version in .yo.rc.json
+    // Store information for cli operation in .yo.rc.json
     this.config.set('version', cliVersion);
+    this.config.set('packageManager', this.options.packageManager || 'npm');
 
     // First copy common files from ../../project/templates
     this.copyTemplatedFiles(

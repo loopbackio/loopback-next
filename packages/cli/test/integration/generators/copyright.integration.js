@@ -61,7 +61,11 @@ describe('lb4 copyright', function () {
           additionalFiles: SANDBOX_FILES,
         }),
       )
-      .withOptions({owner: 'ACME Inc.', license: 'ISC', gitOnly: false});
+      .withOptions({
+        owner: 'ACME Inc.',
+        license: 'ISC',
+        gitOnly: false,
+      });
 
     assertHeader(
       ['src/application.ts', 'lib/no-header.js'],

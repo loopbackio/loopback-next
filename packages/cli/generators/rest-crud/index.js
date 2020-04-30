@@ -369,7 +369,13 @@ module.exports = class RestCrudGenerator extends ArtifactGenerator {
       pkgs.push(`@loopback/rest-crud@${version}`);
     }
 
-    if (pkgs.length) this.npmInstall(pkgs, {save: true});
+    if (pkgs.length === 0) return;
+
+    this.pkgManagerInstall(pkgs, {
+      npm: {
+        save: true,
+      },
+    });
   }
 
   async end() {

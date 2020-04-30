@@ -163,7 +163,7 @@ function updateDependencies(generator) {
     chalk.red('Upgrading dependencies may break the current project.'),
   );
   generator.fs.writeJSON(generator.destinationPath('package.json'), pkg);
-  generator.npmInstall();
+  generator.pkgManagerInstall();
 }
 
 /**

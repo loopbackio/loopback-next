@@ -1,12 +1,13 @@
 sudo: false
 language: node_js
+
+os:
+  - linux
+
 node_js:
   - "10"
   - "12"
   - "14"
-
-os:
-  - linux
 
 script:
   - npm run postinstall
@@ -14,17 +15,27 @@ script:
   - npm run test:ci
 
 env: TASK=test
+
+cache:
+  yarn: true
+
+before_install: npm i -g yarn
+
 install: npm ci --ignore-scripts
 
 after_success:
   - if [[ "${TRAVIS_OS_NAME}" == "linux" ]] && [[ $(echo $TRAVIS_NODE_VERSION | cut -d'.' -f1) == "10" ]]; then npm run coverage:ci; fi
 
-matrix:
+branches:
+  only:
+    - master
+
+jobs:
   include:
     - node_js: "12"
       os: osx
-      # using the default script to build & run the tests
 
+      # using the default script to build & run the tests
     - node_js: "12"
       os: linux
       env: TASK=code-lint
@@ -34,16 +45,19 @@ matrix:
       script:
         - lerna bootstrap
         - npm run lint
+
     - node_js: "12"
       os: linux
       env: TASK=commit-lint
       script: commitlint-travis
+
     - node_js: "12"
       os: linux
       env: TASK=verify-docs
       # The default npm for node v12.16.1 (npm v6.13.4) fails with cb() never called
       before_install: npm i -g npm
       script: ./bin/verify-doc-changes.sh
+
     - node_js: "12"
       os: linux
       env:
@@ -53,6 +67,7 @@ matrix:
       script:
         - lerna bootstrap --scope "@loopback/test-repository-mongodb" --include-dependencies
         - cd acceptance/repository-mongodb && npm test
+
     - node_js: "12"
       os: linux
       env:
@@ -69,6 +84,7 @@ matrix:
       script:
         - lerna bootstrap --scope "@loopback/test-repository-mysql" --include-dependencies
         - cd acceptance/repository-mysql && npm test
+
     - node_js: "12"
       os: linux
       env:
@@ -80,6 +96,7 @@ matrix:
         - lerna bootstrap --scope "@loopback/test-repository-postgresql" --include-dependencies
         - psql -U postgres -a -f acceptance/repository-postgresql/test/schema.sql
         - cd acceptance/repository-postgresql && npm test
+
     - node_js: "12"
       os: linux
       env:
@@ -89,6 +106,7 @@ matrix:
         - lerna bootstrap --scope "@loopback/test-repository-cloudant" --include-dependencies
         - cd acceptance/repository-cloudant && sh setup.sh
         - npm test
+
     - node_js: "12"
       os: linux
       env:
@@ -98,7 +116,3 @@ matrix:
       script:
         - lerna bootstrap --scope "@loopback/test-extension-logging-fluentd" --include-dependencies
         - cd acceptance/extension-logging-fluentd && npm test
-
-branches:
-  only:
-    - master

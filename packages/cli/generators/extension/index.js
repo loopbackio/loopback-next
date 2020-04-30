@@ -27,19 +27,22 @@ module.exports = class ExtensionGenerator extends ProjectGenerator {
   }
 
   setOptions() {
+    if (this.shouldExit()) return;
     return super.setOptions();
   }
 
   promptProjectName() {
+    if (this.shouldExit()) return;
     return super.promptProjectName();
   }
 
   promptProjectDir() {
+    if (this.shouldExit()) return;
     return super.promptProjectDir();
   }
 
   promptComponent() {
-    if (this.shouldExit()) return false;
+    if (this.shouldExit()) return;
     const prompts = [
       {
         type: 'input',
@@ -56,7 +59,13 @@ module.exports = class ExtensionGenerator extends ProjectGenerator {
   }
 
   promptOptions() {
+    if (this.shouldExit()) return;
     return super.promptOptions();
+  }
+
+  promptYarnInstall() {
+    if (this.shouldExit()) return;
+    return super.promptYarnInstall();
   }
 
   scaffold() {

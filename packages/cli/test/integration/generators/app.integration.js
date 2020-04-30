@@ -142,6 +142,7 @@ function testFormat() {
         skipInstall: false,
         // Disable npm log and progress bar
         npmInstall: {silent: true, progress: false},
+        yarnInstall: {silent: true},
         // Disable npm stdio
         spawn: {
           stdio: 'ignore',
