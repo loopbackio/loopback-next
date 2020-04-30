@@ -38,10 +38,10 @@ In your test file:
 
   ```ts
   // can use lb4's testlab's supertest as the dependency is already installed
-  const supertest = require('@loopback/testlab').supertest;
+  const {supertest} = require('@loopback/testlab');
   const assert = require('assert');
   const should = require('should');
-  const ExpressServer = require('../../dist/server').ExpressServer;
+  const {ExpressServer} = require('../../dist/server');
 
   let app;
 
@@ -130,6 +130,9 @@ before(async () => {
   CoffeeShop = await app.lbApp.get('lb3-models.CoffeeShop');
 });
 ```
+
+Additionally, LB3 datasources are also bound to the LB4 application's context
+and can be retrieved with a key in the syntax `lb3-datasources.{ds name}`.
 
 Example integration tests can be found in
 [`examples/lb3-application/lb3app/test/integration.js`](https://github.com/strongloop/loopback-next/blob/spike/lb3test/examples/lb3-application/lb3app/test/integration.js).

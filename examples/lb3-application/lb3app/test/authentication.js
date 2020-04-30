@@ -5,9 +5,9 @@
 
 'use strict';
 const lb3App = require('../server/server');
-const supertest = require('@loopback/testlab').supertest;
+const {supertest} = require('@loopback/testlab');
 const assert = require('assert');
-const ExpressServer = require('../../dist/server').ExpressServer;
+const {ExpressServer} = require('../../dist/server');
 require('should');
 
 let app;
@@ -40,25 +40,30 @@ describe('LoopBack 3 authentication', function () {
     });
 
     it('creates a User and logs them in and out', function (done) {
-      User.create({email: 'new@email.com', password: 'L00pBack!'}, function (
-        err,
-        user,
-      ) {
-        assert.equal(user.email, 'new@email.com');
-        User.login(
-          {
-            email: 'new@email.com',
-            password: 'L00pBack!',
-          },
-          function (err2, token) {
-            token.should.have.properties('ttl', 'userId', 'created', 'id');
-            assert.equal(token.userId, user.id);
-            User.logout(token.id);
-            User.deleteById(user.id);
-          },
-        );
-        done();
-      });
+      request('post', '/api/users')
+        .send({email: 'new@email.com', password: 'L00pBack!'})
+        .expect(200, function (err, user) {
+          assert.equal(user.body.email, 'new@email.com');
+          request('post', '/api/users/login')
+            .send({
+              email: 'new@email.com',
+              password: 'L00pBack!',
+            })
+            .expect(200, function (err2, token) {
+              token.body.should.have.properties(
+                'ttl',
+                'userId',
+                'created',
+                'id',
+              );
+              assert.equal(token.body.userId, user.body.id);
+              request(
+                'post',
+                `/api/users/logout?access_token=${token.body.id}`,
+              ).expect(204);
+              done();
+            });
+        });
     });
 
     it('rejects anonymous requests to protected endpoints', function (done) {
@@ -69,12 +74,12 @@ describe('LoopBack 3 authentication', function () {
     });
 
     it('makes an authenticated request', function (done) {
-      User.create({email: 'new@email.com', password: 'L00pBack!'}, function (
+      User.create({email: 'new@gmail.com', password: 'L00pBack!'}, function (
         err,
         user,
       ) {
-        user.email.should.be.equal('new@email.com');
-        User.login({email: 'new@email.com', password: 'L00pBack!'}, function (
+        user.email.should.be.equal('new@gmail.com');
+        User.login({email: 'new@gmail.com', password: 'L00pBack!'}, function (
           err2,
           token,
         ) {

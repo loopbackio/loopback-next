@@ -252,7 +252,7 @@ describe('booter-lb3app', () => {
 
     it('binds model to the context', async () => {
       const expected = require('../../../fixtures/app-with-model').models.Color;
-      const modelBindings = app.findByTag('model');
+      const modelBindings = app.findByTag('lb3-model');
       const key = modelBindings[0].key;
       const model = await app.get(key);
       expect(model).to.eql(expected);

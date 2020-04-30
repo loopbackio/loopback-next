@@ -4,9 +4,9 @@
 // License text available at https://opensource.org/licenses/MIT
 
 'use strict';
-const supertest = require('@loopback/testlab').supertest;
+const {supertest} = require('@loopback/testlab');
 const assert = require('assert');
-const ExpressServer = require('../../dist/server').ExpressServer;
+const {ExpressServer} = require('../../dist/server');
 require('should');
 
 let app;
