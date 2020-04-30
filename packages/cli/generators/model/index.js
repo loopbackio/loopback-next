@@ -444,7 +444,8 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
           when: answers => {
             return (
               ![null, 'buffer', 'any'].includes(answers.type) &&
-              !answers.generated
+              !answers.generated &&
+              answers.required !== true
             );
           },
         },
