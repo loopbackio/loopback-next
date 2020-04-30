@@ -100,6 +100,52 @@ To update dependencies in the `package.json`, you can use `npm update` or
 may be broken due to dependency changes. Please make sure build/test/run are
 still passing after the upgrade.
 
+## Install shell autocompletion
+
+To enable shell autocompletion with the `tab` key:
+
+```
+lb4 install-completion
+? Which Shell do you use ? (Use arrow keys)
+❯ bash
+  zsh
+  fish
+? Which Shell do you use ? bash
+? We will install completion to ~/.bashrc, is it ok ? Yes
+=> Tabtab line already exists in ~/.config/tabtab/__tabtab.bash file
+=> Tabtab line already exists in ~/.bashrc file
+=> Wrote completion script to /Users/<user>/.config/tabtab/lb4.bash file
+
+      => Tabtab source line added to ~/.bashrc for lb4 package.
+
+      Make sure to reload your SHELL.
+```
+
+Now you can type `lb4` followed by pressing the `tab` keys twice to be prompted
+for auto completion, including commands and options.
+
+```sh
+$ lb4
+app                example            observer           service
+controller         extension          openapi            update
+copyright          import-lb3-models  relation
+datasource         interceptor        repository
+discover           model              rest-crud
+```
+
+```sh
+$ lb4 controller --
+--ask-answered    --force-install   --skip-cache
+--config          --format          --skip-install
+--controllerType  --help            --yes
+```
+
+To uninstall it, run:
+
+```sh
+lb4 uninstall-completion
+```
+
 ## Naming Convention
 
 LoopBack 4 uses different convention for naming classes, variables, and files.

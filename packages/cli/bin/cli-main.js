@@ -8,6 +8,13 @@
 
 const pkg = require('../package.json');
 const semver = require('semver');
+const fs = require('fs-extra');
+const path = require('path');
+
+const {
+  tabCompletionCommands,
+  runTabCompletionCommand,
+} = require('../lib/tab-completion');
 
 // Make sure node version meets the requirement. This code intentionally only
 // uses ES5 features so that it can be run with lower versions of Node
@@ -24,7 +31,6 @@ if (!ok) {
 // Intentionally have a separate `main.js` which can use JS features
 // supported by required version of Node
 const minimist = require('minimist');
-const main = require('../lib/cli');
 const opts = minimist(process.argv.slice(2), {
   alias: {
     version: 'v', // --version or -v: print versions
@@ -33,6 +39,16 @@ const opts = minimist(process.argv.slice(2), {
   },
 });
 
+const args = opts._;
+
+const originalCommand = args[0];
+if (tabCompletionCommands.includes(originalCommand)) {
+  const yoJsonFile = path.join(__dirname, '../.yo-rc.json');
+  const config = fs.readJsonSync(yoJsonFile);
+  return runTabCompletionCommand(config.commands, originalCommand, console.log);
+}
+
+const main = require('../lib/cli');
 const updateNotifier = require('update-notifier');
 // Force version check with `lb4 --version`
 const interval = opts.version ? 0 : undefined;
