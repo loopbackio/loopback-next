@@ -87,7 +87,7 @@ export async function main() {
   }
   const server: ExpressServer = await startApplication(
     oauth2Providers,
-    '../data/db.json',
+    process.env.DB_BKP_FILE_PATH, // eg: export DB_BKP_FILE_PATH=../data/db.json
   );
   console.log(`Server is running at ${server.url}`);
 }

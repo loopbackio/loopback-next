@@ -34,6 +34,16 @@ party apps
 - [Google](https://console.developers.google.com/project)
 - [twitter](https://apps.twitter.com/) **Not yet implemented**
 
+## Authentication using passport strategies as Express midddleware
+
+Take a look at how to use passport strategies
+[as Express middleware using interceptors](src/authentication-interceptors)
+
+## Authentication using passport strategies as a step in Application Sequence
+
+Take a look at how to use passport strategies
+[by invoking independent of Express](src/authentication-strategies)
+
 ## Install the example locally
 
 1. Run the `lb4 example` command to install `example-passport-login` repository:

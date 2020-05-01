@@ -3,22 +3,16 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {
-  asAuthStrategy,
-  AuthenticationStrategy,
-  UserIdentityService,
-} from '@loopback/authentication';
+import {asAuthStrategy, AuthenticationStrategy} from '@loopback/authentication';
 import {StrategyAdapter} from '@loopback/authentication-passport';
-import {Profile} from 'passport';
-import {Strategy, StrategyOption} from 'passport-facebook';
+import {Strategy} from 'passport-facebook';
 import {bind, inject} from '@loopback/context';
-import {UserServiceBindings} from '../services';
 import {extensionFor} from '@loopback/core';
 import {UserProfile} from '@loopback/security';
 import {User} from '../models';
 import {Request, RedirectRoute} from '@loopback/rest';
 import {PassportAuthenticationBindings} from './types';
-import {verifyFunctionFactory, mapProfile} from './types';
+import {mapProfile} from './types';
 
 @bind(
   asAuthStrategy,
@@ -27,23 +21,16 @@ import {verifyFunctionFactory, mapProfile} from './types';
 export class FaceBookOauth2Authorization implements AuthenticationStrategy {
   name = 'oauth2-facebook';
   protected strategy: StrategyAdapter<User>;
-  passportstrategy: Strategy;
 
   /**
    * create an oauth2 strategy for facebook
    */
   constructor(
-    @inject(UserServiceBindings.PASSPORT_USER_IDENTITY_SERVICE)
-    public userService: UserIdentityService<Profile, User>,
-    @inject('facebookOAuth2Options')
-    public facebookOptions: StrategyOption,
+    @inject('facebookStrategy')
+    public passportStrategy: Strategy,
   ) {
-    this.passportstrategy = new Strategy(
-      facebookOptions,
-      verifyFunctionFactory(userService).bind(this),
-    );
     this.strategy = new StrategyAdapter(
-      this.passportstrategy,
+      this.passportStrategy,
       this.name,
       mapProfile.bind(this),
     );
