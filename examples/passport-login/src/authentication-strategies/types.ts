@@ -98,23 +98,7 @@ export const mapProfile = function (user: User): UserProfile {
   return userProfile;
 };
 
-export class PassportInitMW implements Provider<Interceptor> {
-  constructor() {}
-
-  value<Interceptor>() {
-    return toInterceptor(passport.initialize());
-  }
-}
-
-export class PassportSessionMW implements Provider<Interceptor> {
-  constructor() {}
-
-  value<Interceptor>() {
-    return toInterceptor(passport.session());
-  }
-}
-
-export class FacebookOauth2MW implements Provider<Interceptor> {
+export class FacebookOauth implements Provider<Interceptor> {
   constructor(
     @inject('facebookOAuth2Options')
     public facebookOptions: StrategyOption,
