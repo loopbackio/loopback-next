@@ -18,6 +18,21 @@ import {Type} from './types';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 export interface JsonSchemaWithExtensions extends JsonSchema {
+  /**
+   * A custom AJV error message if the JSON schema validation fails. See
+   * {@link https://loopback.io/doc/en/lb4/Parsing-requests.html#custom-error-messages | Custom error messages}.
+   *
+   * @example
+   * ```ts
+   * errorMessage: 'Generic error message for JSON schema validation'
+   * ```
+   */
+  errorMessage: string | AnyObject;
+
+  /**
+   * Allow custom keywords, see
+   * {@link https://github.com/epoberezkin/ajv-keywords}.
+   */
   [attributes: string]: any;
 }
 
