@@ -16,7 +16,7 @@ import {
   Subscription,
 } from '@loopback/context';
 import {Application, CoreBindings, Server} from '@loopback/core';
-import {ExpressRequestHandler, MiddlewareRegistry} from '@loopback/express';
+import {BaseMiddlewareRegistry, ExpressRequestHandler} from '@loopback/express';
 import {HttpServer, HttpServerOptions} from '@loopback/http-server';
 import {
   getControllerSpec,
@@ -101,7 +101,7 @@ const SequenceActions = RestBindings.SequenceActions;
  * const server = await app.get('servers.foo');
  * ```
  */
-export class RestServer extends MiddlewareRegistry
+export class RestServer extends BaseMiddlewareRegistry
   implements Server, HttpServerLike {
   /**
    * Handle incoming HTTP(S) request by invoking the corresponding
