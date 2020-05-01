@@ -32,13 +32,17 @@ There are a few ways to create a binding:
 - Use `Binding` constructor:
 
   ```ts
+  const context = new Context();
   const binding = new Binding('my-key');
+  ctx.add(binding);
   ```
 
 - Use `Binding.bind()`
 
   ```ts
+  const context = new Context();
   const binding = Binding.bind('my-key');
+  ctx.add(binding);
   ```
 
 - Use `context.bind()`
@@ -524,7 +528,7 @@ parameter of `BindingFromClassOptions` type with the following settings:
 {% include note.html content=" The `@bind` decorator only adds metadata to the
 class. It does NOT automatically bind the class to a context. To bind a class
 with `@bind` decoration, the following step needs to happen explicitly or
-implicitly (by a booter).
+implicitly by a [booter](Booting-an-Application.md#booters).
 
 ```ts
 const binding = createBindingFromClass(AClassOrProviderWithBindDecoration);
@@ -543,6 +547,55 @@ const binding = ctx.bind('my-key').toClass(MyService);
 ```
 
 " %}
+
+#### When to call createBindingFromClass
+
+Classes that are placed in specific directories such as : `src/datasources`,
+`src/controllers`, `src/services`, `src/repositories`, `src/observers`,
+`src/interceptors`, etc are automatically registered by
+[the boot process](Booting-an-Application.md), and so it is **not** necessary to
+call
+
+```ts
+const binding = createBindingFromClass(AClassOrProviderWithBindDecoration);
+ctx.add(binding);
+```
+
+in your application.
+
+If, on the other hand, your classes are placed in different directories expected
+by the boot process, then it is necessary to call the code above in your
+application.
+
+##### How the Boot Process Calls createBindingFromClass for you
+
+A default LoopBack 4 application uses
+[BootMixin](Booting-an-Application.md#bootmixin) which loads the
+[BootComponent](Booting-an-Application.md#bootcomponent). It declares the main
+[booters](https://github.com/strongloop/loopback-next/blob/a81ce7e1193f7408d30d984d0c3ddcec74f7c316/packages/boot/src/boot.component.ts#L29)
+for an application : application metadata, controllers, repositories, services,
+datasources, lifecycle observers, interceptors, and model api. The
+[ControllerBooter](https://github.com/strongloop/loopback-next/blob/a81ce7e1193f7408d30d984d0c3ddcec74f7c316/packages/boot/src/booters/controller.booter.ts#L23),
+for example, calls `this.app.controller(controllerClass)` for every controller
+class discovered in the `controllers` folder. This
+[method](https://github.com/strongloop/loopback-next/blob/da9a7e72b12ebb9250214b92dc20a268a8bb7e95/packages/core/src/application.ts#L124)
+does all the work for you; as shown below:
+
+{% include code-caption.html content="loopback-next/packages/core/src/application.ts" %}
+
+```ts
+  controller(controllerCtor: ControllerClass, name?: string): Binding {
+    debug('Adding controller %s', name ?? controllerCtor.name);
+    const binding = createBindingFromClass(controllerCtor, {
+      name,
+      namespace: CoreBindings.CONTROLLERS,
+      type: CoreTags.CONTROLLER,
+      defaultScope: BindingScope.TRANSIENT,
+    });
+    this.add(binding);
+    return binding;
+  }
+```
 
 ### Encoding value types in binding keys
 

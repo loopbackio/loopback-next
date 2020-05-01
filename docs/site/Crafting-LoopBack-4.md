@@ -421,7 +421,7 @@ independent of the nature of such artifacts.
     need to have a packaging model so that extension developers can create their
     own modules as bundles and plug into a LoopBack application.
 
-### Why Express behind the scene?
+### Why Express behind the scenes?
 
 #### Background
 

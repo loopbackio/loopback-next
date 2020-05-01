@@ -270,7 +270,7 @@ children:
         url: Validation-ORM-layer.html
         output: 'web, pdf'
 
-- title: 'Behind the Scene'
+- title: 'Behind the Scenes'
   url: Behind-the-scene.html
   output: 'web, pdf'
   children:
