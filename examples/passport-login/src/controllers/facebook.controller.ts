@@ -10,7 +10,7 @@ import {
   RequestWithSession,
 } from '@loopback/rest';
 import {inject, intercept} from '@loopback/core';
-import {SecurityBindings, UserProfile} from '@loopback/security';
+import {UserProfile} from '@loopback/security';
 
 /**
  * Login controller for facebook
@@ -19,9 +19,7 @@ export class FacebookController {
   constructor(
   ) {}
 
-  @intercept('PassportInitMW')
-  @intercept('PassportSessionMW')
-  @intercept('FacebookOauth2MW')
+  @intercept('passport-init-mw', 'passport-session-mw', 'passport-facebook')
   @get('/auth/facebook')
   /**
    * Endpoint: '/auth/facebook'
@@ -40,20 +38,18 @@ export class FacebookController {
     return response;
   }
 
-  @intercept('PassportInitMW')
-  @intercept('PassportSessionMW')
-  @intercept('FacebookOauth2MW')
+  @intercept('passport-init-mw', 'passport-session-mw', 'passport-facebook')
   @get('/facebook/callback')
   /**
    * Endpoint: '/auth/facebook/callback'
    */
   async thirdPartyCallBack(
-    @inject(SecurityBindings.USER) user: UserProfile,
     @inject(RestBindings.Http.REQUEST) request: RequestWithSession,
     @inject(RestBindings.Http.RESPONSE) response: Response,
   ) {
+    let user: any = request.user;
     const profile = {
-      ...user.profile,
+      ...user,
     };
     request.session.user = profile;
     response.redirect('/auth/account');
