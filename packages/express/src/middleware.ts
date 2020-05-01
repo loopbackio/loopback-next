@@ -43,16 +43,29 @@ const debug = debugFactory('loopback:middleware');
 /**
  * An adapter function to create a LoopBack middleware that invokes the list
  * of Express middleware handler functions in the order of their positions
- *
- * @param handlers A list of Express middleware handler functions
+ * @example
+ * ```ts
+ * toMiddleware(fn);
+ * toMiddleware(fn1, fn2, fn3);
+ * ```
+ * @param firstHandler - An Express middleware handler
+ * @param additionalHandlers A list of Express middleware handler functions
  * @returns A LoopBack middleware function that wraps the list of Express
  * middleware
  */
-export function toMiddleware(...handlers: ExpressRequestHandler[]): Middleware {
+export function toMiddleware(
+  firstHandler: ExpressRequestHandler,
+  ...additionalHandlers: ExpressRequestHandler[]
+): Middleware {
+  if (additionalHandlers.length === 0) return toInterceptor(firstHandler);
+  const handlers = [firstHandler, ...additionalHandlers];
   const middlewareList = handlers.map(handler =>
     toInterceptor<MiddlewareContext>(handler),
   );
   return (middlewareCtx, next) => {
+    if (middlewareList.length === 1) {
+      return middlewareList[0](middlewareCtx, next);
+    }
     const middlewareChain = new MiddlewareChain(middlewareCtx, middlewareList);
     const result = middlewareChain.invokeInterceptors();
     return transformValueOrPromise(result, val =>
@@ -244,7 +257,10 @@ export function invokeExpressMiddleware(
   middlewareCtx: MiddlewareContext,
   ...handlers: ExpressRequestHandler[]
 ): ValueOrPromise<boolean> {
-  const middleware = toMiddleware(...handlers);
+  if (handlers.length === 0) {
+    throw new Error('No Express middleware handler function is provided.');
+  }
+  const middleware = toMiddleware(handlers[0], ...handlers.slice(1));
   debug(
     'Invoke Express middleware for %s %s',
     middlewareCtx.request.method,

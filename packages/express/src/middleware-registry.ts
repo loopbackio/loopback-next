@@ -95,23 +95,18 @@ export abstract class MiddlewareRegistry extends Context {
       const handlers = Array.isArray(configOrHandlers)
         ? configOrHandlers
         : [configOrHandlers as ExpressRequestHandler];
+      // Create middleware that wraps all Express handlers
       if (handlers.length === 0) {
         throw new Error('No Express middleware handler function is provided.');
       }
-      if (handlers.length > 1) {
-        // Create middleware that wraps all Express handlers
-        return registerMiddleware(this, toMiddleware(...handlers), {
+      return registerMiddleware(
+        this,
+        toMiddleware(handlers[0], ...handlers.slice(1)),
+        {
           ...options,
           key,
-        });
-      } else {
-        // Use the single Express middleware handler
-        return registerExpressMiddleware(this, () => handlers[0], undefined, {
-          ...options,
-          key,
-          injectConfiguration: false,
-        });
-      }
+        },
+      );
     } else {
       return registerExpressMiddleware(
         this,

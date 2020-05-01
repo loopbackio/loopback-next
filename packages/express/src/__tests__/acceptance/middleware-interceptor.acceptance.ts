@@ -46,6 +46,23 @@ describe('Middleware interceptor', () => {
       await testLocalSpyLog(interceptor);
     });
 
+    it('wraps multiple middleware handlers to interceptor', async () => {
+      const log = spy({action: 'log'});
+      const mock = spy({action: 'mock'});
+
+      // Chain two Express middleware into one interceptor
+      const interceptor = toInterceptor(log, mock);
+      helper.bindController(interceptor);
+
+      await helper.client
+        .post('/hello')
+        .send('"World"')
+        .set('content-type', 'application/json')
+        .expect(200, 'Hello, Spy')
+        .expect('x-spy-log', 'POST /hello')
+        .expect('x-spy-mock', 'POST /hello');
+    });
+
     it('wraps a middleware factory to interceptor', async () => {
       const interceptor = createInterceptor(spy, spyConfig);
       await testLocalSpyLog(interceptor);
