@@ -183,7 +183,7 @@ To set other types of value providers such as `toDynamicValue`or `toClass`, use
 `@inject.binding` injects a binding for the given key. It can be used to bind
 various types of value providers to the underlying binding or configure the
 binding. This is an advanced form of `@inject.setter`, which only allows to set
-a constant value (using `Binding.to(value)` behind the scene) to the underlying
+a constant value (using `Binding.to(value)` behind the scenes) to the underlying
 binding.
 
 Syntax: `@inject.binding(bindingKey: BindingAddress, {bindingCreation?: ...})`.
