@@ -5,9 +5,15 @@
 
 import axios from 'axios';
 import {Profile} from 'passport';
+let passport = require('passport');
 import {UserIdentityService} from '@loopback/authentication';
 import {User} from '../models';
 import {UserProfile, securityId} from '@loopback/security';
+import {toInterceptor} from '@loopback/rest';
+import {StrategyOption} from 'passport-facebook';
+import {inject, Provider, Interceptor} from '@loopback/core';
+import { UserServiceBindings } from '../services';
+import {Strategy as FacebookStrategy} from 'passport-facebook';
 
 export type profileFunction = (
   accessToken: string,
@@ -91,3 +97,34 @@ export const mapProfile = function (user: User): UserProfile {
   };
   return userProfile;
 };
+
+export class PassportInitMW implements Provider<Interceptor> {
+  constructor() {}
+
+  value<Interceptor>() {
+    return toInterceptor(passport.initialize());
+  }
+}
+
+export class PassportSessionMW implements Provider<Interceptor> {
+  constructor() {}
+
+  value<Interceptor>() {
+    return toInterceptor(passport.session());
+  }
+}
+
+export class FacebookOauth2MW implements Provider<Interceptor> {
+  constructor(
+    @inject('facebookOAuth2Options')
+    public facebookOptions: StrategyOption,
+    @inject(UserServiceBindings.PASSPORT_USER_IDENTITY_SERVICE)
+    public userService: UserIdentityService<Profile, User>,
+  ) {
+    passport.use(new FacebookStrategy(this.facebookOptions, verifyFunctionFactory(this.userService)));
+  }
+
+  value<Interceptor>() {
+    return toInterceptor(passport.authenticate('facebook'));
+  }
+}
