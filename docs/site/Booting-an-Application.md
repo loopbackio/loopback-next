@@ -287,3 +287,44 @@ Used to discover the artifacts supported by the `Booter` based on convention.
 **load**
 
 Used to bind the discovered artifacts to the Application.
+
+### Boot an application using component
+
+For a complex project, we may break it down into multiple LoopBack applications,
+each of which has controllers, datasources, services, repositories, and other
+artifacts. How do we compose these sub applications into the main application?
+The component application booter can be created to support this use case.
+
+1. Create a component for the sub-application:
+
+```ts
+import {createComponentApplicationBooterBinding} from '@loopback/boot';
+import {Component} from '@loopback/core';
+
+export class SubAppComponent implements Component {
+  bindings = [
+    createComponentApplicationBooterBinding(
+      new SubApp(), /* an optional binding filter */,
+    ),
+  ];
+}
+```
+
+2. Mount the sub-application as a component to the main application:
+
+```ts
+const mainApp = new MainApp();
+
+// This can be done in the constructor of `MainApp` too. Make sure the component
+// is registered before calling `app.boot()`.
+mainApp.component(SubAppComponent);
+
+// Boot the main application. It will invoke the component application booter
+// to add artifacts from the `SubApp`.
+await mainApp.boot();
+```
+
+A binding filter function can be provided to select what bindings from the
+component application should be added to the main application. The booter skips
+bindings that exist in the component application before `boot`. It does not
+override locked bindings in the main application.
