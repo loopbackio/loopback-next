@@ -8,14 +8,9 @@ import {
   BindingAddress,
   Constructor,
   Context,
-  isBindingAddress,
   Provider,
 } from '@loopback/core';
-import {
-  registerExpressMiddleware,
-  registerMiddleware,
-  toMiddleware,
-} from './middleware';
+import {MiddlewareMixin} from './mixins/middleware.mixin';
 import {
   ExpressMiddlewareFactory,
   ExpressRequestHandler,
@@ -24,9 +19,9 @@ import {
 } from './types';
 
 /**
- * Base Context that provides APIs to register middleware
+ * A context that allows middleware registration
  */
-export abstract class MiddlewareRegistry extends Context {
+export interface MiddlewareRegistry {
   /**
    * Bind an Express middleware to this server context
    *
@@ -71,53 +66,6 @@ export abstract class MiddlewareRegistry extends Context {
   ): Binding<Middleware>;
 
   /**
-   * @internal
-   *
-   * This signature is only used by RestApplication for delegation
-   */
-  expressMiddleware<CFG>(
-    factoryOrKey: ExpressMiddlewareFactory<CFG> | BindingAddress<Middleware>,
-    configOrHandler: CFG | ExpressRequestHandler | ExpressRequestHandler[],
-    options?: MiddlewareBindingOptions,
-  ): Binding<Middleware>;
-
-  /**
-   * @internal
-   * Implementation of `expressMiddleware`
-   */
-  expressMiddleware<CFG>(
-    factoryOrKey: ExpressMiddlewareFactory<CFG> | BindingAddress<Middleware>,
-    configOrHandlers: CFG | ExpressRequestHandler | ExpressRequestHandler[],
-    options: MiddlewareBindingOptions = {},
-  ): Binding<Middleware> {
-    const key = factoryOrKey as BindingAddress<Middleware>;
-    if (isBindingAddress(key)) {
-      const handlers = Array.isArray(configOrHandlers)
-        ? configOrHandlers
-        : [configOrHandlers as ExpressRequestHandler];
-      // Create middleware that wraps all Express handlers
-      if (handlers.length === 0) {
-        throw new Error('No Express middleware handler function is provided.');
-      }
-      return registerMiddleware(
-        this,
-        toMiddleware(handlers[0], ...handlers.slice(1)),
-        {
-          ...options,
-          key,
-        },
-      );
-    } else {
-      return registerExpressMiddleware(
-        this,
-        factoryOrKey as ExpressMiddlewareFactory<CFG>,
-        configOrHandlers as CFG,
-        options,
-      );
-    }
-  }
-
-  /**
    * Register a middleware function or provider class
    *
    * @example
@@ -133,8 +81,12 @@ export abstract class MiddlewareRegistry extends Context {
    */
   middleware(
     middleware: Middleware | Constructor<Provider<Middleware>>,
-    options: MiddlewareBindingOptions = {},
-  ): Binding<Middleware> {
-    return registerMiddleware(this, middleware, options);
-  }
+    options?: MiddlewareBindingOptions,
+  ): Binding<Middleware>;
 }
+
+/**
+ * Base Context that provides APIs to register middleware
+ */
+export abstract class BaseMiddlewareRegistry extends MiddlewareMixin(Context)
+  implements MiddlewareRegistry {}

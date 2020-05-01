@@ -8,7 +8,7 @@ import {HttpServer, HttpServerOptions} from '@loopback/http-server';
 import debugFactory from 'debug';
 import express from 'express';
 import {toExpressMiddleware} from './middleware';
-import {MiddlewareRegistry} from './middleware-registry';
+import {BaseMiddlewareRegistry} from './middleware-registry';
 import {MiddlewareContext, MIDDLEWARE_CONTEXT, Request} from './types';
 
 const debug = debugFactory('loopback:middleware');
@@ -30,7 +30,7 @@ export type ExpressServerConfig = HttpServerOptions & {
 /**
  * An Express server that provides middleware composition and injection
  */
-export class ExpressServer extends MiddlewareRegistry implements Server {
+export class ExpressServer extends BaseMiddlewareRegistry implements Server {
   /**
    * Base path to mount middleware
    */
