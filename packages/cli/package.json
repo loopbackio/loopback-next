@@ -61,7 +61,7 @@
     "mkdirp": "^1.0.4",
     "natural-compare": "^1.4.0",
     "p-event": "^4.1.0",
-    "pacote": "^11.1.7",
+    "pacote": "^11.1.8",
     "pluralize": "^8.0.0",
     "regenerate": "^1.4.0",
     "semver": "^7.3.2",
