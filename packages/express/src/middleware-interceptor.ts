@@ -15,11 +15,13 @@ import {
   ContextView,
   createBindingFromClass,
   GenericInterceptor,
+  GenericInterceptorChain,
   inject,
   Interceptor,
   InvocationContext,
   NamespacedReflect,
   Provider,
+  transformValueOrPromise,
 } from '@loopback/core';
 import assert from 'assert';
 import debugFactory from 'debug';
@@ -78,13 +80,45 @@ export function executeExpressRequestHandler(
 
 /**
  * Wrap an express middleware handler function as an interceptor
- * @param handlerFn - Express middleware handler function
+ *
+ * @example
+ * ```ts
+ * toInterceptor(fn);
+ * toInterceptor(fn1, fn2, fn3);
+ * ```
+ * @param firstHandler - An Express middleware handler
+ * @param additionalHandlers - A list of Express middleware handler function
  *
  * @typeParam CTX - Context type
  */
 export function toInterceptor<CTX extends Context = InvocationContext>(
-  handlerFn: ExpressRequestHandler,
+  firstHandler: ExpressRequestHandler,
+  ...additionalHandlers: ExpressRequestHandler[]
 ): GenericInterceptor<CTX> {
+  if (additionalHandlers.length === 0) {
+    const handlerFn = firstHandler;
+    return toInterceptorFromExpressMiddleware<CTX>(handlerFn);
+  }
+  const handlers = [firstHandler, ...additionalHandlers];
+  const interceptorList = handlers.map(handler => toInterceptor<CTX>(handler));
+  return async (invocationCtx, next) => {
+    const middlewareCtx = await invocationCtx.get<MiddlewareContext>(
+      MiddlewareBindings.CONTEXT,
+    );
+    const middlewareChain = new GenericInterceptorChain(
+      invocationCtx,
+      interceptorList,
+    );
+    const result = middlewareChain.invokeInterceptors();
+    return transformValueOrPromise(result, val =>
+      val === middlewareCtx.response ? val : next(),
+    );
+  };
+}
+
+function toInterceptorFromExpressMiddleware<
+  CTX extends Context = InvocationContext
+>(handlerFn: ExpressRequestHandler): GenericInterceptor<CTX> {
   return async (context, next) => {
     const middlewareCtx = await context.get<MiddlewareContext>(
       MiddlewareBindings.CONTEXT,
