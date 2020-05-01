@@ -12,6 +12,7 @@ export enum RelationType {
   belongsTo = 'belongsTo',
   hasOne = 'hasOne',
   hasMany = 'hasMany',
+  hasAndBelongsToMany = 'hasAndBelongsToMany',
   embedsOne = 'embedsOne',
   embedsMany = 'embedsMany',
   referencesOne = 'referencesOne',
@@ -112,6 +113,41 @@ export interface HasManyThroughDefinition extends RelationDefinitionBase {
      * The foreign key of the target model defined in the through model, e.g. Order#sellerId
      */
     keyTo: string;
+  };
+}
+
+export interface HasAndBelongsToManyDefinition extends RelationDefinitionBase {
+  type: RelationType.hasAndBelongsToMany;
+  targetsMany: true;
+
+  /**
+   * The foreign key in the source model, e.g. Customer#id.
+   */
+  keyFrom?: string;
+
+  /**
+   * The primary key of the target model, e.g Seller#id.
+   */
+  keyTo?: string;
+
+  through: {
+    /**
+     * The through model of this relation.
+     *
+     * E.g. when a Customer has many Order instances and a Seller has many Order instances,
+     * then Order is through.
+     */
+    model: TypeResolver<Entity, typeof Entity>;
+
+    /**
+     * The foreign key of the source model defined in the through model, e.g. Order#customerId
+     */
+    sourceKey?: string;
+
+    /**
+     * The foreign key of the target model defined in the through model, e.g. Order#sellerId
+     */
+    targetKey?: string;
   };
 }
 

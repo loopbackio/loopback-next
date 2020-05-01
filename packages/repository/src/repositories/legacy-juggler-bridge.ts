@@ -22,8 +22,11 @@ import {
   BelongsToAccessor,
   BelongsToDefinition,
   createBelongsToAccessor,
+  createHasAndBelongsToManyRepositoryFactory,
   createHasManyRepositoryFactory,
   createHasOneRepositoryFactory,
+  HasAndBelongsToManyDefinition,
+  HasAndBelongsToManyRepositoryFactory,
   HasManyDefinition,
   HasManyRepositoryFactory,
   HasOneDefinition,
@@ -274,6 +277,31 @@ export class DefaultCrudRepository<
     return createHasManyRepositoryFactory<Target, TargetID, ForeignKeyType>(
       meta as HasManyDefinition,
       targetRepoGetter,
+    );
+  }
+
+  protected createHasAndBelongsToManyRepositoryFactoryFor<
+    Target extends Entity,
+    Through extends Entity,
+    TargetID,
+    ThroughID,
+    ForeignKeyType
+  >(
+    relationName: string,
+    targetRepoGetter: Getter<EntityCrudRepository<Target, TargetID>>,
+    throughRepoGetter: Getter<EntityCrudRepository<Through, ThroughID>>,
+  ): HasAndBelongsToManyRepositoryFactory<Target, TargetID, ForeignKeyType> {
+    const meta = this.entityClass.definition.relations[relationName];
+    return createHasAndBelongsToManyRepositoryFactory<
+      Target,
+      Through,
+      TargetID,
+      ThroughID,
+      ForeignKeyType
+    >(
+      meta as HasAndBelongsToManyDefinition,
+      targetRepoGetter,
+      throughRepoGetter,
     );
   }
 
