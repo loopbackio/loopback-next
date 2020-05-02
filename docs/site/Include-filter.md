@@ -173,7 +173,10 @@ add the relation foreign key in the `fields`** :
 Return all posts only with field `title` and the relation `category`:
 
 ```ts
-await postRepository.find({include: [{relation: 'category'}], fields: ['title', 'categoryId'});
+await postRepository.find({
+  include: [{relation: 'category'}],
+  fields: ['title', 'categoryId'],
+});
 ```
 
 #### Include with filters
