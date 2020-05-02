@@ -6,6 +6,7 @@
 import {
   Binding,
   BindingFilter,
+  BindingFromClassOptions,
   BindingTemplate,
   bindingTemplateFor,
   Constructor,
@@ -31,10 +32,9 @@ export type ServiceInterface = string | symbol | Function;
 /**
  * Options to register a service binding
  */
-export type ServiceOptions = {
-  name?: string;
+export interface ServiceOptions extends BindingFromClassOptions {
   interface?: ServiceInterface;
-};
+}
 
 /**
  * `@service` injects a service instance that matches the class or interface.
@@ -162,6 +162,7 @@ export function createServiceBinding<S>(
   const binding = createBindingFromClass(cls, {
     name,
     type: CoreTags.SERVICE,
+    ...options,
   }).apply(asService(options.interface ?? cls));
   return binding;
 }

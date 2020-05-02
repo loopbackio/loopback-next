@@ -183,6 +183,15 @@ describe('Application life cycle', () => {
       expect(observer.status).to.equal('stopped');
     });
 
+    it('registers life cycle observers with options', async () => {
+      const app = new Application();
+      const binding = app.lifeCycleObserver(MyObserver, {
+        name: 'my-observer',
+        namespace: 'my-observers',
+      });
+      expect(binding.key).to.eql('my-observers.my-observer');
+    });
+
     it('honors @bind', async () => {
       @bind({
         tags: {

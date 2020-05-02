@@ -44,6 +44,14 @@ describe('Application', () => {
       );
     });
 
+    it('binds a controller with custom options', () => {
+      const binding = app.controller(MyController, {
+        name: 'my-controller',
+        namespace: 'my-controllers',
+      });
+      expect(binding.key).to.eql('my-controllers.my-controller');
+    });
+
     it('binds a singleton controller', () => {
       @bind({scope: BindingScope.SINGLETON})
       class MySingletonController {}
@@ -72,6 +80,14 @@ describe('Application', () => {
       expect(findKeysByTag(app, CoreTags.COMPONENT)).to.containEql(
         'components.my-component',
       );
+    });
+
+    it('binds a component with custom namespace', () => {
+      const binding = app.component(MyComponent, {
+        name: 'my-component',
+        namespace: 'my-components',
+      });
+      expect(binding.key).to.eql('my-components.my-component');
     });
 
     it('binds a transient component', () => {
@@ -207,6 +223,12 @@ describe('Application', () => {
       expect(result.constructor.name).to.equal(FakeServer.name);
     });
 
+    it('allows custom namespace', async () => {
+      const name = 'customName';
+      const binding = app.server(FakeServer, {name, namespace: 'my-servers'});
+      expect(binding.key).to.eql('my-servers.customName');
+    });
+
     it('allows binding of multiple servers as an array', async () => {
       const bindings = app.servers([FakeServer, AnotherServer]);
       expect(Array.from(bindings[0].tagNames)).to.containEql(CoreTags.SERVER);
@@ -235,6 +257,16 @@ describe('Application', () => {
       const binding = app.service(MyService, 'my-service');
       expect(Array.from(binding.tagNames)).to.containEql(CoreTags.SERVICE);
       expect(binding.key).to.equal('services.my-service');
+      expect(findKeysByTag(app, CoreTags.SERVICE)).to.containEql(binding.key);
+    });
+
+    it('binds a service with custom namespace', () => {
+      const binding = app.service(MyService, {
+        namespace: 'my-services',
+        name: 'my-service',
+      });
+      expect(Array.from(binding.tagNames)).to.containEql(CoreTags.SERVICE);
+      expect(binding.key).to.equal('my-services.my-service');
       expect(findKeysByTag(app, CoreTags.SERVICE)).to.containEql(binding.key);
     });
 

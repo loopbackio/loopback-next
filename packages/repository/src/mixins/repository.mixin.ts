@@ -3,7 +3,12 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Binding, BindingScope, createBindingFromClass} from '@loopback/context';
+import {
+  Binding,
+  BindingFromClassOptions,
+  BindingScope,
+  createBindingFromClass,
+} from '@loopback/context';
 import {Application} from '@loopback/core';
 import debugFactory from 'debug';
 import {Class} from '../common-types';
@@ -33,6 +38,7 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
      * Add a repository to this application.
      *
      * @param repoClass - The repository to add.
+     * @param nameOrOptions - Name or options for the binding
      *
      * @example
      * ```ts
@@ -60,13 +66,13 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     repository<R extends Repository<any>>(
       repoClass: Class<R>,
-      name?: string,
+      nameOrOptions?: string | BindingFromClassOptions,
     ): Binding<R> {
       const binding = createBindingFromClass(repoClass, {
-        name,
         namespace: 'repositories',
         type: 'repository',
         defaultScope: BindingScope.TRANSIENT,
+        ...toOptions(nameOrOptions),
       });
       this.add(binding);
       return binding;
@@ -86,7 +92,8 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
      * Add the dataSource to this application.
      *
      * @param dataSource - The dataSource to add.
-     * @param name - The binding name of the datasource; defaults to dataSource.name
+     * @param nameOrOptions - The binding name or options of the datasource;
+     * defaults to dataSource.name
      *
      * @example
      * ```ts
@@ -106,22 +113,24 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
      */
     dataSource<D extends juggler.DataSource>(
       dataSource: Class<D> | D,
-      name?: string,
+      nameOrOptions?: string | BindingFromClassOptions,
     ): Binding<D> {
+      const options = toOptions(nameOrOptions);
       // We have an instance of
       if (dataSource instanceof juggler.DataSource) {
         // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-        name = name || dataSource.name;
-        const key = `datasources.${name}`;
+        const name = options.name || dataSource.name;
+        const namespace = options.namespace ?? 'datasources';
+        const key = `${namespace}.${name}`;
         return this.bind(key).to(dataSource).tag('datasource');
       } else if (typeof dataSource === 'function') {
         // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-        name = name || dataSource.dataSourceName;
+        options.name = options.name || dataSource.dataSourceName;
         const binding = createBindingFromClass(dataSource, {
-          name,
           namespace: 'datasources',
           type: 'datasource',
           defaultScope: BindingScope.SINGLETON,
+          ...options,
         });
         this.add(binding);
         return binding;
@@ -135,6 +144,7 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
      * all the components repositories.
      *
      * @param component - The component to add.
+     * @param nameOrOptions - Name or options for the binding.
      *
      * @example
      * ```ts
@@ -151,8 +161,11 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
      * app.component(ProductComponent);
      * ```
      */
-    public component(component: Class<unknown>, name?: string) {
-      super.component(component, name);
+    public component(
+      component: Class<unknown>,
+      nameOrOptions?: string | BindingFromClassOptions,
+    ) {
+      super.component(component, nameOrOptions);
       this.mountComponentRepositories(component);
     }
 
@@ -214,6 +227,17 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
       }
     }
   };
+}
+
+/**
+ * Normalize name or options to `BindingFromClassOptions`
+ * @param nameOrOptions - Name or options for binding from class
+ */
+function toOptions(nameOrOptions?: string | BindingFromClassOptions) {
+  if (typeof nameOrOptions === 'string') {
+    return {name: nameOrOptions};
+  }
+  return nameOrOptions ?? {};
 }
 
 /**

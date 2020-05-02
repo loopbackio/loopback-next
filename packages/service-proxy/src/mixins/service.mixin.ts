@@ -3,8 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Binding, Provider} from '@loopback/context';
-import {Application} from '@loopback/core';
+import {Binding, BindingFromClassOptions, Provider} from '@loopback/context';
+import {Application, ServiceOptions} from '@loopback/core';
 
 /**
  * Interface for classes with `new` operator.
@@ -61,9 +61,9 @@ export function ServiceMixin<T extends Class<any>>(superClass: T) {
      */
     serviceProvider<S>(
       provider: Class<Provider<S>>,
-      name?: string,
+      nameOrOptions?: string | ServiceOptions,
     ): Binding<S> {
-      return this.service(provider, name);
+      return this.service(provider, nameOrOptions);
     }
 
     /**
@@ -87,8 +87,11 @@ export function ServiceMixin<T extends Class<any>>(superClass: T) {
      * app.component(ProductComponent);
      * ```
      */
-    public component(component: Class<unknown>, name?: string) {
-      super.component(component, name);
+    public component(
+      component: Class<unknown>,
+      nameOrOptions?: string | BindingFromClassOptions,
+    ) {
+      super.component(component, nameOrOptions);
       this.mountComponentServices(component);
     }
 

@@ -5,6 +5,7 @@
 
 import {
   Binding,
+  BindingFromClassOptions,
   BindingScope,
   Constructor,
   Context,
@@ -145,13 +146,16 @@ export class Application extends Context implements LifeCycleObserver {
    * app.controller(MyController).lock();
    * ```
    */
-  controller<T>(controllerCtor: ControllerClass<T>, name?: string): Binding<T> {
-    this.debug('Adding controller %s', name ?? controllerCtor.name);
+  controller<T>(
+    controllerCtor: ControllerClass<T>,
+    nameOrOptions?: string | BindingFromClassOptions,
+  ): Binding<T> {
+    this.debug('Adding controller %s', nameOrOptions ?? controllerCtor.name);
     const binding = createBindingFromClass(controllerCtor, {
-      name,
       namespace: CoreBindings.CONTROLLERS,
       type: CoreTags.CONTROLLER,
       defaultScope: BindingScope.TRANSIENT,
+      ...toOptions(nameOrOptions),
     });
     this.add(binding);
     return binding;
@@ -171,20 +175,20 @@ export class Application extends Context implements LifeCycleObserver {
    * ```
    *
    * @param server - The server constructor.
-   * @param name - Optional override for key name.
+   * @param nameOrOptions - Optional override for name or options.
    * @returns Binding for the server class
    *
    */
   public server<T extends Server>(
     ctor: Constructor<T>,
-    name?: string,
+    nameOrOptions?: string | BindingFromClassOptions,
   ): Binding<T> {
-    this.debug('Adding server %s', name ?? ctor.name);
+    this.debug('Adding server %s', nameOrOptions ?? ctor.name);
     const binding = createBindingFromClass(ctor, {
-      name,
       namespace: CoreBindings.SERVERS,
       type: CoreTags.SERVER,
       defaultScope: BindingScope.SINGLETON,
+      ...toOptions(nameOrOptions),
     }).apply(asLifeCycleObserver);
     this.add(binding);
     return binding;
@@ -332,7 +336,8 @@ export class Application extends Context implements LifeCycleObserver {
    * controllers, providers, and servers from the component.
    *
    * @param componentCtor - The component class to add.
-   * @param name - Optional component name, default to the class name
+   * @param nameOrOptions - Optional component name or options, default to the
+   * class name
    *
    * @example
    * ```ts
@@ -351,14 +356,14 @@ export class Application extends Context implements LifeCycleObserver {
    */
   public component<T extends Component = Component>(
     componentCtor: Constructor<T>,
-    name?: string,
+    nameOrOptions?: string | BindingFromClassOptions,
   ) {
-    this.debug('Adding component: %s', name ?? componentCtor.name);
+    this.debug('Adding component: %s', nameOrOptions ?? componentCtor.name);
     const binding = createBindingFromClass(componentCtor, {
-      name,
       namespace: CoreBindings.COMPONENTS,
       type: CoreTags.COMPONENT,
       defaultScope: BindingScope.SINGLETON,
+      ...toOptions(nameOrOptions),
     });
     if (isLifeCycleObserverClass(componentCtor)) {
       binding.apply(asLifeCycleObserver);
@@ -383,18 +388,18 @@ export class Application extends Context implements LifeCycleObserver {
   /**
    * Register a life cycle observer class
    * @param ctor - A class implements LifeCycleObserver
-   * @param name - Optional name for the life cycle observer
+   * @param nameOrOptions - Optional name or options for the life cycle observer
    */
   public lifeCycleObserver<T extends LifeCycleObserver>(
     ctor: Constructor<T>,
-    name?: string,
+    nameOrOptions?: string | BindingFromClassOptions,
   ): Binding<T> {
-    this.debug('Adding life cycle observer %s', name ?? ctor.name);
+    this.debug('Adding life cycle observer %s', nameOrOptions ?? ctor.name);
     const binding = createBindingFromClass(ctor, {
-      name,
       namespace: CoreBindings.LIFE_CYCLE_OBSERVERS,
       type: CoreTags.LIFE_CYCLE_OBSERVER,
       defaultScope: BindingScope.SINGLETON,
+      ...toOptions(nameOrOptions),
     }).apply(asLifeCycleObserver);
     this.add(binding);
     return binding;
@@ -444,9 +449,9 @@ export class Application extends Context implements LifeCycleObserver {
    */
   public service<S>(
     cls: Constructor<S> | Constructor<Provider<S>>,
-    name?: string | ServiceOptions,
+    nameOrOptions?: string | ServiceOptions,
   ): Binding<S> {
-    const options = typeof name === 'string' ? {name} : name;
+    const options = toOptions(nameOrOptions);
     const binding = createServiceBinding(cls, options);
     this.add(binding);
     return binding;
@@ -530,6 +535,17 @@ export class Application extends Context implements LifeCycleObserver {
       process.removeListener(sig, this._signalListener),
     );
   }
+}
+
+/**
+ * Normalize name or options to `BindingFromClassOptions`
+ * @param nameOrOptions - Name or options for binding from class
+ */
+function toOptions(nameOrOptions?: string | BindingFromClassOptions) {
+  if (typeof nameOrOptions === 'string') {
+    return {name: nameOrOptions};
+  }
+  return nameOrOptions ?? {};
 }
 
 /**
