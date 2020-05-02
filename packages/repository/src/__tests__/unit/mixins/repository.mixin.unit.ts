@@ -257,6 +257,15 @@ describe('RepositoryMixin dataSource', () => {
     expectDataSourceToBeBound(myApp, FooDataSource, 'bar');
   });
 
+  it('binds dataSource class using options', () => {
+    const myApp = new AppWithRepoMixin();
+    const binding = myApp.dataSource(FooDataSource, {
+      name: 'bar',
+      namespace: 'my-datasources',
+    });
+    expect(binding.key).to.eql('my-datasources.bar');
+  });
+
   it('binds dataSource class using Class name', () => {
     const myApp = new AppWithRepoMixin();
     myApp.dataSource(BarDataSource);

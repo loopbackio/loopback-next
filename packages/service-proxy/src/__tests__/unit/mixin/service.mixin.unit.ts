@@ -27,6 +27,17 @@ describe('ServiceMixin', () => {
     await expectGeocoderToBeBound(myApp);
   });
 
+  it('binds service from app.serviceProvider() with options', async () => {
+    const myApp = new AppWithServiceMixin();
+    const binding = myApp.serviceProvider(GeocoderServiceProvider, {
+      name: 'geo',
+      namespace: 'my-services',
+      defaultScope: BindingScope.SINGLETON,
+    });
+    expect(binding.key).to.eql('my-services.geo');
+    expect(binding.scope).to.eql(BindingScope.SINGLETON);
+  });
+
   it('binds singleton service from app.serviceProvider()', async () => {
     @bind({scope: BindingScope.SINGLETON})
     class SingletonGeocoderServiceProvider extends GeocoderServiceProvider {}
