@@ -11,16 +11,15 @@ const helpers = require('yeoman-test');
 const bootstrapCommandFactory = require('@lerna/bootstrap');
 const build = require('@loopback/build');
 
+const appGenerator = path.join(__dirname, '../../generators/app');
+const rootDir = path.join(__dirname, '../../../..');
+const sandboxDir = path.join(rootDir, 'sandbox');
+
 describe('app-generator (SLOW)', function () {
-  const generator = path.join(__dirname, '../../generators/app');
-  const rootDir = path.join(__dirname, '../../../..');
-  const sandbox = path.join(rootDir, 'sandbox/sandbox-app');
-  const cwd = process.cwd();
-  const appName = '@loopback/sandbox-app';
-  const props = {
-    name: appName,
+  const appProps = {
+    name: '@loopback/sandbox-app',
     description: 'My sandbox app for LoopBack 4',
-    outdir: sandbox,
+    outdir: path.join(sandboxDir, 'sandbox-app'),
   };
 
   before('scaffold a new application', async function createAppProject() {
@@ -28,11 +27,11 @@ describe('app-generator (SLOW)', function () {
     // eslint-disable-next-line no-invalid-this
     this.timeout(60 * 1000);
     await helpers
-      .run(generator)
-      .inDir(sandbox)
+      .run(appGenerator)
+      .inDir(appProps.outdir)
       // Mark it private to prevent accidental npm publication
       .withOptions({private: true})
-      .withPrompts(props);
+      .withPrompts(appProps);
   });
 
   before('install dependencies', async function installDependencies() {
@@ -41,7 +40,7 @@ describe('app-generator (SLOW)', function () {
     // eslint-disable-next-line no-invalid-this
     this.timeout(15 * 60 * 1000);
     process.chdir(rootDir);
-    await lernaBootstrap(appName);
+    await lernaBootstrap(null, appProps.name);
   });
 
   it('passes `npm test` for the generated project', function () {
@@ -55,7 +54,7 @@ describe('app-generator (SLOW)', function () {
         .runShell('npm', ['test'], {
           // Disable stdout
           stdio: [process.stdin, 'ignore', process.stderr],
-          cwd: sandbox,
+          cwd: appProps.outdir,
         })
         .on('close', code => {
           assert.equal(code, 0);
@@ -70,12 +69,76 @@ describe('app-generator (SLOW)', function () {
     this.timeout(30 * 1000);
 
     process.chdir(rootDir);
-    build.clean(['node', 'run-clean', sandbox]);
-    process.chdir(cwd);
+    build.clean(['node', 'run-clean', appProps.outdir]);
+    process.chdir(process.cwd());
   });
 });
 
-async function lernaBootstrap(...scopes) {
+build.runShell('yarn', ['help'], {stdio: 'ignore'}).on('close', code => {
+  if (code === 0) return describe('app-generator with Yarn (SLOW)', yarnTest);
+  return describe.skip;
+});
+
+function yarnTest() {
+  const appProps = {
+    name: '@loopback/sandbox-yarn-app',
+    description: 'My sandbox app with Yarn for LoopBack 4',
+    outdir: path.join(sandboxDir, 'sandbox-yarn-app'),
+  };
+
+  before('scaffold a new application', async function createAppProject() {
+    // Increase the timeout to 1 minute to accommodate slow CI build machines
+    // eslint-disable-next-line no-invalid-this
+    this.timeout(60 * 1000);
+    await helpers
+      .run(appGenerator)
+      .inDir(appProps.outdir)
+      // Mark it private to prevent accidental npm publication
+      .withOptions({packageManager: 'yarn', private: true})
+      .withPrompts(appProps);
+  });
+
+  before('install dependencies', async function installDependencies() {
+    // Run `lerna bootstrap --scope @loopback/sandbox-app --include-filtered-dependencies`
+    // WARNING: It takes a while to run `lerna bootstrap`
+    // eslint-disable-next-line no-invalid-this
+    this.timeout(15 * 60 * 1000);
+    process.chdir(rootDir);
+    await lernaBootstrap('yarn', appProps.name);
+  });
+
+  it('passes `yarn test` for the generated project', function () {
+    // Increase the timeout to 5 minutes,
+    // the tests can take more than 2 seconds to run.
+    // eslint-disable-next-line no-invalid-this
+    this.timeout(5 * 60 * 1000);
+
+    return new Promise((resolve, reject) => {
+      build
+        .runShell('yarn', ['test'], {
+          // Disable stdout
+          stdio: [process.stdin, 'ignore', process.stderr],
+          cwd: appProps.outdir,
+        })
+        .on('close', code => {
+          assert.equal(code, 0);
+          resolve();
+        });
+    });
+  });
+
+  after(function () {
+    // Increase the timeout to accommodate slow CI build machines
+    // eslint-disable-next-line no-invalid-this
+    this.timeout(30 * 1000);
+
+    process.chdir(rootDir);
+    build.clean(['node', 'run-clean', appProps.outdir]);
+    process.chdir(process.cwd());
+  });
+}
+
+async function lernaBootstrap(packageManager, ...scopes) {
   const cmd = bootstrapCommandFactory({
     _: [],
     ci: false,
@@ -91,6 +154,7 @@ async function lernaBootstrap(...scopes) {
     loglevel: 'warn',
     // Disable progress bars
     progress: false,
+    npmClient: packageManager || 'npm',
   });
   await cmd;
 }
