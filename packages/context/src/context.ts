@@ -5,7 +5,6 @@
 
 import debugFactory, {Debugger} from 'debug';
 import {EventEmitter} from 'events';
-import {v4 as uuidv4} from 'uuid';
 import {Binding, BindingInspectOptions, BindingTag} from './binding';
 import {
   ConfigurationResolver,
@@ -37,6 +36,7 @@ import {
   Constructor,
   getDeepProperty,
   isPromiseLike,
+  uuid,
   ValueOrPromise,
 } from './value-promise';
 
@@ -151,7 +151,7 @@ export class Context extends EventEmitter {
   }
 
   private generateName() {
-    const id = uuidv4();
+    const id = uuid();
     if (this.constructor === Context) return id;
     return `${this.constructor.name}-${id}`;
   }

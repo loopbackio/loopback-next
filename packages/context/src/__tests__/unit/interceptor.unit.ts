@@ -20,6 +20,7 @@ import {
   Provider,
 } from '../..';
 import {registerInterceptor} from '../../interceptor';
+import {UUID_PATTERN} from '../../value-promise';
 
 describe('mergeInterceptors', () => {
   it('removes duplicate entries from the spec', () => {
@@ -257,6 +258,18 @@ describe('globalInterceptors', () => {
 
     const keys = invocationCtx.getGlobalInterceptorBindingKeys();
     expect(keys).to.eql(['globalInterceptors.logInterceptor']);
+  });
+
+  it('infers binding key from the interceptor function', () => {
+    const binding = registerInterceptor(ctx, logInterceptor);
+    expect(binding.key).to.eql('interceptors.logInterceptor');
+  });
+
+  it('generates binding key for the interceptor function', () => {
+    const binding = registerInterceptor(ctx, () => {});
+    expect(binding.key).to.match(
+      new RegExp(`interceptors.${UUID_PATTERN.source}`, 'i'),
+    );
   });
 
   class MyController {

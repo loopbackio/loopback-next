@@ -3,7 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {v4} from 'uuid';
+import {uuid} from './value-promise';
+
 export type BindingAddress<T = unknown> = string | BindingKey<T>;
 
 export class BindingKey<ValueType> {
@@ -127,7 +128,7 @@ export class BindingKey<ValueType> {
    */
   static generate<T>(namespace = ''): BindingKey<T> {
     const prefix = namespace ? `${namespace}.` : '';
-    const uuid = v4();
-    return BindingKey.create(`${prefix}${uuid}`);
+    const name = uuid();
+    return BindingKey.create(`${prefix}${name}`);
   }
 }
