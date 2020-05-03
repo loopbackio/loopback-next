@@ -6,6 +6,7 @@
 import {expect} from '@loopback/testlab';
 import {
   compareBindingsByTag,
+  composeInterceptors,
   Context,
   filterByTag,
   GenericInterceptor,
@@ -52,6 +53,20 @@ describe('GenericInterceptorChain', () => {
     );
     const result = await interceptorChain.invokeInterceptors();
     expect(result).to.eql('ABC');
+  });
+
+  it('honors final handler', async () => {
+    givenInterceptorChain(
+      givenNamedInterceptor('interceptor1'),
+      async (context, next) => {
+        return next();
+      },
+    );
+    const finalHandler = () => {
+      return 'final';
+    };
+    const result = await interceptorChain.invokeInterceptors(finalHandler);
+    expect(result).to.eql('final');
   });
 
   it('skips downstream interceptors if next is not invoked', async () => {
@@ -155,6 +170,40 @@ describe('GenericInterceptorChain', () => {
       'after-interceptor2',
       'after-interceptor1',
     ]);
+  });
+
+  it('can be used as an interceptor', async () => {
+    givenInterceptorChain(
+      givenNamedInterceptor('interceptor1'),
+      async (context, next) => {
+        await next();
+        return 'ABC';
+      },
+    );
+    const interceptor = interceptorChain.asInterceptor();
+    let invoked = false;
+    await interceptor(new Context(), () => {
+      invoked = true;
+      return invoked;
+    });
+    expect(invoked).to.be.true();
+  });
+
+  it('composes multiple interceptors as a single interceptor', async () => {
+    const interceptor = composeInterceptors(
+      givenNamedInterceptor('interceptor1'),
+      async (context, next) => {
+        await next();
+        return 'ABC';
+      },
+    );
+    let invoked = false;
+    const result = await interceptor(new Context(), () => {
+      invoked = true;
+      return invoked;
+    });
+    expect(invoked).to.be.true();
+    expect(result).to.eql('ABC');
   });
 
   function givenContext() {

@@ -53,8 +53,12 @@ class InterceptorChainState<C extends Context = Context> {
   /**
    * Create a state for the interceptor chain
    * @param interceptors - Interceptor functions or binding keys
+   * @param finalHandler - An optional final handler
    */
-  constructor(private interceptors: GenericInterceptorOrKey<C>[]) {}
+  constructor(
+    public readonly interceptors: GenericInterceptorOrKey<C>[],
+    public readonly finalHandler: Next = () => undefined,
+  ) {}
 
   /**
    * Get the index for the current interceptor
@@ -138,10 +142,22 @@ export class GenericInterceptorChain<C extends Context = Context> {
   /**
    * Invoke the interceptor chain
    */
-  invokeInterceptors(): ValueOrPromise<InvocationResult> {
+  invokeInterceptors(finalHandler?: Next): ValueOrPromise<InvocationResult> {
     // Create a state for each invocation to provide isolation
-    const state = new InterceptorChainState<C>(this.getInterceptors());
+    const state = new InterceptorChainState<C>(
+      this.getInterceptors(),
+      finalHandler,
+    );
     return this.next(state);
+  }
+
+  /**
+   * Use the interceptor chain as an interceptor
+   */
+  asInterceptor(): GenericInterceptor<C> {
+    return (ctx, next) => {
+      return this.invokeInterceptors(next);
+    };
   }
 
   /**
@@ -152,7 +168,7 @@ export class GenericInterceptorChain<C extends Context = Context> {
   ): ValueOrPromise<InvocationResult> {
     if (state.done()) {
       // No more interceptors
-      return undefined;
+      return state.finalHandler();
     }
     // Invoke the next interceptor in the chain
     return this.invokeNextInterceptor(state);
@@ -205,4 +221,20 @@ export function invokeInterceptors<
 ): ValueOrPromise<T | undefined> {
   const chain = new GenericInterceptorChain(context, interceptors);
   return chain.invokeInterceptors();
+}
+
+/**
+ * Compose a list of interceptors as a single interceptor
+ * @param interceptors - A list of interceptor functions or binding keys
+ */
+export function composeInterceptors<C extends Context = Context>(
+  ...interceptors: GenericInterceptor<C>[]
+): GenericInterceptor<C> {
+  return (ctx, next) => {
+    const interceptor = new GenericInterceptorChain(
+      ctx,
+      interceptors,
+    ).asInterceptor();
+    return interceptor(ctx, next);
+  };
 }
