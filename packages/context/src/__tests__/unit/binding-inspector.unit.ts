@@ -14,6 +14,7 @@ import {
   createBindingFromClass,
   Provider,
 } from '../..';
+import {ContextTags} from '../../keys';
 
 describe('createBindingFromClass()', () => {
   it('inspects classes', () => {
@@ -204,6 +205,33 @@ describe('createBindingFromClass()', () => {
     });
 
     expect(binding.key).to.eql('services.MyService');
+  });
+
+  it('honors default namespace with options', () => {
+    class MyService {}
+
+    @bind({tags: {[ContextTags.NAMESPACE]: 'my-services'}})
+    class MyServiceWithNS {}
+
+    const ctx = new Context();
+    let binding = givenBindingFromClass(MyService, ctx, {
+      defaultNamespace: 'services',
+    });
+
+    expect(binding.key).to.eql('services.MyService');
+
+    binding = givenBindingFromClass(MyService, ctx, {
+      namespace: 'my-services',
+      defaultNamespace: 'services',
+    });
+
+    expect(binding.key).to.eql('my-services.MyService');
+
+    binding = givenBindingFromClass(MyServiceWithNS, ctx, {
+      defaultNamespace: 'services',
+    });
+
+    expect(binding.key).to.eql('my-services.MyServiceWithNS');
   });
 
   it('includes class name in error messages', () => {
