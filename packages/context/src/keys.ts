@@ -59,6 +59,11 @@ export namespace ContextTags {
 export const GLOBAL_INTERCEPTOR_NAMESPACE = 'globalInterceptors';
 
 /**
+ * Default namespace for local interceptors
+ */
+export const LOCAL_INTERCEPTOR_NAMESPACE = 'interceptors';
+
+/**
  * Namespace for context bindings
  */
 export namespace ContextBindings {

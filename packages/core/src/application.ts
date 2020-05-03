@@ -10,8 +10,11 @@ import {
   Constructor,
   Context,
   createBindingFromClass,
+  Interceptor,
+  InterceptorBindingOptions,
   JSONObject,
   Provider,
+  registerInterceptor,
 } from '@loopback/context';
 import assert from 'assert';
 import debugFactory from 'debug';
@@ -455,6 +458,19 @@ export class Application extends Context implements LifeCycleObserver {
     const binding = createServiceBinding(cls, options);
     this.add(binding);
     return binding;
+  }
+
+  /**
+   * Register an interceptor
+   * @param interceptor - An interceptor function or provider class
+   * @param nameOrOptions - Binding name or options
+   */
+  public interceptor(
+    interceptor: Interceptor | Constructor<Provider<Interceptor>>,
+    nameOrOptions?: string | InterceptorBindingOptions,
+  ) {
+    const options = toOptions(nameOrOptions);
+    return registerInterceptor(this, interceptor, options);
   }
 
   /**
