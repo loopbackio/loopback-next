@@ -15,7 +15,13 @@ import assert from 'assert';
 import debugFactory from 'debug';
 import {Binding, BindingTemplate} from './binding';
 import {bind} from './binding-decorator';
-import {BindingSpec} from './binding-inspector';
+import {
+  BindingFromClassOptions,
+  BindingSpec,
+  createBindingFromClass,
+  isProviderClass,
+} from './binding-inspector';
+import {BindingAddress, BindingKey} from './binding-key';
 import {sortBindingsByPhase} from './binding-sorter';
 import {Context} from './context';
 import {
@@ -33,8 +39,10 @@ import {
   ContextBindings,
   ContextTags,
   GLOBAL_INTERCEPTOR_NAMESPACE,
+  LOCAL_INTERCEPTOR_NAMESPACE,
 } from './keys';
-import {tryWithFinally, ValueOrPromise} from './value-promise';
+import {Provider} from './provider';
+import {Constructor, tryWithFinally, ValueOrPromise} from './value-promise';
 const debug = debugFactory('loopback:context:interceptor');
 
 /**
@@ -344,4 +352,82 @@ export function invokeMethodWithInterceptors(
     },
     () => invocationCtx.close(),
   );
+}
+
+/**
+ * Options for an interceptor binding
+ */
+export interface InterceptorBindingOptions extends BindingFromClassOptions {
+  /**
+   * Global or local interceptor
+   */
+  global?: boolean;
+  /**
+   * Group name for a global interceptor
+   */
+  group?: string;
+  /**
+   * Source filter for a global interceptor
+   */
+  source?: string | string[];
+}
+
+/**
+ * Register an interceptor function or provider class to the given context
+ * @param ctx - Context object
+ * @param interceptor - An interceptor function or provider class
+ * @param options - Options for the interceptor binding
+ */
+export function registerInterceptor(
+  ctx: Context,
+  interceptor: Interceptor | Constructor<Provider<Interceptor>>,
+  options: InterceptorBindingOptions = {},
+) {
+  let {global} = options;
+  const {group, source} = options;
+  if (group != null || source != null) {
+    // If group or source is set, assuming global
+    global = global !== false;
+  }
+
+  const namespace =
+    options.namespace ?? options.defaultNamespace ?? global
+      ? GLOBAL_INTERCEPTOR_NAMESPACE
+      : LOCAL_INTERCEPTOR_NAMESPACE;
+
+  let binding: Binding<Interceptor>;
+  if (isProviderClass(interceptor as Constructor<Provider<Interceptor>>)) {
+    binding = createBindingFromClass(
+      interceptor as Constructor<Provider<Interceptor>>,
+      {
+        defaultNamespace: namespace,
+        ...options,
+      },
+    );
+    if (binding.tagMap[ContextTags.GLOBAL_INTERCEPTOR]) {
+      global = true;
+    }
+    ctx.add(binding);
+  } else {
+    let key = options.key;
+    if (!key) {
+      const name = options.name ?? interceptor.name;
+      if (!name) {
+        key = BindingKey.generate<Interceptor>(namespace).key;
+      } else {
+        key = `${namespace}.${name}`;
+      }
+    }
+    binding = ctx
+      .bind(key as BindingAddress<Interceptor>)
+      .to(interceptor as Interceptor);
+  }
+  if (global) {
+    binding.apply(asGlobalInterceptor(group));
+    if (source) {
+      binding.tag({[ContextTags.GLOBAL_INTERCEPTOR_SOURCE]: source});
+    }
+  }
+
+  return binding;
 }

@@ -4,12 +4,17 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
+  asGlobalInterceptor,
   bind,
   Binding,
   BindingScope,
   BindingTag,
   Context,
+  ContextTags,
   inject,
+  Interceptor,
+  InvocationContext,
+  Next,
   Provider,
 } from '@loopback/context';
 import {expect} from '@loopback/testlab';
@@ -360,6 +365,96 @@ describe('Application', () => {
 
     function getListeners() {
       return process.listeners('SIGTERM');
+    }
+  });
+
+  describe('interceptor binding', () => {
+    beforeEach(givenApp);
+
+    it('registers a function as local interceptor', () => {
+      const binding = app.interceptor(logInterceptor, {
+        name: 'logInterceptor',
+      });
+      expect(binding).to.containDeep({
+        key: 'interceptors.logInterceptor',
+      });
+      expect(binding.tagMap[ContextTags.GLOBAL_INTERCEPTOR]).to.be.undefined();
+    });
+
+    it('registers a provider class as local interceptor', () => {
+      const binding = app.interceptor(LogInterceptorProviderWithoutDecoration, {
+        name: 'logInterceptor',
+      });
+      expect(binding).to.containDeep({
+        key: 'interceptors.logInterceptor',
+      });
+      expect(binding.tagMap[ContextTags.GLOBAL_INTERCEPTOR]).to.be.undefined();
+    });
+
+    it('registers a function as global interceptor', () => {
+      const binding = app.interceptor(logInterceptor, {
+        global: true,
+        group: 'log',
+        source: ['route', 'proxy'],
+        name: 'logInterceptor',
+      });
+      expect(binding).to.containDeep({
+        key: 'globalInterceptors.logInterceptor',
+        tagMap: {
+          [ContextTags.GLOBAL_INTERCEPTOR_GROUP]: 'log',
+          [ContextTags.GLOBAL_INTERCEPTOR_SOURCE]: ['route', 'proxy'],
+          [ContextTags.GLOBAL_INTERCEPTOR]: ContextTags.GLOBAL_INTERCEPTOR,
+        },
+      });
+    });
+
+    it('registers a provider class as global interceptor', () => {
+      const binding = app.interceptor(LogInterceptorProvider, {
+        group: 'log',
+        source: ['route', 'proxy'],
+        name: 'logInterceptor',
+      });
+      expect(binding).to.containDeep({
+        key: 'globalInterceptors.logInterceptor',
+        tagMap: {
+          [ContextTags.GLOBAL_INTERCEPTOR_GROUP]: 'log',
+          [ContextTags.GLOBAL_INTERCEPTOR_SOURCE]: ['route', 'proxy'],
+          [ContextTags.GLOBAL_INTERCEPTOR]: ContextTags.GLOBAL_INTERCEPTOR,
+        },
+      });
+    });
+
+    it('registers a provider class without decoration as global interceptor', () => {
+      const binding = app.interceptor(LogInterceptorProviderWithoutDecoration, {
+        global: true,
+        group: 'log',
+        source: ['route', 'proxy'],
+        name: 'logInterceptor',
+      });
+      expect(binding).to.containDeep({
+        key: 'globalInterceptors.logInterceptor',
+        tagMap: {
+          [ContextTags.GLOBAL_INTERCEPTOR_GROUP]: 'log',
+          [ContextTags.GLOBAL_INTERCEPTOR_SOURCE]: ['route', 'proxy'],
+          [ContextTags.GLOBAL_INTERCEPTOR]: ContextTags.GLOBAL_INTERCEPTOR,
+        },
+      });
+    });
+
+    function logInterceptor(ctx: InvocationContext, next: Next) {}
+
+    @bind(asGlobalInterceptor())
+    class LogInterceptorProvider implements Provider<Interceptor> {
+      value() {
+        return logInterceptor;
+      }
+    }
+
+    class LogInterceptorProviderWithoutDecoration
+      implements Provider<Interceptor> {
+      value() {
+        return logInterceptor;
+      }
     }
   });
 

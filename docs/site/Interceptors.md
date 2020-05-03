@@ -53,10 +53,11 @@ method level interceptors. For example, the following code registers a global
 `caching-interceptor` for all methods.
 
 ```ts
-app
-  .bind('caching-interceptor')
-  .toProvider(CachingInterceptorProvider)
-  .apply(asGlobalInterceptor('caching'));
+app.interceptor(CachingInterceptorProvider, {
+  global: true,
+  group: 'caching',
+  key: 'caching-interceptor',
+});
 ```
 
 Global interceptors are also executed for route handler functions without a
@@ -332,13 +333,13 @@ class MyControllerWithClassLevelInterceptors {
 ### Global interceptors
 
 Global interceptors are discovered from the `InvocationContext`. They are
-registered as bindings with `interceptor` tag. For example,
+registered as bindings with `globalInterceptor` tag. For example,
 
 ```ts
 import {asGlobalInterceptor} from '@loopback/context';
 
 app
-  .bind('interceptors.MetricsInterceptor')
+  .bind('globalInterceptors.MetricsInterceptor')
   .toProvider(MetricsInterceptorProvider)
   .apply(asGlobalInterceptor('metrics'));
 ```
@@ -351,6 +352,12 @@ templates that mark bindings of global interceptors. It takes an optional
   the `metrics` group
 - - `asGlobalInterceptor()`: mark a binding as a global interceptor in the
     default group
+
+The registration can be further simplified as:
+
+```ts
+app.interceptor(MetricsInterceptorProvider, {global: true, group: 'metrics'});
+```
 
 ### Order of invocation for interceptors
 
@@ -435,10 +442,11 @@ Global interceptors can be sorted as follows:
    example:
 
    ```ts
-   app
-     .bind('globalInterceptors.authInterceptor')
-     .to(authInterceptor)
-     .apply(asGlobalInterceptor('auth'));
+   app.interceptor(authInterceptor, {
+     name: 'authInterceptor',
+     global: true,
+     group: 'auth',
+   });
    ```
 
    If the group tag does not exist, the value is default to `''`.
