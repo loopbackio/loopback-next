@@ -5,6 +5,7 @@
 
 import {expect} from '@loopback/testlab';
 import {BindingKey} from '../..';
+import {UUID_PATTERN} from '../../value-promise';
 
 describe('BindingKey', () => {
   describe('create', () => {
@@ -62,9 +63,7 @@ describe('BindingKey', () => {
   describe('generate', () => {
     it('generates binding key without namespace', () => {
       const key1 = BindingKey.generate().key;
-      expect(key1).to.match(
-        /^[0-9A-F]{8}-[0-9A-F]{4}-[4][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i,
-      );
+      expect(key1).to.match(UUID_PATTERN);
       const key2 = BindingKey.generate().key;
       expect(key1).to.not.eql(key2);
     });
@@ -72,7 +71,7 @@ describe('BindingKey', () => {
     it('generates binding key with namespace', () => {
       const key1 = BindingKey.generate('services').key;
       expect(key1).to.match(
-        /^services\.[0-9A-F]{8}-[0-9A-F]{4}-[4][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i,
+        new RegExp(`^services\\.${UUID_PATTERN.source}$`, 'i'),
       );
       const key2 = BindingKey.generate('services').key;
       expect(key1).to.not.eql(key2);
