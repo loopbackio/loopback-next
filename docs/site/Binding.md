@@ -461,6 +461,8 @@ parameter of `BindingFromClassOptions` type with the following settings:
   }
   ```
 
+- defaultNamespace: Default namespace if namespace or namespace tag does not
+  exist
 - defaultScope: Default scope if the binding does not have an explicit scope
   set. The `scope` from `@bind` of the bound class takes precedence.
 

@@ -201,17 +201,23 @@ export type BindingFromClassOptions = {
    */
   type?: string;
   /**
-   * Artifact name, such as `my-rest-server` and `my-controller`
+   * Artifact name, such as `my-rest-server` and `my-controller`. It
+   * overrides the name tag
    */
   name?: string;
   /**
-   * Namespace for the binding key, such as `servers` and `controllers`
+   * Namespace for the binding key, such as `servers` and `controllers`. It
+   * overrides the default namespace or namespace tag
    */
   namespace?: string;
   /**
    * Mapping artifact type to binding key namespaces
    */
   typeNamespaceMapping?: TypeNamespaceMapping;
+  /**
+   * Default namespace if the binding does not have an explicit namespace
+   */
+  defaultNamespace?: string;
   /**
    * Default scope if the binding does not have an explicit scope
    */
@@ -313,7 +319,9 @@ function buildBindingKey<T>(
   if (key) return key;
 
   let namespace =
-    options.namespace ?? bindingTemplate.tagMap[ContextTags.NAMESPACE];
+    options.namespace ??
+    bindingTemplate.tagMap[ContextTags.NAMESPACE] ??
+    options.defaultNamespace;
   if (!namespace) {
     const namespaces = Object.assign(
       {},
