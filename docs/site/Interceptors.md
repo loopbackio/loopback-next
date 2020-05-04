@@ -732,3 +732,72 @@ Here are some example interceptor functions:
      return result;
    };
    ```
+
+### Compose multiple interceptors
+
+Sometimes we want to apply more than one interceptors together as a whole. It
+can be done by `composeInterceptors`:
+
+```ts
+import {composeInterceptors} from '@loopback/context';
+
+const interceptor = composeInterceptors(
+  interceptorFn1,
+  'interceptors.my-interceptor',
+  interceptorFn2,
+);
+```
+
+The code above composes `interceptorFn1` and `interceptorFn2` functions with
+`interceptors.my-interceptor` binding key into a single interceptor.
+
+### Build your own interceptor chains
+
+Behind the scenes, interceptors are chained one by one by their orders into an
+invocation chain.
+[GenericInvocationChain](https://loopback.io/doc/en/lb4/apidocs.context.genericinterceptorchain.html)
+is the base class that can be extended to create your own flavor of interceptors
+and chains. For example,
+
+```ts
+import {GenericInvocationChain, GenericInterceptor} from '@loopback/context';
+import {RequestContext} from '@loopback/rest';
+
+export interface RequestInterceptor
+  extends GenericInterceptor<RequestContext> {}
+
+export class RequestInterceptorChain extends GenericInterceptorChain<
+  RequestContext
+> {}
+```
+
+The interceptor chain can be instantiated in two styles:
+
+- with a list of interceptor functions or binding keys
+- with a binding filter function to discover matching interceptors within the
+  context
+
+Once the chain is built, it can be invoked using `invokeInterceptors`:
+
+```ts
+const chain = new RequestInterceptorChain(requestCtx, interceptors);
+await chain.invokeInterceptors();
+```
+
+It's also possible to pass in a final handler:
+
+```ts
+import {Next} from '@loopback/context';
+const finalHandler: Next = async () => {
+  // return ...;
+};
+await chain.invokeInterceptors(finalHandler);
+```
+
+The invocation chain itself can be used a single interceptor so that it be
+registered as one handler to another chain.
+
+```ts
+const chain = new RequestInterceptorChain(requestCtx, interceptors);
+const interceptor = chain.asInterceptor();
+```
