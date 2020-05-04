@@ -17,7 +17,7 @@ import {
 } from '../common-types';
 import {EntityNotFoundError} from '../errors';
 import {Entity, Model, PropertyType} from '../model';
-import {Filter, Inclusion, Where, FilterExcludingWhere} from '../query';
+import {Filter, FilterExcludingWhere, Inclusion, Where} from '../query';
 import {
   BelongsToAccessor,
   BelongsToDefinition,
@@ -458,6 +458,9 @@ export class DefaultCrudRepository<
     data: DataObject<T>,
     options?: Options,
   ): Promise<void> {
+    if (id === undefined) {
+      throw new Error('Invalid Argument: id cannot be undefined');
+    }
     const idProp = this.modelClass.definition.idName();
     const where = {} as Where<T>;
     (where as AnyObject)[idProp] = id;
