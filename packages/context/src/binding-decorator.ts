@@ -14,7 +14,6 @@ import {
   isProviderClass,
   removeNameAndKeyTags,
 } from './binding-inspector';
-import {Provider} from './provider';
 import {Constructor} from './value-promise';
 
 /**
@@ -97,8 +96,8 @@ export namespace bind {
    */
   export function provider(
     ...specs: BindingSpec[]
-  ): (target: Constructor<Provider<unknown>>) => void {
-    return (target: Constructor<Provider<unknown>>) => {
+  ): (target: Constructor<unknown>) => void {
+    return (target: Constructor<unknown>) => {
       if (!isProviderClass(target)) {
         throw new Error(`Target ${target} is not a Provider`);
       }
