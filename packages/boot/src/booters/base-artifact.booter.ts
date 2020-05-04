@@ -9,7 +9,7 @@ import path from 'path';
 import {ArtifactOptions, Booter} from '../types';
 import {discoverFiles, loadClassesFromFiles} from './booter-utils';
 
-const debug = debugFactory('loopback:boot:base-artifact-booter');
+const debug = debugFactory('loopback:boot:booter:base');
 
 /**
  * This class serves as a base class for Booters which follow a pattern of
@@ -84,6 +84,10 @@ export class BaseArtifactBooter implements Booter {
         ? this.options.dirs
         : [this.options.dirs]
       : [];
+
+    this.dirs = this.dirs.map(d => {
+      return path.relative(this.projectRoot, path.resolve(this.projectRoot, d));
+    });
 
     this.extensions = this.options.extensions
       ? Array.isArray(this.options.extensions)

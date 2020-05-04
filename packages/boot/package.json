@@ -32,6 +32,7 @@
     "@types/glob": "^7.1.1",
     "debug": "^4.1.1",
     "glob": "^7.1.6",
+    "js-yaml": "^3.13.1",
     "tslib": "^2.0.0"
   },
   "devDependencies": {
@@ -41,7 +42,8 @@
     "@loopback/rest": "^5.1.0",
     "@loopback/rest-crud": "^0.8.6",
     "@loopback/testlab": "^3.1.6",
-    "@types/node": "^10.17.24"
+    "@types/node": "^10.17.24",
+    "@types/js-yaml": "^3.12.3"
   },
   "files": [
     "README.md",

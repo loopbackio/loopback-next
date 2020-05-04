@@ -9,12 +9,15 @@ import {
   Application,
   Component,
   CoreBindings,
+  createBindingFromClass, inject
 } from '@loopback/core';
 import {
   ApplicationMetadataBooter,
+  ConfigurationBooter,
   ControllerBooter,
   DataSourceBooter,
   InterceptorProviderBooter,
+  JsYamlJsonLoader,
   LifeCycleObserverBooter,
   ModelApiBooter,
   ModelBooter,
@@ -42,7 +45,10 @@ export class BootComponent implements Component {
     InterceptorProviderBooter,
     ModelApiBooter,
     ModelBooter,
+    ConfigurationBooter,
   ];
+
+  bindings = [createBindingFromClass(JsYamlJsonLoader)];
 
   /**
    *

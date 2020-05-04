@@ -1,0 +1,6 @@
+loggers.Log1:
+  level: info
+  __source: yaml
+loggers.Log2:
+  level: debug
+  __source: yaml

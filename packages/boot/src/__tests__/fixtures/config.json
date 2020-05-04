@@ -1,0 +1,10 @@
+{
+  "loggers.Log1": {
+    "level": "info",
+    "__source": "json"
+  },
+  "loggers.Log2": {
+    "level": "debug",
+    "__source": "json"
+  }
+}
