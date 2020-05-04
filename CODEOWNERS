@@ -298,8 +298,8 @@
 #
 # - Issue label: Internal Tooling
 # - Primary owner(s): @raymondfeng
-# - Standby owner(s): @emonddr @raymondfeng
-/bin
+# - Standby owner(s): @emonddr
+/bin @emonddr @raymondfeng
 /packages/build @emonddr @raymondfeng
 /packages/eslint-config @emonddr @raymondfeng
 /packages/tsdocs @emonddr @raymondfeng
