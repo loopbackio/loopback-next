@@ -57,9 +57,11 @@ export type BindingSpec<T = unknown> = BindingTemplate<T> | BindingScopeAndTags;
  * @typeParam T - Value type
  */
 export function isProviderClass<T>(
-  cls: Constructor<T | Provider<T>>,
+  cls: unknown,
 ): cls is Constructor<Provider<T>> {
-  return typeof cls?.prototype?.value === 'function';
+  return (
+    typeof cls === 'function' && typeof cls.prototype?.value === 'function'
+  );
 }
 
 /**

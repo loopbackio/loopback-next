@@ -396,14 +396,11 @@ export function registerInterceptor(
       : LOCAL_INTERCEPTOR_NAMESPACE;
 
   let binding: Binding<Interceptor>;
-  if (isProviderClass(interceptor as Constructor<Provider<Interceptor>>)) {
-    binding = createBindingFromClass(
-      interceptor as Constructor<Provider<Interceptor>>,
-      {
-        defaultNamespace: namespace,
-        ...options,
-      },
-    );
+  if (isProviderClass(interceptor)) {
+    binding = createBindingFromClass(interceptor, {
+      defaultNamespace: namespace,
+      ...options,
+    });
     if (binding.tagMap[ContextTags.GLOBAL_INTERCEPTOR]) {
       global = true;
     }
