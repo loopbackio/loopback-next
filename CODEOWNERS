@@ -84,11 +84,15 @@
 # Fall-back entry for files not assigned to any Functional Areas
 * @bajtos @raymondfeng
 
-# To keep things simple, we assign documentation to all core team members
-# For longer term, we may want to re-organize doc files around functional
-# areas (create a new subdirectory for each functional area), so that
-# we can assign more specific code owners to different doc pages.
-/docs @agnes512 @bajtos @deepakrkris @emonddr @jannyHou @hacksparrow @raymondfeng
+# To keep things simple, we don't assign any owners for the documentation.
+# When some doc pages are changed as part of a pull request changing the
+# implementation, then GitHub will assign the reviewers based on who is
+# owning the code being modified.
+# There will be no code owners assigned for pull requests changing
+# the documentation only. We can improve this situation in the future,
+# e.g. by re-organizing doc pages to align the file structure with functional
+# areas.
+/docs
 
 #
 # CLI (`lb4` infrastructure, commands not covered by functional areas below)
