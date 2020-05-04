@@ -609,6 +609,13 @@ describe('DefaultCrudRepository', () => {
     );
   });
 
+  it('throws error when provided an empty id', async () => {
+    const repo = new DefaultCrudRepository(Note, ds);
+    await expect(repo.updateById(undefined, {title: 't4'})).to.be.rejectedWith(
+      'Invalid Argument: id cannot be undefined',
+    );
+  });
+
   it('implements Repository.updateAll()', async () => {
     const repo = new DefaultCrudRepository(Note, ds);
     await repo.create({title: 't3', content: 'c3'});
