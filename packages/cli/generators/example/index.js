@@ -53,6 +53,9 @@ const EXAMPLES = {
   'multi-tenancy': g.f(
     'An example application to demonstrate how to implement multi-tenancy with LoopBack 4.',
   ),
+  'passport-login': g.f(
+    'An example implmenting authentication in a LoopBack application using Passport modules.',
+  ),
 };
 Object.freeze(EXAMPLES);
 

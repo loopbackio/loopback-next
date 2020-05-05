@@ -81,6 +81,10 @@ LoopBack 4 comes with the following example projects.
 - **[validation-app](https://github.com/strongloop/loopback-next/tree/master/examples/validation-app)**:
   An example demonstrating how to add validations in a LoopBack application.
 
+- **[passport-login](https://github.com/strongloop/loopback-next/tree/master/examples/passport-login)**:
+  An example implmenting authentication in a LoopBack application using
+  [Passport](https://github.com/jaredhanson/passport) modules.
+
 ## How to download examples
 
 You can download the example projects using our CLI tool `lb4`:
