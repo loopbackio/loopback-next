@@ -83,19 +83,30 @@ export class BaseArtifactBooter implements Booter {
    * NOTE: All properties are configured even if all aren't used.
    */
   async configure() {
-    if (Array.isArray(this.options.globs)) {
-      this.globs = this.options.globs;
-      return;
-    } else if (typeof this.options.globs === 'string') {
-      this.globs = [this.options.globs];
-      return;
-    }
+    const config = this.buildOptions(this.options);
+    this.dirs = config.dirs;
+    this.globs = config.globs;
+    this.extensions = config.extensions;
+  }
 
-    this.dirs = this.options.dirs
-      ? Array.isArray(this.options.dirs)
-        ? this.options.dirs
-        : [this.options.dirs]
-      : [];
+  /**
+   * Build options for discovering files within the project
+   * @param options - Options for the artifact
+   */
+  protected buildOptions(options: ArtifactOptions) {
+    const config = {
+      globs: [],
+      extensions: [],
+      dirs: [],
+      ...options,
+    };
+
+    let dirs = asStringArray(options.dirs);
+    const extensions = asStringArray(options.extensions);
+    if (options.globs) {
+      const globs = asStringArray(options.globs);
+      return {...config, dirs, globs, extensions};
+    }
 
     // Generated LoopBack applications use `<pkgRoot>/dist` as the `projectRoot`
     this.packageRoot = this.projectRoot;
@@ -106,7 +117,7 @@ export class BaseArtifactBooter implements Booter {
       this.packageRoot = path.resolve(this.projectRoot, '..');
     }
     // Now the root is either `''` or `'dist/'`
-    this.dirs = this.dirs.map(d => {
+    dirs = dirs.map(d => {
       // Resolve the dir to be relative to the package root
       const dir = path.relative(
         this.packageRoot,
@@ -119,7 +130,7 @@ export class BaseArtifactBooter implements Booter {
     // Glob does not allow `@(configs|dist/configs)`
     // Organize dirs by common root
     const dirPatterns: Record<string, string[]> = {};
-    this.dirs.reduce<Record<string, string[]>>(
+    dirs.reduce<Record<string, string[]>>(
       (previousValue: Record<string, string[]>, dir) => {
         const lastIndex = dir.lastIndexOf('/');
         let root = '';
@@ -135,24 +146,18 @@ export class BaseArtifactBooter implements Booter {
       dirPatterns,
     );
 
-    this.extensions = this.options.extensions
-      ? Array.isArray(this.options.extensions)
-        ? this.options.extensions
-        : [this.options.extensions]
-      : [];
-
-    const joinedExts = this.extensions.join('|');
+    const joinedExts = extensions.join('|');
     const globs: string[] = [];
     for (const root in dirPatterns) {
       const prefix = root === '' ? '/' : `/${root}/`;
       const joinedDirs = dirPatterns[root].join('|');
       const glob = `${prefix}@(${joinedDirs})/${
-        this.options.nested ? '**/*' : '*'
+        options.nested ? '**/*' : '*'
       }@(${joinedExts})`;
       globs.push(glob);
     }
 
-    this.globs = this.options.globs ? [this.options.globs] : globs;
+    return {...config, dirs, globs, extensions};
   }
 
   /**
@@ -161,31 +166,37 @@ export class BaseArtifactBooter implements Booter {
    * 'discovered' property.
    */
   async discover() {
+    this.discovered = await this.discoverFiles(this.globs);
+  }
+
+  protected async discoverFiles(globs: string[]) {
     debug(
       'Discovering %s artifacts in %j using glob %j',
       this.artifactName,
       this.packageRoot,
-      this.globs,
+      globs,
     );
-
     const listOfFiles = await Promise.all(
-      this.globs.map(glob => discoverFiles(glob, this.packageRoot)),
+      globs.map(glob => discoverFiles(glob, this.packageRoot)),
     );
-    this.discovered = [];
+    const discovered = new Set<string>();
     for (const files of listOfFiles) {
-      this.discovered.push(...files);
+      for (const f of files) {
+        discovered.add(f);
+      }
     }
-
+    const result = Array.from(discovered);
     if (debug.enabled) {
       debug(
         'Artifact files found: %s',
         JSON.stringify(
-          this.discovered.map(f => path.relative(this.packageRoot, f)),
+          result.map(f => path.relative(this.packageRoot, f)),
           null,
           2,
         ),
       );
     }
+    return result;
   }
 
   /**
@@ -199,4 +210,9 @@ export class BaseArtifactBooter implements Booter {
   async load() {
     this.classes = loadClassesFromFiles(this.discovered, this.projectRoot);
   }
+}
+
+function asStringArray(val?: string | string[]) {
+  if (val == null) return [];
+  return Array.isArray(val) ? val : [val];
 }

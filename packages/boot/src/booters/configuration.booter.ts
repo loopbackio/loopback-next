@@ -32,17 +32,36 @@ import {BaseArtifactBooter} from './base-artifact.booter';
 const debug = debugFactory('loopback:boot:booter:configuration');
 const readFile = promisify(fs.readFile);
 
+/**
+ * Extension point name for configuration loaders
+ */
 export const CONFIGURATION_LOADERS = 'configuration.loaders';
 
+/**
+ * Configuration metadata keyed by target binding keys to be configured
+ */
 export interface Configuration {
   [bindingKey: string]: unknown;
 }
 
+/**
+ * Loader for configurations
+ */
 export interface ConfigurationLoader {
-  fileExtensions?: string[];
+  /**
+   * Options for the loader
+   */
+  options: ArtifactOptions;
+
+  /**
+   * Load configuration objects
+   * @param app - Application instance
+   * @param packageRoot - Root directory of the package
+   * @param files - Discovered files
+   */
   load(
     app: Application,
-    projectRoot: string,
+    packageRoot: string,
     files: string[],
   ): ValueOrPromise<Configuration>;
 }
@@ -62,6 +81,11 @@ export class ConfigurationBooter extends BaseArtifactBooter {
   @extensions.list(CONFIGURATION_LOADERS)
   private loaders: ConfigurationLoader[];
 
+  private loaderOptions = new Map<
+    ConfigurationLoader,
+    {files: string[]; globs: string[]}
+  >();
+
   constructor(
     @inject(CoreBindings.APPLICATION_INSTANCE)
     public app: Application,
@@ -72,32 +96,22 @@ export class ConfigurationBooter extends BaseArtifactBooter {
     super(
       projectRoot,
       // Set Configuration Booter Options if passed in via bootConfig
-      {...ConfigurationDefaults, ...configOptions},
+      configOptions,
     );
   }
 
   async configure() {
-    const fileExtensions = new Set(
-      this.options.extensions
-        ? Array.isArray(this.options.extensions)
-          ? [...this.options.extensions]
-          : [this.options.extensions]
-        : [],
-    );
+    for (const loader of this.loaders) {
+      const options = this.buildOptions(loader.options);
+      this.loaderOptions.set(loader, {globs: options.globs, files: []});
+      debug('Options for loader %s', loader.constructor.name, options);
+    }
+  }
 
-    this.loaders.forEach(loader => {
-      const loaderExtensions = loader.fileExtensions;
-      if (Array.isArray(loaderExtensions)) {
-        for (const e of loaderExtensions) {
-          fileExtensions.add(e);
-        }
-      }
-    });
-    this.options.extensions = Array.from(fileExtensions);
-    await super.configure();
-
-    debug('Dirs', this.dirs);
-    debug('Extensions', this.extensions);
+  async discover() {
+    for (const entry of this.loaderOptions.values()) {
+      entry.files = await this.discoverFiles(entry.globs);
+    }
   }
 
   /**
@@ -105,16 +119,16 @@ export class ConfigurationBooter extends BaseArtifactBooter {
    * creating a ConfigurationConstructor and binding it to the application class.
    */
   async load() {
-    for (const loader of this.loaders) {
+    for (const [loader, entry] of this.loaderOptions.entries()) {
       debug(
         'Calling configuration loader %s for %j',
         loader.constructor.name,
-        this.discovered,
+        entry.files,
       );
       const configs = await loader.load(
         this.app,
         this.projectRoot,
-        this.discovered,
+        entry.files,
       );
       for (const key in configs) {
         const configData = configs[key];
@@ -131,20 +145,6 @@ export class ConfigurationBooter extends BaseArtifactBooter {
     }
   }
 }
-
-/**
- * Default ArtifactOptions for ConfigurationBooter.
- */
-export const ConfigurationDefaults: ArtifactOptions = {
-  dirs: [
-    // <application-package-root-dir>/dist/configs
-    'configs',
-    // <application-package-root-dir>/configs
-    '../configs',
-  ],
-  extensions: ['.config.js', '.config.json', '.config.yaml', '.config.yml'],
-  nested: true,
-};
 
 /**
  * A shortcut decorator `@configurationLoader` to mark a class as an extension
@@ -166,20 +166,25 @@ export function configurationLoader(...specs: BindingSpec[]) {
  */
 @configurationLoader()
 export class JsYamlJsonLoader implements ConfigurationLoader {
-  fileExtensions = [
-    '.config.js',
-    '.config.yaml',
-    '.config.yml',
-    '.config.json',
-  ];
+  @config()
+  options = {
+    dirs: [
+      // <application-package-root-dir>/dist/configs
+      'configs',
+      // <application-package-root-dir>/configs
+      '../configs',
+    ],
+    extensions: ['.config.js', '.config.json', '.config.yaml', '.config.yml'],
+    nested: true,
+  };
 
   async load(
     app: Application,
-    projectRoot: string,
+    packageRoot: string,
     files: string[],
   ): Promise<Configuration> {
     files = selectFiles(files, {
-      extensionOrder: this.fileExtensions,
+      extensions: this.options.extensions,
     });
     const data = {};
     for (const file of files) {
@@ -204,7 +209,7 @@ export interface FileSelectionOptions {
    * `['.js', '.json']` denotes that the `.js` file overrides the `.json` file.
    * If no items are provided, no overriding happens.
    */
-  extensionOrder?: string[];
+  extensions?: string[];
 }
 
 /**
@@ -212,9 +217,9 @@ export interface FileSelectionOptions {
  * @param files - An array of file names
  * @param options - Options to control the overriding behavior
  */
-function selectFiles(files: string[], options?: FileSelectionOptions) {
+export function selectFiles(files: string[], options?: FileSelectionOptions) {
   const selected = [...files];
-  const extensionOrder = options?.extensionOrder ?? [];
+  const extensionOrder = options?.extensions ?? [];
   selected.sort((a, b) => {
     const baseA = removeExtension(a, extensionOrder);
     const baseB = removeExtension(b, extensionOrder);

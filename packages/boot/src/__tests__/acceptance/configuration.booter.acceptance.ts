@@ -10,12 +10,13 @@ import {
   TagValueMatcher,
 } from '@loopback/core';
 import {expect, TestSandbox} from '@loopback/testlab';
+import {Suite} from 'mocha';
 import {resolve} from 'path';
 import {ConfigurationLoader, configurationLoader} from '../../booters';
 import {BooterApp} from '../fixtures/application';
 
-describe('configuration booter acceptance tests', function () {
-  // eslint-disable-next-line no-invalid-this
+/* eslint-disable @typescript-eslint/naming-convention */
+describe('configuration booter acceptance tests', function (this: Suite) {
   this.timeout(5000);
   let app: BooterApp;
   const sandbox = new TestSandbox(resolve(__dirname, '../../.sandbox'), {
@@ -86,7 +87,8 @@ describe('configuration booter acceptance tests', function () {
   it('allows extensions to load configurations', async () => {
     @configurationLoader()
     class MyConfigLoader implements ConfigurationLoader {
-      fileExtensions?: string[];
+      options = {};
+
       load(_app: Application, projectRoot: string, files: string[]) {
         app.configure('loggers.Log1').to({
           level: 'info',
