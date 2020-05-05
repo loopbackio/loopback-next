@@ -200,6 +200,15 @@ children:
       url: Database-migrations.html
       output: 'web, pdf'
 
+  - title: 'Running and debugging apps'
+    url: Running-and-debugging-apps.html
+    output: 'web, pdf'
+    children:
+
+    - title: 'Setting debug strings'
+      url: Setting-debug-strings.html
+      output: 'web, pdf'
+
   - title: 'Call Other Services'
     url: Calling-other-APIs-and-web-services.html
     output: 'web, pdf'
