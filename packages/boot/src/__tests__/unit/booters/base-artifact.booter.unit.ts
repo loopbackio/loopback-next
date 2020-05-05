@@ -26,29 +26,29 @@ describe('base-artifact booter unit tests', () => {
       expect(booterInst.extensions).to.be.eql(['.test.js']);
     });
 
-    it(`creates and sets 'glob' pattern`, async () => {
+    it(`creates and sets 'globs' pattern`, async () => {
       const booterInst = givenBaseBooter();
-      const expected = '/@(test|test2)/*@(.test.js|test2.js)';
+      const expected = ['/@(test|test2)/*@(.test.js|test2.js)'];
       await booterInst.configure();
-      expect(booterInst.glob).to.equal(expected);
+      expect(booterInst.globs).to.eql(expected);
     });
 
-    it(`creates and sets 'glob' pattern (nested)`, async () => {
+    it(`creates and sets 'globs' pattern (nested)`, async () => {
       const booterInst = givenBaseBooter(
         Object.assign({}, TEST_OPTIONS, {nested: true}),
       );
-      const expected = '/@(test|test2)/**/*@(.test.js|test2.js)';
+      const expected = ['/@(test|test2)/**/*@(.test.js|test2.js)'];
       await booterInst.configure();
-      expect(booterInst.glob).to.equal(expected);
+      expect(booterInst.globs).to.eql(expected);
     });
 
-    it(`sets 'glob' pattern to options.glob if present`, async () => {
-      const expected = '/**/*.glob';
+    it(`sets 'globs' pattern to options.glob if present`, async () => {
+      const expected = ['/**/*.glob'];
       const booterInst = givenBaseBooter(
-        Object.assign({}, TEST_OPTIONS, {glob: expected}),
+        Object.assign({}, TEST_OPTIONS, {globs: expected}),
       );
       await booterInst.configure();
-      expect(booterInst.glob).to.equal(expected);
+      expect(booterInst.globs).to.eql(expected);
     });
   });
 

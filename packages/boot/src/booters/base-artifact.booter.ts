@@ -76,10 +76,6 @@ export class BaseArtifactBooter implements Booter {
     return this.constructor.name.replace(/Booter$/, '');
   }
 
-  get glob(): string {
-    return this.globs[0];
-  }
-
   /**
    * Configure the Booter by initializing the 'dirs', 'extensions' and 'glob'
    * properties.
@@ -87,11 +83,11 @@ export class BaseArtifactBooter implements Booter {
    * NOTE: All properties are configured even if all aren't used.
    */
   async configure() {
-    if (Array.isArray(this.options.glob)) {
-      this.globs = this.options.glob;
+    if (Array.isArray(this.options.globs)) {
+      this.globs = this.options.globs;
       return;
-    } else if (typeof this.options.glob === 'string') {
-      this.globs = [this.options.glob];
+    } else if (typeof this.options.globs === 'string') {
+      this.globs = [this.options.globs];
       return;
     }
 
@@ -156,7 +152,7 @@ export class BaseArtifactBooter implements Booter {
       globs.push(glob);
     }
 
-    this.globs = this.options.glob ? [this.options.glob] : globs;
+    this.globs = this.options.globs ? [this.options.globs] : globs;
   }
 
   /**
