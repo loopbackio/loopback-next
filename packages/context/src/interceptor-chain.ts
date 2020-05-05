@@ -228,7 +228,7 @@ export function invokeInterceptors<
  * @param interceptors - A list of interceptor functions or binding keys
  */
 export function composeInterceptors<C extends Context = Context>(
-  ...interceptors: GenericInterceptor<C>[]
+  ...interceptors: GenericInterceptorOrKey<C>[]
 ): GenericInterceptor<C> {
   return (ctx, next) => {
     const interceptor = new GenericInterceptorChain(

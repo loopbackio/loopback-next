@@ -13,6 +13,7 @@ import {
   GenericInterceptorChain,
   Next,
 } from '../..';
+import {Interceptor} from '../../interceptor';
 
 describe('GenericInterceptorChain', () => {
   let ctx: Context;
@@ -199,6 +200,27 @@ describe('GenericInterceptorChain', () => {
     );
     let invoked = false;
     const result = await interceptor(new Context(), () => {
+      invoked = true;
+      return invoked;
+    });
+    expect(invoked).to.be.true();
+    expect(result).to.eql('ABC');
+  });
+
+  it('composes multiple interceptors or keys as a single interceptor', async () => {
+    const binding = ctx
+      .bind<Interceptor>('interceptors.abc')
+      .to(async (context, next) => {
+        await next();
+        return 'ABC';
+      });
+    const childCtx = new Context(ctx);
+    const interceptor = composeInterceptors(
+      givenNamedInterceptor('interceptor1'),
+      binding.key,
+    );
+    let invoked = false;
+    const result = await interceptor(childCtx, () => {
       invoked = true;
       return invoked;
     });
