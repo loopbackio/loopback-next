@@ -70,6 +70,19 @@ describe('configuration booter acceptance tests', function () {
     await testConfigBooting('json');
   });
 
+  it('discovers files in <project>/configs', async () => {
+    await sandbox.copyFile(
+      resolve(__dirname, '../../../src/__tests__/fixtures/config.json'),
+      'configs/test.config.json',
+    );
+
+    await sandbox.copyFile(
+      resolve(__dirname, '../../../src/__tests__/fixtures/config.yaml'),
+      'configs/test.config.yaml',
+    );
+    await testConfigBooting('json');
+  });
+
   it('allows extensions to load configurations', async () => {
     @configurationLoader()
     class MyConfigLoader implements ConfigurationLoader {

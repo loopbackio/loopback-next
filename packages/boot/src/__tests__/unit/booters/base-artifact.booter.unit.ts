@@ -56,7 +56,7 @@ describe('base-artifact booter unit tests', () => {
     it(`sets 'discovered' property`, async () => {
       const booterInst = givenBaseBooter();
       // Fake glob pattern so we get an empty array
-      booterInst.glob = '/abc.xyz';
+      booterInst.globs = ['/abc.xyz'];
       await booterInst.discover();
       expect(booterInst.discovered).to.eql([]);
     });

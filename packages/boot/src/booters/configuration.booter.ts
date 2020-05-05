@@ -136,7 +136,12 @@ export class ConfigurationBooter extends BaseArtifactBooter {
  * Default ArtifactOptions for ConfigurationBooter.
  */
 export const ConfigurationDefaults: ArtifactOptions = {
-  dirs: ['configs'],
+  dirs: [
+    // <application-package-root-dir>/dist/configs
+    'configs',
+    // <application-package-root-dir>/configs
+    '../configs',
+  ],
   extensions: ['.config.js', '.config.json', '.config.yaml', '.config.yml'],
   nested: true,
 };

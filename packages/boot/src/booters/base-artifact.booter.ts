@@ -5,6 +5,7 @@
 
 import {Constructor} from '@loopback/core';
 import debugFactory from 'debug';
+import fs from 'fs';
 import path from 'path';
 import {ArtifactOptions, Booter} from '../types';
 import {discoverFiles, loadClassesFromFiles} from './booter-utils';
@@ -37,6 +38,9 @@ export class BaseArtifactBooter implements Booter {
    * Project root relative to which all other paths are resolved
    */
   readonly projectRoot: string;
+
+  private packageRoot: string;
+
   /**
    * Relative paths of directories to be searched
    */
@@ -48,7 +52,7 @@ export class BaseArtifactBooter implements Booter {
   /**
    * `glob` pattern to match artifact paths
    */
-  glob: string;
+  globs: string[];
 
   /**
    * List of files discovered by the Booter that matched artifact requirements
@@ -72,6 +76,10 @@ export class BaseArtifactBooter implements Booter {
     return this.constructor.name.replace(/Booter$/, '');
   }
 
+  get glob(): string {
+    return this.globs[0];
+  }
+
   /**
    * Configure the Booter by initializing the 'dirs', 'extensions' and 'glob'
    * properties.
@@ -79,15 +87,57 @@ export class BaseArtifactBooter implements Booter {
    * NOTE: All properties are configured even if all aren't used.
    */
   async configure() {
+    if (Array.isArray(this.options.glob)) {
+      this.globs = this.options.glob;
+      return;
+    } else if (typeof this.options.glob === 'string') {
+      this.globs = [this.options.glob];
+      return;
+    }
+
     this.dirs = this.options.dirs
       ? Array.isArray(this.options.dirs)
         ? this.options.dirs
         : [this.options.dirs]
       : [];
 
+    // Generated LoopBack applications use `<pkgRoot>/dist` as the `projectRoot`
+    this.packageRoot = this.projectRoot;
+    const pkgJsonFile = path.resolve(this.projectRoot, '../package.json');
+    if (fs.existsSync(pkgJsonFile)) {
+      // Use the parent directory containing `package.json` as the package root
+      // so that we can use `dirs` such as `../configs`.
+      this.packageRoot = path.resolve(this.projectRoot, '..');
+    }
+    // Now the root is either `''` or `'dist/'`
     this.dirs = this.dirs.map(d => {
-      return path.relative(this.projectRoot, path.resolve(this.projectRoot, d));
+      // Resolve the dir to be relative to the package root
+      const dir = path.relative(
+        this.packageRoot,
+        path.resolve(this.projectRoot, d),
+      );
+      // Replace `\`
+      return dir.replace(/\\/g, '/');
     });
+
+    // Glob does not allow `@(configs|dist/configs)`
+    // Organize dirs by common root
+    const dirPatterns: Record<string, string[]> = {};
+    this.dirs.reduce<Record<string, string[]>>(
+      (previousValue: Record<string, string[]>, dir) => {
+        const lastIndex = dir.lastIndexOf('/');
+        let root = '';
+        let name = dir;
+        if (lastIndex !== -1) {
+          root = dir.substring(0, lastIndex);
+          name = dir.substring(lastIndex + 1);
+        }
+        previousValue[root] = previousValue[root] ?? [];
+        previousValue[root].push(name);
+        return previousValue;
+      },
+      dirPatterns,
+    );
 
     this.extensions = this.options.extensions
       ? Array.isArray(this.options.extensions)
@@ -95,14 +145,18 @@ export class BaseArtifactBooter implements Booter {
         : [this.options.extensions]
       : [];
 
-    const joinedDirs = this.dirs.join('|');
     const joinedExts = this.extensions.join('|');
+    const globs: string[] = [];
+    for (const root in dirPatterns) {
+      const prefix = root === '' ? '/' : `/${root}/`;
+      const joinedDirs = dirPatterns[root].join('|');
+      const glob = `${prefix}@(${joinedDirs})/${
+        this.options.nested ? '**/*' : '*'
+      }@(${joinedExts})`;
+      globs.push(glob);
+    }
 
-    this.glob = this.options.glob
-      ? this.options.glob
-      : `/@(${joinedDirs})/${
-          this.options.nested ? '**/*' : '*'
-        }@(${joinedExts})`;
+    this.globs = this.options.glob ? [this.options.glob] : globs;
   }
 
   /**
@@ -114,17 +168,23 @@ export class BaseArtifactBooter implements Booter {
     debug(
       'Discovering %s artifacts in %j using glob %j',
       this.artifactName,
-      this.projectRoot,
-      this.glob,
+      this.packageRoot,
+      this.globs,
     );
 
-    this.discovered = await discoverFiles(this.glob, this.projectRoot);
+    const listOfFiles = await Promise.all(
+      this.globs.map(glob => discoverFiles(glob, this.packageRoot)),
+    );
+    this.discovered = [];
+    for (const files of listOfFiles) {
+      this.discovered.push(...files);
+    }
 
     if (debug.enabled) {
       debug(
         'Artifact files found: %s',
         JSON.stringify(
-          this.discovered.map(f => path.relative(this.projectRoot, f)),
+          this.discovered.map(f => path.relative(this.packageRoot, f)),
           null,
           2,
         ),

@@ -30,7 +30,7 @@ export type ArtifactOptions = {
    * A `glob` string to use when searching for files. This takes
    * precedence over other options.
    */
-  glob?: string;
+  glob?: string | string[];
 };
 
 /**
