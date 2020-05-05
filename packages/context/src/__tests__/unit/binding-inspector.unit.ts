@@ -11,10 +11,11 @@ import {
   BindingScopeAndTags,
   Constructor,
   Context,
+  ContextTags,
   createBindingFromClass,
+  isProviderClass,
   Provider,
 } from '../..';
-import {ContextTags} from '../../keys';
 
 describe('createBindingFromClass()', () => {
   it('inspects classes', () => {
@@ -254,5 +255,58 @@ describe('createBindingFromClass()', () => {
     const binding = createBindingFromClass(cls, options);
     ctx.add(binding);
     return binding;
+  }
+});
+
+describe('isProviderClass', () => {
+  describe('non-functions', () => {
+    assertNotProviderClasses(undefined, null, 'abc', 1, true, false, {x: 1});
+  });
+
+  describe('functions that do not have value()', () => {
+    function fn() {}
+    class MyClass {}
+    class MyClassWithVal {
+      value = 'abc';
+    }
+    assertNotProviderClasses(String, Date, fn, MyClass, MyClassWithVal);
+  });
+
+  describe('functions that have value()', () => {
+    class MyProvider {
+      value() {
+        return 'abc';
+      }
+    }
+
+    class MyAsyncProvider {
+      value() {
+        return Promise.resolve('abc');
+      }
+    }
+
+    function MyJsProvider() {}
+
+    MyJsProvider.prototype.value = function () {
+      return 'abc';
+    };
+
+    assertProviderClasses(MyProvider, MyAsyncProvider, MyJsProvider);
+  });
+
+  function assertNotProviderClasses(...values: unknown[]) {
+    for (const v of values) {
+      it(`recognizes ${v} is not a provider class`, () => {
+        expect(isProviderClass(v)).to.be.false();
+      });
+    }
+  }
+
+  function assertProviderClasses(...values: unknown[]) {
+    for (const v of values) {
+      it(`recognizes ${v} is a provider class`, () => {
+        expect(isProviderClass(v)).to.be.true();
+      });
+    }
   }
 });
