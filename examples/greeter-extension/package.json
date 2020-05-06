@@ -63,6 +63,6 @@
     "@loopback/openapi-v3": "^3.3.0",
     "chalk": "^4.0.0",
     "debug": "^4.1.1",
-    "tslib": "^1.11.1"
+    "tslib": "^1.11.2"
   }
 }
