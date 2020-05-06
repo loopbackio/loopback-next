@@ -224,9 +224,7 @@ module.exports = class ProjectGenerator extends BaseGenerator {
         type: 'confirm',
         name: 'yarn',
         message: g.f('Yarn is available. Do you prefer to use it by default?'),
-        when:
-          !this.options.packageManager &&
-          this.spawnCommandSync('yarn', ['help'], {stdio: false}).status === 0,
+        when: !this.options.packageManager && utils.isYarnAvailable(),
         default: false,
       },
     ];

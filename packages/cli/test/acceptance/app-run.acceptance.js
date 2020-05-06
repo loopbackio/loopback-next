@@ -10,7 +10,7 @@ const assert = require('yeoman-assert');
 const helpers = require('yeoman-test');
 const bootstrapCommandFactory = require('@lerna/bootstrap');
 const build = require('@loopback/build');
-
+const utils = require('../../lib/utils');
 const appGenerator = path.join(__dirname, '../../generators/app');
 const rootDir = path.join(__dirname, '../../../..');
 const sandboxDir = path.join(rootDir, 'sandbox');
@@ -74,12 +74,10 @@ describe('app-generator (SLOW)', function () {
   });
 });
 
-build.runShell('yarn', ['help'], {stdio: 'ignore'}).on('close', code => {
-  if (code === 0) return describe('app-generator with Yarn (SLOW)', yarnTest);
-  return describe.skip;
-});
+const isYarnAvailable = utils.isYarnAvailable();
+const yarnTest = isYarnAvailable ? describe : describe.skip;
 
-function yarnTest() {
+yarnTest('app-generator with Yarn (SLOW)', () => {
   const appProps = {
     name: '@loopback/sandbox-yarn-app',
     description: 'My sandbox app with Yarn for LoopBack 4',
@@ -136,7 +134,7 @@ function yarnTest() {
     build.clean(['node', 'run-clean', appProps.outdir]);
     process.chdir(process.cwd());
   });
-}
+});
 
 async function lernaBootstrap(packageManager, ...scopes) {
   const cmd = bootstrapCommandFactory({
