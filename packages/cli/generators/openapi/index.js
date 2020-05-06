@@ -73,6 +73,13 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
       description: g.f('A valid datasource name for the OpenAPI endpoint'),
     });
 
+    this.option('baseModel', {
+      description: g.f('Base model class'),
+      required: false,
+      default: '',
+      type: String,
+    });
+
     this.option('promote-anonymous-schemas', {
       description: g.f('Promote anonymous schemas as models'),
       required: false,
@@ -89,6 +96,16 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
 
   async promptDataSourceName() {
     if (this.shouldExit()) return false;
+    if (
+      this.options.baseModel &&
+      this.options.baseModel !== 'Model' &&
+      this.options.baseModel !== 'Entity'
+    ) {
+      this.exit(
+        `Invalid baseModel: ${this.options.baseModel}. Valid values: Model, Entity.`,
+      );
+      return;
+    }
     if (this.options.client !== true) return;
     if (this.options.url) return;
 
@@ -370,6 +387,7 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
     const typeSource = this.templatePath('src/models/type-template.ts.ejs');
     for (const m of this.modelSpecs) {
       if (!m.fileName) continue;
+      m.baseModel = this.options.baseModel;
       const modelFile = m.fileName;
       if (debug.enabled) {
         debug(`Artifact output filename set to: ${modelFile}`);
@@ -486,7 +504,7 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
       try {
         const minVersion = semver.minVersion(connectorVersionRange);
         if (semver.lt(minVersion, '6.0.0')) {
-          pkgs.push('loopback-connector-openapi');
+          pkgs.push('loopback-connector-openapi@^6.0.0');
         }
       } catch (err) {
         // The version can be a tarball

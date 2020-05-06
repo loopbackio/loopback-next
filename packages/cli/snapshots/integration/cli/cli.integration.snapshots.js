@@ -1018,6 +1018,14 @@ exports[`cli saves command metadata to .yo-rc.json 1`] = `
           "name": "datasource",
           "hide": false
         },
+        "baseModel": {
+          "description": "Base model class",
+          "required": false,
+          "default": "",
+          "type": "String",
+          "name": "baseModel",
+          "hide": false
+        },
         "promote-anonymous-schemas": {
           "description": "Promote anonymous schemas as models",
           "required": false,

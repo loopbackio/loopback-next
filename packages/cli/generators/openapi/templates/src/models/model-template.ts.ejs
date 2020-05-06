@@ -1,8 +1,12 @@
 <%_
 const _properties = locals.properties || [];
-if (_properties.length) {
+if (importProperty && baseModel) {
 -%>
-import {model, property, Model} from '@loopback/repository';
+import {model, property, <%- baseModel %>} from '@loopback/repository';
+<%_
+} else if (importProperty) {
+-%>
+import {model, property} from '@loopback/repository';
 <%_
 } else {
 -%>
@@ -22,11 +26,21 @@ imports.forEach(i => {
  * <%- escapeComment(description) %>
  */
 @model({name: '<%- name %>'})
-export class <%- className %> extends Model {
+<%_ if (baseModel) { -%>
+export class <%- className %> extends <%- baseModel %> {
   constructor(data?: Partial<<%- className %>>) {
     super(data);
   }
 
+<%_ } else { -%>
+export class <%- className %> {
+  constructor(data?: Partial<<%- className %>>) {
+    if (data != null && typeof data === 'object') {
+      Object.assign(this, data);
+    }
+  }
+
+<%_ } -%>
   <%_ for (const p of _properties) { -%>
   /**
   <%_ const _comment = escapeComment(p.description);
@@ -37,7 +51,12 @@ export class <%- className %> extends Model {
    *
   <%_ } -%>
    */
+<%_ if (p.comment) { -%>
+  // <%- p.comment %>
+<%_ } -%>
+<%_ if (p.decoration) { -%>
   <%- p.decoration %>
+<%_ } -%>
   <%- p.signature %>
 
   <%_ } -%>

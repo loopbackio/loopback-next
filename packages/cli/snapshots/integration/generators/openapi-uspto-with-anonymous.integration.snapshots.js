@@ -421,16 +421,18 @@ export * from './perform-search-response-body.model';
 
 
 exports[`openapi-generator uspto with anonymous generates all the proper files 5`] = `
-import {model, property, Model} from '@loopback/repository';
+import {model, property} from '@loopback/repository';
 
 /**
  * The model class is generated from OpenAPI schema - performSearchRequestBody
  * performSearchRequestBody
  */
 @model({name: 'performSearchRequestBody'})
-export class PerformSearchRequestBody extends Model {
+export class PerformSearchRequestBody {
   constructor(data?: Partial<PerformSearchRequestBody>) {
-    super(data);
+    if (data != null && typeof data === 'object') {
+      Object.assign(this, data);
+    }
   }
 
   /**
@@ -485,16 +487,14 @@ export type PerformSearchRequestBodyWithRelations = PerformSearchRequestBody & P
 exports[`openapi-generator uspto with anonymous generates all the proper files 6`] = `
 /**
  * The model type is generated from OpenAPI schema - {
-  [additionalProperty: string]: {
-  
-};
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [additionalProperty: string]: any;
 }[]
  * performSearchResponseBody
  */
 export type PerformSearchResponseBody = {
-  [additionalProperty: string]: {
-  
-};
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [additionalProperty: string]: any;
 }[];
 
 
