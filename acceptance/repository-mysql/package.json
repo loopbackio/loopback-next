@@ -24,7 +24,7 @@
     "@loopback/repository-tests": "^0.12.2",
     "@types/node": "^10.17.21",
     "loopback-connector-mysql": "^5.4.3",
-    "tslib": "^1.11.1"
+    "tslib": "^1.11.2"
   },
   "files": [
     "README.md",

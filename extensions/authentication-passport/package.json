@@ -48,7 +48,7 @@
     "@loopback/rest": "^3.3.2",
     "@loopback/security": "^0.2.7",
     "passport": "^0.4.1",
-    "tslib": "^1.11.1",
+    "tslib": "^1.11.2",
     "util-promisifyall": "^1.0.6"
   },
   "devDependencies": {

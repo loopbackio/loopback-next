@@ -28,7 +28,7 @@
     "@types/express": "^4.17.6",
     "@types/lodash": "^4.14.150",
     "lodash": "^4.17.15",
-    "tslib": "^1.11.1"
+    "tslib": "^1.11.2"
   },
   "devDependencies": {
     "@loopback/build": "^5.3.0",
