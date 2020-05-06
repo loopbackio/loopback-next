@@ -113,6 +113,18 @@ describe('Repository in Thinking in LoopBack', () => {
     expect(stored).to.containDeep(user);
   });
 
+  it('toObject preserves the prototype of properties', async () => {
+    const DATE = new Date('2020-05-01');
+    const created = await repo.create({
+      createdAt: DATE,
+    });
+
+    expect(created.toObject()).to.deepEqual({
+      id: 1,
+      createdAt: DATE,
+    });
+  });
+
   function givenProductRepository() {
     const db = new DataSource({
       connector: 'memory',

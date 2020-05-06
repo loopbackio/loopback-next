@@ -21,6 +21,7 @@ describe('model', () => {
     .addProperty('lastName', STRING)
     .addProperty('address', 'object')
     .addProperty('phones', 'array')
+    .addProperty('createdAt', Date)
     .addSetting('id', 'id');
 
   const realmCustomerDef = new ModelDefinition('RealmCustomer');
@@ -83,6 +84,7 @@ describe('model', () => {
     email: string;
     firstName: string;
     lastName: string;
+    createdAt?: Date;
     address?: Address;
     phones?: Phone[];
 
@@ -136,6 +138,24 @@ describe('model', () => {
     const customer = new Customer();
     customer.id = '123';
     customer.email = 'xyz@example.com';
+    customer.address = new Address({
+      street: '123 A St',
+      city: 'San Jose',
+      state: 'CA',
+      zipCode: '95131',
+    });
+    customer.phones = [
+      new Phone({label: 'home', number: '111-222-3333'}),
+      new Phone({label: 'work', number: '111-222-5555'}),
+    ];
+    return customer;
+  }
+
+  function createCustomerWithContactAndDate(date: Date) {
+    const customer = new Customer();
+    customer.id = '123';
+    customer.email = 'xyz@example.com';
+    customer.createdAt = date;
     customer.address = new Address({
       street: '123 A St',
       city: 'San Jose',
@@ -332,12 +352,14 @@ describe('model', () => {
   });
 
   it('converts to plain object recursively', () => {
-    const customer = createCustomerWithContact();
+    const aDate = new Date();
+    const customer = createCustomerWithContactAndDate(aDate);
     Object.assign(customer, {unknown: 'abc'});
     Object.assign(customer.address, {unknown: 'xyz'});
     expect(customer.toObject()).to.eql({
       id: '123',
       email: 'xyz@example.com',
+      createdAt: aDate,
       address: {
         street: '123 A St',
         city: 'San Jose',
@@ -352,6 +374,7 @@ describe('model', () => {
     expect(customer.toObject({ignoreUnknownProperties: false})).to.eql({
       id: '123',
       email: 'xyz@example.com',
+      createdAt: aDate,
       unknown: 'abc',
       address: {
         street: '123 A St',

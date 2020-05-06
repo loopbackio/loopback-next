@@ -20,6 +20,11 @@ export class Product extends Entity {
   @property({type: 'string'})
   slug: string;
 
+  @property({
+    type: 'date',
+  })
+  createdAt: Date;
+
   constructor(data?: Partial<Product>) {
     super(data);
   }
