@@ -47,6 +47,19 @@ describe('openapi-generator with --client', function () {
     assertModels();
   });
 
+  it('allows baseModel option', async () => {
+    await testUtils
+      .executeGenerator(generator)
+      .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path))
+      .withPrompts(props)
+      .withOptions({client: true, baseModel: 'Model'});
+
+    assertControllers();
+    assertDataSources();
+    assertServices();
+    assertModels();
+  });
+
   it('does not generates files for client with --no-client', async () => {
     await testUtils
       .executeGenerator(generator)

@@ -117,6 +117,7 @@ components:
           type: string
         zipCode:
           type: string
+      additionalProperties: true
     USAddress:
       $ref: '#/components/schemas/Address'
     Customer:

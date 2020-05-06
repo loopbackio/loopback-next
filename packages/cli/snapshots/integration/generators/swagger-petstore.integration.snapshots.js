@@ -69,6 +69,9 @@ import {NewPet} from '../models/new-pet.model';
           },
         },
       },
+      additionalProperties: {
+        type: 'string',
+      },
     },
   },
   paths: {},
@@ -378,16 +381,18 @@ export type Pet = NewPet & {
 
 
 exports[`openapi-generator specific files generates all the proper files 4`] = `
-import {model, property, Model} from '@loopback/repository';
+import {model, property} from '@loopback/repository';
 
 /**
  * The model class is generated from OpenAPI schema - NewPet
  * NewPet
  */
 @model({name: 'NewPet'})
-export class NewPet extends Model {
+export class NewPet {
   constructor(data?: Partial<NewPet>) {
-    super(data);
+    if (data != null && typeof data === 'object') {
+      Object.assign(this, data);
+    }
   }
 
   /**
@@ -420,16 +425,18 @@ export type NewPetWithRelations = NewPet & NewPetRelations;
 
 
 exports[`openapi-generator specific files generates all the proper files 5`] = `
-import {model, property, Model} from '@loopback/repository';
+import {model, property} from '@loopback/repository';
 
 /**
  * The model class is generated from OpenAPI schema - Error
  * Error
  */
 @model({name: 'Error'})
-export class Error extends Model {
+export class Error {
   constructor(data?: Partial<Error>) {
-    super(data);
+    if (data != null && typeof data === 'object') {
+      Object.assign(this, data);
+    }
   }
 
   /**

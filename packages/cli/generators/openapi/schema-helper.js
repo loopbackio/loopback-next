@@ -200,18 +200,37 @@ function mapObjectType(schema, options) {
       properties.push(propSpec);
     }
     typeSpec.properties = properties;
-    const propertySignatures = properties.map(p => p.signature);
+    typeSpec.importProperty = properties.length > 0;
 
     // Handle `additionalProperties`
     if (schema.additionalProperties === true) {
-      propertySignatures.push('[additionalProperty: string]: unknown;');
+      const signature = '[additionalProperty: string]: any;';
+      typeSpec.properties.push({
+        name: '',
+        description: 'additionalProperties',
+        comment: 'eslint-disable-next-line @typescript-eslint/no-explicit-any',
+        signature,
+      });
     } else if (schema.additionalProperties) {
-      propertySignatures.push(
+      // TypeScript does not like `[additionalProperty: string]: string;`
+      /*
+      const signature =
         '[additionalProperty: string]: ' +
-          mapSchemaType(schema.additionalProperties).signature +
-          ';',
-      );
+        mapSchemaType(schema.additionalProperties).signature +
+        ';';
+      */
+      const signature = '[additionalProperty: string]: any;';
+      typeSpec.properties.push({
+        name: '',
+        description: 'additionalProperties',
+        comment: 'eslint-disable-next-line @typescript-eslint/no-explicit-any',
+        signature,
+      });
     }
+    const propertySignatures = properties.map(p => {
+      if (p.comment) return `  // ${p.comment}\n  ${p.signature}`;
+      return p.signature;
+    });
     typeSpec.declaration = `{
   ${propertySignatures.join('\n  ')}
 }`;

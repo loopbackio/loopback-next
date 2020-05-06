@@ -214,9 +214,8 @@ oa_citations
   start?: number;
   rows?: number;
 }): Promise<{
-  [additionalProperty: string]: {
-  
-};
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [additionalProperty: string]: any;
 }[]> {
     throw new Error('Not implemented');
   }

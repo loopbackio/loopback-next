@@ -211,7 +211,8 @@ pulvinar elit eu, euismod sapien.
     },
   },
 }) where: {
-  [additionalProperty: string]: unknown;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [additionalProperty: string]: any;
 }): Promise<Pet[]> {
     throw new Error('Not implemented');
   }
@@ -409,16 +410,18 @@ export type Pet = NewPet & {
 
 
 exports[`openapi-generator petstore generates all the proper files 5`] = `
-import {model, property, Model} from '@loopback/repository';
+import {model, property} from '@loopback/repository';
 
 /**
  * The model class is generated from OpenAPI schema - NewPet
  * NewPet
  */
 @model({name: 'NewPet'})
-export class NewPet extends Model {
+export class NewPet {
   constructor(data?: Partial<NewPet>) {
-    super(data);
+    if (data != null && typeof data === 'object') {
+      Object.assign(this, data);
+    }
   }
 
   /**
@@ -451,16 +454,18 @@ export type NewPetWithRelations = NewPet & NewPetRelations;
 
 
 exports[`openapi-generator petstore generates all the proper files 6`] = `
-import {model, property, Model} from '@loopback/repository';
+import {model, property} from '@loopback/repository';
 
 /**
  * The model class is generated from OpenAPI schema - Error
  * Error
  */
 @model({name: 'Error'})
-export class Error extends Model {
+export class Error {
   constructor(data?: Partial<Error>) {
-    super(data);
+    if (data != null && typeof data === 'object') {
+      Object.assign(this, data);
+    }
   }
 
   /**
