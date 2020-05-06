@@ -1006,8 +1006,8 @@ To set up code coverage:
   "precoverage": "npm test",
   "coverage": "open coverage/index.html",
   "coverage:ci": "lb-nyc report --reporter=text-lcov | coveralls",
-  "test": "lb-nyc npm run mocha --scripts-prepend-node-path",
-  "test:ci": "lb-nyc npm run mocha --scripts-prepend-node-path"
+  "test": "lb-nyc npm run mocha",
+  "test:ci": "lb-nyc npm run mocha"
   ```
 
   `converage:ci` sets up integration with [Coveralls](https://coveralls.io/).
