@@ -189,13 +189,21 @@ function asJSON(value: any): any {
   return value;
 }
 
+/**
+ * Convert a value to a plain object as DTO.
+ *
+ * - The prototype of the value in primitive types are preserved,
+ *   like `Date`, `ObjectId`.
+ * - If the value is an instance of custom model, call `toObject` to convert.
+ * - If the value is an array, convert each element recursively.
+ *
+ * @param value the value to convert
+ * @param options the options
+ */
 function asObject(value: any, options?: Options): any {
   if (value == null) return value;
   if (typeof value.toObject === 'function') {
     return value.toObject(options);
-  }
-  if (typeof value.toJSON === 'function') {
-    return value.toJSON();
   }
   if (Array.isArray(value)) {
     return value.map(item => asObject(item, options));
@@ -217,7 +225,7 @@ export abstract class Model {
    * Serialize into a plain JSON object
    */
   toJSON(): Object {
-    const def = (<typeof Model>this.constructor).definition;
+    const def = (this.constructor as typeof Model).definition;
     if (def == null || def.settings.strict === false) {
       return this.toObject({ignoreUnknownProperties: false});
     }
@@ -249,18 +257,36 @@ export abstract class Model {
 
   /**
    * Convert to a plain object as DTO
+   *
+   * If `ignoreUnknownProperty` is set to false, convert all properties in the
+   * model instance, otherwise only convert the ones defined in the model
+   * definitions.
+   *
+   * See function `asObject` for each property's conversion rules.
    */
   toObject(options?: Options): Object {
-    let obj: AnyObject;
+    const obj: AnyObject = {};
+
     if (options && options.ignoreUnknownProperties === false) {
-      obj = {};
       for (const p in this) {
         const val = (this as AnyObject)[p];
         obj[p] = asObject(val, options);
       }
-    } else {
-      obj = this.toJSON();
+      return obj;
     }
+
+    const def = (this.constructor as typeof Model).definition;
+    const props = def.properties;
+    const keys = Object.keys(props);
+
+    for (const i in keys) {
+      const propertyName = keys[i];
+      const val = (this as AnyObject)[propertyName];
+
+      if (val === undefined) continue;
+      obj[propertyName] = asObject(val, options);
+    }
+
     return obj;
   }
 
