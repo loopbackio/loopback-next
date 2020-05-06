@@ -10,7 +10,7 @@ install:
 
 test_script:
   - npm run build
-  - npm run mocha --scripts-prepend-node-path
+  - npm run mocha
 
 cache:
   - "%LOCALAPPDATA%\\Yarn"
