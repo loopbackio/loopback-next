@@ -10,7 +10,8 @@ const yeoman = require('yeoman-environment');
 const testUtils = require('../../test-utils');
 const sinon = require('sinon');
 const path = require('path');
-const deps = require('../../../lib/utils').getDependencies();
+const utils = require('../../../lib/utils');
+const deps = utils.getDependencies();
 const expect = require('@loopback/testlab').expect;
 
 module.exports = function (projGenerator, props, projectType) {
@@ -520,13 +521,37 @@ module.exports = function (projGenerator, props, projectType) {
       });
     });
 
-    describe('set yarn packageManager', () => {
+    const isYarnAvailable = utils.isYarnAvailable();
+    const yarnTest = isYarnAvailable ? describe : describe.skip;
+    yarnTest('set yarn packageManager', () => {
       before(() => {
         return helpers.run(projGenerator).withOptions({
           packageManager: 'yarn',
         });
       });
       it('check .yo-rc.json', () => {
+        assert.file('.yo-rc.json');
+        assert.jsonFileContent('.yo-rc.json', {
+          '@loopback/cli': {
+            packageManager: 'yarn',
+          },
+        });
+      });
+    });
+
+    yarnTest('test yarn prompt', () => {
+      before(() => {
+        return helpers.run(projGenerator).withPrompts(
+          Object.assign(
+            {
+              yarn: true,
+            },
+            props,
+          ),
+        );
+      });
+
+      it('check .yo-rc.json for yarn', () => {
         assert.file('.yo-rc.json');
         assert.jsonFileContent('.yo-rc.json', {
           '@loopback/cli': {
@@ -546,28 +571,6 @@ module.exports = function (projGenerator, props, projectType) {
         return expect(result).to.be.rejectedWith(
           /Package manager 'invalidPkgManager' is not supported\. Use npm or yarn\./,
         );
-      });
-    });
-
-    describe('test yarn prompt', () => {
-      before(() => {
-        return helpers.run(projGenerator).withPrompts(
-          Object.assign(
-            {
-              yarn: true,
-            },
-            props,
-          ),
-        );
-      });
-
-      it('check .yo-rc.json', () => {
-        assert.file('.yo-rc.json');
-        assert.jsonFileContent('.yo-rc.json', {
-          '@loopback/cli': {
-            packageManager: 'yarn',
-          },
-        });
       });
     });
 

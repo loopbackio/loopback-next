@@ -11,6 +11,7 @@ const fs = require('fs');
 const path = require('path');
 const util = require('util');
 const stream = require('stream');
+const {spawnSync} = require('child_process');
 const readline = require('readline');
 const semver = require('semver');
 const regenerate = require('regenerate');
@@ -718,6 +719,18 @@ function wrapText(text, maxLineLength = 80) {
 
 exports.wrapLine = wrapLine;
 exports.wrapText = wrapText;
+
+/**
+ * Check if `yarn` is installed
+ */
+let yarnInstalled = undefined;
+function isYarnAvailable() {
+  if (yarnInstalled == null) {
+    yarnInstalled = spawnSync('yarn', ['help'], {stdio: false}).status === 0;
+  }
+  return yarnInstalled;
+}
+exports.isYarnAvailable = isYarnAvailable;
 
 // literal strings with artifacts directory locations
 exports.repositoriesDir = 'repositories';
