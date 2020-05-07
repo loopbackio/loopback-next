@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@2.3.0...@loopback/repository@2.4.0) (2020-05-07)
+
+
+### Bug Fixes
+
+* **repository:** updateById behaves like updateAll when called with an undefined value for id ([763dba0](https://github.com/strongloop/loopback-next/commit/763dba0abba568af5397f70f0928842bfbe92f3d))
+
+
+### Features
+
+* **core:** allow options for artifact registration on an application ([f3fdc3b](https://github.com/strongloop/loopback-next/commit/f3fdc3b94e34610dd1bebb600a497c77a2794019))
+* **repository:** add null type ([0aa585a](https://github.com/strongloop/loopback-next/commit/0aa585a5ea686b9c9a06b5341a1dcdfa4c80787c))
+* **repository:** generic factory for repository classes ([501f032](https://github.com/strongloop/loopback-next/commit/501f032f5dfcedf24f8c08a150a9efde657802d7))
+* **repository:** to object preserves prototype ([52465c3](https://github.com/strongloop/loopback-next/commit/52465c35b774f7f04ee191333fc4d9b1126be23f))
+
+
+
+
+
 # [2.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@2.2.1...@loopback/repository@2.3.0) (2020-04-29)
 
 

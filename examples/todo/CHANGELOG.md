@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo@3.2.0...@loopback/example-todo@3.3.0) (2020-05-07)
+
+
+### Features
+
+* **example-todo:** add morgan middleware if env var DEBUG is set ([4457495](https://github.com/strongloop/loopback-next/commit/4457495b9147f9db0e5a84479f0e546d72c19274))
+
+
+
+
+
 # [3.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo@3.1.3...@loopback/example-todo@3.2.0) (2020-04-29)
 
 

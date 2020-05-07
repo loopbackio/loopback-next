@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/boot@2.1.2...@loopback/boot@2.2.0) (2020-05-07)
+
+
+### Features
+
+* **boot:** add helpers to create a booter for component applications ([9276237](https://github.com/strongloop/loopback-next/commit/92762378d63c104c2c43f4960ae96fc649c8d3fe))
+* **context:** add registerInterceptor helper function and app.interceptor ([c760966](https://github.com/strongloop/loopback-next/commit/c76096684771ffaf535b75b025892ccfb057bff0))
+
+
+
+
+
 ## [2.1.2](https://github.com/strongloop/loopback-next/compare/@loopback/boot@2.1.1...@loopback/boot@2.1.2) (2020-04-29)
 
 **Note:** Version bump only for package @loopback/boot

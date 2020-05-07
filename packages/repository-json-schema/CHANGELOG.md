@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@2.3.0...@loopback/repository-json-schema@2.4.0) (2020-05-07)
+
+
+### Features
+
+* **repository-json-schema:** improve schema building for null/undefined types ([845914b](https://github.com/strongloop/loopback-next/commit/845914be5a3660edf4833bcccd7e7aa2f2cfb3f2))
+
+
+
+
+
 # [2.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@2.2.1...@loopback/repository-json-schema@2.3.0) (2020-04-29)
 
 

@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.7.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.6.0...@loopback/docs@3.7.0) (2020-05-07)
+
+
+### Bug Fixes
+
+* **cli:** add passport-login to example cli ([221bd6b](https://github.com/strongloop/loopback-next/commit/221bd6b958763e3bf0a8f6fa5dc7c1be090d82d1))
+* **docs:** fix broken link ([a844dd4](https://github.com/strongloop/loopback-next/commit/a844dd4ce2ed481cc6bde19755efb6a7630e22ac))
+* **docs:** fix format in OpenAPI generator ([eba6866](https://github.com/strongloop/loopback-next/commit/eba686647786b5ad2d4f5c0612c40c1343d3e46b))
+* **docs:** remove push and storage connectors from lb4 list ([2bf6fb4](https://github.com/strongloop/loopback-next/commit/2bf6fb4e1b9155eb52aac063b8f2322ebe3abca0))
+* **docs:** update Include-filter.md to fix sample code ([1daab4a](https://github.com/strongloop/loopback-next/commit/1daab4a6756350ebda34629f97b38d18ee078e1d))
+
+
+### Features
+
+* **boot:** add helpers to create a booter for component applications ([9276237](https://github.com/strongloop/loopback-next/commit/92762378d63c104c2c43f4960ae96fc649c8d3fe))
+* **cli:** add bash-completion using tabtab package ([a0dd2c9](https://github.com/strongloop/loopback-next/commit/a0dd2c9a20bcd36b8fac85a07aa0a3bbff56694f))
+* **context:** add registerInterceptor helper function and app.interceptor ([c760966](https://github.com/strongloop/loopback-next/commit/c76096684771ffaf535b75b025892ccfb057bff0))
+* **context:** allows bindings with singleton/context scopes to be refreshed ([8155147](https://github.com/strongloop/loopback-next/commit/8155147ceae756b60a0c9289f94ea8be6199c6d7))
+* **context:** allows default namespace for bindings from classes ([ec2da01](https://github.com/strongloop/loopback-next/commit/ec2da01d766881da1c90dd47c50f8af319e04614))
+* **docs:** add docs for @loopback/express and its usage in @loopback/rest ([fbdb81a](https://github.com/strongloop/loopback-next/commit/fbdb81a48abb383a69cbdf90bcfd29211bc200e5))
+* **docs:** add docs to compose interceptors and extend interceptor chains ([a1352cb](https://github.com/strongloop/loopback-next/commit/a1352cbba749bad0db1c4cede4caab4615c81e7f))
+* **express:** add [@loop](https://github.com/loop)Back/express to integrate with Express middleware ([f036475](https://github.com/strongloop/loopback-next/commit/f0364757bf05a79c11c89cd17e57a5ca3c15b27b))
+
+
+
+
+
 # [3.6.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.5.0...@loopback/docs@3.6.0) (2020-04-29)
 
 

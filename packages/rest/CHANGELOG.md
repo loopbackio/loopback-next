@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@3.3.2...@loopback/rest@4.0.0) (2020-05-07)
+
+
+### Features
+
+* **rest:** use @loopback/express for sequence, cors, and OpenAPI spec ([19e2510](https://github.com/strongloop/loopback-next/commit/19e25107da7eaadcdf29a04b2bb295d51555a050))
+
+
+### BREAKING CHANGES
+
+* **rest:** `basePath` now also applies to endpoints that serve OpenAPI
+specs. For example, the OpenAPI specs are available at `/api/openapi.json`
+or `/api/openapi.yaml` if the base path is set to `/api`.
+
+
+
+
+
 ## [3.3.2](https://github.com/strongloop/loopback-next/compare/@loopback/rest@3.3.1...@loopback/rest@3.3.2) (2020-04-29)
 
 **Note:** Version bump only for package @loopback/rest
