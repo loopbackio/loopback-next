@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.7.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@3.6.0...@loopback/context@3.7.0) (2020-05-07)
+
+
+### Bug Fixes
+
+* **context:** allow binding keys to be used with composeInterceptors() ([0663c04](https://github.com/strongloop/loopback-next/commit/0663c0425b77cbbfa6391e0c4bd92f56b590a548))
+
+
+### Features
+
+* **context:** add registerInterceptor helper function and app.interceptor ([c760966](https://github.com/strongloop/loopback-next/commit/c76096684771ffaf535b75b025892ccfb057bff0))
+* **context:** allow composition of intercetors ([261e9eb](https://github.com/strongloop/loopback-next/commit/261e9eb7d197fc480ab241bdd3b70b8a6e272908))
+* **context:** allows bindings with singleton/context scopes to be refreshed ([8155147](https://github.com/strongloop/loopback-next/commit/8155147ceae756b60a0c9289f94ea8be6199c6d7))
+* **context:** allows default namespace for bindings from classes ([ec2da01](https://github.com/strongloop/loopback-next/commit/ec2da01d766881da1c90dd47c50f8af319e04614))
+* **context:** consolidate uuid generation and testing ([5abe25e](https://github.com/strongloop/loopback-next/commit/5abe25ecc2632b0d25140b5e863dfee446c29a01))
+* **context:** force interceptor functions to return a value ([5663a76](https://github.com/strongloop/loopback-next/commit/5663a7642cbbb43fab08020d398393d0aabeed86))
+* **context:** relax parameter type for isProviderClass() ([aafe7d0](https://github.com/strongloop/loopback-next/commit/aafe7d002a3bc0d2a1db5aceb054f25cb4f4f11f))
+
+
+
+
+
 # [3.6.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@3.5.1...@loopback/context@3.6.0) (2020-04-29)
 
 

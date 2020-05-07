@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.6.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@2.5.0...@loopback/cli@2.6.0) (2020-05-07)
+
+
+### Bug Fixes
+
+* **cli:** add passport-login to example cli ([221bd6b](https://github.com/strongloop/loopback-next/commit/221bd6b958763e3bf0a8f6fa5dc7c1be090d82d1))
+* **cli:** ignoring default when require is true ([44fd3bc](https://github.com/strongloop/loopback-next/commit/44fd3bcd03c6c4c0f8e6467466a23ad14f35120b))
+* **cli:** make yarn related tests conditional on the yarn availablity ([3c579f6](https://github.com/strongloop/loopback-next/commit/3c579f66da2ed47d0e44d733dcba63ed5403ff1d))
+
+
+### Features
+
+* **cli:** add `baseModel` option for `lb4 openapi` command ([53f819d](https://github.com/strongloop/loopback-next/commit/53f819dfc372ea48b90a04fd2e59f1a62233e9dc))
+* **cli:** add bash-completion using tabtab package ([a0dd2c9](https://github.com/strongloop/loopback-next/commit/a0dd2c9a20bcd36b8fac85a07aa0a3bbff56694f))
+* **cli:** add middleware support in sequence.ts template ([b2df4e6](https://github.com/strongloop/loopback-next/commit/b2df4e641aa973eddf0b4df25cc23c88bf22981e))
+* **cli:** add yarn support for generated projects ([320aab9](https://github.com/strongloop/loopback-next/commit/320aab9eddadf38a001f8aea690d108dfa5b5dfa))
+
+
+
+
+
 # [2.5.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@2.4.4...@loopback/cli@2.5.0) (2020-04-29)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-passport-login@1.2.0...@loopback/example-passport-login@1.3.0) (2020-05-07)
+
+
+### Features
+
+* try mw with passport login example ([b5c5ab7](https://github.com/strongloop/loopback-next/commit/b5c5ab7c2d0fd1e1e846afb4c4f1dd6633350625))
+
+
+
+
+
 # [1.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-passport-login@1.1.3...@loopback/example-passport-login@1.2.0) (2020-04-29)
 
 

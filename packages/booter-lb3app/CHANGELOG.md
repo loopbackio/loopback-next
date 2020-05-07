@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.3](https://github.com/strongloop/loopback-next/compare/@loopback/booter-lb3app@2.1.2...@loopback/booter-lb3app@2.1.3) (2020-05-07)
+
+
+### Bug Fixes
+
+* **booter-lb3app:** rename ds binding key ([2140def](https://github.com/strongloop/loopback-next/commit/2140def7953f1b39f2da63c7860740570ea21cc7))
+
+
+
+
+
 ## [2.1.2](https://github.com/strongloop/loopback-next/compare/@loopback/booter-lb3app@2.1.1...@loopback/booter-lb3app@2.1.2) (2020-04-29)
 
 **Note:** Version bump only for package @loopback/booter-lb3app

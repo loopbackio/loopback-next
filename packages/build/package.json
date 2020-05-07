@@ -6,7 +6,7 @@
 		"url": "https://github.com/strongloop/loopback-next.git",
 		"directory": "packages/build"
 	},
-	"version": "5.3.0",
+	"version": "5.3.1",
 	"engines": {
 		"node": ">=10"
 	},
@@ -15,7 +15,7 @@
 	"copyright.owner": "IBM Corp.",
 	"license": "MIT",
 	"dependencies": {
-		"@loopback/eslint-config": "^6.0.5",
+		"@loopback/eslint-config": "^6.0.6",
 		"@types/mocha": "^7.0.2",
 		"@types/node": "^10.17.21",
 		"@typescript-eslint/eslint-plugin": "^2.31.0",

@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.5.0](https://github.com/strongloop/loopback-next/compare/@loopback/core@2.4.2...@loopback/core@2.5.0) (2020-05-07)
+
+
+### Features
+
+* **context:** add registerInterceptor helper function and app.interceptor ([c760966](https://github.com/strongloop/loopback-next/commit/c76096684771ffaf535b75b025892ccfb057bff0))
+* **context:** force interceptor functions to return a value ([5663a76](https://github.com/strongloop/loopback-next/commit/5663a7642cbbb43fab08020d398393d0aabeed86))
+* **core:** allow options for artifact registration on an application ([f3fdc3b](https://github.com/strongloop/loopback-next/commit/f3fdc3b94e34610dd1bebb600a497c77a2794019))
+
+
+
+
+
 ## [2.4.2](https://github.com/strongloop/loopback-next/compare/@loopback/core@2.4.1...@loopback/core@2.4.2) (2020-04-29)
 
 **Note:** Version bump only for package @loopback/core
