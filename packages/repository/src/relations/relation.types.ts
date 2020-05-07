@@ -52,6 +52,10 @@ export interface RelationDefinitionBase {
   target: TypeResolver<Entity, typeof Entity>;
 }
 
+/**
+ * HasManyDefinition defines one-to-many relations and also possible defines
+ * many-to-many relations with through models.
+ */
 export interface HasManyDefinition extends RelationDefinitionBase {
   type: RelationType.hasMany;
   targetsMany: true;
@@ -69,49 +73,40 @@ export interface HasManyDefinition extends RelationDefinitionBase {
    */
   keyTo?: string;
   keyFrom?: string;
-}
-
-/**
- * A `hasManyThrough` relation defines a many-to-many connection with another model.
- * This relation indicates that the declaring model can be matched with zero or more
- * instances of another model by proceeding through a third model.
- *
- * Warning: The hasManyThrough interface is experimental and is subject to change.
- * If backwards-incompatible changes are made, a new major version may not be
- * released.
- */
-export interface HasManyThroughDefinition extends RelationDefinitionBase {
-  type: RelationType.hasMany;
-  targetsMany: true;
 
   /**
-   * The foreign key in the source model, e.g. Customer#id.
+   * Description of the through model of the hasManyThrough relation.
+   *
+   * A `hasManyThrough` relation defines a many-to-many connection with another model.
+   * This relation indicates that the declaring model can be matched with zero or more
+   * instances of another model by proceeding through a third model.
+   *
+   * E.g a Category has many Products, and a Product can have many Categories.
+   * CategoryProductLink can be the through model.
+   * Such a through model has information of foreign keys of the source model(Category) and the target model(Product).
+   *
+   * Warning: The hasManyThrough interface is experimental and is subject to change.
+   * If backwards-incompatible changes are made, a new major version may not be
+   * released.
    */
-  keyFrom: string;
-
-  /**
-   * The primary key of the target model, e.g Seller#id.
-   */
-  keyTo: string;
-
-  through: {
+  through?: {
     /**
      * The through model of this relation.
      *
-     * E.g. when a Customer has many Order instances and a Seller has many Order instances,
-     * then Order is through.
+     * E.g. when a Category has many CategoryProductLink instances and a Product has many CategoryProductLink instances,
+     * then CategoryProductLink is through.
      */
     model: TypeResolver<Entity, typeof Entity>;
 
     /**
-     * The foreign key of the source model defined in the through model, e.g. Order#customerId
+     * The foreign key of the source model defined in the through model, e.g. CategoryProductLink#categoryId
      */
-    keyFrom: string;
+    keyFrom?: string;
 
     /**
-     * The foreign key of the target model defined in the through model, e.g. Order#sellerId
+     * The foreign key of the target model defined in the through model, e.g. CategoryProductLink#productId
      */
-    keyTo: string;
+    keyTo?: string;
   };
 }
 
@@ -153,7 +148,6 @@ export interface HasOneDefinition extends RelationDefinitionBase {
  */
 export type RelationMetadata =
   | HasManyDefinition
-  | HasManyThroughDefinition
   | BelongsToDefinition
   | HasOneDefinition
   // TODO(bajtos) add other relation types and remove RelationDefinitionBase once
