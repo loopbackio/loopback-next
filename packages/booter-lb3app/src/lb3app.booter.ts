@@ -64,13 +64,24 @@ export class Lb3AppBooter implements Booter {
 
     const dataSources = lb3App.dataSources;
     if (dataSources) {
-      const visited: unknown[] = [];
-      Object.keys(dataSources).forEach(key => {
-        const ds = dataSources[key];
-        if (visited.includes(ds)) return;
-        visited.push(ds);
-        this.app.bind(`lb3-datasources.${key}`).to(ds).tag('lb3-datasource');
-      });
+      const visitedDs = new Set();
+      for (const k in dataSources) {
+        const ds = dataSources[k];
+        if (visitedDs.has(ds)) continue;
+        this.app.bind(`lb3-datasources.${k}`).to(ds).tag('lb3-datasource');
+        visitedDs.add(ds);
+      }
+    }
+
+    const models = lb3App.models;
+    if (models) {
+      const visitedModels = new Set();
+      for (const k in models) {
+        const model = models[k];
+        if (visitedModels.has(model)) continue;
+        this.app.bind(`lb3-models.${k}`).to(model).tag('lb3-model');
+        visitedModels.add(model);
+      }
     }
 
     // TODO(bajtos) Listen for the following events to update the OpenAPI spec:
@@ -148,5 +159,7 @@ export interface Lb3AppBooterOptions {
 
 interface Lb3Application extends ExpressApplication {
   handler(name: 'rest'): ExpressRequestHandler;
-  dataSources?: {[name: string]: unknown};
+  dataSources?: Record<string, unknown>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  models?: Record<string, any>;
 }
