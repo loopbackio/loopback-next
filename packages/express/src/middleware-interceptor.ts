@@ -64,7 +64,7 @@ export function executeExpressRequestHandler(
 ): Promise<boolean> {
   const responseWritten = onFinishedAsync(response).then(() => true);
   const handlerFinished = new Promise<boolean>((resolve, reject) => {
-    handler(request, response, err => {
+    handler(request, response, (err: unknown) => {
       if (err) {
         reject(err);
       } else {
