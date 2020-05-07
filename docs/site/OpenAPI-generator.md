@@ -509,7 +509,7 @@ export class CustomerServiceProvider implements Provider<CustomerService> {
     return service.apis['Customer'];
   }
 }
-```
+````
 
 ### OpenAPI Examples
 
@@ -522,4 +522,3 @@ Try out the following specs or your own with `lb4 openapi`:
 
 For more real world OpenAPI specs, see
 [https://api.apis.guru/v2/list.json](https://api.apis.guru/v2/list.json).
-````
