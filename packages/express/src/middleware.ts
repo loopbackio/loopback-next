@@ -20,7 +20,7 @@ import {
 } from '@loopback/context';
 import {extensionFilter, extensionFor} from '@loopback/core';
 import debugFactory from 'debug';
-import {MIDDLEWARE_NAMESPACE} from './keys';
+import {DEFAULT_MIDDLEWARE_GROUP, MIDDLEWARE_NAMESPACE} from './keys';
 import {
   createInterceptor,
   defineInterceptorProvider,
@@ -131,7 +131,7 @@ export function asMiddleware(
   return function middlewareBindingTemplate(binding) {
     binding
       .apply(extensionFor(options.chain ?? DEFAULT_MIDDLEWARE_CHAIN))
-      .tag({group: options.group ?? ''});
+      .tag({group: options.group ?? DEFAULT_MIDDLEWARE_GROUP});
   };
 }
 

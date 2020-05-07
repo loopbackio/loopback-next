@@ -408,7 +408,7 @@ export function createMiddlewareInterceptorBinding<CFG>(
 ) {
   options = {
     global: true,
-    group: 'middleware',
+    group: DEFAULT_MIDDLEWARE_GROUP,
     ...options,
   };
   const namespace = options.global
