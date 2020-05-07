@@ -20,9 +20,6 @@
  *
  * @packageDocumentation
  */
-
-// Re-export express namespace from `express`
-export * as express from 'express';
 export * from './express.application';
 export * from './express.server';
 export * from './keys';
