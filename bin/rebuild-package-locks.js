@@ -25,10 +25,13 @@ async function removePackageLocks(project, ...scopes) {
   const packages = await project.getPackages();
   const rootPath = project.rootPath;
   const pkgRoots = [];
-  const matchedPackages = filterPackages(packages, scopes, [], true, true);
-  if (matchedPackages.length === 0) {
-    console.error('No matching packages found for %s', scopes);
-    return pkgRoots;
+  let matchedPackages = packages;
+  if (scopes.length) {
+    matchedPackages = filterPackages(packages, scopes, [], true, true);
+    if (matchedPackages.length === 0) {
+      console.error('No matching packages found for %s', scopes);
+      return pkgRoots;
+    }
   }
   for (const pkg of matchedPackages) {
     pkgRoots.push(pkg.location);
@@ -71,6 +74,7 @@ async function rebuildPackageLocks(...scopes) {
       cwd: project.rootPth,
     });
   } else {
+    await removePackageLocks(project, ...scopes);
     console.log('Running npm install...');
     build.runShell('npm', ['install'], {cwd: project.rootPth});
   }
