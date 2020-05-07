@@ -3,11 +3,13 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Context, inject, Provider} from '@loopback/core';
-import {FindRoute, Request} from '../types';
+import {bind, Context, inject, Provider} from '@loopback/core';
+import {asMiddleware, Middleware} from '@loopback/express';
 import {HttpHandler} from '../http-handler';
-import {RestBindings} from '../keys';
+import {RestBindings, RestTags} from '../keys';
 import {ResolvedRoute} from '../router';
+import {RestMiddlewareGroups} from '../sequence';
+import {FindRoute, Request} from '../types';
 
 export class FindRouteProvider implements Provider<FindRoute> {
   constructor(
@@ -23,5 +25,26 @@ export class FindRouteProvider implements Provider<FindRoute> {
     const found = this.handler.findRoute(request);
     found.updateBindings(this.context);
     return found;
+  }
+}
+
+@bind(
+  asMiddleware({
+    group: RestMiddlewareGroups.FIND_ROUTE,
+    chain: RestTags.REST_MIDDLEWARE_CHAIN,
+  }),
+)
+export class FindRouteMiddlewareProvider implements Provider<Middleware> {
+  constructor(
+    @inject(RestBindings.SequenceActions.FIND_ROUTE)
+    protected findRoute: FindRoute,
+  ) {}
+
+  value(): Middleware {
+    return async (ctx, next) => {
+      const route = this.findRoute(ctx.request);
+      ctx.bind(RestBindings.Operation.ROUTE).to(route);
+      return next();
+    };
   }
 }

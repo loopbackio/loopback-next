@@ -59,8 +59,9 @@ describe('Express middleware registry', () => {
     const spyMiddleware: Middleware = async (middlewareCtx, next) => {
       const {request, response} = middlewareCtx;
       response.set('x-spy-log-req', `${request.method} ${request.path}`);
-      await next();
+      const result = await next();
       response.set('x-spy-log-res', `${request.method} ${request.path}`);
+      return result;
     };
 
     it('registers a LoopBack middleware handler', async () => {
@@ -93,11 +94,12 @@ describe('Express middleware registry', () => {
               `${this.options.headerName}-req`,
               `${request.method} ${request.path}`,
             );
-            await next();
+            const result = await next();
             response.set(
               `${this.options.headerName}-res`,
               `${request.method} ${request.path}`,
             );
+            return result;
           };
         }
       }

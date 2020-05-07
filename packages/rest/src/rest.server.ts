@@ -12,6 +12,7 @@ import {
   ContextObserver,
   CoreBindings,
   createBindingFromClass,
+  extensionFor,
   filterByKey,
   filterByTag,
   inject,
@@ -61,7 +62,12 @@ import {
   RoutingTable,
 } from './router';
 import {assignRouterSpec} from './router/router-spec';
-import {DefaultSequence, SequenceFunction, SequenceHandler} from './sequence';
+import {
+  DefaultSequence,
+  RestMiddlewareGroups,
+  SequenceFunction,
+  SequenceHandler,
+} from './sequence';
 import {Request, RequestBodyParserOptions, Response} from './types';
 
 const debug = debugFactory('loopback:rest:server');
@@ -249,8 +255,13 @@ export class RestServer extends BaseMiddlewareRegistry
     this.expressMiddleware(cors, this.config.cors, {
       injectConfiguration: false,
       key: 'middleware.cors',
-      group: 'cors',
-    });
+      group: RestMiddlewareGroups.CORS,
+    }).apply(
+      extensionFor(
+        RestTags.REST_MIDDLEWARE_CHAIN,
+        RestTags.ACTION_MIDDLEWARE_CHAIN,
+      ),
+    );
 
     // Set up endpoints for OpenAPI spec/ui
     this._setupOpenApiSpecEndpoints();
@@ -323,8 +334,14 @@ export class RestServer extends BaseMiddlewareRegistry
       this._redirectToSwaggerUI(req, res, next),
     );
     this.expressMiddleware('middleware.apiSpec.defaults', router, {
-      group: 'apiSpec',
-    });
+      group: RestMiddlewareGroups.API_SPEC,
+      upstreamGroups: RestMiddlewareGroups.CORS,
+    }).apply(
+      extensionFor(
+        RestTags.REST_MIDDLEWARE_CHAIN,
+        RestTags.ACTION_MIDDLEWARE_CHAIN,
+      ),
+    );
   }
 
   /**

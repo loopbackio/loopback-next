@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {BindingKey, Context, CoreBindings} from '@loopback/core';
-import {InvokeMiddleware} from '@loopback/express';
+import {DEFAULT_MIDDLEWARE_CHAIN, InvokeMiddleware} from '@loopback/express';
 import {HttpProtocol} from '@loopback/http-server';
 import {OpenApiSpec, OperationObject} from '@loopback/openapi-v3';
 import https from 'https';
@@ -12,13 +12,15 @@ import {ErrorWriterOptions} from 'strong-error-handler';
 import {BodyParser, RequestBodyParser} from './body-parsers';
 import {HttpHandler} from './http-handler';
 import {RestServer, RestServerConfig} from './rest.server';
-import {RestRouter, RestRouterOptions} from './router';
+import {ResolvedRoute, RestRouter, RestRouterOptions} from './router';
 import {SequenceHandler} from './sequence';
 import {
   AjvFactory,
   FindRoute,
   InvokeMethod,
   LogError,
+  OperationArgs,
+  OperationRetval,
   ParseParams,
   Reject,
   Request,
@@ -180,11 +182,19 @@ export namespace RestBindings {
   export const SEQUENCE = BindingKey.create<SequenceHandler>('rest.sequence');
 
   /**
+   * Binding key for setting and injecting a `invokeMiddleware` function for
+   * middleware based sequence
+   */
+  export const INVOKE_MIDDLEWARE_SERVICE = BindingKey.create<InvokeMiddleware>(
+    'rest.invokeMiddleware',
+  );
+
+  /**
    * Bindings for potential actions that could be used in a sequence
    */
   export namespace SequenceActions {
     /**
-     * Binding key for setting and injecting a route finding function
+     * Binding key for setting and injecting `invokeMiddleware` function
      */
     export const INVOKE_MIDDLEWARE = BindingKey.create<InvokeMiddleware>(
       'rest.sequence.actions.invokeMiddleware',
@@ -222,6 +232,20 @@ export namespace RestBindings {
      */
     export const REJECT = BindingKey.create<Reject>(
       'rest.sequence.actions.reject',
+    );
+  }
+
+  export namespace Operation {
+    export const ROUTE = BindingKey.create<ResolvedRoute>(
+      'rest.operation.route',
+    );
+
+    export const PARAMS = BindingKey.create<OperationArgs>(
+      'rest.operation.params',
+    );
+
+    export const RETURN_VALUE = BindingKey.create<OperationRetval>(
+      'rest.operation.returnValue',
     );
   }
 
@@ -285,4 +309,11 @@ export namespace RestTags {
 
   export const AJV_KEYWORD = 'ajvKeyword';
   export const AJV_FORMAT = 'ajvFormat';
+
+  export const REST_MIDDLEWARE_CHAIN = DEFAULT_MIDDLEWARE_CHAIN;
+
+  /**
+   * Legacy middleware chain for action-based REST sequence
+   */
+  export const ACTION_MIDDLEWARE_CHAIN = 'middlewareChain.rest.actions';
 }
