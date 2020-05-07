@@ -127,7 +127,7 @@ export function registerExpressMiddleware<CFG>(
  */
 export function asMiddleware(
   options: MiddlewareBindingOptions = {},
-): BindingTemplate<Middleware> {
+): BindingTemplate {
   return function middlewareBindingTemplate(binding) {
     binding
       .apply(extensionFor(options.chain ?? DEFAULT_MIDDLEWARE_CHAIN))
