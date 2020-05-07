@@ -26,7 +26,7 @@ export * from '@loopback/express';
 export type FindRoute = (request: Request) => ResolvedRoute;
 
 /**
- *
+ * A function to parse OpenAPI operation parameters for a given route
  */
 export type ParseParams = (
   request: Request,

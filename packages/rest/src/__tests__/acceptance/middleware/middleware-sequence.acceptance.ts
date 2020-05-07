@@ -5,6 +5,7 @@
 
 import {BindingScope, Constructor, CoreTags, inject} from '@loopback/core';
 import {InvokeMiddleware, InvokeMiddlewareProvider} from '@loopback/express';
+import {RestTags} from '../../../keys';
 import {RequestContext} from '../../../request-context';
 import {DefaultSequence} from '../../../sequence';
 import {SpyAction} from '../../fixtures/middleware/spy-config';
@@ -18,7 +19,9 @@ describe('Middleware in sequence', () => {
   afterEach(() => helper?.stop());
 
   it('registers a middleware in default slot', () => {
-    const binding = helper.app.expressMiddleware(spy, undefined);
+    const binding = helper.app.expressMiddleware(spy, undefined, {
+      chain: RestTags.ACTION_MIDDLEWARE_CHAIN,
+    });
     return helper.testSpyLog(binding);
   });
 
@@ -46,7 +49,9 @@ describe('Middleware in sequence', () => {
 
   it('registers a middleware in default slot with sequence 2', () => {
     helper.app.sequence(SequenceWithTwoInvokeMiddleware);
-    const binding = helper.app.expressMiddleware(spy, undefined);
+    const binding = helper.app.expressMiddleware(spy, undefined, {
+      chain: RestTags.ACTION_MIDDLEWARE_CHAIN,
+    });
     return helper.testSpyLog(binding);
   });
 

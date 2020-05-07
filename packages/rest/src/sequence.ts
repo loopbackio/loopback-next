@@ -3,12 +3,17 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-const debug = require('debug')('loopback:rest:sequence');
-import {inject, ValueOrPromise} from '@loopback/core';
-import {InvokeMiddleware} from '@loopback/express';
-import {RestBindings} from './keys';
+import {config, inject, ValueOrPromise} from '@loopback/core';
+import {
+  InvokeMiddleware,
+  InvokeMiddlewareOptions,
+  MiddlewareGroups,
+} from '@loopback/express';
+import debugFactory from 'debug';
+import {RestBindings, RestTags} from './keys';
 import {RequestContext} from './request-context';
 import {FindRoute, InvokeMethod, ParseParams, Reject, Send} from './types';
+const debug = debugFactory('loopback:rest:sequence');
 
 const SequenceActions = RestBindings.SequenceActions;
 
@@ -119,5 +124,128 @@ export class DefaultSequence implements SequenceHandler {
     } catch (error) {
       this.reject(context, error);
     }
+  }
+}
+
+/**
+ * Built-in middleware groups for the REST sequence
+ */
+export namespace RestMiddlewareGroups {
+  /**
+   * Invoke downstream middleware to get the result or catch errors so that it
+   * can produce the http response
+   */
+  export const SEND_RESPONSE = 'sendResponse';
+
+  /**
+   * Enforce CORS
+   */
+  export const CORS = MiddlewareGroups.CORS;
+
+  /**
+   * Server OpenAPI specs
+   */
+  export const API_SPEC = MiddlewareGroups.API_SPEC;
+
+  /**
+   * Default middleware group
+   */
+  export const MIDDLEWARE = MiddlewareGroups.MIDDLEWARE;
+  export const DEFAULT = MIDDLEWARE;
+
+  /**
+   * Find the route that can serve the request
+   */
+  export const FIND_ROUTE = 'findRoute';
+
+  /**
+   * Perform authentication
+   */
+  export const AUTHENTICATION = 'authentication';
+
+  /**
+   * Parse the http request to extract parameter values for the operation
+   */
+  export const PARSE_PARAMS = 'parseParams';
+
+  /**
+   * Invoke the target controller method or handler function
+   */
+  export const INVOKE_METHOD = 'invokeMethod';
+}
+
+/**
+ * A sequence implementation using middleware chains
+ */
+export class MiddlewareSequence implements SequenceHandler {
+  static defaultOptions: InvokeMiddlewareOptions = {
+    chain: RestTags.REST_MIDDLEWARE_CHAIN,
+    orderedGroups: [
+      // Please note that middleware is cascading. The `sendResponse` is
+      // added first to invoke downstream middleware to get the result or
+      // catch errors so that it can produce the http response.
+      RestMiddlewareGroups.SEND_RESPONSE,
+
+      RestMiddlewareGroups.CORS,
+      RestMiddlewareGroups.API_SPEC,
+      RestMiddlewareGroups.MIDDLEWARE,
+
+      RestMiddlewareGroups.FIND_ROUTE,
+
+      // authentication depends on the route
+      RestMiddlewareGroups.AUTHENTICATION,
+
+      RestMiddlewareGroups.PARSE_PARAMS,
+
+      RestMiddlewareGroups.INVOKE_METHOD,
+    ],
+  };
+
+  /**
+   * Constructor: Injects `InvokeMiddleware` and `InvokeMiddlewareOptions`
+   *
+   * @param invokeMiddleware - invoker for registered middleware in a chain.
+   * To be injected via RestBindings.INVOKE_MIDDLEWARE_SERVICE.
+   */
+  constructor(
+    @inject(RestBindings.INVOKE_MIDDLEWARE_SERVICE)
+    readonly invokeMiddleware: InvokeMiddleware,
+    @config()
+    readonly options: InvokeMiddlewareOptions = MiddlewareSequence.defaultOptions,
+  ) {}
+
+  /**
+   * Runs the default sequence. Given a handler context (request and response),
+   * running the sequence will produce a response or an error.
+   *
+   * Default sequence executes these groups of middleware:
+   *
+   *  - `cors`: Enforces `CORS`
+   *  - `openApiSpec`: Serves OpenAPI specs
+   *  - `findRoute`: Finds the appropriate controller method, swagger spec and
+   *    args for invocation
+   *  - `parseParams`: Parses HTTP request to get API argument list
+   *  - `invokeMethod`: Invokes the API which is defined in the Application
+   *    controller method
+   *
+   * In front of the groups above, we have a special middleware called
+   * `sendResponse`, which first invokes downstream middleware to get a result
+   * and handles the result or error respectively.
+   *
+   *  - Writes the result from API into the HTTP response (if the HTTP response
+   *    has not been produced yet by the middleware chain.
+   *  - Catches error logs it using 'logError' if any of the above steps
+   *    in the sequence fails with an error.
+   *
+   * @param context - The request context: HTTP request and response objects,
+   * per-request IoC container and more.
+   */
+  async handle(context: RequestContext): Promise<void> {
+    debug(
+      'Invoking middleware chain %s with groups %s',
+      this.options.chain,
+      this.options.orderedGroups,
+    );
+    await this.invokeMiddleware(context, this.options);
   }
 }

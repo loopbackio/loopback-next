@@ -4,15 +4,14 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
+  Application,
   Binding,
+  Component,
   Constructor,
+  CoreBindings,
+  CoreTags,
   createBindingFromClass,
   inject,
-} from '@loopback/core';
-import {
-  Application,
-  Component,
-  CoreBindings,
   ProviderMap,
   Server,
 } from '@loopback/core';
@@ -26,21 +25,25 @@ import {
   UrlEncodedBodyParser,
 } from './body-parsers';
 import {RawBodyParser} from './body-parsers/body-parser.raw';
-import {RestBindings} from './keys';
+import {RestBindings, RestTags} from './keys';
 import {
+  FindRouteMiddlewareProvider,
   FindRouteProvider,
+  InvokeMethodMiddlewareProvider,
   InvokeMethodProvider,
   LogErrorProvider,
+  ParseParamsMiddlewareProvider,
   ParseParamsProvider,
   RejectProvider,
   SendProvider,
+  SendResponseMiddlewareProvider,
 } from './providers';
 import {
   createBodyParserBinding,
   RestServer,
   RestServerConfig,
 } from './rest.server';
-import {DefaultSequence} from './sequence';
+import {MiddlewareSequence} from './sequence';
 import {ConsolidationEnhancer} from './spec-enhancers/consolidate.spec-enhancer';
 import {InfoSpecEnhancer} from './spec-enhancers/info.spec-enhancer';
 import {AjvFactoryProvider} from './validation/ajv-factory.provider';
@@ -48,8 +51,6 @@ import {AjvFactoryProvider} from './validation/ajv-factory.provider';
 export class RestComponent implements Component {
   providers: ProviderMap = {
     [RestBindings.SequenceActions.LOG_ERROR.key]: LogErrorProvider,
-    [RestBindings.SequenceActions.INVOKE_MIDDLEWARE
-      .key]: InvokeMiddlewareProvider,
     [RestBindings.SequenceActions.FIND_ROUTE.key]: FindRouteProvider,
     [RestBindings.SequenceActions.INVOKE_METHOD.key]: InvokeMethodProvider,
     [RestBindings.SequenceActions.REJECT.key]: RejectProvider,
@@ -86,6 +87,8 @@ export class RestComponent implements Component {
     ),
     createBindingFromClass(InfoSpecEnhancer),
     createBindingFromClass(ConsolidationEnhancer),
+
+    ...getRestMiddlewareBindings(),
   ];
   servers: {
     [name: string]: Constructor<Server>;
@@ -97,7 +100,27 @@ export class RestComponent implements Component {
     @inject(CoreBindings.APPLICATION_INSTANCE) app: Application,
     @inject(RestBindings.CONFIG) config?: RestComponentConfig,
   ) {
-    app.bind(RestBindings.SEQUENCE).toClass(DefaultSequence);
+    // Register the `InvokeMiddleware` with default to `ACTION_MIDDLEWARE_CHAIN`
+    // to keep backward compatibility with action based sequence
+    const invokeMiddlewareActionBinding = createBindingFromClass(
+      InvokeMiddlewareProvider,
+      {
+        key: RestBindings.SequenceActions.INVOKE_MIDDLEWARE,
+      },
+    ).tag({[CoreTags.EXTENSION_POINT]: RestTags.ACTION_MIDDLEWARE_CHAIN});
+    app.add(invokeMiddlewareActionBinding);
+
+    // Register the `InvokeMiddleware` with default to `DEFAULT_MIDDLEWARE_CHAIN`
+    // for the middleware based sequence
+    const invokeMiddlewareServiceBinding = createBindingFromClass(
+      InvokeMiddlewareProvider,
+      {
+        key: RestBindings.INVOKE_MIDDLEWARE_SERVICE,
+      },
+    ).tag({[CoreTags.EXTENSION_POINT]: RestTags.REST_MIDDLEWARE_CHAIN});
+    app.add(invokeMiddlewareServiceBinding);
+
+    app.bind(RestBindings.SEQUENCE).toClass(MiddlewareSequence);
     const apiSpec = createEmptyApiSpec();
     // Merge the OpenAPI `servers` spec from the config into the empty one
     if (config?.openApiSpec?.servers) {
@@ -105,6 +128,15 @@ export class RestComponent implements Component {
     }
     app.bind(RestBindings.API_SPEC).to(apiSpec);
   }
+}
+
+function getRestMiddlewareBindings() {
+  return [
+    SendResponseMiddlewareProvider,
+    FindRouteMiddlewareProvider,
+    ParseParamsMiddlewareProvider,
+    InvokeMethodMiddlewareProvider,
+  ].map(cls => createBindingFromClass(cls));
 }
 
 // TODO(kevin): Extend this interface def to include multiple servers?

@@ -1406,7 +1406,9 @@ paths:
 
   async function dummyRequestHandler(requestContext: RequestContext) {
     const {response} = requestContext;
-    const result = await invokeMiddleware(requestContext);
+    const result = await invokeMiddleware(requestContext, {
+      chain: RestTags.ACTION_MIDDLEWARE_CHAIN,
+    });
     if (result === response) return;
     response.write('Hello');
     response.end();
