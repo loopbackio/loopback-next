@@ -5,9 +5,11 @@
 
 import {expect} from '@loopback/testlab';
 import {
+  BelongsToDefinition,
   Entity,
   HasManyDefinition,
   ModelDefinition,
+  rejectNavigationalPropertiesInData,
   RelationType,
   STRING,
 } from '../../../';
@@ -455,6 +457,43 @@ describe('model', () => {
       id: '123',
       email: 'xyz@example.com',
       firstName: 'Test User',
+    });
+  });
+
+  describe('rejectNavigationalPropertiesInData', () => {
+    class Order extends Entity {
+      static definition = new ModelDefinition('Order')
+        .addProperty('id', {type: 'string', id: true})
+        .addRelation(<BelongsToDefinition>{
+          name: 'customer',
+          type: RelationType.belongsTo,
+          targetsMany: false,
+          source: Order,
+          target: () => User,
+          keyFrom: 'customerId',
+        });
+
+      id: string;
+      customerId: string;
+
+      customer?: User;
+    }
+
+    it('accepts data with no navigational properties', () => {
+      rejectNavigationalPropertiesInData(Order, {id: '1'});
+    });
+
+    it('rejects data with a navigational property', () => {
+      expect(() =>
+        rejectNavigationalPropertiesInData(Order, {
+          id: '1',
+          customer: {
+            id: '2',
+            email: 'test@example.com',
+            firstName: 'a customer',
+          },
+        }),
+      ).to.throw(/Navigational properties are not allowed in model data/);
     });
   });
 });
