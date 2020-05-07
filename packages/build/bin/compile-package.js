@@ -164,8 +164,10 @@ function validArgsForBuild(args) {
   });
   let validArgs = args;
   if (args.includes('-b') || args.includes('--build')) {
-    validArgs = filterArgs(args, arg => {
-      if (validBooleanOptions.includes(arg)) return 1;
+    validArgs = filterArgs(args, (arg, next) => {
+      if (validBooleanOptions.includes(arg)) {
+        return next === 'false' || next === 'true' ? 2 : 1;
+      }
       if (validValueOptions.includes(arg)) return 2;
       return 0;
     });
@@ -185,7 +187,7 @@ function filterArgs(args, filter) {
   const validArgs = [];
   let i = 0;
   while (i < args.length) {
-    const length = filter(args[i]);
+    const length = filter(args[i], args[i + 1]);
     if (length === 0) {
       i++;
     } else if (length === 1) {
