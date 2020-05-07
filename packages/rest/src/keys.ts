@@ -17,9 +17,7 @@ import {RestRouter, RestRouterOptions} from './router';
 import {SequenceHandler} from './sequence';
 import {
   AjvFactory,
-  BindElement,
   FindRoute,
-  GetFromContext,
   InvokeMethod,
   LogError,
   ParseParams,
@@ -223,19 +221,6 @@ export namespace RestBindings {
       'rest.sequence.actions.reject',
     );
   }
-
-  /**
-   * Binding key for setting and injecting a wrapper function for retrieving
-   * values from a given context
-   */
-  export const GET_FROM_CONTEXT = BindingKey.create<GetFromContext>(
-    'getFromContext',
-  );
-  /**
-   * Binding key for setting and injecting a wrapper function for setting values
-   * on a given context
-   */
-  export const BIND_ELEMENT = BindingKey.create<BindElement>('bindElement');
 
   /**
    * Request-specific bindings

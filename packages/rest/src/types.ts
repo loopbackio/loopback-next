@@ -3,7 +3,6 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Binding, BoundValue} from '@loopback/context';
 import {HandlerContext, Request, Response} from '@loopback/express';
 import {ReferenceObject, SchemaObject} from '@loopback/openapi-v3';
 import ajv, {Ajv, FormatDefinition, KeywordDefinition} from 'ajv';
@@ -190,9 +189,6 @@ export type OperationArgs = any[];
  * operation results from other "any" typed values.
  */
 export type OperationRetval = any;
-
-export type GetFromContext = (key: string) => Promise<BoundValue>;
-export type BindElement = (key: string) => Binding;
 
 /**
  * user profile to add in session
