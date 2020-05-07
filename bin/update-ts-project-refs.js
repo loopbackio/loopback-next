@@ -89,7 +89,8 @@ async function updateReferences(options) {
       // To include ts/json files
       tsconfig.include = ['src/**/*', 'src/**/*.json'];
     }
-    tsconfig.references = refs;
+    // Sort the references so that we will have a consistent output
+    tsconfig.references = refs.sort();
 
     // Convert to JSON
     const tsconfigJson = JSON.stringify(tsconfig, null, 2);
