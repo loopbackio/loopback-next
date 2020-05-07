@@ -144,15 +144,16 @@ export const ANY_TAG_VALUE: TagValueMatcher = (tagValue, tagName, tagMap) =>
 /**
  * Create a tag value matcher function that returns `true` if the target tag
  * value equals to the item value or is an array that includes the item value.
- * @param itemValue - Tag item value
+ * @param itemValues - A list of tag item value
  */
-export function includesTagValue(itemValue: unknown): TagValueMatcher {
+export function includesTagValue(...itemValues: unknown[]): TagValueMatcher {
   return tagValue => {
-    return (
-      // The tag value equals the item value
-      tagValue === itemValue ||
-      // The tag value contains the item value
-      (Array.isArray(tagValue) && tagValue.includes(itemValue))
+    return itemValues.some(
+      itemValue =>
+        // The tag value equals the item value
+        tagValue === itemValue ||
+        // The tag value contains the item value
+        (Array.isArray(tagValue) && tagValue.includes(itemValue)),
     );
   };
 }
