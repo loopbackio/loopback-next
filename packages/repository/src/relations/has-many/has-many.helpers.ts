@@ -30,41 +30,18 @@ export type HasManyResolvedDefinition = HasManyDefinition & {
 export function resolveHasManyMetadata(
   relationMeta: HasManyDefinition,
 ): HasManyResolvedDefinition {
-  if ((relationMeta.type as RelationType) !== RelationType.hasMany) {
-    const reason = 'relation type must be HasMany';
-    throw new InvalidRelationError(reason, relationMeta);
-  }
-
-  if (!isTypeResolver(relationMeta.target)) {
-    const reason = 'target must be a type resolver';
-    throw new InvalidRelationError(reason, relationMeta);
-  }
+  // some checks and relationMeta.keyFrom are handled in here
+  relationMeta = resolveHasManyMetaHelper(relationMeta);
 
   const targetModel = relationMeta.target();
   const targetModelProperties =
     targetModel.definition && targetModel.definition.properties;
 
   const sourceModel = relationMeta.source;
-  if (!sourceModel || !sourceModel.modelName) {
-    const reason = 'source model must be defined';
-    throw new InvalidRelationError(reason, relationMeta);
-  }
 
-  // keyFrom defaults to id property
-  let keyFrom;
-  if (
-    relationMeta.keyFrom &&
-    relationMeta.source.definition.properties[relationMeta.keyFrom]
-  ) {
-    keyFrom = relationMeta.keyFrom;
-  } else {
-    keyFrom = sourceModel.getIdProperties()[0];
-  }
-  // Make sure that if it already keys to the foreign key property,
-  // the key exists in the target model
   if (relationMeta.keyTo && targetModelProperties[relationMeta.keyTo]) {
     // The explicit cast is needed because of a limitation of type inference
-    return Object.assign(relationMeta, {keyFrom}) as HasManyResolvedDefinition;
+    return relationMeta as HasManyResolvedDefinition;
   }
 
   debug(
@@ -81,7 +58,44 @@ export function resolveHasManyMetadata(
   }
 
   return Object.assign(relationMeta, {
-    keyFrom,
     keyTo: defaultFkName,
   } as HasManyResolvedDefinition);
+}
+
+/**
+ * A helper to check relation type and the existence of the source/target models
+ * and set up keyFrom
+ * for HasMany(Through) relations
+ * @param relationMeta
+ *
+ * @returns relationMeta that has set up keyFrom
+ */
+export function resolveHasManyMetaHelper(
+  relationMeta: HasManyDefinition,
+): HasManyDefinition {
+  if ((relationMeta.type as RelationType) !== RelationType.hasMany) {
+    const reason = 'relation type must be HasMany';
+    throw new InvalidRelationError(reason, relationMeta);
+  }
+
+  if (!isTypeResolver(relationMeta.target)) {
+    const reason = 'target must be a type resolver';
+    throw new InvalidRelationError(reason, relationMeta);
+  }
+
+  const sourceModel = relationMeta.source;
+  if (!sourceModel || !sourceModel.modelName) {
+    const reason = 'source model must be defined';
+    throw new InvalidRelationError(reason, relationMeta);
+  }
+  let keyFrom;
+  if (
+    relationMeta.keyFrom &&
+    relationMeta.source.definition.properties[relationMeta.keyFrom]
+  ) {
+    keyFrom = relationMeta.keyFrom;
+  } else {
+    keyFrom = sourceModel.getIdProperties()[0];
+  }
+  return Object.assign(relationMeta, {keyFrom}) as HasManyDefinition;
 }
