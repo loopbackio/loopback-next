@@ -441,7 +441,9 @@ describe('Application', () => {
       });
     });
 
-    function logInterceptor(ctx: InvocationContext, next: Next) {}
+    function logInterceptor(ctx: InvocationContext, next: Next) {
+      return undefined;
+    }
 
     @bind(asGlobalInterceptor())
     class LogInterceptorProvider implements Provider<Interceptor> {

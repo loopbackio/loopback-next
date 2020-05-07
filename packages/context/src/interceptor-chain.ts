@@ -13,27 +13,54 @@ import {transformValueOrPromise, ValueOrPromise} from './value-promise';
 const debug = debugFactory('loopback:context:interceptor-chain');
 
 /**
+ * Any type except `void`. We use this type to enforce that interceptor functions
+ * always return a value (including undefined or null).
+ */
+export type NonVoid = string | number | boolean | null | undefined | object;
+
+/**
  * The `next` function that can be used to invoke next generic interceptor in
  * the chain
  */
-export type Next = () => ValueOrPromise<InvocationResult>;
+export type Next = () => ValueOrPromise<NonVoid>;
 
 /**
  * An interceptor function to be invoked in a chain for the given context.
  * It serves as the base interface for various types of interceptors, such
  * as method invocation interceptor or request/response processing interceptor.
  *
+ * We choose `NonVoid` as the return type to avoid possible bugs that an
+ * interceptor forgets to return the value from `next()`. For example, the code
+ * below will fail to compile.
+ *
+ * ```ts
+ * const myInterceptor: Interceptor = async (ctx, next) {
+ *   // preprocessing
+ *   // ...
+ *
+ *   // There is a subtle bug that the result from `next()` is not further
+ *   // returned back to the upstream interceptors
+ *   const result = await next();
+ *
+ *   // postprocessing
+ *   // ...
+ *   // We must have `return ...` here
+ *   // either return `result` or another value if the interceptor decides to
+ *   // have its own response
+ * }
+ * ```
+ *
  * @typeParam C - `Context` class or a subclass of `Context`
  * @param context - Context object
  * @param next - A function to proceed with downstream interceptors or the
  * target operation
  *
- * @returns The invocation result as a value (sync) or promise (async)
+ * @returns The invocation result as a value (sync) or promise (async).
  */
 export type GenericInterceptor<C extends Context = Context> = (
   context: C,
   next: Next,
-) => ValueOrPromise<InvocationResult>;
+) => ValueOrPromise<NonVoid>;
 
 /**
  * Interceptor function or a binding key that resolves a generic interceptor
