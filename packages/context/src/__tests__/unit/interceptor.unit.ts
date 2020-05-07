@@ -266,7 +266,7 @@ describe('globalInterceptors', () => {
   });
 
   it('generates binding key for the interceptor function', () => {
-    const binding = registerInterceptor(ctx, () => {});
+    const binding = registerInterceptor(ctx, () => undefined);
     expect(binding.key).to.match(
       new RegExp(`interceptors.${UUID_PATTERN.source}`, 'i'),
     );
