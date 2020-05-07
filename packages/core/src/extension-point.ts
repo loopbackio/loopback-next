@@ -227,11 +227,13 @@ function inferExtensionPointName(
 /**
  * A factory function to create binding filter for extensions of a named
  * extension point
- * @param extensionPointName - Name of the extension point
+ * @param extensionPointNames - A list of names of extension points
  */
-export function extensionFilter(extensionPointName: string): BindingFilter {
+export function extensionFilter(
+  ...extensionPointNames: string[]
+): BindingFilter {
   return filterByTag({
-    [CoreTags.EXTENSION_FOR]: includesTagValue(extensionPointName),
+    [CoreTags.EXTENSION_FOR]: includesTagValue(...extensionPointNames),
   });
 }
 

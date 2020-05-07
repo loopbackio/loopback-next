@@ -251,13 +251,25 @@ describe('extension point', () => {
       ]);
     });
 
-    it('allows multiple extension points for extensionFilter', () => {
+    it('allows multiple extension points for extensionFor', () => {
       class MyExtension {}
       const binding = ctx.bind('my-extension').toClass(MyExtension);
       extensionFor('extensionPoint-1', 'extensionPoint-2')(binding);
       expect(extensionFilter('extensionPoint-1')(binding)).to.be.true();
       expect(extensionFilter('extensionPoint-2')(binding)).to.be.true();
       expect(extensionFilter('extensionPoint-3')(binding)).to.be.false();
+    });
+
+    it('allows multiple extension points for extensionFilter', () => {
+      class MyExtension {}
+      const binding = ctx.bind('my-extension').toClass(MyExtension);
+      extensionFor('extensionPoint-1', 'extensionPoint-2')(binding);
+      expect(
+        extensionFilter('extensionPoint-1', 'extensionPoint3')(binding),
+      ).to.be.true();
+      expect(
+        extensionFilter('extensionPoint-2', 'extensionPoint3')(binding),
+      ).to.be.true();
     });
 
     it('allows multiple extension points for @extensions', async () => {
