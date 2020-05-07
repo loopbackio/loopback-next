@@ -88,7 +88,10 @@
       "args": [
         "run",
         "-s",
-        "build"
+        "build",
+        "--",
+        "--pretty",
+        "false"
       ],
       "problemMatcher": "$tsc"
     },
