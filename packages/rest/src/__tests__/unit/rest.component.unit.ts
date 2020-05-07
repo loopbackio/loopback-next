@@ -34,8 +34,6 @@ describe('RestComponent', () => {
         RestBindings.SequenceActions.FIND_ROUTE.key,
         RestBindings.SequenceActions.INVOKE_METHOD.key,
         RestBindings.SequenceActions.REJECT.key,
-        RestBindings.BIND_ELEMENT.key,
-        RestBindings.GET_FROM_CONTEXT.key,
         RestBindings.SequenceActions.PARSE_PARAMS.key,
         RestBindings.SequenceActions.SEND.key,
       ];

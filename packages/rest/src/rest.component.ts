@@ -28,9 +28,7 @@ import {
 import {RawBodyParser} from './body-parsers/body-parser.raw';
 import {RestBindings} from './keys';
 import {
-  BindElementProvider,
   FindRouteProvider,
-  GetFromContextProvider,
   InvokeMethodProvider,
   LogErrorProvider,
   ParseParamsProvider,
@@ -55,8 +53,6 @@ export class RestComponent implements Component {
     [RestBindings.SequenceActions.FIND_ROUTE.key]: FindRouteProvider,
     [RestBindings.SequenceActions.INVOKE_METHOD.key]: InvokeMethodProvider,
     [RestBindings.SequenceActions.REJECT.key]: RejectProvider,
-    [RestBindings.BIND_ELEMENT.key]: BindElementProvider,
-    [RestBindings.GET_FROM_CONTEXT.key]: GetFromContextProvider,
     [RestBindings.SequenceActions.PARSE_PARAMS.key]: ParseParamsProvider,
     [RestBindings.SequenceActions.SEND.key]: SendProvider,
     [RestBindings.AJV_FACTORY.key]: AjvFactoryProvider,
