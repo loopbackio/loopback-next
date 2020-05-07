@@ -71,7 +71,6 @@ for more information.
 
 See the following articles for more information:
 
-- [Creating, updating, and deleting data](Creating-updating-and-deleting-data.html)
 - [Querying data](Querying-data.html)
   - [Fields filter](Fields-filter.html)
   - [Include filter](Include-filter.html)
@@ -79,5 +78,3 @@ See the following articles for more information:
   - [Order filter](Order-filter.html)
   - [Skip filter](Skip-filter.html)
   - [Where filter](Where-filter.html)
-- [Using database transactions](Using-database-transactions.html)
-- [Realtime server-sent events](Realtime-server-sent-events.html)
