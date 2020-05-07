@@ -9,7 +9,7 @@ permalink: /doc/en/lb4/Working-with-data.html
 In LoopBack 4, models describe the shape of data, repositories provide behavior
 like CRUD operations, and controllers define routes (this is different from
 LoopBack 3.x where models implement behavior too). LB4
-[repositories](Repository.md) provide a couple of create, read, update, and
+[repositories](Repositories.md) provide a couple of create, read, update, and
 delete (CRUD) operations. Once you have defined these three artifacts, you can
 add data to the model, manipulate the data, and query it through these CRUD
 operations. The following is an overview of CRUD operations at different levels:
@@ -23,7 +23,7 @@ operations. The following is an overview of CRUD operations at different levels:
       <th width="120">Corresponding SQL<br>Operation</th>
     </tr>
   </thead>
-  <tbody>    
+  <tbody>
     <tr>
       <td>Create</td>
       <td>
@@ -71,7 +71,6 @@ for more information.
 
 See the following articles for more information:
 
-- [Creating, updating, and deleting data](Creating-updating-and-deleting-data.html)
 - [Querying data](Querying-data.html)
   - [Fields filter](Fields-filter.html)
   - [Include filter](Include-filter.html)
@@ -80,4 +79,3 @@ See the following articles for more information:
   - [Skip filter](Skip-filter.html)
   - [Where filter](Where-filter.html)
 - [Using database transactions](Using-database-transactions.html)
-- [Realtime server-sent events](Realtime-server-sent-events.html)
