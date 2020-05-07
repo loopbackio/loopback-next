@@ -89,7 +89,7 @@ describe('multipart/form-data', () => {
       const storage = multer.memoryStorage();
       const upload = multer({storage});
       return new Promise<object>((resolve, reject) => {
-        upload.any()(request, response, err => {
+        upload.any()(request, response, (err: unknown) => {
           if (err) reject(err);
           else {
             resolve({

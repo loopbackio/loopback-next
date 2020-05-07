@@ -104,7 +104,7 @@ class MultipartFormDataBodyParser implements BodyParser {
     const upload = multer({storage});
     return new Promise<RequestBody>((resolve, reject) => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      upload.any()(request, {} as any, err => {
+      upload.any()(request, {} as any, (err: unknown) => {
         if (err) reject(err);
         else {
           resolve({
