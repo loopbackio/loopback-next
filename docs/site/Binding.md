@@ -83,6 +83,47 @@ binding.toDynamicValue(() => new Date());
 binding.toDynamicValue(() => Promise.resolve('my-value'));
 ```
 
+The factory function can receive extra information about the context, binding,
+and resolution options.
+
+```ts
+import {ValueFactory} from '@loopback/context';
+
+// The factory function now have access extra metadata about the resolution
+const factory: ValueFactory<string> = resolutionCtx => {
+  return `Hello, ${resolutionCtx.context.name}#${
+    resolutionCtx.binding.key
+  } ${resolutionCtx.options.session?.getBindingPath()}`;
+};
+const b = ctx.bind('msg').toDynamicValue(factory);
+```
+
+Object destructuring can be used to further simplify a value factory function
+that needs to access `context`, `binding`, or `options`.
+
+```ts
+const factory: ValueFactory<string> = ({context, binding, options}) => {
+  return `Hello, ${context.name}#${
+    binding.key
+  } ${options.session?.getBindingPath()}`;
+};
+```
+
+An advanced form of value factory is a class that has a static `value` method
+that allows parameter injection.
+
+```ts
+import {inject} from '@loopback/context';
+
+class GreetingProvider {
+  static value(@inject('user') user: string) {
+    return `Hello, ${user}`;
+  }
+}
+
+const b = ctx.bind('msg').toDynamicValue(GreetingProvider);
+```
+
 #### A class
 
 The binding can represent an instance of a class, for example, a controller. A
@@ -118,6 +159,9 @@ class MyValueProvider implements Provider<string> {
 
 binding.toProvider(MyValueProvider);
 ```
+
+The provider class serves as the wrapper to declare dependency injections. If
+dependency is not needed, `toDynamicValue` can be used instead.
 
 #### An alias
 

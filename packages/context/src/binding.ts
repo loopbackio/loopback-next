@@ -9,11 +9,13 @@ import {BindingAddress, BindingKey} from './binding-key';
 import {Context} from './context';
 import {inspectInjections} from './inject';
 import {createProxyWithInterceptors} from './interception-proxy';
+import {invokeMethod} from './invocation';
 import {JSONObject} from './json-types';
 import {ContextTags} from './keys';
 import {Provider} from './provider';
 import {
   asResolutionOptions,
+  ResolutionContext,
   ResolutionOptions,
   ResolutionOptionsOrSession,
   ResolutionSession,
@@ -170,10 +172,61 @@ export type BindingEventListener = (
   event: BindingEvent,
 ) => void;
 
-type ValueGetter<T> = (
-  ctx: Context,
-  options: ResolutionOptions,
+/**
+ * A factory function for `toDynamicValue`
+ */
+export type ValueFactory<T = unknown> = (
+  resolutionCtx: ResolutionContext,
 ) => ValueOrPromise<T | undefined>;
+
+/**
+ * A class with a static `value` method as the factory function for
+ * `toDynamicValue`.
+ *
+ * @example
+ * ```ts
+ * import {inject} from '@loopback/context';
+ *
+ * export class DynamicGreetingProvider {
+ *   static value(@inject('currentUser') user: string) {
+ *     return `Hello, ${user}`;
+ *   }
+ * }
+ * ```
+ */
+export interface DynamicValueProviderClass<T = unknown>
+  extends Constructor<unknown>,
+    Function {
+  value: (...args: BoundValue[]) => ValueOrPromise<T>;
+}
+
+/**
+ * Adapt the ValueFactoryProvider class to be a value factory
+ * @param provider - ValueFactoryProvider class
+ */
+function toValueFactory<T = unknown>(
+  provider: DynamicValueProviderClass<T>,
+): ValueFactory<T> {
+  return resolutionCtx =>
+    invokeMethod(provider, 'value', resolutionCtx.context, [], {
+      skipInterceptors: true,
+    });
+}
+
+/**
+ * Check if the factory is a value factory provider class
+ * @param factory - A factory function or a dynamic value provider class
+ */
+function isDynamicValueProviderClass(
+  factory: unknown,
+): factory is DynamicValueProviderClass {
+  // Not a class
+  if (typeof factory !== 'function' || !String(factory).startsWith('class ')) {
+    return false;
+  }
+  const valueMethod = (factory as DynamicValueProviderClass).value;
+  return typeof valueMethod === 'function';
+}
 
 /**
  * Binding represents an entry in the `Context`. Each binding has a key and a
@@ -208,7 +261,7 @@ export class Binding<T = BoundValue> extends EventEmitter {
   }
 
   private _cache: WeakMap<Context, T>;
-  private _getValue?: ValueGetter<T>;
+  private _getValue?: ValueFactory<T>;
 
   private _valueConstructor?: Constructor<T>;
   private _providerConstructor?: Constructor<Provider<T>>;
@@ -357,7 +410,13 @@ export class Binding<T = BoundValue> extends EventEmitter {
       const result = ResolutionSession.runWithBinding(
         s => {
           const optionsWithSession = Object.assign({}, options, {session: s});
-          return this._getValue!(ctx, optionsWithSession);
+          // We already test `this._getValue` is a function. It's safe to assert
+          // that `this._getValue` is not undefined.
+          return this._getValue!({
+            context: ctx,
+            binding: this,
+            options: optionsWithSession,
+          });
         },
         this,
         options.session,
@@ -464,16 +523,19 @@ export class Binding<T = BoundValue> extends EventEmitter {
    * Set the `_getValue` function
    * @param getValue - getValue function
    */
-  private _setValueGetter(getValue: ValueGetter<T>) {
+  private _setValueGetter(getValue: ValueFactory<T>) {
     // Clear the cache
     this._clearCache();
-    this._getValue = (ctx: Context, options: ResolutionOptions) => {
-      if (options.asProxyWithInterceptors && this._type !== BindingType.CLASS) {
+    this._getValue = resolutionCtx => {
+      if (
+        resolutionCtx.options.asProxyWithInterceptors &&
+        this._type !== BindingType.CLASS
+      ) {
         throw new Error(
           `Binding '${this.key}' (${this._type}) does not support 'asProxyWithInterceptors'`,
         );
       }
-      return getValue(ctx, options);
+      return getValue(resolutionCtx);
     };
     this.emitChangedEvent('value');
   }
@@ -539,13 +601,21 @@ export class Binding<T = BoundValue> extends EventEmitter {
    * );
    * ```
    */
-  toDynamicValue(factoryFn: () => ValueOrPromise<T>): this {
+  toDynamicValue(
+    factory: ValueFactory<T> | DynamicValueProviderClass<T>,
+  ): this {
     /* istanbul ignore if */
     if (debug.enabled) {
-      debug('Bind %s to dynamic value:', this.key, factoryFn);
+      debug('Bind %s to dynamic value:', this.key, factory);
+    }
+    let factoryFn: ValueFactory<T>;
+    if (isDynamicValueProviderClass(factory)) {
+      factoryFn = toValueFactory(factory);
+    } else {
+      factoryFn = factory;
     }
     this._type = BindingType.DYNAMIC_VALUE;
-    this._setValueGetter(ctx => factoryFn());
+    this._setValueGetter(resolutionCtx => factoryFn(resolutionCtx));
     return this;
   }
 
@@ -572,10 +642,10 @@ export class Binding<T = BoundValue> extends EventEmitter {
     }
     this._type = BindingType.PROVIDER;
     this._providerConstructor = providerClass;
-    this._setValueGetter((ctx, options) => {
+    this._setValueGetter(({context, options}) => {
       const providerOrPromise = instantiateClass<Provider<T>>(
         providerClass,
-        ctx,
+        context,
         options.session,
       );
       return transformValueOrPromise(providerOrPromise, p => p.value());
@@ -596,12 +666,12 @@ export class Binding<T = BoundValue> extends EventEmitter {
       debug('Bind %s to class %s', this.key, ctor.name);
     }
     this._type = BindingType.CLASS;
-    this._setValueGetter((ctx, options) => {
-      const instOrPromise = instantiateClass(ctor, ctx, options.session);
+    this._setValueGetter(({context, options}) => {
+      const instOrPromise = instantiateClass(ctor, context, options.session);
       if (!options.asProxyWithInterceptors) return instOrPromise;
       return createInterceptionProxyFromInstance(
         instOrPromise,
-        ctx,
+        context,
         options.session,
       );
     });
@@ -621,8 +691,8 @@ export class Binding<T = BoundValue> extends EventEmitter {
     }
     this._type = BindingType.ALIAS;
     this._alias = keyWithPath;
-    this._setValueGetter((ctx, options) => {
-      return ctx.getValueOrPromise(keyWithPath, options);
+    this._setValueGetter(({context, options}) => {
+      return context.getValueOrPromise(keyWithPath, options);
     });
     return this;
   }
