@@ -28,10 +28,10 @@ async function syncDevDeps() {
   const deps = [
     '@typescript-eslint/eslint-plugin',
     '@typescript-eslint/parser',
-    'eslint',
     'eslint-config-prettier',
     'eslint-plugin-eslint-plugin',
     'eslint-plugin-mocha',
+    'eslint',
     'typescript',
   ];
   const masterDeps = {};
@@ -49,7 +49,10 @@ async function syncDevDeps() {
   for (const pkg of packages) {
     if (pkg.name === '@loopback/build') continue;
     const pkgFile = pkg.manifestLocation;
-    updatePackageJson(pkgFile, masterDeps);
+    updatePackageJson(pkgFile, {
+      eslint: masterDeps.eslint,
+      typescript: masterDeps.typescript,
+    });
   }
 
   // Update dependencies in monorepo root
