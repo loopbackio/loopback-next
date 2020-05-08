@@ -40,8 +40,17 @@ const METHODS_KEY = MetadataAccessor.create<Injection, MethodDecorator>(
   'inject:methods',
 );
 
+// TODO(rfeng): We may want to align it with `ValueFactory` interface that takes
+// an argument of `ResolutionContext`.
 /**
- * A function to provide resolution of injected values
+ * A function to provide resolution of injected values.
+ *
+ * @example
+ * ```ts
+ * const resolver: ResolverFunction = (ctx, injection, session) {
+ *   return session.currentBinding?.key;
+ * }
+ * ```
  */
 export interface ResolverFunction {
   (
@@ -377,7 +386,7 @@ export namespace inject {
    * ```
    */
   export const context = function injectContext() {
-    return inject('', {decorator: '@inject.context'}, ctx => ctx);
+    return inject('', {decorator: '@inject.context'}, (ctx: Context) => ctx);
   };
 }
 

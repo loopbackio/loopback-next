@@ -6,6 +6,7 @@
 import {DecoratorFactory} from '@loopback/metadata';
 import debugModule from 'debug';
 import {Binding} from './binding';
+import {Context} from './context';
 import {Injection} from './inject';
 import {BoundValue, tryWithFinally, ValueOrPromise} from './value-promise';
 
@@ -365,4 +366,22 @@ export function asResolutionOptions(
     return {session: optionsOrSession};
   }
   return optionsOrSession ?? {};
+}
+
+/**
+ * Contextual metadata for resolution
+ */
+export interface ResolutionContext<T = unknown> {
+  /**
+   * The context for resolution
+   */
+  readonly context: Context;
+  /**
+   * The binding to be resolved
+   */
+  readonly binding: Readonly<Binding<T>>;
+  /**
+   * The options used for resolution
+   */
+  readonly options: ResolutionOptions;
 }

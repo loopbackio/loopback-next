@@ -15,6 +15,7 @@ import {
   inject,
   Provider,
 } from '../..';
+import {ValueFactory} from '../../binding';
 
 const key = 'foo';
 
@@ -170,6 +171,56 @@ describe('Binding', () => {
       const value = await ctx.get<string>('msg');
       expect(value).to.equal('hello');
       expect(b.type).to.equal(BindingType.DYNAMIC_VALUE);
+    });
+
+    it('support a factory to access context/binding/session', async () => {
+      const factory: ValueFactory<string> = ({
+        context,
+        binding: _binding,
+        options,
+      }) => {
+        return `Hello, ${context.name}#${
+          _binding.key
+        } ${options.session?.getBindingPath()}`;
+      };
+      const b = ctx.bind('msg').toDynamicValue(factory);
+      const value = await ctx.get<string>('msg');
+      expect(value).to.equal('Hello, test#msg msg');
+      expect(b.type).to.equal(BindingType.DYNAMIC_VALUE);
+    });
+
+    it('supports a factory to use context to look up a binding', async () => {
+      ctx.bind('user').to('John');
+      ctx.bind('greeting').toDynamicValue(async ({context}) => {
+        const user = await context.get('user');
+        return `Hello, ${user}`;
+      });
+      const value = await ctx.get<string>('greeting');
+      expect(value).to.eql('Hello, John');
+    });
+
+    it('supports a factory to use static provider', () => {
+      class GreetingProvider {
+        static value(@inject('user') user: string) {
+          return `Hello, ${user}`;
+        }
+      }
+      ctx.bind('user').to('John');
+      ctx.bind('greeting').toDynamicValue(GreetingProvider);
+      const value = ctx.getSync<string>('greeting');
+      expect(value).to.eql('Hello, John');
+    });
+
+    it('supports a factory to use async static provider', async () => {
+      class GreetingProvider {
+        static async value(@inject('user') user: string) {
+          return `Hello, ${user}`;
+        }
+      }
+      ctx.bind('user').to('John');
+      ctx.bind('greeting').toDynamicValue(GreetingProvider);
+      const value = await ctx.get<string>('greeting');
+      expect(value).to.eql('Hello, John');
     });
 
     it('triggers changed event', () => {
@@ -582,7 +633,7 @@ describe('Binding', () => {
   });
 
   function givenBinding() {
-    ctx = new Context();
+    ctx = new Context('test');
     binding = new Binding(key);
   }
 
