@@ -12,6 +12,7 @@ import {
   Provider,
 } from '@loopback/core';
 import debugFactory from 'debug';
+import {DEFAULT_MIDDLEWARE_GROUP} from '../keys';
 import {invokeExpressMiddleware, invokeMiddleware} from '../middleware';
 import {
   DEFAULT_MIDDLEWARE_CHAIN,
@@ -39,7 +40,7 @@ export class InvokeMiddlewareProvider implements Provider<InvokeMiddleware> {
   @config()
   protected defaultOptions: InvokeMiddlewareOptions = {
     chain: DEFAULT_MIDDLEWARE_CHAIN,
-    orderedGroups: ['cors', 'apiSpec', ''],
+    orderedGroups: ['cors', 'apiSpec', DEFAULT_MIDDLEWARE_GROUP],
   };
 
   value(): InvokeMiddleware {

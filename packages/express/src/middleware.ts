@@ -213,7 +213,7 @@ export function invokeMiddleware(
     filter,
     compareBindingsByTag('group', orderedGroups),
   );
-  return _middlewareChain.invokeInterceptors();
+  return _middlewareChain.invokeInterceptors(options?.next);
 }
 
 /**
