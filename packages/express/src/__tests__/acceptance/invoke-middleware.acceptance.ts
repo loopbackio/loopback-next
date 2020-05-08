@@ -4,6 +4,8 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {ExpressServer, invokeExpressMiddleware} from '../../';
+import {invokeMiddleware, toMiddleware} from '../../middleware';
+import spyMiddlewareFactory from '../fixtures/spy.middleware';
 import {spy, TestHelper} from './test-helpers';
 
 describe('Express middleware registry', () => {
@@ -26,6 +28,30 @@ describe('Express middleware registry', () => {
       {key: 'middleware.listOfExpressHandlers'},
     );
     await helper.assertSpyLog();
+  });
+
+  it('invokes middleware', async () => {
+    const logMiddleware = toMiddleware(spyMiddlewareFactory({action: 'log'}));
+    const mockMiddleware = toMiddleware(spyMiddlewareFactory({action: 'mock'}));
+
+    server.middleware(logMiddleware, {chain: 'log'});
+    server.middleware(mockMiddleware, {chain: 'mock'});
+
+    server.middleware(async (ctx, next) => {
+      invokeMiddleware(ctx, {
+        chain: 'log',
+        next: () => {
+          return invokeMiddleware(ctx, {chain: 'mock', next});
+        },
+      });
+    });
+    await helper.client
+      .post('/hello')
+      .send('"World"')
+      .set('content-type', 'application/json')
+      .expect(200, 'Hello, Spy')
+      .expect('x-spy-log', 'POST /hello')
+      .expect('x-spy-mock', 'POST /hello');
   });
 
   async function givenTestApp() {

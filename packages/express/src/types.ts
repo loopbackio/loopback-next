@@ -10,6 +10,7 @@ import {
   GenericInterceptorChain,
   InvocationContext,
   ValueOrPromise,
+  Next,
 } from '@loopback/core';
 import {Request, RequestHandler, Response} from 'express';
 import onFinished from 'on-finished';
@@ -119,6 +120,8 @@ export interface InvokeMiddlewareOptions {
    * An array of group names to denote the order of execution
    */
   orderedGroups?: string[];
+
+  next?: Next;
 }
 
 /**
