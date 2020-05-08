@@ -20,7 +20,7 @@
   "devDependencies": {
     "@loopback/build": "^2.0.16",
     "@loopback/core": "^2.5.0",
-    "@loopback/eslint-config": "^4.1.4",
+    "@loopback/eslint-config": "^6.0.6",
     "@loopback/extension-logging": "^0.3.3",
     "@loopback/testlab": "^3.1.3",
     "@types/node": "^10.17.21",
