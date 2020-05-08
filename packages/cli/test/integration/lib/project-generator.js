@@ -260,16 +260,18 @@ module.exports = function (projGenerator, props, projectType) {
           ['package.json', '@loopback/build'],
           ['package.json', '"typescript"'],
           ['package.json', '"eslint"'],
-          ['package.json', 'eslint-config-prettier'],
-          ['package.json', 'eslint-plugin-eslint-plugin'],
-          ['package.json', 'eslint-plugin-mocha'],
-          ['package.json', '@typescript-eslint/eslint-plugin'],
           ['package.json', '@loopback/eslint-config'],
           ['package.json', 'source-map-support'],
           ['.eslintrc.js', '@loopback/eslint-config'],
           ['tsconfig.json', '@loopback/build'],
         ]);
-        assert.noFileContent([['.eslintrc.js', '"rules"']]);
+        assert.noFileContent([
+          ['.eslintrc.js', '"rules"'],
+          ['package.json', 'eslint-config-prettier'],
+          ['package.json', 'eslint-plugin-eslint-plugin'],
+          ['package.json', 'eslint-plugin-mocha'],
+          ['package.json', '@typescript-eslint/eslint-plugin'],
+        ]);
 
         if (projectType === 'application') {
           assert.fileContent(
@@ -348,16 +350,16 @@ module.exports = function (projGenerator, props, projectType) {
           ['package.json', '@loopback/build'],
           ['package.json', '@loopback/dist-util'],
           ['tsconfig.json', '@loopback/build'],
+          ['package.json', 'eslint-config-prettier'],
+          ['package.json', 'eslint-plugin-eslint-plugin'],
+          ['package.json', 'eslint-plugin-mocha'],
+          ['package.json', '@typescript-eslint/eslint-plugin'],
         ]);
         assert.fileContent([
           ['package.json', '"clean": "rimraf dist *.tsbuildinfo .eslintcache"'],
           ['package.json', /^ {4}"typescript"/m],
           ['package.json', /^ {4}"tslib"/m],
           ['package.json', '"eslint"'],
-          ['package.json', 'eslint-config-prettier'],
-          ['package.json', 'eslint-plugin-eslint-plugin'],
-          ['package.json', 'eslint-plugin-mocha'],
-          ['package.json', '@typescript-eslint/eslint-plugin'],
           ['package.json', '@loopback/eslint-config'],
           ['package.json', '"prettier"'],
           ['.eslintrc.js', "extends: '@loopback/eslint-config'"],
