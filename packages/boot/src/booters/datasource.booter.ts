@@ -16,7 +16,7 @@ import {BaseArtifactBooter} from './base-artifact.booter';
 
 /**
  * A class that extends BaseArtifactBooter to boot the 'DataSource' artifact type.
- * Discovered DataSources are bound using `app.controller()`.
+ * Discovered DataSources are bound using `app.dataSource()`.
  *
  * Supported phases: configure, discover, load
  *

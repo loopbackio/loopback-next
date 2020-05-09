@@ -21,7 +21,7 @@ const debug = debugFactory('loopback:boot:service-booter');
 
 /**
  * A class that extends BaseArtifactBooter to boot the 'Service' artifact type.
- * Discovered DataSources are bound using `app.controller()`.
+ * Discovered services are bound using `app.service()`.
  *
  * Supported phases: configure, discover, load
  *
