@@ -5,6 +5,7 @@
 
 'use strict';
 
+const fse = require('fs-extra');
 const semver = require('semver');
 const chalk = require('chalk');
 const latestVersion = require('latest-version');
@@ -163,6 +164,10 @@ function updateDependencies(generator) {
     chalk.red('Upgrading dependencies may break the current project.'),
   );
   generator.fs.writeJSON(generator.destinationPath('package.json'), pkg);
+  // Remove `node_modules` force a fresh install
+  if (generator.command === 'update') {
+    fse.removeSync(generator.destinationPath('node_modules'));
+  }
   generator.pkgManagerInstall();
 }
 
