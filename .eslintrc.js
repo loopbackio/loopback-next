@@ -4,5 +4,30 @@
 // License text available at https://opensource.org/licenses/MIT
 
 module.exports = {
-  extends: ['./packages/eslint-config/eslintrc.js'],
+  plugins: ['jsdoc'],
+  extends: ['plugin:jsdoc/recommended', './packages/eslint-config/eslintrc.js'],
+  rules: {
+    /**
+     * JSDoc specific rules
+     * See https://www.npmjs.com/package/eslint-plugin-jsdoc#eslint-plugin-jsdoc-rules
+     */
+    'jsdoc/require-jsdoc': 0,
+    'jsdoc/check-tag-names': [
+      'error',
+      {
+        definedTags: [
+          // API Extractor Tags
+          'internal',
+          'packageDocumentation',
+          'remarks',
+          'typeParam',
+        ],
+      },
+    ],
+  },
+  settings: {
+    jsdoc: {
+      mode: 'typescript',
+    },
+  },
 };
