@@ -57,6 +57,14 @@ export class MyAppApplication extends BootMixin(
 
 
 exports[`app-generator specific files generates all the proper files 2`] = `
+import {MiddlewareSequence} from '@loopback/rest';
+
+export class MySequence extends MiddlewareSequence {}
+
+`;
+
+
+exports[`app-generator specific files generates all the proper files 3`] = `
 import {ApplicationConfig, MyAppApplication} from './application';
 
 export * from './application';
@@ -100,7 +108,7 @@ if (require.main === module) {
 `;
 
 
-exports[`app-generator specific files generates all the proper files 3`] = `
+exports[`app-generator specific files generates all the proper files 4`] = `
 import {Request, RestBindings, get, ResponseObject} from '@loopback/rest';
 import {inject} from '@loopback/core';
 
@@ -157,7 +165,7 @@ export class PingController {
 `;
 
 
-exports[`app-generator specific files generates all the proper files 4`] = `
+exports[`app-generator specific files generates all the proper files 5`] = `
 import {Client, expect} from '@loopback/testlab';
 import {MyAppApplication} from '../..';
 import {setupApplication} from './test-helper';
@@ -183,7 +191,7 @@ describe('PingController', () => {
 `;
 
 
-exports[`app-generator specific files generates all the proper files 5`] = `
+exports[`app-generator specific files generates all the proper files 6`] = `
 import {Client} from '@loopback/testlab';
 import {MyAppApplication} from '../..';
 import {setupApplication} from './test-helper';
@@ -219,7 +227,7 @@ describe('HomePage', () => {
 `;
 
 
-exports[`app-generator specific files generates all the proper files 6`] = `
+exports[`app-generator specific files generates all the proper files 7`] = `
 import {MyAppApplication} from '../..';
 import {
   createRestAppClient,
