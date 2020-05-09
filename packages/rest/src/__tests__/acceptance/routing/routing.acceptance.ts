@@ -524,7 +524,7 @@ describe('Routing', () => {
     const app = givenAnApplication();
     const server = await givenAServer(app);
 
-    @api({basePath: '/my', paths: {}})
+    @api({basePath: '/my'})
     class MyController {
       @get('/greet')
       greet(@param.query.string('name') name: string) {
