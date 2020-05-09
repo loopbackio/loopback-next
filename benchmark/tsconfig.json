@@ -14,6 +14,9 @@
       "path": "../examples/todo/tsconfig.json"
     },
     {
+      "path": "../packages/context/tsconfig.json"
+    },
+    {
       "path": "../packages/openapi-spec-builder/tsconfig.json"
     },
     {
