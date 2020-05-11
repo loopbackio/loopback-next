@@ -9,8 +9,8 @@ import {
   GenericInterceptor,
   GenericInterceptorChain,
   InvocationContext,
-  ValueOrPromise,
   Next,
+  ValueOrPromise,
 } from '@loopback/core';
 import {Request, RequestHandler, Response} from 'express';
 import onFinished from 'on-finished';
@@ -70,11 +70,10 @@ export class MiddlewareContext extends Context implements HandlerContext {
  * A middleware for LoopBack is basically a generic interceptor that uses
  * `RequestContext`.
  *
- * The signature of a middleware function is as follows. It's very much the same
- * as {@link https://github.com/koajs/koa/blob/master/docs/guide.md#writing-middleware | Koa middleware}.
- * ```ts
- * (context: MiddlewareContext, next: Next) => ValueOrPromise<InvocationResult>;
- * ```
+ * The signature of a middleware function is described at
+ * {@link https://loopback.io/doc/en/lb4/apidocs.express.middleware.html | Middleware}.
+ * It's very much the same as
+ * {@link https://github.com/koajs/koa/blob/master/docs/guide.md#writing-middleware | Koa middleware}.
  *
  * @example
  * ```ts
