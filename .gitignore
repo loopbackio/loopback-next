@@ -5,6 +5,7 @@ npm-debug.log
 coverage
 .nyc_output
 **/*.tgz
+fixtures/*/dist
 acceptance/*/dist
 packages/*/dist
 extensions/*/dist
