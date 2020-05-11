@@ -75,5 +75,7 @@ instructions into several sub-sections.
 1. [Migrating components contributing Model mixins](./mixins) explains how to
    migrate a component that's contributing Model mixins.
 
+1. [Migrating components contributing REST API endpoints](./rest-api)
+
 1. _More sections will be created as part of
    [loopback-next#3955](https://github.com/strongloop/loopback-next/issues/3955)._
