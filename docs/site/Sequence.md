@@ -426,6 +426,11 @@ actions.
 
 ## Working with Express middleware
 
+{% include warning.html content="First-class support for Express middleware has
+been added to LoopBack since v4.0.0 of `@loopback/rest`. Please refer to
+[Using Express Middleware](Express-middleware.md). The following information
+only applies to earlier versions of `@loopback/rest`." %}
+
 Under the hood, LoopBack leverages [Express](https://expressjs.com) framework
 and its concept of middleware. To avoid common pitfalls, it is not possible to
 mount Express middleware directly on a LoopBack application. Instead, LoopBack
