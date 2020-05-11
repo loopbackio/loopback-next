@@ -225,7 +225,37 @@ TBD
 
 ### Migrate REST API
 
-TBD
+See [Extending REST API endpoints](../site/extending/rest-api.md) for
+instructions how to write components contributing REST API endpoints.
+
+See
+[Migrating components: REST API endpoints](../site/migration/components/rest-api.md)
+for migration steps.
+
+> Add a new REST API endpoint to every (public) model/entity provided by the
+> app, e.g. `GET /api/{model}/schema` returning JSON schema of the model.
+
+First, we need to find all publicly exposed models. This is tricky in LB4,
+because there is no direct mapping between models and REST API endpoints. REST
+APIs are implemented by Controllers, there may be more than one Controller for
+each Model (e.g. `ProductController` and `ProductCategoryController`).
+
+I am arguing that the particular use case of accessing JSON schema of a model is
+not relevant in LB4, because model schema can be obtained from the OpenAPI spec
+document provided by all LB4 applications out of the box.
+
+Let's not provide any migration guide for this technique for now. We can wait
+until there is user demand and then build a better understanding of user
+requirements before looking for LB4 solution.
+
+> Intercept REST requests handled by an endpoint contributed by a 3rd-party
+> controller to invoke additional logic before the controller method is called
+> (e.g. automatically create containers when uploading files) and after the
+> controller method returned (e.g. post-process the uploaded file).
+
+Considering that this use case is specific to the way how
+loopback-component-storage implements REST API endpoints for file uploads and
+downloads, I feel it's not necessary to provide migration guide for this case.
 
 ### Migrate Services (local and remote)
 

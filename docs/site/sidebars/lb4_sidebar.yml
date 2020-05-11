@@ -359,6 +359,14 @@ children:
     url: Creating-decorators.html
     output: 'web, pdf'
 
+  - title: 'Contributing REST API'
+    url: 'creating-components-rest-api.html'
+    output: 'web, pdf'
+
+  - title: 'Creating services'
+    url: 'creating-components-services.html'
+    output: 'web, pdf'
+
   - title: 'Creating servers'
     url: Creating-servers.html
     output: 'web, pdf'
@@ -891,6 +899,10 @@ children:
 
     - title: 'Mixins'
       url: migration-extensions-mixins.html
+      output: 'web, pdf'
+
+    - title: 'REST API'
+      url: migration-extensions-rest-api.html
       output: 'web, pdf'
 
   - title: 'Clients (API consumers)'
