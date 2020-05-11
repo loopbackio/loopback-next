@@ -2,10 +2,6 @@
 // Node module: @loopback/authentication-passport
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
-import {
-  startApp,
-  stopApp,
-} from './__tests__/acceptance/fixtures/mock-oauth2-social-app';
 
 /**
  * An adapter to plug in passport based strategies to the authentication system
@@ -26,8 +22,3 @@ import {
  */
 
 export * from './strategy-adapter';
-
-export namespace MockTestOauth2SocialApp {
-  export const startMock = startApp;
-  export const stopMock = stopApp;
-}

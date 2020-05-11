@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Client, supertest, expect} from '@loopback/testlab';
-import {MockTestOauth2SocialApp} from '@loopback/authentication-passport';
+import {MockTestOauth2SocialApp} from '@loopback/mock-oauth2-provider';
 import {ExpressServer} from '../../server';
 import {User, UserIdentity} from '../../models';
 import {startApplication} from '../../';

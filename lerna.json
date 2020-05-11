@@ -1,6 +1,7 @@
 {
   "packages": [
     "acceptance/*",
+    "fixtures/*",
     "benchmark",
     "docs",
     "examples/*",

@@ -11,6 +11,7 @@ packages/tsdocs/fixtures/monorepo/**/dist
 packages/tsdocs/fixtures/monorepo/**/docs
 **/.sandbox
 acceptance/*/dist
+fixtures/*/dist
 packages/*/dist
 extensions/*/dist
 examples/*/dist

@@ -21,7 +21,7 @@ import {
   Send,
   SequenceHandler,
 } from '@loopback/rest';
-import {MyUser} from './user-repository';
+import {MyUser} from '@loopback/mock-oauth2-provider';
 import {StrategyAdapter} from '../../../strategy-adapter';
 import {extensionFor} from '@loopback/core';
 
