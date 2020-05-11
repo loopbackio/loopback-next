@@ -154,6 +154,25 @@ describe('Sequence', () => {
     return whenIRequest().get('/').expect('hello world');
   });
 
+  it('allows CORS middleware to produce an http response', () => {
+    server.sequence(DefaultSequence);
+    app.bind('test').to('hello world');
+
+    // Response from `CORS`
+    return whenIRequest()
+      .options('/')
+      .expect(204)
+      .expect('access-control-allow-origin', '*');
+  });
+
+  it('allows OpenAPI middleware to produce an http response', () => {
+    server.sequence(DefaultSequence);
+    app.bind('test').to('hello world');
+
+    // Response from `OpenAPI`
+    return whenIRequest().get('/openapi.json').expect(200);
+  });
+
   async function givenAppWithController() {
     await givenAnApplication();
     app.bind('application.name').to('SequenceApp');

@@ -89,6 +89,7 @@ export class DefaultSequence implements SequenceHandler {
    * running the sequence will produce a response or an error.
    *
    * Default sequence executes these steps
+   *  - Executes middleware for CORS, OpenAPI spec endpoints
    *  - Finds the appropriate controller method, swagger spec
    *    and args for invocation
    *  - Parses HTTP request to get API argument list
@@ -104,7 +105,11 @@ export class DefaultSequence implements SequenceHandler {
     try {
       const {request, response} = context;
       // Invoke registered Express middleware
-      await this.invokeMiddleware(context);
+      const finished = await this.invokeMiddleware(context);
+      if (finished) {
+        // The response been produced by the middleware chain
+        return;
+      }
       const route = this.findRoute(request);
       const args = await this.parseParams(request, route);
       const result = await this.invoke(route, args);
