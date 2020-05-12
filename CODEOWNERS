@@ -338,6 +338,14 @@
 /benchmark @bajtos
 
 #
+# Fastify
+#
+# - Issue label: n/a
+# - Primary owner(s): @bajtos
+# - Secondary owner(s): n/a
+/extensions/fastify @bajtos
+
+#
 # PostgreSQL
 #
 # - Issue label: db:PostgreSQL
