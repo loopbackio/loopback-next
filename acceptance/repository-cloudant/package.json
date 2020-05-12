@@ -31,7 +31,7 @@
     "lodash": "^4.17.15",
     "loopback-connector-cloudant": "2.4.2",
     "ms": "2.1.2",
-    "tslib": "^1.11.2",
+    "tslib": "^1.12.0",
     "typescript": "~3.8.3"
   },
   "files": [
