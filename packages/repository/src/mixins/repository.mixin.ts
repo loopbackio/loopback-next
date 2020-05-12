@@ -9,10 +9,11 @@ import {
   BindingScope,
   createBindingFromClass,
 } from '@loopback/context';
-import {Application} from '@loopback/core';
+import {Application, Component, Constructor, MixinTarget} from '@loopback/core';
 import debugFactory from 'debug';
 import {Class} from '../common-types';
 import {SchemaMigrationOptions} from '../datasource';
+import {Model} from '../model';
 import {juggler, Repository} from '../repositories';
 
 const debug = debugFactory('loopback:repository:mixin');
@@ -31,8 +32,9 @@ const debug = debugFactory('loopback:repository:mixin');
  * called <a href="#RepositoryMixinDoc">RepositoryMixinDoc</a>
  *
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function RepositoryMixin<T extends Class<any>>(superClass: T) {
+export function RepositoryMixin<T extends MixinTarget<Application>>(
+  superClass: T,
+) {
   return class extends superClass {
     /**
      * Add a repository to this application.
@@ -161,12 +163,17 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
      * app.component(ProductComponent);
      * ```
      */
-    public component(
-      component: Class<unknown>,
+    // Unfortunately, TypeScript does not allow overriding methods inherited
+    // from mapped types. https://github.com/microsoft/TypeScript/issues/38496
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    // @ts-ignore
+    public component<C extends Component = Component>(
+      componentCtor: Constructor<C>,
       nameOrOptions?: string | BindingFromClassOptions,
     ) {
-      super.component(component, nameOrOptions);
-      this.mountComponentRepositories(component);
+      const binding = super.component(componentCtor, nameOrOptions);
+      this.mountComponentRepositories(componentCtor);
+      return binding;
     }
 
     /**
@@ -178,7 +185,9 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
      */
     mountComponentRepositories(component: Class<unknown>) {
       const componentKey = `components.${component.name}`;
-      const compInstance = this.getSync(componentKey);
+      const compInstance = this.getSync<{
+        repositories?: Class<Repository<Model>>[];
+      }>(componentKey);
 
       if (compInstance.repositories) {
         for (const repo of compInstance.repositories) {
@@ -216,7 +225,7 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
         'datasource',
       );
       for (const b of dsBindings) {
-        const ds = await this.get(b.key);
+        const ds = await this.get<juggler.DataSource>(b.key);
 
         if (operation in ds && typeof ds[operation] === 'function') {
           debug('Migrating dataSource %s', b.key);

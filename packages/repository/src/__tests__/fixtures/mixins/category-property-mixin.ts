@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Constructor} from '@loopback/context';
+import {MixinTarget} from '@loopback/core';
 import {Model, property} from '../../..';
 
 /**
@@ -12,7 +12,7 @@ import {Model, property} from '../../..';
  * @param superClass - Base Class
  * @typeParam T - Model class
  */
-export function AddCategoryPropertyMixin<T extends Constructor<Model>>(
+export function AddCategoryPropertyMixin<T extends MixinTarget<Model>>(
   superClass: T,
 ) {
   class MixedModel extends superClass {

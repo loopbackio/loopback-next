@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Constructor} from '@loopback/context';
+import {MixinTarget} from '@loopback/core';
 import {Model} from '@loopback/repository';
 import {get, getModelSchemaRef, param} from '../../../';
 
@@ -38,10 +38,12 @@ export interface FindByTitleControllerMixinOptions {
  */
 export function FindByTitleControllerMixin<
   M extends Model,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  T extends Constructor<any> = Constructor<object>
+  T extends MixinTarget<object>
 >(superClass: T, options: FindByTitleControllerMixinOptions) {
   class MixedController extends superClass implements FindByTitle<M> {
+    // Value will be provided by the subclassed controller class
+    repository: FindByTitle<M>;
+
     @get(`${options.basePath}/findByTitle/{title}`, {
       responses: {
         '200': {

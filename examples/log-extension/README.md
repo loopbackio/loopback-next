@@ -228,12 +228,11 @@ providing it via `ApplicationOptions` or using a helper method
 `app.logLevel(level: number)`.
 
 ```ts
-import {Constructor} from '@loopback/context';
+import {MixinTarget, Application} from '@loopback/core';
 import {EXAMPLE_LOG_BINDINGS} from '../keys';
 import {LogComponent} from '../component';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function LogMixin<T extends Constructor<any>>(superClass: T) {
+export function LogMixin<T extends MixinTarget<Application>>(superClass: T) {
   return class extends superClass {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     constructor(...args: any[]) {

@@ -88,5 +88,4 @@ export interface MiddlewareRegistry {
 /**
  * Base Context that provides APIs to register middleware
  */
-export abstract class BaseMiddlewareRegistry extends MiddlewareMixin(Context)
-  implements MiddlewareRegistry {}
+export abstract class BaseMiddlewareRegistry extends MiddlewareMixin(Context) {}

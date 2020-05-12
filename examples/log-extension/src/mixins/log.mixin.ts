@@ -3,9 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Constructor} from '@loopback/context';
-import {EXAMPLE_LOG_BINDINGS, LOG_LEVEL} from '../keys';
+import {Application, MixinTarget} from '@loopback/core';
 import {LogComponent} from '../component';
+import {EXAMPLE_LOG_BINDINGS, LOG_LEVEL} from '../keys';
 
 /**
  * A mixin class for Application that can bind logLevel from `options`.
@@ -17,8 +17,7 @@ import {LogComponent} from '../component';
  * class MyApplication extends LogMixin(Application) {}
  * ```
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function LogMixin<T extends Constructor<any>>(superClass: T) {
+export function LogMixin<T extends MixinTarget<Application>>(superClass: T) {
   return class extends superClass {
     // A mixin class has to take in a type any[] argument!
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
