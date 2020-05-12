@@ -196,12 +196,12 @@ You can configure the conventions used in your project for a Controller by
 passing a `controllers` object on `BootOptions` property of your Application.
 The `controllers` object supports the following options:
 
-| Options      | Type                 | Default              | Description                                                                                                   |
-| ------------ | -------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------- |
-| `dirs`       | `string \| string[]` | `['controllers']`    | Paths relative to projectRoot to look in for Controller artifacts                                             |
-| `extensions` | `string \| string[]` | `['.controller.js']` | File extensions to match for Controller artifacts                                                             |
-| `nested`     | `boolean`            | `true`               | Look in nested directories in `dirs` for Controller artifacts                                                 |
-| `glob`       | `string`             |                      | A `glob` pattern string. This takes precendence over above 3 options (which are used to make a glob pattern). |
+| Options      | Type                 | Default              | Description                                                                                                            |
+| ------------ | -------------------- | -------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `dirs`       | `string \| string[]` | `['controllers']`    | Paths relative to projectRoot to look in for Controller artifacts                                                      |
+| `extensions` | `string \| string[]` | `['.controller.js']` | File extensions to match for Controller artifacts                                                                      |
+| `nested`     | `boolean`            | `true`               | Look in nested directories in `dirs` for Controller artifacts                                                          |
+| `globs`      | `string \| string[]` |                      | A `glob` pattern string or array. This takes precendence over above 3 options (which are used to make a glob pattern). |
 
 ### Repository Booter
 
@@ -214,12 +214,12 @@ You can configure the conventions used in your project for a Repository by
 passing a `repositories` object on `BootOptions` property of your Application.
 The `repositories` object supports the following options:
 
-| Options      | Type                 | Default              | Description                                                                                                   |
-| ------------ | -------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------- |
-| `dirs`       | `string \| string[]` | `['repositories']`   | Paths relative to projectRoot to look in for Repository artifacts                                             |
-| `extensions` | `string \| string[]` | `['.repository.js']` | File extensions to match for Repository artifacts                                                             |
-| `nested`     | `boolean`            | `true`               | Look in nested directories in `dirs` for Repository artifacts                                                 |
-| `glob`       | `string`             |                      | A `glob` pattern string. This takes precendence over above 3 options (which are used to make a glob pattern). |
+| Options      | Type                 | Default              | Description                                                                                                            |
+| ------------ | -------------------- | -------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `dirs`       | `string \| string[]` | `['repositories']`   | Paths relative to projectRoot to look in for Repository artifacts                                                      |
+| `extensions` | `string \| string[]` | `['.repository.js']` | File extensions to match for Repository artifacts                                                                      |
+| `nested`     | `boolean`            | `true`               | Look in nested directories in `dirs` for Repository artifacts                                                          |
+| `globs`      | `string \| string[]` |                      | A `glob` pattern string or array. This takes precendence over above 3 options (which are used to make a glob pattern). |
 
 ### DataSource Booter
 
@@ -232,12 +232,12 @@ You can configure the conventions used in your project for a DataSource by
 passing a `datasources` object on `BootOptions` property of your Application.
 The `datasources` object support the following options:
 
-| Options      | Type                 | Default              | Description                                                                                                   |
-| ------------ | -------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------- |
-| `dirs`       | `string \| string[]` | `['datasources']`    | Paths relative to projectRoot to look in for DataSource artifacts                                             |
-| `extensions` | `string \| string[]` | `['.datasource.js']` | File extensions to match for DataSource artifacts                                                             |
-| `nested`     | `boolean`            | `true`               | Look in nested directories in `dirs` for DataSource artifacts                                                 |
-| `glob`       | `string`             |                      | A `glob` pattern string. This takes precendence over above 3 options (which are used to make a glob pattern). |
+| Options      | Type                 | Default              | Description                                                                                                            |
+| ------------ | -------------------- | -------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `dirs`       | `string \| string[]` | `['datasources']`    | Paths relative to projectRoot to look in for DataSource artifacts                                                      |
+| `extensions` | `string \| string[]` | `['.datasource.js']` | File extensions to match for DataSource artifacts                                                                      |
+| `nested`     | `boolean`            | `true`               | Look in nested directories in `dirs` for DataSource artifacts                                                          |
+| `globs`      | `string \| string[]` |                      | A `glob` pattern string or array. This takes precendence over above 3 options (which are used to make a glob pattern). |
 
 ### Service Booter
 
@@ -259,12 +259,118 @@ The options for this are passed in a `services` object on `BootOptions`.
 
 Available options on the `services` object on `BootOptions` are as follows:
 
-| Options      | Type                 | Default           | Description                                                                                                  |
-| ------------ | -------------------- | ----------------- | ------------------------------------------------------------------------------------------------------------ |
-| `dirs`       | `string \| string[]` | `['services']`    | Paths relative to projectRoot to look in for Service artifacts                                               |
-| `extensions` | `string \| string[]` | `['.service.js']` | File extensions to match for Service artifacts                                                               |
-| `nested`     | `boolean`            | `true`            | Look in nested directories in `dirs` for Service artifacts                                                   |
-| `glob`       | `string`             |                   | A `glob` pattern string. This takes precedence over above 3 options (which are used to make a glob pattern). |
+| Options      | Type                 | Default           | Description                                                                                                           |
+| ------------ | -------------------- | ----------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `dirs`       | `string \| string[]` | `['services']`    | Paths relative to projectRoot to look in for Service artifacts                                                        |
+| `extensions` | `string \| string[]` | `['.service.js']` | File extensions to match for Service artifacts                                                                        |
+| `nested`     | `boolean`            | `true`            | Look in nested directories in `dirs` for Service artifacts                                                            |
+| `globs`      | `string \| string[]` |                   | A `glob` pattern string or array. This takes precedence over above 3 options (which are used to make a glob pattern). |
+
+### Configuration Booter
+
+#### Description
+
+Discovers configuration files in `configs` and `dist/configs` folders and binds
+them to the application context using `app.configure()`.
+
+The booter also serves as an extension point to plug in configuration loaders
+that handle different forms of files. By default, a configuration loader is
+added to recognize `.config.js`, `.config.json`, `.config.yaml`, and
+`.config.yml` files. Files with the same base name are loaded in the precedence
+of js, json, yaml, and yml extensions. For example, `x.config.js` shadows
+`x.config.json`.
+
+The js/json/yaml/yml files export an object containing binding key/configuration
+value pairs.
+
+The `.ts` file will be transpiled to `.js`.
+
+```ts
+export = {
+  'loggers.Log1': {
+    level: 'info',
+    __source: 'js',
+  },
+  'loggers.Log2': {
+    level: 'debug',
+    __source: 'js',
+  },
+};
+```
+
+The configuration can be defined in a json file.
+
+```json
+{
+  "loggers.Log1": {
+    "level": "info",
+    "__source": "json"
+  },
+  "loggers.Log2": {
+    "level": "debug",
+    "__source": "json"
+  }
+}
+```
+
+The `yaml` format is supported too.
+
+```yaml
+loggers.Log1:
+  level: info
+  __source: yaml
+loggers.Log2:
+  level: debug
+  __source: yaml
+```
+
+![config-booter](imgs/config-booter.png)
+
+#### Configuration loaders
+
+Configuration loaders are extensions to the configuration booter.
+
+```ts
+@configurationLoader()
+class MyConfigLoader implements ConfigurationLoader {
+  options = {};
+
+  load(_app: Application, projectRoot: string, files: string[]) {
+    // Directly add configuration bindings to the application
+    app.configure('loggers.Log1').to({
+      level: 'info',
+      __source: 'my-loader',
+    });
+    // Export an object containing configuration values keyed by target binding
+    // keys
+    return {
+      'loggers.Log2': {
+        level: 'debug',
+        __source: 'my-loader',
+      },
+    };
+  }
+}
+
+app.add(createBindingFromClass(MyConfigLoader));
+```
+
+#### Options
+
+The options for this can be passed via `BootOptions` when calling
+`app.boot(options: BootOptions)`.
+
+The options for this are passed in a `configurations` object on `BootOptions`.
+
+Available options on the `configurations` object on `BootOptions` are as
+follows:
+
+| Options      | Type                 | Default                                                        | Description                                                                                                           |
+| ------------ | -------------------- | -------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `dirs`       | `string \| string[]` | `['configs', '../configs]`                                     | Paths relative to projectRoot to look in for configuration artifacts                                                  |
+| `extensions` | `string \| string[]` | `['.config.js', '.config.json', '.config.yaml, '.config.yml']` | File extensions to match for Service artifacts                                                                        |
+| `nested`     | `boolean`            | `true`                                                         | Look in nested directories in `dirs` for Service artifacts                                                            |
+| `globs`      | `string \| string[]` |                                                                | A `glob` pattern string or array. This takes precedence over above 3 options (which are used to make a glob pattern). |
 
 ### Custom Booters
 
