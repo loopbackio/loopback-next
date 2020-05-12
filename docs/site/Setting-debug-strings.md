@@ -14,8 +14,8 @@ applications.
 
 ## Using debug strings
 
-LoopBack has a number of built-in debug strings to help with debugging.Specify a
-string on the command-line via an environment variable as follows:
+LoopBack has a number of built-in debug strings to help with debugging. Specify
+a string on the command-line via an environment variable as follows:
 
 **MacOS and Linux**
 

@@ -209,6 +209,10 @@ children:
       url: Setting-debug-strings.html
       output: 'web, pdf'
 
+    - title: 'Using strong-error-handler'
+      url: Using-strong-error-handler.html
+      output: 'web, pdf'
+
   - title: 'Call Other Services'
     url: Calling-other-APIs-and-web-services.html
     output: 'web, pdf'
