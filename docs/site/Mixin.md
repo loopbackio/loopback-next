@@ -54,7 +54,7 @@ Define mixin `TimeStampMixin`:
 ```ts
 import {Class} from '@loopback/repository';
 
-export function TimeStampMixin<T extends Class<any>>(baseClass: T) {
+export function TimeStampMixin<T extends MixinTarget<object>>(baseClass: T) {
   return class extends baseClass {
     // add a new property `createdAt`
     public createdAt: Date;
@@ -76,7 +76,7 @@ And define mixin `LoggerMixin`:
 ```ts
 import {Class} from '@loopback/repository';
 
-function LoggerMixin<T extends Class<any>>(baseClass: T) {
+function LoggerMixin<T extends MixinTarget<object>>(baseClass: T) {
   return class extends baseClass {
     // add a new method `log()`
     log(str: string) {

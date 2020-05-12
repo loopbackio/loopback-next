@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Constructor} from '@loopback/context';
+import {MixinTarget} from '@loopback/core';
 import {CrudRepository, Model, Where} from '../../..';
 
 /**
@@ -24,7 +24,7 @@ export interface FindByTitle<M extends Model> {
  */
 export function FindByTitleRepositoryMixin<
   M extends Model & {title: string},
-  R extends Constructor<CrudRepository<M>>
+  R extends MixinTarget<CrudRepository<M>>
 >(superClass: R) {
   class MixedRepository extends superClass implements FindByTitle<M> {
     async findByTitle(title: string): Promise<M[]> {

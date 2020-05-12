@@ -5,11 +5,13 @@
 
 import {
   Binding,
+  BindingFromClassOptions,
   BindingScope,
   Constructor,
   Context,
   createBindingFromClass,
 } from '@loopback/context';
+import {Application, Component, MixinTarget} from '@loopback/core';
 import {BootComponent} from '../boot.component';
 import {Bootstrapper} from '../bootstrapper';
 import {BootBindings, BootTags} from '../keys';
@@ -30,18 +32,8 @@ export {Binding};
  * - Provides the `booter()` convenience method to bind a Booter(s) to the Application
  * - Override `component()` to call `mountComponentBooters`
  * - Adds `mountComponentBooters` which binds Booters to the application from `component.booters[]`
- *
- * ******************** NOTE ********************
- * Trying to constrain the type of this Mixin (or any Mixin) will cause errors.
- * For example, constraining this Mixin to type Application require all types using by
- * Application to be imported (including it's dependencies such as ResolutionSession).
- * Another issue was that if a Mixin that is type constrained is used with another Mixin
- * that is not, it will result in an error.
- * Example (class MyApp extends BootMixin(RepositoryMixin(Application))) {};
- ********************* END OF NOTE ********************
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function BootMixin<T extends Constructor<any>>(superClass: T) {
+export function BootMixin<T extends MixinTarget<Application>>(superClass: T) {
   return class extends superClass implements Bootable {
     projectRoot: string;
     bootOptions?: BootOptions;
@@ -57,7 +49,7 @@ export function BootMixin<T extends Constructor<any>>(superClass: T) {
         () => this.projectRoot,
       );
       this.bind(BootBindings.BOOT_OPTIONS).toDynamicValue(
-        () => this.bootOptions,
+        () => this.bootOptions ?? {},
       );
     }
 
@@ -65,18 +57,34 @@ export function BootMixin<T extends Constructor<any>>(superClass: T) {
      * Convenience method to call bootstrapper.boot() by resolving bootstrapper
      */
     async boot(): Promise<void> {
-      if (this.state === 'booting') return this.awaitState('booted');
-      this.assertNotInProcess('boot');
-      this.assertInStates('boot', 'created', 'booted');
+      /* eslint-disable @typescript-eslint/ban-ts-ignore */
+      // A workaround to access protected Application methods
+      const self = (this as unknown) as Application;
+
+      if (this.state === 'booting') {
+        // @ts-ignore
+        return self.awaitState('booted');
+      }
+      // @ts-ignore
+      self.assertNotInProcess('boot');
+      // @ts-ignore
+      self.assertInStates('boot', 'created', 'booted');
+
       if (this.state === 'booted') return;
-      this.setState('booting');
+      // @ts-ignore
+      self.setState('booting');
+
       // Get a instance of the BootStrapper
       const bootstrapper: Bootstrapper = await this.get(
         BootBindings.BOOTSTRAPPER_KEY,
       );
 
       await bootstrapper.boot();
+
+      // @ts-ignore
       this.setState('booted');
+
+      /* eslint-enable @typescript-eslint/ban-ts-ignore */
     }
 
     /**
@@ -115,9 +123,17 @@ export function BootMixin<T extends Constructor<any>>(superClass: T) {
      * app.component(ProductComponent);
      * ```
      */
-    public component(component: Constructor<{}>) {
-      super.component(component);
-      this.mountComponentBooters(component);
+    // Unfortunately, TypeScript does not allow overriding methods inherited
+    // from mapped types. https://github.com/microsoft/TypeScript/issues/38496
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    // @ts-ignore
+    public component<C extends Component = Component>(
+      componentCtor: Constructor<C>,
+      nameOrOptions?: string | BindingFromClassOptions,
+    ) {
+      const binding = super.component(componentCtor, nameOrOptions);
+      this.mountComponentBooters(componentCtor);
+      return binding;
     }
 
     /**
@@ -129,7 +145,9 @@ export function BootMixin<T extends Constructor<any>>(superClass: T) {
      */
     mountComponentBooters(component: Constructor<{}>) {
       const componentKey = `components.${component.name}`;
-      const compInstance = this.getSync(componentKey);
+      const compInstance = this.getSync<{
+        booters?: Constructor<Booter>[];
+      }>(componentKey);
 
       if (compInstance.booters) {
         this.booters(...compInstance.booters);

@@ -364,7 +364,7 @@ The following snippet is an abbreviated function
 {% include code-caption.html content="src/mixins/repository.mixin.ts" %}
 
 ```ts
-export function RepositoryMixin<T extends Class<any>>(superClass: T) {
+export function RepositoryMixin<T extends MixinTarget<Application>>(superClass: T) {
   return class extends superClass {
     constructor(...args: any[]) {
       super(...args);
