@@ -12,7 +12,7 @@
   ],
   "references": [
     {
-      "path": "../../packages/testlab/tsconfig.json"
+      "path": "../../extensions/metrics/tsconfig.json"
     },
     {
       "path": "../../packages/boot/tsconfig.json"
@@ -21,10 +21,10 @@
       "path": "../../packages/core/tsconfig.json"
     },
     {
-      "path": "../../extensions/metrics/tsconfig.json"
+      "path": "../../packages/rest/tsconfig.json"
     },
     {
-      "path": "../../packages/rest/tsconfig.json"
+      "path": "../../packages/testlab/tsconfig.json"
     }
   ]
 }

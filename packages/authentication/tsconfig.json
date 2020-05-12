@@ -11,12 +11,6 @@
   ],
   "references": [
     {
-      "path": "../openapi-spec-builder/tsconfig.json"
-    },
-    {
-      "path": "../testlab/tsconfig.json"
-    },
-    {
       "path": "../context/tsconfig.json"
     },
     {
@@ -26,6 +20,9 @@
       "path": "../metadata/tsconfig.json"
     },
     {
+      "path": "../openapi-spec-builder/tsconfig.json"
+    },
+    {
       "path": "../openapi-v3/tsconfig.json"
     },
     {
@@ -33,6 +30,9 @@
     },
     {
       "path": "../security/tsconfig.json"
+    },
+    {
+      "path": "../testlab/tsconfig.json"
     }
   ]
 }
