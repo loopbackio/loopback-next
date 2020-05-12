@@ -14,6 +14,9 @@
       "path": "../core/tsconfig.json"
     },
     {
+      "path": "../model-api-builder/tsconfig.json"
+    },
+    {
       "path": "../repository/tsconfig.json"
     },
     {
@@ -21,9 +24,6 @@
     },
     {
       "path": "../testlab/tsconfig.json"
-    },
-    {
-      "path": "../model-api-builder/tsconfig.json"
     }
   ]
 }

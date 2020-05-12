@@ -12,15 +12,6 @@
   ],
   "references": [
     {
-      "path": "../../packages/http-caching-proxy/tsconfig.json"
-    },
-    {
-      "path": "../../packages/repository/tsconfig.json"
-    },
-    {
-      "path": "../../packages/testlab/tsconfig.json"
-    },
-    {
       "path": "../../packages/boot/tsconfig.json"
     },
     {
@@ -30,16 +21,25 @@
       "path": "../../packages/core/tsconfig.json"
     },
     {
+      "path": "../../packages/http-caching-proxy/tsconfig.json"
+    },
+    {
       "path": "../../packages/openapi-v3/tsconfig.json"
     },
     {
-      "path": "../../packages/rest/tsconfig.json"
+      "path": "../../packages/repository/tsconfig.json"
     },
     {
       "path": "../../packages/rest-explorer/tsconfig.json"
     },
     {
+      "path": "../../packages/rest/tsconfig.json"
+    },
+    {
       "path": "../../packages/service-proxy/tsconfig.json"
+    },
+    {
+      "path": "../../packages/testlab/tsconfig.json"
     }
   ]
 }

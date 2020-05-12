@@ -11,19 +11,19 @@
   ],
   "references": [
     {
+      "path": "../core/tsconfig.json"
+    },
+    {
       "path": "../openapi-spec-builder/tsconfig.json"
+    },
+    {
+      "path": "../repository-json-schema/tsconfig.json"
     },
     {
       "path": "../repository/tsconfig.json"
     },
     {
       "path": "../testlab/tsconfig.json"
-    },
-    {
-      "path": "../core/tsconfig.json"
-    },
-    {
-      "path": "../repository-json-schema/tsconfig.json"
     }
   ]
 }

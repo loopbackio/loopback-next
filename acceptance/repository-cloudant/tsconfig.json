@@ -11,10 +11,10 @@
   ],
   "references": [
     {
-      "path": "../../packages/repository/tsconfig.json"
+      "path": "../../packages/repository-tests/tsconfig.json"
     },
     {
-      "path": "../../packages/repository-tests/tsconfig.json"
+      "path": "../../packages/repository/tsconfig.json"
     }
   ]
 }

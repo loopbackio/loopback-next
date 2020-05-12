@@ -90,7 +90,7 @@ async function updateReferences(options) {
       tsconfig.include = ['src/**/*', 'src/**/*.json'];
     }
     // Sort the references so that we will have a consistent output
-    tsconfig.references = refs.sort();
+    tsconfig.references = refs.sort((a, b) => a.path.localeCompare(b.path));
 
     // Convert to JSON
     const tsconfigJson = JSON.stringify(tsconfig, null, 2);

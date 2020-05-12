@@ -11,12 +11,6 @@
   ],
   "references": [
     {
-      "path": "../../packages/openapi-spec-builder/tsconfig.json"
-    },
-    {
-      "path": "../../packages/testlab/tsconfig.json"
-    },
-    {
       "path": "../../packages/authentication/tsconfig.json"
     },
     {
@@ -29,6 +23,9 @@
       "path": "../../packages/metadata/tsconfig.json"
     },
     {
+      "path": "../../packages/openapi-spec-builder/tsconfig.json"
+    },
+    {
       "path": "../../packages/openapi-v3/tsconfig.json"
     },
     {
@@ -36,6 +33,9 @@
     },
     {
       "path": "../../packages/security/tsconfig.json"
+    },
+    {
+      "path": "../../packages/testlab/tsconfig.json"
     }
   ]
 }

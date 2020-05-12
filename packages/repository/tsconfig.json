@@ -11,13 +11,13 @@
   ],
   "references": [
     {
-      "path": "../testlab/tsconfig.json"
-    },
-    {
       "path": "../context/tsconfig.json"
     },
     {
       "path": "../core/tsconfig.json"
+    },
+    {
+      "path": "../testlab/tsconfig.json"
     }
   ]
 }

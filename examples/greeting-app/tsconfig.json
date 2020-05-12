@@ -12,9 +12,6 @@
   ],
   "references": [
     {
-      "path": "../../packages/testlab/tsconfig.json"
-    },
-    {
       "path": "../../packages/boot/tsconfig.json"
     },
     {
@@ -24,13 +21,16 @@
       "path": "../../packages/core/tsconfig.json"
     },
     {
-      "path": "../greeter-extension/tsconfig.json"
-    },
-    {
       "path": "../../packages/openapi-v3/tsconfig.json"
     },
     {
       "path": "../../packages/rest/tsconfig.json"
+    },
+    {
+      "path": "../../packages/testlab/tsconfig.json"
+    },
+    {
+      "path": "../greeter-extension/tsconfig.json"
     }
   ]
 }
