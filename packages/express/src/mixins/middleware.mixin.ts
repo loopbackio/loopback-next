@@ -9,6 +9,7 @@ import {
   Constructor,
   Context,
   isBindingAddress,
+  MixinTarget,
   Provider,
 } from '@loopback/core';
 import {
@@ -36,8 +37,7 @@ function extendsFrom(
   return false;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function MiddlewareMixin<T extends Constructor<any>>(superClass: T) {
+export function MiddlewareMixin<T extends MixinTarget<Context>>(superClass: T) {
   if (!extendsFrom(superClass, Context)) {
     throw new TypeError('The super class does not extend from Context');
   }

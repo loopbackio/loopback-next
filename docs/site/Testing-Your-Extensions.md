@@ -234,7 +234,7 @@ class. Following is an example for an integration test for a Mixin:
 
 ```ts
 import {Constructor} from '@loopback/context';
-export function TimeMixin<T extends Constructor<any>>(superClass: T) {
+export function TimeMixin<T extends MixinTarget<object>>(superClass: T) {
   return class extends superClass {
     constructor(...args: any[]) {
       super(...args);

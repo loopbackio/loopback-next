@@ -24,5 +24,6 @@ export * from './extension-point';
 export * from './keys';
 export * from './lifecycle';
 export * from './lifecycle-registry';
+export * from './mixin-target';
 export * from './server';
 export * from './service';
