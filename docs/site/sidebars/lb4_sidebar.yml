@@ -743,10 +743,6 @@ children:
     output: 'web'
     children:
 
-    - title: 'Email connector'
-      url: Email-connector.html
-      output: 'web, pdf'
-
     - title: 'JSON RPC connector'
       url: JSON-RPC-connector.html
       output: 'web, pdf'
