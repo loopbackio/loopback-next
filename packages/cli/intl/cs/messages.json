@@ -176,7 +176,7 @@
   "f8b4ea0079120a07a9aabec29c9023d7": "Platný název vlastnosti ID pro zadaný model",
   "fae5b20162ed86b458a943aee0979f68": "Použít @loopback/build",
   "fd9d1ae9ba5ae0b5d8f2b2dd40be8b5f": "Model nebyl nalezen v umístění",
-  "fde67ed0176ea54fd0b2c6bb2fc72d13": "Je vyžadován?:",
+  "fde67ed0176ea54fd0b2c6bb2fc72d13": "Je položka povinná? ",
   "ff0366defc888d15b3fbfc1458edf1c0": "Nebyla nalezena žádná úložiště v {0}. ",
   "ffa8d88b9563dfa3e567974095c39140": "Nevybrali jste platný model"
 }
