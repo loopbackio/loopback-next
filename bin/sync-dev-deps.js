@@ -21,7 +21,12 @@ async function syncDevDeps() {
 
   const rootPath = project.rootPath;
 
-  // Load dependencies from `packages/build/package.json`
+  // Load dependencies from `packages/eslint-config/package.json`
+  const eslintDeps = require(path.join(
+    rootPath,
+    'packages/eslint-config/package.json',
+  )).dependencies;
+
   const buildDeps = require(path.join(rootPath, 'packages/build/package.json'))
     .dependencies;
 
@@ -31,23 +36,25 @@ async function syncDevDeps() {
     'eslint-config-prettier',
     'eslint-plugin-eslint-plugin',
     'eslint-plugin-mocha',
-    'eslint',
-    'typescript',
   ];
   const masterDeps = {};
+
+  masterDeps['eslint'] = buildDeps['eslint'];
+  masterDeps['typescript'] = buildDeps['typescript'];
+
   for (const d of deps) {
-    if (buildDeps[d] == null) {
+    if (eslintDeps[d] == null) {
       console.error(
         'Dependency %s is missing in packages/build/package.json',
         d,
       );
     }
-    masterDeps[d] = buildDeps[d];
+    masterDeps[d] = eslintDeps[d];
   }
 
   // Update typescript & eslint dependencies in individual packages
   for (const pkg of packages) {
-    if (pkg.name === '@loopback/build') continue;
+    if (pkg.name === '@loopback/eslint-config') continue;
     const pkgFile = pkg.manifestLocation;
     updatePackageJson(pkgFile, {
       eslint: masterDeps.eslint,
