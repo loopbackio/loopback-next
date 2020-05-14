@@ -73,7 +73,7 @@
     "passport-local": "^1.0.0",
     "passport-oauth2": "^1.5.0",
     "path": "^0.12.7",
-    "tslib": "^1.12.0"
+    "tslib": "^2.0.0"
   },
   "devDependencies": {
     "@loopback/build": "^5.3.1",

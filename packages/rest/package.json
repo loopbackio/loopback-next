@@ -48,7 +48,7 @@
     "path-to-regexp": "^6.1.0",
     "qs": "^6.9.4",
     "strong-error-handler": "^3.4.0",
-    "tslib": "^1.12.0",
+    "tslib": "^2.0.0",
     "type-is": "^1.6.18",
     "validator": "^13.0.0"
   },
