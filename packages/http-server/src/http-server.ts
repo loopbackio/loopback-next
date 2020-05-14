@@ -4,11 +4,11 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import assert from 'assert';
+import {once} from 'events';
 import http, {IncomingMessage, ServerResponse} from 'http';
 import https from 'https';
 import {AddressInfo, ListenOptions} from 'net';
 import os from 'os';
-import pEvent from 'p-event';
 import stoppable from 'stoppable';
 
 /**
@@ -118,7 +118,7 @@ export class HttpServer {
    */
   public async start() {
     this.server.listen(this.serverOptions);
-    await pEvent(this.server, 'listening');
+    await once(this.server, 'listening');
     this._listening = true;
 
     const address = this.server.address();
@@ -136,7 +136,7 @@ export class HttpServer {
     } else {
       this.server.close();
     }
-    await pEvent(this.server, 'close');
+    await once(this.server, 'close');
     this._listening = false;
   }
 

@@ -12,8 +12,8 @@ import {
   RestApplication,
 } from '@loopback/rest';
 import debugFactory from 'debug';
+import {once} from 'events';
 import {Application as ExpressApplication} from 'express';
-import pEvent from 'p-event';
 import path from 'path';
 
 const {generateSwaggerSpec} = require('loopback-swagger');
@@ -104,7 +104,7 @@ export class Lb3AppBooter implements Booter {
     if (lb3App.booting) {
       debug('  waiting for boot process to finish');
       // Wait until the legacy LB3 app boots
-      await pEvent(lb3App, 'booted');
+      await once(lb3App, 'booted');
     }
 
     return lb3App as Lb3Application;

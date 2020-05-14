@@ -11,8 +11,7 @@ import {
 } from '@loopback/core';
 import {expect} from '@loopback/testlab';
 import {sendAt} from 'cron';
-import {EventEmitter} from 'events';
-import pEvent from 'p-event';
+import {EventEmitter, once} from 'events';
 import {promisify} from 'util';
 import {
   asCronJob,
@@ -51,7 +50,7 @@ describe('Cron (acceptance)', () => {
     });
     app.bind('cron.jobs.job1').to(job).apply(asCronJob);
     // The context event notification can happen before `await component.getJobs()`
-    await pEvent(emitter, 'run');
+    await once(emitter, 'run');
     const jobs = await component.getJobs();
     expect(jobs).to.eql([job]);
     expect(count).to.be.greaterThan(0);
@@ -86,7 +85,7 @@ describe('Cron (acceptance)', () => {
     expect(jobs.length).to.eql(1);
     expect(count).to.be.eql(0);
     await component.start();
-    await pEvent(emitter, 'run');
+    await once(emitter, 'run');
     expect(count).to.be.greaterThan(0);
   });
 
@@ -125,7 +124,7 @@ describe('Cron (acceptance)', () => {
     expect(jobs.length).to.eql(1);
     expect(count).to.be.eql(0);
     await component.start();
-    await pEvent(emitter, 'run');
+    await once(emitter, 'run');
     expect(count).to.be.greaterThan(0);
   });
 
@@ -143,7 +142,7 @@ describe('Cron (acceptance)', () => {
       errCaught = err;
     });
     app.bind('cron.jobs.job1').to(job).apply(asCronJob);
-    await pEvent(job.emitter, 'run');
+    await once(job.emitter, 'run');
     expect((errCaught as Error).message).to.eql('Something wrong in the job');
   });
 

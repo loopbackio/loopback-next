@@ -4,12 +4,12 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {ApplicationConfig} from '@loopback/core';
+import {once} from 'events';
 import express from 'express';
 import http from 'http';
 import {AddressInfo} from 'net';
-import pEvent from 'p-event';
-import {OAuth2LoginApplication} from './application';
 import * as path from 'path';
+import {OAuth2LoginApplication} from './application';
 
 /**
  * An express server with multiple apps
@@ -64,7 +64,7 @@ export class ExpressServer {
     const port = this.lbApp.restServer.config.port ?? 3000;
     const host = this.lbApp.restServer.config.host ?? 'localhost';
     this.server = this.webApp.listen(port, host);
-    await pEvent(this.server, 'listening');
+    await once(this.server, 'listening');
     const add = <AddressInfo>this.server.address();
     this.url = `https://${add.address}:${add.port}`;
   }
@@ -76,7 +76,7 @@ export class ExpressServer {
     if (!this.server) return;
     await this.lbApp.stop();
     this.server.close();
-    await pEvent(this.server, 'close');
+    await once(this.server, 'close');
     this.server = undefined;
   }
 }

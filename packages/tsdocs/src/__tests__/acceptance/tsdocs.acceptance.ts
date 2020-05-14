@@ -4,8 +4,8 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
+import {once} from 'events';
 import fs from 'fs-extra';
-import pEvent from 'p-event';
 import path from 'path';
 import {runExtractorForMonorepo, updateApiDocs} from '../..';
 import {runExtractorForPackage} from '../../monorepo-api-extractor';
@@ -91,7 +91,7 @@ describe('tsdocs', function () {
     const child = runCLI('@microsoft/api-documenter/lib/start', args, {
       stdio: 'ignore',
     });
-    await pEvent(child, 'close');
+    await once(child, 'close');
     const files = await fs.readdir(SITE_APIDOCS_ROOT);
     expect(files.sort()).eql(API_MD_FILES);
   });

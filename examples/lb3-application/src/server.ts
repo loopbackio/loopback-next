@@ -4,10 +4,10 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {ApplicationConfig} from '@loopback/core';
+import {once} from 'events';
 import express, {Request, Response} from 'express';
 import http from 'http';
 import {AddressInfo} from 'net';
-import pEvent from 'p-event';
 import path from 'path';
 import {CoffeeShopApplication} from './application';
 
@@ -54,7 +54,7 @@ export class ExpressServer {
     const port = this.lbApp.restServer.config.port ?? 3000;
     const host = this.lbApp.restServer.config.host ?? '127.0.0.1';
     this.server = this.app.listen(port, host);
-    await pEvent(this.server, 'listening');
+    await once(this.server, 'listening');
     const add = <AddressInfo>this.server.address();
     this.url = `http://${add.address}:${add.port}`;
   }
@@ -63,7 +63,7 @@ export class ExpressServer {
     if (!this.server) return;
     await this.lbApp.stop();
     this.server.close();
-    await pEvent(this.server, 'close');
+    await once(this.server, 'close');
     this.server = undefined;
   }
 }

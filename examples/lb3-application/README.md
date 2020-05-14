@@ -202,10 +202,10 @@ LoopBack 4 apps.
 
    ```ts
    import {ApplicationConfig} from '@loopback/core';
+   import {once} from 'events';
    import * as express from 'express';
    import {Request, Response} from 'express';
    import * as http from 'http';
-   import pEvent from 'p-event';
    import * as path from 'path';
    // Replace CoffeeShopApplication with the name of your application
    import {CoffeeShopApplication} from './application';

@@ -20,7 +20,6 @@
     "@cloudnative/health": "^2.1.2",
     "@loopback/core": "^2.5.0",
     "@loopback/rest": "^4.0.0",
-    "p-event": "^4.1.0",
     "tslib": "^2.0.0"
   },
   "devDependencies": {

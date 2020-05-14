@@ -3,9 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {once} from 'events';
 import express from 'express';
 import {Server} from 'http';
-import pEvent from 'p-event';
 
 /**
  * A mockup server for https://github.com/prometheus/pushgateway
@@ -32,14 +32,14 @@ export class PushGateway {
       res.send('\n');
     });
     this.server = app.listen(port);
-    await pEvent(this.server, 'listening');
+    await once(this.server, 'listening');
     return this.server;
   }
 
   async stop() {
     if (!this.server) return;
     this.server.close();
-    await pEvent(this.server, 'close');
+    await once(this.server, 'close');
     this.server = undefined;
   }
 }
