@@ -15,6 +15,7 @@ import {
   Repository,
   RepositoryMixin,
 } from '../../..';
+import {model, property} from '../../../decorators';
 
 describe('RepositoryMixin', () => {
   it('mixed class has .repository()', () => {
@@ -315,4 +316,27 @@ describe('RepositoryMixin dataSource', () => {
       });
     }
   }
+});
+
+describe('RepositoryMixin model', () => {
+  it('mixes into the target class', () => {
+    const myApp = new AppWithRepoMixin();
+    expect(typeof myApp.model).to.be.eql('function');
+  });
+
+  it('binds a model class', () => {
+    const myApp = new AppWithRepoMixin();
+    const binding = myApp.model(MyModel);
+    expect(binding.key).to.eql('models.MyModel');
+    expect(binding.tagMap).to.have.property('model');
+    expect(myApp.getSync('models.MyModel')).to.eql(MyModel);
+  });
+
+  @model()
+  class MyModel {
+    @property()
+    name: string;
+  }
+
+  class AppWithRepoMixin extends RepositoryMixin(Application) {}
 });
