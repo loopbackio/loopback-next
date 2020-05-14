@@ -142,6 +142,16 @@ export function RepositoryMixin<T extends MixinTarget<Application>>(
     }
 
     /**
+     * Register a model class
+     * @param modelClass - Model class
+     */
+    model<M extends Class<unknown>>(modelClass: M) {
+      return this.bind<M>(`models.${modelClass.name}`)
+        .to(modelClass)
+        .tag('model');
+    }
+
+    /**
      * Add a component to this application. Also mounts
      * all the components repositories.
      *
@@ -264,6 +274,7 @@ export interface ApplicationWithRepositories extends Application {
     dataSource: Class<D> | D,
     name?: string,
   ): Binding<D>;
+  model<M extends Class<unknown>>(modelClass: M): Binding<M>;
   component(component: Class<unknown>, name?: string): Binding;
   mountComponentRepositories(component: Class<unknown>): void;
   migrateSchema(options?: SchemaMigrationOptions): Promise<void>;
