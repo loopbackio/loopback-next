@@ -90,11 +90,12 @@ type `UserProfile` is shown below.
 import {UserProfileFactory} from '@loopback/authentication';
 import {securityId, UserProfile} from '@loopback/security';
 
-export const myUserProfileFactory: UserProfileFactory<MyUser> = function (user: MyUser): UserProfile {
-    const userProfile = {[securityId]: user.id};
-    return userProfile;
-    }
-}
+export const myUserProfileFactory: UserProfileFactory<MyUser> = function (
+  user: MyUser,
+): UserProfile {
+  const userProfile = {[securityId]: user.id};
+  return userProfile;
+};
 ```
 
 3. Apply the adapter to the strategy
