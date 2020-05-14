@@ -16,8 +16,7 @@ import {
   inject,
   LifeCycleObserver,
 } from '@loopback/core';
-import {EventEmitter} from 'events';
-import pEvent from 'p-event';
+import {EventEmitter, once as onceGeneric} from 'events';
 import {HealthBindings, HealthTags} from '../keys';
 import {LiveCheck, ReadyCheck} from '../types';
 
@@ -34,10 +33,12 @@ export class HealthObserver implements LifeCycleObserver {
     @inject.view(filterByTag(HealthTags.READY_CHECK))
     private readyChecks: ContextView<ReadyCheck>,
   ) {
-    const startup = pEvent(this.eventEmitter, 'startup');
+    const startup = (once(this.eventEmitter, 'startup') as unknown) as Promise<
+      void
+    >;
     const startupCheck = new StartupCheck('startup', () => startup);
 
-    const shutdown = pEvent(this.eventEmitter, 'shutdown');
+    const shutdown = once(this.eventEmitter, 'shutdown');
     const shutdownCheck = new ShutdownCheck('shutdown', () => shutdown);
 
     this.startupCheck = this.healthChecker.registerStartupCheck(startupCheck);
@@ -72,4 +73,8 @@ export class HealthObserver implements LifeCycleObserver {
   stop() {
     this.eventEmitter.emit('shutdown');
   }
+}
+
+function once(emitter: EventEmitter, event: string | symbol): Promise<void> {
+  return (onceGeneric(emitter, event) as unknown) as Promise<void>;
 }

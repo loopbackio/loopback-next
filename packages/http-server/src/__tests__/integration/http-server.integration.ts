@@ -11,11 +11,10 @@ import {
   skipOnTravis,
   supertest,
 } from '@loopback/testlab';
-import {EventEmitter} from 'events';
+import {EventEmitter, once} from 'events';
 import fs from 'fs';
 import {Agent, IncomingMessage, Server, ServerResponse} from 'http';
 import os from 'os';
-import pEvent from 'p-event';
 import path from 'path';
 import {HttpOptions, HttpServer, HttpsOptions} from '../../';
 import {HttpServerOptions} from '../../http-server';
@@ -66,7 +65,7 @@ describe('HttpServer (integration)', () => {
     // Send a request with keep-alive
     const req = httpGetAsync(server.url, agent);
     // Wait until the request is accepted by the server
-    await pEvent(server.server, 'request');
+    await once(server.server, 'request');
     // Stop the server
     const stop = server.stop();
     // Now notify the request to finish in next cycle with setImmediate
@@ -94,7 +93,7 @@ describe('HttpServer (integration)', () => {
     // Send a request with keep-alive
     const req = httpGetAsync(server.url, agent);
     // Wait until the request is accepted by the server
-    await pEvent(server.server, 'request');
+    await once(server.server, 'request');
     // Set up error handler for expected rejection before the event is emitted
     const socketPromise = expect(req).to.be.rejectedWith(/socket hang up/);
     // Stop the server

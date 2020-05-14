@@ -18,7 +18,7 @@ import {
 } from '@loopback/context';
 import assert from 'assert';
 import debugFactory from 'debug';
-import pEvent from 'p-event';
+import {once} from 'events';
 import {Component, mountComponent} from './component';
 import {CoreBindings, CoreTags} from './keys';
 import {
@@ -285,7 +285,7 @@ export class Application extends Context implements LifeCycleObserver {
   }
 
   protected async awaitState(state: string) {
-    await pEvent(this, state);
+    await once(this, state);
   }
 
   /**

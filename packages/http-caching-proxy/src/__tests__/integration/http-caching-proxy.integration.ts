@@ -10,9 +10,9 @@ import axios, {
   AxiosResponse,
 } from 'axios';
 import delay from 'delay';
+import {once} from 'events';
 import http from 'http';
 import {AddressInfo} from 'net';
-import pEvent from 'p-event';
 import path from 'path';
 import rimrafCb from 'rimraf';
 import tunnel, {ProxyOptions as TunnelProxyOptions} from 'tunnel';
@@ -301,7 +301,7 @@ describe('HttpCachingProxy', () => {
       }
     });
     stubServer.listen(0);
-    await pEvent(stubServer, 'listening');
+    await once(stubServer, 'listening');
     const address = stubServer.address() as AddressInfo;
     stubServerUrl = `http://127.0.0.1:${address.port}`;
   }
@@ -309,7 +309,7 @@ describe('HttpCachingProxy', () => {
   async function stopStubServer() {
     if (!stubServer) return;
     stubServer.close();
-    await pEvent(stubServer, 'close');
+    await once(stubServer, 'close');
     stubServer = undefined;
   }
 

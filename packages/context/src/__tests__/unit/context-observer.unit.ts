@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import pEvent from 'p-event';
+import {once} from 'events';
 import {promisify} from 'util';
 import {
   Binding,
@@ -291,7 +291,7 @@ describe('Context', () => {
       server.bind('bar').to('bar-value');
       // Please note the following code registers an `error` listener on `server`
       // so that error events are caught before it is reported as unhandled.
-      const obj = await pEvent(server, 'error');
+      const [obj] = await once(server, 'error');
       expect(obj).to.equal(err);
     });
 
@@ -304,7 +304,7 @@ describe('Context', () => {
       });
       server.bind('bar').to('bar-value');
       // No error listener is registered on `server`
-      const obj = await pEvent(app, 'error');
+      const [obj] = await once(app, 'error');
       expect(obj).to.equal(err);
     });
 

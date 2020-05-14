@@ -16,7 +16,6 @@
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
-    "p-event": "^4.1.0",
     "stoppable": "^1.1.0",
     "tslib": "^2.0.0"
   },

@@ -20,7 +20,6 @@
     "debug": "^4.1.1",
     "loopback": "^3.27.0",
     "loopback-swagger": "^5.9.0",
-    "p-event": "^4.1.0",
     "swagger2openapi": "^6.0.3",
     "tslib": "^2.0.0"
   },

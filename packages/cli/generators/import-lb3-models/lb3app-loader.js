@@ -7,7 +7,7 @@
 
 const debug = require('../../lib/debug')('import-lb3-models');
 const path = require('path');
-const pEvent = require('p-event');
+const {once} = require('events');
 
 module.exports = {
   loadLb3App,
@@ -25,7 +25,7 @@ async function loadLb3App(dir) {
   if (lb3App.booting) {
     debug('  waiting for boot process to finish');
     // Wait until the legacy LB3 app boots
-    await pEvent(lb3App, 'booted');
+    await once(lb3App, 'booted');
   }
   return lb3App;
 }

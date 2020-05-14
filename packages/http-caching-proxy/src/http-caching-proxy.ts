@@ -5,6 +5,7 @@
 
 import axios, {AxiosInstance, Method} from 'axios';
 import debugFactory from 'debug';
+import {once} from 'events';
 import {
   createServer,
   IncomingMessage,
@@ -13,7 +14,6 @@ import {
   ServerResponse,
 } from 'http';
 import {AddressInfo} from 'net';
-import pEvent from 'p-event';
 
 const cacache = require('cacache');
 
@@ -109,7 +109,7 @@ export class HttpCachingProxy {
     });
 
     this._server.listen(this._options.port);
-    await pEvent(this._server, 'listening');
+    await once(this._server, 'listening');
 
     const address = this._server.address() as AddressInfo;
     this.url = `http://127.0.0.1:${address.port}`;
@@ -126,7 +126,7 @@ export class HttpCachingProxy {
     this._server = undefined;
 
     server.close();
-    await pEvent(server, 'close');
+    await once(server, 'close');
   }
 
   private _handle(request: IncomingMessage, response: ServerResponse) {

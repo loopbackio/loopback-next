@@ -5,9 +5,9 @@
 
 import {Context, inject} from '@loopback/context';
 import {Application, CoreBindings, Server} from '@loopback/core';
+import {once} from 'events';
 import express from 'express';
 import http from 'http';
-import pEvent from 'p-event';
 import {rpcRouter} from './rpc.router';
 
 export class RPCServer extends Context implements Server {
@@ -34,12 +34,12 @@ export class RPCServer extends Context implements Server {
       (this.config && this.config.port) || 3000,
     );
     this._listening = true;
-    return pEvent(this._server, 'listening');
+    await once(this._server, 'listening');
   }
   async stop(): Promise<void> {
     this._server.close();
     this._listening = false;
-    return pEvent(this._server, 'close');
+    await once(this._server, 'close');
   }
 }
 
