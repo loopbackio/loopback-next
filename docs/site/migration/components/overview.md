@@ -11,12 +11,6 @@ redirect_from: /doc/en/lb4/migration-extensions.html
 Missing instructions for your LoopBack 3 use case? Please report a [Migration docs issue](https://github.com/strongloop/loopback-next/issues/new?labels=question,Migration,Docs&template=Migration_docs.md) on GitHub to let us know.
 " %}
 
-{% include note.html content="
-This is a placeholder page, the task of adding content is tracked by the
-following GitHub issue:
-[loopback-next#3955](https://github.com/strongloop/loopback-next/issues/3955)
-" %}
-
 In LoopBack 3, a component is essentially a function that extends and/or patches
 the target application.
 
@@ -68,6 +62,10 @@ instructions into several sub-sections.
    migrate your LoopBack 3 extension project infrastructure to LoopBack 4 style
    and how to update the instructions for using your component.
 
+1. [Migrating components contributing Models, Entities and Repositories](./models.md)
+   explains how to migrate a LB3 component contributing Models into a LB4
+   component that contributes Entites and Repositories.
+
 1. [Migrating access to current context](./current-context.md) describes how to
    migrate code accessing contextual information shared by different parts of a
    LoopBack application.
@@ -75,7 +73,17 @@ instructions into several sub-sections.
 1. [Migrating components contributing Model mixins](./mixins) explains how to
    migrate a component that's contributing Model mixins.
 
-1. [Migrating components contributing REST API endpoints](./rest-api)
+1. [Migrating components contributing REST API endpoints](./rest-api) explains
+   how to migrate different kinds of REST API endpoints.
 
-1. _More sections will be created as part of
-   [loopback-next#3955](https://github.com/strongloop/loopback-next/issues/3955)._
+There is no migration guide written for the following areas yet, please up-vote
+the referenced GitHub issues to let us know if you are looking for such content:
+
+- Migrating services (local and remote):
+  [loopback-next#5424](https://github.com/strongloop/loopback-next/issues/5424)
+
+- API transports (websockets, pub/sub message consumers):
+  [loopback-next#5425](https://github.com/strongloop/loopback-next/issues/5425)
+
+- Introspection of application artifacts:
+  [loopback-next#5426](https://github.com/strongloop/loopback-next/issues/5426)

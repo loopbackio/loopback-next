@@ -130,26 +130,25 @@ coming from._
 17. Add a new local service (a class providing JS/TS API), e.g. Push service or
     (database) Migration service.
 
-    - The service must be configurable by the target app (e.g. Apple & Google
-      credentials for push notifications, transport config for logger
-      frameworks, Amazon S3 credentials for storage component, etc.).
+    The service must be configurable by the target app (e.g. Apple & Google
+    credentials for push notifications, transport config for logger frameworks,
+    Amazon S3 credentials for storage component, etc.).
 
-      _LB3 typically uses component configuration. I think in LB4, we can use
-      `@configure` specific to each service (see the logger extension for an
-      example)._
+    _LB3 typically uses component configuration. I think in LB4, we can use
+    `@configure` specific to each service (see the logger extension for an
+    example)._
 
 18. Inject LB3 models (LB4 entities & repositories) to the service. These models
     can be provided either by the extension or by the target application. When
     using models from the target application, the developer needs an option to
     specify which models (entities) and associated repositories to use.
 
-    _Note: In LB4, models/entities are not injectable now, we used them
-    primarily for the type information (to describe the shape of model data). As
-    part of the follow-up research, we will need to decide if it's enough to
-    inject LB4 Repository to a component or if we need to make model/entity
-    classes injectable too. Also note that `DefaultCrudReposiory` class provides
-    a public instance property `entityClass` referencing the model/entity it's
-    bound to._
+    _Note: In LB4, models/entities are used primarily for the type information
+    (to describe the shape of model data). As part of the follow-up research, we
+    will need to decide if it's enough to inject LB4 Repository to a component
+    or if we need to inject model/entity classes too. Also note that
+    `DefaultCrudReposiory` class provides a public instance property
+    `entityClass` referencing the model/entity it's bound to._
 
 19. Provide a service factory to create services dynamically at runtime, e.g.
     named child loggers created via `app.log('name')` in LB3.
@@ -259,19 +258,48 @@ downloads, I feel it's not necessary to provide migration guide for this case.
 
 ### Migrate Services (local and remote)
 
-TBD
+Created a follow-up epic
+[loopback-next#5424](https://github.com/strongloop/loopback-next/issues/5424) to
+look into this area later, when there is user demand.
 
 ### Migrate API transports
 
-TBD
+Created a follow-up epic
+[loopback-next#5425](https://github.com/strongloop/loopback-next/issues/5425) to
+look into this area later, when there is user demand.
 
 ### Migrate Authentication & authorization
 
-TBD
+Considering the huge difference between the auth & auth design in LB3 and LB4, I
+think it's not feasible to migrate existing LB3 auth extension(s) to in way that
+will preserve the high-level design. Instead, users need to approach the auth
+layer with a fresh perspective and structure their extensions around the new
+architecture of auth & auth.
+
+In that light, I don't see much value in describing how to migrate techniques
+from LB3 auth extensions to LB4, because such techniques are very likely to be
+irrelevant in LB4 world.
+
+Let's see what questions LoopBack 4 users come with and write content that's
+useful to current LB4 applications & extensions, instead of documenting
+techniques that used to be useful in the past.
+
+> 24. Add a custom step to the default LB3 authentication/authorization
+>     workflow, so that we can compute additional information about the current
+>     user (e.g. groups the user belongs to).
+>
+>     _Note: I think this step could be replaced by lazy initialization, where
+>     the current user groups are computed on the first access and cached for
+>     subsequent use._
+>
+> 25. A new role resolver (e.g. using groups), the app developer needs a way how
+>     to configure which models/repositories to use for role resolution.
 
 ### Migrate Introspection
 
-TBD
+Created a follow-up epic
+[loopback-next#5426](https://github.com/strongloop/loopback-next/issues/5426) to
+look into this area later, when there is user demand.
 
 ## Overview of existing LB3 components
 

@@ -893,6 +893,10 @@ children:
       url: migration-extensions-project-layout.html
       output: 'web, pdf'
 
+    - title: 'Models'
+      url: migration-extensions-models.html
+      output: 'web, pdf'
+
     - title: 'Current context'
       url: migration-extensions-current-context.html
       output: 'web, pdf'
