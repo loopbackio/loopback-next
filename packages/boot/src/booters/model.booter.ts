@@ -4,8 +4,11 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {config, Constructor, inject} from '@loopback/context';
-import {Application, CoreBindings} from '@loopback/core';
-import {ModelMetadataHelper} from '@loopback/repository';
+import {CoreBindings} from '@loopback/core';
+import {
+  ApplicationWithRepositories,
+  ModelMetadataHelper,
+} from '@loopback/repository';
 import debugFactory from 'debug';
 import {BootBindings} from '../keys';
 import {ArtifactOptions, booter} from '../types';
@@ -26,7 +29,7 @@ const debug = debugFactory('loopback:boot:model-booter');
 export class ModelBooter extends BaseArtifactBooter {
   constructor(
     @inject(CoreBindings.APPLICATION_INSTANCE)
-    public app: Application,
+    public app: ApplicationWithRepositories,
     @inject(BootBindings.PROJECT_ROOT) projectRoot: string,
     @config()
     public modelConfig: ArtifactOptions = {},
@@ -53,7 +56,7 @@ export class ModelBooter extends BaseArtifactBooter {
 
       debug('Bind class: %s', cls.name);
       // We are binding the model class itself
-      const binding = this.app.bind(`models.${cls.name}`).to(cls).tag('model');
+      const binding = this.app.model(cls);
       debug('Binding created for model class %s: %j', cls.name, binding);
     }
   }
