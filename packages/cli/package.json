@@ -91,7 +91,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/strongloop/loopback-next"
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "packages/cli"
   },
   "config": {
     "templateDependencies": {
@@ -171,5 +172,8 @@
     }
   },
   "copyright.owner": "IBM Corp.",
-  "license": "MIT"
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  }
 }

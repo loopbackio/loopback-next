@@ -14,6 +14,7 @@
     "node": ">=8"
   },
   "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
   "scripts": {
     "build": "lb-tsc",
     "build:watch": "lb-tsc --watch",
@@ -33,7 +34,9 @@
     "start": "node ."
   },
   "repository": {
-    "type": "git"
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "examples/soap-calculator"
   },
   "publishConfig": {
     "access": "public"

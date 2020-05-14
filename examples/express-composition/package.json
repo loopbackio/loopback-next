@@ -41,6 +41,7 @@
     "access": "public"
   },
   "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
     "@loopback/boot": "^2.2.0",
