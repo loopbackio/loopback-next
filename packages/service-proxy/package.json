@@ -32,7 +32,7 @@
     "@loopback/context": "^3.7.0",
     "@loopback/core": "^2.5.0",
     "loopback-datasource-juggler": "^4.21.2",
-    "tslib": "^1.12.0"
+    "tslib": "^2.0.0"
   },
   "files": [
     "README.md",
