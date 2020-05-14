@@ -56,6 +56,33 @@ describe('component application booter acceptance tests', () => {
     );
   });
 
+  it('binds artifacts booted from the sub application', async () => {
+    const mainApp = new MainAppWithSubAppBooter();
+    const appBindingsBeforeBoot = mainApp.find(
+      // Exclude boot related bindings
+      binding =>
+        ![
+          BootBindings.BOOT_OPTIONS.key,
+          BootBindings.PROJECT_ROOT.key,
+          BootBindings.BOOTSTRAPPER_KEY.key,
+        ].includes(binding.key),
+    );
+    await mainApp.boot();
+    const controllers = mainApp.find('controllers.*').map(b => b.key);
+    expect(controllers).to.eql([
+      'controllers.ArtifactOne',
+      'controllers.ArtifactTwo',
+    ]);
+
+    // Assert main app bindings before boot are not overridden
+    const appBindingsAfterBoot = mainApp.find(binding =>
+      appBindingsBeforeBoot.includes(binding),
+    );
+    expect(appBindingsAfterBoot.map(b => b.key)).to.eql(
+      appBindingsBeforeBoot.map(b => b.key),
+    );
+  });
+
   it('binds artifacts booted from the component application by filter', async () => {
     class BooterAppComponent implements Component {
       bindings = [
@@ -94,6 +121,14 @@ describe('component application booter acceptance tests', () => {
     constructor() {
       super();
       this.projectRoot = __dirname;
+    }
+  }
+
+  class MainAppWithSubAppBooter extends BootMixin(Application) {
+    constructor() {
+      super();
+      this.projectRoot = __dirname;
+      this.applicationBooter(app);
     }
   }
 

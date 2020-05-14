@@ -5,6 +5,7 @@
 
 import {
   Binding,
+  BindingFilter,
   BindingFromClassOptions,
   BindingScope,
   Constructor,
@@ -13,6 +14,7 @@ import {
 } from '@loopback/context';
 import {Application, Component, MixinTarget} from '@loopback/core';
 import {BootComponent} from '../boot.component';
+import {createComponentApplicationBooterBinding} from '../booters/component-application.booter';
 import {Bootstrapper} from '../bootstrapper';
 import {BootBindings, BootTags} from '../keys';
 import {Bootable, Booter, BootOptions} from '../types';
@@ -102,6 +104,20 @@ export function BootMixin<T extends MixinTarget<Application>>(superClass: T) {
       return booterCls.map(cls =>
         _bindBooter((this as unknown) as Context, cls),
       );
+    }
+
+    /**
+     * Register a booter to boot a sub-application. See
+     * {@link createComponentApplicationBooterBinding} for more details.
+     *
+     * @param subApp - A sub-application with artifacts to be booted
+     * @param filter - A binding filter to select what bindings from the sub
+     * application should be added to the main application.
+     */
+    applicationBooter(subApp: Application & Bootable, filter?: BindingFilter) {
+      const binding = createComponentApplicationBooterBinding(subApp, filter);
+      this.add(binding);
+      return binding;
     }
 
     /**
