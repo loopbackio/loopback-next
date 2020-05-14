@@ -41,7 +41,6 @@
     "@loopback/context": "^3.7.0",
     "@loopback/core": "^2.5.0",
     "express": "^4.17.1",
-    "p-event": "^4.1.0",
     "tslib": "^2.0.0"
   },
   "devDependencies": {

@@ -21,7 +21,6 @@
   "dependencies": {
     "@loopback/context": "^3.7.0",
     "debug": "^4.1.1",
-    "p-event": "^4.1.0",
     "tslib": "^2.0.0"
   },
   "devDependencies": {

@@ -211,18 +211,11 @@ And add the
 [public/express.html](https://github.com/strongloop/loopback-next/blob/master/examples/express-composition/public/express.html)
 file to your project.
 
-Let's also install [`p-event`](https://www.npmjs.com/package/p-event) to make
-sure the server is listening:
-
-```sh
-npm install --save p-event
-```
-
 Finally, we can add functions to boot the `Note` application and start the
 Express application:
 
 ```ts
-import pEvent from 'p-event';
+import {once} from 'events';
 
 export class ExpressServer {
   public readonly app: express.Application;
@@ -242,7 +235,7 @@ export class ExpressServer {
     const port = this.lbApp.restServer.config.port ?? 3000;
     const host = this.lbApp.restServer.config.host || '127.0.0.1';
     this.server = this.app.listen(port, host);
-    await pEvent(this.server, 'listening');
+    await once(this.server, 'listening');
   }
 
   // For testing purposes

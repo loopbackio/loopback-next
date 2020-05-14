@@ -60,7 +60,6 @@
     "minimist": "^1.2.5",
     "mkdirp": "^1.0.4",
     "natural-compare": "^1.4.0",
-    "p-event": "^4.1.0",
     "pacote": "^11.1.10",
     "pluralize": "^8.0.0",
     "regenerate": "^1.4.0",
