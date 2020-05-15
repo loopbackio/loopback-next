@@ -37,8 +37,8 @@ export async function assignProjectInstanceId(
 /**
  * Generate the resource name according to the naming convention
  * in casbin policy
- * @param resource resource name
- * @param id resource instance's id
+ * @param resource - resource name
+ * @param id - resource instance's id
  */
 function getResourceName(resource: string, id?: number): string {
   // instance level name

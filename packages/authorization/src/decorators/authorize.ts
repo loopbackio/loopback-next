@@ -92,7 +92,7 @@ export class AuthorizeMethodDecoratorFactory extends MethodDecoratorFactory<
 /**
  * Decorator `@authorize` to mark methods that require authorization
  *
- * @param spec Authorization metadata
+ * @param spec - Authorization metadata
  */
 export function authorize(spec: AuthorizationMetadata) {
   return function authorizeDecoratorForClassOrMethod(
@@ -202,8 +202,8 @@ export namespace authorize {
 /**
  * Fetch authorization metadata stored by `@authorize` decorator.
  *
- * @param target Target object/class
- * @param methodName Target method
+ * @param target - Target object/class
+ * @param methodName - Target method
  */
 export function getAuthorizationMetadata(
   target: object,

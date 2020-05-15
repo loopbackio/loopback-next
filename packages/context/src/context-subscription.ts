@@ -185,8 +185,8 @@ export class ContextSubscriptionManager extends EventEmitter {
 
   /**
    * A strongly-typed method to emit context events
-   * @param type Event type
-   * @param event Context event
+   * @param type - Event type
+   * @param event - Context event
    */
   private emitEvent<T extends ContextEvent>(type: string, event: T) {
     this.emit(type, event);
@@ -194,7 +194,7 @@ export class ContextSubscriptionManager extends EventEmitter {
 
   /**
    * Emit an `error` event
-   * @param err Error
+   * @param err - Error
    */
   private emitError(err: unknown) {
     this.emit('error', err);

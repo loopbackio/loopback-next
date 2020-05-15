@@ -22,8 +22,8 @@ interface Greeter {
 
 /**
  * A function to create a new class with parameterized decorations
- * @param bindingKeyForName Binding key for current user
- * @param tags Additional binding tags
+ * @param bindingKeyForName - Binding key for current user
+ * @param tags - Additional binding tags
  */
 function createClassWithDecoration(
   bindingKeyForName: BindingAddress<string>,

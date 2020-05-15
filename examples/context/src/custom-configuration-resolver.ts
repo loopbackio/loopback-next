@@ -25,7 +25,7 @@ class EnvConfigResolver extends DefaultConfigurationResolver
 
   /**
    * Try to find a matching env variable (case insensitive)
-   * @param key The binding key
+   * @param key - The binding key
    */
   private getFromEnvVars(key: string) {
     let val;

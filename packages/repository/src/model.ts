@@ -197,8 +197,8 @@ function asJSON(value: any): any {
  * - If the value is an instance of custom model, call `toObject` to convert.
  * - If the value is an array, convert each element recursively.
  *
- * @param value the value to convert
- * @param options the options
+ * @param value - the value to convert
+ * @param options - the options
  */
 function asObject(value: any, options?: Options): any {
   if (value == null) return value;
@@ -398,8 +398,8 @@ export type EntityResolver<T extends Entity> = TypeResolver<T, typeof Entity>;
  * Check model data for navigational properties linking to related models.
  * Throw a descriptive error if any such property is found.
  *
- * @param modelClass Model constructor, e.g. `Product`.
- * @param entityData  Model instance or a plain-data object,
+ * @param modelClass - Model constructor, e.g. `Product`.
+ * @param entityData -  Model instance or a plain-data object,
  * e.g. `{name: 'pen'}`.
  */
 export function rejectNavigationalPropertiesInData<M extends typeof Entity>(

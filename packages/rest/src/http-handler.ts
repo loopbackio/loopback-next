@@ -53,7 +53,7 @@ export class HttpHandler {
 
   /**
    * @deprecated Use `registerApiComponents`
-   * @param defs Schemas
+   * @param defs - Schemas
    */
   registerApiDefinitions(defs: SchemasObject) {
     this.registerApiComponents({schemas: defs});

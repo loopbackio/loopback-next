@@ -14,9 +14,9 @@ import {
 
 /**
  * Custom resolver function for bindings
- * @param ctx The current context
- * @param injection Metadata about the injection
- * @param session Current resolution session
+ * @param ctx - The current context
+ * @param injection - Metadata about the injection
+ * @param session - Current resolution session
  */
 const resolve: ResolverFunction = (
   ctx: Context,

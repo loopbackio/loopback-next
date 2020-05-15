@@ -568,7 +568,7 @@ export class DefaultCrudRepository<
    *
    * User can extend `DefaultCrudRepository` then override this
    * function to execute custom persist hook.
-   * @param entity The entity passed from CRUD operations' caller.
+   * @param entity - The entity passed from CRUD operations' caller.
    * @param options
    */
   protected async entityToData<R extends T>(
@@ -581,7 +581,7 @@ export class DefaultCrudRepository<
   /** Converts an entity object to a JSON object to check if it contains navigational property.
    * Throws an error if `entity` contains navigational property.
    *
-   * @param entity The entity passed from CRUD operations' caller.
+   * @param entity - The entity passed from CRUD operations' caller.
    * @param options
    */
   protected ensurePersistable<R extends T>(

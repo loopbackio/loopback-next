@@ -69,7 +69,7 @@ export class OASEnhancerService {
 
   /**
    * Find an enhancer by its name
-   * @param name The name of the enhancer you want to find
+   * @param name - The name of the enhancer you want to find
    */
   async getEnhancerByName<T extends OASEnhancer = OASEnhancer>(
     name: string,
@@ -81,7 +81,7 @@ export class OASEnhancerService {
 
   /**
    * Apply a given enhancer's merge function. Return the latest _spec.
-   * @param name The name of the enhancer you want to apply
+   * @param name - The name of the enhancer you want to apply
    */
   async applyEnhancerByName(name: string): Promise<OpenApiSpec> {
     const enhancer = await this.getEnhancerByName(name);
@@ -112,8 +112,8 @@ export class OASEnhancerService {
  * A list of merging rules can be found in test file:
  * https://github.com/pierreinglebert/json-merge-patch/blob/master/test/lib/merge.js
  *
- * @param currentSpec The original spec
- * @param patchSpec The patch spec to be merged into the original spec
+ * @param currentSpec - The original spec
+ * @param patchSpec - The patch spec to be merged into the original spec
  */
 export function mergeOpenAPISpec(
   currentSpec: Partial<OpenApiSpec>,
@@ -128,9 +128,9 @@ export function mergeOpenAPISpec(
  * It provides a direct route to add a security schema to the specs components.
  * It returns a new merged object without modifying the original one.
  *
- * @param currentSpec The original spec
- * @param schemeName The name of the security scheme to be added
- * @param schemeSpec The security scheme spec body to be added,
+ * @param currentSpec - The original spec
+ * @param schemeName - The name of the security scheme to be added
+ * @param schemeSpec - The security scheme spec body to be added,
  */
 export function mergeSecuritySchemeToSpec(
   spec: OpenApiSpec,

@@ -50,7 +50,7 @@ describe('LoggingComponent', function () {
 
   /**
    * Read fluentd log files to match against the given regular exp
-   * @param regex A regular expression for assertion
+   * @param regex - A regular expression for assertion
    */
   async function expectLogsToMatch(regex: RegExp) {
     const content = await readLog();

@@ -326,8 +326,8 @@ export class RestServer extends BaseMiddlewareRegistry
   /**
    * Add a new non-controller endpoint hosting a form of the OpenAPI spec.
    *
-   * @param path Path at which to host the copy of the OpenAPI
-   * @param form Form that should be rendered from that path
+   * @param path - Path at which to host the copy of the OpenAPI
+   * @param form - Form that should be rendered from that path
    */
   addOpenApiSpecEndpoint(
     path: string,
@@ -821,8 +821,8 @@ export class RestServer extends BaseMiddlewareRegistry
    * a specific request for the spec, leveraging both app config and request
    * path information.
    *
-   * @param spec base spec object from which to start
-   * @param requestContext request to use to infer path information
+   * @param spec - base spec object from which to start
+   * @param requestContext - request to use to infer path information
    * @returns Updated or rebuilt spec object to use in the context of the request
    */
   private updateSpecFromRequest(

@@ -39,7 +39,7 @@ export const bindingKeysExcludedFromSubApp = [
  * the main application will not be overridden.
  *
  * @param componentApp - The application exposing a component
- * @param filter Binding filter to selected bindings to be added
+ * @param filter - Binding filter to selected bindings to be added
  */
 export function createBooterForComponentApplication(
   componentApp: Application & Bootable,
@@ -111,7 +111,7 @@ export function createBooterForComponentApplication(
  * Locked bindings in the main application will not be overridden.
  *
  * @param componentApp - The application exposing a component
- * @param filter Binding filter to selected bindings to be added
+ * @param filter - Binding filter to selected bindings to be added
  */
 export function createComponentApplicationBooterBinding(
   componentApp: Application & Bootable,

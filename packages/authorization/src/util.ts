@@ -18,7 +18,7 @@ import {Principal, securityId, UserProfile} from '@loopback/security';
  * - specifies 'USER' as type
  * - assign the value of `securityId` to name if it's missing in the
  * user profile
- * @param user The user profile passed from `@loopback/authentication`.
+ * @param user - The user profile passed from `@loopback/authentication`.
  */
 export function createPrincipalFromUserProfile(user: UserProfile): Principal {
   return {

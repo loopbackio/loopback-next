@@ -298,8 +298,8 @@ export function metaToJsonProperty(meta: PropertyDefinition): JsonSchema {
 
 /**
  * Checks and return navigational property definition for the relation
- * @param relMeta Relation metadata object
- * @param targetRef Schema definition for the target model
+ * @param relMeta - Relation metadata object
+ * @param targetRef - Schema definition for the target model
  */
 export function getNavigationalPropertyForRelation(
   relMeta: RelationMetadata,
@@ -333,7 +333,7 @@ function buildSchemaTitle<T extends object>(
 
 /**
  * Checks the options and generates a descriptive suffix using compatible chars
- * @param options json schema options
+ * @param options - json schema options
  */
 function getTitleSuffix<T extends object>(options: JsonSchemaOptions<T> = {}) {
   let suffix = '';

@@ -52,7 +52,7 @@ export type BindingSelector<ValueType = unknown> =
 
 /**
  * Check if an object is a `BindingKey` by duck typing
- * @param selector Binding selector
+ * @param selector - Binding selector
  */
 function isBindingKey(selector: BindingSelector) {
   if (selector == null || typeof selector !== 'object') return false;

@@ -23,7 +23,7 @@ class Greeter {
 
 /**
  * Create an instance for `Greeter` with the given context and run `hello()`
- * @param ctx Context object
+ * @param ctx - Context object
  */
 async function sayHello(ctx: Context) {
   const greeter = await instantiateClass(Greeter, ctx);

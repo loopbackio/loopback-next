@@ -73,7 +73,7 @@ export interface CrudRestController<
 
   /**
    * Implementation of the endpoint `POST /`.
-   * @param data Model data
+   * @param data - Model data
    */
   create(data: Omit<T, IdName>): Promise<T>;
 }
@@ -123,8 +123,8 @@ export interface CrudRestControllerOptions {
  * app.controller(ProductController);
  * ```
  *
- * @param modelCtor A model class, e.g. `Product`.
- * @param options Configuration options, e.g. `{basePath: '/products'}`.
+ * @param modelCtor - A model class, e.g. `Product`.
+ * @param options - Configuration options, e.g. `{basePath: '/products'}`.
  */
 export function defineCrudRestController<
   T extends Entity,

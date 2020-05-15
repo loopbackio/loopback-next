@@ -49,7 +49,7 @@ const debug = debugFactory('loopback:middleware');
  * toMiddleware(fn1, fn2, fn3);
  * ```
  * @param firstHandler - An Express middleware handler
- * @param additionalHandlers A list of Express middleware handler functions
+ * @param additionalHandlers - A list of Express middleware handler functions
  * @returns A LoopBack middleware function that wraps the list of Express
  * middleware
  */

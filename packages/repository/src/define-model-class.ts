@@ -35,9 +35,9 @@ import {Model, ModelDefinition} from './model';
  * >(Entity, new ModelDefinition('Product'));
  * ```
  *
- * @param base The base model to extend, typically Model or Entity.
+ * @param base - The base model to extend, typically Model or Entity.
  *  You can also use your own base class, e.g. `User`.
- * @param definition Definition of the model to create.
+ * @param definition - Definition of the model to create.
  * @typeParam BaseCtor Constructor type of the base class,
  *   e.g `typeof Model` or `typeof Entity`
  * @typeParam Props Interface describing model properties,

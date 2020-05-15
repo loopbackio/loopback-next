@@ -182,8 +182,8 @@ export class Context extends EventEmitter {
 
   /**
    * A strongly-typed method to emit context events
-   * @param type Event type
-   * @param event Context event
+   * @param type - Event type
+   * @param event - Context event
    */
   emitEvent<T extends ContextEvent>(type: string, event: T) {
     this.emit(type, event);
@@ -191,7 +191,7 @@ export class Context extends EventEmitter {
 
   /**
    * Emit an `error` event
-   * @param err Error
+   * @param err - Error
    */
   emitError(err: unknown) {
     this.emit('error', err);
