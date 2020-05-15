@@ -17,8 +17,8 @@ import {RESOURCE_ID} from '../../../keys';
  * - 'projects/{id}/withdraw'
  * This function is used to modify the authorization context.
  * It is not used for making a decision, so just returns ABSTAIN
- * @param authorizationCtx
- * @param metadata
+ * @param authorizationCtx - authorizationCtx
+ * @param metadata - metadata
  */
 export async function assignProjectInstanceId(
   authorizationCtx: AuthorizationContext,

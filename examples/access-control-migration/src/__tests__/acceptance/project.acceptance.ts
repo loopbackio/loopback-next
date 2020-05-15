@@ -78,8 +78,8 @@ describe('AccessControlApplication - permissions', () => {
   /**
    * Test a role's permission when visit the 5 endpoints in the
    * project controller
-   * @param role
-   * @param permissions
+   * @param role - role
+   * @param permissions - permissions
    */
   function testPermission(
     role: string,

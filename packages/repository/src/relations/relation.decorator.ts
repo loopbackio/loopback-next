@@ -12,7 +12,7 @@ export const RELATIONS_KEY = 'loopback:relations';
 
 /**
  * Decorator for relations
- * @param definition
+ * @param definition - definition
  * @returns A property decorator
  */
 export function relation(definition?: Object) {
@@ -43,7 +43,7 @@ export function getModelRelations(
 
 /**
  * Decorator for embedsOne
- * @param definition
+ * @param definition - definition
  * @returns A property decorator
  */
 export function embedsOne(definition?: Object) {
@@ -55,7 +55,7 @@ export function embedsOne(definition?: Object) {
 
 /**
  * Decorator for embedsMany
- * @param definition
+ * @param definition - definition
  * @returns A property decorator
  */
 export function embedsMany(definition?: Object) {
@@ -67,7 +67,7 @@ export function embedsMany(definition?: Object) {
 
 /**
  * Decorator for referencesOne
- * @param definition
+ * @param definition - definition
  * @returns A property decorator
  */
 export function referencesOne(definition?: Object) {
@@ -79,7 +79,7 @@ export function referencesOne(definition?: Object) {
 
 /**
  * Decorator for referencesMany
- * @param definition
+ * @param definition - definition
  * @returns A property decorator
  */
 export function referencesMany(definition?: Object) {

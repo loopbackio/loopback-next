@@ -16,7 +16,7 @@ import {EntityCrudRepository} from '../../repositories/repository';
 export interface BelongsToRepository<Target extends Entity> {
   /**
    * Gets the target model instance
-   * @param options
+   * @param options - options
    * @returns A promise resolved with the target object or rejected
    * with an EntityNotFoundError when target model instance was not found.
    */

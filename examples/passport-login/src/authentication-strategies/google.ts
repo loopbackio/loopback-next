@@ -5,14 +5,13 @@
 
 import {asAuthStrategy, AuthenticationStrategy} from '@loopback/authentication';
 import {StrategyAdapter} from '@loopback/authentication-passport';
-import {Strategy} from 'passport-google-oauth2';
 import {bind, inject} from '@loopback/context';
 import {extensionFor} from '@loopback/core';
+import {RedirectRoute, Request} from '@loopback/rest';
 import {UserProfile} from '@loopback/security';
+import {Strategy} from 'passport-google-oauth2';
 import {User} from '../models';
-import {Request, RedirectRoute} from '@loopback/rest';
-import {PassportAuthenticationBindings} from './types';
-import {mapProfile} from './types';
+import {mapProfile, PassportAuthenticationBindings} from './types';
 
 @bind(
   asAuthStrategy,
@@ -38,7 +37,7 @@ export class GoogleOauth2Authorization implements AuthenticationStrategy {
 
   /**
    * authenticate a request
-   * @param request
+   * @param request - request
    */
   async authenticate(request: Request): Promise<UserProfile | RedirectRoute> {
     return this.strategy.authenticate(request);

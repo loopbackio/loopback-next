@@ -248,7 +248,7 @@ export function isArrayType(type: string | Function) {
 
 /**
  * Converts property metadata into a JSON property definition
- * @param meta
+ * @param meta - meta
  */
 export function metaToJsonProperty(meta: PropertyDefinition): JsonSchema {
   const propDef: JsonSchema = {};

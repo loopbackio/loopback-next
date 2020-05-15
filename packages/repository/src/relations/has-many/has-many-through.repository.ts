@@ -46,7 +46,7 @@ export interface HasManyThroughRepository<
   /**
    * Delete multiple target model instances
    * @param where - Instances within the where scope are deleted
-   * @param options
+   * @param options - options
    * @returns A promise which resolves the deleted target model instances
    */
   delete(
@@ -60,7 +60,7 @@ export interface HasManyThroughRepository<
    * Patch multiple target model instances
    * @param dataObject - The fields and their new values to patch
    * @param where - Instances within the where scope are patched
-   * @param options
+   * @param options - options
    * @returns A promise which resolves the patched target model instances
    */
   patch(
@@ -74,7 +74,7 @@ export interface HasManyThroughRepository<
   /**
    * Creates a new many-to-many association to an existing target model instance
    * @param targetModelId - The target model ID to link
-   * @param options
+   * @param options - options
    * @returns A promise which resolves to the linked target model instance
    */
   link(
@@ -88,7 +88,7 @@ export interface HasManyThroughRepository<
   /**
    * Removes an association to an existing target model instance
    * @param targetModelId - The target model to unlink
-   * @param options
+   * @param options - options
    * @returns A promise which resolves to null
    */
   unlink(

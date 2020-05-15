@@ -31,7 +31,7 @@ export class MockStrategy implements AuthenticationStrategy {
     return this.verify(req);
   }
   /**
-   * @param req
+   * @param req - req
    * mock verification function
    *
    * For the purpose of mock tests we have this here

@@ -3,14 +3,14 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {AuthenticationStrategy, asAuthStrategy} from '@loopback/authentication';
+import {asAuthStrategy, AuthenticationStrategy} from '@loopback/authentication';
 import {StrategyAdapter} from '@loopback/authentication-passport';
-import {Request, RedirectRoute} from '@loopback/rest';
-import {UserProfile, securityId} from '@loopback/security';
-import {User} from '../models';
 import {bind} from '@loopback/context';
-import {Strategy, IVerifyOptions} from 'passport-local';
 import {repository} from '@loopback/repository';
+import {RedirectRoute, Request} from '@loopback/rest';
+import {securityId, UserProfile} from '@loopback/security';
+import {IVerifyOptions, Strategy} from 'passport-local';
+import {User} from '../models';
 import {UserRepository} from '../repositories';
 
 @bind(asAuthStrategy)
@@ -49,7 +49,7 @@ export class LocalAuthStrategy implements AuthenticationStrategy {
 
   /**
    * authenticate a request
-   * @param request
+   * @param request - request
    */
   async authenticate(request: Request): Promise<UserProfile | RedirectRoute> {
     return this.strategy.authenticate(request);
@@ -58,9 +58,9 @@ export class LocalAuthStrategy implements AuthenticationStrategy {
   /**
    * authenticate user with provided username and password
    *
-   * @param username
-   * @param password
-   * @param done
+   * @param username - username
+   * @param password - password
+   * @param done - done
    *
    * @returns User model
    */
@@ -112,7 +112,7 @@ export class LocalAuthStrategy implements AuthenticationStrategy {
   /**
    * maps returned User model from verify function to UserProfile
    *
-   * @param user
+   * @param user - user
    */
   mapProfile(user: User): UserProfile {
     const userProfile: UserProfile = {

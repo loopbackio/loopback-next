@@ -265,7 +265,7 @@ export function getKeyValue(model: AnyObject, keyName: string) {
  * Workaround for MongoDB, where the connector returns ObjectID
  * values even for properties configured with "type: string".
  *
- * @param rawKey
+ * @param rawKey - rawKey
  */
 export function normalizeKey(rawKey: unknown) {
   if (isBsonType(rawKey)) {
@@ -277,8 +277,8 @@ export function normalizeKey(rawKey: unknown) {
 /**
  * Returns an array of instances. For HasMany relation usage.
  *
- * @param acc
- * @param it
+ * @param acc - acc
+ * @param it - it
  */
 export function reduceAsArray<T>(acc: T[] | undefined, it: T) {
   if (acc) acc.push(it);
@@ -288,8 +288,8 @@ export function reduceAsArray<T>(acc: T[] | undefined, it: T) {
 /**
  * Returns a single of an instance. For HasOne and BelongsTo relation usage.
  *
- * @param _acc
- * @param it
+ * @param _acc - _acc
+ * @param it - it
  */
 export function reduceAsSingleItem<T>(_acc: T | undefined, it: T) {
   return it;
@@ -322,7 +322,7 @@ export function deduplicate<T>(input: T[]): T[] {
  * different versions of bson that might be used in the code base.
  * Might need to update in the future.
  *
- * @param value
+ * @param value - value
  */
 export function isBsonType(value: unknown): value is object {
   if (typeof value !== 'object' || !value) return false;

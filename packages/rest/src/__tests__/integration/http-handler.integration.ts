@@ -397,7 +397,7 @@ describe('HttpHandler', () => {
     /**
      * Ignore the EPIPE and ECONNRESET errors.
      * See https://github.com/nodejs/node/issues/12339
-     * @param err
+     * @param err - err
      */
     function ignorePipeError(err: HttpErrors.HttpError) {
       // The server side can close the socket before the client

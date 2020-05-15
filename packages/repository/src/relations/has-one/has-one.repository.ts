@@ -44,7 +44,7 @@ export interface HasOneRepository<Target extends Entity> {
 
   /**
    * Delete the related target model instance
-   * @param options
+   * @param options - options
    * @returns A promise which resolves the deleted target model instances
    */
   delete(options?: Options): Promise<Count>;
@@ -52,7 +52,7 @@ export interface HasOneRepository<Target extends Entity> {
   /**
    * Patch the  related target model instance
    * @param dataObject - The target model fields and their new values to patch
-   * @param options
+   * @param options - options
    * @returns A promise which resolves the patched target model instances
    */
   patch(dataObject: DataObject<Target>, options?: Options): Promise<Count>;

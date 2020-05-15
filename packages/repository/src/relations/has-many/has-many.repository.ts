@@ -38,7 +38,7 @@ export interface HasManyRepository<Target extends Entity> {
   /**
    * Delete multiple target model instances
    * @param where - Instances within the where scope are deleted
-   * @param options
+   * @param options - options
    * @returns A promise which resolves the deleted target model instances
    */
   delete(where?: Where<Target>, options?: Options): Promise<Count>;
@@ -46,7 +46,7 @@ export interface HasManyRepository<Target extends Entity> {
    * Patch multiple target model instances
    * @param dataObject - The fields and their new values to patch
    * @param where - Instances within the where scope are patched
-   * @param options
+   * @param options - options
    * @returns A promise which resolves the patched target model instances
    */
   patch(

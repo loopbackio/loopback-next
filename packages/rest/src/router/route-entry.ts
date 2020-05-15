@@ -26,14 +26,14 @@ export interface RouteEntry {
 
   /**
    * Update bindings for the request context
-   * @param requestContext
+   * @param requestContext - requestContext
    */
   updateBindings(requestContext: Context): void;
 
   /**
    * A handler to invoke the resolved controller method
-   * @param requestContext
-   * @param args
+   * @param requestContext - requestContext
+   * @param args - args
    */
   invokeHandler(
     requestContext: Context,

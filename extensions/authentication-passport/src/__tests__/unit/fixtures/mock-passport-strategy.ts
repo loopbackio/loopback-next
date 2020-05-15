@@ -6,8 +6,8 @@
 // Should it be imported from 'express'?
 // The `Request` type from 'express' is not compatible
 // with the one from `@loopback/rest` now.
-import {UserProfile} from '@loopback/security';
 import {Request} from '@loopback/rest';
+import {UserProfile} from '@loopback/security';
 import {AuthenticateOptions, Strategy} from 'passport';
 
 /**
@@ -24,13 +24,13 @@ export class MockPassportStrategy extends Strategy {
 
   /**
    * authenticate() function similar to passport-strategy packages
-   * @param req
+   * @param req - req
    */
   async authenticate(req: Request, options?: AuthenticateOptions) {
     await this.verify(req);
   }
   /**
-   * @param req
+   * @param req - req
    * mock verification function; usually passed in as constructor argument for
    * passport-strategy
    *

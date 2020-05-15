@@ -36,9 +36,9 @@ export class RoutingTable {
 
   /**
    * Register a controller as the route
-   * @param spec
-   * @param controllerCtor
-   * @param controllerFactory
+   * @param spec - spec
+   * @param controllerCtor - controllerCtor
+   * @param controllerFactory - controllerFactory
    */
   registerController<T>(
     spec: ControllerSpec,
@@ -95,7 +95,7 @@ export class RoutingTable {
 
   /**
    * Map a request to a route
-   * @param request
+   * @param request - request
    */
   find(request: Request): ResolvedRoute {
     debug('Finding route for %s %s', request.method, request.path);

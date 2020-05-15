@@ -102,7 +102,7 @@ export function createBearerAuthorizationHeaderValue(
 
 /**
  * Convert a User instance to an object in type UserProfile
- * @param user
+ * @param user - user
  */
 
 export const myUserProfileFactory: UserProfileFactory<User> = function (

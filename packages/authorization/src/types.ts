@@ -137,7 +137,7 @@ export interface AuthorizationRequest {
 export interface Enforcer {
   /**
    * Extract the request from authorization context
-   * @param authorizationContext
+   * @param authorizationContext - authorizationContext
    */
   buildRequest(
     authorizationContext: AuthorizationContext,
@@ -145,7 +145,7 @@ export interface Enforcer {
 
   /**
    * Decide if the request can be granted access
-   * @param request
+   * @param request - request
    */
   enforce(request: AuthorizationRequest): Promise<AuthorizationDecision>;
 }

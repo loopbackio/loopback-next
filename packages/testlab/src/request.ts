@@ -9,7 +9,7 @@ import url from 'url';
 
 /**
  * Async wrapper for making HTTP GET requests
- * @param urlString
+ * @param urlString - urlString
  */
 export function httpGetAsync(
   urlString: string,
@@ -24,7 +24,7 @@ export function httpGetAsync(
 
 /**
  * Async wrapper for making HTTPS GET requests
- * @param urlString
+ * @param urlString - urlString
  */
 export function httpsGetAsync(
   urlString: string,

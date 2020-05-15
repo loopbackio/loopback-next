@@ -36,7 +36,7 @@ export type PropertyMap = MetadataMap<PropertyDefinition>;
 
 /**
  * Decorator for model definitions
- * @param definition
+ * @param definition - definition
  * @returns A class decorator for `model`
  */
 export function model(definition?: Partial<ModelDefinitionSyntax>) {
@@ -105,7 +105,7 @@ export function buildModelDefinition(
 
 /**
  * Decorator for model properties
- * @param definition
+ * @param definition - definition
  * @returns A property decorator
  */
 export function property(definition?: Partial<PropertyDefinition>) {

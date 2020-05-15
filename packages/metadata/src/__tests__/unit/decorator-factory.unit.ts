@@ -75,7 +75,7 @@ describe('DecoratorFactory.cloneDeep', () => {
 describe('ClassDecoratorFactory', () => {
   /**
    * Define `@classDecorator(spec)`
-   * @param spec
+   * @param spec - spec
    */
   function classDecorator(spec: object): ClassDecorator {
     return ClassDecoratorFactory.createDecorator('test', spec);
@@ -140,7 +140,7 @@ describe('ClassDecoratorFactory', () => {
 describe('ClassDecoratorFactory for primitive types', () => {
   /**
    * Define `@classDecorator(spec)`
-   * @param spec
+   * @param spec - spec
    */
   function classDecorator(spec: number): ClassDecorator {
     return ClassDecoratorFactory.createDecorator('test', spec);
@@ -177,7 +177,7 @@ describe('ClassDecoratorFactory with create', () => {
 
   /**
    * Define `@classDecorator(spec)`
-   * @param spec
+   * @param spec - spec
    */
   function classDecorator(spec: MySpec): ClassDecorator {
     const factory = new ClassDecoratorFactory<MySpec>('test', spec);
@@ -209,7 +209,7 @@ describe('ClassDecoratorFactory with create', () => {
 describe('ClassDecoratorFactory without inheritance', () => {
   /**
    * Define `@classDecorator(spec)`
-   * @param spec
+   * @param spec - spec
    */
   function classDecorator(spec: object): ClassDecorator {
     return ClassDecoratorFactory.createDecorator('test', spec, {
@@ -242,7 +242,7 @@ describe('ClassDecoratorFactory without inheritance', () => {
 describe('ClassDecoratorFactory with cloneInputSpec set to false', () => {
   /**
    * Define `@classDecorator(spec)`
-   * @param spec
+   * @param spec - spec
    */
   function classDecorator(spec: object): ClassDecorator {
     return ClassDecoratorFactory.createDecorator('test', spec, {
@@ -264,7 +264,7 @@ describe('ClassDecoratorFactory with cloneInputSpec set to false', () => {
 describe('ClassDecoratorFactory does not inherit array values', () => {
   /**
    * Define `@classDecorator(spec)`
-   * @param spec
+   * @param spec - spec
    */
   function classDecorator(spec: object): ClassDecorator {
     return ClassDecoratorFactory.createDecorator('test', spec);
@@ -295,13 +295,13 @@ describe('ClassDecoratorFactory does not inherit array values', () => {
 describe('ClassDecoratorFactory with custom inherit', () => {
   /**
    * Define `@classDecorator(spec)`
-   * @param spec
+   * @param spec - spec
    */
   function classDecorator(spec: object): ClassDecorator {
     class MyClassDecoratorFactory extends ClassDecoratorFactory<object> {
       /**
        * Override the `inherit` method to skip metadata from the base
-       * @param baseMeta
+       * @param baseMeta - baseMeta
        */
       inherit(baseMeta: object) {
         return this.spec;
@@ -335,7 +335,7 @@ describe('ClassDecoratorFactory with custom inherit', () => {
 describe('PropertyDecoratorFactory', () => {
   /**
    * Define `@propertyDecorator(spec)`
-   * @param spec
+   * @param spec - spec
    */
   function propertyDecorator(spec: object): PropertyDecorator {
     return PropertyDecoratorFactory.createDecorator('test', spec);
@@ -383,7 +383,7 @@ describe('PropertyDecoratorFactory', () => {
 describe('PropertyDecoratorFactory for static properties', () => {
   /**
    * Define `@propertyDecorator(spec)`
-   * @param spec
+   * @param spec - spec
    */
   function propertyDecorator(spec: object): PropertyDecorator {
     return PropertyDecoratorFactory.createDecorator('test', spec);
@@ -431,7 +431,7 @@ describe('PropertyDecoratorFactory for static properties', () => {
 describe('MethodDecoratorFactory', () => {
   /**
    * Define `@methodDecorator(spec)`
-   * @param spec
+   * @param spec - spec
    */
   function methodDecorator(spec: object): MethodDecorator {
     return MethodDecoratorFactory.createDecorator('test', spec);
@@ -479,7 +479,7 @@ describe('MethodDecoratorFactory', () => {
 describe('MethodDecoratorFactory for static methods', () => {
   /**
    * Define `@methodDecorator(spec)`
-   * @param spec
+   * @param spec - spec
    */
   function methodDecorator(spec: object): MethodDecorator {
     return MethodDecoratorFactory.createDecorator('test', spec);
@@ -686,7 +686,7 @@ describe('MethodMultiDecoratorFactory for static methods', () => {
 describe('ParameterDecoratorFactory', () => {
   /**
    * Define `@parameterDecorator(spec)`
-   * @param spec
+   * @param spec - spec
    */
   function parameterDecorator(spec: object): ParameterDecorator {
     return ParameterDecoratorFactory.createDecorator('test', spec);
@@ -737,7 +737,7 @@ describe('ParameterDecoratorFactory', () => {
 describe('ParameterDecoratorFactory for a constructor', () => {
   /**
    * Define `@parameterDecorator(spec)`
-   * @param spec
+   * @param spec - spec
    */
   function parameterDecorator(spec: object): ParameterDecorator {
     return ParameterDecoratorFactory.createDecorator('test', spec);
@@ -775,7 +775,7 @@ describe('ParameterDecoratorFactory for a constructor', () => {
 describe('ParameterDecoratorFactory for a static method', () => {
   /**
    * Define `@parameterDecorator(spec)`
-   * @param spec
+   * @param spec - spec
    */
   function parameterDecorator(spec: object): ParameterDecorator {
     return ParameterDecoratorFactory.createDecorator('test', spec);
@@ -826,7 +826,7 @@ describe('ParameterDecoratorFactory for a static method', () => {
 describe('MethodParameterDecoratorFactory', () => {
   /**
    * Define `@parameterDecorator(spec)`
-   * @param spec
+   * @param spec - spec
    */
   function methodParameterDecorator(spec: object): MethodDecorator {
     return MethodParameterDecoratorFactory.createDecorator('test', spec);
@@ -862,7 +862,7 @@ describe('MethodParameterDecoratorFactory', () => {
 describe('MethodParameterDecoratorFactory with invalid decorations', () => {
   /**
    * Define `@parameterDecorator(spec)`
-   * @param spec
+   * @param spec - spec
    */
   function methodParameterDecorator(spec: object): MethodDecorator {
     return MethodParameterDecoratorFactory.createDecorator('test', spec, {

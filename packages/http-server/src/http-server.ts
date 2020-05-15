@@ -77,8 +77,8 @@ export class HttpServer {
   private serverOptions: HttpServerOptions;
 
   /**
-   * @param requestListener
-   * @param serverOptions
+   * @param requestListener - requestListener
+   * @param serverOptions - serverOptions
    */
   constructor(
     requestListener: RequestListener,

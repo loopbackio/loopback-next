@@ -4,16 +4,16 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {ApplicationConfig} from '@loopback/core';
-import {ExpressServer} from './server';
+import {RestApplication} from '@loopback/rest';
 import * as path from 'path';
 import {oauth2ProfileFunction} from './authentication-strategies';
-import {RestApplication} from '@loopback/rest';
+import {ExpressServer} from './server';
 
 export {ExpressServer};
 
 /**
  * Prepare server config
- * @param oauth2Providers
+ * @param oauth2Providers - oauth2Providers
  */
 export async function serverConfig(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -40,7 +40,7 @@ export async function serverConfig(
 
 /**
  * bind resources to application
- * @param server
+ * @param server - server
  */
 export async function setupApplication(
   lbApp: RestApplication,
@@ -60,7 +60,7 @@ export async function setupApplication(
 
 /**
  * Start this application
- * @param oauth2Providers
+ * @param oauth2Providers - oauth2Providers
  */
 export async function startApplication(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -22,8 +22,8 @@ import {resolveHasOneMetadata} from './has-one.helpers';
  *
  * Notice: scope field for inclusion is not supported yet.
  *
- * @param meta
- * @param getTargetRepo
+ * @param meta - meta
+ * @param getTargetRepo - getTargetRepo
  */
 export function createHasOneInclusionResolver<
   Target extends Entity,

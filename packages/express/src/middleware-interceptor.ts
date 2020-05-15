@@ -50,8 +50,8 @@ const onFinishedAsync = promisify(onFinished);
  * Execute an Express-style callback-based request handler.
  *
  * @param handler - Express middleware handler function
- * @param request
- * @param response
+ * @param request - request
+ * @param response - response
  * @returns A promise resolved to:
  * - `true` when the request was handled
  * - `false` when the handler called `next()` to proceed to the next

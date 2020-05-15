@@ -3,36 +3,36 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {UserProfileFactory, authenticate} from '@loopback/authentication';
-import {
-  Strategy as Oauth2Strategy,
-  StrategyOptions,
-  VerifyFunction,
-  VerifyCallback,
-} from 'passport-oauth2';
-import {MyUser, userRepository} from './fixtures/user-repository';
-import {
-  simpleRestApplication,
-  configureApplication,
-} from './fixtures/simple-rest-app';
-import {securityId, UserProfile, SecurityBindings} from '@loopback/security';
-import {StrategyAdapter} from '../../strategy-adapter';
+import {authenticate, UserProfileFactory} from '@loopback/authentication';
+import {inject} from '@loopback/core';
 import {get} from '@loopback/openapi-v3';
+import {Response, RestApplication, RestBindings} from '@loopback/rest';
+import {SecurityBindings, securityId, UserProfile} from '@loopback/security';
 import {
   Client,
   createClientForHandler,
   expect,
   supertest,
 } from '@loopback/testlab';
-import {RestApplication, RestBindings, Response} from '@loopback/rest';
+import axios from 'axios';
+import {
+  Strategy as Oauth2Strategy,
+  StrategyOptions,
+  VerifyCallback,
+  VerifyFunction,
+} from 'passport-oauth2';
+import qs from 'qs';
+import * as url from 'url';
+import {StrategyAdapter} from '../../strategy-adapter';
 import {
   startApp as startMockOauth2Server,
   stopApp as stopMockOauth2Server,
 } from './fixtures/mock-oauth2-social-app';
-import * as url from 'url';
-import {inject} from '@loopback/core';
-import axios from 'axios';
-import qs from 'qs';
+import {
+  configureApplication,
+  simpleRestApplication,
+} from './fixtures/simple-rest-app';
+import {MyUser, userRepository} from './fixtures/user-repository';
 
 /**
  * This test consists of three main components -> the supertest client, the LoopBack app (simple-rest-app.ts)
@@ -68,10 +68,10 @@ const oauth2Options: StrategyOptions = {
  * verify function for the oauth2 strategy
  * This function mocks a lookup against a user profile datastore
  *
- * @param accessToken
- * @param refreshToken
- * @param profile
- * @param done
+ * @param accessToken - accessToken
+ * @param refreshToken - refreshToken
+ * @param profile - profile
+ * @param done - done
  */
 const verify: VerifyFunction = function (
   accessToken: string,
@@ -88,7 +88,7 @@ const verify: VerifyFunction = function (
 
 /**
  * convert user info to user profile
- * @param user
+ * @param user - user
  */
 const myUserProfileFactory: UserProfileFactory<MyUser> = function (
   user: MyUser,

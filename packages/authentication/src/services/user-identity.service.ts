@@ -21,7 +21,7 @@
 export interface UserIdentityService<I, U> {
   /**
    * find or create a local user using a profile from an external source
-   * @param userIdentity
+   * @param userIdentity - userIdentity
    *
    * @example
    *    async findOrCreateUser(
@@ -40,7 +40,7 @@ export interface UserIdentityService<I, U> {
 
   /**
    * link an external profile with an existing local user id.
-   * @param userId
+   * @param userId - userId
    *
    * @example
    *    async linkExternalProfile(userId: string, ldapUser: LDAPUserIdentity) {

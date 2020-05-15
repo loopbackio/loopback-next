@@ -57,8 +57,8 @@ export class MySequence implements SequenceHandler {
   /**
    * Handle errors
    * If the request url is `/coffee-shops`, customize the error message.
-   * @param context
-   * @param err
+   * @param context - context
+   * @param err - err
    */
   handleError(context: RequestContext, err: HttpErrors.HttpError) {
     // 2. customize error for particular endpoint

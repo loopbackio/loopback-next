@@ -132,23 +132,23 @@ export function authorize(spec: AuthorizationMetadata) {
 export namespace authorize {
   /**
    * Shortcut to configure allowed roles
-   * @param roles
+   * @param roles - roles
    */
   export const allow = (...roles: string[]) => authorize({allowedRoles: roles});
   /**
    * Shortcut to configure denied roles
-   * @param roles
+   * @param roles - roles
    */
   export const deny = (...roles: string[]) => authorize({deniedRoles: roles});
   /**
    * Shortcut to specify access scopes
-   * @param scopes
+   * @param scopes - scopes
    */
   export const scope = (...scopes: string[]) => authorize({scopes});
 
   /**
    * Shortcut to configure voters
-   * @param voters
+   * @param voters - voters
    */
   export const vote = (
     ...voters: (Authorizer | BindingAddress<Authorizer>)[]
@@ -161,7 +161,7 @@ export namespace authorize {
 
   /**
    * Allow all but the given roles
-   * @param roles
+   * @param roles - roles
    */
   export const allowAllExcept = (...roles: string[]) =>
     authorize({
@@ -176,7 +176,7 @@ export namespace authorize {
 
   /**
    * Deny all but the given roles
-   * @param roles
+   * @param roles - roles
    */
   export const denyAllExcept = (...roles: string[]) =>
     authorize({

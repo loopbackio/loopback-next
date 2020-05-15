@@ -676,9 +676,9 @@ export class MethodParameterDecoratorFactory<T> extends DecoratorFactory<
 > {
   /**
    * Find the corresponding parameter index for the decoration
-   * @param target
-   * @param methodName
-   * @param methodDescriptor
+   * @param target - target
+   * @param methodName - methodName
+   * @param methodDescriptor - methodDescriptor
    */
   private getParameterIndex(
     target: Object,

@@ -3,11 +3,11 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {UserIdentityService} from '@loopback/authentication';
+import {securityId, UserProfile} from '@loopback/security';
 import axios from 'axios';
 import {Profile} from 'passport';
-import {UserIdentityService} from '@loopback/authentication';
 import {User} from '../models';
-import {UserProfile, securityId} from '@loopback/security';
 
 export type profileFunction = (
   accessToken: string,
@@ -51,10 +51,10 @@ export const oauth2ProfileFunction: profileFunction = (
 
 /**
  * provides an appropriate verify function for oauth2 strategies
- * @param accessToken
- * @param refreshToken
- * @param profile
- * @param done
+ * @param accessToken - accessToken
+ * @param refreshToken - refreshToken
+ * @param profile - profile
+ * @param done - done
  */
 export const verifyFunctionFactory = function (
   userService: UserIdentityService<Profile, User>,
@@ -80,7 +80,7 @@ export const verifyFunctionFactory = function (
 
 /**
  * map passport profile to UserProfile in `@loopback/security`
- * @param user
+ * @param user - user
  */
 export const mapProfile = function (user: User): UserProfile {
   const userProfile: UserProfile = {

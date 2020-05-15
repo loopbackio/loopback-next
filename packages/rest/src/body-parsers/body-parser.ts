@@ -189,7 +189,7 @@ export class RequestBodyParser {
 
 /**
  * Test if a function is a body parser class or plain function
- * @param fn
+ * @param fn - fn
  */
 function isBodyParserClass(
   fn: Constructor<BodyParser> | BodyParserFunction,
@@ -199,7 +199,7 @@ function isBodyParserClass(
 
 /**
  * Sort body parsers so that built-in ones are used after extensions
- * @param parsers
+ * @param parsers - parsers
  */
 function sortParsers(parsers: BodyParser[]) {
   return parsers.sort((a, b) =>

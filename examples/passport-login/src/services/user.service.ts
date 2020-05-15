@@ -3,11 +3,11 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {UserIdentityService} from '@loopback/authentication';
 import {repository} from '@loopback/repository';
 import {Profile as PassportProfile} from 'passport';
-import {UserIdentityService} from '@loopback/authentication';
-import {UserRepository} from '../repositories';
 import {User} from '../models';
+import {UserRepository} from '../repositories';
 import {UserIdentityRepository} from '../repositories/user-identity.repository';
 
 /**
@@ -25,9 +25,9 @@ export class PassportUserIdentityService
   /**
    * find a linked local user for an external profile
    * create a local user if not created yet.
-   * @param email
-   * @param profile
-   * @param token
+   * @param email - email
+   * @param profile - profile
+   * @param token - token
    */
   async findOrCreateUser(profile: PassportProfile): Promise<User> {
     if (!profile.emails || !profile.emails.length) {
@@ -61,8 +61,8 @@ export class PassportUserIdentityService
 
   /**
    * link external profile with local user
-   * @param userId
-   * @param userIdentity
+   * @param userId - userId
+   * @param userIdentity - userIdentity
    */
   async linkExternalProfile(
     userId: string,
@@ -100,8 +100,8 @@ export class PassportUserIdentityService
 
   /**
    * create a copy of the external profile
-   * @param userId
-   * @param userIdentity
+   * @param userId - userId
+   * @param userIdentity - userIdentity
    */
   async createUser(
     userId: string,

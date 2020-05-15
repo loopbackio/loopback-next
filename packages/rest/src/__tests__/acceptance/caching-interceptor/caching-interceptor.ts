@@ -53,8 +53,8 @@ export class CachingInterceptorProvider implements Provider<Interceptor> {
  * An interceptor function that caches results. It uses `invocationContext`
  * to locate the http request
  *
- * @param invocationCtx
- * @param next
+ * @param invocationCtx - invocationCtx
+ * @param next - next
  */
 export async function cache<T>(
   invocationCtx: InvocationContext,

@@ -17,7 +17,7 @@ export type Client = supertest.SuperTest<supertest.Test>;
 /**
  * Create a SuperTest client connected to an HTTP server listening
  * on an ephemeral port and calling `handler` to handle incoming requests.
- * @param handler
+ * @param handler - handler
  */
 export function createClientForHandler(
   handler: (req: http.IncomingMessage, res: http.ServerResponse) => void,

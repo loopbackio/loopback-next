@@ -187,7 +187,7 @@ export class OperationSpecBuilder extends BuilderBase<OperationObject> {
    * Note that parameters are positional in OpenAPI Spec, therefore
    * the first call of `withParameter` defines the first parameter,
    * the second call defines the second parameter, etc.
-   * @param parameterSpecs
+   * @param parameterSpecs - parameterSpecs
    */
   withParameter(...parameterSpecs: ParameterObject[]): this {
     if (!this._spec.parameters) this._spec.parameters = [];
@@ -248,7 +248,7 @@ export class OperationSpecBuilder extends BuilderBase<OperationObject> {
 
   /**
    * Describe tags associated with the operation
-   * @param tags
+   * @param tags - tags
    */
   withTags(tags: string | string[]): this {
     if (!this._spec.tags) this._spec.tags = [];

@@ -34,7 +34,7 @@ export type BodyParserMiddleware = (
 
 /**
  * Normalize parsing errors as `4xx`
- * @param err
+ * @param err - err
  */
 export function normalizeParsingError(err: HttpError) {
   debug('Cannot parse request body %j', err);
@@ -74,7 +74,7 @@ export const DEFAULT_LIMIT = '1mb';
 /**
  * Extract parser options based on the parser type
  * @param type - json|urlencoded|text
- * @param options
+ * @param options - options
  */
 export function getParserOptions(
   type: 'json',

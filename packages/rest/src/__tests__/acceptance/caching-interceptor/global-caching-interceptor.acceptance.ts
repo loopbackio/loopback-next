@@ -86,7 +86,7 @@ describe('global caching interceptor', () => {
 
   /**
    * A plain function to convert `text` to lower case
-   * @param text
+   * @param text - text
    */
   function toLowerCase(text: string) {
     return text.toLowerCase();

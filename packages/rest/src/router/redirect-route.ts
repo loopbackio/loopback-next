@@ -47,7 +47,7 @@ export class RedirectRoute implements RouteEntry, ResolvedRoute {
 
   /**
    * type guard type checker for this class
-   * @param obj
+   * @param obj - obj
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   static isRedirectRoute(obj: any): obj is RedirectRoute {

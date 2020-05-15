@@ -6,17 +6,17 @@
 import {expect} from '@loopback/testlab';
 import {
   ClassDecoratorFactory,
-  PropertyDecoratorFactory,
+  MetadataAccessor,
+  MetadataInspector,
   MethodDecoratorFactory,
   ParameterDecoratorFactory,
-  MetadataInspector,
+  PropertyDecoratorFactory,
 } from '../..';
-import {MetadataAccessor} from '../..';
 
 describe('Inspector for a class', () => {
   /**
    * Define `@classDecorator(spec)`
-   * @param spec
+   * @param spec - spec
    */
   function classDecorator(spec: object): ClassDecorator {
     return ClassDecoratorFactory.createDecorator('test', spec);
@@ -51,7 +51,7 @@ describe('Inspector for a class', () => {
 describe('Inspector for a class for its own metadata', () => {
   /**
    * Define `@classDecorator(spec)`
-   * @param spec
+   * @param spec - spec
    */
   function classDecorator(spec: object): ClassDecorator {
     return ClassDecoratorFactory.createDecorator('test', spec);
@@ -90,7 +90,7 @@ describe('Inspector for a class for its own metadata', () => {
 describe('Inspector for instance properties', () => {
   /**
    * Define `@propertyDecorator(spec)`
-   * @param spec
+   * @param spec - spec
    */
   function propertyDecorator(spec: object): PropertyDecorator {
     return PropertyDecoratorFactory.createDecorator('test', spec);
@@ -158,7 +158,7 @@ describe('Inspector for instance properties', () => {
 describe('Inspector for static properties', () => {
   /**
    * Define `@propertyDecorator(spec)`
-   * @param spec
+   * @param spec - spec
    */
   function propertyDecorator(spec: object): PropertyDecorator {
     return PropertyDecoratorFactory.createDecorator('test', spec);
@@ -224,7 +224,7 @@ describe('Inspector for static properties', () => {
 describe('Inspector for instance methods', () => {
   /**
    * Define `@methodDecorator(spec)`
-   * @param spec
+   * @param spec - spec
    */
   function methodDecorator(spec: object): MethodDecorator {
     return MethodDecoratorFactory.createDecorator('test', spec);
@@ -290,7 +290,7 @@ describe('Inspector for instance methods', () => {
 describe('Inspector for static methods', () => {
   /**
    * Define `@methodDecorator(spec)`
-   * @param spec
+   * @param spec - spec
    */
   function methodDecorator(spec: object): MethodDecorator {
     return PropertyDecoratorFactory.createDecorator('test', spec);
@@ -354,7 +354,7 @@ describe('Inspector for static methods', () => {
 describe('Inspector for parameters of an instance method', () => {
   /**
    * Define `@parameterDecorator(spec)`
-   * @param spec
+   * @param spec - spec
    */
   function parameterDecorator(spec: object): ParameterDecorator {
     return ParameterDecoratorFactory.createDecorator('test', spec);
@@ -432,7 +432,7 @@ describe('Inspector for parameters of an instance method', () => {
 describe('Inspector for parameters of a static method', () => {
   /**
    * Define `@parameterDecorator(spec)`
-   * @param spec
+   * @param spec - spec
    */
   function parameterDecorator(spec: object): ParameterDecorator {
     return ParameterDecoratorFactory.createDecorator('test', spec);
@@ -508,7 +508,7 @@ describe('Inspector for parameters of a static method', () => {
 describe('Inspector for parameters of a constructor', () => {
   /**
    * Define `@parameterDecorator(spec)`
-   * @param spec
+   * @param spec - spec
    */
   function parameterDecorator(spec: object): ParameterDecorator {
     return ParameterDecoratorFactory.createDecorator('test', spec);

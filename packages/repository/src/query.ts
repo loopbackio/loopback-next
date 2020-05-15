@@ -231,7 +231,7 @@ export type FilterExcludingWhere<MT extends object = AnyObject> = Omit<
 
 /**
  * TypeGuard for Filter
- * @param candidate
+ * @param candidate - candidate
  */
 export function isFilter<MT extends object>(
   candidate: any,
@@ -494,7 +494,7 @@ export class FilterBuilder<MT extends object = AnyObject> {
 
   /**
    * Alias to `offset`
-   * @param skip
+   * @param skip - skip
    */
   skip(skip: number): this {
     return this.offset(skip);

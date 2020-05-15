@@ -48,7 +48,7 @@ export class Validator {
   /**
    * Check is a parameter required or not.
    *
-   * @param opts
+   * @param opts - opts
    */
   isRequired(opts?: ValidationOptions) {
     if (this.ctx.parameterSpec.required) return true;
@@ -59,7 +59,7 @@ export class Validator {
   /**
    * Return `true` if the value is empty, return `false` otherwise.
    *
-   * @param value
+   * @param value - value
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   isAbsent(value: any) {

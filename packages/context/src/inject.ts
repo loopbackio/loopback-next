@@ -216,7 +216,7 @@ export type Getter<T> = () => Promise<T>;
 export namespace Getter {
   /**
    * Convert a value into a Getter returning that value.
-   * @param value
+   * @param value - value
    */
   export function fromValue<T>(value: T): Getter<T> {
     return () => Promise.resolve(value);
@@ -365,7 +365,7 @@ export namespace inject {
    * }
    * ```
    * @param bindingFilter - A binding filter function
-   * @param metadata
+   * @param metadata - metadata
    */
   export const view = function injectContextView(
     bindingFilter: BindingFilter,
@@ -416,9 +416,9 @@ export function assertTargetType(
 
 /**
  * Resolver for `@inject.getter`
- * @param ctx
- * @param injection
- * @param session
+ * @param ctx - ctx
+ * @param injection - injection
+ * @param session - session
  */
 function resolveAsGetter(
   ctx: Context,
@@ -440,8 +440,8 @@ function resolveAsGetter(
 
 /**
  * Resolver for `@inject.setter`
- * @param ctx
- * @param injection
+ * @param ctx - ctx
+ * @param injection - injection
  */
 function resolveAsSetter(ctx: Context, injection: Injection) {
   const targetName = assertTargetType(injection, Function, 'Setter function');

@@ -28,7 +28,7 @@ export class UserRepository {
 
   /**
    * find by username
-   * @param username
+   * @param username - username
    */
   find(username: string): MyUser {
     return _.filter(this.list, (user: MyUser) => user.username === username);
@@ -36,7 +36,7 @@ export class UserRepository {
 
   /**
    * find by id
-   * @param id
+   * @param id - id
    */
   findById(id: string): MyUser | undefined {
     const usr = _.filter(this.list, (user: MyUser) => user.id === id);
@@ -45,7 +45,7 @@ export class UserRepository {
 
   /**
    * create profile for external user
-   * @param user
+   * @param user - user
    */
   createExternalUser(user: MyUser) {
     this.list[user.id] = user;
