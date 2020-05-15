@@ -12,6 +12,7 @@ import {BindingKey} from './binding-key';
 export namespace ContextTags {
   export const CLASS = 'class';
   export const PROVIDER = 'provider';
+  export const DYNAMIC_VALUE_PROVIDER = 'dynamicValueProvider';
 
   /**
    * Type of the artifact

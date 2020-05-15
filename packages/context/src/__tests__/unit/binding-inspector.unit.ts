@@ -16,6 +16,7 @@ import {
   isProviderClass,
   Provider,
 } from '../..';
+import {inject} from '../../inject';
 
 describe('createBindingFromClass()', () => {
   it('inspects classes', () => {
@@ -151,6 +152,72 @@ describe('createBindingFromClass()', () => {
     const ctx = new Context();
     const binding = givenBindingFromClass(MyProvider, ctx);
     expect(binding.key).to.eql('providers.MyProvider');
+    expect(ctx.getSync(binding.key)).to.eql('my-value');
+  });
+
+  it('inspects dynamic value provider classes', () => {
+    const spec = {
+      tags: ['rest'],
+      scope: BindingScope.CONTEXT,
+    };
+
+    @bind(spec)
+    class MyProvider {
+      static value() {
+        return 'my-value';
+      }
+    }
+
+    const ctx = new Context();
+    const binding = givenBindingFromClass(MyProvider, ctx);
+
+    expect(binding.key).to.eql('dynamicValueProviders.MyProvider');
+    expect(binding.scope).to.eql(spec.scope);
+    expect(binding.tagMap).to.containDeep({
+      type: 'dynamicValueProvider',
+      dynamicValueProvider: 'dynamicValueProvider',
+      rest: 'rest',
+    });
+    expect(ctx.getSync(binding.key)).to.eql('my-value');
+  });
+
+  it('recognizes dynamic value provider classes', () => {
+    const spec = {
+      tags: ['rest', {type: 'dynamicValueProvider'}],
+      scope: BindingScope.CONTEXT,
+    };
+
+    @bind(spec)
+    class MyProvider {
+      static value(@inject('prefix') prefix: string) {
+        return `[${prefix}] my-value`;
+      }
+    }
+
+    const ctx = new Context();
+    ctx.bind('prefix').to('abc');
+    const binding = givenBindingFromClass(MyProvider, ctx);
+
+    expect(binding.key).to.eql('dynamicValueProviders.MyProvider');
+    expect(binding.scope).to.eql(spec.scope);
+    expect(binding.tagMap).to.containDeep({
+      type: 'dynamicValueProvider',
+      dynamicValueProvider: 'dynamicValueProvider',
+      rest: 'rest',
+    });
+    expect(ctx.getSync(binding.key)).to.eql('[abc] my-value');
+  });
+
+  it('recognizes dynamic value provider classes without @bind', () => {
+    class MyProvider {
+      static value() {
+        return 'my-value';
+      }
+    }
+
+    const ctx = new Context();
+    const binding = givenBindingFromClass(MyProvider, ctx);
+    expect(binding.key).to.eql('dynamicValueProviders.MyProvider');
     expect(ctx.getSync(binding.key)).to.eql('my-value');
   });
 

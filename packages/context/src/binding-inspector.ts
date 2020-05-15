@@ -5,7 +5,14 @@
 
 import {MetadataAccessor, MetadataInspector} from '@loopback/metadata';
 import debugFactory from 'debug';
-import {Binding, BindingScope, BindingTag, BindingTemplate} from './binding';
+import {
+  Binding,
+  BindingScope,
+  BindingTag,
+  BindingTemplate,
+  DynamicValueProviderClass,
+  isDynamicValueProviderClass,
+} from './binding';
 import {BindingAddress} from './binding-key';
 import {ContextTags} from './keys';
 import {Provider} from './provider';
@@ -85,16 +92,21 @@ export function asProvider<T>(
  * A factory function to create a template function to bind the target class
  * as a class or `Provider`.
  * @param target - Target class, which can be an implementation of `Provider`
+ * or `DynamicValueProviderClass`
  *
  * @typeParam T - Value type
  */
 export function asClassOrProvider<T>(
-  target: Constructor<T | Provider<T>>,
+  target: Constructor<T | Provider<T>> | DynamicValueProviderClass<T>,
 ): BindingTemplate<T> {
   // Add a template to bind to a class or provider
   return function bindAsClassOrProvider(binding) {
     if (isProviderClass(target)) {
       asProvider(target)(binding);
+    } else if (isDynamicValueProviderClass<T>(target)) {
+      binding.toDynamicValue(target).tag(ContextTags.DYNAMIC_VALUE_PROVIDER, {
+        [ContextTags.TYPE]: ContextTags.DYNAMIC_VALUE_PROVIDER,
+      });
     } else {
       binding.toClass(target as Constructor<T>);
     }
@@ -157,7 +169,7 @@ export function removeNameAndKeyTags(binding: Binding<unknown>) {
  * @typeParam T - Value type
  */
 export function bindingTemplateFor<T>(
-  cls: Constructor<T | Provider<T>>,
+  cls: Constructor<T | Provider<T>> | DynamicValueProviderClass<T>,
 ): BindingTemplate<T> {
   const spec = getBindingMetadata(cls);
   debug('class %s has binding metadata', cls.name, spec);
@@ -188,6 +200,7 @@ export type TypeNamespaceMapping = {[name: string]: string};
 export const DEFAULT_TYPE_NAMESPACES: TypeNamespaceMapping = {
   class: 'classes',
   provider: 'providers',
+  dynamicValueProvider: 'dynamicValueProviders',
 };
 
 /**
@@ -239,7 +252,7 @@ export type BindingFromClassOptions = {
  * @typeParam T - Value type
  */
 export function createBindingFromClass<T>(
-  cls: Constructor<T | Provider<T>>,
+  cls: Constructor<T | Provider<T>> | DynamicValueProviderClass<T>,
   options: BindingFromClassOptions = {},
 ): Binding<T> {
   debug('create binding from class %s with options', cls.name, options);

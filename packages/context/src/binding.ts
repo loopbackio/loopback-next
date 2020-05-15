@@ -267,9 +267,9 @@ function toValueFactory<T = unknown>(
  * Check if the factory is a value factory provider class
  * @param factory - A factory function or a dynamic value provider class
  */
-function isDynamicValueProviderClass(
+export function isDynamicValueProviderClass<T = unknown>(
   factory: unknown,
-): factory is DynamicValueProviderClass {
+): factory is DynamicValueProviderClass<T> {
   // Not a class
   if (typeof factory !== 'function' || !String(factory).startsWith('class ')) {
     return false;
