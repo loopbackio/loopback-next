@@ -114,7 +114,7 @@ describe('Middleware in sequence', () => {
     // Create another middleware phase
     helper.app
       .bind('middleware.postInvoke')
-      .toProvider(InvokeMiddlewareProvider)
+      .toDynamicValue(InvokeMiddlewareProvider)
       // Configure a different extension point name
       .tag({[CoreTags.EXTENSION_POINT]: POST_INVOCATION_MIDDLEWARE});
     helper.app.sequence(SequenceWithOneInvokeMiddleware);

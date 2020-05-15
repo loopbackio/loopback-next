@@ -21,25 +21,24 @@ const debug = debugFactory('loopback:rest:parse-param');
  *
  * @returns The handler function that will parse request args.
  */
-export class ParseParamsProvider implements Provider<ParseParams> {
-  constructor(
+export class ParseParamsProvider {
+  static value(
     @inject(RestBindings.REQUEST_BODY_PARSER)
-    private requestBodyParser: RequestBodyParser,
+    requestBodyParser: RequestBodyParser,
     @inject(
       RestBindings.REQUEST_BODY_PARSER_OPTIONS.deepProperty('validation'),
       {optional: true},
     )
-    private validationOptions: ValidationOptions = DEFAULT_AJV_VALIDATION_OPTIONS,
+    validationOptions: ValidationOptions = DEFAULT_AJV_VALIDATION_OPTIONS,
     @inject(RestBindings.AJV_FACTORY, {optional: true})
-    private ajvFactory?: AjvFactory,
-  ) {}
-
-  value(): ParseParams {
-    return (request: Request, route: ResolvedRoute) =>
-      parseOperationArgs(request, route, this.requestBodyParser, {
-        ajvFactory: this.ajvFactory,
-        ...this.validationOptions,
+    ajvFactory: AjvFactory,
+  ): ParseParams {
+    const parseParams: ParseParams = (request: Request, route: ResolvedRoute) =>
+      parseOperationArgs(request, route, requestBodyParser, {
+        ajvFactory: ajvFactory,
+        ...validationOptions,
       });
+    return parseParams;
   }
 }
 

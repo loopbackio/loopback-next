@@ -7,7 +7,6 @@ import {BindingScope, injectable, Provider} from '@loopback/core';
 import {asMiddleware, Middleware} from '@loopback/express';
 import {RestBindings, RestTags} from '../keys';
 import {RestMiddlewareGroups} from '../sequence';
-import {Send} from '../types';
 import {writeResultToResponse} from '../writer';
 /**
  * Provides the function that populates the response object with
@@ -16,9 +15,10 @@ import {writeResultToResponse} from '../writer';
  * @returns The handler function that will populate the
  * response with operation results.
  */
+
 @injectable({scope: BindingScope.SINGLETON})
-export class SendProvider implements Provider<Send> {
-  value() {
+export class SendProvider {
+  static value() {
     return writeResultToResponse;
   }
 }

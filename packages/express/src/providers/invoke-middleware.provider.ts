@@ -9,7 +9,6 @@ import {
   CoreTags,
   extensionPoint,
   inject,
-  Provider,
 } from '@loopback/core';
 import debugFactory from 'debug';
 import {DEFAULT_MIDDLEWARE_GROUP} from '../keys';
@@ -27,25 +26,26 @@ const debug = debugFactory('loopback:rest:middleware');
  * Extension point for middleware to be run as part of the sequence actions
  */
 @extensionPoint(DEFAULT_MIDDLEWARE_CHAIN)
-export class InvokeMiddlewareProvider implements Provider<InvokeMiddleware> {
-  /**
-   * Inject the binding so that we can access `extensionPoint` tag
-   */
-  @inject.binding()
-  protected binding: Binding<InvokeMiddleware>;
+export class InvokeMiddlewareProvider {
+  static value(
+    /**
+     * Inject the binding so that we can access `extensionPoint` tag
+     */
+    @inject.binding()
+    binding: Binding<InvokeMiddleware>,
 
-  /**
-   * Default options for invoking the middleware chain
-   */
-  @config()
-  protected defaultOptions: InvokeMiddlewareOptions = {
-    chain: DEFAULT_MIDDLEWARE_CHAIN,
-    orderedGroups: ['cors', 'apiSpec', DEFAULT_MIDDLEWARE_GROUP],
-  };
-
-  value(): InvokeMiddleware {
-    debug('Binding', this.binding);
-    return (
+    /**
+     * Default options for invoking the middleware chain
+     */
+    @config()
+    defaultOptions: InvokeMiddlewareOptions = {
+      chain: DEFAULT_MIDDLEWARE_CHAIN,
+      orderedGroups: ['cors', 'apiSpec', DEFAULT_MIDDLEWARE_GROUP],
+    },
+  ): InvokeMiddleware {
+    debug('Binding', binding);
+    debug('Default options', defaultOptions);
+    const invokeMiddlewareFn: InvokeMiddleware = (
       middlewareCtx: MiddlewareContext,
       optionsOrHandlers?: InvokeMiddlewareOptions | ExpressRequestHandler[],
     ) => {
@@ -57,17 +57,20 @@ export class InvokeMiddlewareProvider implements Provider<InvokeMiddleware> {
       const orderedGroups = options?.orderedGroups;
       chain =
         chain ??
-        this.binding?.tagMap[CoreTags.EXTENSION_POINT] ??
-        this.defaultOptions.chain;
-      return this.action(middlewareCtx, {
+        binding?.tagMap[CoreTags.EXTENSION_POINT] ??
+        defaultOptions.chain;
+      const middlewareOptions = {
         ...options,
         chain,
-        orderedGroups: orderedGroups ?? this.defaultOptions.orderedGroups,
-      });
+        orderedGroups: orderedGroups ?? defaultOptions.orderedGroups,
+      };
+      debug('Invoke middleware with', middlewareOptions);
+      return this.action(middlewareCtx, middlewareOptions);
     };
+    return invokeMiddlewareFn;
   }
 
-  async action(
+  static async action(
     middlewareCtx: MiddlewareContext,
     optionsOrHandlers?: InvokeMiddlewareOptions | ExpressRequestHandler[],
   ) {
