@@ -299,6 +299,14 @@
 /examples/access-control-migration @hacksparrow @jannyHou
 
 #
+# APIConnect
+#
+# - Issue label: APIConnect
+# - Primary owner(s): @raymondfeng
+# - Standby owner(s): @deepakrkris
+/extensions/apiconnect @raymondfeng @deepakrkris
+
+#
 # Build & internal tooling
 #
 # - Issue label: Internal Tooling
