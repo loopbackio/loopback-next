@@ -35,7 +35,7 @@
     "@loopback/example-todo": "^3.3.0",
     "@loopback/openapi-spec-builder": "^2.1.3",
     "@loopback/rest": "^4.0.0",
-    "@types/byline": "^4.2.31",
+    "@types/byline": "^4.2.32",
     "@types/debug": "^4.1.5",
     "@types/request-promise-native": "^1.0.17",
     "autocannon": "^4.6.0",
