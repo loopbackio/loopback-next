@@ -1,0 +1,5 @@
+replicaCount: 1
+resources: {}
+images:
+  pkg1: 'pkg1:1.0.0'
+  pkg2: 'pkg2:1.0.0'

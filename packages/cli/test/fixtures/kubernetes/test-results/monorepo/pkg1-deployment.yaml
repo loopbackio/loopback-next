@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    name: pkg1
+  name: pkg1
+  namespace: kraken
+spec:
+  template:
+    metadata:
+      labels:
+        app: pkg1
+    spec:
+      containers:
+        - name: pkg1
+          image: .Values.images.pkg1
+          ports:
+            - name: rest
+              containerPort: 3000
+              protocol: TCP
+          resources: {}
+          imagePullPolicy: IfNotPresent

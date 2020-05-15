@@ -10,6 +10,7 @@ const path = require('path');
 const helpers = require('yeoman-test');
 const fs = require('fs-extra');
 const {stringifyObject} = require('../lib/utils');
+const glob = require('glob');
 
 exports.testSetUpGen = function (genName, arg) {
   arg = arg || {};
@@ -161,4 +162,27 @@ export class ${className} extends juggler.DataSource {
   }
 }
 `;
+};
+
+/**
+ * returns a list of files from a directory
+ */
+exports.discoverFiles = function (cwd) {
+
+  function mapFile(cwd, file) {
+    const dir = path.dirname(file);
+    const name = path.basename(file);
+    return {
+      path: dir,
+      file: name,
+      content: fs.readFileSync(path.join(cwd, file), {
+        encoding: 'utf-8',
+      }),
+    };
+  }
+
+  return glob
+    .sync('**/*.{js,ts,json}', {nodir: true, cwd})
+    .filter(f => f !== 'index.js')
+    .map(f => mapFile(cwd, f));
 };

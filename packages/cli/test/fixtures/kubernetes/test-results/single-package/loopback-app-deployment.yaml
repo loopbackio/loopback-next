@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    name: loopback-app
+  name: loopback-app
+  namespace: kraken
+spec:
+  template:
+    metadata:
+      labels:
+        app: loopback-app
+    spec:
+      containers:
+        - name: loopback-app
+          image: .Values.images.loopback-app
+          ports:
+            - name: rest
+              containerPort: 3000
+              protocol: TCP
+          resources: {}
+          imagePullPolicy: IfNotPresent

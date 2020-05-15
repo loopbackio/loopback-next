@@ -26,6 +26,9 @@ const validate = require('validate-npm-package-name');
 const Conflicter = require('yeoman-generator/lib/util/conflicter');
 const connectors = require('./connectors.json');
 const tsquery = require('./ast-helper');
+const yamljs = require('yamljs');
+const fse = require('fs-extra');
+
 const stringifyObject = require('stringify-object');
 const camelCase = _.camelCase;
 const kebabCase = _.kebabCase;
@@ -731,6 +734,12 @@ function isYarnAvailable() {
   return yarnInstalled;
 }
 exports.isYarnAvailable = isYarnAvailable;
+
+exports.writeYaml = async function(fileLocation, jsonContent) {
+  let yaml = yamljs.stringify(jsonContent, 10, 2);
+  yaml = yaml.replace(/(\s+\-)\s*\n\s+/g, '$1 ');
+  await fse.writeFile(fileLocation, yaml);
+};
 
 // literal strings with artifacts directory locations
 exports.repositoriesDir = 'repositories';

@@ -1,0 +1,4 @@
+replicaCount: 1
+resources: {}
+images:
+  loopback-app: 'loopback-app:1.0.0'
