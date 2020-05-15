@@ -46,11 +46,12 @@ function initializeSnapshots(snapshotDir) {
   let currentTest;
   let snapshotErrors = false;
 
-  beforeEach(function setupSnapshots() {
-    // eslint-disable-next-line no-invalid-this
+  /** @this {Mocha.Context} */
+  function setupSnapshots() {
     currentTest = this.currentTest;
     currentTest.__snapshotCounter = 1;
-  });
+  }
+  beforeEach(setupSnapshots);
 
   if (!process.env.UPDATE_SNAPSHOTS) {
     process.on('exit', function printSnapshotHelp() {

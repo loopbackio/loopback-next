@@ -42,8 +42,7 @@ const repositoryFileName = [
   'customer-class-type.repository.ts',
 ];
 
-describe('lb4 relation HasOne', function () {
-  // eslint-disable-next-line no-invalid-this
+describe('lb4 relation HasOne', /** @this {Mocha.Suite} */ function () {
   this.timeout(30000);
 
   it('rejects relation when the corresponding repository does not exist', async () => {

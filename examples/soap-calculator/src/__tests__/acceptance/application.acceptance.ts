@@ -6,11 +6,10 @@
 import {Client, createRestAppClient, expect} from '@loopback/testlab';
 import {SoapCalculatorApplication} from '../../application';
 
-describe('Application', function () {
+describe('Application', function (this: Mocha.Suite) {
   let app: SoapCalculatorApplication;
   let client: Client;
 
-  // eslint-disable-next-line no-invalid-this
   this.timeout(30000);
 
   before(givenAnApplication);

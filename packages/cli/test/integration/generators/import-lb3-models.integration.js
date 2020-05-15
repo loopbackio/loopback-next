@@ -35,12 +35,13 @@ const APP_USING_MODEL_INHERITANCE = require.resolve(
 describe('lb4 import-lb3-models', function () {
   require('../lib/base-generator')(generator, {args: ['path-to-lb3-app']})();
 
-  before(function preloadCoffeeShopExampleApp() {
+  before(preloadCoffeeShopExampleApp);
+  /** @this {Mocha.Context} */
+  function preloadCoffeeShopExampleApp() {
     // The CoffeeShop example app takes some time to load :(
-    // eslint-disable-next-line no-invalid-this
     this.timeout(10000);
     return loadLb3App(COFFEE_SHOP_EXAMPLE);
-  });
+  }
 
   beforeEach('reset sandbox', () => sandbox.reset());
 

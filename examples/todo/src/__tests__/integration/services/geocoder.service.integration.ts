@@ -14,8 +14,7 @@ import {
   isGeoCoderServiceAvailable,
 } from '../../helpers';
 
-describe('GeoLookupService', function () {
-  // eslint-disable-next-line no-invalid-this
+describe('GeoLookupService', function (this: Mocha.Suite) {
   this.timeout(30 * 1000);
 
   let cachingProxy: HttpCachingProxy;
@@ -30,8 +29,7 @@ describe('GeoLookupService', function () {
     available = await isGeoCoderServiceAvailable(service);
   });
 
-  it('resolves an address to a geo point', async function () {
-    // eslint-disable-next-line no-invalid-this
+  it('resolves an address to a geo point', async function (this: Mocha.Context) {
     if (!available) return this.skip();
 
     const points = await service.geocode(aLocation.address);

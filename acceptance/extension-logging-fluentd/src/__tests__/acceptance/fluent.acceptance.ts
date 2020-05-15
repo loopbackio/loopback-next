@@ -11,16 +11,14 @@ import {readLog} from '../fixtures/fluentd.docker';
 
 const sleep = promisify(setTimeout);
 
-describe('LoggingComponent', function () {
+describe('LoggingComponent', function (this: Mocha.Suite) {
   let app: Application;
 
-  // eslint-disable-next-line no-invalid-this
   this.timeout(10000);
 
   beforeEach(givenAppWithCustomConfig);
 
-  /* eslint-disable no-invalid-this */
-  it('binds a fluent sender', async function () {
+  it('binds a fluent sender', async function (this: Mocha.Context) {
     if (process.env.FLUENTD_SERVICE_PORT_TCP == null) return this.skip();
     const sender = await app.get(LoggingBindings.FLUENT_SENDER);
     sender.emit({greeting: 'Hello, LoopBack!'});
@@ -28,7 +26,7 @@ describe('LoggingComponent', function () {
     await expectLogsToMatch(/LoopBack\s+\{"greeting"\:"Hello, LoopBack!"\}/);
   });
 
-  it('binds a winston transport for fluent', async function () {
+  it('binds a winston transport for fluent', async function (this: Mocha.Context) {
     if (process.env.FLUENTD_SERVICE_PORT_TCP == null) return this.skip();
     const logger = await app.get(LoggingBindings.WINSTON_LOGGER);
     logger.log('info', 'Hello, LoopBack!');
@@ -38,7 +36,7 @@ describe('LoggingComponent', function () {
     );
   });
 
-  it('throws error if fluent is not configured', async function () {
+  it('throws error if fluent is not configured', async function (this: Mocha.Context) {
     if (process.env.FLUENTD_SERVICE_PORT_TCP == null) return this.skip();
 
     // Remove the configuration for fluent sender

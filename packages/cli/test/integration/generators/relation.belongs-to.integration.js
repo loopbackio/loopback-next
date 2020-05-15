@@ -36,8 +36,7 @@ const repositoryFileName = [
   'order-class-type.repository.ts',
 ];
 
-describe('lb4 relation', function () {
-  // eslint-disable-next-line no-invalid-this
+describe('lb4 relation', /** @this {Mocha.Suite} */ function () {
   this.timeout(50000);
 
   it("rejects relation when destination model doesn't have primary Key", async () => {

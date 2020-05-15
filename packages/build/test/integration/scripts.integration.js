@@ -10,8 +10,7 @@ const path = require('path');
 const fs = require('fs-extra');
 const utils = require('../../bin/utils');
 
-describe('build', function () {
-  // eslint-disable-next-line no-invalid-this
+describe('build', /** @this {Mocha.Suite} */ function () {
   this.timeout(30000);
   const cwd = process.cwd();
   const projectDir = path.resolve(__dirname, './fixtures');
@@ -243,8 +242,7 @@ describe('build', function () {
   });
 });
 
-describe('mocha', function () {
-  // eslint-disable-next-line no-invalid-this
+describe('mocha', /** @this {Mocha.Suite} */ function () {
   this.timeout(30000);
   const cwd = process.cwd();
   const projectDir = path.resolve(__dirname, './fixtures');

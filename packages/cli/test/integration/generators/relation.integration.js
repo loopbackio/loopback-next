@@ -23,8 +23,7 @@ const sandbox = new TestSandbox(path.resolve(__dirname, '../.sandbox'));
 // See `relation-{type}.integration.ts` files for test cases specific
 // to different relation types.
 
-describe('lb4 relation', function () {
-  // eslint-disable-next-line no-invalid-this
+describe('lb4 relation', /** @this {Mocha.Suite} */ function () {
   this.timeout(30000);
 
   beforeEach('reset sandbox', async () => {

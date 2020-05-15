@@ -41,9 +41,8 @@ describe('HttpServer (integration)', () => {
     await supertest(server.url).get('/').expect(200);
   });
 
-  it('stops server', async function () {
+  it('stops server', async function (this: Mocha.Context) {
     // This test takes a bit longer to finish on windows.
-    // eslint-disable-next-line no-invalid-this
     this.timeout(3000);
     const serverOptions = givenHttpServerConfig();
     server = new HttpServer(dummyRequestHandler, serverOptions);
@@ -52,9 +51,8 @@ describe('HttpServer (integration)', () => {
     await expect(httpGetAsync(server.url)).to.be.rejectedWith(/ECONNREFUSED/);
   });
 
-  it('stops server with grace period and inflight request', async function () {
+  it('stops server with grace period and inflight request', async function (this: Mocha.Context) {
     // This test takes a bit longer to finish on windows.
-    // eslint-disable-next-line no-invalid-this
     this.timeout(3000);
     const serverOptions = givenHttpServerConfig() as HttpServerOptions;
     serverOptions.gracePeriodForClose = 1000;
@@ -80,9 +78,8 @@ describe('HttpServer (integration)', () => {
     await expect(httpGetAsync(server.url)).to.be.rejectedWith(/ECONNREFUSED/);
   });
 
-  it('stops server with shorter grace period and inflight request', async function () {
+  it('stops server with shorter grace period and inflight request', async function (this: Mocha.Context) {
     // This test takes a bit longer to finish on windows.
-    // eslint-disable-next-line no-invalid-this
     this.timeout(3000);
     const serverOptions = givenHttpServerConfig() as HttpServerOptions;
     serverOptions.gracePeriodForClose = 10;

@@ -26,9 +26,8 @@ const props = {
   dataSourceName: 'petStore',
 };
 
-describe('openapi-generator with --client', function () {
+describe('openapi-generator with --client', /** @this {Mocha.Suite} */ function () {
   // These tests take longer to execute, they used to time out on Travis CI
-  // eslint-disable-next-line no-invalid-this
   this.timeout(10000);
 
   before('reset sandbox', () => sandbox.reset());
@@ -88,9 +87,8 @@ describe('openapi-generator with --client', function () {
   });
 });
 
-it('generates files with --client for an existing datasource', async function () {
+it('generates files with --client for an existing datasource', /** @this {Mocha.Context} */ async function () {
   // These tests take longer to execute, they used to time out on Travis CI
-  // eslint-disable-next-line no-invalid-this
   this.timeout(10000);
   await testUtils
     .executeGenerator(generator)

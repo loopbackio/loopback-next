@@ -30,7 +30,9 @@ let realWorldAPIs = [
 ];
 
 describe('Real-world APIs', () => {
-  before(async function () {
+  before(prepareRealWorldApis);
+  /** @this {Mocha.Context} */
+  async function prepareRealWorldApis() {
     // Set env var `APIS` to `*` to test against apis.guru directory
     if (process.env.APIS !== 'all') return;
 
@@ -46,7 +48,6 @@ describe('Real-world APIs', () => {
     }
 
     // This hook sometimes takes several seconds, due to the large download
-    // eslint-disable-next-line no-invalid-this
     this.timeout(10000);
 
     // Download a list of over 1500 real-world Swagger APIs from apis.guru
@@ -78,10 +79,9 @@ describe('Real-world APIs', () => {
         realWorldAPIs.push(api);
       }
     }
-  });
+  }
 
-  it('generates all the proper files', async function () {
-    // eslint-disable-next-line no-invalid-this
+  it('generates all the proper files', /** @this {Mocha.Context} */ async function () {
     this.timeout(0);
     let count = 0;
     for (const api of realWorldAPIs) {

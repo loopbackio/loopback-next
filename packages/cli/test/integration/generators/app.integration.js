@@ -129,8 +129,9 @@ describe('app-generator with --apiconnect', () => {
 
 // The test takes about 1 min to install dependencies
 function testFormat() {
-  before(function () {
-    // eslint-disable-next-line no-invalid-this
+  before(createAppAndInstallDeps);
+  /** @this {Mocha.Context} */
+  function createAppAndInstallDeps() {
     this.timeout(90 * 1000);
     return helpers
       .run(generator)
@@ -148,7 +149,7 @@ function testFormat() {
         },
       })
       .withPrompts(props);
-  });
+  }
   it('generates all the proper files', () => {
     assert.file('src/application.ts');
     assert.fileContent('src/application.ts', /class MyApp extends BootMixin\(/);
@@ -206,7 +207,7 @@ describe('app-generator with default values', () => {
 });
 
 /** For testing the support of tilde path as the input of project path.
- * Use differnt paths to test out the support of `~` when the test runs outside of home dir.
+ * Use different paths to test out the support of `~` when the test runs outside of home dir.
  */
 describe('app-generator with tilde project path', () => {
   const rootDir = path.join(__dirname, '../../../../../');
@@ -230,9 +231,10 @@ describe('app-generator with tilde project path', () => {
     outdir: pathWithTilde,
   };
 
-  before(async function () {
+  before(givenScaffoldedApp);
+  /** @this {Mocha.Context} */
+  async function givenScaffoldedApp() {
     // Increase the timeout to accommodate slow CI build machines
-    // eslint-disable-next-line no-invalid-this
     this.timeout(30 * 1000);
     // check it with full path. tilde-path-app should not exist at this point
     assert.equal(fs.existsSync(sandbox), false);
@@ -242,14 +244,17 @@ describe('app-generator with tilde project path', () => {
       // Mark it private to prevent accidental npm publication
       .withOptions({private: true})
       .withPrompts(tildePathProps);
-  });
+  }
+
   it('scaffold a new application for tilde-path-app', async () => {
     // tilde-path-app should be created at this point
     assert.equal(fs.existsSync(sandbox), true);
   });
-  after(function () {
+
+  after(cleanup);
+  /** @this {Mocha.Context} */
+  function cleanup() {
     // Increase the timeout to accommodate slow CI build machines
-    // eslint-disable-next-line no-invalid-this
     this.timeout(30 * 1000);
 
     // Handle special case - Skipping... not inside the project root directory.
@@ -260,5 +265,5 @@ describe('app-generator with tilde project path', () => {
     }
     build.clean(['node', 'run-clean', sandbox]);
     process.chdir(cwd);
-  });
+  }
 });
