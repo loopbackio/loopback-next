@@ -8,7 +8,7 @@ permalink: /doc/en/lb4/OpenAPI-generator.html
 
 {% include content/generator-create-app.html lang=page.lang %}
 
-### Synopsis
+## Synopsis
 
 Generates models and types from an OpenAPI spec for a LoopBack application. It
 supports both server and client sides. Controllers are generated for the server
@@ -24,7 +24,7 @@ spec.
 lb4 openapi [<url>] [options]
 ```
 
-### Options
+## Options
 
 - `--url`: URL or file path of the OpenAPI spec.
 - `--validate`: Validate the OpenAPI spec. Default: `false`.
@@ -36,11 +36,11 @@ lb4 openapi [<url>] [options]
 - `--positional`: A flag to control if service methods use positional parameters
   or an object with named properties. Default: `true`.
 
-### Arguments
+## Arguments
 
 `<url>`: URL or file path of the OpenAPI spec. Type: String. Required: false.
 
-### Supported OpenAPI spec versions
+## Supported OpenAPI spec versions
 
 - [2.0 (a.k.a. Swagger)](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md)
 - [3.0.x (OpenAPI 3.0)](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md)
@@ -48,7 +48,7 @@ lb4 openapi [<url>] [options]
 Please note Swagger 2.0 specs are converted to OpenAPI 3.0 internally using
 [swagger2openapi](https://www.npmjs.com/package/swagger2openapi).
 
-### Interactive Prompts
+## Interactive Prompts
 
 The tool will prompt you for:
 
@@ -62,14 +62,16 @@ The tool will prompt you for:
   service if `--client` is specified. If a datasource is selected, the prompt is
   skipped.
 
-### Generated artifacts
+## Generated artifacts
 
-#### Models and types
+### Models and types
 
 The command generates the following model classes and TypeScript types:
 
-1.  For each schema under `components.schemas`, a model class or type
-    declaration is generated as `src/models/<model-or-type-name>.model.ts`.
+**1. Schemas**
+
+For each schema under `components.schemas`, a model class or type declaration is
+generated as `src/models/<model-or-type-name>.model.ts`.
 
 Simple types, array types, composite types (allOf/anyOf/oneOf) are mapped to
 TypeScript type declarations. Object types are mapped to TypeScript classes.
@@ -157,9 +159,11 @@ import {NewPet} from './new-pet.model.ts';
 export type Pet = NewPet & {id: number};
 ```
 
-2. Anonymous schemas of object/array types are generated as inline TypeScript
-   type literals or separate model classes/types depending on
-   `--promote-anonymous-schemas` flag (default to `false`).
+**2. Anonymous schemas**
+
+Anonymous schemas of object/array types are generated as inline TypeScript type
+literals or separate model classes/types depending on
+`--promote-anonymous-schemas` flag (default to `false`).
 
 For example, the following OpenAPI spec snippet uses anonymous schemas for
 request and response body objects.
@@ -295,12 +299,14 @@ export type PerformSearchResponseBody = {
 }[];
 ```
 
-3. The generator groups operations (`paths.<path>.<verb>`) by tags. If no tag is
-   present, it defaults to `OpenApi`. For each tag, a controller class is
-   generated as `src/controllers/<tag-name>.controller.ts` to hold all
-   operations with the same tag.
+**3. Operations**
 
-#### Server-side controllers
+The generator groups operations (`paths.<path>.<verb>`) by tags. If no tag is
+present, it defaults to `OpenApi`. For each tag, a controller class is generated
+as `src/controllers/<tag-name>.controller.ts` to hold all operations with the
+same tag.
+
+### Server-side controllers
 
 Controller class names are derived from tag names. The `x-controller-name`
 property of an operation can be used to customize the controller name. Method
@@ -392,7 +398,7 @@ export class AccountController {
 }
 ```
 
-#### Client-side datasource and service proxies
+### Client-side datasource and service proxies
 
 If `--client` is specified, a datasource is generated to configure the
 connection to the endpoint that exposes an OpenAPI spec.
@@ -511,7 +517,7 @@ export class CustomerServiceProvider implements Provider<CustomerService> {
 }
 ````
 
-### OpenAPI Examples
+## OpenAPI Examples
 
 Try out the following specs or your own with `lb4 openapi`:
 
