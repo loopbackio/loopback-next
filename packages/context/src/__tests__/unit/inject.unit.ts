@@ -9,6 +9,7 @@ import {
   describeInjectedArguments,
   describeInjectedProperties,
   inject,
+  inspectTargetType,
 } from '../..';
 
 describe('function argument injection', () => {
@@ -270,4 +271,77 @@ describe('property injection', () => {
     expect(meta.foo.metadata).to.be.not.exactly(options);
     expect(meta.foo.metadata).to.eql({x: 1, decorator: '@inject'});
   });
+});
+
+describe('inspectTargetType', () => {
+  it('handles static method injection', () => {
+    const type = inspectTargetType({
+      target: HelloProviderWithMI,
+      member: 'value',
+      methodDescriptorOrParameterIndex: 0,
+      bindingSelector: 'hello',
+      metadata: {},
+    });
+    expect(type).to.eql(Number);
+  });
+
+  it('handles prototype method injection', () => {
+    const type = inspectTargetType({
+      target: HelloProviderWithMI.prototype,
+      member: 'count',
+      methodDescriptorOrParameterIndex: 0,
+      bindingSelector: 'hello',
+      metadata: {},
+    });
+    expect(type).to.eql(Number);
+  });
+
+  it('handles constructor injection', () => {
+    const type = inspectTargetType({
+      target: HelloProviderWithCI,
+      member: '',
+      methodDescriptorOrParameterIndex: 0,
+      bindingSelector: 'hello',
+      metadata: {},
+    });
+    expect(type).to.eql(Number);
+  });
+
+  it('handles property injection', () => {
+    const type = inspectTargetType({
+      target: HelloProviderWithPI.prototype,
+      member: 'count',
+      bindingSelector: 'hello',
+      metadata: {},
+    });
+    expect(type).to.eql(Number);
+  });
+
+  class HelloProviderWithMI {
+    static value(
+      @inject('count')
+      count: number,
+    ) {
+      return 'hello';
+    }
+
+    count(
+      @inject('count')
+      count: number,
+    ) {
+      return count;
+    }
+  }
+
+  class HelloProviderWithCI {
+    constructor(
+      @inject('count')
+      count: number,
+    ) {}
+  }
+
+  class HelloProviderWithPI {
+    @inject('count')
+    count: number;
+  }
 });
