@@ -613,22 +613,19 @@ export function describeInjectedArguments(
  * @param injection - Injection information
  */
 export function inspectTargetType(injection: Readonly<Injection>) {
-  let type = MetadataInspector.getDesignTypeForProperty(
-    injection.target,
-    injection.member!,
-  );
-  if (type) {
-    return type;
-  }
-  const designType = MetadataInspector.getDesignTypeForMethod(
-    injection.target,
-    injection.member!,
-  );
-  type =
-    designType.parameterTypes[
+  if (typeof injection.methodDescriptorOrParameterIndex === 'number') {
+    const designType = MetadataInspector.getDesignTypeForMethod(
+      injection.target,
+      injection.member!,
+    );
+    return designType.parameterTypes[
       injection.methodDescriptorOrParameterIndex as number
     ];
-  return type;
+  }
+  return MetadataInspector.getDesignTypeForProperty(
+    injection.target,
+    injection.member!,
+  );
 }
 
 /**
