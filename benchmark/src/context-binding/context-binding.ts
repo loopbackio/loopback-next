@@ -88,7 +88,7 @@ function runBenchmark(ctx: Context) {
   const options: Benchmark.Options = {
     initCount: 1000,
     onComplete: (e: Benchmark.Event) => {
-      const benchmark = e.target as Benchmark;
+      const benchmark = e.target;
       console.log('%s %d', benchmark, benchmark.count);
     },
   };
