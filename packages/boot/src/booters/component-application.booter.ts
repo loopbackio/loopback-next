@@ -19,6 +19,21 @@ import {Bootable, Booter, booter} from '../types';
 const debug = debugFactory('loopback:boot:booter:component-application');
 
 /**
+ * Binding keys excluded from a sub application. These bindings booted from the
+ * sub application won't be added to the main application.
+ */
+export const bindingKeysExcludedFromSubApp = [
+  BootBindings.BOOT_OPTIONS.key,
+  BootBindings.PROJECT_ROOT.key,
+  BootBindings.BOOTSTRAPPER_KEY.key,
+  CoreBindings.APPLICATION_CONFIG.key,
+  CoreBindings.APPLICATION_INSTANCE.key,
+  CoreBindings.APPLICATION_METADATA.key,
+  CoreBindings.LIFE_CYCLE_OBSERVER_REGISTRY.key,
+  CoreBindings.LIFE_CYCLE_OBSERVER_OPTIONS.key,
+];
+
+/**
  * Create a booter that boots the component application. Bindings that exist
  * in the component application before `boot` are skipped. Locked bindings in
  * the main application will not be overridden.
@@ -40,11 +55,6 @@ export function createBooterForComponentApplication(
     ) {}
 
     async load() {
-      const bootBindingKeys = [
-        BootBindings.BOOT_OPTIONS.key,
-        BootBindings.PROJECT_ROOT.key,
-        BootBindings.BOOTSTRAPPER_KEY.key,
-      ];
       /**
        * List all bindings before boot
        */
@@ -58,7 +68,7 @@ export function createBooterForComponentApplication(
       bindings = componentApp.find(filter);
       for (const binding of bindings) {
         // Exclude boot related bindings
-        if (bootBindingKeys.includes(binding.key)) continue;
+        if (bindingKeysExcludedFromSubApp.includes(binding.key)) continue;
 
         // Exclude bindings from the app before boot
         if (bindingsBeforeBoot.has(binding)) {

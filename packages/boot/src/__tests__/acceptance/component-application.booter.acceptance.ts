@@ -6,11 +6,9 @@
 import {Application, Component} from '@loopback/core';
 import {expect, givenHttpServerConfig, TestSandbox} from '@loopback/testlab';
 import {resolve} from 'path';
-import {
-  BootBindings,
-  BootMixin,
-  createComponentApplicationBooterBinding,
-} from '../..';
+import {BootMixin, createComponentApplicationBooterBinding} from '../..';
+import {bindingKeysExcludedFromSubApp} from '../../booters';
+import {Bootable} from '../../types';
 import {BooterApp} from '../fixtures/application';
 
 describe('component application booter acceptance tests', () => {
@@ -31,56 +29,12 @@ describe('component application booter acceptance tests', () => {
 
     const mainApp = new MainApp();
     mainApp.component(BooterAppComponent);
-    const appBindingsBeforeBoot = mainApp.find(
-      // Exclude boot related bindings
-      binding =>
-        ![
-          BootBindings.BOOT_OPTIONS.key,
-          BootBindings.PROJECT_ROOT.key,
-          BootBindings.BOOTSTRAPPER_KEY.key,
-        ].includes(binding.key),
-    );
-    await mainApp.boot();
-    const controllers = mainApp.find('controllers.*').map(b => b.key);
-    expect(controllers).to.eql([
-      'controllers.ArtifactOne',
-      'controllers.ArtifactTwo',
-    ]);
-
-    // Assert main app bindings before boot are not overridden
-    const appBindingsAfterBoot = mainApp.find(binding =>
-      appBindingsBeforeBoot.includes(binding),
-    );
-    expect(appBindingsAfterBoot.map(b => b.key)).to.eql(
-      appBindingsBeforeBoot.map(b => b.key),
-    );
+    await testSubAppBoot(mainApp);
   });
 
   it('binds artifacts booted from the sub application', async () => {
     const mainApp = new MainAppWithSubAppBooter();
-    const appBindingsBeforeBoot = mainApp.find(
-      // Exclude boot related bindings
-      binding =>
-        ![
-          BootBindings.BOOT_OPTIONS.key,
-          BootBindings.PROJECT_ROOT.key,
-          BootBindings.BOOTSTRAPPER_KEY.key,
-        ].includes(binding.key),
-    );
-    await mainApp.boot();
-    const controllers = mainApp.find('controllers.*').map(b => b.key);
-    expect(controllers).to.eql([
-      'controllers.ArtifactOne',
-      'controllers.ArtifactTwo',
-    ]);
-
-    // Assert main app bindings before boot are not overridden
-    const appBindingsAfterBoot = mainApp.find(binding =>
-      appBindingsBeforeBoot.includes(binding),
-    );
-    expect(appBindingsAfterBoot.map(b => b.key)).to.eql(
-      appBindingsBeforeBoot.map(b => b.key),
-    );
+    await testSubAppBoot(mainApp);
   });
 
   it('binds artifacts booted from the component application by filter', async () => {
@@ -144,5 +98,26 @@ describe('component application booter acceptance tests', () => {
     app = new MyApp({
       rest: givenHttpServerConfig(),
     });
+  }
+
+  async function testSubAppBoot(mainApp: Application & Bootable) {
+    const appBindingsBeforeBoot = mainApp.find(
+      // Exclude boot related bindings
+      binding => !bindingKeysExcludedFromSubApp.includes(binding.key),
+    );
+    await mainApp.boot();
+    const controllers = mainApp.find('controllers.*').map(b => b.key);
+    expect(controllers).to.eql([
+      'controllers.ArtifactOne',
+      'controllers.ArtifactTwo',
+    ]);
+
+    // Assert main app bindings before boot are not overridden
+    const appBindingsAfterBoot = mainApp.find(binding =>
+      appBindingsBeforeBoot.includes(binding),
+    );
+    expect(appBindingsAfterBoot.map(b => b.key)).to.eql(
+      appBindingsBeforeBoot.map(b => b.key),
+    );
   }
 });
