@@ -620,18 +620,20 @@ describe('HttpHandler', () => {
   let handler: HttpHandler;
   function givenHandler() {
     rootContext = new Context();
-    rootContext.bind(SequenceActions.FIND_ROUTE).toProvider(FindRouteProvider);
+    rootContext
+      .bind(SequenceActions.FIND_ROUTE)
+      .toDynamicValue(FindRouteProvider);
     rootContext
       .bind(SequenceActions.PARSE_PARAMS)
-      .toProvider(ParseParamsProvider);
+      .toDynamicValue(ParseParamsProvider);
     rootContext
       .bind(SequenceActions.INVOKE_METHOD)
-      .toProvider(InvokeMethodProvider);
+      .toDynamicValue(InvokeMethodProvider);
     rootContext
       .bind(SequenceActions.LOG_ERROR)
       .to(createUnexpectedHttpErrorLogger());
     rootContext.bind(SequenceActions.SEND).to(writeResultToResponse);
-    rootContext.bind(SequenceActions.REJECT).toProvider(RejectProvider);
+    rootContext.bind(SequenceActions.REJECT).toDynamicValue(RejectProvider);
 
     rootContext.bind(RestBindings.SEQUENCE).toClass(DefaultSequence);
 

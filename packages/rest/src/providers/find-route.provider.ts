@@ -14,27 +14,28 @@ import {asMiddleware, Middleware} from '@loopback/express';
 import debugFactory from 'debug';
 import {HttpHandler} from '../http-handler';
 import {RestBindings, RestTags} from '../keys';
-import {ResolvedRoute} from '../router';
 import {RestMiddlewareGroups} from '../sequence';
-import {FindRoute, Request} from '../types';
+import {FindRoute} from '../types';
 
 const debug = debugFactory('loopback:rest:find-route');
 
-export class FindRouteProvider implements Provider<FindRoute> {
-  constructor(
-    @inject(RestBindings.Http.CONTEXT) protected context: Context,
-    @inject(RestBindings.HANDLER) protected handler: HttpHandler,
-  ) {}
-
-  value(): FindRoute {
-    return request => this.action(request);
-  }
-
-  action(request: Request): ResolvedRoute {
-    const found = this.handler.findRoute(request);
-    debug('Route found for %s %s', request.method, request.originalUrl, found);
-    found.updateBindings(this.context);
-    return found;
+export class FindRouteProvider {
+  static value(
+    @inject(RestBindings.Http.CONTEXT) context: Context,
+    @inject(RestBindings.HANDLER) handler: HttpHandler,
+  ): FindRoute {
+    const findRoute: FindRoute = request => {
+      const found = handler.findRoute(request);
+      debug(
+        'Route found for %s %s',
+        request.method,
+        request.originalUrl,
+        found,
+      );
+      found.updateBindings(context);
+      return found;
+    };
+    return findRoute;
   }
 }
 
