@@ -16,6 +16,8 @@ const compression = require('compression');
 const cors = require('cors');
 const helmet = require('helmet');
 
+export {ApplicationConfig};
+
 export class ExpressServer {
   private app: express.Application;
   public readonly lbApp: CoffeeShopApplication;

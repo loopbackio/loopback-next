@@ -19,6 +19,8 @@ import {
 } from './components/jwt-authentication';
 import {MySequence} from './sequence';
 
+export {ApplicationConfig};
+
 /**
  * Information from package.json
  */

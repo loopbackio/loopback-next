@@ -2,6 +2,8 @@
   "name": "@loopback/apiconnect",
   "version": "0.3.1",
   "description": "An extension for IBM API Connect",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "engines": {
     "node": ">=10"
   },
@@ -24,8 +26,6 @@
   ],
   "files": [
     "README.md",
-    "index.js",
-    "index.d.ts",
     "dist",
     "src",
     "!*/__tests__"

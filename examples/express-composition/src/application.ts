@@ -12,6 +12,8 @@ import {ServiceMixin} from '@loopback/service-proxy';
 import path from 'path';
 import {MySequence} from './sequence';
 
+export {ApplicationConfig};
+
 export class NoteApplication extends BootMixin(
   ServiceMixin(RepositoryMixin(RestApplication)),
 ) {

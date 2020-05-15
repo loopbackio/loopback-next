@@ -2,10 +2,11 @@
   "name": "@loopback/repository-tests",
   "version": "0.12.3",
   "description": "Shared test-suite for repository based persistence",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "engines": {
     "node": ">=10"
   },
-  "main": "index",
   "publishConfig": {
     "access": "public"
   },
@@ -39,8 +40,6 @@
   },
   "files": [
     "README.md",
-    "index.js",
-    "index.d.ts",
     "dist",
     "src",
     "!*/__tests__"

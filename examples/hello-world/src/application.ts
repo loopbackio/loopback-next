@@ -5,6 +5,7 @@
 
 import {ApplicationConfig} from '@loopback/core';
 import {RestApplication, RestServer} from '@loopback/rest';
+export {ApplicationConfig};
 
 export class HelloWorldApplication extends RestApplication {
   constructor(options: ApplicationConfig = {}) {

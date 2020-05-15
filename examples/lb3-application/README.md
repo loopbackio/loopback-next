@@ -276,7 +276,7 @@ LoopBack 4 apps.
    import {ApplicationConfig} from '@loopback/core';
    import {ExpressServer} from './server';
 
-   export {ExpressServer};
+   export {ApplicationConfig, ExpressServer};
 
    export async function main(options: ApplicationConfig = {}) {
      const server = new ExpressServer(options);
@@ -286,17 +286,15 @@ LoopBack 4 apps.
    }
    ```
 
-4. Update `index.js`
+4. Next, modify the application config in `src/index.ts` file to prevent the LB4
+   app from listening, by adding `listenOnStart: false` in `config.rest` object.
+   The `config` object should now look like this:
 
-   Next, modify the `index.js` file in the root of the project to prevent the
-   LB4 app from listening, by adding `listenOnStart: false` in `config.rest`
-   object. The `config` object should now look like this:
-
-   ```js
+   ```ts
    const config = {
      rest: {
-       port: +process.env.PORT || 3000,
-       host: process.env.HOST || 'localhost',
+       port: +(process.env.PORT ?? 3000),
+       host: process.env.HOST ?? 'localhost',
        openApiSpec: {
          // useful when used with OpenAPI-to-GraphQL to locate your application
          setServersFromRequest: true,

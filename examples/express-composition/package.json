@@ -2,6 +2,8 @@
   "name": "@loopback/example-express-composition",
   "version": "2.1.1",
   "description": "LoopBack 4 REST API on Express",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "keywords": [
     "loopback-application",
     "loopback",
@@ -9,7 +11,6 @@
     "tutorial",
     "express"
   ],
-  "main": "index.js",
   "engines": {
     "node": ">=10"
   },

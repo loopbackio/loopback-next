@@ -2,6 +2,8 @@
   "name": "@loopback/extension-health",
   "version": "0.4.3",
   "description": "LoopBack Health",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "engines": {
     "node": ">=10"
   },
@@ -35,8 +37,6 @@
   ],
   "files": [
     "README.md",
-    "index.js",
-    "index.d.ts",
     "dist",
     "src",
     "!*/__tests__"

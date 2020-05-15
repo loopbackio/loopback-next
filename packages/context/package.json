@@ -2,6 +2,8 @@
   "name": "@loopback/context",
   "version": "3.7.0",
   "description": "LoopBack's container for Inversion of Control",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "engines": {
     "node": ">=10"
   },
@@ -45,8 +47,6 @@
   ],
   "files": [
     "README.md",
-    "index.js",
-    "index.d.ts",
     "dist",
     "src",
     "!*/__tests__"

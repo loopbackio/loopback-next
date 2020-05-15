@@ -8,3 +8,12 @@ export * from './component';
 export * from './greeting-service';
 export * from './keys';
 export * from './types';
+
+import {GreetingApplication} from './application';
+if (require.main === module) {
+  const app = new GreetingApplication();
+  app.main().catch(err => {
+    console.error(err);
+    process.exit(1);
+  });
+}

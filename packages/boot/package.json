@@ -2,6 +2,8 @@
   "name": "@loopback/boot",
   "version": "2.2.0",
   "description": "A collection of Booters for LoopBack 4 Applications",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "engines": {
     "node": ">=10"
   },
@@ -44,8 +46,6 @@
   },
   "files": [
     "README.md",
-    "index.js",
-    "index.d.ts",
     "dist",
     "src",
     "!*/__tests__"

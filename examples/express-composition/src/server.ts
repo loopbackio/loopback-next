@@ -3,12 +3,13 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {ApplicationConfig} from '@loopback/core';
 import {once} from 'events';
 import express, {Request, Response} from 'express';
 import http from 'http';
 import path from 'path';
-import {NoteApplication} from './application';
+import {ApplicationConfig, NoteApplication} from './application';
+
+export {ApplicationConfig};
 
 export class ExpressServer {
   public readonly app: express.Application;

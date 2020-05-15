@@ -2,7 +2,8 @@
   "name": "@loopback/example-hello-world",
   "version": "2.0.8",
   "description": "A simple hello-world Application using LoopBack 4",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "engines": {
     "node": ">=10"
   },

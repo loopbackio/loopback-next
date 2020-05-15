@@ -2,7 +2,8 @@
   "name": "@loopback/example-rest-crud",
   "version": "1.2.1",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "engines": {
     "node": ">=10"
   },

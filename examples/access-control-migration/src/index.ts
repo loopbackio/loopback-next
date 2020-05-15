@@ -3,8 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {AccessControlApplication} from './application';
-import {ApplicationConfig} from '@loopback/core';
+import {AccessControlApplication, ApplicationConfig} from './application';
 
 export async function main(options: ApplicationConfig = {}) {
   const app = new AccessControlApplication(options);
@@ -17,8 +16,26 @@ export async function main(options: ApplicationConfig = {}) {
 }
 
 // re-exports for our benchmark, not needed for the tutorial itself
-export {AccessControlApplication};
-
+export * from '@loopback/rest';
+export * from './application';
 export * from './models';
 export * from './repositories';
-export * from '@loopback/rest';
+
+// Start the server when loaded via `node .`
+if (require.main === module) {
+  // Run the application
+  const config = {
+    rest: {
+      port: +(process.env.PORT ?? 3000),
+      host: process.env.HOST ?? 'localhost',
+      openApiSpec: {
+        // useful when used with OpenAPI-to-GraphQL to locate your application
+        setServersFromRequest: true,
+      },
+    },
+  };
+  main(config).catch(err => {
+    console.error('Cannot start the application.', err);
+    process.exit(1);
+  });
+}

@@ -12,6 +12,8 @@ import {RestExplorerComponent} from '@loopback/rest-explorer';
 import path from 'path';
 import {MySequence} from './sequence';
 
+export {ApplicationConfig};
+
 export class TodoApplication extends BootMixin(
   RepositoryMixin(RestApplication),
 ) {

@@ -16,6 +16,8 @@ import path from 'path';
 import {MultiTenancyComponent} from './multi-tenancy/component';
 import {MySequence} from './sequence';
 
+export {ApplicationConfig};
+
 export class ExampleMultiTenancyApplication extends BootMixin(
   ServiceMixin(RepositoryMixin(RestApplication)),
 ) {

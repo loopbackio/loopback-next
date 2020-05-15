@@ -2,6 +2,8 @@
   "name": "@loopback/example-soap-calculator",
   "version": "2.1.1",
   "description": "Integrate a SOAP webservice with LoopBack 4",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "keywords": [
     "loopback",
     "LoopBack",
@@ -9,7 +11,6 @@
     "tutorial",
     "soap"
   ],
-  "main": "index.js",
   "engines": {
     "node": ">=8"
   },

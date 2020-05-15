@@ -2,6 +2,8 @@
   "name": "@loopback/authorization",
   "version": "0.5.8",
   "description": "A LoopBack component for authorization support.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "engines": {
     "node": ">=10"
   },
@@ -41,8 +43,6 @@
   ],
   "files": [
     "README.md",
-    "index.js",
-    "index.d.ts",
     "dist",
     "src",
     "!*/__tests__",

@@ -2,6 +2,8 @@
   "name": "@loopback/extension-metrics",
   "version": "0.3.3",
   "description": "LoopBack Metrics for Prometheus",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "engines": {
     "node": ">=10"
   },
@@ -38,8 +40,6 @@
   ],
   "files": [
     "README.md",
-    "index.js",
-    "index.d.ts",
     "dist",
     "src",
     "!*/__tests__",

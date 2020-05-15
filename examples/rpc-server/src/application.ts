@@ -4,8 +4,10 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Application, ApplicationConfig} from '@loopback/core';
-import {RPCServer} from './rpc.server';
 import {GreetController} from './controllers';
+import {RPCServer} from './rpc.server';
+
+export {ApplicationConfig};
 
 export class MyApplication extends Application {
   options: ApplicationConfig;
