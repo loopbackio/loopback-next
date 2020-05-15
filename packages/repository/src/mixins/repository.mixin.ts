@@ -9,10 +9,17 @@ import {
   BindingScope,
   createBindingFromClass,
 } from '@loopback/context';
-import {Application, Component, Constructor, MixinTarget} from '@loopback/core';
+import {
+  Application,
+  Component,
+  Constructor,
+  CoreBindings,
+  MixinTarget,
+} from '@loopback/core';
 import debugFactory from 'debug';
 import {Class} from '../common-types';
 import {SchemaMigrationOptions} from '../datasource';
+import {RepositoryBindings, RepositoryTags} from '../keys';
 import {Model} from '../model';
 import {juggler, Repository} from '../repositories';
 
@@ -71,11 +78,11 @@ export function RepositoryMixin<T extends MixinTarget<Application>>(
       nameOrOptions?: string | BindingFromClassOptions,
     ): Binding<R> {
       const binding = createBindingFromClass(repoClass, {
-        namespace: 'repositories',
-        type: 'repository',
+        namespace: RepositoryBindings.REPOSITORIES,
+        type: RepositoryTags.REPOSITORY,
         defaultScope: BindingScope.TRANSIENT,
         ...toOptions(nameOrOptions),
-      });
+      }).tag(RepositoryTags.REPOSITORY);
       this.add(binding);
       return binding;
     }
@@ -122,15 +129,15 @@ export function RepositoryMixin<T extends MixinTarget<Application>>(
       if (dataSource instanceof juggler.DataSource) {
         // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
         const name = options.name || dataSource.name;
-        const namespace = options.namespace ?? 'datasources';
+        const namespace = options.namespace ?? RepositoryBindings.DATASOURCES;
         const key = `${namespace}.${name}`;
-        return this.bind(key).to(dataSource).tag('datasource');
+        return this.bind(key).to(dataSource).tag(RepositoryTags.DATASOURCE);
       } else if (typeof dataSource === 'function') {
         // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
         options.name = options.name || dataSource.dataSourceName;
         const binding = createBindingFromClass(dataSource, {
-          namespace: 'datasources',
-          type: 'datasource',
+          namespace: RepositoryBindings.DATASOURCES,
+          type: RepositoryTags.DATASOURCE,
           defaultScope: BindingScope.SINGLETON,
           ...options,
         });
@@ -142,13 +149,13 @@ export function RepositoryMixin<T extends MixinTarget<Application>>(
     }
 
     /**
-     * Register a model class
+     * Register a model class as a binding in the target context
      * @param modelClass - Model class
      */
     model<M extends Class<unknown>>(modelClass: M) {
-      return this.bind<M>(`models.${modelClass.name}`)
-        .to(modelClass)
-        .tag('model');
+      const binding = createModelClassBinding(modelClass);
+      this.add(binding);
+      return binding;
     }
 
     /**
@@ -194,7 +201,7 @@ export function RepositoryMixin<T extends MixinTarget<Application>>(
      * @param component - The component to mount repositories of
      */
     mountComponentRepositories(component: Class<unknown>) {
-      const componentKey = `components.${component.name}`;
+      const componentKey = `${CoreBindings.COMPONENTS}.${component.name}`;
       const compInstance = this.getSync<{
         repositories?: Class<Repository<Model>>[];
       }>(componentKey);
@@ -232,7 +239,7 @@ export function RepositoryMixin<T extends MixinTarget<Application>>(
 
       // Look up all datasources and update/migrate schemas one by one
       const dsBindings: Readonly<Binding<object>>[] = this.findByTag(
-        'datasource',
+        RepositoryTags.DATASOURCE,
       );
       for (const b of dsBindings) {
         const ds = await this.get<juggler.DataSource>(b.key);
@@ -415,4 +422,16 @@ export class RepositoryMixinDoc {
    * preserving data or rebuild everything from scratch.
    */
   async migrateSchema(options?: SchemaMigrationOptions): Promise<void> {}
+}
+
+/**
+ * Create a binding for the given model class
+ * @param modelClass - Model class
+ */
+export function createModelClassBinding<M extends Class<unknown>>(
+  modelClass: M,
+) {
+  return Binding.bind<M>(`${RepositoryBindings.MODELS}.${modelClass.name}`)
+    .to(modelClass)
+    .tag(RepositoryTags.MODEL);
 }

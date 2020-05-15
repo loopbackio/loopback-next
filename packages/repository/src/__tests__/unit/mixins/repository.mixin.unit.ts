@@ -213,6 +213,7 @@ describe('RepositoryMixin', () => {
     expect(boundRepositories).to.containEql('repositories.NoteRepo');
     const binding = myApp.getBinding('repositories.NoteRepo');
     expect(binding.scope).to.equal(BindingScope.TRANSIENT);
+    expect(binding.tagMap).to.have.property('repository');
     const repoInstance = myApp.getSync('repositories.NoteRepo');
     expect(repoInstance).to.be.instanceOf(NoteRepo);
   }
@@ -248,7 +249,8 @@ describe('RepositoryMixin dataSource', () => {
   it('binds dataSource class using the dataSourceName property', () => {
     const myApp = new AppWithRepoMixin();
 
-    myApp.dataSource(FooDataSource);
+    const binding = myApp.dataSource(FooDataSource);
+    expect(binding.tagMap).to.have.property('datasource');
     expectDataSourceToBeBound(myApp, FooDataSource, 'foo');
   });
 
@@ -291,6 +293,9 @@ describe('RepositoryMixin dataSource', () => {
     name: string,
   ) => {
     expect(app.find('datasources.*').map(d => d.key)).to.containEql(
+      `datasources.${name}`,
+    );
+    expect(app.findByTag('datasource').map(d => d.key)).to.containEql(
       `datasources.${name}`,
     );
     expect(app.getSync(`datasources.${name}`)).to.be.instanceOf(ds);
