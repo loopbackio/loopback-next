@@ -108,7 +108,8 @@ module.exports = {
     'no-new-wrappers': 'error', // tslint:no-construct
     // 'no-redeclare': 'error', // tslint:no-duplicate-variable
 
-    'no-invalid-this': 'error',
+    'no-invalid-this': 'off',
+    '@typescript-eslint/no-invalid-this': ['error'],
     '@typescript-eslint/no-misused-new': 'error',
     'no-shadow': 'error', // tslint:no-shadowed-variable
     'no-throw-literal': 'error', // tslint:no-string-throw
