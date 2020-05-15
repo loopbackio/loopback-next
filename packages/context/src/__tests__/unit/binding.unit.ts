@@ -36,7 +36,9 @@ describe('Binding', () => {
 
     it('leaves other states to `undefined` by default', () => {
       expect(binding.type).to.be.undefined();
+      expect(binding.source).to.be.undefined();
       expect(binding.valueConstructor).to.be.undefined();
+      expect(binding.providerConstructor).to.be.undefined();
     });
   });
 
@@ -139,6 +141,7 @@ describe('Binding', () => {
     it('sets the type to CONSTANT', () => {
       binding.to('value');
       expect(binding.type).to.equal(BindingType.CONSTANT);
+      expect(binding.source?.value).to.equal('value');
     });
 
     it('triggers changed event', () => {
@@ -167,7 +170,11 @@ describe('Binding', () => {
 
   describe('toDynamicValue(dynamicValueFn)', () => {
     it('support a factory', async () => {
-      const b = ctx.bind('msg').toDynamicValue(() => Promise.resolve('hello'));
+      const factory = () => Promise.resolve('hello');
+      const b = ctx.bind('msg').toDynamicValue(factory);
+      expect(b.type).to.equal(BindingType.DYNAMIC_VALUE);
+      expect(b.source?.value).to.equal(factory);
+
       const value = await ctx.get<string>('msg');
       expect(value).to.equal('hello');
       expect(b.type).to.equal(BindingType.DYNAMIC_VALUE);
@@ -184,6 +191,8 @@ describe('Binding', () => {
         } ${options.session?.getBindingPath()}`;
       };
       const b = ctx.bind('msg').toDynamicValue(factory);
+      expect(b.type).to.equal(BindingType.DYNAMIC_VALUE);
+      expect(b.source?.value).to.equal(factory);
       const value = await ctx.get<string>('msg');
       expect(value).to.equal('Hello, test#msg msg');
       expect(b.type).to.equal(BindingType.DYNAMIC_VALUE);
@@ -218,7 +227,12 @@ describe('Binding', () => {
         }
       }
       ctx.bind('user').to('John');
-      ctx.bind('greeting').toDynamicValue(GreetingProvider);
+      const b = ctx.bind('greeting').toDynamicValue(GreetingProvider);
+      expect(b.type).to.equal(BindingType.DYNAMIC_VALUE);
+      expect(b.source).to.eql({
+        type: BindingType.DYNAMIC_VALUE,
+        value: GreetingProvider,
+      });
       const value = await ctx.get<string>('greeting');
       expect(value).to.eql('Hello, John');
     });
@@ -233,10 +247,15 @@ describe('Binding', () => {
   describe('toClass(cls)', () => {
     it('support a class', async () => {
       ctx.bind('msg').toDynamicValue(() => Promise.resolve('world'));
-      const b = ctx.bind('myService').toClass(MyService);
-      expect(b.type).to.equal(BindingType.CLASS);
+      ctx.bind('myService').toClass(MyService);
       const myService = await ctx.get<MyService>('myService');
       expect(myService.getMessage()).to.equal('hello world');
+    });
+
+    it('sets the type to CLASS', async () => {
+      const b = ctx.bind('myService').toClass(MyService);
+      expect(b.type).to.equal(BindingType.CLASS);
+      expect(b.source?.value).to.equal(MyService);
     });
 
     it('triggers changed event', () => {
@@ -272,6 +291,7 @@ describe('Binding', () => {
       ctx.bind('msg').to('hello');
       const b = ctx.bind('provider_key').toProvider(MyProvider);
       expect(b.type).to.equal(BindingType.PROVIDER);
+      expect(b.source?.value).to.equal(MyProvider);
     });
 
     it('sets the providerConstructor', () => {
@@ -344,11 +364,15 @@ describe('Binding', () => {
       expect(childOptions).to.be.undefined();
     });
 
-    it('sets type to ALIAS', () => {
+    it('sets the type to ALIAS', () => {
       const childBinding = ctx
         .bind('child.options')
         .toAlias('parent.options#child');
       expect(childBinding.type).to.equal(BindingType.ALIAS);
+      expect(childBinding.source).to.eql({
+        type: BindingType.ALIAS,
+        value: 'parent.options#child',
+      });
     });
 
     it('triggers changed event', () => {
