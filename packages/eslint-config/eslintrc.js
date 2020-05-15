@@ -15,7 +15,12 @@ module.exports = {
   // Use the typescript-eslint parser
   parser: '@typescript-eslint/parser',
   // Enable eslint and typescript-eslint
-  plugins: ['eslint-plugin', '@typescript-eslint', 'mocha'],
+  plugins: [
+    'eslint-plugin',
+    '@typescript-eslint',
+    'mocha',
+    'eslint-plugin-tsdoc',
+  ],
   env: {
     es6: true,
     node: true,
@@ -154,6 +159,7 @@ module.exports = {
     '@typescript-eslint/prefer-nullish-coalescing': 'error',
     '@typescript-eslint/no-extra-non-null-assertion': 'error',
     '@typescript-eslint/return-await': 'error',
+    'tsdoc/syntax': 'warn',
   },
 
   overrides: [

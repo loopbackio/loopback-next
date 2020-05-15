@@ -14,6 +14,7 @@
     "@typescript-eslint/parser": "^2.33.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-eslint-plugin": "^2.2.1",
+    "eslint-plugin-tsdoc": "^0.2.4",
     "eslint-plugin-mocha": "^7.0.0"
   },
   "peerDependencies": {

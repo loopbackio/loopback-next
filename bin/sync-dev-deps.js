@@ -30,13 +30,7 @@ async function syncDevDeps() {
   const buildDeps = require(path.join(rootPath, 'packages/build/package.json'))
     .dependencies;
 
-  const deps = [
-    '@typescript-eslint/eslint-plugin',
-    '@typescript-eslint/parser',
-    'eslint-config-prettier',
-    'eslint-plugin-eslint-plugin',
-    'eslint-plugin-mocha',
-  ];
+  const deps = Object.keys(eslintDeps);
   const masterDeps = {};
 
   masterDeps['eslint'] = buildDeps['eslint'];
