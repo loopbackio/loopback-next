@@ -19,8 +19,7 @@ const readFile = promisify(fs.readFile);
 const VALID_EXAMPLE = 'todo';
 const sandbox = new TestSandbox(path.resolve(__dirname, '../.sandbox'));
 
-describe('cloneExampleFromGitHub (SLOW)', function () {
-  // eslint-disable-next-line no-invalid-this
+describe('cloneExampleFromGitHub (SLOW)', /** @this {Mocha.Suite} */ function () {
   this.timeout(20000);
 
   beforeEach('reset sandbox', () => sandbox.reset());

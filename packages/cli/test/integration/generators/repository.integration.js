@@ -19,8 +19,7 @@ const testUtils = require('../../test-utils');
 // Test Sandbox
 const sandbox = new TestSandbox(path.resolve(__dirname, '../.sandbox'));
 
-describe('lb4 repository', function () {
-  // eslint-disable-next-line no-invalid-this
+describe('lb4 repository', /** @this {Mocha.Suite} */ function () {
   this.timeout(30000);
 
   beforeEach('reset sandbox', async () => {

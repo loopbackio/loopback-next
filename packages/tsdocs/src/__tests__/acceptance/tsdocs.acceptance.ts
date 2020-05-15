@@ -16,8 +16,7 @@ const MONOREPO_ROOT = path.join(__dirname, '../../../fixtures/monorepo');
 const APIDOCS_ROOT = path.join(MONOREPO_ROOT, 'docs/apidocs');
 const SITE_APIDOCS_ROOT = path.join(MONOREPO_ROOT, 'docs/site/apidocs');
 
-describe('tsdocs', function () {
-  // eslint-disable-next-line no-invalid-this
+describe('tsdocs', function (this: Mocha.Suite) {
   this.timeout(10000);
 
   const API_MD_FILES = [

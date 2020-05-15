@@ -23,9 +23,8 @@ const props = {
   url: specPath,
 };
 
-describe('openapi-generator petstore', function () {
+describe('openapi-generator petstore', /** @this {Mocha.Suite} */ function () {
   // These tests take longer to execute, they used to time out on Travis CI
-  // eslint-disable-next-line no-invalid-this
   this.timeout(10000);
 
   before('reset sandbox', () => sandbox.reset());

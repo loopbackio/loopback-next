@@ -38,8 +38,7 @@ describe('TodoApplication', () => {
   after(() => app.stop());
 
   let available = true;
-  before(async function () {
-    // eslint-disable-next-line no-invalid-this
+  before(async function (this: Mocha.Context) {
     this.timeout(30 * 1000);
     const service = await app.get<Geocoder>('services.Geocoder');
     available = await isGeoCoderServiceAvailable(service);
@@ -54,10 +53,9 @@ describe('TodoApplication', () => {
     await todoRepo.deleteAll();
   });
 
-  it('creates a todo', async function () {
+  it('creates a todo', async function (this: Mocha.Context) {
     // Set timeout to 30 seconds as `post /todos` triggers geocode look up
     // over the internet and it takes more than 2 seconds
-    // eslint-disable-next-line no-invalid-this
     this.timeout(30000);
     const todo = givenTodo();
     const response = await client.post('/todos').send(todo).expect(200);
@@ -86,11 +84,9 @@ describe('TodoApplication', () => {
     await client.post('/todos').send(todo).expect(422);
   });
 
-  it('creates an address-based reminder', async function () {
-    // eslint-disable-next-line no-invalid-this
+  it('creates an address-based reminder', async function (this: Mocha.Context) {
     if (!available) return this.skip();
     // Increase the timeout to accommodate slow network connections
-    // eslint-disable-next-line no-invalid-this
     this.timeout(30000);
 
     const todo = givenTodo({remindAtAddress: aLocation.address});
@@ -103,11 +99,9 @@ describe('TodoApplication', () => {
     expect(result).to.containEql(todo);
   });
 
-  it('returns 400 if it cannot find an address', async function () {
-    // eslint-disable-next-line no-invalid-this
+  it('returns 400 if it cannot find an address', async function (this: Mocha.Context) {
     if (!available) return this.skip();
     // Increase the timeout to accommodate slow network connections
-    // eslint-disable-next-line no-invalid-this
     this.timeout(30000);
 
     const todo = givenTodo({remindAtAddress: 'this address does not exist'});

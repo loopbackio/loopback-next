@@ -18,10 +18,9 @@ describe('context examples', () => {
 
   before(disableConsoleOutput);
 
-  it('runs all examples', async function () {
+  it('runs all examples', async function (this: Mocha.Context) {
     // For some reason, travis CI on mac reports timeout for some builds
     // Error: Timeout of 2000ms exceeded.
-    // eslint-disable-next-line no-invalid-this
     this.timeout(5000);
     const expectedLogs = loadExpectedLogs();
     await main();

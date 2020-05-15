@@ -21,8 +21,7 @@ const sandbox = new TestSandbox(path.resolve(__dirname, '../.sandbox'));
 
 const year = new Date().getFullYear();
 
-describe('lb4 copyright for monorepo', function () {
-  // eslint-disable-next-line no-invalid-this
+describe('lb4 copyright for monorepo', /** @this {Mocha.Suite} */ function () {
   this.timeout(30000);
 
   beforeEach('reset sandbox', async () => {

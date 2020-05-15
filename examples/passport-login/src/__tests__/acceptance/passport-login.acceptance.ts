@@ -3,14 +3,14 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Client, supertest, expect} from '@loopback/testlab';
 import {MockTestOauth2SocialApp} from '@loopback/mock-oauth2-provider';
-import {ExpressServer} from '../../server';
-import {User, UserIdentity} from '../../models';
-import {startApplication} from '../../';
-import * as url from 'url';
-import qs from 'qs';
+import {Client, expect, supertest} from '@loopback/testlab';
 import * as path from 'path';
+import qs from 'qs';
+import * as url from 'url';
+import {startApplication} from '../../';
+import {User, UserIdentity} from '../../models';
+import {ExpressServer} from '../../server';
 const oauth2Providers = require(path.resolve(
   __dirname,
   '../../../data/oauth2-test-provider',
@@ -40,8 +40,7 @@ describe('example-passport-login acceptance test', () => {
    */
   before(MockTestOauth2SocialApp.startMock);
   after(MockTestOauth2SocialApp.stopMock);
-  before(async function setupApplication() {
-    // eslint-disable-next-line no-invalid-this
+  before(async function setupApplication(this: Mocha.Context) {
     this.timeout(6000);
     server = await startApplication(oauth2Providers);
     client = supertest('http://127.0.0.1:3000');

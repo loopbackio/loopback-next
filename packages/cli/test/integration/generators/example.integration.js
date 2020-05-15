@@ -17,8 +17,7 @@ const testUtils = require('../../test-utils');
 const ALL_EXAMPLES = require('../../../generators/example').getAllExamples();
 const VALID_EXAMPLE = 'todo';
 
-describe('lb4 example', function () {
-  // eslint-disable-next-line no-invalid-this
+describe('lb4 example', /** @this {Mocha.Suite} */ function () {
   this.timeout(10000);
 
   describe('correctly extends BaseGenerator', baseTests);

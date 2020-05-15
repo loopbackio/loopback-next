@@ -22,9 +22,10 @@ describe('app-generator (SLOW)', function () {
     outdir: path.join(sandboxDir, 'sandbox-app'),
   };
 
-  before('scaffold a new application', async function createAppProject() {
+  before('scaffold a new application', createAppProject);
+  /** @this {Mocha.Context} */
+  async function createAppProject() {
     // Increase the timeout to 1 minute to accommodate slow CI build machines
-    // eslint-disable-next-line no-invalid-this
     this.timeout(60 * 1000);
     await helpers
       .run(appGenerator)
@@ -32,21 +33,21 @@ describe('app-generator (SLOW)', function () {
       // Mark it private to prevent accidental npm publication
       .withOptions({private: true})
       .withPrompts(appProps);
-  });
+  }
 
-  before('install dependencies', async function installDependencies() {
+  before('install dependencies', installDependencies);
+  /** @this {Mocha.Context} */
+  async function installDependencies() {
     // Run `lerna bootstrap --scope @loopback/sandbox-app --include-filtered-dependencies`
     // WARNING: It takes a while to run `lerna bootstrap`
-    // eslint-disable-next-line no-invalid-this
     this.timeout(15 * 60 * 1000);
     process.chdir(rootDir);
     await lernaBootstrap(null, appProps.name);
-  });
+  }
 
-  it('passes `npm test` for the generated project', function () {
+  it('passes `npm test` for the generated project', /** @this {Mocha.Context} */ function () {
     // Increase the timeout to 5 minutes,
     // the tests can take more than 2 seconds to run.
-    // eslint-disable-next-line no-invalid-this
     this.timeout(5 * 60 * 1000);
 
     return new Promise((resolve, reject) => {
@@ -63,15 +64,16 @@ describe('app-generator (SLOW)', function () {
     });
   });
 
-  after(function () {
+  after(cleanup);
+  /** @this {Mocha.Context} */
+  function cleanup() {
     // Increase the timeout to accommodate slow CI build machines
-    // eslint-disable-next-line no-invalid-this
     this.timeout(30 * 1000);
 
     process.chdir(rootDir);
     build.clean(['node', 'run-clean', appProps.outdir]);
     process.chdir(process.cwd());
-  });
+  }
 });
 
 const isYarnAvailable = utils.isYarnAvailable();
@@ -84,9 +86,10 @@ yarnTest('app-generator with Yarn (SLOW)', () => {
     outdir: path.join(sandboxDir, 'sandbox-yarn-app'),
   };
 
-  before('scaffold a new application', async function createAppProject() {
+  before('scaffold a new application', createAppProject);
+  /** @this {Mocha.Context} */
+  async function createAppProject() {
     // Increase the timeout to 1 minute to accommodate slow CI build machines
-    // eslint-disable-next-line no-invalid-this
     this.timeout(60 * 1000);
     await helpers
       .run(appGenerator)
@@ -98,21 +101,21 @@ yarnTest('app-generator with Yarn (SLOW)', () => {
         private: true,
       })
       .withPrompts(appProps);
-  });
+  }
 
-  before('install dependencies', async function installDependencies() {
+  before('install dependencies', installDependencies);
+  /** @this {Mocha.Context} */
+  async function installDependencies() {
     // Run `lerna bootstrap --scope @loopback/sandbox-app --include-filtered-dependencies`
     // WARNING: It takes a while to run `lerna bootstrap`
-    // eslint-disable-next-line no-invalid-this
     this.timeout(15 * 60 * 1000);
     process.chdir(rootDir);
     await lernaBootstrap('yarn', appProps.name);
-  });
+  }
 
-  it('passes `yarn test` for the generated project', function () {
+  it('passes `yarn test` for the generated project', /** @this {Mocha.Context} */ function () {
     // Increase the timeout to 5 minutes,
     // the tests can take more than 2 seconds to run.
-    // eslint-disable-next-line no-invalid-this
     this.timeout(5 * 60 * 1000);
 
     return new Promise((resolve, reject) => {
@@ -129,15 +132,16 @@ yarnTest('app-generator with Yarn (SLOW)', () => {
     });
   });
 
-  after(function () {
+  after(cleanup);
+  /** @this {Mocha.Context} */
+  function cleanup() {
     // Increase the timeout to accommodate slow CI build machines
-    // eslint-disable-next-line no-invalid-this
     this.timeout(30 * 1000);
 
     process.chdir(rootDir);
     build.clean(['node', 'run-clean', appProps.outdir]);
     process.chdir(process.cwd());
-  });
+  }
 });
 
 async function lernaBootstrap(packageManager, ...scopes) {

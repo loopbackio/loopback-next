@@ -21,8 +21,7 @@ const testUtils = require('../../test-utils');
 let year = new Date().getFullYear();
 if (year !== 2020) year = `2020,${year}`;
 
-describe('lb4 copyright with git', function () {
-  // eslint-disable-next-line no-invalid-this
+describe('lb4 copyright with git', /** @this {Mocha.Suite} */ function () {
   this.timeout(30000);
 
   before('add files not tracked by git', async () => {
