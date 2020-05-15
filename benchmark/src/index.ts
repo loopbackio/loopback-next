@@ -16,3 +16,13 @@ export async function main() {
   bench.logger = (title, stats) => console.log('%s:', title, stats);
   await bench.run();
 }
+
+if (require.main === module) {
+  main().then(
+    success => process.exit(0),
+    err => {
+      console.error('Cannot run the benchmark.', err);
+      process.exit(1);
+    },
+  );
+}

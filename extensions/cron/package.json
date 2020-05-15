@@ -2,6 +2,8 @@
   "name": "@loopback/cron",
   "version": "0.2.3",
   "description": "LoopBack Cron Integration",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "engines": {
     "node": ">=10"
   },
@@ -36,8 +38,6 @@
   ],
   "files": [
     "README.md",
-    "index.js",
-    "index.d.ts",
     "dist",
     "src",
     "!*/__tests__"

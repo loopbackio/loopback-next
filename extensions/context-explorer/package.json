@@ -2,6 +2,8 @@
   "name": "@loopback/context-explorer",
   "version": "0.1.3",
   "description": "LoopBack's Context/Binding Explorer",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "engines": {
     "node": ">=10"
   },
@@ -36,8 +38,6 @@
   ],
   "files": [
     "README.md",
-    "index.js",
-    "index.d.ts",
     "dist",
     "src",
     "!*/__tests__",

@@ -92,7 +92,11 @@ yarnTest('app-generator with Yarn (SLOW)', () => {
       .run(appGenerator)
       .inDir(appProps.outdir)
       // Mark it private to prevent accidental npm publication
-      .withOptions({packageManager: 'yarn', private: true})
+      .withOptions({
+        applicationName: 'YarnApp',
+        packageManager: 'yarn',
+        private: true,
+      })
       .withPrompts(appProps);
   });
 

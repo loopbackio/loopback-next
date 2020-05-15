@@ -20,6 +20,8 @@ import {ServiceMixin} from '@loopback/service-proxy';
 import path from 'path';
 import {MySequence} from './sequence';
 
+export {ApplicationConfig};
+
 export class MyAppApplication extends BootMixin(
   ServiceMixin(RepositoryMixin(RestApplication)),
 ) {
@@ -55,42 +57,9 @@ export class MyAppApplication extends BootMixin(
 
 
 exports[`app-generator specific files generates all the proper files 2`] = `
-const application = require('./dist');
+import {ApplicationConfig, MyAppApplication} from './application';
 
-module.exports = application;
-
-if (require.main === module) {
-  // Run the application
-  const config = {
-    rest: {
-      port: +(process.env.PORT || 3000),
-      host: process.env.HOST,
-      // The \`gracePeriodForClose\` provides a graceful close for http/https
-      // servers with keep-alive clients. The default value is \`Infinity\`
-      // (don't force-close). If you want to immediately destroy all sockets
-      // upon stop, set its value to \`0\`.
-      // See https://www.npmjs.com/package/stoppable
-      gracePeriodForClose: 5000, // 5 seconds
-      openApiSpec: {
-        // useful when used with OpenAPI-to-GraphQL to locate your application
-        setServersFromRequest: true,
-      },
-    },
-  };
-  application.main(config).catch(err => {
-    console.error('Cannot start the application.', err);
-    process.exit(1);
-  });
-}
-
-`;
-
-
-exports[`app-generator specific files generates all the proper files 3`] = `
-import {MyAppApplication} from './application';
-import {ApplicationConfig} from '@loopback/core';
-
-export {MyAppApplication};
+export * from './application';
 
 export async function main(options: ApplicationConfig = {}) {
   const app = new MyAppApplication(options);
@@ -104,10 +73,34 @@ export async function main(options: ApplicationConfig = {}) {
   return app;
 }
 
+if (require.main === module) {
+  // Run the application
+  const config = {
+    rest: {
+      port: +(process.env.PORT ?? 3000),
+      host: process.env.HOST,
+      // The \`gracePeriodForClose\` provides a graceful close for http/https
+      // servers with keep-alive clients. The default value is \`Infinity\`
+      // (don't force-close). If you want to immediately destroy all sockets
+      // upon stop, set its value to \`0\`.
+      // See https://www.npmjs.com/package/stoppable
+      gracePeriodForClose: 5000, // 5 seconds
+      openApiSpec: {
+        // useful when used with OpenAPI-to-GraphQL to locate your application
+        setServersFromRequest: true,
+      },
+    },
+  };
+  main(config).catch(err => {
+    console.error('Cannot start the application.', err);
+    process.exit(1);
+  });
+}
+
 `;
 
 
-exports[`app-generator specific files generates all the proper files 4`] = `
+exports[`app-generator specific files generates all the proper files 3`] = `
 import {Request, RestBindings, get, ResponseObject} from '@loopback/rest';
 import {inject} from '@loopback/context';
 
@@ -164,7 +157,7 @@ export class PingController {
 `;
 
 
-exports[`app-generator specific files generates all the proper files 5`] = `
+exports[`app-generator specific files generates all the proper files 4`] = `
 import {Client, expect} from '@loopback/testlab';
 import {MyAppApplication} from '../..';
 import {setupApplication} from './test-helper';
@@ -190,7 +183,7 @@ describe('PingController', () => {
 `;
 
 
-exports[`app-generator specific files generates all the proper files 6`] = `
+exports[`app-generator specific files generates all the proper files 5`] = `
 import {Client} from '@loopback/testlab';
 import {MyAppApplication} from '../..';
 import {setupApplication} from './test-helper';
@@ -226,7 +219,7 @@ describe('HomePage', () => {
 `;
 
 
-exports[`app-generator specific files generates all the proper files 7`] = `
+exports[`app-generator specific files generates all the proper files 6`] = `
 import {MyAppApplication} from '../..';
 import {
   createRestAppClient,
@@ -349,6 +342,8 @@ import {
 import path from 'path';
 import {MySequence} from './sequence';
 
+export {ApplicationConfig};
+
 export class MyAppApplication extends BootMixin(
   ServiceMixin(RepositoryMixin(RestApplication)),
 ) {
@@ -403,6 +398,8 @@ import {ServiceMixin} from '@loopback/service-proxy';
 import path from 'path';
 import {MySequence} from './sequence';
 
+export {ApplicationConfig};
+
 export class MyApp extends BootMixin(
   ServiceMixin(RepositoryMixin(RestApplication)),
 ) {
@@ -449,6 +446,8 @@ import {RestApplication} from '@loopback/rest';
 import {ServiceMixin} from '@loopback/service-proxy';
 import path from 'path';
 import {MySequence} from './sequence';
+
+export {ApplicationConfig};
 
 export class MyApp extends BootMixin(
   ServiceMixin(RepositoryMixin(RestApplication)),

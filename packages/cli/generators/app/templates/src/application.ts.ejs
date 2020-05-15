@@ -21,6 +21,8 @@ import {
 import path from 'path';
 import {MySequence} from './sequence';
 
+export {ApplicationConfig};
+
 <% if (project.appClassWithMixins) { -%>
 export class <%= project.applicationName %> extends BootMixin(
   <%= project.appClassWithMixins %>,

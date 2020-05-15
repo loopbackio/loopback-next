@@ -71,8 +71,6 @@ node_modules/
   ***
 LICENSE
 README.md
-index.js
-index.ts
 package.json
 tsconfig.json
 .eslintrc.js
@@ -84,8 +82,6 @@ Note that there might be extra files not listed here.
 
 | File                                                     | Purpose                                                                                                                                                                                                                                                                                                                                                                  |
 | -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `index.ts`                                               | Allows importing contents of the `src` folder (for use elsewhere)                                                                                                                                                                                                                                                                                                        |
-| `index.js`                                               | Top-level file connecting components of the application.                                                                                                                                                                                                                                                                                                                 |
 | `package.json`                                           | Your application's package manifest. See [package.json](https://docs.npmjs.com/files/package.json) for details.                                                                                                                                                                                                                                                          |
 | `tsconfig.json`                                          | The TypeScript project configuration. See [tsconfig.json](http://www.typescriptlang.org/docs/handbook/tsconfig-json.html) for details.                                                                                                                                                                                                                                   |
 | `.eslintrc.js`                                           | [ESLint configuration](https://eslint.org/docs/user-guide/configuring)                                                                                                                                                                                                                                                                                                   |

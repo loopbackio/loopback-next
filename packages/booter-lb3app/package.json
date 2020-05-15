@@ -2,6 +2,8 @@
   "name": "@loopback/booter-lb3app",
   "version": "2.1.3",
   "description": "Boot a LoopBack 3 application in a LoopBack 4 project",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "engines": {
     "node": ">=10"
   },
@@ -52,8 +54,6 @@
   ],
   "files": [
     "README.md",
-    "index.js",
-    "index.d.ts",
     "dist",
     "src",
     "!*/__tests__"

@@ -2,10 +2,11 @@
   "name": "@loopback/repository",
   "version": "2.4.0",
   "description": "Repository based persistence for LoopBack 4",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "engines": {
     "node": ">=10"
   },
-  "main": "index",
   "scripts": {
     "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
     "build": "lb-tsc",
@@ -38,8 +39,6 @@
   },
   "files": [
     "README.md",
-    "index.js",
-    "index.d.ts",
     "dist",
     "src",
     "!*/__tests__"

@@ -2,7 +2,8 @@
   "name": "@loopback/example-access-control-migration",
   "version": "1.2.1",
   "description": "Tutorial example on how to migrate the access control example with LoopBack 4.",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "engines": {
     "node": ">=10"
   },

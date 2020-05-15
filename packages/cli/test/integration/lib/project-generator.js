@@ -365,7 +365,6 @@ module.exports = function (projGenerator, props, projectType) {
           ['.eslintrc.js', "extends: '@loopback/eslint-config'"],
           ['tsconfig.json', '"compilerOptions"'],
           ['tsconfig.json', '"resolveJsonModule": true'],
-          ['index.js', "require('./dist')"],
         ]);
       });
     });

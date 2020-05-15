@@ -32,3 +32,10 @@ if (require.main === module) {
     process.exit(1);
   });
 }
+
+if (require.main === module) {
+  main().catch(err => {
+    console.error('Fails to run examples.', err);
+    process.exit(1);
+  });
+}

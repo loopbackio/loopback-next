@@ -2,6 +2,8 @@
   "name": "@loopback/authentication-jwt",
   "version": "0.2.1",
   "description": "Extension for the prototype of JWT authentication",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "engines": {
     "node": ">=10"
   },
@@ -45,8 +47,6 @@
   ],
   "files": [
     "README.md",
-    "index.js",
-    "index.d.ts",
     "dist",
     "src",
     "!*/__tests__"

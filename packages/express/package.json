@@ -2,11 +2,12 @@
   "name": "@loopback/express",
   "version": "1.1.0",
   "description": "@loopback/express",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "keywords": [
     "loopback-extension",
     "loopback"
   ],
-  "main": "index.js",
   "engines": {
     "node": ">=10"
   },
@@ -27,8 +28,6 @@
   "license": "MIT",
   "files": [
     "README.md",
-    "index.js",
-    "index.d.ts",
     "dist",
     "src",
     "!*/__tests__"

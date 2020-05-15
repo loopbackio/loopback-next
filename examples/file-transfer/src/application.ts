@@ -15,6 +15,8 @@ import path from 'path';
 import {FILE_UPLOAD_SERVICE, STORAGE_DIRECTORY} from './keys';
 import {MySequence} from './sequence';
 
+export {ApplicationConfig};
+
 export class FileUploadApplication extends BootMixin(RestApplication) {
   constructor(options: ApplicationConfig = {}) {
     super(options);

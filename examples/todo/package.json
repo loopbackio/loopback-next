@@ -2,7 +2,8 @@
   "name": "@loopback/example-todo",
   "version": "3.3.0",
   "description": "Tutorial example on how to build an application with LoopBack 4.",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "engines": {
     "node": ">=10"
   },

@@ -151,9 +151,10 @@ Create two properties, the Express application instance and LoopBack application
 instance:
 
 ```ts
-import {NoteApplication} from './application';
-import {ApplicationConfig} from '@loopback/core';
 import express from 'express';
+import {ApplicationConfig, NoteApplication} from './application';
+
+export {ApplicationConfig};
 
 export class ExpressServer {
   public readonly app: express.Application;
@@ -255,10 +256,9 @@ Now that our **src/server.ts** file is ready, then we can modify our
 {% include code-caption.html content="src/index.ts" %}
 
 ```ts
-import {ExpressServer} from './server';
-import {ApplicationConfig} from '@loopback/core';
+import {ApplicationConfig, ExpressServer} from './server';
 
-export {ExpressServer, NoteApplication};
+export {ApplicationConfig, ExpressServer, NoteApplication};
 
 export async function main(options: ApplicationConfig = {}) {
   const server = new ExpressServer(options);
@@ -266,21 +266,13 @@ export async function main(options: ApplicationConfig = {}) {
   await server.start();
   console.log('Server is running at http://127.0.0.1:3000');
 }
-```
-
-{% include code-caption.html content="index.js" %}
-
-```js
-const application = require('./dist');
-
-module.exports = application;
 
 if (require.main === module) {
   // Run the application
   const config = {
     rest: {
-      port: +process.env.PORT || 3000,
-      host: process.env.HOST || 'localhost',
+      port: +(process.env.PORT ?? 3000),
+      host: process.env.HOST ?? 'localhost',
       openApiSpec: {
         // useful when used with OpenAPI-to-GraphQL to locate your application
         setServersFromRequest: true,
@@ -289,7 +281,7 @@ if (require.main === module) {
       listenOnStart: false,
     },
   };
-  application.main(config).catch(err => {
+  main(config).catch(err => {
     console.error('Cannot start the application.', err);
     process.exit(1);
   });

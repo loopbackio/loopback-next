@@ -1,14 +1,15 @@
 {
   "name": "@loopback/benchmark",
   "version": "2.0.8",
-  "private": true,
   "description": "Benchmarks measuring performance of our framework.",
+  "private": true,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "keywords": [
     "loopback",
     "performance",
     "benchmark"
   ],
-  "main": "index.js",
   "engines": {
     "node": ">=10"
   },
@@ -26,8 +27,6 @@
   "license": "MIT",
   "files": [
     "README.md",
-    "index.js",
-    "index.d.ts",
     "dist",
     "src",
     "!*/__tests__"

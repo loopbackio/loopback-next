@@ -2,12 +2,13 @@
   "name": "@loopback/example-multi-tenancy",
   "version": "0.2.1",
   "description": "An example to demonstrate multi-tenancy with LoopBack 4",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "keywords": [
     "loopback-application",
     "loopback",
     "multi-tenancy"
   ],
-  "main": "index.js",
   "engines": {
     "node": ">=10"
   },
@@ -43,8 +44,6 @@
   "license": "MIT",
   "files": [
     "README.md",
-    "index.js",
-    "index.d.ts",
     "dist",
     "src",
     "!*/__tests__"

@@ -2,7 +2,8 @@
   "name": "@loopback/example-metrics-prometheus",
   "version": "0.2.8",
   "description": "Standalone examples for @loopback/metrics",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "engines": {
     "node": ">=10"
   },

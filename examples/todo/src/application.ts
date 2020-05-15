@@ -13,6 +13,8 @@ import morgan from 'morgan';
 import path from 'path';
 import {MySequence} from './sequence';
 
+export {ApplicationConfig};
+
 export class TodoListApplication extends BootMixin(
   ServiceMixin(RepositoryMixin(RestApplication)),
 ) {

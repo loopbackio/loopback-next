@@ -3,13 +3,12 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {ApplicationConfig} from '@loopback/core';
-import {ExpressServer} from './server';
+import {RestApplication} from '@loopback/rest';
 import * as path from 'path';
 import {oauth2ProfileFunction} from './authentication-strategies';
-import {RestApplication} from '@loopback/rest';
+import {ApplicationConfig, ExpressServer} from './server';
 
-export {ExpressServer};
+export * from './server';
 
 /**
  * Prepare server config
@@ -90,4 +89,11 @@ export async function main() {
     process.env.DB_BKP_FILE_PATH, // eg: export DB_BKP_FILE_PATH=../data/db.json
   );
   console.log(`Server is running at ${server.url}`);
+}
+
+if (require.main === module) {
+  main().catch(err => {
+    console.error('Cannot start the application.', err);
+    process.exit(1);
+  });
 }

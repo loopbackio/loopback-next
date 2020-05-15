@@ -2,6 +2,8 @@
   "name": "@loopback/repository-json-schema",
   "version": "2.4.0",
   "description": "Converts TS classes into JSON Schemas using TypeScript's reflection API",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "engines": {
     "node": ">=10"
   },
@@ -40,8 +42,6 @@
   },
   "files": [
     "README.md",
-    "index.js",
-    "index.d.ts",
     "dist",
     "src",
     "!*/__tests__"

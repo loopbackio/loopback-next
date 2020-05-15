@@ -11,6 +11,8 @@ import {AddressInfo} from 'net';
 import * as path from 'path';
 import {OAuth2LoginApplication} from './application';
 
+export {ApplicationConfig};
+
 /**
  * An express server with multiple apps
  *

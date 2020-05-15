@@ -2,6 +2,8 @@
   "name": "@loopback/openapi-v3",
   "version": "3.3.1",
   "description": "Processes openapi v3 related metadata",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "engines": {
     "node": ">=10"
   },
@@ -46,8 +48,6 @@
   ],
   "files": [
     "README.md",
-    "index.js",
-    "index.d.ts",
     "dist",
     "src",
     "!*/__tests__"
