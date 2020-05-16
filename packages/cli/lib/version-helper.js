@@ -179,8 +179,8 @@ async function checkLoopBackProject(generator) {
   if (generator.shouldExit()) return false;
 
   const incompatibleDeps = await checkDependencies(generator);
-  if (incompatibleDeps == null) return;
-  if (Object.keys(incompatibleDeps) === 0) return;
+  if (incompatibleDeps == null) return false;
+  if (Object.keys(incompatibleDeps) === 0) return false;
 
   const choices = [
     {
@@ -209,11 +209,11 @@ async function checkLoopBackProject(generator) {
   ];
   const answers = await generator.prompt(prompts);
   if (answers && answers.decision === 'continue') {
-    return;
+    return false;
   }
   if (answers && answers.decision === 'upgrade') {
     updateDependencies(generator);
-    return;
+    return true;
   }
   generator.exit(new Error('Incompatible dependencies'));
 }
