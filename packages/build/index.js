@@ -10,6 +10,7 @@ exports.prettier = require('./bin/run-prettier');
 exports.nyc = require('./bin/run-nyc');
 exports.mocha = require('./bin/run-mocha');
 exports.clean = require('./bin/run-clean');
+exports.eslint = require('./bin/run-eslint');
 
 const utils = require('./bin/utils');
 exports.runCLI = utils.runCLI;
