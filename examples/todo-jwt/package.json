@@ -1,0 +1,82 @@
+{
+  "name": "@loopback/example-todo-jwt",
+  "version": "1.0.0",
+  "description": "Tutorial example on how to build an application with LoopBack 4.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "engines": {
+    "node": ">=10"
+  },
+  "author": "IBM Corp.",
+  "scripts": {
+    "build": "lb-tsc",
+    "build:watch": "lb-tsc --watch",
+    "clean": "lb-clean *example-todo-jwt*.tgz dist *.tsbuildinfo package",
+    "lint": "npm run prettier:check && npm run eslint",
+    "lint:fix": "npm run eslint:fix && npm run prettier:fix",
+    "prettier:cli": "lb-prettier \"**/*.ts\"",
+    "prettier:check": "npm run prettier:cli -- -l",
+    "prettier:fix": "npm run prettier:cli -- --write",
+    "eslint": "lb-eslint --report-unused-disable-directives .",
+    "eslint:fix": "npm run eslint -- --fix",
+    "pretest": "npm run build",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
+    "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js && npm run posttest",
+    "verify": "npm pack && tar xf loopback-todo*.tgz && tree package && npm run clean",
+    "migrate": "node ./dist/migrate",
+    "prestart": "npm run build",
+    "start": "node ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "examples/todo-jwt"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@loopback/authentication": "^4.2.4",
+    "@loopback/authentication-jwt": "^0.3.0",
+    "@loopback/boot": "^2.3.0",
+    "@loopback/context": "^3.8.0",
+    "@loopback/core": "^2.6.0",
+    "@loopback/openapi-v3": "^3.4.0",
+    "@loopback/repository": "^2.5.0",
+    "@loopback/rest": "^5.0.0",
+    "@loopback/rest-explorer": "^2.2.1",
+    "@loopback/security": "^0.2.9",
+    "@loopback/service-proxy": "^2.2.1",
+    "bcryptjs": "^2.4.3",
+    "loopback-connector-rest": "^3.6.0",
+    "tslib": "^1.10.0",
+    "@types/bcryptjs": "^2.4.2"
+  },
+  "devDependencies": {
+    "@loopback/build": "^5.4.0",
+    "@loopback/eslint-config": "^7.0.0",
+    "@loopback/http-caching-proxy": "^2.1.4",
+    "@loopback/testlab": "^3.1.4",
+    "@types/lodash": "^4.14.150",
+    "@types/node": "^10.17.21",
+    "@typescript-eslint/eslint-plugin": "^2.31.0",
+    "@typescript-eslint/parser": "^2.31.0",
+    "eslint": "^7.0.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-eslint-plugin": "^2.2.1",
+    "lodash": "^4.17.15",
+    "typescript": "~3.9.2"
+  },
+  "keywords": [
+    "loopback",
+    "LoopBack",
+    "example",
+    "tutorial",
+    "CRUD",
+    "models",
+    "todo",
+    "jwt",
+    "authentication"
+  ]
+}
