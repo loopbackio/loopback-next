@@ -68,6 +68,9 @@
       "path": "examples/soap-calculator/tsconfig.json"
     },
     {
+      "path": "examples/todo-jwt/tsconfig.json"
+    },
+    {
       "path": "examples/todo-list/tsconfig.json"
     },
     {
