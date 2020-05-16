@@ -7,6 +7,8 @@
 
 const BaseGenerator = require('../../lib/base-generator');
 const g = require('../../lib/globalize');
+const link = require('terminal-link');
+const chalk = require('chalk');
 
 module.exports = class UpdateGenerator extends BaseGenerator {
   // Note: arguments and options should be defined in the constructor.
@@ -29,12 +31,25 @@ module.exports = class UpdateGenerator extends BaseGenerator {
     return super.setOptions();
   }
 
-  checkLoopBackProject() {
+  async checkLoopBackProject() {
     if (this.shouldExit()) return;
-    return super.checkLoopBackProject();
+    this.updated = await super.checkLoopBackProject();
+  }
+
+  async _openChangeLog() {
+    if (this.shouldExit()) return;
+    if (this.updated !== true) return;
+    this.log(chalk.red(g.f('The upgrade may break the current project.')));
+    this.log(
+      link(
+        g.f('Please check out change logs for breaking changes.'),
+        'https://loopback.io/doc/en/lb4/changelog.index.html',
+      ),
+    );
   }
 
   async end() {
+    await this._openChangeLog();
     await super.end();
   }
 };

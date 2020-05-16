@@ -71,6 +71,7 @@
     "swagger-parser": "^9.0.1",
     "swagger2openapi": "^6.0.3",
     "tabtab": "^3.0.2",
+    "terminal-link": "^2.1.1",
     "tildify": "^2.0.0",
     "ts-morph": "^7.1.0",
     "typescript": "~3.9.3",

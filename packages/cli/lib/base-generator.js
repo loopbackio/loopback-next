@@ -407,9 +407,9 @@ module.exports = class BaseGenerator extends Generator {
    * "@loopback/core" package in the dependencies section of the
    * package.json.
    */
-  async checkLoopBackProject() {
+  checkLoopBackProject() {
     debug('Checking for loopback project');
-    await checkLoopBackProject(this);
+    return checkLoopBackProject(this);
   }
 
   _runNpmScript(projectDir, args) {
