@@ -6,11 +6,12 @@
 import {composeInterceptors, intercept} from '@loopback/core';
 
 /**
- *  Name: OAuth2InterceptExpressMiddleware
- *  Type: DECORATOR
+ * Name: OAuth2InterceptExpressMiddleware
+ * Type: DECORATOR
  *
- *  This method uses the @intercept decorator to intercept incoming requests with a series of passport strategies.
- *  It composes an middleware interceptor chain with the following interceptor keys:
+ * This method uses the `@intercept` decorator to intercept incoming requests
+ * with a series of passport strategies.
+ * It composes an middleware interceptor chain with the following interceptor keys:
  *      'passport-init-mw',
  *      'passport-session-mw',
  *      'passport-facebook',

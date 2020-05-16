@@ -53,7 +53,7 @@ export function serviceProxy(dataSource: string | juggler.DataSource) {
 }
 
 /**
- * Resolve the @repository injection
+ * Resolve the `@repository` injection
  * @param ctx - Context
  * @param injection - Injection metadata
  */

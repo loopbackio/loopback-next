@@ -28,7 +28,7 @@ export interface AppWithClient {
 
 /**
  * Generate a complete Note object for use with tests.
- * @param  A partial (or complete) Note object.
+ * @param note - A partial (or complete) Note object.
  */
 export function givenNote(note?: Partial<Note>) {
   const data = Object.assign(

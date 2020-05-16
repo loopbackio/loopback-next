@@ -35,7 +35,7 @@ describe('example-passport-login acceptance test', () => {
   let client: Client;
 
   /**
-   * This test uses the mock social app from the @loopback/authentication-passport package,
+   * This test uses the mock social app from the `@loopback/authentication-passport` package,
    * as oauth2 profile endpoint.
    */
   before(MockTestOauth2SocialApp.startMock);
@@ -77,8 +77,8 @@ describe('example-passport-login acceptance test', () => {
     context('Scenario 1: Signing up as a NEW user', () => {
       /**
        * create a local account in the loopback app with the following profile
-       *     username: test@example.com
-       *     email: test@example.com
+       *     username: `test@example.com`
+       *     email: `test@example.com`
        */
       it('signup as new user with loopback app', async () => {
         const response: supertest.Response = await client
@@ -195,8 +195,8 @@ describe('example-passport-login acceptance test', () => {
 
       /**
        * Sign Up via a social app with the following profile
-       *   username: testuser
-       *   email: test@example.com
+       *   username: `testuser`
+       *   email: `test@example.com`
        *
        * Email-id MATCHES local account
        */

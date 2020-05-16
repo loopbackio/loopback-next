@@ -63,7 +63,7 @@ interface AppRegistry {
 /**
  * apps registered with this provider
  * format:
- *   { clientId: {client_secret, list_of_tokens} }
+ *   `{ clientId: {client_secret, list_of_tokens} }`
  */
 const registeredApps: AppRegistry = {
   // eslint-disable-next-line @typescript-eslint/camelcase
@@ -107,8 +107,8 @@ const users: MyUser[] = [
 
 /**
  * find a user by a name and password
- * @param {*} username
- * @param {*} password
+ * @param username - User name
+ * @param password - Password
  */
 function findUser(username: string, password: string) {
   return users.find(

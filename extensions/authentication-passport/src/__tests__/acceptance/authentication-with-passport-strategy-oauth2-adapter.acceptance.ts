@@ -35,7 +35,8 @@ import {
 import {MyUser, userRepository} from './fixtures/user-repository';
 
 /**
- * This test consists of three main components -> the supertest client, the LoopBack app (simple-rest-app.ts)
+ * This test consists of three main components `->` the supertest client, the
+ * LoopBack app (simple-rest-app.ts)
  * and the Mock Authorization Server (mock-oauth2-social-app.ts)
  *
  *  PLEASE LOOK AT fixtures/README.md file before going thru the below

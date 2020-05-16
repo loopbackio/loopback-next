@@ -32,7 +32,7 @@ export function LogMixin<T extends MixinTarget<Application>>(superClass: T) {
     /**
      * Set minimum logLevel to be displayed.
      *
-     * @param level - The log level to set for @log decorator
+     * @param level - The log level to set for `@log` decorator
      *
      * @example
      * ```ts

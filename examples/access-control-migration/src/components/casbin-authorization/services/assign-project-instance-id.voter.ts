@@ -12,9 +12,9 @@ import {RESOURCE_ID} from '../../../keys';
 
 /**
  * Instance level authorizer for known endpoints
- * - 'projects/{id}/show-balance'
- * - 'projects/{id}/donate'
- * - 'projects/{id}/withdraw'
+ * - `projects/{id}/show-balance`
+ * - `projects/{id}/donate`
+ * - `projects/{id}/withdraw`
  * This function is used to modify the authorization context.
  * It is not used for making a decision, so just returns ABSTAIN
  * @param authorizationCtx - authorizationCtx

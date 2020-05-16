@@ -19,7 +19,7 @@ export namespace EXAMPLE_LOG_BINDINGS {
 }
 
 /**
- * The key used to store log-related via @loopback/metadata and reflection.
+ * The key used to store log-related via `@loopback/metadata` and reflection.
  */
 export const EXAMPLE_LOG_METADATA_KEY = 'example.log.metadata';
 

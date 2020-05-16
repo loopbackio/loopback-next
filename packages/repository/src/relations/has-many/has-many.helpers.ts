@@ -66,7 +66,7 @@ export function resolveHasManyMetadata(
  * A helper to check relation type and the existence of the source/target models
  * and set up keyFrom
  * for HasMany(Through) relations
- * @param relationMeta
+ * @param relationMeta - relationMeta
  *
  * @returns relationMeta that has set up keyFrom
  */

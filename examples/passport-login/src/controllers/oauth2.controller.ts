@@ -18,10 +18,13 @@ import {OAuth2InterceptExpressMiddleware} from '../authentication-interceptors/t
 /**
  * Login controller for third party oauth provider
  *
- * This controller demonstrates using passport strategies both as express middleware and as an independent strategy
+ * This controller demonstrates using passport strategies both as express
+ * middleware and as an independent strategy
  *
- * The method loginToThirdParty uses the @authenticate decorator to plugin passport strategies independently
- * The method thirdPartyCallBack uses the passport strategies as express middleware
+ * The method loginToThirdParty uses the `@authenticate` decorator to plugin
+ * passport strategies independently
+ * The method thirdPartyCallBack uses the passport strategies as express
+ * middleware
  */
 export class Oauth2Controller {
   constructor() {}
@@ -29,10 +32,12 @@ export class Oauth2Controller {
   @authenticate('oauth2')
   @get('/auth/thirdparty/{provider}')
   /**
-   * This method uses the @authenticate decorator to plugin passport strategies independently
+   * This method uses the `@authenticate` decorator to plugin passport
+   * strategies independently
    *
-   * Endpoint: '/auth/thirdparty/{provider}'
-   *          an endpoint for api clients to login via a third party app, redirects to third party app
+   * Endpoint: `/auth/thirdparty/{provider}`
+   *          an endpoint for api clients to login via a third party app,
+   *          redirects to third party app
    */
   loginToThirdParty(
     @param.path.string('provider') provider: string,

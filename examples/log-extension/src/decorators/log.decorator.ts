@@ -14,7 +14,7 @@ import {LevelMetadata} from '../types';
 /**
  * Mark a controller method as requiring logging (input, output & timing)
  * if it is set at or greater than Application LogLevel.
- * LOG_LEVEL.DEBUG < LOG_LEVEL.INFO < LOG_LEVEL.WARN < LOG_LEVEL.ERROR < LOG_LEVEL.OFF
+ * `LOG_LEVEL.DEBUG < LOG_LEVEL.INFO < LOG_LEVEL.WARN < LOG_LEVEL.ERROR < LOG_LEVEL.OFF`
  *
  * @param level - The Log Level at or above it should log
  */
