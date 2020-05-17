@@ -1,0 +1,73 @@
+{
+  "name": "@loopback/cli-main",
+  "description": "LoopBack 4 CLI built with Oclif",
+  "version": "0.0.1",
+  "bin": {
+    "lb4": "./bin/cli.js"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
+    "build": "lb-tsc",
+    "clean": "lb-clean loopback-cli-main*.tgz dist *.tsbuildinfo package",
+    "pretest": "npm run build",
+    "integration": "lb-mocha \"dist/__tests__/integration/**/*.js\"",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
+    "unit": "lb-mocha \"dist/__tests__/unit/**/*.js\"",
+    "verify": "npm pack && tar xf loopback-cli-main*.tgz && tree package && npm run clean",
+    "postpack": "lb-clean oclif.manifest.json",
+    "prepack": "npm run clean && npm run build && oclif-dev manifest && oclif-dev readme",
+    "version": "oclif-dev readme && git add README.md"
+  },
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "bugs": "https://github.com/strongloop/loopback-next/issues",
+  "dependencies": {
+    "@oclif/command": "^1.6.1",
+    "@oclif/config": "^1.15.1",
+    "@oclif/plugin-help": "^3.0.1",
+    "tslib": "^2.0.0"
+  },
+  "devDependencies": {
+    "@loopback/build": "^5.3.1",
+    "@loopback/testlab": "^3.1.3",
+    "@oclif/dev-cli": "^1.22.2",
+    "@types/node": "^10.17.21",
+    "globby": "^10.0.2",
+    "typescript": "^3.9.2"
+  },
+  "engines": {
+    "node": ">=10"
+  },
+  "files": [
+    "README.md",
+    "index.js",
+    "index.d.ts",
+    "dist",
+    "src",
+    "!*/__tests__",
+    "bin",
+    "/oclif.manifest.json"
+  ],
+  "homepage": "https://github.com/strongloop/loopback-next",
+  "keywords": [
+    "oclif"
+  ],
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "oclif": {
+    "commands": "./dist/commands",
+    "bin": "lb4",
+    "plugins": [
+      "@oclif/plugin-help"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "commands/main"
+  }
+}
