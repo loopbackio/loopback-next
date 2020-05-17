@@ -46,6 +46,8 @@ describe('model', () => {
   const flexibleDef = new ModelDefinition('Flexible');
   flexibleDef
     .addProperty('id', {type: 'string', id: true})
+    .addProperty('createdAt', Date)
+    .addSetting('hiddenProperties', ['createdAt'])
     .addSetting('strict', false);
 
   const addressDef = new ModelDefinition('Address');
@@ -121,8 +123,8 @@ describe('model', () => {
 
   class Flexible extends Entity {
     static definition = flexibleDef;
-
     id: string;
+    createdAt?: Date;
 
     constructor(data?: Partial<Flexible>) {
       super(data);
@@ -457,6 +459,16 @@ describe('model', () => {
       id: '123',
       email: 'xyz@example.com',
       firstName: 'Test User',
+    });
+  });
+
+  it('excludes hidden properties from toJSON() output with strict false', () => {
+    const flexible = new Flexible({
+      id: '123a',
+      createdAt: new Date(),
+    });
+    expect(flexible.toJSON()).to.eql({
+      id: '123a',
     });
   });
 
