@@ -203,9 +203,9 @@ LoopBack 4 apps.
    ```ts
    import {ApplicationConfig} from '@loopback/core';
    import {once} from 'events';
-   import * as express from 'express';
-   import {Request, Response} from 'express';
+   import express, {Request, Response} from 'express';
    import * as http from 'http';
+   import {AddressInfo} from 'net';
    import * as path from 'path';
    // Replace CoffeeShopApplication with the name of your application
    import {CoffeeShopApplication} from './application';
@@ -218,7 +218,8 @@ LoopBack 4 apps.
    export class ExpressServer {
      private app: express.Application;
      public readonly lbApp: CoffeeShopApplication;
-     private server?: http.Server;
+     public server?: http.Server;
+     public url: String;
 
      constructor(options: ApplicationConfig = {}) {
        this.app = express();
@@ -251,14 +252,16 @@ LoopBack 4 apps.
        const port = this.lbApp.restServer.config.port || 3000;
        const host = this.lbApp.restServer.config.host || '127.0.0.1';
        this.server = this.app.listen(port, host);
-       await pEvent(this.server, 'listening');
+       await once(this.server, 'listening');
+       const add = <AddressInfo>this.server.address();
+       this.url = `http://${add.address}:${add.port}`;
      }
 
      public async stop() {
        if (!this.server) return;
        await this.lbApp.stop();
        this.server.close();
-       await pEvent(this.server, 'close');
+       await once(this.server, 'close');
        this.server = undefined;
      }
    }
@@ -355,7 +358,7 @@ LoopBack 3 application. The following guide shows how to run
 In order to run LoopBack 3's tests from their current folder, add LB3 tests'
 path to `test` entry in package.json:
 
-- `"test": "lb-mocha \"dist/**tests**/\*_/_.js\" \"lb3app/test/\*.js\""`
+- `"test": "lb-mocha \"dist/**tests**/*_/_.js\" \"lb3app/test/*.js\""`
 
 In this case, the test folder is
 [`/lb3app/test`](https://github.com/strongloop/loopback-next/tree/spike/lb3test/examples/lb3-application/lb3app/test)
