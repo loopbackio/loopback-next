@@ -265,17 +265,20 @@ export abstract class Model {
    * See function `asObject` for each property's conversion rules.
    */
   toObject(options?: Options): Object {
+    const def = (this.constructor as typeof Model).definition;
     const obj: AnyObject = {};
 
     if (options && options.ignoreUnknownProperties === false) {
+      const hiddenProperties: string[] = def?.settings.hiddenProperties || [];
       for (const p in this) {
-        const val = (this as AnyObject)[p];
-        obj[p] = asObject(val, options);
+        if (!hiddenProperties.includes(p)) {
+          const val = (this as AnyObject)[p];
+          obj[p] = asObject(val, options);
+        }
       }
       return obj;
     }
 
-    const def = (this.constructor as typeof Model).definition;
     const props = def.properties;
     const keys = Object.keys(props);
 
