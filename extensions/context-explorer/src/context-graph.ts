@@ -9,7 +9,7 @@ import {
   JSONArray,
   JSONObject,
 } from '@loopback/context';
-import {attribute, digraph, ICluster, IContext} from 'ts-graphviz';
+import {attribute, Digraph, ICluster, toDot} from 'ts-graphviz';
 
 /**
  * A wrapper class for context, binding, and its level in the chain
@@ -46,6 +46,11 @@ export type ContextGraphOptions = {
  * A graph for context hierarchy
  */
 export class ContextGraph {
+  /**
+   * Root diagram
+   */
+  private root = new Digraph('ContextGraph');
+
   /**
    * Context json objects in the chain from root to leaf
    */
@@ -95,12 +100,10 @@ export class ContextGraph {
    * @param parent - Parent subgraph
    * @param level - Level of the context in the chain
    */
-  private renderContextChain(parent: ICluster<string>, level: number) {
+  private renderContextChain(parent: ICluster, level: number) {
     const ctx = this.contextChain[level];
     const ctxName = ctx.name as string;
-    const subgraph = parent.createSubgraph(`cluster_${ctxName}`);
-
-    subgraph.apply({
+    const subgraph = parent.createSubgraph(`cluster_${ctxName}`, {
       [attribute.label]: ctxName,
       [attribute.labelloc]: 't',
     });
@@ -132,7 +135,7 @@ export class ContextGraph {
    * @param level - Context level
    */
   protected renderConfig(
-    parent: ICluster<string>,
+    parent: ICluster,
     {binding, level, id}: ContextBinding,
   ) {
     const tagMap = binding.tags as JSONObject;
@@ -142,7 +145,7 @@ export class ContextGraph {
         level,
       );
       if (targetBinding != null) {
-        return parent.createEdge(targetBinding.id, id).attributes.apply({
+        return parent.createEdge([targetBinding.id, id], {
           [attribute.style]: 'dashed',
           [attribute.arrowhead]: 'odot',
           [attribute.color]: 'orange',
@@ -157,10 +160,7 @@ export class ContextGraph {
    * @param parent - Parent subgraph
    * @param binding - Context Binding object
    */
-  protected renderBinding(
-    parent: ICluster<string>,
-    {binding, id}: ContextBinding,
-  ) {
+  protected renderBinding(parent: ICluster, {binding, id}: ContextBinding) {
     let style = `filled,rounded`;
     if (binding.scope === BindingScope.SINGLETON) {
       style = style + ',bold';
@@ -175,7 +175,7 @@ export class ContextGraph {
     const tagLabel = tagPairs.length ? `|${tagPairs.join('\\l')}\\l` : '';
     const label = `{${binding.key}|{${binding.type}|${binding.scope}}${tagLabel}}`;
 
-    return parent.createNode(id).attributes.apply({
+    return parent.createNode(id, {
       [attribute.label]: label,
       [attribute.shape]: 'record',
       [attribute.style]: style,
@@ -230,7 +230,7 @@ export class ContextGraph {
    * @param level - Context level
    */
   private renderBindingInjections(
-    parent: ICluster<string>,
+    parent: ICluster,
     {binding, level, id}: ContextBinding,
   ) {
     const targetBindings: string[] = [];
@@ -283,23 +283,17 @@ export class ContextGraph {
 
       // FIXME(rfeng): We might have classes with the same name
       const classId = `Class_${ctor}`;
-      const rootGraph = getRootGraph(parent)!;
-      const node = rootGraph.createNode(classId);
-      node.attributes.apply({
+      this.root.createNode(classId, {
         [attribute.label]: label,
         [attribute.style]: 'filled',
         [attribute.shape]: 'record',
         [attribute.fillcolor]: 'khaki',
       });
 
-      parent
-        .createEdge(id, classId)
-        .attributes.apply({[attribute.style]: 'dashed'});
+      parent.createEdge([id, classId], {[attribute.style]: 'dashed'});
 
       for (const b of targetBindings) {
-        parent
-          .createEdge(classId, b)
-          .attributes.apply({[attribute.color]: 'blue'});
+        parent.createEdge([classId, b], {[attribute.color]: 'blue'});
       }
     }
   }
@@ -328,32 +322,14 @@ export class ContextGraph {
    * Build a direct graph
    */
   build() {
-    const graph = digraph('ContextGraph');
-    this.renderContextChain(graph, 0);
-    return graph;
+    this.renderContextChain(this.root, 0);
   }
 
   /**
    * Render the context graph in graphviz dot format
    */
   render() {
-    return this.build().toDot();
+    this.build();
+    return toDot(this.root);
   }
-}
-
-/**
- * Find the root graph for the given subgraph
- * @param g - Subgraph
- */
-function getRootGraph(g: ICluster<string>) {
-  let current: ICluster<string> | IContext = g;
-  while (isICluster(current) && current.context != null) {
-    current = current.context;
-  }
-  return !isICluster(current) ? current.root : undefined;
-}
-
-function isICluster(g: ICluster<string> | IContext): g is ICluster<string> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return (g as any).context != null;
 }
