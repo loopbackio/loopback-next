@@ -1,36 +1,45 @@
 {
-  "name": "@loopback/extension-tracing",
+  "name": "@loopback/tracing",
   "version": "0.0.1",
   "description": "LoopBack Distributed Tracing",
   "engines": {
-    "node": ">=8.9"
+    "node": "^10.16 || 12 || 14"
   },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "lb-tsc",
-    "clean": "lb-clean loopback-extension-tracing*.tgz dist tsconfig.build.tsbuildinfo package",
+    "clean": "lb-clean loopback-tracing*.tgz dist tsconfig.build.tsbuildinfo package",
     "pretest": "npm run build",
     "test": "lb-mocha \"dist/__tests__/**/*.js\"",
-    "verify": "npm pack && tar xf loopback-extension-tracing*.tgz && tree package && npm run clean",
+    "verify": "npm pack && tar xf loopback-tracing*.tgz && tree package && npm run clean",
     "demo": "./src/__examples__/demo.sh"
   },
   "author": "IBM Corp.",
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
-    "@loopback/core": "^1.10.6",
-    "@loopback/rest": "^1.22.0",
-    "@types/jaeger-client": "^3.15.1",
-    "debug": "^4.1.1",
-    "jaeger-client": "^3.17.1",
-    "opentracing": "^0.14.4",
-    "p-event": "^4.1.0"
+    "@loopback/core": "^2.10.1",
+    "@loopback/express": "^2.0.1",
+    "@loopback/rest": "^7.0.1",
+    "@opentelemetry/api": "^0.11.0",
+    "@opentelemetry/exporter-jaeger": "^0.11.0",
+    "@opentelemetry/exporter-prometheus": "^0.11.0",
+    "@opentelemetry/metrics": "^0.11.0",
+    "@opentelemetry/node": "^0.11.0",
+    "@opentelemetry/plugin-http": "^0.11.0",
+    "@opentelemetry/plugin-https": "^0.11.0",
+    "@opentelemetry/tracing": "^0.11.0",
+    "@types/jaeger-client": "^3.15.4",
+    "debug": "^4.2.0",
+    "jaeger-client": "^3.18.1"
   },
   "devDependencies": {
-    "@loopback/build": "^2.0.15",
-    "@loopback/eslint-config": "^4.1.3",
-    "@loopback/testlab": "^1.9.3",
+    "@loopback/build": "^6.2.4",
+    "@loopback/eslint-config": "^10.0.0",
+    "@loopback/testlab": "^3.2.6",
     "@types/debug": "^4.1.5",
-    "@types/node": "^10.14.13"
+    "@types/node": "^10.17.35"
   },
   "keywords": [
     "LoopBack",

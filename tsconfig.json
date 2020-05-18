@@ -119,6 +119,9 @@
       "path": "extensions/pooling/tsconfig.json"
     },
     {
+      "path": "extensions/tracing/tsconfig.json"
+    },
+    {
       "path": "extensions/typeorm/tsconfig.json"
     },
     {

@@ -1,5 +1,5 @@
 // Copyright IBM Corp. 2019. All Rights Reserved.
-// Node module: @loopback/rest-explorer
+// Node module: @loopback/tracing
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
@@ -67,10 +67,7 @@ describe('Tracing (acceptance)', () => {
   }
 
   function getTraceId(span: Span) {
-    return span
-      .context()
-      .toString()
-      .split(':')[0];
+    return span.context().toString().split(':')[0];
   }
 
   class GreetingService {
