@@ -11,6 +11,7 @@ import {
   DefaultCrudRepository,
   Entity,
   juggler,
+  Model,
   ModelDefinition,
   Repository,
   RepositoryMixin,
@@ -75,6 +76,23 @@ describe('RepositoryMixin', () => {
 
     expectComponentToBeBound(myApp, TestComponent);
     expectNoteRepoToBeBound(myApp);
+  });
+
+  it('binds user defined component with models', () => {
+    @model()
+    class MyModel extends Model {}
+
+    class MyModelComponent {
+      models = [MyModel];
+    }
+
+    const myApp = new AppWithRepoMixin();
+    myApp.component(MyModelComponent);
+
+    const boundModels = myApp.find('models.*').map(b => b.key);
+    expect(boundModels).to.containEql('models.MyModel');
+    const modelCtor = myApp.getSync<typeof MyModel>('models.MyModel');
+    expect(modelCtor).to.be.equal(MyModel);
   });
 
   context('migrateSchema', () => {
