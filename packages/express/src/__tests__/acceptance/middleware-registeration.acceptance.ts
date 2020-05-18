@@ -5,6 +5,7 @@
 
 import {config, Provider} from '@loopback/core';
 import {Client, expect} from '@loopback/testlab';
+import {Router} from 'express';
 import {ExpressServer, Middleware} from '../../';
 import {SpyAction} from '../fixtures/spy-config';
 import {spy, SpyConfig, TestFunction, TestHelper} from './test-helpers';
@@ -42,12 +43,30 @@ describe('Express middleware registry', () => {
         expect(binding.key).to.match(/^middleware\./);
         return testFn(binding);
       });
+
+      it('registers a middleware with router', async () => {
+        const router = Router();
+        router.post('/greet', spy(spyConfig));
+        const binding = server.expressMiddleware(
+          'middleware.express.spy',
+          router,
+        );
+        await testFn(binding, '/greet');
+        const res = await client
+          .post('/hello')
+          .send('"World"')
+          .set('content-type', 'application/json')
+          .expect(200, 'Hello, World');
+        ['x-spy-log', 'x-spy-mock', 'x-spy-reject'].forEach(h =>
+          expect(res.get(h)).to.be.undefined(),
+        );
+      });
     });
   }
 
-  runTests('log', binding => helper.testSpyLog(binding));
-  runTests('mock', binding => helper.testSpyMock(binding));
-  runTests('reject', binding => helper.testSpyReject(binding));
+  runTests('log', (binding, path) => helper.testSpyLog(binding, path));
+  runTests('mock', (binding, path) => helper.testSpyMock(binding, path));
+  runTests('reject', (binding, path) => helper.testSpyReject(binding, path));
 
   describe('LoopBack middleware registry', () => {
     const spyMiddleware: Middleware = async (middlewareCtx, next) => {
