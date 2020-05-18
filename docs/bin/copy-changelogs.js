@@ -96,6 +96,7 @@ lang: en
 title: 'CHANGELOG - ${name}'
 keywords: LoopBack 4.0, LoopBack 4, CHANGELOG
 sidebar: lb4_sidebar
+toc_level: 0
 permalink: /doc/en/lb4/changelog.${shortName}.html
 ---
 
