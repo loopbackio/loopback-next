@@ -47,7 +47,7 @@ cp -r $SOURCE_DIR/_includes $JEKYLL_DIR/
 cp -r $SOURCE_DIR/_layouts $JEKYLL_DIR/
 
 echo "Copying static assets"
-cp -r $SOURCE_DIR/{css,images,dist,js,fonts} $JEKYLL_DIR/
+cp -r $SOURCE_DIR/{css,images,dist,js,fonts,navbar-template.html} $JEKYLL_DIR/
 rm -rf $JEKYLL_DIR/doc
 mkdir -p $JEKYLL_DIR/doc
 cp -r $SOURCE_DIR/doc/index.md $JEKYLL_DIR/doc
