@@ -220,7 +220,54 @@ See
 
 ### Migrate Models, Entities and Repositories
 
-TBD
+> Contribute custom models (Notification) describing shape of data expected by
+> the services (Push service). These models are not backed by any datasource,
+> they are primarily used to describe data fields.
+
+See
+[Migrate behavior-less models](../site/migration/components/models.md#migrate-behavior-less-models).
+
+> Contribute custom entities (Application, Installation) to be persisted via
+> CRUD, exposed via REST and possibly further customized by the app.
+> Customization options include which datasource to use, the base path where
+> REST API is exposed (e.g. `/api/apps` and `/api/devices`), additional fields
+> (e.g. `Application.tenantId`) and changes in persistence behavior (e.g. via
+> Operation Hooks)
+
+See
+[loopback-next#5476](https://github.com/strongloop/loopback-next/issues/5476)
+
+> Add a custom Operation Hook to given models, with a config option to
+> enable/disable this feature. The list of models can be provided explicitly in
+> the component configuration or obtained dynamically via introspection (e.g.
+> all models having a "belongsTo" relation with the Group model)
+
+See
+[loopback-next#5476](https://github.com/strongloop/loopback-next/issues/5476)
+
+> Add new relations, e.g. between an app-provided entity `User` and a
+> component-provided entity `File`. In this variant, the relation is added on
+> small fixed number of models.
+
+See
+[loopback-next#5476](https://github.com/strongloop/loopback-next/issues/5476)
+
+> A model mixing adding new relations (`hasMany ModelEvents`), installing
+> Operation Hooks (to generate model events/audit log entries), adding new
+> Repository APIs (for working with related model events).
+>
+> _(The mixin-based design may be difficult to accomplish in LB4, we may want to
+> use introspection and a model setting instead. The trickier part is how to
+> apply changes to models added after the component was mounted.)_
+
+See
+[loopback-next#5476](https://github.com/strongloop/loopback-next/issues/5476)
+
+> For all models with a flag enabled in model settings, setup a custom
+> `afterRemote` hook to modify the HTTP response (e.g. add additional headers).
+
+See
+[loopback-next#5476](https://github.com/strongloop/loopback-next/issues/5476)
 
 ### Migrate REST API
 
