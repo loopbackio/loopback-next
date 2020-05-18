@@ -43,6 +43,7 @@ jobs:
       # is not able to access type information for dependencies
       script:
         - lerna bootstrap
+        - npm run build
         - npm run lint
 
     - node_js: "12"
