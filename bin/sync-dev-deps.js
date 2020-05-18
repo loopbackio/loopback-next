@@ -40,6 +40,7 @@ async function syncDevDeps() {
   const masterDeps = {};
 
   masterDeps['eslint'] = buildDeps['eslint'];
+  masterDeps['prettier'] = buildDeps['prettier'];
   masterDeps['typescript'] = buildDeps['typescript'];
 
   for (const d of deps) {
