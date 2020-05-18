@@ -333,6 +333,27 @@ export class MorganInterceptor extends ExpressMiddlewareInterceptorProvider<
 }
 ```
 
+## Use Express Router to enable
+
+Express allows HTTP verbs to be used to set up routes, such as
+`app.post('/hello', ...)`. See http://expressjs.com/en/4x/api.html#app.METHOD.
+
+To allow a similar usage in LoopBack, we can create an Express router and
+register it to LoopBack as follows:
+
+```ts
+import {ExpressRequestHandler, Router} from '@loopback/express';
+
+const handler: ExpressRequestHandler = async (req, res, next) => {
+  res.send(req.path);
+};
+
+const router = Router();
+router.post('/greet', handler);
+router.get('/hello', handler);
+const binding = server.expressMiddleware('middleware.express.greeting', router);
+```
+
 ## What's behind the scenes
 
 `Middleware` and `Interceptor` are key concepts that allow Express middleware

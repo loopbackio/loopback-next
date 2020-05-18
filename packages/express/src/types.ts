@@ -16,7 +16,7 @@ import {Request, RequestHandler, Response} from 'express';
 import onFinished from 'on-finished';
 import {MiddlewareBindings} from './keys';
 
-export {Request, Response} from 'express';
+export {Request, Response, Router, RouterOptions} from 'express';
 
 /**
  * An object holding HTTP request, response and other data

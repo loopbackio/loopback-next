@@ -12,12 +12,16 @@ import {
 import {Client, givenHttpServerConfig, supertest} from '@loopback/testlab';
 import bodyParser from 'body-parser';
 import {ExpressApplication} from '../../express.application';
+import {ExpressRequestHandler} from '../../types';
 import {SpyAction, SpyConfig} from '../fixtures/spy-config';
 import spyFactory from '../fixtures/spy.middleware';
 export const spy = spyFactory;
 export {SpyConfig} from '../fixtures/spy-config';
 
-export type TestFunction = (spyBinding: Binding<unknown>) => Promise<unknown>;
+export type TestFunction = (
+  spyBinding: Binding<unknown>,
+  path?: string,
+) => Promise<unknown>;
 
 export class TestHelper {
   readonly app: ExpressApplication;
@@ -58,7 +62,7 @@ export class TestHelper {
       }
     }
     const binding = this.app.controller(MyController);
-    this.app.expressServer.expressApp.post('/hello', async (req, res, next) => {
+    const handler: ExpressRequestHandler = async (req, res, next) => {
       try {
         const controller = await this.app.get<MyController>(binding.key);
         const proxy = createProxyWithInterceptors(
@@ -74,7 +78,9 @@ export class TestHelper {
       } catch (err) {
         next(err);
       }
-    });
+    };
+    this.app.expressServer.expressApp.post('/hello', handler);
+    this.app.expressServer.expressApp.post('/greet', handler);
   }
 
   private configureSpy(
@@ -84,46 +90,46 @@ export class TestHelper {
     this.app.configure<SpyConfig>(spyBinding.key).to({action});
   }
 
-  async testSpyLog(spyBinding: Binding<unknown>) {
+  async testSpyLog(spyBinding: Binding<unknown>, path = '/hello') {
     this.configureSpy(spyBinding);
 
-    await this.assertSpyLog();
+    await this.assertSpyLog(path);
   }
 
-  async assertSpyLog() {
+  async assertSpyLog(path = '/hello') {
     await this.client
-      .post('/hello')
+      .post(path)
       .send('"World"')
       .set('content-type', 'application/json')
       .expect(200, 'Hello, World')
-      .expect('x-spy-log', 'POST /hello');
+      .expect('x-spy-log', `POST ${path}`);
   }
 
-  async testSpyMock(spyBinding: Binding<unknown>) {
+  async testSpyMock(spyBinding: Binding<unknown>, path = '/hello') {
     this.configureSpy(spyBinding, 'mock');
-    await this.assertSpyMock();
+    await this.assertSpyMock(path);
   }
 
-  async assertSpyMock() {
+  async assertSpyMock(path = '/hello') {
     await this.client
-      .post('/hello')
+      .post(path)
       .send('"World"')
       .set('content-type', 'application/json')
       .expect(200, 'Hello, Spy')
-      .expect('x-spy-mock', 'POST /hello');
+      .expect('x-spy-mock', `POST ${path}`);
   }
 
-  async testSpyReject(spyBinding: Binding<unknown>) {
+  async testSpyReject(spyBinding: Binding<unknown>, path = '/hello') {
     this.configureSpy(spyBinding, 'reject');
-    await this.assertSpyReject();
+    await this.assertSpyReject(path);
   }
 
-  private async assertSpyReject() {
+  private async assertSpyReject(path = '/hello') {
     await this.client
-      .post('/hello')
+      .post(path)
       .send('"World"')
       .set('content-type', 'application/json')
       .expect(400)
-      .expect('x-spy-reject', 'POST /hello');
+      .expect('x-spy-reject', `POST ${path}`);
   }
 }
