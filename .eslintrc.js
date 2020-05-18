@@ -4,5 +4,9 @@
 // License text available at https://opensource.org/licenses/MIT
 
 module.exports = {
-  extends: ['./packages/eslint-config/eslintrc.js'],
+  extends: [
+    './packages/eslint-config/eslintrc.js',
+    'plugin:prettier/recommended',
+  ],
+  plugins: ['prettier'],
 };
