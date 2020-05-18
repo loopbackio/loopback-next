@@ -115,7 +115,7 @@ export function getFilterJsonSchemaFor(
   const modelRelations = getModelRelations(modelCtor);
   const hasRelations = Object.keys(modelRelations).length > 0;
 
-  if (hasRelations) {
+  if (hasRelations && !excluded.includes('include')) {
     schema.properties!.include = {
       ...(options.setTitle !== false && {
         title: `${modelCtor.modelName}.IncludeFilter`,
