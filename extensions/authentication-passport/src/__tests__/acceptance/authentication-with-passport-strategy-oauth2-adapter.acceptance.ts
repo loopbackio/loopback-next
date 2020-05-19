@@ -10,7 +10,7 @@ import {
   VerifyFunction,
   VerifyCallback,
 } from 'passport-oauth2';
-import {MyUser, userRepository} from './fixtures/user-repository';
+import {MyUser, userRepository} from '@loopback/mock-oauth2-provider';
 import {
   simpleRestApplication,
   configureApplication,
@@ -25,10 +25,7 @@ import {
   supertest,
 } from '@loopback/testlab';
 import {RestApplication, RestBindings, Response} from '@loopback/rest';
-import {
-  startApp as startMockOauth2Server,
-  stopApp as stopMockOauth2Server,
-} from './fixtures/mock-oauth2-social-app';
+import {MockTestOauth2SocialApp} from '@loopback/mock-oauth2-provider';
 import * as url from 'url';
 import {inject} from '@loopback/core';
 import axios from 'axios';
@@ -160,8 +157,8 @@ describe('Oauth2 authorization flow', () => {
   let oauth2Strategy: StrategyAdapter<MyUser>;
   let client: Client;
 
-  before(startMockOauth2Server);
-  after(stopMockOauth2Server);
+  before(MockTestOauth2SocialApp.startMock);
+  after(MockTestOauth2SocialApp.stopMock);
 
   before(givenLoopBackApp);
   before(givenOauth2Strategy);

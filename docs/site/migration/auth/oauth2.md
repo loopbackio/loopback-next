@@ -23,6 +23,6 @@ We have a simplified OAuth 2.0 server implementation in extension
 [authentication-passport](https://github.com/strongloop/loopback-next/blob/master/extensions/authentication-passport)'s
 test fixtures, which sets up an Express application as an OAuth 2.0 provider.
 You can find the code in file
-[mock-oauth2-social-app.ts](https://github.com/strongloop/loopback-next/blob/master/extensions/authentication-passport/src/__tests__/acceptance/fixtures/mock-oauth2-social-app.ts).
+[mock-oauth2-provider](https://github.com/strongloop/loopback-next/blob/master/fixtures/mock-oauth2-provider).
 At this moment people who are interested to create such a provider can use it as
 a reference.

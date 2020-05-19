@@ -8,10 +8,10 @@
 
   A. the Supertest client
 
-  B. a LoopBack app (fixtures/simple-rest-app.ts) - has a simple app with no
+  B. a LoopBack app (./fixtures/simple-rest-app.ts) - has a simple app with no
   controller, Oauth2Controller is added during the test run
 
-  C. Mock Authorization Server (fixtures/mock-oauth2-social-app.ts) - mocks the
+  C. Mock Authorization Server (@loopback/mock-oauth2-provider) - mocks the
   authorization flow login with a social app like facebook, google, etc
 
 ### Test steps:

@@ -383,3 +383,11 @@
 # Includes the following repos
 # - loopback-connector-kv-redis
 # (there is no acceptance/repository-kv-redis yet)
+
+#
+# Fixtures (test apps)
+#
+# - Issue label: fixtures
+# - Primary owner(s): @jannyHou @emonddr
+# - Standby owner(s): @deepakrkris
+fixtures/mock-oauth2-provider @jannyHou @emonddr @deepakrkris
