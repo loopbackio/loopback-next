@@ -592,6 +592,66 @@ const binding = ctx.bind('my-key').toClass(MyService);
 
 " %}
 
+The `createBindingFromClass` can be used for three kinds of classes as the value
+provider for bindings.
+
+1. The class for `toClass()`
+
+   ```ts
+   @bind({tags: {greeting: 'a'}})
+   class Greeter {
+     constructor(@inject('currentUser') private user: string) {}
+
+     greet() {
+       return `Hello, ${this.user}`;
+     }
+   }
+
+   // toClass() is used internally
+   // A tag `{type: 'class'}` is added
+   const binding = createBindingFromClass(Greeter);
+   ctx.add(binding);
+   ```
+
+2. The class for `toProvider()`
+
+```ts
+@bind({tags: {greeting: 'b'}})
+class GreetingProvider implements Provider<string> {
+  constructor(@inject('currentUser') private user: string) {}
+
+  value() {
+    return `Hello, ${this.user}`;
+  }
+}
+
+// toProvider() is used internally
+// A tag `{type: 'provider'}` is added
+const binding = createBindingFromClass(GreetingProvider);
+ctx.add(binding);
+```
+
+3. The class for `toDynamicValue()`
+
+```ts
+@bind({tags: {greeting: 'c'}})
+class DynamicGreetingProvider {
+  static value(@inject('currentUser') user: string) {
+    return `Hello, ${this.user}`;
+  }
+}
+
+// toDynamicValue() is used internally
+// A tag `{type: 'dynamicValueProvider'}` is added
+const binding = createBindingFromClass(GreetingProvider);
+ctx.add(binding);
+```
+
+The `@bind` is optional for such classes. But it's usually there to provide
+additional metadata such as scope and tags for the binding. Without `@bind`,
+`createFromClass` simply calls underlying `toClass`, `toProvider`, or
+`toDynamicValue` based on the class signature.
+
 #### When to call createBindingFromClass
 
 Classes that are placed in specific directories such as : `src/datasources`,
