@@ -3,9 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Component, createBindingFromClass} from '@loopback/core';
+import {Binding, Component, createBindingFromClass} from '@loopback/core';
 import {ApiConnectSpecEnhancer} from './apiconnect.spec-enhancer';
 
 export class ApiConnectComponent implements Component {
-  bindings = [createBindingFromClass(ApiConnectSpecEnhancer)];
+  bindings: Binding[] = [createBindingFromClass(ApiConnectSpecEnhancer)];
 }

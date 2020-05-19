@@ -9,7 +9,7 @@ import {
   JSONArray,
   JSONObject,
 } from '@loopback/context';
-import {attribute, Digraph, ICluster, toDot} from 'ts-graphviz';
+import {attribute, Digraph, ICluster, toDot, INode, IEdge} from 'ts-graphviz';
 
 /**
  * A wrapper class for context, binding, and its level in the chain
@@ -137,7 +137,7 @@ export class ContextGraph {
   protected renderConfig(
     parent: ICluster,
     {binding, level, id}: ContextBinding,
-  ) {
+  ): IEdge | undefined {
     const tagMap = binding.tags as JSONObject;
     if (tagMap?.[ContextTags.CONFIGURATION_FOR]) {
       const targetBinding = this.getBinding(
@@ -160,7 +160,10 @@ export class ContextGraph {
    * @param parent - Parent subgraph
    * @param binding - Context Binding object
    */
-  protected renderBinding(parent: ICluster, {binding, id}: ContextBinding) {
+  protected renderBinding(
+    parent: ICluster,
+    {binding, id}: ContextBinding,
+  ): INode {
     let style = `filled,rounded`;
     if (binding.scope === BindingScope.SINGLETON) {
       style = style + ',bold';

@@ -13,6 +13,7 @@ import {
   Interceptor,
   InvocationContext,
   Next,
+  NonVoid,
   Provider,
 } from '@loopback/context';
 import {SecurityBindings, UserProfile} from '@loopback/security';
@@ -50,7 +51,10 @@ export class AuthorizationInterceptor implements Provider<Interceptor> {
     return this.intercept.bind(this);
   }
 
-  async intercept(invocationCtx: InvocationContext, next: Next) {
+  async intercept(
+    invocationCtx: InvocationContext,
+    next: Next,
+  ): Promise<NonVoid> {
     const description = debug.enabled ? invocationCtx.description : '';
     let metadata = getAuthorizationMetadata(
       invocationCtx.target,
