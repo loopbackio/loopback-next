@@ -18,7 +18,7 @@
     "docs"
   ],
   "scripts": {
-    "prepack": "node ./bin/copy-readmes.js && node ./bin/copy-changelogs.js && cd .. && npm run tsdocs",
+    "version": "node ./bin/copy-readmes.js && node ./bin/copy-changelogs.js && cd .. && npm run tsdocs",
     "clean": "lb-clean loopback-docs*.tgz package apidocs site/readmes site/changelogs site/apidocs"
   },
   "devDependencies": {

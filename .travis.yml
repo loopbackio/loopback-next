@@ -56,7 +56,9 @@ jobs:
       env: TASK=verify-docs
       # The default npm for node v12.16.1 (npm v6.13.4) fails with cb() never called
       before_install: npm i -g npm
-      script: ./bin/verify-doc-changes.sh
+      script:
+        - npm run --prefix docs version
+        - ./bin/verify-doc-changes.sh
 
     - node_js: "12"
       os: linux
