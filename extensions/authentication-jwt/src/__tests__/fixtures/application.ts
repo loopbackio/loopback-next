@@ -11,11 +11,7 @@ import {RestApplication} from '@loopback/rest';
 import {RestExplorerComponent} from '@loopback/rest-explorer';
 import {ServiceMixin} from '@loopback/service-proxy';
 import path from 'path';
-import {
-  JWTAuthenticationComponent,
-  SECURITY_SCHEME_SPEC,
-  UserServiceBindings,
-} from '../../';
+import {JWTAuthenticationComponent, UserServiceBindings} from '../../';
 import {DbDataSource} from './datasources/db.datasource';
 import {MySequence} from './sequence';
 
@@ -32,8 +28,6 @@ export class TestApplication extends BootMixin(
     this.static('/', path.join(__dirname, '../public'));
 
     // - enable jwt auth -
-    // Add security spec (To be done: refactor it to an enhancer)
-    this.addSecuritySpec();
     // Mount authentication system
     this.component(AuthenticationComponent);
     // Mount jwt component
@@ -56,25 +50,5 @@ export class TestApplication extends BootMixin(
         nested: true,
       },
     };
-  }
-
-  // - enable jwt auth -
-  addSecuritySpec(): void {
-    this.api({
-      openapi: '3.0.0',
-      info: {
-        title: 'test application',
-        version: '1.0.0',
-      },
-      paths: {},
-      components: {securitySchemes: SECURITY_SCHEME_SPEC},
-      security: [
-        {
-          // secure all endpoints with 'jwt'
-          jwt: [],
-        },
-      ],
-      servers: [{url: '/'}],
-    });
   }
 }
