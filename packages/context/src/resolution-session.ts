@@ -6,8 +6,9 @@
 import {DecoratorFactory} from '@loopback/metadata';
 import debugModule from 'debug';
 import {Binding} from './binding';
+import {BindingSelector} from './binding-filter';
 import {Context} from './context';
-import {Injection} from './inject';
+import {Injection, InjectionMetadata} from './inject';
 import {BoundValue, tryWithFinally, ValueOrPromise} from './value-promise';
 
 const debugSession = debugModule('loopback:context:resolver:session');
@@ -34,6 +35,12 @@ export interface BindingElement {
 export interface InjectionElement {
   type: 'injection';
   value: Readonly<Injection>;
+}
+
+export interface InjectionDescriptor {
+  targetName: string;
+  bindingSelector: BindingSelector;
+  metadata: InjectionMetadata;
 }
 
 /**
@@ -156,7 +163,9 @@ export class ResolutionSession {
    * Describe the injection for debugging purpose
    * @param injection - Injection object
    */
-  static describeInjection(injection: Readonly<Injection>) {
+  static describeInjection(
+    injection: Readonly<Injection>,
+  ): InjectionDescriptor {
     const name = getTargetName(
       injection.target,
       injection.member,

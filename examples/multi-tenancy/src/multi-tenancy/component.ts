@@ -3,7 +3,12 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Component, createBindingFromClass, extensionFor} from '@loopback/core';
+import {
+  Binding,
+  Component,
+  createBindingFromClass,
+  extensionFor,
+} from '@loopback/core';
 import {MultiTenancyActionProvider} from './actions/multi-tenancy-action.provider';
 import {MultiTenancyBindings, MULTI_TENANCY_STRATEGIES} from './keys';
 import {
@@ -14,7 +19,7 @@ import {
 } from './strategies';
 
 export class MultiTenancyComponent implements Component {
-  bindings = [
+  bindings: Binding[] = [
     createBindingFromClass(MultiTenancyActionProvider, {
       key: MultiTenancyBindings.ACTION,
     }),

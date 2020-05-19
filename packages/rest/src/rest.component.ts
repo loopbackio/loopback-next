@@ -60,7 +60,7 @@ export class RestComponent implements Component {
   /**
    * Add built-in body parsers
    */
-  bindings = [
+  bindings: Binding[] = [
     // FIXME(rfeng): We now register request body parsers in TRANSIENT scope
     // so that they can be bound at application or server level
     Binding.bind(RestBindings.REQUEST_BODY_PARSER).toClass(RequestBodyParser),

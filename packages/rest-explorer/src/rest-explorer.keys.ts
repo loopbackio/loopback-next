@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {BindingKey} from '@loopback/context';
+import {BindingAddress, BindingKey} from '@loopback/context';
 import {RestExplorerComponent} from './rest-explorer.component';
 import {RestExplorerConfig} from './rest-explorer.types';
 
@@ -23,7 +23,7 @@ export namespace RestExplorerBindings {
    * We recommend `ctx.configure(RestExplorerBindings.COMPONENT)` to be used
    * instead of `ctx.bind(RestExplorerBindings.CONFIG)`.
    */
-  export const CONFIG = BindingKey.buildKeyForConfig<RestExplorerConfig>(
-    COMPONENT,
-  );
+  export const CONFIG: BindingAddress<RestExplorerConfig> = BindingKey.buildKeyForConfig<
+    RestExplorerConfig
+  >(COMPONENT);
 }

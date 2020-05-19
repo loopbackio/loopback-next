@@ -7,6 +7,7 @@ import {
   bind,
   Binding,
   BindingSpec,
+  BindingTagFilter,
   Constructor,
   filterByTag,
   ValueOrPromise,
@@ -62,7 +63,7 @@ export function asLifeCycleObserver<T = unknown>(binding: Binding<T>) {
  * Find all life cycle observer bindings. By default, a binding tagged with
  * `CoreTags.LIFE_CYCLE_OBSERVER`. It's used as `BindingFilter`.
  */
-export const lifeCycleObserverFilter = filterByTag(
+export const lifeCycleObserverFilter: BindingTagFilter = filterByTag(
   CoreTags.LIFE_CYCLE_OBSERVER,
 );
 
