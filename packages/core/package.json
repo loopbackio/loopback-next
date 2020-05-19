@@ -18,6 +18,9 @@
   "author": "IBM Corp.",
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "@loopback/context": "^3.7.0",
     "debug": "^4.1.1",
