@@ -63,10 +63,32 @@ export async function runExtractorForMonorepo(options: ExtractorOptions = {}) {
 
   setupApiDocsDirs(lernaRootDir, options);
 
+  const errors: Record<string, unknown> = {};
+
   for (const pkg of packages) {
     /* istanbul ignore if  */
-    invokeExtractorForPackage(pkg, options);
+    const err = invokeExtractorForPackage(pkg, options);
+    if (err != null) {
+      if (options.ignoreErrors) {
+        errors[pkg.name] = err;
+      } else {
+        throw err;
+      }
+    }
   }
+  if (Object.keys(errors).length === 0) return;
+  console.error(
+    '****************************************' +
+      '****************************************',
+  );
+  for (const p in errors) {
+    const err = errors[p] as {message: string};
+    console.error('%s: %s', p, err?.message ?? err);
+  }
+  console.error(
+    '****************************************' +
+      '****************************************',
+  );
 }
 
 export function runExtractorForPackage(
@@ -92,7 +114,12 @@ export function runExtractorForPackage(
     manifestLocation: path.join(pkgDir, 'package.json'),
     rootPath: pkgDir,
   };
-  invokeExtractorForPackage(pkg, options);
+  const err = invokeExtractorForPackage(pkg, options);
+  if (err == null) return;
+  if (!options.ignoreErrors) {
+    throw err;
+  }
+  console.error(err);
 }
 
 /**
@@ -111,7 +138,12 @@ function invokeExtractorForPackage(
   process.chdir(pkg.location);
   const extractorConfig = buildExtractorConfig(pkg, options);
   debug('Resolved extractor config:', extractorConfig);
-  invokeExtractor(extractorConfig, options);
+  try {
+    invokeExtractor(extractorConfig, options);
+  } catch (err) {
+    debug('Error in extracting API docs for %s', pkg.name, err);
+    return err;
+  }
 }
 
 /**

@@ -170,6 +170,10 @@ export interface ExtractorOptions extends ApiDocsOptions {
    * A flag to control if `apiReport` should be enabled
    */
   apiReportEnabled?: boolean;
+  /**
+   * A flag to control if errors should be ignored
+   */
+  ignoreErrors?: boolean;
 }
 
 /**
