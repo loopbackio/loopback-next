@@ -283,7 +283,7 @@ describe('Basic Authentication', () => {
 
       @authenticate(AUTH_STRATEGY_NAME)
       async whoAmI(): Promise<string> {
-        return this.user[securityId];
+        return <string>this.user[securityId];
       }
     }
     app.controller(MyController);

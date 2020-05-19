@@ -240,7 +240,7 @@ describe('Basic Authentication', () => {
       ): Promise<string> {
         if (!userProfile) return 'userProfile is undefined';
         if (!userProfile[securityId]) return 'userProfile id is undefined';
-        return userProfile[securityId];
+        return <string>userProfile[securityId];
       }
     }
     app.controller(MyController);

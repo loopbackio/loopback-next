@@ -93,6 +93,6 @@ export class UserController {
     },
   })
   async whoAmI(): Promise<string> {
-    return this.user[securityId];
+    return <string>this.user[securityId];
   }
 }

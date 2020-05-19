@@ -138,7 +138,7 @@ export class UserLoginController {
     @inject(SecurityBindings.USER) profile: UserProfile,
   ) {
     const user = await this.userRepository.findById(
-      parseInt(profile[securityId]),
+      parseInt(<string>profile[securityId]),
       {
         include: [
           {

@@ -15,7 +15,7 @@ export interface Principal {
   /**
    * Name/id
    */
-  [securityId]: string;
+  [securityId]: number | string;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [attribute: string]: any;
