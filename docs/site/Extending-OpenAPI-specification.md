@@ -151,3 +151,10 @@ To apply an enhancer by name, call `applyEnhancerByName`:
 ```ts
 await app.getSpecService.applyEnhancerByName('info');
 ```
+
+## Usage in REST Server
+
+The REST server in `@loopback/rest` has a built-in OAS enhancer service. By
+default it applies all the enhancers bound to its application. You can read
+section [Enhance OpenAPI Specification](Server.md#Enhance-openAPI-specification)
+to learn more about how to add your own enhancers.

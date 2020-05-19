@@ -338,6 +338,51 @@ export class HelloWorldApp extends Application {
 You can also add multiple servers in the constructor of your application class
 as shown [here](Application.md#servers).
 
+### Enhance OpenAPI Specification
+
+The REST server exposes a function `getApiSpec()` to retrieve its OpenAPI
+specifications:
+
+```ts
+// in code, retrieve the OpenAPI spec by `getApiSpec()`
+const spec = await app.restServer.getApiSpec();
+```
+
+An application's OpenAPI specification is mainly generated from
+[controllers](https://loopback.io/doc/en/lb4/Controllers.html) and their
+members. Besides the controller, other artifacts should also be able to
+contribute specifications. Therefore we introduced
+[OpenAPI specification enhancer](Extending-OpenAPI-specification.md) to
+customize it.
+
+You can read the page
+[Extending OpenAPI specification](Extending-OpenAPI-specification.md) to get
+familiar with its concepts and usages.
+
+The REST server has a built-in enhancer service to scan all the enhancers bound
+to the application and apply them by default. To add your own enhancer, just
+bind it to your application and the server will automatically pick it up:
+
+```ts
+import {RestApplication} from '@loopback/rest';
+
+export class SomeApp extends RestApplication {
+constructor(options: ApplicationConfig = {}) {
+  super(options);
+  this.add(createBindingFromClass(SomeSpecEnhancer));
+}
+```
+
+If you contribute the enhancer from a [component](Components.md), create the
+binding in this way:
+
+```ts
+import {createBindingFromClass} from '@loopback/core';
+export class SomeComponent implements Component {
+  bindings = [createBindingFromClass(SomeSpecEnhancer)];
+}
+```
+
 ## Next Steps
 
 - Learn about [Server-level Context](Context.md#server-level-context)
