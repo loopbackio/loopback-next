@@ -167,7 +167,7 @@ export class OrderClassCustomerClassController {
   async getCustomerClass(
     @param.path.number('id') id: typeof OrderClass.prototype.orderNumber,
   ): Promise<CustomerClass> {
-    return this.orderClassRepository.customerClass(id);
+    return this.orderClassRepository.my_customer(id);
   }
 }
 
