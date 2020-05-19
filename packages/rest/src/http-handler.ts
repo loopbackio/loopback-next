@@ -8,6 +8,8 @@ import {
   ComponentsObject,
   ControllerSpec,
   PathObject,
+  ReferenceObject,
+  SchemaObject,
   SchemasObject,
 } from '@loopback/openapi-v3';
 import {RestBindings} from './keys';
@@ -78,7 +80,11 @@ export class HttpHandler {
   /**
    * @deprecated Use `getApiComponents`
    */
-  getApiDefinitions() {
+  getApiDefinitions():
+    | {
+        [schema: string]: SchemaObject | ReferenceObject;
+      }
+    | undefined {
     return this._openApiComponents?.schemas;
   }
 

@@ -20,7 +20,7 @@ import {
   isBindingAddress,
   isBindingTagFilter,
 } from './binding-filter';
-import {BindingAddress} from './binding-key';
+import {BindingAddress, BindingKey} from './binding-key';
 import {BindingComparator} from './binding-sorter';
 import {BindingCreationPolicy, Context} from './context';
 import {ContextView, createViewGetter} from './context-view';
@@ -322,7 +322,7 @@ export namespace inject {
    * @param metadata - Metadata for the injection
    */
   export const binding = function injectBinding(
-    bindingKey?: BindingAddress,
+    bindingKey?: string | BindingKey<unknown>,
     metadata?: InjectBindingMetadata,
   ) {
     metadata = Object.assign({decorator: '@inject.binding'}, metadata);

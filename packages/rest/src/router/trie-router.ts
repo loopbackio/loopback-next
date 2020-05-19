@@ -7,7 +7,7 @@ import {inject} from '@loopback/context';
 import {inspect} from 'util';
 import {RestBindings} from '../keys';
 import {RestRouterOptions} from './rest-router';
-import {createResolvedRoute, RouteEntry} from './route-entry';
+import {createResolvedRoute, ResolvedRoute, RouteEntry} from './route-entry';
 import {BaseRouter} from './router-base';
 import {Trie} from './trie';
 
@@ -32,7 +32,10 @@ export class TrieRouter extends BaseRouter {
     this.trie.create(key, route);
   }
 
-  protected findRouteWithPathVars(verb: string, path: string) {
+  protected findRouteWithPathVars(
+    verb: string,
+    path: string,
+  ): ResolvedRoute | undefined {
     const key = this.getKey(verb, path);
 
     const found = this.trie.match(key);

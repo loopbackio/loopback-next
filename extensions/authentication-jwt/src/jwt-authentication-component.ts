@@ -22,7 +22,7 @@ import {JWTAuthenticationStrategy} from './services/jwt.auth.strategy';
 import {JWTService} from './services/jwt.service';
 
 export class JWTAuthenticationComponent implements Component {
-  bindings = [
+  bindings: Binding[] = [
     // token bindings
     Binding.bind(TokenServiceBindings.TOKEN_SECRET).to(
       TokenServiceConstants.TOKEN_SECRET_VALUE,

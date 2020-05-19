@@ -12,7 +12,7 @@ import https from 'https';
 import {ErrorWriterOptions} from 'strong-error-handler';
 import {BodyParser, RequestBodyParser} from './body-parsers';
 import {HttpHandler} from './http-handler';
-import {RestServer} from './rest.server';
+import {RestServer, RestServerConfig} from './rest.server';
 import {RestRouter, RestRouterOptions} from './router';
 import {SequenceHandler} from './sequence';
 import {
@@ -35,7 +35,9 @@ export namespace RestBindings {
   /**
    * Binding key for setting and injecting RestComponentConfig
    */
-  export const CONFIG = CoreBindings.APPLICATION_CONFIG.deepProperty('rest');
+  export const CONFIG: BindingKey<RestServerConfig> = CoreBindings.APPLICATION_CONFIG.deepProperty(
+    'rest',
+  );
   /**
    * Binding key for setting and injecting the host name of RestServer
    */
@@ -162,7 +164,9 @@ export namespace RestBindings {
   /**
    * Binding key for setting and injecting an OpenAPI spec
    */
-  export const API_SPEC = BindingKey.create<OpenApiSpec>('rest.apiSpec');
+  export const API_SPEC: BindingKey<OpenApiSpec> = BindingKey.create<
+    OpenApiSpec
+  >('rest.apiSpec');
 
   /**
    * Binding key for setting and injecting an OpenAPI operation spec
@@ -229,7 +233,9 @@ export namespace RestBindings {
     /**
      * Binding key for setting and injecting the http request
      */
-    export const REQUEST = BindingKey.create<Request>('rest.http.request');
+    export const REQUEST: BindingKey<Request> = BindingKey.create<Request>(
+      'rest.http.request',
+    );
     /**
      * Binding key for setting and injecting the http response
      */

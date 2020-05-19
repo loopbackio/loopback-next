@@ -32,7 +32,7 @@ export class ParseParamsProvider implements Provider<ParseParams> {
     private ajvFactory?: AjvFactory,
   ) {}
 
-  value() {
+  value(): ParseParams {
     return (request: Request, route: ResolvedRoute) =>
       parseOperationArgs(request, route, this.requestBodyParser, {
         ajvFactory: this.ajvFactory,

@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Context, CoreBindings, inject, Server} from '@loopback/core';
-import {HttpServer, HttpServerOptions} from '@loopback/http-server';
+import {HttpOptions, HttpServer, HttpsOptions} from '@loopback/http-server';
 import debugFactory from 'debug';
 import express from 'express';
 import {toExpressMiddleware} from './middleware';
@@ -16,7 +16,7 @@ const debug = debugFactory('loopback:middleware');
 /**
  * Configuration for a LoopBack based Express server
  */
-export type ExpressServerConfig = HttpServerOptions & {
+export type ExpressServerConfig = (HttpOptions | HttpsOptions) & {
   /**
    * Base path to mount the LoopBack middleware chain
    */

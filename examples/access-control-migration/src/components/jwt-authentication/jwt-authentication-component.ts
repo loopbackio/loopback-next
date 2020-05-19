@@ -11,17 +11,17 @@ import {
   CoreBindings,
   inject,
 } from '@loopback/core';
-import {JWTAuthenticationStrategy} from './services/jwt.auth.strategy';
-import {JWTService} from './services/jwt.service';
 import {
   TokenServiceBindings,
   TokenServiceConstants,
   UserServiceBindings,
 } from './keys';
+import {JWTAuthenticationStrategy} from './services/jwt.auth.strategy';
+import {JWTService} from './services/jwt.service';
 import {MyUserService} from './services/user.service';
 
 export class JWTAuthenticationComponent implements Component {
-  bindings = [
+  bindings: Binding[] = [
     Binding.bind(TokenServiceBindings.TOKEN_SECRET).to(
       TokenServiceConstants.TOKEN_SECRET_VALUE,
     ),
