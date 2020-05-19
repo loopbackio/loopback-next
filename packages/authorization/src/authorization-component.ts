@@ -5,6 +5,7 @@
 
 import {
   bind,
+  Binding,
   Component,
   ContextTags,
   createBindingFromClass,
@@ -14,5 +15,5 @@ import {AuthorizationBindings} from './keys';
 
 @bind({tags: {[ContextTags.KEY]: AuthorizationBindings.COMPONENT.key}})
 export class AuthorizationComponent implements Component {
-  bindings = [createBindingFromClass(AuthorizationInterceptor)];
+  bindings: Binding[] = [createBindingFromClass(AuthorizationInterceptor)];
 }

@@ -5,6 +5,7 @@
 
 import {
   addExtension,
+  Binding,
   BindingTemplate,
   Constructor,
   Context,
@@ -108,7 +109,7 @@ export const USER_PROFILE_NOT_FOUND = 'USER_PROFILE_NOT_FOUND';
 export function registerAuthenticationStrategy(
   context: Context,
   strategyClass: Constructor<AuthenticationStrategy>,
-) {
+): Binding<unknown> {
   return addExtension(
     context,
     AuthenticationBindings.AUTHENTICATION_STRATEGY_EXTENSION_POINT_NAME,
