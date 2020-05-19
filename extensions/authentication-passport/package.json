@@ -20,6 +20,9 @@
   "author": "IBM Corp.",
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "keywords": [
     "Passport",
     "Authentication",
@@ -31,9 +34,6 @@
     "src",
     "!*/__tests__"
   ],
-  "publishConfig": {
-    "access": "public"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/strongloop/loopback-next.git",

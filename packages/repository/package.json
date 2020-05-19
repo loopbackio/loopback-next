@@ -18,6 +18,9 @@
   "author": "IBM Corp.",
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "devDependencies": {
     "@loopback/build": "^5.4.2",
     "@loopback/eslint-config": "^8.0.0",

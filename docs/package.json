@@ -4,6 +4,11 @@
   "description": "Documentation for LoopBack 4",
   "homepage": "https://github.com/strongloop/loopback-next/tree/master/docs",
   "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "engines": {
     "node": ">=10"
   },
@@ -24,16 +29,11 @@
   "devDependencies": {
     "@loopback/build": "^5.4.2"
   },
-  "publishConfig": {
-    "access": "public"
-  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/strongloop/loopback-next",
+    "url": "https://github.com/strongloop/loopback-next.git",
     "directory": "docs"
   },
-  "copyright.owner": "IBM Corp.",
-  "license": "MIT",
   "dependencies": {
     "fs-extra": "^9.0.0",
     "tslib": "^2.0.0"

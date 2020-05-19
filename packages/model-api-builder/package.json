@@ -7,9 +7,6 @@
   "engines": {
     "node": ">=10"
   },
-  "publishConfig": {
-    "access": "public"
-  },
   "scripts": {
     "build": "lb-tsc",
     "clean": "lb-clean loopback-model-api-builder*.tgz dist *.tsbuildinfo package",
@@ -20,6 +17,9 @@
   "author": "IBM Corp.",
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "peerDependencies": {
     "@loopback/core": "^2.7.1",
     "@loopback/repository": "^2.6.0"

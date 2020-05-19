@@ -24,6 +24,7 @@
     "start": "node ."
   },
   "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "files": [
     "README.md",

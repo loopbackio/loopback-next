@@ -8,6 +8,11 @@
     "node": ">=10"
   },
   "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "lb-tsc",
     "build:watch": "lb-tsc --watch",
@@ -33,10 +38,6 @@
     "url": "https://github.com/strongloop/loopback-next.git",
     "directory": "examples/access-control-migration"
   },
-  "publishConfig": {
-    "access": "public"
-  },
-  "license": "MIT",
   "dependencies": {
     "@loopback/authentication": "^4.2.6",
     "@loopback/authorization": "^0.5.11",

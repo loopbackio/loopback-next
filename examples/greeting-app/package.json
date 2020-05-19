@@ -29,18 +29,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/strongloop/loopback-next.git"
-  },
-  "publishConfig": {
-    "access": "public"
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "examples/greeting-app"
   },
   "keywords": [
     "loopback",
     "loopback-application"
   ],
-  "license": "MIT",
   "author": "IBM Corp.",
   "copyright.owner": "IBM Corp.",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "bugs": {
     "url": "https://github.com/strongloop/loopback-next/issues"
   },

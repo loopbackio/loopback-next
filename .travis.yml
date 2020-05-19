@@ -45,6 +45,7 @@ jobs:
         - lerna bootstrap
         - npm run build
         - npm run lint
+        - npm run check-package-metadata
 
     - node_js: "12"
       os: linux

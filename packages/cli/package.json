@@ -4,6 +4,11 @@
   "description": "Yeoman generator for LoopBack 4",
   "homepage": "https://github.com/strongloop/loopback-next/tree/master/packages/cli",
   "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "engines": {
     "node": ">=10"
   },
@@ -91,7 +96,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/strongloop/loopback-next"
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "packages/cli"
   },
   "config": {
     "templateDependencies": {
@@ -173,7 +179,5 @@
       "@loopback/example-todo-jwt": "^1.1.0",
       "@loopback/mock-oauth2-provider": "^0.1.0"
     }
-  },
-  "copyright.owner": "IBM Corp.",
-  "license": "MIT"
+  }
 }
