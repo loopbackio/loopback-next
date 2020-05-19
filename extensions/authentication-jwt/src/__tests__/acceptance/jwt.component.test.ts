@@ -12,6 +12,7 @@ import {
 import {genSalt, hash} from 'bcryptjs';
 import * as _ from 'lodash';
 import {UserServiceBindings} from '../..';
+import {OPERATION_SECURITY_SPEC, SECURITY_SCHEME_SPEC} from '../../';
 import {UserRepository} from '../../repositories';
 import {TestApplication} from '../fixtures/application';
 
@@ -41,6 +42,12 @@ describe('jwt authentication', () => {
       .set('Authorization', 'Bearer ' + token)
       .expect(200);
     expect(res.text).to.equal('2');
+  });
+
+  it('generates openapi spec provided by enhancer', async () => {
+    const spec = await app.restServer.getApiSpec();
+    expect(spec.security).to.eql(OPERATION_SECURITY_SPEC);
+    expect(spec.components?.securitySchemes).to.eql(SECURITY_SCHEME_SPEC);
   });
 
   /*

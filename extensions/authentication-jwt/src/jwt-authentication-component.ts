@@ -9,6 +9,7 @@ import {
   Binding,
   Component,
   CoreBindings,
+  createBindingFromClass,
   inject,
 } from '@loopback/core';
 import {
@@ -20,6 +21,7 @@ import {UserCredentialsRepository, UserRepository} from './repositories';
 import {MyUserService} from './services';
 import {JWTAuthenticationStrategy} from './services/jwt.auth.strategy';
 import {JWTService} from './services/jwt.service';
+import {SecuritySpecEnhancer} from './services/security.spec.enhancer';
 
 export class JWTAuthenticationComponent implements Component {
   bindings: Binding[] = [
@@ -38,6 +40,7 @@ export class JWTAuthenticationComponent implements Component {
     Binding.bind(UserServiceBindings.USER_CREDENTIALS_REPOSITORY).toClass(
       UserCredentialsRepository,
     ),
+    createBindingFromClass(SecuritySpecEnhancer),
   ];
   constructor(@inject(CoreBindings.APPLICATION_INSTANCE) app: Application) {
     registerAuthenticationStrategy(app, JWTAuthenticationStrategy);
