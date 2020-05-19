@@ -30,11 +30,12 @@
     "url": "https://github.com/strongloop/loopback-next.git",
     "directory": "examples/passport-login"
   },
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
-  "author": "IBM Corp.",
-  "license": "MIT",
   "dependencies": {
     "@loopback/authentication": "^4.2.6",
     "@loopback/authentication-passport": "^2.1.6",
@@ -96,6 +97,5 @@
     "tutorial",
     "passport",
     "authentication"
-  ],
-  "copyright.owner": "IBM Corp."
+  ]
 }

@@ -25,7 +25,11 @@
     "directory": "packages/express"
   },
   "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "files": [
     "README.md",
     "dist",
@@ -56,9 +60,5 @@
     "http-errors": "^1.7.3",
     "source-map-support": "^0.5.19",
     "typescript": "~3.9.3"
-  },
-  "copyright.owner": "IBM Corp.",
-  "publishConfig": {
-    "access": "public"
   }
 }

@@ -8,6 +8,11 @@
     "node": ">=10"
   },
   "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
     "build": "lb-tsc",
@@ -33,10 +38,6 @@
     "url": "https://github.com/strongloop/loopback-next.git",
     "directory": "examples/context"
   },
-  "publishConfig": {
-    "access": "public"
-  },
-  "license": "MIT",
   "dependencies": {
     "@loopback/context": "^3.8.2",
     "tslib": "^2.0.0"

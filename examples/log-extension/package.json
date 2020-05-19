@@ -8,6 +8,11 @@
     "node": ">=10"
   },
   "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "lb-tsc",
     "build:watch": "lb-tsc --watch",
@@ -27,16 +32,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/strongloop/loopback-next.git"
-  },
-  "publishConfig": {
-    "access": "public"
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "examples/log-extension"
   },
   "keywords": [
     "loopback",
     "loopback-extension"
   ],
-  "license": "MIT",
   "bugs": {
     "url": "https://github.com/strongloop/loopback-next/issues"
   },

@@ -34,11 +34,12 @@
     "url": "https://github.com/strongloop/loopback-next.git",
     "directory": "examples/rpc-server"
   },
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
-  "author": "IBM Corp.",
-  "license": "MIT",
   "dependencies": {
     "@loopback/context": "^3.8.2",
     "@loopback/core": "^2.7.1",

@@ -17,6 +17,9 @@
   "author": "IBM Corp.",
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "@loopback/context": "^3.8.2",
     "@loopback/core": "^2.7.1",
@@ -46,9 +49,6 @@
     "!*/__tests__",
     "templates"
   ],
-  "publishConfig": {
-    "access": "public"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/strongloop/loopback-next.git",

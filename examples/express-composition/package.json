@@ -38,11 +38,12 @@
     "url": "https://github.com/strongloop/loopback-next.git",
     "directory": "examples/express-composition"
   },
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
-  "author": "IBM Corp.",
-  "license": "MIT",
   "dependencies": {
     "@loopback/boot": "^2.3.2",
     "@loopback/context": "^3.8.2",
