@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.4](https://github.com/strongloop/loopback-next/compare/@loopback/authentication-passport@2.1.3...@loopback/authentication-passport@2.1.4) (2020-05-19)
+
+
+### Bug Fixes
+
+* errors in mock oauth2 app export from test folder ([5c4d10f](https://github.com/strongloop/loopback-next/commit/5c4d10f7cb37087cf5f01bd2985f086b04413cf8)), closes [#5380](https://github.com/strongloop/loopback-next/issues/5380)
+* **authentication-passport:** delete an extra curly brackets in UserProfileFactory example ([32d56ac](https://github.com/strongloop/loopback-next/commit/32d56ac68af971a9f9e9cff7506a8d702654ca21))
+
+
+
+
+
 ## [2.1.3](https://github.com/strongloop/loopback-next/compare/@loopback/authentication-passport@2.1.2...@loopback/authentication-passport@2.1.3) (2020-05-07)
 
 **Note:** Version bump only for package @loopback/authentication-passport

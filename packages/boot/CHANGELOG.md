@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/boot@2.2.0...@loopback/boot@2.3.0) (2020-05-19)
+
+
+### Features
+
+* **boot:** add `applicationBooter` method to `BootMixin` ([3a8a487](https://github.com/strongloop/loopback-next/commit/3a8a48700fc34d007137c591c03af813cb96db20))
+* **boot:** add a booter for model classes ([2de7d5f](https://github.com/strongloop/loopback-next/commit/2de7d5f5f3a4498eda1ca615cf2c5a472163236f))
+* **boot:** make sure core bindings are excluded from sub app boot ([a6108ce](https://github.com/strongloop/loopback-next/commit/a6108ced24e2760b21e3d6d29f0becf14ea42baf))
+* **repository:** add `model()` to RepositoryMixin ([8314612](https://github.com/strongloop/loopback-next/commit/8314612f816f0eb41d5a30f71dffa8738b84b2d6)), closes [/github.com/strongloop/loopback-next/pull/5378#discussion_r424980840](https://github.com//github.com/strongloop/loopback-next/pull/5378/issues/discussion_r424980840)
+
+
+
+
+
 # [2.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/boot@2.1.2...@loopback/boot@2.2.0) (2020-05-07)
 
 

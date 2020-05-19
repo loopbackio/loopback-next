@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/booter-lb3app@2.1.3...@loopback/booter-lb3app@2.2.0) (2020-05-19)
+
+
+### Features
+
+* **booter-lb3app:** bind lb3 models ([914234e](https://github.com/strongloop/loopback-next/commit/914234e3a8cb2664b149bb2d6627815cc20a72f1))
+* **example-lb3-application:** add lb3 tests to mocha ([92ea098](https://github.com/strongloop/loopback-next/commit/92ea098ad964886be5e8a846af3f5a097c793e53))
+
+
+
+
+
 ## [2.1.3](https://github.com/strongloop/loopback-next/compare/@loopback/booter-lb3app@2.1.2...@loopback/booter-lb3app@2.1.3) (2020-05-07)
 
 

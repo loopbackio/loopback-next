@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.5.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@2.4.0...@loopback/repository@2.5.0) (2020-05-19)
+
+
+### Bug Fixes
+
+* hidden properties when strict is false ([133cc6b](https://github.com/strongloop/loopback-next/commit/133cc6b267cd3e339821eb908c87e571773dc845))
+
+
+### Features
+
+* **repository:** add `model()` to RepositoryMixin ([8314612](https://github.com/strongloop/loopback-next/commit/8314612f816f0eb41d5a30f71dffa8738b84b2d6)), closes [/github.com/strongloop/loopback-next/pull/5378#discussion_r424980840](https://github.com//github.com/strongloop/loopback-next/pull/5378/issues/discussion_r424980840)
+* **repository:** adding hasManyThrough to hasMany and its helpers ([fe4cf5e](https://github.com/strongloop/loopback-next/commit/fe4cf5e523bb86dd8b9160c0382e1aba2d096056))
+* **repository:** define constants for repository binding namespaces and tags ([43e84a1](https://github.com/strongloop/loopback-next/commit/43e84a1ad53bc849f15dfbc5fc11123108463be4))
+* **repository:** extract helper `rejectNavigationalPropertiesInData` ([4cc8eba](https://github.com/strongloop/loopback-next/commit/4cc8eba853232213f9f82408568587d81103142e))
+
+
+
+
+
 # [2.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@2.3.0...@loopback/repository@2.4.0) (2020-05-07)
 
 

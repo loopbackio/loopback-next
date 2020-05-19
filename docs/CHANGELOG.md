@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.8.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.7.0...@loopback/docs@3.8.0) (2020-05-19)
+
+
+### Bug Fixes
+
+* **docs:** fix edit url for changelog files ([42eea59](https://github.com/strongloop/loopback-next/commit/42eea59ff92f91189f38ec005919c45e021c17e8))
+* **docs:** set `toc_level` to customize toc layout ([eccf944](https://github.com/strongloop/loopback-next/commit/eccf9445eab2ceb307b911dd2ef5266131999a81))
+* errors in mock oauth2 app export from test folder ([5c4d10f](https://github.com/strongloop/loopback-next/commit/5c4d10f7cb37087cf5f01bd2985f086b04413cf8)), closes [#5380](https://github.com/strongloop/loopback-next/issues/5380)
+* **docs:** copy navbar-template to fast preview site ([e594997](https://github.com/strongloop/loopback-next/commit/e59499707586df0463986b5029e92660cefa3f40))
+* **docs:** fix typo in Components.md ([9c46928](https://github.com/strongloop/loopback-next/commit/9c46928603786d8eac3498feeb764c9da10f067e))
+* remove email connector from sidebar ([ca7e122](https://github.com/strongloop/loopback-next/commit/ca7e122f83bd737367c59ca7214b2bc611c5f10a))
+
+
+### Features
+
+* **context:** pass resolution context to the factory function for toDynamicValue() ([6513d3f](https://github.com/strongloop/loopback-next/commit/6513d3f5e36b90f58501cfbf311b2b26210d44dd))
+* **docs:** add more information to createBindingFromClass ([e2a1a52](https://github.com/strongloop/loopback-next/commit/e2a1a524cb870f318234f1bfabe5a43aabbebd64))
+* **docs:** update sequence.md to refer to latest Express support ([64209c0](https://github.com/strongloop/loopback-next/commit/64209c097f3480b5b4e47aebc4befa136eec0bb7))
+
+
+
+
+
 # [3.7.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.6.0...@loopback/docs@3.7.0) (2020-05-07)
 
 

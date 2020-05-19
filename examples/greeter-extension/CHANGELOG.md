@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-greeter-extension@2.0.8...@loopback/example-greeter-extension@2.1.0) (2020-05-19)
+
+
+### Features
+
+* upgrade to TypeScript 3.9.x ([3300e45](https://github.com/strongloop/loopback-next/commit/3300e4569ab8410bb1285f7a54d326e9d976476d))
+
+
+
+
+
 ## [2.0.8](https://github.com/strongloop/loopback-next/compare/@loopback/example-greeter-extension@2.0.7...@loopback/example-greeter-extension@2.0.8) (2020-05-07)
 
 **Note:** Version bump only for package @loopback/example-greeter-extension

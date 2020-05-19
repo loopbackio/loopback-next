@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.8.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@3.7.0...@loopback/context@3.8.0) (2020-05-19)
+
+
+### Bug Fixes
+
+* **context:** check parameter design type for method injections ([7e81e10](https://github.com/strongloop/loopback-next/commit/7e81e10f8d5c5c5cd9be0e091fde9bf8c4b1e3b3))
+
+
+### Features
+
+* **context:** allow bindings to be created from dynamic value provider classes ([9e15154](https://github.com/strongloop/loopback-next/commit/9e15154dae3a3b51b5e090ecfe4052f416051332))
+* **context:** pass resolution context to the factory function for toDynamicValue() ([6513d3f](https://github.com/strongloop/loopback-next/commit/6513d3f5e36b90f58501cfbf311b2b26210d44dd))
+* **context:** use a `_source` to keep the original value provider for bindings ([90679f3](https://github.com/strongloop/loopback-next/commit/90679f3826a8cf18f06123503a9b96c763b5dc20))
+* **core:** allow extensionFilter to take a list of extension point names ([8f315eb](https://github.com/strongloop/loopback-next/commit/8f315eb46bee7365da5325a23b948df9d477bfdb))
+
+
+
+
+
 # [3.7.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@3.6.0...@loopback/context@3.7.0) (2020-05-07)
 
 

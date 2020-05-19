@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.7.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@2.6.0...@loopback/cli@2.7.0) (2020-05-19)
+
+
+### Bug Fixes
+
+* **cli:** add yeoman-environment as a dependency ([065ff27](https://github.com/strongloop/loopback-next/commit/065ff273d60264e1d3fe87ab249bfaa139149010))
+
+
+### Features
+
+* upgrade to TypeScript 3.9.x ([3300e45](https://github.com/strongloop/loopback-next/commit/3300e4569ab8410bb1285f7a54d326e9d976476d))
+* **cli:** remove `node_modules` before run `npm install` for `lb4 update` ([54ff104](https://github.com/strongloop/loopback-next/commit/54ff10429b91355adb6363847de3c0cc2bf28da1))
+* **cli:** update dependencies to be compatible with ESLint 7.x ([d05d357](https://github.com/strongloop/loopback-next/commit/d05d3575312f987155542ce0222e2da86d3dfbe9))
+
+
+
+
+
 # [2.6.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@2.5.0...@loopback/cli@2.6.0) (2020-05-07)
 
 

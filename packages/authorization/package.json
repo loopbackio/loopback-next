@@ -1,6 +1,6 @@
 {
   "name": "@loopback/authorization",
-  "version": "0.5.8",
+  "version": "0.5.9",
   "description": "A LoopBack component for authorization support.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -24,15 +24,15 @@
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
-    "@loopback/context": "^3.7.0",
-    "@loopback/core": "^2.5.0",
-    "@loopback/security": "^0.2.8",
+    "@loopback/context": "^3.8.0",
+    "@loopback/core": "^2.6.0",
+    "@loopback/security": "^0.2.9",
     "debug": "^4.1.1",
     "tslib": "^2.0.0"
   },
   "devDependencies": {
-    "@loopback/build": "^5.3.1",
-    "@loopback/testlab": "^3.1.3",
+    "@loopback/build": "^5.4.0",
+    "@loopback/testlab": "^3.1.4",
     "@types/debug": "^4.1.5",
     "@types/node": "10.17.21",
     "casbin": "^5.0.0"

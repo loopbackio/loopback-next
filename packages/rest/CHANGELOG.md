@@ -3,6 +3,32 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@4.0.0...@loopback/rest@5.0.0) (2020-05-19)
+
+
+### Bug Fixes
+
+* **rest:** check if the middleware chain has already produce a response ([be290dc](https://github.com/strongloop/loopback-next/commit/be290dc7088eddeecd79288ccb6c70f4da9956fd))
+* use unknown type for err argument for Express hander ([b13b338](https://github.com/strongloop/loopback-next/commit/b13b3386a06332b71b33a64f5bc2ab9b4544cc8a))
+
+
+### Features
+
+* **openapi-v3:** relax `[@api](https://github.com/api)` to make `paths` optional with `{}` as the default ([ef3c415](https://github.com/strongloop/loopback-next/commit/ef3c4151efb2c88daa2b5abb37c6086b91860c92))
+* **rest:** remove bindElement and getFromContext ([d6d830f](https://github.com/strongloop/loopback-next/commit/d6d830f8161fbb408f75df69402144dc2ca7cc48))
+
+
+### BREAKING CHANGES
+
+* **rest:** usage of `BindElement` and `GetFromContext` should be
+replaced with `@inject.setter`, `@inject.binding`, and `@inject.getter`.
+
+See https://loopback.io/doc/en/lb4/Decorators_inject.html
+
+
+
+
+
 # [4.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@3.3.2...@loopback/rest@4.0.0) (2020-05-07)
 
 

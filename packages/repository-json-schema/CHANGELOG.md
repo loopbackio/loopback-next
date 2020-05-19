@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.4.1](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@2.4.0...@loopback/repository-json-schema@2.4.1) (2020-05-19)
+
+
+### Bug Fixes
+
+* **repository-json-schema:** honor excluded "include" property ([3888f60](https://github.com/strongloop/loopback-next/commit/3888f60357be7006fc3aff250d291f53c0ca355e))
+
+
+
+
+
 # [2.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@2.3.0...@loopback/repository-json-schema@2.4.0) (2020-05-07)
 
 

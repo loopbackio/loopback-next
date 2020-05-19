@@ -3,6 +3,63 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/eslint-config@6.0.6...@loopback/eslint-config@7.0.0) (2020-05-19)
+
+
+### Features
+
+* replace eslint rule `no-invalid-this` with TypeScript-aware one ([b2f21f7](https://github.com/strongloop/loopback-next/commit/b2f21f78c28c71b59bbed8f1a42c4b663c85f507))
+* **eslint-config:** upgrade to ESLint 7.x ([5c3e3c2](https://github.com/strongloop/loopback-next/commit/5c3e3c247b9d6f47a1b5d861ffe3eff35ed5caf0))
+
+
+### BREAKING CHANGES
+
+* In code accessing `this` variable, eslint-ignore
+comment for `no-invalid-this` will no longer work. You can either
+change those comments to disable `@typescript-eslint/no-invalid-this`,
+or better tell TypeScript what is the type of `this` in your function.
+
+A TypeScript example:
+
+```ts
+describe('my mocha suite', function(this: Mocha.Suite) {
+  this.timeout(1000);
+  it('is slow', function(this: Mocha.Context) {
+    this.timeout(2000);
+  });
+})
+```
+
+A JavaScript example:
+
+```js
+describe('my mocha suite', /** @this {Mocha.Suite} */ function() {
+  this.timeout(1000);
+  it('is slow', /** @this {Mocha.Context} */ function() {
+    this.timeout(2000);
+  });
+})
+```
+
+Signed-off-by: Miroslav Bajtoš <mbajtoss@gmail.com>
+* **eslint-config:** ESLint 7.x changes how plugins references in the shared
+config are resolved. The following is quoted from
+https://eslint.org/blog/2020/05/eslint-v7.0.0-released:
+
+> ESLint will now resolve plugins relative to the entry configuration file.
+This means that shared configuration files that are located outside the
+project can now be colocated with the plugins they require.
+> Starting in ESLint v7, configuration files and ignore files passed to
+ESLint using the --config path/to/a-config and --ignore-path
+path/to/a-ignore CLI flags, respectively, will resolve from the current
+working directory rather than the file location. This allows for users to
+utilize shared plugins without having to install them directly in their
+project.
+
+
+
+
+
 ## [6.0.6](https://github.com/strongloop/loopback-next/compare/@loopback/eslint-config@6.0.5...@loopback/eslint-config@6.0.6) (2020-05-07)
 
 **Note:** Version bump only for package @loopback/eslint-config

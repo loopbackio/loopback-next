@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-passport-login@1.3.0...@loopback/example-passport-login@1.4.0) (2020-05-19)
+
+
+### Bug Fixes
+
+* errors in mock oauth2 app export from test folder ([5c4d10f](https://github.com/strongloop/loopback-next/commit/5c4d10f7cb37087cf5f01bd2985f086b04413cf8)), closes [#5380](https://github.com/strongloop/loopback-next/issues/5380)
+
+
+### Features
+
+* upgrade to TypeScript 3.9.x ([3300e45](https://github.com/strongloop/loopback-next/commit/3300e4569ab8410bb1285f7a54d326e9d976476d))
+
+
+
+
+
 # [1.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-passport-login@1.2.0...@loopback/example-passport-login@1.3.0) (2020-05-07)
 
 

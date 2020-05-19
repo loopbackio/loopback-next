@@ -1,6 +1,6 @@
 {
   "name": "@loopback/cron",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "LoopBack Cron Integration",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -18,7 +18,7 @@
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
-    "@loopback/core": "^2.5.0",
+    "@loopback/core": "^2.6.0",
     "@types/cron": "^1.7.2",
     "@types/debug": "^4.1.5",
     "cron": "^1.8.2",
@@ -26,9 +26,9 @@
     "tslib": "^2.0.0"
   },
   "devDependencies": {
-    "@loopback/build": "^5.3.1",
-    "@loopback/eslint-config": "^6.0.6",
-    "@loopback/testlab": "^3.1.3",
+    "@loopback/build": "^5.4.0",
+    "@loopback/eslint-config": "^7.0.0",
+    "@loopback/testlab": "^3.1.4",
     "@types/node": "^10.17.21"
   },
   "keywords": [

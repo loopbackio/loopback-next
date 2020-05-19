@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@3.3.1...@loopback/openapi-v3@3.4.0) (2020-05-19)
+
+
+### Features
+
+* **openapi-v3:** relax `[@api](https://github.com/api)` to make `paths` optional with `{}` as the default ([ef3c415](https://github.com/strongloop/loopback-next/commit/ef3c4151efb2c88daa2b5abb37c6086b91860c92))
+
+
+
+
+
 ## [3.3.1](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@3.3.0...@loopback/openapi-v3@3.3.1) (2020-05-07)
 
 **Note:** Version bump only for package @loopback/openapi-v3

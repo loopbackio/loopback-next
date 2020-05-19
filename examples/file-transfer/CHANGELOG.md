@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-file-transfer@1.2.5...@loopback/example-file-transfer@1.3.0) (2020-05-19)
+
+
+### Bug Fixes
+
+* use unknown type for err argument for Express hander ([b13b338](https://github.com/strongloop/loopback-next/commit/b13b3386a06332b71b33a64f5bc2ab9b4544cc8a))
+
+
+### Features
+
+* upgrade to TypeScript 3.9.x ([3300e45](https://github.com/strongloop/loopback-next/commit/3300e4569ab8410bb1285f7a54d326e9d976476d))
+
+
+
+
+
 ## [1.2.5](https://github.com/strongloop/loopback-next/compare/@loopback/example-file-transfer@1.2.4...@loopback/example-file-transfer@1.2.5) (2020-05-07)
 
 **Note:** Version bump only for package @loopback/example-file-transfer

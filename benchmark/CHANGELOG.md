@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/benchmark@2.0.7...@loopback/benchmark@2.1.0) (2020-05-19)
+
+
+### Features
+
+* **benchmark:** add a simple benchmark for context bindings ([bdad689](https://github.com/strongloop/loopback-next/commit/bdad6891345e34c472acca967da904cc959d6c03))
+
+
+
+
+
 ## [2.0.8](https://github.com/strongloop/loopback-next/compare/@loopback/benchmark@2.0.7...@loopback/benchmark@2.0.8) (2020-05-07)
 
 **Note:** Version bump only for package @loopback/benchmark

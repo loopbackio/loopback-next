@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-validation-app@1.3.1...@loopback/example-validation-app@1.4.0) (2020-05-19)
+
+
+### Features
+
+* upgrade to TypeScript 3.9.x ([3300e45](https://github.com/strongloop/loopback-next/commit/3300e4569ab8410bb1285f7a54d326e9d976476d))
+
+
+
+
+
 ## [1.3.1](https://github.com/strongloop/loopback-next/compare/@loopback/example-validation-app@1.3.0...@loopback/example-validation-app@1.3.1) (2020-05-07)
 
 **Note:** Version bump only for package @loopback/example-validation-app
