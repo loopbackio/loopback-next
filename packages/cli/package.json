@@ -30,7 +30,7 @@
     "@types/ejs": "^3.0.4",
     "@types/fs-extra": "^9.0.0",
     "@types/minimatch": "^3.0.3",
-    "@types/node": "^10.17.21",
+    "@types/node": "^10.17.24",
     "loopback": "^3.27.0",
     "loopback-datasource-juggler": "^4.21.2",
     "mem-fs": "^1.1.3",
