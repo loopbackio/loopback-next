@@ -335,7 +335,7 @@ app.get('/oauth/token', function (req, res) {
  */
 app.get('/verify', async function (req, res) {
   try {
-    const token = (req.query.access_token ||
+    const token = (req.query.access_token ??
       req.header('Authorization')) as string;
     const result = await verifyToken(token);
     const expirationTime = result.exp;
