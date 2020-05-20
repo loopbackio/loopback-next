@@ -451,7 +451,7 @@ export class Application extends Context implements LifeCycleObserver {
    * ```
    */
   public service<S>(
-    cls: Constructor<S> | Constructor<Provider<S>>,
+    cls: Constructor<S | Provider<S>>,
     nameOrOptions?: string | ServiceOptions,
   ): Binding<S> {
     const options = toOptions(nameOrOptions);
