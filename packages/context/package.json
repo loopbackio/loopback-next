@@ -25,7 +25,7 @@
     "debug": "^4.1.1",
     "p-event": "^4.1.0",
     "tslib": "^2.0.0",
-    "uuid": "^8.0.0"
+    "uuid": "^8.1.0"
   },
   "devDependencies": {
     "@loopback/build": "^5.4.1",
