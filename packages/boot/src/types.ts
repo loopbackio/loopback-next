@@ -5,6 +5,7 @@
 
 import {bind, Binding, BindingSpec, Constructor} from '@loopback/context';
 import {BootTags} from './keys';
+import {Application} from '@loopback/core';
 
 /**
  * Type definition for ArtifactOptions. These are the options supported by
@@ -159,3 +160,19 @@ export function booter(artifactNamespace: string, ...specs: BindingSpec[]) {
     ...specs,
   );
 }
+
+/**
+ * Type to define application configuration functions.
+ *
+ * @example
+ * ```ts
+ * function addServices(app) {
+ *   app.bind('user-identity-service').toClass(MyUserIdentityService);
+ * }
+ *
+ * function addRestExplorer(app) {
+ *   app.component(RestExplorerComponent);
+ * }
+ * ```
+ */
+export type ConfigScriptFn = (app: Application) => void;

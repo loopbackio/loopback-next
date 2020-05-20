@@ -7,6 +7,7 @@ import {Constructor} from '@loopback/context';
 import debugFactory from 'debug';
 import path from 'path';
 import {promisify} from 'util';
+import {ConfigScriptFn} from '../types';
 const glob = promisify(require('glob'));
 
 const debug = debugFactory('loopback:boot:booter-utils');
@@ -67,4 +68,43 @@ export function loadClassesFromFiles(
   }
 
   return classes;
+}
+
+/**
+ * Given a function returns true if it is of type ConfigScriptFn.
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function isConfigScriptFunction(target: any): target is ConfigScriptFn {
+  if (typeof target === 'function' && target.toString().indexOf('class') !== 0) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+/**
+ * Returns an Array of config functions from given files.
+ * Works by identifying the exports of type ConfigScriptFn.
+ *
+ * @param files - An array of string of absolute file paths
+ * @param projectRootDir - The project root directory
+ * @returns An array of ConfigScriptFn
+ */
+export function getConfigScriptFunctions(
+  files: string[],
+  projectRootDir: string,
+): ConfigScriptFn[] {
+  const fns: ConfigScriptFn[] = [];
+  for (const file of files) {
+    debug('Loading artifact file %j', path.relative(projectRootDir, file));
+    const moduleObj = require(file);
+    for (const k in moduleObj) {
+      const exported = moduleObj[k];
+      if (isConfigScriptFunction(exported)) {
+        debug('  add %s (config script function %s)', k, exported.name);
+        fns.push(exported);
+      }
+    }
+  }
+  return fns;
 }
