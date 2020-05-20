@@ -51,7 +51,7 @@
     "@loopback/testlab": "^3.1.4",
     "@types/node": "^10.17.24",
     "eslint": "^7.0.0",
-    "typescript": "~3.9.2"
+    "typescript": "~3.9.3"
   },
   "keywords": [
     "loopback",
