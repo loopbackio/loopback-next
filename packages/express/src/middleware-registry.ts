@@ -18,6 +18,28 @@ import {
   MiddlewareBindingOptions,
 } from './types';
 
+// FIXME(rfeng): Workaround for https://github.com/microsoft/rushstack/pull/1867
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import {
+  JSONObject,
+  ContextSubscriptionManager,
+  ContextEvent,
+  Interceptor,
+  InterceptorBindingOptions,
+  ResolutionOptions,
+  BindingKey,
+  BindingFilter,
+  ValueOrPromise,
+  ContextEventObserver,
+  ContextObserver,
+  Subscription,
+  BindingComparator,
+  ContextView,
+  ResolutionSession,
+  BindingCreationPolicy,
+  ContextInspectOptions,
+} from '@loopback/context';
+
 /**
  * A context that allows middleware registration
  */
