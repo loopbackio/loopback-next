@@ -142,7 +142,7 @@ export function filterByServiceInterface(
  * @param options - Service options
  */
 export function createServiceBinding<S>(
-  cls: Constructor<S> | Constructor<Provider<S>>,
+  cls: Constructor<S | Provider<S>>,
   options: ServiceOptions = {},
 ): Binding<S> {
   let name = options.name;

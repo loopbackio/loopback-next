@@ -3,8 +3,48 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Binding, BindingFromClassOptions, Provider} from '@loopback/context';
-import {Application, ServiceOptions} from '@loopback/core';
+import {
+  Binding,
+  BindingFromClassOptions,
+  Provider,
+  Constructor,
+} from '@loopback/context';
+import {
+  Application,
+  MixinTarget,
+  ServiceOptions,
+  Component,
+} from '@loopback/core';
+
+// FIXME(rfeng): Workaround for https://github.com/microsoft/rushstack/pull/1867
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import {
+  BindingAddress,
+  BindingFilter,
+  JSONObject,
+  Context,
+  ContextSubscriptionManager,
+  ContextEvent,
+  Interceptor,
+  InterceptorBindingOptions,
+  ResolutionOptions,
+  BindingKey,
+  ValueOrPromise,
+  ContextEventObserver,
+  ContextObserver,
+  Subscription,
+  BindingComparator,
+  ContextView,
+  ResolutionSession,
+  BindingCreationPolicy,
+  ContextInspectOptions,
+} from '@loopback/context';
+import {
+  Server,
+  ApplicationConfig,
+  ApplicationMetadata,
+  LifeCycleObserver,
+} from '@loopback/core';
 
 /**
  * Interface for classes with `new` operator.
@@ -29,8 +69,9 @@ export interface Class<T> {
  * called <a href="#ServiceMixinDoc">ServiceMixinDoc</a>
  *
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function ServiceMixin<T extends Class<any>>(superClass: T) {
+export function ServiceMixin<T extends MixinTarget<Application>>(
+  superClass: T,
+) {
   return class extends superClass {
     /**
      * Add a service to this application.
@@ -60,7 +101,7 @@ export function ServiceMixin<T extends Class<any>>(superClass: T) {
      * ```
      */
     serviceProvider<S>(
-      provider: Class<Provider<S>>,
+      provider: Constructor<Provider<S>>,
       nameOrOptions?: string | ServiceOptions,
     ): Binding<S> {
       return this.service(provider, nameOrOptions);
@@ -87,12 +128,17 @@ export function ServiceMixin<T extends Class<any>>(superClass: T) {
      * app.component(ProductComponent);
      * ```
      */
-    public component(
-      component: Class<unknown>,
+    // Unfortunately, TypeScript does not allow overriding methods inherited
+    // from mapped types. https://github.com/microsoft/TypeScript/issues/38496
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    // @ts-ignore
+    component<T extends Component = Component>(
+      componentCtor: Constructor<T>,
       nameOrOptions?: string | BindingFromClassOptions,
     ) {
-      super.component(component, nameOrOptions);
-      this.mountComponentServices(component);
+      const binding = super.component(componentCtor, nameOrOptions);
+      this.mountComponentServices(componentCtor, binding.key);
+      return binding;
     }
 
     /**
@@ -102,9 +148,13 @@ export function ServiceMixin<T extends Class<any>>(superClass: T) {
      *
      * @param component - The component to mount services of
      */
-    mountComponentServices(component: Class<unknown>) {
-      const componentKey = `components.${component.name}`;
-      const compInstance = this.getSync(componentKey);
+    mountComponentServices<T extends Component = Component>(
+      component: Constructor<T>,
+      componentBindingKey?: BindingAddress<T>,
+    ) {
+      const componentKey =
+        componentBindingKey ?? `components.${component.name}`;
+      const compInstance = this.getSync<Component>(componentKey);
 
       if (compInstance.serviceProviders) {
         for (const provider of compInstance.serviceProviders) {
