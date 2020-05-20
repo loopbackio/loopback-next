@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/tsdocs@2.1.4...@loopback/tsdocs@2.2.0) (2020-05-20)
+
+
+### Features
+
+* **tsdocs:** add ignoreErrors option for tsdocs extraction ([eca6322](https://github.com/strongloop/loopback-next/commit/eca632257a0e754a939403345bcfa5ee604fb746))
+
+
+
+
+
 ## [2.1.4](https://github.com/strongloop/loopback-next/compare/@loopback/tsdocs@2.1.2...@loopback/tsdocs@2.1.4) (2020-05-19)
 
 **Note:** Version bump only for package @loopback/tsdocs

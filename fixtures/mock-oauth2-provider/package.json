@@ -1,6 +1,6 @@
 {
   "name": "@loopback/mock-oauth2-provider",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "mocks the oauth2 authorization flow",
   "private": true,
   "engines": {
@@ -45,7 +45,7 @@
     "tslib": "^2.0.0"
   },
   "devDependencies": {
-    "@loopback/build": "^5.4.0",
-    "@loopback/eslint-config": "^7.0.0"
+    "@loopback/build": "^5.4.1",
+    "@loopback/eslint-config": "^7.0.1"
   }
 }

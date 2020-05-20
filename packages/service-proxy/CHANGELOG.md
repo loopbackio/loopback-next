@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/service-proxy@2.2.1...@loopback/service-proxy@2.3.0) (2020-05-20)
+
+
+### Features
+
+* **service-proxy:** refine service mixin ([a6d0e2a](https://github.com/strongloop/loopback-next/commit/a6d0e2a457751568faffc1e733dc15f2e7232d2c))
+
+
+
+
+
 ## [2.2.1](https://github.com/strongloop/loopback-next/compare/@loopback/service-proxy@2.2.0...@loopback/service-proxy@2.2.1) (2020-05-19)
 
 **Note:** Version bump only for package @loopback/service-proxy

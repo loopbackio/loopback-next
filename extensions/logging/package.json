@@ -1,6 +1,6 @@
 {
   "name": "@loopback/extension-logging",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "description": "LoopBack Logging for Winston and Fluentd",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -18,9 +18,9 @@
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
-    "@loopback/context": "^3.8.0",
-    "@loopback/core": "^2.6.0",
-    "@loopback/rest": "^5.0.0",
+    "@loopback/context": "^3.8.1",
+    "@loopback/core": "^2.7.0",
+    "@loopback/rest": "^5.0.1",
     "fluent-logger": "^3.4.1",
     "morgan": "^1.10.0",
     "tslib": "^2.0.0",
@@ -28,9 +28,9 @@
     "winston-transport": "^4.3.0"
   },
   "devDependencies": {
-    "@loopback/build": "^5.4.0",
-    "@loopback/eslint-config": "^7.0.0",
-    "@loopback/testlab": "^3.1.4",
+    "@loopback/build": "^5.4.1",
+    "@loopback/eslint-config": "^7.0.1",
+    "@loopback/testlab": "^3.1.5",
     "@types/morgan": "^1.9.0",
     "@types/node": "^10.17.24"
   },
