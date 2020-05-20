@@ -37,6 +37,10 @@ async function updateTemplateDeps() {
   const buildDeps = require(path.join(rootPath, 'packages/build/package.json'))
     .dependencies;
 
+  // Load dependencies from `packages/core/package.json` for `tslib`
+  const coreDeps = require(path.join(rootPath, 'packages/core/package.json'))
+    .dependencies;
+
   // Load dependencies from `packages/cli/package.json`
   const cliPackageJson = path.join(rootPath, 'packages/cli/package.json');
 
@@ -46,7 +50,12 @@ async function updateTemplateDeps() {
   const currentDeps = cliPkg.config.templateDependencies || {};
 
   // Merge all entries
-  const deps = Object.assign({}, currentDeps, buildDeps, lbModules);
+  const deps = Object.assign(
+    {tslib: coreDeps.tslib},
+    currentDeps,
+    buildDeps,
+    lbModules,
+  );
 
   cliPkg.config.templateDependencies = deps;
 
