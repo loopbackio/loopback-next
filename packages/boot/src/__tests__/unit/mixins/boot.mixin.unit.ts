@@ -3,9 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {Application, bind, BindingKey, ContextTags} from '@loopback/core';
 import {expect} from '@loopback/testlab';
-import {BootMixin, Booter, BootBindings} from '../../..';
-import {Application, bind} from '@loopback/core';
+import {BootBindings, Booter, BootMixin} from '../../..';
 
 describe('BootMxiin unit tests', () => {
   let app: AppWithBootMixin;
@@ -34,6 +34,22 @@ describe('BootMxiin unit tests', () => {
       `${BootBindings.BOOTER_PREFIX}.TestBooterWithBind`,
     );
     expect(booterBinding.tagMap).to.containEql({artifactType: 'xsd'});
+  });
+
+  it('binds booter with `@bind` using a custom binding key', async () => {
+    const testApp = new AppWithBootMixin();
+    testApp.bind(BootBindings.PROJECT_ROOT).to(__dirname);
+    testApp.booters(TestBooterWithCustomBindingKey);
+
+    await testApp.boot();
+    const booterBinding = testApp.getBinding(
+      `io.loopback.custom.binding.TestBooterWithCustomBindingKey`,
+    );
+    const component = await testApp.get<TestBooterWithCustomBindingKey>(
+      `io.loopback.custom.binding.TestBooterWithCustomBindingKey`,
+    );
+    expect(booterBinding.tagMap).to.containEql({artifactType: 'bmp'});
+    expect(component.configured).true();
   });
 
   it('binds booter from app.booters() as singletons by default', async () => {
@@ -86,6 +102,23 @@ describe('BootMxiin unit tests', () => {
 
   @bind({tags: {artifactType: 'xsd'}})
   class TestBooterWithBind implements Booter {
+    configured = false;
+
+    async configure() {
+      this.configured = true;
+    }
+  }
+
+  const CustomBinding = BindingKey.create<TestBooterWithCustomBindingKey>(
+    'io.loopback.custom.binding.TestBooterWithCustomBindingKey',
+  );
+  @bind({
+    tags: {
+      [ContextTags.KEY]: CustomBinding,
+      artifactType: 'bmp',
+    },
+  })
+  class TestBooterWithCustomBindingKey implements Booter {
     configured = false;
 
     async configure() {

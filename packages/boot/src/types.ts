@@ -159,3 +159,10 @@ export function booter(artifactNamespace: string, ...specs: BindingSpec[]) {
     ...specs,
   );
 }
+
+/**
+ * Interface to describe an object that may have an array of `booters`.
+ */
+export interface InstanceWithBooters {
+  booters?: Constructor<Booter>[];
+}
