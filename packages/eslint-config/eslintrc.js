@@ -93,6 +93,9 @@ module.exports = {
     '@typescript-eslint/no-empty-interface': 'off',
     '@typescript-eslint/no-non-null-asserted-optional-chain': 'error',
 
+    // Disable warning  Missing return type on function for now
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
+
     /**
      * The following rules are enforced to support legacy tslint configuration
      */
