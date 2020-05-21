@@ -12,12 +12,17 @@ import {
   Context,
   createBindingFromClass,
 } from '@loopback/context';
-import {Application, Component, MixinTarget} from '@loopback/core';
+import {
+  Application,
+  Component,
+  CoreBindings,
+  MixinTarget,
+} from '@loopback/core';
 import {BootComponent} from '../boot.component';
 import {createComponentApplicationBooterBinding} from '../booters/component-application.booter';
 import {Bootstrapper} from '../bootstrapper';
 import {BootBindings, BootTags} from '../keys';
-import {Bootable, Booter, BootOptions} from '../types';
+import {Bootable, Booter, BootOptions, InstanceWithBooters} from '../types';
 
 // FIXME(rfeng): Workaround for https://github.com/microsoft/rushstack/pull/1867
 /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -154,7 +159,9 @@ export function BootMixin<T extends MixinTarget<Application>>(superClass: T) {
       nameOrOptions?: string | BindingFromClassOptions,
     ) {
       const binding = super.component(componentCtor, nameOrOptions);
-      this.mountComponentBooters(componentCtor);
+      const instance = this.getSync<InstanceWithBooters>(binding.key);
+
+      this.mountComponentBooters(instance);
       return binding;
     }
 
@@ -165,14 +172,28 @@ export function BootMixin<T extends MixinTarget<Application>>(superClass: T) {
      *
      * @param component - The component to mount booters of
      */
-    mountComponentBooters(component: Constructor<{}>) {
-      const componentKey = `components.${component.name}`;
-      const compInstance = this.getSync<{
-        booters?: Constructor<Booter>[];
-      }>(componentKey);
+    mountComponentBooters(
+      componentInstanceOrClass: Constructor<unknown> | InstanceWithBooters,
+    ) {
+      const componentInstance = resolveComponentInstance(this);
+      if (componentInstance.booters) {
+        this.booters(...componentInstance.booters);
+      }
 
-      if (compInstance.booters) {
-        this.booters(...compInstance.booters);
+      /**
+       * Determines if componentInstanceOrClass is an instance of a component,
+       * or a class that needs to be instantiated from context.
+       * @param ctx
+       */
+      function resolveComponentInstance(ctx: Readonly<Context>) {
+        if (typeof componentInstanceOrClass !== 'function') {
+          return componentInstanceOrClass;
+        }
+
+        // TODO(semver-major) @bajtos: Reminder to remove this on the next major release
+        const componentName = componentInstanceOrClass.name;
+        const componentKey = `${CoreBindings.COMPONENTS}.${componentName}`;
+        return ctx.getSync<InstanceWithBooters>(componentKey);
       }
     }
   };
