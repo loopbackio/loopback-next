@@ -65,9 +65,13 @@ https://github.com/strongloop/loopback-next/issues/5113_
 
 #### Bugs, developer experience, internal tooling
 
-- TS project reference, mocha parallel testing
+- mocha parallel testing
+- identify and investigate tests taking a longer time
 
 #### Switch from CLA to DCO
+
+- first iteration to consider: `loopback-next`, `loopback.io` and
+  `loopback-datasource-juggler`.
 
 ---
 
