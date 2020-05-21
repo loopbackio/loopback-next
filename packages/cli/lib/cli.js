@@ -116,6 +116,10 @@ function setupGenerators() {
     path.join(__dirname, '../generators/copyright'),
     PREFIX + 'copyright',
   );
+  env.register(
+    path.join(__dirname, '../generators/openapi-spec'),
+    PREFIX + 'openapi-spec',
+  );
   return env;
 }
 
