@@ -1,10 +1,13 @@
 # @loopback/example-todo-jwt
 
-This is a modified LoopBack 4 [Todo application](https://github.com/strongloop/loopback-next/tree/master/examples/todo) with JWT authentication, using the `@loopback/authentication-jwt` extension.
+This is a modified LoopBack 4
+[Todo application](https://github.com/strongloop/loopback-next/tree/master/examples/todo)
+with JWT authentication, using the `@loopback/authentication-jwt` extension.
 
 ## Overview
 
-This tutorial demonstrates how to add JWT authentication to the [Todo application](https://github.com/strongloop/loopback-next/tree/master/examples/todo).
+This tutorial demonstrates how to add JWT authentication to the
+[Todo application](https://github.com/strongloop/loopback-next/tree/master/examples/todo).
 
 ## Usage
 

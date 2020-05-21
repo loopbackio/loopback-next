@@ -7,7 +7,6 @@ import {AuthenticationComponent} from '@loopback/authentication';
 import {
   JWTAuthenticationComponent,
   MyUserService,
-  SECURITY_SCHEME_SPEC,
   UserServiceBindings,
 } from '@loopback/authentication-jwt';
 import {BootMixin} from '@loopback/boot';
@@ -46,8 +45,6 @@ export class TodoListApplication extends BootMixin(
     };
 
     // ------ ADD SNIPPET AT THE BOTTOM ---------
-    // Add security spec
-    this.addSecuritySpec();
     // Mount authentication system
     this.component(AuthenticationComponent);
     // Mount jwt component
@@ -59,27 +56,4 @@ export class TodoListApplication extends BootMixin(
     //new
     this.bind(UserServiceBindings.USER_SERVICE).toClass(MyUserService);
   }
-
-  // ---------- ADD THIS FUNCTION ------------
-  // Add this function so that we can later test the
-  // JWT authentication using API Explorer
-  addSecuritySpec(): void {
-    this.api({
-      openapi: '3.0.0',
-      info: {
-        title: 'test application',
-        version: '1.0.0',
-      },
-      paths: {},
-      components: {securitySchemes: SECURITY_SCHEME_SPEC},
-      security: [
-        {
-          // secure all endpoints with 'jwt'
-          jwt: [],
-        },
-      ],
-      servers: [{url: '/'}],
-    });
-  }
-  // -------------- END OF SNIPPET -----------
 }
