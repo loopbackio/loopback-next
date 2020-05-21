@@ -107,7 +107,7 @@ export function ServiceMixin<T extends MixinTarget<Application>>(
      */
     // Unfortunately, TypeScript does not allow overriding methods inherited
     // from mapped types. https://github.com/microsoft/TypeScript/issues/38496
-    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     component<T extends Component = Component>(
       componentCtor: Constructor<T>,

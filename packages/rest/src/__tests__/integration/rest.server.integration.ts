@@ -791,7 +791,7 @@ paths:
     const pfxPath = path.join(FIXTURES, 'pfx.pfx');
     const serverOptions = givenHttpServerConfig({
       port: 0,
-      protocol: 'https' as 'https',
+      protocol: 'https' as const,
       pfx: fs.readFileSync(pfxPath),
       passphrase: 'loopback4',
     });

@@ -31,6 +31,8 @@ import * as loopbackContext from '@loopback/context';
 import * as loopbackCore from '@loopback/core';
 /* eslint-enable @typescript-eslint/no-unused-vars */
 
+/* eslint-enable @typescript-eslint/no-unused-vars */
+
 /**
  * A mixin class for Application that creates a .repository()
  * function to register a repository automatically. Also overrides
@@ -188,7 +190,7 @@ export function RepositoryMixin<T extends MixinTarget<Application>>(
      */
     // Unfortunately, TypeScript does not allow overriding methods inherited
     // from mapped types. https://github.com/microsoft/TypeScript/issues/38496
-    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     public component<C extends Component = Component>(
       componentCtor: Constructor<C>,

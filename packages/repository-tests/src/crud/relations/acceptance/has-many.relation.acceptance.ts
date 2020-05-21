@@ -107,7 +107,6 @@ export function hasManyRelationAcceptance(
     it('can find an instance of the related model with non-id property as a source key(keyFrom)', async () => {
       const shipment = await shipmentRepo.create({
         name: 'non-id prop as keyFrom relation',
-        // eslint-disable-next-line @typescript-eslint/camelcase
         shipment_id: 999,
       });
       const order = await orderRepo.create({
