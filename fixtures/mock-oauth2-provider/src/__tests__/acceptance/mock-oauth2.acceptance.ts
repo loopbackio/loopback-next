@@ -7,7 +7,6 @@ import {supertest} from '@loopback/testlab';
 import {Server} from 'http';
 import {MockTestOauth2SocialApp} from '../..';
 
-/* eslint-disable @typescript-eslint/camelcase */
 describe('mock-oauth2-provider', () => {
   let server: Server;
   before(() => (server = MockTestOauth2SocialApp.startMock(0)));

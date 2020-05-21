@@ -151,7 +151,6 @@ export class Oauth2Controller {
   // the oauth2 strategy exchanges the access code for a access token and then calls the provided verify() function
   // the verify function creates a user profile after verifying the access token
   thirdPartyCallBack(@inject(SecurityBindings.USER) user: UserProfile) {
-    // eslint-disable-next-line @typescript-eslint/camelcase
     return {access_token: user.token};
   }
 }
@@ -206,9 +205,7 @@ describe('Oauth2 authorization flow', () => {
         const params = {
           username: 'user1',
           password: 'abc',
-          // eslint-disable-next-line @typescript-eslint/camelcase
           client_id: loginPageHiddenParams.client_id,
-          // eslint-disable-next-line @typescript-eslint/camelcase
           redirect_uri: loginPageHiddenParams.redirect_uri,
           scope: loginPageHiddenParams.scope,
         };
