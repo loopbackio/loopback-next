@@ -60,7 +60,6 @@
     "@loopback/testlab": "^3.1.4",
     "@types/lodash": "^4.14.150",
     "@types/node": "^10.17.21",
-    "@typescript-eslint/eslint-plugin": "^2.31.0",
     "@typescript-eslint/parser": "^2.31.0",
     "eslint": "^7.0.0",
     "eslint-config-prettier": "^6.11.0",
