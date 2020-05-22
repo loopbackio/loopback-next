@@ -2,7 +2,6 @@
   "name": "@loopback/mock-oauth2-provider",
   "version": "0.0.3",
   "description": "mocks the oauth2 authorization flow",
-  "private": true,
   "engines": {
     "node": ">=10"
   },
@@ -47,5 +46,8 @@
   "devDependencies": {
     "@loopback/build": "^5.4.1",
     "@loopback/eslint-config": "^7.0.1"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
