@@ -121,10 +121,14 @@ function mapArrayType(schema, options) {
     const typeSpec = getTypeSpec(schema, options);
     const itemTypeSpec = mapSchemaType(schema.items, opts);
     const defaultVal = getDefault(schema, options);
-    typeSpec.name = itemTypeSpec.signature + '[]';
-    typeSpec.declaration = itemTypeSpec.signature + '[]';
-    typeSpec.signature =
-      (typeSpec.className || itemTypeSpec.signature + '[]') + defaultVal;
+    let arrayType = `${itemTypeSpec.signature}[]`;
+    if (itemTypeSpec.signature.match(/[\|\&]/)) {
+      // The type is a union or intersection
+      arrayType = `(${itemTypeSpec.signature})[]`;
+    }
+    typeSpec.name = arrayType;
+    typeSpec.declaration = arrayType;
+    typeSpec.signature = (typeSpec.className || arrayType) + defaultVal;
     typeSpec.itemType = itemTypeSpec;
     collectImports(typeSpec, itemTypeSpec);
     return typeSpec;
