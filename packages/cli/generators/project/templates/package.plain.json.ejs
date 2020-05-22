@@ -52,6 +52,7 @@
     "docker:run": "docker run -p 3000:3000 -d <%= project.name -%>",
   <%_ } -%>
     "migrate": "node ./dist/migrate",
+    "openapi-spec": "node ./dist/openapi-spec",
     "start": "npm run build && node -r source-map-support/register .",
 <% } -%>
     "prepare": "npm run build"
