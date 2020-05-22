@@ -27,25 +27,8 @@ import {
 
 // FIXME(rfeng): Workaround for https://github.com/microsoft/rushstack/pull/1867
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import {
-  JSONObject,
-  ContextSubscriptionManager,
-  ContextEvent,
-  Interceptor,
-  InterceptorBindingOptions,
-  ResolutionOptions,
-  BindingKey,
-  BindingFilter,
-  ValueOrPromise,
-  ContextEventObserver,
-  ContextObserver,
-  Subscription,
-  BindingComparator,
-  ContextView,
-  ResolutionSession,
-  BindingCreationPolicy,
-  ContextInspectOptions,
-} from '@loopback/context';
+import * as loopbackContext from '@loopback/context';
+/* eslint-enable @typescript-eslint/no-unused-vars */
 
 function extendsFrom(
   subClass: Constructor<unknown>,
