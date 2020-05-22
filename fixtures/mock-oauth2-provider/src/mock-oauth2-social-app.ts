@@ -27,7 +27,7 @@ const app = express();
 let server: Server;
 
 // to support json payload in body
-app.use('parse', bodyParser.json());
+app.use(bodyParser.json());
 // to support html form bodies
 app.use(bodyParser.text({type: 'text/html'}));
 // create application/x-www-form-urlencoded parser
@@ -41,7 +41,7 @@ interface JWT {
 }
 
 /**
- * datastructure for an app registration, also holds issued tokens for an app
+ * data structure for an app registration, also holds issued tokens for an app
  */
 interface App {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -107,8 +107,8 @@ const users: MyUser[] = [
 
 /**
  * find a user by a name and password
- * @param {*} username
- * @param {*} password
+ * @param username - User name
+ * @param password - Password
  */
 function findUser(username: string, password: string) {
   return users.find(
@@ -118,9 +118,9 @@ function findUser(username: string, password: string) {
 
 /**
  * create a jwt token
- * @param {*} user
- * @param {*} scopes
- * @param {*} signingKey
+ * @param user - User
+ * @param scopes - Scopes
+ * @param signingKey - Signing key
  */
 async function createJwt(
   user: MyUser,
@@ -161,11 +161,12 @@ async function createJwt(
  *
  * check with given client id and token if token is valid
  *
- * @param {*} req
- * @param {*} token
+ * @param req - request
+ * @param token - token
  */
 async function verifyToken(token: string) {
   const unwrappedJwt = jwt.decode(token, {json: true, complete: true});
+  if (unwrappedJwt == null) throw new Error('invalid token');
   const tokenId: string = unwrappedJwt?.payload.jti;
   const registeredApp: App = registeredApps[unwrappedJwt?.payload.client_id];
   if (registeredApp) {
@@ -193,22 +194,25 @@ async function verifyToken(token: string) {
  */
 app.get('/oauth/dialog', function (req, res) {
   if (!req.query.redirect_uri) {
-    res.setHeader('Content-Type', 'application/json');
-    res
-      .status(500)
-      .send(JSON.stringify({error: 'redirect_uri not sent in query'}));
+    res.status(400).send({error: 'missing redirect_uri'});
+    return;
+  }
+  if (!req.query.client_id) {
+    res.status(400).send({error: 'missing client_id'});
     return;
   }
   if (registeredApps[req.query.client_id as string]) {
     let params =
       '?client_id=' +
       req.query.client_id +
-      '&&redirect_uri=' +
+      '&redirect_uri=' +
       req.query.redirect_uri;
-    params = params + '&&scope=' + req.query.scope;
+    if (req.query.scope) {
+      params = params + '&scope=' + req.query.scope;
+    }
     res.redirect('/login' + params);
   } else {
-    res.send('invalid app');
+    res.status(401).send({error: 'invalid client_id'});
   }
 });
 
@@ -253,6 +257,10 @@ app.get('/login', function (req, response) {
  * 4. redirects to callback url with access code
  */
 app.post('/login_submit', urlencodedParser, async function (req, res) {
+  if (!req.body.username) {
+    res.status(400).send({error: 'missing username'});
+    return;
+  }
   const user: MyUser | undefined = findUser(
     req.body.username,
     req.body.password,
@@ -288,18 +296,22 @@ app.post('/login_submit', urlencodedParser, async function (req, res) {
  * returns token in exchange for access code
  */
 app.post('/oauth/token', urlencodedParser, function (req, res) {
+  if (!req.body.client_id) {
+    res.status(400).send({error: 'missing client_id'});
+    return;
+  }
   if (registeredApps[req.body.client_id]) {
     //&& apps[req.query.client_id].client_secret === req.query.client_secret
-    const oauthstates = registeredApps[req.body.client_id].tokens;
-    if (oauthstates[req.body.code]) {
+    const oauthStates = registeredApps[req.body.client_id].tokens;
+    if (oauthStates[req.body.code]) {
       res.setHeader('Content-Type', 'application/json');
       // eslint-disable-next-line @typescript-eslint/camelcase
-      res.send({access_token: oauthstates[req.body.code].token});
+      res.send({access_token: oauthStates[req.body.code].token});
     } else {
-      res.sendStatus(401);
+      res.status(401).send({error: 'invalid code'});
     }
   } else {
-    res.sendStatus(401);
+    res.status(401).send({error: 'invalid client_id'});
   }
 });
 
@@ -311,19 +323,23 @@ app.post('/oauth/token', urlencodedParser, function (req, res) {
  */
 app.get('/oauth/token', function (req, res) {
   const clientId = req.query.client_id as string;
+  if (!clientId) {
+    res.status(400).send({error: 'missing client_id'});
+    return;
+  }
   if (registeredApps[clientId]) {
     //&& apps[req.query.client_id].client_secret === req.query.client_secret
-    const oauthstates = registeredApps[clientId].tokens;
+    const oauthStates = registeredApps[clientId].tokens;
     const code = req.query.code as string;
-    if (oauthstates[code]) {
+    if (oauthStates[code]) {
       res.setHeader('Content-Type', 'application/json');
       // eslint-disable-next-line @typescript-eslint/camelcase
-      res.send({access_token: oauthstates[code].token});
+      res.send({access_token: oauthStates[code].token});
     } else {
-      res.sendStatus(401);
+      res.status(401).send({error: 'invalid code'});
     }
   } else {
-    res.sendStatus(401);
+    res.status(401).send({error: 'invalid client id'});
   }
 });
 
@@ -337,18 +353,23 @@ app.get('/verify', async function (req, res) {
   try {
     const token = (req.query.access_token ??
       req.header('Authorization')) as string;
+    if (!token) {
+      res.status(400).send({error: 'missing access_token'});
+      return;
+    }
     const result = await verifyToken(token);
     const expirationTime = result.exp;
     res.setHeader('Content-Type', 'application/json');
     res.send({...result, expirationTime: expirationTime});
   } catch (err) {
     res.setHeader('Content-Type', 'application/json');
-    res.status(401).send(JSON.stringify({error: err}));
+    res.status(401).send({error: err.message});
   }
 });
 
-export function startApp() {
-  server = app.listen(9000);
+export function startApp(port = 9000) {
+  server = app.listen(port);
+  return server;
 }
 
 export function stopApp() {

@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 'use strict';
-const _ = require('lodash');
+import _ from 'lodash';
 
 /**
  * A simple User model
@@ -24,14 +24,14 @@ export interface MyUser {
  * Repository to store and access user objects
  */
 export class UserRepository {
-  constructor(readonly list: {[key: string]: MyUser}) {}
+  constructor(readonly list: Record<string, MyUser>) {}
 
   /**
    * find by username
    * @param username
    */
-  find(username: string): MyUser {
-    return _.filter(this.list, (user: MyUser) => user.username === username);
+  find(username: string): MyUser[] {
+    return _.filter(this.list, user => user.username === username);
   }
 
   /**

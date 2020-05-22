@@ -10,3 +10,8 @@ export namespace MockTestOauth2SocialApp {
   export const startMock = startApp;
   export const stopMock = stopApp;
 }
+
+if (require.main === module) {
+  const server = startApp();
+  console.log('Mock oAuth2 provider is running at %s', server.address());
+}
