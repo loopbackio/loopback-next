@@ -3,33 +3,37 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {UserProfileFactory, authenticate} from '@loopback/authentication';
+import {authenticate, UserProfileFactory} from '@loopback/authentication';
+import {inject} from '@loopback/core';
 import {
-  Strategy as Oauth2Strategy,
-  StrategyOptions,
-  VerifyFunction,
-  VerifyCallback,
-} from 'passport-oauth2';
-import {MyUser, userRepository} from '@loopback/mock-oauth2-provider';
-import {
-  simpleRestApplication,
-  configureApplication,
-} from './fixtures/simple-rest-app';
-import {securityId, UserProfile, SecurityBindings} from '@loopback/security';
-import {StrategyAdapter} from '../../strategy-adapter';
+  MockTestOauth2SocialApp,
+  MyUser,
+  userRepository,
+} from '@loopback/mock-oauth2-provider';
 import {get} from '@loopback/openapi-v3';
+import {Response, RestApplication, RestBindings} from '@loopback/rest';
+import {SecurityBindings, securityId, UserProfile} from '@loopback/security';
 import {
   Client,
   createClientForHandler,
   expect,
   supertest,
 } from '@loopback/testlab';
-import {RestApplication, RestBindings, Response} from '@loopback/rest';
-import {MockTestOauth2SocialApp} from '@loopback/mock-oauth2-provider';
-import * as url from 'url';
-import {inject} from '@loopback/core';
 import axios from 'axios';
+import {AddressInfo} from 'net';
+import {
+  Strategy as Oauth2Strategy,
+  StrategyOptions,
+  VerifyCallback,
+  VerifyFunction,
+} from 'passport-oauth2';
 import qs from 'qs';
+import * as url from 'url';
+import {StrategyAdapter} from '../../strategy-adapter';
+import {
+  configureApplication,
+  simpleRestApplication,
+} from './fixtures/simple-rest-app';
 
 /**
  * This test consists of three main components -> the supertest client, the LoopBack app (simple-rest-app.ts)
@@ -156,8 +160,13 @@ describe('Oauth2 authorization flow', () => {
   let app: RestApplication;
   let oauth2Strategy: StrategyAdapter<MyUser>;
   let client: Client;
+  let oauth2Client: Client;
 
-  before(MockTestOauth2SocialApp.startMock);
+  before(() => {
+    const server = MockTestOauth2SocialApp.startMock();
+    const port = (server.address() as AddressInfo).port;
+    oauth2Client = supertest(`http://localhost:${port}`);
+  });
   after(MockTestOauth2SocialApp.stopMock);
 
   before(givenLoopBackApp);
@@ -205,8 +214,8 @@ describe('Oauth2 authorization flow', () => {
         };
         // On successful login, the authorizing app redirects to the callback url
         // HTTP status code 302 is returned to the browser
-        const response = await supertest('')
-          .post('http://localhost:9000/login_submit')
+        const response = await oauth2Client
+          .post('/login_submit')
           .send(qs.stringify(params))
           .expect(302);
         callbackToLbApp = response.get('Location');
