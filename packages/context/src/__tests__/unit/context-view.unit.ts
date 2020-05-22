@@ -208,7 +208,7 @@ describe('ContextView', () => {
 
     function setupListeners() {
       events = [];
-      ['open', 'close', 'refresh', 'resolve', 'bind', 'unbind'].forEach(t =>
+      ['close', 'refresh', 'resolve', 'bind', 'unbind'].forEach(t =>
         taggedAsFoo.on(t, () => events.push(t)),
       );
     }

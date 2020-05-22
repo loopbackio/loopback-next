@@ -18,7 +18,7 @@ import {
 } from './binding-filter';
 import {BindingAddress, BindingKey} from './binding-key';
 import {BindingComparator} from './binding-sorter';
-import {ContextEvent} from './context-event';
+import {ContextEvent, ContextEventListener} from './context-event';
 import {ContextEventObserver, ContextObserver} from './context-observer';
 import {ContextSubscriptionManager, Subscription} from './context-subscription';
 import {ContextTagIndexer} from './context-tag-indexer';
@@ -877,6 +877,42 @@ export class Context extends EventEmitter {
       json.parent = this._parent._inspect(options, visitedClasses);
     }
     return json;
+  }
+
+  /**
+   * The "bind" event is emitted when a new binding is added to the context.
+   * The "unbind" event is emitted when an existing binding is removed.
+   *
+   * @param eventName The name of the event - always `bind` or `unbind`.
+   * @param listener The listener function to call when the event is emitted.
+   */
+  on(eventName: 'bind' | 'unbind', listener: ContextEventListener): this;
+
+  // The generic variant inherited from EventEmitter
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  on(event: string | symbol, listener: (...args: any[]) => void): this;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  on(event: string | symbol, listener: (...args: any[]) => void): this {
+    return super.on(event, listener);
+  }
+
+  /**
+   * The "bind" event is emitted when a new binding is added to the context.
+   * The "unbind" event is emitted when an existing binding is removed.
+   *
+   * @param eventName The name of the event - always `bind` or `unbind`.
+   * @param listener The listener function to call when the event is emitted.
+   */
+  once(eventName: 'bind' | 'unbind', listener: ContextEventListener): this;
+
+  // The generic variant inherited from EventEmitter
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  once(event: string | symbol, listener: (...args: any[]) => void): this;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  once(event: string | symbol, listener: (...args: any[]) => void): this {
+    return super.once(event, listener);
   }
 }
 
