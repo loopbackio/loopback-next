@@ -5,6 +5,8 @@
   "engines": {
     "node": ">=10"
   },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "lb-tsc",
     "clean": "lb-clean loopback-mock-oauth2-provider*.tgz dist *.tsbuildinfo package",
