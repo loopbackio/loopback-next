@@ -28,7 +28,7 @@ export const OPERATION_SECURITY_SPEC = [
 ];
 
 export const SECURITY_SCHEME_SPEC: SecuritySchemeObjects = {
-  bearerAuth: {
+  jwt: {
     type: 'http',
     scheme: 'bearer',
     bearerFormat: 'JWT',
