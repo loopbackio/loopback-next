@@ -663,7 +663,7 @@ describe('Binding', () => {
 
   function listenOnBinding() {
     const events: BindingEvent[] = [];
-    binding.on('changed', (event: BindingEvent) => {
+    binding.on('changed', event => {
       events.push(event);
     });
     return events;

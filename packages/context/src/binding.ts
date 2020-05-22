@@ -201,7 +201,7 @@ export type BindingEvent = {
   /**
    * Event type
    */
-  type: string;
+  type: 'changed' | string;
   /**
    * Source binding that emits the event
    */
@@ -209,7 +209,7 @@ export type BindingEvent = {
   /**
    * Operation that triggers the event
    */
-  operation: string;
+  operation: 'tag' | 'scope' | 'value' | string;
 };
 
 /**
@@ -870,6 +870,42 @@ export class Binding<T = BoundValue> extends EventEmitter {
     return new Binding(BindingKey.buildKeyForConfig<T>(key)).tag({
       [ContextTags.CONFIGURATION_FOR]: key.toString(),
     });
+  }
+
+  /**
+   * The "changed" event is emitted by methods such as `tag`, `inScope`, `to`,
+   * and `toClass`.
+   *
+   * @param eventName The name of the event - always `changed`.
+   * @param listener The listener function to call when the event is emitted.
+   */
+  on(eventName: 'changed', listener: BindingEventListener): this;
+
+  // The generic variant inherited from EventEmitter
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  on(event: string | symbol, listener: (...args: any[]) => void): this;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  on(event: string | symbol, listener: (...args: any[]) => void): this {
+    return super.on(event, listener);
+  }
+
+  /**
+   * The "changed" event is emitted by methods such as `tag`, `inScope`, `to`,
+   * and `toClass`.
+   *
+   * @param eventName The name of the event - always `changed`.
+   * @param listener The listener function to call when the event is emitted.
+   */
+  once(eventName: 'changed', listener: BindingEventListener): this;
+
+  // The generic variant inherited from EventEmitter
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  once(event: string | symbol, listener: (...args: any[]) => void): this;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  once(event: string | symbol, listener: (...args: any[]) => void): this {
+    return super.once(event, listener);
   }
 }
 
