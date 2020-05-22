@@ -31,7 +31,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 // to support json payload in body
-app.use('parse', bodyParser.json());
+app.use(bodyParser.json());
 // to support html form bodies
 app.use(bodyParser.text({type: 'text/html'}));
 // create application/x-www-form-urlencoded parser

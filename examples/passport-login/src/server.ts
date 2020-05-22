@@ -68,7 +68,7 @@ export class ExpressServer {
     this.server = this.webApp.listen(port, host);
     await once(this.server, 'listening');
     const add = <AddressInfo>this.server.address();
-    this.url = `https://${add.address}:${add.port}`;
+    this.url = `http://${add.address}:${add.port}`;
   }
 
   /**

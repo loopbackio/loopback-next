@@ -38,23 +38,23 @@ describe('example-passport-login acceptance test', () => {
    * This test uses the mock social app from the @loopback/authentication-passport package,
    * as oauth2 profile endpoint.
    */
-  before(MockTestOauth2SocialApp.startMock);
+  before(() => MockTestOauth2SocialApp.startMock());
   after(MockTestOauth2SocialApp.stopMock);
   before(async function setupApplication(this: Mocha.Context) {
     this.timeout(6000);
     server = await startApplication(oauth2Providers);
-    client = supertest('http://127.0.0.1:3000');
+    client = supertest(server.webApp);
   });
 
   before(async function clearTestData() {
-    await supertest('')
-      .delete('http://localhost:3000/api/clear')
+    await client
+      .delete('/api/clear')
       .auth('admin', 'password', {type: 'basic'});
   });
 
   after(async function clearTestData() {
-    await supertest('')
-      .delete('http://localhost:3000/api/clear')
+    await client
+      .delete('/api/clear')
       .auth('admin', 'password', {type: 'basic'});
   });
 
@@ -140,24 +140,22 @@ describe('example-passport-login acceptance test', () => {
 
       it('check if user was registered', async () => {
         const filter = 'filter={"where":{"email": "test@example.com"}}';
-        const response = await supertest('')
-          .get('http://localhost:3000/api/users')
-          .query(filter);
+        const response = await client.get('/api/users').query(filter);
         const users = response.body as User[];
         expect(users.length).to.eql(1);
         expect(users[0].email).to.eql('test@example.com');
       });
 
       it('able to invoke api endpoints with basic auth', async () => {
-        await supertest('')
-          .get('http://localhost:3000/api/profiles')
+        await client
+          .get('/api/profiles')
           .auth('test@example.com', 'password', {type: 'basic'})
           .expect(204);
       });
 
       it('basic auth fails for incorrect password', async () => {
-        await supertest('')
-          .get('http://localhost:3000/api/profiles')
+        await client
+          .get('/api/profiles')
           .auth('test@example.com', 'incorrect-password', {type: 'basic'})
           .expect(401);
       });
@@ -212,8 +210,8 @@ describe('example-passport-login acceptance test', () => {
         };
         // On successful login, the authorizing app redirects to the callback url
         // HTTP status code 302 is returned to the browser
-        const response = await supertest('')
-          .post('http://localhost:9000/login_submit')
+        const response = await supertest('http://localhost:9000')
+          .post('/login_submit')
           .send(qs.stringify(params))
           .expect(302);
         callbackToLbApp = response.get('Location');
@@ -267,8 +265,8 @@ describe('example-passport-login acceptance test', () => {
       });
 
       it('check if profile is linked to existing user', async () => {
-        const response = await supertest('')
-          .get('http://localhost:3000/api/profiles')
+        const response = await client
+          .get('/api/profiles')
           .auth('test@example.com', 'password', {type: 'basic'});
         const profiles = response.body as UserIdentity[];
         expect(profiles?.length).to.eql(1);
@@ -336,8 +334,8 @@ describe('example-passport-login acceptance test', () => {
           };
           // On successful login, the authorizing app redirects to the callback url
           // HTTP status code 302 is returned to the browser
-          const response = await supertest('')
-            .post('http://localhost:9000/login_submit')
+          const response = await supertest('http://localhost:9000')
+            .post('/login_submit')
             .send(qs.stringify(params))
             .expect(302);
           callbackToLbApp = response.get('Location');
@@ -392,9 +390,7 @@ describe('example-passport-login acceptance test', () => {
 
         it('check if a new user was registered', async () => {
           const filter = 'filter={"where":{"email": "usr1@lb.com"}}';
-          const response = await supertest('')
-            .get('http://localhost:3000/api/users')
-            .query(filter);
+          const response = await client.get('/api/users').query(filter);
           const users = response.body as User[];
           expect(users.length).to.eql(1);
           expect(users[0].email).to.eql('usr1@lb.com');
