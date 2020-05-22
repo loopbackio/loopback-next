@@ -29,7 +29,7 @@ Models can be discovered from a supported datasource by running the
 `lb4 discover` command.
 
 {% include important.html content="The LoopBack project must be built with
-`npm run build` to transpile the datasource files to `/dist/datasources/*.js`."
+`npm run build` to transpile the datasource files to `/dist/datasources/*.ts`."
 %}
 
 ### Options
