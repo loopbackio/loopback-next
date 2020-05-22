@@ -89,6 +89,19 @@ describe('primitive types with enum', () => {
   it('maps string', () => {
     expectMapping({type: 'string', enum: ['A', 'B', 'C']}, "'A' | 'B' | 'C'");
   });
+
+  it('maps string array', () => {
+    expectMapping(
+      {
+        type: 'array',
+        items: {
+          type: 'string',
+          enum: ['A', 'B', 'C'],
+        },
+      },
+      "('A' | 'B' | 'C')[]",
+    );
+  });
 });
 
 describe('array types', () => {
@@ -169,6 +182,18 @@ describe('composite types', () => {
     );
   });
 
+  it('maps array oneOf', () => {
+    expectMapping(
+      {
+        type: 'array',
+        items: {
+          oneOf: [{type: 'string'}, {type: 'number'}],
+        },
+      },
+      '(string | number)[]',
+    );
+  });
+
   it('maps anyOf', () => {
     expectMapping(
       {anyOf: [{type: 'string'}, {type: 'number'}]},
@@ -180,6 +205,18 @@ describe('composite types', () => {
     expectMapping(
       {allOf: [{type: 'string'}, {type: 'number'}]},
       'string & number',
+    );
+  });
+
+  it('maps array allOf', () => {
+    expectMapping(
+      {
+        type: 'array',
+        items: {
+          allOf: [{type: 'string'}, {type: 'number'}],
+        },
+      },
+      '(string & number)[]',
     );
   });
 });
