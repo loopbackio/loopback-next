@@ -201,7 +201,7 @@ export type BindingEvent = {
   /**
    * Event type
    */
-  type: string;
+  type: 'changed' | string;
   /**
    * Source binding that emits the event
    */
@@ -209,7 +209,7 @@ export type BindingEvent = {
   /**
    * Operation that triggers the event
    */
-  operation: string;
+  operation: 'tag' | 'scope' | 'value' | string;
 };
 
 /**
@@ -871,6 +871,34 @@ export class Binding<T = BoundValue> extends EventEmitter {
       [ContextTags.CONFIGURATION_FOR]: key.toString(),
     });
   }
+}
+
+export declare interface Binding {
+  /**
+   * The "bind" event is emitted when a new binding is added to the context.
+   * The "unbind" event is emitted when an existing binding is removed.
+   *
+   * @param eventName The name of the event - always `bind` or `unbind`.
+   * @param listener The listener function to call when the event is emitted.
+   */
+  on(eventName: 'change', listener: BindingEventListener): this;
+
+  // The generic variant inherited from EventEmitter
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  on(event: string | symbol, listener: (...args: any[]) => void): this;
+
+  /**
+   * The "change" event is emitted by methods such as `tag`, `inScope`, `to`,
+   * and `toClass`.
+   *
+   * @param eventName The name of the event - always `change`.
+   * @param listener The listener function to call when the event is emitted.
+   */
+  once(eventName: 'change', listener: BindingEventListener): this;
+
+  // The generic variant inherited from EventEmitter
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  once(event: string | symbol, listener: (...args: any[]) => void): this;
 }
 
 /**
