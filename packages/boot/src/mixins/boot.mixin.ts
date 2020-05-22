@@ -21,33 +21,9 @@ import {Bootable, Booter, BootOptions} from '../types';
 
 // FIXME(rfeng): Workaround for https://github.com/microsoft/rushstack/pull/1867
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import {
-  BindingAddress,
-  JSONObject,
-  Provider,
-  ContextSubscriptionManager,
-  ContextEvent,
-  Interceptor,
-  InterceptorBindingOptions,
-  ResolutionOptions,
-  BindingKey,
-  ValueOrPromise,
-  ContextEventObserver,
-  ContextObserver,
-  Subscription,
-  BindingComparator,
-  ContextView,
-  ResolutionSession,
-  BindingCreationPolicy,
-  ContextInspectOptions,
-} from '@loopback/context';
-import {
-  Server,
-  ApplicationConfig,
-  ApplicationMetadata,
-  LifeCycleObserver,
-  ServiceOptions,
-} from '@loopback/core';
+import * as loopbackContext from '@loopback/context';
+import * as loopbackCore from '@loopback/core';
+/* eslint-enable @typescript-eslint/no-unused-vars */
 
 // Binding is re-exported as Binding / Booter types are needed when consuming
 // BootMixin and this allows a user to import them from the same package (UX!)

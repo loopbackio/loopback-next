@@ -5,6 +5,7 @@
 
 import {
   Binding,
+  BindingAddress,
   BindingFromClassOptions,
   Provider,
   Constructor,
@@ -18,33 +19,9 @@ import {
 
 // FIXME(rfeng): Workaround for https://github.com/microsoft/rushstack/pull/1867
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import {
-  BindingAddress,
-  BindingFilter,
-  JSONObject,
-  Context,
-  ContextSubscriptionManager,
-  ContextEvent,
-  Interceptor,
-  InterceptorBindingOptions,
-  ResolutionOptions,
-  BindingKey,
-  ValueOrPromise,
-  ContextEventObserver,
-  ContextObserver,
-  Subscription,
-  BindingComparator,
-  ContextView,
-  ResolutionSession,
-  BindingCreationPolicy,
-  ContextInspectOptions,
-} from '@loopback/context';
-import {
-  Server,
-  ApplicationConfig,
-  ApplicationMetadata,
-  LifeCycleObserver,
-} from '@loopback/core';
+import * as loopbackContext from '@loopback/context';
+import * as loopbackCore from '@loopback/core';
+/* eslint-enable @typescript-eslint/no-unused-vars */
 
 /**
  * Interface for classes with `new` operator.
