@@ -9,7 +9,7 @@ permalink: /doc/en/lb4/Relation-generator.html
 ### Prerequisites
 
 Important: Before running this generator, make sure the models, datasource, and
-repositories involved in this relation exist. Then, inside your LoopBack
+repositories involved in this relation exist. Then, inside your LoopBack 4
 application, run the command from the root directory.
 
 {% include content/generator-create-app.html lang=page.lang %}
@@ -90,7 +90,7 @@ The tool will prompt you for:
 - **Name of the `target` model.** _(targetModel)_ Prompts a list of available
   models to choose from as the target model of the relation.
 
-- **Name of the `foreign key`.** _(relationName)_ Prompts a property name that
+- **Name of the `foreign key`.** _(foreignKeyName)_ Prompts a property name that
   references the primary key property of the another model. Note: Leave blank to
   use the default.
 
@@ -102,9 +102,10 @@ The tool will prompt you for:
   Default values:
 
   - plural form of `<targetModel>` for `hasMany` relations, e.g. `products`
-  - Based on the foreign key for `belongsTo` relations, e.g. when the foreign
-    key is the default name, e.g `categoryId`, the default relation name is
-    `category`.
+  - singular form of `<targetModel>` for `hasOne` relations, e.g. `address`
+  - for `belongsTo` relations, the default name is based on the foreign key of
+    the `belongsTo` relation. E.g. when the foreign key is the default name,
+    `categoryId` for example, the default relation name is `category`.
 
 {% include warning.html content="Based on your input, the default foreign key name might be the same as the default relation name, especially for belongsTo relation. Please name them differently to avoid a known issue [Navigational Property Error](https://github.com/strongloop/loopback-next/issues/4392)
 " lang=page.lang %}
