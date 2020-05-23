@@ -41,7 +41,7 @@ describe('jwt authentication', () => {
       .get('/whoAmI')
       .set('Authorization', 'Bearer ' + token)
       .expect(200);
-    expect(res.text).to.equal('2');
+    expect(res.text).to.equal('f48b7167-8d95-451c-bbfc-8a12cd49e763');
   });
 
   it('generates openapi spec provided by enhancer', async () => {
@@ -69,21 +69,22 @@ describe('jwt authentication', () => {
 
   async function createUsers(): Promise<void> {
     const hashedPassword = await hashPassword('opensesame', 10);
+    //providing UUID() to test
     const users = [
       {
-        id: 1,
+        id: 'a75337c0-78d2-4b44-8037-20e22d5e2508',
         username: 'John',
         email: 'john@doe.com',
         password: hashedPassword,
       },
       {
-        id: 2,
+        id: 'f48b7167-8d95-451c-bbfc-8a12cd49e763',
         username: 'Jane',
         email: 'jane@doe.com',
         password: hashedPassword,
       },
       {
-        id: 3,
+        id: 'bbb5e8a0-fc86-4573-aeab-c950c38dc7a1',
         username: 'Bob',
         email: 'bob@projects.com',
         password: hashedPassword,

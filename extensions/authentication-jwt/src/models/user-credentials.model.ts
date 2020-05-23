@@ -8,10 +8,12 @@ import {Entity, model, property} from '@loopback/repository';
 @model({settings: {strict: false}})
 export class UserCredentials extends Entity {
   @property({
-    type: 'number',
+    type: 'string',
     id: true,
+    generated: false,
+    defaultFn: 'uuidv4',
   })
-  id: number;
+  id: string;
 
   @property({
     type: 'string',
@@ -20,10 +22,10 @@ export class UserCredentials extends Entity {
   password: string;
 
   @property({
-    type: 'number',
+    type: 'string',
     required: true,
   })
-  userId: number;
+  userId: string;
 
   // Define well-known properties here
 

@@ -13,13 +13,14 @@ import {UserCredentials} from './user-credentials.model';
 })
 export class User extends Entity {
   // must keep it
+  // add id:string<UUID>
   @property({
-    type: 'number',
-    id: 1,
+    type: 'string',
+    id: true,
     generated: false,
-    updateOnly: true,
+    defaultFn: 'uuidv4',
   })
-  id: number;
+  id: string;
 
   @property({
     type: 'string',
@@ -33,9 +34,13 @@ export class User extends Entity {
   username?: string;
 
   // must keep it
+  // feat email unique
   @property({
     type: 'string',
     required: true,
+    index: {
+      unique: true,
+    },
   })
   email: string;
 
