@@ -135,7 +135,7 @@ export class ProductReviewController {
     return this.barRepository.findById(id, filter);
   }
 
-  @get('product-reviews/findOne', {
+  @get('/product-reviews/findOne', {
     responses: {
       '200': {
         description: 'ProductReview model instance',
@@ -245,6 +245,7 @@ export class ProductReviewController {
         'application/json': {
           schema: getModelSchemaRef(ProductReview, {
             title: 'NewProductReview',
+
           }),
         },
       },
@@ -330,7 +331,7 @@ export class ProductReviewController {
     return this.barRepository.findById(id, filter);
   }
 
-  @get('product-reviews/findOne', {
+  @get('/product-reviews/findOne', {
     responses: {
       '200': {
         description: 'ProductReview model instance',
