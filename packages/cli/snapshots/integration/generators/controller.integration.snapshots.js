@@ -135,6 +135,24 @@ export class ProductReviewController {
     return this.barRepository.findById(id, filter);
   }
 
+  @get('product-reviews/findOne', {
+    responses: {
+      '200': {
+        description: 'ProductReview model instance',
+        content: {
+          'application/json': {
+            schema: getModelSchemaRef(ProductReview, { includeRelations: true }),
+          },
+        },
+      },
+    },
+  })
+  async findOne(
+    @param.filter(ProductReview) filter?: Filter<ProductReview>,
+  ): Promise<ProductReview | null> {
+    return this.barRepository.findOne(filter);
+  }
+
   @patch('/product-reviews/{id}', {
     responses: {
       '204': {
@@ -227,7 +245,7 @@ export class ProductReviewController {
         'application/json': {
           schema: getModelSchemaRef(ProductReview, {
             title: 'NewProductReview',
-            
+
           }),
         },
       },
@@ -311,6 +329,24 @@ export class ProductReviewController {
     @param.filter(ProductReview, {exclude: 'where'}) filter?: FilterExcludingWhere<ProductReview>
   ): Promise<ProductReview> {
     return this.barRepository.findById(id, filter);
+  }
+
+  @get('product-reviews/findOne', {
+    responses: {
+      '200': {
+        description: 'ProductReview model instance',
+        content: {
+          'application/json': {
+            schema: getModelSchemaRef(ProductReview, { includeRelations: true }),
+          },
+        },
+      },
+    },
+  })
+  async findOne(
+    @param.filter(ProductReview) filter?: Filter<ProductReview>,
+  ): Promise<ProductReview | null> {
+    return this.barRepository.findOne(filter);
   }
 
   @patch('/product-reviews/{id}', {
