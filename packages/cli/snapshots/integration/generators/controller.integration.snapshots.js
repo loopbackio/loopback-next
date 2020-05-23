@@ -245,7 +245,6 @@ export class ProductReviewController {
         'application/json': {
           schema: getModelSchemaRef(ProductReview, {
             title: 'NewProductReview',
-
           }),
         },
       },
