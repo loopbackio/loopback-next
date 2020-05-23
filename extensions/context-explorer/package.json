@@ -21,7 +21,7 @@
     "@loopback/context": "^3.8.1",
     "@loopback/core": "^2.7.0",
     "@loopback/rest": "^5.0.1",
-    "ts-graphviz": "^0.13.0",
+    "ts-graphviz": "^0.13.1",
     "viz.js": "^2.1.2"
   },
   "devDependencies": {
