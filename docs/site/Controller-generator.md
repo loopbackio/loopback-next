@@ -216,6 +216,24 @@ export class TodoController {
     return this.todoRepository.findById(id, filter);
   }
 
+  @get('/todos/findOne', {
+    responses: {
+      '200': {
+        description: 'Todo model instance',
+        content: {
+          'application/json': {
+            schema: getModelSchemaRef(Todo, {includeRelations: true}),
+          },
+        },
+      },
+    },
+  })
+  async findOne(
+    @param.where(Todo) where?: Where<Todo>
+  ): Promise<Todo | null> {
+    return this.todoRepository.findOne(where);
+  }
+
   @patch('/todos/{id}', {
     responses: {
       '204': {
