@@ -3,13 +3,20 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Getter, inject, Provider, Setter} from '@loopback/core';
-import {Request, RedirectRoute} from '@loopback/rest';
+import {bind, Getter, inject, Provider, Setter} from '@loopback/core';
+import {
+  asMiddleware,
+  Middleware,
+  RedirectRoute,
+  Request,
+  RestMiddlewareGroups,
+} from '@loopback/rest';
 import {SecurityBindings, UserProfile} from '@loopback/security';
 import {AuthenticationBindings} from '../keys';
 import {
   AuthenticateFn,
   AuthenticationStrategy,
+  AUTHENTICATION_STRATEGY_NOT_FOUND,
   USER_PROFILE_NOT_FOUND,
 } from '../types';
 /**
@@ -78,5 +85,35 @@ export class AuthenticateActionProvider implements Provider<AuthenticateFn> {
       });
       throw error;
     }
+  }
+}
+
+@bind(
+  asMiddleware({
+    group: RestMiddlewareGroups.AUTHENTICATION,
+    upstreamGroups: [RestMiddlewareGroups.FIND_ROUTE],
+  }),
+)
+export class AuthenticationMiddlewareProvider implements Provider<Middleware> {
+  constructor(
+    @inject(AuthenticationBindings.AUTH_ACTION)
+    private authenticate: AuthenticateFn,
+  ) {}
+
+  value(): Middleware {
+    return async (ctx, next) => {
+      try {
+        await this.authenticate(ctx.request);
+      } catch (error) {
+        if (
+          error.code === AUTHENTICATION_STRATEGY_NOT_FOUND ||
+          error.code === USER_PROFILE_NOT_FOUND
+        ) {
+          error.statusCode = 401;
+        }
+        throw error;
+      }
+      return next();
+    };
   }
 }
