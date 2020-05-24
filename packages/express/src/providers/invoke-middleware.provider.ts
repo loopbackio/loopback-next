@@ -40,7 +40,13 @@ export class InvokeMiddlewareProvider implements Provider<InvokeMiddleware> {
   @config()
   protected defaultOptions: InvokeMiddlewareOptions = {
     chain: DEFAULT_MIDDLEWARE_CHAIN,
-    orderedGroups: ['cors', 'apiSpec', DEFAULT_MIDDLEWARE_GROUP],
+    orderedGroups: [
+      'cors',
+      'apiSpec',
+      'authentication',
+      DEFAULT_MIDDLEWARE_GROUP,
+      'route',
+    ],
   };
 
   value(): InvokeMiddleware {
