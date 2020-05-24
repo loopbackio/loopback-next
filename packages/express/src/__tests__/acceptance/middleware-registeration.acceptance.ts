@@ -83,6 +83,20 @@ describe('Express middleware registry', () => {
       await testSpyLog();
     });
 
+    it('reports error for circular dependencies', async () => {
+      server.middleware(spyMiddleware, {
+        key: 'middleware.spy',
+        downstreamGroups: ['x'],
+        upstreamGroups: ['x'],
+      });
+      const res = await client
+        .post('/hello')
+        .send('"World"')
+        .set('content-type', 'application/json')
+        .expect(500);
+      expect(res.text).to.match(/Error\: Cyclic dependency/);
+    });
+
     it('registers a LoopBack middleware provider', async () => {
       class SpyMiddlewareProvider implements Provider<Middleware> {
         value() {

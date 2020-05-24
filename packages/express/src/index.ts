@@ -22,6 +22,7 @@
  */
 export * from './express.application';
 export * from './express.server';
+export * from './group-sorter';
 export * from './keys';
 export * from './middleware';
 export * from './middleware-interceptor';

@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {BindingKey} from '@loopback/core';
-import {MiddlewareContext} from './types';
+import {MiddlewareContext, MiddlewareGroups} from './types';
 
 export namespace MiddlewareBindings {
   /**
@@ -34,4 +34,4 @@ export const MIDDLEWARE_INTERCEPTOR_NAMESPACE = 'globalInterceptors.middleware';
 /**
  * Default order group name for Express middleware based global interceptors
  */
-export const DEFAULT_MIDDLEWARE_GROUP = 'middleware';
+export const DEFAULT_MIDDLEWARE_GROUP = MiddlewareGroups.DEFAULT;
