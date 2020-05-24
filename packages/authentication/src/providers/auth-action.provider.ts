@@ -3,8 +3,14 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Getter, inject, Provider, Setter} from '@loopback/context';
-import {Request, RedirectRoute} from '@loopback/rest';
+import {bind, Getter, inject, Provider, Setter} from '@loopback/context';
+import {
+  asMiddleware,
+  DEFAULT_MIDDLEWARE_CHAIN,
+  Middleware,
+  RedirectRoute,
+  Request,
+} from '@loopback/rest';
 import {SecurityBindings, UserProfile} from '@loopback/security';
 import {AuthenticationBindings} from '../keys';
 import {
@@ -78,5 +84,25 @@ export class AuthenticateActionProvider implements Provider<AuthenticateFn> {
       });
       throw error;
     }
+  }
+}
+
+@bind(
+  asMiddleware({
+    chain: DEFAULT_MIDDLEWARE_CHAIN,
+    group: 'authentication',
+  }),
+)
+export class AuthenticationMiddlewareProvider implements Provider<Middleware> {
+  constructor(
+    @inject(AuthenticationBindings.AUTH_ACTION)
+    private authenticate: AuthenticateFn,
+  ) {}
+
+  value(): Middleware {
+    return async (ctx, next) => {
+      await this.authenticate(ctx.request);
+      return next();
+    };
   }
 }
