@@ -38,6 +38,11 @@ export type ExpressRequestHandler = RequestHandler;
  */
 export class MiddlewareContext extends Context implements HandlerContext {
   /**
+   * A flag to tell if the response is finished.
+   */
+  responseFinished = false;
+
+  /**
    * Constructor for `MiddlewareContext`
    * @param request - Express request object
    * @param response - Express response object
@@ -53,6 +58,7 @@ export class MiddlewareContext extends Context implements HandlerContext {
     super(parent, name);
     this.setupBindings();
     onFinished(this.response, () => {
+      this.responseFinished = true;
       // Close the request context when the http response is finished so that
       // it can be recycled by GC
       this.emit('close');
@@ -68,7 +74,28 @@ export class MiddlewareContext extends Context implements HandlerContext {
 /**
  * Interface LoopBack 4 middleware to be executed within sequence of actions.
  * A middleware for LoopBack is basically a generic interceptor that uses
- * `RequestContext`.
+ * `MiddlewareContext`.
+ *
+ * @remarks
+ *
+ * The middleware function is responsible for processing HTTP requests and
+ * responses. It typically includes the following logic.
+ *
+ * 1. Process the request with one of the following outcome
+ *   - Reject the request by throwing an error if request is invalid, such as
+ *     validation or authentication failures
+ *   - Produce a response by itself, such as from the cache
+ *   - Proceed by calling `await next()` to invoke downstream middleware. When
+ *     `await next()` returns, it goes to step 2. If an error thrown from
+ *     `await next()`, step 3 handles the error.
+ *
+ * 2. Process the response with one the following outcome
+ *   - Reject the response by throwing an error
+ *   - Replace the response with its own value
+ *   - Return the response to upstream middleware
+ *
+ * 3. Catch the error thrown from `await next()`. If the `catch` block does not
+ * exist, the error will be bubbled up to upstream middleware
  *
  * The signature of a middleware function is described at
  * {@link https://loopback.io/doc/en/lb4/apidocs.express.middleware.html | Middleware}.
@@ -116,7 +143,8 @@ export interface InvokeMiddlewareOptions {
    */
   chain?: string;
   /**
-   * An array of group names to denote the order of execution
+   * An array of group names to denote the order of execution, such as
+   * `['cors', 'caching', 'rate-limiting']`.
    */
   orderedGroups?: string[];
 
@@ -227,6 +255,24 @@ export interface MiddlewareBindingOptions
    * Name of the middleware extension point. Default to `DEFAULT_MIDDLEWARE_CHAIN`.
    */
   chain?: string;
+
+  /**
+   * An array of group names for upstream middleware in the cascading order.
+   *
+   * For example, the  `invokeMethod` depends on `parseParams` for request
+   * processing. The `upstreamGroups` for `invokeMethod` should be
+   * `['parseParams']`. The order of groups in the array does not matter.
+   */
+  upstreamGroups?: string | string[];
+
+  /**
+   * An array of group names for downstream middleware in the cascading order.
+   *
+   * For example, the  `sendResponse` depends on `invokeMethod` for response
+   * processing. The `downstreamGroups` for `sendResponse` should be
+   * `['invokeMethod']`. The order of groups in the array does not matter.
+   */
+  downstreamGroups?: string | string[];
 }
 
 /**
@@ -241,3 +287,24 @@ export interface ExpressMiddlewareFactory<C> {
  * A symbol to store `MiddlewareContext` on the request object
  */
 export const MIDDLEWARE_CONTEXT = Symbol('loopback.middleware.context');
+
+/**
+ * Constants for middleware groups
+ */
+export namespace MiddlewareGroups {
+  /**
+   * Enforce CORS
+   */
+  export const CORS = 'cors';
+
+  /**
+   * Server OpenAPI specs
+   */
+  export const API_SPEC = 'apiSpec';
+
+  /**
+   * Default middleware group
+   */
+  export const MIDDLEWARE = 'middleware';
+  export const DEFAULT = MIDDLEWARE;
+}
