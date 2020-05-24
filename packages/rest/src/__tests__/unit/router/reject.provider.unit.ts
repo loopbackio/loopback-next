@@ -4,10 +4,10 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
-  ExpressContextStub,
-  SinonSpy,
   expect,
+  ExpressContextStub,
   sinon,
+  SinonSpy,
   stubExpressContext,
 } from '@loopback/testlab';
 import {LogError, RejectProvider} from '../../..';
@@ -20,7 +20,7 @@ describe('reject', () => {
   beforeEach(givenStubbedContext);
 
   it('returns HTTP response with status code 500 by default', async () => {
-    const reject = new RejectProvider(noopLogger).value();
+    const reject = RejectProvider.value(noopLogger);
 
     reject(contextStub, testError);
     const result = await contextStub.result;
@@ -29,7 +29,7 @@ describe('reject', () => {
   });
 
   it('converts error code ENTITY_NOT_FOUND to status code 404', async () => {
-    const reject = new RejectProvider(noopLogger).value();
+    const reject = RejectProvider.value(noopLogger);
 
     const notFoundError: Error & {code?: string} = new Error('not found');
     notFoundError.code = 'ENTITY_NOT_FOUND';
@@ -42,7 +42,7 @@ describe('reject', () => {
 
   it('logs the error', async () => {
     const logger = sinon.spy() as LogError & SinonSpy;
-    const reject = new RejectProvider(logger).value();
+    const reject = RejectProvider.value(logger);
 
     reject(contextStub, testError);
     await contextStub.result;

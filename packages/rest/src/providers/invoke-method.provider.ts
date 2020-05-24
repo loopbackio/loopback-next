@@ -3,19 +3,16 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Context, inject, Provider} from '@loopback/context';
-import {InvokeMethod, OperationArgs, OperationRetval} from '../types';
+import {Context, inject} from '@loopback/context';
 import {RestBindings} from '../keys';
-import {RouteEntry} from '../router';
+import {InvokeMethod} from '../types';
 
-export class InvokeMethodProvider implements Provider<InvokeMethod> {
-  constructor(@inject(RestBindings.Http.CONTEXT) protected context: Context) {}
-
-  value(): InvokeMethod {
-    return (route, args) => this.action(route, args);
-  }
-
-  action(route: RouteEntry, args: OperationArgs): Promise<OperationRetval> {
-    return route.invokeHandler(this.context, args);
+export class InvokeMethodProvider {
+  static value(
+    @inject(RestBindings.Http.CONTEXT) context: Context,
+  ): InvokeMethod {
+    const invokeMethod: InvokeMethod = (route, args) =>
+      route.invokeHandler(context, args);
+    return invokeMethod;
   }
 }

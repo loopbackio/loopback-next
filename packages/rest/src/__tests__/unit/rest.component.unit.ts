@@ -3,13 +3,14 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {BoundValue, Context, inject, Provider} from '@loopback/context';
 import {
-  Application,
-  Component,
-  CoreBindings,
-  ProviderMap,
-} from '@loopback/core';
+  BindingType,
+  Context,
+  createBindingFromClass,
+  inject,
+  Provider,
+} from '@loopback/context';
+import {Application, Component, CoreBindings} from '@loopback/core';
 import {expect, stubExpressContext} from '@loopback/testlab';
 import {
   HttpHandler,
@@ -53,9 +54,9 @@ describe('RestComponent', () => {
 
       for (const key of EXPECTED_KEYS) {
         it(`binds ${key}`, async () => {
-          const result = await app.get(key);
-          const expected: Provider<BoundValue> = new comp.providers![key]();
-          expect(result).to.deepEqual(expected.value());
+          await app.get(key);
+          const expected = comp.bindings?.find(b => b.key === key);
+          expect(expected?.type).to.eql(BindingType.DYNAMIC_VALUE);
         });
       }
     });
@@ -73,9 +74,11 @@ describe('RestComponent', () => {
         let lastLog = 'logError() was not called';
 
         class CustomRestComponent extends RestComponent {
-          providers: ProviderMap = {
-            [RestBindings.SequenceActions.LOG_ERROR.key]: CustomLogger,
-          };
+          bindings = [
+            createBindingFromClass(CustomLogger, {
+              key: RestBindings.SequenceActions.LOG_ERROR,
+            }),
+          ];
           constructor(
             @inject(CoreBindings.APPLICATION_INSTANCE) application: Application,
             @inject(CoreBindings.APPLICATION_CONFIG)

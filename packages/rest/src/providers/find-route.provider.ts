@@ -3,25 +3,21 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Context, inject, Provider} from '@loopback/context';
-import {FindRoute, Request} from '../types';
+import {Context, inject} from '@loopback/context';
 import {HttpHandler} from '../http-handler';
 import {RestBindings} from '../keys';
-import {ResolvedRoute} from '../router';
+import {FindRoute} from '../types';
 
-export class FindRouteProvider implements Provider<FindRoute> {
-  constructor(
-    @inject(RestBindings.Http.CONTEXT) protected context: Context,
-    @inject(RestBindings.HANDLER) protected handler: HttpHandler,
-  ) {}
-
-  value(): FindRoute {
-    return request => this.action(request);
-  }
-
-  action(request: Request): ResolvedRoute {
-    const found = this.handler.findRoute(request);
-    found.updateBindings(this.context);
-    return found;
+export class FindRouteProvider {
+  static value(
+    @inject(RestBindings.Http.CONTEXT) context: Context,
+    @inject(RestBindings.HANDLER) handler: HttpHandler,
+  ): FindRoute {
+    const findRoute: FindRoute = request => {
+      const found = handler.findRoute(request);
+      found.updateBindings(context);
+      return found;
+    };
+    return findRoute;
   }
 }
