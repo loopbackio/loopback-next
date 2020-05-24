@@ -5,6 +5,7 @@
 
 import {BindingKey, MetadataAccessor} from '@loopback/core';
 import {SecurityBindings, UserProfile} from '@loopback/security';
+import {Middleware} from '@loopback/rest';
 import {AuthenticationComponent} from './authentication.component';
 import {
   AuthenticateFn,
@@ -86,6 +87,13 @@ export namespace AuthenticationBindings {
    */
   export const AUTH_ACTION = BindingKey.create<AuthenticateFn>(
     'authentication.actions.authenticate',
+  );
+
+  /**
+   * Binding key for AUTHENTICATION_MIDDLEWARE
+   */
+  export const AUTHENTICATION_MIDDLEWARE = BindingKey.create<Middleware>(
+    'middleware.authentication',
   );
 
   /**
