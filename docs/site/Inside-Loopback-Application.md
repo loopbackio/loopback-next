@@ -65,11 +65,11 @@ mobile application is the same.
     user.
   - We have the following API requirements for this use case:
 
-| Use case          | operations          | summary                                           |
-| ----------------- | ------------------- | ------------------------------------------------- |
-| create a new user | POST /users         | creates a user entity                             |
-| query for a user  | GET /users/{userId} | query for user entity by id                       |
-| login as a user   | POST /users/login   | does basic authentication and returns a jwt token |
+| Use case          | operations          | summary                                     |
+| ----------------- | ------------------- | ------------------------------------------- |
+| create a new user | POST /users         | creates a user entity                       |
+| query for a user  | GET /users/{userId} | query for user entity by id                 |
+| login as a user   | POST /users/login   | does basic authentication and returns a JWT |
 
 Similar to this we can breakdown further use cases into API requirements.
 
@@ -109,7 +109,7 @@ The API business logic is separated between various layers in LoopBack:
   `Repositories`.
 
 - [Services](https://loopback.io/doc/en/lb4/Calling-other-APIs-and-web-services.html)
-  provide common interfaces for external apis and services. This allows invoking
+  provide common interfaces for external APIs and services. This allows invoking
   external services without mentioning connection details every time. `Services`
   interchangeably also provide common interfaces for locally available classes.
 
@@ -132,9 +132,9 @@ The API business logic is separated between various layers in LoopBack:
 Developers typically create server-side "handler functions" for each route as
 remote methods. In LoopBack, remote methods are defined in
 [controller classes](https://loopback.io/doc/en/lb4/Controllers.html#routing-to-controllers)
-and configured as API endpoints with api `decorators`.
+and configured as API endpoints with API `decorators`.
 
-> LoopBack has built-in decorators to indicate api specification and the
+> LoopBack has built-in decorators to indicate API specification and the
 > expected arguments for the remote method.
 
 For example,
@@ -144,7 +144,7 @@ For example,
   class is defined as `/users/login` API endpoint.
 - argument of method `findById` in the
   [UserController](https://github.com/strongloop/loopback4-example-shopping/blob/master/packages/shopping/src/controllers/user.controller.ts)
-  is decorated with `@param.path.string('userId')` which means that the userId
+  is decorated with `@param.path.string('userId')` which means that the `userId`
   parameter in the URL path is passed into the method at runtime.
 
 ## Classes and wiring dependencies
@@ -154,15 +154,15 @@ For example,
 > into constructors, class properties and methods.
 
 The `UserController` in the shopping example needs to connect to a user service
-to verify the user credentials and a jwt token service to create a token. Having
-these `dependencies` loosely coupled with the `UserController` will help
-developers of the `Login` use case with separation of duties and inject mock
-services for rapid testing.
+to verify the user credentials and a JWT service to create a token. Having these
+`dependencies` loosely coupled with the `UserController` will help developers of
+the `Login` use case with separation of duties and inject mock services for
+rapid testing.
 
 For example, a `TokenService` interface is injected into the `UserController` to
 `verify` and `generate` tokens. A
 [JWT Service](https://github.com/strongloop/loopback4-example-shopping/blob/master/packages/shopping/src/services/jwt-service.ts)
-provides a local implementation of this interface specifically for jwt tokens.
+provides a local implementation of this interface specifically for JWTs.
 
 Dependency injection is used to wire services and repositories with controllers
 dynamically at run time. We will also see that this feature is extensively used
