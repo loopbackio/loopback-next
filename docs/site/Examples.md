@@ -53,6 +53,17 @@ LoopBack 4 comes with the following example projects.
   An example demonstrating how to implement a Role Based Access Control (RBAC)
   system.
 
+### Authentication and authorization related examples
+
+- **[passport-login](https://github.com/strongloop/loopback-next/tree/master/examples/passport-login)**:
+  An example implmenting authentication in a LoopBack application using
+  [Passport](https://github.com/jaredhanson/passport) modules.
+
+- **[todo-jwt](https://github.com/strongloop/loopback-next/tree/master/examples/todo-jwt)**:
+  A modified
+  [Todo example](https://github.com/strongloop/loopback-next/tree/master/examples/todo)
+  with JWT authentication.
+
 ### Other examples
 
 - **[context](https://github.com/strongloop/loopback-next/tree/master/examples/context)**:
@@ -80,10 +91,6 @@ LoopBack 4 comes with the following example projects.
 
 - **[validation-app](https://github.com/strongloop/loopback-next/tree/master/examples/validation-app)**:
   An example demonstrating how to add validations in a LoopBack application.
-
-- **[passport-login](https://github.com/strongloop/loopback-next/tree/master/examples/passport-login)**:
-  An example implmenting authentication in a LoopBack application using
-  [Passport](https://github.com/jaredhanson/passport) modules.
 
 ## How to download examples
 
