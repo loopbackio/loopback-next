@@ -851,6 +851,27 @@ class TestModel {
 }
 ```
 
+To define a nested array property, you must provide the `jsonSchema` field to
+describe the sub-array property. For example:
+
+```ts
+@model()
+class TestModel {
+  // alternatively use @property.array('array')
+  @property.array(Array, {
+    jsonSchema: {
+      type: 'array',
+      items: {type: 'string'},
+    },
+  })
+  nestedArr: Array<Array<string>>;
+}
+```
+
+If the `jsonSchema` field is missing, you will get an error saying
+
+> You must provide the "jsonSchema" field when define a nested array property'
+
 ### Validation Rules
 
 You can also specify the validation rules in the field `jsonSchema`. For

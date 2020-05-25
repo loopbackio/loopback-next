@@ -251,6 +251,34 @@ describe('build-schema', () => {
         expectValidJsonSchema(jsonSchema);
       });
 
+      it('properly converts nested array property when json schema provided', () => {
+        @model()
+        class TestModel {
+          // alternatively use @property.array('array')
+          @property.array(Array, {
+            jsonSchema: {
+              type: 'array',
+              items: {type: 'string'},
+            },
+          })
+          nestedArr: Array<Array<string>>;
+        }
+
+        const jsonSchema = modelToJsonSchema(TestModel);
+        expect(jsonSchema.properties).to.deepEqual({
+          nestedArr: {
+            type: 'array',
+            items: {
+              type: 'array',
+              items: {
+                type: 'string',
+              },
+            },
+          },
+        });
+        expectValidJsonSchema(jsonSchema);
+      });
+
       it('properly converts properties with enum in json schema', () => {
         enum QueryLanguage {
           JSON = 'json',
@@ -308,22 +336,20 @@ describe('build-schema', () => {
         });
       });
 
-      it('properly converts properties with recursive arrays', () => {
+      it('throws for nested array property when json schema is missing', () => {
         @model()
         class RecursiveArray {
           @property.array(Array)
           recArr: string[][];
         }
 
-        const jsonSchema = modelToJsonSchema(RecursiveArray);
-        expect(jsonSchema.properties).to.eql({
-          recArr: {
-            type: 'array',
-            items: {
-              type: 'array',
-            },
+        expect.throws(
+          () => {
+            modelToJsonSchema(RecursiveArray);
           },
-        });
+          Error,
+          'You must provide the "jsonSchema" field when define a nested array property',
+        );
       });
 
       it('supports explicit primitive type decoration via strings', () => {
