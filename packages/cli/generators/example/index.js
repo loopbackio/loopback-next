@@ -56,6 +56,7 @@ const EXAMPLES = {
   'passport-login': g.f(
     'An example implmenting authentication in a LoopBack application using Passport modules.',
   ),
+  'todo-jwt': g.f('A modified Todo application with JWT authentication'),
 };
 Object.freeze(EXAMPLES);
 

@@ -288,6 +288,7 @@
 /extensions/authentication-jwt @emonddr @hacksparrow @jannyHou
 /docs/site/tutorials/authentication @emonddr @hacksparrow @jannyHou
 /examples/passport-login @deepakrkris @emonddr
+/examples/todo-jwt @dhmlau @jannyHou
 
 #
 # Authorization
