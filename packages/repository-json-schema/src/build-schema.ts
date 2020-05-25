@@ -10,6 +10,7 @@ import {
   ModelMetadataHelper,
   Null,
   PropertyDefinition,
+  PropertyType,
   RelationMetadata,
   resolveType,
 } from '@loopback/repository';
@@ -242,7 +243,7 @@ export function stringTypeToWrapper(type: string | Function): Function {
  * Determines whether a given string or constructor is array type or not
  * @param type - Type as string or wrapper
  */
-export function isArrayType(type: string | Function) {
+export function isArrayType(type: string | Function | PropertyType) {
   return type === Array || type === 'array';
 }
 
@@ -256,8 +257,11 @@ export function metaToJsonProperty(meta: PropertyDefinition): JsonSchema {
   let propertyType = meta.type as string | Function;
 
   if (isArrayType(propertyType) && meta.itemType) {
-    if (Array.isArray(meta.itemType)) {
-      throw new Error('itemType as an array is not supported');
+    if (isArrayType(meta.itemType) && !meta.jsonSchema) {
+      throw new Error(
+        'You must provide the "jsonSchema" field when define ' +
+          'a nested array property',
+      );
     }
     result = {type: 'array', items: propDef};
     propertyType = meta.itemType as string | Function;

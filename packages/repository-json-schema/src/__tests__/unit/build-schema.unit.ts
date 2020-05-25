@@ -71,12 +71,6 @@ describe('build-schema', () => {
   });
 
   describe('metaToJsonSchema', () => {
-    it('errors out if "itemType" is an array', () => {
-      expect(() => metaToJsonProperty({type: Array, itemType: []})).to.throw(
-        /itemType as an array is not supported/,
-      );
-    });
-
     it('converts Boolean', () => {
       expect(metaToJsonProperty({type: Boolean})).to.eql({
         type: 'boolean',
