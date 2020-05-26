@@ -208,12 +208,12 @@ export function invokeMiddleware(
       middlewareCtx.find(filter).map(b => b.key),
     );
   }
-  const _middlewareChain = new MiddlewareChain(
+  const mwChain = new MiddlewareChain(
     middlewareCtx,
     filter,
     compareBindingsByTag('group', orderedGroups),
   );
-  return _middlewareChain.invokeInterceptors(options?.next);
+  return mwChain.invokeInterceptors(options?.next);
 }
 
 /**

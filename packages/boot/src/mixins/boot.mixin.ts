@@ -25,8 +25,6 @@ import * as loopbackContext from '@loopback/context';
 import * as loopbackCore from '@loopback/core';
 /* eslint-enable @typescript-eslint/no-unused-vars */
 
-/* eslint-enable @typescript-eslint/no-unused-vars */
-
 // Binding is re-exported as Binding / Booter types are needed when consuming
 // BootMixin and this allows a user to import them from the same package (UX!)
 export {Binding};
@@ -110,7 +108,7 @@ export function BootMixin<T extends MixinTarget<Application>>(superClass: T) {
      */
     booters(...booterCls: Constructor<Booter>[]): Binding[] {
       return booterCls.map(cls =>
-        _bindBooter((this as unknown) as Context, cls),
+        bindBooter((this as unknown) as Context, cls),
       );
     }
 
@@ -187,7 +185,7 @@ export function BootMixin<T extends MixinTarget<Application>>(superClass: T) {
  * @param ctx - The Context to bind the Booter Class
  * @param booterCls - Booter class to be bound
  */
-export function _bindBooter(
+export function bindBooter(
   ctx: Context,
   booterCls: Constructor<Booter>,
 ): Binding {
@@ -209,3 +207,6 @@ export function _bindBooter(
   }
   return binding;
 }
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export const _bindBooter = bindBooter; // For backward-compatibility

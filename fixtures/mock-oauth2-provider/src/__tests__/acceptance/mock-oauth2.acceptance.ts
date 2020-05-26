@@ -26,7 +26,9 @@ describe('mock-oauth2-provider', () => {
     return supertest(server)
       .get('/oauth/dialog')
       .query({
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         redirect_uri: 'http://localhost:3000/callback',
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         client_id: '1111',
       })
       .expect(302)
@@ -40,7 +42,9 @@ describe('mock-oauth2-provider', () => {
     return supertest(server)
       .get('/oauth/dialog')
       .query({
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         redirect_uri: 'http://localhost:3000/callback',
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         client_id: '1111',
         scope: 'email',
       })
@@ -58,10 +62,13 @@ describe('mock-oauth2-provider', () => {
   });
 
   it('exposes GET /oauth/dialog - missing client_id', () => {
-    return supertest(server)
-      .get('/oauth/dialog')
-      .query({redirect_uri: 'http://localhost:3000/callback'})
-      .expect(400, {error: 'missing client_id'});
+    return (
+      supertest(server)
+        .get('/oauth/dialog')
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        .query({redirect_uri: 'http://localhost:3000/callback'})
+        .expect(400, {error: 'missing client_id'})
+    );
   });
 
   it('exposes GET /oauth/token - invalid client id', () => {

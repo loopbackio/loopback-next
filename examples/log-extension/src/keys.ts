@@ -26,6 +26,7 @@ export const EXAMPLE_LOG_METADATA_KEY = 'example.log.metadata';
 /**
  * Enum to define the supported log levels
  */
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export enum LOG_LEVEL {
   DEBUG,
   INFO,

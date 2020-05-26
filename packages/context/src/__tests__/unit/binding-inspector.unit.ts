@@ -352,6 +352,7 @@ describe('isProviderClass', () => {
       }
     }
 
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     function MyJsProvider() {}
 
     MyJsProvider.prototype.value = function () {

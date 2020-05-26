@@ -202,7 +202,9 @@ describe('example-passport-login acceptance test', () => {
         const params = {
           username: 'testuser',
           password: 'xyz',
+          // eslint-disable-next-line @typescript-eslint/naming-convention
           client_id: loginPageHiddenParams.client_id,
+          // eslint-disable-next-line @typescript-eslint/naming-convention
           redirect_uri: loginPageHiddenParams.redirect_uri,
           scope: loginPageHiddenParams.scope,
         };
@@ -324,7 +326,9 @@ describe('example-passport-login acceptance test', () => {
           const params = {
             username: 'user1',
             password: 'abc',
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             client_id: loginPageHiddenParams.client_id,
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             redirect_uri: loginPageHiddenParams.redirect_uri,
             scope: loginPageHiddenParams.scope,
           };

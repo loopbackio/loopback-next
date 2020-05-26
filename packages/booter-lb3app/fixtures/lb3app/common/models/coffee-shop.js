@@ -5,6 +5,7 @@
 
 'use strict';
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 module.exports = function (CoffeeShop) {
   CoffeeShop.status = function (cb) {
     const currentDate = new Date();

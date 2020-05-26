@@ -23,6 +23,8 @@ import {Server} from 'http';
 import jwt from 'jsonwebtoken';
 import {MyUser} from './user-repository';
 
+/* eslint-disable @typescript-eslint/naming-convention */
+
 const app = express();
 let server: Server;
 

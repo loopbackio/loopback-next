@@ -13,7 +13,7 @@ import {
 import {authenticate, AuthenticationBindings} from '@loopback/authentication';
 import {inject} from '@loopback/core';
 import {SecurityBindings, UserProfile} from '@loopback/security';
-import {OAuth2InterceptExpressMiddleware} from '../authentication-interceptors/types';
+import {oAuth2InterceptExpressMiddleware} from '../authentication-interceptors/types';
 
 /**
  * Login controller for third party oauth provider
@@ -49,7 +49,7 @@ export class Oauth2Controller {
     return response;
   }
 
-  @OAuth2InterceptExpressMiddleware()
+  @oAuth2InterceptExpressMiddleware()
   @get('/auth/thirdparty/{provider}/callback')
   /**
    * This method uses the passport strategies as express middleware

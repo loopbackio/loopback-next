@@ -26,6 +26,7 @@ export class Shipment extends Entity {
   @property({
     type: 'number',
   })
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   shipment_id: number;
 
   @property({type: 'string'})

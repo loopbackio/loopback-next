@@ -17,7 +17,7 @@ import {composeInterceptors, intercept} from '@loopback/core';
  *      'passport-google',
  *      'passport-oauth2'
  */
-export function OAuth2InterceptExpressMiddleware() {
+export function oAuth2InterceptExpressMiddleware() {
   return intercept(
     composeInterceptors(
       'passport-init-mw',

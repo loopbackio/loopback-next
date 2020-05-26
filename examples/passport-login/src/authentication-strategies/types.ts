@@ -9,7 +9,7 @@ import {UserIdentityService} from '@loopback/authentication';
 import {User} from '../models';
 import {UserProfile, securityId} from '@loopback/security';
 
-export type profileFunction = (
+export type ProfileFunction = (
   accessToken: string,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   done: (err?: Error | null, profile?: any) => void,
@@ -27,7 +27,7 @@ export namespace PassportAuthenticationBindings {
   export const OAUTH2_STRATEGY = 'passport.authentication.oauth2.strategy';
 }
 
-export const oauth2ProfileFunction: profileFunction = (
+export const oauth2ProfileFunction: ProfileFunction = (
   accessToken: string,
   done,
 ) => {

@@ -54,6 +54,7 @@ export function isTypeResolver<T extends object>(
 /**
  * A boxed type for `null`
  */
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export function Null() {
   return null;
 }
