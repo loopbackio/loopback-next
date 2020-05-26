@@ -5,4 +5,5 @@
 
 'use strict';
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 module.exports = function (Coffee) {};

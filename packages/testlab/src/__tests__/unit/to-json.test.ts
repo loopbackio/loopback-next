@@ -100,10 +100,10 @@ describe('toJSON', () => {
 
   it('handles classes with custom toJSON', () => {
     class Customer {
-      private __data: object;
+      private _data: object;
 
       constructor(public id: string, public email: string) {
-        this.__data = {id, email};
+        this._data = {id, email};
       }
 
       toJSON() {

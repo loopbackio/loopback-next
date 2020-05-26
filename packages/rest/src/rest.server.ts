@@ -124,6 +124,7 @@ export class RestServer extends BaseMiddlewareRegistry
    */
 
   protected _OASEnhancer: OASEnhancerService;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   public get OASEnhancer(): OASEnhancerService {
     this._setupOASEnhancerIfNeeded();
     return this._OASEnhancer;

@@ -26,6 +26,7 @@ exports.testSetUpGen = function (genName, arg) {
  * @param {string} GeneratorOrNamespace
  * @param {object} [settings]
  */
+// eslint-disable-next-line @typescript-eslint/naming-convention
 exports.executeGenerator = function (GeneratorOrNamespace, settings) {
   const runner = helpers.run(GeneratorOrNamespace, settings);
 

@@ -14,7 +14,7 @@ import {
 } from 'passport-oauth2';
 import {
   verifyFunctionFactory,
-  profileFunction,
+  ProfileFunction,
 } from '../authentication-strategies/types';
 
 @bind.provider({scope: BindingScope.SINGLETON})
@@ -25,7 +25,7 @@ export class CustomOauth2 implements Provider<OAuth2Strategy> {
     @inject('customOAuth2Options')
     public oauth2Options: OAuth2StrategyOptions,
     @inject('authentication.oauth2.profile.function', {optional: true})
-    public profileFn: profileFunction,
+    public profileFn: ProfileFunction,
     @inject(UserServiceBindings.PASSPORT_USER_IDENTITY_SERVICE)
     public userService: UserIdentityService<Profile, User>,
   ) {

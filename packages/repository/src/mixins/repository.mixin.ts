@@ -31,8 +31,6 @@ import * as loopbackContext from '@loopback/context';
 import * as loopbackCore from '@loopback/core';
 /* eslint-enable @typescript-eslint/no-unused-vars */
 
-/* eslint-enable @typescript-eslint/no-unused-vars */
-
 /**
  * A mixin class for Application that creates a .repository()
  * function to register a repository automatically. Also overrides

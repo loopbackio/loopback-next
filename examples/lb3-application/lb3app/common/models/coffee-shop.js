@@ -7,6 +7,7 @@
 
 const debug = require('debug')('loopback:example:lb3application');
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 module.exports = function (CoffeeShop) {
   CoffeeShop.status = async function () {
     const currentDate = new Date();

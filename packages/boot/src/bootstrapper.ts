@@ -8,7 +8,7 @@ import {Application, CoreBindings} from '@loopback/core';
 import debugModule from 'debug';
 import {resolve} from 'path';
 import {BootBindings, BootTags} from './keys';
-import {_bindBooter} from './mixins';
+import {bindBooter} from './mixins';
 import {
   Bootable,
   BOOTER_PHASES,
@@ -69,7 +69,7 @@ export class Bootstrapper {
     // Bind booters passed in as a part of BootOptions
     // We use _bindBooter so this Class can be used without the Mixin
     if (execOptions?.booters) {
-      execOptions.booters.forEach(booter => _bindBooter(this.app, booter));
+      execOptions.booters.forEach(booter => bindBooter(this.app, booter));
     }
 
     // Determine the phases to be run. If a user set a phases filter, those

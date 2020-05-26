@@ -50,6 +50,7 @@ export class MockConnector {
     });
   }
 
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   get DataAccessObject() {
     if (!this.connected) {
       // this simulates call to the connector.DataAccessObject when the
