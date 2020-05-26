@@ -458,6 +458,40 @@ export function modelToJsonSchema<T extends object>(
     result.description = descriptionSuffix;
   }
 
+  if (options.includeRelations) {
+    const parentSchema = modelToJsonSchema(ctor, {
+      ...options,
+      includeRelations: false,
+    });
+    const properties: typeof result.properties = {};
+
+    for (const r in meta.relations) {
+      const relMeta = meta.relations[r];
+      const targetType = resolveType(relMeta.target);
+
+      // `title` is the unique identity of a schema,
+      // it should be removed from the `options`
+      // when generating the relation or property schemas
+      const targetOptions = {...options};
+      delete targetOptions.title;
+
+      const targetSchema = getJsonSchema(targetType, targetOptions);
+      const targetRef = {$ref: `#/definitions/${targetSchema.title}`};
+      const propDef = getNavigationalPropertyForRelation(relMeta, targetRef);
+
+      properties[relMeta.name] = properties[relMeta.name] || propDef;
+      includeReferencedSchema(targetSchema.title!, targetSchema);
+    }
+    result.allOf = [
+      {$ref: `#/definitions/${parentSchema.title}`},
+      {
+        properties,
+      },
+    ];
+    includeReferencedSchema(parentSchema.title!, parentSchema);
+    return result;
+  }
+
   for (const p in meta.properties) {
     if (options.exclude && options.exclude.includes(p as keyof T)) {
       debug('Property % is excluded by %s', p, options.exclude);
@@ -531,28 +565,6 @@ export function modelToJsonSchema<T extends object>(
 
   result.additionalProperties = meta.settings.strict === false;
   debug('  additionalProperties?', result.additionalProperties);
-
-  if (options.includeRelations) {
-    for (const r in meta.relations) {
-      result.properties = result.properties ?? {};
-      const relMeta = meta.relations[r];
-      const targetType = resolveType(relMeta.target);
-
-      // `title` is the unique identity of a schema,
-      // it should be removed from the `options`
-      // when generating the relation or property schemas
-      const targetOptions = {...options};
-      delete targetOptions.title;
-
-      const targetSchema = getJsonSchema(targetType, targetOptions);
-      const targetRef = {$ref: `#/definitions/${targetSchema.title}`};
-      const propDef = getNavigationalPropertyForRelation(relMeta, targetRef);
-
-      result.properties[relMeta.name] =
-        result.properties[relMeta.name] || propDef;
-      includeReferencedSchema(targetSchema.title!, targetSchema);
-    }
-  }
 
   function includeReferencedSchema(name: string, schema: JsonSchema) {
     if (!schema || !Object.keys(schema).length) return;

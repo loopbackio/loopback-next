@@ -1019,27 +1019,54 @@ describe('build-schema', () => {
 
       const expectedSchema: JsonSchema = {
         definitions: {
+          Category: {
+            additionalProperties: false,
+            description:
+              '(tsType: Category, schemaOptions: { includeRelations: false })',
+            properties: {
+              id: {
+                type: 'number',
+              },
+            },
+            title: 'Category',
+          },
+          Product: {
+            title: 'Product',
+            description:
+              `(tsType: Product, ` +
+              `schemaOptions: { includeRelations: false })`,
+            properties: {
+              id: {type: 'number'},
+              categoryId: {type: 'number'},
+            },
+            additionalProperties: false,
+          },
           ProductWithRelations: {
             title: 'ProductWithRelations',
             description:
               `(tsType: ProductWithRelations, ` +
               `schemaOptions: { includeRelations: true })`,
+            allOf: [
+              {$ref: '#/definitions/Product'},
+              {
+                properties: {
+                  category: {$ref: '#/definitions/CategoryWithRelations'},
+                },
+              },
+            ],
+          },
+        },
+        allOf: [
+          {$ref: '#/definitions/Category'},
+          {
             properties: {
-              id: {type: 'number'},
-              categoryId: {type: 'number'},
-              category: {$ref: '#/definitions/CategoryWithRelations'},
+              products: {
+                type: 'array',
+                items: {$ref: '#/definitions/ProductWithRelations'},
+              },
             },
-            additionalProperties: false,
           },
-        },
-        properties: {
-          id: {type: 'number'},
-          products: {
-            type: 'array',
-            items: {$ref: '#/definitions/ProductWithRelations'},
-          },
-        },
-        additionalProperties: false,
+        ],
         title: 'CategoryWithRelations',
         description:
           `(tsType: CategoryWithRelations, ` +
@@ -1066,28 +1093,53 @@ describe('build-schema', () => {
       }
       const expectedSchema: JsonSchema = {
         definitions: {
-          ProductWithRelations: {
-            title: 'ProductWithRelations',
+          CategoryWithoutProp: {
+            additionalProperties: false,
             description:
-              `(tsType: ProductWithRelations, ` +
-              `schemaOptions: { includeRelations: true })`,
+              '(tsType: CategoryWithoutProp, schemaOptions: { includeRelations: false })',
+            title: 'CategoryWithoutProp',
+          },
+          Product: {
+            title: 'Product',
+            description:
+              '(tsType: Product, schemaOptions: { includeRelations: false })',
             properties: {
-              id: {type: 'number'},
-              categoryId: {type: 'number'},
-              category: {
-                $ref: '#/definitions/CategoryWithoutPropWithRelations',
+              categoryId: {
+                type: 'number',
+              },
+              id: {
+                type: 'number',
               },
             },
             additionalProperties: false,
           },
-        },
-        properties: {
-          products: {
-            type: 'array',
-            items: {$ref: '#/definitions/ProductWithRelations'},
+          ProductWithRelations: {
+            allOf: [
+              {$ref: '#/definitions/Product'},
+              {
+                properties: {
+                  category: {
+                    $ref: '#/definitions/CategoryWithoutPropWithRelations',
+                  },
+                },
+              },
+            ],
+            description:
+              '(tsType: ProductWithRelations, schemaOptions: { includeRelations: true })',
+            title: 'ProductWithRelations',
           },
         },
-        additionalProperties: false,
+        allOf: [
+          {$ref: '#/definitions/CategoryWithoutProp'},
+          {
+            properties: {
+              products: {
+                type: 'array',
+                items: {$ref: '#/definitions/ProductWithRelations'},
+              },
+            },
+          },
+        ],
         title: 'CategoryWithoutPropWithRelations',
         description:
           `(tsType: CategoryWithoutPropWithRelations, ` +

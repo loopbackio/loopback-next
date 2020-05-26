@@ -313,15 +313,15 @@ describe('build-schema', () => {
         title: 'ParentWithItsChildren',
         includeRelations: true,
       });
-      expect(schema.properties).to.containEql({
-        children: {
-          type: 'array',
-          // The reference here should be `ChildWithRelations`,
-          // instead of `ParentWithItsChildren`
-          items: {$ref: '#/definitions/ChildWithRelations'},
+      expect(schema.allOf).to.containEql({
+        properties: {
+          children: {
+            type: 'array',
+            // The reference here should be `ChildWithRelations`,
+            // instead of `ParentWithItsChildren`
+            items: {$ref: '#/definitions/ChildWithRelations'},
+          },
         },
-        benchmarkId: {type: 'string'},
-        color: {type: 'string'},
       });
       // The recursive calls should NOT inherit
       // `title` from the previous call's `options`.
@@ -332,8 +332,7 @@ describe('build-schema', () => {
           title: 'ChildWithRelations',
           description:
             '(tsType: ChildWithRelations, schemaOptions: { includeRelations: true })',
-          properties: {name: {type: 'string'}},
-          additionalProperties: false,
+          allOf: [{$ref: '#/definitions/Child'}, {properties: {}}],
         },
       });
     });
