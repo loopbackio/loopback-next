@@ -773,7 +773,7 @@ corresponding database column name (`testId`) can be different if needed.
           </tr>
         </tbody>
       </table>
-    </div>
+</div>
 
 ### Array Property Decorator
 
