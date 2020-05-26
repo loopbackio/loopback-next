@@ -263,7 +263,7 @@ export class CreateSampleObserver implements LifeCycleObserver {
 
     const sample = {title: 'a todo sample', desc: 'Something to do.'};
     // Create the sample by calling TodoRepo.create()
-    const result = await TodoRepo.create(sample);
+    const result = await todoRepo.create(sample);
     console.log('Sample created as ', result);
   }
 
