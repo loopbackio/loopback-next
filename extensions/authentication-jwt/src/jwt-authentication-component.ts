@@ -16,12 +16,23 @@ import {
   TokenServiceBindings,
   TokenServiceConstants,
   UserServiceBindings,
+  RefreshTokenInterceptorConstants,
+  RefreshTokenInterceptorBindings,
+  RefreshTokenBindings,
 } from './keys';
-import {UserCredentialsRepository, UserRepository} from './repositories';
+import {
+  UserCredentialsRepository,
+  UserRepository,
+  RefreshTokenRepository,
+} from './repositories';
 import {MyUserService} from './services';
 import {JWTAuthenticationStrategy} from './services/jwt.auth.strategy';
 import {JWTService} from './services/jwt.service';
 import {SecuritySpecEnhancer} from './services/security.spec.enhancer';
+import {
+  RefreshTokenGenerateInterceptor,
+  RefreshTokenGrantInterceptor,
+} from './interceptors';
 
 export class JWTAuthenticationComponent implements Component {
   bindings: Binding[] = [
@@ -41,6 +52,27 @@ export class JWTAuthenticationComponent implements Component {
       UserCredentialsRepository,
     ),
     createBindingFromClass(SecuritySpecEnhancer),
+    ///refresh bindings
+    Binding.bind(
+      RefreshTokenInterceptorConstants.REFRESH_INTERCEPTOR_NAME,
+    ).toProvider(RefreshTokenGenerateInterceptor),
+    Binding.bind(
+      RefreshTokenInterceptorConstants.REFRESH_INTERCEPTOR_GRANT_TYPE,
+    ).toProvider(RefreshTokenGrantInterceptor),
+    //  Refresh token bindings
+    Binding.bind(RefreshTokenInterceptorBindings.REFRESH_SECRET).to(
+      RefreshTokenInterceptorConstants.REFRESH_SECRET_VALUE,
+    ),
+    Binding.bind(RefreshTokenInterceptorBindings.REFRESH_EXPIRES_IN).to(
+      RefreshTokenInterceptorConstants.REFRESH_EXPIRES_IN_VALUE,
+    ),
+    Binding.bind(RefreshTokenInterceptorBindings.REFRESH_ISSURE).to(
+      RefreshTokenInterceptorConstants.REFRESH_ISSURE_VALUE,
+    ),
+    //refresh token repository binding
+    Binding.bind(RefreshTokenBindings.REFRESH_REPOSITORY).toClass(
+      RefreshTokenRepository,
+    ),
   ];
   constructor(@inject(CoreBindings.APPLICATION_INSTANCE) app: Application) {
     registerAuthenticationStrategy(app, JWTAuthenticationStrategy);

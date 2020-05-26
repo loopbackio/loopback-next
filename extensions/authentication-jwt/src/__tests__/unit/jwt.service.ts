@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {HttpErrors} from '@loopback/rest';
-import {securityId} from '@loopback/security';
+import {securityId, UserProfile} from '@loopback/security';
 import {expect} from '@loopback/testlab';
 import {JWTService} from '../../';
 
@@ -19,9 +19,17 @@ describe('token service', () => {
     id: '1',
     name: 'test',
   };
+  type Setter<T> = (value?: T) => void;
   const TOKEN_SECRET_VALUE = 'myjwts3cr3t';
   const TOKEN_EXPIRES_IN_VALUE = '60';
-  const jwtService = new JWTService(TOKEN_SECRET_VALUE, TOKEN_EXPIRES_IN_VALUE);
+  const setCurrentUser: Setter<UserProfile> = userProfile => {
+    return userProfile;
+  };
+  const jwtService = new JWTService(
+    TOKEN_SECRET_VALUE,
+    TOKEN_EXPIRES_IN_VALUE,
+    setCurrentUser,
+  );
 
   it('token service generateToken() succeeds', async () => {
     const token = await jwtService.generateToken(USER_PROFILE);

@@ -8,10 +8,17 @@ import {
   TokenService,
   UserService,
 } from '@loopback/authentication';
-import {inject} from '@loopback/core';
+import {inject, intercept} from '@loopback/core';
 import {get, post, requestBody} from '@loopback/rest';
 import {SecurityBindings, securityId, UserProfile} from '@loopback/security';
-import {TokenServiceBindings, User, UserServiceBindings} from '../../../';
+import {
+  TokenServiceBindings,
+  User,
+  UserServiceBindings,
+  RefreshGrantRequestBody,
+  RefreshGrant,
+  TokenObject,
+} from '../../../';
 import {Credentials} from '../../../services/user.service';
 
 const CredentialsSchema = {
@@ -94,5 +101,71 @@ export class UserController {
   })
   async whoAmI(): Promise<string> {
     return this.user[securityId];
+  }
+
+  @post('/users/refresh/login', {
+    responses: {
+      '200': {
+        description: 'Token',
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
+              properties: {
+                accessToken: {
+                  type: 'string',
+                },
+                refreshToken: {
+                  type: 'string',
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  })
+  @intercept('refresh-token-generate')
+  async refreshLogin(
+    @requestBody(CredentialsRequestBody) credentials: Credentials,
+  ): Promise<TokenObject> {
+    // ensure the user exists, and the password is correct
+    const user = await this.userService.verifyCredentials(credentials);
+    // convert a User object into a UserProfile object (reduced set of properties)
+    const userProfile: UserProfile = this.userService.convertToUserProfile(
+      user,
+    );
+    // create a JSON Web Token based on the user profile
+    const token = {
+      accessToken: await this.jwtService.generateToken(userProfile),
+    };
+    return token;
+  }
+
+  @post('/refresh', {
+    responses: {
+      '200': {
+        description: 'Token',
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
+              properties: {
+                refreshToken: {
+                  type: 'string',
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  })
+  @intercept('refresh-token-grant')
+  async refresh(
+    @requestBody(RefreshGrantRequestBody) refreshGrant: RefreshGrant,
+  ): Promise<{token: string}> {
+    const token = '';
+    return {token};
   }
 }

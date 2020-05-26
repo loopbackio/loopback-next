@@ -4,9 +4,9 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {TokenService} from '@loopback/authentication';
-import {inject} from '@loopback/core';
+import {inject, Setter} from '@loopback/core';
 import {HttpErrors} from '@loopback/rest';
-import {securityId, UserProfile} from '@loopback/security';
+import {securityId, UserProfile, SecurityBindings} from '@loopback/security';
 import {promisify} from 'util';
 import {TokenServiceBindings} from '../keys';
 
@@ -20,6 +20,8 @@ export class JWTService implements TokenService {
     private jwtSecret: string,
     @inject(TokenServiceBindings.TOKEN_EXPIRES_IN)
     private jwtExpiresIn: string,
+    @inject.setter(SecurityBindings.USER)
+    readonly setCurrentUser: Setter<UserProfile>,
   ) {}
 
   async verifyToken(token: string): Promise<UserProfile> {
@@ -57,6 +59,7 @@ export class JWTService implements TokenService {
         'Error generating token : userProfile is null',
       );
     }
+    this.setCurrentUser(userProfile);
     const userInfoForToken = {
       id: userProfile[securityId],
       name: userProfile.name,

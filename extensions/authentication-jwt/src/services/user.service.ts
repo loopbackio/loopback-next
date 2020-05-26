@@ -62,4 +62,16 @@ export class MyUserService implements UserService<User, Credentials> {
       email: user.email,
     };
   }
+
+  async findUserById(id: string) {
+    const userNotfound = 'invalid User';
+    const foundUser = await this.userRepository.findOne({
+      where: {id: id},
+    });
+
+    if (!foundUser) {
+      throw new HttpErrors.Unauthorized(userNotfound);
+    }
+    return foundUser;
+  }
 }

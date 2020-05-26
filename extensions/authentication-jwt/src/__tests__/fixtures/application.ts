@@ -14,6 +14,7 @@ import path from 'path';
 import {JWTAuthenticationComponent, UserServiceBindings} from '../../';
 import {DbDataSource} from './datasources/db.datasource';
 import {MySequence} from './sequence';
+import {RefreshTokenBindings} from '../../keys';
 
 export class TestApplication extends BootMixin(
   ServiceMixin(RepositoryMixin(RestApplication)),
@@ -34,6 +35,7 @@ export class TestApplication extends BootMixin(
     this.component(JWTAuthenticationComponent);
     // Bind datasource
     this.dataSource(DbDataSource, UserServiceBindings.DATASOURCE_NAME);
+    this.dataSource(DbDataSource, RefreshTokenBindings.DATASOURCE_NAME);
 
     this.component(RestExplorerComponent);
     this.projectRoot = __dirname;

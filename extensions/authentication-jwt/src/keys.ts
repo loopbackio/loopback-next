@@ -34,3 +34,55 @@ export namespace UserServiceBindings {
   export const USER_CREDENTIALS_REPOSITORY =
     'repositories.UserCredentialsRepository';
 }
+
+export namespace RefreshTokenInterceptorConstants {
+  export const REFRESH_INTERCEPTOR_NAME = 'refresh-token-generate';
+  export const REFRESH_INTERCEPTOR_GRANT_TYPE = 'refresh-token-grant';
+  export const REFRESH_SECRET_VALUE = 'r3fr35htok3n';
+  export const REFRESH_EXPIRES_IN_VALUE = '216000';
+  export const REFRESH_ISSURE_VALUE = 'loopback4';
+}
+
+export namespace RefreshTokenInterceptorBindings {
+  export const REFRESH_SECRET = BindingKey.create<string>(
+    'authentication.jwt.refresh.secret',
+  );
+  export const REFRESH_EXPIRES_IN = BindingKey.create<string>(
+    'authentication.jwt.referesh.expires.in.seconds',
+  );
+  export const REFRESH_ISSURE = BindingKey.create<string>(
+    'authentication.jwt.referesh.issure',
+  );
+}
+
+export namespace RefreshTokenBindings {
+  export const DATASOURCE_NAME = 'refreshdb';
+  export const REFRESH_REPOSITORY = 'repositories.RefreshTokenRepository';
+}
+
+export type RefreshGrant = {
+  refreshToken: string;
+};
+
+export const RefreshGrantSchema = {
+  type: 'object',
+  required: ['refreshToken'],
+  properties: {
+    refreshToken: {
+      type: 'string',
+    },
+  },
+};
+export const RefreshGrantRequestBody = {
+  description: 'Reissuing Acess Token',
+  required: true,
+  content: {
+    'application/json': {schema: RefreshGrantSchema},
+  },
+};
+
+export type TokenObject = {
+  accessToken: string;
+  expiresIn?: string | undefined;
+  refreshToken?: string | undefined;
+};
