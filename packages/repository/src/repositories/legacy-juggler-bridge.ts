@@ -6,43 +6,14 @@
 import {Getter} from '@loopback/context';
 import assert from 'assert';
 import legacy from 'loopback-datasource-juggler';
-import {
-  AnyObject,
-  Command,
-  Count,
-  DataObject,
-  DeepPartial,
-  NamedParameters,
-  Options,
-  PositionalParameters,
-} from '../common-types';
+import {AnyObject, Command, Count, DataObject, DeepPartial, NamedParameters, Options, PositionalParameters} from '../common-types';
 import {EntityNotFoundError} from '../errors';
-import {
-  Entity,
-  Model,
-  PropertyType,
-  rejectNavigationalPropertiesInData,
-} from '../model';
+import {Entity, Model, ModelDefinition, PropertyType, rejectNavigationalPropertiesInData} from '../model';
 import {Filter, FilterExcludingWhere, Inclusion, Where} from '../query';
-import {
-  BelongsToAccessor,
-  BelongsToDefinition,
-  createBelongsToAccessor,
-  createHasManyRepositoryFactory,
-  createHasOneRepositoryFactory,
-  HasManyDefinition,
-  HasManyRepositoryFactory,
-  HasOneDefinition,
-  HasOneRepositoryFactory,
-  includeRelatedModels,
-  InclusionResolver,
-} from '../relations';
+import {BelongsToAccessor, BelongsToDefinition, createBelongsToAccessor, createHasManyRepositoryFactory, createHasOneRepositoryFactory, HasManyDefinition, HasManyRepositoryFactory, HasOneDefinition, HasOneRepositoryFactory, includeRelatedModels, InclusionResolver} from '../relations';
 import {IsolationLevel, Transaction} from '../transaction';
 import {isTypeResolver, resolveType} from '../type-resolver';
-import {
-  EntityCrudRepository,
-  TransactionalEntityRepository,
-} from './repository';
+import {EntityCrudRepository, TransactionalEntityRepository} from './repository';
 
 export namespace juggler {
   /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -105,7 +76,7 @@ export class DefaultCrudRepository<
   T extends Entity,
   ID,
   Relations extends object = {}
-> implements EntityCrudRepository<T, ID, Relations> {
+  > implements EntityCrudRepository<T, ID, Relations> {
   modelClass: juggler.PersistedModelClass;
 
   public readonly inclusionResolvers: Map<
@@ -625,7 +596,7 @@ export class DefaultTransactionalRepository<
   T extends Entity,
   ID,
   Relations extends object = {}
-> extends DefaultCrudRepository<T, ID, Relations>
+  > extends DefaultCrudRepository<T, ID, Relations>
   implements TransactionalEntityRepository<T, ID, Relations> {
   async beginTransaction(
     options?: IsolationLevel | Options,
@@ -636,4 +607,21 @@ export class DefaultTransactionalRepository<
     // so we need it cast it back
     return (await this.dataSource.beginTransaction(dsOptions)) as Transaction;
   }
+}
+
+export type SchemaDefinition = {
+  name: string,
+  properties: {[prop: string]: string},
+  options: {[prop: string]: string},
+}
+
+export function discoverModelDefinition(schema: SchemaDefinition): ModelDefinition {
+  return new ModelDefinition({
+    name: schema.name,
+    // TODO: convert from juggler/LB3 style to LB4
+    // For example, we need to transform array-type definitions from
+    // {type: ['string']} to {type: 'array', itemType: 'string'}
+    properties: schema.properties,
+    settings: schema.options,
+  });
 }

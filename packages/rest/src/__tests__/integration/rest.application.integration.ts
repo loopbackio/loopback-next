@@ -3,18 +3,14 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {ApplicationConfig} from '@loopback/core/src';
 import {anOperationSpec} from '@loopback/openapi-spec-builder';
+import {RepositoryMixin} from '@loopback/repository';
 import {Client, createRestAppClient, expect} from '@loopback/testlab';
 import express, {Request, Response} from 'express';
 import fs from 'fs';
 import path from 'path';
-import {
-  get,
-  RestApplication,
-  RestServer,
-  RestServerConfig,
-  RouterSpec,
-} from '../..';
+import {get, RestApplication, RestServer, RestServerConfig, RouterSpec} from '../..';
 
 const ASSETS = path.resolve(__dirname, '../../../fixtures/assets');
 
@@ -271,8 +267,29 @@ describe('RestApplication (integration)', () => {
     await client.get('/api/dogs/poodle').expect(200, 'Poodle!');
   });
 
+  it('adds dynamic routes from models at runtime', async () => {
+    const app = new DynamicApp();
+    await app.start();
+    client = createRestAppClient(app);
+    // No DummyController is present
+    await client.get('/books/1').expect(404);
+    // Add DummyController after server.start
+    await app.dynamic({
+      name: 'dynamo',
+      connector: 'memory'
+    });
+    // Now /html is available
+    await client.get('/books/1').expect(200);
+  });
+
   function givenApplication(options?: {rest: RestServerConfig}) {
     options = options ?? {rest: {port: 0, host: '127.0.0.1'}};
     restApp = new RestApplication(options);
+  }
+
+  class DynamicApp extends RepositoryMixin(RestApplication) {
+    constructor(options: ApplicationConfig = {}) {
+      super(options);
+    }
   }
 });
