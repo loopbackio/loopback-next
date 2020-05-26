@@ -32,6 +32,7 @@ import cors from 'cors';
 import debugFactory from 'debug';
 import express, {ErrorRequestHandler} from 'express';
 import {PathParams} from 'express-serve-static-core';
+import fs from 'fs';
 import {IncomingMessage, ServerResponse} from 'http';
 import {ServerOptions} from 'https';
 import {safeDump} from 'js-yaml';
@@ -986,6 +987,34 @@ export class RestServer extends BaseMiddlewareRegistry
     spec?: RouterSpec,
   ): void {
     this._externalRoutes.mountRouter(basePath, router, spec);
+  }
+
+  /**
+   * Export the OpenAPI spec to the given json or yaml file
+   * @param outFile - File name for the spec. The extension of the file
+   * determines the format of the file.
+   * - `yaml` or `yml`: YAML
+   * - `json` or other: JSON
+   * If the outFile is not provided or its value is `''` or `'-'`, the spec is
+   * written to the console using the `log` function.
+   * @param log - Log function, default to `console.log`
+   */
+  async exportOpenApiSpec(outFile = '', log = console.log): Promise<void> {
+    const spec = await this.getApiSpec();
+    if (outFile === '-' || outFile === '') {
+      const json = JSON.stringify(spec, null, 2);
+      log('%s', json);
+      return;
+    }
+    const fileName = outFile.toLowerCase();
+    if (fileName.endsWith('.yaml') || fileName.endsWith('.yml')) {
+      const yaml = safeDump(spec);
+      fs.writeFileSync(outFile, yaml, 'utf-8');
+    } else {
+      const json = JSON.stringify(spec, null, 2);
+      fs.writeFileSync(outFile, json, 'utf-8');
+    }
+    log('The OpenAPI spec has been saved to %s.', outFile);
   }
 }
 
