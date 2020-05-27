@@ -109,7 +109,6 @@ Let's also update it in the `TodoController`:
     },
   },
 })
-})
 async findTodos(/*...*/) {/*...*/}
 
 @get('/todos/{id}', {
