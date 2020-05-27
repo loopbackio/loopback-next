@@ -10,45 +10,7 @@ import {
   resolveMap,
   resolveUntil,
   transformValueOrPromise,
-  tryWithFinally,
 } from '../..';
-
-describe('tryWithFinally', () => {
-  it('performs final action for a fulfilled promise', async () => {
-    let finalActionInvoked = false;
-    const action = () => Promise.resolve(1);
-    const finalAction = () => (finalActionInvoked = true);
-    await tryWithFinally(action, finalAction);
-    expect(finalActionInvoked).to.be.true();
-  });
-
-  it('performs final action for a resolved value', () => {
-    let finalActionInvoked = false;
-    const action = () => 1;
-    const finalAction = () => (finalActionInvoked = true);
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    tryWithFinally(action, finalAction);
-    expect(finalActionInvoked).to.be.true();
-  });
-
-  it('performs final action for a rejected promise', async () => {
-    let finalActionInvoked = false;
-    const action = () => Promise.reject(new Error('error'));
-    const finalAction = () => (finalActionInvoked = true);
-    await expect(tryWithFinally(action, finalAction)).be.rejectedWith('error');
-    expect(finalActionInvoked).to.be.true();
-  });
-
-  it('performs final action for an action that throws an error', () => {
-    let finalActionInvoked = false;
-    const action = () => {
-      throw new Error('error');
-    };
-    const finalAction = () => (finalActionInvoked = true);
-    expect(() => tryWithFinally(action, finalAction)).to.throw('error');
-    expect(finalActionInvoked).to.be.true();
-  });
-});
 
 describe('getDeepProperty', () => {
   it('gets the root value if path is empty', () => {
