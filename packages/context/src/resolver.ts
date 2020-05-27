@@ -15,7 +15,11 @@ import {
   describeInjectedProperties,
   Injection,
 } from './inject';
-import {ResolutionOptions, ResolutionSession} from './resolution-session';
+import {
+  ResolutionError,
+  ResolutionOptions,
+  ResolutionSession,
+} from './resolution-session';
 import {
   BoundValue,
   Constructor,
@@ -230,10 +234,11 @@ export function resolveInjectedArguments(
         return extraArgs[nonInjectedIndex++];
       } else {
         const name = getTargetName(target, method, ix);
-        throw new Error(
-          `Cannot resolve injected arguments for ${name}: ` +
-            `The arguments[${ix}] is not decorated for dependency injection, ` +
-            `but a value is not supplied`,
+        throw new ResolutionError(
+          `The argument '${name}' is not decorated for dependency injection ` +
+            'but no value was supplied by the caller. Did you forget to apply ' +
+            '@inject() to the argument?',
+          {context: ctx, options: {session}},
         );
       }
     }
@@ -270,20 +275,12 @@ export function resolveInjectedProperties(
   }
   const injectedProperties = describeInjectedProperties(constructor.prototype);
 
-  return resolveMap(injectedProperties, (injection, p) => {
-    if (!injection.bindingSelector && !injection.resolve) {
-      const name = getTargetName(constructor, p);
-      throw new Error(
-        `Cannot resolve injected property ${name}: ` +
-          `The property ${p} is not decorated for dependency injection.`,
-      );
-    }
-
-    return resolve(
+  return resolveMap(injectedProperties, injection =>
+    resolve(
       ctx,
       injection,
       // Clone the session so that multiple properties can be resolved in parallel
       ResolutionSession.fork(session),
-    );
-  });
+    ),
+  );
 }

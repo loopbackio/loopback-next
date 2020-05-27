@@ -133,6 +133,11 @@ export function inject(
   if (injectionMetadata.bindingComparator && !resolve) {
     throw new Error('Binding comparator is only allowed with a binding filter');
   }
+  if (!bindingSelector && typeof resolve !== 'function') {
+    throw new Error(
+      'A non-empty binding selector or resolve function is required for @inject',
+    );
+  }
   return function markParameterOrPropertyAsInjected(
     target: Object,
     member: string | undefined,
