@@ -422,13 +422,19 @@ describe('build-schema', () => {
       const newUserSchema = modelToJsonSchema(NewUser, {});
       expect(newUserSchema).to.eql({
         title: 'NewUser',
-        properties: {
-          id: {type: 'string'},
-          name: {type: 'string'},
-          password: {type: 'string'},
+        allOf: [
+          {$ref: `#/definitions/User`},
+          {
+            properties: {
+              password: {type: 'string'},
+            },
+            required: ['password'],
+            additionalProperties: false,
+          },
+        ],
+        definitions: {
+          User: userSchema,
         },
-        required: ['name', 'password'],
-        additionalProperties: false,
       });
     });
 

@@ -6,6 +6,7 @@
 import {MetadataInspector} from '@loopback/context';
 import {
   isBuiltinType,
+  Model,
   ModelDefinition,
   ModelMetadataHelper,
   Null,
@@ -492,7 +493,21 @@ export function modelToJsonSchema<T extends object>(
     return result;
   }
 
+  const ownPropsSchema: Pick<
+    typeof result,
+    'required' | 'properties' | 'additionalProperties'
+  > = {};
+  const parentModel = getParentModel(ctor);
+  const parentMeta = parentModel
+    ? (ModelMetadataHelper.getModelMetadata(parentModel) as ModelDefinition)
+    : null;
+
   for (const p in meta.properties) {
+    if (isInherited(parentMeta, meta, p)) {
+      debug('Property % is excluded by inheritance', p);
+      continue;
+    }
+
     if (options.exclude && options.exclude.includes(p as keyof T)) {
       debug('Property % is excluded by %s', p, options.exclude);
       continue;
@@ -505,20 +520,20 @@ export function modelToJsonSchema<T extends object>(
       );
     }
 
-    result.properties = result.properties ?? {};
-    result.properties[p] = result.properties[p] || {};
+    ownPropsSchema.properties = ownPropsSchema.properties ?? {};
+    ownPropsSchema.properties[p] = ownPropsSchema.properties[p] || {};
 
     const metaProperty = Object.assign({}, meta.properties[p]);
 
     // populating "properties" key
-    result.properties[p] = metaToJsonProperty(metaProperty);
+    ownPropsSchema.properties[p] = metaToJsonProperty(metaProperty);
 
     // handling 'required' metadata
     const optional = options.optional.includes(p as keyof T);
 
     if (metaProperty.required && !(partial || optional)) {
-      result.required = result.required ?? [];
-      result.required.push(p);
+      ownPropsSchema.required = ownPropsSchema.required ?? [];
+      ownPropsSchema.required.push(p);
     }
 
     // populating JSON Schema 'definitions'
@@ -548,8 +563,8 @@ export function modelToJsonSchema<T extends object>(
     const propSchema = getJsonSchema(referenceType, propOptions);
 
     // JSONSchema6Definition allows both boolean and JSONSchema6 types
-    if (typeof result.properties[p] !== 'boolean') {
-      const prop = result.properties[p] as JsonSchema;
+    if (typeof ownPropsSchema.properties[p] !== 'boolean') {
+      const prop = ownPropsSchema.properties[p] as JsonSchema;
       const propTitle = propSchema.title ?? referenceType.name;
       const targetRef = {$ref: `#/definitions/${propTitle}`};
 
@@ -557,14 +572,28 @@ export function modelToJsonSchema<T extends object>(
         // Update $ref for array type
         prop.items = targetRef;
       } else {
-        result.properties[p] = targetRef;
+        ownPropsSchema.properties[p] = targetRef;
       }
       includeReferencedSchema(propTitle, propSchema);
     }
   }
 
-  result.additionalProperties = meta.settings.strict === false;
-  debug('  additionalProperties?', result.additionalProperties);
+  ownPropsSchema.additionalProperties = meta.settings.strict === false;
+  debug('  additionalProperties?', ownPropsSchema.additionalProperties);
+
+  const hasProperties = !!ownPropsSchema.properties;
+  if (parentModel) {
+    const parentOptions = {...options};
+    delete parentOptions.title;
+    const parentSchema = modelToJsonSchema(parentModel, parentOptions);
+    result.allOf = [
+      {$ref: `#/definitions/${parentSchema.title}`},
+      hasProperties && ownPropsSchema,
+    ].filter(Boolean);
+    includeReferencedSchema(parentSchema.title!, parentSchema);
+  } else {
+    Object.assign(result, ownPropsSchema);
+  }
 
   function includeReferencedSchema(name: string, schema: JsonSchema) {
     if (!schema || !Object.keys(schema).length) return;
@@ -589,4 +618,26 @@ export function modelToJsonSchema<T extends object>(
     Object.assign(result, meta.jsonSchema);
   }
   return result;
+}
+
+function getParentModel(ctor: Function) {
+  const proto = Object.getPrototypeOf(ctor) as Function;
+  const isBaseType = proto.name === 'Model' || proto.name === 'Entity';
+  const isModel = proto instanceof Model.constructor;
+  return !isBaseType && isModel ? proto : null;
+}
+
+function isInherited(
+  parentModel: ModelDefinition | null,
+  model: ModelDefinition,
+  propertyName: string,
+) {
+  if (!parentModel) {
+    return false;
+  }
+  // TODO(InvictusMB): deep equality check here?
+  return (
+    model.properties[propertyName]?.type ===
+    parentModel.properties[propertyName]?.type
+  );
 }
