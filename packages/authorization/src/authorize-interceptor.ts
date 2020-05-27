@@ -42,6 +42,7 @@ export class AuthorizationInterceptor implements Provider<Interceptor> {
     this.options = {
       defaultDecision: AuthorizationDecision.DENY,
       precedence: AuthorizationDecision.DENY,
+      defaultStatusCodeForDeny: 403,
       ...options,
     };
     debug('Authorization options', this.options);
@@ -107,7 +108,7 @@ export class AuthorizationInterceptor implements Provider<Interceptor> {
       ) {
         debug('Access denied');
         const error = new AuthorizationError('Access denied');
-        error.statusCode = 401;
+        error.statusCode = this.options.defaultStatusCodeForDeny;
         throw error;
       }
       if (
@@ -122,7 +123,7 @@ export class AuthorizationInterceptor implements Provider<Interceptor> {
     // Handle the final decision
     if (finalDecision === AuthorizationDecision.DENY) {
       const error = new AuthorizationError('Access denied');
-      error.statusCode = 401;
+      error.statusCode = this.options.defaultStatusCodeForDeny;
       throw error;
     }
     return next();

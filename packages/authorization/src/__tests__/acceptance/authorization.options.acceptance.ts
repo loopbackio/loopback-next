@@ -117,6 +117,19 @@ describe('Authorization', () => {
     await testPlaceOrder(matrix5);
   });
 
+  it('honors options.defaultStatusCodeForDeny', async () => {
+    givenRequestContext();
+    const row = matrix1[0];
+    setupAuthorization({defaultStatusCodeForDeny: 401}, ...row[1]);
+    const result = invokeMethod(controller, 'cancelOrder', reqCtx, [
+      'order-01',
+    ]);
+    await expect(result).to.be.rejectedWith({
+      statusCode: 401,
+      message: 'Access denied',
+    });
+  });
+
   async function testCancelOrder(matrix: DecisionMatrix) {
     let index = 0;
     for (const row of matrix) {

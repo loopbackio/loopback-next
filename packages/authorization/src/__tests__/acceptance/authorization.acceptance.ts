@@ -43,7 +43,10 @@ describe('Authorization', () => {
     const result = invokeMethod(controller, 'cancelOrder', reqCtx, [
       'order-01',
     ]);
-    await expect(result).to.be.rejectedWith('Access denied');
+    await expect(result).to.be.rejectedWith({
+      statusCode: 403,
+      message: 'Access denied',
+    });
     expect(events).to.eql(['OrderController.prototype.cancelOrder']);
   });
 
