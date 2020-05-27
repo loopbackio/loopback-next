@@ -51,14 +51,14 @@ describe('constructor injection', () => {
   });
 
   it('can report error for missing binding key', () => {
-    class TestClass {
-      constructor(@inject('', {x: 'bar'}) public fooBar: string) {}
-    }
-
     expect(() => {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      instantiateClass(TestClass, ctx);
-    }).to.throw(/Cannot resolve injected arguments/);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      class TestClass {
+        constructor(@inject('', {x: 'bar'}) public fooBar: string) {}
+      }
+    }).to.throw(
+      /A non-empty binding selector or resolve function is required for @inject/,
+    );
   });
 
   it('allows optional constructor injection', () => {
@@ -378,15 +378,15 @@ describe('property injection', () => {
   });
 
   it('can report error for missing binding key', () => {
-    class TestClass {
-      @inject('', {x: 'bar'})
-      public fooBar: string;
-    }
-
     expect(() => {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      instantiateClass(TestClass, ctx);
-    }).to.throw(/Cannot resolve injected property/);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      class TestClass {
+        @inject('', {x: 'bar'})
+        public fooBar: string;
+      }
+    }).to.throw(
+      /A non-empty binding selector or resolve function is required for @inject/,
+    );
   });
 
   it('resolves injected properties with custom resolve function', () => {

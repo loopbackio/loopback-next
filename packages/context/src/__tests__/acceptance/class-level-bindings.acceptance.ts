@@ -51,7 +51,15 @@ describe('Context bindings - Injecting dependencies of classes', () => {
         throw new Error('ctx.get() should have failed');
       },
       function onError(err) {
-        expect(err).to.match(/resolve.*InfoController.*argument 1/);
+        expect(err.message).to.match(
+          /The argument 'InfoController\.constructor\[0\]' is not decorated for dependency injection/,
+        );
+        expect(err.message).to.match(
+          /but no value was supplied by the caller\. Did you forget to apply @inject\(\) to the argument\?/,
+        );
+        expect(err.message).to.match(
+          /\(context: [\w\-]+, resolutionPath: controllers\.info\)/,
+        );
       },
     );
   });
@@ -72,7 +80,15 @@ describe('Context bindings - Injecting dependencies of classes', () => {
         throw new Error('ctx.get() should have failed');
       },
       function onError(err) {
-        expect(err).to.match(/resolve.*InfoController.*argument 1/);
+        expect(err.message).to.match(
+          /The argument 'InfoController\.constructor\[0\]' is not decorated for dependency injection/,
+        );
+        expect(err.message).to.match(
+          /but no value was supplied by the caller\. Did you forget to apply @inject\(\) to the argument\?/,
+        );
+        expect(err.message).to.match(
+          /\(context: [\w\-]+, resolutionPath: controllers\.info\)/,
+        );
       },
     );
   });

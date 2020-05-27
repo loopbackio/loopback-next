@@ -148,7 +148,7 @@ export class DecoratorFactory<
     if (member == null && descriptorOrIndex == null) {
       return `class ${name}`;
     }
-    if (member == null) member = 'constructor';
+    if (member == null || member === '') member = 'constructor';
 
     const memberAccessor =
       typeof member === 'symbol' ? '[' + member.toString() + ']' : '.' + member;

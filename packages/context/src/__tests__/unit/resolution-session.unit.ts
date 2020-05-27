@@ -4,7 +4,8 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {Binding, inject, Injection, ResolutionSession} from '../..';
+import {Binding, Context, inject, Injection, ResolutionSession} from '../..';
+import {ResolutionError} from '../../resolution-session';
 
 describe('ResolutionSession', () => {
   class MyController {
@@ -279,5 +280,44 @@ describe('ResolutionSession', () => {
       expect(session1.bindingStack).to.be.eql([bindingA]);
       expect(session1.injectionStack).to.be.eql([]);
     });
+  });
+
+  describe('ResolutionError', () => {
+    let resolutionErr: ResolutionError;
+
+    before(givenResolutionError);
+
+    it('includes contextual information in message', () => {
+      expect(resolutionErr.message).to.eql(
+        'Binding not found (context: test, binding: b, resolutionPath: ' +
+          'a --> @MyController.constructor[0] --> b)',
+      );
+    });
+
+    it('includes contextual information in toString()', () => {
+      expect(resolutionErr.toString()).to.eql(
+        'ResolutionError: Binding not found ' +
+          '(context: test, binding: b, resolutionPath: ' +
+          'a --> @MyController.constructor[0] --> b)',
+      );
+    });
+
+    function givenResolutionError() {
+      const ctx = new Context('test');
+      const bindingA = new Binding('a');
+      ctx.add(bindingA);
+      session.pushBinding(bindingA);
+      const injection: Injection = givenInjection();
+      session.pushInjection(injection);
+      const bindingB = new Binding('b');
+      ctx.add(bindingB);
+      session.pushBinding(bindingB);
+      resolutionErr = new ResolutionError('Binding not found', {
+        options: {session},
+        context: ctx,
+        binding: bindingB,
+      });
+      return resolutionErr;
+    }
   });
 });

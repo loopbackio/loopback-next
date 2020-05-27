@@ -16,6 +16,7 @@ import {Provider} from './provider';
 import {
   asResolutionOptions,
   ResolutionContext,
+  ResolutionError,
   ResolutionOptions,
   ResolutionOptionsOrSession,
   ResolutionSession,
@@ -465,15 +466,19 @@ export class Binding<T = BoundValue> extends EventEmitter {
       }
     }
     const options = asResolutionOptions(optionsOrSession);
+    const resolutionCtx = {
+      context: ctx,
+      binding: this,
+      options,
+    };
     if (typeof this._getValue === 'function') {
       const result = ResolutionSession.runWithBinding(
         s => {
-          const optionsWithSession = Object.assign({}, options, {session: s});
+          const optionsWithSession = {...options, session: s};
           // We already test `this._getValue` is a function. It's safe to assert
           // that `this._getValue` is not undefined.
           return this._getValue!({
-            context: ctx,
-            binding: this,
+            ...resolutionCtx,
             options: optionsWithSession,
           });
         },
@@ -485,7 +490,10 @@ export class Binding<T = BoundValue> extends EventEmitter {
     // `@inject.binding` adds a binding without _getValue
     if (options.optional) return undefined;
     return Promise.reject(
-      new Error(`No value was configured for binding ${this.key}.`),
+      new ResolutionError(
+        `No value was configured for binding ${this.key}.`,
+        resolutionCtx,
+      ),
     );
   }
 

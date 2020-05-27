@@ -394,3 +394,51 @@ export interface ResolutionContext<T = unknown> {
    */
   readonly options: ResolutionOptions;
 }
+
+/**
+ * Error for context binding resolutions and dependency injections
+ */
+export class ResolutionError extends Error {
+  constructor(
+    message: string,
+    readonly resolutionCtx: Partial<ResolutionContext>,
+  ) {
+    super(ResolutionError.buildMessage(message, resolutionCtx));
+    this.name = ResolutionError.name;
+  }
+
+  private static buildDetails(resolutionCtx: Partial<ResolutionContext>) {
+    return {
+      context: resolutionCtx.context?.name ?? '',
+      binding: resolutionCtx.binding?.key ?? '',
+      resolutionPath: resolutionCtx.options?.session?.getResolutionPath() ?? '',
+    };
+  }
+
+  /**
+   * Build the error message for the resolution to include more contextual data
+   * @param reason - Cause of the error
+   * @param resolutionCtx - Resolution context
+   */
+  private static buildMessage(
+    reason: string,
+    resolutionCtx: Partial<ResolutionContext>,
+  ) {
+    const info = this.describeResolutionContext(resolutionCtx);
+    const message = `${reason} (${info})`;
+    return message;
+  }
+
+  private static describeResolutionContext(
+    resolutionCtx: Partial<ResolutionContext>,
+  ) {
+    const details = ResolutionError.buildDetails(resolutionCtx);
+    const items: string[] = [];
+    for (const [name, val] of Object.entries(details)) {
+      if (val !== '') {
+        items.push(`${name}: ${val}`);
+      }
+    }
+    return items.join(', ');
+  }
+}
