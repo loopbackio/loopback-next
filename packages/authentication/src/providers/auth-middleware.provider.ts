@@ -12,20 +12,29 @@ import {
   Request,
 } from '@loopback/rest';
 import {SecurityBindings, UserProfile} from '@loopback/security';
+import debugFactory from 'debug';
 import {AuthenticationBindings} from '../keys';
 import {
-  AuthenticateFn,
   AuthenticationStrategy,
+  AUTHENTICATION_STRATEGY_NOT_FOUND,
   USER_PROFILE_NOT_FOUND,
 } from '../types';
+
+const debug = debugFactory('loopback:authentication:middleware');
+
+@bind(
+  asMiddleware({
+    chain: DEFAULT_MIDDLEWARE_CHAIN,
+    group: 'authentication',
+  }),
+)
 /**
- * Provides the authentication action for a sequence
- * @example `context.bind('authentication.actions.authenticate').toProvider(AuthenticateActionProvider)`
+ * Authentication middleware
  */
-export class AuthenticateActionProvider implements Provider<AuthenticateFn> {
+export class AuthenticationMiddlewareProvider implements Provider<Middleware> {
   constructor(
-    // The provider is instantiated for Sequence constructor,
-    // at which time we don't have information about the current
+    // The provider is instantiated for for the middleware chain within a
+    // sequence, at which time we don't have information about the current
     // route yet. This information is needed to determine
     // what auth strategy should be used.
     // To solve this, we are injecting a getter function that will
@@ -41,11 +50,24 @@ export class AuthenticateActionProvider implements Provider<AuthenticateFn> {
     readonly setRedirectStatus: Setter<number>,
   ) {}
 
-  /**
-   * @returns authenticateFn
-   */
-  value(): AuthenticateFn {
-    return request => this.action(request);
+  value(): Middleware {
+    const authenticationMiddleware: Middleware = async (ctx, next) => {
+      let userProfile: UserProfile | undefined;
+      try {
+        userProfile = await this.action(ctx.request);
+      } catch (err) {
+        if (
+          err.code === AUTHENTICATION_STRATEGY_NOT_FOUND ||
+          err.code === USER_PROFILE_NOT_FOUND
+        ) {
+          Object.assign(err, {statusCode: 401 /* Unauthorized */});
+        }
+        throw err;
+      }
+      await next();
+      return userProfile;
+    };
+    return authenticationMiddleware;
   }
 
   /**
@@ -56,10 +78,13 @@ export class AuthenticateActionProvider implements Provider<AuthenticateFn> {
     const strategy = await this.getStrategy();
     if (!strategy) {
       // The invoked operation does not require authentication.
+      debug('No authentication is required');
       return undefined;
     }
+    debug('Strategy', strategy);
 
     const authResponse = await strategy.authenticate(request);
+    debug('Authentication response', authResponse);
     let userProfile: UserProfile;
 
     // response from `strategy.authenticate()` could return an object of type UserProfile or RedirectRoute
@@ -72,6 +97,7 @@ export class AuthenticateActionProvider implements Provider<AuthenticateFn> {
     } else if (authResponse) {
       // if `strategy.authenticate()` returns an object of type UserProfile, set it as current user
       userProfile = authResponse as UserProfile;
+      debug('UserProfile', userProfile);
       this.setCurrentUser(userProfile);
       return userProfile;
     } else if (!authResponse) {
@@ -84,25 +110,5 @@ export class AuthenticateActionProvider implements Provider<AuthenticateFn> {
       });
       throw error;
     }
-  }
-}
-
-@bind(
-  asMiddleware({
-    chain: DEFAULT_MIDDLEWARE_CHAIN,
-    group: 'authentication',
-  }),
-)
-export class AuthenticationMiddlewareProvider implements Provider<Middleware> {
-  constructor(
-    @inject(AuthenticationBindings.AUTH_ACTION)
-    private authenticate: AuthenticateFn,
-  ) {}
-
-  value(): Middleware {
-    return async (ctx, next) => {
-      await this.authenticate(ctx.request);
-      return next();
-    };
   }
 }

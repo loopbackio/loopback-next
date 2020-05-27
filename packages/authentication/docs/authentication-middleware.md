@@ -1,5 +1,4 @@
-### Auth action
-
+### Authentication middleware
 ```ts
 import HttpErrors from 'http-errors';
 

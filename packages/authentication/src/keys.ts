@@ -9,7 +9,6 @@ import {SecurityBindings, UserProfile} from '@loopback/security';
 import {Middleware} from '@loopback/rest';
 import {AuthenticationComponent} from './authentication.component';
 import {
-  AuthenticateFn,
   AuthenticationMetadata,
   AuthenticationStrategy,
   UserProfileFactory,
@@ -53,41 +52,6 @@ export namespace AuthenticationBindings {
    */
   export const STRATEGY = BindingKey.create<AuthenticationStrategy | undefined>(
     'authentication.strategy',
-  );
-
-  /**
-   * Key used to inject the authentication function into the sequence.
-   *
-   * @example
-   * ```ts
-   * class MySequence implements SequenceHandler {
-   *   constructor(
-   *     @inject(AuthenticationBindings.AUTH_ACTION)
-   *     protected authenticateRequest: AuthenticateFn,
-   *     // ... other sequence action injections
-   *   ) {}
-   *
-   *   async handle(context: RequestContext) {
-   *     try {
-   *       const {request, response} = context;
-   *       const route = this.findRoute(request);
-   *
-   *      // Authenticate
-   *       await this.authenticateRequest(request);
-   *
-   *       // Authentication successful, proceed to invoke controller
-   *       const args = await this.parseParams(request, route);
-   *       const result = await this.invoke(route, args);
-   *       this.send(response, result);
-   *     } catch (err) {
-   *       this.reject(context, err);
-   *     }
-   *   }
-   * }
-   * ```
-   */
-  export const AUTH_ACTION = BindingKey.create<AuthenticateFn>(
-    'authentication.actions.authenticate',
   );
 
   /**

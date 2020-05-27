@@ -4,22 +4,22 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Context, instantiateClass} from '@loopback/context';
-import {Request} from '@loopback/rest';
+import {Middleware, MiddlewareContext} from '@loopback/rest';
 import {securityId, UserProfile} from '@loopback/security';
-import {expect} from '@loopback/testlab';
-import {AuthenticateFn, AuthenticationBindings} from '../../..';
-import {AuthenticateActionProvider} from '../../../providers';
+import {expect, stubExpressContext} from '@loopback/testlab';
+import {AuthenticationBindings} from '../../..';
+import {AuthenticationMiddlewareProvider} from '../../../providers';
 import {AuthenticationStrategy} from '../../../types';
 import {MockStrategy} from '../fixtures/mock-strategy';
 
-describe('AuthenticateActionProvider', () => {
+describe('AuthenticationMiddlewareProvider', () => {
   describe('constructor()', () => {
     it('instantiateClass injects authentication.strategy in the constructor', async () => {
       const context = new Context();
       const strategy = new MockStrategy();
       context.bind(AuthenticationBindings.STRATEGY).to(strategy);
       const provider = await instantiateClass(
-        AuthenticateActionProvider,
+        AuthenticationMiddlewareProvider,
         context,
       );
       expect(await provider.getStrategy()).to.be.equal(strategy);
@@ -27,27 +27,23 @@ describe('AuthenticateActionProvider', () => {
   });
 
   describe('value()', () => {
-    let provider: AuthenticateActionProvider;
+    let provider: AuthenticationMiddlewareProvider;
     let strategy: MockStrategy;
     let currentUser: UserProfile | undefined;
 
     const mockUser: UserProfile = {name: 'user-name', [securityId]: 'mock-id'};
 
-    beforeEach(givenAuthenticateActionProvider);
+    beforeEach(givenAuthenticationMiddlewareProvider);
 
     it('returns a function which authenticates a request and returns a user', async () => {
-      const authenticate: AuthenticateFn = await Promise.resolve(
-        provider.value(),
-      );
-      const request = <Request>{};
-      const user = await authenticate(request);
+      const request = givenRequest();
+      const user = await provider.action(request);
       expect(user).to.be.equal(mockUser);
     });
 
     it('updates current user', async () => {
-      const authenticate = await Promise.resolve(provider.value());
-      const request = <Request>{};
-      await authenticate(request);
+      const request = givenRequest();
+      await provider.action(request);
       expect(currentUser).to.equal(mockUser);
     });
 
@@ -56,13 +52,11 @@ describe('AuthenticateActionProvider', () => {
         const context: Context = new Context();
         context.bind(AuthenticationBindings.STRATEGY).to(strategy);
         context
-          .bind(AuthenticationBindings.AUTH_ACTION)
-          .toProvider(AuthenticateActionProvider);
-        const request = <Request>{};
-        const authenticate = await context.get<AuthenticateFn>(
-          AuthenticationBindings.AUTH_ACTION,
+          .bind(AuthenticationBindings.AUTHENTICATION_MIDDLEWARE)
+          .toProvider(AuthenticationMiddlewareProvider);
+        const user: UserProfile | undefined = await invokeAuthMiddleware(
+          context,
         );
-        const user: UserProfile | undefined = await authenticate(request);
         expect(user).to.be.equal(mockUser);
       });
 
@@ -72,15 +66,12 @@ describe('AuthenticateActionProvider', () => {
           .bind(AuthenticationBindings.STRATEGY)
           .to({} as AuthenticationStrategy);
         context
-          .bind(AuthenticationBindings.AUTH_ACTION)
-          .toProvider(AuthenticateActionProvider);
-        const authenticate = await context.get<AuthenticateFn>(
-          AuthenticationBindings.AUTH_ACTION,
-        );
-        const request = <Request>{};
+          .bind(AuthenticationBindings.AUTHENTICATION_MIDDLEWARE)
+          .toProvider(AuthenticationMiddlewareProvider);
+
         let error;
         try {
-          await authenticate(request);
+          await invokeAuthMiddleware(context);
         } catch (exception) {
           error = exception;
         }
@@ -94,16 +85,12 @@ describe('AuthenticateActionProvider', () => {
         const context: Context = new Context();
         context.bind(AuthenticationBindings.STRATEGY).to(strategy);
         context
-          .bind(AuthenticationBindings.AUTH_ACTION)
-          .toProvider(AuthenticateActionProvider);
-        const authenticate = await context.get<AuthenticateFn>(
-          AuthenticationBindings.AUTH_ACTION,
-        );
-        const request = <Request>{};
-        request.headers = {testState: 'fail'};
+          .bind(AuthenticationBindings.AUTHENTICATION_MIDDLEWARE)
+          .toProvider(AuthenticationMiddlewareProvider);
+
         let error;
         try {
-          await authenticate(request);
+          await invokeAuthMiddleware(context, {testState: 'fail'});
         } catch (err) {
           error = err;
         }
@@ -114,16 +101,11 @@ describe('AuthenticateActionProvider', () => {
         const context: Context = new Context();
         context.bind(AuthenticationBindings.STRATEGY).to(strategy);
         context
-          .bind(AuthenticationBindings.AUTH_ACTION)
-          .toProvider(AuthenticateActionProvider);
-        const authenticate = await context.get<AuthenticateFn>(
-          AuthenticationBindings.AUTH_ACTION,
-        );
-        const request = <Request>{};
-        request.headers = {testState: 'empty'};
+          .bind(AuthenticationBindings.AUTHENTICATION_MIDDLEWARE)
+          .toProvider(AuthenticationMiddlewareProvider);
         let error;
         try {
-          await authenticate(request);
+          await invokeAuthMiddleware(context, {testState: 'empty'});
         } catch (err) {
           error = err;
         }
@@ -131,16 +113,44 @@ describe('AuthenticateActionProvider', () => {
       });
     });
 
-    function givenAuthenticateActionProvider() {
+    function givenAuthenticationMiddlewareProvider() {
       strategy = new MockStrategy();
       strategy.setMockUser(mockUser);
-      provider = new AuthenticateActionProvider(
+      provider = new AuthenticationMiddlewareProvider(
         () => Promise.resolve(strategy),
         u => (currentUser = u),
         url => url,
         status => status,
       );
       currentUser = undefined;
+    }
+
+    function givenRequest() {
+      const stub = stubExpressContext({url: '/'});
+      return stub.request;
+    }
+
+    function givenMiddlewareContext(parent: Context): MiddlewareContext {
+      const stub = stubExpressContext({url: '/'});
+      return new MiddlewareContext(stub.request, stub.response, parent);
+    }
+
+    async function invokeAuthMiddleware(
+      context: Context,
+      headers: Record<string, string> = {},
+    ) {
+      const middlewareCtx = givenMiddlewareContext(context);
+      for (const h in headers) {
+        middlewareCtx.request.headers[h] = headers[h];
+      }
+      const middleware = await context.get<Middleware>(
+        AuthenticationBindings.AUTHENTICATION_MIDDLEWARE,
+      );
+      const user: UserProfile | undefined = (await middleware(
+        middlewareCtx,
+        () => undefined,
+      )) as UserProfile | undefined;
+      return user;
     }
   });
 });

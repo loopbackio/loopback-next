@@ -799,7 +799,14 @@ export class Context extends EventEmitter {
 
     optionsOrSession = asResolutionOptions(optionsOrSession);
 
-    const binding = this.getBinding<ValueType>(key, optionsOrSession);
+    let binding: Binding<ValueType> | undefined;
+    try {
+      binding = this.getBinding<ValueType>(key, optionsOrSession);
+    } catch (err) {
+      const resolutionPath = optionsOrSession.session?.getResolutionPath();
+      const notFound = new Error(`${err}: ${resolutionPath}`);
+      throw notFound;
+    }
     if (binding == null) return undefined;
 
     const boundValue = binding.getValue(this, optionsOrSession);

@@ -6,7 +6,7 @@
 import {inject} from '@loopback/context';
 import {Application} from '@loopback/core';
 import {get, post} from '@loopback/openapi-v3';
-import {Request, RestServer} from '@loopback/rest';
+import {Request, RestServer, DefaultSequence} from '@loopback/rest';
 import {SecurityBindings, securityId, UserProfile} from '@loopback/security';
 import {Client, createClientForHandler, expect} from '@loopback/testlab';
 import {
@@ -23,7 +23,6 @@ import {
   myUserProfileFactory,
 } from '../fixtures/helper';
 import {JWTAuthenticationStrategyBindings, USER_REPO} from '../fixtures/keys';
-import {MyAuthenticationSequence} from '../fixtures/sequences/authentication.sequence';
 import {JWTService} from '../fixtures/services/jwt-service';
 import {JWTAuthenticationStrategy} from '../fixtures/strategies/jwt-strategy';
 import {User} from '../fixtures/users/user';
@@ -473,7 +472,7 @@ describe('JWT Authentication', () => {
 
   function givenAuthenticatedSequence() {
     // bind user defined sequence
-    server.sequence(MyAuthenticationSequence);
+    server.sequence(DefaultSequence);
   }
 
   function givenProviders() {
