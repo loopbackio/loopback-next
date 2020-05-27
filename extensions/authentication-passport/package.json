@@ -58,7 +58,7 @@
     "@loopback/openapi-spec-builder": "^2.1.5",
     "@loopback/testlab": "^3.1.5",
     "@types/jsonwebtoken": "^8.5.0",
-    "@types/lodash": "^4.14.152",
+    "@types/lodash": "^4.14.153",
     "@types/node": "^10.17.24",
     "@types/passport": "^1.0.3",
     "@types/passport-http": "^0.3.8",
