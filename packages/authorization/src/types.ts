@@ -187,4 +187,9 @@ export interface AuthorizationOptions {
    * not associated with authorization metadata.
    */
   defaultMetadata?: AuthorizationMetadata;
+  /**
+   * Default HTTP status code when the final decision is `AuthorizationDecision.DENY`.
+   * If not set, default to 403
+   */
+  defaultStatusCodeForDeny?: number;
 }

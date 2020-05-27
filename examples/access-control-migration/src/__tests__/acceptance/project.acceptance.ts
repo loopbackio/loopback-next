@@ -111,7 +111,8 @@ describe('AccessControlApplication - permissions', () => {
     });
 
     it(`view returns ${permissions.view} for role ${role}`, async () => {
-      const expectedStatus = permissions.view ? 200 : 401;
+      const errorCode = role === 'anonymous' ? 401 : 403;
+      const expectedStatus = permissions.view ? 200 : errorCode;
 
       if (role === 'anonymous') {
         await client.get('/view-all-projects').expect(expectedStatus);
@@ -125,7 +126,8 @@ describe('AccessControlApplication - permissions', () => {
     });
 
     it(`show-balance returns ${permissions.balance} for role ${role}`, async () => {
-      const expectedStatus = permissions.balance ? 200 : 401;
+      const errorCode = role === 'anonymous' ? 401 : 403;
+      const expectedStatus = permissions.balance ? 200 : errorCode;
 
       if (role === 'anonymous') {
         await client.get('/projects/1/show-balance').expect(expectedStatus);
@@ -139,7 +141,8 @@ describe('AccessControlApplication - permissions', () => {
     });
 
     it(`donate returns ${permissions.donate} for role ${role}`, async () => {
-      const expectedStatus = permissions.donate ? 204 : 401;
+      const errorCode = role === 'anonymous' ? 401 : 403;
+      const expectedStatus = permissions.donate ? 204 : errorCode;
 
       if (role === 'anonymous') {
         await client.patch('/projects/1/donate').expect(expectedStatus);
@@ -153,7 +156,8 @@ describe('AccessControlApplication - permissions', () => {
     });
 
     it(`withdraw returns ${permissions.withdraw} for role ${role}`, async () => {
-      const expectedStatus = permissions.withdraw ? 204 : 401;
+      const errorCode = role === 'anonymous' ? 401 : 403;
+      const expectedStatus = permissions.withdraw ? 204 : errorCode;
 
       if (role === 'anonymous') {
         await client.patch('/projects/1/withdraw').expect(expectedStatus);
