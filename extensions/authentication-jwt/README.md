@@ -88,7 +88,7 @@ export class MySequence implements SequenceHandler {
 </details>
 
 - mount jwt component in application
-
+- bind datasource to user service and refresh token
 <details>
 <summary markdown="span"><strong>Check The Code</strong></summary>
 
@@ -116,8 +116,10 @@ export class TestApplication extends BootMixin(
     this.component(AuthenticationComponent);
     // Mount jwt component
     this.component(JWTAuthenticationComponent);
-    // Bind datasource
+    // Bind datasource for user
     this.dataSource(DbDataSource, UserServiceBindings.DATASOURCE_NAME);
+    // Bind datasource for refresh token
+    this.dataSource(DbDataSource, RefreshTokenBindings.DATASOURCE_NAME);
 
     this.component(RestExplorerComponent);
     this.projectRoot = __dirname;
@@ -140,7 +142,24 @@ login, then decorate endpoints with `@authentication('jwt')` to inject the
 logged in user's profile.
 
 This module contains an example application in the `fixtures` folder. It has a
-controller with endpoints `/login` and `/whoAmI`.
+controller with endpoints `/login`, `/refreshlogin`, `/refresh` and `/whoAmI`.
+
+Before using the below snippet do not forget to inject below repositories and
+bindingings  
+in your controller's constructor
+
+```ts
+    @inject(TokenServiceBindings.TOKEN_SERVICE)
+    public jwtService: TokenService,
+    @inject(UserServiceBindings.USER_SERVICE)
+    public userService: UserService<User, Credentials>,
+    @inject(SecurityBindings.USER, {optional: true})
+    private user: UserProfile,
+    @inject(UserServiceBindings.USER_REPOSITORY)
+    public userRepository: UserRepository,
+    @inject(RefreshTokenServiceBindings.REFRESH_TOKEN_SERVICE)
+    public refreshService: RefreshTokenService,
+```
 
 The code snippet for login function:
 
@@ -167,6 +186,44 @@ The code snippet for whoAmI function:
 @authenticate('jwt')
   async whoAmI(): Promise<string> {
     return this.user[securityId];
+  }
+```
+
+### Endpoints with refresh token
+
+To add refresh token mechanism in your app, you can follow below example code at
+the endpoint.
+
+1. `To generate refresh token` : to generate the refresh token and access token
+   when user logins to your app with provided credentials.
+
+```ts
+ async refreshLogin(
+    @requestBody(CredentialsRequestBody) credentials: Credentials,
+  ): Promise<TokenObject> {
+    // ensure the user exists, and the password is correct
+    const user = await this.userService.verifyCredentials(credentials);
+    // convert a User object into a UserProfile object (reduced set of properties)
+    const userProfile: UserProfile = this.userService.convertToUserProfile(
+      user,
+    );
+    const accessToken = await this.jwtService.generateToken(userProfile);
+    const tokens = await this.refreshService.generateToken(
+      userProfile,
+      accessToken,
+    );
+    return tokens;
+  }
+```
+
+2. `To refresh the token`: to generate the access token by the refresh token
+   obtained from the the last login endpoint.
+
+```ts
+  async refresh(
+    @requestBody(RefreshGrantRequestBody) refreshGrant: RefreshGrant,
+  ): Promise<TokenObject> {
+    return this.refreshService.refreshToken(refreshGrant.refreshToken);
   }
 ```
 
@@ -297,6 +354,27 @@ provide your own `User` model and repository.
      }
    }
    ```
+
+### Extra configurations
+
+1. To change the token secret in your application.ts
+
+```
+  // for jwt access token
+  this.bind(TokenServiceBindings.TOKEN_SECRET).to("<yourSecret>");
+  // for refresh token
+  this.bind(RefreshTokenServiceBindings.TOKEN_SECRET).to("<yourSecret>");
+```
+
+2. To change token expiration. to learn more about expiration time here at
+   [Ziet/ms](https://github.com/zeit/ms)
+
+```
+  // for jwt access token expiration
+    this.bind(TokenServiceBindings.TOKEN_EXPIRES_IN).to("<Expiration Time in sec>");
+  // for refresh token expiration
+    this.bind(RefreshTokenServiceBindings.TOKEN_EXPIRES_IN).to("<Expiration Time in sec>");
+```
 
 ## Future Work
 

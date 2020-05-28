@@ -13,12 +13,18 @@ import {
   inject,
 } from '@loopback/core';
 import {
+  RefreshTokenConstants,
+  RefreshTokenServiceBindings,
   TokenServiceBindings,
   TokenServiceConstants,
   UserServiceBindings,
 } from './keys';
-import {UserCredentialsRepository, UserRepository} from './repositories';
-import {MyUserService} from './services';
+import {
+  RefreshTokenRepository,
+  UserCredentialsRepository,
+  UserRepository,
+} from './repositories';
+import {MyUserService, RefreshtokenService} from './services';
 import {JWTAuthenticationStrategy} from './services/jwt.auth.strategy';
 import {JWTService} from './services/jwt.service';
 import {SecuritySpecEnhancer} from './services/security.spec.enhancer';
@@ -41,6 +47,25 @@ export class JWTAuthenticationComponent implements Component {
       UserCredentialsRepository,
     ),
     createBindingFromClass(SecuritySpecEnhancer),
+    ///refresh bindings
+    Binding.bind(RefreshTokenServiceBindings.REFRESH_TOKEN_SERVICE).toClass(
+      RefreshtokenService,
+    ),
+
+    //  Refresh token bindings
+    Binding.bind(RefreshTokenServiceBindings.REFRESH_SECRET).to(
+      RefreshTokenConstants.REFRESH_SECRET_VALUE,
+    ),
+    Binding.bind(RefreshTokenServiceBindings.REFRESH_EXPIRES_IN).to(
+      RefreshTokenConstants.REFRESH_EXPIRES_IN_VALUE,
+    ),
+    Binding.bind(RefreshTokenServiceBindings.REFRESH_ISSUER).to(
+      RefreshTokenConstants.REFRESH_ISSUER_VALUE,
+    ),
+    //refresh token repository binding
+    Binding.bind(RefreshTokenServiceBindings.REFRESH_REPOSITORY).toClass(
+      RefreshTokenRepository,
+    ),
   ];
   constructor(@inject(CoreBindings.APPLICATION_INSTANCE) app: Application) {
     registerAuthenticationStrategy(app, JWTAuthenticationStrategy);

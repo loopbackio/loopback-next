@@ -19,8 +19,10 @@ describe('token service', () => {
     id: '1',
     name: 'test',
   };
+
   const TOKEN_SECRET_VALUE = 'myjwts3cr3t';
   const TOKEN_EXPIRES_IN_VALUE = '60';
+
   const jwtService = new JWTService(TOKEN_SECRET_VALUE, TOKEN_EXPIRES_IN_VALUE);
 
   it('token service generateToken() succeeds', async () => {
@@ -31,7 +33,6 @@ describe('token service', () => {
   it('token service verifyToken() succeeds', async () => {
     const token = await jwtService.generateToken(USER_PROFILE);
     const userProfileFromToken = await jwtService.verifyToken(token);
-
     expect(userProfileFromToken).to.deepEqual(DECODED_USER_PROFILE);
   });
 

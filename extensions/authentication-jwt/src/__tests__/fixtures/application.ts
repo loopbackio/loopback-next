@@ -11,7 +11,11 @@ import {RestApplication} from '@loopback/rest';
 import {RestExplorerComponent} from '@loopback/rest-explorer';
 import {ServiceMixin} from '@loopback/service-proxy';
 import path from 'path';
-import {JWTAuthenticationComponent, UserServiceBindings} from '../../';
+import {
+  JWTAuthenticationComponent,
+  UserServiceBindings,
+  RefreshTokenServiceBindings,
+} from '../../';
 import {DbDataSource} from './datasources/db.datasource';
 import {MySequence} from './sequence';
 
@@ -34,6 +38,8 @@ export class TestApplication extends BootMixin(
     this.component(JWTAuthenticationComponent);
     // Bind datasource
     this.dataSource(DbDataSource, UserServiceBindings.DATASOURCE_NAME);
+    //Bind datasource for refreshtoken table
+    this.dataSource(DbDataSource, RefreshTokenServiceBindings.DATASOURCE_NAME);
 
     this.component(RestExplorerComponent);
     this.projectRoot = __dirname;
