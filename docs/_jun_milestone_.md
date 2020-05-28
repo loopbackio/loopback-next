@@ -11,6 +11,10 @@
       #4992
 - [ ] Spike: robust handling of ObjectID type for MongoDB #3456
 - [ ] Integration with TypeORM #4853
+- [ ] PRs to review
+  - [ ] feat(graphql): add an extension for type-graphql integration #5545
+  - [ ] community PRs
+        https://github.com/strongloop/loopback-next/pulls?q=is%3Apr+is%3Aopen+label%3Acommunity-contribution
 
 ## Stretch Goals
 
