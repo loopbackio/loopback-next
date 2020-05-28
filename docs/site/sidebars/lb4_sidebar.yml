@@ -254,6 +254,10 @@ children:
     url: Serving-static-files.html
     output: 'web, pdf'
 
+  - title: 'Dynamically adding models, repositories, and controllers'
+    url: Dynamic-models-repositories-controllers.html
+    output: 'web, pdf'
+
   - title: 'Uploading and Downloading Files'
     url: File-upload-download.html
     output: 'web, pdf'
