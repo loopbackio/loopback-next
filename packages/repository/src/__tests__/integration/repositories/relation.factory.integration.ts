@@ -88,6 +88,190 @@ describe('HasMany relation', () => {
     expect(orders).to.deepEqual(persistedOrders);
   });
 
+  it('can include the related model when the foreign key is omitted in filter', async () => {
+    const order = await customerOrderRepo.create({
+      description: 'an order desc',
+    });
+
+    const customer = await customerRepo.findById(existingCustomerId, {
+      include: [
+        {
+          relation: 'orders',
+          scope: {
+            fields: {
+              description: true,
+            },
+          },
+        },
+      ],
+    });
+
+    withProtoCheck(false, () => {
+      expect(customer.orders).length(1);
+      expect(customer.orders).to.matchEach((v: Partial<Order>) => {
+        expect(v).to.deepEqual({
+          id: undefined,
+          description: order.description,
+          customerId: undefined,
+        });
+      });
+    });
+  });
+
+  it('can include the related model when the foreign key is disabled in filter', async () => {
+    const order = await customerOrderRepo.create({
+      description: 'an order desc',
+    });
+    const customer = await customerRepo.findById(existingCustomerId, {
+      include: [
+        {
+          relation: 'orders',
+          scope: {
+            fields: {
+              customerId: false,
+              description: true,
+            },
+          },
+        },
+      ],
+    });
+
+    withProtoCheck(false, () => {
+      expect(customer.orders).length(1);
+      expect(customer.orders).to.matchEach((v: Partial<Order>) => {
+        expect(v).to.deepEqual({
+          id: undefined,
+          description: order.description,
+          customerId: undefined,
+        });
+      });
+    });
+  });
+
+  it('can include the related model when only the foreign key is disabled in filter', async () => {
+    const order = await customerOrderRepo.create({
+      description: 'an order desc',
+    });
+    const customer = await customerRepo.findById(existingCustomerId, {
+      include: [
+        {
+          relation: 'orders',
+          scope: {
+            fields: {
+              customerId: false,
+            },
+          },
+        },
+      ],
+    });
+
+    withProtoCheck(false, () => {
+      expect(customer.orders).length(1);
+      expect(customer.orders).to.matchEach((v: Partial<Order>) => {
+        expect(v).to.deepEqual({
+          id: order.id,
+          description: order.description,
+          customerId: undefined,
+        });
+      });
+    });
+  });
+
+  it('preserves the foreign key value when set in filter', async () => {
+    const order = await customerOrderRepo.create({
+      description: 'an order desc',
+    });
+    const customer = await customerRepo.findById(existingCustomerId, {
+      include: [
+        {
+          relation: 'orders',
+          scope: {
+            fields: {
+              customerId: true,
+              description: true,
+            },
+          },
+        },
+      ],
+    });
+
+    withProtoCheck(false, () => {
+      expect(customer.orders).length(1);
+      expect(customer.orders).to.matchEach((v: Partial<Order>) => {
+        expect(v).to.deepEqual({
+          id: undefined,
+          description: order.description,
+          customerId: order.customerId,
+        });
+      });
+    });
+  });
+
+  it('includes only the fields set in filter', async () => {
+    await customerOrderRepo.create({
+      description: 'an order desc',
+    });
+    const customer = await customerRepo.findById(existingCustomerId, {
+      include: [
+        {
+          relation: 'orders',
+          scope: {
+            fields: {},
+          },
+        },
+      ],
+    });
+
+    withProtoCheck(false, () => {
+      expect(customer.orders).length(1);
+      expect(customer.orders).to.matchEach((v: Partial<Order>) => {
+        expect(v).to.deepEqual({
+          id: undefined,
+          description: undefined,
+          customerId: undefined,
+        });
+      });
+    });
+  });
+
+  it('preserves the fields not excluded in filter', async () => {
+    const order = await customerOrderRepo.create({
+      description: 'an order desc',
+    });
+
+    const customer = await customerRepo.findById(existingCustomerId, {
+      fields: {
+        name: false,
+      },
+      include: [
+        {
+          relation: 'orders',
+          scope: {
+            fields: {
+              description: false,
+            },
+          },
+        },
+      ],
+    });
+
+    withProtoCheck(false, () => {
+      expect(customer).to.deepEqual({
+        id: existingCustomerId,
+        name: undefined,
+        orders: [
+          {
+            id: order.id,
+            description: undefined,
+            customerId: existingCustomerId,
+          },
+        ],
+        reviewsApproved: undefined,
+        reviewsAuthored: undefined,
+      });
+    });
+  });
+
   it('finds appropriate related model instances for multiple relations', async () => {
     // note(shimks): roundabout way of creating reviews with 'approves'
     // ideally, the review repository should have a approve function
@@ -146,6 +330,14 @@ describe('HasMany relation', () => {
     );
 
     customerOrderRepo = orderFactoryFn(existingCustomerId);
+    const customerCrud = customerRepo as DefaultCrudRepository<
+      Customer,
+      number
+    >;
+    customerCrud.registerInclusionResolver(
+      'orders',
+      orderFactoryFn.inclusionResolver,
+    );
   }
 
   function givenRepositoryFactoryFunctions() {
@@ -161,6 +353,8 @@ describe('HasMany relation', () => {
 });
 
 describe('BelongsTo relation', () => {
+  let customer: Customer;
+  let order: Order;
   let findCustomerOfOrder: BelongsToAccessor<
     Customer,
     typeof Order.prototype.id
@@ -175,28 +369,181 @@ describe('BelongsTo relation', () => {
       reviewRepo.deleteAll(),
     ]);
   });
+  beforeEach(givenCustomerAndOrder);
 
   it('finds an instance of the related model', async () => {
-    const customer = await customerRepo.create({name: 'Order McForder'});
-    const order = await orderRepo.create({
-      customerId: customer.id,
-      description: 'Order from Order McForder, the hoarder of Mordor',
-    });
-
     const result = await findCustomerOfOrder(order.id);
 
     expect(result).to.deepEqual(customer);
   });
 
   it('throws EntityNotFound error when the related model does not exist', async () => {
-    const order = await orderRepo.create({
+    const orderToFail = await orderRepo.create({
       customerId: 999, // does not exist
       description: 'Order of a fictional customer',
     });
 
-    await expect(findCustomerOfOrder(order.id)).to.be.rejectedWith(
+    await expect(findCustomerOfOrder(orderToFail.id)).to.be.rejectedWith(
       EntityNotFoundError,
     );
+  });
+
+  it('can include the related model when the foreign key is omitted in filter', async () => {
+    const orderWithRelations = (await orderRepo.findById(order.id, {
+      include: [
+        {
+          relation: 'customer',
+          scope: {
+            fields: {
+              name: true,
+            },
+          },
+        },
+      ],
+    })) as OrderWithRelations;
+
+    withProtoCheck(false, () => {
+      expect(orderWithRelations.customer).to.deepEqual({
+        id: undefined,
+        name: customer.name,
+        orders: undefined,
+        reviewsApproved: undefined,
+        reviewsAuthored: undefined,
+      });
+    });
+  });
+
+  it('can include the related model when the foreign key is disabled in filter', async () => {
+    const orderWithRelations = (await orderRepo.findById(order.id, {
+      include: [
+        {
+          relation: 'customer',
+          scope: {
+            fields: {
+              id: false,
+              name: true,
+            },
+          },
+        },
+      ],
+    })) as OrderWithRelations;
+
+    withProtoCheck(false, () => {
+      expect(orderWithRelations.customer).to.deepEqual({
+        id: undefined,
+        name: customer.name,
+        orders: undefined,
+        reviewsApproved: undefined,
+        reviewsAuthored: undefined,
+      });
+    });
+  });
+
+  it('can include the related model when only the foreign key is disabled in filter', async () => {
+    const orderWithRelations = (await orderRepo.findById(order.id, {
+      include: [
+        {
+          relation: 'customer',
+          scope: {
+            fields: {
+              id: false,
+            },
+          },
+        },
+      ],
+    })) as OrderWithRelations;
+
+    withProtoCheck(false, () => {
+      expect(orderWithRelations.customer).to.deepEqual({
+        id: undefined,
+        name: customer.name,
+        orders: undefined,
+        reviewsApproved: undefined,
+        reviewsAuthored: undefined,
+      });
+    });
+  });
+
+  it('preserves the foreign key value when set in filter', async () => {
+    const orderWithRelations = (await orderRepo.findById(order.id, {
+      include: [
+        {
+          relation: 'customer',
+          scope: {
+            fields: {
+              id: true,
+              name: true,
+            },
+          },
+        },
+      ],
+    })) as OrderWithRelations;
+
+    withProtoCheck(false, () => {
+      expect(orderWithRelations.customer).to.deepEqual({
+        id: customer.id,
+        name: customer.name,
+        orders: undefined,
+        reviewsApproved: undefined,
+        reviewsAuthored: undefined,
+      });
+    });
+  });
+
+  it('includes only the fields set in filter', async () => {
+    const orderWithRelations = (await orderRepo.findById(order.id, {
+      include: [
+        {
+          relation: 'customer',
+          scope: {
+            fields: {},
+          },
+        },
+      ],
+    })) as OrderWithRelations;
+
+    withProtoCheck(false, () => {
+      expect(orderWithRelations.customer).to.deepEqual({
+        id: undefined,
+        name: undefined,
+        orders: undefined,
+        reviewsApproved: undefined,
+        reviewsAuthored: undefined,
+      });
+    });
+  });
+
+  it('preserves the fields not excluded in filter', async () => {
+    const orderWithRelations = (await orderRepo.findById(order.id, {
+      fields: {
+        description: false,
+      },
+      include: [
+        {
+          relation: 'customer',
+          scope: {
+            fields: {
+              name: false,
+            },
+          },
+        },
+      ],
+    })) as OrderWithRelations;
+
+    withProtoCheck(false, () => {
+      expect(orderWithRelations).to.deepEqual({
+        id: order.id,
+        description: undefined,
+        customerId: customer.id,
+        customer: {
+          id: customer.id,
+          name: undefined,
+          orders: undefined,
+          reviewsApproved: undefined,
+          reviewsAuthored: undefined,
+        },
+      });
+    });
   });
 
   //--- HELPERS ---//
@@ -207,6 +554,22 @@ describe('BelongsTo relation', () => {
       Getter.fromValue(customerRepo),
       orderRepo,
     );
+
+    const orderCrud = orderRepo as DefaultCrudRepository<Order, number>;
+    orderCrud.registerInclusionResolver(
+      'customer',
+      findCustomerOfOrder.inclusionResolver,
+    );
+  }
+
+  async function givenCustomerAndOrder() {
+    customer = await customerRepo.create({
+      name: 'Order McForder',
+    });
+    order = await orderRepo.create({
+      customerId: customer.id,
+      description: 'Order from Order McForder, the hoarder of Mordor',
+    });
   }
 });
 
@@ -498,6 +861,10 @@ class CartItem extends Entity {
     .addProperty('description', {type: 'string', required: true});
 }
 
+class OrderWithRelations extends Order {
+  customer: Customer;
+}
+
 class Review extends Entity {
   id: number;
   description: string;
@@ -563,4 +930,15 @@ function givenCrudRepositories() {
     db,
   );
   reviewRepo = new DefaultCrudRepository(Review, db);
+}
+
+function withProtoCheck(value: boolean, fn: Function) {
+  const shouldJs = (expect as unknown) as {config: {checkProtoEql: boolean}};
+  const oldValue = shouldJs.config.checkProtoEql;
+  shouldJs.config.checkProtoEql = value;
+  try {
+    fn();
+  } finally {
+    shouldJs.config.checkProtoEql = oldValue;
+  }
 }

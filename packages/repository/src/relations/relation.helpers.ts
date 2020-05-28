@@ -149,18 +149,25 @@ function isInclusionAllowed<T extends Entity, Relations extends object = {}>(
  * @param sourceIds - One value or array of values of the target key
  * @param targetEntities - target entities that satisfy targetKey's value (ids).
  * @param targetKey - name of the target key
+ * @param fieldsToRemove - map of fields to remove after flattening
  *
  */
 export function flattenTargetsOfOneToOneRelation<Target extends Entity>(
   sourceIds: unknown[],
   targetEntities: Target[],
   targetKey: StringKeyOf<Target>,
+  fieldsToRemove = [] as (keyof Target)[],
 ): (Target | undefined)[] {
   const lookup = buildLookupMap<unknown, Target, Target>(
     targetEntities,
     targetKey,
     reduceAsSingleItem,
   );
+
+  const pruningMask = _.fromPairs(fieldsToRemove.map(v => [v, undefined]));
+  targetEntities.forEach((e: Partial<Target>) => {
+    Object.assign(e, pruningMask);
+  });
 
   return flattenMapByKeys(sourceIds, lookup);
 }
@@ -173,12 +180,14 @@ export function flattenTargetsOfOneToOneRelation<Target extends Entity>(
  * @param sourceIds - One value or array of values of the target key
  * @param targetEntities - target entities that satisfy targetKey's value (ids).
  * @param targetKey - name of the target key
+ * @param fieldsToRemove - map of fields to remove after flattening
  *
  */
 export function flattenTargetsOfOneToManyRelation<Target extends Entity>(
   sourceIds: unknown[],
   targetEntities: Target[],
   targetKey: StringKeyOf<Target>,
+  fieldsToRemove = [] as (keyof Target)[],
 ): (Target[] | undefined)[] {
   debug('flattenTargetsOfOneToManyRelation');
   debug('sourceIds', sourceIds);
@@ -194,6 +203,11 @@ export function flattenTargetsOfOneToManyRelation<Target extends Entity>(
     targetKey,
     reduceAsArray,
   );
+
+  const pruningMask = _.fromPairs(fieldsToRemove.map(v => [v, undefined]));
+  targetEntities.forEach((e: Partial<Target>) => {
+    Object.assign(e, pruningMask);
+  });
 
   debug('lookup map', lookup);
 

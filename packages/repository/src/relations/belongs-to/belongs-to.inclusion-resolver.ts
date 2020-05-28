@@ -5,7 +5,7 @@
 
 import {AnyObject, Options} from '../../common-types';
 import {Entity} from '../../model';
-import {Filter, Inclusion} from '@loopback/filter';
+import {Filter, Inclusion, ensureFields} from '@loopback/filter';
 import {EntityCrudRepository} from '../../repositories/repository';
 import {
   deduplicate,
@@ -54,15 +54,24 @@ export function createBelongsToInclusionResolver<
     const targetKey = relationMeta.keyTo as StringKeyOf<Target>;
     const dedupedSourceIds = deduplicate(sourceIds);
 
+    const {filter: scope, fieldsAdded} = ensureFields(
+      [targetKey],
+      inclusion.scope as Filter<Target & TargetRelations>,
+    );
     const targetRepo = await getTargetRepo();
     const targetsFound = await findByForeignKeys(
       targetRepo,
       targetKey,
       dedupedSourceIds.filter(e => e),
-      inclusion.scope as Filter<Target>,
+      scope,
       options,
     );
 
-    return flattenTargetsOfOneToOneRelation(sourceIds, targetsFound, targetKey);
+    return flattenTargetsOfOneToOneRelation(
+      sourceIds,
+      targetsFound,
+      targetKey,
+      fieldsAdded,
+    );
   };
 }

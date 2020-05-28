@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Filter, Inclusion} from '@loopback/filter';
+import {Filter, Inclusion, ensureFields} from '@loopback/filter';
 import {AnyObject, Options} from '../../common-types';
 import {Entity} from '../../model';
 import {EntityCrudRepository} from '../../repositories/repository';
@@ -48,15 +48,24 @@ export function createHasOneInclusionResolver<
     const sourceIds = entities.map(e => (e as AnyObject)[sourceKey]);
     const targetKey = relationMeta.keyTo as StringKeyOf<Target>;
 
+    const {filter: scope, fieldsAdded} = ensureFields(
+      [targetKey],
+      inclusion.scope as Filter<Target & TargetRelations>,
+    );
     const targetRepo = await getTargetRepo();
     const targetsFound = await findByForeignKeys(
       targetRepo,
       targetKey,
       sourceIds,
-      inclusion.scope as Filter<Target>,
+      scope,
       options,
     );
 
-    return flattenTargetsOfOneToOneRelation(sourceIds, targetsFound, targetKey);
+    return flattenTargetsOfOneToOneRelation(
+      sourceIds,
+      targetsFound,
+      targetKey,
+      fieldsAdded,
+    );
   };
 }
