@@ -24,6 +24,7 @@
     "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js && npm run posttest",
     "verify": "npm pack && tar xf loopback-rest-crud*.tgz && tree package && npm run clean",
     "migrate": "node ./dist/migrate",
+    "openapi-spec": "node ./dist/openapi-spec",
     "prestart": "npm run build",
     "start": "node ."
   },

@@ -26,6 +26,7 @@
     "docker:build": "docker build -t validation-app .",
     "docker:run": "docker run -p 3000:3000 -d validation-app",
     "migrate": "node ./dist/migrate",
+    "openapi-spec": "node ./dist/openapi-spec",
     "prestart": "npm run build",
     "start": "node -r source-map-support/register ."
   },
