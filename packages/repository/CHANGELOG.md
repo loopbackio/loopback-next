@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.6.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@2.5.1...@loopback/repository@2.6.0) (2020-05-28)
+
+
+### Features
+
+* **repository:** allow components to contribute models for DI ([e74fc57](https://github.com/strongloop/loopback-next/commit/e74fc5725a52227a4cf37ae7d2796df0f5288142))
+
+
+
+
+
 ## [2.5.1](https://github.com/strongloop/loopback-next/compare/@loopback/repository@2.5.0...@loopback/repository@2.5.1) (2020-05-20)
 
 **Note:** Version bump only for package @loopback/repository

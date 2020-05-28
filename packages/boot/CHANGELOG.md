@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.2](https://github.com/strongloop/loopback-next/compare/@loopback/boot@2.3.1...@loopback/boot@2.3.2) (2020-05-28)
+
+
+### Bug Fixes
+
+* bootmixin get binding from super.component() ([9a855ff](https://github.com/strongloop/loopback-next/commit/9a855ffb6b42c9052b1faba32530c62a06cc0b1c))
+
+
+
+
+
 ## [2.3.1](https://github.com/strongloop/loopback-next/compare/@loopback/boot@2.3.0...@loopback/boot@2.3.1) (2020-05-20)
 
 **Note:** Version bump only for package @loopback/boot

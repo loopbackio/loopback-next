@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.8.2](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.8.1...@loopback/docs@3.8.2) (2020-05-28)
+
+
+### Bug Fixes
+
+* array decorator ([08ba68d](https://github.com/strongloop/loopback-next/commit/08ba68d34d23919db23f3aaecc3dc97dc1d09763))
+* **docs:** add todo-jwt to example list ([7024e8e](https://github.com/strongloop/loopback-next/commit/7024e8e969684e6a5f0ecbcf08b98e6c940024c4))
+* **docs:** fix variable name in boot script docs ([ff2dde5](https://github.com/strongloop/loopback-next/commit/ff2dde588119db49a889c27349182d51d9c2ae05))
+
+
+
+
+
 ## [3.8.1](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.8.0...@loopback/docs@3.8.1) (2020-05-20)
 
 **Note:** Version bump only for package @loopback/docs

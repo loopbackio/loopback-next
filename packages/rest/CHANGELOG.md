@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@5.0.1...@loopback/rest@5.1.0) (2020-05-28)
+
+
+### Features
+
+* **rest:** add `exportOpenAPISpec` to export the OpenAPI spec to a file ([6e669f6](https://github.com/strongloop/loopback-next/commit/6e669f62ec6b87d3e857f57787bc694cc7af47ac))
+
+
+
+
+
 ## [5.0.1](https://github.com/strongloop/loopback-next/compare/@loopback/rest@5.0.0...@loopback/rest@5.0.1) (2020-05-20)
 
 **Note:** Version bump only for package @loopback/rest

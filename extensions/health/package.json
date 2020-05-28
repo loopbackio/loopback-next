@@ -1,6 +1,6 @@
 {
   "name": "@loopback/extension-health",
-  "version": "0.4.5",
+  "version": "0.4.6",
   "description": "LoopBack Health",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -20,14 +20,14 @@
   "license": "MIT",
   "dependencies": {
     "@cloudnative/health": "^2.1.2",
-    "@loopback/core": "^2.7.0",
-    "@loopback/rest": "^5.0.1",
+    "@loopback/core": "^2.7.1",
+    "@loopback/rest": "^5.1.0",
     "tslib": "^2.0.0"
   },
   "devDependencies": {
-    "@loopback/build": "^5.4.1",
-    "@loopback/eslint-config": "^7.0.1",
-    "@loopback/testlab": "^3.1.5",
+    "@loopback/build": "^5.4.2",
+    "@loopback/eslint-config": "^8.0.0",
+    "@loopback/testlab": "^3.1.6",
     "@types/node": "^10.17.24"
   },
   "keywords": [

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-greeting-app@2.1.1...@loopback/example-greeting-app@2.2.0) (2020-05-28)
+
+
+### Features
+
+* add `npm run openapi-spec` to export the openapi spec ([dca78e1](https://github.com/strongloop/loopback-next/commit/dca78e1ba3241ed2a0e7067e00cc1afd001f0335))
+
+
+
+
+
 ## [2.1.1](https://github.com/strongloop/loopback-next/compare/@loopback/example-greeting-app@2.1.0...@loopback/example-greeting-app@2.1.1) (2020-05-20)
 
 **Note:** Version bump only for package @loopback/example-greeting-app

@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/authentication-jwt@0.3.1...@loopback/authentication-jwt@0.4.0) (2020-05-28)
+
+
+### Bug Fixes
+
+* **authentication-jwt:** correct the scheme name ([65b0d63](https://github.com/strongloop/loopback-next/commit/65b0d639613945e7c24fe4d1ba0caaf27bae1e2d))
+
+
+### Features
+
+* **authentication-jwt:** add jwt spec enhancer ([7ba645a](https://github.com/strongloop/loopback-next/commit/7ba645a3941638530c5f7feb2de4d23cff23fa92))
+* **authentication-jwt:** unique index email for user ([befd345](https://github.com/strongloop/loopback-next/commit/befd34546c58369003a0b92328e01ced06b2939f))
+
+
+
+
+
 ## [0.3.1](https://github.com/strongloop/loopback-next/compare/@loopback/authentication-jwt@0.3.0...@loopback/authentication-jwt@0.3.1) (2020-05-20)
 
 **Note:** Version bump only for package @loopback/authentication-jwt

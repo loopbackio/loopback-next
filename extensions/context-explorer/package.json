@@ -1,6 +1,6 @@
 {
   "name": "@loopback/context-explorer",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "LoopBack's Context/Binding Explorer",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -18,16 +18,16 @@
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
-    "@loopback/context": "^3.8.1",
-    "@loopback/core": "^2.7.0",
-    "@loopback/rest": "^5.0.1",
+    "@loopback/context": "^3.8.2",
+    "@loopback/core": "^2.7.1",
+    "@loopback/rest": "^5.1.0",
     "ts-graphviz": "^0.13.1",
     "viz.js": "^2.1.2"
   },
   "devDependencies": {
-    "@loopback/build": "^5.4.1",
-    "@loopback/eslint-config": "^7.0.1",
-    "@loopback/testlab": "^3.1.5",
+    "@loopback/build": "^5.4.2",
+    "@loopback/eslint-config": "^8.0.0",
+    "@loopback/testlab": "^3.1.6",
     "@types/node": "^10.17.24"
   },
   "keywords": [

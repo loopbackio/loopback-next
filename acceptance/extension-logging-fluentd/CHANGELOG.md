@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.6](https://github.com/strongloop/loopback-next/compare/@loopback/test-extension-logging-fluentd@0.3.5...@loopback/test-extension-logging-fluentd@0.3.6) (2020-05-28)
+
+**Note:** Version bump only for package @loopback/test-extension-logging-fluentd
+
+
+
+
+
 ## [0.3.5](https://github.com/strongloop/loopback-next/compare/@loopback/test-extension-logging-fluentd@0.3.4...@loopback/test-extension-logging-fluentd@0.3.5) (2020-05-20)
 
 **Note:** Version bump only for package @loopback/test-extension-logging-fluentd

@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.8.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@2.7.1...@loopback/cli@2.8.0) (2020-05-28)
+
+
+### Bug Fixes
+
+* **cli:** group union/intersection types for array ([5172b5f](https://github.com/strongloop/loopback-next/commit/5172b5ffac629c6b875e9416f587db0eaa986634))
+* **docs:** add todo-jwt to example list ([7024e8e](https://github.com/strongloop/loopback-next/commit/7024e8e969684e6a5f0ecbcf08b98e6c940024c4))
+* use correct relation name in belongsTo template ([826120c](https://github.com/strongloop/loopback-next/commit/826120c10a881c80232e4963a6e0148790ba6518))
+
+
+### Features
+
+* **cli:** print out a url for `lb4 update` to open changelogs ([ccd7531](https://github.com/strongloop/loopback-next/commit/ccd7531abeb5e45a97fc7f1b9bb4817727c08cbe))
+* **cli:** update application template to generate openapi-spec.ts ([3b58292](https://github.com/strongloop/loopback-next/commit/3b582929714915fb21487228f5f56c2562626ef3))
+
+
+
+
+
 ## [2.7.1](https://github.com/strongloop/loopback-next/compare/@loopback/cli@2.7.0...@loopback/cli@2.7.1) (2020-05-20)
 
 **Note:** Version bump only for package @loopback/cli

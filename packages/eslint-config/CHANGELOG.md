@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [8.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/eslint-config@7.0.1...@loopback/eslint-config@8.0.0) (2020-05-28)
+
+
+### Features
+
+* **eslint-config:** add naming convention rules ([c8e2143](https://github.com/strongloop/loopback-next/commit/c8e214392a572a81620133f79c2cc122f89e6862))
+* **eslint-config:** disable 'warning Missing return type on function' for now ([1b3494e](https://github.com/strongloop/loopback-next/commit/1b3494e721e1eed782f07ab38748662d850391f0))
+
+
+### BREAKING CHANGES
+
+* **eslint-config:** @typescript-eslint/typescript-eslint v3.0.0 introduces
+a list of breaking changes. Existing code might violate the new or changed
+rules. Manual fixes may be required.
+
+See more details at:
+https://github.com/typescript-eslint/typescript-eslint/releases/tag/v3.0.0
+
+
+
+
+
 ## [7.0.1](https://github.com/strongloop/loopback-next/compare/@loopback/eslint-config@7.0.0...@loopback/eslint-config@7.0.1) (2020-05-20)
 
 **Note:** Version bump only for package @loopback/eslint-config
