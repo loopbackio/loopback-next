@@ -11,6 +11,7 @@
       #4992
 - [ ] Spike: robust handling of ObjectID type for MongoDB #3456
 - [ ] Integration with TypeORM #4853
+- [ ] Continue with feat(repository): hasManyThrough #4438
 - [ ] PRs to review
   - [ ] feat(graphql): add an extension for type-graphql integration #5545
   - [ ] community PRs
