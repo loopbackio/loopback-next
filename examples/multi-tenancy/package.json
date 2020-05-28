@@ -28,6 +28,7 @@
     "docker:build": "docker build -t @loopback/example-multi-tenancy .",
     "docker:run": "docker run -p 3000:3000 -d @loopback/example-multi-tenancy",
     "migrate": "node ./dist/migrate",
+    "openapi-spec": "node ./dist/openapi-spec",
     "prestart": "npm run build",
     "start": "node -r source-map-support/register .",
     "clean": "lb-clean dist *.tsbuildinfo .eslintcache"
