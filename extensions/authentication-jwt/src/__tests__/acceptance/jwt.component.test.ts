@@ -21,7 +21,8 @@ describe('jwt authentication', () => {
   let client: Client;
   let token: string;
   let userRepo: UserRepository;
-
+  let refreshToken: string;
+  let tokenAuth: string;
   before(givenRunningApplication);
   before(() => {
     client = createRestAppClient(app);
@@ -48,6 +49,29 @@ describe('jwt authentication', () => {
     const spec = await app.restServer.getApiSpec();
     expect(spec.security).to.eql(OPERATION_SECURITY_SPEC);
     expect(spec.components?.securitySchemes).to.eql(SECURITY_SCHEME_SPEC);
+  });
+
+  it(`user login and token granted successfully`, async () => {
+    const credentials = {email: 'jane@doe.com', password: 'opensesame'};
+    const res = await client
+      .post('/users/refresh-login')
+      .send(credentials)
+      .expect(200);
+    refreshToken = res.body.refreshToken;
+  });
+
+  it(`user sends refresh token and new access token issued`, async () => {
+    const tokenArg = {refreshToken: refreshToken};
+    const res = await client.post('/refresh/').send(tokenArg).expect(200);
+    tokenAuth = res.body.accessToken;
+  });
+
+  it('whoAmI returns the login user id using token generated from refresh', async () => {
+    const res = await client
+      .get('/whoAmI')
+      .set('Authorization', 'Bearer ' + tokenAuth)
+      .expect(200);
+    expect(res.text).to.equal('f48b7167-8d95-451c-bbfc-8a12cd49e763');
   });
 
   /*

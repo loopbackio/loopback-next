@@ -13,10 +13,43 @@ import {model, property} from '@loopback/repository';
 import {get, post, requestBody} from '@loopback/rest';
 import {SecurityBindings, securityId, UserProfile} from '@loopback/security';
 import {genSalt, hash} from 'bcryptjs';
-import {TokenServiceBindings, User, UserServiceBindings} from '../../../';
+import {
+  RefreshTokenServiceBindings,
+  TokenObject,
+  TokenServiceBindings,
+  User,
+  UserServiceBindings,
+} from '../../../';
 import {UserRepository} from '../../../repositories';
 import {Credentials} from '../../../services/user.service';
+import {RefreshTokenService} from '../../../types';
 
+// Describes the type of grant object taken in by method "refresh"
+type RefreshGrant = {
+  refreshToken: string;
+};
+
+// Describes the schema of grant object
+const RefreshGrantSchema = {
+  type: 'object',
+  required: ['refreshToken'],
+  properties: {
+    refreshToken: {
+      type: 'string',
+    },
+  },
+};
+
+// Describes the request body of grant object
+const RefreshGrantRequestBody = {
+  description: 'Reissuing Acess Token',
+  required: true,
+  content: {
+    'application/json': {schema: RefreshGrantSchema},
+  },
+};
+
+// Describe the schema of user credentials
 const CredentialsSchema = {
   type: 'object',
   required: ['email', 'password'],
@@ -59,6 +92,8 @@ export class UserController {
     private user: UserProfile,
     @inject(UserServiceBindings.USER_REPOSITORY)
     public userRepository: UserRepository,
+    @inject(RefreshTokenServiceBindings.REFRESH_TOKEN_SERVICE)
+    public refreshService: RefreshTokenService,
   ) {}
 
   @post('/users/signup', {
@@ -94,6 +129,11 @@ export class UserController {
     return savedUser;
   }
 
+  /**
+   * A login function that returns an access token. After login, include the token
+   * in the next requests to verify your identity.
+   * @param credentials User email and password
+   */
   @post('/users/login', {
     responses: {
       '200': {
@@ -141,5 +181,72 @@ export class UserController {
   })
   async whoAmI(): Promise<string> {
     return this.user[securityId];
+  }
+  /**
+   * A login function that returns refresh token and access token.
+   * @param credentials User email and password
+   */
+  @post('/users/refresh-login', {
+    responses: {
+      '200': {
+        description: 'Token',
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
+              properties: {
+                accessToken: {
+                  type: 'string',
+                },
+                refreshToken: {
+                  type: 'string',
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  })
+  async refreshLogin(
+    @requestBody(CredentialsRequestBody) credentials: Credentials,
+  ): Promise<TokenObject> {
+    // ensure the user exists, and the password is correct
+    const user = await this.userService.verifyCredentials(credentials);
+    // convert a User object into a UserProfile object (reduced set of properties)
+    const userProfile: UserProfile = this.userService.convertToUserProfile(
+      user,
+    );
+    const accessToken = await this.jwtService.generateToken(userProfile);
+    const tokens = await this.refreshService.generateToken(
+      userProfile,
+      accessToken,
+    );
+    return tokens;
+  }
+
+  @post('/refresh', {
+    responses: {
+      '200': {
+        description: 'Token',
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
+              properties: {
+                accessToken: {
+                  type: 'object',
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  })
+  async refresh(
+    @requestBody(RefreshGrantRequestBody) refreshGrant: RefreshGrant,
+  ): Promise<TokenObject> {
+    return this.refreshService.refreshToken(refreshGrant.refreshToken);
   }
 }
