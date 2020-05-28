@@ -223,8 +223,32 @@ children:
     children:
 
     - title: 'Authentication'
-      url: Loopback-component-authentication.html
+      url: Authentication-overview.html
       output: 'web, pdf'
+      children:
+        - title: 'Authentication Concepts and Architecture'
+          url: Authentication-architecture.html
+          output: 'web, pdf'
+
+        - title: 'Authentication Component'
+          url: Loopback-component-authentication.html
+          output: 'web, pdf'
+
+        - title: 'JWT Authentication Extension'
+          url: JWT-authentication-extension.html
+          output: 'web, pdf'
+
+        - title: 'Apply JWT Authentication in Todo Example'
+          url: Authentication-tutorial.html
+          output: 'web, pdf'
+
+        - title: 'Advanced tutorial - Implement your own JWT authentication'
+          url: Implement-your-own-jwt.html
+          output: 'web, pdf'
+
+        - title: 'Passport Adapter for Authentication'
+          url: Authentication-passport.html
+          output: 'web, pdf'
 
     - title: 'Authorization'
       url: Loopback-component-authorization.html
@@ -324,15 +348,6 @@ children:
   - title: 'Creating CRUD REST APIs from a model'
     url: Creating-crud-rest-apis.html
     output: 'web, pdf'
-
-  - title: 'Authentication'
-    url: Loopback-component-authentication.html
-    output: 'web, pdf'
-    children:
-
-    - title: 'Passport Adapter for Authentication'
-      url: Authentication-passport.html
-      output: 'web, pdf'
 
   - title: 'Authorization'
     url: Loopback-component-authorization.html
@@ -506,10 +521,6 @@ children:
 
   - title: 'Creating an Express Application with LoopBack REST API'
     url: express-with-lb4-rest-tutorial.html
-    output: 'web, pdf'
-
-  - title: 'How to secure your LoopBack 4 application with JWT authentication'
-    url: Authentication-Tutorial.html
     output: 'web, pdf'
 
   - title: 'Build large scale Node.js projects with LoopBack 4'
