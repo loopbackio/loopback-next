@@ -5,3 +5,4 @@ coverage/
 **/*.d.ts
 /docs/_preview
 /docs/_loopback.io
+**/.eslintrc.js

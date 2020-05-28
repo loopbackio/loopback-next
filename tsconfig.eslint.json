@@ -1,0 +1,28 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "allowJs": true,
+  },
+  "include": [
+    "acceptance/*/docker.setup.js",
+    "bin/*.js",
+    "commitlint.config.js",
+    "docs/bin/*.js",
+    "examples/lb3-application/lb3app/**/*.js",
+    "examples/passport-login/web-application/express-app.js",
+    "extensions/context-explorer/public/**/*.js",
+    "packages/booter-lb3app/fixtures/**/*.js",
+    "packages/build/**/*.js",
+    "packages/build/**/*.ts",
+    "packages/cli/**/*.js",
+    "packages/cli/**/*.ts",
+    "packages/eslint-config/eslintrc.js",
+    "packages/repository/examples/**/*.js",
+    "packages/repository/examples/**/*.ts",
+    "packages/tsdocs/bin/*.js",
+    "packages/tsdocs/fixtures/**/*.js"
+  ],
+  "exclude": [
+    "**/node_modules/**/*"
+  ]
+}
