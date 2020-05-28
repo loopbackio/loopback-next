@@ -145,13 +145,13 @@ LoopBack provides a convenient way to create schemas/tables/collections for our
 models if we don't have corresponding schemas defined in the database. Once we
 created the above artifacts, run the following commands:
 
-1. Build the project:
+**1.** Build the project:
 
 ```bash
 $ npm run build
 ```
 
-2. Migrate database schemas (alter existing tables):
+**2.** Migrate database schemas (alter existing tables):
 
 ```
 $ npm run migrate
