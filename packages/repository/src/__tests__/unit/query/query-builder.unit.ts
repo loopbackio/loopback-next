@@ -5,13 +5,13 @@
 
 import {expect} from '@loopback/testlab';
 import {
+  AnyObject,
   FilterBuilder,
-  WhereBuilder,
   filterTemplate,
   isFilter,
-  AnyObject,
-  Where,
   KeyOf,
+  Where,
+  WhereBuilder,
 } from '../../../';
 
 describe('WhereBuilder', () => {
@@ -81,6 +81,55 @@ describe('WhereBuilder', () => {
       .between('y', 'a', 'b')
       .build();
     expect(where).to.eql({x: {between: [1, 2]}, y: {between: ['a', 'b']}});
+  });
+
+  it('builds where object with string like', () => {
+    const whereBuilder = new WhereBuilder();
+    const where = whereBuilder.like('x', /\d{3}/.source).build();
+
+    expect(where).to.eql({x: {like: /\d{3}/.source}});
+  });
+
+  it('builds where object with string nlike', () => {
+    const whereBuilder = new WhereBuilder();
+    const where = whereBuilder.nlike('x', /\d{3}/.source).build();
+
+    expect(where).to.eql({x: {nlike: /\d{3}/.source}});
+  });
+
+  it('builds where object with string ilike', () => {
+    const whereBuilder = new WhereBuilder();
+    const where = whereBuilder.ilike('x', /\d{3}/.source).build();
+
+    expect(where).to.eql({x: {ilike: /\d{3}/.source}});
+  });
+
+  it('builds where object with string nilike', () => {
+    const whereBuilder = new WhereBuilder();
+    const where = whereBuilder.nilike('x', /\d{3}/.source).build();
+
+    expect(where).to.eql({x: {nilike: /\d{3}/.source}});
+  });
+
+  it('builds where object with string regexp', () => {
+    const whereBuilder = new WhereBuilder();
+    const where = whereBuilder.regexp('x', /\d{3}/.source).build();
+
+    expect(where).to.eql({x: {regexp: /\d{3}/.source}});
+  });
+
+  it('builds where object with literal regexp', () => {
+    const whereBuilder = new WhereBuilder();
+    const where = whereBuilder.regexp('x', /\d{3}/).build();
+
+    expect(where).to.eql({x: {regexp: /\d{3}/}});
+  });
+
+  it('builds where object with object regexp', () => {
+    const whereBuilder = new WhereBuilder();
+    const where = whereBuilder.regexp('x', new RegExp(/\d{3}/)).build();
+
+    expect(where).to.eql({x: {regexp: /\d{3}/}});
   });
 
   it('builds where object with or', () => {
