@@ -7,10 +7,12 @@ import debugFactory from 'debug';
 import {camelCase} from 'lodash';
 import {
   DataObject,
+  deduplicate,
   Entity,
   HasManyDefinition,
   InvalidRelationError,
   isTypeResolver,
+  StringKeyOf,
 } from '../..';
 import {resolveHasManyMetaHelper} from './has-many.helpers';
 
@@ -27,7 +29,7 @@ export type HasManyThroughResolvedDefinition = HasManyDefinition & {
 
 /**
  * Creates constraint used to query target
- * @param relationMeta - hasManyThrough metadata to resolve
+ * @param relationMeta - resolved hasManyThrough metadata
  * @param throughInstances - Instances of through entities used to constrain the target
  * @internal
  *
@@ -50,11 +52,13 @@ export type HasManyThroughResolvedDefinition = HasManyDefinition & {
         categoryId: 2,
         productId: 8,
       }, {
-        id: 2,
+        id: 1,
         categoryId: 2,
         productId: 9,
       }
   ]);
+
+  >>> {id: {inq: [9, 8]}}
  * ```
  */
 export function createTargetConstraint<
@@ -62,14 +66,18 @@ export function createTargetConstraint<
   Through extends Entity
 >(
   relationMeta: HasManyThroughResolvedDefinition,
-  throughInstances: Through[],
+  throughInstances: Through | Through[],
 ): DataObject<Target> {
   const targetPrimaryKey = relationMeta.keyTo;
   const targetFkName = relationMeta.through.keyTo;
-  const fkValues = throughInstances.map(
+  if (!Array.isArray(throughInstances)) {
+    throughInstances = [throughInstances];
+  }
+  let fkValues = throughInstances.map(
     (throughInstance: Through) =>
       throughInstance[targetFkName as keyof Through],
   );
+  fkValues = deduplicate(fkValues);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const constraint: any = {
     [targetPrimaryKey]: fkValues.length === 1 ? fkValues[0] : {inq: fkValues},
@@ -80,7 +88,7 @@ export function createTargetConstraint<
 /**
  * Creates constraint used to query through model
  *
- * @param relationMeta - hasManyThrough metadata to resolve
+ * @param relationMeta - resolved hasManyThrough metadata
  * @param fkValue - Value of the foreign key of the source model used to constrain through
  * @param targetInstance - Instance of target entity used to constrain through
  * @internal
@@ -98,6 +106,8 @@ export function createTargetConstraint<
  *  },
  * };
  * createThroughConstraint(resolvedMetadata, 1);
+ *
+ * >>> {categoryId: 1}
  * ```
  */
 export function createThroughConstraint<Through extends Entity, ForeignKeyType>(
@@ -107,6 +117,45 @@ export function createThroughConstraint<Through extends Entity, ForeignKeyType>(
   const sourceFkName = relationMeta.through.keyFrom;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const constraint: any = {[sourceFkName]: fkValue};
+  return constraint;
+}
+/**
+ * Creates constraint used to create the through model
+ *
+ * @param relationMeta - resolved hasManyThrough metadata
+ * @param targetInstance instance of target entity used to constrain through
+ * @internal
+ *
+ * @example
+ * ```ts
+ * const resolvedMetadata = {
+ *  // .. other props
+ *  keyFrom: 'id',
+ *  keyTo: 'id',
+ *  through: {
+ *    model: () => CategoryProductLink,
+ *    keyFrom: 'categoryId',
+ *    keyTo: 'productId',
+ *  },
+ * };
+ * createThroughConstraint(resolvedMetadata, {id: 3, name: 'a product'});
+ *
+ * >>> {productId: 1}
+ *
+ * createThroughConstraint(resolvedMetadata, {id: {inq:[3,4]}});
+ *
+ * >>> {productId: {inq:[3,4]}}
+ */
+export function createThroughFkConstraint<Target, Through extends Entity>(
+  relationMeta: HasManyThroughResolvedDefinition,
+  targetInstance: Target,
+): DataObject<Through> {
+  const targetKey = relationMeta.keyTo as StringKeyOf<Target>;
+  const targetFkName = relationMeta.through.keyTo;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const constraint: any = {
+    [targetFkName]: targetInstance[targetKey],
+  };
   return constraint;
 }
 

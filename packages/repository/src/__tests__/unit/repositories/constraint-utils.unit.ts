@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2019. All Rights Reserved.
+// Copyright IBM Corp. 2019,2020. All Rights Reserved.
 // Node module: @loopback/repository
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -9,6 +9,7 @@ import {
   constrainDataObjects,
   constrainFilter,
   constrainWhere,
+  constrainWhereOr,
   Entity,
   Filter,
   FilterBuilder,
@@ -74,6 +75,23 @@ describe('constraint utility functions', () => {
       expect(result).to.deepEqual({
         and: [inputWhere, constraint],
       });
+    });
+  });
+
+  context('constrainWhereOr', () => {
+    const inputWhere: Where<{x: string; y: string; id: string}> = {
+      x: 'x',
+    };
+    it('enforces a constraint', () => {
+      const constraint = [{id: '5'}, {y: 'y'}];
+      const result = constrainWhereOr(inputWhere, constraint);
+      expect(result).to.deepEqual({...inputWhere, or: constraint});
+    });
+
+    it('enforces constraint with dup key', () => {
+      const constraint = [{y: 'z'}, {x: 'z'}];
+      const result = constrainWhereOr(inputWhere, constraint);
+      expect(result).to.deepEqual({...inputWhere, or: constraint});
     });
   });
 
