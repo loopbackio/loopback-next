@@ -3,12 +3,13 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {expect} from '@loopback/testlab';
+import {expect, toJSON} from '@loopback/testlab';
 import {
   BelongsToAccessor,
   BelongsToDefinition,
   createBelongsToAccessor,
   createHasManyRepositoryFactory,
+  createHasManyThroughRepositoryFactory,
   DefaultCrudRepository,
   Entity,
   EntityCrudRepository,
@@ -17,6 +18,8 @@ import {
   HasManyDefinition,
   HasManyRepository,
   HasManyRepositoryFactory,
+  HasManyThroughRepository,
+  HasManyThroughRepositoryFactory,
   juggler,
   ModelDefinition,
   RelationType,
@@ -26,6 +29,10 @@ import {
 let db: juggler.DataSource;
 let customerRepo: EntityCrudRepository<Customer, typeof Customer.prototype.id>;
 let orderRepo: EntityCrudRepository<Order, typeof Order.prototype.id>;
+let customerOrderLinkRepo: EntityCrudRepository<
+  CustomerOrderLink,
+  typeof CustomerOrderLink.prototype.id
+>;
 let reviewRepo: EntityCrudRepository<Review, typeof Review.prototype.id>;
 
 describe('HasMany relation', () => {
@@ -203,6 +210,262 @@ describe('BelongsTo relation', () => {
   }
 });
 
+describe.only('HasManyThrough relation', () => {
+  let existingCustomerId: number;
+
+  let hasManyThroughRepo: HasManyThroughRepository<
+    Order,
+    typeof Order.prototype.id,
+    CustomerOrderLink
+  >;
+  let hasManyThroughFactory: HasManyThroughRepositoryFactory<
+    Order,
+    typeof Order.prototype.id,
+    CustomerOrderLink,
+    typeof Customer.prototype.id
+  >;
+
+  before(givenCrudRepositories);
+  before(givenPersistedCustomerInstance);
+  before(givenConstrainedRepositories);
+
+  beforeEach(async function resetDatabase() {
+    await customerRepo.deleteAll();
+    await customerOrderLinkRepo.deleteAll();
+    await orderRepo.deleteAll();
+  });
+
+  it('can create an target instance alone with the corresponding through model', async () => {
+    const order = await hasManyThroughRepo.create(
+      {
+        description: 'an order hasManyThrough',
+      },
+      {
+        throughData: {id: 99},
+      },
+    );
+    const persistedOrder = await orderRepo.findById(order.id);
+    const persistedLink = await customerOrderLinkRepo.find();
+    expect(order).to.deepEqual(persistedOrder);
+    expect(persistedLink).have.length(1);
+    const expected = {
+      id: 99,
+      customerId: existingCustomerId,
+      orderId: order.id,
+    };
+    expect(toJSON(persistedLink[0])).to.deepEqual(toJSON(expected));
+  });
+
+  it('can find an instance via through model', async () => {
+    const order = await hasManyThroughRepo.create(
+      {
+        description: 'an order hasManyThrough',
+      },
+      {
+        throughData: {id: 99},
+      },
+    );
+    const notMyOrder = await orderRepo.create({
+      description: "someone else's order desc",
+    });
+
+    const orders = await hasManyThroughRepo.find();
+
+    expect(orders).to.not.containEql(notMyOrder);
+    expect(orders).to.deepEqual([order]);
+  });
+
+  it('can find instances via through models', async () => {
+    const order1 = await hasManyThroughRepo.create(
+      {
+        description: 'group 1',
+      },
+      {
+        throughData: {id: 99},
+      },
+    );
+    const order2 = await hasManyThroughRepo.create(
+      {
+        description: 'group 2',
+      },
+      {
+        throughData: {id: 98},
+      },
+    );
+    const orders = await hasManyThroughRepo.find();
+
+    expect(orders).have.length(2);
+    expect(orders).to.deepEqual([order1, order2]);
+    const group1 = await hasManyThroughRepo.find({
+      where: {description: 'group 1'},
+    });
+    expect(group1).to.deepEqual([order1]);
+  });
+
+  it('can delete an instance alone through model', async () => {
+    const order1 = await hasManyThroughRepo.create(
+      {
+        description: 'customer 1',
+      },
+      {
+        throughData: {id: 98},
+      },
+    );
+    const anotherHasManyThroughRepo = hasManyThroughFactory(
+      existingCustomerId + 1,
+    );
+    const order2 = await anotherHasManyThroughRepo.create(
+      {
+        description: 'customer 2',
+      },
+      {
+        throughData: {id: 99},
+      },
+    );
+    let orders = await orderRepo.find();
+    let links = await customerOrderLinkRepo.find();
+
+    expect(orders).have.length(2);
+    expect(links).have.length(2);
+
+    await hasManyThroughRepo.delete();
+    orders = await orderRepo.find();
+    orders = await orderRepo.find();
+    links = await customerOrderLinkRepo.find();
+
+    expect(orders).have.length(1);
+    expect(links).have.length(1);
+    expect(orders).to.deepEqual([order2]);
+    expect(links[0]).has.property('orderId', order2.id);
+    expect(links[0]).has.property('customerId', existingCustomerId + 1);
+  });
+
+  it('can delete an instance alone through model', async () => {
+    const order1 = await hasManyThroughRepo.create(
+      {
+        description: 'customer 1',
+      },
+      {
+        throughData: {id: 98},
+      },
+    );
+    const anotherHasManyThroughRepo = hasManyThroughFactory(
+      existingCustomerId + 1,
+    );
+    const order2 = await anotherHasManyThroughRepo.create(
+      {
+        description: 'customer 2',
+      },
+      {
+        throughData: {id: 99},
+      },
+    );
+    const through = await customerOrderLinkRepo.create({
+      id: 1,
+      customerId: existingCustomerId + 1,
+      orderId: order1.id,
+    });
+    let orders = await orderRepo.find();
+    let links = await customerOrderLinkRepo.find();
+
+    expect(orders).have.length(2);
+    expect(links).have.length(3);
+
+    await hasManyThroughRepo.delete();
+
+    orders = await orderRepo.find();
+    orders = await orderRepo.find();
+    links = await customerOrderLinkRepo.find();
+
+    expect(orders).have.length(1);
+    expect(links).have.length(1);
+    expect(orders).to.deepEqual([order2]);
+    expect(links).to.not.containEql(through);
+    expect(links[0]).has.property('orderId', order2.id);
+    expect(links[0]).has.property('customerId', existingCustomerId + 1);
+  });
+
+  it('can find instances via through models', async () => {
+    const order = await hasManyThroughRepo.create(
+      {
+        description: 'group 1',
+      },
+      {
+        throughData: {id: 99},
+      },
+    );
+    await hasManyThroughRepo.patch({description: 'group 2'});
+    const updateResult = await orderRepo.find();
+    expect(toJSON(updateResult)).to.containDeep(
+      toJSON([{id: order.id, description: 'group 2', customerId: undefined}]),
+    );
+  });
+
+  it('can patch instances that belong to the same source model (same source fk)', async () => {
+    const order1 = await hasManyThroughRepo.create(
+      {
+        description: 'group 1',
+      },
+      {
+        throughData: {id: 99},
+      },
+    );
+    const order2 = await hasManyThroughRepo.create(
+      {
+        description: 'group 1',
+      },
+      {
+        throughData: {id: 98},
+      },
+    );
+
+    const count = await hasManyThroughRepo.patch({description: 'group 2'});
+    expect(count).to.match({count: 2});
+    const updateResult = await orderRepo.find();
+    expect(toJSON(updateResult)).to.containDeep(
+      toJSON([
+        {id: order1.id, description: 'group 2', customerId: undefined},
+        {id: order2.id, description: 'group 2', customerId: undefined},
+      ]),
+    );
+  });
+  //--- HELPERS ---//
+
+  async function givenPersistedCustomerInstance() {
+    const customer = await customerRepo.create({name: 'a customer'});
+    existingCustomerId = customer.id;
+  }
+
+  function givenConstrainedRepositories() {
+    hasManyThroughFactory = createHasManyThroughRepositoryFactory<
+      Order,
+      typeof Order.prototype.id,
+      CustomerOrderLink,
+      typeof CustomerOrderLink.prototype.id,
+      typeof Customer.prototype.id
+    >(
+      {
+        name: 'products',
+        type: 'hasMany',
+        targetsMany: true,
+        source: Customer,
+        keyFrom: 'id',
+        target: () => Order,
+        keyTo: 'id',
+        through: {
+          model: () => CustomerOrderLink,
+          keyFrom: 'customerId',
+          keyTo: 'orderId',
+        },
+      } as HasManyDefinition,
+      Getter.fromValue(orderRepo),
+      Getter.fromValue(customerOrderLinkRepo),
+    );
+
+    hasManyThroughRepo = hasManyThroughFactory(existingCustomerId);
+  }
+});
+
 //--- HELPERS ---//
 
 class Order extends Entity {
@@ -213,7 +476,7 @@ class Order extends Entity {
   static definition = new ModelDefinition('Order')
     .addProperty('id', {type: 'number', id: true})
     .addProperty('description', {type: 'string', required: true})
-    .addProperty('customerId', {type: 'number', required: true})
+    .addProperty('customerId', {type: 'number', required: false})
     .addRelation({
       name: 'customer',
       type: RelationType.belongsTo,
@@ -277,10 +540,24 @@ class Customer extends Entity {
     });
 }
 
+class CustomerOrderLink extends Entity {
+  id: number;
+  customerId: number;
+  orderId: number;
+  static definition = new ModelDefinition('CustomerOrderLink')
+    .addProperty('id', {
+      type: 'number',
+      id: true,
+      required: true,
+    })
+    .addProperty('orderId', {type: 'number'})
+    .addProperty('customerId', {type: 'number'});
+}
 function givenCrudRepositories() {
   db = new juggler.DataSource({connector: 'memory'});
 
   customerRepo = new DefaultCrudRepository(Customer, db);
   orderRepo = new DefaultCrudRepository(Order, db);
+  customerOrderLinkRepo = new DefaultCrudRepository(CustomerOrderLink, db);
   reviewRepo = new DefaultCrudRepository(Review, db);
 }

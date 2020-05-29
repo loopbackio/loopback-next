@@ -9,6 +9,7 @@ import {
   constrainDataObjects,
   constrainFilter,
   constrainWhere,
+  constrainWhereOr,
   Entity,
   Filter,
   FilterBuilder,
@@ -74,6 +75,25 @@ describe('constraint utility functions', () => {
       expect(result).to.deepEqual({
         and: [inputWhere, constraint],
       });
+    });
+  });
+
+  context('constrainWhereOr', () => {
+    const inputWhere: Where<{x: string; y: string; id: string}> = {
+      x: 'x',
+    };
+    it('enforces a constraint', () => {
+      const constraint = [{id: '5'}, {y: 'y'}];
+      const result = constrainWhereOr(inputWhere, constraint);
+      console.log(result);
+      expect(result).to.deepEqual({...inputWhere, or: constraint});
+    });
+
+    it('enforces constraint with dup key', () => {
+      const constraint = {y: 'z'};
+      const result = constrainWhereOr(inputWhere, constraint);
+      console.log(result);
+      expect(result).to.deepEqual({...inputWhere, or: [constraint]});
     });
   });
 

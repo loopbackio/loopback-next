@@ -15,6 +15,7 @@ import {
 import {
   createTargetConstraint,
   createThroughConstraint,
+  createThroughFkConstraint,
   HasManyThroughResolvedDefinition,
   resolveHasManyThroughMetadata,
 } from '../../../../relations/has-many/has-many-through.helpers';
@@ -47,6 +48,17 @@ describe('HasManyThroughHelpers', () => {
       // multiple through models
       result = createTargetConstraint(resolved, [through1, through2]);
       expect(result).to.containEql({id: {inq: [9, 8]}});
+    });
+  });
+  context('createThroughFkConstraint', () => {
+    it('can create constraint with a given target instance', () => {
+      const product = createProduct({
+        id: 1,
+      });
+      const resolved = resolvedMetadata as HasManyThroughResolvedDefinition;
+
+      let result = createThroughFkConstraint(resolved, product);
+      expect(result).to.containEql({productId: 1});
     });
   });
   context('resolveHasManyThroughMetadata', () => {
@@ -323,5 +335,8 @@ describe('HasManyThroughHelpers', () => {
 
   function createCategoryProductLink(properties: Partial<CategoryProductLink>) {
     return new CategoryProductLink(properties);
+  }
+  function createProduct(properties: Partial<Product>) {
+    return new Product(properties);
   }
 });

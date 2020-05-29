@@ -2,8 +2,20 @@
 // Node module: @loopback/repository
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
-
-import {Count, DataObject, Entity, Filter, Options, Where} from '../..';
+import {
+  constrainDataObject,
+  constrainFilter,
+  constrainWhere,
+  Count,
+  DataObject,
+  Entity,
+  EntityCrudRepository,
+  Filter,
+  Getter,
+  Options,
+  Where,
+} from '../..';
+import {constrainWhereOr} from '../../repositories/constraint-utils';
 
 /**
  * CRUD operations for a target repository of a HasManyThrough relation
@@ -97,4 +109,158 @@ export interface HasManyThroughRepository<
       throughOptions?: Options;
     },
   ): Promise<void>;
+}
+
+/**
+ * a class for CRUD operations for hasManyThrough relation.
+ *
+ * Warning: The hasManyThrough interface is experimental and is subject to change.
+ * If backwards-incompatible changes are made, a new major version may not be
+ * released.
+ */
+export class DefaultHasManyThroughRepository<
+  TargetEntity extends Entity,
+  TargetID,
+  TargetRepository extends EntityCrudRepository<TargetEntity, TargetID>,
+  ThroughEntity extends Entity,
+  ThroughID,
+  ThroughRepository extends EntityCrudRepository<ThroughEntity, ThroughID>
+> implements HasManyThroughRepository<TargetEntity, TargetID, ThroughEntity> {
+  constructor(
+    public getTargetRepository: Getter<TargetRepository>,
+    public getThroughRepository: Getter<ThroughRepository>,
+    public getTargetConstraint: (
+      throughInstances: ThroughEntity | ThroughEntity[],
+    ) => DataObject<TargetEntity>,
+    public getThroughConstraint: () => DataObject<ThroughEntity>,
+    public getThroughFkConstraint: (
+      targetInstance: TargetEntity,
+    ) => DataObject<ThroughEntity>,
+  ) {}
+
+  async create(
+    targetModelData: DataObject<TargetEntity>,
+    options?: Options & {
+      throughData?: DataObject<ThroughEntity>;
+      throughOptions?: Options;
+    },
+  ): Promise<TargetEntity> {
+    const targetRepository = await this.getTargetRepository(); //{id: inq:[]}
+    const throughRepository = await this.getThroughRepository(); // {category: 1}
+    const targetInstance = await targetRepository.create(
+      targetModelData,
+      options,
+    );
+    const targetConstraint = this.getThroughFkConstraint(targetInstance);
+    const throughConstraint = this.getThroughConstraint();
+    const constraints = {...targetConstraint, ...throughConstraint};
+    await throughRepository.create(
+      constrainDataObject(
+        options?.throughData ?? {},
+        constraints as DataObject<ThroughEntity>,
+      ),
+      options?.throughOptions,
+    );
+    return targetInstance;
+  }
+
+  async find(
+    filter?: Filter<TargetEntity>,
+    options?: Options & {
+      throughOptions?: Options;
+    },
+  ): Promise<TargetEntity[]> {
+    const targetRepository = await this.getTargetRepository();
+    const throughRepository = await this.getThroughRepository();
+    const throughConstraint = this.getThroughConstraint();
+    const throughInstances = await throughRepository.find(
+      constrainFilter(undefined, throughConstraint),
+      options?.throughOptions,
+    );
+    const targetConstraint = this.getTargetConstraint(throughInstances);
+    return targetRepository.find(
+      constrainFilter(filter, targetConstraint),
+      options,
+    );
+  }
+
+  // 1. Given through links: {sourceId: 1, targetId: 1} and {sourceId: 2, targetId: 2}.
+  // When delete all models belonging to source id 1,
+  // then the target model id 1 and the first link is deleted.
+
+  // 2. Given trough links {sourceId: 1, targetId: 1}, {sourceId: 2, targetId: 1}
+  // and {sourceId: 2, targetId: 2}.
+  // When delete all models belonging to source id 1,
+  // then the target model id 1 and the first two links are deleted.
+  // Only {sourceId: 2, targetId: 2} link is preserved
+  async delete(
+    where?: Where<TargetEntity>,
+    options?: Options & {
+      throughOptions?: Options;
+    },
+  ): Promise<Count> {
+    const targetRepository = await this.getTargetRepository();
+    const throughRepository = await this.getThroughRepository();
+    const throughConstraint = this.getThroughConstraint();
+    const throughInstances = await throughRepository.find(
+      constrainFilter(undefined, throughConstraint),
+      options?.throughOptions,
+    );
+    const targetConstraint = this.getTargetConstraint(throughInstances);
+
+    // delete throughs that have the targets that are going to be deleted
+    const throughFkConstraint = this.getThroughFkConstraint(
+      targetConstraint as TargetEntity,
+    );
+    await throughRepository.deleteAll(
+      constrainWhereOr({}, [throughConstraint, throughFkConstraint]),
+    );
+
+    // delete target(s)
+    return await targetRepository.deleteAll(
+      constrainWhere(where, targetConstraint as Where<TargetEntity>),
+      options,
+    );
+  }
+  // only allows patch target instances for now
+  async patch(
+    dataObject: DataObject<TargetEntity>,
+    where?: Where<TargetEntity>,
+    options?: Options & {
+      throughOptions?: Options;
+    },
+  ): Promise<Count> {
+    const targetRepository = await this.getTargetRepository();
+    const throughRepository = await this.getThroughRepository();
+    const throughConstraint = this.getThroughConstraint();
+    const throughInstances = await throughRepository.find(
+      constrainFilter(undefined, throughConstraint),
+      options?.throughOptions,
+    );
+    const targetConstraint = this.getTargetConstraint(throughInstances);
+    return targetRepository.updateAll(
+      constrainDataObject(dataObject, targetConstraint),
+      constrainWhere(where, targetConstraint as Where<TargetEntity>),
+      options,
+    );
+  }
+
+  async link(
+    targetModelId: TargetID,
+    options?: Options & {
+      throughData?: DataObject<ThroughEntity>;
+      throughOptions?: Options;
+    },
+  ): Promise<TargetEntity> {
+    throw new Error('Method not implemented.');
+  }
+
+  async unlink(
+    targetModelId: TargetID,
+    options?: Options & {
+      throughOptions?: Options;
+    },
+  ): Promise<void> {
+    throw new Error('Method not implemented.');
+  }
 }
