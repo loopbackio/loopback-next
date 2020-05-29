@@ -31,6 +31,24 @@ describe('defineModelClass', () => {
     expect(instance.title).to.equal('a title');
   });
 
+  it('creates a correctly typed constructor', () => {
+    const definition = new ModelDefinition('Product').addProperty('name', {
+      type: 'string',
+    });
+    const Product = defineModelClass<typeof Model, {name: string}>(
+      Model,
+      definition,
+    );
+
+    // When the `data` argument is not provided, then TypeScript may pick
+    // Model's constructor signature instead of Product constructor signature.
+    // When that happens, `p` has type `Model` without Product properties.
+    // This test verifies that such situation does not happen.
+    const p = new Product();
+    p.name = 'Pen';
+    // The test passed when the line above is accepted by the compiler.
+  });
+
   it('creates an Entity class', () => {
     const definition = new ModelDefinition('Product')
       .addProperty('id', {type: 'number', id: true})

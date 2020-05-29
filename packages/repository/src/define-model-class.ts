@@ -79,10 +79,10 @@ export function defineModelClass<
 export type DynamicModelCtor<
   BaseCtor extends typeof Model,
   Props extends object
-> = BaseCtor & {
+> = {
   /** Model constructor accepting partial model data. */
   new (data?: DataObject<PrototypeOf<BaseCtor> & Props>): PrototypeOf<
     BaseCtor
   > &
     Props;
-};
+} & BaseCtor;
