@@ -9,7 +9,7 @@ class ConfigProvider1 implements Provider<object> {
   value() {
     return {
       level: 'info',
-      __source: 'js-provider',
+      _source: 'js-provider',
     };
   }
 }
@@ -18,7 +18,7 @@ class ConfigProvider2 implements Provider<object> {
   value() {
     return {
       level: 'debug',
-      __source: 'js-provider',
+      _source: 'js-provider',
     };
   }
 }

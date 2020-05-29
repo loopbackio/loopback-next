@@ -15,7 +15,6 @@ import {resolve} from 'path';
 import {ConfigurationLoader, configurationLoader} from '../../booters';
 import {BooterApp} from '../fixtures/application';
 
-/* eslint-disable @typescript-eslint/naming-convention */
 describe('configuration booter acceptance tests', function (this: Suite) {
   this.timeout(5000);
   let app: BooterApp;
@@ -92,12 +91,12 @@ describe('configuration booter acceptance tests', function (this: Suite) {
       load(_app: Application, projectRoot: string, files: string[]) {
         app.configure('loggers.Log1').to({
           level: 'info',
-          __source: 'my-loader',
+          _source: 'my-loader',
         });
         return {
           'loggers.Log2': {
             level: 'debug',
-            __source: 'my-loader',
+            _source: 'my-loader',
           },
         };
       }
@@ -117,9 +116,9 @@ describe('configuration booter acceptance tests', function (this: Suite) {
     const bindings = app.findByTag({[ContextTags.CONFIGURATION_FOR]: matcher});
     expect(bindings.length).to.eql(2);
     const cfg1 = await app.getConfig('loggers.Log1');
-    expect(cfg1).to.eql({level: 'info', __source: source});
+    expect(cfg1).to.eql({level: 'info', _source: source});
     const cfg2 = await app.getConfig('loggers.Log2');
-    expect(cfg2).to.eql({level: 'debug', __source: source});
+    expect(cfg2).to.eql({level: 'debug', _source: source});
   }
 
   async function copyJs() {
