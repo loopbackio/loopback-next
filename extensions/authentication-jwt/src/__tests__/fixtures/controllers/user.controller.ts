@@ -9,7 +9,7 @@ import {
   UserService,
 } from '@loopback/authentication';
 import {inject} from '@loopback/core';
-import {get, post, requestBody} from '@loopback/rest';
+import {get, post, requestBody, getModelSchemaRef} from '@loopback/rest';
 import {SecurityBindings, securityId, UserProfile} from '@loopback/security';
 import {TokenServiceBindings, User, UserServiceBindings} from '../../../';
 import {Credentials} from '../../../services/user.service';
@@ -94,5 +94,40 @@ export class UserController {
   })
   async whoAmI(): Promise<string> {
     return this.user[securityId];
+  }
+  @post('/signup', {
+    responses: {
+      '200': {
+        description: 'User',
+        content: {
+          'application/json': {
+            schema: {
+              'x-ts-type': User,
+            },
+          },
+        },
+      },
+    },
+  })
+  async signUp(
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(NewUserRequest, {
+            title: 'NewUser',
+          }),
+        },
+      },
+    })
+    newUserRequest: NewUserRequest,
+  ): Promise<User> {
+    const password = await hash(newUserRequest.password, await genSalt());
+    const savedUser = await this.userRepository.create(
+      _.omit(newUserRequest, 'password'),
+    );
+
+    await this.userRepository.userCredentials(savedUser.id).create({password});
+
+    return savedUser;
   }
 }
