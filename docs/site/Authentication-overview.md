@@ -34,7 +34,7 @@ LoopBack's authentication mechanism.
 As you can see, a request with token in its header reaches the application. It's
 handled by the REST server's sequence, which invokes the authentication action
 to decode the user profile from token so that controller can inject the user
-into its functions. All you need to do is the code in programming colors:
+into its functions. All you need to add is the code in programming colors:
 
 - Register the authentication component and JWT extension in your application.
 - Enable the authenticate action in sequence.
@@ -49,7 +49,7 @@ developers.
 The authentication system is highly extensible and plugible. It's easy to get
 started with. While there are more advanced features to explorer, and they
 benefit when you build more complicated and larger scale applications. This
-requires you to understand the mechanism of the sysmte, like how component
+requires you to understand the mechanism of the system, like how component
 `@loopback/authentication` works. To help you learn the full features gradually,
 we break down the documentations into several parts:
 
