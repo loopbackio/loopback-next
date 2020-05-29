@@ -443,6 +443,61 @@ export class WhereBuilder<MT extends object = AnyObject> {
   }
 
   /**
+   * Add a `like` condition
+   * @param key - Property name
+   * @param val - Regexp condition
+   */
+  like<K extends KeyOf<MT>>(key: K, val: MT[K]): this {
+    const w: Where<MT> = {};
+    w[key] = {like: val};
+    return this.add(w);
+  }
+
+  /**
+   * Add a `nlike` condition
+   * @param key - Property name
+   * @param val - Regexp condition
+   */
+  nlike<K extends KeyOf<MT>>(key: K, val: MT[K]): this {
+    const w: Where<MT> = {};
+    w[key] = {nlike: val};
+    return this.add(w);
+  }
+
+  /**
+   * Add a `ilike` condition
+   * @param key - Property name
+   * @param val - Regexp condition
+   */
+  ilike<K extends KeyOf<MT>>(key: K, val: MT[K]): this {
+    const w: Where<MT> = {};
+    w[key] = {ilike: val};
+    return this.add(w);
+  }
+
+  /**
+   * Add a `nilike` condition
+   * @param key - Property name
+   * @param val - Regexp condition
+   */
+  nilike<K extends KeyOf<MT>>(key: K, val: MT[K]): this {
+    const w: Where<MT> = {};
+    w[key] = {nilike: val};
+    return this.add(w);
+  }
+
+  /**
+   * Add a `regexp` condition
+   * @param key - Property name
+   * @param val - Regexp condition
+   */
+  regexp<K extends KeyOf<MT>>(key: K, val: string | RegExp): this {
+    const w: Where<MT> = {};
+    w[key] = {regexp: val};
+    return this.add(w);
+  }
+
+  /**
    * Get the where object
    */
   build() {
