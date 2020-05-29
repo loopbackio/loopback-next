@@ -42,6 +42,23 @@ export function constrainWhere<T extends object>(
   return builder.impose(constraint).build();
 }
 /**
+ * A utility function which takes a where filter and enforces constraint(s)
+ * on it with OR clause
+ * @param originalWhere - the where filter to apply the constrain(s) to
+ * @param constraint - the constraint which is to be applied on the filter with
+ * or clause
+ * @returns Filter the modified filter with the constraint, otherwise
+ * the original filter
+ */
+export function constrainWhereOr<T extends object>(
+  originalWhere: Where<T> | undefined,
+  constraint: Where<T>[],
+): Where<T> {
+  const where = cloneDeep(originalWhere);
+  const builder = new WhereBuilder<T>(where);
+  return builder.or(constraint).build();
+}
+/**
  * A utility function which takes a model instance data and enforces constraint(s)
  * on it
  * @param originalData - the model data to apply the constrain(s) to

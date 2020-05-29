@@ -15,6 +15,7 @@ import {
 import {
   createTargetConstraint,
   createThroughConstraint,
+  createThroughFkConstraint,
   HasManyThroughResolvedDefinition,
   resolveHasManyThroughMetadata,
 } from '../../../../relations/has-many/has-many-through.helpers';
@@ -42,11 +43,39 @@ describe('HasManyThroughHelpers', () => {
       const resolved = resolvedMetadata as HasManyThroughResolvedDefinition;
 
       // single through model
-      let result = createTargetConstraint(resolved, [through1]);
+      let result = createTargetConstraint(resolved, through1);
       expect(result).to.containEql({id: 9});
       // multiple through models
       result = createTargetConstraint(resolved, [through1, through2]);
       expect(result).to.containEql({id: {inq: [9, 8]}});
+    });
+
+    it('can create constraint for searching target models with duplicate keys', () => {
+      const through1 = createCategoryProductLink({
+        id: 1,
+        categoryId: 2,
+        productId: 9,
+      });
+      const through2 = createCategoryProductLink({
+        id: 2,
+        categoryId: 3,
+        productId: 9,
+      });
+      const resolved = resolvedMetadata as HasManyThroughResolvedDefinition;
+
+      const result = createTargetConstraint(resolved, [through1, through2]);
+      expect(result).to.containEql({id: 9});
+    });
+  });
+  context('createThroughFkConstraint', () => {
+    it('can create constraint with a given target instance', () => {
+      const product = createProduct({
+        id: 1,
+      });
+      const resolved = resolvedMetadata as HasManyThroughResolvedDefinition;
+
+      const result = createThroughFkConstraint(resolved, product);
+      expect(result).to.containEql({productId: 1});
     });
   });
   context('resolveHasManyThroughMetadata', () => {
@@ -323,5 +352,8 @@ describe('HasManyThroughHelpers', () => {
 
   function createCategoryProductLink(properties: Partial<CategoryProductLink>) {
     return new CategoryProductLink(properties);
+  }
+  function createProduct(properties: Partial<Product>) {
+    return new Product(properties);
   }
 });
