@@ -64,7 +64,9 @@ async function updateReferences(options) {
     const tsconfigMeta = loadTsConfig(pkgLocation, dryRun);
     const tsconfigFile = tsconfigMeta.file;
     rootRefs.push({
-      path: path.join(path.relative(project.rootPath, pkgLocation), TSCONFIG),
+      path: path
+        .join(path.relative(project.rootPath, pkgLocation), TSCONFIG)
+        .replace(/\\/g, '/'),
     });
     const tsconfig = tsconfigMeta.tsconfig;
     const originalTsconfigJson = JSON.stringify(tsconfig, null, 2);
@@ -75,7 +77,7 @@ async function updateReferences(options) {
       // Skip non-typescript packages
       if (loadTsConfig(depPkg.location, dryRun) == null) continue;
       const relativePath = path.relative(pkgLocation, depPkg.pkg.location);
-      refs.push({path: path.join(relativePath, TSCONFIG)});
+      refs.push({path: path.join(relativePath, TSCONFIG).replace(/\\/g, '/')});
     }
     tsconfig.compilerOptions = {
       // outDir has to be set in tsconfig instead of CLI for tsc -b
