@@ -21,6 +21,7 @@
     "access": "public"
   },
   "peerDependencies": {
+    "@loopback/boot": "^3.0.2",
     "@loopback/core": "^2.11.0",
     "@loopback/repository": "^3.1.0",
     "@loopback/rest": "^8.0.0"
@@ -32,6 +33,7 @@
   },
   "devDependencies": {
     "@loopback/build": "^6.2.5",
+    "@loopback/boot": "^3.0.2",
     "@loopback/core": "^2.11.0",
     "@loopback/repository": "^3.1.0",
     "@loopback/rest": "^8.0.0",

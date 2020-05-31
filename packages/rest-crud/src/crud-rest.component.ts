@@ -3,9 +3,17 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Binding, Component, createBindingFromClass} from '@loopback/core';
+import {Booter} from '@loopback/boot';
+import {
+  Binding,
+  Component,
+  Constructor,
+  createBindingFromClass,
+} from '@loopback/core';
+import {ModelApiBooter} from '@loopback/model-api-builder';
 import {CrudRestApiBuilder} from './crud-rest.api-builder';
 
 export class CrudRestComponent implements Component {
   bindings: Binding[] = [createBindingFromClass(CrudRestApiBuilder)];
+  booters: Constructor<Booter>[] = [ModelApiBooter];
 }

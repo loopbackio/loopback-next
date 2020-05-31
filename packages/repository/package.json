@@ -22,12 +22,12 @@
     "access": "public"
   },
   "peerDependencies": {
-    "@loopback/boot": "^3.0.1",
+    "@loopback/boot": "^3.0.2",
     "@loopback/core": "^2.11.0"
   },
   "devDependencies": {
     "@loopback/build": "^6.2.5",
-    "@loopback/boot": "^3.0.1",
+    "@loopback/boot": "^3.0.2",
     "@loopback/core": "^2.11.0",
     "@loopback/eslint-config": "^10.0.1",
     "@loopback/testlab": "^3.2.7",

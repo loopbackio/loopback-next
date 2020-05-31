@@ -56,7 +56,7 @@ describe('CrudRestController for a simple Product model', () => {
   Object.freeze(PATCH_DATA);
 
   before(setupTestScenario);
-  after(stopTheApp);
+  after(stopApp);
   beforeEach(cleanDatabase);
 
   describe('create', () => {
@@ -311,8 +311,8 @@ describe('CrudRestController for a simple Product model', () => {
     client = createRestAppClient(app);
   }
 
-  async function stopTheApp() {
-    await app.stop();
+  async function stopApp() {
+    if (app?.state === 'started') await app?.stop();
   }
 
   async function cleanDatabase() {
