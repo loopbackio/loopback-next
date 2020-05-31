@@ -12,20 +12,21 @@ import {BootOptions} from './types';
  */
 export namespace BootBindings {
   /**
-   * Binding key for boot options
-   */
-  export const BOOT_OPTIONS = BindingKey.create<BootOptions>('boot.options');
-  /**
-   * Binding key for determining project root directory
-   */
-  export const PROJECT_ROOT = BindingKey.create<string>('boot.project_root');
-
-  /**
    * Binding key for binding the BootStrapper class
    */
   export const BOOTSTRAPPER_KEY = BindingKey.create<Bootstrapper>(
     'application.bootstrapper',
   );
+  /**
+   * Binding key for boot options
+   */
+  export const BOOT_OPTIONS = BindingKey.create(
+    BindingKey.buildKeyForConfig<BootOptions>(BOOTSTRAPPER_KEY.key).toString(),
+  );
+  /**
+   * Binding key for determining project root directory
+   */
+  export const PROJECT_ROOT = BindingKey.create<string>('boot.project_root');
 
   /**
    * Booter binding namespace

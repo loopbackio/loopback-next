@@ -27,9 +27,6 @@
     "@loopback/core": "^2.11.0"
   },
   "dependencies": {
-    "@loopback/model-api-builder": "^2.1.16",
-    "@loopback/repository": "^3.1.0",
-    "@loopback/service-proxy": "^3.0.2",
     "@types/debug": "^4.1.5",
     "@types/glob": "^7.1.3",
     "debug": "^4.2.0",
@@ -40,8 +37,6 @@
     "@loopback/build": "^6.2.5",
     "@loopback/core": "^2.11.0",
     "@loopback/eslint-config": "^10.0.1",
-    "@loopback/rest": "^8.0.0",
-    "@loopback/rest-crud": "^0.8.16",
     "@loopback/testlab": "^3.2.7",
     "@types/node": "^10.17.35"
   },

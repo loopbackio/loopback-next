@@ -15,21 +15,6 @@
       "path": "../core/tsconfig.json"
     },
     {
-      "path": "../model-api-builder/tsconfig.json"
-    },
-    {
-      "path": "../repository/tsconfig.json"
-    },
-    {
-      "path": "../rest-crud/tsconfig.json"
-    },
-    {
-      "path": "../rest/tsconfig.json"
-    },
-    {
-      "path": "../service-proxy/tsconfig.json"
-    },
-    {
       "path": "../testlab/tsconfig.json"
     }
   ]

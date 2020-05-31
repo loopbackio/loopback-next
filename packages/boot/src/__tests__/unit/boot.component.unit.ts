@@ -10,8 +10,6 @@ import {
   BootMixin,
   Bootstrapper,
   ControllerBooter,
-  DataSourceBooter,
-  RepositoryBooter,
   ServiceBooter,
 } from '../../';
 
@@ -32,20 +30,6 @@ describe('boot.component unit tests', () => {
       `${BootBindings.BOOTERS}.ControllerBooter`,
     );
     expect(booterInst).to.be.an.instanceOf(ControllerBooter);
-  });
-
-  it('RepositoryBooter is bound as a booter by default', async () => {
-    const booterInst = await app.get(
-      `${BootBindings.BOOTERS}.RepositoryBooter`,
-    );
-    expect(booterInst).to.be.an.instanceOf(RepositoryBooter);
-  });
-
-  it('DataSourceBooter is bound as a booter by default', async () => {
-    const booterInst = await app.get(
-      `${BootBindings.BOOTERS}.DataSourceBooter`,
-    );
-    expect(booterInst).to.be.an.instanceOf(DataSourceBooter);
   });
 
   it('ServiceBooter is bound as a booter by default', async () => {

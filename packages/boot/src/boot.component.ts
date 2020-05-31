@@ -5,54 +5,45 @@
 
 import {
   Application,
-  BindingScope,
+  Binding,
   Component,
+  Constructor,
   CoreBindings,
+  createBindingFromClass,
   inject,
 } from '@loopback/core';
 import {
   ApplicationMetadataBooter,
   ControllerBooter,
-  DataSourceBooter,
   InterceptorProviderBooter,
   LifeCycleObserverBooter,
-  ModelApiBooter,
-  ModelBooter,
-  RepositoryBooter,
   ServiceBooter,
 } from './booters';
 import {Bootstrapper} from './bootstrapper';
-import {BootBindings} from './keys';
+import {Booter} from './types';
 
 /**
- * BootComponent is used to export the default list of Booter's made
+ * BootstrapComponent is used to export the default list of Booter's made
  * available by this module as well as bind the BootStrapper to the app so it
  * can be used to run the Booters.
  */
 export class BootComponent implements Component {
+  bindings: Binding[] = [createBindingFromClass(Bootstrapper)];
   // Export a list of default booters in the component so they get bound
   // automatically when this component is mounted.
-  booters = [
-    ApplicationMetadataBooter,
-    ControllerBooter,
-    RepositoryBooter,
-    ServiceBooter,
-    DataSourceBooter,
-    LifeCycleObserverBooter,
-    InterceptorProviderBooter,
-    ModelApiBooter,
-    ModelBooter,
-  ];
+  booters: Constructor<Booter>[];
 
   /**
    *
    * @param app - Application instance
    */
   constructor(@inject(CoreBindings.APPLICATION_INSTANCE) app: Application) {
-    // Bound as a SINGLETON so it can be cached as it has no state
-    app
-      .bind(BootBindings.BOOTSTRAPPER_KEY)
-      .toClass(Bootstrapper)
-      .inScope(BindingScope.SINGLETON);
+    this.booters = [
+      ApplicationMetadataBooter,
+      ControllerBooter,
+      ServiceBooter,
+      LifeCycleObserverBooter,
+      InterceptorProviderBooter,
+    ];
   }
 }

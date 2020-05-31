@@ -4,7 +4,6 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Application} from '@loopback/core';
-import {ApplicationWithServices, ServiceMixin} from '@loopback/service-proxy';
 import {expect, sinon, TestSandbox} from '@loopback/testlab';
 import {resolve} from 'path';
 import {ServiceBooter, ServiceDefaults} from '../../..';
@@ -15,7 +14,7 @@ describe('service booter unit tests', () => {
   const SERVICES_PREFIX = 'services';
   const SERVICES_TAG = 'service';
 
-  class AppWithRepo extends ServiceMixin(Application) {}
+  class AppWithRepo extends Application {}
 
   let app: AppWithRepo;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -32,10 +31,7 @@ describe('service booter unit tests', () => {
       resolve(__dirname, '../../fixtures/service-provider.artifact.js'),
     );
 
-    const booterInst = new ServiceBooter(
-      normalApp as ApplicationWithServices,
-      sandbox.path,
-    );
+    const booterInst = new ServiceBooter(normalApp, sandbox.path);
 
     booterInst.discovered = [
       resolve(sandbox.path, 'service-provider.artifact.js'),

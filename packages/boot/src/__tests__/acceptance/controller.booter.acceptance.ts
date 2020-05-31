@@ -3,11 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {
-  createRestAppClient,
-  givenHttpServerConfig,
-  TestSandbox,
-} from '@loopback/testlab';
+import {expect, givenHttpServerConfig, TestSandbox} from '@loopback/testlab';
 import {resolve} from 'path';
 import {BooterApp} from '../fixtures/application';
 
@@ -18,17 +14,10 @@ describe('controller booter acceptance tests', () => {
   beforeEach('reset sandbox', () => sandbox.reset());
   beforeEach(getApp);
 
-  afterEach(stopApp);
-
-  it('binds controllers using ControllerDefaults and REST endpoints work', async () => {
+  it('binds controllers using ControllerDefaults', async () => {
     await app.boot();
-    await app.start();
-
-    const client = createRestAppClient(app);
-
-    // Default Controllers = /controllers with .controller.js ending (nested = true);
-    await client.get('/one').expect(200, 'ControllerOne.one()');
-    await client.get('/two').expect(200, 'ControllerTwo.two()');
+    const bindings = app.find('controllers.*');
+    expect(bindings.length).to.eql(2);
   });
 
   async function getApp() {
@@ -43,9 +32,5 @@ describe('controller booter acceptance tests', () => {
     app = new MyApp({
       rest: givenHttpServerConfig(),
     });
-  }
-
-  async function stopApp() {
-    await app?.stop();
   }
 });

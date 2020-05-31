@@ -1,17 +1,14 @@
-// Copyright IBM Corp. 2019. All Rights Reserved.
+// Copyright IBM Corp. 2019,2020. All Rights Reserved.
 // Node module: @loopback/boot
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
 import {Application} from '@loopback/core';
-import {RepositoryMixin} from '@loopback/repository';
 import {expect, sinon} from '@loopback/testlab';
 import {BootBindings, Booter, BootMixin, Bootstrapper} from '../..';
 
 describe('boot-strapper unit tests', () => {
-  // RepositoryMixin is added to avoid warning message printed logged to console
-  // due to the fact that RepositoryBooter is a default Booter loaded via BootMixin.
-  class BootApp extends BootMixin(RepositoryMixin(Application)) {}
+  class BootApp extends BootMixin(Application) {}
 
   let app: BootApp;
   let bootstrapper: Bootstrapper;

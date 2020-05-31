@@ -3,17 +3,13 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {get} from '@loopback/rest';
-
 export class ArtifactOne {
-  @get('/one')
   one() {
     return 'ControllerOne.one()';
   }
 }
 
 export class ArtifactTwo {
-  @get('/two')
   two() {
     return 'ControllerTwo.two()';
   }

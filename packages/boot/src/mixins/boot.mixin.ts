@@ -38,7 +38,7 @@ export {Binding};
  * - Add a `projectRoot` property to the Class
  * - Adds an optional `bootOptions` property to the Class that can be used to
  *    store the Booter conventions.
- * - Adds the `BootComponent` to the Class (which binds the Bootstrapper and default Booters)
+ * - Adds the `BootstrapComponent` to the Class (which binds the Bootstrapper and default Booters)
  * - Provides the `boot()` convenience method to call Bootstrapper.boot()
  * - Provides the `booter()` convenience method to bind a Booter(s) to the Application
  * - Override `component()` to call `mountComponentBooters`

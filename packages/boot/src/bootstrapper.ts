@@ -1,13 +1,17 @@
-// Copyright IBM Corp. 2018,2019. All Rights Reserved.
+// Copyright IBM Corp. 2018,2020. All Rights Reserved.
 // Node module: @loopback/boot
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
 import {
   Application,
+  BindingScope,
+  config,
   Context,
+  ContextTags,
   CoreBindings,
   inject,
+  injectable,
   resolveList,
 } from '@loopback/core';
 import debugModule from 'debug';
@@ -34,12 +38,16 @@ const debug = debugModule('loopback:boot:bootstrapper');
  * @param projectRoot - The root directory of the project, relative to which all other paths are resolved
  * @param bootOptions - The BootOptions describing the conventions to be used by various Booters
  */
+@injectable({
+  scope: BindingScope.SINGLETON,
+  tags: {[ContextTags.KEY]: BootBindings.BOOTSTRAPPER_KEY},
+})
 export class Bootstrapper {
   constructor(
     @inject(CoreBindings.APPLICATION_INSTANCE)
     private app: Application & Bootable,
     @inject(BootBindings.PROJECT_ROOT) private projectRoot: string,
-    @inject(BootBindings.BOOT_OPTIONS, {optional: true})
+    @config()
     private bootOptions: BootOptions = {},
   ) {
     // Resolve path to projectRoot and re-bind
@@ -48,7 +56,7 @@ export class Bootstrapper {
 
     // This is re-bound for testing reasons where this value may be passed directly
     // and needs to be propagated to the Booters via DI
-    app.bind(BootBindings.BOOT_OPTIONS).to(this.bootOptions);
+    app.configure(BootBindings.BOOTSTRAPPER_KEY).to(this.bootOptions);
   }
 
   /**
