@@ -15,5 +15,6 @@
  * @packageDocumentation
  */
 
+export * from './booters';
 export * from './model-api-builder';
 export * from './model-api-config';
