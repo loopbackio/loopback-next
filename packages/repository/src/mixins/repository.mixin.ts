@@ -3,10 +3,12 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {bindBooter} from '@loopback/boot';
 import {
   Binding,
   BindingFromClassOptions,
   BindingScope,
+  Context,
   createBindingFromClass,
 } from '@loopback/core';
 import {
@@ -17,6 +19,7 @@ import {
   MixinTarget,
 } from '@loopback/core';
 import debugFactory from 'debug';
+import {DataSourceBooter, ModelBooter, RepositoryBooter} from '../booters';
 import {Class} from '../common-types';
 import {SchemaMigrationOptions} from '../datasource';
 import {RepositoryBindings, RepositoryTags} from '../keys';
@@ -55,6 +58,15 @@ export function RepositoryMixin<T extends MixinTarget<Application>>(
   superClass: T,
 ) {
   return class extends superClass {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    constructor(...args: any[]) {
+      super(...args);
+      const ctx = (this as unknown) as Context;
+      bindBooter(ctx, ModelBooter);
+      bindBooter(ctx, DataSourceBooter);
+      bindBooter(ctx, RepositoryBooter);
+    }
+
     /**
      * Add a repository to this application.
      *
