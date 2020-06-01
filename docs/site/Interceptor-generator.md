@@ -63,7 +63,7 @@ import {
   bind,
   Interceptor,
   Provider,
-} from '@loopback/context';
+} from '@loopback/core';
 
 /**
  * This class will be bound to the application as a global `Interceptor` during
@@ -115,7 +115,7 @@ import {
   bind,
   Interceptor,
   Provider,
-} from '@loopback/context';
+} from '@loopback/core';
 
 /**
  * This class will be bound to the application as a global `Interceptor` during

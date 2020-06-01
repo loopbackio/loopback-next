@@ -57,7 +57,7 @@ The component class is usually implemented inside
 
 ```ts
 import {Application, Component, CoreBindings} from '@loopback/core';
-import {bind, config, ContextTags, inject} from '@loopback/context';
+import {bind, config, ContextTags, inject} from '@loopback/core';
 import {MetricsBindings} from './keys';
 import {DEFAULT_METRICS_OPTIONS, MetricsOptions} from './types';
 

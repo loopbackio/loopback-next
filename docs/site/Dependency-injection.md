@@ -22,6 +22,8 @@ the caller specify which strategy to use.
 The implementation of the `authenticate` action is shown below.
 
 ```ts
+import {inject, Provider} from '@loopback/core';
+
 export class AuthenticateActionProvider implements Provider<AuthenticateFn> {
   constructor(
     // The provider is instantiated for Sequence constructor,
@@ -72,6 +74,19 @@ export class AuthenticateActionProvider implements Provider<AuthenticateFn> {
   }
 }
 ```
+
+{% include note.html content="The `@loopback/core` package re-exports all public
+APIs of `@loopback/context`. For consistency, we recommend the usage of
+`@loopback/core` for imports in LoopBack modules and applications unless they
+depend on `@loopback/context` explicitly. The two statements below are
+equivalent:
+
+```ts
+import {inject} from '@loopback/context';
+import {inject} from '@loopback/core';
+```
+
+" %}
 
 Dependency Injection makes the code easier to extend and customize, because the
 dependencies can be easily rewired by the application developer. It makes the
@@ -296,7 +311,7 @@ problem.
 Consider the following example:
 
 ```ts
-import {Context, inject} from '@loopback/context';
+import {Context, inject} from '@loopback/core';
 
 interface Developer {
   // Each developer belongs to a team
@@ -363,7 +378,7 @@ Let's take a look at the following example:
 The corresponding code is:
 
 ```ts
-import {inject, Context, BindingScope} from '@loopback/context';
+import {inject, Context, BindingScope} from '@loopback/core';
 import {RestBindings} from '@loopback/rest';
 
 interface Logger() {

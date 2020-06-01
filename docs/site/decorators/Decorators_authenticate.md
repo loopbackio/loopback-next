@@ -20,7 +20,7 @@ Here's an example using 'BasicStrategy': to authenticate user in function
 {% include code-caption.html content="src/controllers/who-am-i.controller.ts" %}
 
 ```ts
-import {inject} from '@loopback/context';
+import {inject} from '@loopback/core';
 import {securityId, SecurityBindings, UserProfile} from '@loopback/security';
 import {authenticate} from '@loopback/authentication';
 import {get} from '@loopback/rest';

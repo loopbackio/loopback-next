@@ -204,7 +204,7 @@ function upon injection.
 
 ```ts
 import {Send, Response} from '@loopback/rest';
-import {Provider, BoundValue, inject} from '@loopback/context';
+import {Provider, BoundValue, inject} from '@loopback/core';
 import {writeResultToResponse, RestBindings, Request} from '@loopback/rest';
 
 // Note: This is an example class; we do not provide this for you.
@@ -264,7 +264,7 @@ import {
 } from '@loopback/repository';
 import {CustomSendProvider} from './providers/custom-send.provider';
 import {Formatter} from './utils';
-import {BindingScope} from '@loopback/context';
+import {BindingScope} from '@loopback/core';
 
 export class YourApp extends RepositoryMixin(RestApplication) {
   constructor() {

@@ -51,7 +51,7 @@ based on the given name:
 ```ts
 // Uncomment these imports to begin using these cool features!
 
-// import {inject} from '@loopback/context';
+// import {inject} from '@loopback/core';
 
 export class FooController {
   constructor() {}

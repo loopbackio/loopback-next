@@ -238,7 +238,7 @@ The following code snippet shows how it would look like:
 content="/src/repositories/order.repository.ts" %}
 
 ```ts
-import {Getter, inject} from '@loopback/context';
+import {Getter, inject} from '@loopback/core';
 import {
   BelongsToAccessor,
   DefaultCrudRepository,

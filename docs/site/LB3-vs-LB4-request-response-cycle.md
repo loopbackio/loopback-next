@@ -331,7 +331,7 @@ available to them via [dependency injection](./Dependency-injection.md).
 Example of accesssing the request and response object in a Controller:
 
 ```ts
-import {inject} from '@loopback/context';
+import {inject} from '@loopback/core';
 import {Request, Response, RestBindings, get} from '@loopback/rest';
 
 export class ExampleController {

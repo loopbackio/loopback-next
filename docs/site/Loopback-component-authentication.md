@@ -146,7 +146,7 @@ Here is an example of the decorator using a custom authentication strategy named
 authentication strategy in later sections)
 
 ```ts
-import {inject} from '@loopback/context';
+import {inject} from '@loopback/core';
 import {AuthenticationBindings, authenticate} from '@loopback/authentication';
 import {SecurityBindings, securityId, UserProfile} from '@loopback/security';
 import {get} from '@loopback/rest';
@@ -715,7 +715,7 @@ with a value of `false` for the `/scareme` endpoint. We use the **default**
 option value for the `/whoami` endpoint.
 
 ```ts
-import {inject} from '@loopback/context';
+import {inject} from '@loopback/core';
 import {AuthenticationBindings, authenticate} from '@loopback/authentication';
 import {UserProfile, securityId} from '@loopback/security';
 import {get} from '@loopback/rest';

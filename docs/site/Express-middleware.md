@@ -220,7 +220,7 @@ Alternatively, we can create a subclass of
 `ExpressMiddlewareInterceptorProvider`.
 
 ```ts
-import {config} from '@loopback/context';
+import {config} from '@loopback/core';
 import {
   ExpressMiddlewareInterceptorProvider,
   createMiddlewareInterceptorBinding,

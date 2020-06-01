@@ -25,7 +25,7 @@ A few steps are involved to create an endpoint for file upload.
    [`FileUploadController`](https://github.com/strongloop/loopback-next/blob/master/examples/file-transfer/src/controllers/file-upload.controller.ts)
 
 ```ts
-import {inject} from '@loopback/context';
+import {inject} from '@loopback/core';
 import {
   post,
   Request,
@@ -110,7 +110,7 @@ To download files from the backend, please follow the following steps.
    [`FileDownloadController`](https://github.com/strongloop/loopback-next/blob/master/examples/file-transfer/src/controllers/file-download.controller.ts)
 
 ```ts
-import {inject} from '@loopback/context';
+import {inject} from '@loopback/core';
 import {
   get,
   HttpErrors,

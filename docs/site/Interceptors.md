@@ -34,7 +34,7 @@ Controller methods decorated with `@intercept` are invoked with applied
 interceptors for corresponding routes upon API requests.
 
 ```ts
-import {intercept} from '@loopback/context';
+import {intercept} from '@loopback/core';
 
 @intercept(log) // `log` is an interceptor function
 export class OrderController {
@@ -74,7 +74,7 @@ services and would like to allow repository or service methods to be
 intercepted.
 
 ```ts
-import {createProxyWithInterceptors} from '@loopback/context';
+import {createProxyWithInterceptors} from '@loopback/core';
 
 const proxy = createProxyWithInterceptors(controllerInstance, ctx);
 const msg = await proxy.greet('John');
@@ -148,7 +148,7 @@ To explicitly invoke a method with interceptors, use `invokeMethod` from
 `RestServer` for controller methods.
 
 ```ts
-import {Context, invokeMethod} from '@loopback/context';
+import {Context, invokeMethod} from '@loopback/core';
 
 const ctx: Context = new Context();
 
@@ -336,7 +336,7 @@ Global interceptors are discovered from the `InvocationContext`. They are
 registered as bindings with `globalInterceptor` tag. For example,
 
 ```ts
-import {asGlobalInterceptor} from '@loopback/context';
+import {asGlobalInterceptor} from '@loopback/core';
 
 app
   .bind('globalInterceptors.MetricsInterceptor')
@@ -747,7 +747,7 @@ Sometimes we want to apply more than one interceptors together as a whole. It
 can be done by `composeInterceptors`:
 
 ```ts
-import {composeInterceptors} from '@loopback/context';
+import {composeInterceptors} from '@loopback/core';
 
 const interceptor = composeInterceptors(
   interceptorFn1,
@@ -768,7 +768,7 @@ is the base class that can be extended to create your own flavor of interceptors
 and chains. For example,
 
 ```ts
-import {GenericInvocationChain, GenericInterceptor} from '@loopback/context';
+import {GenericInvocationChain, GenericInterceptor} from '@loopback/core';
 import {RequestContext} from '@loopback/rest';
 
 export interface RequestInterceptor
@@ -795,7 +795,7 @@ await chain.invokeInterceptors();
 It's also possible to pass in a final handler:
 
 ```ts
-import {Next} from '@loopback/context';
+import {Next} from '@loopback/core';
 const finalHandler: Next = async () => {
   // return ...;
 };

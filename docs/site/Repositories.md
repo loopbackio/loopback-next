@@ -166,7 +166,7 @@ TypeScript version:
 import {DefaultCrudRepository, juggler} from '@loopback/repository';
 import {Account, AccountRelations} from '../models';
 import {DbDataSource} from '../datasources';
-import {inject} from '@loopback/context';
+import {inject} from '@loopback/core';
 
 export class AccountRepository extends DefaultCrudRepository<
   Account,
@@ -354,7 +354,7 @@ implementation based on `loopback-datasource-juggler`.
 import {DefaultKeyValueRepository} from '@loopback/repository';
 import {ShoppingCart} from '../models/shopping-cart.model';
 import {RedisDataSource} from '../datasources/redis.datasource';
-import {inject} from '@loopback/context';
+import {inject} from '@loopback/core';
 
 export class ShoppingCartRepository extends DefaultKeyValueRepository<
   ShoppingCart
