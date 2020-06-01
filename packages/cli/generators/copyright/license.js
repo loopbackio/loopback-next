@@ -8,6 +8,14 @@ const {FSE} = require('./fs');
 const {getYears} = require('./git');
 const {wrapText} = require('../../lib/utils');
 const spdxLicenses = require('spdx-license-list/full');
+
+spdxLicenses.CUSTOM = {
+  name: 'Custom License',
+  url: '',
+  osiApproved: false,
+  licenseText: '',
+};
+
 const spdxLicenseList = {};
 for (const id in spdxLicenses) {
   spdxLicenseList[id.toLowerCase()] = {id, ...spdxLicenses[id]};
