@@ -196,6 +196,25 @@ export class HelloController {
 - `@param.query.number` specifies in the spec being generated that the route
   takes a parameter via query which will be a number.
 
+## Class factory to allow parameterized decorations
+
+Since decorations applied on a top-level class cannot have references to
+variables, you can create a class factory that allows parameterized decorations
+as shown in the example below.
+
+```ts
+function createControllerClass(version: string, basePath: string) {
+  @api({basePath: `${basePath}`})
+  class Controller {
+    @get(`/${version}`) find() {}
+  }
+}
+```
+
+For a complete example, see
+[parameterized-decoration.ts](https://github.com/strongloop/loopback-next/blob/master/examples/context/src/parameterized-decoration.ts)
+.
+
 ## Handling Errors in Controllers
 
 In order to specify errors for controller methods to throw, the class
@@ -269,3 +288,34 @@ export class HelloController {
   }
 }
 ```
+
+## Creating Controllers at Runtime
+
+A controller can be created for a model at runtime using the
+`defineCrudRestController` helper function from the `@loopback/rest-crud`
+package. It accepts a Model class and a `CrudRestControllerOptions` object.
+Dependency injection for the controller has to be configured by applying the
+`inject` decorator manually as shown in the example below.
+
+```ts
+const basePath = '/' + bookDef.name;
+const BookController = defineCrudRestController(BookModel, {basePath});
+inject(repoBinding.key)(BookController, undefined, 0);
+```
+
+The controller is then attached to the app by calling the `app.controller()`
+method.
+
+```ts
+app.controller(BookController);
+```
+
+The new CRUD REST endpoints for the model will be available on the app now.
+
+If you want a customized controller, you can create a copy of
+`defineCrudRestController`'s
+[implementation](https://github.com/strongloop/loopback-next/blob/00917f5a06ea8a51e1f452f228a6b0b7314809be/packages/rest-crud/src/crud-rest.controller.ts#L129-L269)
+and modify it according to your requirements.
+
+For details about `defineCrudRestController` and `CrudRestControllerOptions`,
+refer to the [@loopback/rest-crud API documentation](./apidocs/rest-crud.html).
