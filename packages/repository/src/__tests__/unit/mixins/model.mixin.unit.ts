@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {MetadataInspector, MetadataMap} from '@loopback/context';
+import {MetadataInspector, MetadataMap} from '@loopback/core';
 import {expect} from '@loopback/testlab';
 import {MODEL_PROPERTIES_KEY} from '../../../';
 import {Note} from '../../fixtures/models/note.model';

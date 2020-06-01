@@ -366,7 +366,7 @@ export class ProductReviewController {
 exports[`lb4 controller basic controller scaffolds correct file with args 1`] = `
 // Uncomment these imports to begin using these cool features!
 
-// import {inject} from '@loopback/context';
+// import {inject} from '@loopback/core';
 
 
 export class ProductReviewController {
@@ -379,7 +379,7 @@ export class ProductReviewController {
 exports[`lb4 controller basic controller scaffolds correct file with input 1`] = `
 // Uncomment these imports to begin using these cool features!
 
-// import {inject} from '@loopback/context';
+// import {inject} from '@loopback/core';
 
 
 export class ProductReviewController {

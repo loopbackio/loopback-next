@@ -14,7 +14,7 @@ import {
   InvocationContext,
   Provider,
   ValueOrPromise,
-} from '@loopback/context';
+} from '@loopback/core';
 import {RequestContext, RestBindings} from '@loopback/rest';
 import morgan from 'morgan';
 import {format} from 'util';

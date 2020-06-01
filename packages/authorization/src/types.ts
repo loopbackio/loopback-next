@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {BindingAddress, InvocationContext} from '@loopback/context';
+import {BindingAddress, InvocationContext} from '@loopback/core';
 import {Principal, Role} from '@loopback/security';
 
 /**

@@ -8,7 +8,7 @@ import {
   createProxyWithInterceptors,
   intercept,
   InterceptorOrKey,
-} from '@loopback/context';
+} from '@loopback/core';
 import {Client, givenHttpServerConfig, supertest} from '@loopback/testlab';
 import bodyParser from 'body-parser';
 import {ExpressApplication} from '../../express.application';

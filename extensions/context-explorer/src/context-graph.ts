@@ -3,12 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {
-  BindingScope,
-  ContextTags,
-  JSONArray,
-  JSONObject,
-} from '@loopback/context';
+import {BindingScope, ContextTags, JSONArray, JSONObject} from '@loopback/core';
 import {attribute, Digraph, ICluster, toDot, INode, IEdge} from 'ts-graphviz';
 
 /**

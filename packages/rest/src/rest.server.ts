@@ -4,18 +4,20 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
+  Application,
   Binding,
   BindingAddress,
   BindingScope,
   Constructor,
   ContextObserver,
+  CoreBindings,
   createBindingFromClass,
   filterByKey,
   filterByTag,
   inject,
+  Server,
   Subscription,
-} from '@loopback/context';
-import {Application, CoreBindings, Server} from '@loopback/core';
+} from '@loopback/core';
 import {BaseMiddlewareRegistry, ExpressRequestHandler} from '@loopback/express';
 import {HttpServer, HttpServerOptions} from '@loopback/http-server';
 import {

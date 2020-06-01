@@ -279,10 +279,6 @@ module.exports = function (projGenerator, props, projectType) {
           );
           assert.fileContent(
             'package.json',
-            `"@loopback/context": "${deps['@loopback/context']}"`,
-          );
-          assert.fileContent(
-            'package.json',
             `"@loopback/rest": "${deps['@loopback/rest']}"`,
           );
           assert.fileContent(
@@ -300,10 +296,6 @@ module.exports = function (projGenerator, props, projectType) {
           assert.fileContent(
             'package.json',
             `"@loopback/core": "${deps['@loopback/core']}"`,
-          );
-          assert.fileContent(
-            'package.json',
-            `"@loopback/context": "${deps['@loopback/context']}"`,
           );
           assert.noFileContent('package.json', '"@loopback/rest"');
           assert.noFileContent('package.json', '"@loopback/openapi-v3"');
@@ -339,10 +331,6 @@ module.exports = function (projGenerator, props, projectType) {
         assert.fileContent(
           'package.json',
           `"@loopback/core": "${deps['@loopback/core']}"`,
-        );
-        assert.fileContent(
-          'package.json',
-          `"@loopback/context": "${deps['@loopback/context']}"`,
         );
         assert.fileContent('package.json', `"rimraf": "${deps['rimraf']}"`);
         assert.noFileContent([

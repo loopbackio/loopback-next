@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Constructor} from '@loopback/context';
+import {Constructor} from '@loopback/core';
 import debugFactory from 'debug';
 import path from 'path';
 import {promisify} from 'util';

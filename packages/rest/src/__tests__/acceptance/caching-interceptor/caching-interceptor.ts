@@ -9,7 +9,7 @@ import {
   InvocationContext,
   Provider,
   ValueOrPromise,
-} from '@loopback/context';
+} from '@loopback/core';
 import {Request, RestBindings, RouteSource} from '../../..';
 
 /**

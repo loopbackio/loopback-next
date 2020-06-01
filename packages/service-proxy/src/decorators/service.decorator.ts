@@ -9,7 +9,7 @@ import {
   Context,
   Injection,
   InjectionMetadata,
-} from '@loopback/context';
+} from '@loopback/core';
 import {getService, juggler} from '..';
 
 /**

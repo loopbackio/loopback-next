@@ -3,8 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {config, Getter} from '@loopback/context';
-import {extensionPoint, extensions} from '@loopback/core';
+import {config, Getter, extensionPoint, extensions} from '@loopback/core';
 import chalk from 'chalk';
 import {Greeter, GREETER_EXTENSION_POINT_NAME} from './types';
 

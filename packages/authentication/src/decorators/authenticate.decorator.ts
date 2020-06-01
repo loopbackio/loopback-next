@@ -9,7 +9,7 @@ import {
   DecoratorFactory,
   MetadataInspector,
   MethodDecoratorFactory,
-} from '@loopback/context';
+} from '@loopback/core';
 import {
   AUTHENTICATION_METADATA_CLASS_KEY,
   AUTHENTICATION_METADATA_KEY,

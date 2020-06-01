@@ -3,8 +3,13 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {config, Constructor, inject, Provider} from '@loopback/context';
-import {CoreBindings} from '@loopback/core';
+import {
+  config,
+  Constructor,
+  inject,
+  Provider,
+  CoreBindings,
+} from '@loopback/core';
 import {getAuthenticateMetadata} from '../decorators';
 import {AuthenticationBindings} from '../keys';
 import {AuthenticationMetadata, AuthenticationOptions} from '../types';

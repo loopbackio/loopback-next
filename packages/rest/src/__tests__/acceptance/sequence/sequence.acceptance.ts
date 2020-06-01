@@ -3,8 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {inject} from '@loopback/context';
-import {Application} from '@loopback/core';
+import {inject, Application} from '@loopback/core';
 import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
 import {api} from '@loopback/openapi-v3';
 import {Client, createClientForHandler} from '@loopback/testlab';

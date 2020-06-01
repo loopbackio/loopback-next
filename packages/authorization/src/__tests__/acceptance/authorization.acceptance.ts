@@ -3,8 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Context, invokeMethod, Provider} from '@loopback/context';
-import {Application} from '@loopback/core';
+import {Context, invokeMethod, Provider, Application} from '@loopback/core';
 import {SecurityBindings, securityId} from '@loopback/security';
 import {expect} from '@loopback/testlab';
 import {

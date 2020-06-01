@@ -3,8 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {inject} from '@loopback/context';
-import {Application, CoreBindings} from '@loopback/core';
+import {inject, Application, CoreBindings} from '@loopback/core';
 import debugModule from 'debug';
 import {BootBindings} from '../keys';
 import {Booter} from '../types';

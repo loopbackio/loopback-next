@@ -155,7 +155,7 @@ export type RelationMetadata =
   | RelationDefinitionBase;
 
 // Re-export Getter so that users don't have to import from @loopback/context
-export {Getter} from '@loopback/context';
+export {Getter} from '@loopback/core';
 
 /**
  * @returns An array of resolved values, the items must be ordered in the same

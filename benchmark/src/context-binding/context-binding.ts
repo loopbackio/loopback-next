@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Context, inject, Provider, ValueFactory} from '@loopback/context';
+import {Context, inject, Provider, ValueFactory} from '@loopback/core';
 import Benchmark from 'benchmark';
 
 /**

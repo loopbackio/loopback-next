@@ -8,7 +8,7 @@ import {
   AuthenticationBindings,
   AuthenticationComponent,
 } from '@loopback/authentication';
-import {inject} from '@loopback/context';
+import {inject} from '@loopback/core';
 import {
   FindRoute,
   InvokeMethod,

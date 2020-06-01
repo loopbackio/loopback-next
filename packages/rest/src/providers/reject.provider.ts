@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {LogError, Reject, HandlerContext} from '../types';
-import {inject, Provider} from '@loopback/context';
+import {inject, Provider} from '@loopback/core';
 import {HttpError} from 'http-errors';
 import {RestBindings} from '../keys';
 import {writeErrorToResponse, ErrorWriterOptions} from 'strong-error-handler';

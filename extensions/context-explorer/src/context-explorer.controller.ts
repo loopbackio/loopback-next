@@ -4,13 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import {
-  config,
-  Constructor,
-  Context,
-  inject,
-  JSONObject,
-} from '@loopback/context';
+import {config, Constructor, Context, inject, JSONObject} from '@loopback/core';
 import {
   api,
   get,

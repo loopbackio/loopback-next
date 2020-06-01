@@ -11,10 +11,7 @@
   ],
   "references": [
     {
-      "path": "../context/tsconfig.json"
-    },
-    {
-      "path": "../metadata/tsconfig.json"
+      "path": "../core/tsconfig.json"
     },
     {
       "path": "../repository/tsconfig.json"

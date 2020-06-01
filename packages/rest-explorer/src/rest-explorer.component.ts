@@ -3,9 +3,15 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import {bind, config, ContextTags, inject} from '@loopback/context';
-import {Component, CoreBindings} from '@loopback/core';
+import {
+  bind,
+  Component,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  config,
+  ContextTags,
+  CoreBindings,
+  inject,
+} from '@loopback/core';
 import {createControllerFactoryForClass, RestApplication} from '@loopback/rest';
 import {ExplorerController} from './rest-explorer.controller';
 import {RestExplorerBindings} from './rest-explorer.keys';

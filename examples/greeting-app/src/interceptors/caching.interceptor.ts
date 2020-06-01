@@ -12,7 +12,7 @@ import {
   InvocationResult,
   Provider,
   ValueOrPromise,
-} from '@loopback/context';
+} from '@loopback/core';
 import {RestBindings} from '@loopback/rest';
 import debugFactory from 'debug';
 import {CachingService} from '../caching-service';

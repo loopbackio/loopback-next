@@ -7,7 +7,7 @@ import {AuthenticationStrategy, asAuthStrategy} from '@loopback/authentication';
 import {RedirectRoute, RequestWithSession, HttpErrors} from '@loopback/rest';
 import {UserProfile} from '@loopback/security';
 import {User} from '../models';
-import {bind} from '@loopback/context';
+import {bind} from '@loopback/core';
 import {repository} from '@loopback/repository';
 import {UserRepository} from '../repositories';
 import {mapProfile} from './types';

@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {MetadataInspector} from '@loopback/context';
+import {MetadataInspector} from '@loopback/core';
 import {property} from '../../decorators/model.decorator';
 import {Entity, EntityResolver, PropertyDefinition} from '../../model';
 import {relation} from '../relation.decorator';

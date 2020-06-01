@@ -9,7 +9,7 @@ import {
   config,
   ContextTags,
   Provider,
-} from '@loopback/context';
+} from '@loopback/core';
 import multer from 'multer';
 import {FILE_UPLOAD_SERVICE} from '../keys';
 import {FileUploadHandler} from '../types';

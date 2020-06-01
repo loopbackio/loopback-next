@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Context, instantiateClass} from '@loopback/context';
+import {Context, instantiateClass} from '@loopback/core';
 import {Request} from '@loopback/rest';
 import {securityId, UserProfile} from '@loopback/security';
 import {expect} from '@loopback/testlab';

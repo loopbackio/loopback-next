@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {asGlobalInterceptor} from '@loopback/context';
+import {asGlobalInterceptor} from '@loopback/core';
 import {anOperationSpec} from '@loopback/openapi-spec-builder';
 import {get, param} from '@loopback/openapi-v3';
 import {

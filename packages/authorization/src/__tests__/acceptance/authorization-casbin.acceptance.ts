@@ -3,8 +3,13 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Context, inject, invokeMethod, Provider} from '@loopback/context';
-import {Application} from '@loopback/core';
+import {
+  Context,
+  inject,
+  invokeMethod,
+  Provider,
+  Application,
+} from '@loopback/core';
 import {SecurityBindings, securityId, UserProfile} from '@loopback/security';
 import {expect} from '@loopback/testlab';
 import * as casbin from 'casbin';

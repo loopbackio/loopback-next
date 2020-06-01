@@ -3,8 +3,14 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {BindingScope, Getter, inject} from '@loopback/context';
-import {extensionPoint, extensions, Provider} from '@loopback/core';
+import {
+  BindingScope,
+  Getter,
+  inject,
+  extensionPoint,
+  extensions,
+  Provider,
+} from '@loopback/core';
 import {AuthenticationBindings} from '../keys';
 import {
   AuthenticationMetadata,

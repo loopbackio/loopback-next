@@ -4,13 +4,14 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
+  ApplicationMetadata,
   bind,
   BindingScope,
+  CoreBindings,
   inject,
   JSONObject,
   JSONValue,
-} from '@loopback/context';
-import {ApplicationMetadata, CoreBindings} from '@loopback/core';
+} from '@loopback/core';
 import {
   asSpecEnhancer,
   ContactObject,

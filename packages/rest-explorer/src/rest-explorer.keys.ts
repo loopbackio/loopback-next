@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {BindingAddress, BindingKey} from '@loopback/context';
+import {BindingAddress, BindingKey} from '@loopback/core';
 import {RestExplorerComponent} from './rest-explorer.component';
 import {RestExplorerConfig} from './rest-explorer.types';
 

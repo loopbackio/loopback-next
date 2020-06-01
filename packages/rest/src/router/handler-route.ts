@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Context, invokeMethodWithInterceptors} from '@loopback/context';
+import {Context, invokeMethodWithInterceptors} from '@loopback/core';
 import {OperationObject} from '@loopback/openapi-v3';
 import {RestBindings} from '../keys';
 import {OperationArgs, OperationRetval} from '../types';

@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 const debug = require('debug')('loopback:rest:sequence');
-import {inject, ValueOrPromise} from '@loopback/context';
+import {inject, ValueOrPromise} from '@loopback/core';
 import {InvokeMiddleware} from '@loopback/express';
 import {RestBindings} from './keys';
 import {RequestContext} from './request-context';

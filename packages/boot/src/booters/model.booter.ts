@@ -3,8 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {config, Constructor, inject} from '@loopback/context';
-import {CoreBindings} from '@loopback/core';
+import {config, Constructor, inject, CoreBindings} from '@loopback/core';
 import {
   ApplicationWithRepositories,
   ModelMetadataHelper,

@@ -11,7 +11,7 @@ import {
   MetadataInspector,
   MetadataMap,
   MethodDecoratorFactory,
-} from '@loopback/context';
+} from '@loopback/core';
 import {
   AUTHENTICATED,
   AuthorizationMetadata,

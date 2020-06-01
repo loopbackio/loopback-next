@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Binding, intercept, InterceptorOrKey} from '@loopback/context';
+import {Binding, intercept, InterceptorOrKey} from '@loopback/core';
 import {post, requestBody} from '@loopback/openapi-v3';
 import {
   Client,

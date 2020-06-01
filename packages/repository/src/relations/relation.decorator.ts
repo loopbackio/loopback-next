@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {PropertyDecoratorFactory} from '@loopback/context';
+import {PropertyDecoratorFactory} from '@loopback/core';
 import {buildModelDefinition} from '../decorators';
 import {Model, RelationDefinitionMap} from '../model';
 import {RelationType} from './relation.types';

@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {AuthenticationStrategy, TokenService} from '@loopback/authentication';
-import {inject} from '@loopback/context';
+import {inject} from '@loopback/core';
 import {HttpErrors, Request} from '@loopback/rest';
 import {UserProfile} from '@loopback/security';
 import {TokenServiceBindings} from '../keys';

@@ -25,9 +25,6 @@
       "path": "../../packages/boot/tsconfig.json"
     },
     {
-      "path": "../../packages/context/tsconfig.json"
-    },
-    {
       "path": "../../packages/core/tsconfig.json"
     },
     {

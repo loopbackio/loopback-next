@@ -12,9 +12,6 @@
   ],
   "references": [
     {
-      "path": "../context/tsconfig.json"
-    },
-    {
       "path": "../core/tsconfig.json"
     },
     {

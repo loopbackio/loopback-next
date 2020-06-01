@@ -41,7 +41,6 @@
   "dependencies": {
     "@loopback/boot": "^2.3.2",
     "@loopback/booter-lb3app": "^2.2.2",
-    "@loopback/context": "^3.8.2",
     "@loopback/core": "^2.7.1",
     "@loopback/repository": "^2.6.0",
     "@loopback/rest": "^5.1.0",

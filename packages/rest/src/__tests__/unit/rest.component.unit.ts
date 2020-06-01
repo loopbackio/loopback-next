@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {BoundValue, Context, inject, Provider} from '@loopback/context';
+import {BoundValue, Context, inject, Provider} from '@loopback/core';
 import {
   Application,
   Component,
