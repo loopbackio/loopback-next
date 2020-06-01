@@ -9,6 +9,7 @@ const {updateFileHeaders} = require('./header');
 const {spdxLicenseList, updateLicense} = require('./license');
 const g = require('../../lib/globalize');
 const _ = require('lodash');
+const chalk = require('chalk');
 const autocomplete = require('inquirer-autocomplete-prompt');
 
 module.exports = class CopyrightGenerator extends BaseGenerator {
@@ -19,7 +20,7 @@ module.exports = class CopyrightGenerator extends BaseGenerator {
     for (const id in spdxLicenseList) {
       const license = spdxLicenseList[id];
       if (
-        ['mit', 'apache-2.0', 'isc', 'artistic-2.0'].includes(
+        ['mit', 'apache-2.0', 'isc', 'artistic-2.0', 'custom'].includes(
           id.toLocaleLowerCase(),
         )
       ) {
@@ -88,7 +89,7 @@ module.exports = class CopyrightGenerator extends BaseGenerator {
     }
     const owner =
       this.options.copyrightOwner || _.get(pkg, 'copyright.owner', author);
-    const license = this.options.license || _.get(pkg, 'license');
+    let license = this.options.license || _.get(pkg, 'license');
     const licenses = [...this.licenseList];
     if (license != null) {
       // find the matching license by id and move it to the front of the list
@@ -135,9 +136,52 @@ module.exports = class CopyrightGenerator extends BaseGenerator {
     const excludePatterns = exclude.split(',').filter(p => p !== '');
     excludePatterns.push('**/node_modules/**/*');
 
+    const copyrightOwner = answers.owner || this.options.owner;
+    license = answers.license || this.options.license;
+
+    let customLicenseLines = [];
+    if (
+      (license && license.id === 'CUSTOM') ||
+      license === 'custom' ||
+      license === 'CUSTOM'
+    ) {
+      this.log(
+        g.f(
+          'Please provide lines of text for the custom copyright/license headers.',
+        ),
+      );
+      const example = ` Copyright <%= owner %> <%= years %>. All Rights Reserved.
+ Node module: <%= name %>',
+ This file is licensed under the <%= license %>.
+ License text available at <%= url %>`;
+      this.log(
+        chalk.green(
+          `Example (supported variables: owner/years/name):
+${example}`,
+        ),
+      );
+
+      answers = await this.prompt([
+        {
+          type: 'editor',
+          name: 'customLicenseLines',
+          message: g.f('Custom license lines:'),
+          default: example,
+        },
+      ]);
+    }
+
+    answers = answers || {};
+    if (answers.customLicenseLines) {
+      customLicenseLines = answers.customLicenseLines;
+      this.log(customLicenseLines);
+      customLicenseLines = customLicenseLines.match(/[^\r\n]+/g);
+    }
+
     this.headerOptions = {
-      copyrightOwner: answers.owner || this.options.owner,
-      license: answers.license || this.options.license,
+      copyrightOwner,
+      customLicenseLines,
+      license,
       log: this.log,
       gitOnly: this.options.gitOnly,
       fs: this.fs,

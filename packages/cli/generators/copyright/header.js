@@ -17,28 +17,42 @@ const debug = require('debug')('loopback:cli:copyright');
 
 // Components of the copyright header.
 const COPYRIGHT = [
-  'Copyright <%= owner %> <%= years %>. All Rights Reserved.',
-  'Node module: <%= name %>',
+  ' Copyright <%= owner %> <%= years %>. All Rights Reserved.',
+  ' Node module: <%= name %>',
 ];
 const LICENSE = [
-  'This file is licensed under the <%= license %>.',
-  'License text available at <%= url %>',
+  ' This file is licensed under the <%= license %>.',
+  ' License text available at <%= url %>',
 ];
-const CUSTOM_LICENSE = [];
 
 // Compiled templates for generating copyright headers
-const UNLICENSED = _.template(COPYRIGHT.join('\n'));
 const LICENSED = _.template(COPYRIGHT.concat(LICENSE).join('\n'));
-let CUSTOM = UNLICENSED;
-if (CUSTOM_LICENSE.length) {
-  CUSTOM = _.template(COPYRIGHT.concat(CUSTOM_LICENSE).join('\n'));
+
+function getCustomTemplate(customLicenseLines = []) {
+  if (typeof customLicenseLines === 'string') {
+    customLicenseLines = [customLicenseLines];
+  }
+  const UNLICENSED = _.template(COPYRIGHT.join('\n'));
+  let CUSTOM = UNLICENSED;
+  if (customLicenseLines.length) {
+    let copyrightLines = COPYRIGHT;
+    if (customLicenseLines.some(line => line.includes('Copyright'))) {
+      copyrightLines = [];
+    }
+    CUSTOM = _.template(copyrightLines.concat(customLicenseLines).join('\n'));
+  }
+  return CUSTOM;
 }
 
 // Patterns for matching previously generated copyright headers
 const BLANK = /^\s*$/;
-const ANY = COPYRIGHT.concat(LICENSE, CUSTOM_LICENSE).map(
-  l => new RegExp(l.replace(/<%[^>]+%>/g, '.*')),
-);
+
+function getHeaderRegEx(customLicenseLines) {
+  const ANY = COPYRIGHT.concat(LICENSE, customLicenseLines).map(
+    l => new RegExp(l.replace(/<%[^>]+%>/g, '.*')),
+  );
+  return ANY;
+}
 
 /**
  * Build header for a file
@@ -50,7 +64,7 @@ async function buildHeader(file, pkg, options) {
   const license =
     options.license || _.get(pkg, 'license') || options.defaultLicense;
   const years = await getYears(file);
-  const params = expandLicense(license);
+  const params = expandLicense(license, options.customLicenseLines);
   params.years = years.join(',');
   const owner = getCopyrightOwner(pkg, options);
 
@@ -85,11 +99,11 @@ function getCopyrightOwner(pkg, options) {
  * Build the license template params
  * @param {string|object} spdxLicense - SPDX license id or object
  */
-function expandLicense(spdxLicense) {
+function expandLicense(spdxLicense, customLicenseLines = []) {
   if (typeof spdxLicense === 'string') {
     spdxLicense = spdxLicenseList[spdxLicense.toLowerCase()];
   }
-  if (spdxLicense) {
+  if (spdxLicense && spdxLicense.id !== 'CUSTOM') {
     return {
       template: LICENSED,
       license: spdxLicense.name,
@@ -97,7 +111,7 @@ function expandLicense(spdxLicense) {
     };
   }
   return {
-    template: CUSTOM,
+    template: getCustomTemplate(customLicenseLines),
     license: spdxLicense,
   };
 }
@@ -110,7 +124,7 @@ function expandLicense(spdxLicense) {
  */
 async function formatHeader(file, pkg, options) {
   const header = await buildHeader(file, pkg, options);
-  return header.split('\n').map(line => `// ${line}`);
+  return header.split('\n').map(line => `//${line}`);
 }
 
 /**
@@ -124,7 +138,11 @@ async function ensureHeader(file, pkg, options = {}) {
   const header = await formatHeader(file, pkg, options);
   debug('Header: %s', header);
   const current = await fs.read(file, 'utf8');
-  const content = mergeHeaderWithContent(header, current);
+  const content = mergeHeaderWithContent(
+    header,
+    current,
+    options.customLicenseLines,
+  );
   if (!options.dryRun) {
     await fs.write(file, content, 'utf8');
   } else {
@@ -138,24 +156,26 @@ async function ensureHeader(file, pkg, options = {}) {
  * Merge header with file content
  * @param {string} header - Copyright header
  * @param {string} content - File content
+ * @param {string[]} customLicenseLines - Custom license lines
  */
-function mergeHeaderWithContent(header, content) {
+function mergeHeaderWithContent(header, content, customLicenseLines) {
   const lineEnding = /\r\n/gm.test(content) ? '\r\n' : '\n';
   const preamble = [];
   content = content.split(lineEnding);
   if (/^#!/.test(content[0])) {
     preamble.push(content.shift());
   }
+  const patterns = getHeaderRegEx(customLicenseLines);
   // replace any existing copyright header lines and collapse blank lines down
   // to just one.
-  while (headerOrBlankLine(content[0])) {
+  while (headerOrBlankLine(content[0], patterns)) {
     content.shift();
   }
   return [].concat(preamble, header, '', content).join(lineEnding);
 }
 
-function headerOrBlankLine(line) {
-  return BLANK.test(line) || ANY.some(pat => pat.test(line));
+function headerOrBlankLine(line, patterns) {
+  return BLANK.test(line) || patterns.some(pat => pat.test(line));
 }
 
 /**

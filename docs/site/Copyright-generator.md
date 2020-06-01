@@ -58,6 +58,18 @@ The command prompts you for:
 2. The license name. The default value is read from `license` in the
    `package.json`.
 
+   If the license name is `CUSTOM`, you'll be prompted to provide a custom
+   template. For example:
+
+   ```
+   =============================================================================
+   Licensed Materials - Property of <%= owner %>
+   (C) Copyright <%= owner %> <%= years %>
+   US Government Users Restricted Rights - Use, duplication or disclosure
+   restricted by GSA ADP Schedule Contract with <%= owner %>.
+   =============================================================================
+   ```
+
 The default owner is `IBM Corp.` and license is `MIT` with the following
 `package.json`.
 
