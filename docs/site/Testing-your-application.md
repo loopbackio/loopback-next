@@ -144,7 +144,7 @@ belongs to Category, include it in the repository call, for example:
 {% include code-caption.html content="src/__tests__/helpers/database.helpers.ts" %}
 
 ```ts
-import {Getter} from '@loopback/context';
+import {Getter} from '@loopback/core';
 import {ProductRepository, CategoryRepository} from '../../repositories';
 import {testdb} from '../fixtures/datasources/testdb.datasource';
 

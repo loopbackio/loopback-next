@@ -71,7 +71,7 @@ work with the `MiddlewareContext` - a wrapper object for `request` and
 
 ```ts
 import {MiddlewareContext} from '@loopback/express';
-import {Next, ValueOrPromise, InvocationResult} from '@loopback/context';
+import {Next, ValueOrPromise, InvocationResult} from '@loopback/core';
 
 (context: MiddlewareContext, next: Next) => ValueOrPromise<InvocationResult>;
 ```

@@ -34,7 +34,7 @@ To register artifacts, we first create an instance of `Context` and use `bind`
 to add artifacts to the registry as bindings.
 
 ```ts
-import {Context} from '@loopback/context';
+import {Context} from '@loopback/core';
 import {GreetingController} from './controllers';
 import {CACHING_SERVICE, GREETING_SERVICE} from './keys';
 import {CachingService} from './caching-service';

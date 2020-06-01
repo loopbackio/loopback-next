@@ -46,7 +46,7 @@ that the service provider can be injected into the consumer class. The code
 snippet below shows the usage of `@inject` for dependency injection.
 
 ```ts
-import {inject, Context} from '@loopback/context';
+import {inject, Context} from '@loopback/core';
 
 /**
  * A UserController implementation that depends on UserRepository and PasswordHasher

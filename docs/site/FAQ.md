@@ -135,7 +135,7 @@ headers). This can be accomplished by injecting the `Response` object into the
 controller:
 
 ```ts
-import {inject} from '@loopback/context';
+import {inject} from '@loopback/core';
 import {get, Response, RestBindings} from '@loopback/rest';
 
 export class PingController {

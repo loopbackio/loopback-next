@@ -53,7 +53,7 @@ Example showing a component exporting a `/ping` endpoint at a configurable base
 path:
 
 ```ts
-import {config} from '@loopback/context';
+import {config} from '@loopback/core';
 import {Component} from '@loopback/core';
 import {RestApplication} from '@loopback/rest';
 import {MyComponentBindings} from './my-component.keys.ts';
@@ -99,7 +99,7 @@ The example below shows a component that always contributed a `ping` endpoint
 and sometimes contributes a `stats` endpoint, depending on the configuration.
 
 ```ts
-import {bind, config, ContextTags} from '@loopback/context';
+import {bind, config, ContextTags} from '@loopback/core';
 import {MyComponentBindings} from './my-component.keys.ts';
 import {PingController, StatsController} from './controllers';
 

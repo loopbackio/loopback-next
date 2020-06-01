@@ -37,12 +37,25 @@ can be chained using the `parent` to form a hierarchy. For example, the code
 below creates a chain of three contexts: `reqCtx -> serverCtx -> rootCtx`.
 
 ```ts
-import {Context} from '@loopback/context';
+import {Context} from '@loopback/core';
 
 const rootCtx = new Context('root-ctx'); // No parent
 const serverCtx = new Context(rootCtx, 'server-ctx'); // rootCtx as the parent
 const reqCtx = new Context(serverCtx); // No explicit name, a UUID will be generated
 ```
+
+{% include note.html content="The `@loopback/core` package re-exports all public
+APIs of `@loopback/context`. For consistency, we recommend the usage of
+`@loopback/core` for imports in LoopBack modules and applications unless they
+depend on `@loopback/context` explicitly. The two statements below are
+equivalent:
+
+```ts
+import {inject} from '@loopback/context';
+import {inject} from '@loopback/core';
+```
+
+" %}
 
 LoopBack's context system allows an unlimited amount of Context instances, each
 of which may have a parent Context.
@@ -180,8 +193,7 @@ However, when using classes, LoopBack provides a better way to get at stuff in
 the context via the `@inject` decorator:
 
 ```ts
-import {inject} from '@loopback/context';
-import {Application} from '@loopback/core';
+import {inject, Application} from '@loopback/core';
 
 const app = new Application();
 app.bind('defaultName').to('John');
@@ -489,7 +501,7 @@ be used to watch a list of bindings matching certain criteria depicted by a
 matched bindings.
 
 ```ts
-import {Context, ContextView} from '@loopback/context';
+import {Context, ContextView} from '@loopback/core';
 
 // Set up a context chain
 const appCtx = new Context('app');

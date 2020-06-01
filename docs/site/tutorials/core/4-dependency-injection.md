@@ -33,7 +33,7 @@ locating the dependent artifacts. For example:
 2. Use `ServiceLocator` pattern
 
    ```ts
-   import {Context} from '@loopback/context';
+   import {Context} from '@loopback/core';
    import {EnglishGreeter, ChineseGreeter} from './greeters';
    export class GreetingService {
      private chineseGreeter: ChineseGreeter;
@@ -58,7 +58,7 @@ locating the dependent artifacts. For example:
    This technique is being used commonly within the LoopBack framework.
 
    ```ts
-   import {inject} from '@loopback/context';
+   import {inject} from '@loopback/core';
    import {LifeCycleObserver} from '@loopback/core';
    import {CachingService} from '../caching-service';
    import {CACHING_SERVICE} from '../keys';

@@ -68,7 +68,7 @@ decorators and functions are provided to ensure consistency and convention.
 1. Inject a getter function for extensions
 
    ```ts
-   import {Getter} from '@loopback/context';
+   import {Getter} from '@loopback/core';
    import {extensionPoint, extensions} from '@loopback/core';
 
    @extensionPoint('greeters')
@@ -81,7 +81,7 @@ decorators and functions are provided to ensure consistency and convention.
 2. Inject a context view for extensions
 
    ```ts
-   import {ContextView} from '@loopback/context';
+   import {ContextView} from '@loopback/core';
    import {extensionPoint, extensions} from '@loopback/core';
 
    @extensionPoint('greeters')

@@ -32,6 +32,7 @@ There are a few ways to create a binding:
 - Use `Binding` constructor:
 
   ```ts
+  import {Context, Binding} from '@loopback/core';
   const context = new Context();
   const binding = new Binding('my-key');
   ctx.add(binding);
@@ -40,6 +41,7 @@ There are a few ways to create a binding:
 - Use `Binding.bind()`
 
   ```ts
+  import {Context, Binding} from '@loopback/core';
   const context = new Context();
   const binding = Binding.bind('my-key');
   ctx.add(binding);
@@ -48,9 +50,23 @@ There are a few ways to create a binding:
 - Use `context.bind()`
 
   ```ts
+  import {Context, Binding} from '@loopback/core';
   const context = new Context();
   context.bind('my-key');
   ```
+
+  {% include note.html content="The `@loopback/core` package re-exports all
+  public APIs of `@loopback/context`. For consistency, we recommend the usage of
+  `@loopback/core` for imports in LoopBack modules and applications unless they
+  depend on `@loopback/context` explicitly. The two statements below are
+  equivalent:
+
+  ```ts
+  import {inject} from '@loopback/context';
+  import {inject} from '@loopback/core';
+  ```
+
+  " %}
 
 ## How to set up a binding?
 
@@ -87,7 +103,7 @@ The factory function can receive extra information about the context, binding,
 and resolution options.
 
 ```ts
-import {ValueFactory} from '@loopback/context';
+import {ValueFactory} from '@loopback/core';
 
 // The factory function now have access extra metadata about the resolution
 const factory: ValueFactory<string> = resolutionCtx => {
@@ -113,7 +129,7 @@ An advanced form of value factory is a class that has a static `value` method
 that allows parameter injection.
 
 ```ts
-import {inject} from '@loopback/context';
+import {inject} from '@loopback/core';
 
 class GreetingProvider {
   static value(@inject('user') user: string) {
@@ -458,7 +474,7 @@ match/find bindings by tag. The search criteria can be one of the followings:
      filterByTag,
      includesTagValue, // Match tag value as an array that includes the item
      TagValueMatcher,
-   } from '@loopback/context';
+   } from '@loopback/core';
    // Match a binding with a named service
    ctx.find(filterByTag({name: ANY_TAG_VALUE, service: 'service'}));
 
@@ -504,7 +520,7 @@ When the class is bound, these attributes are honored to create a binding. You
 can use `@bind` decorator to configure how to bind a class.
 
 ```ts
-import {bind, BindingScope} from '@loopback/context';
+import {bind, BindingScope} from '@loopback/core';
 
 // @bind() accepts scope and tags
 @bind({
@@ -538,7 +554,7 @@ export class YourController {}
 Then a binding can be created by inspecting the class,
 
 ```ts
-import {createBindingFromClass} from '@loopback/context';
+import {createBindingFromClass} from '@loopback/core';
 
 const ctx = new Context();
 const binding = createBindingFromClass(MyService);

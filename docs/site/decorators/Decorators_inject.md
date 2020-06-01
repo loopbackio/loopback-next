@@ -55,7 +55,7 @@ WidgetController:
 {% include code-caption.html content="src/controllers/widget.controller.ts" %}
 
 ```ts
-import {inject} from '@loopback/context';
+import {inject} from '@loopback/core';
 
 export class WidgetController {
   // injection for property
@@ -75,6 +75,8 @@ array of values can be injected. If the target type is not `Array`, an error
 will be thrown.
 
 ```ts
+import {inject} from '@loopback/core';
+
 class MyControllerWithValues {
   constructor(
     @inject(binding => binding.tagNames.includes('foo'))
@@ -87,6 +89,8 @@ To sort matched bindings found by the binding filter function, `@inject` honors
 `bindingComparator` in `metadata`:
 
 ```ts
+import {inject} from '@loopback/core';
+
 class MyControllerWithValues {
   constructor(
     @inject(binding => binding.tagNames.includes('foo'), {
@@ -100,6 +104,19 @@ class MyControllerWithValues {
 }
 ```
 
+{% include note.html content="The `@loopback/core` package re-exports all public
+APIs of `@loopback/context`. For consistency, we recommend the usage of
+`@loopback/core` for imports in LoopBack modules and applications unless they
+depend on `@loopback/context` explicitly. The two statements below are
+equivalent:
+
+```ts
+import {inject} from '@loopback/context';
+import {inject} from '@loopback/core';
+```
+
+" %}
+
 A few variants of `@inject` are provided to declare special forms of
 dependencies.
 
@@ -111,7 +128,7 @@ value of the key.
 Syntax: `@inject.getter(bindingSelector: BindingSelector)`.
 
 ```ts
-import {inject, Getter} from '@loopback/context';
+import {inject, Getter} from '@loopback/core';
 import {UserProfile} from '@loopback/authentication';
 import {get} from '@loopback/rest';
 
@@ -276,7 +293,7 @@ console.log(store.locations); // ['San Francisco', 'San Jose']
 a filter function.
 
 ```ts
-import {inject} from '@loopback/context';
+import {inject} from '@loopback/core';
 import {DataSource} from '@loopback/repository';
 
 export class DataSourceTracker {
