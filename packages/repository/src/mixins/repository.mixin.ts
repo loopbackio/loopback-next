@@ -44,6 +44,12 @@ import * as loopbackCore from '@loopback/core';
  * Please note: the members in the mixin function are documented in a dummy class
  * called <a href="#RepositoryMixinDoc">RepositoryMixinDoc</a>
  *
+ * @param superClass - Application class
+ * @returns A new class that extends the super class with repository related
+ * methods
+ *
+ * @typeParam T - Type of the application class as the target for the mixin
+ *
  */
 export function RepositoryMixin<T extends MixinTarget<Application>>(
   superClass: T,
