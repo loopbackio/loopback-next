@@ -274,6 +274,9 @@ export function transformValueOrPromise<T, V>(
 
 /**
  * A utility to generate uuid v4
+ *
+ * @deprecated Use [uuid](https://www.npmjs.com/package/uuid) or
+ * [hyperid](https://www.npmjs.com/package/hyperid) instead.
  */
 export function uuid() {
   return uuidv4();
@@ -281,5 +284,7 @@ export function uuid() {
 
 /**
  * A regular expression for testing uuid v4 PATTERN
+ * @deprecated This pattern is an internal helper used by unit-tests, we are no
+ * longer using it.
  */
 export const UUID_PATTERN = /[0-9A-F]{8}-[0-9A-F]{4}-[4][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}/i;

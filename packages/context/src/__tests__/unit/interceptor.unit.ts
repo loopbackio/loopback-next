@@ -20,7 +20,7 @@ import {
   Provider,
 } from '../..';
 import {registerInterceptor} from '../../interceptor';
-import {UUID_PATTERN} from '../../value-promise';
+import {UNIQUE_ID_PATTERN} from '../../unique-id';
 
 describe('mergeInterceptors', () => {
   it('removes duplicate entries from the spec', () => {
@@ -268,7 +268,7 @@ describe('globalInterceptors', () => {
   it('generates binding key for the interceptor function', () => {
     const binding = registerInterceptor(ctx, () => undefined);
     expect(binding.key).to.match(
-      new RegExp(`interceptors.${UUID_PATTERN.source}`, 'i'),
+      new RegExp(`interceptors.${UNIQUE_ID_PATTERN.source}`, 'i'),
     );
   });
 
