@@ -16,7 +16,7 @@
     "@commitlint/travis-cli": "^8.3.5",
     "@types/mocha": "^7.0.2",
     "@typescript-eslint/eslint-plugin": "^3.0.2",
-    "@typescript-eslint/parser": "^3.0.2",
+    "@typescript-eslint/parser": "^3.1.0",
     "coveralls": "^3.1.0",
     "cz-conventional-changelog": "^3.2.0",
     "eslint": "^7.1.0",
