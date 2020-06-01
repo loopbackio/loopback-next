@@ -13,7 +13,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@typescript-eslint/eslint-plugin": "^3.0.2",
+    "@typescript-eslint/eslint-plugin": "^3.1.0",
     "@typescript-eslint/parser": "^3.1.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-eslint-plugin": "^2.2.1",
