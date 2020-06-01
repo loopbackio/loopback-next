@@ -31,12 +31,12 @@ import {
   ResolutionOptionsOrSession,
   ResolutionSession,
 } from './resolution-session';
+import {generateUniqueId} from './unique-id';
 import {
   BoundValue,
   Constructor,
   getDeepProperty,
   isPromiseLike,
-  uuid,
   ValueOrPromise,
 } from './value-promise';
 
@@ -108,8 +108,8 @@ export class Context extends EventEmitter {
    * const reqCtx = new Context(appCtx, 'request');
    * ```
    * @param _parent - The optional parent context
-   * @param name - Name of the context, if not provided, a `uuid` will be
-   * generated as the name
+   * @param name - Name of the context. If not provided, a unique identifier
+   * will be generated as the name.
    */
   constructor(_parent?: Context | string, name?: string) {
     super();
@@ -151,7 +151,7 @@ export class Context extends EventEmitter {
   }
 
   private generateName() {
-    const id = uuid();
+    const id = generateUniqueId();
     if (this.constructor === Context) return id;
     return `${this.constructor.name}-${id}`;
   }

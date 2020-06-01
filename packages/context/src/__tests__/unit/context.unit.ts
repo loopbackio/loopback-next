@@ -17,7 +17,7 @@ import {
   isPromiseLike,
   Provider,
 } from '../..';
-import {UUID_PATTERN} from '../../value-promise';
+import {UNIQUE_ID_PATTERN} from '../../unique-id';
 
 /**
  * Create a subclass of context so that we can access parents and registry
@@ -46,13 +46,13 @@ class TestContext extends Context {
 describe('Context constructor', () => {
   it('generates uuid name if not provided', () => {
     const ctx = new Context();
-    expect(ctx.name).to.match(UUID_PATTERN);
+    expect(ctx.name).to.match(new RegExp(`^${UNIQUE_ID_PATTERN.source}$`));
   });
 
   it('adds subclass name as the prefix', () => {
     const ctx = new TestContext();
     expect(ctx.name).to.match(
-      new RegExp(`^TestContext-${UUID_PATTERN.source}$`, 'i'),
+      new RegExp(`^TestContext-${UNIQUE_ID_PATTERN.source}$`, 'i'),
     );
   });
 

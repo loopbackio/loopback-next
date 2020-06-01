@@ -32,16 +32,17 @@ permalink: /doc/en/lb4/Context.html
 ## How to create a context?
 
 A context can be created with an optional parent and an optional name. If the
-name is not provided, a UUID will be generated as the value. Context instances
-can be chained using the `parent` to form a hierarchy. For example, the code
-below creates a chain of three contexts: `reqCtx -> serverCtx -> rootCtx`.
+name is not provided, a unique identifier will be generated as the value.
+Context instances can be chained using the `parent` to form a hierarchy. For
+example, the code below creates a chain of three contexts:
+`reqCtx -> serverCtx -> rootCtx`.
 
 ```ts
 import {Context} from '@loopback/core';
 
 const rootCtx = new Context('root-ctx'); // No parent
 const serverCtx = new Context(rootCtx, 'server-ctx'); // rootCtx as the parent
-const reqCtx = new Context(serverCtx); // No explicit name, a UUID will be generated
+const reqCtx = new Context(serverCtx); // No explicit name, a unique id will be generated
 ```
 
 {% include note.html content="The `@loopback/core` package re-exports all public
