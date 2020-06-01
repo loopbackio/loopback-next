@@ -440,7 +440,7 @@ export class MyController {
 The `x-ts-type` can be used for array and object properties too:
 
 {% include note.html content="Arrays should be defined with
-[`@requestBody.array`](#@requestBody.array) instead."}
+[`@requestBody.array`](#@requestBody.array) instead." %}
 
 ```ts
 const schemaWithArrayOfMyModel = {

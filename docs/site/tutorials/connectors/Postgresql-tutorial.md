@@ -16,8 +16,8 @@ LoopBack 4 applications with
 
 Before starting this tutorial, make sure you have the following installed:
 
-- Node
-- LoopBack CLI tools; see
+- Node.js version 10 or higher
+- LoopBack 4 CLI; see
   [Getting Started with LoopBack 4](../../Getting-started.md)
 
 ## Tutorial - PostgreSQL
@@ -50,6 +50,8 @@ le all, <i> to invert selection)
 Let's create a simple model `User`. To keep the tutorial short, the prompts of
 `lb4 model` are skipped:
 
+{% include code-caption.html content="user.model.ts" %}
+
 ```ts
 // imports
 @model()
@@ -59,7 +61,7 @@ export class User extends Entity {
     id: true,
     generated: true,
   })
-  id?: number;
+  id: number;
 
   @property({
     type: 'string',
@@ -80,11 +82,11 @@ export class User extends Entity {
 
 ### 3. Create a data source
 
-Next, let's create a dataSource `db` using PostgreSQL connector with the
-following setups:
+Next, let's create a DataSource `db` using the PostgreSQL connector by the
+prompts below:
 
 ```bash
-agnes:my-app agnes$ lb4 datasource
+$ lb4 datasource
 ? Datasource name: db
 ? Select the connector for db:
   ...
@@ -121,10 +123,12 @@ const config = {
 
 ### 4. Create repositories
 
-[Repository](../../Repository.md) is a artifact that ties the model and the
-datasource. We will need to create the repository for the `User` class before
-accessing the database. The steps of creating `UserRepository` by running
-`lb4 repository` are skipped here:
+A [Repository](../../Repository.md) is an artifact that ties the model and the
+datasource. We will need to create the repository for the `User` class to access
+the database. The steps of creating `UserRepository` by running `lb4 repository`
+are skipped here:
+
+{% include code-caption.html content="user.repository.ts" %}
 
 ```ts
 // imports
@@ -181,7 +185,7 @@ $ npm start
 ```
 
 We can verify what we just created with API Explorer
-`http://localhost:3000/explorer/`.
+[`http://localhost:3000/explorer/`](http://localhost:3000/explorer/).
 
 ## Database Migration
 
