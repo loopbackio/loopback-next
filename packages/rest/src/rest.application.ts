@@ -4,13 +4,15 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
+  Application,
+  ApplicationConfig,
   Binding,
   BindingAddress,
   Constructor,
   Context,
   Provider,
-} from '@loopback/context';
-import {Application, ApplicationConfig, Server} from '@loopback/core';
+  Server,
+} from '@loopback/core';
 import {
   ExpressMiddlewareFactory,
   ExpressRequestHandler,

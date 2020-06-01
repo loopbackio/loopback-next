@@ -10,7 +10,7 @@ import {
   InvocationResult,
   Provider,
   ValueOrPromise,
-} from '@loopback/context';
+} from '@loopback/core';
 import {CoffeeShop} from '../models';
 
 /**

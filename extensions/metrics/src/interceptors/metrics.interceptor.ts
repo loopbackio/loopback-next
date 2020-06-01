@@ -11,7 +11,7 @@ import {
   InvocationContext,
   Provider,
   ValueOrPromise,
-} from '@loopback/context';
+} from '@loopback/core';
 import {Counter, Gauge, Histogram, register, Summary} from 'prom-client';
 
 /**

@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Context, inject, Injection} from '@loopback/context';
+import {Context, inject, Injection} from '@loopback/core';
 import assert from 'assert';
 import {Class} from '../common-types';
 import {DataSource} from '../datasource';

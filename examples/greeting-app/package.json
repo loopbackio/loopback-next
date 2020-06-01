@@ -57,7 +57,6 @@
   },
   "dependencies": {
     "@loopback/boot": "^2.3.2",
-    "@loopback/context": "^3.8.2",
     "@loopback/core": "^2.7.1",
     "@loopback/example-greeter-extension": "^2.1.2",
     "@loopback/openapi-v3": "^3.4.2",

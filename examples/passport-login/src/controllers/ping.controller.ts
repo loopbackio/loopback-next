@@ -10,7 +10,7 @@ import {
   RequestBodyObject,
   SchemaObject,
 } from '@loopback/rest';
-import {inject} from '@loopback/context';
+import {inject} from '@loopback/core';
 import {authenticate} from '@loopback/authentication';
 import {SecurityBindings, UserProfile} from '@loopback/security';
 

@@ -10,9 +10,9 @@ import {
   ContextView,
   createBindingFromClass,
   Interceptor,
+  InterceptorOrKey,
   Provider,
-} from '@loopback/context';
-import {InterceptorOrKey} from '@loopback/core';
+} from '@loopback/core';
 import {expect} from '@loopback/testlab';
 import {
   createInterceptor,

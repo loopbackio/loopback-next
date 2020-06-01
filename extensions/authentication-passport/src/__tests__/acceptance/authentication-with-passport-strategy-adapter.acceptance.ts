@@ -13,8 +13,7 @@ import {
   UserProfileFactory,
   USER_PROFILE_NOT_FOUND,
 } from '@loopback/authentication';
-import {inject} from '@loopback/context';
-import {addExtension, CoreTags, Provider} from '@loopback/core';
+import {inject, addExtension, CoreTags, Provider} from '@loopback/core';
 import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
 import {api, get} from '@loopback/openapi-v3';
 import {

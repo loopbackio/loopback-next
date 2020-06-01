@@ -3,8 +3,14 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {BindingScope, Constructor, Context, inject} from '@loopback/context';
-import {Application, CoreBindings} from '@loopback/core';
+import {
+  BindingScope,
+  Constructor,
+  Context,
+  inject,
+  Application,
+  CoreBindings,
+} from '@loopback/core';
 import {anOpenApiSpec, anOperationSpec} from '@loopback/openapi-spec-builder';
 import {
   api,

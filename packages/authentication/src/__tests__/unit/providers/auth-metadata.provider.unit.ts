@@ -3,8 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Context, Provider} from '@loopback/context';
-import {CoreBindings} from '@loopback/core';
+import {Context, Provider, CoreBindings} from '@loopback/core';
 import {expect} from '@loopback/testlab';
 import {authenticate, AuthenticationMetadata} from '../../..';
 import {AuthenticationBindings} from '../../../keys';

@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Provider} from '@loopback/context';
+import {Provider} from '@loopback/core';
 import {LogError, Request} from '../types';
 
 export class LogErrorProvider implements Provider<LogError> {

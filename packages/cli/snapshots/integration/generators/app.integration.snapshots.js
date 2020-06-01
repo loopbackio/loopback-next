@@ -102,7 +102,7 @@ if (require.main === module) {
 
 exports[`app-generator specific files generates all the proper files 3`] = `
 import {Request, RestBindings, get, ResponseObject} from '@loopback/rest';
-import {inject} from '@loopback/context';
+import {inject} from '@loopback/core';
 
 /**
  * OpenAPI response for ping()

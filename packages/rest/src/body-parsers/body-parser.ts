@@ -10,7 +10,7 @@ import {
   filterByTag,
   inject,
   instantiateClass,
-} from '@loopback/context';
+} from '@loopback/core';
 import {isReferenceObject, OperationObject} from '@loopback/openapi-v3';
 import debugModule from 'debug';
 import {is} from 'type-is';

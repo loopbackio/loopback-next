@@ -7,10 +7,10 @@ import {
   BINDING_METADATA_KEY,
   config,
   Constructor,
+  CoreBindings,
   inject,
   MetadataInspector,
-} from '@loopback/context';
-import {CoreBindings} from '@loopback/core';
+} from '@loopback/core';
 import {ApplicationWithServices} from '@loopback/service-proxy';
 import debugFactory from 'debug';
 import {BootBindings} from '../keys';

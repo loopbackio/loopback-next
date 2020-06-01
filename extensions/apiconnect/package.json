@@ -39,7 +39,6 @@
     "directory": "extensions/apiconnect"
   },
   "dependencies": {
-    "@loopback/context": "^3.8.2",
     "@loopback/core": "^2.7.1",
     "@loopback/openapi-v3": "^3.4.2",
     "tslib": "^2.0.0"

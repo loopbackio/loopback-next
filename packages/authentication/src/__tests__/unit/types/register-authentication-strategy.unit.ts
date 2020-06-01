@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {bind, Context, createBindingFromClass} from '@loopback/context';
+import {bind, Context, createBindingFromClass} from '@loopback/core';
 import {
   asSpecEnhancer,
   OASEnhancer,

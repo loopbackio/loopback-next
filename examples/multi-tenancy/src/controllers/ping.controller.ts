@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Request, RestBindings, get, ResponseObject} from '@loopback/rest';
-import {inject} from '@loopback/context';
+import {inject} from '@loopback/core';
 
 /**
  * OpenAPI response for ping()

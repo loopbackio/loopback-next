@@ -3,8 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Context} from '@loopback/context';
-import {extensionFor} from '@loopback/core';
+import {Context, extensionFor} from '@loopback/core';
 import {expect} from '@loopback/testlab';
 import {
   format,

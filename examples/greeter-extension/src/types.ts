@@ -3,8 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {BindingTemplate} from '@loopback/context';
-import {extensionFor} from '@loopback/core';
+import {BindingTemplate, extensionFor} from '@loopback/core';
 
 /**
  * Typically an extension point defines an interface as the contract for

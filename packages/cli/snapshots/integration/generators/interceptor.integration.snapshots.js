@@ -16,7 +16,7 @@ import {
   InvocationResult,
   Provider,
   ValueOrPromise,
-} from '@loopback/context';
+} from '@loopback/core';
 
 /**
  * This class will be bound to the application as an \`Interceptor\` during
@@ -77,7 +77,7 @@ import {
   InvocationResult,
   Provider,
   ValueOrPromise,
-} from '@loopback/context';
+} from '@loopback/core';
 
 /**
  * This class will be bound to the application as an \`Interceptor\` during
@@ -138,7 +138,7 @@ import {
   InvocationResult,
   Provider,
   ValueOrPromise,
-} from '@loopback/context';
+} from '@loopback/core';
 
 /**
  * This class will be bound to the application as an \`Interceptor\` during
@@ -199,7 +199,7 @@ import {
   InvocationResult,
   Provider,
   ValueOrPromise,
-} from '@loopback/context';
+} from '@loopback/core';
 
 /**
  * This class will be bound to the application as an \`Interceptor\` during
@@ -262,7 +262,7 @@ import {
   InvocationResult,
   Provider,
   ValueOrPromise,
-} from '@loopback/context';
+} from '@loopback/core';
 
 /**
  * This class will be bound to the application as an \`Interceptor\` during

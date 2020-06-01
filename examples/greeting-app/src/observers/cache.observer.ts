@@ -3,8 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {inject} from '@loopback/context';
-import {lifeCycleObserver, LifeCycleObserver} from '@loopback/core';
+import {inject, lifeCycleObserver, LifeCycleObserver} from '@loopback/core';
 import {CachingService} from '../caching-service';
 import {CACHING_SERVICE} from '../keys';
 

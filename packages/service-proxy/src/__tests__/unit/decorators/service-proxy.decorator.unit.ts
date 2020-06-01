@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {Context} from '@loopback/context';
+import {Context} from '@loopback/core';
 import {serviceProxy} from '../../../';
 
 import {juggler} from '../../../';

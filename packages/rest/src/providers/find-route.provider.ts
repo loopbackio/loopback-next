@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Context, inject, Provider} from '@loopback/context';
+import {Context, inject, Provider} from '@loopback/core';
 import {FindRoute, Request} from '../types';
 import {HttpHandler} from '../http-handler';
 import {RestBindings} from '../keys';

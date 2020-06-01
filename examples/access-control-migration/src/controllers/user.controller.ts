@@ -6,7 +6,7 @@
 // Uncomment these imports to begin using these cool features!
 
 import {TokenService, UserService} from '@loopback/authentication';
-import {inject} from '@loopback/context';
+import {inject} from '@loopback/core';
 import {post, requestBody} from '@loopback/rest';
 import {
   Credentials,

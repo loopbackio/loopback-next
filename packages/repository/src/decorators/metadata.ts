@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {InspectionOptions, MetadataInspector} from '@loopback/context';
+import {InspectionOptions, MetadataInspector} from '@loopback/core';
 import {ModelDefinition, RelationDefinitionMap} from '../model';
 import {RELATIONS_KEY} from '../relations';
 import {

@@ -3,8 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Context} from '@loopback/context';
-import {Application} from '@loopback/core';
+import {Context, Application} from '@loopback/core';
 import {anOperationSpec} from '@loopback/openapi-spec-builder';
 import {expect} from '@loopback/testlab';
 import {

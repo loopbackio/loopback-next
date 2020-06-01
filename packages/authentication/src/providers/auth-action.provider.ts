@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Getter, inject, Provider, Setter} from '@loopback/context';
+import {Getter, inject, Provider, Setter} from '@loopback/core';
 import {Request, RedirectRoute} from '@loopback/rest';
 import {SecurityBindings, UserProfile} from '@loopback/security';
 import {AuthenticationBindings} from '../keys';

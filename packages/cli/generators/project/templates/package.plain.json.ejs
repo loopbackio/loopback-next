@@ -73,9 +73,8 @@
   ],
   "dependencies": {
     "@loopback/boot": "<%= project.dependencies['@loopback/boot'] -%>",
-    "@loopback/context": "<%= project.dependencies['@loopback/context'] -%>",
-<% if (project.projectType === 'application') { -%>
     "@loopback/core": "<%= project.dependencies['@loopback/core'] -%>",
+<% if (project.projectType === 'application') { -%>
     "@loopback/openapi-v3": "<%= project.dependencies['@loopback/openapi-v3'] -%>",
     "@loopback/repository": "<%= project.dependencies['@loopback/repository'] -%>",
 <% if (project.apiconnect) { -%>
@@ -83,8 +82,6 @@
 <% } -%>
     "@loopback/rest": "<%= project.dependencies['@loopback/rest'] -%>",
     "@loopback/rest-explorer": "<%= project.dependencies['@loopback/rest-explorer'] -%>",
-<% } else { -%>
-    "@loopback/core": "<%= project.dependencies['@loopback/core'] -%>",
 <% } -%>
     "tslib": "<%= project.dependencies['tslib'] -%>"
   },

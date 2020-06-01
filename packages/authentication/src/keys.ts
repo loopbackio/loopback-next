@@ -3,8 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {BindingKey} from '@loopback/context';
-import {MetadataAccessor} from '@loopback/metadata';
+import {BindingKey, MetadataAccessor} from '@loopback/core';
 import {SecurityBindings, UserProfile} from '@loopback/security';
 import {AuthenticationComponent} from './authentication.component';
 import {

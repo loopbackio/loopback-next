@@ -40,7 +40,6 @@
     "@loopback/authentication": "^4.2.6",
     "@loopback/authentication-passport": "^2.1.6",
     "@loopback/boot": "^2.3.2",
-    "@loopback/context": "^3.8.2",
     "@loopback/core": "^2.7.1",
     "@loopback/express": "^1.2.2",
     "@loopback/openapi-v3": "^3.4.2",

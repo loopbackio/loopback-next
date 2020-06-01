@@ -3,8 +3,14 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {config, ContextTags, Getter, Provider} from '@loopback/context';
-import {extensionPoint, extensions} from '@loopback/core';
+import {
+  config,
+  ContextTags,
+  Getter,
+  Provider,
+  extensionPoint,
+  extensions,
+} from '@loopback/core';
 import {RequestContext} from '@loopback/rest';
 import debugFactory from 'debug';
 import {MultiTenancyBindings, MULTI_TENANCY_STRATEGIES} from '../keys';

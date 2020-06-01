@@ -8,7 +8,7 @@ import {
   Constructor,
   createBindingFromClass,
   inject,
-} from '@loopback/context';
+} from '@loopback/core';
 import {
   Application,
   Component,

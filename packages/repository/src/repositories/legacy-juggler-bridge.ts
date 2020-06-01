@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Getter} from '@loopback/context';
+import {Getter} from '@loopback/core';
 import assert from 'assert';
 import legacy from 'loopback-datasource-juggler';
 import {

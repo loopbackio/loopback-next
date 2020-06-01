@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Context, InvocationSource} from '@loopback/context';
+import {Context, InvocationSource} from '@loopback/core';
 import {OperationObject} from '@loopback/openapi-v3';
 import {OperationArgs, OperationRetval} from '../types';
 import {RouteEntry} from './route-entry';

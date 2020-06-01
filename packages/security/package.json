@@ -24,7 +24,6 @@
     "access": "public"
   },
   "dependencies": {
-    "@loopback/context": "^3.8.2",
     "@loopback/core": "^2.7.1",
     "debug": "^4.1.1",
     "tslib": "^2.0.0"

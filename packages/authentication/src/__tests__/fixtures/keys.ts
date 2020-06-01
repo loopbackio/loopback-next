@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {BindingKey} from '@loopback/context';
+import {BindingKey} from '@loopback/core';
 import {BasicAuthenticationUserService} from './services/basic-auth-user-service';
 import {JWTService} from './services/jwt-service';
 import {UserRepository} from './users/user.repository';

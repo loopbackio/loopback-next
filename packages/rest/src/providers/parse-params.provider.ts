@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {inject, Provider} from '@loopback/context';
+import {inject, Provider} from '@loopback/core';
 import {RequestBodyParser} from '../body-parsers';
 import {RestBindings} from '../keys';
 import {parseOperationArgs} from '../parser';

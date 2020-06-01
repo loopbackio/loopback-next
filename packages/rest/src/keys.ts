@@ -3,8 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {BindingKey, Context} from '@loopback/context';
-import {CoreBindings} from '@loopback/core';
+import {BindingKey, Context, CoreBindings} from '@loopback/core';
 import {InvokeMiddleware} from '@loopback/express';
 import {HttpProtocol} from '@loopback/http-server';
 import {OpenApiSpec, OperationObject} from '@loopback/openapi-v3';

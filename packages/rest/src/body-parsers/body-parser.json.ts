@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {inject} from '@loopback/context';
+import {inject} from '@loopback/core';
 import {json} from 'body-parser';
 import {is} from 'type-is';
 import {RestBindings} from '../keys';

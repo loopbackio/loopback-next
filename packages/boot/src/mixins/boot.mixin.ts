@@ -11,7 +11,7 @@ import {
   Constructor,
   Context,
   createBindingFromClass,
-} from '@loopback/context';
+} from '@loopback/core';
 import {
   Application,
   Component,
@@ -26,7 +26,7 @@ import {Bootable, Booter, BootOptions, InstanceWithBooters} from '../types';
 
 // FIXME(rfeng): Workaround for https://github.com/microsoft/rushstack/pull/1867
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import * as loopbackContext from '@loopback/context';
+import * as loopbackContext from '@loopback/core';
 import * as loopbackCore from '@loopback/core';
 /* eslint-enable @typescript-eslint/no-unused-vars */
 

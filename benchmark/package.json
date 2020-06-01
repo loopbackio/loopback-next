@@ -33,7 +33,7 @@
     "!*/__tests__"
   ],
   "dependencies": {
-    "@loopback/context": "^3.8.2",
+    "@loopback/core": "^2.7.1",
     "@loopback/example-todo": "^3.5.0",
     "@loopback/openapi-spec-builder": "^2.1.6",
     "@loopback/rest": "^5.1.0",

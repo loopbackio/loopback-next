@@ -55,7 +55,6 @@
     "typescript": "~3.9.3"
   },
   "dependencies": {
-    "@loopback/context": "^3.8.2",
     "@loopback/core": "^2.7.1",
     "@loopback/openapi-v3": "^3.4.2",
     "chalk": "^4.0.0",

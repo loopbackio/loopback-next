@@ -3,8 +3,13 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Context, inject, resolveList} from '@loopback/context';
-import {Application, CoreBindings} from '@loopback/core';
+import {
+  Context,
+  inject,
+  resolveList,
+  Application,
+  CoreBindings,
+} from '@loopback/core';
 import debugModule from 'debug';
 import {resolve} from 'path';
 import {BootBindings, BootTags} from './keys';

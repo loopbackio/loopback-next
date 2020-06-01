@@ -4,13 +4,14 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
+  Application,
   config,
   Constructor,
+  CoreBindings,
   inject,
   Interceptor,
   Provider,
-} from '@loopback/context';
-import {Application, CoreBindings} from '@loopback/core';
+} from '@loopback/core';
 import debugFactory from 'debug';
 import {BootBindings} from '../keys';
 import {ArtifactOptions, booter} from '../types';

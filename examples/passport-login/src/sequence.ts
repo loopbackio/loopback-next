@@ -9,7 +9,7 @@ import {
   AUTHENTICATION_STRATEGY_NOT_FOUND,
   USER_PROFILE_NOT_FOUND,
 } from '@loopback/authentication';
-import {inject} from '@loopback/context';
+import {inject} from '@loopback/core';
 import {
   FindRoute,
   InvokeMethod,

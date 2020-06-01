@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Context, inject, Provider} from '@loopback/context';
+import {Context, inject, Provider} from '@loopback/core';
 import {InvokeMethod, OperationArgs, OperationRetval} from '../types';
 import {RestBindings} from '../keys';
 import {RouteEntry} from '../router';

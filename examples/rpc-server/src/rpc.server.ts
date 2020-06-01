@@ -3,8 +3,13 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Context, inject} from '@loopback/context';
-import {Application, CoreBindings, Server} from '@loopback/core';
+import {
+  Context,
+  inject,
+  Application,
+  CoreBindings,
+  Server,
+} from '@loopback/core';
 import {once} from 'events';
 import express from 'express';
 import http from 'http';

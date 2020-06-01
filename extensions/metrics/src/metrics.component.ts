@@ -4,14 +4,16 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
+  Application,
   bind,
+  Component,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   config,
   ContextTags,
+  CoreBindings,
   createBindingFromClass,
   inject,
-} from '@loopback/context';
-import {Application, Component, CoreBindings} from '@loopback/core';
+} from '@loopback/core';
 import {metricsControllerFactory} from './controllers';
 import {MetricsInterceptor} from './interceptors';
 import {MetricsBindings} from './keys';

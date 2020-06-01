@@ -8,7 +8,7 @@ import {StrategyAdapter} from '@loopback/authentication-passport';
 import {Request, RedirectRoute} from '@loopback/rest';
 import {UserProfile, securityId} from '@loopback/security';
 import {User} from '../models';
-import {bind} from '@loopback/context';
+import {bind} from '@loopback/core';
 import {Strategy, IVerifyOptions} from 'passport-local';
 import {repository} from '@loopback/repository';
 import {UserRepository} from '../repositories';

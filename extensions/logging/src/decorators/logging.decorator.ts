@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {intercept} from '@loopback/context';
+import {intercept} from '@loopback/core';
 import {LoggingBindings} from '../keys';
 
 /**

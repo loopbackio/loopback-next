@@ -8,7 +8,7 @@ import {
   Constructor,
   MethodDecoratorFactory,
   MetadataInspector,
-} from '@loopback/context';
+} from '@loopback/core';
 import {LevelMetadata} from '../types';
 
 /**

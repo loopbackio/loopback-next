@@ -26,8 +26,7 @@
     "JSON Schema"
   ],
   "dependencies": {
-    "@loopback/context": "^3.8.2",
-    "@loopback/metadata": "^2.1.6",
+    "@loopback/core": "^2.7.1",
     "@loopback/repository": "^2.6.0",
     "@types/json-schema": "^7.0.4",
     "debug": "^4.1.1",

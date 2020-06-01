@@ -32,7 +32,6 @@
     "bson": "4.0.4"
   },
   "dependencies": {
-    "@loopback/context": "^3.8.2",
     "@loopback/core": "^2.7.1",
     "@types/debug": "^4.1.5",
     "debug": "^4.1.1",

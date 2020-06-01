@@ -3,8 +3,13 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {BindingScope, inject} from '@loopback/context';
-import {Application, Component, CoreBindings} from '@loopback/core';
+import {
+  BindingScope,
+  inject,
+  Application,
+  Component,
+  CoreBindings,
+} from '@loopback/core';
 import {
   ApplicationMetadataBooter,
   ControllerBooter,

@@ -3,8 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Binding, createBindingFromClass} from '@loopback/context';
-import {Component} from '@loopback/core';
+import {Binding, createBindingFromClass, Component} from '@loopback/core';
 import {ChineseGreeter} from './greeters/greeter-cn';
 import {EnglishGreeter} from './greeters/greeter-en';
 import {GreetingService} from './greeting-service';

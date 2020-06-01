@@ -7,11 +7,11 @@ import {
   BindingScope,
   Constructor,
   Context,
+  CoreBindings,
   instantiateClass,
   invokeMethod,
   ValueOrPromise,
-} from '@loopback/context';
-import {CoreBindings} from '@loopback/core';
+} from '@loopback/core';
 import {ControllerSpec, OperationObject} from '@loopback/openapi-v3';
 import assert from 'assert';
 import debugFactory from 'debug';

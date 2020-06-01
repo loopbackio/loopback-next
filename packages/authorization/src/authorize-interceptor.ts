@@ -15,7 +15,7 @@ import {
   Next,
   NonVoid,
   Provider,
-} from '@loopback/context';
+} from '@loopback/core';
 import {SecurityBindings, UserProfile} from '@loopback/security';
 import debugFactory from 'debug';
 import {getAuthorizationMetadata} from './decorators/authorize';

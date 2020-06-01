@@ -3,8 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {inject} from '@loopback/context';
-import {Application} from '@loopback/core';
+import {inject, Application} from '@loopback/core';
 import {get, post} from '@loopback/openapi-v3';
 import {Request, RestServer} from '@loopback/rest';
 import {SecurityBindings, securityId, UserProfile} from '@loopback/security';

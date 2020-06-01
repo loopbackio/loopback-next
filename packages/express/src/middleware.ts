@@ -12,13 +12,14 @@ import {
   Constructor,
   Context,
   createBindingFromClass,
+  extensionFilter,
+  extensionFor,
   InvocationResult,
   isProviderClass,
   Provider,
   transformValueOrPromise,
   ValueOrPromise,
-} from '@loopback/context';
-import {extensionFilter, extensionFor} from '@loopback/core';
+} from '@loopback/core';
 import debugFactory from 'debug';
 import {DEFAULT_MIDDLEWARE_GROUP, MIDDLEWARE_NAMESPACE} from './keys';
 import {

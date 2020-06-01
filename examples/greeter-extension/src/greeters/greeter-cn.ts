@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {bind, config} from '@loopback/context';
+import {bind, config} from '@loopback/core';
 import {asGreeter, Greeter} from '../types';
 
 /**
