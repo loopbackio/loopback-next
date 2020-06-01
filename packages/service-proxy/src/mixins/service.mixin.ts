@@ -45,6 +45,11 @@ export interface Class<T> {
  * Please note: the members in the mixin function are documented in a dummy class
  * called <a href="#ServiceMixinDoc">ServiceMixinDoc</a>
  *
+ * @param superClass - Application class
+ * @returns A new class that extends the super class with service proxy related
+ * methods
+ *
+ * @typeParam T - Type of the application class as the target for the mixin
  */
 export function ServiceMixin<T extends MixinTarget<Application>>(
   superClass: T,
@@ -146,9 +151,12 @@ export function ServiceMixin<T extends MixinTarget<Application>>(
  * Interface for an Application mixed in with ServiceMixin
  */
 export interface ApplicationWithServices extends Application {
-  serviceProvider<S>(provider: Class<Provider<S>>, name?: string): Binding<S>;
-  component(component: Class<{}>, name?: string): Binding;
-  mountComponentServices(component: Class<{}>): void;
+  serviceProvider<S>(
+    provider: Constructor<Provider<S>>,
+    name?: string,
+  ): Binding<S>;
+  component(component: Constructor<{}>, name?: string): Binding;
+  mountComponentServices(component: Constructor<{}>): void;
 }
 
 /**
@@ -191,7 +199,7 @@ export class ServiceMixinDoc {
    * app.serviceProvider(GeocoderServiceProvider);
    * ```
    */
-  serviceProvider<S>(provider: Class<Provider<S>>): Binding<S> {
+  serviceProvider<S>(provider: Constructor<Provider<S>>): Binding<S> {
     throw new Error();
   }
 
@@ -216,7 +224,7 @@ export class ServiceMixinDoc {
    * app.component(ProductComponent);
    * ```
    */
-  public component(component: Class<unknown>): Binding {
+  public component(component: Constructor<unknown>): Binding {
     throw new Error();
   }
 
@@ -227,5 +235,5 @@ export class ServiceMixinDoc {
    *
    * @param component - The component to mount services of
    */
-  mountComponentServices(component: Class<unknown>) {}
+  mountComponentServices(component: Constructor<unknown>) {}
 }

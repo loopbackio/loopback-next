@@ -45,6 +45,11 @@ export {Binding};
  * - Provides the `booter()` convenience method to bind a Booter(s) to the Application
  * - Override `component()` to call `mountComponentBooters`
  * - Adds `mountComponentBooters` which binds Booters to the application from `component.booters[]`
+ *
+ * @param superClass - Application class
+ * @returns A new class that extends the super class with boot related methods
+ *
+ * @typeParam T - Type of the application class as the target for the mixin
  */
 export function BootMixin<T extends MixinTarget<Application>>(superClass: T) {
   return class extends superClass implements Bootable {

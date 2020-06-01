@@ -26,6 +26,7 @@ import {Constructor} from '@loopback/context';
  * the base class. You can use the following approach as a workaround:
  *
  * ```ts
+ * // eslint-disable-next-line @typescript-eslint/ban-ts-comment
  * // @ts-ignore
  * (this as unknown as {YourBaseClass}).protectedMember
  * ```
