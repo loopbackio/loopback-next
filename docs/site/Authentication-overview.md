@@ -60,10 +60,9 @@ we've broken down the documentations into several parts:
   A tutorial to get started by applying the JWT authentication in the
   [todo example](https://loopback.io/doc/en/lb4/todo-tutorial.html). We highly recommend you to get started with this example.
 - Understand the modules provided out-of-the-box:
-  - [**Authentication component**](missing_link): A deep dive of component
-    `@loopback/authentication`
   - [**JWT extension**](JWT-authentication-extension.md): A prototype
     implementation of the JWT authentication.
+  - [**Authentication component**](Loopback-component-authentication.md): A deep dive of component `@loopback/authentication`.
 - [**Create your own authentication strategy**](Create-custom-authentication-strategy.md):
   Particularly for extension developers.
 - [Use **Express Passport** strategies](Authentication-passport.md):
