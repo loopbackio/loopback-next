@@ -1,7 +1,7 @@
 {
   "name": "@loopback/extension-health",
   "version": "0.4.6",
-  "description": "LoopBack Health",
+  "description": "An extension exposes health check related endpoints with LoopBack 4",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "engines": {

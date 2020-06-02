@@ -1,7 +1,7 @@
 {
   "name": "@loopback/service-proxy",
   "version": "2.3.1",
-  "description": "Service integration for LoopBack 4",
+  "description": "A common set of interfaces for interacting with service oriented backends such as REST APIs, SOAP Web Services, and gRPC microservices",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "engines": {

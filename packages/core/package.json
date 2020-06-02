@@ -1,7 +1,7 @@
 {
   "name": "@loopback/core",
   "version": "2.7.1",
-  "description": "LoopBack 4 core",
+  "description": "Define and implement core constructs such as Application and Component",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "engines": {

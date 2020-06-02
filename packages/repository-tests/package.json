@@ -1,7 +1,7 @@
 {
   "name": "@loopback/repository-tests",
   "version": "0.12.6",
-  "description": "Shared test-suite for repository based persistence",
+  "description": "A shared test suite to verify `@loopback/repository` functionality with a given compatible connector",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "engines": {

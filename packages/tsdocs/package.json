@@ -1,7 +1,7 @@
 {
   "name": "@loopback/tsdocs",
   "version": "2.2.1",
-  "description": "LoopBack's TypeScript docs based on Microsoft api-extractor and api-documenter",
+  "description": "An internal package to generate api docs using Microsoft api-extractor and api-documenter",
   "private": true,
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

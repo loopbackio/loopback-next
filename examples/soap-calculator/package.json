@@ -1,7 +1,7 @@
 {
   "name": "@loopback/example-soap-calculator",
   "version": "2.2.2",
-  "description": "Integrate a SOAP webservice with LoopBack 4",
+  "description": "A tutorial demonstrating integration SOAP webservice with LoopBack 4",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "keywords": [

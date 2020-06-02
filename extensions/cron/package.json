@@ -1,7 +1,7 @@
 {
   "name": "@loopback/cron",
   "version": "0.2.6",
-  "description": "LoopBack Cron Integration",
+  "description": "Schedule tasks using cron-like syntax",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "engines": {

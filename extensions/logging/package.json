@@ -1,7 +1,7 @@
 {
   "name": "@loopback/extension-logging",
   "version": "0.3.6",
-  "description": "LoopBack Logging for Winston and Fluentd",
+  "description": "An extension exposes logging for Winston and Fluentd with LoopBack 4",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "engines": {

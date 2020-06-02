@@ -1,7 +1,7 @@
 {
   "name": "@loopback/test-extension-logging-fluentd",
   "version": "0.3.6",
-  "description": "Acceptance test for extension-logging with fluentd",
+  "description": "Acceptance test for `@loopback/extension-logging` with fluentd",
   "private": true,
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

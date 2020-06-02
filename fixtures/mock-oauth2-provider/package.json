@@ -1,10 +1,11 @@
 {
   "name": "@loopback/mock-oauth2-provider",
   "version": "0.1.0",
-  "description": "mocks the oauth2 authorization flow",
+  "description": "An internal application to mock the OAuth2 authorization flow login with a social app like facebook, google etc",
   "engines": {
     "node": ">=10"
   },
+  "private": true,
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {

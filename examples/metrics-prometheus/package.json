@@ -1,7 +1,7 @@
 {
   "name": "@loopback/example-metrics-prometheus",
   "version": "0.3.2",
-  "description": "Standalone examples for @loopback/metrics",
+  "description": "An example to illustrate metrics provided by @loopback/extension-metrics and Prometheus",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "engines": {

@@ -1,7 +1,7 @@
 {
   "name": "@loopback/example-multi-tenancy",
   "version": "0.4.0",
-  "description": "An example to demonstrate multi-tenancy with LoopBack 4",
+  "description": "An example to illustrate how to enable multi-tenancy with LoopBack's IoC and DI container",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "keywords": [

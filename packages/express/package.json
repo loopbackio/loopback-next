@@ -1,7 +1,7 @@
 {
   "name": "@loopback/express",
   "version": "1.2.2",
-  "description": "@loopback/express",
+  "description": "Integrate with Express and expose middleware infrastructure for sequence and interceptors",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "keywords": [

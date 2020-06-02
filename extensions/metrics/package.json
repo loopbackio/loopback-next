@@ -1,7 +1,7 @@
 {
   "name": "@loopback/extension-metrics",
   "version": "0.3.6",
-  "description": "LoopBack Metrics for Prometheus",
+  "description": "An extension exposes metrics for Prometheus with LoopBack 4",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "engines": {
