@@ -1,7 +1,7 @@
 {
   "name": "@loopback/example-rest-crud",
   "version": "1.4.0",
-  "description": "",
+  "description": "An example showing how to use @loopback/rest-crud to define default repository and controller classes",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "engines": {

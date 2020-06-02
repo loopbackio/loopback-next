@@ -1,7 +1,7 @@
 {
   "name": "@loopback/booter-lb3app",
   "version": "2.2.2",
-  "description": "Boot a LoopBack 3 application in a LoopBack 4 project",
+  "description": "A booter component for LoopBack 3 applications to expose their REST API via LoopBack 4",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "engines": {

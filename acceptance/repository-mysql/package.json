@@ -1,7 +1,7 @@
 {
   "name": "@loopback/test-repository-mysql",
   "version": "0.7.6",
-  "description": "",
+  "description": "Acceptance tests for `@loopback/repository` + `loopback-connector-mysql`",
   "private": true,
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

@@ -1,7 +1,7 @@
 {
   "name": "@loopback/test-repository-cloudant",
   "version": "2.2.2",
-  "description": "",
+  "description": "Acceptance tests for `@loopback/repository` + `loopback-connector-cloudant`",
   "private": true,
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

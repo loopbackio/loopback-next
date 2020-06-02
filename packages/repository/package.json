@@ -1,7 +1,7 @@
 {
   "name": "@loopback/repository",
   "version": "2.6.0",
-  "description": "Repository based persistence for LoopBack 4",
+  "description": "Define and implement a common set of interfaces for interacting with databases",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "engines": {

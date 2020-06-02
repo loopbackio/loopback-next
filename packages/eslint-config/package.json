@@ -1,7 +1,7 @@
 {
   "name": "@loopback/eslint-config",
   "version": "8.0.0",
-  "description": "Shared configuration for ESLint",
+  "description": "ESLint configuration for LoopBack projects",
   "engines": {
     "node": ">=10"
   },

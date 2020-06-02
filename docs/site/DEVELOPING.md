@@ -680,8 +680,10 @@ and falls back to `extensions`.
 
 6. Run `update-ts-project-refs` to update TypeScript project references
 
-7. Remind to update `CODEOWNERS` and `docs/site/MONOREPO.md` If you would like
-   to do it manually, follow steps below:
+7. Run `update-monorepo-file` to update `docs/site/MONOREPO.md`
+
+8. Remind to update `CODEOWNERS`. If you would like to do it manually, follow
+   steps below:
 
 To add a new package by hand, create a folder in
 [`packages`](https://github.com/strongloop/loopback-next/tree/master/packages)

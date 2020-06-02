@@ -26,6 +26,7 @@
     "fs-extra": "^9.0.1",
     "husky": "^4.2.5",
     "lerna": "^3.22.1",
+    "markdown-table": "^2.0.0",
     "open-cli": "^6.0.1",
     "typescript": "~3.9.5"
   },
@@ -41,6 +42,7 @@
     "update-template-deps": "node bin/update-template-deps -f",
     "update-peer-deps": "node bin/update-peer-deps -f",
     "update-all-deps": "npm update && lerna exec -- npm update && npm run update-package-locks",
+    "update-monorepo-file": "node bin/update-monorepo-file",
     "sync-dev-deps": "node bin/sync-dev-deps",
     "save-cli-metadata": "node packages/cli/bin/cli-main.js --meta",
     "version": "npm run update-template-deps && npm run update-peer-deps && npm run save-cli-metadata",

@@ -1,7 +1,7 @@
 {
   "name": "@loopback/example-context",
   "version": "2.1.2",
-  "description": "Standalone examples for @loopback/context",
+  "description": "Standalone examples to illustrate features provided by @loopback/context",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "engines": {

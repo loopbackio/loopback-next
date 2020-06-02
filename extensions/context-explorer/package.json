@@ -1,7 +1,7 @@
 {
   "name": "@loopback/context-explorer",
   "version": "0.1.6",
-  "description": "LoopBack's Context/Binding Explorer",
+  "description": "Visualize context hierarchy, bindings, configurations, and dependencies",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "engines": {

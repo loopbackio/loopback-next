@@ -1,7 +1,7 @@
 {
   "name": "@loopback/example-greeter-extension",
   "version": "2.1.2",
-  "description": "An example extension point/extensions for LoopBack 4",
+  "description": "An example showing how to implement the extension point/extension pattern using LoopBack 4",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "engines": {

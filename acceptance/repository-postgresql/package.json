@@ -1,7 +1,7 @@
 {
   "name": "@loopback/test-repository-postgresql",
   "version": "2.1.6",
-  "description": "",
+  "description": "Acceptance tests for `@loopback/repository` + `loopback-connector-postgresql`",
   "private": true,
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

@@ -1,6 +1,6 @@
 {
   "name": "@loopback/build",
-  "description": "Build scripts and configuration files for LoopBack 4 modules",
+  "description": "A set of common scripts and default configurations to build LoopBack 4 or other TypeScript modules",
   "repository": {
     "type": "git",
     "url": "https://github.com/strongloop/loopback-next.git",

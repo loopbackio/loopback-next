@@ -1,7 +1,7 @@
 {
   "name": "@loopback/metadata",
   "version": "2.1.6",
-  "description": "LoopBack's metadata utilities for reflection and decoration",
+  "description": "Utilities to help developers implement TypeScript decorators, define/merge metadata, and inspect metadata",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "engines": {

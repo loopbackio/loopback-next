@@ -1,7 +1,7 @@
 {
   "name": "@loopback/openapi-v3",
   "version": "3.4.2",
-  "description": "Processes openapi v3 related metadata",
+  "description": "Decorators that annotate LoopBack artifacts with OpenAPI v3 metadata and utilities that transform LoopBack metadata to OpenAPI v3 specifications",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "engines": {
