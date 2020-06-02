@@ -1,12 +1,19 @@
 # @loopback/authentication-jwt
 
-This module exports the jwt authentication strategy and its corresponding token
+This module is created as a prototype
+[JWT(JSON web token)](https://github.com/auth0/node-jsonwebtoken#readme)
+authentication system for users to quickly get started with LoopBack 4
+authentication.
+
+It exports the JWT authentication strategy and its corresponding token
 and user service as a component. You can mount the component to get a prototype
 token based authentication system in your LoopBack 4 application.
 
 Please note this package has the user service is a reference implementation, not
 recommended for production. You can follow the guide in section
 [Customizing User](#customizing-user) to replace it.
+
+To learn how you can apply it in your application, check the example [todo-jwt](https://github.com/strongloop/loopback-next/tree/master/examples/todo-jwt) and its tutorial [Apply JWT Authentication in Todo Example](https://loopback.io/doc/en/lb4/Authentication-tutorial.html)
 
 ## Stability: ⚠️Experimental⚠️
 
