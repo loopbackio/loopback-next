@@ -66,6 +66,5 @@ we've broken down the documentations into several parts:
     authentication.
 - [**How to create your own authentication strategy**](missing_link):
   Particularly for extension developers.
-- [Use [**Passport**](https://www.npmjs.com/package/passport)
-  strategies](missing link): The usage of passport adapter module
-  `@loopback/authentication-passport`.
+- [Use [**Passport**](https://www.npmjs.com/package/passport) strategies](Authentication-passport.md):
+  The usage of passport adapter module `@loopback/authentication-passport`.
