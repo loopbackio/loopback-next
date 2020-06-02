@@ -233,6 +233,22 @@ children:
         - title: 'Authentication Component'
           url: Loopback-component-authentication.html
           output: 'web, pdf'
+          children:
+            - title: 'Authentication Decorator'
+              url: Authentication-component-decorator.html
+              output: 'web, pdf'
+
+            - title: 'Authentication Action'
+              url: Authentication-component-action.html
+              output: 'web, pdf'
+
+            - title: 'Authentication Strategy'
+              url: Authentication-component-strategy.html
+              output: 'web, pdf'
+
+            - title: 'Managing Custom Authentication Strategy Options'
+              url: Authentication-component-options.html
+              output: 'web, pdf'
 
         - title: 'JWT Authentication Extension'
           url: JWT-authentication-extension.html
