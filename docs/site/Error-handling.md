@@ -1,7 +1,7 @@
 ---
 lang: en
 title: Error Handling
-keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI
+keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, Error Handling
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Error-handling.html
 ---

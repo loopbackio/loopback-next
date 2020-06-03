@@ -1,7 +1,7 @@
 ---
 lang: en
 title: 'SOAP calculator Web Service integration tutorial'
-keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI
+keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, Tutorial
 layout: readme
 source: loopback-next
 file: examples/soap-calculator/README.md
