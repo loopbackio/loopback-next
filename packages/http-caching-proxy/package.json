@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "axios": "^0.19.2",
-    "cacache": "^15.0.3",
+    "cacache": "^15.0.4",
     "debug": "^4.1.1",
     "rimraf": "^3.0.2",
     "tslib": "^2.0.0"
