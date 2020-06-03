@@ -1,7 +1,8 @@
 ---
 lang: en
 title: 'Repository Decorators'
-keywords: LoopBack 4.0, LoopBack, Node.js, TypeScript, OpenAPI, Decorator
+keywords:
+  LoopBack 4.0, LoopBack, Node.js, TypeScript, OpenAPI, Decorator, Repository
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Decorators_repository.html
 ---

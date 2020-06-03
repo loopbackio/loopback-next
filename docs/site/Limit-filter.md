@@ -1,7 +1,7 @@
 ---
 title: 'Limit filter'
 lang: en
-keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, limit
+keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, Filter
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Limit-filter.html
 summary:

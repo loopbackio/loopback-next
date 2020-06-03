@@ -1,7 +1,7 @@
 ---
 title: 'Include filter'
 lang: en
-keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, include
+keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, Filter
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Include-filter.html
 ---

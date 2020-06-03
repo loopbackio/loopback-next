@@ -1,7 +1,9 @@
 ---
 lang: en
 title: 'Authentication Decorator'
-keywords: LoopBack 4.0, LoopBack, Node.js, TypeScript, OpenAPI, Decorator
+keywords:
+  LoopBack 4.0, LoopBack, Node.js, TypeScript, OpenAPI, Decorator,
+  Authentication
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Decorators_authenticate.html
 ---

@@ -1,7 +1,7 @@
 ---
 lang: en
 title: 'Deployment'
-keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI
+keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, Deployment
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Deployment.html
 ---
