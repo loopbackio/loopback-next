@@ -1,7 +1,7 @@
 ---
 lang: en
 title: 'Dependency Injection Decorators'
-keywords: LoopBack 4.0, LoopBack-Next
+keywords: LoopBack 4.0, LoopBack, Node.js, TypeScript, OpenAPI, Decorator
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Decorators_inject.html
 ---

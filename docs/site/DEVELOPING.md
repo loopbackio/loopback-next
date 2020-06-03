@@ -1,7 +1,9 @@
 ---
 lang: en
 title: 'Contributing code in LoopBack 4'
-keywords: LoopBack 4.0, contributing, community
+keywords:
+  LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, contributing,
+  community
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/code-contrib-lb4.html
 toc: false

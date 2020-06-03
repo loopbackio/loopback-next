@@ -1,7 +1,8 @@
 ---
 lang: en
 title: 'Creating services in components'
-keywords: LoopBack 4, Extensions, Components, Services
+keywords:
+  LoopBack 4, Node.js, TypeScript, OpenAPI, Extensions, Components, Services
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/creating-components-services.html
 ---

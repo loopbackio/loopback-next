@@ -1,7 +1,7 @@
 ---
 lang: en
 title: 'Add TodoList Repository'
-keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI
+keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, Tutorial
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/todo-list-tutorial-repository.html
 summary: LoopBack 4 TodoList Application Tutorial - Add TodoList Repository

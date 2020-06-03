@@ -1,7 +1,7 @@
 ---
 lang: en
 title: 'Deploying with pm2 and nginx'
-keywords: LoopBack, pm2, nginx
+keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, pm2, nginx
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/deploying-with-pm2-and-nginx.html
 ---

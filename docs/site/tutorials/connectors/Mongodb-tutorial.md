@@ -2,7 +2,7 @@
 lang: en
 title: 'MongoDB connector tutorial'
 keywords:
-  LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, connector, MongoDB
+  LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, Connector, MongoDB
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Connecting-to-MongoDB.html
 ---

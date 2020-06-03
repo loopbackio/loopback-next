@@ -1,7 +1,7 @@
 ---
 lang: en
 title: 'Deploying to IBM Cloud'
-keywords: LoopBack
+keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, Cloud
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Deploying-to-IBM-Cloud.html
 ---

@@ -1,7 +1,7 @@
 ---
 lang: en
 title: 'Serving static files in LoopBack 4'
-keywords: LoopBack
+keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Serving-static-files.html
 ---

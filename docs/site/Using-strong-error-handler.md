@@ -1,7 +1,7 @@
 ---
 title: 'Using strong-error-handler'
 lang: en
-keywords: LoopBack 4, error handling
+keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, Error handling
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Using-strong-error-handler.html
 ---
