@@ -4,15 +4,14 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
-  BindingScope,
-  inject,
   Application,
+  Binding,
+  BindingScope,
   Component,
   CoreBindings,
   createBindingFromClass,
   inject,
 } from '@loopback/core';
-import {Application, Component, CoreBindings} from '@loopback/core';
 import {
   ApplicationMetadataBooter,
   ConfigurationBooter,

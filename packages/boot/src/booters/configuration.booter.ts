@@ -4,21 +4,19 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
+  Application,
   bind,
   BindingKey,
   BindingSpec,
   config,
   ContextTags,
+  CoreBindings,
   createBindingFromClass,
+  extensionFor,
+  extensions,
   inject,
   isProviderClass,
   ValueOrPromise,
-} from '@loopback/context';
-import {
-  Application,
-  CoreBindings,
-  extensionFor,
-  extensions,
 } from '@loopback/core';
 import debugFactory from 'debug';
 import fs from 'fs';

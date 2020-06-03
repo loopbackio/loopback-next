@@ -6,10 +6,10 @@
 export = {
   'loggers.Log1': {
     level: 'info',
-    _source: 'js',
+    source: 'js',
   },
   'loggers.Log2': {
     level: 'debug',
-    _source: 'js',
+    source: 'js',
   },
 };

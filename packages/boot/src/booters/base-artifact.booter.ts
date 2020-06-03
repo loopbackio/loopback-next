@@ -35,10 +35,14 @@ export class BaseArtifactBooter implements Booter {
    */
   readonly options: ArtifactOptions;
   /**
-   * Project root relative to which all other paths are resolved
+   * Project root relative to which all other paths are resolved. It's
+   * usually set to `<application-package-root-dir>/dist`.
    */
   readonly projectRoot: string;
 
+  /**
+   * Root directory of the application package. It typically contains`package.json`.
+   */
   private packageRoot: string;
 
   /**
@@ -53,6 +57,13 @@ export class BaseArtifactBooter implements Booter {
    * `glob` pattern to match artifact paths
    */
   globs: string[];
+
+  /**
+   * @deprecated Please use `globs` instead
+   */
+  get glob() {
+    return this.globs[0];
+  }
 
   /**
    * List of files discovered by the Booter that matched artifact requirements
@@ -103,6 +114,10 @@ export class BaseArtifactBooter implements Booter {
 
     let dirs = asStringArray(options.dirs);
     const extensions = asStringArray(options.extensions);
+    if (options.glob) {
+      const globs = [options.glob];
+      return {...config, dirs, globs, extensions};
+    }
     if (options.globs) {
       const globs = asStringArray(options.globs);
       return {...config, dirs, globs, extensions};

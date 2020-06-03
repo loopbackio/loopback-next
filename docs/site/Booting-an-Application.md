@@ -289,11 +289,11 @@ The `.ts` file will be transpiled to `.js`.
 export = {
   'loggers.Log1': {
     level: 'info',
-    __source: 'js',
+    source: 'js',
   },
   'loggers.Log2': {
     level: 'debug',
-    __source: 'js',
+    source: 'js',
   },
 };
 ```
@@ -304,11 +304,11 @@ The configuration can be defined in a json file.
 {
   "loggers.Log1": {
     "level": "info",
-    "__source": "json"
+    "source": "json"
   },
   "loggers.Log2": {
     "level": "debug",
-    "__source": "json"
+    "source": "json"
   }
 }
 ```
@@ -318,10 +318,10 @@ The `yaml` format is supported too.
 ```yaml
 loggers.Log1:
   level: info
-  __source: yaml
+  source: yaml
 loggers.Log2:
   level: debug
-  __source: yaml
+  source: yaml
 ```
 
 ![config-booter](imgs/config-booter.png)
@@ -339,14 +339,14 @@ class MyConfigLoader implements ConfigurationLoader {
     // Directly add configuration bindings to the application
     app.configure('loggers.Log1').to({
       level: 'info',
-      __source: 'my-loader',
+      source: 'my-loader',
     });
     // Export an object containing configuration values keyed by target binding
     // keys
     return {
       'loggers.Log2': {
         level: 'debug',
-        __source: 'my-loader',
+        source: 'my-loader',
       },
     };
   }

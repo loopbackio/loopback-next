@@ -27,10 +27,16 @@ export type ArtifactOptions = {
    */
   nested?: boolean;
   /**
-   * A `glob` string to use when searching for files. This takes
+   * Array of `glob` string to use when searching for files. This takes
    * precedence over other options.
    */
   globs?: string | string[];
+
+  /**
+   * @deprecated
+   * Please use `globs` instead
+   */
+  glob?: string;
 };
 
 /**

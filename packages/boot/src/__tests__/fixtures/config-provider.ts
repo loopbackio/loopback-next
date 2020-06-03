@@ -3,13 +3,13 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Provider} from '@loopback/context';
+import {Provider} from '@loopback/core';
 
 class ConfigProvider1 implements Provider<object> {
   value() {
     return {
       level: 'info',
-      _source: 'js-provider',
+      source: 'js-provider',
     };
   }
 }
@@ -18,7 +18,7 @@ class ConfigProvider2 implements Provider<object> {
   value() {
     return {
       level: 'debug',
-      _source: 'js-provider',
+      source: 'js-provider',
     };
   }
 }
