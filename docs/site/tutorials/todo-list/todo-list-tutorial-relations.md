@@ -1,7 +1,7 @@
 ---
 lang: en
 title: 'Add Model Relations'
-keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI
+keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, Tutorial
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/todo-list-tutorial-relations.html
 summary: LoopBack 4 TodoList Application Tutorial - Add TodoList Repository

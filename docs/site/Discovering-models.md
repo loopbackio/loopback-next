@@ -1,7 +1,7 @@
 ---
 lang: en
 title: 'Discovering models from relational databases'
-keywords: LoopBack 4.0, LoopBack-Next
+keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Discovering-models.html
 ---

@@ -1,7 +1,7 @@
 ---
 lang: en
 title: 'Contributing REST API endpoints'
-keywords: LoopBack 4, Extensions, Components
+keywords: LoopBack 4, Node.js, TypeScript, OpenAPI, Extensions, Components
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/creating-components-rest-api.html
 ---

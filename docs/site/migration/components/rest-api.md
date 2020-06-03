@@ -1,7 +1,9 @@
 ---
 lang: en
 title: 'Migrating components: REST API endpoints'
-keywords: LoopBack 4, LoopBack 3, Migration, Extensions, Components
+keywords:
+  LoopBack 4, LoopBack 3, Node.js, TypeScript, OpenAPI, Migration, Extensions,
+  Components
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/migration-extensions-rest-api.html
 ---

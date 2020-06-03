@@ -2,7 +2,8 @@
 lang: en
 title: 'Deploying to Kubernetes on IBM Cloud'
 keywords:
-  LoopBack 4.0, LoopBack 4, Kubernetes, IBM Cloud, Docker, Container Registry
+  LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, Kubernetes, IBM Cloud,
+  Docker, Container Registry
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/deploying_to_ibm_cloud_kubernetes.html
 ---

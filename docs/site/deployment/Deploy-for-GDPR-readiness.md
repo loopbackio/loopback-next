@@ -1,7 +1,7 @@
 ---
 title: 'LoopBack considerations for GDPR readiness'
 layout: page
-keywords: LoopBack, GDPR
+keywords: LoopBack, LoopBack 4.0, Node.js, TypeScript, OpenAPI, GDPR
 tags: gdpr
 lang: en
 sidebar: lb4_sidebar

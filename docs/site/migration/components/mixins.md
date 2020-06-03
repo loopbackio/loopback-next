@@ -1,7 +1,9 @@
 ---
 lang: en
 title: 'Migrating components contributing Model mixins'
-keywords: LoopBack 4, LoopBack 3, Migration, Extensions, Components, Mixins
+keywords:
+  LoopBack 4, LoopBack 3, Node.js, TypeScript, OpenAPI, Migration, Extensions,
+  Components, Mixins
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/migration-extensions-mixins.html
 ---

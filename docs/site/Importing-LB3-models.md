@@ -1,7 +1,7 @@
 ---
 lang: en
 title: 'Importing models from LoopBack 3 projects'
-keywords: LoopBack 4.0, Migration
+keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, Migration
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Importing-LB3-models.html
 ---

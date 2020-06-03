@@ -1,7 +1,9 @@
 ---
 title: Submitting a pull request to LoopBack 4
 lang: en
-keywords: contributing, LoopBack community, pull request, PR, loopback
+keywords:
+  LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, Contributing, LoopBack
+  community, Pull request, PR
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/submitting_a_pr.html
 ---

@@ -1,7 +1,7 @@
 ---
 lang: en
 title: Tutorials
-keywords: LoopBack 4.0
+keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, Tutorial
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Tutorials.html
 ---

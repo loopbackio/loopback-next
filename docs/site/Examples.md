@@ -1,7 +1,7 @@
 ---
 lang: en
 title: Example Projects
-keywords: LoopBack 4.0
+keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, Examples
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Examples.html
 ---

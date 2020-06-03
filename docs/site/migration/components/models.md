@@ -1,7 +1,9 @@
 ---
 lang: en
 title: 'Migrating components contributing Models'
-keywords: LoopBack 4, LoopBack 3, Migration, Extensions, Components, Models
+keywords:
+  LoopBack 4, LoopBack 3, Node.js, TypeScript, OpenAPI, Migration, Extensions,
+  Components, Models
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/migration-extensions-models.html
 ---
