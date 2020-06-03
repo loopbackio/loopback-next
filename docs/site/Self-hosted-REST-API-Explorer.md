@@ -1,7 +1,7 @@
 ---
 lang: en
 title: 'Self-hosted REST API Explorer'
-keywords: LoopBack 4.0, LoopBack 4
+keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI
 layout: readme
 source: loopback-next
 file: packages/rest-explorer/README.md

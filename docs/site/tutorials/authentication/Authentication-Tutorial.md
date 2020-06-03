@@ -1,7 +1,9 @@
 ---
 lang: en
 title: 'How to secure your LoopBack 4 application with JWT authentication'
-keywords: LoopBack 4.0, LoopBack 4, Authentication, Tutorial
+keywords:
+  LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, Authentication,
+  Tutorial
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Authentication-Tutorial.html
 summary: A LoopBack 4 application that uses JWT authentication

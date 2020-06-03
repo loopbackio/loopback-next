@@ -1,7 +1,8 @@
 ---
 lang: en
 title: 'PostgreSQL connector tutorial'
-keywords: LoopBack 4.0, LoopBack 4, connector, postgreSQL
+keywords:
+  LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, connector, postgreSQL
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Connecting-to-PostgreSQL.html
 ---

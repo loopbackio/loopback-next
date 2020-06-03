@@ -1,7 +1,7 @@
 ---
 title: 'Order filter'
 lang: en
-keywords: LoopBack 4.0, LoopBack 4, order
+keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, order
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Order-filter.html
 summary:

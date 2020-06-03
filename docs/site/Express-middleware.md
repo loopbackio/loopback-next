@@ -1,7 +1,8 @@
 ---
 lang: en
 title: 'Using Express middleware'
-keywords: LoopBack 4.0, LoopBack 4, Express, Middleware
+keywords:
+  LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, Express, Middleware
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Express-middleware.html
 ---

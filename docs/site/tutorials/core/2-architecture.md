@@ -1,7 +1,7 @@
 ---
 lang: en
 title: 'Architectural challenges'
-keywords: LoopBack 4.0, LoopBack 4
+keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/core-tutorial-part2.html
 ---

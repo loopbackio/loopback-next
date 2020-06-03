@@ -1,7 +1,7 @@
 ---
 title: 'Where filter'
 lang: en
-keywords: LoopBack 4.0, LoopBack 4, where
+keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, where
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Where-filter.html
 summary:

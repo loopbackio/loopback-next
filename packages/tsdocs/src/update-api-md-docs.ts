@@ -129,7 +129,7 @@ async function addJekyllMetadata(
     doc = `---
 lang: en
 title: 'API docs: ${name}'
-keywords: LoopBack 4.0, LoopBack 4
+keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI
 sidebar: lb4_sidebar
 editurl: ${pkgUrl}
 permalink: /doc/en/lb4/apidocs.${name}.html

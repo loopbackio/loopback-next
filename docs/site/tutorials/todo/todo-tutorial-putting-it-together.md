@@ -1,7 +1,7 @@
 ---
 lang: en
 title: 'Putting it all together'
-keywords: LoopBack 4.0, LoopBack 4
+keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/todo-tutorial-putting-it-together.html
 summary: LoopBack 4 Todo Application Tutorial - Putting it all together

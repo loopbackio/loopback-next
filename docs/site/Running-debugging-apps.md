@@ -1,7 +1,7 @@
 ---
 title: 'Running and debugging apps'
 lang: en
-keywords: LoopBack 4.0, LoopBack 4, Debug
+keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, Debug
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Running-and-debugging-apps.html
 summary:

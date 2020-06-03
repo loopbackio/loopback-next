@@ -1,7 +1,7 @@
 ---
 lang: en
 title: 'Calling other APIs and web services'
-keywords: LoopBack 4.0, LoopBack 4
+keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, REST, SOAP
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Calling-other-APIs-and-web-services.html
 ---

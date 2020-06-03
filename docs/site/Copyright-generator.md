@@ -1,7 +1,7 @@
 ---
 lang: en
 title: 'Generate copyright/license header for JavaScript/TypeScript files'
-keywords: LoopBack 4.0, LoopBack 4
+keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, CLI, Utility
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Copyright-generator.html
 ---

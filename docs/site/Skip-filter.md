@@ -1,7 +1,7 @@
 ---
 title: 'Skip filter'
 lang: en
-keywords: LoopBack 4.0, LoopBack 4, skip
+keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, skip
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Skip-filter.html
 ---

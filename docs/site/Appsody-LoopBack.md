@@ -1,7 +1,7 @@
 ---
 lang: en
 title: 'Developing and Deploying LoopBack Applications with Appsody'
-keywords: LoopBack 4.0, LoopBack 4, Appsody
+keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, Appsody, Cloud
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Appsody-LoopBack.html
 ---

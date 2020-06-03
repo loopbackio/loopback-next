@@ -1,7 +1,7 @@
 ---
 lang: en
 title: 'Understanding the differences between LoopBack 3 and LoopBack 4'
-keywords: LoopBack 4.0, LoopBack 4, LoopBack 3
+keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, LoopBack 3
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Understanding-the-differences.html
 ---

@@ -1,7 +1,7 @@
 ---
 lang: en
 title: 'Booting an Application'
-keywords: LoopBack 4.0, LoopBack 4
+keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, Booting
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Booting-an-Application.html
 ---

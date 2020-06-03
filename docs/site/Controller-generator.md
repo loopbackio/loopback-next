@@ -1,7 +1,7 @@
 ---
 lang: en
 title: 'Controller generator'
-keywords: LoopBack 4.0, LoopBack 4
+keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, CLI
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Controller-generator.html
 ---
