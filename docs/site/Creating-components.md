@@ -1,7 +1,7 @@
 ---
 lang: en
 title: 'Creating components'
-keywords: LoopBack 4.0, LoopBack 4
+keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, Components
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Creating-components.html
 ---

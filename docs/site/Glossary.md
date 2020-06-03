@@ -1,7 +1,7 @@
 ---
 lang: en
 title: 'Glossary'
-keywords: LoopBack 4.0, LoopBack 4
+keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI
 toc_level: 1
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Glossary.html

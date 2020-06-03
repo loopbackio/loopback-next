@@ -69,7 +69,7 @@ async function copyChangelogs() {
     `---
 lang: en
 title: 'CHANGELOG Docs'
-keywords: LoopBack 4.0, LoopBack 4
+keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/changelog.index.html
 ---
@@ -94,7 +94,7 @@ permalink: /doc/en/lb4/changelog.index.html
       const md = `---
 lang: en
 title: 'CHANGELOG - ${name}'
-keywords: LoopBack 4.0, LoopBack 4, CHANGELOG
+keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, Node.js, TypeScript, OpenAPI, CHANGELOG
 sidebar: lb4_sidebar
 toc_level: 0
 editurl: https://github.com/strongloop/loopback-next/blob/master/${location}/CHANGELOG.md

@@ -1,7 +1,8 @@
 ---
 lang: en
 title: 'OpenAPI generator'
-keywords: LoopBack 4.0, LoopBack 4, OpenAPI, Swagger
+keywords:
+  LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, OpenAPI, Swagger
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/OpenAPI-generator.html
 ---

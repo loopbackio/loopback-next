@@ -1,7 +1,7 @@
 ---
 lang: en
 title: 'Health checks'
-keywords: LoopBack 4.0, LoopBack 4, Cloud Native
+keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, Cloud Native
 layout: readme
 source: loopback-next
 file: extensions/health/README.md

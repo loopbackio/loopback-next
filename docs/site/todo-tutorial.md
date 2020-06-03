@@ -1,7 +1,7 @@
 ---
 lang: en
 title: 'Todo tutorial'
-keywords: LoopBack 4.0, LoopBack 4
+keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI
 layout: readme
 source: loopback-next
 file: examples/todo/README.md

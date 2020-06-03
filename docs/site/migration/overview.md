@@ -1,7 +1,8 @@
 ---
 lang: en
 title: 'Migration guide'
-keywords: LoopBack 4.0, LoopBack 4, LoopBack 3, Migration
+keywords:
+  LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, LoopBack 3, Migration
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/migration-overview.html
 ---

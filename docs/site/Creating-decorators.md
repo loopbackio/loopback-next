@@ -1,7 +1,7 @@
 ---
 lang: en
 title: 'Creating decorators'
-keywords: LoopBack 4.0, LoopBack 4
+keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, Decorators
 layout: readme
 source: loopback-next
 file: packages/metadata/README.md

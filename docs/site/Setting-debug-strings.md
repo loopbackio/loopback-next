@@ -1,7 +1,8 @@
 ---
 title: 'Setting debug strings'
 lang: en
-keywords: LoopBack 4.0, LoopBack 4, base-connector.js
+keywords:
+  LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, base-connector.js
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Setting-debug-strings.html
 summary:

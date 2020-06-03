@@ -2,7 +2,9 @@
 title: 'Using database transactions'
 lang: en
 layout: page
-keywords: LoopBack 4.0, LoopBack 4, Transactions, Transaction
+keywords:
+  LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, Transactions,
+  Transaction
 tags:
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Using-database-transactions.html

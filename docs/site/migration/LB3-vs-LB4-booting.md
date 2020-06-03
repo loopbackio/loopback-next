@@ -1,7 +1,9 @@
 ---
 lang: en
 title: 'Differences in LoopBack 3 and LoopBack 4 booting process'
-keywords: LoopBack 4.0, LoopBack 4, LoopBack 3.0, LoopBack 3
+keywords:
+  LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, LoopBack 3.0, LoopBack
+  3
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/LB3-vs-LB4-booting.html
 ---

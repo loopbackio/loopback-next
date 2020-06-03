@@ -1,7 +1,9 @@
 ---
 lang: en
 title: 'Dynamically adding models, repositories, and controllers during runtime'
-keywords: LoopBack 4.0, LoopBack 4, model, repository, controller, tutorial
+keywords:
+  LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, model, repository,
+  controller, tutorial
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Dynamic-models-repositories-controllers-tutorial.html
 ---

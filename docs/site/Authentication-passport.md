@@ -1,7 +1,9 @@
 ---
 lang: en
 title: 'Passport Authentication Strategy Adapter'
-keywords: LoopBack 4.0, LoopBack 4, Authentication, Passport
+keywords:
+  LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, Authentication,
+  Passport
 layout: readme
 source: loopback-next
 file: extensions/authentication-passport/README.md

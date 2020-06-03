@@ -1,7 +1,7 @@
 ---
 lang: en
 title: 'Exposing GraphQL APIs'
-keywords: LoopBack 4.0, LoopBack 4, GraphQL
+keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, GraphQL
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/exposing-graphql-apis.html
 ---
