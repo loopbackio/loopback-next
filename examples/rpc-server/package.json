@@ -52,6 +52,6 @@
     "@types/express": "^4.17.6",
     "@types/node": "^10.17.24",
     "eslint": "^7.1.0",
-    "typescript": "~3.9.3"
+    "typescript": "~3.9.5"
   }
 }
