@@ -63,7 +63,7 @@
     "@types/node": "^10.17.24",
     "eslint": "^7.0.0",
     "lodash": "^4.17.15",
-    "typescript": "~3.9.2"
+    "typescript": "~3.9.5"
   },
   "keywords": [
     "loopback",

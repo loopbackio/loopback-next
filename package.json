@@ -27,7 +27,7 @@
     "husky": "^4.2.5",
     "lerna": "^3.22.0",
     "open-cli": "^6.0.1",
-    "typescript": "~3.9.3"
+    "typescript": "~3.9.5"
   },
   "scripts": {
     "bootstrap": "lerna bootstrap",

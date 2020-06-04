@@ -54,7 +54,7 @@
     "@types/multer": "^1.4.3",
     "@types/node": "^10.17.24",
     "eslint": "^7.1.0",
-    "typescript": "~3.9.3"
+    "typescript": "~3.9.5"
   },
   "keywords": [
     "loopback",

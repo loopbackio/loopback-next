@@ -64,7 +64,7 @@
     "eslint": "^7.1.0",
     "lodash": "^4.17.15",
     "should": "^13.2.3",
-    "typescript": "~3.9.3"
+    "typescript": "~3.9.5"
   },
   "keywords": [
     "loopback",
