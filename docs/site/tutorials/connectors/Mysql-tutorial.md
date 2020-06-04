@@ -1,18 +1,18 @@
 ---
 lang: en
-title: 'PostgreSQL connector tutorial'
+title: 'MySQL connector tutorial'
 keywords:
-  LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, Connector, PostgreSQL,
+  LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, Connector, MySQL,
   Tutorial
 sidebar: lb4_sidebar
-permalink: /doc/en/lb4/Connecting-to-PostgreSQL.html
+permalink: /doc/en/lb4/Connecting-to-MySQL.html
 ---
 
-# Connecting to PostgreSQL
+# Connecting to MySQL
 
-The following tutorial introduces how to set up PostgreSQL as the data source of
+The following tutorial introduces how to set up MySQL as the data source of
 LoopBack 4 applications with
-[LoopBack PostgreSQL connector](https://github.com/strongloop/loopback-connector-postgresql).
+[LoopBack MySQL connector](https://github.com/strongloop/loopback-connector-mysql).
 
 ## Prerequisites
 
@@ -22,7 +22,7 @@ Before starting this tutorial, make sure you have the following installed:
 - LoopBack 4 CLI; see
   [Getting Started with LoopBack 4](../../Getting-started.md)
 
-## Tutorial - PostgreSQL
+## Tutorial - MySQL
 
 ### 1. Create a new LoopBack 4 app
 
@@ -32,7 +32,7 @@ LoopBack 4 application called `MyApp`:
 ```bash
 $ lb4 app
 ? Project name: my-app
-? Project description: postgreSQL connector tutorial
+? Project description: MySQL connector tutorial
 ? Project root directory: my-app
 ? Application class name: MyAppApplication
 ? Select features to enable in the project (Press <space> to select, <a> to togg
@@ -72,7 +72,6 @@ export class User extends Entity {
 
   @property({
     type: 'boolean',
-    required: true,
   })
   hasAccount: boolean;
 
@@ -84,22 +83,21 @@ export class User extends Entity {
 
 ### 3. Create a data source
 
-Next, let's create a DataSource `db` using the PostgreSQL connector by the
-prompts below:
+Next, let's create a DataSource `db` using the MySQL connector by the prompts
+below:
 
 ```bash
 $ lb4 datasource
 ? Datasource name: db
 ? Select the connector for db:
   ...
-  MySQL (supported by StrongLoop)
-❯ PostgreSQL (supported by StrongLoop)
-  Oracle (supported by StrongLoop)
+  MongoDB (supported by StrongLoop)
+❯ MySQL (supported by StrongLoop)
+  PostgreSQL (supported by StrongLoop)
   ...
-? Connection String url to override other settings (eg: postgres://username:pass
-word@localhost/database):
+? Connection String url to override other settings (eg: mysql://user:pass@host/db):
 ? host: localhost
-? port: 5432
+? port: 3306
 ? user: loopback
 ? password: [hidden] // example password: pa55w0rd
 ? database: demo
@@ -113,10 +111,10 @@ and the config we just set:
 ```ts
 const config = {
   name: 'db',
-  connector: 'postgresql',
+  connector: 'mysql',
   url: '',
   host: 'localhost',
-  port: 5432,
+  port: 3306,
   user: 'loopback',
   password: 'pa55w0rd',
   database: 'demo',
@@ -163,18 +161,21 @@ $ npm run build
 $ npm run migrate
 ```
 
-This would generate the corresponding PostgreSQL table `user` using the metadata
-from `User` model via auto-migrate. See
+This would generate the corresponding MySQL table `User` using the metadata from
+`User` model via auto-migrate if it does not exist. See
 [Database Migration](#database-migration) section below for information.
 
-If you check the database, you should able to see the table `user`.
+If you check the database, you should able to see the table `User`.
 
 ```
- column_name |          column_default          | data_type
--------------+----------------------------------+-----------
- id          | nextval('user_id_seq'::regclass) | integer
- name        |                                  | text
- hasaccount  |                                  | boolean
+mysql> describe User;
++------------+--------------+------+-----+---------+----------------+
+| Field      | Type         | Null | Key | Default | Extra          |
++------------+--------------+------+-----+---------+----------------+
+| id         | int(11)      | NO   | PRI | NULL    | auto_increment |
+| name       | varchar(512) | YES  |     | NULL    |                |
+| hasAccount | tinyint(1)   | YES  |     | NULL    |                |
++------------+--------------+------+-----+---------+----------------+
 ```
 
 ### 6. Create endpoints and view data using API Explorer
@@ -225,7 +226,7 @@ Please check [Database migration](../../Database-migrations.md) for details.
 Besides the basic model metadata, you can also specify part of the database
 schema definition via the property definition, which would be mapped to the
 database. See
-[Data Mapping Properties](https://loopback.io/doc/en/lb4/Model.html#data-mapping-properties).
+[Data Mapping Properties](https://loopback.io/doc/en/lb4/MySQL-connector.html#data-mapping-properties).
 
 ## Model Discovery
 
@@ -236,9 +237,9 @@ the `user` table we created previously:
 
 ```bash
 $ npm run build
-$ lb4 discover
+$ lb4 discover --schema demo
 ? Select the connector to discover  db
-? Select the models which to discover  user
+? Select the models which to discover  User
 ? Select a convention to convert db column names(EXAMPLE_COLUMN) to model proper
 ty names: Camel case (exampleColumn) (Recommended)
 ? Overwrite src/models/user.model.ts? overwrite
@@ -254,40 +255,59 @@ details:
 ```ts
 // imports
 @model({
-  settings: {idInjection: false, postgresql: {schema: 'public', table: 'user'}},
+  settings: {idInjection: false, mysql: {schema: 'testdb', table: 'User'}},
 })
 export class User extends Entity {
   @property({
     type: 'number',
     required: true,
+    precision: 10,
     scale: 0,
     id: 1,
-    postgresql: {
+    mysql: {
       columnName: 'id',
-      dataType: 'integer',
+      dataType: 'int',
       dataLength: null,
-      dataPrecision: null,
+      dataPrecision: 10,
       dataScale: 0,
-      nullable: 'NO',
+      nullable: 'N',
     },
   })
   id: number;
 
   @property({
     type: 'string',
-    postgresql: {
+    length: 512,
+    mysql: {
       columnName: 'name',
-      dataType: 'text',
-      dataLength: null,
+      dataType: 'varchar',
+      dataLength: 512,
       dataPrecision: null,
       dataScale: null,
-      nullable: 'YES',
+      nullable: 'Y',
     },
   })
   name?: string;
+
+  @property({
+    type: 'number',
+    precision: 3,
+    scale: 0,
+    mysql: {
+      columnName: 'hasAccount',
+      dataType: 'tinyint',
+      dataLength: null,
+      dataPrecision: 3,
+      dataScale: 0,
+      nullable: 'Y',
+    },
+  })
+  hasAccount?: number;
   // ...
 }
 ```
 
-These definitions would map to the database as well, see
-[Data Mapping Properties](https://loopback.io/doc/en/lb4/Model.html#data-mapping-properties).
+The field `mysql.<property>` maps to the database definition of a table/column.
+See
+[Data Mapping Properties](https://loopback.io/doc/en/lb4/MySQL-connector.html#data-mapping-properties)
+for details.
