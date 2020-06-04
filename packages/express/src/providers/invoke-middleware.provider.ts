@@ -60,6 +60,7 @@ export class InvokeMiddlewareProvider implements Provider<InvokeMiddleware> {
         this.binding?.tagMap[CoreTags.EXTENSION_POINT] ??
         this.defaultOptions.chain;
       return this.action(middlewareCtx, {
+        ...options,
         chain,
         orderedGroups: orderedGroups ?? this.defaultOptions.orderedGroups,
       });
