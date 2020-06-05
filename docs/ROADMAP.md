@@ -65,6 +65,9 @@ https://github.com/strongloop/loopback-next/issues/5113_
 
 #### Bugs, developer experience, internal tooling
 
+_Details to be discussed in
+https://github.com/strongloop/loopback-next/issues/5669 and linked issues._
+
 - mocha parallel testing
 - identify and investigate tests taking a longer time
 
