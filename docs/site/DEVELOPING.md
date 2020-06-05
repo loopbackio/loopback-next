@@ -229,6 +229,9 @@ npm script `lint:fix`.
 npm run lint:fix
 ```
 
+Files staged for commit are linted automatically. If necessary, pre-commit
+linting can be bypassed by setting the environment variable `LINT_STAGED=0`.
+
 ## Working with dependencies
 
 We use npm's
