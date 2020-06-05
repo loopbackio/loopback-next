@@ -28,6 +28,9 @@ import {
 } from './fastify.config';
 import {FastifyBindings} from './fastify.keys';
 import {FastifyInstance, Reply, Request} from './fastify.types';
+import {parseOperationParameters} from './parameter-parser';
+import {buildRouteSchema} from './route-schema';
+import {parseQueryString} from './query-parser';
 
 const debug = debugFactory('loopback:fastify:mixin');
 
@@ -46,7 +49,11 @@ export function FastifyMixin<T extends MixinTarget<Context>>(superClass: T) {
 
       // fastify modifies the provided config object, we create a copy to avoid
       // changing the config object in our bindings
-      this.fastify = Fastify({...config});
+      this.fastify = Fastify({
+        ...config,
+        querystringParser: parseQueryString,
+      });
+
       setupLifecycleObserver(this, config);
       setupBindingObserver(this);
     }
@@ -128,7 +135,9 @@ function registerController(
   for (const path in apiSpec.paths) {
     for (const verb in apiSpec.paths[path]) {
       const opSpec: OperationObject = apiSpec.paths[path][verb];
-      const fullPath = joinPath(basePath, path);
+      const fullPath = convertOpenApiPathParamsToColonStyle(
+        joinPath(basePath, path),
+      );
 
       const controllerMethodName = opSpec['x-operation-name'];
       if (!controllerMethodName) {
@@ -144,7 +153,7 @@ function registerController(
         debug(
           'Registering route %s %s -> %s(%s)',
           verb.toUpperCase(),
-          path,
+          fullPath,
           `${ctor.name}.${controllerMethodName}`,
           describeOperationParameters(opSpec),
         );
@@ -153,6 +162,7 @@ function registerController(
       serverContext.fastify.route({
         method: verb.toUpperCase() as HTTPMethod,
         url: fullPath,
+        schema: buildRouteSchema(opSpec),
         // TODO: describe query, params, headers,request & response body
         // using opSpec
         handler: async function (
@@ -171,12 +181,29 @@ function registerController(
             ctor,
             controllerFactory,
             controllerMethodName,
+            opSpec,
             request,
           );
         },
       });
     }
   }
+}
+
+// Copied from packages/rest/src/router/openapi-path.ts
+// Do we want to share this helper, perhaps via `@loopback/openapi-v3` package?
+/**
+ * Convert an OpenAPI path to Express (path-to-regexp) style
+ * @param path - OpenAPI path with optional variables as `{var}`
+ */
+export function convertOpenApiPathParamsToColonStyle(path: string) {
+  const result = path
+    // Convert `{arg}` to `:arg`
+    .replace(/\{([^\}]+)\}/g, ':$1')
+    // Convert `.` to `\\.` so that path-to-regexp will treat it as the plain
+    // `.` character
+    .replace('.', '\\.');
+  return result;
 }
 
 // Copied from packages/rest/src/router/controller-route.ts
@@ -214,13 +241,11 @@ function invokeControllerMethod(
   controllerCtor: Constructor<ControllerInstance>,
   controllerFactory: ControllerFactory,
   controllerMethodName: string,
+  operationSpec: OperationObject,
   request: Request,
 ): ValueOrPromise<unknown> {
   const requestContext = new Context(parentContext);
-
-  // TODO: parse args from the request
-  const args: unknown[] = [];
-
+  const args: unknown[] = parseOperationParameters(operationSpec, request);
   return transformValueOrPromise(controllerFactory(requestContext), invoke);
 
   function invoke(controller: ControllerInstance) {

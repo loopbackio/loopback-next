@@ -73,14 +73,15 @@ A Todo example app with REST API Explorer.
 - [x] FastifyMixin (replacing RestServer and RestApplication)
 - [x] Controller registration (`app.controller()`)
 - [x] OpenAPI-based routing
-- [ ] Documentation for Server Extension developers
-- [ ] OpenAPI-based parameter parsing & response schemas
+- [x] OpenAPI-based parameter parsing & response schemas
 - [ ] Tests to verify support for APIs produced by `rest-crud` model api builder
 - [ ] Benchmark
 - [ ] Code cleanup (initial)
+- [ ] Documentation for Server Extension developers
 
 **next**
 
+- [ ] More test coverage for validation
 - [ ] Error handler (based on strong-error-handler?)
 - [ ] REST API Explorer, preferably using `@loopback/rest-explorer`. This will
       probably require:

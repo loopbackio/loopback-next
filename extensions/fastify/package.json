@@ -37,6 +37,7 @@
     "debug": "^4.1.1",
     "fastify": "^2.14.1",
     "http-errors": "^1.7.3",
+    "qs": "^6.9.4",
     "tslib": "^1.10.0"
   },
   "peerDependencies": {
@@ -47,10 +48,13 @@
     "@loopback/core": "^2.5.0",
     "@loopback/eslint-config": "^6.0.6",
     "@loopback/openapi-spec-builder": "^2.1.3",
+    "@loopback/repository": "^2.6.0",
+    "@loopback/rest-crud": "^1.4.0",
     "@loopback/testlab": "^3.1.3",
     "@types/debug": "^4.1.5",
+    "@types/http-errors": "^1.6.3",
     "@types/node": "^10.17.21",
-    "@types/http-errors": "^1.6.3"
+    "@types/qs": "^6.9.3"
   },
   "copyright.owner": "IBM Corp.",
   "publishConfig": {
