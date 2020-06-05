@@ -26,7 +26,9 @@
     "eslint-plugin-mocha": "^7.0.1",
     "fs-extra": "^9.0.1",
     "husky": "^4.2.5",
+    "if-env": "^1.0.4",
     "lerna": "^3.22.1",
+    "lint-staged": "^10.2.7",
     "markdown-table": "^2.0.0",
     "open-cli": "^6.0.1",
     "typescript": "~3.9.6"
@@ -81,6 +83,7 @@
   "copyright.owner": "IBM Corp.",
   "husky": {
     "hooks": {
+      "pre-commit": "if-env LINT_STAGED=0 && echo \"lint-staged disabled via LINT_STAGED env var\" || lint-staged",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   }
