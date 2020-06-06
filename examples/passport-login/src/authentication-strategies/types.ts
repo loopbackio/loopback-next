@@ -3,11 +3,11 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import axios from 'axios';
-import {Profile} from 'passport';
 import {UserIdentityService} from '@loopback/authentication';
+import {securityId, UserProfile} from '@loopback/security';
+import got from 'got';
+import {Profile} from 'passport';
 import {User} from '../models';
-import {UserProfile, securityId} from '@loopback/security';
 
 export type ProfileFunction = (
   accessToken: string,
@@ -32,13 +32,15 @@ export const oauth2ProfileFunction: ProfileFunction = (
   done,
 ) => {
   // call the profile url in the mock authorization app with the accessToken
-  axios
+  got
     .get('http://localhost:9000/verify?access_token=' + accessToken, {
       headers: {Authorization: accessToken},
     })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    .json<any>()
     .then(response => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const profile: any = response.data;
+      const profile: any = response;
       profile.id = profile.userId;
       profile.emails = [{value: profile.email}];
       profile.provider = 'custom-oauth2';
