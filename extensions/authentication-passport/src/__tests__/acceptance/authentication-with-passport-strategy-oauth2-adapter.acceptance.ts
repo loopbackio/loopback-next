@@ -19,7 +19,7 @@ import {
   expect,
   supertest,
 } from '@loopback/testlab';
-import axios from 'axios';
+import got from 'got';
 import {AddressInfo} from 'net';
 import {
   Strategy as Oauth2Strategy,
@@ -253,12 +253,13 @@ describe('Oauth2 authorization flow', () => {
     // passport-oauth2 base class leaves user profile creation to subclass implementations
     passport.userProfile = (accessToken, done) => {
       // call the profile url in the mock authorization app with the accessToken
-      axios
+      got
         .get('http://localhost:9000/verify?access_token=' + accessToken, {
           headers: {Authorization: accessToken},
         })
+        .json<unknown>()
         .then(response => {
-          done(null, response.data);
+          done(null, response);
         })
         .catch(err => {
           done(err);
