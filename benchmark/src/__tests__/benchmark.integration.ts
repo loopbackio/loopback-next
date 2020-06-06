@@ -5,7 +5,7 @@
 
 import {expect} from '@loopback/testlab';
 import {Options} from 'autocannon';
-import axios, {AxiosRequestConfig, Method} from 'axios';
+import got, {Method, OptionsOfJSONResponseBody} from 'got';
 import {Benchmark} from '..';
 import {Autocannon, EndpointStats} from '../autocannon';
 
@@ -41,11 +41,11 @@ describe('Benchmark (SLOW)', function (this: Mocha.Suite) {
     ): Promise<EndpointStats> {
       if (!options) options = {};
 
-      const requestOptions: AxiosRequestConfig = {
+      const requestOptions: OptionsOfJSONResponseBody = {
         url: this.buildUrl(urlPath),
         method: (options.method ?? 'GET') as Method,
         responseType: 'json',
-        data: options.body ? JSON.parse(options.body as string) : undefined,
+        json: options.body ? JSON.parse(options.body as string) : undefined,
       };
 
       debug(
@@ -55,7 +55,7 @@ describe('Benchmark (SLOW)', function (this: Mocha.Suite) {
       );
 
       // Verify that the server is implementing the requested URL
-      await axios(requestOptions);
+      await got(requestOptions);
 
       return DUMMY_STATS;
     }

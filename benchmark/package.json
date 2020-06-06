@@ -41,10 +41,10 @@
     "@types/debug": "^4.1.5",
     "@types/request-promise-native": "^1.0.17",
     "autocannon": "^5.0.0",
-    "axios": "^0.19.2",
     "benchmark": "^2.1.4",
     "byline": "^5.0.0",
     "debug": "^4.1.1",
+    "got": "^11.3.0",
     "path-to-regexp": "^6.1.0",
     "tslib": "^2.0.0"
   },

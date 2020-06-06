@@ -4,18 +4,16 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Todo} from '@loopback/example-todo';
-import axios from 'axios';
+import got from 'got';
 
 export class Client {
   constructor(private url: string) {}
 
   createTodo(data: Partial<Todo>) {
-    return axios.post(`${this.url}/todos`, data, {
-      responseType: 'json',
-    });
+    return got.post(`${this.url}/todos`, {json: data});
   }
 
   ping() {
-    return axios.get(`${this.url}/todos`);
+    return got.get(`${this.url}/todos`);
   }
 }
