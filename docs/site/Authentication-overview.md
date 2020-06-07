@@ -64,7 +64,7 @@ we've broken down the documentations into several parts:
     `@loopback/authentication`
   - [**JWT extension**](JWT-authentication-extension.md): A prototype
     implementation of the JWT authentication.
-- [**How to create your own authentication strategy**](missing_link):
+- [**How to create your own authentication strategy**](Create-custom-authentication-strategy.md):
   Particularly for extension developers.
 - [Use [**Passport**](https://www.npmjs.com/package/passport) strategies](Authentication-passport.md):
   The usage of passport adapter module `@loopback/authentication-passport`.
