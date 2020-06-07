@@ -132,6 +132,7 @@
 # - Standby owner(s): @emonddr
 /packages/core/src/component.ts @emonddr @jannyHou @raymondfeng
 /extensions/cron @raymondfeng
+/extensions/pooling @raymondfeng
 /examples/greeting-app @emonddr @jannyHou @raymondfeng
 /examples/log-extension @emonddr @jannyHou @raymondfeng
 /examples/greeter-extension @emonddr @jannyHou @raymondfeng
