@@ -34,7 +34,7 @@
     "@loopback/eslint-config": "^8.0.0",
     "@loopback/testlab": "^3.1.6",
     "@types/morgan": "^1.9.0",
-    "@types/node": "^10.17.24"
+    "@types/node": "^10.17.25"
   },
   "keywords": [
     "LoopBack",

@@ -83,7 +83,7 @@
     "@loopback/testlab": "^3.1.6",
     "@types/express": "^4.17.6",
     "@types/lodash": "^4.14.155",
-    "@types/node": "^10.17.24",
+    "@types/node": "^10.17.25",
     "axios": "^0.19.2",
     "eslint": "^7.2.0",
     "lodash": "^4.17.15",

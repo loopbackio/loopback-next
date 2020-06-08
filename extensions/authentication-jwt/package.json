@@ -39,7 +39,7 @@
     "@loopback/repository": "^2.6.0",
     "@loopback/testlab": "^2.0.2",
     "@types/lodash": "^4.14.155",
-    "@types/node": "^10.17.24",
+    "@types/node": "^10.17.25",
     "lodash": "^4.17.15",
     "typescript": "~3.9.5"
   },
