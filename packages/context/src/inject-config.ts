@@ -129,7 +129,7 @@ export namespace config {
  */
 function getCurrentBindingKey(session: ResolutionSession) {
   // The current binding is not set if `instantiateClass` is invoked directly
-  return session.currentBinding && session.currentBinding.key;
+  return session.currentBinding?.key;
 }
 
 /**

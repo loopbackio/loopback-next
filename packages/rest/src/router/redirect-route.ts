@@ -54,8 +54,7 @@ export class RedirectRoute implements RouteEntry, ResolvedRoute {
     const redirectOptions = obj as RedirectRoute;
     if (
       redirectOptions?.targetLocation &&
-      redirectOptions.spec &&
-      redirectOptions.spec.description === 'LoopBack Redirect route'
+      redirectOptions.spec?.description === 'LoopBack Redirect route'
     ) {
       return true;
     }

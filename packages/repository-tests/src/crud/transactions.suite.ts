@@ -77,7 +77,7 @@ export function transactionSuite(
           // reference of a `tx`.
           // Detailed explanation see:
           // https://github.com/strongloop/loopback-next/pull/4474
-          if (ds.connector && ds.connector.name === 'postgresql') {
+          if (ds.connector?.name === 'postgresql') {
             tx = undefined;
           }
           if (tx?.isActive()) {

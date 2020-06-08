@@ -194,7 +194,7 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
     }
 
     if (methodTags) {
-      if (operationSpec.tags && operationSpec.tags.length) {
+      if (operationSpec.tags?.length) {
         operationSpec.tags = operationSpec.tags.concat(methodTags.tags);
       } else {
         operationSpec.tags = methodTags.tags;

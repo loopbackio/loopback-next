@@ -280,7 +280,7 @@ describe('RestServer.getApiSpec()', () => {
     app.controller(MyController);
 
     const spec = await server.getApiSpec();
-    expect(spec.components && spec.components.schemas).to.deepEqual({
+    expect(spec.components?.schemas).to.deepEqual({
       MyModel: {
         title: 'MyModel',
         properties: {

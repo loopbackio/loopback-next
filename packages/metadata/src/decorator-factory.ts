@@ -98,7 +98,7 @@ export class DecoratorFactory<
   }
 
   protected allowInheritance(): boolean {
-    return !!(this.options && this.options.allowInheritance);
+    return !!this.options?.allowInheritance;
   }
 
   /**

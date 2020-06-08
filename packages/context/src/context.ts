@@ -502,7 +502,7 @@ export class Context extends EventEmitter {
       if (filter(b)) bindings.push(b);
     }
 
-    const parentBindings = this._parent && this._parent.find(filter);
+    const parentBindings = this._parent?.find(filter);
     return this._mergeWithParent(bindings, parentBindings);
   }
 

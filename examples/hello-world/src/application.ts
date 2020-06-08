@@ -23,7 +23,7 @@ export class HelloWorldApplication extends RestApplication {
   async start() {
     await super.start();
 
-    if (!(this.options && this.options.disableConsoleLog)) {
+    if (!this.options?.disableConsoleLog) {
       const rest = await this.getServer(RestServer);
       console.log(
         `REST server running on port: ${await rest.get('rest.port')}`,

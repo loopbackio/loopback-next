@@ -34,8 +34,7 @@ export function resolveHasManyMetadata(
   relationMeta = resolveHasManyMetaHelper(relationMeta);
 
   const targetModel = relationMeta.target();
-  const targetModelProperties =
-    targetModel.definition && targetModel.definition.properties;
+  const targetModelProperties = targetModel.definition?.properties;
 
   const sourceModel = relationMeta.source;
 

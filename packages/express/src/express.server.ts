@@ -95,7 +95,7 @@ export class ExpressServer extends BaseMiddlewareRegistry implements Server {
    * will be 'http://localhost:3000' regardless of the `basePath`.
    */
   get rootUrl(): string | undefined {
-    return this.httpServer && this.httpServer.url;
+    return this.httpServer?.url;
   }
 
   async start() {
