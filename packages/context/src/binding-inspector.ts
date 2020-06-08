@@ -178,7 +178,7 @@ export function bindingTemplateFor<T>(
     for (const t of templateFunctions) {
       binding.apply(t);
     }
-    if (spec && spec.target !== cls) {
+    if (spec?.target !== cls) {
       // Remove name/key tags inherited from base classes
       binding.apply(removeNameAndKeyTags);
     }

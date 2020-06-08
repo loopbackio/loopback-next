@@ -45,7 +45,7 @@ export class MySequence implements SequenceHandler {
       const args = await this.parseParams(request, route);
 
       // if provider name is available in the request path params, set it in the query
-      if (route.pathParams && route.pathParams.provider) {
+      if (route.pathParams?.provider) {
         request.query['oauth2-provider-name'] = route.pathParams.provider;
       }
 

@@ -4,11 +4,11 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
+  Application,
   Context,
   inject,
   invokeMethod,
   Provider,
-  Application,
 } from '@loopback/core';
 import {SecurityBindings, securityId, UserProfile} from '@loopback/security';
 import {expect} from '@loopback/testlab';
@@ -151,7 +151,7 @@ describe('Authorization', () => {
       const request: AuthorizationRequest = {
         subject: authorizationCtx.principals[0].name,
         object: metadata.resource ?? authorizationCtx.resource,
-        action: (metadata.scopes && metadata.scopes[0]) || 'execute',
+        action: metadata.scopes?.[0] ?? 'execute',
       };
       const allow = await this.enforcer.enforce(
         request.subject,

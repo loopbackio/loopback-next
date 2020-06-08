@@ -6,8 +6,8 @@
 // Should it be imported from 'express'?
 // The `Request` type from 'express' is not compatible
 // with the one from `@loopback/rest` now.
-import {UserProfile} from '@loopback/security';
 import {Request} from '@loopback/rest';
+import {UserProfile} from '@loopback/security';
 import {AuthenticateOptions, Strategy} from 'passport';
 
 /**
@@ -39,18 +39,10 @@ export class MockPassportStrategy extends Strategy {
    * pass req.query.testState = 'error' to mock unexpected error
    */
   async verify(request: Request) {
-    if (
-      request.headers &&
-      request.headers.testState &&
-      request.headers.testState === 'fail'
-    ) {
+    if (request.headers?.testState === 'fail') {
       this.returnUnauthorized('authorization failed');
       return;
-    } else if (
-      request.headers &&
-      request.headers.testState &&
-      request.headers.testState === 'error'
-    ) {
+    } else if (request.headers?.testState === 'error') {
       this.returnError('unexpected error');
       return;
     }

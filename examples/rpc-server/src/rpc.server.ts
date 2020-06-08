@@ -4,10 +4,10 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
-  Context,
-  inject,
   Application,
+  Context,
   CoreBindings,
+  inject,
   Server,
 } from '@loopback/core';
 import {once} from 'events';
@@ -35,9 +35,7 @@ export class RPCServer extends Context implements Server {
   }
 
   async start(): Promise<void> {
-    this._server = this.expressServer.listen(
-      (this.config && this.config.port) || 3000,
-    );
+    this._server = this.expressServer.listen(this.config?.port ?? 3000);
     this._listening = true;
     await once(this._server, 'listening');
   }

@@ -152,7 +152,7 @@ export class HttpServer {
    */
   public get port(): number {
     if (typeof this._address === 'string') return 0;
-    return (this._address && this._address.port) || this.serverOptions.port!;
+    return this._address?.port || this.serverOptions.port!;
   }
 
   /**
@@ -160,7 +160,7 @@ export class HttpServer {
    */
   public get host(): string | undefined {
     if (typeof this._address === 'string') return undefined;
-    return (this._address && this._address.address) || this.serverOptions.host;
+    return this._address?.address || this.serverOptions.host;
   }
 
   /**

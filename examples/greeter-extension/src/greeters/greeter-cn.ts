@@ -30,7 +30,7 @@ export class ChineseGreeter implements Greeter {
   ) {}
 
   greet(name: string) {
-    if (this.options && this.options.nameFirst === false) {
+    if (this.options?.nameFirst === false) {
       return `你好，${name}！`;
     }
     return `${name}，你好！`;

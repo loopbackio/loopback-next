@@ -44,7 +44,7 @@ export class CasbinAuthorizationProvider implements Provider<Authorizer> {
     const request: AuthorizationRequest = {
       subject,
       object,
-      action: (metadata.scopes && metadata.scopes[0]) || DEFAULT_SCOPE,
+      action: metadata.scopes?.[0] ?? DEFAULT_SCOPE,
     };
 
     const allowedRoles = metadata.allowedRoles;

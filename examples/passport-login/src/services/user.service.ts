@@ -3,11 +3,11 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {UserIdentityService} from '@loopback/authentication';
 import {repository} from '@loopback/repository';
 import {Profile as PassportProfile} from 'passport';
-import {UserIdentityService} from '@loopback/authentication';
-import {UserRepository} from '../repositories';
 import {User} from '../models';
+import {UserRepository} from '../repositories';
 import {UserIdentityRepository} from '../repositories/user-identity.repository';
 
 /**
@@ -43,10 +43,9 @@ export class PassportUserIdentityService
     });
     let user: User;
     if (!users || !users.length) {
-      const name =
-        profile.name && profile.name.givenName
-          ? profile.name.givenName + ' ' + profile.name.familyName
-          : profile.displayName;
+      const name = profile.name?.givenName
+        ? profile.name.givenName + ' ' + profile.name.familyName
+        : profile.displayName;
       user = await this.userRepository.create({
         email: email,
         name: name || JSON.stringify(profile.name),

@@ -405,7 +405,7 @@ describe('HttpHandler', () => {
       // is called before all request data has been processed due
       // to size limit.
       // On Windows, ECONNRESET is sometimes emitted instead of EPIPE.
-      if (err && err.code !== 'EPIPE' && err.code !== 'ECONNRESET') throw err;
+      if (err?.code !== 'EPIPE' && err?.code !== 'ECONNRESET') throw err;
     }
 
     function givenLargeRequest() {

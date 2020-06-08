@@ -41,8 +41,7 @@ export function resolveHasOneMetadata(
   }
 
   const targetModel = relationMeta.target();
-  const targetModelProperties =
-    targetModel.definition && targetModel.definition.properties;
+  const targetModelProperties = targetModel.definition?.properties;
 
   const sourceModel = relationMeta.source;
   if (!sourceModel || !sourceModel.modelName) {

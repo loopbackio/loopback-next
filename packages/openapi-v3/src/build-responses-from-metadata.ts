@@ -21,7 +21,7 @@ declare type ResponseMap = Map<
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function isModel<T extends Model>(c: any): c is T {
-  return c && c.prototype instanceof Model;
+  return c?.prototype instanceof Model;
 }
 
 /**

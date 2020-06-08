@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {config, Getter, extensionPoint, extensions} from '@loopback/core';
+import {config, extensionPoint, extensions, Getter} from '@loopback/core';
 import chalk from 'chalk';
 import {Greeter, GREETER_EXTENSION_POINT_NAME} from './types';
 
@@ -60,7 +60,7 @@ export class GreetingService {
       // Fall back to English
       greeting = `Hello, ${name}!`;
     }
-    if (this.options && this.options.color) {
+    if (this.options?.color) {
       greeting = chalk.keyword(this.options.color)(greeting);
     }
     return greeting;

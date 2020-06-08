@@ -216,7 +216,7 @@ function asObject(value: any, options?: Options): any {
  */
 export abstract class Model {
   static get modelName(): string {
-    return (this.definition && this.definition.name) || this.name;
+    return this.definition?.name || this.name;
   }
 
   static definition: ModelDefinition;
@@ -268,7 +268,7 @@ export abstract class Model {
     const def = (this.constructor as typeof Model).definition;
     const obj: AnyObject = {};
 
-    if (options && options.ignoreUnknownProperties === false) {
+    if (options?.ignoreUnknownProperties === false) {
       const hiddenProperties: string[] = def?.settings.hiddenProperties || [];
       for (const p in this) {
         if (!hiddenProperties.includes(p)) {

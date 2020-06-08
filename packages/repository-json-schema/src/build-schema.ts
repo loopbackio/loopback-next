@@ -342,12 +342,12 @@ function buildSchemaTitle<T extends object>(
 function getTitleSuffix<T extends object>(options: JsonSchemaOptions<T> = {}) {
   let suffix = '';
 
-  if (options.optional && options.optional.length) {
+  if (options.optional?.length) {
     suffix += `Optional_${options.optional.join('-')}_`;
   } else if (options.partial) {
     suffix += 'Partial';
   }
-  if (options.exclude && options.exclude.length) {
+  if (options.exclude?.length) {
     suffix += `Excluding_${options.exclude.join('-')}_`;
   }
   if (options.includeRelations) {
@@ -463,7 +463,7 @@ export function modelToJsonSchema<T extends object>(
   }
 
   for (const p in meta.properties) {
-    if (options.exclude && options.exclude.includes(p as keyof T)) {
+    if (options.exclude?.includes(p as keyof T)) {
       debug('Property % is excluded by %s', p, options.exclude);
       continue;
     }
@@ -562,7 +562,7 @@ export function modelToJsonSchema<T extends object>(
     if (!schema || !Object.keys(schema).length) return;
 
     // promote nested definition to the top level
-    if (result !== schema && schema.definitions) {
+    if (result !== schema?.definitions) {
       for (const key in schema.definitions) {
         if (key === title) continue;
         result.definitions = result.definitions ?? {};

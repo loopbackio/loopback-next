@@ -180,7 +180,7 @@ export class RestServer extends BaseMiddlewareRegistry
    * will be 'http://localhost:3000' regardless of the `basePath`.
    */
   get rootUrl(): string | undefined {
-    return this._httpServer && this._httpServer.url;
+    return this._httpServer?.url;
   }
 
   /**

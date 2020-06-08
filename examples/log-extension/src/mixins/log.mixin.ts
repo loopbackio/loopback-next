@@ -23,7 +23,7 @@ export function LogMixin<T extends MixinTarget<Application>>(superClass: T) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     constructor(...args: any[]) {
       super(...args);
-      if (this.options && this.options.logLevel) {
+      if (this.options?.logLevel) {
         this.logLevel(this.options.logLevel);
       }
       this.component(LogComponent);
