@@ -31,7 +31,7 @@
     "@loopback/eslint-config": "^8.0.0",
     "@loopback/testlab": "^3.1.6",
     "@types/express": "^4.17.6",
-    "@types/node": "^10.17.24",
+    "@types/node": "^10.17.25",
     "express": "^4.17.1"
   },
   "keywords": [
