@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {BindingKey} from '@loopback/core';
-import {TimerFn, LogFn, LogWriterFn} from './types';
+import {LogFn, LogWriterFn, TimerFn} from './types';
 
 /**
  * Binding keys used by this component.
@@ -19,7 +19,7 @@ export namespace EXAMPLE_LOG_BINDINGS {
 }
 
 /**
- * The key used to store log-related via @loopback/metadata and reflection.
+ * The key used to store log-related metadata via decorators and reflection.
  */
 export const EXAMPLE_LOG_METADATA_KEY = 'example.log.metadata';
 
