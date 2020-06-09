@@ -52,7 +52,7 @@
     "@openapi-contrib/openapi-schema-to-json-schema": "^3.0.0",
     "@phenomnomnominal/tsquery": "^4.1.0",
     "camelcase-keys": "^6.2.2",
-    "chalk": "^4.0.0",
+    "chalk": "^4.1.0",
     "change-case": "^4.1.1",
     "debug": "^4.1.1",
     "fs-extra": "^9.0.1",
