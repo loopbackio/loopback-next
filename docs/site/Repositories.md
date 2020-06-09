@@ -543,7 +543,7 @@ Injection:
     ```
 
 2.  Inject the bound instance into the repository property of your controller.
-    `inject` can be imported from `@loopback/context`.
+    `inject` can be imported from `@loopback/core`.
 
     ```ts
     export class AccountController {

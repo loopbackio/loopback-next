@@ -49,7 +49,6 @@ Then **decorating your controller methods with `@authorize`** to require the
 request to be authorized.
 
 ```ts
-import {inject} from '@loopback/context';
 import {authorize} from '@loopback/authorization';
 import {get} from '@loopback/rest';
 

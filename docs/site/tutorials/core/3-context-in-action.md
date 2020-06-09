@@ -25,6 +25,19 @@ In LoopBack 4, we implemented such capabilities in the `@loopback/context`
 module. The hierarchy of contexts becomes the universal knowledge base for the
 whole application to promote visibility, extensibility, and composability.
 
+{% include note.html content="The `@loopback/core` package re-exports all public
+APIs of `@loopback/context`. For consistency, we recommend the usage of
+`@loopback/core` for imports in LoopBack modules and applications unless they
+depend on `@loopback/context` explicitly. The two statements below are
+equivalent:
+
+```ts
+import {inject} from '@loopback/context';
+import {inject} from '@loopback/core';
+```
+
+" %}
+
 Let's walk through some code snippets to illustrate how artifacts are managed
 with `@loopback/context`.
 
