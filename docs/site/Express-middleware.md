@@ -171,7 +171,7 @@ If the Express middleware only exposes the handler function without a factory or
 a single instance is desired, use `toInterceptor`.
 
 ```ts
-import {toInterceptor} from '@loopback/express';
+import {toInterceptor} from '@loopback/rest';
 import morgan from 'morgan';
 
 const morganInterceptor = toInterceptor(morgan('combined'));
@@ -183,7 +183,7 @@ When the Express middleware module exports a factory function that takes an
 optional argument for configuration, use `createInterceptor`.
 
 ```ts
-import {createInterceptor} from '@loopback/express';
+import {createInterceptor} from '@loopback/rest';
 import helmet, {IHelmetConfiguration} from 'helmet';
 const helmetConfig: IHelmetConfiguration = {};
 const helmetInterceptor = createInterceptor(helmet, helmetConfig);
@@ -208,7 +208,7 @@ for the middleware. We can use `defineInterceptorProvider` to simplify
 definition of such provider classes.
 
 ```ts
-import {defineInterceptorProvider} from '@loopback/express';
+import {defineInterceptorProvider} from '@loopback/rest';
 import helmet, {IHelmetConfiguration} from 'helmet';
 
 const helmetProviderClass = defineInterceptorProvider<IHelmetConfiguration>(
@@ -225,7 +225,7 @@ import {config} from '@loopback/core';
 import {
   ExpressMiddlewareInterceptorProvider,
   createMiddlewareInterceptorBinding,
-} from '@loopback/express';
+} from '@loopback/rest';
 import helmet, {IHelmetConfiguration} from 'helmet';
 
 class HelmetInterceptorProvider extends ExpressMiddlewareInterceptorProvider<
@@ -317,7 +317,7 @@ Let's update `src/interceptors/helmet.interceptor.ts:
 ```ts
 import {config, globalInterceptor} from '@loopback/core';
 import helmet, {IHelmetConfiguration} from 'helmet';
-import {ExpressMiddlewareInterceptorProvider} from '@loopback/express';
+import {ExpressMiddlewareInterceptorProvider} from '@loopback/rest';
 
 @globalInterceptor('middleware', {tags: {name: 'Helmet'}})
 export class MorganInterceptor extends ExpressMiddlewareInterceptorProvider<
@@ -343,7 +343,7 @@ To allow a similar usage in LoopBack, we can create an Express router and
 register it to LoopBack as follows:
 
 ```ts
-import {ExpressRequestHandler, Router} from '@loopback/express';
+import {ExpressRequestHandler, Router} from '@loopback/rest';
 
 const handler: ExpressRequestHandler = async (req, res, next) => {
   res.send(req.path);
