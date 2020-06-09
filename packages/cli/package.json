@@ -72,7 +72,7 @@
     "slash": "^3.0.0",
     "spdx-license-list": "^6.2.0",
     "stringify-object": "^3.3.0",
-    "strong-globalize": "^6.0.2",
+    "strong-globalize": "^6.0.3",
     "swagger-parser": "^9.0.1",
     "swagger2openapi": "^6.0.3",
     "tabtab": "^3.0.2",
