@@ -28,7 +28,7 @@
   "dependencies": {
     "@loopback/core": "^2.7.1",
     "@loopback/repository": "^2.6.0",
-    "@types/json-schema": "^7.0.4",
+    "@types/json-schema": "^7.0.5",
     "debug": "^4.1.1",
     "tslib": "^2.0.0"
   },
