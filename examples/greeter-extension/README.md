@@ -51,8 +51,8 @@ context. In our case, we mark `GreetingService` as the extension point that
 needs to access a list of greeters.
 
 ```ts
-import {Getter} from '@loopback/context';
-import {extensionFilter, CoreTags} from '@loopback/core';
+import {CoreTags, Getter, extensionFilter} from '@loopback/core';
+
 /**
  * An extension point for greeters that can greet in different languages
  */
@@ -169,7 +169,7 @@ knowing much about one another.
 
 ```ts
 import {Greeter, asGreeter} from '../types';
-import {bind, config} from '@loopback/context';
+import {bind, config} from '@loopback/core';
 
 /**
  * Options for the Chinese greeter
@@ -235,8 +235,7 @@ app
 The process can be automated with a component:
 
 ```ts
-import {createBindingFromClass} from '@loopback/context';
-import {Component} from '@loopback/core';
+import {Component, createBindingFromClass} from '@loopback/core';
 import {GreetingService} from './greeting-service';
 import {GREETING_SERVICE} from './keys';
 

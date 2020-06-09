@@ -20,6 +20,19 @@ module implements an
 container called [Context](Context.md) as a service registry that supports
 [Dependency injection](Dependency-injection.md).
 
+{% include note.html content="The `@loopback/core` package re-exports all public
+APIs of `@loopback/context`. For consistency, we recommend the usage of
+`@loopback/core` for imports in LoopBack modules and applications unless they
+depend on `@loopback/context` explicitly. The two statements below are
+equivalent:
+
+```ts
+import {inject} from '@loopback/context';
+import {inject} from '@loopback/core';
+```
+
+" %}
+
 The IoC container decouples service providers and consumers. A service provider
 can be bound to the context with a key, which can be treated as an address of
 the service provider.

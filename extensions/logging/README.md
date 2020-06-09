@@ -42,7 +42,7 @@ Now your application can add a controller as follows to leverage the logging
 facilities:
 
 ```ts
-import {inject} from '@loopback/context';
+import {inject} from '@loopback/core';
 import {Logger, logInvocation} from '@loopback/extension-logging';
 import {get, param} from '@loopback/rest';
 

@@ -356,8 +356,8 @@ default implementation of
 [invoke](https://github.com/strongloop/loopback-next/blob/6bafa0774662991199090219913c3dc77ad5b149/packages/rest/src/providers/invoke-method.provider.ts)
 action calls the handler function for the route with the request specific
 context and the arguments for the function. It is important to note that
-controller methods use `invokeMethod` from `@loopback/context` and can be used
-with global and custom interceptors. See
+controller methods use `invokeMethod` from `@loopback/core` and can be used with
+global and custom interceptors. See
 [Interceptor docs](Interceptors.md#use-invokemethod-to-apply-interceptors) for
 more details. The request flow for two route flavours is explained below.
 

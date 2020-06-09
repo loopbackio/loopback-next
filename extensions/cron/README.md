@@ -62,7 +62,7 @@ It's also possible to extend `CronJob`.
 
 ```ts
 import {CronJob, cronJob, CronJobConfig} from '@loopback/cron';
-import {config, Provider, createBindingFromClass} from '@loopback/context';
+import {config, Provider, createBindingFromClass} from '@loopback/core';
 
 @cronJob()
 class MyCronJob extends CronJob {
@@ -86,7 +86,7 @@ Alternatively, we can also define a provider class:
 
 ```ts
 import {CronJob, cronJob, CronJobConfig} from '@loopback/cron';
-import {config, Provider, createBindingFromClass} from '@loopback/context';
+import {config, Provider, createBindingFromClass} from '@loopback/core';
 
 @cronJob()
 class CronJobProvider implements Provider<CronJob> {

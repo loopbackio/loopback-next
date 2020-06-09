@@ -223,8 +223,7 @@ import {
   AuthenticationStrategy,
   AuthenticationBindings,
 } from '@loopback/authentication';
-import {Provider} from '@loopback/core';
-import {inject} from '@loopback/context';
+import {Provider, inject} from '@loopback/core';
 
 export class PassportBasicAuthProvider<MyUser>
   implements Provider<AuthenticationStrategy> {

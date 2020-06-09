@@ -130,7 +130,7 @@ module.exports = {
          *
          * @example
          * ```ts
-         * import {inject} from '@loopback/context';
+         * import {inject} from '@loopback/core';
          * class MyController {
          *   constructor(@inject('foo') foo: string) {}
          * }
