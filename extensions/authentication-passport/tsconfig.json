@@ -20,9 +20,6 @@
       "path": "../../packages/core/tsconfig.json"
     },
     {
-      "path": "../../packages/metadata/tsconfig.json"
-    },
-    {
       "path": "../../packages/openapi-spec-builder/tsconfig.json"
     },
     {
