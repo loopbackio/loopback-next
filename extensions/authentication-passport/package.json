@@ -42,7 +42,6 @@
   "dependencies": {
     "@loopback/authentication": "^4.2.6",
     "@loopback/core": "^2.7.1",
-    "@loopback/metadata": "^2.1.6",
     "@loopback/openapi-v3": "^3.4.2",
     "@loopback/rest": "^5.1.0",
     "@loopback/security": "^0.2.11",
