@@ -33,6 +33,8 @@ describe('model API booter acceptance tests', () => {
 
   afterEach(stopApp);
 
+  after('delete sandbox', () => sandbox.delete());
+
   it('uses the correct model API builder', async () => {
     await sandbox.copyFile(
       resolve(__dirname, '../fixtures/product.model.js'),
@@ -167,10 +169,6 @@ module.exports = {
   }
 
   async function stopApp() {
-    try {
-      await app.stop();
-    } catch (err) {
-      // console.error('Cannot stop the app, ignoring the error.', err);
-    }
+    if (app?.state === 'started') await app?.stop();
   }
 });
