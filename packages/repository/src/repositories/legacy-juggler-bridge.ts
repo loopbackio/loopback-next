@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Getter} from '@loopback/core';
-import {Filter, FilterExcludingWhere, Inclusion, Where} from '@loopback/filter';
+import {Filter, FilterExcludingWhere, Where} from '@loopback/filter';
 import assert from 'assert';
 import legacy from 'loopback-datasource-juggler';
 import {
@@ -447,30 +447,34 @@ export class DefaultCrudRepository<
     filter?: Filter<T>,
     options?: Options,
   ): Promise<(T & Relations)[]> {
-    const include = filter?.include;
-    const models = await ensurePromise(
-      this.modelClass.find(this.normalizeFilter(filter), options),
-    );
-    const entities = this.toEntities(models);
-    return this.includeRelatedModels(entities, include, options);
+    const resolveEntities = async (updatedFilter?: Filter<T>) => {
+      const models = await ensurePromise(
+        this.modelClass.find(this.normalizeFilter(updatedFilter), options),
+      );
+      return this.toEntities(models);
+    };
+    return this.includeRelatedModels(resolveEntities, filter, options);
   }
 
   async findOne(
     filter?: Filter<T>,
     options?: Options,
   ): Promise<(T & Relations) | null> {
-    const model = await ensurePromise(
-      this.modelClass.findOne(this.normalizeFilter(filter), options),
-    );
-    if (!model) return null;
-    const entity = this.toEntity(model);
-    const include = filter?.include;
+    const resolveEntities = async (updatedFilter?: Filter<T>) => {
+      const model = await ensurePromise(
+        this.modelClass.findOne(this.normalizeFilter(updatedFilter), options),
+      );
+      if (!model) {
+        return [] as (T & Relations)[];
+      }
+      return [this.toEntity(model)];
+    };
     const resolved = await this.includeRelatedModels(
-      [entity],
-      include,
+      resolveEntities,
+      filter,
       options,
     );
-    return resolved[0];
+    return resolved[0] || null;
   }
 
   async findById(
@@ -478,17 +482,22 @@ export class DefaultCrudRepository<
     filter?: FilterExcludingWhere<T>,
     options?: Options,
   ): Promise<T & Relations> {
-    const include = filter?.include;
-    const model = await ensurePromise(
-      this.modelClass.findById(id, this.normalizeFilter(filter), options),
-    );
-    if (!model) {
-      throw new EntityNotFoundError(this.entityClass, id);
-    }
-    const entity = this.toEntity(model);
+    const resolveEntities = async (updatedFilter?: FilterExcludingWhere<T>) => {
+      const model = await ensurePromise(
+        this.modelClass.findById(
+          id,
+          this.normalizeFilter(updatedFilter),
+          options,
+        ),
+      );
+      if (!model) {
+        throw new EntityNotFoundError(this.entityClass, id);
+      }
+      return [this.toEntity(model)];
+    };
     const resolved = await this.includeRelatedModels(
-      [entity],
-      include,
+      resolveEntities,
+      filter,
       options,
     );
     return resolved[0];
@@ -689,16 +698,21 @@ export class DefaultCrudRepository<
    * Returns model instances that include related models of this repository
    * that have a registered resolver.
    *
-   * @param entities - An array of entity instances or data
-   * @param include -Inclusion filter
+   * @param resolveEntities - A function returning an array of entity instances or data
+   * @param filter - A filter with inclusions
    * @param options - Options for the operations
    */
   protected async includeRelatedModels(
-    entities: T[],
-    include?: Inclusion[],
+    resolveEntities: (filter?: Filter<T>) => Promise<T[]>,
+    filter?: Filter<T>,
     options?: Options,
   ): Promise<(T & Relations)[]> {
-    return includeRelatedModels<T, Relations>(this, entities, include, options);
+    return includeRelatedModels<T, Relations>(
+      this,
+      resolveEntities,
+      filter,
+      options,
+    );
   }
 
   /**

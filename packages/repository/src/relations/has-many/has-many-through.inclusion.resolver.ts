@@ -51,10 +51,11 @@ export function createHasManyThroughInclusionResolver<
   const relationMeta = resolveHasManyMetadata(meta);
 
   return async function fetchHasManyThroughModels(
-    entities: Entity[],
+    resolveEntities: (fieldsToEnsure: string[]) => Promise<Entity[]>,
     inclusion: Inclusion,
     options?: Options,
   ): Promise<((Target & TargetRelations)[] | undefined)[]> {
+    const entities = await resolveEntities([]);
     if (!entities.length) return [];
 
     debug('Fetching target models for entities:', entities);

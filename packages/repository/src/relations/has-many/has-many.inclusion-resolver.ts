@@ -41,16 +41,17 @@ export function createHasManyInclusionResolver<
   const relationMeta = resolveHasManyMetadata(meta);
 
   return async function fetchHasManyModels(
-    entities: Entity[],
+    resolveEntities: (fieldsToEnsure: string[]) => Promise<Entity[]>,
     inclusion: Inclusion,
     options?: Options,
   ): Promise<((Target & TargetRelations)[] | undefined)[]> {
+    const sourceKey = relationMeta.keyFrom;
+    const entities = await resolveEntities([sourceKey]);
     if (!entities.length) return [];
 
     debug('Fetching target models for entities:', entities);
     debug('Relation metadata:', relationMeta);
 
-    const sourceKey = relationMeta.keyFrom;
     const sourceIds = entities.map(e => (e as AnyObject)[sourceKey]);
     const targetKey = relationMeta.keyTo as StringKeyOf<Target>;
 

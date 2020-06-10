@@ -515,8 +515,10 @@ describe('DefaultCrudRepository', () => {
       const hasManyResolver: InclusionResolver<
         Folder,
         File
-      > = async entities => {
+      > = async resolveEntities => {
+        const entities = await resolveEntities();
         const files = [];
+
         for (const entity of entities) {
           const file = await folderFiles(entity.id).find();
           files.push(file);
@@ -528,7 +530,8 @@ describe('DefaultCrudRepository', () => {
       const belongsToResolver: InclusionResolver<
         File,
         Folder
-      > = async entities => {
+      > = async resolveEntities => {
+        const entities = await resolveEntities();
         const folders = [];
 
         for (const file of entities) {
@@ -542,7 +545,8 @@ describe('DefaultCrudRepository', () => {
       const hasOneResolver: InclusionResolver<
         Folder,
         Author
-      > = async entities => {
+      > = async resolveEntities => {
+        const entities = await resolveEntities();
         const authors = [];
 
         for (const folder of entities) {
@@ -745,8 +749,8 @@ describe('DefaultCrudRepository', () => {
 
   it('implements Repository.registerInclusionResolver()', () => {
     const repo = new DefaultCrudRepository(Note, ds);
-    const resolver: InclusionResolver<Note, Entity> = async entities => {
-      return entities;
+    const resolver: InclusionResolver<Note, Entity> = async resolveEntities => {
+      return resolveEntities();
     };
     repo.registerInclusionResolver('notes', resolver);
     const setResolver = repo.inclusionResolvers.get('notes');

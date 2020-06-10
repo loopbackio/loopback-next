@@ -94,6 +94,9 @@ describe('HasMany relation', () => {
     });
 
     const customer = await customerRepo.findById(existingCustomerId, {
+      fields: {
+        name: true,
+      },
       include: [
         {
           relation: 'orders',
@@ -107,13 +110,18 @@ describe('HasMany relation', () => {
     });
 
     withProtoCheck(false, () => {
-      expect(customer.orders).length(1);
-      expect(customer.orders).to.matchEach((v: Partial<Order>) => {
-        expect(v).to.deepEqual({
-          id: undefined,
-          description: order.description,
-          customerId: undefined,
-        });
+      expect(customer).to.deepEqual({
+        id: undefined,
+        name: 'a customer',
+        orders: [
+          {
+            id: undefined,
+            description: order.description,
+            customerId: undefined,
+          },
+        ],
+        reviewsApproved: undefined,
+        reviewsAuthored: undefined,
       });
     });
   });
@@ -123,6 +131,10 @@ describe('HasMany relation', () => {
       description: 'an order desc',
     });
     const customer = await customerRepo.findById(existingCustomerId, {
+      fields: {
+        id: false,
+        name: true,
+      },
       include: [
         {
           relation: 'orders',
@@ -137,13 +149,18 @@ describe('HasMany relation', () => {
     });
 
     withProtoCheck(false, () => {
-      expect(customer.orders).length(1);
-      expect(customer.orders).to.matchEach((v: Partial<Order>) => {
-        expect(v).to.deepEqual({
-          id: undefined,
-          description: order.description,
-          customerId: undefined,
-        });
+      expect(customer).to.deepEqual({
+        id: undefined,
+        name: 'a customer',
+        orders: [
+          {
+            id: undefined,
+            description: order.description,
+            customerId: undefined,
+          },
+        ],
+        reviewsApproved: undefined,
+        reviewsAuthored: undefined,
       });
     });
   });
@@ -153,6 +170,9 @@ describe('HasMany relation', () => {
       description: 'an order desc',
     });
     const customer = await customerRepo.findById(existingCustomerId, {
+      fields: {
+        id: false,
+      },
       include: [
         {
           relation: 'orders',
@@ -166,13 +186,18 @@ describe('HasMany relation', () => {
     });
 
     withProtoCheck(false, () => {
-      expect(customer.orders).length(1);
-      expect(customer.orders).to.matchEach((v: Partial<Order>) => {
-        expect(v).to.deepEqual({
-          id: order.id,
-          description: order.description,
-          customerId: undefined,
-        });
+      expect(customer).to.deepEqual({
+        id: undefined,
+        name: 'a customer',
+        orders: [
+          {
+            id: order.id,
+            description: order.description,
+            customerId: undefined,
+          },
+        ],
+        reviewsApproved: undefined,
+        reviewsAuthored: undefined,
       });
     });
   });
@@ -182,6 +207,10 @@ describe('HasMany relation', () => {
       description: 'an order desc',
     });
     const customer = await customerRepo.findById(existingCustomerId, {
+      fields: {
+        id: true,
+        name: true,
+      },
       include: [
         {
           relation: 'orders',
@@ -196,13 +225,18 @@ describe('HasMany relation', () => {
     });
 
     withProtoCheck(false, () => {
-      expect(customer.orders).length(1);
-      expect(customer.orders).to.matchEach((v: Partial<Order>) => {
-        expect(v).to.deepEqual({
-          id: undefined,
-          description: order.description,
-          customerId: order.customerId,
-        });
+      expect(customer).to.deepEqual({
+        id: 1,
+        name: 'a customer',
+        orders: [
+          {
+            id: undefined,
+            description: order.description,
+            customerId: order.customerId,
+          },
+        ],
+        reviewsApproved: undefined,
+        reviewsAuthored: undefined,
       });
     });
   });
@@ -212,6 +246,7 @@ describe('HasMany relation', () => {
       description: 'an order desc',
     });
     const customer = await customerRepo.findById(existingCustomerId, {
+      fields: {},
       include: [
         {
           relation: 'orders',
@@ -223,13 +258,18 @@ describe('HasMany relation', () => {
     });
 
     withProtoCheck(false, () => {
-      expect(customer.orders).length(1);
-      expect(customer.orders).to.matchEach((v: Partial<Order>) => {
-        expect(v).to.deepEqual({
-          id: undefined,
-          description: undefined,
-          customerId: undefined,
-        });
+      expect(customer).to.deepEqual({
+        id: undefined,
+        name: undefined,
+        orders: [
+          {
+            id: undefined,
+            description: undefined,
+            customerId: undefined,
+          },
+        ],
+        reviewsApproved: undefined,
+        reviewsAuthored: undefined,
       });
     });
   });
@@ -390,6 +430,9 @@ describe('BelongsTo relation', () => {
 
   it('can include the related model when the foreign key is omitted in filter', async () => {
     const orderWithRelations = (await orderRepo.findById(order.id, {
+      fields: {
+        description: true,
+      },
       include: [
         {
           relation: 'customer',
@@ -403,18 +446,27 @@ describe('BelongsTo relation', () => {
     })) as OrderWithRelations;
 
     withProtoCheck(false, () => {
-      expect(orderWithRelations.customer).to.deepEqual({
+      expect(orderWithRelations).to.deepEqual({
         id: undefined,
-        name: customer.name,
-        orders: undefined,
-        reviewsApproved: undefined,
-        reviewsAuthored: undefined,
+        description: order.description,
+        customerId: undefined,
+        customer: {
+          id: undefined,
+          name: customer.name,
+          orders: undefined,
+          reviewsApproved: undefined,
+          reviewsAuthored: undefined,
+        },
       });
     });
   });
 
   it('can include the related model when the foreign key is disabled in filter', async () => {
     const orderWithRelations = (await orderRepo.findById(order.id, {
+      fields: {
+        description: true,
+        customerId: false,
+      },
       include: [
         {
           relation: 'customer',
@@ -429,18 +481,26 @@ describe('BelongsTo relation', () => {
     })) as OrderWithRelations;
 
     withProtoCheck(false, () => {
-      expect(orderWithRelations.customer).to.deepEqual({
+      expect(orderWithRelations).to.deepEqual({
         id: undefined,
-        name: customer.name,
-        orders: undefined,
-        reviewsApproved: undefined,
-        reviewsAuthored: undefined,
+        description: order.description,
+        customerId: undefined,
+        customer: {
+          id: undefined,
+          name: customer.name,
+          orders: undefined,
+          reviewsApproved: undefined,
+          reviewsAuthored: undefined,
+        },
       });
     });
   });
 
   it('can include the related model when only the foreign key is disabled in filter', async () => {
     const orderWithRelations = (await orderRepo.findById(order.id, {
+      fields: {
+        customerId: false,
+      },
       include: [
         {
           relation: 'customer',
@@ -454,18 +514,27 @@ describe('BelongsTo relation', () => {
     })) as OrderWithRelations;
 
     withProtoCheck(false, () => {
-      expect(orderWithRelations.customer).to.deepEqual({
-        id: undefined,
-        name: customer.name,
-        orders: undefined,
-        reviewsApproved: undefined,
-        reviewsAuthored: undefined,
+      expect(orderWithRelations).to.deepEqual({
+        id: order.id,
+        description: order.description,
+        customerId: undefined,
+        customer: {
+          id: undefined,
+          name: customer.name,
+          orders: undefined,
+          reviewsApproved: undefined,
+          reviewsAuthored: undefined,
+        },
       });
     });
   });
 
   it('preserves the foreign key value when set in filter', async () => {
     const orderWithRelations = (await orderRepo.findById(order.id, {
+      fields: {
+        description: true,
+        customerId: true,
+      },
       include: [
         {
           relation: 'customer',
@@ -480,18 +549,24 @@ describe('BelongsTo relation', () => {
     })) as OrderWithRelations;
 
     withProtoCheck(false, () => {
-      expect(orderWithRelations.customer).to.deepEqual({
-        id: customer.id,
-        name: customer.name,
-        orders: undefined,
-        reviewsApproved: undefined,
-        reviewsAuthored: undefined,
+      expect(orderWithRelations).to.deepEqual({
+        id: undefined,
+        description: order.description,
+        customerId: order.customerId,
+        customer: {
+          id: customer.id,
+          name: customer.name,
+          orders: undefined,
+          reviewsApproved: undefined,
+          reviewsAuthored: undefined,
+        },
       });
     });
   });
 
   it('includes only the fields set in filter', async () => {
     const orderWithRelations = (await orderRepo.findById(order.id, {
+      fields: {},
       include: [
         {
           relation: 'customer',
@@ -503,12 +578,17 @@ describe('BelongsTo relation', () => {
     })) as OrderWithRelations;
 
     withProtoCheck(false, () => {
-      expect(orderWithRelations.customer).to.deepEqual({
+      expect(orderWithRelations).to.deepEqual({
         id: undefined,
-        name: undefined,
-        orders: undefined,
-        reviewsApproved: undefined,
-        reviewsAuthored: undefined,
+        description: undefined,
+        customerId: undefined,
+        customer: {
+          id: undefined,
+          name: undefined,
+          orders: undefined,
+          reviewsApproved: undefined,
+          reviewsAuthored: undefined,
+        },
       });
     });
   });
@@ -517,6 +597,7 @@ describe('BelongsTo relation', () => {
     const orderWithRelations = (await orderRepo.findById(order.id, {
       fields: {
         description: false,
+        customerId: false,
       },
       include: [
         {
@@ -534,7 +615,7 @@ describe('BelongsTo relation', () => {
       expect(orderWithRelations).to.deepEqual({
         id: order.id,
         description: undefined,
-        customerId: customer.id,
+        customerId: undefined,
         customer: {
           id: customer.id,
           name: undefined,

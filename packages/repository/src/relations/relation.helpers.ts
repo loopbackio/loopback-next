@@ -8,6 +8,7 @@ import debugFactory from 'debug';
 import _ from 'lodash';
 import {
   AnyObject,
+  ensureFields,
   Entity,
   EntityCrudRepository,
   Filter,
@@ -73,8 +74,8 @@ export type StringKeyOf<T> = Extract<keyof T, string>;
  * resolver.
  *
  * @param targetRepository - The target repository where the model instances are found
- * @param entities - An array of entity instances or data
- * @param include -Inclusion filter
+ * @param resolveEntities - A function returning array of entity instances or data
+ * @param filter - A filter with inclusions
  * @param options - Options for the operations
  */
 
@@ -83,12 +84,14 @@ export async function includeRelatedModels<
   Relations extends object = {}
 >(
   targetRepository: EntityCrudRepository<T, unknown, Relations>,
-  entities: T[],
-  include?: Inclusion[],
+  resolveEntities: (filter?: Filter<T>) => Promise<T[]>,
+  filter?: Filter<T>,
   options?: Options,
 ): Promise<(T & Relations)[]> {
-  const result = entities as (T & Relations)[];
-  if (!include) return result;
+  const include = filter?.include;
+  if (!include) {
+    return (await resolveEntities(filter)) as (T & Relations)[];
+  }
 
   const invalidInclusions = include.filter(
     inclusionFilter => !isInclusionAllowed(targetRepository, inclusionFilter),
@@ -106,20 +109,54 @@ export async function includeRelatedModels<
     throw err;
   }
 
+  const relationKeys = {} as {[k in keyof T]: true};
+  const pruningMask = {} as {[k in keyof T]: undefined};
+
+  const [entityPromise, resolveEntitiesWithFK] = captureResult(() => {
+    const fields = Object.keys(relationKeys) as (keyof T)[];
+    const {filter: newFilter, fieldsAdded} = ensureFields(fields, filter ?? {});
+
+    fieldsAdded.forEach(f => (pruningMask[f] = undefined));
+    return resolveEntities(newFilter);
+  });
+
+  const resolveEntitiesAfterInclusions = _.after(
+    include.length,
+    resolveEntitiesWithFK,
+  );
+
   const resolveTasks = include.map(async inclusionFilter => {
     const relationName = inclusionFilter.relation;
     const resolver = targetRepository.inclusionResolvers.get(relationName)!;
-    const targets = await resolver(entities, inclusionFilter, options);
 
-    result.forEach((entity, ix) => {
+    const [invocationPromise, resolveRelationSource] = captureInvocation(
+      (fieldsToEnsure: string[] = []) => {
+        fieldsToEnsure.forEach(f => (relationKeys[f as keyof T] = true));
+        return entityPromise;
+      },
+    );
+
+    const resolutionPromise = resolver(
+      resolveRelationSource,
+      inclusionFilter,
+      options,
+    );
+
+    // this guards from the situation where resolveRelationSource
+    // is not invoked inside inclusion resolver
+    await Promise.race([invocationPromise, resolutionPromise]);
+    await resolveEntitiesAfterInclusions();
+
+    const targets = await resolutionPromise;
+    const entities = await entityPromise;
+    entities.forEach((entity, ix) => {
       const src = entity as AnyObject;
       src[relationName] = targets[ix];
     });
   });
 
   await Promise.all(resolveTasks);
-
-  return result;
+  return (await entityPromise).map(e => Object.assign(e, pruningMask));
 }
 /**
  * Checks if the resolver of the inclusion relation is registered
@@ -344,4 +381,37 @@ export function isBsonType(value: unknown): value is object {
   function check(target: unknown) {
     return Object.prototype.hasOwnProperty.call(target, '_bsontype');
   }
+}
+
+/**
+ * Creates a Promise which resolves when a function is invoked
+ *
+ * @param fn - A function to wrap
+ */
+function captureInvocation<T, R>(fn: (...args: T[]) => R) {
+  let wrapper = _.noop as typeof fn;
+  const promise = new Promise<T[]>(resolve => {
+    wrapper = (...args: T[]) => {
+      resolve(args);
+      return fn(...args);
+    };
+  });
+  return [promise, wrapper] as const;
+}
+
+/**
+ * Creates a Promise which resolves with a return value of a function
+ *
+ * @param fn - A function to wrap
+ */
+function captureResult<T, R>(fn: (...args: T[]) => R) {
+  let wrapper = _.noop as typeof fn;
+  const promise = new Promise(resolve => {
+    wrapper = (...args: T[]) => {
+      const result = fn(...args);
+      resolve(result);
+      return result;
+    };
+  }) as R extends Promise<infer U> ? Promise<U> : Promise<R>;
+  return [promise, wrapper] as const;
 }

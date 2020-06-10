@@ -43,13 +43,14 @@ export function createBelongsToInclusionResolver<
   const relationMeta = resolveBelongsToMetadata(meta);
 
   return async function fetchIncludedModels(
-    entities: Entity[],
+    resolveEntities: (fieldsToEnsure: string[]) => Promise<Entity[]>,
     inclusion: Inclusion,
     options?: Options,
   ): Promise<((Target & TargetRelations) | undefined)[]> {
+    const sourceKey = relationMeta.keyFrom;
+    const entities = await resolveEntities([sourceKey]);
     if (!entities.length) return [];
 
-    const sourceKey = relationMeta.keyFrom;
     const sourceIds = entities.map(e => (e as AnyObject)[sourceKey]);
     const targetKey = relationMeta.keyTo as StringKeyOf<Target>;
     const dedupedSourceIds = deduplicate(sourceIds);

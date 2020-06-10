@@ -166,9 +166,10 @@ export {Getter} from '@loopback/core';
  */
 export type InclusionResolver<S extends Entity, T extends Entity> = (
   /**
-   * List of source models as returned by the first database query.
+   * A function resolving the first database query.
+   * @param fieldsToEnsure {string[]} a list of fields to include in the query
    */
-  sourceEntities: S[],
+  resolveEntities: (fieldsToEnsure?: string[]) => Promise<S[]>,
   /**
    * Inclusion requested by the user (e.g. scope constraints to apply).
    */

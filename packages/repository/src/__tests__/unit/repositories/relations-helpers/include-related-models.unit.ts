@@ -35,14 +35,18 @@ describe('includeRelatedModels', () => {
   it('returns source model if no filter is passed in', async () => {
     const category = await categoryRepo.create({name: 'category 1'});
     await categoryRepo.create({name: 'category 2'});
-    const result = await includeRelatedModels(categoryRepo, [category]);
+    const result = await includeRelatedModels(categoryRepo, async () => [
+      category,
+    ]);
     expect(result).to.eql([category]);
   });
 
   it('throws error if the target repository does not have the registered resolver', async () => {
     const category = await categoryRepo.create({name: 'category 1'});
     await expect(
-      includeRelatedModels(categoryRepo, [category], [{relation: 'products'}]),
+      includeRelatedModels(categoryRepo, async () => [category], {
+        include: [{relation: 'products'}],
+      }),
     ).to.be.rejectedWith(
       /Invalid "filter.include" entries: {"relation":"products"}/,
     );
@@ -55,11 +59,25 @@ describe('includeRelatedModels', () => {
 
     const categories = await includeRelatedModels(
       categoryRepo,
-      [category],
-      [{relation: 'products'}],
+      async () => [category],
+      {
+        include: [{relation: 'products'}],
+      },
     );
 
     expect(categories[0].products).to.be.empty();
+  });
+
+  it('resolves when the inclusion resolver is misbehaving', async () => {
+    const category = await categoryRepo.create({name: 'category'});
+
+    categoryRepo.inclusionResolvers.set('products', misbehavingResolver);
+
+    await expect(
+      includeRelatedModels(categoryRepo, async () => [category], {
+        include: [{relation: 'products'}],
+      }),
+    ).to.be.fulfilled();
   });
 
   it('includes related model for one instance - belongsTo', async () => {
@@ -73,8 +91,10 @@ describe('includeRelatedModels', () => {
 
     const productWithCategories = await includeRelatedModels(
       productRepo,
-      [product],
-      [{relation: 'category'}],
+      async () => [product],
+      {
+        include: [{relation: 'category'}],
+      },
     );
 
     expect(productWithCategories[0].toJSON()).to.deepEqual({
@@ -105,8 +125,10 @@ describe('includeRelatedModels', () => {
 
     const productWithCategories = await includeRelatedModels(
       productRepo,
-      [productOne, productTwo, productThree],
-      [{relation: 'category'}],
+      async () => [productOne, productTwo, productThree],
+      {
+        include: [{relation: 'category'}],
+      },
     );
 
     expect(toJSON(productWithCategories)).to.deepEqual([
@@ -132,8 +154,10 @@ describe('includeRelatedModels', () => {
 
     const categoryWithProducts = await includeRelatedModels(
       categoryRepo,
-      [category],
-      [{relation: 'products'}],
+      async () => [category],
+      {
+        include: [{relation: 'products'}],
+      },
     );
 
     expect(toJSON(categoryWithProducts)).to.deepEqual([
@@ -167,8 +191,10 @@ describe('includeRelatedModels', () => {
 
     const categoryWithProducts = await includeRelatedModels(
       categoryRepo,
-      [categoryOne, categoryTwo, categoryThree],
-      [{relation: 'products'}],
+      async () => [categoryOne, categoryTwo, categoryThree],
+      {
+        include: [{relation: 'products'}],
+      },
     );
 
     expect(toJSON(categoryWithProducts)).to.deepEqual([
@@ -186,7 +212,8 @@ describe('includeRelatedModels', () => {
   const belongsToResolver: InclusionResolver<
     Product,
     Category
-  > = async entities => {
+  > = async resolveEntities => {
+    const entities = await resolveEntities();
     const categories = [];
 
     for (const product of entities) {
@@ -200,7 +227,8 @@ describe('includeRelatedModels', () => {
   const hasManyResolver: InclusionResolver<
     Category,
     Product
-  > = async entities => {
+  > = async resolveEntities => {
+    const entities = await resolveEntities();
     const products = [];
 
     for (const category of entities) {
@@ -208,5 +236,13 @@ describe('includeRelatedModels', () => {
       products.push(product);
     }
     return products;
+  };
+
+  const misbehavingResolver: InclusionResolver<
+    Category,
+    Product
+  > = async resolveEntities => {
+    // resolveEntities is not invoked intentionally
+    return [];
   };
 });
