@@ -20,6 +20,8 @@ describe('controller booter acceptance tests', () => {
 
   afterEach(stopApp);
 
+  after('delete sandbox', () => sandbox.delete());
+
   it('binds controllers using ControllerDefaults and REST endpoints work', async () => {
     await app.boot();
     await app.start();
@@ -46,10 +48,6 @@ describe('controller booter acceptance tests', () => {
   }
 
   async function stopApp() {
-    try {
-      await app.stop();
-    } catch (err) {
-      console.log(`Stopping the app threw an error: ${err}`);
-    }
+    await app?.stop();
   }
 });

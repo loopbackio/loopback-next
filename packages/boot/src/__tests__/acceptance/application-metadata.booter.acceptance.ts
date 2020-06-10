@@ -5,19 +5,16 @@
 
 import {CoreBindings} from '@loopback/core';
 import {expect, givenHttpServerConfig, TestSandbox} from '@loopback/testlab';
+import fs from 'fs';
 import {resolve} from 'path';
 import {BooterApp} from '../fixtures/application';
 
 describe('application metadata booter acceptance tests', () => {
   let app: BooterApp;
-  const sandbox = new TestSandbox(resolve(__dirname, '../../.sandbox'), {
-    // We intentionally use this flag so that `dist/application.js` can keep
-    // its relative path to satisfy import statements
-    subdir: false,
-  });
+  const sandbox = new TestSandbox(resolve(__dirname, '../../.sandbox'));
 
-  beforeEach('reset sandbox', () => sandbox.reset());
   beforeEach(getApp);
+  after('delete sandbox', () => sandbox.delete());
 
   it('binds content of package.json to application metadata', async () => {
     await app.boot();
@@ -33,14 +30,18 @@ describe('application metadata booter acceptance tests', () => {
     // Add the following files
     // - package.json
     // - dist/application.js
+
+    const appJsFile = resolve(__dirname, '../fixtures/application.js');
+    let appJs = fs.readFileSync(appJsFile, 'utf-8');
+    // Adjust the relative path for `import`
+    appJs = appJs.replace('../..', '../../..');
+    await sandbox.writeTextFile('dist/application.js', appJs);
+
     await sandbox.copyFile(resolve(__dirname, '../fixtures/package.json'));
-    await sandbox.copyFile(
-      resolve(__dirname, '../fixtures/application.js'),
-      'dist/application.js',
-    );
 
     const MyApp = require(resolve(sandbox.path, 'dist/application.js'))
       .BooterApp;
+
     app = new MyApp({
       rest: givenHttpServerConfig(),
     });
