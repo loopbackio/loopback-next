@@ -858,6 +858,10 @@ children:
     url: Testing-your-extension.html
     output: 'web, pdf'
 
+- title: 'Community extensions'
+  url: Community-extensions.html
+  output: 'web, pdf'
+
 - title: 'Contribute to LoopBack 4'
   url: code-contrib-lb4.html
   output: 'web, pdf'
