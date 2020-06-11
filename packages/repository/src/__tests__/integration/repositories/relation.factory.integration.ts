@@ -30,7 +30,7 @@ let db: juggler.DataSource;
 let customerRepo: EntityCrudRepository<Customer, typeof Customer.prototype.id>;
 let orderRepo: EntityCrudRepository<Order, typeof Order.prototype.id>;
 let cartItemRepo: EntityCrudRepository<CartItem, typeof CartItem.prototype.id>;
-let CustomerCartItemLinkRepo: EntityCrudRepository<
+let customerCartItemLinkRepo: EntityCrudRepository<
   CustomerCartItemLink,
   typeof CustomerCartItemLink.prototype.id
 >;
@@ -232,40 +232,30 @@ describe('HasManyThrough relation', () => {
 
   beforeEach(async function resetDatabase() {
     await customerRepo.deleteAll();
-    await CustomerCartItemLinkRepo.deleteAll();
+    await customerCartItemLinkRepo.deleteAll();
     await cartItemRepo.deleteAll();
   });
 
-  it('creates a target instance alone with the corresponding through model', async () => {
-    const cartItem = await customerCartItemRepo.create(
-      {
-        description: 'an item hasManyThrough',
-      },
-      {
-        throughData: {id: 99},
-      },
-    );
+  it('creates a target instance along with the corresponding through model', async () => {
+    const cartItem = await customerCartItemRepo.create({
+      description: 'an item hasManyThrough',
+    });
     const persistedItem = await cartItemRepo.findById(cartItem.id);
-    const persistedLink = await CustomerCartItemLinkRepo.find();
+    const persistedLink = await customerCartItemLinkRepo.find();
+
     expect(cartItem).to.deepEqual(persistedItem);
     expect(persistedLink).have.length(1);
     const expected = {
-      id: 99,
       customerId: existingCustomerId,
       itemId: cartItem.id,
     };
-    expect(toJSON(persistedLink[0])).to.deepEqual(toJSON(expected));
+    expect(toJSON(persistedLink[0])).to.containEql(toJSON(expected));
   });
 
   it('finds an instance via through model', async () => {
-    const item = await customerCartItemRepo.create(
-      {
-        description: 'an item hasManyThrough',
-      },
-      {
-        throughData: {id: 99},
-      },
-    );
+    const item = await customerCartItemRepo.create({
+      description: 'an item hasManyThrough',
+    });
     const notMyItem = await cartItemRepo.create({
       description: "someone else's item desc",
     });
@@ -277,22 +267,10 @@ describe('HasManyThrough relation', () => {
   });
 
   it('finds instances via through models', async () => {
-    const item1 = await customerCartItemRepo.create(
-      {
-        description: 'group 1',
-      },
-      {
-        throughData: {id: 99},
-      },
-    );
-    const item2 = await customerCartItemRepo.create(
-      {
-        description: 'group 2',
-      },
-      {
-        throughData: {id: 98},
-      },
-    );
+    const item1 = await customerCartItemRepo.create({description: 'group 1'});
+    const item2 = await customerCartItemRepo.create({
+      description: 'group 2',
+    });
     const items = await customerCartItemRepo.find();
 
     expect(items).have.length(2);
@@ -304,34 +282,24 @@ describe('HasManyThrough relation', () => {
   });
 
   it('deletes an instance, then deletes the through model', async () => {
-    await customerCartItemRepo.create(
-      {
-        description: 'customer 1',
-      },
-      {
-        throughData: {id: 98},
-      },
-    );
+    await customerCartItemRepo.create({
+      description: 'customer 1',
+    });
     const anotherHasManyThroughRepo = customerCartItemFactory(
       existingCustomerId + 1,
     );
-    const item2 = await anotherHasManyThroughRepo.create(
-      {
-        description: 'customer 2',
-      },
-      {
-        throughData: {id: 99},
-      },
-    );
+    const item2 = await anotherHasManyThroughRepo.create({
+      description: 'customer 2',
+    });
     let items = await cartItemRepo.find();
-    let links = await CustomerCartItemLinkRepo.find();
+    let links = await customerCartItemLinkRepo.find();
 
     expect(items).have.length(2);
     expect(links).have.length(2);
 
     await customerCartItemRepo.delete();
     items = await cartItemRepo.find();
-    links = await CustomerCartItemLinkRepo.find();
+    links = await customerCartItemLinkRepo.find();
 
     expect(items).have.length(1);
     expect(links).have.length(1);
@@ -341,33 +309,23 @@ describe('HasManyThrough relation', () => {
   });
 
   it('deletes through model when corresponding target gets deleted', async () => {
-    const item1 = await customerCartItemRepo.create(
-      {
-        description: 'customer 1',
-      },
-      {
-        throughData: {id: 98},
-      },
-    );
+    const item1 = await customerCartItemRepo.create({
+      description: 'customer 1',
+    });
     const anotherHasManyThroughRepo = customerCartItemFactory(
       existingCustomerId + 1,
     );
-    const item2 = await anotherHasManyThroughRepo.create(
-      {
-        description: 'customer 2',
-      },
-      {
-        throughData: {id: 99},
-      },
-    );
+    const item2 = await anotherHasManyThroughRepo.create({
+      description: 'customer 2',
+    });
     // when order1 gets deleted, this through instance should be deleted too.
-    const through = await CustomerCartItemLinkRepo.create({
+    const through = await customerCartItemLinkRepo.create({
       id: 1,
       customerId: existingCustomerId + 1,
       itemId: item1.id,
     });
     let items = await cartItemRepo.find();
-    let links = await CustomerCartItemLinkRepo.find();
+    let links = await customerCartItemLinkRepo.find();
 
     expect(items).have.length(2);
     expect(links).have.length(3);
@@ -375,7 +333,7 @@ describe('HasManyThrough relation', () => {
     await customerCartItemRepo.delete();
 
     items = await cartItemRepo.find();
-    links = await CustomerCartItemLinkRepo.find();
+    links = await customerCartItemLinkRepo.find();
 
     expect(items).have.length(1);
     expect(links).have.length(1);
@@ -386,22 +344,12 @@ describe('HasManyThrough relation', () => {
   });
 
   it('patches instances that belong to the same source model (same source fk)', async () => {
-    const item1 = await customerCartItemRepo.create(
-      {
-        description: 'group 1',
-      },
-      {
-        throughData: {id: 99},
-      },
-    );
-    const item2 = await customerCartItemRepo.create(
-      {
-        description: 'group 1',
-      },
-      {
-        throughData: {id: 98},
-      },
-    );
+    const item1 = await customerCartItemRepo.create({
+      description: 'group 1',
+    });
+    const item2 = await customerCartItemRepo.create({
+      description: 'group 1',
+    });
 
     const count = await customerCartItemRepo.patch({description: 'group 2'});
     expect(count).to.match({count: 2});
@@ -412,6 +360,51 @@ describe('HasManyThrough relation', () => {
         {id: item2.id, description: 'group 2'},
       ]),
     );
+  });
+
+  it('links a target instance to the source instance', async () => {
+    const item = await cartItemRepo.create({description: 'an item'});
+    let targets = await customerCartItemRepo.find();
+    expect(targets).to.deepEqual([]);
+
+    await customerCartItemRepo.link(item.id);
+    targets = await customerCartItemRepo.find();
+    expect(toJSON(targets)).to.containDeep(toJSON([item]));
+    const link = await customerCartItemLinkRepo.find();
+    expect(toJSON(link[0])).to.containEql(
+      toJSON({customerId: existingCustomerId, itemId: item.id}),
+    );
+  });
+
+  it('links a target instance to the source instance with specified ThroughData', async () => {
+    const item = await cartItemRepo.create({description: 'an item'});
+
+    await customerCartItemRepo.link(item.id, {
+      throughData: {description: 'a through'},
+    });
+    const targets = await customerCartItemRepo.find();
+    expect(toJSON(targets)).to.containDeep(toJSON([item]));
+    const link = await customerCartItemLinkRepo.find();
+    expect(toJSON(link[0])).to.containEql(
+      toJSON({
+        customerId: existingCustomerId,
+        itemId: item.id,
+        description: 'a through',
+      }),
+    );
+  });
+
+  it('unlinks a target instance from the source instance', async () => {
+    const item = await customerCartItemRepo.create({description: 'an item'});
+    let targets = await customerCartItemRepo.find();
+    expect(toJSON(targets)).to.containDeep(toJSON([item]));
+
+    await customerCartItemRepo.unlink(item.id);
+    targets = await customerCartItemRepo.find();
+    expect(targets).to.deepEqual([]);
+    // the through model should be deleted
+    const thoughs = await customerCartItemRepo.find();
+    expect(thoughs).to.deepEqual([]);
   });
   //--- HELPERS ---//
 
@@ -443,7 +436,7 @@ describe('HasManyThrough relation', () => {
         },
       } as HasManyDefinition,
       Getter.fromValue(cartItemRepo),
-      Getter.fromValue(CustomerCartItemLinkRepo),
+      Getter.fromValue(customerCartItemLinkRepo),
     );
 
     customerCartItemRepo = customerCartItemFactory(existingCustomerId);
@@ -537,14 +530,12 @@ class CustomerCartItemLink extends Entity {
   id: number;
   customerId: number;
   itemId: number;
+  description: string;
   static definition = new ModelDefinition('CustomerCartItemLink')
-    .addProperty('id', {
-      type: 'number',
-      id: true,
-      required: true,
-    })
+    .addProperty('id', {type: 'number', id: true})
     .addProperty('itemId', {type: 'number'})
-    .addProperty('customerId', {type: 'number'});
+    .addProperty('customerId', {type: 'number'})
+    .addProperty('description', {type: 'string'});
 }
 function givenCrudRepositories() {
   db = new juggler.DataSource({connector: 'memory'});
@@ -552,7 +543,7 @@ function givenCrudRepositories() {
   customerRepo = new DefaultCrudRepository(Customer, db);
   orderRepo = new DefaultCrudRepository(Order, db);
   cartItemRepo = new DefaultCrudRepository(CartItem, db);
-  CustomerCartItemLinkRepo = new DefaultCrudRepository(
+  customerCartItemLinkRepo = new DefaultCrudRepository(
     CustomerCartItemLink,
     db,
   );
