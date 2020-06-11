@@ -56,5 +56,31 @@ trouble of having to do so manually. Again it's best to check the documentation
 for the given Component/Mixin.
 " %}
 
-See [Using components](Using-components.md) and
-[Creating components](Creating-components.md) for more information.
+## Using components
+
+Components can be added to your application using the `app.component()` method.
+
+The following is an example of installing and using a component.
+
+Install the following dependencies:
+
+```sh
+npm install --save @loopback/authentication
+```
+
+To load the component in your application:
+
+```ts
+import {RestApplication} from '@loopback/rest';
+import {AuthenticationComponent} from '@loopback/authentication';
+
+const app = new RestApplication();
+// Add component to Application, which provides bindings used to resolve
+// authenticated requests in a Sequence.
+app.component(AuthenticationComponent);
+```
+
+## Creating components
+
+Please refer to [Creating components](Creating-components.md) for more
+information.

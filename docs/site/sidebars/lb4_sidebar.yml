@@ -23,417 +23,6 @@ children:
   url: Inside-LoopBack-Application.html
   output: 'web, pdf'
 
-- title: 'Key concepts'
-  url: Concepts.html
-  output: 'web, pdf'
-  children:
-
-  - title: 'Application'
-    url: Application.html
-    output: 'web, pdf'
-
-  - title: 'Server'
-    url: Server.html
-    output: 'web, pdf'
-
-  - title: 'Controllers'
-    url: Controllers.html
-    output: 'web, pdf'
-
-  - title: 'Models'
-    url: Model.html
-    output: 'web, pdf'
-
-  - title: 'Relations'
-    url: Relations.html
-    output: 'web, pdf'
-    children:
-
-    - title: 'HasMany Relation'
-      url: HasMany-relation.html
-      output: 'web, pdf'
-
-    - title: 'BelongsTo Relation'
-      url: BelongsTo-relation.html
-      output: 'web, pdf'
-
-    - title: 'HasOne Relation'
-      url: HasOne-relation.html
-      output: 'web, pdf'
-
-  - title: 'DataSources'
-    url: DataSources.html
-    output: 'web, pdf'
-
-  - title: 'Repositories'
-    url: Repositories.html
-    output: 'web, pdf'
-    children:
-
-    - title: 'Database Transactions'
-      url: Using-database-transactions.html
-      output: 'web, pdf'
-
-  - title: 'Services'
-    url: Services.html
-    output: 'web, pdf'
-
-  - title: 'Interceptors'
-    url: Interceptors.html
-    output: 'web, pdf'
-
-  - title: 'Life cycle events and observers'
-    url: Life-cycle.html
-    output: 'web, pdf'
-
-  - title: 'Routes'
-    url: Routes.html
-    output: 'web, pdf'
-
-  - title: 'Sequence'
-    url: Sequence.html
-    output: 'web, pdf'
-    children:
-
-    - title: 'Routing requests'
-      url: Routing-requests.html
-      output: 'web, pdf'
-
-    - title: 'Parsing requests'
-      url: Parsing-requests.html
-      output: 'web, pdf'
-
-  - title: 'Middleware'
-    url: Middleware.html
-    output: 'web, pdf'
-
-  - title: 'Using Express Middleware'
-    url: Express-middleware.html
-    output: 'web, pdf'
-
-  - title: 'Decorators'
-    url: Decorators.html
-    output: 'web, pdf'
-    children:
-
-    - title: 'OpenAPI Decorators'
-      url: Decorators_openapi.html
-      output: 'web, pdf'
-
-    - title: 'Dependency Injection Decorator'
-      url: Decorators_inject.html
-      output: 'web, pdf'
-
-    - title: 'Authentication Decorator'
-      url: Decorators_authenticate.html
-      output: 'web, pdf'
-
-    - title: 'Service Decorators'
-      url: Decorators_service.html
-      output: 'web, pdf'
-
-    - title: 'Repository Decorators'
-      url: Decorators_repository.html
-      output: 'web, pdf'
-
-  - title: 'Mixins'
-    url: Mixin.html
-    output: 'web, pdf'
-
-  - title: 'Error handling'
-    url: Error-handling.html
-    output: 'web, pdf'
-
-- title: 'Usage Scenarios'
-  url: Usage-scenarios.html
-  output: 'web, pdf'
-  children:
-
-  - title: 'Create Other Forms of APIs'
-    url: Create-other-forms-of-apis.html
-    output: 'web, pdf'
-    children:
-      - title: 'Exposing GraphQL APIs'
-        url: exposing-graphql-apis.html
-        output: 'web, pdf'
-
-  - title: 'Access Databases'
-    url: Access-databases.html
-    output: 'web, pdf'
-    children:
-
-    - title: 'Working with data'
-      url: Working-with-data.html
-      output: 'web, pdf'
-      children:
-
-      - title: 'Querying data'
-        url: Querying-data.html
-        output: 'web, pdf'
-        children:
-
-        - title: 'Fields filter'
-          url: Fields-filter.html
-          output: 'web, pdf'
-
-        - title: 'Include filter'
-          url: Include-filter.html
-          output: 'web, pdf'
-
-        - title: 'Limit filter'
-          url: Limit-filter.html
-          output: 'web, pdf'
-
-        - title: 'Order filter'
-          url: Order-filter.html
-          output: 'web, pdf'
-
-        - title: 'Skip filter'
-          url: Skip-filter.html
-          output: 'web, pdf'
-
-        - title: 'Where filter'
-          url: Where-filter.html
-          output: 'web, pdf'
-
-    - title: 'Database Migrations'
-      url: Database-migrations.html
-      output: 'web, pdf'
-
-  - title: 'Running and debugging apps'
-    url: Running-and-debugging-apps.html
-    output: 'web, pdf'
-    children:
-
-    - title: 'Setting debug strings'
-      url: Setting-debug-strings.html
-      output: 'web, pdf'
-
-    - title: 'Using strong-error-handler'
-      url: Using-strong-error-handler.html
-      output: 'web, pdf'
-
-  - title: 'Call Other Services'
-    url: Calling-other-APIs-and-web-services.html
-    output: 'web, pdf'
-
-  - title: 'Integrate with Infrastructures'
-    url: Integrate-with-infrastructures.html
-    output: 'web, pdf'
-    children:
-
-    - title: 'Authentication'
-      url: Authentication-overview.html
-      output: 'web, pdf'
-      children:
-        - title: 'Apply JWT Authentication in Todo Example'
-          url: Authentication-tutorial.html
-          output: 'web, pdf'
-
-        - title: 'Authentication Component'
-          url: Loopback-component-authentication.html
-          output: 'web, pdf'
-          children:
-            - title: 'Authentication Decorator'
-              url: Authentication-component-decorator.html
-              output: 'web, pdf'
-
-            - title: 'Authentication Action'
-              url: Authentication-component-action.html
-              output: 'web, pdf'
-
-            - title: 'Authentication Strategy'
-              url: Authentication-component-strategy.html
-              output: 'web, pdf'
-
-            - title: 'Managing Custom Authentication Strategy Options'
-              url: Authentication-component-options.html
-              output: 'web, pdf'
-
-        - title: 'JWT Authentication Extension'
-          url: JWT-authentication-extension.html
-          output: 'web, pdf'
-
-        - title: 'Implement your own authentication strategy'
-          url: Implement-your-own-strategy.html
-          output: 'web, pdf'
-
-        - title: 'Passport Adapter for Authentication'
-          url: Authentication-passport.html
-          output: 'web, pdf'
-
-    - title: 'Authorization'
-      url: Loopback-component-authorization.html
-      output: 'web, pdf'
-
-  - title: 'Deployment'
-    url: Deployment.html
-    output: 'web, pdf'
-    children:
-      - title: 'Deploying to IBM Cloud'
-        url: Deploying-to-IBM-Cloud.html
-        output: 'web, pdf'
-
-      - title: 'Deploying to Kubernetes on IBM Cloud'
-        url: deploying_to_ibm_cloud_kubernetes.html
-        output: 'web, pdf'
-
-      - title: 'Deploying with pm2 and nginx'
-        url: deploying-with-pm2-and-nginx.html
-        output: 'web, pdf'
-
-      - title: 'Developing and Deploying LoopBack Applications with Appsody'
-        url: Appsody-LoopBack.html
-        output: 'web, pdf'
-
-  - title: 'Serving Static Files'
-    url: Serving-static-files.html
-    output: 'web, pdf'
-
-  - title: 'Dynamically adding models, repositories, and controllers'
-    url: Dynamic-models-repositories-controllers.html
-    output: 'web, pdf'
-
-  - title: 'Uploading and Downloading Files'
-    url: File-upload-download.html
-    output: 'web, pdf'
-
-  - title: 'Validation'
-    url: Validation.html
-    output: 'web, pdf'
-    children:
-      - title: 'Validation in REST Layer'
-        url: Validation-REST-layer.html
-        output: 'web, pdf'
-
-      - title: 'Validation in the Controller, Repository and Service Layer'
-        url: Validation-controller-repo-service-layer.html
-        output: 'web, pdf'
-
-      - title: 'Validation in ORM Layer'
-        url: Validation-ORM-layer.html
-        output: 'web, pdf'
-
-- title: 'Behind the Scenes'
-  url: Behind-the-scene.html
-  output: 'web, pdf'
-  children:
-
-    - title: 'Context'
-      url: Context.html
-      output: 'web, pdf'
-
-    - title: 'Binding'
-      url: Binding.html
-      output: 'web, pdf'
-
-    - title: 'Dependency Injection'
-      url: Dependency-injection.html
-      output: 'web, pdf'
-      children:
-
-        - title: 'Reserved binding keys'
-          url: Reserved-binding-keys.html
-          output: 'web, pdf'
-
-    - title: 'Components'
-      url: Components.html
-      output: 'web, pdf'
-
-    - title: 'Request/response cycle'
-      url: Request-response-cycle.html
-      output: 'web, pdf'
-
-- title: 'Booting an Application'
-  url: Booting-an-Application.html
-  output: 'web, pdf'
-
-- title: 'Using Components'
-  url: Using-components.html
-  output: 'web, pdf'
-  children:
-
-  - title: 'Self-hosted REST API Explorer'
-    url: Self-hosted-rest-api-explorer.html
-    output: 'web, pdf'
-
-  - title: 'Creating CRUD REST APIs from a model'
-    url: Creating-crud-rest-apis.html
-    output: 'web, pdf'
-
-  - title: 'Authorization'
-    url: Loopback-component-authorization.html
-    output: 'web, pdf'
-
-  - title: 'Boot and Mount a LoopBack 3 Application'
-    url: Boot-and-Mount-a-LoopBack-3-application.html
-    output: 'web, pdf'
-
-  - title: 'Running cron jobs'
-    url: Running-cron-jobs.html
-    output: 'web, pdf'
-
-  - title: 'Health check'
-    url: Health.html
-    output: 'web, pdf'
-
-  - title: 'Metrics for Prometheus'
-    url: Metrics.html
-    output: 'web, pdf'
-
-- title: 'Extending LoopBack 4'
-  url: Extending-LoopBack-4.html
-  output: 'web, pdf'
-  children:
-
-  - title: 'Creating components'
-    url: Creating-components.html
-    output: 'web, pdf'
-
-  - title: 'Creating decorators'
-    url: Creating-decorators.html
-    output: 'web, pdf'
-
-  - title: 'Contributing REST API'
-    url: 'creating-components-rest-api.html'
-    output: 'web, pdf'
-
-  - title: 'Creating services'
-    url: 'creating-components-services.html'
-    output: 'web, pdf'
-
-  - title: 'Creating servers'
-    url: Creating-servers.html
-    output: 'web, pdf'
-
-  - title: 'Extension point and extensions'
-    url: Extension-point-and-extensions.html
-    output: 'web, pdf'
-
-  - title: 'Extending request body parsing'
-    url: Extending-request-body-parsing.html
-    output: 'web, pdf'
-
-  - title: 'Extension life cycle'
-    url: Extension-life-cycle.html
-    output: 'web, pdf'
-
-  - title: 'Extending OpenAPI specification'
-    url: Extending-OpenAPI-specification.html
-    output: 'web, pdf'
-
-  - title: 'Extending Model API builder'
-    url: Extending-Model-API-builder.html
-    output: 'web, pdf'
-
-  - title: 'Testing your extension'
-    url: Testing-your-extension.html
-    output: 'web, pdf'
-
-- title: 'Crafting LoopBack 4'
-  url: Crafting-LoopBack-4.html
-  output: 'web, pdf'
-
 - title: 'Tutorials'
   url: Tutorials.html
   output: 'web, pdf'
@@ -588,248 +177,692 @@ children:
         url: core-tutorial-part11.html
         output: 'web, pdf'
 
-- title: 'Examples'
-  url: Examples.html
-  output: 'web, pdf'
-
-- title: 'CLI References'
-  url: Command-line-interface.html
+- title: 'Usage Scenarios'
+  url: Usage-scenarios.html
   output: 'web, pdf'
   children:
 
-  - title: 'Application generator'
-    url: Application-generator.html
+  - title: 'Create Other Forms of APIs'
+    url: Create-other-forms-of-apis.html
+    output: 'web, pdf'
+    children:
+      - title: 'Exposing GraphQL APIs'
+        url: exposing-graphql-apis.html
+        output: 'web, pdf'
+
+  - title: 'Access Databases'
+    url: Access-databases.html
+    output: 'web, pdf'
+    children:
+
+    - title: 'Working with data'
+      url: Working-with-data.html
+      output: 'web, pdf'
+      children:
+
+      - title: 'Querying data'
+        url: Querying-data.html
+        output: 'web, pdf'
+        children:
+
+        - title: 'Fields filter'
+          url: Fields-filter.html
+          output: 'web, pdf'
+
+        - title: 'Include filter'
+          url: Include-filter.html
+          output: 'web, pdf'
+
+        - title: 'Limit filter'
+          url: Limit-filter.html
+          output: 'web, pdf'
+
+        - title: 'Order filter'
+          url: Order-filter.html
+          output: 'web, pdf'
+
+        - title: 'Skip filter'
+          url: Skip-filter.html
+          output: 'web, pdf'
+
+        - title: 'Where filter'
+          url: Where-filter.html
+          output: 'web, pdf'
+
+    - title: 'Database Migrations'
+      url: Database-migrations.html
+      output: 'web, pdf'
+
+  - title: 'Running and debugging apps'
+    url: Running-and-debugging-apps.html
+    output: 'web, pdf'
+    children:
+
+    - title: 'Setting debug strings'
+      url: Setting-debug-strings.html
+      output: 'web, pdf'
+
+    - title: 'Using strong-error-handler'
+      url: Using-strong-error-handler.html
+      output: 'web, pdf'
+
+  - title: 'Call Other Services'
+    url: Calling-other-APIs-and-web-services.html
     output: 'web, pdf'
 
-  - title: 'Controller generator'
-    url: Controller-generator.html
+  - title: 'Integrate with Infrastructures'
+    url: Integrate-with-infrastructures.html
+    output: 'web, pdf'
+    children:
+
+    - title: 'Authentication'
+      url: Authentication-overview.html
+      output: 'web, pdf'
+      children:
+        - title: 'Apply JWT Authentication in Todo Example'
+          url: Authentication-tutorial.html
+          output: 'web, pdf'
+
+        - title: 'Authentication Component'
+          url: Loopback-component-authentication.html
+          output: 'web, pdf'
+          children:
+            - title: 'Authentication Decorator'
+              url: Authentication-component-decorator.html
+              output: 'web, pdf'
+
+            - title: 'Authentication Action'
+              url: Authentication-component-action.html
+              output: 'web, pdf'
+
+            - title: 'Authentication Strategy'
+              url: Authentication-component-strategy.html
+              output: 'web, pdf'
+
+            - title: 'Managing Custom Authentication Strategy Options'
+              url: Authentication-component-options.html
+              output: 'web, pdf'
+
+        - title: 'JWT Authentication Extension'
+          url: JWT-authentication-extension.html
+          output: 'web, pdf'
+
+        - title: 'Implement your own authentication strategy'
+          url: Implement-your-own-strategy.html
+          output: 'web, pdf'
+
+        - title: 'Passport Adapter for Authentication'
+          url: Authentication-passport.html
+          output: 'web, pdf'
+
+    - title: 'Authorization'
+      url: Loopback-component-authorization.html
+      output: 'web, pdf'
+
+  - title: 'Deployment'
+    url: Deployment.html
+    output: 'web, pdf'
+    children:
+      - title: 'Deploying to IBM Cloud'
+        url: Deploying-to-IBM-Cloud.html
+        output: 'web, pdf'
+
+      - title: 'Deploying to Kubernetes on IBM Cloud'
+        url: deploying_to_ibm_cloud_kubernetes.html
+        output: 'web, pdf'
+
+      - title: 'Deploying with pm2 and nginx'
+        url: deploying-with-pm2-and-nginx.html
+        output: 'web, pdf'
+
+      - title: 'Developing and Deploying LoopBack Applications with Appsody'
+        url: Appsody-LoopBack.html
+        output: 'web, pdf'
+
+  - title: 'Using Express Middleware'
+    url: Express-middleware.html
     output: 'web, pdf'
 
-  - title: 'DataSource generator'
-    url: DataSource-generator.html
+  - title: 'Serving Static Files'
+    url: Serving-static-files.html
     output: 'web, pdf'
 
-  - title: 'Import models from LoopBack 3'
-    url: Importing-LB3-models.html
+  - title: 'Dynamically adding models, repositories, and controllers'
+    url: Dynamic-models-repositories-controllers.html
     output: 'web, pdf'
 
-  - title: 'Model generator'
-    url: Model-generator.html
+  - title: 'Uploading and Downloading Files'
+    url: File-upload-download.html
     output: 'web, pdf'
 
-  - title: 'Model discovery'
-    url: Discovering-models.html
+  - title: 'Validation'
+    url: Validation.html
+    output: 'web, pdf'
+    children:
+      - title: 'Validation in REST Layer'
+        url: Validation-REST-layer.html
+        output: 'web, pdf'
+
+      - title: 'Validation in the Controller, Repository and Service Layer'
+        url: Validation-controller-repo-service-layer.html
+        output: 'web, pdf'
+
+      - title: 'Validation in ORM Layer'
+        url: Validation-ORM-layer.html
+        output: 'web, pdf'
+
+  - title: 'Self-hosted REST API Explorer'
+    url: Self-hosted-rest-api-explorer.html
     output: 'web, pdf'
 
-  - title: 'Relation generator'
-    url: Relation-generator.html
+  - title: 'Creating CRUD REST APIs from a model'
+    url: Creating-crud-rest-apis.html
     output: 'web, pdf'
 
-  - title: 'Repository generator'
-    url: Repository-generator.html
+  - title: 'Authorization'
+    url: Loopback-component-authorization.html
     output: 'web, pdf'
 
-  - title: 'REST CRUD model endpoints generator'
-    url: Rest-Crud-generator.html
+  - title: 'Boot and Mount a LoopBack 3 Application'
+    url: Boot-and-Mount-a-LoopBack-3-application.html
     output: 'web, pdf'
 
-  - title: 'Service generator'
-    url: Service-generator.html
+  - title: 'Running cron jobs'
+    url: Running-cron-jobs.html
     output: 'web, pdf'
 
-  - title: 'OpenAPI generator'
-    url: OpenAPI-generator.html
+  - title: 'Health check'
+    url: Health.html
     output: 'web, pdf'
 
-  - title: 'Life cycle observer generator'
-    url: Life-cycle-observer-generator.html
+  - title: 'Metrics for Prometheus'
+    url: Metrics.html
     output: 'web, pdf'
 
-  - title: 'Interceptor generator'
-    url: Interceptor-generator.html
-    output: 'web, pdf'
-
-  - title: 'Extension generator'
-    url: Extension-generator.html
-    output: 'web, pdf'
-
-  - title: 'Download examples'
-    url: Download-examples.html
-    output: 'web, pdf'
-
-  - title: 'Update project dependencies'
-    url: Update-generator.html
-    output: 'web, pdf'
-
-  - title: 'Generate copyright/license headers'
-    url: Copyright-generator.html
-    output: 'web, pdf'
-
-- title: 'Connectors reference'
-  url: Connectors-reference.html
-  output: 'web'
+- title: 'Behind the Scenes'
+  url: Behind-the-scene.html
+  output: 'web, pdf'
   children:
 
-  - title: 'Memory connector'
-    url: Memory-connector.html
+  - title: 'Crafting LoopBack 4'
+    url: Crafting-LoopBack-4.html
     output: 'web, pdf'
 
-  - title: 'Database connectors'
-    url: Database-connectors.html
+  - title: 'Application'
+    url: Application.html
+    output: 'web, pdf'
+
+  - title: 'Server'
+    url: Server.html
+    output: 'web, pdf'
+
+  - title: 'Controllers'
+    url: Controllers.html
+    output: 'web, pdf'
+
+  - title: 'Models'
+    url: Model.html
+    output: 'web, pdf'
+
+  - title: 'Relations'
+    url: Relations.html
+    output: 'web, pdf'
+    children:
+
+    - title: 'HasMany Relation'
+      url: HasMany-relation.html
+      output: 'web, pdf'
+
+    - title: 'BelongsTo Relation'
+      url: BelongsTo-relation.html
+      output: 'web, pdf'
+
+    - title: 'HasOne Relation'
+      url: HasOne-relation.html
+      output: 'web, pdf'
+
+  - title: 'DataSources'
+    url: DataSources.html
+    output: 'web, pdf'
+
+  - title: 'Repositories'
+    url: Repositories.html
+    output: 'web, pdf'
+    children:
+
+    - title: 'Database Transactions'
+      url: Using-database-transactions.html
+      output: 'web, pdf'
+
+  - title: 'Services'
+    url: Services.html
+    output: 'web, pdf'
+
+  - title: 'Interceptors'
+    url: Interceptors.html
+    output: 'web, pdf'
+
+  - title: 'Life cycle events and observers'
+    url: Life-cycle.html
+    output: 'web, pdf'
+
+  - title: 'Routes'
+    url: Routes.html
+    output: 'web, pdf'
+
+  - title: 'Sequence'
+    url: Sequence.html
+    output: 'web, pdf'
+    children:
+
+    - title: 'Routing requests'
+      url: Routing-requests.html
+      output: 'web, pdf'
+
+    - title: 'Parsing requests'
+      url: Parsing-requests.html
+      output: 'web, pdf'
+
+  - title: 'Middleware'
+    url: Middleware.html
+    output: 'web, pdf'
+
+  - title: 'Decorators'
+    url: Decorators.html
+    output: 'web, pdf'
+    children:
+
+    - title: 'OpenAPI Decorators'
+      url: Decorators_openapi.html
+      output: 'web, pdf'
+
+    - title: 'Dependency Injection Decorator'
+      url: Decorators_inject.html
+      output: 'web, pdf'
+
+    - title: 'Authentication Decorator'
+      url: Decorators_authenticate.html
+      output: 'web, pdf'
+
+    - title: 'Service Decorators'
+      url: Decorators_service.html
+      output: 'web, pdf'
+
+    - title: 'Repository Decorators'
+      url: Decorators_repository.html
+      output: 'web, pdf'
+
+  - title: 'Mixins'
+    url: Mixin.html
+    output: 'web, pdf'
+
+  - title: 'Error handling'
+    url: Error-handling.html
+    output: 'web, pdf'
+
+  - title: 'Context'
+    url: Context.html
+    output: 'web, pdf'
+
+  - title: 'Binding'
+    url: Binding.html
+    output: 'web, pdf'
+
+  - title: 'Dependency Injection'
+    url: Dependency-injection.html
+    output: 'web, pdf'
+    children:
+
+      - title: 'Reserved binding keys'
+        url: Reserved-binding-keys.html
+        output: 'web, pdf'
+
+  - title: 'Components'
+    url: Components.html
+    output: 'web, pdf'
+
+  - title: 'Request/response cycle'
+    url: Request-response-cycle.html
+    output: 'web, pdf'
+
+  - title: 'Booting an Application'
+    url: Booting-an-Application.html
+    output: 'web, pdf'
+
+- title: 'Best practices'
+  url: Best-practices.html
+  output: 'web, pdf'
+  children:
+
+  - title: 'Defining the API using code-first approach'
+    url: Defining-the-API-using-code-first-approach.html
+    output: 'web, pdf'
+
+  - title: 'Defining your testing strategy'
+    url: Defining-your-testing-strategy.html
+    output: 'web, pdf'
+
+  - title: 'Testing your application'
+    url: Testing-your-application.html
+    output: 'web, pdf'
+
+- title: 'Reference guides'
+  url: Reference.html
+  output: 'web, pdf'
+  children:
+
+  - title: 'Examples'
+    url: Examples.html
+    output: 'web, pdf'
+
+  - title: 'API docs'
+    url: apidocs.index.html
+    output: 'web, pdf'
+
+  - title: 'CLI References'
+    url: Command-line-interface.html
+    output: 'web, pdf'
+    children:
+
+    - title: 'Application generator'
+      url: Application-generator.html
+      output: 'web, pdf'
+
+    - title: 'Controller generator'
+      url: Controller-generator.html
+      output: 'web, pdf'
+
+    - title: 'DataSource generator'
+      url: DataSource-generator.html
+      output: 'web, pdf'
+
+    - title: 'Import models from LoopBack 3'
+      url: Importing-LB3-models.html
+      output: 'web, pdf'
+
+    - title: 'Model generator'
+      url: Model-generator.html
+      output: 'web, pdf'
+
+    - title: 'Model discovery'
+      url: Discovering-models.html
+      output: 'web, pdf'
+
+    - title: 'Relation generator'
+      url: Relation-generator.html
+      output: 'web, pdf'
+
+    - title: 'Repository generator'
+      url: Repository-generator.html
+      output: 'web, pdf'
+
+    - title: 'REST CRUD model endpoints generator'
+      url: Rest-Crud-generator.html
+      output: 'web, pdf'
+
+    - title: 'Service generator'
+      url: Service-generator.html
+      output: 'web, pdf'
+
+    - title: 'OpenAPI generator'
+      url: OpenAPI-generator.html
+      output: 'web, pdf'
+
+    - title: 'Life cycle observer generator'
+      url: Life-cycle-observer-generator.html
+      output: 'web, pdf'
+
+    - title: 'Interceptor generator'
+      url: Interceptor-generator.html
+      output: 'web, pdf'
+
+    - title: 'Extension generator'
+      url: Extension-generator.html
+      output: 'web, pdf'
+
+    - title: 'Download examples'
+      url: Download-examples.html
+      output: 'web, pdf'
+
+    - title: 'Update project dependencies'
+      url: Update-generator.html
+      output: 'web, pdf'
+
+    - title: 'Generate copyright/license headers'
+      url: Copyright-generator.html
+      output: 'web, pdf'
+
+  - title: 'Connectors reference'
+    url: Connectors-reference.html
     output: 'web'
     children:
 
-    - title: 'Cassandra connector'
-      url: Cassandra-connector.html
+    - title: 'Memory connector'
+      url: Memory-connector.html
       output: 'web, pdf'
 
-    - title: 'Cloudant connector'
-      url: Cloudant-connector.html
-      output: 'web, pdf'
-
-    - title: 'DashDB connector'
-      url: DashDB.html
-      output: 'web, pdf'
-
-    - title: 'IBM Db2 (for Linux, Unix, Windows) connector'
-      url: DB2-connector.html
-      output: 'web, pdf'
-
-    - title: 'IBM Db2 for i connector'
-      url: DB2-for-i-connector.html
-      output: 'web, pdf'
-
-    - title: 'IBM Db2 for z/OS connector'
-      url: DB2-for-z-OS-connector.html
-      output: 'web, pdf'
-
-    - title: Informix connector
-      url: Informix.html
-      output: 'web, pdf'
-
-    - title: 'MongoDB connector'
-      url: MongoDB-connector.html
-      output: 'web, pdf'
+    - title: 'Database connectors'
+      url: Database-connectors.html
+      output: 'web'
       children:
 
-      - title: 'MongoDB Connector Tutorial'
-        url: Connecting-to-MongoDB.html
+      - title: 'Cassandra connector'
+        url: Cassandra-connector.html
         output: 'web, pdf'
 
-      - title: 'Using MongoLab'
-        url: Using-MongoLab.html
+      - title: 'Cloudant connector'
+        url: Cloudant-connector.html
         output: 'web, pdf'
 
-    - title: 'MySQL connector'
-      url: MySQL-connector.html
-      output: 'web, pdf'
+      - title: 'DashDB connector'
+        url: DashDB.html
+        output: 'web, pdf'
+
+      - title: 'IBM Db2 (for Linux, Unix, Windows) connector'
+        url: DB2-connector.html
+        output: 'web, pdf'
+
+      - title: 'IBM Db2 for i connector'
+        url: DB2-for-i-connector.html
+        output: 'web, pdf'
+
+      - title: 'IBM Db2 for z/OS connector'
+        url: DB2-for-z-OS-connector.html
+        output: 'web, pdf'
+
+      - title: Informix connector
+        url: Informix.html
+        output: 'web, pdf'
+
+      - title: 'MongoDB connector'
+        url: MongoDB-connector.html
+        output: 'web, pdf'
+        children:
+
+        - title: 'MongoDB Connector Tutorial'
+          url: Connecting-to-MongoDB.html
+          output: 'web, pdf'
+
+        - title: 'Using MongoLab'
+          url: Using-MongoLab.html
+          output: 'web, pdf'
+
+      - title: 'MySQL connector'
+        url: MySQL-connector.html
+        output: 'web, pdf'
+        children:
+
+        - title: 'MySQL Connector Tutorial'
+          url: Connecting-to-MySQL.html
+          output: 'web, pdf'
+
+      - title: 'Oracle connector'
+        url: Oracle-connector.html
+        output: 'web, pdf'
+        children:
+
+        - title: 'Installing the Oracle connector'
+          url: Installing-the-Oracle-connector.html
+          output: 'web, pdf'
+
+        - title: 'Oracle connector tutorial'
+          url: Connecting-to-Oracle.html
+          output: 'web, pdf'
+
+      - title: 'PostgreSQL connector'
+        url: PostgreSQL-connector.html
+        output: 'web, pdf'
+        children:
+
+        - title: 'PostgreSQL connector tutorial'
+          url: Connecting-to-PostgreSQL.html
+          output: 'web, pdf'
+
+      - title: 'Redis connector'
+        url: Redis-connector.html
+        output: 'web, pdf'
+
+      - title: 'Redis key-value connector'
+        url: kv-redis-connector.html
+        output: 'web, pdf'
+        children:
+
+        - title: 'KV connector example'
+          url: Example-kv-connector.html
+          output: 'web, pdf'
+
+      - title: 'SQL Server connector'
+        url: SQL-Server-connector.html
+        output: 'web, pdf'
+        children:
+
+        - title: 'SQL Server connector tutorial'
+          url: Connecting-to-Microsoft-SQL-Server.html
+          output: 'web, pdf'
+
+      - title: 'SQLite3 connector'
+        url: SQLite3.html
+        output: 'web, pdf'
+
+      - title: 'z/OS Connect Enterprise Edition connector'
+        url: zOSconnectEE.html
+        output: 'web, pdf'
+
+    - title: 'Other connectors'
+      url: Other-connectors.html
+      output: 'web'
       children:
 
-      - title: 'MySQL Connector Tutorial'
-        url: Connecting-to-MySQL.html
+      - title: 'JSON RPC connector'
+        url: JSON-RPC-connector.html
         output: 'web, pdf'
 
-    - title: 'Oracle connector'
-      url: Oracle-connector.html
-      output: 'web, pdf'
-      children:
-
-      - title: 'Installing the Oracle connector'
-        url: Installing-the-Oracle-connector.html
+      - title: 'MQ Light connector'
+        url: MQLight-connector.html
         output: 'web, pdf'
 
-      - title: 'Oracle connector tutorial'
-        url: Connecting-to-Oracle.html
+      - title: 'REST connector'
+        url: REST-connector.html
+        output: 'web, pdf'
+        children:
+
+        - title: 'REST connector example'
+          url: REST-connector-example.html
+          output: 'web, pdf'
+
+      - title: 'SOAP connector'
+        url: SOAP-connector.html
+        output: 'web, pdf'
+        children:
+
+        - title: 'Strong-soap'
+          url: Strong-soap.html
+          output: 'web, pdf'
+
+        - title: 'SOAP connector example'
+          url: SOAP-Connector-example.html
+          output: 'web, pdf'
+
+        - title: 'Connecting to SOAP web services'
+          url: Connecting-to-SOAP.html
+          output: 'web, pdf'
+
+      - title: 'OpenAPI connector'
+        url: OpenAPI-connector.html
         output: 'web, pdf'
 
-    - title: 'PostgreSQL connector'
-      url: PostgreSQL-connector.html
-      output: 'web, pdf'
-      children:
-
-      - title: 'PostgreSQL connector tutorial'
-        url: Connecting-to-PostgreSQL.html
-        output: 'web, pdf'
-
-    - title: 'Redis connector'
-      url: Redis-connector.html
+    - title: 'Community connectors'
+      url: Community-connectors.html
       output: 'web, pdf'
 
-    - title: 'Redis key-value connector'
-      url: kv-redis-connector.html
-      output: 'web, pdf'
-      children:
-
-      - title: 'KV connector example'
-        url: Example-kv-connector.html
-        output: 'web, pdf'
-
-    - title: 'SQL Server connector'
-      url: SQL-Server-connector.html
-      output: 'web, pdf'
-      children:
-
-      - title: 'SQL Server connector tutorial'
-        url: Connecting-to-Microsoft-SQL-Server.html
-        output: 'web, pdf'
-
-    - title: 'SQLite3 connector'
-      url: SQLite3.html
-      output: 'web, pdf'
-
-    - title: 'z/OS Connect Enterprise Edition connector'
-      url: zOSconnectEE.html
-      output: 'web, pdf'
-
-  - title: 'Other connectors'
-    url: Other-connectors.html
-    output: 'web'
-    children:
-
-    - title: 'JSON RPC connector'
-      url: JSON-RPC-connector.html
-      output: 'web, pdf'
-
-    - title: 'MQ Light connector'
-      url: MQLight-connector.html
-      output: 'web, pdf'
-
-    - title: 'REST connector'
-      url: REST-connector.html
-      output: 'web, pdf'
-      children:
-
-      - title: 'REST connector example'
-        url: REST-connector-example.html
-        output: 'web, pdf'
-
-    - title: 'SOAP connector'
-      url: SOAP-connector.html
-      output: 'web, pdf'
-      children:
-
-      - title: 'Strong-soap'
-        url: Strong-soap.html
-        output: 'web, pdf'
-
-      - title: 'SOAP connector example'
-        url: SOAP-Connector-example.html
-        output: 'web, pdf'
-
-      - title: 'Connecting to SOAP web services'
-        url: Connecting-to-SOAP.html
-        output: 'web, pdf'
-
-    - title: 'OpenAPI connector'
-      url: OpenAPI-connector.html
-      output: 'web, pdf'
-
-  - title: 'Community connectors'
-    url: Community-connectors.html
+  - title: 'Change logs'
+    url: changelog.index.html
     output: 'web, pdf'
 
-- title: 'API docs'
-  url: apidocs.index.html
+  - title: 'Considerations for GDPR readiness'
+    url: Deploy-for-GDPR-readiness.html
+    output: 'web, pdf'
+
+- title: 'Extending LoopBack 4'
+  url: Extending-LoopBack-4.html
+  output: 'web, pdf'
+  children:
+
+  - title: 'Creating components'
+    url: Creating-components.html
+    output: 'web, pdf'
+
+  - title: 'Creating decorators'
+    url: Creating-decorators.html
+    output: 'web, pdf'
+
+  - title: 'Contributing REST API'
+    url: 'creating-components-rest-api.html'
+    output: 'web, pdf'
+
+  - title: 'Creating services'
+    url: 'creating-components-services.html'
+    output: 'web, pdf'
+
+  - title: 'Creating servers'
+    url: Creating-servers.html
+    output: 'web, pdf'
+
+  - title: 'Extension point and extensions'
+    url: Extension-point-and-extensions.html
+    output: 'web, pdf'
+
+  - title: 'Extending request body parsing'
+    url: Extending-request-body-parsing.html
+    output: 'web, pdf'
+
+  - title: 'Extension life cycle'
+    url: Extension-life-cycle.html
+    output: 'web, pdf'
+
+  - title: 'Extending OpenAPI specification'
+    url: Extending-OpenAPI-specification.html
+    output: 'web, pdf'
+
+  - title: 'Extending Model API builder'
+    url: Extending-Model-API-builder.html
+    output: 'web, pdf'
+
+  - title: 'Testing your extension'
+    url: Testing-your-extension.html
+    output: 'web, pdf'
+
+- title: 'Contribute to LoopBack 4'
+  url: code-contrib-lb4.html
+  output: 'web, pdf'
+  children:
+
+    - title: 'Submitting a pull request to LoopBack 4'
+      url: submitting_a_pr.html
+      output: 'web, pdf'
+
+- title: 'FAQ'
+  url: FAQ.html
   output: 'web, pdf'
 
 - title: 'Migration guide'
@@ -951,46 +984,3 @@ children:
   - title: 'Features not planned'
     url: migration-not-planned.html
     output: 'web, pdf'
-
-- title: 'Best practices'
-  url: Best-practices.html
-  output: 'web, pdf'
-  children:
-
-  - title: 'Defining the API using code-first approach'
-    url: Defining-the-API-using-code-first-approach.html
-    output: 'web, pdf'
-
-  - title: 'Defining your testing strategy'
-    url: Defining-your-testing-strategy.html
-    output: 'web, pdf'
-
-  - title: 'Testing your application'
-    url: Testing-your-application.html
-    output: 'web, pdf'
-
-- title: 'Contribute to LoopBack 4'
-  url: code-contrib-lb4.html
-  output: 'web, pdf'
-  children:
-
-    - title: 'Submitting a pull request to LoopBack 4'
-      url: submitting_a_pr.html
-      output: 'web, pdf'
-
-- title: 'Change logs'
-  url: changelog.index.html
-  output: 'web, pdf'
-
-- title: 'Reference'
-  url: Reference.html
-  output: 'web, pdf'
-  children:
-
-  - title: 'Considerations for GDPR readiness'
-    url: Deploy-for-GDPR-readiness.html
-    output: 'web, pdf'
-
-- title: 'FAQ'
-  url: FAQ.html
-  output: 'web, pdf'
