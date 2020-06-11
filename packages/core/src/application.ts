@@ -451,7 +451,7 @@ export class Application extends Context implements LifeCycleObserver {
    * ```
    */
   public service<S>(
-    cls: Constructor<S | Provider<S>>,
+    cls: ServiceOrProviderClass<S>,
     nameOrOptions?: string | ServiceOptions,
   ): Binding<S> {
     const options = toOptions(nameOrOptions);
@@ -601,6 +601,9 @@ export interface ApplicationConfig {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type ControllerClass<T = any> = Constructor<T>;
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type ServiceOrProviderClass<T = any> = Constructor<T | Provider<T>>;
 
 /**
  * Type description for `package.json`

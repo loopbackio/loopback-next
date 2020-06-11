@@ -10,7 +10,11 @@ import {
   createBindingFromClass,
   Provider,
 } from '@loopback/context';
-import {Application, ControllerClass} from './application';
+import {
+  Application,
+  ControllerClass,
+  ServiceOrProviderClass,
+} from './application';
 import {LifeCycleObserver} from './lifecycle';
 import {Server} from './server';
 
@@ -70,6 +74,11 @@ export interface Component {
   };
 
   lifeCycleObservers?: Constructor<LifeCycleObserver>[];
+
+  /**
+   * An array of service or provider classes
+   */
+  services?: ServiceOrProviderClass[];
 
   /**
    * An array of bindings to be aded to the application context.
@@ -135,6 +144,12 @@ export function mountComponent(app: Application, component: Component) {
   if (component.lifeCycleObservers) {
     for (const observer of component.lifeCycleObservers) {
       app.lifeCycleObserver(observer);
+    }
+  }
+
+  if (component.services) {
+    for (const service of component.services) {
+      app.service(service);
     }
   }
 }
