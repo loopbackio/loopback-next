@@ -15,6 +15,9 @@ Usage:
 
 'use strict';
 
+const path = require('path');
+const fs = require('fs-extra');
+
 function run(argv, options) {
   const utils = require('./utils');
 
@@ -56,6 +59,17 @@ function run(argv, options) {
   if (lang !== -1) {
     process.env.LANG = mochaOpts[lang + 1];
     mochaOpts.splice(lang, 2);
+  }
+
+  // Set `--parallel` for `@loopback/*` packages
+  if (!mochaOpts.includes('--parallel')) {
+    const pkgFile = path.join(utils.getPackageDir(), 'package.json');
+    if (fs.existsSync(pkgFile)) {
+      const pkg = fs.readJsonSync(pkgFile);
+      if (pkg.name.startsWith('@loopback/')) {
+        mochaOpts.push('--parallel');
+      }
+    }
   }
 
   const args = [...mochaOpts];
