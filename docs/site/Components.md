@@ -27,6 +27,7 @@ properties:
   context.
 - `servers` - A map of name/class pairs for [servers](Server.md).
 - `lifeCycleObservers` - An array of [life cycle observers](Life-cycle.md).
+- `services` - An array of [service](Services.md) classes or providers.
 - `bindings` - An array of [bindings](Binding.md) to be added to the application
   context. A good example of using bindings to extend the functionality of a
   LoopBack 4 app is
