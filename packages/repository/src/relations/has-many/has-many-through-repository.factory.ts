@@ -2,7 +2,6 @@
 // Node module: @loopback/repository
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
-
 import {
   DataObject,
   Entity,
@@ -11,9 +10,10 @@ import {
   HasManyDefinition,
 } from '../..';
 import {
-  createTargetConstraint,
-  createThroughConstraint,
-  createThroughFkConstraint,
+  createTargetConstraintFromThrough,
+  createThroughConstraintFromSource,
+  createThroughConstraintFromTarget,
+  getTargetKeysFromThroughModels,
   resolveHasManyThroughMetadata,
 } from './has-many-through.helpers';
 import {
@@ -33,9 +33,9 @@ export type HasManyThroughRepositoryFactory<
   TargetEntity extends Entity,
   TargetID,
   ThroughEntity extends Entity,
-  ForeignKeyType
+  SourceID
 > = (
-  fkValue: ForeignKeyType,
+  fkValue: SourceID,
 ) => HasManyThroughRepository<TargetEntity, TargetID, ThroughEntity>;
 
 export function createHasManyThroughRepositoryFactory<
@@ -43,35 +43,41 @@ export function createHasManyThroughRepositoryFactory<
   TargetID,
   Through extends Entity,
   ThroughID,
-  ForeignKeyType
+  SourceID
 >(
   relationMetadata: HasManyDefinition,
   targetRepositoryGetter: Getter<EntityCrudRepository<Target, TargetID>>,
   throughRepositoryGetter: Getter<EntityCrudRepository<Through, ThroughID>>,
-): HasManyThroughRepositoryFactory<Target, TargetID, Through, ForeignKeyType> {
+): HasManyThroughRepositoryFactory<Target, TargetID, Through, SourceID> {
   const meta = resolveHasManyThroughMetadata(relationMetadata);
-  const result = function (fkValue: ForeignKeyType) {
-    function getTargetContraint(
-      throughInstances: Through | Through[],
+  const result = function (fkValue: SourceID) {
+    function getTargetConstraintFromThroughModels(
+      throughInstances: Through[],
     ): DataObject<Target> {
-      return createTargetConstraint<Target, Through>(meta, throughInstances);
+      return createTargetConstraintFromThrough<Target, Through>(
+        meta,
+        throughInstances,
+      );
     }
-    function getThroughConstraint(): DataObject<Through> {
-      const constriant: DataObject<Through> = createThroughConstraint<
+    function getTargetKeys(throughInstances: Through[]): TargetID[] {
+      return getTargetKeysFromThroughModels(meta, throughInstances);
+    }
+    function getThroughConstraintFromSource(): DataObject<Through> {
+      const constraint: DataObject<Through> = createThroughConstraintFromSource<
         Through,
-        ForeignKeyType
+        SourceID
       >(meta, fkValue);
-      return constriant;
+      return constraint;
     }
 
-    function getThroughFkConstraint(
-      targetInstance: Target,
+    function getThroughConstraintFromTarget(
+      fkValues: TargetID[],
     ): DataObject<Through> {
-      const constriant: DataObject<Through> = createThroughFkConstraint<
-        Target,
-        Through
-      >(meta, targetInstance);
-      return constriant;
+      const constraint: DataObject<Through> = createThroughConstraintFromTarget<
+        Through,
+        TargetID
+      >(meta, fkValues);
+      return constraint;
     }
 
     return new DefaultHasManyThroughRepository<
@@ -84,9 +90,10 @@ export function createHasManyThroughRepositoryFactory<
     >(
       targetRepositoryGetter,
       throughRepositoryGetter,
-      getTargetContraint,
-      getThroughConstraint,
-      getThroughFkConstraint,
+      getTargetConstraintFromThroughModels,
+      getTargetKeys,
+      getThroughConstraintFromSource,
+      getThroughConstraintFromTarget,
     );
   };
   return result;
