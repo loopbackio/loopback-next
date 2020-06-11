@@ -171,6 +171,35 @@ describe('Application', () => {
       expect(binding.tagNames).to.containEql('foo');
     });
 
+    it('binds services from a component', () => {
+      class MyService {}
+
+      class MyComponentWithServices implements Component {
+        services = [MyService];
+      }
+
+      app.component(MyComponentWithServices);
+
+      expect(
+        app.getBinding('services.MyService').valueConstructor,
+      ).to.be.exactly(MyService);
+    });
+
+    it('binds services with @bind from a component', () => {
+      @bind({scope: BindingScope.TRANSIENT, tags: ['foo']})
+      class MyService {}
+
+      class MyComponentWithServices implements Component {
+        services = [MyService];
+      }
+
+      app.component(MyComponentWithServices);
+
+      const binding = app.getBinding('services.MyService');
+      expect(binding.scope).to.eql(BindingScope.TRANSIENT);
+      expect(binding.tagNames).to.containEql('foo');
+    });
+
     it('honors tags when binding providers from a component', () => {
       @bind({tags: ['foo']})
       class MyProvider implements Provider<string> {
