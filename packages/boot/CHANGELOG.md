@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.3](https://github.com/strongloop/loopback-next/compare/@loopback/boot@2.3.2...@loopback/boot@2.3.3) (2020-06-11)
+
+
+### Bug Fixes
+
+* **boot:** make sure sandbox directories are removed after tests ([00d52ee](https://github.com/strongloop/loopback-next/commit/00d52eed7fc23fb8da44084bac4f9ab75f65152e))
+
+
+
+
+
 ## [2.3.2](https://github.com/strongloop/loopback-next/compare/@loopback/boot@2.3.1...@loopback/boot@2.3.2) (2020-05-28)
 
 

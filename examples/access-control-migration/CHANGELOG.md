@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-access-control-migration@1.4.0...@loopback/example-access-control-migration@2.0.0) (2020-06-11)
+
+
+### Bug Fixes
+
+* **authorization:** set default HTTP status code for authorization error to 403 as per RFC 7231 ([0eb124b](https://github.com/strongloop/loopback-next/commit/0eb124b068ece35e0129bcdfa1bd551250fe5303))
+
+
+### BREAKING CHANGES
+
+* **authorization:** We now use http status code `403` instead of `401` to report authorization denied. The default status code can be set via `defaultStatusCodeForDeny` for the authorization options.
+
+
+
+
+
 # [1.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-access-control-migration@1.3.1...@loopback/example-access-control-migration@1.4.0) (2020-05-28)
 
 

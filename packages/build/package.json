@@ -6,7 +6,7 @@
     "url": "https://github.com/strongloop/loopback-next.git",
     "directory": "packages/build"
   },
-  "version": "5.4.2",
+  "version": "5.4.3",
   "engines": {
     "node": ">=10"
   },
@@ -18,7 +18,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@loopback/eslint-config": "^8.0.0",
+    "@loopback/eslint-config": "^8.0.1",
     "@types/mocha": "^7.0.2",
     "@types/node": "^10.17.26",
     "cross-spawn": "^7.0.3",

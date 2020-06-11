@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.7](https://github.com/strongloop/loopback-next/compare/@loopback/authentication-passport@2.1.6...@loopback/authentication-passport@2.1.7) (2020-06-11)
+
+
+### Bug Fixes
+
+* remove unused dependency `@loopback/metadata` ([4d6bff9](https://github.com/strongloop/loopback-next/commit/4d6bff942b8b8b58fe5940b3daf5715c145293df))
+
+
+
+
+
 ## [2.1.6](https://github.com/strongloop/loopback-next/compare/@loopback/authentication-passport@2.1.5...@loopback/authentication-passport@2.1.6) (2020-05-28)
 
 **Note:** Version bump only for package @loopback/authentication-passport

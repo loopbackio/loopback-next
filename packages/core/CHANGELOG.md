@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.8.0](https://github.com/strongloop/loopback-next/compare/@loopback/core@2.7.1...@loopback/core@2.8.0) (2020-06-11)
+
+
+### Features
+
+* **core:** add services to component artifacts ([5545345](https://github.com/strongloop/loopback-next/commit/5545345a7a1a51333d518d5a5cb8580d74ff2492))
+
+
+
+
+
 ## [2.7.1](https://github.com/strongloop/loopback-next/compare/@loopback/core@2.7.0...@loopback/core@2.7.1) (2020-05-28)
 
 **Note:** Version bump only for package @loopback/core

@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.7.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@2.6.0...@loopback/repository@2.7.0) (2020-06-11)
+
+
+### Bug Fixes
+
+* **repository:** fix DynamicModelCtor type to correctly preserve Props ([927789e](https://github.com/strongloop/loopback-next/commit/927789e254f4db7945201609683ae83a18f1c48d))
+
+
+### Features
+
+* **repository:** add hasManyThrough factory and tests ([3304963](https://github.com/strongloop/loopback-next/commit/33049634e2320cd30e5f9403e03db17000dd49cd))
+* **repository:** add more helpers for HasManyThrough ([c795544](https://github.com/strongloop/loopback-next/commit/c7955446c38b2dfd0d064eb6fa4d90a7f76283a2))
+* **repository:** adds fuzzy where filters to WhereBuilder ([7f79805](https://github.com/strongloop/loopback-next/commit/7f798052b33077b12ae2becb5c42453800aa54aa)), closes [#5577](https://github.com/strongloop/loopback-next/issues/5577)
+
+
+
+
+
 # [2.6.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@2.5.1...@loopback/repository@2.6.0) (2020-05-28)
 
 

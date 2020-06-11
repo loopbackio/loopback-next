@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.3](https://github.com/strongloop/loopback-next/compare/@loopback/example-passport-login@1.4.2...@loopback/example-passport-login@1.4.3) (2020-06-11)
+
+
+### Bug Fixes
+
+* remove unused dependency ([b59b811](https://github.com/strongloop/loopback-next/commit/b59b81105a9805dc8fefe8e00ef32dd963e364b0))
+
+
+
+
+
 ## [1.4.2](https://github.com/strongloop/loopback-next/compare/@loopback/example-passport-login@1.4.1...@loopback/example-passport-login@1.4.2) (2020-05-28)
 
 **Note:** Version bump only for package @loopback/example-passport-login

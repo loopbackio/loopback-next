@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.9.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@3.8.2...@loopback/context@3.9.0) (2020-06-11)
+
+
+### Features
+
+* **context:** add `tryCatchFinally` helper function for value or promise ([c764ac6](https://github.com/strongloop/loopback-next/commit/c764ac61c3305fba5f8c59357243507e8a940ba6))
+* **context:** add strongly typed `on` and `once` methods ([3f14bfa](https://github.com/strongloop/loopback-next/commit/3f14bfa05679fd2642221a9bba0a0e80864b706d))
+* **context:** improve error reporting with more contextual information ([2a30484](https://github.com/strongloop/loopback-next/commit/2a30484f90b08803f14669524f8eb64c35031da9))
+* **context:** use a faster UID generator ([e5e3d19](https://github.com/strongloop/loopback-next/commit/e5e3d193a182b364a0877dd223be7a0d936a91cd))
+
+
+
+
+
 ## [3.8.2](https://github.com/strongloop/loopback-next/compare/@loopback/context@3.8.1...@loopback/context@3.8.2) (2020-05-28)
 
 **Note:** Version bump only for package @loopback/context

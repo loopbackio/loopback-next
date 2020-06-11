@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.2.7](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@4.2.6...@loopback/authentication@4.2.7) (2020-06-11)
+
+
+### Bug Fixes
+
+* remove unused dependency `@loopback/metadata` ([c0b87c3](https://github.com/strongloop/loopback-next/commit/c0b87c3d49d3e4cf57a01e95c5c55267cf7b054b))
+
+
+
+
+
 ## [4.2.6](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@4.2.5...@loopback/authentication@4.2.6) (2020-05-28)
 
 **Note:** Version bump only for package @loopback/authentication

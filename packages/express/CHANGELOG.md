@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.3](https://github.com/strongloop/loopback-next/compare/@loopback/express@1.2.2...@loopback/express@1.2.3) (2020-06-11)
+
+
+### Bug Fixes
+
+* **express:** ensure options are honored for `invokeMiddleware` resolved from the provider ([b80fcf8](https://github.com/strongloop/loopback-next/commit/b80fcf873fc5213a4d031b7684ddd4bd9ec90f8f))
+
+
+
+
+
 ## [1.2.2](https://github.com/strongloop/loopback-next/compare/@loopback/express@1.2.1...@loopback/express@1.2.2) (2020-05-28)
 
 **Note:** Version bump only for package @loopback/express

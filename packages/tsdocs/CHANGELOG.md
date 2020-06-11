@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.2](https://github.com/strongloop/loopback-next/compare/@loopback/tsdocs@2.2.1...@loopback/tsdocs@2.2.2) (2020-06-11)
+
+
+### Bug Fixes
+
+* **docs:** improve keywords in frontmatter ([8852827](https://github.com/strongloop/loopback-next/commit/8852827639c7edc694741cfc3bd1535333d59a05))
+
+
+
+
+
 ## [2.2.1](https://github.com/strongloop/loopback-next/compare/@loopback/tsdocs@2.2.0...@loopback/tsdocs@2.2.1) (2020-05-28)
 
 **Note:** Version bump only for package @loopback/tsdocs

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/metadata@2.1.6...@loopback/metadata@2.2.0) (2020-06-11)
+
+
+### Features
+
+* **context:** improve error reporting with more contextual information ([2a30484](https://github.com/strongloop/loopback-next/commit/2a30484f90b08803f14669524f8eb64c35031da9))
+
+
+
+
+
 ## [2.1.6](https://github.com/strongloop/loopback-next/compare/@loopback/metadata@2.1.5...@loopback/metadata@2.1.6) (2020-05-28)
 
 **Note:** Version bump only for package @loopback/metadata

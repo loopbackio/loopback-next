@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.6.0](https://github.com/strongloop/loopback-next/compare/@loopback/authorization@0.5.11...@loopback/authorization@0.6.0) (2020-06-11)
+
+
+### Bug Fixes
+
+* **authorization:** set default HTTP status code for authorization error to 403 as per RFC 7231 ([0eb124b](https://github.com/strongloop/loopback-next/commit/0eb124b068ece35e0129bcdfa1bd551250fe5303))
+
+
+### BREAKING CHANGES
+
+* **authorization:** We now use http status code `403` instead of `401` to report authorization denied. The default status code can be set via `defaultStatusCodeForDeny` for the authorization options.
+
+
+
+
+
 ## [0.5.11](https://github.com/strongloop/loopback-next/compare/@loopback/authorization@0.5.10...@loopback/authorization@0.5.11) (2020-05-28)
 
 **Note:** Version bump only for package @loopback/authorization

@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.9.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.8.2...@loopback/docs@3.9.0) (2020-06-11)
+
+
+### Bug Fixes
+
+* **docs:** add more keywords in docs frontmatter ([6df1d73](https://github.com/strongloop/loopback-next/commit/6df1d732665e14cb0cb31d1b75711a71eaaa8cb0))
+* **docs:** apply feedback ([ecc8771](https://github.com/strongloop/loopback-next/commit/ecc877145c96d5e1960a0aa96a7678ed92ec7744))
+* **docs:** fix listing error ([cf38dca](https://github.com/strongloop/loopback-next/commit/cf38dca9a06ef1f3447930468bd852dc377e6ff8))
+* **docs:** improve keywords in frontmatter ([8852827](https://github.com/strongloop/loopback-next/commit/8852827639c7edc694741cfc3bd1535333d59a05))
+* **example-todo:** add imports ([be64c48](https://github.com/strongloop/loopback-next/commit/be64c484d4c6cb2e66c4bff9a364c018868a46a3))
+* apply feedback from Miroslav ([f080942](https://github.com/strongloop/loopback-next/commit/f08094211027bd89798d1f616c1740650501b3c0))
+* jwt auth tutorial ([c30086c](https://github.com/strongloop/loopback-next/commit/c30086c17ce7bc42fcb0735e1951bb3b787fffdf))
+
+
+### Features
+
+* **cli:** allow custom copyright/license lines ([f4ef6b6](https://github.com/strongloop/loopback-next/commit/f4ef6b64305812922a1a61ba837111e5c8509fdc))
+* **context:** use a faster UID generator ([e5e3d19](https://github.com/strongloop/loopback-next/commit/e5e3d193a182b364a0877dd223be7a0d936a91cd))
+* **docs:** add Q3 roadmap ([584a880](https://github.com/strongloop/loopback-next/commit/584a8801405b65f0107f6cbaaabd473bc7c8af9e))
+* **docs:** adds requestBody.array() docs ([06b4b84](https://github.com/strongloop/loopback-next/commit/06b4b8437ac2cb1e10169a192c522665e08d4a9d)), closes [#5601](https://github.com/strongloop/loopback-next/issues/5601)
+
+
+
+
+
 ## [3.8.2](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.8.1...@loopback/docs@3.8.2) (2020-05-28)
 
 
