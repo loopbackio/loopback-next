@@ -121,3 +121,11 @@ jobs:
       script:
         - lerna bootstrap --scope "@loopback/test-extension-logging-fluentd" --include-dependencies
         - cd acceptance/extension-logging-fluentd && npm test
+
+    - node_js: "12"
+      os: linux
+      env:
+        - TASK=test-benchmark
+      script:
+        - lerna bootstrap --scope "@loopback/benchmark" --include-dependencies
+        - cd benchmark && npm test
