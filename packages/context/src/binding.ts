@@ -310,7 +310,7 @@ export class Binding<T = BoundValue> extends EventEmitter {
     return this._source?.type;
   }
 
-  private _cache: WeakMap<Context, T>;
+  private _cache: WeakMap<Context, ValueOrPromise<T>>;
   private _getValue?: ValueFactory<T>;
 
   /**
@@ -359,18 +359,16 @@ export class Binding<T = BoundValue> extends EventEmitter {
     result: ValueOrPromise<T>,
   ): ValueOrPromise<T> {
     // Initialize the cache as a weakmap keyed by context
-    if (!this._cache) this._cache = new WeakMap<Context, T>();
-    return transformValueOrPromise(result, val => {
-      if (this.scope === BindingScope.SINGLETON) {
-        // Cache the value
-        this._cache.set(ctx.getOwnerContext(this.key)!, val);
-      } else if (this.scope === BindingScope.CONTEXT) {
-        // Cache the value at the current context
-        this._cache.set(ctx, val);
-      }
-      // Do not cache for `TRANSIENT`
-      return val;
-    });
+    if (!this._cache) this._cache = new WeakMap<Context, ValueOrPromise<T>>();
+    if (this.scope === BindingScope.SINGLETON) {
+      // Cache the value
+      this._cache.set(ctx.getOwnerContext(this.key)!, result);
+    } else if (this.scope === BindingScope.CONTEXT) {
+      // Cache the value at the current context
+      this._cache.set(ctx, result);
+    }
+    // Do not cache for `TRANSIENT`
+    return result;
   }
 
   /**
