@@ -12,7 +12,7 @@ const {
 } = require('../../../generators/openapi/schema-helper');
 const path = require('path');
 const json5 = require('json5');
-const {expectToMatchSnapshot} = require('../../snapshots');
+const {expectToMatchSnapshot} = require('../../snapshots')();
 
 describe('schema to model', () => {
   let usptoSpec, usptoSpecAnonymous, petstoreSpec, customerSpec;

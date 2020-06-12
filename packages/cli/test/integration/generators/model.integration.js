@@ -9,7 +9,7 @@
 const path = require('path');
 const assert = require('yeoman-assert');
 const {expect, TestSandbox} = require('@loopback/testlab');
-const {expectFileToMatchSnapshot} = require('../../snapshots');
+const {expectFileToMatchSnapshot} = require('../../snapshots')();
 const {remove} = require('fs-extra');
 
 const generator = path.join(__dirname, '../../../generators/model');

@@ -9,7 +9,7 @@
 const path = require('path');
 const assert = require('yeoman-assert');
 const {expect, TestSandbox} = require('@loopback/testlab');
-const {expectFileToMatchSnapshot} = require('../../snapshots');
+const {expectFileToMatchSnapshot} = require('../../snapshots')();
 
 const generator = path.join(__dirname, '../../../generators/discover');
 require('../lib/artifact-generator')(generator);

@@ -17,6 +17,7 @@ move this file to a standalone package so that all Mocha users can use it.
 const chalk = require('chalk');
 const assert = require('assert');
 const path = require('path');
+const debug = require('debug')('test:snapshot-matcher');
 
 module.exports = {
   initializeSnapshots,
@@ -43,6 +44,22 @@ module.exports = {
  * ```
  */
 function initializeSnapshots(snapshotDir) {
+  if (debug.enabled) {
+    const stack = new Error().stack
+      .split(/\n/g)
+      // Remove the error message and the top stack frame pointing to ourselves
+      // and pick three frames (max), that should be enough to identify
+      // which test file called us.
+      .slice(2, 5)
+      .map(f => `\n${f}`)
+      .join();
+    debug(
+      'Initializing snapshot matcher, storing snapshots in %s%s',
+      snapshotDir,
+      stack,
+    );
+  }
+
   let currentTest;
   let snapshotErrors = false;
 

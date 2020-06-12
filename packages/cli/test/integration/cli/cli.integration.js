@@ -12,7 +12,7 @@ const main = require('../../../lib/cli');
 const {
   expectToMatchSnapshot,
   expectFileToMatchSnapshot,
-} = require('../../snapshots');
+} = require('../../snapshots')();
 
 function getLog(buffer) {
   buffer = buffer || [];

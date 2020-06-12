@@ -10,41 +10,60 @@ const fs = require('fs');
 const path = require('path');
 const {initializeSnapshots} = require('./snapshot-matcher');
 
-const expectToMatchSnapshot = initializeSnapshots(
-  path.resolve(__dirname, '../snapshots'),
-);
-
-function expectFileToMatchSnapshot(filePath) {
-  assert.file(filePath);
-  const content = fs.readFileSync(filePath, {encoding: 'utf-8'});
-  expectToMatchSnapshot(content);
-}
+module.exports = install;
 
 /**
- * Assert a list of files to match snapshots
- * @param {object} options Options
- *   - exists: assert the file exists or not
- *   - rootPath: rootPath for file names
- * @param  {...string} files
+ * Initialize snapshot engine and install before/after hooks.
+ *
+ * It's important to call this method from each test file to ensure hooks are
+ * installed in a way that works with parallel mocha testing.
+ *
+ * @example
+ *
+ * ```js
+ * const {
+ *   expectToMatchSnapshot,
+ *   expectFileToMatchSnapshot
+ * } = require('../../snapshots')();
+ * ```
  */
-function assertFilesToMatchSnapshot(options, ...files) {
-  options = {exists: true, ...options};
-  if (options.rootPath) {
-    files = files.map(f => path.resolve(options.rootPath, f));
+function install() {
+  const expectToMatchSnapshot = initializeSnapshots(
+    path.resolve(__dirname, '../snapshots'),
+  );
+
+  return {
+    expectToMatchSnapshot,
+    expectFileToMatchSnapshot,
+    assertFilesToMatchSnapshot,
+  };
+
+  function expectFileToMatchSnapshot(filePath) {
+    assert.file(filePath);
+    const content = fs.readFileSync(filePath, {encoding: 'utf-8'});
+    expectToMatchSnapshot(content);
   }
 
-  for (const f of files) {
-    if (options.exists === false) {
-      assert.noFile(f);
-      break;
+  /**
+   * Assert a list of files to match snapshots
+   * @param {object} options Options
+   *   - exists: assert the file exists or not
+   *   - rootPath: rootPath for file names
+   * @param  {...string} files
+   */
+  function assertFilesToMatchSnapshot(options, ...files) {
+    options = {exists: true, ...options};
+    if (options.rootPath) {
+      files = files.map(f => path.resolve(options.rootPath, f));
     }
-    assert.file(f);
-    expectFileToMatchSnapshot(f);
-  }
-}
 
-module.exports = {
-  expectToMatchSnapshot,
-  expectFileToMatchSnapshot,
-  assertFilesToMatchSnapshot,
+    for (const f of files) {
+      if (options.exists === false) {
+        assert.noFile(f);
+        break;
+      }
+      assert.file(f);
+      expectFileToMatchSnapshot(f);
+    }
+  }
 };

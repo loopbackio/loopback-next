@@ -7,7 +7,7 @@ const json5 = require('json5');
 const {loadAndBuildSpec} = require('../../../generators/openapi/spec-loader');
 const path = require('path');
 
-const {expectToMatchSnapshot} = require('../../snapshots');
+const {expectToMatchSnapshot} = require('../../snapshots')();
 
 describe('openapi to controllers/models', () => {
   const customer = path.join(

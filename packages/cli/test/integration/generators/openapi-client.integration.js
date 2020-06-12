@@ -7,7 +7,7 @@
 
 const path = require('path');
 const {TestSandbox} = require('@loopback/testlab');
-const {assertFilesToMatchSnapshot} = require('../../snapshots');
+const {assertFilesToMatchSnapshot} = require('../../snapshots')();
 
 const generator = path.join(__dirname, '../../../generators/openapi');
 const specPath = path.resolve(

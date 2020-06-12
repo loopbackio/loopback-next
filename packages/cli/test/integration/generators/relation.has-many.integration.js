@@ -8,7 +8,7 @@
 const path = require('path');
 const assert = require('yeoman-assert');
 const {expect, TestSandbox} = require('@loopback/testlab');
-const {expectFileToMatchSnapshot} = require('../../snapshots');
+const {expectFileToMatchSnapshot} = require('../../snapshots')();
 
 const generator = path.join(__dirname, '../../../generators/relation');
 const {SANDBOX_FILES, SourceEntries} = require('../../fixtures/relation');

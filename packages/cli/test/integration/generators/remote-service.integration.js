@@ -15,7 +15,7 @@ const TestSandbox = testlab.TestSandbox;
 const generator = path.join(__dirname, '../../../generators/service');
 const SANDBOX_FILES = require('../../fixtures/service').SANDBOX_FILES;
 const testUtils = require('../../test-utils');
-const {expectFileToMatchSnapshot} = require('../../snapshots');
+const {expectFileToMatchSnapshot} = require('../../snapshots')();
 
 // Test Sandbox
 const sandbox = new TestSandbox(path.resolve(__dirname, '../.sandbox'));

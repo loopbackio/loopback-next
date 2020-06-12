@@ -12,7 +12,7 @@ const specPath = path.join(
   __dirname,
   '../../fixtures/openapi/2.0/petstore-expanded-swagger.json',
 );
-const {expectFileToMatchSnapshot} = require('../../snapshots');
+const {expectFileToMatchSnapshot} = require('../../snapshots')();
 
 const testlab = require('@loopback/testlab');
 const TestSandbox = testlab.TestSandbox;

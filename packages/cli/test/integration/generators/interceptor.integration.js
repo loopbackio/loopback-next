@@ -12,7 +12,7 @@ const generator = path.join(__dirname, '../../../generators/interceptor');
 const SANDBOX_FILES = require('../../fixtures/interceptor').SANDBOX_FILES;
 const testUtils = require('../../test-utils');
 
-const {expectFileToMatchSnapshot} = require('../../snapshots');
+const {expectFileToMatchSnapshot} = require('../../snapshots')();
 
 // Test Sandbox
 const sandbox = new TestSandbox(path.resolve(__dirname, '../.sandbox'));

@@ -21,7 +21,7 @@ const props = {
 };
 const {expect} = require('@loopback/testlab');
 
-const {assertFilesToMatchSnapshot} = require('../../snapshots');
+const {assertFilesToMatchSnapshot} = require('../../snapshots')();
 
 const tests = require('../lib/project-generator')(
   generator,

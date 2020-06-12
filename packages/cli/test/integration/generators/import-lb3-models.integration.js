@@ -9,7 +9,7 @@ const assert = require('yeoman-assert');
 const {expect, TestSandbox} = require('@loopback/testlab');
 const path = require('path');
 const generator = path.join(__dirname, '../../../generators/import-lb3-models');
-const {expectFileToMatchSnapshot} = require('../../snapshots');
+const {expectFileToMatchSnapshot} = require('../../snapshots')();
 const testUtils = require('../../test-utils');
 
 const sandbox = new TestSandbox(path.resolve(__dirname, '../.sandbox'));
