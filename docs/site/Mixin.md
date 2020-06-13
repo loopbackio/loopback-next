@@ -96,7 +96,7 @@ function LoggerMixin<T extends MixinTarget<object>>(baseClass: T) {
 overriding existing members of a base class. Hence the need for `// @ts-ignore`
 as shown above. See the
 [API docs](https://loopback.io/doc/en/lb4/apidocs.core.mixintarget.html) for
-more info."}
+more info." %}
 
 Now you can extend `SimpleController` with the two mixins:
 
