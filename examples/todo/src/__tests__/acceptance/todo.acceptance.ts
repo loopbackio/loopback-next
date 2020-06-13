@@ -4,6 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {EntityNotFoundError} from '@loopback/repository';
+import {Request, Response} from '@loopback/rest';
 import {
   Client,
   createRestAppClient,
@@ -185,7 +186,7 @@ describe('TodoApplication', () => {
       const logToArray = (str: string) => {
         logs.push(str);
       };
-      app.configure<morgan.Options>('middleware.morgan').to({
+      app.configure<morgan.Options<Request, Response>>('middleware.morgan').to({
         stream: {
           write: logToArray,
         },

@@ -15,7 +15,7 @@ import {
   Provider,
   ValueOrPromise,
 } from '@loopback/core';
-import {RequestContext, RestBindings} from '@loopback/rest';
+import {Request, RequestContext, Response, RestBindings} from '@loopback/rest';
 import morgan from 'morgan';
 import {format} from 'util';
 import {Logger} from 'winston';
@@ -67,7 +67,7 @@ export class InvocationLoggingInterceptor implements Provider<Interceptor> {
   }
 }
 
-export interface AccessLogOptions extends morgan.Options {
+export interface AccessLogOptions extends morgan.Options<Request, Response> {
   format?: string | morgan.FormatFn;
 }
 
