@@ -57,7 +57,7 @@ We highly recommend you read and understand the document of LoopBack 4
 authentication system before the migration:
 
 - [Introducing component `@loopback/authentication`](https://loopback.io/doc/en/lb4/Loopback-component-authentication.html)
-- [Tutorial of how to secure your LoopBack 4 APIs with jwt strategy](https://loopback.io/doc/en/lb4/Authentication-Tutorial.html)
+- [Tutorial of how to secure your LoopBack 4 APIs with jwt strategy](https://loopback.io/doc/en/lb4/Authentication-tutorial.html)
 
 As a summary for the above documents: LoopBack 4 has a more flexible
 authentication module that can potentially support any authentication
@@ -258,7 +258,7 @@ which will decide the `principal`'s access later.
 To simplify the implementation for readers, we provide a brief introduction of
 the extracted services and bindings instead of unfolding all the implementation
 details. You can find a very detailed steps of creating it in
-[this tutorial](https://loopback.io/doc/en/lb4/Authentication-Tutorial.html).
+[this tutorial](https://loopback.io/doc/en/lb4/Authentication-tutorial.html).
 
 The component consists of the following files:
 
