@@ -182,7 +182,7 @@ This part is same as registering a non-passport based strategy. Please make sure
 you follow the documentation
 [adding-an-authentication-action-to-a-custom-sequence](https://loopback.io/doc/en/lb4/Loopback-component-authentication.html#adding-an-authentication-action-to-a-custom-sequence)
 to rewrite your sequence. You can also find a sample implementation in
-[this example tutorial](https://loopback.io/doc/en/lb4/Authentication-Tutorial.html#creating-a-custom-sequence-and-adding-the-authentication-action).
+[this example tutorial](https://loopback.io/doc/en/lb4/Authentication-tutorial.html#creating-a-custom-sequence-and-adding-the-authentication-action).
 
 ### With Provider
 
@@ -391,4 +391,4 @@ This part is same as registering a non-passport based strategy. Please make sure
 you follow the documentation
 [adding-an-authentication-action-to-a-custom-sequence](https://loopback.io/doc/en/lb4/Loopback-component-authentication.html#adding-an-authentication-action-to-a-custom-sequence)
 to rewrite your sequence. You can also find a sample implementation in
-[this example tutorial](https://loopback.io/doc/en/lb4/Authentication-Tutorial.html#creating-a-custom-sequence-and-adding-the-authentication-action).
+[this example tutorial](https://loopback.io/doc/en/lb4/Authentication-tutorial.html#creating-a-custom-sequence-and-adding-the-authentication-action).

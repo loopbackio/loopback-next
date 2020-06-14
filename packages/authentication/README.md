@@ -48,7 +48,7 @@ For detailed documentation, see
 [AuthenticationComponent](https://loopback.io/doc/en/lb4/Loopback-component-authentication.html).
 
 For a tutorial on how to add **JWT** authentication to an application, see
-[How to secure your LoopBack 4 application with JWT authentication](https://loopback.io/doc/en/lb4/Authentication-Tutorial.html).
+[How to secure your LoopBack 4 application with JWT authentication](https://loopback.io/doc/en/lb4/Authentication-tutorial.html).
 
 For some background on our design decisions, please read
 [Multiple Authentication strategies](./docs/authentication-system.md).
