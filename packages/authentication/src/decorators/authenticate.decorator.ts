@@ -29,7 +29,7 @@ class AuthenticateClassDecoratorFactory extends ClassDecoratorFactory<
  * @param options - Additional options to configure the authentication.
  */
 export function authenticate(
-  strategyNameOrMetadata: string | AuthenticationMetadata,
+  strategyNameOrMetadata: string | string[] | AuthenticationMetadata,
   options?: object,
 ) {
   return function authenticateDecoratorForClassOrMethod(
@@ -43,7 +43,10 @@ export function authenticate(
     methodDescriptor?: TypedPropertyDescriptor<any>,
   ) {
     let spec: AuthenticationMetadata;
-    if (typeof strategyNameOrMetadata === 'object') {
+    if (
+      typeof strategyNameOrMetadata === 'object' &&
+      !Array.isArray(strategyNameOrMetadata)
+    ) {
       spec = strategyNameOrMetadata;
     } else {
       spec = {strategy: strategyNameOrMetadata, options: options ?? {}};

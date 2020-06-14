@@ -22,7 +22,7 @@ export interface AuthenticationMetadata {
   /**
    * Name of the authentication strategy
    */
-  strategy: string;
+  strategy: string | string[];
   /**
    * Options for the authentication strategy
    */

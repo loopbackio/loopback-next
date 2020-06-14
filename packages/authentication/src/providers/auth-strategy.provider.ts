@@ -5,10 +5,10 @@
 
 import {
   BindingScope,
-  Getter,
-  inject,
   extensionPoint,
   extensions,
+  Getter,
+  inject,
   Provider,
 } from '@loopback/core';
 import {AuthenticationBindings} from '../keys';
@@ -32,33 +32,47 @@ import {
   {scope: BindingScope.TRANSIENT},
 ) //this needs to be transient, e.g. for request level context.
 export class AuthenticationStrategyProvider
-  implements Provider<AuthenticationStrategy | undefined> {
+  implements Provider<AuthenticationStrategy[] | undefined> {
   constructor(
     @extensions()
     protected authenticationStrategies: Getter<AuthenticationStrategy[]>,
     @inject(AuthenticationBindings.METADATA)
     protected metadata?: AuthenticationMetadata,
   ) {}
-  async value(): Promise<AuthenticationStrategy | undefined> {
+  async value(): Promise<AuthenticationStrategy[] | undefined> {
     if (!this.metadata) {
       return undefined;
     }
-    const name = this.metadata.strategy;
-    const strategy = await this.findAuthenticationStrategy(name);
-    if (!strategy) {
-      // important to throw a non-protocol-specific error here
-      const error = new Error(`The strategy '${name}' is not available.`);
-      Object.assign(error, {
-        code: AUTHENTICATION_STRATEGY_NOT_FOUND,
-      });
-      throw error;
-    }
-    return strategy;
+    return this.findAuthenticationStrategies(this.metadata.strategy);
   }
 
-  async findAuthenticationStrategy(name: string) {
-    const strategies = await this.authenticationStrategies();
-    const matchingAuthStrategy = strategies.find(a => a.name === name);
-    return matchingAuthStrategy;
+  private async findAuthenticationStrategies(names: string | string[]) {
+    const strategies: AuthenticationStrategy[] = [];
+
+    const existingStrategies = await this.authenticationStrategies();
+
+    const findStrategy = (name: string) => {
+      const strategy = existingStrategies.find(a => a.name === name);
+      if (!strategy) {
+        const error = new Error(`The strategy '${name}' is not available.`);
+        Object.assign(error, {
+          code: AUTHENTICATION_STRATEGY_NOT_FOUND,
+        });
+        throw error;
+      }
+      return strategy;
+    };
+
+    if (Array.isArray(names)) {
+      for (const name of names) {
+        const strategy = findStrategy(name);
+        strategies.push(strategy);
+      }
+    } else {
+      const strategy = findStrategy(names);
+      strategies.push(strategy);
+    }
+
+    return strategies;
   }
 }

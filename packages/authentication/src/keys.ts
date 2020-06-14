@@ -47,12 +47,12 @@ export namespace AuthenticationBindings {
    * ```ts
    * server
    *   .bind(AuthenticationBindings.STRATEGY)
-   *   .toProvider(MyAuthenticationStrategy);
+   *   .toProvider([MyAuthenticationStrategy]);
    * ```
    */
-  export const STRATEGY = BindingKey.create<AuthenticationStrategy | undefined>(
-    'authentication.strategy',
-  );
+  export const STRATEGY = BindingKey.create<
+    AuthenticationStrategy | AuthenticationStrategy[] | undefined
+  >('authentication.strategy');
 
   /**
    * Key used to inject the authentication function into the sequence.

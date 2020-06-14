@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Request} from '@loopback/rest';
-import {UserProfile} from '@loopback/security';
+import {securityId, UserProfile} from '@loopback/security';
 import {AuthenticationStrategy} from '../../../types';
 
 class AuthenticationError extends Error {
@@ -15,7 +15,7 @@ class AuthenticationError extends Error {
  * Test fixture for a mock asynchronous authentication strategy
  */
 export class MockStrategy implements AuthenticationStrategy {
-  name: 'MockStrategy';
+  name = 'MockStrategy';
   // user to return for successful authentication
   private mockUser: UserProfile;
 
@@ -49,5 +49,16 @@ export class MockStrategy implements AuthenticationStrategy {
       throw new Error('unexpected error');
     }
     return this.returnMockUser();
+  }
+}
+
+export class MockStrategy2 implements AuthenticationStrategy {
+  name = 'MockStrategy2';
+
+  async authenticate(request: Request): Promise<UserProfile | undefined> {
+    if (request.headers?.testState2 === 'fail') {
+      throw new AuthenticationError();
+    }
+    return {[securityId]: 'mock-id'};
   }
 }
