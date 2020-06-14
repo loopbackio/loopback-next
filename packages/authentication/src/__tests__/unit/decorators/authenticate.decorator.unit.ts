@@ -47,6 +47,19 @@ describe('Authentication', () => {
       expect(metaData).to.eql({strategy: 'my-strategy', options: {}});
     });
 
+    it('can add authenticate metadata to target method with strategies as array', () => {
+      class TestClass {
+        @authenticate(['my-strategy', 'my-strategy2'])
+        whoAmI() {}
+      }
+
+      const metaData = getAuthenticateMetadata(TestClass, 'whoAmI');
+      expect(metaData).to.eql({
+        strategy: ['my-strategy', 'my-strategy2'],
+        options: {},
+      });
+    });
+
     it('adds authenticate metadata to target class', () => {
       @authenticate('my-strategy', {option1: 'value1', option2: 'value2'})
       class TestClass {
