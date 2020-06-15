@@ -165,7 +165,6 @@ module.exports = {
   }
 
   async function stopApp() {
-    if (app.state !== 'started') return;
-    await app.stop();
+    if (app?.state === 'started') await app?.stop();
   }
 });

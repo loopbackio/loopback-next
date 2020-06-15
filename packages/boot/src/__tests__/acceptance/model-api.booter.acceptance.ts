@@ -167,10 +167,6 @@ module.exports = {
   }
 
   async function stopApp() {
-    try {
-      await app.stop();
-    } catch (err) {
-      // console.error('Cannot stop the app, ignoring the error.', err);
-    }
+    if (app?.state === 'started') await app?.stop();
   }
 });
