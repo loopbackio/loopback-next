@@ -4,6 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import debugFactory from 'debug';
+import {camelCase} from 'lodash';
 import {InvalidRelationError} from '../../errors';
 import {isTypeResolver} from '../../type-resolver';
 import {BelongsToDefinition, RelationType} from '../relation.types';
@@ -14,7 +15,10 @@ const debug = debugFactory('loopback:repository:belongs-to-helpers');
  * Relation definition with optional metadata (e.g. `keyTo`) filled in.
  * @internal
  */
-export type BelongsToResolvedDefinition = BelongsToDefinition & {keyTo: string};
+export type BelongsToResolvedDefinition = BelongsToDefinition & {
+  keyFrom: string;
+  keyTo: string;
+};
 
 /**
  * Resolves given belongsTo metadata if target is specified to be a resolver.
@@ -34,11 +38,6 @@ export function resolveBelongsToMetadata(relationMeta: BelongsToDefinition) {
     throw new InvalidRelationError(reason, relationMeta);
   }
 
-  if (!relationMeta.keyFrom) {
-    const reason = 'keyFrom is required';
-    throw new InvalidRelationError(reason, relationMeta);
-  }
-
   const sourceModel = relationMeta.source;
   if (!sourceModel || !sourceModel.modelName) {
     const reason = 'source model must be defined';
@@ -49,12 +48,24 @@ export function resolveBelongsToMetadata(relationMeta: BelongsToDefinition) {
   const targetName = targetModel.modelName;
   debug('Resolved model %s from given metadata: %o', targetName, targetModel);
 
+  let keyFrom;
+  if (
+    relationMeta.keyFrom &&
+    relationMeta.source.definition.properties[relationMeta.keyFrom]
+  ) {
+    keyFrom = relationMeta.keyFrom;
+  } else {
+    keyFrom = camelCase(targetName + '_id');
+  }
+
   const targetProperties = targetModel.definition.properties;
   debug('relation metadata from %o: %o', targetName, targetProperties);
 
   if (relationMeta.keyTo && targetProperties[relationMeta.keyTo]) {
     // The explicit cast is needed because of a limitation of type inference
-    return relationMeta as BelongsToResolvedDefinition;
+    return Object.assign(relationMeta, {
+      keyFrom,
+    }) as BelongsToResolvedDefinition;
   }
 
   const targetPrimaryKey = targetModel.definition.idProperties()[0];
@@ -63,5 +74,5 @@ export function resolveBelongsToMetadata(relationMeta: BelongsToDefinition) {
     throw new InvalidRelationError(reason, relationMeta);
   }
 
-  return Object.assign(relationMeta, {keyTo: targetPrimaryKey});
+  return Object.assign(relationMeta, {keyFrom, keyTo: targetPrimaryKey});
 }

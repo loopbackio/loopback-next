@@ -50,20 +50,6 @@ describe('createBelongsToAccessor', () => {
     ).to.throw(/target must be a type resolver/);
   });
 
-  it('rejects relations with missing keyFrom', () => {
-    const relationMeta = givenBelongsToDefinition({
-      keyFrom: undefined,
-    });
-
-    expect(() =>
-      createBelongsToAccessor(
-        relationMeta,
-        Getter.fromValue(companyRepo),
-        customerRepo,
-      ),
-    ).to.throw(/keyFrom is required/);
-  });
-
   it('rejects relations with a target that is not a type resolver', () => {
     const relationMeta = givenBelongsToDefinition({
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

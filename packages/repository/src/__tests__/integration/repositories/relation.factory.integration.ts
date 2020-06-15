@@ -22,7 +22,6 @@ import {
   HasManyThroughRepositoryFactory,
   juggler,
   ModelDefinition,
-  RelationType,
 } from '../../..';
 
 // Given a Customer and Order models - see definitions at the bottom
@@ -454,14 +453,9 @@ class Order extends Entity {
     .addProperty('id', {type: 'number', id: true})
     .addProperty('description', {type: 'string', required: true})
     .addProperty('customerId', {type: 'number', required: true})
-    .addRelation({
-      name: 'customer',
-      type: RelationType.belongsTo,
-      targetsMany: false,
+    .belongsTo('customer', {
       source: Order,
       target: () => Customer,
-      keyFrom: 'customerId',
-      keyTo: 'id',
     });
 }
 
@@ -500,26 +494,17 @@ class Customer extends Entity {
     .addProperty('orders', {type: Order, array: true})
     .addProperty('reviewsAuthored', {type: Review, array: true})
     .addProperty('reviewsApproved', {type: Review, array: true})
-    .addRelation({
-      name: 'orders',
-      type: RelationType.hasMany,
-      targetsMany: true,
+    .hasMany('orders', {
       source: Customer,
       target: () => Order,
       keyTo: 'customerId',
     })
-    .addRelation({
-      name: 'reviewsAuthored',
-      type: RelationType.hasMany,
-      targetsMany: true,
+    .hasMany('reviewsAuthored', {
       source: Customer,
       target: () => Review,
       keyTo: 'authorId',
     })
-    .addRelation({
-      name: 'reviewsApproved',
-      type: RelationType.hasMany,
-      targetsMany: true,
+    .hasMany('reviewsApproved', {
       source: Customer,
       target: () => Review,
       keyTo: 'approvedId',
