@@ -508,4 +508,66 @@ describe('model', () => {
       ).to.throw(/Navigational properties are not allowed in model data/);
     });
   });
+
+  describe('relation helpers', () => {
+    it('adds belongsTo relation', () => {
+      const definition = new ModelDefinition('Phone').belongsTo('customer', {
+        source: Phone,
+        keyFrom: 'customerId',
+
+        target: () => Customer,
+        keyTo: 'id',
+      });
+
+      expect(definition.relations.customer).to.eql({
+        name: 'customer',
+        source: Phone,
+        keyFrom: 'customerId',
+        target: () => Customer,
+        keyTo: 'id',
+        type: RelationType.belongsTo,
+        targetsMany: false,
+      });
+    });
+
+    it('adds hasOne relation', () => {
+      const definition = new ModelDefinition('Customer').hasOne('address', {
+        source: Customer,
+        keyFrom: 'id',
+
+        target: () => Address,
+        keyTo: 'customerId',
+      });
+
+      expect(definition.relations.address).to.eql({
+        name: 'address',
+        source: Customer,
+        keyFrom: 'id',
+        target: () => Address,
+        keyTo: 'customerId',
+        type: RelationType.hasOne,
+        targetsMany: false,
+      });
+    });
+
+    it('adds hasMany relation', () => {
+      const definition = new ModelDefinition('Customer').hasMany('phones', {
+        source: Customer,
+        keyFrom: 'id',
+
+        target: () => Phone,
+        keyTo: 'customerId',
+      });
+
+      expect(definition.relations.phones).to.eql({
+        name: 'phones',
+        source: Customer,
+        keyFrom: 'id',
+        target: () => Phone,
+        keyTo: 'customerId',
+        type: RelationType.hasMany,
+        targetsMany: true,
+      });
+    });
+  });
 });

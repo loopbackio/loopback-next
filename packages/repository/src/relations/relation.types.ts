@@ -117,7 +117,7 @@ export interface BelongsToDefinition extends RelationDefinitionBase {
   /*
    * The foreign key in the source model, e.g. Order#customerId.
    */
-  keyFrom: string;
+  keyFrom?: string;
 
   /*
    * The primary key of the target model, e.g Customer#id.

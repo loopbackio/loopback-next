@@ -4,8 +4,14 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {AnyObject, DataObject, Options, PrototypeOf} from './common-types';
-import {JsonSchema} from './index';
-import {RelationMetadata} from './relations';
+import {
+  BelongsToDefinition,
+  HasManyDefinition,
+  HasOneDefinition,
+  JsonSchema,
+  RelationMetadata,
+  RelationType,
+} from './index';
 import {TypeResolver} from './type-resolver';
 import {Type} from './types';
 
@@ -143,6 +149,60 @@ export class ModelDefinition {
   addRelation(definition: RelationMetadata): this {
     this.relations[definition.name] = definition;
     return this;
+  }
+
+  /**
+   * Define a new belongsTo relation.
+   * @param name - The name of the belongsTo relation.
+   * @param definition - The definition of the belongsTo relation.
+   */
+  belongsTo(
+    name: string,
+    definition: Omit<BelongsToDefinition, 'name' | 'type' | 'targetsMany'>,
+  ): this {
+    const meta: BelongsToDefinition = {
+      ...definition,
+      name,
+      type: RelationType.belongsTo,
+      targetsMany: false,
+    };
+    return this.addRelation(meta);
+  }
+
+  /**
+   * Define a new hasOne relation.
+   * @param name - The name of the hasOne relation.
+   * @param definition - The definition of the hasOne relation.
+   */
+  hasOne(
+    name: string,
+    definition: Omit<HasOneDefinition, 'name' | 'type' | 'targetsMany'>,
+  ): this {
+    const meta: HasOneDefinition = {
+      ...definition,
+      name,
+      type: RelationType.hasOne,
+      targetsMany: false,
+    };
+    return this.addRelation(meta);
+  }
+
+  /**
+   * Define a new hasMany relation.
+   * @param name - The name of the hasMany relation.
+   * @param definition - The definition of the hasMany relation.
+   */
+  hasMany(
+    name: string,
+    definition: Omit<HasManyDefinition, 'name' | 'type' | 'targetsMany'>,
+  ): this {
+    const meta: HasManyDefinition = {
+      ...definition,
+      name,
+      type: RelationType.hasMany,
+      targetsMany: true,
+    };
+    return this.addRelation(meta);
   }
 
   /**
