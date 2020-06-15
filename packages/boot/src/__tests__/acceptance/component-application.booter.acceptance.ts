@@ -13,11 +13,7 @@ import {BooterApp} from '../fixtures/application';
 
 describe('component application booter acceptance tests', () => {
   let app: BooterApp;
-  const sandbox = new TestSandbox(resolve(__dirname, '../../.sandbox'), {
-    // We intentionally use this flag so that `dist/application.js` can keep
-    // its relative path to satisfy import statements
-    subdir: false,
-  });
+  const sandbox = new TestSandbox(resolve(__dirname, '../../.sandbox'));
 
   beforeEach('reset sandbox', () => sandbox.reset());
   beforeEach(getApp);
@@ -87,8 +83,14 @@ describe('component application booter acceptance tests', () => {
   }
 
   async function getApp() {
+    await sandbox.copyFile(
+      resolve(__dirname, '../fixtures/application.js'),
+      'application.js',
+      // Adjust the relative path for `import`
+      content => content.replace('../..', '../../..'),
+    );
+
     await sandbox.copyFile(resolve(__dirname, '../fixtures/package.json'));
-    await sandbox.copyFile(resolve(__dirname, '../fixtures/application.js'));
     await sandbox.copyFile(
       resolve(__dirname, '../fixtures/multiple.artifact.js'),
       'controllers/multiple.controller.js',
