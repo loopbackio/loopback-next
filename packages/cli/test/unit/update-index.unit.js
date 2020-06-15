@@ -19,6 +19,8 @@ const sandbox = new TestSandbox(path.resolve(__dirname, '.sandbox'));
 const expectedFile = path.join(sandbox.path, 'index.ts');
 
 describe('update-index unit tests', () => {
+  after('delete sandbox', () => sandbox.delete());
+
   beforeEach('reset sandbox', () => sandbox.reset());
 
   it('creates index.ts when not present', async () => {

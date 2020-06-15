@@ -45,6 +45,8 @@ describe('controller-generator extending BaseGenerator', baseTests);
 describe('generator-loopback4:controller', tests);
 
 describe('lb4 controller', () => {
+  after('delete sandbox', () => sandbox.delete());
+
   beforeEach('reset sandbox', () => sandbox.reset());
 
   it('does not run without package.json', () => {

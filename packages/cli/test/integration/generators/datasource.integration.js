@@ -61,6 +61,8 @@ describe('datasource-generator extending BaseGenerator', baseTests);
 describe('generator-loopback4:datasource', tests);
 
 describe('lb4 datasource integration', () => {
+  after('delete sandbox', () => sandbox.delete());
+
   beforeEach('reset sandbox', () => sandbox.reset());
 
   it('does not run without package.json', () => {

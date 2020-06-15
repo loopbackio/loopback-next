@@ -22,6 +22,8 @@ const sandbox = new TestSandbox(path.resolve(__dirname, '../.sandbox'));
 describe('cloneExampleFromGitHub (SLOW)', /** @this {Mocha.Suite} */ function () {
   this.timeout(20000);
 
+  after('delete sandbox', () => sandbox.delete());
+
   beforeEach('reset sandbox', () => sandbox.reset());
 
   it('extracts project files', async () => {

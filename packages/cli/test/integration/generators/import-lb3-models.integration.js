@@ -43,6 +43,8 @@ describe('lb4 import-lb3-models', function () {
     return loadLb3App(COFFEE_SHOP_EXAMPLE);
   }
 
+  after('delete sandbox', () => sandbox.delete());
+
   beforeEach('reset sandbox', () => sandbox.reset());
 
   it('imports CoffeeShop model from lb3-example app', async () => {

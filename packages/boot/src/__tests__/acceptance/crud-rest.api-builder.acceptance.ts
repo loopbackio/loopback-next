@@ -16,6 +16,8 @@ describe('CRUD rest builder acceptance tests', () => {
   let app: BooterApp;
   const sandbox = new TestSandbox(resolve(__dirname, '../../.sandbox'));
 
+  after('delete sandbox', () => sandbox.delete());
+
   beforeEach('reset sandbox', () => sandbox.reset());
   beforeEach(givenAppWithDataSource);
 

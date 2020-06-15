@@ -16,6 +16,8 @@ describe('controller booter unit tests', () => {
 
   let app: Application;
 
+  after('delete sandbox', () => sandbox.delete());
+
   beforeEach('reset sandbox', () => sandbox.reset());
   beforeEach(getApp);
 

@@ -14,6 +14,8 @@ describe('repository booter integration tests', () => {
 
   let app: BooterApp;
 
+  after('delete sandbox', () => sandbox.delete());
+
   beforeEach('reset sandbox', () => sandbox.reset());
   beforeEach(getApp);
 

@@ -36,6 +36,8 @@ describe('model-generator extending BaseGenerator', baseTests);
 describe('generator-loopback4:model', tests);
 
 describe('lb4 model integration', () => {
+  after('delete sandbox', () => sandbox.delete());
+
   beforeEach('reset sandbox', () => sandbox.reset());
 
   it('does not run without package.json', () => {
@@ -261,52 +263,56 @@ describe('lb4 model integration', () => {
       basicModelFileChecks(expectedModelFile, expectedIndexFile);
     });
   });
-});
 
-describe('model generator using --config option', () => {
-  it('create models with valid json', async () => {
-    await testUtils
-      .executeGenerator(generator)
-      .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path))
-      .withArguments(['--config', '{"name":"test", "base":"Entity"}', '--yes']);
-
-    basicModelFileChecks(expectedModelFile, expectedIndexFile);
-  });
-
-  it('does not run if pass invalid json', () => {
-    return expect(
-      testUtils
-        .executeGenerator(generator)
-        .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path))
-        .withArguments([
-          '--config',
-          '{"name":"test", "base":"InvalidBaseModel"}',
-          '--yes',
-        ]),
-    ).to.be.rejectedWith(/Model was not found in/);
-  });
-
-  describe('model generator using --config option with model settings', () => {
-    it('creates a model with valid settings', async () => {
+  describe('model generator using --config option', () => {
+    it('create models with valid json', async () => {
       await testUtils
         .executeGenerator(generator)
         .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path))
         .withArguments([
           '--config',
-          '{"name":"test", "base":"Entity", \
-          "modelSettings": {"annotations": \
-          [{"destinationClass": "class1","argument": 0}],\
-          "foreignKeys": {"fk_destination": {"name": "fk_destination"}}},\
-          "allowAdditionalProperties":true}',
+          '{"name":"test", "base":"Entity"}',
           '--yes',
         ]);
 
       basicModelFileChecks(expectedModelFile, expectedIndexFile);
+    });
 
-      assert.fileContent(
-        expectedModelFile,
-        /@model\({\n {2}settings: {\n {4}annotations: \[{destinationClass: 'class1', argument: 0}],\n {4}foreignKeys: {fk_destination: {name: 'fk_destination'}},\n {4}strict: false\n {2}}\n}\)/,
-      );
+    it('does not run if pass invalid json', () => {
+      return expect(
+        testUtils
+          .executeGenerator(generator)
+          .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path))
+          .withArguments([
+            '--config',
+            '{"name":"test", "base":"InvalidBaseModel"}',
+            '--yes',
+          ]),
+      ).to.be.rejectedWith(/Model was not found in/);
+    });
+
+    describe('model generator using --config option with model settings', () => {
+      it('creates a model with valid settings', async () => {
+        await testUtils
+          .executeGenerator(generator)
+          .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path))
+          .withArguments([
+            '--config',
+            '{"name":"test", "base":"Entity", \
+          "modelSettings": {"annotations": \
+          [{"destinationClass": "class1","argument": 0}],\
+          "foreignKeys": {"fk_destination": {"name": "fk_destination"}}},\
+          "allowAdditionalProperties":true}',
+            '--yes',
+          ]);
+
+        basicModelFileChecks(expectedModelFile, expectedIndexFile);
+
+        assert.fileContent(
+          expectedModelFile,
+          /@model\({\n {2}settings: {\n {4}annotations: \[{destinationClass: 'class1', argument: 0}],\n {4}foreignKeys: {fk_destination: {name: 'fk_destination'}},\n {4}strict: false\n {2}}\n}\)/,
+        );
+      });
     });
   });
 });
