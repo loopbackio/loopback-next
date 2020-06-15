@@ -24,8 +24,6 @@ describe('lifecycle script booter integration tests', () => {
   beforeEach('reset sandbox', () => sandbox.reset());
   beforeEach(getApp);
 
-  after('delete sandbox', () => sandbox.delete());
-
   it('boots life cycle observers when app.boot() is called', async () => {
     const expectedBinding = {
       key: `${OBSERVER_PREFIX}.MyLifeCycleObserver`,
