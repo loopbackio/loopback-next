@@ -19,8 +19,6 @@ describe('controller booter integration tests', () => {
   beforeEach('reset sandbox', () => sandbox.reset());
   beforeEach(getApp);
 
-  after('delete sandbox', () => sandbox.delete());
-
   it('boots controllers when app.boot() is called', async () => {
     const expectedBindings = [
       `${CONTROLLERS_PREFIX}.ArtifactOne`,

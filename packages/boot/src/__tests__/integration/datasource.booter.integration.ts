@@ -18,8 +18,6 @@ describe('datasource booter integration tests', () => {
   beforeEach('reset sandbox', () => sandbox.reset());
   beforeEach(getApp);
 
-  after('delete sandbox', () => sandbox.delete());
-
   it('boots datasources when app.boot() is called', async () => {
     const expectedBindings = [`${DATASOURCES_PREFIX}.db`];
 

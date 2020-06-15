@@ -20,8 +20,6 @@ describe('interceptor script booter integration tests', () => {
   beforeEach('reset sandbox', () => sandbox.reset());
   beforeEach(buildAppWithInterceptors);
 
-  after('delete sandbox', () => sandbox.delete());
-
   it('boots global interceptors when app.boot() is called', async () => {
     const expectedBinding = {
       key: `${GLOBAL_INTERCEPTOR_NAMESPACE}.myGlobalInterceptor`,

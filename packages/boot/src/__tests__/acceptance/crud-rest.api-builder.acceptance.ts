@@ -21,8 +21,6 @@ describe('CRUD rest builder acceptance tests', () => {
 
   afterEach(stopApp);
 
-  after('delete sandbox', () => sandbox.delete());
-
   it('binds the controller and repository to the application', async () => {
     await sandbox.copyFile(
       resolve(__dirname, '../fixtures/product.model.js'),
@@ -167,6 +165,7 @@ module.exports = {
   }
 
   async function stopApp() {
-    if (app?.state === 'started') await app?.stop();
+    if (app.state !== 'started') return;
+    await app.stop();
   }
 });

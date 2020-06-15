@@ -5,7 +5,6 @@
 
 import {Application, Component} from '@loopback/core';
 import {expect, givenHttpServerConfig, TestSandbox} from '@loopback/testlab';
-import fs from 'fs';
 import {resolve} from 'path';
 import {BootMixin, createComponentApplicationBooterBinding} from '../..';
 import {bindingKeysExcludedFromSubApp} from '../../booters';
@@ -14,12 +13,14 @@ import {BooterApp} from '../fixtures/application';
 
 describe('component application booter acceptance tests', () => {
   let app: BooterApp;
-  const sandbox = new TestSandbox(resolve(__dirname, '../../.sandbox'));
+  const sandbox = new TestSandbox(resolve(__dirname, '../../.sandbox'), {
+    // We intentionally use this flag so that `dist/application.js` can keep
+    // its relative path to satisfy import statements
+    subdir: false,
+  });
 
   beforeEach('reset sandbox', () => sandbox.reset());
   beforeEach(getApp);
-
-  after('delete sandbox', () => sandbox.delete());
 
   it('binds artifacts booted from the component application', async () => {
     class BooterAppComponent implements Component {
@@ -86,13 +87,8 @@ describe('component application booter acceptance tests', () => {
   }
 
   async function getApp() {
-    const appJsFile = resolve(__dirname, '../fixtures/application.js');
-    let appJs = fs.readFileSync(appJsFile, 'utf-8');
-    // Adjust the relative path for `import`
-    appJs = appJs.replace('../..', '../../..');
-    await sandbox.writeTextFile('application.js', appJs);
-
     await sandbox.copyFile(resolve(__dirname, '../fixtures/package.json'));
+    await sandbox.copyFile(resolve(__dirname, '../fixtures/application.js'));
     await sandbox.copyFile(
       resolve(__dirname, '../fixtures/multiple.artifact.js'),
       'controllers/multiple.controller.js',
