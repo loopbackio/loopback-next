@@ -536,7 +536,7 @@ export class Context extends EventEmitter {
     tag: BindingTag | RegExp,
   ): Readonly<Binding<ValueType>>[] {
     const currentBindings = this.tagIndexer.findByTagIndex(tag);
-    const parentBindings = this._parent && this._parent?._findByTagIndex(tag);
+    const parentBindings = this._parent?._findByTagIndex(tag);
     return this._mergeWithParent(currentBindings, parentBindings);
   }
 

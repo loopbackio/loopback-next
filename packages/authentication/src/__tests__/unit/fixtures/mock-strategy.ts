@@ -39,25 +39,13 @@ export class MockStrategy implements AuthenticationStrategy {
    * pass req.query.testState = 'error' to mock unexpected error
    */
   async verify(request: Request) {
-    if (
-      request.headers &&
-      request.headers.testState &&
-      request.headers.testState === 'fail'
-    ) {
+    if (request.headers?.testState === 'fail') {
       const err = new AuthenticationError('authorization failed');
       err.statusCode = 401;
       throw err;
-    } else if (
-      request.headers &&
-      request.headers.testState &&
-      request.headers.testState === 'empty'
-    ) {
+    } else if (request.headers?.testState === 'empty') {
       return;
-    } else if (
-      request.headers &&
-      request.headers.testState &&
-      request.headers.testState === 'error'
-    ) {
+    } else if (request.headers?.testState === 'error') {
       throw new Error('unexpected error');
     }
     return this.returnMockUser();
