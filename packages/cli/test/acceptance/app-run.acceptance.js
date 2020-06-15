@@ -14,8 +14,21 @@ const utils = require('../../lib/utils');
 const appGenerator = path.join(__dirname, '../../generators/app');
 const rootDir = path.join(__dirname, '../../../..');
 const sandboxDir = path.join(rootDir, 'sandbox');
+const {skipIf} = require('@loopback/testlab');
 
-describe('app-generator (SLOW)', function () {
+/**
+ * This test is fairly heavy and slow as it does the following steps:
+ *
+ * 1. Run `lb4 app` to scaffold an application
+ * 2. Run `lerna bootstrap` to install/link dependencies
+ * 3. Run `npm t` for the newly generated application
+ *
+ * We use `CI` environment variable to control if the test should be run. In
+ * a CI system, the flag is always set and the test will always be run. On
+ * a local machine, you can force this test to run by setting `CI` environment
+ * variable.
+ */
+skipIf(process.env.CI == null, describe, 'app-generator (SLOW)', function () {
   const appProps = {
     name: '@loopback/sandbox-app',
     description: 'My sandbox app for LoopBack 4',

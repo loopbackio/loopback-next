@@ -129,12 +129,3 @@ jobs:
       script:
         - lerna bootstrap --scope "@loopback/benchmark" --include-dependencies
         - cd benchmark && npm test
-
-    - node_js: "12"
-      os: linux
-      env:
-        - TASK=test-cli-lb4-app
-      script:
-        - lerna bootstrap
-        - npm run build
-        - cd packages/cli && npm run ci-test
