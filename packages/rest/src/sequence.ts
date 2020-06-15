@@ -4,11 +4,18 @@
 // License text available at https://opensource.org/licenses/MIT
 
 const debug = require('debug')('loopback:rest:sequence');
-import {inject, ValueOrPromise} from '@loopback/core';
+import {inject, InvocationResult, Next, ValueOrPromise} from '@loopback/core';
 import {InvokeMiddleware} from '@loopback/express';
 import {RestBindings} from './keys';
 import {RequestContext} from './request-context';
-import {FindRoute, InvokeMethod, ParseParams, Reject, Send} from './types';
+import {
+  FindRoute,
+  InvokeMethod,
+  ParseParams,
+  Reject,
+  Request,
+  Send,
+} from './types';
 
 const SequenceActions = RestBindings.SequenceActions;
 
@@ -54,12 +61,13 @@ export interface SequenceHandler {
  * ```
  */
 export class DefaultSequence implements SequenceHandler {
+  static noOp = () => false;
   /**
    * Optional invoker for registered middleware in a chain.
    * To be injected via SequenceActions.INVOKE_MIDDLEWARE.
    */
   @inject(SequenceActions.INVOKE_MIDDLEWARE, {optional: true})
-  protected invokeMiddleware: InvokeMiddleware = () => false;
+  protected invokeMiddleware: InvokeMiddleware = DefaultSequence.noOp;
 
   /**
    * Constructor: Injects findRoute, invokeMethod & logError
@@ -104,20 +112,42 @@ export class DefaultSequence implements SequenceHandler {
   async handle(context: RequestContext): Promise<void> {
     try {
       const {request, response} = context;
-      // Invoke registered Express middleware
-      const finished = await this.invokeMiddleware(context);
-      if (finished) {
-        // The response been produced by the middleware chain
-        return;
-      }
-      const route = this.findRoute(request);
-      const args = await this.parseParams(request, route);
-      const result = await this.invoke(route, args);
 
-      debug('%s result -', route.describe(), result);
-      this.send(response, result);
+      let result: InvocationResult = response;
+      // Wrap actions in a handler so that middleware can intercept both
+      // request/response processing by the actions
+      const actions: Next = async () => {
+        result = await this.invokeActions(request);
+        return result;
+      };
+
+      let finished = false;
+      // Invoke registered middleware
+      if (this.invokeMiddleware !== DefaultSequence.noOp) {
+        finished = await this.invokeMiddleware(context, {
+          // Cascade to actions
+          next: actions,
+        });
+      } else {
+        await actions();
+      }
+      if (!finished) {
+        // We defer the `send` of invocation result to http response so that
+        // middleware can set http status code and response headers. For example,
+        // a rate limiting middleware may add response headers to tell how much
+        // data is allowed after this request.
+        this.send(response, result);
+      }
     } catch (error) {
       this.reject(context, error);
     }
+  }
+
+  protected async invokeActions(request: Request): Promise<InvocationResult> {
+    const route = this.findRoute(request);
+    const args = await this.parseParams(request, route);
+    const result = await this.invoke(route, args);
+    debug('%s result -', route.describe(), result);
+    return result;
   }
 }

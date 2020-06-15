@@ -10,6 +10,7 @@ import {
   extensionPoint,
   inject,
   Provider,
+  transformValueOrPromise,
 } from '@loopback/core';
 import debugFactory from 'debug';
 import {DEFAULT_MIDDLEWARE_GROUP} from '../keys';
@@ -74,6 +75,11 @@ export class InvokeMiddlewareProvider implements Provider<InvokeMiddleware> {
     if (Array.isArray(optionsOrHandlers)) {
       return invokeExpressMiddleware(middlewareCtx, ...optionsOrHandlers);
     }
-    return invokeMiddleware(middlewareCtx, optionsOrHandlers);
+    const result = invokeMiddleware(middlewareCtx, optionsOrHandlers);
+    return transformValueOrPromise(
+      result,
+      // Set the return value to `true` if the result is the same as `response`
+      val => val === middlewareCtx.response,
+    );
   }
 }
