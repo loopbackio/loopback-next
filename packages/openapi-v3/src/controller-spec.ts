@@ -106,10 +106,7 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
         }
         /* istanbul ignore else */
         if (classTags) {
-          if (
-            spec.paths[path][method].tags &&
-            spec.paths[path][method].tags.length
-          ) {
+          if (spec.paths[path][method].tags?.length) {
             spec.paths[path][method].tags = spec.paths[path][
               method
             ].tags.concat(classTags.tags);
