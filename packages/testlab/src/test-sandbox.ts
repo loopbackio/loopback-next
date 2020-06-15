@@ -107,10 +107,13 @@ export class TestSandbox {
   }
 
   /**
-   * Deletes the TestSandbox.
+   * Deletes the TestSandbox. If `KEEP_TEST_SANDBOX` env variable is set, we
+   * leave the sandbox directory as-is on the file system.
    */
   async delete(): Promise<void> {
-    await remove(this.path);
+    if (!process.env.KEEP_TEST_SANDBOX) {
+      await remove(this.path);
+    }
     delete this._path;
   }
 

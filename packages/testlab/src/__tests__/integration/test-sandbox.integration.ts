@@ -126,6 +126,16 @@ describe('TestSandbox integration tests', () => {
     expect(await pathExists(path)).to.be.False();
   });
 
+  it('keeps the test sandbox with KEEP_TEST_SANDBOX env var', async () => {
+    process.env.KEEP_TEST_SANDBOX = '1';
+    try {
+      await sandbox.delete();
+      expect(await pathExists(path)).to.be.true();
+    } finally {
+      delete process.env.KEEP_TEST_SANDBOX;
+    }
+  });
+
   describe('after deleting sandbox', () => {
     const ERR = 'TestSandbox instance was deleted. Create a new instance.';
 
@@ -172,6 +182,6 @@ describe('TestSandbox integration tests', () => {
 
   async function deleteSandbox() {
     if (!(await pathExists(path))) return;
-    await remove(sandbox.path);
+    await remove(path);
   }
 });
