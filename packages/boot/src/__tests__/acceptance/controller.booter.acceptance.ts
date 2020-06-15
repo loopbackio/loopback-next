@@ -46,10 +46,6 @@ describe('controller booter acceptance tests', () => {
   }
 
   async function stopApp() {
-    try {
-      await app.stop();
-    } catch (err) {
-      console.log(`Stopping the app threw an error: ${err}`);
-    }
+    await app?.stop();
   }
 });
