@@ -233,19 +233,6 @@ children:
       url: Database-migrations.html
       output: 'web, pdf'
 
-  - title: 'Running and debugging apps'
-    url: Running-and-debugging-apps.html
-    output: 'web, pdf'
-    children:
-
-    - title: 'Setting debug strings'
-      url: Setting-debug-strings.html
-      output: 'web, pdf'
-
-    - title: 'Using strong-error-handler'
-      url: Using-strong-error-handler.html
-      output: 'web, pdf'
-
   - title: 'Call Other Services'
     url: Calling-other-APIs-and-web-services.html
     output: 'web, pdf'
@@ -503,6 +490,11 @@ children:
   - title: 'Error handling'
     url: Error-handling.html
     output: 'web, pdf'
+    children:
+
+    - title: 'Using strong-error-handler'
+      url: Using-strong-error-handler.html
+      output: 'web, pdf'
 
   - title: 'Context'
     url: Context.html
@@ -805,6 +797,19 @@ children:
 
   - title: 'Considerations for GDPR readiness'
     url: Deploy-for-GDPR-readiness.html
+    output: 'web, pdf'
+
+- title: 'Troubleshooting Guide'
+  url: Troubleshooting-guide.html
+  output: 'web, pdf'
+  children:
+
+  - title: 'Running and debugging apps'
+    url: Running-and-debugging-apps.html
+    output: 'web, pdf'
+
+  - title: 'Setting debug strings'
+    url: Setting-debug-strings.html
     output: 'web, pdf'
 
 - title: 'Extending LoopBack 4'
