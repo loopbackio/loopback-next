@@ -129,6 +129,11 @@ export class Application extends Context implements LifeCycleObserver {
     // Make options available to other modules as well.
     this.bind(CoreBindings.APPLICATION_CONFIG).to(this.options);
 
+    // Also configure the application instance to allow `@config`
+    this.configure(CoreBindings.APPLICATION_INSTANCE).toAlias(
+      CoreBindings.APPLICATION_CONFIG,
+    );
+
     this._shutdownOptions = {signals: ['SIGTERM'], ...this.options.shutdown};
   }
 

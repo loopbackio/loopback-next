@@ -25,6 +25,29 @@ describe('Application', () => {
 
   afterEach('clean up application', () => app.stop());
 
+  describe('app bindings', () => {
+    it('binds the application itself', () => {
+      app = new Application();
+      expect(app.getSync(CoreBindings.APPLICATION_INSTANCE)).to.equal(app);
+    });
+
+    it('binds the application config', () => {
+      const myAppConfig = {name: 'my-app', port: 3000};
+      app = new Application(myAppConfig);
+      expect(app.getSync(CoreBindings.APPLICATION_CONFIG)).to.equal(
+        myAppConfig,
+      );
+    });
+
+    it('configures the application', () => {
+      const myAppConfig = {name: 'my-app', port: 3000};
+      app = new Application(myAppConfig);
+      expect(app.getConfigSync(CoreBindings.APPLICATION_INSTANCE)).to.equal(
+        myAppConfig,
+      );
+    });
+  });
+
   describe('controller binding', () => {
     beforeEach(givenApp);
 

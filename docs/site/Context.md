@@ -684,13 +684,21 @@ We also allow `@config.*` to be resolved from another binding than the current
 one:
 
 ```ts
+import {config, CoreBindings} from '@loopback/core';
+
 export class MyRestServer {
   constructor(
     // Inject the `rest.host` from the application config
-    @config({fromBinding: 'application', propertyPath: 'rest.host'})
+    @config({
+      fromBinding: CoreBinding.APPLICATION_INSTANCE,
+      propertyPath: 'rest.host',
+    })
     host: string,
     // Inject the `rest.port` from the application config
-    @config({fromBinding: 'application', propertyPath: 'rest.port'})
+    @config({
+      fromBinding: CoreBinding.APPLICATION_INSTANCE,
+      propertyPath: 'rest.port',
+    })
     port: number,
   ) {
     // ...
