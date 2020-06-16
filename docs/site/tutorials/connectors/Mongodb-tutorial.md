@@ -1,6 +1,6 @@
 ---
 lang: en
-title: 'MongoDB connector tutorial'
+title: 'MongoDB Connector Tutorial'
 keywords:
   LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, Connector, MongoDB,
   Tutorial
