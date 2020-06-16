@@ -7,6 +7,6 @@
 
 'use strict';
 
-exports[`common matches snapshot 1 1`] = `
-common result
+exports[`test2 matches snapshot 2 1`] = `
+test2 result
 `;

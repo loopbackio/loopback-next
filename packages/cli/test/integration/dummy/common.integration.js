@@ -5,10 +5,10 @@
 
 'use strict';
 
-const {expectToMatchSnapshot} = require('../../snapshots')();
-
 exports.commonTest = function () {
   describe('common', () => {
+    const {expectToMatchSnapshot} = require('../../snapshots')();
+
     it('matches snapshot 1', function () {
       expectToMatchSnapshot('common result');
     });
