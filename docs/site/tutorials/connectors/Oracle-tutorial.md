@@ -1,18 +1,18 @@
 ---
 lang: en
-title: 'PostgreSQL Connector Tutorial'
+title: 'Oracle Connector Tutorial'
 keywords:
-  LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, Connector, PostgreSQL,
+  LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, Connector, Oracle,
   Tutorial
 sidebar: lb4_sidebar
-permalink: /doc/en/lb4/Connecting-to-PostgreSQL.html
+permalink: /doc/en/lb4/Connecting-to-Oracle.html
 ---
 
-# Connecting to PostgreSQL
+# Connecting to Oracle
 
-The following tutorial introduces how to set up PostgreSQL as the data source of
+The following tutorial introduces how to set up Oracle as the data source of
 LoopBack 4 applications with
-[LoopBack PostgreSQL connector](https://github.com/strongloop/loopback-connector-postgresql).
+[LoopBack Oracle connector](https://github.com/strongloop/loopback-connector-oracle).
 
 ## Prerequisites
 
@@ -22,7 +22,7 @@ Before starting this tutorial, make sure you have the following installed:
 - LoopBack 4 CLI; see
   [Getting Started with LoopBack 4](../../Getting-started.md)
 
-## Tutorial - PostgreSQL
+## Tutorial - Oracle
 
 ### 1. Create a new LoopBack 4 app
 
@@ -32,7 +32,7 @@ LoopBack 4 application called `MyApp`:
 ```bash
 $ lb4 app
 ? Project name: my-app
-? Project description: postgreSQL connector tutorial
+? Project description: Oracle connector tutorial
 ? Project root directory: my-app
 ? Application class name: MyAppApplication
 ? Select features to enable in the project (Press <space> to select, <a> to togg
@@ -72,7 +72,6 @@ export class User extends Entity {
 
   @property({
     type: 'boolean',
-    required: true,
   })
   hasAccount: boolean;
 
@@ -84,25 +83,27 @@ export class User extends Entity {
 
 ### 3. Create a data source
 
-Next, let's create a DataSource `db` using the PostgreSQL connector by the
-prompts below:
+LoopBack allows you to connect to your Oracle database via different methods:
+[Easy connect with host/port/database, TNS, and LDAP](https://loopback.io/doc/en/lb4/Oracle-connector.html#connector-properties).
+Let's create a DataSource `db` using the Oracle connector with Easy connect
+method by the prompts below:
 
 ```bash
 $ lb4 datasource
 ? Datasource name: db
 ? Select the connector for db:
   ...
-  MySQL (supported by StrongLoop)
-❯ PostgreSQL (supported by StrongLoop)
-  Oracle (supported by StrongLoop)
+  PostgreSQL (supported by StrongLoop)
+❯ Oracle (supported by StrongLoop)
+  Microsoft SQL (supported by StrongLoop)
   ...
-? Connection String url to override other settings (eg: postgres://username:pass
-word@localhost/database):
+? Connection String tns (eg: DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=MY_HOST)(P
+ORT=MY_PORT))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=MY_DB))):
 ? host: localhost
-? port: 5432
+? port: 1521
 ? user: loopback
 ? password: [hidden] // example password: pa55w0rd
-? database: demo
+? database: xe
 
 Datasource Db was created in src/datasources/
 ```
@@ -113,15 +114,18 @@ and the config we just set:
 ```ts
 const config = {
   name: 'db',
-  connector: 'postgresql',
-  url: '',
+  connector: 'oracle',
+  tns: '',
   host: 'localhost',
-  port: 5432,
+  port: 1521,
   user: 'loopback',
   password: 'pa55w0rd',
-  database: 'demo',
+  database: 'xe',
 };
 ```
+
+The DataSource would then connect to your back-end service(Oracle) with the
+config when the app starts.
 
 ### 4. Create repositories
 
@@ -163,18 +167,21 @@ $ npm run build
 $ npm run migrate
 ```
 
-This would generate the corresponding PostgreSQL table `user` using the metadata
-from `User` model via auto-migrate. See
+This would generate the corresponding Oracle table `USER` using the metadata
+from `User` model via auto-migrate if it does not exist. See
 [Database Migration](#database-migration) section below for information.
 
-If you check the database, you should able to see the table `user`.
+If you check the database, you should able to see the table `USER`.
 
 ```
- column_name |          column_default          | data_type
--------------+----------------------------------+-----------
- id          | nextval('user_id_seq'::regclass) | integer
- name        |                                  | text
- hasaccount  |                                  | boolean
+SQL> SELECT column_name,data_type,data_length FROM all_tab_columns
+     WHERE table_name='USER' AND owner='LOOPBACK';
+
+COLUMN_NAME    DATA_TYPE    DATA_LENGTH
+-----------------------------------------
+ID              NUMBER         22
+NAME           VARCHAR2       1024
+HASACCOUNT       CHAR          1
 ```
 
 ### 6. Create endpoints and view data using API Explorer
@@ -225,20 +232,20 @@ Please check [Database migration](../../Database-migrations.md) for details.
 Besides the basic model metadata, you can also specify part of the database
 schema definition via the property definition, which would be mapped to the
 database. See
-[Data Mapping Properties](https://loopback.io/doc/en/lb4/Model.html#data-mapping-properties).
+[Data Mapping Properties](https://loopback.io/doc/en/lb4/MySQL-connector.html#data-mapping-properties).
 
 ## Model Discovery
 
 While database migration allows you to migrate models to the DB, LoopBack also
 provides a command [`lb4 discover`](../../Discovering-models.md) to generate
 models based on schemas from the database. For example, we can try to discover
-the `user` table we created previously:
+the `USER` table we created previously:
 
 ```bash
 $ npm run build
 $ lb4 discover
 ? Select the connector to discover  db
-? Select the models which to discover  user
+? Select the models which to discover  User
 ? Select a convention to convert db column names(EXAMPLE_COLUMN) to model proper
 ty names: Camel case (exampleColumn) (Recommended)
 ? Overwrite src/models/user.model.ts? overwrite
@@ -254,40 +261,59 @@ details:
 ```ts
 // imports
 @model({
-  settings: {idInjection: false, postgresql: {schema: 'public', table: 'user'}},
+  settings: {idInjection: false, oracle: {schema: 'LOOPBACK', table: 'USER'}},
 })
 export class User extends Entity {
   @property({
     type: 'number',
     required: true, // set this to false if the value is auto-generated by the db
-    scale: 0,
+    length: 22,
     id: 1,
-    postgresql: {
-      columnName: 'id',
-      dataType: 'integer',
-      dataLength: null,
+    oracle: {
+      columnName: 'ID',
+      dataType: 'NUMBER',
+      dataLength: 22,
       dataPrecision: null,
-      dataScale: 0,
-      nullable: 'NO',
+      dataScale: null,
+      nullable: 'N',
     },
   })
   id: number;
 
   @property({
     type: 'string',
-    postgresql: {
-      columnName: 'name',
-      dataType: 'text',
-      dataLength: null,
+    required: true,
+    length: 1024,
+    oracle: {
+      columnName: 'NAME',
+      dataType: 'VARCHAR2',
+      dataLength: 1024,
       dataPrecision: null,
       dataScale: null,
-      nullable: 'YES',
+      nullable: 'N',
     },
   })
-  name?: string;
+  name: string;
+
+  @property({
+    type: 'boolean',
+    required: true,
+    length: 1,
+    oracle: {
+      columnName: 'HASACCOUNT',
+      dataType: 'CHAR',
+      dataLength: 1,
+      dataPrecision: null,
+      dataScale: null,
+      nullable: 'N',
+    },
+  })
+  hasaccount: boolean;
   // ...
 }
 ```
 
-These definitions would map to the database as well, see
+The field `oracle.<property>` maps to the database definition of a table/column.
+This allows you to customize the table/column names and also specify some
+database related settings. See
 [Data Mapping Properties](https://loopback.io/doc/en/lb4/Model.html#data-mapping-properties).
