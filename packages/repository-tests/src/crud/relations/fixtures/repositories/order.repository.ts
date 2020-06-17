@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2019. All Rights Reserved.
+// Copyright IBM Corp. 2019,2020. All Rights Reserved.
 // Node module: @loopback/repository-tests
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -6,12 +6,12 @@
 import {Getter} from '@loopback/core';
 import {
   BelongsToAccessor,
-  juggler,
-  createBelongsToAccessor,
   BelongsToDefinition,
+  createBelongsToAccessor,
+  juggler,
 } from '@loopback/repository';
-import {Customer, Order, OrderRelations, Shipment} from '../models';
 import {CrudRepositoryCtor} from '../../../..';
+import {Customer, Order, OrderRelations, Shipment} from '../models';
 
 // create the OrderRepo by calling this func so that it can be extended from CrudRepositoryCtor
 export function createOrderRepo(repoClass: CrudRepositoryCtor) {

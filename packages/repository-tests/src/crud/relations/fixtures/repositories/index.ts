@@ -4,6 +4,8 @@
 // License text available at https://opensource.org/licenses/MIT
 
 export * from './address.repository';
+export * from './cart-item.repository';
+export * from './customer-cart-item-link.repository';
 export * from './customer.repository';
 export * from './order.repository';
 export * from './shipment.repository';

@@ -9,6 +9,7 @@ import {
   EntityCrudRepository,
   hasMany,
   HasManyRepositoryFactory,
+  HasManyThroughRepositoryFactory,
   hasOne,
   HasOneRepositoryFactory,
   model,
@@ -17,6 +18,8 @@ import {
 import {BelongsToAccessor} from '@loopback/repository/src';
 import {MixedIdType} from '../../../../helpers.repository-tests';
 import {Address, AddressWithRelations} from './address.model';
+import {CartItem, CartItemWithRelations} from './cart-item.model';
+import {CustomerCartItemLink} from './customer-cart-item-link.model';
 import {Order, OrderWithRelations} from './order.model';
 
 @model()
@@ -44,6 +47,9 @@ export class Customer extends Entity {
 
   @belongsTo(() => Customer)
   parentId?: MixedIdType;
+
+  @hasMany(() => CartItem, {through: {model: () => CustomerCartItemLink}})
+  cartItems: CartItem[];
 }
 
 export interface CustomerRelations {
@@ -51,6 +57,7 @@ export interface CustomerRelations {
   orders?: OrderWithRelations[];
   customers?: CustomerWithRelations[];
   parentCustomer?: CustomerWithRelations;
+  cartItems?: CartItemWithRelations[];
 }
 
 export type CustomerWithRelations = Customer & CustomerRelations;
@@ -62,4 +69,10 @@ export interface CustomerRepository
   orders: HasManyRepositoryFactory<Order, MixedIdType>;
   customers: HasManyRepositoryFactory<Customer, MixedIdType>;
   parent: BelongsToAccessor<Customer, MixedIdType>;
+  cartItems: HasManyThroughRepositoryFactory<
+    CartItem,
+    MixedIdType,
+    CustomerCartItemLink,
+    MixedIdType
+  >;
 }

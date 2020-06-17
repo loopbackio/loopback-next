@@ -193,7 +193,7 @@ export function createThroughConstraintFromSource<
  *    keyTo: 'productId',
  *  },
  * };
- * createThroughConstraintFromTarget(resolvedMetadata, 3);
+ * createThroughConstraintFromTarget(resolvedMetadata, [3]);
  *
  * >>> {productId: 3}
  *

@@ -4,6 +4,8 @@
 // License text available at https://opensource.org/licenses/MIT
 
 export * from './address.model';
+export * from './cart-item.model';
+export * from './customer-cart-item-link.model';
 export * from './customer.model';
 export * from './order.model';
 export * from './shipment.model';
