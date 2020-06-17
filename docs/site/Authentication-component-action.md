@@ -6,6 +6,12 @@ sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Authentication-component-action.html
 ---
 
+{% include note.html content="
+This is not needed for [middleware-based
+sequence](REST-middleware-sequence.md) as the authentication is enforced by a
+middleware that's automatically discovered and added to the sequence.
+" %}
+
 ## Adding an Authentication Action to a Custom Sequence
 
 In a LoopBack 4 application with REST API endpoints, each request passes through

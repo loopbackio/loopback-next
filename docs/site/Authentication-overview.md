@@ -44,6 +44,12 @@ snippet:
 - Decorate the controller endpoint with `@authenticate()` and inject the user
   passed from the authentication layer.
 
+{% include note.html content="
+For [middleware-based sequence](REST-middleware-sequence.md), there is no longer
+needed to add the authenticate action as the authentication is enforced by a
+middleware that's automatically discovered and added to the sequence.
+" %}
+
 The rest will be handled by the authentication component
 `@loopback/authentication`, which incorporates the authentication mechanism, and
 the JWT extension `@loopback/jwt-authentication`, which helps in implementing
