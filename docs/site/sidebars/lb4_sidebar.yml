@@ -466,6 +466,14 @@ children:
     output: 'web, pdf'
     children:
 
+    - title: 'Middleware based sequence'
+      url: REST-middleware-sequence.html
+      output: 'web, pdf'
+
+    - title: 'Action based sequence'
+      url: REST-action-sequence.html
+      output: 'web, pdf'
+
     - title: 'Routing requests'
       url: Routing-requests.html
       output: 'web, pdf'
