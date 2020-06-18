@@ -9,9 +9,12 @@ import {
   UserService,
 } from '@loopback/authentication';
 import {inject} from '@loopback/core';
+import {model, property} from '@loopback/repository';
 import {get, post, requestBody} from '@loopback/rest';
 import {SecurityBindings, securityId, UserProfile} from '@loopback/security';
+import {genSalt, hash} from 'bcryptjs';
 import {TokenServiceBindings, User, UserServiceBindings} from '../../../';
+import {UserRepository} from '../../../repositories';
 import {Credentials} from '../../../services/user.service';
 
 const CredentialsSchema = {
@@ -29,6 +32,15 @@ const CredentialsSchema = {
   },
 };
 
+@model()
+export class NewUserRequest extends User {
+  @property({
+    type: 'string',
+    required: true,
+  })
+  password: string;
+}
+
 export const CredentialsRequestBody = {
   description: 'The input of login function',
   required: true,
@@ -45,7 +57,42 @@ export class UserController {
     public userService: UserService<User, Credentials>,
     @inject(SecurityBindings.USER, {optional: true})
     private user: UserProfile,
+    @inject(UserServiceBindings.USER_REPOSITORY)
+    public userRepository: UserRepository,
   ) {}
+
+  @post('/users/signup', {
+    responses: {
+      '200': {
+        description: 'User model instance',
+        content: {
+          'application/json': {
+            schema: {
+              'x-ts-type': User,
+            },
+          },
+        },
+      },
+    },
+  })
+  async signUp(
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: CredentialsSchema,
+        },
+      },
+    })
+    newUserRequest: NewUserRequest,
+  ): Promise<User> {
+    const password = await hash(newUserRequest.password, await genSalt());
+    delete newUserRequest.password;
+    const savedUser = await this.userRepository.create(newUserRequest);
+
+    await this.userRepository.userCredentials(savedUser.id).create({password});
+
+    return savedUser;
+  }
 
   @post('/users/login', {
     responses: {
