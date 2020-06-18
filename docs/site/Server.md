@@ -69,40 +69,6 @@ const app = new RestApplication({
 });
 ```
 
-### Customize How OpenAPI Spec is Served
-
-There are a few options under `rest.openApiSpec` to configure how OpenAPI spec
-is served by the given REST server.
-
-- servers: Configure servers for OpenAPI spec
-- setServersFromRequest: Set `servers` based on HTTP request headers, default to
-  `false`
-- disabled: Set to `true` to disable endpoints for the OpenAPI spec. It will
-  disable API Explorer too.
-- endpointMapping: Maps urls for various forms of the spec. Default to:
-
-```js
-    {
-      '/openapi.json': {version: '3.0.0', format: 'json'},
-      '/openapi.yaml': {version: '3.0.0', format: 'yaml'},
-    }
-```
-
-```ts
-const app = new RestApplication({
-  rest: {
-    openApiSpec: {
-      servers: [{url: 'http://127.0.0.1:8080'}],
-      setServersFromRequest: false,
-      endpointMapping: {
-        '/openapi.json': {version: '3.0.0', format: 'json'},
-        '/openapi.yaml': {version: '3.0.0', format: 'yaml'},
-      },
-    },
-  },
-});
-```
-
 ### Configure the API Explorer
 
 LoopBack allows externally hosted API Explorer UI to render the OpenAPI
