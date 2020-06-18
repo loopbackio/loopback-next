@@ -153,37 +153,6 @@ Explorer UI. Please refer to
 [Self-hosted REST API Explorer](./Self-hosted-REST-API-Explorer.md) for more
 details.
 
-### Enable HTTPS
-
-Enabling HTTPS for the LoopBack REST server is just a matter of specifying the
-protocol as `https` and specifying the credentials.
-
-In the following app, we configure HTTPS for a bare minimum app using a key +
-certificate chain variant.
-
-```ts
-import {RestApplication, RestServer, RestBindings} from '@loopback/rest';
-import fs from 'fs';
-
-export async function main() {
-  const options = {
-    rest: {
-      protocol: 'https',
-      key: fs.readFileSync('./key.pem'),
-      cert: fs.readFileSync('./cert.pem'),
-    },
-  };
-  const app = new RestApplication(options);
-  app.handler(handler => {
-    handler.response.send('Hello');
-  });
-  await app.start();
-
-  const url = app.restServer.url;
-  console.log(`Server is running at ${url}`);
-}
-```
-
 ### Customize CORS
 
 [CORS](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing) is enabled

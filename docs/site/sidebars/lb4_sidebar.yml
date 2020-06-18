@@ -305,6 +305,10 @@ children:
     url: Deployment.html
     output: 'web, pdf'
     children:
+      - title: 'Enabling HTTPS'
+        url: 'Enabling-https.html'
+        output: 'web, pdf'
+
       - title: 'Deploying to IBM Cloud'
         url: Deploying-to-IBM-Cloud.html
         output: 'web, pdf'
