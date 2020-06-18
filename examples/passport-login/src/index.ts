@@ -82,7 +82,7 @@ export async function main() {
   if (process.env.OAUTH_PROVIDERS_LOCATION) {
     oauth2Providers = require(process.env.OAUTH_PROVIDERS_LOCATION);
   } else {
-    oauth2Providers = require('../oauth2-providers');
+    oauth2Providers = require('@loopback/mock-oauth2-provider');
   }
   const server: ExpressServer = await startApplication(
     oauth2Providers,
