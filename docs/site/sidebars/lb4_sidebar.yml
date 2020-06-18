@@ -181,6 +181,13 @@ children:
   output: 'web, pdf'
   children:
 
+  - title: 'Building REST APIs'
+    output: 'web, pdf'
+    children:
+    - title: 'Customizing how OpenAPI spec is served'
+      url: Customizing-how-openapi-spec-is-served.html
+      output: 'web, pdf'
+
   - title: 'Create Other Forms of APIs'
     url: Create-other-forms-of-apis.html
     output: 'web, pdf'
