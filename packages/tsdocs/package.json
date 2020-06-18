@@ -9,6 +9,7 @@
     "node": ">=10"
   },
   "scripts": {
+    "postinstall": "npm run build:fixtures",
     "build:tsdocs": "npm run build && npm run -s extract-apidocs && npm run -s document-apidocs && npm run -s update-apidocs",
     "extract-apidocs": "node bin/extract-apis",
     "document-apidocs": "api-documenter markdown -i ../../docs/apidocs/models -o ../../docs/site/apidocs",
