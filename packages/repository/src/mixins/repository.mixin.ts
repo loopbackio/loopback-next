@@ -4,16 +4,14 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
+  Application,
   Binding,
   BindingFromClassOptions,
   BindingScope,
-  createBindingFromClass,
-} from '@loopback/core';
-import {
-  Application,
   Component,
   Constructor,
   CoreBindings,
+  createBindingFromClass,
   MixinTarget,
 } from '@loopback/core';
 import debugFactory from 'debug';
@@ -25,10 +23,6 @@ import {juggler, Repository} from '../repositories';
 
 const debug = debugFactory('loopback:repository:mixin');
 
-// FIXME(rfeng): Workaround for https://github.com/microsoft/rushstack/pull/1867
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import * as loopbackContext from '@loopback/core';
-import * as loopbackCore from '@loopback/core';
 /* eslint-enable @typescript-eslint/no-unused-vars */
 
 /**
@@ -268,6 +262,9 @@ export function RepositoryMixin<T extends MixinTarget<Application>>(
      * preserving data or rebuild everything from scratch.
      */
     async migrateSchema(options: SchemaMigrationOptions = {}): Promise<void> {
+      if (options.existingSchema === 'drop' && options.models) {
+        options.models = options.models.reverse();
+      }
       const operation =
         options.existingSchema === 'drop' ? 'automigrate' : 'autoupdate';
 
@@ -287,13 +284,29 @@ export function RepositoryMixin<T extends MixinTarget<Application>>(
 
         if (operation in ds && typeof ds[operation] === 'function') {
           debug('Migrating dataSource %s', b.key);
-          await ds[operation](options.models);
+
+          const models = filterDataSourceModels(ds, options.models);
+          await ds[operation](models);
         } else {
           debug('Skipping migration of dataSource %s', b.key);
         }
       }
     }
   };
+
+  /**
+   * Filter the list of models to keep only the models attached to the given
+   * datasource.
+   * @param models - An array of models
+   * @param ds - Datasource object
+   */
+  function filterDataSourceModels(ds: juggler.DataSource, models?: string[]) {
+    // if options.models is an empty array, return models
+    if (models == null || models.length === 0) return models;
+    // else check if model is part of the datasource
+    const definitions = Object.keys(ds.definitions);
+    return models.filter(m => definitions.includes(m));
+  }
 }
 
 /**
