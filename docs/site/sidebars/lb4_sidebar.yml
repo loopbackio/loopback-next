@@ -511,10 +511,6 @@ children:
     output: 'web, pdf'
     children:
 
-      - title: 'Reserved binding keys'
-        url: Reserved-binding-keys.html
-        output: 'web, pdf'
-
   - title: 'Components'
     url: Components.html
     output: 'web, pdf'
@@ -554,6 +550,10 @@ children:
 
   - title: 'API docs'
     url: apidocs.index.html
+    output: 'web, pdf'
+
+  - title: 'Reserved binding keys'
+    url: Reserved-binding-keys.html
     output: 'web, pdf'
 
   - title: 'Error codes'
