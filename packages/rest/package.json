@@ -39,7 +39,7 @@
     "@types/type-is": "^1.6.3",
     "ajv": "^6.12.2",
     "ajv-errors": "^1.0.1",
-    "ajv-keywords": "^3.4.1",
+    "ajv-keywords": "^3.5.0",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "debug": "^4.1.1",
