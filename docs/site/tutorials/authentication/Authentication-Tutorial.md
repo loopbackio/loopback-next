@@ -234,7 +234,7 @@ APIs. Go to `src/controllers/todo.controller.ts`. Simple add
 `@authenticate('jwt')` before the `TodoController` class. This will protect all
 the APIs in this controller.
 
-{% include code-caption.html content="/src/controllers/user.controller.ts" %}
+{% include code-caption.html content="/src/controllers/todo.controller.ts" %}
 
 ```ts
 // ---------- ADD IMPORTS -------------
