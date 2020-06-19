@@ -498,10 +498,6 @@ children:
     url: Mixin.html
     output: 'web, pdf'
 
-  - title: 'Error handling'
-    url: Error-handling.html
-    output: 'web, pdf'
-
   - title: 'Context'
     url: Context.html
     output: 'web, pdf'
@@ -558,6 +554,10 @@ children:
 
   - title: 'API docs'
     url: apidocs.index.html
+    output: 'web, pdf'
+
+  - title: 'Error codes'
+    url: Error-codes.html
     output: 'web, pdf'
 
   - title: 'CLI References'
