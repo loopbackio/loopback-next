@@ -21,7 +21,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@hapi/shot": "^4.1.2",
+    "@hapi/shot": "^5.0.0",
     "@types/express": "^4.17.6",
     "@types/fs-extra": "^9.0.1",
     "@types/shot": "^4.0.0",
