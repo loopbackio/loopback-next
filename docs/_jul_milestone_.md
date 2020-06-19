@@ -15,6 +15,7 @@ Focus on:
   - [ ] Docs: how to configure a custom table/collection name different from
         model class name #2197
   - [ ] Improve and refactor the authentication documentations #5294
+  - [ ] [Docs] Add "How the documentation is organized" section #5752
 
 - [ ] Feature parity
 
@@ -56,5 +57,3 @@ Focus on:
 - [ ] Chores/Tooling improvements
 
   - [ ] update dependency mem-fs-editor to v7 #5624
-  - [ ] [api-extractor] Incorrect handling of interfaces enhancing a class with
-        the same name microsoft/rushstack#1921
