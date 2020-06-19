@@ -178,7 +178,6 @@ children:
         output: 'web, pdf'
 
 - title: 'Usage Scenarios'
-  url: Usage-scenarios.html
   output: 'web, pdf'
   children:
 
@@ -191,7 +190,6 @@ children:
         output: 'web, pdf'
 
   - title: 'Access Databases'
-    url: Access-databases.html
     output: 'web, pdf'
     children:
 
@@ -551,7 +549,6 @@ children:
     output: 'web, pdf'
 
 - title: 'Reference guides'
-  url: Reference.html
   output: 'web, pdf'
   children:
 
