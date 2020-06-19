@@ -1,12 +1,11 @@
 ---
 lang: en
-title: Error Handling
+title: Error Codes
 keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, Error Handling
 sidebar: lb4_sidebar
-permalink: /doc/en/lb4/Error-handling.html
+permalink: /doc/en/lb4/Error-codes.html
+redirect_from: /doc/en/lb4/Error-handling.html
 ---
-
-## Known Error Codes
 
 In order to allow clients to reliably detect individual error causes, LoopBack
 sets the error `code` property to a machine-readable string.
