@@ -227,6 +227,10 @@ children:
           url: Where-filter.html
           output: 'web, pdf'
 
+    - title: 'Using Database Transactions'
+      url: Using-database-transactions.html
+      output: 'web, pdf'
+
     - title: 'Database Migrations'
       url: Database-migrations.html
       output: 'web, pdf'
@@ -431,10 +435,6 @@ children:
     url: Repositories.html
     output: 'web, pdf'
     children:
-
-    - title: 'Database Transactions'
-      url: Using-database-transactions.html
-      output: 'web, pdf'
 
   - title: 'Services'
     url: Services.html
