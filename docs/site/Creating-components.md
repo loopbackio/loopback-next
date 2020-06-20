@@ -82,6 +82,30 @@ create the following bindings in the application context:
 - `my-server` -> `MyServer` (server)
 - `lifeCycleObservers.MyObserver` -> `MyObserver` (life cycle observer)
 
+### Supported component artifacts
+
+When a component is mounted using `App.component()`, certain properties in a
+component are checked to mount certain artifacts. While some artifacts can be
+mounted using a bare LoopBack 4 application, others require the application to
+be extended by a mixin.
+
+The table below describes the supported properties in the core LoopBack 4
+packages, and the required mixin (if applicable).
+
+{% include important.html content="If an app is not extended with the required Mixin(s), the dependent artifact(s) will be silently disregarded." %}
+
+| Artifact           | Property             | Mixins            |
+| ------------------ | -------------------- | ----------------- |
+| Binding            | `bindings`           | N/A               |
+| Class              | `classes`            | N/A               |
+| Lifecycle Observer | `lifeCycleObservers` | N/A               |
+| Controller         | `controllers`        | N/A               |
+| Model              | `models`             | `RepositoryMixin` |
+| Provider           | `providers`          | N/A               |
+| Repository         | `repositories`       | `RepositoryMixin` |
+| Server             | `servers`            | N/A               |
+| Service            | `services`           | N/A               |
+
 ## Providers
 
 Providers enable components to export values that can be used by the target
