@@ -203,6 +203,24 @@ The `controllers` object supports the following options:
 | `nested`     | `boolean`            | `true`               | Look in nested directories in `dirs` for Controller artifacts                                                 |
 | `glob`       | `string`             |                      | A `glob` pattern string. This takes precendence over above 3 options (which are used to make a glob pattern). |
 
+### Model Booter
+
+This Booter's purpose is to discover [Model](Model.md) type Artifacts and to
+bind them to the Application's Context. The use of this Booter requires
+`RepositoryMixin` from `@loopback/repository` to be mixed into your Application
+class.
+
+You can configure the conventions used in your project for a Repository by
+passing a `models` object on `BootOptions` property of your Application. The
+`models` object supports the following options:
+
+| Options      | Type                 | Default         | Description                                                                                                   |
+| ------------ | -------------------- | --------------- | ------------------------------------------------------------------------------------------------------------- |
+| `dirs`       | `string \| string[]` | `['models']`    | Paths relative to projectRoot to look in for Model artifacts                                                  |
+| `extensions` | `string \| string[]` | `['.model.js']` | File extensions to match for Model artifacts                                                                  |
+| `nested`     | `boolean`            | `true`          | Look in nested directories in `dirs` for Model artifacts                                                      |
+| `glob`       | `string`             |                 | A `glob` pattern string. This takes precendence over above 3 options (which are used to make a glob pattern). |
+
 ### Repository Booter
 
 This Booter's purpose is to discover [Repository](Repositories.md) type
@@ -223,7 +241,7 @@ The `repositories` object supports the following options:
 
 ### DataSource Booter
 
-This Booter's purpose is to discover [DataSource](DataSource.md) type Artifacts
+This Booter's purpose is to discover [DataSource](DataSources.md) type Artifacts
 and to bind them to the Application's Context. The use of this Booter requires
 `RepositoryMixin` from `@loopback/repository` to be mixed into your Application
 class.
