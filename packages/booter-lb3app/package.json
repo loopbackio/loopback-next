@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "engines": {
-    "node": ">=10"
+    "node": ">=10.16"
   },
   "scripts": {
     "build": "lb-tsc",

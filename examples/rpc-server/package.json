@@ -9,7 +9,7 @@
     "loopback"
   ],
   "engines": {
-    "node": ">=10"
+    "node": ">=10.16"
   },
   "scripts": {
     "build": "lb-tsc",
