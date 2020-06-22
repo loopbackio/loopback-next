@@ -16,7 +16,10 @@ move this file to a standalone package so that all Mocha users can use it.
 
 const chalk = require('chalk');
 const assert = require('assert');
+const debug = require('debug')('test:snapshot-matcher');
 const path = require('path');
+
+const root = process.cwd();
 
 module.exports = {
   initializeSnapshots,
@@ -43,6 +46,22 @@ module.exports = {
  * ```
  */
 function initializeSnapshots(snapshotDir) {
+  if (debug.enabled) {
+    const stack = new Error().stack
+      .split(/\n/g)
+      // Remove the error message and the top stack frame pointing to ourselves
+      // and pick three frames (max), that should be enough to identify
+      // which test file called us.
+      .slice(2, 5)
+      .map(f => `\n${f}`)
+      .join();
+    debug(
+      'Initializing snapshot matcher, storing snapshots in %s%s',
+      snapshotDir,
+      stack,
+    );
+  }
+
   let currentTest;
   let snapshotErrors = false;
 
@@ -101,8 +120,10 @@ function matchSnapshot(snapshotDir, currentTest, actualValue) {
   const key = buildSnapshotKey(currentTest);
 
   if (!(key in snapshotData)) {
+    const shortFile = path.relative(root, snapshotFile);
     throw new Error(
-      `No snapshot found for ${JSON.stringify(key)}.\n` +
+      `No snapshot found in ${JSON.stringify(shortFile)} ` +
+        `for ${JSON.stringify(key)}.\n` +
         'Run the tests with `UPDATE_SNAPSHOTS=1` environment variable ' +
         'to create and update snapshot files.',
     );
@@ -129,6 +150,13 @@ function recordSnapshot(snapshots, currentTest, actualValue) {
 
   const key = buildSnapshotKey(currentTest);
   const testFile = currentTest.file;
+  if (debug.enabled) {
+    debug(
+      'Recording snapshot %j for test file %j',
+      key,
+      path.relative(root, testFile),
+    );
+  }
   if (!snapshots[testFile]) snapshots[testFile] = Object.create(null);
   snapshots[testFile][key] = actualValue;
 }
@@ -211,6 +239,7 @@ function writeSnapshotData(snapshotFile, snapshots) {
 
   const content = header + entries.join('\n');
   mkdirp.sync(path.dirname(snapshotFile));
+  debug('Updating snapshot file %j', path.relative(root, snapshotFile));
   return writeFileAtomic(snapshotFile, content, {encoding: 'utf-8'});
 }
 
