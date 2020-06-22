@@ -15,7 +15,7 @@
     "document-apidocs": "api-documenter markdown -i ../../docs/apidocs/models -o ../../docs/site/apidocs",
     "update-apidocs": "node bin/update-apidocs",
     "build": "lb-tsc",
-    "build:fixtures": "npm run build --prefix fixtures/monorepo",
+    "build:fixtures": "node fixtures/monorepo/run-lerna bootstrap && node fixtures/monorepo/run-lerna run clean && node fixtures/monorepo/run-lerna run build",
     "clean": "lb-clean loopback-tsdocs*.tgz dist *.tsbuildinfo package",
     "pretest": "npm run build",
     "test": "lb-mocha \"dist/__tests__/**/*.js\"",

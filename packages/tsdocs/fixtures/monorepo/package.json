@@ -1,15 +1,7 @@
 {
-  "name": "root",
+  "name": "@loopack-tsdocs-fixtures/monorepo",
   "version": "1.0.0",
-  "description": "Root",
-  "scripts": {
-    "clean-fixtures": "node run-lerna run clean",
-    "bootstrap": "node run-lerna bootstrap",
-    "build": "npm -s run bootstrap && npm -s run clean-fixtures && node run-lerna run build"
-  },
-  "author": "",
-  "license": "MIT",
-  "devDependencies": {
-    "@loopback/build": "file:../../../build"
-  }
+  "description": "A dummy package file that must stay (mostly) empty. Put any dependencies or scripts into tsdocs' package.json file instead.",
+  "author": "IBM Corp.",
+  "license": "MIT"
 }

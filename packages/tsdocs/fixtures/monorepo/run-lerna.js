@@ -5,6 +5,12 @@
 // License text available at https://opensource.org/licenses/MIT
 
 /**
+ * Change to the root directory of our monorepo, to prevent lerna from running
+ * against loopback-next monorepo.
+ */
+process.chdir(__dirname);
+
+/**
  * An internal script to run `lerna` installed in loopback-next monorepo root.
  * loopback-next dependencies are not added to PATH when running `npm` in the
  * `fixtures` monorepo, we must locate lerna CLI manually.
