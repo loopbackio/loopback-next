@@ -6,6 +6,8 @@ coverage
 .nyc_output
 **/*.tgz
 fixtures/*/dist
+fixtures/tsdocs-monorepo/docs
+fixtures/tsdocs-monorepo/packages/pkg1/docs
 acceptance/*/dist
 packages/*/dist
 extensions/*/dist
@@ -13,8 +15,6 @@ examples/*/dist
 benchmark/dist
 **/package
 .sandbox
-packages/tsdocs/fixtures/monorepo/docs
-packages/tsdocs/fixtures/monorepo/packages/pkg1/docs
 /docs/site/readmes
 /docs/site/changelogs
 /docs/site/CHANGELOG.md

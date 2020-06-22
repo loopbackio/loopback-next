@@ -12,7 +12,9 @@ import {runExtractorForPackage} from '../../monorepo-api-extractor';
 
 const runCLI = require('@loopback/build').runCLI;
 
-const MONOREPO_ROOT = path.join(__dirname, '../../../fixtures/monorepo');
+const MONOREPO_ROOT = path.dirname(
+  require.resolve('@loopback/tsdocs-monorepo/package.json'),
+);
 const APIDOCS_ROOT = path.join(MONOREPO_ROOT, 'docs/apidocs');
 const SITE_APIDOCS_ROOT = path.join(MONOREPO_ROOT, 'docs/site/apidocs');
 

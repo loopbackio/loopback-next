@@ -102,11 +102,13 @@ function run(argv, options) {
 
   const args = [];
 
-  const cwd = process.env.LERNA_ROOT_PATH || process.cwd();
+  let cwd = process.env.LERNA_ROOT_PATH || process.cwd();
   if (tsConfigFile && fs.existsSync(tsConfigFile)) {
     const tsconfig = require(tsConfigFile);
     if (tsconfig.references) {
       args.unshift('-b');
+      // Reset the cwd for a composite project
+      cwd = process.cwd();
     } else {
       // Make the config file relative the current directory
       args.push('-p', path.relative(cwd, tsConfigFile));

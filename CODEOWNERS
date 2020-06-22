@@ -317,6 +317,7 @@
 /packages/build @emonddr @raymondfeng
 /packages/eslint-config @emonddr @raymondfeng
 /packages/tsdocs @emonddr @raymondfeng
+/fixtures/tsdocs-monorepo @emonddr @raymondfeng
 /packages/cli/generators/update @emonddr @raymondfeng
 /packages/cli/generators/copyright @emonddr @raymondfeng
 
