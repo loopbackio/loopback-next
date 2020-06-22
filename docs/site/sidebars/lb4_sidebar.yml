@@ -177,7 +177,7 @@ children:
         url: core-tutorial-part11.html
         output: 'web, pdf'
 
-- title: 'Usage Scenarios'
+- title: 'How-to guides'
   output: 'web, pdf'
   children:
 
