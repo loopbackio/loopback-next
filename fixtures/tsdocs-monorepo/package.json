@@ -1,0 +1,26 @@
+{
+  "name": "@loopback/tsdocs-monorepo",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=10"
+  },
+  "private": true,
+  "description": "A monorepo for tsdocs testing",
+  "scripts": {
+    "bootstrap:fixtures": "node ../../bin/run-lerna.js bootstrap",
+    "build:fixtures": "node ../../bin/run-lerna.js run build",
+    "clean:fixtures": "node ../../bin/run-lerna.js run clean",
+    "build": "npm -s run bootstrap:fixtures && npm -s run clean:fixtures && npm run -s build:fixtures",
+    "postinstall": "npm run build"
+  },
+  "author": "IBM Corp.",
+  "license": "MIT",
+  "devDependencies": {
+    "@loopback/build": "^5.4.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "fixtures/tsdocs-monorepo"
+  }
+}

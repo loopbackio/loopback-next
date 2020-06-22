@@ -11,6 +11,9 @@
   ],
   "references": [
     {
+      "path": "../../fixtures/tsdocs-monorepo/tsconfig.json"
+    },
+    {
       "path": "../testlab/tsconfig.json"
     }
   ]

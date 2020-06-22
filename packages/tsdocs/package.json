@@ -9,7 +9,6 @@
     "node": ">=10"
   },
   "scripts": {
-    "postinstall": "npm run build:fixtures",
     "build:tsdocs": "npm run build && npm run -s extract-apidocs && npm run -s document-apidocs && npm run -s update-apidocs",
     "extract-apidocs": "node bin/extract-apis",
     "document-apidocs": "api-documenter markdown -i ../../docs/apidocs/models -o ../../docs/site/apidocs",
@@ -35,6 +34,7 @@
     "@loopback/build": "^5.4.3",
     "@loopback/eslint-config": "^8.0.1",
     "@loopback/testlab": "^3.1.7",
+    "@loopback/tsdocs-monorepo": "^0.0.1",
     "@types/debug": "^4.1.5",
     "@types/fs-extra": "^9.0.1",
     "@types/node": "^10.17.26"
