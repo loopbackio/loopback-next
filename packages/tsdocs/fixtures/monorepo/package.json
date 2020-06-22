@@ -2,6 +2,7 @@
   "name": "@loopack-tsdocs-fixtures/monorepo",
   "version": "1.0.0",
   "description": "A dummy package file that must stay (mostly) empty. Put any dependencies or scripts into tsdocs' package.json file instead.",
+  "private": true,
   "author": "IBM Corp.",
   "license": "MIT"
 }
