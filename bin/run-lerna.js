@@ -13,9 +13,15 @@
 const path = require('path');
 const Project = require('@lerna/project');
 const build = require('../packages/build');
+const fs = require('fs');
 
 async function run(argv, options) {
-  const project = new Project(path.join(__dirname, '..'));
+  let project;
+  if (fs.existsSync('lerna.json')) {
+    project = new Project(process.cwd());
+  } else {
+    project = new Project(path.join(__dirname, '..'));
+  }
   const rootPath = project.rootPath;
 
   process.env.LERNA_ROOT_PATH = rootPath;
