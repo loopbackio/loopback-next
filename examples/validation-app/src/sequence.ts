@@ -8,6 +8,7 @@ import {
   FindRoute,
   HttpErrors,
   InvokeMethod,
+  InvokeMiddleware,
   LogError,
   ParseParams,
   Reject,
@@ -28,6 +29,13 @@ const SequenceActions = RestBindings.SequenceActions;
  * 4. log the error using RestBindings.SequenceActions.LOG_ERROR
  */
 export class MySequence implements SequenceHandler {
+  /**
+   * Optional invoker for registered middleware in a chain.
+   * To be injected via SequenceActions.INVOKE_MIDDLEWARE.
+   */
+  @inject(SequenceActions.INVOKE_MIDDLEWARE, {optional: true})
+  protected invokeMiddleware: InvokeMiddleware = () => false;
+
   // 1. inject RestBindings.SequenceActions.LOG_ERROR for logging error
   // and RestBindings.ERROR_WRITER_OPTIONS for options
   constructor(
@@ -45,6 +53,8 @@ export class MySequence implements SequenceHandler {
   async handle(context: RequestContext) {
     try {
       const {request, response} = context;
+      const finished = await this.invokeMiddleware(context);
+      if (finished) return;
       const route = this.findRoute(request);
       const args = await this.parseParams(request, route);
       const result = await this.invoke(route, args);
