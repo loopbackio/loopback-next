@@ -5,15 +5,8 @@
 // License text available at https://opensource.org/licenses/MIT
 
 /**
- * An internal script to run lerna command
+ * An internal script to run `lerna` installed in loopback-next monorepo root.
+ * loopback-next dependencies are not added to PATH when running `npm` in the
+ * `fixtures` monorepo, we must locate lerna CLI manually.
  */
-const path = require('path');
-const lerna = path.resolve(__dirname, '../../../../node_modules/.bin/lerna');
-
-const runShell = require('@loopback/build').runShell;
-const child = runShell(lerna, process.argv.splice(2), {
-  cwd: __dirname,
-});
-child.on('exit', code => {
-  process.exit(code);
-});
+require('../../../../node_modules/lerna/cli.js');
