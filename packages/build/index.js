@@ -20,3 +20,5 @@ exports.typeScriptPath = path.resolve(
   require.resolve('typescript/package.json'),
   '..',
 );
+
+exports.mergeMochaConfigs = require('./src/merge-mocha-configs');
