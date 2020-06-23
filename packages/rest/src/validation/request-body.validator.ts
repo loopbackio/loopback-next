@@ -15,7 +15,11 @@ import debugModule from 'debug';
 import _ from 'lodash';
 import util from 'util';
 import {HttpErrors, RequestBody, RestHttpErrors} from '..';
-import {RequestBodyValidationOptions, SchemaValidatorCache} from '../types';
+import {
+  RequestBodyValidationOptions,
+  SchemaValidatorCache,
+  ValueValidationOptions,
+} from '../types';
 import {AjvFactoryProvider} from './ajv-factory.provider';
 
 const toJsonSchema = require('@openapi-contrib/openapi-schema-to-json-schema');
@@ -66,7 +70,10 @@ export async function validateRequestBody(
   if (!schema) return;
 
   options = {coerceTypes: !!body.coercionRequired, ...options};
-  await validateValueAgainstSchema(body.value, schema, globalSchemas, options);
+  await validateValueAgainstSchema(body.value, schema, globalSchemas, {
+    ...options,
+    source: 'body',
+  });
 }
 
 /**
@@ -115,12 +122,12 @@ function getKeyForOptions(options: RequestBodyValidationOptions) {
  * @param globalSchemas - Schema references.
  * @param options - Request body validation options.
  */
-async function validateValueAgainstSchema(
+export async function validateValueAgainstSchema(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  body: any,
+  value: any,
   schema: SchemaObject | ReferenceObject,
   globalSchemas: SchemasObject = {},
-  options: RequestBodyValidationOptions = {},
+  options: ValueValidationOptions = {},
 ) {
   let validate: ajv.ValidateFunction | undefined;
 
@@ -145,10 +152,10 @@ async function validateValueAgainstSchema(
 
   let validationErrors: ajv.ErrorObject[] = [];
   try {
-    const validationResult = await validate(body);
-    // When body is optional & values is empty / null, ajv returns null
+    const validationResult = await validate(value);
+    // When value is optional & values is empty / null, ajv returns null
     if (validationResult || validationResult === null) {
-      debug('Request body passed AJV validation.');
+      debug(`Value from ${options.source} passed AJV validation.`);
       return;
     }
   } catch (error) {
@@ -158,8 +165,8 @@ async function validateValueAgainstSchema(
   /* istanbul ignore if */
   if (debug.enabled) {
     debug(
-      'Invalid request body: %s. Errors: %s',
-      util.inspect(body, {depth: null}),
+      'Invalid value: %s. Errors: %s',
+      util.inspect(value, {depth: null}),
       util.inspect(validationErrors),
     );
   }
@@ -168,7 +175,24 @@ async function validateValueAgainstSchema(
     validationErrors = options.ajvErrorTransformer(validationErrors);
   }
 
-  const error = RestHttpErrors.invalidRequestBody();
+  // Throw invalid request body error
+  if (options.source === 'body') {
+    const error = RestHttpErrors.invalidRequestBody();
+    addErrorDetails(error, validationErrors);
+    throw error;
+  }
+
+  // Throw invalid value error
+  const error = new HttpErrors.BadRequest('Invalid value.');
+  addErrorDetails(error, validationErrors);
+  throw error;
+}
+
+function addErrorDetails(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  error: any,
+  validationErrors: ajv.ErrorObject[],
+) {
   error.details = _.map(validationErrors, e => {
     return {
       path: e.dataPath,
@@ -177,7 +201,6 @@ async function validateValueAgainstSchema(
       info: e.params,
     };
   });
-  throw error;
 }
 
 /**

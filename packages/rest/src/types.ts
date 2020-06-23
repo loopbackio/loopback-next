@@ -109,6 +109,17 @@ export type AjvKeyword = KeywordDefinition & {name: string};
 export type AjvFormat = FormatDefinition & {name: string};
 
 /**
+ * Options for any value validation using AJV
+ */
+export interface ValueValidationOptions extends RequestBodyValidationOptions {
+  /**
+   * Where the data comes from. It can be 'body', 'path', 'header',
+   * 'query', 'cookie', etc...
+   */
+  source?: string;
+}
+
+/**
  * Options for request body validation using AJV
  */
 export interface RequestBodyValidationOptions extends ajv.Options {
