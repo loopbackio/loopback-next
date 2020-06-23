@@ -17,6 +17,11 @@ for requests on a specific port, handle them, and return appropriate responses.
 A single application can have multiple server instances listening on different
 ports and working with different protocols.
 
+## Common tasks
+
+- [Enable HTTPS](./guides/deployment/enabling-https.md)
+- [Customize how OpenAPI spec is served](./guides/rest/customize-openapi.md)
+
 ## Usage
 
 LoopBack 4 offers the
