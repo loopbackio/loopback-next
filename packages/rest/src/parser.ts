@@ -83,7 +83,7 @@ async function buildOperationArguments(
     }
     const spec = paramSpec as ParameterObject;
     const rawValue = getParamFromRequest(spec, request, pathParams);
-    const coercedValue = coerceParameter(rawValue, spec);
+    const coercedValue = await coerceParameter(rawValue, spec);
     paramArgs.push(coercedValue);
   }
 

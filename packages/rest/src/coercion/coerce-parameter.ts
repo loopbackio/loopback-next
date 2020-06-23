@@ -3,9 +3,19 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {isReferenceObject, ParameterObject} from '@loopback/openapi-v3';
+import {
+  isReferenceObject,
+  ParameterObject,
+  ReferenceObject,
+  SchemaObject,
+} from '@loopback/openapi-v3';
 import debugModule from 'debug';
-import {RestHttpErrors} from '../';
+import {
+  RequestBodyValidationOptions,
+  RestHttpErrors,
+  validateValueAgainstSchema,
+  ValueValidationOptions,
+} from '../';
 import {parseJson} from '../parse-json';
 import {
   DateCoercionOptions,
@@ -27,18 +37,14 @@ const debug = debugModule('loopback:rest:coercion');
  *
  * @param data - The raw data get from http request
  * @param schema - The parameter's schema defined in OpenAPI specification
+ * @param options - The ajv validation options
  */
-export function coerceParameter(
+export async function coerceParameter(
   data: string | undefined | object,
   spec: ParameterObject,
+  options?: ValueValidationOptions,
 ) {
-  let schema = spec.schema;
-
-  // If a query parameter is a url encoded Json object, the schema is defined under content['application/json']
-  if (!schema && spec.in === 'query' && spec.content) {
-    const jsonSpec = spec.content['application/json'];
-    schema = jsonSpec.schema;
-  }
+  const schema = extractSchemaFromSpec(spec);
 
   if (!schema || isReferenceObject(schema)) {
     debug(
@@ -72,7 +78,7 @@ export function coerceParameter(
     case 'boolean':
       return coerceBoolean(data, spec);
     case 'object':
-      return coerceObject(data, spec);
+      return coerceObject(data, spec, options);
     case 'string':
     case 'password':
       return coerceString(data, spec);
@@ -158,19 +164,53 @@ function coerceBoolean(data: string | object, spec: ParameterObject) {
   throw RestHttpErrors.invalidData(data, spec.name);
 }
 
-function coerceObject(input: string | object, spec: ParameterObject) {
+async function coerceObject(
+  input: string | object,
+  spec: ParameterObject,
+  options?: RequestBodyValidationOptions,
+) {
   const data = parseJsonIfNeeded(input, spec);
 
-  if (data === undefined) {
+  if (data == null) {
     // Skip any further checks and coercions, nothing we can do with `undefined`
-    return undefined;
+    return data;
   }
 
   if (typeof data !== 'object' || Array.isArray(data))
     throw RestHttpErrors.invalidData(input, spec.name);
 
-  // TODO(bajtos) apply coercion based on properties defined by spec.schema
+  const schema = extractSchemaFromSpec(spec);
+  if (schema) {
+    // Apply coercion based on properties defined by spec.schema
+    await validateValueAgainstSchema(
+      data,
+      schema,
+      {},
+      {...options, coerceTypes: true, source: 'parameter'},
+    );
+  }
+
   return data;
+}
+
+/**
+ * Extract the schema from an OpenAPI parameter specification. If the root level
+ * one not found, search from media type 'application/json'.
+ *
+ * @param spec The parameter specification
+ */
+function extractSchemaFromSpec(
+  spec: ParameterObject,
+): SchemaObject | ReferenceObject | undefined {
+  let schema = spec.schema;
+
+  // If a query parameter is a url encoded Json object,
+  // the schema is defined under content['application/json']
+  if (!schema && spec.in === 'query') {
+    schema = spec.content?.['application/json']?.schema;
+  }
+
+  return schema;
 }
 
 function parseJsonIfNeeded(

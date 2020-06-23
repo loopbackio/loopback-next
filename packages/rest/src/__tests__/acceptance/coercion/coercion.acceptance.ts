@@ -27,6 +27,21 @@ describe('Coercion', () => {
     if (spy) spy.restore();
   });
 
+  const filterSchema = {
+    type: 'object',
+    title: 'filter',
+    properties: {
+      where: {
+        type: 'object',
+        properties: {
+          id: {type: 'number'},
+          name: {type: 'string'},
+          active: {type: 'boolean'},
+        },
+      },
+    },
+  };
+
   class MyController {
     @get('/create-number-from-path/{num}')
     createNumberFromPath(@param.path.number('num') num: number) {
@@ -49,7 +64,14 @@ describe('Coercion', () => {
     }
 
     @get('/object-from-query')
-    getObjectFromQuery(@param.query.object('filter') filter: object) {
+    getObjectFromQuery(
+      @param.query.object('filter', filterSchema) filter: object,
+    ) {
+      return filter;
+    }
+
+    @get('/random-object-from-query')
+    getRandomObjectFromQuery(@param.query.object('filter') filter: object) {
       return filter;
     }
   }
@@ -84,6 +106,8 @@ describe('Coercion', () => {
   });
 
   it('coerces parameter in query from nested keys to object', async () => {
+    // Notice that numeric and boolean values are coerced to their own types
+    // because the schema is provided.
     spy = sinon.spy(MyController.prototype, 'getObjectFromQuery');
     await client
       .get('/object-from-query')
@@ -94,9 +118,28 @@ describe('Coercion', () => {
       })
       .expect(200);
     sinon.assert.calledWithExactly(spy, {
-      // Notice that numeric and boolean values are converted to strings.
-      // This is because all values are encoded as strings on URL queries
-      // and we did not specify any schema in @param.query.object() decorator.
+      where: {
+        id: 1,
+        name: 'Pen',
+        active: true,
+      },
+    });
+  });
+
+  it('coerces parameter in query from nested keys to object - no schema', async () => {
+    // Notice that numeric and boolean values are converted to strings.
+    // This is because all values are encoded as strings on URL queries
+    // and we did not specify any schema in @param.query.object() decorator.
+    spy = sinon.spy(MyController.prototype, 'getRandomObjectFromQuery');
+    await client
+      .get('/random-object-from-query')
+      .query({
+        'filter[where][id]': 1,
+        'filter[where][name]': 'Pen',
+        'filter[where][active]': true,
+      })
+      .expect(200);
+    sinon.assert.calledWithExactly(spy, {
       where: {
         id: '1',
         name: 'Pen',
