@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.8](https://github.com/strongloop/loopback-next/compare/@loopback/authentication-passport@2.1.7...@loopback/authentication-passport@2.1.8) (2020-06-23)
+
+
+### Bug Fixes
+
+* set node version to >=10.16 to support events.once ([e39da1c](https://github.com/strongloop/loopback-next/commit/e39da1ca47728eafaf83c10ce35b09b03b6a4edc))
+* **docs:** fix broken links ([0e63a6b](https://github.com/strongloop/loopback-next/commit/0e63a6b79b3dc727b01ff4031548b3d3aeceb544))
+
+
+
+
+
 ## [2.1.7](https://github.com/strongloop/loopback-next/compare/@loopback/authentication-passport@2.1.6...@loopback/authentication-passport@2.1.7) (2020-06-11)
 
 

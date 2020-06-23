@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.13](https://github.com/strongloop/loopback-next/compare/@loopback/security@0.2.12...@loopback/security@0.2.13) (2020-06-23)
+
+
+### Bug Fixes
+
+* set node version to >=10.16 to support events.once ([e39da1c](https://github.com/strongloop/loopback-next/commit/e39da1ca47728eafaf83c10ce35b09b03b6a4edc))
+
+
+
+
+
 ## [0.2.12](https://github.com/strongloop/loopback-next/compare/@loopback/security@0.2.11...@loopback/security@0.2.12) (2020-06-11)
 
 **Note:** Version bump only for package @loopback/security

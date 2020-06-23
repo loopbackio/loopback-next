@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.8.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@2.7.0...@loopback/repository@2.8.0) (2020-06-23)
+
+
+### Bug Fixes
+
+* set node version to >=10.16 to support events.once ([e39da1c](https://github.com/strongloop/loopback-next/commit/e39da1ca47728eafaf83c10ce35b09b03b6a4edc))
+
+
+### Features
+
+* **repository:** implement hasManyThrough repo ([ecd2780](https://github.com/strongloop/loopback-next/commit/ecd2780c034e902e72905f0bbefe3a6fe08c3a2c))
+
+
+
+
+
 # [2.7.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@2.6.0...@loopback/repository@2.7.0) (2020-06-11)
 
 

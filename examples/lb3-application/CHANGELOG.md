@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-lb3-application@2.2.1...@loopback/example-lb3-application@2.3.0) (2020-06-23)
+
+
+### Bug Fixes
+
+* set node version to >=10.16 to support events.once ([e39da1c](https://github.com/strongloop/loopback-next/commit/e39da1ca47728eafaf83c10ce35b09b03b6a4edc))
+
+
+### Features
+
+* update sequence.ts to invoke middleware ([e2ff6b2](https://github.com/strongloop/loopback-next/commit/e2ff6b22367e919926d0f41f6d939d988c654c00))
+
+
+
+
+
 ## [2.2.1](https://github.com/strongloop/loopback-next/compare/@loopback/example-lb3-application@2.2.0...@loopback/example-lb3-application@2.2.1) (2020-06-11)
 
 **Note:** Version bump only for package @loopback/example-lb3-application

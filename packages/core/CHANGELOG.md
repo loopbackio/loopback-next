@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.9.0](https://github.com/strongloop/loopback-next/compare/@loopback/core@2.8.0...@loopback/core@2.9.0) (2020-06-23)
+
+
+### Bug Fixes
+
+* set node version to >=10.16 to support events.once ([e39da1c](https://github.com/strongloop/loopback-next/commit/e39da1ca47728eafaf83c10ce35b09b03b6a4edc))
+
+
+### Features
+
+* **core:** enable application config with configure/getConfig/[@config](https://github.com/config) ([3a74ee1](https://github.com/strongloop/loopback-next/commit/3a74ee180633754ecd369b07454a104e731129f1))
+
+
+
+
+
 # [2.8.0](https://github.com/strongloop/loopback-next/compare/@loopback/core@2.7.1...@loopback/core@2.8.0) (2020-06-11)
 
 

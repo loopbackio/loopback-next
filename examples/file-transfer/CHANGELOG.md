@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-file-transfer@1.3.3...@loopback/example-file-transfer@1.4.0) (2020-06-23)
+
+
+### Bug Fixes
+
+* set node version to >=10.16 to support events.once ([e39da1c](https://github.com/strongloop/loopback-next/commit/e39da1ca47728eafaf83c10ce35b09b03b6a4edc))
+
+
+### Features
+
+* update sequence.ts to invoke middleware ([e2ff6b2](https://github.com/strongloop/loopback-next/commit/e2ff6b22367e919926d0f41f6d939d988c654c00))
+
+
+
+
+
 ## [1.3.3](https://github.com/strongloop/loopback-next/compare/@loopback/example-file-transfer@1.3.2...@loopback/example-file-transfer@1.3.3) (2020-06-11)
 
 **Note:** Version bump only for package @loopback/example-file-transfer

@@ -1,6 +1,6 @@
 {
   "name": "@loopback/openapi-v3",
-  "version": "3.4.3",
+  "version": "3.4.4",
   "description": "Decorators that annotate LoopBack artifacts with OpenAPI v3 metadata and utilities that transform LoopBack metadata to OpenAPI v3 specifications",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -8,8 +8,8 @@
     "node": ">=10.16"
   },
   "dependencies": {
-    "@loopback/core": "^2.8.0",
-    "@loopback/repository-json-schema": "^2.4.4",
+    "@loopback/core": "^2.9.0",
+    "@loopback/repository-json-schema": "^2.4.5",
     "debug": "^4.1.1",
     "http-status": "^1.4.2",
     "json-merge-patch": "^1.0.0",
@@ -18,11 +18,11 @@
     "tslib": "^2.0.0"
   },
   "devDependencies": {
-    "@loopback/build": "^5.4.3",
-    "@loopback/eslint-config": "^8.0.1",
-    "@loopback/openapi-spec-builder": "^2.1.7",
-    "@loopback/repository": "^2.7.0",
-    "@loopback/testlab": "^3.1.7",
+    "@loopback/build": "^6.0.0",
+    "@loopback/eslint-config": "^8.0.2",
+    "@loopback/openapi-spec-builder": "^2.1.8",
+    "@loopback/repository": "^2.8.0",
+    "@loopback/testlab": "^3.1.8",
     "@types/debug": "^4.1.5",
     "@types/http-status": "^1.1.2",
     "@types/json-merge-patch": "0.0.5",

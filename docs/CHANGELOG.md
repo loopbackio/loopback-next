@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.10.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.9.0...@loopback/docs@3.10.0) (2020-06-23)
+
+
+### Bug Fixes
+
+* set node version to >=10.16 to support events.once ([e39da1c](https://github.com/strongloop/loopback-next/commit/e39da1ca47728eafaf83c10ce35b09b03b6a4edc))
+* **docs:** fix broken links ([51d80a6](https://github.com/strongloop/loopback-next/commit/51d80a6719611ca09c1e7f906277c65e0a7d8faf))
+* **docs:** fix broken links ([0e63a6b](https://github.com/strongloop/loopback-next/commit/0e63a6b79b3dc727b01ff4031548b3d3aeceb544))
+* **docs:** fix missing % in mixin.md ([1f26a60](https://github.com/strongloop/loopback-next/commit/1f26a60f7f0ff033839e73fcd19bbd004632c615))
+
+
+### Features
+
+* **core:** enable application config with configure/getConfig/[@config](https://github.com/config) ([3a74ee1](https://github.com/strongloop/loopback-next/commit/3a74ee180633754ecd369b07454a104e731129f1))
+* **docs:** improve clarity of Mixins docs ([f96ece7](https://github.com/strongloop/loopback-next/commit/f96ece7fa73f93f6e5a5668fc7353dc9179c971a))
+
+
+
+
+
 # [3.9.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.8.2...@loopback/docs@3.9.0) (2020-06-11)
 
 

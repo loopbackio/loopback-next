@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.4.2](https://github.com/strongloop/loopback-next/compare/@loopback/authentication-jwt@0.4.1...@loopback/authentication-jwt@0.4.2) (2020-06-23)
+
+
+### Bug Fixes
+
+* set node version to >=10.16 to support events.once ([e39da1c](https://github.com/strongloop/loopback-next/commit/e39da1ca47728eafaf83c10ce35b09b03b6a4edc))
+
+
+
+
+
 ## [0.4.1](https://github.com/strongloop/loopback-next/compare/@loopback/authentication-jwt@0.4.0...@loopback/authentication-jwt@0.4.1) (2020-06-11)
 
 **Note:** Version bump only for package @loopback/authentication-jwt

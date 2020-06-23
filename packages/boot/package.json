@@ -1,6 +1,6 @@
 {
   "name": "@loopback/boot",
-  "version": "2.3.3",
+  "version": "2.3.4",
   "description": "A collection of Booters for LoopBack 4 Applications",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -24,10 +24,10 @@
     "access": "public"
   },
   "dependencies": {
-    "@loopback/core": "^2.8.0",
-    "@loopback/model-api-builder": "^2.1.7",
-    "@loopback/repository": "^2.7.0",
-    "@loopback/service-proxy": "^2.3.2",
+    "@loopback/core": "^2.9.0",
+    "@loopback/model-api-builder": "^2.1.8",
+    "@loopback/repository": "^2.8.0",
+    "@loopback/service-proxy": "^2.3.3",
     "@types/debug": "^4.1.5",
     "@types/glob": "^7.1.2",
     "debug": "^4.1.1",
@@ -35,12 +35,12 @@
     "tslib": "^2.0.0"
   },
   "devDependencies": {
-    "@loopback/build": "^5.4.3",
-    "@loopback/eslint-config": "^8.0.1",
-    "@loopback/openapi-v3": "^3.4.3",
-    "@loopback/rest": "^5.1.1",
-    "@loopback/rest-crud": "^0.8.7",
-    "@loopback/testlab": "^3.1.7",
+    "@loopback/build": "^6.0.0",
+    "@loopback/eslint-config": "^8.0.2",
+    "@loopback/openapi-v3": "^3.4.4",
+    "@loopback/rest": "^5.1.2",
+    "@loopback/rest-crud": "^0.8.8",
+    "@loopback/testlab": "^3.1.8",
     "@types/node": "^10.17.26"
   },
   "files": [

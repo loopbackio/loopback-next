@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.9.1](https://github.com/strongloop/loopback-next/compare/@loopback/context@3.9.0...@loopback/context@3.9.1) (2020-06-23)
+
+
+### Bug Fixes
+
+* set node version to >=10.16 to support events.once ([e39da1c](https://github.com/strongloop/loopback-next/commit/e39da1ca47728eafaf83c10ce35b09b03b6a4edc))
+* **context:** cache binding value or promise as-is to avoid racing condition ([38b9b96](https://github.com/strongloop/loopback-next/commit/38b9b968e5b0c033d9a1f4a304c4cebbb345fac7))
+
+
+
+
+
 # [3.9.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@3.8.2...@loopback/context@3.9.0) (2020-06-11)
 
 

@@ -3,6 +3,32 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/build@5.4.3...@loopback/build@6.0.0) (2020-06-23)
+
+
+### Bug Fixes
+
+* set node version to >=10.16 to support events.once ([e39da1c](https://github.com/strongloop/loopback-next/commit/e39da1ca47728eafaf83c10ce35b09b03b6a4edc))
+
+
+### Features
+
+* **build:** upgrade to mocha 8.x ([c83270d](https://github.com/strongloop/loopback-next/commit/c83270dbdbe42e1e17fabc7b81c345df45e869d8))
+
+
+### BREAKING CHANGES
+
+* **build:** After have upgraded to `mocha` version 8, which no longer
+supports `--opts` and `test/mocha.opts`. It may break your application
+if it depends on earlier version of `@loopback/build` for `npm test`.
+
+See a list of breaking changes of mocha 8.x at:
+https://github.com/mochajs/mocha/releases/tag/v8.0.0
+
+
+
+
+
 ## [5.4.3](https://github.com/strongloop/loopback-next/compare/@loopback/build@5.4.2...@loopback/build@5.4.3) (2020-06-11)
 
 **Note:** Version bump only for package @loopback/build
