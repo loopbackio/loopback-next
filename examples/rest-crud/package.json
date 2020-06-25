@@ -54,7 +54,7 @@
     "@loopback/eslint-config": "^8.0.2",
     "@loopback/http-caching-proxy": "^2.1.8",
     "@loopback/testlab": "^3.1.8",
-    "@types/lodash": "^4.14.156",
+    "@types/lodash": "^4.14.157",
     "@types/node": "^10.17.26",
     "eslint": "^7.3.1",
     "lodash": "^4.17.15",
