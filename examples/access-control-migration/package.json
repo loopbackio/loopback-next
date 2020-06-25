@@ -53,7 +53,7 @@
     "bcryptjs": "^2.4.3",
     "casbin": "^5.0.4",
     "jsonwebtoken": "^8.5.1",
-    "loopback-connector-rest": "^3.6.0"
+    "loopback-connector-rest": "^3.7.0"
   },
   "devDependencies": {
     "@loopback/build": "^6.0.0",
