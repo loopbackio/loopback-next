@@ -5,10 +5,9 @@
 
 import {BindingKey, Interceptor} from '@loopback/core';
 import {FluentSender} from 'fluent-logger';
-import * as WinstonTransport from 'winston-transport';
+import WinstonTransport from 'winston-transport';
 import {LoggingComponent} from './logging.component';
 import {WinstonLogger} from './winston';
-import {DefaulLevels} from 'winston';
 
 /**
  * Binding keys used by this component.
@@ -26,7 +25,7 @@ export namespace LoggingBindings {
   /**
    * Binding key for winston logger
    */
-  export const WINSTON_LOGGER = BindingKey.create<WinstonLogger<DefaulLevels>>(
+  export const WINSTON_LOGGER = BindingKey.create<WinstonLogger>(
     'logging.winston.logger',
   );
 

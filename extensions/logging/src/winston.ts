@@ -7,7 +7,6 @@ import {config, extensions, Getter, Provider} from '@loopback/core';
 import {Format} from 'logform';
 import {
   createLogger,
-  DefaulLevels,
   format,
   Logger,
   LoggerOptions,
@@ -57,7 +56,7 @@ export class WinstonLoggerProvider implements Provider<Logger> {
     /**
      * Configuration for the logger
      */
-    @config() private options: LoggerOptions<DefaulLevels> = {},
+    @config() private options: LoggerOptions = {},
   ) {}
 
   async value() {
