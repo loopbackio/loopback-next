@@ -4,12 +4,13 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Application} from '@loopback/core';
+import {invokeMiddleware} from '@loopback/express';
 import {
   aComponentsSpec,
   anOpenApiSpec,
   anOperationSpec,
 } from '@loopback/openapi-spec-builder';
-import {invokeMiddleware} from '@loopback/express';
+import {OpenAPIObject} from '@loopback/openapi-v3';
 import {
   createClientForHandler,
   createRestAppClient,
@@ -542,9 +543,9 @@ paths:
                 type: string
     `);
     // Use json for comparison to tolerate textual diffs
-    const json = yaml.safeLoad(response.text);
+    const json = yaml.safeLoad(response.text) as OpenAPIObject;
     expect(json).to.containDeep(expected);
-    expect(json.servers[0].url).to.match('/');
+    expect(json.servers?.[0].url).to.match('/');
 
     expect(response.get('Access-Control-Allow-Origin')).to.equal('*');
     expect(response.get('Access-Control-Allow-Credentials')).to.equal('true');
