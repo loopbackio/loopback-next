@@ -21,6 +21,12 @@
  */
 
 export * from '@loopback/openapi-v3';
+export {
+  ErrorHandlerOptions,
+  ErrorWriterOptions,
+  StrongErrorHandler,
+  writeErrorToResponse,
+} from 'strong-error-handler';
 export * from './body-parsers';
 export * from './http-handler';
 export * from './keys';
