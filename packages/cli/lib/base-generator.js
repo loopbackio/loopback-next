@@ -383,6 +383,9 @@ module.exports = class BaseGenerator extends Generator {
     context,
     templateOptions = {},
     copyOptions = {
+      // See https://github.com/SBoudrias/mem-fs-editor/pull/147
+      // Don't remove .ejs from the file name to keep backward-compatibility
+      processDestinationPath: destPath => destPath,
       // See https://github.com/mrmlnc/fast-glob#options-1
       globOptions: {
         // Allow patterns to match filenames starting with a period (files &
