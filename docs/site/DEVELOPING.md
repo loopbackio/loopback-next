@@ -147,6 +147,20 @@ It does all you need:
 - Check code formatting using [Prettier](https://prettier.io/)
 - Lint the code using [ESLint](https://typescript-eslint.io/)
 
+Please note some heavy tests are only run when the `CI` environment variable is
+set. Such tests are always executed with our CI builds. To run such tests
+locally:
+
+```sh
+npx cross-env CI=1 npm test
+```
+
+Or use a simpler form on Mac and Linux.
+
+```sh
+CI=1 npm test
+```
+
 ## Coding rules
 
 - All features and bug fixes must be covered by one or more automated tests.
