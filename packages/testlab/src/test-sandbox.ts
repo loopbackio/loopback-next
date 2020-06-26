@@ -10,10 +10,11 @@ import {
   ensureDir,
   ensureDirSync,
   mkdtempSync,
+  outputFile,
+  outputJson,
   pathExists,
+  readFile,
   remove,
-  writeFile,
-  writeJson,
 } from 'fs-extra';
 import {join, parse, resolve} from 'path';
 
@@ -131,13 +132,24 @@ export class TestSandbox {
    * @param src - Absolute path of file to be copied to the TestSandbox
    * @param dest - Optional. Destination filename of the copy operation
    * (relative to TestSandbox). Original filename used if not specified.
+   * @param transform - Optional. A function to transform the file content.
    */
-  async copyFile(src: string, dest?: string): Promise<void> {
+  async copyFile(
+    src: string,
+    dest?: string,
+    transform?: (content: string) => string,
+  ): Promise<void> {
     dest = dest
       ? resolve(this.path, dest)
       : resolve(this.path, parse(src).base);
 
-    await copy(src, dest);
+    if (transform == null) {
+      await copy(src, dest);
+    } else {
+      let content = await readFile(src, 'utf-8');
+      content = transform(content);
+      await outputFile(dest, content, {encoding: 'utf-8'});
+    }
 
     if (parse(src).ext === '.js' && pathExists(src + '.map')) {
       const srcMap = src + '.map';
@@ -153,9 +165,7 @@ export class TestSandbox {
    */
   async writeJsonFile(dest: string, data: unknown): Promise<void> {
     dest = resolve(this.path, dest);
-    const destDir = parse(dest).dir;
-    await ensureDir(destDir);
-    return writeJson(dest, data, {spaces: 2});
+    return outputJson(dest, data, {spaces: 2});
   }
 
   /**
@@ -166,8 +176,6 @@ export class TestSandbox {
    */
   async writeTextFile(dest: string, data: string): Promise<void> {
     dest = resolve(this.path, dest);
-    const destDir = parse(dest).dir;
-    await ensureDir(destDir);
-    return writeFile(dest, data, {encoding: 'utf-8'});
+    return outputFile(dest, data, 'utf-8');
   }
 }

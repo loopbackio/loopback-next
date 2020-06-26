@@ -36,6 +36,27 @@ describe('TestSandbox integration tests', () => {
     await expectFilesToBeIdentical(COPY_FILE_PATH, resolve(path, COPY_FILE));
   });
 
+  it('copies a file to the sandbox with transform', async () => {
+    await sandbox.copyFile(COPY_FILE_PATH, undefined, content =>
+      content.toUpperCase(),
+    );
+    const dest = resolve(path, COPY_FILE);
+    expect(await pathExists(dest)).to.be.True();
+    const content = await readFile(dest, 'utf-8');
+    expect(content).to.equal('HELLO WORLD!');
+  });
+
+  it('copies a file to the sandbox with dest and transform', async () => {
+    const rename = 'copy.me.js';
+    await sandbox.copyFile(COPY_FILE_PATH, rename, content =>
+      content.toUpperCase(),
+    );
+    const dest = resolve(path, rename);
+    expect(await pathExists(dest)).to.be.True();
+    const content = await readFile(dest, 'utf-8');
+    expect(content).to.equal('HELLO WORLD!');
+  });
+
   it('copies and renames the file to the sandbox', async () => {
     const rename = 'copy.me.js';
     await sandbox.copyFile(COPY_FILE_PATH, rename);
