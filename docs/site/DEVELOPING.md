@@ -142,7 +142,7 @@ npm test
 
 It does all you need:
 
-- Compile TypeScript
+- Compile TypeScript (full rebuild)
 - Run all tests
 - Check code formatting using [Prettier](https://prettier.io/)
 - Lint the code using [ESLint](https://typescript-eslint.io/)
@@ -159,6 +159,40 @@ Or use a simpler form on Mac and Linux.
 
 ```sh
 CI=1 npm test
+```
+
+Running the full test suite after each small change is not very effective. You
+can use the following commands to run a subset of checks:
+
+- `npm run build` for a fast incremental build
+- `npm run mocha` to (re)run the test suite
+
+We are running tests in parallel, use the Mocha option `-j` (`--jobs`) to
+control the number of worker processes or disable parallel execution entirely by
+using a single job only:
+
+```
+$ npm run mocha -- -j 1
+```
+
+When working in a single package, it's possible to limit the compilation to this
+package & its dependencies and then run only package tests.
+
+For example, run the following Unix command in `loopback-next` root directory to
+build and test changes made in `@loopback/rest` only:
+
+```
+$ (cd packages/rest && npm t)
+```
+
+On Windows, you have to change the working directory once and then you can
+repeatedly run `npm t` inside the package.
+
+```bat
+rem Run this only once
+cd packages/rest
+rem Run this to build & test your changes
+npm t
 ```
 
 ## Coding rules
