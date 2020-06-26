@@ -70,7 +70,7 @@
     "build:site": "./bin/build-docs-site.sh",
     "docs:prepare": "./docs/bin/build-preview-site.sh",
     "docs:start": "cd docs/_preview && bundle exec jekyll serve --no-w --i",
-    "mocha": "node packages/build/bin/run-mocha --lang en_US.UTF-8 --timeout 5000 \"packages/*/dist/__tests__/**/*.js\" \"extensions/*/dist/__tests__/**/*.js\" \"examples/*/dist/__tests__/**/*.js\" \"packages/cli/test/**/*.js\" \"packages/build/test/*/*.js\"",
+    "mocha": "node packages/build/bin/run-mocha --lang en_US.UTF-8 \"packages/*/dist/__tests__/**/*.js\" \"extensions/*/dist/__tests__/**/*.js\" \"examples/*/dist/__tests__/**/*.js\" \"packages/cli/test/**/*.js\" \"packages/build/test/*/*.js\"",
     "posttest": "npm run lint"
   },
   "config": {
