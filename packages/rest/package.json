@@ -44,7 +44,7 @@
     "cors": "^2.8.5",
     "debug": "^4.1.1",
     "express": "^4.17.1",
-    "http-errors": "^1.7.3",
+    "http-errors": "^1.8.0",
     "js-yaml": "^3.14.0",
     "json-schema-compare": "^0.2.2",
     "lodash": "^4.17.15",
