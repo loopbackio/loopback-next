@@ -29,9 +29,11 @@ import {
   BelongsToDefinition,
   createBelongsToAccessor,
   createHasManyRepositoryFactory,
+  createHasManyThroughRepositoryFactory,
   createHasOneRepositoryFactory,
   HasManyDefinition,
   HasManyRepositoryFactory,
+  HasManyThroughRepositoryFactory,
   HasOneDefinition,
   HasOneRepositoryFactory,
   includeRelatedModels,
@@ -281,6 +283,62 @@ export class DefaultCrudRepository<
       meta as HasManyDefinition,
       targetRepoGetter,
     );
+  }
+
+  /**
+   * Function to create a constrained hasManyThrough relation repository factory
+   *
+   * @example
+   * ```ts
+   * class CustomerRepository extends DefaultCrudRepository<
+   *   Customer,
+   *   typeof Customer.prototype.id,
+   *   CustomerRelations
+   * > {
+   *   public readonly cartItems: HasManyRepositoryFactory<CartItem, typeof Customer.prototype.id>;
+   *
+   *   constructor(
+   *     protected db: juggler.DataSource,
+   *     cartItemRepository: EntityCrudRepository<CartItem, typeof, CartItem.prototype.id>,
+   *     throughRepository: EntityCrudRepository<Through, typeof Through.prototype.id>,
+   *   ) {
+   *     super(Customer, db);
+   *     this.cartItems = this.createHasManyThroughRepositoryFactoryFor(
+   *       'cartItems',
+   *       cartItemRepository,
+   *     );
+   *   }
+   * }
+   * ```
+   *
+   * @param relationName - Name of the relation defined on the source model
+   * @param targetRepo - Target repository instance
+   * @param throughRepo - Through repository instance
+   */
+  protected createHasManyThroughRepositoryFactoryFor<
+    Target extends Entity,
+    TargetID,
+    Through extends Entity,
+    ThroughID,
+    ForeignKeyType
+  >(
+    relationName: string,
+    targetRepoGetter: Getter<EntityCrudRepository<Target, TargetID>>,
+    throughRepoGetter: Getter<EntityCrudRepository<Through, ThroughID>>,
+  ): HasManyThroughRepositoryFactory<
+    Target,
+    TargetID,
+    Through,
+    ForeignKeyType
+  > {
+    const meta = this.entityClass.definition.relations[relationName];
+    return createHasManyThroughRepositoryFactory<
+      Target,
+      TargetID,
+      Through,
+      ThroughID,
+      ForeignKeyType
+    >(meta as HasManyDefinition, targetRepoGetter, throughRepoGetter);
   }
 
   /**
