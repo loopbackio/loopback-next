@@ -46,7 +46,7 @@
     "body-parser": "^1.19.0",
     "debug": "^4.1.1",
     "express": "^4.17.1",
-    "http-errors": "^1.7.3",
+    "http-errors": "^1.8.0",
     "on-finished": "^2.3.0",
     "tslib": "^2.0.0"
   },
@@ -56,7 +56,7 @@
     "@types/debug": "^4.1.5",
     "@types/node": "^10.17.26",
     "@types/on-finished": "^2.3.1",
-    "http-errors": "^1.7.3",
+    "http-errors": "^1.8.0",
     "source-map-support": "^0.5.19",
     "typescript": "~3.9.5"
   }
