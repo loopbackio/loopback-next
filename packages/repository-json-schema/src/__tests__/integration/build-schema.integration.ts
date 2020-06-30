@@ -47,6 +47,7 @@ describe('build-schema', () => {
         const jsonSchema = modelToJsonSchema(TestModel);
         expect(jsonSchema).to.eql({
           title: 'TestModel',
+          type: 'object',
           properties: {nul: {type: 'null'}},
           additionalProperties: false,
         });
@@ -466,6 +467,7 @@ describe('build-schema', () => {
           expect(jsonSchema.definitions).to.deepEqual({
             CustomType: {
               title: 'CustomType',
+              type: 'object',
               properties: {
                 prop: {
                   type: 'string',
@@ -500,6 +502,7 @@ describe('build-schema', () => {
           expect(jsonSchema.definitions).to.deepEqual({
             CustomType: {
               title: 'CustomType',
+              type: 'object',
               properties: {
                 prop: {
                   type: 'string',
@@ -538,6 +541,7 @@ describe('build-schema', () => {
           expect(jsonSchema.definitions).to.deepEqual({
             CustomTypePartial: {
               title: 'CustomTypePartial',
+              type: 'object',
               description:
                 "(tsType: Partial<CustomType>, schemaOptions: { partial: 'deep' })",
               properties: {
@@ -600,6 +604,7 @@ describe('build-schema', () => {
           expect(jsonSchema.definitions).to.deepEqual({
             CustomType: {
               title: 'CustomType',
+              type: 'object',
               properties: {
                 prop: {
                   type: 'string',
@@ -637,6 +642,7 @@ describe('build-schema', () => {
           expect(jsonSchema.definitions).to.deepEqual({
             CustomTypePartial: {
               title: 'CustomTypePartial',
+              type: 'object',
               description:
                 "(tsType: Partial<CustomType>, schemaOptions: { partial: 'deep' })",
               properties: {
@@ -715,6 +721,7 @@ describe('build-schema', () => {
           expect(jsonSchema.definitions).to.deepEqual({
             Address: {
               title: 'Address',
+              type: 'object',
               properties: {
                 city: {
                   type: 'string',
@@ -808,6 +815,7 @@ describe('build-schema', () => {
           expect(schemaDefs).to.deepEqual({
             CustomTypeFoo: {
               title: 'CustomTypeFoo',
+              type: 'object',
               properties: {
                 prop: {
                   type: 'string',
@@ -817,6 +825,7 @@ describe('build-schema', () => {
             },
             CustomTypeBar: {
               title: 'CustomTypeBar',
+              type: 'object',
               properties: {
                 prop: {
                   type: 'array',
@@ -848,6 +857,7 @@ describe('build-schema', () => {
 
       const expectedSchema = {
         title: 'Category',
+        type: 'object',
         properties: {
           products: {
             type: 'array',
@@ -858,6 +868,7 @@ describe('build-schema', () => {
         definitions: {
           Product: {
             title: 'Product',
+            type: 'object',
             properties: {
               category: {
                 $ref: '#/definitions/Category',
@@ -998,6 +1009,7 @@ describe('build-schema', () => {
 
       const expectedSchemaForCategory = {
         title: 'Category',
+        type: 'object',
         properties: {
           products: {
             type: 'array',
@@ -1008,6 +1020,7 @@ describe('build-schema', () => {
         definitions: {
           Product: {
             title: 'Product',
+            type: 'object',
             properties: {
               category: {
                 $ref: '#/definitions/Category',
@@ -1047,6 +1060,7 @@ describe('build-schema', () => {
         definitions: {
           ProductWithRelations: {
             title: 'ProductWithRelations',
+            type: 'object',
             description:
               `(tsType: ProductWithRelations, ` +
               `schemaOptions: { includeRelations: true })`,
@@ -1067,6 +1081,7 @@ describe('build-schema', () => {
         },
         additionalProperties: false,
         title: 'CategoryWithRelations',
+        type: 'object',
         description:
           `(tsType: CategoryWithRelations, ` +
           `schemaOptions: { includeRelations: true })`,
@@ -1094,6 +1109,7 @@ describe('build-schema', () => {
         definitions: {
           ProductWithRelations: {
             title: 'ProductWithRelations',
+            type: 'object',
             description:
               `(tsType: ProductWithRelations, ` +
               `schemaOptions: { includeRelations: true })`,
@@ -1115,6 +1131,7 @@ describe('build-schema', () => {
         },
         additionalProperties: false,
         title: 'CategoryWithoutPropWithRelations',
+        type: 'object',
         description:
           `(tsType: CategoryWithoutPropWithRelations, ` +
           `schemaOptions: { includeRelations: true })`,
@@ -1201,6 +1218,7 @@ describe('build-schema', () => {
         definitions: {
           ProductWithRelations: {
             title: 'ProductWithRelations',
+            type: 'object',
             properties: {
               id: {type: 'number'},
               categoryId: {type: 'number'},
@@ -1219,6 +1237,7 @@ describe('build-schema', () => {
         },
         additionalProperties: false,
         title: 'CategoryWithRelations',
+        type: 'object',
       };
       MetadataInspector.defineMetadata(
         JSON_SCHEMA_KEY,
@@ -1234,6 +1253,7 @@ describe('build-schema', () => {
         },
         additionalProperties: false,
         title: 'Category',
+        type: 'object',
       });
     });
 
@@ -1284,6 +1304,7 @@ describe('build-schema', () => {
         const excludeIdSchema = getJsonSchema(Product, {exclude: ['id']});
         expect(excludeIdSchema).to.deepEqual({
           title: 'ProductExcluding_id_',
+          type: 'object',
           properties: {
             name: {type: 'string'},
             description: {type: 'string'},
@@ -1309,6 +1330,7 @@ describe('build-schema', () => {
         });
         expect(excludeIdAndNameSchema).to.deepEqual({
           title: 'ProductExcluding_id-name_',
+          type: 'object',
           properties: {
             description: {type: 'string'},
           },

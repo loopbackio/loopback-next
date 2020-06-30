@@ -283,6 +283,7 @@ describe('RestServer.getApiSpec()', () => {
     expect(spec.components?.schemas).to.deepEqual({
       MyModel: {
         title: 'MyModel',
+        type: 'object',
         properties: {
           bar: {
             type: 'string',

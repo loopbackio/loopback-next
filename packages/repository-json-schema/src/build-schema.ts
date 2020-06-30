@@ -452,6 +452,8 @@ export function modelToJsonSchema<T extends object>(
   const result: JsonSchema = {title};
   options.visited[title] = result;
 
+  result.type = 'object';
+
   const descriptionSuffix = getDescriptionSuffix(ctor.name, options);
 
   if (meta.description) {

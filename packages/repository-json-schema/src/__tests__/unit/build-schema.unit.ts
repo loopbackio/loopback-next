@@ -324,6 +324,7 @@ describe('build-schema', () => {
       expect(schema.definitions).to.containEql({
         ChildWithRelations: {
           title: 'ChildWithRelations',
+          type: 'object',
           description:
             '(tsType: ChildWithRelations, schemaOptions: { includeRelations: true })',
           properties: {name: {type: 'string'}},
@@ -379,6 +380,7 @@ describe('build-schema', () => {
       expect(schema.definitions).to.containEql({
         Child: {
           title: 'Child',
+          type: 'object',
           properties: {name: {type: 'string'}},
           additionalProperties: false,
         },
@@ -410,6 +412,7 @@ describe('build-schema', () => {
       const userSchema = modelToJsonSchema(User, {});
       expect(userSchema).to.eql({
         title: 'User',
+        type: 'object',
         properties: {id: {type: 'string'}, name: {type: 'string'}},
         required: ['name'],
         additionalProperties: false,
@@ -417,6 +420,7 @@ describe('build-schema', () => {
       const newUserSchema = modelToJsonSchema(NewUser, {});
       expect(newUserSchema).to.eql({
         title: 'NewUser',
+        type: 'object',
         properties: {
           id: {type: 'string'},
           name: {type: 'string'},
@@ -472,6 +476,7 @@ describe('build-schema', () => {
       const userSchema = modelToJsonSchema(User, {});
       expect(userSchema).to.eql({
         title: 'User',
+        type: 'object',
         properties: {
           id: {type: 'string'},
           name: {type: 'string'},
@@ -482,6 +487,7 @@ describe('build-schema', () => {
         definitions: {
           Address: {
             title: 'Address',
+            type: 'object',
             properties: {
               street: {type: 'string'},
               city: {type: 'string'},
@@ -491,6 +497,7 @@ describe('build-schema', () => {
           },
           Email: {
             title: 'Email',
+            type: 'object',
             properties: {
               label: {type: 'string'},
               id: {type: 'string'},

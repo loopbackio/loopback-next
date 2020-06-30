@@ -76,17 +76,20 @@ describe('controller spec', () => {
         schemas: {
           Bar: {
             title: 'Bar',
+            type: 'object',
             properties: {name: {type: 'string'}},
             additionalProperties: false,
           },
           Baz: {
             title: 'Baz',
+            type: 'object',
             properties: {name: {type: 'string'}},
             additionalProperties: false,
           },
           Foo: {
             // guarantee `definition` is deleted
             title: 'Foo',
+            type: 'object',
             properties: {
               bar: {$ref: '#/components/schemas/Bar'},
               baz: {$ref: '#/components/schemas/Baz'},
@@ -562,6 +565,7 @@ describe('controller spec', () => {
       },
       additionalProperties: false,
       title: 'MyModel',
+      type: 'object',
     };
 
     it('generates schema for response content', () => {
@@ -804,6 +808,7 @@ describe('controller spec', () => {
       expect(globalSchemas).to.deepEqual({
         MyModel: {
           title: 'MyModel',
+          type: 'object',
           properties: {
             name: {
               type: 'string',
