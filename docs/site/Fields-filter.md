@@ -27,11 +27,8 @@ query will include **only** those you specifically include with filters.
 
 ### REST API
 
-{% include warning.html content="
-As a known bug, the option `<false>` does not work for url for now. Please include the properties you need or use the [stringified JSON format](Querying-data.html#using-stringified-json-in-rest-queries) to meet your requirement. The bug is tracked in the GH issue [#4992](https://github.com/strongloop/loopback-next/issues/4992)" %}
-
 <pre>
-filter[fields][<i>propertyName</i>]=true&filter[fields][<i>propertyName</i>]=true...
+filter[fields][<i>propertyName</i>]=true|false&filter[fields][<i>propertyName</i>]=true|false...
 </pre>
 
 Note that to include more than one field in REST, use multiple filters.
@@ -42,22 +39,22 @@ in a REST query.
 
 ### Examples
 
-Return customer information only with `name` and `address`, and hide their `id`:
+Use case 1: Include required properties.
+
+To return customer information only with `name` and `address`, and hide other
+fields, you can specify all required properties as:
 
 {% include code-caption.html content="Node.js API" %}
 
 ```ts
-await customerRepository.find({fields: {id: false, name: true, address: true}});
+await customerRepository.find({fields: {name: true, address: true}});
 ```
 
 {% include code-caption.html content="REST" %}
 
-Include all required properties as a workaround:
-`/customers?filter[fields][name]=true&filter[fields][address]=true`
+Its equivalent stringified JSON format:
 
-Or use stringified JSON format:
-
-`/orders?filter={"fields":{"name":true,"address":true,"id":false}}`
+`/customers?filter={"fields":{"name":true,"address":true}}`
 
 Returns:
 
@@ -75,7 +72,9 @@ Returns:
 ]
 ```
 
-Exclude the `password` property:
+Use case 2: Exclude properties.
+
+Exclude the `password` property for returned user:
 
 {% include code-caption.html content="Node.js API" %}
 
@@ -84,10 +83,6 @@ await userRepository.find({fields: {password: false}});
 ```
 
 {% include code-caption.html content="REST" %}
-
-Include all properties except `password` as a workaround:
-
-`/users?filter[fields][name]=true&filter[fields][email]=true&filter[fields][id]=true...`
 
 Or use stringified JSON format:
 
