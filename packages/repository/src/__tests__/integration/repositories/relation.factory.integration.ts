@@ -342,6 +342,36 @@ describe('HasManyThrough relation', () => {
     expect(links[0]).has.property('customerId', existingCustomerId + 1);
   });
 
+  it('deletes instances based on the filter', async () => {
+    await customerCartItemRepo.create({
+      description: 'customer 1',
+    });
+    const item2 = await customerCartItemRepo.create({
+      description: 'customer 2',
+    });
+
+    let items = await cartItemRepo.find();
+    let links = await customerCartItemLinkRepo.find();
+    expect(items).have.length(2);
+    expect(links).have.length(2);
+
+    await customerCartItemRepo.delete({description: 'does not exist'});
+    items = await cartItemRepo.find();
+    links = await customerCartItemLinkRepo.find();
+    expect(items).have.length(2);
+    expect(links).have.length(2);
+
+    await customerCartItemRepo.delete({description: 'customer 1'});
+    items = await cartItemRepo.find();
+    links = await customerCartItemLinkRepo.find();
+
+    expect(items).have.length(1);
+    expect(links).have.length(1);
+    expect(items).to.deepEqual([item2]);
+    expect(links[0]).has.property('itemId', item2.id);
+    expect(links[0]).has.property('customerId', existingCustomerId);
+  });
+
   it('patches instances that belong to the same source model (same source fk)', async () => {
     const item1 = await customerCartItemRepo.create({
       description: 'group 1',
