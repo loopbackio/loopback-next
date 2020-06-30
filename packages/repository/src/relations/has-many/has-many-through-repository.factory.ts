@@ -13,6 +13,7 @@ import {
   createTargetConstraintFromThrough,
   createThroughConstraintFromSource,
   createThroughConstraintFromTarget,
+  getTargetIdsFromTargetModels,
   getTargetKeysFromThroughModels,
   resolveHasManyThroughMetadata,
 } from './has-many-through.helpers';
@@ -69,7 +70,9 @@ export function createHasManyThroughRepositoryFactory<
       >(meta, fkValue);
       return constraint;
     }
-
+    function getTargetIds(targetInstances: Target[]): TargetID[] {
+      return getTargetIdsFromTargetModels(meta, targetInstances);
+    }
     function getThroughConstraintFromTarget(
       fkValues: TargetID[],
     ): DataObject<Through> {
@@ -93,6 +96,7 @@ export function createHasManyThroughRepositoryFactory<
       getTargetConstraintFromThroughModels,
       getTargetKeys,
       getThroughConstraintFromSource,
+      getTargetIds,
       getThroughConstraintFromTarget,
     );
   };

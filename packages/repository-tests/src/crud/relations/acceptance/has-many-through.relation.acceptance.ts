@@ -66,7 +66,7 @@ export function hasManyThroughRelationAcceptance(
       existingCustomerId = (await givenPersistedCustomerInstance()).id;
     });
 
-    it('can create an instance of the related model alone with a through model', async () => {
+    it('creates an instance of the related model alone with a through model', async () => {
       const item = await customerRepo
         .cartItems(existingCustomerId)
         .create(
@@ -93,7 +93,7 @@ export function hasManyThroughRelationAcceptance(
       );
     });
 
-    it('can find instances of the related model', async () => {
+    it('finds instances of the related model', async () => {
       const item = await customerRepo
         .cartItems(existingCustomerId)
         .create(
@@ -108,7 +108,7 @@ export function hasManyThroughRelationAcceptance(
       expect(toJSON(result[0])).to.not.containEql(toJSON(notMyItem));
     });
 
-    it('can patch instances', async () => {
+    it('patches instances', async () => {
       const item1 = await customerRepo
         .cartItems(existingCustomerId)
         .create({description: 'group 1'});
@@ -129,7 +129,7 @@ export function hasManyThroughRelationAcceptance(
       );
     });
 
-    it('can patch an instance based on the filter', async () => {
+    it('patches an instance based on the filter', async () => {
       const item1 = await customerRepo
         .cartItems(existingCustomerId)
         .create({description: 'group 1'});
@@ -162,7 +162,7 @@ export function hasManyThroughRelationAcceptance(
       ).to.be.rejectedWith(/Property "id" cannot be changed!/);
     });
 
-    it('can delete many instances and their through models', async () => {
+    it('deletes many instances and their through models', async () => {
       await customerRepo
         .cartItems(existingCustomerId)
         .create({description: 'group 1'});
@@ -182,7 +182,7 @@ export function hasManyThroughRelationAcceptance(
       expect(cartItems).have.length(0);
     });
 
-    it('can delete corresponding through models when the target gets deleted', async () => {
+    it('deletes corresponding through models when the target gets deleted', async () => {
       const item = await customerRepo
         .cartItems(existingCustomerId)
         .create({description: 'group 1'});
@@ -205,9 +205,39 @@ export function hasManyThroughRelationAcceptance(
       expect(cartItems).have.length(0);
     });
 
-    //FIXME(Agnes): should be able to do deletion based on filters
+    it('deletes instances based on the filter', async () => {
+      const item1 = await customerRepo
+        .cartItems(existingCustomerId)
+        .create({description: 'group 1'});
+      await customerRepo
+        .cartItems(existingCustomerId)
+        .create({description: 'group 2'});
 
-    it('can link a target model to a source model', async () => {
+      let links = await customerCartItemLinkRepo.find();
+      let cartItems = await cartItemRepo.find();
+      expect(links).have.length(2);
+      expect(cartItems).have.length(2);
+
+      await customerRepo
+        .cartItems(existingCustomerId)
+        .delete({description: 'does not exist'});
+      links = await customerCartItemLinkRepo.find();
+      cartItems = await cartItemRepo.find();
+      expect(links).have.length(2);
+      expect(cartItems).have.length(2);
+
+      await customerRepo
+        .cartItems(existingCustomerId)
+        .delete({description: 'group 2'});
+      links = await customerCartItemLinkRepo.find();
+      cartItems = await cartItemRepo.find();
+      expect(links).have.length(1);
+      expect(toJSON(cartItems)).to.containDeep(
+        toJSON([{id: item1.id, description: 'group 1'}]),
+      );
+    });
+
+    it('links a target model to a source model', async () => {
       const item = await cartItemRepo.create({description: 'an item'});
 
       let targets = await customerRepo.cartItems(existingCustomerId).find();
@@ -224,7 +254,7 @@ export function hasManyThroughRelationAcceptance(
       );
     });
 
-    it('can unlink a target model from a source model', async () => {
+    it('unlinks a target model from a source model', async () => {
       const item = await customerRepo
         .cartItems(existingCustomerId)
         .create({description: 'an item'});

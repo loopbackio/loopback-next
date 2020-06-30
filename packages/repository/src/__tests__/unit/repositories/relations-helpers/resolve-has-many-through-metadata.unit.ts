@@ -16,6 +16,7 @@ import {
   createTargetConstraintFromThrough,
   createThroughConstraintFromSource,
   createThroughConstraintFromTarget,
+  getTargetIdsFromTargetModels,
   getTargetKeysFromThroughModels,
   HasManyThroughResolvedDefinition,
   resolveHasManyThroughMetadata,
@@ -103,6 +104,27 @@ describe('HasManyThroughHelpers', () => {
       expect(result).to.containEql({id: 9});
     });
   });
+
+  context('getTargetIdsFromTargetModels', () => {
+    it('returns an empty array if the given target array is empty', () => {
+      const result = getTargetIdsFromTargetModels(relationMetaData, []);
+      expect(result).to.containDeep([]);
+    });
+    it('creates constraint with a given fk', () => {
+      const result = getTargetIdsFromTargetModels(relationMetaData, [
+        createProduct({id: 1}),
+      ]);
+      expect(result).to.containDeep([1]);
+    });
+    it('creates constraint with given fks', () => {
+      const result = getTargetIdsFromTargetModels(relationMetaData, [
+        createProduct({id: 1}),
+        createProduct({id: 2}),
+      ]);
+      expect(result).to.containDeep([1, 2]);
+    });
+  });
+
   context('createThroughConstraintFromTarget', () => {
     it('creates constraint with a given fk', () => {
       const result = createThroughConstraintFromTarget(relationMetaData, [1]);
@@ -395,5 +417,8 @@ describe('HasManyThroughHelpers', () => {
 
   function createCategoryProductLink(properties: Partial<CategoryProductLink>) {
     return new CategoryProductLink(properties);
+  }
+  function createProduct(properties: Partial<Product>) {
+    return new Product(properties);
   }
 });

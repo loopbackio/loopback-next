@@ -58,7 +58,7 @@ export function hasManyRelationAcceptance(
       existingCustomerId = (await givenPersistedCustomerInstance()).id;
     });
 
-    it('can create an instance of the related model', async () => {
+    it('creates an instance of the related model', async () => {
       const order = await customerRepo.orders(existingCustomerId).create({
         description: 'order 1',
       });
@@ -80,7 +80,7 @@ export function hasManyRelationAcceptance(
       );
     });
 
-    it('can find instances of the related model', async () => {
+    it('finds instances of the related model', async () => {
       const order = await createCustomerOrders(existingCustomerId, {
         description: 'an order desc',
       });
@@ -104,7 +104,7 @@ export function hasManyRelationAcceptance(
       expect(toJSON(persisted)).to.deepEqual(toJSON(foundOrders));
     });
 
-    it('can find an instance of the related model with non-id property as a source key(keyFrom)', async () => {
+    it('finds an instance of the related model with non-id property as a source key(keyFrom)', async () => {
       const shipment = await shipmentRepo.create({
         name: 'non-id prop as keyFrom relation',
         // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -139,7 +139,7 @@ export function hasManyRelationAcceptance(
       );
     });
 
-    it('can patch many instances', async () => {
+    it('patches many instances', async () => {
       await createCustomerOrders(existingCustomerId, {
         description: 'order 1',
         isShipped: false,
@@ -182,7 +182,7 @@ export function hasManyRelationAcceptance(
       ).to.be.rejectedWith(/Property "customerId" cannot be changed!/);
     });
 
-    it('can delete many instances', async () => {
+    it('deletes many instances', async () => {
       await createCustomerOrders(existingCustomerId, {
         description: 'order 1',
       });

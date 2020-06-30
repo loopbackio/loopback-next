@@ -174,6 +174,55 @@ export function createThroughConstraintFromSource<
   const constraint: any = {[sourceFkName]: fkValue};
   return constraint;
 }
+
+/**
+ * Returns an array of target ids of the given target instances.
+ *
+ * @param relationMeta - resolved hasManyThrough metadata
+ * @param targetInstances - an array of target instances
+ *
+ * @example
+ * ```ts
+ * const resolvedMetadata = {
+ *  // .. other props
+ *  keyFrom: 'id',
+ *  keyTo: 'id',
+ *  through: {
+ *    model: () => CategoryProductLink,
+ *    keyFrom: 'categoryId',
+ *    keyTo: 'productId',
+ *  },
+ * };
+ * getTargetKeysFromTargetModels(resolvedMetadata,[{
+        id: 2,
+        des: 'a target',
+      }]);
+ * >>> [2]
+ * getTargetKeysFromTargetModels(resolvedMetadata, [
+      {
+        id: 2,
+        des: 'a target',
+      }, {
+        id: 1,
+        des: 'a target',
+      }
+  ]);
+  >>> [2, 1]
+ */
+export function getTargetIdsFromTargetModels<Target extends Entity, TargetID>(
+  relationMeta: HasManyThroughResolvedDefinition,
+  targetInstances: Target[],
+): TargetID[] {
+  const targetId = relationMeta.keyTo;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let ids = [] as any;
+  ids = targetInstances.map(
+    (targetInstance: Target) => targetInstance[targetId as keyof Target],
+  );
+  ids = deduplicate(ids);
+  return ids as TargetID[];
+}
+
 /**
  * Creates through constraint based on the target foreign key
  *
