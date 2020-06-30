@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.9](https://github.com/strongloop/loopback-next/compare/@loopback/extension-metrics@0.3.8...@loopback/extension-metrics@0.3.9) (2020-06-30)
+
+**Note:** Version bump only for package @loopback/extension-metrics
+
+
+
+
+
 ## [0.3.8](https://github.com/strongloop/loopback-next/compare/@loopback/extension-metrics@0.3.7...@loopback/extension-metrics@0.3.8) (2020-06-23)
 
 

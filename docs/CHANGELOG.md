@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.11.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.10.0...@loopback/docs@3.11.0) (2020-06-30)
+
+
+### Features
+
+* allow CI env var to be set with cross-env ([74e350c](https://github.com/strongloop/loopback-next/commit/74e350c304f075eb609576bffc28f290d5aa4457))
+* **docs:** adds booter model artifact ([9ca46e0](https://github.com/strongloop/loopback-next/commit/9ca46e06920c1c3e3cb7befde950054e6e75734a))
+* **docs:** adds component supported artifacts table ([d36a298](https://github.com/strongloop/loopback-next/commit/d36a298d0e6162fa33e6b82c2abb8451c00d3549))
+
+
+
+
+
 # [3.10.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.9.0...@loopback/docs@3.10.0) (2020-06-23)
 
 

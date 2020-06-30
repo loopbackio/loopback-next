@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.3](https://github.com/strongloop/loopback-next/compare/@loopback/mock-oauth2-provider@0.1.2...@loopback/mock-oauth2-provider@0.1.3) (2020-06-30)
+
+
+### Bug Fixes
+
+* **mock-oauth2-provider:** reset publish status ([8f644ce](https://github.com/strongloop/loopback-next/commit/8f644ce2c1608cf39f5e9e190bdec0ea890d99b6))
+
+
+
+
+
 ## [0.1.2](https://github.com/strongloop/loopback-next/compare/@loopback/mock-oauth2-provider@0.1.1...@loopback/mock-oauth2-provider@0.1.2) (2020-06-23)
 
 

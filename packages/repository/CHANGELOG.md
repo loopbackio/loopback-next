@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.9.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@2.8.0...@loopback/repository@2.9.0) (2020-06-30)
+
+
+### Features
+
+* add HasManyThroughFactory to Juggler bridge ([c2d4352](https://github.com/strongloop/loopback-next/commit/c2d43524be4fd1345970b29e722e57890f2ea766))
+* **repository:** add link and unlink methods ([31dc4e9](https://github.com/strongloop/loopback-next/commit/31dc4e989ae981732fa43f7f48dfb8f19d5ac796))
+
+
+
+
+
 # [2.8.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@2.7.0...@loopback/repository@2.8.0) (2020-06-23)
 
 

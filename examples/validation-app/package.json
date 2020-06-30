@@ -1,6 +1,6 @@
 {
   "name": "@loopback/example-validation-app",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "An example demonstrating how to add validation in a LoopBack 4 application",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -41,20 +41,20 @@
     "directory": "examples/validation-app"
   },
   "dependencies": {
-    "@loopback/boot": "^2.3.4",
-    "@loopback/core": "^2.9.0",
-    "@loopback/openapi-v3": "^3.4.4",
-    "@loopback/repository": "^2.8.0",
-    "@loopback/rest": "^5.1.2",
-    "@loopback/rest-explorer": "^2.2.5",
-    "@loopback/service-proxy": "^2.3.3",
+    "@loopback/boot": "^2.3.5",
+    "@loopback/core": "^2.9.1",
+    "@loopback/openapi-v3": "^3.4.5",
+    "@loopback/repository": "^2.9.0",
+    "@loopback/rest": "^5.2.0",
+    "@loopback/rest-explorer": "^2.2.6",
+    "@loopback/service-proxy": "^2.3.4",
     "strong-error-handler": "^3.5.0",
     "tslib": "^2.0.0"
   },
   "devDependencies": {
-    "@loopback/build": "^6.0.0",
-    "@loopback/eslint-config": "^8.0.2",
-    "@loopback/testlab": "^3.1.8",
+    "@loopback/build": "^6.1.0",
+    "@loopback/eslint-config": "^8.0.3",
+    "@loopback/testlab": "^3.2.0",
     "@types/node": "^10.17.26",
     "eslint": "^7.3.1",
     "source-map-support": "^0.5.19",

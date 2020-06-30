@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/build@6.0.0...@loopback/build@6.1.0) (2020-06-30)
+
+
+### Features
+
+* **build:** add a helper to merge mocha config objects ([3ce9eef](https://github.com/strongloop/loopback-next/commit/3ce9eefdb3a286f2d2b2690ec471f00d8124efb9))
+
+
+
+
+
 # [6.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/build@5.4.3...@loopback/build@6.0.0) (2020-06-23)
 
 

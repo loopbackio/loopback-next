@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.10.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@2.9.1...@loopback/cli@2.10.0) (2020-06-30)
+
+
+### Bug Fixes
+
+* **cli:** set processDestinationPath option for backward-compatibility ([b1de0d5](https://github.com/strongloop/loopback-next/commit/b1de0d5922a894155a805418d1826537706232ef))
+
+
+### Features
+
+* **cli:** improve snapshot matcher to be compatible with parallel testing ([862072b](https://github.com/strongloop/loopback-next/commit/862072b82ad88ec4b248e0b243dda58b53640f94))
+
+
+
+
+
 ## [2.9.1](https://github.com/strongloop/loopback-next/compare/@loopback/cli@2.9.0...@loopback/cli@2.9.1) (2020-06-23)
 
 

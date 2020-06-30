@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@5.1.2...@loopback/rest@5.2.0) (2020-06-30)
+
+
+### Bug Fixes
+
+* **rest:** fix typing to be compatible with latest @types/js-yaml ([5ac39e4](https://github.com/strongloop/loopback-next/commit/5ac39e44827ef74c9d2bccb1797a9da125c249e3))
+
+
+### Features
+
+* coerce query object with schema ([ccea25f](https://github.com/strongloop/loopback-next/commit/ccea25fc382457f9436adfc0d8f6ce3a2d029c5e))
+* **rest:** expose types from strong-error-handler ([b6f5595](https://github.com/strongloop/loopback-next/commit/b6f559549518c839a2898f1b968fc6a7901a6c6b))
+
+
+
+
+
 ## [5.1.2](https://github.com/strongloop/loopback-next/compare/@loopback/rest@5.1.1...@loopback/rest@5.1.2) (2020-06-23)
 
 

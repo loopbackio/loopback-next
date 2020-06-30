@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@3.1.8...@loopback/testlab@3.2.0) (2020-06-30)
+
+
+### Features
+
+* **testlab:** add transform option for sandbox copyFile ([f5565fb](https://github.com/strongloop/loopback-next/commit/f5565fbfce2e88f4f0accaaa620f4237dc67545c))
+
+
+
+
+
 ## [3.1.8](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@3.1.7...@loopback/testlab@3.1.8) (2020-06-23)
 
 
