@@ -85,7 +85,7 @@ describe('model', () => {
   class Customer extends Entity {
     static definition = customerDef;
     id: string;
-    email: string;
+    email?: string;
     firstName: string;
     lastName: string;
     createdAt?: Date;

@@ -486,7 +486,7 @@ describe('Routing', () => {
     const app = givenAnApplication();
     const server = await givenAServer(app);
     const spec = anOpenApiSpec().build();
-    delete spec.paths;
+    spec.paths = {};
     server.api(spec);
   });
 

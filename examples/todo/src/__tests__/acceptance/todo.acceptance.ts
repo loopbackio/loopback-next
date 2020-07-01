@@ -74,7 +74,7 @@ describe('TodoApplication', () => {
   });
 
   it('rejects requests to create a todo with no title', async () => {
-    const todo = givenTodo();
+    const todo: Partial<Todo> = givenTodo();
     delete todo.title;
     await client.post('/todos').send(todo).expect(422);
   });

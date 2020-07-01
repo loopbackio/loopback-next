@@ -235,7 +235,7 @@ describe('TodoListApplication', () => {
     id: typeof Todo.prototype.id,
     todo?: Partial<Todo>,
   ) {
-    const data = givenTodo(todo);
+    const data: Partial<Todo> = givenTodo(todo);
     delete data.todoListId;
     return todoListRepo.todos(id).create(data);
   }
