@@ -28,7 +28,7 @@
     "@loopback/express": "^1.2.5",
     "@loopback/http-server": "^2.1.9",
     "@loopback/openapi-v3": "^3.4.5",
-    "@openapi-contrib/openapi-schema-to-json-schema": "^3.0.0",
+    "@openapi-contrib/openapi-schema-to-json-schema": "^3.0.1",
     "@types/body-parser": "^1.19.0",
     "@types/cors": "^2.8.6",
     "@types/express": "^4.17.6",
