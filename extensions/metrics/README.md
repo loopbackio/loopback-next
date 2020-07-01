@@ -85,7 +85,7 @@ http://localhost:3000/metrics returns metrics in plain text format. It includes
 information for the Node.js process as well as LoopBack method invocations.
 
 <details>
-<summary>Example of plain text data</summary>
+<summary markdown="span">Example of plain text data</summary>
 <pre>
 # HELP process_cpu_user_seconds_total Total user CPU time spent in seconds.
 # TYPE process_cpu_user_seconds_total counter

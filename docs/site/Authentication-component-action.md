@@ -19,7 +19,7 @@ To know more details of what each action does, click the code snippet below with
 more descriptions.
 
 <details>
-<summary>Click to view the details of the default sequence</summary>
+<summary markdown="span">Click to view the details of the default sequence</summary>
 
 ```ts
 export class DefaultSequence implements SequenceHandler {
