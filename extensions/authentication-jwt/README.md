@@ -27,7 +27,7 @@ and its tutorial
 
 ## Architecture Overview
 
-![authentication-jwt](authentication-jwt.png)
+![authentication-jwt](https://raw.githubusercontent.com/strongloop/loopback-next/master/extensions/authentication-jwt/authentication-jwt.png)
 
 ## Usage
 
@@ -42,8 +42,7 @@ Next enable the jwt authentication system in your application:
 - add authenticate action
 
 <details>
-<summary><strong>Check The Code</strong></summary>
-<p>
+<summary markdown="span"><strong>Check The Code</strong></summary>
 
 ```ts
 import {
@@ -86,14 +85,12 @@ export class MySequence implements SequenceHandler {
 }
 ```
 
-</p>
 </details>
 
 - mount jwt component in application
 
 <details>
-<summary><strong>Check The Code</strong></summary>
-<p>
+<summary markdown="span"><strong>Check The Code</strong></summary>
 
 ```ts
 import {AuthenticationComponent} from '@loopback/authentication';
@@ -130,7 +127,6 @@ export class TestApplication extends BootMixin(
 }
 ```
 
-</p>
 </details>
 
 _All the jwt authentication related code are marked with comment "- enable jwt
@@ -203,8 +199,7 @@ provide your own `User` model and repository.
    `User` and `UserRepository` with `MyUser`, `MyUserRepository`:
 
    <details>
-   <summary><strong>Check The Code</strong></summary>
-   <p>
+   <summary markdown="span"><strong>Check The Code</strong></summary>
 
    ```ts
    import {UserService} from '@loopback/authentication';
@@ -271,7 +266,6 @@ provide your own `User` model and repository.
    }
    ```
 
-   </p>
    </details>
 
 3. Bind `MyUserRepository` (and `MyUserCredentialsRepository` if you create your
