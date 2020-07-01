@@ -29,7 +29,7 @@
     "lerna": "^3.22.1",
     "markdown-table": "^2.0.0",
     "open-cli": "^6.0.1",
-    "typescript": "~3.9.5"
+    "typescript": "~3.9.6"
   },
   "scripts": {
     "bootstrap": "lerna bootstrap",
