@@ -44,7 +44,7 @@ describe('TodoListApplication', () => {
   });
 
   it('creates image for a todoList', async () => {
-    const todoListImage = givenTodoListImage();
+    const todoListImage: Partial<TodoListImage> = givenTodoListImage();
     delete todoListImage.todoListId;
     const response = await client
       .post(`/todo-lists/${persistedTodoList.id}/image`)
@@ -94,7 +94,7 @@ describe('TodoListApplication', () => {
     id: typeof TodoList.prototype.id,
     todoListImage?: Partial<TodoListImage>,
   ) {
-    const data = givenTodoListImage(todoListImage);
+    const data: Partial<TodoListImage> = givenTodoListImage(todoListImage);
     delete data.todoListId;
     return todoListRepo.image(id).create(data);
   }
