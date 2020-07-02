@@ -125,7 +125,7 @@ children:
     output: 'web, pdf'
 
   - title: 'How to secure your LoopBack 4 application with JWT authentication'
-    url: Authentication-Tutorial.html
+    url: Authentication-tutorial.html
     output: 'web, pdf'
 
   - title: 'Build large scale Node.js projects with LoopBack 4'
