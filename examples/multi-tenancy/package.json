@@ -67,7 +67,7 @@
     "@loopback/testlab": "^3.2.0",
     "@types/jsonwebtoken": "^8.5.0",
     "@types/node": "^10.17.26",
-    "eslint": "^7.3.1",
+    "eslint": "^7.4.0",
     "source-map-support": "^0.5.19",
     "typescript": "~3.9.6"
   }

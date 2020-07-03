@@ -23,7 +23,7 @@
     "@types/node": "^10.17.26",
     "cross-spawn": "^7.0.3",
     "debug": "^4.1.1",
-    "eslint": "^7.3.1",
+    "eslint": "^7.4.0",
     "fs-extra": "^9.0.1",
     "glob": "^7.1.6",
     "lodash": "^4.17.15",
