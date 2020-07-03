@@ -53,7 +53,7 @@
     "@types/express-serve-static-core": "^4.17.8",
     "@types/multer": "^1.4.3",
     "@types/node": "^10.17.26",
-    "eslint": "^7.3.1",
+    "eslint": "^7.4.0",
     "typescript": "~3.9.6"
   },
   "keywords": [
