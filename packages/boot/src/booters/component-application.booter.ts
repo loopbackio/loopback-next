@@ -119,5 +119,6 @@ export function createComponentApplicationBooterBinding(
 ) {
   return createBindingFromClass(
     createBooterForComponentApplication(componentApp, filter),
+    {key: `booters.${componentApp.name}`},
   );
 }

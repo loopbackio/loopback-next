@@ -67,6 +67,17 @@ describe('component application booter acceptance tests', () => {
     expect(current).to.be.exactly(lockedBinding);
   });
 
+  it('creates binding key based on application name', () => {
+    const binding = createComponentApplicationBooterBinding(app);
+    expect(binding.key).to.eql(`booters.${app.name}`);
+  });
+
+  it('creates unique bindings for different applications', () => {
+    const binding1 = createComponentApplicationBooterBinding(new BooterApp());
+    const binding2 = createComponentApplicationBooterBinding(new BooterApp());
+    expect(binding1.key).to.not.eql(binding2.key);
+  });
+
   class MainApp extends BootMixin(Application) {
     constructor() {
       super();
