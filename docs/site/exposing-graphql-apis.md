@@ -45,7 +45,7 @@ todo-application as the parameter, start up the server by running the following
 command:
 
 ```sh
-npx openapi-to-graphql --port=3001 http://localhost:3000/openapi.json
+npx openapi-to-graphql-cli --port=3001 http://localhost:3000/openapi.json
 ```
 
 _Haven't heard about `npx` yet? It's a cool helper provided by `npm` and
