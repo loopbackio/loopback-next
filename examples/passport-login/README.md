@@ -34,7 +34,7 @@ party apps
 - [Google](https://console.developers.google.com/project)
 - [twitter](https://apps.twitter.com/) **Not yet implemented**
 
-## Authentication using passport strategies as Express midddleware
+## Authentication using passport strategies as Express middleware
 
 Take a look at how to use passport strategies
 [as Express middleware using interceptors](src/authentication-interceptors)
@@ -65,9 +65,17 @@ By default the user data is stored using a memory connector and saved locally to
 
 Start the application with
 
-```
+```sh
 $ npm start
 ```
+
+To use Google or Facebook logins, you'll need:
+
+- Copy `oauth2-providers.template.json` from this example project's root to
+  `oauth2-providers.json`.
+- Update Google/Facebook configuration in the json file.
+- Set `OAUTH_PROVIDERS_LOCATION` environment variable to
+  `../oauth2-providers.json`.
 
 ## Test the login scenarios
 
@@ -91,7 +99,7 @@ Open browser to http://localhost:3000
 2. When you click on any login option, the page is redirected to that social
    app's login page. On successful login with the social app, the `View account`
    page is loaded.
-3. If the email-id registered in the social media app maches with a email-id
+3. If the email-id registered in the social media app matches with a email-id
    registered locally, then the profiles will be linked and the `View account`
    page will display all the `linked accounts` for that locally registered user.
 4. Click on Logout to log out of user session
@@ -142,7 +150,7 @@ Open browser to http://localhost:3000
 - Update Facebook oauth2 config with the values for `clientID/clientSecret` from
   your test app.
 
-  ```
+  ```json
   "facebook-login": {
     "provider": "facebook",
     "module": "passport-facebook",
@@ -198,7 +206,7 @@ http://loopback.io/doc/en/lb2/Configuring-providers.json.html.
 - Update Google oauth2 config with the values for `clientID/clientSecret` from
   your Google test app.
 
-  ```
+  ```json
   "google-login": {
       "provider": "google",
       "module": "passport-google-oauth2",
