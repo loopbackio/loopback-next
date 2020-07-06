@@ -59,7 +59,7 @@
     "@loopback/build": "^6.1.0",
     "@loopback/eslint-config": "^8.0.3",
     "@loopback/testlab": "^3.2.0",
-    "@types/express": "^4.17.6",
+    "@types/express": "^4.17.7",
     "@types/node": "^10.17.26",
     "eslint": "^7.4.0",
     "typescript": "~3.9.6"

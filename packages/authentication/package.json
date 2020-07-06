@@ -28,7 +28,7 @@
     "@loopback/openapi-v3": "^3.4.5",
     "@loopback/rest": "^5.2.0",
     "@loopback/security": "^0.2.14",
-    "@types/express": "^4.17.6",
+    "@types/express": "^4.17.7",
     "@types/lodash": "^4.14.157",
     "lodash": "^4.17.15",
     "tslib": "^2.0.0"
