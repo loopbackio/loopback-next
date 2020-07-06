@@ -285,30 +285,20 @@ export function defineInterceptorProvider<
   className = buildName(middlewareFactory, className);
   assert(className, 'className is missing and it cannot be inferred.');
 
-  const defineNamedClass = new Function(
-    'middlewareFactory',
-    'defaultMiddlewareConfig',
-    'MiddlewareInterceptorProvider',
-    'createInterceptor',
-    `return class ${className} extends MiddlewareInterceptorProvider {
-       constructor(middlewareConfig) {
-         super(
-           middlewareFactory,
-           middlewareConfig,
-         );
-         if (this.middlewareConfig == null) {
-           this.middlewareConfig = defaultMiddlewareConfig;
-         }
-       }
-     };`,
-  );
+  const cls = class extends ExpressMiddlewareInterceptorProvider<CFG, CTX> {
+    constructor(middlewareConfig?: CFG) {
+      super(middlewareFactory, middlewareConfig);
+      if (this.middlewareConfig == null) {
+        this.middlewareConfig = defaultMiddlewareConfig;
+      }
+    }
+  };
 
-  const cls = defineNamedClass(
-    middlewareFactory,
-    defaultMiddlewareConfig,
-    ExpressMiddlewareInterceptorProvider,
-    createInterceptor,
-  );
+  Object.defineProperty(cls, 'name', {
+    value: className,
+    configurable: false,
+  });
+
   if (options?.injectConfiguration === 'watch') {
     // Inject the config view
     config.view()(cls, '', 0);

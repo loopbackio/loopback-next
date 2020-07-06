@@ -102,19 +102,22 @@ export function defineRepositoryClass<
   baseRepositoryClass: BaseRepositoryClass<M, R>,
 ): ModelRepositoryClass<PrototypeOf<M>, R> {
   const repoName = modelClass.name + 'Repository';
-  const defineNamedRepo = new Function(
-    'ModelCtor',
-    'BaseRepository',
-    `return class ${repoName} extends BaseRepository {
-      constructor(dataSource) {
-        super(ModelCtor, dataSource);
-      }
-    };`,
-  );
 
-  const repo = defineNamedRepo(modelClass, baseRepositoryClass);
-  assert.equal(repo.name, repoName);
-  return repo;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  class CustomRepoClass extends (baseRepositoryClass as any) {
+    constructor(dataSource: juggler.DataSource) {
+      super(modelClass, dataSource);
+    }
+  }
+
+  Object.defineProperty(CustomRepoClass, 'name', {
+    value: repoName,
+    configurable: false,
+  });
+
+  assert.equal(CustomRepoClass.name, repoName);
+
+  return CustomRepoClass as ModelRepositoryClass<PrototypeOf<M>, R>;
 }
 
 /**

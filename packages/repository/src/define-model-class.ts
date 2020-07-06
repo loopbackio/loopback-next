@@ -52,19 +52,19 @@ export function defineModelClass<
   definition: ModelDefinition,
 ): DynamicModelCtor<BaseCtor, Props> {
   const modelName = definition.name;
-  const defineNamedModelClass = new Function(
-    base.name,
-    `return class ${modelName} extends ${base.name} {}`,
-  );
-  const modelClass = defineNamedModelClass(base) as DynamicModelCtor<
-    BaseCtor,
-    Props
-  >;
-  assert.equal(modelClass.name, modelName);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  class CustomModelClass extends (base as any) {}
+
+  Object.defineProperty(CustomModelClass, 'name', {
+    value: modelName,
+    configurable: false,
+  });
+
+  assert.equal(CustomModelClass.name, modelName);
   // Apply `@model(definition)` to the generated class
-  model(definition)(modelClass);
-  return modelClass;
+  model(definition)(CustomModelClass);
+  return CustomModelClass as DynamicModelCtor<BaseCtor, Props>;
 }
 
 /**

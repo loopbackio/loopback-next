@@ -263,13 +263,13 @@ export function defineCrudRestController<
   }
 
   const controllerName = modelName + 'Controller';
-  const defineNamedController = new Function(
-    'controllerClass',
-    `return class ${controllerName} extends controllerClass {}`,
-  );
-  const controller = defineNamedController(CrudRestControllerImpl);
-  assert.equal(controller.name, controllerName);
-  return controller;
+  const controllerClass = class extends CrudRestControllerImpl {};
+  Object.defineProperty(controllerClass, 'name', {
+    value: controllerName,
+    configurable: false,
+  });
+  assert.equal(controllerClass.name, controllerName);
+  return controllerClass;
 }
 
 function getIdSchema<T extends Entity>(
