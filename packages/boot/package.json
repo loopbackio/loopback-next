@@ -29,7 +29,7 @@
     "@loopback/repository": "^2.9.0",
     "@loopback/service-proxy": "^2.3.4",
     "@types/debug": "^4.1.5",
-    "@types/glob": "^7.1.2",
+    "@types/glob": "^7.1.3",
     "debug": "^4.1.1",
     "glob": "^7.1.6",
     "tslib": "^2.0.0"
