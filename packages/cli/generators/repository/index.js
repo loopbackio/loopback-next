@@ -38,7 +38,7 @@ const CLI_BASE_KEY_VALUE_REPOSITORIES = [
 const CLI_BASE_SEPARATOR = [
   {
     type: 'separator',
-    line: '----- Custom Repositories -----',
+    line: g.f('----- Custom Repositories -----'),
   },
 ];
 
