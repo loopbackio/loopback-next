@@ -64,7 +64,7 @@
     "express": "4.17.1",
     "express-session": "^1.17.1",
     "jade": "^1.11.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.17",
     "passport": "^0.4.1",
     "passport-facebook": "^3.0.0",
     "passport-google": "^0.3.0",
@@ -85,7 +85,7 @@
     "@types/node": "^10.17.26",
     "axios": "^0.19.2",
     "eslint": "^7.4.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.17",
     "typescript": "~3.9.6"
   },
   "keywords": [

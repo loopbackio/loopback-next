@@ -59,7 +59,7 @@
     "@types/morgan": "^1.9.1",
     "@types/node": "^10.17.26",
     "eslint": "^7.4.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.17",
     "typescript": "~3.9.6"
   },
   "keywords": [

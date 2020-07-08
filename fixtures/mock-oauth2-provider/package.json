@@ -45,7 +45,7 @@
     "express": "^4.17.1",
     "form-data": "^3.0.0",
     "jsonwebtoken": "^8.5.1",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.17",
     "tslib": "^2.0.0"
   },
   "devDependencies": {
