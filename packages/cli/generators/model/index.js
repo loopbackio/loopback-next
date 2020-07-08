@@ -439,7 +439,7 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
           name: 'default',
           message: g.f(
             'Default value %s:',
-            `${chalk.yellow('[leave blank for none]')}`,
+            `${chalk.yellow(g.f('[leave blank for none]'))}`,
           ),
           when: answers => {
             return (
