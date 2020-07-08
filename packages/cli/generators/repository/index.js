@@ -3,6 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+// no translate: Repository
 'use strict';
 const _ = require('lodash');
 const ArtifactGenerator = require('../../lib/artifact-generator');
