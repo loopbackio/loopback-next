@@ -162,6 +162,7 @@
   "dd9b2e815dc04519c82ded4787c1a53a": "The following dependencies are incompatible with @loopback/cli@{0}:",
   "ddb67f6cad9d36d2acf42898c4fe58f5": "Component name",
   "e06dcb9b794d62f93022ac5a189f9072": "Skip upgrading project dependencies",
+  "e1bf205e7a3c78d22506aad47301f87f": "[leave blank for none]",
   "e4765958ab33531b244d9d1d6fb2b705": "Target model primary key does not exist.",
   "e4a87a58bb56e705349a97dbc23ecd6d": "Default relation name",
   "e4ca073d5042621174cf6950ad25b40e": "Project description:",
