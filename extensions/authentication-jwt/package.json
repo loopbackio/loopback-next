@@ -40,7 +40,7 @@
     "@loopback/testlab": "^2.0.2",
     "@types/lodash": "^4.14.157",
     "@types/node": "^10.17.26",
-    "lodash": "^4.17.17",
+    "lodash": "^4.17.19",
     "typescript": "~3.9.6"
   },
   "keywords": [
