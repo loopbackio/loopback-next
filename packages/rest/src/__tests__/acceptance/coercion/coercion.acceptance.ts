@@ -4,6 +4,15 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
+  belongsTo,
+  Entity,
+  Filter,
+  hasMany,
+  hasOne,
+  model,
+  property,
+} from '@loopback/repository';
+import {
   Client,
   createRestAppClient,
   givenHttpServerConfig,
@@ -27,6 +36,7 @@ describe('Coercion', () => {
     if (spy) spy.restore();
   });
 
+  /* --------- schema defined for object query ---------- */
   const filterSchema = {
     type: 'object',
     title: 'filter',
@@ -41,6 +51,56 @@ describe('Coercion', () => {
       },
     },
   };
+  /* ----------------------- end ----------------------- */
+
+  /* --------- models defined for nested inclusion query -------- */
+  @model()
+  class Todo extends Entity {
+    @property({
+      type: 'number',
+      id: true,
+      generated: false,
+    })
+    id: number;
+
+    @belongsTo(() => TodoList)
+    todoListId: number;
+  }
+
+  @model()
+  class TodoListImage extends Entity {
+    @property({
+      type: 'number',
+      id: true,
+      generated: false,
+    })
+    id: number;
+
+    @belongsTo(() => TodoList)
+    todoListId: number;
+
+    @property({
+      required: true,
+    })
+    value: string;
+  }
+
+  @model()
+  class TodoList extends Entity {
+    @property({
+      type: 'number',
+      id: true,
+      generated: false,
+    })
+    id: number;
+
+    @hasMany(() => Todo)
+    todos: Todo[];
+
+    @hasOne(() => TodoListImage)
+    image: TodoListImage;
+  }
+  /* ---------------------------- end --------------------------- */
 
   class MyController {
     @get('/create-number-from-path/{num}')
@@ -72,6 +132,14 @@ describe('Coercion', () => {
 
     @get('/random-object-from-query')
     getRandomObjectFromQuery(@param.query.object('filter') filter: object) {
+      return filter;
+    }
+
+    @get('/nested-inclusion-from-query')
+    nestedInclusionFromQuery(
+      @param.filter(Todo)
+      filter: Filter<Todo>,
+    ) {
       return filter;
     }
   }
@@ -157,6 +225,32 @@ describe('Coercion', () => {
         'where[active]': true,
       })
       .expect(400);
+  });
+
+  it('allows nested inclusion filter', async () => {
+    spy = sinon.spy(MyController.prototype, 'nestedInclusionFromQuery');
+    const inclusionFilter = {
+      include: [
+        {
+          relation: 'todoList',
+          scope: {
+            include: [
+              {
+                relation: 'image',
+                scope: {
+                  fields: {value: false},
+                },
+              },
+            ],
+          },
+        },
+      ],
+    };
+    const encodedFilter = encodeURIComponent(JSON.stringify(inclusionFilter));
+    await client
+      .get(`/nested-inclusion-from-query?filter=${encodedFilter}`)
+      .expect(200);
+    sinon.assert.calledWithExactly(spy, {...inclusionFilter});
   });
 
   async function givenAClient() {

@@ -64,6 +64,38 @@ You can also use
 [stringified JSON format](Querying-data.md#using-stringified-json-in-rest-queries) in
 a REST query.
 
+#### Scope Filter
+
+Please note if the scope filter contains non-string data, they won't be coerced
+if you use the plain query. Only the stringified JSON format works as expected.
+
+For example, the following REST query which includes related `users` without
+their names:
+
+`/modelName?filter[include][0][relation]=users&filter[include][0][scope][fields][name]=false`
+
+won't hide the `name` field for `users`, because `false` is a boolean value. It
+won't be coerced and will present as a string when passed to the controller
+function.
+
+A solution is to use the stringified JSON query instead to include data with
+scope specified:
+
+```ts
+// Define the inclusion filter and get its encoded format
+const inclusionFilter = {
+  include: {
+    relation: 'users',
+    scope: {
+      fields: {name: false},
+    },
+  },
+};
+const encodedFilter = encodeURIComponent(JSON.stringify(filter));
+```
+
+and call `/modelName?filter=<encodedFilter>`
+
 ### Examples
 
 - Return all customers with their orders:
