@@ -21,6 +21,15 @@ export interface FilterSchemaOptions {
   exclude?: string[] | string;
 }
 
+export const AnyScopeFilterSchema: JsonSchema = {
+  type: 'array',
+  items: {
+    type: 'object',
+    properties: {},
+    additionalProperties: true,
+  },
+};
+
 /**
  * Build a JSON schema describing the format of the "scope" object
  * used to query model instances.
@@ -38,12 +47,17 @@ export function getScopeFilterJsonSchemaFor(
   class EmptyModel extends Model {}
 
   const schema: JsonSchema = {
-    ...getFilterJsonSchemaFor(EmptyModel, {setTitle: false}),
+    ...getFilterJsonSchemaFor(EmptyModel, {
+      setTitle: false,
+    }),
     ...(options.setTitle !== false && {
       title: `${modelCtor.modelName}.ScopeFilter`,
     }),
   };
 
+  // To include nested models, we need to hard-code the inclusion
+  // filter schema for EmptyModel to allow any object query.
+  schema.properties!.include = {...AnyScopeFilterSchema};
   return schema;
 }
 
