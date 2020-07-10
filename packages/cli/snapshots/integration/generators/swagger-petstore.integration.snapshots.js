@@ -177,7 +177,7 @@ pulvinar elit eu, euismod sapien.
       type: 'string',
     },
   },
-}) tags: string[], @param({
+}) tags: string[] | undefined, @param({
   name: 'limit',
   in: 'query',
   description: 'maximum number of results to return',
@@ -186,7 +186,7 @@ pulvinar elit eu, euismod sapien.
     type: 'integer',
     format: 'int32',
   },
-}) limit: number): Promise<Pet[]> {
+}) limit: number | undefined): Promise<Pet[]> {
     throw new Error('Not implemented');
   }
 

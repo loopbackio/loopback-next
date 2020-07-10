@@ -210,13 +210,15 @@ function buildMethodSpec(controllerSpec, op, options) {
     args = parameters.map(p => {
       const {paramType, argName} = buildParameter(p, paramNames, comments);
       const paramJson = printSpecObject(p);
-      return `@param(${paramJson}) ${argName}: ${paramType.signature}`;
+      const optionalType = !p.required ? ' | undefined' : '';
+      return `@param(${paramJson}) ${argName}: ${paramType.signature}${optionalType}`;
     });
     interfaceArgs = parameters.map(p => {
       const param = buildParameter(p, interfaceParamNames);
       namedParameters.push(param);
       const {paramType, argName} = param;
-      return `${argName}: ${paramType.signature}`;
+      const optionalType = !p.required ? ' | undefined' : '';
+      return `${argName}: ${paramType.signature}${optionalType}`;
     });
   }
   if (op.spec.requestBody) {
