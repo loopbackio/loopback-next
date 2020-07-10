@@ -605,7 +605,7 @@ pulvinar elit eu, euismod sapien.
       type: 'string',
     },
   },
-}) tags: string[], @param({
+}) tags: string[] | undefined, @param({
   name: 'limit',
   in: 'query',
   description: 'maximum number of results to return',
@@ -614,7 +614,7 @@ pulvinar elit eu, euismod sapien.
     type: 'integer',
     format: 'int32',
   },
-}) limit: number, @param({
+}) limit: number | undefined, @param({
   name: 'where',
   in: 'query',
   content: {
@@ -629,7 +629,7 @@ pulvinar elit eu, euismod sapien.
 }) where: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [additionalProperty: string]: any;
-}): Promise<Pet[]> {
+} | undefined): Promise<Pet[]> {
     throw new Error('Not implemented');
   }
 
@@ -911,10 +911,10 @@ pulvinar elit eu, euismod sapien.
    * @param where 
    * @returns pet response
    */
-  findPets(tags: string[], limit: number, where: {
+  findPets(tags: string[] | undefined, limit: number | undefined, where: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [additionalProperty: string]: any;
-}): Promise<Pet[]>;
+} | undefined): Promise<Pet[]>;
 
   /**
    * Creates a new pet in the store. Duplicates are allowed
@@ -1248,7 +1248,7 @@ pulvinar elit eu, euismod sapien.
       type: 'string',
     },
   },
-}) tags: string[], @param({
+}) tags: string[] | undefined, @param({
   name: 'limit',
   in: 'query',
   description: 'maximum number of results to return',
@@ -1257,7 +1257,7 @@ pulvinar elit eu, euismod sapien.
     type: 'integer',
     format: 'int32',
   },
-}) limit: number, @param({
+}) limit: number | undefined, @param({
   name: 'where',
   in: 'query',
   content: {
@@ -1272,7 +1272,7 @@ pulvinar elit eu, euismod sapien.
 }) where: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [additionalProperty: string]: any;
-}): Promise<Pet[]> {
+} | undefined): Promise<Pet[]> {
     throw new Error('Not implemented');
   }
 
@@ -1667,10 +1667,10 @@ pulvinar elit eu, euismod sapien.
    * @param where 
    * @returns pet response
    */
-  findPets(tags: string[], limit: number, where: {
+  findPets(tags: string[] | undefined, limit: number | undefined, where: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [additionalProperty: string]: any;
-}): Promise<Pet[]>;
+} | undefined): Promise<Pet[]>;
 
   /**
    * Creates a new pet in the store. Duplicates are allowed
@@ -2008,7 +2008,7 @@ pulvinar elit eu, euismod sapien.
       type: 'string',
     },
   },
-}) tags: string[], @param({
+}) tags: string[] | undefined, @param({
   name: 'limit',
   in: 'query',
   description: 'maximum number of results to return',
@@ -2017,7 +2017,7 @@ pulvinar elit eu, euismod sapien.
     type: 'integer',
     format: 'int32',
   },
-}) limit: number, @param({
+}) limit: number | undefined, @param({
   name: 'where',
   in: 'query',
   content: {
@@ -2032,7 +2032,7 @@ pulvinar elit eu, euismod sapien.
 }) where: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [additionalProperty: string]: any;
-}): Promise<Pet[]> {
+} | undefined): Promise<Pet[]> {
     throw new Error('Not implemented');
   }
 
@@ -2314,10 +2314,10 @@ pulvinar elit eu, euismod sapien.
    * @param where 
    * @returns pet response
    */
-  findPets(tags: string[], limit: number, where: {
+  findPets(tags: string[] | undefined, limit: number | undefined, where: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [additionalProperty: string]: any;
-}): Promise<Pet[]>;
+} | undefined): Promise<Pet[]>;
 
   /**
    * Creates a new pet in the store. Duplicates are allowed
