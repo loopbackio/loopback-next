@@ -57,7 +57,7 @@
     "@loopback/testlab": "^3.2.0",
     "@types/lodash": "^4.14.157",
     "@types/morgan": "^1.9.1",
-    "@types/node": "^10.17.26",
+    "@types/node": "^10.17.27",
     "eslint": "^7.4.0",
     "lodash": "^4.17.19",
     "typescript": "~3.9.6"
