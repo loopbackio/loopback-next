@@ -27,7 +27,7 @@
     "@loopback/build": "^6.1.0",
     "@loopback/eslint-config": "^8.0.3",
     "@loopback/testlab": "^3.2.0",
-    "@types/node": "^10.17.26"
+    "@types/node": "^10.17.27"
   },
   "dependencies": {
     "@loopback/core": "^2.9.1",

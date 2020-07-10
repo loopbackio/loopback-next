@@ -28,7 +28,7 @@
     "@loopback/rest": "^5.1.1",
     "@loopback/testlab": "^3.1.7",
     "@types/json-schema": "^7.0.5",
-    "@types/node": "^10.17.26",
+    "@types/node": "^10.17.27",
     "sqlite3": "^5.0.0"
   },
   "dependencies": {

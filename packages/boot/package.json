@@ -41,7 +41,7 @@
     "@loopback/rest": "^5.2.0",
     "@loopback/rest-crud": "^0.8.9",
     "@loopback/testlab": "^3.2.0",
-    "@types/node": "^10.17.26"
+    "@types/node": "^10.17.27"
   },
   "files": [
     "README.md",
