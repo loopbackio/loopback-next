@@ -37,16 +37,18 @@ export class AuthenticationStrategyProvider
     @extensions()
     protected authenticationStrategies: Getter<AuthenticationStrategy[]>,
     @inject(AuthenticationBindings.METADATA)
-    protected metadata?: AuthenticationMetadata,
+    protected metadata?: AuthenticationMetadata[],
   ) {}
   async value(): Promise<AuthenticationStrategy[] | undefined> {
-    if (!this.metadata) {
+    if (!this.metadata?.length) {
       return undefined;
     }
-    return this.findAuthenticationStrategies(this.metadata.strategy);
+    return this.findAuthenticationStrategies(this.metadata);
   }
 
-  private async findAuthenticationStrategies(names: string | string[]) {
+  private async findAuthenticationStrategies(
+    metadata: AuthenticationMetadata[],
+  ): Promise<AuthenticationStrategy[]> {
     const strategies: AuthenticationStrategy[] = [];
 
     const existingStrategies = await this.authenticationStrategies();
@@ -63,13 +65,8 @@ export class AuthenticationStrategyProvider
       return strategy;
     };
 
-    if (Array.isArray(names)) {
-      for (const name of names) {
-        const strategy = findStrategy(name);
-        strategies.push(strategy);
-      }
-    } else {
-      const strategy = findStrategy(names);
+    for (const data of metadata) {
+      const strategy = findStrategy(data.strategy);
       strategies.push(strategy);
     }
 

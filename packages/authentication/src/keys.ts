@@ -40,14 +40,14 @@ export namespace AuthenticationBindings {
   >('authentication.userProfileFactory');
 
   /**
-   * Key used to bind an authentication strategy to the context for the
-   * authentication function to use.
+   * Key used to bind an authentication strategy or multiple strategies
+   * to the context for the authentication function to use.
    *
    * @example
    * ```ts
    * server
    *   .bind(AuthenticationBindings.STRATEGY)
-   *   .toProvider([MyAuthenticationStrategy]);
+   *   .toProvider(MyAuthenticationStrategy);
    * ```
    */
   export const STRATEGY = BindingKey.create<
@@ -105,20 +105,19 @@ export namespace AuthenticationBindings {
    * class MyPassportStrategyProvider implements Provider<Strategy | undefined> {
    *   constructor(
    *     @inject(AuthenticationBindings.METADATA)
-   *     private metadata: AuthenticationMetadata,
+   *     private metadata?: AuthenticationMetadata[],
    *   ) {}
    *   value(): ValueOrPromise<Strategy | undefined> {
-   *     if (this.metadata) {
-   *       const name = this.metadata.strategy;
+   *     if (this.metadata?.length) {
    *       // logic to determine which authentication strategy to return
    *     }
    *   }
    * }
    * ```
    */
-  export const METADATA = BindingKey.create<AuthenticationMetadata | undefined>(
-    'authentication.operationMetadata',
-  );
+  export const METADATA = BindingKey.create<
+    AuthenticationMetadata[] | undefined
+  >('authentication.operationMetadata');
 
   export const AUTHENTICATION_STRATEGY_EXTENSION_POINT_NAME =
     'authentication.strategies';
