@@ -8,16 +8,15 @@ import {authenticate, getAuthenticateMetadata} from '../../..';
 
 describe('Authentication', () => {
   describe('@authenticate decorator', () => {
-    it('can add authenticate metadata to target method with options', () => {
+    it('can add authenticate metadata to target method', () => {
       class TestClass {
-        @authenticate('my-strategy', {option1: 'value1', option2: 'value2'})
+        @authenticate('my-strategy')
         whoAmI() {}
       }
 
       const metaData = getAuthenticateMetadata(TestClass, 'whoAmI');
-      expect(metaData).to.eql({
+      expect(metaData?.[0]).to.eql({
         strategy: 'my-strategy',
-        options: {option1: 'value1', option2: 'value2'},
       });
     });
 
@@ -31,7 +30,7 @@ describe('Authentication', () => {
       }
 
       const metaData = getAuthenticateMetadata(TestClass, 'whoAmI');
-      expect(metaData).to.eql({
+      expect(metaData?.[0]).to.eql({
         strategy: 'my-strategy',
         options: {option1: 'value1', option2: 'value2'},
       });
@@ -44,47 +43,82 @@ describe('Authentication', () => {
       }
 
       const metaData = getAuthenticateMetadata(TestClass, 'whoAmI');
-      expect(metaData).to.eql({strategy: 'my-strategy', options: {}});
-    });
-
-    it('can add authenticate metadata to target method with strategies as array', () => {
-      class TestClass {
-        @authenticate(['my-strategy', 'my-strategy2'])
-        whoAmI() {}
-      }
-
-      const metaData = getAuthenticateMetadata(TestClass, 'whoAmI');
-      expect(metaData).to.eql({
-        strategy: ['my-strategy', 'my-strategy2'],
-        options: {},
+      expect(metaData?.[0]).to.eql({
+        strategy: 'my-strategy',
       });
     });
 
-    it('adds authenticate metadata to target class', () => {
-      @authenticate('my-strategy', {option1: 'value1', option2: 'value2'})
+    it('can add authenticate metadata to target method with multiple strategies', () => {
       class TestClass {
+        @authenticate('my-strategy', 'my-strategy2')
         whoAmI() {}
       }
 
       const metaData = getAuthenticateMetadata(TestClass, 'whoAmI');
-      expect(metaData).to.eql({
+      expect(metaData?.[0]).to.eql({
         strategy: 'my-strategy',
+      });
+      expect(metaData?.[1]).to.eql({
+        strategy: 'my-strategy2',
+      });
+    });
+
+    it('can add authenticate metadata to target method with multiple objects', () => {
+      class TestClass {
+        @authenticate(
+          {
+            strategy: 'my-strategy',
+            options: {option1: 'value1', option2: 'value2'},
+          },
+          {
+            strategy: 'my-strategy2',
+            options: {option1: 'value1', option2: 'value2'},
+          },
+        )
+        whoAmI() {}
+      }
+
+      const metaData = getAuthenticateMetadata(TestClass, 'whoAmI');
+      expect(metaData?.[0]).to.eql({
+        strategy: 'my-strategy',
+        options: {option1: 'value1', option2: 'value2'},
+      });
+      expect(metaData?.[1]).to.eql({
+        strategy: 'my-strategy2',
         options: {option1: 'value1', option2: 'value2'},
       });
     });
 
-    it('overrides class level metadata by method level', () => {
-      @authenticate('my-strategy', {option1: 'value1', option2: 'value2'})
+    it('adds authenticate metadata to target class', () => {
+      @authenticate('my-strategy')
       class TestClass {
-        @authenticate('another-strategy', {
-          option1: 'valueA',
-          option2: 'value2',
+        whoAmI() {}
+      }
+
+      const metaData = getAuthenticateMetadata(TestClass, 'whoAmI');
+      expect(metaData?.[0]).to.eql({
+        strategy: 'my-strategy',
+      });
+    });
+
+    it('overrides class level metadata by method level', () => {
+      @authenticate({
+        strategy: 'my-strategy',
+        options: {option1: 'value1', option2: 'value2'},
+      })
+      class TestClass {
+        @authenticate({
+          strategy: 'another-strategy',
+          options: {
+            option1: 'valueA',
+            option2: 'value2',
+          },
         })
         whoAmI() {}
       }
 
       const metaData = getAuthenticateMetadata(TestClass, 'whoAmI');
-      expect(metaData).to.eql({
+      expect(metaData?.[0]).to.eql({
         strategy: 'another-strategy',
         options: {option1: 'valueA', option2: 'value2'},
       });
@@ -92,14 +126,14 @@ describe('Authentication', () => {
   });
 
   it('can skip authentication', () => {
-    @authenticate('my-strategy', {option1: 'value1', option2: 'value2'})
+    @authenticate('my-strategy')
     class TestClass {
       @authenticate.skip()
       whoAmI() {}
     }
 
     const metaData = getAuthenticateMetadata(TestClass, 'whoAmI');
-    expect(metaData).to.containEql({skip: true});
+    expect(metaData?.[0]).to.containEql({skip: true});
   });
 
   it('can skip authentication at class level', () => {
@@ -109,6 +143,6 @@ describe('Authentication', () => {
     }
 
     const metaData = getAuthenticateMetadata(TestClass, 'whoAmI');
-    expect(metaData).to.containEql({skip: true});
+    expect(metaData?.[0]).to.containEql({skip: true});
   });
 });

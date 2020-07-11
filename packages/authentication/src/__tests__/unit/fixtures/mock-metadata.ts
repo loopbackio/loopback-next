@@ -8,6 +8,6 @@ export const mockAuthenticationMetadata: AuthenticationMetadata = {
 };
 
 export const mockAuthenticationMetadata2: AuthenticationMetadata = {
-  strategy: ['MockStrategy', 'MockStrategy2'],
+  strategy: 'MockStrategy2',
   options,
 };

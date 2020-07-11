@@ -1,3 +1,8 @@
+// Copyright IBM Corp. 2020. All Rights Reserved.
+// Node module: @loopback/authentication
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
 import {Context} from '@loopback/core';
 import {expect} from '@loopback/testlab';
 import {
@@ -20,7 +25,7 @@ describe('AuthStrategyProvider', () => {
   beforeEach(() => {
     givenAuthenticationStrategyProvider(
       [mockStrategy, mockStrategy2],
-      mockAuthenticationMetadata2,
+      [mockAuthenticationMetadata, mockAuthenticationMetadata2],
     );
   });
 
@@ -29,20 +34,20 @@ describe('AuthStrategyProvider', () => {
       const strategies = await strategyProvider.value();
 
       expect(strategies).to.not.be.undefined();
-      expect(strategies![0]).to.be.equal(mockStrategy);
-      expect(strategies![1]).to.be.equal(mockStrategy2);
+      expect(strategies?.[0]).to.be.equal(mockStrategy);
+      expect(strategies?.[1]).to.be.equal(mockStrategy2);
     });
 
     it('should only return the authentication strategy specified in the authentication metadata', async () => {
       givenAuthenticationStrategyProvider(
         [mockStrategy, mockStrategy2],
-        mockAuthenticationMetadata,
+        [mockAuthenticationMetadata],
       );
 
       const strategies = await strategyProvider.value();
 
       expect(strategies?.length).to.be.equal(1);
-      expect(strategies![0]).to.be.equal(mockStrategy);
+      expect(strategies?.[0]).to.be.equal(mockStrategy);
     });
 
     it('should return undefined if the authentication metadata is not available', async () => {
@@ -54,11 +59,11 @@ describe('AuthStrategyProvider', () => {
     });
 
     it('should throw an error if the authentication strategy is not available', async () => {
-      givenAuthenticationStrategyProvider([], mockAuthenticationMetadata);
+      givenAuthenticationStrategyProvider([], [mockAuthenticationMetadata]);
 
       await expect(strategyProvider.value()).to.be.rejected();
 
-      givenAuthenticationStrategyProvider([], mockAuthenticationMetadata2);
+      givenAuthenticationStrategyProvider([], [mockAuthenticationMetadata2]);
 
       await expect(strategyProvider.value()).to.be.rejected();
     });
@@ -91,7 +96,7 @@ describe('AuthStrategyProvider', () => {
 
   function givenAuthenticationStrategyProvider(
     strategies: AuthenticationStrategy[],
-    metadata: AuthenticationMetadata | undefined,
+    metadata: AuthenticationMetadata[] | undefined,
   ) {
     strategyProvider = new AuthenticationStrategyProvider(
       () => Promise.resolve(strategies),

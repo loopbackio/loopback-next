@@ -34,7 +34,7 @@ export class AuthenticateActionProvider implements Provider<AuthenticateFn> {
     // is executed.
     @inject.getter(AuthenticationBindings.STRATEGY)
     readonly getStrategies: Getter<
-      AuthenticationStrategy | AuthenticationStrategy[]
+      AuthenticationStrategy | AuthenticationStrategy[] | undefined
     >,
     @inject.setter(SecurityBindings.USER)
     readonly setCurrentUser: Setter<UserProfile>,
@@ -61,7 +61,7 @@ export class AuthenticateActionProvider implements Provider<AuthenticateFn> {
       // The invoked operation does not require authentication.
       return undefined;
     }
-
+    // convert to array if required
     strategies = Array.isArray(strategies) ? strategies : [strategies];
 
     let authenticated = false;
@@ -99,8 +99,8 @@ export class AuthenticateActionProvider implements Provider<AuthenticateFn> {
           });
           throw error;
         }
-      } catch (err) {
-        authError = authError ?? err;
+      } catch (error) {
+        authError = authError ?? error;
       }
     }
 

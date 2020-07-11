@@ -6,9 +6,9 @@
 import {
   config,
   Constructor,
+  CoreBindings,
   inject,
   Provider,
-  CoreBindings,
 } from '@loopback/core';
 import {getAuthenticateMetadata} from '../decorators';
 import {AuthenticationBindings} from '../keys';
@@ -19,7 +19,7 @@ import {AuthenticationMetadata, AuthenticationOptions} from '../types';
  * @example `context.bind('authentication.operationMetadata').toProvider(AuthMetadataProvider)`
  */
 export class AuthMetadataProvider
-  implements Provider<AuthenticationMetadata | undefined> {
+  implements Provider<AuthenticationMetadata[] | undefined> {
   constructor(
     @inject(CoreBindings.CONTROLLER_CLASS, {optional: true})
     private readonly controllerClass: Constructor<{}>,
@@ -32,14 +32,14 @@ export class AuthMetadataProvider
   /**
    * @returns AuthenticationMetadata
    */
-  value(): AuthenticationMetadata | undefined {
+  value(): AuthenticationMetadata[] | undefined {
     if (!this.controllerClass || !this.methodName) return;
     const metadata = getAuthenticateMetadata(
       this.controllerClass,
       this.methodName,
     );
     // Skip authentication if `skip` is `true`
-    if (metadata?.skip) return undefined;
+    if (metadata?.[0]?.skip) return undefined;
     if (metadata) return metadata;
     // Fall back to default metadata
     return this.options.defaultMetadata;

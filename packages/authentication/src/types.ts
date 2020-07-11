@@ -11,7 +11,7 @@ import {
   Context,
   extensionFor,
 } from '@loopback/core';
-import {Request, RedirectRoute} from '@loopback/rest';
+import {RedirectRoute, Request} from '@loopback/rest';
 import {UserProfile} from '@loopback/security';
 import {AuthenticationBindings} from './keys';
 
@@ -22,7 +22,7 @@ export interface AuthenticationMetadata {
   /**
    * Name of the authentication strategy
    */
-  strategy: string | string[];
+  strategy: string;
   /**
    * Options for the authentication strategy
    */
@@ -59,7 +59,7 @@ export interface AuthenticationOptions {
    * `@authenticate`. If not set, no default authentication will be enforced for
    * those methods without authentication metadata.
    */
-  defaultMetadata?: AuthenticationMetadata;
+  defaultMetadata?: AuthenticationMetadata[];
 }
 
 /**
@@ -133,3 +133,16 @@ export const asAuthStrategy: BindingTemplate = binding => {
       AuthenticationBindings.AUTHENTICATION_STRATEGY_EXTENSION_POINT_NAME,
   });
 };
+
+/**
+ * Get the authentication metadata object for the specified strategy.
+ *
+ * @param metadata - Array of authentication metadata objects
+ * @param strategyName - Name of the authentication strategy
+ */
+export function getAuthenticationMetadataForStrategy(
+  metadata: AuthenticationMetadata[],
+  strategyName: string,
+): AuthenticationMetadata | undefined {
+  return metadata.find(data => data.strategy === strategyName);
+}
