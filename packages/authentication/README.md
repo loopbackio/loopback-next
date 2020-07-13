@@ -1,6 +1,8 @@
 # @loopback/authentication
 
-A LoopBack 4 component for authentication support.
+A LoopBack 4 component for authentication support. Its corresponding
+documentation is in
+[LoopBack component authentication](https://loopback.io/doc/en/lb4/Loopback-component-authentication.html)
 
 ## Overview
 
@@ -25,22 +27,22 @@ npm install --save @loopback/authentication
 
 ## Basic Use
 
-[Load the AuthenticationComponent](https://loopback.io/doc/en/lb4/Loopback-component-authentication.html#authentication-component)
+[Load the AuthenticationComponent](https://loopback.io/doc/en/lb4/Loopback-component-authentication.html#mounting-authentication-component)
 into your application.
 
 **Extension developers** need to:
 
-- [create custom authentication strategies](https://loopback.io/doc/en/lb4/Loopback-component-authentication.html#creating-a-custom-authentication-strategy)
+- [create custom authentication strategies](https://loopback.io/doc/en/lb4/Implement-your-own-strategy.html)
 
 **Application Developers** need to:
 
-- [decorate controller functions with the authentication decorator](https://loopback.io/doc/en/lb4/Loopback-component-authentication.html#using-the-authentication-decorator)
-- [add the authentication action to a custom sequence](https://loopback.io/doc/en/lb4/Loopback-component-authentication.html#adding-an-authentication-action-to-a-custom-sequence)
+- [decorate controller functions with the authentication decorator](https://loopback.io/doc/en/lb4/Authentication-component-decorator.html)
+- [add the authentication action to a custom sequence](https://loopback.io/doc/en/lb4/Authentication-component-action.html#adding-an-authentication-action-to-a-custom-sequence)
   and
-  [bind the custom sequence to the application](https://loopback.io/doc/en/lb4/Loopback-component-authentication.html#binding-the-authenticating-sequence-to-the-application)
-- [register the authentication strategies](https://loopback.io/doc/en/lb4/Loopback-component-authentication.html#registering-a-custom-authentication-strategy)
+  [bind the custom sequence to the application](https://loopback.io/doc/en/lb4/Authentication-component-action.html#binding-the-authenticating-sequence-to-the-application)
+- [register the authentication strategies](https://loopback.io/doc/en/lb4/Authentication-component-strategy.html)
 
-[Create and register a passport based strategy](https://www.npmjs.com/package/@loopback/authentication-passport)
+[Create and register a passport based strategy](https://loopback.io/doc/en/lb4/Authentication-passport.html)
 
 ## Related resources
 
