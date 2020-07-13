@@ -49,9 +49,8 @@ describe('cli', () => {
     expect(entries).to.not.containEql('Available commands:');
   });
 
-  it('saves command metadata to .yo-rc.json', function () {
+  it('saves command metadata to .yo-rc.json', /** @this {Mocha.Context} */ function () {
     // This test can be slow under parallel mode
-    // eslint-disable-next-line @typescript-eslint/no-invalid-this
     this.timeout(15000);
     const entries = [];
     main({meta: true}, getLog(entries));
