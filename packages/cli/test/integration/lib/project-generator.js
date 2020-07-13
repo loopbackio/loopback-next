@@ -281,10 +281,6 @@ module.exports = function (projGenerator, props, projectType) {
             'package.json',
             `"@loopback/rest": "${deps['@loopback/rest']}"`,
           );
-          assert.fileContent(
-            'package.json',
-            `"@loopback/openapi-v3": "${deps['@loopback/openapi-v3']}"`,
-          );
           assert.jsonFileContent('package.json', {
             scripts: {
               prestart: 'npm run build',
