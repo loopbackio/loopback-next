@@ -10,7 +10,7 @@ import {
   CoreBindings,
   inject,
 } from '@loopback/core';
-import {asSpecEnhancer, OASEnhancer, OpenAPIObject} from '@loopback/openapi-v3';
+import {asSpecEnhancer, OASEnhancer, OpenAPIObject} from '@loopback/rest';
 
 /**
  * Configuration for IBM API Connect extensions to the OpenAPI spec
