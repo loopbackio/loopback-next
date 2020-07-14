@@ -18,9 +18,6 @@
       "path": "../model-api-builder/tsconfig.json"
     },
     {
-      "path": "../openapi-v3/tsconfig.json"
-    },
-    {
       "path": "../repository/tsconfig.json"
     },
     {

@@ -1,5 +1,5 @@
 // Copyright IBM Corp. 2019. All Rights Reserved.
-// Node module: @loopback/openapi-v3
+// Node module: @loopback/authentication-jwt"
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
@@ -11,7 +11,7 @@ import {
   OpenApiSpec,
   ReferenceObject,
   SecuritySchemeObject,
-} from '@loopback/openapi-v3';
+} from '@loopback/rest';
 import debugModule from 'debug';
 import {inspect} from 'util';
 const debug = debugModule('loopback:jwt-extension:spec-enhancer');

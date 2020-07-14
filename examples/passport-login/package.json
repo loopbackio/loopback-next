@@ -42,7 +42,6 @@
     "@loopback/boot": "^2.3.5",
     "@loopback/core": "^2.9.1",
     "@loopback/mock-oauth2-provider": "^0.1.3",
-    "@loopback/openapi-v3": "^3.4.5",
     "@loopback/repository": "^2.9.0",
     "@loopback/rest": "^5.2.0",
     "@loopback/rest-crud": "^0.8.9",

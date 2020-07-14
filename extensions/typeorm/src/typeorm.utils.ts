@@ -3,11 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {
-  JsonSchemaOptions,
-  ReferenceObject,
-  SchemaObject,
-} from '@loopback/openapi-v3';
+import {JsonSchemaOptions, ReferenceObject, SchemaObject} from '@loopback/rest';
 import debugFactory from 'debug';
 import {getMetadataArgsStorage} from 'typeorm';
 import {ColumnType} from 'typeorm/driver/types/ColumnTypes';

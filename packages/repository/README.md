@@ -97,7 +97,7 @@ or properties.
 import {repository} from '@loopback/repository';
 import {NoteRepository} from '../repositories';
 import {Note} from '../models';
-import {post, requestBody, get, param} from '@loopback/openapi-v3';
+import {post, requestBody, get, param} from '@loopback/rest';
 
 export class NoteController {
   constructor(

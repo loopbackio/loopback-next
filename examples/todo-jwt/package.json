@@ -43,7 +43,6 @@
     "@loopback/authentication-jwt": "^0.4.3",
     "@loopback/boot": "^2.3.5",
     "@loopback/core": "^2.9.1",
-    "@loopback/openapi-v3": "^3.4.5",
     "@loopback/repository": "^2.9.0",
     "@loopback/rest": "^5.2.0",
     "@loopback/rest-explorer": "^2.2.6",
