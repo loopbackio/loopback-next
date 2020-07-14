@@ -378,8 +378,7 @@ class MyController {
 upload. For example,
 
 ```ts
-import {post, requestBody} from '@loopback/openapi-v3';
-import {Request} from '@loopback/rest';
+import {post, Request, requestBody} from '@loopback/rest';
 class MyController {
   @post('/pictures')
   upload(
@@ -404,7 +403,7 @@ example,
 
 ```ts
 import {model, property} from '@loopback/repository';
-import {requestBody, post, get} from '@loopback/openapi-v3';
+import {requestBody, post, get} from '@loopback/rest';
 
 @model()
 class MyModel {
@@ -566,11 +565,11 @@ use verbose JSON.
 
 ## Shortcuts for the OpenAPI Spec (OAS) Objects
 
-All of the above are direct exports of `@loopback/openapi-v3`, but they are also
+All of the above are direct exports of `@loopback/rest`, but they are also
 available under the `oas` namespace:
 
 ```ts
-import {oas} from '@loopback/openapi-v3';
+import {oas} from '@loopback/rest';
 
 @oas.api({})
 class MyController {
@@ -800,8 +799,7 @@ class MyController {
 file download. For example:
 
 ```ts
-import {oas, get, param} from '@loopback/openapi-v3';
-import {RestBindings, Response} from '@loopback/rest';
+import {get, oas, param, RestBindings, Response} from '@loopback/rest';
 
 class MyController {
   @get('/files/{filename}')

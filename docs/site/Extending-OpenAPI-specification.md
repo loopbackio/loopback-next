@@ -22,7 +22,7 @@ _Read about the extension point/extension pattern in
 
 ## Adding a New OAS Enhancer
 
-Interface `OASEnhancer` is created in `@loopback/openapi-v3` to describe the
+Interface `OASEnhancer` provided by `@loopback/rest` is describing the
 specification enhancers. A typical OAS enhancer class should have a string type
 `name` field and a function `modifySpec()` to modify the current specification.
 
@@ -36,7 +36,7 @@ import {
   asSpecEnhancer,
   OASEnhancer,
   OpenApiSpec,
-} from '@loopback/openapi-v3';
+} from '@loopback/rest';
 
 /**
  * A spec enhancer to add OpenAPI info spec
@@ -98,8 +98,8 @@ class MyApplication extends RestApplication {
 
 ## OAS Enhancer Service as Extension Point
 
-The OAS enhancer extension point is created in package `@loopback/openapi-v3`.
-It organizes the registered OAS enhancers, and provides APIs to either apply one
+The OAS enhancer extension point is provided by package `@loopback/rest`. It
+organizes the registered OAS enhancers, and provides APIs to either apply one
 enhancer by name, or apply all enhancers automatically.
 
 ### Registering an Enhancer Service
@@ -109,7 +109,7 @@ You can bind the OAS enhancer extension point to your app via key
 
 ```ts
 import {RestApplication} from '@loopback/rest';
-import {OASEnhancerService, OASEnhancerBindings} from '@loopback/openapi-v3';
+import {OASEnhancerService, OASEnhancerBindings} from '@loopback/rest';
 
 class MyApplication extends RestApplication {
   constructor() {

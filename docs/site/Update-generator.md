@@ -49,7 +49,6 @@ The following dependencies are incompatible with @loopback/cli@1.24.0:
 - @loopback/boot: ^1.2.7 (cli ^1.5.10)
 - @loopback/build: ^1.5.4 (cli ^2.0.15)
 - @loopback/core: ^1.7.0 (cli ^1.10.6)
-- @loopback/openapi-v3: ^1.3.11 (cli ^1.10.0)
 - @loopback/repository: ^1.5.5 (cli ^1.15.3)
 - @loopback/rest: ^1.11.2 (cli ^1.22.0)
 - @loopback/testlab: ^1.2.9 (cli ^1.9.3)
@@ -57,7 +56,6 @@ The following dependencies are incompatible with @loopback/cli@1.24.0:
 ? How do you want to proceed? Upgrade project dependencies
 - Dependency @loopback/boot: ^1.2.7 => ^1.5.10
 - Dependency @loopback/core: ^1.7.0 => ^1.10.6
-- Dependency @loopback/openapi-v3: ^1.3.11 => ^1.10.0
 - Dependency @loopback/repository: ^1.5.5 => ^1.15.3
 - Dependency @loopback/rest: ^1.11.2 => ^1.22.0
 - Dependency @loopback/service-proxy: ^1.1.10 => ^1.3.10
