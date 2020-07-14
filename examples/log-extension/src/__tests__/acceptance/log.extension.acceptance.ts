@@ -4,10 +4,11 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {inject} from '@loopback/core';
-import {get, param} from '@loopback/openapi-v3';
 import {
+  get,
   FindRoute,
   InvokeMethod,
+  param,
   ParseParams,
   Reject,
   RequestContext,

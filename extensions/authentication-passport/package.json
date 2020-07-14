@@ -42,7 +42,6 @@
   "dependencies": {
     "@loopback/authentication": "^4.2.9",
     "@loopback/core": "^2.9.1",
-    "@loopback/openapi-v3": "^3.4.5",
     "@loopback/rest": "^5.2.0",
     "@loopback/security": "^0.2.14",
     "passport": "^0.4.1",

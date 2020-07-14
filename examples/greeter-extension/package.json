@@ -56,7 +56,6 @@
   },
   "dependencies": {
     "@loopback/core": "^2.9.1",
-    "@loopback/openapi-v3": "^3.4.5",
     "chalk": "^4.1.0",
     "debug": "^4.1.1",
     "tslib": "^2.0.0"

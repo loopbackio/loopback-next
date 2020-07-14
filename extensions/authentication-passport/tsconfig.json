@@ -23,9 +23,6 @@
       "path": "../../packages/openapi-spec-builder/tsconfig.json"
     },
     {
-      "path": "../../packages/openapi-v3/tsconfig.json"
-    },
-    {
       "path": "../../packages/rest/tsconfig.json"
     },
     {

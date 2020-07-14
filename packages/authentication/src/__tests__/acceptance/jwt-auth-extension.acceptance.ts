@@ -4,8 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {inject, Application} from '@loopback/core';
-import {get, post} from '@loopback/openapi-v3';
-import {Request, RestServer} from '@loopback/rest';
+import {get, post, Request, RestServer} from '@loopback/rest';
 import {SecurityBindings, securityId, UserProfile} from '@loopback/security';
 import {Client, createClientForHandler, expect} from '@loopback/testlab';
 import {

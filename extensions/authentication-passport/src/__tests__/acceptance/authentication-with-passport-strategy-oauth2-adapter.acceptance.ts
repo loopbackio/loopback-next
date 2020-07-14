@@ -10,8 +10,7 @@ import {
   MyUser,
   userRepository,
 } from '@loopback/mock-oauth2-provider';
-import {get} from '@loopback/openapi-v3';
-import {Response, RestApplication, RestBindings} from '@loopback/rest';
+import {get, Response, RestApplication, RestBindings} from '@loopback/rest';
 import {SecurityBindings, securityId, UserProfile} from '@loopback/security';
 import {
   Client,

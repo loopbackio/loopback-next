@@ -9,8 +9,8 @@ import {
   OASEnhancer,
   OASEnhancerBindings,
   OpenApiSpec,
-} from '@loopback/openapi-v3';
-import {Request} from '@loopback/rest';
+  Request,
+} from '@loopback/rest';
 import {securityId, UserProfile} from '@loopback/security';
 import {expect} from '@loopback/testlab';
 import {
