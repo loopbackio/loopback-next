@@ -59,7 +59,6 @@ cli.
   - @loopback/core: ^1.10.4
   - @loopback/metadata: ^1.3.4
   - @loopback/openapi-spec-builder: ^1.2.15
-  - @loopback/openapi-v3: ^1.9.9
   - @loopback/repository-json-schema: ^1.10.2
   - @loopback/repository: ^1.15.1
   - @loopback/rest: ^1.20.1
