@@ -154,6 +154,41 @@ const SourceEntries = {
     file: 'index.ts',
     content: readSourceFile('./controllers/index.ts'),
   },
+  DoctorModel: {
+    path: MODEL_APP_PATH,
+    file: 'doctor.model.ts',
+    content: readSourceFile('./models/doctor.model.ts'),
+  },
+  DoctorRepository: {
+    path: REPOSITORY_APP_PATH,
+    file: 'doctor.repository.ts',
+    content: readSourceFile('./repositories/doctor.repository.ts'),
+  },
+  PatientModel: {
+    path: MODEL_APP_PATH,
+    file: 'patient.model.ts',
+    content: readSourceFile('./models/patient.model.ts'),
+  },
+  PatientRepository: {
+    path: REPOSITORY_APP_PATH,
+    file: 'patient.repository.ts',
+    content: readSourceFile('./repositories/patient.repository.ts'),
+  },
+  AppointmentModel: {
+    path: MODEL_APP_PATH,
+    file: 'appointment.model.ts',
+    content: readSourceFile('./models/appointment.model.ts'),
+  },
+  AppointmentRepository: {
+    path: REPOSITORY_APP_PATH,
+    file: 'appointment.repository.ts',
+    content: readSourceFile('./repositories/appointment.repository.ts'),
+  },
+  DoctorPatientController: {
+    path: CONTROLLER_PATH,
+    file: 'doctor-patient.controller.ts',
+    content: readSourceFile('./controllers/doctor-patient.controller.ts'),
+  },
 };
 exports.SourceEntries = SourceEntries;
 
@@ -208,6 +243,9 @@ exports.SANDBOX_FILES = [
   SourceEntries.OrderClassTypeRepository,
   SourceEntries.AddressClassTypeRepository,
   SourceEntries.NoKeyRepository,
+  SourceEntries.DoctorRepository,
+  SourceEntries.PatientRepository,
+  SourceEntries.AppointmentRepository,
 
   SourceEntries.CustomerModel,
   SourceEntries.OrderModel,
@@ -220,6 +258,10 @@ exports.SANDBOX_FILES = [
   SourceEntries.CustomerClassTypeModel,
   SourceEntries.OrderClassTypeModel,
   SourceEntries.AddressClassTypeModel,
+  SourceEntries.DoctorModel,
+  SourceEntries.PatientModel,
+  SourceEntries.AppointmentModel,
+  SourceEntries.DoctorPatientController,
 ];
 
 exports.SANDBOX_FILES2 = [
@@ -233,6 +275,9 @@ exports.SANDBOX_FILES2 = [
   SourceEntries.OrderClassTypeRepository,
   SourceEntries.AddressClassTypeRepository,
   SourceEntries.NoKeyRepository,
+  SourceEntries.DoctorRepository,
+  SourceEntries.PatientRepository,
+  SourceEntries.AppointmentRepository,
 
   SourceEntries.CustomerModel,
   SourceEntries.OrderModel,
@@ -243,6 +288,9 @@ exports.SANDBOX_FILES2 = [
   SourceEntries.OrderClassModel,
   SourceEntries.AddressClassModel,
   SourceEntries.CustomerClassTypeModel,
+  SourceEntries.DoctorModel,
+  SourceEntries.PatientModel,
+  SourceEntries.AppointmentModel,
 
   SourceEntries.IndexOfControllers,
 ];
