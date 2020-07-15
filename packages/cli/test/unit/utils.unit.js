@@ -270,6 +270,34 @@ describe('Utils', () => {
     });
   });
 
+  describe('validateKeyToKeyFrom', () => {
+    it('does not validate an invalid input', () => {
+      expect(
+        utils.validateKeyToKeyFrom('relationName', 'relationName'),
+      ).to.match(
+        /Through model cannot have two identical foreign keys: relationName/,
+      );
+      expect(utils.validateKeyToKeyFrom('', 'relationName')).to.match(
+        /Key name cannot be empty/,
+      );
+      expect(utils.validateKeyToKeyFrom('2keyName', 'relationName')).to.match(
+        /Key name cannot start with a number: 2keyName/,
+      );
+      expect(utils.validateKeyToKeyFrom('key.name', 'relationName')).to.match(
+        /Key name cannot contain .: key.name/,
+      );
+      expect(utils.validateKeyToKeyFrom('key name', 'relationName')).to.match(
+        /Key name cannot contain spaces: key name/,
+      );
+      expect(utils.validateKeyToKeyFrom('key-name', 'relationName')).to.match(
+        /Key name cannot contain hyphens: key-name/,
+      );
+      expect(utils.validateKeyToKeyFrom('key@name', 'relationName')).to.match(
+        'Key name cannot contain special characters (/@+%: ): key@name',
+      );
+    });
+  });
+
   describe('prependBackslash', () => {
     it('appends backslash if given word does not have any', () => {
       expect(utils.prependBackslash('product-review')).to.eql(

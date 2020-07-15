@@ -13,6 +13,7 @@ const utils = require('../../lib/utils');
 exports.relationType = {
   belongsTo: 'belongsTo',
   hasMany: 'hasMany',
+  hasManyThrough: 'hasManyThrough',
   hasOne: 'hasOne',
 };
 
