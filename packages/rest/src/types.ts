@@ -111,7 +111,7 @@ export type AjvFormat = FormatDefinition & {name: string};
 /**
  * Options for any value validation using AJV
  */
-export interface ValueValidationOptions extends RequestBodyValidationOptions {
+export interface ValueValidationOptions extends ValidationOptions {
   /**
    * Where the data comes from. It can be 'body', 'path', 'header',
    * 'query', 'cookie', etc...
@@ -122,7 +122,7 @@ export interface ValueValidationOptions extends RequestBodyValidationOptions {
 /**
  * Options for request body validation using AJV
  */
-export interface RequestBodyValidationOptions extends ajv.Options {
+export interface ValidationOptions extends ajv.Options {
   /**
    * Custom cache for compiled schemas by AJV. This setting makes it possible
    * to skip the default cache.
@@ -184,7 +184,7 @@ export interface RequestBodyParserOptions extends Options {
    * This setting is global for all request body parsers and it cannot be
    * overridden inside parser specific properties such as `json` or `text`.
    */
-  validation?: RequestBodyValidationOptions;
+  validation?: ValidationOptions;
   /**
    * Common options for all parsers
    */
@@ -225,3 +225,7 @@ export interface Session {
 export interface RequestWithSession extends Request {
   session: Session;
 }
+
+// For backwards compatibility
+// TODO(SEMVER-MAJOR)
+export type RequestBodyValidationOptions = ValidationOptions;

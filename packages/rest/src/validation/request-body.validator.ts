@@ -16,11 +16,14 @@ import _ from 'lodash';
 import util from 'util';
 import {HttpErrors, RequestBody, RestHttpErrors} from '..';
 import {
-  RequestBodyValidationOptions,
   SchemaValidatorCache,
+  ValidationOptions,
   ValueValidationOptions,
 } from '../types';
-import {AjvFactoryProvider} from './ajv-factory.provider';
+import {
+  AjvFactoryProvider,
+  DEFAULT_AJV_VALIDATION_OPTIONS,
+} from './ajv-factory.provider';
 
 const toJsonSchema = require('@openapi-contrib/openapi-schema-to-json-schema');
 const debug = debugModule('loopback:rest:validation');
@@ -39,7 +42,7 @@ export async function validateRequestBody(
   body: RequestBody,
   requestBodySpec?: RequestBodyObject,
   globalSchemas: SchemasObject = {},
-  options: RequestBodyValidationOptions = {},
+  options: ValidationOptions = DEFAULT_AJV_VALIDATION_OPTIONS,
 ) {
   const required = requestBodySpec?.required;
 
@@ -102,12 +105,12 @@ const DEFAULT_COMPILED_SCHEMA_CACHE: SchemaValidatorCache = new WeakMap();
  * Build a cache key for AJV options
  * @param options - Request body validation options
  */
-function getKeyForOptions(options: RequestBodyValidationOptions) {
+function getKeyForOptions(
+  options: ValidationOptions = DEFAULT_AJV_VALIDATION_OPTIONS,
+) {
   const ajvOptions: Record<string, unknown> = {};
   // Sort keys for options
-  const keys = Object.keys(
-    options,
-  ).sort() as (keyof RequestBodyValidationOptions)[];
+  const keys = Object.keys(options).sort() as (keyof ValidationOptions)[];
   for (const k of keys) {
     if (k === 'compiledSchemaCache') continue;
     ajvOptions[k] = options[k];

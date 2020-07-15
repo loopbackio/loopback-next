@@ -208,28 +208,9 @@ A full list of validation keywords could be found in the
 
 ##### Custom Error Messages
 
-You can also specify custom error messages for the JSON schema validation rules
-in the model property decorator. The messages are added in field called
-`errorMessage` inside `jsonSchema` like:
-
-```ts
-@model()
-class Product extends Entity {
-  @property({
-    name: 'name',
-    description: "The product's common name.",
-    type: 'string',
-    // Specify the JSON validation rules here
-    jsonSchema: {
-      maxLength: 30,
-      minLength: 10,
-      errorMessage:
-        'name must be at least 10 characters and maximum 30 characters',
-    },
-  })
-  public name: string;
-}
-```
+You can also specify custom error messages for JSON schema validation rules, as
+explained in
+[Custom Validation Rules and Error Messages](Model.md#custom-validation-rules-and-error-messages).
 
 A full list of options & usage scenarios could be found in the
 [documentation of AJV errors](https://github.com/epoberezkin/ajv-errors).
