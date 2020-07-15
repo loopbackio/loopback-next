@@ -6,42 +6,46 @@
 import {
   config,
   ContextTags,
-  Getter,
-  Provider,
   extensionPoint,
   extensions,
+  Getter,
+  Provider,
 } from '@loopback/core';
-import {RequestContext} from '@loopback/rest';
+import {asMiddleware, Middleware, RequestContext} from '@loopback/rest';
 import debugFactory from 'debug';
 import {MultiTenancyBindings, MULTI_TENANCY_STRATEGIES} from '../keys';
-import {
-  MultiTenancyAction,
-  MultiTenancyActionOptions,
-  MultiTenancyStrategy,
-} from '../types';
-const debug = debugFactory('loopback:multi-tenancy:action');
+import {MultiTenancyMiddlewareOptions, MultiTenancyStrategy} from '../types';
+const debug = debugFactory('loopback:multi-tenancy');
 /**
  * Provides the multi-tenancy action for a sequence
  */
-@extensionPoint(MULTI_TENANCY_STRATEGIES, {
-  tags: {
-    [ContextTags.KEY]: MultiTenancyBindings.ACTION,
+@extensionPoint(
+  MULTI_TENANCY_STRATEGIES,
+  {
+    tags: {
+      [ContextTags.KEY]: MultiTenancyBindings.MIDDLEWARE,
+    },
   },
-})
-export class MultiTenancyActionProvider
-  implements Provider<MultiTenancyAction> {
+  asMiddleware({
+    group: 'tenancy',
+    downstreamGroups: 'findRoute',
+  }),
+)
+export class MultiTenancyMiddlewareProvider implements Provider<Middleware> {
   constructor(
     @extensions()
     private readonly getMultiTenancyStrategies: Getter<MultiTenancyStrategy[]>,
     @config()
-    private options: MultiTenancyActionOptions = {strategyNames: ['header']},
+    private options: MultiTenancyMiddlewareOptions = {
+      strategyNames: ['header'],
+    },
   ) {}
 
-  /**
-   * @returns MultiTenancyStrategyFactory
-   */
-  value(): MultiTenancyAction {
-    return this.action.bind(this);
+  value(): Middleware {
+    return async (ctx, next) => {
+      await this.action(ctx as RequestContext);
+      return next();
+    };
   }
 
   /**

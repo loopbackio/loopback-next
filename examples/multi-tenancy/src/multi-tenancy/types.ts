@@ -14,14 +14,7 @@ export interface Tenant {
   [attribute: string]: unknown;
 }
 
-/**
- * Resolve a tenant for the given request
- */
-export interface MultiTenancyAction {
-  (requestContext: RequestContext): ValueOrPromise<Tenant | undefined>;
-}
-
-export interface MultiTenancyActionOptions {
+export interface MultiTenancyMiddlewareOptions {
   strategyNames: string[];
 }
 
