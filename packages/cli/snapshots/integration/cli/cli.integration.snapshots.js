@@ -30,7 +30,6 @@ Available commands:
   lb4 uninstall-completion
 `;
 
-
 exports[`cli prints commands with --help 1`] = `
 Available commands:
   lb4 app
@@ -53,7 +52,6 @@ Available commands:
   lb4 install-completion
   lb4 uninstall-completion
 `;
-
 
 exports[`cli saves command metadata to .yo-rc.json 1`] = `
 {
@@ -1392,6 +1390,27 @@ exports[`cli saves command metadata to .yo-rc.json 1`] = `
           "required": false,
           "description": "Destination model",
           "name": "destinationModel",
+          "hide": false
+        },
+        "throughModel": {
+          "type": "String",
+          "required": false,
+          "description": "Through model",
+          "name": "throughModel",
+          "hide": false
+        },
+        "sourceKeyOnThrough": {
+          "type": "String",
+          "required": false,
+          "description": "Foreign key references source model on through model",
+          "name": "sourceKeyOnThrough",
+          "hide": false
+        },
+        "targetKeyOnThrough": {
+          "type": "String",
+          "required": false,
+          "description": "Foreign key references target model on through model",
+          "name": "targetKeyOnThrough",
           "hide": false
         },
         "defaultForeignKeyName": {
