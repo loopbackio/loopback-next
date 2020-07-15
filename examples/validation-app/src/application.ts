@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {BootMixin} from '@loopback/boot';
-import {ApplicationConfig} from '@loopback/core';
+import {ApplicationConfig, createBindingFromClass} from '@loopback/core';
 import {RepositoryMixin} from '@loopback/repository';
 import {RestApplication} from '@loopback/rest';
 import {
@@ -13,6 +13,7 @@ import {
 } from '@loopback/rest-explorer';
 import {ServiceMixin} from '@loopback/service-proxy';
 import path from 'path';
+import {ValidationErrorMiddlewareProvider} from './middleware/validation-error.middleware';
 import {MySequence} from './sequence';
 
 export {ApplicationConfig};
@@ -22,6 +23,8 @@ export class ValidationApplication extends BootMixin(
 ) {
   constructor(options: ApplicationConfig = {}) {
     super(options);
+
+    this.add(createBindingFromClass(ValidationErrorMiddlewareProvider));
 
     // Set up the custom sequence
     this.sequence(MySequence);
