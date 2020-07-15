@@ -17,10 +17,10 @@ import {
   jsonToSchemaObject,
   post,
   requestBody,
-  RequestBodyValidationOptions,
   RestApplication,
   RestBindings,
   SchemaObject,
+  ValidationOptions,
 } from '../../..';
 import {aBodySpec} from '../../helpers';
 
@@ -788,7 +788,7 @@ describe('Validation at REST level', () => {
 
   async function givenAnAppAndAClient(
     controller: ControllerClass,
-    validationOptions?: RequestBodyValidationOptions,
+    validationOptions?: ValidationOptions,
   ) {
     app = new RestApplication({rest: givenHttpServerConfig()});
     if (validationOptions)

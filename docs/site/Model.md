@@ -918,10 +918,12 @@ If the `jsonSchema` field is missing, you will get an error saying
 
 > You must provide the "jsonSchema" field when define a nested array property'
 
-### Validation Rules
+### Custom Validation Rules and Error Messages
 
-You can also specify the validation rules in the field `jsonSchema`. For
-example:
+You can also specify the validation rules in the `jsonSchema` field of the
+property option and configure them with custom error messages.
+
+The validation rules and custom error messages are configured this way.
 
 ```ts
 @model()
@@ -930,15 +932,29 @@ class Product extends Entity {
     name: 'name',
     description: "The product's common name.",
     type: 'string',
-    // Specify the JSON validation rules here
+    // JSON validation rules
     jsonSchema: {
-      maxLength: 30,
       minLength: 10,
-      errorMessage:
-        'name must be at least 10 characters and maximum 30 characters',
+      maxLength: 30,
+      errorMessage: 'Name should be between 10 and 30 characters.',
     },
   })
   public name: string;
+}
+```
+
+In case you want to send an error message specific to the validation rule that
+did not pass, you can configure `errorMessage` this way.
+
+```ts
+jsonSchema: {
+  minLength: 10,
+  maxLength: 30,
+  errorMessage: {
+    // Corresponding error messages
+    minLength: 'Name should be at least 10 characters.',
+    maxLength: 'Name should not exceed 30 characters.',
+  }
 }
 ```
 

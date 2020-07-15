@@ -13,16 +13,18 @@ import {
 import AjvCtor from 'ajv';
 import debugModule from 'debug';
 import {RestBindings, RestTags} from '../keys';
-import {
-  AjvFactory,
-  AjvFormat,
-  AjvKeyword,
-  RequestBodyValidationOptions,
-} from '../types';
+import {AjvFactory, AjvFormat, AjvKeyword, ValidationOptions} from '../types';
+
 const debug = debugModule('loopback:rest:ajv');
 
 const ajvKeywords = require('ajv-keywords');
 const ajvErrors = require('ajv-errors');
+
+export const DEFAULT_AJV_VALIDATION_OPTIONS: ValidationOptions = {
+  $data: true,
+  ajvKeywords: true,
+  ajvErrors: true,
+};
 
 /**
  * A provider class that instantiate an AJV instance
@@ -34,7 +36,7 @@ export class AjvFactoryProvider implements Provider<AjvFactory> {
       RestBindings.REQUEST_BODY_PARSER_OPTIONS.deepProperty('validation'),
       {optional: true},
     )
-    private options: RequestBodyValidationOptions = {},
+    private options: ValidationOptions = DEFAULT_AJV_VALIDATION_OPTIONS,
   ) {}
 
   @inject(filterByTag(RestTags.AJV_KEYWORD))
@@ -45,7 +47,7 @@ export class AjvFactoryProvider implements Provider<AjvFactory> {
 
   value(): AjvFactory {
     return options => {
-      let validationOptions: RequestBodyValidationOptions = {
+      let validationOptions: ValidationOptions = {
         ...this.options,
         ...options,
       };

@@ -8,12 +8,8 @@ import {RequestBodyParser} from '../body-parsers';
 import {RestBindings} from '../keys';
 import {parseOperationArgs} from '../parser';
 import {ResolvedRoute} from '../router';
-import {
-  AjvFactory,
-  ParseParams,
-  Request,
-  RequestBodyValidationOptions,
-} from '../types';
+import {AjvFactory, ParseParams, Request, ValidationOptions} from '../types';
+import {DEFAULT_AJV_VALIDATION_OPTIONS} from '../validation/ajv-factory.provider';
 /**
  * Provides the function for parsing args in requests at runtime.
  *
@@ -27,7 +23,7 @@ export class ParseParamsProvider implements Provider<ParseParams> {
       RestBindings.REQUEST_BODY_PARSER_OPTIONS.deepProperty('validation'),
       {optional: true},
     )
-    private validationOptions: RequestBodyValidationOptions = {},
+    private validationOptions: ValidationOptions = DEFAULT_AJV_VALIDATION_OPTIONS,
     @inject(RestBindings.AJV_FACTORY, {optional: true})
     private ajvFactory?: AjvFactory,
   ) {}

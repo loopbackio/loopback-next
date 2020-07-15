@@ -73,8 +73,9 @@ export class MySequence implements SequenceHandler {
   handleError(context: RequestContext, err: HttpErrors.HttpError) {
     // 2. customize error for particular endpoint
     if (context.request.url === '/coffee-shops') {
-      // if this is a validation error
-      if (err.statusCode === 422) {
+      // if this is a validation error from the PATCH method, customize it
+      // for other validation errors, the default AJV error object will be sent
+      if (err.statusCode === 422 && context.request.method === 'PATCH') {
         const customizedMessage = 'My customized validation error message';
 
         let customizedProps = {};

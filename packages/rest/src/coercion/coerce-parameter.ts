@@ -11,12 +11,13 @@ import {
 } from '@loopback/openapi-v3';
 import debugModule from 'debug';
 import {
-  RequestBodyValidationOptions,
   RestHttpErrors,
   validateValueAgainstSchema,
+  ValidationOptions,
   ValueValidationOptions,
 } from '../';
 import {parseJson} from '../parse-json';
+import {DEFAULT_AJV_VALIDATION_OPTIONS} from '../validation/ajv-factory.provider';
 import {
   DateCoercionOptions,
   getOAIPrimitiveType,
@@ -167,7 +168,7 @@ function coerceBoolean(data: string | object, spec: ParameterObject) {
 async function coerceObject(
   input: string | object,
   spec: ParameterObject,
-  options?: RequestBodyValidationOptions,
+  options: ValidationOptions = DEFAULT_AJV_VALIDATION_OPTIONS,
 ) {
   const data = parseJsonIfNeeded(input, spec);
 

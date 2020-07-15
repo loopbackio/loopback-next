@@ -19,8 +19,9 @@ import {
   OperationArgs,
   PathParameterValues,
   Request,
-  RequestBodyValidationOptions,
+  ValidationOptions,
 } from './types';
+import {DEFAULT_AJV_VALIDATION_OPTIONS} from './validation/ajv-factory.provider';
 import {validateRequestBody} from './validation/request-body.validator';
 const debug = debugFactory('loopback:rest:parser');
 
@@ -35,7 +36,7 @@ export async function parseOperationArgs(
   request: Request,
   route: ResolvedRoute,
   requestBodyParser: RequestBodyParser = new RequestBodyParser(),
-  options: RequestBodyValidationOptions = {},
+  options: ValidationOptions = DEFAULT_AJV_VALIDATION_OPTIONS,
 ): Promise<OperationArgs> {
   debug('Parsing operation arguments for route %s', route.describe());
   const operationSpec = route.spec;
@@ -60,7 +61,7 @@ async function buildOperationArguments(
   pathParams: PathParameterValues,
   body: RequestBody,
   globalSchemas: SchemasObject,
-  options: RequestBodyValidationOptions = {},
+  options: ValidationOptions = DEFAULT_AJV_VALIDATION_OPTIONS,
 ): Promise<OperationArgs> {
   let requestBodyIndex = -1;
   if (operationSpec.requestBody) {
