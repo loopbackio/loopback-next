@@ -172,6 +172,42 @@ exports.validateKeyName = function (name) {
 };
 
 /**
+ * validate if the input name is valid. The input name cannot be the same as
+ * comparedTo.
+ */
+/* istanbul ignore next */
+exports.validateKeyToKeyFrom = function (input, comparedTo) {
+  if (!input || input === '') {
+    return 'Key name cannot be empty';
+  }
+  if (input === comparedTo) {
+    return util.format(
+      'Through model cannot have two identical foreign keys: %s',
+      input,
+    );
+  }
+  if (!isNaN(input.charAt(0))) {
+    return util.format('Key name cannot start with a number: %s', input);
+  }
+  if (input.includes('.')) {
+    return util.format('Key name cannot contain .: %s', input);
+  }
+  if (input.includes(' ')) {
+    return util.format('Key name cannot contain spaces: %s', input);
+  }
+  if (input.includes('-')) {
+    return util.format('Key name cannot contain hyphens: %s', input);
+  }
+  if (input.match(/[\/@\s\+%:]/)) {
+    return util.format(
+      'Key name cannot contain special characters (/@+%: ): %s',
+      input,
+    );
+  }
+  return true;
+};
+
+/**
  * checks if the belongsTo relation has the same relation name and source key name,
  * which is an invalid case.
  */

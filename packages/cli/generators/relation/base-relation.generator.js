@@ -103,6 +103,9 @@ module.exports = class BaseRelationGenerator extends ArtifactGenerator {
   }
 
   _addParametersToRepositoryConstructor(classConstructor) {
+    if (this._addThroughRepoToRepositoryConstructor) {
+      this._addThroughRepoToRepositoryConstructor(classConstructor);
+    }
     const parameterName =
       utils.camelCase(this.artifactInfo.dstRepositoryClassName) + 'Getter';
 
@@ -171,6 +174,16 @@ module.exports = class BaseRelationGenerator extends ArtifactGenerator {
 
     this.artifactInfo.dstRepositoryClassName =
       utils.toClassName(options.destinationModel) + 'Repository';
+    this.artifactInfo.dstModelPrimaryKey = options.destinationModelPrimaryKey;
+    if (options.throughModel) {
+      this.artifactInfo.throughModelClass = options.throughModel;
+      this.artifactInfo.throughRepoClassName = utils.toClassName(
+        options.throughModel + 'Repository',
+      );
+      this.artifactInfo.throughModelPrimaryKey = options.throughModelPrimaryKey;
+      this.artifactInfo.throughModelPrimaryKeyType =
+        options.throughModelPrimaryKeyType;
+    }
 
     // relation configuration
     this.artifactInfo.relationName = options.relationName;
