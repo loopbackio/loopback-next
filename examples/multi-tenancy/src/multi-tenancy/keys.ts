@@ -4,11 +4,12 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {BindingKey} from '@loopback/core';
-import {MultiTenancyAction, Tenant} from './types';
+import {Middleware} from '@loopback/rest';
+import {Tenant} from './types';
 
 export namespace MultiTenancyBindings {
-  export const ACTION = BindingKey.create<MultiTenancyAction>(
-    'sequence.actions.multi-tenancy',
+  export const MIDDLEWARE = BindingKey.create<Middleware>(
+    'middleware.multi-tenancy',
   );
 
   export const CURRENT_TENANT = BindingKey.create<Tenant>(

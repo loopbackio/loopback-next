@@ -4,11 +4,11 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Client, expect} from '@loopback/testlab';
-import {ExampleMultiTenancyApplication} from '../..';
 import {
-  MultiTenancyActionOptions,
+  ExampleMultiTenancyApplication,
   MultiTenancyBindings,
-} from '../../multi-tenancy';
+  MultiTenancyMiddlewareOptions,
+} from '../..';
 import {setupApplication} from './test-helper';
 
 describe('UserController with header-based multi-tenancy', () => {
@@ -18,7 +18,7 @@ describe('UserController with header-based multi-tenancy', () => {
   before('setupApplication', async () => {
     ({app, client} = await setupApplication());
     app
-      .configure<MultiTenancyActionOptions>(MultiTenancyBindings.ACTION)
+      .configure<MultiTenancyMiddlewareOptions>(MultiTenancyBindings.MIDDLEWARE)
       .to({strategyNames: ['jwt', 'header', 'query']});
   });
 

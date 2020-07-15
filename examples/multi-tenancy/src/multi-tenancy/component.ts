@@ -9,8 +9,8 @@ import {
   createBindingFromClass,
   extensionFor,
 } from '@loopback/core';
-import {MultiTenancyActionProvider} from './actions/multi-tenancy-action.provider';
 import {MultiTenancyBindings, MULTI_TENANCY_STRATEGIES} from './keys';
+import {MultiTenancyMiddlewareProvider} from './middleware/multi-tenancy-middleware.provider';
 import {
   HeaderStrategy,
   HostStrategy,
@@ -20,8 +20,8 @@ import {
 
 export class MultiTenancyComponent implements Component {
   bindings: Binding[] = [
-    createBindingFromClass(MultiTenancyActionProvider, {
-      key: MultiTenancyBindings.ACTION,
+    createBindingFromClass(MultiTenancyMiddlewareProvider, {
+      key: MultiTenancyBindings.MIDDLEWARE,
     }),
     createBindingFromClass(JWTStrategy).apply(
       extensionFor(MULTI_TENANCY_STRATEGIES),

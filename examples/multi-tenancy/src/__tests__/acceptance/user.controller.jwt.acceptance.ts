@@ -7,8 +7,8 @@ import {Client, expect, supertest} from '@loopback/testlab';
 import {sign} from 'jsonwebtoken';
 import {ExampleMultiTenancyApplication} from '../..';
 import {
-  MultiTenancyActionOptions,
   MultiTenancyBindings,
+  MultiTenancyMiddlewareOptions,
 } from '../../multi-tenancy';
 import {setupApplication} from './test-helper';
 
@@ -19,7 +19,7 @@ describe('UserController with jwt-based multi-tenancy', () => {
   before('setupApplication', async () => {
     ({app, client} = await setupApplication());
     app
-      .configure<MultiTenancyActionOptions>(MultiTenancyBindings.ACTION)
+      .configure<MultiTenancyMiddlewareOptions>(MultiTenancyBindings.MIDDLEWARE)
       .to({strategyNames: ['jwt', 'header', 'query']});
   });
 
