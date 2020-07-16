@@ -5,29 +5,15 @@ This package contains documentation for LoopBack 4. It's published to npm as
 
 ## Documentation site
 
-The `site` directory contains pages for
-http://loopback.io/doc/en/lb4/index.html.
+The `site` directory contains pages for documentation published at
+[loopback.io](http://loopback.io/doc/en/lb4/index.html).
+
+The content is organized along four quadrants as explained in
+[How is our documentation organized](./site/index.md#how-is-our-documentation-organized).
 
 To contribute, please check out
-https://loopback.io/doc/en/contrib/doc-contrib.html.
-
-We are using the documentation system based on four quadrants, as described at
-https://documentation.divio.com
-
-- Learning-oriented [Tutorials](https://documentation.divio.com/tutorials/),
-  nested in [Tutorials](./site/Tutorials.md) section of the sidebar.
-
-- Problem-oriented
-  [How-to Guides](https://documentation.divio.com/how-to-guides/), nested in
-  [Usage scenarios](./site/Usage-scenarios.md) section of the sidebar.
-
-- Understanding-oriented
-  [Explanation](https://documentation.divio.com/explanation/), nested in
-  [Behind the scenes](./site/Behind-the-scene.md) section of the sidebar.
-
-- Information-oriented
-  [Reference guides](https://documentation.divio.com/reference/), nested in
-  [Reference guides](./site/Reference.md) section of the sidebar.
+[Contributing to LoopBack documentation](https://loopback.io/doc/en/contrib/doc-contrib.html)
+and [Developing Documentation](./site/DEVELOPING.md#documentation).
 
 ## API references
 
