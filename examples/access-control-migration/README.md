@@ -10,7 +10,7 @@ the access control.
 This tutorial demonstrates how to implement a RBAC(Role Based Access Control)
 system and provides 5 endpoints to test different role's permissions. The
 tutorial of building it from a dummy application documented in
-[auth-example-migration-tutorial](https://github.com/strongloop/loopback-next/blob/auth-migration/docs/site/migration/auth/example.md)
+[auth-example-migration-tutorial](https://loopback.io/doc/en/lb4/migration-auth-access-control-example.html)
 
 ## Setup
 
