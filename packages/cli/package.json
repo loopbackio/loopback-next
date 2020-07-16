@@ -79,7 +79,7 @@
     "terminal-link": "^2.1.1",
     "tildify": "^2.0.0",
     "ts-morph": "^7.1.2",
-    "typescript": "~3.9.6",
+    "typescript": "~3.9.7",
     "unicode-10.0.0": "^0.7.5",
     "untildify": "^4.0.0",
     "update-notifier": "^4.1.0",
