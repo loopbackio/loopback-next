@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {Debugger} from 'debug';
+import debugFactory, {Debugger} from 'debug';
 import {format} from 'util';
 import {
   Binding,
@@ -35,6 +35,10 @@ class TestContext extends Context {
 
   get parent() {
     return this._parent;
+  }
+
+  get debugInstance() {
+    return this._debug;
   }
 
   get bindingMap() {
@@ -842,6 +846,15 @@ describe('Context', () => {
       childCtx.close();
       expect(childCtx.parent).to.equal(ctx);
       expect(childCtx.contains('foo'));
+    });
+
+    it('destroys the debug instance', () => {
+      const childCtx = new TestContext(ctx);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const instances: Debugger[] = (debugFactory as any).instances;
+      expect(instances.includes(childCtx.debugInstance));
+      childCtx.close();
+      expect(!instances.includes(childCtx.debugInstance));
     });
   });
 
