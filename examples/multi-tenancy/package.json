@@ -68,6 +68,6 @@
     "@types/node": "^10.17.27",
     "eslint": "^7.4.0",
     "source-map-support": "^0.5.19",
-    "typescript": "~3.9.6"
+    "typescript": "~3.9.7"
   }
 }

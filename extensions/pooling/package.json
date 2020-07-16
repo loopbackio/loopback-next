@@ -41,7 +41,7 @@
     "@loopback/build": "^6.1.0",
     "@loopback/testlab": "^3.2.0",
     "@types/node": "^10.17.27",
-    "typescript": "~3.9.6"
+    "typescript": "~3.9.7"
   },
   "copyright.owner": "IBM Corp.",
   "publishConfig": {
