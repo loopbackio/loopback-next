@@ -267,7 +267,7 @@ const filter = {
 with the `FilterBuilder`:
 
 ```ts
-import { FilterBuilder } from '@loopback/repository';
+import {FilterBuilder} from '@loopback/repository';
 ...
 const filterBuilder = new FilterBuilder();
     filterBuilder
