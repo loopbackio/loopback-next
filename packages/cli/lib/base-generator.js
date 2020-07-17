@@ -65,7 +65,13 @@ module.exports = class BaseGenerator extends Generator {
       description: g.f('Fail on install dependencies error'),
       default: false,
     };
-
+    this._options['ask-answered'] = {
+      name: 'ask-answered',
+      type: Boolean,
+      description: g.f('Show prompts for already configured options'),
+      default: false,
+      hide: false,
+    };
     debug(
       'Try overwrite yeoman messages globally',
       this._options['help'].description,

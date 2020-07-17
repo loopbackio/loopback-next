@@ -134,6 +134,7 @@
   "b3c1afbfb1c87daaac414bab981ee7bd": "Error reading file",
   "b48768d73c204b1a2ebcc3f44792b556": "Invalid example name: {0}\nRun \"lb4 example --help\" to print the list of available example names.",
   "b68ecbcaa4f94151658f5ad32e6cf6fd": "Local service class bound to application context",
+  "b7fc5ab93877e57e2ffa139d8ba87a54": "Show prompts for already configured options",
   "b9356b7d2debc8b04dd6f2fd9bf5f83f": "What example would you like to clone?",
   "bcebec8d7974acc21a208c7325a06e9c": "A simplified version of the Todo example that only requires a model and a datasource.",
   "be65fa55f75dd126a2af5ec2ad4b8f8b": "An example on how to integrate SOAP web services.",
