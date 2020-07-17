@@ -36,6 +36,59 @@ export class MyComponent implements Component {
 }
 ```
 
+## Working with dependencies
+
+Extensions should preferably use LoopBack modules installed by the target
+application, to allow application developers to choose the version of framework
+modules they want to use. For example, they may want to hold to an older version
+until a regression is fixed in the latest version, or even use their own fork to
+have a bug fix available before it's officially published.
+
+We recommend to use `peerDependencies` to specify what packages is your
+extension expecting in the target application and `devDependencies` to make
+these packages available for extension tests.
+
+For example:
+
+```json
+{
+  "name": "my-lb4-extension",
+  "version": "1.0.0",
+  "dependencies": {
+    "tslib": "^2.0.0"
+  },
+  "peerDependencies": {
+    "@loopback/core": "^2.9.1",
+    "@loopback/rest": "^5.2.0"
+  },
+  "devDependencies": {
+    "@loopback/build": "^6.1.0",
+    "@loopback/core": "^2.9.1",
+    "@loopback/eslint-config": "^8.0.3",
+    "@loopback/rest": "^5.2.0",
+    "@loopback/testlab": "^3.2.0"
+  }
+}
+```
+
+It is also possible for a single extension version to support multiple versions
+of a framework dependency:
+
+```json
+{
+  "peerDependencies": {
+    "@loopback/core": "^1.9.0 || ^2.0.0"
+  }
+}
+```
+
+{% include important.html content=' Shrinking the supported version range of a
+peer dependency is a breaking change that should trigger a semver-major release.
+
+For example, changing the range from `"^1.5.3"` to `"^1.5.3 || ^2.0.0"` is
+backwards compatible, while changing the range from `"^1.5.3"` to `"^2.0.0"` is
+a breaking change. ' %}
+
 ## Injecting the target application instance
 
 You can inject anything from the context and access them from a component. In
