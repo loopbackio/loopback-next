@@ -20,6 +20,11 @@
   "publishConfig": {
     "access": "public"
   },
+  "peerDependencies": {
+    "@loopback/boot": "^2.3.5",
+    "@loopback/core": "^2.9.1",
+    "@loopback/rest": "^5.2.0"
+  },
   "dependencies": {
     "@types/express": "^4.17.7",
     "debug": "^4.1.1",
@@ -27,11 +32,6 @@
     "loopback-swagger": "^5.9.0",
     "swagger2openapi": "^6.2.1",
     "tslib": "^2.0.0"
-  },
-  "peerDependencies": {
-    "@loopback/boot": "^2.3.5",
-    "@loopback/core": "^2.9.1",
-    "@loopback/rest": "^5.2.0"
   },
   "devDependencies": {
     "@loopback/boot": "^2.3.5",

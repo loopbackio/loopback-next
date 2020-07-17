@@ -20,6 +20,11 @@
   "publishConfig": {
     "access": "public"
   },
+  "peerDependencies": {
+    "@loopback/core": "^2.9.1",
+    "@loopback/repository": "^2.9.0",
+    "@loopback/rest": "^5.2.0"
+  },
   "dependencies": {
     "@loopback/model-api-builder": "^2.1.9",
     "debug": "^4.1.1",
@@ -33,11 +38,6 @@
     "@loopback/testlab": "^3.2.0",
     "@types/debug": "^4.1.5",
     "@types/node": "^10.17.27"
-  },
-  "peerDependencies": {
-    "@loopback/core": "^2.9.1",
-    "@loopback/repository": "^2.9.0",
-    "@loopback/rest": "^5.2.0"
   },
   "files": [
     "README.md",

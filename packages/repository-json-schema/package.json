@@ -25,16 +25,20 @@
     "TypeScript",
     "JSON Schema"
   ],
-  "dependencies": {
+  "peerDependencies": {
     "@loopback/core": "^2.9.1",
-    "@loopback/repository": "^2.9.0",
+    "@loopback/repository": "^2.9.0"
+  },
+  "dependencies": {
     "@types/json-schema": "^7.0.5",
     "debug": "^4.1.1",
     "tslib": "^2.0.0"
   },
   "devDependencies": {
     "@loopback/build": "^6.1.0",
+    "@loopback/core": "^2.9.1",
     "@loopback/eslint-config": "^8.0.3",
+    "@loopback/repository": "^2.9.0",
     "@loopback/testlab": "^3.2.0",
     "@types/debug": "^4.1.5",
     "@types/node": "^10.17.27",

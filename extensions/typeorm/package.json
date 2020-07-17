@@ -21,19 +21,24 @@
   "publishConfig": {
     "access": "public"
   },
+  "peerDependencies": {
+    "@loopback/boot": "^2.3.3",
+    "@loopback/core": "^2.8.0",
+    "@loopback/rest": "^5.1.1"
+  },
   "devDependencies": {
+    "@loopback/boot": "^2.3.3",
     "@loopback/build": "^5.4.3",
+    "@loopback/core": "^2.8.0",
     "@loopback/eslint-config": "^8.0.1",
     "@loopback/repository": "^2.7.0",
+    "@loopback/rest": "^5.1.1",
     "@loopback/testlab": "^3.1.7",
     "@types/json-schema": "^7.0.5",
     "@types/node": "^10.17.27",
     "sqlite3": "^5.0.0"
   },
   "dependencies": {
-    "@loopback/boot": "^2.3.3",
-    "@loopback/core": "^2.8.0",
-    "@loopback/rest": "^5.1.1",
     "tslib": "^2.0.0",
     "typeorm": "^0.2.25"
   },

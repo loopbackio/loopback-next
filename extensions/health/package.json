@@ -21,15 +21,19 @@
   "publishConfig": {
     "access": "public"
   },
+  "peerDependencies": {
+    "@loopback/core": "^2.9.1",
+    "@loopback/rest": "^5.2.0"
+  },
   "dependencies": {
     "@cloudnative/health": "^2.1.2",
-    "@loopback/core": "^2.9.1",
-    "@loopback/rest": "^5.2.0",
     "tslib": "^2.0.0"
   },
   "devDependencies": {
     "@loopback/build": "^6.1.0",
+    "@loopback/core": "^2.9.1",
     "@loopback/eslint-config": "^8.0.3",
+    "@loopback/rest": "^5.2.0",
     "@loopback/testlab": "^3.2.0",
     "@types/node": "^10.17.27"
   },

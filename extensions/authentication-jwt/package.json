@@ -20,22 +20,28 @@
   "publishConfig": {
     "access": "public"
   },
-  "dependencies": {
+  "peerDependencies": {
     "@loopback/authentication": "^4.2.9",
     "@loopback/core": "^2.9.1",
     "@loopback/rest": "^5.2.0",
+    "@loopback/service-proxy": "^2.3.4"
+  },
+  "dependencies": {
     "@loopback/rest-explorer": "^2.2.6",
     "@loopback/security": "^0.2.14",
-    "@loopback/service-proxy": "^2.3.4",
     "@types/bcryptjs": "2.4.2",
     "bcryptjs": "^2.4.3",
     "jsonwebtoken": "^8.5.1"
   },
   "devDependencies": {
+    "@loopback/authentication": "^4.2.9",
     "@loopback/boot": "^2.3.5",
     "@loopback/build": "^6.1.0",
+    "@loopback/core": "^2.9.1",
     "@loopback/eslint-config": "^8.0.3",
     "@loopback/repository": "^2.9.0",
+    "@loopback/rest": "^5.2.0",
+    "@loopback/service-proxy": "^2.3.4",
     "@loopback/testlab": "^2.0.2",
     "@types/lodash": "^4.14.157",
     "@types/node": "^10.17.27",
