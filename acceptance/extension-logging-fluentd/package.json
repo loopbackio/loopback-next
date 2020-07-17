@@ -26,7 +26,7 @@
     "@loopback/extension-logging": "^0.3.9",
     "@loopback/testlab": "^3.2.0",
     "@types/node": "^10.17.27",
-    "testcontainers": "^2.18.3",
+    "testcontainers": "^2.19.0",
     "tslib": "^2.0.0"
   },
   "files": [
