@@ -42,14 +42,14 @@
 #   - loopback-connector-jsonrpc
 #
 # SOAP connector
-# - Primary owner(s): @deepakrkris
+# - Primary owner(s): @jannyHou
 # - Standby owner(s): @raymondfeng
 # - Repositories:
 #   - loopback-connector-soap
 #   - strong-soap
 #
 # Cassandra
-# - Primary owner(s): @deepakrkris
+# - Primary owner(s): @jannyHou
 # - Standby owners(s): n/a
 # - Repositories:
 #   - loopback-connector-cassandra
@@ -107,22 +107,22 @@
 #
 # - Issue label: IoC/Context
 # - Primary owner(s): @raymondfeng
-# - Standby owner(s): @deepakrkris @emonddr @jannyHou
-/packages/metadata @raymondfeng @deepakrkris @emonddr @jannyHou
-/packages/context @raymondfeng @deepakrkris @emonddr @jannyHou
-/examples/context @raymondfeng @deepakrkris @emonddr @jannyHou
-/packages/cli/generators/interceptor @raymondfeng @deepakrkris @emonddr @jannyHou
+# - Standby owner(s): @emonddr @jannyHou
+/packages/metadata @raymondfeng @emonddr @jannyHou
+/packages/context @raymondfeng @emonddr @jannyHou
+/examples/context @raymondfeng @emonddr @jannyHou
+/packages/cli/generators/interceptor @raymondfeng @emonddr @jannyHou
 /extensions/context-explorer @raymondfeng @emonddr
 
 #
 # Framework core
 #
 # - Issue label: Core
-# - Primary owner(s): @raymondfeng @deepakrkris
+# - Primary owner(s): @raymondfeng
 # - Standby owner(s): n/a
-/packages/core @deepakrkris @raymondfeng
-/examples/rpc-server @deepakrkris @raymondfeng
-/packages/cli/generators/observer @deepakrkris @raymondfeng
+/packages/core @raymondfeng
+/examples/rpc-server @raymondfeng
+/packages/cli/generators/observer @raymondfeng
 
 #
 # Infrastructure for extensions
@@ -144,26 +144,26 @@
 #
 # - Issue label: REST
 # - Primary owner(s): @hacksparrow
-# - Standby owner(s): @deepakrkris @emonddr
-/packages/rest @deepakrkris @emonddr @hacksparrow
-/packages/http-server @deepakrkris @emonddr @hacksparrow
+# - Standby owner(s): @emonddr
+/packages/rest @emonddr @hacksparrow
+/packages/http-server @emonddr @hacksparrow
 /packages/express @raymondfeng
-/packages/cli/generators/controller @deepakrkris @emonddr @hacksparrow
-/examples/hello-world @deepakrkris @emonddr @hacksparrow
-/examples/express-composition @deepakrkris @emonddr @hacksparrow
-/examples/file-transfer @deepakrkris @emonddr @hacksparrow @raymondfeng
+/packages/cli/generators/controller @emonddr @hacksparrow
+/examples/hello-world @emonddr @hacksparrow
+/examples/express-composition @emonddr @hacksparrow
+/examples/file-transfer @emonddr @hacksparrow @raymondfeng
 
 #
 # OpenAPI (server-side)
 #
 # - Issue label: OpenAPI
 # - Primary owner(s): @jannyHou
-# - Standby owner(s): @deepakrkris @emonddr
-/packages/openapi-spec-builder @deepakrkris @emonddr @jannyHou
-/packages/openapi-v3 @deepakrkris @emonddr @jannyHou
-/packages/rest/src/router/openapi-path.ts @deepakrkris @emonddr @jannyHou
-/packages/rest/src/__tests__/unit/router/rebase-openapi-spec.unit.ts @deepakrkris @emonddr @jannyHou
-/packages/rest/src/__tests__/unit/rest.server/rest.server.open-api-spec.unit.ts @deepakrkris @emonddr @jannyHou
+# - Standby owner(s): @emonddr
+/packages/openapi-spec-builder @emonddr @jannyHou
+/packages/openapi-v3 @emonddr @jannyHou
+/packages/rest/src/router/openapi-path.ts @emonddr @jannyHou
+/packages/rest/src/__tests__/unit/router/rebase-openapi-spec.unit.ts @emonddr @jannyHou
+/packages/rest/src/__tests__/unit/rest.server/rest.server.open-api-spec.unit.ts @emonddr @jannyHou
 
 # REST API Explorer
 #
@@ -248,12 +248,12 @@
 # Migration from LB3
 #
 # - Issue label: Migration
-# - Primary owner(s): @deepakrkris
-# - Standby owner(s): @hacksparrow
-/packages/booter-lb3app @deepakrkris @hacksparrow
-/packages/cli/generators/import-lb3-models @deepakrkris @hacksparrow
-/examples/lb3-application @deepakrkris @hacksparrow
-/docs/site/migration @deepakrkris @hacksparrow
+# - Primary owner(s): @hacksparrow
+# - Standby owner(s): n/a
+/packages/booter-lb3app @hacksparrow
+/packages/cli/generators/import-lb3-models @hacksparrow
+/examples/lb3-application @hacksparrow
+/docs/site/migration @hacksparrow
 
 #
 # REST CRUD conventional API
@@ -282,13 +282,13 @@
 #
 # - Issue label: Authentication
 # - Primary owner(s): @hacksparrow
-# - Standby owner(s): @emonddr @jannyHou @deepakrkris
+# - Standby owner(s): @emonddr @jannyHou
 /packages/authentication @emonddr @hacksparrow @jannyHou
 /packages/security @emonddr @hacksparrow @jannyHou
 /extensions/authentication-passport @emonddr @hacksparrow @jannyHou
 /extensions/authentication-jwt @emonddr @hacksparrow @jannyHou
 /docs/site/tutorials/authentication @emonddr @hacksparrow @jannyHou
-/examples/passport-login @deepakrkris @emonddr
+/examples/passport-login @emonddr
 /examples/todo-jwt @dhmlau @jannyHou
 
 #
@@ -305,8 +305,8 @@
 #
 # - Issue label: APIConnect
 # - Primary owner(s): @raymondfeng
-# - Standby owner(s): @deepakrkris
-/extensions/apiconnect @raymondfeng @deepakrkris
+# - Standby owner(s): @dhmlau
+/extensions/apiconnect @raymondfeng @dhmlau
 
 #
 # TypeORM
@@ -351,10 +351,10 @@
 # PostgreSQL
 #
 # - Issue label: db:PostgreSQL
-# - Primary owner(s): @deepakrkris
+# - Primary owner(s): @jannyHou
 # - Standby owner(s): @agnes512
 # Includes the following repos: loopback-connector-postgresql
-/acceptance/repository-postgresql @agnes512 @deepakrkris
+/acceptance/repository-postgresql @agnes512 @jannyHou
 
 #
 # MySQL
@@ -400,5 +400,5 @@
 #
 # - Issue label: fixtures
 # - Primary owner(s): @jannyHou @emonddr
-# - Standby owner(s): @deepakrkris
-fixtures/mock-oauth2-provider @jannyHou @emonddr @deepakrkris
+# - Standby owner(s): n/a
+fixtures/mock-oauth2-provider @jannyHou @emonddr
