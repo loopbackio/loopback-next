@@ -47,6 +47,9 @@ transaction objects, commit them on success or roll them back at the end of all
 intended operations. See [Handling Transactions](#handling-transactions) below
 for more details.
 
+Alternatively, you can also being a transaction by calling `beginTransaction()`
+method of `DataSource` class.
+
 ## Handling Transactions
 
 See
@@ -220,3 +223,32 @@ implicit). To avoid long waits or even deadlocks, you should:
 
 1.  Keep the transaction as short-lived as possible
 2.  Don't serialize execution of methods across multiple transactions
+
+## Accessing multiple models inside one transaction
+
+The transaction object created by `beginTransaction` is not model specific. If
+you have multiple models attached to the same datasource, you can pass the same
+transaction object to different repository instances.
+
+For example, assuming we have `ProductRepository` and `CategoryRepository`
+attached to the same datasource that's backed by a SQL database:
+
+```ts
+// Obtain repository instances. In a typical application, instances are injected
+// via dependency injection using `@repository` decorator.
+const categoryRepo = await app.getRepository(CategoryRepository);
+const productRepo = await app.getRepository(ProductRepository);
+
+// Begin a new transaction.
+// It's also possible to call `categoryRepo.beginTransaction()` instead.
+const transaction = await categoryRepo.dataSource.beginTransaction(
+  IsolationLevel.SERIALIZABLE,
+);
+
+// Execute database commands in the transaction
+const c = await categoryRepo.create({name: 'Stationery'}, {transaction});
+const p = await productRepo.create({name: 'Pen'}, {transaction});
+
+// Finally commit the changes
+await transaction.commit();
+```
