@@ -71,10 +71,15 @@
     "src",
     "!*/__tests__"
   ],
+<% if (project.projectType === 'extension') { -%>
+  "peerDependencies": {
+    "@loopback/core": "<%= project.dependencies['@loopback/core'] -%>"
+  },
+<% } -%>
   "dependencies": {
+<% if (project.projectType === 'application') { -%>
     "@loopback/boot": "<%= project.dependencies['@loopback/boot'] -%>",
     "@loopback/core": "<%= project.dependencies['@loopback/core'] -%>",
-<% if (project.projectType === 'application') { -%>
     "@loopback/repository": "<%= project.dependencies['@loopback/repository'] -%>",
 <% if (project.apiconnect) { -%>
     "@loopback/apiconnect": "<%= project.dependencies['@loopback/apiconnect'] -%>",
@@ -87,6 +92,9 @@
   "devDependencies": {
     "rimraf": "<%= project.dependencies['rimraf'] -%>",
     "source-map-support": "<%= project.dependencies['source-map-support'] -%>",
+<% if (project.projectType === 'extension') { -%>
+    "@loopback/core": "<%= project.dependencies['@loopback/core'] -%>",
+<% } -%>
     "@loopback/testlab": "<%= project.dependencies['@loopback/testlab'] -%>",
 <% if (project.mocha) { -%>
     "@types/mocha": "<%= project.dependencies['@types/mocha'] -%>",

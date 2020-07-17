@@ -71,10 +71,15 @@
     "src",
     "!*/__tests__"
   ],
+<% if (project.projectType === 'extension') { -%>
+  "peerDependencies": {
+    "@loopback/core": "<%= project.dependencies['@loopback/core'] -%>"
+  },
+<% } -%>
   "dependencies": {
+<% if (project.projectType === 'application') { -%>
     "@loopback/boot": "<%= project.dependencies['@loopback/boot'] -%>",
     "@loopback/core": "<%= project.dependencies['@loopback/core'] -%>",
-<% if (project.projectType === 'application') { -%>
 <% if (project.repositories) { -%>
     "@loopback/repository": "<%= project.dependencies['@loopback/repository'] -%>",
 <% } -%>
@@ -94,6 +99,9 @@
   "devDependencies": {
     "@loopback/build": "<%= project.dependencies['@loopback/build'] -%>",
     "source-map-support": "<%= project.dependencies['source-map-support'] -%>",
+<% if (project.projectType === 'extension') { -%>
+    "@loopback/core": "<%= project.dependencies['@loopback/core'] -%>",
+<% } -%>
     "@loopback/testlab": "<%= project.dependencies['@loopback/testlab'] -%>",
     "@types/node": "<%= project.dependencies['@types/node'] -%>",
 <% if (project.eslint) { -%>
