@@ -66,10 +66,10 @@ module.exports = class BaseGenerator extends Generator {
       default: false,
     };
     this._options['ask-answered'] = {
-      name: 'ask-answered',
       type: Boolean,
       description: g.f('Show prompts for already configured options'),
       default: false,
+      name: 'ask-answered',
       hide: false,
     };
     debug(
