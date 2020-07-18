@@ -48,7 +48,7 @@
     "@loopback/eslint-config": "^8.0.3",
     "@loopback/testlab": "^3.2.0",
     "@types/node": "^10.17.27",
-    "eslint": "^7.4.0",
+    "eslint": "^7.5.0",
     "typescript": "~3.9.7"
   },
   "keywords": [

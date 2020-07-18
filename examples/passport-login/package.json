@@ -83,7 +83,7 @@
     "@types/lodash": "^4.14.157",
     "@types/node": "^10.17.27",
     "axios": "^0.19.2",
-    "eslint": "^7.4.0",
+    "eslint": "^7.5.0",
     "lodash": "^4.17.19",
     "typescript": "~3.9.7"
   },
