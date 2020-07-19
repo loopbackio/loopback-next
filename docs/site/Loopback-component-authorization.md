@@ -264,7 +264,7 @@ class MyAuthorizationProvider implements Provider<Authorizer> {
 > `AuthorizationTags.AUTHORIZER` as below.
 
 ```ts
-import AuthorizationTags from '@loopback/authorization';
+import {AuthorizationTags} from '@loopback/authorization';
 let app = new Application();
 app
   .bind('authorizationProviders.my-provider')
