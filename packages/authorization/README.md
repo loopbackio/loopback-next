@@ -54,7 +54,7 @@ import {get} from '@loopback/rest';
 
 export class MyController {
   // user with ADMIN role can see the number of views
-  @authorize({allowRoles: ['ADMIN']})
+  @authorize({allowedRoles: ['ADMIN']})
   @get('/number-of-views')
   numOfViews(): number {
     return 100;
@@ -124,7 +124,7 @@ Controller method:
 
 ```ts
 @authenticate(‘jwt’)
-@authorize({allowRoles: ['ADMIN']})
+@authorize({allowedRoles: ['ADMIN']})
 @get('/number-of-views')
 numOfViews(): number {
   return 100;
