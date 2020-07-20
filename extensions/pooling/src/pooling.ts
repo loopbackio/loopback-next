@@ -26,12 +26,15 @@ export interface PoolFactory<T> extends Factory<T> {
    * To be called right after the resource is acquired from the pool. If it
    * fails, the resource will be destroyed from the pool. The method should be
    * used to set up the acquired resource.
+   * @param resource - Resource instance
+   * @param requestCtx - Request context
    */
-  acquire?(resource: T): ValueOrPromise<void>;
+  acquire?(resource: T, requestCtx: Context): ValueOrPromise<void>;
   /**
    * To be called right before the resource is released to the pool. If it
    * fails, the resource will be destroyed from the pool. This method should be
    * used to clean up the resource to be returned.
+   * @param resource - Resource instance
    */
   release?(resource: T): ValueOrPromise<void>;
 }
@@ -61,7 +64,7 @@ export interface Poolable extends LifeCycleObserver {
    * fails, the resource will be destroyed from the pool. The method should be
    * used to set up the acquired resource.
    */
-  acquire?(): ValueOrPromise<void>;
+  acquire?(requestCtx: Context): ValueOrPromise<void>;
   /**
    * To be called right before the resource is released to the pool. If it
    * fails, the resource will be destroyed from the pool. This method should be
@@ -91,11 +94,18 @@ export interface PooledValue<T> {
 /**
  * Acquire a resource from the pooling service or pool
  * @param poolingService - Pooling service or pool
+ * @param requestCtx - Request context
  */
 export async function getPooledValue<T>(
   poolingService: PoolingService<T> | Pool<T>,
+  requestCtx?: Context,
 ): Promise<PooledValue<T>> {
-  const value = await poolingService.acquire();
+  let value: T;
+  if (poolingService instanceof PoolingService) {
+    value = await poolingService.acquire(requestCtx);
+  } else {
+    value = await poolingService.acquire();
+  }
   const pool =
     poolingService instanceof PoolingService
       ? poolingService.pool
@@ -173,29 +183,27 @@ export class PoolingService<T> implements LifeCycleObserver {
 
   /**
    * Acquire a new instance
+   * @param requestCtx - Optional request context, default to the owning context
    */
-  async acquire() {
-    debug(
-      'Acquiring a resource from the pool in context %s',
-      this.context.name,
-    );
+  async acquire(requestCtx: Context = this.context) {
+    debug('Acquiring a resource from the pool for context %s', requestCtx.name);
     const resource = await this.pool.acquire();
 
     try {
       // Try factory-level acquire hook first
       if (this.factory.acquire) {
-        await this.factory.acquire(resource);
+        await this.factory.acquire(resource, requestCtx);
       } else {
         // Fall back to resource-level acquire hook
-        await invokePoolableMethod(resource, 'acquire');
+        await invokePoolableMethod(resource, 'acquire', requestCtx);
       }
     } catch (err) {
       await this.pool.destroy(resource);
       throw err;
     }
     debug(
-      'Resource acquired from the pool in context %s',
-      this.context.name,
+      'Resource acquired from the pool for context %s',
+      requestCtx.name,
       resource,
     );
     return resource;
@@ -251,8 +259,11 @@ export class PoolingService<T> implements LifeCycleObserver {
    *
    * @param task -  A function that accepts a resource and returns a Promise.
    */
-  async run(task: (resource: T) => ValueOrPromise<void>) {
-    const resource = await this.acquire();
+  async run(
+    task: (resource: T) => ValueOrPromise<void>,
+    requestCtx: Context = this.context,
+  ) {
+    const resource = await this.acquire(requestCtx);
     try {
       await task(resource);
     } catch (err) {
@@ -297,6 +308,7 @@ class PooledBindingFactory<T extends object> implements PoolFactory<T> {
     await invokePoolableMethod(value, 'start');
     return value;
   }
+
   async destroy(value: T) {
     debug(
       'Destroying a resource for %s#%s',
@@ -312,11 +324,20 @@ class PooledBindingFactory<T extends object> implements PoolFactory<T> {
  * Invoke a hook method on the given resource
  * @param resource - Resource instance
  * @param method - Hook method name
+ * @param requestCtx - Request context
  */
-function invokePoolableMethod(resource: Poolable, method: keyof Poolable) {
+function invokePoolableMethod(
+  resource: Poolable,
+  method: keyof Poolable,
+  requestCtx?: Context,
+) {
   if (typeof resource[method] === 'function') {
     debug('Invoking hook method %s on resource', method, resource);
-    return resource[method]!();
+    if (method === 'acquire') {
+      return resource[method]!(requestCtx!);
+    } else {
+      return resource[method]!();
+    }
   }
   debug('Hook method: %s does not exist on resource', method, resource);
 }

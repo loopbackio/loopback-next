@@ -103,7 +103,9 @@ const myPoolingService = await app.get<PoolingService>(
 ### Acquire a resource instance from the pool
 
 ```ts
-const res1 = await myPoolingService.acquire();
+// The request context can be used by a factory to set up the acquired resource
+// such as security credentials
+const res1 = await myPoolingService.acquire(requestCtx);
 // Do some work with res1
 ```
 
@@ -146,17 +148,17 @@ const options: PoolingServiceOptions<ExpensiveResource> = {
       resource.status = 'destroyed';
     },
 
-    async validate(resource) {
+    async validate(resource: ExpensiveResource) {
       const result = resource.status === 'created';
       resource.status = 'validated';
       return result;
     },
 
-    acquire(resource) {
+    acquire(resource: ExpensiveResource, requestCtx: Context) {
       resource.status = 'in-use-set-by-factory';
     },
 
-    release(resource) {
+    release(resource: ExpensiveResource) {
       resource.status = 'idle-set-by-factory';
     };
   },
@@ -170,6 +172,7 @@ The resource can also implement similar methods:
 
 ```ts
 class ExpensiveResourceWithHooks extends ExpensiveResource implements Poolable {
+  private requestCtx?: Context;
   /**
    * Life cycle method to be called by `create`
    */
@@ -185,12 +188,14 @@ class ExpensiveResourceWithHooks extends ExpensiveResource implements Poolable {
     this.status = 'stopped';
   }
 
-  acquire() {
+  acquire(requestCtx: Context) {
     this.status = 'in-use';
+    this.requestCtx = requestCtx;
   }
 
   release() {
     this.status = 'idle';
+    this.requestCtx = undefined;
   }
 }
 ```
