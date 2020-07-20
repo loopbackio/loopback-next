@@ -394,6 +394,56 @@ describe('model', () => {
     });
   });
 
+  it('converts to plain object including relation properties', () => {
+    class Category extends Entity {
+      id: number;
+      products: Product[];
+
+      // allow additional (free-form) properties
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      [propName: string]: any;
+
+      constructor(data: Partial<Category>) {
+        super(data);
+      }
+    }
+
+    class Product extends Entity {
+      id: number;
+      categoryId: number;
+
+      constructor(data: Partial<Product>) {
+        super(data);
+      }
+    }
+
+    Category.definition = new ModelDefinition('Category')
+      .addSetting('strict', false)
+      .addProperty('id', {type: 'number', id: true, required: true})
+      .addRelation(<HasManyDefinition>{
+        name: 'products',
+        type: RelationType.hasMany,
+        targetsMany: true,
+
+        source: Category,
+        keyFrom: 'id',
+
+        target: () => Product,
+        keyTo: 'categoryId',
+      });
+
+    const category = new Category({
+      id: 1,
+      products: [new Product({id: 2, categoryId: 1})],
+    });
+
+    const data = category.toObject();
+    expect(data).to.deepEqual({
+      id: 1,
+      products: [{id: 2, categoryId: 1}],
+    });
+  });
+
   it('gets id', () => {
     const customer = createCustomer();
     expect(customer.getId()).to.eql('123');
