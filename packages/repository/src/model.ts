@@ -339,6 +339,18 @@ export abstract class Model {
       return obj;
     }
 
+    if (def?.relations) {
+      for (const r in def.relations) {
+        const relName = def.relations[r].name;
+        if (relName in this) {
+          obj[relName] = asObject((this as AnyObject)[relName], {
+            ...options,
+            ignoreUnknownProperties: false,
+          });
+        }
+      }
+    }
+
     const props = def.properties;
     const keys = Object.keys(props);
 
