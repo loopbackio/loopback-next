@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.2](https://github.com/strongloop/loopback-next/compare/@loopback/example-rest-crud@1.5.1...@loopback/example-rest-crud@1.5.2) (2020-07-20)
+
+
+### Bug Fixes
+
+* ensure delete only applies to optional properties ([89cd43f](https://github.com/strongloop/loopback-next/commit/89cd43f1a455983f120d9bb9c869eac36adc7ad7))
+
+
+
+
+
 ## [1.5.1](https://github.com/strongloop/loopback-next/compare/@loopback/example-rest-crud@1.5.0...@loopback/example-rest-crud@1.5.1) (2020-06-30)
 
 **Note:** Version bump only for package @loopback/example-rest-crud

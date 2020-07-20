@@ -1,6 +1,6 @@
 {
   "name": "@loopback/example-metrics-prometheus",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "description": "An example to illustrate metrics provided by @loopback/extension-metrics and Prometheus",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -40,16 +40,16 @@
     "directory": "examples/metrics-prometheus"
   },
   "dependencies": {
-    "@loopback/boot": "^2.3.5",
-    "@loopback/core": "^2.9.1",
-    "@loopback/extension-metrics": "^0.3.9",
-    "@loopback/rest": "^5.2.0",
+    "@loopback/boot": "^2.4.0",
+    "@loopback/core": "^2.9.2",
+    "@loopback/extension-metrics": "^0.3.10",
+    "@loopback/rest": "^5.2.1",
     "tslib": "^2.0.0"
   },
   "devDependencies": {
-    "@loopback/build": "^6.1.0",
-    "@loopback/eslint-config": "^8.0.3",
-    "@loopback/testlab": "^3.2.0",
+    "@loopback/build": "^6.1.1",
+    "@loopback/eslint-config": "^8.0.4",
+    "@loopback/testlab": "^3.2.1",
     "@types/node": "^10.17.27",
     "eslint": "^7.5.0",
     "typescript": "~3.9.7"

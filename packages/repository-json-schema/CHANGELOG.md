@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.4.7](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@2.4.6...@loopback/repository-json-schema@2.4.7) (2020-07-20)
+
+
+### Bug Fixes
+
+* nested scope filter ([b29d6d7](https://github.com/strongloop/loopback-next/commit/b29d6d7938b0d07e927b0939745b76cfff91272b))
+* **repository-json-schema:** added type 'object' to model json schema ([5c5f9ef](https://github.com/strongloop/loopback-next/commit/5c5f9efcfdea7788503d74610e7ce64f31abc7cd)), closes [#3804](https://github.com/strongloop/loopback-next/issues/3804)
+
+
+
+
+
 ## [2.4.6](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@2.4.5...@loopback/repository-json-schema@2.4.6) (2020-06-30)
 
 **Note:** Version bump only for package @loopback/repository-json-schema

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.9.3](https://github.com/strongloop/loopback-next/compare/@loopback/context@3.9.2...@loopback/context@3.9.3) (2020-07-20)
+
+
+### Bug Fixes
+
+* **context:** destroy debug instances to avoid memory leak ([a28d53c](https://github.com/strongloop/loopback-next/commit/a28d53c8951bf71af62f5238d694662905d1a8f6))
+
+
+
+
+
 ## [3.9.2](https://github.com/strongloop/loopback-next/compare/@loopback/context@3.9.1...@loopback/context@3.9.2) (2020-06-30)
 
 **Note:** Version bump only for package @loopback/context

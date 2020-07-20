@@ -1,6 +1,6 @@
 {
   "name": "@loopback/example-lb3-application",
-  "version": "2.3.1",
+  "version": "2.3.2",
   "description": "Tutorial example on how to add existing an LB3 application to a LB4 project",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -39,12 +39,12 @@
     "directory": "examples/lb3-application"
   },
   "dependencies": {
-    "@loopback/boot": "^2.3.5",
-    "@loopback/booter-lb3app": "^2.2.5",
-    "@loopback/core": "^2.9.1",
-    "@loopback/repository": "^2.9.0",
-    "@loopback/rest": "^5.2.0",
-    "@loopback/rest-explorer": "^2.2.6",
+    "@loopback/boot": "^2.4.0",
+    "@loopback/booter-lb3app": "^2.2.6",
+    "@loopback/core": "^2.9.2",
+    "@loopback/repository": "^2.10.0",
+    "@loopback/rest": "^5.2.1",
+    "@loopback/rest-explorer": "^2.2.7",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
     "debug": "^4.1.1",
@@ -55,10 +55,10 @@
     "tslib": "^2.0.0"
   },
   "devDependencies": {
-    "@loopback/build": "^6.1.0",
-    "@loopback/eslint-config": "^8.0.3",
+    "@loopback/build": "^6.1.1",
+    "@loopback/eslint-config": "^8.0.4",
     "@loopback/rest": "^1.11.1",
-    "@loopback/testlab": "^3.2.0",
+    "@loopback/testlab": "^3.2.1",
     "@types/lodash": "^4.14.157",
     "@types/node": "^10.17.27",
     "eslint": "^7.5.0",

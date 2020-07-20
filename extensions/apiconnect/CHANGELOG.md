@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/apiconnect@0.3.7...@loopback/apiconnect@0.4.0) (2020-07-20)
+
+
+### Features
+
+* remove openapi-v3 from apiconnect dependencies ([4b99200](https://github.com/strongloop/loopback-next/commit/4b99200854da10ad99c1ab121a1d3e41af120fed))
+
+
+
+
+
 ## [0.3.7](https://github.com/strongloop/loopback-next/compare/@loopback/apiconnect@0.3.6...@loopback/apiconnect@0.3.7) (2020-06-30)
 
 **Note:** Version bump only for package @loopback/apiconnect

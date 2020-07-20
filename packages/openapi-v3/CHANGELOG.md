@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.6](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@3.4.5...@loopback/openapi-v3@3.4.6) (2020-07-20)
+
+
+### Bug Fixes
+
+* **repository-json-schema:** added type 'object' to model json schema ([5c5f9ef](https://github.com/strongloop/loopback-next/commit/5c5f9efcfdea7788503d74610e7ce64f31abc7cd)), closes [#3804](https://github.com/strongloop/loopback-next/issues/3804)
+
+
+
+
+
 ## [3.4.5](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@3.4.4...@loopback/openapi-v3@3.4.5) (2020-06-30)
 
 **Note:** Version bump only for package @loopback/openapi-v3

@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.11.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@2.10.0...@loopback/cli@2.11.0) (2020-07-20)
+
+
+### Bug Fixes
+
+* fix ([852e7d8](https://github.com/strongloop/loopback-next/commit/852e7d8c9fab34a71a5232001a01db779cf7bfe9))
+* globalize artifacts creation result ([dfdad08](https://github.com/strongloop/loopback-next/commit/dfdad088eb8d82cdff63ec801c4a0ac3e3af8573))
+* globalize help options ([44ac989](https://github.com/strongloop/loopback-next/commit/44ac9894ff0679f4a48d867e5c515923c6754ef2))
+* globalize strings for repository generator ([2cbe048](https://github.com/strongloop/loopback-next/commit/2cbe04844bc8065e0c1f127a96967a9a70940fe3))
+* globlize strings for model generator ([67729f9](https://github.com/strongloop/loopback-next/commit/67729f918572a0144cc67fab6cfaa2ad389e9d33))
+
+
+### Features
+
+* **cli:** honor `required` flag for parameters ([5debaa9](https://github.com/strongloop/loopback-next/commit/5debaa9d0f856b6a5df88cdd54e2a8253c9a0b5b))
+* **cli:** remove openapi-v3 from project template dependencies ([e992c15](https://github.com/strongloop/loopback-next/commit/e992c1551fe4a398b7add572c335c6c5309cae5b))
+* **cli:** update translation messages ([c28acef](https://github.com/strongloop/loopback-next/commit/c28acefd2bcb0af4c4eff59f04ed4058a6eef603))
+
+
+
+
+
 # [2.10.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@2.9.1...@loopback/cli@2.10.0) (2020-06-30)
 
 

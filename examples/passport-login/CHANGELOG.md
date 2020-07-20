@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.2](https://github.com/strongloop/loopback-next/compare/@loopback/example-passport-login@1.5.1...@loopback/example-passport-login@1.5.2) (2020-07-20)
+
+
+### Bug Fixes
+
+* **example-passport-login:** improve README to mention OAUTH_PROVIDERS_LOCATION ([43a3707](https://github.com/strongloop/loopback-next/commit/43a37076a30568e2db548c47affe8a56d51eb0c8))
+
+
+
+
+
 ## [1.5.1](https://github.com/strongloop/loopback-next/compare/@loopback/example-passport-login@1.5.0...@loopback/example-passport-login@1.5.1) (2020-06-30)
 
 **Note:** Version bump only for package @loopback/example-passport-login

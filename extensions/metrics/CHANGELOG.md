@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.10](https://github.com/strongloop/loopback-next/compare/@loopback/extension-metrics@0.3.9...@loopback/extension-metrics@0.3.10) (2020-07-20)
+
+
+### Bug Fixes
+
+* **docs:** fix collapsible section ([0f6e76d](https://github.com/strongloop/loopback-next/commit/0f6e76dfe5c8e8d7c11e065c5ea74e51d3e2c8e7))
+
+
+
+
+
 ## [0.3.9](https://github.com/strongloop/loopback-next/compare/@loopback/extension-metrics@0.3.8...@loopback/extension-metrics@0.3.9) (2020-06-30)
 
 **Note:** Version bump only for package @loopback/extension-metrics

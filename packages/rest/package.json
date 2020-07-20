@@ -1,6 +1,6 @@
 {
   "name": "@loopback/rest",
-  "version": "5.2.0",
+  "version": "5.2.1",
   "description": "Expose controllers as REST endpoints and route REST API requests to controller methods",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -24,10 +24,10 @@
     "access": "public"
   },
   "dependencies": {
-    "@loopback/core": "^2.9.1",
-    "@loopback/express": "^1.2.5",
-    "@loopback/http-server": "^2.1.9",
-    "@loopback/openapi-v3": "^3.4.5",
+    "@loopback/core": "^2.9.2",
+    "@loopback/express": "^1.2.6",
+    "@loopback/http-server": "^2.1.10",
+    "@loopback/openapi-v3": "^3.4.6",
     "@openapi-contrib/openapi-schema-to-json-schema": "^3.0.3",
     "@types/body-parser": "^1.19.0",
     "@types/cors": "^2.8.6",
@@ -57,11 +57,11 @@
     "validator": "^13.1.1"
   },
   "devDependencies": {
-    "@loopback/build": "^6.1.0",
-    "@loopback/eslint-config": "^8.0.3",
-    "@loopback/openapi-spec-builder": "^2.1.9",
-    "@loopback/repository": "^2.9.0",
-    "@loopback/testlab": "^3.2.0",
+    "@loopback/build": "^6.1.1",
+    "@loopback/eslint-config": "^8.0.4",
+    "@loopback/openapi-spec-builder": "^2.1.10",
+    "@loopback/repository": "^2.10.0",
+    "@loopback/testlab": "^3.2.1",
     "@types/debug": "^4.1.5",
     "@types/js-yaml": "^3.12.5",
     "@types/json-schema-compare": "^0.2.0",

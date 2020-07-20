@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.12.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.11.0...@loopback/docs@3.12.0) (2020-07-20)
+
+
+### Bug Fixes
+
+* nested scope filter ([b29d6d7](https://github.com/strongloop/loopback-next/commit/b29d6d7938b0d07e927b0939745b76cfff91272b))
+* **docs:** fix collapsible section ([0f6e76d](https://github.com/strongloop/loopback-next/commit/0f6e76dfe5c8e8d7c11e065c5ea74e51d3e2c8e7))
+* **docs:** fix typo in guide command ([2ba147a](https://github.com/strongloop/loopback-next/commit/2ba147a80962c95147a31b6f8ea6a92e48c44ada))
+* **docs:** update Querying-data.md on proper usage of import for FilterBuilder ([6dcc4d7](https://github.com/strongloop/loopback-next/commit/6dcc4d7a79d1bd11d367677b19beaae5dc37317d))
+* **docs:** update Querying-data.md on proper usage of import for FilterBuilder as suggested ([963fce4](https://github.com/strongloop/loopback-next/commit/963fce47f6fd999c0b12ba370d31477cd1b2d22f))
+* broken link in sidebar ([b197add](https://github.com/strongloop/loopback-next/commit/b197add6117928309e8c63d103d95f8600e063f8))
+
+
+### Features
+
+* **docs:** add community extensions page ([98a7b96](https://github.com/strongloop/loopback-next/commit/98a7b96e18a6a29b76b99ecd05f6606e33e7519e))
+* **docs:** explain how is the content organized ([b550c80](https://github.com/strongloop/loopback-next/commit/b550c80627df853a853ac696c004993c7eff3725))
+* **pooling:** add an extension to provide pooling service ([402e1e0](https://github.com/strongloop/loopback-next/commit/402e1e0f5da74c2b72199dd29dcaae43add48478))
+* **typeorm:** add a component for TypeORM integration ([b4e984a](https://github.com/strongloop/loopback-next/commit/b4e984a18f46e29ff540a19d6a0a4bc045d0c393))
+
+
+
+
+
 # [3.11.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.10.0...@loopback/docs@3.11.0) (2020-06-30)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.12.10](https://github.com/strongloop/loopback-next/compare/@loopback/repository-tests@0.12.9...@loopback/repository-tests@0.12.10) (2020-07-20)
+
+
+### Bug Fixes
+
+* **repository:** hasManyThrough can delete correct target n through based on filter ([c1ba91f](https://github.com/strongloop/loopback-next/commit/c1ba91f2dcbc33dd1cee905d25f9719a71bc7919))
+
+
+
+
+
 ## [0.12.9](https://github.com/strongloop/loopback-next/compare/@loopback/repository-tests@0.12.8...@loopback/repository-tests@0.12.9) (2020-06-30)
 
 **Note:** Version bump only for package @loopback/repository-tests

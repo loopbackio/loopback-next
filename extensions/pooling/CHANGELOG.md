@@ -8,4 +8,4 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Features
 
-* **typeorm:** add a component for TypeORM integration ([b4e984a](https://github.com/strongloop/loopback-next/commit/b4e984a18f46e29ff540a19d6a0a4bc045d0c393))
+* **pooling:** add an extension to provide pooling service ([402e1e0](https://github.com/strongloop/loopback-next/commit/402e1e0f5da74c2b72199dd29dcaae43add48478))

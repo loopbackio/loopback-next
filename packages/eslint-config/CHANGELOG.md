@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.0.4](https://github.com/strongloop/loopback-next/compare/@loopback/eslint-config@8.0.3...@loopback/eslint-config@8.0.4) (2020-07-20)
+
+**Note:** Version bump only for package @loopback/eslint-config
+
+
+
+
+
 ## [8.0.3](https://github.com/strongloop/loopback-next/compare/@loopback/eslint-config@8.0.2...@loopback/eslint-config@8.0.3) (2020-06-30)
 
 **Note:** Version bump only for package @loopback/eslint-config

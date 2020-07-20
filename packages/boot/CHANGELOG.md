@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/boot@2.3.5...@loopback/boot@2.4.0) (2020-07-20)
+
+
+### Bug Fixes
+
+* **boot:** generate unique binding keys for component application booters ([0a7c406](https://github.com/strongloop/loopback-next/commit/0a7c4068fca043b676b3abdce10b4ee4c0ef9f58))
+
+
+### Features
+
+* **typeorm:** add a component for TypeORM integration ([b4e984a](https://github.com/strongloop/loopback-next/commit/b4e984a18f46e29ff540a19d6a0a4bc045d0c393))
+
+
+
+
+
 ## [2.3.5](https://github.com/strongloop/loopback-next/compare/@loopback/boot@2.3.4...@loopback/boot@2.3.5) (2020-06-30)
 
 

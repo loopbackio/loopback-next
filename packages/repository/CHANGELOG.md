@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.10.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@2.9.0...@loopback/repository@2.10.0) (2020-07-20)
+
+
+### Bug Fixes
+
+* **repository:** hasManyThrough can delete correct target n through based on filter ([c1ba91f](https://github.com/strongloop/loopback-next/commit/c1ba91f2dcbc33dd1cee905d25f9719a71bc7919))
+* ensure delete only applies to optional properties ([89cd43f](https://github.com/strongloop/loopback-next/commit/89cd43f1a455983f120d9bb9c869eac36adc7ad7))
+
+
+### Features
+
+* **repository:** add helpers to create relations ([42d17aa](https://github.com/strongloop/loopback-next/commit/42d17aa37fa88bb4c4152b26450ddb8b72da1f49))
+
+
+
+
+
 # [2.9.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@2.8.0...@loopback/repository@2.9.0) (2020-06-30)
 
 
