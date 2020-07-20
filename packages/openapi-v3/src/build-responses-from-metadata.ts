@@ -118,10 +118,8 @@ function buildMapsFromMetadata(
       const codeRef = responseRef?.content;
 
       if (codeRef?.has(r.contentType)) {
-        // eslint-disable-next-line no-unused-expressions
         codeRef.get(r.contentType)?.push(r.responseModelOrSpec);
       } else {
-        // eslint-disable-next-line no-unused-expressions
         codeRef?.set(r.contentType, [r.responseModelOrSpec]);
       }
     } else {
