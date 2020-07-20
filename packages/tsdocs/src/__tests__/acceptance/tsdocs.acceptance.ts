@@ -42,6 +42,25 @@ describe('tsdocs', function (this: Mocha.Suite) {
     fs.emptyDirSync(path.join(MONOREPO_ROOT, 'packages/pkg1/docs'));
   });
 
+  let originalConsoleLog: typeof console.log;
+
+  before(function setupConsoleLogInterceptor() {
+    originalConsoleLog = console.log;
+    console.log = function (...args: unknown[]) {
+      const ignore =
+        args?.length &&
+        typeof args[0] === 'string' &&
+        /Analysis will use the bundled TypeScript version/.test(args[0]);
+      if (ignore) return;
+      process.stdout.write('XX: ' + require('util').inspect(args));
+      originalConsoleLog(...args);
+    };
+  });
+
+  after(function uninstallConsoleLogInterceptor() {
+    console.log = originalConsoleLog;
+  });
+
   it('runs api-extractor', async () => {
     await runExtractorForMonorepo({
       rootDir: MONOREPO_ROOT,
