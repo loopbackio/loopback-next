@@ -170,10 +170,15 @@ describe('Resource pool', () => {
   it('invokes resource-level acquire/release methods', async () => {
     const poolService = await givenPoolService({}, ExpensiveResourceWithHooks);
     poolService.start();
-    const res = await poolService.acquire();
+    const reqCtx = new Context('request');
+    const res = (await poolService.acquire(
+      reqCtx,
+    )) as ExpensiveResourceWithHooks;
     expect(res.status).to.eql('in-use');
+    expect(res.requestCtx).to.eql(reqCtx);
     await poolService.release(res);
     expect(res.status).to.eql('idle');
+    expect(res.requestCtx).to.be.undefined();
   });
 
   it('invokes factory-level acquire/release methods', async () => {
@@ -311,12 +316,16 @@ describe('Resource pool', () => {
    */
   class ExpensiveResourceWithHooks extends ExpensiveResource
     implements Poolable {
-    acquire() {
+    requestCtx?: Context;
+
+    acquire(requestCtx: Context) {
       this.status = 'in-use';
+      this.requestCtx = requestCtx;
     }
 
     release() {
       this.status = 'idle';
+      this.requestCtx = undefined;
     }
   }
 
