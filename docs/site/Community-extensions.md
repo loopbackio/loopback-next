@@ -33,7 +33,7 @@ list.
   <tbody>
     <tr>
       <td><a href="https://www.npmjs.com/package/loopback4-soft-delete">loopback4-soft-delete</a></td>
-      <td>Used for soft-deletes in a multi-tenant application</td>
+      <td>Adds soft-delete feature to your models and repositories</td>
     </tr>
     <tr>
       <td><a href="https://www.npmjs.com/package/loopback4-helmet">loopback4-helmet</a></td>
