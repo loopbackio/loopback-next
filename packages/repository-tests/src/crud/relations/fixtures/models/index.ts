@@ -9,3 +9,5 @@ export * from './customer-cart-item-link.model';
 export * from './customer.model';
 export * from './order.model';
 export * from './shipment.model';
+export * from './user.model';
+export * from './user-link.model';

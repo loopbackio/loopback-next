@@ -22,6 +22,10 @@ import {
   CustomerCartItemLink,
   CustomerCartItemLinkRepository,
   CustomerRepository,
+  User,
+  UserRepository,
+  UserLink,
+  UserLinkRepository,
 } from '../fixtures/models';
 import {givenBoundCrudRepositories} from '../helpers';
 
@@ -273,6 +277,100 @@ export function hasManyThroughRelationAcceptance(
 
     async function givenPersistedCustomerInstance() {
       return customerRepo.create({name: 'a customer'});
+    }
+  });
+  describe('HasManyThrough relation - self through', () => {
+    before(deleteAllModelsInDefaultDataSource);
+    let userRepo: UserRepository;
+    let userLinkRepo: UserLinkRepository;
+    let existedUserId: MixedIdType;
+
+    before(
+      withCrudCtx(async function setupRepository(ctx: CrudTestContext) {
+        ({userRepo, userLinkRepo} = givenBoundCrudRepositories(
+          ctx.dataSource,
+          repositoryClass,
+          features,
+        ));
+        await ctx.dataSource.automigrate([User.name, UserLink.name]);
+      }),
+    );
+
+    beforeEach(async () => {
+      await userRepo.deleteAll();
+      await userLinkRepo.deleteAll();
+    });
+
+    beforeEach(async () => {
+      existedUserId = (await givenPersistedUserInstance()).id;
+    });
+
+    it('creates instances of self model', async () => {
+      const followed = await userRepo
+        .users(existedUserId)
+        .create(
+          {name: 'another user'},
+          {throughData: {description: 'a through model - UserLink'}},
+        );
+
+      const persistedUser = await userRepo.findById(followed.id);
+      const persistedLink = await userLinkRepo.find();
+      expect(toJSON(persistedUser)).to.containDeep(toJSON(followed));
+      expect(toJSON(persistedLink[0])).to.containDeep(
+        toJSON({
+          followerId: existedUserId,
+          followeeId: followed.id,
+          description: 'a through model - UserLink',
+        }),
+      );
+    });
+
+    it('finds an instance of self model alone with a through model', async () => {
+      const followed = await userRepo
+        .users(existedUserId)
+        .create(
+          {name: 'another user'},
+          {throughData: {description: 'a through model - UserLink'}},
+        );
+      const notFollowed = await userRepo.create({
+        name: 'not being followed',
+      });
+
+      const persistedUser = await userRepo.users(existedUserId).find();
+      const persistedLink = await userLinkRepo.find();
+      expect(toJSON(persistedUser[0])).to.deepEqual(toJSON(followed));
+      expect(toJSON(persistedUser[0])).to.not.containEql(toJSON(notFollowed));
+      expect(toJSON(persistedLink)).to.containDeep(
+        toJSON([
+          {
+            followerId: existedUserId,
+            followeeId: followed.id,
+            description: 'a through model - UserLink',
+          },
+        ]),
+      );
+    });
+    it('finds instances of self model', async () => {
+      const u1 = await userRepo.create({name: 'u1'});
+      const u2 = await userRepo.create({name: 'u2'});
+      const u3 = await userRepo.create({name: 'u3'});
+      await userRepo.users(u1.id).link(u2.id);
+      await userRepo.users(u1.id).link(u3.id);
+      await userRepo.users(u3.id).link(u1.id);
+
+      const u1Following = await userRepo.users(u1.id).find();
+      const u2Following = await userRepo.users(u2.id).find();
+      const u3Following = await userRepo.users(u3.id).find();
+      expect(toJSON(u1Following)).to.deepEqual(toJSON([u2, u3]));
+      expect(toJSON(u2Following)).to.deepEqual(toJSON([]));
+      expect(toJSON(u3Following)).to.not.containEql(toJSON([u1]));
+
+      const persistedLink = await userLinkRepo.find();
+      expect(persistedLink.length).to.equal(3);
+    });
+
+    async function givenPersistedUserInstance() {
+      return userRepo.create({name: 'a user'});
     }
   });
 }
