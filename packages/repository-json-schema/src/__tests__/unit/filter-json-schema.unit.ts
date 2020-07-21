@@ -69,7 +69,6 @@ describe('getFilterJsonSchemaFor', () => {
 
   it('disallows "where"', () => {
     const filter = {where: {name: 'John'}};
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     ajv.validate(customerFilterExcludingWhereSchema, filter);
     expect(ajv.errors ?? []).to.containDeep([
       {
@@ -84,7 +83,6 @@ describe('getFilterJsonSchemaFor', () => {
 
   it('disallows "include"', () => {
     const filter = {include: 'orders'};
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     ajv.validate(customerFilterExcludingIncludeSchema, filter);
     expect(ajv.errors ?? []).to.containDeep([
       {
@@ -99,7 +97,6 @@ describe('getFilterJsonSchemaFor', () => {
 
   it('describes "where" as an object', () => {
     const filter = {where: 'invalid-where'};
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     ajv.validate(customerFilterSchema, filter);
     expect(ajv.errors ?? []).to.containDeep([
       {
@@ -112,7 +109,6 @@ describe('getFilterJsonSchemaFor', () => {
 
   it('describes "fields" as an object', () => {
     const filter = {fields: 'invalid-fields'};
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     ajv.validate(customerFilterSchema, filter);
     expect(ajv.errors ?? []).to.containDeep([
       {
@@ -125,7 +121,6 @@ describe('getFilterJsonSchemaFor', () => {
 
   it('describes "include" as an array for models with relations', () => {
     const filter = {include: 'invalid-include'};
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     ajv.validate(customerFilterSchema, filter);
     expect(ajv.errors ?? []).to.containDeep([
       {
@@ -143,7 +138,6 @@ describe('getFilterJsonSchemaFor', () => {
 
   it('describes "offset" as an integer', () => {
     const filter = {offset: 'invalid-offset'};
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     ajv.validate(customerFilterSchema, filter);
     expect(ajv.errors ?? []).to.containDeep([
       {
@@ -156,7 +150,6 @@ describe('getFilterJsonSchemaFor', () => {
 
   it('describes "limit" as an integer', () => {
     const filter = {limit: 'invalid-limit'};
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     ajv.validate(customerFilterSchema, filter);
     expect(ajv.errors ?? []).to.containDeep([
       {
@@ -169,7 +162,6 @@ describe('getFilterJsonSchemaFor', () => {
 
   it('describes "skip" as an integer', () => {
     const filter = {skip: 'invalid-skip'};
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     ajv.validate(customerFilterSchema, filter);
     expect(ajv.errors ?? []).to.containDeep([
       {
@@ -182,7 +174,6 @@ describe('getFilterJsonSchemaFor', () => {
 
   it('describes "order" as an array', () => {
     const filter = {order: 'invalid-order'};
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     ajv.validate(customerFilterSchema, filter);
     expect(ajv.errors ?? []).to.containDeep([
       {
