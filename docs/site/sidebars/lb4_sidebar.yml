@@ -432,6 +432,10 @@ children:
       url: HasOne-relation.html
       output: 'web, pdf'
 
+    - title: 'HasManyThrough Relation'
+      url: HasManyThrough-relation.html
+      output: 'web, pdf'
+
   - title: 'DataSources'
     url: DataSources.html
     output: 'web, pdf'

@@ -331,7 +331,7 @@ setting would allow you to do so:
 @model()
 export class Customer extends Entity {
   // constructor, properties, etc.
-  @hasMany(() => Order, {keyFrom: 'orders'}, {name: 'my_orders'})
+  @hasMany(() => Order, {_relationMetadata_}, {name: 'my_orders'})
   orders: Order[];
 }
 ```
@@ -390,12 +390,12 @@ export class CustomerRepository extends DefaultCrudRepository<
   constructor(
     @inject('datasources.db') protected db: juggler.DataSource,
     @repository.getter('OrderRepository')
-    getOrderRepository: Getter<OrderRepository>,
+    orderRepositoryGetter: Getter<OrderRepository>,
   ) {
     super(Customer, db);
     this.orders = this.createHasManyRepositoryFactoryFor(
       'orders',
-      getOrderRepository,
+      orderRepositoryGetter,
     );
   }
 }
@@ -404,15 +404,15 @@ export class CustomerRepository extends DefaultCrudRepository<
 The following CRUD APIs are now available in the constrained target repository
 factory `orders` for instances of `customerRepository`:
 
-- `create` for creating a target model instance belonging to customer model
+- `create` for creating a target model instance belonging to source model
   instance
   ([API Docs](https://loopback.io/doc/en/lb4/apidocs.repository.hasmanyrepository.create.html))
-- `find` finding target model instance(s) belonging to customer model instance
+- `find` finding target model instance(s) belonging to source model instance
   ([API Docs](https://loopback.io/doc/en/lb4/apidocs.repository.hasmanyrepository.find.html))
-- `delete` for deleting target model instance(s) belonging to customer model
+- `delete` for deleting target model instance(s) belonging to source model
   instance
   ([API Docs](https://loopback.io/doc/en/lb4/apidocs.repository.hasmanyrepository.delete.html))
-- `patch` for patching target model instance(s) belonging to customer model
+- `patch` for patching target model instance(s) belonging to source model
   instance
   ([API Docs](https://loopback.io/doc/en/lb4/apidocs.repository.hasmanyrepository.patch.html))
 
