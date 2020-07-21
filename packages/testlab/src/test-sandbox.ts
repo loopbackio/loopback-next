@@ -151,7 +151,7 @@ export class TestSandbox {
       await outputFile(dest, content, {encoding: 'utf-8'});
     }
 
-    if (parse(src).ext === '.js' && pathExists(src + '.map')) {
+    if (parse(src).ext === '.js' && (await pathExists(src + '.map'))) {
       const srcMap = src + '.map';
       await appendFile(dest, `\n//# sourceMappingURL=${srcMap}`);
     }
