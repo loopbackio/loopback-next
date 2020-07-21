@@ -29,8 +29,6 @@ module.exports = {
      * See https://github.com/typescript-eslint/typescript-eslint/issues/389
      */
     project: getProjectFile(),
-    // See https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/parser#configuration
-    createDefaultProgram: true,
     ecmaFeatures: {
       ecmaVersion: 2017,
       jsx: false,
