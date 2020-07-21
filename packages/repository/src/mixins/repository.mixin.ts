@@ -139,13 +139,11 @@ export function RepositoryMixin<T extends MixinTarget<Application>>(
       const options = toOptions(nameOrOptions);
       // We have an instance of
       if (dataSource instanceof juggler.DataSource) {
-        // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
         const name = options.name || dataSource.name;
         const namespace = options.namespace ?? RepositoryBindings.DATASOURCES;
         const key = `${namespace}.${name}`;
         return this.bind(key).to(dataSource).tag(RepositoryTags.DATASOURCE);
       } else if (typeof dataSource === 'function') {
-        // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
         options.name = options.name || dataSource.dataSourceName;
         const binding = createBindingFromClass(dataSource, {
           namespace: RepositoryBindings.DATASOURCES,

@@ -3,18 +3,22 @@
     "tsconfig.build.json is used by eslint to constrain files to be checked",
     "tsconfig.json is used by tsc"
   ],
-  "extends": "./packages/build/config/tsconfig.common.json",
+  "compilerOptions": {
+    "skipLibCheck": true,
+    "allowJs": true,
+    "noEmit": true
+  },
   "include": [
-    "acceptance",
-    "fixtures",
-    "benchmark",
-    "examples",
-    "packages",
-    "extensions"
+    "**/.eslintrc.js",
+    "**/*.js",
+    "**/*.ts"
   ],
   "exclude": [
     "**/node_modules/**",
     "**/dist/**",
-    "**/*.d.ts"
+    "**/*.d.ts",
+    "coverage",
+    "docs/_loopback.io",
+    "docs/_preview"
   ]
 }
