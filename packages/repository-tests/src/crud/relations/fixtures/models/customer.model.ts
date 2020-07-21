@@ -27,7 +27,7 @@ export class Customer extends Entity {
   @property({
     id: true,
     generated: true,
-    useDefaltIdType: true,
+    useDefaultIdType: true,
   })
   id: MixedIdType;
 

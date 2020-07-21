@@ -18,6 +18,10 @@ import {
   OrderRepository,
   Shipment,
   ShipmentRepository,
+  User,
+  UserRepository,
+  UserLink,
+  UserLinkRepository,
 } from './fixtures/models';
 import {
   createAddressRepo,
@@ -26,6 +30,8 @@ import {
   createCustomerRepo,
   createOrderRepo,
   createShipmentRepo,
+  createUserRepo,
+  createUserLinkRepo,
 } from './fixtures/repositories';
 
 export function givenBoundCrudRepositories(
@@ -39,6 +45,8 @@ export function givenBoundCrudRepositories(
   CartItem.definition.properties.id.type = features.idType;
   CustomerCartItemLink.definition.properties.id.type = features.idType;
   Shipment.definition.properties.id.type = features.idType;
+  User.definition.properties.id.type = features.idType;
+  UserLink.definition.properties.id.type = features.idType;
   // when running the test suite on MongoDB, we don't really need to setup
   // this config for mongo connector to pass the test.
   // however real-world applications might have such config for MongoDB
@@ -57,6 +65,14 @@ export function givenBoundCrudRepositories(
   };
   CustomerCartItemLink.definition.properties.cartItemId.type = features.idType;
   CustomerCartItemLink.definition.properties.cartItemId.mongodb = {
+    dataType: 'ObjectID',
+  };
+  UserLink.definition.properties.followerId.type = features.idType;
+  UserLink.definition.properties.followerId.mongodb = {
+    dataType: 'ObjectID',
+  };
+  UserLink.definition.properties.followeeId.type = features.idType;
+  UserLink.definition.properties.followeeId.mongodb = {
     dataType: 'ObjectID',
   };
   // get the repository class and create a new instance of it
@@ -122,6 +138,15 @@ export function givenBoundCrudRepositories(
     db,
   );
 
+  const userRepoClass = createUserRepo(repositoryClass);
+  const userRepo: UserRepository = new userRepoClass(
+    db,
+    async () => userLinkRepo,
+  );
+
+  const userLinkRepoClass = createUserLinkRepo(repositoryClass);
+  const userLinkRepo: UserLinkRepository = new userLinkRepoClass(db);
+
   return {
     customerRepo,
     orderRepo,
@@ -129,5 +154,7 @@ export function givenBoundCrudRepositories(
     addressRepo,
     cartItemRepo,
     customerCartItemLinkRepo,
+    userRepo,
+    userLinkRepo,
   };
 }

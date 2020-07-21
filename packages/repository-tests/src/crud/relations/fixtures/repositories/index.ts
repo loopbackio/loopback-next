@@ -9,3 +9,5 @@ export * from './customer-cart-item-link.repository';
 export * from './customer.repository';
 export * from './order.repository';
 export * from './shipment.repository';
+export * from './user.repository';
+export * from './user-link.repository';

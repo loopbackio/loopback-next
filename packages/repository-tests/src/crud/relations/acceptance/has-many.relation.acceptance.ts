@@ -309,7 +309,7 @@ export function hasManyRelationAcceptance(
           parentId: parent.id,
         });
         const childsParent = await getParentCustomer(child.id);
-        expect(_.pick(childsParent, ['id', 'name'])).to.eql(
+        expect(toJSON(_.pick(childsParent, ['id', 'name']))).to.eql(
           toJSON(_.pick(parent, ['id', 'name'])),
         );
       });

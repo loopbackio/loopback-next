@@ -19,7 +19,7 @@ export class Address extends Entity {
   @property({
     id: true,
     generated: true,
-    useDefaltIdType: true,
+    useDefaultIdType: true,
   })
   id: MixedIdType;
   @property({
