@@ -28,7 +28,7 @@
     "@loopback/rest": "^5.2.1",
     "@loopback/security": "^0.2.15",
     "@types/express": "^4.17.7",
-    "@types/lodash": "^4.14.157",
+    "@types/lodash": "^4.14.158",
     "lodash": "^4.17.19",
     "tslib": "^2.0.0"
   },
