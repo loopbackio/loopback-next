@@ -56,7 +56,7 @@ LoopBack 4 comes with the following example projects.
 ### Authentication and authorization related examples
 
 - **[passport-login](https://github.com/strongloop/loopback-next/tree/master/examples/passport-login)**:
-  An example implmenting authentication in a LoopBack application using
+  An example implementing authentication in a LoopBack application using
   [Passport](https://github.com/jaredhanson/passport) modules.
 
 - **[todo-jwt](https://github.com/strongloop/loopback-next/tree/master/examples/todo-jwt)**:
