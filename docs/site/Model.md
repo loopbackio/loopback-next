@@ -25,63 +25,94 @@ or gRPC message definitions, and vice versa.
 
 There are two subtly different types of models for domain objects:
 
-- Value Object: A domain object that does not have an identity (ID). Its
-  equality is based on the structural value. For example, `Address` can be
-  modeled as a `Value Object` because two US addresses are equal if they have
-  the same street number, street name, city, and zip code values. For example:
-
-```json
-{
-  "name": "Address",
-  "properties": {
-    "streetNum": "string",
-    "streetName": "string",
-    "city": "string",
-    "zipCode": "string"
-  }
-}
-```
-
 - Entity: A domain object that has an identity (ID). Its equality is based on
   the identity. For example, `Customer` can be modeled as an `Entity` because
   each customer has a unique customer id. Two instances of `Customer` with the
-  same customer id are equal since they refer to the same customer. For example:
+  same customer id are equal since they refer to the same customer. For example,
+  this is how a `Customer` can be modelled::
 
-```json
-{
-  "name": "Customer",
-  "properties": {
-    "id": "string",
-    "lastName": "string",
-    "firstName": "string",
-    "email": "string",
-    "address": "Address"
+```ts
+import {Entity, model, property} from '@loopback/repository';
+
+@model()
+export class Customer extends Entity {
+  @property({id: true}) id: string;
+
+  @property() name: string;
+
+  @property() email: string;
+
+  constructor(data?: Partial<Appointment>) {
+    super(data);
   }
 }
 ```
 
+- Value Object: A domain object that does not have an identity (ID). Its
+  equality is based on the structural value. For example, `Address` can be
+  modeled as a `Value Object` because two US addresses are equal if they have
+  the same street number, street name, city, and zip code values. For example,
+  this is how a `Address` can be modelled::
+
+```ts
+import {Model, model, property} from '@loopback/repository';
+
+@model()
+export class Address extends Model {
+  @property() streetNum: number;
+
+  @property() streetName: string;
+
+  @property() city: string;
+
+  @property() zipCode: string;
+
+  constructor(data?: Partial<Address>) {
+    super(data);
+  }
+```
+
 Currently, we provide the `@loopback/repository` module, which provides special
-decorators for adding metadata to your TypeScript/JavaScript classes in order to
-use them with the legacy implementation of the
-[datasource juggler](https://github.com/strongloop/loopback-datasource-juggler).
+decorators `@model` and `@property` for adding metadata to your
+TypeScript/JavaScript classes. Please read on to learn more.
 
 ## Definition of a Model
 
-At its core, a model in LoopBack is a simple JavaScript class.
+A typical LoopBack 4 model is written in TypeScript. We use decorators `@model`
+and `@property` to annotate or modify the class and class members respectively.
 
 ```ts
-export class Customer {
-  email: string;
-  isMember: boolean;
-  cart: ShoppingCart;
+import {Entity, model, property} from '@loopback/repository';
+
+@model({setting: {hiddenProperties: 'id'}})
+export class User extends Entity {
+  @property({
+    type: 'number',
+    id: true,
+    generated: true,
+  })
+  id: number;
+
+  @property({
+    type: 'string',
+    required: false,
+  })
+  des?: string;
+
+  constructor(data?: Partial<Appointment>) {
+    super(data);
+  }
 }
 ```
 
-Extensibility is a core feature of LoopBack. There are external packages that
-add additional features, for example, integration with the juggler bridge or
-JSON Schema generation. These features become available to a LoopBack model
-through the `@model` and `@property` decorators from the `@loopback/repository`
-module.
+We also provide a useful command line interface (CLI)
+[`lb4 model`](Model-generator.md) to generate models.
+
+At its core, a model in LoopBack is a simple JavaScript class. With the
+extensibility of `@model` and `@property` decorators, we are able to manipulate
+the metadata or even integrate with JSON Schema generation.
+
+For example, the following is a simple model `Customer`:
 
 ```ts
 import {model, property} from '@loopback/repository';
@@ -112,12 +143,12 @@ export class Customer {
 }
 ```
 
-## Defining a Model at runtime
+### Defining a Model at Runtime
 
-Models can be created at runtime using the `defineModelClass()` helper function
-from the `@loopback/repository` class. It expects a base model to extend
-(typically `Model` or `Entity`), followed by a `ModelDefinition` object as shown
-in the example below.
+Models can also be created at runtime using the `defineModelClass()` helper
+function from the `@loopback/repository` class. It expects a base model to
+extend (typically `Model` or `Entity`), followed by a `ModelDefinition` object
+as shown in the example below.
 
 ```ts
 const bookDef = new ModelDefinition('Book')
@@ -158,16 +189,19 @@ The `app.model()` method is available only on application classes with
 `RepositoryMixin` applied.
 " %}
 
-## Model Discovery
+### Model Discovery
 
-LoopBack can automatically create model definitions by discovering the schema of
-your database. See [Discovering models](Discovering-models.md) for more details
-and a list of connectors supporting model discovery.
+Instead of creating models from scratch, LoopBack can automatically generate
+model definitions by discovering the schema of your database. See
+[Discovering models](Discovering-models.md) for more details and a list of
+connectors supporting model discovery.
 
-## Using the Juggler Bridge
+## Model Metadata
 
-To define a model for use with the juggler bridge, extend your classes from
-`Entity` and decorate them with the `@model` and `@property` decorators.
+As we mentioned before, LB4 uses `@model` and `@property` to collect metadata
+from a model class. To enable such decorators from module
+`@loopback/repository`, you will need to extend your classes from `Entity` and
+decorate them with the `@model` and `@property` decorators:
 
 ```ts
 import {model, property, Entity} from '@loopback/repository';
@@ -192,38 +226,19 @@ export class Product extends Entity {
 }
 ```
 
-Models are defined primarily by their TypeScript class. By default, classes
-forbid additional properties that are not specified in the type definition. The
-persistence layer respects this constraint and configures underlying
-PersistedModel classes to enforce `strict` mode.
-
-LB4 supports creating a model that allows both well-defined but also arbitrary
-extra properties for **NoSQL** databases such as MongoDB. You need to disable
-`strict` mode in model settings. Besides modifying model settings directly, it
-can also be done through the CLI by setting
-`Allow additional (free-form) properties` to `true` by saying yes when given
-this prompt and telling TypeScript to allow arbitrary additional properties to
-be set on model instances.
-
-```ts
-@model({settings: {strict: false}})
-class MyFlexibleModel extends Entity {
-  @property({id: true})
-  id: string;
-
-  // Define well-known properties here
-
-  // Add an indexer property to allow additional data
-  [prop: string]: any;
-}
-```
+Except for definitions, there are a bunch of settings you can apply through
+`@model` and/or `@property`. For example, by default, LB4 classes forbid
+additional properties that are not specified in the type definition. Such
+constraints can be disabled through `@model` when it comes to **NoSQL**
+databases such as MongoDB, as they support free-form properties. Please check
+out the following [Model decorator](#model-decorator) and
+[Property decorator](#property-decorator) sections for details.
 
 ## Model Decorator
 
 The model decorator can be used without any additional parameters, or can be
 passed in a ModelDefinitionSyntax:
 
-<!-- should be replaced with a lb4 example when possible -->
 <!-- according to https://github.com/strongloop/loopback-datasource-juggler/blob/master/lib/model-builder.js#L283 and the legacy juggler file-->
 
 ```ts
@@ -241,8 +256,8 @@ class Category extends Entity {
 }
 ```
 
-The model decorator already knows the name of your model class, so you can omit
-it.
+`name` can be omitted as the model decorator already knows the name of your
+model class:
 
 ```ts
 @model()
@@ -326,8 +341,8 @@ now:
       In LB4, the default for this entry is set to be <code>true</code>.<br/>
       Specifies whether the model accepts only predefined properties or not. One of:
       <ul>
-      <li><code>true</code>: Only properties defined in the model are accepted. Use if you want to ensure the model accepts only predefined properties.
-      If you try to save a model instance with properties that are not predefined, LoopBack throws a ValidationError. In addition, SQL databases only support this mode.
+      <li><code>true</code>: Only properties defined in the model are accepted. It ensure the model accepts only predefined properties.
+      If a model instance contains properties that are not predefined, LoopBack throws a <code>ValidationError</code>. In addition, SQL databases only support this mode.
       </li>
       <li><code>false</code>: The model is an open model and accepts all properties, including ones not predefined in the model.
         This mode is useful to store free-form JSON data to a schema-less database such as MongoDB and supported by such databases only.
@@ -343,13 +358,17 @@ now:
 
   </table>
 
+To discover more about `Model Decorator` in LoopBack 4, please check
+[legacy-juggler-bridge file](https://github.com/strongloop/loopback-next/blob/2fa5df67181cdcd23a5dce90c9c640fe75943cb8/packages/repository/src/repositories/legacy-juggler-bridge.ts)
+and
+[model-builder file](https://github.com/strongloop/loopback-datasource-juggler/blob/master/lib/model-builder.js).
+
 ### Unsupported Entries
 
-If you're a LB3 user, there are several entries that are no longer available in
-LB4:
+If you're a LB3 user, the following entries that are no longer available in LB4:
 
+<details><summary markdown="span"><strong>Click to Expand</strong></summary>
 <!-- Please update the OPTIONS, ACLS field when they are available -->
-
 <table>
   <thead>
     <tr>
@@ -357,40 +376,33 @@ LB4:
       <th>Description</th>
     </tr>
   </thead>
-
   <tbody>
-
   <tr>
     <td><code>acls</code></td>
     <td>
       (TBD)
     </td>
   </tr>
-
   <tr>
   <td><code>base</code></td>
   <td>This entry is no longer being used. This is done by the typical Js/Tsc classes inheritance way in LB4:
   <pre><code>@model() class MySuperModel extends MyBaseModel {...}</code>
   </pre></td>
   </tr>
-
   <tr>
   <td><code>excludeBaseProperties</code></td>
   <td>(TBD)</td>
   </tr>
-
   <tr>
   <td><code>http</code></td>
   <td> This entry affects HTTP configuration in LB3. Since in LB4 http configurations are inferred from controller members and the rest server, this field is not applicable.</td>
   </tr>
-
   <tr>
     <td><code>options</code></td>
     <td>
       (TBD) see <a href="https://github.com/strongloop/loopback-next/issues/2142">issue #2142</a> for further discussion.
     </td>
   </tr>
-
   <tr>
     <td><code>plural</code></td>
     <td>This entry is part of HTTP configuration in LB3. So it's not applicable for the same reason as <code>http</code> above.</td>
@@ -400,7 +412,6 @@ LB4:
     <td><code>properties</code></td>
     <td>This entry is no longer being used as we introduced <code>@property</code> decorator in LB4. See <code>@property</code> decorator below to discover moer about how to define properties for your models.</td>
   </tr>
-
   <tr>
     <td><code>relations</code></td>
     <td>
@@ -414,7 +425,6 @@ LB4:
     This entry is part of HTTP configuration in LB3. So it's not applicable for the same reason as <code>http</code> above.
     </td>
   </tr>
-
   <tr>
     <td><code>replaceOnPUT</code></td>
     <td>This entry is no longer supported as LB4 controllers scaffolded by LB4 controller, PUT is always calling replaceById. Users are free to change the generated code to call <code>patchById</code> if needed.</td>
@@ -422,10 +432,7 @@ LB4:
   </tbody>
 </table>
 
-To discover more about `Model Decorator` in LoopBack 4, please check
-[legacy-juggler-bridge file](https://github.com/strongloop/loopback-next/blob/2fa5df67181cdcd23a5dce90c9c640fe75943cb8/packages/repository/src/repositories/legacy-juggler-bridge.ts)
-and
-[model-builder file](https://github.com/strongloop/loopback-datasource-juggler/blob/master/lib/model-builder.js).
+</details>
 
 ### Hidden Properties
 
@@ -677,150 +684,6 @@ Tips:
     definitions. Always check [Database Connectors](Database-connectors.md) for
     details and examples for database migration / discover.
 
-### Data Mapping Properties
-
-When using a relational database data source, LB4 allows you to describe tables
-via the model definition and/or property definition.
-
-The following fields of `settings` of the model definition describe the table in
-the database:
-
-<table>
-  <thead>
-    <tr>
-      <th width="260">Property</th>
-      <th width="100">Type</th>
-      <th width="540">Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>[connector name].schema</code></td>
-      <td>String</td>
-      <td>schema of the table</td>
-    </tr>
-    <tr>
-      <td><code>[connector name].table</code></td>
-      <td>String</td>
-      <td>the table name</td>
-    </tr>
-  </tbody>
-</table>
-
-The following are common fields of the property definition that describe the
-columns in the database:
-
-<table>
-  <thead>
-    <tr>
-      <th width="260">Property</th>
-      <th width="100">Type</th>
-      <th width="540">Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>columnName</code></td>
-      <td>String</td>
-      <td>Column name</td>
-    </tr>
-    <tr>
-      <td><code>dataType</code></td>
-      <td>String</td>
-      <td>Data type as defined in the database</td>
-    </tr>
-    <tr>
-      <td><code>dataLength</code></td>
-      <td>Number</td>
-      <td>Data length</td>
-    </tr>
-    <tr>
-      <td><code>dataPrecision</code></td>
-      <td>Number</td>
-      <td>Numeric data precision</td>
-    </tr>
-    <tr>
-      <td><code>dataScale</code></td>
-      <td>Number</td>
-      <td>Numeric data scale</td>
-    </tr>
-    <tr>
-      <td><code>nullable</code></td>
-      <td>Boolean</td>
-      <td>If <code>true</code>, data can be null</td>
-    </tr>
-  </tbody>
-</table>
-
-For example, to map a property to a column in an PostgreSQL database table, use
-the following:
-
-```ts
-@model({
-  settings: {
-    postgresql: {schema: 'public', table: 'mymodel'},
-  },
-})
-export class MyModel extends Entity {
-  @property({
-    type: 'number',
-    required: false,
-    scale: 0,
-    id: true,
-    postgresql: {
-      columnName: 'testId',
-      dataType: 'integer',
-      dataLength: null,
-      dataPrecision: null,
-      dataScale: 0,
-      nullable: 'NO',
-    },
-  })
-  id: number;
-...
-}
-```
-
-Notice that with the mapping, the model property name (`id`) and the
-corresponding database column name (`testId`) can be different if needed.
-
-{% include important.html content="Some SQL databases might have different setups e.g don't have the concept of `schema`. And not all fields are supported by NoSQL databases. For detailed connector-specific settings for defining model schemas and/or auto-migration, check out the specific connector under [Database Connectors](Database-connectors.md)." %}
-
-<div class="sl-hidden"><strong>Non-public Information</strong><br>
-  Removed until <a href="https://github.com/strongloop/loopback-datasource-juggler/issues/128" class="external-link" rel="nofollow">https://github.com/strongloop/loopback-datasource-juggler/issues/128</a> is resolved.
-  <p>Conversion and formatting properties</p>
-  <p>Format conversions are declared in properties, as described in the following table:</p>
-      <table>
-        <tbody>
-          <tr>
-            <th>Key</th>
-            <th>Type</th>
-            <th>Description</th>
-          </tr>
-          <tr>
-            <td>trim</td>
-            <td>Boolean</td>
-            <td>Whether to trim the string</td>
-          </tr>
-          <tr>
-            <td>lowercase</td>
-            <td>Boolean</td>
-            <td>Whether to convert a string to lowercase</td>
-          </tr>
-          <tr>
-            <td>uppercase</td>
-            <td>Boolean</td>
-            <td>Whether to convert a string to uppercase</td>
-          </tr>
-          <tr>
-            <td>format</td>
-            <td>Regular expression</td>
-            <td>Format for a date property.</td>
-          </tr>
-        </tbody>
-      </table>
-</div>
-
 ### Array Property Decorator
 
 There is a limitation to the metadata that can be automatically inferred by
@@ -1031,6 +894,219 @@ enum QueryLanguage {
 })
 queryLanguage: QueryLanguage;
 ```
+
+## How LoopBack Models Map to Database Tables/collections
+
+A frequently asked question is, how can I configure a custom table/collection
+name different from model class name?
+
+No matter you set up models and database tables/collections through the CLI
+[`lb4 model`](Model-generator.md), [Model migration](Database-migrations.md), or
+[Model discovery](Discovering-models.md), models/properties would be mapped to
+corresponding tables/columns based on some conventions or connector-specific
+setting in model and/or property definitions.
+
+When there is no any connector-specific settings, for example:
+
+```ts
+@model()
+export class MyModel extends Entity {
+  @property({
+    type: 'number',
+    required: true,
+    id: true,
+  })
+  id: number;
+
+  @property({
+    type: 'string',
+    required: false,
+  })
+  myName?: string;
+}
+```
+
+connectors would map the model based on the convention they have. Take the
+Oracle connector as an example, it would look for a table named `MYMODEL` under
+the default schema in the database and also map properties `id` and `name` to
+columns named `ID` and `MYNAME` in that table as UPPERCASE is the default case
+of Oracle database. Similarly, with the PostgreSQL connector, it would look for
+a table named `mymodel` under the default schema and columns named `id` and
+`myname`. On one hand, it's convenient if you have default values on your
+database. On the another hand, it might be troublesome if it fails to find
+tables/columns with default names.
+
+The following shows the general idea of how you can specify database definition
+through the connector-specific settings to avoid the issue above.
+
+{% include important.html content="Please do check out specific database connectors as the setup might be vary, e.g don't have the concept of `schema`. Also notice that not all connectors support customized config such as Cloudant." %}
+
+### Data Mapping Properties
+
+The following fields of `settings` of the **model definition** can
+describe/customize schemas or tables/collections names in the database as
+`settings.<connectorName>`:
+
+<table>
+  <thead>
+    <tr>
+      <th width="260">Property</th>
+      <th width="100">Type</th>
+      <th width="540">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>[connectorName].schema</code></td>
+      <td>String</td>
+      <td>schema of the table.</td>
+    </tr>
+    <tr>
+      <td><code>[connectorName].table</code></td>
+      <td>String</td>
+      <td>the table name. For SQL databases.</td>
+    </tr>
+    <tr>
+      <td><code>[connectorName].collection</code></td>
+      <td>String</td>
+      <td>the table name. For NoSQL databases.</td>
+    </tr>
+  </tbody>
+</table>
+
+The following fields of `settings` of the **model definition**
+describe/customize schemas or tables/collections names in the database as
+`settings.<connectorName>.<propName>`:
+
+The following are common fields of the **property definition** that describe the
+columns in the database as `<connectorName>.<propName>:
+
+<table>
+  <thead>
+    <tr>
+      <th width="260">Property</th>
+      <th width="100">Type</th>
+      <th width="540">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>columnName</code></td>
+      <td>String</td>
+      <td>Column name. For SQL databases.</td>
+    </tr>
+    <tr>
+      <td><code>fieldName</code></td>
+      <td>String</td>
+      <td>Column name. For NoSQL databases.</td>
+    </tr>
+    <tr>
+      <td><code>dataType</code></td>
+      <td>String</td>
+      <td>Data type as defined in the database</td>
+    </tr>
+    <tr>
+      <td><code>dataLength</code></td>
+      <td>Number</td>
+      <td>Data length</td>
+    </tr>
+    <tr>
+      <td><code>dataPrecision</code></td>
+      <td>Number</td>
+      <td>Numeric data precision</td>
+    </tr>
+    <tr>
+      <td><code>dataScale</code></td>
+      <td>Number</td>
+      <td>Numeric data scale</td>
+    </tr>
+    <tr>
+      <td><code>nullable</code></td>
+      <td>Boolean</td>
+      <td>If <code>true</code>, data can be null</td>
+    </tr>
+  </tbody>
+</table>
+
+The following example shows how to configure custom table/column names different
+from the model and some other settings in PostgreSQL database:
+
+```ts
+@model({
+  settings: {
+    postgresql: {schema: 'quarter2', table: 'my_model'}, // custom names
+  },
+})
+export class MyModel extends Entity {
+  @property({
+    type: 'number',
+    required: true,
+    id: true,
+    postgresql: {
+      columnName: 'custom_id',
+      dataType: 'integer',
+      dataLength: null,
+      dataPrecision: null,
+      dataScale: 0,
+      nullable: 'NO',
+    },
+  })
+  id: number;
+
+  @property({
+    type: 'string',
+    required: false,
+    postgresql: {
+      columnName: 'my_name',
+      dataType: 'text',
+      dataLength: 20,
+      dataPrecision: null,
+      dataScale: 0,
+      nullable: 'NO',
+    },
+  })
+  myName?: string;
+}
+```
+
+With the mapping, you can configure custom names different from the model. In
+the above example, the model property (`id`) maps to the database column named
+(`custom_id`) in the table named `my_model`.
+
+<div class="sl-hidden"><strong>Non-public Information</strong><br>
+  Removed until <a href="https://github.com/strongloop/loopback-datasource-juggler/issues/128" class="external-link" rel="nofollow">https://github.com/strongloop/loopback-datasource-juggler/issues/128</a> is resolved.
+  <p>Conversion and formatting properties</p>
+  <p>Format conversions are declared in properties, as described in the following table:</p>
+      <table>
+        <tbody>
+          <tr>
+            <th>Key</th>
+            <th>Type</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td>trim</td>
+            <td>Boolean</td>
+            <td>Whether to trim the string</td>
+          </tr>
+          <tr>
+            <td>lowercase</td>
+            <td>Boolean</td>
+            <td>Whether to convert a string to lowercase</td>
+          </tr>
+          <tr>
+            <td>uppercase</td>
+            <td>Boolean</td>
+            <td>Whether to convert a string to uppercase</td>
+          </tr>
+          <tr>
+            <td>format</td>
+            <td>Regular expression</td>
+            <td>Format for a date property.</td>
+          </tr>
+        </tbody>
+      </table>
+</div>
 
 ## JSON Schema Inference
 

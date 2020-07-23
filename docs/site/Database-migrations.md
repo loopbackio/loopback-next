@@ -22,10 +22,16 @@ LoopBack offers two ways to do this:
 
 Part of the database schema definition can be specified via the model and/or
 property definition. For example, the following property setting is a common
-definition that indicates the data type and the length of a column and also uses
-a column name that is different from the property name:
+definition that indicates the schema, the table name, the data type and the
+length of a column, and also uses a column name that is different from the
+property name:
 
 ```ts
+@model({
+  settings: {
+    postgresql: {schema: 'quarter2', table: 'my_model'},
+  },
+})
 export class MyModel extends Entity {
   @property({
     type: 'string',
