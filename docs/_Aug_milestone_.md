@@ -14,11 +14,33 @@
 
 - [ ] Documentation improvement
 
+  - [ ] docs: improve the structure of "Behind the scenes" sidebar + find a
+        better name #5776
+  - [ ] docs: improve the structure of "Usage scenarios" (how-to guides) sidebar
+        #5777
+  - [ ] [Spike] docs: untangle connector reference into reference, how-to guides
+        and tutorials #5961
   - [ ] Rename "legacy juggler bridge" mentioned in docs #5558
   - [ ] Add Couchdb connector docs #5267
   - [ ] [APIDocs] Table not showing properly when it includes code snippet #5756
 
 - [ ] PRs to review:
-  - [ ] any PRs?
+  - [ ] feat(authentication-jwt) Add signup / create user #5763
+  - [ ] feat(authentication): add support for multiple strategies on same method
+        #5735
+  - [ ] 5187 jwt refresh token Feature #5589
+  - [ ] [RFC WIP] feat(typegoose): add a component for typegoose/mongoose
+        integration #5152
 
-### Stretch Goals
+### Stretch Goals (Community contribution is welcome!)
+
+- [ ] Documentation improvement
+
+  - [ ] Blogpost: what are our current plans for juggler modernization #5956
+  - [ ] How to configure a custom table/collection name different from model
+        class name #2197
+  - [ ] Add "project layout reference" page #4847
+  - [ ] Add missing LoopBack 4 Types docs #5063
+
+- [ ] Feature parity
+  - [ ] Execute raw NoSQL queries (e.g. MongoDB) #3342
