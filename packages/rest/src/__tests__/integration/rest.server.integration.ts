@@ -1059,6 +1059,59 @@ paths:
     await server.stop();
   });
 
+  it('registers components provided by server.api()', async () => {
+    const server = await givenAServer();
+
+    // Add component schemas
+    const EXPECTED_SPEC = anOpenApiSpec()
+      .withComponents(
+        aComponentsSpec().withSchema('requestData', {
+          type: 'object',
+          properties: {
+            greet: {type: 'string'},
+          },
+        }),
+      )
+      .build();
+
+    server.api(EXPECTED_SPEC);
+
+    // register route
+    type Data = {greet: string};
+
+    const returnDataSpec = {
+      requestBody: {
+        content: {
+          'application/json': {
+            schema: {$ref: '#/components/schemas/requestData'},
+          },
+        },
+      },
+      responses: {
+        200: {
+          content: {'text/plain': {schema: {type: 'string'}}},
+        },
+      },
+    };
+    server.route('post', '/returnData', returnDataSpec, function returnData(
+      data: Data,
+    ) {
+      return data.greet;
+    });
+
+    await server.start();
+    const client = createClientForHandler(server.requestHandler);
+    await client
+      .post('/returnData')
+      .set('Content-Type', 'application/json')
+      .send({greet: 'hello'})
+      .expect(200, 'hello');
+
+    const spec = await server.getApiSpec();
+    expect(spec.components).to.eql(EXPECTED_SPEC.components);
+    await server.stop();
+  });
+
   it('registers controller routes under routes.*', async () => {
     const server = await givenAServer();
     server.controller(DummyController);
