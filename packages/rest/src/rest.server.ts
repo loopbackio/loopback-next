@@ -445,6 +445,9 @@ export class RestServer extends BaseMiddlewareRegistry
 
     // TODO(bajtos) should we support API spec defined asynchronously?
     const spec: OpenApiSpec = this.getSync(RestBindings.API_SPEC);
+    if (spec.components) {
+      this._httpHandler.registerApiComponents(spec.components);
+    }
     for (const path in spec.paths) {
       for (const verb in spec.paths[path]) {
         const routeSpec: OperationObject = spec.paths[path][verb];
