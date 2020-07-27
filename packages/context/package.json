@@ -29,7 +29,7 @@
     "hyperid": "^2.0.5",
     "p-event": "^4.2.0",
     "tslib": "^2.0.0",
-    "uuid": "^8.2.0"
+    "uuid": "^8.3.0"
   },
   "devDependencies": {
     "@loopback/build": "^6.1.1",
