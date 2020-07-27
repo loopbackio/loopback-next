@@ -19,6 +19,7 @@ LoopBack implements the
 **Database connectors**
 
 - [Cassandra connector](https://loopback.io/doc/en/lb4/Cassandra-connector.html)
+- [CouchDB connector](https://loopback.io/doc/en/lb4/Couchdb2-connector.html)
 - [Cloudant connector](https://loopback.io/doc/en/lb4/Cloudant-connector.html)
 - [DashDB connector](https://loopback.io/doc/en/lb4/DashDB.html)
 - [IBM Db2 connector](https://loopback.io/doc/en/lb4/DB2-connector.html)
