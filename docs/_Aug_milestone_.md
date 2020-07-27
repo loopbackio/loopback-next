@@ -7,11 +7,6 @@
 
 ### Goals
 
-- [ ] hasManyThrough relation MVP
-
-  - [ ] docs: add HasManyThrough relation #5835
-  - [ ] feat: set up HasManyThrough relation through the CLI #5836
-
 - [ ] Documentation improvement
 
   - [ ] docs: improve the structure of "Behind the scenes" sidebar + find a
@@ -24,8 +19,15 @@
   - [ ] Add Couchdb connector docs #5267
   - [ ] [APIDocs] Table not showing properly when it includes code snippet #5756
 
+- [ ] Bugs
+
+  - [ ] includeRelations bug #4547
+
+- [ ] Miscellaneous
+
+  - [ ] CLA/DCO switch strongloop-internal/scrum-apex#436
+
 - [ ] PRs to review:
-  - [ ] feat(authentication-jwt) Add signup / create user #5763
   - [ ] feat(authentication): add support for multiple strategies on same method
         #5735
   - [ ] 5187 jwt refresh token Feature #5589
@@ -36,9 +38,8 @@
 
 - [ ] Documentation improvement
 
+  - [ ] Improve loopback4 authorization docs of using the component #5441
   - [ ] Blogpost: what are our current plans for juggler modernization #5956
-  - [ ] How to configure a custom table/collection name different from model
-        class name #2197
   - [ ] Add "project layout reference" page #4847
   - [ ] Add missing LoopBack 4 Types docs #5063
 
