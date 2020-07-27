@@ -2,8 +2,7 @@
 
 ### Overview
 
-- Finish hasManyThrough relation MVP
-- Continue with docs improvements
+- Focus on docs improvements
 
 ### Goals
 
