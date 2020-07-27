@@ -664,6 +664,10 @@ children:
         url: Cloudant-connector.html
         output: 'web, pdf'
 
+      - title: 'CouchDB 2.x connector'
+        url: Couchdb2-connector.html
+        output: 'web, pdf'
+
       - title: 'DashDB connector'
         url: DashDB.html
         output: 'web, pdf'
