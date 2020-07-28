@@ -688,16 +688,12 @@ describe('DefaultCrudRepository', () => {
 
   it('implements Repository.execute()', async () => {
     // Dummy implementation for execute() in datasource
-    ds.execute = (command, parameters, options) => {
-      return Promise.resolve({command, parameters, options});
+    ds.execute = (...args: unknown[]) => {
+      return Promise.resolve(args);
     };
     const repo = new DefaultCrudRepository(Note, ds);
     const result = await repo.execute('query', ['arg']);
-    expect(result).to.eql({
-      command: 'query',
-      parameters: ['arg'],
-      options: undefined,
-    });
+    expect(result).to.deepEqual(['query', ['arg'], undefined]);
   });
 
   it(`throws error when execute() not implemented by ds connector`, async () => {
