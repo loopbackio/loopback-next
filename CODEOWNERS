@@ -192,14 +192,14 @@
 #
 # - Issue label: Relations
 # - Primary owner(s): @agnes512
-# - Standby owner(s): @hacksparrow
-/packages/repository/src/relations @agnes512 @hacksparrow
-/packages/repository-tests/src/crud/relations @agnes512 @hacksparrow
-/packages/repository/src/__tests__/acceptance/has-many-without-di.relation.acceptance.ts @agnes512 @hacksparrow
-/packages/repository/src/__tests__/integration/repositories/relation.factory.integration.ts @agnes512 @hacksparrow
-/packages/cli/generators/relation @agnes512 @hacksparrow
-/examples/todo-list @agnes512 @hacksparrow
-/docs/site/tutorials/todo-list/ @agnes512 @hacksparrow
+# - Standby owner(s): @hacksparrow @nabdelgadir
+/packages/repository/src/relations @agnes512 @hacksparrow @nabdelgadir
+/packages/repository-tests/src/crud/relations @agnes512 @hacksparrow @nabdelgadir
+/packages/repository/src/__tests__/acceptance/has-many-without-di.relation.acceptance.ts @agnes512 @hacksparrow @nabdelgadir
+/packages/repository/src/__tests__/integration/repositories/relation.factory.integration.ts @agnes512 @hacksparrow @nabdelgadir
+/packages/cli/generators/relation @agnes512 @hacksparrow @nabdelgadir
+/examples/todo-list @agnes512 @hacksparrow @nabdelgadir
+/docs/site/tutorials/todo-list/ @agnes512 @hacksparrow @nabdelgadir
 
 #
 # Services (infrastructure for SOAP/REST clients)
@@ -249,21 +249,21 @@
 #
 # - Issue label: Migration
 # - Primary owner(s): @hacksparrow
-# - Standby owner(s): n/a
-/packages/booter-lb3app @hacksparrow
-/packages/cli/generators/import-lb3-models @hacksparrow
-/examples/lb3-application @hacksparrow
-/docs/site/migration @hacksparrow
+# - Standby owner(s): @nabdelgadir
+/packages/booter-lb3app @hacksparrow @nabdelgadir
+/packages/cli/generators/import-lb3-models @hacksparrow @nabdelgadir
+/examples/lb3-application @hacksparrow @nabdelgadir
+/docs/site/migration @hacksparrow @nabdelgadir
 
 #
 # REST CRUD conventional API
 #
 # - Issue label: n/a
 # - Primary owner(s): @bajtos
-# - Standby owner(s): @hacksparrow
+# - Standby owner(s): @hacksparrow @nabdelgadir
 /packages/model-api-builder @bajtos @hacksparrow
-/packages/rest-crud @bajtos
-/examples/rest-crud @bajtos
+/packages/rest-crud @bajtos @nabdelgadir
+/examples/rest-crud @bajtos @nabdelgadir
 
 #
 # Cloud Native tooling
