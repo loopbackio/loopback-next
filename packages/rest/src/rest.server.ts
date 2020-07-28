@@ -800,11 +800,13 @@ export class RestServer extends BaseMiddlewareRegistry
    */
   async getApiSpec(requestContext?: RequestContext): Promise<OpenApiSpec> {
     let spec = await this.get<OpenApiSpec>(RestBindings.API_SPEC);
+    spec = cloneDeep(spec);
     const components = this.httpHandler.getApiComponents();
 
     // Apply deep clone to prevent getApiSpec() callers from
     // accidentally modifying our internal routing data
-    spec.paths = cloneDeep(this.httpHandler.describeApiPaths());
+    const paths = cloneDeep(this.httpHandler.describeApiPaths());
+    spec.paths = {...paths, ...spec.paths};
     if (components) {
       const defs = cloneDeep(components);
       spec.components = {...spec.components, ...defs};

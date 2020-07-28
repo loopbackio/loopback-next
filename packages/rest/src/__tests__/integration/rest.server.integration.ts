@@ -1220,6 +1220,60 @@ paths:
     await server.stop();
   });
 
+  it('registers handler routes after start and getApiSpec', async () => {
+    const server = await givenAServer();
+    await server.start();
+    const client = createClientForHandler(server.requestHandler);
+    // No `/greet` is present
+    await client.get('/greet').expect(404);
+
+    // Add DummyController after server.start
+    const greetSpec = {
+      responses: {
+        200: {
+          content: {'text/plain': {schema: {type: 'string'}}},
+          description: 'greeting of the day',
+        },
+      },
+    };
+
+    // Add `GET /greet` route
+    server.route('get', '/greet', greetSpec, function greet() {
+      return 'Hello';
+    });
+
+    // Now `GET /greet` is available
+    await client.get('/greet').expect(200, 'Hello');
+
+    // Update api specs to verify serving API explorer does not mess up
+    await server.getApiSpec();
+
+    // Add `GET /greet1`
+    const binding = server.route('get', '/greet1', greetSpec, function greet() {
+      return 'Hello1';
+    });
+
+    // `GET /greet` is still available
+    await client.get('/greet').expect(200, 'Hello');
+
+    // The newly added `GET /greet1` is available
+    await client.get('/greet1').expect(200, 'Hello1');
+
+    // Now update api specs again
+    await server.getApiSpec();
+
+    // Remove `GET /greet1`
+    server.unbind(binding.key);
+
+    // `GET /greet` is still available
+    await client.get('/greet').expect(200, 'Hello');
+
+    // Now `GET /greet1` is gone
+    await client.get('/greet1').expect(404);
+
+    await server.stop();
+  });
+
   it('updates api spec after start', async () => {
     class MyController {
       greet(name: string) {

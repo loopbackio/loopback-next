@@ -317,6 +317,7 @@ describe('RestServer.getApiSpec()', () => {
       },
       '/status': {
         get: {
+          'x-operation': status,
           responses: {},
         },
       },
