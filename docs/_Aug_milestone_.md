@@ -17,6 +17,7 @@
   - [ ] Rename "legacy juggler bridge" mentioned in docs #5558
   - [ ] Add Couchdb connector docs #5267
   - [ ] [APIDocs] Table not showing properly when it includes code snippet #5756
+  - [ ] Clean up extension template and docs #5336
 
 - [ ] Bugs
 
@@ -25,6 +26,7 @@
 - [ ] Miscellaneous
 
   - [ ] CLA/DCO switch strongloop-internal/scrum-apex#436
+  - [ ] Spike: robust handling of ObjectID type for MongoDB #3456
 
 - [ ] PRs to review:
   - [ ] feat(authentication): add support for multiple strategies on same method
