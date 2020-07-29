@@ -29,6 +29,8 @@
   - [ ] Spike: robust handling of ObjectID type for MongoDB #3456
 
 - [ ] PRs to review:
+  - [ ] feat: introduce middleware based sequence for REST #5366
+  - [ ] feat(graphql): add an extension for type-graphql integration #5545
   - [ ] feat(authentication): add support for multiple strategies on same method
         #5735
   - [ ] 5187 jwt refresh token Feature #5589
