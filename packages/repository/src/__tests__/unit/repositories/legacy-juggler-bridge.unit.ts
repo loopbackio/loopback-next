@@ -686,21 +686,52 @@ describe('DefaultCrudRepository', () => {
     expect(ok).to.be.true();
   });
 
-  it('implements Repository.execute()', async () => {
-    // Dummy implementation for execute() in datasource
-    ds.execute = (...args: unknown[]) => {
-      return Promise.resolve(args);
-    };
-    const repo = new DefaultCrudRepository(Note, ds);
-    const result = await repo.execute('query', ['arg']);
-    expect(result).to.deepEqual(['query', ['arg'], undefined]);
-  });
+  describe('Repository.execute()', () => {
+    beforeEach(() => {
+      // Dummy implementation for execute() in datasource
+      ds.execute = (...args: unknown[]) => {
+        return Promise.resolve(args);
+      };
+    });
 
-  it(`throws error when execute() not implemented by ds connector`, async () => {
-    const repo = new DefaultCrudRepository(Note, ds);
-    await expect(repo.execute('query', [])).to.be.rejectedWith(
-      'execute() must be implemented by the connector',
-    );
+    it('implements SQL variant', async () => {
+      const repo = new DefaultCrudRepository(Note, ds);
+      const result = await repo.execute('query', ['arg']);
+      expect(result).to.deepEqual(['query', ['arg']]);
+    });
+
+    it('implements MongoDB variant', async () => {
+      const repo = new DefaultCrudRepository(Note, ds);
+      const result = await repo.execute('MyCollection', 'aggregate', [
+        {$unwind: '$data'},
+        {$out: 'tempData'},
+      ]);
+      expect(result).to.deepEqual([
+        'MyCollection',
+        'aggregate',
+        [{$unwind: '$data'}, {$out: 'tempData'}],
+      ]);
+    });
+
+    it('implements a generic variant', async () => {
+      const repo = new DefaultCrudRepository(Note, ds);
+      const command = {
+        query: 'MATCH (u:User {email: {email}}) RETURN u',
+        params: {
+          email: 'alice@example.com',
+        },
+      };
+      const result = await repo.execute(command);
+      expect(result).to.deepEqual([command]);
+    });
+
+    it(`throws error when execute() not implemented by ds connector`, async () => {
+      delete ds.execute;
+      const repo = new DefaultCrudRepository(Note, ds);
+      await expect(repo.execute('query', [])).to.be.rejectedWith(
+        'execute() must be implemented by the connector',
+      );
+    });
   });
 
   it('has the property inclusionResolvers', () => {
