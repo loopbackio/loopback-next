@@ -1072,12 +1072,15 @@ const OPENAPI_SPEC_MAPPING: {[key: string]: OpenApiSpecForm} = {
 export interface OpenApiSpecOptions {
   /**
    * Mapping of urls to spec forms, by default:
-   * ```
+   * <br>
    * {
+   *   <br>
    *   '/openapi.json': {version: '3.0.0', format: 'json'},
+   *   <br>
    *   '/openapi.yaml': {version: '3.0.0', format: 'yaml'},
+   *   <br>
    * }
-   * ```
+   *
    */
   endpointMapping?: {[key: string]: OpenApiSpecForm};
 
