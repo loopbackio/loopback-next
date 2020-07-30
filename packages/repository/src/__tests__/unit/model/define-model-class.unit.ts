@@ -6,6 +6,7 @@
 import {expect} from '@loopback/testlab';
 import {defineModelClass, Entity, Model, ModelDefinition} from '../../..';
 import {AnyObject} from '../../../common-types';
+import {ModelMetadataHelper} from '../../../decorators';
 
 describe('defineModelClass', () => {
   it('creates a Model class', () => {
@@ -21,7 +22,7 @@ describe('defineModelClass', () => {
 
     // Verify that typedefs allows us to access static Model properties
     expect(DataTransferObject.modelName).to.equal('DataTransferObject');
-    expect(DataTransferObject.definition).to.equal(definition);
+    expect(DataTransferObject.definition).to.deepEqual(definition);
 
     // Verify that typedefs allows us to create new model instances
     const instance = new DataTransferObject({title: 'a title'});
@@ -64,7 +65,7 @@ describe('defineModelClass', () => {
 
     // Verify that typedefs allows us to access static Model properties
     expect(Product.modelName).to.equal('Product');
-    expect(Product.definition).to.equal(definition);
+    expect(Product.definition).to.deepEqual(definition);
 
     // Verify that typedefs allows us to access static Entity properties
     expect(Product.getIdProperties()).to.deepEqual(['id']);
@@ -92,7 +93,7 @@ describe('defineModelClass', () => {
 
     // Verify that typedefs allows us to access static Model properties
     expect(FreeForm.modelName).to.equal('FreeForm');
-    expect(FreeForm.definition).to.equal(definition);
+    expect(FreeForm.definition).to.deepEqual(definition);
 
     // Verify that typedefs allows us to access static Entity properties
     expect(FreeForm.getIdProperties()).to.deepEqual(['id']);
@@ -105,5 +106,19 @@ describe('defineModelClass', () => {
     expect(instance.toJSON()).to.deepEqual({id: 1, name: 'a name'});
     // Verify that typedefs allows us to access free-form properties
     expect(instance.name).to.equal('a name');
+  });
+
+  it('should add model definition in decorator metadata', () => {
+    const definition = new ModelDefinition('Book').addProperty('title', {
+      type: 'string',
+    });
+
+    const Book = defineModelClass<typeof Model, {title: string}>(
+      Model,
+      definition,
+    );
+
+    const meta = ModelMetadataHelper.getModelMetadata(Book);
+    expect(meta).to.deepEqual(definition);
   });
 });

@@ -49,13 +49,13 @@ export class ModelMetadataHelper {
         // sets the metadata to a dedicated key if cached value does not exist
 
         // set ModelDefinition properties if they don't already exist
-        const meta = new ModelDefinition(Object.assign({}, modelMeta));
+        const meta = new ModelDefinition({...modelMeta});
 
         // set properties lost from creating instance of ModelDefinition
         Object.assign(meta, modelMeta);
 
         meta.properties = Object.assign(
-          <PropertyMap>{},
+          <PropertyMap>meta.properties,
           MetadataInspector.getAllPropertyMetadata(
             MODEL_PROPERTIES_KEY,
             target.prototype,
@@ -64,7 +64,7 @@ export class ModelMetadataHelper {
         );
 
         meta.relations = Object.assign(
-          <RelationDefinitionMap>{},
+          <RelationDefinitionMap>meta.relations,
           MetadataInspector.getAllPropertyMetadata(
             RELATIONS_KEY,
             target.prototype,
