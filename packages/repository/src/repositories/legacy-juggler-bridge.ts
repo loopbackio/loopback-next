@@ -573,12 +573,95 @@ export class DefaultCrudRepository<
     return ensurePromise(this.modelClass.exists(id, options));
   }
 
-  async execute(
+  /**
+   * Execute a SQL command.
+   *
+   * **WARNING:** In general, it is always better to perform database actions
+   * through repository methods. Directly executing SQL may lead to unexpected
+   * results, corrupted data, security vulnerabilities and other issues.
+   *
+   * @example
+   *
+   * ```ts
+   * // MySQL
+   * const result = await repo.execute(
+   *   'SELECT * FROM Products WHERE size > ?',
+   *   [42]
+   * );
+   *
+   * // PostgreSQL
+   * const result = await repo.execute(
+   *   'SELECT * FROM Products WHERE size > $1',
+   *   [42]
+   * );
+   * ```
+   *
+   * @param command A parameterized SQL command or query.
+   * Check your database documentation for information on which characters to
+   * use as parameter placeholders.
+   * @param parameters List of parameter values to use.
+   * @param options Additional options, for example `transaction`.
+   * @returns A promise which resolves to the command output as returned by the
+   * database driver. The output type (data structure) is database specific and
+   * often depends on the command executed.
+   */
+  execute(
     command: Command,
     parameters: NamedParameters | PositionalParameters,
     options?: Options,
-  ): Promise<AnyObject> {
-    return ensurePromise(this.dataSource.execute(command, parameters, options));
+  ): Promise<AnyObject>;
+
+  /**
+   * Execute a MongoDB command.
+   *
+   * **WARNING:** In general, it is always better to perform database actions
+   * through repository methods. Directly executing MongoDB commands may lead
+   * to unexpected results and other issues.
+   *
+   * @example
+   *
+   * ```ts
+   * const result = await repo.execute('MyCollection', 'aggregate', [
+   *   {$lookup: {
+   *     // ...
+   *   }},
+   *   {$unwind: '$data'},
+   *   {$out: 'tempData'}
+   * ]);
+   * ```
+   *
+   * @param collectionName The name of the collection to execute the command on.
+   * @param command The command name. See
+   * [Collection API docs](http://mongodb.github.io/node-mongodb-native/3.6/api/Collection.html)
+   * for the list of commands supported by the MongoDB client.
+   * @param parameters Command parameters (arguments), as described in MongoDB API
+   * docs for individual collection methods.
+   * @returns A promise which resolves to the command output as returned by the
+   * database driver.
+   */
+  execute(
+    collectionName: string,
+    command: string,
+    ...parameters: PositionalParameters
+  ): Promise<AnyObject>;
+
+  /**
+   * Execute a raw database command using a connector that's not described
+   * by LoopBack's `execute` API yet.
+   *
+   * **WARNING:** In general, it is always better to perform database actions
+   * through repository methods. Directly executing database commands may lead
+   * to unexpected results and other issues.
+   *
+   * @param args Command and parameters, please consult your connector's
+   * documentation to learn about supported commands and their parameters.
+   * @returns A promise which resolves to the command output as returned by the
+   * database driver.
+   */
+  execute(...args: PositionalParameters): Promise<AnyObject>;
+
+  async execute(...args: PositionalParameters): Promise<AnyObject> {
+    return ensurePromise(this.dataSource.execute(...args));
   }
 
   protected toEntity<R extends T>(model: juggler.PersistedModel): R {
