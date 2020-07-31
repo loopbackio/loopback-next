@@ -29,7 +29,7 @@
     "@types/supertest": "^2.0.10",
     "express": "^4.17.1",
     "fs-extra": "^9.0.1",
-    "oas-validator": "^4.0.6",
+    "oas-validator": "^4.0.7",
     "should": "^13.2.3",
     "sinon": "^9.0.2",
     "supertest": "^4.0.2",
