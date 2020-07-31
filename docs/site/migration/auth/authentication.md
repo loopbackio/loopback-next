@@ -186,7 +186,7 @@ cd myLB4App
 $ lb4 repository
 ? Please select the datasource DbDatasource
 ? Select the model(s) you want to generate a repository User, UserCredentials
-? Please select the repository base class DefaultCrudRepository (Legacy juggler bridge)
+? Please select the repository base class DefaultCrudRepository (Juggler bridge)
 ```
 
 Create the user controller for CRUD operations:

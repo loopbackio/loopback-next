@@ -585,7 +585,7 @@ describe('Person (unit)', () => {
 ```
 
 Writing a unit test for custom repository methods is not as straightforward
-because `CrudRepository` is based on legacy
+because `CrudRepository` is based on
 [loopback-datasource-juggler](https://github.com/strongloop/loopback-datasource-juggler)
 which was not designed with dependency injection in mind. Instead, use
 integration tests to verify the implementation of custom repository methods. For

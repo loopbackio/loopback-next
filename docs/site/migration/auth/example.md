@@ -549,7 +549,7 @@ Create corresponding repositories:
 $ lb4 repository
 ? Please select the datasource DbDatasource
 ? Select the model(s) you want to generate a repository Project, Team, UserCredentials, User
-? Please select the repository base class DefaultCrudRepository (Legacy juggler bridge)
+? Please select the repository base class DefaultCrudRepository (Juggler bridge)
 ```
 
 Create relations:

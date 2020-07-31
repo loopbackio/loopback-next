@@ -282,7 +282,7 @@ Here are the stages we are marching through toward the final version of LoopBack
     - Introduce repositories to represent data access patterns such as CRUD or
       Key/Value stores
     - Provide a reference implementation of CRUD and KV flavors of repository
-      interfaces using the legacy juggler and connectors
+      interfaces using juggler and connectors
     - Refactor/rewrite the juggler into separate modules
       - Typing system
       - Model and relation definition
