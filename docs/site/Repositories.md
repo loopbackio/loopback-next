@@ -38,9 +38,9 @@ See more examples at:
 
 ## Installation
 
-Legacy juggler support has been enabled in `loopback-next` and can be imported
-from the `@loopback/repository` package. In order to do this, save
-`@loopback/repository` as a dependency in your application.
+Juggler support has been enabled in `loopback-next` and can be imported from the
+`@loopback/repository` package. In order to do this, save `@loopback/repository`
+as a dependency in your application.
 
 You can then install your favorite connector by saving it as part of your
 application dependencies.
@@ -98,7 +98,7 @@ INSERT statement, which can be executed through MySQL driver for Node.js.
 
 When a `DataSource` is instantiated, the configuration properties will be used
 to initialize the connector to connect to the backend system. You can define a
-DataSource using legacy Juggler in your LoopBack 4 app as follows:
+DataSource using Juggler in your LoopBack 4 app as follows:
 
 {% include code-caption.html content="src/datsources/db.datasource.ts" %}
 
@@ -155,9 +155,9 @@ Account.definition = new ModelDefinition({
 
 ## Define repositories
 
-Use `DefaultCrudRepository` class to create a repository leveraging the legacy
-juggler bridge and binding your Entity-based class with a datasource you have
-configured earlier. It's recommended that you use
+Use `DefaultCrudRepository` class to create a repository leveraging juggler
+bridge and binding your Entity-based class with a datasource you have configured
+earlier. It's recommended that you use
 [Dependency Injection](Dependency-injection.md) to retrieve your datasource.
 
 TypeScript version:

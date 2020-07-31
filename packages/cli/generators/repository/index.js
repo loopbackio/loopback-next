@@ -24,7 +24,7 @@ const KEY_VALUE_REPOSITORY = 'DefaultKeyValueRepository';
 const BASE_REPOSITORIES = [DEFAULT_CRUD_REPOSITORY, KEY_VALUE_REPOSITORY];
 const CLI_BASE_CRUD_REPOSITORIES = [
   {
-    name: `${DEFAULT_CRUD_REPOSITORY} ${chalk.gray('(Legacy juggler bridge)')}`,
+    name: `${DEFAULT_CRUD_REPOSITORY} ${chalk.gray('(Juggler bridge)')}`,
     value: DEFAULT_CRUD_REPOSITORY,
   },
 ];

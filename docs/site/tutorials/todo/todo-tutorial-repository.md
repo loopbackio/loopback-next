@@ -33,8 +33,7 @@ list of available datasources.
 lb4 repository
 ? Please select the datasource DbDatasource
 ? Select the model(s) you want to generate a repository Todo
-? Please select the repository base class DefaultCrudRepository (Legacy juggler
-bridge)
+? Please select the repository base class DefaultCrudRepository (Juggler bridge)
 
    create src/repositories/todo.repository.ts
    update src/repositories/index.ts

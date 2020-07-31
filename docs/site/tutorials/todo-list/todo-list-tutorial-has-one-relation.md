@@ -62,7 +62,7 @@ Using `lb4 repository`, let's create the repository:
 lb4 repository
 ? Please select the datasource DbDatasource
 ? Select the model(s) you want to generate a repository TodoListImage
-? Please select the repository base class DefaultCrudRepository (Legacy juggler bridge)
+? Please select the repository base class DefaultCrudRepository (Juggler bridge)
    create src/repositories/todo-list-image.repository.ts
    update src/repositories/index.ts
 

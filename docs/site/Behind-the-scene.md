@@ -40,9 +40,8 @@ responsibilities for typical API and/or Microservice applications.
 - [**Model**](Model.md): The definition of an object in respect to the
   datasource juggler. The `@loopback/repository` module provides special
   decorators for adding metadata to TypeScript/JavaScript classes to use them
-  with the legacy implementation of DataSource Juggler. In addition,
-  `@loopback/repository-json-schema` module uses the decorators' metadata to
-  build a matching JSON Schema.
+  with DataSource Juggler. In addition, `@loopback/repository-json-schema`
+  module uses the decorators' metadata to build a matching JSON Schema.
 
 - [**DataSources**](DataSources.md): A named configuration for a Connector
   instance that represents data in an external system.
