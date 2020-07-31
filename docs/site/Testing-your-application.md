@@ -1012,4 +1012,4 @@ To set up code coverage:
   "test:ci": "lb-nyc npm run mocha"
   ```
 
-  `converage:ci` sets up integration with [Coveralls](https://coveralls.io/).
+  `coverage:ci` sets up integration with [Coveralls](https://coveralls.io/).
