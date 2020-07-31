@@ -130,7 +130,7 @@ npm run build
     "test:ci": "lb-nyc npm run mocha"
     ```
 
-    `converage:ci` sets up integration with [Coveralls](https://coveralls.io/).
+    `coverage:ci` sets up integration with [Coveralls](https://coveralls.io/).
 
 ## A note on console logs printed by tests
 
