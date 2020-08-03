@@ -23,6 +23,9 @@ else
   (cd $SOURCE_DIR && git pull)
 fi
 
+echo "Pulling README files (connectors, etc.)"
+(cd $SOURCE_DIR && ./update-readmes.sh)
+
 echo "Installing setup dependencies"
 npm install --no-save js-yaml
 
@@ -58,6 +61,9 @@ rm -rf $JEKYLL_DIR/pages
 # Use `pax` because `ln` does not support directory recursion.
 mkdir $JEKYLL_DIR/pages
 (TARGET="$PWD/$JEKYLL_DIR/pages" && cd "$PWD/site" && pax -rwlpe . $TARGET)
+
+echo "Copying external README pages"
+cp $SOURCE_DIR/pages/en/lb4/readmes/*.md $JEKYLL_DIR/pages/readmes/
 
 echo "Setting up sidebar(s)"
 rm -rf $JEKYLL_DIR/_data/sidebars
