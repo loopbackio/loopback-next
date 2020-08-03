@@ -24,6 +24,7 @@
     "@loopback/eslint-config": "^9.0.0",
     "@loopback/repository": "^2.11.0",
     "@loopback/repository-tests": "^0.12.11",
+    "@loopback/testlab": "^3.2.2",
     "@types/node": "^10.17.28",
     "loopback-connector-postgresql": "^5.0.2",
     "tslib": "^2.0.1"
