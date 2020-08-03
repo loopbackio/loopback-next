@@ -6,11 +6,6 @@
 /**
  * A common set of interfaces for interacting with databases.
  *
- * @remarks
- * *NOTE:* This module is experimental and evolving. It is likely going to be
- * refactored and decomposed into multiple modules as we refine the story based
- * on the loopback-datasource-juggler and connector modules from LoopBack 3.x.
- *
  * This module provides data access facilities to various databases and services
  * as well as the constructs for modeling and accessing those data.
  *
