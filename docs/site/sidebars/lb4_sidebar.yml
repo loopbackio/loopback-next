@@ -242,6 +242,10 @@ children:
       url: Database-migrations.html
       output: 'web, pdf'
 
+    - title: 'Executing database commands'
+      url: Executing-database-commands
+      output: 'web, pdf'
+
   - title: 'Using TypeORM'
     output: 'web, pdf'
     children:
