@@ -79,3 +79,4 @@ See the following articles for more information:
   - [Skip filter](Skip-filter.html)
   - [Where filter](Where-filter.html)
 - [Using database transactions](Using-database-transactions.html)
+- [Executing database commands](Executing-database-commands.md)
