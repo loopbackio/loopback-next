@@ -261,6 +261,7 @@ function toValueFactory<T = unknown>(
   return resolutionCtx =>
     invokeMethod(provider, 'value', resolutionCtx.context, [], {
       skipInterceptors: true,
+      session: resolutionCtx.options.session,
     });
 }
 

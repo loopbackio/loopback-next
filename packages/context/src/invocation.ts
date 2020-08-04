@@ -8,6 +8,7 @@ import assert from 'assert';
 import debugFactory from 'debug';
 import {Context} from './context';
 import {invokeMethodWithInterceptors} from './interceptor';
+import {ResolutionSession} from './resolution-session';
 import {resolveInjectedArguments} from './resolver';
 import {transformValueOrPromise, ValueOrPromise} from './value-promise';
 
@@ -120,6 +121,7 @@ export class InvocationContext extends Context {
         targetWithMethods,
         this.methodName,
         this.args,
+        options.session,
       );
     }
     return invokeTargetMethod(
@@ -148,6 +150,10 @@ export type InvocationOptions = {
    * it's a `Route`. For injected proxies, it's a `Binding`.
    */
   source?: InvocationSource;
+  /**
+   * Resolution session
+   */
+  session?: ResolutionSession;
 };
 
 /**
@@ -177,6 +183,7 @@ export function invokeMethod(
         target,
         method,
         nonInjectedArgs,
+        options.session,
       );
     }
   }
@@ -203,6 +210,7 @@ function invokeTargetMethodWithInjection(
   target: object,
   method: string,
   nonInjectedArgs?: InvocationArgs,
+  session?: ResolutionSession,
 ): ValueOrPromise<InvocationResult> {
   const methodName = getTargetName(target, method);
   /* istanbul ignore if */
@@ -216,7 +224,7 @@ function invokeTargetMethodWithInjection(
     target,
     method,
     ctx,
-    undefined,
+    session,
     nonInjectedArgs,
   );
   const targetWithMethods = target as Record<string, Function>;
