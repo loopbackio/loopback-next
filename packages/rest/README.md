@@ -14,6 +14,10 @@ with:
   `@loopback/openapi-v3`
 - a default sequence implementation to manage the request and response lifecycle
 
+**NOTE: Starting from 6.0.0, we have introduced a middleware-based sequence,
+which is is used as the default one for newly generated LoopBack applications
+using `lb4` command from `@loopback/cli`.**
+
 ## Installation
 
 To use this package, you'll need to install `@loopback/rest`.
