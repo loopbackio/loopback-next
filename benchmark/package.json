@@ -55,7 +55,7 @@
     "@types/benchmark": "^1.0.33",
     "@types/mocha": "^8.0.1",
     "@types/node": "^10.17.28",
-    "mocha": "^8.1.0",
+    "mocha": "^8.1.1",
     "source-map-support": "^0.5.19"
   },
   "repository": {
