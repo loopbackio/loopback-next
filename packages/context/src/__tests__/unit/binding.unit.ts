@@ -16,6 +16,7 @@ import {
   Provider,
 } from '../..';
 import {ValueFactory} from '../../binding';
+import {config} from '../../inject-config';
 
 const key = 'foo';
 
@@ -235,6 +236,51 @@ describe('Binding', () => {
       });
       const value = await ctx.get<string>('greeting');
       expect(value).to.eql('Hello, John');
+    });
+
+    it('supports a factory to use async static provider to inject binding', async () => {
+      class GreetingProvider {
+        static async value(
+          @inject('user') user: string,
+          @inject.binding() currentBinding: Binding,
+        ) {
+          return `[${currentBinding.key}] Hello, ${user}`;
+        }
+      }
+      ctx.bind('user').to('John');
+      const b = ctx.bind('greeting').toDynamicValue(GreetingProvider);
+      expect(b.type).to.equal(BindingType.DYNAMIC_VALUE);
+      expect(b.source).to.eql({
+        type: BindingType.DYNAMIC_VALUE,
+        value: GreetingProvider,
+      });
+      const value = await ctx.get<string>('greeting');
+      expect(value).to.eql('[greeting] Hello, John');
+    });
+
+    it('supports a factory to use async static provider to inject config', async () => {
+      type GreetingConfig = {
+        prefix: string;
+      };
+
+      class GreetingProvider {
+        static async value(
+          @inject('user') user: string,
+          @config() cfg: GreetingConfig,
+        ) {
+          return `[${cfg.prefix}] Hello, ${user}`;
+        }
+      }
+      ctx.bind('user').to('John');
+      const b = ctx.bind('greeting').toDynamicValue(GreetingProvider);
+      expect(b.type).to.equal(BindingType.DYNAMIC_VALUE);
+      expect(b.source).to.eql({
+        type: BindingType.DYNAMIC_VALUE,
+        value: GreetingProvider,
+      });
+      ctx.configure(b.key).to({prefix: '***'});
+      const value = await ctx.get<string>('greeting');
+      expect(value).to.eql('[***] Hello, John');
     });
 
     it('triggers changed event', () => {
