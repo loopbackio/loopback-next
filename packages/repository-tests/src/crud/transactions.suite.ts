@@ -60,6 +60,8 @@ export function transactionSuite(
         >;
         let tx: Transaction | undefined;
         let ds: juggler.DataSource;
+        let ds2: juggler.DataSource;
+
         before(
           withCrudCtx(async function setupRepository(ctx: CrudTestContext) {
             ds = ctx.dataSource;
@@ -82,6 +84,13 @@ export function transactionSuite(
           }
           if (tx?.isActive()) {
             await tx.rollback();
+          }
+        });
+
+        afterEach(async () => {
+          if (ds2) {
+            ds2.disconnect();
+            (ds2 as unknown) = undefined;
           }
         });
 
@@ -149,7 +158,7 @@ export function transactionSuite(
           const ds2Options = Object.assign({}, dataSourceOptions);
           ds2Options.name = 'anotherDataSource';
           ds2Options.database = ds2Options.database + '_new';
-          const ds2 = new juggler.DataSource(ds2Options);
+          ds2 = new juggler.DataSource(ds2Options);
           const anotherRepo = new repositoryClass(Product, ds2);
           await ds2.automigrate(Product.name);
 
