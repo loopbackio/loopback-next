@@ -1,5 +1,9 @@
 ### Auth action
 
+**This is not needed for middleware-based sequence as the authentication is
+enforced by a middleware that's automatically discovered and added to the
+sequence.**
+
 ```ts
 import HttpErrors from 'http-errors';
 
