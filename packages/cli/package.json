@@ -45,7 +45,7 @@
     "sinon": "^9.0.2",
     "strong-globalize-cli": "7.0.3",
     "yeoman-assert": "^3.1.1",
-    "yeoman-test": "~2.7.0"
+    "yeoman-test": "~3.0.0"
   },
   "dependencies": {
     "@lerna/project": "^3.21.0",
