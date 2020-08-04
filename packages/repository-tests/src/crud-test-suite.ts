@@ -48,7 +48,14 @@ export function crudRepositoryTestSuite(
     );
     before(
       withCrudCtx(function setupGlobalDataSource(ctx: CrudTestContext) {
+        debug('Initializing the shared datasource instance.');
         ctx.dataSource = new juggler.DataSource(ctx.dataSourceOptions);
+      }),
+    );
+    after(
+      withCrudCtx(function destroyGlobalDataSource(ctx: CrudTestContext) {
+        debug('Disconnecting the shared datasource instance.');
+        return ctx.dataSource.disconnect();
       }),
     );
 
