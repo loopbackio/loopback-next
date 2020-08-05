@@ -142,12 +142,22 @@ export interface InvokeMiddlewareOptions {
    * from the binding
    */
   chain?: string;
+
   /**
    * An array of group names to denote the order of execution, such as
    * `['cors', 'caching', 'rate-limiting']`.
    */
   orderedGroups?: string[];
 
+  /**
+   * An optional function to validate the sorted groups before invoking the
+   * middleware chain
+   */
+  validate?: (groups: string[]) => void;
+
+  /**
+   * Optional next handler
+   */
   next?: Next;
 }
 

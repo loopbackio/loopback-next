@@ -199,6 +199,26 @@ export class MiddlewareSequence implements SequenceHandler {
 
       RestMiddlewareGroups.INVOKE_METHOD,
     ],
+
+    /**
+     * Reports an error if there are middleware groups are unreachable as they
+     * are ordered after the `invokeMethod` group.
+     */
+    validate: groups => {
+      const index = groups.indexOf(RestMiddlewareGroups.INVOKE_METHOD);
+      if (index !== -1) {
+        const unreachableGroups = groups.slice(index + 1);
+        if (unreachableGroups.length > 0) {
+          throw new Error(
+            `Middleware groups "${unreachableGroups.join(
+              ',',
+            )}" are not invoked as they are ordered after "${
+              RestMiddlewareGroups.INVOKE_METHOD
+            }"`,
+          );
+        }
+      }
+    },
   };
 
   /**
@@ -246,6 +266,10 @@ export class MiddlewareSequence implements SequenceHandler {
       this.options.chain,
       this.options.orderedGroups,
     );
-    await this.invokeMiddleware(context, this.options);
+    const options: InvokeMiddlewareOptions = {
+      validate: MiddlewareSequence.defaultOptions.validate,
+      ...this.options,
+    };
+    await this.invokeMiddleware(context, options);
   }
 }
