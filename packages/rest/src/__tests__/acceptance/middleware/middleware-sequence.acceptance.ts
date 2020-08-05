@@ -3,12 +3,24 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {BindingScope, Constructor, CoreTags, inject} from '@loopback/core';
+import {
+  Application,
+  BindingScope,
+  Constructor,
+  CoreTags,
+  inject,
+} from '@loopback/core';
 import {InvokeMiddleware, InvokeMiddlewareProvider} from '@loopback/express';
-import {RestTags} from '../../../keys';
-import {RequestContext} from '../../../request-context';
-import {DefaultSequence} from '../../../sequence';
-import {SpyAction} from '../../fixtures/middleware/spy-config';
+import {createUnexpectedHttpErrorLogger} from '@loopback/testlab';
+import {
+  DefaultSequence,
+  MiddlewareSequence,
+  RequestContext,
+  RestMiddlewareGroups,
+  RestTags,
+  SequenceActions,
+} from '../../../';
+import {SpyAction, SpyConfig} from '../../fixtures/middleware/spy-config';
 import {spy, TestHelper} from './test-helpers';
 
 const POST_INVOCATION_MIDDLEWARE = 'middleware.postInvocation';
@@ -55,6 +67,22 @@ describe('Middleware in sequence', () => {
     return helper.testSpyLog(binding);
   });
 
+  it('reports an error for unreachable middleware groups', async () => {
+    suppressErrorLogsForExpectedHttpError(helper.app, 500);
+    helper.app.sequence(MiddlewareSequence);
+    const binding = helper.app.expressMiddleware(spy, undefined, {
+      chain: RestTags.REST_MIDDLEWARE_CHAIN,
+      group: 'log',
+      upstreamGroups: [RestMiddlewareGroups.INVOKE_METHOD],
+    });
+    helper.app.restServer.configure<SpyConfig>(binding.key).to({action: 'log'});
+    await helper.client
+      .post('/hello')
+      .send('"World"')
+      .set('content-type', 'application/json')
+      .expect(500);
+  });
+
   function givenTestApp() {
     helper = new TestHelper();
     // Create another middleware phase
@@ -66,6 +94,15 @@ describe('Middleware in sequence', () => {
     helper.app.sequence(SequenceWithOneInvokeMiddleware);
     helper.bindController();
     return helper.start();
+  }
+
+  function suppressErrorLogsForExpectedHttpError(
+    app: Application,
+    skipStatusCode: number,
+  ) {
+    app
+      .bind(SequenceActions.LOG_ERROR)
+      .to(createUnexpectedHttpErrorLogger(skipStatusCode));
   }
 
   /**

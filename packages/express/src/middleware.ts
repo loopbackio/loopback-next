@@ -218,23 +218,34 @@ export function invokeMiddleware(
   // Find extensions for the given extension point binding
   const filter = extensionFilter(chain);
 
+  const middlewareBindings = middlewareCtx.find(filter);
+  if (debug.enabled) {
+    debug(
+      'Middleware for extension point "%s":',
+      chain,
+      middlewareBindings.map(b => b.key),
+    );
+  }
+
   // Calculate orders from middleware dependencies
   const ordersFromDependencies: string[][] = [];
-  middlewareCtx.find(filter).forEach(b => {
+  middlewareBindings.forEach(b => {
     const group: string = b.tagMap.group ?? DEFAULT_MIDDLEWARE_GROUP;
     const groupsBefore: string[] = b.tagMap.upstreamGroups ?? [];
     groupsBefore.forEach(d => ordersFromDependencies.push([d, group]));
     const groupsAfter: string[] = b.tagMap.downstreamGroups ?? [];
     groupsAfter.forEach(d => ordersFromDependencies.push([group, d]));
   });
-  if (debug.enabled) {
-    debug(
-      'Middleware for extension point "%s":',
-      chain,
-      middlewareCtx.find(filter).map(b => b.key),
-    );
+
+  const order = sortListOfGroups(...ordersFromDependencies, orderedGroups);
+
+  /**
+   * Validate sorted groups
+   */
+  if (typeof options?.validate === 'function') {
+    options.validate(order);
   }
-  const order = sortListOfGroups(orderedGroups, ...ordersFromDependencies);
+
   const mwChain = new MiddlewareChain(
     middlewareCtx,
     filter,
