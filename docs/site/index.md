@@ -63,8 +63,8 @@ We are using the documentation system based on four quadrants, as described at
 - Problem-oriented `How-to Guides` provide recipes to solve specific goals you
   may encounter while building a LoopBack project.
 
-- Understanding-oriented `Behind the scenes` pages provide background and
-  context, wider view and deeper knowledge about the framework.
+- Understanding-oriented `Concepts` pages provide the explanation of
+  architecture concepts, wider view and deeper knowledge about the framework.
 
 - Information-oriented `Reference guides` provide technical description of the
   machinery and how to use it.

@@ -399,7 +399,7 @@ children:
       url: Setting-debug-strings.html
       output: 'web, pdf'
 
-- title: 'Behind the Scenes'
+- title: 'Concepts'
   url: Behind-the-scene.html
   output: 'web, pdf'
   children:
@@ -408,146 +408,156 @@ children:
     url: Crafting-LoopBack-4.html
     output: 'web, pdf'
 
-  - title: 'Application'
-    url: Application.html
-    output: 'web, pdf'
-
-  - title: 'Server'
-    url: Server.html
-    output: 'web, pdf'
-
-  - title: 'Controllers'
-    url: Controllers.html
-    output: 'web, pdf'
-
-  - title: 'Models'
-    url: Model.html
-    output: 'web, pdf'
-
-  - title: 'Relations'
-    url: Relations.html
+  - title: 'Core'
     output: 'web, pdf'
     children:
 
-    - title: 'HasMany Relation'
-      url: HasMany-relation.html
+    - title: 'Application'
+      url: Application.html
       output: 'web, pdf'
 
-    - title: 'BelongsTo Relation'
-      url: BelongsTo-relation.html
+    - title: 'Component'
+      url: Component.html
       output: 'web, pdf'
 
-    - title: 'HasOne Relation'
-      url: HasOne-relation.html
+    - title: 'Context'
+      url: Context.html
       output: 'web, pdf'
 
-    - title: 'HasManyThrough Relation'
-      url: HasManyThrough-relation.html
+    - title: 'Binding'
+      url: Binding.html
       output: 'web, pdf'
 
-  - title: 'DataSources'
-    url: DataSources.html
-    output: 'web, pdf'
+    - title: 'Dependency Injection'
+      url: Dependency-injection.html
+      output: 'web, pdf'
 
-  - title: 'Repositories'
-    url: Repositories.html
+    - title: 'Interceptor'
+      url: Interceptor.html
+      output: 'web, pdf'
+
+    - title: 'Life Cycle Event and Observer'
+      url: Life-cycle.html
+      output: 'web, pdf'
+
+    - title: 'Service'
+      url: Service.html
+      output: 'web, pdf'
+
+    - title: 'Booter'
+      url: Booting-an-Application.html
+      output: 'web, pdf'
+
+    - title: 'Decorators'
+      url: Decorators.html
+      output: 'web, pdf'
+      children:
+
+      - title: 'OpenAPI Decorators'
+        url: Decorators_openapi.html
+        output: 'web, pdf'
+
+      - title: 'Dependency Injection Decorator'
+        url: Decorators_inject.html
+        output: 'web, pdf'
+
+      - title: 'Authentication Decorator'
+        url: Decorators_authenticate.html
+        output: 'web, pdf'
+
+      - title: 'Service Decorators'
+        url: Decorators_service.html
+        output: 'web, pdf'
+
+      - title: 'Repository Decorators'
+        url: Decorators_repository.html
+        output: 'web, pdf'
+
+    - title: 'Mixin'
+      url: Mixin.html
+      output: 'web, pdf'
+
+  - title: 'REST APIs'
     output: 'web, pdf'
     children:
 
-  - title: 'Services'
-    url: Services.html
-    output: 'web, pdf'
+    - title: 'Server'
+      url: Server.html
+      output: 'web, pdf'
 
-  - title: 'Interceptors'
-    url: Interceptors.html
-    output: 'web, pdf'
+    - title: 'Sequence'
+      url: Sequence.html
+      output: 'web, pdf'
+      children:
 
-  - title: 'Life cycle events and observers'
-    url: Life-cycle.html
-    output: 'web, pdf'
+      - title: 'Middleware based sequence'
+        url: REST-middleware-sequence.html
+        output: 'web, pdf'
 
-  - title: 'Routes'
-    url: Routes.html
-    output: 'web, pdf'
+      - title: 'Action based sequence'
+        url: REST-action-sequence.html
+        output: 'web, pdf'
 
-  - title: 'Sequence'
-    url: Sequence.html
+      - title: 'Routing requests'
+        url: Routing-requests.html
+        output: 'web, pdf'
+
+      - title: 'Parsing requests'
+        url: Parsing-requests.html
+        output: 'web, pdf'
+
+    - title: 'Middleware'
+      url: Middleware.html
+      output: 'web, pdf'
+
+    - title: 'Route'
+      url: Route.html
+      output: 'web, pdf'
+
+    - title: 'Controller'
+      url: Controller.html
+      output: 'web, pdf'
+
+    - title: 'Request/response cycle'
+      url: Request-response-cycle.html
+      output: 'web, pdf'
+
+  - title: 'Data Access'
     output: 'web, pdf'
     children:
 
-    - title: 'Middleware based sequence'
-      url: REST-middleware-sequence.html
+    - title: 'Model'
+      url: Model.html
       output: 'web, pdf'
 
-    - title: 'Action based sequence'
-      url: REST-action-sequence.html
+    - title: 'Relations'
+      url: Relations.html
+      output: 'web, pdf'
+      children:
+
+      - title: 'HasMany Relation'
+        url: HasMany-relation.html
+        output: 'web, pdf'
+
+      - title: 'BelongsTo Relation'
+        url: BelongsTo-relation.html
+        output: 'web, pdf'
+
+      - title: 'HasOne Relation'
+        url: HasOne-relation.html
+        output: 'web, pdf'
+
+      - title: 'HasManyThrough Relation'
+        url: HasManyThrough-relation.html
+        output: 'web, pdf'
+
+    - title: 'Repository'
+      url: Repository.html
       output: 'web, pdf'
 
-    - title: 'Routing requests'
-      url: Routing-requests.html
+    - title: 'DataSource'
+      url: DataSource.html
       output: 'web, pdf'
-
-    - title: 'Parsing requests'
-      url: Parsing-requests.html
-      output: 'web, pdf'
-
-  - title: 'Middleware'
-    url: Middleware.html
-    output: 'web, pdf'
-
-  - title: 'Decorators'
-    url: Decorators.html
-    output: 'web, pdf'
-    children:
-
-    - title: 'OpenAPI Decorators'
-      url: Decorators_openapi.html
-      output: 'web, pdf'
-
-    - title: 'Dependency Injection Decorator'
-      url: Decorators_inject.html
-      output: 'web, pdf'
-
-    - title: 'Authentication Decorator'
-      url: Decorators_authenticate.html
-      output: 'web, pdf'
-
-    - title: 'Service Decorators'
-      url: Decorators_service.html
-      output: 'web, pdf'
-
-    - title: 'Repository Decorators'
-      url: Decorators_repository.html
-      output: 'web, pdf'
-
-  - title: 'Mixins'
-    url: Mixin.html
-    output: 'web, pdf'
-
-  - title: 'Context'
-    url: Context.html
-    output: 'web, pdf'
-
-  - title: 'Binding'
-    url: Binding.html
-    output: 'web, pdf'
-
-  - title: 'Dependency Injection'
-    url: Dependency-injection.html
-    output: 'web, pdf'
-    children:
-
-  - title: 'Components'
-    url: Components.html
-    output: 'web, pdf'
-
-  - title: 'Request/response cycle'
-    url: Request-response-cycle.html
-    output: 'web, pdf'
-
-  - title: 'Booting an Application'
-    url: Booting-an-Application.html
-    output: 'web, pdf'
 
 - title: 'Best practices'
   url: Best-practices.html

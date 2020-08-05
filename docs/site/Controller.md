@@ -1,9 +1,10 @@
 ---
 lang: en
-title: 'Controllers'
+title: 'Controller'
 keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, Concepts
 sidebar: lb4_sidebar
-permalink: /doc/en/lb4/Controllers.html
+permalink: /doc/en/lb4/Controller.html
+redirect_from: /doc/en/lb4/Controllers.html
 ---
 
 ## Overview

@@ -1,9 +1,10 @@
 ---
 lang: en
-title: 'DataSources'
+title: 'DataSource'
 keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI
 sidebar: lb4_sidebar
-permalink: /doc/en/lb4/DataSources.html
+permalink: /doc/en/lb4/DataSource.html
+redirect_from: /doc/en/lb4/DataSources.html
 ---
 
 ## Overview
