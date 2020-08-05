@@ -132,7 +132,7 @@ The `component` function allows binding of component constructors within your
 `Application` instance's context.
 
 For more information on how to make use of components, see
-[Using Components](Using-components.md).
+[Using Components](Components.md#using-components).
 
 #### Controllers
 

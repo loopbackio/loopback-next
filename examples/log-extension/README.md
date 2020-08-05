@@ -7,7 +7,7 @@ An example repo showing how to write a complex log extension for LoopBack 4
 This repository shows you how to use
 [@loopback/cli](https://github.com/strongloop/loopback-next/tree/master/packages/cli)
 to write a complex logging extension that requires a
-[Component](http://loopback.io/doc/en/lb4/Using-components.html),
+[Components](http://loopback.io/doc/en/lb4/Components.html),
 [Decorator](http://loopback.io/doc/en/lb4/Decorators.html), and a
 [Mixin](http://loopback.io/doc/en/lb4/Mixin.html).
 

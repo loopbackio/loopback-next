@@ -19,7 +19,7 @@ paths, headers, and so on) a client needs to make a valid request to the API.
 
 **Component**: A reusable bundle of Bindings, [Controllers](Controllers.md),
 Services, [Repositories](Repositories.md), and models. For more information, see
-[Using components](Using-components.md) and
+[Using components](Components.md#using-components) and
 [Creating components](Creating-components.md).
 
 **Connector**: An interface that abstracts underlying backend systems (for
