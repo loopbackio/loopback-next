@@ -91,6 +91,10 @@ children:
       url: todo-list-tutorial-sqldb.html
       output: 'web, pdf'
 
+  - title: 'Connecting to Back-end Service Tutorials'
+    url: Connecting-to-back-end.html
+    output: 'web, pdf'
+
   - title: 'SOAP Web Service Tutorial'
     url: soap-calculator-tutorial.html
     output: 'web, pdf'
@@ -230,6 +234,10 @@ children:
   - title: 'Accessing Databases'
     output: 'web, pdf'
     children:
+
+    - title: 'Configuring DataSource'
+      url: Configuring-datasource.html
+      output: 'web, pdf'
 
     - title: 'Working with data'
       url: Working-with-data.html
