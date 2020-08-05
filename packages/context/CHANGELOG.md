@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.9.4](https://github.com/strongloop/loopback-next/compare/@loopback/context@3.9.3...@loopback/context@3.9.4) (2020-08-05)
+
+**Note:** Version bump only for package @loopback/context
+
+
+
+
+
 ## [3.9.3](https://github.com/strongloop/loopback-next/compare/@loopback/context@3.9.2...@loopback/context@3.9.3) (2020-07-20)
 
 

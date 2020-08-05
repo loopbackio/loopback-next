@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/express@1.2.6...@loopback/express@1.3.0) (2020-08-05)
+
+
+### Features
+
+* **express:** sort middleware by group dependencies and ordered groups ([5582f06](https://github.com/strongloop/loopback-next/commit/5582f069834666a6d6a9d8d2f2d66fa1a9a5f7d3))
+
+
+
+
+
 ## [1.2.6](https://github.com/strongloop/loopback-next/compare/@loopback/express@1.2.5...@loopback/express@1.2.6) (2020-07-20)
 
 **Note:** Version bump only for package @loopback/express

@@ -3,6 +3,34 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@5.2.1...@loopback/rest@6.0.0) (2020-08-05)
+
+
+### Bug Fixes
+
+* **rest:** code block in interface apidoc ([1f79de5](https://github.com/strongloop/loopback-next/commit/1f79de56fed717b85da996c0cdc23da6214f4410))
+* **rest:** preserve the bound value for API_SPCE binding from api() ([18fedf3](https://github.com/strongloop/loopback-next/commit/18fedf37fe3db266e9222191e20e1bf6fdcaa8ec))
+* **rest:** register component for apispec ([7ac2081](https://github.com/strongloop/loopback-next/commit/7ac208153b5986fc346d81a410c18ec97c223b2e))
+* enable default AJV custom validation and error messages ([d7c385e](https://github.com/strongloop/loopback-next/commit/d7c385ee24f14e187655a68e2a08cff68c5142a9))
+
+
+### Features
+
+* **rest:** add a note to mention the middleware-based sequence ([8d06f62](https://github.com/strongloop/loopback-next/commit/8d06f62ce66a258d62b2d42febbd947c186b73f0))
+* **rest:** add middleware for REST actions and MiddlewareSequence ([80b667c](https://github.com/strongloop/loopback-next/commit/80b667c3592bcbd5c835854ddffde97c7e66fac4))
+
+
+### BREAKING CHANGES
+
+* **rest:** A middleware-based sequence has been introduced to have
+a middleware chain with discovered middleware to process REST requests
+and responses. The action-based sequence is kept for backward compatibility.
+Please check out https://loopback.io/doc/en/lb4/Sequence.html for more details.
+
+
+
+
+
 ## [5.2.1](https://github.com/strongloop/loopback-next/compare/@loopback/rest@5.2.0...@loopback/rest@5.2.1) (2020-07-20)
 
 

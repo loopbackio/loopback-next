@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/build@6.1.1...@loopback/build@6.2.0) (2020-08-05)
+
+
+### Bug Fixes
+
+* **docs:** fix minor typo ([9b06ccc](https://github.com/strongloop/loopback-next/commit/9b06ccc7659799ba8fdbc26ebddc34715dc6a8d3))
+
+
+### Features
+
+* rework fail-on-console-logs to support parallel test execution ([ba580de](https://github.com/strongloop/loopback-next/commit/ba580de07ef6e9cd7448e6fc7f59201836228621))
+
+
+
+
+
 ## [6.1.1](https://github.com/strongloop/loopback-next/compare/@loopback/build@6.1.0...@loopback/build@6.1.1) (2020-07-20)
 
 **Note:** Version bump only for package @loopback/build

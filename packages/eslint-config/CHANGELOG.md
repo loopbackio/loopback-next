@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [9.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/eslint-config@8.0.4...@loopback/eslint-config@9.0.0) (2020-08-05)
+
+
+### Features
+
+* **eslint-config:** disable `createDefaultProgram` ([13dbaf2](https://github.com/strongloop/loopback-next/commit/13dbaf24abad16ac4249cef15f41508d5264ed54))
+
+
+### BREAKING CHANGES
+
+* **eslint-config:** We are no longer telling eslint to create a default
+program for files not included in `tsconfig.json`. If you start
+receiving linter errors after upgrade, you can either add
+`createDefaultProgram` to your eslint config manually, modify your
+`tsconfig` file to include all files checked by eslint, or exclude
+the problematic files from linting by adding them to `.eslintignore`
+file.
+
+In projects scaffolded via `lb4 app`, we recommend to add `.eslintrc.js`
+file to `.eslintignore` list.
+
+Signed-off-by: Miroslav Bajtoš <mbajtoss@gmail.com>
+
+
+
+
+
 ## [8.0.4](https://github.com/strongloop/loopback-next/compare/@loopback/eslint-config@8.0.3...@loopback/eslint-config@8.0.4) (2020-07-20)
 
 **Note:** Version bump only for package @loopback/eslint-config

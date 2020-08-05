@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.6.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-multi-tenancy@0.5.2...@loopback/example-multi-tenancy@0.6.0) (2020-08-05)
+
+
+### Features
+
+* **example-multi-tenancy:** refactor the code to use middleware ([036476c](https://github.com/strongloop/loopback-next/commit/036476c08f83035547f525350d0626aee42bb5da))
+
+
+
+
+
 ## [0.5.2](https://github.com/strongloop/loopback-next/compare/@loopback/example-multi-tenancy@0.5.1...@loopback/example-multi-tenancy@0.5.2) (2020-07-20)
 
 **Note:** Version bump only for package @loopback/example-multi-tenancy

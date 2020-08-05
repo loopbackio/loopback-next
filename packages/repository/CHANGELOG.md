@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.11.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@2.10.0...@loopback/repository@2.11.0) (2020-08-05)
+
+
+### Bug Fixes
+
+* **repository:** convert relation property in toobject ([85a6164](https://github.com/strongloop/loopback-next/commit/85a616415253bdca0475b7db9072da1ee611ac28))
+
+
+### Features
+
+* **repository:** add support for non-SQL variants of `Repository.execute()` ([49b86c4](https://github.com/strongloop/loopback-next/commit/49b86c463648ef5e0cfac4e9db14334291e992ab))
+
+
+
+
+
 # [2.10.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@2.9.0...@loopback/repository@2.10.0) (2020-07-20)
 
 

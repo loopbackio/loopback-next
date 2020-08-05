@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.2.2](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@3.2.1...@loopback/testlab@3.2.2) (2020-08-05)
+
+
+### Bug Fixes
+
+* **testlab:** correctly detect `.map` files when copying JS files to sandbox ([abdb1aa](https://github.com/strongloop/loopback-next/commit/abdb1aa8fc1f44540767a8bbcd64b7f7f81b6d4b))
+
+
+
+
+
 ## [3.2.1](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@3.2.0...@loopback/testlab@3.2.1) (2020-07-20)
 
 **Note:** Version bump only for package @loopback/testlab

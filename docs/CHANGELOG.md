@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.13.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.12.0...@loopback/docs@3.13.0) (2020-08-05)
+
+
+### Bug Fixes
+
+* **docs:** fix minor typo ([9b06ccc](https://github.com/strongloop/loopback-next/commit/9b06ccc7659799ba8fdbc26ebddc34715dc6a8d3))
+* enable default AJV custom validation and error messages ([d7c385e](https://github.com/strongloop/loopback-next/commit/d7c385ee24f14e187655a68e2a08cff68c5142a9))
+* **docs:** fix extension desc ([0382ae8](https://github.com/strongloop/loopback-next/commit/0382ae8e6bceeacba745b443ab4d55ab30d0dd06))
+
+
+### Features
+
+* add docs for middleware-based sequence ([fbf07b8](https://github.com/strongloop/loopback-next/commit/fbf07b8749b825dd15a200ee83faf96062febabf))
+
+
+
+
+
 # [3.12.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.11.0...@loopback/docs@3.12.0) (2020-07-20)
 
 

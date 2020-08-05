@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.5.0](https://github.com/strongloop/loopback-next/compare/@loopback/authentication-jwt@0.4.4...@loopback/authentication-jwt@0.5.0) (2020-08-05)
+
+
+### Bug Fixes
+
+* **authentication-jwt:** move REST API Explorer to devDependencies ([0de229e](https://github.com/strongloop/loopback-next/commit/0de229eaf85e91c7dbbdab8aee4e3fd2d2a16886))
+
+
+### Features
+
+* **authentication-jwt:** add signup route ([d481157](https://github.com/strongloop/loopback-next/commit/d481157355d428b7cbc8f59b6a010a6585e9ad1a))
+
+
+
+
+
 ## [0.4.4](https://github.com/strongloop/loopback-next/compare/@loopback/authentication-jwt@0.4.3...@loopback/authentication-jwt@0.4.4) (2020-07-20)
 
 

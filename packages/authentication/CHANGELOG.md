@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@4.2.10...@loopback/authentication@5.0.0) (2020-08-05)
+
+
+### Features
+
+* **authentication:** add a middleware for authentication ([de6f96c](https://github.com/strongloop/loopback-next/commit/de6f96c7af946486ded0425e643ff22c92d6f04f))
+* **authentication:** authentication action is no longer needed ([041fa21](https://github.com/strongloop/loopback-next/commit/041fa213482bcfe723dd075518fa890dce3936e0))
+
+
+### BREAKING CHANGES
+
+* **authentication:** with the newly introduced middleware-based sequence for
+'@loopback/rest', it is no longer needed to explicitly add the authentication
+action for middleware-based sequence.
+
+
+
+
+
 ## [4.2.10](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@4.2.9...@loopback/authentication@4.2.10) (2020-07-20)
 
 **Note:** Version bump only for package @loopback/authentication

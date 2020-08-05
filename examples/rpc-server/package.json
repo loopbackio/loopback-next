@@ -1,6 +1,6 @@
 {
   "name": "@loopback/example-rpc-server",
-  "version": "2.1.6",
+  "version": "2.1.7",
   "description": "An example RPC server and application to demonstrate the creation of your own custom server",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -41,14 +41,14 @@
     "access": "public"
   },
   "dependencies": {
-    "@loopback/core": "^2.9.2",
+    "@loopback/core": "^2.9.3",
     "express": "^4.17.1",
     "tslib": "^2.0.0"
   },
   "devDependencies": {
-    "@loopback/build": "^6.1.1",
-    "@loopback/eslint-config": "^8.0.4",
-    "@loopback/testlab": "^3.2.1",
+    "@loopback/build": "^6.2.0",
+    "@loopback/eslint-config": "^9.0.0",
+    "@loopback/testlab": "^3.2.2",
     "@types/express": "^4.17.7",
     "@types/node": "^10.17.28",
     "eslint": "^7.6.0",

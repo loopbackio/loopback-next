@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.4.1](https://github.com/strongloop/loopback-next/compare/@loopback/apiconnect@0.4.0...@loopback/apiconnect@0.4.1) (2020-08-05)
+
+**Note:** Version bump only for package @loopback/apiconnect
+
+
+
+
+
 # [0.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/apiconnect@0.3.7...@loopback/apiconnect@0.4.0) (2020-07-20)
 
 

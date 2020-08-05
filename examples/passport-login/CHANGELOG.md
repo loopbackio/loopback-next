@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.3](https://github.com/strongloop/loopback-next/compare/@loopback/example-passport-login@1.5.2...@loopback/example-passport-login@1.5.3) (2020-08-05)
+
+**Note:** Version bump only for package @loopback/example-passport-login
+
+
+
+
+
 ## [1.5.2](https://github.com/strongloop/loopback-next/compare/@loopback/example-passport-login@1.5.1...@loopback/example-passport-login@1.5.2) (2020-07-20)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.5.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-file-transfer@1.4.2...@loopback/example-file-transfer@1.5.0) (2020-08-05)
+
+
+### Features
+
+* switch to middleware based sequence for examples ([b664a41](https://github.com/strongloop/loopback-next/commit/b664a4195a81c7cd4a4f71e4f7cacb9edb21347b))
+
+
+
+
+
 ## [1.4.2](https://github.com/strongloop/loopback-next/compare/@loopback/example-file-transfer@1.4.1...@loopback/example-file-transfer@1.4.2) (2020-07-20)
 
 **Note:** Version bump only for package @loopback/example-file-transfer

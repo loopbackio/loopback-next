@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.7.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo@3.6.2...@loopback/example-todo@3.7.0) (2020-08-05)
+
+
+### Features
+
+* switch to middleware based sequence for examples ([b664a41](https://github.com/strongloop/loopback-next/commit/b664a4195a81c7cd4a4f71e4f7cacb9edb21347b))
+* **example-todo:** switch to middleware based sequence ([a8e49c6](https://github.com/strongloop/loopback-next/commit/a8e49c6f9d03b79017143603853a5df27459c7d5))
+
+
+
+
+
 ## [3.6.2](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo@3.6.1...@loopback/example-todo@3.6.2) (2020-07-20)
 
 

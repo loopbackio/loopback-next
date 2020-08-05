@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.7.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-validation-app@1.6.2...@loopback/example-validation-app@1.7.0) (2020-08-05)
+
+
+### Bug Fixes
+
+* enable default AJV custom validation and error messages ([d7c385e](https://github.com/strongloop/loopback-next/commit/d7c385ee24f14e187655a68e2a08cff68c5142a9))
+
+
+### Features
+
+* **example-validation-app:** refactor the code to use middleware ([3490a22](https://github.com/strongloop/loopback-next/commit/3490a225ff8caf7a76ef6c744637515ca67b921a))
+
+
+
+
+
 ## [1.6.2](https://github.com/strongloop/loopback-next/compare/@loopback/example-validation-app@1.6.1...@loopback/example-validation-app@1.6.2) (2020-07-20)
 
 **Note:** Version bump only for package @loopback/example-validation-app

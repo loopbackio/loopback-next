@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.12.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@2.11.0...@loopback/cli@2.12.0) (2020-08-05)
+
+
+### Features
+
+* **cli:** add hasManyThrough to relation option ([1c3fb1e](https://github.com/strongloop/loopback-next/commit/1c3fb1eaf9dfeb887545a075f2c468a5900d345f))
+* **cli:** update eslintignore template to skip linting `.eslintrc.js` ([a8b3b00](https://github.com/strongloop/loopback-next/commit/a8b3b00845e8922ca4fd2572ffeedfaa4a979b50))
+* **cli:** update template for `src/sequence.ts` ([dc5023c](https://github.com/strongloop/loopback-next/commit/dc5023cc26ae4e81a542bdc4d861104bffc8ed1b))
+
+
+
+
+
 # [2.11.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@2.10.0...@loopback/cli@2.11.0) (2020-07-20)
 
 

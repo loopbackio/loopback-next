@@ -1,6 +1,6 @@
 {
   "name": "@loopback/context-explorer",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "description": "Visualize context hierarchy, bindings, configurations, and dependencies",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -21,15 +21,15 @@
     "access": "public"
   },
   "dependencies": {
-    "@loopback/core": "^2.9.2",
-    "@loopback/rest": "^5.2.1",
+    "@loopback/core": "^2.9.3",
+    "@loopback/rest": "^6.0.0",
     "ts-graphviz": "^0.13.1",
     "viz.js": "^2.1.2"
   },
   "devDependencies": {
-    "@loopback/build": "^6.1.1",
-    "@loopback/eslint-config": "^8.0.4",
-    "@loopback/testlab": "^3.2.1",
+    "@loopback/build": "^6.2.0",
+    "@loopback/eslint-config": "^9.0.0",
+    "@loopback/testlab": "^3.2.2",
     "@types/node": "^10.17.28"
   },
   "keywords": [
