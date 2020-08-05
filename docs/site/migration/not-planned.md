@@ -69,7 +69,7 @@ _If you are happy with the outcome, then please consider packaging your code as
 a [LoopBack Component](../Creating-components.md) and sharing your great work
 with the entire LoopBack community. We are happy to promote it in our
 documentation, just submit a pull request to add your component to
-[Using components](../Using-components.md)._
+[Using components](../Components.md#using-components)._
 
 ## Push notifications
 

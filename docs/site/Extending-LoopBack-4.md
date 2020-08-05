@@ -141,7 +141,7 @@ is illustrated below:
 For more information about components, see:
 
 - [Creating components](Creating-components.md)
-- [Using Components](Using-components.md)
+- [Using Components](Components.md#using-components)
 
 ## Types of extensions
 

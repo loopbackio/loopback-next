@@ -50,8 +50,8 @@ environment-specific configuration by using `component-config.{env}.json` files.
 ## LoopBack 4 layout
 
 As explained in [Creating components](../../Creating-Components.md) and
-[Using components](../../Using-components.md), a typical LoopBack 4 component is
-an npm package exporting a Component class.
+[Using components](../../Components.md#using-components), a typical LoopBack 4
+component is an npm package exporting a Component class.
 
 The component class is usually implemented inside
 `src/{component-name}.component.ts` file, for example
