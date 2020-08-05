@@ -82,3 +82,19 @@ Attach the newly created datasource to the app by calling `app.dataSource()`.
 The `app.datasource()` method is available only on application classes
 with `RepositoryMixin` applied.
 " %}
+
+### Connector
+
+{% include note.html content=" This is a placeholder page, the task of adding content is tracked by the following GitHub issue: loopback-next#6092 " %}
+
+<!-- TODO
+
+- what is connectors
+- what role it plays in req/res cycle, and what relation it has between model and other artifacts (briefly)
+- connector types (add links ):
+  - SQL (transaction), NoSQL (freeform properties)
+  - Services connectors (service proxy) and others
+  - (optional) In-memory connector
+  - (optional) Community connector
+
+  -->
