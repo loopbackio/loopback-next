@@ -12,11 +12,10 @@ import {
   ValueOrPromise,
 } from '@loopback/core';
 import {
-  discoverMiddleware,
   InvokeMiddleware,
   InvokeMiddlewareOptions,
   MiddlewareGroups,
-  MiddlewareOrKey,
+  MiddlewareView,
 } from '@loopback/express';
 import debugFactory from 'debug';
 import {RestBindings, RestTags} from './keys';
@@ -188,7 +187,7 @@ export namespace RestMiddlewareGroups {
  */
 @bind({scope: BindingScope.SINGLETON})
 export class MiddlewareSequence implements SequenceHandler {
-  private middlewareList: MiddlewareOrKey[];
+  private middlewareView: MiddlewareView;
 
   static defaultOptions: InvokeMiddlewareOptions = {
     chain: RestTags.REST_MIDDLEWARE_CHAIN,
@@ -248,8 +247,8 @@ export class MiddlewareSequence implements SequenceHandler {
     @config()
     readonly options: InvokeMiddlewareOptions = MiddlewareSequence.defaultOptions,
   ) {
-    this.middlewareList = discoverMiddleware(context, options);
-    debug('Discovered middleware', this.middlewareList);
+    this.middlewareView = new MiddlewareView(context, options);
+    debug('Discovered middleware', this.middlewareView.middlewareBindingKeys);
   }
 
   /**
@@ -285,7 +284,7 @@ export class MiddlewareSequence implements SequenceHandler {
       this.options.orderedGroups,
     );
     const options: InvokeMiddlewareOptions = {
-      middlewareList: this.middlewareList,
+      middlewareList: this.middlewareView.middlewareBindingKeys,
       validate: MiddlewareSequence.defaultOptions.validate,
       ...this.options,
     };
