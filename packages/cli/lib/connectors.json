@@ -101,9 +101,9 @@
     },
     "supportedByStrongLoop": true
   },
-  "db2i": {
+  "ibmi": {
     "name": "ibmi",
-    "description": "IBM Db2 for i",
+    "description": "IBM i (Db2 for i)",
     "baseModel": "PersistedModel",
     "features": {
       "discovery": true,
@@ -112,20 +112,19 @@
     "settings": {
       "dsn": {
         "type": "string",
-        "message": "ODBC DSN to use for the connection"
+        "message": "ODBC DSN"
       },
       "connectionString": {
         "type": "string",
-        "message": "ODBC connection string for connecting to the database (eg: DSN=*LOCAL;UID=MY_UID;PWD=MY_PWD)"
+        "message": "ODBC connection string for overriding other options (e.g.: DBQ=QGPL;NAM=1)"
       },
-      "username": {
-        "type": "string"
+      "user": {
+        "type": "string",
+        "message": "IBM i User (If not specified in DSN or connection string)"
       },
       "password": {
-        "type": "password"
-      },
-      "schema": {
-        "type": "string"
+        "type": "password",
+        "message": "IBM i User's Password (If not specified in DSN or connection string)"
       }
     },
     "package": {
