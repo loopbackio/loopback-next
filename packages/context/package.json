@@ -28,7 +28,7 @@
     "debug": "^4.1.1",
     "hyperid": "^2.0.5",
     "p-event": "^4.2.0",
-    "tslib": "^2.0.0",
+    "tslib": "^2.0.1",
     "uuid": "^8.3.0"
   },
   "devDependencies": {

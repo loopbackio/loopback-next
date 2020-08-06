@@ -34,7 +34,7 @@
     "@loopback/boot": "^2.4.1",
     "@loopback/core": "^2.9.3",
     "@loopback/rest": "^6.0.0",
-    "tslib": "^2.0.0",
+    "tslib": "^2.0.1",
     "typeorm": "^0.2.25"
   },
   "files": [

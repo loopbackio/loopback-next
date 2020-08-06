@@ -33,7 +33,7 @@
     "@loopback/testlab": "^3.2.2",
     "@types/debug": "^4.1.5",
     "debug": "^4.1.1",
-    "tslib": "^2.0.0"
+    "tslib": "^2.0.1"
   },
   "peerDependencies": {
     "@loopback/repository": "^2.11.0"

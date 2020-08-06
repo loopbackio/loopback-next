@@ -25,7 +25,7 @@
     "@cloudnative/health": "^2.1.2",
     "@loopback/core": "^2.9.3",
     "@loopback/rest": "^6.0.0",
-    "tslib": "^2.0.0"
+    "tslib": "^2.0.1"
   },
   "devDependencies": {
     "@loopback/build": "^6.2.0",
