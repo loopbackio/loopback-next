@@ -14,8 +14,8 @@ import {juggler} from '@loopback/repository';
 const config = {
   name: 'ds',
   connector: 'memory',
-  localStorage: undefined,
-  file: undefined
+  localStorage: '',
+  file: ''
 };
 
 // Observe application's life cycle to disconnect the datasource when
@@ -46,8 +46,8 @@ import {juggler} from '@loopback/repository';
 const config = {
   name: 'ds',
   connector: 'memory',
-  localStorage: undefined,
-  file: undefined
+  localStorage: '',
+  file: ''
 };
 
 // Observe application's life cycle to disconnect the datasource when
@@ -78,13 +78,13 @@ import {juggler} from '@loopback/repository';
 const config = {
   name: 'ds',
   connector: 'db2',
-  dsn: undefined,
-  host: undefined,
+  dsn: '',
+  host: '',
   port: 100,
-  user: undefined,
-  password: undefined,
-  database: undefined,
-  schema: undefined
+  user: '',
+  password: '',
+  database: '',
+  schema: ''
 };
 
 // Observe application's life cycle to disconnect the datasource when
@@ -115,7 +115,7 @@ import {juggler} from '@loopback/repository';
 const config = {
   name: 'ds',
   connector: 'rest',
-  baseURL: undefined,
+  baseURL: '',
   options: {
     test: 'value'
   },
@@ -155,10 +155,10 @@ const config = {
   name: 'ds',
   connector: 'cloudant',
   url: 'http://user:pass@host.com',
-  database: undefined,
+  database: '',
   username: 'user',
   password: 'pass',
-  modelIndex: undefined
+  modelIndex: ''
 };
 
 // Observe application's life cycle to disconnect the datasource when

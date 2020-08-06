@@ -7,9 +7,7 @@
 
 'use strict';
 
-exports[
-  `lb4 relation HasManyThrough checks if the controller file created  answers {"relationType":"hasManyThrough","sourceModel":"Doctor","destinationModel":"Patient","throughModel":"Appointment","relationName":"myPatients"} controller file has been created with hasManyThrough relation 1`
-] = `
+exports[`lb4 relation HasManyThrough checks if the controller file created  answers {"relationType":"hasManyThrough","sourceModel":"Doctor","destinationModel":"Patient","throughModel":"Appointment","relationName":"myPatients"} controller file has been created with hasManyThrough relation 1`] = `
 import {
   Count,
   CountSchema,
@@ -123,9 +121,8 @@ export class DoctorPatientController {
 
 `;
 
-exports[
-  `lb4 relation HasManyThrough checks if the controller file created  answers {"relationType":"hasManyThrough","sourceModel":"Doctor","destinationModel":"Patient","throughModel":"Appointment"} controller file has been created with hasManyThrough relation 1`
-] = `
+
+exports[`lb4 relation HasManyThrough checks if the controller file created  answers {"relationType":"hasManyThrough","sourceModel":"Doctor","destinationModel":"Patient","throughModel":"Appointment"} controller file has been created with hasManyThrough relation 1`] = `
 import {
   Count,
   CountSchema,
@@ -239,9 +236,8 @@ export class DoctorPatientController {
 
 `;
 
-exports[
-  `lb4 relation HasManyThrough generates model relation with custom keyFrom and/or keyTo answers {"relationType":"hasManyThrough","sourceModel":"Doctor","destinationModel":"Patient","throughModel":"Appointment","sourceKeyOnThrough":"customKeyFrom","targetKeyOnThrough":"customKeyTo"} add custom keyTo and/or keyFrom to the through model 1`
-] = `
+
+exports[`lb4 relation HasManyThrough generates model relation with custom keyFrom and/or keyTo answers {"relationType":"hasManyThrough","sourceModel":"Doctor","destinationModel":"Patient","throughModel":"Appointment","sourceKeyOnThrough":"customKeyFrom","targetKeyOnThrough":"customKeyTo"} add custom keyTo and/or keyFrom to the through model 1`] = `
 import {Entity, model, property, hasMany} from '@loopback/repository';
 import {Patient} from './patient.model';
 import {Appointment} from './appointment.model';
@@ -270,9 +266,8 @@ export class Doctor extends Entity {
 
 `;
 
-exports[
-  `lb4 relation HasManyThrough generates model relation with custom keyFrom and/or keyTo answers {"relationType":"hasManyThrough","sourceModel":"Doctor","destinationModel":"Patient","throughModel":"Appointment","sourceKeyOnThrough":"customKeyFrom","targetKeyOnThrough":"customKeyTo"} add custom keyTo and/or keyFrom to the through model 2`
-] = `
+
+exports[`lb4 relation HasManyThrough generates model relation with custom keyFrom and/or keyTo answers {"relationType":"hasManyThrough","sourceModel":"Doctor","destinationModel":"Patient","throughModel":"Appointment","sourceKeyOnThrough":"customKeyFrom","targetKeyOnThrough":"customKeyTo"} add custom keyTo and/or keyFrom to the through model 2`] = `
 import {Entity, model, property} from '@loopback/repository';
 
 @model()
@@ -306,9 +301,8 @@ export class Appointment extends Entity {
 
 `;
 
-exports[
-  `lb4 relation HasManyThrough generates model relation with custom keyFrom and/or keyTo answers {"relationType":"hasManyThrough","sourceModel":"Doctor","destinationModel":"Patient","throughModel":"Appointment","sourceKeyOnThrough":"customKeyFrom"} add custom keyTo and/or keyFrom to the through model 1`
-] = `
+
+exports[`lb4 relation HasManyThrough generates model relation with custom keyFrom and/or keyTo answers {"relationType":"hasManyThrough","sourceModel":"Doctor","destinationModel":"Patient","throughModel":"Appointment","sourceKeyOnThrough":"customKeyFrom"} add custom keyTo and/or keyFrom to the through model 1`] = `
 import {Entity, model, property, hasMany} from '@loopback/repository';
 import {Patient} from './patient.model';
 import {Appointment} from './appointment.model';
@@ -337,9 +331,8 @@ export class Doctor extends Entity {
 
 `;
 
-exports[
-  `lb4 relation HasManyThrough generates model relation with custom keyFrom and/or keyTo answers {"relationType":"hasManyThrough","sourceModel":"Doctor","destinationModel":"Patient","throughModel":"Appointment","sourceKeyOnThrough":"customKeyFrom"} add custom keyTo and/or keyFrom to the through model 2`
-] = `
+
+exports[`lb4 relation HasManyThrough generates model relation with custom keyFrom and/or keyTo answers {"relationType":"hasManyThrough","sourceModel":"Doctor","destinationModel":"Patient","throughModel":"Appointment","sourceKeyOnThrough":"customKeyFrom"} add custom keyTo and/or keyFrom to the through model 2`] = `
 import {Entity, model, property} from '@loopback/repository';
 
 @model()
@@ -373,9 +366,8 @@ export class Appointment extends Entity {
 
 `;
 
-exports[
-  `lb4 relation HasManyThrough generates model relation with custom keyFrom and/or keyTo answers {"relationType":"hasManyThrough","sourceModel":"Doctor","destinationModel":"Patient","throughModel":"Appointment","targetKeyOnThrough":"customKeyTo"} add custom keyTo and/or keyFrom to the through model 1`
-] = `
+
+exports[`lb4 relation HasManyThrough generates model relation with custom keyFrom and/or keyTo answers {"relationType":"hasManyThrough","sourceModel":"Doctor","destinationModel":"Patient","throughModel":"Appointment","targetKeyOnThrough":"customKeyTo"} add custom keyTo and/or keyFrom to the through model 1`] = `
 import {Entity, model, property, hasMany} from '@loopback/repository';
 import {Patient} from './patient.model';
 import {Appointment} from './appointment.model';
@@ -404,9 +396,8 @@ export class Doctor extends Entity {
 
 `;
 
-exports[
-  `lb4 relation HasManyThrough generates model relation with custom keyFrom and/or keyTo answers {"relationType":"hasManyThrough","sourceModel":"Doctor","destinationModel":"Patient","throughModel":"Appointment","targetKeyOnThrough":"customKeyTo"} add custom keyTo and/or keyFrom to the through model 2`
-] = `
+
+exports[`lb4 relation HasManyThrough generates model relation with custom keyFrom and/or keyTo answers {"relationType":"hasManyThrough","sourceModel":"Doctor","destinationModel":"Patient","throughModel":"Appointment","targetKeyOnThrough":"customKeyTo"} add custom keyTo and/or keyFrom to the through model 2`] = `
 import {Entity, model, property} from '@loopback/repository';
 
 @model()
@@ -440,9 +431,8 @@ export class Appointment extends Entity {
 
 `;
 
-exports[
-  `lb4 relation HasManyThrough generates model relation with custom relation name answers {"relationType":"hasManyThrough","sourceModel":"Doctor","destinationModel":"Patient","throughModel":"Appointment","relationName":"myPatients"} relation name should be myPatients 1`
-] = `
+
+exports[`lb4 relation HasManyThrough generates model relation with custom relation name answers {"relationType":"hasManyThrough","sourceModel":"Doctor","destinationModel":"Patient","throughModel":"Appointment","relationName":"myPatients"} relation name should be myPatients 1`] = `
 import {Entity, model, property, hasMany} from '@loopback/repository';
 import {Patient} from './patient.model';
 import {Appointment} from './appointment.model';
@@ -471,9 +461,8 @@ export class Doctor extends Entity {
 
 `;
 
-exports[
-  `lb4 relation HasManyThrough generates model relation with custom relation name answers {"relationType":"hasManyThrough","sourceModel":"Doctor","destinationModel":"Patient","throughModel":"Appointment","relationName":"myPatients"} relation name should be myPatients 2`
-] = `
+
+exports[`lb4 relation HasManyThrough generates model relation with custom relation name answers {"relationType":"hasManyThrough","sourceModel":"Doctor","destinationModel":"Patient","throughModel":"Appointment","relationName":"myPatients"} relation name should be myPatients 2`] = `
 import {DefaultCrudRepository, repository, HasManyThroughRepositoryFactory} from '@loopback/repository';
 import {Doctor, Patient, Appointment} from '../models';
 import {DbDataSource} from '../datasources';
@@ -499,9 +488,8 @@ export class DoctorRepository extends DefaultCrudRepository<
 
 `;
 
-exports[
-  `lb4 relation HasManyThrough generates model relation with default values answers {"relationType":"hasManyThrough","sourceModel":"Doctor","destinationModel":"Patient","throughModel":"Appointment"} has correct default foreign keys 1`
-] = `
+
+exports[`lb4 relation HasManyThrough generates model relation with default values answers {"relationType":"hasManyThrough","sourceModel":"Doctor","destinationModel":"Patient","throughModel":"Appointment"} has correct default foreign keys 1`] = `
 import {Entity, model, property} from '@loopback/repository';
 
 @model()
@@ -535,9 +523,8 @@ export class Appointment extends Entity {
 
 `;
 
-exports[
-  `lb4 relation HasManyThrough generates model relation with default values answers {"relationType":"hasManyThrough","sourceModel":"Doctor","destinationModel":"Patient","throughModel":"Appointment"} has correct imports and relation name patients 1`
-] = `
+
+exports[`lb4 relation HasManyThrough generates model relation with default values answers {"relationType":"hasManyThrough","sourceModel":"Doctor","destinationModel":"Patient","throughModel":"Appointment"} has correct imports and relation name patients 1`] = `
 import {Entity, model, property, hasMany} from '@loopback/repository';
 import {Patient} from './patient.model';
 import {Appointment} from './appointment.model';
@@ -566,9 +553,8 @@ export class Doctor extends Entity {
 
 `;
 
-exports[
-  `lb4 relation HasManyThrough generates model relation with default values answers {"relationType":"hasManyThrough","sourceModel":"Doctor","destinationModel":"Patient","throughModel":"Appointment"} has correct imports and relation name patients 2`
-] = `
+
+exports[`lb4 relation HasManyThrough generates model relation with default values answers {"relationType":"hasManyThrough","sourceModel":"Doctor","destinationModel":"Patient","throughModel":"Appointment"} has correct imports and relation name patients 2`] = `
 import {DefaultCrudRepository, repository, HasManyThroughRepositoryFactory} from '@loopback/repository';
 import {Doctor, Patient, Appointment} from '../models';
 import {DbDataSource} from '../datasources';

@@ -258,6 +258,7 @@ module.exports = class RestCrudGenerator extends ArtifactGenerator {
         name: 'modelNameList',
         message: PROMPT_MESSAGE_MODEL,
         choices: modelList.map(m => ({name: m, value: m, checked: true})),
+        default: [],
         when: this.artifactInfo.modelNameList === undefined,
         // Require at least one model to be selected
         // This prevents users from accidentally pressing ENTER instead of SPACE

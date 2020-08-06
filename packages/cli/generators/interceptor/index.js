@@ -137,6 +137,7 @@ module.exports = class InterceptorGenerator extends ArtifactGenerator {
       {
         type: 'input',
         name: 'group',
+        default: '',
         // capitalization
         message: g.f("Group name for the global interceptor: ('')"),
       },

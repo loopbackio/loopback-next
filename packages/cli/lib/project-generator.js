@@ -202,6 +202,7 @@ module.exports = class ProjectGenerator extends BaseGenerator {
         choices: choices,
         // Skip if all features are enabled by cli options
         when: choices.length > 0,
+        default: choices.map(c => c.short),
       },
     ];
     return this.prompt(prompts).then(props => {

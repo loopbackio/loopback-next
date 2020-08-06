@@ -274,6 +274,7 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
         // This prevents users from accidentally pressing ENTER instead of SPACE
         // to select an item from the list
         validate: result => !!result.length,
+        default: choices.map(c => c.value),
       },
     ];
     const selections =

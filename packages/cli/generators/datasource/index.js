@@ -168,7 +168,7 @@ module.exports = class DataSourceGenerator extends ArtifactGenerator {
       // Set defaults and merge with `setting` to override properties
       const question = Object.assign(
         {},
-        {name: key, message: key, suffix: ':'},
+        {name: key, message: key, suffix: ':', type: 'input'},
         setting,
       );
 
@@ -178,18 +178,25 @@ module.exports = class DataSourceGenerator extends ArtifactGenerator {
        */
       switch ((setting.type || '').toLowerCase()) {
         case 'string':
+          question.default = '';
+          break;
         case 'number':
-          question.type = 'input';
+          question.default = 0;
           break;
         case 'object':
+          question.default = '{}';
+          question.validate = utils.validateStringObject(setting.type);
+          break;
         case 'array':
-          question.type = 'input';
+          question.default = '[]';
           question.validate = utils.validateStringObject(setting.type);
           break;
         case 'boolean':
           question.type = 'confirm';
+          question.default = false;
           break;
         case 'password':
+          question.default = '';
           break;
         default:
           console.warn(

@@ -368,6 +368,7 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
             return true;
           }
         },
+        default: '',
       },
     ];
 

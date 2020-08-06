@@ -366,6 +366,7 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
         name: 'modelNameList',
         message: PROMPT_MESSAGE_MODEL,
         choices: modelList,
+        default: [],
         when: this.artifactInfo.modelNameList === undefined,
         // Require at least one model to be selected
         // This prevents users from accidentally pressing ENTER instead of SPACE
