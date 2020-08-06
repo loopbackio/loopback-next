@@ -1326,6 +1326,31 @@ paths:
     await client.get(response.header.location).expect(200, 'Hi');
   });
 
+  it('isolates processing for concurrent requests', async () => {
+    class MyController {
+      @get('/hello')
+      hello() {
+        return 'hello';
+      }
+
+      @get('/greet')
+      greet() {
+        return 'greet';
+      }
+    }
+    const server = await givenAServer();
+    server.controller(MyController);
+    const client = createClientForHandler(server.requestHandler);
+    const requests: Promise<unknown>[] = [];
+    for (let i = 0; i < 10; i++) {
+      requests.push(
+        client.get('/hello').expect(200, 'hello'),
+        client.get('/greet').expect(200, 'greet'),
+      );
+    }
+    await Promise.all(requests);
+  });
+
   describe('basePath', () => {
     const root = ASSETS;
     let server: RestServer;

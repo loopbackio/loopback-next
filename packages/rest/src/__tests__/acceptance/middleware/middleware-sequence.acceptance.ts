@@ -10,8 +10,13 @@ import {
   CoreTags,
   inject,
 } from '@loopback/core';
-import {InvokeMiddleware, InvokeMiddlewareProvider} from '@loopback/express';
-import {createUnexpectedHttpErrorLogger} from '@loopback/testlab';
+import {
+  InvokeMiddleware,
+  InvokeMiddlewareProvider,
+  MiddlewareView,
+} from '@loopback/express';
+import {createUnexpectedHttpErrorLogger, expect} from '@loopback/testlab';
+import {once} from 'events';
 import {
   DefaultSequence,
   MiddlewareSequence,
@@ -65,6 +70,27 @@ describe('Middleware in sequence', () => {
       chain: RestTags.ACTION_MIDDLEWARE_CHAIN,
     });
     return helper.testSpyLog(binding);
+  });
+
+  it('allows a middleware to be unregistered', async () => {
+    helper.app.sequence(MiddlewareSequence);
+    const binding = helper.app.expressMiddleware(spy, undefined, {
+      chain: RestTags.REST_MIDDLEWARE_CHAIN,
+    });
+    await helper.testSpyLog(binding);
+    const view = new MiddlewareView(helper.app.restServer, {
+      chain: RestTags.REST_MIDDLEWARE_CHAIN,
+    });
+    helper.app.restServer.unbind(binding.key);
+
+    // Wait until the `unbind` is processed
+    await once(view, 'refresh');
+    const res = await helper.client
+      .post('/hello')
+      .send('"World"')
+      .set('content-type', 'application/json')
+      .expect(200, 'Hello, World');
+    expect(res.get('x-spy-log')).to.be.undefined();
   });
 
   it('reports an error for unreachable middleware groups', async () => {

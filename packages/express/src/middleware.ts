@@ -11,6 +11,7 @@ import {
   compareBindingsByTag,
   Constructor,
   Context,
+  ContextView,
   createBindingFromClass,
   extensionFilter,
   extensionFor,
@@ -214,59 +215,87 @@ export function invokeMiddleware(
     middlewareCtx.request.originalUrl,
     options,
   );
-  const keys =
-    options?.middlewareList ?? discoverMiddleware(middlewareCtx, options);
+  let keys = options?.middlewareList;
+  if (keys == null) {
+    const view = new MiddlewareView(middlewareCtx, options);
+    keys = view.middlewareBindingKeys;
+    view.close();
+  }
   const mwChain = new MiddlewareChain(middlewareCtx, keys);
   return mwChain.invokeInterceptors(options?.next);
 }
 
 /**
- * Discover middleware binding keys for the given context and sort them by
+ * Watch middleware binding keys for the given context and sort them by
  * group
  * @param ctx - Context object
  * @param options - Middleware options
  */
-export function discoverMiddleware(
-  ctx: Context,
-  options?: InvokeMiddlewareOptions,
-) {
-  const {chain = DEFAULT_MIDDLEWARE_CHAIN, orderedGroups = []} = options ?? {};
-  // Find extensions for the given extension point binding
-  const filter = extensionFilter(chain);
+export class MiddlewareView extends ContextView {
+  private options: InvokeMiddlewareOptions;
+  private keys: string[];
 
-  const middlewareBindings = ctx.find(filter);
-  if (debug.enabled) {
-    debug(
-      'Middleware for extension point "%s":',
-      chain,
-      middlewareBindings.map(b => b.key),
-    );
+  constructor(ctx: Context, options?: InvokeMiddlewareOptions) {
+    // Find extensions for the given extension point binding
+    const filter = extensionFilter(options?.chain ?? DEFAULT_MIDDLEWARE_CHAIN);
+    super(ctx, filter);
+    this.options = {
+      chain: DEFAULT_MIDDLEWARE_CHAIN,
+      orderedGroups: [],
+      ...options,
+    };
+    this.buildMiddlewareKeys();
+    this.open();
   }
 
-  // Calculate orders from middleware dependencies
-  const ordersFromDependencies: string[][] = [];
-  middlewareBindings.forEach(b => {
-    const group: string = b.tagMap.group ?? DEFAULT_MIDDLEWARE_GROUP;
-    const groupsBefore: string[] = b.tagMap.upstreamGroups ?? [];
-    groupsBefore.forEach(d => ordersFromDependencies.push([d, group]));
-    const groupsAfter: string[] = b.tagMap.downstreamGroups ?? [];
-    groupsAfter.forEach(d => ordersFromDependencies.push([group, d]));
-  });
-
-  const order = sortListOfGroups(...ordersFromDependencies, orderedGroups);
+  refresh() {
+    super.refresh();
+    this.buildMiddlewareKeys();
+  }
 
   /**
-   * Validate sorted groups
+   * A list of binding keys sorted by group for registered middleware
    */
-  if (typeof options?.validate === 'function') {
-    options.validate(order);
+  get middlewareBindingKeys() {
+    return this.keys;
   }
 
-  const keys = middlewareBindings
-    .sort(compareBindingsByTag('group', order))
-    .map(b => b.key);
+  private buildMiddlewareKeys() {
+    const middlewareBindings = this.bindings;
+    if (debug.enabled) {
+      debug(
+        'Middleware for extension point "%s":',
+        this.options.chain,
+        middlewareBindings.map(b => b.key),
+      );
+    }
 
-  return keys;
+    // Calculate orders from middleware dependencies
+    const ordersFromDependencies: string[][] = [];
+    middlewareBindings.forEach(b => {
+      const group: string = b.tagMap.group ?? DEFAULT_MIDDLEWARE_GROUP;
+      const groupsBefore: string[] = b.tagMap.upstreamGroups ?? [];
+      groupsBefore.forEach(d => ordersFromDependencies.push([d, group]));
+      const groupsAfter: string[] = b.tagMap.downstreamGroups ?? [];
+      groupsAfter.forEach(d => ordersFromDependencies.push([group, d]));
+    });
+
+    const order = sortListOfGroups(
+      ...ordersFromDependencies,
+      this.options.orderedGroups!,
+    );
+
+    /**
+     * Validate sorted groups
+     */
+    if (typeof this.options?.validate === 'function') {
+      this.options.validate(order);
+    }
+
+    this.keys = middlewareBindings
+      .sort(compareBindingsByTag('group', order))
+      .map(b => b.key);
+  }
 }
 
 /**
