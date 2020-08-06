@@ -43,7 +43,7 @@
     "@loopback/rest": "^6.0.0",
     "@loopback/rest-explorer": "^2.2.8",
     "multer": "^1.4.2",
-    "tslib": "^2.0.0"
+    "tslib": "^2.0.1"
   },
   "devDependencies": {
     "@loopback/build": "^6.2.0",

@@ -52,7 +52,7 @@
     "path-to-regexp": "^6.1.0",
     "qs": "^6.9.4",
     "strong-error-handler": "^3.5.0",
-    "tslib": "^2.0.0",
+    "tslib": "^2.0.1",
     "type-is": "^1.6.18",
     "validator": "^13.1.1"
   },

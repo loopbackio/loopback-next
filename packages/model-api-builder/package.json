@@ -42,6 +42,6 @@
     "directory": "packages/model-api-builder"
   },
   "dependencies": {
-    "tslib": "^2.0.0"
+    "tslib": "^2.0.1"
   }
 }

@@ -32,7 +32,7 @@
   "dependencies": {
     "@loopback/core": "^2.9.3",
     "loopback-datasource-juggler": "^4.24.0",
-    "tslib": "^2.0.0"
+    "tslib": "^2.0.1"
   },
   "files": [
     "README.md",
