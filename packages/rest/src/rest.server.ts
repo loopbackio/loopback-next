@@ -64,6 +64,7 @@ import {
 import {assignRouterSpec} from './router/router-spec';
 import {
   DefaultSequence,
+  MiddlewareSequence,
   RestMiddlewareGroups,
   SequenceFunction,
   SequenceHandler,
@@ -222,6 +223,8 @@ export class RestServer extends BaseMiddlewareRegistry
 
     if (config.sequence) {
       this.sequence(config.sequence);
+    } else {
+      this.sequence(MiddlewareSequence);
     }
 
     if (config.router) {
@@ -889,10 +892,14 @@ export class RestServer extends BaseMiddlewareRegistry
    * }
    * ```
    *
-   * @param value - The sequence to invoke for each incoming request.
+   * @param sequenceClass - The sequence class to invoke for each incoming request.
    */
-  public sequence(value: Constructor<SequenceHandler>) {
-    this.bind(RestBindings.SEQUENCE).toClass(value);
+  public sequence(sequenceClass: Constructor<SequenceHandler>) {
+    const sequenceBinding = createBindingFromClass(sequenceClass, {
+      key: RestBindings.SEQUENCE,
+    });
+    this.add(sequenceBinding);
+    return sequenceBinding;
   }
 
   /**

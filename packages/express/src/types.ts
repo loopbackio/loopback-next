@@ -8,6 +8,7 @@ import {
   Context,
   GenericInterceptor,
   GenericInterceptorChain,
+  GenericInterceptorOrKey,
   InvocationContext,
   Next,
   ValueOrPromise,
@@ -129,6 +130,11 @@ export class MiddlewareChain extends GenericInterceptorChain<
 > {}
 
 /**
+ * A middleware function or binding key
+ */
+export type MiddlewareOrKey = GenericInterceptorOrKey<MiddlewareContext>;
+
+/**
  * Default extension point name for middleware
  */
 export const DEFAULT_MIDDLEWARE_CHAIN = 'middlewareChain.default';
@@ -154,6 +160,12 @@ export interface InvokeMiddlewareOptions {
    * middleware chain
    */
   validate?: (groups: string[]) => void;
+
+  /**
+   * Pre-built middleware list. If set, the list will be used to create the
+   * middleware chain without discovering again within the context.
+   */
+  middlewareList?: MiddlewareOrKey[];
 
   /**
    * Optional next handler
