@@ -102,7 +102,7 @@ export class RestApplication extends Application implements HttpServerLike {
   }
 
   sequence(sequence: Constructor<SequenceHandler>): Binding {
-    return this.bind(RestBindings.SEQUENCE).toClass(sequence);
+    return this.restServer.sequence(sequence);
   }
 
   handler(handlerFn: SequenceFunction) {

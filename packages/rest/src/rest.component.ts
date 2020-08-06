@@ -43,7 +43,6 @@ import {
   RestServer,
   RestServerConfig,
 } from './rest.server';
-import {MiddlewareSequence} from './sequence';
 import {ConsolidationEnhancer} from './spec-enhancers/consolidate.spec-enhancer';
 import {InfoSpecEnhancer} from './spec-enhancers/info.spec-enhancer';
 import {AjvFactoryProvider} from './validation/ajv-factory.provider';
@@ -120,7 +119,6 @@ export class RestComponent implements Component {
     ).tag({[CoreTags.EXTENSION_POINT]: RestTags.REST_MIDDLEWARE_CHAIN});
     app.add(invokeMiddlewareServiceBinding);
 
-    app.bind(RestBindings.SEQUENCE).toClass(MiddlewareSequence);
     const apiSpec = createEmptyApiSpec();
     // Merge the OpenAPI `servers` spec from the config into the empty one
     if (config?.openApiSpec?.servers) {

@@ -3,11 +3,20 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {config, inject, ValueOrPromise} from '@loopback/core';
 import {
+  bind,
+  BindingScope,
+  config,
+  Context,
+  inject,
+  ValueOrPromise,
+} from '@loopback/core';
+import {
+  discoverMiddleware,
   InvokeMiddleware,
   InvokeMiddlewareOptions,
   MiddlewareGroups,
+  MiddlewareOrKey,
 } from '@loopback/express';
 import debugFactory from 'debug';
 import {RestBindings, RestTags} from './keys';
@@ -177,7 +186,10 @@ export namespace RestMiddlewareGroups {
 /**
  * A sequence implementation using middleware chains
  */
+@bind({scope: BindingScope.SINGLETON})
 export class MiddlewareSequence implements SequenceHandler {
+  private middlewareList: MiddlewareOrKey[];
+
   static defaultOptions: InvokeMiddlewareOptions = {
     chain: RestTags.REST_MIDDLEWARE_CHAIN,
     orderedGroups: [
@@ -228,11 +240,17 @@ export class MiddlewareSequence implements SequenceHandler {
    * To be injected via RestBindings.INVOKE_MIDDLEWARE_SERVICE.
    */
   constructor(
+    @inject.context()
+    context: Context,
+
     @inject(RestBindings.INVOKE_MIDDLEWARE_SERVICE)
     readonly invokeMiddleware: InvokeMiddleware,
     @config()
     readonly options: InvokeMiddlewareOptions = MiddlewareSequence.defaultOptions,
-  ) {}
+  ) {
+    this.middlewareList = discoverMiddleware(context, options);
+    debug('Discovered middleware', this.middlewareList);
+  }
 
   /**
    * Runs the default sequence. Given a handler context (request and response),
@@ -267,6 +285,7 @@ export class MiddlewareSequence implements SequenceHandler {
       this.options.orderedGroups,
     );
     const options: InvokeMiddlewareOptions = {
+      middlewareList: this.middlewareList,
       validate: MiddlewareSequence.defaultOptions.validate,
       ...this.options,
     };

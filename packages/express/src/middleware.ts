@@ -214,11 +214,27 @@ export function invokeMiddleware(
     middlewareCtx.request.originalUrl,
     options,
   );
+  const keys =
+    options?.middlewareList ?? discoverMiddleware(middlewareCtx, options);
+  const mwChain = new MiddlewareChain(middlewareCtx, keys);
+  return mwChain.invokeInterceptors(options?.next);
+}
+
+/**
+ * Discover middleware binding keys for the given context and sort them by
+ * group
+ * @param ctx - Context object
+ * @param options - Middleware options
+ */
+export function discoverMiddleware(
+  ctx: Context,
+  options?: InvokeMiddlewareOptions,
+) {
   const {chain = DEFAULT_MIDDLEWARE_CHAIN, orderedGroups = []} = options ?? {};
   // Find extensions for the given extension point binding
   const filter = extensionFilter(chain);
 
-  const middlewareBindings = middlewareCtx.find(filter);
+  const middlewareBindings = ctx.find(filter);
   if (debug.enabled) {
     debug(
       'Middleware for extension point "%s":',
@@ -246,12 +262,11 @@ export function invokeMiddleware(
     options.validate(order);
   }
 
-  const mwChain = new MiddlewareChain(
-    middlewareCtx,
-    filter,
-    compareBindingsByTag('group', order),
-  );
-  return mwChain.invokeInterceptors(options?.next);
+  const keys = middlewareBindings
+    .sort(compareBindingsByTag('group', order))
+    .map(b => b.key);
+
+  return keys;
 }
 
 /**
