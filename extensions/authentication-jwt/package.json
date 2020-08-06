@@ -37,7 +37,7 @@
     "@loopback/repository": "^2.11.0",
     "@loopback/rest-explorer": "^2.2.8",
     "@loopback/testlab": "^2.0.2",
-    "@types/lodash": "^4.14.158",
+    "@types/lodash": "^4.14.159",
     "@types/node": "^10.17.28",
     "lodash": "^4.17.19",
     "typescript": "~3.9.7"
