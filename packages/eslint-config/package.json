@@ -17,7 +17,7 @@
     "@typescript-eslint/parser": "^3.8.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-eslint-plugin": "^2.3.0",
-    "eslint-plugin-mocha": "^7.0.1"
+    "eslint-plugin-mocha": "^8.0.0"
   },
   "peerDependencies": {
     "eslint": "^7.6.0"
