@@ -581,6 +581,10 @@ children:
     url: Error-codes.html
     output: 'web, pdf'
 
+  - title: 'LoopBack Types'
+    url: LoopBack-types.html
+    output: 'web, pdf'
+
   - title: 'CLI References'
     url: Command-line-interface.html
     output: 'web, pdf'
