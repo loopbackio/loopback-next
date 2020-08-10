@@ -68,6 +68,7 @@ LoopBack 3:
 - [HasMany](../../HasMany-relation.md)
 - [HasOne](../../HasOne-relation.md)
 - [BelongsTo](../../BelongsTo-relation.md)
+- [HasManyThrough](../../HasManyThrough-relation.md)
 
 Other relations types are not supported yet, you can subscribe to our progress
 in the high-level tracking issue
@@ -75,8 +76,6 @@ in the high-level tracking issue
 See also issues for individual relation types as mentioned in the tracking
 issue, for example:
 
-- HasManyThrough -
-  [loopback-next#2264](https://github.com/strongloop/loopback-next/issues/2264)
 - HasAndBelongsToMany -
   [loopback-next#2308](https://github.com/strongloop/loopback-next/issues/2308)
 - Polymorphic relations -
