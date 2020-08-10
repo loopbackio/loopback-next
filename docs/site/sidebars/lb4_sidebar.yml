@@ -184,19 +184,50 @@ children:
   - title: 'Building REST APIs'
     output: 'web, pdf'
     children:
+    - title: 'Creating CRUD REST APIs from a model'
+      url: Creating-crud-rest-apis.html
+      output: 'web, pdf'
+
     - title: 'Customizing how OpenAPI spec is served'
       url: Customizing-how-openapi-spec-is-served.html
       output: 'web, pdf'
 
-  - title: 'Create Other Forms of APIs'
-    url: Create-other-forms-of-apis.html
+    - title: 'Dynamically adding models, repositories, and controllers'
+      url: Dynamic-models-repositories-controllers.html
+      output: 'web, pdf'
+
+    - title: 'Self-hosted REST API Explorer'
+      url: Self-hosted-rest-api-explorer.html
+      output: 'web, pdf'
+
+    - title: 'Serving Static Files'
+      url: Serving-static-files.html
+      output: 'web, pdf'
+
+    - title: 'Uploading and Downloading Files'
+      url: File-upload-download.html
+      output: 'web, pdf'
+
+    - title: 'Using Express Middleware'
+      url: Express-middleware.html
+      output: 'web, pdf'
+
+    - title: 'Using strong-error-handler'
+      url: Using-strong-error-handler.html
+      output: 'web, pdf'
+
+    - title: 'Boot and Mount a LoopBack 3 Application'
+      url: Boot-and-Mount-a-LoopBack-3-application.html
+      output: 'web, pdf'
+
+  - title: 'Creating Other Forms of APIs'
     output: 'web, pdf'
     children:
       - title: 'Exposing GraphQL APIs'
         url: exposing-graphql-apis.html
         output: 'web, pdf'
 
-  - title: 'Access Databases'
+  - title: 'Accessing Databases'
     output: 'web, pdf'
     children:
 
@@ -246,75 +277,85 @@ children:
       url: Executing-database-commands
       output: 'web, pdf'
 
-  - title: 'Using TypeORM'
+    - title: 'Using TypeORM'
+      output: 'web, pdf'
+      children:
+      - title: 'How to use TypeORM with LoopBack'
+        url: Using-typeorm-with-loopback.html
+        output: 'web, pdf'
+
+  - title: 'Accessing Services'
     output: 'web, pdf'
     children:
-    - title: 'How to use TypeORM with LoopBack'
-      url: Using-typeorm-with-loopback.html
-      output: 'web, pdf'
+      - title: 'Call Other Services'
+        url: Calling-other-APIs-and-web-services.html
+        output: 'web, pdf'
 
-  - title: 'Running and debugging apps'
-    url: Running-and-debugging-apps.html
+  - title: 'Validating Data'
+    url: Validation.html
+    output: 'web, pdf'
+    children:
+      - title: 'Validation in REST Layer'
+        url: Validation-REST-layer.html
+        output: 'web, pdf'
+
+      - title: 'Validation in the Controller, Repository and Service Layer'
+        url: Validation-controller-repo-service-layer.html
+        output: 'web, pdf'
+
+      - title: 'Validation in ORM Layer'
+        url: Validation-ORM-layer.html
+        output: 'web, pdf'
+
+  - title: 'Securing Applications'
     output: 'web, pdf'
     children:
 
-    - title: 'Setting debug strings'
-      url: Setting-debug-strings.html
+    - title: 'Authentication'
+      url: Authentication-overview.html
+      output: 'web, pdf'
+      children:
+        - title: 'Apply JWT Authentication in Todo Example'
+          url: Authentication-tutorial.html
+          output: 'web, pdf'
+
+        - title: 'Authentication Component'
+          url: Loopback-component-authentication.html
+          output: 'web, pdf'
+          children:
+            - title: 'Authentication Decorator'
+              url: Authentication-component-decorator.html
+              output: 'web, pdf'
+
+            - title: 'Authentication Action'
+              url: Authentication-component-action.html
+              output: 'web, pdf'
+
+            - title: 'Authentication Strategy'
+              url: Authentication-component-strategy.html
+              output: 'web, pdf'
+
+            - title: 'Managing Custom Authentication Strategy Options'
+              url: Authentication-component-options.html
+              output: 'web, pdf'
+
+        - title: 'JWT Authentication Extension'
+          url: JWT-authentication-extension.html
+          output: 'web, pdf'
+
+        - title: 'Implement your own authentication strategy'
+          url: Implement-your-own-strategy.html
+          output: 'web, pdf'
+
+        - title: 'Passport Adapter for Authentication'
+          url: Authentication-passport.html
+          output: 'web, pdf'
+
+    - title: 'Authorization'
+      url: Loopback-component-authorization.html
       output: 'web, pdf'
 
-    - title: 'Using strong-error-handler'
-      url: Using-strong-error-handler.html
-      output: 'web, pdf'
-
-  - title: 'Call Other Services'
-    url: Calling-other-APIs-and-web-services.html
-    output: 'web, pdf'
-
-  - title: 'Authentication'
-    url: Authentication-overview.html
-    output: 'web, pdf'
-    children:
-      - title: 'Apply JWT Authentication in Todo Example'
-        url: Authentication-tutorial.html
-        output: 'web, pdf'
-
-      - title: 'Authentication Component'
-        url: Loopback-component-authentication.html
-        output: 'web, pdf'
-        children:
-          - title: 'Authentication Decorator'
-            url: Authentication-component-decorator.html
-            output: 'web, pdf'
-
-          - title: 'Authentication Action'
-            url: Authentication-component-action.html
-            output: 'web, pdf'
-
-          - title: 'Authentication Strategy'
-            url: Authentication-component-strategy.html
-            output: 'web, pdf'
-
-          - title: 'Managing Custom Authentication Strategy Options'
-            url: Authentication-component-options.html
-            output: 'web, pdf'
-
-      - title: 'JWT Authentication Extension'
-        url: JWT-authentication-extension.html
-        output: 'web, pdf'
-
-      - title: 'Implement your own authentication strategy'
-        url: Implement-your-own-strategy.html
-        output: 'web, pdf'
-
-      - title: 'Passport Adapter for Authentication'
-        url: Authentication-passport.html
-        output: 'web, pdf'
-
-  - title: 'Authorization'
-    url: Loopback-component-authorization.html
-    output: 'web, pdf'
-
-  - title: 'Deployment'
+  - title: 'Deploying Applications'
     url: Deployment.html
     output: 'web, pdf'
     children:
@@ -338,61 +379,25 @@ children:
         url: Appsody-LoopBack.html
         output: 'web, pdf'
 
-  - title: 'Using Express Middleware'
-    url: Express-middleware.html
-    output: 'web, pdf'
+      - title: 'Running cron jobs'
+        url: Running-cron-jobs.html
+        output: 'web, pdf'
 
-  - title: 'Serving Static Files'
-    url: Serving-static-files.html
-    output: 'web, pdf'
+      - title: 'Health check'
+        url: Health.html
+        output: 'web, pdf'
 
-  - title: 'Dynamically adding models, repositories, and controllers'
-    url: Dynamic-models-repositories-controllers.html
-    output: 'web, pdf'
+      - title: 'Metrics for Prometheus'
+        url: Metrics.html
+        output: 'web, pdf'
 
-  - title: 'Uploading and Downloading Files'
-    url: File-upload-download.html
-    output: 'web, pdf'
-
-  - title: 'Validation'
-    url: Validation.html
+  - title: 'Troubleshooting'
     output: 'web, pdf'
     children:
-      - title: 'Validation in REST Layer'
-        url: Validation-REST-layer.html
-        output: 'web, pdf'
 
-      - title: 'Validation in the Controller, Repository and Service Layer'
-        url: Validation-controller-repo-service-layer.html
-        output: 'web, pdf'
-
-      - title: 'Validation in ORM Layer'
-        url: Validation-ORM-layer.html
-        output: 'web, pdf'
-
-  - title: 'Self-hosted REST API Explorer'
-    url: Self-hosted-rest-api-explorer.html
-    output: 'web, pdf'
-
-  - title: 'Creating CRUD REST APIs from a model'
-    url: Creating-crud-rest-apis.html
-    output: 'web, pdf'
-
-  - title: 'Boot and Mount a LoopBack 3 Application'
-    url: Boot-and-Mount-a-LoopBack-3-application.html
-    output: 'web, pdf'
-
-  - title: 'Running cron jobs'
-    url: Running-cron-jobs.html
-    output: 'web, pdf'
-
-  - title: 'Health check'
-    url: Health.html
-    output: 'web, pdf'
-
-  - title: 'Metrics for Prometheus'
-    url: Metrics.html
-    output: 'web, pdf'
+    - title: 'Setting debug strings'
+      url: Setting-debug-strings.html
+      output: 'web, pdf'
 
 - title: 'Behind the Scenes'
   url: Behind-the-scene.html
