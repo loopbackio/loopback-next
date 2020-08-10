@@ -29,7 +29,7 @@
     "@types/json-schema": "^7.0.5",
     "@types/lodash": "^4.14.159",
     "@types/node": "^10.17.28",
-    "bson": "4.0.4"
+    "bson": "4.1.0"
   },
   "dependencies": {
     "@loopback/core": "^2.9.3",
