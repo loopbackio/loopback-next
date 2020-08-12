@@ -35,6 +35,9 @@ For example:
   paths: {
     '/greet': {
       get: {
+        // You can specify `operationId` as an universal property that's
+        // understood by other frameworks.
+        operationId: 'MyController.greet',
         'x-operation-name': 'greet',
         'x-controller-name': 'MyController',
         parameters: [{name: 'name', schema: {type: 'string'}, in: 'query'}],
@@ -76,6 +79,9 @@ your endpoint, for example:
 
 ```ts
 const spec = {
+  // You can specify `operationId` as an universal property that's
+  // understood by other frameworks.
+  operationId: 'MyController.checkExist'
   parameters: [{name: 'name', schema: {type: 'string'}, in: 'query'}],
   responses: {
     '200': {
