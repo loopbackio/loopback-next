@@ -117,6 +117,11 @@ export interface ValueValidationOptions extends ValidationOptions {
    * 'query', 'cookie', etc...
    */
   source?: string;
+
+  /**
+   * Parameter name, as provided in `ParameterObject#name` property.
+   */
+  name?: string;
 }
 
 /**

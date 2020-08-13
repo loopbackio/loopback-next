@@ -12,7 +12,6 @@ import {
 } from '@loopback/openapi-v3';
 import ajv, {Ajv} from 'ajv';
 import debugModule from 'debug';
-import _ from 'lodash';
 import util from 'util';
 import {HttpErrors, RequestBody, RestHttpErrors} from '..';
 import {
@@ -180,30 +179,32 @@ export async function validateValueAgainstSchema(
 
   // Throw invalid request body error
   if (options.source === 'body') {
-    const error = RestHttpErrors.invalidRequestBody();
-    addErrorDetails(error, validationErrors);
+    const error = RestHttpErrors.invalidRequestBody(
+      buildErrorDetails(validationErrors),
+    );
     throw error;
   }
 
   // Throw invalid value error
-  const error = new HttpErrors.BadRequest('Invalid value.');
-  addErrorDetails(error, validationErrors);
+  const error = RestHttpErrors.invalidData(value, options.name ?? '(unknown)', {
+    details: buildErrorDetails(validationErrors),
+  });
   throw error;
 }
 
-function addErrorDetails(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  error: any,
+function buildErrorDetails(
   validationErrors: ajv.ErrorObject[],
-) {
-  error.details = _.map(validationErrors, e => {
-    return {
-      path: e.dataPath,
-      code: e.keyword,
-      message: e.message,
-      info: e.params,
-    };
-  });
+): RestHttpErrors.ValidationErrorDetails[] {
+  return validationErrors.map(
+    (e: ajv.ErrorObject): RestHttpErrors.ValidationErrorDetails => {
+      return {
+        path: e.dataPath,
+        code: e.keyword,
+        message: e.message ?? `must pass validation rule ${e.keyword}`,
+        info: e.params,
+      };
+    },
+  );
 }
 
 /**

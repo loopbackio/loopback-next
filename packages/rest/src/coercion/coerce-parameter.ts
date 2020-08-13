@@ -187,7 +187,7 @@ async function coerceObject(
       data,
       schema,
       {},
-      {...options, coerceTypes: true, source: 'parameter'},
+      {...options, coerceTypes: true, source: 'parameter', name: spec.name},
     );
   }
 
