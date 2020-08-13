@@ -15,6 +15,7 @@ import {
 import {
   Client,
   createRestAppClient,
+  expect,
   givenHttpServerConfig,
   sinon,
 } from '@loopback/testlab';
@@ -251,6 +252,34 @@ describe('Coercion', () => {
       .get(`/nested-inclusion-from-query?filter=${encodedFilter}`)
       .expect(200);
     sinon.assert.calledWithExactly(spy, {...inclusionFilter});
+  });
+
+  it('returns AJV validation errors in error details', async () => {
+    const filter = {
+      where: 'string-instead-of-object',
+    };
+    const response = await client
+      .get(`/nested-inclusion-from-query`)
+      .query({filter: JSON.stringify(filter)})
+      .expect(400);
+
+    expect(response.body.error).to.containDeep({
+      code: 'INVALID_PARAMETER_VALUE',
+      details: [
+        {
+          code: 'type',
+          info: {
+            type: 'object',
+          },
+          message: 'should be object',
+          path: '/where',
+        },
+      ],
+    });
+
+    expect(response.body.error.message).to.match(
+      /Invalid data.* for parameter "filter"/,
+    );
   });
 
   async function givenAClient() {
