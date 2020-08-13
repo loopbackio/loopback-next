@@ -47,7 +47,7 @@
     "http-errors": "^1.8.0",
     "js-yaml": "^3.14.0",
     "json-schema-compare": "^0.2.2",
-    "lodash": "^4.17.19",
+    "lodash": "^4.17.20",
     "on-finished": "^2.3.0",
     "path-to-regexp": "^6.1.0",
     "qs": "^6.9.4",
