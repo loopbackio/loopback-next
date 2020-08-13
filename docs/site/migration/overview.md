@@ -55,10 +55,11 @@ require migration:
    Learn how to convert your boot scripts to lifecycle observers in
    [Migrating boot scripts](boot-scripts.md).
 
-2. To make your application secure, LoopBack 3 offers several ways how to
-   implement authentication and authorization. Check out
+2. To make your application secure, LoopBack 3 offers several ways to implement
+   authentication and authorization. Check out
    [Authentication & authorization](auth/overview.md) for an overview and links
-   to further resources.
+   to further resources on how to migrate to LoopBack 4
+   authentication/authorization.
 
 3. LoopBack version 4 has its own CLI tool `lb4` (see
    [Command-line interface](../Command-line-interface.md)). We preserved many of
