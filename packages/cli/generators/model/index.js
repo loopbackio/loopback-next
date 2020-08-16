@@ -27,11 +27,10 @@ const ERROR_NO_MODELS_FOUND = g.f('Model was not found in');
 const BASE_MODELS = ['Entity', 'Model'];
 const CLI_BASE_MODELS = [
   {
-    name: `Entity ${chalk.gray('(A persisted model with an ID)')}`,
+    name: `Entity ${chalk.gray('A persisted model with an ID')}`,
     value: 'Entity',
   },
-  {name: `Model ${chalk.gray('(A business domain object)')}`, value: 'Model'},
-  {type: 'separator', line: '----- Custom Models -----'},
+  {name: `Model ${chalk.gray('A business domain object')}`, value: 'Model'},
 ];
 const MODEL_TEMPLATE_PATH = 'model.ts.ejs';
 
@@ -100,7 +99,7 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
       type: String,
       required: false,
       description: g.f(
-        'The name of the dataSource which contains this model and suppots model discovery',
+        'The name of the dataSource which contains this model and supports model discovery',
       ),
     });
 
@@ -207,8 +206,9 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
 
     try {
       debug(`model list dir ${this.artifactInfo.modelDir}`);
-      const modelList = await utils.getArtifactList(
+      const modelList = await utils.getArtifactListWithPath(
         this.artifactInfo.modelDir,
+        this.artifactInfo.relPath,
         'model',
       );
       debug(`modelist ${modelList}`);

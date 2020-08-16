@@ -36,12 +36,6 @@ const CLI_BASE_KEY_VALUE_REPOSITORIES = [
     value: KEY_VALUE_REPOSITORY,
   },
 ];
-const CLI_BASE_SEPARATOR = [
-  {
-    type: 'separator',
-    line: g.f('----- Custom Repositories -----'),
-  },
-];
 
 const REPOSITORY_KV_TEMPLATE = 'repository-kv-template.ts.ejs';
 const REPOSITORY_CRUD_TEMPLATE = 'repository-crud-default-template.ts.ejs';
@@ -395,7 +389,6 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
     if (this.artifactInfo.repositoryTypeClass === KEY_VALUE_REPOSITORY)
       availableRepositoryList.push(...CLI_BASE_KEY_VALUE_REPOSITORIES);
     else availableRepositoryList.push(...CLI_BASE_CRUD_REPOSITORIES);
-    availableRepositoryList.push(...CLI_BASE_SEPARATOR);
 
     try {
       this.artifactInfo.baseRepositoryList = await this._findBaseClasses(

@@ -382,6 +382,36 @@ exports.getArtifactList = async function (
 };
 
 /**
+ * Parses the files of the target directory and returns matching JavaScript
+ * or TypeScript class with their relative path.
+ * @param {string} dir The target directory from which to load artifacts.
+ * @param {string} relPath Relative path of of the directory.
+ * @param {string} artifactType The artifact type (ex. "model", "repository")
+ * @param {boolean} addSuffix Whether or not to append the artifact type to the
+ * results. (ex. [Foo,Bar] -> [FooRepository, BarRepository])
+ * @param {Function} reader An alternate function to replace the promisified
+ * fs.readdir (useful for testing and for custom overrides).
+ */
+exports.getArtifactListWithPath = async function (
+  dir,
+  relPath,
+  artifactType,
+  addSuffix,
+  reader,
+) {
+  const paths = await exports.findArtifactPaths(dir, artifactType, reader);
+  debug('Artifacts paths found:', paths);
+  return paths.map(p => {
+    const firstWord = _.first(_.split(_.last(_.split(p, path.sep)), '.'));
+    const result = pascalCase(exports.toClassName(firstWord));
+    const suffixed = addSuffix
+      ? exports.toClassName(result) + exports.toClassName(artifactType)
+      : exports.toClassName(result);
+    return `${suffixed} ${chalk.gray(relPath + '/' + p)}`;
+  });
+};
+
+/**
  * Check package.json and dependencies.json to find out versions for generated
  * dependencies
  */

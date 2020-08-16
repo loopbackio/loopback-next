@@ -118,13 +118,15 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
     let modelList, repositoryList;
 
     try {
-      modelList = await utils.getArtifactList(
+      modelList = await utils.getArtifactListWithPath(
         this.artifactInfo.modelDir,
+        this.artifactInfo.relPath,
         'model',
       );
 
-      repositoryList = await utils.getArtifactList(
+      repositoryList = await utils.getArtifactListWithPath(
         this.artifactInfo.repositoryDir,
+        this.artifactInfo.relPath,
         'repository',
         true,
       );
