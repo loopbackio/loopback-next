@@ -82,7 +82,7 @@
     "typescript": "~3.9.7",
     "unicode-10.0.0": "^0.7.5",
     "untildify": "^4.0.0",
-    "update-notifier": "^4.1.0",
+    "update-notifier": "^4.1.1",
     "url-slug": "^2.3.2",
     "validate-npm-package-name": "^3.0.0",
     "write-file-atomic": "^3.0.3",
