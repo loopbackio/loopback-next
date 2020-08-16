@@ -181,9 +181,9 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
         type: 'list',
         name: 'idType',
         message: g.f('What is the type of your ID?'),
-        choices: ['number', 'string', 'object'],
+        choices: ['string', 'number', 'object'],
         when: this.artifactInfo.idType === undefined,
-        default: 'number',
+        default: 'string',
       },
       {
         type: 'confirm',
