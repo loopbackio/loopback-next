@@ -4,18 +4,36 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {inject} from '@loopback/core';
-import {ServerUnaryCall} from 'grpc';
+import debugFactory from 'debug';
+import {
+  ServerDuplexStream,
+  ServerReadableStream,
+  ServerUnaryCall,
+  ServerWritableStream,
+} from 'grpc';
 import {GrpcBindings} from './keys';
 
-import debugFactory from 'debug';
 const debug = debugFactory('loopback:grpc');
 
 /**
  * Interface that describes a GRPC Sequence
  */
 export interface GrpcSequenceInterface {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  unaryCall(request: ServerUnaryCall<any>): Promise<any>;
+  unaryCall<Req = unknown, Res = unknown>(
+    request: ServerUnaryCall<Req>,
+  ): Promise<Res>;
+
+  clientStreamingCall?<Req = unknown, Res = unknown>(
+    request: ServerReadableStream<Req>,
+  ): Promise<Res>;
+
+  serverStreamingCall?<Req = unknown>(
+    request: ServerWritableStream<Req>,
+  ): Promise<void>;
+
+  bidiStreamingCall?<Req = unknown, Res = unknown>(
+    request: ServerDuplexStream<Req, Res>,
+  ): Promise<void>;
 }
 
 /**
@@ -28,8 +46,9 @@ export class GrpcSequence implements GrpcSequenceInterface {
     @inject(GrpcBindings.GRPC_METHOD_NAME) protected method: string,
   ) {}
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async unaryCall(call: ServerUnaryCall<any>): Promise<any> {
+  async unaryCall<Req = unknown, Res = unknown>(
+    call: ServerUnaryCall<Req>,
+  ): Promise<Res> {
     // Do something before call
     debug(
       'Calling %s.%s',

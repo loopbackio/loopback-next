@@ -99,9 +99,9 @@ describe('GrpcComponent', () => {
         @inject(GrpcBindings.GRPC_METHOD_NAME) protected method: string,
       ) {}
       // tslint:disable-next-line:no-any
-      async unaryCall(
-        call: grpcModule.ServerUnaryCall<any>,
-      ): Promise<HelloReply> {
+      async unaryCall<Req = unknown, Res = unknown>(
+        call: grpcModule.ServerUnaryCall<Req>,
+      ): Promise<Res> {
         // Do something before call
         const reply = await this.controller[this.method](call.request);
         reply.message += ' Sequenced';
