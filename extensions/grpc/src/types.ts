@@ -5,7 +5,7 @@
 
 import {Constructor} from '@loopback/core';
 import {GrpcObject, MethodDefinition, ServiceDefinition} from 'grpc';
-import {GrpcHandler} from './grpc.sequence';
+import {GrpcSequenceHandler} from './grpc.sequence';
 
 /**
  * Configuration for a GRPC server
@@ -13,7 +13,7 @@ import {GrpcHandler} from './grpc.sequence';
 export interface GrpcServerConfig {
   host?: string;
   port?: number;
-  sequence?: Constructor<GrpcHandler>;
+  sequence?: Constructor<GrpcSequenceHandler>;
 }
 
 export interface GrpcMethod {
@@ -29,7 +29,7 @@ export interface GrpcMethod {
  * Metadata for a GRPC method
  */
 export interface GrpcMethodMetadata {
-  // <packageName>/<ServiceName>/<MethodName>, such as "/greeterpackage.Greeter/SayHello"
+  // <packageName>.<ServiceName>/<MethodName>, such as "greeterpackage.Greeter/SayHello"
   path: string;
   requestStream?: boolean;
   responseStream?: boolean;

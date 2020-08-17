@@ -4,30 +4,26 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {BootMixin} from '@loopback/boot';
-import {
-  Application,
-  ApplicationConfig,
-  Constructor,
-  inject,
-} from '@loopback/core';
+import {Application, ApplicationConfig, Constructor} from '@loopback/core';
 import {expect} from '@loopback/testlab';
-import grpcModule from 'grpc';
+import grpcModule, {ServerUnaryCall} from 'grpc';
 import path from 'path';
 import {
   grpc,
   GrpcBindings,
   GrpcComponent,
-  GrpcHandler,
   GrpcServer,
   GrpcServerConfig,
 } from '../..';
+import {GrpcSequenceHandler} from '../../grpc.sequence';
+import {GrpcRequestContext} from '../../request-context';
 import {
   Greeter,
   HelloReply,
   HelloRequest,
   TestReply,
   TestRequest,
-} from './greeter.proto';
+} from '../fixtures/greeter.proto';
 
 describe('GrpcComponent', () => {
   class GRPCApplication extends BootMixin(Application) {
@@ -97,18 +93,17 @@ describe('GrpcComponent', () => {
       }
     }
 
-    class MySequence implements GrpcHandler {
-      constructor(
-        @inject(GrpcBindings.GRPC_CONTROLLER)
-        protected controller: {[method: string]: Function},
-        @inject(GrpcBindings.GRPC_METHOD_NAME) protected method: string,
-      ) {}
-      // tslint:disable-next-line:no-any
-      async unaryCall<Req = unknown, Res = unknown>(
-        call: grpcModule.ServerUnaryCall<Req>,
+    class MySequence implements GrpcSequenceHandler {
+      async handle<Req = unknown, Res = unknown>(
+        reqCtx: GrpcRequestContext<Req, Res>,
       ): Promise<Res> {
+        const controller: {[method: string]: Function} = await reqCtx.get(
+          GrpcBindings.GRPC_CONTROLLER,
+        );
+        const method = await reqCtx.get(GrpcBindings.GRPC_METHOD_NAME);
         // Do something before call
-        const reply = await this.controller[this.method](call.request);
+        const request = reqCtx.request as ServerUnaryCall<Req>;
+        const reply = await controller[method](request.request);
         reply.message += ' Sequenced';
         // Do something after call
         return reply;
@@ -133,7 +128,7 @@ describe('GrpcComponent', () => {
    * Returns GRPC Enabled Application
    **/
   function givenApplication(
-    sequence?: Constructor<GrpcHandler>,
+    sequence?: Constructor<GrpcSequenceHandler>,
   ): GRPCApplication {
     const grpcConfig: GrpcServerConfig = {port: 8080};
     if (sequence) {

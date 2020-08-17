@@ -24,18 +24,20 @@ export const GRPC_METHODS = 'grpc:methods';
  * ```ts
  * import {Greeter, HelloRequest, HelloReply} from 'greeter.proto';
  *
- * class GreeterCtrl implements Greeter.Service {
- *   @grpc(Greeter.SayHello)
+ * class GreeterController implements Greeter.Service {
+ *   @grpc('greeterpackage.Greeter/SayHello')
  *   public sayHello(request: HelloRequest): HelloResponse {
  *     return { message: 'Hello ' + call.request.name };
  *   }
  * }
  * ```
  */
-export function grpc(spec: GrpcMethodMetadata | GrpcMethod) {
+export function grpc(spec: GrpcMethodMetadata | GrpcMethod | string) {
   let metadata: GrpcMethodMetadata;
   if (isGrpcMethodMetadata(spec)) {
     metadata = spec;
+  } else if (typeof spec === 'string') {
+    metadata = {path: spec};
   } else {
     metadata = getGrpcMethodMetadata(spec);
   }
@@ -43,7 +45,7 @@ export function grpc(spec: GrpcMethodMetadata | GrpcMethod) {
 }
 
 function isGrpcMethodMetadata(
-  spec: GrpcMethodMetadata | GrpcMethod,
+  spec: GrpcMethodMetadata | GrpcMethod | string,
 ): spec is GrpcMethodMetadata {
   return typeof (spec as GrpcMethodMetadata).path === 'string';
 }

@@ -5,14 +5,16 @@
 
 import {BindingKey, Context, CoreBindings} from '@loopback/core';
 import {Server} from 'grpc';
-import {GrpcHandler} from './grpc.sequence';
+import {GrpcSequenceHandler} from './grpc.sequence';
 
 /**
  * Binding keys used by this component.
  */
 export namespace GrpcBindings {
   export const GRPC_SERVER = BindingKey.create<Server>('grpc.server');
-  export const GRPC_SEQUENCE = BindingKey.create<GrpcHandler>('grpc.sequence');
+  export const GRPC_SEQUENCE = BindingKey.create<GrpcSequenceHandler>(
+    'grpc.sequence',
+  );
   export const GRPC_CONTROLLER = 'grpc.controller';
   export const GRPC_METHOD = 'grpc.method';
   export const GRPC_METHOD_NAME = BindingKey.create<string>('grpc.method.name');

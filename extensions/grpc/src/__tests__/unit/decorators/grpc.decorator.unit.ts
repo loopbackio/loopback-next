@@ -12,7 +12,7 @@ import {
   HelloRequest,
   TestReply,
   TestRequest,
-} from '../../acceptance/greeter.proto';
+} from '../../fixtures/greeter.proto';
 
 describe('@rpc decorator', () => {
   it('defines reflection metadata for rpc method', () => {
@@ -22,7 +22,7 @@ describe('@rpc decorator', () => {
         return {message: `hello ${request.name}`};
       }
 
-      @grpc(Greeter.SayTest)
+      @grpc('greeterpackage.Greeter/SayTest')
       sayTest(request: TestRequest): TestReply {
         return {
           message: 'Test ' + request.name,
@@ -39,5 +39,6 @@ describe('@rpc decorator', () => {
       GreeterCtrl.prototype,
     );
     expect(controllerMethods).to.have.property('sayHello');
+    expect(controllerMethods).to.have.property('sayTest');
   });
 });

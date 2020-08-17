@@ -16,15 +16,14 @@ import {
   Server,
 } from '@loopback/core';
 import debugFactory from 'debug';
-import grpc from 'grpc';
+import grpc, {ServiceError} from 'grpc';
 import {GRPC_METHODS} from './decorators/grpc.decorator';
 import {GrpcGenerator} from './grpc.generator';
 import {GrpcBindings} from './keys';
+import {GrpcRequestContext} from './request-context';
 import {GrpcMethod, GrpcMethodMetadata, GrpcOperation} from './types';
 
 const debug = debugFactory('loopback:grpc:server');
-
-/* eslint-disable @typescript-eslint/no-explicit-any */
 
 /**
  * This Class provides a LoopBack Server implementing gRPC
@@ -108,8 +107,13 @@ export class GrpcServer extends Context implements Server {
       ) ?? {};
 
     const services = new Map<
-      grpc.ServiceDefinition<any>,
-      {[method: string]: grpc.handleUnaryCall<grpc.ServerUnaryCall<any>, any>}
+      grpc.ServiceDefinition<unknown>,
+      {
+        [method: string]: grpc.handleUnaryCall<
+          grpc.ServerUnaryCall<unknown>,
+          unknown
+        >;
+      }
     >();
 
     for (const methodName in controllerMethods) {
@@ -126,11 +130,11 @@ export class GrpcServer extends Context implements Server {
       const serviceDef = meta.service;
       if (!services.has(serviceDef)) {
         services.set(serviceDef, {
-          [meta.name]: this.setupGrpcCall(ctor, methodName),
+          [meta.name]: this.setupGrpcCall(ctor, methodName, meta),
         });
       } else {
         const methods = services.get(serviceDef)!;
-        methods[meta.name] = this.setupGrpcCall(ctor, methodName);
+        methods[meta.name] = this.setupGrpcCall(ctor, methodName, meta);
       }
     }
 
@@ -146,27 +150,30 @@ export class GrpcServer extends Context implements Server {
    * @param prototype
    * @param methodName
    */
-  private setupGrpcCall<T>(
+  private setupGrpcCall<Req = unknown, Res = unknown>(
     ctor: ControllerClass,
     methodName: string,
-  ): grpc.handleUnaryCall<grpc.ServerUnaryCall<any>, any> {
+    operation: GrpcOperation,
+  ): grpc.handleUnaryCall<Req, Res> {
     return (
-      call: grpc.ServerUnaryCall<any>,
-      callback: (err: any, value?: T) => void,
+      call: grpc.ServerUnaryCall<Req>,
+      callback: (err: ServiceError | null, value: Res | null) => void,
     ) => {
-      const handleUnary = async (): Promise<T> => {
-        this.bind(GrpcBindings.CONTEXT).to(this);
-        this.bind(GrpcBindings.GRPC_CONTROLLER)
+      const handleUnary = async (): Promise<Res | void> => {
+        const reqCtx = new GrpcRequestContext<Req, Res>(operation, call, this);
+        reqCtx.bind(GrpcBindings.CONTEXT).to(this);
+        reqCtx
+          .bind(GrpcBindings.GRPC_CONTROLLER)
           .toClass(ctor)
           .inScope(BindingScope.SINGLETON);
-        this.bind(GrpcBindings.GRPC_METHOD_NAME).to(methodName);
+        reqCtx.bind(GrpcBindings.GRPC_METHOD_NAME).to(methodName);
         const sequence = await this.get(GrpcBindings.GRPC_SEQUENCE);
-        return sequence.unaryCall(call);
+        return sequence.handle<Req, Res>(reqCtx);
       };
       handleUnary().then(
-        result => callback(null, result),
+        result => callback(null, result === undefined ? null : result),
         error => {
-          callback(error);
+          callback(error, null);
         },
       );
     };

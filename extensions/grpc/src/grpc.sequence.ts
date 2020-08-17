@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {inject} from '@loopback/core';
+import {invokeMethod} from '@loopback/core';
 import debugFactory from 'debug';
 import {
   ServerDuplexStream,
@@ -12,6 +12,7 @@ import {
   ServerWritableStream,
 } from 'grpc';
 import {GrpcBindings} from './keys';
+import {GrpcRequestContext} from './request-context';
 
 const debug = debugFactory('loopback:grpc');
 
@@ -36,28 +37,55 @@ export interface GrpcHandler {
   ): Promise<void>;
 }
 
+export interface GrpcSequenceHandler {
+  handle<Req = unknown, Res = unknown>(
+    reqCtx: GrpcRequestContext<Req, Res>,
+  ): Promise<Res | void>;
+}
+
 /**
  * GRPC Sequence
  */
-export class GrpcSequence implements GrpcHandler {
-  constructor(
-    @inject(GrpcBindings.GRPC_CONTROLLER)
-    protected controller: {[method: string]: Function},
-    @inject(GrpcBindings.GRPC_METHOD_NAME) protected method: string,
-  ) {}
+export class GrpcSequence implements GrpcSequenceHandler {
+  constructor() {}
 
-  async unaryCall<Req = unknown, Res = unknown>(
-    call: ServerUnaryCall<Req>,
-  ): Promise<Res> {
-    // Do something before call
-    debug(
-      'Calling %s.%s',
-      this.controller.constructor.name,
-      this.method,
-      call.request,
+  async invoke<Req = unknown, Res = unknown>(
+    reqCtx: GrpcRequestContext<Req, Res>,
+    args?: Req,
+  ) {
+    const controller: {[method: string]: Function} = await reqCtx.get(
+      GrpcBindings.GRPC_CONTROLLER,
     );
-    const reply = await this.controller[this.method](call.request);
-    // Do something after call
-    return reply;
+    const method = await reqCtx.get(GrpcBindings.GRPC_METHOD_NAME);
+    // Do something before call
+    debug('Calling %s.%s', controller.constructor.name, method, reqCtx);
+    return invokeMethod(controller, method, reqCtx, [args ?? reqCtx]);
+  }
+
+  async handle<Req = unknown, Res = unknown>(
+    reqCtx: GrpcRequestContext<Req, Res>,
+  ): Promise<Res | void> {
+    const method = reqCtx.operation.method;
+    if (method.requestStream === true && method.responseStream === true) {
+      return this.invoke(reqCtx);
+    } else if (
+      method.requestStream === true &&
+      method.responseStream === false
+    ) {
+      return this.invoke(reqCtx);
+    } else if (
+      method.requestStream === false &&
+      method.responseStream === true
+    ) {
+      return this.invoke(reqCtx);
+    } else if (
+      method.requestStream === false &&
+      method.responseStream === false
+    ) {
+      return this.invoke(
+        reqCtx,
+        (reqCtx.request as ServerUnaryCall<Req>).request,
+      );
+    }
   }
 }
