@@ -224,6 +224,10 @@ children:
       url: Boot-and-Mount-a-LoopBack-3-application.html
       output: 'web, pdf'
 
+    - title: 'Integrating with API Connect'
+      url: Integrating-with-api-connect.html
+      output: 'web, pdf'
+
   - title: 'Creating Other Forms of APIs'
     output: 'web, pdf'
     children:
@@ -399,12 +403,24 @@ children:
         url: Metrics.html
         output: 'web, pdf'
 
+      - title: 'Pooling'
+        url: Pooling.html
+        output: 'web, pdf'
+
   - title: 'Troubleshooting'
     output: 'web, pdf'
     children:
 
     - title: 'Setting debug strings'
       url: Setting-debug-strings.html
+      output: 'web, pdf'
+
+    - title: 'Logging'
+      url: Logging.html
+      output: 'web, pdf'
+
+    - title: 'Context Explorer'
+      url: Context-explorer.html
       output: 'web, pdf'
 
 - title: 'Concepts'
