@@ -3,11 +3,12 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {ContextView, filterByTag, inject} from '@loopback/core';
 import {execSync} from 'child_process';
-import glob from 'glob';
-import grpc, {GrpcObject} from 'grpc';
+import {GrpcObject, MethodDefinition, ServiceDefinition} from 'grpc';
 import path from 'path';
-import {GrpcService} from './types';
+import {GrpcBindings} from './keys';
+import {GrpcOperation, GrpcProto, GrpcServerConfig} from './types';
 
 /**
  * GRPC TypeScript generator.
@@ -21,59 +22,65 @@ export class GrpcGenerator {
    * boot time and later being used by implemented grpc
    * controllers.
    */
-  private protos: {[name: string]: GrpcObject} = {};
+  private protos: {
+    [name: string]: GrpcOperation;
+  } = {};
   /**
    * @param - config
    */
-  constructor(protected config: GrpcService) {}
+  constructor(
+    @inject(GrpcBindings.CONFIG) protected config: GrpcServerConfig,
+    @inject.view(filterByTag('proto'))
+    protected protosView: ContextView<GrpcObject>,
+  ) {}
   /**
    * This method will find and load all protos
    * contained within the project directory. Saving in memory
    * instances for those found protos for later usage.
    */
-  public execute(): void {
-    this.getProtoPaths().forEach((protoPath: string) => {
-      const protoName: string = protoPath.split('/').pop() ?? '';
-      this.protos[protoName] = this.loadProto(protoPath);
-      this.generate(protoPath);
-    });
+  execute() {
+    const protoBindings = this.protosView.bindings;
+    for (const protoBinding of protoBindings) {
+      const protoObj = this.protosView.context.getSync<GrpcProto>(
+        protoBinding.key,
+      );
+
+      for (const pkg in protoObj.proto) {
+        const pkgObj = protoObj.proto[pkg] as GrpcObject;
+        for (const key in pkgObj) {
+          const child = pkgObj[key] as GrpcObject;
+          if (child.service) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const service = child.service as ServiceDefinition<any>;
+            for (const m in service) {
+              const method = service[m] as MethodDefinition<unknown, unknown>;
+              const methodPath = (method.path as unknown) as string;
+              this.protos[methodPath] = {
+                package: pkgObj,
+                service,
+                method,
+                path: methodPath,
+                name: m,
+              };
+            }
+          }
+        }
+      }
+      this.generate(protoObj.file);
+    }
   }
+
   /**
    * This method will return a proto instance
    * from the proto list directory, previously loaded during
    * boot time.
    *
-   * @param name
+   * @param methodPath
    *
    */
-  public getProto(name: string): GrpcObject {
-    return this.protos[name];
+  public getProto(methodPath: string): GrpcOperation {
+    return this.protos[`/${methodPath}`];
   }
-  /**
-   * This method receive a proto file path and
-   * load that proto using the official grpc library.
-   *
-   * @param protoPath
-   */
-  public loadProto(protoPath: string): GrpcObject {
-    const proto: GrpcObject = grpc.load(protoPath);
-    return proto;
-  }
-  /**
-   * This method will getProtoPaths a directory look ahead and
-   * typescript files generations from found proto files.
-   */
-  public getProtoPaths(): string[] {
-    const pattern = this.config.protoPattern ?? '**/*.proto';
-    const ignores = this.config.protoIngores ?? ['**/node_modules/**'];
-    const options = {
-      cwd: this.config.cwd ?? process.cwd(),
-      ignore: ignores,
-      nodir: true,
-    };
-    return glob.sync(pattern, options);
-  }
-
   /**
    * This method will generate a typescript
    * file representing the provided proto file by calling

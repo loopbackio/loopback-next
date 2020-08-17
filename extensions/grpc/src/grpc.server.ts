@@ -6,6 +6,8 @@
 import {
   Application,
   BindingScope,
+  BindingType,
+  ClassBindingSource,
   Context,
   ControllerClass,
   CoreBindings,
@@ -18,9 +20,9 @@ import grpc from 'grpc';
 import {GRPC_METHODS} from './decorators/grpc.decorator';
 import {GrpcGenerator} from './grpc.generator';
 import {GrpcBindings} from './keys';
-import {GrpcMethod} from './types';
+import {GrpcMethod, GrpcMethodMetadata, GrpcOperation} from './types';
 
-const debug = debugFactory('loopback:grpc');
+const debug = debugFactory('loopback:grpc:server');
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -49,10 +51,25 @@ export class GrpcServer extends Context implements Server {
     @inject(GrpcBindings.GRPC_GENERATOR) protected generator: GrpcGenerator,
   ) {
     super(app);
+  }
+
+  private setupControllers() {
     // Execute TypeScript Generator. (Must be first one to load)
     this.generator.execute();
-    // Setup Controllers
-    for (const b of this.find('controllers.*')) {
+    const bindings = this.find(b => {
+      if (b.type !== BindingType.CLASS) return false;
+      const ctor = (b.source as ClassBindingSource<unknown>).value;
+
+      const controllerMethods = MetadataInspector.getAllMethodMetadata<
+        GrpcMethod
+      >(GRPC_METHODS, ctor.prototype);
+
+      return controllerMethods != null;
+    });
+
+    debug('Proto bindings', bindings);
+
+    for (const b of bindings) {
       const controllerName = b.key.replace(/^controllers\./, '');
       const ctor = b.valueConstructor;
       if (!ctor) {
@@ -69,6 +86,7 @@ export class GrpcServer extends Context implements Server {
   }
 
   async start(): Promise<void> {
+    this.setupControllers();
     this.server.bind(
       `${this.host}:${this.port}`,
       grpc.ServerCredentials.createInsecure(),
@@ -84,7 +102,7 @@ export class GrpcServer extends Context implements Server {
 
   private _setupControllerMethods(ctor: ControllerClass) {
     const controllerMethods =
-      MetadataInspector.getAllMethodMetadata<GrpcMethod>(
+      MetadataInspector.getAllMethodMetadata<GrpcMethodMetadata>(
         GRPC_METHODS,
         ctor.prototype,
       ) ?? {};
@@ -98,27 +116,21 @@ export class GrpcServer extends Context implements Server {
       const config = controllerMethods[methodName];
       debug('Config for method %s', methodName, config);
 
-      const proto: grpc.GrpcObject = this.generator.getProto(config.PROTO_NAME);
-      debug('Proto for %s', config.PROTO_NAME, proto);
+      const meta: GrpcOperation = this.generator.getProto(config.path);
+      debug('Proto for %s', config.path, meta);
 
-      if (!proto) {
+      if (!meta) {
         throw new Error(`Grpc Server: No proto file was provided.`);
       }
 
-      const pkgMeta = proto[config.PROTO_PACKAGE] as grpc.GrpcObject;
-      debug('Package for %s', config.PROTO_PACKAGE, pkgMeta);
-
-      const serviceMeta = pkgMeta[config.SERVICE_NAME] as any;
-      debug('Service for %s', config.SERVICE_NAME, serviceMeta);
-
-      const serviceDef: grpc.ServiceDefinition<any> = serviceMeta.service;
+      const serviceDef = meta.service;
       if (!services.has(serviceDef)) {
         services.set(serviceDef, {
-          [config.METHOD_NAME]: this.setupGrpcCall(ctor, methodName),
+          [meta.name]: this.setupGrpcCall(ctor, methodName),
         });
       } else {
         const methods = services.get(serviceDef)!;
-        methods[config.METHOD_NAME] = this.setupGrpcCall(ctor, methodName);
+        methods[meta.name] = this.setupGrpcCall(ctor, methodName);
       }
     }
 

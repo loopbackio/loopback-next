@@ -4,22 +4,16 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Constructor} from '@loopback/core';
-import {GrpcSequenceInterface} from './grpc.sequence';
+import {GrpcObject, MethodDefinition, ServiceDefinition} from 'grpc';
+import {GrpcHandler} from './grpc.sequence';
 
-export interface GrpcService {
-  cwd?: string;
-  /**
-   * glob pattern for proto files, default to `**\/*proto`
-   */
-  protoPattern?: string;
-  /**
-   * An array of glob patterns to ignore for proto files,
-   * default to ['**\/node_modules\/**]
-   */
-  protoIngores?: string[];
+/**
+ * Configuration for a GRPC server
+ */
+export interface GrpcServerConfig {
   host?: string;
   port?: number;
-  sequence?: Constructor<GrpcSequenceInterface>;
+  sequence?: Constructor<GrpcHandler>;
 }
 
 export interface GrpcMethod {
@@ -29,4 +23,31 @@ export interface GrpcMethod {
   METHOD_NAME: string;
   REQUEST_STREAM: boolean;
   RESPONSE_STREAM: boolean;
+}
+
+/**
+ * Metadata for a GRPC method
+ */
+export interface GrpcMethodMetadata {
+  // <packageName>/<ServiceName>/<MethodName>, such as "/greeterpackage.Greeter/SayHello"
+  path: string;
+  requestStream?: boolean;
+  responseStream?: boolean;
+}
+
+/**
+ * Loaded proto object for GRPC
+ */
+export interface GrpcProto {
+  name: string;
+  file: string;
+  proto: GrpcObject;
+}
+
+export interface GrpcOperation {
+  package: GrpcObject;
+  service: ServiceDefinition<unknown>;
+  method: MethodDefinition<unknown, unknown>;
+  name: string;
+  path: string;
 }

@@ -18,7 +18,7 @@ const debug = debugFactory('loopback:grpc');
 /**
  * Interface that describes a GRPC Sequence
  */
-export interface GrpcSequenceInterface {
+export interface GrpcHandler {
   unaryCall<Req = unknown, Res = unknown>(
     request: ServerUnaryCall<Req>,
   ): Promise<Res>;
@@ -39,7 +39,7 @@ export interface GrpcSequenceInterface {
 /**
  * GRPC Sequence
  */
-export class GrpcSequence implements GrpcSequenceInterface {
+export class GrpcSequence implements GrpcHandler {
   constructor(
     @inject(GrpcBindings.GRPC_CONTROLLER)
     protected controller: {[method: string]: Function},

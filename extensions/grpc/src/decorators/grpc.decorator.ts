@@ -4,13 +4,13 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {MethodDecoratorFactory} from '@loopback/core';
-import {GrpcMethod} from '../types';
+import {GrpcMethod, GrpcMethodMetadata} from '../types';
 
 export const GRPC_METHODS = 'grpc:methods';
 
 /**
  * This decorator provides a way to configure GRPC Micro Services within LoopBack 4
- * @param params
+ * @param spec
  *
  * @example
  *
@@ -32,6 +32,26 @@ export const GRPC_METHODS = 'grpc:methods';
  * }
  * ```
  */
-export function grpc(spec: GrpcMethod) {
-  return MethodDecoratorFactory.createDecorator(GRPC_METHODS, spec);
+export function grpc(spec: GrpcMethodMetadata | GrpcMethod) {
+  let metadata: GrpcMethodMetadata;
+  if (isGrpcMethodMetadata(spec)) {
+    metadata = spec;
+  } else {
+    metadata = getGrpcMethodMetadata(spec);
+  }
+  return MethodDecoratorFactory.createDecorator(GRPC_METHODS, metadata);
+}
+
+function isGrpcMethodMetadata(
+  spec: GrpcMethodMetadata | GrpcMethod,
+): spec is GrpcMethodMetadata {
+  return typeof (spec as GrpcMethodMetadata).path === 'string';
+}
+
+export function getGrpcMethodMetadata(method: GrpcMethod): GrpcMethodMetadata {
+  return {
+    path: `${method.PROTO_PACKAGE}.${method.SERVICE_NAME}/${method.METHOD_NAME}`,
+    requestStream: method.REQUEST_STREAM,
+    responseStream: method.RESPONSE_STREAM,
+  };
 }

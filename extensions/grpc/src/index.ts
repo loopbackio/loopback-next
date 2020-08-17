@@ -3,6 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+export * from './booters/proto.booter';
 export * from './decorators/grpc.decorator';
 export * from './grpc.component';
 export * from './grpc.sequence';
