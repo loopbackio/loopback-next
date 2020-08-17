@@ -85,20 +85,24 @@ export class GrpcGenerator {
   private generate(proto: string): Buffer {
     const root = path.dirname(proto);
     const isWin = process.platform === 'win32';
-    return execSync(
-      `${path.join(
-        __dirname,
-        '../', // Root of grpc module and not the dist dir
-        'compilers',
-        process.platform,
-        'bin',
-        `protoc${isWin ? '.exe' : ''}`,
-      )} --plugin=protoc-gen-ts=${path.join(
+    const protocPath = path.join(
+      __dirname,
+      '../', // Root of grpc module and not the dist dir
+      'compilers',
+      process.platform,
+      'bin',
+      `protoc${isWin ? '.exe' : ''}`,
+    );
+    const pluginPath = path.normalize(
+      path.join(
         process.cwd(),
         'node_modules',
         '.bin',
         `protoc-gen-ts${isWin ? '.cmd' : ''}`,
-      )} --ts_out service=true:${root} -I ${root} ${proto}`,
+      ),
+    );
+    return execSync(
+      `${protocPath} --plugin=protoc-gen-ts=${pluginPath} --ts_out service=true:${root} -I ${root} ${proto}`,
     );
   }
 }
