@@ -131,13 +131,19 @@ module.exports = class ProjectGenerator extends BaseGenerator {
     });
   }
 
-  promptProjectName() {
+  promptProjectName(projectType) {
     if (this.shouldExit()) return false;
+    let namePrompt = 'Project name:';
+    let descriptionPrompt = 'Project description:';
+    if (projectType) {
+      namePrompt = `${projectType} name:`;
+      descriptionPrompt = `${projectType} description:`;
+    }
     const prompts = [
       {
         type: 'input',
         name: 'name',
-        message: g.f('Project name:'),
+        message: g.f(namePrompt),
         when: this.projectInfo.name == null,
         default:
           this.options.name || utils.toFileName(path.basename(process.cwd())),
@@ -146,7 +152,7 @@ module.exports = class ProjectGenerator extends BaseGenerator {
       {
         type: 'input',
         name: 'description',
-        message: g.f('Project description:'),
+        message: g.f(descriptionPrompt),
         when: this.projectInfo.description == null,
         default: this.options.name || this.appname,
       },
@@ -157,13 +163,17 @@ module.exports = class ProjectGenerator extends BaseGenerator {
     });
   }
 
-  promptProjectDir() {
+  promptProjectDir(projectType) {
     if (this.shouldExit()) return false;
+    let dirPrompt = 'Project root directory:';
+    if (projectType) {
+      dirPrompt = `${projectType} root directory:`;
+    }
     const prompts = [
       {
         type: 'input',
         name: 'outdir',
-        message: g.f('Project root directory:'),
+        message: g.f(dirPrompt),
         when:
           this.projectInfo.outdir == null ||
           // prompts if option was set to a directory that already exists

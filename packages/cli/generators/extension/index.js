@@ -33,12 +33,12 @@ module.exports = class ExtensionGenerator extends ProjectGenerator {
 
   promptProjectName() {
     if (this.shouldExit()) return;
-    return super.promptProjectName();
+    return super.promptProjectName('Extension');
   }
 
   promptProjectDir() {
     if (this.shouldExit()) return;
-    return super.promptProjectDir();
+    return super.promptProjectDir('Extension');
   }
 
   promptComponent() {
