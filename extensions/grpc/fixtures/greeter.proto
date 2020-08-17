@@ -1,0 +1,32 @@
+// Copyright IBM Corp. 2017,2019. All Rights Reserved.
+// Node module: @loopback/grpc
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
+syntax = "proto3";
+package greeterpackage;
+
+service Greeter {
+  // Sends a greeting
+  rpc SayHello (HelloRequest) returns (HelloReply) {}
+
+  rpc SayTest (TestRequest) returns (TestReply) {}
+}
+
+// The request message containing the user's name.
+message HelloRequest {
+  string name = 1;
+}
+
+// The response message containing the greetings
+message HelloReply {
+  string message = 1;
+}
+
+message TestRequest {
+  string name = 1;
+}
+
+message TestReply {
+  string message = 1;
+}

@@ -110,6 +110,9 @@
       "path": "extensions/graphql/tsconfig.json"
     },
     {
+      "path": "extensions/grpc/tsconfig.json"
+    },
+    {
       "path": "extensions/health/tsconfig.json"
     },
     {
