@@ -4,13 +4,17 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Application, bind, BindingKey, ContextTags} from '@loopback/core';
-import {expect} from '@loopback/testlab';
+import {expect, sinon} from '@loopback/testlab';
 import {BootBindings, Booter, BootMixin} from '../../..';
 
 describe('BootMixin unit tests', () => {
   let app: AppWithBootMixin;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let stub: sinon.SinonStub<[any?, ...any[]], void>;
 
   beforeEach(getApp);
+  beforeEach(createStub);
+  afterEach(restoreStub);
 
   it('mixes into the target class', () => {
     expect(app.boot).to.be.a.Function();
@@ -92,6 +96,14 @@ describe('BootMixin unit tests', () => {
     expect(booterInst).to.be.an.instanceOf(TestBooter);
   });
 
+  it('warns if app is started without booting', async () => {
+    await app.start();
+    sinon.assert.calledWith(
+      stub,
+      'App started without booting. Did you forget to call `await app.boot()`?',
+    );
+  });
+
   class TestBooter implements Booter {
     configured = false;
 
@@ -138,5 +150,13 @@ describe('BootMixin unit tests', () => {
 
   function getApp() {
     app = new AppWithBootMixin();
+  }
+
+  function restoreStub() {
+    stub.restore();
+  }
+
+  function createStub() {
+    stub = sinon.stub(process, 'emitWarning');
   }
 });
