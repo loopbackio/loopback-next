@@ -364,15 +364,43 @@ children:
           output: 'web, pdf'
 
     - title: 'Authorization'
-      url: Loopback-component-authorization.html
+      url: Authorization-overview.html
       output: 'web, pdf'
+      children:
+        - title: 'RBAC with Authorization System'
+          url: RBAC-with-authorization.html
+          output: 'web, pdf'
+
+        - title: 'Authorization Component'
+          url: Loopback-component-authorization.html
+          output: 'web, pdf'
+          children:
+          - title: 'Interceptor'
+            url: Authorization-component-interceptor.html
+            output: 'web, pdf'
+
+          - title: 'Decorator'
+            url: Authorization-component-decorator.html
+            output: 'web, pdf'
+
+          - title: 'Authorizer'
+            url: Authorization-component-authorizer.html
+            output: 'web, pdf'
+
+          - title: 'Decision Matrix'
+            url: Authorization-component-decision-matrix.html
+            output: 'web, pdf'
+
+          - title: 'Enforcer'
+            url: Authorization-component-enforcer.html
+            output: 'web, pdf'
 
   - title: 'Deploying Applications'
     url: Deployment.html
     output: 'web, pdf'
     children:
       - title: 'Enabling HTTPS'
-        url: 'Enabling-https.html'
+        url: Enabling-https.html
         output: 'web, pdf'
 
       - title: 'Deploying to IBM Cloud'
