@@ -13,7 +13,7 @@ import {Application, config, CoreBindings, inject} from '@loopback/core';
 import debugFactory from 'debug';
 import grpc, {GrpcObject} from 'grpc';
 import path from 'path';
-import {GrpcProto} from '../types';
+import {GrpcTags} from '../keys';
 const debug = debugFactory('loopback:grpc:booter:proto');
 
 /**
@@ -32,12 +32,12 @@ export class ProtoBooter extends BaseArtifactBooter {
     public app: Application,
     @inject(BootBindings.PROJECT_ROOT) projectRoot: string,
     @config()
-    public entityConfig: ArtifactOptions = {},
+    public protoConfig: ArtifactOptions = {},
   ) {
     super(
       projectRoot,
-      // Set TypeORM connection options if passed in via bootConfig
-      {...ProtoDefaults, ...entityConfig},
+      // Set proto options if passed in via bootConfig
+      {...ProtoDefaults, ...protoConfig},
     );
   }
 
@@ -46,16 +46,12 @@ export class ProtoBooter extends BaseArtifactBooter {
     for (const file of this.discovered) {
       const name = path.basename(file);
       const obj: GrpcObject = grpc.load(file);
-      const proto: GrpcProto = {
-        proto: obj,
-        name,
-        file,
-      };
-      debug(proto);
+      debug('Loaded proto object', obj);
       this.app
         .bind(`grpc.protos.${name}`)
-        .to(proto)
-        .tag({name, file, proto: 'proto'});
+        .to(obj)
+        .tag(GrpcTags.PROTO)
+        .tag(file);
     }
   }
 }

@@ -8,8 +8,8 @@
     "node": ">=10"
   },
   "scripts": {
-    "build": "lb-tsc --copy-resources",
-    "build:watch": "lb-tsc --copy-resources --watch",
+    "build": "lb-tsc",
+    "build:watch": "lb-tsc --watch",
     "clean": "lb-clean loopback-grpc*.tgz dist package api-docs *.tsbuildinfo",
     "pretest": "npm run clean && npm run build",
     "test": "lb-mocha \"dist/__tests__/**/*.js\""
@@ -29,10 +29,10 @@
     "!*/__tests__"
   ],
   "dependencies": {
-    "@loopback/boot": "^2.4.1",
-    "@loopback/core": "^2.9.3",
-    "@loopback/repository": "^2.11.0",
-    "@loopback/rest": "^6.0.0",
+    "@loopback/boot": "^2.5.0",
+    "@loopback/core": "^2.9.4",
+    "@loopback/repository": "^2.11.1",
+    "@loopback/rest": "^6.1.0",
     "debug": "^4.1.1",
     "glob": "^7.1.6",
     "grpc": "^1.24.3",
@@ -40,10 +40,14 @@
     "protobufjs": "^6.10.1"
   },
   "devDependencies": {
-    "@loopback/build": "^6.2.0",
-    "@loopback/eslint-config": "^9.0.0",
-    "@loopback/testlab": "^3.2.2",
+    "@loopback/build": "^6.2.1",
+    "@loopback/eslint-config": "^9.0.1",
+    "@loopback/testlab": "^3.2.3",
     "@types/debug": "^4.1.5",
     "@types/glob": "^7.1.2"
+  },
+  "copyright.owner": "IBM Corp.",
+  "publishConfig": {
+    "access": "public"
   }
 }

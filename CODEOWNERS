@@ -326,6 +326,13 @@
 /extensions/graphql @raymondfeng
 /examples/graphql @raymondfeng
 
+# gRPC
+#
+# - Issue label: gRPC
+# - Primary owner(s): @raymondfeng
+# - Standby owner(s): n/a
+/extensions/grpc @raymondfeng
+
 #
 # MessagePack body parser
 #

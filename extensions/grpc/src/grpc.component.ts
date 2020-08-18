@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2017,2019. All Rights Reserved.
+// Copyright IBM Corp. 2020. All Rights Reserved.
 // Node module: @loopback/grpc
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -15,10 +15,11 @@ import {
   Server,
 } from '@loopback/core';
 import {ProtoBooter} from './booters/proto.booter';
-import {GrpcGenerator} from './grpc.generator';
-import {GrpcSequence} from './grpc.sequence';
+import {ProtoManager} from './grpc.proto';
+import {DefaultGrpcSequence} from './grpc.sequence';
 import {GrpcServer} from './grpc.server';
 import {GrpcBindings} from './keys';
+import {GrpcMethodInvokerProvider} from './providers/invoke-method.provider';
 import {ServerProvider} from './providers/server.provider';
 import {GrpcServerConfig} from './types';
 /**
@@ -29,7 +30,8 @@ export class GrpcComponent implements Component {
    * Export GrpcProviders
    */
   providers: ProviderMap = {
-    [GrpcBindings.GRPC_SERVER.toString()]: ServerProvider,
+    [GrpcBindings.GRPC_SERVER.key]: ServerProvider,
+    [GrpcBindings.GRPC_METHOD_INVOKER.key]: GrpcMethodInvokerProvider,
   };
 
   /**
@@ -54,12 +56,15 @@ export class GrpcComponent implements Component {
     app.bind(GrpcBindings.PORT).to(config.port);
 
     app
-      .bind(GrpcBindings.GRPC_GENERATOR)
-      .toClass(GrpcGenerator)
+      .bind(GrpcBindings.GRPC_PROTO_MANAGER)
+      .toClass(ProtoManager)
       .inScope(BindingScope.SINGLETON);
-    app
-      .bind(GrpcBindings.GRPC_SEQUENCE)
-      .toClass(config.sequence ?? GrpcSequence);
+
+    const sequenceBinding = createBindingFromClass(
+      config.sequence ?? DefaultGrpcSequence,
+      {key: GrpcBindings.GRPC_SEQUENCE},
+    );
+    app.add(sequenceBinding);
 
     const booterBindings = createBindingFromClass(ProtoBooter);
     app.add(booterBindings);

@@ -1,14 +1,16 @@
-// Copyright IBM Corp. 2017,2019. All Rights Reserved.
+// Copyright IBM Corp. 2020. All Rights Reserved.
 // Node module: @loopback/grpc
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
 import {ContextView, filterByTag, inject} from '@loopback/core';
 import {execSync} from 'child_process';
+import debugFactory from 'debug';
 import {GrpcObject, MethodDefinition, ServiceDefinition} from 'grpc';
 import path from 'path';
-import {GrpcBindings} from './keys';
-import {GrpcOperation, GrpcProto, GrpcServerConfig} from './types';
+import {GrpcBindings, GrpcTags} from './keys';
+import {GrpcOperation, GrpcServerConfig} from './types';
+const debug = debugFactory('loopback:grpc:generator');
 
 /**
  * GRPC TypeScript generator.
@@ -16,45 +18,60 @@ import {GrpcOperation, GrpcProto, GrpcServerConfig} from './types';
  * corresponding typescript files from proto files.
  * Required for `@grpc` configuration and strict development.
  */
-export class GrpcGenerator {
+export class ProtoManager {
   /**
    * proto instances directory loaded during
    * boot time and later being used by implemented grpc
    * controllers.
    */
-  private protos: {
-    [name: string]: GrpcOperation;
-  } = {};
+  private protos?: Record<string, GrpcOperation>;
+
   /**
    * @param - config
    */
   constructor(
     @inject(GrpcBindings.CONFIG) protected config: GrpcServerConfig,
-    @inject.view(filterByTag('proto'))
+    @inject.view(filterByTag(GrpcTags.PROTO))
     protected protosView: ContextView<GrpcObject>,
-  ) {}
+  ) {
+    this.protosView.on('refresh', () => (this.protos = undefined));
+  }
   /**
    * This method will find and load all protos
    * contained within the project directory. Saving in memory
    * instances for those found protos for later usage.
    */
-  execute() {
+  generateTsCode() {
     const protoBindings = this.protosView.bindings;
     for (const protoBinding of protoBindings) {
-      const protoObj = this.protosView.context.getSync<GrpcProto>(
+      if (protoBinding.tagMap.file != null) {
+        this.generate(protoBinding.tagMap.file);
+      }
+    }
+  }
+
+  indexProtos() {
+    if (this.protos != null) return;
+    this.protos = {};
+    const protoBindings = this.protosView.bindings;
+    for (const protoBinding of protoBindings) {
+      const protoObj = this.protosView.context.getSync<GrpcObject>(
         protoBinding.key,
       );
 
-      for (const pkg in protoObj.proto) {
-        const pkgObj = protoObj.proto[pkg] as GrpcObject;
+      for (const pkg in protoObj) {
+        const pkgObj = protoObj[pkg] as GrpcObject;
+        debug('Protobuf packge: %s', pkg, pkgObj);
         for (const key in pkgObj) {
           const child = pkgObj[key] as GrpcObject;
           if (child.service) {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const service = child.service as ServiceDefinition<any>;
+            debug('Protobuf service: %s', key, service);
             for (const m in service) {
               const method = service[m] as MethodDefinition<unknown, unknown>;
               const methodPath = (method.path as unknown) as string;
+              debug('Protobuf method: %s', m, method);
               this.protos[methodPath] = {
                 package: pkgObj,
                 service,
@@ -66,21 +83,20 @@ export class GrpcGenerator {
           }
         }
       }
-      this.generate(protoObj.file);
     }
   }
 
   /**
-   * This method will return a proto instance
-   * from the proto list directory, previously loaded during
-   * boot time.
+   * This method will return a proto operation for the given path
    *
-   * @param methodPath
+   * @param methodPath - Path for the gRPC method <package>.<Service>/<Method>
    *
    */
-  public getProto(methodPath: string): GrpcOperation {
-    return this.protos[`/${methodPath}`];
+  public getProto(methodPath: string): GrpcOperation | undefined {
+    this.indexProtos();
+    return this.protos == null ? undefined : this.protos[`/${methodPath}`];
   }
+
   /**
    * This method will generate a typescript
    * file representing the provided proto file by calling

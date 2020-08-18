@@ -1,11 +1,16 @@
-// Copyright IBM Corp. 2017,2019. All Rights Reserved.
+// Copyright IBM Corp. 2020. All Rights Reserved.
 // Node module: @loopback/grpc
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Constructor} from '@loopback/core';
+import {
+  Constructor,
+  GenericInterceptor,
+  GenericInterceptorChain,
+} from '@loopback/core';
 import {GrpcObject, MethodDefinition, ServiceDefinition} from 'grpc';
 import {GrpcSequenceHandler} from './grpc.sequence';
+import {GrpcRequestContext} from './request-context';
 
 /**
  * Configuration for a GRPC server
@@ -16,21 +21,15 @@ export interface GrpcServerConfig {
   sequence?: Constructor<GrpcSequenceHandler>;
 }
 
-export interface GrpcMethod {
-  PROTO_NAME: string;
-  PROTO_PACKAGE: string;
-  SERVICE_NAME: string;
-  METHOD_NAME: string;
-  REQUEST_STREAM: boolean;
-  RESPONSE_STREAM: boolean;
-}
-
 /**
  * Metadata for a GRPC method
  */
 export interface GrpcMethodMetadata {
   // <packageName>.<ServiceName>/<MethodName>, such as "greeterpackage.Greeter/SayHello"
   path: string;
+  packageName?: string;
+  serviceName?: string;
+  methodName?: string;
   requestStream?: boolean;
   responseStream?: boolean;
 }
@@ -51,3 +50,10 @@ export interface GrpcOperation {
   name: string;
   path: string;
 }
+
+export interface GrpcMiddleware
+  extends GenericInterceptor<GrpcRequestContext> {}
+
+export class GrpcMiddlewareChain extends GenericInterceptorChain<
+  GrpcRequestContext
+> {}

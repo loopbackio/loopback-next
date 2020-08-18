@@ -1,14 +1,17 @@
-
 ## Overview
 
-Decorators provide annotations for class methods and arguments. Decorators use the form `@decorator` where `decorator` is the name of the function that will be called at runtime.
+Decorators provide annotations for class methods and arguments. Decorators use
+the form `@decorator` where `decorator` is the name of the function that will be
+called at runtime.
 
 ### gRPC Decorator
 
-This decorator allows you to annotate a `Controller` class. The decorator will setup a GRPC Service.
+This decorator allows you to annotate a `Controller` class. The decorator will
+setup a GRPC Service.
 
 **Example**
-````js
+
+```js
 /**
 * Setup gRPC MicroService
 **/
@@ -25,14 +28,14 @@ class GreeterCtrl implements Greeter.Service {
     return { message: 'Hello ' + call.request.name };
   }
 }
-````
+```
 
 ## Example Proto File
 
-````proto
+```proto
 syntax = "proto3";
 package awesomepackage;
- 
+
 service Greeter {
   // Sends a greeting
   rpc SayHello (HelloRequest) returns (HelloReply) {}
@@ -47,11 +50,12 @@ message HelloRequest {
 message HelloReply {
   string message = 1;
 }
-````
+```
 
 ## Related Resources
 
-You can check out the following resource to learn more about decorators and how they are used in LoopBack Next.
+You can check out the following resource to learn more about decorators and how
+they are used in LoopBack Next.
 
 - [TypeScript Handbook: Decorators](https://www.typescriptlang.org/docs/handbook/decorators.html)
 - [Decorators in LoopBack](http://loopback.io/doc/en/lb4/Decorators.html)

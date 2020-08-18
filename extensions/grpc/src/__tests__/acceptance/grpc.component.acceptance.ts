@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2019. All Rights Reserved.
+// Copyright IBM Corp. 2020. All Rights Reserved.
 // Node module: @loopback/grpc
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -26,13 +26,6 @@ import {
 } from '../fixtures/greeter.proto';
 
 describe('GrpcComponent', () => {
-  class GRPCApplication extends BootMixin(Application) {
-    constructor(config: ApplicationConfig) {
-      super(config);
-      this.projectRoot = path.join(__dirname, '../fixtures');
-    }
-  }
-
   // GRPC Component Configurations
   it('defines grpc component configurations', async () => {
     const app = givenApplication();
@@ -43,16 +36,16 @@ describe('GrpcComponent', () => {
   // LoopBack GRPC Service
   it('creates a grpc service', async () => {
     // Define Greeter Service Implementation
-    class GreeterCtrl implements Greeter.Service {
+    class GreeterController implements Greeter.Service {
       // Tell LoopBack that this is a Service RPC implementation
-      @grpc(Greeter.SayHello)
+      @grpc('greeterpackage.Greeter/SayHello')
       sayHello(request: HelloRequest): HelloReply {
         return {
           message: 'Hello ' + request.name,
         };
       }
 
-      @grpc(Greeter.SayTest)
+      @grpc({path: 'greeterpackage.Greeter/SayTest'})
       sayTest(request: TestRequest): TestReply {
         return {
           message: 'Test ' + request.name,
@@ -62,7 +55,7 @@ describe('GrpcComponent', () => {
     // Load LoopBack Application
     const app = givenApplication();
     await app.boot();
-    app.controller(GreeterCtrl);
+    app.controller(GreeterController);
     await app.start();
     // Make GRPC Client Call
     const result: HelloReply = await asyncCall({
@@ -77,15 +70,15 @@ describe('GrpcComponent', () => {
   // LoopBack GRPC Service
   it('creates a grpc service with custom sequence', async () => {
     // Define Greeter Service Implementation
-    class GreeterCtrl implements Greeter.Service {
+    class GreeterController implements Greeter.Service {
       // Tell LoopBack that this is a Service RPC implementation
-      @grpc(Greeter.SayHello)
+      @grpc('greeterpackage.Greeter/SayHello')
       sayHello(request: HelloRequest): HelloReply {
         const reply: HelloReply = {message: 'Hello ' + request.name};
         return reply;
       }
 
-      @grpc(Greeter.SayTest)
+      @grpc({path: 'greeterpackage.Greeter/SayTest'})
       sayTest(request: TestRequest): TestReply {
         return {
           message: 'Test ' + request.name,
@@ -112,7 +105,7 @@ describe('GrpcComponent', () => {
     // Load LoopBack Application
     const app = givenApplication(MySequence);
     await app.boot();
-    app.controller(GreeterCtrl);
+    app.controller(GreeterController);
     await app.start();
     // Make GRPC Client Call
     const result: HelloReply = await asyncCall({
@@ -123,6 +116,17 @@ describe('GrpcComponent', () => {
     expect(result.message).to.eql('Hello World Sequenced');
     await app.stop();
   });
+
+  class GRPCApplication extends BootMixin(Application) {
+    constructor(config: ApplicationConfig) {
+      super(config);
+      this.projectRoot = path.join(
+        __dirname,
+        // Load from src directory as `tsc` won't copy `*.proto` files to `dist`
+        '../../../src/__tests__/fixtures',
+      );
+    }
+  }
 
   /**
    * Returns GRPC Enabled Application
@@ -146,7 +150,10 @@ describe('GrpcComponent', () => {
    **/
   function getGrpcClient(app: Application) {
     const proto = grpcModule.load(
-      path.join(__dirname, '../fixtures/protos/greeter.proto'),
+      path.join(
+        __dirname,
+        '../../../src/__tests__/fixtures/protos/greeter.proto',
+      ),
     )['greeterpackage'] as grpcModule.GrpcObject;
     const client = proto.Greeter as typeof grpcModule.Client;
     return new client(

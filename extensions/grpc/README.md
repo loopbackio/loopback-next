@@ -1,10 +1,12 @@
-# gRPC Extension for LoopBack 4
+# @loopback/grpc
 
-[![Join the chat at https://gitter.im/strongloop/loopback4-extension-grpc](https://badges.gitter.im/strongloop/loopback4-extension-grpc.svg)](https://gitter.im/strongloop/loopback4-extension-grpc?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+This module is a LoopBack 4 extension for creating and exposing gRPC APIs.
 
 ## Overview
 
-The `@loopback/grpc` component enables LoopBack 4 as a [gRPC](https://grpc.io/) Server. Also it provides with a gRPC decorator to define your RPC Method implementations from your Application Controllers.
+The `@loopback/grpc` component enables LoopBack 4 as a [gRPC](https://grpc.io/)
+Server. It also provides a gRPC decorator to define your RPC Method
+implementations as controllers.
 
 ## Installation
 
@@ -19,7 +21,7 @@ $ npm install --save @loopback/grpc
 ```js
 import {Application} from '@loopback/core';
 import {GrpcComponent, Config} from '@loopback/grpc';
-import {GreeterCtrl} from './controllers/greeter/greeter.ctrl';
+import {GreeterController} from './controllers/greeter.controller';
 // Grpc Configurations are optional.
 const config: Config.Component = {
   /* Optional Configs */
@@ -31,65 +33,46 @@ const app = new Application({
 // Add Grpc as Component
 app.component(GrpcComponent);
 // Bind GreeterCtrl to the LoopBack Application
-app.controller(GreeterCtrl);
+app.controller(GreeterController);
 // Start App
 app.start();
 ```
 
-## Grpc auto-generated code
+## Discover proto files
 
-The `@loopback/grpc` extension provides you with auto-generated interfaces and configurations for strict development.
-
-The extension will automatically look for proto files within your project structure, creating the corresponding typescript interfaces.
-
-Example:
-
-```sh
-- app
-| - controllers
-| | - greeter
-| | | - greeter.proto
-| | | - greeter.ctrl.ts
-```
-
-Once you start your app for first time it will automatically create your typescript interfaces from the `greeter.proto` file.
-
-```sh
-- app
-| - controllers
-| | - greeter
-| | | - greeter.proto
-| | | - greeter.proto.ts <--- Auto-generated
-| | | - greeter.ctrl.ts
-```
-
-Once your interfaces and configurations are created, you can start building your controller logic.
+The component contributes a booter for `.proto` files to the application. During
+`app.boot()`, proto files are loaded and bound to the application context.
 
 ## Grpc Controller
 
-The `@loopback/grpc` component provides you with a handy decorator to implement GRPC Methods within your LoopBack controllers.
+The `@loopback/grpc` component provides you with a handy decorator to implement
+GRPC Methods within your LoopBack controllers.
 
-`app/controllers/greeter/greeter.ctrl.ts`
+`src/controllers/greeter.controller.ts`
 
-```js
+```ts
 import {grpc} from '@loopback/grpc';
 import {Greeter, HelloRequest, HelloReply} from '/greeter.proto';
-/**
- * @class GreeterCtrl
- * @description Implements grpc proto service
- **/
-export class GreeterCtrl implements Greeter.Service {
-    // Tell LoopBack that this is a Service RPC implementation
-    @grpc(Greeter.SayHello)
-    sayHello(request: HelloRequest): HelloReply {
-        return {message: 'Hello ' + request.name};
-    }
+export class GreeterController implements Greeter.Service {
+  // Tell LoopBack that this is a Service RPC implementation
+  @grpc('greeterpackage.Greeter/SayHello')
+  sayHello(request: HelloRequest): HelloReply {
+    const reply: HelloReply = {message: 'Hello ' + request.name};
+    return reply;
+  }
+
+  @grpc('greeterpackage.Greeter/SayTest')
+  sayTest(request: TestRequest): TestReply {
+    return {
+      message: 'Test ' + request.name,
+    };
+  }
 }
 ```
 
 ## Proto Example
 
-`app/controllers/greeter/greeter.proto`
+`protos/greeter.proto`
 
 ```txt
 syntax = "proto3";
@@ -111,6 +94,12 @@ message HelloReply {
 }
 ```
 
+## gRPC Server
+
+## gRPC Sequence
+
+## gRPC Middleware
+
 ## Contribute
 
 Get started by either downloading this project or cloning it as follows:
@@ -122,24 +111,18 @@ $ cd loopback4-extension-grpc && npm install
 
 ## Contributions
 
-* [Guidelines](https://github.com/strongloop/loopback-next/wiki/Contributing#guidelines)
-* [Join the team](https://github.com/strongloop/loopback-next/issues/110)
+- [Guidelines](https://github.com/strongloop/loopback-next/wiki/Contributing#guidelines)
+- [Join the team](https://github.com/strongloop/loopback-next/issues/110)
 
 ## Tests
 
 run `npm test` from the root folder.
 
-## Todo
-
-* Watch for proto changes.
-* Server/Client Streams
-
 ## Contributors
 
-See [all contributors](https://github.com/strongloop/loopback4-extension-grpc/graphs/contributors).
+See
+[all contributors](https://github.com/strongloop/loopback4-extension-grpc/graphs/contributors).
 
 ## License
 
 MIT
-
-[grpc]: (https://grpc.io)

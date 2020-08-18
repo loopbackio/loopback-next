@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2017,2019. All Rights Reserved.
+// Copyright IBM Corp. 2020. All Rights Reserved.
 // Node module: @loopback/grpc
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -18,10 +18,10 @@ import {
 import debugFactory from 'debug';
 import grpc, {ServiceError} from 'grpc';
 import {GRPC_METHODS} from './decorators/grpc.decorator';
-import {GrpcGenerator} from './grpc.generator';
+import {ProtoManager} from './grpc.proto';
 import {GrpcBindings} from './keys';
 import {GrpcRequestContext} from './request-context';
-import {GrpcMethod, GrpcMethodMetadata, GrpcOperation} from './types';
+import {GrpcMethodMetadata, GrpcOperation} from './types';
 
 const debug = debugFactory('loopback:grpc:server');
 
@@ -47,20 +47,21 @@ export class GrpcServer extends Context implements Server {
     @inject(GrpcBindings.GRPC_SERVER) protected server: grpc.Server,
     @inject(GrpcBindings.HOST) protected host: string,
     @inject(GrpcBindings.PORT) protected port: string,
-    @inject(GrpcBindings.GRPC_GENERATOR) protected generator: GrpcGenerator,
+    @inject(GrpcBindings.GRPC_PROTO_MANAGER)
+    protected protoManager: ProtoManager,
   ) {
     super(app);
   }
 
   private setupControllers() {
     // Execute TypeScript Generator. (Must be first one to load)
-    this.generator.execute();
+    this.protoManager.indexProtos();
     const bindings = this.find(b => {
       if (b.type !== BindingType.CLASS) return false;
       const ctor = (b.source as ClassBindingSource<unknown>).value;
 
       const controllerMethods = MetadataInspector.getAllMethodMetadata<
-        GrpcMethod
+        GrpcMethodMetadata
       >(GRPC_METHODS, ctor.prototype);
 
       return controllerMethods != null;
@@ -120,11 +121,13 @@ export class GrpcServer extends Context implements Server {
       const config = controllerMethods[methodName];
       debug('Config for method %s', methodName, config);
 
-      const meta: GrpcOperation = this.generator.getProto(config.path);
+      const meta = this.protoManager.getProto(config.path);
       debug('Proto for %s', config.path, meta);
 
       if (!meta) {
-        throw new Error(`Grpc Server: No proto file was provided.`);
+        throw new Error(
+          `Grpc Server: No protobuf operation found for ${config.path}`,
+        );
       }
 
       const serviceDef = meta.service;
