@@ -71,6 +71,24 @@ export function BootMixin<T extends MixinTarget<Application>>(superClass: T) {
       );
     }
 
+    booted: boolean;
+
+    /**
+     * Override to detect and warn about starting without booting.
+     */
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    public async start(): Promise<void> {
+      await super.start();
+      if (!this.booted) {
+        process.emitWarning(
+          'App started without booting. Did you forget to call ' +
+            '`await app.boot()`?',
+          'LoopBackWarning',
+        );
+      }
+    }
+
     /**
      * Convenience method to call bootstrapper.boot() by resolving bootstrapper
      */
@@ -101,6 +119,7 @@ export function BootMixin<T extends MixinTarget<Application>>(superClass: T) {
 
       // @ts-ignore
       this.setState('booted');
+      this.booted = true;
 
       /* eslint-enable @typescript-eslint/ban-ts-comment */
     }

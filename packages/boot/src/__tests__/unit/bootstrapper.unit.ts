@@ -5,7 +5,7 @@
 
 import {Application} from '@loopback/core';
 import {RepositoryMixin} from '@loopback/repository';
-import {expect} from '@loopback/testlab';
+import {expect, sinon} from '@loopback/testlab';
 import {BootBindings, Booter, BootMixin, Bootstrapper} from '../..';
 
 describe('boot-strapper unit tests', () => {
@@ -17,9 +17,13 @@ describe('boot-strapper unit tests', () => {
   let bootstrapper: Bootstrapper;
   const booterKey = `${BootBindings.BOOTER_PREFIX}.TestBooter`;
   const anotherBooterKey = `${BootBindings.BOOTER_PREFIX}.AnotherBooter`;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let stub: sinon.SinonStub<[any?, ...any[]], void>;
 
   beforeEach(getApplication);
   beforeEach(getBootStrapper);
+  beforeEach(createStub);
+  afterEach(restoreStub);
 
   it('finds and runs registered booters', async () => {
     const ctx = await bootstrapper.boot();
@@ -147,5 +151,13 @@ describe('boot-strapper unit tests', () => {
       if (this.configureCalled) result.push('AnotherBooter:configure');
       return result;
     }
+  }
+
+  function restoreStub() {
+    stub.restore();
+  }
+
+  function createStub() {
+    stub = sinon.stub(process, 'emitWarning');
   }
 });
