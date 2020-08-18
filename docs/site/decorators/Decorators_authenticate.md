@@ -10,11 +10,32 @@ permalink: /doc/en/lb4/Decorators_authenticate.html
 
 ## Authentication Decorator
 
-Syntax: `@authenticate(strategyName: string, options?: object)` or
-`@authenticate(metadata: AuthenticationMetadata)`
+Syntax:
 
-Marks a controller method as needing an authenticated user. This decorator
-requires a strategy name as a parameter.
+- single strategy: `@authenticate(strategyName)`
+- multiple strategies: `@authenticate(strategyName1, strategyName2)`
+- single strategy with options:
+  ```ts
+    @authenticate({
+      strategy: strategyName,
+      options: {option1: 'value1', option2: 'value2'}
+    })
+  ```
+- multiple strategies with options:
+  ```ts
+    @authenticate({
+      strategy: strategyName1,
+      options: {option1: 'value1'}
+    }, {
+      strategy: strategyName2,
+      options: {option2: 'value2'}
+    })
+  ```
+
+To mark a controller method as needing an authenticated user, the decorator
+requires one or more strategies.
+
+### Method Level Decorator
 
 Here's an example using 'BasicStrategy': to authenticate user in function
 `whoAmI`:
@@ -37,6 +58,8 @@ export class WhoAmIController {
   }
 }
 ```
+
+### Class Level Decorator
 
 To configure a default authentication for all methods within a class,
 `@authenticate` can also be applied at the class level. In the code below,
@@ -68,3 +91,38 @@ export class WhoAmIController {
 
 For more information on authentication with LoopBack, visit
 [here](../Loopback-component-authentication.md).
+
+### Multiple Strategies
+
+`@authenticate()` can takes in more than one strategy. For example:
+
+```ts
+import {inject} from '@loopback/core';
+import {securityId, SecurityBindings, UserProfile} from '@loopback/security';
+import {authenticate} from '@loopback/authentication';
+import {get} from '@loopback/rest';
+
+export class WhoAmIController {
+  constructor(@inject(SecurityBindings.USER) private user: UserProfile) {}
+
+  @authenticate('BasicStrategy', 'JWTStrategy')
+  @get('/whoami')
+  whoAmI(): string {
+    return this.user[securityId];
+  }
+}
+```
+
+The logic on how the strategies are executed is similar to how
+[passport.js](http://www.passportjs.org/) does it:
+
+- The authentication strategies will be executed in the provided order.
+- If at least one authentication strategy succeeds, the request will be further
+  processed without throwing an error.
+- Once a strategy succeeds or redirects, all subsequent strategies will not be
+  evaluated.
+- If all strategies fail, an error will be thrown with the error message of the
+  first provided strategy.
+
+{% include note.html content="It is not feasible to use multiple strategies that redirect (e.g. OAuth login redirects) since the first redirect will halt the execution chain.
+" %}

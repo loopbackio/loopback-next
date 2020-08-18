@@ -18,15 +18,25 @@ functions with the
 
 The decorator's syntax is:
 
-```ts
-@authenticate(strategyName: string, options?: object)
-```
-
-or
-
-```ts
-@authenticate(metadata: AuthenticationMetadata)
-```
+- single strategy: `@authenticate(strategyName)`
+- multiple strategies: `@authenticate(strategyName1, strategyName2)`
+- single strategy with options:
+  ```ts
+    @authenticate({
+      strategy: strategyName,
+      options: {option1: 'value1', option2: 'value2'}
+    })
+  ```
+- multiple strategies with options:
+  ```ts
+    @authenticate({
+      strategy: strategyName1,
+      options: {option1: 'value1'}
+    }, {
+      strategy: strategyName2,
+      options: {option2: 'value2'}
+    })
+  ```
 
 The **`strategyName`** is the **unique** name of the authentication strategy.
 
@@ -73,7 +83,7 @@ export class WhoAmIController {
 An example of the decorator when options **are** specified looks like this:
 
 ```ts
-@authenticate('basic', { /* some options for the strategy */})
+@authenticate({strategy: 'basic', options: { /* some options for the strategy */}})
 ```
 
 {% include tip.html content="
