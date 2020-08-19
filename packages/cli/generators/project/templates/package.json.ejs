@@ -6,6 +6,9 @@
     "loopback-<%= project.projectType -%>",
     "loopback"
   ],
+<% if (project.private) { -%>
+  "private": true,
+<% } -%>
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "engines": {
@@ -60,10 +63,11 @@
   "repository": {
     "type": "git"
   },
-<% if (project.private) { -%>
-  "private": true,
-<% } -%>
+<% if (author) { -%>
+  "author": "<%= author.name %> <<%= author.email %>>",
+<% } else { -%>
   "author": "",
+<% } -%>
   "license": "",
   "files": [
     "README.md",
