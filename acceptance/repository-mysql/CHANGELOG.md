@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.7.12](https://github.com/strongloop/loopback-next/compare/@loopback/test-repository-mysql@0.7.11...@loopback/test-repository-mysql@0.7.12) (2020-08-19)
+
+**Note:** Version bump only for package @loopback/test-repository-mysql
+
+
+
+
+
 ## [0.7.11](https://github.com/strongloop/loopback-next/compare/@loopback/test-repository-mysql@0.7.10...@loopback/test-repository-mysql@0.7.11) (2020-08-05)
 
 **Note:** Version bump only for package @loopback/test-repository-mysql

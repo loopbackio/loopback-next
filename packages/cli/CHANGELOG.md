@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.13.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@2.12.0...@loopback/cli@2.13.0) (2020-08-19)
+
+
+### Bug Fixes
+
+* ibm i db2 connector ([e6a6cfd](https://github.com/strongloop/loopback-next/commit/e6a6cfdb5ffc1ed6f77cc8fe1179408e835090d0))
+* remove .npmrc when Yarn has been selected ([ebb6b3a](https://github.com/strongloop/loopback-next/commit/ebb6b3aa87bdca6a65034386104947f1936fd09b))
+* use Yarn in scripts when Yarn is selected ([142ae8b](https://github.com/strongloop/loopback-next/commit/142ae8b9d124e9f8c71ac4e9b6ae4b1c13c42d13))
+* **docs:** rename legacy juggler to juggler ([d1febb1](https://github.com/strongloop/loopback-next/commit/d1febb17341ef647e203cb24cba3b716c0163f4c))
+
+
+### Features
+
+* add the git user as the author of a project ([873ea96](https://github.com/strongloop/loopback-next/commit/873ea9651766234053b4d6142495c8e94b4c194e))
+* set the project template version to 0.0.1 ([05bbf62](https://github.com/strongloop/loopback-next/commit/05bbf62f70237691ed9ae21101de7f056fd6d260))
+* **cli:** update translation messages ([c854e4f](https://github.com/strongloop/loopback-next/commit/c854e4f697a37f85778b1f867f5e568ecd1832a5))
+
+
+
+
+
 # [2.12.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@2.11.0...@loopback/cli@2.12.0) (2020-08-05)
 
 

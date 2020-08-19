@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.1](https://github.com/strongloop/loopback-next/compare/@loopback/authentication-jwt@0.5.0...@loopback/authentication-jwt@0.5.1) (2020-08-19)
+
+**Note:** Version bump only for package @loopback/authentication-jwt
+
+
+
+
+
 # [0.5.0](https://github.com/strongloop/loopback-next/compare/@loopback/authentication-jwt@0.4.4...@loopback/authentication-jwt@0.5.0) (2020-08-05)
 
 

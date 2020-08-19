@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.10.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@3.9.4...@loopback/context@3.10.0) (2020-08-19)
+
+
+### Features
+
+* **context:** propagate resolution session to dynamic value factory ([60929f1](https://github.com/strongloop/loopback-next/commit/60929f1193b3ac0eadc3b70e3e3efc8206e40bab))
+
+
+
+
+
 ## [3.9.4](https://github.com/strongloop/loopback-next/compare/@loopback/context@3.9.3...@loopback/context@3.9.4) (2020-08-05)
 
 **Note:** Version bump only for package @loopback/context

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.12.12](https://github.com/strongloop/loopback-next/compare/@loopback/repository-tests@0.12.11...@loopback/repository-tests@0.12.12) (2020-08-19)
+
+
+### Bug Fixes
+
+* **repository-tests:** disconnect datasources after tests finish ([c574303](https://github.com/strongloop/loopback-next/commit/c574303adabf8cc67f91c98ab59aa226a972bf83))
+
+
+
+
+
 ## [0.12.11](https://github.com/strongloop/loopback-next/compare/@loopback/repository-tests@0.12.10...@loopback/repository-tests@0.12.11) (2020-08-05)
 
 **Note:** Version bump only for package @loopback/repository-tests

@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.11.1](https://github.com/strongloop/loopback-next/compare/@loopback/repository@2.11.0...@loopback/repository@2.11.1) (2020-08-19)
+
+
+### Bug Fixes
+
+* **docs:** rename legacy juggler to juggler ([d1febb1](https://github.com/strongloop/loopback-next/commit/d1febb17341ef647e203cb24cba3b716c0163f4c))
+* **repository:** apply `[@model](https://github.com/model)` to generated model class ([9a1b1e4](https://github.com/strongloop/loopback-next/commit/9a1b1e4324516bc1351e08943b8b0c5a00e75992))
+* **repository:** remove experimental note ([921e6ae](https://github.com/strongloop/loopback-next/commit/921e6aee81130e92948c24e844424183e4147ab3))
+
+
+
+
+
 # [2.11.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@2.10.0...@loopback/repository@2.11.0) (2020-08-05)
 
 

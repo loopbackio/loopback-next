@@ -1,6 +1,6 @@
 {
   "name": "@loopback/model-api-builder",
-  "version": "2.1.11",
+  "version": "2.1.12",
   "description": "Types and helpers for packages contributing Model API builders.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -21,13 +21,13 @@
     "access": "public"
   },
   "peerDependencies": {
-    "@loopback/core": "^2.9.3",
-    "@loopback/repository": "^2.11.0"
+    "@loopback/core": "^2.9.4",
+    "@loopback/repository": "^2.11.1"
   },
   "devDependencies": {
     "@loopback/build": "^1.7.1",
-    "@loopback/core": "^2.9.3",
-    "@loopback/repository": "^2.11.0",
+    "@loopback/core": "^2.9.4",
+    "@loopback/repository": "^2.11.1",
     "@types/node": "^10.17.28"
   },
   "files": [

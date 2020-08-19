@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/express@1.3.0...@loopback/express@1.4.0) (2020-08-19)
+
+
+### Features
+
+* **express:** add middleware view to watch registered middleware ([205d948](https://github.com/strongloop/loopback-next/commit/205d948cb91cf48d187ce247ee5e77b1204be35e))
+* **rest:** add the ability to validate sorted middleware groups ([227dbf8](https://github.com/strongloop/loopback-next/commit/227dbf8045990536ac1437ea4a7ae1f1a1e571bb))
+* **rest:** optimize middleware sequence to reuse middleware binding keys ([0041a24](https://github.com/strongloop/loopback-next/commit/0041a246df89f7dbff179ed7c5e08a65ec5bcbda))
+
+
+
+
+
 # [1.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/express@1.2.6...@loopback/express@1.3.0) (2020-08-05)
 
 

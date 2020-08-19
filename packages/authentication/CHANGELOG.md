@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@5.0.0...@loopback/authentication@6.0.0) (2020-08-19)
+
+
+### Features
+
+* **authentication:** add support for multiple strategies on same method ([f2f1580](https://github.com/strongloop/loopback-next/commit/f2f15806189d568d0a2c6d6198de74e6801f094c)), closes [#5310](https://github.com/strongloop/loopback-next/issues/5310)
+* **authentication:** update signature of authenticate decorator ([ae6c0e6](https://github.com/strongloop/loopback-next/commit/ae6c0e68a58a2b574fd534242e599aa2a96fc855))
+
+
+### BREAKING CHANGES
+
+* **authentication:** The `@authenticate` signature changed, options are no longer
+a separate input parameter but instead have to be provided in the metadata object.
+The metadata value is now `AuthenticationMetadata[]`.
+
+Signed-off-by: nflaig <nflaig@protonmail.com>
+
+
+
+
+
 # [5.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@4.2.10...@loopback/authentication@5.0.0) (2020-08-05)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.13.1](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.13.0...@loopback/docs@3.13.1) (2020-08-19)
+
+
+### Bug Fixes
+
+* **docs:** rename legacy juggler to juggler ([d1febb1](https://github.com/strongloop/loopback-next/commit/d1febb17341ef647e203cb24cba3b716c0163f4c))
+
+
+
+
+
 # [3.13.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.12.0...@loopback/docs@3.13.0) (2020-08-05)
 
 

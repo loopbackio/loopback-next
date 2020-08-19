@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@6.0.0...@loopback/rest@6.1.0) (2020-08-19)
+
+
+### Bug Fixes
+
+* **repository:** apply `[@model](https://github.com/model)` to generated model class ([9a1b1e4](https://github.com/strongloop/loopback-next/commit/9a1b1e4324516bc1351e08943b8b0c5a00e75992))
+
+
+### Features
+
+* **express:** add middleware view to watch registered middleware ([205d948](https://github.com/strongloop/loopback-next/commit/205d948cb91cf48d187ce247ee5e77b1204be35e))
+* **rest:** add the ability to validate sorted middleware groups ([227dbf8](https://github.com/strongloop/loopback-next/commit/227dbf8045990536ac1437ea4a7ae1f1a1e571bb))
+* **rest:** improve validation errors for invalid parameter value ([54f762c](https://github.com/strongloop/loopback-next/commit/54f762c845912b45811f6481518a100f10c5e1e6))
+* **rest:** optimize middleware sequence to reuse middleware binding keys ([0041a24](https://github.com/strongloop/loopback-next/commit/0041a246df89f7dbff179ed7c5e08a65ec5bcbda))
+
+
+
+
+
 # [6.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@5.2.1...@loopback/rest@6.0.0) (2020-08-05)
 
 

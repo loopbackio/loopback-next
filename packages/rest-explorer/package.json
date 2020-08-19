@@ -1,6 +1,6 @@
 {
   "name": "@loopback/rest-explorer",
-  "version": "2.2.8",
+  "version": "2.2.9",
   "description": "LoopBack's API Explorer",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -21,16 +21,16 @@
     "access": "public"
   },
   "dependencies": {
-    "@loopback/core": "^2.9.3",
-    "@loopback/rest": "^6.0.0",
+    "@loopback/core": "^2.9.4",
+    "@loopback/rest": "^6.1.0",
     "ejs": "^3.1.5",
     "swagger-ui-dist": "3.32.3",
     "tslib": "^2.0.1"
   },
   "devDependencies": {
-    "@loopback/build": "^6.2.0",
-    "@loopback/eslint-config": "^9.0.0",
-    "@loopback/testlab": "^3.2.2",
+    "@loopback/build": "^6.2.1",
+    "@loopback/eslint-config": "^9.0.1",
+    "@loopback/testlab": "^3.2.3",
     "@types/ejs": "^3.0.4",
     "@types/express": "^4.17.7",
     "@types/node": "^10.17.28",

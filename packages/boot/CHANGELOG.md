@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.5.0](https://github.com/strongloop/loopback-next/compare/@loopback/boot@2.4.1...@loopback/boot@2.5.0) (2020-08-19)
+
+
+### Features
+
+* warn if app is started without booting ([1677195](https://github.com/strongloop/loopback-next/commit/1677195321ce06a1d7467233979ca4f321870e40))
+
+
+
+
+
 ## [2.4.1](https://github.com/strongloop/loopback-next/compare/@loopback/boot@2.4.0...@loopback/boot@2.4.1) (2020-08-05)
 
 **Note:** Version bump only for package @loopback/boot

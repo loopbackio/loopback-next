@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.8](https://github.com/strongloop/loopback-next/compare/@loopback/example-log-extension@2.1.7...@loopback/example-log-extension@2.1.8) (2020-08-19)
+
+**Note:** Version bump only for package @loopback/example-log-extension
+
+
+
+
+
 ## [2.1.7](https://github.com/strongloop/loopback-next/compare/@loopback/example-log-extension@2.1.6...@loopback/example-log-extension@2.1.7) (2020-08-05)
 
 **Note:** Version bump only for package @loopback/example-log-extension
