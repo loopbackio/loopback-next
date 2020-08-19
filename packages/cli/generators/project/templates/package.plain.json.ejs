@@ -19,46 +19,91 @@
     "build:watch": "tsc --watch",
     "clean": "rimraf dist *.tsbuildinfo .eslintcache",
 <% if (project.prettier && project.eslint) { -%>
+<% if (packageManager === 'yarn') { -%>
+    "lint": "yarn run prettier:check && yarn run eslint",
+    "lint:fix": "yarn run eslint:fix && yarn run prettier:fix",
+<% } else { -%>
     "lint": "npm run prettier:check && npm run eslint",
     "lint:fix": "npm run eslint:fix && npm run prettier:fix",
+<% } -%>
 <% } else if (project.prettier) { -%>
+<% if (packageManager === 'yarn') { -%>
+    "lint": "yarn run prettier:check",
+    "lint:fix": "yarn run prettier:fix",
+<% } else { -%>
     "lint": "npm run prettier:check",
     "lint:fix": "npm run prettier:fix",
+<% } -%>
 <% } else if (project.eslint) { -%>
+<% if (packageManager === 'yarn') { -%>
+    "lint": "yarn run eslint",
+    "lint:fix": "yarn run eslint:fix",
+<% } else { -%>
     "lint": "npm run eslint",
     "lint:fix": "npm run eslint:fix",
 <% } -%>
+<% } -%>
 <% if (project.prettier) { -%>
     "prettier:cli": "prettier \"**/*.ts\" \"**/*.js\"",
+<% if (packageManager === 'yarn') { -%>
+    "prettier:check": "yarn run prettier:cli -l",
+    "prettier:fix": "yarn run prettier:cli --write",
+<% } else { -%>
     "prettier:check": "npm run prettier:cli -- -l",
     "prettier:fix": "npm run prettier:cli -- --write",
 <% } -%>
+<% } -%>
 <% if (project.eslint) { -%>
     "eslint": "eslint .",
+<% if (packageManager === 'yarn') { -%>
+    "eslint:fix": "yarn run eslint --fix",
+<% } else { -%>
     "eslint:fix": "npm run eslint -- --fix",
 <% } -%>
+<% } -%>
+<% if (packageManager === 'yarn') { -%>
+    "pretest": "yarn run clean && yarn run build",
+<% } else { -%>
     "pretest": "npm run clean && npm run build",
+<% } -%>
 <% if (project.mocha) { -%>
     "test": "mocha dist/__tests__",
 <% } -%>
 <% if (project.prettier || project.eslint) { -%>
+<% if (packageManager === 'yarn') { -%>
+    "posttest": "yarn run lint",
+<% } else { -%>
     "posttest": "npm run lint",
 <% } -%>
+<% } -%>
 <% if (project.mocha && (project.prettier || project.eslint)) { -%>
+<% if (packageManager === 'yarn') { -%>
+    "test:dev": "mocha dist/__tests__/**/*.js && yarn run posttest",
+<% } else { -%>
     "test:dev": "mocha dist/__tests__/**/*.js && npm run posttest",
+<% } -%>
 <% } else if (project.mocha) { -%>
     "test:dev": "mocha dist/__tests__/**/*.js",
 <% } -%>
 <% if (project.projectType === 'application') { -%>
-  <%_ if (project.docker) { -%>
+<% if (project.docker) { -%>
     "docker:build": "docker build -t <%= project.name -%> .",
     "docker:run": "docker run -p 3000:3000 -d <%= project.name -%>",
-  <%_ } -%>
+<% } -%>
     "migrate": "node ./dist/migrate",
     "openapi-spec": "node ./dist/openapi-spec",
-    "start": "npm run build && node -r source-map-support/register .",
+<% if (packageManager === 'yarn') { -%>
+    "prestart": "yarn run build",
+<% } else { -%>
+    "prestart": "npm run build",
 <% } -%>
+    "start": "node -r source-map-support/register .",
+<% } -%>
+<% if (packageManager === 'yarn') { -%>
+    "prepare": "yarn run build"
+<% } else { -%>
     "prepare": "npm run build"
+<% } -%>
   },
   "repository": {
     "type": "git"
