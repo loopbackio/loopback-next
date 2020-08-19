@@ -303,6 +303,23 @@ module.exports = function (projGenerator, props, projectType) {
       });
     });
 
+    describe('with mocha disabled', () => {
+      before(() => {
+        return helpers.run(projGenerator).withPrompts(
+          Object.assign(
+            {
+              settings: ['Disable mocha'],
+            },
+            props,
+          ),
+        );
+      });
+
+      it('does not create .mocharc.json files', () => {
+        assert.noFile('.mocharc.json');
+      });
+    });
+
     describe('with loopbackBuild disabled', () => {
       before(() => {
         return helpers.run(projGenerator).withPrompts(
