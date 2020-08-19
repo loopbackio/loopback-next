@@ -604,6 +604,10 @@ children:
   output: 'web, pdf'
   children:
 
+  - title: 'LoopBack 4 Application Layout'
+    url: Loopback-application-layout.html
+    output: 'web, pdf'
+
   - title: 'Examples'
     url: Examples.html
     output: 'web, pdf'
