@@ -251,6 +251,12 @@ module.exports = class ProjectGenerator extends BaseGenerator {
       this.destinationPath(''),
       {
         project: this.projectInfo,
+        author: this.user.git.email()
+          ? {
+              name: this.user.git.name(),
+              email: this.user.git.email(),
+            }
+          : null,
       },
     );
 
