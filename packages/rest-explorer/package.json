@@ -24,7 +24,7 @@
     "@loopback/core": "^2.9.3",
     "@loopback/rest": "^6.0.0",
     "ejs": "^3.1.5",
-    "swagger-ui-dist": "3.32.2",
+    "swagger-ui-dist": "3.32.3",
     "tslib": "^2.0.1"
   },
   "devDependencies": {
