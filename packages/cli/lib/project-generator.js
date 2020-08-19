@@ -242,8 +242,8 @@ module.exports = class ProjectGenerator extends BaseGenerator {
     this.destinationRoot(this.projectInfo.outdir);
 
     // Store information for cli operation in .yo.rc.json
-    this.config.set('version', cliVersion);
     this.config.set('packageManager', this.options.packageManager || 'npm');
+    this.config.set('version', cliVersion);
 
     // First copy common files from ../../project/templates
     this.copyTemplatedFiles(
@@ -295,6 +295,10 @@ module.exports = class ProjectGenerator extends BaseGenerator {
 
     if (!this.projectInfo.vscode) {
       this.fs.delete(this.destinationPath('.vscode'));
+    }
+
+    if (this.options.packageManager === 'yarn') {
+      this.fs.delete(this.destinationPath('.npmrc'));
     }
   }
 };
