@@ -251,6 +251,7 @@ module.exports = class ProjectGenerator extends BaseGenerator {
       this.destinationPath(''),
       {
         project: this.projectInfo,
+        packageManager: this.config.get('packageManager'),
         author: this.user.git.email()
           ? {
               name: this.user.git.name(),
