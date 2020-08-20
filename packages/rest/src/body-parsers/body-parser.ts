@@ -61,15 +61,18 @@ export class RequestBodyParser {
       if (customParser) {
         // Invoke the custom parser
         const body = await this._invokeCustomParser(customParser, request);
+        debug('Parsed request body', body);
         return Object.assign(requestBody, body);
       } else {
         const parser = this._findParser(matchedMediaType);
         if (parser) {
           const body = await parser.parse(request);
+          debug('Parsed request body', body);
           return Object.assign(requestBody, body);
         }
       }
     } catch (err) {
+      debug('Request body parsing error', err);
       throw normalizeParsingError(err);
     }
 
