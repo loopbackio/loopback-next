@@ -1,4 +1,12 @@
-# Developing with Webstorm
+---
+lang: en
+title: 'Developing with WebStorm'
+keywords: LoopBack 4.0, LoopBack 4
+sidebar: lb4_sidebar
+permalink: /doc/en/lb4/Developing-with-webstorm.html
+---
+
+# Developing with WebStorm
 
 For contributors using [WebStorm](https://www.jetbrains.com/webstorm/) as their
 preferred development environment, we recommend the following extensions to be
@@ -53,7 +61,7 @@ to the declaration of `inject`. WebStorm should jump to the `.ts` file in `src`
 It seems that refactorings like "rename" with (`Maj+F6`) will not change the
 renamed entity across packages.
 
-## How to verify TSLint setup
+## How to verify ESLint setup
 
 1.  Open any existing TypeScript file, e.g. `packages/src/index.ts`
 
