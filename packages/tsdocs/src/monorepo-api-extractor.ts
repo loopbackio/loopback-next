@@ -10,6 +10,7 @@ import {
   ExtractorConfig,
   ExtractorLogLevel,
   ExtractorMessage,
+  ExtractorMessageId,
   ExtractorResult,
   IConfigFile,
 } from '@microsoft/api-extractor';
@@ -200,7 +201,7 @@ function createRawExtractorConfig(
     },
     messages: {
       extractorMessageReporting: {
-        'ae-missing-release-tag': {
+        [ExtractorMessageId.MissingReleaseTag]: {
           logLevel: ExtractorLogLevel.None,
           addToApiReportFile: false,
         },
