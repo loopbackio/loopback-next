@@ -5,10 +5,13 @@
 
 import {bind, Context, inject, Provider} from '@loopback/core';
 import {asMiddleware, Middleware} from '@loopback/express';
+import debugFactory from 'debug';
 import {RestBindings, RestTags} from '../keys';
 import {RouteEntry} from '../router';
 import {RestMiddlewareGroups} from '../sequence';
 import {InvokeMethod, OperationArgs, OperationRetval} from '../types';
+
+const debug = debugFactory('loopback:rest:invoke-method');
 
 export class InvokeMethodProvider implements Provider<InvokeMethod> {
   constructor(@inject(RestBindings.Http.CONTEXT) protected context: Context) {}
@@ -41,9 +44,26 @@ export class InvokeMethodMiddlewareProvider implements Provider<Middleware> {
       const params: OperationArgs = await ctx.get(
         RestBindings.Operation.PARAMS,
       );
-      const retVal = await this.invokeMethod(route, params);
-      ctx.bind(RestBindings.Operation.RETURN_VALUE).to(retVal);
-      return retVal;
+      if (debug.enabled) {
+        debug(
+          'Invoking method %s for %s %s with',
+          route.describe(),
+          ctx.request.method,
+          ctx.request.originalUrl,
+          params,
+        );
+      }
+      try {
+        const retVal = await this.invokeMethod(route, params);
+        ctx.bind(RestBindings.Operation.RETURN_VALUE).to(retVal);
+        if (debug.enabled) {
+          debug('Return value from %s', route.describe(), retVal);
+        }
+        return retVal;
+      } catch (err) {
+        debug('Error', err);
+        throw err;
+      }
     };
   }
 }
