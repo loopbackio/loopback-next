@@ -1,7 +1,15 @@
-# Developing with VisualStudio Code
+---
+lang: en
+title: 'Developing with Visual Studio Code'
+keywords: LoopBack 4.0, LoopBack 4
+sidebar: lb4_sidebar
+permalink: /doc/en/lb4/Developing-with-vscode.html
+---
+
+# Developing with Visual Studio Code
 
 We recommend our contributors to use
-[VisualStudio Code](https://code.visualstudio.com/) with the following
+[Visual Studio Code](https://code.visualstudio.com/) with the following
 extensions installed:
 
 - [Prettier - Code Formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)

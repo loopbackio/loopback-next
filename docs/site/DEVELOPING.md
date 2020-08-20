@@ -44,7 +44,8 @@ dependencies.
 You may want to configure your IDE or editor to get better support for
 TypeScript too.
 
-- [VisualStudio Code](./VSCODE.md)
+- [Visual Studio Code](./Developing-with-vscode.md)
+- [WebStorm](./Developing-with-webstorm.md)
 - _Missing your favorite IDE/editor here? We would love to have documentation
   for more IDEs/editors! Please send a pull request to add recommended setup for
   your tool._
@@ -837,7 +838,8 @@ configuration, it's important to verify that all usage scenarios keep working.
     relative to monorepo root, e.g. `packages/src/index.ts`.
 
 5.  Test integration with supported IDEs:
-    - [VS Code](./VSCODE.md#how-to-verify-typescript-setup)
+    - [Visual Studio Code](./Developing-with-vscode.md#how-to-verify-typescript-setup)
+    - [WebStorm](./Developing-with-webstorm.md#how-to-verify-typescript-setup)
 
 ### Verify ESLint setup
 
@@ -862,7 +864,8 @@ configuration, it's important to verify that all usage scenarios keep working.
 
 5.  Test integration with supported IDEs:
 
-    - [VS Code](./VSCODE.md#how-to-verify-eslint-setup)
+    - [Visual Studio Code](./Developing-with-vscode.md#how-to-verify-eslint-setup)
+    - [WebStorm](./Developing-with-webstorm.md#how-to-verify-eslint-setup)
 
 ### tsconfig files
 
