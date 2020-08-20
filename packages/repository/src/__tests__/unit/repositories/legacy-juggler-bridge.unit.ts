@@ -726,8 +726,12 @@ describe('DefaultCrudRepository', () => {
     });
 
     it(`throws error when execute() not implemented by ds connector`, async () => {
-      delete ds.execute;
-      const repo = new DefaultCrudRepository(Note, ds);
+      const memDs = new juggler.DataSource({
+        name: 'db',
+        connector: 'memory',
+      });
+      delete memDs.connector!.execute;
+      const repo = new DefaultCrudRepository(Note, memDs);
       await expect(repo.execute('query', [])).to.be.rejectedWith(
         'execute() must be implemented by the connector',
       );
