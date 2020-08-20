@@ -47,10 +47,11 @@ describe('tsdocs', function (this: Mocha.Suite) {
   before(function setupConsoleLogInterceptor() {
     originalConsoleLog = console.log;
     console.log = function (...args: unknown[]) {
+      const msg = typeof args[0] === 'string' ? args[0] : '';
       const ignore =
-        args?.length &&
-        typeof args[0] === 'string' &&
-        /Analysis will use the bundled TypeScript version/.test(args[0]);
+        msg &&
+        (/Analysis will use the bundled TypeScript version/.test(msg) ||
+          /The target project appears to use TypeScript/.test(msg));
       if (ignore) return;
       process.stdout.write('XX: ' + require('util').inspect(args));
       originalConsoleLog(...args);
