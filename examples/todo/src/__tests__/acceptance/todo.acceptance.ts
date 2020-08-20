@@ -222,6 +222,98 @@ describe('TodoApplication', () => {
     expect(response.body).to.have.length(2);
   });
 
+  it('queries todos with string-based order filter', async () => {
+    const todoInProgress = await givenTodoInstance({
+      title: 'go to sleep',
+      isComplete: false,
+    });
+
+    const todoCompleted = await givenTodoInstance({
+      title: 'wake up',
+      isComplete: true,
+    });
+
+    const todoCompleted2 = await givenTodoInstance({
+      title: 'go to work',
+      isComplete: true,
+    });
+
+    await client
+      .get('/todos')
+      .query({filter: {order: 'title DESC'}})
+      .expect(200, toJSON([todoCompleted, todoCompleted2, todoInProgress]));
+  });
+
+  it('queries todos with array-based order filter', async () => {
+    const todoInProgress = await givenTodoInstance({
+      title: 'go to sleep',
+      isComplete: false,
+    });
+
+    const todoCompleted = await givenTodoInstance({
+      title: 'wake up',
+      isComplete: true,
+    });
+
+    const todoCompleted2 = await givenTodoInstance({
+      title: 'go to work',
+      isComplete: true,
+    });
+
+    await client
+      .get('/todos')
+      .query({filter: {order: ['title DESC']}})
+      .expect(200, toJSON([todoCompleted, todoCompleted2, todoInProgress]));
+  });
+
+  it('queries todos with exploded string-based order filter', async () => {
+    const todoInProgress = await givenTodoInstance({
+      title: 'go to sleep',
+      isComplete: false,
+    });
+
+    const todoCompleted = await givenTodoInstance({
+      title: 'wake up',
+      isComplete: true,
+    });
+
+    const todoCompleted2 = await givenTodoInstance({
+      title: 'go to work',
+      isComplete: true,
+    });
+
+    await client
+      .get('/todos')
+      .query('filter[order]=title%20DESC')
+      .expect(200, [
+        toJSON(todoCompleted),
+        toJSON(todoCompleted2),
+        toJSON(todoInProgress),
+      ]);
+  });
+
+  it('queries todos with exploded array-based order filter', async () => {
+    const todoInProgress = await givenTodoInstance({
+      title: 'go to sleep',
+      isComplete: false,
+    });
+
+    const todoCompleted = await givenTodoInstance({
+      title: 'wake up',
+      isComplete: true,
+    });
+
+    const todoCompleted2 = await givenTodoInstance({
+      title: 'go to work',
+      isComplete: true,
+    });
+
+    await client
+      .get('/todos')
+      .query('filter[order][0]=title+DESC')
+      .expect(200, toJSON([todoCompleted, todoCompleted2, todoInProgress]));
+  });
+
   /*
    ============================================================================
    TEST HELPERS

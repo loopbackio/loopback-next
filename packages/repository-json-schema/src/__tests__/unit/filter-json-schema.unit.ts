@@ -53,6 +53,14 @@ describe('getFilterJsonSchemaFor', () => {
     expectSchemaToAllowFilter(customerFilterSchema, {});
   });
 
+  it('allows a string-based order', () => {
+    expectSchemaToAllowFilter(customerFilterSchema, {order: 'id DESC'});
+  });
+
+  it('allows a array-based order', () => {
+    expectSchemaToAllowFilter(customerFilterSchema, {order: ['id DESC']});
+  });
+
   it('allows all top-level filter properties', () => {
     const filter: Required<Filter> = {
       where: {id: 1},
@@ -172,14 +180,25 @@ describe('getFilterJsonSchemaFor', () => {
     ]);
   });
 
-  it('describes "order" as an array', () => {
-    const filter = {order: 'invalid-order'};
+  it('describes "order" as a string or array', () => {
+    const filter = {order: {invalidOrder: ''}};
     ajv.validate(customerFilterSchema, filter);
     expect(ajv.errors ?? []).to.containDeep([
       {
         keyword: 'type',
         dataPath: '.order',
+        message: 'should be string',
+      },
+      {
+        keyword: 'type',
+        dataPath: '.order',
         message: 'should be array',
+      },
+      {
+        keyword: 'oneOf',
+        dataPath: '.order',
+        params: {passingSchemas: null},
+        message: 'should match exactly one schema in oneOf',
       },
     ]);
   });

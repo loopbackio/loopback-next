@@ -99,10 +99,17 @@ export function getFilterJsonSchemaFor(
     },
 
     order: {
-      type: 'array',
-      items: {
-        type: 'string',
-      },
+      oneOf: [
+        {
+          type: 'string',
+        },
+        {
+          type: 'array',
+          items: {
+            type: 'string',
+          },
+        },
+      ],
     },
   };
 
