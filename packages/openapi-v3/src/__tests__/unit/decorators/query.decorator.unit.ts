@@ -43,7 +43,12 @@ describe('sugar decorators for filter and where', () => {
                 offset: {type: 'integer', minimum: 0},
                 limit: {type: 'integer', minimum: 1, example: 100},
                 skip: {type: 'integer', minimum: 0},
-                order: {type: 'array', items: {type: 'string'}},
+                order: {
+                  oneOf: [
+                    {type: 'string'},
+                    {type: 'array', items: {type: 'string'}},
+                  ],
+                },
                 where: {
                   title: 'MyModel.WhereFilter',
                   type: 'object',
@@ -79,7 +84,12 @@ describe('sugar decorators for filter and where', () => {
                 offset: {type: 'integer', minimum: 0},
                 limit: {type: 'integer', minimum: 1, example: 100},
                 skip: {type: 'integer', minimum: 0},
-                order: {type: 'array', items: {type: 'string'}},
+                order: {
+                  oneOf: [
+                    {type: 'string'},
+                    {type: 'array', items: {type: 'string'}},
+                  ],
+                },
                 where: {
                   title: 'MyModel.WhereFilter',
                   type: 'object',
@@ -122,7 +132,12 @@ describe('sugar decorators for filter and where', () => {
                 offset: {type: 'integer', minimum: 0},
                 limit: {type: 'integer', minimum: 1, example: 100},
                 skip: {type: 'integer', minimum: 0},
-                order: {type: 'array', items: {type: 'string'}},
+                order: {
+                  oneOf: [
+                    {type: 'string'},
+                    {type: 'array', items: {type: 'string'}},
+                  ],
+                },
               },
               additionalProperties: false,
             },
