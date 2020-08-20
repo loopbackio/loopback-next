@@ -3,7 +3,7 @@ lang: en
 title: 'Action based Sequence for REST Server'
 keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI
 sidebar: lb4_sidebar
-permalink: /doc/en/lb4/REST-action-based-sequence.html
+permalink: /doc/en/lb4/REST-action-sequence.html
 ---
 
 {% include warning.html content="Action-based sequence is now being phased out.
