@@ -1,9 +1,23 @@
-import {Component, ProviderMap} from '@loopback/core';
+import {
+  Application,
+  bind,
+  Component,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  config,
+  ContextTags,
+  CoreBindings,
+  inject,
+} from '@loopback/core';
+import {<%= project.bindingsNamespace %>} from './keys'
+import {<%= project.defaultOptions %>, <%= project.optionsInterface %>} from './types';
 
+// Configure the binding for <%= project.componentName %>
+@bind({tags: {[ContextTags.KEY]: <%= project.bindingsNamespace %>.COMPONENT}})
 export class <%= project.componentName %> implements Component {
-  constructor() {}
-
-  providers?: ProviderMap = {
-  };
-
+  constructor(
+    @inject(CoreBindings.APPLICATION_INSTANCE)
+    private application: Application,
+    @config()
+    private options: <%= project.optionsInterface %> = <%= project.defaultOptions %>,
+  ) {}
 }

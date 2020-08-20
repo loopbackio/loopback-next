@@ -33,7 +33,7 @@ export interface ClassMap {
 }
 
 /**
- * A component declares a set of artifacts so that they cane be contributed to
+ * A component declares a set of artifacts so that they can be contributed to
  * an application as a group
  */
 export interface Component {

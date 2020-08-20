@@ -89,7 +89,7 @@ ctx.bind('utilities.PasswordHash').to(PasswordHasher)
 // Bind the UserController class as the user management implementation
 ctx.bind('controllers.UserController').toClass(UserController);
 
-// Locate the an instance of UserController from the context
+// Locate the instance of UserController from the context
 const userController: UserController = await ctx.get<UserController>('controller.UserController');
 // Run the login()
 const ok = await userController.login('John', 'MyPassWord');
@@ -189,8 +189,8 @@ An application-level component usually contributes:
 
 ### Learn from existing ones
 
-- [loopback4-example-log-extension](https://github.com/strongloop/loopback-next/tree/master/examples/log-extension)
-- [@loopback/authentication](https://github.com/strongloop/loopback-next/tree/master/packages/authentication)
+Refer to the list of [official components](./Component.md#official-components)
+for an idea about how different types of components are written.
 
 ### Create your own extension
 
