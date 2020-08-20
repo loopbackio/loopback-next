@@ -1,0 +1,11 @@
+import {BindingKey, CoreBindings} from '@loopback/core';
+import {<%= project.componentName %>} from './component';
+
+/**
+ * Binding keys used by this component.
+ */
+export namespace <%= project.bindingsNamespace %> {
+  export const COMPONENT = BindingKey.create<<%= project.componentName %>>(
+    `${CoreBindings.COMPONENTS}.<%= project.componentName %>`,
+  );
+}

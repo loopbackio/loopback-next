@@ -441,23 +441,35 @@ app.find('repositories.*');
 
 ## Configuring components
 
-More often than not, the component may want to offer different value providers
-depending on the configuration. For example, a component providing an email API
-may offer different transports (stub, SMTP, and so on).
+Components can be configured by an app by calling `this.configure()` in its
+constructor, and the configuration object can be injected into the component
+constructor using the `@config()` decorator.
 
-Components should use constructor-level
-[Dependency Injection](Context.md#dependency-injection) to receive the
-configuration from the application.
+{% include code-caption.html content="mycomponent.ts" %}
 
 ```ts
-class EmailComponent {
-  constructor(@inject('config#components.email') config) {
-    this.providers = {
-      sendEmail:
-        this.config.transport == 'stub'
-          ? StubTransportProvider
-          : SmtpTransportProvider,
-    };
+export class MyComponent implements Component {
+  constructor(
+    @config()
+    options: MyComponentOptions = {enableLogging: false},
+  ) {
+    if (options.enableLogging) {
+      // do logging
+    } else {
+      // no logging
+    }
   }
 }
+```
+
+{% include code-caption.html content="application.ts" %}
+
+```ts
+...
+// MyComponent.COMPONENT is the binding key of MyComponent
+this.configure(MyComponent.COMPONENT).to({
+  enableLogging: true,
+});
+this.component(MyComponent);
+...
 ```

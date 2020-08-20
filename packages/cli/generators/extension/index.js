@@ -69,6 +69,14 @@ module.exports = class ExtensionGenerator extends ProjectGenerator {
   }
 
   scaffold() {
+    if (this.projectInfo) {
+      this.projectInfo.optionsInterface = `${this.projectInfo.componentName}Options`;
+      this.projectInfo.bindingsNamespace = `${this.projectInfo.componentName}Bindings`;
+      const uppercaseUnderscore = this.projectInfo.name
+        .toUpperCase()
+        .replace(/\W/g, '_');
+      this.projectInfo.defaultOptions = `DEFAULT_${uppercaseUnderscore}_OPTIONS`;
+    }
     return super.scaffold();
   }
 

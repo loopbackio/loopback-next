@@ -83,6 +83,64 @@ const app = new RestApplication();
 app.component(AuthenticationComponent);
 ```
 
+## Official components
+
+Here is a list of components officially created and maintained by the LoopBack
+team.
+
+### Core components
+
+These components implement the primary LoopBack capabilities.
+
+- [@loopback/authentication](https://github.com/strongloop/loopback-next/tree/master/packages/authentication) -
+  A LoopBack component for authentication support
+- [@loopback/authorization](https://github.com/strongloop/loopback-next/tree/master/packages/authorization) -
+  A LoopBack component for authorization support
+- [@loopback/boot](https://github.com/strongloop/loopback-next/tree/master/packages/boot) -
+  A collection of Booters for LoopBack 4 Applications
+- [@loopback/booter-lb3app](https://github.com/strongloop/loopback-next/tree/master/packages/booter-lb3app) -
+  A booter component for LoopBack 3 applications to expose their REST API via
+  LoopBack 4
+- [@loopback/rest](https://github.com/strongloop/loopback-next/tree/master/packages/rest) -
+  Expose controllers as REST endpoints and route REST API requests to controller
+  methods
+- [@loopback/rest-crud](https://github.com/strongloop/loopback-next/tree/master/packages/rest-crud) -
+  REST API controller implementing default CRUD semantics
+- [@loopback/rest-explorer](https://github.com/strongloop/loopback-next/tree/master/packages/rest-explorer) -
+  LoopBack's API Explorer
+
+### Extensions
+
+These components add additional capabilities to LoopBack.
+
+- [@loopback/apiconnect](https://github.com/strongloop/loopback-next/tree/master/extensions/apiconnect) -
+  An extension for integrating with
+  [IBM API Connect](https://www.ibm.com/cloud/api-connect)
+- [@loopback/authentication-jwt](https://github.com/strongloop/loopback-next/tree/master/extensions/authentication-jwt) -
+  Extension for JWT authentication
+- [@loopback/authentication-passport](https://github.com/strongloop/loopback-next/tree/master/extensions/authentication-passport) -
+  A package creating adapters between the passport module and
+  @loopback/authentication
+- [@loopback/context-explorer](https://github.com/strongloop/loopback-next/tree/master/extensions/context-explorer) -
+  Visualize context hierarchy, bindings, configurations, and dependencies
+- [@loopback/cron](https://github.com/strongloop/loopback-next/tree/master/extensions/cron) -
+  Schedule tasks using cron-like syntax
+- [@loopback/extension-health](https://github.com/strongloop/loopback-next/tree/master/extensions/health) -
+  An extension exposes health check related endpoints with LoopBack 4
+- [@loopback/extension-logging](https://github.com/strongloop/loopback-next/tree/master/extensions/logging) -
+  An extension exposes logging for Winston and Fluentd with LoopBack 4
+- [@loopback/extension-metrics](https://github.com/strongloop/loopback-next/tree/master/extensions/metrics) -
+  An extension exposes metrics for Prometheus with LoopBack 4
+- [@loopback/pooling](https://github.com/strongloop/loopback-next/tree/master/extensions/pooling) -
+  Resource pooling service for LoopBack 4
+- [@loopback/typeorm](https://github.com/strongloop/loopback-next/tree/master/extensions/typeorm) -
+  Adds support for TypeORM in LoopBack
+
+### Community extensions
+
+For a list of components created by community members, refer to
+[Community extensions](./Community-extensions.html).
+
 ## Creating components
 
 Please refer to [Creating components](Creating-components.md) for more
