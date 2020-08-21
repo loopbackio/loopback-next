@@ -116,6 +116,8 @@ export class TodoListApplication extends BootMixin(
 
 ## Step 2: Add Authenticate Action
 
+{% include note.html content="Skip this step when using a [middleware-based sequence](../../REST-middleware-sequence.md), which is used by default on newly-generated LoopBack 4 applications." %}
+
 Next, we will add the authenticate action in the Sequence. We’ll also modify the
 error when authentication fails to return status code 401.
 
