@@ -20,7 +20,9 @@ export class Route extends BaseRoute {
   }
 
   describe(): string {
-    return this._handler.name || super.describe();
+    return `${super.describe()} => ${
+      this._handler.name || this._handler.toString()
+    }`;
   }
 
   updateBindings(requestContext: Context) {

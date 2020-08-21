@@ -33,11 +33,22 @@ describe('HandlerRoute', () => {
   });
 
   describe('toString', () => {
-    it('implements toString', () => {
+    it('implements toString for anonymous handler', () => {
       const spec = anOperationSpec().build();
       const route = new Route('get', '/greet', spec, () => {});
-      expect(route.toString()).to.equal('Route - get /greet');
-      expect(new RouteSource(route).toString()).to.equal('get /greet');
+      expect(route.toString()).to.equal('Route - get /greet => () => { }');
+      expect(new RouteSource(route).toString()).to.equal(
+        'Route - get /greet => () => { }',
+      );
+    });
+
+    it('implements toString for named handler', () => {
+      const spec = anOperationSpec().build();
+      const route = new Route('get', '/greet', spec, function process() {});
+      expect(route.toString()).to.equal('Route - get /greet => process');
+      expect(new RouteSource(route).toString()).to.equal(
+        'Route - get /greet => process',
+      );
     });
   });
 });

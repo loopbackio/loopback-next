@@ -36,11 +36,11 @@ export abstract class BaseRoute implements RouteEntry {
   ): Promise<OperationRetval>;
 
   describe(): string {
-    return `"${this.verb} ${this.path}"`;
+    return `${this.verb} ${this.path}`;
   }
 
   toString() {
-    return `${this.constructor.name} - ${this.verb} ${this.path}`;
+    return `${this.constructor.name} - ${this.describe()}`;
   }
 }
 
@@ -48,6 +48,6 @@ export class RouteSource implements InvocationSource<RouteEntry> {
   type = 'route';
   constructor(readonly value: RouteEntry) {}
   toString() {
-    return `${this.value.verb} ${this.value.path}`;
+    return this.value.toString();
   }
 }
