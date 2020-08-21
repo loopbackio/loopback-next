@@ -21,7 +21,7 @@
     "access": "public"
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.20.0",
     "cacache": "^15.0.5",
     "debug": "^4.1.1",
     "rimraf": "^3.0.2",
