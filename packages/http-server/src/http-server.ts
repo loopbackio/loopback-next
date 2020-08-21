@@ -4,12 +4,14 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import assert from 'assert';
+import debugFactory from 'debug';
 import {once} from 'events';
 import http, {IncomingMessage, ServerResponse} from 'http';
 import https from 'https';
 import {AddressInfo, ListenOptions} from 'net';
 import os from 'os';
 import stoppable from 'stoppable';
+const debug = debugFactory('loopback:http-server');
 
 /**
  * Request listener function for http/https requests
@@ -84,12 +86,14 @@ export class HttpServer {
     requestListener: RequestListener,
     serverOptions?: HttpServerOptions,
   ) {
+    debug('Http server options', serverOptions);
     this.requestListener = requestListener;
     this.serverOptions = Object.assign(
       {port: 0, host: undefined},
       serverOptions,
     );
     if (this.serverOptions.path) {
+      debug('Http server with IPC path %s', this.serverOptions.path);
       const ipcPath = this.serverOptions.path;
       checkNamedPipe(ipcPath);
       // Remove `port` so that `path` is honored
@@ -106,6 +110,10 @@ export class HttpServer {
     }
     // Set up graceful stop for http server
     if (typeof this.serverOptions.gracePeriodForClose === 'number') {
+      debug(
+        'Http server gracePeriodForClose %d',
+        this.serverOptions.gracePeriodForClose,
+      );
       this._stoppable = stoppable(
         this.server,
         this.serverOptions.gracePeriodForClose,
@@ -117,6 +125,7 @@ export class HttpServer {
    * Starts the HTTP / HTTPS server
    */
   public async start() {
+    debug('Starting http server', this.serverOptions);
     this.server.listen(this.serverOptions);
     await once(this.server, 'listening');
     this._listening = true;
@@ -124,6 +133,7 @@ export class HttpServer {
     const address = this.server.address();
     assert(address != null);
     this._address = address!;
+    debug('Http server is listening on', this.url);
   }
 
   /**
@@ -131,13 +141,16 @@ export class HttpServer {
    */
   public async stop() {
     if (!this._listening) return;
+    debug('Stopping http server');
     if (this._stoppable != null) {
+      debug('Stopping http server with graceful close');
       this._stoppable.stop();
     } else {
       this.server.close();
     }
     await once(this.server, 'close');
     this._listening = false;
+    debug('Http server is stopped');
   }
 
   /**
