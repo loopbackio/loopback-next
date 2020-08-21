@@ -45,13 +45,7 @@ export class InvokeMethodMiddlewareProvider implements Provider<Middleware> {
         RestBindings.Operation.PARAMS,
       );
       if (debug.enabled) {
-        debug(
-          'Invoking method %s for %s %s with',
-          route.describe(),
-          ctx.request.method,
-          ctx.request.originalUrl,
-          params,
-        );
+        debug('Invoking method %s with', route.describe(), params);
       }
       try {
         const retVal = await this.invokeMethod(route, params);
@@ -61,7 +55,9 @@ export class InvokeMethodMiddlewareProvider implements Provider<Middleware> {
         }
         return retVal;
       } catch (err) {
-        debug('Error', err);
+        if (debug.enabled) {
+          debug('Error thrown from %s', route.describe(), err);
+        }
         throw err;
       }
     };

@@ -524,7 +524,8 @@ describe('HttpHandler', () => {
 
       await client.get('/hello').expect(404, {
         error: {
-          message: 'Controller method not found: TestController.unknownMethod',
+          message:
+            'Controller method not found: get /hello => TestController.unknownMethod',
           name: 'NotFoundError',
           statusCode: 404,
         },

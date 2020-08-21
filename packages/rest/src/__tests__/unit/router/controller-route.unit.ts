@@ -116,8 +116,12 @@ describe('ControllerRoute', () => {
       myControllerFactory,
       'greet',
     );
-    expect(route.toString()).to.equal('MyRoute - get /greet');
-    expect(new RouteSource(route).toString()).to.equal('get /greet');
+    expect(route.toString()).to.equal(
+      'MyRoute - get /greet => MyController.greet',
+    );
+    expect(new RouteSource(route).toString()).to.equal(
+      'MyRoute - get /greet => MyController.greet',
+    );
   });
 
   describe('updateBindings()', () => {

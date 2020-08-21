@@ -69,7 +69,7 @@ function runTestsWithRouter(router: RestRouter) {
     expect(route).to.be.instanceOf(ControllerRoute);
     expect(route).to.have.property('spec').containEql(spec.paths['/hello'].get);
     expect(route).to.have.property('pathParams');
-    expect(route.describe()).to.equal('TestController.greet');
+    expect(route.describe()).to.equal('get /hello => TestController.greet');
   });
 
   it('finds simple "GET /my/hello" endpoint', () => {
@@ -98,7 +98,7 @@ function runTestsWithRouter(router: RestRouter) {
     expect(route).to.be.instanceOf(ControllerRoute);
     expect(route).to.have.property('spec').containEql(spec.paths['/hello'].get);
     expect(route).to.have.property('pathParams');
-    expect(route.describe()).to.equal('TestController.greet');
+    expect(route.describe()).to.equal('get /my/hello => TestController.greet');
   });
 
   it('finds simple "GET /hello/world" endpoint', () => {
@@ -122,7 +122,9 @@ function runTestsWithRouter(router: RestRouter) {
       .to.have.property('spec')
       .containEql(spec.paths['/hello/world'].get);
     expect(route).to.have.property('pathParams', {});
-    expect(route.describe()).to.equal('TestController.greetWorld');
+    expect(route.describe()).to.equal(
+      'get /hello/world => TestController.greetWorld',
+    );
   });
 
   it('finds simple "GET /add/{arg1}/{arg2}" endpoint', () => {

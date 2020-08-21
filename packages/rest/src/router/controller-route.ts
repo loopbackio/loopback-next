@@ -101,7 +101,7 @@ export class ControllerRoute<T> extends BaseRoute {
   }
 
   describe(): string {
-    return `${this._controllerName}.${this._methodName}`;
+    return `${super.describe()} => ${this._controllerName}.${this._methodName}`;
   }
 
   updateBindings(requestContext: Context) {
