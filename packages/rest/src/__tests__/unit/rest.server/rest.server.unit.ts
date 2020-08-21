@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Context, Application} from '@loopback/core';
+import {Application, Context} from '@loopback/core';
 import {anOperationSpec} from '@loopback/openapi-spec-builder';
 import {expect} from '@loopback/testlab';
 import {
@@ -92,6 +92,22 @@ describe('RestServer', () => {
       app.component(RestComponent);
       const server = await app.getServer(RestServer);
       expect(server.getSync(RestBindings.PATH)).to.equal(path);
+    });
+
+    it('honors gracePeriodForClose', async () => {
+      const app = new Application({
+        rest: {gracePeriodForClose: 1000},
+      });
+      app.component(RestComponent);
+      const server = await app.getServer(RestServer);
+      await server.start();
+      try {
+        expect(server.httpServer?.serverOptions.gracePeriodForClose).to.eql(
+          1000,
+        );
+      } finally {
+        await server.stop();
+      }
     });
 
     it('honors basePath in config', async () => {
