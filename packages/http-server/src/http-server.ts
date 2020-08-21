@@ -76,7 +76,7 @@ export class HttpServer {
   private requestListener: RequestListener;
   readonly server: http.Server | https.Server;
   private _stoppable: stoppable.StoppableServer;
-  private serverOptions: HttpServerOptions;
+  readonly serverOptions: HttpServerOptions;
 
   /**
    * @param requestListener
@@ -88,10 +88,11 @@ export class HttpServer {
   ) {
     debug('Http server options', serverOptions);
     this.requestListener = requestListener;
-    this.serverOptions = Object.assign(
-      {port: 0, host: undefined},
-      serverOptions,
-    );
+    this.serverOptions = {
+      port: 0,
+      host: undefined,
+      ...serverOptions,
+    };
     if (this.serverOptions.path) {
       debug('Http server with IPC path %s', this.serverOptions.path);
       const ipcPath = this.serverOptions.path;

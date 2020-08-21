@@ -170,6 +170,10 @@ export class RestServer extends BaseMiddlewareRegistry
     return this._httpServer ? this._httpServer.listening : false;
   }
 
+  get httpServer(): HttpServer | undefined {
+    return this._httpServer;
+  }
+
   /**
    * The base url for the server, including the basePath if set. For example,
    * the value will be 'http://localhost:3000/api' if `basePath` is set to
@@ -978,10 +982,7 @@ export class RestServer extends BaseMiddlewareRegistry
       return;
     }
 
-    const serverOptions = {};
-    if (protocol === 'https') Object.assign(serverOptions, httpsOptions);
-    Object.assign(serverOptions, {port, host, protocol, path});
-
+    const serverOptions = {...httpsOptions, port, host, protocol, path};
     this._httpServer = new HttpServer(this.requestHandler, serverOptions);
 
     await this._httpServer.start();
