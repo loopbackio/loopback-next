@@ -251,6 +251,8 @@ affects open issues : N
 The interactive `commitizen` prompts complete and the commit is created with a
 properly formatted message.
 
+{% include tip.html content="If you signed the commit but still get an error saying <b>`message must be signed off`</b>, you can add <b>`--no-verify`</b> in the <b>`git commit`</b> command. If you have to sign off existing commits in a PR with the <b>`git rebase`</b> command, make sure to use <b>`HUSKY_SKIP_HOOKS=1 git rebase -i ...`</b> to skip commit hooks as the signed-off-by rule may block you." %}
+
 ### 5. Push commits to the remote feature branch
 
 It is now time to push your local committed changes of your local feature branch
