@@ -19,7 +19,7 @@ const MONOREPO_FILE_DIST = 'docs/site';
 const MONOREPO_FILE_NAME = 'MONOREPO.md';
 
 function getPackageRelativeUri(pkg) {
-  return path.relative(pkg.rootPath, pkg.location);
+  return path.relative(pkg.rootPath, pkg.location).replace(/\\/g, '/');
 }
 
 async function getSortedPackages() {
