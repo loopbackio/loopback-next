@@ -9,7 +9,7 @@ summary:
   datasource
 ---
 
-Starting with a [model class](Model.md) and [datasource](DataSources.md),
+Starting with a [model class](Model.md) and [datasource](DataSource.md),
 LoopBack 4 allows you to easily use CRUD REST APIs by convention through
 [`@loopback/rest-crud`](https://github.com/strongloop/loopback-next/tree/master/packages/rest-crud).
 The package allows the application to use a default CRUD repository and

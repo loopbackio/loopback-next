@@ -12,8 +12,8 @@ permalink: /doc/en/lb4/Repository-generator.html
 ### Synopsis
 
 Adds a new
-[Repository class (or multiple backed by the same datasource)](Repositories.md)
-to a LoopBack application with one single command.
+[Repository class (or multiple backed by the same datasource)](Repository.md) to
+a LoopBack application with one single command.
 
 ```sh
 lb4 repository [options] [<name>]

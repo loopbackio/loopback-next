@@ -556,8 +556,8 @@ In Express, a route handler is a middleware function that serves the response
 and does not call `next()`. Handlers can be registered using APIs like
 `app.get()`, `app.post()`, but also a more generic `app.use()`.
 
-In LoopBack, we typically use [Controllers](Controllers.md) and
-[Route handlers](Routes.md) to implement request handling logic.
+In LoopBack, we typically use [Controllers](Controller.md) and
+[Route handlers](Route.md) to implement request handling logic.
 
 To support interoperability with Express, it is also possible to take an Express
 Router instance and add it to a LoopBack application as an external router - see

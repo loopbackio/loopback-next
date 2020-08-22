@@ -9,7 +9,7 @@ permalink: /doc/en/lb4/Working-with-data.html
 In LoopBack 4, models describe the shape of data, repositories provide behavior
 like CRUD operations, and controllers define routes (this is different from
 LoopBack 3.x where models implement behavior too). LB4
-[repositories](Repositories.md) provide a couple of create, read, update, and
+[repositories](Repository.md) provide a couple of create, read, update, and
 delete (CRUD) operations. Once you have defined these three artifacts, you can
 add data to the model, manipulate the data, and query it through these CRUD
 operations. The following is an overview of CRUD operations at different levels:

@@ -313,7 +313,7 @@ constructor(options: ApplicationConfig = {}) {
 }
 ```
 
-If you contribute the enhancer from a [component](Components.md), create the
+If you contribute the enhancer from a [component](Component.md), create the
 binding in this way:
 
 ```ts

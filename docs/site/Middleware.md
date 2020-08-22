@@ -55,7 +55,7 @@ Injection, as well as Extension Point and Extensions.
     - As middleware in the sequence to handle all requests/responses
     - As global or local interceptors around controller method invocations
 
-- Build on top of the [Interceptors](Interceptors.md) infrastructure. We have
+- Build on top of the [Interceptors](Interceptor.md) infrastructure. We have
   used interceptors within the `InvokeMethod` action of a sequence. Expanding
   such capability to other actions is a natural choice. We're not reinventing
   the wheel as we are just extending the interceptor idea to new use cases.The
@@ -126,7 +126,7 @@ LoopBack's architecture.
    injection of middleware configurations.
 
 To harvest the best of breeds of both frameworks, we build the integration on
-top of the [interceptor](Interceptors.md) with community input as illustrated in
+top of the [interceptor](Interceptor.md) with community input as illustrated in
 the diagram below:
 
 ![middleware](imgs/middleware.png)

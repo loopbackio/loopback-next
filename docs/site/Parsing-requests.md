@@ -44,7 +44,7 @@ example above, the first parameter is from source `path`, so its value will be
 parsed from a request's path.
 
 {% include note.html title="Controller documentation" content="
-See [controllers](Controllers.md) for more details of defining an endpoint.
+See [controllers](Controller.md) for more details of defining an endpoint.
 " %}
 
 {% include note.html title="OpenAPI operation object" content="

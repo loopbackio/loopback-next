@@ -20,7 +20,7 @@ package.
 
 Operations are functions that accept Parameters. They can be implemented as
 plain JavaScript/TypeScript functions (like http handler functions) or as
-methods in [Controllers](Controllers.md).
+methods in [Controllers](Controller.md).
 
 ```ts
 // greet is a basic operation

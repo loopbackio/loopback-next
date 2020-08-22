@@ -132,7 +132,7 @@ The `component` function allows binding of component constructors within your
 `Application` instance's context.
 
 For more information on how to make use of components, see
-[Using Components](Components.md#using-components).
+[Using Components](Component.md#using-components).
 
 #### Controllers
 
@@ -142,7 +142,7 @@ app.controller(BarController);
 ```
 
 Much like the component function, the `controller` function allows binding of
-[Controllers](Controllers.md) to the `Application` context.
+[Controllers](Controller.md) to the `Application` context.
 
 #### Servers
 
