@@ -33,7 +33,7 @@ provide a description of your API. These concepts and their decorators include:
 - [Model](Model.md)
   - `@model()`
   - `@property()`
-- [Routes](Routes.md)
+- [Routes](Route.md)
   - `@operation()`
   - `@param()`
 

@@ -30,7 +30,7 @@ return this.coffeeShopRepository.create(coffeeShop);
 
 ## Add interceptor for validation
 
-Another way is to use [interceptors](Interceptors.md).
+Another way is to use [interceptors](Interceptor.md).
 
 Interceptors are reusable functions to provide aspect-oriented logic around
 method invocations.

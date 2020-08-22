@@ -10,7 +10,7 @@ permalink: /doc/en/lb4/DataSource-generator.html
 
 ### Synopsis
 
-Adds a new [DataSource](DataSources.md) class and config files to a LoopBack
+Adds a new [DataSource](DataSource.md) class and config files to a LoopBack
 application.
 
 ```sh

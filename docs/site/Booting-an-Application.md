@@ -189,7 +189,7 @@ are a part of the `@loopback/boot` package and loaded automatically via
 
 ### Controller Booter
 
-This Booter's purpose is to discover [Controller](Controllers.md) type Artifacts
+This Booter's purpose is to discover [Controller](Controller.md) type Artifacts
 and to bind them to the Application's Context.
 
 You can configure the conventions used in your project for a Controller by
@@ -223,10 +223,10 @@ passing a `models` object on `BootOptions` property of your Application. The
 
 ### Repository Booter
 
-This Booter's purpose is to discover [Repository](Repositories.md) type
-Artifacts and to bind them to the Application's Context. The use of this Booter
-requires `RepositoryMixin` from `@loopback/repository` to be mixed into your
-Application class.
+This Booter's purpose is to discover [Repository](Repository.md) type Artifacts
+and to bind them to the Application's Context. The use of this Booter requires
+`RepositoryMixin` from `@loopback/repository` to be mixed into your Application
+class.
 
 You can configure the conventions used in your project for a Repository by
 passing a `repositories` object on `BootOptions` property of your Application.
@@ -241,7 +241,7 @@ The `repositories` object supports the following options:
 
 ### DataSource Booter
 
-This Booter's purpose is to discover [DataSource](DataSources.md) type Artifacts
+This Booter's purpose is to discover [DataSource](DataSource.md) type Artifacts
 and to bind them to the Application's Context. The use of this Booter requires
 `RepositoryMixin` from `@loopback/repository` to be mixed into your Application
 class.

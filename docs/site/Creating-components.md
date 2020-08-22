@@ -6,8 +6,8 @@ sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Creating-components.html
 ---
 
-As explained in [Using Components](Components.md), a typical LoopBack component
-is an npm package exporting a Component class.
+As explained in [Using Components](Component.md#using-components), a typical
+LoopBack component is an npm package exporting a Component class.
 
 ```ts
 import {MyController} from './controllers/my.controller';

@@ -361,5 +361,5 @@ const binding = server.expressMiddleware('middleware.express.greeting', router);
 into LoopBack seamlessly. Please read the following pages to better understand
 the architecture.
 
-- [Interceptors](Interceptors.md)
+- [Interceptors](Interceptor.md)
 - [Middleware](Middleware.md)

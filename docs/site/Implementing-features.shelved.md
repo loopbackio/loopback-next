@@ -332,7 +332,7 @@ Welcome to `@loopback/repository`, a TypeScript facade for the
     }
     ```
 
-See [Repositories](Repositories.md) for more details on this topic.
+See [Repositories](Repository.md) for more details on this topic.
 
 ### Update test helpers and the controller use real model and repository
 

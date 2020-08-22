@@ -366,9 +366,9 @@ which breaks the recommended test layout 'arrange-act-assert' (or
 #### Create a stub Repository
 
 When writing an application that accesses data in a database, the best practice
-is to use [repositories](Repositories.md) to encapsulate all
+is to use [repositories](Repository.md) to encapsulate all
 data-access/persistence-related code. Other parts of the application (typically
-[controllers](Controllers.md)) can then depend on these repositories for data
+[controllers](Controller.md)) can then depend on these repositories for data
 access. To test Repository dependents (for example, Controllers) in isolation,
 we need to provide a test double, usually as a test stub.
 

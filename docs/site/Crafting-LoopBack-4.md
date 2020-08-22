@@ -457,7 +457,7 @@ only for their middleware support). The final decision was to use Express in a
 way that bridges the gap by addressing the gaps identified above as follows:
 
 - LoopBack provides its own
-  [Controller / OpenAPI metadata optimized routing engine](Routes.md)
+  [Controller / OpenAPI metadata optimized routing engine](Route.md)
 - Express is used exclusively for allowing us to consume Express middleware
   (CORS, Static File Serving)
 - LoopBack uses a [Sequence of Actions](Sequence.md) to craft the response in a
@@ -473,7 +473,7 @@ There are several key pillars to make extensibility a reality for LoopBack 4.
 - [Context](Context.md), the IoC container to manage services
 - [Dependency injection](Dependency-injection.md) to facilitate composition
 - [Decorators](Decorators.md) to supply metadata using annotations
-- [Components](Components.md) as the packaging model to bundle extensions
+- [Components](Component.md) as the packaging model to bundle extensions
 
 Please check out [Extending LoopBack 4](Extending-LoopBack-4.md).
 
@@ -484,11 +484,10 @@ API experience by "eating your own dog food" with the following artifacts:
 
 - [Sequence and actions](Sequence.md): A sequence of actions to handle HTTP
   requests/responses.
-- [Controllers](Controllers.md): A class with methods to implement API
-  operations behind REST endpoints.
+- [Controllers](Controller.md): A class with methods to implement API operations
+  behind REST endpoints.
 - [Model](Model.md): Definition of data models.
-- [Repositories](Repositories.md): Interfaces of access patterns for data
-  sources.
+- [Repositories](Repository.md): Interfaces of access patterns for data sources.
 
 The features are provided by the following modules:
 

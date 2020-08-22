@@ -22,9 +22,9 @@ application on a LoopBack 4 application, see
 " %}
 
 This tutorial assumes familiarity with scaffolding a LoopBack 4 application,
-[`Models`](Model.md), [`DataSources`](DataSources.md),
-[`Repositories`](Repositories.md), and [`Controllers`](Controllers.md). To see
-how they're used in a LoopBack application, please see the
+[`Models`](Model.md), [`DataSources`](DataSource.md),
+[`Repositories`](Repository.md), and [`Controllers`](Controller.md). To see how
+they're used in a LoopBack application, please see the
 [`Todo` tutorial](todo-tutorial.md).
 
 ## Try it out
