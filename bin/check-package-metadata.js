@@ -44,7 +44,7 @@ async function checkMonorepoFile(packages, rootPath) {
   const monorepoFile = await fs.readFile('docs/site/MONOREPO.md', 'utf8');
 
   for (const p of packages) {
-    const packagePath = path.relative(rootPath, p.location);
+    const packagePath = path.relative(rootPath, p.location).replace(/\\/g, '/');
 
     const packageExists =
       monorepoFile.includes(p.name) || monorepoFile.includes(packagePath);
@@ -73,7 +73,7 @@ async function checkCodeOwnersFile(packages, rootPath) {
       continue;
     }
 
-    const packagePath = path.relative(rootPath, p.location);
+    const packagePath = path.relative(rootPath, p.location).replace(/\\/g, '/');
 
     if (!codeOwnersFile.includes(packagePath)) {
       errors.push(`${p.name} is not added in the CODEOWNERS.md file`);
