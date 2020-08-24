@@ -13,7 +13,8 @@ const debug = debugFactory('loopback:multi-tenancy:strategy:query');
 /**
  * Use `tenant-id` http query parameter to identify the tenant id
  */
-export class QueryStrategy extends BaseStrategy
+export class QueryStrategy
+  extends BaseStrategy
   implements MultiTenancyStrategy {
   name = 'query';
 

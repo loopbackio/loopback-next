@@ -81,7 +81,7 @@ export const controllerSpec = {
           },
         ],
         responses: {
-          '200': {
+          200: {
             description: 'Returns a hello world with your (optional) name.',
             examples: {
               'text/plain': 'Hello world Ted.',

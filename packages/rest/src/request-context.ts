@@ -17,7 +17,8 @@ import {RestServerResolvedConfig} from './rest.server';
  * A per-request Context combining an IoC container with handler context
  * (request, response, etc.).
  */
-export class RequestContext extends MiddlewareContext
+export class RequestContext
+  extends MiddlewareContext
   implements HandlerContext {
   /**
    * Get the protocol used by the client to make the request.

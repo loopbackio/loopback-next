@@ -314,7 +314,8 @@ describe('Resource pool', () => {
   /**
    * An expensive resource that implements `acquire` and `release` hooks
    */
-  class ExpensiveResourceWithHooks extends ExpensiveResource
+  class ExpensiveResourceWithHooks
+    extends ExpensiveResource
     implements Poolable {
     requestCtx?: Context;
 

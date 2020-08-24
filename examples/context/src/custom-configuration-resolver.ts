@@ -17,7 +17,8 @@ import {
 /**
  * A custom configuration resolver that looks up env variables first
  */
-class EnvConfigResolver extends DefaultConfigurationResolver
+class EnvConfigResolver
+  extends DefaultConfigurationResolver
   implements ConfigurationResolver {
   constructor(@inject.context() public readonly context: Context) {
     super(context);

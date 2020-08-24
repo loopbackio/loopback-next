@@ -763,10 +763,11 @@ export class DefaultCrudRepository<
  */
 
 export class DefaultTransactionalRepository<
-  T extends Entity,
-  ID,
-  Relations extends object = {}
-> extends DefaultCrudRepository<T, ID, Relations>
+    T extends Entity,
+    ID,
+    Relations extends object = {}
+  >
+  extends DefaultCrudRepository<T, ID, Relations>
   implements TransactionalEntityRepository<T, ID, Relations> {
   async beginTransaction(
     options?: IsolationLevel | Options,

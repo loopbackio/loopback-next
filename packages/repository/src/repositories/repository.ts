@@ -138,7 +138,8 @@ export interface EntityCrudRepository<
   T extends Entity,
   ID,
   Relations extends object = {}
-> extends EntityRepository<T, ID>, CrudRepository<T, Relations> {
+> extends EntityRepository<T, ID>,
+    CrudRepository<T, Relations> {
   // entityClass should have type "typeof T", but that's not supported by TSC
   entityClass: typeof Entity & {prototype: T};
   inclusionResolvers: Map<string, InclusionResolver<T, Entity>>;
