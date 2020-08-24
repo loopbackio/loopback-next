@@ -45,7 +45,8 @@ export interface ContextViewEvent<T> extends ContextEvent {
  * - 'refresh': when the view is refreshed as bindings are added/removed
  * - 'resolve': when the cached values are resolved and updated
  */
-export class ContextView<T = unknown> extends EventEmitter
+export class ContextView<T = unknown>
+  extends EventEmitter
   implements ContextObserver {
   /**
    * An array of cached bindings that matches the binding filter

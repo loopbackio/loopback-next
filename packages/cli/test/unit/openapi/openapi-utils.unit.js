@@ -183,7 +183,7 @@ describe('openapi utils', () => {
               },
             },
             responses: {
-              '200': {
+              200: {
                 description: 'Success',
                 content: {
                   'application/json': {

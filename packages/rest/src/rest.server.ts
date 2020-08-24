@@ -111,7 +111,8 @@ const SequenceActions = RestBindings.SequenceActions;
  * const server = await app.get('servers.foo');
  * ```
  */
-export class RestServer extends BaseMiddlewareRegistry
+export class RestServer
+  extends BaseMiddlewareRegistry
   implements Server, HttpServerLike {
   /**
    * Handle incoming HTTP(S) request by invoking the corresponding

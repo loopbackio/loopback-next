@@ -12,7 +12,8 @@ const debug = debugFactory('loopback:multi-tenancy:strategy:header');
 /**
  * Use `x-tenant-id` http header to identify the tenant id
  */
-export class HeaderStrategy extends BaseStrategy
+export class HeaderStrategy
+  extends BaseStrategy
   implements MultiTenancyStrategy {
   name = 'header';
 

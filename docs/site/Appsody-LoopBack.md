@@ -824,11 +824,13 @@ terminal window opened in your project directory. In our case, this is the
     installation fails. See
     [Resolving the Appsody Operator Error ](#resolving-the-appsody-operator-error).
 
+    If deployment was successful, the `applicationImage` field in
+    `app-deploy.yaml` will have a value of:
 
-    If deployment was successful, the `applicationImage` field in `app-deploy.yaml` will have a value of:
     ```yaml
     applicationImage: us.icr.io/dremond/appsodylb4todo:1
     ```
+
     which matches what you specified in the deploy command.
 
 12. Confirm the deployment with:
