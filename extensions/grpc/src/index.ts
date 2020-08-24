@@ -5,6 +5,7 @@
 
 export * from './booters/proto.booter';
 export * from './decorators/grpc.decorator';
+export * from './grpc.code-gen';
 export * from './grpc.component';
 export * from './grpc.sequence';
 export * from './grpc.server';

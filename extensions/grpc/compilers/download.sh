@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# This script downloads `protoc` releases and unzips them locally for
+# Linux, Mac OSX, and Windows platforms.
+
 DIR=`dirname $0`
 
 PB_REL="https://github.com/protocolbuffers/protobuf/releases"
