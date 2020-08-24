@@ -253,7 +253,7 @@ describe('lb4 model integration', () => {
       await testUtils
         .executeGenerator(generator)
         .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path))
-        .withArguments('test')
+        .withArguments('--name test')
         .withPrompts({
           propName: null,
         });
