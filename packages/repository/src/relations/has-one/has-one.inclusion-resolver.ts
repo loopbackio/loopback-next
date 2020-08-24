@@ -3,9 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {Filter, Inclusion} from '@loopback/filter';
 import {AnyObject, Options} from '../../common-types';
 import {Entity} from '../../model';
-import {Filter, Inclusion} from '../../query';
 import {EntityCrudRepository} from '../../repositories/repository';
 import {
   findByForeignKeys,

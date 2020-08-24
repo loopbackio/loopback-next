@@ -3,6 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {Filter, FilterExcludingWhere, Where} from '@loopback/filter';
 import {
   AnyObject,
   Command,
@@ -16,7 +17,6 @@ import {CrudConnector} from '../connectors';
 import {DataSource} from '../datasource';
 import {EntityNotFoundError} from '../errors';
 import {Entity, Model, ValueObject} from '../model';
-import {Filter, FilterExcludingWhere, Where} from '../query';
 import {InclusionResolver} from '../relations/relation.types';
 import {IsolationLevel, Transaction} from '../transaction';
 

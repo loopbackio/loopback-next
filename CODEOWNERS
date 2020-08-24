@@ -179,6 +179,7 @@
 # - Primary owner(s): @agnes512
 # - Standby owner(s): @hacksparrow
 # Includes the following repos: loopback-datasource-juggler
+/packages/filter @agnes512 @hacksparrow
 /packages/repository @agnes512 @hacksparrow
 /packages/repository-json-schema @agnes512 @hacksparrow
 /packages/repository-tests @agnes512 @hacksparrow

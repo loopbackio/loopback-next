@@ -3,10 +3,10 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Connector} from './connector';
+import {Filter, Where} from '@loopback/filter';
+import {Class, Count, Options} from '../common-types';
 import {Entity, EntityData} from '../model';
-import {Filter, Where} from '../query';
-import {Class, Options, Count} from '../common-types';
+import {Connector} from './connector';
 
 /**
  * CRUD operations for connector implementations

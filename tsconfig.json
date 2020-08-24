@@ -143,6 +143,9 @@
       "path": "packages/express/tsconfig.json"
     },
     {
+      "path": "packages/filter/tsconfig.json"
+    },
+    {
       "path": "packages/http-caching-proxy/tsconfig.json"
     },
     {

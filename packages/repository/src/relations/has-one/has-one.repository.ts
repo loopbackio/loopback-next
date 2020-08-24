@@ -4,10 +4,10 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Getter} from '@loopback/core';
+import {Filter} from '@loopback/filter';
 import {Count, DataObject, Options} from '../../common-types';
 import {EntityNotFoundError} from '../../errors';
 import {Entity} from '../../model';
-import {Filter} from '../../query';
 import {
   constrainDataObject,
   constrainFilter,

@@ -12,6 +12,7 @@
  * @packageDocumentation
  */
 
+export * from '@loopback/filter';
 export {JSONSchema7 as JsonSchema} from 'json-schema';
 export * from './common-types';
 export * from './connectors';
@@ -23,7 +24,6 @@ export * from './errors';
 export * from './keys';
 export * from './mixins';
 export * from './model';
-export * from './query';
 export * from './relations';
 export * from './repositories';
 export * from './transaction';
