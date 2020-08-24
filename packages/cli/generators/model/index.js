@@ -83,6 +83,12 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
       utils.modelsDir,
     );
 
+    this.option('name', {
+      type: String,
+      required: false,
+      description: g.f('the name of the model'),
+    });
+
     this.option('base', {
       type: String,
       required: false,
@@ -192,7 +198,11 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
   // Prompt a user for Model Name
   async promptArtifactName() {
     if (this.shouldExit()) return;
-    await super.promptArtifactName();
+    if (this.options.name) {
+      this.artifactInfo.name = this.options.name;
+    } else {
+      await super.promptArtifactName();
+    }
     this.artifactInfo.className = utils.toClassName(this.artifactInfo.name);
     // Prompt warning msg for the name
     super.promptWarningMsgForName();
