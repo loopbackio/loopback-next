@@ -4,6 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Getter} from '@loopback/core';
+import {Filter, FilterExcludingWhere, Inclusion, Where} from '@loopback/filter';
 import assert from 'assert';
 import legacy from 'loopback-datasource-juggler';
 import {
@@ -23,7 +24,6 @@ import {
   PropertyType,
   rejectNavigationalPropertiesInData,
 } from '../model';
-import {Filter, FilterExcludingWhere, Inclusion, Where} from '../query';
 import {
   BelongsToAccessor,
   BelongsToDefinition,

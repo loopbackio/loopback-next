@@ -5,7 +5,7 @@
 
 import {AnyObject, Options} from '../../common-types';
 import {Entity} from '../../model';
-import {Filter, Inclusion} from '../../query';
+import {Filter, Inclusion} from '@loopback/filter';
 import {EntityCrudRepository} from '../../repositories/repository';
 import {
   deduplicate,

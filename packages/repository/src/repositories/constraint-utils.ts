@@ -3,10 +3,10 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {Filter, FilterBuilder, Where, WhereBuilder} from '@loopback/filter';
 import {cloneDeep} from 'lodash';
 import {AnyObject, DataObject} from '../common-types';
 import {Entity} from '../model';
-import {Filter, FilterBuilder, Where, WhereBuilder} from '../query';
 
 /**
  * A utility function which takes a filter and enforces constraint(s)

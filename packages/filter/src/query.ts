@@ -1,10 +1,10 @@
-// Copyright IBM Corp. 2017,2020. All Rights Reserved.
-// Node module: @loopback/repository
+// Copyright IBM Corp. 2020. All Rights Reserved.
+// Node module: @loopback/filter
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
 import assert from 'assert';
-import {AnyObject} from './common-types';
+import {AnyObject} from './types';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -513,7 +513,7 @@ export class WhereBuilder<MT extends object = AnyObject> {
  * ```ts
  * const filterBuilder = new FilterBuilder();
  * const filter = filterBuilder
- *   .fields('id', a', 'b')
+ *   .fields('id', 'a', 'b')
  *   .limit(10)
  *   .offset(0)
  *   .order(['a ASC', 'b DESC'])

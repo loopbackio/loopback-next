@@ -3,9 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {Inclusion} from '@loopback/filter';
 import {Options} from '../common-types';
 import {Entity} from '../model';
-import {Inclusion} from '../query';
 import {TypeResolver} from '../type-resolver';
 
 export enum RelationType {

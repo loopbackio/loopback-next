@@ -14,9 +14,6 @@
       "path": "../core/tsconfig.json"
     },
     {
-      "path": "../filter/tsconfig.json"
-    },
-    {
       "path": "../testlab/tsconfig.json"
     }
   ]

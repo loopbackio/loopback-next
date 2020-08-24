@@ -1,18 +1,18 @@
-// Copyright IBM Corp. 2019,2020. All Rights Reserved.
-// Node module: @loopback/repository
+// Copyright IBM Corp. 2020. All Rights Reserved.
+// Node module: @loopback/filter
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
 import {
-  AnyObject,
   FilterBuilder,
   filterTemplate,
   isFilter,
   KeyOf,
   Where,
   WhereBuilder,
-} from '../../../';
+} from '../..';
+import {AnyObject} from '../../types';
 
 describe('WhereBuilder', () => {
   it('builds where object', () => {
