@@ -11,7 +11,7 @@ node_js:
 script:
   - npm run postinstall
   - npm run build
-  - cd packages/cli && npm run test:ci
+  - npm run test:ci
 
 env: TASK=test
 
