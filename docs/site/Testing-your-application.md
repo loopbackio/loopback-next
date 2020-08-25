@@ -116,6 +116,8 @@ export const testdb: juggler.DataSource = new juggler.DataSource({
 });
 ```
 
+{% include important.html content="The `name` property of your test datasource must match your real datasource's name." %}
+
 ### Clean the database before each test
 
 Start with a clean database before each test. This may seem counter-intuitive:
@@ -965,8 +967,11 @@ describe('Product (acceptance)', () => {
         port: 0,
       },
     });
-    app.dataSource(testdb);
     await app.boot();
+
+    // change to use the test datasource after the app has been booted so that
+    // it is not overriden
+    app.dataSource(testdb);
     await app.start();
 
     client = createRestAppClient(app);
