@@ -3,6 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {GrpcObject, loadPackageDefinition} from '@grpc/grpc-js';
+import {load} from '@grpc/proto-loader';
 import {
   ArtifactOptions,
   BaseArtifactBooter,
@@ -11,7 +13,6 @@ import {
 } from '@loopback/boot';
 import {Application, config, CoreBindings, inject} from '@loopback/core';
 import debugFactory from 'debug';
-import grpc, {GrpcObject} from 'grpc';
 import path from 'path';
 import {GrpcTags} from '../keys';
 const debug = debugFactory('loopback:grpc:booter:proto');
@@ -45,7 +46,8 @@ export class ProtoBooter extends BaseArtifactBooter {
     debug('Discovered proto files', this.discovered);
     for (const file of this.discovered) {
       const name = path.basename(file);
-      const obj: GrpcObject = grpc.load(file);
+      const protoDef = await load(file);
+      const obj: GrpcObject = loadPackageDefinition(protoDef);
       debug('Loaded proto object', obj);
       this.app
         .bind(`grpc.protos.${name}`)

@@ -3,14 +3,20 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Context} from '@loopback/core';
 import {
   ServerDuplexStream,
   ServerReadableStream,
   ServerUnaryCall,
   ServerWritableStream,
-} from 'grpc';
+} from '@grpc/grpc-js';
+import {Context} from '@loopback/core';
 import {GrpcOperation} from './types';
+
+export type GrpcRequest<Req = unknown, Res = unknown> =
+  | ServerUnaryCall<Req, Res>
+  | ServerReadableStream<Req, Res>
+  | ServerWritableStream<Req, Res>
+  | ServerDuplexStream<Req, Res>;
 
 /**
  * Context for gRPC request/response processing
@@ -24,11 +30,7 @@ export class GrpcRequestContext<Req = unknown, Res = unknown> extends Context {
   /**
    * Request object
    */
-  request:
-    | ServerUnaryCall<Req>
-    | ServerReadableStream<Req>
-    | ServerWritableStream<Req>
-    | ServerDuplexStream<Req, Res>;
+  request: GrpcRequest<Req, Res>;
 
   /**
    * Response type
@@ -37,11 +39,7 @@ export class GrpcRequestContext<Req = unknown, Res = unknown> extends Context {
 
   constructor(
     operation: GrpcOperation,
-    request:
-      | ServerUnaryCall<Req>
-      | ServerReadableStream<Req>
-      | ServerWritableStream<Req>
-      | ServerDuplexStream<Req, Res>,
+    request: GrpcRequest<Req, Res>,
     parent?: Context,
   ) {
     super(parent);

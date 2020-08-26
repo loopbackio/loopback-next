@@ -3,8 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {Server} from '@grpc/grpc-js';
 import {BindingKey, Context, CoreBindings} from '@loopback/core';
-import {Server} from 'grpc';
 import {GrpcSequenceHandler} from './grpc.sequence';
 import {GrpcMiddleware} from './types';
 

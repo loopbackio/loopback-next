@@ -3,10 +3,17 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {
+  Client,
+  credentials,
+  GrpcObject,
+  loadPackageDefinition,
+  ServerUnaryCall,
+} from '@grpc/grpc-js';
+import {loadSync} from '@grpc/proto-loader';
 import {BootMixin} from '@loopback/boot';
 import {Application, ApplicationConfig, Constructor} from '@loopback/core';
 import {expect} from '@loopback/testlab';
-import grpcModule, {ServerUnaryCall} from 'grpc';
 import path from 'path';
 import {
   grpc,
@@ -95,7 +102,7 @@ describe('GrpcComponent', () => {
         );
         const method = await reqCtx.get(GrpcBindings.GRPC_METHOD_NAME);
         // Do something before call
-        const request = reqCtx.request as ServerUnaryCall<Req>;
+        const request = reqCtx.request as ServerUnaryCall<Req, Res>;
         const reply = await controller[method](request.request);
         reply.message += ' Sequenced';
         // Do something after call
@@ -149,16 +156,18 @@ describe('GrpcComponent', () => {
    * Returns GRPC Client
    **/
   function getGrpcClient(app: Application) {
-    const proto = grpcModule.load(
+    const protoDef = loadSync(
       path.join(
         __dirname,
         '../../../src/__tests__/fixtures/protos/greeter.proto',
       ),
-    )['greeterpackage'] as grpcModule.GrpcObject;
-    const client = proto.Greeter as typeof grpcModule.Client;
+    );
+    const protoObj = loadPackageDefinition(protoDef);
+    const proto = protoObj['greeterpackage'] as GrpcObject;
+    const client = proto.Greeter as typeof Client;
     return new client(
       `${app.getSync(GrpcBindings.HOST)}:${app.getSync(GrpcBindings.PORT)}`,
-      grpcModule.credentials.createInsecure(),
+      credentials.createInsecure(),
     );
   }
 
@@ -166,7 +175,7 @@ describe('GrpcComponent', () => {
    * Callback to Promise Wrapper
    **/
   async function asyncCall(input: {
-    client: grpcModule.Client;
+    client: Client;
     method: string;
     data: unknown;
   }): Promise<HelloReply> {

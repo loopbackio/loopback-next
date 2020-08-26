@@ -3,12 +3,12 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {GrpcObject, MethodDefinition, ServiceDefinition} from '@grpc/grpc-js';
 import {
   Constructor,
   GenericInterceptor,
   GenericInterceptorChain,
 } from '@loopback/core';
-import {GrpcObject, MethodDefinition, ServiceDefinition} from 'grpc';
 import {GrpcSequenceHandler} from './grpc.sequence';
 import {GrpcRequestContext} from './request-context';
 

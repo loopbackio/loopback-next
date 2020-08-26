@@ -3,6 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {ServerUnaryCall} from '@grpc/grpc-js';
 import {
   bind,
   BindingScope,
@@ -11,7 +12,6 @@ import {
   Provider,
 } from '@loopback/core';
 import debugFactory from 'debug';
-import {ServerUnaryCall} from 'grpc';
 import {GrpcBindings, GrpcTags} from '../keys';
 import {GrpcRequestContext} from '../request-context';
 import {GrpcMiddleware} from '../types';
@@ -66,7 +66,7 @@ export class GrpcMethodInvokerProvider implements Provider<GrpcMiddleware> {
     ) {
       return this.invoke(
         reqCtx,
-        (reqCtx.request as ServerUnaryCall<Req>).request,
+        (reqCtx.request as ServerUnaryCall<Req, Res>).request,
       );
     }
   }

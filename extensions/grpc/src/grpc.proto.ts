@@ -3,9 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {GrpcObject, MethodDefinition, ServiceDefinition} from '@grpc/grpc-js';
 import {ContextView, filterByTag, inject} from '@loopback/core';
 import debugFactory from 'debug';
-import {GrpcObject, MethodDefinition, ServiceDefinition} from 'grpc';
 import {GrpcBindings, GrpcTags} from './keys';
 import {GrpcOperation, GrpcServerConfig} from './types';
 const debug = debugFactory('loopback:grpc:proto');
@@ -47,8 +47,10 @@ export class ProtoManager {
         for (const key in pkgObj) {
           const child = pkgObj[key] as GrpcObject;
           if (child.service) {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const service = child.service as ServiceDefinition<any>;
+            const service = (child.service as unknown) as ServiceDefinition<
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              any
+            >;
             debug('Protobuf service: %s', key, service);
             for (const m in service) {
               const method = service[m] as MethodDefinition<unknown, unknown>;
