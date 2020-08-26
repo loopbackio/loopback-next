@@ -561,7 +561,7 @@ In LoopBack, we typically use [Controllers](Controller.md) and
 
 To support interoperability with Express, it is also possible to take an Express
 Router instance and add it to a LoopBack application as an external router - see
-[Mounting an Express Router](Routes.md#mounting-an-express-router). This way it
+[Mounting an Express Router](Route.md#mounting-an-express-router). This way it
 is possible to implement server endpoints using Express APIs.
 
 ### Static files

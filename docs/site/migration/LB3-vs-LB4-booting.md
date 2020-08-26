@@ -91,8 +91,8 @@ required anymore." %}
 more about datasource booter
 [here](../Booting-an-Application.md#controller-booter).
 
-Read more about LoopBack 4 datasources [here](../DataSources.md). Read more
-about migrating datasources [here](./datasources.md).
+Read more about LoopBack 4 datasources [here](../DataSource.md). Read more about
+migrating datasources [here](./datasources.md).
 
 #### 3. Definition of models
 
@@ -136,7 +136,7 @@ Node.js module which exports a function with the signature
 [component](../Creating-components.md) is a TypeScript class which can add
 [servers](../Server.md), [observers](../Life-cycle.md),
 [providers](../Creating-components.md#providers), and
-[controllers](../Controllers.md) to the application using dependency injection.
+[controllers](../Controller.md) to the application using dependency injection.
 
 LoopBack 3 components adding routes can be migrated to LoopBack 4 by moving the
 functionality to the controller of a LoopBack 4 component.

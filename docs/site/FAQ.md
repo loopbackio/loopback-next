@@ -190,7 +190,7 @@ create a completely separate key. See
 
 ### Can I attach an Express router?
 
-Yes. See [Mounting an Express Router](Routes.md#mounting-an-express-router).
+Yes. See [Mounting an Express Router](Route.md#mounting-an-express-router).
 
 ### Can I mount an Express middleware?
 

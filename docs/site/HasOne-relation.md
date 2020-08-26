@@ -447,7 +447,7 @@ controller methods is employed for `hasOne` repositories. Once the hasOne
 relation has been defined and configured, controller methods can call the
 underlying constrained repository CRUD APIs and expose them as routes once
 decorated with
-[Route decorators](Routes.md#using-route-decorators-with-controller-methods). It
+[Route decorators](Route.md#using-route-decorators-with-controller-methods). It
 will require the value of the foreign key and, depending on the request method,
 a value for the target model instance as demonstrated below.
 

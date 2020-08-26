@@ -61,15 +61,15 @@ In LoopBack 4, you can implement a similar functionality as follows:
    the Node.js client library provided by your provider. You may want to check
    [multer-storage-pkgcloud](https://github.com/dustin-H/multer-storage-pkgcloud)
 
-4. Finally, create a [Service](../Services.md) providing File and Container APIs
-   in TypeScript and one or more [Controllers](../Controllers.md) to implement
+4. Finally, create a [Service](../Service.md) providing File and Container APIs
+   in TypeScript and one or more [Controllers](../Controller.md) to implement
    the REST API.
 
 _If you are happy with the outcome, then please consider packaging your code as
 a [LoopBack Component](../Creating-components.md) and sharing your great work
 with the entire LoopBack community. We are happy to promote it in our
 documentation, just submit a pull request to add your component to
-[Using components](../Components.md#using-components)._
+[Using components](../Component.md#using-components)._
 
 ## Push notifications
 
@@ -95,7 +95,7 @@ In LoopBack 4, you can re-create a similar functionality as follows:
 
 - Implement models, repositories and controllers to provide Device and
   Application model.
-- Implement a [Service](../Services.md) to provide TypeScript API for sending
+- Implement a [Service](../Service.md) to provide TypeScript API for sending
   notifications and persisting scheduled notifications to be sent later. You can
   use packages like [apn](https://www.npmjs.com/package/apn) and
   [node-gcm](https://www.npmjs.com/package/node-gcm) to interact with Apple's

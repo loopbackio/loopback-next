@@ -10,7 +10,7 @@ permalink: /doc/en/lb4/Decorators_openapi.html
 
 Route decorators are used to expose controller methods as REST API operations.
 If you are not familiar with the concept of Route or Controller, please see
-[LoopBack Route](../Routes.md) and [LoopBack Controller](../Controllers.md) to
+[LoopBack Route](../Route.md) and [LoopBack Controller](../Controller.md) to
 learn more about them.
 
 By calling a route decorator, you provide OpenAPI specification to describe the
@@ -64,7 +64,7 @@ app.controller(MyController);
 ```
 
 A more detailed explanation can be found in
-[Specifying Controller APIs](../Controllers.md#specifying-controller-apis)
+[Specifying Controller APIs](../Controller.md#specifying-controller-apis)
 
 ### Operation Decorator
 
@@ -192,7 +192,7 @@ class MyController {
 ```
 
 You can find specific use cases in
-[Writing Controller methods](../Controllers.md#writing-controller-methods)
+[Writing Controller methods](../Controller.md#writing-controller-methods)
 
 _The parameter location cookie is not supported yet, see_
 _(https://github.com/strongloop/loopback-next/issues/997)_

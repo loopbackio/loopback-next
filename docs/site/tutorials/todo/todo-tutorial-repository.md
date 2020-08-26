@@ -20,7 +20,7 @@ strong-typed data access (for example, CRUD) operations of a domain model
 against the underlying database or service.
 
 For more information about Repositories, see
-[Repositories](../../Repositories.md).
+[Repositories](../../Repository.md).
 
 ### Create your repository
 

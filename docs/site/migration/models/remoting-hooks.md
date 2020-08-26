@@ -61,8 +61,8 @@ application developers to implement similar functionality.
   LoopBack 4 route handler. They correspond to LoopBack 3 **global hooks**.
 - [**Class level interceptors**](../../Interceptors.md#class-level-interceptors)
   are executed for requests handled by the given
-  [Controller](../../Controllers.md) class. They correspond to LoopBack 3
-  **model level hooks**.
+  [Controller](../../Controller.md) class. They correspond to LoopBack 3 **model
+  level hooks**.
 - [**Method level interceptors**](../../Interceptors.md#method-level-interceptors)
   are executed only for request handled by the given controller method. They
   correspond to LoopBack 3 **method level hooks**.
@@ -453,7 +453,7 @@ async function intercept(
 
 In order to reject a request and return an error HTTP response, just throw an
 error from your interceptor. As explained in
-[Handling errors in controllers](../../Controllers.md#handling-errors-in-controllers),
+[Handling errors in controllers](../../Controller.md#handling-errors-in-controllers),
 you can use one of `HttpErrors` constructors to control the HTTP status code of
 the response.
 

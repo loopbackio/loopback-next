@@ -18,7 +18,7 @@ suit their needs.
 If you want to use LoopBack as the host instead and mount your Express
 application on a LoopBack 4 application, see
 [Using Express Middleware](Express-middleware.md) and
-[Mounting an Express Router](Routes.md#mounting-an-express-router).
+[Mounting an Express Router](Route.md#mounting-an-express-router).
 " %}
 
 This tutorial assumes familiarity with scaffolding a LoopBack 4 application,

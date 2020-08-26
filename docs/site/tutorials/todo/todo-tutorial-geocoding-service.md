@@ -11,7 +11,7 @@ summary:
 ### Services
 
 To call other APIs and web services from LoopBack applications, we recommend to
-use [Service Proxies](../../Services.md) as a design pattern for encapsulating
+use [Service Proxies](../../Service.md) as a design pattern for encapsulating
 low-level implementation details of communication with 3rd-party services and
 providing JavaScript/TypeScript API that's easy to consume e.g. from
 Controllers. See

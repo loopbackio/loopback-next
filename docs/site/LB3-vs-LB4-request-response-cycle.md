@@ -50,7 +50,7 @@ the
 [RestApplication.mountExpressRouter()](./apidocs/apidocs.rest.restapplication.mountexpressrouter.md)
 API.
 
-Using [Controllers](./Controllers.md) is the recommended way for creating custom
+Using [Controllers](./Controller.md) is the recommended way for creating custom
 (and REST) endpoints on your application. Its support for
 [dependency injection](./Dependency-injection.md) and
 [Interceptors](./Interceptors.md) makes it a very powerful extension mechanism.
@@ -64,9 +64,9 @@ required anymore because of architectural changes.
 In LoopBack 3, models files automatically create the corresponding REST API
 endpoints and the database query machinery (using the configured datasource). In
 LoopBack 4, model files are limited only to describing the properties of the
-data. You will have to create a corresponding [Repository](./Repositories.md)
-for database connectivity, and [controllers](./Controllers.md) for creating the
-REST API endpoint.
+data. You will have to create a corresponding [Repository](./Repository.md) for
+database connectivity, and [controllers](./Controller.md) for creating the REST
+API endpoint.
 
 The fact that you have to create two more artifacts along with the model to get
 a REST endpoint working might seem overly tedious at first. However, the
@@ -93,7 +93,7 @@ Node.js module which exports a function with the signature
 `function(app, options)`. In LoopBack 4, a [component](./Creating-components.md)
 is a TypeScript class which can add [servers](./Server.md),
 [observers](./Life-cycle.md), [providers](./Creating-components.md#providers),
-and [controllers](./Controllers.md) to the application using dependency
+and [controllers](./Controller.md) to the application using dependency
 injection.
 
 LoopBack 3 components adding routes can be migrated to LoopBack 4 by moving the
@@ -325,10 +325,10 @@ loaded using the
 [app.mountExpressRouter() ](./apidocs/apidocs.rest.restapplication.mountexpressrouter.md)
 method, using the familiar Express middleware signature.
 
-[Controllers](./Controllers.md), [services](./Services.md), and
-[repositories](./Repositories.md) are LoopBack 4 artifacts that participate in
-the request/response cycle. The request and response objects can be made
-available to them via [dependency injection](./Dependency-injection.md).
+[Controllers](./Controller.md), [services](./Service.md), and
+[repositories](./Repository.md) are LoopBack 4 artifacts that participate in the
+request/response cycle. The request and response objects can be made available
+to them via [dependency injection](./Dependency-injection.md).
 
 Example of accesssing the request and response object in a Controller:
 

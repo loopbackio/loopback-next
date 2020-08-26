@@ -22,9 +22,9 @@ implementing REST API.
 
 In LoopBack 4,
 
-- data-access APIs are implemented by [repositories](../../Repositories.md) that
+- data-access APIs are implemented by [repositories](../../Repository.md) that
   are decoupled from models.
-- REST APIs are implemented by [controllers](docs/site/Controllers.md) that are
+- REST APIs are implemented by [controllers](docs/site/Controller.md) that are
   decoupled from models.
 
 A `Repository` represents a specialized service interface that provides
