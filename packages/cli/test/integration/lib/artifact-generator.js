@@ -49,7 +49,7 @@ module.exports = function (artiGenerator) {
       });
 
       it('sets up artifactInfo', async () => {
-        const gen = testUtils.testSetUpGen(artiGenerator, {args: ['test']});
+        const gen = testUtils.testSetUpGen(artiGenerator, 'test');
         await gen.setOptions();
         assert(gen.artifactInfo);
         assert.equal(gen.artifactInfo.name, 'test');
