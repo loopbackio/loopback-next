@@ -199,13 +199,19 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
   async promptArtifactName() {
     if (this.shouldExit()) return;
     if (this.options.name) {
+      this.log('checkpoint 1');
       this.artifactInfo.name = this.options.name;
     } else {
+      this.log('checkpoint 2');
       await super.promptArtifactName();
+      this.log('checkpoint 3');
     }
+    this.log('checkpoint 4');
     this.artifactInfo.className = utils.toClassName(this.artifactInfo.name);
+    this.log('checkpoint 5');
     // Prompt warning msg for the name
     super.promptWarningMsgForName();
+    this.log('checkpoint 6');
   }
 
   // Ask for Model base class
