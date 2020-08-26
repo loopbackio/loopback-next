@@ -180,7 +180,7 @@ mysql> describe User;
 
 ### 6. Create endpoints and view data using API Explorer
 
-Once we built a [controller](../../Controllers.md) with `lb4 controller` to
+Once we built a [controller](../../Controller.md) with `lb4 controller` to
 handle requests:
 
 ```bash

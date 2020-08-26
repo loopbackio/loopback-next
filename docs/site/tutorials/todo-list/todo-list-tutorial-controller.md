@@ -13,7 +13,7 @@ summary:
 
 Defining business logic to handle requests to related models isn't too different
 from handling requests for standalone models. We'll create
-[controllers](../../Controllers.md) to handle requests for todo-lists and todo
+[controllers](../../Controller.md) to handle requests for todo-lists and todo
 items under a todo-list.
 
 ### Create TodoList controller

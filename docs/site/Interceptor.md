@@ -63,7 +63,7 @@ app.interceptor(CachingInterceptorProvider, {
 
 Global interceptors are also executed for route handler functions without a
 controller class. See an example in
-[Route Handler](Routes.md#using-partial-openapi-spec-fragments).
+[Route Handler](Route.md#using-partial-openapi-spec-fragments).
 
 ### Create a proxy to apply interceptors
 

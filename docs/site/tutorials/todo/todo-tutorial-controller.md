@@ -9,7 +9,7 @@ summary: LoopBack 4 Todo Application Tutorial - Add a Controller
 
 ### Controllers
 
-In LoopBack 4, [controllers](../../Controllers.md) handle the request-response
+In LoopBack 4, [controllers](../../Controller.md) handle the request-response
 lifecycle for your API. Each function on a controller can be addressed
 individually to handle an incoming request (like a POST request to `/todos`), to
 perform business logic, and to return a response.

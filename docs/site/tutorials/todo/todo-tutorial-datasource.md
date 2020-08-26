@@ -18,10 +18,10 @@ Repositories for Data operations.
 In LoopBack 4, datasources can be represented as strongly-typed objects and
 freely made available for [injection](../../Dependency-injection.md) throughout
 the application. Typically, in LoopBack 4, datasources are used in conjunction
-with [Repositories](../../Repositories.md) to provide access to data.
+with [Repositories](../../Repository.md) to provide access to data.
 
 For more information about datasources in LoopBack, see
-[DataSources](../../DataSources.md).
+[DataSources](../../DataSource.md).
 
 Since our Todo API will need to persist instances of Todo items, we'll need to
 create a datasource definition to make this possible.

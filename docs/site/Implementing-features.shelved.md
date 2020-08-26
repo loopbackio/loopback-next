@@ -562,7 +562,7 @@ export class ProductController {
 ```
 
 More information on `HttpErrors` can be found in
-[Controllers](./Controllers.md#handling-errors-in-controllers)
+[Controllers](./Controller.md#handling-errors-in-controllers)
 
 ### Implement a custom Sequence
 

@@ -189,7 +189,7 @@ export class HelloController {
 ```
 
 - `HelloRepository` extends from `Repository`, which is LoopBack's database
-  abstraction. See [Repositories](./Repositories.md) for more.
+  abstraction. See [Repositories](./Repository.md) for more.
 - `HelloMessage` is the arbitrary object that `list` returns a list of.
 - `@get('/messages')` automatically creates the
   [Paths Item Object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#path-item-object)

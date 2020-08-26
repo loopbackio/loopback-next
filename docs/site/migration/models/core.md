@@ -17,9 +17,8 @@ public (REST) API.
 
 In LoopBack 4, a model class is no longer responsible for everything. We have
 [Models](../../Model.md) to describe shape of data,
-[Repositories](../../Repositories.md) to provide persistence-related behavior
-and finally [Controllers](../../Controllers.md) to implement public APIs. The
-section
+[Repositories](../../Repository.md) to provide persistence-related behavior and
+finally [Controllers](../../Controller.md) to implement public APIs. The section
 [Migrating models persisted in a database](#migrating-models-persisted-in-a-database)
 describes how to create these artifacts for models persisted in a database.
 
