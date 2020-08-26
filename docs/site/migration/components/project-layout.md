@@ -49,7 +49,7 @@ environment-specific configuration by using `component-config.{env}.json` files.
 
 ## LoopBack 4 layout
 
-As explained in [Creating components](../../Creating-Components.md) and
+As explained in [Creating components](../../Creating-components.md) and
 [Using components](../../Component.md#using-components), a typical LoopBack 4
 component is an npm package exporting a Component class.
 
