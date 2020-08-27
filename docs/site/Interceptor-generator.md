@@ -10,8 +10,8 @@ permalink: /doc/en/lb4/Interceptor-generator.html
 
 ### Synopsis
 
-Adds a new [interceptor](Interceptors.md#global-interceptors) class to a
-LoopBack application.
+Adds a new [interceptor](Interceptor.md#global-interceptors) class to a LoopBack
+application.
 
 ```sh
 lb4 interceptor [--global] [--group <group>] [<name>]
