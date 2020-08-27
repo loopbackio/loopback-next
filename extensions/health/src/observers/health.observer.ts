@@ -23,6 +23,7 @@ import {LiveCheck, ReadyCheck} from '../types';
 export class HealthObserver implements LifeCycleObserver {
   private eventEmitter = new EventEmitter();
   private startupCheck: Promise<void>;
+  private shutdownCheck: ShutdownCheck;
 
   constructor(
     @inject(HealthBindings.HEALTH_CHECKER) private healthChecker: HealthChecker,
@@ -37,15 +38,13 @@ export class HealthObserver implements LifeCycleObserver {
       void
     >;
     const startupCheck = new StartupCheck('startup', () => startup);
-
-    const shutdown = once(this.eventEmitter, 'shutdown');
-    const shutdownCheck = new ShutdownCheck('shutdown', () => shutdown);
-
     this.startupCheck = this.healthChecker.registerStartupCheck(startupCheck);
-    this.healthChecker.registerShutdownCheck(shutdownCheck);
+    const shutdown = once(this.eventEmitter, 'shutdown');
+    this.shutdownCheck = new ShutdownCheck('shutdown', () => shutdown);
   }
 
   async start() {
+    this.healthChecker.registerShutdownCheck(this.shutdownCheck);
     const liveChecks = await this.liveChecks.values();
     const liveCheckBindings = this.liveChecks.bindings;
     let index = 0;
@@ -72,6 +71,14 @@ export class HealthObserver implements LifeCycleObserver {
 
   stop() {
     this.eventEmitter.emit('shutdown');
+    // Fix a potential memory leak caused by
+    // https://github.com/CloudNativeJS/cloud-health/blob/2.1.2/src/healthcheck/HealthChecker.ts#L118
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const onShutdownRequest = (this.healthChecker as any).onShutdownRequest;
+    if (onShutdownRequest != null) {
+      // Remove the listener from the current process
+      process.removeListener('SIGTERM', onShutdownRequest);
+    }
   }
 }
 
