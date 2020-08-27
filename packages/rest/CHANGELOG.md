@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@6.1.0...@loopback/rest@6.2.0) (2020-08-27)
+
+
+### Features
+
+* **rest:** add more debugging statements for middleware ([de2f5be](https://github.com/strongloop/loopback-next/commit/de2f5bee6415d55c53ca14cdf989cb37b06c7f47))
+* **rest:** improve route description to include verb and path ([3b7fcca](https://github.com/strongloop/loopback-next/commit/3b7fccafa57cfb7fd2ee1495dc81dbc87ab6e94e))
+* **rest:** make sure rest options are passed to http-server ([e9af196](https://github.com/strongloop/loopback-next/commit/e9af1961dfe2aaae3c07e3100f6fe538797943e0))
+
+
+
+
+
 # [6.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@6.0.0...@loopback/rest@6.1.0) (2020-08-19)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "@loopback/http-caching-proxy",
-  "version": "2.1.12",
+  "version": "2.1.13",
   "description": "A caching HTTP proxy for integration tests. NOT SUITABLE FOR PRODUCTION USE!",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -28,9 +28,9 @@
     "tslib": "^2.0.1"
   },
   "devDependencies": {
-    "@loopback/build": "^6.2.1",
-    "@loopback/eslint-config": "^9.0.1",
-    "@loopback/testlab": "^3.2.3",
+    "@loopback/build": "^6.2.2",
+    "@loopback/eslint-config": "^9.0.2",
+    "@loopback/testlab": "^3.2.4",
     "@types/debug": "^4.1.5",
     "@types/node": "^10.17.28",
     "@types/rimraf": "^3.0.0",

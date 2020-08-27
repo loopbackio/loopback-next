@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/http-server@2.1.12...@loopback/http-server@2.2.0) (2020-08-27)
+
+
+### Features
+
+* **http-server:** add debugging statements for http-server package ([ffde907](https://github.com/strongloop/loopback-next/commit/ffde907c188ca48163eb0ba1bb7b0e0ecb612367))
+* **rest:** make sure rest options are passed to http-server ([e9af196](https://github.com/strongloop/loopback-next/commit/e9af1961dfe2aaae3c07e3100f6fe538797943e0))
+
+
+
+
+
 ## [2.1.12](https://github.com/strongloop/loopback-next/compare/@loopback/http-server@2.1.11...@loopback/http-server@2.1.12) (2020-08-19)
 
 **Note:** Version bump only for package @loopback/http-server

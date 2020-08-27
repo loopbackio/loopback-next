@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.6.0](https://github.com/strongloop/loopback-next/compare/@loopback/authentication-jwt@0.5.1...@loopback/authentication-jwt@0.6.0) (2020-08-27)
+
+
+### Bug Fixes
+
+* **authentication-jwt:** work around TypeScript 4.x complaint about optional properties ([2683303](https://github.com/strongloop/loopback-next/commit/26833038e697471a2eb576d3f8fd57ef10794398))
+
+
+### Features
+
+* **authentication-jwt:** implementation of refresh token ([7074182](https://github.com/strongloop/loopback-next/commit/70741829678b5a0dc9c277a12674725c8a2efb1d))
+
+
+
+
+
 ## [0.5.1](https://github.com/strongloop/loopback-next/compare/@loopback/authentication-jwt@0.5.0...@loopback/authentication-jwt@0.5.1) (2020-08-19)
 
 **Note:** Version bump only for package @loopback/authentication-jwt

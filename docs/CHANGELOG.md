@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.14.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.13.1...@loopback/docs@3.14.0) (2020-08-27)
+
+
+### Bug Fixes
+
+* **docs:** change to test db after booting app ([c1ff479](https://github.com/strongloop/loopback-next/commit/c1ff479d2ca5be82b016ffbed6cb1910e8cf1584))
+* **docs:** fix broken links ([f371207](https://github.com/strongloop/loopback-next/commit/f371207772f5d5a5195cf8f2ec9e19b75bc15fe0))
+* **docs:** fixes development IDE docs ([9b2a0c9](https://github.com/strongloop/loopback-next/commit/9b2a0c93a41f78e1d810d42cc48ad93f3d988480))
+* **docs:** syncs permalink ([59c6114](https://github.com/strongloop/loopback-next/commit/59c6114c1041f3f661fdb31af92300203569d33f))
+* **docs:** update instructions for sign DCO ([834c23d](https://github.com/strongloop/loopback-next/commit/834c23da23c1312c2d0e4a6daa093ba57e533dff))
+
+
+### Features
+
+* **docs:** adds note regarding middleware-based sequences ([7ff3d39](https://github.com/strongloop/loopback-next/commit/7ff3d39d373b7ae76109559241926547a77c42a2))
+
+
+
+
+
 ## [3.13.1](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.13.0...@loopback/docs@3.13.1) (2020-08-19)
 
 

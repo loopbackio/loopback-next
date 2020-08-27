@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/tsdocs@2.2.7...@loopback/tsdocs@2.3.0) (2020-08-27)
+
+
+### Features
+
+* **tsdocs:** suppress warnings from api-extractor ([2e91b26](https://github.com/strongloop/loopback-next/commit/2e91b260df87ce1a3c87ac42f9c861ceb58153d6))
+
+
+
+
+
 ## [2.2.7](https://github.com/strongloop/loopback-next/compare/@loopback/tsdocs@2.2.6...@loopback/tsdocs@2.2.7) (2020-08-19)
 
 **Note:** Version bump only for package @loopback/tsdocs

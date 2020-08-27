@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.4.13](https://github.com/strongloop/loopback-next/compare/@loopback/extension-health@0.4.12...@loopback/extension-health@0.4.13) (2020-08-27)
+
+**Note:** Version bump only for package @loopback/extension-health
+
+
+
+
+
 ## [0.4.12](https://github.com/strongloop/loopback-next/compare/@loopback/extension-health@0.4.11...@loopback/extension-health@0.4.12) (2020-08-19)
 
 **Note:** Version bump only for package @loopback/extension-health

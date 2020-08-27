@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.11.2](https://github.com/strongloop/loopback-next/compare/@loopback/repository@2.11.1...@loopback/repository@2.11.2) (2020-08-27)
+
+
+### Bug Fixes
+
+* **repository:** fix test case for repository.execute ([ff0c969](https://github.com/strongloop/loopback-next/commit/ff0c969b441030cc21c0d2e6413ab6b1943f2281))
+
+
+
+
+
 ## [2.11.1](https://github.com/strongloop/loopback-next/compare/@loopback/repository@2.11.0...@loopback/repository@2.11.1) (2020-08-19)
 
 

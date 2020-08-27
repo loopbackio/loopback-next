@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.7.2](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo@3.7.1...@loopback/example-todo@3.7.2) (2020-08-27)
+
+
+### Bug Fixes
+
+* **repository-json-schema:** allows string-based order filter ([c10dca9](https://github.com/strongloop/loopback-next/commit/c10dca990f73d80c70752ae72fd1006bb356991d)), closes [#6140](https://github.com/strongloop/loopback-next/issues/6140)
+
+
+
+
+
 ## [3.7.1](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo@3.7.0...@loopback/example-todo@3.7.1) (2020-08-19)
 
 **Note:** Version bump only for package @loopback/example-todo
