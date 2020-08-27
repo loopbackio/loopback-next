@@ -53,7 +53,7 @@ API.
 Using [Controllers](./Controller.md) is the recommended way for creating custom
 (and REST) endpoints on your application. Its support for
 [dependency injection](./Dependency-injection.md) and
-[Interceptors](./Interceptors.md) makes it a very powerful extension mechanism.
+[Interceptors](./Interceptor.md) makes it a very powerful extension mechanism.
 
 In LoopBack 4
 [middleware.json](https://loopback.io/doc/en/lb3/middleware.json.html) is not
@@ -364,7 +364,7 @@ of the following reasons:
    endpoint's OpenAPI spec
 4. Controller routes are included in the auto-generated OpenAPI spec document
 
-[Interceptors](./Interceptors.md) can intercept execution of controller methods,
+[Interceptors](./Interceptor.md) can intercept execution of controller methods,
 thus have access to the request and response objects.
 
 #### Data coercion and validation
@@ -479,7 +479,7 @@ Similarly, various other repository methods in LoopBack 4 can be overriden to
 access the model data in the context of their operation.
 
 {% include tip.html content="
-[Interceptors](./Interceptors.md)
+[Interceptors](./Interceptor.md)
 may also be used to access the user submitted data in some cases." %}
 
 ## Summary

@@ -53,17 +53,17 @@ specifier. In general, there are three kinds of hook scopes:
   User.beforeRemote('login', handlerFn);
   ```
 
-LoopBack 4 provides [Interceptors](../../Interceptors.md) feature to enable
+LoopBack 4 provides [Interceptors](../../Interceptor.md) feature to enable
 application developers to implement similar functionality.
 
-- [**Global interceptors**](../../Interceptors.md#global-interceptors) are
+- [**Global interceptors**](../../Interceptor.md#global-interceptors) are
   executed for _every_ request handled by a LoopBack 4 controller method or a
   LoopBack 4 route handler. They correspond to LoopBack 3 **global hooks**.
-- [**Class level interceptors**](../../Interceptors.md#class-level-interceptors)
+- [**Class level interceptors**](../../Interceptor.md#class-level-interceptors)
   are executed for requests handled by the given
   [Controller](../../Controller.md) class. They correspond to LoopBack 3 **model
   level hooks**.
-- [**Method level interceptors**](../../Interceptors.md#method-level-interceptors)
+- [**Method level interceptors**](../../Interceptor.md#method-level-interceptors)
   are executed only for request handled by the given controller method. They
   correspond to LoopBack 3 **method level hooks**.
 
@@ -173,7 +173,7 @@ instructions on how to map LoopBack 3 context properties to LoopBack 4.
 ## Migrating global hooks
 
 Global remoting hooks should be rewritten to
-[global interceptors](../../Interceptors.md#global-interceptors). You can use
+[global interceptors](../../Interceptor.md#global-interceptors). You can use
 [Interceptor generator CLI](../../Interceptor-generator.md) to create the
 necessary infrastructure for each hook.
 
@@ -189,7 +189,7 @@ $ lb4 interceptor
 
 Global interceptors are sorted by the order of an array of group names
 bound to ContextBindings.GLOBAL_INTERCEPTOR_ORDERED_GROUPS.
-See https://loopback.io/doc/en/lb4/Interceptors.md#order-of-invocation-for-interceptors.
+See https://loopback.io/doc/en/lb4/Interceptor.md#order-of-invocation-for-interceptors.
 
 ? Group name for the global interceptor: ('')
   create src/interceptors/global-logger.interceptor.ts
@@ -208,8 +208,8 @@ map LoopBack 3 context properties to LoopBack 4.
 ## Migrating model level hooks
 
 Model level hooks should be rewritten to
-[class interceptors](../../Interceptors.md#class-level-interceptors). You can
-use [Interceptor generator CLI](../../Interceptor-generator.md) to create the
+[class interceptors](../../Interceptor.md#class-level-interceptors). You can use
+[Interceptor generator CLI](../../Interceptor-generator.md) to create the
 necessary infrastructure for each hook.
 
 {% include tip.html content=" In LoopBack 3, we use the term _model level_ hook,
@@ -254,7 +254,7 @@ export class ProductController {
 ## Migrating method level hooks
 
 Method level hooks should be rewritten to
-[method interceptors](../../Interceptors.md#method-level-interceptors). You can
+[method interceptors](../../Interceptor.md#method-level-interceptors). You can
 use [Interceptor generator CLI](../../Interceptor-generator.md) to create the
 necessary infrastructure for each hook.
 

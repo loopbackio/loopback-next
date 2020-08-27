@@ -750,7 +750,7 @@ action calls the handler function for the route with the request specific
 context and the arguments for the function. It is important to note that
 controller methods use `invokeMethod` from `@loopback/core` and can be used with
 global and custom interceptors. See
-[Interceptor docs](Interceptors.md#use-invokemethod-to-apply-interceptors) for
+[Interceptor docs](Interceptor.md#use-invokemethod-to-apply-interceptors) for
 more details. The request flow for two route flavours is explained below.
 
 For controller methods:
