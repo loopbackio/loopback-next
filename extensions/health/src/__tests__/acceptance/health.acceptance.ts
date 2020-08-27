@@ -7,6 +7,7 @@ import {RestApplication, RestServerConfig} from '@loopback/rest';
 import {
   Client,
   createRestAppClient,
+  expect,
   givenHttpServerConfig,
 } from '@loopback/testlab';
 import {HealthComponent} from '../..';
@@ -40,6 +41,17 @@ describe('Health (acceptance)', () => {
 
     it('exposes health at "/live/"', async () => {
       await request.get('/live').expect(200, {status: 'UP', checks: []});
+    });
+
+    it('removes listener from the process', async () => {
+      const healthChecker = await app.get(HealthBindings.HEALTH_CHECKER);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const onShutdownRequest = (healthChecker as any).onShutdownRequest;
+      let listeners = process.listeners('SIGTERM');
+      expect(listeners).to.containEql(onShutdownRequest);
+      await app.stop();
+      listeners = process.listeners('SIGTERM');
+      expect(listeners).to.not.containEql(onShutdownRequest);
     });
   });
 
