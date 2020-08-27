@@ -1,0 +1,19 @@
+on: [push, pull_request]
+name: Check docs links
+jobs:
+  check-docs-links:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Link Checker
+        id: lc
+        uses: peter-evans/link-checker@v1
+        with:
+          args: >
+            --concurrency 3
+            --document-root "https://loopback.io/"
+            --exclude "/127\.0\.0\.1|github\.com\/strongloop\/loopback-next\/issues|github\.com\/strongloop\/loopback-next\/pull/i"
+            --recursive
+            docs/**/*.md
+      - name: Fail if there were link errors
+        run: exit ${{ steps.lc.outputs.exit_code }}
