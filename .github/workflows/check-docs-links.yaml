@@ -12,7 +12,7 @@ jobs:
           args: >
             --concurrency 3
             --document-root "https://loopback.io/"
-            --exclude "/127\.0\.0\.1|github\.com\/strongloop\/loopback-next\/issues|github\.com\/strongloop\/loopback-next\/pull/i"
+            --exclude "/127\.0\.0\.1|localhost|github\.com\/strongloop\/loopback-next\/issues|github\.com\/strongloop\/loopback-next\/pull/i"
             --recursive
             docs/**/*.md
       - name: Fail if there were link errors
