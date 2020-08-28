@@ -3,83 +3,84 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {execSync} from 'child_process';
 import debugFactory from 'debug';
-import fs from 'fs';
 import minimist from 'minimist';
 import path from 'path';
+import {pbjs, pbts} from 'protobufjs/cli';
 const debug = debugFactory('loopback:grpc:generator');
 
-export type ProtoCodeGenerationOptions = {
-  targetDir?: string;
-  protoc?: string;
-};
+/**
+ * Run `pbjs` to generate a JavaScript file for the list of proto files
+ * @param outFile - JavaScript file name
+ * @param protoFiles - A list of proto file names
+ */
+export function runPbjs(outFile: string, ...protoFiles: string[]) {
+  const args = [
+    '-t',
+    'static-module',
+    '-w',
+    'commonjs',
+    '-o',
+    outFile,
+    ...protoFiles,
+  ];
+  debug('pbjs %s', args.join(' '));
+  return new Promise<string | undefined>((resolve, reject) => {
+    pbjs.main(args, (err, output) => {
+      if (err) return reject(err);
+      debug('Output', output);
+      resolve(output);
+    });
+  });
+}
 
 /**
- * Generate TypeScript code for the given proto file
- * @param protoFile - Proto file
- * @param options - Code generation options
+ * Run `pbts` to generate a TypeScript definition (.d.ts) file for a list of
+ * proto JavaScript files
+ * @param outFile - TypeScript definition file name
+ * @param jsFiles - A list of proto JavaScript file names
  */
-export function generateTsCode(
-  protoFile: string,
-  options: ProtoCodeGenerationOptions = {},
-) {
-  debug('proto file: %s', protoFile);
-  const root = path.dirname(protoFile);
-  const targetDir = options.targetDir ?? root;
-  const isWin = process.platform === 'win32';
-  const protocPath =
-    options.protoc ??
-    process.env.PROTOC ??
-    path.join(
-      __dirname,
-      '../', // Root of grpc module and not the dist dir
-      'compilers',
-      process.platform,
-      'bin',
-      `protoc${isWin ? '.exe' : ''}`,
-    );
+export function runPbts(outFile: string, ...jsFiles: string[]) {
+  const args = [
+    '-t',
+    'static-module',
+    '-w',
+    'commonjs',
+    '-o',
+    outFile,
+    ...jsFiles,
+  ];
+  debug('pbts %s', args.join(' '));
+  return new Promise<string | undefined>((resolve, reject) => {
+    pbts.main(args, (err, output) => {
+      if (err) return reject(err);
+      debug('Output', output);
+      resolve(output);
+    });
+  });
+}
 
-  debug('protoc', protocPath);
-
-  const pluginPath = require.resolve('grpc_tools_node_protoc_ts/package.json');
-
-  debug('plugin module', pluginPath);
-
-  const genTs = path.resolve(
-    pluginPath,
-    `../../.bin/protoc-gen-ts${isWin ? '.cmd' : ''}`,
-  );
-
-  debug('protoc-gen-ts', genTs);
-
-  const cmd = `"${protocPath}" --plugin=protoc-gen-ts="${genTs}" --ts_out service=true:"${targetDir}" -I "${root}" "${protoFile}"`;
-
-  debug('protoc command', cmd);
-  execSync(cmd);
-  const files = fs.readdirSync(targetDir);
-  for (const f of files) {
-    if (f.endsWith('.d.ts')) {
-      const tsFile = f.replace(/\.d\.ts$/, '.ts');
-      debug('Renaming %s to %s', f, tsFile);
-      fs.renameSync(path.join(targetDir, f), path.join(targetDir, tsFile));
-    }
-  }
+/**
+ * Generate code for a list of proto files
+ * @param outFile - Generated JavaScript file name
+ * @param protoFiles - A list of proto file names
+ */
+export async function generateTsCode(outFile: string, ...protoFiles: string[]) {
+  const jsFile = outFile.replace(/(\.d\.ts|\.ts)$/, '.js');
+  await runPbjs(jsFile, ...protoFiles);
+  const tsFile = outFile.replace(/\.js$/, '.d.ts');
+  await runPbts(tsFile, outFile);
 }
 
 if (require.main === module) {
   const parsedArgs = minimist(process.argv.slice(2), {
     alias: {
       d: 'target',
-      c: 'protoc',
       s: 'silent',
     },
     boolean: ['s'],
   });
-  const options: ProtoCodeGenerationOptions = {
-    targetDir: parsedArgs.d ?? process.cwd(),
-    protoc: parsedArgs.c,
-  };
+  const target = parsedArgs.d ?? 'proto.js';
   const files = parsedArgs._;
   if (files.length === 0) {
     console.error(
@@ -89,14 +90,13 @@ if (require.main === module) {
     );
     console.error(`Available options:
 -s: enable silent mode
--c <protoc-command>: customize protoc command
--d <target-dir>: set target directory for the generated code`);
+-d <target-file>: set target directory for the generated code`);
   } else {
-    for (const f of files) {
-      if (!parsedArgs.s) {
-        console.log('Generating gRPC TypeScript code for %s...', f);
-      }
-      generateTsCode(f, options);
+    if (!parsedArgs.s) {
+      console.log('Generating gRPC TypeScript code for %s...', files);
     }
+    generateTsCode(target, ...files).catch(err => {
+      console.error(err);
+    });
   }
 }

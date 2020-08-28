@@ -14,19 +14,20 @@ describe('GrpcCodeGen', () => {
     sandbox = new TestSandbox(path.join(__dirname, '../../../.sandbox'));
   });
 
-  it('generates TS code', () => {
+  it('generates TS code', async () => {
     const protoFile = path.join(
       __dirname,
       '../../../src/__tests__/fixtures/protos/greeter.proto',
     );
 
-    generateTsCode(protoFile, {targetDir: sandbox.path});
+    const target = path.join(sandbox.path, 'greeter.proto.js');
+    await generateTsCode(target, protoFile);
 
     expect(
-      fs.existsSync(path.join(sandbox.path, 'greeter_grpc_pb.ts')),
+      fs.existsSync(path.join(sandbox.path, 'greeter.proto.js')),
     ).to.be.true();
     expect(
-      fs.existsSync(path.join(sandbox.path, 'greeter_pb.ts')),
+      fs.existsSync(path.join(sandbox.path, 'greeter.proto.d.ts')),
     ).to.be.true();
   });
 
