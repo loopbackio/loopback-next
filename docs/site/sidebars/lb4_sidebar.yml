@@ -286,7 +286,7 @@ children:
       output: 'web, pdf'
 
     - title: 'Executing database commands'
-      url: Executing-database-commands
+      url: Executing-database-commands.html
       output: 'web, pdf'
 
     - title: 'Using TypeORM'

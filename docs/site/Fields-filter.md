@@ -34,7 +34,7 @@ filter[fields][<i>propertyName</i>]=true|false&filter[fields][<i>propertyName</i
 Note that to include more than one field in REST, use multiple filters.
 
 Check out the usage of
-[stringified JSON format](Querying-data.html#using-stringified-json-in-rest-queries)
+[stringified JSON format](Querying-data.md#using-stringified-json-in-rest-queries)
 in a REST query.
 
 ### Examples

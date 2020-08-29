@@ -552,8 +552,8 @@ itself as a `ContextObserver` to rebuild the routes upon changes of routes in
 the context with `listen()`.
 
 If your dependency needs to follow the context for values from bindings matching
-a filter, use [`@inject.view`](Decorators_inject.md#@inject.view) for dependency
-injection.
+a filter, use [`@inject.view`](decorators/Decorators_inject.md#@inject.view) for
+dependency injection.
 
 ### ContextView events
 

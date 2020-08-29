@@ -151,9 +151,9 @@ case [Context](Context.md) will recursively instantiate these classes first,
 resolving their dependencies as needed.
 
 In this particular example, the class is a
-[Provider](Writing-Components#providers). Providers allow you to customize the
-way how a value is created by the Context, possibly depending on other Context
-values. A provider is typically bound using `.toProvider()` API:
+[Provider](Creating-components.md#providers). Providers allow you to customize
+the way how a value is created by the Context, possibly depending on other
+Context values. A provider is typically bound using `.toProvider()` API:
 
 ```js
 app

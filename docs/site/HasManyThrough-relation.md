@@ -317,7 +317,7 @@ export class DoctorRepository extends DefaultCrudRepository<
   instance
   ([API Docs](https://loopback.io/doc/en/lb4/apidocs.repository.defaulthasmanythroughrepository.create.html))
 - `find` finding target model instance(s) belonging to source model instance
-  ([API Docs](https://loopback.io/doc/en/lb4/apidocs.repository.defaulthasmanythroughrepository.find.htmll))
+  ([API Docs](https://loopback.io/doc/en/lb4/apidocs.repository.defaulthasmanythroughrepository.find.html))
 - `delete` for deleting target model instance(s) belonging to source model
   instance
   ([API Docs](https://loopback.io/doc/en/lb4/apidocs.repository.defaulthasmanythroughrepository.delete.html))

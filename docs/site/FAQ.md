@@ -179,7 +179,7 @@ This will result in a custom response body and a new header, `x-secret-sauce`.
 ### Where do I find the default binding keys?
 
 Binding keys used by `@loopback/*` packages are consolidated under
-[Reserved binding keys](Reserved-binding-keys.md).
+[Reserved binding keys](reference/reserved-binding-keys.md).
 
 ### What is the difference between general and configuration bindings?
 

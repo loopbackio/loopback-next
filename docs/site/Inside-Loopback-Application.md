@@ -103,21 +103,19 @@ In the example,
 
 The API business logic is separated between various layers in LoopBack:
 
-- [Controllers](https://loopback.io/doc/en/lb4/Controllers.html) represent the
-  `API Endpoints`. These endpoints will have to authenticate incoming request,
-  parse and validate as well as orchestrate calls to `Services` and
-  `Repositories`.
+- [Controllers](Controller.md) represent the `API Endpoints`. These endpoints
+  will have to authenticate incoming request, parse and validate as well as
+  orchestrate calls to `Services` and `Repositories`.
 
-- [Services](https://loopback.io/doc/en/lb4/Calling-other-APIs-and-web-services.html)
-  provide common interfaces for external APIs and services. This allows invoking
-  external services without mentioning connection details every time. `Services`
-  interchangeably also provide common interfaces for locally available classes.
+- [Services](Calling-other-APIs-and-Web-Services.md) provide common interfaces
+  for external APIs and services. This allows invoking external services without
+  mentioning connection details every time. `Services` interchangeably also
+  provide common interfaces for locally available classes.
 
-- [Models](https://loopback.io/doc/en/lb4/Model.html) and
-  [Relations](https://loopback.io/doc/en/lb4/Relations.html) represent domain
-  objects and provide entity relationship models.
+- [Models](Model.md) and [Relations](Relations.md) represent domain objects and
+  provide entity relationship models.
 
-- [Repositories](https://loopback.io/doc/en/lb4/Repositories.html) represent the
+- [Repositories](https://loopback.io/doc/en/lb4/Repository.md) represent the
   `Entity layer` for a specific model and handle all CRUD operations on the
   model. They also use repository of other models to handle `entity relations`.
 
@@ -131,8 +129,8 @@ The API business logic is separated between various layers in LoopBack:
 
 Developers typically create server-side "handler functions" for each route as
 remote methods. In LoopBack, remote methods are defined in
-[controller classes](https://loopback.io/doc/en/lb4/Controllers.html#routing-to-controllers)
-and configured as API endpoints with API `decorators`.
+[controller classes](Controller.md#routing-to-controllers) and configured as API
+endpoints with API `decorators`.
 
 > LoopBack has built-in decorators to indicate API specification and the
 > expected arguments for the remote method.
@@ -150,7 +148,7 @@ For example,
 ## Classes and wiring dependencies
 
 > Dependency injection features in LoopBack is used to
-> [wire dependencies](https://loopback.io/doc/en/lb4/Dependency-injection.html#flavors-of-dependency-injection)
+> [wire dependencies](Dependency-injection.md#flavors-of-dependency-injection)
 > into constructors, class properties and methods.
 
 The `UserController` in the shopping example needs to connect to a user service
@@ -174,9 +172,9 @@ into repository classes.
 ## API Security
 
 > Security implementations in LoopBack can be created as separate
-> [Authentication strategies](https://loopback.io/doc/en/lb4/Loopback-component-authentication.html)
-> and the `@authenticate` decorator can be used to define the authentication
-> strategy of a particular endpoint.
+> [Authentication strategies](Loopback-component-authentication.md) and the
+> `@authenticate` decorator can be used to define the authentication strategy of
+> a particular endpoint.
 
 For example,
 
@@ -197,13 +195,11 @@ logic and easy understanding of security specifications.
 > relations. Built-in `decorators` are used to annotate property data types as
 > well as entity relationships in a `Model` class.
 
-[Models](https://loopback.io/doc/en/lb4/Model.html#definition-of-a-model) define
-the structure of domain objects.
-[Model Relations](https://loopback.io/doc/en/lb4/Relations.html) help in
-defining entity composition and cardinalities like one-to-many or one-to-one.
+[Models](Model.md#definition-of-a-model) define the structure of domain objects.
+[Model Relations](Relations.md) help in defining entity composition and
+cardinalities like one-to-many or one-to-one.
 
-> Models can also be generated from
-> [existing tables](https://loopback.io/doc/en/lb4/Discovering-models.html) in
+> Models can also be generated from [existing tables](Discovering-models.md) in
 > relational databases.
 
 [User](https://github.com/strongloop/loopback4-example-shopping/blob/master/packages/shopping/src/models/user.model.ts)
@@ -214,9 +210,9 @@ are domain objects in the shopping cart use case:
 - They have the same structure and relations when posted by users from the front
   end as well as when persisted towards a backend datastore.
 - A user can have multiple orders, and hence `User` model has a
-  [has-many relation](https://loopback.io/doc/en/lb4/HasMany-relation.html)
-  (ie., one-to-many) with `Order` model. Hence the `orders` property in `User`
-  model is annotated with the `@hasMany(() => Order)` decorator.
+  [has-many relation](HasMany-relation.md) (ie., one-to-many) with `Order`
+  model. Hence the `orders` property in `User` model is annotated with the
+  `@hasMany(() => Order)` decorator.
 - An `Order` is composed with a list of products added in the shopping cart and
   submitted towards the order. Hence the `products` property in `Order` model is
   annotated as `@property.array()` to indicate that it is a list property.
@@ -228,9 +224,9 @@ are domain objects in the shopping cart use case:
 
 ## Entity layer and Database connectivity
 
-> [Repositories](https://loopback.io/doc/en/lb4/Repositories.html) in LoopBack
-> represent the `Entity` layer for querying and persisting a domain model. They
-> also connect with other repositories to resolve `Entity relations`.
+> [Repositories](Repository.md) in LoopBack represent the `Entity` layer for
+> querying and persisting a domain model. They also connect with other
+> repositories to resolve `Entity relations`.
 
 Applications displaying a `user` profile might need a list of associated recent
 `orders` made by the user. The same also applies for an order page, some
@@ -267,8 +263,8 @@ uses the LoopBack `mongodb` connector.
 
 The `Shopping` APIs have to be setup with configurations so that they are
 accessible on a specific port, have a base url, etc. Also we may want to setup
-[various bootup activities](https://loopback.io/doc/en/lb4/Application.html) if
-there are tasks to be completed before the APIs are available online.
+[various bootup activities](Application.md) if there are tasks to be completed
+before the APIs are available online.
 
 The
 [ShoppingApplication class](https://github.com/strongloop/loopback4-example-shopping/blob/master/packages/shopping/src/application.ts)
@@ -277,10 +273,9 @@ is a palette to hold all common configurations and startup activities of the
 
 The `ShoppingApplication` class extends the `RestApplication` class from the
 `@loopback\rest` package and so has inherited the capabilities of the in-built
-[LoopBack Server](https://loopback.io/doc/en/lb4/Server.html) to `boot`, `start`
-and `stop`. The application can now be booted and started by calling the
-`app.boot` and `app.start` methods respectively. In the example, this call is
-made from the
+[LoopBack Server](Server.md) to `boot`, `start` and `stop`. The application can
+now be booted and started by calling the `app.boot` and `app.start` methods
+respectively. In the example, this call is made from the
 [index.ts](https://github.com/strongloop/loopback4-example-shopping/blob/master/packages/shopping/src/index.ts)
 file.
 
