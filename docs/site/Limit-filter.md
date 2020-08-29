@@ -26,7 +26,7 @@ filter[limit]=<i>n</i>
 </pre>
 
 You can also
-use [stringified JSON format](Querying-data.html#using-stringified-json-in-rest-queries) in
+use [stringified JSON format](Querying-data.md#using-stringified-json-in-rest-queries) in
 a REST query.
 
 ### Examples

@@ -43,7 +43,7 @@ For example, here is a query to find cars with `odo` is less than 30,000:
 ```
 
 You can also
-use [stringified JSON format](Querying-data.html#using-stringified-json-in-rest-queries) in
+use [stringified JSON format](Querying-data.md#using-stringified-json-in-rest-queries) in
 a REST query. The above example can be written as:
 
 ```

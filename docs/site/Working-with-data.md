@@ -71,12 +71,12 @@ for more information.
 
 See the following articles for more information:
 
-- [Querying data](Querying-data.html)
-  - [Fields filter](Fields-filter.html)
-  - [Include filter](Include-filter.html)
-  - [Limit filter](Limit-filter.html)
-  - [Order filter](Order-filter.html)
-  - [Skip filter](Skip-filter.html)
-  - [Where filter](Where-filter.html)
-- [Using database transactions](Using-database-transactions.html)
+- [Querying data](Querying-data.md)
+  - [Fields filter](Fields-filter.md)
+  - [Include filter](Include-filter.md)
+  - [Limit filter](Limit-filter.md)
+  - [Order filter](Order-filter.md)
+  - [Skip filter](Skip-filter.md)
+  - [Where filter](Where-filter.md)
+- [Using database transactions](Using-database-transactions.md)
 - [Executing database commands](Executing-database-commands.md)

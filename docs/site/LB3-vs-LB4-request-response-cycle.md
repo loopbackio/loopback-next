@@ -77,7 +77,7 @@ application grows.
 
 For those who are uncomfortable with the concept of having to creating a
 repository and a controller for a model, we have a component
-[@loopback/rest-crud](./Creating-crud-rest-apis.md) ; with a little bit of
+[@loopback/rest-crud](./Creating-CRUD-REST-apis.md) ; with a little bit of
 configuration, a model file is all you will need to create the REST endpoints.
 Once your requirements outgrow what `@loopback/rest-crud` provides, you can
 implement your REST endpoints the idiomatic way.
@@ -188,7 +188,7 @@ export class HelloController {
 
 {% include tip.html content="For details about migrating LoopBack 3 boot scripts
 refer to
-[Migrating boot scripts](./migration-boot-scripts.md)
+[Migrating boot scripts](migration/boot-scripts.md)
 ." %}
 
 #### Remote methods

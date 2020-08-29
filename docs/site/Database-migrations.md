@@ -50,7 +50,7 @@ export class MyModel extends Entity {
 
 For detailed connector-specific settings for defining model schemas and
 auto-migration, check out the specific connector under
-[Database Connectors](Database-connectors.md).
+[Database Connectors](Database-connectors.html).
 
 {% include warning.html content="Auto-update will attempt to preserve data while
 updating the schema in your target database, but this is not guaranteed to be

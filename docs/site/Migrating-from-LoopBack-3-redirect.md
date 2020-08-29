@@ -8,4 +8,4 @@ permalink: /doc/en/lb4/Migrating-from-LoopBack-3.html
 ---
 
 The migration guide was moved to a new place:
-[Migration guide](./migration-overview.md).
+[Migration guide](migration/overview.md).

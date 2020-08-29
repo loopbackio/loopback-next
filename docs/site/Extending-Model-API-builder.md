@@ -13,7 +13,7 @@ From a model class, this module can be used to define a contract to create a
 corresponding repository and controller. An example Model API builder is the
 [`CrudRestApiBuilder`](https://loopback.io/doc/en/lb4/apidocs.rest-crud.crudrestapibuilder.html)
 which is used to create a CRUD REST repository and controller. You can see more
-details in [Creating CRUD REST APIs](Creating-crud-rest-apis.md).
+details in [Creating CRUD REST APIs](Creating-CRUD-REST-apis.md).
 
 `@loopback/model-api-builder` helps create a configuration for the repository
 and controllers and
