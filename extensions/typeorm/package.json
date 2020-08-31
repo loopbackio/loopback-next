@@ -26,7 +26,7 @@
     "@loopback/eslint-config": "^9.0.2",
     "@loopback/repository": "^2.11.2",
     "@loopback/testlab": "^3.2.4",
-    "@types/json-schema": "^7.0.5",
+    "@types/json-schema": "^7.0.6",
     "@types/node": "^10.17.28",
     "sqlite3": "^5.0.0"
   },
