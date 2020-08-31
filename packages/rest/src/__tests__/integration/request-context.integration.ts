@@ -154,7 +154,7 @@ async function teardown() {
 
 async function givenRunningAppWithClient(
   restOptions?: RestServerConfig,
-  setupFn: (app: RestApplication) => void = () => {},
+  setupFn: (restApp: RestApplication) => void = () => {},
 ) {
   const options: ApplicationConfig = {
     rest: givenHttpServerConfig(restOptions),

@@ -34,7 +34,6 @@ export class Manufacturer extends Entity {
 interface ManufacturerRelations {
   products?: ProductWithRelations;
 }
-type ManufacturerWithRelations = Manufacturer & ManufacturerRelations;
 
 export class ManufacturerRepository extends DefaultCrudRepository<
   Manufacturer,
@@ -126,7 +125,6 @@ export class Category extends Entity {
 interface CategoryRelations {
   products?: ProductWithRelations;
 }
-type CategoryWithRelations = Category & CategoryRelations;
 
 export class CategoryRepository extends DefaultCrudRepository<
   Category,

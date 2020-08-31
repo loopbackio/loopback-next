@@ -337,11 +337,11 @@ export class DecoratorFactory<
    * @param options - Options for the decorator
    */
   protected static _createDecorator<
-    T,
-    M extends T | MetadataMap<T> | MetadataMap<T[]>,
-    D extends DecoratorType
-  >(key: MetadataKey<T, D>, spec: T, options?: DecoratorOptions): D {
-    const inst = new this<T, M, D>(key.toString(), spec, options);
+    S,
+    MT extends S | MetadataMap<S> | MetadataMap<S[]>,
+    DT extends DecoratorType
+  >(key: MetadataKey<S, DT>, spec: S, options?: DecoratorOptions): DT {
+    const inst = new this<S, MT, DT>(key.toString(), spec, options);
     return inst.create();
   }
 
@@ -422,12 +422,12 @@ export class ClassDecoratorFactory<T> extends DecoratorFactory<
    * @param spec - Metadata object from the decorator function
    * @param options - Options for the decorator
    */
-  static createDecorator<T>(
-    key: MetadataKey<T, ClassDecorator>,
-    spec: T,
+  static createDecorator<S>(
+    key: MetadataKey<S, ClassDecorator>,
+    spec: S,
     options?: DecoratorOptions,
   ) {
-    return super._createDecorator<T, T, ClassDecorator>(key, spec, options);
+    return super._createDecorator<S, S, ClassDecorator>(key, spec, options);
   }
 }
 
@@ -483,12 +483,12 @@ export class PropertyDecoratorFactory<T> extends DecoratorFactory<
    * @param spec - Metadata object from the decorator function
    * @param options - Options for the decorator
    */
-  static createDecorator<T>(
-    key: MetadataKey<T, PropertyDecorator>,
-    spec: T,
+  static createDecorator<S>(
+    key: MetadataKey<S, PropertyDecorator>,
+    spec: S,
     options?: DecoratorOptions,
   ) {
-    return super._createDecorator<T, MetadataMap<T>, PropertyDecorator>(
+    return super._createDecorator<S, MetadataMap<S>, PropertyDecorator>(
       key,
       spec,
       options,
@@ -549,12 +549,12 @@ export class MethodDecoratorFactory<T> extends DecoratorFactory<
    * @param spec - Metadata object from the decorator function
    * @param options - Options for the decorator
    */
-  static createDecorator<T>(
-    key: MetadataKey<T, MethodDecorator>,
-    spec: T,
+  static createDecorator<S>(
+    key: MetadataKey<S, MethodDecorator>,
+    spec: S,
     options?: DecoratorOptions,
   ) {
-    return super._createDecorator<T, MetadataMap<T>, MethodDecorator>(
+    return super._createDecorator<S, MetadataMap<S>, MethodDecorator>(
       key,
       spec,
       options,
@@ -642,12 +642,12 @@ export class ParameterDecoratorFactory<T> extends DecoratorFactory<
    * @param spec - Metadata object from the decorator function
    * @param options - Options for the decorator
    */
-  static createDecorator<T>(
-    key: MetadataKey<T, ParameterDecorator>,
-    spec: T,
+  static createDecorator<S>(
+    key: MetadataKey<S, ParameterDecorator>,
+    spec: S,
     options?: DecoratorOptions,
   ) {
-    return super._createDecorator<T, MetadataMap<T[]>, ParameterDecorator>(
+    return super._createDecorator<S, MetadataMap<S[]>, ParameterDecorator>(
       key,
       spec,
       options,
@@ -777,12 +777,12 @@ export class MethodParameterDecoratorFactory<T> extends DecoratorFactory<
    * @param spec - Metadata object from the decorator function
    * @param options - Options for the decorator
    */
-  static createDecorator<T>(
-    key: MetadataKey<T, MethodDecorator>,
-    spec: T,
+  static createDecorator<S>(
+    key: MetadataKey<S, MethodDecorator>,
+    spec: S,
     options?: DecoratorOptions,
   ) {
-    return super._createDecorator<T, MetadataMap<T[]>, MethodDecorator>(
+    return super._createDecorator<S, MetadataMap<S[]>, MethodDecorator>(
       key,
       spec,
       options,

@@ -151,10 +151,7 @@ function isInclusionAllowed<T extends Entity, Relations extends object = {}>(
  * @param targetKey - name of the target key
  *
  */
-export function flattenTargetsOfOneToOneRelation<
-  SourceWithRelations extends Entity,
-  Target extends Entity
->(
+export function flattenTargetsOfOneToOneRelation<Target extends Entity>(
   sourceIds: unknown[],
   targetEntities: Target[],
   targetKey: StringKeyOf<Target>,

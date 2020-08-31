@@ -94,7 +94,7 @@ export function getDeepProperty<OUT = BoundValue, IN = BoundValue>(
  */
 export function resolveMap<T, V>(
   map: MapObject<T>,
-  resolver: (val: T, key: string, map: MapObject<T>) => ValueOrPromise<V>,
+  resolver: (val: T, key: string, values: MapObject<T>) => ValueOrPromise<V>,
 ): ValueOrPromise<MapObject<V>> {
   const result: MapObject<V> = {};
   let asyncResolvers: PromiseLike<void>[] | undefined = undefined;
@@ -156,7 +156,7 @@ export function resolveMap<T, V>(
  */
 export function resolveList<T, V>(
   list: T[],
-  resolver: (val: T, index: number, list: T[]) => ValueOrPromise<V>,
+  resolver: (val: T, index: number, values: T[]) => ValueOrPromise<V>,
 ): ValueOrPromise<V[]> {
   const result: V[] = new Array<V>(list.length);
   let asyncResolvers: PromiseLike<void>[] | undefined = undefined;

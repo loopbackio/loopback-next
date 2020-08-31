@@ -64,6 +64,7 @@ export interface CrudRestController<
   T extends Entity,
   IdType,
   IdName extends keyof T,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   Relations extends object = {}
 > {
   /**

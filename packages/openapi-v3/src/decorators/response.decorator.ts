@@ -20,7 +20,11 @@ interface ResponseWithContent extends ResponseObject {
 }
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function isResponseObject(c: any): c is ResponseWithContent {
-  return !!c?.hasOwnProperty('content') && !!c.content;
+  return (
+    c != null &&
+    Object.prototype.hasOwnProperty.call(c, 'content') &&
+    c.content != null
+  );
 }
 
 function buildDecoratorReducer(

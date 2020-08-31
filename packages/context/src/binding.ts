@@ -855,7 +855,7 @@ export class Binding<T = BoundValue> extends EventEmitter {
    * easy to read.
    * @param key - Binding key
    */
-  static bind<T = unknown>(key: BindingAddress<T>): Binding<T> {
+  static bind<V = unknown>(key: BindingAddress<V>): Binding<V> {
     return new Binding(key);
   }
 
@@ -868,13 +868,13 @@ export class Binding<T = BoundValue> extends EventEmitter {
    *   .to({port: 3000});
    * ```
    *
-   * @typeParam T Generic type for the configuration value (not the binding to
+   * @typeParam V Generic type for the configuration value (not the binding to
    * be configured)
    *
    * @param key - Key for the binding to be configured
    */
-  static configure<T = unknown>(key: BindingAddress): Binding<T> {
-    return new Binding(BindingKey.buildKeyForConfig<T>(key)).tag({
+  static configure<V = unknown>(key: BindingAddress): Binding<V> {
+    return new Binding(BindingKey.buildKeyForConfig<V>(key)).tag({
       [ContextTags.CONFIGURATION_FOR]: key.toString(),
     });
   }

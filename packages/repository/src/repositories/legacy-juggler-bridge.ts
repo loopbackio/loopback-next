@@ -54,9 +54,9 @@ export namespace juggler {
   export import PersistedModel = legacy.PersistedModel;
   export import KeyValueModel = legacy.KeyValueModel;
   export import PersistedModelClass = legacy.PersistedModelClass;
-  // eslint-disable-next-line no-shadow
+  // eslint-disable-next-line @typescript-eslint/no-shadow
   export import Transaction = legacy.Transaction;
-  // eslint-disable-next-line no-shadow
+  // eslint-disable-next-line @typescript-eslint/no-shadow
   export import IsolationLevel = legacy.IsolationLevel;
 }
 

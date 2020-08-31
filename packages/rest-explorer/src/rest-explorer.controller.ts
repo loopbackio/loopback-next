@@ -3,7 +3,6 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import {config, inject} from '@loopback/core';
 import {
   OpenApiSpecForm,
