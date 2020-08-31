@@ -264,6 +264,79 @@ describe('Application life cycle', () => {
       expect(stopInvoked).to.be.false(); // not invoked
     });
   });
+
+  describe('app.onStart()', () => {
+    it('registers the handler as "start" lifecycle observer', async () => {
+      const app = new Application();
+      let invoked = false;
+
+      const binding = app.onStart(async function doSomething() {
+        // delay the actual observer code to the next tick to
+        // verify that the promise returned by an async observer
+        // is correctly forwarded by LifeCycle wrapper
+        await Promise.resolve();
+        invoked = true;
+      });
+
+      expect(binding.key).to.match(/^lifeCycleObservers.doSomething/);
+
+      await app.start();
+      expect(invoked).to.be.true();
+    });
+
+    it('registers multiple handlers with the same name', async () => {
+      const app = new Application();
+      const invoked: string[] = [];
+
+      app.onStart(() => {
+        invoked.push('first');
+      });
+      app.onStart(() => {
+        invoked.push('second');
+      });
+
+      await app.start();
+      expect(invoked).to.deepEqual(['first', 'second']);
+    });
+  });
+
+  describe('app.onStop()', () => {
+    it('registers the handler as "stop" lifecycle observer', async () => {
+      const app = new Application();
+      let invoked = false;
+
+      const binding = app.onStop(async function doSomething() {
+        // delay the actual observer code to the next tick to
+        // verify that the promise returned by an async observer
+        // is correctly forwarded by LifeCycle wrapper
+        await Promise.resolve();
+        invoked = true;
+      });
+
+      expect(binding.key).to.match(/^lifeCycleObservers.doSomething/);
+
+      await app.start();
+      expect(invoked).to.be.false();
+      await app.stop();
+      expect(invoked).to.be.true();
+    });
+
+    it('registers multiple handlers with the same name', async () => {
+      const app = new Application();
+      const invoked: string[] = [];
+      app.onStop(() => {
+        invoked.push('first');
+      });
+      app.onStop(() => {
+        invoked.push('second');
+      });
+      await app.start();
+      expect(invoked).to.be.empty();
+      await app.stop();
+      // `stop` observers are invoked in reverse order
+      expect(invoked).to.deepEqual(['second', 'first']);
+    });
+  });
 });
 
 class ObservingComponentWithServers implements Component, LifeCycleObserver {

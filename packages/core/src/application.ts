@@ -15,7 +15,9 @@ import {
   JSONObject,
   Provider,
   registerInterceptor,
+  ValueOrPromise,
 } from '@loopback/context';
+import {generateUniqueId} from '@loopback/context/dist/unique-id';
 import assert from 'assert';
 import debugFactory from 'debug';
 import {once} from 'events';
@@ -313,6 +315,28 @@ export class Application extends Context implements LifeCycleObserver {
   }
 
   /**
+   * Register a function to be called when the application starts.
+   *
+   * This is a shortcut for adding a binding for a LifeCycleObserver
+   * implementing a `start()` method.
+   *
+   * @param fn The function to invoke, it can be synchronous (returning `void`)
+   * or asynchronous (returning `Promise<void>`).
+   * @returns The LifeCycleObserver binding created.
+   */
+  public onStart(fn: () => ValueOrPromise<void>): Binding<LifeCycleObserver> {
+    const key = [
+      CoreBindings.LIFE_CYCLE_OBSERVERS,
+      fn.name || '<onStart>',
+      generateUniqueId(),
+    ].join('.');
+
+    return this.bind<LifeCycleObserver>(key)
+      .to({start: fn})
+      .apply(asLifeCycleObserver);
+  }
+
+  /**
    * Stop the application instance and all of its registered observers. The
    * application state is checked to ensure the integrity of `stop`.
    *
@@ -333,6 +357,27 @@ export class Application extends Context implements LifeCycleObserver {
     const registry = await this.getLifeCycleObserverRegistry();
     await registry.stop();
     this.setState('stopped');
+  }
+
+  /**
+   * Register a function to be called when the application starts.
+   *
+   * This is a shortcut for adding a binding for a LifeCycleObserver
+   * implementing a `start()` method.
+   *
+   * @param fn The function to invoke, it can be synchronous (returning `void`)
+   * or asynchronous (returning `Promise<void>`).
+   * @returns The LifeCycleObserver binding created.
+   */
+  public onStop(fn: () => ValueOrPromise<void>): Binding<LifeCycleObserver> {
+    const key = [
+      CoreBindings.LIFE_CYCLE_OBSERVERS,
+      fn.name || '<onStop>',
+      generateUniqueId(),
+    ].join('.');
+    return this.bind<LifeCycleObserver>(key)
+      .to({stop: fn})
+      .apply(asLifeCycleObserver);
   }
 
   private async getLifeCycleObserverRegistry() {
