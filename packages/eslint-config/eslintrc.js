@@ -255,23 +255,6 @@ module.exports = {
         '@typescript-eslint/prefer-nullish-coalescing': 'off',
       },
     },
-    {
-      files: ['**/*.ts'],
-      rules: {
-        /*
-         * The mocha plugin reports the following signature as a violation of
-         * `mocha/handle-done-callback`.
-         *
-         * ```ts
-         * before(async function setupApplication(this: Mocha.Context) {
-         *   this.timeout(6000);
-         *   // ...
-         * }
-         * ```
-         */
-        'mocha/handle-done-callback': 'off',
-      },
-    },
   ],
 };
 
