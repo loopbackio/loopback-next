@@ -189,6 +189,36 @@ export class MyComponentWithObservers implements Component {
 }
 ```
 
+### Shorthand methods
+
+In some cases, it's desirable to register a single function to be called at
+start or stop time.
+
+For example, when writing integration-level tests, we can use `app.onStop()` to
+register a cleanup routine to be invoked whenever the application is shut down.
+
+```ts
+import {Application} from '@loopback/core';
+
+describe('my test suite', () => {
+  let app: Application;
+  before(setupApp);
+  after(() => app.stop());
+
+  // the tests come here
+
+  async setupApp() {
+    app = new Application();
+    app.onStop(async cleanup() {
+      // do some cleanup
+    });
+
+    await app.boot();
+    await app.start();
+  }
+});
+```
+
 ## Discover life cycle observers
 
 The `Application` finds all bindings tagged with `CoreTags.LIFE_CYCLE_OBSERVER`
