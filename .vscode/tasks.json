@@ -96,6 +96,24 @@
       "problemMatcher": "$tsc"
     },
     {
+      "label": "Build and watch for changes",
+      "group": "build",
+      "type": "shell",
+      "command": "npm",
+      "args": [
+        "run",
+        "-s",
+        "build",
+        "--",
+        "--watch",
+        "--pretty",
+        "false"
+      ],
+      "problemMatcher": [
+        "$tsc-watch",
+      ]
+    },
+    {
       "label": "Clean project",
       "group": "build",
       "type": "shell",
