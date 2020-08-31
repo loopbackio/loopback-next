@@ -112,7 +112,11 @@ module.exports = {
     'no-invalid-this': 'off',
     '@typescript-eslint/no-invalid-this': ['error'],
     '@typescript-eslint/no-misused-new': 'error',
-    'no-shadow': 'error', // tslint:no-shadowed-variable
+
+    // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-shadow.md#how-to-use
+    'no-shadow': 'off',
+    '@typescript-eslint/no-shadow': 'error',
+
     'no-throw-literal': 'error', // tslint:no-string-throw
 
     '@typescript-eslint/no-unused-vars': [
@@ -120,21 +124,6 @@ module.exports = {
       {
         vars: 'all',
         args: 'none', // none - do not check arguments
-        /*
-         * The following is a workaround to the issue that parameter decorators
-         * are treated as `unused-vars`.
-         *
-         * See https://github.com/typescript-eslint/typescript-eslint/issues/571
-         *
-         * @example
-         * ```ts
-         * import {inject} from '@loopback/core';
-         * class MyController {
-         *   constructor(@inject('foo') foo: string) {}
-         * }
-         * ```
-         */
-        varsIgnorePattern: 'inject|(\\w+)Bindings',
         ignoreRestSiblings: false,
       },
     ], // tslint:no-unused-variable
@@ -264,6 +253,23 @@ module.exports = {
       rules: {
         '@typescript-eslint/prefer-optional-chain': 'off',
         '@typescript-eslint/prefer-nullish-coalescing': 'off',
+      },
+    },
+    {
+      files: ['**/*.ts'],
+      rules: {
+        /*
+         * The mocha plugin reports the following signature as a violation of
+         * `mocha/handle-done-callback`.
+         *
+         * ```ts
+         * before(async function setupApplication(this: Mocha.Context) {
+         *   this.timeout(6000);
+         *   // ...
+         * }
+         * ```
+         */
+        'mocha/handle-done-callback': 'off',
       },
     },
   ],
