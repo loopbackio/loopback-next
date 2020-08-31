@@ -7,7 +7,6 @@ import {
   asGlobalInterceptor,
   bind,
   BindingAddress,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   config,
   Context,
   Interceptor,

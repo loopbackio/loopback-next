@@ -110,10 +110,10 @@ describe('Express middleware registry', () => {
     });
 
     it('registers a LoopBack middleware provider with config injection', async () => {
-      type SpyConfig = {headerName: string};
+      type TestSpyConfig = {headerName: string};
       class SpyMiddlewareProviderWithConfig implements Provider<Middleware> {
         @config()
-        private options: SpyConfig;
+        private options: TestSpyConfig;
         value(): Middleware {
           return async ({request, response}, next) => {
             response.set(

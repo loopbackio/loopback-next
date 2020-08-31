@@ -6,6 +6,7 @@
 /**
  * A function defining a new test case or a test suite, e.g. `it` or `describe`.
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export type TestDefinition<ARGS extends unknown[], RETVAL> = (
   name: string,
   ...args: ARGS

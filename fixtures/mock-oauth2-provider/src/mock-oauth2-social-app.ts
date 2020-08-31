@@ -35,13 +35,6 @@ app.use(bodyParser.text({type: 'text/html'}));
 // create application/x-www-form-urlencoded parser
 const urlencodedParser = bodyParser.urlencoded({extended: false});
 
-interface JWT {
-  payload: {
-    jti: string;
-    client_id: string;
-  };
-}
-
 /**
  * data structure for an app registration, also holds issued tokens for an app
  */

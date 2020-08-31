@@ -251,7 +251,7 @@ export class ContextView<T = unknown>
    */
   on(
     eventName: 'bind',
-    listener: <T>(event: ContextViewEvent<T>) => void,
+    listener: <V>(event: ContextViewEvent<V>) => void,
   ): this;
 
   /**
@@ -262,7 +262,7 @@ export class ContextView<T = unknown>
    */
   on(
     eventName: 'unbind',
-    listener: <T>(event: ContextViewEvent<T> & {cachedValue?: T}) => void,
+    listener: <V>(event: ContextViewEvent<V> & {cachedValue?: V}) => void,
   ): this;
 
   /**
@@ -282,7 +282,7 @@ export class ContextView<T = unknown>
    * @param listener The listener function to call when the event is emitted.
    */
   // eslint-disable-next-line @typescript-eslint/unified-signatures
-  on(eventName: 'refresh', listener: <T>(result: T[]) => void): this;
+  on(eventName: 'refresh', listener: <V>(result: V[]) => void): this;
 
   /**
    * The "close" event is emitted when the view is closed (stopped observing
@@ -311,7 +311,7 @@ export class ContextView<T = unknown>
    */
   once(
     eventName: 'bind',
-    listener: <T>(event: ContextViewEvent<T>) => void,
+    listener: <V>(event: ContextViewEvent<V>) => void,
   ): this;
 
   /**
@@ -322,7 +322,7 @@ export class ContextView<T = unknown>
    */
   once(
     eventName: 'unbind',
-    listener: <T>(event: ContextViewEvent<T> & {cachedValue?: T}) => void,
+    listener: <V>(event: ContextViewEvent<V> & {cachedValue?: V}) => void,
   ): this;
 
   /**
@@ -342,7 +342,7 @@ export class ContextView<T = unknown>
    * @param listener The listener function to call when the event is emitted.
    */
   // eslint-disable-next-line @typescript-eslint/unified-signatures
-  once(eventName: 'refresh', listener: <T>(result: T[]) => void): this;
+  once(eventName: 'refresh', listener: <V>(result: V[]) => void): this;
 
   /**
    * The "close" event is emitted when the view is closed (stopped observing

@@ -7,6 +7,7 @@ import {generateUniqueId} from './unique-id';
 
 export type BindingAddress<T = unknown> = string | BindingKey<T>;
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export class BindingKey<ValueType> {
   static readonly PROPERTY_SEPARATOR = '#';
 
@@ -25,16 +26,13 @@ export class BindingKey<ValueType> {
    *   is allowed to contain propertyPath as encoded via `BindingKey#toString()`
    * @param propertyPath - Optional path to a deep property of the bound value.
    */
-  public static create<ValueType>(
-    key: string,
-    propertyPath?: string,
-  ): BindingKey<ValueType> {
+  public static create<V>(key: string, propertyPath?: string): BindingKey<V> {
     // TODO(bajtos) allow chaining of propertyPaths, e.g.
     //   BindingKey.create('config#rest', 'port')
     // should create {key: 'config', path: 'rest.port'}
     if (propertyPath) {
       BindingKey.validate(key);
-      return new BindingKey<ValueType>(key, propertyPath);
+      return new BindingKey<V>(key, propertyPath);
     }
 
     return BindingKey.parseKeyWithPath(key);

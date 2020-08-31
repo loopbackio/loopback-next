@@ -386,10 +386,7 @@ export function registerExpressMiddlewareInterceptor<CFG>(
     middlewareConfig,
     options,
   );
-  const binding = createMiddlewareInterceptorBinding<CFG>(
-    providerClass,
-    options,
-  );
+  const binding = createMiddlewareInterceptorBinding(providerClass, options);
   ctx.add(binding);
   return binding;
 }
@@ -400,9 +397,8 @@ export function registerExpressMiddlewareInterceptor<CFG>(
  * @param middlewareProviderClass - Middleware provider class
  * @param options - Options to create middlewareFactory interceptor binding
  *
- * @typeParam CFG - Configuration type
  */
-export function createMiddlewareInterceptorBinding<CFG>(
+export function createMiddlewareInterceptorBinding(
   middlewareProviderClass: Constructor<Provider<Interceptor>>,
   options: MiddlewareInterceptorBindingOptions = {},
 ) {

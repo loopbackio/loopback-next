@@ -6,7 +6,6 @@
 import {
   bind,
   Component,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   config,
   ContextTags,
   CoreBindings,

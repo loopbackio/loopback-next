@@ -40,6 +40,7 @@ describe('example-passport-login acceptance test', () => {
    */
   before(() => MockTestOauth2SocialApp.startMock());
   after(MockTestOauth2SocialApp.stopMock);
+
   before(async function setupApplication(this: Mocha.Context) {
     this.timeout(6000);
     server = await startApplication(oauth2Providers);

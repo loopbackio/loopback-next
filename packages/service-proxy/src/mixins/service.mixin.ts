@@ -114,8 +114,8 @@ export function ServiceMixin<T extends MixinTarget<Application>>(
     // from mapped types. https://github.com/microsoft/TypeScript/issues/38496
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    component<T extends Component = Component>(
-      componentCtor: Constructor<T>,
+    component<C extends Component = Component>(
+      componentCtor: Constructor<C>,
       nameOrOptions?: string | BindingFromClassOptions,
     ) {
       const binding = super.component(componentCtor, nameOrOptions);
@@ -130,9 +130,9 @@ export function ServiceMixin<T extends MixinTarget<Application>>(
      *
      * @param component - The component to mount services of
      */
-    mountComponentServices<T extends Component = Component>(
-      component: Constructor<T>,
-      componentBindingKey?: BindingAddress<T>,
+    mountComponentServices<C extends Component = Component>(
+      component: Constructor<C>,
+      componentBindingKey?: BindingAddress<C>,
     ) {
       const componentKey =
         componentBindingKey ?? `components.${component.name}`;

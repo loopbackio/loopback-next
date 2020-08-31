@@ -39,6 +39,7 @@ describe('TodoApplication', () => {
   after(() => app.stop());
 
   let available = true;
+
   before(async function (this: Mocha.Context) {
     this.timeout(30 * 1000);
     const service = await app.get<Geocoder>('services.Geocoder');

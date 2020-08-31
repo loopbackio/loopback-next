@@ -363,7 +363,8 @@ function processSchemaExtensions(
    *  You cannot provide BOTH a defnintion AND one of these keywords.
    */
   /* istanbul ignore else */
-  const hasOwn = (prop: string) => schema?.hasOwnProperty(prop);
+  const hasOwn = (prop: string) =>
+    schema != null && Object.prototype.hasOwnProperty.call(schema, prop);
 
   if (SCHEMA_ARR_KEYS.some(k => hasOwn(k))) {
     SCHEMA_ARR_KEYS.forEach((k: MixKey) => {
