@@ -302,8 +302,8 @@ export function transformValueOrPromise<T, V>(
 /**
  * A utility to generate uuid v4
  *
- * @deprecated Use [uuid](https://www.npmjs.com/package/uuid) or
- * [hyperid](https://www.npmjs.com/package/hyperid) instead.
+ * @deprecated Use `generateUniqueId`, [uuid](https://www.npmjs.com/package/uuid)
+ * or [hyperid](https://www.npmjs.com/package/hyperid) instead.
  */
 export function uuid() {
   return uuidv4();
