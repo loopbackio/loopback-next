@@ -14,6 +14,7 @@ import AjvCtor from 'ajv';
 import debugModule from 'debug';
 import {RestBindings, RestTags} from '../keys';
 import {AjvFactory, AjvFormat, AjvKeyword, ValidationOptions} from '../types';
+import {openapiFormats} from './openapi-formats';
 
 const debug = debugModule('loopback:rest:ajv');
 
@@ -57,8 +58,6 @@ export class AjvFactoryProvider implements Provider<AjvFactory> {
         jsonPointers: true,
         // nullable: support keyword "nullable" from Open API 3 specification.
         nullable: true,
-        // Allow OpenAPI spec binary format
-        unknownFormats: ['binary'],
         ...validationOptions,
       };
 
@@ -84,12 +83,17 @@ export class AjvFactoryProvider implements Provider<AjvFactory> {
         });
       }
 
+      for (const format of openapiFormats) {
+        ajvInst.addFormat(format.name, format);
+      }
+
       if (this.formats) {
         this.formats.forEach(format => {
           debug('Adding Ajv format %s', format.name);
           ajvInst.addFormat(format.name, format);
         });
       }
+
       return ajvInst;
     };
   }

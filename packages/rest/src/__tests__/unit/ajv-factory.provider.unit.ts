@@ -15,11 +15,113 @@ describe('Ajv factory', () => {
 
   beforeEach(givenContext);
 
-  it('allows binary format by default', async () => {
-    const ajvFactory = await ctx.get(RestBindings.AJV_FACTORY);
-    const validator = ajvFactory().compile({type: 'string', format: 'binary'});
-    const result = await validator('ABC123');
-    expect(result).to.be.true();
+  context('OpenAPI formats', () => {
+    it('allows binary format by default', async () => {
+      const validator = getValidator('string', 'binary');
+      const result = await validator('ABC123');
+      expect(result).to.be.true();
+    });
+
+    it('supports int32 format by default', async () => {
+      const validator = getValidator('number', 'int32');
+      const result = await validator(123);
+      expect(result).to.be.true();
+    });
+
+    it('reports non-integer int32 value', async () => {
+      const validator = getValidator('number', 'int32');
+      const result = await validator(123.3);
+      expect(result).to.be.false();
+    });
+
+    it('reports out-of-range int32 value', async () => {
+      const validator = getValidator('number', 'int32');
+      let result = await validator(21474836470);
+      expect(result).to.be.false();
+      result = await validator(-21474836470);
+      expect(result).to.be.false();
+    });
+
+    it('supports int64 format by default', async () => {
+      const validator = getValidator('number', 'int64');
+      const result = await validator(123);
+      expect(result).to.be.true();
+    });
+
+    it('reports non-integer int64 value', async () => {
+      const validator = getValidator('number', 'int64');
+      const result = await validator(123.3);
+      expect(result).to.be.false();
+    });
+
+    it('reports out-of-range int64 value', async () => {
+      const validator = getValidator('number', 'int64');
+      let result = await validator(Infinity);
+      expect(result).to.be.false();
+      result = await validator(Number.NEGATIVE_INFINITY);
+      expect(result).to.be.false();
+    });
+
+    it('allows max int64 value', async () => {
+      const validator = getValidator('number', 'int64');
+      let result = await validator(Number.MIN_SAFE_INTEGER);
+      expect(result).to.be.true();
+      result = await validator(Number.MAX_SAFE_INTEGER);
+      expect(result).to.be.true();
+    });
+
+    it('supports float format by default', async () => {
+      const validator = getValidator('number', 'float');
+      const result = await validator(123);
+      expect(result).to.be.true();
+    });
+
+    it('reports out-of-range float value', async () => {
+      const validator = getValidator('number', 'float');
+      let result = await validator(Number.MAX_VALUE);
+      expect(result).to.be.false();
+      result = await validator(-Number.MAX_VALUE);
+      expect(result).to.be.false();
+    });
+
+    it('supports double format by default', async () => {
+      const validator = getValidator('number', 'double');
+      const result = await validator(123);
+      expect(result).to.be.true();
+    });
+
+    it('reports out-of-range double value', async () => {
+      const validator = getValidator('number', 'double');
+      let result = await validator(Infinity);
+      expect(result).to.be.false();
+      result = await validator(Number.NEGATIVE_INFINITY);
+      expect(result).to.be.false();
+    });
+
+    it('supports byte format by default', async () => {
+      const validator = getValidator('string', 'byte');
+
+      const base64 = Buffer.from('XYZ123@$').toString('base64');
+      const result = await validator(base64);
+      expect(result).to.be.true();
+    });
+
+    it('reports invalid byte value', async () => {
+      const validator = getValidator('string', 'byte');
+
+      const invalidBase64 = 'XYZ123@$';
+      const result = await validator(invalidBase64);
+      expect(result).to.be.false();
+    });
+
+    function getValidator(type: string, format: string) {
+      const ajvFactory = ctx.getSync(RestBindings.AJV_FACTORY);
+      const validator = ajvFactory().compile({
+        type,
+        format,
+      });
+      return validator;
+    }
   });
 
   it('honors request body parser options', async () => {
