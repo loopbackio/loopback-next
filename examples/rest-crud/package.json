@@ -54,7 +54,7 @@
     "@loopback/http-caching-proxy": "^2.1.13",
     "@loopback/testlab": "^3.2.4",
     "@types/lodash": "^4.14.161",
-    "@types/node": "^10.17.28",
+    "@types/node": "^10.17.29",
     "eslint": "^7.8.1",
     "lodash": "^4.17.20",
     "typescript": "~4.0.2"
