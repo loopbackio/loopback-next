@@ -177,9 +177,15 @@ function defineCustomContextInspect(
   });
 }
 
+// @types/node@v10.17.29 seems to miss the type definition of `util.inspect.custom`
+// error TS2339: Property 'custom' does not exist on type 'typeof inspect'.
+// Use a workaround for now to access the `custom` symbol for now.
+// https://nodejs.org/api/util.html#util_util_inspect_custom
+const custom = Symbol.for('nodejs.util.inspect.custom');
+
 function defineCustomInspect(
   obj: any,
   inspectFn: (depth: number, opts: any) => {},
 ) {
-  obj[util.inspect.custom] = inspectFn;
+  obj[custom] = inspectFn;
 }
