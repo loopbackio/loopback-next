@@ -25,7 +25,7 @@
     "debug": "^4.1.1",
     "loopback": "^3.27.0",
     "loopback-swagger": "^5.9.0",
-    "swagger2openapi": "^6.2.3",
+    "swagger2openapi": "^7.0.0",
     "tslib": "^2.0.1"
   },
   "peerDependencies": {
