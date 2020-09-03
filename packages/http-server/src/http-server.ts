@@ -6,7 +6,7 @@
 import assert from 'assert';
 import debugFactory from 'debug';
 import {once} from 'events';
-import http, {IncomingMessage, ServerResponse} from 'http';
+import http, {IncomingMessage, Server, ServerResponse} from 'http';
 import https from 'https';
 import {AddressInfo, ListenOptions} from 'net';
 import os from 'os';
@@ -22,9 +22,25 @@ export type RequestListener = (
 ) => void;
 
 /**
+ * The following are for configuring properties which are directly set on
+ * https://nodejs.org/api/http.html#http_class_http_server and
+ * https://nodejs.org/api/net.html#net_class_net_server
+ */
+export type HttpServerProperties = Pick<
+  Server,
+  | 'keepAliveTimeout'
+  | 'headersTimeout'
+  | 'maxConnections'
+  | 'maxHeadersCount'
+  | 'timeout'
+>;
+
+/**
  * Base options that are common to http and https servers
  */
-export interface BaseHttpOptions extends ListenOptions {
+export interface BaseHttpOptions
+  extends ListenOptions,
+    Partial<HttpServerProperties> {
   /**
    * The `gracePeriodForClose` property controls how to stop the server
    * gracefully. Its value is the number of milliseconds to wait before
@@ -109,6 +125,31 @@ export class HttpServer {
     } else {
       this.server = http.createServer(this.requestListener);
     }
+
+    // Apply server properties
+    const {
+      keepAliveTimeout,
+      headersTimeout,
+      maxConnections,
+      maxHeadersCount,
+      timeout,
+    } = this.serverOptions;
+    if (keepAliveTimeout) {
+      this.server.keepAliveTimeout = keepAliveTimeout;
+    }
+    if (headersTimeout) {
+      this.server.headersTimeout = headersTimeout;
+    }
+    if (maxConnections) {
+      this.server.maxConnections = maxConnections;
+    }
+    if (maxHeadersCount) {
+      this.server.maxHeadersCount = maxHeadersCount;
+    }
+    if (timeout) {
+      this.server.timeout = timeout;
+    }
+
     // Set up graceful stop for http server
     if (typeof this.serverOptions.gracePeriodForClose === 'number') {
       debug(
