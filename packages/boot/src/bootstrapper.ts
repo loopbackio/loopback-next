@@ -85,7 +85,7 @@ export class Bootstrapper {
     const bindings = bootCtx.findByTag(BootTags.BOOTER);
 
     // Prefix length. +1 because of `.` => 'booters.'
-    const prefixLength = BootBindings.BOOTER_PREFIX.length + 1;
+    const prefixLength = BootBindings.BOOTERS.length + 1;
 
     // Names of all registered booters.
     const defaultBooterNames = bindings.map(binding =>

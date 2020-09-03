@@ -28,14 +28,14 @@ describe('BootMixin unit tests', () => {
 
   it('binds booter from app.booters()', async () => {
     app.booters(TestBooter);
-    const booter = await app.get(`${BootBindings.BOOTER_PREFIX}.TestBooter`);
+    const booter = await app.get(`${BootBindings.BOOTERS}.TestBooter`);
     expect(booter).to.be.an.instanceOf(TestBooter);
   });
 
   it('binds booter with `@bind` from app.booters()', async () => {
     app.booters(TestBooterWithBind);
     const booterBinding = app.getBinding(
-      `${BootBindings.BOOTER_PREFIX}.TestBooterWithBind`,
+      `${BootBindings.BOOTERS}.TestBooterWithBind`,
     );
     expect(booterBinding.tagMap).to.containEql({artifactType: 'xsd'});
   });
@@ -58,18 +58,18 @@ describe('BootMixin unit tests', () => {
 
   it('binds booter from app.booters() as singletons by default', async () => {
     app.booters(TestBooter);
-    const booter1 = await app.get(`${BootBindings.BOOTER_PREFIX}.TestBooter`);
-    const booter2 = await app.get(`${BootBindings.BOOTER_PREFIX}.TestBooter`);
+    const booter1 = await app.get(`${BootBindings.BOOTERS}.TestBooter`);
+    const booter2 = await app.get(`${BootBindings.BOOTERS}.TestBooter`);
     expect(booter1).to.be.exactly(booter2);
   });
 
   it('binds multiple booter classes from app.booters()', async () => {
     app.booters(TestBooter, AnotherTestBooter);
-    const booter = await app.get(`${BootBindings.BOOTER_PREFIX}.TestBooter`);
+    const booter = await app.get(`${BootBindings.BOOTERS}.TestBooter`);
     expect(booter).to.be.an.instanceOf(TestBooter);
 
     const anotherBooter = await app.get(
-      `${BootBindings.BOOTER_PREFIX}.AnotherTestBooter`,
+      `${BootBindings.BOOTERS}.AnotherTestBooter`,
     );
     expect(anotherBooter).to.be.an.instanceOf(AnotherTestBooter);
   });
@@ -90,9 +90,7 @@ describe('BootMixin unit tests', () => {
     app.component(TestComponent);
     const compInstance = await app.get('components.TestComponent');
     expect(compInstance).to.be.an.instanceOf(TestComponent);
-    const booterInst = await app.get(
-      `${BootBindings.BOOTER_PREFIX}.TestBooter`,
-    );
+    const booterInst = await app.get(`${BootBindings.BOOTERS}.TestBooter`);
     expect(booterInst).to.be.an.instanceOf(TestBooter);
   });
 

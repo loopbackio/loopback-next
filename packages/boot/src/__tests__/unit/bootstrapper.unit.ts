@@ -15,8 +15,8 @@ describe('boot-strapper unit tests', () => {
 
   let app: BootApp;
   let bootstrapper: Bootstrapper;
-  const booterKey = `${BootBindings.BOOTER_PREFIX}.TestBooter`;
-  const anotherBooterKey = `${BootBindings.BOOTER_PREFIX}.AnotherBooter`;
+  const booterKey = `${BootBindings.BOOTERS}.TestBooter`;
+  const anotherBooterKey = `${BootBindings.BOOTERS}.AnotherBooter`;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let stub: sinon.SinonStub<[any?, ...any[]], void>;
 

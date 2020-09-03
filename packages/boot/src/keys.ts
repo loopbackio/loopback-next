@@ -27,6 +27,10 @@ export namespace BootBindings {
     'application.bootstrapper',
   );
 
+  /**
+   * Booter binding namespace
+   */
+  export const BOOTERS = 'booters';
   export const BOOTER_PREFIX = 'booters';
 }
 

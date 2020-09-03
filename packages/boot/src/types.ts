@@ -3,8 +3,14 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {bind, Binding, BindingSpec, Constructor} from '@loopback/core';
-import {BootTags} from './keys';
+import {
+  bind,
+  Binding,
+  BindingSpec,
+  Constructor,
+  ContextTags,
+} from '@loopback/core';
+import {BootBindings, BootTags} from './keys';
 
 /**
  * Type definition for ArtifactOptions. These are the options supported by
@@ -155,7 +161,13 @@ export interface Bootable {
  */
 export function booter(artifactNamespace: string, ...specs: BindingSpec[]) {
   return bind(
-    {tags: {artifactNamespace, [BootTags.BOOTER]: BootTags.BOOTER}},
+    {
+      tags: {
+        artifactNamespace,
+        [BootTags.BOOTER]: BootTags.BOOTER,
+        [ContextTags.NAMESPACE]: BootBindings.BOOTERS,
+      },
+    },
     ...specs,
   );
 }
