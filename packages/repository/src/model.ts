@@ -48,6 +48,36 @@ export interface PropertyDefinition {
 }
 
 /**
+ * Defining the settings for a model
+ * See https://loopback.io/doc/en/lb4/Model.html#supported-entries-of-model-definition
+ */
+export interface ModelSettings {
+  /**
+   * Description of the model
+   */
+  description?: string;
+  /**
+   * Prevent clients from setting the auto-generated ID value manually
+   */
+  forceId?: boolean;
+  /**
+   * Hides properties from response bodies
+   */
+  hiddenProperties?: string[];
+  /**
+   * Scope enables you to set a scope that will apply to every query made by the model's repository
+   */
+  scope?: object;
+  /**
+   * Specifies whether the model accepts only predefined properties or not
+   */
+  strict?: boolean | 'filter';
+
+  // Other variable settings
+  [name: string]: any;
+}
+
+/**
  * See https://github.com/strongloop/loopback-datasource-juggler/issues/432
  */
 export interface PropertyForm {
@@ -70,7 +100,7 @@ export type RelationDefinitionMap = {
 export interface ModelDefinitionSyntax {
   name: string;
   properties?: {[name: string]: PropertyDefinition | PropertyType};
-  settings?: {[name: string]: any};
+  settings?: ModelSettings;
   relations?: RelationDefinitionMap;
   jsonSchema?: JsonSchemaWithExtensions;
   [attribute: string]: any;
@@ -82,7 +112,7 @@ export interface ModelDefinitionSyntax {
 export class ModelDefinition {
   readonly name: string;
   properties: {[name: string]: PropertyDefinition};
-  settings: {[name: string]: any};
+  settings: ModelSettings;
   relations: RelationDefinitionMap;
   // indexes: Map<string, any>;
   [attribute: string]: any; // Other attributes
