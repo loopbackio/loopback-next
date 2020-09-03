@@ -3,15 +3,15 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {expect} from '@loopback/testlab';
 import {Application} from '@loopback/core';
+import {expect} from '@loopback/testlab';
 import {
   BootBindings,
+  BootMixin,
   Bootstrapper,
   ControllerBooter,
-  BootMixin,
-  RepositoryBooter,
   DataSourceBooter,
+  RepositoryBooter,
   ServiceBooter,
 } from '../../';
 
@@ -29,29 +29,27 @@ describe('boot.component unit tests', () => {
 
   it('ControllerBooter is bound as a booter by default', async () => {
     const booterInst = await app.get(
-      `${BootBindings.BOOTER_PREFIX}.ControllerBooter`,
+      `${BootBindings.BOOTERS}.ControllerBooter`,
     );
     expect(booterInst).to.be.an.instanceOf(ControllerBooter);
   });
 
   it('RepositoryBooter is bound as a booter by default', async () => {
     const booterInst = await app.get(
-      `${BootBindings.BOOTER_PREFIX}.RepositoryBooter`,
+      `${BootBindings.BOOTERS}.RepositoryBooter`,
     );
     expect(booterInst).to.be.an.instanceOf(RepositoryBooter);
   });
 
   it('DataSourceBooter is bound as a booter by default', async () => {
     const booterInst = await app.get(
-      `${BootBindings.BOOTER_PREFIX}.DataSourceBooter`,
+      `${BootBindings.BOOTERS}.DataSourceBooter`,
     );
     expect(booterInst).to.be.an.instanceOf(DataSourceBooter);
   });
 
   it('ServiceBooter is bound as a booter by default', async () => {
-    const booterInst = await app.get(
-      `${BootBindings.BOOTER_PREFIX}.ServiceBooter`,
-    );
+    const booterInst = await app.get(`${BootBindings.BOOTERS}.ServiceBooter`);
     expect(booterInst).to.be.an.instanceOf(ServiceBooter);
   });
 

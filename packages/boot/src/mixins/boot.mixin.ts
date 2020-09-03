@@ -11,8 +11,6 @@ import {
   Constructor,
   Context,
   createBindingFromClass,
-} from '@loopback/core';
-import {
   Application,
   Component,
   CoreBindings,
@@ -235,7 +233,7 @@ export function bindBooter(
   booterCls: Constructor<Booter>,
 ): Binding {
   const binding = createBindingFromClass(booterCls, {
-    namespace: BootBindings.BOOTER_PREFIX,
+    namespace: BootBindings.BOOTERS,
     defaultScope: BindingScope.SINGLETON,
   }).tag(BootTags.BOOTER);
   ctx.add(binding);
