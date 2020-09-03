@@ -37,9 +37,20 @@ async function copyReadmes() {
   }));
 
   for (const {location} of packages) {
-    const src = path.join(REPO_ROOT, location, 'README.md');
-    const dest = path.join(DEST_ROOT, location, 'README.md');
-    await fs.copy(src, dest, {overwrite: true});
+    let files = await fs.readdir(path.join(REPO_ROOT, location));
+    files = files.filter(
+      // Copy README.md and image files
+      f =>
+        f === 'README.md' ||
+        ['.png', '.jpg', 'jpeg'].includes(path.extname(f).toLowerCase()),
+    );
+    for (const f of files) {
+      await fs.copy(
+        path.join(REPO_ROOT, location, f),
+        path.join(DEST_ROOT, location, f),
+        {overwrite: true},
+      );
+    }
   }
 }
 
