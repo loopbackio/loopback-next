@@ -39,20 +39,25 @@
     "url": "https://github.com/strongloop/loopback-next.git",
     "directory": "extensions/authentication-passport"
   },
-  "dependencies": {
+  "peerDependencies": {
     "@loopback/authentication": "^6.0.1",
     "@loopback/core": "^2.9.5",
-    "@loopback/rest": "^6.2.0",
+    "@loopback/rest": "^6.2.0"
+  },
+  "dependencies": {
     "@loopback/security": "^0.2.18",
     "passport": "^0.4.1",
     "tslib": "^2.0.1",
     "util-promisifyall": "^1.0.6"
   },
   "devDependencies": {
+    "@loopback/authentication": "^6.0.1",
     "@loopback/build": "^6.2.2",
+    "@loopback/core": "^2.9.5",
     "@loopback/eslint-config": "^9.0.2",
     "@loopback/mock-oauth2-provider": "^0.1.7",
     "@loopback/openapi-spec-builder": "^2.1.13",
+    "@loopback/rest": "^6.2.0",
     "@loopback/testlab": "^3.2.4",
     "@types/jsonwebtoken": "^8.5.0",
     "@types/lodash": "^4.14.161",
