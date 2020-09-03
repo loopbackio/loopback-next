@@ -38,14 +38,18 @@
     "url": "https://github.com/strongloop/loopback-next.git",
     "directory": "extensions/apiconnect"
   },
-  "dependencies": {
+  "peerDependencies": {
     "@loopback/core": "^2.9.5",
-    "@loopback/rest": "^6.2.0",
+    "@loopback/rest": "^6.2.0"
+  },
+  "dependencies": {
     "tslib": "^2.0.1"
   },
   "devDependencies": {
     "@loopback/build": "^6.2.2",
+    "@loopback/core": "^2.9.5",
     "@loopback/eslint-config": "^9.0.2",
+    "@loopback/rest": "^6.2.0",
     "@loopback/testlab": "^3.2.4",
     "@types/node": "^10.17.29"
   }

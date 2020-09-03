@@ -31,14 +31,17 @@
     "src",
     "!*/__tests__"
   ],
+  "peerDependencies": {
+    "@loopback/core": "^2.9.5"
+  },
   "dependencies": {
-    "@loopback/core": "^2.9.5",
     "@types/generic-pool": "^3.1.9",
     "generic-pool": "^3.7.1",
     "tslib": "^2.0.1"
   },
   "devDependencies": {
     "@loopback/build": "^6.2.2",
+    "@loopback/core": "^2.9.5",
     "@loopback/testlab": "^3.2.4",
     "@types/node": "^10.17.29",
     "typescript": "~4.0.2"

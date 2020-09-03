@@ -20,9 +20,11 @@
   "publishConfig": {
     "access": "public"
   },
-  "dependencies": {
+  "peerDependencies": {
     "@loopback/core": "^2.9.5",
-    "@loopback/rest": "^6.2.0",
+    "@loopback/rest": "^6.2.0"
+  },
+  "dependencies": {
     "fluent-logger": "^3.4.1",
     "morgan": "^1.10.0",
     "tslib": "^2.0.1",
@@ -31,7 +33,9 @@
   },
   "devDependencies": {
     "@loopback/build": "^6.2.2",
+    "@loopback/core": "^2.9.5",
     "@loopback/eslint-config": "^9.0.2",
+    "@loopback/rest": "^6.2.0",
     "@loopback/testlab": "^3.2.4",
     "@types/morgan": "^1.9.1",
     "@types/node": "^10.17.29"
