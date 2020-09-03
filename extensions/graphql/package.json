@@ -26,7 +26,7 @@
     "@loopback/http-server": "^2.2.0",
     "@loopback/metadata": "^2.2.6",
     "@types/graphql": "^14.5.0",
-    "apollo-server-express": "^2.16.1",
+    "apollo-server-express": "^2.17.0",
     "debug": "^4.1.1",
     "express": "^4.17.1",
     "graphql": "^15.3.0",
