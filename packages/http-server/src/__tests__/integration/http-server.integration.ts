@@ -102,6 +102,29 @@ describe('HttpServer (integration)', () => {
     await socketPromise;
   });
 
+  it('applies server properties', async () => {
+    server = new HttpServer(dummyRequestHandler, {
+      keepAliveTimeout: 101,
+      headersTimeout: 102,
+      maxConnections: 103,
+      maxHeadersCount: 104,
+      timeout: 105,
+    });
+    expect(server.server)
+      .to.have.property('keepAliveTimeout')
+      .which.is.equal(101);
+    expect(server.server)
+      .to.have.property('headersTimeout')
+      .which.is.equal(102);
+    expect(server.server)
+      .to.have.property('maxConnections')
+      .which.is.equal(103);
+    expect(server.server)
+      .to.have.property('maxHeadersCount')
+      .which.is.equal(104);
+    expect(server.server).to.have.property('timeout').which.is.equal(105);
+  });
+
   it('exports original port', async () => {
     server = new HttpServer(dummyRequestHandler, {port: 0});
     expect(server).to.have.property('port').which.is.equal(0);
