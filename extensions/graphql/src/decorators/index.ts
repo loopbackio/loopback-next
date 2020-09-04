@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 // Force require('reflect-metadata');
-import '@loopback/metadata';
+import '@loopback/core';
 import {
   Arg,
   Args,
