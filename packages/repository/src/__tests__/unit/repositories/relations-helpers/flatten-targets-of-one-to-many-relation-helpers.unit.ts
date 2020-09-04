@@ -33,5 +33,14 @@ describe('flattenTargetsOfOneToManyRelation', () => {
       );
       expect(result).to.deepEqual([[eraser], [pen, pencil]]);
     });
+    it('returns undefined if a source id yields no results', () => {
+      const pen = createProduct({name: 'pen', categoryId: 1});
+      const result = flattenTargetsOfOneToManyRelation(
+        [1, 2],
+        [pen],
+        'categoryId',
+      );
+      expect(result).to.deepEqual([[pen], undefined]);
+    });
   });
 });

@@ -19,9 +19,9 @@ import {
   Shipment,
   ShipmentRepository,
   User,
-  UserRepository,
   UserLink,
   UserLinkRepository,
+  UserRepository,
 } from './fixtures/models';
 import {
   createAddressRepo,
@@ -30,8 +30,8 @@ import {
   createCustomerRepo,
   createOrderRepo,
   createShipmentRepo,
-  createUserRepo,
   createUserLinkRepo,
+  createUserRepo,
 } from './fixtures/repositories';
 
 export function givenBoundCrudRepositories(
@@ -98,6 +98,10 @@ export function givenBoundCrudRepositories(
     'address',
     customerRepo.address.inclusionResolver,
   );
+  customerRepo.inclusionResolvers.set(
+    'cartItems',
+    customerRepo.cartItems.inclusionResolver,
+  );
 
   const orderRepoClass = createOrderRepo(repositoryClass);
   const orderRepo: OrderRepository = new orderRepoClass(
@@ -146,6 +150,8 @@ export function givenBoundCrudRepositories(
 
   const userLinkRepoClass = createUserLinkRepo(repositoryClass);
   const userLinkRepo: UserLinkRepository = new userLinkRepoClass(db);
+
+  userRepo.inclusionResolvers.set('users', userRepo.users.inclusionResolver);
 
   return {
     customerRepo,

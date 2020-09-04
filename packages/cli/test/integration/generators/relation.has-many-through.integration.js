@@ -204,7 +204,7 @@ describe('lb4 relation HasManyThrough', /** @this {Mocha.Suite} */ function () {
     }
   });
 
-  context('checks if the controller file created ', () => {
+  context('checks if the controller file is created ', () => {
     const promptArray = [
       {
         relationType: 'hasManyThrough',
@@ -249,6 +249,62 @@ describe('lb4 relation HasManyThrough', /** @this {Mocha.Suite} */ function () {
         assert.file(filePath);
         expectFileToMatchSnapshot(filePath);
       });
+    }
+  });
+
+  context('checks generated source class repository', () => {
+    const promptArray = [
+      {
+        relationType: 'hasManyThrough',
+        sourceModel: 'Doctor',
+        destinationModel: 'Patient',
+        throughModel: 'Appointment',
+      },
+      {
+        relationType: 'hasManyThrough',
+        sourceModel: 'Doctor',
+        destinationModel: 'Patient',
+        throughModel: 'Appointment',
+        registerInclusionResolver: false,
+      },
+    ];
+
+    const sourceClassNames = ['Doctor', 'Doctor'];
+
+    promptArray.forEach(function (multiItemPrompt, i) {
+      describe('answers ' + JSON.stringify(multiItemPrompt), () => {
+        suite(multiItemPrompt, i);
+      });
+    });
+
+    function suite(multiItemPrompt, i) {
+      before(async function runGeneratorWithAnswers() {
+        await sandbox.reset();
+        await testUtils
+          .executeGenerator(generator)
+          .inDir(sandbox.path, () =>
+            testUtils.givenLBProject(sandbox.path, {
+              additionalFiles: SANDBOX_FILES,
+            }),
+          )
+          .withPrompts(multiItemPrompt);
+      });
+
+      it(
+        'generates ' +
+          sourceClassNames[i] +
+          ' repository file with different inputs',
+        async () => {
+          const sourceFilePath = path.join(
+            sandbox.path,
+            REPOSITORY_APP_PATH,
+            repositoryFileName,
+          );
+
+          assert.file(sourceFilePath);
+          expectFileToMatchSnapshot(sourceFilePath);
+        },
+      );
     }
   });
 });

@@ -319,6 +319,12 @@ module.exports = class HasManyThroughRelationGenerator extends BaseRelationGener
   }
 
   _registerInclusionResolverForRelation(classConstructor, options) {
-    /* not implemented yet */
+    const relationPropertyName = this._getRepositoryRelationPropertyName();
+    if (options.registerInclusionResolver) {
+      const statement =
+        `this.registerInclusionResolver(` +
+        `'${relationPropertyName}', this.${relationPropertyName}.inclusionResolver);`;
+      classConstructor.insertStatements(2, statement);
+    }
   }
 };

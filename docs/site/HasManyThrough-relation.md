@@ -304,7 +304,7 @@ export class DoctorRepository extends DefaultCrudRepository<
     appointmentRepositoryGetter: Getter<AppointmentRepository>,
   ) {
     super(Doctor, db);
-    this.patient = this.createHasManyThroughRepositoryFactoryFor(
+    this.patients = this.createHasManyThroughRepositoryFactoryFor(
       'patients',
       patientRepositoryGetter,
       appointmentRepositoryGetter,
@@ -445,6 +445,121 @@ export class UserRepository extends DefaultCrudRepository<
 }
 ```
 
+## Querying related models
+
+In contrast with LB3, LB4 creates a different inclusion resolver for each
+relation type to query related models. Each **relation** has its own inclusion
+resolver `inclusionResolver`. And each **repository** has a built-in property
+`inclusionResolvers` as a registry for its inclusionResolvers.
+
+A `hasManyThrough` relation has an `inclusionResolver` function as a property.
+It fetches target models for the given list of source model instances via a
+through model.
+
+Using the models from above, a `Doctor` has many `Patient`s through
+`Appointments`.
+
+After setting up the relation in the repository class, the inclusion resolver
+allows users to retrieve all doctors along with their related patients through
+the following code at the repository level:
+
+```ts
+doctorRepository.find({include: [{relation: 'patients'}]});
+```
+
+or use APIs with controllers:
+
+```
+GET http://localhost:3000/doctors?filter[include][][relation]=patients
+```
+
+### Enable/disable the inclusion resolvers
+
+- Base repository classes have a public property `inclusionResolvers`, which
+  maintains a map containing inclusion resolvers for each relation.
+- The `inclusionResolver` of a certain relation is built when the source
+  repository class calls the `createHasManyThroughRepositoryFactoryFor` function
+  in the constructor with the relation name.
+- Call `registerInclusionResolver` to add the resolver of that relation to the
+  `inclusionResolvers` map. (As we realized in LB3, not all relations are
+  allowed to be traversed. Users can decide to which resolvers can be added.)
+
+The following code snippet shows how to register the inclusion resolver for the
+has many through relation 'patients':
+
+```ts
+export class DoctorRepository extends DefaultCrudRepository<
+  Doctor,
+  typeof Doctor.prototype.id,
+  DoctorRelations
+> {
+  public readonly patients: HasManyThroughRepositoryFactory<
+    Patient,
+    typeof Patient.prototype.pid,
+    Appointment,
+    typeof Doctor.prototype.id
+  >;
+  constructor(
+    @inject('datasources.db') protected db: juggler.DataSource,
+    @repository.getter('PatientRepository')
+    patientRepositoryGetter: Getter<PatientRepository>,
+    @repository.getter('AppointmentRepository')
+    appointmentRepositoryGetter: Getter<AppointmentRepository>,
+  ) {
+    super(Doctor, db);
+    // we already have this line to create a HasManyThroughRepository factory
+    this.patients = this.createHasManyThroughRepositoryFactoryFor(
+      'patients',
+      patientRepositoryGetter,
+      appointmentRepositoryGetter,
+    );
+
+    // add this line to register inclusion resolver
+    this.registerInclusionResolver('patients', this.patients.inclusionResolver);
+  }
+}
+```
+
+- We can simply include the relation in queries via `find()`, `findOne()`, and
+  `findById()` methods. For example, these queries return all doctors with their
+  patients:
+
+  if you process data at the repository level:
+
+  ```ts
+  doctorRepository.find({include: [{relation: 'patients'}]});
+  ```
+
+  this is the same as the url:
+
+  ```
+  GET http://localhost:3000/doctors?filter[include][][relation]=patients
+  ```
+
+  which returns:
+
+  ```ts
+  [
+    {
+      id: 1,
+      name: 'Doctor Mario',
+      patients: [{name: 'Luigi'}, {name: 'Peach'}],
+    },
+    {
+      id: 2,
+      name: 'Doctor Link',
+      patients: [{name: 'Zelda'}],
+    },
+  ];
+  ```
+
+{% include note.html content="The query syntax is a slightly different from LB3. We are also working on simplifying the query syntax. Check our GitHub issue for more information:
+[Simpler Syntax for Inclusion](https://github.com/strongloop/loopback-next/issues/3205)" %}
+
+- You can delete a relation from `inclusionResolvers` to disable the inclusion
+  for a certain relation. e.g
+  `doctorRepository.inclusionResolvers.delete('patients')`
+
 ## Using hasManyThrough constrained repository in a controller
 
 Once the hasManyThrough relation has been defined and configured, controller
@@ -496,7 +611,6 @@ issue](https://github.com/strongloop/loopback-next/issues/1179) to follow the di
 ## Features on the way
 
 As an experimental feature, there are some functionalities of `hasManyThrough`
-are not yet being implemented:
+that are not yet being implemented:
 
-- [inclusionResolver](https://github.com/strongloop/loopback-next/issues/5946)
 - customize `keyFrom` and/or `keyTo` for hasManyThrough

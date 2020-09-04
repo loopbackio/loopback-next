@@ -24,7 +24,7 @@ const debug = debugFactory('loopback:repository:relation-helpers');
  * @param targetRepository - The target repository where the related model instances are found
  * @param fkName - Name of the foreign key
  * @param fkValues - One value or array of values of the foreign key to be included
- * @param scope - Additional scope constraints (not currently supported)
+ * @param scope - Additional scope constraints
  * @param options - Options for the operations
  */
 export async function findByForeignKeys<

@@ -98,10 +98,6 @@ lb4 relation --sourceModel=<sourceModel>
 - `<targetKeyOnThrough>` - Property on the through model that references the
   primary key property of the target model.
 
-Notice that the inclusion resolver is not supported in HasManyThrough relation
-yet. See
-[GitHub issue #5946](https://github.com/strongloop/loopback-next/issues/5946).
-
 ### Interactive Prompts
 
 The tool will prompt you for:
