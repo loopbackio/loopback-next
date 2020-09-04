@@ -615,7 +615,6 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
 
   async promptRegisterInclusionResolver() {
     if (this.shouldExit()) return false;
-    if (this.artifactInfo.relationType === 'hasManyThrough') return;
     const props = await this.prompt([
       {
         type: 'confirm',

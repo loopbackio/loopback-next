@@ -2,12 +2,14 @@
 // Node module: @loopback/repository
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
+
 import {
   DataObject,
   Entity,
   EntityCrudRepository,
   Getter,
   HasManyDefinition,
+  InclusionResolver,
 } from '../..';
 import {
   createTargetConstraintFromThrough,
@@ -17,6 +19,7 @@ import {
   getTargetKeysFromThroughModels,
   resolveHasManyThroughMetadata,
 } from './has-many-through.helpers';
+import {createHasManyThroughInclusionResolver} from './has-many-through.inclusion.resolver';
 import {
   DefaultHasManyThroughRepository,
   HasManyThroughRepository,
@@ -35,9 +38,18 @@ export type HasManyThroughRepositoryFactory<
   TargetID,
   ThroughEntity extends Entity,
   SourceID
-> = (
-  fkValue: SourceID,
-) => HasManyThroughRepository<TargetEntity, TargetID, ThroughEntity>;
+> = {
+  (fkValue: SourceID): HasManyThroughRepository<
+    TargetEntity,
+    TargetID,
+    ThroughEntity
+  >;
+
+  /**
+   * Use `resolver` property to obtain an InclusionResolver for this relation.
+   */
+  inclusionResolver: InclusionResolver<Entity, TargetEntity>;
+};
 
 export function createHasManyThroughRepositoryFactory<
   Target extends Entity,
@@ -100,5 +112,10 @@ export function createHasManyThroughRepositoryFactory<
       getThroughConstraintFromTarget,
     );
   };
+  result.inclusionResolver = createHasManyThroughInclusionResolver(
+    meta,
+    throughRepositoryGetter,
+    targetRepositoryGetter,
+  );
   return result;
 }
