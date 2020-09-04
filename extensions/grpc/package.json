@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "engines": {
-    "node": ">=10"
+    "node": "^10.16 || 12 || 14"
   },
   "bin": {
     "lb-grpc": "node dist/grpc.code-gen"
@@ -32,21 +32,23 @@
     "!*/__tests__"
   ],
   "dependencies": {
-    "@grpc/grpc-js": "^1.1.5",
+    "@grpc/grpc-js": "^1.1.6",
     "@grpc/proto-loader": "^0.5.5",
-    "@loopback/boot": "^2.5.1",
-    "@loopback/core": "^2.9.5",
-    "@loopback/repository": "^2.11.2",
-    "@loopback/rest": "^6.2.0",
     "debug": "^4.1.1",
     "glob": "^7.1.6",
     "minimist": "^1.2.5",
     "protobufjs": "^6.10.1"
   },
+  "peerDependencies": {
+    "@loopback/boot": "^3.0.2",
+    "@loopback/core": "^2.11.0"
+  },
   "devDependencies": {
-    "@loopback/build": "^6.2.2",
-    "@loopback/eslint-config": "^9.0.2",
-    "@loopback/testlab": "^3.2.4",
+    "@loopback/boot": "^3.0.2",
+    "@loopback/build": "^6.2.5",
+    "@loopback/core": "^2.11.0",
+    "@loopback/eslint-config": "^10.0.1",
+    "@loopback/testlab": "^3.2.7",
     "@types/debug": "^4.1.5",
     "@types/glob": "^7.1.2",
     "@types/minimist": "^1.2.0"
