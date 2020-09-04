@@ -27,7 +27,7 @@
     "debug": "^4.1.1",
     "express": "^4.17.1",
     "graphql": "^15.3.0",
-    "type-graphql": "^1.0.0-rc.3"
+    "type-graphql": "^1.0.0"
   },
   "peerDependencies": {
     "@loopback/boot": "^2.5.1",
