@@ -208,6 +208,10 @@ children:
       url: Serving-static-files.html
       output: 'web, pdf'
 
+    - title: 'Accessing HTTP Request and Response Objects'
+      url: Accessing-http-request-response.html
+      output: 'web, pdf'
+
     - title: 'Uploading and Downloading Files'
       url: File-upload-download.html
       output: 'web, pdf'
