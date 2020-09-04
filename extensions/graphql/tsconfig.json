@@ -20,9 +20,6 @@
       "path": "../../packages/http-server/tsconfig.json"
     },
     {
-      "path": "../../packages/metadata/tsconfig.json"
-    },
-    {
       "path": "../../packages/repository/tsconfig.json"
     },
     {
