@@ -11,9 +11,6 @@
   ],
   "references": [
     {
-      "path": "../core/tsconfig.json"
-    },
-    {
       "path": "../testlab/tsconfig.json"
     }
   ]
