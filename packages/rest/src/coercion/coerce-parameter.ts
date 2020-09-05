@@ -13,10 +13,10 @@ import debugModule from 'debug';
 import {
   RestHttpErrors,
   validateValueAgainstSchema,
-  ValidationOptions,
   ValueValidationOptions,
 } from '../';
 import {parseJson} from '../parse-json';
+import {ValidationOptions} from '../types';
 import {DEFAULT_AJV_VALIDATION_OPTIONS} from '../validation/ajv-factory.provider';
 import {
   DateCoercionOptions,
@@ -61,31 +61,51 @@ export async function coerceParameter(
   validator.validateParamBeforeCoercion(data);
   if (data === undefined) return data;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let result: any = data;
+
   switch (OAIType) {
     case 'byte':
-      return coerceBuffer(data, spec);
+      result = coerceBuffer(data, spec);
+      break;
     case 'date':
-      return coerceDatetime(data, spec, {dateOnly: true});
+      result = coerceDatetime(data, spec, {dateOnly: true});
+      break;
     case 'date-time':
-      return coerceDatetime(data, spec);
+      result = coerceDatetime(data, spec);
+      break;
     case 'float':
     case 'double':
     case 'number':
-      return coerceNumber(data, spec);
+      result = coerceNumber(data, spec);
+      break;
     case 'long':
-      return coerceInteger(data, spec, {isLong: true});
+      result = coerceInteger(data, spec, {isLong: true});
+      break;
     case 'integer':
-      return coerceInteger(data, spec);
+      result = coerceInteger(data, spec);
+      break;
     case 'boolean':
-      return coerceBoolean(data, spec);
+      result = coerceBoolean(data, spec);
+      break;
     case 'object':
-      return coerceObject(data, spec, options);
+      result = await coerceObject(data, spec);
+      break;
     case 'string':
     case 'password':
-      return coerceString(data, spec);
-    default:
-      return data;
+      result = coerceString(data, spec);
+      break;
   }
+
+  if (result != null) {
+    // For date/date-time/byte, we need to pass the raw string value to AJV
+    if (OAIType === 'date' || OAIType === 'date-time' || OAIType === 'byte') {
+      await validateParam(spec, data, options);
+      return result;
+    }
+    result = await validateParam(spec, result, options);
+  }
+  return result;
 }
 
 function coerceString(data: string | object, spec: ParameterObject) {
@@ -165,11 +185,7 @@ function coerceBoolean(data: string | object, spec: ParameterObject) {
   throw RestHttpErrors.invalidData(data, spec.name);
 }
 
-async function coerceObject(
-  input: string | object,
-  spec: ParameterObject,
-  options: ValidationOptions = DEFAULT_AJV_VALIDATION_OPTIONS,
-) {
+async function coerceObject(input: string | object, spec: ParameterObject) {
   const data = parseJsonIfNeeded(input, spec);
 
   if (data == null) {
@@ -180,17 +196,25 @@ async function coerceObject(
   if (typeof data !== 'object' || Array.isArray(data))
     throw RestHttpErrors.invalidData(input, spec.name);
 
+  return data;
+}
+
+function validateParam(
+  spec: ParameterObject,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data: any,
+  options: ValidationOptions = DEFAULT_AJV_VALIDATION_OPTIONS,
+) {
   const schema = extractSchemaFromSpec(spec);
   if (schema) {
     // Apply coercion based on properties defined by spec.schema
-    await validateValueAgainstSchema(
+    return validateValueAgainstSchema(
       data,
       schema,
       {},
       {...options, coerceTypes: true, source: 'parameter', name: spec.name},
     );
   }
-
   return data;
 }
 

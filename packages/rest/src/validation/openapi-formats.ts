@@ -27,7 +27,7 @@ export const int64Format: AjvFormat = {
   type: 'number',
   validate: (value: number) => {
     const max = Number.MAX_SAFE_INTEGER; // 9007199254740991
-    const min = Number.MIN_SAFE_INTEGER; // 9007199254740991
+    const min = Number.MIN_SAFE_INTEGER; // -9007199254740991
     return Number.isInteger(value) && value >= min && value <= max;
   },
   async: false,
