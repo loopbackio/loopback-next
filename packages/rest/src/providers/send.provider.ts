@@ -3,11 +3,11 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {bind, inject, Provider} from '@loopback/core';
+import {bind, BindingScope, Provider} from '@loopback/core';
 import {asMiddleware, Middleware} from '@loopback/express';
 import {RestBindings, RestTags} from '../keys';
 import {RestMiddlewareGroups} from '../sequence';
-import {Reject, Send} from '../types';
+import {Send} from '../types';
 import {writeResultToResponse} from '../writer';
 /**
  * Provides the function that populates the response object with
@@ -16,6 +16,7 @@ import {writeResultToResponse} from '../writer';
  * @returns The handler function that will populate the
  * response with operation results.
  */
+@bind({scope: BindingScope.SINGLETON})
 export class SendProvider implements Provider<Send> {
   value() {
     return writeResultToResponse;
@@ -31,17 +32,13 @@ export class SendProvider implements Provider<Send> {
     ],
     chain: RestTags.REST_MIDDLEWARE_CHAIN,
   }),
+  {scope: BindingScope.SINGLETON},
 )
 export class SendResponseMiddlewareProvider implements Provider<Middleware> {
-  constructor(
-    @inject(RestBindings.SequenceActions.SEND)
-    protected send: Send,
-    @inject(RestBindings.SequenceActions.REJECT)
-    protected reject: Reject,
-  ) {}
-
   value(): Middleware {
     return async (ctx, next) => {
+      const send = await ctx.get(RestBindings.SequenceActions.SEND);
+      const reject = await ctx.get(RestBindings.SequenceActions.REJECT);
       try {
         /**
          * Invoke downstream middleware to produce the result
@@ -50,12 +47,12 @@ export class SendResponseMiddlewareProvider implements Provider<Middleware> {
         /**
          * Write the result to HTTP response
          */
-        this.send(ctx.response, result);
+        send(ctx.response, result);
       } catch (err) {
         /**
          * Write the error to HTTP response
          */
-        this.reject(ctx, err);
+        reject(ctx, err);
       }
     };
   }

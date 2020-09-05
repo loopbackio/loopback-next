@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {bind, inject, Provider} from '@loopback/core';
+import {bind, BindingScope, inject, Provider} from '@loopback/core';
 import {asMiddleware, Middleware} from '@loopback/express';
 import debugFactory from 'debug';
 import {RequestBodyParser} from '../body-parsers';
@@ -49,18 +49,32 @@ export class ParseParamsProvider implements Provider<ParseParams> {
     upstreamGroups: RestMiddlewareGroups.FIND_ROUTE,
     chain: RestTags.REST_MIDDLEWARE_CHAIN,
   }),
+  {scope: BindingScope.SINGLETON},
 )
 export class ParseParamsMiddlewareProvider implements Provider<Middleware> {
-  constructor(
-    @inject(RestBindings.SequenceActions.PARSE_PARAMS)
-    protected parseParams: ParseParams,
-  ) {}
-
   value(): Middleware {
     return async (ctx, next) => {
+      const requestBodyParser = await ctx.get(RestBindings.REQUEST_BODY_PARSER);
+      const validationOptions: ValidationOptions =
+        (await ctx.get(
+          RestBindings.REQUEST_BODY_PARSER_OPTIONS.deepProperty('validation'),
+          {optional: true},
+        )) ?? DEFAULT_AJV_VALIDATION_OPTIONS;
+      const ajvFactory = await ctx.get(RestBindings.AJV_FACTORY, {
+        optional: true,
+      });
+
       const route: ResolvedRoute = await ctx.get(RestBindings.Operation.ROUTE);
       debug('Parsing parameters for %s %s', route.verb, route.path);
-      const params = await this.parseParams(ctx.request, route);
+      const params = await parseOperationArgs(
+        ctx.request,
+        route,
+        requestBodyParser,
+        {
+          ajvFactory: ajvFactory,
+          ...validationOptions,
+        },
+      );
       ctx.bind(RestBindings.Operation.PARAMS).to(params);
       debug('Parameters', params);
       return next();

@@ -3,11 +3,11 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {LogError, Reject, HandlerContext} from '../types';
-import {inject, Provider} from '@loopback/core';
+import {bind, BindingScope, inject, Provider} from '@loopback/core';
 import {HttpError} from 'http-errors';
+import {ErrorWriterOptions, writeErrorToResponse} from 'strong-error-handler';
 import {RestBindings} from '../keys';
-import {writeErrorToResponse, ErrorWriterOptions} from 'strong-error-handler';
+import {HandlerContext, LogError, Reject} from '../types';
 
 // TODO(bajtos) Make this mapping configurable at RestServer level,
 // allow apps and extensions to contribute additional mappings.
@@ -15,6 +15,7 @@ const codeToStatusCodeMap: {[key: string]: number} = {
   ENTITY_NOT_FOUND: 404,
 };
 
+@bind({scope: BindingScope.SINGLETON})
 export class RejectProvider implements Provider<Reject> {
   constructor(
     @inject(RestBindings.SequenceActions.LOG_ERROR)
