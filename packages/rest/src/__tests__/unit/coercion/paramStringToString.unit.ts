@@ -18,6 +18,12 @@ const REQUIRED_STRING_PARAM = {
   required: true,
 };
 
+const ENUM_STRING_PARAM: ParameterObject = {
+  in: 'query',
+  name: 'aparameter',
+  schema: {type: 'string', enum: ['A', 'B']},
+};
+
 describe('coerce param from string to string - required', () => {
   context('valid values', () => {
     test(REQUIRED_STRING_PARAM, 'text', 'text');
@@ -30,6 +36,29 @@ describe('coerce param from string to string - required', () => {
       '',
       RestHttpErrors.missingRequired(REQUIRED_STRING_PARAM.name),
     );
+  });
+});
+
+describe('coerce param from string to string - enum', () => {
+  context('valid values', () => {
+    test(ENUM_STRING_PARAM, 'A', 'A');
+  });
+
+  context('invalid values trigger ERROR_BAD_REQUEST', () => {
+    const expectedError = RestHttpErrors.invalidData(
+      'C',
+      ENUM_STRING_PARAM.name,
+    );
+    expectedError.details = [
+      {
+        path: '',
+        code: 'enum',
+        message: 'should be equal to one of the allowed values',
+        info: {allowedValues: ['A', 'B']},
+      },
+    ];
+
+    test(ENUM_STRING_PARAM, 'C', expectedError);
   });
 });
 
