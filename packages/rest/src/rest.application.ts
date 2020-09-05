@@ -368,7 +368,7 @@ export class RestApplication extends Application implements HttpServerLike {
    * @returns Binding for the api spec
    */
   api(spec: OpenApiSpec): Binding {
-    return this.bind(RestBindings.API_SPEC).to(spec);
+    return this.restServer.bind(RestBindings.API_SPEC).to(spec);
   }
 
   /**

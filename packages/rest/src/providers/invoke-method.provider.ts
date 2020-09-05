@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {bind, Context, inject, Provider} from '@loopback/core';
+import {bind, BindingScope, Context, inject, Provider} from '@loopback/core';
 import {asMiddleware, Middleware} from '@loopback/express';
 import debugFactory from 'debug';
 import {RestBindings, RestTags} from '../keys';
@@ -31,13 +31,9 @@ export class InvokeMethodProvider implements Provider<InvokeMethod> {
     upstreamGroups: RestMiddlewareGroups.PARSE_PARAMS,
     chain: RestTags.REST_MIDDLEWARE_CHAIN,
   }),
+  {scope: BindingScope.SINGLETON},
 )
 export class InvokeMethodMiddlewareProvider implements Provider<Middleware> {
-  constructor(
-    @inject(RestBindings.SequenceActions.INVOKE_METHOD)
-    protected invokeMethod: InvokeMethod,
-  ) {}
-
   value(): Middleware {
     return async (ctx, next) => {
       const route: RouteEntry = await ctx.get(RestBindings.Operation.ROUTE);
@@ -48,7 +44,7 @@ export class InvokeMethodMiddlewareProvider implements Provider<Middleware> {
         debug('Invoking method %s with', route.describe(), params);
       }
       try {
-        const retVal = await this.invokeMethod(route, params);
+        const retVal = await route.invokeHandler(ctx, params);
         ctx.bind(RestBindings.Operation.RETURN_VALUE).to(retVal);
         if (debug.enabled) {
           debug('Return value from %s', route.describe(), retVal);
