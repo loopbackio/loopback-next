@@ -4,12 +4,12 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
+  Application,
   BindingScope,
   Constructor,
   Context,
-  inject,
-  Application,
   CoreBindings,
+  inject,
 } from '@loopback/core';
 import {anOpenApiSpec, anOperationSpec} from '@loopback/openapi-spec-builder';
 import {
@@ -310,6 +310,7 @@ describe('Routing', () => {
 
     const spec = anOpenApiSpec()
       .withOperationReturningString('get', '/status', 'getStatus')
+      .withOperationReturningString('get', '/header', 'getHeader')
       .build();
 
     @api(spec)
@@ -323,10 +324,20 @@ describe('Routing', () => {
         this.response.statusCode = 202; // 202 Accepted
         return this.request.method as string;
       }
+
+      async getHeader(): Promise<string> {
+        this.response.status(202);
+        this.response.set('x-custom-res-header', 'xyz');
+        return this.request.method as string;
+      }
     }
     givenControllerInApp(app, StatusController);
 
-    return whenIMakeRequestTo(server).get('/status').expect(202, 'GET');
+    await whenIMakeRequestTo(server).get('/status').expect(202, 'GET');
+    await whenIMakeRequestTo(server)
+      .get('/header')
+      .expect(202)
+      .expect('x-custom-res-header', 'xyz');
   });
 
   it('binds controller constructor object and operation', async () => {
