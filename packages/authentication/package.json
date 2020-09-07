@@ -23,9 +23,11 @@
   "publishConfig": {
     "access": "public"
   },
-  "dependencies": {
+  "peerDependencies": {
     "@loopback/core": "^2.9.5",
-    "@loopback/rest": "^6.2.0",
+    "@loopback/rest": "^6.2.0"
+  },
+  "dependencies": {
     "@loopback/security": "^0.2.18",
     "@types/express": "^4.17.8",
     "@types/lodash": "^4.14.161",
@@ -34,8 +36,10 @@
   },
   "devDependencies": {
     "@loopback/build": "^6.2.2",
+    "@loopback/core": "^2.9.5",
     "@loopback/eslint-config": "^9.0.2",
     "@loopback/openapi-spec-builder": "^2.1.13",
+    "@loopback/rest": "^6.2.0",
     "@loopback/testlab": "^3.2.4",
     "@types/node": "^10.17.29",
     "jsonwebtoken": "^8.5.1"
