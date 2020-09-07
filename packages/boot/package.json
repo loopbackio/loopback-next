@@ -23,8 +23,10 @@
   "publishConfig": {
     "access": "public"
   },
+  "peerDependencies": {
+    "@loopback/core": "^2.9.5"
+  },
   "dependencies": {
-    "@loopback/core": "^2.9.5",
     "@loopback/model-api-builder": "^2.1.13",
     "@loopback/repository": "^2.11.2",
     "@loopback/service-proxy": "^2.3.8",
@@ -36,6 +38,7 @@
   },
   "devDependencies": {
     "@loopback/build": "^6.2.2",
+    "@loopback/core": "^2.9.5",
     "@loopback/eslint-config": "^9.0.2",
     "@loopback/rest": "^6.2.0",
     "@loopback/rest-crud": "^0.8.13",

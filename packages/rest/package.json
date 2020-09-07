@@ -23,8 +23,10 @@
   "publishConfig": {
     "access": "public"
   },
+  "peerDependencies": {
+    "@loopback/core": "^2.9.5"
+  },
   "dependencies": {
-    "@loopback/core": "^2.9.5",
     "@loopback/express": "^1.4.1",
     "@loopback/http-server": "^2.2.0",
     "@loopback/openapi-v3": "^3.4.9",
@@ -58,6 +60,7 @@
   },
   "devDependencies": {
     "@loopback/build": "^6.2.2",
+    "@loopback/core": "^2.9.5",
     "@loopback/eslint-config": "^9.0.2",
     "@loopback/openapi-spec-builder": "^2.1.13",
     "@loopback/repository": "^2.11.2",

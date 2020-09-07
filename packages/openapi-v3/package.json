@@ -7,8 +7,10 @@
   "engines": {
     "node": ">=10.16"
   },
+  "peerDependencies": {
+    "@loopback/core": "^2.9.5"
+  },
   "dependencies": {
-    "@loopback/core": "^2.9.5",
     "@loopback/repository-json-schema": "^2.4.10",
     "debug": "^4.1.1",
     "http-status": "^1.4.2",
@@ -19,6 +21,7 @@
   },
   "devDependencies": {
     "@loopback/build": "^6.2.2",
+    "@loopback/core": "^2.9.5",
     "@loopback/eslint-config": "^9.0.2",
     "@loopback/openapi-spec-builder": "^2.1.13",
     "@loopback/repository": "^2.11.2",
