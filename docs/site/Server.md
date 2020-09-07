@@ -76,53 +76,16 @@ const app = new RestApplication({
 
 ### Configure the API Explorer
 
-LoopBack allows externally hosted API Explorer UI to render the OpenAPI
-endpoints for a REST server. Such URLs can be specified with `rest.apiExplorer`:
-
-- url: URL for the hosted API Explorer UI, default to
-  `https://explorer.loopback.io`.
-- httpUrl: URL for the API explorer served over plain http to deal with mixed
-  content security imposed by browsers as the spec is exposed over `http` by
-  default. See https://github.com/strongloop/loopback-next/issues/1603. Default
-  to the value of `url`.
-
-```ts
-const app = new RestApplication({
-  rest: {
-    apiExplorer: {
-      url: 'https://petstore.swagger.io',
-      httpUrl: 'http://petstore.swagger.io',
-    },
-  },
-});
-```
-
-#### Disable redirect to API Explorer
-
-To disable redirect to the externally hosted API Explorer, set the config option
-`rest.apiExplorer.disabled` to `true`.
-
-```ts
-const app = new RestApplication({
-  rest: {
-    apiExplorer: {
-      disabled: true,
-    },
-  },
-});
-```
-
-{% include note.html content="To completely disable API Explorer, we also need
-to [disable the self-hosted REST API Explorer extension](./Self-hosted-REST-API-Explorer.md#disable-self-hosted-api-explorer)." %}
-
-### Use a self-hosted API Explorer
-
-Hosting the API Explorer at an external URL has a few downsides, for example a
-working internet connection is required to explore the API. As a recommended
-alternative, LoopBack comes with an extension that provides a self-hosted
-Explorer UI. Please refer to
+Starting from `@loopback/rest` version `7.0.0`, LoopBack no longer supports
+automatic redirect to an externally hosted API Explorer UI. Instead, we provide
+an extension that implements a self-hosted API Explorer UI. Please refer to
 [Self-hosted REST API Explorer](./Self-hosted-REST-API-Explorer.md) for more
 details.
+
+By default, applications scaffolded using `lb4 app` are coming with a
+pre-configured API Explorer. See
+[disable the self-hosted REST API Explorer extension](./Self-hosted-REST-API-Explorer.md#disable-self-hosted-api-explorer)
+for instructions on how to disable this pre-configured API Explorer.
 
 ### Customize CORS
 
@@ -247,7 +210,7 @@ for more details.
 | cors                | CorsOptions               | Specify the CORS options.                                                                                                                                                                                                                                                                                                           |
 | sequence            | SequenceHandler           | Use a custom SequenceHandler to change the behavior of the RestServer for the request-response lifecycle.                                                                                                                                                                                                                           |
 | openApiSpec         | OpenApiSpecOptions        | Customize how OpenAPI spec is served                                                                                                                                                                                                                                                                                                |
-| apiExplorer         | ApiExplorerOptions        | Customize how API explorer is served                                                                                                                                                                                                                                                                                                |
+| apiExplorer         | ApiExplorerOptions        | **(DEPRECATED)** Customize how API explorer is served                                                                                                                                                                                                                                                                               |
 | requestBodyParser   | RequestBodyParserOptions  | Customize how request body is parsed                                                                                                                                                                                                                                                                                                |
 | router              | RouterOptions             | Customize how trailing slashes are used for routing                                                                                                                                                                                                                                                                                 |
 | listenOnStart       | boolean (default to true) | Control if the server should listen on http/https when it's started                                                                                                                                                                                                                                                                 |

@@ -182,16 +182,19 @@ dependency is not needed, `toDynamicValue` can be used instead.
 #### An alias
 
 An alias is the key with optional path to resolve the value from another
-binding. For example, if we want to get options from RestServer for the API
-explorer, we can configure the `apiExplorer.options` to be resolved from
-`servers.RestServer.options#apiExplorer`.
+binding. For example, if we want to get options from RestServer for the OpenAPI
+Spec endpoints, we can configure the `openApiSpec.options` to be resolved from
+`servers.RestServer.options#openApiSpec`.
 
 ```ts
-ctx.bind('servers.RestServer.options').to({apiExplorer: {path: '/explorer'}});
 ctx
-  .bind('apiExplorer.options')
-  .toAlias('servers.RestServer.options#apiExplorer');
-const apiExplorerOptions = await ctx.get('apiExplorer.options'); // => {path: '/explorer'}
+  .bind('servers.RestServer.options')
+  .to({openApiSpec: {setServersFromRequest: true}});
+ctx
+  .bind('openApiSpec.options')
+  .toAlias('servers.RestServer.options#openApiSpec');
+const openApiSpecOptions = await ctx.get('openApiSpec.options');
+// => {setServersFromRequest: true}
 ```
 
 ### Configure the scope
