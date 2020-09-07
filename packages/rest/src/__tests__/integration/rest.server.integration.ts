@@ -13,7 +13,6 @@ import {
 import {OpenAPIObject} from '@loopback/openapi-v3';
 import {
   createClientForHandler,
-  createRestAppClient,
   expect,
   givenHttpServerConfig,
   httpsGetAsync,
@@ -34,13 +33,13 @@ import {
   Request,
   requestBody,
   RequestContext,
-  RestApplication,
   RestBindings,
   RestComponent,
   RestServer,
   RestServerConfig,
 } from '../..';
 import {RestTags} from '../../keys';
+import {ApiExplorerOptions} from '../../rest.server';
 const readFileAsync = util.promisify(fs.readFile);
 
 const FIXTURES = path.resolve(__dirname, '../../../fixtures');
@@ -608,7 +607,7 @@ paths:
     ).to.throw(/already configured/);
   });
 
-  it('exposes "GET /explorer" endpoint', async () => {
+  it('no longer exposes "GET /explorer" endpoint', async () => {
     const app = new Application();
     app.component(RestComponent);
     const server = await app.getServer(RestServer);
@@ -622,20 +621,9 @@ paths:
     };
     server.route('get', '/greet', greetSpec, function greet() {});
 
-    const response = await createClientForHandler(server.requestHandler).get(
-      '/explorer',
-    );
-    await server.get(RestBindings.PORT);
-    const expectedUrl = new RegExp(
-      [
-        'http://explorer.loopback.io',
-        '\\?url=http://\\d+.\\d+.\\d+.\\d+:\\d+/openapi.json',
-      ].join(''),
-    );
-    expect(response.status).to.equal(302);
-    expect(response.get('Location')).match(expectedUrl);
-    expect(response.get('Access-Control-Allow-Origin')).to.equal('*');
-    expect(response.get('Access-Control-Allow-Credentials')).to.equal('true');
+    await createClientForHandler(server.requestHandler)
+      .get('/explorer')
+      .expect(404);
   });
 
   it('can be configured to disable "GET /explorer"', async () => {
@@ -650,125 +638,17 @@ paths:
     await request.get('/explorer').expect(404);
   });
 
-  it('honors "x-forwarded-*" headers', async () => {
-    const app = new Application();
-    app.component(RestComponent);
-    const server = await app.getServer(RestServer);
-
-    const response = await createClientForHandler(server.requestHandler)
-      .get('/explorer')
-      .set('x-forwarded-proto', 'https')
-      .set('x-forwarded-host', 'example.com')
-      .set('x-forwarded-port', '8080');
-    await server.get(RestBindings.PORT);
-    const expectedUrl = new RegExp(
-      [
-        'https://explorer.loopback.io',
-        '\\?url=https://example.com:8080/openapi.json',
-      ].join(''),
-    );
-    expect(response.get('Location')).match(expectedUrl);
-  });
-
-  it('honors "x-forwarded-host" headers', async () => {
-    const app = new Application();
-    app.component(RestComponent);
-    const server = await app.getServer(RestServer);
-
-    const response = await createClientForHandler(server.requestHandler)
-      .get('/explorer')
-      .set('x-forwarded-proto', 'http')
-      .set('x-forwarded-host', 'example.com:8080,my.example.com:9080');
-    await server.get(RestBindings.PORT);
-    const expectedUrl = new RegExp(
-      [
-        'http://explorer.loopback.io',
-        '\\?url=http://example.com:8080/openapi.json',
-      ].join(''),
-    );
-    expect(response.get('Location')).match(expectedUrl);
-  });
-
-  it('skips port if it is the default for http or https', async () => {
-    const app = new Application();
-    app.component(RestComponent);
-    const server = await app.getServer(RestServer);
-
-    const response = await createClientForHandler(server.requestHandler)
-      .get('/explorer')
-      .set('x-forwarded-proto', 'https')
-      .set('x-forwarded-host', 'example.com')
-      .set('x-forwarded-port', '443');
-    await server.get(RestBindings.PORT);
-    const expectedUrl = new RegExp(
-      [
-        'https://explorer.loopback.io',
-        '\\?url=https://example.com/openapi.json',
-      ].join(''),
-    );
-    expect(response.get('Location')).match(expectedUrl);
-  });
-
-  it('handles requests with missing Host header', async () => {
-    const app = new RestApplication({
-      rest: {port: 0, host: '127.0.0.1'},
-    });
-    await app.start();
-    const port = await app.restServer.get(RestBindings.PORT);
-
-    const response = await createRestAppClient(app)
-      .get('/explorer')
-      .set('host', '');
-    await app.stop();
-    const expectedUrl = new RegExp(`\\?url=http://127.0.0.1:${port}`);
-    expect(response.get('Location')).match(expectedUrl);
-  });
-
-  it('exposes "GET /explorer" endpoint with apiExplorer.url', async () => {
-    const server = await givenAServer({
-      rest: {
-        apiExplorer: {
-          url: 'https://petstore.swagger.io',
+  it('throws an error when apiExplorer config is missing "disable" flag', () => {
+    return expect(
+      givenAServer({
+        rest: {
+          ...givenHttpServerConfig(),
+          apiExplorer: {} as ApiExplorerOptions,
         },
-      },
-    });
-
-    const response = await createClientForHandler(server.requestHandler).get(
-      '/explorer',
+      }),
+    ).to.be.rejectedWith(
+      /Externally hosted API Explorer is no longer supported/,
     );
-    await server.get(RestBindings.PORT);
-    const expectedUrl = new RegExp(
-      [
-        'https://petstore.swagger.io',
-        '\\?url=http://\\d+.\\d+.\\d+.\\d+:\\d+/openapi.json',
-      ].join(''),
-    );
-    expect(response.status).to.equal(302);
-    expect(response.get('Location')).match(expectedUrl);
-  });
-
-  it('exposes "GET /explorer" endpoint with apiExplorer.urlForHttp', async () => {
-    const server = await givenAServer({
-      rest: {
-        apiExplorer: {
-          url: 'https://petstore.swagger.io',
-          httpUrl: 'http://petstore.swagger.io',
-        },
-      },
-    });
-
-    const response = await createClientForHandler(server.requestHandler).get(
-      '/explorer',
-    );
-    await server.get(RestBindings.PORT);
-    const expectedUrl = new RegExp(
-      [
-        'http://petstore.swagger.io',
-        '\\?url=http://\\d+.\\d+.\\d+.\\d+:\\d+/openapi.json',
-      ].join(''),
-    );
-    expect(response.status).to.equal(302);
-    expect(response.get('Location')).match(expectedUrl);
   });
 
   it('supports HTTPS protocol with key and certificate files', async () => {
@@ -822,34 +702,6 @@ paths:
     const serverUrl = server.getSync(RestBindings.URL);
     const res = await httpsGetAsync(serverUrl);
     expect(res.statusCode).to.equal(200);
-    await server.stop();
-  });
-
-  // https://github.com/strongloop/loopback-next/issues/1623
-  skipOnTravis(it, 'handles IPv6 address for API Explorer UI', async () => {
-    const keyPath = path.join(FIXTURES, 'key.pem');
-    const certPath = path.join(FIXTURES, 'cert.pem');
-    const server = await givenAServer({
-      rest: {
-        port: 0,
-        host: '::1',
-        protocol: 'https',
-        key: fs.readFileSync(keyPath),
-        cert: fs.readFileSync(certPath),
-      },
-    });
-    server.handler(dummyRequestHandler);
-    await server.start();
-    const serverUrl = server.getSync(RestBindings.URL);
-
-    // The `Location` header should be something like
-    // https://explorer.loopback.io?url=https://[::1]:58470/openapi.json
-    const res = await httpsGetAsync(serverUrl + '/explorer');
-    const location = res.headers['location'];
-    expect(location).to.match(/\[\:\:1\]\:\d+\/openapi.json/);
-    expect(location).to.equal(
-      `https://explorer.loopback.io?url=${serverUrl}/openapi.json`,
-    );
     await server.stop();
   });
 

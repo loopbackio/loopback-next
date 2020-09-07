@@ -240,6 +240,15 @@ export class RestServer
 
     this.bind(RestBindings.BASE_PATH).toDynamicValue(() => this._basePath);
     this.bind(RestBindings.HANDLER).toDynamicValue(() => this.httpHandler);
+
+    if (this.config.apiExplorer && !this.config.apiExplorer.disabled) {
+      throw new Error(
+        'Externally hosted API Explorer is no longer supported. ' +
+          'Please remove "apiExplorer" section from your REST configuration ' +
+          'and configure a self-hosted API Explorer as explained here: ' +
+          'https://loopback.io/doc/en/lb4/Self-hosted-rest-api-explorer.html',
+      );
+    }
   }
 
   protected _setupOASEnhancerIfNeeded() {
@@ -325,8 +334,7 @@ export class RestServer
   }
 
   /**
-   * Mount /openapi.json, /openapi.yaml for specs and /swagger-ui, /explorer
-   * to redirect to externally hosted API explorer
+   * Mount /openapi.json, /openapi.yaml for specs
    */
   protected _setupOpenApiSpecEndpoints() {
     assertExists(this._expressApp, 'this._expressApp');
@@ -337,10 +345,6 @@ export class RestServer
     for (const p in mapping) {
       this.addOpenApiSpecEndpoint(p, mapping[p], router);
     }
-    const explorerPaths = ['/swagger-ui', '/explorer'];
-    router.get(explorerPaths, (req, res, next) =>
-      this._redirectToSwaggerUI(req, res, next),
-    );
     this.expressMiddleware('middleware.apiSpec.defaults', router, {
       group: RestMiddlewareGroups.API_SPEC,
       upstreamGroups: RestMiddlewareGroups.CORS,
@@ -554,32 +558,6 @@ export class RestServer
       response.setHeader('content-type', 'text/yaml; charset=utf-8');
       response.end(yaml, 'utf-8');
     }
-  }
-  private async _redirectToSwaggerUI(
-    request: Request,
-    response: Response,
-    next: express.NextFunction,
-  ) {
-    const config = this.config.apiExplorer;
-
-    if (config.disabled) {
-      debug('Redirect to swagger-ui was disabled by configuration.');
-      next();
-      return;
-    }
-
-    debug('Redirecting to swagger-ui from %j.', request.originalUrl);
-    const requestContext = new RequestContext(
-      request,
-      response,
-      this,
-      this.config,
-    );
-    const protocol = requestContext.requestedProtocol;
-    const baseUrl = protocol === 'http' ? config.httpUrl : config.url;
-    const openApiUrl = `${requestContext.requestedBaseUrl}/openapi.json`;
-    const fullUrl = `${baseUrl}?url=${openApiUrl}`;
-    response.redirect(302, fullUrl);
   }
 
   /**
@@ -1132,26 +1110,16 @@ export interface OpenApiSpecOptions {
   consolidate?: boolean;
 }
 
+// TODO(semver-major) Remove this interface in the next major version
+/**
+ * A legacy interface preserved for easier upgrade path.
+ */
 export interface ApiExplorerOptions {
-  /**
-   * URL for the hosted API explorer UI
-   * default to https://loopback.io/api-explorer
-   */
-  url?: string;
-
-  /**
-   * URL for the API explorer served over `http` protocol to deal with mixed
-   * content security imposed by browsers as the spec is exposed over `http` by
-   * default.
-   * See https://github.com/strongloop/loopback-next/issues/1603
-   */
-  httpUrl?: string;
-
   /**
    * Set this flag to disable the built-in redirect to externally
    * hosted API Explorer UI.
    */
-  disabled?: true;
+  disabled: true;
 }
 
 /**
@@ -1169,7 +1137,17 @@ export interface RestServerResolvedOptions {
   basePath?: string;
   cors: cors.CorsOptions;
   openApiSpec: OpenApiSpecOptions;
-  apiExplorer: ApiExplorerOptions;
+
+  /**
+   * Configuration options for legacy API Explorer implemented as
+   * a redirect to externally hosted swagger-ui.
+   *
+   * @deprecated Externally hosted API Explorer is no longer supported,
+   * please use the self-hosted explorer instead.
+   * See https://loopback.io/doc/en/lb4/Self-hosted-rest-api-explorer.html
+   */
+  apiExplorer?: ApiExplorerOptions;
+
   requestBodyParser?: RequestBodyParserOptions;
   sequence?: Constructor<SequenceHandler>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -1195,7 +1173,6 @@ export type RestServerResolvedConfig = RestServerResolvedOptions &
 const DEFAULT_CONFIG: RestServerResolvedConfig = {
   port: 3000,
   openApiSpec: {},
-  apiExplorer: {},
   cors: {
     origin: '*',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
@@ -1233,26 +1210,7 @@ function resolveRestServerConfig(
     result.openApiSpec.endpointMapping = cloneDeep(OPENAPI_SPEC_MAPPING);
   }
 
-  result.apiExplorer = normalizeApiExplorerConfig(config.apiExplorer);
-
-  if (result.openApiSpec.disabled) {
-    // Disable apiExplorer if the OpenAPI spec endpoint is disabled
-    result.apiExplorer.disabled = true;
-  }
+  result.apiExplorer = config.apiExplorer;
 
   return result;
-}
-
-function normalizeApiExplorerConfig(
-  input: ApiExplorerOptions | undefined,
-): ApiExplorerOptions {
-  const config = input ?? {};
-  const url = config.url ?? 'https://explorer.loopback.io';
-
-  config.httpUrl =
-    config.httpUrl ?? config.url ?? 'http://explorer.loopback.io';
-
-  config.url = url;
-
-  return config;
 }
