@@ -24,6 +24,9 @@
     "@loopback/core": "^2.9.5",
     "@loopback/repository": "^2.11.2"
   },
+  "dependencies": {
+    "tslib": "^2.0.1"
+  },
   "devDependencies": {
     "@loopback/build": "^1.7.1",
     "@loopback/core": "^2.9.5",
@@ -40,8 +43,5 @@
     "type": "git",
     "url": "https://github.com/strongloop/loopback-next.git",
     "directory": "packages/model-api-builder"
-  },
-  "dependencies": {
-    "tslib": "^2.0.1"
   }
 }
