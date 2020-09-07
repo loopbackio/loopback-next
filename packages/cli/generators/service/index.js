@@ -3,6 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+// no translation: Service
 'use strict';
 const ArtifactGenerator = require('../../lib/artifact-generator');
 const fs = require('fs');
