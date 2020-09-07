@@ -77,15 +77,18 @@ export interface MetadataMap<T> {
  */
 export interface DesignTimeMethodMetadata {
   /**
-   * Type of the method itself. It is `Function`
+   * Type of the method itself. It is `Function` for methods, `undefined` for the constructor.
    */
-  type: Function;
+  type: Function | undefined;
+
   /**
-   * An array of parameter types
+   * An array of parameter types.
    */
+
   parameterTypes: Function[];
+
   /**
-   * Return type
+   * Return type, may be `undefined` (e.g. for constructors).
    */
-  returnType: Function;
+  returnType: Function | undefined;
 }
