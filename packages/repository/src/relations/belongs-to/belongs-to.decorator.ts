@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {MetadataInspector} from '@loopback/core';
+import {DecoratorFactory, MetadataInspector} from '@loopback/core';
 import {property} from '../../decorators/model.decorator';
 import {Entity, EntityResolver, PropertyDefinition} from '../../model';
 import {relation} from '../relation.decorator';
@@ -23,16 +23,32 @@ export function belongsTo<T extends Entity>(
   propertyDefinition?: Partial<PropertyDefinition>,
 ) {
   return function (decoratedTarget: Entity, decoratedKey: string) {
+    const propType =
+      MetadataInspector.getDesignTypeForProperty(
+        decoratedTarget,
+        decoratedKey,
+      ) ?? propertyDefinition?.type;
+
+    if (!propType) {
+      const fullPropName = DecoratorFactory.getTargetName(
+        decoratedTarget,
+        decoratedKey,
+      );
+      throw new Error(
+        `Cannot infer type of model property ${fullPropName} because ` +
+          'TypeScript compiler option `emitDecoratorMetadata` is not set. ' +
+          'Please enable `emitDecoratorMetadata` or use the third argument of ' +
+          '`@belongsTo` decorator to specify the property type explicitly.',
+      );
+    }
+
     const propMeta: PropertyDefinition = Object.assign(
       {},
       // properties provided by the caller
       propertyDefinition,
       // properties enforced by the decorator
       {
-        type: MetadataInspector.getDesignTypeForProperty(
-          decoratedTarget,
-          decoratedKey,
-        ),
+        type: propType,
         // TODO(bajtos) Make the foreign key required once our REST API layer
         // allows controller methods to exclude required properties
         // required: true,

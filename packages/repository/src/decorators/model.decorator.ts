@@ -87,6 +87,15 @@ export function buildModelDefinition(
     const propertyDef = propertyMap[p];
     const designType = MetadataInspector.getDesignTypeForProperty(prototype, p);
     if (!propertyDef.type) {
+      if (!designType) {
+        const err: Error & {code?: string} = new Error(
+          `The definition of model property ${modelDef.name}.${p} is missing ` +
+            '`type` field and TypeScript did not provide any design-time type. ' +
+            'Learn more at https://loopback.io/doc/en/lb4/Error-codes.html#cannot_infer_property_type',
+        );
+        err.code = 'CANNOT_INFER_PROPERTY_TYPE';
+        throw err;
+      }
       propertyDef.type = designType;
     }
     modelDef.addProperty(p, propertyDef);
