@@ -121,17 +121,21 @@ export class DecoratorFactory<
   }
 
   /**
-   * Get the qualified name of a decoration target. For example:
-   * ```
-   * class MyClass
-   * MyClass.constructor[0] // First parameter of the constructor
-   * MyClass.myStaticProperty
-   * MyClass.myStaticMethod()
-   * MyClass.myStaticMethod[0] // First parameter of the myStaticMethod
-   * MyClass.prototype.myProperty
-   * MyClass.prototype.myMethod()
-   * MyClass.prototype.myMethod[1] // Second parameter of myMethod
-   * ```
+   * Get the qualified name of a decoration target.
+   *
+   * @remarks
+   *
+   * Example of target names:
+   *
+   * - class MyClass
+   * - MyClass.constructor[0] // First parameter of the constructor
+   * - MyClass.myStaticProperty
+   * - MyClass.myStaticMethod()
+   * - MyClass.myStaticMethod[0] // First parameter of the myStaticMethod
+   * - MyClass.prototype.myProperty
+   * - MyClass.prototype.myMethod()
+   * - MyClass.prototype.myMethod[1] // Second parameter of myMethod
+   *
    * @param target - Class or prototype of a class
    * @param member - Optional property/method name
    * @param descriptorOrIndex - Optional method descriptor or parameter index
