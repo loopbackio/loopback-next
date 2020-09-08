@@ -11,11 +11,14 @@ import {
   GraphQLBindings,
   Int,
   mutation,
+  Publisher,
+  pubSub,
   query,
   resolver,
   ResolverData,
   ResolverInterface,
   root,
+  subscription,
 } from '@loopback/graphql';
 import {repository} from '@loopback/repository';
 import {RecipeInput} from '../graphql-types/recipe-input';
@@ -46,8 +49,19 @@ export class RecipeResolver implements ResolverInterface<Recipe> {
   }
 
   @mutation(returns => Recipe)
-  async addRecipe(@arg('recipe') recipe: RecipeInput): Promise<Recipe> {
-    return this.recipeRepo.add(recipe);
+  async addRecipe(
+    @arg('recipe') recipe: RecipeInput,
+    @pubSub('recipeCreated') publisher: Publisher<Recipe>,
+  ): Promise<Recipe> {
+    const result = await this.recipeRepo.add(recipe);
+    await publisher(result);
+    return result;
+  }
+
+  @subscription(returns => Recipe, {topics: 'recipeCreated'})
+  async recipeCreated(@root() recipe: Recipe) {
+    console.log('recipe created', recipe);
+    return recipe;
   }
 
   @fieldResolver()

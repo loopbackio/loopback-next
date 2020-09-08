@@ -125,4 +125,13 @@ mutation AddRecipe {
     numberInCollection
     creationDate
   }
-}`;
+}
+
+subscription AllNotifications {
+  recipeCreated {
+    id
+    numberInCollection
+    creationDate
+  }
+}
+`;

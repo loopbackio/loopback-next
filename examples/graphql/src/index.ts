@@ -1,8 +1,8 @@
+import {GraphQLServerOptions} from '@loopback/graphql';
 // Copyright IBM Corp. 2020. All Rights Reserved.
 // Node module: @loopback/example-graphql
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
-
 import {ApplicationConfig, GraphqlDemoApplication} from './application';
 
 export * from './application';
@@ -20,6 +20,11 @@ export async function main(options: ApplicationConfig = {}) {
 }
 
 if (require.main === module) {
+  const graphqlCfg: GraphQLServerOptions = {
+    graphql: {
+      subscriptions: '/subscriptions',
+    },
+  };
   // Run the application
   const config = {
     rest: {
@@ -36,6 +41,7 @@ if (require.main === module) {
         setServersFromRequest: true,
       },
     },
+    graphql: graphqlCfg,
   };
   main(config).catch(err => {
     console.error('Cannot start the application.', err);

@@ -28,7 +28,11 @@ describe('GraphQL server', () => {
   runTests(() => supertest(server.httpServer?.url));
 
   async function givenServer() {
-    server = new GraphQLServer({host: '127.0.0.1', port: 0});
+    server = new GraphQLServer({
+      host: '127.0.0.1',
+      port: 0,
+      graphql: {subscriptions: '/subscriptions'},
+    });
     server.resolver(RecipeResolver);
 
     server.bind('recipes').to([...sampleRecipes]);
