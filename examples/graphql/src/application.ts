@@ -23,6 +23,7 @@ export class GraphqlDemoApplication extends BootMixin(
     const server = this.getSync(GraphQLBindings.GRAPHQL_SERVER);
     this.expressMiddleware('middleware.express.GraphQL', server.expressApp);
     this.configure(GraphQLBindings.GRAPHQL_SERVER).to({
+      ...this.options.graphql,
       asMiddlewareOnly: true,
     });
 
