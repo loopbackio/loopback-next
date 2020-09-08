@@ -20,7 +20,12 @@ import {
 } from '@loopback/core';
 import {HttpOptions, HttpServer} from '@loopback/http-server';
 import {ContextFunction} from 'apollo-server-core';
-import {ApolloServer, ApolloServerExpressConfig} from 'apollo-server-express';
+import {
+  ApolloServer,
+  ApolloServerExpressConfig,
+  PubSub,
+  PubSubEngine,
+} from 'apollo-server-express';
 import {ExpressContext} from 'apollo-server-express/dist/ApolloServer';
 import express from 'express';
 import {
@@ -137,6 +142,11 @@ export class GraphQLServer extends Context implements Server {
         optional: true,
       })) ?? ((resolverData, roles) => true);
 
+    const pubSub: PubSubEngine | undefined =
+      (await this.get(GraphQLBindings.PUB_SUB_ENGINE, {
+        optional: true,
+      })) ?? new PubSub();
+
     // build TypeGraphQL executable schema
     const schema = await buildSchema({
       // See https://github.com/MichalLytek/type-graphql/issues/150#issuecomment-420181526
@@ -146,6 +156,7 @@ export class GraphQLServer extends Context implements Server {
       // emitSchemaFile: path.resolve(__dirname, 'schema.gql'),
       container: new LoopBackContainer(this),
       authChecker,
+      pubSub,
       globalMiddlewares: await this.getMiddleware(),
     });
 
@@ -159,6 +170,7 @@ export class GraphQLServer extends Context implements Server {
       // enable GraphQL Playground
       playground: true,
       context: graphqlContextResolver,
+      subscriptions: {},
       ...this.options.graphql,
       schema,
     };
