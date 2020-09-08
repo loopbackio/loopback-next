@@ -38,7 +38,7 @@
     "@loopback/rest": "^6.2.0",
     "@loopback/testlab": "^3.2.4",
     "@types/morgan": "^1.9.1",
-    "@types/node": "^10.17.29"
+    "@types/node": "^10.17.30"
   },
   "keywords": [
     "LoopBack",
