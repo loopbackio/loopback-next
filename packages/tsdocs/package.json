@@ -37,7 +37,7 @@
     "@loopback/tsdocs-monorepo": "^0.0.7",
     "@types/debug": "^4.1.5",
     "@types/fs-extra": "^9.0.1",
-    "@types/node": "^10.17.29"
+    "@types/node": "^10.17.30"
   },
   "keywords": [
     "LoopBack",

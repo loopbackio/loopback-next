@@ -60,7 +60,7 @@
     "@loopback/eslint-config": "^8.0.4",
     "@loopback/testlab": "^3.2.1",
     "@types/multer": "^1.4.3",
-    "@types/node": "^10.17.29",
+    "@types/node": "^10.17.30",
     "eslint": "^7.5.0",
     "typescript": "~3.9.7",
     "rimraf": "^3.0.2",

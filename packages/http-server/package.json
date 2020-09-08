@@ -31,7 +31,7 @@
     "@loopback/eslint-config": "^9.0.2",
     "@loopback/testlab": "^3.2.4",
     "@types/debug": "^4.1.5",
-    "@types/node": "^10.17.29",
+    "@types/node": "^10.17.30",
     "@types/stoppable": "^1.1.0"
   },
   "files": [
