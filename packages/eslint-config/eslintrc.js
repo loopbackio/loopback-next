@@ -57,10 +57,6 @@ module.exports = {
     // TypeScript allows the same name for namespace and function
     'no-redeclare': 'off',
 
-    // Avoid promise rewrapping
-    // https://exploringjs.com/es2016-es2017/ch_async-functions.html#_returned-promises-are-not-wrapped
-    'no-return-await': 'error',
-
     /**
      * Rules imported from eslint-config-loopback
      */
@@ -144,7 +140,11 @@ module.exports = {
     '@typescript-eslint/prefer-optional-chain': 'error',
     '@typescript-eslint/prefer-nullish-coalescing': 'error',
     '@typescript-eslint/no-extra-non-null-assertion': 'error',
+
+    // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/return-await.md#how-to-use
     '@typescript-eslint/return-await': 'error',
+    // note we must disable the base rule as it can report incorrect errors
+    'no-return-await': 'off',
 
     // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/naming-convention.md
     camelcase: 'off',
