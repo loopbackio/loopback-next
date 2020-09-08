@@ -4,7 +4,8 @@
 // License text available at https://opensource.org/licenses/MIT
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {ValueOrPromise} from '@loopback/context';
+
+import {ValueOrPromise} from '@loopback/core';
 
 export type MessageHandler = (
   channel: string,
@@ -59,3 +60,5 @@ export interface Subscriber {
   close(): Promise<void>;
   onMessage(handler: MessageHandler): void;
 }
+
+export * from 'graphql-subscriptions';

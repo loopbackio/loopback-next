@@ -24,17 +24,21 @@
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
-    "@loopback/context": "^3.10.1",
-    "@loopback/core": "^2.9.5",
     "@types/ioredis": "^4.16.1",
     "debug": "^4.1.1",
+    "graphql-subscriptions": "^1.1.0",
     "ioredis": "^4.16.3"
   },
+  "peerDependencies": {
+    "@loopback/core": "^2.9.5"
+  },
   "devDependencies": {
+    "@loopback/core": "^2.9.5",
     "@loopback/build": "^6.2.2",
     "@loopback/testlab": "^3.2.4",
     "@types/debug": "^4.1.5",
     "@types/node": "^10.17.28",
+    "graphql-redis-subscriptions": "^2.3.1",
     "kafka-node": "^5.0.0",
     "p-event": "^4.1.0"
   },

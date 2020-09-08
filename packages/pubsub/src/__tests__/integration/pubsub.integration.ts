@@ -5,6 +5,7 @@
 
 import {expect} from '@loopback/testlab';
 import {EventEmitter} from 'events';
+import {Suite} from 'mocha';
 import pEvent from 'p-event';
 import {promisify} from 'util';
 import {PubSubConnector} from '../..';
@@ -16,8 +17,7 @@ export function testPubSubConnector(
   connector: PubSubConnector,
   subscriberOptions: Partial<SubscriberOptions> = {},
 ) {
-  describe(`${name} pubsub connector`, function() {
-    // eslint-disable-next-line no-invalid-this
+  describe(`${name} pubsub connector`, function (this: Suite) {
     this.timeout(30000);
 
     before(() => connector.connect());
