@@ -184,9 +184,9 @@
   "f846f25f533c78e5eab3c1afa289ca12": "Geef een lege eigenschapnaam op als u klaar bent",
   "f87558eadaf216be8be9546d874d1301": "standaardnaam externe sleutel",
   "f8b4ea0079120a07a9aabec29c9023d7": "Een geldige eigenschapnaam van een ID voor het opgegeven model",
-  "fae5b20162ed86b458a943aee0979f68": "Gebruik @loopback/build",
+  "fae5b20162ed86b458a943aee0979f68": "@loopback/build gebruiken",
   "fd9d1ae9ba5ae0b5d8f2b2dd40be8b5f": "Model is niet gevonden in",
-  "fde67ed0176ea54fd0b2c6bb2fc72d13": "Is het vereist?:",
+  "fde67ed0176ea54fd0b2c6bb2fc72d13": "Is dit item vereist?:",
   "ff0366defc888d15b3fbfc1458edf1c0": "Geen repository's gevonden in {0}. ",
   "ffa8d88b9563dfa3e567974095c39140": "U hebt geen geldig model geselecteerd"
 }
