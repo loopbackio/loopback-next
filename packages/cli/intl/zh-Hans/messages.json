@@ -89,7 +89,7 @@
   "7c9111f852ea9bd35067a5f53540ff0b": "{0} 中找不到任何模型。",
   "7d35e6a282ed68a01b4badfddb9dd412": "包含服务代理导入和 ServiceMixin",
   "815548e083b8b7ea5edd0e57df0bfd29": "包含存储库导入和 RepositoryMixin",
-  "8340baa1142a43339a4df3a9ea93e9cb": "请勿自动安装依赖项",
+  "8340baa1142a43339a4df3a9ea93e9cb": "不自动安装依赖项",
   "84cee9d182963cbedca9286a040f1e9a": "跳过有关缺省值或所提供值的所有确认提示",
   "84d0d2cbd6faa568def78ab07ed7b81c": "升级可能会中断当前项目。",
   "86c44b0af78ca6f4a016571a7f184e06": "经过修改的使用 JWT 认证的 Todo 应用程序",
