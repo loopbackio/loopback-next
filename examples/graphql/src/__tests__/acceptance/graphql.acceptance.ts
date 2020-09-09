@@ -31,7 +31,7 @@ describe('GraphQL server', () => {
     server = new GraphQLServer({
       host: '127.0.0.1',
       port: 0,
-      graphql: {subscriptions: '/subscriptions'},
+      apollo: {subscriptions: '/subscriptions'},
     });
     server.resolver(RecipeResolver);
 
