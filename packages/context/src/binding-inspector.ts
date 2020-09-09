@@ -243,10 +243,13 @@ export type BindingFromClassOptions = {
  * Create a binding from a class with decorated metadata. The class is attached
  * to the binding as follows:
  * - `binding.toClass(cls)`: if `cls` is a plain class such as `MyController`
- * - `binding.toProvider(cls)`: it `cls` is a value provider class with a
+ * - `binding.toProvider(cls)`: if `cls` is a value provider class with a
  * prototype method `value()`
+ * - `binding.toDynamicValue(cls)`: if `cls` is a dynamic value provider class
+ * with a static method `value()`
  *
- * @param cls - A class. It can be either a plain class or  a value provider class
+ * @param cls - A class. It can be either a plain class, a value provider class,
+ * or a dynamic value provider class
  * @param options - Options to customize the binding key
  *
  * @typeParam T - Value type

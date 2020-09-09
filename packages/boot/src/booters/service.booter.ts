@@ -8,7 +8,9 @@ import {
   config,
   Constructor,
   CoreBindings,
+  hasInjections,
   inject,
+  isDynamicValueProviderClass,
   MetadataInspector,
 } from '@loopback/core';
 import {ApplicationWithServices} from '@loopback/service-proxy';
@@ -81,8 +83,15 @@ function isBindableClass(cls: Constructor<unknown>) {
   if (MetadataInspector.getClassMetadata(BINDING_METADATA_KEY, cls)) {
     return true;
   }
+  if (hasInjections(cls)) {
+    return true;
+  }
   if (isServiceProvider(cls)) {
     debug('Provider class found: %s', cls.name);
+    return true;
+  }
+  if (isDynamicValueProviderClass(cls)) {
+    debug('Dynamic value provider class found: %s', cls.name);
     return true;
   }
   debug('Skip class not decorated with @bind: %s', cls.name);

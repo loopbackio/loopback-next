@@ -11,6 +11,7 @@ import {
   MetadataMap,
   ParameterDecoratorFactory,
   PropertyDecoratorFactory,
+  Reflector,
 } from '@loopback/metadata';
 import {Binding, BindingTag} from './binding';
 import {
@@ -26,17 +27,20 @@ import {BindingCreationPolicy, Context} from './context';
 import {ContextView, createViewGetter} from './context-view';
 import {JSONObject} from './json-types';
 import {ResolutionOptions, ResolutionSession} from './resolution-session';
-import {BoundValue, ValueOrPromise} from './value-promise';
+import {BoundValue, Constructor, ValueOrPromise} from './value-promise';
 
-const PARAMETERS_KEY = MetadataAccessor.create<Injection, ParameterDecorator>(
-  'inject:parameters',
-);
-const PROPERTIES_KEY = MetadataAccessor.create<Injection, PropertyDecorator>(
-  'inject:properties',
-);
+const INJECT_PARAMETERS_KEY = MetadataAccessor.create<
+  Injection,
+  ParameterDecorator
+>('inject:parameters');
+
+const INJECT_PROPERTIES_KEY = MetadataAccessor.create<
+  Injection,
+  PropertyDecorator
+>('inject:properties');
 
 // A key to cache described argument injections
-const METHODS_KEY = MetadataAccessor.create<Injection, MethodDecorator>(
+const INJECT_METHODS_KEY = MetadataAccessor.create<Injection, MethodDecorator>(
   'inject:methods',
 );
 
@@ -151,7 +155,7 @@ export function inject(
       const paramDecorator: ParameterDecorator = ParameterDecoratorFactory.createDecorator<
         Injection
       >(
-        PARAMETERS_KEY,
+        INJECT_PARAMETERS_KEY,
         {
           target,
           member,
@@ -187,7 +191,7 @@ export function inject(
       const propDecorator: PropertyDecorator = PropertyDecoratorFactory.createDecorator<
         Injection
       >(
-        PROPERTIES_KEY,
+        INJECT_PROPERTIES_KEY,
         {
           target,
           member,
@@ -574,7 +578,7 @@ export function describeInjectedArguments(
   // Try to read from cache
   const cache =
     MetadataInspector.getAllMethodMetadata<Readonly<Injection>[]>(
-      METHODS_KEY,
+      INJECT_METHODS_KEY,
       target,
       {
         ownMetadataOnly: true,
@@ -596,7 +600,7 @@ export function describeInjectedArguments(
   }
   meta =
     MetadataInspector.getAllParameterMetadata<Readonly<Injection>>(
-      PARAMETERS_KEY,
+      INJECT_PARAMETERS_KEY,
       target,
       method,
       options,
@@ -605,7 +609,7 @@ export function describeInjectedArguments(
   // Cache the result
   cache[method] = meta;
   MetadataInspector.defineMetadata<MetadataMap<Readonly<Injection>[]>>(
-    METHODS_KEY,
+    INJECT_METHODS_KEY,
     cache,
     target,
   );
@@ -706,7 +710,7 @@ export function describeInjectedProperties(
 ): MetadataMap<Readonly<Injection>> {
   const metadata =
     MetadataInspector.getAllPropertyMetadata<Readonly<Injection>>(
-      PROPERTIES_KEY,
+      INJECT_PROPERTIES_KEY,
       target,
     ) ?? {};
   return metadata;
@@ -773,4 +777,22 @@ function inspectInjection(injection: Readonly<Injection<unknown>>) {
     }
   }
   return descriptor;
+}
+
+/**
+ * Check if the given class has `@inject` or other decorations that map to
+ * `@inject`.
+ *
+ * @param cls - Class with possible `@inject` decorations
+ */
+export function hasInjections(cls: Constructor<unknown>): boolean {
+  return (
+    MetadataInspector.getClassMetadata(INJECT_PARAMETERS_KEY, cls) != null ||
+    Reflector.getMetadata(INJECT_PARAMETERS_KEY.toString(), cls.prototype) !=
+      null ||
+    MetadataInspector.getAllPropertyMetadata(
+      INJECT_PROPERTIES_KEY,
+      cls.prototype,
+    ) != null
+  );
 }

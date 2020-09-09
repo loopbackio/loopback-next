@@ -264,9 +264,65 @@ The `datasources` object support the following options:
 Discovers and binds remote service proxies or local service classes or providers
 using `app.service()`.
 
+{% include notes.html content="
 **IMPORTANT:** For a class to be recognized by `ServiceBooter` as a service
-provider, it either has to be decorated with `@bind` or the class name must end
-with `Provider` suffix and its prototype must have a `value()` method.
+provider, it either has to be decorated with `@bind`/`@inject` or the class name
+must end with `Provider` suffix and must have a static or prototype `value()`
+method.
+" %}
+
+The following are some examples for service classes:
+
+```ts
+import {bind, BindingScope, inject, Provider} from '@loopback/core';
+
+// With `@bind`
+@bind({
+  tags: {serviceType: 'local'},
+  scope: BindingScope.SINGLETON,
+})
+export class BindableGreetingService {
+  greet(whom = 'world') {
+    return Promise.resolve(`Hello ${whom}`);
+  }
+}
+
+@bind({tags: {serviceType: 'local', name: 'CurrentDate'}})
+export class DateProvider implements Provider<Date> {
+  value(): Promise<Date> {
+    return Promise.resolve(new Date());
+  }
+}
+
+// Provider class
+export class BindableDateProvider implements Provider<Date> {
+  value(): Promise<Date> {
+    return Promise.resolve(new Date());
+  }
+}
+
+// Dynamic factory provider class
+export class DynamicDateProvider {
+  static value() {
+    return new Date();
+  }
+}
+
+// With `@inject`
+export class ServiceWithConstructorInject {
+  constructor(@inject('currentUser') private user: string) {}
+}
+
+export class ServiceWithPropertyInject {
+  @inject('currentUser') private user: string;
+}
+
+export class ServiceWithMethodInject {
+  greet(@inject('currentUser') user: string) {
+    return `Hello, ${user}`;
+  }
+}
+```
 
 #### Options
 

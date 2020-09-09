@@ -10,6 +10,7 @@ import {
   Constructor,
   Context,
   createBindingFromClass,
+  DynamicValueProviderClass,
   Interceptor,
   InterceptorBindingOptions,
   JSONObject,
@@ -653,7 +654,9 @@ export interface ApplicationConfig {
 export type ControllerClass<T = any> = Constructor<T>;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type ServiceOrProviderClass<T = any> = Constructor<T | Provider<T>>;
+export type ServiceOrProviderClass<T = any> =
+  | Constructor<T | Provider<T>>
+  | DynamicValueProviderClass<T>;
 
 /**
  * Type description for `package.json`

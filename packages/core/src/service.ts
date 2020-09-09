@@ -9,17 +9,17 @@ import {
   BindingFromClassOptions,
   BindingTemplate,
   bindingTemplateFor,
-  Constructor,
   ContextTags,
   ContextView,
   createBindingFromClass,
   inject,
   InjectionMetadata,
+  isDynamicValueProviderClass,
   isProviderClass,
   MetadataInspector,
-  Provider,
   transformValueOrPromise,
 } from '@loopback/context';
+import {ServiceOrProviderClass} from './application';
 import {CoreTags} from './keys';
 
 /**
@@ -142,7 +142,7 @@ export function filterByServiceInterface(
  * @param options - Service options
  */
 export function createServiceBinding<S>(
-  cls: Constructor<S | Provider<S>>,
+  cls: ServiceOrProviderClass<S>,
   options: ServiceOptions = {},
 ): Binding<S> {
   let name = options.name;
@@ -153,6 +153,18 @@ export function createServiceBinding<S>(
     const template = Binding.bind<S>('template').apply(templateFn);
     if (
       template.tagMap[ContextTags.PROVIDER] &&
+      !template.tagMap[ContextTags.NAME]
+    ) {
+      // The class is a provider and no `name` tag is found
+      name = cls.name.replace(/Provider$/, '');
+    }
+  }
+  if (!name && isDynamicValueProviderClass(cls)) {
+    // Trim `Provider` from the default service name
+    const templateFn = bindingTemplateFor(cls);
+    const template = Binding.bind<S>('template').apply(templateFn);
+    if (
+      template.tagMap[ContextTags.DYNAMIC_VALUE_PROVIDER] &&
       !template.tagMap[ContextTags.NAME]
     ) {
       // The class is a provider and no `name` tag is found
