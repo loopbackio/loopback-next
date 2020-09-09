@@ -153,6 +153,16 @@ export async function main() {
 }
 ```
 
+To disable CORS, you can set the options to `{origin: false}`, that is:
+
+```ts
+const options = {
+  rest: {
+    cors: {origin: false},
+  },
+};
+```
+
 For a complete list of CORS options, see
 https://github.com/expressjs/cors#configuration-options.
 
