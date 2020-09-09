@@ -51,16 +51,15 @@ export class RecipeResolver implements ResolverInterface<Recipe> {
   @mutation(returns => Recipe)
   async addRecipe(
     @arg('recipe') recipe: RecipeInput,
-    @pubSub('recipeCreated') publisher: Publisher<Recipe>,
+    @pubSub('recipeCreated') publish: Publisher<Recipe>,
   ): Promise<Recipe> {
     const result = await this.recipeRepo.add(recipe);
-    await publisher(result);
+    await publish(result);
     return result;
   }
 
   @subscription(returns => Recipe, {topics: 'recipeCreated'})
   async recipeCreated(@root() recipe: Recipe) {
-    console.log('recipe created', recipe);
     return recipe;
   }
 

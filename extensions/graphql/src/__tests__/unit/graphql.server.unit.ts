@@ -23,7 +23,7 @@ describe('GraphQL server', () => {
 
   it('registers resolver classes', () => {
     server.resolver(RecipeResolver);
-    expect(server.getResolvers()).to.containEql(RecipeResolver);
+    expect(server.getResolverClasses()).to.containEql(RecipeResolver);
   });
 
   it('registers resolver classes with name', () => {
@@ -39,8 +39,27 @@ describe('GraphQL server', () => {
       return next();
     };
     server.middleware(middleware);
-    const middlewareList = await server.getMiddleware();
+    const middlewareList = await server.getMiddlewareList();
     expect(middlewareList).to.containEql(middleware);
+  });
+
+  it('fails to start without resolvers', async () => {
+    await expect(server.start()).to.be.rejectedWith(
+      /Empty `resolvers` array property found in `buildSchema` options/,
+    );
+  });
+
+  it('starts and stops', async () => {
+    server.resolver(RecipeResolver);
+    await server.start();
+    expect(server.listening).to.be.true();
+    await server.stop();
+    expect(server.listening).to.be.false();
+  });
+
+  it('does not create http server with asMiddlewareOnly option', async () => {
+    server = new GraphQLServer({asMiddlewareOnly: true});
+    expect(server.httpServer).to.be.undefined();
   });
 
   function givenServer() {
