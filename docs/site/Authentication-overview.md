@@ -52,7 +52,7 @@ middleware that's automatically discovered and added to the sequence.
 
 The rest will be handled by the authentication component
 `@loopback/authentication`, which incorporates the authentication mechanism, and
-the JWT extension `@loopback/jwt-authentication`, which helps in implementing
+the JWT extension `@loopback/authentication-jwt`, which helps in implementing
 JWT-based authentication to the system and should be provided by extension
 developers.
 
