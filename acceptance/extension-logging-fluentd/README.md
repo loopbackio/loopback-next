@@ -1,6 +1,6 @@
 # @loopback/test-extension-logging-fluentd
 
-Acceptance tests for `@loopback/extension-logging` against a fluentd server.
+Acceptance tests for `@loopback/logging` against a fluentd server.
 
 ## Running the test suite
 

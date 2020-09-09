@@ -1,7 +1,7 @@
 # @loopback/example-metrics-prometheus
 
 This project contains an example to illustrate metrics provided by
-[`@loopback/extension-metrics`](https://github.com/strongloop/loopback-next/blob/master/extensions/metrics)
+[`@loopback/metrics`](https://github.com/strongloop/loopback-next/blob/master/extensions/metrics)
 and [Prometheus](https://prometheus.io/).
 
 ## Use

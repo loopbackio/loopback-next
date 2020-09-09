@@ -125,11 +125,11 @@ These components add additional capabilities to LoopBack.
   Visualize context hierarchy, bindings, configurations, and dependencies
 - [@loopback/cron](https://github.com/strongloop/loopback-next/tree/master/extensions/cron) -
   Schedule tasks using cron-like syntax
-- [@loopback/extension-health](https://github.com/strongloop/loopback-next/tree/master/extensions/health) -
+- [@loopback/health](https://github.com/strongloop/loopback-next/tree/master/extensions/health) -
   An extension exposes health check related endpoints with LoopBack 4
-- [@loopback/extension-logging](https://github.com/strongloop/loopback-next/tree/master/extensions/logging) -
+- [@loopback/logging](https://github.com/strongloop/loopback-next/tree/master/extensions/logging) -
   An extension exposes logging for Winston and Fluentd with LoopBack 4
-- [@loopback/extension-metrics](https://github.com/strongloop/loopback-next/tree/master/extensions/metrics) -
+- [@loopback/metrics](https://github.com/strongloop/loopback-next/tree/master/extensions/metrics) -
   An extension exposes metrics for Prometheus with LoopBack 4
 - [@loopback/pooling](https://github.com/strongloop/loopback-next/tree/master/extensions/pooling) -
   Resource pooling service for LoopBack 4

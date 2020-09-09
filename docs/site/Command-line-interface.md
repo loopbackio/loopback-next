@@ -83,7 +83,7 @@ cli.
   - @loopback/example-greeting-app: ^1.2.2
   - @loopback/example-context: ^1.2.16
   - @loopback/repository-tests: ^0.5.1
-  - @loopback/extension-health: ^0.2.8
+  - @loopback/health: ^0.2.8
   - @loopback/authorization: ^0.4.1
   - @loopback/rest-crud: ^0.3.2
   - @loopback/security: ^0.1.4

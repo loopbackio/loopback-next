@@ -5,7 +5,7 @@
 
 import {BootMixin} from '@loopback/boot';
 import {ApplicationConfig} from '@loopback/core';
-import {MetricsComponent} from '@loopback/extension-metrics';
+import {MetricsComponent} from '@loopback/metrics';
 import {RestApplication} from '@loopback/rest';
 
 export class GreetingApplication extends BootMixin(RestApplication) {
