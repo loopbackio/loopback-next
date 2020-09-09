@@ -1,4 +1,4 @@
-# @loopback/extension-metrics
+# @loopback/metrics
 
 This module contains a component that reports metrics of Node.js, LoopBack
 framework, and your application to [Prometheus](https://prometheus.io/).
@@ -13,7 +13,7 @@ framework, and your application to [Prometheus](https://prometheus.io/).
 ## Installation
 
 ```sh
-npm install --save @loopback/extension-metrics
+npm install --save @loopback/metrics
 ```
 
 ## Basic use
@@ -24,7 +24,7 @@ class.
 Start by importing the component class:
 
 ```ts
-import {MetricsComponent} from '@loopback/extension-metrics';
+import {MetricsComponent} from '@loopback/metrics';
 ```
 
 In the constructor, add the component to your application:

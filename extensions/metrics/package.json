@@ -1,5 +1,5 @@
 {
-  "name": "@loopback/extension-metrics",
+  "name": "@loopback/metrics",
   "version": "0.3.13",
   "description": "An extension exposes metrics for Prometheus with LoopBack 4",
   "main": "dist/index.js",
