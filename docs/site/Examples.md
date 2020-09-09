@@ -40,7 +40,7 @@ LoopBack 4 comes with the following example projects.
 
 - **[metrics-prometheus](https://github.com/strongloop/loopback-next/tree/master/examples/metrics-prometheus)**:
   illustrate metrics provided by
-  [@loopback/extension-metrics extension](https://github.com/strongloop/loopback-next/blob/master/extensions/metrics)
+  [@loopback/metrics extension](https://github.com/strongloop/loopback-next/blob/master/extensions/metrics)
   and [Prometheus](https://prometheus.io/).
 
 ### Examples with migration

@@ -1,7 +1,7 @@
 {
   "name": "@loopback/example-metrics-prometheus",
   "version": "0.3.9",
-  "description": "An example to illustrate metrics provided by @loopback/extension-metrics and Prometheus",
+  "description": "An example to illustrate metrics provided by @loopback/metrics and Prometheus",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "engines": {
@@ -42,7 +42,7 @@
   "dependencies": {
     "@loopback/boot": "^2.5.1",
     "@loopback/core": "^2.9.5",
-    "@loopback/extension-metrics": "^0.3.13",
+    "@loopback/metrics": "^0.3.13",
     "@loopback/rest": "^6.2.0",
     "tslib": "^2.0.1"
   },

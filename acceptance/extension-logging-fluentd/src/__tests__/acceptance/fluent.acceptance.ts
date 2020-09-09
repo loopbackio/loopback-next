@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Application, BindingKey} from '@loopback/core';
-import {LoggingBindings, LoggingComponent} from '@loopback/extension-logging';
+import {LoggingBindings, LoggingComponent} from '@loopback/logging';
 import {expect} from '@loopback/testlab';
 import {promisify} from 'util';
 import {readLog} from '../fixtures/fluentd.docker';

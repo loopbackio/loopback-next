@@ -87,7 +87,7 @@ LoopBack 4 components are added to applications inside application constructor.
 First, the application file needs to import the component class:
 
 ```ts
-import {MetricsComponent} from '@loopback/extension-metrics';
+import {MetricsComponent} from '@loopback/metrics';
 ```
 
 Then in the constructor, add the component to your application:
