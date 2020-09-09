@@ -1,10 +1,10 @@
 // Copyright IBM Corp. 2019,2020. All Rights Reserved.
-// Node module: @loopback/extension-health
+// Node module: @loopback/health
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
 import {HealthChecker} from '@cloudnative/health';
-import {BindingKey, BindingAddress} from '@loopback/core';
+import {BindingAddress, BindingKey} from '@loopback/core';
 import {HealthComponent} from './health.component';
 import {HealthConfig} from './types';
 

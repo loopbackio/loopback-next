@@ -1,4 +1,4 @@
-# @loopback/extension-health
+# @loopback/health
 
 This module contains a component to report health status using
 [@cloudnative/health](https://github.com/CloudNativeJS/cloud-health).
@@ -6,7 +6,7 @@ This module contains a component to report health status using
 ## Installation
 
 ```sh
-npm install --save @loopback/extension-health
+npm install --save @loopback/health
 ```
 
 ## Basic use
@@ -19,7 +19,7 @@ class.
 Start by importing the component class:
 
 ```ts
-import {HealthComponent} from '@loopback/extension-health';
+import {HealthComponent} from '@loopback/health';
 ```
 
 In the constructor, add the component to your application:
@@ -63,7 +63,7 @@ The health component allows extra
 to be added.
 
 ```ts
-import {LiveCheck, ReadyCheck, HealthTags} from '@loopback/extension-health';
+import {LiveCheck, ReadyCheck, HealthTags} from '@loopback/health';
 
 const myLiveCheck: LiveCheck = () => {
   return Promise.resolve();
