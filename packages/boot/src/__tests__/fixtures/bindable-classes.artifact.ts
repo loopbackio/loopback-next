@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {bind, BindingScope, Provider} from '@loopback/core';
+import {bind, BindingScope, inject, Provider} from '@loopback/core';
 
 @bind({
   tags: {serviceType: 'local'},
@@ -31,5 +31,19 @@ export class NotBindableGreetingService {
 export class NotBindableDateProvider implements Provider<Date> {
   value(): Promise<Date> {
     return Promise.resolve(new Date());
+  }
+}
+
+export class ServiceWithConstructorInject {
+  constructor(@inject('currentUser') private user: string) {}
+}
+
+export class ServiceWithPropertyInject {
+  @inject('currentUser') private user: string;
+}
+
+export class ServiceWithMethodInject {
+  greet(@inject('currentUser') user: string) {
+    return `Hello, ${user}`;
   }
 }

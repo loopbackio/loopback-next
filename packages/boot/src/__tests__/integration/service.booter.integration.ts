@@ -24,6 +24,10 @@ describe('service booter integration tests', () => {
       'services.CurrentDate',
       'services.GeocoderService',
       'services.NotBindableDate',
+      'services.DynamicDate',
+      'services.ServiceWithConstructorInject',
+      'services.ServiceWithPropertyInject',
+      'services.ServiceWithMethodInject',
     ];
 
     await app.boot();
@@ -49,6 +53,14 @@ describe('service booter integration tests', () => {
     await sandbox.copyFile(
       resolve(__dirname, '../fixtures/service-provider.artifact.js'),
       'services/geocoder.service.js',
+    );
+
+    await sandbox.copyFile(
+      resolve(
+        __dirname,
+        '../fixtures/service-dynamic-value-provider.artifact.js',
+      ),
+      'services/date.service.js',
     );
 
     await sandbox.copyFile(
