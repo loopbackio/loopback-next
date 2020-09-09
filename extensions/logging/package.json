@@ -1,5 +1,5 @@
 {
-  "name": "@loopback/extension-logging",
+  "name": "@loopback/logging",
   "version": "0.3.13",
   "description": "An extension exposes logging for Winston and Fluentd with LoopBack 4",
   "main": "dist/index.js",

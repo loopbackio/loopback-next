@@ -1,4 +1,4 @@
-# @loopback/extension-logging
+# @loopback/logging
 
 This module contains a component provides logging facilities based on
 [Winston](https://github.com/winstonjs/winston) and
@@ -18,7 +18,7 @@ This module contains a component provides logging facilities based on
 ## Installation
 
 ```sh
-npm install --save @loopback/extension-logging
+npm install --save @loopback/logging
 ```
 
 ## Basic use
@@ -29,7 +29,7 @@ class.
 Start by importing the component class:
 
 ```ts
-import {LoggingComponent} from '@loopback/extension-logging';
+import {LoggingComponent} from '@loopback/logging';
 ```
 
 In the constructor, add the component to your application:
@@ -43,7 +43,7 @@ facilities:
 
 ```ts
 import {inject} from '@loopback/core';
-import {Logger, logInvocation} from '@loopback/extension-logging';
+import {Logger, logInvocation} from '@loopback/logging';
 import {get, param} from '@loopback/rest';
 
 class MyController {
@@ -98,7 +98,7 @@ The fluent sender and transport for winston can be configured against
 `FLUENT_SENDER`:
 
 ```ts
-import {LoggingBindings} from '@loopback/extension-logging';
+import {LoggingBindings} from '@loopback/logging';
 
 app.configure(LoggingBindings.FLUENT_SENDER).to({
   host: process.env.FLUENTD_SERVICE_HOST ?? 'localhost',
@@ -111,7 +111,7 @@ app.configure(LoggingBindings.FLUENT_SENDER).to({
 The winston logger can be configured against `LoggingBindings.WINSTON_LOGGER`:
 
 ```ts
-import {LoggingBindings} from '@loopback/extension-logging';
+import {LoggingBindings} from '@loopback/logging';
 
 ctx.configure<LoggerOptions>(LoggingBindings.WINSTON_LOGGER).to({
   level: 'info',
@@ -134,7 +134,7 @@ import {
   WINSTON_TRANSPORT,
   WinstonFormat,
   WinstonTransports,
-} from '@loopback/extension-logging';
+} from '@loopback/logging';
 
 const myFormat: WinstonFormat = format((info, opts) => {
   console.log(info);
