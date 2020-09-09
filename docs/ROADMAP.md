@@ -35,6 +35,32 @@ the `help wanted` and `2020Qx` labels.
 
 ---
 
+## Q4 2020 Roadmap
+
+_We published
+[a blog](https://strongloop.com/strongblog/2020-community-contribution/) earlier
+to invite our community to enrich LoopBack and its community together. We
+continue to encourage more participation and contributions from our users by
+sharing our plans on some of the areas._
+
+- Blogs to share our plans on:
+  - [modernizing the data access layer](https://github.com/strongloop/loopback-next/issues/5956)
+  - multi-tenancy
+- Potential joint blogs on:
+  - [Mocha](https://mochajs.org/) on parallel testing work
+  - [TypeGraphQL](https://typegraphql.com/) on GraphQL extension
+- Continuous improvement on documentation and developer experience, for example,
+  - Move recipes to how-to guides (epic):
+    https://github.com/strongloop/loopback-next/issues/5783
+- Enhancement on Express TypeScript definitions
+  - [spike](https://github.com/strongloop/loopback-next/issues/6115)
+- Web socket support
+- Pub/sub messaging support
+- [Test/Enable Node.js 14](https://github.com/strongloop/loopback-next/issues/6019)
+- [Participate in Hacktoberfest](https://hacktoberfest.digitalocean.com/details/#maintainers)
+
+---
+
 ## Q3 2020 Roadmap
 
 ### Scope
