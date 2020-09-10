@@ -56,7 +56,7 @@ You can also
 use [stringified JSON format](Querying-data.md#using-stringified-json-in-rest-queries) in
 a REST query.
 
-{% include note.html content="Configure default ordering in [default scope](Model-definition-JSON-file.html#default-scope).
+{% include note.html content="Configure default ordering in [default scope](Model.md#scope).
 " %}
 
 ### Examples
