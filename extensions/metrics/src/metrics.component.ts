@@ -5,13 +5,13 @@
 
 import {
   Application,
-  bind,
   Component,
   config,
   ContextTags,
   CoreBindings,
   createBindingFromClass,
   inject,
+  injectable,
 } from '@loopback/core';
 import {metricsControllerFactory} from './controllers';
 import {MetricsInterceptor} from './interceptors';
@@ -22,7 +22,7 @@ import {DEFAULT_METRICS_OPTIONS, MetricsOptions} from './types';
 /**
  * A component providing metrics for Prometheus
  */
-@bind({tags: {[ContextTags.KEY]: MetricsBindings.COMPONENT}})
+@injectable({tags: {[ContextTags.KEY]: MetricsBindings.COMPONENT}})
 export class MetricsComponent implements Component {
   constructor(
     @inject(CoreBindings.APPLICATION_INSTANCE)

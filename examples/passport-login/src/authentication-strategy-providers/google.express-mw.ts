@@ -4,11 +4,11 @@
 // License text available at https://opensource.org/licenses/MIT
 
 const passport = require('passport');
-import {inject, Provider, bind, BindingScope} from '@loopback/core';
-import {Strategy as GoogleStrategy} from 'passport-google-oauth2';
+import {BindingScope, inject, injectable, Provider} from '@loopback/core';
 import {ExpressRequestHandler} from '@loopback/rest';
+import {Strategy as GoogleStrategy} from 'passport-google-oauth2';
 
-@bind.provider({scope: BindingScope.SINGLETON})
+@injectable.provider({scope: BindingScope.SINGLETON})
 export class GoogleOauth2ExpressMiddleware
   implements Provider<ExpressRequestHandler> {
   constructor(

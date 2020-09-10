@@ -3,21 +3,21 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Profile} from 'passport';
 import {UserIdentityService} from '@loopback/authentication';
-import {User} from '../models';
-import {inject, Provider, BindingScope, bind} from '@loopback/core';
-import {UserServiceBindings} from '../services';
+import {BindingScope, inject, injectable, Provider} from '@loopback/core';
+import {Profile} from 'passport';
 import {
   Strategy as OAuth2Strategy,
   StrategyOptions as OAuth2StrategyOptions,
 } from 'passport-oauth2';
 import {
-  verifyFunctionFactory,
   ProfileFunction,
+  verifyFunctionFactory,
 } from '../authentication-strategies/types';
+import {User} from '../models';
+import {UserServiceBindings} from '../services';
 
-@bind.provider({scope: BindingScope.SINGLETON})
+@injectable.provider({scope: BindingScope.SINGLETON})
 export class CustomOauth2 implements Provider<OAuth2Strategy> {
   strategy: OAuth2Strategy;
 

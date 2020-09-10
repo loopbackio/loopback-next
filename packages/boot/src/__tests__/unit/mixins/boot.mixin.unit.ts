@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Application, bind, BindingKey, ContextTags} from '@loopback/core';
+import {Application, BindingKey, ContextTags, injectable} from '@loopback/core';
 import {expect, sinon} from '@loopback/testlab';
 import {BootBindings, Booter, BootMixin} from '../../..';
 
@@ -32,7 +32,7 @@ describe('BootMixin unit tests', () => {
     expect(booter).to.be.an.instanceOf(TestBooter);
   });
 
-  it('binds booter with `@bind` from app.booters()', async () => {
+  it('binds booter with `@injectable` from app.booters()', async () => {
     app.booters(TestBooterWithBind);
     const booterBinding = app.getBinding(
       `${BootBindings.BOOTERS}.TestBooterWithBind`,
@@ -40,7 +40,7 @@ describe('BootMixin unit tests', () => {
     expect(booterBinding.tagMap).to.containEql({artifactType: 'xsd'});
   });
 
-  it('binds booter with `@bind` using a custom binding key', async () => {
+  it('binds booter with `@injectable` using a custom binding key', async () => {
     const testApp = new AppWithBootMixin();
     testApp.bind(BootBindings.PROJECT_ROOT).to(__dirname);
     testApp.booters(TestBooterWithCustomBindingKey);
@@ -110,7 +110,7 @@ describe('BootMixin unit tests', () => {
     }
   }
 
-  @bind({tags: {artifactType: 'xsd'}})
+  @injectable({tags: {artifactType: 'xsd'}})
   class TestBooterWithBind implements Booter {
     configured = false;
 
@@ -122,7 +122,7 @@ describe('BootMixin unit tests', () => {
   const CustomBinding = BindingKey.create<TestBooterWithCustomBindingKey>(
     'io.loopback.custom.binding.TestBooterWithCustomBindingKey',
   );
-  @bind({
+  @injectable({
     tags: {
       [ContextTags.KEY]: CustomBinding,
       artifactType: 'bmp',

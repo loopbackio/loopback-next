@@ -4,12 +4,12 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
-  bind,
   Binding,
   BindingSpec,
   BindingTagFilter,
   Constructor,
   filterByTag,
+  injectable,
   ValueOrPromise,
 } from '@loopback/context';
 import {CoreTags} from './keys';
@@ -73,7 +73,7 @@ export const lifeCycleObserverFilter: BindingTagFilter = filterByTag(
  * @param specs - Optional bindings specs
  */
 export function lifeCycleObserver(group = '', ...specs: BindingSpec[]) {
-  return bind(
+  return injectable(
     asLifeCycleObserver,
     {
       tags: {

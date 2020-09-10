@@ -5,9 +5,9 @@
 
 import {
   Application,
-  bind,
   BindingScope,
   Component,
+  injectable,
   Provider,
 } from '@loopback/core';
 import {expect} from '@loopback/testlab';
@@ -39,7 +39,7 @@ describe('ServiceMixin', () => {
   });
 
   it('binds singleton service from app.serviceProvider()', async () => {
-    @bind({scope: BindingScope.SINGLETON})
+    @injectable({scope: BindingScope.SINGLETON})
     class SingletonGeocoderServiceProvider extends GeocoderServiceProvider {}
     const myApp = new AppWithServiceMixin();
 

@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {HealthChecker} from '@cloudnative/health';
-import {bind, BindingScope, Constructor, inject} from '@loopback/core';
+import {BindingScope, Constructor, inject, injectable} from '@loopback/core';
 import {get} from '@loopback/rest';
 import {HealthBindings} from '../keys';
 import {DEFAULT_HEALTH_OPTIONS, HealthOptions} from '../types';
@@ -22,7 +22,7 @@ export function createHealthController(
   /**
    * Controller for health endpoints
    */
-  @bind({scope: BindingScope.SINGLETON})
+  @injectable({scope: BindingScope.SINGLETON})
   class HealthController {
     constructor(
       @inject(HealthBindings.HEALTH_CHECKER)

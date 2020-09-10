@@ -142,7 +142,7 @@ You can configure the authentication endpoints with the following steps:
 /**
  * basic passport strategy
  */
-@bind(asAuthStrategy)
+@injectable(asAuthStrategy)
 export class BasicStrategy implements AuthenticationStrategy {
   name = 'basic';
   passportstrategy: Strategy;
@@ -335,7 +335,7 @@ You can configure the authentication endpoints with the following steps:
   [@loopback/authentication-passport](https://loopback.io/doc/en/lb4/Authentication-passport.html).
 
 ```ts
-@bind(
+@injectable(
   asAuthStrategy,
   extensionFor(PassportAuthenticationBindings.OAUTH2_STRATEGY),
 )

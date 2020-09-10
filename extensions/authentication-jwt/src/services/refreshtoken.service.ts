@@ -1,5 +1,5 @@
 import {TokenService} from '@loopback/authentication';
-import {bind, BindingScope, inject, uuid} from '@loopback/core';
+import {BindingScope, inject, injectable, uuid} from '@loopback/core';
 import {repository} from '@loopback/repository';
 import {HttpErrors} from '@loopback/rest';
 import {securityId, UserProfile} from '@loopback/security';
@@ -9,7 +9,6 @@ import {
   TokenServiceBindings,
   UserServiceBindings,
 } from '../keys';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import {RefreshToken, RefreshTokenRelations} from '../models';
 import {RefreshTokenRepository} from '../repositories';
 import {TokenObject} from '../types';
@@ -18,7 +17,7 @@ const jwt = require('jsonwebtoken');
 const signAsync = promisify(jwt.sign);
 const verifyAsync = promisify(jwt.verify);
 
-@bind({scope: BindingScope.TRANSIENT})
+@injectable({scope: BindingScope.TRANSIENT})
 export class RefreshtokenService {
   constructor(
     @inject(RefreshTokenServiceBindings.REFRESH_SECRET)
@@ -106,7 +105,9 @@ export class RefreshtokenService {
    * Verify the validity of a refresh token, and make sure it exists in backend.
    * @param refreshToken
    */
-  async verifyToken(refreshToken: string) {
+  async verifyToken(
+    refreshToken: string,
+  ): Promise<RefreshToken & RefreshTokenRelations> {
     try {
       await verifyAsync(refreshToken, this.refreshSecret);
       const userRefreshData = await this.refreshTokenRepository.findOne({

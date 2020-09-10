@@ -14,7 +14,7 @@ import {
 import assert from 'assert';
 import debugFactory from 'debug';
 import {Binding, BindingTemplate} from './binding';
-import {bind} from './binding-decorator';
+import {injectable} from './binding-decorator';
 import {
   BindingFromClassOptions,
   BindingSpec,
@@ -159,7 +159,7 @@ export function asGlobalInterceptor(group?: string): BindingTemplate {
  * @param specs - Extra binding specs
  */
 export function globalInterceptor(group?: string, ...specs: BindingSpec[]) {
-  return bind(asGlobalInterceptor(group), ...specs);
+  return injectable(asGlobalInterceptor(group), ...specs);
 }
 
 /**

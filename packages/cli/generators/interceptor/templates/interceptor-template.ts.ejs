@@ -3,7 +3,7 @@ import {
 <% if (isGlobal) { -%>
   globalInterceptor,
 <% } else { -%>
-  bind,
+  injectable,
 <% } -%>
   Interceptor,
   InvocationContext,
@@ -19,7 +19,7 @@ import {
 <% if (isGlobal) { -%>
 @globalInterceptor('<%= group %>', {tags: {name: '<%= name %>'}})
 <% } else { -%>
-@bind({tags: {key: <%= className %>.BINDING_KEY}})
+@injectable({tags: {key: <%= className %>.BINDING_KEY}})
 <% } -%>
 export class <%= className %> implements Provider<Interceptor> {
 <% if (!isGlobal) { -%>

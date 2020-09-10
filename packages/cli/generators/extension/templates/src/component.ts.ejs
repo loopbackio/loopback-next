@@ -1,6 +1,6 @@
 import {
   Application,
-  bind,
+  injectable,
   Component,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   config,
@@ -12,7 +12,7 @@ import {<%= project.bindingsNamespace %>} from './keys'
 import {<%= project.defaultOptions %>, <%= project.optionsInterface %>} from './types';
 
 // Configure the binding for <%= project.componentName %>
-@bind({tags: {[ContextTags.KEY]: <%= project.bindingsNamespace %>.COMPONENT}})
+@injectable({tags: {[ContextTags.KEY]: <%= project.bindingsNamespace %>.COMPONENT}})
 export class <%= project.componentName %> implements Component {
   constructor(
     @inject(CoreBindings.APPLICATION_INSTANCE)

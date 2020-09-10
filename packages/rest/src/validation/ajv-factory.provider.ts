@@ -4,10 +4,10 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
-  bind,
   BindingScope,
   filterByTag,
   inject,
+  injectable,
   Provider,
 } from '@loopback/core';
 import AjvCtor from 'ajv';
@@ -30,7 +30,7 @@ export const DEFAULT_AJV_VALIDATION_OPTIONS: ValidationOptions = {
 /**
  * A provider class that instantiate an AJV instance
  */
-@bind({scope: BindingScope.SINGLETON})
+@injectable({scope: BindingScope.SINGLETON})
 export class AjvFactoryProvider implements Provider<AjvFactory> {
   constructor(
     @inject(

@@ -1,4 +1,4 @@
-import {bind, /* inject, */ BindingScope, Provider} from '@loopback/core';
+import {injectable, /* inject, */ BindingScope, Provider} from '@loopback/core';
 
 /*
  * Fix the service type. Possible options can be:
@@ -8,7 +8,7 @@ import {bind, /* inject, */ BindingScope, Provider} from '@loopback/core';
  */
 export type <%= className %> = unknown;
 
-@bind({scope: BindingScope.TRANSIENT})
+@injectable({scope: BindingScope.TRANSIENT})
 export class <%= className %>Provider implements Provider<<%= className %>> {
   constructor(/* Add @inject to inject parameters */) {}
 

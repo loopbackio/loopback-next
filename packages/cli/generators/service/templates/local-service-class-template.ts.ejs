@@ -1,6 +1,6 @@
-import {bind, /* inject, */ BindingScope} from '@loopback/core';
+import {injectable, /* inject, */ BindingScope} from '@loopback/core';
 
-@bind({scope: BindingScope.TRANSIENT})
+@injectable({scope: BindingScope.TRANSIENT})
 export class <%= className %>Service {
   constructor(/* Add @inject to inject parameters */) {}
 

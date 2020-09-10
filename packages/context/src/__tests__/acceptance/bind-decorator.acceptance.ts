@@ -5,21 +5,21 @@
 
 import {expect} from '@loopback/testlab';
 import {
-  bind,
   BindingScope,
   Context,
   createBindingFromClass,
+  injectable,
   Provider,
 } from '../..';
 
-describe('@bind - customize classes with binding attributes', () => {
-  @bind({
+describe('@injectable - customize classes with binding attributes', () => {
+  @injectable({
     scope: BindingScope.SINGLETON,
     tags: ['service'],
   })
   class MyService {}
 
-  @bind.provider({
+  @injectable.provider({
     tags: {
       key: 'my-date-provider',
     },
@@ -30,7 +30,7 @@ describe('@bind - customize classes with binding attributes', () => {
     }
   }
 
-  @bind({
+  @injectable({
     tags: ['controller', {name: 'my-controller', type: 'controller'}],
   })
   class MyController {}
@@ -81,7 +81,7 @@ describe('@bind - customize classes with binding attributes', () => {
   });
 
   describe('binding scope', () => {
-    @bind({
+    @injectable({
       // Explicitly set the binding scope to be `SINGLETON` as the developer
       // choose to implement the controller as a singleton without depending
       // on request specific information
@@ -89,7 +89,7 @@ describe('@bind - customize classes with binding attributes', () => {
     })
     class MySingletonController {}
 
-    it('allows singleton controller with @bind', () => {
+    it('allows singleton controller with @injectable', () => {
       const binding = createBindingFromClass(MySingletonController, {
         type: 'controller',
       });
@@ -98,14 +98,14 @@ describe('@bind - customize classes with binding attributes', () => {
       expect(binding.scope).to.equal(BindingScope.SINGLETON);
     });
 
-    it('honors binding scope from @bind over defaultScope', () => {
+    it('honors binding scope from @injectable over defaultScope', () => {
       const binding = createBindingFromClass(MySingletonController, {
         defaultScope: BindingScope.TRANSIENT,
       });
       expect(binding.scope).to.equal(BindingScope.SINGLETON);
     });
 
-    it('honors binding scope from @bind', () => {
+    it('honors binding scope from @injectable', () => {
       const binding = createBindingFromClass(MySingletonController);
       expect(binding.scope).to.equal(BindingScope.SINGLETON);
     });

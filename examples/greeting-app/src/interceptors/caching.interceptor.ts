@@ -5,8 +5,8 @@
 
 import {
   asGlobalInterceptor,
-  bind,
   inject,
+  injectable,
   Interceptor,
   InvocationContext,
   InvocationResult,
@@ -20,7 +20,7 @@ import {CACHING_SERVICE} from '../keys';
 
 const debug = debugFactory('greeter-extension');
 
-@bind(asGlobalInterceptor('caching'))
+@injectable(asGlobalInterceptor('caching'))
 export class CachingInterceptor implements Provider<Interceptor> {
   constructor(
     @inject(CACHING_SERVICE) private cachingService: CachingService,

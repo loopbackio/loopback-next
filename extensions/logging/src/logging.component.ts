@@ -4,12 +4,12 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
-  bind,
   Binding,
   Component,
   config,
   ContextTags,
   extensionFor,
+  injectable,
   ProviderMap,
 } from '@loopback/core';
 import {FluentSenderProvider, FluentTransportProvider} from './fluent';
@@ -37,7 +37,7 @@ export type LoggingComponentConfig = {
 /**
  * A component providing logging facilities
  */
-@bind({tags: {[ContextTags.KEY]: LoggingBindings.COMPONENT}})
+@injectable({tags: {[ContextTags.KEY]: LoggingBindings.COMPONENT}})
 export class LoggingComponent implements Component {
   providers: ProviderMap;
   bindings: Binding<unknown>[];

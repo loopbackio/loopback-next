@@ -193,7 +193,7 @@ export * from './my-interceptor.interceptor';
 exports[`lb4 interceptor valid generation of interceptors generates a non-global interceptor from CLI 1`] = `
 import {
   /* inject, */
-  bind,
+  injectable,
   Interceptor,
   InvocationContext,
   InvocationResult,
@@ -205,7 +205,7 @@ import {
  * This class will be bound to the application as an \`Interceptor\` during
  * \`boot\`
  */
-@bind({tags: {key: MyInterceptorInterceptor.BINDING_KEY}})
+@injectable({tags: {key: MyInterceptorInterceptor.BINDING_KEY}})
 export class MyInterceptorInterceptor implements Provider<Interceptor> {
   static readonly BINDING_KEY = \`interceptors.\${MyInterceptorInterceptor.name}\`;
 
@@ -256,7 +256,7 @@ export * from './my-interceptor.interceptor';
 exports[`lb4 interceptor valid generation of interceptors generates a non-global interceptor with prompts 1`] = `
 import {
   /* inject, */
-  bind,
+  injectable,
   Interceptor,
   InvocationContext,
   InvocationResult,
@@ -268,7 +268,7 @@ import {
  * This class will be bound to the application as an \`Interceptor\` during
  * \`boot\`
  */
-@bind({tags: {key: MyInterceptorInterceptor.BINDING_KEY}})
+@injectable({tags: {key: MyInterceptorInterceptor.BINDING_KEY}})
 export class MyInterceptorInterceptor implements Provider<Interceptor> {
   static readonly BINDING_KEY = \`interceptors.\${MyInterceptorInterceptor.name}\`;
 

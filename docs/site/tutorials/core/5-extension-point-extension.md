@@ -163,7 +163,7 @@ knowing much about one another.
 
 ```ts
 import {Greeter, asGreeter} from '../types';
-import {bind, inject} from '@loopback/core';
+import {injectable, inject} from '@loopback/core';
 /**
  * Options for the Chinese greeter
  */
@@ -174,7 +174,7 @@ export interface ChineseGreeterOptions {
 /**
  * A greeter implementation for Chinese
  */
-@bind(asGreeter)
+@injectable(asGreeter)
 export class ChineseGreeter implements Greeter {
   language = 'zh';
   constructor(
@@ -194,7 +194,7 @@ export class ChineseGreeter implements Greeter {
 ```
 
 Please note we use
-[`@bind`](https://loopback.io/doc/en/lb4/Binding.html#configure-binding-attributes-for-a-class)
+[`@injectable`](https://loopback.io/doc/en/lb4/Binding.html#configure-binding-attributes-for-a-class)
 to customize how the class can be bound. In this case, `asGreeter` is a binding
 template function, which is equivalent as configuring a binding with
 `{extensionFor: 'greeter'}` tag and in the `SINGLETON` scope.

@@ -22,7 +22,7 @@ You can create your own
 
    ```ts
    export function globalInterceptor(group?: string) {
-     bind({tags: [ContextTags.GLOBAL_INTERCEPTOR]});
+     injectable({tags: [ContextTags.GLOBAL_INTERCEPTOR]});
    }
    ```
 
@@ -93,7 +93,7 @@ configuration object to be injected as instructed by `@config`.
 /**
  * A greeter implementation for Chinese.
  */
-@bind(asGreeter)
+@injectable(asGreeter)
 export class ChineseGreeter implements Greeter {
   language = 'zh';
   constructor(

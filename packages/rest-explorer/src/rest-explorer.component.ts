@@ -4,12 +4,12 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
-  bind,
   Component,
   config,
   ContextTags,
   CoreBindings,
   inject,
+  injectable,
 } from '@loopback/core';
 import {createControllerFactoryForClass, RestApplication} from '@loopback/rest';
 import {ExplorerController} from './rest-explorer.controller';
@@ -21,7 +21,7 @@ const swaggerUI = require('swagger-ui-dist');
 /**
  * A component providing a self-hosted API Explorer.
  */
-@bind({tags: {[ContextTags.KEY]: RestExplorerBindings.COMPONENT.key}})
+@injectable({tags: {[ContextTags.KEY]: RestExplorerBindings.COMPONENT.key}})
 export class RestExplorerComponent implements Component {
   constructor(
     @inject(CoreBindings.APPLICATION_INSTANCE)

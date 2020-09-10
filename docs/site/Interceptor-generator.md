@@ -60,7 +60,7 @@ The generated class looks like:
 import {
   /* inject, */
   globalInterceptor,
-  bind,
+  injectable,
   Interceptor,
   Provider,
 } from '@loopback/core';
@@ -112,7 +112,7 @@ export class TestInterceptor implements Provider<Interceptor> {
 ```ts
 import {
   /* inject, */
-  bind,
+  injectable,
   Interceptor,
   Provider,
 } from '@loopback/core';
@@ -121,7 +121,7 @@ import {
  * This class will be bound to the application as a global `Interceptor` during
  * `boot`
  */
-@bind({tags: {key: TestInterceptor.BINDING_KEY}})
+@injectable({tags: {key: TestInterceptor.BINDING_KEY}})
 export class TestInterceptor implements Provider<Interceptor> {
   static readonly BINDING_KEY = `interceptors.${TestInterceptor.name}`;
 

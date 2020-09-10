@@ -21,7 +21,7 @@ import {Constructor} from './value-promise';
 const debug = debugFactory('loopback:context:binding-inspector');
 
 /**
- * Binding metadata from `@bind`
+ * Binding metadata from `@injectable`
  *
  * @typeParam T - Value type
  */
@@ -53,7 +53,7 @@ export type BindingScopeAndTags = {
 };
 
 /**
- * Specification of parameters for `@bind()`
+ * Specification of parameters for `@injectable()`
  */
 export type BindingSpec<T = unknown> = BindingTemplate<T> | BindingScopeAndTags;
 
@@ -164,7 +164,7 @@ export function removeNameAndKeyTags(binding: Binding<unknown>) {
 /**
  * Get the binding template for a class with binding metadata
  *
- * @param cls - A class with optional `@bind`
+ * @param cls - A class with optional `@injectable`
  *
  * @typeParam T - Value type
  */

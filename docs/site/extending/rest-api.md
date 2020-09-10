@@ -59,7 +59,7 @@ import {RestApplication} from '@loopback/rest';
 import {MyComponentBindings} from './my-component.keys.ts';
 import {definePingController} from './controllers/ping.controller-factory.ts';
 
-@bind({tags: {[ContextTags.KEY]: MyComponentBindings.COMPONENT.key}})
+@injectable({tags: {[ContextTags.KEY]: MyComponentBindings.COMPONENT.key}})
 export class MyComponent implements Component {
   constructor(
     @config(),
@@ -99,7 +99,7 @@ The example below shows a component that always contributed a `ping` endpoint
 and sometimes contributes a `stats` endpoint, depending on the configuration.
 
 ```ts
-import {bind, config, ContextTags} from '@loopback/core';
+import {injectable, config, ContextTags} from '@loopback/core';
 import {MyComponentBindings} from './my-component.keys.ts';
 import {PingController, StatsController} from './controllers';
 
@@ -107,7 +107,7 @@ export interface MyComponentConfig {
   stats: boolean;
 }
 
-@bind({tags: {[ContextTags.KEY]: MyComponentBindings.COMPONENT.key}})
+@injectable({tags: {[ContextTags.KEY]: MyComponentBindings.COMPONENT.key}})
 export class MyComponent implements Component {
   constructor(
     @config()

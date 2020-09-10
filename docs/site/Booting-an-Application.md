@@ -266,18 +266,18 @@ using `app.service()`.
 
 {% include notes.html content="
 **IMPORTANT:** For a class to be recognized by `ServiceBooter` as a service
-provider, it either has to be decorated with `@bind`/`@inject` or the class name
-must end with `Provider` suffix and must have a static or prototype `value()`
-method.
+provider, it either has to be decorated with `@injectable`/`@inject` or the
+class name must end with `Provider` suffix and must have a static or prototype
+`value()` method.
 " %}
 
 The following are some examples for service classes:
 
 ```ts
-import {bind, BindingScope, inject, Provider} from '@loopback/core';
+import {injectable, BindingScope, inject, Provider} from '@loopback/core';
 
-// With `@bind`
-@bind({
+// With `@injectable`
+@injectable({
   tags: {serviceType: 'local'},
   scope: BindingScope.SINGLETON,
 })
@@ -287,7 +287,7 @@ export class BindableGreetingService {
   }
 }
 
-@bind({tags: {serviceType: 'local', name: 'CurrentDate'}})
+@injectable({tags: {serviceType: 'local', name: 'CurrentDate'}})
 export class DateProvider implements Provider<Date> {
   value(): Promise<Date> {
     return Promise.resolve(new Date());

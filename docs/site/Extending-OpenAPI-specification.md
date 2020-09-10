@@ -41,7 +41,7 @@ import {
 /**
  * A spec enhancer to add OpenAPI info spec
  */
-@bind(asSpecEnhancer)
+@injectable(asSpecEnhancer)
 export class InfoSpecEnhancer implements OASEnhancer {
   // give your enhancer a proper name
   name = 'info';
@@ -81,8 +81,8 @@ merge two json objects. You can find its usage in the
 
 ### Registering an Enhancer
 
-After decorating your enhancer properly with `@bind(asSpecEnhancer)`, you can
-bind it to your application as follows:
+After decorating your enhancer properly with `@injectable(asSpecEnhancer)`, you
+can bind it to your application as follows:
 
 ```ts
 import {createBindingFromClass} from '@loopback/core';

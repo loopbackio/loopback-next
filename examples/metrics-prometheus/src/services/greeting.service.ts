@@ -3,11 +3,11 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {bind, ContextTags} from '@loopback/core';
+import {ContextTags, injectable} from '@loopback/core';
 import {promisify} from 'util';
 const sleep = promisify(setTimeout);
 
-@bind({tags: {[ContextTags.NAMESPACE]: 'services'}})
+@injectable({tags: {[ContextTags.NAMESPACE]: 'services'}})
 export class GreetingService {
   async greet(name: string) {
     const ts = new Date().toISOString();

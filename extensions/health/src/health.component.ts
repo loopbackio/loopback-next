@@ -6,13 +6,13 @@
 import {HealthChecker} from '@cloudnative/health';
 import {
   Application,
-  bind,
   BindingScope,
   Component,
   config,
   ContextTags,
   CoreBindings,
   inject,
+  injectable,
 } from '@loopback/core';
 import {createHealthController} from './controllers';
 import {HealthBindings} from './keys';
@@ -22,7 +22,7 @@ import {DEFAULT_HEALTH_OPTIONS, HealthConfig, HealthOptions} from './types';
 /**
  * A component providing health status
  */
-@bind({tags: {[ContextTags.KEY]: HealthBindings.COMPONENT}})
+@injectable({tags: {[ContextTags.KEY]: HealthBindings.COMPONENT}})
 export class HealthComponent implements Component {
   constructor(
     @inject(CoreBindings.APPLICATION_INSTANCE)

@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {bind, inject} from '@loopback/core';
+import {inject, injectable} from '@loopback/core';
 import {
   asSpecEnhancer,
   HttpErrors,
@@ -17,7 +17,7 @@ import {asAuthStrategy, AuthenticationStrategy} from '../../../types';
 import {JWTAuthenticationStrategyBindings} from '../keys';
 import {JWTService} from '../services/jwt-service';
 
-@bind(asAuthStrategy, asSpecEnhancer)
+@injectable(asAuthStrategy, asSpecEnhancer)
 export class JWTAuthenticationStrategy
   implements AuthenticationStrategy, OASEnhancer {
   name = 'jwt';

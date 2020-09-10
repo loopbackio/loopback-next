@@ -59,11 +59,11 @@ The component class is usually implemented inside
 
 ```ts
 import {Application, Component, CoreBindings} from '@loopback/core';
-import {bind, config, ContextTags, inject} from '@loopback/core';
+import {injectable, config, ContextTags, inject} from '@loopback/core';
 import {MetricsBindings} from './keys';
 import {DEFAULT_METRICS_OPTIONS, MetricsOptions} from './types';
 
-@bind({tags: {[ContextTags.KEY]: MetricsBindings.COMPONENT}})
+@injectable({tags: {[ContextTags.KEY]: MetricsBindings.COMPONENT}})
 export class MetricsComponent implements Component {
   constructor(
     @inject(CoreBindings.APPLICATION_INSTANCE)

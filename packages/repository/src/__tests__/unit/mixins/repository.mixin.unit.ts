@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Application, bind, BindingScope, Component} from '@loopback/core';
+import {Application, BindingScope, Component, injectable} from '@loopback/core';
 import {expect, sinon} from '@loopback/testlab';
 import {
   Class,
@@ -33,7 +33,7 @@ describe('RepositoryMixin', () => {
   });
 
   it('binds singleton repository from app.repository()', () => {
-    @bind({scope: BindingScope.SINGLETON})
+    @injectable({scope: BindingScope.SINGLETON})
     class SingletonNoteRepo extends NoteRepo {}
 
     const myApp = new AppWithRepoMixin();

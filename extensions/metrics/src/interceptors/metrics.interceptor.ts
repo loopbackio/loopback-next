@@ -5,8 +5,8 @@
 
 import {
   asGlobalInterceptor,
-  bind,
   BindingScope,
+  injectable,
   Interceptor,
   InvocationContext,
   Provider,
@@ -20,7 +20,7 @@ import {Counter, Gauge, Histogram, register, Summary} from 'prom-client';
  * a method is invoked. Please collect metrics at other places
  * if you want to cover more than just method invocations.
  */
-@bind(asGlobalInterceptor('metrics'), {scope: BindingScope.SINGLETON})
+@injectable(asGlobalInterceptor('metrics'), {scope: BindingScope.SINGLETON})
 export class MetricsInterceptor implements Provider<Interceptor> {
   private static gauge: Gauge<'targetName'>;
 

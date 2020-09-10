@@ -4,10 +4,10 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
-  bind,
   BindingScope,
   ContextTags,
   inject,
+  injectable,
   LifeCycleObserver,
   lifeCycleObserver,
 } from '@loopback/core';
@@ -17,7 +17,7 @@ import {RecipesDataSource} from '../datasources/recipes.datasource';
 import {RecipeInput} from '../graphql-types/recipe-input';
 import {Recipe} from '../graphql-types/recipe-type';
 
-@bind({
+@injectable({
   scope: BindingScope.SINGLETON,
   tags: {[ContextTags.NAMESPACE]: RepositoryBindings.REPOSITORIES},
 })

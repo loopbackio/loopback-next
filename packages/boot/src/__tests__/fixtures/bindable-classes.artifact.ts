@@ -3,9 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {bind, BindingScope, inject, Provider} from '@loopback/core';
+import {injectable, BindingScope, inject, Provider} from '@loopback/core';
 
-@bind({
+@injectable({
   tags: {serviceType: 'local'},
   scope: BindingScope.SINGLETON,
 })
@@ -15,7 +15,7 @@ export class BindableGreetingService {
   }
 }
 
-@bind({tags: {serviceType: 'local', name: 'CurrentDate'}})
+@injectable({tags: {serviceType: 'local', name: 'CurrentDate'}})
 export class DateProvider implements Provider<Date> {
   value(): Promise<Date> {
     return Promise.resolve(new Date());

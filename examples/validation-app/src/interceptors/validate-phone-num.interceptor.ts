@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
-  bind,
+  injectable,
   Interceptor,
   InvocationContext,
   InvocationResult,
@@ -17,7 +17,7 @@ import {CoffeeShop} from '../models';
  * This class will be bound to the application as an `Interceptor` during
  * `boot`
  */
-@bind({tags: {key: ValidatePhoneNumInterceptor.BINDING_KEY}})
+@injectable({tags: {key: ValidatePhoneNumInterceptor.BINDING_KEY}})
 export class ValidatePhoneNumInterceptor implements Provider<Interceptor> {
   static readonly BINDING_KEY = `interceptors.${ValidatePhoneNumInterceptor.name}`;
 

@@ -3,10 +3,10 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {bind, BindingScope, Provider} from '@loopback/core';
+import {BindingScope, injectable, Provider} from '@loopback/core';
 import {LogError, Request} from '../types';
 
-@bind({scope: BindingScope.SINGLETON})
+@injectable({scope: BindingScope.SINGLETON})
 export class LogErrorProvider implements Provider<LogError> {
   value(): LogError {
     return (err, statusCode, req) => this.action(err, statusCode, req);

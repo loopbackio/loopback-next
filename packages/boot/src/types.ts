@@ -4,11 +4,11 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
-  bind,
   Binding,
   BindingSpec,
   Constructor,
   ContextTags,
+  injectable,
 } from '@loopback/core';
 import {BootBindings, BootTags} from './keys';
 
@@ -160,7 +160,7 @@ export interface Bootable {
  * @param specs - Extra specs for the binding
  */
 export function booter(artifactNamespace: string, ...specs: BindingSpec[]) {
-  return bind(
+  return injectable(
     {
       tags: {
         artifactNamespace,

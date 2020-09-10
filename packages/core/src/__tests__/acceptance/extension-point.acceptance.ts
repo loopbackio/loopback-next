@@ -4,7 +4,6 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
-  bind,
   Binding,
   BindingScope,
   BINDING_METADATA_KEY,
@@ -13,6 +12,7 @@ import {
   ContextView,
   createBindingFromClass,
   Getter,
+  injectable,
   MetadataInspector,
 } from '@loopback/context';
 import {expect} from '@loopback/testlab';
@@ -62,7 +62,7 @@ describe('extension point', () => {
         public greeters: Getter<Greeter[]>;
       }
 
-      // `@extensionPoint` is a sugar decorator for `@bind`
+      // `@extensionPoint` is a sugar decorator for `@injectable`
       const binding = createBindingFromClass(GreetingService, {
         key: 'greeter-service',
       });
@@ -93,7 +93,7 @@ describe('extension point', () => {
         }
       }
 
-      // `@extensionPoint` is a sugar decorator for `@bind`
+      // `@extensionPoint` is a sugar decorator for `@injectable`
       const binding = createBindingFromClass(GreetingService, {
         key: 'greeter-service',
       });
@@ -119,7 +119,7 @@ describe('extension point', () => {
         public greeters: Greeter[];
       }
 
-      // `@extensionPoint` is a sugar decorator for `@bind`
+      // `@extensionPoint` is a sugar decorator for `@injectable`
       const binding = createBindingFromClass(GreetingService, {
         key: 'greeter-service',
       });
@@ -221,7 +221,10 @@ describe('extension point', () => {
     });
 
     it('allows an extension to contribute to multiple extension points', () => {
-      @bind(extensionFor('extensionPoint-1'), extensionFor('extensionPoint-2'))
+      @injectable(
+        extensionFor('extensionPoint-1'),
+        extensionFor('extensionPoint-2'),
+      )
       class MyExtension {}
       const binding = createBindingFromClass(MyExtension);
       expect(binding.tagMap[CoreTags.EXTENSION_FOR]).to.eql([
@@ -283,7 +286,7 @@ describe('extension point', () => {
         @extensions() getMyExtensions: Getter<MyExtension[]>;
       }
 
-      @bind(extensionFor('extensionPoint-1', 'extensionPoint-2'))
+      @injectable(extensionFor('extensionPoint-1', 'extensionPoint-2'))
       class MyExtension {}
 
       ctx.add(

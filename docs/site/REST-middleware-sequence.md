@@ -379,7 +379,7 @@ cascading style. The order of groups is determined by two factors:
       middleware
 
       ```ts
-      @bind(
+      @injectable(
         asMiddleware({
           chain: RestTags.REST_MIDDLEWARE_CHAIN,
           group: 'authentication',
@@ -394,7 +394,7 @@ cascading style. The order of groups is determined by two factors:
       this middleware
 
       ```ts
-      @bind(
+      @injectable(
         asMiddleware({
           group: 'sendResponse',
           downstreamGroups: ['cors', 'invokeMethod'],

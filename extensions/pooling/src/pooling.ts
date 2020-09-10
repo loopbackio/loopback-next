@@ -4,12 +4,12 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
-  bind,
   BindingAddress,
   BindingScope,
   config,
   Context,
   inject,
+  injectable,
   LifeCycleObserver,
   ValueOrPromise,
 } from '@loopback/core';
@@ -135,7 +135,7 @@ export async function getPooledValue<T>(
  *
  * The pool service observes life cycle events to start and stop.
  */
-@bind({scope: BindingScope.SINGLETON})
+@injectable({scope: BindingScope.SINGLETON})
 export class PoolingService<T> implements LifeCycleObserver {
   private readonly factory: PoolFactory<T>;
   /**

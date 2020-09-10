@@ -70,7 +70,7 @@ locating the dependent artifacts. For example:
    ```
 
    ```ts
-   @bind(asGlobalInterceptor('caching'))
+   @injectable(asGlobalInterceptor('caching'))
    export class CachingInterceptor implements Provider<Interceptor> {
      constructor(
        @inject(CACHING_SERVICE) private cachingService: CachingService,

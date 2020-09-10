@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {bind, Context, createBindingFromClass} from '@loopback/core';
+import {Context, createBindingFromClass, injectable} from '@loopback/core';
 import {
   asSpecEnhancer,
   OASEnhancer,
@@ -54,7 +54,7 @@ describe('registerAuthenticationStrategy', () => {
     );
   });
 
-  @bind(asAuthStrategy, asSpecEnhancer)
+  @injectable(asAuthStrategy, asSpecEnhancer)
   class MyAuthenticationStrategy
     implements AuthenticationStrategy, OASEnhancer {
     name: 'my-auth';

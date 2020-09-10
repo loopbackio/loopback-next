@@ -4,10 +4,10 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
-  bind,
   BindingScope,
   Context,
   createBindingFromClass,
+  injectable,
 } from '@loopback/context';
 import {expect} from '@loopback/testlab';
 import {promisify} from 'util';
@@ -167,7 +167,7 @@ describe('LifeCycleRegistry', () => {
   }
 
   function givenObserver(name: string, group = '') {
-    @bind({tags: {[CoreTags.LIFE_CYCLE_OBSERVER_GROUP]: group}})
+    @injectable({tags: {[CoreTags.LIFE_CYCLE_OBSERVER_GROUP]: group}})
     class MyObserver implements LifeCycleObserver {
       start() {
         events.push(`${name}-start`);
@@ -185,7 +185,7 @@ describe('LifeCycleRegistry', () => {
   }
 
   function givenAsyncObserver(name: string, group = '', delayInMs = 0) {
-    @bind({tags: {[CoreTags.LIFE_CYCLE_OBSERVER_GROUP]: group}})
+    @injectable({tags: {[CoreTags.LIFE_CYCLE_OBSERVER_GROUP]: group}})
     class MyAsyncObserver implements LifeCycleObserver {
       async start() {
         await sleep(delayInMs);

@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {bind, BindingSpec} from '@loopback/core';
+import {BindingSpec, injectable} from '@loopback/core';
 import {asCronJob} from '../types';
 
 /**
@@ -22,5 +22,5 @@ import {asCronJob} from '../types';
  * @param specs - Extra binding specs
  */
 export function cronJob(...specs: BindingSpec[]) {
-  return bind(asCronJob, ...specs);
+  return injectable(asCronJob, ...specs);
 }
