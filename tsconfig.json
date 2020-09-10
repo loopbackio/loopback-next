@@ -29,6 +29,9 @@
       "path": "examples/access-control-migration/tsconfig.json"
     },
     {
+      "path": "examples/binding-resolution/tsconfig.json"
+    },
+    {
       "path": "examples/context/tsconfig.json"
     },
     {
