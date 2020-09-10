@@ -39,7 +39,7 @@
     "@loopback/rest": "^6.2.0",
     "@loopback/testlab": "^3.2.4",
     "@types/json-schema": "^7.0.6",
-    "@types/node": "^10.17.30",
+    "@types/node": "^10.17.31",
     "sqlite3": "^5.0.0"
   },
   "files": [
