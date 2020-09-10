@@ -211,6 +211,7 @@ export class RestServer
     config: RestServerConfig = {},
   ) {
     super(app);
+    this.scope = BindingScope.SERVER;
 
     this.config = resolveRestServerConfig(config);
 

@@ -5,6 +5,7 @@
 
 import {
   BindingAddress,
+  BindingScope,
   Context,
   GenericInterceptor,
   GenericInterceptorChain,
@@ -57,6 +58,7 @@ export class MiddlewareContext extends Context implements HandlerContext {
     name?: string,
   ) {
     super(parent, name);
+    this.scope = BindingScope.REQUEST;
     this.setupBindings();
     onFinished(this.response, () => {
       this.responseFinished = true;
