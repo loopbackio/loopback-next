@@ -7,12 +7,10 @@ package, please see the [CODEOWNERS file](CODEOWNERS).
 Core maintainers:
 
 - Agnes Lin ([@agnes512](https://github.com/agnes512))
-- Deepak Rajamohan ([@deepakrkris](https://github.com/deepakrkris))
 - Diana Lau ([@dhmlau](https://github.com/dhmlau))
 - Dominique Emond ([@emonddr](https://github.com/emonddr))
 - Janny Hou ([@jannyhou](https://github.com/jannyhou))
 - Miroslav Bajtos ([@bajtos](https://github.com/bajtos))
-- Nora Abdelgadir ([@nabdelgadir](https://github.com/nabdelgadir))
 - Raymond Feng ([@raymondfeng](https://github.com/raymondfeng))
 - Yaapa Hage ([@hacksparrow](https://github.com/hacksparrow))
 
@@ -22,7 +20,9 @@ Community maintainers:
 - Douglas McConnachie ([@dougal83](https://github.com/dougal83))
 - Francisco Buceta ([@frbuceta](https://github.com/frbuceta))
 - Hugo Da Roit ([@Yaty](https://github.com/Yaty))
+- Madaky ([@madaky](https://github.com/madaky))
 - Mario Estrada ([@marioestradarosa](https://github.com/marioestradarosa))
 - Matthew Schnee ([@mschnee](https://github.com/mschnee))
+- Nora Abdelgadir ([@nabdelgadir](https://github.com/nabdelgadir))
 - Rifa Achrinza ([@achrinza](https://github.com/achrinza))
 - TN ([@thinusn](https://github.com/thinusn))
