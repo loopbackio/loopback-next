@@ -179,10 +179,10 @@ into repository classes.
 For example,
 
 - A
-  [JWT Authentication Strategy](https://github.com/strongloop/loopback4-example-shopping/blob/master/packages/shopping/src/authentication-strategies/jwt-strategy.ts)
+  [JWT Authentication Strategy](https://github.com/strongloop/loopback-next/blob/master/extensions/authentication-jwt/src/services/jwt.auth.strategy.ts)
   is implemented with a name property `jwt`.
-- `printCurrentUser` remote method in
-  [UserController](https://github.com/strongloop/loopback4-example-shopping/blob/master/packages/shopping/src/controllers/user.controller.ts)
+- `whoAmI` remote method in
+  [UserController](https://github.com/strongloop/loopback-next/blob/526e70e9a603d56ef96c5b42347b1d22ec0beac9/examples/todo-jwt/src/controllers/user.controller.ts#L97-L113)
   is decorated with `authenticate('jwt')` to indicate the API endpoint is
   authenticated with json web tokens.
 
