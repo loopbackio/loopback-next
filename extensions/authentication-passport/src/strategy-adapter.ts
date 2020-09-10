@@ -9,7 +9,7 @@ import {
 } from '@loopback/authentication';
 import {HttpErrors, RedirectRoute, Request} from '@loopback/rest';
 import {UserProfile} from '@loopback/security';
-import {Strategy} from 'passport';
+import {Strategy, AuthenticateOptions} from 'passport';
 
 const passportRequestMixin = require('passport/lib/http/request');
 
@@ -41,8 +41,12 @@ export class StrategyAdapter<U> implements AuthenticationStrategy {
    *     2. add success and failure state handlers
    *     3. authenticate using the strategy
    * @param request The incoming request.
+   * @param options Options passed through to strategy.authenticate.
    */
-  authenticate(request: Request): Promise<UserProfile | RedirectRoute> {
+  authenticate(
+    request: Request,
+    options?: AuthenticateOptions,
+  ): Promise<UserProfile | RedirectRoute> {
     const userProfileFactory = this.userProfileFactory;
     return new Promise<UserProfile | RedirectRoute>((resolve, reject) => {
       // mix-in passport additions like req.logIn and req.logOut
@@ -82,7 +86,7 @@ export class StrategyAdapter<U> implements AuthenticationStrategy {
       };
 
       // authenticate
-      strategy.authenticate(request);
+      strategy.authenticate(request, options);
     });
   }
 }

@@ -14,21 +14,25 @@ describe('Strategy Adapter', () => {
   const mockUser: UserProfile = {name: 'user-name', [securityId]: 'mock-id'};
 
   describe('authenticate()', () => {
-    it('calls the authenticate method of the strategy', async () => {
+    it('calls the authenticate method of the strategy with provided options', async () => {
       let calledFlag = false;
+      let calledOptions = null;
       // TODO: (as suggested by @bajtos) use sinon spy
       class MyStrategy extends MockPassportStrategy {
         // override authenticate method to set calledFlag
         async authenticate(req: Request, options?: AuthenticateOptions) {
           calledFlag = true;
+          calledOptions = options;
           await super.authenticate(req, options);
         }
       }
       const strategy = new MyStrategy();
       const adapter = new StrategyAdapter(strategy, 'mock-strategy');
       const request = <Request>{};
-      await adapter.authenticate(request);
+      const providedOptions = {passReqToCallback: true};
+      await adapter.authenticate(request, providedOptions);
       expect(calledFlag).to.be.true();
+      expect(calledOptions).to.be.eql(providedOptions);
     });
 
     it('returns a promise which resolves to an object', async () => {
