@@ -139,5 +139,5 @@ $ npm run migrate
 
 The `todolist`, `todo` and `todolistimage` tables are created.
 
-For details, see the [Database migrations](Database-migrations.md) documentation
-page.
+For details, see the [Database migrations](../../Database-migrations.md)
+documentation page.

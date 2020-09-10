@@ -23,7 +23,7 @@ doing it.
 A `ModelDefinition` object is the first step to creating a LoopBack model, it is
 an abstraction for specifying the various attributes of a LoopBack model. A
 `ModelDefinition` object is instantiated by passing a name or a
-[ModelDefinitionSyntax](./apidocs/repository.modeldefinitionsyntax.html#modeldefinitionsyntax-interface)
+[ModelDefinitionSyntax](./apidocs.repository.modeldefinitionsyntax.html#modeldefinitionsyntax-interface)
 object describing the model's attributes to the `ModelDefinition`'s constructor.
 
 An example of creating a `ModelDefinition` object:
@@ -99,7 +99,7 @@ const StudentModel = defineModelClass<
 
 For details about `ModelDefinition`, `defineModelClass`, `Model`, `Entity`, and
 `DynamicModelCtor` refer to the
-[@loopback/repository API documentation](./apidocs/repository.html).
+[@loopback/repository API documentation](./apidocs.repository.html).
 
 ### Defining a Datasource
 
@@ -225,7 +225,7 @@ If you want a customized controller, you can create a copy of
 and modify it according to your requirements.
 
 For details about `defineCrudRestController` and `CrudRestControllerOptions`,
-refer to the [@loopback/rest-crud API documentation](./apidocs/rest-crud.html).
+refer to the [@loopback/rest-crud API documentation](./apidocs.rest-crud.html).
 
 ## Model discovery
 

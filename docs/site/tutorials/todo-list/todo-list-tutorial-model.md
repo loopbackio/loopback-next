@@ -79,6 +79,7 @@ a [repository](todo-list-tutorial-repository.md) for `TodoList`.
 
 ### Navigation
 
-Introduction: [TodoList Tutorial](todo-list-tutorial.md)
+Introduction:
+[TodoList Tutorial](https://loopback.io/doc/en/lb4/todo-list-tutorial.html)
 
 Next step: [Add TodoList repository](todo-list-tutorial-repository.md)
