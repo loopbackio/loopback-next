@@ -152,6 +152,7 @@
 /examples/hello-world @emonddr @hacksparrow
 /examples/express-composition @emonddr @hacksparrow
 /examples/file-transfer @emonddr @hacksparrow @raymondfeng
+/examples/binding-resolution @raymondfeng
 
 #
 # OpenAPI (server-side)
