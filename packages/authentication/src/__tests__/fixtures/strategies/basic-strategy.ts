@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {bind, inject} from '@loopback/core';
+import {inject, injectable} from '@loopback/core';
 import {
   asSpecEnhancer,
   HttpErrors,
@@ -22,7 +22,7 @@ export interface BasicAuthenticationStrategyCredentials {
   password: string;
 }
 
-@bind(asAuthStrategy, asSpecEnhancer)
+@injectable(asAuthStrategy, asSpecEnhancer)
 export class BasicAuthenticationStrategy
   implements AuthenticationStrategy, OASEnhancer {
   name = 'basic';

@@ -3,10 +3,10 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {asService, bind} from '@loopback/core';
+import {asService, injectable} from '@loopback/core';
 import {Recipe} from '../graphql-types/recipe-type';
 
-@bind(asService(RecipeService))
+@injectable(asService(RecipeService))
 export class RecipeService {
   ratingsCount(recipe: Recipe, minRate: number): number {
     return recipe.ratings.filter(rating => rating >= minRate).length;

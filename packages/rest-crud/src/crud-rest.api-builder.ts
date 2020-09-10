@@ -4,11 +4,11 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
-  bind,
   BindingSelector,
   Constructor,
   ControllerClass,
   inject,
+  injectable,
 } from '@loopback/core';
 import {
   asModelApiBuilder,
@@ -33,7 +33,7 @@ export interface ModelCrudRestApiConfig extends ModelApiConfig {
   basePath: string;
 }
 
-@bind(asModelApiBuilder)
+@injectable(asModelApiBuilder)
 export class CrudRestApiBuilder implements ModelApiBuilder {
   readonly pattern: string = 'CrudRest';
 

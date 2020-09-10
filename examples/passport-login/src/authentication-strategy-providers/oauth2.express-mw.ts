@@ -4,11 +4,11 @@
 // License text available at https://opensource.org/licenses/MIT
 
 const passport = require('passport');
-import {inject, Provider, BindingScope, bind} from '@loopback/core';
-import {Strategy as OAuth2Strategy} from 'passport-oauth2';
+import {BindingScope, inject, injectable, Provider} from '@loopback/core';
 import {ExpressRequestHandler} from '@loopback/rest';
+import {Strategy as OAuth2Strategy} from 'passport-oauth2';
 
-@bind.provider({scope: BindingScope.SINGLETON})
+@injectable.provider({scope: BindingScope.SINGLETON})
 export class CustomOauth2ExpressMiddleware
   implements Provider<ExpressRequestHandler> {
   constructor(

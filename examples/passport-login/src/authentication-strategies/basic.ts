@@ -3,21 +3,21 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {AuthenticationStrategy, asAuthStrategy} from '@loopback/authentication';
+import {asAuthStrategy, AuthenticationStrategy} from '@loopback/authentication';
 import {StrategyAdapter} from '@loopback/authentication-passport';
-import {Request, RedirectRoute} from '@loopback/rest';
-import {UserProfile} from '@loopback/security';
-import {User} from '../models';
-import {bind} from '@loopback/core';
-import {BasicStrategy as Strategy} from 'passport-http';
+import {injectable} from '@loopback/core';
 import {repository} from '@loopback/repository';
+import {RedirectRoute, Request} from '@loopback/rest';
+import {UserProfile} from '@loopback/security';
+import {BasicStrategy as Strategy} from 'passport-http';
+import {User} from '../models';
 import {UserRepository} from '../repositories';
 import {mapProfile} from './types';
 
 /**
  * basic passport strategy
  */
-@bind(asAuthStrategy)
+@injectable(asAuthStrategy)
 export class BasicStrategy implements AuthenticationStrategy {
   name = 'basic';
   passportstrategy: Strategy;

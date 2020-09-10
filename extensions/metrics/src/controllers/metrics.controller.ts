@@ -3,14 +3,14 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {bind, BindingScope, Constructor, inject} from '@loopback/core';
+import {BindingScope, Constructor, inject, injectable} from '@loopback/core';
 import {get, Response, RestBindings} from '@loopback/rest';
 import {register} from 'prom-client';
 
 export function metricsControllerFactory(
   basePath = '/metrics',
 ): Constructor<unknown> {
-  @bind({scope: BindingScope.SINGLETON})
+  @injectable({scope: BindingScope.SINGLETON})
   class MetricsController {
     @get(basePath, {
       responses: {},

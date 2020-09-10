@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {bind, BindingScope, Provider} from '@loopback/core';
+import {BindingScope, injectable, Provider} from '@loopback/core';
 import {asMiddleware, Middleware} from '@loopback/express';
 import {RestBindings, RestTags} from '../keys';
 import {RestMiddlewareGroups} from '../sequence';
@@ -16,14 +16,14 @@ import {writeResultToResponse} from '../writer';
  * @returns The handler function that will populate the
  * response with operation results.
  */
-@bind({scope: BindingScope.SINGLETON})
+@injectable({scope: BindingScope.SINGLETON})
 export class SendProvider implements Provider<Send> {
   value() {
     return writeResultToResponse;
   }
 }
 
-@bind(
+@injectable(
   asMiddleware({
     group: RestMiddlewareGroups.SEND_RESPONSE,
     downstreamGroups: [

@@ -468,7 +468,7 @@ export class Application extends Context implements LifeCycleObserver {
    *
    * ```ts
    * // Define a class to be bound via ctx.toClass()
-   * @bind({scope: BindingScope.SINGLETON})
+   * @injectable({scope: BindingScope.SINGLETON})
    * export class LogService {
    *   log(msg: string) {
    *     console.log(msg);

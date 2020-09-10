@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {bind, Component, createBindingFromClass} from '@loopback/core';
+import {Component, createBindingFromClass, injectable} from '@loopback/core';
 import {
   asModelApiBuilder,
   ModelApiBuilder,
@@ -14,7 +14,7 @@ import {BooterApp} from './application';
 
 export const buildCalls: object[] = [];
 
-@bind(asModelApiBuilder)
+@injectable(asModelApiBuilder)
 class StubModelApiBuilder implements ModelApiBuilder {
   readonly pattern: string = 'stub';
   async build(
@@ -32,7 +32,7 @@ export class StubModelApiBuilderComponent implements Component {
 
 export const samePatternBuildCalls: object[] = [];
 
-@bind(asModelApiBuilder)
+@injectable(asModelApiBuilder)
 class SamePatternModelApiBuilder implements ModelApiBuilder {
   readonly pattern: string = 'same';
   async build(
@@ -50,7 +50,7 @@ export class SamePatternModelApiBuilderComponent implements Component {
 
 export const similarPatternBuildCalls: object[] = [];
 
-@bind(asModelApiBuilder)
+@injectable(asModelApiBuilder)
 class SimilarPatternModelApiBuilder implements ModelApiBuilder {
   readonly pattern: string = 'same';
   async build(

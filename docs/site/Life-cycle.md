@@ -262,14 +262,14 @@ app
   .apply(asLifeCycleObserver);
 ```
 
-The observer class can also be decorated with `@bind` to provide binding
+The observer class can also be decorated with `@injectable` to provide binding
 metadata.
 
 ```ts
-import {bind, createBindingFromClass} from '@loopback/core';
+import {injectable, createBindingFromClass} from '@loopback/core';
 import {CoreTags, asLifeCycleObserver} from '@loopback/core';
 
-@bind(
+@injectable(
   {
     tags: {
       [CoreTags.LIFE_CYCLE_OBSERVER_GROUP]: 'g1',

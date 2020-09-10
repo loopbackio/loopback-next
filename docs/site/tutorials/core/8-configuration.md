@@ -15,7 +15,7 @@ specify the greeting phrase or the name should come first.
 /**
  * A greeter implementation for Chinese.
  */
-@bind(asGreeter)
+@injectable(asGreeter)
 export class ChineseGreeter implements Greeter {
   language = 'zh';
   constructor(

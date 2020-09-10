@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {bind, BindingScope, inject, Provider} from '@loopback/core';
+import {BindingScope, inject, injectable, Provider} from '@loopback/core';
 import {asMiddleware, Middleware} from '@loopback/express';
 import debugFactory from 'debug';
 import {RequestBodyParser} from '../body-parsers';
@@ -43,7 +43,7 @@ export class ParseParamsProvider implements Provider<ParseParams> {
   }
 }
 
-@bind(
+@injectable(
   asMiddleware({
     group: RestMiddlewareGroups.PARSE_PARAMS,
     upstreamGroups: RestMiddlewareGroups.FIND_ROUTE,

@@ -4,16 +4,16 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
-  bind,
   Binding,
   Component,
   ContextTags,
   createBindingFromClass,
+  injectable,
 } from '@loopback/core';
 import {AuthorizationInterceptor} from './authorize-interceptor';
 import {AuthorizationBindings} from './keys';
 
-@bind({tags: {[ContextTags.KEY]: AuthorizationBindings.COMPONENT.key}})
+@injectable({tags: {[ContextTags.KEY]: AuthorizationBindings.COMPONENT.key}})
 export class AuthorizationComponent implements Component {
   bindings: Binding[] = [createBindingFromClass(AuthorizationInterceptor)];
 }

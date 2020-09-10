@@ -5,15 +5,14 @@
 
 import {asAuthStrategy, AuthenticationStrategy} from '@loopback/authentication';
 import {StrategyAdapter} from '@loopback/authentication-passport';
-import {Strategy} from 'passport-google-oauth2';
-import {bind, inject, extensionFor} from '@loopback/core';
+import {extensionFor, inject, injectable} from '@loopback/core';
+import {RedirectRoute, Request} from '@loopback/rest';
 import {UserProfile} from '@loopback/security';
+import {Strategy} from 'passport-google-oauth2';
 import {User} from '../models';
-import {Request, RedirectRoute} from '@loopback/rest';
-import {PassportAuthenticationBindings} from './types';
-import {mapProfile} from './types';
+import {mapProfile, PassportAuthenticationBindings} from './types';
 
-@bind(
+@injectable(
   asAuthStrategy,
   extensionFor(PassportAuthenticationBindings.OAUTH2_STRATEGY),
 )

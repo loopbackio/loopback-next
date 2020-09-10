@@ -5,10 +5,10 @@
 
 import {
   ApplicationMetadata,
-  bind,
   config,
   CoreBindings,
   inject,
+  injectable,
 } from '@loopback/core';
 import {asSpecEnhancer, OASEnhancer, OpenAPIObject} from '@loopback/rest';
 
@@ -23,7 +23,7 @@ export type ApiConnectSpecOptions = {
  * An OpenAPI spec enhancer to add `x-ibm-configuration` extension required
  * by API Connect
  */
-@bind(asSpecEnhancer)
+@injectable(asSpecEnhancer)
 export class ApiConnectSpecEnhancer implements OASEnhancer {
   name = 'IBM API Connect';
 

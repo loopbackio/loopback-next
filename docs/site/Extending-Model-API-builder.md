@@ -46,7 +46,7 @@ so it can be used as an API builder option.
 import {bind} from '@loopback/core';
 import {asModelApiBulder, ModelApiBuilder} from '@loopback/model-api-builder';
 
-@bind(asModelApiBuilder)
+@injectable(asModelApiBuilder)
 export class SampleApiBuilder implements ModelApiBuilder {}
 ```
 
@@ -63,7 +63,7 @@ import {
 import {ApplicationWithRepositories} from '@loopback/repository';
 import {Model} from '@loopback/rest';
 
-@bind(asModelApiBuilder)
+@injectable(asModelApiBuilder)
 export class SampleApiBuilder implements ModelApiBuilder {
   readonly pattern: string = 'Sample'; // put the name of your builder here
 
@@ -86,7 +86,7 @@ export interface SampleApiConfig extends ModelApiConfig {
   // add configuration options here
 }
 
-@bind(asModelApiBuilder)
+@injectable(asModelApiBuilder)
 export class SampleApiBuilder implements ModelApiBuilder {
   // other code here
 }

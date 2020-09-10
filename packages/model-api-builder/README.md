@@ -27,7 +27,7 @@ import {
   ModelApiConfig,
 } from '@loopback/model-api-builder';
 
-@bind(asModelApiBuilder)
+@injectable(asModelApiBuilder)
 export class SampleApiBuilder implements ModelApiBuilder {
   readonly pattern: string = 'Sample';
 

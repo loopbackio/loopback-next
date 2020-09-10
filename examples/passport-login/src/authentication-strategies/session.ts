@@ -3,16 +3,16 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {AuthenticationStrategy, asAuthStrategy} from '@loopback/authentication';
-import {RedirectRoute, RequestWithSession, HttpErrors} from '@loopback/rest';
+import {asAuthStrategy, AuthenticationStrategy} from '@loopback/authentication';
+import {injectable} from '@loopback/core';
+import {repository} from '@loopback/repository';
+import {HttpErrors, RedirectRoute, RequestWithSession} from '@loopback/rest';
 import {UserProfile} from '@loopback/security';
 import {User} from '../models';
-import {bind} from '@loopback/core';
-import {repository} from '@loopback/repository';
 import {UserRepository} from '../repositories';
 import {mapProfile} from './types';
 
-@bind(asAuthStrategy)
+@injectable(asAuthStrategy)
 export class SessionStrategy implements AuthenticationStrategy {
   name = 'session';
 

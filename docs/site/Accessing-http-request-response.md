@@ -112,9 +112,9 @@ request/response/context objects via method parameter injection.
 
 ```ts
 import {Request, RestBindings} from '@loopback/rest';
-import {bind, inject, BindingScope} from '@loopback/core';
+import {injectable, inject, BindingScope} from '@loopback/core';
 
-@bind({scope: BindingScope.SINGLETON})
+@injectable({scope: BindingScope.SINGLETON})
 export class PingController {
 
   ping(

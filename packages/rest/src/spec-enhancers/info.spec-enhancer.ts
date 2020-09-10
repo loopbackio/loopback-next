@@ -5,10 +5,10 @@
 
 import {
   ApplicationMetadata,
-  bind,
   BindingScope,
   CoreBindings,
   inject,
+  injectable,
   JSONObject,
   JSONValue,
 } from '@loopback/core';
@@ -27,7 +27,7 @@ const debug = debugFactory('loopback:openapi:spec-enhancer:info');
  * An OpenAPI spec enhancer to populate `info` with application metadata
  * (package.json).
  */
-@bind(asSpecEnhancer, {scope: BindingScope.SINGLETON})
+@injectable(asSpecEnhancer, {scope: BindingScope.SINGLETON})
 export class InfoSpecEnhancer implements OASEnhancer {
   name = 'info';
 

@@ -5,7 +5,6 @@
 
 import {
   assertTargetType,
-  bind,
   Binding,
   BindingFilter,
   BindingFromClassOptions,
@@ -20,6 +19,7 @@ import {
   filterByTag,
   includesTagValue,
   inject,
+  injectable,
   Injection,
   ResolutionSession,
 } from '@loopback/context';
@@ -42,7 +42,7 @@ import {CoreTags} from './keys';
  * @param name - Name of the extension point
  */
 export function extensionPoint(name: string, ...specs: BindingSpec[]) {
-  return bind({tags: {[CoreTags.EXTENSION_POINT]: name}}, ...specs);
+  return injectable({tags: {[CoreTags.EXTENSION_POINT]: name}}, ...specs);
 }
 
 /**

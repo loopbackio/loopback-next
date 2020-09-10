@@ -221,7 +221,7 @@ import {
 /**
  * A spec enhancer to modify `operationId` in paths
  */
-@bind(asSpecEnhancer)
+@injectable(asSpecEnhancer)
 export class OperationSpecEnhancer implements OASEnhancer {
   name = 'operationIdEnhancer';
   // takes in the current spec, modifies it, and returns a new one

@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {bind, BindingScope, inject, Provider} from '@loopback/core';
+import {BindingScope, inject, injectable, Provider} from '@loopback/core';
 import {HttpError} from 'http-errors';
 import {ErrorWriterOptions, writeErrorToResponse} from 'strong-error-handler';
 import {RestBindings} from '../keys';
@@ -15,7 +15,7 @@ const codeToStatusCodeMap: {[key: string]: number} = {
   ENTITY_NOT_FOUND: 404,
 };
 
-@bind({scope: BindingScope.SINGLETON})
+@injectable({scope: BindingScope.SINGLETON})
 export class RejectProvider implements Provider<Reject> {
   constructor(
     @inject(RestBindings.SequenceActions.LOG_ERROR)

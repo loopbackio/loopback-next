@@ -3,7 +3,13 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {bind, BindingScope, Context, inject, Provider} from '@loopback/core';
+import {
+  BindingScope,
+  Context,
+  inject,
+  injectable,
+  Provider,
+} from '@loopback/core';
 import {asMiddleware, Middleware} from '@loopback/express';
 import debugFactory from 'debug';
 import {RestBindings, RestTags} from '../keys';
@@ -25,7 +31,7 @@ export class InvokeMethodProvider implements Provider<InvokeMethod> {
   }
 }
 
-@bind(
+@injectable(
   asMiddleware({
     group: RestMiddlewareGroups.INVOKE_METHOD,
     upstreamGroups: RestMiddlewareGroups.PARSE_PARAMS,

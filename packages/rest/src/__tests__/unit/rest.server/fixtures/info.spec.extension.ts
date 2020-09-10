@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {bind} from '@loopback/core';
+import {injectable} from '@loopback/core';
 import debugFactory from 'debug';
 import {inspect} from 'util';
 import {
@@ -18,7 +18,7 @@ const debug = debugFactory('loopback:openapi:spec-enhancer');
 /**
  * A spec enhancer to add OpenAPI info spec
  */
-@bind(asSpecEnhancer)
+@injectable(asSpecEnhancer)
 export class TestInfoSpecEnhancer implements OASEnhancer {
   name = 'info-test';
 

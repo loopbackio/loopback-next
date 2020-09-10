@@ -4,10 +4,10 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
-  bind,
   BindingScope,
   config,
   ContextTags,
+  injectable,
   Provider,
 } from '@loopback/core';
 import multer from 'multer';
@@ -17,7 +17,7 @@ import {FileUploadHandler} from '../types';
 /**
  * A provider to return an `Express` request handler from `multer` middleware
  */
-@bind({
+@injectable({
   scope: BindingScope.TRANSIENT,
   tags: {[ContextTags.KEY]: FILE_UPLOAD_SERVICE},
 })

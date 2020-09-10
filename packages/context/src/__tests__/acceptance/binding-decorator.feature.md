@@ -1,4 +1,4 @@
-# Feature: @bind for classes representing various artifacts
+# Feature: @injectable for classes representing various artifacts
 
 - In order to automatically bind classes for various artifacts to a context
 - As a developer
@@ -31,15 +31,16 @@ example, it's impossible for the bootstrapper to infer that `LogProvider` is a
 provider so that the class can be bound using
 `ctx.bind('providers.LogProvider').toProvider(LogProvider)`.
 
-Developers can help the bootstrapper by decorating these classes with `@bind`.
+Developers can help the bootstrapper by decorating these classes with
+`@injectable`.
 
 ```ts
-@bind({tags: ['log']})
+@injectable({tags: ['log']})
 export class LogController {}
 
 export const LOG_LEVEL = 'info';
 
-@bind.provider(tags: ['log']})
+@injectable.provider(tags: ['log']})
 export class LogProvider implements Provider<Logger> {
   value() {
     return msg => console.log(msg);
@@ -47,6 +48,6 @@ export class LogProvider implements Provider<Logger> {
 }
 ```
 
-Please note that we don't intend to use `@bind` to help the bootstrapper
-discover such artifacts. The purpose of `@bind` is to allow developers to
+Please note that we don't intend to use `@injectable` to help the bootstrapper
+discover such artifacts. The purpose of `@injectable` is to allow developers to
 provide more metadata on how the class should be bound.

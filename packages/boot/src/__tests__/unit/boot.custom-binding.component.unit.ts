@@ -5,11 +5,11 @@
 
 import {
   Application,
-  bind,
   BindingKey,
   BindingScope,
   Component,
   ContextTags,
+  injectable,
 } from '@loopback/core';
 import {expect} from '@loopback/testlab';
 import {BootBindings, BootMixin} from '../../';
@@ -49,7 +49,7 @@ describe('boot.component unit tests', () => {
   const CustomBinding = BindingKey.create<CustomBoundComponent>(
     'io.loopback.custom.binding.CustomBoundComponent',
   );
-  @bind({
+  @injectable({
     tags: {[ContextTags.KEY]: CustomBinding},
     scope: BindingScope.SINGLETON,
   })

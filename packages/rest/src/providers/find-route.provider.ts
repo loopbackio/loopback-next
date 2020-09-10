@@ -3,7 +3,13 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {bind, BindingScope, Context, inject, Provider} from '@loopback/core';
+import {
+  BindingScope,
+  Context,
+  inject,
+  injectable,
+  Provider,
+} from '@loopback/core';
 import {asMiddleware, Middleware} from '@loopback/express';
 import debugFactory from 'debug';
 import {HttpHandler} from '../http-handler';
@@ -32,7 +38,7 @@ export class FindRouteProvider implements Provider<FindRoute> {
   }
 }
 
-@bind(
+@injectable(
   asMiddleware({
     group: RestMiddlewareGroups.FIND_ROUTE,
     chain: RestTags.REST_MIDDLEWARE_CHAIN,

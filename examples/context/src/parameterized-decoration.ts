@@ -4,13 +4,13 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
-  bind,
   BindingAddress,
   BindingTag,
   Constructor,
   Context,
   createBindingFromClass,
   inject,
+  injectable,
 } from '@loopback/context';
 
 /**
@@ -29,7 +29,7 @@ function createClassWithDecoration(
   bindingKeyForName: BindingAddress<string>,
   ...tags: BindingTag[]
 ): Constructor<Greeter> {
-  @bind({tags})
+  @injectable({tags})
   class GreeterTemplate implements Greeter {
     constructor(@inject(bindingKeyForName) private userName: string) {}
 

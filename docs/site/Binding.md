@@ -300,7 +300,7 @@ The `SINGLETON` scope is useful for some use cases, such as:
 
     ```ts
     // Mark the controller class a candidate for singleton binding
-    @bind({scope: BindingScope.SINGLETON})
+    @injectable({scope: BindingScope.SINGLETON})
     export class GreetingController {
       greet(name: string) {
         return `Hello, ${name}`;
@@ -314,7 +314,7 @@ The `SINGLETON` scope is useful for some use cases, such as:
     `GreetingController` per request.
 
     ```ts
-    // createBindingFromClass() respects `@bind` and sets the binding scope to `SINGLETON'
+    // createBindingFromClass() respects `@injectable` and sets the binding scope to `SINGLETON'
     const binding = ctx.add(createBindingFromClass(GreetingController));
     const c1 = ctx.getSync(binding.key);
     const c2 = ctx.getSync(binding.key);
@@ -375,7 +375,7 @@ can be different from the context (such as `application`) used to instantiate
 the class as a singleton.
 
 {% include note.html content="
-To understand the difference between `@bind()` and `ctx.bind()`, see
+To understand the difference between `@bind()/@injectable` and `ctx.bind()`, see
 [Configure binding attributes for a class](#configure-binding-attributes-for-a-class).
 " %}
 
@@ -517,20 +517,20 @@ Classes can be discovered and bound to the application context during `boot`. In
 addition to conventions, it's often desirable to allow certain binding
 attributes, such as scope and tags, to be specified as metadata for the class.
 When the class is bound, these attributes are honored to create a binding. You
-can use `@bind` decorator to configure how to bind a class.
+can use `@injectable` decorator to configure how to bind a class.
 
 ```ts
-import {bind, BindingScope} from '@loopback/core';
+import {injectable, BindingScope} from '@loopback/core';
 
-// @bind() accepts scope and tags
-@bind({
+// @injectable() accepts scope and tags
+@injectable({
   scope: BindingScope.SINGLETON,
   tags: ['service'],
 })
 export class MyService {}
 
 // @binding.provider is a shortcut for a provider class
-@bind.provider({
+@injectable.provider({
   tags: {
     key: 'my-date-provider',
   },
@@ -541,13 +541,13 @@ export class MyDateProvider implements Provider<Date> {
   }
 }
 
-@bind({
+@injectable({
   tags: ['controller', {name: 'my-controller'}],
 })
 export class MyController {}
 
-// @bind() can take one or more binding template functions
-@bind(binding => binding.tag('controller', {name: 'your-controller'})
+// @injectable() can take one or more binding template functions
+@injectable(binding => binding.tag('controller', {name: 'your-controller'})
 export class YourController {}
 ```
 
@@ -583,25 +583,25 @@ parameter of `BindingFromClassOptions` type with the following settings:
 - defaultNamespace: Default namespace if namespace or namespace tag does not
   exist
 - defaultScope: Default scope if the binding does not have an explicit scope
-  set. The `scope` from `@bind` of the bound class takes precedence.
+  set. The `scope` from `@injectable` of the bound class takes precedence.
 
-{% include note.html content=" The `@bind` decorator only adds metadata to the
-class. It does NOT automatically bind the class to a context. To bind a class
-with `@bind` decoration, the following step needs to happen explicitly or
-implicitly by a [booter](Booting-an-Application.md#booters).
+{% include note.html content=" The `@injectable` decorator only adds metadata to
+the class. It does NOT automatically bind the class to a context. To bind a
+class with `@injectable` decoration, the following step needs to happen
+explicitly or implicitly by a [booter](Booting-an-Application.md#booters).
 
 ```ts
 const binding = createBindingFromClass(AClassOrProviderWithBindDecoration);
 ctx.add(binding);
 ```
 
-The metadata added by `@bind` is **NOT** inspected/honored by `toClass` or
+The metadata added by `@injectable` is **NOT** inspected/honored by `toClass` or
 `toProvider`. Be warned that the example below does NOT set up the binding per
-`@bind` decoration:
+`@injectable` decoration:
 
 ```ts
 const binding = ctx.bind('my-key').toClass(MyService);
-// The binding is NOT configured based on the `@bind` decoration on MyService.
+// The binding is NOT configured based on the `@injectable` decoration on MyService.
 // The scope is BindingScope.TRANSIENT (not BindingScope.SINGLETON).
 // There is no tag named 'service' for the binding either.
 ```
@@ -614,7 +614,7 @@ provider for bindings.
 1. The class for `toClass()`
 
    ```ts
-   @bind({tags: {greeting: 'a'}})
+   @injectable({tags: {greeting: 'a'}})
    class Greeter {
      constructor(@inject('currentUser') private user: string) {}
 
@@ -632,7 +632,7 @@ provider for bindings.
 2. The class for `toProvider()`
 
 ```ts
-@bind({tags: {greeting: 'b'}})
+@injectable({tags: {greeting: 'b'}})
 class GreetingProvider implements Provider<string> {
   constructor(@inject('currentUser') private user: string) {}
 
@@ -650,7 +650,7 @@ ctx.add(binding);
 3. The class for `toDynamicValue()`
 
 ```ts
-@bind({tags: {greeting: 'c'}})
+@injectable({tags: {greeting: 'c'}})
 class DynamicGreetingProvider {
   static value(@inject('currentUser') user: string) {
     return `Hello, ${this.user}`;
@@ -663,10 +663,10 @@ const binding = createBindingFromClass(GreetingProvider);
 ctx.add(binding);
 ```
 
-The `@bind` is optional for such classes. But it's usually there to provide
-additional metadata such as scope and tags for the binding. Without `@bind`,
-`createFromClass` simply calls underlying `toClass`, `toProvider`, or
-`toDynamicValue` based on the class signature.
+The `@injectable` is optional for such classes. But it's usually there to
+provide additional metadata such as scope and tags for the binding. Without
+`@injectable`, `createFromClass` simply calls underlying `toClass`,
+`toProvider`, or `toDynamicValue` based on the class signature.
 
 #### When to call createBindingFromClass
 

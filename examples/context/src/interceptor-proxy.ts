@@ -6,12 +6,12 @@
 import {
   asGlobalInterceptor,
   AsyncProxy,
-  bind,
   BindingKey,
   BindingScope,
   Context,
   createBindingFromClass,
   inject,
+  injectable,
   Interceptor,
   InvocationContext,
   Provider,
@@ -33,7 +33,7 @@ const TRACING_INTERCEPTOR = BindingKey.create<Interceptor>(
 const CONVERTER = BindingKey.create<Converter>('converter');
 const GREETER = BindingKey.create<Greeter>('greeter');
 
-@bind(asGlobalInterceptor('tracing'))
+@injectable(asGlobalInterceptor('tracing'))
 class TracingInterceptor implements Provider<Interceptor> {
   constructor(
     @inject(REQUEST_ID_GENERATOR) private generator: RequestIdGenerator,

@@ -4,11 +4,11 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
-  bind,
   BindingScope,
   Constructor,
   Context,
   createBindingFromClass,
+  injectable,
 } from '@loopback/context';
 import {expect} from '@loopback/testlab';
 import {
@@ -192,8 +192,8 @@ describe('Application life cycle', () => {
       expect(binding.key).to.eql('my-observers.my-observer');
     });
 
-    it('honors @bind', async () => {
-      @bind({
+    it('honors @injectable', async () => {
+      @injectable({
         tags: {
           [CoreTags.LIFE_CYCLE_OBSERVER]: CoreTags.LIFE_CYCLE_OBSERVER,
           [CoreTags.LIFE_CYCLE_OBSERVER_GROUP]: 'my-group',

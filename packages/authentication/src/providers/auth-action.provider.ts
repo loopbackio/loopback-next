@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {bind, Getter, inject, Provider, Setter} from '@loopback/core';
+import {Getter, inject, injectable, Provider, Setter} from '@loopback/core';
 import {
   asMiddleware,
   Middleware,
@@ -113,7 +113,7 @@ export class AuthenticateActionProvider implements Provider<AuthenticateFn> {
   }
 }
 
-@bind(
+@injectable(
   asMiddleware({
     group: RestMiddlewareGroups.AUTHENTICATION,
     upstreamGroups: [RestMiddlewareGroups.FIND_ROUTE],

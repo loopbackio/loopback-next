@@ -4,12 +4,12 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
-  bind,
   Component,
   config,
   ContextTags,
   CoreBindings,
   inject,
+  injectable,
 } from '@loopback/core';
 import {RestApplication} from '@loopback/rest';
 import path from 'path';
@@ -20,7 +20,7 @@ import {ContextExplorerConfig} from './types';
 /**
  * A component providing a self-hosted API Explorer.
  */
-@bind({tags: {[ContextTags.KEY]: ContextExplorerBindings.COMPONENT.key}})
+@injectable({tags: {[ContextTags.KEY]: ContextExplorerBindings.COMPONENT.key}})
 export class ContextExplorerComponent implements Component {
   constructor(
     @inject(CoreBindings.APPLICATION_INSTANCE)

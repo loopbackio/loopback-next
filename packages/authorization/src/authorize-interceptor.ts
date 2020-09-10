@@ -5,10 +5,10 @@
 
 import {
   asGlobalInterceptor,
-  bind,
   BindingAddress,
   config,
   Context,
+  injectable,
   Interceptor,
   InvocationContext,
   Next,
@@ -30,7 +30,7 @@ import {createPrincipalFromUserProfile} from './util';
 
 const debug = debugFactory('loopback:authorization:interceptor');
 
-@bind(asGlobalInterceptor('authorization'))
+@injectable(asGlobalInterceptor('authorization'))
 export class AuthorizationInterceptor implements Provider<Interceptor> {
   private options: AuthorizationOptions;
 

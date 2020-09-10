@@ -4,11 +4,11 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
-  bind,
   BindingScope,
   config,
   Context,
   inject,
+  injectable,
   ValueOrPromise,
 } from '@loopback/core';
 import {
@@ -185,7 +185,7 @@ export namespace RestMiddlewareGroups {
 /**
  * A sequence implementation using middleware chains
  */
-@bind({scope: BindingScope.SINGLETON})
+@injectable({scope: BindingScope.SINGLETON})
 export class MiddlewareSequence implements SequenceHandler {
   private middlewareView: MiddlewareView;
 

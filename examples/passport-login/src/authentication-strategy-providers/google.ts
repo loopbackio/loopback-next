@@ -3,16 +3,16 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Profile} from 'passport';
 import {UserIdentityService} from '@loopback/authentication';
-import {User} from '../models';
+import {BindingScope, inject, injectable, Provider} from '@loopback/core';
+import {Profile} from 'passport';
 import {StrategyOption} from 'passport-facebook';
-import {inject, Provider, bind, BindingScope} from '@loopback/core';
-import {UserServiceBindings} from '../services';
 import {Strategy as GoogleStrategy} from 'passport-google-oauth2';
 import {verifyFunctionFactory} from '../authentication-strategies/types';
+import {User} from '../models';
+import {UserServiceBindings} from '../services';
 
-@bind.provider({scope: BindingScope.SINGLETON})
+@injectable.provider({scope: BindingScope.SINGLETON})
 export class GoogleOauth implements Provider<GoogleStrategy> {
   strategy: GoogleStrategy;
 

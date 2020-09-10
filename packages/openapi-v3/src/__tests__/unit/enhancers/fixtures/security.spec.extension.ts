@@ -3,8 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {bind} from '@loopback/core';
-import debugModule from 'debug';
+import {injectable} from '@loopback/core';
+import debugFactory from 'debug';
 import {inspect} from 'util';
 import {
   mergeOpenAPISpec,
@@ -13,7 +13,7 @@ import {
 } from '../../../..';
 import {asSpecEnhancer, OASEnhancer} from '../../../../enhancers/types';
 import {OpenApiSpec} from '../../../../types';
-const debug = debugModule('loopback:openapi:spec-enhancer');
+const debug = debugFactory('loopback:openapi:spec-enhancer');
 
 export type SecuritySchemeObjects = {
   [securityScheme: string]: SecuritySchemeObject | ReferenceObject;
@@ -31,7 +31,7 @@ export const SECURITY_SCHEME_SPEC: SecuritySchemeObjects = {
  * A spec enhancer to add bearer token OpenAPI security entry to
  * `spec.component.securitySchemes`
  */
-@bind(asSpecEnhancer)
+@injectable(asSpecEnhancer)
 export class SecuritySpecEnhancer implements OASEnhancer {
   name = 'security';
 

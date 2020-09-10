@@ -5,11 +5,11 @@
 
 import {
   asGlobalInterceptor,
-  bind,
   BindingScope,
   config,
   ContextTags,
   inject,
+  injectable,
   Interceptor,
   InvocationContext,
   Provider,
@@ -24,7 +24,7 @@ import {LoggingBindings} from '../keys';
 /**
  * A local interceptor that provides logging for method invocations.
  */
-@bind({
+@injectable({
   tags: {[ContextTags.KEY]: LoggingBindings.WINSTON_INVOCATION_LOGGER},
   scope: BindingScope.SINGLETON,
 })
@@ -74,7 +74,7 @@ export interface AccessLogOptions extends morgan.Options<Request, Response> {
 /**
  * A global interceptor that provides logging for http requests/responses.
  */
-@bind(asGlobalInterceptor('logging'), {
+@injectable(asGlobalInterceptor('logging'), {
   tags: {
     [ContextTags.KEY]: LoggingBindings.WINSTON_HTTP_ACCESS_LOGGER,
     // Only apply to invocations from REST routes

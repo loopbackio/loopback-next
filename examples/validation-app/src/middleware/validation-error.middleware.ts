@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {bind, inject, Provider} from '@loopback/core';
+import {inject, injectable, Provider} from '@loopback/core';
 import {
   asMiddleware,
   ErrorWriterOptions,
@@ -16,7 +16,7 @@ import {
   RestMiddlewareGroups,
 } from '@loopback/rest';
 
-@bind(
+@injectable(
   asMiddleware({
     group: 'validationError',
     upstreamGroups: RestMiddlewareGroups.SEND_RESPONSE,

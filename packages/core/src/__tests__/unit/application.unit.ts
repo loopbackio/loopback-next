@@ -5,13 +5,13 @@
 
 import {
   asGlobalInterceptor,
-  bind,
   Binding,
   BindingScope,
   BindingTag,
   Context,
   ContextTags,
   inject,
+  injectable,
   Interceptor,
   InvocationContext,
   Next,
@@ -81,7 +81,7 @@ describe('Application', () => {
     });
 
     it('binds a singleton controller', () => {
-      @bind({scope: BindingScope.SINGLETON})
+      @injectable({scope: BindingScope.SINGLETON})
       class MySingletonController {}
 
       const binding = app.controller(MySingletonController);
@@ -119,7 +119,7 @@ describe('Application', () => {
     });
 
     it('binds a transient component', () => {
-      @bind({scope: BindingScope.TRANSIENT})
+      @injectable({scope: BindingScope.TRANSIENT})
       class MyTransientComponent {}
 
       const binding = app.component(MyTransientComponent);
@@ -180,8 +180,8 @@ describe('Application', () => {
       expect(app.getSync('my-provider')).to.be.eql('my-str');
     });
 
-    it('binds classes with @bind from a component', () => {
-      @bind({scope: BindingScope.SINGLETON, tags: ['foo']})
+    it('binds classes with @injectable from a component', () => {
+      @injectable({scope: BindingScope.SINGLETON, tags: ['foo']})
       class MyClass {}
 
       class MyComponentWithClasses implements Component {
@@ -208,8 +208,8 @@ describe('Application', () => {
       ).to.be.exactly(MyService);
     });
 
-    it('binds services with @bind from a component', () => {
-      @bind({scope: BindingScope.TRANSIENT, tags: ['foo']})
+    it('binds services with @injectable from a component', () => {
+      @injectable({scope: BindingScope.TRANSIENT, tags: ['foo']})
       class MyService {}
 
       class MyComponentWithServices implements Component {
@@ -224,7 +224,7 @@ describe('Application', () => {
     });
 
     it('honors tags when binding providers from a component', () => {
-      @bind({tags: ['foo']})
+      @injectable({tags: ['foo']})
       class MyProvider implements Provider<string> {
         value() {
           return 'my-str';
@@ -266,7 +266,7 @@ describe('Application', () => {
     });
 
     it('binds a server with a different scope than SINGLETON', async () => {
-      @bind({scope: BindingScope.TRANSIENT})
+      @injectable({scope: BindingScope.TRANSIENT})
       class TransientServer extends FakeServer {}
 
       const binding = app.server(TransientServer);
@@ -343,7 +343,7 @@ describe('Application', () => {
     });
 
     it('binds a singleton service', () => {
-      @bind({scope: BindingScope.SINGLETON})
+      @injectable({scope: BindingScope.SINGLETON})
       class MySingletonService {}
 
       const binding = app.service(MySingletonService);
@@ -352,7 +352,7 @@ describe('Application', () => {
     });
 
     it('binds a service provider', () => {
-      @bind({tags: {date: 'now', namespace: 'localServices'}})
+      @injectable({tags: {date: 'now', namespace: 'localServices'}})
       class MyServiceProvider implements Provider<Date> {
         value() {
           return new Date();
@@ -368,7 +368,7 @@ describe('Application', () => {
     });
 
     it('binds a service provider with name tag', () => {
-      @bind({tags: {date: 'now', name: 'my-service'}})
+      @injectable({tags: {date: 'now', name: 'my-service'}})
       class MyServiceProvider implements Provider<Date> {
         value() {
           return new Date();
@@ -497,7 +497,7 @@ describe('Application', () => {
       return undefined;
     }
 
-    @bind(asGlobalInterceptor())
+    @injectable(asGlobalInterceptor())
     class LogInterceptorProvider implements Provider<Interceptor> {
       value() {
         return logInterceptor;

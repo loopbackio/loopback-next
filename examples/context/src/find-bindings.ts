@@ -4,12 +4,12 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
-  bind,
   BindingFilter,
   BindingTemplate,
   Context,
   createBindingFromClass,
   filterByTag,
+  injectable,
 } from '@loopback/context';
 
 interface Greeter {
@@ -31,7 +31,7 @@ class ChineseGreeter implements Greeter {
   }
 }
 
-@bind(asGreeter)
+@injectable(asGreeter)
 class EnglishGreeter implements Greeter {
   language = 'en';
   greet(name: string) {

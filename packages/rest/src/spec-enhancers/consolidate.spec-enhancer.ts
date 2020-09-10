@@ -5,10 +5,10 @@
 
 import {
   ApplicationConfig,
-  bind,
   BindingScope,
   CoreBindings,
   inject,
+  injectable,
 } from '@loopback/core';
 import {
   asSpecEnhancer,
@@ -58,7 +58,7 @@ const debug = debugFactory('loopback:openapi:spec-enhancer:consolidate');
  * When comparing schemas to avoid naming collisions, the description field
  * is ignored.
  */
-@bind(asSpecEnhancer, {scope: BindingScope.SINGLETON})
+@injectable(asSpecEnhancer, {scope: BindingScope.SINGLETON})
 export class ConsolidationEnhancer implements OASEnhancer {
   name = 'consolidate';
   disabled: boolean;

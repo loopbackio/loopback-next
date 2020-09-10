@@ -139,9 +139,9 @@ How to migrate such components:
 An example implementation of the ping service class:
 
 ```ts
-import {bind, BindingScope} from '@loopback/core';
+import {injectable, BindingScope} from '@loopback/core';
 
-@bind({scope: BindingScope.TRANSIENT})
+@injectable({scope: BindingScope.TRANSIENT})
 export class PingService {
   ping() {
     return {status: 'ok'};
@@ -152,13 +152,13 @@ export class PingService {
 An example implementation of the ping controller factory:
 
 ```ts
-import {bind, BindingScope, Constructor, inject} from '@loopback/core';
+import {injectable, BindingScope, Constructor, inject} from '@loopback/core';
 import {get} from '@loopback/rest';
 import {PingBindings} from '../ping.keys';
 import {PingService} from '../services/ping.service.ts';
 
 export function definePingController(basePath: string): Constructor<unknown> {
-  @bind({scope: BindingScope.SINGLETON})
+  @injectable({scope: BindingScope.SINGLETON})
   class PingController {
     constructor(
       @inject(PingBindings.PING_SERVICE)
@@ -185,7 +185,7 @@ import {PingBindings} from './keys';
 import {PingService} from './services/ping.service.ts';
 import {PingComponentConfig} from './types';
 
-@bind({tags: {[ContextTags.KEY]: PingBindings.COMPONENT.key}})
+@injectable({tags: {[ContextTags.KEY]: PingBindings.COMPONENT.key}})
 export class PingComponent implements Component {
   constructor(
     @config(),
