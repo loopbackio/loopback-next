@@ -17,9 +17,11 @@ import {
 import {Constructor} from './value-promise';
 
 /**
- * Decorator factory for `@bind`
+ * Decorator factory for `@injectable`
  */
-class BindDecoratorFactory extends ClassDecoratorFactory<BindingMetadata> {
+class InjectableDecoratorFactory extends ClassDecoratorFactory<
+  BindingMetadata
+> {
   mergeWithInherited(inherited: BindingMetadata, target: Function) {
     if (inherited) {
       return {
@@ -54,8 +56,9 @@ class BindDecoratorFactory extends ClassDecoratorFactory<BindingMetadata> {
  *
  * @example
  * ```ts
- * @bind((binding) => {binding.inScope(BindingScope.SINGLETON).tag('controller')}
+ * @injectable((binding) => {binding.inScope(BindingScope.SINGLETON).tag('controller')}
  * )
+ * @injectable({scope: BindingScope.SINGLETON})
  * export class MyController {
  * }
  * ```
@@ -63,7 +66,7 @@ class BindDecoratorFactory extends ClassDecoratorFactory<BindingMetadata> {
  * @param specs - A list of binding scope/tags or template functions to
  * configure the binding
  */
-export function bind(...specs: BindingSpec[]): ClassDecorator {
+export function injectable(...specs: BindingSpec[]): ClassDecorator {
   const templateFunctions = specs.map(t => {
     if (typeof t === 'function') {
       return t;
@@ -79,18 +82,21 @@ export function bind(...specs: BindingSpec[]): ClassDecorator {
       target: cls,
     };
 
-    const decorator = BindDecoratorFactory.createDecorator(
+    const decorator = InjectableDecoratorFactory.createDecorator(
       BINDING_METADATA_KEY,
       spec,
-      {decoratorName: '@bind'},
+      {decoratorName: '@injectable'},
     );
     decorator(target);
   };
 }
 
-export namespace bind {
+/**
+ * A namespace to host shortcuts for `@injectable`
+ */
+export namespace injectable {
   /**
-   * `@bind.provider` to denote a provider class
+   * `@injectable.provider` to denote a provider class
    *
    * A list of binding scope/tags or template functions to configure the binding
    */
@@ -101,7 +107,7 @@ export namespace bind {
       if (!isProviderClass(target)) {
         throw new Error(`Target ${target} is not a Provider`);
       }
-      bind(
+      injectable(
         // Set up the default for providers
         asProvider(target),
         // Call other template functions
@@ -109,4 +115,24 @@ export namespace bind {
       )(target);
     };
   }
+}
+
+/**
+ * `@bind` is now an alias to {@link injectable} for backward compatibility
+ * {@inheritDoc injectable}
+ */
+export function bind(...specs: BindingSpec[]): ClassDecorator {
+  return injectable(...specs);
+}
+
+/**
+ * Alias namespace `bind` to `injectable` for backward compatibility
+ *
+ * It should have the same members as `bind`.
+ */
+export namespace bind {
+  /**
+   * {@inheritDoc injectable.provider}
+   */
+  export const provider = injectable.provider;
 }
