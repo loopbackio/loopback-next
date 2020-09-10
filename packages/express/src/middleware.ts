@@ -132,9 +132,11 @@ export function asMiddleware(
   options: MiddlewareBindingOptions = {},
 ): BindingTemplate {
   return function middlewareBindingTemplate(binding) {
-    binding
-      .apply(extensionFor(options.chain ?? DEFAULT_MIDDLEWARE_CHAIN))
-      .tag({group: options.group ?? DEFAULT_MIDDLEWARE_GROUP});
+    binding.apply(extensionFor(options.chain ?? DEFAULT_MIDDLEWARE_CHAIN));
+
+    if (!binding.tagMap.group) {
+      binding.tag({group: options.group ?? DEFAULT_MIDDLEWARE_GROUP});
+    }
     const groupsBefore = options.upstreamGroups;
     if (groupsBefore != null) {
       binding.tag({

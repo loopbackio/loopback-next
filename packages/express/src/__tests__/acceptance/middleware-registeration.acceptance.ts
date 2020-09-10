@@ -3,10 +3,11 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {config, Provider} from '@loopback/core';
+import {bind, config, Provider} from '@loopback/core';
 import {Client, expect} from '@loopback/testlab';
 import {Router} from 'express';
 import {ExpressServer, Middleware} from '../../';
+import {asMiddleware} from '../../middleware';
 import {SpyAction} from '../fixtures/spy-config';
 import {spy, SpyConfig, TestFunction, TestHelper} from './test-helpers';
 
@@ -111,6 +112,8 @@ describe('Express middleware registry', () => {
 
     it('registers a LoopBack middleware provider with config injection', async () => {
       type TestSpyConfig = {headerName: string};
+
+      @bind(asMiddleware({group: 'spy'}))
       class SpyMiddlewareProviderWithConfig implements Provider<Middleware> {
         @config()
         private options: TestSpyConfig;
@@ -131,6 +134,7 @@ describe('Express middleware registry', () => {
       const binding = server.middleware(SpyMiddlewareProviderWithConfig, {
         key: 'middleware.spy',
       });
+      expect(binding.tagMap.group).to.eql('spy');
       server.configure(binding.key).to({headerName: 'x-spy'});
       await client
         .post('/hello')
