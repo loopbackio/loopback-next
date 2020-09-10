@@ -90,7 +90,8 @@ result: {
 
 ### Navigation
 
-Previous step: [Tutorial overview](soap-calculator-tutorial.md)
+Previous step:
+[Tutorial overview](https://loopback.io/doc/en/lb4/soap-calculator-tutorial.html)
 
 Next step:
 [Create your app scaffolding](soap-calculator-tutorial-scaffolding.md)

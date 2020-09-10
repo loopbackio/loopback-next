@@ -15,7 +15,7 @@ can be useful for our developers to build a scalable Node.js application.
   dependencies of a class separated from its behaviors.
 - [Extension points and extension framework](5-extension-point-extension.md)
   help you to organize artifacts with loose coupling and promote extensibility.
-- [Observers](7-obseration.md) and [interceptors](6-interception.md) allows you
+- [Observers](7-observation.md) and [interceptors](6-interception.md) allows you
   to add logic as part of the application life cycle events.
 - [Configuration](8-configuration.md) can be added to extension points,
   extentions and services which enables greater flexibility in your application.
