@@ -46,7 +46,7 @@
     "@types/node": "^10.17.31",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
-    "helmet": "^4.1.0",
+    "helmet": "^4.1.1",
     "loopback-boot": "^3.3.1"
   },
   "keywords": [
