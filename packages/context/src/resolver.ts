@@ -6,7 +6,6 @@
 import {DecoratorFactory} from '@loopback/metadata';
 import assert from 'assert';
 import debugModule from 'debug';
-import {BindingScope} from './binding';
 import {isBindingAddress} from './binding-filter';
 import {BindingAddress} from './binding-key';
 import {Context} from './context';
@@ -98,11 +97,8 @@ function resolveContext(
   session?: ResolutionSession,
 ) {
   const currentBinding = session?.currentBinding;
-  if (
-    currentBinding == null ||
-    currentBinding.scope !== BindingScope.SINGLETON
-  ) {
-    // No current binding or its scope is not `SINGLETON`
+  if (currentBinding == null) {
+    // No current binding
     return ctx;
   }
 
@@ -113,9 +109,9 @@ function resolveContext(
     typeof injection.methodDescriptorOrParameterIndex !== 'number';
 
   if (isConstructorOrPropertyInjection) {
-    // Set context to the owner context of the current binding for constructor
-    // or property injections against a singleton
-    ctx = ctx.getOwnerContext(currentBinding.key)!;
+    // Set context to the resolution context of the current binding for
+    // constructor or property injections against a singleton
+    ctx = ctx.getResolutionContext(currentBinding)!;
   }
   return ctx;
 }

@@ -5,7 +5,12 @@
 
 import debugFactory, {Debugger} from 'debug';
 import {EventEmitter} from 'events';
-import {Binding, BindingInspectOptions, BindingTag} from './binding';
+import {
+  Binding,
+  BindingInspectOptions,
+  BindingScope,
+  BindingTag,
+} from './binding';
 import {
   ConfigurationResolver,
   DefaultConfigurationResolver,
@@ -90,6 +95,11 @@ export class Context extends EventEmitter {
    * ```
    */
   protected _debug: Debugger;
+
+  /**
+   * Scope for binding resolution
+   */
+  scope: BindingScope = BindingScope.CONTEXT;
 
   /**
    * Create a new context.
@@ -467,15 +477,100 @@ export class Context extends EventEmitter {
   }
 
   /**
-   * Get the owning context for a binding key
-   * @param key - Binding key
+   * Get the owning context for a binding or its key
+   * @param keyOrBinding - Binding object or key
    */
-  getOwnerContext(key: BindingAddress): Context | undefined {
-    if (this.contains(key)) return this;
+  getOwnerContext(
+    keyOrBinding: BindingAddress | Readonly<Binding<unknown>>,
+  ): Context | undefined {
+    let key: BindingAddress;
+    if (keyOrBinding instanceof Binding) {
+      key = keyOrBinding.key;
+    } else {
+      key = keyOrBinding as BindingAddress;
+    }
+    if (this.contains(key)) {
+      if (keyOrBinding instanceof Binding) {
+        // Check if the contained binding is the same
+        if (this.registry.get(key.toString()) === keyOrBinding) {
+          return this;
+        }
+        return undefined;
+      }
+      return this;
+    }
     if (this._parent) {
       return this._parent.getOwnerContext(key);
     }
     return undefined;
+  }
+
+  /**
+   * Get the context matching the scope
+   * @param scope - Binding scope
+   */
+  getScopedContext(
+    scope:
+      | BindingScope.APPLICATION
+      | BindingScope.SERVER
+      | BindingScope.REQUEST,
+  ): Context | undefined {
+    if (this.scope === scope) return this;
+    if (this._parent) {
+      return this._parent.getScopedContext(scope);
+    }
+    return undefined;
+  }
+
+  /**
+   * Locate the resolution context for the given binding. Only bindings in the
+   * resolution context and its ancestors are visible as dependencies to resolve
+   * the given binding
+   * @param binding - Binding object
+   */
+  getResolutionContext(
+    binding: Readonly<Binding<unknown>>,
+  ): Context | undefined {
+    let resolutionCtx: Context | undefined;
+    switch (binding.scope) {
+      case BindingScope.SINGLETON:
+        // Use the owner context
+        return this.getOwnerContext(binding.key);
+      case BindingScope.TRANSIENT:
+      case BindingScope.CONTEXT:
+        // Use the current context
+        return this;
+      case BindingScope.REQUEST:
+        resolutionCtx = this.getScopedContext(binding.scope);
+        if (resolutionCtx != null) {
+          return resolutionCtx;
+        } else {
+          // If no `REQUEST` scope exists in the chain, fall back to the current
+          // context
+          this.debug(
+            'No context is found for binding "%s (scope=%s)". Fall back to the current context.',
+            binding.key,
+            binding.scope,
+          );
+          return this;
+        }
+      default:
+        // Use the scoped context
+        return this.getScopedContext(binding.scope);
+    }
+  }
+
+  /**
+   * Check if this context is visible (same or ancestor) to the given one
+   * @param ctx - Another context object
+   */
+  isVisibleTo(ctx: Context) {
+    let current: Context | undefined = ctx;
+    while (current != null) {
+      if (current === this) return true;
+      current = current._parent;
+    }
+    return false;
   }
 
   /**

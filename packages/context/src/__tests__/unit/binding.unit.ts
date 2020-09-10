@@ -113,6 +113,21 @@ describe('Binding', () => {
       expect(binding.scope).to.equal(BindingScope.TRANSIENT);
     });
 
+    it('sets the request binding scope', () => {
+      binding.inScope(BindingScope.REQUEST);
+      expect(binding.scope).to.equal(BindingScope.REQUEST);
+    });
+
+    it('sets the application binding scope', () => {
+      binding.inScope(BindingScope.APPLICATION);
+      expect(binding.scope).to.equal(BindingScope.APPLICATION);
+    });
+
+    it('sets the server binding scope', () => {
+      binding.inScope(BindingScope.SERVER);
+      expect(binding.scope).to.equal(BindingScope.SERVER);
+    });
+
     it('triggers changed event', () => {
       const events = listenOnBinding();
       binding.inScope(BindingScope.TRANSIENT);

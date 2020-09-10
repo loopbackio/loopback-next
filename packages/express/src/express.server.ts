@@ -3,7 +3,13 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Context, CoreBindings, inject, Server} from '@loopback/core';
+import {
+  BindingScope,
+  Context,
+  CoreBindings,
+  inject,
+  Server,
+} from '@loopback/core';
 import {HttpOptions, HttpServer, HttpsOptions} from '@loopback/http-server';
 import debugFactory from 'debug';
 import express from 'express';
@@ -51,6 +57,7 @@ export class ExpressServer extends BaseMiddlewareRegistry implements Server {
     parent?: Context,
   ) {
     super(parent);
+    this.scope = BindingScope.SERVER;
     let basePath = config?.basePath ?? '';
     // Trim leading and trailing `/`
     basePath = basePath.replace(/(^\/)|(\/$)/, '');
