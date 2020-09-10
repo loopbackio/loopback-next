@@ -116,6 +116,7 @@ export class Application extends Context implements LifeCycleObserver {
   constructor(configOrParent?: ApplicationConfig | Context, parent?: Context) {
     // super() has to be first statement for a constructor
     super(...buildConstructorArgs(configOrParent, parent));
+    this.scope = BindingScope.APPLICATION;
 
     this.options =
       configOrParent instanceof Context ? {} : configOrParent ?? {};

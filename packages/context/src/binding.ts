@@ -58,6 +58,10 @@ export enum BindingScope {
   TRANSIENT = 'Transient',
 
   /**
+   * @deprecated Finer-grained scopes such as `APPLICATION`, `SERVER`, or
+   * `REQUEST` should be used instead to ensure the scope of sharing of resolved
+   * binding values.
+   *
    * The binding provides a value as a singleton within each local context. The
    * value is calculated only once per context and cached for subsequential
    * uses. Child contexts have their own value and do not share with their
@@ -79,6 +83,7 @@ export enum BindingScope {
    * 3. `'b1'` is resolved in `app` but not in `req2`, a new value `2` is
    * calculated and used for `req2` afterward
    * - req2.get('b1') ==> 2 (always)
+   *
    */
   CONTEXT = 'Context',
 
@@ -104,6 +109,62 @@ export enum BindingScope {
    * - req2.get('b1') ==> 0 (always)
    */
   SINGLETON = 'Singleton',
+
+  /*
+   * The following scopes are checked against the context hierarchy to find
+   * the first matching context for a given scope in the chain. Resolved binding
+   * values will be cached and shared on the scoped context. This ensures a
+   * binding to have the same value for the scoped context.
+   */
+
+  /**
+   * Application scope
+   *
+   * @remarks
+   * The binding provides an application-scoped value within the context
+   * hierarchy. Resolved value for this binding will be cached and shared for
+   * the same application context (denoted by its scope property set to
+   * `BindingScope.APPLICATION`).
+   *
+   */
+  APPLICATION = 'Application',
+
+  /**
+   * Server scope
+   *
+   * @remarks
+   * The binding provides an server-scoped value within the context hierarchy.
+   * Resolved value for this binding will be cached and shared for the same
+   * server context (denoted by its scope property set to
+   * `BindingScope.SERVER`).
+   *
+   * It's possible that an application has more than one servers configured,
+   * such as a `RestServer` and a `GrpcServer`. Both server contexts are created
+   * with `scope` set to `BindingScope.SERVER`. Depending on where a binding
+   * is resolved:
+   * - If the binding is resolved from the RestServer or below, it will be
+   * cached using the RestServer context as the key.
+   * - If the binding is resolved from the GrpcServer or below, it will be
+   * cached using the GrpcServer context as the key.
+   *
+   * The same binding can resolved/shared/cached for all servers, each of which
+   * has its own value for the binding.
+   */
+  SERVER = 'Server',
+
+  /**
+   * Request scope
+   *
+   * @remarks
+   * The binding provides an request-scoped value within the context hierarchy.
+   * Resolved value for this binding will be cached and shared for the same
+   * request context (denoted by its scope property set to
+   * `BindingScope.REQUEST`).
+   *
+   * The `REQUEST` scope is very useful for controllers, services and artifacts
+   * that want to have a single instance/value for a given request.
+   */
+  REQUEST = 'Request',
 }
 
 /**
@@ -352,23 +413,18 @@ export class Binding<T = BoundValue> extends EventEmitter {
 
   /**
    * Cache the resolved value by the binding scope
-   * @param ctx - The current context
+   * @param resolutionCtx - The resolution context
    * @param result - The calculated value for the binding
    */
   private _cacheValue(
-    ctx: Context,
+    resolutionCtx: Context,
     result: ValueOrPromise<T>,
   ): ValueOrPromise<T> {
     // Initialize the cache as a weakmap keyed by context
     if (!this._cache) this._cache = new WeakMap<Context, ValueOrPromise<T>>();
-    if (this.scope === BindingScope.SINGLETON) {
-      // Cache the value
-      this._cache.set(ctx.getOwnerContext(this.key)!, result);
-    } else if (this.scope === BindingScope.CONTEXT) {
-      // Cache the value at the current context
-      this._cache.set(ctx, result);
+    if (this.scope !== BindingScope.TRANSIENT) {
+      this._cache.set(resolutionCtx!, result);
     }
-    // Do not cache for `TRANSIENT`
     return result;
   }
 
@@ -383,7 +439,7 @@ export class Binding<T = BoundValue> extends EventEmitter {
 
   /**
    * Invalidate the binding cache so that its value will be reloaded next time.
-   * This is useful to force reloading a singleton when its configuration or
+   * This is useful to force reloading a cached value when its configuration or
    * dependencies are changed.
    * **WARNING**: The state held in the cached value will be gone.
    *
@@ -391,15 +447,11 @@ export class Binding<T = BoundValue> extends EventEmitter {
    */
   refresh(ctx: Context) {
     if (!this._cache) return;
-    if (this.scope === BindingScope.SINGLETON) {
-      // Cache the value
-      const ownerCtx = ctx.getOwnerContext(this.key);
-      if (ownerCtx != null) {
-        this._cache.delete(ownerCtx);
+    if (this.scope !== BindingScope.TRANSIENT) {
+      const resolutionCtx = ctx.getResolutionContext(this);
+      if (resolutionCtx != null) {
+        this._cache.delete(resolutionCtx);
       }
-    } else if (this.scope === BindingScope.CONTEXT) {
-      // Cache the value at the current context
-      this._cache.delete(ctx);
     }
   }
 
@@ -451,22 +503,20 @@ export class Binding<T = BoundValue> extends EventEmitter {
     if (debug.enabled) {
       debug('Get value for binding %s', this.key);
     }
+
+    const options = asResolutionOptions(optionsOrSession);
+    const resolutionCtx = this.getResolutionContext(ctx, options);
+    if (resolutionCtx == null) return undefined;
     // First check cached value for non-transient
     if (this._cache) {
-      if (this.scope === BindingScope.SINGLETON) {
-        const ownerCtx = ctx.getOwnerContext(this.key);
-        if (ownerCtx && this._cache.has(ownerCtx)) {
-          return this._cache.get(ownerCtx)!;
-        }
-      } else if (this.scope === BindingScope.CONTEXT) {
-        if (this._cache.has(ctx)) {
-          return this._cache.get(ctx)!;
+      if (this.scope !== BindingScope.TRANSIENT) {
+        if (resolutionCtx && this._cache.has(resolutionCtx)) {
+          return this._cache.get(resolutionCtx)!;
         }
       }
     }
-    const options = asResolutionOptions(optionsOrSession);
-    const resolutionCtx = {
-      context: ctx,
+    const resolutionMetadata = {
+      context: resolutionCtx!,
       binding: this,
       options,
     };
@@ -477,23 +527,60 @@ export class Binding<T = BoundValue> extends EventEmitter {
           // We already test `this._getValue` is a function. It's safe to assert
           // that `this._getValue` is not undefined.
           return this._getValue!({
-            ...resolutionCtx,
+            ...resolutionMetadata,
             options: optionsWithSession,
           });
         },
         this,
         options.session,
       );
-      return this._cacheValue(ctx, result);
+      return this._cacheValue(resolutionCtx!, result);
     }
     // `@inject.binding` adds a binding without _getValue
     if (options.optional) return undefined;
     return Promise.reject(
       new ResolutionError(
         `No value was configured for binding ${this.key}.`,
-        resolutionCtx,
+        resolutionMetadata,
       ),
     );
+  }
+
+  /**
+   * Locate and validate the resolution context
+   * @param ctx - Current context
+   * @param options - Resolution options
+   */
+  private getResolutionContext(ctx: Context, options: ResolutionOptions) {
+    const resolutionCtx = ctx.getResolutionContext(this);
+    switch (this.scope) {
+      case BindingScope.APPLICATION:
+      case BindingScope.SERVER:
+      case BindingScope.REQUEST:
+        if (resolutionCtx == null) {
+          const msg =
+            `Binding "${this.key}" in context "${ctx.name}" cannot` +
+            ` be resolved in scope "${this.scope}"`;
+          if (options.optional) {
+            debug(msg);
+            return undefined;
+          }
+          throw new Error(msg);
+        }
+    }
+
+    const ownerCtx = ctx.getOwnerContext(this.key);
+    if (ownerCtx != null && !ownerCtx.isVisibleTo(resolutionCtx!)) {
+      const msg =
+        `Resolution context "${resolutionCtx?.name}" does not have ` +
+        `visibility to binding "${this.key} (scope:${this.scope})" in context "${ownerCtx.name}"`;
+      if (options.optional) {
+        debug(msg);
+        return undefined;
+      }
+      throw new Error(msg);
+    }
+    return resolutionCtx;
   }
 
   /**

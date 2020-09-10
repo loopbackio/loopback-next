@@ -5,6 +5,7 @@
 
 import {
   Binding,
+  BindingScope,
   Constructor,
   Context,
   createBindingFromClass,
@@ -57,6 +58,9 @@ export class LoopBackContainer implements ContainerType {
       resolverClass,
       resolverData,
     );
+    if (reqCtx == null) {
+      resolutionCtx.scope = BindingScope.REQUEST;
+    }
     const resolverBinding = createBindingFromClass(resolverClass, {
       defaultNamespace: GraphQLBindings.RESOLVERS,
     });
