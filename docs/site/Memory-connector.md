@@ -22,9 +22,6 @@ The memory connector supports:
 
 - Standard query and create, read, update, and delete operations, so you can
   test models against an in-memory data source.
-- Geo-filtering when using the `find()` operation with an attached model.
-  See [GeoPoint class](http://apidocs.loopback.io/loopback-datasource-juggler/#geopoint) for
-  more information on geo-filtering.
 
 {% include important.html content=" The memory connector is designed for
 development and testing of a single-process application without setting up a
@@ -34,23 +31,10 @@ own isolated data not shared in the cluster.
 You can persist data between application restarts using the `file` property. See
 [Data persistence](#data-persistence) for more information. " %}
 
-## Creating a data source
+### Limitations
 
-By default, an application created with the
-[Application generator](Application-generator.html) has a memory data source
-defined; for example:
-
-{% include code-caption.html content="/server/datasources.json" %}
-
-```javascript
-"db": {
-    "name": "db",
-    "connector": "memory"
-}
-```
-
-Use the [Data source generator](Data-source-generator.html) to add a new memory
-data source to your application.
+The connector does not implement transactions. Hence, transactions will fail
+with an error.
 
 ### Memory connector properties
 
@@ -70,6 +54,14 @@ data source to your application.
       <td>connector</td>
       <td>String</td>
       <td>Must be "memory" to use the memory connector.</td>
+    </tr>
+    <tr>
+      <td>localStorage</td>
+      <td>String</td>
+      <td>
+          <b>Not recommended.</b> Path to the browser Local Storage. This is
+          kept for legacy reasons and may be removed in a future release.
+        </td>
     </tr>
     <tr>
       <td>file</td>
@@ -94,32 +86,32 @@ using the memory connector exits, all model instances are lost. To maintain data
 across application restarts, specify a JSON file in which to store the data with
 the `file` property when creating the data source.
 
-The simplest way to do this is by editing `server/datasources.json`; for
-example:
+The simplest way to do this is by editing
+`src/datasources/[datasource name].datasource.ts`; for example:
 
-{% include code-caption.html content="server/datasources.json" %}
+{% include code-caption.html content="src/datasources/db.datasource.ts" %}
 
-```javascript
-{
-  "db": {
-    "name": "db",
-    "connector": "memory",
-    "file": "mydata.json"
+```diff
+import {inject} from '@loopback/core';
+import {juggler} from '@loopback/repository';
+
+const config = {
+  name: 'db',
+  connector: 'memory',
+  localStorage: '',
++ file: './data/db.json',
+- file: '',
+};
+
+export class DbDataSource extends juggler.DataSource {
+  static dataSourceName = 'db';
+  static readonly defaultConfig = config;
+
+  constructor(
+    @inject('datasources.config.db', {optional: true})
+    dsConfig: object = config,
+  ) {
+    super(dsConfig);
   }
 }
 ```
-
-You can also set the persistence file in a boot script; for example:
-
-{% include code-caption.html content="server/boot/script.js" %}
-
-```javascript
-var memory = loopback.createDataSource({
-  connector: loopback.Memory,
-  file: 'mydata.json',
-});
-```
-
-When the application exits, the memory connector will then store data in the
-`mydata.json` file, and when it restarts will load the saved data from that
-file.
