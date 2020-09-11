@@ -15,6 +15,7 @@ import {
 import {
   asSpecEnhancer,
   ContactObject,
+  DEFAULT_OPENAPI_SPEC_INFO,
   mergeOpenAPISpec,
   OASEnhancer,
   OpenApiSpec,
@@ -44,12 +45,20 @@ export class InfoSpecEnhancer implements OASEnhancer {
     const contact: ContactObject = InfoSpecEnhancer.parseAuthor(
       this.pkg.author,
     );
+    // Only override `info` if the `spec.info` is not customized
+    const overrideInfo =
+      spec.info.title === DEFAULT_OPENAPI_SPEC_INFO.title &&
+      spec.info.version === DEFAULT_OPENAPI_SPEC_INFO.version;
     const patchSpec = {
       info: {
-        title: this.pkg.name,
-        description: this.pkg.description,
-        version: this.pkg.version,
-        contact,
+        title: overrideInfo ? this.pkg.name : spec.info.title ?? this.pkg.name,
+        description: overrideInfo
+          ? this.pkg.description
+          : spec.info.description ?? this.pkg.description,
+        version: overrideInfo
+          ? this.pkg.version
+          : spec.info.version ?? this.pkg.version,
+        contact: overrideInfo ? contact : spec.info.contact ?? contact,
       },
     };
     debug('Enhancing OpenAPI spec with %j', patchSpec);
