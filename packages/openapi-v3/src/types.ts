@@ -18,6 +18,11 @@ export type OpenApiSpec = OpenAPIObject;
 // Export also all spec interfaces
 export * from 'openapi3-ts';
 
+export const DEFAULT_OPENAPI_SPEC_INFO = {
+  title: 'LoopBack Application',
+  version: '1.0.0',
+};
+
 /**
  * Create an empty OpenApiSpec object that's still a valid openapi document.
  *
@@ -27,8 +32,7 @@ export function createEmptyApiSpec(): OpenApiSpec {
   return {
     openapi: '3.0.0',
     info: {
-      title: 'LoopBack Application',
-      version: '1.0.0',
+      ...DEFAULT_OPENAPI_SPEC_INFO,
     },
     paths: {},
     servers: [{url: '/'}],
