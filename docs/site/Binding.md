@@ -211,8 +211,11 @@ We allow a binding to be resolved within a context using one of the following
 scopes:
 
 - BindingScope.TRANSIENT (default)
-- BindingScope.CONTEXT
+- BindingScope.CONTEXT (deprecated to favor APPLICATION/SERVER/REQUEST)
 - BindingScope.SINGLETON
+- BindingScope.APPLICATION
+- BindingScope.SERVER
+- BindingScope.REQUEST
 
 For a complete list of descriptions, please see
 [BindingScope](https://loopback.io/doc/en/lb4/apidocs.context.bindingscope.html).
@@ -379,14 +382,225 @@ To understand the difference between `@bind()/@injectable` and `ctx.bind()`, see
 [Configure binding attributes for a class](#configure-binding-attributes-for-a-class).
 " %}
 
-### Refresh a binding with SINGLETON or CONTEXT scope
+There are some limitation of `SINGLETON`, `CONTEXT`, and `TRANSIENT` scopes.
+Consider the following typical context hierarchy formed by a LoopBack REST
+application:
 
-`SINGLETON` and `CONTEXT` scopes can be used to minimize the number of value
-instances created for a given binding. But sometimes we would like to force
-reloading of a binding when its configuration or dependencies are changed. For
-example, a logging provider can be refreshed to pick up a new logging level. The
-same functionality can be achieved with `TRANSIENT` scope but with much more
-overhead.
+```ts
+// We have a context chain: invocationCtx -> requestCtx -> serverCtx -> appCtx
+appCtx
+  .bind('services.MyService')
+  .toClass(MyService)
+  .inScope(BindingScope.TRANSIENT);
+```
+
+We use `TRANSIENT` scope for controllers/services so that each request will get
+a new instance. But if a controller/service is resolved within the
+`invocationCtx` (by interceptors), a new instance will be created again.
+
+```ts
+// In a middleware
+const serviceInst1 = requestCtx.get<MyService>('services.MyService');
+// In an interceptor
+const serviceInst2 = invocationCtx.get<MyService>('services.MyService');
+// serviceInst2 is a new instance and it's NOT the same as serviceInst1
+```
+
+It can also happen with dependency injections:
+
+```ts
+class MyMiddlewareProvider implements Provider<Middleware> {
+  constructor(@inject('services.MyService') private myService) {}
+}
+
+class MyInterceptor {
+  constructor(@inject('services.MyService') private myService) {}
+}
+
+// For the same request, the middleware and interceptor will receive two different
+// instances of `MyService`
+```
+
+Ideally, we should get the same instance at the subtree of the `requestCtx`.
+Even worse, resolving a binding twice in the same reqCtx will get two different
+instances too.
+
+Neither `SINGLETON` or `CONTEXT` can satisfy this requirement. Typically,
+controllers/servers are discovered and loaded into the application context.
+Those from components such as RestComponent also contribute bindings to the
+`appCtx` instead of `serverCtx`. With `SINGLETON` scope, we will get one
+instance at the `appCtx` level. With `CONTEXT` scope, we will get one instance
+per context. A set of fine-grained scopes has been introduced to allow better
+scoping of binding resolutions.
+
+- BindingScope.APPLICATION
+- BindingScope.SERVER
+- BindingScope.REQUEST
+
+The scopes above are checked against the context hierarchy to find the first
+matching context for a given scope in the chain. Resolved binding values will be
+cached and shared on the scoped context. This ensures a binding to have the same
+value for the scoped context.
+
+{% include note.html content="In some cases (especially for tests), no context
+with `REQUEST` scope exists in the chain. The resolution falls back to the
+current context. This behavior makes it easy to use `REQUEST` as the default
+scope for controllers and other artifacts.
+" %}
+
+```ts
+// We have a context chain: invocationCtx -> requestCtx -> serverCtx -> appCtx
+appCtx
+  .bind('services.MyService')
+  .toClass(MyService)
+  .inScope(BindingScope.REQUEST);
+```
+
+Now the same instance of MyService will be resolved in the `MyMiddleware` and
+`MyInterceptor`.
+
+### Resolve a binding value by key and scope within a context hierarchy
+
+Binding resolution happens explicitly with `ctx.get()`, `ctx.getSync()`, or
+`binding.getValue(ctx)`. It may be also triggered with dependency injections
+when a class is instantiated or a method is invoked.
+
+Within a context hierarchy, resolving a binding involves the following context
+objects, which can be the same or different depending on the context chain and
+binding scopes.
+
+Let's assume we have a context chain configured as follows:
+
+```ts
+import {Context} from '@loopback/core';
+
+const appCtx = new Context('application');
+appCtx.scope = BindingScope.APPLICATION;
+
+const serverCtx = new Context(appCtx, 'server');
+serverCtx.scope = BindingScope.SERVER;
+
+const reqCtx = new Context(serverCtx, 'request');
+reqCtx.scope = BindingScope.REQUEST;
+```
+
+1.  The owner context
+
+    The owner context is the context in which a binding is registered by
+    `ctx.bind()` or `ctx.add()` APIs.
+
+    Let's add some bindings to the context chain.
+
+    ```ts
+    appCtx.bind('foo.app').to('app.bar');
+    serverCtx.bind('foo.server').to('server.bar');
+    ```
+
+    The owner context for the code snippet above will be:
+
+    - 'foo.app': appCtx
+    - 'foo.server': serverCtx
+
+2.  The current context
+
+    The current context is either the one that is explicitly passed in APIs that
+    starts the resolution or implicitly used to inject dependencies. For
+    dependency injections, it will be the resolution context of the owning class
+    binding. For example, the current context is `reqCtx` for the statement
+    below:
+
+    ```ts
+    const val = await reqCtx.get('foo.app');
+    ```
+
+3.  The resolution context
+
+    The resolution context is the context in the chain that will be used to find
+    bindings by key. Only the resolution context itself and its ancestors are
+    visible for the binding resolution.
+
+    The resolution context is determined for a binding key as follows:
+
+    a. Find the first binding with the given key in the current context or its
+    ancestors recursively
+
+    b. Use the scope of binding found to locate the resolution context:
+
+    - Use the `current context` for `CONTEXT` and `TRANSIENT` scopes
+    - Use the `owner context` for `SINGLETON` scope
+    - Use the first context that matches the binding scope in the chain starting
+      from the current context and traversing to its ancestors for
+      `APPLICATION`, `SERVER` and `REQUEST` scopes
+
+    For example:
+
+    ```ts
+    import {generateUniqueId} from '@loopback/core';
+
+    appCtx.bind('foo').to('app.bar');
+    serverCtx
+      .bind('foo')
+      .toDynamicValue(() => `foo.server.${generateUniqueId()}`)
+      .inScope(BindingScope.SERVER);
+
+    serverCtx
+      .bind('xyz')
+      .toDynamicValue(() => `abc.server.${generateUniqueId()}`)
+      .inScope(BindingScope.SINGLETON);
+
+    const val = await reqCtx.get('foo');
+    const appVal = await appCtx.get('foo');
+    const xyz = await reqCtx.get('xyz');
+    ```
+
+    For `const val = await reqCtx.get('foo');`, the binding will be `foo`
+    (scope=SERVER) in the `serverCtx` and resolution context will be
+    `serverCtx`.
+
+    For `const appVal = await appCtx.get('foo');`, the binding will be `foo`
+    (scope=TRANSIENT) in the `appCtx` and resolution context will be `appCtx`.
+
+    For `const xyz = await reqCtx.get('xyz');`, the binding will be `xyz`
+    (scope=SINGLETON) in the `serverCtx` and resolution context will be
+    `serverCtx`.
+
+    For dependency injections, the `current context` will be the
+    `resolution context` of the class binding that declares injections. The
+    `resolution context` will be located for each injection. If the bindings to
+    be injected is NOT visible (either the key does not exist or only exists in
+    descendant) to the `resolution context`, an error will be reported.
+
+{% include note.html content="If the owner context happens to be same as the
+resolution context, the `APPLICATION/SERVER/REQUEST` scope is equivalent as
+`SINGLETON` scope. For example, the following two bindings behave the same way
+as each other.
+
+```ts
+let count = 0;
+appCtx
+  .bind('app.counter')
+  .toDynamicValue(() => count++)
+  .inScope(BindingScope.APPLICATION);
+```
+
+```ts
+let count = 0;
+appCtx
+  .bind('app.counter')
+  .toDynamicValue(() => count++)
+  .inScope(BindingScope.SINGLETON);
+```
+
+" %}
+
+### Refresh a binding with non-transient scopes
+
+`SINGLETON`/`CONTEXT`/`APPLICATION`/`SERVER` scopes can be used to minimize the
+number of value instances created for a given binding. But sometimes we would
+like to force reloading of a binding when its configuration or dependencies are
+changed. For example, a logging provider can be refreshed to pick up a new
+logging level. The same functionality can be achieved with `TRANSIENT` scope but
+with much more overhead.
 
 The `binding.refresh()` method invalidates the cache so that its value will be
 reloaded next time.
