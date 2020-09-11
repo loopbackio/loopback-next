@@ -13,7 +13,8 @@ script:
   - npm run build
   - npm run test:ci
 
-env: TASK=test
+# Increase the memory to 2G for node
+env: TASK=test NODE_OPTIONS="--max-old-space-size=2048"
 
 cache:
   yarn: true
