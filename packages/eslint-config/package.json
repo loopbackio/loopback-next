@@ -20,7 +20,7 @@
     "eslint-plugin-mocha": "^8.0.0"
   },
   "peerDependencies": {
-    "eslint": "^7.8.1"
+    "eslint": "^7.9.0"
   },
   "repository": {
     "type": "git",
