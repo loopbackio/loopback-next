@@ -1,39 +1,16 @@
 {
   "name": "loopback-next",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/strongloop/loopback-next.git"
-  },
+  "description": "Monorepo for LoopBack 4 - A highly extensible Node.js and TypeScript framework for building APIs and microservices",
   "version": "0.1.0",
+  "author": "IBM Corp.",
+  "license": "MIT",
+  "copyright.owner": "IBM Corp.",
   "engines": {
     "node": ">=10.16"
   },
-  "author": "IBM Corp.",
-  "license": "MIT",
-  "devDependencies": {
-    "@commitlint/cli": "^11.0.0",
-    "@commitlint/config-conventional": "^11.0.0",
-    "@commitlint/travis-cli": "^11.0.0",
-    "@types/mocha": "^8.0.3",
-    "@typescript-eslint/eslint-plugin": "^4.1.0",
-    "@typescript-eslint/parser": "^4.1.0",
-    "coveralls": "^3.1.0",
-    "cross-env": "^7.0.2",
-    "cz-conventional-changelog": "^3.3.0",
-    "eslint": "^7.9.0",
-    "eslint-config-prettier": "^6.11.0",
-    "eslint-plugin-eslint-plugin": "^2.3.0",
-    "eslint-plugin-mocha": "^8.0.0",
-    "eslint-plugin-prettier": "^3.1.4",
-    "fs-extra": "^9.0.1",
-    "husky": "^4.3.0",
-    "if-env": "^1.0.4",
-    "lerna": "^3.22.1",
-    "lint-staged": "^10.3.0",
-    "markdown-table": "^2.0.0",
-    "open-cli": "^6.0.1",
-    "prettier": "^2.1.1",
-    "typescript": "~4.0.2"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git"
   },
   "scripts": {
     "bootstrap": "lerna bootstrap",
@@ -80,16 +57,40 @@
     "mocha": "node packages/build/bin/run-mocha --lang en_US.UTF-8 \"packages/*/dist/__tests__/**/*.js\" \"extensions/*/dist/__tests__/**/*.js\" \"examples/*/dist/__tests__/**/*.js\" \"packages/cli/test/**/*.js\" \"packages/build/test/*/*.js\"",
     "posttest": "npm run lint"
   },
+  "devDependencies": {
+    "@commitlint/cli": "^11.0.0",
+    "@commitlint/config-conventional": "^11.0.0",
+    "@commitlint/travis-cli": "^11.0.0",
+    "@types/mocha": "^8.0.3",
+    "@typescript-eslint/eslint-plugin": "^4.1.0",
+    "@typescript-eslint/parser": "^4.1.0",
+    "coveralls": "^3.1.0",
+    "cross-env": "^7.0.2",
+    "cz-conventional-changelog": "^3.3.0",
+    "eslint": "^7.8.1",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-eslint-plugin": "^2.3.0",
+    "eslint-plugin-mocha": "^8.0.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "fs-extra": "^9.0.1",
+    "husky": "^4.3.0",
+    "if-env": "^1.0.4",
+    "lerna": "^3.22.1",
+    "lint-staged": "^10.3.0",
+    "markdown-table": "^2.0.0",
+    "open-cli": "^6.0.1",
+    "prettier": "^2.1.1",
+    "typescript": "~4.0.2"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-commit": "if-env LINT_STAGED=0 && echo \"lint-staged disabled via LINT_STAGED env var\" || lint-staged"
+    }
+  },
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
-    }
-  },
-  "copyright.owner": "IBM Corp.",
-  "husky": {
-    "hooks": {
-      "pre-commit": "if-env LINT_STAGED=0 && echo \"lint-staged disabled via LINT_STAGED env var\" || lint-staged",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   }
 }
