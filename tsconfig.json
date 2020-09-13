@@ -77,6 +77,9 @@
       "path": "examples/soap-calculator/tsconfig.json"
     },
     {
+      "path": "examples/socketio/tsconfig.json"
+    },
+    {
       "path": "examples/todo-jwt/tsconfig.json"
     },
     {

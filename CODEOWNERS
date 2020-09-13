@@ -340,6 +340,7 @@
 # - Primary owner(s): @raymondfeng
 # - Standby owner(s): n/a
 /extensions/socketio @raymondfeng
+/examples/socketio @raymondfeng
 
 #
 # Build & internal tooling

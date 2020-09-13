@@ -6,10 +6,10 @@
 import {expect} from '@loopback/testlab';
 import pEvent from 'p-event';
 import io from 'socket.io-client';
-import {SocketIoDemoApplication} from '../fixtures/application';
+import {SocketIoExampleApplication} from '../../application';
 
 describe('SocketIoServer', () => {
-  let app: SocketIoDemoApplication;
+  let app: SocketIoExampleApplication;
 
   before(givenApplication);
 
@@ -18,16 +18,17 @@ describe('SocketIoServer', () => {
   });
 
   it('connects to socketio controller', async () => {
-    const url = app.socketServer.url + '/chats/group1';
+    const url = app.socketServer.url;
     const socket = io(url);
-    socket.emit('chat message', 'Hello');
-    const msg = await pEvent(socket, 'chat message');
-    expect(msg).to.match(/\[\/chats\/group1#.+\] Hello/);
+
+    socket.emit('general-message-forward', 'Hello');
+    const msg = await pEvent(socket, 'general-message-forward');
+    expect(msg).to.match('Hello');
     socket.disconnect();
   });
 
   async function givenApplication() {
-    app = new SocketIoDemoApplication({
+    app = new SocketIoExampleApplication({
       httpServerOptions: {
         host: '127.0.0.1',
         port: 0,
