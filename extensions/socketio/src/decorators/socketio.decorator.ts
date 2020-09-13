@@ -1,20 +1,28 @@
-// Copyright IBM Corp. 2020. All Rights Reserved.
+// Copyright IBM Corp. 2019,2020. All Rights Reserved.
 // Node module: @loopback/socketio
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {ClassDecoratorFactory, Constructor, inject, MetadataAccessor, MetadataInspector, MethodDecoratorFactory} from '@loopback/context';
-import {SocketIOBindings} from '../keys';
+import {
+  ClassDecoratorFactory,
+  Constructor,
+  inject,
+  MetadataAccessor,
+  MetadataInspector,
+  MethodDecoratorFactory,
+} from '@loopback/core';
+import {SocketIoBindings} from '../keys';
 
 /**
- * Metadata for SocketIO
+ * Metadata for SocketIo
  */
-export interface SocketIOMetadata {
+export interface SocketIoMetadata {
+  name?: string;
   namespace?: string | RegExp;
 }
 
 export const SOCKET_IO_METADATA = MetadataAccessor.create<
-  SocketIOMetadata,
+  SocketIoMetadata,
   ClassDecorator
 >('socketio');
 
@@ -33,18 +41,18 @@ export const SOCKET_IO_CONNECT_METADATA = MetadataAccessor.create<
  * For example,
  * ```ts
  * @socketio({namespace: '/chats'})
- * export class SocketIOController {}
+ * export class SocketIoController {}
  * ```
  * @param spec A namespace or object
  */
-export function socketio(spec: SocketIOMetadata | string | RegExp = {}) {
+export function socketio(spec: SocketIoMetadata | string | RegExp = {}) {
   if (typeof spec === 'string' || spec instanceof RegExp) {
     spec = {namespace: spec};
   }
   return ClassDecoratorFactory.createDecorator(SOCKET_IO_METADATA, spec);
 }
 
-export function getSocketIOMetadata(controllerClass: Constructor<unknown>) {
+export function getSocketIoMetadata(controllerClass: Constructor<unknown>) {
   return MetadataInspector.getClassMetadata(
     SOCKET_IO_METADATA,
     controllerClass,
@@ -52,8 +60,16 @@ export function getSocketIOMetadata(controllerClass: Constructor<unknown>) {
 }
 
 export namespace socketio {
+  export function io() {
+    return inject(SocketIoBindings.IO);
+  }
+
+  export function namespace(name: string) {
+    return inject(`socketio.namespace.${name}`);
+  }
+
   export function socket() {
-    return inject(SocketIOBindings.SOCKET);
+    return inject(SocketIoBindings.SOCKET);
   }
 
   /**

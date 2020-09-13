@@ -13,9 +13,9 @@ const debug = debugFactory('loopback:socketio:controller');
  * A demo controller for socket.io
  */
 @socketio(/^\/chats\/.+$/)
-export class SocketIOController {
+export class ChatController {
   constructor(
-    @socketio.socket() // Equivalent to `@inject('ws.socket')`
+    @socketio.socket() // Equivalent to `@inject('socketio.socket')`
     private socket: Socket,
   ) {}
 
@@ -42,7 +42,7 @@ export class SocketIOController {
 
   /**
    * Register a handler for all events
-   * @param msg
+   * @param args
    */
   @socketio.subscribe(/.+/)
   logMessage(...args: unknown[]) {
@@ -51,7 +51,6 @@ export class SocketIOController {
 
   /**
    * The method is invoked when a client disconnects from the server
-   * @param socket
    */
   @socketio.disconnect()
   disconnect() {

@@ -1,5 +1,7 @@
 # @loopback/socketio
 
+Stability: :warning: Experimental :warning:
+
 This module uses [socket.io](http://socket.io) to expose controllers as
 WebSocket friendly endpoints.
 
@@ -18,11 +20,11 @@ WebSocket friendly endpoints.
 
 The package will provide the following key constructs:
 
-- SocketIOServer: A new server type that listens on incoming WebSocket
+- SocketIoServer: A new server type that listens on incoming WebSocket
   connections and dispatches messages to controllers that subscribe to the
   namespace. Each server is attached to an http/https endpoint.
 
-- SocketIO controller: A controller class that is decorated with SocketIO
+- SocketIo controller: A controller class that is decorated with SocketIo
   related metadata, including:
 
   - Map to a namespace
@@ -30,16 +32,20 @@ The package will provide the following key constructs:
   - Subscribe/consume messages
   - Publish/produce messages
 
-- SocketIO middleware or sequence
+- SocketIo middleware or sequence
   - Allow common logic to intercept/process WebSocket messages
 
 ## Basic Use
 
-1. Create a SocketIOServer
+1. Create a SocketIoServer
 2. Define a controller to handle socket.io events/messages
 3. Register the controller
-4. Discover socket.io controllers and mount them to the SocketIOServer
+4. Discover socket.io controllers and mount them to the SocketIoServer
    namespaces.
+
+## Sample application
+
+[socket.io](https://github.com/strongloop/loopback-next/tree/master/examples/socketio)
 
 ## Installation
 

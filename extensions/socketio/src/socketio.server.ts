@@ -1,17 +1,37 @@
-// Copyright IBM Corp. 2020. All Rights Reserved.
+// Copyright IBM Corp. 2019,2020. All Rights Reserved.
 // Node module: @loopback/socketio
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {BindingFilter, BindingScope, Constructor, Context, ContextView, createBindingFromClass, inject, MetadataInspector} from '@loopback/context';
-import {CoreBindings, CoreTags} from '@loopback/core';
+import {
+  Application,
+  Binding,
+  BindingFilter,
+  BindingScope,
+  config,
+  Constructor,
+  Context,
+  ContextView,
+  CoreBindings,
+  CoreTags,
+  createBindingFromClass,
+  inject,
+  MetadataInspector,
+} from '@loopback/core';
 import {HttpServer, HttpServerOptions} from '@loopback/http-server';
+import cors from 'cors';
 import debugFactory from 'debug';
+import {cloneDeep} from 'lodash';
 import SocketIO, {Server, ServerOptions, Socket} from 'socket.io';
-import {getSocketIOMetadata, SOCKET_IO_CONNECT_METADATA, SOCKET_IO_METADATA, SOCKET_IO_SUBSCRIBE_METADATA} from './decorators/socketio.decorator';
-import {SocketIOBindings, SocketIOTags} from './keys';
-import {SocketIOControllerFactory} from './socketio-controller-factory';
-
+import {
+  getSocketIoMetadata,
+  SocketIoMetadata,
+  SOCKET_IO_CONNECT_METADATA,
+  SOCKET_IO_METADATA,
+  SOCKET_IO_SUBSCRIBE_METADATA,
+} from './decorators';
+import {SocketIoBindings, SocketIoTags} from './keys';
+import {SocketIoControllerFactory} from './socketio-controller-factory';
 const debug = debugFactory('loopback:socketio:server');
 
 export type SockIOMiddleware = (
@@ -20,15 +40,18 @@ export type SockIOMiddleware = (
   fn: (err?: any) => void,
 ) => void;
 
+export const getNamespaceKeyForName = (name: string) =>
+  `socketio.namespace.${name}`;
+
 /**
  * A binding filter to match socket.io controllers
  * @param binding - Binding object
  */
-export const socketIOControllers: BindingFilter = binding => {
+export const socketIoControllers: BindingFilter = binding => {
   // It has to be tagged with `controller`
   if (!binding.tagNames.includes(CoreTags.CONTROLLER)) return false;
   // It can be explicitly tagged with `socket.io`
-  if (binding.tagNames.includes(SocketIOTags.SOCKET_IO)) return true;
+  if (binding.tagNames.includes(SocketIoTags.SOCKET_IO)) return true;
 
   // Now inspect socket.io decorations
   if (binding.valueConstructor) {
@@ -38,7 +61,7 @@ export const socketIOControllers: BindingFilter = binding => {
       cls,
     );
     if (classMeta != null) {
-      debug('SocketIO metadata found at class %s', cls.name);
+      debug('SocketIo metadata found at class %s', cls.name);
       return true;
     }
     const subscribeMeta = MetadataInspector.getAllMethodMetadata(
@@ -46,7 +69,7 @@ export const socketIOControllers: BindingFilter = binding => {
       cls.prototype,
     );
     if (subscribeMeta != null) {
-      debug('SocketIO subscribe metadata found at methods of %s', cls.name);
+      debug('SocketIo subscribe metadata found at methods of %s', cls.name);
       return true;
     }
 
@@ -55,37 +78,46 @@ export const socketIOControllers: BindingFilter = binding => {
       cls.prototype,
     );
     if (connectMeta != null) {
-      debug('SocketIO connect metadata found at methods of %s', cls.name);
+      debug('SocketIo connect metadata found at methods of %s', cls.name);
       return true;
     }
   }
   return false;
 };
 
-export interface SocketIOServerOptions {
-  httpServerOptions?: HttpServerOptions;
-  socketIOOptions?: ServerOptions;
+// Server config expected from application
+export interface SocketIoServerOptions {
+  httpServerOptions?: HttpServerResolvedOptions;
+  socketIoOptions?: ServerOptions;
 }
 
 /**
  * A socketio server
  */
-export class SocketIOServer extends Context {
+export class SocketIoServer extends Context {
   private controllers: ContextView;
   private httpServer: HttpServer;
-  private io: Server;
+  private readonly io: Server;
+  public readonly config: HttpServerResolvedOptions;
 
   constructor(
-    @inject(SocketIOBindings.CONFIG, {optional: true})
-    private options: SocketIOServerOptions = {},
+    @inject(CoreBindings.APPLICATION_INSTANCE) public app: Application,
+    @config({fromBinding: CoreBindings.APPLICATION_INSTANCE})
+    protected options: SocketIoServerOptions = {},
   ) {
-    super();
-    if (options.socketIOOptions == null) {
+    super(app);
+    if (!options.socketIoOptions) {
       this.io = SocketIO();
     } else {
-      this.io = SocketIO(options.socketIOOptions);
+      this.io = SocketIO(options.socketIoOptions);
     }
-    this.controllers = this.createView(socketIOControllers);
+    app.bind(SocketIoBindings.IO).to(this.io);
+
+    this.controllers = this.createView(socketIoControllers);
+  }
+
+  get listening(): boolean {
+    return this.httpServer ? this.httpServer.listening : false;
   }
 
   /**
@@ -103,15 +135,23 @@ export class SocketIOServer extends Context {
   /**
    * Register a socketio controller
    * @param controllerClass
-   * @param namespace
+   * @param meta
    */
-  route(controllerClass: Constructor<object>, namespace?: string | RegExp) {
-    if (namespace == null) {
-      const meta = getSocketIOMetadata(controllerClass);
-      namespace = meta?.namespace;
+  route(
+    controllerClass: Constructor<object>,
+    meta?: SocketIoMetadata | string | RegExp,
+  ) {
+    if (meta instanceof RegExp || typeof meta === 'string') {
+      meta = {namespace: meta} as SocketIoMetadata;
+    }
+    if (meta == null) {
+      meta = getSocketIoMetadata(controllerClass) as SocketIoMetadata;
+    }
+    const nsp = meta?.namespace ? this.io.of(meta.namespace) : this.io;
+    if (meta?.name) {
+      this.app.bind(getNamespaceKeyForName(meta.name)).to(nsp);
     }
 
-    const nsp = namespace ? this.io.of(namespace) : this.io;
     nsp.on('connection', socket =>
       this.createSocketHandler(controllerClass)(socket),
     );
@@ -127,21 +167,22 @@ export class SocketIOServer extends Context {
   ): (socket: Socket) => void {
     return async socket => {
       debug(
-        'Websocket connected: id=%s namespace=%s',
+        'SocketIo connected: id=%s namespace=%s',
         socket.id,
         socket.nsp.name,
       );
-      // Create a request context
-      const reqCtx = new SocketIORequestContext(socket, this);
-      // Bind socketio
-      reqCtx.bind(SocketIOBindings.SOCKET).to(socket);
-      reqCtx.bind(CoreBindings.CONTROLLER_CLASS).to(controllerClass);
-      reqCtx
-        .bind(CoreBindings.CONTROLLER_CURRENT)
-        .toClass(controllerClass)
-        .inScope(BindingScope.SINGLETON);
-      // Instantiate the controller instance
-      await new SocketIOControllerFactory(reqCtx, controllerClass).create();
+      try {
+        await new SocketIoControllerFactory(
+          this,
+          controllerClass,
+          socket,
+        ).create();
+      } catch (err) {
+        debug(
+          'SocketIo error: error creating controller instance con connection',
+          err,
+        );
+      }
     };
   }
 
@@ -149,12 +190,12 @@ export class SocketIOServer extends Context {
    * Register a socket.io controller
    * @param controllerClass
    */
-  controller(controllerClass: Constructor<unknown>) {
+  controller(controllerClass: Constructor<unknown>): Binding<unknown> {
     debug('Adding controller %s', controllerClass.name);
     const binding = createBindingFromClass(controllerClass, {
-      namespace: 'socketio.controllers',
+      namespace: SocketIoBindings.CONTROLLERS_NAMESPACE,
       defaultScope: BindingScope.TRANSIENT,
-    }).tag(SocketIOTags.SOCKET_IO, CoreTags.CONTROLLER);
+    }).tag(SocketIoTags.SOCKET_IO, CoreTags.CONTROLLER);
     this.add(binding);
     debug('Controller binding: %j', binding);
     return binding;
@@ -181,16 +222,20 @@ export class SocketIOServer extends Context {
    * Start the socketio server
    */
   async start() {
-    this.httpServer = new HttpServer(() => {}, this.options.httpServerOptions);
+    const requestListener = this.getSync(SocketIoBindings.REQUEST_LISTENER);
+    const serverOptions = resolveHttpServerConfig(
+      this.options.httpServerOptions,
+    );
+    this.httpServer = new HttpServer(requestListener, serverOptions);
     await this.httpServer.start();
-    this.io.attach(this.httpServer.server, this.options.socketIOOptions);
+    this.io.attach(this.httpServer.server, this.options.socketIoOptions);
   }
 
   /**
    * Stop the socketio server
    */
   async stop() {
-    const closePromise = new Promise<void>((resolve, reject) => {
+    const closePromise = new Promise<void>((resolve, _reject) => {
       this.io.close(() => {
         resolve();
       });
@@ -201,10 +246,46 @@ export class SocketIOServer extends Context {
 }
 
 /**
- * Request context for a socket.io request
+ * Valid configuration for the HttpServer constructor.
  */
-export class SocketIORequestContext extends Context {
-  constructor(public readonly socket: Socket, parent: Context) {
-    super(parent);
+
+export interface HttpServerResolvedOptions {
+  host?: string;
+  port: number;
+  path?: string;
+  basePath?: string;
+  cors: cors.CorsOptions;
+}
+
+const DEFAULT_CONFIG: HttpServerResolvedOptions & HttpServerOptions = {
+  port: 3000,
+  cors: {
+    origin: '*',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
+    maxAge: 86400,
+    credentials: true,
+  },
+};
+
+function resolveHttpServerConfig(
+  applicationConfig?: HttpServerResolvedOptions,
+): HttpServerResolvedOptions {
+  const result: HttpServerResolvedOptions = Object.assign(
+    cloneDeep(DEFAULT_CONFIG),
+    applicationConfig,
+  );
+
+  // Can't check falsiness, 0 is a valid port.
+  if (result.port == null) {
+    result.port = 3000;
   }
+
+  if (result.host == null) {
+    // Set it to '' so that the http server will listen on all interfaces
+    result.host = undefined;
+  }
+
+  return result;
 }

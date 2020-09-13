@@ -7,9 +7,13 @@
     "composite": true
   },
   "include": [
-    "src"
+    "src/**/*",
+    "src/**/*.json"
   ],
   "references": [
+    {
+      "path": "../../extensions/socketio/tsconfig.json"
+    },
     {
       "path": "../../packages/boot/tsconfig.json"
     },
@@ -17,7 +21,10 @@
       "path": "../../packages/core/tsconfig.json"
     },
     {
-      "path": "../../packages/http-server/tsconfig.json"
+      "path": "../../packages/rest-explorer/tsconfig.json"
+    },
+    {
+      "path": "../../packages/rest/tsconfig.json"
     },
     {
       "path": "../../packages/testlab/tsconfig.json"
