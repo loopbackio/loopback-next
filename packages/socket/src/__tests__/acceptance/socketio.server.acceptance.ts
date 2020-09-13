@@ -1,12 +1,12 @@
-// Copyright IBM Corp. 2020. All Rights Reserved.
-// Node module: @loopback/socketio
+// Copyright IBM Corp. 2019. All Rights Reserved.
+// Node module: @loopback/socket
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
 import pEvent from 'p-event';
-import io from 'socket.io-client';
 import {SocketIODemoApplication} from './application';
+import io = require('socket.io-client');
 
 describe('SocketIOServer', () => {
   let app: SocketIODemoApplication;
@@ -18,12 +18,13 @@ describe('SocketIOServer', () => {
   });
 
   it('connects to socketio controller', async () => {
-    const url = app.socketServer.url + '/chats/group1';
+    const url = app.options.ioServer.url + '/chats/group1';
     const socket = io(url);
     socket.emit('chat message', 'Hello');
     const msg = await pEvent(socket, 'chat message');
     expect(msg).to.match(/\[\/chats\/group1#.+\] Hello/);
-    socket.disconnect();
+    // eslint-disable-next-line @typescript-eslint/await-thenable
+    await socket.disconnect();
   });
 
   async function givenApplication() {
@@ -34,7 +35,6 @@ describe('SocketIOServer', () => {
       },
     });
     await app.start();
-
     return app;
   }
 });

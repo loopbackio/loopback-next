@@ -5,7 +5,7 @@
 
 import {BindingKey} from '@loopback/core';
 import {Socket} from 'socket.io';
-import {SocketIOServerOptions, SocketIOServer} from './socketio.server';
+import {SocketIOServerOptions, SocketServer} from './socket.server';
 
 export namespace SocketIOBindings {
   export const CONFIG = BindingKey.create<SocketIOServerOptions>(
@@ -15,22 +15,11 @@ export namespace SocketIOBindings {
   /**
    * Binding key for the server itself
    */
-  export const SERVER = BindingKey.create<SocketIOServer>(
-    'servers.SocketServer',
-  );
+  export const SERVER = BindingKey.create<SocketServer>('servers.SocketServer');
 
   export const SOCKET = BindingKey.create<Socket>('socketio.socket');
 
   export const MESSAGE = BindingKey.create<unknown[]>('socketio.message');
-
-  /**
-   * Binding key for setting and injecting the host name of RestServer
-   */
-  export const HOST = BindingKey.create<string | undefined>('socketio.host');
-  /**
-   * Binding key for setting and injecting the port number of RestServer
-   */
-  export const PORT = BindingKey.create<number>('socketio.port');
 }
 
 export namespace SocketIOTags {

@@ -1,51 +1,40 @@
-// Copyright IBM Corp. 2020. All Rights Reserved.
-// Node module: @loopback/socketio
+// Copyright IBM Corp. 2019. All Rights Reserved.
+// Node module: @loopback/socket
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Application, ApplicationConfig} from '@loopback/core';
+import {BootMixin} from '@loopback/boot';
+import {ApplicationConfig} from '@loopback/core';
+import {RepositoryMixin} from '@loopback/repository';
+import {ServiceMixin} from '@loopback/service-proxy';
 import {SocketIOServer} from '../..';
+import {SocketApplication} from '../../socket.application';
 import {SocketIOController} from './controllers';
 
-// const debug = debugFactory('loopback:socketio:application');
-
-// tslint:disable:no-any
-
-export class SocketIODemoApplication extends Application {
+export class SocketIODemoApplication extends BootMixin(
+  ServiceMixin(RepositoryMixin(SocketApplication)),
+) {
   readonly ioServer: SocketIOServer;
 
   constructor(options: ApplicationConfig = {}) {
+    options.rest = options.rest || {};
+    options.rest.port = +(process.env.PORT || 3000);
+    options.rest.host = process.env.HOST || '127.0.0.1';
+    options.rest.url = '127.0.0.1:3000';
     super(options);
 
-    // Create ws server from the http server
-    const server = new SocketIOServer({httpServerOptions: options.socketio});
-    this.bind('servers.socketio.SocketIOServer').to(server);
-    /*
-    server.use((socket, next) => {
-      debug('Global middleware - socket:', socket.id);
+    this.socketServer.use((socket, next) => {
+      console.log('Global middleware - socket:', socket.id);
       next();
     });
-    // Add a route
-    const ns = server.route(SocketIOController, /^\/chats\/.+$/);
+    const ns = this.socketServer.route(SocketIOController, /^\/chats\/.+$/);
     ns.use((socket, next) => {
-      debug(
+      console.log(
         'Middleware for namespace %s - socket: %s',
         socket.nsp.name,
         socket.id,
       );
       next();
     });
-    */
-    server.controller(SocketIOController);
-    server.discoverAndRegister();
-    this.ioServer = server;
-  }
-
-  start() {
-    return this.ioServer.start();
-  }
-
-  stop() {
-    return this.ioServer.stop();
   }
 }

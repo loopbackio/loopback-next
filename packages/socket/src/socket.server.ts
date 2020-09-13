@@ -1,16 +1,31 @@
-// Copyright IBM Corp. 2020. All Rights Reserved.
+// Copyright IBM Corp. 2019. All Rights Reserved.
 // Node module: @loopback/socketio
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {BindingFilter, BindingScope, Constructor, Context, ContextView, createBindingFromClass, inject, MetadataInspector} from '@loopback/context';
+import {
+  BindingFilter,
+  BindingScope,
+  Constructor,
+  Context,
+  ContextView,
+  createBindingFromClass,
+  inject,
+  MetadataInspector,
+} from '@loopback/context';
 import {CoreBindings, CoreTags} from '@loopback/core';
 import {HttpServer, HttpServerOptions} from '@loopback/http-server';
-import debugFactory from 'debug';
-import SocketIO, {Server, ServerOptions, Socket} from 'socket.io';
-import {getSocketIOMetadata, SOCKET_IO_CONNECT_METADATA, SOCKET_IO_METADATA, SOCKET_IO_SUBSCRIBE_METADATA} from './decorators/socketio.decorator';
+import {Server, ServerOptions, Socket} from 'socket.io';
+import {
+  getSocketIOMetadata,
+  SOCKET_IO_CONNECT_METADATA,
+  SOCKET_IO_METADATA,
+  SOCKET_IO_SUBSCRIBE_METADATA,
+} from './decorators/socketio.decorator';
 import {SocketIOBindings, SocketIOTags} from './keys';
 import {SocketIOControllerFactory} from './socketio-controller-factory';
+import debugFactory = require('debug');
+import SocketIO = require('socket.io');
 
 const debug = debugFactory('loopback:socketio:server');
 
@@ -20,17 +35,9 @@ export type SockIOMiddleware = (
   fn: (err?: any) => void,
 ) => void;
 
-/**
- * A binding filter to match socket.io controllers
- * @param binding - Binding object
- */
 export const socketIOControllers: BindingFilter = binding => {
-  // It has to be tagged with `controller`
   if (!binding.tagNames.includes(CoreTags.CONTROLLER)) return false;
-  // It can be explicitly tagged with `socket.io`
-  if (binding.tagNames.includes(SocketIOTags.SOCKET_IO)) return true;
-
-  // Now inspect socket.io decorations
+  if (binding.tagNames.includes('socketio')) return true;
   if (binding.valueConstructor) {
     const cls = binding.valueConstructor;
     const classMeta = MetadataInspector.getClassMetadata(
@@ -70,7 +77,7 @@ export interface SocketIOServerOptions {
 /**
  * A socketio server
  */
-export class SocketIOServer extends Context {
+export class SocketServer extends Context {
   private controllers: ContextView;
   private httpServer: HttpServer;
   private io: Server;
@@ -80,6 +87,7 @@ export class SocketIOServer extends Context {
     private options: SocketIOServerOptions = {},
   ) {
     super();
+    console.log('OPTIONS :: ', options);
     if (options.socketIOOptions == null) {
       this.io = SocketIO();
     } else {
@@ -101,7 +109,8 @@ export class SocketIOServer extends Context {
   }
 
   get url() {
-    return this.httpServer?.url;
+    // eslint-disable-next-line @typescript-eslint/prefer-optional-chain
+    return this.httpServer && this.httpServer.url;
   }
 
   /**
@@ -112,7 +121,8 @@ export class SocketIOServer extends Context {
   route(controllerClass: Constructor<object>, namespace?: string | RegExp) {
     if (namespace == null) {
       const meta = getSocketIOMetadata(controllerClass);
-      namespace = meta?.namespace;
+      // eslint-disable-next-line @typescript-eslint/prefer-optional-chain
+      namespace = meta && meta.namespace;
     }
 
     const nsp = namespace ? this.io.of(namespace) : this.io;
@@ -138,7 +148,7 @@ export class SocketIOServer extends Context {
       // Create a request context
       const reqCtx = new SocketIORequestContext(socket, this);
       // Bind socketio
-      reqCtx.bind(SocketIOBindings.SOCKET).to(socket);
+      reqCtx.bind('socketio.socket').to(socket);
       reqCtx.bind(CoreBindings.CONTROLLER_CLASS).to(controllerClass);
       reqCtx
         .bind(CoreBindings.CONTROLLER_CURRENT)

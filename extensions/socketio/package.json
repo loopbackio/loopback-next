@@ -20,9 +20,12 @@
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
+    "@loopback/boot": "^2.4.1",
     "@loopback/context": "^3.9.4",
     "@loopback/core": "^2.9.3",
     "@loopback/http-server": "^2.1.11",
+    "@loopback/repository": "^2.11.0",
+    "@loopback/service-proxy": "^2.3.6",
     "debug": "^4.1.1",
     "socket.io": "^2.3.0"
   },
