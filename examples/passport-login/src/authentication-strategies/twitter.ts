@@ -5,30 +5,30 @@
 
 import {asAuthStrategy, AuthenticationStrategy} from '@loopback/authentication';
 import {StrategyAdapter} from '@loopback/authentication-passport';
-import {extensionFor, inject, injectable} from '@loopback/core';
+import {bind, extensionFor, inject} from '@loopback/core';
 import {RedirectRoute, Request} from '@loopback/rest';
 import {UserProfile} from '@loopback/security';
-import {Strategy} from 'passport-facebook';
+import {Strategy} from 'passport-twitter';
 import {User} from '../models';
 import {mapProfile, PassportAuthenticationBindings} from './types';
 
-@injectable(
+@bind(
   asAuthStrategy,
   extensionFor(PassportAuthenticationBindings.OAUTH2_STRATEGY),
 )
-export class FaceBookOauth2Authentication implements AuthenticationStrategy {
-  name = 'oauth2-facebook';
+export class TwitterOauthAuthentication implements AuthenticationStrategy {
+  name = 'oauth2-twitter';
   protected strategy: StrategyAdapter<User>;
 
   /**
-   * create an oauth2 strategy for facebook
+   * create an oauth2 strategy for twitter
    */
   constructor(
-    @inject('facebookStrategy')
-    public passportStrategy: Strategy,
+    @inject('twitterStrategy')
+    public passportstrategy: Strategy,
   ) {
     this.strategy = new StrategyAdapter(
-      this.passportStrategy,
+      this.passportstrategy,
       this.name,
       mapProfile.bind(this),
     );

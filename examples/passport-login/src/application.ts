@@ -3,38 +3,42 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {AuthenticationComponent} from '@loopback/authentication';
 import {BootMixin} from '@loopback/boot';
+import {ApplicationConfig, createBindingFromClass} from '@loopback/core';
 import {RepositoryMixin} from '@loopback/repository';
 import {RestApplication, toInterceptor} from '@loopback/rest';
+import {CrudRestComponent} from '@loopback/rest-crud';
 import {ServiceMixin} from '@loopback/service-proxy';
-import {MySequence} from './sequence';
-import {AuthenticationComponent} from '@loopback/authentication';
+import passport from 'passport';
 import {
-  FaceBookOauth2Authorization,
-  GoogleOauth2Authorization,
-  Oauth2AuthStrategy,
-  LocalAuthStrategy,
-  SessionStrategy,
-  BasicStrategy,
-} from './authentication-strategies';
-import {
-  FacebookOauth,
-  GoogleOauth,
-  CustomOauth2,
-  FacebookOauth2ExpressMiddleware,
-  GoogleOauth2ExpressMiddleware,
-  CustomOauth2ExpressMiddleware,
-} from './authentication-strategy-providers';
-import {
-  SessionAuth,
+  CustomOauth2Interceptor,
   FacebookOauthInterceptor,
   GoogleOauthInterceptor,
-  CustomOauth2Interceptor,
+  SessionAuth,
+  TwitterOauthInterceptor,
 } from './authentication-interceptors';
+import {
+  BasicStrategy,
+  FaceBookOauth2Authentication,
+  GoogleOauth2Authentication,
+  LocalAuthStrategy,
+  Oauth2AuthStrategy,
+  SessionStrategy,
+  TwitterOauthAuthentication,
+} from './authentication-strategies';
+import {
+  CustomOauth2,
+  CustomOauth2ExpressMiddleware,
+  FacebookOauth,
+  FacebookOauth2ExpressMiddleware,
+  GoogleOauth,
+  GoogleOauth2ExpressMiddleware,
+  TwitterOauth,
+  TwitterOauthExpressMiddleware,
+} from './authentication-strategy-providers';
+import {MySequence} from './sequence';
 import {PassportUserIdentityService, UserServiceBindings} from './services';
-import {ApplicationConfig, createBindingFromClass} from '@loopback/core';
-import {CrudRestComponent} from '@loopback/rest-crud';
-import passport from 'passport';
 
 export class OAuth2LoginApplication extends BootMixin(
   ServiceMixin(RepositoryMixin(RestApplication)),
@@ -79,6 +83,7 @@ export class OAuth2LoginApplication extends BootMixin(
     this.add(createBindingFromClass(FacebookOauth, {key: 'facebookStrategy'}));
     this.add(createBindingFromClass(GoogleOauth, {key: 'googleStrategy'}));
     this.add(createBindingFromClass(CustomOauth2, {key: 'oauth2Strategy'}));
+    this.add(createBindingFromClass(TwitterOauth, {key: 'twitterStrategy'}));
     // passport express middleware
     this.add(
       createBindingFromClass(FacebookOauth2ExpressMiddleware, {
@@ -91,14 +96,20 @@ export class OAuth2LoginApplication extends BootMixin(
       }),
     );
     this.add(
+      createBindingFromClass(TwitterOauthExpressMiddleware, {
+        key: 'twitterStrategyMiddleware',
+      }),
+    );
+    this.add(
       createBindingFromClass(CustomOauth2ExpressMiddleware, {
         key: 'oauth2StrategyMiddleware',
       }),
     );
     // LoopBack 4 style authentication strategies
     this.add(createBindingFromClass(LocalAuthStrategy));
-    this.add(createBindingFromClass(FaceBookOauth2Authorization));
-    this.add(createBindingFromClass(GoogleOauth2Authorization));
+    this.add(createBindingFromClass(FaceBookOauth2Authentication));
+    this.add(createBindingFromClass(GoogleOauth2Authentication));
+    this.add(createBindingFromClass(TwitterOauthAuthentication));
     this.add(createBindingFromClass(Oauth2AuthStrategy));
     this.add(createBindingFromClass(SessionStrategy));
     this.add(createBindingFromClass(BasicStrategy));
@@ -107,6 +118,7 @@ export class OAuth2LoginApplication extends BootMixin(
     this.bind('passport-session-mw').to(toInterceptor(passport.session()));
     this.bind('passport-facebook').toProvider(FacebookOauthInterceptor);
     this.bind('passport-google').toProvider(GoogleOauthInterceptor);
+    this.bind('passport-twitter').toProvider(TwitterOauthInterceptor);
     this.bind('passport-oauth2').toProvider(CustomOauth2Interceptor);
     this.bind('set-session-user').toProvider(SessionAuth);
   }

@@ -16,7 +16,7 @@ import {mapProfile, PassportAuthenticationBindings} from './types';
   asAuthStrategy,
   extensionFor(PassportAuthenticationBindings.OAUTH2_STRATEGY),
 )
-export class GoogleOauth2Authorization implements AuthenticationStrategy {
+export class GoogleOauth2Authentication implements AuthenticationStrategy {
   name = 'oauth2-google';
   protected strategy: StrategyAdapter<User>;
 
