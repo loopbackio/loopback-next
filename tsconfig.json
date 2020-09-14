@@ -89,6 +89,9 @@
       "path": "examples/validation-app/tsconfig.json"
     },
     {
+      "path": "examples/webpack/tsconfig.json"
+    },
+    {
       "path": "extensions/apiconnect/tsconfig.json"
     },
     {
