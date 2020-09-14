@@ -122,6 +122,7 @@
 # - Standby owner(s): n/a
 /packages/core @raymondfeng
 /examples/rpc-server @raymondfeng
+/examples/webpack @raymondfeng
 /packages/cli/generators/observer @raymondfeng
 
 #

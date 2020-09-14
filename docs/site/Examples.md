@@ -92,6 +92,9 @@ LoopBack 4 comes with the following example projects.
 - **[validation-app](https://github.com/strongloop/loopback-next/tree/master/examples/validation-app)**:
   An example demonstrating how to add validations in a LoopBack application.
 
+- **[webpack](https://github.com/strongloop/loopback-next/tree/master/examples/webpack)**:
+  An example to bundle @loopback/core using webpack
+
 ## How to download examples
 
 You can download the example projects using our CLI tool `lb4`:
