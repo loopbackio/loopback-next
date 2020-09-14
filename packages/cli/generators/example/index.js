@@ -57,6 +57,7 @@ const EXAMPLES = {
     'An example implmenting authentication in a LoopBack application using Passport modules.',
   ),
   'todo-jwt': g.f('A modified Todo application with JWT authentication'),
+  webpack: g.f('An example to bundle @loopback/core using webpack'),
 };
 Object.freeze(EXAMPLES);
 

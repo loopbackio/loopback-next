@@ -1,0 +1,57 @@
+{
+  "name": "@loopback/example-webpack",
+  "version": "0.0.1",
+  "description": "An example to bundle @loopback/core using webpack",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "unpkg": "dist/bundle-web.js",
+  "engines": {
+    "node": "^10.16 || 12 || 14"
+  },
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "lb-tsc",
+    "build:webpack": "webpack --silent",
+    "build:webpack-node": "webpack --silent --config-name node",
+    "build:webpack-web": "webpack --silent --config-name web",
+    "prepack": "npm run build:webpack-web",
+    "clean": "lb-clean *example-webpack*.tgz dist *.tsbuildinfo package",
+    "verify": "npm pack && tar xf *example-webpack*.tgz && tree package && npm run clean",
+    "pretest": "npm run clean && npm run build",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
+    "prestart": "npm run build",
+    "start": "node ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "examples/webpack"
+  },
+  "dependencies": {
+    "@loopback/core": "^2.10.1",
+    "tslib": "^2.0.2"
+  },
+  "devDependencies": {
+    "@loopback/build": "^6.2.4",
+    "@loopback/eslint-config": "^10.0.0",
+    "@loopback/testlab": "^3.2.6",
+    "@types/node": "^10.17.34",
+    "eslint": "^7.10.0",
+    "ts-loader": "^8.0.4",
+    "typescript": "~4.0.3",
+    "webpack": "^4.44.2",
+    "webpack-cli": "^3.3.12",
+    "zombie": "^6.1.4"
+  },
+  "keywords": [
+    "loopback",
+    "LoopBack",
+    "example",
+    "tutorial"
+  ]
+}
