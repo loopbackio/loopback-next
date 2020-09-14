@@ -8,6 +8,7 @@
 const path = require('path');
 const assert = require('yeoman-assert');
 const testlab = require('@loopback/testlab');
+const {expectFileToMatchSnapshot} = require('../../snapshots');
 const expect = testlab.expect;
 const TestSandbox = testlab.TestSandbox;
 const generator = path.join(__dirname, '../../../generators/relation');
@@ -183,6 +184,9 @@ describe('lb4 relation', /** @this {Mocha.Suite} */ function () {
         expectedControllerIndexFile,
         "export * from './order-customer.controller';\n",
       );
+
+      assert.file(expectedControllerIndexFile);
+      expectFileToMatchSnapshot(expectedControllerIndexFile);
     });
   });
 });

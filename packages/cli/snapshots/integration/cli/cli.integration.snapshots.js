@@ -30,6 +30,7 @@ Available commands:
   lb4 uninstall-completion
 `;
 
+
 exports[`cli prints commands with --help 1`] = `
 Available commands:
   lb4 app
@@ -52,6 +53,7 @@ Available commands:
   lb4 install-completion
   lb4 uninstall-completion
 `;
+
 
 exports[`cli saves command metadata to .yo-rc.json 1`] = `
 {

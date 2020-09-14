@@ -20,24 +20,12 @@ const CONTROLLER_PATH = 'src/controllers';
 const REPOSITORY_APP_PATH = 'src/repositories';
 const sandbox = new TestSandbox(path.resolve(__dirname, '../.sandbox'));
 
-const sourceFileName = [
-  'order.model.ts',
-  'order-class.model.ts',
-  'order-class-type.model.ts',
-];
-const controllerFileName = [
-  'order-customer.controller.ts',
-  'order-class-customer-class.controller.ts',
-  'order-class-type-customer-class-type.controller.ts',
-];
-const repositoryFileName = [
-  'order.repository.ts',
-  'order-class.repository.ts',
-  'order-class-type.repository.ts',
-];
+const sourceFileName = 'order.model.ts';
+const controllerFileName = 'order-customer.controller.ts';
+const repositoryFileName = 'order.repository.ts';
 
 describe('lb4 relation', /** @this {Mocha.Suite} */ function () {
-  this.timeout(50000);
+  this.timeout(30000);
 
   it("rejects relation when destination model doesn't have primary Key", async () => {
     await sandbox.reset();
@@ -81,38 +69,6 @@ describe('lb4 relation', /** @this {Mocha.Suite} */ function () {
     ).to.be.rejectedWith(/No models found/);
   });
 
-  it('updates property decorator when property already exist in the model', async () => {
-    await sandbox.reset();
-    const prompt = {
-      relationType: 'belongsTo',
-      sourceModel: 'Order',
-      destinationModel: 'Customer',
-    };
-
-    await testUtils
-      .executeGenerator(generator)
-      .inDir(sandbox.path, () =>
-        testUtils.givenLBProject(sandbox.path, {
-          additionalFiles: [
-            SourceEntries.CustomerModelWithOrdersProperty,
-            SourceEntries.OrderModelModelWithCustomerIdProperty,
-            SourceEntries.CustomerRepository,
-            SourceEntries.OrderRepository,
-          ],
-        }),
-      )
-      .withPrompts(prompt);
-
-    const expectedFile = path.join(
-      sandbox.path,
-      MODEL_APP_PATH,
-      'order.model.ts',
-    );
-
-    const relationalPropertyRegEx = /\@belongsTo\(\(\) \=\> Customer\)/;
-    assert.fileContent(expectedFile, relationalPropertyRegEx);
-  });
-
   context('generates model relation with default values', () => {
     const promptArray = [
       {
@@ -145,7 +101,7 @@ describe('lb4 relation', /** @this {Mocha.Suite} */ function () {
         const sourceFilePath = path.join(
           sandbox.path,
           MODEL_APP_PATH,
-          sourceFileName[i],
+          sourceFileName,
         );
 
         assert.file(sourceFilePath);
@@ -161,32 +117,23 @@ describe('lb4 relation', /** @this {Mocha.Suite} */ function () {
         sourceModel: 'Order',
         destinationModel: 'Customer',
         foreignKeyName: 'customerId',
-      },
-      {
-        relationType: 'hasMany',
-        sourceModel: 'Customer',
-        destinationModel: 'Order',
-        foreignKeyName: 'customerId',
-        relationName: 'orders',
+        relationName: 'customer',
       },
     ];
 
     it('verifies that a preexisting property will be overwritten', async () => {
       await sandbox.reset();
-      await testUtils
-        .executeGenerator(generator)
-        .inDir(sandbox.path, () =>
-          testUtils.givenLBProject(sandbox.path, {
-            additionalFiles: SANDBOX_FILES,
-          }),
-        )
-        .withPrompts(promptList[1]);
 
       await testUtils
         .executeGenerator(generator)
         .inDir(sandbox.path, () =>
           testUtils.givenLBProject(sandbox.path, {
-            additionalFiles: SANDBOX_FILES,
+            additionalFiles: [
+              SourceEntries.CustomerModelWithOrdersProperty,
+              SourceEntries.OrderModelModelWithCustomerIdProperty,
+              SourceEntries.CustomerRepository,
+              SourceEntries.OrderRepository,
+            ],
           }),
         )
         .withPrompts(promptList[0]);
@@ -194,7 +141,7 @@ describe('lb4 relation', /** @this {Mocha.Suite} */ function () {
       const sourceFilePath = path.join(
         sandbox.path,
         MODEL_APP_PATH,
-        sourceFileName[0],
+        'order.model.ts',
       );
 
       assert.file(sourceFilePath);
@@ -209,12 +156,6 @@ describe('lb4 relation', /** @this {Mocha.Suite} */ function () {
         sourceModel: 'Order',
         destinationModel: 'Customer',
         foreignKeyName: 'customerId',
-        relationName: 'my_customer',
-      },
-      {
-        relationType: 'belongsTo',
-        sourceModel: 'OrderClass',
-        destinationModel: 'CustomerClass',
         relationName: 'my_customer',
       },
     ];
@@ -241,7 +182,7 @@ describe('lb4 relation', /** @this {Mocha.Suite} */ function () {
         const sourceFilePath = path.join(
           sandbox.path,
           MODEL_APP_PATH,
-          sourceFileName[i],
+          sourceFileName,
         );
 
         assert.file(sourceFilePath);
@@ -259,19 +200,19 @@ describe('lb4 relation', /** @this {Mocha.Suite} */ function () {
       },
       {
         relationType: 'belongsTo',
-        sourceModel: 'OrderClass',
-        destinationModel: 'CustomerClass',
+        sourceModel: 'Order',
+        destinationModel: 'Customer',
         relationName: 'my_customer',
       },
     ];
 
-    promptArray.forEach(function (multiItemPrompt, i) {
+    promptArray.forEach(function (multiItemPrompt) {
       describe('answers ' + JSON.stringify(multiItemPrompt), () => {
-        suite(multiItemPrompt, i);
+        suite(multiItemPrompt);
       });
     });
 
-    function suite(multiItemPrompt, i) {
+    function suite(multiItemPrompt) {
       before(async function runGeneratorWithAnswers() {
         await sandbox.reset();
         await testUtils
@@ -284,20 +225,11 @@ describe('lb4 relation', /** @this {Mocha.Suite} */ function () {
           .withPrompts(multiItemPrompt);
       });
 
-      it('new controller file created', async () => {
-        const filePath = path.join(
-          sandbox.path,
-          CONTROLLER_PATH,
-          controllerFileName[i],
-        );
-        assert.file(filePath);
-      });
-
       it('checks controller content with belongsTo relation', async () => {
         const filePath = path.join(
           sandbox.path,
           CONTROLLER_PATH,
-          controllerFileName[i],
+          controllerFileName,
         );
         assert.file(filePath);
         expectFileToMatchSnapshot(filePath);
@@ -324,21 +256,14 @@ describe('lb4 relation', /** @this {Mocha.Suite} */ function () {
       },
       {
         relationType: 'belongsTo',
-        sourceModel: 'OrderClass',
-        destinationModel: 'CustomerClass',
-        relationName: 'customer',
-        registerInclusionResolver: true,
-      },
-      {
-        relationType: 'belongsTo',
-        sourceModel: 'OrderClassType',
-        destinationModel: 'CustomerClassType',
-        relationName: 'customer',
+        sourceModel: 'Order',
+        destinationModel: 'Customer',
+        relationName: 'custom_name',
         registerInclusionResolver: false,
       },
     ];
 
-    const sourceClassnames = ['Order', 'OrderClass', 'OrderClassType'];
+    const sourceClassnames = ['Order', 'Order'];
 
     promptArray.forEach(function (multiItemPrompt, i) {
       describe('answers ' + JSON.stringify(multiItemPrompt), () => {
@@ -367,7 +292,7 @@ describe('lb4 relation', /** @this {Mocha.Suite} */ function () {
           const sourceFilePath = path.join(
             sandbox.path,
             REPOSITORY_APP_PATH,
-            repositoryFileName[i],
+            repositoryFileName,
           );
 
           assert.file(sourceFilePath);
