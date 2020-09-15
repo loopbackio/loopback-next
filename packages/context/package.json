@@ -36,7 +36,7 @@
     "@loopback/eslint-config": "^9.0.2",
     "@loopback/testlab": "^3.2.4",
     "@types/bluebird": "^3.5.32",
-    "@types/node": "^10.17.32",
+    "@types/node": "^10.17.34",
     "@types/uuid": "^8.3.0",
     "bluebird": "^3.7.2"
   },

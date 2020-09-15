@@ -35,7 +35,7 @@
     "@loopback/rest": "^6.2.0",
     "@loopback/testlab": "^3.2.4",
     "@types/express": "^4.17.8",
-    "@types/node": "^10.17.32",
+    "@types/node": "^10.17.34",
     "express": "^4.17.1"
   },
   "keywords": [

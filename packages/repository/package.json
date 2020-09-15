@@ -32,7 +32,7 @@
     "@types/bson": "^4.0.2",
     "@types/json-schema": "^7.0.6",
     "@types/lodash": "^4.14.161",
-    "@types/node": "^10.17.32",
+    "@types/node": "^10.17.34",
     "bson": "4.1.0"
   },
   "dependencies": {
