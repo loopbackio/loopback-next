@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.14.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@2.13.1...@loopback/cli@2.14.0) (2020-09-15)
+
+
+### Features
+
+* update examples and docs to use `@loopback/*` instead of `@loopback/extension-*` ([a96b7cb](https://github.com/strongloop/loopback-next/commit/a96b7cbb2e146f941b1fec0e7dd0b0829dcd0245))
+* **cli:** move "@loopback/core" to peerDependencies for new extensions ([3ee9a39](https://github.com/strongloop/loopback-next/commit/3ee9a39acd6d76d200808dc1604c1d88b2bf42f9))
+* **cli:** update translation message ([6cea7cf](https://github.com/strongloop/loopback-next/commit/6cea7cf85c7ac7bf38904ca4fd547d723e809432))
+
+
+
+
+
 ## [2.13.1](https://github.com/strongloop/loopback-next/compare/@loopback/cli@2.13.0...@loopback/cli@2.13.1) (2020-08-27)
 
 **Note:** Version bump only for package @loopback/cli

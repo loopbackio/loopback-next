@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/metadata@2.2.6...@loopback/metadata@3.0.0) (2020-09-15)
+
+
+### Features
+
+* **metadata:** improve handling of missing design-time type metadata ([4816cae](https://github.com/strongloop/loopback-next/commit/4816caee73fe8f4b99b246bc8544f90037791b6f))
+
+
+### BREAKING CHANGES
+
+* **metadata:** If you are consuming `@loopback/metadata` directly,
+then you may need to update your code to handle the case when
+design-time type metadata is not available. (The compiler will tell you
+what places to fix.)
+
+Regular LoopBack users should not be affected as long as they update
+all LB packages together.
+
+Signed-off-by: Miroslav Bajtoš <mbajtoss@gmail.com>
+
+
+
+
+
 ## [2.2.6](https://github.com/strongloop/loopback-next/compare/@loopback/metadata@2.2.5...@loopback/metadata@2.2.6) (2020-08-27)
 
 **Note:** Version bump only for package @loopback/metadata

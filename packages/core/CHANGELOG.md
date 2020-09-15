@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.10.0](https://github.com/strongloop/loopback-next/compare/@loopback/core@2.9.5...@loopback/core@2.10.0) (2020-09-15)
+
+
+### Bug Fixes
+
+* improve handling of missing design-time type metadata ([95b6a2b](https://github.com/strongloop/loopback-next/commit/95b6a2b7ce64e614720df43b905f77a53a54e438))
+
+
+### Features
+
+* add `app.onStart()` and `app.onStop()` helpers ([92daddd](https://github.com/strongloop/loopback-next/commit/92daddd8dfaf24c16e03ed3af66d491a8fd9503e))
+* allow dynamic value provider classes and classes with [@inject](https://github.com/inject) to be booted ([7b85cdf](https://github.com/strongloop/loopback-next/commit/7b85cdf63730ef659a4ee799f05f02eea8a1e3e8))
+
+
+
+
+
 ## [2.9.5](https://github.com/strongloop/loopback-next/compare/@loopback/core@2.9.4...@loopback/core@2.9.5) (2020-08-27)
 
 **Note:** Version bump only for package @loopback/core

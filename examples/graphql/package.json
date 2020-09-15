@@ -1,6 +1,6 @@
 {
   "name": "@loopback/example-graphql",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "GraphQL Example Application",
   "keywords": [
     "loopback-application",
@@ -47,24 +47,24 @@
     "!*/__tests__"
   ],
   "dependencies": {
-    "@loopback/graphql": "^0.0.1",
-    "@loopback/boot": "^2.4.0",
-    "@loopback/core": "^2.9.2",
-    "@loopback/repository": "^2.10.0",
+    "@loopback/boot": "^3.0.0",
+    "@loopback/core": "^2.10.0",
+    "@loopback/graphql": "^0.1.0",
+    "@loopback/repository": "^3.0.0",
     "@loopback/rest": "^5.2.1",
-    "tslib": "^2.0.0",
-    "class-transformer": "^0.3.1"
+    "class-transformer": "^0.3.1",
+    "tslib": "^2.0.0"
   },
   "devDependencies": {
-    "@loopback/build": "^6.1.1",
+    "@loopback/build": "^6.2.3",
     "@loopback/eslint-config": "^8.0.4",
-    "@loopback/testlab": "^3.2.1",
+    "@loopback/testlab": "^3.2.5",
     "@types/multer": "^1.4.3",
     "@types/node": "^10.17.34",
     "eslint": "^7.9.0",
-    "typescript": "~3.9.7",
     "rimraf": "^3.0.2",
-    "source-map-support": "^0.5.19"
+    "source-map-support": "^0.5.19",
+    "typescript": "~3.9.7"
   },
   "copyright.owner": "IBM Corp."
 }

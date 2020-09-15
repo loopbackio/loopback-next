@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.7.3](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo@3.7.2...@loopback/example-todo@3.7.3) (2020-09-15)
+
+**Note:** Version bump only for package @loopback/example-todo
+
+
+
+
+
 ## [3.7.2](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo@3.7.1...@loopback/example-todo@3.7.2) (2020-08-27)
 
 

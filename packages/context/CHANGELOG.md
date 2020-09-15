@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.11.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@3.10.1...@loopback/context@3.11.0) (2020-09-15)
+
+
+### Bug Fixes
+
+* improve handling of missing design-time type metadata ([95b6a2b](https://github.com/strongloop/loopback-next/commit/95b6a2b7ce64e614720df43b905f77a53a54e438))
+
+
+### Features
+
+* **context:** add `[@injectable](https://github.com/injectable)` as a preferred decorator for `[@bind](https://github.com/bind)` ([1f75c35](https://github.com/strongloop/loopback-next/commit/1f75c35937a4190564bdade48b0782c4364f6101))
+* allow dynamic value provider classes and classes with [@inject](https://github.com/inject) to be booted ([7b85cdf](https://github.com/strongloop/loopback-next/commit/7b85cdf63730ef659a4ee799f05f02eea8a1e3e8))
+
+
+
+
+
 ## [3.10.1](https://github.com/strongloop/loopback-next/compare/@loopback/context@3.10.0...@loopback/context@3.10.1) (2020-08-27)
 
 **Note:** Version bump only for package @loopback/context
