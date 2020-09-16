@@ -340,6 +340,29 @@ Available options on the `services` object on `BootOptions` are as follows:
 | `nested`     | `boolean`            | `true`            | Look in nested directories in `dirs` for Service artifacts                                                   |
 | `glob`       | `string`             |                   | A `glob` pattern string. This takes precedence over above 3 options (which are used to make a glob pattern). |
 
+### Interceptor Booter
+
+#### Description
+
+Discovers and binds global or local interceptor provider classes using
+`app.interceptor()`.
+
+#### Options
+
+The options for this can be passed via `BootOptions` when calling
+`app.boot(options: BootOptions)`.
+
+The options for this are passed in a `interceptors` object on `BootOptions`.
+
+Available options on the `interceptors` object on `BootOptions` are as follows:
+
+| Options      | Type                 | Default               | Description                                                                                                  |
+| ------------ | -------------------- | --------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `dirs`       | `string \| string[]` | `['interceptors']`    | Paths relative to projectRoot to look in for Interceptor artifacts                                           |
+| `extensions` | `string \| string[]` | `['.interceptor.js']` | File extensions to match for Interceptor artifacts                                                           |
+| `nested`     | `boolean`            | `true`                | Look in nested directories in `dirs` for Interceptor artifacts                                               |
+| `glob`       | `string`             |                       | A `glob` pattern string. This takes precedence over above 3 options (which are used to make a glob pattern). |
+
 ### Custom Booters
 
 A custom Booter can be written as a Class that implements the `Booter`
