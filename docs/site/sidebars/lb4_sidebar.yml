@@ -448,6 +448,7 @@ children:
         output: 'web, pdf'
 
   - title: 'Troubleshooting'
+    url: Troubleshooting.html
     output: 'web, pdf'
     children:
 
