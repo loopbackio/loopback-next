@@ -31,7 +31,7 @@
     "@loopback/core": "^2.10.0",
     "@loopback/eslint-config": "^10.0.0",
     "@loopback/testlab": "^3.2.5",
-    "@types/node": "^10.17.34"
+    "@types/node": "^10.17.35"
   },
   "dependencies": {
     "loopback-datasource-juggler": "^4.24.0",
