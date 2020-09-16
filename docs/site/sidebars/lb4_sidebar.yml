@@ -452,6 +452,7 @@ children:
         output: 'web, pdf'
 
   - title: 'Troubleshooting'
+    url: Troubleshooting.html
     output: 'web, pdf'
     children:
 
@@ -465,6 +466,10 @@ children:
 
     - title: 'Context Explorer'
       url: Context-explorer.html
+      output: 'web, pdf'
+
+    - title: 'Debugging tests with Mocha'
+      url: Debugging-tests-with-mocha.html
       output: 'web, pdf'
 
 - title: 'Concepts'
