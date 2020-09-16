@@ -79,7 +79,7 @@
     "lint-staged": "^10.3.0",
     "markdown-table": "^2.0.0",
     "open-cli": "^6.0.1",
-    "prettier": "^2.1.1",
+    "prettier": "^2.1.2",
     "typescript": "~4.0.2"
   },
   "husky": {
