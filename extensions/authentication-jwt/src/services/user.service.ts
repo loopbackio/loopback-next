@@ -10,7 +10,7 @@ import {securityId, UserProfile} from '@loopback/security';
 import {compare} from 'bcryptjs';
 import {UserRepository} from '../repositories';
 /* eslint-disable*/
-import {User, UserRelations} from '../models';
+import {User} from '../models';
 /* eslint-enable */
 /**
  * A pre-defined type for user credentials. It assumes a user logs in
@@ -61,7 +61,7 @@ export class MyUserService implements UserService<User, Credentials> {
       id: user.id,
       name: user.username,
       email: user.email,
-      roles: user.roles,
+      ...(user.roles && {roles: user.roles}),
     };
   }
 
