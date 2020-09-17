@@ -299,6 +299,35 @@ To update dependencies to their latest compatible versions:
 npm run update-all-deps
 ```
 
+### Limitation of Lerna Monorepo
+
+If an application inside the `loopback-next` monorepo connects to a datasource
+like `loopback-connector-mongodb`, you need to require the module directly in
+the configuration as follow:
+
+```ts
+const config = {
+  name: 'mongo',
+  // Note the connector should be required directly here.
+  connector: require('loopback-connector-mongodb'),
+  url: '',
+  host: '127.0.0.1',
+  port: 27017,
+  user: 'test',
+  password: 'test',
+};
+```
+
+This is caused by the way how lerna installs local package dependencies as
+symbolic links. The code loading connectors is executed from
+`loopback-next/packages/repository/node_modules/loopback-datasource-juggler/lib/datasource.js`.
+While the connector is installed in examples like
+`loopback-next/examples/todo/node_modules/loopback-connector-mongodb`.
+Specifying a string name like "mongodb" will result in the code looking for
+connectors installed under the package `repository` instead of the example.
+Therefore you must explicitly specify the datasource's path in the
+configuration.
+
 ## File naming convention
 
 For consistency, we follow
