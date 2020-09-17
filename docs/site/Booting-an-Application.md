@@ -264,7 +264,7 @@ The `datasources` object support the following options:
 Discovers and binds remote service proxies or local service classes or providers
 using `app.service()`.
 
-{% include notes.html content="
+{% include note.html content="
 **IMPORTANT:** For a class to be recognized by `ServiceBooter` as a service
 provider, it either has to be decorated with `@injectable`/`@inject` or the
 class name must end with `Provider` suffix and must have a static or prototype
