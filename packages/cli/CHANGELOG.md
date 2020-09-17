@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.15.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@2.14.0...@loopback/cli@2.15.0) (2020-09-17)
+
+
+### Features
+
+* **cli:** improve README.md for application projects ([38582f4](https://github.com/strongloop/loopback-next/commit/38582f43f0c325656344443189948fcf031efa37))
+
+
+
+
+
 # [2.14.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@2.13.1...@loopback/cli@2.14.0) (2020-09-15)
 
 

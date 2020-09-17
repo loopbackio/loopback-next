@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.15](https://github.com/strongloop/loopback-next/compare/@loopback/test-repository-postgresql@2.1.14...@loopback/test-repository-postgresql@2.1.15) (2020-09-17)
+
+**Note:** Version bump only for package @loopback/test-repository-postgresql
+
+
+
+
+
 ## [2.1.14](https://github.com/strongloop/loopback-next/compare/@loopback/test-repository-postgresql@2.1.13...@loopback/test-repository-postgresql@2.1.14) (2020-09-15)
 
 **Note:** Version bump only for package @loopback/test-repository-postgresql

@@ -1,6 +1,6 @@
 {
   "name": "@loopback/example-soap-calculator",
-  "version": "2.4.3",
+  "version": "2.4.4",
   "description": "A tutorial demonstrating integration SOAP webservice with LoopBack 4",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -44,19 +44,19 @@
     "directory": "examples/soap-calculator"
   },
   "dependencies": {
-    "@loopback/boot": "^3.0.0",
-    "@loopback/core": "^2.10.0",
-    "@loopback/repository": "^3.0.0",
-    "@loopback/rest": "^7.0.0",
-    "@loopback/rest-explorer": "^3.0.0",
-    "@loopback/service-proxy": "^3.0.0",
+    "@loopback/boot": "^3.0.1",
+    "@loopback/core": "^2.10.1",
+    "@loopback/repository": "^3.0.1",
+    "@loopback/rest": "^7.0.1",
+    "@loopback/rest-explorer": "^3.0.1",
+    "@loopback/service-proxy": "^3.0.1",
     "loopback-connector-soap": "^5.1.0",
     "tslib": "^2.0.1"
   },
   "devDependencies": {
-    "@loopback/build": "^6.2.3",
+    "@loopback/build": "^6.2.4",
     "@loopback/eslint-config": "^10.0.0",
-    "@loopback/testlab": "^3.2.5",
+    "@loopback/testlab": "^3.2.6",
     "@types/mocha": "^8.0.3",
     "@types/node": "^10.17.35",
     "eslint": "^7.9.0",

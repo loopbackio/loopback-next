@@ -6,7 +6,7 @@
     "url": "https://github.com/strongloop/loopback-next.git",
     "directory": "packages/build"
   },
-  "version": "6.2.3",
+  "version": "6.2.4",
   "engines": {
     "node": ">=10.16"
   },

@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.7.1](https://github.com/strongloop/loopback-next/compare/@loopback/authorization@0.7.0...@loopback/authorization@0.7.1) (2020-09-17)
+
+**Note:** Version bump only for package @loopback/authorization
+
+
+
+
+
 # [0.7.0](https://github.com/strongloop/loopback-next/compare/@loopback/authorization@0.6.6...@loopback/authorization@0.7.0) (2020-09-15)
 
 

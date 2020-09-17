@@ -1,6 +1,6 @@
 {
   "name": "@loopback/typeorm",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Adds support for TypeORM in LoopBack",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -22,22 +22,22 @@
     "access": "public"
   },
   "peerDependencies": {
-    "@loopback/boot": "^3.0.0",
-    "@loopback/core": "^2.10.0",
-    "@loopback/rest": "^7.0.0"
+    "@loopback/boot": "^3.0.1",
+    "@loopback/core": "^2.10.1",
+    "@loopback/rest": "^7.0.1"
   },
   "dependencies": {
     "tslib": "^2.0.1",
     "typeorm": "^0.2.26"
   },
   "devDependencies": {
-    "@loopback/boot": "^3.0.0",
+    "@loopback/boot": "^3.0.1",
     "@loopback/build": "^5.4.3",
-    "@loopback/core": "^2.10.0",
+    "@loopback/core": "^2.10.1",
     "@loopback/eslint-config": "^10.0.0",
-    "@loopback/repository": "^3.0.0",
-    "@loopback/rest": "^7.0.0",
-    "@loopback/testlab": "^3.2.5",
+    "@loopback/repository": "^3.0.1",
+    "@loopback/rest": "^7.0.1",
+    "@loopback/testlab": "^3.2.6",
     "@types/json-schema": "^7.0.6",
     "@types/node": "^10.17.35",
     "sqlite3": "^5.0.0"

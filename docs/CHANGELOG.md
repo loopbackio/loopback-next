@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.16.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.15.0...@loopback/docs@3.16.0) (2020-09-17)
+
+
+### Features
+
+* **docs:** update memory connector docs for lb4 ([d47f4ee](https://github.com/strongloop/loopback-next/commit/d47f4ee0671c45a1917ccfcd084a18ed6810d772))
+* **rest:** add msgpack body parser ([4e5a128](https://github.com/strongloop/loopback-next/commit/4e5a128765c0fecc2c66a61da83b7013132b450a))
+
+
+
+
+
 # [3.15.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.14.0...@loopback/docs@3.15.0) (2020-09-15)
 
 
