@@ -70,7 +70,7 @@
     "regenerate": "^1.4.1",
     "semver": "^7.3.2",
     "slash": "^3.0.0",
-    "spdx-license-list": "^6.2.0",
+    "spdx-license-list": "^6.3.0",
     "stringify-object": "^3.3.0",
     "strong-globalize": "^6.0.4",
     "swagger-parser": "^10.0.2",
