@@ -58,8 +58,8 @@ export class MyUserService implements UserService<User, Credentials> {
   convertToUserProfile(user: User): UserProfile {
     return {
       [securityId]: user.id.toString(),
-      name: user.username,
       id: user.id,
+      name: user.username,
       email: user.email,
       roles: user.roles,
     };
