@@ -54,6 +54,11 @@ export class User extends Entity {
   })
   verificationToken?: string;
 
+  @property.array(String, {
+    type: 'array',
+  })
+  roles: string[];
+
   @hasOne(() => UserCredentials)
   userCredentials: UserCredentials;
 
