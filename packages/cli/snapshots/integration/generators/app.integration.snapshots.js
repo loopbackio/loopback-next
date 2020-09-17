@@ -8,6 +8,90 @@
 'use strict';
 
 exports[`app-generator specific files generates all the proper files 1`] = `
+# my-app
+
+This application is generated using [LoopBack 4 CLI](https://loopback.io/doc/en/lb4/Command-line-interface.html) with the
+[initial project layout](https://loopback.io/doc/en/lb4/Loopback-application-layout.html).
+
+## Install dependencies
+
+By default, dependencies were installed when this application was generated.
+Whenever dependencies in \`package.json\` are changed, run the following command:
+
+\`\`\`sh
+npm install
+\`\`\`
+
+To only install resolved dependencies in \`package-lock.json\`:
+
+\`\`\`sh
+npm ci
+\`\`\`
+
+## Run the application
+
+\`\`\`sh
+npm start
+\`\`\`
+
+You can also run \`node .\` to skip the build step.
+
+Open http://127.0.0.1:3000 in your browser.
+
+## Rebuild the project
+
+To incrementally build the project:
+
+\`\`\`
+npm run build
+\`\`\`
+
+To force a full build by cleaning up cached artifacts:
+
+\`\`\`
+npm run clean
+npm run build
+\`\`\`
+
+## Fix code style and formatting issues
+
+If \`eslint\` and \`prettier\` are enabled for this project, you can use the
+following commands to check code style and formatting issues.
+
+\`\`\`sh
+npm run lint
+\`\`\`
+
+To automatically fix such issues:
+
+\`\`\`sh
+npm run lint:fix
+\`\`\`
+
+## Other useful commands
+
+- \`npm run migrate\`: Migrate database schemas for models
+- \`npm run openapi-spec\`: Generate OpenAPI spec into a file
+- \`npm run docker:build\`: Build a Docker image for this application
+- \`npm run docker:run\`: Run this application inside a Docker container
+
+## Tests
+
+\`\`\`sh
+npm test
+\`\`\`
+
+## What's next
+
+Please check out [LoopBack 4 documentation](https://loopback.io/doc/en/lb4/) to
+understand how you can continue to add features to this application.
+
+[![LoopBack](<https://github.com/strongloop/loopback-next/raw/master/docs/site/imgs/branding/Powered-by-LoopBack-Badge-(blue)-@2x.png>)](http://loopback.io/)
+
+`;
+
+
+exports[`app-generator specific files generates all the proper files 2`] = `
 import {BootMixin} from '@loopback/boot';
 import {ApplicationConfig} from '@loopback/core';
 import {
@@ -56,7 +140,7 @@ export class MyAppApplication extends BootMixin(
 `;
 
 
-exports[`app-generator specific files generates all the proper files 2`] = `
+exports[`app-generator specific files generates all the proper files 3`] = `
 import {MiddlewareSequence} from '@loopback/rest';
 
 export class MySequence extends MiddlewareSequence {}
@@ -64,7 +148,7 @@ export class MySequence extends MiddlewareSequence {}
 `;
 
 
-exports[`app-generator specific files generates all the proper files 3`] = `
+exports[`app-generator specific files generates all the proper files 4`] = `
 import {ApplicationConfig, MyAppApplication} from './application';
 
 export * from './application';
@@ -108,7 +192,7 @@ if (require.main === module) {
 `;
 
 
-exports[`app-generator specific files generates all the proper files 4`] = `
+exports[`app-generator specific files generates all the proper files 5`] = `
 import {Request, RestBindings, get, ResponseObject} from '@loopback/rest';
 import {inject} from '@loopback/core';
 
@@ -165,7 +249,7 @@ export class PingController {
 `;
 
 
-exports[`app-generator specific files generates all the proper files 5`] = `
+exports[`app-generator specific files generates all the proper files 6`] = `
 import {Client, expect} from '@loopback/testlab';
 import {MyAppApplication} from '../..';
 import {setupApplication} from './test-helper';
@@ -191,7 +275,7 @@ describe('PingController', () => {
 `;
 
 
-exports[`app-generator specific files generates all the proper files 6`] = `
+exports[`app-generator specific files generates all the proper files 7`] = `
 import {Client} from '@loopback/testlab';
 import {MyAppApplication} from '../..';
 import {setupApplication} from './test-helper';
@@ -227,7 +311,7 @@ describe('HomePage', () => {
 `;
 
 
-exports[`app-generator specific files generates all the proper files 7`] = `
+exports[`app-generator specific files generates all the proper files 8`] = `
 import {MyAppApplication} from '../..';
 import {
   createRestAppClient,
