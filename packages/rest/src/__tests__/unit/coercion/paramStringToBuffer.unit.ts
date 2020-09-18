@@ -3,18 +3,18 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {ParameterLocation} from '@loopback/openapi-v3';
+import {ParameterObject} from '@loopback/openapi-v3';
 import {RestHttpErrors} from '../../..';
 import {test} from './utils';
 
-const BUFFER_PARAM = {
-  in: <ParameterLocation>'path',
+const BUFFER_PARAM: ParameterObject = {
+  in: 'path',
   name: 'aparameter',
   schema: {type: 'string', format: 'byte'},
 };
 
-const REQUIRED_BUFFER_PARAM = {
-  in: <ParameterLocation>'path',
+const REQUIRED_BUFFER_PARAM: ParameterObject = {
+  in: 'path',
   name: 'aparameter',
   schema: {type: 'string', format: 'byte'},
   required: true,

@@ -86,7 +86,7 @@ export function param(paramSpec: ParameterObject) {
  * reference link:
  * https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#data-types
  */
-const builtinTypes = {
+const builtinTypes: Record<string, ParamShortcutOptions> = {
   string: {type: 'string'},
   boolean: {type: 'boolean'},
   number: {type: 'number'},
@@ -489,7 +489,7 @@ export namespace param {
 }
 
 interface ParamShortcutOptions {
-  type: string;
+  type: SchemaObject['type'];
   format?: string;
 }
 

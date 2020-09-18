@@ -4,13 +4,18 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Context} from '@loopback/core';
-import {OperationObject, RequestBodyObject} from '@loopback/openapi-v3';
+import {
+  OperationObject,
+  RequestBodyObject,
+  SchemaObject,
+} from '@loopback/openapi-v3';
 import {
   expect,
   ShotRequestOptions,
   stubExpressContext,
 } from '@loopback/testlab';
 import {
+  builtinParsers,
   JsonBodyParser,
   RawBodyParser,
   Request,
@@ -21,10 +26,9 @@ import {
   TextBodyParser,
   UrlEncodedBodyParser,
 } from '../..';
-import {builtinParsers} from '../../body-parsers/body-parser.helpers';
 
 describe('body parser', () => {
-  const defaultSchema = {
+  const defaultSchema: SchemaObject = {
     type: 'object',
   };
   let requestBodyParser: RequestBodyParser;
@@ -39,7 +43,7 @@ describe('body parser', () => {
       payload: 'key=value',
     });
 
-    const urlencodedSchema = {
+    const urlencodedSchema: SchemaObject = {
       type: 'object',
       properties: {
         key: {type: 'string'},

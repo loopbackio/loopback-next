@@ -3,6 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {SchemaObject} from '@loopback/openapi-v3';
 import {
   belongsTo,
   Entity,
@@ -38,7 +39,7 @@ describe('Coercion', () => {
   });
 
   /* --------- schema defined for object query ---------- */
-  const filterSchema = {
+  const filterSchema: SchemaObject = {
     type: 'object',
     title: 'filter',
     properties: {

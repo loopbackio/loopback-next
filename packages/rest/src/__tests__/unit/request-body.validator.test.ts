@@ -14,7 +14,7 @@ import {aBodySpec} from '../helpers';
 
 const INVALID_MSG = RestHttpErrors.INVALID_REQUEST_BODY_MESSAGE;
 
-const TODO_SCHEMA = {
+const TODO_SCHEMA: SchemaObject = {
   title: 'Todo',
   properties: {
     title: {type: 'string'},
@@ -25,7 +25,7 @@ const TODO_SCHEMA = {
 };
 
 // a schema that contains a property with referenced schema
-const ACCOUNT_SCHEMA = {
+const ACCOUNT_SCHEMA: SchemaObject = {
   title: 'Account',
   properties: {
     title: {type: 'string'},
@@ -33,7 +33,7 @@ const ACCOUNT_SCHEMA = {
   },
 };
 
-const ADDRESS_SCHEMA = {
+const ADDRESS_SCHEMA: SchemaObject = {
   title: 'Address',
   properties: {
     city: {type: 'string'},
@@ -42,7 +42,7 @@ const ADDRESS_SCHEMA = {
   },
 };
 
-const INVALID_ACCOUNT_SCHEMA = {
+const INVALID_ACCOUNT_SCHEMA: SchemaObject = {
   title: 'Account',
   properties: {
     title: {type: 'string'},
