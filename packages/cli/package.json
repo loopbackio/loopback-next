@@ -74,7 +74,7 @@
     "stringify-object": "^3.3.0",
     "strong-globalize": "^6.0.4",
     "swagger-parser": "^10.0.2",
-    "swagger2openapi": "^7.0.0",
+    "swagger2openapi": "^7.0.1",
     "tabtab": "^3.0.2",
     "terminal-link": "^2.1.1",
     "tildify": "^2.0.0",
