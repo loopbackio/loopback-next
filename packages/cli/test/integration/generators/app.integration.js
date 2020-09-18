@@ -67,6 +67,7 @@ describe('app-generator specific files', () => {
       'package.json',
       /"openapi-spec": "node \.\/dist\/openapi-spec"/,
     );
+    assert.fileContent('package.json', /"preopenapi-spec": "npm run build"/);
   });
 
   it('generates docker files', () => {
@@ -86,6 +87,7 @@ describe('app-generator specific files', () => {
   it('creates npm script "migrate-db"', async () => {
     const pkg = JSON.parse(await readFile('package.json'));
     expect(pkg.scripts).to.have.property('migrate', 'node ./dist/migrate');
+    expect(pkg.scripts).to.have.property('premigrate', 'npm run build');
   });
 
   it('creates .gitignore', () => {

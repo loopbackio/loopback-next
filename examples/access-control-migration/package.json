@@ -28,7 +28,9 @@
     "test": "lb-mocha \"dist/__tests__/**/*.js\"",
     "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js",
     "verify": "npm pack && tar xf loopback-access-control-migration*.tgz && tree package && npm run clean",
+    "premigrate": "npm run build ",
     "migrate": "node ./dist/migrate",
+    "preopenapi-spec": "npm run build",
     "openapi-spec": "node ./dist/openapi-spec",
     "prestart": "npm run build",
     "start": "node ."
