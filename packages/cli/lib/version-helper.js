@@ -37,8 +37,17 @@ async function checkDependencies(generator) {
   const pkg = generator.fs.readJSON(generator.destinationPath('package.json'));
   generator.packageJson = pkg;
 
+  const isUpdate = generator.command === 'update';
+  const pkgDeps = pkg
+    ? {
+        dependencies: {...pkg.dependencies},
+        devDependencies: {...pkg.devDependencies},
+        peerDependencies: {...pkg.peerDependencies},
+      }
+    : {};
+
   if (!pkg) {
-    if (generator.command === 'update') {
+    if (isUpdate) {
       printVersions(generator.log);
       await checkCliVersion(generator.log);
       return;
@@ -53,13 +62,24 @@ async function checkDependencies(generator) {
     return;
   }
 
-  const projectDeps = pkg.dependencies || {};
-  const projectDevDeps = pkg.devDependencies || {};
-
   const dependentPackage = '@loopback/core';
-  const projectDepsNames = Object.keys(projectDeps);
 
-  if (!projectDepsNames.includes(dependentPackage)) {
+  const projectDepsNames = isUpdate
+    ? Object.keys(
+        // Check dependencies, devDependencies, and peerDependencies
+        {
+          ...pkgDeps.dependencies,
+          ...pkgDeps.devDependencies,
+          ...pkgDeps.peerDependencies,
+        },
+      )
+    : Object.keys(pkgDeps.dependencies);
+
+  const isLBProj = isUpdate
+    ? projectDepsNames.some(n => n.startsWith('@loopback/'))
+    : projectDepsNames.includes(dependentPackage);
+
+  if (!isLBProj) {
     const err = new Error(
       'No `@loopback/core` package found in the "dependencies" section of ' +
         generator.destinationPath('package.json') +
@@ -70,26 +90,36 @@ async function checkDependencies(generator) {
     return;
   }
 
-  const incompatibleDeps = {};
+  const incompatibleDeps = {
+    dependencies: {},
+    devDependencies: {},
+    peerDependencies: {},
+  };
 
+  let found = false;
   for (const d in templateDeps) {
-    const versionRange = projectDeps[d] || projectDevDeps[d];
-    if (!versionRange) continue;
-    // https://github.com/strongloop/loopback-next/issues/2028
-    // https://github.com/npm/node-semver/pull/238
-    // semver.intersects does not like `*`, `x`, or `X`
-    if (versionRange.match(/^\*|x|X/)) continue;
-    if (generator.options.semver === false) {
-      // For `lb4 update` command, check exact matches
-      if (versionRange !== templateDeps[d]) {
-        incompatibleDeps[d] = [versionRange, templateDeps[d]];
+    for (const s in incompatibleDeps) {
+      const versionRange = pkgDeps[s][d];
+      if (!versionRange) continue;
+      const templateDep = templateDeps[d];
+      // https://github.com/strongloop/loopback-next/issues/2028
+      // https://github.com/npm/node-semver/pull/238
+      // semver.intersects does not like `*`, `x`, or `X`
+      if (versionRange.match(/^\*|x|X/)) continue;
+      if (generator.options.semver === false) {
+        // For `lb4 update` command, check exact matches
+        if (versionRange !== templateDep) {
+          incompatibleDeps[s][d] = [versionRange, templateDep];
+          found = true;
+        }
+        continue;
       }
-      continue;
+      if (semver.intersects(versionRange, templateDep)) continue;
+      incompatibleDeps[s][d] = [versionRange, templateDep];
+      found = true;
     }
-    if (semver.intersects(versionRange, templateDeps[d])) continue;
-    incompatibleDeps[d] = [versionRange, templateDeps[d]];
   }
-  if (Object.keys(incompatibleDeps).length === 0) {
+  if (!found) {
     // No incompatible dependencies
     if (generator.command === 'update') {
       generator.log(
@@ -119,8 +149,15 @@ async function checkDependencies(generator) {
       ),
     ),
   );
-  for (const d in incompatibleDeps) {
-    generator.log(chalk.yellow('- %s: %s (cli %s)'), d, ...incompatibleDeps[d]);
+  for (const s in incompatibleDeps) {
+    generator.log(s);
+    for (const d in incompatibleDeps[s]) {
+      generator.log(
+        chalk.yellow('- %s: %s (cli %s)'),
+        d,
+        ...incompatibleDeps[s][d],
+      );
+    }
   }
   return incompatibleDeps;
 }
@@ -156,6 +193,16 @@ function updateDependencies(generator) {
       );
       pkg.devDependencies[d] = templateDeps[d];
     }
+    if (
+      pkg.peerDependencies &&
+      pkg.peerDependencies[d] &&
+      pkg.peerDependencies[d] !== templateDeps[d]
+    ) {
+      depUpdates.push(
+        `- PeerDependency ${d}: ${pkg.devDependencies[d]} => ${templateDeps[d]}`,
+      );
+      pkg.devDependencies[d] = templateDeps[d];
+    }
   }
   if (depUpdates.length) {
     depUpdates.sort().forEach(d => generator.log(d));
@@ -165,7 +212,7 @@ function updateDependencies(generator) {
   );
   generator.fs.writeJSON(generator.destinationPath('package.json'), pkg);
   // Remove `node_modules` force a fresh install
-  if (generator.command === 'update') {
+  if (generator.command === 'update' && !generator.options['skip-install']) {
     fse.removeSync(generator.destinationPath('node_modules'));
   }
   generator.pkgManagerInstall();
@@ -180,7 +227,14 @@ async function checkLoopBackProject(generator) {
 
   const incompatibleDeps = await checkDependencies(generator);
   if (incompatibleDeps == null) return false;
-  if (Object.keys(incompatibleDeps) === 0) return false;
+  if (
+    Object.keys({
+      ...incompatibleDeps.dependencies,
+      ...incompatibleDeps.devDependencies,
+      ...incompatibleDeps.peerDependencies,
+    }) === 0
+  )
+    return false;
 
   const choices = [
     {

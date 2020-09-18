@@ -74,6 +74,26 @@ module.exports = function suiteCheckLoopBackProject(generator) {
     );
 
     testCheckLoopBack(
+      'throws an error if "@loopback/core" is only a dev dependency',
+      {
+        devDependencies: {
+          '@loopback/core': coreVer,
+        },
+      },
+      /No `@loopback\/core` package found/,
+    );
+
+    testCheckLoopBack(
+      'throws an error if "@loopback/core" is only a peer dependency',
+      {
+        peerDependencies: {
+          '@loopback/core': coreVer,
+        },
+      },
+      /No `@loopback\/core` package found/,
+    );
+
+    testCheckLoopBack(
       'throws an error if dependencies have incompatible versions',
       {
         dependencies: {
@@ -195,6 +215,50 @@ module.exports = function suiteCheckLoopBackProject(generator) {
     it('passes if "@loopback/core" is a dependency', async () => {
       await gen.checkLoopBackProject();
     });
+
+    testCheckLoopBack(
+      'passes if "@loopback/core" is a dependency',
+      {
+        dependencies: {
+          '@loopback/core': coreVer,
+        },
+      },
+      [],
+      {command: 'update'},
+    );
+
+    testCheckLoopBack(
+      'passes if "@loopback/context" is a dependency',
+      {
+        dependencies: {
+          '@loopback/context': contextVer,
+        },
+      },
+      [],
+      {command: 'update'},
+    );
+
+    testCheckLoopBack(
+      'passes if "@loopback/core" is a dev dependency',
+      {
+        devDependencies: {
+          '@loopback/core': coreVer,
+        },
+      },
+      [],
+      {command: 'update'},
+    );
+
+    testCheckLoopBack(
+      'passes if "@loopback/core" is a peer dependency',
+      {
+        peerDependencies: {
+          '@loopback/core': coreVer,
+        },
+      },
+      [],
+      {command: 'update'},
+    );
 
     function testCheckLoopBack(
       testName,
