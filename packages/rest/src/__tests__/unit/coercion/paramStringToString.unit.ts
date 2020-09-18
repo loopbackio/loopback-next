@@ -13,7 +13,7 @@ const OPTIONAL_STRING_PARAM: ParameterObject = {
   schema: {type: 'string'},
 };
 
-const REQUIRED_STRING_PARAM = {
+const REQUIRED_STRING_PARAM: ParameterObject = {
   ...OPTIONAL_STRING_PARAM,
   required: true,
 };

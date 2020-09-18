@@ -3,14 +3,19 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {ParameterLocation} from '@loopback/openapi-v3';
+import {
+  ParameterLocation,
+  ParameterObject,
+  SchemaObject,
+} from '@loopback/openapi-v3';
 import {RestHttpErrors} from '../../../';
 import {test} from './utils';
 
-const INVALID_PARAM = {
-  in: <ParameterLocation>'unknown',
+const INVALID_PARAM: ParameterObject = {
+  in: 'unknown' as ParameterLocation,
   name: 'aparameter',
-  schema: {type: 'unknown'},
+  // TS compiler catches `unknown` as invalid without the cast
+  schema: ({type: 'unknown'} as unknown) as SchemaObject,
 };
 
 describe('throws error for invalid parameter spec', () => {

@@ -6,6 +6,7 @@
 import {post, requestBody, getControllerSpec} from '../../../..';
 import {expect} from '@loopback/testlab';
 import {model, property} from '@loopback/repository';
+import {SchemaObject} from 'openapi3-ts';
 
 describe('requestBody decorator', () => {
   context('can build a correct "RequestBody" spec and', () => {
@@ -71,7 +72,7 @@ describe('requestBody decorator', () => {
     });
 
     it('preserves user-provided schema in requestBody', () => {
-      const expectedContent = {
+      const expectedContent: SchemaObject = {
         'application/json': {
           schema: {type: 'object'},
         },

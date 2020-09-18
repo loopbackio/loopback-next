@@ -3,25 +3,25 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {ParameterLocation} from '@loopback/openapi-v3';
+import {ParameterObject} from '@loopback/openapi-v3';
 import {RestHttpErrors} from '../../../';
 import {test} from './utils';
 
-const NUMBER_PARAM = {
-  in: <ParameterLocation>'path',
+const NUMBER_PARAM: ParameterObject = {
+  in: 'path',
   name: 'aparameter',
   schema: {type: 'number'},
 };
 
-const REQUIRED_NUMBER_PARAM = {
-  in: <ParameterLocation>'path',
+const REQUIRED_NUMBER_PARAM: ParameterObject = {
+  in: 'path',
   name: 'aparameter',
   schema: {type: 'number'},
   required: true,
 };
 
-const FLOAT_PARAM = {
-  in: <ParameterLocation>'path',
+const FLOAT_PARAM: ParameterObject = {
+  in: 'path',
   name: 'aparameter',
   schema: {
     type: 'number',
@@ -29,8 +29,8 @@ const FLOAT_PARAM = {
   },
 };
 
-const DOUBLE_PARAM = {
-  in: <ParameterLocation>'path',
+const DOUBLE_PARAM: ParameterObject = {
+  in: 'path',
   name: 'aparameter',
   schema: {
     type: 'number',

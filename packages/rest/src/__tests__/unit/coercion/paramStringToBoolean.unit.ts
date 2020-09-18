@@ -3,18 +3,18 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {ParameterLocation} from '@loopback/openapi-v3';
+import {ParameterObject} from '@loopback/openapi-v3';
 import {RestHttpErrors} from '../../../';
 import {test} from './utils';
 
-const BOOLEAN_PARAM = {
-  in: <ParameterLocation>'path',
+const BOOLEAN_PARAM: ParameterObject = {
+  in: 'path',
   name: 'aparameter',
   schema: {type: 'boolean'},
 };
 
-const REQUIRED_BOOLEAN_PARAM = {
-  in: <ParameterLocation>'path',
+const REQUIRED_BOOLEAN_PARAM: ParameterObject = {
+  in: 'path',
   name: 'aparameter',
   schema: {type: 'boolean'},
   required: true,

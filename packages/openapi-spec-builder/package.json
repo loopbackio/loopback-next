@@ -28,7 +28,7 @@
     "Testing"
   ],
   "dependencies": {
-    "openapi3-ts": "^1.4.0",
+    "openapi3-ts": "^2.0.0",
     "tslib": "^2.0.1"
   },
   "devDependencies": {

@@ -16,7 +16,7 @@
     "http-status": "^1.4.2",
     "json-merge-patch": "^1.0.0",
     "lodash": "^4.17.20",
-    "openapi3-ts": "^1.4.0",
+    "openapi3-ts": "^2.0.0",
     "tslib": "^2.0.1"
   },
   "devDependencies": {
