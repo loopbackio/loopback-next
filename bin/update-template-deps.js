@@ -33,6 +33,12 @@ async function updateTemplateDeps() {
 
   const rootPath = project.rootPath;
 
+  // Load eslint related dependencies from `packages/eslint-config/package.json`
+  const eslintDeps = require(path.join(
+    rootPath,
+    'packages/eslint-config/package.json',
+  )).dependencies;
+
   // Load dependencies from `packages/build/package.json`
   const buildDeps = require(path.join(rootPath, 'packages/build/package.json'))
     .dependencies;
@@ -50,12 +56,13 @@ async function updateTemplateDeps() {
   const currentDeps = cliPkg.config.templateDependencies || {};
 
   // Merge all entries
-  const deps = Object.assign(
-    {tslib: coreDeps.tslib},
-    currentDeps,
-    buildDeps,
-    lbModules,
-  );
+  const deps = {
+    tslib: coreDeps.tslib,
+    ...currentDeps,
+    ...buildDeps,
+    ...eslintDeps,
+    ...lbModules,
+  };
 
   cliPkg.config.templateDependencies = deps;
 
