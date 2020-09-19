@@ -37,3 +37,6 @@ benchmark/dist
 # Docs preview
 docs/_loopback.io/
 docs/_preview/
+
+# IntellJ IDEA IDE
+.idea

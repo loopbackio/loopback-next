@@ -13,7 +13,7 @@ import _ from 'lodash';
 
 // Instance level authorizer
 // Can be also registered as an authorizer, depends on users' need.
-export async function basicAuthorization(
+export async function roleBasedAuthorization(
   authorizationCtx: AuthorizationContext,
   decoratorMetadata: AuthorizationMetadata,
 ): Promise<AuthorizationDecision> {
