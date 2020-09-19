@@ -1,5 +1,5 @@
 // Copyright IBM Corp. 2020. All Rights Reserved.
-// Node module: @loopback/bodyparser-msgpack
+// Node module: @loopback/rest-msgpack
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
