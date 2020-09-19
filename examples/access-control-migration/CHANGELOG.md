@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.4](https://github.com/strongloop/loopback-next/compare/@loopback/example-access-control-migration@2.2.3...@loopback/example-access-control-migration@2.2.4) (2020-09-17)
+
+**Note:** Version bump only for package @loopback/example-access-control-migration
+
+
+
+
+
+## [2.2.3](https://github.com/strongloop/loopback-next/compare/@loopback/example-access-control-migration@2.2.2...@loopback/example-access-control-migration@2.2.3) (2020-09-15)
+
+**Note:** Version bump only for package @loopback/example-access-control-migration
+
+
+
+
+
 ## [2.2.2](https://github.com/strongloop/loopback-next/compare/@loopback/example-access-control-migration@2.2.1...@loopback/example-access-control-migration@2.2.2) (2020-08-27)
 
 **Note:** Version bump only for package @loopback/example-access-control-migration

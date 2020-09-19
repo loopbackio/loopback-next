@@ -627,7 +627,7 @@ export function inspectTargetType(injection: Readonly<Injection>) {
       injection.target,
       injection.member!,
     );
-    return designType.parameterTypes[
+    return designType?.parameterTypes?.[
       injection.methodDescriptorOrParameterIndex as number
     ];
   }

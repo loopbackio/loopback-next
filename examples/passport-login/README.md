@@ -32,7 +32,7 @@ party apps
 
 - [Facebook](https://developers.facebook.com/apps)
 - [Google](https://console.developers.google.com/project)
-- [twitter](https://apps.twitter.com/) **Not yet implemented**
+- [twitter](https://developer.twitter.com/apps)
 
 ## Authentication using passport strategies as Express middleware
 
@@ -69,11 +69,11 @@ Start the application with
 $ npm start
 ```
 
-To use Google or Facebook logins, you'll need:
+To use Google, Facebook or Twitter logins, you'll need:
 
 - Copy `oauth2-providers.template.json` from this example project's root to
   `oauth2-providers.json`.
-- Update Google/Facebook configuration in the json file.
+- Update Google/Facebook/Twitter configuration in the json file.
 - Set `OAUTH_PROVIDERS_LOCATION` environment variable to
   `../oauth2-providers.json`.
 
@@ -93,9 +93,9 @@ Open browser to http://localhost:3000
 
 1. Click on `Login` from the header menu, You will see various buttons under
    `Other login options`.
-   - [Facebook](#Try-it-out-with-FaceBook)
+   - [Facebook](#Try-it-out-with-Facebook)
    - [Google](#Try-it-out-with-Google)
-   - `Twitter` - not yet implemented
+   - [Twitter](#Try-it-out-with-Twitter)
 2. When you click on any login option, the page is redirected to that social
    app's login page. On successful login with the social app, the `View account`
    page is loaded.
@@ -108,9 +108,9 @@ Open browser to http://localhost:3000
 
 1. Click on `Login` from the header menu, You will see various buttons under
    `Other login options`.
-   - [Facebook](#Try-it-out-with-FaceBook)
+   - [Facebook](#Try-it-out-with-Facebook)
    - [Google](#Try-it-out-with-Google)
-   - `Twitter` - not yet implemented
+   - [Twitter](#Try-it-out-with-Twitter)
 2. When you click on any login option, the page is redirected to that social
    app's login page. On successful login with the social app, the `View account`
    page is loaded.
@@ -120,9 +120,9 @@ Open browser to http://localhost:3000
    `linked accounts` section.
 4. Click on Logout to log out of user session
 
-## Try it out with FaceBook
+## Try it out with Facebook
 
-### Create a test app and test user in FaceBook
+### Create a test app and test user in Facebook
 
 1. Login to Facebook developer console: https://developers.facebook.com/apps
 2. Click on `My Apps` tab in the dashboard menu, and then select `Add a new App`
@@ -230,3 +230,68 @@ http://loopback.io/doc/en/lb2/Configuring-providers.json.html.
 - Click on `Log In with Google` button
 - Google login page opens, enter Google user-id and password
 - example app loads again on successful login
+
+## Try it out with Twitter
+
+### Create a test app and test user in Twitter
+
+1. Login to Twitter developer page: https://developer.twitter.com/apps
+2. Click on `Create an app` to create a new app.
+3. In the `App details` page, fill the `callback URL` field with
+   `http://localhost:3000/api/auth/thirdparty/twitter/callback`.
+4. In the same page, you also need to fill in the `Terms of Service URL` and
+   `Privacy policy URL`. This is needed since we will need to request users for
+   email address in the `Permissions` settings.
+5. In the `Keys and tokens` tab, no changes are needed. You will see the
+   `Consumer API keys` section which has the API key and secret. These values
+   will be used in the LoopBack application.
+6. In the `Permissions` tab, under `additional permissions` section, select
+   `Request email address`. Make sure you have the term of service and privacy
+   policy urls information filled in in the `Add details` tab, otherwise the
+   `Request email address` will be disabled for you.
+
+- NOTE:
+  - If you change the permission settings after the app is being created, you
+    might need to regenerate the tokens again by going to the `Keys and tokens`
+    tab for regeneration.
+  - For details in getting email address from the login profile, see
+    [this discussion in `passport-twitter` repo](https://github.com/jaredhanson/passport-twitter/issues/67).
+  - The
+    [passport-twitter strategy](http://www.passportjs.org/packages/passport-twitter/)
+    used in this example is using OAuth 1.0a API.
+
+### Create oauth2-providers.json
+
+- Copy `oauth2-providers.template.json` from this example project's root to
+  `oauth2-providers.json`
+- Update Twitter oauth config with the values for `consumerKey/consumerSecret`
+  from your test app.
+
+  ```json
+  "twitter-login": {
+      "provider": "twitter",
+      "module": "passport-twitter",
+      "strategy": "OAuth2Strategy",
+      "consumerKey": "xxxxxxxxxxxxxx",
+      "consumerSecret": "xxxxxxxxxxxxxxx",
+      "callbackURL": "/api/auth/thirdparty/twitter/callback?source=twitter",
+      "authPath": "/api/auth/thirdparty/twitter",
+      "callbackPath": "/api/auth/thirdparty/twitter/callback",
+      "successRedirect": "/auth/account",
+      "failureRedirect": "/login",
+      "includeEmail": true,
+      "scope": ["email", "profile"],
+      "failureFlash": true
+    },
+  ```
+
+### Log in with Twitter
+
+- Open your browser to the example app with `http://localhost:3000`
+- Click `Log In` from the example app header menu
+- Click on `Log In with Twitter` button
+- You'll be asked to authorize the Twitter app to access your account. Click
+  `Authorize app`.
+- Example app loads again on successful login
+- Redirect to example app will fail if Twitter did not return profile with
+  email-id

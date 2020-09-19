@@ -3,6 +3,38 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.1](https://github.com/strongloop/loopback-next/compare/@loopback/cron@0.3.0...@loopback/cron@0.3.1) (2020-09-17)
+
+**Note:** Version bump only for package @loopback/cron
+
+
+
+
+
+# [0.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/cron@0.2.13...@loopback/cron@0.3.0) (2020-09-15)
+
+
+### Features
+
+* move framework packages to `peerDependencies` ([d8f72e4](https://github.com/strongloop/loopback-next/commit/d8f72e4e9085aa132bfac3e930f3960042816f2a))
+
+
+### BREAKING CHANGES
+
+* Extensions no longer install framework packages as
+their own dependencies, they use the framework packages provided by the
+target application instead.
+
+If you are getting `npm install` errors after upgrade, then make sure
+your project lists all dependencies required by the extensions you are
+using.
+
+Signed-off-by: Miroslav Bajtoš <mbajtoss@gmail.com>
+
+
+
+
+
 ## [0.2.13](https://github.com/strongloop/loopback-next/compare/@loopback/cron@0.2.12...@loopback/cron@0.2.13) (2020-08-27)
 
 **Note:** Version bump only for package @loopback/cron

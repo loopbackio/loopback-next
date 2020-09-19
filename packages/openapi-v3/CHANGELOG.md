@@ -3,6 +3,44 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.1](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@4.0.0...@loopback/openapi-v3@4.0.1) (2020-09-17)
+
+**Note:** Version bump only for package @loopback/openapi-v3
+
+
+
+
+
+# [4.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@3.4.9...@loopback/openapi-v3@4.0.0) (2020-09-15)
+
+
+### Bug Fixes
+
+* improve handling of missing design-time type metadata ([95b6a2b](https://github.com/strongloop/loopback-next/commit/95b6a2b7ce64e614720df43b905f77a53a54e438))
+
+
+### Features
+
+* **openapi-v3:** export a constant for the default openapi spec info ([fce91a2](https://github.com/strongloop/loopback-next/commit/fce91a20e514c557a5f84bfcae4eb7031894f114))
+* move framework packages to `devDependencies` ([e2c61ce](https://github.com/strongloop/loopback-next/commit/e2c61ce79aa68d76f6e7138642034160b50063f0))
+
+
+### BREAKING CHANGES
+
+* components no longer install core framework packages as
+their own dependencies, they use the framework packages provided by the
+target application instead.
+
+If you are getting `npm install` errors after upgrade, then make sure
+your project lists all dependencies required by the extensions you are
+using.
+
+Signed-off-by: Miroslav Bajtoš <mbajtoss@gmail.com>
+
+
+
+
+
 ## [3.4.9](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@3.4.8...@loopback/openapi-v3@3.4.9) (2020-08-27)
 
 

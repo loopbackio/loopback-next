@@ -317,7 +317,7 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
       constructor.prototype,
       op,
     );
-    const paramTypes = opMetadata.parameterTypes;
+    const paramTypes = opMetadata?.parameterTypes ?? [];
 
     const isComplexType = (ctor: Function) =>
       !includes([String, Number, Boolean, Array, Object], ctor);

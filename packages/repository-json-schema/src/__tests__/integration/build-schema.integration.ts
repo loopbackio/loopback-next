@@ -3,13 +3,16 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {MetadataInspector} from '@loopback/core';
+import {MetadataInspector, Reflector} from '@loopback/core';
 import {
   belongsTo,
   Entity,
   hasMany,
   model,
+  ModelDefinitionSyntax,
+  MODEL_KEY,
   property,
+  PropertyType,
 } from '@loopback/repository';
 import {expect} from '@loopback/testlab';
 import {
@@ -23,17 +26,41 @@ import {expectValidJsonSchema} from '../helpers/expect-valid-json-schema';
 describe('build-schema', () => {
   describe('modelToJsonSchema', () => {
     context('properties conversion', () => {
-      it('reports error for null or undefined property', () => {
-        @model()
-        class TestModel {
-          @property()
-          nul: null;
-          @property()
-          undef: undefined;
-        }
+      it('reports error for property without type (`null`)', () => {
+        // We cannot use `@model()` and `@property()` decorators because
+        // they no longer allow missing property type. Fortunately,
+        // it's possible to reproduce the problematic edge case by
+        // creating the model definition object directly.
+        class TestModel {}
+        const definition: ModelDefinitionSyntax = {
+          name: 'TestModel',
+          properties: {
+            nul: {type: (null as unknown) as PropertyType},
+          },
+        };
+        Reflector.defineMetadata(MODEL_KEY.key, definition, TestModel);
 
         expect(() => modelToJsonSchema(TestModel)).to.throw(
           /Property TestModel.nul does not have "type" in its definition/,
+        );
+      });
+
+      it('reports error for property without type (`undefined`)', () => {
+        // We cannot use `@model()` and `@property()` decorators because
+        // they no longer allow missing property type. Fortunately,
+        // it's possible to reproduce the problematic edge case by
+        // creating the model definition object directly.
+        class TestModel {}
+        const definition: ModelDefinitionSyntax = {
+          name: 'TestModel',
+          properties: {
+            undef: {type: (undefined as unknown) as PropertyType},
+          },
+        };
+        Reflector.defineMetadata(MODEL_KEY.key, definition, TestModel);
+
+        expect(() => modelToJsonSchema(TestModel)).to.throw(
+          /Property TestModel.undef does not have "type" in its definition/,
         );
       });
 

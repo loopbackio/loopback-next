@@ -3,6 +3,54 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.16.1](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.16.0...@loopback/docs@3.16.1) (2020-09-18)
+
+
+### Bug Fixes
+
+* **docs:** fix file link ([89a426b](https://github.com/strongloop/loopback-next/commit/89a426b6d130c201cfebb175b03432e4b2e0cc9d))
+
+
+
+
+
+# [3.16.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.15.0...@loopback/docs@3.16.0) (2020-09-17)
+
+
+### Features
+
+* **docs:** update memory connector docs for lb4 ([d47f4ee](https://github.com/strongloop/loopback-next/commit/d47f4ee0671c45a1917ccfcd084a18ed6810d772))
+* **rest:** add msgpack body parser ([4e5a128](https://github.com/strongloop/loopback-next/commit/4e5a128765c0fecc2c66a61da83b7013132b450a))
+
+
+
+
+
+# [3.15.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.14.0...@loopback/docs@3.15.0) (2020-09-15)
+
+
+### Bug Fixes
+
+* improve handling of missing design-time type metadata ([95b6a2b](https://github.com/strongloop/loopback-next/commit/95b6a2b7ce64e614720df43b905f77a53a54e438))
+* **docs:** add instructions to disable CORS ([e8d0335](https://github.com/strongloop/loopback-next/commit/e8d03351e35061fd421bd989050e0f1f7581ac16))
+* **docs:** fix broken links ([a95771d](https://github.com/strongloop/loopback-next/commit/a95771d619d03fe90b9f5d07d5658529e8a17874))
+* **docs:** fix broken links ([628720c](https://github.com/strongloop/loopback-next/commit/628720c10ed638a884f547dd604bb88cbd297ad9))
+* **docs:** make sure image files are copied with README.md ([ed9c5ef](https://github.com/strongloop/loopback-next/commit/ed9c5efe4ad43c36004426a4f01475d46cc794e6))
+
+
+### Features
+
+* allow dynamic value provider classes and classes with [@inject](https://github.com/inject) to be booted ([7b85cdf](https://github.com/strongloop/loopback-next/commit/7b85cdf63730ef659a4ee799f05f02eea8a1e3e8))
+* update examples and docs to use `@loopback/*` instead of `@loopback/extension-*` ([a96b7cb](https://github.com/strongloop/loopback-next/commit/a96b7cbb2e146f941b1fec0e7dd0b0829dcd0245))
+* **docs:** add docs to access http request/response objects ([7a34ab0](https://github.com/strongloop/loopback-next/commit/7a34ab0bc7b020ad5e884e6bba04bf345e9983ca))
+* refactor filters into standalone package ([f52d4df](https://github.com/strongloop/loopback-next/commit/f52d4dffb1873446e3eec4d6c0f50bbeb528c922)), closes [#5957](https://github.com/strongloop/loopback-next/issues/5957)
+* **graphql:** add an extension for type-graphql integration ([72c22bf](https://github.com/strongloop/loopback-next/commit/72c22bfb0f73e023f1ecf137afba4125764ad662))
+* add `app.onStart()` and `app.onStop()` helpers ([92daddd](https://github.com/strongloop/loopback-next/commit/92daddd8dfaf24c16e03ed3af66d491a8fd9503e))
+
+
+
+
+
 # [3.14.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.13.1...@loopback/docs@3.14.0) (2020-08-27)
 
 

@@ -18,9 +18,14 @@ import {
   lifeCycleObserver,
   Server,
 } from '@loopback/core';
-import {HttpOptions, HttpServer} from '@loopback/http-server';
+import {HttpServer} from '@loopback/http-server';
 import {ContextFunction} from 'apollo-server-core';
-import {ApolloServer, ApolloServerExpressConfig} from 'apollo-server-express';
+import {
+  ApolloServer,
+  ApolloServerExpressConfig,
+  PubSub,
+  PubSubEngine,
+} from 'apollo-server-express';
 import {ExpressContext} from 'apollo-server-express/dist/ApolloServer';
 import express from 'express';
 import {
@@ -32,29 +37,7 @@ import {
 import {Middleware} from 'type-graphql/dist/interfaces/Middleware';
 import {LoopBackContainer} from './graphql.container';
 import {GraphQLBindings, GraphQLTags} from './keys';
-
-export {ContextFunction} from 'apollo-server-core';
-export {ApolloServerExpressConfig} from 'apollo-server-express';
-export {ExpressContext} from 'apollo-server-express/dist/ApolloServer';
-export {Middleware as GraphQLMiddleware} from 'type-graphql/dist/interfaces/Middleware';
-
-/**
- * Options for GraphQL server
- */
-export interface GraphQLServerOptions extends HttpOptions {
-  /**
-   * GraphQL related configuration
-   */
-  graphql?: ApolloServerExpressConfig;
-  /**
-   * Express settings
-   */
-  express?: Record<string, unknown>;
-  /**
-   * Use as a middleware for RestServer instead of a standalone server
-   */
-  asMiddlewareOnly?: boolean;
-}
+import {GraphQLServerOptions} from './types';
 
 /**
  * GraphQL Server
@@ -73,13 +56,17 @@ export class GraphQLServer extends Context implements Server {
     parent?: Context,
   ) {
     super(parent, 'graphql-server');
+
+    // An internal express application for GraphQL only
     this.expressApp = express();
-    if (options.express) {
-      for (const p in options.express) {
-        this.expressApp.set(p, options.express[p]);
+    if (options.expressSettings) {
+      for (const p in options.expressSettings) {
+        this.expressApp.set(p, options.expressSettings[p]);
       }
     }
 
+    // Create a standalone http server if GraphQL is mounted as an Express
+    // middleware to a RestServer from `@loopback/rest`
     if (!options.asMiddlewareOnly) {
       this.httpServer = new HttpServer(this.expressApp, this.options);
     }
@@ -88,7 +75,7 @@ export class GraphQLServer extends Context implements Server {
   /**
    * Get a list of resolver classes
    */
-  getResolvers(): Constructor<ResolverInterface<object>>[] {
+  getResolverClasses(): Constructor<ResolverInterface<object>>[] {
     const view = this.createView(filterByTag(GraphQLTags.RESOLVER));
     return view.bindings
       .filter(b => b.valueConstructor != null)
@@ -98,7 +85,7 @@ export class GraphQLServer extends Context implements Server {
   /**
    * Get a list of middleware
    */
-  async getMiddleware(): Promise<Middleware<unknown>[]> {
+  async getMiddlewareList(): Promise<Middleware<unknown>[]> {
     const view = this.createView<Middleware<unknown>>(
       filterByTag(GraphQLTags.MIDDLEWARE),
     );
@@ -128,14 +115,20 @@ export class GraphQLServer extends Context implements Server {
   }
 
   async start() {
-    const resolverClasses = (this.getResolvers() as unknown) as NonEmptyArray<
+    const resolverClasses = (this.getResolverClasses() as unknown) as NonEmptyArray<
       Function
     >;
 
+    // Get the configured auth checker
     const authChecker: AuthChecker =
       (await this.get(GraphQLBindings.GRAPHQL_AUTH_CHECKER, {
         optional: true,
       })) ?? ((resolverData, roles) => true);
+
+    const pubSub: PubSubEngine | undefined =
+      (await this.get(GraphQLBindings.PUB_SUB_ENGINE, {
+        optional: true,
+      })) ?? new PubSub();
 
     // build TypeGraphQL executable schema
     const schema = await buildSchema({
@@ -146,7 +139,8 @@ export class GraphQLServer extends Context implements Server {
       // emitSchemaFile: path.resolve(__dirname, 'schema.gql'),
       container: new LoopBackContainer(this),
       authChecker,
-      globalMiddlewares: await this.getMiddleware(),
+      pubSub,
+      globalMiddlewares: await this.getMiddlewareList(),
     });
 
     // Allow a graphql context resolver to be bound to GRAPHQL_CONTEXT_RESOLVER
@@ -155,25 +149,35 @@ export class GraphQLServer extends Context implements Server {
         optional: true,
       })) ?? (context => context);
 
+    // Create ApolloServerExpress GraphQL server
     const serverConfig: ApolloServerExpressConfig = {
       // enable GraphQL Playground
       playground: true,
       context: graphqlContextResolver,
-      ...this.options.graphql,
+      subscriptions: false,
+      ...this.options.apollo,
       schema,
     };
-    // Create GraphQL server
     const graphQLServer = new ApolloServer(serverConfig);
-
     graphQLServer.applyMiddleware({app: this.expressApp});
 
+    // Set up subscription handlers
+    if (this.httpServer && serverConfig.subscriptions) {
+      graphQLServer.installSubscriptionHandlers(this.httpServer?.server);
+    }
+
+    // Start the http server if created
     await this.httpServer?.start();
   }
 
   async stop() {
+    // Stop the http server if created
     await this.httpServer?.stop();
   }
 
+  /**
+   * Is the GraphQL listening
+   */
   get listening() {
     return !!this.httpServer?.listening;
   }
