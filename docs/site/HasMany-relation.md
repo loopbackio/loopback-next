@@ -8,14 +8,14 @@ permalink: /doc/en/lb4/HasMany-relation.html
 
 ## Overview
 
+{% include important.html content="Please read [Relations](Relations.md) first." %}
+
 {% include note.html content="
 This relation best works with databases that support foreign key
 constraints (SQL).
 Using this relation with NoSQL databases will result in unexpected behavior,
 such as the ability to create a relation with a model that does not exist. We are [working on a solution](https://github.com/strongloop/loopback-next/issues/2341) to better handle this. It is fine to use this relation with NoSQL databases for purposes such as navigating related models, where the referential integrity is not critical.
 " %}
-
-{% include note.html content="There are some limitations to `Inclusion Resolver`. See [Limitations](Relations.md#limitations)." %}
 
 A `hasMany` relation denotes a one-to-many connection of a model to another
 model through referential integrity. The referential integrity is enforced by a
