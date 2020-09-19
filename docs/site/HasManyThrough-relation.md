@@ -8,6 +8,8 @@ permalink: /doc/en/lb4/HasManyThrough-relation.html
 
 ## Overview
 
+{% include important.html content="Please read [Relations](Relations.md) first." %}
+
 {% include note.html content="
 This relation best works with databases that support foreign key
 constraints (SQL).

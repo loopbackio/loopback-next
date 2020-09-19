@@ -61,6 +61,28 @@ application.
 To generate a `HasMany`, `HasOne`, `BelongsTo`, or `hasManyThrough` relation
 through the CLI, see [Relation generator](Relation-generator.md).
 
+## Weak vs Strong Relations
+
+LoopBack 4 implements _weak relations_ with `@belongsTo()`, `@hasMany()`,
+`@hasOne`, etc. This means the constraints are enforced by LoopBack 4 itself,
+not the underlying database engine. This is useful for integrating
+cross-database relations, thereby allowing LoopBack 4 applications to partially
+take the role of a data lake.
+
+However, this means that invalid data could be keyed in outside of the LoopBack
+4 application. To resolve this issue, some LoopBack 4 connectors (such as
+[PostgreSQL](./PostgreSQL-connector.md#auto-migrateauto-update-models-with-foreign-keys)
+and
+[MySQL](MySQL-connector.md#auto-migrateauto-update-models-with-foreign-keys))
+allow defining a
+[_foreign key constraint_](https://en.wikipedia.org/wiki/Foreign_key) through
+the `@model` decorator. Please consult the respective connector documentation to
+check for compatibility.
+
+[Issue #2331](https://github.com/strongloop/loopback-next/issues/2331) tracks
+native support for foreign key constraints in relation decorators (such as
+`@belongsTo`).
+
 ## Limitations
 
 ### Filtering by parent model

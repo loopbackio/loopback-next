@@ -6,9 +6,9 @@ sidebar: lb4_sidebar
 permalink: /doc/en/lb4/BelongsTo-relation.html
 ---
 
-{% include note.html content="There are some limitations to `Inclusion Resolver`. See [Limitations](Relations.md#limitations)." %}
-
 ## Overview
+
+{% include important.html content="Please read [Relations](Relations.md) first." %}
 
 {% include note.html content="
 This relation best works with databases that support foreign key
