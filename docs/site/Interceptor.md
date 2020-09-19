@@ -471,6 +471,12 @@ Interceptors can be made available by LoopBack itself, extension modules, or
 applications. They can be a function that implements `Interceptor` signature or
 a binding that is resolved to an `Interceptor` function.
 
+You can use [`lb4 interceptor` command](Interceptor-generator.md) to generate
+global or local interceptors as provider classes. Such interceptors will be
+automatically discovered and bound to the application by the
+[interceptor booter](Booting-an-Application.md#interceptor-booter) during
+`boot()`.
+
 ### Interceptor functions
 
 The interceptor function is invoked to intercept a method invocation with two

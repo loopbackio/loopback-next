@@ -6,12 +6,12 @@
 import {expect} from '@loopback/testlab';
 import {
   ClassDecoratorFactory,
-  PropertyDecoratorFactory,
+  MetadataAccessor,
+  MetadataInspector,
   MethodDecoratorFactory,
   ParameterDecoratorFactory,
-  MetadataInspector,
+  PropertyDecoratorFactory,
 } from '../..';
-import {MetadataAccessor} from '../..';
 
 describe('Inspector for a class', () => {
   /**
@@ -642,6 +642,59 @@ describe('Inspector for design time metadata', () => {
     expect(meta).to.eql(Object);
   });
 
+  it('returns no property design type when decorator metadata is not available', () => {
+    // It's important to bypass TypeScript compiler that would add design-time
+    // metadata and construct the class directly from JavaScript.
+    const classFactory = new Function(
+      'propertyDecorator',
+      `
+        class MyModel {};
+        propertyDecorator()(MyModel, 'id', void 0);
+        return MyModel;
+    `,
+    );
+    const MyModel: Function = classFactory(propertyDecorator);
+
+    const meta = MetadataInspector.getDesignTypeForProperty(MyModel, 'id');
+    expect(meta).to.equal(undefined);
+  });
+
+  it('returns `undefined` design type for property type `null`', () => {
+    class MyModel {
+      prop: null;
+    }
+
+    const meta = MetadataInspector.getDesignTypeForProperty(MyModel, 'prop');
+    expect(meta).to.equal(undefined);
+  });
+
+  it('returns `undefined` design type for property type `undefined`', () => {
+    class MyModel {
+      prop: undefined;
+    }
+
+    const meta = MetadataInspector.getDesignTypeForProperty(MyModel, 'prop');
+    expect(meta).to.equal(undefined);
+  });
+
+  it('returns `undefined` design type for property type union', () => {
+    class MyModel {
+      prop: string | number;
+    }
+
+    const meta = MetadataInspector.getDesignTypeForProperty(MyModel, 'prop');
+    expect(meta).to.equal(undefined);
+  });
+
+  it('returns `undefined` design type for property type array', () => {
+    class MyModel {
+      prop: string[];
+    }
+
+    const meta = MetadataInspector.getDesignTypeForProperty(MyModel, 'prop');
+    expect(meta).to.equal(undefined);
+  });
+
   it('inspects design time type for the constructor', () => {
     const meta = MetadataInspector.getDesignTypeForMethod(MyController, '');
     expect(meta).to.eql({
@@ -673,5 +726,28 @@ describe('Inspector for design time metadata', () => {
       returnType: Boolean,
       parameterTypes: [String, Number],
     });
+  });
+
+  it('returns no method design type when decorator metadata is not available', () => {
+    // It's important to bypass TypeScript compiler that would add design-time
+    // metadata and construct the class directly from JavaScript.
+    const classFactory = new Function(
+      'methodDecorator',
+      `
+        class TestController {
+          static greet() {}
+        };
+        methodDecorator()(TestController, 'greet', null)
+        return TestController;
+    `,
+    );
+    const TestController: Function = classFactory(methodDecorator);
+
+    const meta = MetadataInspector.getDesignTypeForMethod(
+      TestController,
+      'greet',
+    );
+
+    expect(meta).to.equal(undefined);
   });
 });

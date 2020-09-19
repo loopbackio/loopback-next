@@ -3,15 +3,23 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {BindingKey, Constructor} from '@loopback/core';
-import {AuthChecker, ResolverData} from 'type-graphql';
+import {BindingKey, Constructor, CoreBindings} from '@loopback/core';
+import {AuthChecker, PubSubEngine, ResolverData} from 'type-graphql';
 import {GraphQLComponent} from './graphql.component';
-import {ContextFunction, ExpressContext, GraphQLServer} from './graphql.server';
+import {GraphQLServer} from './graphql.server';
+import {ContextFunction, ExpressContext, GraphQLServerOptions} from './types';
 
 /**
  * Namespace for GraphQL related bindings
  */
 export namespace GraphQLBindings {
+  /**
+   * Binding key for setting and injecting GraphQLServerConfig
+   */
+  export const CONFIG: BindingKey<GraphQLServerOptions> = CoreBindings.APPLICATION_CONFIG.deepProperty(
+    'graphql',
+  );
+
   /**
    * Binding key for the GraphQL server
    */
@@ -38,6 +46,13 @@ export namespace GraphQLBindings {
    */
   export const GRAPHQL_AUTH_CHECKER = BindingKey.create<AuthChecker>(
     'graphql.authChecker',
+  );
+
+  /**
+   * Binding key for the GraphQL pub/sub engine
+   */
+  export const PUB_SUB_ENGINE = BindingKey.create<PubSubEngine>(
+    'graphql.pubSubEngine',
   );
 
   /**

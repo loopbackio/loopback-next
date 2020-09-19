@@ -232,6 +232,10 @@ children:
       url: Integrating-with-api-connect.html
       output: 'web, pdf'
 
+    - title: 'Accepting MessagePack over HTTP'
+      url: Accepting-messagepack-over-http.html
+      output: 'web, pdf'
+
   - title: 'Creating Other Forms of APIs'
     output: 'web, pdf'
     children:

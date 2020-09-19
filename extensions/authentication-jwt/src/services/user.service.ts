@@ -9,9 +9,8 @@ import {HttpErrors} from '@loopback/rest';
 import {securityId, UserProfile} from '@loopback/security';
 import {compare} from 'bcryptjs';
 import {UserRepository} from '../repositories';
-/* eslint-disable*/
-import {User, UserRelations} from '../models';
-/* eslint-enable */
+import {User} from '../models';
+
 /**
  * A pre-defined type for user credentials. It assumes a user logs in
  * using the email and password. You can modify it if your app has different credential fields
@@ -61,6 +60,7 @@ export class MyUserService implements UserService<User, Credentials> {
       name: user.username,
       id: user.id,
       email: user.email,
+      ...(user.roles && {roles: user.roles}),
     };
   }
 

@@ -3,6 +3,38 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.7.1](https://github.com/strongloop/loopback-next/compare/@loopback/authentication-jwt@0.7.0...@loopback/authentication-jwt@0.7.1) (2020-09-17)
+
+**Note:** Version bump only for package @loopback/authentication-jwt
+
+
+
+
+
+# [0.7.0](https://github.com/strongloop/loopback-next/compare/@loopback/authentication-jwt@0.6.0...@loopback/authentication-jwt@0.7.0) (2020-09-15)
+
+
+### Features
+
+* move framework packages to `peerDependencies` ([d8f72e4](https://github.com/strongloop/loopback-next/commit/d8f72e4e9085aa132bfac3e930f3960042816f2a))
+
+
+### BREAKING CHANGES
+
+* Extensions no longer install framework packages as
+their own dependencies, they use the framework packages provided by the
+target application instead.
+
+If you are getting `npm install` errors after upgrade, then make sure
+your project lists all dependencies required by the extensions you are
+using.
+
+Signed-off-by: Miroslav Bajtoš <mbajtoss@gmail.com>
+
+
+
+
+
 # [0.6.0](https://github.com/strongloop/loopback-next/compare/@loopback/authentication-jwt@0.5.1...@loopback/authentication-jwt@0.6.0) (2020-08-27)
 
 

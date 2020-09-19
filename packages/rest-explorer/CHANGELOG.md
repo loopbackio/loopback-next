@@ -3,6 +3,38 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.1](https://github.com/strongloop/loopback-next/compare/@loopback/rest-explorer@3.0.0...@loopback/rest-explorer@3.0.1) (2020-09-17)
+
+**Note:** Version bump only for package @loopback/rest-explorer
+
+
+
+
+
+# [3.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest-explorer@2.2.10...@loopback/rest-explorer@3.0.0) (2020-09-15)
+
+
+### Features
+
+* move framework packages to `devDependencies` ([e2c61ce](https://github.com/strongloop/loopback-next/commit/e2c61ce79aa68d76f6e7138642034160b50063f0))
+
+
+### BREAKING CHANGES
+
+* components no longer install core framework packages as
+their own dependencies, they use the framework packages provided by the
+target application instead.
+
+If you are getting `npm install` errors after upgrade, then make sure
+your project lists all dependencies required by the extensions you are
+using.
+
+Signed-off-by: Miroslav Bajtoš <mbajtoss@gmail.com>
+
+
+
+
+
 ## [2.2.10](https://github.com/strongloop/loopback-next/compare/@loopback/rest-explorer@2.2.9...@loopback/rest-explorer@2.2.10) (2020-08-27)
 
 **Note:** Version bump only for package @loopback/rest-explorer

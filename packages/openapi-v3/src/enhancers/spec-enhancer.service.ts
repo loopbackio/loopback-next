@@ -7,7 +7,11 @@ import {config, extensionPoint, extensions, Getter} from '@loopback/core';
 import debugModule from 'debug';
 import * as _ from 'lodash';
 import {inspect} from 'util';
-import {OpenApiSpec, SecuritySchemeObject} from '../types';
+import {
+  DEFAULT_OPENAPI_SPEC_INFO,
+  OpenApiSpec,
+  SecuritySchemeObject,
+} from '../types';
 import {OASEnhancerBindings} from './keys';
 import {OASEnhancer} from './types';
 const jsonmergepatch = require('json-merge-patch');
@@ -48,8 +52,7 @@ export class OASEnhancerService {
   private _spec: OpenApiSpec = {
     openapi: '3.0.0',
     info: {
-      title: 'LoopBack Application',
-      version: '1.0.0',
+      ...DEFAULT_OPENAPI_SPEC_INFO,
     },
     paths: {},
   };

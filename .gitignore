@@ -11,6 +11,7 @@ fixtures/tsdocs-monorepo/packages/pkg1/docs
 acceptance/*/dist
 packages/*/dist
 extensions/*/dist
+bodyparsers/*/dist
 examples/*/dist
 benchmark/dist
 **/package
@@ -37,3 +38,6 @@ benchmark/dist
 # Docs preview
 docs/_loopback.io/
 docs/_preview/
+
+# IntellJ IDEA IDE
+.idea
