@@ -68,11 +68,11 @@ export class GraphqlDemoApplication extends BootMixin(
     super(options);
 
     this.component(GraphQLComponent);
-    const server = this.getSync(GraphQLBindings.GRAPHQL_SERVER);
-    this.expressMiddleware('middleware.express.GraphQL', server.expressApp);
     this.configure(GraphQLBindings.GRAPHQL_SERVER).to({
       asMiddlewareOnly: true,
     });
+    const server = this.getSync(GraphQLBindings.GRAPHQL_SERVER);
+    this.expressMiddleware('middleware.express.GraphQL', server.expressApp);
 
     // ...
 
@@ -87,6 +87,17 @@ export class GraphqlDemoApplication extends BootMixin(
     };
   }
 }
+```
+
+The GraphQLServer configuration can also be passed in from the application
+config, such as:
+
+```ts
+const app = new Application({
+  graphql: {
+    asMiddlewareOnly: true,
+  },
+});
 ```
 
 ## Add GraphQL types

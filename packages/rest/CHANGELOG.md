@@ -3,6 +3,47 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.0.1](https://github.com/strongloop/loopback-next/compare/@loopback/rest@7.0.0...@loopback/rest@7.0.1) (2020-09-17)
+
+**Note:** Version bump only for package @loopback/rest
+
+
+
+
+
+# [7.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@6.2.0...@loopback/rest@7.0.0) (2020-09-15)
+
+
+### Bug Fixes
+
+* **rest:** do not override customized openapi spec info object ([acae2a3](https://github.com/strongloop/loopback-next/commit/acae2a39d6ede327a1c1af53d33bd9e4c23b9626))
+* **rest:** make sure OpenAPI parameters with simple types are validated by AJV ([987c103](https://github.com/strongloop/loopback-next/commit/987c1033a7ff28e4f2b9188a854c6479ed2365f9))
+
+
+### Features
+
+* **rest:** use sington binding scope to cache REST middleware ([5783f54](https://github.com/strongloop/loopback-next/commit/5783f5471e1e16aface22d8db4d300366f6b06d3))
+* move framework packages to `devDependencies` ([e2c61ce](https://github.com/strongloop/loopback-next/commit/e2c61ce79aa68d76f6e7138642034160b50063f0))
+* **rest:** add AJV formats for OpenAPI spec data type formats ([3f2ccbf](https://github.com/strongloop/loopback-next/commit/3f2ccbf98c8cca92666c9a9931ad741d274a76b6))
+* **rest:** expose RequestContext to Express request object ([50448cb](https://github.com/strongloop/loopback-next/commit/50448cb215cc94b8bd2459d7f9487aa03149fe3d))
+
+
+### BREAKING CHANGES
+
+* components no longer install core framework packages as
+their own dependencies, they use the framework packages provided by the
+target application instead.
+
+If you are getting `npm install` errors after upgrade, then make sure
+your project lists all dependencies required by the extensions you are
+using.
+
+Signed-off-by: Miroslav Bajtoš <mbajtoss@gmail.com>
+
+
+
+
+
 # [6.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@6.1.0...@loopback/rest@6.2.0) (2020-08-27)
 
 

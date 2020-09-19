@@ -3,6 +3,45 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.1](https://github.com/strongloop/loopback-next/compare/@loopback/repository@3.0.0...@loopback/repository@3.0.1) (2020-09-17)
+
+**Note:** Version bump only for package @loopback/repository
+
+
+
+
+
+# [3.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@2.11.2...@loopback/repository@3.0.0) (2020-09-15)
+
+
+### Bug Fixes
+
+* improve handling of missing design-time type metadata ([95b6a2b](https://github.com/strongloop/loopback-next/commit/95b6a2b7ce64e614720df43b905f77a53a54e438))
+
+
+### Features
+
+* **repository:** add types to the configuration for autocompletion ([6fbf23d](https://github.com/strongloop/loopback-next/commit/6fbf23d3e6366a99ee0ff543fd05fe15bdb711ca))
+* move framework packages to `devDependencies` ([e2c61ce](https://github.com/strongloop/loopback-next/commit/e2c61ce79aa68d76f6e7138642034160b50063f0))
+* refactor filters into standalone package ([f52d4df](https://github.com/strongloop/loopback-next/commit/f52d4dffb1873446e3eec4d6c0f50bbeb528c922)), closes [#5957](https://github.com/strongloop/loopback-next/issues/5957)
+
+
+### BREAKING CHANGES
+
+* components no longer install core framework packages as
+their own dependencies, they use the framework packages provided by the
+target application instead.
+
+If you are getting `npm install` errors after upgrade, then make sure
+your project lists all dependencies required by the extensions you are
+using.
+
+Signed-off-by: Miroslav Bajtoš <mbajtoss@gmail.com>
+
+
+
+
+
 ## [2.11.2](https://github.com/strongloop/loopback-next/compare/@loopback/repository@2.11.1...@loopback/repository@2.11.2) (2020-08-27)
 
 

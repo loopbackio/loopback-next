@@ -16,7 +16,7 @@ import {mapProfile, PassportAuthenticationBindings} from './types';
   asAuthStrategy,
   extensionFor(PassportAuthenticationBindings.OAUTH2_STRATEGY),
 )
-export class FaceBookOauth2Authorization implements AuthenticationStrategy {
+export class FaceBookOauth2Authentication implements AuthenticationStrategy {
   name = 'oauth2-facebook';
   protected strategy: StrategyAdapter<User>;
 

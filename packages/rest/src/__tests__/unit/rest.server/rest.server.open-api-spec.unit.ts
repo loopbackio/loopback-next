@@ -360,6 +360,32 @@ describe('RestServer.getApiSpec()', () => {
     expect(spec.info).to.eql(EXPECTED_SPEC_INFO);
   });
 
+  it('does not override customized oas.info', async () => {
+    const EXPECTED_SPEC_INFO = {
+      title: 'My LB App',
+      version: '2.0',
+      description: 'LoopBack Test Application',
+      contact: {},
+    };
+    app.setMetadata({
+      name: 'MyApp',
+      description: 'LoopBack Test Application',
+      version: '1.0.1',
+      author: 'Barney Rubble <b@rubble.com> (http://barnyrubble.tumblr.com/)',
+    });
+    server.api({
+      openapi: '3.0.0',
+      info: {
+        title: 'My LB App',
+        version: '2.0',
+        contact: {},
+      },
+      paths: {},
+    });
+    const spec = await server.getApiSpec();
+    expect(spec.info).to.eql(EXPECTED_SPEC_INFO);
+  });
+
   it('invokes info oas enhancers with author object', async () => {
     const EXPECTED_SPEC_INFO = {
       title: 'MyApp',

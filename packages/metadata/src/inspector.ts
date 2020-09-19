@@ -2,7 +2,8 @@
 // Node module: @loopback/metadata
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
-
+import debugModule from 'debug';
+import {DecoratorFactory} from './decorator-factory';
 import {NamespacedReflect, Reflector} from './reflect';
 import {
   DecoratorType,
@@ -10,6 +11,8 @@ import {
   MetadataKey,
   MetadataMap,
 } from './types';
+
+const debug = debugModule('loopback:metadata:inspector');
 
 /**
  * TypeScript reflector without a namespace. The TypeScript compiler can be
@@ -207,23 +210,31 @@ export class MetadataInspector {
    * Get TypeScript design time type for a property
    * @param target - Class or prototype
    * @param propertyName - Property name
+   * @returns Design time metadata. The return value is `undefined` when:
+   * - The property has type `undefined`, `null` or a complex type like
+   *   `Partial<MyModel>`, `string | number`, `string[]`.
+   * - The TypeScript project has not enabled the compiler option `emitDecoratorMetadata`.
+   * - The code is written in vanilla JavaScript.
    */
   static getDesignTypeForProperty(
     target: Object,
     propertyName: string,
-  ): Function {
+  ): Function | undefined {
     return TSReflector.getMetadata('design:type', target, propertyName);
   }
 
   /**
-   * Get TypeScript design time type for a method
+   * Get TypeScript design time type for a method.
    * @param target - Class or prototype
    * @param methodName - Method name
+   * @returns Design time metadata. The return value is `undefined`
+   * in projects that do not enable `emitDecoratorMetadata`
+   * in TypeScript compiler options or are written in vanilla JavaScript.
    */
   static getDesignTypeForMethod(
     target: Object,
     methodName: string,
-  ): DesignTimeMethodMetadata {
+  ): DesignTimeMethodMetadata | undefined {
     const type = TSReflector.getMetadata('design:type', target, methodName);
     const parameterTypes = TSReflector.getMetadata(
       'design:paramtypes',
@@ -235,6 +246,25 @@ export class MetadataInspector {
       target,
       methodName,
     );
+
+    if (
+      type === undefined &&
+      parameterTypes === undefined &&
+      returnType === undefined
+    ) {
+      /* istanbul ignore next */
+      if (debug.enabled) {
+        const targetName = DecoratorFactory.getTargetName(target, methodName);
+        debug(
+          'No design-time type metadata found while inspecting %s. ' +
+            'Did you forget to enable TypeScript compiler option `emitDecoratorMetadata`?',
+          targetName,
+        );
+      }
+
+      return undefined;
+    }
+
     return {
       type,
       parameterTypes,

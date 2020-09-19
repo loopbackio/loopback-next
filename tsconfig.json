@@ -23,6 +23,9 @@
       "path": "benchmark/tsconfig.json"
     },
     {
+      "path": "bodyparsers/rest-msgpack/tsconfig.json"
+    },
+    {
       "path": "examples/access-control-migration/tsconfig.json"
     },
     {
