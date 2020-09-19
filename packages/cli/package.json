@@ -54,7 +54,7 @@
     "camelcase-keys": "^6.2.2",
     "chalk": "^4.1.0",
     "change-case": "^4.1.1",
-    "debug": "^4.1.1",
+    "debug": "^4.2.0",
     "fs-extra": "^9.0.1",
     "glob": "^7.1.6",
     "inquirer-autocomplete-prompt": "^1.1.0",

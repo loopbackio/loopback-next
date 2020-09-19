@@ -57,7 +57,7 @@
   "dependencies": {
     "@loopback/core": "^2.10.1",
     "chalk": "^4.1.0",
-    "debug": "^4.1.1",
+    "debug": "^4.2.0",
     "tslib": "^2.0.1"
   }
 }
