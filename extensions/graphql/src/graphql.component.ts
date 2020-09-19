@@ -4,14 +4,16 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
+  Application,
   Binding,
   Component,
-  config,
+  CoreBindings,
   createBindingFromClass,
+  inject,
 } from '@loopback/core';
 import {GraphQLResolverBooter} from './booters/resolver.booter';
 import {GraphQLServer} from './graphql.server';
-import {GraphQLComponentOptions} from './types';
+import {GraphQLBindings} from './keys';
 
 /**
  * Component for GraphQL
@@ -22,5 +24,9 @@ export class GraphQLComponent implements Component {
     createBindingFromClass(GraphQLResolverBooter),
   ];
 
-  constructor(@config() private options: GraphQLComponentOptions = {}) {}
+  constructor(@inject(CoreBindings.APPLICATION_INSTANCE) app: Application) {
+    app
+      .configure(GraphQLBindings.GRAPHQL_SERVER)
+      .toAlias(GraphQLBindings.CONFIG);
+  }
 }

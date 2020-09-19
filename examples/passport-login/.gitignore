@@ -65,3 +65,6 @@ typings/
 
 # Cache used by TypeScript's incremental build
 *.tsbuildinfo
+
+# OAuth2 provider values
+oauth2-providers.json

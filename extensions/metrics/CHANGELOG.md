@@ -3,6 +3,55 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.4.1](https://github.com/strongloop/loopback-next/compare/@loopback/metrics@0.4.0...@loopback/metrics@0.4.1) (2020-09-17)
+
+**Note:** Version bump only for package @loopback/metrics
+
+
+
+
+
+# 0.4.0 (2020-09-15)
+
+
+### Bug Fixes
+
+* **docs:** fix collapsible section ([0f6e76d](https://github.com/strongloop/loopback-next/commit/0f6e76dfe5c8e8d7c11e065c5ea74e51d3e2c8e7))
+* set node version to >=10.16 to support events.once ([e39da1c](https://github.com/strongloop/loopback-next/commit/e39da1ca47728eafaf83c10ce35b09b03b6a4edc))
+* **docs:** replace emoji markup with an emoji glyph ([8455526](https://github.com/strongloop/loopback-next/commit/84555262865292764cefe98aef685d655fc797be))
+
+
+### chore
+
+* remove support for Node.js v8.x ([4281d9d](https://github.com/strongloop/loopback-next/commit/4281d9df50f0715d32879e1442a90b643ec8f542))
+
+
+### Features
+
+* add `tslib` as dependency ([a6e0b4c](https://github.com/strongloop/loopback-next/commit/a6e0b4ce7b862764167cefedee14c1115b25e0a4)), closes [#4676](https://github.com/strongloop/loopback-next/issues/4676)
+* move framework packages to `peerDependencies` ([d8f72e4](https://github.com/strongloop/loopback-next/commit/d8f72e4e9085aa132bfac3e930f3960042816f2a))
+* update package.json and .travis.yml for builds ([cb2b8e6](https://github.com/strongloop/loopback-next/commit/cb2b8e6a18616dda7783c0193091039d4e608131))
+* **extension-metrics:** add metrics extension for prometheus ([7e485f6](https://github.com/strongloop/loopback-next/commit/7e485f630594d94dc567abe4a1f7a1adfa66f8ec))
+
+
+### BREAKING CHANGES
+
+* Extensions no longer install framework packages as
+their own dependencies, they use the framework packages provided by the
+target application instead.
+
+If you are getting `npm install` errors after upgrade, then make sure
+your project lists all dependencies required by the extensions you are
+using.
+
+Signed-off-by: Miroslav Bajtoš <mbajtoss@gmail.com>
+* Node.js v8.x is now end of life. Please upgrade to version
+10 and above. See https://nodejs.org/en/about/releases.
+
+
+
+
+
 ## [0.3.13](https://github.com/strongloop/loopback-next/compare/@loopback/extension-metrics@0.3.12...@loopback/extension-metrics@0.3.13) (2020-08-27)
 
 **Note:** Version bump only for package @loopback/extension-metrics

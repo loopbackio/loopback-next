@@ -28,6 +28,21 @@
         "scope": ["email", "profile"],
         "failureFlash": true
     },
+    "twitter-login": {
+      "provider": "twitter",
+      "module": "passport-twitter",
+      "strategy": "OAuth2Strategy",
+      "consumerKey": "{twitter-consumer-key}",
+      "consumerSecret": "{twitter-consumer-secret}",
+      "callbackURL": "/api/auth/thirdparty/twitter/callback?source=twitter",
+      "authPath": "/api/auth/thirdparty/twitter",
+      "callbackPath": "/api/auth/thirdparty/twitter/callback",
+      "successRedirect": "/auth/account",
+      "failureRedirect": "/login",
+      "includeEmail": true,
+      "scope": ["email", "profile"],
+      "failureFlash": true
+    },
     "oauth2": {
         "provider": "oauth2",
         "module": "passport-oauth2",

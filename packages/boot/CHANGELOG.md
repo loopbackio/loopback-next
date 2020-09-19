@@ -3,6 +3,40 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.1](https://github.com/strongloop/loopback-next/compare/@loopback/boot@3.0.0...@loopback/boot@3.0.1) (2020-09-17)
+
+**Note:** Version bump only for package @loopback/boot
+
+
+
+
+
+# [3.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/boot@2.5.1...@loopback/boot@3.0.0) (2020-09-15)
+
+
+### Features
+
+* allow dynamic value provider classes and classes with [@inject](https://github.com/inject) to be booted ([7b85cdf](https://github.com/strongloop/loopback-next/commit/7b85cdf63730ef659a4ee799f05f02eea8a1e3e8))
+* move framework packages to `devDependencies` ([e2c61ce](https://github.com/strongloop/loopback-next/commit/e2c61ce79aa68d76f6e7138642034160b50063f0))
+* **boot:** unify booter namespace to be `booters` ([c8bdfda](https://github.com/strongloop/loopback-next/commit/c8bdfda2abff4e57b9e95aaab0717f0581c5812b))
+
+
+### BREAKING CHANGES
+
+* components no longer install core framework packages as
+their own dependencies, they use the framework packages provided by the
+target application instead.
+
+If you are getting `npm install` errors after upgrade, then make sure
+your project lists all dependencies required by the extensions you are
+using.
+
+Signed-off-by: Miroslav Bajtoš <mbajtoss@gmail.com>
+
+
+
+
+
 ## [2.5.1](https://github.com/strongloop/loopback-next/compare/@loopback/boot@2.5.0...@loopback/boot@2.5.1) (2020-08-27)
 
 **Note:** Version bump only for package @loopback/boot

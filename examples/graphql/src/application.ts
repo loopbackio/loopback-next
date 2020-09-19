@@ -22,9 +22,6 @@ export class GraphqlDemoApplication extends BootMixin(
     this.component(GraphQLComponent);
     const server = this.getSync(GraphQLBindings.GRAPHQL_SERVER);
     this.expressMiddleware('middleware.express.GraphQL', server.expressApp);
-    this.configure(GraphQLBindings.GRAPHQL_SERVER).to({
-      asMiddlewareOnly: true,
-    });
 
     // It's possible to register a graphql context resolver
     this.bind(GraphQLBindings.GRAPHQL_CONTEXT_RESOLVER).to(context => {

@@ -264,7 +264,7 @@ The `datasources` object support the following options:
 Discovers and binds remote service proxies or local service classes or providers
 using `app.service()`.
 
-{% include notes.html content="
+{% include note.html content="
 **IMPORTANT:** For a class to be recognized by `ServiceBooter` as a service
 provider, it either has to be decorated with `@injectable`/`@inject` or the
 class name must end with `Provider` suffix and must have a static or prototype
@@ -339,6 +339,29 @@ Available options on the `services` object on `BootOptions` are as follows:
 | `extensions` | `string \| string[]` | `['.service.js']` | File extensions to match for Service artifacts                                                               |
 | `nested`     | `boolean`            | `true`            | Look in nested directories in `dirs` for Service artifacts                                                   |
 | `glob`       | `string`             |                   | A `glob` pattern string. This takes precedence over above 3 options (which are used to make a glob pattern). |
+
+### Interceptor Booter
+
+#### Description
+
+Discovers and binds global or local interceptor provider classes using
+`app.interceptor()`.
+
+#### Options
+
+The options for this can be passed via `BootOptions` when calling
+`app.boot(options: BootOptions)`.
+
+The options for this are passed in a `interceptors` object on `BootOptions`.
+
+Available options on the `interceptors` object on `BootOptions` are as follows:
+
+| Options      | Type                 | Default               | Description                                                                                                  |
+| ------------ | -------------------- | --------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `dirs`       | `string \| string[]` | `['interceptors']`    | Paths relative to projectRoot to look in for Interceptor artifacts                                           |
+| `extensions` | `string \| string[]` | `['.interceptor.js']` | File extensions to match for Interceptor artifacts                                                           |
+| `nested`     | `boolean`            | `true`                | Look in nested directories in `dirs` for Interceptor artifacts                                               |
+| `glob`       | `string`             |                       | A `glob` pattern string. This takes precedence over above 3 options (which are used to make a glob pattern). |
 
 ### Custom Booters
 

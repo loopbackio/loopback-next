@@ -12,6 +12,7 @@ import {
   ContextTags,
   ContextView,
   createBindingFromClass,
+  DecoratorFactory,
   inject,
   InjectionMetadata,
   isDynamicValueProviderClass,
@@ -81,7 +82,7 @@ export function service(
           serviceType = MetadataInspector.getDesignTypeForMethod(
             injection.target,
             injection.member!,
-          ).parameterTypes[injection.methodDescriptorOrParameterIndex];
+          )?.parameterTypes[injection.methodDescriptorOrParameterIndex];
         } else {
           serviceType = MetadataInspector.getDesignTypeForProperty(
             injection.target,
@@ -89,6 +90,19 @@ export function service(
           );
         }
       }
+      if (serviceType === undefined) {
+        const targetName = DecoratorFactory.getTargetName(
+          injection.target,
+          injection.member,
+          injection.methodDescriptorOrParameterIndex,
+        );
+        const msg =
+          `No design-time type metadata found while inspecting ${targetName}. ` +
+          'You can either use `@service(ServiceClass)` or ensure `emitDecoratorMetadata` is enabled in your TypeScript configuration. ' +
+          'Run `tsc --showConfig` to print the final TypeScript configuration of your project.';
+        throw new Error(msg);
+      }
+
       if (serviceType === Object || serviceType === Array) {
         throw new Error(
           'Service class cannot be inferred from design type. Use @service(ServiceClass).',

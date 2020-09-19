@@ -41,6 +41,7 @@ describe('app-generator specific files', () => {
   it('generates all the proper files', () => {
     assertFilesToMatchSnapshot(
       {},
+      'README.md',
       'src/application.ts',
       'src/sequence.ts',
       'src/index.ts',

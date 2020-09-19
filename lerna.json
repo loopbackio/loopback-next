@@ -7,6 +7,7 @@
     "examples/*",
     "packages/*",
     "extensions/*",
+    "bodyparsers/*",
     "sandbox/*"
   ],
   "command": {

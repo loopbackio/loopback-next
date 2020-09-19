@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [10.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/eslint-config@9.0.2...@loopback/eslint-config@10.0.0) (2020-09-15)
+
+
+### Features
+
+* **eslint-config:** update rules to be compatible with typescript-eslint 4.x ([595951c](https://github.com/strongloop/loopback-next/commit/595951cab99af82a1d41623ad37c133b3e6d8c5a))
+* update typescript-eslint monorepo to v4 ([5767e22](https://github.com/strongloop/loopback-next/commit/5767e22eaf9813ea619f21710bddf12ac7303705))
+
+
+### BREAKING CHANGES
+
+* **eslint-config:** typescript-eslint 4.x introduces some breaking changes.
+The following are impacted:
+
+- decorator functions are correctly honored as usage of defined variables
+- @typescript-eslint/no-shadow replaces no-shadow
+
+Signed-off-by: Raymond Feng <enjoyjava@gmail.com>
+
+
+
+
+
 ## [9.0.2](https://github.com/strongloop/loopback-next/compare/@loopback/eslint-config@9.0.1...@loopback/eslint-config@9.0.2) (2020-08-27)
 
 **Note:** Version bump only for package @loopback/eslint-config

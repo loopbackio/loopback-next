@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.4.1](https://github.com/strongloop/loopback-next/compare/@loopback/test-extension-logging-fluentd@0.4.0...@loopback/test-extension-logging-fluentd@0.4.1) (2020-09-17)
+
+**Note:** Version bump only for package @loopback/test-extension-logging-fluentd
+
+
+
+
+
+# [0.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/test-extension-logging-fluentd@0.3.13...@loopback/test-extension-logging-fluentd@0.4.0) (2020-09-15)
+
+
+### Features
+
+* update examples and docs to use `@loopback/*` instead of `@loopback/extension-*` ([a96b7cb](https://github.com/strongloop/loopback-next/commit/a96b7cbb2e146f941b1fec0e7dd0b0829dcd0245))
+
+
+
+
+
 ## [0.3.13](https://github.com/strongloop/loopback-next/compare/@loopback/test-extension-logging-fluentd@0.3.12...@loopback/test-extension-logging-fluentd@0.3.13) (2020-08-27)
 
 **Note:** Version bump only for package @loopback/test-extension-logging-fluentd

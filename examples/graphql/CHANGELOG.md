@@ -1,0 +1,21 @@
+# Change Log
+
+All notable changes to this project will be documented in this file.
+See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+## [0.1.1](https://github.com/strongloop/loopback-next/compare/@loopback/example-graphql@0.1.0...@loopback/example-graphql@0.1.1) (2020-09-17)
+
+**Note:** Version bump only for package @loopback/example-graphql
+
+
+
+
+
+# 0.1.0 (2020-09-15)
+
+
+### Features
+
+* **example-graphql:** add subscriptions to the graphql example ([5202fc3](https://github.com/strongloop/loopback-next/commit/5202fc3819d485cbc0eb1367d4e25e27c972cabc))
+* **graphql:** add an extension for type-graphql integration ([72c22bf](https://github.com/strongloop/loopback-next/commit/72c22bfb0f73e023f1ecf137afba4125764ad662))
+* **graphql:** improve graphql server configuration ([e4671f0](https://github.com/strongloop/loopback-next/commit/e4671f0c582dc029f9414a2beca42fedb596f0c9))
