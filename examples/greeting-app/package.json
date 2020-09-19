@@ -61,7 +61,7 @@
     "@loopback/example-greeter-extension": "^2.1.11",
     "@loopback/rest": "^7.0.1",
     "chalk": "^4.1.0",
-    "debug": "^4.1.1",
+    "debug": "^4.2.0",
     "tslib": "^2.0.1"
   }
 }

@@ -26,7 +26,7 @@
   "dependencies": {
     "@microsoft/api-documenter": "^7.8.51",
     "@microsoft/api-extractor": "^7.9.17",
-    "debug": "^4.1.1",
+    "debug": "^4.2.0",
     "fs-extra": "^9.0.1",
     "tslib": "^2.0.1"
   },
