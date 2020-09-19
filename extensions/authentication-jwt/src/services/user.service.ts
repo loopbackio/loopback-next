@@ -61,6 +61,7 @@ export class MyUserService implements UserService<User, Credentials> {
       name: user.username,
       id: user.id,
       email: user.email,
+      ...(user.roles && {roles: user.roles}),
     };
   }
 
