@@ -29,6 +29,7 @@ export type Next = () => ValueOrPromise<NonVoid>;
  * It serves as the base interface for various types of interceptors, such
  * as method invocation interceptor or request/response processing interceptor.
  *
+ * @remarks
  * We choose `NonVoid` as the return type to avoid possible bugs that an
  * interceptor forgets to return the value from `next()`. For example, the code
  * below will fail to compile.
