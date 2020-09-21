@@ -3,20 +3,21 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {authenticate} from '@loopback/authentication';
 import {inject} from '@loopback/core';
+import {repository} from '@loopback/repository';
 import {
-  post,
   del,
+  get,
+  post,
   requestBody,
+  RequestWithSession,
   Response,
   RestBindings,
-  RequestWithSession,
-  get,
+  SchemaObject,
 } from '@loopback/rest';
+import {SecurityBindings, securityId, UserProfile} from '@loopback/security';
 import {UserRepository} from '../repositories';
-import {repository} from '@loopback/repository';
-import {SecurityBindings, UserProfile, securityId} from '@loopback/security';
-import {authenticate} from '@loopback/authentication';
 import {UserCredentialsRepository} from '../repositories/user-credentials.repository';
 import {UserIdentityRepository} from '../repositories/user-identity.repository';
 
@@ -26,7 +27,7 @@ export type Credentials = {
   name: string;
 };
 
-const CredentialsSchema = {
+const CredentialsSchema: SchemaObject = {
   type: 'object',
   required: ['email', 'password'],
   properties: {
