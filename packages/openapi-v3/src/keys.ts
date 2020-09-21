@@ -36,6 +36,22 @@ export namespace OAI3Keys {
     ClassDecorator
   >('openapi-v3:class:deprecated');
 
+  /**
+   * Metadata key used to set or retrieve `@visibility` metadata on a method.
+   */
+  export const VISIBILITY_METHOD_KEY = MetadataAccessor.create<
+    boolean,
+    MethodDecorator
+  >('openapi-v3:methods:visibility');
+
+  /**
+   * Metadata key used to set or retrieve `@visibility` metadata on a class
+   */
+  export const VISIBILITY_CLASS_KEY = MetadataAccessor.create<
+    boolean,
+    ClassDecorator
+  >('openapi-v3:class:visibility');
+
   /*
    * Metadata key used to add to or retrieve an endpoint's responses
    */
