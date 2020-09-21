@@ -251,13 +251,14 @@ app.bind('fooCorp.widgetServer.config').to(widgetServerConfig);
 ### Avoid use of `getSync`
 
 We provide the
-[`getSync`](https://loopback.io/doc/en/lb4/apidocs.context.getsync.html)
+[`getSync`](https://loopback.io/doc/en/lb4/apidocs.context.context.getsync_1.html)
 function for scenarios where you cannot asynchronously retrieve your bindings,
 such as in constructor bodies.
 
 However, the number of scenarios in which you must do this are limited, and you
 should avoid potential race conditions and retrieve your bindings asynchronously
-using the [`get`](https://loopback.io/doc/en/lb4/apidocs.context.get.html)
+using the
+[`get`](https://loopback.io/doc/en/lb4/apidocs.context.context.get_1.html)
 function whenever possible.
 
 ### Use caution with singleton binding scopes
