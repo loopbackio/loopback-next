@@ -7,7 +7,7 @@
 
 import {TokenService, UserService} from '@loopback/authentication';
 import {inject} from '@loopback/core';
-import {post, requestBody} from '@loopback/rest';
+import {post, requestBody, SchemaObject} from '@loopback/rest';
 import {
   Credentials,
   TokenServiceBindings,
@@ -15,7 +15,7 @@ import {
 } from '../components/jwt-authentication';
 import {User} from '../models';
 
-const CredentialsSchema = {
+const CredentialsSchema: SchemaObject = {
   type: 'object',
   required: ['email', 'password'],
   properties: {

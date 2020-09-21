@@ -10,7 +10,7 @@ import {
 } from '@loopback/authentication';
 import {inject} from '@loopback/core';
 import {model, property} from '@loopback/repository';
-import {get, post, requestBody} from '@loopback/rest';
+import {get, post, requestBody, SchemaObject} from '@loopback/rest';
 import {SecurityBindings, securityId, UserProfile} from '@loopback/security';
 import {genSalt, hash} from 'bcryptjs';
 import {
@@ -30,7 +30,7 @@ type RefreshGrant = {
 };
 
 // Describes the schema of grant object
-const RefreshGrantSchema = {
+const RefreshGrantSchema: SchemaObject = {
   type: 'object',
   required: ['refreshToken'],
   properties: {
@@ -50,7 +50,7 @@ const RefreshGrantRequestBody = {
 };
 
 // Describe the schema of user credentials
-const CredentialsSchema = {
+const CredentialsSchema: SchemaObject = {
   type: 'object',
   required: ['email', 'password'],
   properties: {

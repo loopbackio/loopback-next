@@ -66,7 +66,7 @@ export type StringifiedTypeOptions = {
 // TODO: identify other data types
 function getStringifiedType(
   options: StringifiedTypeOptions,
-): string | undefined {
+): SchemaObject['type'] {
   const {func, entity, property} = options;
   if (func === Number) {
     return 'number';

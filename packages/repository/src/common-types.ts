@@ -96,13 +96,19 @@ export interface Count {
 
 /**
  * JSON Schema describing the Count interface. It's the response type for
- * REST calls to APIs which return Count
+ * REST calls to APIs which return `count`. The type is compatible with
+ * `SchemaObject` from `@loopback/openapi-v3`, which is not an explicit
+ * dependency for `@loopback/repository`.
  */
-export const CountSchema = {
-  type: 'object',
+export const CountSchema /* :SchemaObject */ = {
+  type: 'object' as const, // Force to be `object` type instead of `string`
   title: 'loopback.Count',
   'x-typescript-type': '@loopback/repository#Count',
-  properties: {count: {type: 'number'}},
+  properties: {
+    count: {
+      type: 'number' as const, // Force to be `number` type instead of `string`
+    },
+  },
 };
 
 /**

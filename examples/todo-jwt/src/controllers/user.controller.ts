@@ -14,7 +14,13 @@ import {
 } from '@loopback/authentication-jwt';
 import {inject} from '@loopback/core';
 import {model, property, repository} from '@loopback/repository';
-import {get, getModelSchemaRef, post, requestBody} from '@loopback/rest';
+import {
+  get,
+  getModelSchemaRef,
+  post,
+  requestBody,
+  SchemaObject,
+} from '@loopback/rest';
 import {SecurityBindings, securityId, UserProfile} from '@loopback/security';
 import {genSalt, hash} from 'bcryptjs';
 import _ from 'lodash';
@@ -28,7 +34,7 @@ export class NewUserRequest extends User {
   password: string;
 }
 
-const CredentialsSchema = {
+const CredentialsSchema: SchemaObject = {
   type: 'object',
   required: ['email', 'password'],
   properties: {
