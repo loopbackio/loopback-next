@@ -43,6 +43,11 @@ export interface TagsDecoratorMetadata {
   tags: string[];
 }
 
+export enum OperationVisibility {
+  DOCUMENTED = 'documented',
+  UNDOCUMENTED = 'undocumented',
+}
+
 export type ResponseModelOrSpec =
   | typeof Model
   | SchemaObject

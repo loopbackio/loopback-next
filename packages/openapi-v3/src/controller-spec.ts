@@ -19,6 +19,7 @@ import {
   ISpecificationExtension,
   isReferenceObject,
   OperationObject,
+  OperationVisibility,
   ParameterObject,
   PathObject,
   ReferenceObject,
@@ -93,17 +94,31 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
     constructor,
   );
 
+  const classVisibility = MetadataInspector.getClassMetadata<
+    OperationVisibility
+  >(OAI3Keys.VISIBILITY_CLASS_KEY, constructor);
+
+  if (classVisibility) {
+    debug(`  using class-level @oas.visibility(): '${classVisibility}'`);
+  }
+
   if (classTags) {
     debug('  using class-level @oas.tags()');
   }
 
-  if (classTags || isClassDeprecated) {
+  if (classTags || isClassDeprecated || classVisibility) {
     for (const path of Object.keys(spec.paths)) {
       for (const method of Object.keys(spec.paths[path])) {
         /* istanbul ignore else */
         if (isClassDeprecated) {
           spec.paths[path][method].deprecated = true;
         }
+
+        /* istanbul ignore else */
+        if (classVisibility) {
+          spec.paths[path][method]['x-visibility'] = classVisibility;
+        }
+
         /* istanbul ignore else */
         if (classTags) {
           if (spec.paths[path][method].tags?.length) {
@@ -139,6 +154,16 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
     );
     if (isMethodDeprecated) {
       debug('  using method-level deprecation via @deprecated()');
+    }
+
+    const methodVisibility = MetadataInspector.getMethodMetadata<
+      OperationVisibility
+    >(OAI3Keys.VISIBILITY_METHOD_KEY, constructor.prototype, op);
+
+    if (methodVisibility) {
+      debug(
+        `  using method-level visibility via @visibility(): '${methodVisibility}'`,
+      );
     }
 
     const methodTags = MetadataInspector.getMethodMetadata<
@@ -202,7 +227,7 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
 
     debug('  spec responses for method %s: %o', op, operationSpec.responses);
 
-    // Prescedence: method decorator > class decorator > operationSpec > undefined
+    // Precedence: method decorator > class decorator > operationSpec > undefined
     const deprecationSpec =
       isMethodDeprecated ??
       isClassDeprecated ??
@@ -211,6 +236,14 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
 
     if (deprecationSpec) {
       operationSpec.deprecated = true;
+    }
+
+    // Precedence: method decorator > class decorator > operationSpec > 'documented'
+    const visibilitySpec: OperationVisibility =
+      methodVisibility ?? classVisibility ?? operationSpec['x-visibility'];
+
+    if (visibilitySpec) {
+      operationSpec['x-visibility'] = visibilitySpec;
     }
 
     for (const code in operationSpec.responses) {

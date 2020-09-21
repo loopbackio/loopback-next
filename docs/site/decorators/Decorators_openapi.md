@@ -626,6 +626,47 @@ class MyOtherController {
 }
 ```
 
+### @oas.visibility
+
+[API document](https://loopback.io/doc/en/lb4/apidocs.openapi-v3.visibility.html)
+
+This decorator can be applied to class and/or a class method. It will set the
+`x-visibility` property, which dictates if a class method appears in the OAS3
+spec. When applied to a class, it will mark all operation methods of that class,
+unless a method overloads with `@oas.visibility(<different visibility type>)`.
+
+When not explicitly defined, `x-visibility` is `undefined`, which is identical
+to `x-visibility: 'documented`.
+
+Currently, the supported values are `documented` or `undocumented`.
+
+This decorator does not currently support marking
+(parameters)[https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#parameter-object].
+
+```ts
+@oas.visibility('undocumented')
+class MyController {
+   @oas.get('/greet')
+   async function greet() {
+    return 'Hello, World!'
+  }
+
+  @oas.get('/greet-v2')
+  @oas.visibility('documented')
+  async function greetV2() {
+    return 'Hello, World!'
+  }
+}
+
+class MyOtherController {
+  @oas.get('/echo')
+  @oas.visibility('undocumented')
+  async function echo() {
+    return 'Echo!'
+  }
+}
+```
+
 ### @oas.response
 
 [API document](https://loopback.io/doc/en/lb4/apidocs.openapi-v3.oas.html#oas-variable),

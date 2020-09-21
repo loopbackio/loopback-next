@@ -8,6 +8,7 @@ export * from './deprecated.decorator';
 export * from './operation.decorator';
 export * from './parameter.decorator';
 export * from './request-body.decorator';
+export * from './visibility.decorator';
 
 import {api} from './api.decorator';
 import {deprecated} from './deprecated.decorator';
@@ -16,6 +17,7 @@ import {param} from './parameter.decorator';
 import {requestBody} from './request-body.decorator';
 import {response} from './response.decorator';
 import {tags} from './tags.decorator';
+import {visibility} from './visibility.decorator';
 
 export const oas = {
   api,
@@ -38,4 +40,5 @@ export const oas = {
   deprecated,
   response,
   tags,
+  visibility,
 };

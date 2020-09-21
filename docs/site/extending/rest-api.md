@@ -123,15 +123,16 @@ export class MyComponent implements Component {
 
 Sometimes it's desirable to treat the new endpoints as internal (undocumented)
 and leave them out from the OpenAPI document describing application's REST API.
-This can be achieved using custom LoopBack extension `x-visibility`.
+This can be achieved using
+[`@oas.visibility(OperationVisibility.UNDOCUMENTED)`](../Decorators/Decorators_openapi.md#oasvisibility).
 
 ```ts
 class MyController {
   // constructor
 
+  @oas.visibility(OperationVisibility.UNDOCUMENTED)
   @get('/health', {
     responses: {},
-    'x-visibility': 'undocumented',
   })
   health() {
     // ...
