@@ -1,18 +1,16 @@
-// Copyright IBM Corp. 2019. All Rights Reserved.
-// Node module: @loopback/socket
-// This file is licensed under the MIT License.
-// License text available at https://opensource.org/licenses/MIT
-
 import {BootMixin} from '@loopback/boot';
 import {ApplicationConfig} from '@loopback/core';
 import {RepositoryMixin} from '@loopback/repository';
 import {ServiceMixin} from '@loopback/service-proxy';
+import {SocketApplication, SocketIOServer} from '@loopback/socketio';
 import debugFactory from 'debug';
-import {SocketApplication, SocketIOServer} from '../..';
 import {SocketIOController} from './controllers';
-const debug = debugFactory('loopback:socketio:demo');
 
-export class SocketIODemoApplication extends BootMixin(
+const debug = debugFactory('loopback:example:socketio:demo');
+
+export {ApplicationConfig};
+
+export class SocketioApplication extends BootMixin(
   ServiceMixin(RepositoryMixin(SocketApplication)),
 ) {
   readonly ioServer: SocketIOServer;
@@ -28,9 +26,11 @@ export class SocketIODemoApplication extends BootMixin(
 
     this.socketServer.use((socket, next) => {
       debug('Global middleware - socket:', socket.id);
+      console.log('global');
       next();
     });
-    const ns = this.socketServer.route(SocketIOController, /^\/chats\/.+$/);
+
+    const ns = this.socketServer.route(SocketIOController);
     ns.use((socket, next) => {
       debug(
         'Middleware for namespace %s - socket: %s',

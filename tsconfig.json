@@ -197,9 +197,6 @@
       "path": "packages/service-proxy/tsconfig.json"
     },
     {
-      "path": "packages/socket/tsconfig.json"
-    },
-    {
       "path": "packages/testlab/tsconfig.json"
     },
     {

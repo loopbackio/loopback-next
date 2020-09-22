@@ -5,5 +5,6 @@
 
 export * from './decorators/socketio.decorator';
 export * from './keys';
+export * from './socket.application';
 export * from './socketio-controller-factory';
 export * from './socketio.server';

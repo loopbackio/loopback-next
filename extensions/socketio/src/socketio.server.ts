@@ -3,12 +3,26 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {BindingFilter, BindingScope, Constructor, Context, ContextView, createBindingFromClass, inject, MetadataInspector} from '@loopback/context';
+import {
+  BindingFilter,
+  BindingScope,
+  Constructor,
+  Context,
+  ContextView,
+  createBindingFromClass,
+  inject,
+  MetadataInspector,
+} from '@loopback/context';
 import {CoreBindings, CoreTags} from '@loopback/core';
 import {HttpServer, HttpServerOptions} from '@loopback/http-server';
 import debugFactory from 'debug';
 import SocketIO, {Server, ServerOptions, Socket} from 'socket.io';
-import {getSocketIOMetadata, SOCKET_IO_CONNECT_METADATA, SOCKET_IO_METADATA, SOCKET_IO_SUBSCRIBE_METADATA} from './decorators/socketio.decorator';
+import {
+  getSocketIOMetadata,
+  SOCKET_IO_CONNECT_METADATA,
+  SOCKET_IO_METADATA,
+  SOCKET_IO_SUBSCRIBE_METADATA,
+} from './decorators/socketio.decorator';
 import {SocketIOBindings, SocketIOTags} from './keys';
 import {SocketIOControllerFactory} from './socketio-controller-factory';
 
@@ -185,9 +199,37 @@ export class SocketIOServer extends Context {
    * Start the socketio server
    */
   async start() {
-    this.httpServer = new HttpServer(() => {}, this.options.httpServerOptions);
+    const config = this.options?.httpServerOptions || {
+      host: '::',
+      port: 3000,
+
+      cors: {
+        origin: '*',
+        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+        preflightContinue: false,
+        optionsSuccessStatus: 204,
+        maxAge: 86400,
+        credentials: true,
+      },
+    };
+    this.httpServer = new HttpServer(() => {}, config);
     await this.httpServer.start();
-    this.io.attach(this.httpServer.server, this.options.socketIOOptions);
+
+    const socketConfig: SocketIO.ServerOptions = this.options
+      ?.socketIOOptions || {
+      origins: '*:*',
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      handlePreflightRequest: (req, res: any) => {
+        const headers = {
+          'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Credentials': true,
+        };
+        res.writeHead(200, headers);
+        res.end();
+      },
+    };
+    this.io.attach(this.httpServer.server, socketConfig);
   }
 
   /**

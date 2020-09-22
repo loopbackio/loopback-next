@@ -19,6 +19,7 @@ describe('SocketIOServer', () => {
 
   it('connects to socketio controller', async () => {
     const url = app.socketServer.url + '/chats/group1';
+    console.log(url);
     const socket = io(url);
     socket.emit('chat message', 'Hello');
     const msg = await pEvent(socket, 'chat message');
@@ -33,6 +34,7 @@ describe('SocketIOServer', () => {
         port: 0,
       },
     });
+    await app.boot();
     await app.start();
 
     return app;
