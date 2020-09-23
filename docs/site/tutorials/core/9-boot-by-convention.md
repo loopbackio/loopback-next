@@ -32,7 +32,7 @@ app.add(createBindingFromClass(CachingInterceptor));
 
 As the number of artifacts increases over time, it becomes cumbersome and
 error-prone. A better and simpler way is to use
-[`boot`](https://loopback.io/doc/en/lb4/Booting-an-Application.html).
+[`boot`](../../Booting-an-Application.md).
 
 ## Use `@loopback/boot`
 

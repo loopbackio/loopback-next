@@ -30,10 +30,9 @@ application powered by LoopBack.
 
 - **Codebase**: LoopBack application code can be committed to GitHub for the
   version control.
-- **Dependencies**:
-  [Dependency injection](https://loopback.io/doc/en/lb4/Dependency-injection.html)
-  can be used to keep the construction of dependencies of a class or function
-  separated from its behavior.
+- **Dependencies**: [Dependency injection](../../Dependency-injection.md) can be
+  used to keep the construction of dependencies of a class or function separated
+  from its behavior.
 
 - **Config**: LoopBack provides context-based configuration and pluggable
   configuration resolver.
