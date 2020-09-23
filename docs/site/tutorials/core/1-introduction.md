@@ -7,14 +7,13 @@ permalink: /doc/en/lb4/core-tutorial-part1.html
 ---
 
 At the core of LoopBack 4, we provide a powerful
-[Inversion of Control](https://loopback.io/doc/en/lb4/Context.html) and
-[Dependency Injection](https://loopback.io/doc/en/lb4/Dependency-injection.html)
-container in TypeScript that serves as the foundation to manage many types of
-collaborating artifacts as building blocks for complex applications. In addition
-to great API and Microservice capabilities offered by the LoopBack framework,
-these core modules can be used independently as a platform to develop large
-scale Node.js projects that require flexibility, extensibility, and
-composability.
+[Inversion of Control](../../Context.md) and
+[Dependency Injection](../../Dependency-injection.md) container in TypeScript
+that serves as the foundation to manage many types of collaborating artifacts as
+building blocks for complex applications. In addition to great API and
+Microservice capabilities offered by the LoopBack framework, these core modules
+can be used independently as a platform to develop large scale Node.js projects
+that require flexibility, extensibility, and composability.
 
 To help our users leverage the core packages, we created a series of tutorials
 to explain why such features matter and how to use them for your development.

@@ -130,8 +130,7 @@ There are three binding scopes:
 3. Context - for a given context in the hierarchy, there is only a single
    instance for a given binding key.
 
-For details, see
-https://loopback.io/doc/en/lb4/Binding.html#configure-the-scope.
+For details, see [Configure the scope](../../Binding.md#configure-the-scope).
 
 ## Watching artifacts
 
@@ -141,21 +140,19 @@ also allows the support of dynamic extension points. For the
 after the application has started, more greeters can be added, and there is no
 need to add all the greeters up front.
 
-See the
-[Context documentation page](https://loopback.io/doc/en/lb4/Context.html#context-observers)
-and
+See the [Context documentation page](../../Context.md#context-observers) and
 [example](https://github.com/strongloop/loopback-next/blob/master/examples/context/src/context-observation.ts)
 for more details.
 
 ## Contributing multiple artifacts via components
 
-[Components](https://loopback.io/doc/en/lb4/Components.html) can be considered
-as a collection of binding added to the context. For example, for an
-authentication component, an authentication stategy and an authentication action
-can be added to the component.
+[Components](../../Component.md) can be considered as a collection of binding
+added to the context. For example, for an authentication component, an
+authentication stategy and an authentication action can be added to the
+component.
 
-See
-https://github.com/strongloop/loopback-next/blob/master/examples/greeter-extension/src/component.ts
+See the
+[GreetingComponent](https://github.com/strongloop/loopback-next/blob/master/examples/greeter-extension/src/component.ts)
 as an example.
 
 ```ts
