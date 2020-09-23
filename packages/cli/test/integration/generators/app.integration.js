@@ -216,6 +216,45 @@ describe('app-generator with default values', () => {
   });
 });
 
+/** For testing if the app names with numbers are untouched */
+describe('app-generator with numbers in app name', () => {
+  const rootDir = path.join(__dirname, '../../../../../');
+  const defaultValProjPath = path.join(rootDir, 'sandbox/lb4-example');
+  const sandbox = path.join(rootDir, 'sandbox');
+  const pathToDefValApp = path.join(defaultValProjPath, 'lb4-example');
+  const cwd = process.cwd();
+  const defaultValProps = {
+    name: 'lb4-example',
+    description: 'An app to test out default values',
+    outdir: '',
+  };
+
+  before(async () => {
+    // lb4-example should not exist at this point
+    assert.equal(fs.existsSync(defaultValProjPath), false);
+    assert.equal(fs.existsSync(pathToDefValApp), false);
+    return (
+      helpers
+        .run(generator)
+        .inDir(defaultValProjPath)
+        // Mark it private to prevent accidental npm publication
+        .withOptions({private: true})
+        .withPrompts(defaultValProps)
+    );
+  });
+
+  it('scaffold a new app for lb4-example', async () => {
+    // lb4-example should be created at this point
+    assert.equal(fs.existsSync(pathToDefValApp), true);
+  });
+
+  after(() => {
+    process.chdir(sandbox);
+    build.clean(['node', 'run-clean', defaultValProjPath]);
+    process.chdir(cwd);
+  });
+});
+
 /** For testing the support of tilde path as the input of project path.
  * Use different paths to test out the support of `~` when the test runs outside of home dir.
  */
