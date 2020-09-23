@@ -20,7 +20,7 @@ enables identified/validated access to the protected routes.
 Authorization is a process of deciding if a user can perform an action on a
 protected resource.
 
-{% include note.html content=" For a description of an Authorization process, please see [Authorization](Loopback-component-authorization.md). " %}
+{% include note.html content=" For a description of an Authorization process, please see [Authorization](Authorization-component.md). " %}
 
 This document gives you an overview of the authentication system provided in
 LoopBack 4.

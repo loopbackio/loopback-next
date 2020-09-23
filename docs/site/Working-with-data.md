@@ -78,5 +78,5 @@ See the following articles for more information:
   - [Order filter](Order-filter.md)
   - [Skip filter](Skip-filter.md)
   - [Where filter](Where-filter.md)
-- [Using database transactions](Using-database-transactions.md)
+- [Using database transactions](guides/data-access/transactions.md)
 - [Executing database commands](Executing-database-commands.md)

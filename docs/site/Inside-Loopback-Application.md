@@ -115,9 +115,9 @@ The API business logic is separated between various layers in LoopBack:
 - [Models](Model.md) and [Relations](Relations.md) represent domain objects and
   provide entity relationship models.
 
-- [Repositories](https://loopback.io/doc/en/lb4/Repository.md) represent the
-  `Entity layer` for a specific model and handle all CRUD operations on the
-  model. They also use repository of other models to handle `entity relations`.
+- [Repositories](Repository.md) represent the `Entity layer` for a specific
+  model and handle all CRUD operations on the model. They also use repository of
+  other models to handle `entity relations`.
 
 ![Business Logic](imgs/shopping-business-logic.png)
 

@@ -633,7 +633,7 @@ Or stringified JSON format:
 ## WhereBuilder
 
 You can use the
-[`WhereBuilder`](https://loopback.io/doc/en/lb4/apidocs.repository.wherebuilder.html)
+[`WhereBuilder`](https://loopback.io/doc/en/lb4/apidocs.filter.wherebuilder.html)
 to build and/or combine `where` clauses. You can build `where` clause with
 operators such as `and/or`, `gt`, etc.
 
@@ -665,7 +665,7 @@ the filter will be built as
 ```
 
 Another common usage is to combine `where` clauses with
-[`WhereBuilder.impose`](https://loopback.io/doc/en/lb4/apidocs.repository.wherebuilder.impose.html).
+[`WhereBuilder.impose`](https://loopback.io/doc/en/lb4/apidocs.filter.wherebuilder.impose.html).
 It adds a `where` object to the existing `where` filter by using the `and`
 operator. For example,
 

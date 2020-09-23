@@ -3,7 +3,7 @@
 This module provides integration with [GraphQL](https://graphql.org/) using
 [type-graphql](https://typegraphql.com/).
 
-![type-graphql](type-graphql.png)
+![type-graphql](https://raw.githubusercontent.com/strongloop/loopback-next/master/extensions/graphql/type-graphql.png)
 
 ## Stability: ⚠️Experimental⚠️
 
