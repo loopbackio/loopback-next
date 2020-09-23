@@ -252,7 +252,7 @@ For example: `GET /api/activities/findOne?filter={"where":{"id":1234}}`
 ### Build filters with FilterBuilder
 
 Besides writing the filter yourself, you can also use
-[`FilterBuilder`](https://loopback.io/doc/en/lb4/apidocs.repository.filterbuilder.html)
+[`FilterBuilder`](https://loopback.io/doc/en/lb4/apidocs.filter.filterbuilder.html)
 to help you create or combine `where` clauses.
 
 For example, you can build the filter
@@ -279,7 +279,7 @@ const filterBuilder = new FilterBuilder();
 ```
 
 Another usage of
-[`FilterBuilder`](https://loopback.io/doc/en/lb4/apidocs.repository.filterbuilder.html)
+[`FilterBuilder`](https://loopback.io/doc/en/lb4/apidocs.filter.filterbuilder.html)
 is to combine the `where` clause by using `FilterBuilder.impose`. For example,
 
 ```ts
@@ -299,7 +299,7 @@ The `where` clauses is combined as:
 ```
 
 This also can be done with the
-[`WhereBuilder`](https://loopback.io/doc/en/lb4/apidocs.repository.wherebuilder.html).
+[`WhereBuilder`](https://loopback.io/doc/en/lb4/apidocs.filter.wherebuilder.html).
 See more examples in the [`Where Filter`](Where-filter.md#wherebuilder) page.
 
 <!-- TODO: (Agnes) need to double check.

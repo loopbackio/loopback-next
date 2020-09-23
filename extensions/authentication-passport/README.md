@@ -26,7 +26,7 @@ npm i @loopback/authentication-passport --save
 
 `@loopback/authentication@3.x` allows users to register authentication
 strategies that implement the interface
-[`AuthenticationStrategy`](https://apidocs.strongloop.com/@loopback%2fdocs/authentication.html#AuthenticationStrategy)
+[`AuthenticationStrategy`](https://loopback.io/doc/en/lb4/apidocs.authentication.authenticationstrategy.html)
 
 Since `AuthenticationStrategy` describes a strategy with different contracts
 than the passport
