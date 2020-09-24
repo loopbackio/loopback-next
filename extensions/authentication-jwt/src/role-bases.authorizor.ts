@@ -57,7 +57,6 @@ export async function roleBasedAuthorization(
     return AuthorizationDecision.DENY;
   }
 
-  // Authorize everything that does not have a allowedRoles property
   if (!decoratorMetadata.allowedRoles) {
     return AuthorizationDecision.ALLOW;
   }
