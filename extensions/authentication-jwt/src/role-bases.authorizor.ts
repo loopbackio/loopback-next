@@ -9,8 +9,25 @@ import {
   AuthorizationMetadata,
 } from '@loopback/authorization';
 import {securityId, UserProfile} from '@loopback/security';
-import _ from 'lodash';
+import {pick} from 'lodash';
 
+// Example:
+//   @authorize({
+//     allowedRoles: [RoleEnum.admin],
+//     voters: [basicAuthorization],
+//   })
+//   @delete('/profile/{id}}', {
+//     responses: {
+//       '204': {
+//         description: 'Profile reset success',
+//       },
+//     },
+//   })
+//   async resetById(
+//     @param.path.number('id') id?: number,
+//   ): Promise<void> {
+//     await this.profileRepository.deleteById(id);
+//   }
 // Instance level authorizer
 // Can be also registered as an authorizer, depends on users' need.
 export async function roleBasedAuthorization(
@@ -20,7 +37,7 @@ export async function roleBasedAuthorization(
   // No access if authorization details are missing
   let currentUser: UserProfile;
   if (authorizationCtx.principals.length > 0) {
-    const user = _.pick(authorizationCtx.principals[0], [
+    const user = pick(authorizationCtx.principals[0], [
       'id',
       'name',
       'email',
@@ -45,30 +62,10 @@ export async function roleBasedAuthorization(
     return AuthorizationDecision.ALLOW;
   }
 
-  let roleIsAllowed = false;
   for (const role of currentUser.roles) {
     if (decoratorMetadata.allowedRoles!.includes(role)) {
-      roleIsAllowed = true;
-      break;
+      return AuthorizationDecision.ALLOW;
     }
-  }
-
-  if (!roleIsAllowed) {
-    return AuthorizationDecision.DENY;
-  }
-
-  // Admin and support accounts bypass id verification
-  if (currentUser.roles.includes('admin')) {
-    return AuthorizationDecision.ALLOW;
-  }
-
-  /**
-   * Allow access only to model owners, using route as source of truth
-   *
-   * eg. @post('/users/{userId}/orders', ...) returns `userId` as args[0]
-   */
-  if (currentUser[securityId] === authorizationCtx.invocationContext.args[0]) {
-    return AuthorizationDecision.ALLOW;
   }
 
   return AuthorizationDecision.DENY;
