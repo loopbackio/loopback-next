@@ -6,8 +6,10 @@
 import {UserIdentityService} from '@loopback/authentication';
 import {BindingScope, inject, injectable, Provider} from '@loopback/core';
 import {Profile} from 'passport';
-import {StrategyOption} from 'passport-facebook';
-import {Strategy as GoogleStrategy} from 'passport-google-oauth2';
+import {
+  Strategy as GoogleStrategy,
+  StrategyOptions,
+} from 'passport-google-oauth2';
 import {verifyFunctionFactory} from '../authentication-strategies/types';
 import {User} from '../models';
 import {UserServiceBindings} from '../services';
@@ -18,7 +20,7 @@ export class GoogleOauth implements Provider<GoogleStrategy> {
 
   constructor(
     @inject('googleOAuth2Options')
-    public oauth2Options: StrategyOption,
+    public oauth2Options: StrategyOptions,
     @inject(UserServiceBindings.PASSPORT_USER_IDENTITY_SERVICE)
     public userService: UserIdentityService<Profile, User>,
   ) {
