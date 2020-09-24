@@ -36,22 +36,22 @@ export async function roleBasedAuthorization(
 ): Promise<AuthorizationDecision> {
   // No access if authorization details are missing
   let currentUser: UserProfile;
-  if (authorizationCtx.principals.length > 0) {
-    const user = pick(authorizationCtx.principals[0], [
-      'id',
-      'name',
-      'email',
-      'roles',
-    ]);
-    currentUser = {
-      [securityId]: user.id,
-      name: user.name,
-      email: user.email,
-      roles: user.roles,
-    } as UserProfile;
-  } else {
+  if (authorizationCtx.principals.length <= 0) {
     return AuthorizationDecision.DENY;
   }
+
+  const user = pick(authorizationCtx.principals[0], [
+    'id',
+    'name',
+    'email',
+    'roles',
+  ]);
+  currentUser = {
+    [securityId]: user.id,
+    name: user.name,
+    email: user.email,
+    roles: user.roles,
+  } as UserProfile;
 
   if (!currentUser.roles) {
     return AuthorizationDecision.DENY;
