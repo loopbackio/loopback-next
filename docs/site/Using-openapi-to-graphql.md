@@ -1,10 +1,16 @@
 ---
 lang: en
-title: 'Exposing GraphQL APIs'
+title: 'Using OpenAPI-to-GraphQL'
 keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, GraphQL
 sidebar: lb4_sidebar
-permalink: /doc/en/lb4/exposing-graphql-apis.html
+permalink: /doc/en/lb4/Using-openapi-to-graphql.html
+redirect_from: /doc/en/lb4/exposing-graphql-apis.html
 ---
+
+{% include note.html content="
+The OpenAPI-to-GraphQL module is a general wrapper for existing OpenAPI
+REST APIs. For first-class GraphQL support, see
+[@loopback/graphql](./GraphQL.md)" %}
 
 ## Overview
 
