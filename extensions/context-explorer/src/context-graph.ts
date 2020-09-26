@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {BindingScope, ContextTags, JSONArray, JSONObject} from '@loopback/core';
-import {attribute, Digraph, ICluster, toDot, INode, IEdge} from 'ts-graphviz';
+import {attribute, Digraph, ICluster, IEdge, INode, toDot} from 'ts-graphviz';
 
 /**
  * A wrapper class for context, binding, and its level in the chain
@@ -167,7 +167,11 @@ export class ContextGraph {
     const tagPairs: string[] = [];
     if (tags) {
       for (const t in tags) {
-        tagPairs.push(`${t}:${tags[t]}`);
+        let tagVal = tags[t];
+        if (typeof tagVal === 'function') {
+          tagVal = (tagVal as Function).name;
+        }
+        tagPairs.push(`${t}:${tagVal}`);
       }
     }
     const tagLabel = tagPairs.length ? `|${tagPairs.join('\\l')}\\l` : '';

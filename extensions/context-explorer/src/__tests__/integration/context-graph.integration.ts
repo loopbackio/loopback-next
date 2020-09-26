@@ -43,7 +43,10 @@ describe('ContextGraph', () => {
 
   it('creates a dot graph with bindings', () => {
     server.bind('port').to(3000);
-    app.bind('now').toDynamicValue(() => new Date());
+    app
+      .bind('now')
+      .toDynamicValue(() => new Date())
+      .tag({serviceInterface: Date});
     const json = server.inspect();
     const graph = new ContextGraph(json);
     const dot = graph.render();
@@ -52,7 +55,7 @@ describe('ContextGraph', () => {
     label = "app";
     labelloc = "t";
     "Binding_0_0" [
-      label = "{now|{DynamicValue|Transient}}",
+      label = "{now|{DynamicValue|Transient}|serviceInterface:Date\\l}",
       shape = "record",
       style = "filled,rounded",
       fillcolor = "cyan3",
