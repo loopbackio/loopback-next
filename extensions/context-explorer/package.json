@@ -46,8 +46,8 @@
     "README.md",
     "dist",
     "src",
-    "!*/__tests__",
-    "templates"
+    "public",
+    "!*/__tests__"
   ],
   "repository": {
     "type": "git",
