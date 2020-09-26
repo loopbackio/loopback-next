@@ -3,6 +3,11 @@
 This module provides integration with [GraphQL](https://graphql.org/) using
 [type-graphql](https://typegraphql.com/).
 
+{% include note.html content="
+The `@loopback/graphql` module provides first-class GraphQL support in
+LoopBack 4. For the general OpenAPI REST API wrapper, see
+[Using OpenAPI-to-GraphQL](https://loopback.io/doc/en/lb4/Using-openapi-to-graphql.html)" %}
+
 ![type-graphql](https://raw.githubusercontent.com/strongloop/loopback-next/master/extensions/graphql/type-graphql.png)
 
 ## Stability: ⚠️Experimental⚠️

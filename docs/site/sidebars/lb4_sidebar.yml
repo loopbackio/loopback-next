@@ -243,8 +243,8 @@ children:
         url: GraphQL.html
         output: 'web, pdf'
 
-      - title: 'Exposing GraphQL APIs'
-        url: exposing-graphql-apis.html
+      - title: 'Using OpenAPI-to-GraphQL'
+        url: Using-openapi-to-graphql.html
         output: 'web, pdf'
 
   - title: 'Running cron jobs'
