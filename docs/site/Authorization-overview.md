@@ -74,15 +74,15 @@ approach authorization.
 `Developers` need to,
 
 - mount the authorization component, see
-  [Registering the Authorization Component](#registering-the-authorization-component)
+  [Registering the Authorization Component](Authorization-component.md)
 - decorate endpoints with authorization metadata, see
-  [Configuring API Endpoints](#configuring-api-endpoints)
+  [Configuring API Endpoints](Authorization-component-decorator.md)
 - define `authorizer` and `voter` functions, see
-  [Programming Access Policies](#programming-access-policies)
+  [Programming Access Policies](Authorization-component-interceptor.md)
 - design security policies as decision matrix, see
-  [Authorization by decision matrix](#authorization-by-decision-matrix)
+  [Authorization by decision matrix](Authorization-component-decision-matrix.md)
 - plug in external enforcer libraries, see
-  [Enforcer Libraries](#enforcer-libraries)
+  [Enforcer Libraries](Authorization-component-enforcer.md)
 
 ## Tutorials
 
