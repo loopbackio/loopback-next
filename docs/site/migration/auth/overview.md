@@ -35,4 +35,4 @@ authorization to secure the applications:
 - [loopback-example-access-control](https://github.com/strongloop/loopback-example-access-control)
   demonstrate authentication and authorization mechanisms in LoopBack. The
   migration guide is described in
-  [Migrating access control example](./example.md).
+  [Migrating access control example](./migration-auth-access-control-example.md).

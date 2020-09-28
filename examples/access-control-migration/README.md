@@ -42,7 +42,7 @@ application, follow these steps:
 ```
 
 Then try different roles' permissions by following the
-[try it out section](https://github.com/strongloop/loopback-next/blob/auth-migration/docs/site/migration/auth/example.md#try-it-out)
+[try it out section](https://github.com/strongloop/loopback-next/blob/auth-migration/docs/site/migration/auth/migration-auth-access-control-example.md#try-it-out)
 
 ### Need help?
 
