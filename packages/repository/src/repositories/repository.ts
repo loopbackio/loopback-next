@@ -26,7 +26,33 @@ export interface Repository<T extends Model> {}
 
 export interface ExecutableRepository<T extends Model> extends Repository<T> {
   /**
-   * Execute a query with the given parameter object or an array of parameters
+   * Proxy method for the underlying connector's method to execute raw queries.
+   * Support and method signature are entirely dependent on the underlying
+   * connector's implementation.
+   *
+   * @remarks
+   *
+   * Currently only SQL connectors implement the feature properly. In the other
+   * connectors the method may exist but will not be usable via external
+   * execution of the method. There is an open issue to track the development
+   * in case of MongoDB
+   * - https://github.com/strongloop/loopback-next/issues/3342.
+   *
+   * MySQL usage example:
+   *
+   * Although the whole command can be specified in the `command` argument. It
+   * is recommended to specify the parameters in the `parameters` argument,
+   * which is an array in case of MySQL.
+   *
+   *```ts
+   * myRepository.execute(
+   *  'SELECT * from User WHERE name=? && status=?',
+   *  ['John', 'active']
+   *);
+   *```
+   *
+   * Using `parameters` argument helps to prevent SQL injection attacks.
+   *
    * @param command - The query string or command object
    * @param parameters - The object with name/value pairs or an array of parameter
    * values
