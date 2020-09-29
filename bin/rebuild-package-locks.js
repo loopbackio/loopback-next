@@ -15,6 +15,7 @@ const fs = require('fs-extra');
 const Project = require('@lerna/project');
 const filterPackages = require('@lerna/filter-packages');
 const build = require('../packages/build');
+const {runMain} = require('./script-util');
 
 /**
  * Remove all package-lock.json and node_modules for all packages
@@ -80,10 +81,4 @@ async function rebuildPackageLocks(...scopes) {
   }
 }
 
-if (require.main === module) {
-  const args = process.argv.slice(2);
-  rebuildPackageLocks(...args).catch(err => {
-    console.error(err);
-    process.exit(1);
-  });
-}
+runMain(module, rebuildPackageLocks, ...process.argv.slice(2));

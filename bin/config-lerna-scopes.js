@@ -9,7 +9,7 @@
  */
 'use strict';
 
-const {getPackages} = require('@lerna/project');
+const {getPackages, runMain} = require('./script-util');
 
 module.exports = {
   rules: {
@@ -18,11 +18,9 @@ module.exports = {
   },
 };
 
-async function getPackageNames(context) {
-  const ctx = context || {};
-  const cwd = ctx.cwd || process.cwd();
+async function getPackageNames() {
   // List all lerna packages
-  const packages = await getPackages(cwd);
+  const packages = await getPackages();
 
   // Get a list of names. Npm scopes will be removed, for example,
   // @loopback/core -> core
@@ -39,12 +37,4 @@ function getShortName(pkg) {
   return name.startsWith('@') ? name.split('/')[1] : name;
 }
 
-if (require.main === module) {
-  getPackageNames().then(
-    names => console.log('Scopes: %s', names),
-    err => {
-      console.error(err);
-      process.exit(1);
-    },
-  );
-}
+runMain(module, getPackageNames);

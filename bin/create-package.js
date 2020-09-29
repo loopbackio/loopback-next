@@ -46,6 +46,7 @@ const {updateReferences} = require('./update-ts-project-refs');
 const path = require('path');
 const cwd = process.cwd();
 const fs = require('fs-extra');
+const {runMain} = require('./script-util');
 
 /**
  * Return a promise to be resolved by the child process exit event
@@ -69,8 +70,7 @@ function waitForProcessExit(child) {
 /**
  * Main function for the script
  */
-async function main() {
-  let name = process.argv[2];
+async function createPackage(name) {
   if (name == null) {
     console.error(
       'Usage: %s <[parentDir]/package-name> [--yes]',
@@ -238,9 +238,4 @@ function promptActions({projectDir}) {
   console.log('  - CODEOWNERS');
 }
 
-if (require.main === module) {
-  main().catch(err => {
-    console.error(err);
-    process.exit(2);
-  });
-}
+runMain(module, createPackage, process.argv[2]);
