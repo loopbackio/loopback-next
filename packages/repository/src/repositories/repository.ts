@@ -28,15 +28,10 @@ export interface ExecutableRepository<T extends Model> extends Repository<T> {
   /**
    * Proxy method for the underlying connector's method to execute raw queries.
    * Support and method signature are entirely dependent on the underlying
-   * connector's implementation.
+   * connector's implementation. The result object is the connector's native
+   * result object, you will have to process it on your own.
    *
    * @remarks
-   *
-   * Currently only SQL connectors implement the feature properly. In the other
-   * connectors the method may exist but will not be usable via external
-   * execution of the method. There is an open issue to track the development
-   * in case of MongoDB
-   * - https://github.com/strongloop/loopback-next/issues/3342.
    *
    * MySQL usage example:
    *
@@ -52,6 +47,15 @@ export interface ExecutableRepository<T extends Model> extends Repository<T> {
    *```
    *
    * Using `parameters` argument helps to prevent SQL injection attacks.
+   *
+   * MongoDB usage example:
+   *
+   * In case of MongoDB, the first parameter is the collection name, the second
+   * parameter is the command name, and the third being the options.
+   *
+   * const res = await myRepository.execute(
+   *   'Pet', 'find', {type:'cat'}
+   * );
    *
    * @param command - The query string or command object
    * @param parameters - The object with name/value pairs or an array of parameter
