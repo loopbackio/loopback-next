@@ -44,6 +44,12 @@ Next enable the jwt authentication system in your application:
 <details>
 <summary markdown="span"><strong>Check The Code</strong></summary>
 
+{% include note.html content="
+Skip this step when using a
+[middleware-based sequence](https://loopback.io/doc/en/lb4/REST-middleware-sequence.html), which is used by
+default on newly-generated LoopBack 4 applications.
+" %}
+
 ```ts
 import {
   AuthenticateFn,
@@ -145,8 +151,7 @@ This module contains an example application in the `fixtures` folder. It has a
 controller with endpoints `/login`, `/refreshlogin`, `/refresh` and `/whoAmI`.
 
 Before using the below snippet do not forget to inject below repositories and
-bindingings  
-in your controller's constructor
+bindings in your controller's constructor
 
 ```ts
     @inject(TokenServiceBindings.TOKEN_SERVICE)
