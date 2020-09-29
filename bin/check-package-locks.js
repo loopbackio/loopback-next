@@ -12,23 +12,19 @@
 
 const path = require('path');
 const fs = require('fs-extra');
-
-const Project = require('@lerna/project');
+const {loadLernaRepo, runMain} = require('./script-util');
 
 async function checkPackageLocks() {
-  const project = new Project(process.cwd());
-  const packages = await project.getPackages();
+  const {project, packages} = await loadLernaRepo();
   const packageNames = packages.map(p => p.name);
   const rootPath = project.rootPath;
   const lockFiles = packages.map(p =>
     path.relative(rootPath, path.join(p.location, 'package-lock.json')),
   );
 
-  const checkResults = await Promise.all(
-    lockFiles.map(async lockFile => {
-      return {lockFile, violations: await checkLockFile(lockFile)};
-    }),
-  );
+  const checkResults = lockFiles.map(lockFile => {
+    return {lockFile, violations: checkLockFile(lockFile)};
+  });
   const badPackages = checkResults.filter(r => r.violations.length > 0);
   if (!badPackages.length) return true;
 
@@ -44,9 +40,9 @@ async function checkPackageLocks() {
   console.error('\n  $ npm run update-package-locks\n');
   return false;
 
-  async function checkLockFile(lockFile) {
+  function checkLockFile(lockFile) {
     const file = path.resolve(project.rootPath, lockFile);
-    const found = await fs.exists(file);
+    const found = fs.existsSync(file);
     if (!found) return [];
     let data = {};
     try {
@@ -61,12 +57,6 @@ async function checkPackageLocks() {
   }
 }
 
-if (require.main === module) {
-  checkPackageLocks().then(
-    ok => process.exit(ok ? 0 : 1),
-    err => {
-      console.error(err);
-      process.exit(2);
-    },
-  );
-}
+module.exports = checkPackageLocks;
+
+runMain(module, checkPackageLocks);

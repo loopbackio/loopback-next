@@ -5,7 +5,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 /**
- * This is an internal script to run `lerna` command with enviornment variable
+ * This is an internal script to run `lerna` command with environment variable
  * `LERNA_ROOT_PATH` set to the root directory of `loopback-next` monorepo
  */
 'use strict';
@@ -14,8 +14,10 @@ const path = require('path');
 const Project = require('@lerna/project');
 const build = require('../packages/build');
 const fs = require('fs');
+const {once} = require('events');
+const {runMain} = require('./script-util');
 
-async function run(argv, options) {
+async function runLernaCommand(argv, options) {
   let project;
   if (fs.existsSync('lerna.json')) {
     project = new Project(process.cwd());
@@ -27,13 +29,11 @@ async function run(argv, options) {
   process.env.LERNA_ROOT_PATH = rootPath;
   const args = argv.slice(2);
 
-  return build.runCLI('lerna/cli', args, options);
+  const childProcess = build.runCLI('lerna/cli', args, options);
+  const data = await once(childProcess, 'exit');
+  return {exitCode: data[0]};
 }
 
-module.exports = run;
-if (require.main === module) {
-  run(process.argv).catch(err => {
-    console.error(err);
-    process.exit(1);
-  });
-}
+module.exports = runLernaCommand;
+
+runMain(module, runLernaCommand, process.argv);

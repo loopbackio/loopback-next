@@ -16,8 +16,16 @@ const path = require('path');
 const fs = require('fs-extra');
 const debug = require('debug')('loopback:build');
 
-const Project = require('@lerna/project');
 const PackageGraph = require('@lerna/package-graph');
+const {
+  isDryRun,
+  loadLernaRepo,
+  printJson,
+  writeJsonSync,
+  cloneJson,
+  isJsonEqual,
+  runMain,
+} = require('./script-util');
 
 const TSCONFIG = 'tsconfig.json';
 const TSCONFIG_BUILD = 'tsconfig.build.json';
@@ -43,11 +51,13 @@ function loadTsConfig(pkgLocation, dryRun = true) {
   };
 }
 
-async function updateReferences(options) {
-  options = options || {};
-  const dryRun = options.dryRun;
-  const project = new Project(process.cwd());
-  const packages = await project.getPackages();
+/**
+ * Update TypeScript project references
+ * @param {*} options - Options
+ */
+async function updateTsReferences(options) {
+  const dryRun = isDryRun(options);
+  const {project, packages} = await loadLernaRepo();
 
   const rootRefs = [];
   const graph = new PackageGraph(packages);
@@ -69,7 +79,7 @@ async function updateReferences(options) {
         .replace(/\\/g, '/'),
     });
     const tsconfig = tsconfigMeta.tsconfig;
-    const originalTsconfigJson = JSON.stringify(tsconfig, null, 2);
+    const originalTsconfigJson = cloneJson(tsconfig);
 
     const refs = [];
     for (const d of p.localDependencies.keys()) {
@@ -94,28 +104,22 @@ async function updateReferences(options) {
     // Sort the references so that we will have a consistent output
     tsconfig.references = refs.sort((a, b) => a.path.localeCompare(b.path));
 
-    // Convert to JSON
-    const tsconfigJson = JSON.stringify(tsconfig, null, 2);
-
     if (!dryRun) {
-      if (originalTsconfigJson !== tsconfigJson) {
-        // Using `-f` to overwrite tsconfig.json
-        fs.writeFileSync(tsconfigFile, tsconfigJson + '\n', {
-          encoding: 'utf-8',
-        });
+      if (!isJsonEqual(tsconfig, originalTsconfigJson)) {
+        writeJsonSync(tsconfigFile, tsconfig);
         changed = true;
         debug('%s has been updated.', tsconfigFile);
       }
     } else {
       // Otherwise write to console
       console.log('- %s', p.pkg.name);
-      console.log(tsconfigJson);
+      printJson(tsconfig);
     }
   }
 
   const rootTsconfigFile = path.join(project.rootPath, 'tsconfig.json');
   const rootTsconfig = require(rootTsconfigFile);
-  const originalRootTsconfigJson = JSON.stringify(rootTsconfig, null, 2);
+  const originalRootTsconfigJson = cloneJson(rootTsconfig);
 
   rootTsconfig.compilerOptions = rootTsconfig.compilerOptions || {};
   rootTsconfig.compilerOptions.composite = true;
@@ -126,14 +130,10 @@ async function updateReferences(options) {
   delete rootTsconfig.include;
   delete rootTsconfig.exclude;
 
-  // Convert to JSON
-  const rootTsconfigJson = JSON.stringify(rootTsconfig, null, 2);
   if (!dryRun) {
-    if (originalRootTsconfigJson !== rootTsconfigJson) {
+    if (!isJsonEqual(originalRootTsconfigJson, rootTsconfig)) {
       // Using `-f` to overwrite tsconfig.json
-      fs.writeFileSync(rootTsconfigFile, rootTsconfigJson + '\n', {
-        encoding: 'utf-8',
-      });
+      writeJsonSync(rootTsconfigFile, rootTsconfig);
       changed = true;
       debug('%s has been updated.', rootTsconfigFile);
     }
@@ -144,19 +144,10 @@ async function updateReferences(options) {
     }
   } else {
     console.log('\n%s', path.relative(project.rootPath, rootTsconfigFile));
-    console.log(rootTsconfigJson);
-    console.log(
-      '\nThis is a dry-run. Please use -f option to update tsconfig files.',
-    );
+    printJson(rootTsconfig);
   }
 }
 
-if (require.main === module) {
-  const dryRun = !process.argv.includes('-f');
-  updateReferences({dryRun}).catch(err => {
-    console.error(err);
-    process.exit(1);
-  });
-}
+module.exports = updateTsReferences;
 
-exports.updateReferences = updateReferences;
+runMain(module, updateTsReferences);
