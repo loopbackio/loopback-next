@@ -51,7 +51,7 @@
     "json-schema-compare": "^0.2.2",
     "lodash": "^4.17.20",
     "on-finished": "^2.3.0",
-    "path-to-regexp": "^6.1.0",
+    "path-to-regexp": "^6.2.0",
     "qs": "^6.9.4",
     "strong-error-handler": "^3.5.0",
     "tslib": "^2.0.1",
