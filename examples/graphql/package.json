@@ -51,13 +51,13 @@
     "@loopback/core": "^2.10.1",
     "@loopback/graphql": "^0.1.1",
     "@loopback/repository": "^3.0.1",
-    "@loopback/rest": "^5.2.1",
+    "@loopback/rest": "^7.0.1",
     "class-transformer": "^0.3.1",
     "tslib": "^2.0.0"
   },
   "devDependencies": {
     "@loopback/build": "^6.2.4",
-    "@loopback/eslint-config": "^8.0.4",
+    "@loopback/eslint-config": "^10.0.0",
     "@loopback/testlab": "^3.2.6",
     "@types/multer": "^1.4.3",
     "@types/node": "^10.17.35",

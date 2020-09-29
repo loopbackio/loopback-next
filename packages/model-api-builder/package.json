@@ -28,7 +28,7 @@
     "tslib": "^2.0.1"
   },
   "devDependencies": {
-    "@loopback/build": "^1.7.1",
+    "@loopback/build": "^6.2.4",
     "@loopback/core": "^2.10.1",
     "@loopback/repository": "^3.0.1",
     "@types/node": "^10.17.35"
