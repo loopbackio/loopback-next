@@ -5,57 +5,60 @@
     "group:recommended",
     "helpers:disableTypesNodeMajor"
   ],
-
   "ignorePaths": [
     "**/node_modules/**",
     "**/__tests__/**",
     "**/test/**"
   ],
-
   "automerge": false,
   "branchPrefix": "renovate/",
   "ignoreUnstable": true,
   "rangeStrategy": "bump",
   "statusCheckVerify": true,
   "updateNotScheduled": true,
-
   "lockFileMaintenance": {
     "enabled": true,
     "schedule": "before 5am on monday"
   },
-
   "prConcurrentLimit": 5,
   "prCreation": "immediate",
   "prHourlyLimit": 2,
-
   "semanticCommits": true,
   "semanticCommitType": "chore",
   "semanticCommitScope": null,
-
   "separateMajorMinor": true,
   "separateMinorPatch": false,
-
-  "packageRules": [{
-    "packageNames": [
-      "@microsoft/api-extractor",
-      "@microsoft/api-documenter"
-    ],
-    "groupName": "api-extractor packages"
-  },
-  {
-    "packageNames": [
-      "@types/express",
-      "@types/express-serve-static-core"
-    ],
-    "groupName": "@types/express* packages"
-  }
+  "packageRules": [
+    {
+      "packageNames": [
+        "@microsoft/api-extractor",
+        "@microsoft/api-documenter"
+      ],
+      "groupName": "api-extractor packages"
+    },
+    {
+      "packageNames": [
+        "@types/express",
+        "@types/express-serve-static-core"
+      ],
+      "groupName": "@types/express* packages"
+    },
+    {
+      "updateTypes": ["minor", "patch"],
+      "automerge": true
+    },
+    {
+      "depTypeList": ["devDependencies"],
+      "automerge": true
+    }
   ],
-
   "travis": {
     "enabled": true,
-    "supportPolicy": ["lts", "current"]
+    "supportPolicy": [
+      "lts",
+      "current"
+    ]
   },
-
   "masterIssue": true,
   "masterIssueApproval": false,
   "masterIssueAutoclose": true
