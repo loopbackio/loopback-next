@@ -93,6 +93,10 @@ describe('app-generator specific files', () => {
   it('creates .gitignore', () => {
     assert.fileContent('.gitignore', /^\*\.tsbuildinfo$/m);
   });
+
+  it('creates .mocharc.json', () => {
+    assertFilesToMatchSnapshot({}, '.mocharc.json');
+  });
 });
 
 describe('app-generator with docker disabled', () => {

@@ -7,6 +7,16 @@
 
 'use strict';
 
+exports[`app-generator specific files creates .mocharc.json 1`] = `
+{
+  "exit": true,
+  "recursive": true,
+  "require": "source-map-support/register"
+}
+
+`;
+
+
 exports[`app-generator specific files generates all the proper files 1`] = `
 # my-app
 
