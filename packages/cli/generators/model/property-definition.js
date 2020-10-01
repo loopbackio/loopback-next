@@ -38,6 +38,8 @@ function createPropertyTemplateData(val) {
     }
   } else if (val.type === 'buffer') {
     val.tsType = 'Buffer';
+  } else if (val.type === 'Binary') {
+    val.tsType = 'Buffer';
   }
 
   if (NON_TS_TYPES.includes(val.tsType)) {
