@@ -3,14 +3,10 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Entity, model, property, belongsTo} from '@loopback/repository';
+import {belongsTo, Entity, model, property} from '@loopback/repository';
 import {User} from './user.model';
 
-@model({
-  settings: {
-    hiddenProperties: ['password'],
-  },
-})
+@model()
 export class UserCredentials extends Entity {
   @property({
     type: 'string',
@@ -21,6 +17,7 @@ export class UserCredentials extends Entity {
   @property({
     type: 'string',
     required: true,
+    hidden: true,
   })
   password: string;
 

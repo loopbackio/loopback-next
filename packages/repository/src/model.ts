@@ -40,6 +40,11 @@ export type PropertyType =
 export interface PropertyDefinition {
   type: PropertyType; // For example, 'string', String, or {}
   id?: boolean | number;
+  /**
+   * Used to hide this property from the response body,
+   * adding this property to the hiddenProperties array
+   */
+  hidden?: boolean;
   json?: PropertyForm;
   jsonSchema?: JsonSchemaWithExtensions;
   store?: PropertyForm;

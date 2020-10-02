@@ -132,6 +132,43 @@ describe('model decorator', () => {
     recentOrders?: Order[];
   }
 
+  it('hides a property defined as hidden', () => {
+    @model()
+    class Client extends Entity {
+      @property()
+      name: string;
+      @property({hidden: true})
+      password: string;
+
+      constructor(data: Partial<Client>) {
+        super(data);
+      }
+    }
+    const client = new Client({
+      name: 'name',
+      password: 'password',
+    });
+    expect(Client.definition.settings.hiddenProperties).to.containEql(
+      'password',
+    );
+    expect(client.toJSON()).to.eql({
+      name: 'name',
+    });
+  });
+
+  it('throws error if design type is not provided', () => {
+    const createModel = () => {
+      @model()
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      class Client extends Entity {
+        @property()
+        id: undefined;
+      }
+    };
+
+    expect(createModel).to.throw(Error, {code: 'CANNOT_INFER_PROPERTY_TYPE'});
+  });
+
   // Skip the tests before we resolve the issue around global `Reflector`
   // The tests are passing it run alone but fails with `npm test`
   it('adds model metadata', () => {
