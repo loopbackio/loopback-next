@@ -196,6 +196,10 @@ children:
       url: Customizing-how-openapi-spec-is-served.html
       output: 'web, pdf'
 
+    - title: 'Customizing routes'
+      url: Customizing-routes.html
+      output: 'web, pdf'
+
     - title: 'Dynamically adding models, repositories, and controllers'
       url: Dynamic-models-repositories-controllers.html
       output: 'web, pdf'
