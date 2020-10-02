@@ -32,7 +32,7 @@ export const MODEL_WITH_PROPERTIES_KEY = MetadataAccessor.create<
   ClassDecorator
 >('loopback:model-and-properties');
 
-export type PropertyMap = MetadataMap<PropertyDefinition>;
+export type PropertyMap = MetadataMap<Partial<PropertyDefinition>>;
 
 /**
  * Decorator for model definitions
@@ -83,22 +83,27 @@ export function buildModelDefinition(
   const propertyMap: PropertyMap =
     MetadataInspector.getAllPropertyMetadata(MODEL_PROPERTIES_KEY, prototype) ??
     {};
-  for (const p in propertyMap) {
-    const propertyDef = propertyMap[p];
-    const designType = MetadataInspector.getDesignTypeForProperty(prototype, p);
-    if (!propertyDef.type) {
-      if (!designType) {
-        const err: Error & {code?: string} = new Error(
-          `The definition of model property ${modelDef.name}.${p} is missing ` +
-            '`type` field and TypeScript did not provide any design-time type. ' +
-            'Learn more at https://loopback.io/doc/en/lb4/Error-codes.html#cannot_infer_property_type',
-        );
-        err.code = 'CANNOT_INFER_PROPERTY_TYPE';
-        throw err;
-      }
-      propertyDef.type = designType;
+  for (const [propName, propDef] of Object.entries(propertyMap)) {
+    const designType =
+      propDef.type ??
+      MetadataInspector.getDesignTypeForProperty(prototype, propName);
+    if (!designType) {
+      const err: Error & {code?: string} = new Error(
+        `The definition of model property ${modelDef.name}.${propName} is missing ` +
+          '`type` field and TypeScript did not provide any design-time type. ' +
+          'Learn more at https://loopback.io/doc/en/lb4/Error-codes.html#cannot_infer_property_type',
+      );
+      err.code = 'CANNOT_INFER_PROPERTY_TYPE';
+      throw err;
     }
-    modelDef.addProperty(p, propertyDef);
+
+    if (propDef.hidden) {
+      modelDef.settings.hiddenProperties =
+        modelDef.settings.hiddenProperties ?? [];
+      modelDef.settings.hiddenProperties.push(propName);
+    }
+    propDef.type = designType;
+    modelDef.addProperty(propName, propDef);
   }
   target.definition = modelDef;
   const relationMeta: RelationDefinitionMap =

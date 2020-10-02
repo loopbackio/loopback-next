@@ -440,7 +440,8 @@ The properties are stored in the database, available in JS/TS code, can be set
 via POST/PUT/PATCH requests, but they are removed from response bodies
 (`.toJSON()` output).
 
-To hide a property, you can use the `hiddenProperties` setting like this:
+To hide a property, you can use the `hiddenProperties` model setting which allow
+hide properties defined in the parent model too, like this:
 
 ```ts
 @model({
@@ -454,6 +455,21 @@ class MyUserModel extends Entity {
    @property({type: 'string'})
   email: string;
    @property({type: 'string'})
+  password: string;
+  ...
+}
+```
+
+or at property level
+
+```ts
+@model()
+class MyUserModel extends Entity {
+  @property({id: true})
+  id: number;
+  @property({type: 'string'})
+  email: string;
+  @property({type: 'string', hidden: true})
   password: string;
   ...
 }
@@ -608,6 +624,15 @@ Here are general attributes for property definitions:
       <td>String</td>
       <td>
         Property type. Can be any type described in <a href="LoopBack-types.html">LoopBack types</a>.
+      </td>
+    </tr>
+    <tr>
+      <td><code>hidden</code></td>
+      <td>No</td>
+      <td>Boolean</td>
+      <td>
+        The properties can be hidden from response bodies
+      (<code>.toJSON()</code> output). See <a href="#hidden-properties">Hidden properties</a> section for details.
       </td>
     </tr>
   </tbody>
