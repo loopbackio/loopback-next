@@ -342,6 +342,7 @@
 # - Standby owner(s): @emonddr
 /bin @emonddr @raymondfeng
 /packages/build @emonddr @raymondfeng
+/packages/monorepo @raymondfeng
 /packages/eslint-config @emonddr @raymondfeng
 /packages/tsdocs @emonddr @raymondfeng
 /fixtures/tsdocs-monorepo @emonddr @raymondfeng
