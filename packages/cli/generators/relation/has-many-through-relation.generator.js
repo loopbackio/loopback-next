@@ -68,7 +68,8 @@ module.exports = class HasManyThroughRelationGenerator extends BaseRelationGener
     this.artifactInfo.throughModelPrimaryKey = options.throughModelPrimaryKey;
     this.artifactInfo.throughModelPrimaryKeyType =
       options.throughModelPrimaryKeyType;
-    this.artifactInfo.targetModelPrimaryKey = options.targetModelPrimaryKey;
+    this.artifactInfo.targetModelPrimaryKey =
+      options.destinationModelPrimaryKey;
     this.artifactInfo.foreignKeyName = options.foreignKeyName;
     const source = this.templatePath(CONTROLLER_TEMPLATE_PATH_HAS_MANY_THROUGH);
 
