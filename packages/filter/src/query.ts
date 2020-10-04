@@ -506,7 +506,7 @@ export class WhereBuilder<MT extends object = AnyObject> {
 }
 
 /**
- * A builder for Filter. It provides fleunt APIs to add clauses such as
+ * A builder for Filter. It provides fluent APIs to add clauses such as
  * `fields`, `order`, `where`, `limit`, `offset`, and `include`.
  *
  * @example

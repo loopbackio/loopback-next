@@ -18,3 +18,4 @@
  */
 
 export * from './query';
+export * from './ensure-fields';
