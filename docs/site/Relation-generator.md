@@ -33,6 +33,13 @@ lb4 relation [options]
 - `--sourceModel`: Source model.
 - `--destinationModel`: Destination model.
 - `--throughModel`: Through model. For HasManyThrough relation only.
+- `--sourceModelPrimaryKey`: The name of the primary key of the source model.
+- `--sourceModelPrimaryKeyType`: The type of the primary key of the source
+  model.
+- `--destinationModelPrimaryKey`: The name of the primary key of the destination
+  model.
+- `--destinationModelPrimaryKeyType`: The type of the primary key of the
+  destination model.
 - `--foreignKeyName`: Destination/Source model foreign key name for
   HasMany,HasOne/BelongsTo relation, respectively.
 - `--relationName`: Relation name.
@@ -51,7 +58,12 @@ Defining lb4 relation in one command line interface (cli):
 ```sh
 lb4 relation --sourceModel=<sourceModel>
 --destinationModel=<destinationModel> --foreignKeyName=<foreignKeyName>
---relationType=<hasMany|hasOne|belongsTo> [--relationName=<relationName>] [--format]
+--relationType=<hasMany|hasOne|belongsTo> [--relationName=<relationName>]
+[--sourceModelPrimaryKey=<sourceModelPrimaryKey>]
+[--sourceModelPrimaryKeyType=<sourceModelPrimaryKeyType>]
+[--destinationModelPrimaryKey=<destinationModelPrimaryKey>]
+[--destinationModelPrimaryKeyType=<destinationModelPrimaryKeyType>]
+[--format]
 ```
 
 - `<relationType>` - Type of the relation that will be created between the
@@ -60,6 +72,17 @@ lb4 relation --sourceModel=<sourceModel>
 - `<sourceModel>` - Name of the model to create the relationship from.
 
 - `<destinationModel>` - Name of the model to create a relationship with.
+
+- `<sourceModelPrimaryKey>` - Name of the id property on the model to create the
+  relationship from.
+
+- `<sourceModelPrimaryKeyType>` - Type of the id property on the source mode.
+
+- `<destinationModelPrimaryKey>` - Name of the id property on the model to
+  create a relationship with.
+
+- `<destinationModelPrimaryKeyType>` - Type of the id property on the
+  destination mode.
 
 - `<foreignKeyName>` - Property that references the primary key property of the
   destination model.
@@ -86,7 +109,12 @@ HasMany, HasOne, or BelongsTo relations.
 lb4 relation --sourceModel=<sourceModel>
 --destinationModel=<destinationModel> --throughModel=<throughModel>
 --relationType=<hasManyThrough> [--relationName=<relationName>]
+[--sourceModelPrimaryKey=<sourceModelPrimaryKey>]
+[--sourceModelPrimaryKeyType=<sourceModelPrimaryKeyType>]
+[--destinationModelPrimaryKey=<destinationModelPrimaryKey>]
+[--destinationModelPrimaryKeyType=<destinationModelPrimaryKeyType>]
 [--sourceKeyOnThrough=<sourceKeyOnThrough>] [--targetKeyOnThrough<targetKeyOnThrough>]
+[--format]
 ```
 
 - `<throughModel>` - Name of the model to reference the source model and target
@@ -120,6 +148,24 @@ The tool will prompt you for:
 - Name of the through model (`targetModel`). Prompts a list of available models
   to choose from as the through model of the relation. For HasManyThrough
   relation only.
+
+- Name of the id property of the source model (`sourceModelPrimaryKey`). Prompts
+  for the name of the source model. For example, for `Customer` has many
+  `Order`s, `Customer` is the source model. For an `Order` belongs to a
+  `Customer`, `Order` is the source model. Defaults value: `id`.
+
+- Type of the id property of the source model (`sourceModelPrimaryKey`). Prompts
+  a list of types fir the id property on the source model. Default value:
+  `number`.
+
+- Name of the id property of the source model (`destinationModelPrimaryKey`).
+  Prompts for the name of the destination model. For example, for `Customer` has
+  many `Order`s, `Order` is the destination model. For an `Order` belongs to a
+  `Customer`, `Customer` is the destination model. Defaults value: `id`.
+
+- Type of the id property of the source model (`sourceModelPrimaryKey`). Prompts
+  a list of types fir the id property on the source model. Default value:
+  `number`.
 
 - Name of the foreign key (`foreignKeyName`). Prompts a property name that
   references the primary key property of the another model. Note: Leave blank to

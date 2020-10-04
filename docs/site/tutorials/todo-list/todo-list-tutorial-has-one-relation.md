@@ -101,6 +101,10 @@ $ lb4 relation
 ? Please select the relation type hasOne
 ? Please select source model TodoList
 ? Please select target model TodoListImage
+? What is the name of ID property of the source model? id
+? What is the type of the source model primary key? number
+? What is the name of ID property of the target model? id
+? What is the type of the target model primary key? number
 ? Foreign key name to define on the target model todoListId
 ? Source property name for the relation getter (will be the relation name) image
 ? Allow TodoList queries to include data from related TodoListImage instances? Yes
@@ -117,6 +121,10 @@ $ lb4 relation
 ? Please select the relation type belongsTo
 ? Please select source model TodoListImage
 ? Please select target model TodoList
+? What is the name of ID property of the source model? id
+? What is the type of the source model primary key? number
+? What is the name of ID property of the target model? id
+? What is the type of the target model primary key? number
 ? Foreign key name to define on the source model todoListId
 ? Relation name todoList
 ? Allow TodoListImage queries to include data from related TodoList instances? Yes

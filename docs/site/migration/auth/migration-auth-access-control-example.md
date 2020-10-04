@@ -561,6 +561,10 @@ lb4 relation
 ? Please select the relation type belongsTo
 ? Please select source model Project
 ? Please select target model User
+? What is the name of ID property of the source model? id
+? What is the type of the source model primary key? number
+? What is the name of ID property of the target model? id
+? What is the type of the target model primary key? number
 ? Foreign key name to define on the source model ownerId
 ? Relation name owner
 ? Allow Project queries to include data from related User instances? Yes
@@ -577,6 +581,10 @@ lb4 relation
 ? Please select the relation type hasOne
 ? Please select source model User
 ? Please select target model UserCredentials
+? What is the name of ID property of the source model? id
+? What is the type of the source model primary key? number
+? What is the name of ID property of the target model? id
+? What is the type of the target model primary key? number
 ? Foreign key name to define on the target model userId
 ? Source property name for the relation getter (will be the relation name) userCredentials
 ? Allow User queries to include data from related UserCredentials instances? Yes
@@ -593,6 +601,10 @@ lb4 relation
 ? Please select the relation type hasMany
 ? Please select source model User
 ? Please select target model Team
+? What is the name of ID property of the source model? id
+? What is the type of the source model primary key? number
+? What is the name of ID property of the target model? id
+? What is the type of the target model primary key? number
 ? Foreign key name to define on the target model ownerId
 ? Source property name for the relation getter (will be the relation name) teams
 ? Allow User queries to include data from related Team instances? Yes
