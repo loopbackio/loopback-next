@@ -251,6 +251,13 @@ children:
         url: Using-openapi-to-graphql.html
         output: 'web, pdf'
 
+  - title: 'Building frontend applications'
+    output: 'web, pdf'
+    children:
+      - title: 'Building an Angular Application from OpenAPI Specification'
+        url: Building-frontend-angular-application.html
+        output: 'web, pdf'
+
   - title: 'Running cron jobs'
     url: Running-cron-jobs.html
     output: 'web, pdf'
