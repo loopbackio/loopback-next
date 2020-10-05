@@ -4,18 +4,18 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
-  bind,
   Binding,
   BindingScope,
   Context,
   ContextTags,
   inject,
+  injectable,
   Provider,
 } from '@loopback/core';
 import {RequestContext, RestBindings} from '@loopback/rest';
 import {format} from 'util';
 import {LOGGER_SERVICE} from '../keys';
-import {log, Logger, logContexts} from '../util';
+import {log, logContexts, Logger} from '../util';
 
 /**
  * A default stateless logger
@@ -25,7 +25,7 @@ import {log, Logger, logContexts} from '../util';
  * The logger implementation is stateless. We use SINGLETON scope so that only
  * one instance will be created to minimize the overhead.
  */
-@bind({
+@injectable({
   scope: BindingScope.SINGLETON,
   // Set binding key to `LOGGER_SERVICE`
   tags: {[ContextTags.KEY]: LOGGER_SERVICE},
@@ -57,7 +57,7 @@ export class LoggerService implements Provider<Logger> {
  * instance will be created for each request and the corresponding request
  * context can be injected into the request logger.
  */
-@bind({scope: BindingScope.TRANSIENT})
+@injectable({scope: BindingScope.TRANSIENT})
 export class RequestLoggerService implements Provider<Logger> {
   constructor(
     // Inject the resolution context and current binding for logging purpose

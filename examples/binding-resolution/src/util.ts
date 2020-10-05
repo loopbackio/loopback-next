@@ -6,6 +6,7 @@
 import {Binding, BindingScope, Context} from '@loopback/core';
 import {Request} from '@loopback/rest';
 import debugFactory from 'debug';
+import {APPLICATION_COUNTER, REQUEST_COUNTER, SERVER_COUNTER} from './keys';
 
 const debug = debugFactory('loopback:example:binding-resolution');
 
@@ -27,7 +28,7 @@ export function logContexts(
 ) {
   const ownerCtx = currentCtx.getOwnerContext(binding.key);
   logContext('Owner', ownerCtx, binding, logger);
-  logContext('Current', currentCtx, binding, logger);
+  logContext('Resolution', currentCtx, binding, logger);
 }
 
 /**
@@ -74,10 +75,34 @@ export function log(message: string, ...args: unknown[]) {
  * purely used for the purpose of demonstration to switch between two scopes. It
  * is not recommended for typical applications, which should determine the binding
  * scope based on the state requirement.
+ *
+ * @param - Name of the binding
+ * @param - Default binding scope
  */
-export function bindingScope(defaultScope = BindingScope.SINGLETON) {
-  return (process.env.BINDING_SCOPE ?? defaultScope).toLowerCase() ===
-    BindingScope.SINGLETON.toLowerCase()
-    ? BindingScope.SINGLETON
-    : BindingScope.TRANSIENT;
+export function bindingScope(
+  name: string,
+  defaultScope = BindingScope.SINGLETON,
+) {
+  const scopeName = (process.env.BINDING_SCOPE ?? defaultScope).toLowerCase();
+  const scopes = [
+    BindingScope.APPLICATION,
+    BindingScope.SERVER,
+    BindingScope.REQUEST,
+    BindingScope.SINGLETON,
+    BindingScope.TRANSIENT,
+    BindingScope.CONTEXT,
+  ];
+  const scope =
+    scopes.find(s => s.toLowerCase() === scopeName) ?? BindingScope.TRANSIENT;
+  debug('Binding scope for "%s" is set to "%s".', name, scope);
+  return scope;
+}
+
+export async function count(ctx: Context, name: string) {
+  const keys = [REQUEST_COUNTER, SERVER_COUNTER, APPLICATION_COUNTER];
+  for (const key of keys) {
+    const counter = await ctx.get(key);
+    counter.inc();
+    debug('[%s] Counter: %s %d', name, counter.scope, counter.value);
+  }
 }

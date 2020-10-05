@@ -4,15 +4,17 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {BootMixin} from '@loopback/boot';
-import {ApplicationConfig} from '@loopback/core';
+import {ApplicationConfig, BindingScope} from '@loopback/core';
 import {RestApplication} from '@loopback/rest';
 import {
   RestExplorerBindings,
   RestExplorerComponent,
 } from '@loopback/rest-explorer';
 import path from 'path';
+import {APPLICATION_COUNTER, REQUEST_COUNTER, SERVER_COUNTER} from './keys';
 import {SpyMiddlewareProvider} from './middleware/spy.middleware';
 import {MySequence} from './sequence';
+import {CounterProvider} from './services';
 
 export {ApplicationConfig};
 
@@ -24,6 +26,16 @@ export class BindingDemoApplication extends BootMixin(RestApplication) {
     this.sequence(MySequence);
 
     this.middleware(SpyMiddlewareProvider);
+
+    this.bind(APPLICATION_COUNTER)
+      .toProvider(CounterProvider)
+      .inScope(BindingScope.APPLICATION);
+    this.bind(SERVER_COUNTER)
+      .toProvider(CounterProvider)
+      .inScope(BindingScope.SERVER);
+    this.bind(REQUEST_COUNTER)
+      .toProvider(CounterProvider)
+      .inScope(BindingScope.REQUEST);
 
     // Set up default home page
     this.static('/', path.join(__dirname, '../public'));

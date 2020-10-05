@@ -9,14 +9,18 @@ import {
   Provider,
   ValueOrPromise,
 } from '@loopback/core';
-import {bindingScope, logContext, logContexts} from '../util';
+import {bindingScope, count, logContext, logContexts} from '../util';
 
 /**
  * This class will be bound to the application as an `Interceptor` during
  * `boot`
  */
-@globalInterceptor('spy', {tags: {name: 'Spy'}}, {scope: bindingScope()})
-export class SpyInterceptor implements Provider<Interceptor> {
+@globalInterceptor(
+  'spy',
+  {tags: {name: 'Spy'}},
+  {scope: bindingScope('SpyInterceptor')},
+)
+export class SpyInterceptorProvider implements Provider<Interceptor> {
   // Inject the resolution context and current binding for logging purpose
   constructor(
     @inject.context()
@@ -48,6 +52,7 @@ export class SpyInterceptor implements Provider<Interceptor> {
   ) {
     try {
       logContext('Invocation', invocationCtx, this.binding);
+      await count(invocationCtx, 'SpyInterceptor');
       // Add pre-invocation logic here
       const result = await next();
       // Add post-invocation logic here

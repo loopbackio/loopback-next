@@ -3,18 +3,27 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {bind, Binding, Context, inject, Provider} from '@loopback/core';
+import {Binding, Context, inject, injectable, Provider} from '@loopback/core';
 import {asMiddleware, Middleware, RestMiddlewareGroups} from '@loopback/rest';
 import {LOGGER_SERVICE} from '../keys';
-import {bindingScope, logContext, logRequest, logContexts} from '../util';
+import {
+  bindingScope,
+  count,
+  logContext,
+  logContexts,
+  logRequest,
+} from '../util';
 
-@bind(
+@injectable(
   asMiddleware({
     group: 'spy',
     upstreamGroups: RestMiddlewareGroups.AUTHENTICATION,
     downstreamGroups: RestMiddlewareGroups.INVOKE_METHOD,
   }),
-  {tags: {name: 'Spy'}, scope: bindingScope()},
+  {
+    tags: {name: 'Spy'},
+    scope: bindingScope('SpyMiddleware'),
+  },
 )
 export class SpyMiddlewareProvider implements Provider<Middleware> {
   constructor(
@@ -40,6 +49,8 @@ export class SpyMiddlewareProvider implements Provider<Middleware> {
       // NOTE: It will be too late to do so in an interceptor as interceptors
       // are invoked after the controller instance is resolved.
       ctx.bind(LOGGER_SERVICE).toAlias('services.RequestLoggerService');
+
+      await count(ctx, 'SpyMiddleware');
       const result = await next();
       return result;
     };
