@@ -6,7 +6,7 @@
   "license": "MIT",
   "copyright.owner": "IBM Corp.",
   "engines": {
-    "node": ">=10.16"
+    "node": "^10.16 || 12 || 14"
   },
   "repository": {
     "type": "git",

@@ -2,7 +2,7 @@
   "name": "@loopback/tsdocs-monorepo",
   "version": "0.0.9",
   "engines": {
-    "node": ">=10.16"
+    "node": "^10.16 || 12 || 14"
   },
   "private": true,
   "description": "A monorepo for tsdocs testing",
