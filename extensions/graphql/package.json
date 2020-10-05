@@ -23,7 +23,7 @@
   "dependencies": {
     "@loopback/http-server": "^2.2.2",
     "@types/graphql": "^14.5.0",
-    "apollo-server-express": "^2.18.1",
+    "apollo-server-express": "^2.18.2",
     "debug": "^4.2.0",
     "express": "^4.17.1",
     "graphql": "^15.3.0",
