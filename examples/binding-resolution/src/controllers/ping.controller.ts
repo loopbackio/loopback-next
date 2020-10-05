@@ -3,7 +3,13 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {bind, Binding, BindingScope, Context, inject} from '@loopback/core';
+import {
+  Binding,
+  BindingScope,
+  Context,
+  inject,
+  injectable,
+} from '@loopback/core';
 import {
   get,
   RequestContext,
@@ -11,7 +17,7 @@ import {
   RestBindings,
 } from '@loopback/rest';
 import {LOGGER_SERVICE} from '../keys';
-import {bindingScope, logContext, Logger, logContexts} from '../util';
+import {bindingScope, count, logContext, logContexts, Logger} from '../util';
 
 /**
  * OpenAPI response for ping()
@@ -43,7 +49,7 @@ const PING_RESPONSE: ResponseObject = {
 /**
  * A simple controller to bounce back http requests
  */
-@bind({scope: bindingScope(BindingScope.TRANSIENT)})
+@injectable({scope: bindingScope('PingController', BindingScope.TRANSIENT)})
 export class PingController {
   constructor(
     // Inject the resolution context and current binding for logging purpose
@@ -66,12 +72,13 @@ export class PingController {
       '200': PING_RESPONSE,
     },
   })
-  ping(
+  async ping(
     // Use method parameter injection to receive the request context
     // This works regardless of the binding scope for `PingController`
     @inject(RestBindings.Http.CONTEXT) requestCtx: RequestContext,
-  ): object {
+  ): Promise<object> {
     logContext('Request', requestCtx, this.binding, this.logger);
+    await count(requestCtx, 'PingController');
     // Reply with a greeting, the current time, the url, and request headers
     const result = {
       greeting: 'Hello from LoopBack',
