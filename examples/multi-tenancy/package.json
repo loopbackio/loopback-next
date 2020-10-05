@@ -10,7 +10,7 @@
     "multi-tenancy"
   ],
   "engines": {
-    "node": ">=10.16"
+    "node": "^10.16 || 12 || 14"
   },
   "scripts": {
     "build": "lb-tsc",

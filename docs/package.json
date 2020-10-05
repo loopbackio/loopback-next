@@ -10,7 +10,7 @@
     "access": "public"
   },
   "engines": {
-    "node": ">=10.16"
+    "node": "^10.16 || 12 || 14"
   },
   "files": [
     "*.md",

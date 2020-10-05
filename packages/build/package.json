@@ -8,7 +8,7 @@
   },
   "version": "6.2.4",
   "engines": {
-    "node": ">=10.16"
+    "node": "^10.16 || 12 || 14"
   },
   "main": "index.js",
   "author": "IBM Corp.",
