@@ -27,7 +27,7 @@
     "@loopback/rest": "^7.0.1"
   },
   "dependencies": {
-    "tslib": "^2.0.1",
+    "tslib": "^2.0.2",
     "typeorm": "^0.2.28"
   },
   "devDependencies": {

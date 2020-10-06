@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "msgpack-lite": "0.1.26",
-    "tslib": "^2.0.0",
+    "tslib": "^2.0.2",
     "type-is": "^1.6.18"
   },
   "devDependencies": {
