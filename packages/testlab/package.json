@@ -33,7 +33,7 @@
     "should": "^13.2.3",
     "sinon": "^9.1.0",
     "supertest": "^5.0.0",
-    "tslib": "^2.0.1"
+    "tslib": "^2.0.2"
   },
   "devDependencies": {
     "@loopback/build": "^6.2.4",
