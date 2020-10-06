@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "loopback-datasource-juggler": "^4.24.0",
-    "tslib": "^2.0.1"
+    "tslib": "^2.0.2"
   },
   "files": [
     "README.md",

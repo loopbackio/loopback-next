@@ -50,7 +50,7 @@
     "@loopback/rest-explorer": "^3.0.1",
     "@loopback/service-proxy": "^3.0.1",
     "strong-error-handler": "^3.5.0",
-    "tslib": "^2.0.1"
+    "tslib": "^2.0.2"
   },
   "devDependencies": {
     "@loopback/build": "^6.2.4",
