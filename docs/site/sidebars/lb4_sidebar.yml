@@ -538,6 +538,10 @@ children:
         url: Decorators_authenticate.html
         output: 'web, pdf'
 
+      - title: 'Authorization Decorators'
+        url: Decorators_authorize.html
+        output: 'web, pdf'
+
       - title: 'Service Decorators'
         url: Decorators_service.html
         output: 'web, pdf'
