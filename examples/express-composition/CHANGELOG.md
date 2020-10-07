@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.5.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-express-composition@2.4.4...@loopback/example-express-composition@2.5.0) (2020-10-07)
+
+
+### Features
+
+* **cli:** build before migrate and openapi-spec ([b1d0bd6](https://github.com/strongloop/loopback-next/commit/b1d0bd69319f71712d2dd257e3dea734218b3cbb))
+
+
+
+
+
 ## [2.4.4](https://github.com/strongloop/loopback-next/compare/@loopback/example-express-composition@2.4.3...@loopback/example-express-composition@2.4.4) (2020-09-17)
 
 **Note:** Version bump only for package @loopback/example-express-composition

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@3.0.1...@loopback/repository@3.1.0) (2020-10-07)
+
+
+### Bug Fixes
+
+* tidy up type inferences for OpenAPI SchemaObject ([013bb7e](https://github.com/strongloop/loopback-next/commit/013bb7e4c0f7499a7f77c152dea7caa14e19b7cc))
+
+
+### Features
+
+* **repository:** implement hasManyThrough resolver ([8e7767d](https://github.com/strongloop/loopback-next/commit/8e7767df0a4679c8c70ad524e56aea9783def521))
+
+
+
+
+
 ## [3.0.1](https://github.com/strongloop/loopback-next/compare/@loopback/repository@3.0.0...@loopback/repository@3.0.1) (2020-09-17)
 
 **Note:** Version bump only for package @loopback/repository

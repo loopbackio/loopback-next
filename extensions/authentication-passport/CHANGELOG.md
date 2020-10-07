@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.2](https://github.com/strongloop/loopback-next/compare/@loopback/authentication-passport@3.0.1...@loopback/authentication-passport@3.0.2) (2020-10-07)
+
+
+### Bug Fixes
+
+* **docs:** fix broken links ([3348ab4](https://github.com/strongloop/loopback-next/commit/3348ab4ea8bc1fc41a3a2f71756c978123ed4001))
+
+
+
+
+
 ## [3.0.1](https://github.com/strongloop/loopback-next/compare/@loopback/authentication-passport@3.0.0...@loopback/authentication-passport@3.0.1) (2020-09-17)
 
 **Note:** Version bump only for package @loopback/authentication-passport

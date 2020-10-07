@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.2](https://github.com/strongloop/loopback-next/compare/@loopback/context-explorer@0.2.1...@loopback/context-explorer@0.2.2) (2020-10-07)
+
+
+### Bug Fixes
+
+* **context-explorer:** include `public` directory in the npm package ([ca86092](https://github.com/strongloop/loopback-next/commit/ca86092f646f38bfb8c557ea8d72117f6e72ad73))
+* **context-explorer:** use function/class name for tag values ([f9cb07d](https://github.com/strongloop/loopback-next/commit/f9cb07ddb0deae8e0b6ca77096809406daac6d2f))
+
+
+
+
+
 ## [0.2.1](https://github.com/strongloop/loopback-next/compare/@loopback/context-explorer@0.2.0...@loopback/context-explorer@0.2.1) (2020-09-17)
 
 **Note:** Version bump only for package @loopback/context-explorer

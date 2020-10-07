@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo-jwt@1.3.4...@loopback/example-todo-jwt@1.4.0) (2020-10-07)
+
+
+### Bug Fixes
+
+* tidy up type inferences for OpenAPI SchemaObject ([013bb7e](https://github.com/strongloop/loopback-next/commit/013bb7e4c0f7499a7f77c152dea7caa14e19b7cc))
+
+
+### Features
+
+* **cli:** build before migrate and openapi-spec ([b1d0bd6](https://github.com/strongloop/loopback-next/commit/b1d0bd69319f71712d2dd257e3dea734218b3cbb))
+
+
+
+
+
 ## [1.3.4](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo-jwt@1.3.3...@loopback/example-todo-jwt@1.3.4) (2020-09-17)
 
 **Note:** Version bump only for package @loopback/example-todo-jwt

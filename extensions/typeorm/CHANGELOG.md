@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.2](https://github.com/strongloop/loopback-next/compare/@loopback/typeorm@0.2.1...@loopback/typeorm@0.2.2) (2020-10-07)
+
+
+### Bug Fixes
+
+* tidy up type inferences for OpenAPI SchemaObject ([013bb7e](https://github.com/strongloop/loopback-next/commit/013bb7e4c0f7499a7f77c152dea7caa14e19b7cc))
+
+
+
+
+
 ## [0.2.1](https://github.com/strongloop/loopback-next/compare/@loopback/typeorm@0.2.0...@loopback/typeorm@0.2.1) (2020-09-17)
 
 **Note:** Version bump only for package @loopback/typeorm
