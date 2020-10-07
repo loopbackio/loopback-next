@@ -3,6 +3,61 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [8.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@7.0.1...@loopback/rest@8.0.0) (2020-10-07)
+
+
+### Features
+
+* **context:** introduce new binding scopes ([9916cfd](https://github.com/strongloop/loopback-next/commit/9916cfd4449a870f7a3378e2e674957aed7c1626))
+* update dependency openapi3-ts to v2 ([aabd6e6](https://github.com/strongloop/loopback-next/commit/aabd6e62a11d5e10ff2256ec664a923041e27ce0))
+
+
+### BREAKING CHANGES
+
+* openapi3-ts@2.x has a stricter typing for `type` and `format`
+properties as union types with a known list of values.
+
+We now either have to explicitly type the schema as `SchemaObject`
+or cast the `type` to `SchemaObject['type'], for example:
+
+```ts
+import {SchemaObject} from '@loopback/openapi-v3';
+
+const schemaDef1 = {
+  type: 'number' as const; // cast the type to be 'number' from 'string'
+};
+
+// Use the explicit `SchemaObject` to enforce inference
+const schemaDef2: SchemaObject = {
+  type: 'number' as const;
+};
+```
+
+It also applies to OpenAPI parameter objects:
+
+```ts
+import {ParameterObject} from '@loopback/openapi-v3';
+
+const paramDef1 = {
+  type: 'number' as const, // cast the type to be 'number' from 'string'
+  name: 'limit',
+  in: 'query',
+}
+
+// Use the explicit `ParameterObject` to enforce inference
+const paramDef2: ParameterObject = {
+  type: 'number',
+  name: 'limit',
+  in: 'query',
+}
+```
+
+Signed-off-by: Renovate Bot <bot@renovateapp.com>
+
+
+
+
+
 ## [7.0.1](https://github.com/strongloop/loopback-next/compare/@loopback/rest@7.0.0...@loopback/rest@7.0.1) (2020-09-17)
 
 **Note:** Version bump only for package @loopback/rest

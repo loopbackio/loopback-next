@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/graphql@0.1.1...@loopback/graphql@0.2.0) (2020-10-07)
+
+
+### Bug Fixes
+
+* **docs:** fix broken links ([3348ab4](https://github.com/strongloop/loopback-next/commit/3348ab4ea8bc1fc41a3a2f71756c978123ed4001))
+
+
+### Features
+
+* **context:** introduce new binding scopes ([9916cfd](https://github.com/strongloop/loopback-next/commit/9916cfd4449a870f7a3378e2e674957aed7c1626))
+
+
+
+
+
 ## [0.1.1](https://github.com/strongloop/loopback-next/compare/@loopback/graphql@0.1.0...@loopback/graphql@0.1.1) (2020-09-17)
 
 **Note:** Version bump only for package @loopback/graphql

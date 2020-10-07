@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.11.0](https://github.com/strongloop/loopback-next/compare/@loopback/core@2.10.1...@loopback/core@2.11.0) (2020-10-07)
+
+
+### Features
+
+* **context:** introduce new binding scopes ([9916cfd](https://github.com/strongloop/loopback-next/commit/9916cfd4449a870f7a3378e2e674957aed7c1626))
+
+
+
+
+
 ## [2.10.1](https://github.com/strongloop/loopback-next/compare/@loopback/core@2.10.0...@loopback/core@2.10.1) (2020-09-17)
 
 **Note:** Version bump only for package @loopback/core

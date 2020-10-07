@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/http-server@2.2.2...@loopback/http-server@2.3.0) (2020-10-07)
+
+
+### Features
+
+* **http-server:** configure http.Server and Server properties ([42ad4b8](https://github.com/strongloop/loopback-next/commit/42ad4b887616879241337af1817fe30690641188))
+
+
+
+
+
 ## [2.2.2](https://github.com/strongloop/loopback-next/compare/@loopback/http-server@2.2.1...@loopback/http-server@2.2.2) (2020-09-17)
 
 **Note:** Version bump only for package @loopback/http-server

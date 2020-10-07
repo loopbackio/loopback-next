@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.7.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-passport-login@1.6.0...@loopback/example-passport-login@1.7.0) (2020-10-07)
+
+
+### Bug Fixes
+
+* **example-passport-login:** import options from google oauth2 ([b4249b6](https://github.com/strongloop/loopback-next/commit/b4249b60be22e3344454a85703159d0d1decafdc))
+* tidy up type inferences for OpenAPI SchemaObject ([013bb7e](https://github.com/strongloop/loopback-next/commit/013bb7e4c0f7499a7f77c152dea7caa14e19b7cc))
+
+
+### Features
+
+* **cli:** build before migrate and openapi-spec ([b1d0bd6](https://github.com/strongloop/loopback-next/commit/b1d0bd69319f71712d2dd257e3dea734218b3cbb))
+
+
+
+
+
 # [1.6.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-passport-login@1.5.6...@loopback/example-passport-login@1.6.0) (2020-09-17)
 
 

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/express@2.0.1...@loopback/express@2.1.0) (2020-10-07)
+
+
+### Bug Fixes
+
+* **express:** make sure middleware group name from `[@bind](https://github.com/bind)` is preserved ([1a170e5](https://github.com/strongloop/loopback-next/commit/1a170e59ed8d549fe37d33a4ba9e8bdf2b74ac0d))
+
+
+### Features
+
+* **context:** introduce new binding scopes ([9916cfd](https://github.com/strongloop/loopback-next/commit/9916cfd4449a870f7a3378e2e674957aed7c1626))
+
+
+
+
+
 ## [2.0.1](https://github.com/strongloop/loopback-next/compare/@loopback/express@2.0.0...@loopback/express@2.0.1) (2020-09-17)
 
 **Note:** Version bump only for package @loopback/express

@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.17.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.16.1...@loopback/docs@3.17.0) (2020-10-07)
+
+
+### Bug Fixes
+
+* **docs:** extract route how-to ([90d8a88](https://github.com/strongloop/loopback-next/commit/90d8a88210eabca8d2b6e21e6da664d73a6e056f))
+* authorization links ([af67077](https://github.com/strongloop/loopback-next/commit/af670770b2acfc1871d2a5f611f3ad1273e5895a))
+* **docs:** fix broken links ([3348ab4](https://github.com/strongloop/loopback-next/commit/3348ab4ea8bc1fc41a3a2f71756c978123ed4001))
+
+
+### Features
+
+* **docs:** add docs for Angular ([5c571f5](https://github.com/strongloop/loopback-next/commit/5c571f595990948ae73cdb57a212dbc53aadb87c))
+* **docs:** add Q4 roadmap ([b05c2a7](https://github.com/strongloop/loopback-next/commit/b05c2a7ec804f0a1d5857accbdb29800ca2c2e57))
+* **docs:** update binding docs to reflect the new binding scopes ([b3015ac](https://github.com/strongloop/loopback-next/commit/b3015ac7d6ed4508e1463001cfdf98432bd8296e))
+* **example-binding-resolution:** add an example to illustrate binding resolution and injection ([6c05b25](https://github.com/strongloop/loopback-next/commit/6c05b25b4d28f7b8bccf28e11f6c14008d646c06))
+* **example-webpack:** add an example to generate bundles with webpack ([53bbb3a](https://github.com/strongloop/loopback-next/commit/53bbb3a1ad36e45672bf8f64257e343f18258bd5))
+* **openapi-v3:** add OAS3 visibility decorator ([c388cbf](https://github.com/strongloop/loopback-next/commit/c388cbf94ea06065432b4bb52a8b494b5d8c4c8e)), closes [#6392](https://github.com/strongloop/loopback-next/issues/6392)
+* **repository:** implement hasManyThrough resolver ([8e7767d](https://github.com/strongloop/loopback-next/commit/8e7767df0a4679c8c70ad524e56aea9783def521))
+
+
+
+
+
 ## [3.16.1](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.16.0...@loopback/docs@3.16.1) (2020-09-18)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.6.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo-list@3.5.4...@loopback/example-todo-list@3.6.0) (2020-10-07)
+
+
+### Features
+
+* **cli:** build before migrate and openapi-spec ([b1d0bd6](https://github.com/strongloop/loopback-next/commit/b1d0bd69319f71712d2dd257e3dea734218b3cbb))
+
+
+
+
+
 ## [3.5.4](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo-list@3.5.3...@loopback/example-todo-list@3.5.4) (2020-09-17)
 
 **Note:** Version bump only for package @loopback/example-todo-list

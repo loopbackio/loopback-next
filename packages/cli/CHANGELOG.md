@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.16.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@2.15.1...@loopback/cli@2.16.0) (2020-10-07)
+
+
+### Bug Fixes
+
+* **cli:** update package dependencies in cli template ([ac511ee](https://github.com/strongloop/loopback-next/commit/ac511ee264b72b314105da14ac0ec4c35d0cac9c))
+
+
+### Features
+
+* **cli:** add exit option to mocharc template in generator ([64dbbde](https://github.com/strongloop/loopback-next/commit/64dbbde2678d3a9de25ccad4f0b3b7adf77aa3db))
+* **cli:** build before migrate and openapi-spec ([b1d0bd6](https://github.com/strongloop/loopback-next/commit/b1d0bd69319f71712d2dd257e3dea734218b3cbb))
+* **cli:** improve `lb4 update` to any package that uses `@loopback/*` ([9892b35](https://github.com/strongloop/loopback-next/commit/9892b35ff771e40b9b2c3a5c5d7e17104a863211))
+* **cli:** leave numbers in dirname alone ([3c970ae](https://github.com/strongloop/loopback-next/commit/3c970aec818f2371be3dec56e620b2cb29223c49))
+* **example-webpack:** add an example to generate bundles with webpack ([53bbb3a](https://github.com/strongloop/loopback-next/commit/53bbb3a1ad36e45672bf8f64257e343f18258bd5))
+* **repository:** implement hasManyThrough resolver ([8e7767d](https://github.com/strongloop/loopback-next/commit/8e7767df0a4679c8c70ad524e56aea9783def521))
+
+
+
+
+
 ## [2.15.1](https://github.com/strongloop/loopback-next/compare/@loopback/cli@2.15.0...@loopback/cli@2.15.1) (2020-09-18)
 
 **Note:** Version bump only for package @loopback/cli

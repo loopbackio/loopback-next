@@ -1,6 +1,6 @@
 {
   "name": "@loopback/docs",
-  "version": "3.16.1",
+  "version": "3.17.0",
   "description": "Documentation files rendered at [https://loopback.io](https://loopback.io)",
   "homepage": "https://github.com/strongloop/loopback-next/tree/master/docs",
   "author": "IBM Corp.",
@@ -27,7 +27,7 @@
     "clean": "lb-clean loopback-docs*.tgz package apidocs site/readmes site/changelogs site/apidocs"
   },
   "devDependencies": {
-    "@loopback/build": "^6.2.4"
+    "@loopback/build": "^6.2.5"
   },
   "repository": {
     "type": "git",
