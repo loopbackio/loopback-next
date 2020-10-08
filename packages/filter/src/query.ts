@@ -159,7 +159,9 @@ export type Order<MT = AnyObject> = {[P in keyof MT]: Direction};
  * Example:
  * `{afieldname: true}`
  */
-export type Fields<MT = AnyObject> = {[P in keyof MT]?: boolean};
+export type Fields<MT = AnyObject> =
+  | {[P in keyof MT]?: boolean}
+  | Extract<keyof MT, string>[];
 
 /**
  * Inclusion of related items
@@ -560,16 +562,21 @@ export class FilterBuilder<MT extends object = AnyObject> {
    * @param f - A field name to be included, an array of field names to be
    * included, or an Fields object for the inclusion/exclusion
    */
-  fields(...f: (Fields<MT> | (keyof MT)[] | keyof MT)[]): this {
+  fields(...f: (Fields<MT> | Extract<keyof MT, string>)[]): this {
     if (!this.filter.fields) {
       this.filter.fields = {};
+    } else if (Array.isArray(this.filter.fields)) {
+      this.filter.fields = this.filter.fields.reduce(
+        (prev, current) => ({...prev, [current]: true}),
+        {},
+      );
     }
     const fields = this.filter.fields;
     for (const field of f) {
       if (Array.isArray(field)) {
-        (field as (keyof MT)[]).forEach(i => (fields[i] = true));
+        field.forEach(i => (fields[i] = true));
       } else if (typeof field === 'string') {
-        fields[field as keyof MT] = true;
+        fields[field] = true;
       } else {
         Object.assign(fields, field);
       }

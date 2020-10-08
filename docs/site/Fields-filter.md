@@ -21,14 +21,21 @@ Where:
 - `<true|false>` signifies either `true` or `false` Boolean literal. Use `true`
   to include the property or `false` to exclude it from results.
 
+also can be used an array of strings with the properties
+
+<pre>
+{ fields: [<i>propertyName</i>, <i>propertyName</i>, ... ] }
+</pre>
+
 By default, queries return all model properties in results. However, if you
-specify at least one fields filter with a value of `true`, then by default the
-query will include **only** those you specifically include with filters.
+specify at least one fields filter with a value of `true` or put it in the
+array, then by default the query will include **only** those you specifically
+include with filters.
 
 ### REST API
 
 <pre>
-filter[fields][<i>propertyName</i>]=true|false&filter[fields][<i>propertyName</i>]=true|false...
+filter[fields]=<i>propertyName</i>&filter[fields]=<i>propertyName</i>...
 </pre>
 
 Note that to include more than one field in REST, use multiple filters.
@@ -47,14 +54,14 @@ fields, you can specify all required properties as:
 {% include code-caption.html content="Node.js API" %}
 
 ```ts
-await customerRepository.find({fields: {name: true, address: true}});
+await customerRepository.find({fields: ['name', 'address']});
 ```
 
 {% include code-caption.html content="REST" %}
 
 Its equivalent stringified JSON format:
 
-`/customers?filter={"fields":{"name":true,"address":true}}`
+`/customers?filter={"fields":["name","address"]}`
 
 Returns:
 

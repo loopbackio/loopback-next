@@ -197,20 +197,32 @@ export function getFieldsJsonSchemaFor(
   modelCtor: typeof Model,
   options: FilterSchemaOptions = {},
 ): JsonSchema {
-  const schema: JsonSchema = {
-    ...(options.setTitle !== false && {
-      title: `${modelCtor.modelName}.Fields`,
-    }),
-    type: 'object',
+  const schema: JsonSchema = {oneOf: []};
+  if (options.setTitle !== false) {
+    schema.title = `${modelCtor.modelName}.Fields`;
+  }
 
-    properties: Object.assign(
+  const properties = Object.keys(modelCtor.definition.properties);
+  const additionalProperties = modelCtor.definition.settings.strict === false;
+
+  schema.oneOf?.push({
+    type: 'object',
+    properties: properties.reduce(
+      (prev, crr) => ({...prev, [crr]: {type: 'boolean'}}),
       {},
-      ...Object.keys(modelCtor.definition.properties).map(k => ({
-        [k]: {type: 'boolean'},
-      })),
     ),
-    additionalProperties: modelCtor.definition.settings.strict === false,
-  };
+    additionalProperties,
+  });
+
+  schema.oneOf?.push({
+    type: 'array',
+    items: {
+      type: 'string',
+      enum: properties.length && !additionalProperties ? properties : undefined,
+      examples: properties,
+    },
+    uniqueItems: true,
+  });
 
   return schema;
 }

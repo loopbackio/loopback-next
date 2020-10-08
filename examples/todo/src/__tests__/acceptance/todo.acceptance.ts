@@ -293,6 +293,17 @@ describe('TodoApplication', () => {
       ]);
   });
 
+  it('queries todos with exploded array-based fields filter', async () => {
+    await givenTodoInstance({
+      title: 'go to sleep',
+      isComplete: false,
+    });
+    await client
+      .get('/todos')
+      .query('filter[fields][0]=title')
+      .expect(200, toJSON([{title: 'go to sleep'}]));
+  });
+
   it('queries todos with exploded array-based order filter', async () => {
     const todoInProgress = await givenTodoInstance({
       title: 'go to sleep',
