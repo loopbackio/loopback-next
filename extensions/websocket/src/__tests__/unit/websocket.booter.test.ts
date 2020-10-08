@@ -25,8 +25,10 @@ describe('WebsocketBooter', () => {
   const givemeAnInstanceApplicaciontionRunning = async () => {
     const app = new BooteablewebsocketApplication({
       websocket: {
-        host: '127.0.0.1',
-        port: 0,
+        config: {
+          host: '127.0.0.1',
+          port: 0,
+        },
       },
     });
     await app.boot();

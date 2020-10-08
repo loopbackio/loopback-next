@@ -18,7 +18,7 @@
     "build": "lb-tsc",
     "clean": "lb-clean loopback-socketio*.tgz dist package *.tsbuildinfo",
     "pretest": "npm run build",
-    "test": "lb-mocha --allow-console-logs \"dist/__tests__/unit/**/*.js\" \"dist/__tests__/acceptance/**/*.js\"",
+    "test": "lb-mocha --allow-console-logs \"dist/__tests__/acceptance/websocket.server.acceptance.js\"",
     "unit": "lb-mocha \"dist/__tests__/unit/**/*.js\"",
     "verify": "npm pack && tar xf loopback-socketio*.tgz && tree package && npm run clean"
   },
