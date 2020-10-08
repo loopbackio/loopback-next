@@ -1,17 +1,17 @@
 import {BootMixin} from '@loopback/boot';
 import {ApplicationConfig} from '@loopback/core';
 import {expect} from '@loopback/testlab';
-import {WebsocketApplication} from '../../websocket.application';
+import pEvent from 'p-event';
 import path from 'path';
 import io from 'socket.io-client';
-import pEvent from 'p-event';
+import {WebsocketApplication} from '../../websocket.application';
+import {WebsocketComponent} from '../../websocket.component';
 import {
   DECORATOR_TEST_CONTROLER_NSP,
   METHODS_TEST_CONTROLER_NSP,
   SAMPLE_CONTROLER_NSP,
   SEQUENCE_TEST_CONTROLER_NSP,
 } from '../fixtures/ws-controllers';
-import {WebsocketComponent} from '../../websocket.component';
 
 class BooteablewebsocketApplication extends BootMixin(WebsocketApplication) {
   constructor(options: ApplicationConfig) {

@@ -3,13 +3,13 @@
 // License text available at https://opensource.org/licenses/MIT
 // Base on: https://github.com/strongloop/loopback-next/blob/master/packages/boot/src/booters/repository.booter.ts
 
-import {Application, config, CoreBindings, inject} from '@loopback/core';
 import {
   ArtifactOptions,
   BaseArtifactBooter,
   BootBindings,
   booter,
 } from '@loopback/boot';
+import {Application, config, CoreBindings, inject} from '@loopback/core';
 import {WebsocketBindings} from '../keys';
 import {WebsocketServer} from '../websocket.server';
 

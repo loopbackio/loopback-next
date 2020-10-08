@@ -1,4 +1,6 @@
 import {BindingKey, CoreBindings} from '@loopback/core';
+import {RequestListener} from '@loopback/http-server';
+import {Server, ServerOptions, Socket} from 'socket.io';
 import {
   WebsocketInvokeMethod,
   WebsocketOptions,
@@ -6,9 +8,7 @@ import {
   WebsocketSendMethod,
   WebsocketSequence,
 } from './types';
-import {Server, ServerOptions, Socket} from 'socket.io';
 import {WebsocketServer} from './websocket.server';
-import {RequestListener} from '@loopback/http-server';
 
 export namespace WebsocketBindings {
   export const CONFIG: BindingKey<WebsocketOptions> = CoreBindings.APPLICATION_CONFIG.deepProperty(

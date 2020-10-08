@@ -1,11 +1,10 @@
 import {Constructor} from '@loopback/context';
-import {Socket} from 'socket.io';
 import pEvent from 'p-event';
+import {Socket} from 'socket.io';
 import io from 'socket.io-client';
-
-import {WebsocketApplication} from '../../websocket.application';
-import {WebsocketControllerFactory} from '../../websocket-controller-factory';
 import {WebsocketBindings} from '../../keys';
+import {WebsocketControllerFactory} from '../../websocket-controller-factory';
+import {WebsocketApplication} from '../../websocket.application';
 
 export const withConnectedSockets = async (
   app: WebsocketApplication,

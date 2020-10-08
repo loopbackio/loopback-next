@@ -1,5 +1,5 @@
-import {ws} from '../../../decorators';
 import {Socket} from 'socket.io';
+import {ws} from '../../../decorators';
 
 export const SAMPLE_CONTROLER_NSP = '/sample/ws';
 

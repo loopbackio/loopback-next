@@ -1,20 +1,20 @@
-import {ControllerClass, CoreBindings} from '@loopback/core';
 import {
   BindingScope,
   Constructor,
   Context,
+  invokeMethod,
   MetadataAccessor,
   MetadataInspector,
-  invokeMethod,
 } from '@loopback/context';
-import {WebsocketBindings} from './keys';
+import {ControllerClass, CoreBindings} from '@loopback/core';
+import {DecoratorType, MetadataMap} from '@loopback/metadata/src/types';
+import {Socket} from 'socket.io';
 import {
   WEBSOCKET_CONNECT_METADATA,
   WEBSOCKET_SUBSCRIBE_METADATA,
 } from './decorators';
-import {DecoratorType, MetadataMap} from '@loopback/metadata/src/types';
+import {WebsocketBindings} from './keys';
 import {WebsocketDoneFunction} from './types';
-import {Socket} from 'socket.io';
 
 type WebsocketEventMatcherInfo = {
   matcher: string | RegExp;

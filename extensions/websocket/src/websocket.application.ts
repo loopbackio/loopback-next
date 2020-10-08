@@ -1,6 +1,6 @@
 import {Application, ApplicationConfig} from '@loopback/core';
-import {WebsocketComponent} from './websocket.component';
 import {WebsocketBindings} from './keys';
+import {WebsocketComponent} from './websocket.component';
 import {WebsocketServer} from './websocket.server';
 
 export class WebsocketApplication extends Application {

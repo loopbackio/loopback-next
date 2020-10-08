@@ -1,10 +1,10 @@
 import {expect} from '@loopback/testlab';
+import {Socket} from 'socket.io';
+import {WebsocketBindings} from '../../keys';
+import {WebsocketControllerFactory} from '../../websocket-controller-factory';
 import {WebsocketApplication} from '../../websocket.application';
 import {getNewFactory} from '../fixtures/application';
-import {Socket} from 'socket.io';
 import {DummySocket} from '../fixtures/dummy-socket';
-import {WebsocketControllerFactory} from '../../websocket-controller-factory';
-import {WebsocketBindings} from '../../keys';
 import {SequenceTestController} from '../fixtures/ws-controllers';
 
 describe('WebsocketSequence', () => {

@@ -6,15 +6,15 @@ import {
   inject,
   ProviderMap,
 } from '@loopback/core';
+import {WebsocketBooter} from './booters';
 import {WebsocketBindings} from './keys';
-import {WebsocketServer} from './websocket.server';
-import {DefaultWebsocketSequence} from './websocket.sequence';
 import {
   WebsocketInvokeMethodProvider,
-  WebsocketSendProvider,
   WebsocketRejectProvider,
+  WebsocketSendProvider,
 } from './providers';
-import {WebsocketBooter} from './booters';
+import {DefaultWebsocketSequence} from './websocket.sequence';
+import {WebsocketServer} from './websocket.server';
 
 export class WebsocketComponent implements Component {
   booters = [WebsocketBooter];

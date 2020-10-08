@@ -1,12 +1,12 @@
 import {expect} from '@loopback/testlab';
 import pEvent from 'p-event';
+import {WebsocketApplication} from '../../websocket.application';
 import {getNewFactory, withConnectedSockets} from '../fixtures/application';
 import {
-  SAMPLE_CONTROLER_NSP,
-  SampleTestController,
   MethodsTestController,
+  SampleTestController,
+  SAMPLE_CONTROLER_NSP,
 } from '../fixtures/ws-controllers';
-import {WebsocketApplication} from '../../websocket.application';
 
 describe('Acceptance of Websocket extension', () => {
   let app: WebsocketApplication;

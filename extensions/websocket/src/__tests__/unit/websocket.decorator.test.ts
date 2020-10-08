@@ -1,14 +1,14 @@
-import {expect} from '@loopback/testlab';
 import {invokeMethod} from '@loopback/context';
+import {expect} from '@loopback/testlab';
 import {Namespace, Server, Socket} from 'socket.io';
-import {WebsocketApplication} from '../../websocket.application';
-import {WebsocketControllerFactory} from '../../websocket-controller-factory';
-import {DummySocket} from '../fixtures/dummy-socket';
-import {getNewFactory} from '../fixtures/application';
 import {WebsocketBindings} from '../../keys';
+import {WebsocketControllerFactory} from '../../websocket-controller-factory';
+import {WebsocketApplication} from '../../websocket.application';
+import {getNewFactory} from '../fixtures/application';
+import {DummySocket} from '../fixtures/dummy-socket';
 import {
-  DECORATOR_TEST_CONTROLER_NSP,
   DecoratorTestController,
+  DECORATOR_TEST_CONTROLER_NSP,
 } from '../fixtures/ws-controllers';
 
 describe('Websocket decorators', () => {

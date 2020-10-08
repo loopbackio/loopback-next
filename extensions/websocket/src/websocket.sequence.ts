@@ -1,12 +1,11 @@
 import {Context, ControllerClass, CoreBindings, inject} from '@loopback/core';
-
+import {WebsocketBindings} from './keys';
 import {
   WebsocketInvokeMethod,
   WebsocketRejectMethod,
   WebsocketSendMethod,
   WebsocketSequence,
 } from './types';
-import {WebsocketBindings} from './keys';
 
 export class DefaultWebsocketSequence implements WebsocketSequence {
   constructor(

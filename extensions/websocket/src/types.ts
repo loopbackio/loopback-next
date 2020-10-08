@@ -1,6 +1,6 @@
-import {HttpServerOptions} from '@loopback/http-server';
-import {ControllerClass} from '@loopback/core';
 import {Context} from '@loopback/context';
+import {ControllerClass} from '@loopback/core';
+import {HttpServerOptions} from '@loopback/http-server';
 
 export type WebsocketOptions = HttpServerOptions;
 

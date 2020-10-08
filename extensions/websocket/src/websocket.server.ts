@@ -1,27 +1,27 @@
 import {
+  Application,
   BindingFilter,
   BindingScope,
-  Application,
   Constructor,
   Context,
   ContextView,
-  createBindingFromClass,
   CoreBindings,
+  CoreTags,
+  createBindingFromClass,
   inject,
   MetadataInspector,
-  CoreTags,
 } from '@loopback/core';
 import {HttpServer} from '@loopback/http-server';
-import SocketIO, {Namespace, ServerOptions, Socket, Server} from 'socket.io';
-import {WebsocketBindings, WebsocketTags} from './keys';
-import {WebsocketOptions} from './types';
+import SocketIO, {Namespace, Server, ServerOptions, Socket} from 'socket.io';
 import {
   getWebsocketMetadata,
+  WebsocketMetadata,
   WEBSOCKET_CONNECT_METADATA,
   WEBSOCKET_METADATA,
   WEBSOCKET_SUBSCRIBE_METADATA,
-  WebsocketMetadata,
 } from './decorators';
+import {WebsocketBindings, WebsocketTags} from './keys';
+import {WebsocketOptions} from './types';
 import {WebsocketControllerFactory} from './websocket-controller-factory';
 
 const debug = require('debug')('loopback:websocket');

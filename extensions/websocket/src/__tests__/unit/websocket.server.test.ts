@@ -1,13 +1,13 @@
-import {expect} from '@loopback/testlab';
 import {Application} from '@loopback/core';
-import {getNamespaceKeyForName, WebsocketServer} from '../../websocket.server';
+import {expect} from '@loopback/testlab';
+import {Namespace, Server} from 'socket.io';
 import {WebsocketBindings} from '../../keys';
 import {WebsocketComponent} from '../../websocket.component';
-import {Server, Namespace} from 'socket.io';
+import {getNamespaceKeyForName, WebsocketServer} from '../../websocket.server';
 import {
-  SAMPLE_CONTROLER_NSP,
   DummyTestController,
   SampleTestController,
+  SAMPLE_CONTROLER_NSP,
 } from '../fixtures/ws-controllers';
 
 describe('WebsocketServer', () => {
