@@ -301,7 +301,17 @@ describe('FilterBuilder', () => {
       },
     });
   });
-
+  it('builds a filter object with array', () => {
+    const filterBuilder = new FilterBuilder();
+    filterBuilder.fields(['a', 'b']);
+    const filter = filterBuilder.build();
+    expect(filter).to.eql({
+      fields: {
+        a: true,
+        b: true,
+      },
+    });
+  });
   it('builds a filter object with limit/offset', () => {
     const filterBuilder = new FilterBuilder();
     filterBuilder.limit(10).offset(5);

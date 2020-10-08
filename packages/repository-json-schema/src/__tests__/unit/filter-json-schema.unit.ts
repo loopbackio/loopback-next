@@ -25,6 +25,7 @@ import {
 describe('getFilterJsonSchemaFor', () => {
   let ajv: Ajv.Ajv;
   let customerFilterSchema: JsonSchema;
+  let dynamicCustomerFilterSchema: JsonSchema;
   let customerFilterExcludingWhereSchema: JsonSchema;
   let customerFilterExcludingIncludeSchema: JsonSchema;
   let orderFilterSchema: JsonSchema;
@@ -32,6 +33,7 @@ describe('getFilterJsonSchemaFor', () => {
   beforeEach(() => {
     ajv = new Ajv();
     customerFilterSchema = getFilterJsonSchemaFor(Customer);
+    dynamicCustomerFilterSchema = getFilterJsonSchemaFor(DynamicCustomer);
     customerFilterExcludingWhereSchema = getFilterJsonSchemaFor(Customer, {
       exclude: ['where'],
     });
@@ -123,6 +125,51 @@ describe('getFilterJsonSchemaFor', () => {
         keyword: 'type',
         dataPath: '.fields',
         message: 'should be object',
+      },
+    ]);
+  });
+
+  it('allows free-form properties in "fields" for non-strict models"', () => {
+    const filter = {fields: ['test', 'id']};
+    ajv.validate(dynamicCustomerFilterSchema, filter);
+    expect(ajv.errors ?? []).to.be.empty();
+  });
+
+  it('allows only defined properties in "fields" for strict models"', () => {
+    const filter = {fields: ['test']};
+    ajv.validate(customerFilterSchema, filter);
+    expect(ajv.errors ?? []).to.containDeep([
+      {
+        keyword: 'enum',
+        dataPath: '.fields[0]',
+        params: {allowedValues: ['id', 'name']},
+        message: 'should be equal to one of the allowed values',
+      },
+    ]);
+  });
+
+  it('rejects "fields" with duplicated items for strict models', () => {
+    const filter = {fields: ['id', 'id']};
+    ajv.validate(customerFilterSchema, filter);
+    expect(ajv.errors ?? []).to.containDeep([
+      {
+        keyword: 'uniqueItems',
+        dataPath: '.fields',
+        message:
+          'should NOT have duplicate items (items ## 1 and 0 are identical)',
+      },
+    ]);
+  });
+
+  it('rejects "fields" with duplicated items for non-strict models', () => {
+    const filter = {fields: ['test', 'test']};
+    ajv.validate(dynamicCustomerFilterSchema, filter);
+    expect(ajv.errors ?? []).to.containDeep([
+      {
+        keyword: 'uniqueItems',
+        dataPath: '.fields',
+        message:
+          'should NOT have duplicate items (items ## 1 and 0 are identical)',
       },
     ]);
   });
@@ -498,4 +545,12 @@ class Customer extends Entity {
 
   @hasMany(() => Order)
   orders?: Order[];
+}
+
+@model({
+  settings: {strict: false},
+})
+class DynamicCustomer extends Entity {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any;
 }

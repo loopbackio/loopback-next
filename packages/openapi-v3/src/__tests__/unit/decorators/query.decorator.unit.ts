@@ -35,10 +35,27 @@ describe('sugar decorators for filter and where', () => {
               'x-typescript-type': '@loopback/repository#Filter<MyModel>',
               properties: {
                 fields: {
+                  oneOf: [
+                    {
+                      type: 'object',
+                      additionalProperties: false,
+                      properties: {
+                        name: {
+                          type: 'boolean',
+                        },
+                      },
+                    },
+                    {
+                      type: 'array',
+                      uniqueItems: true,
+                      items: {
+                        enum: ['name'],
+                        type: 'string',
+                        example: 'name',
+                      },
+                    },
+                  ],
                   title: 'MyModel.Fields',
-                  type: 'object',
-                  properties: {name: {type: 'boolean'}},
-                  additionalProperties: false,
                 },
                 offset: {type: 'integer', minimum: 0},
                 limit: {type: 'integer', minimum: 1, example: 100},
@@ -76,10 +93,27 @@ describe('sugar decorators for filter and where', () => {
               'x-typescript-type': '@loopback/repository#Filter<MyModel>',
               properties: {
                 fields: {
+                  oneOf: [
+                    {
+                      type: 'object',
+                      additionalProperties: false,
+                      properties: {
+                        name: {
+                          type: 'boolean',
+                        },
+                      },
+                    },
+                    {
+                      type: 'array',
+                      uniqueItems: true,
+                      items: {
+                        enum: ['name'],
+                        type: 'string',
+                        example: 'name',
+                      },
+                    },
+                  ],
                   title: 'MyModel.Fields',
-                  type: 'object',
-                  properties: {name: {type: 'boolean'}},
-                  additionalProperties: false,
                 },
                 offset: {type: 'integer', minimum: 0},
                 limit: {type: 'integer', minimum: 1, example: 100},
@@ -124,10 +158,27 @@ describe('sugar decorators for filter and where', () => {
               'x-typescript-type': '@loopback/repository#Filter<MyModel>',
               properties: {
                 fields: {
+                  oneOf: [
+                    {
+                      type: 'object',
+                      additionalProperties: false,
+                      properties: {
+                        name: {
+                          type: 'boolean',
+                        },
+                      },
+                    },
+                    {
+                      type: 'array',
+                      uniqueItems: true,
+                      items: {
+                        enum: ['name'],
+                        type: 'string',
+                        example: 'name',
+                      },
+                    },
+                  ],
                   title: 'MyModel.Fields',
-                  type: 'object',
-                  properties: {name: {type: 'boolean'}},
-                  additionalProperties: false,
                 },
                 offset: {type: 'integer', minimum: 0},
                 limit: {type: 'integer', minimum: 1, example: 100},
