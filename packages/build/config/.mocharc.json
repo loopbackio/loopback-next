@@ -1,7 +1,0 @@
-{
-  "require": ["source-map-support/register"],
-  "recursive": true,
-  "exit": true,
-  "reporter": "dot"
-}
-

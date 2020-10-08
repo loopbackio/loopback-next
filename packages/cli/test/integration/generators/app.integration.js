@@ -94,8 +94,8 @@ describe('app-generator specific files', () => {
     assert.fileContent('.gitignore', /^\*\.tsbuildinfo$/m);
   });
 
-  it('creates .mocharc.json', () => {
-    assertFilesToMatchSnapshot({}, '.mocharc.json');
+  it('creates .mocharc.js', () => {
+    assertFilesToMatchSnapshot({}, '.mocharc.js');
   });
 });
 

@@ -7,12 +7,16 @@
 
 'use strict';
 
-exports[`app-generator specific files creates .mocharc.json 1`] = `
-{
-  "exit": true,
-  "recursive": true,
-  "require": "source-map-support/register"
-}
+exports[`app-generator specific files creates .mocharc.js 1`] = `
+const semver = require('semver');
+
+const canUseBuiltinSourceMaps = semver.gte(process.version, 'v12.11.0');
+module.exports = {
+  require: !canUseBuiltinSourceMaps ? ['source-map-support/register'] : [],
+  recursive: true,
+  exit: true,
+  'enable-source-maps': canUseBuiltinSourceMaps,
+};
 
 `;
 

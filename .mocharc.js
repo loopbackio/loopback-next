@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 const {mergeMochaConfigs} = require('./packages/build');
-const defaultConfig = require('./packages/build/config/.mocharc.json');
+const defaultConfig = require('./packages/build/config/.mocharc.js');
 
 const MONOREPO_CONFIG = {
   parallel: true,

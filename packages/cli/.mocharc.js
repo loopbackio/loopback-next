@@ -10,7 +10,7 @@ const debug = require('debug')('loopback:cli:test');
 const {mergeMochaConfigs} = require('@loopback/build');
 
 // Start with the default config from `@loopback/build`
-const defaultConfig = require('@loopback/build/config/.mocharc.json');
+const defaultConfig = require('@loopback/build/config/.mocharc.js');
 debug('Default mocha config:', defaultConfig);
 
 // Resolve `./test/snapshot-matcher.js` to get the absolute path

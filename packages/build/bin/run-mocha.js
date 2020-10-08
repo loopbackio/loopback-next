@@ -33,8 +33,8 @@ function run(argv, options) {
   if (typeof options === 'boolean') options = {dryRun: options};
   options = options || {};
   if (setMochaOpts) {
-    // Use the default `.mocharc.json` from `@loopback/build`
-    const mochaOptsFile = utils.getConfigFile('.mocharc.json');
+    // Use the default `.mocharc.js` from `@loopback/build`
+    const mochaOptsFile = utils.getConfigFile('.mocharc.js', '.mocharc.json');
     mochaOpts.unshift('--config', mochaOptsFile);
   }
 
