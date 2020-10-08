@@ -1,4 +1,4 @@
-import {Constructor} from '@loopback/context';
+import {Constructor} from '@loopback/core';
 import pEvent from 'p-event';
 import {Socket} from 'socket.io';
 import io from 'socket.io-client';

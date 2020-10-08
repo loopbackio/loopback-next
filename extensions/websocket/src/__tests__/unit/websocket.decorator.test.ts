@@ -1,4 +1,4 @@
-import {invokeMethod} from '@loopback/context';
+import {invokeMethod} from '@loopback/core';
 import {expect} from '@loopback/testlab';
 import {Namespace, Server, Socket} from 'socket.io';
 import {WebsocketBindings} from '../../keys';

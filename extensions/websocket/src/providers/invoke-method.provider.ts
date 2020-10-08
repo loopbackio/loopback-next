@@ -1,5 +1,4 @@
-import {invokeMethod} from '@loopback/context';
-import {Context, ControllerClass, Provider} from '@loopback/core';
+import {Context, ControllerClass, invokeMethod, Provider} from '@loopback/core';
 import {WebsocketInvokeMethod} from '../types';
 
 export class WebsocketInvokeMethodProvider

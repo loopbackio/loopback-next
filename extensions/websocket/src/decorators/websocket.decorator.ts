@@ -5,7 +5,7 @@ import {
   MetadataAccessor,
   MetadataInspector,
   MethodDecoratorFactory,
-} from '@loopback/context';
+} from '@loopback/core';
 import {WebsocketBindings} from '../keys';
 
 export interface WebsocketMetadata {

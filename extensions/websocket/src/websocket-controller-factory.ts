@@ -2,12 +2,14 @@ import {
   BindingScope,
   Constructor,
   Context,
+  ControllerClass,
+  CoreBindings,
+  DecoratorType,
   invokeMethod,
   MetadataAccessor,
   MetadataInspector,
-} from '@loopback/context';
-import {ControllerClass, CoreBindings} from '@loopback/core';
-import {DecoratorType, MetadataMap} from '@loopback/metadata';
+  MetadataMap,
+} from '@loopback/core';
 import {Socket} from 'socket.io';
 import {
   WEBSOCKET_CONNECT_METADATA,
