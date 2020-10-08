@@ -69,7 +69,7 @@ export namespace ws {
    * Decorate a method to subscribe to socketio events.
    * For example,
    * ```ts
-   * @socketio.subscribe('chat message')
+   * @ws.subscribe('chat message')
    * async function onChat(msg: string) {
    * }
    * ```

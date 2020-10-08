@@ -434,3 +434,4 @@ fixtures/mock-oauth2-provider @jannyHou @emonddr
 # - Issue label: Websocket
 # - Primary owner(s): @arondn2
 # - Standby owner(s): n/a
+/extension/Websocket @arondn2
