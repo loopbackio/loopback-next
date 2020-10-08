@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.17.1](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.17.0...@loopback/docs@3.17.1) (2020-10-08)
+
+**Note:** Version bump only for package @loopback/docs
+
+
+
+
+
 # [3.17.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.16.1...@loopback/docs@3.17.0) (2020-10-07)
 
 

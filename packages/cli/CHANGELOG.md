@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.16.1](https://github.com/strongloop/loopback-next/compare/@loopback/cli@2.16.0...@loopback/cli@2.16.1) (2020-10-08)
+
+**Note:** Version bump only for package @loopback/cli
+
+
+
+
+
 # [2.16.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@2.15.1...@loopback/cli@2.16.0) (2020-10-07)
 
 
