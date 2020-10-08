@@ -10,5 +10,17 @@
     "src"
   ],
   "references": [
+    {
+      "path": "../../packages/boot/tsconfig.json"
+    },
+    {
+      "path": "../../packages/core/tsconfig.json"
+    },
+    {
+      "path": "../../packages/http-server/tsconfig.json"
+    },
+    {
+      "path": "../../packages/testlab/tsconfig.json"
+    }
   ]
 }
