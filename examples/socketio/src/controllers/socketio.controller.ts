@@ -78,8 +78,8 @@ export class SocketIOController {
       throw new Error('Inappropriate message data');
     } else {
       parsedMsg.receiver.to.forEach(item =>
-        this.socket.nsp.emit(
-          item.id,
+        this.socket.nsp.to(item.id).emit(
+          'general-message',
           JSON.stringify({
             subject: parsedMsg.subject,
             body: parsedMsg.body,

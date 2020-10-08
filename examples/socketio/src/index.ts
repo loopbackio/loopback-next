@@ -5,9 +5,9 @@ export * from './application';
 export async function main(options: ApplicationConfig = {}) {
   const app = new SocketioApplication(
     options || {
-      socketio: {
+      httpServerOptions: {
         host: '127.0.0.1',
-        port: 0,
+        port: 3001,
       },
     },
   );

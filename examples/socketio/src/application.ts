@@ -16,10 +16,10 @@ export class SocketioApplication extends BootMixin(
   readonly ioServer: SocketIOServer;
 
   constructor(options: ApplicationConfig = {}) {
-    options.rest = options.rest || {};
-    options.rest.port = +(process.env.PORT || 3000);
-    options.rest.host = process.env.HOST || '127.0.0.1';
-    options.rest.url = '127.0.0.1:3000';
+    options.httpServerOptions = options.httpServerOptions || {};
+    options.httpServerOptions.port = +(process.env.PORT || 3001);
+    options.httpServerOptions.host = process.env.HOST || '127.0.0.1';
+    options.httpServerOptions.url = process.env.URL || '127.0.0.1:3001';
     super(options);
 
     this.projectRoot = __dirname;

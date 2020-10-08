@@ -27,13 +27,8 @@ describe('SocketIOServer', () => {
   });
 
   async function givenApplication() {
-    app = new SocketIODemoApplication({
-      httpServerOptions: {
-        host: '127.0.0.1',
-        port: 3001,
-      },
-      socketIOOptions: {},
-    });
+    // testing for default configuration
+    app = new SocketIODemoApplication();
     await app.boot();
     await app.start();
 

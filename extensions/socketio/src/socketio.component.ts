@@ -1,15 +1,20 @@
 // Copyright IBM Corp. 2018,2020. All Rights Reserved.
-// Node module: @loopback/rest
+// Node module: @loopback/socketio
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
 import {
+  Application,
   Binding,
+  BindingScope,
   Component,
   Constructor,
+  CoreBindings,
+  inject,
   ProviderMap,
   Server,
 } from '@loopback/core';
+import {SocketIOBindings} from './keys';
 import {SocketIOServer} from './socketio.server';
 
 export class SocketIOComponent implements Component {
@@ -24,5 +29,10 @@ export class SocketIOComponent implements Component {
     SocketServer: SocketIOServer,
   };
 
-  constructor() {}
+  constructor(@inject(CoreBindings.APPLICATION_INSTANCE) app: Application) {
+    app
+      .bind(SocketIOBindings.SERVER)
+      .toClass(SocketIOServer)
+      .inScope(BindingScope.SINGLETON);
+  }
 }

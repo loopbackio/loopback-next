@@ -13,7 +13,7 @@ import {
   inject,
   MetadataInspector,
 } from '@loopback/context';
-import {CoreBindings, CoreTags} from '@loopback/core';
+import {Application, CoreBindings, CoreTags} from '@loopback/core';
 import {HttpServer, HttpServerOptions} from '@loopback/http-server';
 import debugFactory from 'debug';
 import SocketIO, {Server, ServerOptions, Socket} from 'socket.io';
@@ -90,10 +90,11 @@ export class SocketIOServer extends Context {
   private io: Server;
 
   constructor(
+    @inject(CoreBindings.APPLICATION_INSTANCE) public app: Application,
     @inject(SocketIOBindings.CONFIG, {optional: true})
     private options: SocketIOServerOptions = {},
   ) {
-    super();
+    super(app);
     if (options.socketIOOptions == null) {
       this.io = SocketIO();
     } else {
@@ -202,7 +203,6 @@ export class SocketIOServer extends Context {
     const config = this.options?.httpServerOptions || {
       host: '::',
       port: 3000,
-
       cors: {
         origin: '*',
         methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
@@ -214,22 +214,7 @@ export class SocketIOServer extends Context {
     };
     this.httpServer = new HttpServer(() => {}, config);
     await this.httpServer.start();
-
-    const socketConfig: SocketIO.ServerOptions = this.options
-      ?.socketIOOptions || {
-      origins: '*:*',
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      handlePreflightRequest: (req, res: any) => {
-        const headers = {
-          'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Credentials': true,
-        };
-        res.writeHead(200, headers);
-        res.end();
-      },
-    };
-    this.io.attach(this.httpServer.server, socketConfig);
+    this.io.attach(this.httpServer.server, this.options.socketIOOptions);
   }
 
   /**

@@ -3,14 +3,13 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {BindingKey} from '@loopback/core';
+import {BindingKey, CoreBindings} from '@loopback/core';
 import {Socket} from 'socket.io';
-import {SocketIOServerOptions, SocketIOServer} from './socketio.server';
+import {SocketIOServer, SocketIOServerOptions} from './socketio.server';
 
 export namespace SocketIOBindings {
-  export const CONFIG = BindingKey.create<SocketIOServerOptions>(
-    'socketio.server.options',
-  );
+  export const CONFIG: BindingKey<SocketIOServerOptions> =
+    CoreBindings.APPLICATION_CONFIG;
 
   /**
    * Binding key for the server itself
@@ -24,11 +23,11 @@ export namespace SocketIOBindings {
   export const MESSAGE = BindingKey.create<unknown[]>('socketio.message');
 
   /**
-   * Binding key for setting and injecting the host name of RestServer
+   * Binding key for setting and injecting the host name of Http Server
    */
   export const HOST = BindingKey.create<string | undefined>('socketio.host');
   /**
-   * Binding key for setting and injecting the port number of RestServer
+   * Binding key for setting and injecting the port number of Http Server
    */
   export const PORT = BindingKey.create<number>('socketio.port');
 }

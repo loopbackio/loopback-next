@@ -1,5 +1,5 @@
 // Copyright IBM Corp. 2019. All Rights Reserved.
-// Node module: @loopback/socket
+// Node module: @loopback/socketio
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
@@ -18,10 +18,6 @@ export class SocketIODemoApplication extends BootMixin(
   readonly ioServer: SocketIOServer;
 
   constructor(options: ApplicationConfig = {}) {
-    options.rest = options.rest || {};
-    options.rest.port = +(process.env.PORT || 3000);
-    options.rest.host = process.env.HOST || '127.0.0.1';
-    options.rest.url = '127.0.0.1:3000';
     super(options);
 
     this.projectRoot = __dirname;

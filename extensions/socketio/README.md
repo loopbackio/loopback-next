@@ -1,5 +1,7 @@
 # @loopback/socketio
 
+Stability: :warning: Experimental :warning:
+
 This module uses [socket.io](http://socket.io) to expose controllers as
 WebSocket friendly endpoints.
 
@@ -40,6 +42,10 @@ The package will provide the following key constructs:
 3. Register the controller
 4. Discover socket.io controllers and mount them to the SocketIOServer
    namespaces.
+
+## Sample application
+
+[socket.io](https://github.com/strongloop/loopback-next/tree/master/examples/socketio)
 
 ## Installation
 
