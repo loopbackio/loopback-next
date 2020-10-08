@@ -1,3 +1,8 @@
+// Copyright IBM Corp. 2020. All Rights Reserved.
+// Node module: @loopback/authentication-jwt
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
 import {BindingKey, CoreBindings} from '@loopback/core';
 import {RequestListener} from '@loopback/http-server';
 import {Server, ServerOptions, Socket} from 'socket.io';

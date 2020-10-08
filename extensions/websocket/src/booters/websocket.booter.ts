@@ -1,7 +1,9 @@
-// Author: Alexander Rondón
+// Copyright IBM Corp. 2020. All Rights Reserved.
+// Node module: @loopback/authentication-jwt
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
-// Base on: https://github.com/strongloop/loopback-next/blob/master/packages/boot/src/booters/repository.booter.ts
+
+// This file is based on https://github.com/strongloop/loopback-next/blob/master/packages/boot/src/booters/repository.booter.ts
 
 import {
   ArtifactOptions,
