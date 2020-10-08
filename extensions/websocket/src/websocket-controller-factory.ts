@@ -7,7 +7,7 @@ import {
   MetadataInspector,
 } from '@loopback/context';
 import {ControllerClass, CoreBindings} from '@loopback/core';
-import {DecoratorType, MetadataMap} from '@loopback/metadata/src/types';
+import {DecoratorType, MetadataMap} from '@loopback/metadata';
 import {Socket} from 'socket.io';
 import {
   WEBSOCKET_CONNECT_METADATA,
@@ -120,7 +120,9 @@ export class WebsocketControllerFactory {
     for (const methodName in subscribeMethods) {
       for (const matcher of subscribeMethods[methodName]) {
         const matcherString = matcher.toString();
-        const eventMatcherInfo = eventMatchersInfo.get(matcherString) ?? {
+        const eventMatcherInfo: WebsocketEventMatcherInfo = eventMatchersInfo.get(
+          matcherString,
+        ) ?? {
           matcher: matcher,
           methodNames: [],
         };

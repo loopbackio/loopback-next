@@ -427,3 +427,10 @@
 # - Primary owner(s): @jannyHou @emonddr
 # - Standby owner(s): n/a
 fixtures/mock-oauth2-provider @jannyHou @emonddr
+
+#
+# Websocket
+#
+# - Issue label: Websocket
+# - Primary owner(s): @arondn2
+# - Standby owner(s): n/a
