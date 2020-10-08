@@ -1,6 +1,6 @@
 {
   "name": "@loopback/websocket",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "LoopBack's WebSocket server based on socket.io",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -44,20 +44,14 @@
   },
   "keywords": [
     "loopback",
-    "LoopBack",
     "extension",
     "socket",
-    "Socket",
     "socketio",
-    "Socket.IO",
     "socket.io",
-    "Websocket",
     "websocket"
   ],
   "files": [
     "README.md",
-    "index.js",
-    "index.d.ts",
     "dist",
     "src",
     "!*/__tests__"
