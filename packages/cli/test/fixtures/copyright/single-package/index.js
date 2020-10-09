@@ -12,4 +12,16 @@ files.push({
   file: 'third-party.js',
   content: `module.exports = {}`,
 });
+
+files.push({
+  path: '',
+  file: 'license-header.template',
+  content: `=============================================================================
+Licensed Materials - Property of <%= owner %>
+(C) Copyright <%= owner %> <%= years %>
+US Government Users Restricted Rights - Use, duplication or disclosure
+restricted by GSA ADP Schedule Contract with <%= owner %>.
+=============================================================================`,
+});
+
 exports.SANDBOX_FILES = files;

@@ -118,6 +118,32 @@ restricted by GSA ADP Schedule Contract with <%= owner %>.
     );
   });
 
+  it('updates custom copyright/license headers with template', async () => {
+    await testUtils
+      .executeGenerator(generator)
+      .inDir(sandbox.path, () =>
+        testUtils.givenLBProject(sandbox.path, {
+          excludePackageJSON: true,
+          additionalFiles: SANDBOX_FILES,
+        }),
+      )
+      .withOptions({
+        owner: 'ACME Inc.',
+        license: 'CUSTOM',
+        gitOnly: false,
+      });
+
+    assertHeader(
+      ['src/application.ts', 'lib/no-header.js'],
+      `=============================================================================`,
+      `Licensed Materials - Property of ACME Inc.`,
+      `(C) Copyright ACME Inc. ${year}`,
+      `US Government Users Restricted Rights - Use, duplication or disclosure`,
+      `restricted by GSA ADP Schedule Contract with ACME Inc..`,
+      `=============================================================================`,
+    );
+  });
+
   it('updates copyright/license headers with options.exclude', async () => {
     await testUtils
       .executeGenerator(generator)
