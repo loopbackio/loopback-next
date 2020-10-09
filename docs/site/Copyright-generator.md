@@ -70,6 +70,10 @@ The command prompts you for:
    =============================================================================
    ```
 
+   To avoid such prompt, create the `license-header.template` in the root
+   directory of your package, its content will be read as the license header
+   template without prompting.
+
 The default owner is `IBM Corp.` and license is `MIT` with the following
 `package.json`.
 

@@ -145,30 +145,38 @@ module.exports = class CopyrightGenerator extends BaseGenerator {
       license === 'custom' ||
       license === 'CUSTOM'
     ) {
-      this.log(
-        g.f(
-          'Please provide lines of text for the custom copyright/license headers.',
-        ),
-      );
-      const example = ` Copyright <%= owner %> <%= years %>. All Rights Reserved.
+      const templateFile = this.destinationPath('license-header.template');
+      if (this.fs.exists(templateFile)) {
+        const template = this.fs.read(templateFile);
+        customLicenseLines = template.match(/[^\r\n]+/g);
+        this.log(template);
+      } else {
+        this.log(
+          g.f(
+            'Please provide lines of text for the custom copyright/license headers.',
+          ),
+        );
+        const example = ` Copyright <%= owner %> <%= years %>. All Rights Reserved.
  Node module: <%= name %>',
  This file is licensed under the <%= license %>.
  License text available at <%= url %>`;
-      this.log(
-        chalk.green(
-          `Example (supported variables: owner/years/name):
+        this.log(
+          chalk.green(
+            `Example (supported variables: owner/years/name):
 ${example}`,
-        ),
-      );
+          ),
+        );
 
-      answers = await this.prompt([
-        {
-          type: 'editor',
-          name: 'customLicenseLines',
-          message: g.f('Custom license lines:'),
-          default: example,
-        },
-      ]);
+        answers = await this.prompt([
+          {
+            type: 'editor',
+            name: 'customLicenseLines',
+            message: g.f('Custom license lines:'),
+            default: example,
+            when: customLicenseLines.length === 0,
+          },
+        ]);
+      }
     }
 
     answers = answers || {};

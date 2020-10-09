@@ -47,11 +47,23 @@ function getCustomTemplate(customLicenseLines = []) {
 // Patterns for matching previously generated copyright headers
 const BLANK = /^\s*$/;
 
+/**
+ * Preserve characters that have special meaning for RegExp
+ * @param {string} text - Text
+ */
+function escapeRegExp(text) {
+  return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+}
+
 function getHeaderRegEx(customLicenseLines) {
-  const ANY = COPYRIGHT.concat(LICENSE, customLicenseLines).map(
-    l => new RegExp(l.replace(/<%[^>]+%>/g, '.*')),
+  const lines =
+    customLicenseLines != null && customLicenseLines.length
+      ? customLicenseLines
+      : COPYRIGHT.concat(LICENSE, customLicenseLines);
+  const regExp = lines.map(
+    l => new RegExp(escapeRegExp(l).replace(/<%[^>]+%>/g, '.*')),
   );
-  return ANY;
+  return regExp;
 }
 
 /**
