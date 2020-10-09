@@ -186,6 +186,14 @@ children:
           url: core-tutorial-part11.html
           output: 'web, pdf'
 
+  - title: 'Examples'
+    url: Examples.html
+    output: 'web, pdf'
+    children:
+      - title: 'Community examples'
+        url: Community-examples.html
+        output: 'web, pdf'
+
   - title: 'How-to guides'
     output: 'web, pdf'
     children:
@@ -733,10 +741,6 @@ children:
 
   - title: 'LoopBack 4 Application Layout'
     url: Loopback-application-layout.html
-    output: 'web, pdf'
-
-  - title: 'Examples'
-    url: Examples.html
     output: 'web, pdf'
 
   - title: 'API docs'
