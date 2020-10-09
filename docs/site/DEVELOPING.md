@@ -66,7 +66,7 @@ Contributor once your first commit is landed.
 ## Building the project
 
 Whenever you pull updates from GitHub or switch between feature branches, make
-sure to updated installed dependencies in all monorepo packages. The following
+sure to update installed dependencies in all monorepo packages. The following
 command will install npm dependencies for all packages and create symbolic links
 for intra-dependencies:
 
@@ -656,7 +656,7 @@ questions:
 
 - How can I find if my project is affected by this change?
 
-- What does this change means for my project? What is going to change?
+- What does this change mean for my project? What is going to change?
 
 - How can I migrate my project to the new major version? What steps do I need to
   make?
@@ -874,9 +874,9 @@ configuration, it's important to verify that all usage scenarios keep working.
 
 1.  Open any existing TypeScript file, e.g. `packages/src/index.ts`
 
-2.  Introduce two kinds linting problems - one that does and another that does
-    not require type information to be detected. For example, you can add the
-    following line at the end of the opened `index.ts`:
+2.  Introduce two kinds of linting problems - one that does and another that
+    does not require type information to be detected. For example, you can add
+    the following line at the end of the opened `index.ts`:
 
     ```ts
     const foo: any = 'bar';
