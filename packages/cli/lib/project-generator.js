@@ -141,6 +141,8 @@ module.exports = class ProjectGenerator extends BaseGenerator {
         when: this.projectInfo.name == null,
         default:
           this.options.name || utils.toFileName(path.basename(process.cwd())),
+        filter: utils.lowerCase,
+        transformer: utils.lowerCase,
         validate: utils.validate,
       },
       {
