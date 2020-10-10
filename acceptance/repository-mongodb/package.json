@@ -27,7 +27,7 @@
     "@loopback/testlab": "^3.2.7",
     "@types/node": "^10.17.35",
     "loopback-connector-mongodb": "^5.4.0",
-    "tslib": "^2.0.2"
+    "tslib": "^2.0.3"
   },
   "files": [
     "README.md",

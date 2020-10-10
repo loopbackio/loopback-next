@@ -32,7 +32,7 @@
     "@types/express": "^4.17.8",
     "@types/lodash": "^4.14.161",
     "lodash": "^4.17.20",
-    "tslib": "^2.0.2"
+    "tslib": "^2.0.3"
   },
   "devDependencies": {
     "@loopback/build": "^6.2.5",

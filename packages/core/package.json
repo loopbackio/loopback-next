@@ -26,7 +26,7 @@
   "dependencies": {
     "@loopback/context": "^3.12.0",
     "debug": "^4.2.0",
-    "tslib": "^2.0.2"
+    "tslib": "^2.0.3"
   },
   "devDependencies": {
     "@loopback/build": "^6.2.5",
