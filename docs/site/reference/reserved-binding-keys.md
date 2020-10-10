@@ -7,7 +7,7 @@ sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Reserved-binding-keys.html
 ---
 
-When using [dependency injection](Dependency-injection.md) there are a few
+When using [dependency injection](../Dependency-injection.md) there are a few
 things to keep in mind with regards to binding keys.
 
 Different packages and components for LoopBack 4 may have some bindings already
