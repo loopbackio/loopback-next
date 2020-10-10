@@ -37,7 +37,7 @@
     "@loopback/testlab": "^3.2.7",
     "@types/debug": "^4.1.5",
     "debug": "^4.2.0",
-    "tslib": "^2.0.2"
+    "tslib": "^2.0.3"
   },
   "files": [
     "README.md",

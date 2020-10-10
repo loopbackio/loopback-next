@@ -41,7 +41,7 @@
     "debug": "^4.2.0",
     "lodash": "^4.17.20",
     "loopback-datasource-juggler": "^4.24.0",
-    "tslib": "^2.0.2"
+    "tslib": "^2.0.3"
   },
   "files": [
     "README.md",

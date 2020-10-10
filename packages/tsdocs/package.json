@@ -28,7 +28,7 @@
     "@microsoft/api-extractor": "^7.10.4",
     "debug": "^4.2.0",
     "fs-extra": "^9.0.1",
-    "tslib": "^2.0.2"
+    "tslib": "^2.0.3"
   },
   "devDependencies": {
     "@loopback/build": "^6.2.5",
