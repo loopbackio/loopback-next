@@ -4,6 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 const path = require('path');
+const webpack = require('webpack');
 
 /**
  * Common configuration for both Node.js and Web
@@ -24,6 +25,14 @@ const baseConfig = {
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
+    fallback: {
+      // Polyfill for Node.js core modules
+      events: require.resolve('events/'),
+      process: require.resolve('process/browser'),
+      assert: require.resolve('assert/'),
+      buffer: require.resolve('buffer/'),
+      util: require.resolve('util/'),
+    },
   },
 };
 
@@ -55,6 +64,12 @@ const webConfig = {
     library: 'LoopBack',
     libraryTarget: 'umd',
   },
+  plugins: [
+    new webpack.ProvidePlugin({
+      Buffer: ['buffer', 'Buffer'],
+    }),
+    new webpack.ProvidePlugin({process: ['process']}),
+  ],
 };
 
 // Expose two configurations for `webpack`. Use `--config-name <web|node>` to
