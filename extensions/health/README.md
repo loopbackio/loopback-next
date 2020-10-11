@@ -62,6 +62,19 @@ The health component allows extra
 [`live` and `ready` checks](https://github.com/CloudNativeJS/cloud-health#readiness-vs-liveness)
 to be added.
 
+_Liveness probes_ are used to know when to restart a container. For example, in
+case of a deadlock due to a multi-threading defect which might not crash the
+container but keep the application unresponsive. A custom liveness probe would
+detect this failure and restart the container.
+
+_Readiness probes_ are used to decide when the container is available for
+accepting traffic. It is important to note, that readiness probes are
+periodically checked and not only at startup.
+
+**Important:** It is recommended to avoid checking dependencies in liveness
+probes. Liveness probes should be inexpensive and have response times with
+minimal variance.
+
 ```ts
 import {LiveCheck, ReadyCheck, HealthTags} from '@loopback/health';
 
@@ -70,8 +83,8 @@ const myLiveCheck: LiveCheck = () => {
 };
 app.bind('health.MyLiveCheck').to(myLiveCheck).tag(HealthTags.LIVE_CHECK);
 
-// Define a provider to check the liveness of a datasource
-class DBLiveCheckProvider implements Provider<LiveCheck> {
+// Define a provider to check the health of a datasource
+class DBHealthCheckProvider implements Provider<ReadyCheck> {
   constructor(@inject('datasources.db') private ds: DataSource) {}
 
   value() {
@@ -81,8 +94,8 @@ class DBLiveCheckProvider implements Provider<LiveCheck> {
 
 app
   .bind('health.MyDBCheck')
-  .toProvider(DBLiveCheckProvider)
-  .tag(HealthTags.LIVE_CHECK);
+  .toProvider(DBHealthCheckProvider)
+  .tag(HealthTags.READY_CHECK);
 
 const myReadyCheck: ReadyCheck = () => {
   return Promise.resolve();
