@@ -16,9 +16,9 @@
   },
   "scripts": {
     "build": "lb-tsc",
-    "build:webpack": "webpack --silent",
-    "build:webpack-node": "webpack --silent --config-name node",
-    "build:webpack-web": "webpack --silent --config-name web",
+    "build:webpack": "webpack",
+    "build:webpack-node": "webpack --config-name node",
+    "build:webpack-web": "webpack --config-name web",
     "prepack": "npm run build:webpack-web",
     "clean": "lb-clean *example-webpack*.tgz dist *.tsbuildinfo package",
     "verify": "npm pack && tar xf *example-webpack*.tgz && tree package && npm run clean",
