@@ -95,6 +95,9 @@ export async function coerceParameter(
     case 'password':
       result = coerceString(data, spec);
       break;
+    case 'array':
+      result = coerceArray(data, spec);
+      break;
   }
 
   if (result != null) {
@@ -103,6 +106,7 @@ export async function coerceParameter(
       await validateParam(spec, data, options);
       return result;
     }
+
     result = await validateParam(spec, result, options);
   }
   return result;
@@ -195,6 +199,15 @@ async function coerceObject(input: string | object, spec: ParameterObject) {
 
   if (typeof data !== 'object' || Array.isArray(data))
     throw RestHttpErrors.invalidData(input, spec.name);
+
+  return data;
+}
+
+function coerceArray(data: string | object, spec: ParameterObject) {
+  if (spec.in === 'query') {
+    if (data == null || Array.isArray(data)) return data;
+    return [data];
+  }
 
   return data;
 }

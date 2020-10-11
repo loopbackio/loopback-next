@@ -144,6 +144,14 @@ describe('Coercion', () => {
     ) {
       return filter;
     }
+
+    @get('/array-parameters-from-query')
+    getArrayFromQuery(
+      @param.array('stringArray', 'query', {type: 'string'})
+      stringArray: string[],
+    ) {
+      return stringArray;
+    }
   }
 
   it('coerces parameter in path from string to number', async () => {
@@ -281,6 +289,30 @@ describe('Coercion', () => {
     expect(response.body.error.message).to.match(
       /Invalid data.* for parameter "filter"/,
     );
+  });
+
+  describe('coerces array parameters', () => {
+    it('coerces a single value into an array with one item', async () => {
+      const response = await client
+        .get('/array-parameters-from-query')
+        .query({
+          stringArray: 'hello',
+        })
+        .expect(200);
+
+      expect(response.body).to.eql(['hello']);
+    });
+
+    it('preserves array values as arrays', async () => {
+      const response = await client
+        .get('/array-parameters-from-query')
+        .query({
+          stringArray: ['hello', 'loopback', 'world'],
+        })
+        .expect(200);
+
+      expect(response.body).to.eql(['hello', 'loopback', 'world']);
+    });
   });
 
   async function givenAClient() {
