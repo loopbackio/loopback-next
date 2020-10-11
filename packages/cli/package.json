@@ -33,7 +33,7 @@
     "@loopback/eslint-config": "^10.0.1",
     "@loopback/testlab": "^3.2.7",
     "@types/ejs": "^3.0.4",
-    "@types/fs-extra": "^9.0.1",
+    "@types/fs-extra": "^9.0.2",
     "@types/minimatch": "^3.0.3",
     "@types/node": "^10.17.35",
     "loopback": "^3.27.0",
