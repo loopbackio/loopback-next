@@ -26,14 +26,34 @@ describe('Application life cycle', () => {
     it('updates application state', async () => {
       const app = new Application();
       expect(app.state).to.equal('created');
+      const initialize = app.init();
+      expect(app.state).to.equal('initializing');
+      await initialize;
+      expect(app.state).to.equal('initialized');
       const start = app.start();
-      expect(app.state).to.equal('starting');
       await start;
       expect(app.state).to.equal('started');
       const stop = app.stop();
       expect(app.state).to.equal('stopping');
       await stop;
       expect(app.state).to.equal('stopped');
+    });
+
+    it('calls init by start only once', async () => {
+      const app = new Application();
+      let start = app.start();
+      expect(app.state).to.equal('initializing');
+      await start;
+      expect(app.state).to.equal('started');
+      const stop = app.stop();
+      expect(app.state).to.equal('stopping');
+      await stop;
+      expect(app.state).to.equal('stopped');
+      start = app.start();
+      expect(app.state).to.equal('starting');
+      await start;
+      expect(app.state).to.equal('started');
+      await app.stop();
     });
 
     it('emits state change events', async () => {
@@ -43,18 +63,27 @@ describe('Application life cycle', () => {
         events.push(`${event.from} -> ${event.to}`);
       });
       const start = app.start();
-      expect(events).to.eql(['created -> starting']);
+      expect(events).to.eql(['created -> initializing']);
       await start;
-      expect(events).to.eql(['created -> starting', 'starting -> started']);
+      expect(events).to.eql([
+        'created -> initializing',
+        'initializing -> initialized',
+        'initialized -> starting',
+        'starting -> started',
+      ]);
       const stop = app.stop();
       expect(events).to.eql([
-        'created -> starting',
+        'created -> initializing',
+        'initializing -> initialized',
+        'initialized -> starting',
         'starting -> started',
         'started -> stopping',
       ]);
       await stop;
       expect(events).to.eql([
-        'created -> starting',
+        'created -> initializing',
+        'initializing -> initialized',
+        'initialized -> starting',
         'starting -> started',
         'started -> stopping',
         'stopping -> stopped',
@@ -64,19 +93,44 @@ describe('Application life cycle', () => {
     it('emits state events', async () => {
       const app = new Application();
       const events: string[] = [];
-      for (const e of ['starting', 'started', 'stopping', 'stopped']) {
+      for (const e of [
+        'initializing',
+        'initialized',
+        'starting',
+        'started',
+        'stopping',
+        'stopped',
+      ]) {
         app.on(e, event => {
           events.push(e);
         });
       }
       const start = app.start();
-      expect(events).to.eql(['starting']);
+      expect(events).to.eql(['initializing']);
       await start;
-      expect(events).to.eql(['starting', 'started']);
+      expect(events).to.eql([
+        'initializing',
+        'initialized',
+        'starting',
+        'started',
+      ]);
       const stop = app.stop();
-      expect(events).to.eql(['starting', 'started', 'stopping']);
+      expect(events).to.eql([
+        'initializing',
+        'initialized',
+        'starting',
+        'started',
+        'stopping',
+      ]);
       await stop;
-      expect(events).to.eql(['starting', 'started', 'stopping', 'stopped']);
+      expect(events).to.eql([
+        'initializing',
+        'initialized',
+        'starting',
+        'started',
+        'stopping',
+        'stopped',
+      ]);
     });
 
     it('allows application.stop when it is created', async () => {
@@ -148,6 +202,30 @@ describe('Application life cycle', () => {
       expect(component.status).to.equal('started');
       await app.stop();
       expect(component.status).to.equal('stopped');
+    });
+
+    it('initializes all registered components', async () => {
+      const app = new Application();
+      app.component(ObservingComponentWithServers);
+      const component = await app.get<ObservingComponentWithServers>(
+        `${CoreBindings.COMPONENTS}.ObservingComponentWithServers`,
+      );
+      expect(component.status).to.equal('not-initialized');
+      await app.init();
+      expect(component.status).to.equal('initialized');
+      expect(component.initialized).to.be.true();
+    });
+
+    it('initializes all registered components by start', async () => {
+      const app = new Application();
+      app.component(ObservingComponentWithServers);
+      const component = await app.get<ObservingComponentWithServers>(
+        `${CoreBindings.COMPONENTS}.ObservingComponentWithServers`,
+      );
+      expect(component.status).to.equal('not-initialized');
+      await app.start();
+      expect(component.status).to.equal('started');
+      expect(component.initialized).to.be.true();
     });
 
     it('starts/stops all observers from the component', async () => {
@@ -265,6 +343,41 @@ describe('Application life cycle', () => {
     });
   });
 
+  describe('app.onInit()', () => {
+    it('registers the handler as "init" lifecycle observer', async () => {
+      const app = new Application();
+      let invoked = false;
+
+      const binding = app.onInit(async function doSomething() {
+        // delay the actual observer code to the next tick to
+        // verify that the promise returned by an async observer
+        // is correctly forwarded by LifeCycle wrapper
+        await Promise.resolve();
+        invoked = true;
+      });
+
+      expect(binding.key).to.match(/^lifeCycleObservers.doSomething/);
+
+      await app.start();
+      expect(invoked).to.be.true();
+    });
+
+    it('registers multiple handlers with the same name', async () => {
+      const app = new Application();
+      const invoked: string[] = [];
+
+      app.onInit(() => {
+        invoked.push('first');
+      });
+      app.onInit(() => {
+        invoked.push('second');
+      });
+
+      await app.init();
+      expect(invoked).to.deepEqual(['first', 'second']);
+    });
+  });
+
   describe('app.onStart()', () => {
     it('registers the handler as "start" lifecycle observer', async () => {
       const app = new Application();
@@ -341,6 +454,8 @@ describe('Application life cycle', () => {
 
 class ObservingComponentWithServers implements Component, LifeCycleObserver {
   status = 'not-initialized';
+  initialized = false;
+
   servers: {
     [name: string]: Constructor<Server>;
   };
@@ -349,6 +464,11 @@ class ObservingComponentWithServers implements Component, LifeCycleObserver {
       ObservingServer: ObservingServer,
       ObservingServer2: ObservingServer,
     };
+  }
+
+  init() {
+    this.status = 'initialized';
+    this.initialized = true;
   }
   start() {
     this.status = 'started';

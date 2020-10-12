@@ -59,6 +59,68 @@ trouble of having to do so manually. Again it's best to check the documentation
 for the given Component/Mixin.
 " %}
 
+## Component life cycle
+
+A component will be instantiated when `app.component()` is called. A component
+class can use its constructor and properties to contribute bindings to the
+hosting application. Dependency injection is supported, for example, to access
+the hosting application. But you have to make sure that all dependencies can be
+resolved synchronously when `app.component()` is invoked.
+
+```ts
+import {
+  Component,
+  LifeCycleObserver,
+  CoreBindings,
+  inject,
+} from '@loopback/core';
+
+export class MyComponent implements Component, LifeCycleObserver {
+  status = 'not-initialized';
+  initialized = false;
+
+  // Contribute bindings via properties
+  controllers = [];
+  bindings = [];
+
+  constructor(@inject(CoreBindings.APPLICATION_INSTANCE) private app) {
+    // Contribute bindings via constructor
+    this.app.bind('foo').to('bar');
+  }
+}
+```
+
+In some cases, a component may need to contribute bindings asynchronously. It
+should then use the `init` method.
+
+```ts
+export class MyComponent implements Component, LifeCycleObserver {
+  // ...
+
+  async init() {
+    // Contribute bindings via `init`
+    const val = await readFromConfig();
+    this.app.bind('abc').to(val);
+
+    this.status = 'initialized';
+    this.initialized = true;
+  }
+
+  async start() {
+    this.status = 'started';
+  }
+
+  async stop() {
+    this.status = 'stopped';
+  }
+}
+```
+
+Please note that components are treated as
+[life cycle observers](Life-cycle.md). In addition to `init`, `start` and `stop`
+methods are also supported for a component to be notified when the application
+is started or stopped.
+
 ## Using components
 
 Components can be added to your application using the `app.component()` method.

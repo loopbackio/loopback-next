@@ -73,6 +73,8 @@ export class Application extends Context implements LifeCycleObserver {
   private _shutdownOptions: ShutdownOptions;
   private _signalListener: (signal: string) => Promise<void>;
 
+  private _initialized = false;
+
   /**
    * State of the application
    */
@@ -298,12 +300,60 @@ export class Application extends Context implements LifeCycleObserver {
   }
 
   /**
+   * Initialize the application, and all of its registered observers. The
+   * application state is checked to ensure the integrity of `initialize`.
+   *
+   * If the application is already initialized, no operation is performed.
+   *
+   * This method is automatically invoked by `start()` if the application is not
+   * initialized.
+   */
+  public async init(): Promise<void> {
+    if (this._initialized) return;
+    if (this._state === 'initializing') return this.awaitState('initialized');
+    this.assertNotInProcess('initialize');
+    this.setState('initializing');
+
+    const registry = await this.getLifeCycleObserverRegistry();
+    await registry.init();
+    this._initialized = true;
+    this.setState('initialized');
+  }
+
+  /**
+   * Register a function to be called when the application initializes.
+   *
+   * This is a shortcut for adding a binding for a LifeCycleObserver
+   * implementing a `init()` method.
+   *
+   * @param fn The function to invoke, it can be synchronous (returning `void`)
+   * or asynchronous (returning `Promise<void>`).
+   * @returns The LifeCycleObserver binding created.
+   */
+  public onInit(fn: () => ValueOrPromise<void>): Binding<LifeCycleObserver> {
+    const key = [
+      CoreBindings.LIFE_CYCLE_OBSERVERS,
+      fn.name || '<onInit>',
+      generateUniqueId(),
+    ].join('.');
+
+    return this.bind<LifeCycleObserver>(key)
+      .to({init: fn})
+      .apply(asLifeCycleObserver);
+  }
+
+  /**
    * Start the application, and all of its registered observers. The application
    * state is checked to ensure the integrity of `start`.
+   *
+   * If the application is not initialized, it calls first `init()` to
+   * initialize the application. This only happens if `start()` is called for
+   * the first time.
    *
    * If the application is already started, no operation is performed.
    */
   public async start(): Promise<void> {
+    if (!this._initialized) await this.init();
     if (this._state === 'starting') return this.awaitState('started');
     this.assertNotInProcess('start');
     // No-op if it's started

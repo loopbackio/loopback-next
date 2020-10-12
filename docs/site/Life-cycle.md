@@ -12,7 +12,9 @@ A LoopBack application has its own life cycles at runtime. There are a few
 methods to control the transition of states of `Application`.
 
 - boot(): Boot the application
-- start(): Start the application
+- init(): Initialize the application (it happens at most once per application)
+- start(): Start the application. It will automatically call `init()` if the
+  application is not initialized
 - stop(): Stop the application
 
 ## Application states
@@ -38,12 +40,17 @@ The state can transition as follows by operations including `boot`, `start`, and
     - !booted -> booting -> booted
     - booting | booted -> booted (no-op)
 
-2.  start()
+2.  init()
+
+    - !initialized -> initializing -> initialized
+    - initializing | initialized -> initialized (no-op)
+
+3.  start()
 
     - !started -> starting -> started
     - starting | started -> started (no-op)
 
-3.  stop()
+4.  stop()
 
     - started -> stopping -> stopped
     - stopping | !started -> stopped (no-op)

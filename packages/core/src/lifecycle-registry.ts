@@ -196,6 +196,10 @@ export class LifeCycleObserverRegistry implements LifeCycleObserver {
   ) {
     const observers = await this.observersView.values();
     const bindings = this.observersView.bindings;
+    const found = observers.some(observer =>
+      events.some(e => typeof observer[e] === 'function'),
+    );
+    if (!found) return;
     if (reverse) {
       // Do not reverse the original `groups` in place
       groups = [...groups].reverse();
@@ -216,6 +220,15 @@ export class LifeCycleObserverRegistry implements LifeCycleObserver {
         debug('Finished notification %s of %s', event);
       }
     }
+  }
+
+  /**
+   * Notify all life cycle observers by group of `init`
+   */
+  public async init(): Promise<void> {
+    debug('Initializing the %s...');
+    const groups = this.getObserverGroupsByOrder();
+    await this.notifyGroups(['init'], groups);
   }
 
   /**
