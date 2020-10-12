@@ -75,7 +75,7 @@ describe('boot-strapper unit tests', () => {
     await app.boot();
     expect(app.state).to.eql('booted');
     const start = app.start();
-    expect(app.state).to.equal('starting');
+    expect(app.state).to.equal('initializing');
     await start;
     expect(app.state).to.equal('started');
     const stop = app.stop();
