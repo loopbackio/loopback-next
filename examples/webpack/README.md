@@ -14,11 +14,11 @@ Use one of the following commands to build `dist/bundle-web.js` to package this
 example application into a JavaScript file for browsers.
 
 ```sh
-npm run build:webpack
+npm run build:webpack-web
 ```
 
 ```sh
-npx webpack
+npx webpack --config-name web
 ```
 
 Now `dist/bundle-web.js` can be used for HTML pages, for example:
