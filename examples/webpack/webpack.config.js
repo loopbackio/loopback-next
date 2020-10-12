@@ -11,20 +11,11 @@ const webpack = require('webpack');
  */
 const baseConfig = {
   mode: 'production',
-  entry: './src/index.ts',
+  entry: './dist/index.js',
   // Uncomment the following line to enable source map
   // devtool: 'source-map',
-  module: {
-    rules: [
-      {
-        test: /\.tsx?$/,
-        use: 'ts-loader',
-        exclude: /node_modules/,
-      },
-    ],
-  },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js'],
+    extensions: ['.js'],
     fallback: {
       // Polyfill for Node.js core modules
       events: require.resolve('events/'),

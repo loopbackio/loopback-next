@@ -16,17 +16,14 @@
   },
   "scripts": {
     "build": "lb-tsc",
-    "build:webpack": "webpack",
     "build:webpack-node": "webpack --config-name node",
     "build:webpack-web": "webpack --config-name web",
     "prepack": "npm run build:webpack-web",
-    "clean": "lb-clean *example-webpack*.tgz dist *.tsbuildinfo package",
-    "verify": "npm pack && tar xf *example-webpack*.tgz && tree package && npm run clean",
+    "clean": "lb-clean loopback-example-webpack*.tgz dist *.tsbuildinfo package",
+    "verify": "npm pack && tar xf loopback-example-webpack*.tgz && tree package && npm run clean",
     "pretest": "npm run rebuild",
     "test": "lb-mocha \"dist/__tests__/**/*.js\"",
-    "rebuild": "npm run clean && npm run build",
-    "prestart": "npm run rebuild",
-    "start": "node ."
+    "rebuild": "npm run clean && npm run build"
   },
   "repository": {
     "type": "git",
@@ -47,7 +44,6 @@
     "eslint": "^7.11.0",
     "events": "^3.2.0",
     "process": "^0.11.10",
-    "ts-loader": "^8.0.6",
     "typescript": "~4.0.3",
     "util": "^0.12.3",
     "webpack": "^5.2.0",
