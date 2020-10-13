@@ -178,17 +178,17 @@ describe('RestServer (integration)', () => {
       console.error = consoleError;
     });
 
-    it('responds with 500 when Sequence fails with unhandled error', async () => {
+    it('responds with 500 when Sequence returns a rejected promise', async () => {
       server.handler((context, sequence) => {
         return Promise.reject(new Error('unhandled test error'));
       });
       await createClientForHandler(server.requestHandler).get('/').expect(500);
       expect(errorMsg).to.match(
-        /Unhandled error in GET \/\: 500 Error\: unhandled test error/,
+        /Request GET \/\ failed with status code 500. Error\: unhandled test error/,
       );
     });
 
-    it('hangs up socket when Sequence fails with unhandled error and headers sent', async () => {
+    it('hangs up socket when Sequence returns a rejected promise but headers were already sent', async () => {
       server.handler((context, sequence) => {
         context.response.writeHead(200);
         return Promise.reject(new Error('unhandled test error after sent'));
@@ -198,7 +198,7 @@ describe('RestServer (integration)', () => {
         createClientForHandler(server.requestHandler).get('/'),
       ).to.be.rejectedWith(/socket hang up/);
       expect(errorMsg).to.match(
-        /Unhandled error in GET \/\: 500 Error\: unhandled test error after sent/,
+        /Request GET \/\ failed with status code 500. Error\: unhandled test error/,
       );
     });
   });
