@@ -3,6 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {bindBooter, BOOTER_PHASES} from '@loopback/booter';
 import {
   Application,
   BindingScope,
@@ -17,13 +18,7 @@ import {
 import debugModule from 'debug';
 import {resolve} from 'path';
 import {BootBindings, BootTags} from './keys';
-import {bindBooter} from './mixins';
-import {
-  Bootable,
-  BOOTER_PHASES,
-  BootExecutionOptions,
-  BootOptions,
-} from './types';
+import {Bootable, BootExecutionOptions, BootOptions} from './types';
 
 const debug = debugModule('loopback:boot:bootstrapper');
 

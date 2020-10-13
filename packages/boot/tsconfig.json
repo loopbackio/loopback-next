@@ -12,6 +12,9 @@
   ],
   "references": [
     {
+      "path": "../booter/tsconfig.json"
+    },
+    {
       "path": "../core/tsconfig.json"
     },
     {

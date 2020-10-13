@@ -4,8 +4,6 @@
 // License text available at https://opensource.org/licenses/MIT
 
 export * from './application-metadata.booter';
-export * from './base-artifact.booter';
-export * from './booter-utils';
 export * from './component-application.booter';
 export * from './controller.booter';
 export * from './interceptor.booter';

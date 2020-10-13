@@ -3,10 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {config, inject, Application, CoreBindings} from '@loopback/core';
+import {ArtifactOptions, BaseArtifactBooter, booter} from '@loopback/booter';
+import {Application, config, CoreBindings, inject} from '@loopback/core';
 import {BootBindings} from '../keys';
-import {ArtifactOptions, booter} from '../types';
-import {BaseArtifactBooter} from './base-artifact.booter';
 
 /**
  * A class that extends BaseArtifactBooter to boot the 'Controller' artifact type.

@@ -3,6 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {ArtifactOptions, BaseArtifactBooter, booter} from '@loopback/booter';
 import {
   Application,
   config,
@@ -14,8 +15,6 @@ import {
 } from '@loopback/core';
 import debugFactory from 'debug';
 import {BootBindings} from '../keys';
-import {ArtifactOptions, booter} from '../types';
-import {BaseArtifactBooter} from './base-artifact.booter';
 
 const debug = debugFactory('loopback:boot:interceptor-booter');
 

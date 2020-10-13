@@ -3,6 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {Booter} from '@loopback/booter';
 import {
   Application,
   Binding,
@@ -20,7 +21,6 @@ import {
   ServiceBooter,
 } from './booters';
 import {Bootstrapper} from './bootstrapper';
-import {Booter} from './types';
 
 /**
  * BootstrapComponent is used to export the default list of Booter's made

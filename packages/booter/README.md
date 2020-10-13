@@ -23,7 +23,7 @@ $ npm install @loopback/booter
 
 ```ts
 @booter('my-artifacts')
-    class MyBooter implements Booter {}
+class MyBooter implements Booter {}
 ```
 
 ### ArtifactOptions

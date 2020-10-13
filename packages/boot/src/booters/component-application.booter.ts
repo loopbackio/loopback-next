@@ -3,6 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {booter, Booter} from '@loopback/booter';
 import {
   Application,
   Binding,
@@ -14,7 +15,7 @@ import {
 } from '@loopback/core';
 import debugFactory from 'debug';
 import {BootBindings} from '../keys';
-import {Bootable, Booter, booter} from '../types';
+import {Bootable} from '../types';
 
 const debug = debugFactory('loopback:boot:booter:component-application');
 

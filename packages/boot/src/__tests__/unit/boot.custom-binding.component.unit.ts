@@ -3,6 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {BaseArtifactBooter} from '@loopback/booter';
 import {
   Application,
   BindingKey,
@@ -13,7 +14,6 @@ import {
 } from '@loopback/core';
 import {expect} from '@loopback/testlab';
 import {BootBindings, BootMixin} from '../../';
-import {BaseArtifactBooter} from '../../booters';
 import {InstanceWithBooters} from '../../types';
 
 describe('boot.component unit tests', () => {

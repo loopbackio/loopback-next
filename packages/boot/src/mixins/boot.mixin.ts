@@ -7,10 +7,8 @@ import {
   Binding,
   BindingFilter,
   BindingFromClassOptions,
-  BindingScope,
   Constructor,
   Context,
-  createBindingFromClass,
   Application,
   Component,
   CoreBindings,
@@ -19,8 +17,9 @@ import {
 import {BootComponent} from '../boot.component';
 import {createComponentApplicationBooterBinding} from '../booters/component-application.booter';
 import {Bootstrapper} from '../bootstrapper';
-import {BootBindings, BootTags} from '../keys';
-import {Bootable, Booter, BootOptions, InstanceWithBooters} from '../types';
+import {BootBindings} from '../keys';
+import {Bootable, BootOptions, InstanceWithBooters} from '../types';
+import {Booter, bindBooter} from '@loopback/booter';
 
 // FIXME(rfeng): Workaround for https://github.com/microsoft/rushstack/pull/1867
 /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -219,36 +218,6 @@ export function BootMixin<T extends MixinTarget<Application>>(superClass: T) {
       }
     }
   };
-}
-
-/**
- * Method which binds a given Booter to a given Context with the Prefix and
- * Tags expected by the Bootstrapper
- *
- * @param ctx - The Context to bind the Booter Class
- * @param booterCls - Booter class to be bound
- */
-export function bindBooter(
-  ctx: Context,
-  booterCls: Constructor<Booter>,
-): Binding {
-  const binding = createBindingFromClass(booterCls, {
-    namespace: BootBindings.BOOTERS,
-    defaultScope: BindingScope.SINGLETON,
-  }).tag(BootTags.BOOTER);
-  ctx.add(binding);
-  /**
-   * Set up configuration binding as alias to `BootBindings.BOOT_OPTIONS`
-   * so that the booter can use `@config`.
-   */
-  if (binding.tagMap.artifactNamespace) {
-    ctx
-      .configure(binding.key)
-      .toAlias(
-        `${BootBindings.BOOT_OPTIONS.key}#${binding.tagMap.artifactNamespace}`,
-      );
-  }
-  return binding;
 }
 
 // eslint-disable-next-line @typescript-eslint/naming-convention

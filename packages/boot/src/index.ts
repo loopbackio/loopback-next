@@ -27,6 +27,7 @@
  * @packageDocumentation
  */
 
+export * from '@loopback/booter';
 export * from './boot.component';
 export * from './booters';
 export * from './bootstrapper';
