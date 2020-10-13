@@ -47,7 +47,7 @@ transaction objects, commit them on success or roll them back at the end of all
 intended operations. See [Handling Transactions](#handling-transactions) below
 for more details.
 
-Alternatively, you can also being a transaction by calling `beginTransaction()`
+Alternatively, you can also begin a transaction by calling `beginTransaction()`
 method of `DataSource` class.
 
 ## Handling Transactions
