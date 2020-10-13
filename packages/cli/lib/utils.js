@@ -268,10 +268,6 @@ exports.validate = function (name) {
   return isValid;
 };
 
-exports.gggggg = function (name) {
-  return lowerCase(name);
-};
-
 /**
  * Adds a backslash to the start of the word if not already present
  * @param {string} httpPath
