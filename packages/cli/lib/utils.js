@@ -17,7 +17,7 @@ const semver = require('semver');
 const regenerate = require('regenerate');
 const _ = require('lodash');
 const pascalCase = require('change-case').pascalCase;
-const lowerCase = require('change-case').lowerCase;
+const lowerCase = require('lower-case').lowerCase;
 const promisify = require('util').promisify;
 const toVarName = require('change-case').camelCase;
 const pluralize = require('pluralize');
@@ -266,6 +266,10 @@ exports.validate = function (name) {
   const isValid = validate(name).validForNewPackages;
   if (!isValid) return 'Invalid npm package name: ' + name;
   return isValid;
+};
+
+exports.gggggg = function (name) {
+  return lowerCase(name);
 };
 
 /**
