@@ -42,7 +42,7 @@
 'use strict';
 
 const build = require('../packages/build');
-const {updateReferences} = require('./update-ts-project-refs');
+const updateTsReferences = require('./update-ts-project-refs');
 const path = require('path');
 const cwd = process.cwd();
 const fs = require('fs-extra');
@@ -115,7 +115,7 @@ async function createPackage(name) {
   await fixupProject(project);
   await updateCopyrightAndLicense(project, options);
   await bootstrapProject(project);
-  await updateReferences({dryRun: false});
+  await updateTsReferences({dryRun: false});
 
   promptActions(project);
 }
