@@ -6,9 +6,9 @@
 import {
   ArtifactOptions,
   BaseArtifactBooter,
-  BootBindings,
   booter,
-} from '@loopback/boot';
+  BooterBindings,
+} from '@loopback/booter';
 import {
   config,
   CoreBindings,
@@ -31,7 +31,7 @@ export class ModelApiBooter extends BaseArtifactBooter {
   constructor(
     @inject(CoreBindings.APPLICATION_INSTANCE)
     public app: ApplicationWithRepositories,
-    @inject(BootBindings.PROJECT_ROOT) projectRoot: string,
+    @inject(BooterBindings.PROJECT_ROOT) projectRoot: string,
     @extensions()
     public getModelApiBuilders: Getter<ModelApiBuilder[]>,
     @config()

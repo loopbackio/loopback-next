@@ -6,9 +6,9 @@
 import {
   ArtifactOptions,
   BaseArtifactBooter,
-  BootBindings,
   booter,
-} from '@loopback/boot';
+  BooterBindings,
+} from '@loopback/booter';
 import {
   Application,
   config,
@@ -41,7 +41,7 @@ export class GraphQLResolverBooter extends BaseArtifactBooter {
   constructor(
     @inject(CoreBindings.APPLICATION_INSTANCE)
     public app: Application,
-    @inject(BootBindings.PROJECT_ROOT) projectRoot: string,
+    @inject(BooterBindings.PROJECT_ROOT) projectRoot: string,
     @config()
     public interceptorConfig: ArtifactOptions = {},
   ) {

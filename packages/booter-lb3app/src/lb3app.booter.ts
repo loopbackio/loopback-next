@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {BootBindings, Booter} from '@loopback/boot';
+import {Booter, BooterBindings} from '@loopback/booter';
 import {CoreBindings, inject} from '@loopback/core';
 import {
   ExpressRequestHandler,
@@ -35,9 +35,9 @@ export class Lb3AppBooter implements Booter {
   constructor(
     @inject(CoreBindings.APPLICATION_INSTANCE)
     public app: RestApplication,
-    @inject(BootBindings.PROJECT_ROOT)
+    @inject(BooterBindings.PROJECT_ROOT)
     public projectRoot: string,
-    @inject(`${BootBindings.BOOT_OPTIONS}#lb3app`)
+    @inject(`${BooterBindings.BOOT_OPTIONS}#lb3app`)
     options: Partial<Lb3AppBooterOptions> = {},
   ) {
     this.options = Object.assign({}, DefaultOptions, options);

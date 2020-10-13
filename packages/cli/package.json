@@ -114,6 +114,7 @@
       "source-map-support": "^0.5.19",
       "typescript": "~4.0.3",
       "@loopback/authentication": "^7.0.2",
+      "@loopback/booter": "^1.0.0",
       "@loopback/boot": "^3.0.2",
       "@loopback/build": "^6.2.5",
       "@loopback/cli": "^2.16.1",

@@ -6,9 +6,9 @@
 import {
   ArtifactOptions,
   BaseArtifactBooter,
-  BootBindings,
   booter,
-} from '@loopback/boot';
+  BooterBindings,
+} from '@loopback/booter';
 import {config, CoreBindings, inject} from '@loopback/core';
 import debugFactory from 'debug';
 import {ApplicationUsingTypeOrm, ConnectionOptions} from './';
@@ -28,7 +28,7 @@ export class TypeOrmConnectionBooter extends BaseArtifactBooter {
   constructor(
     @inject(CoreBindings.APPLICATION_INSTANCE)
     public app: ApplicationUsingTypeOrm,
-    @inject(BootBindings.PROJECT_ROOT) projectRoot: string,
+    @inject(BooterBindings.PROJECT_ROOT) projectRoot: string,
     @config()
     public entityConfig: ArtifactOptions = {},
   ) {

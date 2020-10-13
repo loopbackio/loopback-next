@@ -6,9 +6,9 @@
 import {
   ArtifactOptions,
   BaseArtifactBooter,
-  BootBindings,
   booter,
-} from '@loopback/boot';
+  BooterBindings,
+} from '@loopback/booter';
 import {config, Constructor, CoreBindings, inject} from '@loopback/core';
 import debugFactory from 'debug';
 import {ModelMetadataHelper} from '../decorators';
@@ -30,7 +30,7 @@ export class ModelBooter extends BaseArtifactBooter {
   constructor(
     @inject(CoreBindings.APPLICATION_INSTANCE)
     public app: ApplicationWithRepositories,
-    @inject(BootBindings.PROJECT_ROOT) projectRoot: string,
+    @inject(BooterBindings.PROJECT_ROOT) projectRoot: string,
     @config()
     public modelConfig: ArtifactOptions = {},
   ) {

@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {bindBooter} from '@loopback/boot';
+import {bindBooter} from '@loopback/booter';
 import {
   Binding,
   BindingFromClassOptions,

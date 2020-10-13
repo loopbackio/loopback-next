@@ -21,7 +21,7 @@
     "access": "public"
   },
   "peerDependencies": {
-    "@loopback/boot": "^3.0.2",
+    "@loopback/booter": "^1.0.0",
     "@loopback/core": "^2.11.0",
     "@loopback/rest": "^8.0.0"
   },
@@ -34,6 +34,7 @@
     "tslib": "^2.0.3"
   },
   "devDependencies": {
+    "@loopback/booter": "^1.0.0",
     "@loopback/boot": "^3.0.2",
     "@loopback/build": "^6.2.5",
     "@loopback/core": "^2.11.0",
