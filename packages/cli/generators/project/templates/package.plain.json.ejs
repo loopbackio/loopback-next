@@ -130,6 +130,7 @@
   "dependencies": {
 <% if (project.projectType === 'application') { -%>
     "@loopback/boot": "<%= project.dependencies['@loopback/boot'] -%>",
+    "@loopback/booter": "<%= project.dependencies['@loopback/booter'] -%>",
     "@loopback/core": "<%= project.dependencies['@loopback/core'] -%>",
     "@loopback/repository": "<%= project.dependencies['@loopback/repository'] -%>",
 <% if (project.apiconnect) { -%>
