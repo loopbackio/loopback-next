@@ -1,0 +1,54 @@
+{
+  "name": "@loopback/booter",
+  "version": "1.0.0",
+  "description": "Types/interfaces for booters",
+  "keywords": [
+    "loopback"
+  ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "engines": {
+    "node": "^10.16 || 12 || 14"
+  },
+  "scripts": {
+    "build": "lb-tsc",
+    "build:watch": "lb-tsc --watch",
+    "pretest": "npm run clean && npm run build",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
+    "clean": "lb-clean dist *.tsbuildinfo .eslintcache"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "packages/booter"
+  },
+  "author": "IBM Corp.",
+  "license": "MIT",
+  "files": [
+    "README.md",
+    "dist",
+    "src",
+    "!*/__tests__"
+  ],
+  "peerDependencies": {
+    "@loopback/core": "^2.11.0"
+  },
+  "dependencies": {
+    "debug": "^4.2.0",
+    "glob": "^7.1.6",
+    "tslib": "^2.0.0"
+  },
+  "devDependencies": {
+    "@loopback/build": "^6.2.5",
+    "@loopback/core": "^2.11.0",
+    "@loopback/testlab": "^3.2.7",
+    "@types/debug": "^4.1.5",
+    "@types/glob": "^7.1.3",
+    "@types/node": "^10.17.37",
+    "typescript": "~4.0.3"
+  },
+  "copyright.owner": "IBM Corp.",
+  "publishConfig": {
+    "access": "public"
+  }
+}

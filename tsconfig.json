@@ -143,6 +143,9 @@
       "path": "packages/booter-lb3app/tsconfig.json"
     },
     {
+      "path": "packages/booter/tsconfig.json"
+    },
+    {
       "path": "packages/context/tsconfig.json"
     },
     {

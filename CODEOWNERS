@@ -246,6 +246,7 @@
 # - Primary owner(s): @jannyHou
 # - Standby owner(s): n/a
 /packages/boot @jannyHou
+/packages/booter @raymondfeng @jannyHou
 
 #
 # Migration from LB3
