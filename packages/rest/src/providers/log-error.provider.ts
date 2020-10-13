@@ -18,7 +18,7 @@ export class LogErrorProvider implements Provider<LogError> {
     }
 
     console.error(
-      'Unhandled error in %s %s: %s %s',
+      'Request %s %s failed with status code %s. %s',
       req.method,
       req.url,
       statusCode,
