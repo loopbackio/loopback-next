@@ -158,7 +158,7 @@ of the `@loopback/cli` module.
     <tr>
       <td></td>
       <td>src/binding.ts</td>
-      <td>loopback:context:bindging</td>
+      <td>loopback:context:binding</td>
     </tr>
     <tr>
       <td></td>
