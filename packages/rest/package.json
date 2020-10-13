@@ -53,7 +53,7 @@
     "on-finished": "^2.3.0",
     "path-to-regexp": "^6.2.0",
     "qs": "^6.9.4",
-    "strong-error-handler": "^3.5.0",
+    "strong-error-handler": "^4.0.0",
     "tslib": "^2.0.3",
     "type-is": "^1.6.18",
     "validator": "^13.1.17"
