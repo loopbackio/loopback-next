@@ -23,465 +23,524 @@ children:
   url: Inside-LoopBack-Application.html
   output: 'web, pdf'
 
-- title: 'Tutorials'
-  url: Tutorials.html
+- title: 'Building LoopBack Applications'
   output: 'web, pdf'
+  expand: 'true'
   children:
 
-  - title: 'Todo Tutorial'
-    url: todo-tutorial.html
+  - title: 'Tutorials'
+    url: Tutorials.html
     output: 'web, pdf'
     children:
 
-    - title: 'Create your app scaffolding'
-      url: todo-tutorial-scaffolding.html
-      output: 'web, pdf'
-
-    - title: 'Add the Todo model'
-      url: todo-tutorial-model.html
-      output: 'web, pdf'
-
-    - title: 'Add a Datasource'
-      url: todo-tutorial-datasource.html
-      output: 'web, pdf'
-
-    - title: 'Add a Repository'
-      url: todo-tutorial-repository.html
-      output: 'web, pdf'
-
-    - title: 'Add a Controller'
-      url: todo-tutorial-controller.html
-      output: 'web, pdf'
-
-    - title: 'Putting it all together'
-      url: todo-tutorial-putting-it-together.html
-      output: 'web, pdf'
-
-    - title: 'Bonus: Integrate with a geo-coding service'
-      url: todo-tutorial-geocoding-service.html
-      output: 'web, pdf'
-
-  - title: 'TodoList Tutorial'
-    url: todo-list-tutorial.html
-    output: 'web, pdf'
-    children:
-
-    - title: 'Add TodoList Model'
-      url: todo-list-tutorial-model.html
-      output: 'web, pdf'
-
-    - title: 'Add TodoList Repository'
-      url: todo-list-tutorial-repository.html
-      output: 'web, pdf'
-
-    - title: 'Add Model Relations'
-      url: todo-list-tutorial-relations.html
+    - title: 'Todo Tutorial'
+      url: todo-tutorial.html
       output: 'web, pdf'
       children:
 
-      - title: 'Add a HasOne Relation'
-        url: todo-list-tutorial-has-one-relation.html
+      - title: 'Create your app scaffolding'
+        url: todo-tutorial-scaffolding.html
         output: 'web, pdf'
 
-    - title: 'Add TodoList Controller'
-      url: todo-list-tutorial-controller.html
-      output: 'web, pdf'
-
-    - title: 'Running on relational databases'
-      url: todo-list-tutorial-sqldb.html
-      output: 'web, pdf'
-
-  - title: 'Connecting to Back-end Service Tutorials'
-    url: Connecting-to-back-end.html
-    output: 'web, pdf'
-
-  - title: 'SOAP Web Service Tutorial'
-    url: soap-calculator-tutorial.html
-    output: 'web, pdf'
-    children:
-
-    - title: 'SOAP Web Service Overview'
-      url: soap-calculator-tutorial-web-service-overview.html
-      output: 'web, pdf'
-
-    - title: 'App scaffolding'
-      url: soap-calculator-tutorial-scaffolding.html
-      output: 'web, pdf'
-
-    - title: 'Add a Datasource'
-      url: soap-calculator-tutorial-add-datasource.html
-      output: 'web, pdf'
-
-    - title: 'Add a Service'
-      url: soap-calculator-tutorial-add-service.html
-      output: 'web, pdf'
-
-    - title: 'Add a Controller'
-      url: soap-calculator-tutorial-add-controller.html
-      output: 'web, pdf'
-
-    - title: 'Run and Test it'
-      url: soap-calculator-tutorial-run-and-test.html
-      output: 'web, pdf'
-
-  - title: 'Creating an Express Application with LoopBack REST API'
-    url: express-with-lb4-rest-tutorial.html
-    output: 'web, pdf'
-
-  - title: 'How to secure your LoopBack 4 application with JWT authentication'
-    url: Authentication-tutorial.html
-    output: 'web, pdf'
-
-  - title: 'Build large scale Node.js projects with LoopBack 4'
-    url: core-tutorial.html
-    output: 'web, pdf'
-    children:
-
-      - title: 'Introduction of the application scenario'
-        url: core-tutorial-part1.html
+      - title: 'Add the Todo model'
+        url: todo-tutorial-model.html
         output: 'web, pdf'
 
-      - title: 'Architectural challenges'
-        url: core-tutorial-part2.html
+      - title: 'Add a Datasource'
+        url: todo-tutorial-datasource.html
         output: 'web, pdf'
 
-      - title: 'Context in action'
-        url: core-tutorial-part3.html
+      - title: 'Add a Repository'
+        url: todo-tutorial-repository.html
         output: 'web, pdf'
 
-      - title: 'Dependency injection'
-        url: core-tutorial-part4.html
+      - title: 'Add a Controller'
+        url: todo-tutorial-controller.html
         output: 'web, pdf'
 
-      - title: 'Extension point and extensions'
-        url: core-tutorial-part5.html
+      - title: 'Putting it all together'
+        url: todo-tutorial-putting-it-together.html
         output: 'web, pdf'
 
-      - title: 'Interception'
-        url: core-tutorial-part6.html
+      - title: 'Bonus: Integrate with a geo-coding service'
+        url: todo-tutorial-geocoding-service.html
         output: 'web, pdf'
 
-      - title: 'Observation of life cycle events'
-        url: core-tutorial-part7.html
-        output: 'web, pdf'
-
-      - title: 'Configuration'
-        url: core-tutorial-part8.html
-        output: 'web, pdf'
-
-      - title: 'Discover and load artifacts by convention'
-        url: core-tutorial-part9.html
-        output: 'web, pdf'
-
-      - title: 'Advanced Recipes'
-        url: core-tutorial-part10.html
-        output: 'web, pdf'
-
-      - title: 'Summary'
-        url: core-tutorial-part11.html
-        output: 'web, pdf'
-
-- title: 'How-to guides'
-  output: 'web, pdf'
-  children:
-
-  - title: 'Building REST APIs'
-    output: 'web, pdf'
-    children:
-    - title: 'Creating CRUD REST APIs from a model'
-      url: Creating-crud-rest-apis.html
-      output: 'web, pdf'
-
-    - title: 'Customizing how OpenAPI spec is served'
-      url: Customizing-how-openapi-spec-is-served.html
-      output: 'web, pdf'
-
-    - title: 'Customizing routes'
-      url: Customizing-routes.html
-      output: 'web, pdf'
-
-    - title: 'Dynamically adding models, repositories, and controllers'
-      url: Dynamic-models-repositories-controllers.html
-      output: 'web, pdf'
-
-    - title: 'Self-hosted REST API Explorer'
-      url: Self-hosted-rest-api-explorer.html
-      output: 'web, pdf'
-
-    - title: 'Serving Static Files'
-      url: Serving-static-files.html
-      output: 'web, pdf'
-
-    - title: 'Accessing HTTP Request and Response Objects'
-      url: Accessing-http-request-response.html
-      output: 'web, pdf'
-
-    - title: 'Uploading and Downloading Files'
-      url: File-upload-download.html
-      output: 'web, pdf'
-
-    - title: 'Using Express Middleware'
-      url: Express-middleware.html
-      output: 'web, pdf'
-
-    - title: 'Using strong-error-handler'
-      url: Using-strong-error-handler.html
-      output: 'web, pdf'
-
-    - title: 'Boot and Mount a LoopBack 3 Application'
-      url: Boot-and-Mount-a-LoopBack-3-application.html
-      output: 'web, pdf'
-
-    - title: 'Integrating with API Connect'
-      url: Integrating-with-api-connect.html
-      output: 'web, pdf'
-
-    - title: 'Accepting MessagePack over HTTP'
-      url: Accepting-messagepack-over-http.html
-      output: 'web, pdf'
-
-  - title: 'Creating Other Forms of APIs'
-    output: 'web, pdf'
-    children:
-      - title: 'Creating GraphQL APIs'
-        url: GraphQL.html
-        output: 'web, pdf'
-
-      - title: 'Using OpenAPI-to-GraphQL'
-        url: Using-openapi-to-graphql.html
-        output: 'web, pdf'
-
-  - title: 'Building frontend applications'
-    output: 'web, pdf'
-    children:
-      - title: 'Building an Angular Application from OpenAPI Specification'
-        url: Building-frontend-angular-application.html
-        output: 'web, pdf'
-
-  - title: 'Running cron jobs'
-    url: Running-cron-jobs.html
-    output: 'web, pdf'
-
-  - title: 'Accessing Databases'
-    output: 'web, pdf'
-    children:
-
-    - title: 'Configuring DataSource'
-      url: Configuring-datasource.html
-      output: 'web, pdf'
-
-    - title: 'Working with data'
-      url: Working-with-data.html
+    - title: 'TodoList Tutorial'
+      url: todo-list-tutorial.html
       output: 'web, pdf'
       children:
 
-      - title: 'Querying data'
-        url: Querying-data.html
+      - title: 'Add TodoList Model'
+        url: todo-list-tutorial-model.html
+        output: 'web, pdf'
+
+      - title: 'Add TodoList Repository'
+        url: todo-list-tutorial-repository.html
+        output: 'web, pdf'
+
+      - title: 'Add Model Relations'
+        url: todo-list-tutorial-relations.html
         output: 'web, pdf'
         children:
 
-        - title: 'Fields filter'
-          url: Fields-filter.html
+        - title: 'Add a HasOne Relation'
+          url: todo-list-tutorial-has-one-relation.html
           output: 'web, pdf'
 
-        - title: 'Include filter'
-          url: Include-filter.html
-          output: 'web, pdf'
+      - title: 'Add TodoList Controller'
+        url: todo-list-tutorial-controller.html
+        output: 'web, pdf'
 
-        - title: 'Limit filter'
-          url: Limit-filter.html
-          output: 'web, pdf'
+      - title: 'Running on relational databases'
+        url: todo-list-tutorial-sqldb.html
+        output: 'web, pdf'
 
-        - title: 'Order filter'
-          url: Order-filter.html
-          output: 'web, pdf'
-
-        - title: 'Skip filter'
-          url: Skip-filter.html
-          output: 'web, pdf'
-
-        - title: 'Where filter'
-          url: Where-filter.html
-          output: 'web, pdf'
-
-    - title: 'Using Database Transactions'
-      url: Using-database-transactions.html
+    - title: 'Connecting to Back-end Service Tutorials'
+      url: Connecting-to-back-end.html
       output: 'web, pdf'
 
-    - title: 'Database Migrations'
-      url: Database-migrations.html
-      output: 'web, pdf'
-
-    - title: 'Executing database commands'
-      url: Executing-database-commands.html
-      output: 'web, pdf'
-
-    - title: 'Using TypeORM'
+    - title: 'SOAP Web Service Tutorial'
+      url: soap-calculator-tutorial.html
       output: 'web, pdf'
       children:
-      - title: 'How to use TypeORM with LoopBack'
-        url: Using-typeorm-with-loopback.html
+
+      - title: 'SOAP Web Service Overview'
+        url: soap-calculator-tutorial-web-service-overview.html
         output: 'web, pdf'
 
-  - title: 'Accessing Services'
-    output: 'web, pdf'
-    children:
-      - title: 'Call Other Services'
-        url: Calling-other-APIs-and-web-services.html
+      - title: 'App scaffolding'
+        url: soap-calculator-tutorial-scaffolding.html
         output: 'web, pdf'
 
-  - title: 'Validating Data'
-    url: Validation.html
-    output: 'web, pdf'
-    children:
-      - title: 'Validation in REST Layer'
-        url: Validation-REST-layer.html
+      - title: 'Add a Datasource'
+        url: soap-calculator-tutorial-add-datasource.html
         output: 'web, pdf'
 
-      - title: 'Validation in the Controller, Repository and Service Layer'
-        url: Validation-controller-repo-service-layer.html
+      - title: 'Add a Service'
+        url: soap-calculator-tutorial-add-service.html
         output: 'web, pdf'
 
-      - title: 'Validation in ORM Layer'
-        url: Validation-ORM-layer.html
+      - title: 'Add a Controller'
+        url: soap-calculator-tutorial-add-controller.html
         output: 'web, pdf'
 
-  - title: 'Securing Applications'
-    output: 'web, pdf'
-    children:
+      - title: 'Run and Test it'
+        url: soap-calculator-tutorial-run-and-test.html
+        output: 'web, pdf'
 
-    - title: 'Authentication'
-      url: Authentication-overview.html
+    - title: 'Creating an Express Application with LoopBack REST API'
+      url: express-with-lb4-rest-tutorial.html
+      output: 'web, pdf'
+
+    - title: 'How to secure your LoopBack 4 application with JWT authentication'
+      url: Authentication-tutorial.html
+      output: 'web, pdf'
+
+    - title: 'Build large scale Node.js projects with LoopBack 4'
+      url: core-tutorial.html
       output: 'web, pdf'
       children:
-        - title: 'Apply JWT Authentication in Todo Example'
-          url: Authentication-tutorial.html
+
+        - title: 'Introduction of the application scenario'
+          url: core-tutorial-part1.html
           output: 'web, pdf'
 
-        - title: 'Authentication Component'
-          url: Loopback-component-authentication.html
+        - title: 'Architectural challenges'
+          url: core-tutorial-part2.html
+          output: 'web, pdf'
+
+        - title: 'Context in action'
+          url: core-tutorial-part3.html
+          output: 'web, pdf'
+
+        - title: 'Dependency injection'
+          url: core-tutorial-part4.html
+          output: 'web, pdf'
+
+        - title: 'Extension point and extensions'
+          url: core-tutorial-part5.html
+          output: 'web, pdf'
+
+        - title: 'Interception'
+          url: core-tutorial-part6.html
+          output: 'web, pdf'
+
+        - title: 'Observation of life cycle events'
+          url: core-tutorial-part7.html
+          output: 'web, pdf'
+
+        - title: 'Configuration'
+          url: core-tutorial-part8.html
+          output: 'web, pdf'
+
+        - title: 'Discover and load artifacts by convention'
+          url: core-tutorial-part9.html
+          output: 'web, pdf'
+
+        - title: 'Advanced Recipes'
+          url: core-tutorial-part10.html
+          output: 'web, pdf'
+
+        - title: 'Summary'
+          url: core-tutorial-part11.html
+          output: 'web, pdf'
+
+  - title: 'How-to guides'
+    output: 'web, pdf'
+    children:
+
+    - title: 'Building REST APIs'
+      output: 'web, pdf'
+      children:
+      - title: 'Creating CRUD REST APIs from a model'
+        url: Creating-crud-rest-apis.html
+        output: 'web, pdf'
+
+      - title: 'Customizing how OpenAPI spec is served'
+        url: Customizing-how-openapi-spec-is-served.html
+        output: 'web, pdf'
+
+      - title: 'Customizing routes'
+        url: Customizing-routes.html
+        output: 'web, pdf'
+
+      - title: 'Dynamically adding models, repositories, and controllers'
+        url: Dynamic-models-repositories-controllers.html
+        output: 'web, pdf'
+
+      - title: 'Self-hosted REST API Explorer'
+        url: Self-hosted-rest-api-explorer.html
+        output: 'web, pdf'
+
+      - title: 'Serving Static Files'
+        url: Serving-static-files.html
+        output: 'web, pdf'
+
+      - title: 'Accessing HTTP Request and Response Objects'
+        url: Accessing-http-request-response.html
+        output: 'web, pdf'
+
+      - title: 'Uploading and Downloading Files'
+        url: File-upload-download.html
+        output: 'web, pdf'
+
+      - title: 'Using Express Middleware'
+        url: Express-middleware.html
+        output: 'web, pdf'
+
+      - title: 'Using strong-error-handler'
+        url: Using-strong-error-handler.html
+        output: 'web, pdf'
+
+      - title: 'Boot and Mount a LoopBack 3 Application'
+        url: Boot-and-Mount-a-LoopBack-3-application.html
+        output: 'web, pdf'
+
+      - title: 'Integrating with API Connect'
+        url: Integrating-with-api-connect.html
+        output: 'web, pdf'
+
+      - title: 'Accepting MessagePack over HTTP'
+        url: Accepting-messagepack-over-http.html
+        output: 'web, pdf'
+
+    - title: 'Creating Other Forms of APIs'
+      output: 'web, pdf'
+      children:
+        - title: 'Creating GraphQL APIs'
+          url: GraphQL.html
+          output: 'web, pdf'
+
+        - title: 'Using OpenAPI-to-GraphQL'
+          url: Using-openapi-to-graphql.html
+          output: 'web, pdf'
+
+    - title: 'Building frontend applications'
+      output: 'web, pdf'
+      children:
+        - title: 'Building an Angular Application from OpenAPI Specification'
+          url: Building-frontend-angular-application.html
+          output: 'web, pdf'
+
+    - title: 'Running cron jobs'
+      url: Running-cron-jobs.html
+      output: 'web, pdf'
+
+    - title: 'Accessing Databases'
+      output: 'web, pdf'
+      children:
+
+      - title: 'Configuring DataSource'
+        url: Configuring-datasource.html
+        output: 'web, pdf'
+
+      - title: 'Working with data'
+        url: Working-with-data.html
+        output: 'web, pdf'
+        children:
+
+        - title: 'Querying data'
+          url: Querying-data.html
           output: 'web, pdf'
           children:
-            - title: 'Authentication Decorator'
-              url: Authentication-component-decorator.html
-              output: 'web, pdf'
 
-            - title: 'Authentication Action'
-              url: Authentication-component-action.html
-              output: 'web, pdf'
+          - title: 'Fields filter'
+            url: Fields-filter.html
+            output: 'web, pdf'
 
-            - title: 'Authentication Strategy'
-              url: Authentication-component-strategy.html
-              output: 'web, pdf'
+          - title: 'Include filter'
+            url: Include-filter.html
+            output: 'web, pdf'
 
-            - title: 'Managing Custom Authentication Strategy Options'
-              url: Authentication-component-options.html
-              output: 'web, pdf'
+          - title: 'Limit filter'
+            url: Limit-filter.html
+            output: 'web, pdf'
 
-        - title: 'JWT Authentication Extension'
-          url: JWT-authentication-extension.html
+          - title: 'Order filter'
+            url: Order-filter.html
+            output: 'web, pdf'
+
+          - title: 'Skip filter'
+            url: Skip-filter.html
+            output: 'web, pdf'
+
+          - title: 'Where filter'
+            url: Where-filter.html
+            output: 'web, pdf'
+
+      - title: 'Using Database Transactions'
+        url: Using-database-transactions.html
+        output: 'web, pdf'
+
+      - title: 'Database Migrations'
+        url: Database-migrations.html
+        output: 'web, pdf'
+
+      - title: 'Executing database commands'
+        url: Executing-database-commands.html
+        output: 'web, pdf'
+
+      - title: 'Using TypeORM'
+        output: 'web, pdf'
+        children:
+        - title: 'How to use TypeORM with LoopBack'
+          url: Using-typeorm-with-loopback.html
           output: 'web, pdf'
 
-        - title: 'Implement your own authentication strategy'
-          url: Implement-your-own-strategy.html
-          output: 'web, pdf'
-
-        - title: 'Passport Adapter for Authentication'
-          url: Authentication-passport.html
-          output: 'web, pdf'
-
-    - title: 'Authorization'
-      url: Authorization-overview.html
+    - title: 'Accessing Services'
       output: 'web, pdf'
       children:
-        - title: 'RBAC with Authorization System'
-          url: RBAC-with-authorization.html
+        - title: 'Call Other Services'
+          url: Calling-other-APIs-and-web-services.html
           output: 'web, pdf'
 
-        - title: 'Authorization Component'
-          url: Loopback-component-authorization.html
+    - title: 'Validating Data'
+      url: Validation.html
+      output: 'web, pdf'
+      children:
+        - title: 'Validation in REST Layer'
+          url: Validation-REST-layer.html
           output: 'web, pdf'
-          children:
-          - title: 'Interceptor'
-            url: Authorization-component-interceptor.html
+
+        - title: 'Validation in the Controller, Repository and Service Layer'
+          url: Validation-controller-repo-service-layer.html
+          output: 'web, pdf'
+
+        - title: 'Validation in ORM Layer'
+          url: Validation-ORM-layer.html
+          output: 'web, pdf'
+
+    - title: 'Securing Applications'
+      output: 'web, pdf'
+      children:
+
+      - title: 'Authentication'
+        url: Authentication-overview.html
+        output: 'web, pdf'
+        children:
+          - title: 'Apply JWT Authentication in Todo Example'
+            url: Authentication-tutorial.html
             output: 'web, pdf'
 
-          - title: 'Decorator'
-            url: Authorization-component-decorator.html
+          - title: 'Authentication Component'
+            url: Loopback-component-authentication.html
+            output: 'web, pdf'
+            children:
+              - title: 'Authentication Decorator'
+                url: Authentication-component-decorator.html
+                output: 'web, pdf'
+
+              - title: 'Authentication Action'
+                url: Authentication-component-action.html
+                output: 'web, pdf'
+
+              - title: 'Authentication Strategy'
+                url: Authentication-component-strategy.html
+                output: 'web, pdf'
+
+              - title: 'Managing Custom Authentication Strategy Options'
+                url: Authentication-component-options.html
+                output: 'web, pdf'
+
+          - title: 'JWT Authentication Extension'
+            url: JWT-authentication-extension.html
             output: 'web, pdf'
 
-          - title: 'Authorizer'
-            url: Authorization-component-authorizer.html
+          - title: 'Implement your own authentication strategy'
+            url: Implement-your-own-strategy.html
             output: 'web, pdf'
 
-          - title: 'Decision Matrix'
-            url: Authorization-component-decision-matrix.html
+          - title: 'Passport Adapter for Authentication'
+            url: Authentication-passport.html
             output: 'web, pdf'
 
-          - title: 'Enforcer'
-            url: Authorization-component-enforcer.html
+      - title: 'Authorization'
+        url: Authorization-overview.html
+        output: 'web, pdf'
+        children:
+          - title: 'RBAC with Authorization System'
+            url: RBAC-with-authorization.html
             output: 'web, pdf'
 
-  - title: 'Deploying Applications'
-    url: Deployment.html
+          - title: 'Authorization Component'
+            url: Loopback-component-authorization.html
+            output: 'web, pdf'
+            children:
+            - title: 'Interceptor'
+              url: Authorization-component-interceptor.html
+              output: 'web, pdf'
+
+            - title: 'Decorator'
+              url: Authorization-component-decorator.html
+              output: 'web, pdf'
+
+            - title: 'Authorizer'
+              url: Authorization-component-authorizer.html
+              output: 'web, pdf'
+
+            - title: 'Decision Matrix'
+              url: Authorization-component-decision-matrix.html
+              output: 'web, pdf'
+
+            - title: 'Enforcer'
+              url: Authorization-component-enforcer.html
+              output: 'web, pdf'
+
+    - title: 'Deploying Applications'
+      url: Deployment.html
+      output: 'web, pdf'
+      children:
+        - title: 'Enabling HTTPS'
+          url: Enabling-https.html
+          output: 'web, pdf'
+
+        - title: 'Deploying to IBM Cloud'
+          url: Deploying-to-IBM-Cloud.html
+          output: 'web, pdf'
+
+        - title: 'Deploying to Kubernetes on IBM Cloud'
+          url: deploying_to_ibm_cloud_kubernetes.html
+          output: 'web, pdf'
+
+        - title: 'Deploying with pm2 and nginx'
+          url: deploying-with-pm2-and-nginx.html
+          output: 'web, pdf'
+
+        - title: 'Developing and Deploying LoopBack Applications with Appsody'
+          url: Appsody-LoopBack.html
+          output: 'web, pdf'
+
+        - title: 'Running cron jobs'
+          url: Running-cron-jobs.html
+          output: 'web, pdf'
+
+        - title: 'Health check'
+          url: Health.html
+          output: 'web, pdf'
+
+        - title: 'Metrics for Prometheus'
+          url: Metrics.html
+          output: 'web, pdf'
+
+        - title: 'Pooling'
+          url: Pooling.html
+          output: 'web, pdf'
+
+    - title: 'Troubleshooting'
+      url: Troubleshooting.html
+      output: 'web, pdf'
+      children:
+
+      - title: 'Setting debug strings'
+        url: Setting-debug-strings.html
+        output: 'web, pdf'
+
+      - title: 'Logging'
+        url: Logging.html
+        output: 'web, pdf'
+
+      - title: 'Context Explorer'
+        url: Context-explorer.html
+        output: 'web, pdf'
+
+      - title: 'Debugging tests with Mocha'
+        url: Debugging-tests-with-mocha.html
+        output: 'web, pdf'
+
+- title: 'Extending LoopBack Framework'
+  url: Extending-LoopBack-4.html
+  output: 'web, pdf'
+  expand: 'true'
+  children:
+
+  - title: 'How-to guides'
     output: 'web, pdf'
     children:
-      - title: 'Enabling HTTPS'
-        url: Enabling-https.html
-        output: 'web, pdf'
 
-      - title: 'Deploying to IBM Cloud'
-        url: Deploying-to-IBM-Cloud.html
-        output: 'web, pdf'
+    - title: 'Creating components'
+      url: Creating-components.html
+      output: 'web, pdf'
 
-      - title: 'Deploying to Kubernetes on IBM Cloud'
-        url: deploying_to_ibm_cloud_kubernetes.html
-        output: 'web, pdf'
+    - title: 'Creating decorators'
+      url: Creating-decorators.html
+      output: 'web, pdf'
 
-      - title: 'Deploying with pm2 and nginx'
-        url: deploying-with-pm2-and-nginx.html
-        output: 'web, pdf'
+    - title: 'Contributing REST API'
+      url: 'creating-components-rest-api.html'
+      output: 'web, pdf'
 
-      - title: 'Developing and Deploying LoopBack Applications with Appsody'
-        url: Appsody-LoopBack.html
-        output: 'web, pdf'
+    - title: 'Creating services'
+      url: 'creating-components-services.html'
+      output: 'web, pdf'
 
-      - title: 'Running cron jobs'
-        url: Running-cron-jobs.html
-        output: 'web, pdf'
+    - title: 'Creating servers'
+      url: Creating-servers.html
+      output: 'web, pdf'
 
-      - title: 'Health check'
-        url: Health.html
-        output: 'web, pdf'
+    - title: 'Extending request body parsing'
+      url: Extending-request-body-parsing.html
+      output: 'web, pdf'
 
-      - title: 'Metrics for Prometheus'
-        url: Metrics.html
-        output: 'web, pdf'
+    - title: 'Extension life cycle'
+      url: Extension-life-cycle.html
+      output: 'web, pdf'
 
-      - title: 'Pooling'
-        url: Pooling.html
-        output: 'web, pdf'
+    - title: 'Extending OpenAPI specification'
+      url: Extending-OpenAPI-specification.html
+      output: 'web, pdf'
 
-  - title: 'Troubleshooting'
-    url: Troubleshooting.html
+    - title: 'Extending Model API builder'
+      url: Extending-Model-API-builder.html
+      output: 'web, pdf'
+
+    - title: 'Testing your extension'
+      url: Testing-your-extension.html
+      output: 'web, pdf'
+
+  - title: 'Community extensions'
+    url: Community-extensions.html
     output: 'web, pdf'
-    children:
-
-    - title: 'Setting debug strings'
-      url: Setting-debug-strings.html
-      output: 'web, pdf'
-
-    - title: 'Logging'
-      url: Logging.html
-      output: 'web, pdf'
-
-    - title: 'Context Explorer'
-      url: Context-explorer.html
-      output: 'web, pdf'
-
-    - title: 'Debugging tests with Mocha'
-      url: Debugging-tests-with-mocha.html
-      output: 'web, pdf'
 
 - title: 'Concepts'
   url: Concepts.html
@@ -522,6 +581,10 @@ children:
 
     - title: 'Life Cycle Event and Observer'
       url: Life-cycle.html
+      output: 'web, pdf'
+
+    - title: 'Extension point and extensions'
+      url: Extension-point-and-extensions.html
       output: 'web, pdf'
 
     - title: 'Service'
@@ -940,60 +1003,7 @@ children:
     url: Deploy-for-GDPR-readiness.html
     output: 'web, pdf'
 
-- title: 'Extending LoopBack 4'
-  url: Extending-LoopBack-4.html
-  output: 'web, pdf'
-  children:
-
-  - title: 'Creating components'
-    url: Creating-components.html
-    output: 'web, pdf'
-
-  - title: 'Creating decorators'
-    url: Creating-decorators.html
-    output: 'web, pdf'
-
-  - title: 'Contributing REST API'
-    url: 'creating-components-rest-api.html'
-    output: 'web, pdf'
-
-  - title: 'Creating services'
-    url: 'creating-components-services.html'
-    output: 'web, pdf'
-
-  - title: 'Creating servers'
-    url: Creating-servers.html
-    output: 'web, pdf'
-
-  - title: 'Extension point and extensions'
-    url: Extension-point-and-extensions.html
-    output: 'web, pdf'
-
-  - title: 'Extending request body parsing'
-    url: Extending-request-body-parsing.html
-    output: 'web, pdf'
-
-  - title: 'Extension life cycle'
-    url: Extension-life-cycle.html
-    output: 'web, pdf'
-
-  - title: 'Extending OpenAPI specification'
-    url: Extending-OpenAPI-specification.html
-    output: 'web, pdf'
-
-  - title: 'Extending Model API builder'
-    url: Extending-Model-API-builder.html
-    output: 'web, pdf'
-
-  - title: 'Testing your extension'
-    url: Testing-your-extension.html
-    output: 'web, pdf'
-
-- title: 'Community extensions'
-  url: Community-extensions.html
-  output: 'web, pdf'
-
-- title: 'Contribute to LoopBack 4'
+- title: 'Contributing to LoopBack 4'
   url: code-contrib-lb4.html
   output: 'web, pdf'
   children:
