@@ -1,10 +1,10 @@
-// Copyright IBM Corp. 2019. All Rights Reserved.
+// Copyright IBM Corp. 2019,2020 All Rights Reserved.
 // Node module: @loopback/example-todo
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
 import {Client} from '@loopback/testlab';
-import {TodoListApplication} from '../..';
+import {TodoListApplication} from '../../application';
 import {setupApplication} from './test-helper';
 
 describe('HomePage', () => {
