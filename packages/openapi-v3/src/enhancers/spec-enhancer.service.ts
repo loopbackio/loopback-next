@@ -117,11 +117,12 @@ export class OASEnhancerService {
  *
  * @param currentSpec The original spec
  * @param patchSpec The patch spec to be merged into the original spec
+ * @returns A new specification object created by merging the original ones.
  */
-export function mergeOpenAPISpec(
-  currentSpec: Partial<OpenApiSpec>,
-  patchSpec: Partial<OpenApiSpec>,
-) {
+export function mergeOpenAPISpec<
+  C extends Partial<OpenApiSpec>,
+  P extends Partial<OpenApiSpec>
+>(currentSpec: C, patchSpec: P): C & P {
   const mergedSpec = jsonmergepatch.merge(currentSpec, patchSpec);
   return mergedSpec;
 }
