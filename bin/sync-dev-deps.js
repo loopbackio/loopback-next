@@ -19,7 +19,7 @@ const {
   isDryRun,
   printJson,
   runMain,
-} = require('./script-util');
+} = require('../packages/monorepo');
 
 async function syncDevDeps(options) {
   const {project, packages} = await loadLernaRepo();

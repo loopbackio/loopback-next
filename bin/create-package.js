@@ -42,11 +42,10 @@
 'use strict';
 
 const build = require('../packages/build');
-const updateTsReferences = require('./update-ts-project-refs');
 const path = require('path');
 const cwd = process.cwd();
 const fs = require('fs-extra');
-const {runMain} = require('./script-util');
+const {runMain, updateTsProjectRefs} = require('../packages/monorepo');
 
 /**
  * Return a promise to be resolved by the child process exit event
@@ -115,7 +114,7 @@ async function createPackage(name) {
   await fixupProject(project);
   await updateCopyrightAndLicense(project, options);
   await bootstrapProject(project);
-  await updateTsReferences({dryRun: false});
+  await updateTsProjectRefs({dryRun: false});
 
   promptActions(project);
 }

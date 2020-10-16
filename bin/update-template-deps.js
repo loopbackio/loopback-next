@@ -17,7 +17,7 @@ const {
   writeJsonSync,
   loadLernaRepo,
   runMain,
-} = require('./script-util');
+} = require('../packages/monorepo');
 
 /**
  * Update `templateDependencies` in `packages/cli/package.json`

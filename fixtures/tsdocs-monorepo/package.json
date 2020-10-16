@@ -7,9 +7,9 @@
   "private": true,
   "description": "A monorepo for tsdocs testing",
   "scripts": {
-    "bootstrap:fixtures": "node ../../bin/run-lerna.js bootstrap",
-    "build:fixtures": "node ../../bin/run-lerna.js run build",
-    "clean:fixtures": "node ../../bin/run-lerna.js run clean",
+    "bootstrap:fixtures": "node ../../packages/monorepo/lib/run-lerna.js bootstrap",
+    "build:fixtures": "node ../../packages/monorepo/lib/run-lerna.js run build",
+    "clean:fixtures": "node ../../packages/monorepo/lib/run-lerna.js run clean",
     "build": "npm -s run bootstrap:fixtures && npm -s run clean:fixtures && npm run -s build:fixtures",
     "postinstall": "npm run build"
   },

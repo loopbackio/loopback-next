@@ -13,7 +13,7 @@
 const path = require('path');
 const fs = require('fs-extra');
 const createMarkdownTable = require('markdown-table');
-const {getPackages, runMain} = require('./script-util');
+const {getPackages, runMain} = require('../packages/monorepo');
 
 const MONOREPO_FILE_DIST = 'docs/site';
 const MONOREPO_FILE_NAME = 'MONOREPO.md';
