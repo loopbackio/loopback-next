@@ -10,14 +10,17 @@
  */
 'use strict';
 
-const {runMain} = require('./script-util');
 const syncDevDeps = require('./sync-dev-deps');
 const updateMonorepo = require('./update-monorepo-file');
-const updatePackageDeps = require('./update-package-deps');
-const updatePackageJson = require('./update-package-json');
-const updateTsRefs = require('./update-ts-project-refs');
 
-async function run() {
+const {
+  runMain,
+  updatePackageDeps,
+  updatePackageJson,
+  updateTsProjectRefs,
+} = require('../packages/monorepo');
+
+async function fixMonorepo() {
   // Ensure all packages use the local version of `@loopback/*`
   await updatePackageDeps();
   // Ensure `devDependencies` is in sync
@@ -27,7 +30,7 @@ async function run() {
   // Ensure `MONOREPO.md` is up to date
   await updateMonorepo();
   // Ensure TypeScript project references are up to date
-  await updateTsRefs();
+  await updateTsProjectRefs();
 }
 
-runMain(module, run);
+runMain(module, fixMonorepo);

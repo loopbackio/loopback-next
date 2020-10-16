@@ -13,7 +13,11 @@
 
 const path = require('path');
 const fs = require('fs-extra');
-const {isTypeScriptPackage, loadLernaRepo, runMain} = require('./script-util');
+const {
+  isTypeScriptPackage,
+  loadLernaRepo,
+  runMain,
+} = require('../packages/monorepo');
 
 /**
  * Check existence of LICENSE file in the monorepo packages
