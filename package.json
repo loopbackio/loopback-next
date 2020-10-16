@@ -6,15 +6,15 @@
   "license": "MIT",
   "copyright.owner": "IBM Corp.",
   "engines": {
-    "node": "^10.16 || 12 || 14"
+    "node": "^10.16 || 12 || 14",
+    "npm": ">=7"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/strongloop/loopback-next.git"
   },
   "scripts": {
-    "bootstrap": "lerna bootstrap",
-    "postinstall": "npm run -s bootstrap && npm run -s update-ts-project-refs",
+    "postinstall": "npm run -s update-ts-project-refs",
     "update-ts-project-refs": "node packages/monorepo/lib/update-ts-project-refs.js",
     "update-packages": "npm run -s update-package-locks",
     "check-package-metadata": "node bin/check-package-metadata.js",
@@ -48,7 +48,7 @@
     "clean": "lerna run clean && node packages/build/bin/run-clean \"packages/*/dist\" \"extensions/*/dist\" \"examples/*/dist\" \"benchmark/dist\"",
     "clean:lerna": "lerna clean",
     "build": "node packages/build/bin/compile-package -b",
-    "build:full": "npm ci --ignore-scripts && lerna bootstrap --ci && npm run clean && npm run build",
+    "build:full": "npm ci --ignore-scripts && npm run clean && npm run build",
     "pretest": "npm run clean && npm run build",
     "test": "node packages/build/bin/run-nyc npm run mocha",
     "test:ci": "node packages/build/bin/run-nyc npm run mocha",
@@ -94,5 +94,16 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
-  }
+  },
+  "workspaces": [
+    "acceptance/*",
+    "fixtures/*",
+    "benchmark",
+    "docs",
+    "examples/*",
+    "packages/*",
+    "extensions/*",
+    "bodyparsers/*",
+    "sandbox/*"
+  ]
 }

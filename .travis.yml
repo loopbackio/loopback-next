@@ -9,7 +9,6 @@ node_js:
   - "14"
 
 script:
-  - npm run postinstall
   - npm run build
   - npm run test:ci
 
@@ -19,7 +18,9 @@ env: TASK=test NODE_OPTIONS="--max-old-space-size=2048"
 cache:
   yarn: true
 
-before_install: npm i -g yarn
+before_install:
+  - npm install -g npm@7
+  - npm i -g yarn
 
 install: npm ci --ignore-scripts
 
