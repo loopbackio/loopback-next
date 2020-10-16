@@ -56,7 +56,7 @@ async function checkoutPR() {
 
 const https = require('https');
 const url = require('url');
-const {runMain} = require('./script-util');
+const {runMain} = require('../packages/monorepo');
 
 /**
  * Fetch PR information
