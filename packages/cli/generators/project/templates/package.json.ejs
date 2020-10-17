@@ -61,9 +61,9 @@
 <% } -%>
 <% } -%>
 <% if (packageManager === 'yarn') { -%>
-    "pretest": "yarn run clean && yarn run build",
+    "pretest": "yarn run rebuild",
 <% } else { -%>
-    "pretest": "npm run clean && npm run build",
+    "pretest": "npm run rebuild",
 <% } -%>
 <% if (project.mocha) { -%>
     "test": "lb-mocha --allow-console-logs \"dist/__tests__\"",
@@ -94,9 +94,11 @@
     "preopenapi-spec": "npm run build",
     "openapi-spec": "node ./dist/openapi-spec",
 <% if (packageManager === 'yarn') { -%>
-    "prestart": "yarn run build",
+    "rebuild": "yarn run clean && yarn run build",
+    "prestart": "yarn run rebuild",
 <% } else { -%>
-    "prestart": "npm run build",
+    "rebuild": "npm run clean && npm run build",
+    "prestart": "npm run rebuild",
 <% } -%>
     "start": "node -r source-map-support/register .",
 <% } -%>

@@ -283,7 +283,8 @@ module.exports = function (projGenerator, props, projectType) {
           );
           assert.jsonFileContent('package.json', {
             scripts: {
-              prestart: 'npm run build',
+              rebuild: 'npm run clean && npm run build',
+              prestart: 'npm run rebuild',
               start: 'node -r source-map-support/register .',
             },
           });
@@ -296,7 +297,8 @@ module.exports = function (projGenerator, props, projectType) {
           assert.noFileContent('package.json', '"@loopback/rest"');
           assert.noFileContent('package.json', '"@loopback/openapi-v3"');
           assert.noJsonFileContent('package.json', {
-            prestart: 'npm run build',
+            rebuild: 'npm run clean && npm run build',
+            prestart: 'npm run rebuild',
             start: 'node .',
           });
         }
