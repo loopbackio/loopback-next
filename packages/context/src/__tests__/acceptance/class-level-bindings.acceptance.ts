@@ -187,6 +187,51 @@ describe('Context bindings - Injecting dependencies of classes', () => {
     expect(await store.getter()).to.equal('456');
   });
 
+  it('allows circular dependencies using getter', async () => {
+    // DepartmentService and EmployeeService depends on each other
+    interface DepartmentService {
+      getEmployeeService: Getter<EmployeeService>;
+    }
+
+    interface EmployeeService {
+      getDepartmentService: Getter<DepartmentService>;
+    }
+
+    class DepartmentServiceImpl implements DepartmentService {
+      constructor(
+        // Use getter to avoid circular dependencies
+        @inject.getter('services.employee')
+        readonly getEmployeeService: Getter<EmployeeService>,
+      ) {}
+    }
+
+    class EmployeeServiceImpl implements EmployeeService {
+      constructor(
+        // Use getter to avoid circular dependencies
+        @inject.getter('services.department')
+        readonly getDepartmentService: Getter<DepartmentService>,
+      ) {}
+    }
+    ctx
+      .bind('services.department')
+      .toClass(DepartmentServiceImpl)
+      .inScope(BindingScope.SINGLETON);
+    ctx
+      .bind('services.employee')
+      .toClass(EmployeeServiceImpl)
+      .inScope(BindingScope.SINGLETON);
+    const departmentService = await ctx.get<DepartmentService>(
+      'services.department',
+    );
+    const employeeService = await ctx.get<EmployeeService>('services.employee');
+    expect(await departmentService.getEmployeeService()).to.eql(
+      employeeService,
+    );
+    expect(await employeeService.getDepartmentService()).to.eql(
+      departmentService,
+    );
+  });
+
   it('creates getter from a value', () => {
     const getter = Getter.fromValue('data');
     expect(getter).to.be.a.Function();
