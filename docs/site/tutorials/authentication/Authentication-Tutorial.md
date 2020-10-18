@@ -256,8 +256,13 @@ details.
 ## Try it out
 
 Start the application by running npm start and go to
-http://localhost:3000/explorer. You’ll see the 3 new endpoints under
-`UserController` together with the other endpoints under `TodoController`.
+http://localhost:3000/explorer.
+
+{% include note.html content="
+When using the API Explorer, be sure to clear out any default <i><b>filter</b></i> or <i><b>where</b></i> objects in order to see all the data." %}
+
+You’ll see the 3 new endpoints under `UserController` together with the other
+endpoints under `TodoController`.
 
 ![](../../imgs/auth-tutorial-apiexplorer.png)
 
