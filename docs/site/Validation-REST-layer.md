@@ -180,7 +180,7 @@ of 10 digits separated by `-` after the 3rd and 6th digits.
 
 Since the error is being caught at the REST layer, the simplest way to customize
 the errors is to customize the
-[sequnce](https://loopback.io/doc/en/lb4/Sequence.html). It exists in all
+[sequence](https://loopback.io/doc/en/lb4/Sequence.html). It exists in all
 LoopBack applications scaffolded by using the `lb4` command and can be found in
 `src/sequence.ts`.
 
