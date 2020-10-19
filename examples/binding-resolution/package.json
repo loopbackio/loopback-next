@@ -18,10 +18,11 @@
   "scripts": {
     "build": "lb-tsc",
     "build:watch": "lb-tsc --watch",
-    "pretest": "npm run clean && npm run build",
+    "pretest": "npm run rebuild",
     "test": "lb-mocha --allow-console-logs \"dist/__tests__\"",
     "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js",
-    "prestart": "npm run build",
+    "rebuild": "npm run clean && npm run build",
+    "prestart": "npm run rebuild",
     "start": "node -r source-map-support/register .",
     "clean": "lb-clean dist *.tsbuildinfo .eslintcache"
   },
