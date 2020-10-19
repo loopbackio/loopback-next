@@ -13,7 +13,7 @@ export class Todo extends Entity {
     id: true,
     generated: false,
   })
-  id: number;
+  id?: number;
 
   @property({
     type: 'string',
@@ -29,14 +29,10 @@ export class Todo extends Entity {
   @property({
     type: 'boolean',
   })
-  isComplete: boolean;
+  isComplete?: boolean;
 
   @belongsTo(() => TodoList)
   todoListId: number;
-
-  getId() {
-    return this.id;
-  }
 
   constructor(data?: Partial<Todo>) {
     super(data);

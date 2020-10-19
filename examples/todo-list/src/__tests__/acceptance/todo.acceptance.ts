@@ -46,6 +46,18 @@ describe('TodoListApplication', () => {
     expect(result).to.containDeep(todo);
   });
 
+  it('gets a count of todos', async function () {
+    await givenTodoInstance(todoRepo, {
+      title: 'say hello',
+      desc: 'formal greeting',
+    });
+    await givenTodoInstance(todoRepo, {
+      title: 'say goodbye',
+      desc: 'formal farewell',
+    });
+    await client.get('/todos/count').expect(200, {count: 2});
+  });
+
   it('rejects requests to create a todo with no title', async () => {
     const todo: Partial<Todo> = givenTodo();
     delete todo.title;
@@ -136,6 +148,24 @@ describe('TodoListApplication', () => {
       .get('/todos')
       .query({filter: {where: {isComplete: false}}})
       .expect(200, [toJSON(todoInProgress)]);
+  });
+
+  it('updates todos using a filter', async () => {
+    await givenTodoInstance(todoRepo, {
+      title: 'hello',
+      desc: 'common greeting',
+      isComplete: false,
+    });
+    await givenTodoInstance(todoRepo, {
+      title: 'goodbye',
+      desc: 'common farewell',
+      isComplete: false,
+    });
+    await client
+      .patch('/todos')
+      .query({where: {title: 'goodbye'}})
+      .send({isComplete: true})
+      .expect(200, {count: 1});
   });
 
   it('includes TodoList in query result', async () => {

@@ -14,11 +14,11 @@ import {
 import {
   del,
   get,
-  getFilterSchemaFor,
   getModelSchemaRef,
   param,
   patch,
   post,
+  put,
   requestBody,
 } from '@loopback/rest';
 import {TodoList} from '../models';
@@ -62,10 +62,7 @@ export class TodoListController {
       },
     },
   })
-  async count(
-    @param.where(TodoList)
-    where?: Where<TodoList>,
-  ): Promise<Count> {
+  async count(@param.where(TodoList) where?: Where<TodoList>): Promise<Count> {
     return this.todoListRepository.count(where);
   }
 
@@ -85,8 +82,7 @@ export class TodoListController {
     },
   })
   async find(
-    @param.filter(TodoList)
-    filter?: Filter<TodoList>,
+    @param.filter(TodoList) filter?: Filter<TodoList>,
   ): Promise<TodoList[]> {
     return this.todoListRepository.find(filter);
   }
@@ -107,9 +103,8 @@ export class TodoListController {
         },
       },
     })
-    todoList: Partial<TodoList>,
-    @param.where(TodoList)
-    where?: Where<TodoList>,
+    todoList: TodoList,
+    @param.where(TodoList) where?: Where<TodoList>,
   ): Promise<Count> {
     return this.todoListRepository.updateAll(todoList, where);
   }
@@ -128,10 +123,7 @@ export class TodoListController {
   })
   async findById(
     @param.path.number('id') id: number,
-    @param.query.object(
-      'filter',
-      getFilterSchemaFor(TodoList, {exclude: 'where'}),
-    )
+    @param.filter(TodoList, {exclude: 'where'})
     filter?: FilterExcludingWhere<TodoList>,
   ): Promise<TodoList> {
     return this.todoListRepository.findById(id, filter);
@@ -153,7 +145,7 @@ export class TodoListController {
         },
       },
     })
-    todoList: Partial<TodoList>,
+    todoList: TodoList,
   ): Promise<void> {
     await this.todoListRepository.updateById(id, todoList);
   }
@@ -167,5 +159,19 @@ export class TodoListController {
   })
   async deleteById(@param.path.number('id') id: number): Promise<void> {
     await this.todoListRepository.deleteById(id);
+  }
+
+  @put('/todo-lists/{id}', {
+    responses: {
+      '204': {
+        description: 'TodoList PUT success',
+      },
+    },
+  })
+  async replaceById(
+    @param.path.number('id') id: number,
+    @requestBody() todoList: TodoList,
+  ): Promise<void> {
+    await this.todoListRepository.replaceById(id, todoList);
   }
 }

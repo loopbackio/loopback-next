@@ -3,7 +3,14 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Filter, repository} from '@loopback/repository';
+import {
+  Count,
+  CountSchema,
+  Filter,
+  FilterExcludingWhere,
+  repository,
+  Where,
+} from '@loopback/repository';
 import {
   del,
   get,
@@ -19,7 +26,8 @@ import {TodoRepository} from '../repositories';
 
 export class TodoController {
   constructor(
-    @repository(TodoRepository) protected todoRepository: TodoRepository,
+    @repository(TodoRepository)
+    public todoRepository: TodoRepository,
   ) {}
 
   @post('/todos', {
@@ -30,11 +38,14 @@ export class TodoController {
       },
     },
   })
-  async createTodo(
+  async create(
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(Todo, {title: 'NewTodo', exclude: ['id']}),
+          schema: getModelSchemaRef(Todo, {
+            title: 'NewTodo',
+            exclude: ['id'],
+          }),
         },
       },
     })
@@ -55,10 +66,9 @@ export class TodoController {
       },
     },
   })
-  async findTodoById(
+  async findById(
     @param.path.number('id') id: number,
-    @param.filter(Todo)
-    filter?: Filter<Todo>,
+    @param.filter(Todo, {exclude: 'where'}) filter?: FilterExcludingWhere<Todo>,
   ): Promise<Todo> {
     return this.todoRepository.findById(id, filter);
   }
@@ -78,10 +88,7 @@ export class TodoController {
       },
     },
   })
-  async findTodos(
-    @param.filter(Todo)
-    filter?: Filter<Todo>,
-  ): Promise<Todo[]> {
+  async find(@param.filter(Todo) filter?: Filter<Todo>): Promise<Todo[]> {
     return this.todoRepository.find(filter);
   }
 
@@ -92,7 +99,7 @@ export class TodoController {
       },
     },
   })
-  async replaceTodo(
+  async replaceById(
     @param.path.number('id') id: number,
     @requestBody() todo: Todo,
   ): Promise<void> {
@@ -106,7 +113,7 @@ export class TodoController {
       },
     },
   })
-  async updateTodo(
+  async updateById(
     @param.path.number('id') id: number,
     @requestBody({
       content: {
@@ -115,7 +122,7 @@ export class TodoController {
         },
       },
     })
-    todo: Partial<Todo>,
+    todo: Todo,
   ): Promise<void> {
     await this.todoRepository.updateById(id, todo);
   }
@@ -127,19 +134,59 @@ export class TodoController {
       },
     },
   })
-  async deleteTodo(@param.path.number('id') id: number): Promise<void> {
+  async deleteById(@param.path.number('id') id: number): Promise<void> {
     await this.todoRepository.deleteById(id);
   }
 
   @get('/todos/{id}/todo-list', {
     responses: {
       '200': {
-        description: 'TodoList model instance',
-        content: {'application/json': {schema: getModelSchemaRef(TodoList)}},
+        description: 'TodoList belonging to Todo',
+        content: {
+          'application/json': {
+            schema: {type: 'array', items: getModelSchemaRef(TodoList)},
+          },
+        },
       },
     },
   })
-  async findOwningList(@param.path.number('id') id: number): Promise<TodoList> {
+  async getTodoList(
+    @param.path.number('id') id: typeof Todo.prototype.id,
+  ): Promise<TodoList> {
     return this.todoRepository.todoList(id);
+  }
+
+  @get('/todos/count', {
+    responses: {
+      '200': {
+        description: 'Todo model count',
+        content: {'application/json': {schema: CountSchema}},
+      },
+    },
+  })
+  async count(@param.where(Todo) where?: Where<Todo>): Promise<Count> {
+    return this.todoRepository.count(where);
+  }
+
+  @patch('/todos', {
+    responses: {
+      '200': {
+        description: 'Todo PATCH success count',
+        content: {'application/json': {schema: CountSchema}},
+      },
+    },
+  })
+  async updateAll(
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(Todo, {partial: true}),
+        },
+      },
+    })
+    todo: Todo,
+    @param.where(Todo) where?: Where<Todo>,
+  ): Promise<Count> {
+    return this.todoRepository.updateAll(todo, where);
   }
 }
