@@ -64,6 +64,23 @@ lists the examples created by the community.
   </tbody>
 </table>
 
+## Authorization
+
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="160">Example</th>
+      <th width="280">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="https://github.com/HrithikMittal/loopback4-authorization">loopback4-Authorization</a></td>
+      <td>Implementation of your own authorization strategy in Loopback-4 by adding permission properties in User model</td>
+    </tr>
+  </tbody>
+</table>
+
 ## Frontend related
 
 <table>
