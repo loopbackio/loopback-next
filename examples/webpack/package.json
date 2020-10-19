@@ -22,9 +22,10 @@
     "prepack": "npm run build:webpack-web",
     "clean": "lb-clean *example-webpack*.tgz dist *.tsbuildinfo package",
     "verify": "npm pack && tar xf *example-webpack*.tgz && tree package && npm run clean",
-    "pretest": "npm run clean && npm run build",
+    "pretest": "npm run rebuild",
     "test": "lb-mocha \"dist/__tests__/**/*.js\"",
-    "prestart": "npm run build",
+    "rebuild": "npm run clean && npm run build",
+    "prestart": "npm run rebuild",
     "start": "node ."
   },
   "repository": {
