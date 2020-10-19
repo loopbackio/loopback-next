@@ -1,0 +1,62 @@
+{
+  "name": "@loopback/datasource",
+  "version": "1.0.0",
+  "description": "Datasource for backend databases and services",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "engines": {
+    "node": "^10.16 || 12 || 14"
+  },
+  "scripts": {
+    "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
+    "build": "lb-tsc",
+    "clean": "lb-clean loopback-datasource*.tgz dist *.tsbuildinfo package",
+    "pretest": "npm run build",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
+    "verify": "npm pack && tar xf loopback-datasource*.tgz && tree package && npm run clean"
+  },
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "@loopback/core": "^2.11.0"
+  },
+  "devDependencies": {
+    "@loopback/build": "^6.2.5",
+    "@loopback/core": "^2.11.0",
+    "@loopback/eslint-config": "^10.0.1",
+    "@loopback/testlab": "^3.2.7",
+    "@types/bson": "^4.0.2",
+    "@types/json-schema": "^7.0.6",
+    "@types/lodash": "^4.14.162",
+    "@types/node": "^10.17.35",
+    "bson": "4.2.0"
+  },
+  "dependencies": {
+    "@loopback/filter": "^1.1.2",
+    "@types/debug": "^4.1.5",
+    "debug": "^4.2.0",
+    "lodash": "^4.17.20",
+    "loopback-datasource-juggler": "^4.25.0",
+    "tslib": "^2.0.3"
+  },
+  "files": [
+    "README.md",
+    "dist",
+    "src",
+    "!*/__tests__"
+  ],
+  "datasource": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "packages/datasource"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "packages/datasource"
+  }
+}
