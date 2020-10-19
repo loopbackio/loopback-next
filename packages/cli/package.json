@@ -37,7 +37,7 @@
     "@types/minimatch": "^3.0.3",
     "@types/node": "^10.17.35",
     "loopback": "^3.27.0",
-    "loopback-datasource-juggler": "^4.24.0",
+    "loopback-datasource-juggler": "^4.25.0",
     "mem-fs": "^1.2.0",
     "mem-fs-editor": "^7.0.1",
     "mock-stdin": "^1.0.0",

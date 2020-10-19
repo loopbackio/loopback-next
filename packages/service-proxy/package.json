@@ -34,7 +34,7 @@
     "@types/node": "^10.17.35"
   },
   "dependencies": {
-    "loopback-datasource-juggler": "^4.24.0",
+    "loopback-datasource-juggler": "^4.25.0",
     "tslib": "^2.0.3"
   },
   "files": [
