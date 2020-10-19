@@ -149,6 +149,9 @@
       "path": "packages/core/tsconfig.json"
     },
     {
+      "path": "packages/datasource/tsconfig.json"
+    },
+    {
       "path": "packages/express/tsconfig.json"
     },
     {
@@ -165,6 +168,9 @@
     },
     {
       "path": "packages/model-api-builder/tsconfig.json"
+    },
+    {
+      "path": "packages/model/tsconfig.json"
     },
     {
       "path": "packages/openapi-spec-builder/tsconfig.json"
