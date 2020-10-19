@@ -40,7 +40,7 @@ describe('TodoController', () => {
     it('creates a Todo', async () => {
       const create = todoRepo.stubs.create;
       create.resolves(aTodoWithId);
-      const result = await controller.createTodo(aTodo);
+      const result = await controller.create(aTodo);
       expect(result).to.eql(aTodoWithId);
       sinon.assert.calledWith(create, aTodo);
     });
@@ -50,7 +50,7 @@ describe('TodoController', () => {
     it('returns a todo if it exists', async () => {
       const findById = todoRepo.stubs.findById;
       findById.resolves(aTodoWithId);
-      expect(await controller.findTodoById(aTodoWithId.id as number)).to.eql(
+      expect(await controller.findById(aTodoWithId.id as number)).to.eql(
         aTodoWithId,
       );
       sinon.assert.calledWith(findById, aTodoWithId.id);
@@ -61,7 +61,7 @@ describe('TodoController', () => {
     it('returns multiple todos if they exist', async () => {
       const find = todoRepo.stubs.find;
       find.resolves(aListOfTodos);
-      expect(await controller.findTodos()).to.eql(aListOfTodos);
+      expect(await controller.find()).to.eql(aListOfTodos);
       sinon.assert.called(find);
     });
 
@@ -69,7 +69,7 @@ describe('TodoController', () => {
       const find = todoRepo.stubs.find;
       const expected: Todo[] = [];
       find.resolves(expected);
-      expect(await controller.findTodos()).to.eql(expected);
+      expect(await controller.find()).to.eql(expected);
       sinon.assert.called(find);
     });
   });
@@ -78,7 +78,7 @@ describe('TodoController', () => {
     it('successfully replaces existing items', async () => {
       const replaceById = todoRepo.stubs.replaceById;
       replaceById.resolves();
-      await controller.replaceTodo(aTodoWithId.id as number, aChangedTodo);
+      await controller.replaceById(aTodoWithId.id as number, aChangedTodo);
       sinon.assert.calledWith(replaceById, aTodoWithId.id, aChangedTodo);
     });
   });
@@ -87,7 +87,7 @@ describe('TodoController', () => {
     it('successfully updates existing items', async () => {
       const updateById = todoRepo.stubs.updateById;
       updateById.resolves();
-      await controller.updateTodo(aTodoWithId.id as number, aChangedTodo);
+      await controller.updateById(aTodoWithId.id as number, aChangedTodo);
       sinon.assert.calledWith(updateById, aTodoWithId.id, aChangedTodo);
     });
   });
@@ -96,7 +96,7 @@ describe('TodoController', () => {
     it('successfully deletes existing items', async () => {
       const deleteById = todoRepo.stubs.deleteById;
       deleteById.resolves();
-      await controller.deleteTodo(aTodoWithId.id as number);
+      await controller.deleteById(aTodoWithId.id as number);
       sinon.assert.calledWith(deleteById, aTodoWithId.id);
     });
   });

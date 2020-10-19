@@ -47,7 +47,7 @@ describe('TodoListApplication', () => {
     const todoListImage: Partial<TodoListImage> = givenTodoListImage();
     delete todoListImage.todoListId;
     const response = await client
-      .post(`/todo-lists/${persistedTodoList.id}/image`)
+      .post(`/todo-lists/${persistedTodoList.id}/todo-list-image`)
       .send(todoListImage)
       .expect(200);
 
@@ -71,7 +71,7 @@ describe('TodoListApplication', () => {
     );
 
     const response = await client
-      .get(`/todo-lists/${persistedTodoList.id}/image`)
+      .get(`/todo-lists/${persistedTodoList.id}/todo-list-image`)
       .send()
       .expect(200);
 

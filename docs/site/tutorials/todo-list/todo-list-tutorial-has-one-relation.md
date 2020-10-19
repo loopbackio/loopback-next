@@ -69,6 +69,28 @@ lb4 repository
 Repository TodoListImageRepository was created in src/repositories/
 ```
 
+### Create the Controller
+
+Using `lb4 controller`, let's create the controller:
+
+```sh
+$ lb4 controller
+? Controller class name: TodoListImage
+Controller TodoListImage will be created in src/controllers/todo-list-image.controller.ts
+
+? What kind of controller would you like to generate? REST Controller with CRUD functions
+? What is the name of the model to use with this CRUD repository? TodoListImage
+? What is the name of your CRUD repository? TodoListImageRepository
+? What is the name of ID property? id
+? What is the type of your ID? number
+? Is the id omitted when creating a new instance? Yes
+? What is the base HTTP path name of the CRUD operations? /todo-list-images
+   create src/controllers/todo-list-image.controller.ts
+   update src/controllers/index.ts
+
+Controller TodoListImage was created in src/controllers/
+```
+
 ### Add the Relation
 
 Adding a [`hasOne` relation](../../HasOne-relation.md) is similar to the HasMany
@@ -101,6 +123,45 @@ $ lb4 relation
    create src/controllers/todo-list-image-todo-list.controller.ts
 
 Relation BelongsTo was created in src/
+```
+
+As you can see, this created the relational controllers
+`todo-list-todo-list-image.controller.ts` and
+`todo-list-image-todo-list.controller.ts`.
+
+As src/controllers/todo-list-image-todo-list.controller.ts only contains one
+method, we can move it to the TodoListImage controller and delete that file:
+
+{% include code-caption.html content="src/controllers/todo-list-image.controller.ts" %}
+
+```ts
+import {repository} from '@loopback/repository';
+import {param, get, getModelSchemaRef} from '@loopback/rest';
+import {TodoListImage, TodoList} from '../models';
+import {TodoListImageRepository} from '../repositories';
+
+export class TodoListImageController {
+  constructor() {} // ...
+
+  // other controller methods
+  @get('/todo-list-images/{id}/todo-list', {
+    responses: {
+      '200': {
+        description: 'TodoList belonging to TodoListImage',
+        content: {
+          'application/json': {
+            schema: {type: 'array', items: getModelSchemaRef(TodoList)},
+          },
+        },
+      },
+    },
+  })
+  async getTodoList(
+    @param.path.number('id') id: typeof TodoListImage.prototype.id,
+  ): Promise<TodoList> {
+    return this.todoListImageRepository.todoList(id);
+  }
+}
 ```
 
 Then you should see the new added property `image` is decorated with the

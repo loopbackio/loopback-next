@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2018,2019. All Rights Reserved.
+// Copyright IBM Corp. 2018,2020. All Rights Reserved.
 // Node module: @loopback/example-todo-list
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -8,9 +8,9 @@ import {
   DefaultCrudRepository,
   HasManyRepositoryFactory,
   HasOneRepositoryFactory,
-  juggler,
   repository,
 } from '@loopback/repository';
+import {DbDataSource} from '../datasources';
 import {Todo, TodoList, TodoListImage, TodoListRelations} from '../models';
 import {TodoListImageRepository} from './todo-list-image.repository';
 import {TodoRepository} from './todo.repository';
@@ -30,7 +30,7 @@ export class TodoListRepository extends DefaultCrudRepository<
   >;
 
   constructor(
-    @inject('datasources.db') dataSource: juggler.DataSource,
+    @inject('datasources.db') dataSource: DbDataSource,
     @repository.getter('TodoRepository')
     protected todoRepositoryGetter: Getter<TodoRepository>,
     @repository.getter('TodoListImageRepository')

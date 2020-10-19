@@ -143,7 +143,7 @@ endpoint `/todo-lists/{id}/todos`, which we'll see in the
 As `src/controllers/todo-todo-list.controller.ts` only contains one method, we
 can move it to the `Todo` controller and delete that file:
 
-{% include code-caption.html content="src/models/todo.controller.ts" %}
+{% include code-caption.html content="src/controllers/todo.controller.ts" %}
 
 ```ts
 export class TodoController {
@@ -181,6 +181,9 @@ so there's nothing else we need to do before we try out our new routes.
 $ npm start
 Server is running at http://127.0.0.1:3000
 ```
+
+{% include note.html content="
+When using the API Explorer, be sure to clear out any default <i><b>filter</b></i> or <i><b>where</b></i> objects in order to see all the data." %}
 
 Here are some new requests you can try out:
 
