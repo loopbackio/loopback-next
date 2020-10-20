@@ -100,6 +100,20 @@ To fix it, run `npm run clean` to delete all the compiled files. By doing so, it
 forces the build to generate the compiled JS files next time when you start the
 application using `npm start` or call `npm run build`.
 
+## Debugging with VS Code
+
+Each LoopBack application has a VS Code configuration file `.vscode/launch.json`
+that contains several tasks to help you debug with breakpoints:
+
+- Launch Program: Running the application.
+- Run Mocha tests: Running the tests under `src/__tests__`.
+- Attach to Progress: Attaching application to an already running program in
+  debug mode.
+
+To bring up the run view, select the "Run" icon in the activity bar on the side
+of VS Code. You can choose the right task besides the green triangle "Run"
+button.
+
 ## Submitting Sample Application for Problem Determination
 
 If you couldn't figure out what is going wrong or would like to report an issue,
