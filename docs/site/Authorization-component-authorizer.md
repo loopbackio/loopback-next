@@ -53,13 +53,21 @@ class MyAuthorizationProvider implements Provider<Authorizer> {
 > the `authorize` function is then tagged to an application as
 > `AuthorizationTags.AUTHORIZER` as below.
 
+{% include code-caption.html content="src/application.ts" %}
+
 ```ts
-import {AuthorizationTags} from '@loopback/authorization';
-let app = new Application();
-app
-  .bind('authorizationProviders.my-provider')
-  .toProvider(MyAuthorizationProvider)
-  .tag(AuthorizationTags.AUTHORIZER);
+export class MyApplication extends BootMixin(
+  ServiceMixin(RepositoryMixin(RestApplication)),
+) {
+  constructor(options: ApplicationConfig = {}) {
+    super(options);
+
+    // bind the authorizer provider
+    this.bind('authorizationProviders.my-authorizer-provider')
+      .toProvider(MyAuthorizationProvider)
+      .tag(AuthorizationTags.AUTHORIZER);
+  }
+}
 ```
 
 - This creates a list of `authorize()` functions.
