@@ -12,6 +12,7 @@ import {
   createBindingFromClass,
   inject,
 } from '@loopback/core';
+import {RepositoryTags} from '@loopback/repository';
 import {
   RefreshTokenConstants,
   RefreshTokenServiceBindings,
@@ -42,10 +43,12 @@ export class JWTAuthenticationComponent implements Component {
 
     // user bindings
     Binding.bind(UserServiceBindings.USER_SERVICE).toClass(MyUserService),
-    Binding.bind(UserServiceBindings.USER_REPOSITORY).toClass(UserRepository),
-    Binding.bind(UserServiceBindings.USER_CREDENTIALS_REPOSITORY).toClass(
-      UserCredentialsRepository,
-    ),
+    Binding.bind(UserServiceBindings.USER_REPOSITORY)
+      .toClass(UserRepository)
+      .tag(RepositoryTags.REPOSITORY),
+    Binding.bind(UserServiceBindings.USER_CREDENTIALS_REPOSITORY)
+      .toClass(UserCredentialsRepository)
+      .tag(RepositoryTags.REPOSITORY),
     createBindingFromClass(SecuritySpecEnhancer),
     ///refresh bindings
     Binding.bind(RefreshTokenServiceBindings.REFRESH_TOKEN_SERVICE).toClass(
@@ -63,9 +66,9 @@ export class JWTAuthenticationComponent implements Component {
       RefreshTokenConstants.REFRESH_ISSUER_VALUE,
     ),
     //refresh token repository binding
-    Binding.bind(RefreshTokenServiceBindings.REFRESH_REPOSITORY).toClass(
-      RefreshTokenRepository,
-    ),
+    Binding.bind(RefreshTokenServiceBindings.REFRESH_REPOSITORY)
+      .toClass(RefreshTokenRepository)
+      .tag(RepositoryTags.REPOSITORY),
   ];
   constructor(@inject(CoreBindings.APPLICATION_INSTANCE) app: Application) {
     registerAuthenticationStrategy(app, JWTAuthenticationStrategy);
