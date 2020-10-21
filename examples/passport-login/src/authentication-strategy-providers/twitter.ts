@@ -4,14 +4,14 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {UserIdentityService} from '@loopback/authentication';
-import {bind, BindingScope, inject, Provider} from '@loopback/core';
+import {BindingScope, inject, injectable, Provider} from '@loopback/core';
 import {Profile} from 'passport';
 import {IStrategyOption, Strategy as TwitterStrategy} from 'passport-twitter';
 import {verifyFunctionFactory} from '../authentication-strategies/types';
 import {User} from '../models';
 import {UserServiceBindings} from '../services';
 
-@bind.provider({scope: BindingScope.SINGLETON})
+@injectable.provider({scope: BindingScope.SINGLETON})
 export class TwitterOauth implements Provider<TwitterStrategy> {
   strategy: TwitterStrategy;
 

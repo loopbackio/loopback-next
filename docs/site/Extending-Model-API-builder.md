@@ -43,7 +43,7 @@ Then bind the builder with
 so it can be used as an API builder option.
 
 ```ts
-import {bind} from '@loopback/core';
+import {injectable} from '@loopback/core';
 import {asModelApiBulder, ModelApiBuilder} from '@loopback/model-api-builder';
 
 @injectable(asModelApiBuilder)
@@ -54,7 +54,7 @@ Since the builder implements `ModelApiBuilder`, the `build` function must be
 defined:
 
 ```ts
-import {bind} from '@loopback/core';
+import {injectable} from '@loopback/core';
 import {
   asModelApiBuilder,
   ModelApiBuilder,

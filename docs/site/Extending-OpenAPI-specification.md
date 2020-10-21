@@ -30,7 +30,7 @@ For example, to modify the `info` field of an OAS, you can create an
 `InfoSpecEnhancer` that implements interface `OASEnhancer` as follows:
 
 ```ts
-import {bind} from '@loopback/core';
+import {injectable} from '@loopback/core';
 import {
   mergeOpenAPISpec,
   asSpecEnhancer,

@@ -4,11 +4,11 @@
 // License text available at https://opensource.org/licenses/MIT
 
 const passport = require('passport');
-import {bind, BindingScope, inject, Provider} from '@loopback/core';
+import {BindingScope, inject, injectable, Provider} from '@loopback/core';
 import {ExpressRequestHandler} from '@loopback/rest';
 import {Strategy as TwitterStrategy} from 'passport-twitter';
 
-@bind.provider({scope: BindingScope.SINGLETON})
+@injectable.provider({scope: BindingScope.SINGLETON})
 export class TwitterOauthExpressMiddleware
   implements Provider<ExpressRequestHandler> {
   constructor(
