@@ -63,12 +63,23 @@ function buildDecoratorReducer(
 }
 
 /**
- *  class MyController {
- *    @oas.response(200, FirstModel)
- *    @oas.response(404, OneError, { $ref: '#/definition...'})
- *    @oas.response(403, SecondError, { schema: ... })
- *  }
+ * Add response object to a path spec.
+ * @param responseCode - The HTTP response code.
+ * @param responseModelOrSpec - The corresponding response object. Or the model
+ *        type used to generate the response object.
  *
+ * @example
+ * ```ts
+ * class MyController {
+ *   @get('/greet')
+ *   @oas.response(200, SuccessModel)
+ *   @oas.response(404, OneError, { $ref: '#/definition...'})
+ *   @oas.response(403, SecondError, { schema: ... })
+ *   greet() {
+ *     return new SuccessModel({message: 'Hello, world'});
+ *   }
+ * }
+ * ```
  */
 export function response(
   responseCode: number,
