@@ -210,7 +210,7 @@ For example, the default naming convention for a path's `operationId` is
 one `${controllerName}-${methodName}`, you can define an enhancer as:
 
 ```ts
-import {bind} from '@loopback/core';
+import {injectable} from '@loopback/core';
 import {
   mergeOpenAPISpec,
   asSpecEnhancer,

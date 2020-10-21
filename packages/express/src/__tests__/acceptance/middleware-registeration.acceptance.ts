@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {bind, config, Provider} from '@loopback/core';
+import {config, injectable, Provider} from '@loopback/core';
 import {Client, expect} from '@loopback/testlab';
 import {Router} from 'express';
 import {ExpressServer, Middleware} from '../../';
@@ -113,7 +113,7 @@ describe('Express middleware registry', () => {
     it('registers a LoopBack middleware provider with config injection', async () => {
       type TestSpyConfig = {headerName: string};
 
-      @bind(asMiddleware({group: 'spy'}))
+      @injectable(asMiddleware({group: 'spy'}))
       class SpyMiddlewareProviderWithConfig implements Provider<Middleware> {
         @config()
         private options: TestSpyConfig;
