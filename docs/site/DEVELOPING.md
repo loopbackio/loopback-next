@@ -505,8 +505,47 @@ to generate API documentation for all our packages. This documentation is
 generated when publishing new releases to npmjs.org and it's picked up by
 https://loopback.io/doc/en/lb4/apidocs.index.html.
 
-You can preview API docs locally by running `npm run tsdocs` and open
-[apidocs/index.md](apidocs/index.md).
+### Preview the API Documentation Changes
+
+To modify the API documentation and preview the changes, you should rebuild the
+package and run `npm run tsdocs`. For example, if some API documentation changes
+have occurred in `/loopback-next/packages/core`, and you wish to preview them,
+perform the following steps:
+
+#### Step 1 - Rebuild package
+
+Run the following commands within `/loopback-next/packages/core`:
+
+```shell
+# Remove the old compiled files.
+npm run clean
+# Rebuild the package, so that the compiled dist files contain
+# the new API documentation.
+npm run build
+```
+
+#### Step 2 - npm run tsdocs
+
+Run the following commands within the root directory `/loopback-next`:
+
+```shell
+# Generate new tsdocs from the updated package dist files.
+npm run tsdocs
+```
+
+#### Step 3 - Preview the API documentation in a browser
+
+Stay in the root directory and run the following commands:
+
+```shell
+# Fetch the new API documentation into `/docs/_preview`
+npm run docs:prepare
+# Start the documentation preview server
+npm run docs:start
+```
+
+Go to http://127.0.0.1:4001 in a browser and you will see the new API
+documentation.
 
 ## Commit message guidelines
 
