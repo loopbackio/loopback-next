@@ -17,8 +17,9 @@ In LoopBack 4, the request handling process starts with the app's
 [sequence](https://loopback.io/doc/en/lb4/Sequence.html), a simple class with
 five injected helper methods in the constructor. It is the gatekeeper of all
 requests to the app. Errors are handled by one of the Sequence actions,
-[`reject`](Sequence.md#handling-errors), which calls `strong-error-handler`
-package to send back an HTTP response describing the error.
+[`reject`](REST-middleware-sequence.md#handling-errors), which calls
+`strong-error-handler` package to send back an HTTP response describing the
+error.
 
 LoopBack 4 apps require 3.x versions of `strong-error-handler`.
 
@@ -35,8 +36,11 @@ details of any error objects to the client in the HTTP responses. Once the
 app.bind(RestBindings.ERROR_WRITER_OPTIONS).to({debug: true});
 ```
 
-Please check [Sequence - Handling errors](Sequence.md#handling-errors) section
-for usages and examples of these two modes.
+Please check the
+[Action based Sequence for REST Server - Handling errors](REST-action-sequence.md#handling-errors)
+and
+[Middleware-based Sequence for REST Server - Handling errors](REST-middleware-sequence.md#handling-errors)
+sections for usages and examples of these two modes.
 
 In general, `reject` is executed in `try {} catch(err) {}` block.
 `strong-error-handler` is the last utility to be used.
