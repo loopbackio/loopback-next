@@ -977,8 +977,7 @@ In LoopBack, we use async functions instead of callbacks and thus can use simple
 sequence actions. A typical Sequence implementation then passes these errors to
 the Sequence action `reject`.
 
-You can learn more about error handling in
-[Handling errors](Sequence.md#handling-errors).
+You can learn more about error handling in [Handling errors](#handling-errors).
 
 ```
 
