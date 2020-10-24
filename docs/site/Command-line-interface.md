@@ -73,6 +73,7 @@ cli.
   - @loopback/http-caching-proxy: ^1.1.15
   - @loopback/http-server: ^1.4.15
   - @loopback/example-todo-list: ^1.11.1
+  - @loopback/example-todo-list-mysql: ^1.0.0
   - @loopback/dist-util: ^0.4.0
   - @loopback/rest-explorer: ^1.4.1
   - @loopback/eslint-config: ^4.1.1

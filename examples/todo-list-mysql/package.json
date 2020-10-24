@@ -1,0 +1,77 @@
+{
+  "name": "@loopback/example-todo-list-mysql",
+  "version": "1.0.0",
+  "description": "todo-list example adjust for use with mysql database",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "engines": {
+    "node": "^10.16 || 12 || 14"
+  },
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "lb-tsc",
+    "build:watch": "lb-tsc --watch",
+    "clean": "lb-clean *example-todo-list-mysql*.tgz dist *.tsbuildinfo package",
+    "lint": "npm run prettier:check && npm run eslint",
+    "lint:fix": "npm run eslint:fix && npm run prettier:fix",
+    "prettier:cli": "lb-prettier \"**/*.ts\"",
+    "prettier:check": "npm run prettier:cli -- -l",
+    "prettier:fix": "npm run prettier:cli -- --write",
+    "eslint": "lb-eslint --report-unused-disable-directives .",
+    "eslint:fix": "npm run eslint -- --fix",
+    "pretest": "npm run build",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
+    "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js && npm run posttest",
+    "verify": "npm pack && tar xf loopback-todo-list*.tgz && tree package && npm run clean",
+    "premigrate": "npm run build ",
+    "migrate": "node ./dist/migrate",
+    "preopenapi-spec": "npm run build",
+    "openapi-spec": "node ./dist/openapi-spec",
+    "prestart": "npm run build",
+    "start": "node ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "examples/todo-list"
+  },
+  "dependencies": {
+    "@loopback/boot": "^3.0.2",
+    "@loopback/core": "^2.11.0",
+    "@loopback/repository": "^3.1.0",
+    "@loopback/rest": "^8.0.0",
+    "@loopback/rest-explorer": "^3.0.2",
+    "@loopback/service-proxy": "^3.0.2",
+    "loopback-connector-mysql": "^5.4.4",
+    "loopback-connector-rest": "^3.7.0",
+    "tslib": "^2.0.3"
+  },
+  "devDependencies": {
+    "@loopback/build": "^6.2.5",
+    "@loopback/eslint-config": "^10.0.1",
+    "@loopback/http-caching-proxy": "^2.1.16",
+    "@loopback/repository": "^3.1.0",
+    "@loopback/testlab": "^3.2.7",
+    "@types/lodash": "^4.14.162",
+    "@types/node": "^10.17.35",
+    "eslint": "^7.11.0",
+    "lodash": "^4.17.20",
+    "typescript": "~4.0.3"
+  },
+  "keywords": [
+    "loopback",
+    "LoopBack",
+    "example",
+    "tutorial",
+    "relations",
+    "CRUD",
+    "models",
+    "todo",
+    "HasMany"
+  ]
+}

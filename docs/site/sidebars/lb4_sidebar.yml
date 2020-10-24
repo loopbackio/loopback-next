@@ -95,6 +95,11 @@ children:
       - title: 'Running on relational databases'
         url: todo-list-tutorial-sqldb.html
         output: 'web, pdf'
+        children:
+
+        - title: 'Setting up MySQL in Docker'
+          url: todo-list-tutorial-docker-mysql.html
+          output: 'web, pdf'
 
     - title: 'Connecting to Back-end Service Tutorials'
       url: Connecting-to-back-end.html
