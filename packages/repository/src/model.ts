@@ -437,7 +437,7 @@ export abstract class Entity extends Model implements Persistable {
       return entityOrData.getId();
     }
 
-    const idName = this.definition.idName();
+    const idName = this.getIdProperties()[0];
     return entityOrData[idName];
   }
 
