@@ -522,6 +522,16 @@ describe('model', () => {
     });
   });
 
+  it('gets id of an object through a static method', () => {
+    const userId = User.getIdOf({
+      id: '53',
+      email: 'loopback@localhost',
+      password: 'l00pback',
+      firstName: 'Loopback User',
+    });
+    expect(userId).to.eql('53');
+  });
+
   describe('rejectNavigationalPropertiesInData', () => {
     class Order extends Entity {
       static definition = new ModelDefinition('Order')
