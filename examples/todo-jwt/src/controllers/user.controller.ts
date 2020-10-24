@@ -104,9 +104,13 @@ export class UserController {
   @get('/whoAmI', {
     responses: {
       '200': {
-        description: '',
-        schema: {
-          type: 'string',
+        description: 'Return current user',
+        content: {
+          'application/json': {
+            schema: {
+              type: 'string',
+            },
+          },
         },
       },
     },
