@@ -5,6 +5,9 @@
 
 import {DefaultMetricsCollectorConfiguration} from 'prom-client';
 
+/**
+ * Options for metrics component
+ */
 export interface MetricsOptions {
   endpoint?: {
     disabled?: boolean;
@@ -23,6 +26,11 @@ export interface MetricsOptions {
 
   openApiSpec?: boolean;
 }
+
+/**
+ * Configuration for metrics component with optional properties
+ */
+export type MetricsConfig = Partial<MetricsOptions>;
 
 export const DEFAULT_METRICS_OPTIONS: MetricsOptions = {
   endpoint: {

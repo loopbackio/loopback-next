@@ -3,11 +3,13 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {CoreBindings} from '@loopback/core';
 import {RestApplication, RestServerConfig} from '@loopback/rest';
-import {givenHttpServerConfig, supertest} from '@loopback/testlab';
+import {expect, givenHttpServerConfig, supertest} from '@loopback/testlab';
 import {AddressInfo} from 'net';
 import {promisify} from 'util';
 import {MetricsBindings, MetricsComponent, MetricsOptions} from '../..';
+import {MetricsPushObserver} from '../../observers';
 import {PushGateway} from './mock-pushgateway';
 
 const gateway = new PushGateway();
@@ -44,6 +46,14 @@ describe('Metrics (with push gateway)', function () {
     const request = supertest(gwUrl);
     // Now we expect to get LoopBack metrics from the push gateway
     await request.get('/metrics').expect(200, /job="loopback"/);
+  });
+
+  it('adds MetricsPushObserver to the application', () => {
+    expect(
+      app.isBound(
+        `${CoreBindings.LIFE_CYCLE_OBSERVERS}.${MetricsPushObserver.name}`,
+      ),
+    ).to.be.true();
   });
 
   async function givenAppWithCustomConfig(config: MetricsOptions) {
