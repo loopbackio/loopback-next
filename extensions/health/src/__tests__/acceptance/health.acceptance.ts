@@ -126,6 +126,77 @@ describe('Health (acceptance)', () => {
     });
   });
 
+  context('with discovered live/ready checks that fail', () => {
+    beforeEach(async () => {
+      app = givenRestApplication();
+      app.component(HealthComponent);
+      app
+        .bind<LiveCheck>('health.MockLiveCheck')
+        .to(() => Promise.reject())
+        .tag(HealthTags.LIVE_CHECK);
+
+      app
+        .bind<ReadyCheck>('health.MockReadyCheck')
+        .to(() => Promise.reject())
+        .tag(HealthTags.READY_CHECK);
+
+      await app.start();
+      request = createRestAppClient(app);
+    });
+
+    it('exposes health at "/health/"', async () => {
+      await request.get('/health').expect(503, {
+        status: 'DOWN',
+        checks: [
+          {
+            name: 'health.MockReadyCheck',
+            state: 'DOWN',
+            data: {
+              reason: '',
+            },
+          },
+          {
+            name: 'health.MockLiveCheck',
+            state: 'DOWN',
+            data: {
+              reason: '',
+            },
+          },
+        ],
+      });
+    });
+
+    it('exposes health at "/ready/"', async () => {
+      await request.get('/ready').expect(503, {
+        status: 'DOWN',
+        checks: [
+          {
+            name: 'health.MockReadyCheck',
+            state: 'DOWN',
+            data: {
+              reason: '',
+            },
+          },
+        ],
+      });
+    });
+
+    it('exposes health at "/live/"', async () => {
+      await request.get('/live').expect(500, {
+        status: 'DOWN',
+        checks: [
+          {
+            name: 'health.MockLiveCheck',
+            state: 'DOWN',
+            data: {
+              reason: '',
+            },
+          },
+        ],
+      });
+    });
+  });
+
   context('with custom endpoint basePath', () => {
     it('honors prefix', async () => {
       await givenAppWithCustomConfig({
