@@ -17,7 +17,7 @@ import {metricsControllerFactory} from './controllers';
 import {MetricsInterceptor} from './interceptors';
 import {MetricsBindings} from './keys';
 import {MetricsObserver, MetricsPushObserver} from './observers';
-import {DEFAULT_METRICS_OPTIONS, MetricsOptions} from './types';
+import {DEFAULT_METRICS_OPTIONS, MetricsConfig, MetricsOptions} from './types';
 
 /**
  * A component providing metrics for Prometheus
@@ -28,16 +28,20 @@ export class MetricsComponent implements Component {
     @inject(CoreBindings.APPLICATION_INSTANCE)
     private application: Application,
     @config()
-    options: MetricsOptions = DEFAULT_METRICS_OPTIONS,
+    metricsConfig: MetricsConfig = {},
   ) {
-    if (!options.defaultMetrics || !options.defaultMetrics?.disabled) {
+    const options: MetricsOptions = {
+      ...DEFAULT_METRICS_OPTIONS,
+      ...metricsConfig,
+    };
+    if (options.defaultMetrics && !options.defaultMetrics.disabled) {
       this.application.lifeCycleObserver(MetricsObserver);
     }
-    if (!options.pushGateway || !options.pushGateway?.disabled) {
+    if (options.pushGateway && !options.pushGateway.disabled) {
       this.application.lifeCycleObserver(MetricsPushObserver);
     }
     this.application.add(createBindingFromClass(MetricsInterceptor));
-    if (!options.endpoint || !options.endpoint?.disabled) {
+    if (options.endpoint && !options.endpoint.disabled) {
       this.application.controller(metricsControllerFactory(options));
     }
   }

@@ -3,6 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {CoreBindings, GLOBAL_INTERCEPTOR_NAMESPACE} from '@loopback/core';
 import {RestApplication, RestServer, RestServerConfig} from '@loopback/rest';
 import {
   Client,
@@ -12,6 +13,9 @@ import {
   validateApiSpec,
 } from '@loopback/testlab';
 import {MetricsBindings, MetricsComponent, MetricsOptions} from '../..';
+import {metricsControllerFactory} from '../../controllers';
+import {MetricsInterceptor} from '../../interceptors';
+import {MetricsObserver, MetricsPushObserver} from '../../observers';
 
 describe('Metrics (acceptance)', () => {
   let app: RestApplication;
@@ -45,6 +49,32 @@ describe('Metrics (acceptance)', () => {
       expect(spec.paths).to.be.empty();
       await validateApiSpec(spec);
     });
+
+    it('adds MetricsObserver, MetricsInterceptor and MetricsController to the application', () => {
+      expect(
+        app.isBound(
+          `${CoreBindings.LIFE_CYCLE_OBSERVERS}.${MetricsObserver.name}`,
+        ),
+      ).to.be.true();
+      expect(
+        app.isBound(
+          `${GLOBAL_INTERCEPTOR_NAMESPACE}.${MetricsInterceptor.name}`,
+        ),
+      ).to.be.true();
+      expect(
+        app.isBound(
+          `${CoreBindings.CONTROLLERS}.${metricsControllerFactory().name}`,
+        ),
+      ).to.be.true();
+    });
+
+    it('does not add MetricsPushObserver to the application', () => {
+      expect(
+        app.isBound(
+          `${CoreBindings.LIFE_CYCLE_OBSERVERS}.${MetricsPushObserver.name}`,
+        ),
+      ).to.be.false();
+    });
   });
 
   context('with custom defaultMetrics', () => {
@@ -74,13 +104,38 @@ describe('Metrics (acceptance)', () => {
     });
   });
 
+  context('with endpoint disabled', () => {
+    beforeEach(async () => {
+      await givenAppWithCustomConfig({
+        endpoint: {
+          disabled: true,
+        },
+      });
+    });
+
+    it('does not expose /metrics', async () => {
+      await request.get('/metrics').expect(404);
+    });
+
+    it('does not add MetricsController to the application', () => {
+      expect(
+        app.isBound(
+          `${CoreBindings.CONTROLLERS}.${metricsControllerFactory().name}`,
+        ),
+      ).to.be.false();
+    });
+  });
+
   context('with defaultMetrics disabled', () => {
-    it('does not emit default metrics', async () => {
+    beforeEach(async () => {
       await givenAppWithCustomConfig({
         defaultMetrics: {
           disabled: true,
         },
       });
+    });
+
+    it('does not emit default metrics', async () => {
       const res = await request
         .get('/metrics')
         .expect(200)
@@ -88,6 +143,14 @@ describe('Metrics (acceptance)', () => {
       expect(res.text).to.not.match(
         /# TYPE process_cpu_user_seconds_total counter/,
       );
+    });
+
+    it('does not add MetricsObserver to the application', () => {
+      expect(
+        app.isBound(
+          `${CoreBindings.LIFE_CYCLE_OBSERVERS}.${MetricsObserver.name}`,
+        ),
+      ).to.be.false();
     });
   });
 
