@@ -3,12 +3,13 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {RestApplication, RestServerConfig} from '@loopback/rest';
+import {RestApplication, RestServer, RestServerConfig} from '@loopback/rest';
 import {
   Client,
   createRestAppClient,
   expect,
   givenHttpServerConfig,
+  validateApiSpec,
 } from '@loopback/testlab';
 import {HealthComponent} from '../..';
 import {HealthBindings, HealthTags} from '../../keys';
@@ -52,6 +53,13 @@ describe('Health (acceptance)', () => {
       await app.stop();
       listeners = process.listeners('SIGTERM');
       expect(listeners).to.not.containEql(onShutdownRequest);
+    });
+
+    it('hides the endpoints from the openapi spec', async () => {
+      const server = await app.getServer(RestServer);
+      const spec = await server.getApiSpec();
+      expect(spec.paths).to.be.empty();
+      await validateApiSpec(spec);
     });
   });
 
@@ -215,6 +223,21 @@ describe('Health (acceptance)', () => {
         disabled: true,
       });
       await request.get('/health').expect(404);
+    });
+  });
+
+  context('with openApiSpec enabled', () => {
+    beforeEach(async () => {
+      await givenAppWithCustomConfig({
+        openApiSpec: true,
+      });
+    });
+
+    it('adds the endpoints to the openapi spec', async () => {
+      const server = await app.getServer(RestServer);
+      const spec = await server.getApiSpec();
+      expect(spec.paths).to.have.properties('/health', '/live', '/ready');
+      await validateApiSpec(spec);
     });
   });
 
