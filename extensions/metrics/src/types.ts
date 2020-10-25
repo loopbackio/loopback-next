@@ -20,6 +20,8 @@ export interface MetricsOptions {
     url: string;
     interval?: number;
   };
+
+  openApiSpec?: boolean;
 }
 
 export const DEFAULT_METRICS_OPTIONS: MetricsOptions = {
@@ -27,4 +29,5 @@ export const DEFAULT_METRICS_OPTIONS: MetricsOptions = {
     basePath: '/metrics',
   },
   defaultMetrics: {},
+  openApiSpec: false,
 };
