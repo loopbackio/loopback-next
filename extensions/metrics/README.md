@@ -47,6 +47,16 @@ this.configure(MetricsBindings.COMPONENT).to({
 });
 ```
 
+It also has to be noted, that by default the OpenAPI spec is disabled and
+therefore the metrics endpoint will not be visible in the API explorer. The spec
+can be enabled by setting `openApiSpec` to `true`.
+
+```ts
+this.configure(MetricsBindings.COMPONENT).to({
+  openApiSpec: true,
+});
+```
+
 ## Metrics Collected
 
 There are three types of metrics being collected by this component:

@@ -3,12 +3,13 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {RestApplication, RestServerConfig} from '@loopback/rest';
+import {RestApplication, RestServer, RestServerConfig} from '@loopback/rest';
 import {
   Client,
   createRestAppClient,
   expect,
   givenHttpServerConfig,
+  validateApiSpec,
 } from '@loopback/testlab';
 import {MetricsBindings, MetricsComponent, MetricsOptions} from '../..';
 
@@ -36,6 +37,13 @@ describe('Metrics (acceptance)', () => {
         .expect('content-type', /text/);
       expect(res.text).to.match(/# TYPE/);
       expect(res.text).to.match(/# HELP/);
+    });
+
+    it('hides the metrics endpoints from the openapi spec', async () => {
+      const server = await app.getServer(RestServer);
+      const spec = await server.getApiSpec();
+      expect(spec.paths).to.be.empty();
+      await validateApiSpec(spec);
     });
   });
 
@@ -80,6 +88,21 @@ describe('Metrics (acceptance)', () => {
       expect(res.text).to.not.match(
         /# TYPE process_cpu_user_seconds_total counter/,
       );
+    });
+  });
+
+  context('with openApiSpec enabled', () => {
+    beforeEach(async () => {
+      await givenAppWithCustomConfig({
+        openApiSpec: true,
+      });
+    });
+
+    it('adds the metrics endpoint to the openapi spec', async () => {
+      const server = await app.getServer(RestServer);
+      const spec = await server.getApiSpec();
+      expect(spec.paths).to.have.properties('/metrics');
+      await validateApiSpec(spec);
     });
   });
 

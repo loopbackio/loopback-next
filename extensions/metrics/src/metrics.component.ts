@@ -38,9 +38,7 @@ export class MetricsComponent implements Component {
     }
     this.application.add(createBindingFromClass(MetricsInterceptor));
     if (!options.endpoint || !options.endpoint?.disabled) {
-      this.application.controller(
-        metricsControllerFactory(options.endpoint?.basePath),
-      );
+      this.application.controller(metricsControllerFactory(options));
     }
   }
 }
