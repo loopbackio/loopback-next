@@ -11,6 +11,7 @@ export type HealthOptions = {
   healthPath: string;
   readyPath: string;
   livePath: string;
+  openApiSpec?: boolean;
 };
 
 /**
@@ -22,6 +23,7 @@ export const DEFAULT_HEALTH_OPTIONS: HealthOptions = {
   healthPath: '/health',
   readyPath: '/ready',
   livePath: '/live',
+  openApiSpec: false,
 };
 
 /**

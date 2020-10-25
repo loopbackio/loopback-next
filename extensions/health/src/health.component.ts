@@ -28,7 +28,7 @@ export class HealthComponent implements Component {
     @inject(CoreBindings.APPLICATION_INSTANCE)
     private application: Application,
     @config()
-    healthConfig: HealthConfig = DEFAULT_HEALTH_OPTIONS,
+    healthConfig: HealthConfig = {},
   ) {
     // Bind the HealthCheck service
     this.application

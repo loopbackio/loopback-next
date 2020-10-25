@@ -56,6 +56,16 @@ http://localhost:3000/health returns health in JSON format, such as:
 }
 ```
 
+It also has to be noted, that by default the OpenAPI spec is disabled and
+therefore the endpoints will not be visible in the API explorer. The spec can be
+enabled by setting `openApiSpec` to `true`.
+
+```ts
+this.configure(HealthBindings.COMPONENT).to({
+  openApiSpec: true,
+});
+```
+
 ## Add custom `live` and `ready` checks
 
 The health component allows extra
