@@ -10,6 +10,7 @@ const pkg = require('../package.json');
 const semver = require('semver');
 const fs = require('fs-extra');
 const path = require('path');
+const chalk = require('chalk');
 
 const {
   tabCompletionCommands,
@@ -23,9 +24,9 @@ const nodeVer = process.versions.node;
 const requiredVer = pkg.engines.node;
 const ok = semver.satisfies(nodeVer, requiredVer);
 if (!ok) {
-  const format = 'Node.js %s is not supported. Please use a version %s.';
-  console.error(format, nodeVer, requiredVer);
-  process.exit(1);
+  const format =
+    'Node.js "%s" is not supported. Please use a version that satisfies "%s".';
+  console.warn(chalk.red(format), nodeVer, requiredVer);
 }
 
 // Intentionally have a separate `main.js` which can use JS features
