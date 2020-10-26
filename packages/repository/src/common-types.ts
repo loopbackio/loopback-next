@@ -54,6 +54,25 @@ export type DeepPartial<T> =
   | {[P in keyof T]?: DeepPartial<T[P]>};
 
 /**
+ * A built-in Required<T> type extension that requires values in deeply nested
+ * properties.
+ */
+export type Primitive =
+  | string
+  | number
+  | boolean
+  | bigint
+  | symbol
+  | undefined
+  | null;
+export type BuiltIn = Primitive | Function | Date | Error | RegExp;
+export type DeepRequired<T> = T extends BuiltIn
+  ? NonNullable<T>
+  : T extends {}
+  ? {[K in keyof T]-?: DeepRequired<T[K]>}
+  : NonNullable<T>;
+
+/**
  * Type alias for strongly or weakly typed objects of T
  */
 export type DataObject<T extends object> = T | DeepPartial<T>;

@@ -4,9 +4,10 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Filter, InclusionFilter} from '@loopback/filter';
+import debugFactory from 'debug';
 import {AnyObject, Options} from '../../common-types';
 import {Entity} from '../../model';
-import {EntityCrudRepository} from '../../repositories';
+import {EntityCrudRepository} from '../../repositories/repository';
 import {
   deduplicate,
   findByForeignKeys,
@@ -19,6 +20,10 @@ import {
   InclusionResolver,
 } from '../relation.types';
 import {resolveBelongsToMetadata} from './belongs-to.helpers';
+
+const debug = debugFactory(
+  'loopback:repository:relations:belongs-to:inclusion-resolver',
+);
 
 /**
  * Creates InclusionResolver for BelongsTo relation.
@@ -49,10 +54,19 @@ export function createBelongsToInclusionResolver<
   ): Promise<((Target & TargetRelations) | undefined)[]> {
     if (!entities.length) return [];
 
+    debug('Fetching target models for entities:', entities);
+    debug('Relation metadata:', relationMeta);
+
     const sourceKey = relationMeta.keyFrom;
     const sourceIds = entities.map(e => (e as AnyObject)[sourceKey]);
     const targetKey = relationMeta.keyTo as StringKeyOf<Target>;
     const dedupedSourceIds = deduplicate(sourceIds);
+
+    debug('Parameters:', {sourceKey, sourceIds, targetKey, dedupedSourceIds});
+    debug(
+      'SourceId types',
+      sourceIds.map(i => typeof i),
+    );
 
     const scope =
       typeof inclusion === 'string' ? {} : (inclusion.scope as Filter<Target>);
@@ -66,6 +80,15 @@ export function createBelongsToInclusionResolver<
       options,
     );
 
-    return flattenTargetsOfOneToOneRelation(sourceIds, targetsFound, targetKey);
+    debug('Targets found:', targetsFound);
+
+    const result = flattenTargetsOfOneToOneRelation(
+      sourceIds,
+      targetsFound,
+      targetKey,
+    );
+
+    debug('InclusionResolver result', result);
+    return result;
   };
 }

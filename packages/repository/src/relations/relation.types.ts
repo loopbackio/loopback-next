@@ -10,6 +10,7 @@ import {TypeResolver} from '../type-resolver';
 
 export enum RelationType {
   belongsTo = 'belongsTo',
+  hasAndBelongsToMany = 'hasAndBelongsToMany',
   hasOne = 'hasOne',
   hasMany = 'hasMany',
   embedsOne = 'embedsOne',
@@ -50,6 +51,18 @@ export interface RelationDefinitionBase {
    * E.g. when a Customer has many Order instances, then Order is the target.
    */
   target: TypeResolver<Entity, typeof Entity>;
+}
+
+export interface HasAndBelongsToManyDefinition extends RelationDefinitionBase {
+  type: RelationType.hasAndBelongsToMany;
+  targetsMany: true;
+  keyTo?: string;
+  keyFrom?: string;
+  through: {
+    model: TypeResolver<Entity, typeof Entity>;
+    sourceKey?: string;
+    targetKey?: string;
+  };
 }
 
 /**

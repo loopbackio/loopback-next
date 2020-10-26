@@ -58,7 +58,7 @@ export function createHasManyInclusionResolver<
 
     debug('Parameters:', {sourceKey, sourceIds, targetKey});
     debug(
-      'sourceId types',
+      'SourceId types',
       sourceIds.map(i => typeof i),
     );
 
@@ -82,7 +82,7 @@ export function createHasManyInclusionResolver<
       targetKey,
     );
 
-    debug('fetchHasManyModels result', result);
+    debug('InclusionResolver result', result);
     return result;
   };
 }

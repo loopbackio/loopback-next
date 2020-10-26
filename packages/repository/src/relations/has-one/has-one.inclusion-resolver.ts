@@ -4,6 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Filter, InclusionFilter} from '@loopback/filter';
+import debugFactory from 'debug';
 import {AnyObject, Options} from '../../common-types';
 import {Entity} from '../../model';
 import {EntityCrudRepository} from '../../repositories';
@@ -14,6 +15,10 @@ import {
 } from '../relation.helpers';
 import {Getter, HasOneDefinition, InclusionResolver} from '../relation.types';
 import {resolveHasOneMetadata} from './has-one.helpers';
+
+const debug = debugFactory(
+  'loopback:repository:relations:has-one:inclusion-resolver',
+);
 
 /**
  * Creates InclusionResolver for HasOne relation.
@@ -44,9 +49,18 @@ export function createHasOneInclusionResolver<
   ): Promise<((Target & TargetRelations) | undefined)[]> {
     if (!entities.length) return [];
 
+    debug('Fetching target models for entities:', entities);
+    debug('Relation metadata:', relationMeta);
+
     const sourceKey = relationMeta.keyFrom;
     const sourceIds = entities.map(e => (e as AnyObject)[sourceKey]);
     const targetKey = relationMeta.keyTo as StringKeyOf<Target>;
+
+    debug('Parameters:', {sourceKey, sourceIds, targetKey});
+    debug(
+      'SourceId types',
+      sourceIds.map(i => typeof i),
+    );
 
     const scope =
       typeof inclusion === 'string' ? {} : (inclusion.scope as Filter<Target>);
@@ -60,6 +74,15 @@ export function createHasOneInclusionResolver<
       options,
     );
 
-    return flattenTargetsOfOneToOneRelation(sourceIds, targetsFound, targetKey);
+    debug('Targets found:', targetsFound);
+
+    const result = flattenTargetsOfOneToOneRelation(
+      sourceIds,
+      targetsFound,
+      targetKey,
+    );
+
+    debug('InclusionResolver result', result);
+    return result;
   };
 }

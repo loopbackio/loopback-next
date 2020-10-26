@@ -9,6 +9,7 @@ import {
   belongsTo,
   Entity,
   getModelRelations,
+  hasAndBelongsToMany,
   hasMany,
   model,
   MODEL_PROPERTIES_KEY,
@@ -18,6 +19,66 @@ import {
 } from '../../..';
 
 describe('relation decorator', () => {
+  describe('hasAndBelongsToMany', () => {
+    it('takes in complex property type and infers foreign key via source model name', () => {
+      // Source Model
+      @model()
+      class Rol extends Entity {
+        id: number;
+        name: string;
+        description?: string;
+        @hasAndBelongsToMany(() => RolesHasPermissions, () => Permission)
+        permissions: object;
+      }
+
+      // Target Model
+      @model()
+      class Permission extends Entity {
+        id: number;
+        name: string;
+        description?: string;
+        resource: string;
+        scope: string;
+      }
+
+      // Through Model
+      @model()
+      class RolesHasPermissions extends Entity {
+        rolId: number;
+        permissionId: number;
+      }
+
+      const meta = MetadataInspector.getPropertyMetadata(
+        RELATIONS_KEY,
+        Rol.prototype,
+        'permissions',
+      );
+
+      expect(meta).to.eql({
+        name: 'permissions',
+        type: RelationType.hasAndBelongsToMany,
+        targetsMany: true,
+        source: Rol,
+        target: () => Permission,
+        through: {
+          model: () => RolesHasPermissions,
+        },
+      });
+      expect(Rol.definition.relations).to.eql({
+        permissions: {
+          name: 'permissions',
+          type: RelationType.hasAndBelongsToMany,
+          targetsMany: true,
+          source: Rol,
+          target: () => Permission,
+          through: {
+            model: () => RolesHasPermissions,
+          },
+        },
+      });
+    });
+  });
+
   describe('hasMany', () => {
     it('takes in complex property type and infers foreign key via source model name', () => {
       @model()

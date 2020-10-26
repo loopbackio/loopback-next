@@ -8,6 +8,7 @@ import {
   BelongsToAccessor,
   BelongsToDefinition,
   createBelongsToAccessor,
+  createHasAndBelongsToManyRepositoryFactory,
   createHasManyRepositoryFactory,
   createHasManyThroughRepositoryFactory,
   DefaultCrudRepository,
@@ -15,6 +16,9 @@ import {
   EntityCrudRepository,
   EntityNotFoundError,
   Getter,
+  HasAndBelongsToManyDefinition,
+  HasAndBelongsToManyRepository,
+  HasAndBelongsToManyRepositoryFactory,
   HasManyDefinition,
   HasManyRepository,
   HasManyRepositoryFactory,
@@ -466,6 +470,248 @@ describe('HasManyThrough relation', () => {
       } as HasManyDefinition,
       Getter.fromValue(cartItemRepo),
       Getter.fromValue(customerCartItemLinkRepo),
+    );
+
+    customerCartItemRepo = customerCartItemFactory(existingCustomerId);
+  }
+});
+
+describe('HasAndBelongsToMany relation', () => {
+  let existingCustomerId: number;
+  // Customer has many CartItems through CustomerCartItemLink
+  let customerCartItemRepo: HasAndBelongsToManyRepository<
+    CartItem,
+    typeof CartItem.prototype.id
+  >;
+  let customerCartItemFactory: HasAndBelongsToManyRepositoryFactory<
+    CartItem,
+    typeof CartItem.prototype.id,
+    typeof Customer.prototype.id
+  >;
+
+  before(givenCrudRepositories);
+  before(givenPersistedCustomerInstance);
+  before(givenConstrainedRepositories);
+
+  beforeEach(async function resetDatabase() {
+    await customerRepo.deleteAll();
+    await customerCartItemLinkRepo.deleteAll();
+    await cartItemRepo.deleteAll();
+  });
+
+  it('creates a target instance along with the corresponding through model', async () => {
+    const cartItem = await customerCartItemRepo.create({
+      description: 'an item hasManyThrough',
+    });
+    const persistedItem = await cartItemRepo.findById(cartItem.id);
+    const persistedLink = await customerCartItemLinkRepo.find();
+
+    expect(cartItem).to.deepEqual(persistedItem);
+    expect(persistedLink).have.length(1);
+    const expected = {
+      customerId: existingCustomerId,
+      itemId: cartItem.id,
+    };
+    expect(toJSON(persistedLink[0])).to.containEql(toJSON(expected));
+  });
+
+  it('finds an instance via through model', async () => {
+    const item = await customerCartItemRepo.create({
+      description: 'an item hasManyThrough',
+    });
+    const notMyItem = await cartItemRepo.create({
+      description: "someone else's item desc",
+    });
+
+    const items = await customerCartItemRepo.find();
+
+    expect(items).to.not.containEql(notMyItem);
+    expect(items).to.deepEqual([item]);
+  });
+
+  it('finds instances via through models', async () => {
+    const item1 = await customerCartItemRepo.create({description: 'group 1'});
+    const item2 = await customerCartItemRepo.create({
+      description: 'group 2',
+    });
+    const items = await customerCartItemRepo.find();
+
+    expect(items).have.length(2);
+    expect(items).to.deepEqual([item1, item2]);
+    const group1 = await customerCartItemRepo.find({
+      where: {description: 'group 1'},
+    });
+    expect(group1).to.deepEqual([item1]);
+  });
+
+  it('deletes an instance, then deletes the through model', async () => {
+    await customerCartItemRepo.create({
+      description: 'customer 1',
+    });
+    const anotherHasManyThroughRepo = customerCartItemFactory(
+      existingCustomerId + 1,
+    );
+    const item2 = await anotherHasManyThroughRepo.create({
+      description: 'customer 2',
+    });
+    let items = await cartItemRepo.find();
+    let links = await customerCartItemLinkRepo.find();
+
+    expect(items).have.length(2);
+    expect(links).have.length(2);
+
+    await customerCartItemRepo.delete();
+    items = await cartItemRepo.find();
+    links = await customerCartItemLinkRepo.find();
+
+    expect(items).have.length(1);
+    expect(links).have.length(1);
+    expect(items).to.deepEqual([item2]);
+    expect(links[0]).has.property('itemId', item2.id);
+    expect(links[0]).has.property('customerId', existingCustomerId + 1);
+  });
+
+  it('deletes through model when corresponding target gets deleted', async () => {
+    const item1 = await customerCartItemRepo.create({
+      description: 'customer 1',
+    });
+    const anotherHasManyThroughRepo = customerCartItemFactory(
+      existingCustomerId + 1,
+    );
+    const item2 = await anotherHasManyThroughRepo.create({
+      description: 'customer 2',
+    });
+    // when order1 gets deleted, this through instance should be deleted too.
+    const through = await customerCartItemLinkRepo.create({
+      id: 1,
+      customerId: existingCustomerId + 1,
+      itemId: item1.id,
+    });
+    let items = await cartItemRepo.find();
+    let links = await customerCartItemLinkRepo.find();
+
+    expect(items).have.length(2);
+    expect(links).have.length(3);
+
+    await customerCartItemRepo.delete();
+
+    items = await cartItemRepo.find();
+    links = await customerCartItemLinkRepo.find();
+
+    expect(items).have.length(1);
+    expect(links).have.length(1);
+    expect(items).to.deepEqual([item2]);
+    expect(links).to.not.containEql(through);
+    expect(links[0]).has.property('itemId', item2.id);
+    expect(links[0]).has.property('customerId', existingCustomerId + 1);
+  });
+
+  it('deletes instances based on the filter', async () => {
+    await customerCartItemRepo.create({
+      description: 'customer 1',
+    });
+    const item2 = await customerCartItemRepo.create({
+      description: 'customer 2',
+    });
+
+    let items = await cartItemRepo.find();
+    let links = await customerCartItemLinkRepo.find();
+    expect(items).have.length(2);
+    expect(links).have.length(2);
+
+    await customerCartItemRepo.delete({description: 'does not exist'});
+    items = await cartItemRepo.find();
+    links = await customerCartItemLinkRepo.find();
+    expect(items).have.length(2);
+    expect(links).have.length(2);
+
+    await customerCartItemRepo.delete({description: 'customer 1'});
+    items = await cartItemRepo.find();
+    links = await customerCartItemLinkRepo.find();
+
+    expect(items).have.length(1);
+    expect(links).have.length(1);
+    expect(items).to.deepEqual([item2]);
+    expect(links[0]).has.property('itemId', item2.id);
+    expect(links[0]).has.property('customerId', existingCustomerId);
+  });
+
+  it('patches instances that belong to the same source model (same source fk)', async () => {
+    const item1 = await customerCartItemRepo.create({
+      description: 'group 1',
+    });
+    const item2 = await customerCartItemRepo.create({
+      description: 'group 1',
+    });
+
+    const count = await customerCartItemRepo.patch({description: 'group 2'});
+    expect(count).to.match({count: 2});
+    const updateResult = await cartItemRepo.find();
+    expect(toJSON(updateResult)).to.containDeep(
+      toJSON([
+        {id: item1.id, description: 'group 2'},
+        {id: item2.id, description: 'group 2'},
+      ]),
+    );
+  });
+
+  it('links a target instance to the source instance', async () => {
+    const item = await cartItemRepo.create({description: 'an item'});
+    let targets = await customerCartItemRepo.find();
+    expect(targets).to.deepEqual([]);
+
+    await customerCartItemRepo.link(item.id);
+    targets = await customerCartItemRepo.find();
+    expect(toJSON(targets)).to.containDeep(toJSON([item]));
+    const link = await customerCartItemLinkRepo.find();
+    expect(toJSON(link[0])).to.containEql(
+      toJSON({customerId: existingCustomerId, itemId: item.id}),
+    );
+  });
+
+  it('unlinks a target instance from the source instance', async () => {
+    const item = await customerCartItemRepo.create({description: 'an item'});
+    let targets = await customerCartItemRepo.find();
+    expect(toJSON(targets)).to.containDeep(toJSON([item]));
+
+    await customerCartItemRepo.unlink(item.id);
+    targets = await customerCartItemRepo.find();
+    expect(targets).to.deepEqual([]);
+    // the through model should be deleted
+    const thoughs = await customerCartItemRepo.find();
+    expect(thoughs).to.deepEqual([]);
+  });
+  //--- HELPERS ---//
+
+  async function givenPersistedCustomerInstance() {
+    const customer = await customerRepo.create({name: 'a customer'});
+    existingCustomerId = customer.id;
+  }
+
+  function givenConstrainedRepositories() {
+    customerCartItemFactory = createHasAndBelongsToManyRepositoryFactory<
+      CustomerCartItemLink,
+      CartItem,
+      typeof Customer.prototype.id,
+      typeof CustomerCartItemLink.prototype.id,
+      typeof CartItem.prototype.id
+    >(
+      {
+        name: 'cartItems',
+        type: 'hasAndBelongsToMany',
+        targetsMany: true,
+        source: Customer,
+        keyFrom: 'id',
+        target: () => CartItem,
+        keyTo: 'id',
+        through: {
+          model: () => CustomerCartItemLink,
+          sourceKey: 'customerId',
+          targetKey: 'itemId',
+        },
+      } as HasAndBelongsToManyDefinition,
+      Getter.fromValue(customerCartItemLinkRepo),
+      Getter.fromValue(cartItemRepo),
     );
 
     customerCartItemRepo = customerCartItemFactory(existingCustomerId);
