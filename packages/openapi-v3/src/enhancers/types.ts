@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {BindingTemplate, extensionFor} from '@loopback/core';
+import {BindingTemplate, extensionFor, ValueOrPromise} from '@loopback/core';
 import {OpenApiSpec} from '../types';
 import {OASEnhancerBindings} from './keys';
 
@@ -13,7 +13,7 @@ import {OASEnhancerBindings} from './keys';
  */
 export interface OASEnhancer {
   name: string;
-  modifySpec(spec: OpenApiSpec): OpenApiSpec;
+  modifySpec(spec: OpenApiSpec): ValueOrPromise<OpenApiSpec>;
 }
 
 /**

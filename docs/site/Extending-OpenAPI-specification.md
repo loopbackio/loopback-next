@@ -47,6 +47,7 @@ export class InfoSpecEnhancer implements OASEnhancer {
   name = 'info';
 
   // takes in the current spec, modifies it, and returns a new one
+  // NOTE: use async function if it contains async operation to the spec
   modifySpec(spec: OpenApiSpec): OpenApiSpec {
     const InfoPatchSpec = {
       info: {title: 'LoopBack Test Application', version: '1.0.1'},
@@ -66,6 +67,15 @@ export class InfoSpecEnhancer implements OASEnhancer {
   `modifySpec`.
 - It calls [`mergeOpenAPISpec`](#default-merge-function) to merge the
   specification fragment into the current spec.
+
+If you need to asynchronously update the spec, you should define the
+`modifySpec` function use keyword `async` and return a `Promise` as following:
+
+```ts
+async modifySpec(spec: OpenApiSpec): Promise<OpenApiSpec> {
+  return modifySpecAsync(spec);
+}
+```
 
 ### Default Merge Function
 
