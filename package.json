@@ -78,7 +78,7 @@
     "husky": "^4.3.0",
     "if-env": "^1.0.4",
     "lerna": "^3.22.1",
-    "lint-staged": "^10.4.2",
+    "lint-staged": "^10.5.0",
     "markdown-table": "^2.0.0",
     "open-cli": "^6.0.1",
     "prettier": "^2.1.2",
