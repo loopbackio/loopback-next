@@ -10,13 +10,14 @@ import {
   BindingKey,
   BindingScope,
   BindingType,
+  config,
   Context,
   filterByTag,
   inject,
+  injectable,
   Provider,
+  ValueFactory,
 } from '../..';
-import {ValueFactory} from '../../binding';
-import {config} from '../../inject-config';
 
 const key = 'foo';
 
@@ -365,6 +366,54 @@ describe('Binding', () => {
       const events = listenOnBinding();
       binding.toProvider(MyProvider);
       assertEvents(events, 'value');
+    });
+  });
+
+  describe('toInjectable(class)', () => {
+    it('binds to a class', async () => {
+      ctx.bind('msg').toDynamicValue(() => Promise.resolve('world'));
+      const serviceBinding = ctx.bind('myService').toInjectable(MyService);
+      expect(serviceBinding.type).to.eql(BindingType.CLASS);
+      const myService = await ctx.get<MyService>('myService');
+      expect(myService.getMessage()).to.equal('hello world');
+    });
+
+    it('binds to a class with @injectable', async () => {
+      @injectable({scope: BindingScope.SINGLETON, tags: {x: 1}})
+      class MyInjectableService {
+        constructor(@inject('msg') private _msg: string) {}
+
+        getMessage(): string {
+          return 'hello ' + this._msg;
+        }
+      }
+      ctx.bind('msg').toDynamicValue(() => Promise.resolve('world'));
+      const serviceBinding = ctx
+        .bind('myService')
+        .toInjectable(MyInjectableService);
+      expect(serviceBinding.type).to.eql(BindingType.CLASS);
+      expect(serviceBinding.scope).to.eql(BindingScope.SINGLETON);
+      expect(serviceBinding.tagMap.x).to.eql(1);
+      const myService = await ctx.get<MyInjectableService>('myService');
+      expect(myService.getMessage()).to.equal('hello world');
+    });
+
+    it('binds to a provider', async () => {
+      ctx.bind('msg').to('hello');
+      const providerBinding = ctx.bind('provider_key').toInjectable(MyProvider);
+      expect(providerBinding.type).to.eql(BindingType.PROVIDER);
+      const value = await ctx.get<string>('provider_key');
+      expect(value).to.equal('hello world');
+    });
+
+    it('binds to a dynamic value provider class', async () => {
+      ctx.bind('msg').to('hello');
+      const providerBinding = ctx
+        .bind('provider_key')
+        .toInjectable(MyDynamicValueProvider);
+      expect(providerBinding.type).to.eql(BindingType.DYNAMIC_VALUE);
+      const value = await ctx.get<string>('provider_key');
+      expect(value).to.equal('hello world');
     });
   });
 
@@ -746,6 +795,12 @@ describe('Binding', () => {
 
     getMessage(): string {
       return 'hello ' + this._msg;
+    }
+  }
+
+  class MyDynamicValueProvider {
+    static value(@inject('msg') _msg: string): string {
+      return _msg + ' world';
     }
   }
 });

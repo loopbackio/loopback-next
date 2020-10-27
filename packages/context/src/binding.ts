@@ -5,6 +5,7 @@
 
 import debugFactory from 'debug';
 import {EventEmitter} from 'events';
+import {bindingTemplateFor} from './binding-inspector';
 import {BindingAddress, BindingKey} from './binding-key';
 import {Context} from './context';
 import {inspectInjections} from './inject';
@@ -840,6 +841,36 @@ export class Binding<T = BoundValue> extends EventEmitter {
         options.session,
       );
     });
+    return this;
+  }
+
+  /**
+   * Bind to a class optionally decorated with `@injectable`. Based on the
+   * introspection of the class, it calls `toClass/toProvider/toDynamicValue`
+   * internally. The current binding key will be preserved (not being overridden
+   * by the key inferred from the class or options).
+   *
+   * This is similar to {@link createBindingFromClass} but applies to an
+   * existing binding.
+   *
+   * @example
+   *
+   * ```ts
+   * @injectable({scope: BindingScope.SINGLETON, tags: {service: 'MyService}})
+   * class MyService {
+   *   // ...
+   * }
+   *
+   * const ctx = new Context();
+   * ctx.bind('services.MyService').toInjectable(MyService);
+   * ```
+   *
+   * @param ctor - A class decorated with `@injectable`.
+   */
+  toInjectable(
+    ctor: DynamicValueProviderClass<T> | Constructor<T | Provider<T>>,
+  ) {
+    this.apply(bindingTemplateFor(ctor));
     return this;
   }
 
