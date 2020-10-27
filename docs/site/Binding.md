@@ -179,6 +179,41 @@ binding.toProvider(MyValueProvider);
 The provider class serves as the wrapper to declare dependency injections. If
 dependency is not needed, `toDynamicValue` can be used instead.
 
+#### An injectable class
+
+An injectable class is one of the following types of classes optionally
+decorated with `@injectable`.
+
+- A class
+- A provider class
+- A dynamic value factory class
+
+The `toInjectable()` method is a shortcut to bind such classes using
+`toClass/toProvider/toDynamicValue` respectively by introspecting the class,
+including the binding metadata added by `@injectable`.
+
+```ts
+@injectable({scope: BindingScope.SINGLETON})
+class MyController {
+  constructor(@inject('my-options') private options: MyOptions) {
+    // ...
+  }
+}
+
+binding.toInjectable(MyController);
+```
+
+The code above is similar as follows:
+
+```ts
+const binding = createBindingFromClass(MyController);
+```
+
+{% include note.html content="
+If `binding.toClass(MyController)` is used, the binding scope set by
+`@injectable` is NOT honored.
+" %}
+
 #### An alias
 
 An alias is the key with optional path to resolve the value from another

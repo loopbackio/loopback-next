@@ -170,6 +170,7 @@ export function removeNameAndKeyTags(binding: Binding<unknown>) {
  */
 export function bindingTemplateFor<T>(
   cls: Constructor<T | Provider<T>> | DynamicValueProviderClass<T>,
+  options?: BindingFromClassOptions,
 ): BindingTemplate<T> {
   const spec = getBindingMetadata(cls);
   debug('class %s has binding metadata', cls.name, spec);
@@ -181,6 +182,9 @@ export function bindingTemplateFor<T>(
     if (spec?.target !== cls) {
       // Remove name/key tags inherited from base classes
       binding.apply(removeNameAndKeyTags);
+    }
+    if (options != null) {
+      applyClassBindingOptions(binding, options);
     }
   };
 }
@@ -260,10 +264,9 @@ export function createBindingFromClass<T>(
 ): Binding<T> {
   debug('create binding from class %s with options', cls.name, options);
   try {
-    const templateFn = bindingTemplateFor(cls);
+    const templateFn = bindingTemplateFor(cls, options);
     const key = buildBindingKey(cls, options);
     const binding = Binding.bind<T>(key).apply(templateFn);
-    applyClassBindingOptions(binding, options);
     return binding;
   } catch (err) {
     err.message += ` (while building binding for class ${cls.name})`;
