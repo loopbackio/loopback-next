@@ -271,6 +271,10 @@ children:
           url: Building-frontend-angular-application.html
           output: 'web, pdf'
 
+    - title: 'Customizing Server configuration'
+      url: Customizing-server-configuration.html
+      output: 'web, pdf'
+
     - title: 'Running cron jobs'
       url: Running-cron-jobs.html
       output: 'web, pdf'
