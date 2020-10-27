@@ -44,7 +44,7 @@
     "@types/msgpack-lite": "0.1.7",
     "@types/node": "^10.17.35",
     "@types/type-is": "^1.6.3",
-    "typescript": "~4.0.3"
+    "typescript": "~4.0.5"
   },
   "copyright.owner": "IBM Corp.",
   "publishConfig": {
