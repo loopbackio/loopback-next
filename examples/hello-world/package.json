@@ -49,7 +49,7 @@
     "@loopback/eslint-config": "^10.0.1",
     "@loopback/testlab": "^3.2.7",
     "@types/node": "^10.17.35",
-    "eslint": "^7.12.0",
+    "eslint": "^7.12.1",
     "typescript": "~4.0.5"
   },
   "keywords": [
