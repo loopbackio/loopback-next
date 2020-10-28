@@ -24,8 +24,8 @@
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
-    "@microsoft/api-documenter": "^7.9.17",
-    "@microsoft/api-extractor": "^7.10.5",
+    "@microsoft/api-documenter": "^7.9.18",
+    "@microsoft/api-extractor": "^7.10.6",
     "debug": "^4.2.0",
     "fs-extra": "^9.0.1",
     "tslib": "^2.0.3"
