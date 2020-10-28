@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {EntityNotFoundError} from '@loopback/repository';
-import {Request, Response} from '@loopback/rest';
+import {Request, Response, RestBindings} from '@loopback/rest';
 import {
   Client,
   createRestAppClient,
@@ -179,6 +179,61 @@ describe('TodoApplication', () => {
     it('returns 404 when deleting a todo that does not exist', async () => {
       await client.del(`/todos/99999`).expect(404);
     });
+
+    it('rejects request with invalid keys - constructor.prototype', async () => {
+      const res = await client
+        .get(
+          '/todos?filter={"offset":0,"limit":100,"skip":0,' +
+            '"where":{"constructor.prototype":{"toString":"def"}},' +
+            '"fields":{"title":true,"id":true}}',
+        )
+        .expect(400);
+      expect(res.body?.error).to.containEql({
+        statusCode: 400,
+        name: 'BadRequestError',
+        code: 'INVALID_PARAMETER_VALUE',
+        details: {
+          syntaxError:
+            'JSON string cannot contain "constructor.prototype" key.',
+        },
+      });
+    });
+
+    it('rejects request with invalid keys - __proto__', async () => {
+      const res = await client
+        .get(
+          '/todos?filter={"offset":0,"limit":100,"skip":0,' +
+            '"where":{"__proto__":{"toString":"def"}},' +
+            '"fields":{"title":true,"id":true}}',
+        )
+        .expect(400);
+      expect(res.body?.error).to.containEql({
+        statusCode: 400,
+        name: 'BadRequestError',
+        code: 'INVALID_PARAMETER_VALUE',
+        details: {
+          syntaxError: 'JSON string cannot contain "__proto__" key.',
+        },
+      });
+    });
+
+    it('rejects request with prohibited keys - badKey', async () => {
+      const res = await client
+        .get(
+          '/todos?filter={"offset":0,"limit":100,"skip":0,' +
+            '"where":{"badKey":{"toString":"def"}},' +
+            '"fields":{"title":true,"id":true}}',
+        )
+        .expect(400);
+      expect(res.body?.error).to.containEql({
+        statusCode: 400,
+        name: 'BadRequestError',
+        code: 'INVALID_PARAMETER_VALUE',
+        details: {
+          syntaxError: 'JSON string cannot contain "badKey" key.',
+        },
+      });
+    });
   });
 
   context('allows logging to be reconfigured', () => {
@@ -341,6 +396,12 @@ describe('TodoApplication', () => {
   async function givenRunningApplicationWithCustomConfiguration() {
     app = new TodoListApplication({
       rest: givenHttpServerConfig(),
+    });
+
+    app.bind(RestBindings.REQUEST_BODY_PARSER_OPTIONS).to({
+      validation: {
+        prohibitedKeys: ['badKey'],
+      },
     });
 
     await app.boot();

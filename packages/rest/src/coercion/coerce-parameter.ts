@@ -15,7 +15,7 @@ import {
   validateValueAgainstSchema,
   ValueValidationOptions,
 } from '../';
-import {parseJson} from '../parse-json';
+import {parseJson, sanitizeJsonParse} from '../parse-json';
 import {ValidationOptions} from '../types';
 import {DEFAULT_AJV_VALIDATION_OPTIONS} from '../validation/ajv-factory.provider';
 import {
@@ -89,7 +89,7 @@ export async function coerceParameter(
       result = coerceBoolean(data, spec);
       break;
     case 'object':
-      result = await coerceObject(data, spec);
+      result = await coerceObject(data, spec, options);
       break;
     case 'string':
     case 'password':
@@ -189,8 +189,12 @@ function coerceBoolean(data: string | object, spec: ParameterObject) {
   throw RestHttpErrors.invalidData(data, spec.name);
 }
 
-async function coerceObject(input: string | object, spec: ParameterObject) {
-  const data = parseJsonIfNeeded(input, spec);
+async function coerceObject(
+  input: string | object,
+  spec: ParameterObject,
+  options?: ValidationOptions,
+) {
+  const data = parseJsonIfNeeded(input, spec, options);
 
   if (data == null) {
     // Skip any further checks and coercions, nothing we can do with `undefined`
@@ -254,6 +258,7 @@ function extractSchemaFromSpec(
 function parseJsonIfNeeded(
   data: string | object,
   spec: ParameterObject,
+  options?: ValidationOptions,
 ): string | object | undefined {
   if (typeof data !== 'string') return data;
 
@@ -271,7 +276,10 @@ function parseJsonIfNeeded(
   }
 
   try {
-    const result = parseJson(data);
+    const result = parseJson(
+      data,
+      sanitizeJsonParse(undefined, options?.prohibitedKeys),
+    );
     debug('Parsed parameter %s as %j', spec.name, result);
     return result;
   } catch (err) {
