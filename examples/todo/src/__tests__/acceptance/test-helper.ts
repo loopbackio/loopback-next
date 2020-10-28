@@ -8,7 +8,7 @@ import {
   createRestAppClient,
   givenHttpServerConfig,
 } from '@loopback/testlab';
-import {TodoListApplication} from '../../application';
+import {TodoListApplication} from '../..';
 
 export async function setupApplication(): Promise<AppWithClient> {
   const app = new TodoListApplication({

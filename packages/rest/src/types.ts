@@ -156,6 +156,11 @@ export interface ValidationOptions extends ajv.Options {
    * A factory to create Ajv instance
    */
   ajvFactory?: (options: ajv.Options) => Ajv;
+
+  /**
+   * An array of keys to be rejected, such as `__proto__`.
+   */
+  prohibitedKeys?: string[];
 }
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
