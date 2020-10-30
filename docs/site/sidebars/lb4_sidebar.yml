@@ -386,6 +386,14 @@ children:
           url: Validation-ORM-layer.html
           output: 'web, pdf'
 
+    - title: 'Configuring Applications'
+      url: Configuring-applications.html
+      output: 'web, pdf'
+      children:
+        - title: 'Tips for Application Setup'
+          url: Application-setup-tips.html
+          output: 'web, pdf'
+
     - title: 'Securing Applications'
       output: 'web, pdf'
       children:
