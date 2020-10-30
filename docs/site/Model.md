@@ -48,11 +48,11 @@ export class Customer extends Entity {
 }
 ```
 
-- Value Object: A domain object that does not have an identity (ID). Its
-  equality is based on the structural value. For example, `Address` can be
-  modeled as a `Value Object` because two US addresses are equal if they have
-  the same street number, street name, city, and zip code values. For example,
-  this is how a `Address` can be modelled::
+- Model: A domain object that does not have an identity (ID). Its equality is
+  based on the structural value. For example, `Address` can be modeled as a
+  `Model` because two US addresses are equal if they have the same street
+  number, street name, city, and zip code values. For example, this is how a
+  `Address` can be modelled::
 
 ```ts
 import {Model, model, property} from '@loopback/repository';
