@@ -346,6 +346,9 @@ children:
         - title: 'Call Other Services'
           url: Calling-other-APIs-and-web-services.html
           output: 'web, pdf'
+    - title: 'Parsing requests'
+      output: 'web, pdf'
+      url: Parsing-requests-guide.html
 
     - title: 'Validating Data'
       url: Validation.html
