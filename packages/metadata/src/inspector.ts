@@ -211,8 +211,7 @@ export class MetadataInspector {
    * @param target - Class or prototype
    * @param propertyName - Property name
    * @returns Design time metadata. The return value is `undefined` when:
-   * - The property has type `undefined`, `null` or a complex type like
-   *   `Partial<MyModel>`, `string | number`, `string[]`.
+   * - The property has type `undefined`, `null`
    * - The TypeScript project has not enabled the compiler option `emitDecoratorMetadata`.
    * - The code is written in vanilla JavaScript.
    */
