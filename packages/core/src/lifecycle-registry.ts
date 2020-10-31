@@ -5,8 +5,10 @@
 
 import {
   Binding,
+  Context,
   ContextView,
   inject,
+  invokeMethod,
   sortBindingsByPhase,
 } from '@loopback/context';
 import {CoreBindings, CoreTags} from './keys';
@@ -51,6 +53,8 @@ export class LifeCycleObserverRegistry implements LifeCycleObserver {
   constructor(
     @inject.view(lifeCycleObserverFilter)
     protected readonly observersView: ContextView<LifeCycleObserver>,
+    @inject(CoreBindings.APPLICATION_INSTANCE)
+    protected readonly context: Context,
     @inject(CoreBindings.LIFE_CYCLE_OBSERVER_OPTIONS, {optional: true})
     protected readonly options: LifeCycleObserverOptions = {
       parallel: true,
@@ -180,7 +184,7 @@ export class LifeCycleObserverRegistry implements LifeCycleObserver {
     event: keyof LifeCycleObserver,
   ) {
     if (typeof observer[event] === 'function') {
-      await observer[event]!();
+      await invokeMethod(observer, event, this.context);
     }
   }
 
