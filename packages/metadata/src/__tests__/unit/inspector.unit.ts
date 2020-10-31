@@ -655,44 +655,63 @@ describe('Inspector for design time metadata', () => {
     );
     const MyModel: Function = classFactory(propertyDecorator);
 
-    const meta = MetadataInspector.getDesignTypeForProperty(MyModel, 'id');
+    const meta = MetadataInspector.getDesignTypeForProperty(
+      MyModel.prototype,
+      'id',
+    );
     expect(meta).to.equal(undefined);
   });
 
   it('returns `undefined` design type for property type `null`', () => {
     class MyModel {
+      @propertyDecorator()
       prop: null;
     }
 
-    const meta = MetadataInspector.getDesignTypeForProperty(MyModel, 'prop');
+    const meta = MetadataInspector.getDesignTypeForProperty(
+      MyModel.prototype,
+      'prop',
+    );
     expect(meta).to.equal(undefined);
   });
 
   it('returns `undefined` design type for property type `undefined`', () => {
     class MyModel {
+      @propertyDecorator()
       prop: undefined;
     }
 
-    const meta = MetadataInspector.getDesignTypeForProperty(MyModel, 'prop');
+    const meta = MetadataInspector.getDesignTypeForProperty(
+      MyModel.prototype,
+      'prop',
+    );
     expect(meta).to.equal(undefined);
   });
 
   it('returns `undefined` design type for property type union', () => {
     class MyModel {
+      @propertyDecorator()
       prop: string | number;
     }
 
-    const meta = MetadataInspector.getDesignTypeForProperty(MyModel, 'prop');
-    expect(meta).to.equal(undefined);
+    const meta = MetadataInspector.getDesignTypeForProperty(
+      MyModel.prototype,
+      'prop',
+    );
+    expect(meta).to.equal(Object);
   });
 
-  it('returns `undefined` design type for property type array', () => {
+  it('returns `array` design type for property type array', () => {
     class MyModel {
+      @propertyDecorator()
       prop: string[];
     }
 
-    const meta = MetadataInspector.getDesignTypeForProperty(MyModel, 'prop');
-    expect(meta).to.equal(undefined);
+    const meta = MetadataInspector.getDesignTypeForProperty(
+      MyModel.prototype,
+      'prop',
+    );
+    expect(meta).to.equal(Array);
   });
 
   it('inspects design time type for the constructor', () => {
