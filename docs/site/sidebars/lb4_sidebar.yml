@@ -341,11 +341,17 @@ children:
           output: 'web, pdf'
 
     - title: 'Accessing Services'
+      url: Accessing-services.html
       output: 'web, pdf'
       children:
-        - title: 'Call Other Services'
-          url: Calling-other-APIs-and-web-services.html
+        - title: 'Calling SOAP Web services'
+          url: Calling-soap-web-services.html
           output: 'web, pdf'
+
+        - title: 'Calling REST APIs'
+          url: Calling-rest-apis.html
+          output: 'web, pdf'
+
     - title: 'Parsing requests'
       output: 'web, pdf'
       url: Parsing-requests-guide.html
