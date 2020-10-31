@@ -125,7 +125,7 @@ section of documentation for detailed instructions.
    }
    ```
 
-3. All set! Now you can hit your localhost at `http://localhost:3000/fooapi`
+3. All set! Now you can hit your localhost at `http://localhost:80/fooapi`
    (assuming nginx is listening to port 80) and your requests will be passed on
    to `pm2` process running your Loopback application.
 
