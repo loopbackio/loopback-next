@@ -52,7 +52,7 @@
     "@loopback/build": "^6.2.5",
     "@loopback/testlab": "^3.2.7",
     "@types/autocannon": "^4.1.0",
-    "@types/benchmark": "^1.0.33",
+    "@types/benchmark": "^2.1.0",
     "@types/mocha": "^8.0.3",
     "@types/node": "^10.17.35",
     "mocha": "^8.2.0",
