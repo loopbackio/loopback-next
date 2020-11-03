@@ -273,9 +273,9 @@
 #
 # - Issue label: CloudNative
 # - Primary owner(s): @jannyHou @raymondfeng
-# - Standby owner(s): @emonddr
-/extensions/metrics @emonddr @jannyHou @raymondfeng
-/extensions/health @emonddr @jannyHou @raymondfeng
+# - Standby owner(s): @emonddr @nflaig
+/extensions/metrics @emonddr @jannyHou @raymondfeng @nflaig
+/extensions/health @emonddr @jannyHou @raymondfeng @nflaig
 /extensions/logging @emonddr @jannyHou @raymondfeng
 /examples/metrics-prometheus @emonddr @jannyHou @raymondfeng
 /acceptance/extension-logging-fluentd @emonddr @jannyHou @raymondfeng
@@ -285,8 +285,8 @@
 #
 # - Issue label: Authentication
 # - Primary owner(s): @hacksparrow
-# - Standby owner(s): @emonddr @jannyHou @Madaky
-/packages/authentication @emonddr @hacksparrow @jannyHou
+# - Standby owner(s): @emonddr @jannyHou @Madaky @nflaig
+/packages/authentication @emonddr @hacksparrow @jannyHou @nflaig
 /packages/security @emonddr @hacksparrow @jannyHou
 /extensions/authentication-passport @emonddr @hacksparrow @jannyHou
 /extensions/authentication-jwt @emonddr @hacksparrow @jannyHou @Madaky
