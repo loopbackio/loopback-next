@@ -114,8 +114,8 @@ See [SECURITY.md](SECURITY.md) for more details.
 |     [![emonddr]](https://github.com/emonddr)     |          [![derdeka]](https://github.com/derdeka)          |    [![dougal83]](https://github.com/dougal83)    |
 |                  Rifa Achrinza                   |                      Francisco Buceta                      |                  Matthew Schnee                  |
 |    [![achrinza]](https://github.com/achrinza)    |         [![frbuceta]](https://github.com/frbuceta)         |     [![mschnee]](https://github.com/mschnee)     |  |
-|                 Nora Abdelgadir                  |                           Madaky                           |                                                  |  |
-| [![nabdelgadir]](https://github.com/nabdelgadir) |           [![madaky]](https://github.com/madaky)           |                                                  |  |
+|                 Nora Abdelgadir                  |                           Madaky                           |                    Nico Flaig                    |  |
+| [![nabdelgadir]](https://github.com/nabdelgadir) |           [![madaky]](https://github.com/madaky)           |      [![nflaig]](https://github.com/nflaig)      |  |
 
 See
 [all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
@@ -153,3 +153,4 @@ See
 [frbuceta]: https://avatars2.githubusercontent.com/u/13822438?v=4&s=60
 [mschnee]: https://avatars0.githubusercontent.com/u/1375316?v=4&s=60
 [madaky]: https://avatars3.githubusercontent.com/u/17172989?v=4&s=60
+[nflaig]: https://avatars3.githubusercontent.com/u/38436224?v=4&s=60
