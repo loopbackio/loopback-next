@@ -264,6 +264,20 @@ children:
           url: Using-openapi-to-graphql.html
           output: 'web, pdf'
 
+    - title: 'Creating Artifacts at Runtime'
+      url: Creating-artifacts-runtime.html
+      output: 'web, pdf'
+      children:
+         - title: 'Creating Model at Runtime'
+           url: Creating-model-runtime.html
+           output: 'web, pdf'
+         - title: 'Creating DataSource at Runtime'
+           url: Creating-datasource-runtime.html
+           output: 'web, pdf'
+         - title: 'Creating Repositories at Runtime'
+           url: Creating-repository-runtime.html
+           output: 'web, pdf'
+
     - title: 'Building frontend applications'
       output: 'web, pdf'
       children:
