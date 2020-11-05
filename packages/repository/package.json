@@ -31,7 +31,7 @@
     "@loopback/testlab": "^3.2.7",
     "@types/bson": "^4.0.3",
     "@types/json-schema": "^7.0.6",
-    "@types/lodash": "^4.14.164",
+    "@types/lodash": "^4.14.165",
     "@types/node": "^10.17.35",
     "bson": "4.2.0"
   },
