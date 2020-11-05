@@ -8,6 +8,7 @@ import {
   Constructor,
   Context,
   createBindingFromClass,
+  inject,
   injectable,
 } from '@loopback/context';
 import {expect} from '@loopback/testlab';
@@ -261,6 +262,24 @@ describe('Application life cycle', () => {
       expect(observer.status).to.equal('stopped');
     });
 
+    it('starts/stops all registered life cycle observers with param injections', async () => {
+      const app = new Application();
+      app.lifeCycleObserver(MyObserverWithMethodInjection, 'my-observer');
+
+      const observer = await app.get<MyObserverWithMethodInjection>(
+        'lifeCycleObservers.my-observer',
+      );
+      app.bind('prefix').to('***');
+      expect(observer.status).to.equal('not-initialized');
+      await app.init();
+      expect(observer.status).to.equal('***:initialized');
+      await app.start();
+      expect(observer.status).to.equal('***:started');
+      app.bind('prefix').to('###');
+      await app.stop();
+      expect(observer.status).to.equal('###:stopped');
+    });
+
     it('registers life cycle observers with options', async () => {
       const app = new Application();
       const binding = app.lifeCycleObserver(MyObserver, {
@@ -500,6 +519,22 @@ class MyObserver implements LifeCycleObserver {
   }
   stop() {
     this.status = 'stopped';
+  }
+}
+
+class MyObserverWithMethodInjection implements LifeCycleObserver {
+  status = 'not-initialized';
+
+  init(@inject('prefix') prefix: string) {
+    this.status = `${prefix}:initialized`;
+  }
+
+  start(@inject('prefix') prefix: string) {
+    this.status = `${prefix}:started`;
+  }
+
+  stop(@inject('prefix') prefix: string) {
+    this.status = `${prefix}:stopped`;
   }
 }
 

@@ -163,13 +163,44 @@ import {ValueOrPromise} from '@loopback/core';
  * Observers to handle life cycle start/stop events
  */
 export interface LifeCycleObserver {
-  start?(): ValueOrPromise<void>;
-  stop?(): ValueOrPromise<void>;
+  /**
+   * The method to be invoked during `init`. It will only be called at most once
+   * for a given application instance.
+   */
+  init?(...injectedArgs: unknown[]): ValueOrPromise<void>;
+  /**
+   * The method to be invoked during `start`
+   */
+  start?(...injectedArgs: unknown[]): ValueOrPromise<void>;
+  /**
+   * The method to be invoked during `stop`
+   */
+  stop?(...injectedArgs: unknown[]): ValueOrPromise<void>;
 }
 ```
 
-Both `start` and `stop` methods are optional so that an observer can opt in
+`init`, `start` and `stop` methods are optional so that an observer can opt in
 certain events.
+
+Method injection is allowed for the lifecycle methods. For example,
+
+```ts
+class MyObserverWithMethodInjection implements LifeCycleObserver {
+  status = 'not-initialized';
+
+  init(@inject('prefix') prefix: string) {
+    this.status = `${prefix}:initialized`;
+  }
+
+  start(@inject('prefix') prefix: string) {
+    this.status = `${prefix}:started`;
+  }
+
+  stop(@inject('prefix') prefix: string) {
+    this.status = `${prefix}:stopped`;
+  }
+}
+```
 
 ## Register a life cycle observer
 
