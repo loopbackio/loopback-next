@@ -3,6 +3,38 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [9.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@8.0.0...@loopback/rest@9.0.0) (2020-11-05)
+
+
+### Bug Fixes
+
+* allow array query parameter for a single value ([08c4a1a](https://github.com/strongloop/loopback-next/commit/08c4a1a2046db606fa28b17410c19bf609abddb6))
+
+
+### Code Refactoring
+
+* **rest:** use dynamic value provider for actions ([3a32290](https://github.com/strongloop/loopback-next/commit/3a322902bd47f664efcb0c14c4de96133301672c))
+
+
+### Features
+
+* **rest:** further sanitize json parsing by rejecting prohibited keys ([b38f0fd](https://github.com/strongloop/loopback-next/commit/b38f0fda4c1c78339de5f02c2f42bbfce32113c9))
+* **rest:** reword the message printed by REST LogError action ([3fc2bc1](https://github.com/strongloop/loopback-next/commit/3fc2bc1ecdd8efe1747050a63dbfefac7216e476))
+
+
+### BREAKING CHANGES
+
+* **rest:** If you use one of the built-in action providers as the base
+class, this commit will break you as the signature of the base class has
+changed. Otherwise the code should be backward compatible for existing
+applications.
+
+Signed-off-by: Raymond Feng <enjoyjava@gmail.com>
+
+
+
+
+
 # [8.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@7.0.1...@loopback/rest@8.0.0) (2020-10-07)
 
 

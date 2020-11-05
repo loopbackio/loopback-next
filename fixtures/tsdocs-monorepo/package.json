@@ -1,6 +1,6 @@
 {
   "name": "@loopback/tsdocs-monorepo",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "engines": {
     "node": "^10.16 || 12 || 14"
   },
@@ -16,7 +16,7 @@
   "author": "IBM Corp.",
   "license": "MIT",
   "devDependencies": {
-    "@loopback/build": "^6.2.5"
+    "@loopback/build": "^6.2.6"
   },
   "repository": {
     "type": "git",

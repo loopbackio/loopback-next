@@ -3,6 +3,39 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.18.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.17.1...@loopback/docs@3.18.0) (2020-11-05)
+
+
+### Bug Fixes
+
+* **docs:** fix debug string typo ([e4a974e](https://github.com/strongloop/loopback-next/commit/e4a974e2aa8d908e241ecc4f183fe8d881478b33))
+* **docs:** fix Dependency-injection link ([1f63727](https://github.com/strongloop/loopback-next/commit/1f637276628b30c633406549c50813889d86003e))
+* **docs:** fix incorrect port in deployment example ([936f026](https://github.com/strongloop/loopback-next/commit/936f0260425d85bc4fe736abff5c90bae7373dea))
+* **docs:** fixes typo in "sequence" ([363947d](https://github.com/strongloop/loopback-next/commit/363947d619931ac3cb3e3957e528a2ad220d20bf))
+* **docs:** update Model.md ([8417006](https://github.com/strongloop/loopback-next/commit/841700627f6cd47152b0a05385cbdf0c73a89a0f))
+* use [@injectable](https://github.com/injectable) over [@bind](https://github.com/bind) ([e28c1a5](https://github.com/strongloop/loopback-next/commit/e28c1a5478b0ec147d313fcc635d76e758eb2eb4))
+
+
+### Features
+
+* **cli:** add vscode launch tasks in app ([4b86952](https://github.com/strongloop/loopback-next/commit/4b869527f46dc2917760330b87de09fa22a3d75d))
+* **cli:** improve lb4 copyright to accept custom license-header.template ([cf071cb](https://github.com/strongloop/loopback-next/commit/cf071cb8546b1922b60443f3e86b1aeb8e336f8a))
+* **context:** add binding.toInjectable shortcut ([230923a](https://github.com/strongloop/loopback-next/commit/230923ada9f8d17038bf819a7b9b0615cedbce31))
+* **core:** add `init` to application life cycle events ([747bc7f](https://github.com/strongloop/loopback-next/commit/747bc7fda83f44b288aefa505c6eddbe387122d4))
+* **docs:** add community example page ([76d322d](https://github.com/strongloop/loopback-next/commit/76d322ddfa244583a2b01d9e719b1d13d18e55cc))
+* **docs:** update FAQ ([7d4a3e2](https://github.com/strongloop/loopback-next/commit/7d4a3e2178556d20401f9a4343824f71d088a9e8))
+* **docs:** update middleware example ([778533d](https://github.com/strongloop/loopback-next/commit/778533daa5b511e0d53ea6d025199c07816e4b7e))
+* **filter:** allow use an array in filter.fields ([ec386c1](https://github.com/strongloop/loopback-next/commit/ec386c15bce904c770a9be51f21d4ff3592dd1af))
+* **monorepo:** add @loopback/monorepo for lerna related scripts ([26e742a](https://github.com/strongloop/loopback-next/commit/26e742aa5899f4c278b014a27357f3106a232d14))
+* **repository:** provide a shortcut to hiddenProperties in property decorator ([3160424](https://github.com/strongloop/loopback-next/commit/3160424e5231a2ea71613749162203c5b1418795))
+* **socketio:** add support for Socket.IO to expose WebSocket endpoints ([29aab5c](https://github.com/strongloop/loopback-next/commit/29aab5c374332d1f462e8ac26c48408333bad74e))
+* **socketio:** socketio server implementation ([e437d96](https://github.com/strongloop/loopback-next/commit/e437d96ff6c2031cf3a8f93ec881f2b8c32a559f))
+* turn modifySpec into async ([fcd0bcb](https://github.com/strongloop/loopback-next/commit/fcd0bcbc9f9c042a254993d5d26a4c9526e72eb0))
+
+
+
+
+
 ## [3.17.1](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.17.0...@loopback/docs@3.17.1) (2020-10-08)
 
 **Note:** Version bump only for package @loopback/docs

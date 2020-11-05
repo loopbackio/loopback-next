@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@3.1.0...@loopback/repository@3.2.0) (2020-11-05)
+
+
+### Bug Fixes
+
+* this.definition.idName is not a function ([4ae5069](https://github.com/strongloop/loopback-next/commit/4ae5069f556073f764a622ffc704a337af3858b8))
+
+
+### Features
+
+* **repository:** provide a shortcut to hiddenProperties in property decorator ([3160424](https://github.com/strongloop/loopback-next/commit/3160424e5231a2ea71613749162203c5b1418795))
+
+
+
+
+
 # [3.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@3.0.1...@loopback/repository@3.1.0) (2020-10-07)
 
 

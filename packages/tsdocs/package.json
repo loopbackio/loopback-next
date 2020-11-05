@@ -1,6 +1,6 @@
 {
   "name": "@loopback/tsdocs",
-  "version": "2.3.3",
+  "version": "2.3.4",
   "description": "An internal package to generate api docs using Microsoft api-extractor and api-documenter",
   "private": true,
   "main": "dist/index.js",
@@ -31,10 +31,10 @@
     "tslib": "^2.0.3"
   },
   "devDependencies": {
-    "@loopback/build": "^6.2.5",
-    "@loopback/eslint-config": "^10.0.1",
-    "@loopback/testlab": "^3.2.7",
-    "@loopback/tsdocs-monorepo": "^0.0.10",
+    "@loopback/build": "^6.2.6",
+    "@loopback/eslint-config": "^10.0.2",
+    "@loopback/testlab": "^3.2.8",
+    "@loopback/tsdocs-monorepo": "^0.0.11",
     "@types/debug": "^4.1.5",
     "@types/fs-extra": "^9.0.3",
     "@types/node": "^10.17.35"

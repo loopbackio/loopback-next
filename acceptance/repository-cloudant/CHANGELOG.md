@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.13](https://github.com/strongloop/loopback-next/compare/@loopback/test-repository-cloudant@2.2.12...@loopback/test-repository-cloudant@2.2.13) (2020-11-05)
+
+**Note:** Version bump only for package @loopback/test-repository-cloudant
+
+
+
+
+
 ## [2.2.12](https://github.com/strongloop/loopback-next/compare/@loopback/test-repository-cloudant@2.2.11...@loopback/test-repository-cloudant@2.2.12) (2020-10-07)
 
 **Note:** Version bump only for package @loopback/test-repository-cloudant

@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.4](https://github.com/strongloop/loopback-next/compare/@loopback/tsdocs@2.3.3...@loopback/tsdocs@2.3.4) (2020-11-05)
+
+**Note:** Version bump only for package @loopback/tsdocs
+
+
+
+
+
 ## [2.3.3](https://github.com/strongloop/loopback-next/compare/@loopback/tsdocs@2.3.2...@loopback/tsdocs@2.3.3) (2020-10-07)
 
 **Note:** Version bump only for package @loopback/tsdocs

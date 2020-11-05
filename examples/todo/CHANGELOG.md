@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.9.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo@3.8.0...@loopback/example-todo@3.9.0) (2020-11-05)
+
+
+### Bug Fixes
+
+* **cli:** update affected example projects ([a4386e9](https://github.com/strongloop/loopback-next/commit/a4386e921713739417de5d4795950209d2f14e22)), closes [#3259](https://github.com/strongloop/loopback-next/issues/3259)
+
+
+### Features
+
+* **filter:** allow use an array in filter.fields ([ec386c1](https://github.com/strongloop/loopback-next/commit/ec386c15bce904c770a9be51f21d4ff3592dd1af))
+* **rest:** further sanitize json parsing by rejecting prohibited keys ([b38f0fd](https://github.com/strongloop/loopback-next/commit/b38f0fda4c1c78339de5f02c2f42bbfce32113c9))
+
+
+
+
+
 # [3.8.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo@3.7.4...@loopback/example-todo@3.8.0) (2020-10-07)
 
 

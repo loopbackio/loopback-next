@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.6.0](https://github.com/strongloop/loopback-next/compare/@loopback/health@0.5.2...@loopback/health@0.6.0) (2020-11-05)
+
+
+### Bug Fixes
+
+* **health:** fix http status code for health endpoints ([fdca8c0](https://github.com/strongloop/loopback-next/commit/fdca8c0857ed76ae725b4634b33a2e43dffb1063))
+
+
+### Features
+
+* **health:** add option to enable/disable openapi spec ([7227ab7](https://github.com/strongloop/loopback-next/commit/7227ab736e7f661d8b5f3227b4c78cc5ca5d6da6))
+
+
+
+
+
 ## [0.5.2](https://github.com/strongloop/loopback-next/compare/@loopback/health@0.5.1...@loopback/health@0.5.2) (2020-10-07)
 
 **Note:** Version bump only for package @loopback/health

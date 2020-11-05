@@ -3,6 +3,32 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/express@2.1.0...@loopback/express@3.0.0) (2020-11-05)
+
+
+### Bug Fixes
+
+* use [@injectable](https://github.com/injectable) over [@bind](https://github.com/bind) ([e28c1a5](https://github.com/strongloop/loopback-next/commit/e28c1a5478b0ec147d313fcc635d76e758eb2eb4))
+
+
+### Code Refactoring
+
+* **rest:** use dynamic value provider for actions ([3a32290](https://github.com/strongloop/loopback-next/commit/3a322902bd47f664efcb0c14c4de96133301672c))
+
+
+### BREAKING CHANGES
+
+* **rest:** If you use one of the built-in action providers as the base
+class, this commit will break you as the signature of the base class has
+changed. Otherwise the code should be backward compatible for existing
+applications.
+
+Signed-off-by: Raymond Feng <enjoyjava@gmail.com>
+
+
+
+
+
 # [2.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/express@2.0.1...@loopback/express@2.1.0) (2020-10-07)
 
 

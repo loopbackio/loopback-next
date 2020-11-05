@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.5.0](https://github.com/strongloop/loopback-next/compare/@loopback/metrics@0.4.2...@loopback/metrics@0.5.0) (2020-11-05)
+
+
+### Bug Fixes
+
+* **metrics:** only add required artifacts to application ([27f36b0](https://github.com/strongloop/loopback-next/commit/27f36b04ff7bf4429725f6a87c15f61068ca7e72))
+
+
+### Features
+
+* **metrics:** add option to enable/disable openapi spec ([478f99a](https://github.com/strongloop/loopback-next/commit/478f99a0fc66bc6dd758087ce74077e9096ec978))
+
+
+
+
+
 ## [0.4.2](https://github.com/strongloop/loopback-next/compare/@loopback/metrics@0.4.1...@loopback/metrics@0.4.2) (2020-10-07)
 
 **Note:** Version bump only for package @loopback/metrics

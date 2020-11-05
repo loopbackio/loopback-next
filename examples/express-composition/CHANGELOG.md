@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.5.1](https://github.com/strongloop/loopback-next/compare/@loopback/example-express-composition@2.5.0...@loopback/example-express-composition@2.5.1) (2020-11-05)
+
+
+### Bug Fixes
+
+* **cli:** update affected example projects ([a4386e9](https://github.com/strongloop/loopback-next/commit/a4386e921713739417de5d4795950209d2f14e22)), closes [#3259](https://github.com/strongloop/loopback-next/issues/3259)
+
+
+
+
+
 # [2.5.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-express-composition@2.4.4...@loopback/example-express-composition@2.5.0) (2020-10-07)
 
 

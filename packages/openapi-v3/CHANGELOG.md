@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@5.0.0...@loopback/openapi-v3@5.1.0) (2020-11-05)
+
+
+### Bug Fixes
+
+* **openapi-v3:** add apidocs for oas.response and oas.tags ([a7151d8](https://github.com/strongloop/loopback-next/commit/a7151d831c5e3c78a6938a30eab9d1b78fc31c0c))
+
+
+### Features
+
+* turn modifySpec into async ([fcd0bcb](https://github.com/strongloop/loopback-next/commit/fcd0bcbc9f9c042a254993d5d26a4c9526e72eb0))
+* **filter:** allow use an array in filter.fields ([ec386c1](https://github.com/strongloop/loopback-next/commit/ec386c15bce904c770a9be51f21d4ff3592dd1af))
+* **openapi-v3:** make `mergeOpenAPISpec` retval strongly typed ([91b433a](https://github.com/strongloop/loopback-next/commit/91b433ae6b2ddcd7c0636ed020a2b84c8a09cf65))
+
+
+
+
+
 # [5.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@4.0.1...@loopback/openapi-v3@5.0.0) (2020-10-07)
 
 

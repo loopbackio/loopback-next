@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/boot@3.0.2...@loopback/boot@3.1.0) (2020-11-05)
+
+
+### Features
+
+* **core:** add `init` to application life cycle events ([747bc7f](https://github.com/strongloop/loopback-next/commit/747bc7fda83f44b288aefa505c6eddbe387122d4))
+
+
+
+
+
 ## [3.0.2](https://github.com/strongloop/loopback-next/compare/@loopback/boot@3.0.1...@loopback/boot@3.0.2) (2020-10-07)
 
 **Note:** Version bump only for package @loopback/boot

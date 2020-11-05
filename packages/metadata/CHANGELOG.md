@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.3](https://github.com/strongloop/loopback-next/compare/@loopback/metadata@3.0.2...@loopback/metadata@3.0.3) (2020-11-05)
+
+
+### Bug Fixes
+
+* change doc message ([8aab137](https://github.com/strongloop/loopback-next/commit/8aab137f7be1ddb84f196768917e8e893453bf0e))
+* getDesignTypeForProperty ([953aa86](https://github.com/strongloop/loopback-next/commit/953aa8656930dacb5e5c30803f85225dd8dcdf58))
+
+
+
+
+
 ## [3.0.2](https://github.com/strongloop/loopback-next/compare/@loopback/metadata@3.0.1...@loopback/metadata@3.0.2) (2020-10-07)
 
 **Note:** Version bump only for package @loopback/metadata

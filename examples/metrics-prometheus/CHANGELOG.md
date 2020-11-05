@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.4.3](https://github.com/strongloop/loopback-next/compare/@loopback/example-metrics-prometheus@0.4.2...@loopback/example-metrics-prometheus@0.4.3) (2020-11-05)
+
+
+### Bug Fixes
+
+* **cli:** update affected example projects ([a4386e9](https://github.com/strongloop/loopback-next/commit/a4386e921713739417de5d4795950209d2f14e22)), closes [#3259](https://github.com/strongloop/loopback-next/issues/3259)
+
+
+
+
+
 ## [0.4.2](https://github.com/strongloop/loopback-next/compare/@loopback/example-metrics-prometheus@0.4.1...@loopback/example-metrics-prometheus@0.4.2) (2020-10-07)
 
 **Note:** Version bump only for package @loopback/example-metrics-prometheus

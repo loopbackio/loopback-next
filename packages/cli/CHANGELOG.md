@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.17.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@2.16.1...@loopback/cli@2.17.0) (2020-11-05)
+
+
+### Bug Fixes
+
+* **cli:** add missing language to code blocks ([672d331](https://github.com/strongloop/loopback-next/commit/672d33111b840a9436c40d6fb7c2d583366ec2b8))
+* **cli:** fix build error when manually deleting a model, repository or controller ([00c9ee7](https://github.com/strongloop/loopback-next/commit/00c9ee71e3b94af36c0a4643a5e91420490ff146)), closes [#3259](https://github.com/strongloop/loopback-next/issues/3259)
+* **cli:** print a warning for Node.js versions that are not supported ([a03bc34](https://github.com/strongloop/loopback-next/commit/a03bc34d0499bf6f7c96a5fc1cace45a32a92475))
+
+
+### Features
+
+* **cli:** add vscode launch tasks in app ([4b86952](https://github.com/strongloop/loopback-next/commit/4b869527f46dc2917760330b87de09fa22a3d75d))
+* **cli:** improve lb4 copyright to accept custom license-header.template ([cf071cb](https://github.com/strongloop/loopback-next/commit/cf071cb8546b1922b60443f3e86b1aeb8e336f8a))
+* **core:** add `init` to application life cycle events ([747bc7f](https://github.com/strongloop/loopback-next/commit/747bc7fda83f44b288aefa505c6eddbe387122d4))
+
+
+
+
+
 ## [2.16.1](https://github.com/strongloop/loopback-next/compare/@loopback/cli@2.16.0...@loopback/cli@2.16.1) (2020-10-08)
 
 **Note:** Version bump only for package @loopback/cli

@@ -1,6 +1,6 @@
 {
   "name": "@loopback/socketio",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "LoopBack's WebSocket server based on socket.io",
   "engines": {
     "node": "^10.16 || 12 || 14"
@@ -20,9 +20,9 @@
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
-    "@loopback/boot": "^3.0.2",
-    "@loopback/core": "^2.11.0",
-    "@loopback/http-server": "^2.3.0",
+    "@loopback/boot": "^3.1.0",
+    "@loopback/core": "^2.12.0",
+    "@loopback/http-server": "^2.3.1",
     "@types/cors": "^2.8.8",
     "@types/lodash": "^4.14.165",
     "cors": "^2.8.5",
@@ -31,9 +31,9 @@
     "socket.io": "^2.3.0"
   },
   "devDependencies": {
-    "@loopback/build": "^6.2.5",
-    "@loopback/eslint-config": "^10.0.1",
-    "@loopback/testlab": "^3.2.7",
+    "@loopback/build": "^6.2.6",
+    "@loopback/eslint-config": "^10.0.2",
+    "@loopback/testlab": "^3.2.8",
     "@types/debug": "^4.1.5",
     "@types/socket.io": "^2.1.11",
     "@types/socket.io-client": "^1.4.34",

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.6](https://github.com/strongloop/loopback-next/compare/@loopback/example-file-transfer@1.5.5...@loopback/example-file-transfer@1.5.6) (2020-11-05)
+
+
+### Bug Fixes
+
+* **cli:** update affected example projects ([a4386e9](https://github.com/strongloop/loopback-next/commit/a4386e921713739417de5d4795950209d2f14e22)), closes [#3259](https://github.com/strongloop/loopback-next/issues/3259)
+
+
+
+
+
 ## [1.5.5](https://github.com/strongloop/loopback-next/compare/@loopback/example-file-transfer@1.5.4...@loopback/example-file-transfer@1.5.5) (2020-10-07)
 
 **Note:** Version bump only for package @loopback/example-file-transfer

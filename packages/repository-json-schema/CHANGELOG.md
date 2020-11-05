@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@3.0.2...@loopback/repository-json-schema@3.1.0) (2020-11-05)
+
+
+### Features
+
+* **filter:** allow use an array in filter.fields ([ec386c1](https://github.com/strongloop/loopback-next/commit/ec386c15bce904c770a9be51f21d4ff3592dd1af))
+
+
+
+
+
 ## [3.0.2](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@3.0.1...@loopback/repository-json-schema@3.0.2) (2020-10-07)
 
 **Note:** Version bump only for package @loopback/repository-json-schema

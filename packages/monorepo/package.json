@@ -6,7 +6,7 @@
     "url": "https://github.com/strongloop/loopback-next.git",
     "directory": "packages/monorepo"
   },
-  "version": "0.0.1",
+  "version": "0.1.0",
   "engines": {
     "node": "^10.16 || 12 || 14"
   },

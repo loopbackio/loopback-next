@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.7.1](https://github.com/strongloop/loopback-next/compare/@loopback/example-multi-tenancy@0.7.0...@loopback/example-multi-tenancy@0.7.1) (2020-11-05)
+
+
+### Bug Fixes
+
+* **cli:** update affected example projects ([a4386e9](https://github.com/strongloop/loopback-next/commit/a4386e921713739417de5d4795950209d2f14e22)), closes [#3259](https://github.com/strongloop/loopback-next/issues/3259)
+
+
+
+
+
 # [0.7.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-multi-tenancy@0.6.4...@loopback/example-multi-tenancy@0.7.0) (2020-10-07)
 
 

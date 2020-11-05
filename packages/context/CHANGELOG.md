@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.13.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@3.12.0...@loopback/context@3.13.0) (2020-11-05)
+
+
+### Features
+
+* **context:** add binding.toInjectable shortcut ([230923a](https://github.com/strongloop/loopback-next/commit/230923ada9f8d17038bf819a7b9b0615cedbce31))
+
+
+
+
+
 # [3.12.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@3.11.1...@loopback/context@3.12.0) (2020-10-07)
 
 

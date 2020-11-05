@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.8.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-passport-login@1.7.0...@loopback/example-passport-login@1.8.0) (2020-11-05)
+
+
+### Bug Fixes
+
+* use [@injectable](https://github.com/injectable) over [@bind](https://github.com/bind) ([e28c1a5](https://github.com/strongloop/loopback-next/commit/e28c1a5478b0ec147d313fcc635d76e758eb2eb4))
+* **cli:** update affected example projects ([a4386e9](https://github.com/strongloop/loopback-next/commit/a4386e921713739417de5d4795950209d2f14e22)), closes [#3259](https://github.com/strongloop/loopback-next/issues/3259)
+
+
+### Features
+
+* **example-passport-login:** refactor wiring code into a life cycle observer ([e5759c5](https://github.com/strongloop/loopback-next/commit/e5759c50fc02668136fe23a283070e6707f9f433))
+* **repository:** provide a shortcut to hiddenProperties in property decorator ([3160424](https://github.com/strongloop/loopback-next/commit/3160424e5231a2ea71613749162203c5b1418795))
+
+
+
+
+
 # [1.7.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-passport-login@1.6.0...@loopback/example-passport-login@1.7.0) (2020-10-07)
 
 

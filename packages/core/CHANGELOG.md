@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.12.0](https://github.com/strongloop/loopback-next/compare/@loopback/core@2.11.0...@loopback/core@2.12.0) (2020-11-05)
+
+
+### Features
+
+* **core:** add `init` to application life cycle events ([747bc7f](https://github.com/strongloop/loopback-next/commit/747bc7fda83f44b288aefa505c6eddbe387122d4))
+
+
+
+
+
 # [2.11.0](https://github.com/strongloop/loopback-next/compare/@loopback/core@2.10.1...@loopback/core@2.11.0) (2020-10-07)
 
 
