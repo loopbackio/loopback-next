@@ -22,15 +22,15 @@ export interface LifeCycleObserver {
    * The method to be invoked during `init`. It will only be called at most once
    * for a given application instance.
    */
-  init?(): ValueOrPromise<void>;
+  init?(...injectedArgs: unknown[]): ValueOrPromise<void>;
   /**
    * The method to be invoked during `start`
    */
-  start?(): ValueOrPromise<void>;
+  start?(...injectedArgs: unknown[]): ValueOrPromise<void>;
   /**
    * The method to be invoked during `stop`
    */
-  stop?(): ValueOrPromise<void>;
+  stop?(...injectedArgs: unknown[]): ValueOrPromise<void>;
 }
 
 const lifeCycleMethods: (keyof LifeCycleObserver)[] = ['init', 'start', 'stop'];
