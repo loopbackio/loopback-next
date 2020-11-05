@@ -24,7 +24,7 @@
     "@loopback/core": "^2.11.0",
     "@loopback/http-server": "^2.3.0",
     "@types/cors": "^2.8.8",
-    "@types/lodash": "^4.14.164",
+    "@types/lodash": "^4.14.165",
     "cors": "^2.8.5",
     "debug": "^4.2.0",
     "lodash": "^4.17.20",
