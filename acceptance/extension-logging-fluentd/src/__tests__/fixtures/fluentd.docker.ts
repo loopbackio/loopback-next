@@ -21,7 +21,7 @@ async function startFluentd() {
     .withEnv('FLUENTD_CONF', 'fluentd.conf')
     .withBindMount(ETC_DIR, '/fluentd/etc', 'ro')
     .start();
-  process.env.FLUENTD_SERVICE_HOST = container.getContainerIpAddress();
+  process.env.FLUENTD_SERVICE_HOST = container.getHost();
   process.env.FLUENTD_SERVICE_PORT_TCP = container
     .getMappedPort(24224)
     .toString();
