@@ -105,14 +105,50 @@ application using `npm start` or call `npm run build`.
 Each LoopBack application has a VS Code configuration file `.vscode/launch.json`
 that contains several tasks to help you debug with breakpoints:
 
-- Launch Program: Running the application.
-- Run Mocha tests: Running the tests under `src/__tests__`.
-- Attach to Progress: Attaching application to an already running program in
+- `Launch Program`: Running the application.
+- `Run Mocha tests`: Running the tests under `src/__tests__`.
+- `Attach to Process`: Attaching application to an already running program in
   debug mode.
 
 To bring up the run view, select the "Run" icon in the activity bar on the side
 of VS Code. You can choose the right task besides the green triangle "Run"
 button.
+
+To properly debug make sure that the LoopBack application is running in
+[Node Debug mode](https://nodejs.org/en/docs/guides/debugging-getting-started/).
+This is usually done via the `node --inspect` flag.
+
+### Creating Breakpoints
+
+Make sure to start the LoopBack application in
+[Node Debug mode](https://nodejs.org/en/docs/guides/debugging-getting-started/).
+
+The easiest way to start debugging and creating breakpoints is by using the
+`Attach to Process` in the "Run" menu in VSCode and select the LoopBack
+application process that you started.
+
+Here's how you can do set a breakpoint:
+
+- Locate the specific line number you want to pause on when the LoopBack
+  application reaches that spot.
+- Hover over to the left of the line number and you will see a dull red circle
+
+![debug_vscode_breakpoint_1.png](./imgs/debug_vscode_breakpoint_1.png)
+
+- Left-clicking on the circle turns it into a bright red circle and remains
+  there even after moving the cursor away. This means that the breakpoint has
+  been set.
+
+![debug_vscode_breakpoint_2.png](./imgs/debug_vscode_breakpoint_2.png)
+
+To remove the breakpoint, left-click on the red circle again or right-click and
+select `Remove Breakpoint`.
+
+To suspend the breakpoint, you can right-click on the red circle and select
+`Disable Breakpoint`. The circle will now be grey. This will keep the
+breakpoint, but prevent it from pausing the LoopBack process on that line. You
+can re-enable the breakpoint by right-clicking and selecting
+`Enable Breakpoint`.
 
 ## Submitting Sample Application for Problem Determination
 
