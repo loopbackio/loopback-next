@@ -4,6 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
+  BindingScope,
   Constructor,
   Context,
   CoreBindings,
@@ -14,7 +15,6 @@ import {
   MetadataMap,
 } from '@loopback/core';
 import {Socket} from 'socket.io';
-import {BindingScope} from '../../../packages/context/dist';
 import {
   SOCKET_IO_CONNECT_METADATA,
   SOCKET_IO_SUBSCRIBE_METADATA,
