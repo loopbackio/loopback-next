@@ -20,8 +20,6 @@
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
-    "@loopback/boot": "^3.1.0",
-    "@loopback/core": "^2.12.0",
     "@loopback/http-server": "^2.3.1",
     "@types/cors": "^2.8.8",
     "@types/lodash": "^4.14.165",
@@ -29,6 +27,10 @@
     "debug": "^4.2.0",
     "lodash": "^4.17.20",
     "socket.io": "^2.3.0"
+  },
+  "peerDependencies": {
+    "@loopback/boot": "^3.1.0",
+    "@loopback/core": "^2.12.0"
   },
   "devDependencies": {
     "@loopback/build": "^6.2.6",
@@ -38,7 +40,9 @@
     "@types/socket.io": "^2.1.11",
     "@types/socket.io-client": "^1.4.34",
     "p-event": "^4.1.0",
-    "socket.io-client": "^2.3.1"
+    "socket.io-client": "^2.3.1",
+    "@loopback/boot": "^3.1.0",
+    "@loopback/core": "^2.12.0"
   },
   "keywords": [
     "LoopBack",
