@@ -39,14 +39,38 @@ describe('includeRelatedModels', () => {
     expect(result).to.eql([category]);
   });
 
-  it('throws error if the target repository does not have the registered resolver', async () => {
-    const category = await categoryRepo.create({name: 'category 1'});
-    await expect(
-      includeRelatedModels(categoryRepo, [category], [{relation: 'products'}]),
-    ).to.be.rejectedWith(
-      /Invalid "filter.include" entries: {"relation":"products"}/,
-    );
-  });
+  context(
+    'throws error if the target repository does not have registered resolvers',
+    () => {
+      it('the error message reports the invalid entry', async () => {
+        const category = await categoryRepo.create({name: 'category 1'});
+        await expect(
+          includeRelatedModels(
+            categoryRepo,
+            [category],
+            [{relation: 'notRegistered'}],
+          ),
+        ).to.be.rejectedWith(
+          /Invalid "filter.include" entries: {"relation":"notRegistered"}/,
+        );
+      });
+      it('the error statusCode should be 400', async () => {
+        const category = await categoryRepo.create({name: 'category 1'});
+        let error;
+        try {
+          await includeRelatedModels(
+            categoryRepo,
+            [category],
+            [{relation: 'notRegistered'}],
+          );
+        } catch (err) {
+          error = err;
+        }
+        expect(error.statusCode).to.equal(400);
+        expect(error.code).to.equal('INVALID_INCLUSION_FILTER');
+      });
+    },
+  );
 
   it('returns an empty array if target model of the source entity does not have any matched instances', async () => {
     const category = await categoryRepo.create({name: 'category'});
