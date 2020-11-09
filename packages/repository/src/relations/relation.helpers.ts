@@ -102,6 +102,7 @@ export async function includeRelatedModels<
     const err = new Error(msg);
     Object.assign(err, {
       code: 'INVALID_INCLUSION_FILTER',
+      statusCode: 400,
     });
     throw err;
   }
