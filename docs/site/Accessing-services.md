@@ -4,6 +4,8 @@ title: 'Accessing Services'
 keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, REST, SOAP
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Accessing-services.html
+redirect_from:
+  - /doc/en/lb4/Calling-other-APIs-and-Web-Services.html
 ---
 
 ## Service proxy
