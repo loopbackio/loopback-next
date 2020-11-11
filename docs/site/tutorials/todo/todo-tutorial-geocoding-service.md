@@ -15,8 +15,8 @@ use [Service Proxies](../../Service.md) as a design pattern for encapsulating
 low-level implementation details of communication with 3rd-party services and
 providing JavaScript/TypeScript API that's easy to consume e.g. from
 Controllers. See
-[Calling other APIs and web services](../../Calling-other-APIs-and-Web-Services.md)
-for more details.
+[Calling other APIs and web services](../../Accessing-services.md) for more
+details.
 
 In LoopBack, each service proxy is backed by a
 [DataSource](./todo-tutorial-datasource.md), this datasource leverages one of
@@ -31,8 +31,7 @@ our Todo API to display location-based reminders,
 {% include tip.html content="
 In a real project, you may want to use a geocoding service that covers more
 countries beyond USA and provides faster responses than US Census Geocoder API,
-for example IBM's [Weather Company Data](https://console.bluemix.net/catalog/services/weather-company-data)
-or [Google Maps Platform](https://developers.google.com/maps/documentation/geocoding).
+for example [Google Maps Platform](https://developers.google.com/maps/documentation/geocoding).
 " %}
 
 ### Configure the backing datasource

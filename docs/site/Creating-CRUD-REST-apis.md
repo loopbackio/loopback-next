@@ -158,7 +158,7 @@ module.exports = <ModelCrudRestApiConfig>{
 Under the hood, a default CRUD controller and repository are created using
 [`defineCrudControllerClass`](https://loopback.io/doc/en/lb4/apidocs.rest-crud.definecrudrestcontroller.html)
 and
-[`defineCrudRepositoryClass`](https://loopback.io/doc/en/lb4/apidocs.rest-crud.definecrudrepositoryclass.html),
+[`defineCrudRepositoryClass`](https://loopback.io/doc/en/lb4/apidocs.repository.definecrudrepositoryclass.html),
 respectively. These two functions can also be used at the application level. For
 example:
 
