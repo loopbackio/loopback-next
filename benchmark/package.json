@@ -53,7 +53,7 @@
     "@loopback/testlab": "^3.2.8",
     "@types/autocannon": "^4.1.0",
     "@types/benchmark": "^2.1.0",
-    "@types/mocha": "^8.0.3",
+    "@types/mocha": "^8.0.4",
     "@types/node": "^10.17.35",
     "mocha": "^8.2.1",
     "source-map-support": "^0.5.19"
