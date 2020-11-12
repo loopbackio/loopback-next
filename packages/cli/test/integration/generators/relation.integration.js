@@ -129,6 +129,106 @@ describe('lb4 relation', /** @this {Mocha.Suite} */ function () {
     });
   });
 
+  context('primary key name and type on the source and target model', () => {
+    const promptArray = [
+      {
+        relationType: 'hasMany',
+        sourceModel: 'Customer',
+        destinationModel: 'Order',
+      },
+      {
+        relationType: 'hasMany',
+        sourceModel: 'Customer',
+        destinationModel: 'Order',
+        sourceModelPrimaryKeyType: 'string',
+        destinationModelPrimaryKeyType: 'string',
+      },
+      {
+        relationType: 'hasMany',
+        sourceModel: 'Customer',
+        destinationModel: 'Order',
+        sourceModelPrimaryKey: 'sid',
+        sourceModelPrimaryKeyType: 'string',
+        destinationModelPrimaryKeyType: 'string',
+        destinationModelPrimaryKey: 'tid',
+      },
+    ];
+
+    it(
+      'generates default pk name and type for controller' +
+        JSON.stringify(promptArray[0]),
+      async () => {
+        await sandbox.reset();
+        await testUtils
+          .executeGenerator(generator)
+          .inDir(sandbox.path, () =>
+            testUtils.givenLBProject(sandbox.path, {
+              additionalFiles: SANDBOX_FILES,
+            }),
+          )
+          .withPrompts(promptArray[0]);
+
+        const controllerFileName = 'customer-order.controller.ts';
+        const sourceFilePath = path.join(
+          sandbox.path,
+          CONTROLLER_PATH,
+          controllerFileName,
+        );
+        assert.file(sourceFilePath);
+        expectFileToMatchSnapshot(sourceFilePath);
+      },
+    );
+
+    it(
+      'generates partially specified pk name and type for controller' +
+        JSON.stringify(promptArray[1]),
+      async () => {
+        await sandbox.reset();
+        await testUtils
+          .executeGenerator(generator)
+          .inDir(sandbox.path, () =>
+            testUtils.givenLBProject(sandbox.path, {
+              additionalFiles: SANDBOX_FILES,
+            }),
+          )
+          .withPrompts(promptArray[1]);
+
+        const controllerFileName = 'customer-order.controller.ts';
+        const sourceFilePath = path.join(
+          sandbox.path,
+          CONTROLLER_PATH,
+          controllerFileName,
+        );
+        assert.file(sourceFilePath);
+        expectFileToMatchSnapshot(sourceFilePath);
+      },
+    );
+    it(
+      'generates fully specified pk name and type for controller' +
+        JSON.stringify(promptArray[2]),
+      async () => {
+        await sandbox.reset();
+        await testUtils
+          .executeGenerator(generator)
+          .inDir(sandbox.path, () =>
+            testUtils.givenLBProject(sandbox.path, {
+              additionalFiles: SANDBOX_FILES,
+            }),
+          )
+          .withPrompts(promptArray[2]);
+
+        const controllerFileName = 'customer-order.controller.ts';
+        const sourceFilePath = path.join(
+          sandbox.path,
+          CONTROLLER_PATH,
+          controllerFileName,
+        );
+        assert.file(sourceFilePath);
+        expectFileToMatchSnapshot(sourceFilePath);
+      },
+    );
+  });
+
   context('add new controller to existing index file', () => {
     it('check if the controller exported to index file ', async () => {
       const prompt = {
