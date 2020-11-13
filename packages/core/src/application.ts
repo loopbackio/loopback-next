@@ -11,6 +11,7 @@ import {
   Context,
   createBindingFromClass,
   DynamicValueProviderClass,
+  generateUniqueId,
   Interceptor,
   InterceptorBindingOptions,
   JSONObject,
@@ -18,7 +19,6 @@ import {
   registerInterceptor,
   ValueOrPromise,
 } from '@loopback/context';
-import {generateUniqueId} from '@loopback/context/dist/unique-id';
 import assert from 'assert';
 import debugFactory from 'debug';
 import {once} from 'events';
