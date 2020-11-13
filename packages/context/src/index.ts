@@ -54,4 +54,5 @@ export * from './keys';
 export * from './provider';
 export * from './resolution-session';
 export * from './resolver';
+export * from './unique-id';
 export * from './value-promise';
