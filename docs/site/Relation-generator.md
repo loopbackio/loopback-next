@@ -76,13 +76,13 @@ lb4 relation --sourceModel=<sourceModel>
 - `<sourceModelPrimaryKey>` - Name of the id property on the model to create the
   relationship from.
 
-- `<sourceModelPrimaryKeyType>` - Type of the id property on the source mode.
+- `<sourceModelPrimaryKeyType>` - Type of the id property on the source model.
 
 - `<destinationModelPrimaryKey>` - Name of the id property on the model to
   create a relationship with.
 
 - `<destinationModelPrimaryKeyType>` - Type of the id property on the
-  destination mode.
+  destination model.
 
 - `<foreignKeyName>` - Property that references the primary key property of the
   destination model.
@@ -154,18 +154,19 @@ The tool will prompt you for:
   `Order`s, `Customer` is the source model. For an `Order` belongs to a
   `Customer`, `Order` is the source model. Defaults value: `id`.
 
-- Type of the id property of the source model (`sourceModelPrimaryKey`). Prompts
-  a list of types fir the id property on the source model. Default value:
-  `number`.
+- Type of the id property of the source model (`sourceModelPrimaryKeyType`).
+  Prompts a list of types for the id property on the source model. Default
+  value: `number`.
 
-- Name of the id property of the source model (`destinationModelPrimaryKey`).
-  Prompts for the name of the destination model. For example, for `Customer` has
-  many `Order`s, `Order` is the destination model. For an `Order` belongs to a
-  `Customer`, `Customer` is the destination model. Defaults value: `id`.
+- Name of the id property of the destination model
+  (`destinationModelPrimaryKey`). Prompts for the name of the destination model.
+  For example, for `Customer` has many `Order`s, `Order` is the destination
+  model. For an `Order` belongs to a `Customer`, `Customer` is the destination
+  model. Default value: `id`.
 
-- Type of the id property of the source model (`sourceModelPrimaryKey`). Prompts
-  a list of types fir the id property on the source model. Default value:
-  `number`.
+- Type of the id property of the destination model
+  (`destinationModelPrimaryKey`). Prompts a list of types for the id property on
+  the source model. Default value: `number`.
 
 - Name of the foreign key (`foreignKeyName`). Prompts a property name that
   references the primary key property of the another model. Note: Leave blank to
