@@ -258,15 +258,15 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
     }
 
     debug('  processing parameters for method %s', op);
-    let params = MetadataInspector.getAllParameterMetadata<ParameterObject>(
-      OAI3Keys.PARAMETERS_KEY,
-      constructor.prototype,
-      op,
-    );
+    let params = MetadataInspector.getAllParameterMetadata<
+      ParameterObject | ReferenceObject
+    >(OAI3Keys.PARAMETERS_KEY, constructor.prototype, op);
 
     debug('  parameters for method %s: %j', op, params);
     if (params != null) {
-      params = DecoratorFactory.cloneDeep<ParameterObject[]>(params);
+      params = DecoratorFactory.cloneDeep<
+        (ParameterObject | ReferenceObject)[]
+      >(params);
       /**
        * If a controller method uses dependency injection, the parameters
        * might be sparse. For example,
@@ -282,6 +282,7 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
       operationSpec.parameters = params
         .filter(p => p != null)
         .map(p => {
+          if (isReferenceObject(p)) return p;
           // Per OpenAPI spec, `required` must be `true` for path parameters
           if (p.in === 'path') {
             p.required = true;

@@ -5,6 +5,7 @@
 
 import {MetadataInspector, ParameterDecoratorFactory} from '@loopback/core';
 import {FilterSchemaOptions, Model} from '@loopback/repository-json-schema';
+import {isReferenceObject} from 'openapi3-ts';
 import {getFilterSchemaFor, getWhereSchemaFor} from '../filter-schema';
 import {resolveSchema} from '../generate-schema';
 import {OAI3Keys} from '../keys';
@@ -34,50 +35,54 @@ import {
  *
  * @param paramSpec - Parameter specification.
  */
-export function param(paramSpec: ParameterObject) {
+export function param(paramSpec: ParameterObject | ReferenceObject) {
   return function (target: object, member: string, index: number) {
     paramSpec = paramSpec || {};
     // Get the design time method parameter metadata
     const methodSig = MetadataInspector.getDesignTypeForMethod(target, member);
     const paramTypes = methodSig?.parameterTypes || [];
 
-    // Map design-time parameter type to the OpenAPI param type
+    if (!isReferenceObject(paramSpec)) {
+      // Map design-time parameter type to the OpenAPI param type
 
-    const paramType = paramTypes[index];
+      const paramType = paramTypes[index];
 
-    if (paramType) {
+      if (paramType) {
+        if (
+          // generate schema if `paramSpec` doesn't have it
+          !paramSpec.schema ||
+          // generate schema if `paramSpec` has `schema` but without `type`
+          (isSchemaObject(paramSpec.schema) && !paramSpec.schema.type)
+        ) {
+          // If content explicitly mentioned do not resolve schema
+          if (!paramSpec.content) {
+            // please note `resolveSchema` only adds `type` and `format` for `schema`
+            paramSpec.schema = resolveSchema(paramType, paramSpec.schema);
+          }
+        }
+      }
+
       if (
-        // generate schema if `paramSpec` doesn't have it
-        !paramSpec.schema ||
-        // generate schema if `paramSpec` has `schema` but without `type`
-        (isSchemaObject(paramSpec.schema) && !paramSpec.schema.type)
+        paramSpec.schema &&
+        isSchemaObject(paramSpec.schema) &&
+        paramSpec.schema.type === 'array'
       ) {
-        // If content explicitly mentioned do not resolve schema
-        if (!paramSpec.content) {
-          // please note `resolveSchema` only adds `type` and `format` for `schema`
-          paramSpec.schema = resolveSchema(paramType, paramSpec.schema);
+        // The design-time type is `Object` for `any`
+        if (paramType != null && paramType !== Object && paramType !== Array) {
+          throw new Error(
+            `The parameter type is set to 'array' but the JavaScript type is ${paramType.name}`,
+          );
         }
       }
     }
 
-    if (
-      paramSpec.schema &&
-      isSchemaObject(paramSpec.schema) &&
-      paramSpec.schema.type === 'array'
-    ) {
-      // The design-time type is `Object` for `any`
-      if (paramType != null && paramType !== Object && paramType !== Array) {
-        throw new Error(
-          `The parameter type is set to 'array' but the JavaScript type is ${paramType.name}`,
-        );
-      }
-    }
-
-    ParameterDecoratorFactory.createDecorator<ParameterObject>(
-      OAI3Keys.PARAMETERS_KEY,
-      paramSpec,
-      {decoratorName: '@param'},
-    )(target, member, index);
+    ParameterDecoratorFactory.createDecorator<
+      ParameterObject | ReferenceObject
+    >(OAI3Keys.PARAMETERS_KEY, paramSpec, {decoratorName: '@param'})(
+      target,
+      member,
+      index,
+    );
   };
 }
 

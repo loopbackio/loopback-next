@@ -5,7 +5,9 @@
 
 import {anOperationSpec} from '@loopback/openapi-spec-builder';
 import {expect} from '@loopback/testlab';
+import {ReferenceObject} from 'openapi3-ts';
 import {
+  api,
   get,
   getControllerSpec,
   operation,
@@ -40,6 +42,41 @@ describe('Routing metadata for parameters', () => {
         .withParameter(paramSpec)
         .withResponse(200, {description: 'Return value of MyController.greet'})
         .build();
+      expect(actualSpec.paths['/greet']['get']).to.eql(expectedSpec);
+    });
+
+    it('defines a new parameter via $ref', async () => {
+      const paramSpecRef: ReferenceObject = {
+        $ref: '#/components/parameters/commonParam',
+      };
+      const paramSpec: ParameterObject = {
+        name: 'name',
+        schema: {
+          type: 'string',
+        },
+        in: 'query',
+      };
+
+      @api({
+        components: {
+          parameters: {
+            commonParam: paramSpec,
+          },
+        },
+      })
+      class MyController {
+        @get('/greet')
+        greet(@param(paramSpecRef) name: string) {}
+      }
+
+      const actualSpec = getControllerSpec(MyController);
+
+      const expectedSpec = anOperationSpec()
+        .withOperationName('greet')
+        .withControllerName('MyController')
+        .withResponse(200, {description: 'Return value of MyController.greet'})
+        .build();
+      expectedSpec.parameters = [paramSpecRef];
       expect(actualSpec.paths['/greet']['get']).to.eql(expectedSpec);
     });
 
