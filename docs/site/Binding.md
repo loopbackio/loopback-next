@@ -66,8 +66,6 @@ There are a few ways to create a binding:
   import {inject} from '@loopback/core';
   ```
 
-  " %}
-
 ## How to set up a binding?
 
 The `Binding` class provides a set of fluent APIs to create and configure a
