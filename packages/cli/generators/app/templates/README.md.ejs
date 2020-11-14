@@ -8,6 +8,11 @@ This application is generated using [LoopBack 4 CLI](https://loopback.io/doc/en/
 By default, dependencies were installed when this application was generated.
 Whenever dependencies in `package.json` are changed, run the following command:
 
+<% if (packageManager === 'yarn') { -%>
+```sh
+yarn install
+```
+<% } else { -%>
 ```sh
 npm install
 ```
@@ -17,12 +22,19 @@ To only install resolved dependencies in `package-lock.json`:
 ```sh
 npm ci
 ```
+<% } -%>
 
 ## Run the application
 
+<% if (packageManager === 'yarn') { -%>
+```sh
+yarn start
+```
+<% } else { -%>
 ```sh
 npm start
 ```
+<% } -%>
 
 You can also run `node .` to skip the build step.
 
@@ -32,48 +44,87 @@ Open http://127.0.0.1:3000 in your browser.
 
 To incrementally build the project:
 
+<% if (packageManager === 'yarn') { -%>
+```sh
+yarn run build
+```
+<% } else { -%>
 ```sh
 npm run build
 ```
+<% } -%>
 
 To force a full build by cleaning up cached artifacts:
 
+<% if (packageManager === 'yarn') { -%>
 ```sh
-npm run clean
-npm run build
+yarn run rebuild
 ```
+<% } else { -%>
+```sh
+npm run rebuild
+```
+<% } -%>
 
+<% if (project.prettier || project.eslint) { -%>
 ## Fix code style and formatting issues
 
-If `eslint` and `prettier` are enabled for this project, you can use the
-following commands to check code style and formatting issues.
-
+<% if (packageManager === 'yarn') { -%>
+```sh
+yarn run lint
+```
+<% } else { -%>
 ```sh
 npm run lint
 ```
+<% } -%>
 
 To automatically fix such issues:
 
+<% if (packageManager === 'yarn') { -%>
+```sh
+yarn run lint:fix
+```
+<% } else { -%>
 ```sh
 npm run lint:fix
 ```
+<% } -%>
+<% } -%>
 
 ## Other useful commands
 
+<% if (packageManager === 'yarn') { -%>
+- `yarn run migrate`: Migrate database schemas for models
+- `yarn run openapi-spec`: Generate OpenAPI spec into a file
+<% if (project.docker) { -%>
+- `yarn run docker:build`: Build a Docker image for this application
+- `yarn run docker:run`: Run this application inside a Docker container
+<% } -%>
+<% } else { -%>
 - `npm run migrate`: Migrate database schemas for models
 - `npm run openapi-spec`: Generate OpenAPI spec into a file
+<% if (project.docker) { -%>
 - `npm run docker:build`: Build a Docker image for this application
 - `npm run docker:run`: Run this application inside a Docker container
+<% } -%>
+<% } -%>
 
 ## Tests
 
+<% if (packageManager === 'yarn') { -%>
+```sh
+yarn test
+```
+<% } else { -%>
 ```sh
 npm test
 ```
+<% } -%>
 
 ## What's next
 
 Please check out [LoopBack 4 documentation](https://loopback.io/doc/en/lb4/) to
 understand how you can continue to add features to this application.
 
-[![LoopBack](<https://github.com/strongloop/loopback-next/raw/master/docs/site/imgs/branding/Powered-by-LoopBack-Badge-(blue)-@2x.png>)](http://loopback.io/)
+[![LoopBack](https://github.com/strongloop/loopback-next/raw/master/docs/site/imgs/branding/Powered-by-LoopBack-Badge-(blue)-@2x.png)](http://loopback.io/)

@@ -19,10 +19,10 @@
     "build:watch": "lb-tsc --watch",
 <% if (project.prettier && project.eslint) { -%>
 <% if (packageManager === 'yarn') { -%>
-    "lint": "yarn run prettier:check && yarn run eslint",
+    "lint": "yarn run eslint && yarn run prettier:check",
     "lint:fix": "yarn run eslint:fix && yarn run prettier:fix",
 <% } else { -%>
-    "lint": "npm run prettier:check && npm run eslint",
+    "lint": "npm run eslint && npm run prettier:check",
     "lint:fix": "npm run eslint:fix && npm run prettier:fix",
 <% } -%>
 <% } else if (project.prettier) { -%>
@@ -89,9 +89,17 @@
     "docker:build": "docker build -t <%= project.name -%> .",
     "docker:run": "docker run -p 3000:3000 -d <%= project.name -%>",
 <% } -%>
+<% if (packageManager === 'yarn') { -%>
+    "premigrate": "yarn run build",
+<% } else { -%>
     "premigrate": "npm run build",
+<% } -%>
     "migrate": "node ./dist/migrate",
+<% if (packageManager === 'yarn') { -%>
+    "preopenapi-spec": "yarn run build",
+<% } else { -%>
     "preopenapi-spec": "npm run build",
+<% } -%>
     "openapi-spec": "node ./dist/openapi-spec",
 <% if (packageManager === 'yarn') { -%>
     "rebuild": "yarn run clean && yarn run build",
@@ -105,7 +113,8 @@
     "clean": "lb-clean dist *.tsbuildinfo .eslintcache"
   },
   "repository": {
-    "type": "git"
+    "type": "git",
+    "url": ""
   },
 <% if (author) { -%>
   "author": "<%= author.name %> <<%= author.email %>>",

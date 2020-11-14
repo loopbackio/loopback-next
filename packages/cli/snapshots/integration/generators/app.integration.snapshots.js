@@ -59,14 +59,10 @@ npm run build
 To force a full build by cleaning up cached artifacts:
 
 \`\`\`sh
-npm run clean
-npm run build
+npm run rebuild
 \`\`\`
 
 ## Fix code style and formatting issues
-
-If \`eslint\` and \`prettier\` are enabled for this project, you can use the
-following commands to check code style and formatting issues.
 
 \`\`\`sh
 npm run lint
@@ -96,7 +92,7 @@ npm test
 Please check out [LoopBack 4 documentation](https://loopback.io/doc/en/lb4/) to
 understand how you can continue to add features to this application.
 
-[![LoopBack](<https://github.com/strongloop/loopback-next/raw/master/docs/site/imgs/branding/Powered-by-LoopBack-Badge-(blue)-@2x.png>)](http://loopback.io/)
+[![LoopBack](https://github.com/strongloop/loopback-next/raw/master/docs/site/imgs/branding/Powered-by-LoopBack-Badge-(blue)-@2x.png)](http://loopback.io/)
 
 `;
 
