@@ -11,11 +11,11 @@ This application exposes `POST /files` endpoint that accepts
 
 ## Key artifacts
 
-- [FileUploadController](src/controllers/files.controller.ts)
+- [FileUploadController](src/controllers/file-upload.controller.ts)
 
   - Expose `POST /files` endpoint to allow file uploads
 
-- [FileUploadService - an Express middleware from multer](src/services/files.service.ts)
+- [FileUploadService - an Express middleware from multer](src/services/file-upload.service.ts)
 
   - A service provider that returns a configured `multer` request handler
 
@@ -37,7 +37,7 @@ This application exposes `POST /files` endpoint that accepts
     this.configure(FILE_UPLOAD_SERVICE).to(multerOptions);
     ```
 
-- [FileDownloadController](src/controllers/files.controller.ts)
+- [FileDownloadController](src/controllers/file-download.controller.ts)
 
   - Expose `GET /files` endpoint to list uploaded files
   - Expose `GET /files/{filename}` endpoint to download a file
