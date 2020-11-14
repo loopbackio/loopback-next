@@ -277,6 +277,7 @@ module.exports = class ProjectGenerator extends (
       this.destinationPath(''),
       {
         project: this.projectInfo,
+        packageManager: this.config.get('packageManager'),
       },
     );
 
