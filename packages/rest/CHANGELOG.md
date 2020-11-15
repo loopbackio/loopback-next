@@ -35,12 +35,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### BREAKING CHANGES
 
+* **rest:** Message printed by REST LogError action changed from
+`Unhandled error` to `Request failed`. Message pattern rules
+(e.g. alerting rules) based on this pattern need to be updated accordingly.
 * **rest:** If you use one of the built-in action providers as the base
 class, this commit will break you as the signature of the base class has
 changed. Otherwise the code should be backward compatible for existing
 applications.
-
-Signed-off-by: Raymond Feng <enjoyjava@gmail.com>
 
 
 
@@ -95,8 +96,6 @@ const paramDef2: ParameterObject = {
 }
 ```
 
-Signed-off-by: Renovate Bot <bot@renovateapp.com>
-
 
 
 
@@ -135,8 +134,6 @@ target application instead.
 If you are getting `npm install` errors after upgrade, then make sure
 your project lists all dependencies required by the extensions you are
 using.
-
-Signed-off-by: Miroslav Bajtoš <mbajtoss@gmail.com>
 
 
 
