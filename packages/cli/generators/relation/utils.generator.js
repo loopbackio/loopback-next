@@ -7,7 +7,6 @@
 
 const ast = require('ts-morph');
 const path = require('path');
-const tsquery = require('../../lib/ast-helper');
 const utils = require('../../lib/utils');
 
 exports.relationType = {
@@ -30,22 +29,6 @@ class AstLoopBackProject extends ast.Project {
   }
 }
 exports.AstLoopBackProject = AstLoopBackProject;
-
-exports.getModelPrimaryKeyProperty = async function (fs, modelDir, modelName) {
-  const modelFile = path.join(modelDir, utils.getModelFileName(modelName));
-
-  const fileContent = await fs.read(modelFile, {});
-  return tsquery.getIdFromModel(fileContent);
-};
-
-exports.getModelPropertyType = function (modelDir, modelName, propertyName) {
-  const project = new this.AstLoopBackProject();
-
-  const modelFile = path.join(modelDir, utils.getModelFileName(modelName));
-  const sf = project.addSourceFileAtPath(modelFile);
-  const co = this.getClassObj(sf, modelName);
-  return this.getPropertyType(co, propertyName);
-};
 
 exports.addFileToProject = function (project, dir, modelName) {
   const fileName = path.resolve(dir, utils.getModelFileName(modelName));
@@ -133,33 +116,6 @@ exports.doesRelationExist = function (classObj, propertyName) {
 
     this.deleteProperty(classObj.getProperty(propertyName));
   }
-};
-
-/**
- * Get property type in class.
- *
- * @param {classObj}
- * @param {propertyName} string
- *
- * @returns string
- */
-
-exports.getPropertyType = function (classObj, propertyName) {
-  return classObj.getProperty(propertyName).getType().getText();
-};
-
-/**
- * Validate if property with specific type exist in class.
- *
- * @param {classObj}
- * @param {propertyName} string
- * @param {propertyType} string
- *
- * @returns bool true on success, false on failure.
- */
-
-exports.isValidPropertyType = function (classObj, propertyName, propertyType) {
-  return this.getPropertyType(classObj, propertyName) === propertyType;
 };
 
 exports.doesParameterExist = function (classConstructor, parameterName) {
