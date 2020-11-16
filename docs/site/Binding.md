@@ -55,18 +55,18 @@ There are a few ways to create a binding:
   context.bind('my-key');
   ```
 
-  {% include note.html content="The `@loopback/core` package re-exports all
-  public APIs of `@loopback/context`. For consistency, we recommend the usage of
-  `@loopback/core` for imports in LoopBack modules and applications unless they
-  depend on `@loopback/context` explicitly. The two statements below are
-  equivalent:
+{% include note.html content="The `@loopback/core` package re-exports all public
+APIs of `@loopback/context`. For consistency, we recommend the usage of
+`@loopback/core` for imports in LoopBack modules and applications unless they
+depend on `@loopback/context` explicitly. The two statements below are
+equivalent:
 
-  ```ts
-  import {inject} from '@loopback/context';
-  import {inject} from '@loopback/core';
-  ```
+```ts
+import {inject} from '@loopback/context';
+import {inject} from '@loopback/core';
+```
 
-  " %}
+" %}
 
 ## How to set up a binding?
 
