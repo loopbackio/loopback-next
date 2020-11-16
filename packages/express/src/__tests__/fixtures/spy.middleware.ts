@@ -3,9 +3,10 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {expect} from '@loopback/testlab';
 import debugFactory from 'debug';
 import HttpErrors from 'http-errors';
-import {ExpressMiddlewareFactory} from '../..';
+import {ExpressMiddlewareFactory, MIDDLEWARE_CONTEXT} from '../..';
 import {SpyConfig} from './spy-config';
 
 const debug = debugFactory('loopback:middleware:spy');
@@ -17,6 +18,9 @@ const debug = debugFactory('loopback:middleware:spy');
 const spyMiddlewareFactory: ExpressMiddlewareFactory<SpyConfig> = config => {
   const options: SpyConfig = {action: 'log', ...config};
   return function spy(req, res, next) {
+    expect(req).to.have.properties(MIDDLEWARE_CONTEXT);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    expect((req as any)[MIDDLEWARE_CONTEXT].request).to.equal(req);
     debug('config', options);
     switch (options?.action) {
       case 'mock':

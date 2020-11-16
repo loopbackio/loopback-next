@@ -38,7 +38,6 @@ import {
   MiddlewareBindingOptions,
   MiddlewareChain,
   MiddlewareContext,
-  MIDDLEWARE_CONTEXT,
 } from './types';
 
 const debug = debugFactory('loopback:middleware');
@@ -356,9 +355,6 @@ export function invokeExpressMiddleware(
 export function toExpressMiddleware(ctx: Context): ExpressRequestHandler {
   return async (req, res, next) => {
     const middlewareCtx = new MiddlewareContext(req, res, ctx);
-    // Set the middleware context to `request` object
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (req as any)[MIDDLEWARE_CONTEXT] = middlewareCtx;
 
     try {
       const result = await invokeMiddleware(middlewareCtx);
