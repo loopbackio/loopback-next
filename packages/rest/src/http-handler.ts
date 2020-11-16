@@ -4,7 +4,6 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Context} from '@loopback/core';
-import {MIDDLEWARE_CONTEXT} from '@loopback/express';
 import {
   ComponentsObject,
   ControllerSpec,
@@ -109,11 +108,6 @@ export class HttpHandler {
       this._rootContext,
       this._serverConfig,
     );
-
-    // Set the request context as a property of Express request object so that
-    // downstream Express native integration can access `RequestContext`
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (request as any)[MIDDLEWARE_CONTEXT] = requestContext;
 
     const sequence = await requestContext.get<SequenceHandler>(
       RestBindings.SEQUENCE,

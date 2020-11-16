@@ -59,6 +59,12 @@ export class MiddlewareContext extends Context implements HandlerContext {
   ) {
     super(parent, name);
     this.scope = BindingScope.REQUEST;
+
+    // Set the request context as a property of Express request object so that
+    // downstream Express native integration can access `RequestContext`
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (request as any)[MIDDLEWARE_CONTEXT] = this;
+
     this.setupBindings();
     onFinished(this.response, () => {
       this.responseFinished = true;

@@ -355,6 +355,22 @@ router.get('/hello', handler);
 const binding = server.expressMiddleware('middleware.express.greeting', router);
 ```
 
+## Access MiddlewareContext/RequestContext in an Express middleware
+
+In some cases, your Express middleware wants to access LoopBack's RequestContext
+to resolve certain bindings. This can be done via `MIDDLEWARE_CONTEXT` property
+of the Express request object, which is set up by LoopBack when the
+RequestContext is instantiated.
+
+```ts
+import {MIDDLEWARE_CONTEXT, RequestContext} from '@loopback/rest';
+
+function expressHandler(req, res, next) {
+  const reqCtx = (req as any)[MIDDLEWARE_CONTEXT];
+  // Now you have access to the LoopBack RequestContext
+}
+```
+
 ## What's behind the scenes
 
 `Middleware` and `Interceptor` are key concepts that allow Express middleware
