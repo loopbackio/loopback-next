@@ -15,7 +15,7 @@ import debugFactory from 'debug';
 import express from 'express';
 import {toExpressMiddleware} from './middleware';
 import {BaseMiddlewareRegistry} from './middleware-registry';
-import {MiddlewareContext, MIDDLEWARE_CONTEXT, Request} from './types';
+import {getMiddlewareContext, MiddlewareContext, Request} from './types';
 
 const debug = debugFactory('loopback:middleware');
 
@@ -119,7 +119,6 @@ export class ExpressServer extends BaseMiddlewareRegistry implements Server {
    * @param request - Request object
    */
   getMiddlewareContext(request: Request): MiddlewareContext | undefined {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return (request as any)[MIDDLEWARE_CONTEXT];
+    return getMiddlewareContext(request);
   }
 }

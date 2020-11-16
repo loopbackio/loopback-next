@@ -7,6 +7,7 @@ import {expect} from '@loopback/testlab';
 import debugFactory from 'debug';
 import HttpErrors from 'http-errors';
 import {ExpressMiddlewareFactory, MIDDLEWARE_CONTEXT} from '../..';
+import {getMiddlewareContext} from '../../types';
 import {SpyConfig} from './spy-config';
 
 const debug = debugFactory('loopback:middleware:spy');
@@ -19,8 +20,7 @@ const spyMiddlewareFactory: ExpressMiddlewareFactory<SpyConfig> = config => {
   const options: SpyConfig = {action: 'log', ...config};
   return function spy(req, res, next) {
     expect(req).to.have.properties(MIDDLEWARE_CONTEXT);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    expect((req as any)[MIDDLEWARE_CONTEXT].request).to.equal(req);
+    expect(getMiddlewareContext(req)?.request).to.equal(req);
     debug('config', options);
     switch (options?.action) {
       case 'mock':

@@ -81,6 +81,19 @@ export class MiddlewareContext extends Context implements HandlerContext {
 }
 
 /**
+ * A helper function to retrieve the MiddlewareContext/RequestContext from the
+ * request object
+ * @param request - Express request object
+ */
+export function getMiddlewareContext<
+  T extends MiddlewareContext = MiddlewareContext
+>(request?: Request): T | undefined {
+  if (request == null) return undefined;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return (request as any)[MIDDLEWARE_CONTEXT];
+}
+
+/**
  * Interface LoopBack 4 middleware to be executed within sequence of actions.
  * A middleware for LoopBack is basically a generic interceptor that uses
  * `MiddlewareContext`.
