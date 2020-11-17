@@ -69,8 +69,8 @@ First let's add two sample `TodoList`s:
       "4": "{\"title\":\"crush rebel scum\",\"desc\":\"Every.Last.One.\",\"id\":4}"
     },
     "TodoList": {
-      "1": "{\"title\":\"Sith lord's check list\",\"lastModified\":\"a long time ago\",\"id\":1}",
-      "2": "{\"title\":\"My daily chores\",\"lastModified\":\"2018-07-13\",\"id\":2}"
+      "1": "{\"title\":\"Sith lord's check list\",\"color\":\"blue\",\"id\":1}",
+      "2": "{\"title\":\"My daily chores\",\"color\":\"red\",\"id\":2}"
     }
   }
 }
@@ -93,8 +93,8 @@ Next, let's add a `todoListId` property to the `Todo`s with the `id`s of the new
       "4": "{\"title\":\"crush rebel scum\",\"desc\":\"Every.Last.One.\",\"todoListId\":1,\"id\":4}"
     },
     "TodoList": {
-      "1": "{\"title\":\"Sith lord's check list\",\"lastModified\":\"a long time ago\",\"id\":1}",
-      "2": "{\"title\":\"My daily chores\",\"lastModified\":\"2018-07-13\",\"id\":2}"
+      "1": "{\"title\":\"Sith lord's check list\",\"color\":\"blue\",\"id\":1}",
+      "2": "{\"title\":\"My daily chores\",\"color\":\"red\",\"id\":2}"
     }
   }
 }
