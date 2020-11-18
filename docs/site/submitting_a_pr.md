@@ -469,6 +469,16 @@ The remote feature branch and the pull request now have one commit.
 
 ![submit_pr_squash_commits_7.png](./imgs/submit_pr_squash_commits_7.png)
 
+If you find that you have commits in your PR that don't belong to you, run the
+following on your branch:
+
+```sh
+git fetch origin
+git rebase origin/master
+```
+
+Then push your branch again.
+
 ### 10. Ensure CI jobs complete successfully
 
 The `post-condition` to your pull request being approved, is that all the
