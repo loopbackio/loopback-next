@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.1](https://github.com/strongloop/loopback-next/compare/@loopback/socketio@0.1.0...@loopback/socketio@0.1.1) (2020-11-18)
+
+
+### Bug Fixes
+
+* **socketio:** remove related path for socketio ([0b09c7c](https://github.com/strongloop/loopback-next/commit/0b09c7cec6971021741813788aed9dc90ca53ff6))
+
+
+
+
+
 # 0.1.0 (2020-11-05)
 
 

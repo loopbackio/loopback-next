@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [9.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@9.0.0...@loopback/rest@9.1.0) (2020-11-18)
+
+
+### Features
+
+* **express:** set up MIDDLEWARE_CONTEXT for request object in constructor ([e086e7b](https://github.com/strongloop/loopback-next/commit/e086e7bcf64a8aa651490784502adfe787156eef))
+
+
+
+
+
 # [9.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@8.0.0...@loopback/rest@9.0.0) (2020-11-05)
 
 

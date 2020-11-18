@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/express@3.0.0...@loopback/express@3.1.0) (2020-11-18)
+
+
+### Features
+
+* **express:** add getMiddlewareContext utility function ([e496642](https://github.com/strongloop/loopback-next/commit/e49664294de2e5b43bb1c42e334a27ee86787453))
+* **express:** set up MIDDLEWARE_CONTEXT for request object in constructor ([e086e7b](https://github.com/strongloop/loopback-next/commit/e086e7bcf64a8aa651490784502adfe787156eef))
+
+
+
+
+
 # [3.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/express@2.1.0...@loopback/express@3.0.0) (2020-11-05)
 
 

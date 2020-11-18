@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.19.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.18.0...@loopback/docs@3.19.0) (2020-11-18)
+
+
+### Bug Fixes
+
+* **docs:** fix broken links ([7650008](https://github.com/strongloop/loopback-next/commit/7650008901e9c134bdd02162566dfc52f29db4c6))
+* **docs:** fix formatting in note ([204d319](https://github.com/strongloop/loopback-next/commit/204d319bd100d1beb41369a77065a5bce875fd62))
+* **docs:** refactor docs to create artifacts at runtime ([510ba91](https://github.com/strongloop/loopback-next/commit/510ba915623cb890f00f9feadbc3c90b04f3dd3e))
+
+
+### Features
+
+* **core:** allow parameter injection for lifecycle methods ([d5351fd](https://github.com/strongloop/loopback-next/commit/d5351fdc81422a523dc2fd78017bda0ef4dbadfd))
+* **express:** add getMiddlewareContext utility function ([e496642](https://github.com/strongloop/loopback-next/commit/e49664294de2e5b43bb1c42e334a27ee86787453))
+* **express:** set up MIDDLEWARE_CONTEXT for request object in constructor ([e086e7b](https://github.com/strongloop/loopback-next/commit/e086e7bcf64a8aa651490784502adfe787156eef))
+
+
+
+
+
 # [3.18.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.17.1...@loopback/docs@3.18.0) (2020-11-05)
 
 

@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.7.18](https://github.com/strongloop/loopback-next/compare/@loopback/test-repository-mongodb@0.7.17...@loopback/test-repository-mongodb@0.7.18) (2020-11-18)
+
+**Note:** Version bump only for package @loopback/test-repository-mongodb
+
+
+
+
+
 ## [0.7.17](https://github.com/strongloop/loopback-next/compare/@loopback/test-repository-mongodb@0.7.16...@loopback/test-repository-mongodb@0.7.17) (2020-11-05)
 
 **Note:** Version bump only for package @loopback/test-repository-mongodb

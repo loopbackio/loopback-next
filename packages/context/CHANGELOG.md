@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.13.1](https://github.com/strongloop/loopback-next/compare/@loopback/context@3.13.0...@loopback/context@3.13.1) (2020-11-18)
+
+
+### Bug Fixes
+
+* re-export generateUniqueId in index.ts ([e392056](https://github.com/strongloop/loopback-next/commit/e392056471cb06c603ed9313e78886fe606e34a9)), closes [#6767](https://github.com/strongloop/loopback-next/issues/6767)
+
+
+
+
+
 # [3.13.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@3.12.0...@loopback/context@3.13.0) (2020-11-05)
 
 

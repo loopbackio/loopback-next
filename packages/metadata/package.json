@@ -1,6 +1,6 @@
 {
   "name": "@loopback/metadata",
-  "version": "3.0.3",
+  "version": "3.0.4",
   "description": "Utilities to help developers implement TypeScript decorators, define/merge metadata, and inspect metadata",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -29,9 +29,9 @@
     "tslib": "^2.0.3"
   },
   "devDependencies": {
-    "@loopback/build": "^6.2.6",
-    "@loopback/eslint-config": "^10.0.2",
-    "@loopback/testlab": "^3.2.8",
+    "@loopback/build": "^6.2.7",
+    "@loopback/eslint-config": "^10.0.3",
+    "@loopback/testlab": "^3.2.9",
     "@types/debug": "^4.1.5",
     "@types/lodash": "^4.14.165",
     "@types/node": "^10.17.35"

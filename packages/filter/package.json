@@ -1,6 +1,6 @@
 {
   "name": "@loopback/filter",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Utility typings and filters for LoopBack filters.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -31,8 +31,8 @@
     "tslib": "^2.0.3"
   },
   "devDependencies": {
-    "@loopback/build": "^6.2.6",
-    "@loopback/testlab": "^3.2.8",
+    "@loopback/build": "^6.2.7",
+    "@loopback/testlab": "^3.2.9",
     "@types/node": "^10.17.35",
     "typescript": "~4.0.5"
   },

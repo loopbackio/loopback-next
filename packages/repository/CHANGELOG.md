@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.2.1](https://github.com/strongloop/loopback-next/compare/@loopback/repository@3.2.0...@loopback/repository@3.2.1) (2020-11-18)
+
+
+### Bug Fixes
+
+* **repository:** fix invalid inclusion relation name error code ([4a73bd1](https://github.com/strongloop/loopback-next/commit/4a73bd140f68e2d767410dd9ed74c8b8be1d141e))
+
+
+
+
+
 # [3.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@3.1.0...@loopback/repository@3.2.0) (2020-11-05)
 
 
