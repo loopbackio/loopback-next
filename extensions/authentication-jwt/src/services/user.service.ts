@@ -8,10 +8,9 @@ import {repository} from '@loopback/repository';
 import {HttpErrors} from '@loopback/rest';
 import {securityId, UserProfile} from '@loopback/security';
 import {compare} from 'bcryptjs';
+import {User, UserWithRelations} from '../models';
 import {UserRepository} from '../repositories';
-/* eslint-disable*/
-import {User, UserRelations} from '../models';
-/* eslint-enable */
+
 /**
  * A pre-defined type for user credentials. It assumes a user logs in
  * using the email and password. You can modify it if your app has different credential fields
@@ -65,7 +64,7 @@ export class MyUserService implements UserService<User, Credentials> {
   }
 
   //function to find user by id
-  async findUserById(id: string) {
+  async findUserById(id: string): Promise<User & UserWithRelations> {
     const userNotfound = 'invalid User';
     const foundUser = await this.userRepository.findOne({
       where: {id: id},
