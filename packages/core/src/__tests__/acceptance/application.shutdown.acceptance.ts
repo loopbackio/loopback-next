@@ -70,7 +70,7 @@ describe('Application shutdown hooks', () => {
         expect(normalizeStdoutData(events)).to.eql(
           normalizeStdoutData(expectedEvents),
         );
-        resolve();
+        resolve(code);
       });
       child.on('error', err => {
         reject(err);
