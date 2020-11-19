@@ -628,7 +628,7 @@ paths:
     await server.get(RestBindings.PORT);
     const expectedUrl = new RegExp(
       [
-        'http://explorer.loopback.io',
+        'http://explorer\\.loopback\\.io',
         '\\?url=http://\\d+.\\d+.\\d+.\\d+:\\d+/openapi.json',
       ].join(''),
     );
@@ -663,8 +663,8 @@ paths:
     await server.get(RestBindings.PORT);
     const expectedUrl = new RegExp(
       [
-        'https://explorer.loopback.io',
-        '\\?url=https://example.com:8080/openapi.json',
+        'https://explorer\\.loopback\\.io',
+        '\\?url=https://example\\.com:8080/openapi\\.json',
       ].join(''),
     );
     expect(response.get('Location')).match(expectedUrl);
@@ -702,8 +702,8 @@ paths:
     await server.get(RestBindings.PORT);
     const expectedUrl = new RegExp(
       [
-        'https://explorer.loopback.io',
-        '\\?url=https://example.com/openapi.json',
+        'https://explorer\\.loopback\\.io',
+        '\\?url=https://example\\.com/openapi\\.json',
       ].join(''),
     );
     expect(response.get('Location')).match(expectedUrl);
@@ -720,7 +720,7 @@ paths:
       .get('/explorer')
       .set('host', '');
     await app.stop();
-    const expectedUrl = new RegExp(`\\?url=http://127.0.0.1:${port}`);
+    const expectedUrl = new RegExp(`\\?url=http://127\\.0\\.0\\.1:${port}`);
     expect(response.get('Location')).match(expectedUrl);
   });
 
@@ -739,7 +739,7 @@ paths:
     await server.get(RestBindings.PORT);
     const expectedUrl = new RegExp(
       [
-        'https://petstore.swagger.io',
+        'https://petstore\\.swagger\\.io',
         '\\?url=http://\\d+.\\d+.\\d+.\\d+:\\d+/openapi.json',
       ].join(''),
     );
@@ -763,7 +763,7 @@ paths:
     await server.get(RestBindings.PORT);
     const expectedUrl = new RegExp(
       [
-        'http://petstore.swagger.io',
+        'http://petstore\\.swagger\\.io',
         '\\?url=http://\\d+.\\d+.\\d+.\\d+:\\d+/openapi.json',
       ].join(''),
     );
