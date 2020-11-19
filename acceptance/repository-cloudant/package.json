@@ -34,7 +34,7 @@
     "loopback-connector-cloudant": "2.4.2",
     "ms": "2.1.2",
     "tslib": "^2.0.3",
-    "typescript": "~4.0.5"
+    "typescript": "~4.1.2"
   },
   "files": [
     "README.md",
