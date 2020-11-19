@@ -161,6 +161,8 @@ async function checkPkgsPackageJson(packages, rootPkg) {
     if (!isRepositoryDirectoryExist) {
       errors.push(`${p.name} directory doesn't exist in the monorepo`);
     }
+
+    checkDepsOrder(p, pkg, errors);
   }
 
   return errors;
@@ -199,6 +201,30 @@ async function checkPackagesMetadata() {
 
   if (errors.length) {
     throw new Error(formatErrorsText(errors));
+  }
+}
+
+function checkDepsOrder(lernaPkg, pkgJson, errors) {
+  const actualOrder = Object.keys(pkgJson).filter(k =>
+    ['dependencies', 'devDependencies', 'peerDependencies'].includes(k),
+  );
+
+  const expectedOrder = [
+    'peerDependencies',
+    'dependencies',
+    'devDependencies',
+  ].filter(k => actualOrder.includes(k));
+
+  const actualStr = actualOrder.join(' ');
+  const expectedStr = expectedOrder.join(' ');
+
+  if (actualStr !== expectedStr) {
+    const pkgPath = path.relative(lernaPkg.rootPath, lernaPkg.location);
+    errors.push(
+      `${pkgPath}/package.json has incorrect order of keys.\n` +
+        `  Actual:   ${actualStr}\n` +
+        `  Expected: ${expectedStr}`,
+    );
   }
 }
 
