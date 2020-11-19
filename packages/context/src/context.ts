@@ -427,9 +427,6 @@ export class Context extends EventEmitter {
     this.debug('Closing context...');
     this.subscriptionManager.close();
     this.tagIndexer.close();
-    // Destroy instance level `debug` to avoid memory leak
-    // https://github.com/strongloop/loopback-next/issues/5943
-    this._debug.destroy();
   }
 
   /**
