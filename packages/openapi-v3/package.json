@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@loopback/repository-json-schema": "^3.1.1",
-    "debug": "^4.2.0",
+    "debug": "^4.3.1",
     "http-status": "^1.5.0",
     "json-merge-patch": "^1.0.1",
     "lodash": "^4.17.20",
