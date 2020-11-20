@@ -152,9 +152,7 @@ export function inject(
     if (typeof methodDescriptorOrParameterIndex === 'number') {
       // The decorator is applied to a method parameter
       // Please note propertyKey is `undefined` for constructor
-      const paramDecorator: ParameterDecorator = ParameterDecoratorFactory.createDecorator<
-        Injection
-      >(
+      const paramDecorator: ParameterDecorator = ParameterDecoratorFactory.createDecorator<Injection>(
         INJECT_PARAMETERS_KEY,
         {
           target,
@@ -188,9 +186,7 @@ export function inject(
             ),
         );
       }
-      const propDecorator: PropertyDecorator = PropertyDecoratorFactory.createDecorator<
-        Injection
-      >(
+      const propDecorator: PropertyDecorator = PropertyDecoratorFactory.createDecorator<Injection>(
         INJECT_PROPERTIES_KEY,
         {
           target,

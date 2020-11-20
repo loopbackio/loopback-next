@@ -296,7 +296,9 @@ exports.validateUrlSlug = function (name) {
 /**
  * Extends conflicter so that it keeps track of conflict status
  */
-exports.StatusConflicter = class StatusConflicter extends Conflicter {
+exports.StatusConflicter = class StatusConflicter extends (
+  Conflicter
+) {
   constructor(adapter, force) {
     super(adapter, force);
     this.generationStatus = {}; // keeps track of file conflict history

@@ -16,7 +16,9 @@ const {importLb3ModelDefinition} = require('./migrate-model');
 const {canImportModelName} = require('./model-names');
 const g = require('../../lib/globalize');
 
-module.exports = class Lb3ModelImporter extends BaseGenerator {
+module.exports = class Lb3ModelImporter extends (
+  BaseGenerator
+) {
   constructor(args, opts) {
     super(args, opts);
 

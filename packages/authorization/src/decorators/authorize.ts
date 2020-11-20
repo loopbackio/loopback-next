@@ -30,13 +30,9 @@ export const AUTHORIZATION_CLASS_KEY = MetadataAccessor.create<
   ClassDecorator
 >('authorization:class');
 
-class AuthorizeClassDecoratorFactory extends ClassDecoratorFactory<
-  AuthorizationMetadata
-> {}
+class AuthorizeClassDecoratorFactory extends ClassDecoratorFactory<AuthorizationMetadata> {}
 
-export class AuthorizeMethodDecoratorFactory extends MethodDecoratorFactory<
-  AuthorizationMetadata
-> {
+export class AuthorizeMethodDecoratorFactory extends MethodDecoratorFactory<AuthorizationMetadata> {
   protected mergeWithOwn(
     ownMetadata: MetadataMap<AuthorizationMetadata>,
     target: Object,

@@ -33,9 +33,7 @@ export class UserRepository extends DefaultCrudRepository<
   constructor(
     @inject('datasources.db') dataSource: DbDataSource,
     @repository.getter('UserCredentialsRepository')
-    protected userCredentialsRepositoryGetter: Getter<
-      UserCredentialsRepository
-    >,
+    protected userCredentialsRepositoryGetter: Getter<UserCredentialsRepository>,
     @repository.getter('TeamRepository')
     protected teamRepositoryGetter: Getter<TeamRepository>,
   ) {

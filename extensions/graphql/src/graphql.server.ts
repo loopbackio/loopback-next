@@ -114,9 +114,7 @@ export class GraphQLServer extends Context implements Server {
   }
 
   async start() {
-    const resolverClasses = (this.getResolverClasses() as unknown) as NonEmptyArray<
-      Function
-    >;
+    const resolverClasses = (this.getResolverClasses() as unknown) as NonEmptyArray<Function>;
 
     // Get the configured auth checker
     const authChecker: AuthChecker =

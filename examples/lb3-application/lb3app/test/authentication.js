@@ -109,27 +109,27 @@ function runTests(request) {
 
   it('makes an authenticated request', function (done) {
     // create user
-    User.create({email: 'new@gmail.com', password: 'L00pBack!'}, function (
-      err,
-      user,
-    ) {
-      user.email.should.be.equal('new@gmail.com');
-      // login
-      User.login({email: 'new@gmail.com', password: 'L00pBack!'}, function (
-        err2,
-        token,
-      ) {
-        assert.equal(typeof token, 'object');
-        assert.equal(token.userId, user.id);
-        // authenticate user with token
-        request('get', `/CoffeeShops/greet?access_token=${token.id}`).expect(
-          200,
-          function (err3, res) {
-            res.body.greeting.should.be.equal('Hello from this Coffee Shop');
-            done();
+    User.create(
+      {email: 'new@gmail.com', password: 'L00pBack!'},
+      function (err, user) {
+        user.email.should.be.equal('new@gmail.com');
+        // login
+        User.login(
+          {email: 'new@gmail.com', password: 'L00pBack!'},
+          function (err2, token) {
+            assert.equal(typeof token, 'object');
+            assert.equal(token.userId, user.id);
+            // authenticate user with token
+            request(
+              'get',
+              `/CoffeeShops/greet?access_token=${token.id}`,
+            ).expect(200, function (err3, res) {
+              res.body.greeting.should.be.equal('Hello from this Coffee Shop');
+              done();
+            });
           },
         );
-      });
-    });
+      },
+    );
   });
 }

@@ -13,7 +13,9 @@ const relationUtils = require('./utils.generator');
 const CONTROLLER_TEMPLATE_PATH_BELONGS_TO =
   'controller-relation-template-belongs-to.ts.ejs';
 
-module.exports = class BelongsToRelationGenerator extends BaseRelationGenerator {
+module.exports = class BelongsToRelationGenerator extends (
+  BaseRelationGenerator
+) {
   constructor(args, opts) {
     super(args, opts);
   }

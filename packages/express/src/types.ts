@@ -146,9 +146,7 @@ export interface Middleware extends GenericInterceptor<MiddlewareContext> {}
  * An interceptor chain of middleware. This represents a list of cascading
  * middleware functions to be executed by the order of `group` names.
  */
-export class MiddlewareChain extends GenericInterceptorChain<
-  MiddlewareContext
-> {}
+export class MiddlewareChain extends GenericInterceptorChain<MiddlewareContext> {}
 
 /**
  * A middleware function or binding key

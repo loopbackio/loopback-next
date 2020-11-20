@@ -228,9 +228,7 @@ import {
 } from '@loopback/rest';
 import helmet, {IHelmetConfiguration} from 'helmet';
 
-class HelmetInterceptorProvider extends ExpressMiddlewareInterceptorProvider<
-  IHelmetConfiguration
-> {
+class HelmetInterceptorProvider extends ExpressMiddlewareInterceptorProvider<IHelmetConfiguration> {
   constructor(@config() helmetConfig?: IHelmetConfiguration) {
     super(helmet, helmetConfig);
   }
@@ -320,9 +318,7 @@ import helmet, {IHelmetConfiguration} from 'helmet';
 import {ExpressMiddlewareInterceptorProvider} from '@loopback/rest';
 
 @globalInterceptor('middleware', {tags: {name: 'Helmet'}})
-export class MorganInterceptor extends ExpressMiddlewareInterceptorProvider<
-  IHelmetConfiguration
-> {
+export class MorganInterceptor extends ExpressMiddlewareInterceptorProvider<IHelmetConfiguration> {
   constructor(
     @config()
     options: IHelmetConfiguration = {

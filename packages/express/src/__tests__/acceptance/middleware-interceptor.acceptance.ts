@@ -184,9 +184,7 @@ describe('Middleware interceptor', () => {
       });
 
       it('registers a middleware interceptor provider class', () => {
-        class SpyInterceptorProvider extends ExpressMiddlewareInterceptorProvider<
-          SpyConfig
-        > {
+        class SpyInterceptorProvider extends ExpressMiddlewareInterceptorProvider<SpyConfig> {
           constructor(@config.view() configView?: ContextView<SpyConfig>) {
             super(spy, configView);
           }

@@ -21,9 +21,9 @@ import {givenTodo, givenTodoList} from '../../helpers';
 
 describe('TodoController', () => {
   let todoListRepo: StubbedInstanceWithSinonAccessor<TodoListRepository>;
-  let constrainedTodoRepo: StubbedInstanceWithSinonAccessor<HasManyRepository<
-    Todo
-  >>;
+  let constrainedTodoRepo: StubbedInstanceWithSinonAccessor<
+    HasManyRepository<Todo>
+  >;
 
   /* eslint-disable @typescript-eslint/no-explicit-any */
   /*

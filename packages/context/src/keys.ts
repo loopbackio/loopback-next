@@ -71,9 +71,9 @@ export namespace ContextBindings {
   /**
    * Binding key for ConfigurationResolver
    */
-  export const CONFIGURATION_RESOLVER = BindingKey.create<
-    ConfigurationResolver
-  >(`${BindingKey.CONFIG_NAMESPACE}.resolver`);
+  export const CONFIGURATION_RESOLVER = BindingKey.create<ConfigurationResolver>(
+    `${BindingKey.CONFIG_NAMESPACE}.resolver`,
+  );
 
   /**
    * Binding key for ordered groups of global interceptors

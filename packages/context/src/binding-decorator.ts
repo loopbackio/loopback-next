@@ -19,9 +19,7 @@ import {Constructor} from './value-promise';
 /**
  * Decorator factory for `@injectable`
  */
-class InjectableDecoratorFactory extends ClassDecoratorFactory<
-  BindingMetadata
-> {
+class InjectableDecoratorFactory extends ClassDecoratorFactory<BindingMetadata> {
   mergeWithInherited(inherited: BindingMetadata, target: Function) {
     if (inherited) {
       return {

@@ -781,9 +781,7 @@ import {RequestContext} from '@loopback/rest';
 export interface RequestInterceptor
   extends GenericInterceptor<RequestContext> {}
 
-export class RequestInterceptorChain extends GenericInterceptorChain<
-  RequestContext
-> {}
+export class RequestInterceptorChain extends GenericInterceptorChain<RequestContext> {}
 ```
 
 The interceptor chain can be instantiated in two styles:

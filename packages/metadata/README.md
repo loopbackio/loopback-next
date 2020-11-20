@@ -495,26 +495,24 @@ const myProp = MetadataInspector.getMethodMetaData<MyMethodMetadata>(
 ```ts
 import {MetadataInspector} from '@loopback/metadata';
 
-const allParamsForMyMethod = MetadataInspector.getAllParameterMetaData<
-  MyParameterMetadata
->(
+const allParamsForMyMethod = MetadataInspector.getAllParameterMetaData<MyParameterMetadata>(
   'my-parameter-decorator-key',
   MyController.prototype, // Use MyController for static methods,
   'myMethod',
 );
 
-const firstParamForMyMethod = MetadataInspector.getMyParameterMetaData<
-  MyParameterMetadata
->(
+const firstParamForMyMethod = MetadataInspector.getMyParameterMetaData<MyParameterMetadata>(
   'my-parameter-decorator-key',
   MyController.prototype, // Use MyController for static methods
   'myMethod',
   0, // parameter index
 );
 
-const allParamsForConstructor = MetadataInspector.getAllParameterMetaData<
-  MyParameterMetadata
->('my-parameter-decorator-key', MyController, '');
+const allParamsForConstructor = MetadataInspector.getAllParameterMetaData<MyParameterMetadata>(
+  'my-parameter-decorator-key',
+  MyController,
+  '',
+);
 ```
 
 ### Use strong-typed metadata access key

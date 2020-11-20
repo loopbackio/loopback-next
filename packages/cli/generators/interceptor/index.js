@@ -14,7 +14,9 @@ const utils = require('../../lib/utils');
 const SCRIPT_TEMPLATE = 'interceptor-template.ts.ejs';
 const g = require('../../lib/globalize');
 
-module.exports = class InterceptorGenerator extends ArtifactGenerator {
+module.exports = class InterceptorGenerator extends (
+  ArtifactGenerator
+) {
   // Note: arguments and options should be defined in the constructor.
   constructor(args, opts) {
     super(args, opts);

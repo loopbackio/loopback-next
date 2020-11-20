@@ -21,7 +21,9 @@ const g = require('../../lib/globalize');
  * for the DataSource as well as a Class for a user to modify. Also installs the
  * appropriate connector from npm.
  */
-module.exports = class DataSourceGenerator extends ArtifactGenerator {
+module.exports = class DataSourceGenerator extends (
+  ArtifactGenerator
+) {
   constructor(args, opts) {
     super(args, opts);
   }
