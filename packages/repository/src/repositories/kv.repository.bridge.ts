@@ -53,9 +53,10 @@ export class DefaultKeyValueRepository<T extends Model>
   }
 
   async get(key: string, options?: Options): Promise<T> {
-    const val = this.kvModelClass.get(key, options) as legacy.PromiseOrVoid<
-      legacy.ModelData
-    >;
+    const val = this.kvModelClass.get(
+      key,
+      options,
+    ) as legacy.PromiseOrVoid<legacy.ModelData>;
     const result = await ensurePromise(val);
     return this.toEntity(result);
   }

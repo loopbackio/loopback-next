@@ -25,7 +25,9 @@ const json5 = require('json5');
 
 const isWindows = process.platform === 'win32';
 
-module.exports = class OpenApiGenerator extends BaseGenerator {
+module.exports = class OpenApiGenerator extends (
+  BaseGenerator
+) {
   // Note: arguments and options should be defined in the constructor.
   constructor(args, opts) {
     super(args, opts);

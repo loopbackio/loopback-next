@@ -58,7 +58,9 @@ const ERROR_NO_DATA_SOURCES_FOUND = g.f('No datasources found at');
 const ERROR_NO_MODELS_FOUND = g.f('No models found at');
 const ERROR_NO_MODEL_SELECTED = g.f('You did not select a valid model');
 
-module.exports = class RepositoryGenerator extends ArtifactGenerator {
+module.exports = class RepositoryGenerator extends (
+  ArtifactGenerator
+) {
   // Note: arguments and options should be defined in the constructor.
   constructor(args, opts) {
     super(args, opts);

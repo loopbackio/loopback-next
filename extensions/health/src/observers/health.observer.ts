@@ -34,9 +34,10 @@ export class HealthObserver implements LifeCycleObserver {
     @inject.view(filterByTag(HealthTags.READY_CHECK))
     private readyChecks: ContextView<ReadyCheck>,
   ) {
-    const startup = (once(this.eventEmitter, 'startup') as unknown) as Promise<
-      void
-    >;
+    const startup = (once(
+      this.eventEmitter,
+      'startup',
+    ) as unknown) as Promise<void>;
     const startupCheck = new StartupCheck('startup', () => startup);
     this.startupCheck = this.healthChecker.registerStartupCheck(startupCheck);
     const shutdown = once(this.eventEmitter, 'shutdown');

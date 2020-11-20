@@ -14,7 +14,9 @@ const utils = require('../../lib/utils');
 const CONTROLLER_TEMPLATE_PATH_HAS_MANY_THROUGH =
   'controller-relation-template-has-many-through.ts.ejs';
 
-module.exports = class HasManyThroughRelationGenerator extends BaseRelationGenerator {
+module.exports = class HasManyThroughRelationGenerator extends (
+  BaseRelationGenerator
+) {
   constructor(args, opts) {
     super(args, opts);
   }

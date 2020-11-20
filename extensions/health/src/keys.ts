@@ -16,9 +16,9 @@ export namespace HealthBindings {
     'components.HealthComponent',
   );
 
-  export const CONFIG: BindingAddress<HealthConfig> = BindingKey.buildKeyForConfig<
-    HealthConfig
-  >(COMPONENT.key);
+  export const CONFIG: BindingAddress<HealthConfig> = BindingKey.buildKeyForConfig<HealthConfig>(
+    COMPONENT.key,
+  );
 
   export const HEALTH_CHECKER = BindingKey.create<HealthChecker>(
     'health.HeathChecker',

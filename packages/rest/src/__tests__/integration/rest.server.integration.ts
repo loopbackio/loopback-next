@@ -1093,11 +1093,14 @@ paths:
         },
       },
     };
-    server.route('post', '/returnData', returnDataSpec, function returnData(
-      data: Data,
-    ) {
-      return data.greet;
-    });
+    server.route(
+      'post',
+      '/returnData',
+      returnDataSpec,
+      function returnData(data: Data) {
+        return data.greet;
+      },
+    );
 
     await server.start();
     const client = createClientForHandler(server.requestHandler);

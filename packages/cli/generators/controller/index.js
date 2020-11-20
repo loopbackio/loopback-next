@@ -15,7 +15,9 @@ const utils = require('../../lib/utils');
 const g = require('../../lib/globalize');
 
 // Exportable constants
-module.exports = class ControllerGenerator extends ArtifactGenerator {
+module.exports = class ControllerGenerator extends (
+  ArtifactGenerator
+) {
   // Note: arguments and options should be defined in the constructor.
   constructor(args, opts) {
     super(args, opts);

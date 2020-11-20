@@ -105,9 +105,9 @@ export namespace RestBindings {
   /**
    * Binding key for request body parser options
    */
-  export const REQUEST_BODY_PARSER_OPTIONS = BindingKey.create<
-    RequestBodyParserOptions
-  >('rest.requestBodyParserOptions');
+  export const REQUEST_BODY_PARSER_OPTIONS = BindingKey.create<RequestBodyParserOptions>(
+    'rest.requestBodyParserOptions',
+  );
 
   /**
    * Binding key for request body parser
@@ -165,9 +165,9 @@ export namespace RestBindings {
   /**
    * Binding key for setting and injecting an OpenAPI spec
    */
-  export const API_SPEC: BindingKey<OpenApiSpec> = BindingKey.create<
-    OpenApiSpec
-  >('rest.apiSpec');
+  export const API_SPEC: BindingKey<OpenApiSpec> = BindingKey.create<OpenApiSpec>(
+    'rest.apiSpec',
+  );
 
   /**
    * Binding key for setting and injecting an OpenAPI operation spec

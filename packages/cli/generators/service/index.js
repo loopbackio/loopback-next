@@ -33,7 +33,9 @@ const TEMPLATES = {
   [LOCAL_SERVICE_PROVIDER]: LOCAL_PROVIDER_TEMPLATE,
 };
 
-module.exports = class ServiceGenerator extends ArtifactGenerator {
+module.exports = class ServiceGenerator extends (
+  ArtifactGenerator
+) {
   // Note: arguments and options should be defined in the constructor.
   constructor(args, opts) {
     super(args, opts);

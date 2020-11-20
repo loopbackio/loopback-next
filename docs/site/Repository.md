@@ -361,9 +361,7 @@ import {ShoppingCart} from '../models/shopping-cart.model';
 import {RedisDataSource} from '../datasources/redis.datasource';
 import {inject} from '@loopback/core';
 
-export class ShoppingCartRepository extends DefaultKeyValueRepository<
-  ShoppingCart
-> {
+export class ShoppingCartRepository extends DefaultKeyValueRepository<ShoppingCart> {
   constructor(@inject('datasources.redis') ds: RedisDataSource) {
     super(ShoppingCart, ds);
   }

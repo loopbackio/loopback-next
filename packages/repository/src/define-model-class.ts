@@ -84,8 +84,7 @@ export type DynamicModelCtor<
   Props extends object
 > = {
   /** Model constructor accepting partial model data. */
-  new (data?: DataObject<PrototypeOf<BaseCtor> & Props>): PrototypeOf<
-    BaseCtor
-  > &
-    Props;
+  new (
+    data?: DataObject<PrototypeOf<BaseCtor> & Props>,
+  ): PrototypeOf<BaseCtor> & Props;
 } & BaseCtor;
