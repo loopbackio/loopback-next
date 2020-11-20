@@ -19,31 +19,6 @@
   "author": "IBM Corp.",
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
-  "dependencies": {
-    "@loopback/http-server": "^2.3.2",
-    "@types/cors": "^2.8.8",
-    "@types/lodash": "^4.14.165",
-    "cors": "^2.8.5",
-    "debug": "^4.3.1",
-    "lodash": "^4.17.20",
-    "socket.io": "^2.3.0"
-  },
-  "peerDependencies": {
-    "@loopback/boot": "^3.1.1",
-    "@loopback/core": "^2.13.0"
-  },
-  "devDependencies": {
-    "@loopback/boot": "^3.1.1",
-    "@loopback/build": "^6.2.7",
-    "@loopback/core": "^2.13.0",
-    "@loopback/eslint-config": "^10.0.3",
-    "@loopback/testlab": "^3.2.9",
-    "@types/debug": "^4.1.5",
-    "@types/socket.io": "^2.1.11",
-    "@types/socket.io-client": "^1.4.34",
-    "p-event": "^4.1.0",
-    "socket.io-client": "^2.3.1"
-  },
   "keywords": [
     "LoopBack",
     "Socket.IO",
@@ -60,6 +35,31 @@
   ],
   "publishConfig": {
     "access": "public"
+  },
+  "peerDependencies": {
+    "@loopback/boot": "^3.1.1",
+    "@loopback/core": "^2.13.0"
+  },
+  "dependencies": {
+    "@loopback/http-server": "^2.3.2",
+    "@types/cors": "^2.8.8",
+    "@types/lodash": "^4.14.165",
+    "cors": "^2.8.5",
+    "debug": "^4.3.1",
+    "lodash": "^4.17.20",
+    "socket.io": "^2.3.0"
+  },
+  "devDependencies": {
+    "@loopback/boot": "^3.1.1",
+    "@loopback/build": "^6.2.7",
+    "@loopback/core": "^2.13.0",
+    "@loopback/eslint-config": "^10.0.3",
+    "@loopback/testlab": "^3.2.9",
+    "@types/debug": "^4.1.5",
+    "@types/socket.io": "^2.1.11",
+    "@types/socket.io-client": "^1.4.34",
+    "p-event": "^4.1.0",
+    "socket.io-client": "^2.3.1"
   },
   "repository": {
     "type": "git",

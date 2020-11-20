@@ -23,22 +23,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "keywords": [
-    "Passport",
-    "Authentication",
-    "TypeScript"
-  ],
-  "files": [
-    "README.md",
-    "dist",
-    "src",
-    "!*/__tests__"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/strongloop/loopback-next.git",
-    "directory": "extensions/authentication-passport"
-  },
   "peerDependencies": {
     "@loopback/authentication": "^7.0.4",
     "@loopback/core": "^2.13.0",
@@ -76,5 +60,21 @@
     "passport-oauth2": "^1.5.0",
     "qs": "^6.9.4",
     "supertest": "^6.0.1"
+  },
+  "keywords": [
+    "Passport",
+    "Authentication",
+    "TypeScript"
+  ],
+  "files": [
+    "README.md",
+    "dist",
+    "src",
+    "!*/__tests__"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "extensions/authentication-passport"
   }
 }

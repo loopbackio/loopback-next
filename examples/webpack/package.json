@@ -14,22 +14,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "scripts": {
-    "build": "lb-tsc",
-    "build:webpack-node": "webpack --config-name node",
-    "build:webpack-web": "webpack --config-name web",
-    "prepack": "npm run build:webpack-web",
-    "clean": "lb-clean loopback-example-webpack*.tgz dist *.tsbuildinfo package",
-    "verify": "npm pack && tar xf loopback-example-webpack*.tgz && tree package && npm run clean",
-    "pretest": "npm run rebuild",
-    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
-    "rebuild": "npm run clean && npm run build"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/strongloop/loopback-next.git",
-    "directory": "examples/webpack"
-  },
   "dependencies": {
     "@loopback/core": "^2.13.0",
     "tslib": "^2.0.3"
@@ -49,6 +33,22 @@
     "webpack": "^5.6.0",
     "webpack-cli": "^4.2.0",
     "zombie": "^6.1.4"
+  },
+  "scripts": {
+    "build": "lb-tsc",
+    "build:webpack-node": "webpack --config-name node",
+    "build:webpack-web": "webpack --config-name web",
+    "prepack": "npm run build:webpack-web",
+    "clean": "lb-clean loopback-example-webpack*.tgz dist *.tsbuildinfo package",
+    "verify": "npm pack && tar xf loopback-example-webpack*.tgz && tree package && npm run clean",
+    "pretest": "npm run rebuild",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
+    "rebuild": "npm run clean && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "examples/webpack"
   },
   "keywords": [
     "loopback",

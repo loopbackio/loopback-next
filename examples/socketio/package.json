@@ -46,6 +46,9 @@
     "src",
     "!*/__tests__"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "@loopback/boot": "^3.1.1",
     "@loopback/core": "^2.13.0",
@@ -67,9 +70,6 @@
     "eslint": "^7.14.0",
     "source-map-support": "^0.5.19",
     "typescript": "~4.1.2"
-  },
-  "publishConfig": {
-    "access": "public"
   },
   "copyright.owner": "IBM Corp."
 }

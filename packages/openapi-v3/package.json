@@ -7,6 +7,21 @@
   "engines": {
     "node": "^10.16 || 12 || 14"
   },
+  "scripts": {
+    "build": "lb-tsc",
+    "clean": "lb-clean loopback-openapi-v3*.tgz dist *.tsbuildinfo package",
+    "integration": "lb-mocha \"dist/__tests__/integration/**/*.js\"",
+    "pretest": "npm run build",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
+    "unit": "lb-mocha \"dist/__tests__/unit/**/*.js\"",
+    "verify": "npm pack && tar xf loopback-openapi-v3*.tgz && tree package && npm run clean"
+  },
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "peerDependencies": {
     "@loopback/core": "^2.13.0"
   },
@@ -31,21 +46,6 @@
     "@types/json-merge-patch": "0.0.5",
     "@types/lodash": "^4.14.165",
     "@types/node": "^10.17.35"
-  },
-  "scripts": {
-    "build": "lb-tsc",
-    "clean": "lb-clean loopback-openapi-v3*.tgz dist *.tsbuildinfo package",
-    "integration": "lb-mocha \"dist/__tests__/integration/**/*.js\"",
-    "pretest": "npm run build",
-    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
-    "unit": "lb-mocha \"dist/__tests__/unit/**/*.js\"",
-    "verify": "npm pack && tar xf loopback-openapi-v3*.tgz && tree package && npm run clean"
-  },
-  "author": "IBM Corp.",
-  "copyright.owner": "IBM Corp.",
-  "license": "MIT",
-  "publishConfig": {
-    "access": "public"
   },
   "keywords": [
     "Swagger",

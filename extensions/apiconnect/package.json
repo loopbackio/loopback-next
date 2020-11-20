@@ -23,21 +23,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "keywords": [
-    "LoopBack",
-    "IBM API Connect"
-  ],
-  "files": [
-    "README.md",
-    "dist",
-    "src",
-    "!*/__tests__"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/strongloop/loopback-next.git",
-    "directory": "extensions/apiconnect"
-  },
   "peerDependencies": {
     "@loopback/core": "^2.13.0",
     "@loopback/rest": "^9.1.0"
@@ -52,5 +37,20 @@
     "@loopback/rest": "^9.1.0",
     "@loopback/testlab": "^3.2.9",
     "@types/node": "^10.17.35"
+  },
+  "keywords": [
+    "LoopBack",
+    "IBM API Connect"
+  ],
+  "files": [
+    "README.md",
+    "dist",
+    "src",
+    "!*/__tests__"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "extensions/apiconnect"
   }
 }

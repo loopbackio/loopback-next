@@ -36,12 +36,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "files": [
-    "README.md",
-    "dist",
-    "src",
-    "!*/__tests__"
-  ],
   "dependencies": {
     "@loopback/boot": "^3.1.1",
     "@loopback/core": "^2.13.0",
@@ -59,5 +53,11 @@
     "source-map-support": "^0.5.19",
     "typescript": "~4.1.2"
   },
+  "files": [
+    "README.md",
+    "dist",
+    "src",
+    "!*/__tests__"
+  ],
   "copyright.owner": "IBM Corp."
 }

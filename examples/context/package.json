@@ -13,6 +13,18 @@
   "publishConfig": {
     "access": "public"
   },
+  "dependencies": {
+    "@loopback/context": "^3.13.1",
+    "tslib": "^2.0.3"
+  },
+  "devDependencies": {
+    "@loopback/build": "^6.2.7",
+    "@loopback/eslint-config": "^10.0.3",
+    "@loopback/testlab": "^3.2.9",
+    "@types/node": "^10.17.35",
+    "eslint": "^7.14.0",
+    "typescript": "~4.1.2"
+  },
   "scripts": {
     "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
     "build": "lb-tsc",
@@ -38,18 +50,6 @@
     "type": "git",
     "url": "https://github.com/strongloop/loopback-next.git",
     "directory": "examples/context"
-  },
-  "dependencies": {
-    "@loopback/context": "^3.13.1",
-    "tslib": "^2.0.3"
-  },
-  "devDependencies": {
-    "@loopback/build": "^6.2.7",
-    "@loopback/eslint-config": "^10.0.3",
-    "@loopback/testlab": "^3.2.9",
-    "@types/node": "^10.17.35",
-    "eslint": "^7.14.0",
-    "typescript": "~4.1.2"
   },
   "keywords": [
     "loopback",
