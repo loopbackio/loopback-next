@@ -13,6 +13,22 @@
   "publishConfig": {
     "access": "public"
   },
+  "dependencies": {
+    "@loopback/core": "^2.13.0",
+    "@loopback/rest": "^9.1.0",
+    "chalk": "^4.1.0",
+    "debug": "^4.3.1",
+    "tslib": "^2.0.3"
+  },
+  "devDependencies": {
+    "@loopback/build": "^6.2.7",
+    "@loopback/eslint-config": "^10.0.3",
+    "@loopback/testlab": "^3.2.9",
+    "@types/debug": "^4.1.5",
+    "@types/node": "^10.17.35",
+    "eslint": "^7.14.0",
+    "typescript": "~4.1.2"
+  },
   "scripts": {
     "build": "lb-tsc",
     "build:watch": "lb-tsc --watch",
@@ -43,21 +59,5 @@
   "bugs": {
     "url": "https://github.com/strongloop/loopback-next/issues"
   },
-  "homepage": "https://github.com/strongloop/loopback-next/tree/master/examples/log-extension",
-  "devDependencies": {
-    "@loopback/build": "^6.2.7",
-    "@loopback/eslint-config": "^10.0.3",
-    "@loopback/testlab": "^3.2.9",
-    "@types/debug": "^4.1.5",
-    "@types/node": "^10.17.35",
-    "eslint": "^7.14.0",
-    "typescript": "~4.1.2"
-  },
-  "dependencies": {
-    "@loopback/core": "^2.13.0",
-    "@loopback/rest": "^9.1.0",
-    "chalk": "^4.1.0",
-    "debug": "^4.3.1",
-    "tslib": "^2.0.3"
-  }
+  "homepage": "https://github.com/strongloop/loopback-next/tree/master/examples/log-extension"
 }

@@ -31,6 +31,10 @@
     "src",
     "!*/__tests__"
   ],
+  "copyright.owner": "IBM Corp.",
+  "publishConfig": {
+    "access": "public"
+  },
   "peerDependencies": {
     "@loopback/core": "^2.13.0"
   },
@@ -45,9 +49,5 @@
     "@loopback/testlab": "^3.2.9",
     "@types/node": "^10.17.35",
     "typescript": "~4.1.2"
-  },
-  "copyright.owner": "IBM Corp.",
-  "publishConfig": {
-    "access": "public"
   }
 }

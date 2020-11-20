@@ -20,13 +20,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "keywords": [
-    "Swagger",
-    "OpenAPI Spec",
-    "TypeScript",
-    "Builder",
-    "Testing"
-  ],
   "dependencies": {
     "openapi3-ts": "^2.0.0",
     "tslib": "^2.0.3"
@@ -37,6 +30,13 @@
     "@loopback/testlab": "^3.2.9",
     "@types/node": "^10.17.35"
   },
+  "keywords": [
+    "Swagger",
+    "OpenAPI Spec",
+    "TypeScript",
+    "Builder",
+    "Testing"
+  ],
   "files": [
     "README.md",
     "dist",

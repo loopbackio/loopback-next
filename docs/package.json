@@ -9,6 +9,13 @@
   "publishConfig": {
     "access": "public"
   },
+  "dependencies": {
+    "fs-extra": "^9.0.1",
+    "tslib": "^2.0.3"
+  },
+  "devDependencies": {
+    "@loopback/build": "^6.2.7"
+  },
   "engines": {
     "node": "^10.16 || 12 || 14"
   },
@@ -26,16 +33,9 @@
     "version": "node ./bin/copy-readmes.js && node ./bin/copy-changelogs.js && cd .. && npm run tsdocs",
     "clean": "lb-clean loopback-docs*.tgz package apidocs site/readmes site/changelogs site/apidocs"
   },
-  "devDependencies": {
-    "@loopback/build": "^6.2.7"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/strongloop/loopback-next.git",
     "directory": "docs"
-  },
-  "dependencies": {
-    "fs-extra": "^9.0.1",
-    "tslib": "^2.0.3"
   }
 }

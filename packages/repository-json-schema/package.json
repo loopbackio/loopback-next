@@ -20,11 +20,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "keywords": [
-    "LoopBack",
-    "TypeScript",
-    "JSON Schema"
-  ],
   "peerDependencies": {
     "@loopback/core": "^2.13.0",
     "@loopback/repository": "^3.2.1"
@@ -44,6 +39,11 @@
     "@types/node": "^10.17.35",
     "ajv": "^6.12.6"
   },
+  "keywords": [
+    "LoopBack",
+    "TypeScript",
+    "JSON Schema"
+  ],
   "files": [
     "README.md",
     "dist",

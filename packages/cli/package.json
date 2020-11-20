@@ -9,44 +9,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "engines": {
-    "node": "^10.16 || 12 || 14"
-  },
-  "files": [
-    "bin",
-    "lib",
-    "generators",
-    "intl",
-    ".yo-rc.json"
-  ],
-  "bin": {
-    "lb4": "bin/cli-main.js"
-  },
-  "main": "generators/app/index.js",
-  "keywords": [
-    "LoopBack",
-    "CLI",
-    "yeoman-generator"
-  ],
-  "devDependencies": {
-    "@loopback/build": "^6.2.7",
-    "@loopback/eslint-config": "^10.0.3",
-    "@loopback/testlab": "^3.2.9",
-    "@types/ejs": "^3.0.5",
-    "@types/fs-extra": "^9.0.4",
-    "@types/minimatch": "^3.0.3",
-    "@types/node": "^10.17.35",
-    "loopback": "^3.27.0",
-    "loopback-datasource-juggler": "^4.26.0",
-    "mem-fs": "^1.2.0",
-    "mem-fs-editor": "^7.1.0",
-    "mock-stdin": "^1.0.0",
-    "rimraf": "^3.0.2",
-    "sinon": "^9.2.1",
-    "strong-globalize-cli": "7.1.0",
-    "yeoman-assert": "^3.1.1",
-    "yeoman-test": "~2.7.0"
-  },
   "dependencies": {
     "@lerna/project": "^3.21.0",
     "@openapi-contrib/openapi-schema-to-json-schema": "^3.0.4",
@@ -89,6 +51,44 @@
     "yeoman-environment": "^2.10.3",
     "yeoman-generator": "^4.12.0"
   },
+  "devDependencies": {
+    "@loopback/build": "^6.2.7",
+    "@loopback/eslint-config": "^10.0.3",
+    "@loopback/testlab": "^3.2.9",
+    "@types/ejs": "^3.0.5",
+    "@types/fs-extra": "^9.0.4",
+    "@types/minimatch": "^3.0.3",
+    "@types/node": "^10.17.35",
+    "loopback": "^3.27.0",
+    "loopback-datasource-juggler": "^4.26.0",
+    "mem-fs": "^1.2.0",
+    "mem-fs-editor": "^7.1.0",
+    "mock-stdin": "^1.0.0",
+    "rimraf": "^3.0.2",
+    "sinon": "^9.2.1",
+    "strong-globalize-cli": "7.1.0",
+    "yeoman-assert": "^3.1.1",
+    "yeoman-test": "~2.7.0"
+  },
+  "engines": {
+    "node": "^10.16 || 12 || 14"
+  },
+  "files": [
+    "bin",
+    "lib",
+    "generators",
+    "intl",
+    ".yo-rc.json"
+  ],
+  "bin": {
+    "lb4": "bin/cli-main.js"
+  },
+  "main": "generators/app/index.js",
+  "keywords": [
+    "LoopBack",
+    "CLI",
+    "yeoman-generator"
+  ],
   "scripts": {
     "test": "lb-mocha --lang en_US.UTF-8 \"test/**/*.js\"",
     "smoke-test": "lb-mocha --allow-console-logs \"smoke-test/**/*.smoke.js\"",

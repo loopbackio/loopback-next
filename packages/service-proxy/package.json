@@ -26,16 +26,16 @@
   "peerDependencies": {
     "@loopback/core": "^2.13.0"
   },
+  "dependencies": {
+    "loopback-datasource-juggler": "^4.26.0",
+    "tslib": "^2.0.3"
+  },
   "devDependencies": {
     "@loopback/build": "^6.2.7",
     "@loopback/core": "^2.13.0",
     "@loopback/eslint-config": "^10.0.3",
     "@loopback/testlab": "^3.2.9",
     "@types/node": "^10.17.35"
-  },
-  "dependencies": {
-    "loopback-datasource-juggler": "^4.26.0",
-    "tslib": "^2.0.3"
   },
   "files": [
     "README.md",
