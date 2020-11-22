@@ -289,6 +289,10 @@ children:
       url: Customizing-server-configuration.html
       output: 'web, pdf'
 
+    - title: 'Migrate from Legacy Sequence'
+      url: Migrate-from-legacy-sequence.html
+      output: 'web, pdf'
+
     - title: 'Running cron jobs'
       url: Running-cron-jobs.html
       output: 'web, pdf'
@@ -692,12 +696,20 @@ children:
         url: REST-action-sequence.html
         output: 'web, pdf'
 
+      - title: 'Advanced topics'
+        url: Advanced-sequence-topics.html
+        output: 'web, pdf'
+
       - title: 'Routing requests'
         url: Routing-requests.html
         output: 'web, pdf'
 
       - title: 'Parsing requests'
         url: Parsing-requests.html
+        output: 'web, pdf'
+
+      - title: 'Working with Express Middleware'
+        url: Working-with-express-middleware.html
         output: 'web, pdf'
 
     - title: 'Middleware'
