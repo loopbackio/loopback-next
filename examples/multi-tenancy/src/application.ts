@@ -38,7 +38,7 @@ export class ExampleMultiTenancyApplication extends BootMixin(
 
     /*
      * app.configure(MultiTenancyBindings.MIDDLEWARE)
-     *   .to({strategyName: ['jwt', 'header', 'query']});
+     *   .to({strategyNames: ['jwt', 'header', 'query']});
      */
     this.component(MultiTenancyComponent);
 
