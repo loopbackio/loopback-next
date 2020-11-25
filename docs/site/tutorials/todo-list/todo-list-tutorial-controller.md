@@ -195,12 +195,9 @@ Here are some new requests you can try out:
 - `GET /todo-lists/{id}/todos` with the ID from before, and see if you get the
   todo you created from before.
 - `GET /todo-lists/{id}` with the ID from before, with the following filter
-  `{include: [{relation: 'todos'}]}`, and see if you get a `todos` property with
-  the todo created before. **Note**: this filter won't work through the API
-  explorer (See this
-  [GitHub issue](https://github.com/strongloop/loopback-next/issues/2208) for
-  details). Use the following url to test this endpoint (remember to replace
-  `{id}` with the ID from before):
+  `{"include": [{"relation": "todos"}]}`, and see if you get a `todos` property
+  with the todo created before. You can also use the following url to test this
+  endpoint (remember to replace `{id}` with the ID from before):
   http://localhost:3000/todo-lists/{id}?filter[include][][relation]=todos
 
 And there you have it! You now have the power to define APIs for related models!
