@@ -360,6 +360,8 @@ The registration can be further simplified as:
 app.interceptor(MetricsInterceptorProvider, {global: true, group: 'metrics'});
 ```
 
+{% include tip.html content="If you need to intercept all requests, including these destinated to a LB3 mounted app, you can use [a Loopback Middleware](https://loopback.io/doc/en/lb4/Middleware.html#loopback-style-middleware)" %}
+
 ### Order of invocation for interceptors
 
 Multiple `@intercept` decorators can be applied to a class or a method. The
