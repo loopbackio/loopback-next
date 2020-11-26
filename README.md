@@ -104,18 +104,17 @@ See [SECURITY.md](SECURITY.md) for more details.
 
 ### Project Maintainers
 
-|                                                  |                                                            |                                                  |
-| :----------------------------------------------: | :--------------------------------------------------------: | :----------------------------------------------: | --- |
 |                    Diana Lau                     |                         Janny Hou                          |                    Hage Yaapa                    |
+| :----------------------------------------------: | :--------------------------------------------------------: | :----------------------------------------------: |
 |      [![dhmlau]](http://github.com/dhmlau)       |         [![jannyhou]](http://github.com/jannyHou)          | [![hacksparrow]](https://github.com/hacksparrow) |
 |                    Agnes Lin                     |                       Mario Estrada                        |                   Hugo Da Roit                   |
 |    [![agnes512]](https://github.com/agnes512)    | [![marioestradarosa]](https://github.com/marioestradarosa) |        [![yaty]](https://github.com/yaty)        |
 |                 Dominique Emond                  |                       Denny Bartelt                        |               Douglas McConnachie                |
 |     [![emonddr]](https://github.com/emonddr)     |          [![derdeka]](https://github.com/derdeka)          |    [![dougal83]](https://github.com/dougal83)    |
 |                  Rifa Achrinza                   |                      Francisco Buceta                      |                  Matthew Schnee                  |
-|    [![achrinza]](https://github.com/achrinza)    |         [![frbuceta]](https://github.com/frbuceta)         |     [![mschnee]](https://github.com/mschnee)     |     |
-|                 Nora Abdelgadir                  |                           Madaky                           |                    Nico Flaig                    |     |
-| [![nabdelgadir]](https://github.com/nabdelgadir) |           [![madaky]](https://github.com/madaky)           |      [![nflaig]](https://github.com/nflaig)      |     |
+|    [![achrinza]](https://github.com/achrinza)    |         [![frbuceta]](https://github.com/frbuceta)         |     [![mschnee]](https://github.com/mschnee)     |
+|                 Nora Abdelgadir                  |                           Madaky                           |                    Nico Flaig                    |
+| [![nabdelgadir]](https://github.com/nabdelgadir) |           [![madaky]](https://github.com/madaky)           |      [![nflaig]](https://github.com/nflaig)      |
 
 See
 [all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
