@@ -11,9 +11,7 @@ const path = require('path');
 const chalk = require('chalk');
 const g = require('./globalize');
 
-module.exports = class ArtifactGenerator extends (
-  BaseGenerator
-) {
+module.exports = class ArtifactGenerator extends BaseGenerator {
   // Note: arguments and options should be defined in the constructor.
   constructor(args, opts) {
     super(args, opts);

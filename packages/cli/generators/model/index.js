@@ -46,9 +46,7 @@ const MODEL_TEMPLATE_PATH = 'model.ts.ejs';
  * entered. Will also ask if a property is required, the default value for the
  * property, if it's the ID (unless one has been selected), etc.
  */
-module.exports = class ModelGenerator extends (
-  ArtifactGenerator
-) {
+module.exports = class ModelGenerator extends ArtifactGenerator {
   constructor(args, opts) {
     super(args, opts);
   }

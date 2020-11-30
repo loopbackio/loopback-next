@@ -12,9 +12,7 @@ const _ = require('lodash');
 const chalk = require('chalk');
 const autocomplete = require('inquirer-autocomplete-prompt');
 
-module.exports = class CopyrightGenerator extends (
-  BaseGenerator
-) {
+module.exports = class CopyrightGenerator extends BaseGenerator {
   // Note: arguments and options should be defined in the constructor.
   constructor(args, opts) {
     super(args, opts);

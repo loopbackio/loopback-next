@@ -9,9 +9,7 @@ const utils = require('../../lib/utils');
 const ProjectGenerator = require('../../lib/project-generator');
 const g = require('../../lib/globalize');
 
-module.exports = class ExtensionGenerator extends (
-  ProjectGenerator
-) {
+module.exports = class ExtensionGenerator extends ProjectGenerator {
   // Note: arguments and options should be defined in the constructor.
   constructor(args, opts) {
     super(args, opts);
