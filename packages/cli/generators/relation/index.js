@@ -52,9 +52,7 @@ const PROMPT_MESSAGE_FOREIGN_KEY_NAME_BELONGSTO = g.f(
   'Foreign key name to define on the source model',
 );
 
-module.exports = class RelationGenerator extends (
-  ArtifactGenerator
-) {
+module.exports = class RelationGenerator extends ArtifactGenerator {
   constructor(args, opts) {
     super(args, opts);
     this.args = args;

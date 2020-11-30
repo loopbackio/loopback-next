@@ -13,9 +13,7 @@ const utils = require('../../lib/utils');
 const CONTROLLER_TEMPLATE_PATH_HAS_ONE =
   'controller-relation-template-has-one.ts.ejs';
 
-module.exports = class HasOneRelationGenerator extends (
-  BaseRelationGenerator
-) {
+module.exports = class HasOneRelationGenerator extends BaseRelationGenerator {
   constructor(args, opts) {
     super(args, opts);
   }

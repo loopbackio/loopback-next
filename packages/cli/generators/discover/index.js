@@ -15,9 +15,7 @@ const g = require('../../lib/globalize');
 
 const rootDir = 'src';
 
-module.exports = class DiscoveryGenerator extends (
-  ArtifactGenerator
-) {
+module.exports = class DiscoveryGenerator extends ArtifactGenerator {
   constructor(args, opts) {
     super(args, opts);
 

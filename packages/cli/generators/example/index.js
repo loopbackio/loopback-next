@@ -61,9 +61,7 @@ const EXAMPLES = {
 };
 Object.freeze(EXAMPLES);
 
-module.exports = class extends (
-  BaseGenerator
-) {
+module.exports = class extends BaseGenerator {
   static getAllExamples() {
     return EXAMPLES;
   }

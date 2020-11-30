@@ -191,9 +191,7 @@ describe('RepositoryMixin', () => {
       migrateStub = sinon.stub().resolves();
       updateStub = sinon.stub().resolves();
 
-      DataSourceStub = class extends (
-        juggler.DataSource
-      ) {
+      DataSourceStub = class extends juggler.DataSource {
         automigrate(models: string | string[]): Promise<void> {
           return migrateStub(models);
         }
