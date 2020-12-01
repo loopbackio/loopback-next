@@ -21,11 +21,27 @@ To query one relation:
 
 ```ts
 {
+  include: ['relationName'];
+}
+```
+
+or
+
+```ts
+{
   include: [{relation: 'relationName'}];
 }
 ```
 
 To query multiple relations:
+
+```ts
+{
+  include: ['relationName1', 'relationName2'];
+}
+```
+
+or
 
 ```ts
 {
@@ -39,7 +55,7 @@ To query nested relations, use the scope field:
 {
     relation: 'relationName',
     scope: {
-    include: [{relation: 'nestedRelationName'}],
+      include: ['nestedRelationName'],
     },
 }
 ```
@@ -51,9 +67,12 @@ Where:
 
 ### REST API
 
-To query one relation: `/modelName?filter[include][][relation]=_relationName_`
+To query one relation: `/modelName?filter[include][]=_relationName_` or
+`/modelName?filter[include][][relation]=_relationName_`
 
 To query multiple relations:
+`/modelName?filter[include][0]=_relationName1_&filter[include][1]=_relationName2_`
+or
 `/modelName?filter[include][0][relation]=_relationName1_&filter[include][1][relation]=_relationName2_`
 
 To query nested relations, as the url would get too long, we recommend to encode
@@ -103,16 +122,16 @@ and call `/modelName?filter=<encodedFilter>`
 {% include code-caption.html content="Node.js API" %}
 
 ```ts
-await customerRepository.find({include: [{relation: 'orders'}]});
+await customerRepository.find({include: ['orders']});
 ```
 
 {% include code-caption.html content="REST" %}
 
-`/customers?filter[include][][relation]=orders`
+`/customers?filter[include][]=orders`
 
 Or stringified JSON format:
 
-`/customers?filter={"include":[{"relation":"orders"}]}`
+`/customers?filter={"include":["orders"]}`
 
 Result:
 
@@ -132,13 +151,13 @@ Result:
 
 ```ts
 await customerRepository.find({
-  include: [{relation: 'orders'}, {relation: 'address'}],
+  include: ['orders', 'address'],
 });
 ```
 
 {% include code-caption.html content="REST" %}
 
-`/customers?filter[include][0][relation]=orders?filter[include][1][relation]=address`
+`/customers?filter[include][]=orders&filter[include][]=address`
 
 Result:
 
@@ -288,19 +307,19 @@ model.
 
 Return all customers including their reviews:
 
-`/customers?filter[include][][relation]=reviews`
+`/customers?filter[include][]=reviews`
 
 Return all customers including their reviews and also their orders:
 
-`/customers?filter[include][0][relation]=reviews?filter[include][1][relation]=orders`
+`/customers?filter[include][]=reviews&filter[include][]=orders`
 
 Return all customers whose age is 21, including their reviews:
 
-`/customers?filter[include][][relation]=reviews&filter[where][age]=21`
+`/customers?filter[include][]=reviews&filter[where][age]=21`
 
 Return first two customers including their reviews:
 
-`/customers?filter[include][][relation]=reviews&filter[limit]=2`
+`/customers?filter[include][]=reviews&filter[limit]=2`
 
 **See also**:
 [Querying related models](HasMany-relation.md#querying-related-models).

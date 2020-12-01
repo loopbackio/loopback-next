@@ -262,7 +262,7 @@ describe('getFilterJsonSchemaFor', () => {
 
   it('returns "include.items.title" when no options were provided', () => {
     expect(customerFilterSchema.properties)
-      .to.have.propertyByPath('include', 'items', 'title')
+      .to.have.propertyByPath('include', 'items', 'anyOf', '0', 'title')
       .to.equal('Customer.IncludeFilter.Items');
   });
 
@@ -271,6 +271,8 @@ describe('getFilterJsonSchemaFor', () => {
       .to.have.propertyByPath(
         'include',
         'items',
+        'anyOf',
+        '0',
         'properties',
         'scope',
         'title',
@@ -341,7 +343,7 @@ describe('getFilterJsonSchemaForOptionsSetTitle', () => {
 
   it('returns "include.items.title" when a single option "setTitle" is set', () => {
     expect(customerFilterSchema.properties)
-      .to.have.propertyByPath('include', 'items', 'title')
+      .to.have.propertyByPath('include', 'items', 'anyOf', '0', 'title')
       .to.equal('Customer.IncludeFilter.Items');
   });
 
@@ -350,6 +352,8 @@ describe('getFilterJsonSchemaForOptionsSetTitle', () => {
       .to.have.propertyByPath(
         'include',
         'items',
+        'anyOf',
+        '0',
         'properties',
         'scope',
         'title',
@@ -377,13 +381,13 @@ describe('getFilterJsonSchemaForOptionsUnsetTitle', () => {
 
   it('no title on include.items when single option "setTitle" is false', () => {
     expect(customerFilterSchema.properties)
-      .propertyByPath('include', 'items')
+      .propertyByPath('include', 'items', 'anyOf', '0')
       .to.not.have.property('title');
   });
 
   it('no title on scope when single option "setTitle" is false', () => {
     expect(customerFilterSchema.properties)
-      .propertyByPath('include', 'items', 'properties', 'scope')
+      .propertyByPath('include', 'items', 'anyOf', '0', 'properties', 'scope')
       .to.not.have.property('title');
   });
 });

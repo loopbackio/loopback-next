@@ -591,9 +591,6 @@ export class SupplierRepository extends DefaultCrudRepository {
   ];
   ```
 
-{% include note.html content="The query syntax is a slightly different from LB3. We are also thinking about simplifying the query syntax. Check our GitHub issue for more information:
-[Simpler Syntax for Inclusion](https://github.com/strongloop/loopback-next/issues/3205)" %}
-
 Here is a diagram to make this more intuitive:
 
 ![Graph](./imgs/hasOne-relation-graph.png)

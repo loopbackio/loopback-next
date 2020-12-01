@@ -220,8 +220,13 @@ export interface Filter<MT extends object = AnyObject> {
   /**
    * To include related objects
    */
-  include?: Inclusion[];
+  include?: InclusionFilter[];
 }
+
+/**
+ * Inclusion filter type e.g. 'property', {relation: 'property'}
+ */
+export type InclusionFilter = string | Inclusion;
 
 /**
  * Filter without `where` property

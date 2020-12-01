@@ -4,7 +4,12 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Getter} from '@loopback/core';
-import {Filter, FilterExcludingWhere, Inclusion, Where} from '@loopback/filter';
+import {
+  Filter,
+  FilterExcludingWhere,
+  InclusionFilter,
+  Where,
+} from '@loopback/filter';
 import assert from 'assert';
 import legacy from 'loopback-datasource-juggler';
 import {
@@ -695,7 +700,7 @@ export class DefaultCrudRepository<
    */
   protected async includeRelatedModels(
     entities: T[],
-    include?: Inclusion[],
+    include?: InclusionFilter[],
     options?: Options,
   ): Promise<(T & Relations)[]> {
     return includeRelatedModels<T, Relations>(this, entities, include, options);

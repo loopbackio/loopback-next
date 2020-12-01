@@ -143,16 +143,23 @@ export function getFilterJsonSchemaFor(
       }),
       type: 'array',
       items: {
-        ...(options.setTitle !== false && {
-          title: `${modelCtor.modelName}.IncludeFilter.Items`,
-        }),
-        type: 'object',
-        properties: {
-          // TODO(bajtos) restrict values to relations defined by "model"
-          relation: {type: 'string'},
-          // TODO(bajtos) describe the filter for the relation target model
-          scope: getScopeFilterJsonSchemaFor(modelCtor, options),
-        },
+        anyOf: [
+          {
+            ...(options.setTitle !== false && {
+              title: `${modelCtor.modelName}.IncludeFilter.Items`,
+            }),
+            type: 'object',
+            properties: {
+              // TODO(bajtos) restrict values to relations defined by "model"
+              relation: {type: 'string'},
+              // TODO(bajtos) describe the filter for the relation target model
+              scope: getScopeFilterJsonSchemaFor(modelCtor, options),
+            },
+          },
+          {
+            type: 'string',
+          },
+        ],
       },
     };
   }
