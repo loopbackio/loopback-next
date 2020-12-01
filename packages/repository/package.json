@@ -41,7 +41,7 @@
     "@types/json-schema": "^7.0.6",
     "@types/lodash": "^4.14.165",
     "@types/node": "^10.17.35",
-    "bson": "4.2.0"
+    "bson": "4.2.2"
   },
   "files": [
     "README.md",
