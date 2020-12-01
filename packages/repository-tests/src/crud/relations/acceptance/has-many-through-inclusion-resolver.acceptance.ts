@@ -83,10 +83,8 @@ export function hasManyThroughInclusionResolverAcceptance(
           .create({description: 'crown'});
 
         await expect(
-          customerRepo.find({include: [{relation: 'crown'}]}),
-        ).to.be.rejectedWith(
-          `Invalid "filter.include" entries: {"relation":"crown"}`,
-        );
+          customerRepo.find({include: ['crown']}),
+        ).to.be.rejectedWith(`Invalid "filter.include" entries: "crown"`);
       });
 
       it('returns single model instance including single related instance', async () => {
@@ -96,7 +94,7 @@ export function hasManyThroughInclusionResolverAcceptance(
           .create({description: 'crown'});
 
         const result = await customerRepo.find({
-          include: [{relation: 'cartItems'}],
+          include: ['cartItems'],
         });
 
         expect(toJSON(result)).to.deepEqual([
@@ -121,7 +119,7 @@ export function hasManyThroughInclusionResolverAcceptance(
           .create({description: 'green hat'});
 
         const result = await customerRepo.find({
-          include: [{relation: 'cartItems'}],
+          include: ['cartItems'],
         });
 
         const expected = [
@@ -148,7 +146,7 @@ export function hasManyThroughInclusionResolverAcceptance(
           .create({description: 'green hat'});
 
         const result = await customerRepo.findById(zelda.id, {
-          include: [{relation: 'cartItems'}],
+          include: ['cartItems'],
         });
         const expected = {
           ...zelda,
@@ -228,7 +226,7 @@ export function hasManyThroughInclusionResolverAcceptance(
         const zelda = await userRepo.users(link.id).create({name: 'zelda'});
 
         const result = await userRepo.findById(link.id, {
-          include: [{relation: 'users'}],
+          include: ['users'],
         });
 
         expect(toJSON(result)).to.deepEqual(
@@ -246,7 +244,7 @@ export function hasManyThroughInclusionResolverAcceptance(
         const hilda = await userRepo.users(link.id).create({name: 'hilda'});
 
         const result = await userRepo.find({
-          include: [{relation: 'users'}],
+          include: ['users'],
         });
 
         const expected = [

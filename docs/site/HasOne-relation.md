@@ -513,13 +513,13 @@ allows users to retrieve all suppliers along with their related accounts through
 the following code at the repository level:
 
 ```ts
-supplierRepo.find({include: [{relation: 'account'}]});
+supplierRepo.find({include: ['account']});
 ```
 
 or use APIs with controllers:
 
 ```
-GET http://localhost:3000/suppliers?filter[include][][relation]=account
+GET http://localhost:3000/suppliers?filter[include][]=account
 ```
 
 ### Enable/disable the inclusion resolvers
@@ -565,13 +565,13 @@ export class SupplierRepository extends DefaultCrudRepository {
   if you process data at the repository level:
 
   ```ts
-  supplierRepository.find({include: [{relation: 'account'}]});
+  supplierRepository.find({include: ['account']});
   ```
 
   this is the same as the url:
 
   ```
-  GET http://localhost:3000/suppliers?filter[include][][relation]=account
+  GET http://localhost:3000/suppliers?filter[include][]=account
   ```
 
   which returns:
@@ -615,13 +615,13 @@ To query **multiple relations**, for example, return all Suppliers including
 their orders and address, in Node API:
 
 ```ts
-customerRepo.find({include: [{relation: 'orders'}, {relation: 'address'}]});
+customerRepo.find({include: ['orders', 'address']});
 ```
 
 Equivalently, with url, you can do:
 
 ```
-GET http://localhost:3000/customers?filter[include][0][relation]=orders&filter[include][1][relation]=address
+GET http://localhost:3000/customers?filter[include][0]=orders&filter[include][1]=address
 ```
 
 This gives
@@ -660,7 +660,7 @@ customerRepo.find({
     {
       relation: 'orders',
       scope: {
-        include: [{relation: 'manufacturers'}],
+        include: ['manufacturers'],
       },
     },
   ],

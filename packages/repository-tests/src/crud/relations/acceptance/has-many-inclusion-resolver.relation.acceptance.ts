@@ -69,10 +69,8 @@ export function hasManyInclusionResolverAcceptance(
         customerId: customer.id,
       });
       await expect(
-        customerRepo.find({include: [{relation: 'managers'}]}),
-      ).to.be.rejectedWith(
-        `Invalid "filter.include" entries: {"relation":"managers"}`,
-      );
+        customerRepo.find({include: ['managers']}),
+      ).to.be.rejectedWith(`Invalid "filter.include" entries: "managers"`);
     });
 
     it('returns single model instance including single related instance', async () => {
@@ -82,7 +80,7 @@ export function hasManyInclusionResolverAcceptance(
         description: "Thor's Mjolnir",
       });
       const result = await customerRepo.find({
-        include: [{relation: 'orders'}],
+        include: ['orders'],
       });
 
       expect(toJSON(result)).to.deepEqual([
@@ -117,7 +115,7 @@ export function hasManyInclusionResolverAcceptance(
       });
 
       const result = await customerRepo.find({
-        include: [{relation: 'orders'}],
+        include: ['orders'],
       });
 
       const expected = [
@@ -169,7 +167,7 @@ export function hasManyInclusionResolverAcceptance(
       });
 
       const result = await customerRepo.findById(odin.id, {
-        include: [{relation: 'orders'}],
+        include: ['orders'],
       });
       const expected = {
         ...odin,
@@ -198,7 +196,7 @@ export function hasManyInclusionResolverAcceptance(
       });
 
       const found = await shipmentRepo.find({
-        include: [{relation: 'shipmentOrders'}],
+        include: ['shipmentOrders'],
       });
 
       expect(toJSON(found)).containDeep(
@@ -240,7 +238,7 @@ export function hasManyInclusionResolverAcceptance(
         const odinPizza = await orderRepo.findById(thorOrder.id);
 
         const result = await customerRepo.findById(odin.id, {
-          include: [{relation: 'orders'}],
+          include: ['orders'],
         });
         const expected = {
           ...odin,
@@ -283,7 +281,7 @@ export function hasManyInclusionResolverAcceptance(
         const odinPizza = await orderRepo.findById(thorOrder.id);
 
         const result = await customerRepo.find({
-          include: [{relation: 'orders'}],
+          include: ['orders'],
         });
         const expected = [
           {
@@ -323,7 +321,7 @@ export function hasManyInclusionResolverAcceptance(
       const odinPizza = await orderRepo.findById(thorOrder.id);
 
       const result = await customerRepo.find({
-        include: [{relation: 'orders'}],
+        include: ['orders'],
       });
       const expected = [
         {
@@ -357,7 +355,7 @@ export function hasManyInclusionResolverAcceptance(
       });
 
       const found = await customerRepo.findById(customerId, {
-        include: [{relation: 'orders'}],
+        include: ['orders'],
       });
       expect(found.orders).to.have.lengthOf(1);
 
@@ -383,10 +381,8 @@ export function hasManyInclusionResolverAcceptance(
       // unregister the resolver
       customerRepo.inclusionResolvers.delete('orders');
 
-      await expect(
-        customerRepo.find({include: [{relation: 'orders'}]}),
-      ).to.be.rejectedWith(
-        `Invalid "filter.include" entries: {"relation":"orders"}`,
+      await expect(customerRepo.find({include: ['orders']})).to.be.rejectedWith(
+        `Invalid "filter.include" entries: "orders"`,
       );
     });
   }

@@ -84,14 +84,7 @@ export class BasicStrategy implements AuthenticationStrategy {
         where: {
           email: username,
         },
-        include: [
-          {
-            relation: 'profiles',
-          },
-          {
-            relation: 'credentials',
-          },
-        ],
+        include: ['profiles', 'credentials'],
       })
       .then((users: User[]) => {
         if (!users || !users.length) {

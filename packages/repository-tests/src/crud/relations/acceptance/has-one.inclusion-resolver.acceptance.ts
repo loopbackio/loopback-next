@@ -68,10 +68,8 @@ export function hasOneInclusionResolverAcceptance(
         zipcode: '8200',
         customerId: customer.id,
       });
-      await expect(
-        customerRepo.find({include: [{relation: 'home'}]}),
-      ).to.be.rejectedWith(
-        `Invalid "filter.include" entries: {"relation":"home"}`,
+      await expect(customerRepo.find({include: ['home']})).to.be.rejectedWith(
+        `Invalid "filter.include" entries: "home"`,
       );
     });
 
@@ -85,7 +83,7 @@ export function hasOneInclusionResolverAcceptance(
         customerId: thor.id,
       });
       const result = await customerRepo.find({
-        include: [{relation: 'address'}],
+        include: ['address'],
       });
 
       const expected = {
@@ -115,7 +113,7 @@ export function hasOneInclusionResolverAcceptance(
       });
 
       const result = await customerRepo.find({
-        include: [{relation: 'address'}],
+        include: ['address'],
       });
 
       const expected = [
@@ -152,7 +150,7 @@ export function hasOneInclusionResolverAcceptance(
       });
 
       const result = await customerRepo.findById(odin.id, {
-        include: [{relation: 'address'}],
+        include: ['address'],
       });
       const expected = {
         ...odin,
@@ -175,10 +173,8 @@ export function hasOneInclusionResolverAcceptance(
       customerRepo.inclusionResolvers.delete('address');
 
       await expect(
-        customerRepo.find({include: [{relation: 'address'}]}),
-      ).to.be.rejectedWith(
-        `Invalid "filter.include" entries: {"relation":"address"}`,
-      );
+        customerRepo.find({include: ['address']}),
+      ).to.be.rejectedWith(`Invalid "filter.include" entries: "address"`);
     });
   }
 }

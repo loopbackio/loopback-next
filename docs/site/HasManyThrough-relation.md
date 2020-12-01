@@ -464,13 +464,13 @@ allows users to retrieve all doctors along with their related patients through
 the following code at the repository level:
 
 ```ts
-doctorRepository.find({include: [{relation: 'patients'}]});
+doctorRepository.find({include: ['patients']});
 ```
 
 or use APIs with controllers:
 
 ```
-GET http://localhost:3000/doctors?filter[include][][relation]=patients
+GET http://localhost:3000/doctors?filter[include][]=patients
 ```
 
 ### Enable/disable the inclusion resolvers
@@ -527,13 +527,13 @@ export class DoctorRepository extends DefaultCrudRepository<
   if you process data at the repository level:
 
   ```ts
-  doctorRepository.find({include: [{relation: 'patients'}]});
+  doctorRepository.find({include: ['patients']});
   ```
 
   this is the same as the url:
 
   ```
-  GET http://localhost:3000/doctors?filter[include][][relation]=patients
+  GET http://localhost:3000/doctors?filter[include][]=patients
   ```
 
   which returns:

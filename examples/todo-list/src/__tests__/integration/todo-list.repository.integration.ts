@@ -42,7 +42,7 @@ describe('TodoListRepository', () => {
     const todo = await givenTodoInstance(todoRepo, {todoListId: list.id});
 
     const response = await todoListRepo.find({
-      include: [{relation: 'todos'}],
+      include: ['todos'],
     });
 
     expect(toJSON(response)).to.deepEqual([
@@ -58,7 +58,7 @@ describe('TodoListRepository', () => {
     const todo = await givenTodoInstance(todoRepo, {todoListId: list.id});
 
     const response = await todoListRepo.findById(list.id, {
-      include: [{relation: 'todos'}],
+      include: ['todos'],
     });
 
     expect(toJSON(response)).to.deepEqual({
@@ -73,7 +73,7 @@ describe('TodoListRepository', () => {
 
     const response = await todoListRepo.findOne({
       where: {id: list.id},
-      include: [{relation: 'todos'}],
+      include: ['todos'],
     });
 
     expect(toJSON(response)).to.deepEqual({
@@ -89,7 +89,7 @@ describe('TodoListRepository', () => {
     });
 
     const response = await todoListRepo.find({
-      include: [{relation: 'image'}],
+      include: ['image'],
     });
 
     expect(toJSON(response)).to.deepEqual([
@@ -107,7 +107,7 @@ describe('TodoListRepository', () => {
     });
 
     const response = await todoListRepo.findById(list.id, {
-      include: [{relation: 'image'}],
+      include: ['image'],
     });
 
     expect(toJSON(response)).to.deepEqual({
@@ -123,7 +123,7 @@ describe('TodoListRepository', () => {
     });
 
     const response = await todoListRepo.findOne({
-      include: [{relation: 'image'}],
+      include: ['image'],
     });
 
     expect(toJSON(response)).to.deepEqual({
@@ -140,7 +140,7 @@ describe('TodoListRepository', () => {
     });
 
     const response = await todoListRepo.find({
-      include: [{relation: 'image'}, {relation: 'todos'}],
+      include: ['image', 'todos'],
     });
 
     expect(toJSON(response)).to.deepEqual([

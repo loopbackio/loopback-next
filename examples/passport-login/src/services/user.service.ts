@@ -89,11 +89,7 @@ export class PassportUserIdentityService
     }
     if (!userId) console.log('user id is empty');
     return this.userRepository.findById(parseInt(userId), {
-      include: [
-        {
-          relation: 'profiles',
-        },
-      ],
+      include: ['profiles'],
     });
   }
 

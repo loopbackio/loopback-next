@@ -425,7 +425,7 @@ describe('DefaultCrudRepository', () => {
 
         folderRepo.registerInclusionResolver('files', hasManyResolver);
 
-        const folders = await folderRepo.find({include: [{relation: 'files'}]});
+        const folders = await folderRepo.find({include: ['files']});
 
         expect(toJSON(folders)).to.deepEqual([
           {...createdFolders[0].toJSON(), files: [toJSON(files[0])]},
@@ -447,7 +447,7 @@ describe('DefaultCrudRepository', () => {
         fileRepo.registerInclusionResolver('folder', belongsToResolver);
 
         const file = await fileRepo.findById(1, {
-          include: [{relation: 'folder'}],
+          include: ['folder'],
         });
 
         expect(file.toJSON()).to.deepEqual({
@@ -470,7 +470,7 @@ describe('DefaultCrudRepository', () => {
         folderRepo.registerInclusionResolver('author', hasOneResolver);
 
         const folder = await folderRepo.findOne({
-          include: [{relation: 'author'}],
+          include: ['author'],
         });
 
         expect(folder!.toJSON()).to.deepEqual({

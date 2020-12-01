@@ -171,7 +171,7 @@ describe('TodoListApplication', () => {
   it('includes TodoList in query result', async () => {
     const list = await givenTodoListInstance(todoListRepo);
     const todo = await givenTodoInstance(todoRepo, {todoListId: list.id});
-    const filter = JSON.stringify({include: [{relation: 'todoList'}]});
+    const filter = JSON.stringify({include: ['todoList']});
 
     const response = await client.get('/todos').query({filter: filter});
 
