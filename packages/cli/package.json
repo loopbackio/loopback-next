@@ -30,7 +30,7 @@
     "pacote": "^11.1.13",
     "pluralize": "^8.0.0",
     "regenerate": "^1.4.2",
-    "semver": "^7.3.2",
+    "semver": "^7.3.4",
     "slash": "^3.0.0",
     "spdx-license-list": "^6.3.0",
     "stringify-object": "^3.3.0",
