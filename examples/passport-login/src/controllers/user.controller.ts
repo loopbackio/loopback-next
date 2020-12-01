@@ -141,11 +141,7 @@ export class UserLoginController {
     const user = await this.userRepository.findById(
       parseInt(profile[securityId]),
       {
-        include: [
-          {
-            relation: 'profiles',
-          },
-        ],
+        include: ['profiles'],
       },
     );
     return user.profiles;

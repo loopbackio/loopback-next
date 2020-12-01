@@ -4,16 +4,16 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
-  expect,
   createStubInstance,
+  expect,
   sinon,
   StubbedInstanceWithSinonAccessor,
 } from '@loopback/testlab';
 import {findByForeignKeys} from '../../../..';
 import {
-  ProductRepository,
-  Product,
   createProduct,
+  Product,
+  ProductRepository,
 } from './relations-helpers-fixtures';
 
 describe('findByForeignKeys', () => {
@@ -142,7 +142,7 @@ describe('findByForeignKeys', () => {
     await productRepo.create({id: 2, name: 'product', categoryId: 1});
     await findByForeignKeys(productRepo, 'categoryId', 1, {
       where: {id: 2},
-      include: [{relation: 'nested inclusion'}],
+      include: ['nested inclusion'],
     });
 
     sinon.assert.calledWithMatch(find, {
@@ -150,7 +150,7 @@ describe('findByForeignKeys', () => {
         categoryId: 1,
         id: 2,
       },
-      include: [{relation: 'nested inclusion'}],
+      include: ['nested inclusion'],
     });
   });
 });

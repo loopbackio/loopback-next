@@ -59,16 +59,14 @@ export function belongsToInclusionResolverAcceptance(
       await orderRepo.deleteAll();
     });
 
-    it('throws an error if it tries to query nonexists relation names', async () => {
+    it('throws an error if it tries to query nonexistent relation names', async () => {
       const customer = await customerRepo.create({name: 'customer'});
       await orderRepo.create({
         description: 'an order',
         customerId: customer.id,
       });
-      await expect(
-        orderRepo.find({include: [{relation: 'shipment'}]}),
-      ).to.be.rejectedWith(
-        `Invalid "filter.include" entries: {"relation":"shipment"}`,
+      await expect(orderRepo.find({include: ['shipment']})).to.be.rejectedWith(
+        `Invalid "filter.include" entries: "shipment"`,
       );
     });
 
@@ -79,7 +77,7 @@ export function belongsToInclusionResolverAcceptance(
         customerId: thor.id,
       });
       const result = await orderRepo.find({
-        include: [{relation: 'customer'}],
+        include: ['customer'],
       });
 
       const expected = {
@@ -107,7 +105,7 @@ export function belongsToInclusionResolverAcceptance(
       });
 
       const result = await orderRepo.find({
-        include: [{relation: 'customer'}],
+        include: ['customer'],
       });
 
       const expected = [
@@ -146,7 +144,7 @@ export function belongsToInclusionResolverAcceptance(
       });
 
       const result = await orderRepo.findById(odinOrder.id, {
-        include: [{relation: 'customer'}],
+        include: ['customer'],
       });
       const expected = {
         ...odinOrder,
@@ -194,7 +192,7 @@ export function belongsToInclusionResolverAcceptance(
         },
       ];
 
-      const result = await orderRepo.find({include: [{relation: 'customer'}]});
+      const result = await orderRepo.find({include: ['customer']});
       expect(toJSON(result)).to.deepEqual(toJSON(expected));
     });
 
@@ -207,10 +205,8 @@ export function belongsToInclusionResolverAcceptance(
       // unregister the resolver
       orderRepo.inclusionResolvers.delete('customer');
 
-      await expect(
-        orderRepo.find({include: [{relation: 'customer'}]}),
-      ).to.be.rejectedWith(
-        `Invalid "filter.include" entries: {"relation":"customer"}`,
+      await expect(orderRepo.find({include: ['customer']})).to.be.rejectedWith(
+        `Invalid "filter.include" entries: "customer"`,
       );
     });
   }

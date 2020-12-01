@@ -42,7 +42,7 @@ describe('TodoListImageRepository', () => {
     });
 
     const response = await todoListImageRepo.find({
-      include: [{relation: 'todoList'}],
+      include: ['todoList'],
     });
 
     expect(toJSON(response)).to.deepEqual([
@@ -60,7 +60,7 @@ describe('TodoListImageRepository', () => {
     });
 
     const response = await todoListImageRepo.findById(image.id, {
-      include: [{relation: 'todoList'}],
+      include: ['todoList'],
     });
 
     expect(toJSON(response)).to.deepEqual({
@@ -76,7 +76,7 @@ describe('TodoListImageRepository', () => {
     });
 
     const response = await todoListImageRepo.findOne({
-      include: [{relation: 'todoList'}],
+      include: ['todoList'],
     });
 
     expect(toJSON(response)).to.deepEqual({

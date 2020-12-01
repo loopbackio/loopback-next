@@ -250,7 +250,7 @@ export function hasManyRelationAcceptance(
       });
 
       const found = await customerRepo.findById(created.id, {
-        include: [{relation: 'orders'}],
+        include: ['orders'],
       });
       expect(found.orders).to.have.lengthOf(1);
 
@@ -292,7 +292,7 @@ export function hasManyRelationAcceptance(
       });
 
       const found = await customerRepo.findById(customer.id, {
-        include: [{relation: 'orders'}],
+        include: ['orders'],
       });
 
       await expect(customerRepo.delete(found)).to.be.rejectedWith(
