@@ -12,7 +12,7 @@ import {
   EntityCrudRepository,
   Filter,
   FilterBuilder,
-  Inclusion,
+  InclusionFilter,
   Options,
   Where,
 } from '..';
@@ -84,7 +84,7 @@ export async function includeRelatedModels<
 >(
   targetRepository: EntityCrudRepository<T, unknown, Relations>,
   entities: T[],
-  include?: Inclusion[],
+  include?: InclusionFilter[],
   options?: Options,
 ): Promise<(T & Relations)[]> {
   const result = entities as (T & Relations)[];
@@ -108,7 +108,10 @@ export async function includeRelatedModels<
   }
 
   const resolveTasks = include.map(async inclusionFilter => {
-    const relationName = inclusionFilter.relation;
+    const relationName =
+      typeof inclusionFilter === 'string'
+        ? inclusionFilter
+        : inclusionFilter.relation;
     const resolver = targetRepository.inclusionResolvers.get(relationName)!;
     const targets = await resolver(entities, inclusionFilter, options);
 
@@ -131,9 +134,9 @@ export async function includeRelatedModels<
  */
 function isInclusionAllowed<T extends Entity, Relations extends object = {}>(
   targetRepository: EntityCrudRepository<T, unknown, Relations>,
-  include: Inclusion,
+  include: InclusionFilter,
 ): boolean {
-  const relationName = include.relation;
+  const relationName = typeof include === 'string' ? include : include.relation;
   if (!relationName) {
     debug('isInclusionAllowed for %j? No: missing relation name', include);
     return false;

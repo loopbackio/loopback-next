@@ -66,7 +66,7 @@ export function hasManyInclusionResolverAcceptance(
       await orderRepo.deleteAll();
     });
 
-    it('include multiple relations', async () => {
+    it('includes multiple relations', async () => {
       const parent = await customerRepo.create({name: 'parent'});
       const customer = await customerRepo.create({
         name: 'customer',
@@ -86,6 +86,90 @@ export function hasManyInclusionResolverAcceptance(
 
       const result = await customerRepo.find({
         include: [{relation: 'orders'}, {relation: 'address'}],
+      });
+      const expected = [
+        {
+          ...parent,
+          parentId: features.emptyValue,
+          orders: [
+            {
+              ...order,
+              isShipped: features.emptyValue,
+              shipmentInfo: features.emptyValue,
+            },
+          ],
+          address: address,
+        },
+        {
+          ...customer,
+          parentId: features.emptyValue, //parent.id, // doesn't have any related models
+        },
+      ];
+      expect(toJSON(result)).to.deepEqual(toJSON(expected));
+    });
+
+    it('includes multiple relations with simplified syntax', async () => {
+      const parent = await customerRepo.create({name: 'parent'});
+      const customer = await customerRepo.create({
+        name: 'customer',
+        //parentId: parent.id,
+      });
+      const address = await addressRepo.create({
+        street: '8200 Warden',
+        city: 'Markham',
+        province: 'On',
+        zipcode: '8200',
+        customerId: parent.id,
+      });
+      const order = await orderRepo.create({
+        description: 'an order',
+        customerId: parent.id,
+      });
+
+      const result = await customerRepo.find({
+        include: ['orders', 'address'],
+      });
+      const expected = [
+        {
+          ...parent,
+          parentId: features.emptyValue,
+          orders: [
+            {
+              ...order,
+              isShipped: features.emptyValue,
+              shipmentInfo: features.emptyValue,
+            },
+          ],
+          address: address,
+        },
+        {
+          ...customer,
+          parentId: features.emptyValue, //parent.id, // doesn't have any related models
+        },
+      ];
+      expect(toJSON(result)).to.deepEqual(toJSON(expected));
+    });
+
+    it('includes multiple relations with mixed syntax', async () => {
+      const parent = await customerRepo.create({name: 'parent'});
+      const customer = await customerRepo.create({
+        name: 'customer',
+        //parentId: parent.id,
+      });
+      const address = await addressRepo.create({
+        street: '8200 Warden',
+        city: 'Markham',
+        province: 'On',
+        zipcode: '8200',
+        customerId: parent.id,
+      });
+      const order = await orderRepo.create({
+        description: 'an order',
+        customerId: parent.id,
+      });
+
+      const result = await customerRepo.find({
+        include: ['orders', {relation: 'address'}],
       });
       const expected = [
         {
@@ -172,7 +256,7 @@ export function hasManyInclusionResolverAcceptance(
       expect(toJSON(result)).to.deepEqual(toJSON(expected));
     });
 
-    it('throws if the custom scope contains nonexists relation name', async () => {
+    it('throws if the custom scope contains nonexistent relation name', async () => {
       const customer = await customerRepo.create({name: 'customer'});
       await orderRepo.create({
         description: 'order',

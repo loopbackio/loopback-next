@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Filter, Inclusion} from '@loopback/filter';
+import {Filter, InclusionFilter} from '@loopback/filter';
 import debugFactory from 'debug';
 import {AnyObject, Options} from '../../common-types';
 import {Entity} from '../../model';
@@ -52,7 +52,7 @@ export function createHasManyThroughInclusionResolver<
 
   return async function fetchHasManyThroughModels(
     entities: Entity[],
-    inclusion: Inclusion,
+    inclusion: InclusionFilter,
     options?: Options,
   ): Promise<((Target & TargetRelations)[] | undefined)[]> {
     if (!entities.length) return [];
@@ -104,6 +104,9 @@ export function createHasManyThroughInclusionResolver<
 
     const result = [];
 
+    const scope =
+      typeof inclusion === 'string' ? {} : (inclusion.scope as Filter<Target>);
+
     // convert from through entities to the target entities
     for (const entityList of throughResult) {
       if (entityList) {
@@ -115,13 +118,7 @@ export function createHasManyThroughInclusionResolver<
           Target,
           TargetRelations,
           StringKeyOf<Target>
-        >(
-          targetRepo,
-          targetKey,
-          (targetIds as unknown) as [],
-          inclusion.scope as Filter<Target>,
-          options,
-        );
+        >(targetRepo, targetKey, (targetIds as unknown) as [], scope, options);
         result.push(targetEntityList);
       } else {
         // no entities found, add undefined to results

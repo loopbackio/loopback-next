@@ -553,9 +553,6 @@ export class DoctorRepository extends DefaultCrudRepository<
   ];
   ```
 
-{% include note.html content="The query syntax is a slightly different from LB3. We are also working on simplifying the query syntax. Check our GitHub issue for more information:
-[Simpler Syntax for Inclusion](https://github.com/strongloop/loopback-next/issues/3205)" %}
-
 - You can delete a relation from `inclusionResolvers` to disable the inclusion
   for a certain relation. e.g
   `doctorRepository.inclusionResolvers.delete('patients')`

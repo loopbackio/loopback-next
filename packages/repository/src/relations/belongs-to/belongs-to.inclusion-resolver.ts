@@ -3,9 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {Filter, InclusionFilter} from '@loopback/filter';
 import {AnyObject, Options} from '../../common-types';
 import {Entity} from '../../model';
-import {Filter, Inclusion} from '@loopback/filter';
 import {EntityCrudRepository} from '../../repositories/repository';
 import {
   deduplicate,
@@ -44,7 +44,7 @@ export function createBelongsToInclusionResolver<
 
   return async function fetchIncludedModels(
     entities: Entity[],
-    inclusion: Inclusion,
+    inclusion: InclusionFilter,
     options?: Options,
   ): Promise<((Target & TargetRelations) | undefined)[]> {
     if (!entities.length) return [];
@@ -54,12 +54,15 @@ export function createBelongsToInclusionResolver<
     const targetKey = relationMeta.keyTo as StringKeyOf<Target>;
     const dedupedSourceIds = deduplicate(sourceIds);
 
+    const scope =
+      typeof inclusion === 'string' ? {} : (inclusion.scope as Filter<Target>);
+
     const targetRepo = await getTargetRepo();
     const targetsFound = await findByForeignKeys(
       targetRepo,
       targetKey,
       dedupedSourceIds.filter(e => e),
-      inclusion.scope as Filter<Target>,
+      scope,
       options,
     );
 
