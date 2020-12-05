@@ -130,6 +130,9 @@ value is provided.
  The type name is case-insensitive; so for example you can use either \"Number\" or \"number\".
 " %}
 
+{% include note.html content="`GeoPoint` is not supported. See GitHub issue
+[#1981](https://github.com/strongloop/loopback-next/issues/1981)" %}
+
 ## Array types
 
 The following are examples of how you can define array type properties:
