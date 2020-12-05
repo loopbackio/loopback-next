@@ -31,6 +31,6 @@ corresponding options.
   - if the `authorizer` function returns `ALLOW`, but voter 1 in authorize
     decorator returns `ABSTAIN` and voter 2 in decorator returns `DENY`.
   - In this case, if the options provided while
-    [registering the authorization component](#authorization-component),
+    [registering the authorization component](Authorization-component.md),
     provides precedence as `DENY`, then the access for the subject is denied to
     the endpoint.

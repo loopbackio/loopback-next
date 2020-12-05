@@ -26,9 +26,9 @@ class.
   ```
 
 - The authorization `options` are provided specifically for enforcing the
-  [decision matrix](#authorization-by-decision-matrix), which is used to combine
-  voters from all `authorize` functions. The options are described per the
-  interface AuthorizationOptions.
+  [decision matrix](Authorization-component-decision-matrix.md), which is used
+  to combine voters from all `authorize` functions. The options are described
+  per the interface AuthorizationOptions.
 
   ```ts
   export interface AuthorizationOptions {

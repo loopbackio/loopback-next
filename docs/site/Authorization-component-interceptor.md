@@ -18,4 +18,4 @@ The `Authorization interceptor` enforces authorization with user-provided
   collects `voters` provided in the `@authorize` decorator of the endpoint.
 - It executes each of the above collected functions provided by the user.
 - Based on the result of all functions it enforces access/privilege control
-  using [a decision matrix](#authorization-by-decision-matrix).
+  using [a decision matrix](Authorization-component-decision-matrix.md).
