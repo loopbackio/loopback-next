@@ -30,9 +30,8 @@ by the users.
 A `Principal` could be a User, Application or Device. The `Principal` is
 identified from the credential provided by a client, by the configured
 `Authentication strategy` of the endpoint
-([see, LoopBack Authentication](https://loopback.io/doc/en/lb4/Loopback-component-authentication.html)).
-Access rights of the client is either associated with or included in the
-credential.
+([see, LoopBack Authentication](Loopback-component-authentication.md)). Access
+rights of the client is either associated with or included in the credential.
 
 The `Principal` is then used by LoopBack's authorization mechanism to enforce
 necessary privileges/access rights by using the permissions annotated by the
