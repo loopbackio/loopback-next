@@ -13,6 +13,7 @@ const utils = require('../../lib/utils');
 const SCRIPT_TEMPLATE = 'observer-template.ts.ejs';
 const g = require('../../lib/globalize');
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 module.exports = class ObserverGenerator extends ArtifactGenerator {
   // Note: arguments and options should be defined in the constructor.
   constructor(args, opts) {

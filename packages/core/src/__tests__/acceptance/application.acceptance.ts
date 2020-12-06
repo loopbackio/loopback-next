@@ -87,6 +87,7 @@ describe('Bootstrapping the application', () => {
     it('injects component dependencies', () => {
       class ConfigComponent {
         providers = {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           greetBriefly: class HelloProvider {
             value() {
               return true;

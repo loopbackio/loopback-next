@@ -12,6 +12,7 @@ const cliVersion = require('../package.json').version;
 const path = require('path');
 const g = require('./globalize');
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 module.exports = class ProjectGenerator extends BaseGenerator {
   // Note: arguments and options should be defined in the constructor.
   constructor(args, opts) {

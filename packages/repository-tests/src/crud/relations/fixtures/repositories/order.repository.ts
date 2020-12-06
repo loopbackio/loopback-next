@@ -15,6 +15,7 @@ import {Customer, Order, OrderRelations, Shipment} from '../models';
 
 // create the OrderRepo by calling this func so that it can be extended from CrudRepositoryCtor
 export function createOrderRepo(repoClass: CrudRepositoryCtor) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   return class OrderRepository extends repoClass<
     Order,
     typeof Order.prototype.id,

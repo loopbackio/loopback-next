@@ -14,6 +14,7 @@ import {Address, AddressRelations, Customer} from '../models';
 import {CrudRepositoryCtor} from '../../../..';
 
 export function createAddressRepo(repoClass: CrudRepositoryCtor) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   return class AddressRepository extends repoClass<
     Address,
     typeof Address.prototype.id,

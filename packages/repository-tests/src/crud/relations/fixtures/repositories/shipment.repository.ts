@@ -15,6 +15,7 @@ import {CrudRepositoryCtor} from '../../../..';
 
 // create the ShipmentRepo by calling this func so that it can be extended from CrudRepositoryCtor
 export function createShipmentRepo(repoClass: CrudRepositoryCtor) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   return class ShipmentRepository extends repoClass<
     Shipment,
     typeof Shipment.prototype.id,

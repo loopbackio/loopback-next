@@ -53,6 +53,7 @@ describe('booter-utils unit tests', () => {
 
   describe('isClass()', () => {
     it('returns true given a class', () => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       expect(isClass(class Thing {})).to.be.True();
     });
   });

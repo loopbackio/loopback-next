@@ -9,6 +9,7 @@ import {UserLink, UserLinkRelations} from '../models';
 
 // create the UserLinkRepo by calling this func so that it can be extended from CrudRepositoryCtor
 export function createUserLinkRepo(repoClass: CrudRepositoryCtor) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   return class UerLinkRepository extends repoClass<
     UserLink,
     typeof UserLink.prototype.id,

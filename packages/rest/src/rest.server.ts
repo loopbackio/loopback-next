@@ -134,11 +134,11 @@ export class RestServer
    * @param res - The response.
    */
 
-  protected _OASEnhancer: OASEnhancerService;
+  protected oasEnhancerService: OASEnhancerService;
   // eslint-disable-next-line @typescript-eslint/naming-convention
   public get OASEnhancer(): OASEnhancerService {
     this._setupOASEnhancerIfNeeded();
-    return this._OASEnhancer;
+    return this.oasEnhancerService;
   }
 
   protected _requestHandler: HttpRequestListener;
@@ -244,13 +244,15 @@ export class RestServer
   }
 
   protected _setupOASEnhancerIfNeeded() {
-    if (this._OASEnhancer != null) return;
+    if (this.oasEnhancerService != null) return;
     this.add(
       createBindingFromClass(OASEnhancerService, {
         key: OASEnhancerBindings.OAS_ENHANCER_SERVICE,
       }),
     );
-    this._OASEnhancer = this.getSync(OASEnhancerBindings.OAS_ENHANCER_SERVICE);
+    this.oasEnhancerService = this.getSync(
+      OASEnhancerBindings.OAS_ENHANCER_SERVICE,
+    );
   }
 
   protected _setupRequestHandlerIfNeeded() {
