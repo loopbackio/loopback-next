@@ -15,6 +15,7 @@ const g = require('../../lib/globalize');
 
 const rootDir = 'src';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 module.exports = class DiscoveryGenerator extends ArtifactGenerator {
   constructor(args, opts) {
     super(args, opts);

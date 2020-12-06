@@ -22,6 +22,7 @@ debug('Is stdin interactive (isTTY)?', process.stdin.isTTY);
 /**
  * Base Generator for LoopBack 4
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 module.exports = class BaseGenerator extends Generator {
   // Note: arguments and options should be defined in the constructor.
   constructor(args, opts) {

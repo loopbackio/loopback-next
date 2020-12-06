@@ -12,6 +12,7 @@ const _ = require('lodash');
 const chalk = require('chalk');
 const autocomplete = require('inquirer-autocomplete-prompt');
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 module.exports = class CopyrightGenerator extends BaseGenerator {
   // Note: arguments and options should be defined in the constructor.
   constructor(args, opts) {

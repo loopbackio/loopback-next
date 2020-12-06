@@ -10,6 +10,7 @@ const g = require('../../lib/globalize');
 const link = require('terminal-link');
 const chalk = require('chalk');
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 module.exports = class UpdateGenerator extends BaseGenerator {
   // Note: arguments and options should be defined in the constructor.
   constructor(args, opts) {
