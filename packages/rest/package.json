@@ -47,7 +47,7 @@
     "debug": "^4.3.1",
     "express": "^4.17.1",
     "http-errors": "^1.8.0",
-    "js-yaml": "^3.14.0",
+    "js-yaml": "^3.14.1",
     "json-schema-compare": "^0.2.2",
     "lodash": "^4.17.20",
     "on-finished": "^2.3.0",
