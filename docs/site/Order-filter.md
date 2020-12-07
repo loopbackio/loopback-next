@@ -17,7 +17,7 @@ descending (DESC) based on the specified property.
 Order by one property:
 
 <pre>
-{order: '<i>propertyName</i> <ASC|DESC>'}
+{order: ['<i>propertyName</i> <ASC|DESC>']}
 </pre>
 
 Order by two or more properties:
@@ -67,7 +67,7 @@ Return the three most expensive items, sorted by the `price` property:
 
 ```ts
 await itemRepository.find({
-  order: 'price DESC',
+  order: ['price DESC'],
   limit: 3,
 });
 ```
