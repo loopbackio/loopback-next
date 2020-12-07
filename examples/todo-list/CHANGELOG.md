@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.7.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo-list@3.6.2...@loopback/example-todo-list@3.7.0) (2020-12-07)
+
+
+### Bug Fixes
+
+* **example-todo-list:** update todo-list-tutorial-relations.md ([b064a39](https://github.com/strongloop/loopback-next/commit/b064a39812d13ed2d4c4d66f27932b145f84b58c)), closes [#6733](https://github.com/strongloop/loopback-next/issues/6733)
+
+
+### Features
+
+* leverage simpler syntax for inclusion ([3bcc61c](https://github.com/strongloop/loopback-next/commit/3bcc61c420672b81e4639e0e0fc7e92035e41219))
+
+
+
+
+
 ## [3.6.2](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo-list@3.6.1...@loopback/example-todo-list@3.6.2) (2020-11-18)
 
 **Note:** Version bump only for package @loopback/example-todo-list

@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.20.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.19.0...@loopback/docs@3.20.0) (2020-12-07)
+
+
+### Bug Fixes
+
+* **docs:** remove note about explorer filter not working ([e0adbff](https://github.com/strongloop/loopback-next/commit/e0adbffd709165afdd3059444b29043920447f06))
+* **example-todo-list:** update todo-list-tutorial-relations.md ([b064a39](https://github.com/strongloop/loopback-next/commit/b064a39812d13ed2d4c4d66f27932b145f84b58c)), closes [#6733](https://github.com/strongloop/loopback-next/issues/6733)
+
+
+### Features
+
+* leverage simpler syntax for inclusion ([3bcc61c](https://github.com/strongloop/loopback-next/commit/3bcc61c420672b81e4639e0e0fc7e92035e41219))
+* **filter:** introduce simpler syntax for inclusion ([2fe32ac](https://github.com/strongloop/loopback-next/commit/2fe32ac0f9c820ff1df242ea6e32c972a4dee383))
+
+
+
+
+
 # [3.19.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.18.0...@loopback/docs@3.19.0) (2020-11-18)
 
 

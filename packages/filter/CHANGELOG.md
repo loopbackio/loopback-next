@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/filter@1.2.1...@loopback/filter@1.3.0) (2020-12-07)
+
+
+### Features
+
+* **filter:** introduce simpler syntax for inclusion ([2fe32ac](https://github.com/strongloop/loopback-next/commit/2fe32ac0f9c820ff1df242ea6e32c972a4dee383))
+
+
+
+
+
 ## [1.2.1](https://github.com/strongloop/loopback-next/compare/@loopback/filter@1.2.0...@loopback/filter@1.2.1) (2020-11-18)
 
 **Note:** Version bump only for package @loopback/filter

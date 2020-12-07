@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.15.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository-tests@0.14.2...@loopback/repository-tests@0.15.0) (2020-12-07)
+
+
+### Features
+
+* leverage simpler syntax for inclusion ([3bcc61c](https://github.com/strongloop/loopback-next/commit/3bcc61c420672b81e4639e0e0fc7e92035e41219))
+* **filter:** introduce simpler syntax for inclusion ([2fe32ac](https://github.com/strongloop/loopback-next/commit/2fe32ac0f9c820ff1df242ea6e32c972a4dee383))
+
+
+
+
+
 ## [0.14.2](https://github.com/strongloop/loopback-next/compare/@loopback/repository-tests@0.14.1...@loopback/repository-tests@0.14.2) (2020-11-18)
 
 **Note:** Version bump only for package @loopback/repository-tests

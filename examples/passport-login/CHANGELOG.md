@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.9.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-passport-login@1.8.1...@loopback/example-passport-login@1.9.0) (2020-12-07)
+
+
+### Features
+
+* leverage simpler syntax for inclusion ([3bcc61c](https://github.com/strongloop/loopback-next/commit/3bcc61c420672b81e4639e0e0fc7e92035e41219))
+
+
+
+
+
 ## [1.8.1](https://github.com/strongloop/loopback-next/compare/@loopback/example-passport-login@1.8.0...@loopback/example-passport-login@1.8.1) (2020-11-18)
 
 **Note:** Version bump only for package @loopback/example-passport-login
