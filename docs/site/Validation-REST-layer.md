@@ -178,6 +178,11 @@ of 10 digits separated by `-` after the 3rd and 6th digits.
 
 ## Customize validation errors
 
+{% include note.html content="This section describes customization for legacy
+[Action-based sequences](./REST-Action-sequence.md). Most LoopBack 4
+applications utilize the new
+[Middleware-based sequences](./REST-Middleware-sequence.md)." %}
+
 Since the error is being caught at the REST layer, the simplest way to customize
 the errors is to customize the
 [sequence](https://loopback.io/doc/en/lb4/Sequence.html). It exists in all
