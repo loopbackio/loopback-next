@@ -42,7 +42,7 @@
   },
   "dependencies": {
     "@loopback/http-server": "^2.3.3",
-    "@types/cors": "^2.8.8",
+    "@types/cors": "^2.8.9",
     "@types/lodash": "^4.14.165",
     "cors": "^2.8.5",
     "debug": "^4.3.1",
