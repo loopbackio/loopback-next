@@ -22,6 +22,7 @@ cache:
 
 before_install:
   - npm i -g yarn
+  - yarn --version
   - |
     NPMVER=`npm --version`
     if [ ${NPMVER/\.*/} = 7 ]
@@ -31,6 +32,7 @@ before_install:
     else
       echo "Using bundled npm version $NPMVER"
     fi
+  - npm --version
 
 install: npm ci --ignore-scripts
 
