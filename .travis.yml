@@ -20,7 +20,17 @@ env: TASK=test NODE_OPTIONS="--max-old-space-size=2048"
 cache:
   yarn: true
 
-before_install: npm i -g yarn
+before_install:
+  - npm i -g yarn
+  - |
+    NPMVER=`npm --version`
+    if [ ${NPMVER/\.*/} = 7 ]
+    then
+      echo "Downgrading bundled npm version $NPMVER to v6"
+      npm i -g npm@6
+    else
+      echo "Using bundled npm version $NPMVER"
+    fi
 
 install: npm ci --ignore-scripts
 
