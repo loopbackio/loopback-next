@@ -41,11 +41,11 @@ if you are interested in a version that's less frequently changed.
 We are providing Maintenance support for
 [LoopBack 3](https://loopback.io/doc/en/lb3/) until December 2020.
 
-| Version    | Status          | Published | EOL                  |
-| ---------- | --------------- | --------- | -------------------- |
-| LoopBack 4 | Current         | Oct 2018  | Apr 2023 _(minimum)_ |
-| LoopBack 3 | Maintenance LTS | Dec 2016  | Dec 2020             |
-| LoopBack 2 | End-of-Life     | Jul 2014  | Apr 2019             |
+| Version    | Status      | Published | EOL                  |
+| ---------- | ----------- | --------- | -------------------- |
+| LoopBack 4 | Current     | Oct 2018  | Apr 2023 _(minimum)_ |
+| LoopBack 3 | End-of-Life | Dec 2016  | Dec 2020             |
+| LoopBack 2 | End-of-Life | Jul 2014  | Apr 2019             |
 
 Please refer to our
 [Long Term Support Policy](https://loopback.io/doc/en/contrib/Long-term-support.html)
