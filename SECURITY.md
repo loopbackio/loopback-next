@@ -8,7 +8,7 @@ LoopBack implements the
 | Version    | Supported          |
 | ---------- | ------------------ |
 | LoopBack 4 | :white_check_mark: |
-| LoopBack 3 | :white_check_mark: |
+| LoopBack 3 | :x:                |
 | LoopBack 2 | :x:                |
 
 <details>
