@@ -3,7 +3,7 @@
   "version": "0.1.13",
   "description": "An internal application to mock the OAuth2 authorization flow login with a social app like facebook, google etc",
   "engines": {
-    "node": "^10.16 || 12 || 14"
+    "node": "^10.16 || 12 || 14 || 15"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
