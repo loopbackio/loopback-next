@@ -3,7 +3,7 @@
   "version": "0.1.2",
   "description": "LoopBack's WebSocket server based on socket.io",
   "engines": {
-    "node": "^10.16 || 12 || 14"
+    "node": "^10.16 || 12 || 14 || 15"
   },
   "types": "dist/index.d.ts",
   "main": "dist/index.js",

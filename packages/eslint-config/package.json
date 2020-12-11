@@ -3,7 +3,7 @@
   "version": "10.0.4",
   "description": "ESLint configuration for LoopBack projects",
   "engines": {
-    "node": "^10.16 || 12 || 14"
+    "node": "^10.16 || 12 || 14 || 15"
   },
   "main": "eslintrc.js",
   "author": "IBM Corp.",
