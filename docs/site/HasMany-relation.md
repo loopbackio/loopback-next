@@ -513,13 +513,13 @@ allows users to retrieve all customers along with their related orders through
 the following code at the repository level:
 
 ```ts
-customerRepo.find({include: ['orders']});
+customerRepo.find({include: [{ relation: 'orders' }]});
 ```
 
 or use APIs with controllers:
 
 ```
-GET http://localhost:3000/customers?filter[include][]=orders
+GET http://localhost:3000/customers?filter[include][0][relation]=orders
 ```
 
 ### Enable/disable the inclusion resolvers
@@ -565,13 +565,13 @@ export class CustomerRepository extends DefaultCrudRepository {
   if you process data at the repository level:
 
   ```ts
-  customerRepository.find({include: ['orders']});
+  customerRepository.find({include: [{ relation: 'orders' }]});
   ```
 
   this is the same as the url:
 
   ```
-  GET http://localhost:3000/customers?filter[include][]=orders
+  GET http://localhost:3000/customers?filter[include][0][relation]=orders
   ```
 
   which returns:
@@ -618,7 +618,7 @@ To query **multiple relations**, for example, return all customers including
 their orders and address, in Node API:
 
 ```ts
-customerRepo.find({include: ['orders', 'address']});
+customerRepo.find({include: [{ relation: 'orders' }, { relation: 'address' }]});
 ```
 
 Equivalently, with url, you can do:
@@ -663,7 +663,7 @@ customerRepo.find({
     {
       relation: 'orders',
       scope: {
-        include: ['manufacturers'],
+        include: [{ relation: 'manufacturers' }],
       },
     },
   ],
@@ -722,7 +722,7 @@ customerRepo.find({
       relation: 'orders',
       scope: {
         where: {name: 'ToysRUs'},
-        include: ['manufacturers'],
+        include: [{ relation: 'manufacturers' }],
       },
     },
   ],
