@@ -64,4 +64,4 @@ To view the completed file, see the
 
 Previous step: [Add TodoList model](todo-list-tutorial-model.md)
 
-Last step: [Add Model Relations](todo-list-tutorial-relations.md)
+Next step: [Add Model Relations](todo-list-tutorial-relations.md)
