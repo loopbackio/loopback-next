@@ -47,6 +47,9 @@ this.configure(MetricsBindings.COMPONENT).to({
 });
 ```
 
+{% include note.html content="this.configure() must be called before
+this.component() to take effect." %}
+
 It also has to be noted, that by default the OpenAPI spec is disabled and
 therefore the metrics endpoint will not be visible in the API explorer. The spec
 can be enabled by setting `openApiSpec` to `true`.

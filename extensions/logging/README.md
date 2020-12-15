@@ -79,6 +79,9 @@ app.configure(LoggingBindings.COMPONENT).to({
 });
 ```
 
+{% include note.html content="this.configure() must be called before
+this.component() to take effect." %}
+
 - `enableFluent`: Enable logs to be sent to Fluentd
 - `enableHttpAccessLog`: Enable all http requests to be logged via a global
   interceptor

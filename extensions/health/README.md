@@ -11,8 +11,6 @@ npm install --save @loopback/health
 
 ## Basic use
 
-{% include note.html content="*this.configure()* must be called before *this.component()* to take effect. This is a [known limitation](https://github.com/strongloop/loopback-next/issues/4289#issuecomment-564617263)." %}
-
 The component should be loaded in the constructor of your custom Application
 class.
 
@@ -43,6 +41,11 @@ this.configure(HealthBindings.COMPONENT).to({
   readyPath: '/ready',
 });
 ```
+
+{% include note.html content="*this.configure()* must be called before
+*this.component()* to take effect. This is a
+[known limitation](https://github.com/strongloop/loopback-next/issues/4289#issuecomment-564617263)
+." %}
 
 http://localhost:3000/health returns health in JSON format, such as:
 
