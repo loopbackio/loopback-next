@@ -43,7 +43,7 @@ Order by one property:
 Order by two or more properties:
 
 <pre>
-?filter[order][0]=<i>propertyName</i>%20<ASC|DESC>&filter[order][1]=<i>propertyName</i>%20<ASC|DESC>...
+?filter[order][0]=<i>propertyName</i> <ASC|DESC>&filter[order][1]=<i>propertyName</i> <ASC|DESC>...
 </pre>
 
 Where:
