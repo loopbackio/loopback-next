@@ -95,10 +95,10 @@ applications can use them.
 
 Start the new LB4 application
 
-    ```sh
-    $ npm start
-    Server is running at http://127.0.0.1:3000
-    ```
+```sh
+$ npm start
+Server is running at http://127.0.0.1:3000
+```
 
 Open the URL printed to console to view your front-end served from `public`
 directory or go to `http://127.0.0.1:3000/explorer` to explore the REST API.
