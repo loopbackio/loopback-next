@@ -181,9 +181,6 @@ module.exports = class BaseRelationGenerator extends ArtifactGenerator {
       this.artifactInfo.throughRepoClassName = utils.toClassName(
         options.throughModel + 'Repository',
       );
-      this.artifactInfo.throughModelPrimaryKey = options.throughModelPrimaryKey;
-      this.artifactInfo.throughModelPrimaryKeyType =
-        options.throughModelPrimaryKeyType;
     }
 
     // relation configuration
