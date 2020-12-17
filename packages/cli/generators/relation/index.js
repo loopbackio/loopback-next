@@ -24,15 +24,6 @@ const g = require('../../lib/globalize');
 const ERROR_INCORRECT_RELATION_TYPE = g.f('Incorrect relation type');
 const ERROR_MODEL_DOES_NOT_EXIST = g.f('model does not exist.');
 const ERROR_NO_MODELS_FOUND = g.f('No models found in');
-const ERROR_SOURCE_MODEL_PRIMARY_KEY_DOES_NOT_EXIST = g.f(
-  'Source model primary key does not exist.',
-);
-const ERROR_DESTINATION_MODEL_PRIMARY_KEY_DOES_NOT_EXIST = g.f(
-  'Target model primary key does not exist.',
-);
-const ERROR_THROUGH_MODEL_PRIMARY_KEY_DOES_NOT_EXIST = g.f(
-  'Through model primary key does not exist.',
-);
 const ERROR_REPOSITORY_DOES_NOT_EXIST = g.f(
   'class does not exist. Please create repository first with "lb4 repository" command.',
 );
@@ -87,6 +78,30 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
       type: String,
       required: false,
       description: g.f('Through model'),
+    });
+
+    this.option('sourceModelPrimaryKey', {
+      type: String,
+      required: false,
+      description: g.f('Primary key on source model'),
+    });
+
+    this.option('sourceModelPrimaryKeyType', {
+      type: String,
+      required: false,
+      description: g.f('Type of the primary key on source model'),
+    });
+
+    this.option('destinationModelPrimaryKey', {
+      type: String,
+      required: false,
+      description: g.f('Primary key on destination model'),
+    });
+
+    this.option('destinationModelPrimaryKeyType', {
+      type: String,
+      required: false,
+      description: g.f('Type of the primary key on destination model'),
     });
 
     this.option('sourceKeyOnThrough', {
@@ -371,74 +386,133 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
   async promptForeignKey() {
     if (this.shouldExit()) return false;
 
-    this.artifactInfo.sourceModelPrimaryKey = await relationUtils.getModelPrimaryKeyProperty(
-      this.fs,
-      this.artifactInfo.modelDir,
-      this.artifactInfo.sourceModel,
-    );
+    if (this.options.sourceModelPrimaryKey) {
+      this.artifactInfo.sourceModelPrimaryKey = this.options.sourceModelPrimaryKey;
+    }
+    if (this.options.sourceModelPrimaryKeyType) {
+      this.artifactInfo.sourceModelPrimaryKeyType = this.options.sourceModelPrimaryKeyType;
+    }
+    if (this.options.destinationModelPrimaryKey) {
+      this.artifactInfo.destinationModelPrimaryKey = this.options.destinationModelPrimaryKey;
+    }
+    if (this.options.destinationModelPrimaryKeyType) {
+      this.artifactInfo.destinationModelPrimaryKeyType = this.options.destinationModelPrimaryKeyType;
+    }
+
     if (!this.artifactInfo.sourceModelPrimaryKey) {
-      /* istanbul ignore next */
-      return this.exit(
-        new Error(ERROR_SOURCE_MODEL_PRIMARY_KEY_DOES_NOT_EXIST),
-      );
-    } else {
-      this.artifactInfo.sourceModelPrimaryKeyType = relationUtils.getModelPropertyType(
+      const sourceModelPK = await relationUtils.getModelPrimaryKeyProperty(
+        this.fs,
         this.artifactInfo.modelDir,
         this.artifactInfo.sourceModel,
-        this.artifactInfo.sourceModelPrimaryKey,
       );
+      if (sourceModelPK) {
+        this.artifactInfo.sourceModelPrimaryKey = sourceModelPK;
+        if (!this.artifactInfo.sourceModelPrimaryKeyType) {
+          const sourceModelPKType = relationUtils.getModelPropertyType(
+            this.artifactInfo.modelDir,
+            this.artifactInfo.sourceModel,
+            this.artifactInfo.sourceModelPrimaryKey,
+          );
+          if (sourceModelPKType) {
+            this.artifactInfo.sourceModelPrimaryKeyType = sourceModelPKType;
+          }
+        }
+      } else {
+        const answer = await this.prompt([
+          {
+            type: 'input',
+            name: 'sourceModelPrimaryKey',
+            message: g.f(
+              'What is the name of ID property of the source model?',
+            ),
+            when: this.artifactInfo.sourceModelPrimaryKey === undefined,
+            default: 'id',
+          },
+        ]);
+        this.artifactInfo.sourceModelPrimaryKey = answer.sourceModelPrimaryKey;
+      }
+    }
+    if (!this.artifactInfo.sourceModelPrimaryKeyType) {
+      const answer = await this.prompt([
+        {
+          type: 'list',
+          name: 'sourceModelPrimaryKeyType',
+          message: g.f('What is the type of the source model primary key?'),
+          choices: ['number', 'string', 'object'],
+          when: this.artifactInfo.sourceModelPrimaryKeyType === undefined,
+          default: 'number',
+        },
+      ]);
+      this.artifactInfo.sourceModelPrimaryKeyType =
+        answer.sourceModelPrimaryKeyType;
     }
 
-    this.artifactInfo.destinationModelPrimaryKey = await relationUtils.getModelPrimaryKeyProperty(
-      this.fs,
-      this.artifactInfo.modelDir,
-      this.artifactInfo.destinationModel,
+    debug(
+      `source model primary key and type: ${this.artifactInfo.destinationModelPrimaryKey}
+      ${this.artifactInfo.destinationModelPrimaryKeyType}`,
     );
+
     if (!this.artifactInfo.destinationModelPrimaryKey) {
-      /* istanbul ignore next */
-      return this.exit(
-        new Error(ERROR_DESTINATION_MODEL_PRIMARY_KEY_DOES_NOT_EXIST),
-      );
-    } else {
-      this.artifactInfo.destinationModelPrimaryKeyType = relationUtils.getModelPropertyType(
+      const destModelPK = await relationUtils.getModelPrimaryKeyProperty(
+        this.fs,
         this.artifactInfo.modelDir,
         this.artifactInfo.destinationModel,
-        this.artifactInfo.destinationModelPrimaryKey,
       );
+      if (destModelPK) {
+        this.artifactInfo.destinationModelPrimaryKey = destModelPK;
+        if (!this.artifactInfo.destinationModelPrimaryKeyType) {
+          const destModelPKType = relationUtils.getModelPropertyType(
+            this.artifactInfo.modelDir,
+            this.artifactInfo.destinationModel,
+            this.artifactInfo.destinationModelPrimaryKey,
+          );
+          if (destModelPKType) {
+            this.artifactInfo.destinationModelPrimaryKeyType = destModelPKType;
+          }
+        }
+      } else {
+        const answer = await this.prompt([
+          {
+            type: 'input',
+            name: 'destinationModelPrimaryKey',
+            message: g.f(
+              'What is the name of ID property of the target model?',
+            ),
+            when: this.artifactInfo.destinationModelPrimaryKey === undefined,
+            default: 'id',
+          },
+        ]);
+        this.artifactInfo.destinationModelPrimaryKey =
+          answer.destinationModelPrimaryKey;
+      }
+    }
+    if (!this.artifactInfo.destinationModelPrimaryKeyType) {
+      const answer = await this.prompt([
+        {
+          type: 'list',
+          name: 'destinationModelPrimaryKeyType',
+          message: g.f('What is the type of the target model primary key?'),
+          choices: ['number', 'string', 'object'],
+          when: this.artifactInfo.destinationModelPrimaryKeyType === undefined,
+          default: 'number',
+        },
+      ]);
+      this.artifactInfo.destinationModelPrimaryKeyType =
+        answer.destinationModelPrimaryKeyType;
     }
 
-    // for controller usage;
-    this.artifactInfo.targetModelPrimaryKey = await relationUtils.getModelPrimaryKeyProperty(
-      this.fs,
-      this.artifactInfo.modelDir,
-      this.artifactInfo.destinationModel,
+    debug(
+      `destination model primary key and type: ${this.artifactInfo.destinationModelPrimaryKey}
+      ${this.artifactInfo.destinationModelPrimaryKeyType}`,
     );
 
     // checks fks for hasManyThrough
     if (this.artifactInfo.relationType === 'hasManyThrough') {
-      this.artifactInfo.throughModelPrimaryKey = await relationUtils.getModelPrimaryKeyProperty(
-        this.fs,
-        this.artifactInfo.modelDir,
-        this.artifactInfo.throughModel,
-      );
-      if (this.artifactInfo.throughModelPrimaryKey) {
-        this.artifactInfo.throughModelPrimaryKeyType = relationUtils.getModelPropertyType(
-          this.artifactInfo.modelDir,
-          this.artifactInfo.throughModel,
-          this.artifactInfo.throughModelPrimaryKey,
-        );
-        // type: sourceModelPrimaryKeyType
-        this.artifactInfo.defaultSourceKeyOnThrough =
-          utils.camelCase(this.artifactInfo.sourceModel) + 'Id';
-        this.artifactInfo.defaultTargetKeyOnThrough =
-          utils.camelCase(this.artifactInfo.destinationModel) + 'Id';
-        return this._promptKeyFromOnThroughModel();
-      } else {
-        /* istanbul ignore next */
-        return this.exit(
-          new Error(ERROR_THROUGH_MODEL_PRIMARY_KEY_DOES_NOT_EXIST),
-        );
-      }
+      this.artifactInfo.defaultSourceKeyOnThrough =
+        utils.camelCase(this.artifactInfo.sourceModel) + 'Id';
+      this.artifactInfo.defaultTargetKeyOnThrough =
+        utils.camelCase(this.artifactInfo.destinationModel) + 'Id';
+      return this._promptKeyFromOnThroughModel();
     }
 
     if (this.options.foreignKeyName) {

@@ -48,6 +48,26 @@ const SourceEntries = {
     file: 'order.repository.ts',
     content: readSourceFile('./repositories/order.repository.ts'),
   },
+  CustomerModelWithInheritance: {
+    path: MODEL_APP_PATH,
+    file: 'customer-inheritance.model.ts',
+    content: readSourceFile('./models/customer-inhe.model.ts'),
+  },
+  CustomerInheRepository: {
+    path: REPOSITORY_APP_PATH,
+    file: 'customer-inheritance.repository.ts',
+    content: readSourceFile('./repositories/customer-inhe.repository.ts'),
+  },
+  OrderModelModelWithInheritance: {
+    path: MODEL_APP_PATH,
+    file: 'order-inheritance.model.ts',
+    content: readSourceFile('./models/order-inhe.model.ts'),
+  },
+  OrderInheRepository: {
+    path: REPOSITORY_APP_PATH,
+    file: 'order-inheritance.repository.ts',
+    content: readSourceFile('./repositories/order-inhe.repository.ts'),
+  },
 
   AddressModel: {
     path: MODEL_APP_PATH,
@@ -63,18 +83,6 @@ const SourceEntries = {
     path: REPOSITORY_APP_PATH,
     file: 'address.repository.ts',
     content: readSourceFile('./repositories/address.repository.ts'),
-  },
-
-  NoKeyModel: {
-    path: MODEL_APP_PATH,
-    file: 'no-key.model.ts',
-    content: readSourceFile('./models/no-key.model.ts'),
-  },
-
-  NoKeyRepository: {
-    path: REPOSITORY_APP_PATH,
-    file: 'no-key.repository.ts',
-    content: readSourceFile('./repositories/no-key.repository.ts'),
   },
 
   NoRepoModel: {
@@ -170,7 +178,6 @@ exports.SANDBOX_FILES = [
   SourceEntries.CustomerRepository,
   SourceEntries.OrderRepository,
   SourceEntries.AddressRepository,
-  SourceEntries.NoKeyRepository,
   SourceEntries.DoctorRepository,
   SourceEntries.PatientRepository,
   SourceEntries.AppointmentRepository,
@@ -178,7 +185,6 @@ exports.SANDBOX_FILES = [
   SourceEntries.CustomerModel,
   SourceEntries.OrderModel,
   SourceEntries.AddressModel,
-  SourceEntries.NoKeyModel,
   SourceEntries.NoRepoModel,
   SourceEntries.DoctorModel,
   SourceEntries.PatientModel,
@@ -188,17 +194,19 @@ exports.SANDBOX_FILES = [
 
 exports.SANDBOX_FILES2 = [
   SourceEntries.CustomerRepository,
+  SourceEntries.CustomerInheRepository,
   SourceEntries.OrderRepository,
+  SourceEntries.OrderInheRepository,
   SourceEntries.AddressRepository,
-  SourceEntries.NoKeyRepository,
   SourceEntries.DoctorRepository,
   SourceEntries.PatientRepository,
   SourceEntries.AppointmentRepository,
 
   SourceEntries.CustomerModel,
+  SourceEntries.CustomerModelWithInheritance,
   SourceEntries.OrderModel,
+  SourceEntries.OrderModelModelWithInheritance,
   SourceEntries.AddressModel,
-  SourceEntries.NoKeyModel,
   SourceEntries.NoRepoModel,
   SourceEntries.DoctorModel,
   SourceEntries.PatientModel,
