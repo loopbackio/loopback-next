@@ -39,7 +39,7 @@
     "@types/on-finished": "^2.3.1",
     "@types/serve-static": "1.13.9",
     "@types/type-is": "^1.6.3",
-    "ajv": "^6.12.6",
+    "ajv": "^7.0.2",
     "ajv-errors": "^1.0.1",
     "ajv-keywords": "^3.5.2",
     "body-parser": "^1.19.0",
