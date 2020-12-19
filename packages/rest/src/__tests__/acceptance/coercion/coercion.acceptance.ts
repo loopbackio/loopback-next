@@ -280,7 +280,7 @@ describe('Coercion', () => {
           info: {
             type: 'object',
           },
-          message: 'should be object',
+          message: 'must be object',
           path: '/where',
         },
       ],

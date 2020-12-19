@@ -45,7 +45,7 @@ describe('Validation at REST level', () => {
       required: true,
       jsonSchema: {
         range: [0, 100],
-        errorMessage: {range: 'price should be in range 0 to 100'},
+        errorMessage: {range: 'price must be in range 0 to 100'},
       },
     })
     price: number;
@@ -97,7 +97,7 @@ describe('Validation at REST level', () => {
           {
             path: '',
             code: 'additionalProperties',
-            message: 'should NOT have additional properties',
+            message: 'must NOT have additional properties',
             info: {additionalProperty: 'id'},
           },
         ],
@@ -159,41 +159,11 @@ describe('Validation at REST level', () => {
 
     before(() =>
       givenAnAppAndAClient(ProductController, {
-        nullable: false,
         compiledSchemaCache: new WeakMap(),
         ajvKeywords: ['range'],
       }),
     );
     after(() => app.stop());
-
-    it('rejects requests containing `null` with {nullable: false}', async () => {
-      const DATA = {
-        name: 'iPhone',
-        description: null,
-        price: 10,
-      };
-      const res = await client.post('/products').send(DATA).expect(422);
-
-      expect(res.body).to.eql({
-        error: {
-          code: 'VALIDATION_FAILED',
-          details: [
-            {
-              code: 'type',
-              info: {
-                type: 'string',
-              },
-              message: 'should be string',
-              path: '/description',
-            },
-          ],
-          message:
-            'The request body is invalid. See error object `details` property for more info.',
-          name: 'UnprocessableEntityError',
-          statusCode: 422,
-        },
-      });
-    });
 
     it('rejects requests with price out of range', async () => {
       const DATA = {
@@ -214,14 +184,26 @@ describe('Validation at REST level', () => {
             {
               path: '/price',
               code: 'maximum',
-              message: 'should be <= 100',
-              info: {comparison: '<=', limit: 100, exclusive: false},
+              message: 'must be <= 100',
+              info: {comparison: '<=', limit: 100},
             },
             {
               path: '/price',
-              code: 'range',
-              message: 'should pass "range" keyword validation',
-              info: {keyword: 'range'},
+              code: 'errorMessage',
+              message: 'price must be in range 0 to 100',
+              info: {
+                errors: [
+                  {
+                    keyword: 'range',
+                    instancePath: '/price',
+                    schemaPath:
+                      '#/components/schemas/Product/properties/price/range',
+                    params: {},
+                    message: 'should pass "range" keyword validation',
+                    emUsed: true,
+                  },
+                ],
+              },
             },
           ],
         },
@@ -241,10 +223,8 @@ describe('Validation at REST level', () => {
 
     before(() =>
       givenAnAppAndAClient(ProductController, {
-        nullable: false,
         compiledSchemaCache: new WeakMap(),
         $data: true,
-        ajvKeywords: true,
       }),
     );
     after(() => app.stop());
@@ -268,14 +248,26 @@ describe('Validation at REST level', () => {
             {
               path: '/price',
               code: 'maximum',
-              message: 'should be <= 100',
-              info: {comparison: '<=', limit: 100, exclusive: false},
+              message: 'must be <= 100',
+              info: {comparison: '<=', limit: 100},
             },
             {
               path: '/price',
-              code: 'range',
-              message: 'should pass "range" keyword validation',
-              info: {keyword: 'range'},
+              code: 'errorMessage',
+              message: 'price must be in range 0 to 100',
+              info: {
+                errors: [
+                  {
+                    keyword: 'range',
+                    instancePath: '/price',
+                    schemaPath:
+                      '#/components/schemas/Product/properties/price/range',
+                    params: {},
+                    message: 'should pass "range" keyword validation',
+                    emUsed: true,
+                  },
+                ],
+              },
             },
           ],
         },
@@ -297,7 +289,6 @@ describe('Validation at REST level', () => {
 
       before(() =>
         givenAnAppAndAClient(ProductController, {
-          nullable: false,
           compiledSchemaCache: new WeakMap(),
           $data: true,
           ajvErrorTransformer: errors => {
@@ -328,7 +319,7 @@ describe('Validation at REST level', () => {
               {
                 path: '',
                 code: 'required',
-                message: "(translated) should have required property 'price'",
+                message: "(translated) must have required property 'price'",
                 info: {missingProperty: 'price'},
               },
             ],
@@ -350,11 +341,8 @@ describe('Validation at REST level', () => {
 
     before(() =>
       givenAnAppAndAClient(ProductController, {
-        nullable: false,
         compiledSchemaCache: new WeakMap(),
         $data: true,
-        ajvKeywords: true,
-        ajvErrors: true,
       }),
     );
     after(() => app.stop());
@@ -378,22 +366,23 @@ describe('Validation at REST level', () => {
             {
               path: '/price',
               code: 'maximum',
-              message: 'should be <= 100',
-              info: {comparison: '<=', limit: 100, exclusive: false},
+              message: 'must be <= 100',
+              info: {comparison: '<=', limit: 100},
             },
             {
               path: '/price',
               code: 'errorMessage',
-              message: 'price should be in range 0 to 100',
+              message: 'price must be in range 0 to 100',
               info: {
                 errors: [
                   {
                     keyword: 'range',
-                    dataPath: '/price',
+                    instancePath: '/price',
                     schemaPath:
                       '#/components/schemas/Product/properties/price/range',
-                    params: {keyword: 'range'},
+                    params: {},
                     message: 'should pass "range" keyword validation',
+                    emUsed: true,
                   },
                 ],
               },
@@ -418,10 +407,8 @@ describe('Validation at REST level', () => {
 
       before(() =>
         givenAnAppAndAClient(ProductController, {
-          nullable: false,
           compiledSchemaCache: new WeakMap(),
           $data: true,
-          ajvKeywords: true,
           ajvErrors: {
             singleError: true,
           },
@@ -448,22 +435,23 @@ describe('Validation at REST level', () => {
               {
                 path: '/price',
                 code: 'maximum',
-                message: 'should be <= 100',
-                info: {comparison: '<=', limit: 100, exclusive: false},
+                message: 'must be <= 100',
+                info: {comparison: '<=', limit: 100},
               },
               {
                 path: '/price',
                 code: 'errorMessage',
-                message: 'price should be in range 0 to 100',
+                message: 'price must be in range 0 to 100',
                 info: {
                   errors: [
                     {
                       keyword: 'range',
-                      dataPath: '/price',
+                      instancePath: '/price',
                       schemaPath:
                         '#/components/schemas/Product/properties/price/range',
-                      params: {keyword: 'range'},
+                      params: {},
                       message: 'should pass "range" keyword validation',
+                      emUsed: true,
                     },
                   ],
                 },
@@ -504,23 +492,22 @@ describe('Validation at REST level', () => {
     it('allows async custom keyword', async () => {
       app.bind(RestBindings.REQUEST_BODY_PARSER_OPTIONS).to({
         validation: {
-          nullable: false,
           logger: false, // Disable log warning - meta-schema not available
           compiledSchemaCache: new WeakMap(),
           $data: true,
-          ajvKeywords: true,
           ajvErrors: {
             singleError: true,
           },
-          keywords: {
-            validProductName: {
+          keywords: [
+            {
+              keyword: 'validProductName',
               async: true,
               type: 'string',
               validate: async (schema: unknown, data: string) => {
                 return data.startsWith('prod-');
               },
             },
-          },
+          ],
         },
       });
       const DATA = {
@@ -537,12 +524,10 @@ describe('Validation at REST level', () => {
           code: 'VALIDATION_FAILED',
           details: [
             {
-              code: 'validProductName',
-              info: {
-                keyword: 'validProductName',
-              },
-              message: 'should pass "validProductName" keyword validation',
               path: '/name',
+              code: 'validProductName',
+              message: 'should pass "validProductName" keyword validation',
+              info: {},
             },
           ],
         },
@@ -552,23 +537,22 @@ describe('Validation at REST level', () => {
     it('allows sync custom keyword', async () => {
       app.bind(RestBindings.REQUEST_BODY_PARSER_OPTIONS).to({
         validation: {
-          nullable: false,
           logger: false, // Disable log warning - meta-schema not available
           compiledSchemaCache: new WeakMap(),
           $data: true,
-          ajvKeywords: true,
           ajvErrors: {
             singleError: true,
           },
-          keywords: {
-            validProductName: {
+          keywords: [
+            {
+              keyword: 'validProductName',
               async: false,
               type: 'string',
               validate: (schema: unknown, data: string) => {
                 return data.startsWith('prod-');
               },
             },
-          },
+          ],
         },
       });
       const DATA = {
@@ -585,12 +569,10 @@ describe('Validation at REST level', () => {
           code: 'VALIDATION_FAILED',
           details: [
             {
-              code: 'validProductName',
-              info: {
-                keyword: 'validProductName',
-              },
-              message: 'should pass "validProductName" keyword validation',
               path: '/name',
+              code: 'validProductName',
+              message: 'should pass "validProductName" keyword validation',
+              info: {},
             },
           ],
         },

@@ -40,7 +40,7 @@ describe('validate properties', () => {
       .expect(422);
     expect(response.body.error.details.length).to.equal(1);
     expect(response.body.error.details[0].message).to.equal(
-      'City name should be between 5 and 10 characters',
+      'City name must be between 5 and 10 characters',
     );
   });
 
@@ -89,10 +89,10 @@ describe('validate properties', () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       response.body.error.details.map((d: any) => d.message),
     ).to.deepEqual([
-      'City name should be between 5 and 10 characters',
+      'City name must be between 5 and 10 characters',
       'Invalid phone number',
       'Capacity cannot be less than 1',
-      'Rating should be between 1 and 5',
+      'Rating must be between 1 and 5',
     ]);
   });
 

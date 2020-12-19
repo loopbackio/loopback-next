@@ -5,9 +5,10 @@
 
 import {Context} from '@loopback/core';
 import {expect} from '@loopback/testlab';
+import {FuncKeywordDefinition} from 'ajv';
 import {RestBindings} from '../..';
 import {RestTags} from '../../keys';
-import {AjvFormat, AjvKeyword} from '../../types';
+import {AjvFormat} from '../../types';
 import {AjvFactoryProvider} from '../../validation/ajv-factory.provider';
 
 describe('Ajv factory', () => {
@@ -18,83 +19,83 @@ describe('Ajv factory', () => {
   context('OpenAPI formats', () => {
     it('allows binary format by default', async () => {
       const validator = getValidator('string', 'binary');
-      const result = await validator('ABC123');
+      const result = validator('ABC123');
       expect(result).to.be.true();
     });
 
     it('supports int32 format by default', async () => {
       const validator = getValidator('number', 'int32');
-      const result = await validator(123);
+      const result = validator(123);
       expect(result).to.be.true();
     });
 
     it('reports non-integer int32 value', async () => {
       const validator = getValidator('number', 'int32');
-      const result = await validator(123.3);
+      const result = validator(123.3);
       expect(result).to.be.false();
     });
 
     it('reports out-of-range int32 value', async () => {
       const validator = getValidator('number', 'int32');
-      let result = await validator(21474836470);
+      let result = validator(21474836470);
       expect(result).to.be.false();
-      result = await validator(-21474836470);
+      result = validator(-21474836470);
       expect(result).to.be.false();
     });
 
     it('supports int64 format by default', async () => {
       const validator = getValidator('number', 'int64');
-      const result = await validator(123);
+      const result = validator(123);
       expect(result).to.be.true();
     });
 
     it('reports non-integer int64 value', async () => {
       const validator = getValidator('number', 'int64');
-      const result = await validator(123.3);
+      const result = validator(123.3);
       expect(result).to.be.false();
     });
 
     it('reports out-of-range int64 value', async () => {
       const validator = getValidator('number', 'int64');
-      let result = await validator(Infinity);
+      let result = validator(Infinity);
       expect(result).to.be.false();
-      result = await validator(Number.NEGATIVE_INFINITY);
+      result = validator(Number.NEGATIVE_INFINITY);
       expect(result).to.be.false();
     });
 
     it('allows max int64 value', async () => {
       const validator = getValidator('number', 'int64');
-      let result = await validator(Number.MIN_SAFE_INTEGER);
+      let result = validator(Number.MIN_SAFE_INTEGER);
       expect(result).to.be.true();
-      result = await validator(Number.MAX_SAFE_INTEGER);
+      result = validator(Number.MAX_SAFE_INTEGER);
       expect(result).to.be.true();
     });
 
     it('supports float format by default', async () => {
       const validator = getValidator('number', 'float');
-      const result = await validator(123);
+      const result = validator(123);
       expect(result).to.be.true();
     });
 
     it('reports out-of-range float value', async () => {
       const validator = getValidator('number', 'float');
-      let result = await validator(Number.MAX_VALUE);
+      let result = validator(Number.MAX_VALUE);
       expect(result).to.be.false();
-      result = await validator(-Number.MAX_VALUE);
+      result = validator(-Number.MAX_VALUE);
       expect(result).to.be.false();
     });
 
     it('supports double format by default', async () => {
       const validator = getValidator('number', 'double');
-      const result = await validator(123);
+      const result = validator(123);
       expect(result).to.be.true();
     });
 
     it('reports out-of-range double value', async () => {
       const validator = getValidator('number', 'double');
-      let result = await validator(Infinity);
+      let result = validator(Infinity);
       expect(result).to.be.false();
-      result = await validator(Number.NEGATIVE_INFINITY);
+      result = validator(Number.NEGATIVE_INFINITY);
       expect(result).to.be.false();
     });
 
@@ -102,7 +103,7 @@ describe('Ajv factory', () => {
       const validator = getValidator('string', 'byte');
 
       const base64 = Buffer.from('XYZ123@$').toString('base64');
-      const result = await validator(base64);
+      const result = validator(base64);
       expect(result).to.be.true();
     });
 
@@ -110,7 +111,7 @@ describe('Ajv factory', () => {
       const validator = getValidator('string', 'byte');
 
       const invalidBase64 = 'XYZ123@$';
-      const result = await validator(invalidBase64);
+      const result = validator(invalidBase64);
       expect(result).to.be.false();
     });
 
@@ -127,10 +128,10 @@ describe('Ajv factory', () => {
   it('honors request body parser options', async () => {
     ctx
       .bind(RestBindings.REQUEST_BODY_PARSER_OPTIONS)
-      .to({validation: {unknownFormats: ['gmail']}});
+      .to({validation: {formats: {gmail: val => val.endsWith('@gmail.com')}}});
     const ajvFactory = await ctx.get(RestBindings.AJV_FACTORY);
     const validator = ajvFactory().compile({type: 'string', format: 'gmail'});
-    const result = await validator('example@gmail.com');
+    const result = validator('example@gmail.com');
     expect(result).to.be.true();
   });
 
@@ -138,16 +139,16 @@ describe('Ajv factory', () => {
     ctx.bind(RestBindings.REQUEST_BODY_PARSER_OPTIONS).to({validation: {}});
     const ajvFactory = await ctx.get(RestBindings.AJV_FACTORY);
     const validator = ajvFactory({coerceTypes: true}).compile({type: 'number'});
-    const result = await validator('123');
+    const result = validator('123');
     expect(result).to.be.true();
   });
 
   it('accepts request body parser options via constructor', async () => {
     const ajvFactory = new AjvFactoryProvider({
-      unknownFormats: ['gmail'],
+      formats: {gmail: val => val.endsWith('@gmail.com')},
     }).value();
     const validator = ajvFactory().compile({type: 'string', format: 'gmail'});
-    const result = await validator('example@gmail.com');
+    const result = validator('example@gmail.com');
     expect(result).to.be.true();
   });
 
@@ -169,7 +170,7 @@ describe('Ajv factory', () => {
       it(`with value ${value}`, async () => {
         const ajvFactory = new AjvFactoryProvider().value();
         const validator = ajvFactory().compile({});
-        const result = await validator(value);
+        const result = validator(value);
         expect(result).to.be.true();
       });
     }
@@ -190,7 +191,7 @@ describe('Ajv factory', () => {
             arbitraryProp: {},
           },
         });
-        const result = await validator({
+        const result = validator({
           name: 'Zoe',
           arbitraryProp: value,
         });
@@ -208,7 +209,7 @@ describe('Ajv factory', () => {
       it(`with value ${value}`, async () => {
         const ajvFactory = new AjvFactoryProvider().value();
         const validator = ajvFactory().compile(true);
-        const result = await validator(value);
+        const result = validator(value);
         expect(result).to.be.true();
       });
     }
@@ -229,7 +230,7 @@ describe('Ajv factory', () => {
             arbitraryProp: true,
           },
         });
-        const result = await validator({
+        const result = validator({
           name: 'Zoe',
           arbitraryProp: value,
         });
@@ -242,14 +243,14 @@ describe('Ajv factory', () => {
     const ajvFactory = await ctx.get(RestBindings.AJV_FACTORY);
     expect(() =>
       ajvFactory().compile({type: 'string', format: 'gmail'}),
-    ).to.throw(/unknown format "gmail" is used in schema/);
+    ).to.throw(/unknown format "gmail" ignored in schema at path "#"/);
   });
 
   it('honors keyword extensions', async () => {
     ctx
-      .bind<AjvKeyword>('ajv.keywords.smallNumber')
+      .bind<FuncKeywordDefinition>('ajv.keywords.smallNumber')
       .to({
-        name: 'smallNumber',
+        keyword: 'smallNumber',
         type: 'number',
         validate: (schema: unknown, data: number) => {
           // The number is smaller than 10
@@ -259,15 +260,15 @@ describe('Ajv factory', () => {
       .tag(RestTags.AJV_KEYWORD);
     const ajvFactory = await ctx.get(RestBindings.AJV_FACTORY);
     const validator = ajvFactory().compile({type: 'number', smallNumber: true});
-    let result = await validator(1);
+    let result = validator(1);
     expect(result).to.be.true();
-    result = await validator(20);
+    result = validator(20);
     expect(result).to.be.false();
   });
 
   it('honors format extensions', async () => {
     ctx
-      .bind<AjvFormat>('ajv.formats.int')
+      .bind<AjvFormat<number>>('ajv.formats.int')
       .to({
         name: 'int',
         type: 'number',
@@ -279,9 +280,9 @@ describe('Ajv factory', () => {
       .tag(RestTags.AJV_FORMAT);
     const ajvFactory = await ctx.get(RestBindings.AJV_FACTORY);
     const validator = ajvFactory().compile({type: 'number', format: 'int'});
-    let result = await validator(1);
+    let result = validator(1);
     expect(result).to.be.true();
-    result = await validator(1.5);
+    result = validator(1.5);
     expect(result).to.be.false();
   });
 

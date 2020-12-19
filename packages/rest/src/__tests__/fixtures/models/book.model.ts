@@ -24,7 +24,7 @@ export class Book extends Entity {
     jsonSchema: {
       maxLength: 10,
       minLength: 3,
-      errorMessage: 'Name should be between 3 and 10 characters.',
+      errorMessage: 'Name must be between 3 and 10 characters.',
     },
   })
   title: string;
