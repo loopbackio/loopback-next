@@ -101,7 +101,7 @@ describe('validateRequestBody', () => {
       {
         path: '',
         code: 'required',
-        message: "should have required property 'title'",
+        message: "must have required property 'title'",
         info: {missingProperty: 'title'},
       },
     ];
@@ -121,7 +121,7 @@ describe('validateRequestBody', () => {
       {
         path: '/isComplete',
         code: 'type',
-        message: 'should be boolean',
+        message: 'must be boolean',
         info: {type: 'boolean'},
       },
     ];
@@ -142,13 +142,13 @@ describe('validateRequestBody', () => {
       {
         path: '',
         code: 'required',
-        message: "should have required property 'title'",
+        message: "must have required property 'title'",
         info: {missingProperty: 'title'},
       },
       {
         path: '/isComplete',
         code: 'type',
-        message: 'should be boolean',
+        message: 'must be boolean',
         info: {type: 'boolean'},
       },
     ];
@@ -180,7 +180,7 @@ describe('validateRequestBody', () => {
       {
         path: '',
         code: 'required',
-        message: "should have required property 'title'",
+        message: "must have required property 'title'",
         info: {missingProperty: 'title'},
       },
     ];
@@ -218,7 +218,7 @@ describe('validateRequestBody', () => {
       {
         path: '/count',
         code: 'type',
-        message: 'should be number',
+        message: 'must be number',
         info: {type: 'number'},
       },
     ];
@@ -242,7 +242,7 @@ describe('validateRequestBody', () => {
         {
           path: '/orders/1',
           code: 'type',
-          message: 'should be string',
+          message: 'must be string',
           info: {type: 'string'},
         },
       ];
@@ -271,7 +271,7 @@ describe('validateRequestBody', () => {
         {
           path: '/1',
           code: 'required',
-          message: "should have required property 'title'",
+          message: "must have required property 'title'",
           info: {missingProperty: 'title'},
         },
       ];
@@ -296,13 +296,13 @@ describe('validateRequestBody', () => {
         {
           path: '/todos/1',
           code: 'required',
-          message: "should have required property 'title'",
+          message: "must have required property 'title'",
           info: {missingProperty: 'title'},
         },
         {
           path: '/todos/2/title',
           code: 'type',
-          message: 'should be string',
+          message: 'must be string',
           info: {type: 'string'},
         },
       ];
@@ -338,7 +338,7 @@ describe('validateRequestBody', () => {
         {
           path: '/accounts/0/address/city',
           code: 'type',
-          message: 'should be string',
+          message: 'must be string',
           info: {type: 'string'},
         },
       ];

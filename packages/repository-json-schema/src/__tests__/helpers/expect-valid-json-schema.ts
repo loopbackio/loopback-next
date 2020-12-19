@@ -5,10 +5,12 @@
 
 import {expect} from '@loopback/testlab';
 import Ajv from 'ajv';
+import ajvFormats from 'ajv-formats';
 import {JsonSchema} from '../..';
 
 export function expectValidJsonSchema(schema: JsonSchema) {
-  const ajv = new Ajv();
+  const ajv = new Ajv({strictTypes: false});
+  ajvFormats(ajv);
   const validate = ajv.compile(
     require('ajv/lib/refs/json-schema-draft-06.json'),
   );

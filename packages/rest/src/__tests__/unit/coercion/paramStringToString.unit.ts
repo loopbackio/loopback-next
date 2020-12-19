@@ -53,7 +53,7 @@ describe('coerce param from string to string - enum', () => {
       {
         path: '',
         code: 'enum',
-        message: 'should be equal to one of the allowed values',
+        message: 'must be equal to one of the allowed values',
         info: {allowedValues: ['A', 'B']},
       },
     ];

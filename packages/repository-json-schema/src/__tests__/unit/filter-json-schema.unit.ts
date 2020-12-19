@@ -23,7 +23,7 @@ import {
 } from '../../filter-json-schema';
 
 describe('getFilterJsonSchemaFor', () => {
-  let ajv: Ajv.Ajv;
+  let ajv: Ajv;
   let customerFilterSchema: JsonSchema;
   let dynamicCustomerFilterSchema: JsonSchema;
   let customerFilterExcludingWhereSchema: JsonSchema;
@@ -83,10 +83,10 @@ describe('getFilterJsonSchemaFor', () => {
     expect(ajv.errors ?? []).to.containDeep([
       {
         keyword: 'additionalProperties',
-        dataPath: '',
+        instancePath: '',
         schemaPath: '#/additionalProperties',
         params: {additionalProperty: 'where'},
-        message: 'should NOT have additional properties',
+        message: 'must NOT have additional properties',
       },
     ]);
   });
@@ -97,10 +97,10 @@ describe('getFilterJsonSchemaFor', () => {
     expect(ajv.errors ?? []).to.containDeep([
       {
         keyword: 'additionalProperties',
-        dataPath: '',
+        instancePath: '',
         schemaPath: '#/additionalProperties',
         params: {additionalProperty: 'include'},
-        message: 'should NOT have additional properties',
+        message: 'must NOT have additional properties',
       },
     ]);
   });
@@ -111,8 +111,8 @@ describe('getFilterJsonSchemaFor', () => {
     expect(ajv.errors ?? []).to.containDeep([
       {
         keyword: 'type',
-        dataPath: '.where',
-        message: 'should be object',
+        instancePath: '/where',
+        message: 'must be object',
       },
     ]);
   });
@@ -123,8 +123,8 @@ describe('getFilterJsonSchemaFor', () => {
     expect(ajv.errors ?? []).to.containDeep([
       {
         keyword: 'type',
-        dataPath: '.fields',
-        message: 'should be object',
+        instancePath: '/fields',
+        message: 'must be object',
       },
     ]);
   });
@@ -141,9 +141,9 @@ describe('getFilterJsonSchemaFor', () => {
     expect(ajv.errors ?? []).to.containDeep([
       {
         keyword: 'enum',
-        dataPath: '.fields[0]',
+        instancePath: '/fields/0',
         params: {allowedValues: ['id', 'name']},
-        message: 'should be equal to one of the allowed values',
+        message: 'must be equal to one of the allowed values',
       },
     ]);
   });
@@ -154,9 +154,9 @@ describe('getFilterJsonSchemaFor', () => {
     expect(ajv.errors ?? []).to.containDeep([
       {
         keyword: 'uniqueItems',
-        dataPath: '.fields',
+        instancePath: '/fields',
         message:
-          'should NOT have duplicate items (items ## 1 and 0 are identical)',
+          'must NOT have duplicate items (items ## 1 and 0 are identical)',
       },
     ]);
   });
@@ -167,9 +167,9 @@ describe('getFilterJsonSchemaFor', () => {
     expect(ajv.errors ?? []).to.containDeep([
       {
         keyword: 'uniqueItems',
-        dataPath: '.fields',
+        instancePath: '/fields',
         message:
-          'should NOT have duplicate items (items ## 1 and 0 are identical)',
+          'must NOT have duplicate items (items ## 1 and 0 are identical)',
       },
     ]);
   });
@@ -180,8 +180,8 @@ describe('getFilterJsonSchemaFor', () => {
     expect(ajv.errors ?? []).to.containDeep([
       {
         keyword: 'type',
-        dataPath: '.include',
-        message: 'should be array',
+        instancePath: '/include',
+        message: 'must be array',
       },
     ]);
   });
@@ -197,8 +197,8 @@ describe('getFilterJsonSchemaFor', () => {
     expect(ajv.errors ?? []).to.containDeep([
       {
         keyword: 'type',
-        dataPath: '.offset',
-        message: 'should be integer',
+        instancePath: '/offset',
+        message: 'must be integer',
       },
     ]);
   });
@@ -209,8 +209,8 @@ describe('getFilterJsonSchemaFor', () => {
     expect(ajv.errors ?? []).to.containDeep([
       {
         keyword: 'type',
-        dataPath: '.limit',
-        message: 'should be integer',
+        instancePath: '/limit',
+        message: 'must be integer',
       },
     ]);
   });
@@ -221,8 +221,8 @@ describe('getFilterJsonSchemaFor', () => {
     expect(ajv.errors ?? []).to.containDeep([
       {
         keyword: 'type',
-        dataPath: '.skip',
-        message: 'should be integer',
+        instancePath: '/skip',
+        message: 'must be integer',
       },
     ]);
   });
@@ -233,19 +233,19 @@ describe('getFilterJsonSchemaFor', () => {
     expect(ajv.errors ?? []).to.containDeep([
       {
         keyword: 'type',
-        dataPath: '.order',
-        message: 'should be string',
+        instancePath: '/order',
+        message: 'must be string',
       },
       {
         keyword: 'type',
-        dataPath: '.order',
-        message: 'should be array',
+        instancePath: '/order',
+        message: 'must be array',
       },
       {
         keyword: 'oneOf',
-        dataPath: '.order',
+        instancePath: '/order',
         params: {passingSchemas: null},
-        message: 'should match exactly one schema in oneOf',
+        message: 'must match exactly one schema in oneOf',
       },
     ]);
   });
@@ -436,7 +436,7 @@ describe('getScopeFilterJsonSchemaFor - nested inclusion', () => {
 });
 
 describe('getWhereJsonSchemaFor', () => {
-  let ajv: Ajv.Ajv;
+  let ajv: Ajv;
   let customerWhereSchema: JsonSchema;
 
   beforeEach(() => {

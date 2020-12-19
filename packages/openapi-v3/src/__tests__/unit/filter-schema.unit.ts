@@ -22,6 +22,7 @@ describe('filterSchema', () => {
     expect(MyUserModel.definition.name).to.eql('my-user-model');
     expect(schema).to.eql({
       title: 'my-user-model.Filter',
+      type: 'object',
       'x-typescript-type': '@loopback/repository#Filter<MyUserModel>',
       properties: {
         where: {
@@ -71,6 +72,7 @@ describe('filterSchema', () => {
     expect(MyUserModel.definition.name).to.eql('my-user-model');
     expect(schema).to.eql({
       title: 'my-user-model.Filter',
+      type: 'object',
       'x-typescript-type': '@loopback/repository#Filter<MyUserModel>',
       properties: {
         fields: {
@@ -124,6 +126,7 @@ describe('filterSchema', () => {
     expect(CustomUserModel.definition.name).to.eql('CustomUserModel');
     expect(schema).to.eql({
       title: 'CustomUserModel.Filter',
+      type: 'object',
       'x-typescript-type': '@loopback/repository#Filter<CustomUserModel>',
       properties: {
         where: {

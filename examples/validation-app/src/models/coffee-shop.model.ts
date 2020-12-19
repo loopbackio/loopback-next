@@ -21,7 +21,7 @@ export class CoffeeShop extends Entity {
     jsonSchema: {
       maxLength: 10,
       minLength: 5,
-      errorMessage: 'City name should be between 5 and 10 characters',
+      errorMessage: 'City name must be between 5 and 10 characters',
     },
   })
   city: string;
@@ -57,7 +57,7 @@ export class CoffeeShop extends Entity {
     // Add jsonSchema
     jsonSchema: {
       range: [1, 5],
-      errorMessage: 'Rating should be between 1 and 5',
+      errorMessage: 'Rating must be between 1 and 5',
     },
   })
   rating: string;

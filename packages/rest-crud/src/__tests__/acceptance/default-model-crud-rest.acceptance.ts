@@ -88,7 +88,7 @@ describe('CrudRestController for a simple Product model', () => {
           {
             path: '',
             code: 'additionalProperties',
-            message: 'should NOT have additional properties',
+            message: 'must NOT have additional properties',
             info: {additionalProperty: 'id'},
           },
         ],
