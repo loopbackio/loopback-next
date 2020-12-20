@@ -125,7 +125,7 @@ export class TestApplication extends BootMixin(
     // Bind datasource for user
     this.dataSource(DbDataSource, UserServiceBindings.DATASOURCE_NAME);
     // Bind datasource for refresh token
-    this.dataSource(DbDataSource, RefreshTokenBindings.DATASOURCE_NAME);
+    this.dataSource(DbDataSource, RefreshTokenServiceBindings.DATASOURCE_NAME);
 
     this.component(RestExplorerComponent);
     this.projectRoot = __dirname;
