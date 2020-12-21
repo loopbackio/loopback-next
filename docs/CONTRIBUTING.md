@@ -46,7 +46,7 @@ and tools contained in LoopBack repositories.
 - [Git commit messages](./site/DEVELOPING.md#commit-message-guidelines)
 - [Making breaking changes](./site/DEVELOPING.md#making-breaking-changes)
 - [Reviewing pull requests](http://loopback.io/doc/en/contrib/triaging-pull-requests.html)
-- [Contributor License Agreement (CLA)](http://loopback.io/doc/en/contrib/code-contrib.html#agreeing-to-the-cla)
+- [Developer Certificate of Origin (DCO)](https://loopback.io/doc/en/contrib/code-contrib.html#developer-certificate-of-origin-dco)
 
 ## [Documentation](http://loopback.io/doc/en/contrib/doc-contrib.html)
 
