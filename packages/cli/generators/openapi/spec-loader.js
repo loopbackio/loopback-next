@@ -5,7 +5,7 @@
 
 'use strict';
 const chalk = require('chalk');
-const SwaggerParser = require('swagger-parser');
+const SwaggerParser = require('@apidevtools/swagger-parser');
 const swagger2openapi = require('swagger2openapi');
 const {debugJson, cloneSpecObject} = require('./utils');
 const {generateControllerSpecs} = require('./spec-helper');
