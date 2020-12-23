@@ -1074,7 +1074,7 @@ Now we can register a binding listener to be triggered when tags are changed:
 
 ```ts
 const bindingListener: BindingEventListener = ({binding, operation}) => {
-  if (event === 'tag') {
+  if (operation === 'tag') {
     console.log('Binding tags for %s %j', binding.key, binding.tagMap);
   }
 });
