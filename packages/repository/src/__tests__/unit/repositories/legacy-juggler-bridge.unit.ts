@@ -4,6 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect, toJSON} from '@loopback/testlab';
+import {cloneDeep} from 'lodash';
 import {
   bindModel,
   DefaultCrudRepository,
@@ -263,41 +264,73 @@ describe('DefaultCrudRepository', () => {
     expect(notes.length).to.eql(2);
   });
 
-  it('implements Repository.find()', async () => {
-    const repo = new DefaultCrudRepository(Note, ds);
-    await repo.createAll([
-      {title: 't1', content: 'c1'},
-      {title: 't2', content: 'c2'},
-    ]);
-    const notes = await repo.find({where: {title: 't1'}});
-    expect(notes.length).to.eql(1);
+  describe('find', () => {
+    it('is implemented', async () => {
+      const repo = new DefaultCrudRepository(Note, ds);
+      await repo.createAll([
+        {title: 't1', content: 'c1'},
+        {title: 't2', content: 'c2'},
+      ]);
+      const notes = await repo.find({where: {title: 't1'}});
+      expect(notes.length).to.eql(1);
+    });
+
+    it('does not manipulate the original filter', async () => {
+      const repo = new DefaultCrudRepository(Note, ds);
+      const filter = {where: {title: 't1'}};
+      const originalFilter = cloneDeep(filter);
+      await repo.createAll([
+        {title: 't1', content: 'c1'},
+        {title: 't2', content: 'c2'},
+      ]);
+      await repo.find(filter);
+      expect(filter).to.deepEqual(originalFilter);
+    });
   });
 
-  it('implements Repository.findOne()', async () => {
-    const repo = new DefaultCrudRepository(Note, ds);
-    await repo.createAll([
-      {title: 't1', content: 'c1'},
-      {title: 't1', content: 'c2'},
-    ]);
-    const note = await repo.findOne({
-      where: {title: 't1'},
-      order: ['content DESC'],
+  describe('findOne', () => {
+    it('is implemented', async () => {
+      const repo = new DefaultCrudRepository(Note, ds);
+      await repo.createAll([
+        {title: 't1', content: 'c1'},
+        {title: 't1', content: 'c2'},
+      ]);
+      const note = await repo.findOne({
+        where: {title: 't1'},
+        order: ['content DESC'],
+      });
+      expect(note).to.not.be.null();
+      expect(note?.title).to.eql('t1');
+      expect(note?.content).to.eql('c2');
     });
-    expect(note).to.not.be.null();
-    expect(note?.title).to.eql('t1');
-    expect(note?.content).to.eql('c2');
-  });
-  it('returns null if Repository.findOne() does not return a value', async () => {
-    const repo = new DefaultCrudRepository(Note, ds);
-    await repo.createAll([
-      {title: 't1', content: 'c1'},
-      {title: 't1', content: 'c2'},
-    ]);
-    const note = await repo.findOne({
-      where: {title: 't5'},
-      order: ['content DESC'],
+
+    it('returns null if instances were found', async () => {
+      const repo = new DefaultCrudRepository(Note, ds);
+      await repo.createAll([
+        {title: 't1', content: 'c1'},
+        {title: 't1', content: 'c2'},
+      ]);
+      const note = await repo.findOne({
+        where: {title: 't5'},
+        order: ['content DESC'],
+      });
+      expect(note).to.be.null();
     });
-    expect(note).to.be.null();
+
+    it('does not manipulate the original filter', async () => {
+      const repo = new DefaultCrudRepository(Note, ds);
+      const filter = {
+        where: {title: 't5'},
+        order: ['content DESC'],
+      };
+      const originalFilter = cloneDeep(filter);
+      await repo.createAll([
+        {title: 't1', content: 'c1'},
+        {title: 't1', content: 'c2'},
+      ]);
+      await repo.findOne(filter);
+      expect(filter).to.deepEqual(originalFilter);
+    });
   });
 
   describe('findById', () => {
@@ -313,6 +346,15 @@ describe('DefaultCrudRepository', () => {
       const note = await repo.create({title: 'a-title', content: 'a-content'});
       const result = await repo.findById(note.id, {fields: {title: true}});
       expect(result?.toJSON()).to.eql({title: 'a-title'});
+    });
+
+    it('does not manipulate the original filter', async () => {
+      const repo = new DefaultCrudRepository(Note, ds);
+      const filter = {fields: {title: true, content: true}};
+      const originalFilter = cloneDeep(filter);
+      const note = await repo.create({title: 'a-title', content: 'a-content'});
+      await repo.findById(note.id, filter);
+      expect(filter).to.deepEqual(originalFilter);
     });
 
     it('throws when the instance does not exist', async () => {

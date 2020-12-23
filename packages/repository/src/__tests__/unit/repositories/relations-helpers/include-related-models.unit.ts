@@ -4,6 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect, toJSON} from '@loopback/testlab';
+import {cloneDeep} from 'lodash';
 import {includeRelatedModels, InclusionResolver} from '../../../..';
 import {
   Category,
@@ -37,6 +38,19 @@ describe('includeRelatedModels', () => {
     await categoryRepo.create({name: 'category 2'});
     const result = await includeRelatedModels(categoryRepo, [category]);
     expect(result).to.eql([category]);
+  });
+
+  it('does not manipulate non-primitive params', async () => {
+    const category = await categoryRepo.create({name: 'category'});
+    const categoryOriginal = cloneDeep(category);
+    const filter = ['products'];
+    const filterOriginal = cloneDeep(filter);
+
+    categoryRepo.inclusionResolvers.set('products', hasManyResolver);
+    await includeRelatedModels(categoryRepo, [category], filter);
+
+    expect(category).to.deepEqual(categoryOriginal);
+    expect(filter).to.deepEqual(filterOriginal);
   });
 
   context(
