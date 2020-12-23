@@ -543,8 +543,10 @@ Here is an example where the application logs out a message before and after a
 request is handled:
 
 ```ts
+import {injectable} from '@loopback/core';
 import {MiddlewareSequence, Request, Response} from '@loopback/rest';
 
+@injectable()
 class MySequence extends MiddlewareSequence {
   log(msg: string) {
     console.log(msg);
