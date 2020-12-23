@@ -5,7 +5,7 @@
 
 import assert from 'assert';
 import debugFactory from 'debug';
-import _ from 'lodash';
+import _, {cloneDeep} from 'lodash';
 import {
   AnyObject,
   Entity,
@@ -39,17 +39,11 @@ export async function findByForeignKeys<
   options?: Options,
 ): Promise<(Target & TargetRelations)[]> {
   let value;
+  scope = cloneDeep(scope);
 
   if (Array.isArray(fkValues)) {
     if (fkValues.length === 0) return [];
-    value =
-      fkValues.length === 1
-        ? fkValues[0]
-        : {
-            // Create a copy to prevent query coercion algorithm
-            // inside connectors from modifying the original values
-            inq: [...fkValues],
-          };
+    value = fkValues.length === 1 ? fkValues[0] : {inq: fkValues};
   } else {
     value = fkValues;
   }
@@ -87,6 +81,8 @@ export async function includeRelatedModels<
   include?: InclusionFilter[],
   options?: Options,
 ): Promise<(T & Relations)[]> {
+  entities = cloneDeep(entities);
+  include = cloneDeep(include);
   const result = entities as (T & Relations)[];
   if (!include) return result;
 

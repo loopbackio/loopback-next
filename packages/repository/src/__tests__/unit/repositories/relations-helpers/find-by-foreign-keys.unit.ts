@@ -9,6 +9,7 @@ import {
   sinon,
   StubbedInstanceWithSinonAccessor,
 } from '@loopback/testlab';
+import {cloneDeep} from 'lodash';
 import {findByForeignKeys} from '../../../..';
 import {
   createProduct,
@@ -152,5 +153,22 @@ describe('findByForeignKeys', () => {
       },
       include: ['nested inclusion'],
     });
+  });
+
+  it('does not manipulate non-primitive params', async () => {
+    const fkValues = [1];
+    const scope = {
+      where: {id: 2},
+    };
+    const fkValuesOriginal = cloneDeep(fkValues);
+    const scopeOriginal = cloneDeep(scope);
+
+    productRepo.stubs.find.resolves([]);
+    await productRepo.create({id: 1, name: 'product', categoryId: 1});
+    await productRepo.create({id: 2, name: 'product', categoryId: 1});
+    await findByForeignKeys(productRepo, 'categoryId', fkValues, scope);
+
+    expect(fkValues).to.deepEqual(fkValuesOriginal);
+    expect(scope).to.deepEqual(scopeOriginal);
   });
 });
