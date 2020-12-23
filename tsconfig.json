@@ -125,6 +125,9 @@
       "path": "extensions/pooling/tsconfig.json"
     },
     {
+      "path": "extensions/rest-raml/tsconfig.json"
+    },
+    {
       "path": "extensions/socketio/tsconfig.json"
     },
     {
