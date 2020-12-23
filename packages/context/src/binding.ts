@@ -1004,7 +1004,10 @@ export class Binding<T = BoundValue> extends EventEmitter {
    * @param eventName The name of the event - always `changed`.
    * @param listener The listener function to call when the event is emitted.
    */
-  on(eventName: 'changed', listener: BindingEventListener): this;
+  on(
+    eventName: 'changed',
+    listener: ValueOrPromise<BindingEventListener>,
+  ): this;
 
   // The generic variant inherited from EventEmitter
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -1022,7 +1025,10 @@ export class Binding<T = BoundValue> extends EventEmitter {
    * @param eventName The name of the event - always `changed`.
    * @param listener The listener function to call when the event is emitted.
    */
-  once(eventName: 'changed', listener: BindingEventListener): this;
+  once(
+    eventName: 'changed',
+    listener: ValueOrPromise<BindingEventListener>,
+  ): this;
 
   // The generic variant inherited from EventEmitter
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
