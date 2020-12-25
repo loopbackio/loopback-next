@@ -23,8 +23,7 @@ export class MsgPackBodyParserComponent implements Component {
     @inject(RestBindings.REQUEST_BODY_PARSER_RAW, {optional: true})
     rawBodyParser?: RawBodyParser,
   ) {
-    if (rawBodyParser == null) {
+    if (!rawBodyParser)
       throw new Error('MessagePack body parser requires raw body parser.');
-    }
   }
 }

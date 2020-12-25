@@ -20,8 +20,8 @@ import {
   ShotRequestOptions,
   stubExpressContext,
 } from '@loopback/testlab';
-import {encode} from 'msgpack-lite';
 import {MsgPackBodyParser} from '../..';
+const msgpack = require('msgpack')();
 
 describe('MessagePack body parser', () => {
   let requestBodyParser: RequestBodyParser;
@@ -56,7 +56,7 @@ describe('MessagePack body parser', () => {
         headers: {
           'Content-Type': contentType,
         },
-        payload: encode({
+        payload: msgpack.encode({
           data: 'hello world',
         }),
       });
@@ -90,7 +90,7 @@ describe('MessagePack body parser', () => {
       headers: {
         'Content-Type': 'application/msgpack',
       },
-      payload: encode({
+      payload: msgpack.encode({
         data: 'does not conform to OAS 3 Schema Object',
       }),
     });
