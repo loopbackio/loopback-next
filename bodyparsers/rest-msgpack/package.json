@@ -36,7 +36,7 @@
     "@loopback/rest": "^9.1.1"
   },
   "dependencies": {
-    "msgpack-lite": "0.1.26",
+    "msgpack5": "^4.4.0",
     "tslib": "^2.0.3",
     "type-is": "^1.6.18"
   },
@@ -45,7 +45,7 @@
     "@loopback/core": "^2.13.1",
     "@loopback/rest": "^9.1.1",
     "@loopback/testlab": "^3.2.10",
-    "@types/msgpack-lite": "0.1.7",
+    "@types/msgpack5": "^3.4.1",
     "@types/node": "^10.17.35",
     "@types/type-is": "^1.6.3",
     "typescript": "~4.1.3"

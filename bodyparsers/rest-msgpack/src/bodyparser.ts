@@ -11,11 +11,12 @@ import {
   RequestBodyParserOptions,
   RestBindings,
 } from '@loopback/rest';
+import msgpack from 'msgpack5';
 import {is} from 'type-is';
-import {msgpack} from '.';
 
 export class MsgPackBodyParser extends RawBodyParser {
   name = Symbol('msgpack');
+  private _msgpack = msgpack();
 
   constructor(
     @inject(RestBindings.REQUEST_BODY_PARSER_OPTIONS, {optional: true})
@@ -35,7 +36,7 @@ export class MsgPackBodyParser extends RawBodyParser {
 
   async parse(request: Request): Promise<RequestBody> {
     const result = await super.parse(request);
-    const body = msgpack.decode(result.value);
+    const body = this._msgpack.decode(result.value);
 
     return {
       value: body,
