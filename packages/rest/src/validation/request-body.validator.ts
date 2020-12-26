@@ -10,7 +10,8 @@ import {
   SchemaObject,
   SchemasObject,
 } from '@loopback/openapi-v3';
-import ajv, {Ajv} from 'ajv';
+import Ajv, {AsyncValidateFunction, ErrorObject} from 'ajv';
+import {AnyValidateFunction, AsyncSchema} from 'ajv/dist/core';
 import debugModule from 'debug';
 import util from 'util';
 import {HttpErrors, RequestBody, RestHttpErrors} from '..';
@@ -131,12 +132,12 @@ export async function validateValueAgainstSchema(
   globalSchemas: SchemasObject = {},
   options: ValueValidationOptions = {},
 ) {
-  let validate: ajv.ValidateFunction | undefined;
+  let validate: AnyValidateFunction | undefined;
 
   const cache = options.compiledSchemaCache ?? DEFAULT_COMPILED_SCHEMA_CACHE;
   const key = getKeyForOptions(options);
 
-  let validatorMap: Map<string, ajv.ValidateFunction> | undefined;
+  let validatorMap: Map<string, AnyValidateFunction> | undefined;
   if (cache.has(schema)) {
     validatorMap = cache.get(schema)!;
     validate = validatorMap.get(key);
@@ -152,14 +153,14 @@ export async function validateValueAgainstSchema(
     cache.set(schema, validatorMap);
   }
 
-  let validationErrors: ajv.ErrorObject[] = [];
+  let validationErrors: ErrorObject[] = [];
   try {
-    const validationResult = await validate(value);
+    const validationResult = validate(value);
     debug(
       `Value from ${options.source} passed AJV validation.`,
       validationResult,
     );
-    return validationResult;
+    return await validationResult;
   } catch (error) {
     validationErrors = error.errors;
   }
@@ -193,10 +194,10 @@ export async function validateValueAgainstSchema(
 }
 
 function buildErrorDetails(
-  validationErrors: ajv.ErrorObject[],
+  validationErrors: ErrorObject[],
 ): RestHttpErrors.ValidationErrorDetails[] {
   return validationErrors.map(
-    (e: ajv.ErrorObject): RestHttpErrors.ValidationErrorDetails => {
+    (e: ErrorObject): RestHttpErrors.ValidationErrorDetails => {
       return {
         path: e.dataPath,
         code: e.keyword,
@@ -217,7 +218,7 @@ function createValidator(
   schema: SchemaObject,
   globalSchemas: SchemasObject = {},
   ajvInst: Ajv,
-): ajv.ValidateFunction {
+): AsyncValidateFunction {
   const jsonSchema = convertToJsonSchema(schema);
 
   // Clone global schemas to set `$async: true` flag
@@ -226,9 +227,9 @@ function createValidator(
     // See https://github.com/strongloop/loopback-next/issues/4939
     schemas[name] = {...globalSchemas[name], $async: true};
   }
-  const schemaWithRef = {components: {schemas}, ...jsonSchema};
+  const schemaWithRef: AsyncSchema = {components: {schemas}, ...jsonSchema};
 
-  // See https://ajv.js.org/#asynchronous-validation for async validation
+  // See https://js.org/#asynchronous-validation for async validation
   schemaWithRef.$async = true;
 
   return ajvInst.compile(schemaWithRef);

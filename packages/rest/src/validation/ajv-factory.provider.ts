@@ -11,15 +11,15 @@ import {
   Provider,
 } from '@loopback/core';
 import AjvCtor from 'ajv';
+import ajvErrors from 'ajv-errors';
+import ajvFormats from 'ajv-formats';
+import ajvKeywords from 'ajv-keywords';
 import debugModule from 'debug';
 import {RestBindings, RestTags} from '../keys';
 import {AjvFactory, AjvFormat, AjvKeyword, ValidationOptions} from '../types';
 import {openapiFormats} from './openapi-formats';
 
 const debug = debugModule('loopback:rest:ajv');
-
-const ajvKeywords = require('ajv-keywords');
-const ajvErrors = require('ajv-errors');
 
 export const DEFAULT_AJV_VALIDATION_OPTIONS: ValidationOptions = {
   $data: true,
@@ -55,34 +55,38 @@ export class AjvFactoryProvider implements Provider<AjvFactory> {
       // See https://github.com/epoberezkin/ajv#options
       validationOptions = {
         allErrors: true,
-        jsonPointers: true,
-        // nullable: support keyword "nullable" from Open API 3 specification.
-        nullable: true,
+        strictTypes: false,
         ...validationOptions,
       };
 
       debug('AJV options', validationOptions);
       const ajvInst = new AjvCtor(validationOptions);
+      ajvInst.addKeyword('components');
+      ajvInst.addKeyword('x-typescript-type');
 
-      if (validationOptions.ajvKeywords === true) {
-        ajvKeywords(ajvInst);
-      } else if (Array.isArray(validationOptions.ajvKeywords)) {
+      if (Array.isArray(validationOptions.ajvKeywords)) {
         ajvKeywords(ajvInst, validationOptions.ajvKeywords);
+      } else if (validationOptions.ajvKeywords !== false) {
+        ajvKeywords(ajvInst);
       }
 
-      if (validationOptions.ajvErrors === true) {
-        ajvErrors(ajvInst);
-      } else if (validationOptions.ajvErrors?.constructor === Object) {
+      if (
+        validationOptions.ajvErrors != null &&
+        typeof validationOptions.ajvErrors === 'object'
+      ) {
         ajvErrors(ajvInst, validationOptions.ajvErrors);
+      } else if (validationOptions.ajvErrors !== false) {
+        ajvErrors(ajvInst);
       }
 
       if (this.keywords) {
         this.keywords.forEach(keyword => {
-          debug('Adding Ajv keyword %s', keyword.name);
-          ajvInst.addKeyword(keyword.name, keyword);
+          debug('Adding Ajv keyword %s', keyword.keyword);
+          ajvInst.addKeyword(keyword);
         });
       }
 
+      ajvFormats(ajvInst);
       for (const format of openapiFormats) {
         ajvInst.addFormat(format.name, format);
       }

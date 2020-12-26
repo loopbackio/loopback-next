@@ -5,7 +5,13 @@
 
 import {HandlerContext, Request, Response} from '@loopback/express';
 import {ReferenceObject, SchemaObject} from '@loopback/openapi-v3';
-import ajv, {Ajv, FormatDefinition, KeywordDefinition} from 'ajv';
+import Ajv, {
+  ErrorObject,
+  FormatDefinition,
+  KeywordDefinition,
+  Options as AjvOptions,
+  ValidateFunction,
+} from 'ajv';
 import {
   Options,
   OptionsJson,
@@ -82,7 +88,7 @@ export type LogError = (
  */
 export type SchemaValidatorCache = WeakMap<
   SchemaObject | ReferenceObject, // First keyed by schema object
-  Map<string, ajv.ValidateFunction> // Second level keyed by stringified AJV options
+  Map<string, ValidateFunction> // Second level keyed by stringified AJV options
 >;
 
 /**
@@ -96,17 +102,19 @@ export type AjvErrorOptions = {
 /**
  * Factory function for Ajv instances
  */
-export type AjvFactory = (options?: ajv.Options) => Ajv;
+export type AjvFactory = (options?: AjvOptions) => Ajv;
 
 /**
  * Ajv keyword definition with a name
  */
-export type AjvKeyword = KeywordDefinition & {name: string};
+export type AjvKeyword = KeywordDefinition;
 
 /**
  * Ajv format definition with a name
  */
-export type AjvFormat = FormatDefinition & {name: string};
+export type AjvFormat<
+  T extends string | number = string
+> = FormatDefinition<T> & {name: string};
 
 /**
  * Options for any value validation using AJV
@@ -127,7 +135,7 @@ export interface ValueValidationOptions extends ValidationOptions {
 /**
  * Options for request body validation using AJV
  */
-export interface ValidationOptions extends ajv.Options {
+export interface ValidationOptions extends AjvOptions {
   /**
    * Custom cache for compiled schemas by AJV. This setting makes it possible
    * to skip the default cache.
@@ -138,24 +146,24 @@ export interface ValidationOptions extends ajv.Options {
    * - `true`: Add all keywords from `ajv-keywords`
    * - `string[]`: Add an array of keywords from `ajv-keywords`
    */
-  ajvKeywords?: true | string[];
+  ajvKeywords?: boolean | string[];
   /**
    * Enable custom error messages in JSON-Schema for AJV validator
    * from https://github.com/epoberezkin/ajv-errors
    * - `true`: Enable `ajv-errors`
    * - `AjvErrorOptions`: Enable `ajv-errors` with options
    */
-  ajvErrors?: true | AjvErrorOptions;
+  ajvErrors?: boolean | AjvErrorOptions;
   /**
    * A function that transform the `ErrorObject`s reported by AJV.
    * This could be used for error messages customization, localization, etc.
    */
-  ajvErrorTransformer?: (errors: ajv.ErrorObject[]) => ajv.ErrorObject[];
+  ajvErrorTransformer?: (errors: ErrorObject[]) => ErrorObject[];
 
   /**
    * A factory to create Ajv instance
    */
-  ajvFactory?: (options: ajv.Options) => Ajv;
+  ajvFactory?: (options: AjvOptions) => Ajv;
 
   /**
    * An array of keys to be rejected, such as `__proto__`.

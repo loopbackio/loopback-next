@@ -47,6 +47,7 @@ export function getScopeFilterJsonSchemaFor(
   class EmptyModel extends Model {}
 
   const schema: JsonSchema = {
+    type: 'object',
     ...getFilterJsonSchemaFor(EmptyModel, {
       setTitle: false,
     }),
@@ -126,6 +127,7 @@ export function getFilterJsonSchemaFor(
   }
 
   const schema: JsonSchema = {
+    type: 'object',
     ...(options.setTitle !== false && {
       title: `${modelCtor.modelName}.Filter`,
     }),
