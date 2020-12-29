@@ -147,8 +147,10 @@ export class MyAppApplication extends BootMixin(
 
 
 exports[`app-generator specific files generates all the proper files 3`] = `
+import {injectable} from '@loopback/core';
 import {MiddlewareSequence} from '@loopback/rest';
 
+@injectable()
 export class MySequence extends MiddlewareSequence {}
 
 `;

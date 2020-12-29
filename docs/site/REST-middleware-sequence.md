@@ -32,8 +32,10 @@ When a LoopBack application is scaffolded using `lb4 app` command, a
 `MySequence` class is generated in `src/sequence.ts`.
 
 ```ts
+import {injectable} from '@loopback/core';
 import {MiddlewareSequence} from '@loopback/rest';
 
+@injectable()
 export class MySequence extends MiddlewareSequence {}
 ```
 
@@ -312,8 +314,10 @@ can simply migrate to the middleware based sequence by replacing the content of
 `src/sequence.ts` with the code below.
 
 ```ts
+import {injectable} from '@loopback/core';
 import {MiddlewareSequence} from '@loopback/rest';
 
+@injectable()
 export class MySequence extends MiddlewareSequence {}
 ```
 
