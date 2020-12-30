@@ -1401,6 +1401,34 @@ exports[`cli saves command metadata to .yo-rc.json 1`] = `
           "name": "throughModel",
           "hide": false
         },
+        "sourceModelPrimaryKey": {
+          "type": "String",
+          "required": false,
+          "description": "Primary key on source model",
+          "name": "sourceModelPrimaryKey",
+          "hide": false
+        },
+        "sourceModelPrimaryKeyType": {
+          "type": "String",
+          "required": false,
+          "description": "Type of the primary key on source model",
+          "name": "sourceModelPrimaryKeyType",
+          "hide": false
+        },
+        "destinationModelPrimaryKey": {
+          "type": "String",
+          "required": false,
+          "description": "Primary key on destination model",
+          "name": "destinationModelPrimaryKey",
+          "hide": false
+        },
+        "destinationModelPrimaryKeyType": {
+          "type": "String",
+          "required": false,
+          "description": "Type of the primary key on destination model",
+          "name": "destinationModelPrimaryKeyType",
+          "hide": false
+        },
         "sourceKeyOnThrough": {
           "type": "String",
           "required": false,

@@ -8,10 +8,10 @@
 'use strict';
 
 exports[`lb4 relation HasOne checks generated source class repository answers {"relationType":"hasOne","sourceModel":"Customer","destinationModel":"Address","registerInclusionResolver":false} generates Customer repository file with different inputs 1`] = `
-import {DefaultCrudRepository, repository, HasOneRepositoryFactory} from '@loopback/repository';
-import {Customer, Address} from '../models';
-import {DbDataSource} from '../datasources';
 import {inject, Getter} from '@loopback/core';
+import {DefaultCrudRepository, repository, HasOneRepositoryFactory} from '@loopback/repository';
+import {DbDataSource} from '../datasources';
+import {Customer, Address} from '../models';
 import {AddressRepository} from './address.repository';
 
 export class CustomerRepository extends DefaultCrudRepository<
@@ -31,10 +31,10 @@ export class CustomerRepository extends DefaultCrudRepository<
 
 
 exports[`lb4 relation HasOne checks generated source class repository answers {"relationType":"hasOne","sourceModel":"Customer","destinationModel":"Address"} generates Customer repository file with different inputs 1`] = `
-import {DefaultCrudRepository, repository, HasOneRepositoryFactory} from '@loopback/repository';
-import {Customer, Address} from '../models';
-import {DbDataSource} from '../datasources';
 import {inject, Getter} from '@loopback/core';
+import {DefaultCrudRepository, repository, HasOneRepositoryFactory} from '@loopback/repository';
+import {DbDataSource} from '../datasources';
+import {Customer, Address} from '../models';
 import {AddressRepository} from './address.repository';
 
 export class CustomerRepository extends DefaultCrudRepository<

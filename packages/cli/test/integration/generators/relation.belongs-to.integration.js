@@ -27,32 +27,12 @@ const repositoryFileName = 'order.repository.ts';
 describe('lb4 relation', /** @this {Mocha.Suite} */ function () {
   this.timeout(30000);
 
-  it("rejects relation when destination model doesn't have primary Key", async () => {
-    await sandbox.reset();
-    const prompt = {
-      relationType: 'belongsTo',
-      sourceModel: 'Customer',
-      destinationModel: 'NoKey',
-    };
-
-    return expect(
-      testUtils
-        .executeGenerator(generator)
-        .inDir(sandbox.path, () =>
-          testUtils.givenLBProject(sandbox.path, {
-            additionalFiles: SANDBOX_FILES,
-          }),
-        )
-        .withPrompts(prompt),
-    ).to.be.rejectedWith(/Target model primary key does not exist/);
-  });
-
   it('rejects relation when models does not exist', async () => {
     await sandbox.reset();
     const prompt = {
       relationType: 'belongsTo',
       sourceModel: 'Customer',
-      destinationModel: 'NoKey',
+      destinationModel: 'NotExistModel',
     };
 
     return expect(

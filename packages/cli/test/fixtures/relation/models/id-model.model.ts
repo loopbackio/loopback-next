@@ -1,19 +1,15 @@
 import {Entity, model, property} from '@loopback/repository';
 
 @model()
-export class NoKey extends Entity {
+export class IdModel extends Entity {
   @property({
     type: 'number',
+    id: true,
     default: 0,
   })
-  id?: number;
+  id?: string;
 
-  @property({
-    type: 'string',
-  })
-  name?: string;
-
-  constructor(data?: Partial<NoKey>) {
+  constructor(data?: Partial<IdModel>) {
     super(data);
   }
 }
