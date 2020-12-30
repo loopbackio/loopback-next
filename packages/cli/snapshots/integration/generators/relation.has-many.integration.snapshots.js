@@ -8,10 +8,10 @@
 'use strict';
 
 exports[`lb4 relation HasMany checks generated source class repository answers {"relationType":"hasMany","sourceModel":"Customer","destinationModel":"Order","relationName":"custom_name","registerInclusionResolver":false} generates Customer repository file with different inputs 1`] = `
-import {DefaultCrudRepository, repository, HasManyRepositoryFactory} from '@loopback/repository';
-import {Customer, Order} from '../models';
-import {DbDataSource} from '../datasources';
 import {inject, Getter} from '@loopback/core';
+import {DefaultCrudRepository, repository, HasManyRepositoryFactory} from '@loopback/repository';
+import {DbDataSource} from '../datasources';
+import {Customer, Order} from '../models';
 import {OrderRepository} from './order.repository';
 
 export class CustomerRepository extends DefaultCrudRepository<
@@ -31,10 +31,10 @@ export class CustomerRepository extends DefaultCrudRepository<
 
 
 exports[`lb4 relation HasMany checks generated source class repository answers {"relationType":"hasMany","sourceModel":"Customer","destinationModel":"Order"} generates Customer repository file with different inputs 1`] = `
-import {DefaultCrudRepository, repository, HasManyRepositoryFactory} from '@loopback/repository';
-import {Customer, Order} from '../models';
-import {DbDataSource} from '../datasources';
 import {inject, Getter} from '@loopback/core';
+import {DefaultCrudRepository, repository, HasManyRepositoryFactory} from '@loopback/repository';
+import {DbDataSource} from '../datasources';
+import {Customer, Order} from '../models';
 import {OrderRepository} from './order.repository';
 
 export class CustomerRepository extends DefaultCrudRepository<
