@@ -48,6 +48,11 @@ class ProductRepository extends DefaultCrudRepository<
 }
 ```
 
+{% include warning.html content="Do not use `this` inside of the observer
+callback function. The `this` keyword will only reference the repository state
+of the first request and may result in unexpected behaviour. See GitHub issue
+[#6962](https://github.com/strongloop/loopback-next/issues/6962)." %}
+
 Although possible, we are not providing an API which directly exposes the
 `observe` method of the model class. The current API makes the registration of
 operation hooks a process that is possible only at the time when the model class
