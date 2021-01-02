@@ -153,7 +153,7 @@ instance:
 ```ts
 import express from 'express';
 import {ApplicationConfig, NoteApplication} from './application';
-
+import http from 'http';
 export {ApplicationConfig};
 
 export class ExpressServer {
@@ -244,7 +244,7 @@ export class ExpressServer {
     if (!this.server) return;
     await this.lbApp.stop();
     this.server.close();
-    await pEvent(this.server, 'close');
+    await once(this.server, 'close');
     this.server = undefined;
   }
 }
