@@ -11,10 +11,11 @@ const {promisify} = require('util');
 const path = require('path');
 const tildify = require('tildify');
 const assert = require('yeoman-assert');
-const helpers = require('yeoman-test');
 const generator = path.join(__dirname, '../../../generators/app');
 const cliVersion = require('../../../package.json').version;
 const build = require('@loopback/build');
+const {executeGenerator} = require('../../test-utils');
+
 const props = {
   name: 'my-app',
   description: 'My app for LoopBack 4',
@@ -36,7 +37,7 @@ describe('app-generator extending BaseGenerator', baseTests);
 describe('generator-loopback4:app', tests);
 describe('app-generator specific files', () => {
   before(() => {
-    return helpers.run(generator).withPrompts(props);
+    return executeGenerator(generator).withPrompts(props);
   });
   it('generates all the proper files', () => {
     assertFilesToMatchSnapshot(
@@ -101,8 +102,7 @@ describe('app-generator specific files', () => {
 
 describe('app-generator with docker disabled', () => {
   before(() => {
-    return helpers
-      .run(generator)
+    return executeGenerator(generator)
       .withOptions({docker: false})
       .withPrompts(props);
   });
@@ -117,8 +117,7 @@ describe('app-generator with docker disabled', () => {
 
 describe('app-generator with --applicationName', () => {
   before(() => {
-    return helpers
-      .run(generator)
+    return executeGenerator(generator)
       .withOptions({applicationName: 'MyApp'})
       .withPrompts(props);
   });
@@ -132,8 +131,7 @@ describe('app-generator with --applicationName', () => {
 
 describe('app-generator with --apiconnect', () => {
   before(() => {
-    return helpers
-      .run(generator)
+    return executeGenerator(generator)
       .withOptions({apiconnect: true})
       .withPrompts(props);
   });
@@ -149,8 +147,7 @@ function testFormat() {
   /** @this {Mocha.Context} */
   function createAppAndInstallDeps() {
     this.timeout(90 * 1000);
-    return helpers
-      .run(generator)
+    return executeGenerator(generator)
       .withOptions({
         applicationName: 'MyApp',
         format: true,
@@ -203,8 +200,7 @@ describe('app-generator with default values', () => {
     assert.equal(fs.existsSync(defaultValProjPath), false);
     assert.equal(fs.existsSync(pathToDefValApp), false);
     return (
-      helpers
-        .run(generator)
+      executeGenerator(generator)
         .inDir(defaultValProjPath)
         // Mark it private to prevent accidental npm publication
         .withOptions({private: true})
@@ -240,8 +236,7 @@ describe('app-generator with numbers in app name', () => {
     assert.equal(fs.existsSync(defaultValProjPath), false);
     assert.equal(fs.existsSync(pathToDefValApp), false);
     return (
-      helpers
-        .run(generator)
+      executeGenerator(generator)
         .inDir(defaultValProjPath)
         // Mark it private to prevent accidental npm publication
         .withOptions({private: true})
@@ -293,8 +288,7 @@ describe('app-generator with tilde project path', () => {
     this.timeout(30 * 1000);
     // check it with full path. tilde-path-app should not exist at this point
     assert.equal(fs.existsSync(sandbox), false);
-    await helpers
-      .run(generator)
+    await executeGenerator(generator)
       .inDir(sandbox)
       // Mark it private to prevent accidental npm publication
       .withOptions({private: true})

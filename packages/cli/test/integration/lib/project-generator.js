@@ -5,7 +5,6 @@
 
 'use strict';
 const assert = require('yeoman-assert');
-const helpers = require('yeoman-test');
 const yeoman = require('yeoman-environment');
 const testUtils = require('../../test-utils');
 const sinon = require('sinon');
@@ -13,6 +12,7 @@ const path = require('path');
 const utils = require('../../../lib/utils');
 const deps = utils.getDependencies();
 const expect = require('@loopback/testlab').expect;
+const {executeGenerator} = require('../../test-utils');
 
 module.exports = function (projGenerator, props, projectType) {
   return /** @this {Mocha.Context} */ function () {
@@ -239,7 +239,7 @@ module.exports = function (projGenerator, props, projectType) {
 
     describe('without settings', () => {
       before(() => {
-        return helpers.run(projGenerator).withPrompts(props);
+        return executeGenerator(projGenerator).withPrompts(props);
       });
 
       it('creates files', () => {
@@ -307,7 +307,7 @@ module.exports = function (projGenerator, props, projectType) {
 
     describe('with mocha disabled', () => {
       before(() => {
-        return helpers.run(projGenerator).withPrompts(
+        return executeGenerator(projGenerator).withPrompts(
           Object.assign(
             {
               settings: ['Disable mocha'],
@@ -324,7 +324,7 @@ module.exports = function (projGenerator, props, projectType) {
 
     describe('with loopbackBuild disabled', () => {
       before(() => {
-        return helpers.run(projGenerator).withPrompts(
+        return executeGenerator(projGenerator).withPrompts(
           Object.assign(
             {
               settings: [
@@ -373,7 +373,7 @@ module.exports = function (projGenerator, props, projectType) {
 
     describe('with prettier disabled', () => {
       before(() => {
-        return helpers.run(projGenerator).withPrompts(
+        return executeGenerator(projGenerator).withPrompts(
           Object.assign(
             {
               settings: [
@@ -397,7 +397,7 @@ module.exports = function (projGenerator, props, projectType) {
 
     describe('with eslint disabled', () => {
       before(() => {
-        return helpers.run(projGenerator).withPrompts(
+        return executeGenerator(projGenerator).withPrompts(
           Object.assign(
             {
               settings: [
@@ -429,7 +429,7 @@ module.exports = function (projGenerator, props, projectType) {
 
     describe('with loopbackBuild & eslint disabled', () => {
       before(() => {
-        return helpers.run(projGenerator).withPrompts(
+        return executeGenerator(projGenerator).withPrompts(
           Object.assign(
             {
               settings: [
@@ -471,7 +471,7 @@ module.exports = function (projGenerator, props, projectType) {
 
     describe('with vscode disabled', () => {
       before(() => {
-        return helpers.run(projGenerator).withPrompts(
+        return executeGenerator(projGenerator).withPrompts(
           Object.assign(
             {
               settings: [
@@ -494,7 +494,7 @@ module.exports = function (projGenerator, props, projectType) {
 
     describe('with --skip-optional-prompts', () => {
       before(() => {
-        return helpers.run(projGenerator).withOptions({
+        return executeGenerator(projGenerator).withOptions({
           name: props.name,
           'skip-optional-prompts': true,
         });
@@ -510,7 +510,7 @@ module.exports = function (projGenerator, props, projectType) {
 
     describe('set npm packageManager', () => {
       before(() => {
-        return helpers.run(projGenerator).withOptions({
+        return executeGenerator(projGenerator).withOptions({
           packageManager: 'npm',
         });
       });
@@ -528,7 +528,7 @@ module.exports = function (projGenerator, props, projectType) {
     const yarnTest = isYarnAvailable ? describe : describe.skip;
     yarnTest('set yarn packageManager', () => {
       before(() => {
-        return helpers.run(projGenerator).withOptions({
+        return executeGenerator(projGenerator).withOptions({
           packageManager: 'yarn',
         });
       });
@@ -544,7 +544,7 @@ module.exports = function (projGenerator, props, projectType) {
 
     yarnTest('test yarn prompt', () => {
       before(() => {
-        return helpers.run(projGenerator).withPrompts(
+        return executeGenerator(projGenerator).withPrompts(
           Object.assign(
             {
               yarn: true,

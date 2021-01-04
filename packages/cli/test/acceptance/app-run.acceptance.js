@@ -7,7 +7,6 @@
 
 const path = require('path');
 const assert = require('yeoman-assert');
-const helpers = require('yeoman-test');
 const bootstrapCommandFactory = require('@lerna/bootstrap');
 const build = require('@loopback/build');
 const utils = require('../../lib/utils');
@@ -15,6 +14,7 @@ const appGenerator = path.join(__dirname, '../../generators/app');
 const rootDir = path.join(__dirname, '../../../..');
 const sandboxDir = path.join(rootDir, 'sandbox');
 const {skipIf} = require('@loopback/testlab');
+const {executeGenerator} = require('../test-utils');
 
 /**
  * This test is fairly heavy and slow as it does the following steps:
@@ -40,8 +40,7 @@ skipIf(process.env.CI == null, describe, 'app-generator (SLOW)', function () {
   async function createAppProject() {
     // Increase the timeout to 1 minute to accommodate slow CI build machines
     this.timeout(60 * 1000);
-    await helpers
-      .run(appGenerator)
+    await executeGenerator(appGenerator)
       .inDir(appProps.outdir)
       // Mark it private to prevent accidental npm publication
       .withOptions({private: true})
@@ -104,8 +103,7 @@ yarnTest('app-generator with Yarn (SLOW)', () => {
   async function createAppProject() {
     // Increase the timeout to 1 minute to accommodate slow CI build machines
     this.timeout(60 * 1000);
-    await helpers
-      .run(appGenerator)
+    await executeGenerator(appGenerator)
       .inDir(appProps.outdir)
       // Mark it private to prevent accidental npm publication
       .withOptions({
