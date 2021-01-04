@@ -129,6 +129,10 @@ module.exports = class BaseGenerator extends Generator {
         'Result:',
         jsonStr === undefined ? '(undefined)' : JSON.stringify(jsonStr),
       );
+      if (jsonStr === '') {
+        debug('Received an empty string, returning back empty config: {}');
+        return {};
+      }
       return JSON.parse(jsonStr);
     } catch (e) {
       if (!process.stdin.isTTY) {
