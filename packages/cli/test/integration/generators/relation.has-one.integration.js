@@ -25,6 +25,13 @@ const sourceFileName = 'customer.model.ts';
 const targetFileName = 'address.model.ts';
 const controllerFileName = 'customer-address.controller.ts';
 const repositoryFileName = 'customer.repository.ts';
+// speed up tests by avoiding reading docs
+const options = {
+  sourceModelPrimaryKey: 'id',
+  sourceModelPrimaryKeyType: 'number',
+  destinationModelPrimaryKey: 'id',
+  destinationModelPrimaryKeyType: 'number',
+};
 
 describe('lb4 relation HasOne', /** @this {Mocha.Suite} */ function () {
   this.timeout(30000);
@@ -74,6 +81,7 @@ describe('lb4 relation HasOne', /** @this {Mocha.Suite} */ function () {
             ],
           }),
         )
+        .withOptions(options)
         .withPrompts(prompt),
     ).to.be.rejectedWith(
       /relational property address already exist in the model Customer/,
@@ -104,6 +112,7 @@ describe('lb4 relation HasOne', /** @this {Mocha.Suite} */ function () {
               ],
             }),
           )
+          .withOptions(options)
           .withPrompts(prompt),
       ).to.be.rejectedWith(
         `relation myCustomer already exists in the repository AddressRepository.`,
@@ -178,6 +187,7 @@ describe('lb4 relation HasOne', /** @this {Mocha.Suite} */ function () {
               additionalFiles: SANDBOX_FILES,
             }),
           )
+          .withOptions(options)
           .withPrompts(multiItemPrompt);
       });
 
@@ -227,6 +237,7 @@ describe('lb4 relation HasOne', /** @this {Mocha.Suite} */ function () {
               additionalFiles: SANDBOX_FILES,
             }),
           )
+          .withOptions(options)
           .withPrompts(multiItemPrompt);
       });
 
@@ -281,6 +292,7 @@ describe('lb4 relation HasOne', /** @this {Mocha.Suite} */ function () {
               additionalFiles: SANDBOX_FILES,
             }),
           )
+          .withOptions(options)
           .withPrompts(multiItemPrompt);
       });
 
@@ -336,6 +348,7 @@ describe('lb4 relation HasOne', /** @this {Mocha.Suite} */ function () {
               additionalFiles: SANDBOX_FILES,
             }),
           )
+          .withOptions(options)
           .withPrompts(multiItemPrompt);
       });
 

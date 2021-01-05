@@ -25,6 +25,13 @@ const sourceFileName = 'doctor.model.ts';
 const throughFileName = 'appointment.model.ts';
 const controllerFileName = 'doctor-patient.controller.ts';
 const repositoryFileName = 'doctor.repository.ts';
+// speed up tests by avoiding reading docs
+const options = {
+  sourceModelPrimaryKey: 'id',
+  sourceModelPrimaryKeyType: 'number',
+  destinationModelPrimaryKey: 'id',
+  destinationModelPrimaryKeyType: 'number',
+};
 
 describe('lb4 relation HasManyThrough', /** @this {Mocha.Suite} */ function () {
   this.timeout(30000);
@@ -116,6 +123,7 @@ describe('lb4 relation HasManyThrough', /** @this {Mocha.Suite} */ function () {
               additionalFiles: SANDBOX_FILES,
             }),
           )
+          .withOptions(options)
           .withPrompts(multiItemPrompt);
       });
 
@@ -181,6 +189,7 @@ describe('lb4 relation HasManyThrough', /** @this {Mocha.Suite} */ function () {
               additionalFiles: SANDBOX_FILES,
             }),
           )
+          .withOptions(options)
           .withPrompts(multiItemPrompt);
       });
 
@@ -237,6 +246,7 @@ describe('lb4 relation HasManyThrough', /** @this {Mocha.Suite} */ function () {
               additionalFiles: SANDBOX_FILES,
             }),
           )
+          .withOptions(options)
           .withPrompts(multiItemPrompt);
       });
 
@@ -287,6 +297,7 @@ describe('lb4 relation HasManyThrough', /** @this {Mocha.Suite} */ function () {
               additionalFiles: SANDBOX_FILES,
             }),
           )
+          .withOptions(options)
           .withPrompts(multiItemPrompt);
       });
 

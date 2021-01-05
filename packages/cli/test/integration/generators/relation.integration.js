@@ -250,6 +250,12 @@ describe('lb4 relation', /** @this {Mocha.Suite} */ function () {
             additionalFiles: SANDBOX_FILES,
           }),
         )
+        .withOptions({
+          sourceModelPrimaryKey: 'id',
+          sourceModelPrimaryKeyType: 'number',
+          destinationModelPrimaryKey: 'id',
+          destinationModelPrimaryKeyType: 'number',
+        })
         .withPrompts(prompt);
       const expectedControllerIndexFile = path.join(
         sandbox.path,
@@ -270,6 +276,10 @@ describe('lb4 relation', /** @this {Mocha.Suite} */ function () {
         relationType: 'belongsTo',
         sourceModel: 'Order',
         destinationModel: 'Customer',
+        sourceModelPrimaryKey: 'id',
+        sourceModelPrimaryKeyType: 'number',
+        destinationModelPrimaryKey: 'id',
+        destinationModelPrimaryKeyType: 'number',
       };
 
       await testUtils
