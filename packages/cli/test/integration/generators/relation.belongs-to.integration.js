@@ -23,6 +23,13 @@ const sandbox = new TestSandbox(path.resolve(__dirname, '../.sandbox'));
 const sourceFileName = 'order.model.ts';
 const controllerFileName = 'order-customer.controller.ts';
 const repositoryFileName = 'order.repository.ts';
+// speed up tests by avoiding reading docs
+const options = {
+  sourceModelPrimaryKey: 'id',
+  sourceModelPrimaryKeyType: 'number',
+  destinationModelPrimaryKey: 'id',
+  destinationModelPrimaryKeyType: 'number',
+};
 
 describe('lb4 relation', /** @this {Mocha.Suite} */ function () {
   this.timeout(30000);
@@ -116,6 +123,7 @@ describe('lb4 relation', /** @this {Mocha.Suite} */ function () {
             ],
           }),
         )
+        .withOptions(options)
         .withPrompts(promptList[0]);
 
       const sourceFilePath = path.join(
@@ -155,6 +163,7 @@ describe('lb4 relation', /** @this {Mocha.Suite} */ function () {
               additionalFiles: SANDBOX_FILES,
             }),
           )
+          .withOptions(options)
           .withPrompts(multiItemPrompt);
       });
 
@@ -202,6 +211,7 @@ describe('lb4 relation', /** @this {Mocha.Suite} */ function () {
               additionalFiles: SANDBOX_FILES,
             }),
           )
+          .withOptions(options)
           .withPrompts(multiItemPrompt);
       });
 
@@ -261,6 +271,7 @@ describe('lb4 relation', /** @this {Mocha.Suite} */ function () {
               additionalFiles: SANDBOX_FILES,
             }),
           )
+          .withOptions(options)
           .withPrompts(multiItemPrompt);
       });
 
