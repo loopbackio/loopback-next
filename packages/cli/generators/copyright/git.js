@@ -49,19 +49,21 @@ async function git(cwd, ...args) {
  */
 async function getYears(file) {
   file = file || '.';
-  let dates = await git(
+  const gitDates = await git(
     process.cwd(),
     '--no-pager log --pretty=%%ai --all -- %s',
     file,
   );
-  debug('Dates for %s', file, dates);
-  if (_.isEmpty(dates)) {
-    // if the given path doesn't have any git history, assume it is new
-    dates = [new Date().toJSON()];
-  } else {
-    dates = [_.head(dates), _.last(dates)];
-  }
-  const years = _.map(dates, getYear);
+
+  const consolidatedDates = [new Date().toISOString()];
+
+  // if the given path has any git history, get its dates
+  if (gitDates.length !== 0)
+    consolidatedDates.push(new Date().toISOString(), _.last(gitDates));
+
+  debug('Dates for %s', file, consolidatedDates);
+
+  const years = consolidatedDates.map(getYear);
   return _.uniq(years).sort();
 }
 
