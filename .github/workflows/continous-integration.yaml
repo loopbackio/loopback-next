@@ -1,5 +1,10 @@
 name: Continous Integration
-on: [push, pull_request]
+on:
+  push:
+    branches: [master]
+  pull_request:
+    # The branches below must be a subset of the branches above
+    branches: [master]
 
 env:
   CI: true
