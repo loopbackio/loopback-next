@@ -13,6 +13,7 @@ import {
   inject,
   injectable,
 } from '@loopback/core';
+import {register} from 'prom-client';
 import {metricsControllerFactory} from './controllers';
 import {MetricsInterceptor} from './interceptors';
 import {MetricsBindings} from './keys';
@@ -43,6 +44,9 @@ export class MetricsComponent implements Component {
     this.application.add(createBindingFromClass(MetricsInterceptor));
     if (options.endpoint && !options.endpoint.disabled) {
       this.application.controller(metricsControllerFactory(options));
+    }
+    if (options.defaultLabels) {
+      register.setDefaultLabels(options.defaultLabels);
     }
   }
 }

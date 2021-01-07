@@ -256,6 +256,41 @@ describe('Metrics (acceptance)', () => {
     });
   });
 
+  context('with configured default labels', () => {
+    beforeEach(async () => {
+      await givenAppForMetricsCollection({
+        defaultLabels: {
+          service: 'api',
+          version: '1.0.0',
+        },
+      });
+    });
+
+    it('adds static labels to default metrics', async () => {
+      const res = await request
+        .get('/metrics')
+        .expect(200)
+        .expect('content-type', /text/);
+
+      expect(res.text).to.match(
+        /process_cpu_user_seconds_total{service="api",version="1.0.0"}/,
+      );
+    });
+
+    it('adds static labels to method invocation metrics', async () => {
+      await request.get('/success').expect(204);
+
+      const res = await request
+        .get('/metrics')
+        .expect(200)
+        .expect('content-type', /text/);
+
+      expect(res.text).to.match(
+        /loopback_invocation_total{targetName="MockController.prototype.success",method="GET",path="\/success",statusCode="204",service="api",version="1.0.0"}/,
+      );
+    });
+  });
+
   async function givenAppWithCustomConfig(config: MetricsOptions) {
     app = givenRestApplication();
     app.configure(MetricsBindings.COMPONENT).to(config);

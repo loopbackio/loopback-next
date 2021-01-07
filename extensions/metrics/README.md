@@ -44,6 +44,10 @@ this.configure(MetricsBindings.COMPONENT).to({
   defaultMetrics: {
     timeout: 5000,
   },
+  defaultLabels: {
+    service: 'api',
+    version: '1.0.0',
+  },
 });
 ```
 
