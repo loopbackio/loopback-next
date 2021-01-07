@@ -30,6 +30,10 @@ export interface MetricsOptions {
   };
 
   openApiSpec?: boolean;
+
+  defaultLabels?: {
+    [labelName: string]: string;
+  };
 }
 
 /**
