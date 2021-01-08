@@ -15,7 +15,6 @@ import {
 } from '@loopback/core';
 import {
   HttpErrors,
-  Request,
   RequestContext,
   Response,
   RouteSource,
@@ -93,21 +92,31 @@ export class MetricsInterceptor implements Provider<Interceptor> {
     next: () => ValueOrPromise<T>,
   ) {
     MetricsInterceptor.setup();
-    const {request, response} = invocationCtx.parent as RequestContext;
+    const {source, parent} = invocationCtx;
     const labelValues: LabelValues<LabelNames> = {
       targetName: invocationCtx.targetName,
-      method: request.method,
     };
-    labelValues.path = getPathPattern(invocationCtx, request);
+    if (isRouteSource(source)) {
+      labelValues.method = getRequestMethod(source);
+      labelValues.path = getPathPattern(source);
+    }
     const endGauge = MetricsInterceptor.gauge.startTimer();
     const endHistogram = MetricsInterceptor.histogram.startTimer();
     const endSummary = MetricsInterceptor.summary.startTimer();
     try {
       const result = await next();
-      labelValues.statusCode = getStatusCodeFromResponse(response, result);
+      if (isRouteSource(source)) {
+        labelValues.statusCode = getStatusCodeFromResponse(
+          // parent context will be request context if invocation source is route
+          (parent as RequestContext).response,
+          result,
+        );
+      }
       return result;
     } catch (err) {
-      labelValues.statusCode = getStatusCodeFromError(err);
+      if (isRouteSource(source)) {
+        labelValues.statusCode = getStatusCodeFromError(err);
+      }
       throw err;
     } finally {
       MetricsInterceptor.counter.inc(labelValues);
@@ -118,11 +127,16 @@ export class MetricsInterceptor implements Provider<Interceptor> {
   }
 }
 
-function getPathPattern({source}: InvocationContext, request: Request) {
+function getPathPattern(source: RouteSource) {
   // make sure to use path pattern instead of raw path
   // this is important since paths can contain unbounded sets of values
   // such as IDs which would create a new time series for each unique value
-  return isRouteSource(source) ? source.value.path : request.path;
+  return source.value.path;
+}
+
+function getRequestMethod(source: RouteSource) {
+  // request methods should be all-uppercase
+  return source.value.verb.toUpperCase();
 }
 
 function getStatusCodeFromResponse(response: Response, result?: unknown) {
