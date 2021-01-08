@@ -31,24 +31,65 @@ describe('Metrics (with push gateway)', function () {
   afterEach(async () => {
     if (app) await app.stop();
     (app as unknown) = undefined;
+    await promisify(setTimeout)(10);
+    gateway.reset();
   });
 
-  beforeEach(async () => {
+  it('pushes metrics to gateway', async () => {
     await givenAppWithCustomConfig({
       // Push metrics each 10 ms
       pushGateway: {url: gwUrl, interval: 10},
     });
-  });
 
-  it('pushes metrics to gateway', async () => {
-    // Wait for 100 ms
+    // Wait for 50 ms
     await promisify(setTimeout)(50);
     const request = supertest(gwUrl);
     // Now we expect to get LoopBack metrics from the push gateway
     await request.get('/metrics').expect(200, /job="loopback"/);
+    expect(gateway.puts).to.equal(0);
+    expect(gateway.posts).to.be.greaterThanOrEqual(1);
   });
 
-  it('adds MetricsPushObserver to the application', () => {
+  it('pushes metrics to gateway with grouping key', async () => {
+    await givenAppWithCustomConfig({
+      pushGateway: {
+        url: gwUrl,
+        interval: 10,
+        jobName: 'my_job',
+        groupingKey: {env: 'test'},
+      },
+    });
+
+    await promisify(setTimeout)(50);
+    const request = supertest(gwUrl);
+    await request.get('/metrics').expect(200, /job="my_job",env="test"/);
+    expect(gateway.puts).to.equal(0);
+    expect(gateway.posts).to.be.greaterThanOrEqual(1);
+  });
+
+  it('pushes metrics to gateway with replacement', async () => {
+    await givenAppWithCustomConfig({
+      pushGateway: {
+        url: gwUrl,
+        interval: 10,
+        jobName: 'my_other_job',
+        groupingKey: {env: 'poc'},
+        replaceAll: true,
+      },
+    });
+
+    await promisify(setTimeout)(50);
+    const request = supertest(gwUrl);
+    await request.get('/metrics').expect(200, /job="my_other_job",env="poc"/);
+    expect(gateway.puts).to.be.greaterThanOrEqual(1);
+    expect(gateway.posts).to.equal(0);
+  });
+
+  it('adds MetricsPushObserver to the application', async () => {
+    await givenAppWithCustomConfig({
+      pushGateway: {url: gwUrl},
+    });
+
     expect(
       app.isBound(
         `${CoreBindings.LIFE_CYCLE_OBSERVERS}.${MetricsPushObserver.name}`,

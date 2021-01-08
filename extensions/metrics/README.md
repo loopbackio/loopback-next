@@ -70,12 +70,12 @@ There are three types of metrics being collected by this component:
 
 Prometheus supports two modes to collect metrics:
 
-- pull - scraping from metrics http endpoint exposed by the system being
-  monitored
-- push - pushing metrics from the system being monitored to a push gateway
-
-See
-https://prometheus.io/docs/introduction/faq/#why-do-you-pull-rather-than-push
+- **pull** - scraping from metrics http endpoint exposed by the system being
+  monitored. This is the usual mode of operation. See
+  [Why do you pull rather than push?](https://prometheus.io/docs/introduction/faq/#why-do-you-pull-rather-than-push)
+- **push** - pushing metrics from the system being monitored to a push gateway.
+  Generally used for ephemeral jobs - see
+  [When to use the Pushgateway](https://prometheus.io/docs/practices/pushing/)
 
 ## Try it out
 

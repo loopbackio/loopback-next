@@ -22,6 +22,11 @@ export interface MetricsOptions {
     disabled?: boolean;
     url: string;
     interval?: number;
+    jobName?: string;
+    groupingKey?: {
+      [key: string]: string;
+    };
+    replaceAll?: boolean;
   };
 
   openApiSpec?: boolean;
