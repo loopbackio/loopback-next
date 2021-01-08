@@ -8,6 +8,7 @@ import {
   del,
   get,
   HttpErrors,
+  param,
   patch,
   post,
   put,
@@ -63,4 +64,13 @@ export class MockController {
   serverError() {
     throw new Error();
   }
+
+  @get('/path/{param}')
+  pathWithParam(@param.path.string('param') _param: string) {}
+
+  @get('/path/{firstParam}/{secondParam}')
+  pathWithParams(
+    @param.path.string('firstParam') _firstParam: string,
+    @param.path.string('secondParam') _secondParam: string,
+  ) {}
 }
