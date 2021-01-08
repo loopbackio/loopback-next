@@ -110,7 +110,7 @@ const inclusionFilter = {
     },
   },
 };
-const encodedFilter = encodeURIComponent(JSON.stringify(filter));
+const encodedFilter = encodeURIComponent(JSON.stringify(inclusionFilter));
 ```
 
 and call `/modelName?filter=<encodedFilter>`
