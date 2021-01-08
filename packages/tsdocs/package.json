@@ -1,8 +1,7 @@
 {
   "name": "@loopback/tsdocs",
   "version": "2.3.6",
-  "description": "An internal package to generate api docs using Microsoft api-extractor and api-documenter",
-  "private": true,
+  "description": "A package to generate api docs using Microsoft api-extractor and api-documenter",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "engines": {
@@ -11,7 +10,7 @@
   "scripts": {
     "build:tsdocs": "npm run build && npm run -s extract-apidocs && npm run -s document-apidocs && npm run -s update-apidocs",
     "extract-apidocs": "node bin/extract-apis",
-    "document-apidocs": "api-documenter markdown -i ../../docs/apidocs/models -o ../../docs/site/apidocs",
+    "document-apidocs": "bin/document-apis markdown -i ../../docs/apidocs/models -o ../../docs/site/apidocs",
     "update-apidocs": "node bin/update-apidocs",
     "build": "lb-tsc",
     "build:fixtures": "npm run build --prefix fixtures/monorepo",
@@ -20,25 +19,14 @@
     "test": "lb-mocha \"dist/__tests__/**/*.js\"",
     "verify": "npm pack && tar xf loopback-tsdocs*.tgz && tree package && npm run clean"
   },
+  "bin": {
+    "lb-extract-apidocs": "./bin/extract-apis.js",
+    "lb-document-apidocs": "./bin/document-apis.js",
+    "lb-update-apidocs": "./bin/update-apidocs.js"
+  },
   "author": "IBM Corp.",
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
-  "dependencies": {
-    "@microsoft/api-documenter": "^7.12.3",
-    "@microsoft/api-extractor": "^7.12.1",
-    "debug": "^4.3.1",
-    "fs-extra": "^9.0.1",
-    "tslib": "^2.0.3"
-  },
-  "devDependencies": {
-    "@loopback/build": "^6.2.8",
-    "@loopback/eslint-config": "^10.0.4",
-    "@loopback/testlab": "^3.2.10",
-    "@loopback/tsdocs-monorepo": "^0.0.13",
-    "@types/debug": "^4.1.5",
-    "@types/fs-extra": "^9.0.6",
-    "@types/node": "^10.17.35"
-  },
   "keywords": [
     "LoopBack",
     "Apidocs",
@@ -55,5 +43,24 @@
     "type": "git",
     "url": "https://github.com/strongloop/loopback-next.git",
     "directory": "packages/tsdocs"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@microsoft/api-documenter": "^7.12.3",
+    "@microsoft/api-extractor": "^7.12.1",
+    "debug": "^4.3.1",
+    "fs-extra": "^9.0.1",
+    "tslib": "^2.0.3"
+  },
+  "devDependencies": {
+    "@loopback/build": "^6.2.8",
+    "@loopback/eslint-config": "^10.0.4",
+    "@loopback/testlab": "^3.2.10",
+    "@loopback/tsdocs-monorepo": "^0.0.13",
+    "@types/debug": "^4.1.5",
+    "@types/fs-extra": "^9.0.6",
+    "@types/node": "^10.17.35"
   }
 }
