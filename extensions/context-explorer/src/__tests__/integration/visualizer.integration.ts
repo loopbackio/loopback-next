@@ -14,7 +14,8 @@ describe('Visualizer', () => {
 
   beforeEach(givenContexts);
 
-  it('creates a dot graph with bindings', async () => {
+  it('creates a dot graph with bindings', async function (this: Mocha.Context) {
+    if ((process.platform as string) === 'os390') return this.skip();
     server.bind('port').to(3000);
     app.bind('now').toDynamicValue(() => new Date());
     const json = server.inspect();

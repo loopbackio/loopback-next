@@ -67,7 +67,8 @@ describe('Context Explorer (acceptance)', function (this: Mocha.Suite) {
       );
     });
 
-    it('invokes GET /graph', async () => {
+    it('invokes GET /graph', async function (this: Mocha.Context) {
+      if ((process.platform as string) === 'os390') return this.skip();
       const res = await request.get('/context-explorer/graph').expect(200);
       expect(res.get('content-type')).to.match(/^image\/svg\+xml/);
     });
