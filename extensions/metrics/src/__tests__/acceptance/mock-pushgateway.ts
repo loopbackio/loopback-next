@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {once} from 'events';
-import express from 'express';
+import express, {Request} from 'express';
 import {Server} from 'http';
 
 /**
@@ -12,7 +12,9 @@ import {Server} from 'http';
  */
 export class PushGateway {
   private server?: Server;
-  private metrics: string[] = [];
+  private metrics = new Map<string, string>();
+  puts = 0;
+  posts = 0;
 
   async start(port = 9091) {
     const app = express();
@@ -24,16 +26,56 @@ export class PushGateway {
     });
     app.use(express.text({type: '*/*'}));
     app.get('/metrics', (req, res) => {
-      res.send(this.metrics.join('\n'));
+      // The actual metrics format appends the grouping key as labels, but this
+      // will do for the tests
+      const output: string[] = [];
+      this.metrics.forEach((value, key) => {
+        output.push(`${key}\n${value}`);
+      });
+      res.send(output.join('\n'));
     });
 
-    app.post('/metrics/job/:jobName', (req, res) => {
-      this.metrics.push(`job="${req.params.jobName}"\n${req.body}`);
-      res.send('\n');
-    });
+    app.put(
+      ['/metrics/job/:jobName', '/metrics/job/:jobName/:labelName/:labelValue'],
+      (req, res) => {
+        this.metrics.set(this.groupingKey(req), req.body);
+        res.send('\n');
+        ++this.puts;
+      },
+    );
+
+    app.post(
+      ['/metrics/job/:jobName', '/metrics/job/:jobName/:labelName/:labelValue'],
+      (req, res) => {
+        // Not quite the real behaviour of Pushgateway's POST, but this will
+        // also do for the tests
+        const key = this.groupingKey(req);
+        if (this.metrics.has(key)) {
+          this.metrics.set(key, this.metrics.get(key)!.concat('\n', req.body));
+        } else {
+          this.metrics.set(key, req.body);
+        }
+        res.send('\n');
+        ++this.posts;
+      },
+    );
+
     this.server = app.listen(port);
     await once(this.server, 'listening');
     return this.server;
+  }
+
+  private groupingKey(req: Request): string {
+    const key = `job="${req.params.jobName}"`;
+    return req.params.labelName
+      ? key.concat(`,${req.params.labelName}="${req.params.labelValue}"`)
+      : key;
+  }
+
+  reset() {
+    this.metrics.clear();
+    this.puts = 0;
+    this.posts = 0;
   }
 
   async stop() {
