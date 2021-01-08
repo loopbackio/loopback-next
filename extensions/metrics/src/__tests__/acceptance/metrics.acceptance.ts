@@ -254,6 +254,19 @@ describe('Metrics (acceptance)', () => {
         /loopback_invocation_duration_summary{quantile="0.01",targetName="MockController.prototype.success",method="GET",path="\/success",statusCode="204"}/,
       );
     });
+
+    it('uses the path pattern instead of the raw path in path labels', async () => {
+      await request.get('/path/1');
+      await request.get('/path/1/2');
+
+      const res = await request
+        .get('/metrics')
+        .expect(200)
+        .expect('content-type', /text/);
+
+      expect(res.text).to.match(/path="\/path\/{param}"/);
+      expect(res.text).to.match(/path="\/path\/{firstParam}\/{secondParam}"/);
+    });
   });
 
   context('with configured default labels', () => {

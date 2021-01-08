@@ -9,10 +9,17 @@ import {
   injectable,
   Interceptor,
   InvocationContext,
+  InvocationSource,
   Provider,
   ValueOrPromise,
 } from '@loopback/core';
-import {HttpErrors, RequestContext, Response} from '@loopback/rest';
+import {
+  HttpErrors,
+  Request,
+  RequestContext,
+  Response,
+  RouteSource,
+} from '@loopback/rest';
 import {
   Counter,
   Gauge,
@@ -90,8 +97,8 @@ export class MetricsInterceptor implements Provider<Interceptor> {
     const labelValues: LabelValues<LabelNames> = {
       targetName: invocationCtx.targetName,
       method: request.method,
-      path: request.path,
     };
+    labelValues.path = getPathPattern(invocationCtx, request);
     const endGauge = MetricsInterceptor.gauge.startTimer();
     const endHistogram = MetricsInterceptor.histogram.startTimer();
     const endSummary = MetricsInterceptor.summary.startTimer();
@@ -111,6 +118,13 @@ export class MetricsInterceptor implements Provider<Interceptor> {
   }
 }
 
+function getPathPattern({source}: InvocationContext, request: Request) {
+  // make sure to use path pattern instead of raw path
+  // this is important since paths can contain unbounded sets of values
+  // such as IDs which would create a new time series for each unique value
+  return isRouteSource(source) ? source.value.path : request.path;
+}
+
 function getStatusCodeFromResponse(response: Response, result?: unknown) {
   // interceptors are invoked before result is written to response,
   // the status code for 200 responses without a result should be 204
@@ -123,4 +137,8 @@ function getStatusCodeFromError(err: HttpErrors.HttpError) {
   // it is required to retrieve the status code from the error
   const notFound = err.code === 'ENTITY_NOT_FOUND';
   return err.statusCode ?? err.status ?? (notFound ? 404 : 500);
+}
+
+function isRouteSource(source?: InvocationSource): source is RouteSource {
+  return source?.type === 'route';
 }
