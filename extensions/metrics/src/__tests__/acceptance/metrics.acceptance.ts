@@ -3,7 +3,11 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {CoreBindings, GLOBAL_INTERCEPTOR_NAMESPACE} from '@loopback/core';
+import {
+  CoreBindings,
+  createProxyWithInterceptors,
+  GLOBAL_INTERCEPTOR_NAMESPACE,
+} from '@loopback/core';
 import {
   RestApplication,
   RestServer,
@@ -266,6 +270,23 @@ describe('Metrics (acceptance)', () => {
 
       expect(res.text).to.match(/path="\/path\/{param}"/);
       expect(res.text).to.match(/path="\/path\/{firstParam}\/{secondParam}"/);
+    });
+
+    it('only adds targetName label if the invocation source is an interception proxy', async () => {
+      const proxy = createProxyWithInterceptors(new MockController(), app);
+      await proxy.success();
+
+      const res = await request
+        .get('/metrics')
+        .expect(200)
+        .expect('content-type', /text/);
+
+      expect(res.text).to.match(
+        /targetName="MockController.prototype.success"/,
+      );
+      expect(res.text).to.not.match(/method=/);
+      expect(res.text).to.not.match(/path=/);
+      expect(res.text).to.not.match(/statusCode=/);
     });
   });
 
