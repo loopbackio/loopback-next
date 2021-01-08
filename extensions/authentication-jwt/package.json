@@ -42,7 +42,7 @@
     "@loopback/rest-explorer": "^3.0.5",
     "@loopback/service-proxy": "^3.0.5",
     "@loopback/testlab": "^3.2.10",
-    "@types/lodash": "^4.14.165",
+    "@types/lodash": "^4.14.167",
     "@types/node": "^10.17.35",
     "lodash": "^4.17.20",
     "typescript": "~4.1.3"
