@@ -1,8 +1,9 @@
 <img src="https://raw.githubusercontent.com/strongloop/loopback.io/gh-pages/images/branding/logo/blue/loopback-sm.png" alt="LoopBack4 logo" width="400"/>
 
-[![Travis Build Status](https://travis-ci.com/strongloop/loopback-next.svg?branch=master)](https://travis-ci.com/strongloop/loopback-next)
+[![Continuous Integration Status](https://github.com/strongloop/loopback-next/workflows/Continous%20Integration/badge.svg)](https://github.com/strongloop/loopback-next/actions?query=workflow%3A%22Continous+Integration%22)
 [![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/q8vp7wrdn2ak6801/branch/master?svg=true)](https://ci.appveyor.com/project/strongloop/loopback-next/branch/master)
 [![Coverage Status](https://coveralls.io/repos/github/strongloop/loopback-next/badge.svg?branch=master)](https://coveralls.io/github/strongloop/loopback-next?branch=master)
+[![CodeQL Status](https://github.com/strongloop/loopback-next/workflows/CodeQL/badge.svg)](https://github.com/strongloop/loopback-next/actions?query=workflow%3ACodeQL)
 
 [![Twitter](https://img.shields.io/twitter/follow/strongloop.svg?style=social&label=Follow%20%40strongloop)](https://twitter.com/strongloop)
 [![Facebook](https://img.shields.io/badge/StrongLoop-white?logo=facebook&color=1877F2&logoColor=white)](https://www.facebook.com/strongloop)
