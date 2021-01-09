@@ -21,7 +21,7 @@
     "access": "public"
   },
   "dependencies": {
-    "openapi3-ts": "^2.0.0",
+    "openapi3-ts": "^2.0.1",
     "tslib": "^2.0.3"
   },
   "devDependencies": {
