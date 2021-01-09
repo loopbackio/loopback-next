@@ -15,6 +15,7 @@ import {
   injectable as injectableDecorator,
   Provider,
 } from '../..';
+import {createBindingFromClass} from '../../binding-inspector';
 
 function testBindingDecorator(
   injectable: typeof injectableDecorator,
@@ -50,6 +51,20 @@ function testBindingDecorator(
       class MySubController extends MyController {}
 
       expect(inspectScopeAndTags(MySubController)).to.eql(expectedScopeAndTags);
+    });
+
+    it('allows subclass to not have @injectable', () => {
+      const spec = {
+        tags: ['rest'],
+        scope: BindingScope.SINGLETON,
+      };
+
+      @injectable(spec)
+      class MyController {}
+
+      class MySubController extends MyController {}
+      const binding = createBindingFromClass(MySubController);
+      expect(binding.source?.value).to.eql(MySubController);
     });
 
     it('ignores `name` and `key` from base class', () => {

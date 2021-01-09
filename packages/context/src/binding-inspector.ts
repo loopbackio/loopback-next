@@ -174,7 +174,11 @@ export function bindingTemplateFor<T>(
 ): BindingTemplate<T> {
   const spec = getBindingMetadata(cls);
   debug('class %s has binding metadata', cls.name, spec);
-  const templateFunctions = spec?.templates ?? [asClassOrProvider(cls)];
+  const templateFunctions = spec?.templates ?? [];
+  if (spec?.target !== cls) {
+    // Make sure the subclass is used as the binding source
+    templateFunctions.push(asClassOrProvider(cls) as BindingTemplate<unknown>);
+  }
   return function applyBindingTemplatesFromMetadata(binding) {
     for (const t of templateFunctions) {
       binding.apply(t);
