@@ -37,8 +37,9 @@ export const SOCKET_IO_CONNECT_METADATA = MetadataAccessor.create<
 >('socketio:connect');
 
 /**
- * Decorate a socketio controller class to specify the namespace
- * For example,
+ * Decorate a socketio controller class to specify the namespace.
+ *
+ * @example
  * ```ts
  * @socketio({namespace: '/chats'})
  * export class SocketIoController {}
