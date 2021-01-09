@@ -18,6 +18,10 @@ export interface MetricsOptions {
     disabled?: boolean;
   } & DefaultMetricsCollectorConfiguration;
 
+  defaultLabels?: {
+    [labelName: string]: string;
+  };
+
   pushGateway?: {
     disabled?: boolean;
     url: string;
@@ -30,10 +34,6 @@ export interface MetricsOptions {
   };
 
   openApiSpec?: boolean;
-
-  defaultLabels?: {
-    [labelName: string]: string;
-  };
 }
 
 /**

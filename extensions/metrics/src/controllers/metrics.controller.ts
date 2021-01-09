@@ -17,7 +17,7 @@ import {DEFAULT_METRICS_OPTIONS, MetricsOptions} from '../types';
 /**
  * OpenAPI definition of metrics response
  */
-const metricsResponse: ResponseObject = {
+const METRICS_RESPONSE: ResponseObject = {
   description: 'Metrics Response',
   content: {
     'text/plain': {
@@ -31,16 +31,16 @@ const metricsResponse: ResponseObject = {
 /**
  * OpenAPI spec for metrics endpoint
  */
-const metricsSpec: OperationObject = {
+const METRICS_SPEC: OperationObject = {
   responses: {
-    '200': metricsResponse,
+    '200': METRICS_RESPONSE,
   },
 };
 
 /**
  * OpenAPI spec to hide endpoints
  */
-const hiddenSpec: OperationObject = {
+const HIDDEN_SPEC: OperationObject = {
   responses: {},
   'x-visibility': 'undocumented',
 };
@@ -49,7 +49,7 @@ export function metricsControllerFactory(
   options: MetricsOptions = DEFAULT_METRICS_OPTIONS,
 ): Constructor<unknown> {
   const basePath = options.endpoint?.basePath ?? '/metrics';
-  const spec = options.openApiSpec ? metricsSpec : hiddenSpec;
+  const spec = options.openApiSpec ? METRICS_SPEC : HIDDEN_SPEC;
 
   /**
    * Controller for metrics endpoint
