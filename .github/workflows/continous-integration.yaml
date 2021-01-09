@@ -13,6 +13,7 @@ env:
 jobs:
   test:
     name: Test
+    timeout-minutes: 15
     strategy:
       matrix:
         os: [ubuntu-latest]
@@ -82,18 +83,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Un-shallow git tree
-        run: git fetch --prune --unshallow
+        with:
+          fetch-depth: 0
       - name: Use Node.js 14
         uses: actions/setup-node@v1
         with:
           node-version: 14
-      - name: Bootstrap project
-        run: |
-          npm ci --ignore-scripts
-          npm run postinstall
-      - name: Build project
-        run: npm run build
+      - name: Install monorepo tools
+        run: npm ci --ignore-scripts
       - name: Verify commit linting
         run: npx commitlint --from origin/master --to HEAD --verbose
 
