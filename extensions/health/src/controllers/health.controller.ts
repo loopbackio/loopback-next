@@ -20,7 +20,7 @@ function getHealthResponseObject() {
   /**
    * OpenAPI definition of health response schema
    */
-  const healthResponseSchema: SchemaObject = {
+  const HEALTH_RESPONSE_SCHEMA: SchemaObject = {
     type: 'object',
     properties: {
       status: {type: 'string'},
@@ -46,22 +46,22 @@ function getHealthResponseObject() {
   /**
    * OpenAPI definition of health response
    */
-  const healthResponse: ResponseObject = {
+  const HEALTH_RESPONSE: ResponseObject = {
     description: 'Health Response',
     content: {
       'application/json': {
-        schema: healthResponseSchema,
+        schema: HEALTH_RESPONSE_SCHEMA,
       },
     },
   };
 
-  return healthResponse;
+  return HEALTH_RESPONSE;
 }
 
 /**
  * OpenAPI spec for health endpoints
  */
-const healthSpec: OperationObject = {
+const HEALTH_SPEC: OperationObject = {
   // response object needs to be cloned because the oas-validator throws an
   // error if the same object is referenced twice
   responses: {
@@ -74,7 +74,7 @@ const healthSpec: OperationObject = {
 /**
  * OpenAPI spec to hide endpoints
  */
-const hiddenSpec: OperationObject = {
+const HIDDEN_SPEC: OperationObject = {
   responses: {},
   'x-visibility': 'undocumented',
 };
@@ -89,7 +89,7 @@ const hiddenSpec: OperationObject = {
 export function createHealthController(
   options: HealthOptions = DEFAULT_HEALTH_OPTIONS,
 ): Constructor<unknown> {
-  const spec = options.openApiSpec ? healthSpec : hiddenSpec;
+  const spec = options.openApiSpec ? HEALTH_SPEC : HIDDEN_SPEC;
 
   /**
    * Controller for health endpoints
