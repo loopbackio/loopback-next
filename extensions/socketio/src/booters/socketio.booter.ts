@@ -16,13 +16,18 @@ import {SocketIoBindings} from '../keys';
 import {SocketIoServer} from '../socketio.server';
 
 /**
- * A class that extends BaseArtifactBooter to boot the 'SocketIoController' artifact type.
- * Discovered controllers are bound using `app.controller()`.
+ * A class that extends {@link @loopback/boot#BaseArtifactBooter} to boot the
+ * {@link SocketIoController} artifact type.
  *
- * Supported phases: configure, discover, load
+ * @remarks
+ * Discovered controllers are bound using
+ * {@link @loopback/core#Application.controller}.
  *
- * @param app - Application instance
- * @param projectRoot - Root of User Project relative to which all paths are resolved
+ * Supported phases: `configure`, `discover`, `load`
+ *
+ * @param app - {@link @loopback/core#Application} instance
+ * @param projectRoot - Root of User Project relative to which all paths are
+ * resolved
  * @param socketioControllerConfig - Controller Artifact Options Object
  */
 @booter('socketioControllers')
