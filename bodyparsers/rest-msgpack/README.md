@@ -93,7 +93,7 @@ to include the MIME type as a possible response and use a parser library.
 For example, to update the Todo controller to return in MessagePack:
 
 ```ts
-// `msgpack-lite` is re-exported by `@loopback/rest-msgpack` for convenience.
+// `msgpack5` is re-exported by `@loopback/rest-msgpack` for convenience.
 // It is recommended to bind it to context the inject it to benefit from
 // dependency injection.
 import {MsgPackBodyParserBindings, msgpack} from '@loopback/rest-msgpack';
@@ -139,7 +139,7 @@ class TodoController {
     //
     this._res
       .type('application/msgpack')
-      .end(msgpack.encode(this.todoRepository.find(filter)));
+      .end(msgpack().encode(this.todoRepository.find(filter)));
   }
 }
 ```
