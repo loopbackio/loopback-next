@@ -33,6 +33,13 @@ lb4 relation [options]
 - `--sourceModel`: Source model.
 - `--destinationModel`: Destination model.
 - `--throughModel`: Through model. For HasManyThrough relation only.
+- `--sourceModelPrimaryKey`: The name of the primary key of the source model.
+- `--sourceModelPrimaryKeyType`: The type of the primary key of the source
+  model.
+- `--destinationModelPrimaryKey`: The name of the primary key of the destination
+  model.
+- `--destinationModelPrimaryKeyType`: The type of the primary key of the
+  destination model.
 - `--foreignKeyName`: Destination/Source model foreign key name for
   HasMany,HasOne/BelongsTo relation, respectively.
 - `--relationName`: Relation name.
@@ -51,7 +58,12 @@ Defining lb4 relation in one command line interface (cli):
 ```sh
 lb4 relation --sourceModel=<sourceModel>
 --destinationModel=<destinationModel> --foreignKeyName=<foreignKeyName>
---relationType=<hasMany|hasOne|belongsTo> [--relationName=<relationName>] [--format]
+--relationType=<hasMany|hasOne|belongsTo> [--relationName=<relationName>]
+[--sourceModelPrimaryKey=<sourceModelPrimaryKey>]
+[--sourceModelPrimaryKeyType=<sourceModelPrimaryKeyType>]
+[--destinationModelPrimaryKey=<destinationModelPrimaryKey>]
+[--destinationModelPrimaryKeyType=<destinationModelPrimaryKeyType>]
+[--format]
 ```
 
 - `<relationType>` - Type of the relation that will be created between the
@@ -60,6 +72,17 @@ lb4 relation --sourceModel=<sourceModel>
 - `<sourceModel>` - Name of the model to create the relationship from.
 
 - `<destinationModel>` - Name of the model to create a relationship with.
+
+- `<sourceModelPrimaryKey>` - Name of the id property on the model to create the
+  relationship from.
+
+- `<sourceModelPrimaryKeyType>` - Type of the id property on the source model.
+
+- `<destinationModelPrimaryKey>` - Name of the id property on the model to
+  create a relationship with.
+
+- `<destinationModelPrimaryKeyType>` - Type of the id property on the
+  destination model.
 
 - `<foreignKeyName>` - Property that references the primary key property of the
   destination model.
@@ -86,7 +109,12 @@ HasMany, HasOne, or BelongsTo relations.
 lb4 relation --sourceModel=<sourceModel>
 --destinationModel=<destinationModel> --throughModel=<throughModel>
 --relationType=<hasManyThrough> [--relationName=<relationName>]
+[--sourceModelPrimaryKey=<sourceModelPrimaryKey>]
+[--sourceModelPrimaryKeyType=<sourceModelPrimaryKeyType>]
+[--destinationModelPrimaryKey=<destinationModelPrimaryKey>]
+[--destinationModelPrimaryKeyType=<destinationModelPrimaryKeyType>]
 [--sourceKeyOnThrough=<sourceKeyOnThrough>] [--targetKeyOnThrough<targetKeyOnThrough>]
+[--format]
 ```
 
 - `<throughModel>` - Name of the model to reference the source model and target
@@ -146,6 +174,9 @@ The tool will prompt you for:
   - for `belongsTo` relations, the default name is based on the foreign key of
     the `belongsTo` relation. E.g. when the foreign key is the default name,
     `categoryId` for example, the default relation name is `category`.
+
+It might also prompt for names and types of the source/destination models if
+they cannot be detected from model files.
 
 {% include warning.html content="Based on your input, the default foreign key name might be the same as the default relation name, especially for belongsTo relation. Please name them differently to avoid a known issue [Navigational Property Error](https://github.com/strongloop/loopback-next/issues/4392)
 " lang=page.lang %}
