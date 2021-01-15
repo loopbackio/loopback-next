@@ -12,7 +12,6 @@ import {
 } from '@loopback/core';
 import {
   AUTHENTICATION_METADATA_CLASS_KEY,
-  AUTHENTICATION_METADATA_KEY,
   AUTHENTICATION_METADATA_METHOD_KEY,
 } from '../keys';
 import {AuthenticationMetadata} from '../types';
@@ -53,7 +52,7 @@ export function authenticate(
     if (method && methodDescriptor) {
       // Method
       return MethodDecoratorFactory.createDecorator<AuthenticationMetadata[]>(
-        AUTHENTICATION_METADATA_KEY,
+        AUTHENTICATION_METADATA_METHOD_KEY,
         specs,
         {decoratorName: '@authenticate'},
       )(target, method, methodDescriptor);

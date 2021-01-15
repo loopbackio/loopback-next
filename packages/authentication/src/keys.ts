@@ -122,7 +122,10 @@ export namespace AuthenticationBindings {
   export const AUTHENTICATION_STRATEGY_EXTENSION_POINT_NAME =
     'authentication.strategies';
 
-  // Make `CURRENT_USER` the alias of SecurityBindings.USER for backward compatibility
+  /**
+   * Make `CURRENT_USER` the alias of SecurityBindings.USER for backward compatibility
+   * @deprecated
+   **/
   export const CURRENT_USER: BindingKey<UserProfile> = SecurityBindings.USER;
 
   // Redirect url for authenticating current user
@@ -146,6 +149,7 @@ export const AUTHENTICATION_METADATA_METHOD_KEY = MetadataAccessor.create<
 
 /**
  * Alias for AUTHENTICATION_METADATA_METHOD_KEY to keep it backward compatible
+ * @deprecated
  */
 export const AUTHENTICATION_METADATA_KEY = AUTHENTICATION_METADATA_METHOD_KEY;
 
