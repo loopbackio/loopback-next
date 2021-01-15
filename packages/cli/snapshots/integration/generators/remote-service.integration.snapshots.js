@@ -8,8 +8,8 @@
 'use strict';
 
 exports[`lb4 service (remote) legacy JSON-based configuration loads config from \`{name}.datasource.config.json\` 1`] = `
-import {getService} from '@loopback/service-proxy';
 import {inject, Provider} from '@loopback/core';
+import {getService} from '@loopback/service-proxy';
 import {LegacyDataSource} from '../datasources';
 
 export interface MyService {
