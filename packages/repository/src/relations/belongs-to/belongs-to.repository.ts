@@ -7,8 +7,7 @@ import {Getter} from '@loopback/core';
 import {DataObject, Options} from '../../common-types';
 import {EntityNotFoundError} from '../../errors';
 import {Entity} from '../../model';
-import {constrainFilter} from '../../repositories/constraint-utils';
-import {EntityCrudRepository} from '../../repositories/repository';
+import {constrainFilter, EntityCrudRepository} from '../../repositories';
 
 /**
  * CRUD operations for a target repository of a BelongsTo relation

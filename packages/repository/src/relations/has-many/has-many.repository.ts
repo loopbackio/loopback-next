@@ -11,8 +11,8 @@ import {
   constrainDataObject,
   constrainFilter,
   constrainWhere,
-} from '../../repositories/constraint-utils';
-import {EntityCrudRepository} from '../../repositories/repository';
+  EntityCrudRepository,
+} from '../../repositories';
 
 /**
  * CRUD operations for a target repository of a HasMany relation

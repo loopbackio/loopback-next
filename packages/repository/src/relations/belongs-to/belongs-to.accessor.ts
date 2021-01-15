@@ -16,7 +16,7 @@ import {resolveBelongsToMetadata} from './belongs-to.helpers';
 import {createBelongsToInclusionResolver} from './belongs-to.inclusion-resolver';
 import {DefaultBelongsToRepository} from './belongs-to.repository';
 
-const debug = debugFactory('loopback:repository:belongs-to-accessor');
+const debug = debugFactory('loopback:repository:relations:belongs-to:accessor');
 
 export interface BelongsToAccessor<Target extends Entity, SourceId> {
   /**

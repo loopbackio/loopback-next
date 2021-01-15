@@ -197,18 +197,53 @@ of the `@loopback/cli` module.
     </tr>
     <tr>
       <td>@loopback/repository</td>
-      <td>src/relations/belongs-to/belongs-to-accessor.ts</td>
-      <td>loopback:repository:belongs-to-accessor</td>
+      <td>src/relations/belongs-to/belongs-to.accessor.ts</td>
+      <td>loopback:repository:relations:belongs-to:accessor</td>
     </tr>
     <tr>
       <td></td>
-      <td>src/relations/has-many/has-many-repository-factory.ts</td>
-      <td>loopback:repository:has-many-repository-factory</td>
+      <td>src/relations/belongs-to/belongs-to.accessor.ts</td>
+      <td>loopback:repository:relations:belongs-to:accessor</td>
     </tr>
     <tr>
       <td></td>
-      <td>src/relations/has-one/has-one-repository-factory.ts</td>
-      <td>loopback:repository:has-one-repository-factory</td>
+      <td>src/relations/belongs-to/belongs-to.helpers.ts</td>
+      <td>loopback:repository:relations:belongs-to:helpers</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>src/relations/has-many/has-many.helpers.ts</td>
+      <td>loopback:repository:relations:has-many:helpers</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>src/relations/has-many/has-many.inclusion-resolver.ts</td>
+      <td>loopback:repository:relations:has-many:inclusion-resolver</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>src/relations/has-many/has-many.repository-factory.ts</td>
+      <td>loopback:repository:relations:has-many:repository-factory</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>src/relations/has-many/has-many-through.helpers.ts</td>
+      <td>loopback:repository:relations:has-many-through:helpers</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>src/relations/has-many/has-many-through.inclusion-resolver.ts</td>
+      <td>loopback:repository:relations:has-many-through:inclusion-resolver</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>src/relations/has-one/has-one.helpers.ts</td>
+      <td>loopback:repository:relations:has-one:helpers</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>src/relations/has-one/has-one.repository-factory.ts</td>
+      <td>loopback:repository:relations:has-one:repository-factory</td>
     </tr>
     <tr>
       <td>@loopback/repository-json-schema</td>

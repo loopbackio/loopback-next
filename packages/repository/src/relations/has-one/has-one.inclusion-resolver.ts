@@ -6,7 +6,7 @@
 import {Filter, InclusionFilter} from '@loopback/filter';
 import {AnyObject, Options} from '../../common-types';
 import {Entity} from '../../model';
-import {EntityCrudRepository} from '../../repositories/repository';
+import {EntityCrudRepository} from '../../repositories';
 import {
   findByForeignKeys,
   flattenTargetsOfOneToOneRelation,

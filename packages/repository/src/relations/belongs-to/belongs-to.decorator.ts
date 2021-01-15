@@ -4,9 +4,9 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {DecoratorFactory, MetadataInspector} from '@loopback/core';
-import {property} from '../../decorators/model.decorator';
-import {Entity, EntityResolver, PropertyDefinition} from '../../model';
+import {property} from '../../decorators';
 import {relation} from '../relation.decorator';
+import {Entity, EntityResolver, PropertyDefinition} from '../../model';
 import {BelongsToDefinition, RelationType} from '../relation.types';
 
 /**

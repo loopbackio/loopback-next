@@ -6,7 +6,7 @@
 import debugFactory from 'debug';
 import {DataObject} from '../../common-types';
 import {Entity} from '../../model';
-import {EntityCrudRepository} from '../../repositories/repository';
+import {EntityCrudRepository} from '../../repositories';
 import {Getter, HasManyDefinition, InclusionResolver} from '../relation.types';
 import {resolveHasManyMetadata} from './has-many.helpers';
 import {createHasManyInclusionResolver} from './has-many.inclusion-resolver';
@@ -15,7 +15,9 @@ import {
   HasManyRepository,
 } from './has-many.repository';
 
-const debug = debugFactory('loopback:repository:has-many-repository-factory');
+const debug = debugFactory(
+  'loopback:repository:relations:has-many:repository-factory',
+);
 
 export interface HasManyRepositoryFactory<
   Target extends Entity,

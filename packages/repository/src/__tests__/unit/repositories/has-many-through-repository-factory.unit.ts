@@ -12,7 +12,7 @@ import {
   model,
   property,
 } from '../../..';
-import {createHasManyThroughRepositoryFactory} from '../../../relations/has-many/has-many-through-repository.factory';
+import {createHasManyThroughRepositoryFactory} from '../../../relations/has-many/has-many-through.repository-factory';
 import {HasManyThroughResolvedDefinition} from '../../../relations/has-many/has-many-through.helpers';
 
 describe('createHasManyThroughRepositoryFactory', () => {

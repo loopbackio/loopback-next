@@ -6,13 +6,15 @@
 import debugFactory from 'debug';
 import {DataObject} from '../../common-types';
 import {Entity} from '../../model';
-import {EntityCrudRepository} from '../../repositories/repository';
+import {EntityCrudRepository} from '../../repositories';
 import {Getter, HasOneDefinition, InclusionResolver} from '../relation.types';
 import {resolveHasOneMetadata} from './has-one.helpers';
 import {createHasOneInclusionResolver} from './has-one.inclusion-resolver';
 import {DefaultHasOneRepository, HasOneRepository} from './has-one.repository';
 
-const debug = debugFactory('loopback:repository:has-one-repository-factory');
+const debug = debugFactory(
+  'loopback:repository:relations:has-one:repository-factory',
+);
 
 export interface HasOneRepositoryFactory<
   Target extends Entity,

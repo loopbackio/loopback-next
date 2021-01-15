@@ -15,7 +15,9 @@ import {
 } from '../..';
 import {resolveHasManyMetaHelper} from './has-many.helpers';
 
-const debug = debugFactory('loopback:repository:has-many-through-helpers');
+const debug = debugFactory(
+  'loopback:repository:relations:has-many-through:helpers',
+);
 
 export type HasManyThroughResolvedDefinition = HasManyDefinition & {
   keyTo: string;

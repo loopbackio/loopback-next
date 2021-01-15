@@ -9,7 +9,7 @@ import {InvalidRelationError} from '../../errors';
 import {isTypeResolver} from '../../type-resolver';
 import {HasOneDefinition, RelationType} from '../relation.types';
 
-const debug = debugFactory('loopback:repository:has-one-helpers');
+const debug = debugFactory('loopback:repository:relations:has-one:helpers');
 
 /**
  * Relation definition with optional metadata (e.g. `keyTo`) filled in.
