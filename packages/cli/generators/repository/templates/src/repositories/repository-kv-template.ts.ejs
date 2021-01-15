@@ -1,9 +1,9 @@
+import {inject} from '@loopback/core';
 <%if (isRepositoryBaseBuiltin) {  -%>
 import {<%= repositoryTypeClass %>, juggler} from '@loopback/repository';
 <% } -%>
-import {<%= modelName %>} from '../models';
 import {<%= dataSourceClassName %>} from '../datasources';
-import {inject} from '@loopback/core';
+import {<%= modelName %>} from '../models';
 <%if ( !isRepositoryBaseBuiltin ) { -%>
 import {<%=repositoryBaseClass %>} from './<%=repositoryBaseFile %>';
 <% } -%>

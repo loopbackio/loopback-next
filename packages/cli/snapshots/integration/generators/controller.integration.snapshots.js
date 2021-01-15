@@ -25,6 +25,7 @@ import {
   put,
   del,
   requestBody,
+  response,
 } from '@loopback/rest';
 import {ProductReview} from '../models';
 import {BarRepository} from '../repositories';
@@ -35,13 +36,10 @@ export class ProductReviewController {
     public barRepository : BarRepository,
   ) {}
 
-  @post('/product-reviews', {
-    responses: {
-      '200': {
-        description: 'ProductReview model instance',
-        content: {'application/json': {schema: getModelSchemaRef(ProductReview)}},
-      },
-    },
+  @post('/product-reviews')
+  @response(200, {
+    description: 'ProductReview model instance',
+    content: {'application/json': {schema: getModelSchemaRef(ProductReview)}},
   })
   async create(
     @requestBody({
@@ -59,13 +57,10 @@ export class ProductReviewController {
     return this.barRepository.create(productReview);
   }
 
-  @get('/product-reviews/count', {
-    responses: {
-      '200': {
-        description: 'ProductReview model count',
-        content: {'application/json': {schema: CountSchema}},
-      },
-    },
+  @get('/product-reviews/count')
+  @response(200, {
+    description: 'ProductReview model count',
+    content: {'application/json': {schema: CountSchema}},
   })
   async count(
     @param.where(ProductReview) where?: Where<ProductReview>,
@@ -73,17 +68,14 @@ export class ProductReviewController {
     return this.barRepository.count(where);
   }
 
-  @get('/product-reviews', {
-    responses: {
-      '200': {
-        description: 'Array of ProductReview model instances',
-        content: {
-          'application/json': {
-            schema: {
-              type: 'array',
-              items: getModelSchemaRef(ProductReview, {includeRelations: true}),
-            },
-          },
+  @get('/product-reviews')
+  @response(200, {
+    description: 'Array of ProductReview model instances',
+    content: {
+      'application/json': {
+        schema: {
+          type: 'array',
+          items: getModelSchemaRef(ProductReview, {includeRelations: true}),
         },
       },
     },
@@ -94,13 +86,10 @@ export class ProductReviewController {
     return this.barRepository.find(filter);
   }
 
-  @patch('/product-reviews', {
-    responses: {
-      '200': {
-        description: 'ProductReview PATCH success count',
-        content: {'application/json': {schema: CountSchema}},
-      },
-    },
+  @patch('/product-reviews')
+  @response(200, {
+    description: 'ProductReview PATCH success count',
+    content: {'application/json': {schema: CountSchema}},
   })
   async updateAll(
     @requestBody({
@@ -116,15 +105,12 @@ export class ProductReviewController {
     return this.barRepository.updateAll(productReview, where);
   }
 
-  @get('/product-reviews/{id}', {
-    responses: {
-      '200': {
-        description: 'ProductReview model instance',
-        content: {
-          'application/json': {
-            schema: getModelSchemaRef(ProductReview, {includeRelations: true}),
-          },
-        },
+  @get('/product-reviews/{id}')
+  @response(200, {
+    description: 'ProductReview model instance',
+    content: {
+      'application/json': {
+        schema: getModelSchemaRef(ProductReview, {includeRelations: true}),
       },
     },
   })
@@ -135,12 +121,9 @@ export class ProductReviewController {
     return this.barRepository.findById(id, filter);
   }
 
-  @patch('/product-reviews/{id}', {
-    responses: {
-      '204': {
-        description: 'ProductReview PATCH success',
-      },
-    },
+  @patch('/product-reviews/{id}')
+  @response(204, {
+    description: 'ProductReview PATCH success',
   })
   async updateById(
     @param.path.number('id') id: number,
@@ -156,12 +139,9 @@ export class ProductReviewController {
     await this.barRepository.updateById(id, productReview);
   }
 
-  @put('/product-reviews/{id}', {
-    responses: {
-      '204': {
-        description: 'ProductReview PUT success',
-      },
-    },
+  @put('/product-reviews/{id}')
+  @response(204, {
+    description: 'ProductReview PUT success',
   })
   async replaceById(
     @param.path.number('id') id: number,
@@ -170,12 +150,9 @@ export class ProductReviewController {
     await this.barRepository.replaceById(id, productReview);
   }
 
-  @del('/product-reviews/{id}', {
-    responses: {
-      '204': {
-        description: 'ProductReview DELETE success',
-      },
-    },
+  @del('/product-reviews/{id}')
+  @response(204, {
+    description: 'ProductReview DELETE success',
   })
   async deleteById(@param.path.number('id') id: number): Promise<void> {
     await this.barRepository.deleteById(id);
@@ -203,6 +180,7 @@ import {
   put,
   del,
   requestBody,
+  response,
 } from '@loopback/rest';
 import {ProductReview} from '../models';
 import {BarRepository} from '../repositories';
@@ -213,13 +191,10 @@ export class ProductReviewController {
     public barRepository : BarRepository,
   ) {}
 
-  @post('/product-reviews', {
-    responses: {
-      '200': {
-        description: 'ProductReview model instance',
-        content: {'application/json': {schema: getModelSchemaRef(ProductReview)}},
-      },
-    },
+  @post('/product-reviews')
+  @response(200, {
+    description: 'ProductReview model instance',
+    content: {'application/json': {schema: getModelSchemaRef(ProductReview)}},
   })
   async create(
     @requestBody({
@@ -237,13 +212,10 @@ export class ProductReviewController {
     return this.barRepository.create(productReview);
   }
 
-  @get('/product-reviews/count', {
-    responses: {
-      '200': {
-        description: 'ProductReview model count',
-        content: {'application/json': {schema: CountSchema}},
-      },
-    },
+  @get('/product-reviews/count')
+  @response(200, {
+    description: 'ProductReview model count',
+    content: {'application/json': {schema: CountSchema}},
   })
   async count(
     @param.where(ProductReview) where?: Where<ProductReview>,
@@ -251,17 +223,14 @@ export class ProductReviewController {
     return this.barRepository.count(where);
   }
 
-  @get('/product-reviews', {
-    responses: {
-      '200': {
-        description: 'Array of ProductReview model instances',
-        content: {
-          'application/json': {
-            schema: {
-              type: 'array',
-              items: getModelSchemaRef(ProductReview, {includeRelations: true}),
-            },
-          },
+  @get('/product-reviews')
+  @response(200, {
+    description: 'Array of ProductReview model instances',
+    content: {
+      'application/json': {
+        schema: {
+          type: 'array',
+          items: getModelSchemaRef(ProductReview, {includeRelations: true}),
         },
       },
     },
@@ -272,13 +241,10 @@ export class ProductReviewController {
     return this.barRepository.find(filter);
   }
 
-  @patch('/product-reviews', {
-    responses: {
-      '200': {
-        description: 'ProductReview PATCH success count',
-        content: {'application/json': {schema: CountSchema}},
-      },
-    },
+  @patch('/product-reviews')
+  @response(200, {
+    description: 'ProductReview PATCH success count',
+    content: {'application/json': {schema: CountSchema}},
   })
   async updateAll(
     @requestBody({
@@ -294,15 +260,12 @@ export class ProductReviewController {
     return this.barRepository.updateAll(productReview, where);
   }
 
-  @get('/product-reviews/{id}', {
-    responses: {
-      '200': {
-        description: 'ProductReview model instance',
-        content: {
-          'application/json': {
-            schema: getModelSchemaRef(ProductReview, {includeRelations: true}),
-          },
-        },
+  @get('/product-reviews/{id}')
+  @response(200, {
+    description: 'ProductReview model instance',
+    content: {
+      'application/json': {
+        schema: getModelSchemaRef(ProductReview, {includeRelations: true}),
       },
     },
   })
@@ -313,12 +276,9 @@ export class ProductReviewController {
     return this.barRepository.findById(id, filter);
   }
 
-  @patch('/product-reviews/{id}', {
-    responses: {
-      '204': {
-        description: 'ProductReview PATCH success',
-      },
-    },
+  @patch('/product-reviews/{id}')
+  @response(204, {
+    description: 'ProductReview PATCH success',
   })
   async updateById(
     @param.path.number('id') id: number,
@@ -334,12 +294,9 @@ export class ProductReviewController {
     await this.barRepository.updateById(id, productReview);
   }
 
-  @put('/product-reviews/{id}', {
-    responses: {
-      '204': {
-        description: 'ProductReview PUT success',
-      },
-    },
+  @put('/product-reviews/{id}')
+  @response(204, {
+    description: 'ProductReview PUT success',
   })
   async replaceById(
     @param.path.number('id') id: number,
@@ -348,12 +305,9 @@ export class ProductReviewController {
     await this.barRepository.replaceById(id, productReview);
   }
 
-  @del('/product-reviews/{id}', {
-    responses: {
-      '204': {
-        description: 'ProductReview DELETE success',
-      },
-    },
+  @del('/product-reviews/{id}')
+  @response(204, {
+    description: 'ProductReview DELETE success',
   })
   async deleteById(@param.path.number('id') id: number): Promise<void> {
     await this.barRepository.deleteById(id);

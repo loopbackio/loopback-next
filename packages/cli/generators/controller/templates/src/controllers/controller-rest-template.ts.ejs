@@ -15,6 +15,7 @@ import {
   put,
   del,
   requestBody,
+  response,
 } from '@loopback/rest';
 import {<%= modelName %>} from '../models';
 import {<%= repositoryName %>} from '../repositories';
@@ -25,13 +26,10 @@ export class <%= className %>Controller {
     public <%= repositoryNameCamel %> : <%= repositoryName %>,
   ) {}
 
-  @post('<%= httpPathName %>', {
-    responses: {
-      '200': {
-        description: '<%= modelName %> model instance',
-        content: {'application/json': {schema: getModelSchemaRef(<%= modelName %>)}},
-      },
-    },
+  @post('<%= httpPathName %>')
+  @response(200, {
+    description: '<%= modelName %> model instance',
+    content: {'application/json': {schema: getModelSchemaRef(<%= modelName %>)}},
   })
   async create(
     @requestBody({
@@ -49,13 +47,10 @@ export class <%= className %>Controller {
     return this.<%= repositoryNameCamel %>.create(<%= modelVariableName %>);
   }
 
-  @get('<%= httpPathName %>/count', {
-    responses: {
-      '200': {
-        description: '<%= modelName %> model count',
-        content: {'application/json': {schema: CountSchema}},
-      },
-    },
+  @get('<%= httpPathName %>/count')
+  @response(200, {
+    description: '<%= modelName %> model count',
+    content: {'application/json': {schema: CountSchema}},
   })
   async count(
     @param.where(<%= modelName %>) where?: Where<<%= modelName %>>,
@@ -63,17 +58,14 @@ export class <%= className %>Controller {
     return this.<%= repositoryNameCamel %>.count(where);
   }
 
-  @get('<%= httpPathName %>', {
-    responses: {
-      '200': {
-        description: 'Array of <%= modelName %> model instances',
-        content: {
-          'application/json': {
-            schema: {
-              type: 'array',
-              items: getModelSchemaRef(<%= modelName %>, {includeRelations: true}),
-            },
-          },
+  @get('<%= httpPathName %>')
+  @response(200, {
+    description: 'Array of <%= modelName %> model instances',
+    content: {
+      'application/json': {
+        schema: {
+          type: 'array',
+          items: getModelSchemaRef(<%= modelName %>, {includeRelations: true}),
         },
       },
     },
@@ -84,13 +76,10 @@ export class <%= className %>Controller {
     return this.<%= repositoryNameCamel %>.find(filter);
   }
 
-  @patch('<%= httpPathName %>', {
-    responses: {
-      '200': {
-        description: '<%= modelName %> PATCH success count',
-        content: {'application/json': {schema: CountSchema}},
-      },
-    },
+  @patch('<%= httpPathName %>')
+  @response(200, {
+    description: '<%= modelName %> PATCH success count',
+    content: {'application/json': {schema: CountSchema}},
   })
   async updateAll(
     @requestBody({
@@ -106,15 +95,12 @@ export class <%= className %>Controller {
     return this.<%= repositoryNameCamel %>.updateAll(<%= modelVariableName %>, where);
   }
 
-  @get('<%= httpPathName %>/{id}', {
-    responses: {
-      '200': {
-        description: '<%= modelName %> model instance',
-        content: {
-          'application/json': {
-            schema: getModelSchemaRef(<%= modelName %>, {includeRelations: true}),
-          },
-        },
+  @get('<%= httpPathName %>/{id}')
+  @response(200, {
+    description: '<%= modelName %> model instance',
+    content: {
+      'application/json': {
+        schema: getModelSchemaRef(<%= modelName %>, {includeRelations: true}),
       },
     },
   })
@@ -125,12 +111,9 @@ export class <%= className %>Controller {
     return this.<%= repositoryNameCamel %>.findById(id, filter);
   }
 
-  @patch('<%= httpPathName %>/{id}', {
-    responses: {
-      '204': {
-        description: '<%= modelName %> PATCH success',
-      },
-    },
+  @patch('<%= httpPathName %>/{id}')
+  @response(204, {
+    description: '<%= modelName %> PATCH success',
   })
   async updateById(
     @param.path.<%= idType %>('id') id: <%= idType %>,
@@ -146,12 +129,9 @@ export class <%= className %>Controller {
     await this.<%= repositoryNameCamel %>.updateById(id, <%= modelVariableName %>);
   }
 
-  @put('<%= httpPathName %>/{id}', {
-    responses: {
-      '204': {
-        description: '<%= modelName %> PUT success',
-      },
-    },
+  @put('<%= httpPathName %>/{id}')
+  @response(204, {
+    description: '<%= modelName %> PUT success',
   })
   async replaceById(
     @param.path.<%= idType %>('id') id: <%= idType %>,
@@ -160,12 +140,9 @@ export class <%= className %>Controller {
     await this.<%= repositoryNameCamel %>.replaceById(id, <%= modelVariableName %>);
   }
 
-  @del('<%= httpPathName %>/{id}', {
-    responses: {
-      '204': {
-        description: '<%= modelName %> DELETE success',
-      },
-    },
+  @del('<%= httpPathName %>/{id}')
+  @response(204, {
+    description: '<%= modelName %> DELETE success',
   })
   async deleteById(@param.path.<%= idType %>('id') id: <%= idType %>): Promise<void> {
     await this.<%= repositoryNameCamel %>.deleteById(id);

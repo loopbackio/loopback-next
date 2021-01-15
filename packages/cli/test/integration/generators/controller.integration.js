@@ -254,32 +254,11 @@ function checkRestCrudContents(options) {
  * @param {string} restUrl The base URL that should've been generated
  */
 function checkRestPaths(restUrl) {
-  assert.fileContent(
-    filePath,
-    new RegExp(/@post\('/.source + restUrl + /', {/.source),
-  );
-  assert.fileContent(
-    filePath,
-    new RegExp(/@get\('/.source + restUrl + /\/count', {/.source),
-  );
-  assert.fileContent(
-    filePath,
-    new RegExp(/@get\('/.source + restUrl + /', {/.source),
-  );
-  assert.fileContent(
-    filePath,
-    new RegExp(/@patch\('/.source + restUrl + /', {/.source),
-  );
-  assert.fileContent(
-    filePath,
-    new RegExp(/@get\('/.source + restUrl + /\/{id}', {/.source),
-  );
-  assert.fileContent(
-    filePath,
-    new RegExp(/@patch\('/.source + restUrl + /\/{id}', {/.source),
-  );
-  assert.fileContent(
-    filePath,
-    new RegExp(/@del\('/.source + restUrl + /\/{id}', {/.source),
-  );
+  assert.fileContent(filePath, `@post('${restUrl}')`);
+  assert.fileContent(filePath, `@get('${restUrl}/count')`);
+  assert.fileContent(filePath, `@get('${restUrl}')`);
+  assert.fileContent(filePath, `@patch('${restUrl}')`);
+  assert.fileContent(filePath, `@get('${restUrl}/{id}')`);
+  assert.fileContent(filePath, `@patch('${restUrl}/{id}')`);
+  assert.fileContent(filePath, `@del('${restUrl}/{id}')`);
 }
