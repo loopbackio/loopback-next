@@ -7,7 +7,7 @@ import {Filter, InclusionFilter} from '@loopback/filter';
 import debugFactory from 'debug';
 import {AnyObject, Options} from '../../common-types';
 import {Entity} from '../../model';
-import {EntityCrudRepository} from '../../repositories/repository';
+import {EntityCrudRepository} from '../../repositories';
 import {
   findByForeignKeys,
   flattenTargetsOfOneToManyRelation,
@@ -17,7 +17,7 @@ import {Getter, HasManyDefinition, InclusionResolver} from '../relation.types';
 import {resolveHasManyMetadata} from './has-many.helpers';
 
 const debug = debugFactory(
-  'loopback:repository:has-many-through-inclusion-resolver',
+  'loopback:repository:relations:has-many-through:inclusion-resolver',
 );
 
 /**

@@ -19,7 +19,7 @@ import {
   getTargetKeysFromThroughModels,
   resolveHasManyThroughMetadata,
 } from './has-many-through.helpers';
-import {createHasManyThroughInclusionResolver} from './has-many-through.inclusion.resolver';
+import {createHasManyThroughInclusionResolver} from './has-many-through.inclusion-resolver';
 import {
   DefaultHasManyThroughRepository,
   HasManyThroughRepository,
