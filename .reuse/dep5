@@ -1,0 +1,8 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: LoopBack 4
+Upstream-Contact: The LoopBack 4 Authors <https://github.com/strongloop/loopback-next/issues/new/choose>
+Source: https://github.com/strongloop/loopback-next
+
+Files: *
+Copyright: 2017,2021 IBM Corp.
+License: MIT

@@ -4,6 +4,7 @@
 [![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/q8vp7wrdn2ak6801/branch/master?svg=true)](https://ci.appveyor.com/project/strongloop/loopback-next/branch/master)
 [![Coverage Status](https://coveralls.io/repos/github/strongloop/loopback-next/badge.svg?branch=master)](https://coveralls.io/github/strongloop/loopback-next?branch=master)
 [![CodeQL Status](https://github.com/strongloop/loopback-next/workflows/CodeQL/badge.svg)](https://github.com/strongloop/loopback-next/actions?query=workflow%3ACodeQL)
+[![REUSE status](https://api.reuse.software/badge/github.com/strongloop/loopback-next)](https://api.reuse.software/info/github.com/strongloop/loopback-next)
 
 [![Twitter](https://img.shields.io/twitter/follow/strongloop.svg?style=social&label=Follow%20%40strongloop)](https://twitter.com/strongloop)
 [![Facebook](https://img.shields.io/badge/StrongLoop-white?logo=facebook&color=1877F2&logoColor=white)](https://www.facebook.com/strongloop)

@@ -114,3 +114,10 @@ jobs:
         run: npm run build
       - name: Verify doc changes
         run: ./bin/verify-doc-changes.sh
+
+  compliance-reuse:
+    name: REUSE Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: fsfe/reuse-action@v1.1
