@@ -490,6 +490,13 @@ children:
           url: deploying-with-pm2-and-nginx.html
           output: 'web, pdf'
 
+        - title: 'Deploying with Cloud Native Buildpacks'
+          output: 'web, pdf'
+          children:
+            - title: 'Deploying with Paketo Buildpacks'
+              url: Deploying-with-Paketo-Buildpacks.html
+              output: 'web, pdf'
+
         - title: 'Developing and Deploying LoopBack Applications with Appsody'
           url: Appsody-LoopBack.html
           output: 'web, pdf'
