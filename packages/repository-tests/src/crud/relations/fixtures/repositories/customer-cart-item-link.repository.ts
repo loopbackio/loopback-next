@@ -8,7 +8,6 @@ import {CrudRepositoryCtor} from '../../../..';
 import {CustomerCartItemLink, CustomerCartItemLinkRelations} from '../models';
 // create the CustomerCartItemLinkRepo by calling this func so that it can be extended from CrudRepositoryCtor
 export function createCustomerCartItemLinkRepo(repoClass: CrudRepositoryCtor) {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   return class CustomerCartItemLinkRepository extends repoClass<
     CustomerCartItemLink,
     typeof CustomerCartItemLink.prototype.id,

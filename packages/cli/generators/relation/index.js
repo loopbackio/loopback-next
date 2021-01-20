@@ -43,7 +43,6 @@ const PROMPT_MESSAGE_FOREIGN_KEY_NAME_BELONGSTO = g.f(
   'Foreign key name to define on the source model',
 );
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 module.exports = class RelationGenerator extends ArtifactGenerator {
   constructor(args, opts) {
     super(args, opts);

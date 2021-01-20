@@ -11,7 +11,6 @@ const path = require('path');
 const chalk = require('chalk');
 const g = require('./globalize');
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 module.exports = class ArtifactGenerator extends BaseGenerator {
   // Note: arguments and options should be defined in the constructor.
   constructor(args, opts) {

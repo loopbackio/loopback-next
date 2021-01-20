@@ -5,17 +5,16 @@
 
 import {Getter} from '@loopback/core';
 import {
+  createHasManyRepositoryFactory,
+  HasManyDefinition,
   HasManyRepositoryFactory,
   juggler,
-  HasManyDefinition,
-  createHasManyRepositoryFactory,
 } from '@loopback/repository';
-import {Order, Shipment, ShipmentRelations} from '../models';
 import {CrudRepositoryCtor} from '../../../..';
+import {Order, Shipment, ShipmentRelations} from '../models';
 
 // create the ShipmentRepo by calling this func so that it can be extended from CrudRepositoryCtor
 export function createShipmentRepo(repoClass: CrudRepositoryCtor) {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   return class ShipmentRepository extends repoClass<
     Shipment,
     typeof Shipment.prototype.id,

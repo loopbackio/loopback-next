@@ -19,10 +19,29 @@ const supportedPackageManagers = ['npm', 'yarn'];
 
 debug('Is stdin interactive (isTTY)?', process.stdin.isTTY);
 
+const DEFAULT_COPY_OPTIONS = {
+  // See https://github.com/SBoudrias/mem-fs-editor/pull/147
+  // Don't remove .ejs from the file name to keep backward-compatibility
+  processDestinationPath: destPath => destPath,
+  // See https://github.com/mrmlnc/fast-glob#options-1
+  globOptions: {
+    // Allow patterns to match filenames starting with a period (files &
+    // directories), even if the pattern does not explicitly have a period
+    // in that spot.
+    dot: true,
+    // Disable expansion of brace patterns ({a,b}, {1..3}).
+    nobrace: true,
+    // Disable extglob support (patterns like +(a|b)), so that extglobs
+    // are regarded as literal characters. This flag allows us to support
+    // Windows paths such as
+    // `D:\Users\BKU\oliverkarst\AppData(Roaming)\npm\node_modules\@loopback\cli`
+    noext: true,
+  },
+};
+
 /**
  * Base Generator for LoopBack 4
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 module.exports = class BaseGenerator extends Generator {
   // Note: arguments and options should be defined in the constructor.
   constructor(args, opts) {
@@ -389,25 +408,7 @@ module.exports = class BaseGenerator extends Generator {
     to,
     context,
     templateOptions = {},
-    copyOptions = {
-      // See https://github.com/SBoudrias/mem-fs-editor/pull/147
-      // Don't remove .ejs from the file name to keep backward-compatibility
-      processDestinationPath: destPath => destPath,
-      // See https://github.com/mrmlnc/fast-glob#options-1
-      globOptions: {
-        // Allow patterns to match filenames starting with a period (files &
-        // directories), even if the pattern does not explicitly have a period
-        // in that spot.
-        dot: true,
-        // Disable expansion of brace patterns ({a,b}, {1..3}).
-        nobrace: true,
-        // Disable extglob support (patterns like +(a|b)), so that extglobs
-        // are regarded as literal characters. This flag allows us to support
-        // Windows paths such as
-        // `D:\Users\BKU\oliverkarst\AppData(Roaming)\npm\node_modules\@loopback\cli`
-        noext: true,
-      },
-    },
+    copyOptions = DEFAULT_COPY_OPTIONS,
   ) {
     return this.fs.copyTpl(from, to, context, templateOptions, copyOptions);
   }

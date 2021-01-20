@@ -4,7 +4,6 @@
 // License text available at https://opensource.org/licenses/MIT
 
 const Viz = require('viz.js');
-// eslint-disable-next-line @typescript-eslint/naming-convention
 let vizOptions: {Module: Function; render: Function};
 
 /**
