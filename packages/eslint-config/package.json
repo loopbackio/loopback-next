@@ -16,8 +16,8 @@
     "eslint": "^7.17.0"
   },
   "dependencies": {
-    "@typescript-eslint/eslint-plugin": "^4.9.0",
-    "@typescript-eslint/parser": "^4.9.0",
+    "@typescript-eslint/eslint-plugin": "^4.14.0",
+    "@typescript-eslint/parser": "^4.14.0",
     "eslint-config-prettier": "^7.1.0",
     "eslint-plugin-eslint-plugin": "^2.3.0",
     "eslint-plugin-mocha": "^8.0.0"
