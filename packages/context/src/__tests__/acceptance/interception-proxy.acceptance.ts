@@ -14,6 +14,7 @@ import {
   ResolutionSession,
   ValueOrPromise,
 } from '../..';
+import {Provider} from '../../provider';
 
 describe('Interception proxy', () => {
   let ctx: Context;
@@ -163,15 +164,70 @@ describe('Interception proxy', () => {
     ]);
   });
 
-  it('reports error when asProxyWithInterceptors is set for non-Class binding', async () => {
+  it('supports asProxyWithInterceptors resolution option for dynamic value', async () => {
+    // Apply `log` to all methods on the class
+    @intercept(log)
+    class MyController {
+      // Apply multiple interceptors. The order of `log` will be preserved as it
+      // explicitly listed at method level
+      @intercept(convertName, log)
+      async greet(name: string) {
+        return `Hello, ${name}`;
+      }
+    }
+
+    ctx.bind('my-controller').toDynamicValue(() => new MyController());
+    const proxy = await ctx.get<MyController>('my-controller', {
+      asProxyWithInterceptors: true,
+    });
+    const msg = await proxy!.greet('John');
+    expect(msg).to.equal('Hello, JOHN');
+    expect(events).to.eql([
+      'convertName: before-greet',
+      'log: [my-controller] before-greet',
+      'log: [my-controller] after-greet',
+      'convertName: after-greet',
+    ]);
+  });
+
+  it('supports asProxyWithInterceptors resolution option for provider', async () => {
+    // Apply `log` to all methods on the class
+    @intercept(log)
+    class MyController {
+      // Apply multiple interceptors. The order of `log` will be preserved as it
+      // explicitly listed at method level
+      @intercept(convertName, log)
+      async greet(name: string) {
+        return `Hello, ${name}`;
+      }
+    }
+
+    class MyControllerProvider implements Provider<MyController> {
+      value() {
+        return new MyController();
+      }
+    }
+
+    ctx.bind('my-controller').toProvider(MyControllerProvider);
+    const proxy = await ctx.get<MyController>('my-controller', {
+      asProxyWithInterceptors: true,
+    });
+    const msg = await proxy!.greet('John');
+    expect(msg).to.equal('Hello, JOHN');
+    expect(events).to.eql([
+      'convertName: before-greet',
+      'log: [my-controller] before-greet',
+      'log: [my-controller] after-greet',
+      'convertName: after-greet',
+    ]);
+  });
+
+  it('allows asProxyWithInterceptors for non-object value', async () => {
     ctx.bind('my-value').toDynamicValue(() => 'my-value');
-    await expect(
-      ctx.get<string>('my-value', {
-        asProxyWithInterceptors: true,
-      }),
-    ).to.be.rejectedWith(
-      `Binding 'my-value' (DynamicValue) does not support 'asProxyWithInterceptors'`,
-    );
+    const value = await ctx.get<string>('my-value', {
+      asProxyWithInterceptors: true,
+    });
+    expect(value).to.eql('my-value');
   });
 
   it('supports asProxyWithInterceptors resolution option for @inject', async () => {

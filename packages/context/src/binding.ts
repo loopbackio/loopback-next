@@ -681,14 +681,6 @@ export class Binding<T = BoundValue> extends EventEmitter {
     // Clear the cache
     this._clearCache();
     this._getValue = resolutionCtx => {
-      if (
-        resolutionCtx.options.asProxyWithInterceptors &&
-        this._source?.type !== BindingType.CLASS
-      ) {
-        throw new Error(
-          `Binding '${this.key}' (${this._source?.type}) does not support 'asProxyWithInterceptors'`,
-        );
-      }
       return getValue(resolutionCtx);
     };
     this.emitChangedEvent('value');
@@ -736,7 +728,9 @@ export class Binding<T = BoundValue> extends EventEmitter {
       type: BindingType.CONSTANT,
       value,
     };
-    this._setValueGetter(() => value);
+    this._setValueGetter(resolutionCtx => {
+      return Binding.valueOrProxy(resolutionCtx, value);
+    });
     return this;
   }
 
@@ -776,8 +770,23 @@ export class Binding<T = BoundValue> extends EventEmitter {
     } else {
       factoryFn = factory;
     }
-    this._setValueGetter(resolutionCtx => factoryFn(resolutionCtx));
+    this._setValueGetter(resolutionCtx => {
+      const value = factoryFn(resolutionCtx);
+      return Binding.valueOrProxy(resolutionCtx, value);
+    });
     return this;
+  }
+
+  private static valueOrProxy<V>(
+    resolutionCtx: ResolutionContext,
+    value: ValueOrPromise<V>,
+  ) {
+    if (!resolutionCtx.options.asProxyWithInterceptors) return value;
+    return createInterceptionProxyFromInstance(
+      value,
+      resolutionCtx.context,
+      resolutionCtx.options.session,
+    );
   }
 
   /**
@@ -805,13 +814,14 @@ export class Binding<T = BoundValue> extends EventEmitter {
       type: BindingType.PROVIDER,
       value: providerClass,
     };
-    this._setValueGetter(({context, options}) => {
+    this._setValueGetter(resolutionCtx => {
       const providerOrPromise = instantiateClass<Provider<T>>(
         providerClass,
-        context,
-        options.session,
+        resolutionCtx.context,
+        resolutionCtx.options.session,
       );
-      return transformValueOrPromise(providerOrPromise, p => p.value());
+      const value = transformValueOrPromise(providerOrPromise, p => p.value());
+      return Binding.valueOrProxy(resolutionCtx, value);
     });
     return this;
   }
@@ -832,14 +842,13 @@ export class Binding<T = BoundValue> extends EventEmitter {
       type: BindingType.CLASS,
       value: ctor,
     };
-    this._setValueGetter(({context, options}) => {
-      const instOrPromise = instantiateClass(ctor, context, options.session);
-      if (!options.asProxyWithInterceptors) return instOrPromise;
-      return createInterceptionProxyFromInstance(
-        instOrPromise,
-        context,
-        options.session,
+    this._setValueGetter(resolutionCtx => {
+      const value = instantiateClass(
+        ctor,
+        resolutionCtx.context,
+        resolutionCtx.options.session,
       );
+      return Binding.valueOrProxy(resolutionCtx, value);
     });
     return this;
   }
@@ -1050,7 +1059,7 @@ function createInterceptionProxyFromInstance<T>(
   session?: ResolutionSession,
 ) {
   return transformValueOrPromise(instOrPromise, inst => {
-    if (typeof inst !== 'object') return inst;
+    if (typeof inst !== 'object' || inst == null) return inst;
     return (createProxyWithInterceptors(
       // Cast inst from `T` to `object`
       (inst as unknown) as object,
