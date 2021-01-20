@@ -23,8 +23,8 @@ await bookDs.connect();
 app.dataSource(bookDs, dsName);
 ```
 
-For details about datasource options, refer to the [DataSource
-documentation](https://apidocs.strongloop.com/loopback-datasource-juggler/#datasource).
+For details about datasource options, refer to the
+[DataSource documentation](https://apidocs.strongloop.com/loopback-datasource-juggler/#datasource).
 
 Attach the newly created datasource to the app by calling `app.dataSource()`.
 
