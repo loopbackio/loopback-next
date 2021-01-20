@@ -16,7 +16,6 @@ const {importLb3ModelDefinition} = require('./migrate-model');
 const {canImportModelName} = require('./model-names');
 const g = require('../../lib/globalize');
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 module.exports = class Lb3ModelImporter extends BaseGenerator {
   constructor(args, opts) {
     super(args, opts);

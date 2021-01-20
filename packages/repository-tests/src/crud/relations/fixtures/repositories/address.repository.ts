@@ -6,15 +6,14 @@
 import {Getter} from '@loopback/core';
 import {
   BelongsToAccessor,
-  juggler,
-  createBelongsToAccessor,
   BelongsToDefinition,
+  createBelongsToAccessor,
+  juggler,
 } from '@loopback/repository';
-import {Address, AddressRelations, Customer} from '../models';
 import {CrudRepositoryCtor} from '../../../..';
+import {Address, AddressRelations, Customer} from '../models';
 
 export function createAddressRepo(repoClass: CrudRepositoryCtor) {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   return class AddressRepository extends repoClass<
     Address,
     typeof Address.prototype.id,

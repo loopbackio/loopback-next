@@ -44,12 +44,10 @@ export class MetadataInspector {
    * Expose Reflector, which is a wrapper of `Reflect` and it uses `loopback`
    * as the namespace prefix for all metadata keys
    */
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   static readonly Reflector = Reflector;
   /**
    * Expose the reflector for TypeScript design-time metadata
    */
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   static readonly DesignTimeReflector = TSReflector;
 
   /**

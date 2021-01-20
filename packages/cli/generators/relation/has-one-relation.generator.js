@@ -13,7 +13,6 @@ const utils = require('../../lib/utils');
 const CONTROLLER_TEMPLATE_PATH_HAS_ONE =
   'controller-relation-template-has-one.ts.ejs';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 module.exports = class HasOneRelationGenerator extends BaseRelationGenerator {
   constructor(args, opts) {
     super(args, opts);

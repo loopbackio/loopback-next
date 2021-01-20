@@ -9,7 +9,6 @@ const utils = require('../../lib/utils');
 const ProjectGenerator = require('../../lib/project-generator');
 const g = require('../../lib/globalize');
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 module.exports = class ExtensionGenerator extends ProjectGenerator {
   // Note: arguments and options should be defined in the constructor.
   constructor(args, opts) {

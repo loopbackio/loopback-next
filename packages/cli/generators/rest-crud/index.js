@@ -31,7 +31,6 @@ const ERROR_NO_DATA_SOURCES_FOUND = g.f('No datasources found at');
 const ERROR_NO_MODELS_FOUND = g.f('No models found at');
 const ERROR_NO_MODEL_SELECTED = g.f('You did not select a valid model');
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 module.exports = class RestCrudGenerator extends ArtifactGenerator {
   // Note: arguments and options should be defined in the constructor.
   constructor(args, opts) {

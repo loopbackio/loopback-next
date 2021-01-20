@@ -296,7 +296,6 @@ exports.validateUrlSlug = function (name) {
 /**
  * Extends conflicter so that it keeps track of conflict status
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 exports.StatusConflicter = class StatusConflicter extends Conflicter {
   constructor(adapter, force) {
     super(adapter, force);

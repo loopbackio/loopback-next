@@ -30,7 +30,6 @@ import {
 
 // create the CustomerRepo by calling this func so that it can be extended from CrudRepositoryCtor
 export function createCustomerRepo(repoClass: CrudRepositoryCtor) {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   return class CustomerRepository extends repoClass<
     Customer,
     typeof Customer.prototype.id,

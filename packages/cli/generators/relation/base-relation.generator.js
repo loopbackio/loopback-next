@@ -11,7 +11,6 @@ const path = require('path');
 const relationUtils = require('./utils.generator');
 const utils = require('../../lib/utils');
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 module.exports = class BaseRelationGenerator extends ArtifactGenerator {
   constructor(args, opts) {
     super(args, opts);

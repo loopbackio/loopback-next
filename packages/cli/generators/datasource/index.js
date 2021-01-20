@@ -21,7 +21,6 @@ const g = require('../../lib/globalize');
  * for the DataSource as well as a Class for a user to modify. Also installs the
  * appropriate connector from npm.
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 module.exports = class DataSourceGenerator extends ArtifactGenerator {
   constructor(args, opts) {
     super(args, opts);

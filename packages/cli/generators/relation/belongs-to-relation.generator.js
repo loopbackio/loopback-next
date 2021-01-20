@@ -13,7 +13,6 @@ const relationUtils = require('./utils.generator');
 const CONTROLLER_TEMPLATE_PATH_BELONGS_TO =
   'controller-relation-template-belongs-to.ts.ejs';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 module.exports = class BelongsToRelationGenerator extends (
   BaseRelationGenerator
 ) {

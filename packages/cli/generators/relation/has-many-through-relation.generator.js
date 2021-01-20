@@ -14,7 +14,6 @@ const utils = require('../../lib/utils');
 const CONTROLLER_TEMPLATE_PATH_HAS_MANY_THROUGH =
   'controller-relation-template-has-many-through.ts.ejs';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 module.exports = class HasManyThroughRelationGenerator extends (
   BaseRelationGenerator
 ) {

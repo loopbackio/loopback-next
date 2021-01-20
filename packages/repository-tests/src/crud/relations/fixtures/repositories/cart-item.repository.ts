@@ -9,7 +9,6 @@ import {CartItem, CartItemRelations} from '../models';
 
 // create the CartItemRepo by calling this func so that it can be extended from CrudRepositoryCtor
 export function createCartItemRepo(repoClass: CrudRepositoryCtor) {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   return class CartItemRepository extends repoClass<
     CartItem,
     typeof CartItem.prototype.id,
