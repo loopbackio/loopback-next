@@ -1,0 +1,69 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    ":combinePatchMinorReleases",
+    ":separateMajorReleases",
+    ":semanticCommits",
+    ":semanticPrefixChore",
+    ":semanticCommitScopeDisabled",
+    ":updateNotScheduled",
+    ":automergeRequireAllStatusChecks",
+    ":ignoreUnstable",
+    ":automergeDisabled",
+    ":gitSignOff",
+    "group:monorepos",
+    "group:recommended",
+    "helpers:disableTypesNodeMajor"
+  ],
+  "ignorePaths": [
+    "**/node_modules/**",
+    "**/__tests__/**",
+    "**/test/**"
+  ],
+  "dependencyDashboard": true,
+  "dependencyDashboardApproval": false,
+  "dependencyDashboardAutoclose": true,
+  "lockFileMaintenance": {
+    "enabled": true,
+    "automerge": true,
+    "schedule": [
+      "before 5am on monday"
+    ]
+  },
+  "packageRules": [
+    {
+      "groupName": "api-extractor packages",
+      "packageNames": [
+        "@microsoft/api-extractor",
+        "@microsoft/api-documenter"
+      ]
+    },
+    {
+      "groupName": "@types/express* packages",
+      "packageNames": [
+        "@types/express",
+        "@types/express-serve-static-core"
+      ]
+    },
+    {
+      "automerge": true,
+      "updateTypes": [
+        "minor",
+        "patch"
+      ]
+    },
+    {
+      "automerge": true,
+      "depTypeList": [
+        "devDependencies"
+      ]
+    }
+  ],
+  "prConcurrentLimit": 5,
+  "prHourlyLimit": 2,
+  "rangeStrategy": "bump",
+  "supportPolicy": [
+    "lts",
+    "current"
+  ]
+}
