@@ -44,7 +44,7 @@
   "dependencies": {
     "@loopback/core": "^2.14.0",
     "express": "^4.17.1",
-    "tslib": "^2.0.3"
+    "tslib": "^2.1.0"
   },
   "devDependencies": {
     "@loopback/build": "^6.2.9",

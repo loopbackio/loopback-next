@@ -31,7 +31,7 @@
     "loopback": "^3.28.0",
     "loopback-swagger": "^5.9.0",
     "swagger2openapi": "^7.0.4",
-    "tslib": "^2.0.3"
+    "tslib": "^2.1.0"
   },
   "devDependencies": {
     "@loopback/boot": "^3.2.0",
