@@ -56,7 +56,7 @@
     "@loopback/rest-explorer": "^3.0.5",
     "@loopback/socketio": "^0.1.2",
     "@types/socket.io": "^2.1.12",
-    "@types/socket.io-client": "^1.4.34",
+    "@types/socket.io-client": "^1.4.35",
     "p-event": "^4.2.0",
     "socket.io": "^2.3.0",
     "socket.io-client": "^2.3.1",
