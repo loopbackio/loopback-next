@@ -70,7 +70,7 @@
     "cross-env": "^7.0.3",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^7.18.0",
-    "eslint-config-prettier": "^7.1.0",
+    "eslint-config-prettier": "^7.2.0",
     "eslint-plugin-eslint-plugin": "^2.3.0",
     "eslint-plugin-mocha": "^8.0.0",
     "eslint-plugin-prettier": "^3.3.1",
