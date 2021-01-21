@@ -10,7 +10,7 @@
   "scripts": {
     "build:tsdocs": "npm run build && npm run -s extract-apidocs && npm run -s document-apidocs && npm run -s update-apidocs",
     "extract-apidocs": "node bin/extract-apis",
-    "document-apidocs": "bin/document-apis markdown -i ../../docs/apidocs/models -o ../../docs/site/apidocs",
+    "document-apidocs": "node bin/document-apis markdown -i ../../docs/apidocs/models -o ../../docs/site/apidocs",
     "update-apidocs": "node bin/update-apidocs",
     "build": "lb-tsc",
     "build:fixtures": "npm run build --prefix fixtures/monorepo",
