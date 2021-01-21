@@ -23,7 +23,7 @@
     "@loopback/eslint-config": "^10.0.4",
     "@loopback/testlab": "^3.2.10",
     "@types/node": "^10.17.35",
-    "eslint": "^7.17.0",
+    "eslint": "^7.18.0",
     "typescript": "~4.1.3"
   },
   "scripts": {
