@@ -52,7 +52,7 @@
     "lodash": "^4.17.20",
     "on-finished": "^2.3.0",
     "path-to-regexp": "^6.2.0",
-    "qs": "^6.9.4",
+    "qs": "^6.9.6",
     "strong-error-handler": "^4.0.0",
     "tslib": "^2.0.3",
     "type-is": "^1.6.18",
