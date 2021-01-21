@@ -38,7 +38,7 @@
     "@loopback/eslint-config": "^10.0.4",
     "@loopback/testlab": "^3.2.10",
     "@types/bson": "^4.0.3",
-    "@types/json-schema": "^7.0.6",
+    "@types/json-schema": "^7.0.7",
     "@types/lodash": "^4.14.167",
     "@types/node": "^10.17.35",
     "bson": "4.2.2"
