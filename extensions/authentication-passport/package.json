@@ -58,7 +58,7 @@
     "lodash": "^4.17.20",
     "passport-http": "^0.3.0",
     "passport-oauth2": "^1.5.0",
-    "qs": "^6.9.4",
+    "qs": "^6.9.6",
     "supertest": "^6.0.1"
   },
   "keywords": [
