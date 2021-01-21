@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/tsdocs@2.3.6...@loopback/tsdocs@2.4.0) (2021-01-21)
+
+
+### Features
+
+* make @loopback/tsdocs public so that it can be used by other projects ([90d157f](https://github.com/strongloop/loopback-next/commit/90d157f2762f8c61199ade35014bebc45e7a3d2f))
+
+
+
+
+
 ## [2.3.6](https://github.com/strongloop/loopback-next/compare/@loopback/tsdocs@2.3.5...@loopback/tsdocs@2.3.6) (2020-12-07)
 
 **Note:** Version bump only for package @loopback/tsdocs

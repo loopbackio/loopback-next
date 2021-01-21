@@ -1,6 +1,6 @@
 {
   "name": "@loopback/rest-msgpack",
-  "version": "0.2.4",
+  "version": "0.3.0",
   "description": "Body parser to handle MessagePack requests in LoopBack 4.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -32,8 +32,8 @@
     "access": "public"
   },
   "peerDependencies": {
-    "@loopback/core": "^2.13.1",
-    "@loopback/rest": "^9.1.1"
+    "@loopback/core": "^2.14.0",
+    "@loopback/rest": "^9.1.2"
   },
   "dependencies": {
     "msgpack5": "^4.5.0",
@@ -41,10 +41,10 @@
     "type-is": "^1.6.18"
   },
   "devDependencies": {
-    "@loopback/build": "^6.2.8",
-    "@loopback/core": "^2.13.1",
-    "@loopback/rest": "^9.1.1",
-    "@loopback/testlab": "^3.2.10",
+    "@loopback/build": "^6.2.9",
+    "@loopback/core": "^2.14.0",
+    "@loopback/rest": "^9.1.2",
+    "@loopback/testlab": "^3.2.11",
     "@types/msgpack5": "^3.4.1",
     "@types/node": "^10.17.35",
     "@types/type-is": "^1.6.3",

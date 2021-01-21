@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.7.4](https://github.com/strongloop/loopback-next/compare/@loopback/example-multi-tenancy@0.7.3...@loopback/example-multi-tenancy@0.7.4) (2021-01-21)
+
+**Note:** Version bump only for package @loopback/example-multi-tenancy
+
+
+
+
+
 ## [0.7.3](https://github.com/strongloop/loopback-next/compare/@loopback/example-multi-tenancy@0.7.2...@loopback/example-multi-tenancy@0.7.3) (2020-12-07)
 
 **Note:** Version bump only for package @loopback/example-multi-tenancy

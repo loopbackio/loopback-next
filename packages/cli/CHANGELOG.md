@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.18.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@2.17.2...@loopback/cli@2.18.0) (2021-01-21)
+
+
+### Bug Fixes
+
+* **cli:** copyright year git integration ([ce8fa66](https://github.com/strongloop/loopback-next/commit/ce8fa663e756d49cc1544752461f4b62b28a72ce))
+
+
+### Features
+
+* fix eslint violations ([062de9c](https://github.com/strongloop/loopback-next/commit/062de9c5f908332f58f54ddf13798a22ca21f1e7))
+
+
+
+
+
 ## [2.17.2](https://github.com/strongloop/loopback-next/compare/@loopback/cli@2.17.1...@loopback/cli@2.17.2) (2020-12-07)
 
 

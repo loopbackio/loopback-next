@@ -1,6 +1,6 @@
 {
   "name": "@loopback/pooling",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "description": "Resource pooling service for LoopBack 4",
   "keywords": [
     "loopback-extension",
@@ -36,7 +36,7 @@
     "access": "public"
   },
   "peerDependencies": {
-    "@loopback/core": "^2.13.1"
+    "@loopback/core": "^2.14.0"
   },
   "dependencies": {
     "@types/generic-pool": "^3.1.9",
@@ -44,9 +44,9 @@
     "tslib": "^2.0.3"
   },
   "devDependencies": {
-    "@loopback/build": "^6.2.8",
-    "@loopback/core": "^2.13.1",
-    "@loopback/testlab": "^3.2.10",
+    "@loopback/build": "^6.2.9",
+    "@loopback/core": "^2.14.0",
+    "@loopback/testlab": "^3.2.11",
     "@types/node": "^10.17.35",
     "typescript": "~4.1.3"
   }

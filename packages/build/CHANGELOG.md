@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.2.9](https://github.com/strongloop/loopback-next/compare/@loopback/build@6.2.8...@loopback/build@6.2.9) (2021-01-21)
+
+**Note:** Version bump only for package @loopback/build
+
+
+
+
+
 ## [6.2.8](https://github.com/strongloop/loopback-next/compare/@loopback/build@6.2.7...@loopback/build@6.2.8) (2020-12-07)
 
 **Note:** Version bump only for package @loopback/build

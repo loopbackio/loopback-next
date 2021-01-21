@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.6.0](https://github.com/strongloop/loopback-next/compare/@loopback/metrics@0.5.2...@loopback/metrics@0.6.0) (2021-01-21)
+
+
+### Bug Fixes
+
+* **metrics:** fix error thrown by interceptor if invoked by proxy ([2fd2da2](https://github.com/strongloop/loopback-next/commit/2fd2da2a5664651675a7510910a674706d04d5f8))
+* **metrics:** use path pattern instead of raw path in path labels ([80a07bc](https://github.com/strongloop/loopback-next/commit/80a07bcb624fd60a72b7537d285723de3a7c04f8))
+
+
+### Features
+
+* **metrics:** add new Pushgateway options ([6d73fff](https://github.com/strongloop/loopback-next/commit/6d73fff0e19eb1d5646878d77c38463422607c22))
+* **metrics:** add option to configure static default labels ([8bce9e8](https://github.com/strongloop/loopback-next/commit/8bce9e81c916051633486dff2f4aa1af643ca15c))
+* **metrics:** additional method invocation labels ([cb3b9a5](https://github.com/strongloop/loopback-next/commit/cb3b9a58683a5cd9c707e77b6896eb5bb4de4db2))
+
+
+
+
+
 ## [0.5.2](https://github.com/strongloop/loopback-next/compare/@loopback/metrics@0.5.1...@loopback/metrics@0.5.2) (2020-12-07)
 
 **Note:** Version bump only for package @loopback/metrics

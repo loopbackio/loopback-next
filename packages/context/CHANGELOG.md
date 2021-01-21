@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.14.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@3.13.2...@loopback/context@3.14.0) (2021-01-21)
+
+
+### Bug Fixes
+
+* **context:** make sure subclass is used for create binding from class ([befbbcf](https://github.com/strongloop/loopback-next/commit/befbbcf04bb66b1764291139c2bdd67a869d62d4))
+
+
+### Features
+
+* **context:** allow asProxyWithInterceptors to be used for non-class bindings ([ebec122](https://github.com/strongloop/loopback-next/commit/ebec1228af2ef6afc2377c7a293bab9f698fd4a8))
+
+
+
+
+
 ## [3.13.2](https://github.com/strongloop/loopback-next/compare/@loopback/context@3.13.1...@loopback/context@3.13.2) (2020-12-07)
 
 **Note:** Version bump only for package @loopback/context

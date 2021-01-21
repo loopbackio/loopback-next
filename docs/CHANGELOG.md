@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.21.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.20.0...@loopback/docs@3.21.0) (2021-01-21)
+
+
+### Bug Fixes
+
+* **context:** make sure subclass is used for create binding from class ([befbbcf](https://github.com/strongloop/loopback-next/commit/befbbcf04bb66b1764291139c2bdd67a869d62d4))
+* **docs:** add info on action-based sequences ([883e9b3](https://github.com/strongloop/loopback-next/commit/883e9b31b0e5281085a0c9f091f648e84fef795e))
+* **docs:** add injectable decorator in custom extended sequence ([1fe4c27](https://github.com/strongloop/loopback-next/commit/1fe4c274efb32210699c13be38d8b71365bee9c4)), closes [#6918](https://github.com/strongloop/loopback-next/issues/6918)
+* **docs:** binding event listener sample code ([bc5dc91](https://github.com/strongloop/loopback-next/commit/bc5dc91af5f23d6be0d83092efe87d1c79117cd5))
+* **docs:** encoded inclusion filter code example ([73be4a4](https://github.com/strongloop/loopback-next/commit/73be4a496bf37bfbd93ab7f08abb14fb2f1b7b7f)), closes [#6980](https://github.com/strongloop/loopback-next/issues/6980)
+
+
+### Features
+
+* make @loopback/tsdocs public so that it can be used by other projects ([90d157f](https://github.com/strongloop/loopback-next/commit/90d157f2762f8c61199ade35014bebc45e7a3d2f))
+* normalize debug scopes in relations ([b3c52c1](https://github.com/strongloop/loopback-next/commit/b3c52c191fc98cc6fc2b304c838d5b15b62ddcb5))
+* **docs:** add warning on LB3 hooks 'this' behaviour ([b9f435e](https://github.com/strongloop/loopback-next/commit/b9f435e527c81ec3e0ac8cf13fbb6902009b87b9))
+
+
+
+
+
 # [3.20.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.19.0...@loopback/docs@3.20.0) (2020-12-07)
 
 

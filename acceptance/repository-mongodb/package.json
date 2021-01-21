@@ -1,6 +1,6 @@
 {
   "name": "@loopback/test-repository-mongodb",
-  "version": "0.7.19",
+  "version": "0.7.20",
   "description": "Acceptance tests for `@loopback/repository` + `loopback-connector-mongodb`",
   "private": true,
   "main": "dist/index.js",
@@ -20,11 +20,11 @@
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "devDependencies": {
-    "@loopback/build": "^6.2.8",
-    "@loopback/eslint-config": "^10.0.4",
-    "@loopback/repository": "^3.3.0",
-    "@loopback/repository-tests": "^0.15.0",
-    "@loopback/testlab": "^3.2.10",
+    "@loopback/build": "^6.2.9",
+    "@loopback/eslint-config": "^10.0.5",
+    "@loopback/repository": "^3.4.0",
+    "@loopback/repository-tests": "^0.16.0",
+    "@loopback/testlab": "^3.2.11",
     "@types/node": "^10.17.35",
     "loopback-connector-mongodb": "^5.5.0",
     "tslib": "^2.0.3"

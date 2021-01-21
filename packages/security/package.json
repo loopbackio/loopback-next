@@ -1,6 +1,6 @@
 {
   "name": "@loopback/security",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "description": "A LoopBack component for security support.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -24,16 +24,16 @@
     "access": "public"
   },
   "peerDependencies": {
-    "@loopback/core": "^2.13.1"
+    "@loopback/core": "^2.14.0"
   },
   "dependencies": {
     "debug": "^4.3.1",
     "tslib": "^2.0.3"
   },
   "devDependencies": {
-    "@loopback/build": "^6.2.8",
-    "@loopback/core": "^2.13.1",
-    "@loopback/testlab": "^3.2.10",
+    "@loopback/build": "^6.2.9",
+    "@loopback/core": "^2.14.0",
+    "@loopback/testlab": "^3.2.11",
     "@types/debug": "^4.1.5",
     "@types/node": "^10.17.35"
   },

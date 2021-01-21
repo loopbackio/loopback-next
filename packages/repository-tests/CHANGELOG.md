@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.16.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository-tests@0.15.0...@loopback/repository-tests@0.16.0) (2021-01-21)
+
+
+### Features
+
+* fix eslint violations ([062de9c](https://github.com/strongloop/loopback-next/commit/062de9c5f908332f58f54ddf13798a22ca21f1e7))
+
+
+
+
+
 # [0.15.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository-tests@0.14.2...@loopback/repository-tests@0.15.0) (2020-12-07)
 
 

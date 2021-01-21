@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@3.3.0...@loopback/repository@3.4.0) (2021-01-21)
+
+
+### Bug Fixes
+
+* **repository:** unwanted object param manipulation ([8171744](https://github.com/strongloop/loopback-next/commit/8171744f473ab5a05e8f0758630a73c00ea8e7cf)), closes [#5814](https://github.com/strongloop/loopback-next/issues/5814)
+
+
+### Features
+
+* add connector interface enums ([763bf72](https://github.com/strongloop/loopback-next/commit/763bf720ae1031f8eba2f4a24f9a3bbc855d7781))
+* normalize debug scopes in relations ([b3c52c1](https://github.com/strongloop/loopback-next/commit/b3c52c191fc98cc6fc2b304c838d5b15b62ddcb5))
+
+
+
+
+
 # [3.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@3.2.1...@loopback/repository@3.3.0) (2020-12-07)
 
 

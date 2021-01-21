@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/boot@3.1.2...@loopback/boot@3.2.0) (2021-01-21)
+
+
+### Features
+
+* fix eslint violations ([062de9c](https://github.com/strongloop/loopback-next/commit/062de9c5f908332f58f54ddf13798a22ca21f1e7))
+
+
+
+
+
 ## [3.1.2](https://github.com/strongloop/loopback-next/compare/@loopback/boot@3.1.1...@loopback/boot@3.1.2) (2020-12-07)
 
 **Note:** Version bump only for package @loopback/boot

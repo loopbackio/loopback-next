@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest-msgpack@0.2.4...@loopback/rest-msgpack@0.3.0) (2021-01-21)
+
+
+### Features
+
+* replace msgpack parser ([fbdb0ab](https://github.com/strongloop/loopback-next/commit/fbdb0abe6c8b3f1025183c91a12e1cff4e5952df))
+
+
+
+
+
 ## [0.2.4](https://github.com/strongloop/loopback-next/compare/@loopback/rest-msgpack@0.2.3...@loopback/rest-msgpack@0.2.4) (2020-12-07)
 
 **Note:** Version bump only for package @loopback/rest-msgpack
