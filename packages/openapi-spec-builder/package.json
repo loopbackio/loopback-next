@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "openapi3-ts": "^2.0.1",
-    "tslib": "^2.0.3"
+    "tslib": "^2.1.0"
   },
   "devDependencies": {
     "@loopback/build": "^6.2.9",
