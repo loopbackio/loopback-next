@@ -17,7 +17,7 @@ authorization to secure the applications:
 - A set of built-in models like `User`, `AccessToken` and `ACL` makes it easy to
   store your user credentials locally and define custom access control checks.
   The migration path is described in
-  [Migrating built-in authentication and authorization](./built-in.md).
+  [Migrating built-in authentication and authorization](./authentication.md).
 
 - [loopback-component-passport](https://github.com/strongloop/loopback-component-passport)
   provides integration between LoopBack 3 and
