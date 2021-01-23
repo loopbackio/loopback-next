@@ -159,7 +159,7 @@ rapid testing.
 
 For example, a `TokenService` interface is injected into the `UserController` to
 `verify` and `generate` tokens. A
-[JWT Service](https://github.com/strongloop/loopback4-example-shopping/blob/master/packages/shopping/src/services/jwt-service.ts)
+[JWT Service](https://github.com/strongloop/loopback4-example-shopping/blob/master/packages/shopping/src/services/jwt.service.ts)
 provides a local implementation of this interface specifically for JWTs.
 
 Dependency injection is used to wire services and repositories with controllers
