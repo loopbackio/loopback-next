@@ -17,10 +17,8 @@ import path from 'path';
 import {RestExplorerBindings} from './rest-explorer.keys';
 import {RestExplorerConfig} from './rest-explorer.types';
 
-// TODO(bajtos) Allow users to customize the template
-const indexHtml = path.resolve(__dirname, '../templates/index.html.ejs');
-const template = fs.readFileSync(indexHtml, 'utf-8');
-const templateFn = ejs.compile(template);
+let prevIndexTemplatePath: string;
+let templateFn: ejs.TemplateFunction;
 
 export class ExplorerController {
   static readonly OPENAPI_RELATIVE_URL = 'openapi.json';
@@ -32,6 +30,7 @@ export class ExplorerController {
   private openApiSpecUrl: string;
   private useSelfHostedSpec: boolean;
   private swaggerThemeFile: string;
+  private indexTemplatePath: string;
 
   constructor(
     @inject(RestBindings.CONFIG, {optional: true})
@@ -46,6 +45,9 @@ export class ExplorerController {
     this.openApiSpecUrl = this.getOpenApiSpecUrl(restConfig);
     this.swaggerThemeFile =
       explorerConfig.swaggerThemeFile ?? './swagger-ui.css';
+    this.indexTemplatePath =
+      explorerConfig.indexTemplatePath ??
+      path.resolve(__dirname, '../templates/index.html.ejs');
   }
 
   indexRedirect() {
@@ -86,6 +88,12 @@ export class ExplorerController {
       openApiSpecUrl,
       swaggerThemeFile,
     };
+
+    if (prevIndexTemplatePath !== this.indexTemplatePath) {
+      const template = fs.readFileSync(this.indexTemplatePath, 'utf-8');
+      templateFn = ejs.compile(template);
+      prevIndexTemplatePath = this.indexTemplatePath;
+    }
 
     const homePage = templateFn(data);
     this.requestContext.response
