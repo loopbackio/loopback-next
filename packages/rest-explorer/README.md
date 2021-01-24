@@ -174,13 +174,15 @@ https://github.com/ostranme/swagger-ui-themes.
 
 ### Overriding the Swagger UI index.html
 
-For more flexibility, the `indexTemplatePath` property can be used to allow
-full customization of [Swagger UI configuration options](https://swagger.io/docs/open-source-tools/swagger-ui/usage/configuration/).
+For more flexibility, the `indexTemplatePath` property can be used to allow full
+customization of
+[Swagger UI configuration options](https://swagger.io/docs/open-source-tools/swagger-ui/usage/configuration/).
 
 `indexTemplatePath` should be an absolute path to a .html.ejs template.
 
-To get started, [download the default index.html.ejs](https://github.com/strongloop/loopback-next/blob/master/packages/rest-explorer/templates/index.html.ejs), add
-/explorer/index.html.ejs to your project, and update the configuration:
+To get started,
+[download the default index.html.ejs](https://github.com/strongloop/loopback-next/blob/master/packages/rest-explorer/templates/index.html.ejs),
+add /explorer/index.html.ejs to your project, and update the configuration:
 
 ```ts
 this.configure(RestExplorerBindings.COMPONENT).to({
