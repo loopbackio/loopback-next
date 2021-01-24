@@ -172,6 +172,24 @@ When the application runs, the explorer template will load the
 Here is a repository that contains popular Swagger-UI themes:
 https://github.com/ostranme/swagger-ui-themes.
 
+### Overriding the Swagger UI index.html
+
+For more flexibility, the `indexTemplatePath` property can be used to allow
+full customization of [Swagger UI configuration options](https://swagger.io/docs/open-source-tools/swagger-ui/usage/configuration/).
+
+`indexTemplatePath` should be an absolute path to a .html.ejs template.
+
+To get started, [download the default index.html.ejs](https://github.com/strongloop/loopback-next/blob/master/packages/rest-explorer/templates/index.html.ejs), add
+/explorer/index.html.ejs to your project, and update the configuration:
+
+```ts
+this.configure(RestExplorerBindings.COMPONENT).to({
+  // For example, create a directory "explorer" at the same level
+  // as "src" and "node_modules" in your applciation structure
+  indexTemplatePath: path.resolve(__dirname, '../explorer/index.html.ejs'),
+});
+```
+
 ## Contributions
 
 - [Guidelines](https://github.com/strongloop/loopback-next/blob/master/docs/CONTRIBUTING.md)

@@ -32,4 +32,9 @@ export type RestExplorerConfig = {
 
   // Relative URL of the theme CSS file
   swaggerThemeFile?: string;
+
+  /* Absolute path to a .html.ejs template to optionally override
+  templates/index.html.ejs
+  */
+  indexTemplatePath?: string;
 };
