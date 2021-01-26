@@ -43,6 +43,10 @@ LoopBack 4 comes with the following example projects.
   [@loopback/metrics extension](https://github.com/strongloop/loopback-next/blob/master/extensions/metrics)
   and [Prometheus](https://prometheus.io/).
 
+- **[graphql](https://github.com/strongloop/loopback-next/tree/master/examples/graphql)**:
+  An example that demonstrates GraphQL integration using
+  [@loopback/graphql](https://github.com/strongloop/loopback-next/tree/graphql/extensions/graphql).
+
 ### Examples with migration
 
 - **[lb3-application](https://github.com/strongloop/loopback-next/tree/master/examples/lb3-application)**:
