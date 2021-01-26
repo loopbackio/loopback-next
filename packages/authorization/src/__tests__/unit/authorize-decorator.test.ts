@@ -161,7 +161,42 @@ describe('Authentication', () => {
         getSecret() {}
       }
 
-      const metaData = getAuthorizationMetadata(TestClass, 'getSecret');
+      let metaData = getAuthorizationMetadata(TestClass, 'getSecret');
+      expect(metaData).to.eql({skip: true});
+
+      metaData = getAuthorizationMetadata(TestClass.prototype, 'getSecret');
+      expect(metaData).to.eql({skip: true});
+
+      metaData = getAuthorizationMetadata(new TestClass(), 'getSecret');
+      expect(metaData).to.eql({skip: true});
+    });
+
+    it('can skip authorization with a flag for sublclass', () => {
+      class TestClass {
+        @authorize({allowedRoles: ['admin']})
+        getSecret() {}
+
+        getNonSecret() {}
+      }
+
+      class SubTestClass extends TestClass {
+        @authorize({allowedRoles: [AUTHENTICATED]})
+        getProfile() {}
+
+        @authorize.skip()
+        getNonSecret() {}
+      }
+
+      let metaData = getAuthorizationMetadata(SubTestClass, 'getNonSecret');
+      expect(metaData).to.eql({skip: true});
+
+      metaData = getAuthorizationMetadata(
+        SubTestClass.prototype,
+        'getNonSecret',
+      );
+      expect(metaData).to.eql({skip: true});
+
+      metaData = getAuthorizationMetadata(new SubTestClass(), 'getNonSecret');
       expect(metaData).to.eql({skip: true});
     });
 
