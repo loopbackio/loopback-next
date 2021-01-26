@@ -43,7 +43,7 @@ export class AuthorizeMethodDecoratorFactory extends MethodDecoratorFactory<Auth
     ownMetadata = ownMetadata || {};
     let methodMeta = ownMetadata[methodName!];
     if (!methodMeta) {
-      methodMeta = {};
+      methodMeta = {...this.spec};
       ownMetadata[methodName!] = methodMeta;
     }
     if (this.spec.allowedRoles) {
@@ -65,15 +65,12 @@ export class AuthorizeMethodDecoratorFactory extends MethodDecoratorFactory<Auth
       methodMeta.voters = this.merge(methodMeta.voters, this.spec.voters);
     }
 
-    if (this.spec.resource) {
-      methodMeta.resource = this.spec.resource;
-    }
-
     return ownMetadata;
   }
 
   private merge<T>(src?: T[], target?: T[]): T[] {
     const list: T[] = [];
+    if (src === target) return src ?? list;
     const set = new Set<T>(src ?? []);
     if (target) {
       for (const i of target) {
