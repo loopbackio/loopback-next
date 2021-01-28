@@ -12,13 +12,12 @@ import {
   filterByKey,
   filterByServiceInterface,
 } from '@loopback/core';
+import {MIDDLEWARE_CONTEXT} from '@loopback/rest';
 import {ExpressContext} from 'apollo-server-express/dist/ApolloServer';
 import debugFactory from 'debug';
 import {ContainerType, ResolverData} from 'type-graphql';
 import {GraphQLBindings, GraphQLTags} from './keys';
-
 const debug = debugFactory('loopback:graphql:container');
-const MIDDLEWARE_CONTEXT = Symbol.for('loopback.middleware.context');
 
 /**
  * Context for graphql resolver resolution
