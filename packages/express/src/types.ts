@@ -325,7 +325,8 @@ export interface ExpressMiddlewareFactory<C> {
 }
 
 /**
- * A symbol to store `MiddlewareContext` on the request object
+ * A symbol to store `MiddlewareContext` on the request object.  This symbol
+ * can be referenced by name, before it is created.
  */
 export const MIDDLEWARE_CONTEXT = Symbol.for('loopback.middleware.context');
 
