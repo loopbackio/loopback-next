@@ -327,7 +327,7 @@ export interface ExpressMiddlewareFactory<C> {
 /**
  * A symbol to store `MiddlewareContext` on the request object
  */
-export const MIDDLEWARE_CONTEXT = Symbol('loopback.middleware.context');
+export const MIDDLEWARE_CONTEXT = Symbol.for('loopback.middleware.context');
 
 /**
  * Constants for middleware groups
