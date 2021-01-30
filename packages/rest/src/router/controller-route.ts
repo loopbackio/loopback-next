@@ -5,14 +5,17 @@
 
 import {
   BindingScope,
-  Constructor,
   Context,
+  ControllerClass,
   CoreBindings,
-  instantiateClass,
   invokeMethod,
-  ValueOrPromise,
 } from '@loopback/core';
 import {ControllerSpec, OperationObject} from '@loopback/openapi-v3';
+import {
+  ControllerFactory,
+  ControllerInstance,
+  createControllerFactoryForClass,
+} from '@loopback/router';
 import assert from 'assert';
 import debugFactory from 'debug';
 import HttpErrors from 'http-errors';
@@ -22,24 +25,6 @@ import {OperationArgs, OperationRetval} from '../types';
 import {BaseRoute, RouteSource} from './base-route';
 
 const debug = debugFactory('loopback:rest:controller-route');
-/*
- * A controller instance with open properties/methods
- */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type ControllerInstance = {[name: string]: any} & object;
-
-/**
- * A factory function to create controller instances synchronously or
- * asynchronously
- */
-export type ControllerFactory<T extends ControllerInstance> = (
-  ctx: Context,
-) => ValueOrPromise<T>;
-
-/**
- * Controller class
- */
-export type ControllerClass<T extends ControllerInstance> = Constructor<T>;
 
 /**
  * A route backed by a controller
@@ -146,46 +131,6 @@ export class ControllerRoute<T> extends BaseRoute {
       source: new RouteSource(this),
     });
   }
-}
-
-/**
- * Create a controller factory function for a given binding key
- * @param key - Binding key
- */
-export function createControllerFactoryForBinding<T>(
-  key: string,
-): ControllerFactory<T> {
-  return ctx => ctx.get<T>(key);
-}
-
-/**
- * Create a controller factory function for a given class
- * @param controllerCtor - Controller class
- */
-export function createControllerFactoryForClass<T>(
-  controllerCtor: ControllerClass<T>,
-): ControllerFactory<T> {
-  return async ctx => {
-    // By default, we get an instance of the controller from the context
-    // using `controllers.<controllerName>` as the key
-    let inst = await ctx.get<T>(`controllers.${controllerCtor.name}`, {
-      optional: true,
-    });
-    if (inst === undefined) {
-      inst = await instantiateClass<T>(controllerCtor, ctx);
-    }
-    return inst;
-  };
-}
-
-/**
- * Create a controller factory function for a given instance
- * @param controllerCtor - Controller instance
- */
-export function createControllerFactoryForInstance<T>(
-  controllerInst: T,
-): ControllerFactory<T> {
-  return ctx => controllerInst;
 }
 
 /**

@@ -3,6 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {Router} from '@loopback/router';
 import {Request} from '../types';
 import {ResolvedRoute, RouteEntry} from './route-entry';
 
@@ -10,7 +11,7 @@ import {ResolvedRoute, RouteEntry} from './route-entry';
 /**
  * Interface for router implementation
  */
-export interface RestRouter {
+export interface RestRouter extends Router<RouteEntry, ResolvedRoute, Request> {
   /**
    * Add a route to the router
    * @param route - A route entry

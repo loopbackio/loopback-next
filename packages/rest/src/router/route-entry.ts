@@ -5,12 +5,14 @@
 
 import {Context} from '@loopback/core';
 import {OperationObject, SchemasObject} from '@loopback/openapi-v3';
+import {RouteEntry as BaseRouteEntry} from '@loopback/router';
 import {OperationArgs, OperationRetval, PathParameterValues} from '../types';
 
 /**
  * An entry in the routing table
  */
-export interface RouteEntry {
+export interface RouteEntry
+  extends BaseRouteEntry<string, OperationArgs, OperationRetval> {
   /**
    * http verb
    */

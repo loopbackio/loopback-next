@@ -156,6 +156,13 @@
 /examples/binding-resolution @raymondfeng
 
 #
+# Router
+#
+# - Primary owner(s): @hacksparrow
+# - Standby owner(s): @emonddr
+/packages/router @hacksparrow @emonddr
+
+#
 # OpenAPI (server-side)
 #
 # - Issue label: OpenAPI

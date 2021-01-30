@@ -9,14 +9,11 @@ import {
   ParameterObject,
   PathObject,
 } from '@loopback/openapi-v3';
+import {ControllerClass, ControllerFactory} from '@loopback/router';
 import debugFactory from 'debug';
 import HttpErrors from 'http-errors';
 import {Request} from '../types';
-import {
-  ControllerClass,
-  ControllerFactory,
-  createRoutesForController,
-} from './controller-route';
+import {createRoutesForController} from './controller-route';
 import {ExternalExpressRoutes} from './external-express-routes';
 import {validateApiPath} from './openapi-path';
 import {RestRouter} from './rest-router';
@@ -26,7 +23,7 @@ import {TrieRouter} from './trie-router';
 const debug = debugFactory('loopback:rest:routing-table');
 
 /**
- * Routing table
+ * REST Routing table
  */
 export class RoutingTable {
   constructor(

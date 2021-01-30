@@ -3,22 +3,29 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+// Re-exports for backwards compatibility
+export {
+  ControllerClass,
+  ControllerFactory,
+  ControllerInstance,
+  createControllerFactoryForBinding,
+  createControllerFactoryForClass,
+  createControllerFactoryForInstance,
+} from '@loopback/router';
 // routes
-export * from './route-entry';
 export * from './base-route';
 export * from './controller-route';
-export * from './handler-route';
 export * from './external-express-routes';
+export * from './handler-route';
+export * from './openapi-path';
 export * from './redirect-route';
-
+export * from './regexp-router';
 // routers
 export * from './rest-router';
-export * from './trie-router';
-export * from './regexp-router';
-
+export * from './route-entry';
+export * from './route-sort';
+export * from './router-spec';
 // helpers
 export * from './routing-table';
-export * from './route-sort';
-export * from './openapi-path';
 export * from './trie';
-export * from './router-spec';
+export * from './trie-router';

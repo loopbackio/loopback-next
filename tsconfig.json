@@ -197,6 +197,9 @@
       "path": "packages/rest/tsconfig.json"
     },
     {
+      "path": "packages/router/tsconfig.json"
+    },
+    {
       "path": "packages/security/tsconfig.json"
     },
     {
