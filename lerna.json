@@ -1,15 +1,7 @@
 {
-  "packages": [
-    "acceptance/*",
-    "fixtures/*",
-    "benchmark",
-    "docs",
-    "examples/*",
-    "packages/*",
-    "extensions/*",
-    "bodyparsers/*",
-    "sandbox/*"
-  ],
+  "npmClient": "npm",
+  "useWorkspaces": true,
+  "version": "independent",
   "command": {
     "bootstrap": {
       "concurrency": 4,
@@ -33,6 +25,5 @@
       "concurrency": 8,
       "yes": true
     }
-  },
-  "version": "independent"
+  }
 }

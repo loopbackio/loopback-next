@@ -6,6 +6,7 @@ environment:
 install:
   - ps: Install-Product node $env:nodejs_version
   - node --version
+  - npm i -g npm@latest # Use latest NPM
   - npm --version
   - npm ci
 

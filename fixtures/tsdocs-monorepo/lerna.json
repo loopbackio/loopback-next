@@ -1,8 +1,6 @@
 {
-  "packages": [
-    "packages/*",
-    "docs"
-  ],
+  "npmClient": "npm",
+  "useWorkspaces": true,
   "version": "independent",
   "command": {
     "run": {

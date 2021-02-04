@@ -31,6 +31,8 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
+      - name: Use latest NPM
+        run: npm i -g npm@latest
       - name: Bootstrap project
         run: |
           npm ci --ignore-scripts
@@ -50,6 +52,8 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 14
+      - name: Use latest NPM
+        run: npm i -g npm@latest
       - name: Bootstrap benchmark tests
         run: |
           npm ci --ignore-scripts
@@ -67,6 +71,8 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 14
+      - name: Use latest NPM
+        run: npm i -g npm@latest
       - name: Bootstrap project
         run: |
           npm ci --ignore-scripts
@@ -103,6 +109,8 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 14
+      - name: Use latest NPM
+        run: npm i -g npm@latest
       - name: Bootstrap project
         run: |
           npm ci --ignore-scripts

@@ -2,19 +2,28 @@
   "name": "loopback-next",
   "description": "Monorepo for LoopBack 4 - A highly extensible Node.js and TypeScript framework for building APIs and microservices",
   "version": "0.1.0",
-  "author": "IBM Corp.",
+  "private": true,
   "license": "MIT",
+  "author": "IBM Corp.",
   "copyright.owner": "IBM Corp.",
+  "repository": "github:strongloop/loopback-next",
   "engines": {
-    "node": "^10.16 || 12 || 14 || 15"
+    "node": "^10.16 || 12 || 14 || 15",
+    "npm": ">=7"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/strongloop/loopback-next.git"
-  },
+  "workspaces": [
+    "acceptance/*",
+    "fixtures/*",
+    "benchmark",
+    "docs",
+    "examples/*",
+    "packages/*",
+    "extensions/*",
+    "bodyparsers/*",
+    "sandbox/example"
+  ],
   "scripts": {
-    "bootstrap": "lerna bootstrap",
-    "postinstall": "npm run -s bootstrap && npm run -s update-ts-project-refs",
+    "postinstall": "npm run -s update-ts-project-refs",
     "update-ts-project-refs": "node packages/monorepo/lib/update-ts-project-refs.js",
     "update-packages": "npm run -s update-package-locks",
     "check-package-metadata": "node bin/check-package-metadata.js",
@@ -48,7 +57,7 @@
     "clean": "lerna run clean && node packages/build/bin/run-clean \"packages/*/dist\" \"extensions/*/dist\" \"examples/*/dist\" \"benchmark/dist\"",
     "clean:lerna": "lerna clean",
     "build": "node packages/build/bin/compile-package -b",
-    "build:full": "npm ci --ignore-scripts && lerna bootstrap --ci && npm run clean && npm run build",
+    "build:full": "npm ci --ignore-scripts && npm run clean && npm run build",
     "pretest": "npm run clean && npm run build",
     "test": "node packages/build/bin/run-nyc npm run mocha",
     "test:ci": "node packages/build/bin/run-nyc npm run mocha",
@@ -58,6 +67,12 @@
     "docs:start": "cd docs/_preview && bundle exec jekyll serve --no-w --i",
     "mocha": "node packages/build/bin/run-mocha --lang en_US.UTF-8 \"packages/*/dist/__tests__/**/*.js\" \"extensions/*/dist/__tests__/**/*.js\" \"examples/*/dist/__tests__/**/*.js\" \"packages/cli/test/**/*.js\" \"packages/build/test/*/*.js\"",
     "posttest": "npm run lint"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-commit": "if-env LINT_STAGED=0 && echo \"lint-staged disabled via LINT_STAGED env var\" || lint-staged"
+    }
   },
   "devDependencies": {
     "@commitlint/cli": "^11.0.0",
@@ -83,12 +98,6 @@
     "open-cli": "^6.0.1",
     "prettier": "^2.2.1",
     "typescript": "~4.1.3"
-  },
-  "husky": {
-    "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-      "pre-commit": "if-env LINT_STAGED=0 && echo \"lint-staged disabled via LINT_STAGED env var\" || lint-staged"
-    }
   },
   "config": {
     "commitizen": {

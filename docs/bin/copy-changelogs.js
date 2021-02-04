@@ -87,6 +87,7 @@ permalink: /doc/en/lb4/changelog.index.html
     }
     for (const {location, name, shortName} of arr) {
       const src = path.join(REPO_ROOT, location, 'CHANGELOG.md');
+      // eslint-disable-next-line @typescript-eslint/await-thenable
       const exists = await fs.exists(src);
       if (!exists) continue;
 

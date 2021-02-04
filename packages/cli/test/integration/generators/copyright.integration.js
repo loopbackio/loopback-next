@@ -221,9 +221,9 @@ restricted by GSA ADP Schedule Contract with <%= owner %>.
     );
     assert.fileContent(
       path.join(sandbox.path, 'LICENSE'),
-      `Permission to use, copy, modify, and /or distribute this software for any
-purpose with or without fee is hereby granted, provided that the above copyright
-notice and this permission notice appear in all copies.`,
+      `Permission to use, copy, modify, and/or distribute this software for any purpose
+with or without fee is hereby granted, provided that the above copyright notice
+and this permission notice appear in all copies.`,
     );
   });
 
@@ -271,7 +271,7 @@ notice and this permission notice appear in all copies.`,
     );
     assert.fileContent(
       path.join(sandbox.path, 'LICENSE'),
-      `MIT License Copyright (c) IBM Corp. ${year}
+      `Copyright (c) IBM Corp. ${year}
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
@@ -280,9 +280,8 @@ use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
 the Software, and to permit persons to whom the Software is furnished to do so,
 subject to the following conditions:
 
-The above copyright notice and this permission notice (including the next
-paragraph) shall be included in all copies or substantial portions of the
-Software.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
