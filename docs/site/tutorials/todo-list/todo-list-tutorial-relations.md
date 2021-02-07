@@ -179,7 +179,7 @@ import {Todo, TodoWithRelations} from './todo.model';
 ```
 
 ```ts
-export interface TodoRelations {
+export interface TodoListRelations {
   // add the following line
   todos?: TodoWithRelations[];
 }
