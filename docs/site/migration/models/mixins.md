@@ -161,7 +161,7 @@ This mixin class factory function `AddCategoryPropertyMixin` in
 {% include code-caption.html content="src/mixins/category-property-mixin.ts" %}
 
 ```ts
-import {Constructor} from '@loopback/core';
+import {MixinTarget} from '@loopback/core';
 import {property, Model} from '@loopback/repository';
 
 /**
@@ -433,7 +433,7 @@ method to any repository.
 {% include code-caption.html content="src/mixins/find-by-title-repository-mixin.ts" %}
 
 ```ts
-import {Constructor} from '@loopback/core';
+import {MixinTarget} from '@loopback/core';
 import {Model, CrudRepository, Where} from '@loopback/repository';
 import {FindByTitle} from './find-by-title-interface';
 
@@ -524,7 +524,7 @@ method to any controller.
 {% include code-caption.html content="src/mixins/src/mixins/find-by-title-controller-mixin.ts" %}
 
 ```ts
-import {Constructor} from '@loopback/core';
+import {MixinTarget} from '@loopback/core';
 import {Model} from '@loopback/repository';
 import {FindByTitle} from './find-by-title-interface';
 import {param, get, getModelSchemaRef} from '@loopback/rest';
