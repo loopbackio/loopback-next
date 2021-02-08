@@ -463,7 +463,7 @@ all contexts on the chain. In the example above, the observer is added to both
 or removed from any of the context on the chain.
 
 - Observers are called in the next turn of
-  [Promise micro-task queue](https://jsblog.insiderattack.net/promises-next-ticks-and-immediates-nodejs-event-loop-part-3-9226cbe7a6aa)
+  [Promise micro-task queue](https://blog.insiderattack.net/promises-next-ticks-and-immediates-nodejs-event-loop-part-3-9226cbe7a6aa)
 
 - When there are multiple async observers registered, they are notified in
   series for an event.
