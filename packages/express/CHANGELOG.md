@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.3](https://github.com/strongloop/loopback-next/compare/@loopback/express@3.1.2...@loopback/express@3.1.3) (2021-02-09)
+
+
+### Bug Fixes
+
+* use Symbol.for() instead of adding lb/rest ([1ff2d5e](https://github.com/strongloop/loopback-next/commit/1ff2d5e61aa7c32fbc18698bd66b85a6854df9a6))
+
+
+
+
+
 ## [3.1.2](https://github.com/strongloop/loopback-next/compare/@loopback/express@3.1.1...@loopback/express@3.1.2) (2021-01-21)
 
 **Note:** Version bump only for package @loopback/express

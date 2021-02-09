@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.7.7](https://github.com/strongloop/loopback-next/compare/@loopback/authorization@0.7.6...@loopback/authorization@0.7.7) (2021-02-09)
+
+
+### Bug Fixes
+
+* **authorization:** allow `[@authorize](https://github.com/authorize).skip` and other metadata for subclasses ([f54979e](https://github.com/strongloop/loopback-next/commit/f54979e0eef95b4bf7094548dac32649c33307cf))
+
+
+
+
+
 ## [0.7.6](https://github.com/strongloop/loopback-next/compare/@loopback/authorization@0.7.5...@loopback/authorization@0.7.6) (2021-01-21)
 
 **Note:** Version bump only for package @loopback/authorization

@@ -1,6 +1,6 @@
 {
   "name": "@loopback/mock-oauth2-provider",
-  "version": "0.1.14",
+  "version": "0.1.15",
   "description": "An internal application to mock the OAuth2 authorization flow login with a social app like facebook, google etc",
   "engines": {
     "node": "^10.16 || 12 || 14 || 15"
@@ -51,6 +51,6 @@
   "devDependencies": {
     "@loopback/build": "^6.2.9",
     "@loopback/eslint-config": "^10.0.5",
-    "@loopback/testlab": "^3.2.11"
+    "@loopback/testlab": "^3.2.12"
   }
 }

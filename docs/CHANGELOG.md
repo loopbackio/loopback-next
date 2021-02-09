@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.22.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.21.0...@loopback/docs@3.22.0) (2021-02-09)
+
+
+### Bug Fixes
+
+* **docs:** documentation code snippet missing imports ([213f411](https://github.com/strongloop/loopback-next/commit/213f411dd24c56d2c4fd243edbb33f7703391c32))
+* **docs:** migration doc built in auth broken link ([12e5dc7](https://github.com/strongloop/loopback-next/commit/12e5dc78af5fae743c81699a09eba9606eedf28f))
+* **docs:** typo in interface name ([d7745d8](https://github.com/strongloop/loopback-next/commit/d7745d815550c6ca75d92244837b9f81b069d46d))
+
+
+### Features
+
+* **cli:** add graphql example ([6e53690](https://github.com/strongloop/loopback-next/commit/6e536904cd495a6d9d2d34bf9d184a2fa56c7bb2))
+
+
+
+
+
 # [3.21.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.20.0...@loopback/docs@3.21.0) (2021-01-21)
 
 

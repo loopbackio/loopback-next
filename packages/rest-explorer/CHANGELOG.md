@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest-explorer@3.0.6...@loopback/rest-explorer@3.1.0) (2021-02-09)
+
+
+### Bug Fixes
+
+* prettier README ([1fc462e](https://github.com/strongloop/loopback-next/commit/1fc462e8065b6ef420d3be51273d18e4c59d986b))
+
+
+### Features
+
+* **cli:** add graphql example ([6e53690](https://github.com/strongloop/loopback-next/commit/6e536904cd495a6d9d2d34bf9d184a2fa56c7bb2))
+* add explorer indexTemplatePath customization ([070e0c9](https://github.com/strongloop/loopback-next/commit/070e0c9901a338204503006f6e8de749b39f8651))
+
+
+
+
+
 ## [3.0.6](https://github.com/strongloop/loopback-next/compare/@loopback/rest-explorer@3.0.5...@loopback/rest-explorer@3.0.6) (2021-01-21)
 
 **Note:** Version bump only for package @loopback/rest-explorer
