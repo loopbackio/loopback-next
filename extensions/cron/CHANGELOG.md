@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.7](https://github.com/strongloop/loopback-next/compare/@loopback/cron@0.3.6...@loopback/cron@0.3.7) (2021-02-09)
+
+**Note:** Version bump only for package @loopback/cron
+
+
+
+
+
 ## [0.3.6](https://github.com/strongloop/loopback-next/compare/@loopback/cron@0.3.5...@loopback/cron@0.3.6) (2021-01-21)
 
 **Note:** Version bump only for package @loopback/cron

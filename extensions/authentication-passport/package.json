@@ -1,6 +1,6 @@
 {
   "name": "@loopback/authentication-passport",
-  "version": "3.0.6",
+  "version": "3.0.7",
   "description": "A package creating adapters between the passport module and @loopback/authentication",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -24,25 +24,25 @@
     "access": "public"
   },
   "peerDependencies": {
-    "@loopback/authentication": "^7.0.6",
-    "@loopback/core": "^2.14.0",
-    "@loopback/rest": "^9.1.2"
+    "@loopback/authentication": "^7.0.7",
+    "@loopback/core": "^2.14.1",
+    "@loopback/rest": "^9.1.3"
   },
   "dependencies": {
-    "@loopback/security": "^0.3.6",
+    "@loopback/security": "^0.3.7",
     "passport": "^0.4.1",
     "tslib": "^2.1.0",
     "util-promisifyall": "^1.0.6"
   },
   "devDependencies": {
-    "@loopback/authentication": "^7.0.6",
+    "@loopback/authentication": "^7.0.7",
     "@loopback/build": "^6.2.9",
-    "@loopback/core": "^2.14.0",
+    "@loopback/core": "^2.14.1",
     "@loopback/eslint-config": "^10.0.5",
-    "@loopback/mock-oauth2-provider": "^0.1.14",
-    "@loopback/openapi-spec-builder": "^3.0.4",
-    "@loopback/rest": "^9.1.2",
-    "@loopback/testlab": "^3.2.11",
+    "@loopback/mock-oauth2-provider": "^0.1.15",
+    "@loopback/openapi-spec-builder": "^3.0.5",
+    "@loopback/rest": "^9.1.3",
+    "@loopback/testlab": "^3.2.12",
     "@types/jsonwebtoken": "^8.5.0",
     "@types/lodash": "^4.14.168",
     "@types/node": "^10.17.35",

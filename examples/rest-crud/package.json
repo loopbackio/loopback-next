@@ -1,6 +1,6 @@
 {
   "name": "@loopback/example-rest-crud",
-  "version": "1.7.4",
+  "version": "1.7.5",
   "description": "An example showing how to use @loopback/rest-crud to define default repository and controller classes",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -14,20 +14,20 @@
     "access": "public"
   },
   "dependencies": {
-    "@loopback/boot": "^3.2.0",
-    "@loopback/core": "^2.14.0",
-    "@loopback/repository": "^3.4.0",
-    "@loopback/rest": "^9.1.2",
-    "@loopback/rest-crud": "^0.8.20",
-    "@loopback/rest-explorer": "^3.0.6",
+    "@loopback/boot": "^3.2.1",
+    "@loopback/core": "^2.14.1",
+    "@loopback/repository": "^3.4.1",
+    "@loopback/rest": "^9.1.3",
+    "@loopback/rest-crud": "^0.8.21",
+    "@loopback/rest-explorer": "^3.1.0",
     "loopback-connector-rest": "^4.0.1",
     "tslib": "^2.1.0"
   },
   "devDependencies": {
     "@loopback/build": "^6.2.9",
     "@loopback/eslint-config": "^10.0.5",
-    "@loopback/http-caching-proxy": "^2.1.20",
-    "@loopback/testlab": "^3.2.11",
+    "@loopback/http-caching-proxy": "^2.1.21",
+    "@loopback/testlab": "^3.2.12",
     "@types/lodash": "^4.14.168",
     "@types/node": "^10.17.35",
     "eslint": "^7.18.0",

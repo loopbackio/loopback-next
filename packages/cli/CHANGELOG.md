@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.19.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@2.18.0...@loopback/cli@2.19.0) (2021-02-09)
+
+
+### Features
+
+* **cli:** add graphql example ([6e53690](https://github.com/strongloop/loopback-next/commit/6e536904cd495a6d9d2d34bf9d184a2fa56c7bb2))
+
+
+
+
+
 # [2.18.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@2.17.2...@loopback/cli@2.18.0) (2021-01-21)
 
 

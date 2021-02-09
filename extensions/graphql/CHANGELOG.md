@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.5](https://github.com/strongloop/loopback-next/compare/@loopback/graphql@0.2.4...@loopback/graphql@0.2.5) (2021-02-09)
+
+
+### Bug Fixes
+
+* use MIDDLEWARE_CONTEXT symbol from lb/rest ([8884874](https://github.com/strongloop/loopback-next/commit/8884874f1fdbce279769139bd92a9465a03c12c3))
+* use Symbol.for() instead of adding lb/rest ([1ff2d5e](https://github.com/strongloop/loopback-next/commit/1ff2d5e61aa7c32fbc18698bd66b85a6854df9a6))
+
+
+
+
+
 ## [0.2.4](https://github.com/strongloop/loopback-next/compare/@loopback/graphql@0.2.3...@loopback/graphql@0.2.4) (2021-01-21)
 
 **Note:** Version bump only for package @loopback/graphql
