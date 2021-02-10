@@ -93,18 +93,21 @@
     "migrate": "node ./dist/migrate",
     "openapi-spec": "node ./dist/openapi-spec",
 <% if (packageManager === 'yarn') { -%>
-    "rebuild": "yarn run clean && yarn run build",
     "prestart": "yarn run rebuild",
 <% } else { -%>
-    "rebuild": "npm run clean && npm run build",
     "prestart": "npm run rebuild",
 <% } -%>
     "start": "node -r source-map-support/register .",
 <% } -%>
 <% if (packageManager === 'yarn') { -%>
-    "prepare": "yarn run build"
+    "prepare": "yarn run build",
 <% } else { -%>
-    "prepare": "npm run build"
+    "prepare": "npm run build",
+<% } -%>
+<% if (packageManager === 'yarn') { -%>
+  "rebuild": "yarn run clean && yarn run build"
+<% } else { -%>
+  "rebuild": "npm run clean && npm run build"
 <% } -%>
   },
   "repository": {

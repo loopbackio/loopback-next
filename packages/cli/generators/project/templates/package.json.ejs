@@ -102,15 +102,18 @@
 <% } -%>
     "openapi-spec": "node ./dist/openapi-spec",
 <% if (packageManager === 'yarn') { -%>
-    "rebuild": "yarn run clean && yarn run build",
     "prestart": "yarn run rebuild",
 <% } else { -%>
-    "rebuild": "npm run clean && npm run build",
     "prestart": "npm run rebuild",
 <% } -%>
     "start": "node -r source-map-support/register .",
 <% } -%>
-    "clean": "lb-clean dist *.tsbuildinfo .eslintcache"
+    "clean": "lb-clean dist *.tsbuildinfo .eslintcache",
+<% if (packageManager === 'yarn') { -%>
+    "rebuild": "yarn run clean && yarn run build"
+<% } else { -%>
+    "rebuild": "npm run clean && npm run build"
+<% } -%>
   },
   "repository": {
     "type": "git",
