@@ -25,7 +25,7 @@ Usage:
 }
 
 console.log('Reading Jekyll config from %s', src);
-const config = yaml.safeLoad(fs.readFileSync(src, 'utf8'));
+const config = yaml.load(fs.readFileSync(src, 'utf8'));
 
 config.sidebars = ['lb4_sidebar'];
 config.defaults[0].values.sidebar = 'lb4_sidebar';
