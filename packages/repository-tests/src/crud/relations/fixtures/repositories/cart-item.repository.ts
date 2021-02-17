@@ -3,9 +3,15 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {juggler} from '@loopback/repository';
+import {
+  BelongsToAccessor,
+  BelongsToDefinition,
+  createBelongsToAccessor,
+  Getter,
+  juggler,
+} from '@loopback/repository';
 import {CrudRepositoryCtor} from '../../../..';
-import {CartItem, CartItemRelations} from '../models';
+import {CartItem, CartItemRelations, Order} from '../models';
 
 // create the CartItemRepo by calling this func so that it can be extended from CrudRepositoryCtor
 export function createCartItemRepo(repoClass: CrudRepositoryCtor) {
@@ -14,8 +20,21 @@ export function createCartItemRepo(repoClass: CrudRepositoryCtor) {
     typeof CartItem.prototype.id,
     CartItemRelations
   > {
-    constructor(db: juggler.DataSource) {
+    public readonly order: BelongsToAccessor<
+      Order,
+      typeof CartItem.prototype.id
+    >;
+    constructor(
+      db: juggler.DataSource,
+      orderRepositoryGetter: Getter<typeof repoClass.prototype>,
+    ) {
       super(CartItem, db);
+      const ordersMeta = this.entityClass.definition.relations['order'];
+      this.order = createBelongsToAccessor(
+        ordersMeta as BelongsToDefinition,
+        orderRepositoryGetter,
+        this,
+      );
     }
   };
 }
