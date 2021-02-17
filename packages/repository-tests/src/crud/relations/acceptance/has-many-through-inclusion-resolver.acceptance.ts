@@ -22,6 +22,8 @@ import {
   CustomerCartItemLink,
   CustomerCartItemLinkRepository,
   CustomerRepository,
+  Order,
+  OrderRepository,
   User,
   UserLink,
   UserLinkRepository,
@@ -46,6 +48,7 @@ export function hasManyThroughInclusionResolverAcceptance(
       let customerRepo: CustomerRepository;
       let cartItemRepo: CartItemRepository;
       let customerCartItemLinkRepo: CustomerCartItemLinkRepository;
+      let orderRepo: OrderRepository;
 
       before(
         withCrudCtx(async function setupRepository(ctx: CrudTestContext) {
@@ -55,6 +58,7 @@ export function hasManyThroughInclusionResolverAcceptance(
             customerRepo,
             cartItemRepo,
             customerCartItemLinkRepo,
+            orderRepo,
           } = givenBoundCrudRepositories(
             ctx.dataSource,
             repositoryClass,
@@ -66,6 +70,7 @@ export function hasManyThroughInclusionResolverAcceptance(
             Customer.name,
             CartItem.name,
             CustomerCartItemLink.name,
+            Order.name,
           ]);
         }),
       );
@@ -74,6 +79,7 @@ export function hasManyThroughInclusionResolverAcceptance(
         await customerRepo.deleteAll();
         await cartItemRepo.deleteAll();
         await customerCartItemLinkRepo.deleteAll();
+        await orderRepo.deleteAll();
       });
 
       it('throws an error if tries to query nonexistent relation names', async () => {
@@ -196,6 +202,71 @@ export function hasManyThroughInclusionResolverAcceptance(
 
         expect(result.length).to.eql(1);
         expect(result[0].cartItems.length).to.eql(1);
+      });
+
+      it('finds models with nested inclusion', async () => {
+        const o1 = await orderRepo.create({description: 'order 1'});
+        const o2 = await orderRepo.create({description: 'order 2'});
+        const o3 = await orderRepo.create({description: 'order 3'});
+
+        const link = await customerRepo.create({name: 'Link'});
+        const sword = await customerRepo
+          .cartItems(link.id)
+          .create({description: 'master sword', orderId: o2.id});
+        const shield = await customerRepo
+          .cartItems(link.id)
+          .create({description: 'shield', orderId: o1.id});
+
+        const zelda = await customerRepo.create({name: 'Zelda'});
+        const force = await customerRepo
+          .cartItems(zelda.id)
+          .create({description: 'Triforce', orderId: o3.id});
+
+        const result = await customerRepo.find({
+          include: [{relation: 'cartItems', scope: {include: ['order']}}],
+        });
+
+        const empty = {
+          isShipped: features.emptyValue,
+          shipmentInfo: features.emptyValue,
+        };
+
+        const expected = [
+          {
+            ...link,
+            parentId: features.emptyValue,
+            cartItems: [
+              {
+                ...sword,
+                order: {
+                  ...o2,
+                  ...empty,
+                },
+              },
+              {
+                ...shield,
+                order: {
+                  ...o1,
+                  ...empty,
+                },
+              },
+            ],
+          },
+          {
+            ...zelda,
+            parentId: features.emptyValue,
+            cartItems: [
+              {
+                ...force,
+                order: {
+                  ...o3,
+                  ...empty,
+                },
+              },
+            ],
+          },
+        ];
+        expect(toJSON(result)).to.deepEqual(toJSON(expected));
       });
     });
 
