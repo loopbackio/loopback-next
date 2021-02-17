@@ -1,10 +1,13 @@
 name: Continous Integration
+
 on:
   push:
     branches: [master]
   pull_request:
     # The branches below must be a subset of the branches above
     branches: [master]
+  schedule:
+    - cron: '0 2 * * 1' # At 02:00 on Monday
 
 env:
   CI: true
