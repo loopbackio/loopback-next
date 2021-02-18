@@ -40,6 +40,8 @@ This project is licensed under the ${license.name}, full text below.
 
 --------
 
+${license.name}
+
 ${text}
 `;
   /*
