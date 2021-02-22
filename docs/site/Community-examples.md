@@ -97,3 +97,20 @@ lists the examples created by the community.
     </tr>
   </tbody>
 </table>
+
+## Boilerplate/Template
+
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="160">Example</th>
+      <th width="280">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="https://github.com/sourcefuse/loopback4-starter">loopback4-starter</a></td>
+      <td>Multi-tenant architecture supported. Authentication, Authorization, Soft deletes, environment vars, Audit logs, included.</td>
+    </tr>
+  </tbody>
+</table>
