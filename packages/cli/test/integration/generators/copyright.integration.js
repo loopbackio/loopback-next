@@ -214,15 +214,14 @@ This project is licensed under the ISC License, full text below.
 
 --------
 
-ISC License
+ISC License:
 
-ISC License Copyright (c) 2004-2010 by Internet Systems Consortium, Inc. ("ISC")
-
+Copyright (c) 2004-2010 by Internet Systems Consortium, Inc. ("ISC")
 Copyright (c) 1995-2003 by Internet Software Consortium
 
-Permission to use, copy, modify, and /or distribute this software for any
-purpose with or without fee is hereby granted, provided that the above copyright
-notice and this permission notice appear in all copies.
+Permission to use, copy, modify, and/or distribute this software for any purpose
+with or without fee is hereby granted, provided that the above copyright notice
+and this permission notice appear in all copies.
 
 THE SOFTWARE IS PROVIDED "AS IS" AND ISC DISCLAIMS ALL WARRANTIES WITH REGARD TO
 THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS.
@@ -274,7 +273,7 @@ This project is licensed under the MIT License, full text below.
 
 MIT License
 
-MIT License Copyright (c) IBM Corp. 2021
+Copyright (c) IBM Corp. 2021
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
@@ -283,9 +282,8 @@ use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
 the Software, and to permit persons to whom the Software is furnished to do so,
 subject to the following conditions:
 
-The above copyright notice and this permission notice (including the next
-paragraph) shall be included in all copies or substantial portions of the
-Software.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
