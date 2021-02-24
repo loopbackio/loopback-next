@@ -14,6 +14,11 @@
 
 export * from '@loopback/filter';
 export {JSONSchema7 as JsonSchema} from 'json-schema';
+/**
+ * Export the DataSource to avoid TypeScript 4.2's complaint about
+ * RepositoryMixin as it references `juggler.DataSource`
+ */
+export {DataSource as JugglerDataSource} from 'loopback-datasource-juggler';
 export * from './common-types';
 export * from './connectors';
 export * from './datasource';
