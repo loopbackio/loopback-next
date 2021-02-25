@@ -53,9 +53,9 @@
     "@loopback/testlab": "^3.2.12",
     "@types/autocannon": "^4.1.0",
     "@types/benchmark": "^2.1.0",
-    "@types/mocha": "^8.2.0",
+    "@types/mocha": "^8.2.1",
     "@types/node": "^10.17.35",
-    "mocha": "^8.2.1",
+    "mocha": "^8.3.0",
     "source-map-support": "^0.5.19"
   },
   "repository": {
