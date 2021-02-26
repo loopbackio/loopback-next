@@ -309,7 +309,7 @@ function asObject(value: any, options?: Options): any {
 /**
  * Base class for models
  */
-export abstract class Model {
+export class Model {
   static get modelName(): string {
     return this.definition?.name || this.name;
   }
@@ -418,7 +418,7 @@ export abstract class ValueObject extends Model implements Persistable {}
 /**
  * Base class for entities which have unique ids
  */
-export abstract class Entity extends Model implements Persistable {
+export class Entity extends Model implements Persistable {
   /**
    * Get the names of identity properties (primary keys).
    */
