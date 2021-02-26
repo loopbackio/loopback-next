@@ -40,7 +40,7 @@
     "@types/bson": "^4.0.3",
     "@types/json-schema": "^7.0.7",
     "@types/lodash": "^4.14.168",
-    "@types/node": "^10.17.35",
+    "@types/node": "^10.17.54",
     "bson": "4.2.2"
   },
   "files": [
