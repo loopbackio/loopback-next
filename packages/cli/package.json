@@ -58,7 +58,7 @@
     "@types/ejs": "^3.0.5",
     "@types/fs-extra": "^9.0.6",
     "@types/minimatch": "^3.0.3",
-    "@types/node": "^10.17.35",
+    "@types/node": "^10.17.54",
     "loopback": "^3.28.0",
     "loopback-datasource-juggler": "^4.26.0",
     "mem-fs": "^1.2.0",
