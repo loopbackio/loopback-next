@@ -5,3 +5,4 @@
 
 export * from './entity-not-found.error';
 export * from './invalid-relation.error';
+export * from './strong-relation-mandate-not-guaranteed.error';

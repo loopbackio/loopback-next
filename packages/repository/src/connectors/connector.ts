@@ -23,15 +23,14 @@ export namespace ConnectorInterfaces {
    *
    * @experimental
    */
-  export const enum StrongRelation {
-    BELONGS_TO = 'strongBelongsTo',
-    HAS_ONE = 'strongHasOne',
-    HAS_MANY = 'strongHasMany',
-    HAS_MANY_THROUGH = 'strongHasManyThrough',
-    HAS_AND_BELONGS_TO_MANY = 'strongHasAndBelongsToMany',
-    EMBEDS_ONE = 'strongEmbedsOne',
-    EMBEDS_MANY = 'strongEmbedsMany',
-    REFERNCES_MANY = 'strongReferencesMany',
+  export enum StrongRelations {
+    belongsTo = 'strongBelongsTo',
+    hasOne = 'strongHasOne',
+    hasMany = 'strongHasMany',
+    embedsOne = 'strongEmbedsOne',
+    embedsMany = 'strongEmbedsMany',
+    referencesOne = 'strongReferencesOne',
+    referencesMany = 'strongReferencesMany',
   }
 
   /**
@@ -39,12 +38,12 @@ export namespace ConnectorInterfaces {
    *
    * @experimental
    */
-  export const enum StrongJoins {
-    INNER = 'strongInnerJoin',
-    LEFT = 'strongLeftJoin',
-    RIGHT = 'strongRightJoin',
-    FULL = 'strongFullJoin',
-    CARTESIAN = 'strongCartesianJoin',
+  export enum StrongJoins {
+    inner = 'strongInnerJoin',
+    left = 'strongLeftJoin',
+    right = 'strongRightJoin',
+    full = 'strongFullJoin',
+    cartesian = 'strongCartesianJoin',
   }
 }
 
@@ -56,7 +55,7 @@ export interface Connector {
   configModel?: Model; // The configuration model
   interfaces?: (
     | string
-    | ConnectorInterfaces.StrongRelation
+    | ConnectorInterfaces.StrongRelations
     | ConnectorInterfaces.StrongJoins
   )[]; // A list of interfaces implemented by the connector
   connect(): Promise<void>; // Connect to the underlying system

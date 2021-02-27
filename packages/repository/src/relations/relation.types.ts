@@ -50,6 +50,44 @@ export interface RelationDefinitionBase {
    * E.g. when a Customer has many Order instances, then Order is the target.
    */
   target: TypeResolver<Entity, typeof Entity>;
+
+  /**
+   * The enforcement of a strong relation contract.
+   *
+   * @remarks
+   * ## Runtime Errors
+   * This contract must be guaranteed with every data query. This means that
+   * with certain connectors, a runtime error may be thrown when `strong: true`
+   * cannot be guaranteed.
+   *
+   * ### SQL Databases
+   * Barring manual schema modifications and migrations, if the models at either
+   * end of the relation are stored in the same SQL database, it's highly
+   * unlikely a runtime error will not be thrown as a relation would have been
+   * created by database engine to enforce the contract.
+   *
+   * ## Limitations
+   * ### Cross-Connector Relations
+   * When models at either end of the relation are managed by different
+   * connectors, it is impossible to guarantee a strong relation. Hence, a
+   * runtime error should be thrown during startup.
+   *
+   * ### DefaultCrudRepository
+   * The only valid values are `undefined` and `false`, which are identical in
+   * behaviour.
+   *
+   * ## Supported Values
+   * - `false` (default): Do not enforce a strong relation.
+   * - `true`: Enforce a strong relation; Throw an error when a strong relation
+   *     cannot be guaranteed.
+   * - `try`: Attempt to enforce a strong relation. Silently fall back to weak
+   *     relations if a strong relation cannot be guaranteed.
+   *
+   * @defaultValue `false`
+   *
+   * @experimental
+   */
+  strong?: boolean | 'try';
 }
 
 /**

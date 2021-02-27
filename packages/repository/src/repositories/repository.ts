@@ -4,6 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Filter, FilterExcludingWhere, Where} from '@loopback/filter';
+import {ConnectorInterfaces, ModelDefinition} from '..';
 import {
   AnyObject,
   Command,
@@ -15,9 +16,17 @@ import {
 } from '../common-types';
 import {CrudConnector} from '../connectors';
 import {DataSource} from '../datasource';
-import {EntityNotFoundError} from '../errors';
+import {ModelMetadataHelper} from '../decorators';
+import {
+  EntityNotFoundError,
+  StrongRelationMandateNotGuaranteedError,
+} from '../errors';
 import {Entity, Model, ValueObject} from '../model';
-import {InclusionResolver} from '../relations/relation.types';
+import {
+  InclusionResolver,
+  RelationMetadata,
+  RelationType,
+} from '../relations/relation.types';
 import {IsolationLevel, Transaction} from '../transaction';
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -267,6 +276,87 @@ export class CrudRepositoryImpl<T extends Entity, ID>
     public entityClass: typeof Entity & {prototype: T},
   ) {
     this.connector = dataSource.connector as CrudConnector;
+    this.ensureStrongRelationSupport();
+  }
+
+  private ensureStrongRelationSupport() {
+    function connectorDoesNotSupportRelation(
+      relationMetadata: RelationMetadata,
+    ) {
+      throw new StrongRelationMandateNotGuaranteedError(
+        'Connector does not support the relation.',
+        relationMetadata,
+      );
+    }
+    const MODEL_DEFINITION = ModelMetadataHelper.getModelMetadata(
+      this.entityClass,
+    );
+    if (MODEL_DEFINITION instanceof ModelDefinition)
+      for (const RELATION_NAME in MODEL_DEFINITION.relations) {
+        const RELATION = MODEL_DEFINITION.relations[RELATION_NAME];
+        if (RELATION.strong === true) {
+          const CONNECTOR_INTERFACES = this.connector.interfaces;
+
+          switch (RELATION.type) {
+            case RelationType.belongsTo:
+              if (
+                !CONNECTOR_INTERFACES?.includes(
+                  ConnectorInterfaces.StrongRelations.belongsTo,
+                )
+              )
+                connectorDoesNotSupportRelation(RELATION);
+              break;
+            case RelationType.hasOne:
+              if (
+                !CONNECTOR_INTERFACES?.includes(
+                  ConnectorInterfaces.StrongRelations.hasOne,
+                )
+              )
+                connectorDoesNotSupportRelation(RELATION);
+              break;
+            case RelationType.hasMany:
+              if (
+                !CONNECTOR_INTERFACES?.includes(
+                  ConnectorInterfaces.StrongRelations.hasMany,
+                )
+              )
+                connectorDoesNotSupportRelation(RELATION);
+              break;
+            case RelationType.embedsOne:
+              if (
+                !CONNECTOR_INTERFACES?.includes(
+                  ConnectorInterfaces.StrongRelations.embedsOne,
+                )
+              )
+                connectorDoesNotSupportRelation(RELATION);
+              break;
+            case RelationType.embedsMany:
+              if (
+                !CONNECTOR_INTERFACES?.includes(
+                  ConnectorInterfaces.StrongRelations.embedsMany,
+                )
+              )
+                connectorDoesNotSupportRelation(RELATION);
+              break;
+            case RelationType.referencesOne:
+              if (
+                !CONNECTOR_INTERFACES?.includes(
+                  ConnectorInterfaces.StrongRelations.referencesOne,
+                )
+              )
+                connectorDoesNotSupportRelation(RELATION);
+              break;
+            case RelationType.referencesMany:
+              if (
+                !CONNECTOR_INTERFACES?.includes(
+                  ConnectorInterfaces.StrongRelations.referencesMany,
+                )
+              )
+                connectorDoesNotSupportRelation(RELATION);
+              break;
+          }
+        }
+      }
   }
 
   private toModels(data: Promise<DataObject<Entity>[]>): Promise<T[]> {

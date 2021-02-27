@@ -16,6 +16,7 @@ import {
   ModelDefinition,
   property,
 } from '../../..';
+import {StrongRelationMandateNotGuaranteedError} from '../../../errors';
 import {
   belongsTo,
   BelongsToAccessor,
@@ -115,6 +116,72 @@ describe('DefaultCrudRepository', () => {
       toBuy: string[];
       toVisit: string[];
     }
+
+    context('strong relations', () => {
+      @model()
+      abstract class RelationModelBase extends Entity {
+        @property({id: true})
+        id: number;
+
+        abstract note: Note;
+      }
+
+      it('rejects models with strong relations', () => {
+        @model()
+        class StrongRelationModelTrue extends RelationModelBase {
+          @property({id: true})
+          id: number;
+
+          @hasOne(() => Note, {strong: true})
+          note: Note;
+        }
+
+        @model()
+        class StrongRelationModelTry extends RelationModelBase {
+          @property({id: true})
+          id: number;
+
+          @hasOne(() => Note, {strong: 'try'})
+          note: Note;
+        }
+
+        expect(
+          () => new DefaultCrudRepository(StrongRelationModelTrue, ds),
+        ).to.throw(StrongRelationMandateNotGuaranteedError);
+
+        expect(
+          () => new DefaultCrudRepository(StrongRelationModelTry, ds),
+        ).to.throw(StrongRelationMandateNotGuaranteedError);
+      });
+
+      it('accepts models with weak relations', () => {
+        @model()
+        class WeakRelationImplicit extends RelationModelBase {
+          @property({id: true})
+          id: number;
+
+          @hasOne(() => Note)
+          note: Note;
+        }
+
+        @model()
+        class WeakRelationFalse extends RelationModelBase {
+          @property({id: true})
+          id: number;
+
+          @hasOne(() => Note, {strong: false})
+          note: Note;
+        }
+
+        expect(
+          new DefaultCrudRepository(WeakRelationImplicit, ds).entityClass,
+        ).to.equal(WeakRelationImplicit);
+
+        expect(
+          new DefaultCrudRepository(WeakRelationFalse, ds).entityClass,
+        ).to.equal(WeakRelationFalse);
+      });
+    });
 
     it('converts PropertyDefinition with array type', () => {
       const originalPropertyDefinition = Object.assign(

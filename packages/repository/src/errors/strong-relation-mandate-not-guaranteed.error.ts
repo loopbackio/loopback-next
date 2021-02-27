@@ -1,11 +1,11 @@
-// Copyright IBM Corp. 2018,2019. All Rights Reserved.
-// Node module: @loopback/repository
-// This file is licensed under the MIT License.
-// License text available at https://opensource.org/licenses/MIT
-
 import {RelationMetadata, RelationType} from '../relations';
 
-export class InvalidRelationError<Props extends object = {}> extends Error {
+/**
+ * @experimental
+ */
+export class StrongRelationMandateNotGuaranteedError<
+  Props extends object = {}
+> extends Error {
   code: string;
   reason: string;
   relationName: string;
@@ -19,12 +19,11 @@ export class InvalidRelationError<Props extends object = {}> extends Error {
   ) {
     const {name, type, source} = relationMeta;
     const model = source?.modelName || '<Unknown Model>';
-    const message = `Invalid ${type} definition for ${model}#${name}: ${reason}`;
+    const message = `Strong ${type} relation for ${model}#${name} could not be guaranteed: ${reason}`;
     super(message);
-
     Error.captureStackTrace(this, this.constructor);
 
-    this.code = 'INVALID_RELATION_DEFINITION';
+    this.code = 'STRONG_RELATION_MANDATE_NOT_GUARANTEED';
     this.relationName = name;
     this.relationType = type;
     this.sourceModelName = model;
@@ -33,7 +32,12 @@ export class InvalidRelationError<Props extends object = {}> extends Error {
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function isInvalidRelationError(e: any): e is InvalidRelationError<any> {
-  return e instanceof InvalidRelationError;
+/**
+ * @experimental
+ */
+export function isStrongRelationMandateNotGuaranteedError(
+  e: unknown,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+): e is StrongRelationMandateNotGuaranteedError<any> {
+  return e instanceof StrongRelationMandateNotGuaranteedError;
 }

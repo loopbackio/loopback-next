@@ -22,7 +22,10 @@ import {
   Options,
   PositionalParameters,
 } from '../common-types';
-import {EntityNotFoundError} from '../errors';
+import {
+  EntityNotFoundError,
+  StrongRelationMandateNotGuaranteedError,
+} from '../errors';
 import {
   Entity,
   Model,
@@ -152,6 +155,15 @@ export class DefaultCrudRepository<
       !!definition,
       `Entity ${entityClass.name} must have valid model definition.`,
     );
+
+    for (const RELATION_NAME in definition.relations) {
+      const RELATION = definition.relations[RELATION_NAME];
+      if (RELATION.strong)
+        throw new StrongRelationMandateNotGuaranteedError(
+          'DefaultCrudRepository does not support strong relations.',
+          RELATION,
+        );
+    }
 
     const dataSource = this.dataSource;
 
