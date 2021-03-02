@@ -12,11 +12,9 @@
  */
 'use strict';
 
+const {PackageGraph} = require('@lerna/package-graph');
 const path = require('path');
 const fs = require('fs-extra');
-const debug = require('debug')('loopback:monorepo');
-
-const PackageGraph = require('@lerna/package-graph');
 const {
   isDryRun,
   loadLernaRepo,
@@ -26,6 +24,8 @@ const {
   isJsonEqual,
   runMain,
 } = require('./script-util');
+
+const debug = require('debug')('loopback:monorepo');
 
 const TSCONFIG = 'tsconfig.json';
 const TSCONFIG_BUILD = 'tsconfig.build.json';
