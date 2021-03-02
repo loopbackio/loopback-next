@@ -7,7 +7,7 @@ import {IConfigFile} from '@microsoft/api-extractor';
 import fs from 'fs-extra';
 import path from 'path';
 
-const Project = require('@lerna/project');
+const {getPackages: getLernaPackages} = require('@lerna/project');
 
 /**
  * TypeScript definition for
@@ -60,8 +60,7 @@ export function getUnscopedPackageName(name: string) {
 export async function getPackages(
   rootDir = process.cwd(),
 ): Promise<LernaPackage[]> {
-  const project = new Project(rootDir);
-  const packages: LernaPackage[] = await project.getPackages();
+  const packages: LernaPackage[] = await getLernaPackages(rootDir);
   packages.sort((p1, p2) => p1.location.localeCompare(p2.location));
   return packages;
 }

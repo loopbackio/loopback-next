@@ -12,7 +12,7 @@
  * from the docs. It also generates Jekyll friendly pages for CHANGELOG files.
  */
 
-const Project = require('@lerna/project');
+const {getPackages} = require('@lerna/project');
 const fs = require('fs-extra');
 const path = require('path');
 
@@ -31,9 +31,7 @@ async function copyChangelogs() {
   // Remove the original folder so we remove files from deleted packages
   await fs.remove(DEST_ROOT);
 
-  const project = new Project(REPO_ROOT);
-  const allPackages = await project.getPackages();
-
+  const allPackages = await getPackages(REPO_ROOT);
   const packages = allPackages
     .filter(shouldCopyChangelog)
     .map(pkg => {

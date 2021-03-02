@@ -5,14 +5,14 @@
 
 'use strict';
 
+const {Project} = require('@lerna/project');
 const path = require('path');
-const debug = require('debug')('loopback:monorepo');
-const fs = require('fs-extra');
 const assert = require('assert');
-const spawn = require('cross-spawn');
 const util = require('util');
+const fs = require('fs-extra');
+const spawn = require('cross-spawn');
 
-const Project = require('@lerna/project');
+const debug = require('debug')('loopback:monorepo');
 
 /**
  * Get a list of lerna packages with the optional filter function
