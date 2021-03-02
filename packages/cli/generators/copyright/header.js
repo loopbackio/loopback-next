@@ -3,14 +3,13 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+const {Project} = require('@lerna/project');
+const {Minimatch} = require('minimatch');
 const _ = require('lodash');
-const Minimatch = require('minimatch').Minimatch;
-const {git, getYears} = require('./git');
 const path = require('path');
-const {FSE, jsOrTsFiles} = require('./fs');
 const chalk = require('chalk');
-const Project = require('@lerna/project');
-
+const {git, getYears} = require('./git');
+const {FSE, jsOrTsFiles} = require('./fs');
 const {spdxLicenseList} = require('./license');
 
 const debug = require('debug')('loopback:cli:copyright');

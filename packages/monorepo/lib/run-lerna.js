@@ -10,7 +10,7 @@
  */
 'use strict';
 
-const Project = require('@lerna/project');
+const {Project} = require('@lerna/project');
 const lernaCli = require('lerna');
 const {runMain} = require('./script-util');
 
