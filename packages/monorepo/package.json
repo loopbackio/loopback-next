@@ -18,12 +18,12 @@
     "access": "public"
   },
   "peerDependencies": {
-    "lerna": "^3.22.1"
+    "lerna": "^4.0.0"
   },
   "dependencies": {
-    "@lerna/filter-packages": "^3.18.0",
-    "@lerna/package-graph": "^3.18.5",
-    "@lerna/project": "^3.21.0",
+    "@lerna/filter-packages": "^4.0.0",
+    "@lerna/package-graph": "^4.0.0",
+    "@lerna/project": "^4.0.0",
     "cross-spawn": "^7.0.3",
     "debug": "^4.3.1",
     "fs-extra": "^9.1.0"
