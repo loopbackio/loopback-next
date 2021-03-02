@@ -56,10 +56,9 @@ jobs:
       - name: Bootstrap benchmark tests
         run: |
           npm ci --ignore-scripts
-          npx lerna bootstrap --scope "@loopback/benchmark" --include-dependencies
+          ./node_modules/.bin/lerna bootstrap --scope "@loopback/benchmark" --include-dependencies
       - name: Run benchmark tests
-        run: |
-          cd benchmark && npm test
+        run: npm test --prefix benchmark
 
   code-lint:
     name: Code Lint
@@ -93,9 +92,11 @@ jobs:
         with:
           node-version: 14
       - name: Install monorepo tools
-        run: npm ci --ignore-scripts
+        run: |
+          npm ci --ignore-scripts
+          ./node_modules/.bin/lerna bootstrap --scope "@loopback/monorepo" --include-dependencies
       - name: Verify commit linting
-        run: npx commitlint --from origin/master --to HEAD --verbose
+        run: ./node_modules/.bin/commitlint --from origin/master --to HEAD --verbose
 
   verify-docs:
     name: Verify Docs
