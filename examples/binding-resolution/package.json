@@ -51,7 +51,7 @@
     "@types/node": "^10.17.54",
     "eslint": "^7.20.0",
     "source-map-support": "^0.5.19",
-    "typescript": "~4.2.2"
+    "typescript": "~4.2.3"
   },
   "files": [
     "README.md",
