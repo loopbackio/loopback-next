@@ -85,119 +85,6 @@ by Shot in your unit tests:
 - Code modifying core HTTP Response, including full request/response handlers
 - Code parsing Express HTTP Request or modifying Express HTTP Response
 
-### `skipIf`
-
-Helper function for skipping tests when a certain condition is met. Use this
-helper together with `it` or `describe`.
-
-```ts
-skipIf(someCondition, it, 'does something', async () => {
-  // the test code
-});
-```
-
-Unfortunately, type inference does not work well for `describe`, you have to
-help the compiler to figure out the correct types.
-
-```ts
-skipIf<[(this: Suite) => void], void>(
-  someCondition,
-  describe,
-  'some suite name',
-  () => {
-    // define the test cases
-  },
-);
-```
-
-Under the hood, `skipIf` invokes the provided test verb by default (e.g. `it`).
-When the provided condition was true, then it calls `.skip` instead (e.g.
-`it.skip`).
-
-### `skipOnTravis`
-
-Helper function for skipping tests on Travis environment. If you need to skip
-testing on Travis for any reason, use this helper together with `it` or
-`describe`.
-
-```ts
-skipOnTravis(it, 'does something when some condition', async () => {
-  // the test code
-});
-```
-
-Under the hood, `skipOnTravis` invokes the provided test verb by default (e.g.
-`it`). When the helper detects Travis CI environment variables, then it calls
-`.skip` instead (e.g. `it.skip`).
-
-### `createRestAppClient`
-
-Helper function to create a `supertest` client connected to a running
-RestApplication. It is the responsibility of the caller to ensure that the app
-is running and to stop the application after all tests are done.
-
-Example use:
-
-```ts
-import {Client, createRestAppClient} from '@loopback/testlab';
-
-describe('My application', () => {
-  app: MyApplication; // extends RestApplication
-  client: Client;
-
-  before(givenRunningApplication);
-  before(() => {
-    client = createRestAppClient(app);
-  });
-  after(() => app.stop());
-
-  it('invokes GET /ping', async () => {
-    await client.get('/ping?msg=world').expect(200);
-  });
-});
-```
-
-### `givenHttpServerConfig`
-
-Helper function for generating Travis-friendly host (127.0.0.1). This is
-required because Travis is not able to handle IPv6 addresses.
-
-### `httpGetAsync`
-
-Async wrapper for making HTTP GET requests.
-
-```ts
-import {httpGetAsync} from '@loopback/testlab';
-const response = await httpGetAsync('http://example.com');
-```
-
-### `httpsGetAsync`
-
-Async wrapper for making HTTPS GET requests.
-
-```ts
-import {httpsGetAsync} from '@loopback/testlab';
-const response = await httpsGetAsync('https://example.com');
-```
-
-### `toJSON`
-
-JSON encoding does not preserve properties that are undefined. As a result,
-`deepEqual` checks fail because the expected model value contains these
-undefined property values, while the actual result returned by REST API does
-not. Use this function to convert a model instance into a data object as
-returned by REST API.
-
-```ts
-import {createClientForHandler, toJSON} from '@loopback/testlab';
-
-it('gets a todo by ID', () => {
-  return client
-    .get(`/todos/${persistedTodo.id}`)
-    .expect(200, toJSON(persistedTodo));
-});
-```
-
 #### Test request parsing
 
 Use the factory function `stubServerRequest` to create a stub request that can
@@ -312,6 +199,119 @@ describe('response writer', () => {
     expect(result.headers['content-type']).to.eql('application/json');
     expect(result.payload).to.equal('{"name":"Joe"}');
   });
+});
+```
+
+### `skipIf`
+
+Helper function for skipping tests when a certain condition is met. Use this
+helper together with `it` or `describe`.
+
+```ts
+skipIf(someCondition, it, 'does something', async () => {
+  // the test code
+});
+```
+
+Unfortunately, type inference does not work well for `describe`, you have to
+help the compiler to figure out the correct types.
+
+```ts
+skipIf<[(this: Suite) => void], void>(
+  someCondition,
+  describe,
+  'some suite name',
+  () => {
+    // define the test cases
+  },
+);
+```
+
+Under the hood, `skipIf` invokes the provided test verb by default (e.g. `it`).
+When the provided condition was true, then it calls `.skip` instead (e.g.
+`it.skip`).
+
+### `skipOnTravis`
+
+Helper function for skipping tests on Travis environment. If you need to skip
+testing on Travis for any reason, use this helper together with `it` or
+`describe`.
+
+```ts
+skipOnTravis(it, 'does something when some condition', async () => {
+  // the test code
+});
+```
+
+Under the hood, `skipOnTravis` invokes the provided test verb by default (e.g.
+`it`). When the helper detects Travis CI environment variables, then it calls
+`.skip` instead (e.g. `it.skip`).
+
+### `createRestAppClient`
+
+Helper function to create a `supertest` client connected to a running
+RestApplication. It is the responsibility of the caller to ensure that the app
+is running and to stop the application after all tests are done.
+
+Example use:
+
+```ts
+import {Client, createRestAppClient} from '@loopback/testlab';
+
+describe('My application', () => {
+  app: MyApplication; // extends RestApplication
+  client: Client;
+
+  before(givenRunningApplication);
+  before(() => {
+    client = createRestAppClient(app);
+  });
+  after(() => app.stop());
+
+  it('invokes GET /ping', async () => {
+    await client.get('/ping?msg=world').expect(200);
+  });
+});
+```
+
+### `givenHttpServerConfig`
+
+Helper function for generating Travis-friendly host (127.0.0.1). This is
+required because Travis is not able to handle IPv6 addresses.
+
+### `httpGetAsync`
+
+Async wrapper for making HTTP GET requests.
+
+```ts
+import {httpGetAsync} from '@loopback/testlab';
+const response = await httpGetAsync('http://example.com');
+```
+
+### `httpsGetAsync`
+
+Async wrapper for making HTTPS GET requests.
+
+```ts
+import {httpsGetAsync} from '@loopback/testlab';
+const response = await httpsGetAsync('https://example.com');
+```
+
+### `toJSON`
+
+JSON encoding does not preserve properties that are undefined. As a result,
+`deepEqual` checks fail because the expected model value contains these
+undefined property values, while the actual result returned by REST API does
+not. Use this function to convert a model instance into a data object as
+returned by REST API.
+
+```ts
+import {createClientForHandler, toJSON} from '@loopback/testlab';
+
+it('gets a todo by ID', () => {
+  return client
+    .get(`/todos/${persistedTodo.id}`)
+    .expect(200, toJSON(persistedTodo));
 });
 ```
 
