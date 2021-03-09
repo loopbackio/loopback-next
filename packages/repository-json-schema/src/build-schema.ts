@@ -216,7 +216,8 @@ export function stringTypeToWrapper(type: string | Function): Function {
       break;
     }
     case 'object':
-    case 'any': {
+    case 'any':
+    case 'geopoint': {
       wrapper = Object;
       break;
     }
@@ -279,6 +280,19 @@ export function metaToJsonProperty(meta: PropertyDefinition): JsonSchema {
     });
   } else if (propertyType === 'any') {
     // no-op, the json schema for any type is {}
+  } else if (propertyType === 'GeoPoint') {
+    Object.assign(propDef, {
+      type: 'object',
+      properties: {
+        lat: {
+          type: 'number',
+        },
+        lng: {
+          type: 'number',
+        },
+      },
+      required: ['lat', 'lng'],
+    });
   } else if (isBuiltinType(resolvedType)) {
     Object.assign(propDef, {
       type: resolvedType.name.toLowerCase(),

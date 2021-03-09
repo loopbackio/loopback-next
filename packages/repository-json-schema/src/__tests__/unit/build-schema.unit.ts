@@ -58,6 +58,10 @@ describe('build-schema', () => {
       it('returns AnyType for "any"', () => {
         expect(stringTypeToWrapper('any')).to.eql(Object);
       });
+
+      it('returns GeoPointType for "GeoPoint"', () => {
+        expect(stringTypeToWrapper('GeoPoint')).to.eql(Object);
+      });
     });
 
     it('errors out if other types are given', () => {
@@ -179,6 +183,21 @@ describe('build-schema', () => {
 
     it('converts type any', () => {
       expect(metaToJsonProperty({type: 'any'})).to.eql({});
+    });
+
+    it('converts type GeoPoint', () => {
+      expect(metaToJsonProperty({type: 'GeoPoint'})).to.eql({
+        type: 'object',
+        properties: {
+          lat: {
+            type: 'number',
+          },
+          lng: {
+            type: 'number',
+          },
+        },
+        required: ['lat', 'lng'],
+      });
     });
 
     it('keeps description on property', () => {
