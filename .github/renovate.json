@@ -47,6 +47,12 @@
       ]
     },
     {
+      "groupName": "ajv-validator packages",
+      "matchSourceUrlPrefixes": [
+        "https://github.com/ajv-validator"
+      ]
+    },
+    {
       "automerge": true,
       "updateTypes": [
         "minor",
