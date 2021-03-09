@@ -53,6 +53,12 @@
       ]
     },
     {
+      "groupName": "yeoman packages",
+      "matchSourceUrlPrefixes": [
+        "https://github.com/yeoman"
+      ]
+    },
+    {
       "automerge": true,
       "updateTypes": [
         "minor",
