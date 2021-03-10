@@ -47,7 +47,7 @@
     "cors": "^2.8.5",
     "debug": "^4.3.1",
     "lodash": "^4.17.20",
-    "socket.io": "^2.4.1"
+    "socket.io": "^4.0.0"
   },
   "devDependencies": {
     "@loopback/boot": "^3.2.1",
@@ -59,7 +59,7 @@
     "@types/socket.io": "^2.1.13",
     "@types/socket.io-client": "^1.4.35",
     "p-event": "^4.2.0",
-    "socket.io-client": "^2.3.1"
+    "socket.io-client": "^4.0.0"
   },
   "repository": {
     "type": "git",
