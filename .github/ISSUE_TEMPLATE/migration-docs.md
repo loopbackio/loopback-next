@@ -2,7 +2,6 @@
 name: Migration help
 about: Get help with migrating from LoopBack 3 to LoopBack 4
 labels: question,Doc,Migration
-
 ---
 
 <!-- 🚨 STOP 🚨 STOP 🚨 STOP 🚨

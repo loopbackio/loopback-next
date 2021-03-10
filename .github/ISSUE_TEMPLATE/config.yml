@@ -1,5 +1,8 @@
 blank_issues_enabled: false
 contact_links:
+  - name: Question
+    url: https://github.com/strongloop/loopback-next/discussions
+    about: Please ask and answer questions here.
   - name: Report a security vulnerability
     url: https://loopback.io/doc/en/contrib/Reporting-issues.html#security-issues
     about: Do not report security vulnerabilities using GitHub issues. Please send an email to `reachsl@us.ibm.com` instead.
