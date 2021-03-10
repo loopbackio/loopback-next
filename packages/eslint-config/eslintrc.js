@@ -43,7 +43,6 @@ module.exports = {
      * See https://github.com/prettier/eslint-config-prettier
      */
     'prettier',
-    'prettier/@typescript-eslint',
   ],
   rules: {
     'prefer-const': 'error',
