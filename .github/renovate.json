@@ -20,6 +20,7 @@
     "**/__tests__/**",
     "**/test/**"
   ],
+  "labels": ["dependencies"],
   "dependencyDashboard": true,
   "dependencyDashboardApproval": false,
   "dependencyDashboardAutoclose": true,
