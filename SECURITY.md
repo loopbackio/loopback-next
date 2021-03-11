@@ -63,4 +63,11 @@ Security advisories can be found on the
 
 If you think you have discovered a new security issue with any StrongLoop
 package, **please do not report it on GitHub**. Instead, send an email to
-reachsl@us.ibm.com with a full description and steps to reproduce.
+reachsl@us.ibm.com with the following details:
+
+- Full description of the vulnerability.
+- Steps to reproduce the issue.
+- Possible solutions.
+
+If you are sending us any logs as part of the report, then make sure to redact
+any sensitive data from them.
