@@ -3,9 +3,15 @@ contact_links:
   - name: Report a security vulnerability
     url: https://loopback.io/doc/en/contrib/Reporting-issues.html#security-issues
     about: Do not report security vulnerabilities using GitHub issues. Please send an email to `reachsl@us.ibm.com` instead.
+  - name: Suggest a feature
+    url: https://github.com/strongloop/loopback-next/discussions/new?category=Ideas
+    about: Share ideas for new features and discuss how to implementat them
+  - name: Ask our community for help
+    url: https://github.com/strongloop/loopback-next/discussions/new?category=Q-A
+    about: Post your question to our Discussions forum
+  - name: Migration from LoopBack 3
+    url: https://github.com/strongloop/loopback-next/discussions/new?category=lb3-migration
+    about: Get help with migrating your project from LoopBack 3 to LoopBack 4
   - name: Get help on StackOverflow
     url: https://stackoverflow.com/tags/loopbackjs
-    about: Please ask and answer questions on StackOverflow.
-  - name: Join our mailing list
-    url: https://groups.google.com/forum/#!forum/loopbackjs
-    about: You can also post your question to our mailing list.
+    about: You can also ask and answer questions on StackOverflow.
