@@ -25,7 +25,7 @@
     "@types/node": "^10.17.55",
     "assert": "^2.0.0",
     "buffer": "^6.0.3",
-    "eslint": "^7.20.0",
+    "eslint": "^7.22.0",
     "events": "^3.2.0",
     "process": "^0.11.10",
     "typescript": "~4.2.3",
