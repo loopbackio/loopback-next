@@ -368,7 +368,7 @@ provide your own `User` model and repository.
   // for jwt access token
   this.bind(TokenServiceBindings.TOKEN_SECRET).to("<yourSecret>");
   // for refresh token
-  this.bind(RefreshTokenServiceBindings.TOKEN_SECRET).to("<yourSecret>");
+  this.bind(RefreshTokenServiceBindings.REFRESH_SECRET).to("<yourSecret>");
 ```
 
 2. To change token expiration. to learn more about expiration time here at
