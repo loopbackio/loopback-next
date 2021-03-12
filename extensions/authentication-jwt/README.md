@@ -151,7 +151,7 @@ This module contains an example application in the `fixtures` folder. It has a
 controller with endpoints `/login`, `/refreshlogin`, `/refresh` and `/whoAmI`.
 
 Before using the below snippet do not forget to inject below repositories and
-bindings in your controller's constructor
+bindings in your controller's constructor.
 
 ```ts
     @inject(TokenServiceBindings.TOKEN_SERVICE)
