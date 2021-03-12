@@ -10,7 +10,6 @@ on:
     - cron: '0 2 * * 1' # At 02:00 on Monday
 
 env:
-  CI: true
   NODE_OPTIONS: --max-old-space-size=4096
 
 jobs:
@@ -34,26 +33,22 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Bootstrap project
+      - name: Install dependencies && Bootstrap project
         run: |
           npm ci --ignore-scripts
           npm run postinstall
       - name: Build project
         run: npm run build
-      - uses: Yuri6037/Action-FakeTTY@v1.1
       - name: Run tests
-        run: faketty npm run test:ci
+        run: npm test --ignore-scripts
 
   test-benchmark:
     name: Test Benchmark
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js 14
-        uses: actions/setup-node@v2
-        with:
-          node-version: 14
-      - name: Bootstrap benchmark tests
+      - uses: actions/setup-node@v2
+      - name: Install dependencies && Bootstrap @loopback/benchmark
         run: |
           npm ci --ignore-scripts
           ./node_modules/.bin/lerna bootstrap --scope "@loopback/benchmark" --include-dependencies
@@ -65,11 +60,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js 14
-        uses: actions/setup-node@v2
-        with:
-          node-version: 14
-      - name: Bootstrap project
+      - uses: actions/setup-node@v2
+      - name: Install dependencies && Bootstrap project
         run: |
           npm ci --ignore-scripts
           npm run postinstall
@@ -88,11 +80,8 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: Use Node.js 14
-        uses: actions/setup-node@v2
-        with:
-          node-version: 14
-      - name: Install monorepo tools
+      - uses: actions/setup-node@v2
+      - name: Install dependencies && Bootstrap @loopback/monorepo
         run: |
           npm ci --ignore-scripts
           ./node_modules/.bin/lerna bootstrap --scope "@loopback/monorepo" --include-dependencies
@@ -104,11 +93,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js 14
-        uses: actions/setup-node@v2
-        with:
-          node-version: 14
-      - name: Bootstrap project
+      - uses: actions/setup-node@v2
+      - name: Install dependencies && Bootstrap project
         run: |
           npm ci --ignore-scripts
           npm run postinstall
