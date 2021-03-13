@@ -26,7 +26,7 @@
     "assert": "^2.0.0",
     "buffer": "^6.0.3",
     "eslint": "^7.22.0",
-    "events": "^3.2.0",
+    "events": "^3.3.0",
     "process": "^0.11.10",
     "typescript": "~4.2.3",
     "util": "^0.12.3",
