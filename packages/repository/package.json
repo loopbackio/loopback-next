@@ -28,7 +28,7 @@
     "@loopback/filter": "^1.3.2",
     "@types/debug": "^4.1.5",
     "debug": "^4.3.1",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "loopback-datasource-juggler": "^4.26.0",
     "tslib": "^2.1.0"
   },
