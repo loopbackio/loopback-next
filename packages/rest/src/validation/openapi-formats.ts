@@ -8,7 +8,7 @@ import {AjvFormat} from '../types';
 /**
  * int32: [-2147483648, 21474836 47]
  */
-export const int32Format: AjvFormat = {
+export const int32Format: AjvFormat<number> = {
   name: 'int32',
   type: 'number',
   validate: (value: number) => {
@@ -22,7 +22,7 @@ export const int32Format: AjvFormat = {
 /**
  * int64: [-9223372036854775808, 9223372036854775807]
  */
-export const int64Format: AjvFormat = {
+export const int64Format: AjvFormat<number> = {
   name: 'int64',
   type: 'number',
   validate: (value: number) => {
@@ -36,7 +36,7 @@ export const int64Format: AjvFormat = {
 /**
  * float: [-2^128, 2^128]
  */
-export const floatFormat: AjvFormat = {
+export const floatFormat: AjvFormat<number> = {
   name: 'float',
   type: 'number',
   validate: (value: number) => {
@@ -48,7 +48,7 @@ export const floatFormat: AjvFormat = {
 /**
  * double: [-2^1024, 2^1024]
  */
-export const doubleFormat: AjvFormat = {
+export const doubleFormat: AjvFormat<number> = {
   name: 'double',
   type: 'number',
   validate: (value: number) => {
@@ -82,7 +82,7 @@ export const binaryFormat: AjvFormat = {
   async: false,
 };
 
-export const openapiFormats: AjvFormat[] = [
+export const openapiFormats: (AjvFormat<string> | AjvFormat<number>)[] = [
   int32Format,
   int64Format,
   floatFormat,
