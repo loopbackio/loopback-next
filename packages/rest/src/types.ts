@@ -153,7 +153,7 @@ export interface ValidationOptions extends AjvOptions {
    * - `true`: Enable `ajv-errors`
    * - `AjvErrorOptions`: Enable `ajv-errors` with options
    */
-  ajvErrors?: boolean | AjvErrorOptions;
+  ajvErrorOptions?: boolean | AjvErrorOptions;
   /**
    * A function that transform the `ErrorObject`s reported by AJV.
    * This could be used for error messages customization, localization, etc.

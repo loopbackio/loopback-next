@@ -331,74 +331,8 @@ describe('Validation at REST level', () => {
     },
   );
 
-  context('with request body validation options - {ajvErrors: true}', () => {
-    class ProductController {
-      @post('/products')
-      async create(
-        @requestBody({required: true}) data: Product,
-      ): Promise<Product> {
-        return new Product(data);
-      }
-    }
-
-    before(() =>
-      givenAnAppAndAClient(ProductController, {
-        compiledSchemaCache: new WeakMap(),
-        $data: true,
-        ajvKeywords: true,
-        ajvErrors: true,
-      }),
-    );
-    after(() => app.stop());
-
-    it('adds custom error message provided with jsonSchema', async () => {
-      const DATA = {
-        name: 'iPhone',
-        description: 'iPhone',
-        price: 200,
-      };
-      const res = await client.post('/products').send(DATA).expect(422);
-
-      expect(res.body).to.eql({
-        error: {
-          statusCode: 422,
-          name: 'UnprocessableEntityError',
-          message:
-            'The request body is invalid. See error object `details` property for more info.',
-          code: 'VALIDATION_FAILED',
-          details: [
-            {
-              path: '/price',
-              code: 'maximum',
-              message: 'should be <= 100',
-              info: {comparison: '<=', limit: 100},
-            },
-            {
-              path: '/price',
-              code: 'errorMessage',
-              message: 'price should be in range 0 to 100',
-              info: {
-                errors: [
-                  {
-                    keyword: 'range',
-                    dataPath: '/price',
-                    schemaPath:
-                      '#/components/schemas/Product/properties/price/range',
-                    params: {},
-                    message: 'should pass "range" keyword validation',
-                    emUsed: true,
-                  },
-                ],
-              },
-            },
-          ],
-        },
-      });
-    });
-  });
-
   context(
-    'with request body validation options - {ajvErrors: {keepErrors: true}}',
+    'with request body validation options - {ajvErrorOptions: true}',
     () => {
       class ProductController {
         @post('/products')
@@ -414,7 +348,76 @@ describe('Validation at REST level', () => {
           compiledSchemaCache: new WeakMap(),
           $data: true,
           ajvKeywords: true,
-          ajvErrors: {
+          ajvErrorOptions: true,
+        }),
+      );
+      after(() => app.stop());
+
+      it('adds custom error message provided with jsonSchema', async () => {
+        const DATA = {
+          name: 'iPhone',
+          description: 'iPhone',
+          price: 200,
+        };
+        const res = await client.post('/products').send(DATA).expect(422);
+
+        expect(res.body).to.eql({
+          error: {
+            statusCode: 422,
+            name: 'UnprocessableEntityError',
+            message:
+              'The request body is invalid. See error object `details` property for more info.',
+            code: 'VALIDATION_FAILED',
+            details: [
+              {
+                path: '/price',
+                code: 'maximum',
+                message: 'should be <= 100',
+                info: {comparison: '<=', limit: 100},
+              },
+              {
+                path: '/price',
+                code: 'errorMessage',
+                message: 'price should be in range 0 to 100',
+                info: {
+                  errors: [
+                    {
+                      keyword: 'range',
+                      dataPath: '/price',
+                      schemaPath:
+                        '#/components/schemas/Product/properties/price/range',
+                      params: {},
+                      message: 'should pass "range" keyword validation',
+                      emUsed: true,
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        });
+      });
+    },
+  );
+
+  context(
+    'with request body validation options - {ajvErrorOptions: {keepErrors: true}}',
+    () => {
+      class ProductController {
+        @post('/products')
+        async create(
+          @requestBody({required: true}) data: Product,
+        ): Promise<Product> {
+          return new Product(data);
+        }
+      }
+
+      before(() =>
+        givenAnAppAndAClient(ProductController, {
+          compiledSchemaCache: new WeakMap(),
+          $data: true,
+          ajvKeywords: true,
+          ajvErrorOptions: {
             singleError: true,
           },
         }),
@@ -501,7 +504,7 @@ describe('Validation at REST level', () => {
           compiledSchemaCache: new WeakMap(),
           $data: true,
           ajvKeywords: true,
-          ajvErrors: {
+          ajvErrorOptions: {
             singleError: true,
           },
           keywords: [
@@ -547,7 +550,7 @@ describe('Validation at REST level', () => {
           compiledSchemaCache: new WeakMap(),
           $data: true,
           ajvKeywords: true,
-          ajvErrors: {
+          ajvErrorOptions: {
             singleError: true,
           },
           keywords: [

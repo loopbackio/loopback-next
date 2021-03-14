@@ -24,7 +24,7 @@ const debug = debugModule('loopback:rest:ajv');
 export const DEFAULT_AJV_VALIDATION_OPTIONS: ValidationOptions = {
   $data: true,
   ajvKeywords: true,
-  ajvErrors: true,
+  ajvErrorOptions: true,
 };
 
 /**
@@ -70,12 +70,11 @@ export class AjvFactoryProvider implements Provider<AjvFactory> {
         ajvKeywords(ajvInst);
       }
 
-      if (
-        validationOptions.ajvErrors !== null &&
-        typeof validationOptions.ajvErrors === 'object'
-      ) {
-        ajvErrors(ajvInst, validationOptions.ajvErrors);
-      } else if (validationOptions.ajvErrors !== false) {
+      const errorOptions =
+        validationOptions.ajvErrorOptions ?? validationOptions.ajvErrors;
+      if (errorOptions !== null && typeof errorOptions === 'object') {
+        ajvErrors(ajvInst, errorOptions);
+      } else if (errorOptions !== false) {
         ajvErrors(ajvInst);
       }
 
