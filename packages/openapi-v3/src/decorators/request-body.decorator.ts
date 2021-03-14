@@ -86,7 +86,7 @@ export function requestBody(requestBodySpec?: Partial<RequestBodyObject>) {
       debug('  options: %s', inspect(requestBodySpec, {depth: null}));
 
     // Use 'application/json' as default content if `requestBody` is undefined
-    requestBodySpec = requestBodySpec ?? {content: {}};
+    requestBodySpec = {content: {}, ...requestBodySpec};
 
     if (_.isEmpty(requestBodySpec.content))
       requestBodySpec.content = {'application/json': {}};
@@ -106,12 +106,6 @@ export function requestBody(requestBodySpec?: Partial<RequestBodyObject>) {
       }
       return c;
     });
-
-    // The default position for request body argument is 0
-    // if not, add extension 'x-parameter-index' to specify the position
-    if (index !== 0) {
-      requestBodySpec[REQUEST_BODY_INDEX] = index;
-    }
 
     /* istanbul ignore if */
     if (debug.enabled)
