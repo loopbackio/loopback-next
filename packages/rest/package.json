@@ -41,6 +41,7 @@
     "@types/type-is": "^1.6.3",
     "ajv": "^8.2.0",
     "ajv-errors": "^3.0.0",
+    "ajv-formats": "^2.0.2",
     "ajv-keywords": "^5.0.0",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
