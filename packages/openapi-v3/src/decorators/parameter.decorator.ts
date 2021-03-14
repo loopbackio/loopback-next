@@ -16,6 +16,8 @@ import {
   SchemaObject,
 } from '../types';
 
+export const PARAMETER_INDEX = 'x-parameter-index';
+
 /**
  * Describe an input parameter of a Controller method.
  *
@@ -36,7 +38,7 @@ import {
  */
 export function param(paramSpec: ParameterObject) {
   return function (target: object, member: string, index: number) {
-    paramSpec = paramSpec || {};
+    paramSpec = {...paramSpec};
     // Get the design time method parameter metadata
     const methodSig = MetadataInspector.getDesignTypeForMethod(target, member);
     const paramTypes = methodSig?.parameterTypes || [];

@@ -11,6 +11,7 @@ import {
 } from '@loopback/repository-json-schema';
 import {includes} from 'lodash';
 import {buildResponsesFromMetadata} from './build-responses-from-metadata';
+import {REQUEST_BODY_INDEX} from './decorators';
 import {resolveSchema} from './generate-schema';
 import {jsonToSchemaObject, SchemaRef} from './json-to-schema';
 import {OAI3Keys} from './keys';
@@ -272,6 +273,7 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
     );
 
     debug('  parameters for method %s: %j', op, params);
+    const paramIndexes: number[] = [];
     if (params != null) {
       params = DecoratorFactory.cloneDeep<ParameterObject[]>(params);
       /**
@@ -287,7 +289,11 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
        * ```
        */
       operationSpec.parameters = params
-        .filter(p => p != null)
+        .filter((p, i) => {
+          if (p == null) return false;
+          paramIndexes.push(i);
+          return true;
+        })
         .map(p => {
           // Per OpenAPI spec, `required` must be `true` for path parameters
           if (p.in === 'path') {
@@ -304,8 +310,13 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
       op,
     );
 
+    const bodyIndexes: number[] = [];
     if (requestBodies != null)
-      requestBodies = requestBodies.filter(p => p != null);
+      requestBodies = requestBodies.filter((p, i) => {
+        if (p == null) return false;
+        bodyIndexes.push(i);
+        return true;
+      });
     let requestBody: RequestBodyObject;
 
     if (requestBodies) {
@@ -318,6 +329,15 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
       debug('  requestBody for method %s: %j', op, requestBody);
       /* istanbul ignore else */
       if (requestBody) {
+        // Find the relative index of the request body
+        const bodyIndex = bodyIndexes[0];
+        let index = 0;
+        for (; index < paramIndexes.length; index++) {
+          if (bodyIndex < paramIndexes[index]) break;
+        }
+        if (index !== 0) {
+          requestBody[REQUEST_BODY_INDEX] = index;
+        }
         operationSpec.requestBody = requestBody;
 
         /* istanbul ignore else */

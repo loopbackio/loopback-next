@@ -3,6 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {inject} from '@loopback/core';
 import {Entity, model, property} from '@loopback/repository';
 import {expect} from '@loopback/testlab';
 import {
@@ -18,6 +19,7 @@ import {
   requestBody,
   SchemaObject,
 } from '../..';
+import {REQUEST_BODY_INDEX} from '../../decorators';
 
 describe('controller spec', () => {
   it('adds property schemas in components.schemas', () => {
@@ -194,6 +196,61 @@ describe('controller spec', () => {
         description: 'Return value of MyController.hello',
       },
     });
+  });
+
+  it('generates relative body index if it is not the 1st arg', () => {
+    class MyController {
+      @post('/{id}')
+      hello(
+        @inject('name') name: string,
+        @requestBody() body: object,
+        @param.path.string('id') id: string,
+      ) {
+        return 'hello world';
+      }
+    }
+
+    const spec = getControllerSpec(MyController);
+    expect(
+      spec.paths['/{id}'].post.requestBody[REQUEST_BODY_INDEX],
+    ).to.be.undefined(); // skip the extension if index is 0
+  });
+
+  it('generates relative body index if it comes after a param', () => {
+    class MyController {
+      @post('/{id}')
+      hello(
+        @inject('name') name: string,
+        @param.path.string('id') id: string,
+        @requestBody() body: object,
+      ) {
+        return 'hello world';
+      }
+    }
+
+    const spec = getControllerSpec(MyController);
+    expect(spec.paths['/{id}'].post.requestBody[REQUEST_BODY_INDEX]).to.equal(
+      1,
+    );
+  });
+
+  it('generates relative body index if it comes before a param', () => {
+    class MyController {
+      @post('/{id}')
+      hello(
+        @inject('name') name: string,
+        @param.path.string('id') id: string,
+        @requestBody() body: object,
+        @param.query.string('lang') lang: string,
+      ) {
+        return 'hello world';
+      }
+    }
+
+    const spec = getControllerSpec(MyController);
+    expect(spec.paths['/{id}'].post.requestBody[REQUEST_BODY_INDEX]).to.equal(
+      1,
+    );
   });
 
   it('generates a response given no content property', () => {
