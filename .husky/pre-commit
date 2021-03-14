@@ -1,0 +1,8 @@
+#!/bin/bash
+. "$(dirname "$0")/_/husky.sh"
+
+if [ "$LINT_STAGED" == "0" ]; then
+  echo "lint-staged disabled via LINT_STAGED env var"
+else
+  npx --no-install lint-staged
+fi
