@@ -526,7 +526,7 @@ describe('RestServer (integration)', () => {
     const response = await createClientForHandler(server.requestHandler).get(
       '/openapi.yaml',
     );
-    const expected = yaml.safeLoad(`
+    const expected = yaml.load(`
 openapi: 3.0.0
 info:
   title: LoopBack Application
@@ -543,7 +543,7 @@ paths:
                 type: string
     `);
     // Use json for comparison to tolerate textual diffs
-    const json = yaml.safeLoad(response.text) as OpenAPIObject;
+    const json = yaml.load(response.text) as OpenAPIObject;
     expect(json).to.containDeep(expected);
     expect(json.servers?.[0].url).to.match('/');
 

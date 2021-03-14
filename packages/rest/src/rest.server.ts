@@ -38,7 +38,7 @@ import {PathParams} from 'express-serve-static-core';
 import fs from 'fs';
 import {IncomingMessage, ServerResponse} from 'http';
 import {ServerOptions} from 'https';
-import {safeDump} from 'js-yaml';
+import {dump} from 'js-yaml';
 import {cloneDeep} from 'lodash';
 import {ServeStaticOptions} from 'serve-static';
 import {writeErrorToResponse} from 'strong-error-handler';
@@ -553,7 +553,7 @@ export class RestServer
       response.setHeader('content-type', 'application/json; charset=utf-8');
       response.end(spec, 'utf-8');
     } else {
-      const yaml = safeDump(specObj, {});
+      const yaml = dump(specObj, {});
       response.setHeader('content-type', 'text/yaml; charset=utf-8');
       response.end(yaml, 'utf-8');
     }
@@ -1045,7 +1045,7 @@ export class RestServer
     }
     const fileName = outFile.toLowerCase();
     if (fileName.endsWith('.yaml') || fileName.endsWith('.yml')) {
-      const yaml = safeDump(spec);
+      const yaml = dump(spec);
       fs.writeFileSync(outFile, yaml, 'utf-8');
     } else {
       const json = JSON.stringify(spec, null, 2);

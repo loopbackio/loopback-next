@@ -6,7 +6,7 @@
 import {ApplicationConfig} from '@loopback/core';
 import {expect, givenHttpServerConfig, TestSandbox} from '@loopback/testlab';
 import fs from 'fs';
-import {safeLoad} from 'js-yaml';
+import {load} from 'js-yaml';
 import path from 'path';
 import {format} from 'util';
 import {get, RestApplication} from '../..';
@@ -76,7 +76,7 @@ describe('exportOpenApiSpec', () => {
     await app.restServer.exportOpenApiSpec(file, log);
     expect(lastLog.match(/The OpenAPI spec is saved to .+ openapi\.yaml$/));
     const content = fs.readFileSync(file, 'utf-8');
-    expect(safeLoad(content)).to.eql(expectedSpec);
+    expect(load(content)).to.eql(expectedSpec);
   });
 
   it('saves the spec to a yml file', async () => {
@@ -84,7 +84,7 @@ describe('exportOpenApiSpec', () => {
     await app.restServer.exportOpenApiSpec(file, log);
     expect(lastLog.match(/The OpenAPI spec is saved to .+ openapi\.yml$/));
     const content = fs.readFileSync(file, 'utf-8');
-    expect(safeLoad(content)).to.eql(expectedSpec);
+    expect(load(content)).to.eql(expectedSpec);
   });
 
   after(() => sandbox.reset());
