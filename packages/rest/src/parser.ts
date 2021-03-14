@@ -71,7 +71,7 @@ async function buildOperationArguments(
       throw new Error('$ref requestBody is not supported yet.');
     }
     const i = operationSpec.requestBody[REQUEST_BODY_INDEX];
-    requestBodyIndex = i ? i : 0;
+    requestBodyIndex = i != null ? i : 0;
   }
 
   const paramArgs: OperationArgs = [];
@@ -96,7 +96,9 @@ async function buildOperationArguments(
     options,
   );
 
-  if (requestBodyIndex > -1) paramArgs.splice(requestBodyIndex, 0, body.value);
+  if (requestBodyIndex >= 0) {
+    paramArgs.splice(requestBodyIndex, 0, body.value);
+  }
   return paramArgs;
 }
 
