@@ -106,7 +106,7 @@ $ lb4 relation
 ? Allow TodoList queries to include data from related TodoListImage instances? Yes
    create src/controllers/todo-list-todo-list-image.controller.ts
 
-Relation HasMany was created in src/
+Relation HasOne was created in src/
 ```
 
 Now, we're going to add the relation for `TodoListImage`. That is,
