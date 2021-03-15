@@ -57,10 +57,11 @@ export function metricsControllerFactory(
   @injectable({scope: BindingScope.SINGLETON})
   class MetricsController {
     @get(basePath, spec)
-    report(@inject(RestBindings.Http.RESPONSE) res: Response) {
+    async report(@inject(RestBindings.Http.RESPONSE) res: Response) {
       // Set the content type from the register
       res.contentType(register.contentType);
-      res.send(register.metrics());
+      const data = await register.metrics();
+      res.send(data);
       return res;
     }
   }
