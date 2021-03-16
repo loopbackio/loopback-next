@@ -61,7 +61,7 @@
     "@loopback/build": "^6.2.9",
     "@loopback/eslint-config": "^10.0.5",
     "@loopback/testlab": "^3.2.12",
-    "@types/jsonwebtoken": "^8.5.0",
+    "@types/jsonwebtoken": "^8.5.1",
     "@types/node": "^10.17.55",
     "eslint": "^7.22.0",
     "source-map-support": "^0.5.19",
