@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.20.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@2.19.0...@loopback/cli@2.20.0) (2021-03-18)
+
+
+### Bug Fixes
+
+* update spdx-license-list ([34073ce](https://github.com/strongloop/loopback-next/commit/34073cec118aea4002e474cae0573d3cd94c9d1b))
+* use a named export with @lerna/* ([d0f6a7d](https://github.com/strongloop/loopback-next/commit/d0f6a7dac49a32d27ba3971ccb893da5396b36ee))
+* **cli:** add rebuild script to package.json of extensions ([c7623a2](https://github.com/strongloop/loopback-next/commit/c7623a245821bb770ad6e01a0bd8a4954684e026))
+
+
+### Features
+
+* update package-lock.json to v2 consistently ([dfc3fbd](https://github.com/strongloop/loopback-next/commit/dfc3fbdae0c9ca9f34c64154a471bef22d5ac6b7))
+* upgrade to TypeScript 4.2.x ([05930bc](https://github.com/strongloop/loopback-next/commit/05930bc0cece3909dd66f75ad91eeaa2d365a480))
+
+
+### Reverts
+
+* Revert "chore: update dependency spdx-license-list to ^6.4.0" ([86aa11a](https://github.com/strongloop/loopback-next/commit/86aa11aed5afb358891e6a6c9d6b01e2a493585b))
+
+
+
+
+
 # [2.19.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@2.18.0...@loopback/cli@2.19.0) (2021-02-09)
 
 

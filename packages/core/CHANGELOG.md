@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.15.0](https://github.com/strongloop/loopback-next/compare/@loopback/core@2.14.1...@loopback/core@2.15.0) (2021-03-18)
+
+
+### Features
+
+* update package-lock.json to v2 consistently ([dfc3fbd](https://github.com/strongloop/loopback-next/commit/dfc3fbdae0c9ca9f34c64154a471bef22d5ac6b7))
+
+
+
+
+
 ## [2.14.1](https://github.com/strongloop/loopback-next/compare/@loopback/core@2.14.0...@loopback/core@2.14.1) (2021-02-09)
 
 **Note:** Version bump only for package @loopback/core

@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.23.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.22.0...@loopback/docs@3.23.0) (2021-03-18)
+
+
+### Bug Fixes
+
+* **docs:** add new extensions to community extensions page ([2456b23](https://github.com/strongloop/loopback-next/commit/2456b23aa9ea681b787b882bc47eab1e8706da48))
+* **docs:** fix typo in todo list tutorial ([93abae9](https://github.com/strongloop/loopback-next/commit/93abae911278c02c3818fcdc999904d6cd60787f))
+* use a named export with @lerna/* ([d0f6a7d](https://github.com/strongloop/loopback-next/commit/d0f6a7dac49a32d27ba3971ccb893da5396b36ee))
+
+
+### Features
+
+* update package-lock.json to v2 consistently ([dfc3fbd](https://github.com/strongloop/loopback-next/commit/dfc3fbdae0c9ca9f34c64154a471bef22d5ac6b7))
+* upgrade to TypeScript 4.2.x ([05930bc](https://github.com/strongloop/loopback-next/commit/05930bc0cece3909dd66f75ad91eeaa2d365a480))
+
+
+
+
+
 # [3.22.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.21.0...@loopback/docs@3.22.0) (2021-02-09)
 
 

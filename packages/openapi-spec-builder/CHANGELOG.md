@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-spec-builder@3.0.5...@loopback/openapi-spec-builder@3.1.0) (2021-03-18)
+
+
+### Features
+
+* update package-lock.json to v2 consistently ([dfc3fbd](https://github.com/strongloop/loopback-next/commit/dfc3fbdae0c9ca9f34c64154a471bef22d5ac6b7))
+
+
+
+
+
 ## [3.0.5](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-spec-builder@3.0.4...@loopback/openapi-spec-builder@3.0.5) (2021-02-09)
 
 **Note:** Version bump only for package @loopback/openapi-spec-builder

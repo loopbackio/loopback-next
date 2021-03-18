@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@5.1.4...@loopback/openapi-v3@5.2.0) (2021-03-18)
+
+
+### Bug Fixes
+
+* **rest:** fix the request body index handling ([b186820](https://github.com/strongloop/loopback-next/commit/b186820f116baed41ee0741804e4dd37fdf1fe39))
+
+
+### Features
+
+* update package-lock.json to v2 consistently ([dfc3fbd](https://github.com/strongloop/loopback-next/commit/dfc3fbdae0c9ca9f34c64154a471bef22d5ac6b7))
+
+
+
+
+
 ## [5.1.4](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@5.1.3...@loopback/openapi-v3@5.1.4) (2021-02-09)
 
 **Note:** Version bump only for package @loopback/openapi-v3

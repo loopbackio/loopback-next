@@ -1,6 +1,6 @@
 {
   "name": "@loopback/cron",
-  "version": "0.3.7",
+  "version": "0.4.0",
   "description": "Schedule tasks using cron-like syntax",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -21,7 +21,7 @@
     "access": "public"
   },
   "peerDependencies": {
-    "@loopback/core": "^2.14.1"
+    "@loopback/core": "^2.15.0"
   },
   "dependencies": {
     "@types/cron": "^1.7.2",
@@ -31,10 +31,10 @@
     "tslib": "^2.1.0"
   },
   "devDependencies": {
-    "@loopback/build": "^6.2.9",
-    "@loopback/core": "^2.14.1",
-    "@loopback/eslint-config": "^10.0.5",
-    "@loopback/testlab": "^3.2.12",
+    "@loopback/build": "^6.3.0",
+    "@loopback/core": "^2.15.0",
+    "@loopback/eslint-config": "^10.1.0",
+    "@loopback/testlab": "^3.3.0",
     "@types/node": "^10.17.55"
   },
   "keywords": [

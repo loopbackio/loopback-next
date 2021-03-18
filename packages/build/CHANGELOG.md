@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/build@6.2.9...@loopback/build@6.3.0) (2021-03-18)
+
+
+### Features
+
+* update package-lock.json to v2 consistently ([dfc3fbd](https://github.com/strongloop/loopback-next/commit/dfc3fbdae0c9ca9f34c64154a471bef22d5ac6b7))
+* upgrade to TypeScript 4.2.x ([05930bc](https://github.com/strongloop/loopback-next/commit/05930bc0cece3909dd66f75ad91eeaa2d365a480))
+
+
+
+
+
 ## [6.2.9](https://github.com/strongloop/loopback-next/compare/@loopback/build@6.2.8...@loopback/build@6.2.9) (2021-01-21)
 
 **Note:** Version bump only for package @loopback/build
