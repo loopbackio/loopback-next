@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [10.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/eslint-config@10.0.5...@loopback/eslint-config@10.1.0) (2021-03-18)
+
+
+### Bug Fixes
+
+* no need to import prettier extensions anymore ([0b13d35](https://github.com/strongloop/loopback-next/commit/0b13d353a3055414e691176cd83c908a78afcc05))
+
+
+### Features
+
+* update package-lock.json to v2 consistently ([dfc3fbd](https://github.com/strongloop/loopback-next/commit/dfc3fbdae0c9ca9f34c64154a471bef22d5ac6b7))
+* upgrade to TypeScript 4.2.x ([05930bc](https://github.com/strongloop/loopback-next/commit/05930bc0cece3909dd66f75ad91eeaa2d365a480))
+
+
+
+
+
 ## [10.0.5](https://github.com/strongloop/loopback-next/compare/@loopback/eslint-config@10.0.4...@loopback/eslint-config@10.0.5) (2021-01-21)
 
 **Note:** Version bump only for package @loopback/eslint-config

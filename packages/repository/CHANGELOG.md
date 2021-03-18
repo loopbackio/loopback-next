@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.5.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@3.4.1...@loopback/repository@3.5.0) (2021-03-18)
+
+
+### Bug Fixes
+
+* fix compilation errors with TypeScript 4.2.x ([b3c33d5](https://github.com/strongloop/loopback-next/commit/b3c33d57dc6d9703e0b25fb49fce916c5abc616a))
+
+
+### Features
+
+* mark Entity and Model to be regular classes ([dc2984e](https://github.com/strongloop/loopback-next/commit/dc2984eb8e02870e49125bac0109c09c87f60cb0))
+* update package-lock.json to v2 consistently ([dfc3fbd](https://github.com/strongloop/loopback-next/commit/dfc3fbdae0c9ca9f34c64154a471bef22d5ac6b7))
+
+
+
+
+
 ## [3.4.1](https://github.com/strongloop/loopback-next/compare/@loopback/repository@3.4.0...@loopback/repository@3.4.1) (2021-02-09)
 
 **Note:** Version bump only for package @loopback/repository

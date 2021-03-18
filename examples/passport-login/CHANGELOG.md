@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.10.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-passport-login@1.9.2...@loopback/example-passport-login@1.10.0) (2021-03-18)
+
+
+### Features
+
+* update package-lock.json to v2 consistently ([dfc3fbd](https://github.com/strongloop/loopback-next/commit/dfc3fbdae0c9ca9f34c64154a471bef22d5ac6b7))
+* upgrade to TypeScript 4.2.x ([05930bc](https://github.com/strongloop/loopback-next/commit/05930bc0cece3909dd66f75ad91eeaa2d365a480))
+
+
+
+
+
 ## [1.9.2](https://github.com/strongloop/loopback-next/compare/@loopback/example-passport-login@1.9.1...@loopback/example-passport-login@1.9.2) (2021-02-09)
 
 **Note:** Version bump only for package @loopback/example-passport-login

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/context-explorer@0.3.1...@loopback/context-explorer@0.4.0) (2021-03-18)
+
+
+### Features
+
+* update package-lock.json to v2 consistently ([dfc3fbd](https://github.com/strongloop/loopback-next/commit/dfc3fbdae0c9ca9f34c64154a471bef22d5ac6b7))
+
+
+
+
+
 ## [0.3.1](https://github.com/strongloop/loopback-next/compare/@loopback/context-explorer@0.3.0...@loopback/context-explorer@0.3.1) (2021-02-09)
 
 **Note:** Version bump only for package @loopback/context-explorer
