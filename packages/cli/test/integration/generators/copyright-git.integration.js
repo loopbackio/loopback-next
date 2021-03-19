@@ -22,7 +22,7 @@ let year = new Date().getFullYear();
 if (year !== 2020) year = `2020,${year}`;
 
 describe('lb4 copyright with git', /** @this {Mocha.Suite} */ function () {
-  this.timeout(30000);
+  this.timeout(60000);
 
   before('add files not tracked by git', async () => {
     await fs.outputFile(
