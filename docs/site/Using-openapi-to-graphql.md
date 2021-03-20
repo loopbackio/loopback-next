@@ -116,7 +116,7 @@ Here are some examples of the `query` and `mutation` calls:
 
    ```
    mutation {
-     todoControllerCreateTodo(newTodoInput: {
+     todoControllerCreate(newTodoInput: {
        title: "Take over the universe"
      }) {
        id
@@ -130,7 +130,7 @@ Here are some examples of the `query` and `mutation` calls:
    ```json
    {
      "data": {
-       "todoControllerCreateTodo": {
+       "todoControllerCreate": {
          "id": 5,
          "title": "Take over the universe"
        }
