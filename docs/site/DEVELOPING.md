@@ -259,13 +259,13 @@ following commands to fix the problem:
 To rebuild `package-lock.json` for all packages.
 
 ```sh
-npm update-package-locks
+npm run update-package-locks
 ```
 
 To update `package-lock.json` for a list of packages:
 
 ```sh
-npm update-package-locks -- --scope <package-name-1> --scope <package-name-2>
+npm run update-package-locks -- --scope <package-name-1> --scope <package-name-2>
 ```
 
 ### Adding dependencies
@@ -757,6 +757,9 @@ The `release` script will automatically perform the tasks for all packages:
 
 If all steps are successful, it prompts you to publish packages into npm
 repository.
+
+> There is an automated process that creates a new version every 15 days. See
+> [continuous-integration.yaml](https://github.com/strongloop/loopback-next/blob/master/.github/workflows/continuous-integration.yaml)
 
 ## Adding a new package
 
