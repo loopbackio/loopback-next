@@ -57,7 +57,7 @@
     "@loopback/testlab": "^3.3.0",
     "@types/ejs": "^3.0.6",
     "@types/fs-extra": "^9.0.8",
-    "@types/minimatch": "^3.0.3",
+    "@types/minimatch": "^3.0.4",
     "@types/node": "^10.17.55",
     "loopback": "^3.28.0",
     "loopback-datasource-juggler": "^4.26.0",
