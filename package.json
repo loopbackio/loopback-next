@@ -7,7 +7,7 @@
   "copyright.owner": "IBM Corp.",
   "engines": {
     "node": "^10.16 || 12 || 14 || 15",
-    "npm": ">=7"
+    "npm": ">=7.7.5"
   },
   "repository": {
     "type": "git",
