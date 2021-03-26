@@ -9,10 +9,8 @@
     ":updateNotScheduled",
     ":automergeRequireAllStatusChecks",
     ":ignoreUnstable",
-    ":automergeDisabled",
     ":gitSignOff",
     "group:monorepos",
-    "group:recommended",
     "helpers:disableTypesNodeMajor"
   ],
   "ignorePaths": [
@@ -34,42 +32,37 @@
   },
   "packageRules": [
     {
+      "automerge": true,
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+    },
+    {
+      "automerge": true,
+      "matchDepTypes": [
+        "devDependencies"
+      ]
+    },
+    {
+      enabled: false,
+      matchDepTypes: ["engines"]
+    },
+    {
       "groupName": "api-extractor packages",
-      "packageNames": [
+      "matchPackageNames": [
         "@microsoft/api-extractor",
         "@microsoft/api-documenter"
       ]
     },
     {
-      "groupName": "@types/express* packages",
-      "packageNames": [
-        "@types/express",
-        "@types/express-serve-static-core"
-      ]
-    },
-    {
       "groupName": "ajv-validator packages",
-      "matchSourceUrlPrefixes": [
-        "https://github.com/ajv-validator"
-      ]
+      "matchPackagePatterns": ["^ajv"]
     },
     {
       "groupName": "yeoman packages",
       "matchSourceUrlPrefixes": [
         "https://github.com/yeoman"
-      ]
-    },
-    {
-      "automerge": true,
-      "updateTypes": [
-        "minor",
-        "patch"
-      ]
-    },
-    {
-      "automerge": true,
-      "depTypeList": [
-        "devDependencies"
       ]
     }
   ],
