@@ -3,7 +3,7 @@
   "version": "0.0.15",
   "engines": {
     "node": "^10.16 || 12 || 14 || 15",
-    "npm": ">=7"
+    "npm": ">=7.7.5"
   },
   "private": true,
   "description": "A monorepo for tsdocs testing",
