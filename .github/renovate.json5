@@ -18,8 +18,10 @@
     "**/__tests__/**",
     "**/test/**"
   ],
-  constraints: {
-    npm: ">=7"
+  force: {
+    constraints: {
+      npm: ">=7"
+    },
   },
   "labels": ["dependencies"],
   "dependencyDashboard": true,
