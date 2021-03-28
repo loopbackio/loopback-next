@@ -20,6 +20,14 @@ export type Credentials = {
   password: string;
 };
 
+const compareCredential = (function () {
+  try {
+    return require('@node-rs/bcrypt').compare;
+  } catch {
+    return compare;
+  }
+})();
+
 export class MyUserService implements UserService<User, Credentials> {
   constructor(
     @repository(UserRepository) public userRepository: UserRepository,
@@ -42,7 +50,7 @@ export class MyUserService implements UserService<User, Credentials> {
       throw new HttpErrors.Unauthorized(invalidCredentialsError);
     }
 
-    const passwordMatched = await compare(
+    const passwordMatched = await compareCredential(
       credentials.password,
       credentialsFound.password,
     );
