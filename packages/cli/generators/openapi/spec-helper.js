@@ -140,11 +140,22 @@ function groupOperationsByController(apiSpec) {
  * as-is. Otherwise, derive the name from `operationId`.
  *
  * @param {object} opSpec OpenAPI operation spec
+ * @internal
  */
 function getMethodName(opSpec) {
-  return camelCase(
-    opSpec['x-operation-name'] || escapeIdentifier(opSpec.operationId),
-  );
+  let methodName;
+
+  if (opSpec['x-operation-name']) {
+    methodName = opSpec['x-operation-name'];
+  } else if (opSpec.operationId) {
+    methodName = escapeIdentifier(opSpec.operationId);
+  } else {
+    throw new Error(
+      'Could not infer method name from OpenAPI Operation Object. OpenAPI Operation Objects must have either `x-operation-name` or `operationId`.',
+    );
+  }
+
+  return camelCase(methodName);
 }
 
 function registerAnonymousSchema(names, schema, typeRegistry) {
@@ -467,6 +478,7 @@ function getServiceFileName(serviceName) {
 
 module.exports = {
   getControllerFileName,
+  getMethodName,
   getServiceFileName,
   generateControllerSpecs,
 };
