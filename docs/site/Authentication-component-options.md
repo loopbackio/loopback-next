@@ -34,6 +34,16 @@ app
   .to({defaultMetadata: {strategy: 'xyz'}});
 ```
 
+If multiple strategies are used for a given method, we can configure the
+`failOnError` option so that a strategy can abort the authentication process by
+throwing an error. Otherwise, other strategies will be invoked and it only fails
+when none of the strategies succeeds by returning a `UserProfile` or
+`RedirectRoute`.
+
+```ts
+app.configure(AuthenticationBindings.COMPONENT).to({failOnError: true});
+```
+
 ### Define the Options Interface and Binding Key
 
 Define an options interface and a binding key for the default options of that
