@@ -3,7 +3,14 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Getter, inject, injectable, Provider, Setter} from '@loopback/core';
+import {
+  config,
+  Getter,
+  inject,
+  injectable,
+  Provider,
+  Setter,
+} from '@loopback/core';
 import {
   asMiddleware,
   Middleware,
@@ -15,13 +22,18 @@ import {SecurityBindings, UserProfile} from '@loopback/security';
 import {AuthenticationBindings} from '../keys';
 import {
   AuthenticateFn,
+  AuthenticationOptions,
   AuthenticationStrategy,
   AUTHENTICATION_STRATEGY_NOT_FOUND,
   USER_PROFILE_NOT_FOUND,
 } from '../types';
+
 /**
  * Provides the authentication action for a sequence
- * @example `context.bind('authentication.actions.authenticate').toProvider(AuthenticateActionProvider)`
+ * @example
+ * ```ts
+ * context.bind('authentication.actions.authenticate').toProvider(AuthenticateActionProvider)
+ * ```
  */
 export class AuthenticateActionProvider implements Provider<AuthenticateFn> {
   constructor(
@@ -42,6 +54,8 @@ export class AuthenticateActionProvider implements Provider<AuthenticateFn> {
     readonly setRedirectUrl: Setter<string>,
     @inject.setter(AuthenticationBindings.AUTHENTICATION_REDIRECT_STATUS)
     readonly setRedirectStatus: Setter<number>,
+    @config({fromBinding: AuthenticationBindings.COMPONENT})
+    private readonly options: AuthenticationOptions = {},
   ) {}
 
   /**
@@ -57,59 +71,54 @@ export class AuthenticateActionProvider implements Provider<AuthenticateFn> {
    */
   async action(request: Request): Promise<UserProfile | undefined> {
     let strategies = await this.getStrategies();
-    if (!strategies) {
+    if (strategies == null) {
       // The invoked operation does not require authentication.
       return undefined;
     }
     // convert to array if required
     strategies = Array.isArray(strategies) ? strategies : [strategies];
 
-    let authenticated = false;
-    let redirected = false;
-    let authError: Error | undefined;
-    let authResponse: UserProfile | RedirectRoute | undefined;
-    let userProfile: UserProfile | undefined;
-
+    const authErrors: unknown[] = [];
     for (const strategy of strategies) {
-      // the first strategy to succeed or redirect will halt the execution chain
-      if (authenticated || redirected) break;
-
+      let authResponse: UserProfile | RedirectRoute | undefined = undefined;
       try {
         authResponse = await strategy.authenticate(request);
-
-        // response from `strategy.authenticate()` could return an object of type UserProfile or RedirectRoute
-        if (RedirectRoute.isRedirectRoute(authResponse)) {
-          redirected = true;
-          const redirectOptions = authResponse;
-          // bind redirection url and status to the context
-          // controller should handle actual redirection
-          this.setRedirectUrl(redirectOptions.targetLocation);
-          this.setRedirectStatus(redirectOptions.statusCode);
-        } else if (authResponse) {
-          authenticated = true;
-          // if `strategy.authenticate()` returns an object of type UserProfile, set it as current user
-          userProfile = authResponse as UserProfile;
-        } else if (!authResponse) {
-          // important to throw a non-protocol-specific error here
-          const error = new Error(
-            `User profile not returned from strategy's authenticate function`,
-          );
-          Object.assign(error, {
-            code: USER_PROFILE_NOT_FOUND,
-          });
-          throw error;
+      } catch (err) {
+        if (this.options.failOnError) {
+          throw err;
         }
-      } catch (error) {
-        authError = authError ?? error;
+        authErrors.push(err);
+      }
+
+      // response from `strategy.authenticate()` could return an object of
+      // type UserProfile or RedirectRoute
+      if (RedirectRoute.isRedirectRoute(authResponse)) {
+        const redirectOptions = authResponse;
+        // bind redirection url and status to the context
+        // controller should handle actual redirection
+        this.setRedirectUrl(redirectOptions.targetLocation);
+        this.setRedirectStatus(redirectOptions.statusCode);
+        return;
+      } else if (authResponse != null) {
+        // if `strategy.authenticate()` returns an object of type UserProfile,
+        // set it as current user
+        const userProfile = authResponse as UserProfile;
+        this.setCurrentUser(userProfile);
+        return userProfile;
       }
     }
 
-    if (!authenticated && !redirected) throw authError;
-
-    if (userProfile) {
-      this.setCurrentUser(userProfile);
-      return userProfile;
+    if (authErrors.length) {
+      throw authErrors[0];
     }
+    // important to throw a non-protocol-specific error here
+    const error = new Error(
+      `User profile not returned from strategy's authenticate function`,
+    );
+    Object.assign(error, {
+      code: USER_PROFILE_NOT_FOUND,
+    });
+    throw error;
   }
 }
 

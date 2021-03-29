@@ -9,7 +9,7 @@ import {securityId, UserProfile} from '@loopback/security';
 import {expect} from '@loopback/testlab';
 import {AuthenticateFn, AuthenticationBindings} from '../../..';
 import {AuthenticateActionProvider} from '../../../providers';
-import {AuthenticationStrategy} from '../../../types';
+import {AuthenticationOptions, AuthenticationStrategy} from '../../../types';
 import {MockStrategy, MockStrategy2} from '../fixtures/mock-strategy';
 
 describe('AuthenticateActionProvider', () => {
@@ -89,12 +89,35 @@ describe('AuthenticateActionProvider', () => {
       const request = <Request>{};
       request.headers = {testState: 'fail'};
 
+      // 1st one fails
       await expect(authenticate(request)).to.not.be.rejected();
 
       givenAuthenticateActionProvider([strategy, strategy2]);
       authenticate = await Promise.resolve(provider.value());
       request.headers = {testState2: 'fail'};
 
+      // 1st one succeeds but 2nd one fails
+      await expect(authenticate(request)).to.not.be.rejected();
+    });
+
+    it('should return a function that throws an error if one authentication strategy fails', async () => {
+      givenAuthenticateActionProvider([strategy, strategy2], {
+        failOnError: true,
+      });
+      let authenticate = await Promise.resolve(provider.value());
+      const request = <Request>{};
+      request.headers = {testState: 'fail'};
+
+      // 1st one fails
+      await expect(authenticate(request)).to.be.rejected();
+
+      givenAuthenticateActionProvider([strategy, strategy2], {
+        failOnError: true,
+      });
+      authenticate = await Promise.resolve(provider.value());
+      request.headers = {testState2: 'fail'};
+
+      // 1st one succeeds but 2nd one fails
       await expect(authenticate(request)).to.not.be.rejected();
     });
 
@@ -180,6 +203,7 @@ describe('AuthenticateActionProvider', () => {
 
     function givenAuthenticateActionProvider(
       strategies?: AuthenticationStrategy[],
+      options: AuthenticationOptions = {},
     ) {
       strategy = new MockStrategy();
       strategy.setMockUser(mockUser);
@@ -189,6 +213,7 @@ describe('AuthenticateActionProvider', () => {
         u => (currentUser = u),
         url => url,
         status => status,
+        options,
       );
       currentUser = undefined;
     }
