@@ -61,6 +61,6 @@
     "@loopback/tsdocs-monorepo": "^0.0.15",
     "@types/debug": "^4.1.5",
     "@types/fs-extra": "^9.0.9",
-    "@types/node": "^10.17.55"
+    "@types/node": "^10.17.56"
   }
 }
