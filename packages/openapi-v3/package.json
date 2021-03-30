@@ -45,7 +45,7 @@
     "@types/http-status": "^1.1.2",
     "@types/json-merge-patch": "0.0.5",
     "@types/lodash": "^4.14.168",
-    "@types/node": "^10.17.55"
+    "@types/node": "^10.17.56"
   },
   "keywords": [
     "Swagger",
