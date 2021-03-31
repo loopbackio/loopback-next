@@ -10,7 +10,6 @@ Core maintainers:
 - Diana Lau ([@dhmlau](https://github.com/dhmlau))
 - Dominique Emond ([@emonddr](https://github.com/emonddr))
 - Janny Hou ([@jannyhou](https://github.com/jannyhou))
-- Miroslav Bajtos ([@bajtos](https://github.com/bajtos))
 - Raymond Feng ([@raymondfeng](https://github.com/raymondfeng))
 - Yaapa Hage ([@hacksparrow](https://github.com/hacksparrow))
 
