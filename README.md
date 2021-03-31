@@ -99,9 +99,9 @@ See [SECURITY.md](SECURITY.md) for more details.
 
 ### Project Architects
 
-|                  Raymond Feng                   |            Miroslav Bajtoš            |     |
-| :---------------------------------------------: | :-----------------------------------: | :-: |
-| [![raymondfeng]](http://github.com/raymondfeng) | [![bajtos]](http://github.com/bajtos) |     |
+|                  Raymond Feng                   |
+| :---------------------------------------------: |
+| [![raymondfeng]](http://github.com/raymondfeng) |
 
 ### Project Maintainers
 
@@ -130,13 +130,13 @@ See
 - [@shimks](https://github.com/shimks)
 - [@b-admike](https://github.com/b-admike)
 - [@deepakrkris](https://github.com/deepakrkris)
+- [@bajtos](http://github.com/bajtos)
 
 ## License
 
 [MIT](LICENSE)
 
 [raymondfeng]: https://avatars0.githubusercontent.com/u/540892?v=3&s=60
-[bajtos]: https://avatars2.githubusercontent.com/u/1140553?v=3&s=60
 [ritch]: https://avatars2.githubusercontent.com/u/462228?v=3&s=60
 [dhmlau]: https://avatars2.githubusercontent.com/u/25489897?v=3&s=60
 [jannyhou]: https://avatars2.githubusercontent.com/u/12554153?v=3&s=60

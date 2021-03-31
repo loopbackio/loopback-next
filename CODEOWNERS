@@ -82,7 +82,7 @@
 #   - loopback-connector-oracle
 
 # Fall-back entry for files not assigned to any Functional Areas
-* @bajtos @raymondfeng
+* @raymondfeng
 
 # To keep things simple, we don't assign any owners for the documentation.
 # When some doc pages are changed as part of a pull request changing the
@@ -262,11 +262,11 @@
 # REST CRUD conventional API
 #
 # - Issue label: n/a
-# - Primary owner(s): @bajtos
+# - Primary owner(s): n/a
 # - Standby owner(s): @hacksparrow @nabdelgadir
-/packages/model-api-builder @bajtos @hacksparrow
-/packages/rest-crud @bajtos @nabdelgadir
-/examples/rest-crud @bajtos @nabdelgadir
+/packages/model-api-builder @hacksparrow
+/packages/rest-crud @nabdelgadir
+/examples/rest-crud @nabdelgadir
 
 #
 # Cloud Native tooling
@@ -361,18 +361,18 @@
 # Test helpers
 #
 # - Issue label: Testlab
-# - Primary owner(s): @bajtos
+# - Primary owner(s): n/a
 # - Standby owner(s): @agnes512
-/packages/testlab @bajtos @agnes512
-/packages/http-caching-proxy @bajtos @agnes512
+/packages/testlab @agnes512
+/packages/http-caching-proxy @agnes512
 
 #
 # Benchmarks
 #
 # - Issue label: n/a
-# - Primary owner(s): @bajtos
+# - Primary owner(s): n/a
 # - Standby owner(s): n/a
-/benchmark @bajtos
+# /benchmark
 
 #
 # PostgreSQL
