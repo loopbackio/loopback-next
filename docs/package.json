@@ -1,6 +1,6 @@
 {
   "name": "@loopback/docs",
-  "version": "3.24.0",
+  "version": "3.24.1",
   "description": "Documentation files rendered at [https://loopback.io](https://loopback.io)",
   "homepage": "https://github.com/strongloop/loopback-next/tree/master/docs",
   "author": "IBM Corp.",
