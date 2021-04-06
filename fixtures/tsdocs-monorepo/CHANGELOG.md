@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.16](https://github.com/strongloop/loopback-next/compare/@loopback/tsdocs-monorepo@0.0.15...@loopback/tsdocs-monorepo@0.0.16) (2021-04-06)
+
+
+### Reverts
+
+* update npm to >=7.7.5 ([b3215d1](https://github.com/strongloop/loopback-next/commit/b3215d1334e14d43cc1bf300af23b5c4556f4441))
+
+
+
+
+
 ## [0.0.15](https://github.com/strongloop/loopback-next/compare/@loopback/tsdocs-monorepo@0.0.14...@loopback/tsdocs-monorepo@0.0.15) (2021-03-18)
 
 **Note:** Version bump only for package @loopback/tsdocs-monorepo
