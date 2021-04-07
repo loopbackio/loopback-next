@@ -138,10 +138,10 @@ endpoints with API `decorators`.
 For example,
 
 - `login()` method in the
-  [UserController](https://github.com/strongloop/loopback4-example-shopping/blob/master/packages/shopping/src/controllers/user.controller.ts)
+  [UserController](https://github.com/strongloop/loopback4-example-shopping/blob/master/packages/shopping/src/controllers/user-management.controller.ts)
   class is defined as `/users/login` API endpoint.
 - argument of method `findById` in the
-  [UserController](https://github.com/strongloop/loopback4-example-shopping/blob/master/packages/shopping/src/controllers/user.controller.ts)
+  [UserController](https://github.com/strongloop/loopback4-example-shopping/blob/master/packages/shopping/src/controllers/user-management.controller.ts)
   is decorated with `@param.path.string('userId')` which means that the `userId`
   parameter in the URL path is passed into the method at runtime.
 
