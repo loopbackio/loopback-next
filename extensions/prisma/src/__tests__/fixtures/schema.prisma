@@ -1,0 +1,18 @@
+// Taken from:
+// https://github.com/prisma/docs/blob/c2421f1ab01245a67f65b5ff975497787805ee1a/content/200-concepts/100-components/01-prisma-schema/index.mdx#example
+
+datasource db {
+  provider = "sqlite"
+  url      = "file://prisma-sqlite.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  email     String   @unique
+  name      String?
+}

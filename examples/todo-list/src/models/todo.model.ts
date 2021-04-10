@@ -31,7 +31,7 @@ export class Todo extends Entity {
   })
   isComplete?: boolean;
 
-  @belongsTo(() => TodoList)
+  @belongsTo(() => TodoList, {})
   todoListId: number;
 
   constructor(data?: Partial<Todo>) {

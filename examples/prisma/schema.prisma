@@ -1,0 +1,15 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file://prisma-sqlite.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Todo {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  email     String   @unique
+  name      String?
+}
