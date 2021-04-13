@@ -10,8 +10,14 @@ import {
   Constructor,
   Context,
   extensionFor,
+  ValueOrPromise,
 } from '@loopback/core';
-import {RedirectRoute, Request} from '@loopback/rest';
+import {
+  RedirectRoute,
+  Request,
+  SecurityRequirementObject,
+  SecuritySchemeObject,
+} from '@loopback/rest';
 import {UserProfile} from '@loopback/security';
 import {AuthenticationBindings} from './keys';
 
@@ -100,7 +106,15 @@ export interface AuthenticationStrategy {
   authenticate(
     request: Request,
   ): Promise<UserProfile | RedirectRoute | undefined>;
+
+  securitySpec?(): ValueOrPromise<SecuritySpec | SecuritySpec[]>;
 }
+
+export type SecuritySpec = {
+  schemeName: string;
+  securityScheme: SecuritySchemeObject;
+  operationSecurity: SecurityRequirementObject;
+};
 
 export const AUTHENTICATION_STRATEGY_NOT_FOUND =
   'AUTHENTICATION_STRATEGY_NOT_FOUND';

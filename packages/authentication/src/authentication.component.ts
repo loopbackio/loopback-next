@@ -3,14 +3,21 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Component, ContextTags, injectable} from '@loopback/core';
-import {AuthenticationBindings} from './keys';
+import {
+  Binding,
+  Component,
+  ContextTags,
+  createBindingFromClass,
+  injectable,
+} from '@loopback/core';
 import {
   AuthenticateActionProvider,
   AuthenticationMiddlewareProvider,
   AuthenticationStrategyProvider,
   AuthMetadataProvider,
 } from './providers';
+import {AuthenticationBindings} from './keys';
+import {SecuritySpecEnhancer} from './spec-enhancers/security.spec-enhancer';
 
 @injectable({tags: {[ContextTags.KEY]: AuthenticationBindings.COMPONENT}})
 export class AuthenticationComponent implements Component {
@@ -21,4 +28,6 @@ export class AuthenticationComponent implements Component {
     [AuthenticationBindings.AUTHENTICATION_MIDDLEWARE
       .key]: AuthenticationMiddlewareProvider,
   };
+
+  bindings: Binding[] = [createBindingFromClass(SecuritySpecEnhancer)];
 }
