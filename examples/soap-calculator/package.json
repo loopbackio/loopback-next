@@ -28,7 +28,7 @@
     "@loopback/rest-explorer": "^3.2.1",
     "@loopback/service-proxy": "^3.1.1",
     "loopback-connector-soap": "^6.0.0",
-    "tslib": "^2.1.0"
+    "tslib": "^2.2.0"
   },
   "devDependencies": {
     "@loopback/build": "^6.3.1",
