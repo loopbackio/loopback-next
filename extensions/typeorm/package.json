@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "tslib": "^2.2.0",
-    "typeorm": "^0.2.31"
+    "typeorm": "^0.2.32"
   },
   "devDependencies": {
     "@loopback/boot": "^3.3.1",
