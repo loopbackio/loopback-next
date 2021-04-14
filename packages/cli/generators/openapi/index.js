@@ -12,7 +12,7 @@ const utils = require('../../lib/utils');
 const {parse} = require('url');
 const path = require('path');
 const semver = require('semver');
-const slash = require('slash');
+const slash = import('slash');
 const {getControllerFileName, getServiceFileName} = require('./spec-helper');
 
 const updateIndex = require('../../lib/update-index');
