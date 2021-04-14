@@ -70,7 +70,7 @@
     "@types/json-schema-compare": "^0.2.0",
     "@types/lodash": "^4.14.168",
     "@types/multer": "^1.4.5",
-    "@types/node": "^10.17.56",
+    "@types/node": "^10.17.57",
     "@types/on-finished": "^2.3.1",
     "@types/qs": "^6.9.6",
     "multer": "^1.4.2"
