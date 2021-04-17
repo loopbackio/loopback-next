@@ -1,5 +1,7 @@
 {
-  "editor.rulers": [80],
+  "editor.rulers": [
+    80
+  ],
   "editor.tabCompletion": "on",
   "editor.tabSize": 2,
   "editor.trimAutoWhitespace": true,
@@ -7,10 +9,17 @@
   "[html]": {
     "editor.formatOnSave": false
   },
+  "[javascript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
   "editor.codeActionsOnSave": {
     "source.organizeImports": true,
     "source.fixAll.eslint": true
   },
+  "files.eol": "\n",
   "files.exclude": {
     "**/.DS_Store": true,
     "**/.git": true,
@@ -35,5 +44,6 @@
   "eslint.validate": [
     "javascript",
     "typescript"
-  ]
+  ],
+  "eslint.format.enable": true
 }

@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.20.2](https://github.com/strongloop/loopback-next/compare/@loopback/cli@2.20.1...@loopback/cli@2.20.2) (2021-04-06)
+
+**Note:** Version bump only for package @loopback/cli
+
+
+
+
+
+## [2.20.1](https://github.com/strongloop/loopback-next/compare/@loopback/cli@2.20.0...@loopback/cli@2.20.1) (2021-04-06)
+
+
+### Bug Fixes
+
+* cli openapi generator op name inference ([a9b561c](https://github.com/strongloop/loopback-next/commit/a9b561c3a322aa6a6a4b725dc4da6e3881c21a4c)), closes [#3417](https://github.com/strongloop/loopback-next/issues/3417)
+
+
+
+
+
 # [2.20.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@2.19.0...@loopback/cli@2.20.0) (2021-03-18)
 
 

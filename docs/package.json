@@ -1,6 +1,6 @@
 {
   "name": "@loopback/docs",
-  "version": "3.23.0",
+  "version": "3.24.1",
   "description": "Documentation files rendered at [https://loopback.io](https://loopback.io)",
   "homepage": "https://github.com/strongloop/loopback-next/tree/master/docs",
   "author": "IBM Corp.",
@@ -11,10 +11,10 @@
   },
   "dependencies": {
     "fs-extra": "^9.1.0",
-    "tslib": "^2.1.0"
+    "tslib": "^2.2.0"
   },
   "devDependencies": {
-    "@loopback/build": "^6.3.0"
+    "@loopback/build": "^6.3.1"
   },
   "engines": {
     "node": "^10.16 || 12 || 14 || 15"

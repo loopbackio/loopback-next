@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.24.1](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.24.0...@loopback/docs@3.24.1) (2021-04-06)
+
+**Note:** Version bump only for package @loopback/docs
+
+
+
+
+
+# [3.24.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.23.0...@loopback/docs@3.24.0) (2021-04-06)
+
+
+### Bug Fixes
+
+* **docs:** fix mutation name in openapi-to-graphql how-to guide ([13aaa8c](https://github.com/strongloop/loopback-next/commit/13aaa8c165354fe55d2aedae345370cbe11e5677))
+
+
+### Features
+
+* allow one strategy to fail the authentication process ([adbbf24](https://github.com/strongloop/loopback-next/commit/adbbf2439ffff42e5e6e3078d479e9c2031c196b))
+
+
+
+
+
 # [3.23.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.22.0...@loopback/docs@3.23.0) (2021-03-18)
 
 

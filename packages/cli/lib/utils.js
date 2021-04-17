@@ -286,7 +286,10 @@ exports.validateUrlSlug = function (name) {
   }
   const separators = ['-', '.', '_', '~', ''];
   const possibleSlugs = separators.map(separator =>
-    urlSlug(name, separator, false),
+    urlSlug(name, {
+      separator,
+      transformer: false,
+    }),
   );
   if (!possibleSlugs.includes(name))
     return `Invalid url slug. Suggested slug: ${backslashIfNeeded}${possibleSlugs[0]}`;

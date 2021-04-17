@@ -1,6 +1,6 @@
 {
   "name": "@loopback/openapi-spec-builder",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "Make it easy to create OpenAPI (Swagger) specification documents in your tests using the builder pattern.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -22,13 +22,13 @@
   },
   "dependencies": {
     "openapi3-ts": "^2.0.1",
-    "tslib": "^2.1.0"
+    "tslib": "^2.2.0"
   },
   "devDependencies": {
-    "@loopback/build": "^6.3.0",
-    "@loopback/eslint-config": "^10.1.0",
-    "@loopback/testlab": "^3.3.0",
-    "@types/node": "^10.17.55"
+    "@loopback/build": "^6.3.1",
+    "@loopback/eslint-config": "^10.1.1",
+    "@loopback/testlab": "^3.3.1",
+    "@types/node": "^10.17.58"
   },
   "keywords": [
     "Swagger",

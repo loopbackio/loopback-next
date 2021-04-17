@@ -1,6 +1,6 @@
 {
   "name": "@loopback/logging",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "An extension exposes logging for Winston and Fluentd with LoopBack 4",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -21,24 +21,24 @@
     "access": "public"
   },
   "peerDependencies": {
-    "@loopback/core": "^2.15.0",
-    "@loopback/rest": "^9.2.0"
+    "@loopback/core": "^2.15.1",
+    "@loopback/rest": "^9.2.1"
   },
   "dependencies": {
     "fluent-logger": "^3.4.1",
     "morgan": "^1.10.0",
-    "tslib": "^2.1.0",
+    "tslib": "^2.2.0",
     "winston": "^3.3.3",
     "winston-transport": "^4.4.0"
   },
   "devDependencies": {
-    "@loopback/build": "^6.3.0",
-    "@loopback/core": "^2.15.0",
-    "@loopback/eslint-config": "^10.1.0",
-    "@loopback/rest": "^9.2.0",
-    "@loopback/testlab": "^3.3.0",
+    "@loopback/build": "^6.3.1",
+    "@loopback/core": "^2.15.1",
+    "@loopback/eslint-config": "^10.1.1",
+    "@loopback/rest": "^9.2.1",
+    "@loopback/testlab": "^3.3.1",
     "@types/morgan": "^1.9.2",
-    "@types/node": "^10.17.55"
+    "@types/node": "^10.17.58"
   },
   "keywords": [
     "LoopBack",

@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.1](https://github.com/strongloop/loopback-next/compare/@loopback/mock-oauth2-provider@0.2.0...@loopback/mock-oauth2-provider@0.2.1) (2021-04-06)
+
+**Note:** Version bump only for package @loopback/mock-oauth2-provider
+
+
+
+
+
 # [0.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/mock-oauth2-provider@0.1.15...@loopback/mock-oauth2-provider@0.2.0) (2021-03-18)
 
 

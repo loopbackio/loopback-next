@@ -2,20 +2,21 @@
   "name": "loopback-next",
   "description": "Monorepo for LoopBack 4 - A highly extensible Node.js and TypeScript framework for building APIs and microservices",
   "version": "0.1.0",
-  "author": "IBM Corp.",
+  "private": true,
   "license": "MIT",
+  "author": "IBM Corp.",
   "copyright.owner": "IBM Corp.",
-  "engines": {
-    "node": "^10.16 || 12 || 14 || 15",
-    "npm": ">=7"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/strongloop/loopback-next.git"
   },
+  "engines": {
+    "node": "^10.16 || 12 || 14 || 15",
+    "npm": ">=7"
+  },
   "scripts": {
     "bootstrap": "lerna bootstrap",
-    "postinstall": "npm run -s bootstrap && npm run -s update-ts-project-refs",
+    "postinstall": "husky install && npm run -s bootstrap && npm run -s update-ts-project-refs",
     "update-ts-project-refs": "node packages/monorepo/lib/update-ts-project-refs.js",
     "update-packages": "npm run -s update-package-locks",
     "check-package-metadata": "node bin/check-package-metadata.js",
@@ -61,34 +62,27 @@
     "posttest": "npm run lint"
   },
   "devDependencies": {
-    "@commitlint/cli": "^12.0.1",
-    "@commitlint/config-conventional": "^12.0.1",
+    "@commitlint/cli": "^12.1.1",
+    "@commitlint/config-conventional": "^12.1.1",
     "@types/mocha": "^8.2.2",
-    "@typescript-eslint/eslint-plugin": "^4.19.0",
-    "@typescript-eslint/parser": "^4.19.0",
+    "@typescript-eslint/eslint-plugin": "^4.22.0",
+    "@typescript-eslint/parser": "^4.22.0",
     "coveralls": "^3.1.0",
     "cross-env": "^7.0.3",
     "cz-conventional-changelog": "^3.3.0",
-    "eslint": "^7.23.0",
-    "eslint-config-prettier": "^8.1.0",
-    "eslint-plugin-eslint-plugin": "^2.3.0",
+    "eslint": "^7.24.0",
+    "eslint-config-prettier": "^8.2.0",
+    "eslint-plugin-eslint-plugin": "^3.0.2",
     "eslint-plugin-mocha": "^8.1.0",
-    "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-prettier": "^3.4.0",
     "fs-extra": "^9.1.0",
-    "husky": "^5.2.0",
-    "if-env": "^1.0.4",
+    "husky": "^6.0.0",
     "lerna": "^4.0.0",
     "lint-staged": "^10.5.4",
     "markdown-table": "^3.0.0",
     "open-cli": "^6.0.1",
     "prettier": "^2.2.1",
-    "typescript": "~4.2.3"
-  },
-  "husky": {
-    "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-      "pre-commit": "if-env LINT_STAGED=0 && echo \"lint-staged disabled via LINT_STAGED env var\" || lint-staged"
-    }
+    "typescript": "~4.2.4"
   },
   "config": {
     "commitizen": {
