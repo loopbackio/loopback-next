@@ -372,7 +372,7 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
     ];
 
     const answers = await this.prompt(prompts);
-    debug(`propName => ${JSON.stringify(answers)}`);
+    debug('propName => ', answers);
     if (answers.propName) {
       this.artifactInfo.properties[answers.propName] = {};
       this.propName = answers.propName;
