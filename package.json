@@ -53,7 +53,6 @@
     "build:full": "npm ci --ignore-scripts && lerna bootstrap --ci && npm run clean && npm run build",
     "pretest": "npm run clean && npm run build",
     "test": "node packages/build/bin/run-nyc npm run mocha",
-    "test:ci": "node packages/build/bin/run-nyc npm run mocha",
     "verify:docs": "npm run build:site -- --verify",
     "build:site": "./bin/build-docs-site.sh",
     "docs:prepare": "./docs/bin/build-preview-site.sh",
