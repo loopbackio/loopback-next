@@ -4,7 +4,10 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {HttpOptions} from '@loopback/http-server';
-import {ApolloServerExpressConfig} from 'apollo-server-express';
+import {
+  ApolloServerExpressConfig,
+  GetMiddlewareOptions,
+} from 'apollo-server-express';
 
 export {ContextFunction} from 'apollo-server-core';
 export {ApolloServerExpressConfig} from 'apollo-server-express';
@@ -27,6 +30,12 @@ export interface GraphQLServerOptions extends HttpOptions {
    * ApolloServerExpress related configuration
    */
   apollo?: ApolloServerExpressConfig;
+
+  /**
+   * Middleware options for GraphQL
+   */
+  middlewareOptions?: GetMiddlewareOptions;
+
   /**
    * Express settings
    */
