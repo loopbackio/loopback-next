@@ -6,7 +6,7 @@
   "types": "dist/index.d.ts",
   "unpkg": "dist/bundle-web.js",
   "engines": {
-    "node": "^10.16 || 12 || 14 || 15"
+    "node": "^10.16 || 12 || 14 || 16"
   },
   "author": "IBM Corp.",
   "copyright.owner": "IBM Corp.",

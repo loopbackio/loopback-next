@@ -3,7 +3,7 @@
   "version": "0.3.1",
   "description": "LoopBack's graphql integration",
   "engines": {
-    "node": "^10.16 || 12 || 14 || 15"
+    "node": "^10.16 || 12 || 14 || 16"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
