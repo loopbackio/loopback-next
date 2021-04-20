@@ -41,7 +41,7 @@ jobs:
         run: npm run build
       - uses: Yuri6037/Action-FakeTTY@v1.1
       - name: Run tests
-        run: faketty npm run test:ci
+        run: faketty npm test --ignore-scripts
 
   test-benchmark:
     name: Test Benchmark
