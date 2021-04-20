@@ -10,7 +10,6 @@ on:
     - cron: '0 2 * * 1' # At 02:00 on Monday
 
 env:
-  CI: true
   NODE_OPTIONS: --max-old-space-size=4096
 
 jobs:
@@ -20,10 +19,10 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node-version: [10, 12, 14]
+        node-version: [10, 12, 14, 16]
         include:
           - os: macos-latest
-            node-version: 14
+            node-version: 14 # LTS
       fail-fast: false
     runs-on: ${{ matrix.os }}
     steps:
@@ -56,7 +55,7 @@ jobs:
       - name: Bootstrap benchmark tests
         run: |
           npm ci --ignore-scripts
-          ./node_modules/.bin/lerna bootstrap --scope "@loopback/benchmark" --include-dependencies
+          npx lerna bootstrap --scope "@loopback/benchmark" --include-dependencies
       - name: Run benchmark tests
         run: npm test --prefix benchmark
 
@@ -95,9 +94,9 @@ jobs:
       - name: Install monorepo tools
         run: |
           npm ci --ignore-scripts
-          ./node_modules/.bin/lerna bootstrap --scope "@loopback/monorepo" --include-dependencies
+          npx lerna bootstrap --scope "@loopback/monorepo" --include-dependencies
       - name: Verify commit linting
-        run: ./node_modules/.bin/commitlint --from origin/master --to HEAD --verbose
+        run: npx commitlint --from origin/master --to HEAD --verbose
 
   verify-docs:
     name: Verify Docs
