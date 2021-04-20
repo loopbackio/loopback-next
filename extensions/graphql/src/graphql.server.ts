@@ -156,7 +156,10 @@ export class GraphQLServer extends Context implements Server {
       schema,
     };
     const graphQLServer = new ApolloServer(serverConfig);
-    graphQLServer.applyMiddleware({app: this.expressApp});
+    graphQLServer.applyMiddleware({
+      app: this.expressApp,
+      ...this.options.middlewareOptions,
+    });
 
     // Set up subscription handlers
     if (this.httpServer && serverConfig.subscriptions) {
