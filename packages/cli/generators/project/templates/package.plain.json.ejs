@@ -10,7 +10,7 @@
   "private": true,
 <% } -%>
   "main": "dist/index.js",
-  "main": "types/index.d.ts",
+  "types": "dist/index.d.ts",
   "engines": {
     "node": ">=10.16"
   },
@@ -134,12 +134,17 @@
 <% if (project.projectType === 'application') { -%>
     "@loopback/boot": "<%= project.dependencies['@loopback/boot'] -%>",
     "@loopback/core": "<%= project.dependencies['@loopback/core'] -%>",
+<% if (project.repositories) { -%>
     "@loopback/repository": "<%= project.dependencies['@loopback/repository'] -%>",
+<% } -%>
 <% if (project.apiconnect) { -%>
     "@loopback/apiconnect": "<%= project.dependencies['@loopback/apiconnect'] -%>",
 <% } -%>
     "@loopback/rest": "<%= project.dependencies['@loopback/rest'] -%>",
     "@loopback/rest-explorer": "<%= project.dependencies['@loopback/rest-explorer'] -%>",
+<% } -%>
+<% if (project.services) { -%>
+    "@loopback/service-proxy": "<%= project.dependencies['@loopback/service-proxy'] -%>",
 <% } -%>
     "tslib": "<%= project.dependencies['tslib'] -%>"
   },
@@ -159,9 +164,6 @@
 <% } -%>
 <% if (project.prettier) { -%>
     "prettier": "<%= project.dependencies['prettier'] -%>",
-<% } -%>
-<% if (project.mocha) { -%>
-    "source-map-support": "<%= project.dependencies['source-map-support'] -%>",
 <% } -%>
 <% if (project.eslint) { -%>
     "@loopback/eslint-config": "<%= project.dependencies['@loopback/eslint-config'] -%>",
