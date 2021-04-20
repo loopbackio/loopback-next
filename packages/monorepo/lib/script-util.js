@@ -113,6 +113,18 @@ function isTypeScriptPackage(pkg) {
 }
 
 /**
+ * Check if a package is Monorepo
+ * @param {object} pkg - Lerna package
+ */
+function isMonorepoPackage(pkg) {
+  const json = pkg.toJSON();
+  return (
+    Array.isArray(json.workspaces) ||
+    fs.existsSync(path.join(pkg.location, 'lerna.json'))
+  );
+}
+
+/**
  * Run the command in a shell
  * @param {string} command The command
  * @param {string[]} args The arguments
@@ -227,6 +239,7 @@ exports.isJsonEqual = isJsonEqual;
 exports.cloneJson = cloneJson;
 exports.printJson = printJson;
 exports.isTypeScriptPackage = isTypeScriptPackage;
+exports.isMonorepoPackage = isMonorepoPackage;
 exports.writeJsonSync = writeJsonSync;
 exports.stringifyJson = stringifyJson;
 exports.traverseLernaRepo = traverseLernaRepo;
