@@ -508,11 +508,21 @@ export class Binding<T = BoundValue> extends EventEmitter {
     const options = asResolutionOptions(optionsOrSession);
     const resolutionCtx = this.getResolutionContext(ctx, options);
     if (resolutionCtx == null) return undefined;
+
+    // Keep a snapshot for proxy
+    const savedSession =
+      ResolutionSession.fork(options.session) ?? new ResolutionSession();
+
     // First check cached value for non-transient
     if (this._cache) {
       if (this.scope !== BindingScope.TRANSIENT) {
         if (resolutionCtx && this._cache.has(resolutionCtx)) {
-          return this._cache.get(resolutionCtx)!;
+          const value = this._cache.get(resolutionCtx)!;
+          return this.getValueOrProxy(
+            resolutionCtx,
+            {...options, session: savedSession},
+            value,
+          );
         }
       }
     }
@@ -524,7 +534,12 @@ export class Binding<T = BoundValue> extends EventEmitter {
     if (typeof this._getValue === 'function') {
       const result = ResolutionSession.runWithBinding(
         s => {
-          const optionsWithSession = {...options, session: s};
+          const optionsWithSession = {
+            ...options,
+            session: s,
+            // Force to be the non-proxy version
+            asProxyWithInterceptors: false,
+          };
           // We already test `this._getValue` is a function. It's safe to assert
           // that `this._getValue` is not undefined.
           return this._getValue!({
@@ -535,7 +550,12 @@ export class Binding<T = BoundValue> extends EventEmitter {
         this,
         options.session,
       );
-      return this._cacheValue(resolutionCtx!, result);
+      const value = this._cacheValue(resolutionCtx!, result);
+      return this.getValueOrProxy(
+        resolutionCtx,
+        {...options, session: savedSession},
+        value,
+      );
     }
     // `@inject.binding` adds a binding without _getValue
     if (options.optional) return undefined;
@@ -544,6 +564,23 @@ export class Binding<T = BoundValue> extends EventEmitter {
         `No value was configured for binding ${this.key}.`,
         resolutionMetadata,
       ),
+    );
+  }
+
+  private getValueOrProxy(
+    resolutionCtx: Context,
+    options: ResolutionOptions,
+    value: ValueOrPromise<T>,
+  ): ValueOrPromise<T> {
+    const session = options.session!;
+    session.pushBinding(this);
+    return Binding.valueOrProxy(
+      {
+        context: resolutionCtx,
+        binding: this,
+        options,
+      },
+      value,
     );
   }
 
