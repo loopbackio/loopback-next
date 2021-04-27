@@ -35,7 +35,7 @@
     "@loopback/rest": "^9.2.1",
     "@loopback/testlab": "^3.3.1",
     "@types/lodash": "^4.14.168",
-    "@types/node": "^10.17.58",
+    "@types/node": "^10.17.59",
     "eslint": "^7.25.0",
     "lodash": "^4.17.21",
     "should": "^13.2.3",
