@@ -348,14 +348,14 @@ provide your own `User` model and repository.
        // Bind datasource
        this.dataSource(DbDataSource, UserServiceBindings.DATASOURCE_NAME);
        // Bind user service
-       this.bind(UserServiceBindings.USER_SERVICE).toClass(CustomUserService),
+       this.bind(UserServiceBindings.USER_SERVICE).toClass(CustomUserService);
        // Bind user and credentials repository
        this.bind(UserServiceBindings.USER_REPOSITORY).toClass(
          UserRepository,
-       ),
+       );
        this.bind(UserServiceBindings.USER_CREDENTIALS_REPOSITORY).toClass(
          UserCredentialsRepository,
-       ),
+       );
      }
    }
    ```
@@ -368,7 +368,7 @@ provide your own `User` model and repository.
   // for jwt access token
   this.bind(TokenServiceBindings.TOKEN_SECRET).to("<yourSecret>");
   // for refresh token
-  this.bind(RefreshTokenServiceBindings.TOKEN_SECRET).to("<yourSecret>");
+  this.bind(RefreshTokenServiceBindings.REFRESH_SECRET).to("<yourSecret>");
 ```
 
 2. To change token expiration. to learn more about expiration time here at
@@ -378,7 +378,7 @@ provide your own `User` model and repository.
   // for jwt access token expiration
     this.bind(TokenServiceBindings.TOKEN_EXPIRES_IN).to("<Expiration Time in sec>");
   // for refresh token expiration
-    this.bind(RefreshTokenServiceBindings.TOKEN_EXPIRES_IN).to("<Expiration Time in sec>");
+    this.bind(RefreshTokenServiceBindings.REFRESH_EXPIRES_IN).to("<Expiration Time in sec>");
 ```
 
 ## Future Work
