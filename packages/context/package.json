@@ -1,9 +1,26 @@
 {
   "name": "@loopback/context",
-  "version": "3.15.1",
   "description": "Facilities to manage artifacts and their dependencies in your Node.js applications. The module exposes TypeScript/JavaScript APIs and decorators to register artifacts, declare dependencies, and resolve artifacts by keys. It also serves as an IoC container to support dependency injection",
+  "version": "3.15.1",
+  "keywords": [
+    "LoopBack",
+    "IoC",
+    "Inversion",
+    "Control",
+    "Container",
+    "Decorators",
+    "Context"
+  ],
+  "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "packages/context"
+  },
   "engines": {
     "node": "^10.16 || 12 || 14 || 16"
   },
@@ -16,12 +33,15 @@
     "unit": "lb-mocha \"dist/__tests__/unit/**/*.js\"",
     "verify": "npm pack && tar xf loopback-context*.tgz && tree package && npm run clean"
   },
-  "author": "IBM Corp.",
-  "copyright.owner": "IBM Corp.",
-  "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
+  "files": [
+    "README.md",
+    "dist",
+    "src",
+    "!*/__tests__"
+  ],
   "dependencies": {
     "@loopback/metadata": "^3.2.1",
     "@types/debug": "^4.1.5",
@@ -39,25 +59,5 @@
     "@types/node": "^10.17.59",
     "@types/uuid": "^8.3.0",
     "bluebird": "^3.7.2"
-  },
-  "keywords": [
-    "LoopBack",
-    "IoC",
-    "Inversion",
-    "Control",
-    "Container",
-    "Decorators",
-    "Context"
-  ],
-  "files": [
-    "README.md",
-    "dist",
-    "src",
-    "!*/__tests__"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/strongloop/loopback-next.git",
-    "directory": "packages/context"
   }
 }

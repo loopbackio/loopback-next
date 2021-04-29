@@ -1,9 +1,22 @@
 {
   "name": "@loopback/authentication-jwt",
-  "version": "0.8.1",
   "description": "Extension for the prototype of JWT authentication",
+  "version": "0.8.1",
+  "keywords": [
+    "LoopBack",
+    "Authentication",
+    "jsonwebtoken"
+  ],
+  "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "extensions/authentication-jwt"
+  },
   "engines": {
     "node": "^10.16 || 12 || 14 || 16"
   },
@@ -14,12 +27,15 @@
     "test": "lb-mocha \"dist/__tests__/unit/*.js\" \"dist/__tests__/acceptance/*.js\"",
     "verify": "npm pack && tar xf loopback-authentication-jwt*.tgz && tree package && npm run clean"
   },
-  "author": "IBM Corp.",
-  "copyright.owner": "IBM Corp.",
-  "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
+  "files": [
+    "README.md",
+    "dist",
+    "src",
+    "!*/__tests__"
+  ],
   "peerDependencies": {
     "@loopback/authentication": "^7.2.0",
     "@loopback/core": "^2.15.1",
@@ -46,21 +62,5 @@
     "@types/node": "^10.17.59",
     "lodash": "^4.17.21",
     "typescript": "~4.2.4"
-  },
-  "keywords": [
-    "LoopBack",
-    "Authentication",
-    "jsonwebtoken"
-  ],
-  "files": [
-    "README.md",
-    "dist",
-    "src",
-    "!*/__tests__"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/strongloop/loopback-next.git",
-    "directory": "extensions/authentication-jwt"
   }
 }

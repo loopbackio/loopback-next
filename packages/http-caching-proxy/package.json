@@ -1,9 +1,24 @@
 {
   "name": "@loopback/http-caching-proxy",
-  "version": "2.2.1",
   "description": "A caching HTTP proxy for integration tests. NOT SUITABLE FOR PRODUCTION USE!",
+  "version": "2.2.1",
+  "keywords": [
+    "LoopBack",
+    "HTTP",
+    "Proxy",
+    "Cache",
+    "Test"
+  ],
+  "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "packages/http-caching-proxy"
+  },
   "engines": {
     "node": "^10.16 || 12 || 14 || 16"
   },
@@ -14,12 +29,15 @@
     "test": "lb-mocha \"dist/__tests__/**/*.js\"",
     "verify": "npm pack && tar xf loopback-caching-proxy*.tgz && tree package && npm run clean"
   },
-  "author": "IBM Corp.",
-  "copyright.owner": "IBM Corp.",
-  "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
+  "files": [
+    "README.md",
+    "dist",
+    "src",
+    "!*/__tests__"
+  ],
   "dependencies": {
     "axios": "^0.21.0",
     "cacache": "^15.0.6",
@@ -37,23 +55,5 @@
     "@types/tunnel": "0.0.2",
     "delay": "^5.0.0",
     "tunnel": "0.0.6"
-  },
-  "keywords": [
-    "LoopBack",
-    "HTTP",
-    "Proxy",
-    "Cache",
-    "Test"
-  ],
-  "files": [
-    "README.md",
-    "dist",
-    "src",
-    "!*/__tests__"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/strongloop/loopback-next.git",
-    "directory": "packages/http-caching-proxy"
   }
 }

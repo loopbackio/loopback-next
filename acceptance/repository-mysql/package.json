@@ -1,10 +1,18 @@
 {
   "name": "@loopback/test-repository-mysql",
-  "version": "0.8.1",
   "description": "Acceptance tests for `@loopback/repository` + `loopback-connector-mysql`",
+  "version": "0.8.1",
   "private": true,
+  "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "acceptance/repository-mysql"
+  },
   "engines": {
     "node": "^10.16 || 12 || 14 || 16"
   },
@@ -16,9 +24,12 @@
     "mocha": "lb-mocha \"dist/__tests__/**/*.js\"",
     "verify": "npm pack && tar xf loopback-test-repository-mysql*.tgz && tree package && npm run clean"
   },
-  "author": "IBM Corp.",
-  "copyright.owner": "IBM Corp.",
-  "license": "MIT",
+  "files": [
+    "README.md",
+    "dist",
+    "src",
+    "!*/__tests__"
+  ],
   "devDependencies": {
     "@loopback/build": "^6.3.1",
     "@loopback/eslint-config": "^10.1.1",
@@ -28,16 +39,5 @@
     "@types/node": "^10.17.59",
     "loopback-connector-mysql": "^6.0.0",
     "tslib": "^2.2.0"
-  },
-  "files": [
-    "README.md",
-    "dist",
-    "src",
-    "!*/__tests__"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/strongloop/loopback-next.git",
-    "directory": "acceptance/repository-mysql"
   }
 }

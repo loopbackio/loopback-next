@@ -1,29 +1,25 @@
 {
   "name": "@loopback/example-context",
-  "version": "2.2.1",
   "description": "Standalone examples to illustrate features provided by @loopback/context",
+  "version": "2.2.1",
+  "keywords": [
+    "loopback",
+    "LoopBack",
+    "example",
+    "tutorial"
+  ],
+  "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "engines": {
-    "node": "^10.16 || 12 || 14 || 16"
-  },
   "author": "IBM Corp.",
   "copyright.owner": "IBM Corp.",
-  "license": "MIT",
-  "publishConfig": {
-    "access": "public"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "examples/context"
   },
-  "dependencies": {
-    "@loopback/context": "^3.15.1",
-    "tslib": "^2.2.0"
-  },
-  "devDependencies": {
-    "@loopback/build": "^6.3.1",
-    "@loopback/eslint-config": "^10.1.1",
-    "@loopback/testlab": "^3.3.1",
-    "@types/node": "^10.17.59",
-    "eslint": "^7.25.0",
-    "typescript": "~4.2.4"
+  "engines": {
+    "node": "^10.16 || 12 || 14 || 16"
   },
   "scripts": {
     "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
@@ -46,15 +42,19 @@
     "prestart": "npm run rebuild",
     "start": "node ."
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/strongloop/loopback-next.git",
-    "directory": "examples/context"
+  "publishConfig": {
+    "access": "public"
   },
-  "keywords": [
-    "loopback",
-    "LoopBack",
-    "example",
-    "tutorial"
-  ]
+  "dependencies": {
+    "@loopback/context": "^3.15.1",
+    "tslib": "^2.2.0"
+  },
+  "devDependencies": {
+    "@loopback/build": "^6.3.1",
+    "@loopback/eslint-config": "^10.1.1",
+    "@loopback/testlab": "^3.3.1",
+    "@types/node": "^10.17.59",
+    "eslint": "^7.25.0",
+    "typescript": "~4.2.4"
+  }
 }

@@ -1,13 +1,21 @@
 {
   "name": "@loopback/example-socketio",
-  "version": "0.2.1",
   "description": "This is an example for spinning up socket server.",
+  "version": "0.2.1",
   "keywords": [
     "loopback-application",
     "loopback"
   ],
+  "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "examples/socketio"
+  },
   "engines": {
     "node": "^10.16 || 12 || 14 || 16"
   },
@@ -33,22 +41,15 @@
     "start": "node -r source-map-support/register .",
     "clean": "lb-clean dist *.tsbuildinfo .eslintcache"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/strongloop/loopback-next.git",
-    "directory": "examples/socketio"
+  "publishConfig": {
+    "access": "public"
   },
-  "author": "IBM Corp.",
-  "license": "MIT",
   "files": [
     "README.md",
     "dist",
     "src",
     "!*/__tests__"
   ],
-  "publishConfig": {
-    "access": "public"
-  },
   "dependencies": {
     "@loopback/boot": "^3.3.1",
     "@loopback/core": "^2.15.1",
@@ -70,6 +71,5 @@
     "eslint": "^7.25.0",
     "source-map-support": "^0.5.19",
     "typescript": "~4.2.4"
-  },
-  "copyright.owner": "IBM Corp."
+  }
 }

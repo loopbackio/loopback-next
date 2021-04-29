@@ -1,9 +1,17 @@
 {
   "name": "@loopback/rest",
-  "version": "9.2.1",
   "description": "Expose controllers as REST endpoints and route REST API requests to controller methods",
+  "version": "9.2.1",
+  "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "packages/rest"
+  },
   "engines": {
     "node": "^10.16 || 12 || 14 || 16"
   },
@@ -17,12 +25,15 @@
     "unit": "lb-mocha \"dist/__tests__/unit/**/*.js\"",
     "verify": "npm pack && tar xf loopback-rest*.tgz && tree package && npm run clean"
   },
-  "author": "IBM Corp.",
-  "copyright.owner": "IBM Corp.",
-  "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
+  "files": [
+    "README.md",
+    "dist",
+    "src",
+    "!*/__tests__"
+  ],
   "peerDependencies": {
     "@loopback/core": "^2.15.1"
   },
@@ -74,16 +85,5 @@
     "@types/on-finished": "^2.3.1",
     "@types/qs": "^6.9.6",
     "multer": "^1.4.2"
-  },
-  "files": [
-    "README.md",
-    "dist",
-    "src",
-    "!*/__tests__"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/strongloop/loopback-next.git",
-    "directory": "packages/rest"
   }
 }

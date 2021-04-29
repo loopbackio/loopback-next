@@ -1,9 +1,17 @@
 {
   "name": "@loopback/rest-msgpack",
-  "version": "0.4.1",
   "description": "Body parser to handle MessagePack requests in LoopBack 4.",
+  "version": "0.4.1",
+  "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "bodyparsers/rest-msgpack"
+  },
   "engines": {
     "node": "^10.16 || 12 || 14 || 16"
   },
@@ -14,23 +22,15 @@
     "test": "lb-mocha \"dist/__tests__/**/*.js\"",
     "clean": "lb-clean dist *.tsbuildinfo .eslintcache"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/strongloop/loopback-next.git",
-    "directory": "bodyparsers/rest-msgpack"
+  "publishConfig": {
+    "access": "public"
   },
-  "author": "IBM Corp.",
-  "license": "MIT",
   "files": [
     "README.md",
     "dist",
     "src",
     "!*/__tests__"
   ],
-  "copyright.owner": "IBM Corp.",
-  "publishConfig": {
-    "access": "public"
-  },
   "peerDependencies": {
     "@loopback/core": "^2.15.1",
     "@loopback/rest": "^9.2.1"

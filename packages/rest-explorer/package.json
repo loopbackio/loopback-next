@@ -1,9 +1,22 @@
 {
   "name": "@loopback/rest-explorer",
-  "version": "3.2.1",
   "description": "LoopBack's API Explorer",
+  "version": "3.2.1",
+  "keywords": [
+    "LoopBack",
+    "Explorer",
+    "Swagger"
+  ],
+  "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "packages/rest-explorer"
+  },
   "engines": {
     "node": "^10.16 || 12 || 14 || 16"
   },
@@ -14,12 +27,16 @@
     "test": "lb-mocha \"dist/__tests__/**/*.js\"",
     "verify": "npm pack && tar xf loopback-explorer*.tgz && tree package && npm run clean"
   },
-  "author": "IBM Corp.",
-  "copyright.owner": "IBM Corp.",
-  "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
+  "files": [
+    "README.md",
+    "dist",
+    "src",
+    "!*/__tests__",
+    "templates"
+  ],
   "peerDependencies": {
     "@loopback/core": "^2.15.1",
     "@loopback/rest": "^9.2.1"
@@ -39,22 +56,5 @@
     "@types/express": "^4.17.11",
     "@types/node": "^10.17.59",
     "express": "^4.17.1"
-  },
-  "keywords": [
-    "LoopBack",
-    "Explorer",
-    "Swagger"
-  ],
-  "files": [
-    "README.md",
-    "dist",
-    "src",
-    "!*/__tests__",
-    "templates"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/strongloop/loopback-next.git",
-    "directory": "packages/rest-explorer"
   }
 }

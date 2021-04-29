@@ -1,9 +1,17 @@
 {
   "name": "@loopback/filter",
-  "version": "1.4.1",
   "description": "Utility typings and filters for LoopBack filters.",
+  "version": "1.4.1",
+  "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "packages/filter"
+  },
   "engines": {
     "node": "^10.16 || 12 || 14 || 16"
   },
@@ -14,23 +22,15 @@
     "test": "lb-mocha \"dist/__tests__/**/*.js\"",
     "clean": "lb-clean dist *.tsbuildinfo .eslintcache"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/strongloop/loopback-next.git",
-    "directory": "packages/filter"
+  "publishConfig": {
+    "access": "public"
   },
-  "author": "IBM Corp.",
-  "license": "MIT",
   "files": [
     "README.md",
     "dist",
     "src",
     "!*/__tests__"
   ],
-  "copyright.owner": "IBM Corp.",
-  "publishConfig": {
-    "access": "public"
-  },
   "dependencies": {
     "tslib": "^2.2.0"
   },

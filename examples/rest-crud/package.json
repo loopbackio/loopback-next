@@ -1,38 +1,27 @@
 {
   "name": "@loopback/example-rest-crud",
-  "version": "1.8.1",
   "description": "An example showing how to use @loopback/rest-crud to define default repository and controller classes",
+  "version": "1.8.1",
+  "keywords": [
+    "loopback",
+    "LoopBack",
+    "example",
+    "CRUD",
+    "models",
+    "todo"
+  ],
+  "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "engines": {
-    "node": "^10.16 || 12 || 14 || 16"
-  },
   "author": "IBM Corp.",
   "copyright.owner": "IBM Corp.",
-  "license": "MIT",
-  "publishConfig": {
-    "access": "public"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "examples/rest-crud"
   },
-  "dependencies": {
-    "@loopback/boot": "^3.3.1",
-    "@loopback/core": "^2.15.1",
-    "@loopback/repository": "^3.5.1",
-    "@loopback/rest": "^9.2.1",
-    "@loopback/rest-crud": "^0.9.1",
-    "@loopback/rest-explorer": "^3.2.1",
-    "loopback-connector-rest": "^4.0.1",
-    "tslib": "^2.2.0"
-  },
-  "devDependencies": {
-    "@loopback/build": "^6.3.1",
-    "@loopback/eslint-config": "^10.1.1",
-    "@loopback/http-caching-proxy": "^2.2.1",
-    "@loopback/testlab": "^3.3.1",
-    "@types/lodash": "^4.14.168",
-    "@types/node": "^10.17.59",
-    "eslint": "^7.25.0",
-    "lodash": "^4.17.21",
-    "typescript": "~4.2.4"
+  "engines": {
+    "node": "^10.16 || 12 || 14 || 16"
   },
   "scripts": {
     "build": "lb-tsc",
@@ -57,17 +46,28 @@
     "prestart": "npm run rebuild",
     "start": "node ."
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/strongloop/loopback-next.git",
-    "directory": "examples/rest-crud"
+  "publishConfig": {
+    "access": "public"
   },
-  "keywords": [
-    "loopback",
-    "LoopBack",
-    "example",
-    "CRUD",
-    "models",
-    "todo"
-  ]
+  "dependencies": {
+    "@loopback/boot": "^3.3.1",
+    "@loopback/core": "^2.15.1",
+    "@loopback/repository": "^3.5.1",
+    "@loopback/rest": "^9.2.1",
+    "@loopback/rest-crud": "^0.9.1",
+    "@loopback/rest-explorer": "^3.2.1",
+    "loopback-connector-rest": "^4.0.1",
+    "tslib": "^2.2.0"
+  },
+  "devDependencies": {
+    "@loopback/build": "^6.3.1",
+    "@loopback/eslint-config": "^10.1.1",
+    "@loopback/http-caching-proxy": "^2.2.1",
+    "@loopback/testlab": "^3.3.1",
+    "@types/lodash": "^4.14.168",
+    "@types/node": "^10.17.59",
+    "eslint": "^7.25.0",
+    "lodash": "^4.17.21",
+    "typescript": "~4.2.4"
+  }
 }
