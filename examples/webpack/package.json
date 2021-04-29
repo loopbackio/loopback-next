@@ -1,16 +1,38 @@
 {
   "name": "@loopback/example-webpack",
-  "version": "0.3.1",
   "description": "An example to bundle @loopback/core using webpack",
+  "version": "0.3.1",
+  "keywords": [
+    "loopback",
+    "LoopBack",
+    "example",
+    "tutorial"
+  ],
+  "license": "MIT",
   "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "unpkg": "dist/bundle-web.js",
+  "types": "dist/index.d.ts",
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "examples/webpack"
+  },
   "engines": {
     "node": "^10.16 || 12 || 14 || 16"
   },
-  "author": "IBM Corp.",
-  "copyright.owner": "IBM Corp.",
-  "license": "MIT",
+  "scripts": {
+    "build": "lb-tsc",
+    "build:webpack-node": "webpack --config-name node",
+    "build:webpack-web": "webpack --config-name web",
+    "prepack": "npm run build:webpack-web",
+    "clean": "lb-clean loopback-example-webpack*.tgz dist *.tsbuildinfo package",
+    "verify": "npm pack && tar xf loopback-example-webpack*.tgz && tree package && npm run clean",
+    "pretest": "npm run rebuild",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
+    "rebuild": "npm run clean && npm run build"
+  },
   "publishConfig": {
     "access": "public"
   },
@@ -33,27 +55,5 @@
     "webpack": "^5.36.2",
     "webpack-cli": "^4.6.0",
     "zombie": "^6.1.4"
-  },
-  "scripts": {
-    "build": "lb-tsc",
-    "build:webpack-node": "webpack --config-name node",
-    "build:webpack-web": "webpack --config-name web",
-    "prepack": "npm run build:webpack-web",
-    "clean": "lb-clean loopback-example-webpack*.tgz dist *.tsbuildinfo package",
-    "verify": "npm pack && tar xf loopback-example-webpack*.tgz && tree package && npm run clean",
-    "pretest": "npm run rebuild",
-    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
-    "rebuild": "npm run clean && npm run build"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/strongloop/loopback-next.git",
-    "directory": "examples/webpack"
-  },
-  "keywords": [
-    "loopback",
-    "LoopBack",
-    "example",
-    "tutorial"
-  ]
+  }
 }

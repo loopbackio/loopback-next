@@ -1,7 +1,7 @@
 {
   "name": "@loopback/example-binding-resolution",
-  "version": "0.2.1",
   "description": "An example application to demonstrate binding resolution and dependency injection within a context hierarchy",
+  "version": "0.2.1",
   "keywords": [
     "loopback-application",
     "loopback",
@@ -10,8 +10,16 @@
     "context",
     "binding"
   ],
+  "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "examples/binding-resolution"
+  },
   "engines": {
     "node": "^10.16 || 12 || 14 || 16"
   },
@@ -26,16 +34,15 @@
     "start": "node -r source-map-support/register .",
     "clean": "lb-clean dist *.tsbuildinfo .eslintcache"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/strongloop/loopback-next.git",
-    "directory": "examples/binding-resolution"
-  },
-  "author": "IBM Corp.",
-  "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
+  "files": [
+    "README.md",
+    "dist",
+    "src",
+    "!*/__tests__"
+  ],
   "dependencies": {
     "@loopback/boot": "^3.3.1",
     "@loopback/core": "^2.15.1",
@@ -52,12 +59,5 @@
     "eslint": "^7.25.0",
     "source-map-support": "^0.5.19",
     "typescript": "~4.2.4"
-  },
-  "files": [
-    "README.md",
-    "dist",
-    "src",
-    "!*/__tests__"
-  ],
-  "copyright.owner": "IBM Corp."
+  }
 }

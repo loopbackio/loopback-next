@@ -1,9 +1,22 @@
 {
   "name": "@loopback/openapi-v3",
-  "version": "5.2.1",
   "description": "Decorators that annotate LoopBack artifacts with OpenAPI v3 metadata and utilities that transform LoopBack metadata to OpenAPI v3 specifications",
+  "version": "5.2.1",
+  "keywords": [
+    "Swagger",
+    "OpenAPI Spec",
+    "TypeScript"
+  ],
+  "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "packages/openapi-v3"
+  },
   "engines": {
     "node": "^10.16 || 12 || 14 || 16"
   },
@@ -16,12 +29,15 @@
     "unit": "lb-mocha \"dist/__tests__/unit/**/*.js\"",
     "verify": "npm pack && tar xf loopback-openapi-v3*.tgz && tree package && npm run clean"
   },
-  "author": "IBM Corp.",
-  "copyright.owner": "IBM Corp.",
-  "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
+  "files": [
+    "README.md",
+    "dist",
+    "src",
+    "!*/__tests__"
+  ],
   "peerDependencies": {
     "@loopback/core": "^2.15.1"
   },
@@ -45,21 +61,5 @@
     "@types/json-merge-patch": "0.0.5",
     "@types/lodash": "^4.14.168",
     "@types/node": "^10.17.59"
-  },
-  "keywords": [
-    "Swagger",
-    "OpenAPI Spec",
-    "TypeScript"
-  ],
-  "files": [
-    "README.md",
-    "dist",
-    "src",
-    "!*/__tests__"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/strongloop/loopback-next.git",
-    "directory": "packages/openapi-v3"
   }
 }

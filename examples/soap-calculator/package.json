@@ -1,9 +1,7 @@
 {
   "name": "@loopback/example-soap-calculator",
-  "version": "2.5.1",
   "description": "A tutorial demonstrating integration SOAP webservice with LoopBack 4",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "version": "2.5.1",
   "keywords": [
     "loopback",
     "LoopBack",
@@ -11,12 +9,38 @@
     "tutorial",
     "soap"
   ],
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "examples/soap-calculator"
+  },
   "engines": {
     "node": "^10.16 || 12 || 14 || 16"
   },
-  "author": "IBM Corp.",
-  "copyright.owner": "IBM Corp.",
-  "license": "MIT",
+  "scripts": {
+    "build": "lb-tsc",
+    "build:watch": "lb-tsc --watch",
+    "clean": "lb-clean *example-soap*.tgz dist package api-docs dist *.tsbuildinfo",
+    "lint": "npm run prettier:check && npm run eslint",
+    "lint:fix": "npm run eslint:fix && npm run prettier:fix",
+    "prettier:cli": "lb-prettier \"**/*.ts\" \"**/*.js\"",
+    "prettier:check": "npm run prettier:cli -- -l",
+    "prettier:fix": "npm run prettier:cli -- --write",
+    "eslint": "lb-eslint --report-unused-disable-directives .",
+    "eslint:fix": "npm run eslint -- --fix",
+    "pretest": "npm run rebuild",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
+    "posttest": "npm run lint",
+    "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js && npm run posttest",
+    "rebuild": "npm run clean && npm run build",
+    "prestart": "npm run rebuild",
+    "start": "node ."
+  },
   "publishConfig": {
     "access": "public"
   },
@@ -40,29 +64,5 @@
     "mocha": "^8.3.2",
     "source-map-support": "^0.5.19",
     "typescript": "~4.2.4"
-  },
-  "scripts": {
-    "build": "lb-tsc",
-    "build:watch": "lb-tsc --watch",
-    "clean": "lb-clean *example-soap*.tgz dist package api-docs dist *.tsbuildinfo",
-    "lint": "npm run prettier:check && npm run eslint",
-    "lint:fix": "npm run eslint:fix && npm run prettier:fix",
-    "prettier:cli": "lb-prettier \"**/*.ts\" \"**/*.js\"",
-    "prettier:check": "npm run prettier:cli -- -l",
-    "prettier:fix": "npm run prettier:cli -- --write",
-    "eslint": "lb-eslint --report-unused-disable-directives .",
-    "eslint:fix": "npm run eslint -- --fix",
-    "pretest": "npm run rebuild",
-    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
-    "posttest": "npm run lint",
-    "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js && npm run posttest",
-    "rebuild": "npm run clean && npm run build",
-    "prestart": "npm run rebuild",
-    "start": "node ."
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/strongloop/loopback-next.git",
-    "directory": "examples/soap-calculator"
   }
 }

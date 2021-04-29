@@ -1,36 +1,25 @@
 {
   "name": "@loopback/example-validation-app",
-  "version": "1.9.1",
   "description": "An example demonstrating how to add validation in a LoopBack 4 application",
+  "version": "1.9.1",
+  "keywords": [
+    "loopback",
+    "LoopBack",
+    "example",
+    "validation"
+  ],
+  "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "engines": {
-    "node": "^10.16 || 12 || 14 || 16"
-  },
   "author": "IBM Corp.",
   "copyright.owner": "IBM Corp.",
-  "license": "MIT",
-  "publishConfig": {
-    "access": "public"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "examples/validation-app"
   },
-  "dependencies": {
-    "@loopback/boot": "^3.3.1",
-    "@loopback/core": "^2.15.1",
-    "@loopback/repository": "^3.5.1",
-    "@loopback/rest": "^9.2.1",
-    "@loopback/rest-explorer": "^3.2.1",
-    "@loopback/service-proxy": "^3.1.1",
-    "strong-error-handler": "^4.0.0",
-    "tslib": "^2.2.0"
-  },
-  "devDependencies": {
-    "@loopback/build": "^6.3.1",
-    "@loopback/eslint-config": "^10.1.1",
-    "@loopback/testlab": "^3.3.1",
-    "@types/node": "^10.17.59",
-    "eslint": "^7.25.0",
-    "source-map-support": "^0.5.19",
-    "typescript": "~4.2.4"
+  "engines": {
+    "node": "^10.16 || 12 || 14 || 16"
   },
   "scripts": {
     "build": "lb-tsc",
@@ -57,15 +46,26 @@
     "prestart": "npm run rebuild",
     "start": "node -r source-map-support/register ."
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/strongloop/loopback-next.git",
-    "directory": "examples/validation-app"
+  "publishConfig": {
+    "access": "public"
   },
-  "keywords": [
-    "loopback",
-    "LoopBack",
-    "example",
-    "validation"
-  ]
+  "dependencies": {
+    "@loopback/boot": "^3.3.1",
+    "@loopback/core": "^2.15.1",
+    "@loopback/repository": "^3.5.1",
+    "@loopback/rest": "^9.2.1",
+    "@loopback/rest-explorer": "^3.2.1",
+    "@loopback/service-proxy": "^3.1.1",
+    "strong-error-handler": "^4.0.0",
+    "tslib": "^2.2.0"
+  },
+  "devDependencies": {
+    "@loopback/build": "^6.3.1",
+    "@loopback/eslint-config": "^10.1.1",
+    "@loopback/testlab": "^3.3.1",
+    "@types/node": "^10.17.59",
+    "eslint": "^7.25.0",
+    "source-map-support": "^0.5.19",
+    "typescript": "~4.2.4"
+  }
 }

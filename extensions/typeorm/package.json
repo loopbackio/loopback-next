@@ -1,9 +1,17 @@
 {
   "name": "@loopback/typeorm",
-  "version": "0.3.1",
   "description": "Adds support for TypeORM in LoopBack",
+  "version": "0.3.1",
+  "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "extensions/typeorm"
+  },
   "engines": {
     "node": "^10.16 || 12 || 14 || 16"
   },
@@ -15,12 +23,15 @@
     "test": "lb-mocha \"dist/__tests__/**/*.js\"",
     "verify": "npm pack && tar xf loopback-typeorm*.tgz && tree package && npm run clean"
   },
-  "author": "IBM Corp.",
-  "copyright.owner": "IBM Corp.",
-  "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
+  "files": [
+    "README.md",
+    "dist",
+    "src",
+    "!*/__tests__"
+  ],
   "peerDependencies": {
     "@loopback/boot": "^3.3.1",
     "@loopback/core": "^2.15.1",
@@ -41,16 +52,5 @@
     "@types/json-schema": "^7.0.7",
     "@types/node": "^10.17.59",
     "sqlite3": "^5.0.2"
-  },
-  "files": [
-    "README.md",
-    "dist",
-    "src",
-    "!*/__tests__"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/strongloop/loopback-next.git",
-    "directory": "extensions/typeorm"
   }
 }

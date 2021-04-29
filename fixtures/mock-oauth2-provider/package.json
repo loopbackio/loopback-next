@@ -1,12 +1,20 @@
 {
   "name": "@loopback/mock-oauth2-provider",
-  "version": "0.2.1",
   "description": "An internal application to mock the OAuth2 authorization flow login with a social app like facebook, google etc",
+  "version": "0.2.1",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "fixtures/mock-oauth2-provider"
+  },
   "engines": {
     "node": "^10.16 || 12 || 14 || 16"
   },
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "scripts": {
     "build": "lb-tsc",
     "clean": "lb-clean loopback-mock-oauth2-provider*.tgz dist *.tsbuildinfo package",
@@ -17,23 +25,15 @@
     "mocha": "lb-mocha \"dist/__tests__/**/*.js\"",
     "verify": "npm pack && tar xf loopback-mock-oauth2-provider*.tgz && tree package && npm run clean"
   },
-  "author": "IBM Corp.",
-  "copyright.owner": "IBM Corp.",
-  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "files": [
     "README.md",
     "dist",
     "src",
     "!*/__tests__"
   ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/strongloop/loopback-next.git",
-    "directory": "fixtures/mock-oauth2-provider"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
   "dependencies": {
     "@types/body-parser": "^1.19.0",
     "@types/express": "^4.17.11",

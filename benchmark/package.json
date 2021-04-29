@@ -1,15 +1,23 @@
 {
   "name": "@loopback/benchmark",
-  "version": "2.2.1",
   "description": "Benchmarks measuring performance of our framework.",
-  "private": true,
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "version": "2.2.1",
   "keywords": [
     "loopback",
     "performance",
     "benchmark"
   ],
+  "private": true,
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "benchmark"
+  },
   "engines": {
     "node": "^10.16 || 12 || 14 || 16"
   },
@@ -23,9 +31,6 @@
     "benchmark:context": "node ./dist/context-binding/context-binding",
     "start": "node ."
   },
-  "author": "IBM Corp.",
-  "copyright.owner": "IBM Corp.",
-  "license": "MIT",
   "files": [
     "README.md",
     "dist",
@@ -57,10 +62,5 @@
     "@types/node": "^10.17.59",
     "mocha": "^8.3.2",
     "source-map-support": "^0.5.19"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/strongloop/loopback-next.git",
-    "directory": "benchmark"
   }
 }

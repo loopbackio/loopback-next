@@ -1,9 +1,21 @@
 {
   "name": "@loopback/authentication",
-  "version": "7.2.0",
   "description": "A LoopBack component for authentication support.",
+  "version": "7.2.0",
+  "keywords": [
+    "LoopBack",
+    "Authentication"
+  ],
+  "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "packages/authentication"
+  },
   "engines": {
     "node": "^10.16 || 12 || 14 || 16"
   },
@@ -17,12 +29,15 @@
     "unit": "lb-mocha \"dist/__tests__/unit/**/*.js\"",
     "verify": "npm pack && tar xf loopback-authentication*.tgz && tree package && npm run clean"
   },
-  "author": "IBM Corp.",
-  "copyright.owner": "IBM Corp.",
-  "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
+  "files": [
+    "README.md",
+    "dist",
+    "src",
+    "!*/__tests__"
+  ],
   "peerDependencies": {
     "@loopback/core": "^2.15.1",
     "@loopback/rest": "^9.2.1"
@@ -43,20 +58,5 @@
     "@loopback/testlab": "^3.3.1",
     "@types/node": "^10.17.59",
     "jsonwebtoken": "^8.5.1"
-  },
-  "keywords": [
-    "LoopBack",
-    "Authentication"
-  ],
-  "files": [
-    "README.md",
-    "dist",
-    "src",
-    "!*/__tests__"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/strongloop/loopback-next.git",
-    "directory": "packages/authentication"
   }
 }

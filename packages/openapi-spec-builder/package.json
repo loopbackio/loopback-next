@@ -1,9 +1,24 @@
 {
   "name": "@loopback/openapi-spec-builder",
-  "version": "3.1.1",
   "description": "Make it easy to create OpenAPI (Swagger) specification documents in your tests using the builder pattern.",
+  "version": "3.1.1",
+  "keywords": [
+    "Swagger",
+    "OpenAPI Spec",
+    "TypeScript",
+    "Builder",
+    "Testing"
+  ],
+  "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "packages/openapi-spec-builder"
+  },
   "engines": {
     "node": "^10.16 || 12 || 14 || 16"
   },
@@ -14,12 +29,15 @@
     "test": "lb-mocha \"dist/__tests__/**/*.js\"",
     "verify": "npm pack && tar xf loopback-openapi-spec-builder*.tgz && tree package && npm run clean"
   },
-  "author": "IBM Corp.",
-  "copyright.owner": "IBM Corp.",
-  "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
+  "files": [
+    "README.md",
+    "dist",
+    "src",
+    "!*/__tests__"
+  ],
   "dependencies": {
     "openapi3-ts": "^2.0.1",
     "tslib": "^2.2.0"
@@ -29,23 +47,5 @@
     "@loopback/eslint-config": "^10.1.1",
     "@loopback/testlab": "^3.3.1",
     "@types/node": "^10.17.59"
-  },
-  "keywords": [
-    "Swagger",
-    "OpenAPI Spec",
-    "TypeScript",
-    "Builder",
-    "Testing"
-  ],
-  "files": [
-    "README.md",
-    "dist",
-    "src",
-    "!*/__tests__"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/strongloop/loopback-next.git",
-    "directory": "packages/openapi-spec-builder"
   }
 }

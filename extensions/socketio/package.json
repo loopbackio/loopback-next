@@ -1,12 +1,28 @@
 {
   "name": "@loopback/socketio",
-  "version": "0.2.1",
   "description": "LoopBack's WebSocket server based on socket.io",
+  "version": "0.2.1",
+  "keywords": [
+    "LoopBack",
+    "Socket.IO",
+    "WebSocket",
+    "extension",
+    "socket",
+    "socketio"
+  ],
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "extensions/socketio"
+  },
   "engines": {
     "node": "^10.16 || 12 || 14 || 16"
   },
-  "types": "dist/index.d.ts",
-  "main": "dist/index.js",
   "scripts": {
     "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
     "build": "lb-tsc",
@@ -16,26 +32,15 @@
     "unit": "lb-mocha \"dist/__tests__/unit/**/*.js\"",
     "verify": "npm pack && tar xf loopback-socketio*.tgz && tree package && npm run clean"
   },
-  "author": "IBM Corp.",
-  "copyright.owner": "IBM Corp.",
-  "license": "MIT",
-  "keywords": [
-    "LoopBack",
-    "Socket.IO",
-    "WebSocket",
-    "extension",
-    "socket",
-    "socketio"
-  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "files": [
     "README.md",
     "dist",
     "src",
     "!*/__tests__"
   ],
-  "publishConfig": {
-    "access": "public"
-  },
   "peerDependencies": {
     "@loopback/boot": "^3.3.1",
     "@loopback/core": "^2.15.1"
@@ -60,10 +65,5 @@
     "@types/socket.io-client": "^1.4.36",
     "p-event": "^4.2.0",
     "socket.io-client": "^2.4.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/strongloop/loopback-next.git",
-    "directory": "extensions/socketio"
   }
 }

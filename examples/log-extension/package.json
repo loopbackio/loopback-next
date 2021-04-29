@@ -1,33 +1,27 @@
 {
   "name": "@loopback/example-log-extension",
-  "version": "2.2.1",
   "description": "An example showing how to write a complex log extension for LoopBack 4",
+  "version": "2.2.1",
+  "keywords": [
+    "loopback",
+    "loopback-extension"
+  ],
+  "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "engines": {
-    "node": "^10.16 || 12 || 14 || 16"
-  },
   "author": "IBM Corp.",
   "copyright.owner": "IBM Corp.",
-  "license": "MIT",
-  "publishConfig": {
-    "access": "public"
+  "homepage": "https://github.com/strongloop/loopback-next/tree/master/examples/log-extension",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "examples/log-extension"
   },
-  "dependencies": {
-    "@loopback/core": "^2.15.1",
-    "@loopback/rest": "^9.2.1",
-    "chalk": "^4.1.1",
-    "debug": "^4.3.1",
-    "tslib": "^2.2.0"
+  "bugs": {
+    "url": "https://github.com/strongloop/loopback-next/issues"
   },
-  "devDependencies": {
-    "@loopback/build": "^6.3.1",
-    "@loopback/eslint-config": "^10.1.1",
-    "@loopback/testlab": "^3.3.1",
-    "@types/debug": "^4.1.5",
-    "@types/node": "^10.17.59",
-    "eslint": "^7.25.0",
-    "typescript": "~4.2.4"
+  "engines": {
+    "node": "^10.16 || 12 || 14 || 16"
   },
   "scripts": {
     "build": "lb-tsc",
@@ -47,17 +41,23 @@
     "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js && npm run posttest",
     "verify": "npm pack && tar xf *example-log-extension*.tgz && tree package && npm run clean"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/strongloop/loopback-next.git",
-    "directory": "examples/log-extension"
+  "publishConfig": {
+    "access": "public"
   },
-  "keywords": [
-    "loopback",
-    "loopback-extension"
-  ],
-  "bugs": {
-    "url": "https://github.com/strongloop/loopback-next/issues"
+  "dependencies": {
+    "@loopback/core": "^2.15.1",
+    "@loopback/rest": "^9.2.1",
+    "chalk": "^4.1.1",
+    "debug": "^4.3.1",
+    "tslib": "^2.2.0"
   },
-  "homepage": "https://github.com/strongloop/loopback-next/tree/master/examples/log-extension"
+  "devDependencies": {
+    "@loopback/build": "^6.3.1",
+    "@loopback/eslint-config": "^10.1.1",
+    "@loopback/testlab": "^3.3.1",
+    "@types/debug": "^4.1.5",
+    "@types/node": "^10.17.59",
+    "eslint": "^7.25.0",
+    "typescript": "~4.2.4"
+  }
 }

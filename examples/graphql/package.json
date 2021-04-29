@@ -1,38 +1,23 @@
 {
   "name": "@loopback/example-graphql",
-  "version": "0.2.1",
   "description": "GraphQL Example Application",
+  "version": "0.2.1",
   "keywords": [
     "loopback-application",
     "loopback"
   ],
+  "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "examples/graphql"
+  },
   "engines": {
     "node": "^10.16 || 12 || 14 || 16"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
-  "dependencies": {
-    "@loopback/boot": "^3.3.1",
-    "@loopback/core": "^2.15.1",
-    "@loopback/graphql": "^0.3.1",
-    "@loopback/repository": "^3.5.1",
-    "@loopback/rest": "^9.2.1",
-    "class-transformer": "^0.4.0",
-    "tslib": "^2.2.0"
-  },
-  "devDependencies": {
-    "@loopback/build": "^6.3.1",
-    "@loopback/eslint-config": "^10.1.1",
-    "@loopback/testlab": "^3.3.1",
-    "@types/multer": "^1.4.5",
-    "@types/node": "^10.17.59",
-    "eslint": "^7.25.0",
-    "rimraf": "^3.0.2",
-    "source-map-support": "^0.5.19",
-    "typescript": "~4.2.4"
   },
   "scripts": {
     "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
@@ -54,18 +39,33 @@
     "prestart": "npm run rebuild",
     "start": "node ."
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/strongloop/loopback-next.git",
-    "directory": "examples/graphql"
+  "publishConfig": {
+    "access": "public"
   },
-  "author": "IBM Corp.",
-  "license": "MIT",
   "files": [
     "README.md",
     "dist",
     "src",
     "!*/__tests__"
   ],
-  "copyright.owner": "IBM Corp."
+  "dependencies": {
+    "@loopback/boot": "^3.3.1",
+    "@loopback/core": "^2.15.1",
+    "@loopback/graphql": "^0.3.1",
+    "@loopback/repository": "^3.5.1",
+    "@loopback/rest": "^9.2.1",
+    "class-transformer": "^0.4.0",
+    "tslib": "^2.2.0"
+  },
+  "devDependencies": {
+    "@loopback/build": "^6.3.1",
+    "@loopback/eslint-config": "^10.1.1",
+    "@loopback/testlab": "^3.3.1",
+    "@types/multer": "^1.4.5",
+    "@types/node": "^10.17.59",
+    "eslint": "^7.25.0",
+    "rimraf": "^3.0.2",
+    "source-map-support": "^0.5.19",
+    "typescript": "~4.2.4"
+  }
 }

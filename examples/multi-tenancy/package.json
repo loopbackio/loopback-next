@@ -1,14 +1,22 @@
 {
   "name": "@loopback/example-multi-tenancy",
-  "version": "0.8.1",
   "description": "An example to illustrate how to enable multi-tenancy with LoopBack's IoC and DI container",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "version": "0.8.1",
   "keywords": [
     "loopback-application",
     "loopback",
     "multi-tenancy"
   ],
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "examples/multi-tenancy"
+  },
   "engines": {
     "node": "^10.16 || 12 || 14 || 16"
   },
@@ -36,17 +44,15 @@
     "start": "node -r source-map-support/register .",
     "clean": "lb-clean dist *.tsbuildinfo .eslintcache"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/strongloop/loopback-next.git",
-    "directory": "examples/multi-tenancy"
-  },
-  "author": "IBM Corp.",
-  "copyright.owner": "IBM Corp.",
-  "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
+  "files": [
+    "README.md",
+    "dist",
+    "src",
+    "!*/__tests__"
+  ],
   "dependencies": {
     "@loopback/boot": "^3.3.1",
     "@loopback/core": "^2.15.1",
@@ -66,11 +72,5 @@
     "eslint": "^7.25.0",
     "source-map-support": "^0.5.19",
     "typescript": "~4.2.4"
-  },
-  "files": [
-    "README.md",
-    "dist",
-    "src",
-    "!*/__tests__"
-  ]
+  }
 }
