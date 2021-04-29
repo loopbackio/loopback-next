@@ -1,14 +1,43 @@
 {
   "name": "@loopback/cli",
-  "version": "2.20.2",
   "description": "Yeoman generator for LoopBack 4",
-  "homepage": "https://github.com/strongloop/loopback-next/tree/master/packages/cli",
+  "version": "2.20.2",
+  "keywords": [
+    "LoopBack",
+    "CLI",
+    "yeoman-generator"
+  ],
+  "license": "MIT",
+  "bin": {
+    "lb4": "bin/cli-main.js"
+  },
+  "main": "generators/app/index.js",
   "author": "IBM Corp.",
   "copyright.owner": "IBM Corp.",
-  "license": "MIT",
+  "homepage": "https://github.com/strongloop/loopback-next/tree/master/packages/cli",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "packages/cli"
+  },
+  "engines": {
+    "node": "^10.16 || 12 || 14 || 16"
+  },
+  "scripts": {
+    "test": "lb-mocha --lang en_US.UTF-8 \"test/**/*.js\"",
+    "smoke-test": "lb-mocha --allow-console-logs \"smoke-test/**/*.smoke.js\"",
+    "build:globalize": "slt-globalize -e && git add \"intl/en/messages.json\""
+  },
   "publishConfig": {
     "access": "public"
   },
+  "files": [
+    "bin",
+    "lib",
+    "generators",
+    "intl",
+    ".yo-rc.json"
+  ],
   "dependencies": {
     "@lerna/project": "^4.0.0",
     "@openapi-contrib/openapi-schema-to-json-schema": "^3.1.0",
@@ -69,35 +98,6 @@
     "strong-globalize-cli": "7.1.0",
     "yeoman-assert": "^3.1.1",
     "yeoman-test": "~2.7.0"
-  },
-  "engines": {
-    "node": "^10.16 || 12 || 14 || 16"
-  },
-  "files": [
-    "bin",
-    "lib",
-    "generators",
-    "intl",
-    ".yo-rc.json"
-  ],
-  "bin": {
-    "lb4": "bin/cli-main.js"
-  },
-  "main": "generators/app/index.js",
-  "keywords": [
-    "LoopBack",
-    "CLI",
-    "yeoman-generator"
-  ],
-  "scripts": {
-    "test": "lb-mocha --lang en_US.UTF-8 \"test/**/*.js\"",
-    "smoke-test": "lb-mocha --allow-console-logs \"smoke-test/**/*.smoke.js\"",
-    "build:globalize": "slt-globalize -e && git add \"intl/en/messages.json\""
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/strongloop/loopback-next.git",
-    "directory": "packages/cli"
   },
   "config": {
     "templateDependencies": {

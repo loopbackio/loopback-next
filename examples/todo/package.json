@@ -1,15 +1,52 @@
 {
   "name": "@loopback/example-todo",
-  "version": "3.10.1",
   "description": "Tutorial example on how to build an application with LoopBack 4",
+  "version": "3.10.1",
+  "keywords": [
+    "loopback",
+    "LoopBack",
+    "example",
+    "tutorial",
+    "CRUD",
+    "models",
+    "todo"
+  ],
+  "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "examples/todo"
+  },
   "engines": {
     "node": "^10.16 || 12 || 14 || 16"
   },
-  "author": "IBM Corp.",
-  "copyright.owner": "IBM Corp.",
-  "license": "MIT",
+  "scripts": {
+    "build": "lb-tsc",
+    "build:watch": "lb-tsc --watch",
+    "clean": "lb-clean *example-todo*.tgz dist *.tsbuildinfo package",
+    "lint": "npm run prettier:check && npm run eslint",
+    "lint:fix": "npm run eslint:fix && npm run prettier:fix",
+    "prettier:cli": "lb-prettier \"**/*.ts\"",
+    "prettier:check": "npm run prettier:cli -- -l",
+    "prettier:fix": "npm run prettier:cli -- --write",
+    "eslint": "lb-eslint --report-unused-disable-directives .",
+    "eslint:fix": "npm run eslint -- --fix",
+    "pretest": "npm run rebuild",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
+    "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js && npm run posttest",
+    "verify": "npm pack && tar xf loopback-todo*.tgz && tree package && npm run clean",
+    "premigrate": "npm run build ",
+    "migrate": "node ./dist/migrate",
+    "preopenapi-spec": "npm run build",
+    "openapi-spec": "node ./dist/openapi-spec",
+    "rebuild": "npm run clean && npm run build",
+    "prestart": "npm run rebuild",
+    "start": "node ."
+  },
   "publishConfig": {
     "access": "public"
   },
@@ -35,42 +72,5 @@
     "eslint": "^7.25.0",
     "lodash": "^4.17.21",
     "typescript": "~4.2.4"
-  },
-  "scripts": {
-    "build": "lb-tsc",
-    "build:watch": "lb-tsc --watch",
-    "clean": "lb-clean *example-todo*.tgz dist *.tsbuildinfo package",
-    "lint": "npm run prettier:check && npm run eslint",
-    "lint:fix": "npm run eslint:fix && npm run prettier:fix",
-    "prettier:cli": "lb-prettier \"**/*.ts\"",
-    "prettier:check": "npm run prettier:cli -- -l",
-    "prettier:fix": "npm run prettier:cli -- --write",
-    "eslint": "lb-eslint --report-unused-disable-directives .",
-    "eslint:fix": "npm run eslint -- --fix",
-    "pretest": "npm run rebuild",
-    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
-    "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js && npm run posttest",
-    "verify": "npm pack && tar xf loopback-todo*.tgz && tree package && npm run clean",
-    "premigrate": "npm run build ",
-    "migrate": "node ./dist/migrate",
-    "preopenapi-spec": "npm run build",
-    "openapi-spec": "node ./dist/openapi-spec",
-    "rebuild": "npm run clean && npm run build",
-    "prestart": "npm run rebuild",
-    "start": "node ."
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/strongloop/loopback-next.git",
-    "directory": "examples/todo"
-  },
-  "keywords": [
-    "loopback",
-    "LoopBack",
-    "example",
-    "tutorial",
-    "CRUD",
-    "models",
-    "todo"
-  ]
+  }
 }

@@ -1,13 +1,21 @@
 {
   "name": "@loopback/example-rpc-server",
-  "version": "2.2.1",
   "description": "An example RPC server and application to demonstrate the creation of your own custom server",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "version": "2.2.1",
   "keywords": [
     "loopback-application",
     "loopback"
   ],
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "examples/rpc-server"
+  },
   "engines": {
     "node": "^10.16 || 12 || 14 || 16"
   },
@@ -30,14 +38,6 @@
     "prestart": "npm run rebuild",
     "start": "node ."
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/strongloop/loopback-next.git",
-    "directory": "examples/rpc-server"
-  },
-  "author": "IBM Corp.",
-  "copyright.owner": "IBM Corp.",
-  "license": "MIT",
   "publishConfig": {
     "access": "public"
   },

@@ -1,9 +1,22 @@
 {
   "name": "@loopback/health",
-  "version": "0.7.1",
   "description": "An extension exposes health check related endpoints with LoopBack 4",
+  "version": "0.7.1",
+  "keywords": [
+    "LoopBack",
+    "Cloud Native",
+    "Health"
+  ],
+  "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "extensions/health"
+  },
   "engines": {
     "node": "^10.16 || 12 || 14 || 16"
   },
@@ -15,12 +28,15 @@
     "verify": "npm pack && tar xf loopback-extension-health*.tgz && tree package && npm run clean",
     "demo": "./src/__examples__/demo.sh"
   },
-  "author": "IBM Corp.",
-  "copyright.owner": "IBM Corp.",
-  "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
+  "files": [
+    "README.md",
+    "dist",
+    "src",
+    "!*/__tests__"
+  ],
   "peerDependencies": {
     "@loopback/core": "^2.15.1",
     "@loopback/rest": "^9.2.1"
@@ -36,21 +52,5 @@
     "@loopback/rest": "^9.2.1",
     "@loopback/testlab": "^3.3.1",
     "@types/node": "^10.17.59"
-  },
-  "keywords": [
-    "LoopBack",
-    "Cloud Native",
-    "Health"
-  ],
-  "files": [
-    "README.md",
-    "dist",
-    "src",
-    "!*/__tests__"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/strongloop/loopback-next.git",
-    "directory": "extensions/health"
   }
 }

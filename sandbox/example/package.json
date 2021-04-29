@@ -1,21 +1,21 @@
 {
   "name": "@loopback/sandbox-example",
-  "version": "2.0.6",
   "description": "Sample project for sandbox",
-  "main": "index.js",
+  "version": "2.0.6",
   "private": true,
-  "scripts": {
-    "test": "echo \"This is an example for sandbox\""
-  },
-  "engines": {
-    "node": "^10.16 || 12 || 14 || 16"
-  },
+  "license": "MIT",
+  "main": "index.js",
   "author": "IBM Corp.",
   "copyright.owner": "IBM Corp.",
-  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/strongloop/loopback-next.git",
     "directory": "sandbox/example"
+  },
+  "engines": {
+    "node": "^10.16 || 12 || 14 || 16"
+  },
+  "scripts": {
+    "test": "echo \"This is an example for sandbox\""
   }
 }

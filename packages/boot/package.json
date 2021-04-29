@@ -1,9 +1,17 @@
 {
   "name": "@loopback/boot",
-  "version": "3.3.1",
   "description": "A collection of Booters for LoopBack 4 Applications",
+  "version": "3.3.1",
+  "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "packages/boot"
+  },
   "engines": {
     "node": "^10.16 || 12 || 14 || 16"
   },
@@ -17,12 +25,15 @@
     "unit": "lb-mocha \"dist/__tests__/unit/**/*.js\"",
     "verify": "npm pack && tar xf loopback-boot*.tgz && tree package && npm run clean"
   },
-  "author": "IBM Corp.",
-  "copyright.owner": "IBM Corp.",
-  "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
+  "files": [
+    "README.md",
+    "dist",
+    "src",
+    "!*/__tests__"
+  ],
   "peerDependencies": {
     "@loopback/core": "^2.15.1"
   },
@@ -44,16 +55,5 @@
     "@loopback/rest-crud": "^0.9.1",
     "@loopback/testlab": "^3.3.1",
     "@types/node": "^10.17.59"
-  },
-  "files": [
-    "README.md",
-    "dist",
-    "src",
-    "!*/__tests__"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/strongloop/loopback-next.git",
-    "directory": "packages/boot"
   }
 }

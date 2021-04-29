@@ -1,9 +1,27 @@
 {
   "name": "@loopback/tsdocs",
-  "version": "2.5.1",
   "description": "A package to generate api docs using Microsoft api-extractor and api-documenter",
+  "version": "2.5.1",
+  "keywords": [
+    "LoopBack",
+    "Apidocs",
+    "Reflect"
+  ],
+  "license": "MIT",
+  "bin": {
+    "lb-extract-apidocs": "./bin/extract-apis.js",
+    "lb-document-apidocs": "./bin/document-apis.js",
+    "lb-update-apidocs": "./bin/update-apidocs.js"
+  },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "packages/tsdocs"
+  },
   "engines": {
     "node": "^10.16 || 12 || 14 || 16"
   },
@@ -19,19 +37,9 @@
     "test": "lb-mocha \"dist/__tests__/**/*.js\"",
     "verify": "npm pack && tar xf loopback-tsdocs*.tgz && tree package && npm run clean"
   },
-  "bin": {
-    "lb-extract-apidocs": "./bin/extract-apis.js",
-    "lb-document-apidocs": "./bin/document-apis.js",
-    "lb-update-apidocs": "./bin/update-apidocs.js"
+  "publishConfig": {
+    "access": "public"
   },
-  "author": "IBM Corp.",
-  "copyright.owner": "IBM Corp.",
-  "license": "MIT",
-  "keywords": [
-    "LoopBack",
-    "Apidocs",
-    "Reflect"
-  ],
   "files": [
     "README.md",
     "dist",
@@ -39,14 +47,6 @@
     "!*/__tests__",
     "!/fixtures"
   ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/strongloop/loopback-next.git",
-    "directory": "packages/tsdocs"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
   "dependencies": {
     "@microsoft/api-documenter": "^7.13.5",
     "@microsoft/api-extractor": "^7.15.0",

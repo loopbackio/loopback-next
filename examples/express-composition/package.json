@@ -1,9 +1,7 @@
 {
   "name": "@loopback/example-express-composition",
-  "version": "2.6.1",
   "description": "LoopBack 4 REST API on Express",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "version": "2.6.1",
   "keywords": [
     "loopback-application",
     "loopback",
@@ -11,6 +9,16 @@
     "tutorial",
     "express"
   ],
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "examples/express-composition"
+  },
   "engines": {
     "node": "^10.16 || 12 || 14 || 16"
   },
@@ -35,14 +43,6 @@
     "prestart": "npm run rebuild",
     "start": "node ."
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/strongloop/loopback-next.git",
-    "directory": "examples/express-composition"
-  },
-  "author": "IBM Corp.",
-  "copyright.owner": "IBM Corp.",
-  "license": "MIT",
   "publishConfig": {
     "access": "public"
   },

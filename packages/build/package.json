@@ -1,19 +1,31 @@
 {
   "name": "@loopback/build",
   "description": "A set of common scripts and default configurations to build LoopBack 4 or other TypeScript modules",
+  "version": "6.3.1",
+  "license": "MIT",
+  "bin": {
+    "lb-tsc": "./bin/compile-package.js",
+    "lb-eslint": "./bin/run-eslint.js",
+    "lb-prettier": "./bin/run-prettier.js",
+    "lb-mocha": "./bin/run-mocha.js",
+    "lb-nyc": "./bin/run-nyc.js",
+    "lb-clean": "./bin/run-clean.js"
+  },
+  "main": "index.js",
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
   "repository": {
     "type": "git",
     "url": "https://github.com/strongloop/loopback-next.git",
     "directory": "packages/build"
   },
-  "version": "6.3.1",
   "engines": {
     "node": "^10.16 || 12 || 14 || 16"
   },
-  "main": "index.js",
-  "author": "IBM Corp.",
-  "copyright.owner": "IBM Corp.",
-  "license": "MIT",
+  "scripts": {
+    "test": "npm run mocha",
+    "mocha": "node bin/run-mocha --timeout 30000 \"test/integration/*.js\" \"test/unit/*.js\""
+  },
   "publishConfig": {
     "access": "public"
   },
@@ -33,17 +45,5 @@
     "rimraf": "^3.0.2",
     "source-map-support": "^0.5.19",
     "typescript": "~4.2.4"
-  },
-  "bin": {
-    "lb-tsc": "./bin/compile-package.js",
-    "lb-eslint": "./bin/run-eslint.js",
-    "lb-prettier": "./bin/run-prettier.js",
-    "lb-mocha": "./bin/run-mocha.js",
-    "lb-nyc": "./bin/run-nyc.js",
-    "lb-clean": "./bin/run-clean.js"
-  },
-  "scripts": {
-    "test": "npm run mocha",
-    "mocha": "node bin/run-mocha --timeout 30000 \"test/integration/*.js\" \"test/unit/*.js\""
   }
 }

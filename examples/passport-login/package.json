@@ -1,9 +1,25 @@
 {
   "name": "@loopback/example-passport-login",
-  "version": "1.10.1",
   "description": "An example to demonstrate authentication with passport strategies",
+  "version": "1.10.1",
+  "keywords": [
+    "loopback",
+    "LoopBack",
+    "example",
+    "tutorial",
+    "passport",
+    "authentication"
+  ],
+  "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "examples/passport-login"
+  },
   "engines": {
     "node": "^10.16 || 12 || 14 || 16"
   },
@@ -27,14 +43,6 @@
     "prestart": "npm run rebuild",
     "start": "node ."
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/strongloop/loopback-next.git",
-    "directory": "examples/passport-login"
-  },
-  "author": "IBM Corp.",
-  "copyright.owner": "IBM Corp.",
-  "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
@@ -90,13 +98,5 @@
     "eslint": "^7.25.0",
     "lodash": "^4.17.21",
     "typescript": "~4.2.4"
-  },
-  "keywords": [
-    "loopback",
-    "LoopBack",
-    "example",
-    "tutorial",
-    "passport",
-    "authentication"
-  ]
+  }
 }

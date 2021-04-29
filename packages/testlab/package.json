@@ -1,9 +1,17 @@
 {
   "name": "@loopback/testlab",
-  "version": "3.3.1",
   "description": "A collection of test utilities we use to write LoopBack tests.",
+  "version": "3.3.1",
+  "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "packages/testlab"
+  },
   "engines": {
     "node": "^10.16 || 12 || 14 || 16"
   },
@@ -14,12 +22,17 @@
     "test": "lb-mocha \"dist/__tests__/**/*.js\"",
     "verify": "npm pack && tar xf loopback-testlab*.tgz && tree package && npm run clean"
   },
-  "author": "IBM Corp.",
-  "copyright.owner": "IBM Corp.",
-  "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
+  "files": [
+    "README.md",
+    "dist",
+    "fixtures",
+    "should-as-function.d.ts",
+    "src",
+    "!*/__tests__"
+  ],
   "dependencies": {
     "@hapi/shot": "^5.0.5",
     "@types/express": "^4.17.11",
@@ -39,18 +52,5 @@
     "@loopback/build": "^6.3.1",
     "@loopback/eslint-config": "^10.1.1",
     "@types/node": "^10.17.59"
-  },
-  "files": [
-    "README.md",
-    "dist",
-    "fixtures",
-    "should-as-function.d.ts",
-    "src",
-    "!*/__tests__"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/strongloop/loopback-next.git",
-    "directory": "packages/testlab"
   }
 }

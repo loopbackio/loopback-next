@@ -1,13 +1,21 @@
 {
   "name": "@loopback/express",
-  "version": "3.2.1",
   "description": "Integrate with Express and expose middleware infrastructure for sequence and interceptors",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "version": "3.2.1",
   "keywords": [
     "loopback-extension",
     "loopback"
   ],
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "packages/express"
+  },
   "engines": {
     "node": "^10.16 || 12 || 14 || 16"
   },
@@ -19,17 +27,15 @@
     "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js",
     "clean": "lb-clean dist *.tsbuildinfo .eslintcache"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/strongloop/loopback-next.git",
-    "directory": "packages/express"
-  },
-  "author": "IBM Corp.",
-  "copyright.owner": "IBM Corp.",
-  "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
+  "files": [
+    "README.md",
+    "dist",
+    "src",
+    "!*/__tests__"
+  ],
   "peerDependencies": {
     "@loopback/core": "^2.15.1"
   },
@@ -58,11 +64,5 @@
     "http-errors": "^1.8.0",
     "source-map-support": "^0.5.19",
     "typescript": "~4.2.4"
-  },
-  "files": [
-    "README.md",
-    "dist",
-    "src",
-    "!*/__tests__"
-  ]
+  }
 }
