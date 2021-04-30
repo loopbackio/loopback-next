@@ -61,7 +61,7 @@
     "@types/node": "^10.17.59",
     "loopback": "^3.28.0",
     "loopback-datasource-juggler": "^4.26.0",
-    "mem-fs": "^2.0.0",
+    "mem-fs": "^2.1.0",
     "mem-fs-editor": "^8.1.2",
     "mock-stdin": "^1.0.0",
     "rimraf": "^3.0.2",
