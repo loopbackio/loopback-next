@@ -135,11 +135,15 @@ module.exports = class AppGenerator extends ProjectGenerator {
     const result = super.scaffold();
     if (this.shouldExit()) return result;
 
-    const {docker} = this.projectInfo || {};
-    if (docker) return result;
+    const {docker, repositories} = this.projectInfo || {};
+    if (!docker) {
+      this.fs.delete(this.destinationPath('Dockerfile'));
+      this.fs.delete(this.destinationPath('.dockerignore'));
+    }
+    if (!repositories) {
+      this.fs.delete(this.destinationPath('src/migrate.ts.ejs'));
+    }
 
-    this.fs.delete(this.destinationPath('Dockerfile'));
-    this.fs.delete(this.destinationPath('.dockerignore'));
     return result;
   }
 
