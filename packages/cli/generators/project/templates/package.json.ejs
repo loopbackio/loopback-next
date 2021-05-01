@@ -89,12 +89,14 @@
     "docker:build": "docker build -t <%= project.name -%> .",
     "docker:run": "docker run -p 3000:3000 -d <%= project.name -%>",
 <% } -%>
-<% if (packageManager === 'yarn') { -%>
+<% if (project.repositories && packageManager === 'yarn') { -%>
     "premigrate": "yarn run build",
-<% } else { -%>
+<% } else if (project.repositories) { -%>
     "premigrate": "npm run build",
 <% } -%>
+<% if (project.repositories) { -%>
     "migrate": "node ./dist/migrate",
+<% } -%>
 <% if (packageManager === 'yarn') { -%>
     "preopenapi-spec": "yarn run build",
 <% } else { -%>

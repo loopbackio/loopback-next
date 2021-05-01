@@ -115,6 +115,21 @@ describe('app-generator with docker disabled', () => {
   });
 });
 
+describe('app-generator with repositories disabled', () => {
+  before(() => {
+    return helpers
+      .run(generator)
+      .withOptions({repositories: false})
+      .withPrompts(props);
+  });
+  it('does not generate migration files', () => {
+    assert.noFile('src/migrate.ts');
+
+    assert.noFileContent('package.json', /"premigrate": "yarn run build/);
+    assert.noFileContent('package.json', /"migrate": "node .\/dist\/migrate/);
+  });
+});
+
 describe('app-generator with --applicationName', () => {
   before(() => {
     return helpers
