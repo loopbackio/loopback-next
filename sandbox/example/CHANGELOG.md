@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/sandbox-example@2.0.6...@loopback/sandbox-example@2.1.0) (2021-05-03)
+
+
+### Features
+
+* support node v16 ([ac99415](https://github.com/strongloop/loopback-next/commit/ac994154543bde22b4482ba98813351656db1b55))
+
+
+
+
+
 ## [2.0.6](https://github.com/strongloop/loopback-next/compare/@loopback/sandbox-example@2.0.5...@loopback/sandbox-example@2.0.6) (2021-01-21)
 
 **Note:** Version bump only for package @loopback/sandbox-example

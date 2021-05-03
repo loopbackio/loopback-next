@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.16.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@3.15.1...@loopback/context@3.16.0) (2021-05-03)
+
+
+### Bug Fixes
+
+* **context:** ensure non-proxy value is cached for bindings ([96cf5da](https://github.com/strongloop/loopback-next/commit/96cf5da1c82017d31f24d6f93f90d1543bee887c))
+
+
+### Features
+
+* support node v16 ([ac99415](https://github.com/strongloop/loopback-next/commit/ac994154543bde22b4482ba98813351656db1b55))
+
+
+
+
+
 ## [3.15.1](https://github.com/strongloop/loopback-next/compare/@loopback/context@3.15.0...@loopback/context@3.15.1) (2021-04-06)
 
 **Note:** Version bump only for package @loopback/context

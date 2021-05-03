@@ -1,7 +1,7 @@
 {
   "name": "@loopback/test-repository-mysql",
   "description": "Acceptance tests for `@loopback/repository` + `loopback-connector-mysql`",
-  "version": "0.8.1",
+  "version": "0.9.0",
   "private": true,
   "license": "MIT",
   "main": "dist/index.js",
@@ -31,11 +31,11 @@
     "!*/__tests__"
   ],
   "devDependencies": {
-    "@loopback/build": "^6.3.1",
-    "@loopback/eslint-config": "^10.1.1",
-    "@loopback/repository": "^3.5.1",
-    "@loopback/repository-tests": "^0.17.1",
-    "@loopback/testlab": "^3.3.1",
+    "@loopback/build": "^6.4.0",
+    "@loopback/eslint-config": "^10.2.0",
+    "@loopback/repository": "^3.6.0",
+    "@loopback/repository-tests": "^0.18.0",
+    "@loopback/testlab": "^3.4.0",
     "@types/node": "^10.17.59",
     "loopback-connector-mysql": "^6.0.0",
     "tslib": "^2.2.0"

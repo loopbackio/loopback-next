@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/monorepo@0.2.1...@loopback/monorepo@0.3.0) (2021-05-03)
+
+
+### Bug Fixes
+
+* **monorepo:** update only node engine ([9611aef](https://github.com/strongloop/loopback-next/commit/9611aefcee438647ab089a5dc0ab924659e450e1))
+
+
+### Features
+
+* set the same order for all json packages ([ee7c179](https://github.com/strongloop/loopback-next/commit/ee7c179a0e99d862f8596c897523a8e1bf2e8888))
+* support node v16 ([ac99415](https://github.com/strongloop/loopback-next/commit/ac994154543bde22b4482ba98813351656db1b55))
+
+
+
+
+
 ## [0.2.1](https://github.com/strongloop/loopback-next/compare/@loopback/monorepo@0.2.0...@loopback/monorepo@0.2.1) (2021-04-06)
 
 **Note:** Version bump only for package @loopback/monorepo

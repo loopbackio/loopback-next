@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@7.2.0...@loopback/authentication@7.3.0) (2021-05-03)
+
+
+### Features
+
+* support node v16 ([ac99415](https://github.com/strongloop/loopback-next/commit/ac994154543bde22b4482ba98813351656db1b55))
+
+
+
+
+
 # [7.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@7.1.0...@loopback/authentication@7.2.0) (2021-04-06)
 
 

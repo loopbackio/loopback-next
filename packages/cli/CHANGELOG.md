@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.21.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@2.20.2...@loopback/cli@2.21.0) (2021-05-03)
+
+
+### Bug Fixes
+
+* **cli:** invalid package.plain.json.ejs template ([df085a4](https://github.com/strongloop/loopback-next/commit/df085a44d43bfd117b683699a2fe39b410244a5e))
+* add url-slug v3 changes ([7b32782](https://github.com/strongloop/loopback-next/commit/7b32782253e8c56f0d21ebd8b40b8d1fb61752d0))
+
+
+### Features
+
+* support node v16 ([ac99415](https://github.com/strongloop/loopback-next/commit/ac994154543bde22b4482ba98813351656db1b55))
+* **cli:** april drop ([ad1df67](https://github.com/strongloop/loopback-next/commit/ad1df6746431ccc062d5654c3f5133ecb5d31231))
+
+
+
+
+
 ## [2.20.2](https://github.com/strongloop/loopback-next/compare/@loopback/cli@2.20.1...@loopback/cli@2.20.2) (2021-04-06)
 
 **Note:** Version bump only for package @loopback/cli

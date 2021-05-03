@@ -1,7 +1,7 @@
 {
   "name": "@loopback/tsdocs-monorepo",
   "description": "A monorepo for tsdocs testing",
-  "version": "0.0.16",
+  "version": "0.1.0",
   "private": true,
   "license": "MIT",
   "author": "IBM Corp.",
@@ -23,6 +23,6 @@
     "postinstall": "npm run build"
   },
   "devDependencies": {
-    "@loopback/build": "^6.3.1"
+    "@loopback/build": "^6.4.0"
   }
 }

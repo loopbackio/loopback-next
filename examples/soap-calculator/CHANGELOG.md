@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.6.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-soap-calculator@2.5.1...@loopback/example-soap-calculator@2.6.0) (2021-05-03)
+
+
+### Features
+
+* support node v16 ([ac99415](https://github.com/strongloop/loopback-next/commit/ac994154543bde22b4482ba98813351656db1b55))
+
+
+
+
+
 ## [2.5.1](https://github.com/strongloop/loopback-next/compare/@loopback/example-soap-calculator@2.5.0...@loopback/example-soap-calculator@2.5.1) (2021-04-06)
 
 **Note:** Version bump only for package @loopback/example-soap-calculator

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/tsdocs-monorepo@0.0.16...@loopback/tsdocs-monorepo@0.1.0) (2021-05-03)
+
+
+### Features
+
+* support node v16 ([ac99415](https://github.com/strongloop/loopback-next/commit/ac994154543bde22b4482ba98813351656db1b55))
+
+
+
+
+
 ## [0.0.16](https://github.com/strongloop/loopback-next/compare/@loopback/tsdocs-monorepo@0.0.15...@loopback/tsdocs-monorepo@0.0.16) (2021-04-06)
 
 
