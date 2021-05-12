@@ -4,16 +4,14 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
+  Application,
   Binding,
   BindingFromClassOptions,
   BindingScope,
-  createBindingFromClass,
-} from '@loopback/core';
-import {
-  Application,
   Component,
   Constructor,
   CoreBindings,
+  createBindingFromClass,
   MixinTarget,
 } from '@loopback/core';
 import debugFactory from 'debug';
@@ -25,10 +23,6 @@ import {juggler, Repository} from '../repositories';
 
 const debug = debugFactory('loopback:repository:mixin');
 
-// FIXME(rfeng): Workaround for https://github.com/microsoft/rushstack/pull/1867
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import * as loopbackContext from '@loopback/core';
-import * as loopbackCore from '@loopback/core';
 /* eslint-enable @typescript-eslint/no-unused-vars */
 
 /**
@@ -284,8 +278,13 @@ export function RepositoryMixin<T extends MixinTarget<Application>>(
       );
       for (const b of dsBindings) {
         const ds = await this.get<juggler.DataSource>(b.key);
+        const disableMigration = ds.settings.disableMigration ?? false;
 
-        if (operation in ds && typeof ds[operation] === 'function') {
+        if (
+          operation in ds &&
+          typeof ds[operation] === 'function' &&
+          !disableMigration
+        ) {
           debug('Migrating dataSource %s', b.key);
           await ds[operation](options.models);
         } else {

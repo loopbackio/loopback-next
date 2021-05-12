@@ -143,6 +143,43 @@ describe('RepositoryMixin', () => {
       // the test passes when migrateSchema() does not throw any error
     });
 
+    it('skips datasources that disables migration', async () => {
+      let modelsMigrated = ['no models were migrated'];
+
+      const ds = new juggler.DataSource({
+        name: 'db',
+        connector: 'memory',
+        disableMigration: true,
+      });
+      // FIXME(bajtos) typings for connectors are missing autoupdate/autoupgrade
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (ds.connector as any).automigrate = function (
+        models: string[],
+        cb: Function,
+      ) {
+        modelsMigrated = models;
+        cb();
+      };
+      app.dataSource(ds);
+
+      class Product extends Entity {
+        static definition = new ModelDefinition('Product').addProperty('id', {
+          type: 'number',
+          id: true,
+        });
+      }
+      class ProductRepository extends DefaultCrudRepository<Product, number> {
+        constructor() {
+          super(Product, ds);
+        }
+      }
+      app.repository(ProductRepository);
+
+      await app.migrateSchema({existingSchema: 'drop'});
+
+      expect(modelsMigrated).to.eql(['no models were migrated']);
+    });
+
     it('attaches all models to datasources', async () => {
       let modelsMigrated = ['no models were migrated'];
 
