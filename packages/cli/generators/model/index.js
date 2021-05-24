@@ -348,7 +348,8 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
 
   // Prompt for a Property Name
   async promptPropertyName() {
-    if (this.shouldExit()) return false;
+    if (this.options.config && this.options.yes) return true;
+    else if (this.shouldExit()) return false;
 
     this.log(g.f('Enter an empty property name when done'));
     this.log();

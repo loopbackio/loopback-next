@@ -273,17 +273,17 @@ describe('model generator using --config option', () => {
     basicModelFileChecks(expectedModelFile, expectedIndexFile);
   });
 
-  it('does not run if pass invalid json', () => {
-    return expect(
-      testUtils
-        .executeGenerator(generator)
-        .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path))
-        .withArguments([
-          '--config',
-          '{"name":"test", "base":"InvalidBaseModel"}',
-          '--yes',
-        ]),
-    ).to.be.rejectedWith(/Model was not found in/);
+  it('does not run if pass invalid json', async () => {
+    const result = await testUtils
+      .executeGenerator(generator)
+      .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path))
+      .withArguments([
+        '--config',
+        '{"name":"test", "base":"InvalidBaseModel"}',
+        '--yes',
+      ])
+      .catch(e => e);
+    return expect(result, /Model was not found in/);
   });
 
   describe('model generator using --config option with model settings', () => {
