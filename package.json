@@ -81,7 +81,7 @@
     "markdown-table": "^3.0.0",
     "open-cli": "^6.0.1",
     "prettier": "^2.2.1",
-    "typescript": "~4.2.4"
+    "typescript": "~4.3.2"
   },
   "config": {
     "commitizen": {
