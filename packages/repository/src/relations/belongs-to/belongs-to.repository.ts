@@ -25,8 +25,9 @@ export interface BelongsToRepository<Target extends Entity> {
 export class DefaultBelongsToRepository<
   TargetEntity extends Entity,
   TargetId,
-  TargetRepository extends EntityCrudRepository<TargetEntity, TargetId>
-> implements BelongsToRepository<TargetEntity> {
+  TargetRepository extends EntityCrudRepository<TargetEntity, TargetId>,
+> implements BelongsToRepository<TargetEntity>
+{
   /**
    * Constructor of DefaultBelongsToEntityCrudRepository
    * @param getTargetRepository - the getter of the related target model repository instance

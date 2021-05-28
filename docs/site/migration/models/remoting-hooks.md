@@ -402,7 +402,8 @@ class AddRemoteAddressInterceptor implements Provider<Interceptor> {
     invocationCtx: InvocationContext,
     next: () => ValueOrPromise<InvocationResult>,
   ) {
-    invocationCtx.args[0].postedFromIpAddress = this.request.socket.remoteAddress;
+    invocationCtx.args[0].postedFromIpAddress =
+      this.request.socket.remoteAddress;
     return next();
   }
 }

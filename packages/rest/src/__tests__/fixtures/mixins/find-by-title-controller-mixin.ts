@@ -38,7 +38,7 @@ export interface FindByTitleControllerMixinOptions {
  */
 export function FindByTitleControllerMixin<
   M extends Model,
-  T extends MixinTarget<object>
+  T extends MixinTarget<object>,
 >(superClass: T, options: FindByTitleControllerMixinOptions) {
   class MixedController extends superClass implements FindByTitle<M> {
     // Value will be provided by the subclassed controller class

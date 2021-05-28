@@ -24,10 +24,8 @@ import {Class} from './common-types';
  * Please note the value returned by the resolver is described as having
  * arbitrary additional static properties (see how Class is defined).
  */
-export type TypeResolver<
-  Type extends Object,
-  StaticMembers = Function
-> = () => Class<Type> & StaticMembers;
+export type TypeResolver<Type extends Object, StaticMembers = Function> =
+  () => Class<Type> & StaticMembers;
 
 /**
  * A function that checks whether a function is a TypeResolver or not.

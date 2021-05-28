@@ -229,30 +229,26 @@ describe('includeRelatedModels', () => {
 
   // stubbed resolvers
 
-  const belongsToResolver: InclusionResolver<
-    Product,
-    Category
-  > = async entities => {
-    const categories = [];
+  const belongsToResolver: InclusionResolver<Product, Category> =
+    async entities => {
+      const categories = [];
 
-    for (const product of entities) {
-      const category = await categoryRepo.findById(product.categoryId);
-      categories.push(category);
-    }
+      for (const product of entities) {
+        const category = await categoryRepo.findById(product.categoryId);
+        categories.push(category);
+      }
 
-    return categories;
-  };
+      return categories;
+    };
 
-  const hasManyResolver: InclusionResolver<
-    Category,
-    Product
-  > = async entities => {
-    const products = [];
+  const hasManyResolver: InclusionResolver<Category, Product> =
+    async entities => {
+      const products = [];
 
-    for (const category of entities) {
-      const product = await categoryRepo.products(category.id).find();
-      products.push(product);
-    }
-    return products;
-  };
+      for (const category of entities) {
+        const product = await categoryRepo.products(category.id).find();
+        products.push(product);
+      }
+      return products;
+    };
 });

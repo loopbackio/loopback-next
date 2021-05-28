@@ -314,4 +314,5 @@ export function uuid() {
  * @deprecated This pattern is an internal helper used by unit-tests, we are no
  * longer using it.
  */
-export const UUID_PATTERN = /[0-9A-F]{8}-[0-9A-F]{4}-[4][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}/i;
+export const UUID_PATTERN =
+  /[0-9A-F]{8}-[0-9A-F]{4}-[4][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}/i;

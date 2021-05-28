@@ -10,7 +10,8 @@ import {Strategy as FacebookStrategy} from 'passport-facebook';
 
 @injectable.provider({scope: BindingScope.SINGLETON})
 export class FacebookOauth2ExpressMiddleware
-  implements Provider<ExpressRequestHandler> {
+  implements Provider<ExpressRequestHandler>
+{
   constructor(
     @inject('facebookStrategy')
     public facebookStrategy: FacebookStrategy,

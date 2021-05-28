@@ -16,10 +16,8 @@ export class ContextTagIndexer {
   /**
    * Index for bindings by tag names
    */
-  readonly bindingsIndexedByTag: Map<
-    string,
-    Set<Readonly<Binding<unknown>>>
-  > = new Map();
+  readonly bindingsIndexedByTag: Map<string, Set<Readonly<Binding<unknown>>>> =
+    new Map();
 
   /**
    * A listener for binding events

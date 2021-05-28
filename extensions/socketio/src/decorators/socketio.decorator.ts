@@ -21,20 +21,16 @@ export interface SocketIoMetadata {
   namespace?: string | RegExp;
 }
 
-export const SOCKET_IO_METADATA = MetadataAccessor.create<
-  SocketIoMetadata,
-  ClassDecorator
->('socketio');
+export const SOCKET_IO_METADATA =
+  MetadataAccessor.create<SocketIoMetadata, ClassDecorator>('socketio');
 
-export const SOCKET_IO_SUBSCRIBE_METADATA = MetadataAccessor.create<
-  (string | RegExp)[],
-  MethodDecorator
->('socketio:subscribe');
+export const SOCKET_IO_SUBSCRIBE_METADATA =
+  MetadataAccessor.create<(string | RegExp)[], MethodDecorator>(
+    'socketio:subscribe',
+  );
 
-export const SOCKET_IO_CONNECT_METADATA = MetadataAccessor.create<
-  boolean,
-  MethodDecorator
->('socketio:connect');
+export const SOCKET_IO_CONNECT_METADATA =
+  MetadataAccessor.create<boolean, MethodDecorator>('socketio:connect');
 
 /**
  * Decorate a socketio controller class to specify the namespace.

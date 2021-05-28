@@ -68,7 +68,7 @@ export type HasManyThroughResolvedDefinition = HasManyDefinition & {
  */
 export function createTargetConstraintFromThrough<
   Target extends Entity,
-  Through extends Entity
+  Through extends Entity,
 >(
   relationMeta: HasManyThroughResolvedDefinition,
   throughInstances: Through[],
@@ -125,7 +125,7 @@ export function createTargetConstraintFromThrough<
  */
 export function getTargetKeysFromThroughModels<
   Through extends Entity,
-  TargetID
+  TargetID,
 >(
   relationMeta: HasManyThroughResolvedDefinition,
   throughInstances: Through[],
@@ -166,7 +166,7 @@ export function getTargetKeysFromThroughModels<
  */
 export function createThroughConstraintFromSource<
   Through extends Entity,
-  SourceID
+  SourceID,
 >(
   relationMeta: HasManyThroughResolvedDefinition,
   fkValue: SourceID,
@@ -254,7 +254,7 @@ export function getTargetIdsFromTargetModels<Target extends Entity, TargetID>(
  */
 export function createThroughConstraintFromTarget<
   Through extends Entity,
-  TargetID
+  TargetID,
 >(
   relationMeta: HasManyThroughResolvedDefinition,
   fkValues: TargetID[],

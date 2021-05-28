@@ -133,12 +133,11 @@ export class SocketIoControllerFactory {
     for (const methodName in subscribeMethods) {
       for (const matcher of subscribeMethods[methodName]) {
         const matcherString = matcher.toString();
-        const eventMatcherInfo: SocketIoEventMatcherInfo = eventMatchersInfo.get(
-          matcherString,
-        ) ?? {
-          matcher: matcher,
-          methodNames: [],
-        };
+        const eventMatcherInfo: SocketIoEventMatcherInfo =
+          eventMatchersInfo.get(matcherString) ?? {
+            matcher: matcher,
+            methodNames: [],
+          };
         eventMatcherInfo.methodNames.push(methodName);
         eventMatchersInfo.set(matcherString, eventMatcherInfo);
       }

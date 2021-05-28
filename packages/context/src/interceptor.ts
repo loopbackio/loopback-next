@@ -176,10 +176,10 @@ export type InterceptorOrKey = GenericInterceptorOrKey<InvocationContext>;
 /**
  * Metadata key for method-level interceptors
  */
-export const INTERCEPT_METHOD_KEY = MetadataAccessor.create<
-  InterceptorOrKey[],
-  MethodDecorator
->('intercept:method');
+export const INTERCEPT_METHOD_KEY =
+  MetadataAccessor.create<InterceptorOrKey[], MethodDecorator>(
+    'intercept:method',
+  );
 
 /**
  * Adding interceptors from the spec to the front of existing ones. Duplicate
@@ -218,10 +218,10 @@ export function mergeInterceptors(
 /**
  * Metadata key for method-level interceptors
  */
-export const INTERCEPT_CLASS_KEY = MetadataAccessor.create<
-  InterceptorOrKey[],
-  ClassDecorator
->('intercept:class');
+export const INTERCEPT_CLASS_KEY =
+  MetadataAccessor.create<InterceptorOrKey[], ClassDecorator>(
+    'intercept:class',
+  );
 
 /**
  * A factory to define `@intercept` for classes. It allows `@intercept` to be

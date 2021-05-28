@@ -44,9 +44,8 @@ export function TypeOrmMixin<T extends MixinTarget<Application>>(
     }
 
     connection(connectionConfig: ConnectionOptions) {
-      const connection: Connection = this.connectionManager.create(
-        connectionConfig,
-      );
+      const connection: Connection =
+        this.connectionManager.create(connectionConfig);
       const name = connection.name;
       const binding: Binding<Connection> = this.bind(
         `${TypeOrmBindings.PREFIX}.${name}`,

@@ -19,7 +19,8 @@ import {RestServerResolvedConfig} from './rest.server';
  */
 export class RequestContext
   extends MiddlewareContext
-  implements HandlerContext {
+  implements HandlerContext
+{
   /**
    * Get the protocol used by the client to make the request.
    * Please note this protocol may be different from what we are observing

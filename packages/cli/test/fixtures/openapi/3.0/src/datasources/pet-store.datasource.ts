@@ -21,7 +21,8 @@ const config = {
 @lifeCycleObserver('datasource')
 export class PetStoreDataSource
   extends juggler.DataSource
-  implements LifeCycleObserver {
+  implements LifeCycleObserver
+{
   static dataSourceName = 'petStore';
   static readonly defaultConfig = config;
 

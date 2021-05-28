@@ -20,9 +20,8 @@ describe('requestBody decorator', () => {
         greet(@requestBody(requestSpec) name: string) {}
       }
 
-      const requestBodySpec = getControllerSpec(MyController).paths[
-        '/greeting'
-      ]['post'].requestBody;
+      const requestBodySpec =
+        getControllerSpec(MyController).paths['/greeting']['post'].requestBody;
       expect(requestBodySpec).to.have.properties({
         description: 'A sample request body',
         required: true,
@@ -39,9 +38,8 @@ describe('requestBody decorator', () => {
         greet(@requestBody(requestSpec) name: string) {}
       }
 
-      const requestBodySpec = getControllerSpec(MyController).paths[
-        '/greeting'
-      ]['post'].requestBody;
+      const requestBodySpec =
+        getControllerSpec(MyController).paths['/greeting']['post'].requestBody;
       expect(requestBodySpec.content).to.have.key('application/json');
     });
 
@@ -65,9 +63,8 @@ describe('requestBody decorator', () => {
         ) {}
       }
 
-      const requestBodySpec = getControllerSpec(MyController).paths['/MyModel'][
-        'post'
-      ].requestBody;
+      const requestBodySpec =
+        getControllerSpec(MyController).paths['/MyModel']['post'].requestBody;
       expect(requestBodySpec.content).to.deepEqual(expectedContent);
     });
 
@@ -85,9 +82,8 @@ describe('requestBody decorator', () => {
         createMyModel(@requestBody({content: expectedContent}) inst: MyModel) {}
       }
 
-      const requestBodySpec = getControllerSpec(MyController).paths['/MyModel'][
-        'post'
-      ].requestBody;
+      const requestBodySpec =
+        getControllerSpec(MyController).paths['/MyModel']['post'].requestBody;
       expect(requestBodySpec.content).to.deepEqual(expectedContent);
     });
 
@@ -107,9 +103,8 @@ describe('requestBody decorator', () => {
         ) {}
       }
 
-      const requestBodySpec = getControllerSpec(MyController).paths['/MyModel'][
-        'post'
-      ].requestBody;
+      const requestBodySpec =
+        getControllerSpec(MyController).paths['/MyModel']['post'].requestBody;
       expect(requestBodySpec.content).to.deepEqual(expectedContent);
     });
 

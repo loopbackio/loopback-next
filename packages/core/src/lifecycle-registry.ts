@@ -116,10 +116,8 @@ export class LifeCycleObserverRegistry implements LifeCycleObserver {
     bindings: Readonly<Binding<LifeCycleObserver>>[],
   ) {
     // Group bindings in a map
-    const groupMap: Map<
-      string,
-      Readonly<Binding<LifeCycleObserver>>[]
-    > = new Map();
+    const groupMap: Map<string, Readonly<Binding<LifeCycleObserver>>[]> =
+      new Map();
     sortBindingsByPhase(
       bindings,
       CoreTags.LIFE_CYCLE_OBSERVER_GROUP,

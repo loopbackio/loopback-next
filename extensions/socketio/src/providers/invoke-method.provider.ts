@@ -7,7 +7,8 @@ import {Context, ControllerClass, invokeMethod, Provider} from '@loopback/core';
 import {SocketIoInvokeMethod} from '../types';
 
 export class SocketIoInvokeMethodProvider
-  implements Provider<SocketIoInvokeMethod> {
+  implements Provider<SocketIoInvokeMethod>
+{
   constructor() {}
 
   value(): SocketIoInvokeMethod {

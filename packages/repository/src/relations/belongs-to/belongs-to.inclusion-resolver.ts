@@ -33,7 +33,7 @@ import {resolveBelongsToMetadata} from './belongs-to.helpers';
 export function createBelongsToInclusionResolver<
   Target extends Entity,
   TargetID,
-  TargetRelations extends object
+  TargetRelations extends object,
 >(
   meta: BelongsToDefinition,
   getTargetRepo: Getter<

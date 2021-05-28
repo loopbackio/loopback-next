@@ -24,7 +24,8 @@ import {Recipe} from '../graphql-types/recipe-type';
 @lifeCycleObserver('repository')
 export class RecipeRepository
   extends DefaultCrudRepository<Recipe, typeof Recipe.prototype.id, {}>
-  implements LifeCycleObserver {
+  implements LifeCycleObserver
+{
   private static idCounter = 0;
 
   @inject('recipes')

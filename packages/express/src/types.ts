@@ -86,7 +86,7 @@ export class MiddlewareContext extends Context implements HandlerContext {
  * @param request - Express request object
  */
 export function getMiddlewareContext<
-  T extends MiddlewareContext = MiddlewareContext
+  T extends MiddlewareContext = MiddlewareContext,
 >(request?: Request): T | undefined {
   if (request == null) return undefined;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

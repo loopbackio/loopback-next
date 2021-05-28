@@ -19,7 +19,8 @@ import {JWTService} from '../services/jwt-service';
 
 @injectable(asAuthStrategy, asSpecEnhancer)
 export class JWTAuthenticationStrategy
-  implements AuthenticationStrategy, OASEnhancer {
+  implements AuthenticationStrategy, OASEnhancer
+{
   name = 'jwt';
 
   constructor(

@@ -56,7 +56,7 @@ export function invokeBodyParserMiddleware(
   request: Request,
 ): Promise<any> {
   // A hack to fool TypeScript as we don't need `response`
-  const response = ({} as any) as Response;
+  const response = {} as any as Response;
   return new Promise<void>((resolve, reject) => {
     handle(request, response, err => {
       if (err) {

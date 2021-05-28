@@ -237,7 +237,8 @@ in
    import {Provider, inject} from '@loopback/core';
 
    export class PassportBasicAuthProvider<MyUser>
-     implements Provider<AuthenticationStrategy> {
+     implements Provider<AuthenticationStrategy>
+   {
      constructor(
        @inject('authentication.basic.verify')
        private verifyFn: BasicVerifyFunction,
@@ -284,7 +285,8 @@ in
    import {INVALID_USER_CREDENTIALS_MESSAGE} from '../keys';
 
    export class VerifyFunctionProvider
-     implements Provider<BasicVerifyFunction> {
+     implements Provider<BasicVerifyFunction>
+   {
      constructor(@repository('users') private userRepo: MyUserRepository) {}
 
      value(): BasicVerifyFunction {

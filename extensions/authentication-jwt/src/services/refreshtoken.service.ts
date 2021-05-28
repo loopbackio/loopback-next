@@ -72,9 +72,8 @@ export class RefreshtokenService {
       const user = await this.userService.findUserById(
         userRefreshData.userId.toString(),
       );
-      const userProfile: UserProfile = this.userService.convertToUserProfile(
-        user,
-      );
+      const userProfile: UserProfile =
+        this.userService.convertToUserProfile(user);
       // create a JSON Web Token based on the user profile
       const token = await this.jwtService.generateToken(userProfile);
 

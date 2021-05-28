@@ -47,12 +47,16 @@ async function updateTemplateDeps(options) {
   )).dependencies;
 
   // Load dependencies from `packages/build/package.json`
-  const buildDeps = require(path.join(rootPath, 'packages/build/package.json'))
-    .dependencies;
+  const buildDeps = require(path.join(
+    rootPath,
+    'packages/build/package.json',
+  )).dependencies;
 
   // Load dependencies from `packages/core/package.json` for `tslib`
-  const coreDeps = require(path.join(rootPath, 'packages/core/package.json'))
-    .dependencies;
+  const coreDeps = require(path.join(
+    rootPath,
+    'packages/core/package.json',
+  )).dependencies;
 
   // Load dependencies from `packages/cli/package.json`
   const cliPackageJson = path.join(rootPath, 'packages/cli/package.json');

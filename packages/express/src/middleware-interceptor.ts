@@ -115,7 +115,7 @@ export function toInterceptor<CTX extends Context = InvocationContext>(
 }
 
 function toInterceptorFromExpressMiddleware<
-  CTX extends Context = InvocationContext
+  CTX extends Context = InvocationContext,
 >(handlerFn: ExpressRequestHandler): GenericInterceptor<CTX> {
   return async (context, next) => {
     const middlewareCtx = await context.get<MiddlewareContext>(
@@ -190,8 +190,9 @@ export function createInterceptor<CFG, CTX extends Context = InvocationContext>(
  */
 export abstract class ExpressMiddlewareInterceptorProvider<
   CFG,
-  CTX extends Context = InvocationContext
-> implements Provider<GenericInterceptor<CTX>> {
+  CTX extends Context = InvocationContext,
+> implements Provider<GenericInterceptor<CTX>>
+{
   protected middlewareConfigView?: ContextView<CFG>;
   protected middlewareConfig?: CFG;
 
@@ -275,7 +276,7 @@ export abstract class ExpressMiddlewareInterceptorProvider<
  */
 export function defineInterceptorProvider<
   CFG,
-  CTX extends Context = InvocationContext
+  CTX extends Context = InvocationContext,
 >(
   middlewareFactory: ExpressMiddlewareFactory<CFG>,
   defaultMiddlewareConfig?: CFG,

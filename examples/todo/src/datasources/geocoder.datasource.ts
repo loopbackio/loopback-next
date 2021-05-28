@@ -24,8 +24,7 @@ const config = {
     {
       template: {
         method: 'GET',
-        url:
-          'https://geocoding.geo.census.gov/geocoder/locations/onelineaddress',
+        url: 'https://geocoding.geo.census.gov/geocoder/locations/onelineaddress',
         query: {
           format: '{format=json}',
           benchmark: 'Public_AR_Current',
@@ -47,7 +46,8 @@ const config = {
 @lifeCycleObserver('datasource')
 export class GeocoderDataSource
   extends juggler.DataSource
-  implements LifeCycleObserver {
+  implements LifeCycleObserver
+{
   static dataSourceName = 'geocoder';
   static readonly defaultConfig = config;
 

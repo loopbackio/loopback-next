@@ -30,7 +30,7 @@ const debug = debugFactory('loopback:repository:relation-helpers');
 export async function findByForeignKeys<
   Target extends Entity,
   TargetRelations extends object,
-  ForeignKey extends StringKeyOf<Target>
+  ForeignKey extends StringKeyOf<Target>,
 >(
   targetRepository: EntityCrudRepository<Target, unknown, TargetRelations>,
   fkName: ForeignKey,
@@ -48,7 +48,7 @@ export async function findByForeignKeys<
     value = fkValues;
   }
 
-  const where = ({[fkName]: value} as unknown) as Where<Target>;
+  const where = {[fkName]: value} as unknown as Where<Target>;
 
   if (scope && !_.isEmpty(scope)) {
     // combine where clause to scope filter
@@ -74,7 +74,7 @@ export type StringKeyOf<T> = Extract<keyof T, string>;
 
 export async function includeRelatedModels<
   T extends Entity,
-  Relations extends object = {}
+  Relations extends object = {},
 >(
   targetRepository: EntityCrudRepository<T, unknown, Relations>,
   entities: T[],

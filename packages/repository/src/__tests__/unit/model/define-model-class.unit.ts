@@ -10,9 +10,10 @@ import {ModelMetadataHelper} from '../../../decorators';
 
 describe('defineModelClass', () => {
   it('creates a Model class', () => {
-    const definition = new ModelDefinition(
-      'DataTransferObject',
-    ).addProperty('title', {type: 'string'});
+    const definition = new ModelDefinition('DataTransferObject').addProperty(
+      'title',
+      {type: 'string'},
+    );
 
     const DataTransferObject = defineModelClass<typeof Model, {title: string}>(
       Model,

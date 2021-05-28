@@ -121,7 +121,7 @@ export class OASEnhancerService {
  */
 export function mergeOpenAPISpec<
   C extends Partial<OpenApiSpec>,
-  P extends Partial<OpenApiSpec>
+  P extends Partial<OpenApiSpec>,
 >(currentSpec: C, patchSpec: P): C & P {
   const mergedSpec = jsonmergepatch.merge(currentSpec, patchSpec);
   return mergedSpec;

@@ -14,7 +14,8 @@ const debug = debugFactory('loopback:multi-tenancy:strategy:header');
  */
 export class HeaderStrategy
   extends BaseStrategy
-  implements MultiTenancyStrategy {
+  implements MultiTenancyStrategy
+{
   name = 'header';
 
   identifyTenant(requestContext: RequestContext) {

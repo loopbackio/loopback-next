@@ -37,7 +37,7 @@ export type HasManyThroughRepositoryFactory<
   TargetEntity extends Entity,
   TargetID,
   ThroughEntity extends Entity,
-  SourceID
+  SourceID,
 > = {
   (fkValue: SourceID): HasManyThroughRepository<
     TargetEntity,
@@ -56,7 +56,7 @@ export function createHasManyThroughRepositoryFactory<
   TargetID,
   Through extends Entity,
   ThroughID,
-  SourceID
+  SourceID,
 >(
   relationMetadata: HasManyDefinition,
   targetRepositoryGetter: Getter<EntityCrudRepository<Target, TargetID>>,

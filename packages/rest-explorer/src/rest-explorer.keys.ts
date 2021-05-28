@@ -23,7 +23,6 @@ export namespace RestExplorerBindings {
    * We recommend `ctx.configure(RestExplorerBindings.COMPONENT)` to be used
    * instead of `ctx.bind(RestExplorerBindings.CONFIG)`.
    */
-  export const CONFIG: BindingAddress<RestExplorerConfig> = BindingKey.buildKeyForConfig<RestExplorerConfig>(
-    COMPONENT,
-  );
+  export const CONFIG: BindingAddress<RestExplorerConfig> =
+    BindingKey.buildKeyForConfig<RestExplorerConfig>(COMPONENT);
 }

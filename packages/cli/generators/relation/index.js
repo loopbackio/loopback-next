@@ -386,16 +386,20 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
     if (this.shouldExit()) return false;
 
     if (this.options.sourceModelPrimaryKey) {
-      this.artifactInfo.sourceModelPrimaryKey = this.options.sourceModelPrimaryKey;
+      this.artifactInfo.sourceModelPrimaryKey =
+        this.options.sourceModelPrimaryKey;
     }
     if (this.options.sourceModelPrimaryKeyType) {
-      this.artifactInfo.sourceModelPrimaryKeyType = this.options.sourceModelPrimaryKeyType;
+      this.artifactInfo.sourceModelPrimaryKeyType =
+        this.options.sourceModelPrimaryKeyType;
     }
     if (this.options.destinationModelPrimaryKey) {
-      this.artifactInfo.destinationModelPrimaryKey = this.options.destinationModelPrimaryKey;
+      this.artifactInfo.destinationModelPrimaryKey =
+        this.options.destinationModelPrimaryKey;
     }
     if (this.options.destinationModelPrimaryKeyType) {
-      this.artifactInfo.destinationModelPrimaryKeyType = this.options.destinationModelPrimaryKeyType;
+      this.artifactInfo.destinationModelPrimaryKeyType =
+        this.options.destinationModelPrimaryKeyType;
     }
 
     if (!this.artifactInfo.sourceModelPrimaryKey) {
@@ -660,13 +664,15 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
       );
       this.artifactInfo.srcRepositoryClassName =
         utils.toClassName(this.artifactInfo.sourceModel) + 'Repository';
-      this.artifactInfo.srcRepositoryFileObj = new relationUtils.AstLoopBackProject().addSourceFileAtPath(
-        this.artifactInfo.srcRepositoryFile,
-      );
+      this.artifactInfo.srcRepositoryFileObj =
+        new relationUtils.AstLoopBackProject().addSourceFileAtPath(
+          this.artifactInfo.srcRepositoryFile,
+        );
 
-      const repoClassDeclaration = this.artifactInfo.srcRepositoryFileObj.getClassOrThrow(
-        this.artifactInfo.srcRepositoryClassName,
-      );
+      const repoClassDeclaration =
+        this.artifactInfo.srcRepositoryFileObj.getClassOrThrow(
+          this.artifactInfo.srcRepositoryClassName,
+        );
       // checks if the relation name already exists in repo
       if (
         relationUtils.doesPropertyExist(

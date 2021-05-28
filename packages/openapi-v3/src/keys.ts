@@ -15,10 +15,10 @@ export namespace OAI3Keys {
   /**
    * Metadata key used to set or retrieve `@operation` metadata.
    */
-  export const METHODS_KEY = MetadataAccessor.create<
-    Partial<RestEndpoint>,
-    MethodDecorator
-  >('openapi-v3:methods');
+  export const METHODS_KEY =
+    MetadataAccessor.create<Partial<RestEndpoint>, MethodDecorator>(
+      'openapi-v3:methods',
+    );
 
   /**
    * Metadata key used to set or retrieve `@deprecated` metadata on a method.
@@ -87,10 +87,8 @@ export namespace OAI3Keys {
   /**
    * Metadata key used to set or retrieve `@api` metadata
    */
-  export const CLASS_KEY = MetadataAccessor.create<
-    ControllerSpec,
-    ClassDecorator
-  >('openapi-v3:class');
+  export const CLASS_KEY =
+    MetadataAccessor.create<ControllerSpec, ClassDecorator>('openapi-v3:class');
 
   /**
    * Metadata key used to set or retrieve a controller spec

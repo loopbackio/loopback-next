@@ -448,7 +448,7 @@ import {FindByTitle} from './find-by-title-interface';
  */
 export function FindByTitleRepositoryMixin<
   M extends Model & {title: string},
-  R extends MixinTarget<CrudRepository<M>>
+  R extends MixinTarget<CrudRepository<M>>,
 >(superClass: R) {
   class MixedRepository extends superClass implements FindByTitle<M> {
     async findByTitle(title: string): Promise<M[]> {
@@ -553,7 +553,7 @@ export interface FindByTitleControllerMixinOptions {
  */
 export function FindByTitleControllerMixin<
   M extends Model,
-  T extends MixinTarget<object>
+  T extends MixinTarget<object>,
 >(superClass: T, options: FindByTitleControllerMixinOptions) {
   class MixedController extends superClass implements FindByTitle<M> {
     // Value will be provided by the subclassed controller class

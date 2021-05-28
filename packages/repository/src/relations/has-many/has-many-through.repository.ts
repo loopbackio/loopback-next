@@ -27,7 +27,7 @@ import {
 export interface HasManyThroughRepository<
   Target extends Entity,
   TargetID,
-  Through extends Entity
+  Through extends Entity,
 > {
   /**
    * Create a target model instance
@@ -125,8 +125,9 @@ export class DefaultHasManyThroughRepository<
   TargetRepository extends EntityCrudRepository<TargetEntity, TargetID>,
   ThroughEntity extends Entity,
   ThroughID,
-  ThroughRepository extends EntityCrudRepository<ThroughEntity, ThroughID>
-> implements HasManyThroughRepository<TargetEntity, TargetID, ThroughEntity> {
+  ThroughRepository extends EntityCrudRepository<ThroughEntity, ThroughID>,
+> implements HasManyThroughRepository<TargetEntity, TargetID, ThroughEntity>
+{
   constructor(
     public getTargetRepository: Getter<TargetRepository>,
     public getThroughRepository: Getter<ThroughRepository>,
@@ -170,9 +171,8 @@ export class DefaultHasManyThroughRepository<
       constrainFilter(undefined, sourceConstraint),
       options?.throughOptions,
     );
-    const targetConstraint = this.getTargetConstraintFromThroughModels(
-      throughInstances,
-    );
+    const targetConstraint =
+      this.getTargetConstraintFromThroughModels(throughInstances);
     return targetRepository.find(
       constrainFilter(filter, targetConstraint),
       options,
@@ -210,17 +210,15 @@ export class DefaultHasManyThroughRepository<
       // otherwise, delete through models that relate to the sourceId
       const targetFkValues = this.getTargetKeys(throughInstances);
       // delete through instances that have the targets that are going to be deleted
-      const throughFkConstraint = this.getThroughConstraintFromTarget(
-        targetFkValues,
-      );
+      const throughFkConstraint =
+        this.getThroughConstraintFromTarget(targetFkValues);
       await throughRepository.deleteAll(
         constrainWhereOr({}, [sourceConstraint, throughFkConstraint]),
       );
     }
     // delete target(s)
-    const targetConstraint = this.getTargetConstraintFromThroughModels(
-      throughInstances,
-    );
+    const targetConstraint =
+      this.getTargetConstraintFromThroughModels(throughInstances);
     return targetRepository.deleteAll(
       constrainWhere(where, targetConstraint as Where<TargetEntity>),
       options,
@@ -241,9 +239,8 @@ export class DefaultHasManyThroughRepository<
       constrainFilter(undefined, sourceConstraint),
       options?.throughOptions,
     );
-    const targetConstraint = this.getTargetConstraintFromThroughModels(
-      throughInstances,
-    );
+    const targetConstraint =
+      this.getTargetConstraintFromThroughModels(throughInstances);
     return targetRepository.updateAll(
       constrainDataObject(dataObject, targetConstraint),
       constrainWhere(where, targetConstraint as Where<TargetEntity>),

@@ -78,8 +78,7 @@ describe('HttpCachingProxy', () => {
     await givenRunningProxy({logError: false, timeout: 1});
     await expect(
       makeRequest({
-        url:
-          'http://www.mocky.io/v2/5dade5e72d0000a542e4bd9c?mocky-delay=1000ms',
+        url: 'http://www.mocky.io/v2/5dade5e72d0000a542e4bd9c?mocky-delay=1000ms',
       }),
     ).to.be.rejectedWith(/502 - "Error: timeout of 1ms exceeded/);
   });

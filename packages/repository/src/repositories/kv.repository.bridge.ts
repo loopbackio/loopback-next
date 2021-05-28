@@ -13,7 +13,8 @@ import {ensurePromise, juggler} from './legacy-juggler-bridge';
  * An implementation of KeyValueRepository based on loopback-datasource-juggler
  */
 export class DefaultKeyValueRepository<T extends Model>
-  implements KeyValueRepository<T> {
+  implements KeyValueRepository<T>
+{
   /**
    * A legacy KeyValueModel class
    */
@@ -29,9 +30,8 @@ export class DefaultKeyValueRepository<T extends Model>
   ) {
     // KVModel class is placeholder to receive methods from KeyValueAccessObject
     // through mixin
-    this.kvModelClass = ds.createModel<typeof juggler.KeyValueModel>(
-      '_kvModel',
-    );
+    this.kvModelClass =
+      ds.createModel<typeof juggler.KeyValueModel>('_kvModel');
   }
 
   delete(key: string, options?: Options): Promise<void> {

@@ -28,9 +28,8 @@ import {
 } from '../../pooling';
 
 describe('Resource pool', () => {
-  const POOLING_SERVICE = BindingKey.create<PoolingService<ExpensiveResource>>(
-    'services.pooling',
-  );
+  const POOLING_SERVICE =
+    BindingKey.create<PoolingService<ExpensiveResource>>('services.pooling');
   let ctx: Context;
 
   beforeEach(givenContext);
@@ -316,7 +315,8 @@ describe('Resource pool', () => {
    */
   class ExpensiveResourceWithHooks
     extends ExpensiveResource
-    implements Poolable {
+    implements Poolable
+  {
     requestCtx?: Context;
 
     acquire(requestCtx: Context) {
@@ -334,7 +334,8 @@ describe('Resource pool', () => {
    * Wrap the expensive resource as a LoopBack binding provider
    */
   class ExpensiveResourceProvider
-    implements Provider<PooledValue<ExpensiveResource>> {
+    implements Provider<PooledValue<ExpensiveResource>>
+  {
     constructor(
       @inject(POOLING_SERVICE)
       private poolingService: PoolingService<ExpensiveResource>,
