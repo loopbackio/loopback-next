@@ -25,6 +25,6 @@
     "@typescript-eslint/parser": "^4.25.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-eslint-plugin": "^3.0.3",
-    "eslint-plugin-mocha": "^8.1.0"
+    "eslint-plugin-mocha": "^8.2.0"
   }
 }
