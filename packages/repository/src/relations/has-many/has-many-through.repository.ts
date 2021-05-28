@@ -110,6 +110,17 @@ export interface HasManyThroughRepository<
       throughOptions?: Options;
     },
   ): Promise<void>;
+
+  /**
+   * Remove all association to an existing target model instance
+   * @param options
+   * @return A promise which resolves to void
+   */
+  unlinkAll(
+    options?: Options & {
+      throughOptions?: Options;
+    },
+  ): Promise<void>;
 }
 
 /**
@@ -277,6 +288,27 @@ export class DefaultHasManyThroughRepository<
     const throughRepository = await this.getThroughRepository();
     const sourceConstraint = this.getThroughConstraintFromSource();
     const targetConstraint = this.getThroughConstraintFromTarget([targetId]);
+    const constraints = {...targetConstraint, ...sourceConstraint};
+    await throughRepository.deleteAll(
+      constrainDataObject({}, constraints as DataObject<ThroughEntity>),
+      options?.throughOptions,
+    );
+  }
+
+  async unlinkAll(
+    options?: Options & {
+      throughOptions?: Options;
+    },
+  ): Promise<void> {
+    const throughRepository = await this.getThroughRepository();
+    const sourceConstraint = this.getThroughConstraintFromSource();
+    const throughInstances = await throughRepository.find(
+      constrainFilter(undefined, sourceConstraint),
+      options?.throughOptions,
+    );
+    const targetFkValues = this.getTargetKeys(throughInstances);
+    const targetConstraint =
+      this.getThroughConstraintFromTarget(targetFkValues);
     const constraints = {...targetConstraint, ...sourceConstraint};
     await throughRepository.deleteAll(
       constrainDataObject({}, constraints as DataObject<ThroughEntity>),
