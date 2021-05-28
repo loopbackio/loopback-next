@@ -131,10 +131,10 @@ describe('HasManyThroughHelpers', () => {
       expect(result).to.containEql({productId: 1});
     });
     it('creates constraint with given fks', () => {
-      const result = createThroughConstraintFromTarget(relationMetaData, [
-        1,
-        2,
-      ]);
+      const result = createThroughConstraintFromTarget(
+        relationMetaData,
+        [1, 2],
+      );
       expect(result).to.containEql({productId: {inq: [1, 2]}});
     });
     it('throws if fkValue is undefined', () => {

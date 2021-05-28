@@ -267,9 +267,8 @@ export function RepositoryMixin<T extends MixinTarget<Application>>(
 
       // Instantiate all repositories to ensure models are registered & attached
       // to their datasources
-      const repoBindings: Readonly<Binding<unknown>>[] = this.findByTag(
-        'repository',
-      );
+      const repoBindings: Readonly<Binding<unknown>>[] =
+        this.findByTag('repository');
       await Promise.all(repoBindings.map(b => this.get(b.key)));
 
       // Look up all datasources and update/migrate schemas one by one

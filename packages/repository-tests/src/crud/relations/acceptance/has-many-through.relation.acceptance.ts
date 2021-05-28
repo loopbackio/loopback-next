@@ -43,15 +43,12 @@ export function hasManyThroughRelationAcceptance(
 
     before(
       withCrudCtx(async function setupRepository(ctx: CrudTestContext) {
-        ({
-          customerRepo,
-          cartItemRepo,
-          customerCartItemLinkRepo,
-        } = givenBoundCrudRepositories(
-          ctx.dataSource,
-          repositoryClass,
-          features,
-        ));
+        ({customerRepo, cartItemRepo, customerCartItemLinkRepo} =
+          givenBoundCrudRepositories(
+            ctx.dataSource,
+            repositoryClass,
+            features,
+          ));
         await ctx.dataSource.automigrate([
           Customer.name,
           CartItem.name,

@@ -98,7 +98,7 @@ export interface AuthorizationContext {
  * A function to decide if access to the target should be allowed or denied
  */
 export type Authorizer<
-  T extends AuthorizationMetadata = AuthorizationMetadata
+  T extends AuthorizationMetadata = AuthorizationMetadata,
 > =
   /**
    * @param context: Context information for authorization

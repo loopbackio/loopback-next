@@ -33,7 +33,7 @@ const debug = debugFactory(
 export function createHasManyInclusionResolver<
   Target extends Entity,
   TargetID,
-  TargetRelations extends object
+  TargetRelations extends object,
 >(
   meta: HasManyDefinition,
   getTargetRepo: Getter<

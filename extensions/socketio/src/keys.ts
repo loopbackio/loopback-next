@@ -35,9 +35,8 @@ export namespace SocketIoBindings {
 
   export const MESSAGE = BindingKey.create<unknown[]>('socketio.message');
 
-  export const SEQUENCE = BindingKey.create<SocketIoSequence>(
-    'socketio.sequence',
-  );
+  export const SEQUENCE =
+    BindingKey.create<SocketIoSequence>('socketio.sequence');
 
   export const INVOKE_METHOD = BindingKey.create<SocketIoInvokeMethod>(
     'socketio.sequence.invokeMethod',

@@ -54,16 +54,12 @@ export function hasManyThroughInclusionResolverAcceptance(
         withCrudCtx(async function setupRepository(ctx: CrudTestContext) {
           // this helper should create the inclusion resolvers and also
           // register inclusion resolvers for us
-          ({
-            customerRepo,
-            cartItemRepo,
-            customerCartItemLinkRepo,
-            orderRepo,
-          } = givenBoundCrudRepositories(
-            ctx.dataSource,
-            repositoryClass,
-            features,
-          ));
+          ({customerRepo, cartItemRepo, customerCartItemLinkRepo, orderRepo} =
+            givenBoundCrudRepositories(
+              ctx.dataSource,
+              repositoryClass,
+              features,
+            ));
           expect(customerRepo.cartItems.inclusionResolver).to.be.Function();
 
           await ctx.dataSource.automigrate([

@@ -36,9 +36,8 @@ export namespace RestBindings {
   /**
    * Binding key for setting and injecting RestComponentConfig
    */
-  export const CONFIG: BindingKey<RestServerConfig> = CoreBindings.APPLICATION_CONFIG.deepProperty(
-    'rest',
-  );
+  export const CONFIG: BindingKey<RestServerConfig> =
+    CoreBindings.APPLICATION_CONFIG.deepProperty('rest');
   /**
    * Binding key for setting and injecting the host name of RestServer
    */
@@ -62,9 +61,8 @@ export namespace RestBindings {
   /**
    * Binding key for HTTPS options
    */
-  export const HTTPS_OPTIONS = BindingKey.create<https.ServerOptions>(
-    'rest.httpsOptions',
-  );
+  export const HTTPS_OPTIONS =
+    BindingKey.create<https.ServerOptions>('rest.httpsOptions');
 
   /**
    * Binding key for the server itself
@@ -105,9 +103,10 @@ export namespace RestBindings {
   /**
    * Binding key for request body parser options
    */
-  export const REQUEST_BODY_PARSER_OPTIONS = BindingKey.create<RequestBodyParserOptions>(
-    'rest.requestBodyParserOptions',
-  );
+  export const REQUEST_BODY_PARSER_OPTIONS =
+    BindingKey.create<RequestBodyParserOptions>(
+      'rest.requestBodyParserOptions',
+    );
 
   /**
    * Binding key for request body parser
@@ -165,9 +164,8 @@ export namespace RestBindings {
   /**
    * Binding key for setting and injecting an OpenAPI spec
    */
-  export const API_SPEC: BindingKey<OpenApiSpec> = BindingKey.create<OpenApiSpec>(
-    'rest.apiSpec',
-  );
+  export const API_SPEC: BindingKey<OpenApiSpec> =
+    BindingKey.create<OpenApiSpec>('rest.apiSpec');
 
   /**
    * Binding key for setting and injecting an OpenAPI operation spec
@@ -256,9 +254,8 @@ export namespace RestBindings {
     /**
      * Binding key for setting and injecting the http request
      */
-    export const REQUEST: BindingKey<Request> = BindingKey.create<Request>(
-      'rest.http.request',
-    );
+    export const REQUEST: BindingKey<Request> =
+      BindingKey.create<Request>('rest.http.request');
     /**
      * Binding key for setting and injecting the http response
      */

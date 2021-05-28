@@ -62,7 +62,7 @@ export interface DecoratorOptions {
 export class DecoratorFactory<
   T, // Type of the metadata spec for individual class/method/property/parameter
   M extends T | MetadataMap<T> | MetadataMap<T[]>, // Type of the metadata
-  D extends DecoratorType // Type of the decorator
+  D extends DecoratorType, // Type of the decorator
 > {
   protected decoratorName: string;
 
@@ -343,7 +343,7 @@ export class DecoratorFactory<
   protected static _createDecorator<
     S,
     MT extends S | MetadataMap<S> | MetadataMap<S[]>,
-    DT extends DecoratorType
+    DT extends DecoratorType,
   >(key: MetadataKey<S, DT>, spec: S, options?: DecoratorOptions): DT {
     const inst = new this<S, MT, DT>(key.toString(), spec, options);
     return inst.create();

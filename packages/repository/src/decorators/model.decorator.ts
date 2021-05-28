@@ -19,10 +19,10 @@ import {
 } from '../model';
 import {RELATIONS_KEY} from '../relations/relation.decorator';
 
-export const MODEL_KEY = MetadataAccessor.create<
-  Partial<ModelDefinitionSyntax>,
-  ClassDecorator
->('loopback:model');
+export const MODEL_KEY =
+  MetadataAccessor.create<Partial<ModelDefinitionSyntax>, ClassDecorator>(
+    'loopback:model',
+  );
 export const MODEL_PROPERTIES_KEY = MetadataAccessor.create<
   PropertyDefinition,
   PropertyDecorator

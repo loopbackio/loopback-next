@@ -56,7 +56,8 @@ describe('registerAuthenticationStrategy', () => {
 
   @injectable(asAuthStrategy, asSpecEnhancer)
   class MyAuthenticationStrategy
-    implements AuthenticationStrategy, OASEnhancer {
+    implements AuthenticationStrategy, OASEnhancer
+  {
     name: 'my-auth';
     async authenticate(request: Request): Promise<UserProfile | undefined> {
       return {

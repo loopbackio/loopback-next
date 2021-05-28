@@ -113,7 +113,8 @@ const SequenceActions = RestBindings.SequenceActions;
  */
 export class RestServer
   extends BaseMiddlewareRegistry
-  implements Server, HttpServerLike {
+  implements Server, HttpServerLike
+{
   /**
    * Handle incoming HTTP(S) request by invoking the corresponding
    * Controller method via the configured Sequence.

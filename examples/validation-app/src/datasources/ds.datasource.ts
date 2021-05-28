@@ -16,7 +16,8 @@ const config = {
 @lifeCycleObserver('datasource')
 export class DsDataSource
   extends juggler.DataSource
-  implements LifeCycleObserver {
+  implements LifeCycleObserver
+{
   static dataSourceName = 'ds';
   static readonly defaultConfig = config;
 

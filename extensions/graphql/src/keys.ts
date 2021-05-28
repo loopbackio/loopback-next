@@ -16,9 +16,8 @@ export namespace GraphQLBindings {
   /**
    * Binding key for setting and injecting GraphQLServerConfig
    */
-  export const CONFIG: BindingKey<GraphQLServerOptions> = CoreBindings.APPLICATION_CONFIG.deepProperty(
-    'graphql',
-  );
+  export const CONFIG: BindingKey<GraphQLServerOptions> =
+    CoreBindings.APPLICATION_CONFIG.deepProperty('graphql');
 
   /**
    * Binding key for the GraphQL server

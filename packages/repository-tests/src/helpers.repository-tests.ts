@@ -11,7 +11,7 @@ import {CrudTestContext} from './types.repository-tests';
  * @param context - Mocha context as provided to the test function via `this`.
  */
 export function getCrudContext(context: Mocha.Context) {
-  return (context as unknown) as CrudTestContext;
+  return context as unknown as CrudTestContext;
 }
 
 /**

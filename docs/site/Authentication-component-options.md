@@ -55,9 +55,10 @@ export interface AuthenticationStrategyOptions {
 }
 
 export namespace BasicAuthenticationStrategyBindings {
-  export const DEFAULT_OPTIONS = BindingKey.create<AuthenticationStrategyOptions>(
-    'authentication.strategies.basic.defaultoptions',
-  );
+  export const DEFAULT_OPTIONS =
+    BindingKey.create<AuthenticationStrategyOptions>(
+      'authentication.strategies.basic.defaultoptions',
+    );
 }
 ```
 

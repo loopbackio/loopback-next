@@ -10,7 +10,8 @@ export namespace ApiConnectBindings {
   /**
    * Strongly-typed binding key for ApiConnectSpecEnhancer
    */
-  export const API_CONNECT_SPEC_ENHANCER = BindingKey.create<ApiConnectSpecEnhancer>(
-    'oas-enhancer.ApiConnectSpecEnhancer',
-  );
+  export const API_CONNECT_SPEC_ENHANCER =
+    BindingKey.create<ApiConnectSpecEnhancer>(
+      'oas-enhancer.ApiConnectSpecEnhancer',
+    );
 }

@@ -28,9 +28,8 @@ describe('AuthMetadataProvider', () => {
 
   describe('value()', () => {
     it('returns the auth metadata of a controller method', async () => {
-      const authMetadata:
-        | AuthenticationMetadata[]
-        | undefined = await provider.value();
+      const authMetadata: AuthenticationMetadata[] | undefined =
+        await provider.value();
       expect(authMetadata?.[0]).to.be.eql({
         strategy: 'my-strategy',
       });
@@ -44,9 +43,8 @@ describe('AuthMetadataProvider', () => {
         context
           .bind(CoreBindings.CONTROLLER_METHOD_META)
           .toProvider(AuthMetadataProvider);
-        const authMetadata:
-          | AuthenticationMetadata[]
-          | undefined = await context.get(CoreBindings.CONTROLLER_METHOD_META);
+        const authMetadata: AuthenticationMetadata[] | undefined =
+          await context.get(CoreBindings.CONTROLLER_METHOD_META);
         expect(authMetadata?.[0]).to.be.eql({
           strategy: 'my-strategy',
         });
@@ -59,9 +57,8 @@ describe('AuthMetadataProvider', () => {
         context
           .bind(CoreBindings.CONTROLLER_METHOD_META)
           .toProvider(AuthMetadataProvider);
-        const authMetadata:
-          | AuthenticationMetadata[]
-          | undefined = await context.get(CoreBindings.CONTROLLER_METHOD_META);
+        const authMetadata: AuthenticationMetadata[] | undefined =
+          await context.get(CoreBindings.CONTROLLER_METHOD_META);
         expect(authMetadata?.[0]).to.be.undefined();
       });
 
@@ -75,9 +72,8 @@ describe('AuthMetadataProvider', () => {
         context
           .configure(AuthenticationBindings.COMPONENT)
           .to({defaultMetadata: [{strategy: 'xyz'}]});
-        const authMetadata:
-          | AuthenticationMetadata[]
-          | undefined = await context.get(CoreBindings.CONTROLLER_METHOD_META);
+        const authMetadata: AuthenticationMetadata[] | undefined =
+          await context.get(CoreBindings.CONTROLLER_METHOD_META);
         expect(authMetadata?.[0]).to.be.undefined();
       });
 
@@ -90,9 +86,8 @@ describe('AuthMetadataProvider', () => {
         context
           .bind(CoreBindings.CONTROLLER_METHOD_META)
           .toProvider(AuthMetadataProvider);
-        const authMetadata:
-          | AuthenticationMetadata[]
-          | undefined = await context.get(CoreBindings.CONTROLLER_METHOD_META);
+        const authMetadata: AuthenticationMetadata[] | undefined =
+          await context.get(CoreBindings.CONTROLLER_METHOD_META);
         expect(authMetadata?.[0]).to.be.undefined();
       });
 
@@ -108,9 +103,8 @@ describe('AuthMetadataProvider', () => {
         context
           .bind(CoreBindings.CONTROLLER_METHOD_META)
           .toProvider(AuthMetadataProvider);
-        const authMetadata:
-          | AuthenticationMetadata[]
-          | undefined = await context.get(CoreBindings.CONTROLLER_METHOD_META);
+        const authMetadata: AuthenticationMetadata[] | undefined =
+          await context.get(CoreBindings.CONTROLLER_METHOD_META);
         expect(authMetadata?.[0]).to.be.eql({strategy: 'xyz'});
       });
 
@@ -119,9 +113,8 @@ describe('AuthMetadataProvider', () => {
         context
           .bind(CoreBindings.CONTROLLER_METHOD_META)
           .toProvider(AuthMetadataProvider);
-        const authMetadata:
-          | AuthenticationMetadata[]
-          | undefined = await context.get(CoreBindings.CONTROLLER_METHOD_META);
+        const authMetadata: AuthenticationMetadata[] | undefined =
+          await context.get(CoreBindings.CONTROLLER_METHOD_META);
         expect(authMetadata?.[0]).to.be.undefined();
       });
     });

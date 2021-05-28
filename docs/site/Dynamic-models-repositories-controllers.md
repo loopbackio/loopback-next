@@ -132,11 +132,10 @@ The `@loopback/rest-crud` package exports a helper function,
 `DefaultCrudRepository`-based repository class for a given model.
 
 ```ts
-const BookRepository = defineCrudRepositoryClass<
-  Book,
-  typeof Book.prototype.id,
-  BookRelations
->(BookModel);
+const BookRepository =
+  defineCrudRepositoryClass<Book, typeof Book.prototype.id, BookRelations>(
+    BookModel,
+  );
 ```
 
 In case you want to use a non-`DefaultCrudRepository` repository class or you
@@ -155,7 +154,7 @@ repository as the base class.
 class MyRepoBase<
   E extends Entity,
   IdType,
-  Relations extends object
+  Relations extends object,
 > extends DefaultCrudRepository<E, IdType, Relations> {
   // Custom implementation
 }

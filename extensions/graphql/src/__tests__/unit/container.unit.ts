@@ -33,7 +33,7 @@ describe('LoopBack container for type-graphql', () => {
     root: '',
     args: {},
     context: {},
-    info: ({} as unknown) as GraphQLResolveInfo,
+    info: {} as unknown as GraphQLResolveInfo,
   };
 
   beforeEach(givenContainer);
@@ -92,7 +92,7 @@ describe('LoopBack container for type-graphql', () => {
           [MIDDLEWARE_CONTEXT]: middlewareCtx,
         },
       },
-      info: ({} as unknown) as GraphQLResolveInfo,
+      info: {} as unknown as GraphQLResolveInfo,
     };
     const resolver = container.get(
       BookResolver,

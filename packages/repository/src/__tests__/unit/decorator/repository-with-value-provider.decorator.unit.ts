@@ -19,7 +19,8 @@ class MyController {
 }
 
 class MyRepositoryProvider
-  implements Provider<DefaultCrudRepository<Entity, string>> {
+  implements Provider<DefaultCrudRepository<Entity, string>>
+{
   constructor(
     @inject('models.Note') private myModel: typeof Entity,
     @inject('dataSources.memory') private dataSource: juggler.DataSource,

@@ -18,7 +18,7 @@ const debug = debugFactory(
 
 export interface HasOneRepositoryFactory<
   Target extends Entity,
-  ForeignKeyType
+  ForeignKeyType,
 > {
   /**
    * Invoke the function to obtain HasOneRepository.
@@ -46,7 +46,7 @@ export interface HasOneRepositoryFactory<
 export function createHasOneRepositoryFactory<
   Target extends Entity,
   TargetID,
-  ForeignKeyType
+  ForeignKeyType,
 >(
   relationMetadata: HasOneDefinition,
   targetRepositoryGetter: Getter<EntityCrudRepository<Target, TargetID>>,

@@ -554,46 +554,40 @@ describe('DefaultCrudRepository', () => {
       );
 
       // stub resolvers
-      const hasManyResolver: InclusionResolver<
-        Folder,
-        File
-      > = async entities => {
-        const files = [];
-        for (const entity of entities) {
-          const file = await folderFiles(entity.id).find();
-          files.push(file);
-        }
+      const hasManyResolver: InclusionResolver<Folder, File> =
+        async entities => {
+          const files = [];
+          for (const entity of entities) {
+            const file = await folderFiles(entity.id).find();
+            files.push(file);
+          }
 
-        return files;
-      };
+          return files;
+        };
 
-      const belongsToResolver: InclusionResolver<
-        File,
-        Folder
-      > = async entities => {
-        const folders = [];
+      const belongsToResolver: InclusionResolver<File, Folder> =
+        async entities => {
+          const folders = [];
 
-        for (const file of entities) {
-          const folder = await fileFolder(file.folderId);
-          folders.push(folder);
-        }
+          for (const file of entities) {
+            const folder = await fileFolder(file.folderId);
+            folders.push(folder);
+          }
 
-        return folders;
-      };
+          return folders;
+        };
 
-      const hasOneResolver: InclusionResolver<
-        Folder,
-        Author
-      > = async entities => {
-        const authors = [];
+      const hasOneResolver: InclusionResolver<Folder, Author> =
+        async entities => {
+          const authors = [];
 
-        for (const folder of entities) {
-          const author = await folderAuthor(folder.id).get();
-          authors.push(author);
-        }
+          for (const folder of entities) {
+            const author = await folderAuthor(folder.id).get();
+            authors.push(author);
+          }
 
-        return authors;
-      };
+          return authors;
+        };
     });
   });
 

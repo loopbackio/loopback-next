@@ -15,7 +15,8 @@ const debug = debugFactory('loopback:multi-tenancy:strategy:query');
  */
 export class QueryStrategy
   extends BaseStrategy
-  implements MultiTenancyStrategy {
+  implements MultiTenancyStrategy
+{
   name = 'query';
 
   identifyTenant(requestContext: RequestContext) {

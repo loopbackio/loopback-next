@@ -30,9 +30,8 @@ export namespace CoreBindings {
   /**
    * Binding key for application configuration
    */
-  export const APPLICATION_CONFIG: BindingKey<ApplicationConfig> = BindingKey.create<ApplicationConfig>(
-    'application.config',
-  );
+  export const APPLICATION_CONFIG: BindingKey<ApplicationConfig> =
+    BindingKey.create<ApplicationConfig>('application.config');
 
   /**
    * Binding key for the content of `package.json`
@@ -60,9 +59,8 @@ export namespace CoreBindings {
    * Binding key for the controller class resolved in the current request
    * context
    */
-  export const CONTROLLER_CLASS: BindingKey<ControllerClass> = BindingKey.create<ControllerClass>(
-    'controller.current.ctor',
-  );
+  export const CONTROLLER_CLASS: BindingKey<ControllerClass> =
+    BindingKey.create<ControllerClass>('controller.current.ctor');
 
   /**
    * Binding key for the controller method resolved in the current request
@@ -88,16 +86,14 @@ export namespace CoreBindings {
   /**
    * Binding key for life cycle observer options
    */
-  export const LIFE_CYCLE_OBSERVER_REGISTRY = BindingKey.create<LifeCycleObserverRegistry>(
-    'lifeCycleObserver.registry',
-  );
+  export const LIFE_CYCLE_OBSERVER_REGISTRY =
+    BindingKey.create<LifeCycleObserverRegistry>('lifeCycleObserver.registry');
 
   /**
    * Binding key for life cycle observer options
    */
-  export const LIFE_CYCLE_OBSERVER_OPTIONS = BindingKey.create<LifeCycleObserverOptions>(
-    'lifeCycleObserver.options',
-  );
+  export const LIFE_CYCLE_OBSERVER_OPTIONS =
+    BindingKey.create<LifeCycleObserverOptions>('lifeCycleObserver.options');
 }
 
 export namespace CoreTags {

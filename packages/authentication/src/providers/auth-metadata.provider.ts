@@ -19,7 +19,8 @@ import {AuthenticationMetadata, AuthenticationOptions} from '../types';
  * @example `context.bind('authentication.operationMetadata').toProvider(AuthMetadataProvider)`
  */
 export class AuthMetadataProvider
-  implements Provider<AuthenticationMetadata[] | undefined> {
+  implements Provider<AuthenticationMetadata[] | undefined>
+{
   constructor(
     @inject(CoreBindings.CONTROLLER_CLASS, {optional: true})
     private readonly controllerClass: Constructor<{}>,

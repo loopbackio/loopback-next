@@ -59,9 +59,9 @@ export class GraphQLResolverBooter extends BaseArtifactBooter {
   async load() {
     await super.load();
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const resolverClasses: ResolverClassMetadata[] = (getMetadataStorage() as any)
-      .resolverClasses;
+    const resolverClasses: ResolverClassMetadata[] =
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (getMetadataStorage() as any).resolverClasses;
     this.resolvers = this.classes.filter(cls => {
       return resolverClasses.some(r => !r.isAbstract && r.target === cls);
     });

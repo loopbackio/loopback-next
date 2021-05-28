@@ -59,8 +59,9 @@ export interface HasManyRepository<Target extends Entity> {
 export class DefaultHasManyRepository<
   TargetEntity extends Entity,
   TargetID,
-  TargetRepository extends EntityCrudRepository<TargetEntity, TargetID>
-> implements HasManyRepository<TargetEntity> {
+  TargetRepository extends EntityCrudRepository<TargetEntity, TargetID>,
+> implements HasManyRepository<TargetEntity>
+{
   /**
    * Constructor of DefaultHasManyEntityCrudRepository
    * @param getTargetRepository - the getter of the related target model repository instance

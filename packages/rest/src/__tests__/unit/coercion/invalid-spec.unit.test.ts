@@ -15,7 +15,7 @@ const INVALID_PARAM: ParameterObject = {
   in: 'unknown' as ParameterLocation,
   name: 'aparameter',
   // TS compiler catches `unknown` as invalid without the cast
-  schema: ({type: 'unknown'} as unknown) as SchemaObject,
+  schema: {type: 'unknown'} as unknown as SchemaObject,
 };
 
 describe('throws error for invalid parameter spec', () => {

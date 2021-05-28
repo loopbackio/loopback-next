@@ -46,7 +46,7 @@ import {Model, ModelDefinition} from './model';
  */
 export function defineModelClass<
   BaseCtor extends typeof Model,
-  Props extends object = {}
+  Props extends object = {},
 >(
   base: BaseCtor /* Model or Entity */,
   definition: ModelDefinition,
@@ -81,7 +81,7 @@ export function defineModelClass<
  */
 export type DynamicModelCtor<
   BaseCtor extends typeof Model,
-  Props extends object
+  Props extends object,
 > = {
   /** Model constructor accepting partial model data. */
   new (

@@ -38,8 +38,10 @@ describe('application metadata booter acceptance tests', () => {
 
     await sandbox.copyFile(resolve(__dirname, '../fixtures/package.json'));
 
-    const MyApp = require(resolve(sandbox.path, 'dist/application.js'))
-      .BooterApp;
+    const MyApp = require(resolve(
+      sandbox.path,
+      'dist/application.js',
+    )).BooterApp;
 
     app = new MyApp({
       rest: givenHttpServerConfig(),

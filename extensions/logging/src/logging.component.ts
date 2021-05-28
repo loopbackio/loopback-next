@@ -53,14 +53,13 @@ export class LoggingComponent implements Component {
     };
     this.providers = {
       [LoggingBindings.WINSTON_LOGGER.key]: WinstonLoggerProvider,
-      [LoggingBindings.WINSTON_INVOCATION_LOGGER
-        .key]: InvocationLoggingInterceptor,
+      [LoggingBindings.WINSTON_INVOCATION_LOGGER.key]:
+        InvocationLoggingInterceptor,
     };
 
     if (loggingConfig.enableHttpAccessLog) {
-      this.providers[
-        LoggingBindings.WINSTON_HTTP_ACCESS_LOGGER.key
-      ] = HttpAccessLogInterceptor;
+      this.providers[LoggingBindings.WINSTON_HTTP_ACCESS_LOGGER.key] =
+        HttpAccessLogInterceptor;
     }
 
     if (loggingConfig.enableFluent) {

@@ -1097,11 +1097,11 @@ function createInterceptionProxyFromInstance<T>(
 ) {
   return transformValueOrPromise(instOrPromise, inst => {
     if (typeof inst !== 'object' || inst == null) return inst;
-    return (createProxyWithInterceptors(
+    return createProxyWithInterceptors(
       // Cast inst from `T` to `object`
-      (inst as unknown) as object,
+      inst as unknown as object,
       context,
       session,
-    ) as unknown) as T;
+    ) as unknown as T;
   });
 }

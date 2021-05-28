@@ -18,7 +18,7 @@ export class AuthenticationComponent implements Component {
     [AuthenticationBindings.AUTH_ACTION.key]: AuthenticateActionProvider,
     [AuthenticationBindings.STRATEGY.key]: AuthenticationStrategyProvider,
     [AuthenticationBindings.METADATA.key]: AuthMetadataProvider,
-    [AuthenticationBindings.AUTHENTICATION_MIDDLEWARE
-      .key]: AuthenticationMiddlewareProvider,
+    [AuthenticationBindings.AUTHENTICATION_MIDDLEWARE.key]:
+      AuthenticationMiddlewareProvider,
   };
 }

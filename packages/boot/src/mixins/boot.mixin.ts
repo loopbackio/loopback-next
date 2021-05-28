@@ -93,7 +93,7 @@ export function BootMixin<T extends MixinTarget<Application>>(superClass: T) {
     async boot(): Promise<void> {
       /* eslint-disable @typescript-eslint/ban-ts-comment */
       // A workaround to access protected Application methods
-      const self = (this as unknown) as Application;
+      const self = this as unknown as Application;
 
       if (this.state === 'booting') {
         // @ts-ignore
@@ -134,9 +134,7 @@ export function BootMixin<T extends MixinTarget<Application>>(superClass: T) {
      * ```
      */
     booters(...booterCls: Constructor<Booter>[]): Binding[] {
-      return booterCls.map(cls =>
-        bindBooter((this as unknown) as Context, cls),
-      );
+      return booterCls.map(cls => bindBooter(this as unknown as Context, cls));
     }
 
     /**

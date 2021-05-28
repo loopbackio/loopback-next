@@ -37,7 +37,7 @@ export function createBelongsToAccessor<
   Target extends Entity,
   TargetId,
   Source extends Entity,
-  SourceId
+  SourceId,
 >(
   belongsToMetadata: BelongsToDefinition,
   targetRepoGetter: Getter<EntityCrudRepository<Target, TargetId>>,
@@ -45,28 +45,26 @@ export function createBelongsToAccessor<
 ): BelongsToAccessor<Target, SourceId> {
   const meta = resolveBelongsToMetadata(belongsToMetadata);
   debug('Resolved BelongsTo relation metadata: %o', meta);
-  const result: BelongsToAccessor<
-    Target,
-    SourceId
-  > = async function getTargetInstanceOfBelongsTo(sourceId: SourceId) {
-    const foreignKey = meta.keyFrom;
-    const primaryKey = meta.keyTo;
-    const sourceModel = await sourceRepository.findById(sourceId);
-    const foreignKeyValue = sourceModel[foreignKey as keyof Source];
-    // workaround to check referential integrity.
-    // should be removed once the memory connector ref integrity is done
-    // GH issue: https://github.com/strongloop/loopback-next/issues/2333
-    if (!foreignKeyValue) {
-      return (undefined as unknown) as Target;
-    }
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const constraint: any = {[primaryKey]: foreignKeyValue};
-    const constrainedRepo = new DefaultBelongsToRepository(
-      targetRepoGetter,
-      constraint as DataObject<Target>,
-    );
-    return constrainedRepo.get();
-  };
+  const result: BelongsToAccessor<Target, SourceId> =
+    async function getTargetInstanceOfBelongsTo(sourceId: SourceId) {
+      const foreignKey = meta.keyFrom;
+      const primaryKey = meta.keyTo;
+      const sourceModel = await sourceRepository.findById(sourceId);
+      const foreignKeyValue = sourceModel[foreignKey as keyof Source];
+      // workaround to check referential integrity.
+      // should be removed once the memory connector ref integrity is done
+      // GH issue: https://github.com/strongloop/loopback-next/issues/2333
+      if (!foreignKeyValue) {
+        return undefined as unknown as Target;
+      }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const constraint: any = {[primaryKey]: foreignKeyValue};
+      const constrainedRepo = new DefaultBelongsToRepository(
+        targetRepoGetter,
+        constraint as DataObject<Target>,
+      );
+      return constrainedRepo.get();
+    };
 
   result.inclusionResolver = createBelongsToInclusionResolver(
     meta,

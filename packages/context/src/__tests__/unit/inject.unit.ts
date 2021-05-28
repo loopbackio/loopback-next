@@ -111,15 +111,15 @@ describe('function argument injection', () => {
       name = 'Leonard';
     }
 
-    const mixinDecorator = () => <C extends Constructor<object>>(
-      baseConstructor: C,
-    ) =>
-      class extends baseConstructor {
-        classProperty = 'a classProperty';
-        classFunction() {
-          return 'a classFunction';
-        }
-      };
+    const mixinDecorator =
+      () =>
+      <C extends Constructor<object>>(baseConstructor: C) =>
+        class extends baseConstructor {
+          classProperty = 'a classProperty';
+          classFunction() {
+            return 'a classFunction';
+          }
+        };
 
     @mixinDecorator()
     class Test {

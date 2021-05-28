@@ -62,7 +62,8 @@ describe('boot.component unit tests', () => {
 
   class ClassicComponent
     extends BaseArtifactBooter
-    implements InstanceWithBooters {
+    implements InstanceWithBooters
+  {
     configured = false;
     async configure() {
       this.configured = true;

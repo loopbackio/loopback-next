@@ -214,9 +214,8 @@ export class UserController {
     // ensure the user exists, and the password is correct
     const user = await this.userService.verifyCredentials(credentials);
     // convert a User object into a UserProfile object (reduced set of properties)
-    const userProfile: UserProfile = this.userService.convertToUserProfile(
-      user,
-    );
+    const userProfile: UserProfile =
+      this.userService.convertToUserProfile(user);
     const accessToken = await this.jwtService.generateToken(userProfile);
     const tokens = await this.refreshService.generateToken(
       userProfile,

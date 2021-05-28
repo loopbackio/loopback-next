@@ -47,7 +47,8 @@ export interface ContextViewEvent<T> extends ContextEvent {
  */
 export class ContextView<T = unknown>
   extends EventEmitter
-  implements ContextObserver {
+  implements ContextObserver
+{
   /**
    * An array of cached bindings that matches the binding filter
    */

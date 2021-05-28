@@ -19,7 +19,8 @@ import {
  */
 class EnvConfigResolver
   extends DefaultConfigurationResolver
-  implements ConfigurationResolver {
+  implements ConfigurationResolver
+{
   constructor(@inject.context() public readonly context: Context) {
     super(context);
   }

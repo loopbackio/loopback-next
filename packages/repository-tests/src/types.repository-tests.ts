@@ -81,7 +81,7 @@ export interface CrudFeatures {
 export type CrudRepositoryCtor = new <
   T extends Entity,
   ID,
-  Relations extends object
+  Relations extends object,
 >(
   entityClass: typeof Entity & {prototype: T},
   dataSource: juggler.DataSource,
@@ -94,7 +94,7 @@ export type CrudRepositoryCtor = new <
 export type TransactionalRepositoryCtor = new <
   T extends Entity,
   ID,
-  Relations extends object
+  Relations extends object,
 >(
   entityClass: typeof Entity & {prototype: T},
   dataSource: juggler.DataSource,

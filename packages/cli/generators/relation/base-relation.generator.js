@@ -65,9 +65,8 @@ module.exports = class BaseRelationGenerator extends ArtifactGenerator {
       this.artifactInfo.srcRepositoryFileObj,
       this.artifactInfo.srcRepositoryClassName,
     );
-    const classConstructor = relationUtils.getClassConstructor(
-      classDeclaration,
-    );
+    const classConstructor =
+      relationUtils.getClassConstructor(classDeclaration);
     this._addParametersToRepositoryConstructor(classConstructor);
     this._addCreatorToRepositoryConstructor(classConstructor);
     this._registerInclusionResolverForRelation(classConstructor, options);
@@ -87,9 +86,10 @@ module.exports = class BaseRelationGenerator extends ArtifactGenerator {
   }
 
   _addPropertyToRepository(options) {
-    const classDeclaration = this.artifactInfo.srcRepositoryFileObj.getClassOrThrow(
-      this.artifactInfo.srcRepositoryClassName,
-    );
+    const classDeclaration =
+      this.artifactInfo.srcRepositoryFileObj.getClassOrThrow(
+        this.artifactInfo.srcRepositoryClassName,
+      );
 
     const property = {
       scope: ast.Scope.Public,
@@ -155,9 +155,10 @@ module.exports = class BaseRelationGenerator extends ArtifactGenerator {
     this.artifactInfo.srcRepositoryClassName =
       utils.toClassName(options.sourceModel) + 'Repository';
 
-    this.artifactInfo.srcRepositoryFileObj = new relationUtils.AstLoopBackProject().addSourceFileAtPath(
-      this.artifactInfo.srcRepositoryFile,
-    );
+    this.artifactInfo.srcRepositoryFileObj =
+      new relationUtils.AstLoopBackProject().addSourceFileAtPath(
+        this.artifactInfo.srcRepositoryFile,
+      );
 
     // dst configuration
     this.artifactInfo.dstModelFile = path.resolve(

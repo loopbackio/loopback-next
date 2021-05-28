@@ -76,8 +76,7 @@ const config = {
     {
       template: {
         method: 'GET',
-        url:
-          'https://geocoding.geo.census.gov/geocoder/locations/onelineaddress',
+        url: 'https://geocoding.geo.census.gov/geocoder/locations/onelineaddress',
         query: {
           format: '{format=json}',
           benchmark: 'Public_AR_Current',

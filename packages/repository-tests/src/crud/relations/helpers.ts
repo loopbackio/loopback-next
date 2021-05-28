@@ -143,12 +143,10 @@ export function givenBoundCrudRepositories(
     cartItemRepo.order.inclusionResolver,
   );
 
-  const customerCartItemLinkRepoClass = createCustomerCartItemLinkRepo(
-    repositoryClass,
-  );
-  const customerCartItemLinkRepo: CustomerCartItemLinkRepository = new customerCartItemLinkRepoClass(
-    db,
-  );
+  const customerCartItemLinkRepoClass =
+    createCustomerCartItemLinkRepo(repositoryClass);
+  const customerCartItemLinkRepo: CustomerCartItemLinkRepository =
+    new customerCartItemLinkRepoClass(db);
 
   const userRepoClass = createUserRepo(repositoryClass);
   const userRepo: UserRepository = new userRepoClass(

@@ -24,7 +24,8 @@ export interface BasicAuthenticationStrategyCredentials {
 
 @injectable(asAuthStrategy, asSpecEnhancer)
 export class BasicAuthenticationStrategy
-  implements AuthenticationStrategy, OASEnhancer {
+  implements AuthenticationStrategy, OASEnhancer
+{
   name = 'basic';
 
   constructor(
@@ -33,9 +34,8 @@ export class BasicAuthenticationStrategy
   ) {}
 
   async authenticate(request: Request): Promise<UserProfile | undefined> {
-    const credentials: BasicAuthenticationStrategyCredentials = this.extractCredentials(
-      request,
-    );
+    const credentials: BasicAuthenticationStrategyCredentials =
+      this.extractCredentials(request);
     const user = await this.userService.verifyCredentials(credentials);
     const userProfile = this.userService.convertToUserProfile(user);
 

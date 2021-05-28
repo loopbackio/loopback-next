@@ -112,7 +112,7 @@ describe('Context binding configuration', () => {
         propertyPath?: string,
         resolutionOptions?: ResolutionOptions,
       ): ValueOrPromise<ConfigValueType | undefined> {
-        return (`Dummy config for ${key}` as unknown) as ConfigValueType;
+        return `Dummy config for ${key}` as unknown as ConfigValueType;
       }
     }
     it('gets default resolver', () => {

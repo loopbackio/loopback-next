@@ -29,7 +29,7 @@ describe('SocketIoControllerFactory', () => {
       !!getNewFactory(
         app,
         DummyTestController,
-        (dummySocket as Object) as Socket,
+        dummySocket as Object as Socket,
       ),
     ).to.be.true();
   });
@@ -42,7 +42,7 @@ describe('SocketIoControllerFactory', () => {
       factory = getNewFactory(
         app,
         MethodsTestController,
-        (dummySocket as Object) as Socket,
+        dummySocket as Object as Socket,
       );
       createdController = await factory.create();
     });

@@ -61,9 +61,8 @@ describe('Validation at REST level', () => {
   const PRODUCT_SPEC_WITH_DESCRIPTION: SchemaObject = {
     ...PRODUCT_SPEC,
   };
-  PRODUCT_SPEC_WITH_DESCRIPTION.required = PRODUCT_SPEC.required!.concat(
-    'description',
-  );
+  PRODUCT_SPEC_WITH_DESCRIPTION.required =
+    PRODUCT_SPEC.required!.concat('description');
 
   context('with properties excluded from schema', () => {
     before(() => {

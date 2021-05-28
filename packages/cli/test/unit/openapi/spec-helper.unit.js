@@ -1,6 +1,6 @@
 const expect = require('@loopback/testlab').expect;
-const getMethodName = require('../../../generators/openapi/spec-helper')
-  .getMethodName;
+const getMethodName =
+  require('../../../generators/openapi/spec-helper').getMethodName;
 
 describe('Spec Helpers', () => {
   describe('getMethodName', () => {

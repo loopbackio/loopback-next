@@ -30,9 +30,8 @@ export function createShipmentRepo(repoClass: CrudRepositoryCtor) {
       orderRepositoryGetter: Getter<typeof repoClass.prototype>,
     ) {
       super(Shipment, db);
-      const shipmentOrdersMeta = this.entityClass.definition.relations[
-        'shipmentOrders'
-      ];
+      const shipmentOrdersMeta =
+        this.entityClass.definition.relations['shipmentOrders'];
       this.shipmentOrders = createHasManyRepositoryFactory(
         shipmentOrdersMeta as HasManyDefinition,
         orderRepositoryGetter,

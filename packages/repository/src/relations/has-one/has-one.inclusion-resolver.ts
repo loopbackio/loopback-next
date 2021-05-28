@@ -28,7 +28,7 @@ import {resolveHasOneMetadata} from './has-one.helpers';
 export function createHasOneInclusionResolver<
   Target extends Entity,
   TargetID,
-  TargetRelations extends object
+  TargetRelations extends object,
 >(
   meta: HasOneDefinition,
   getTargetRepo: Getter<

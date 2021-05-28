@@ -24,7 +24,7 @@ import {
  */
 export interface ModelRepositoryClass<
   M extends Model,
-  R extends Repository<M>
+  R extends Repository<M>,
 > {
   /**
    * The constructor for the generated repository class
@@ -52,7 +52,7 @@ export interface ModelRepositoryClass<
  */
 export interface BaseRepositoryClass<
   M extends typeof Model,
-  R extends Repository<PrototypeOf<M>>
+  R extends Repository<PrototypeOf<M>>,
 > {
   /**
    * The constructor for the generated repository class
@@ -96,7 +96,7 @@ export interface BaseRepositoryClass<
  */
 export function defineRepositoryClass<
   M extends typeof Model,
-  R extends Repository<PrototypeOf<M>>
+  R extends Repository<PrototypeOf<M>>,
 >(
   modelClass: M,
   baseRepositoryClass: BaseRepositoryClass<M, R>,
@@ -141,7 +141,7 @@ export function defineRepositoryClass<
 export function defineCrudRepositoryClass<
   E extends Entity,
   IdType,
-  Relations extends object
+  Relations extends object,
 >(
   entityClass: typeof Entity & {prototype: E},
 ): ModelRepositoryClass<E, DefaultCrudRepository<E, IdType, Relations>> {

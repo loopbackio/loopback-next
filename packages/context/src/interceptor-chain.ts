@@ -242,7 +242,7 @@ export class GenericInterceptorChain<C extends Context = Context> {
  */
 export function invokeInterceptors<
   C extends Context = Context,
-  T = InvocationResult
+  T = InvocationResult,
 >(
   context: C,
   interceptors: GenericInterceptorOrKey<C>[],

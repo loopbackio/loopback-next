@@ -150,10 +150,8 @@ export async function givenEmptyDatabase() {
     async () => todoListImageRepo,
   );
 
-  const todoListImageRepo: TodoListImageRepository = new TodoListImageRepository(
-    testdb,
-    async () => todoListRepo,
-  );
+  const todoListImageRepo: TodoListImageRepository =
+    new TodoListImageRepository(testdb, async () => todoListRepo);
 
   await todoRepo.deleteAll();
   await todoListRepo.deleteAll();

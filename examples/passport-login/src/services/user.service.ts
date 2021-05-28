@@ -14,7 +14,8 @@ import {UserIdentityRepository} from '../repositories/user-identity.repository';
  * User service to accept a 'passport' user profile and save it locally
  */
 export class PassportUserIdentityService
-  implements UserIdentityService<PassportProfile, User> {
+  implements UserIdentityService<PassportProfile, User>
+{
   constructor(
     @repository(UserRepository)
     public userRepository: UserRepository,

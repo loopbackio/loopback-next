@@ -137,7 +137,8 @@ point**.
   {scope: BindingScope.TRANSIENT},
 ) //this needs to be transient, e.g. for request level context.
 export class AuthenticationStrategyProvider
-  implements Provider<AuthenticationStrategy | undefined> {
+  implements Provider<AuthenticationStrategy | undefined>
+{
   constructor(
     @extensions()
     private authenticationStrategies: Getter<AuthenticationStrategy[]>,

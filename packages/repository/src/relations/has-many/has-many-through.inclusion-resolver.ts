@@ -38,7 +38,7 @@ export function createHasManyThroughInclusionResolver<
   ThroughRelations extends object,
   Target extends Entity,
   TargetID,
-  TargetRelations extends object
+  TargetRelations extends object,
 >(
   meta: HasManyDefinition,
   getThroughRepo: Getter<
@@ -118,7 +118,7 @@ export function createHasManyThroughInclusionResolver<
           Target,
           TargetRelations,
           StringKeyOf<Target>
-        >(targetRepo, targetKey, (targetIds as unknown) as [], scope, options);
+        >(targetRepo, targetKey, targetIds as unknown as [], scope, options);
         result.push(targetEntityList);
       } else {
         // no entities found, add undefined to results

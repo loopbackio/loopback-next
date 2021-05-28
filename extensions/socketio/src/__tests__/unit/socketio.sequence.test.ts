@@ -32,7 +32,7 @@ describe('SocketIoSequence', () => {
       factory = getNewFactory(
         app,
         SequenceTestController,
-        (dummySocket as Object) as Socket,
+        dummySocket as Object as Socket,
       );
       await factory.create();
     });
@@ -69,7 +69,7 @@ describe('SocketIoSequence', () => {
       factory = getNewFactory(
         app,
         SequenceTestController,
-        (dummySocket as Object) as Socket,
+        dummySocket as Object as Socket,
       );
       await factory.create();
 

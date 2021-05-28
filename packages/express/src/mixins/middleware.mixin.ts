@@ -122,7 +122,7 @@ export function MiddlewareMixin<T extends MixinTarget<Context>>(superClass: T) {
           );
         }
         return registerMiddleware(
-          (this as unknown) as Context,
+          this as unknown as Context,
           toMiddleware(handlers[0], ...handlers.slice(1)),
           {
             ...options,
@@ -131,7 +131,7 @@ export function MiddlewareMixin<T extends MixinTarget<Context>>(superClass: T) {
         );
       } else {
         return registerExpressMiddleware(
-          (this as unknown) as Context,
+          this as unknown as Context,
           factoryOrKey as ExpressMiddlewareFactory<CFG>,
           configOrHandlers as CFG,
           options,
@@ -158,7 +158,7 @@ export function MiddlewareMixin<T extends MixinTarget<Context>>(superClass: T) {
       options: MiddlewareBindingOptions = {},
     ): Binding<Middleware> {
       return registerMiddleware(
-        (this as unknown) as Context,
+        this as unknown as Context,
         middleware,
         options,
       );

@@ -30,7 +30,7 @@ describe('SocketIo decorators', () => {
     factory = getNewFactory(
       app,
       DecoratorTestController,
-      (dummySocket as Object) as Socket,
+      dummySocket as Object as Socket,
     );
     createdController = await factory.create();
     controller = createdController as DecoratorTestController;

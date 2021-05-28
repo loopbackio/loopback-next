@@ -35,7 +35,7 @@ describe('build-schema', () => {
         const definition: ModelDefinitionSyntax = {
           name: 'TestModel',
           properties: {
-            nul: {type: (null as unknown) as PropertyType},
+            nul: {type: null as unknown as PropertyType},
           },
         };
         Reflector.defineMetadata(MODEL_KEY.key, definition, TestModel);
@@ -54,7 +54,7 @@ describe('build-schema', () => {
         const definition: ModelDefinitionSyntax = {
           name: 'TestModel',
           properties: {
-            undef: {type: (undefined as unknown) as PropertyType},
+            undef: {type: undefined as unknown as PropertyType},
           },
         };
         Reflector.defineMetadata(MODEL_KEY.key, definition, TestModel);

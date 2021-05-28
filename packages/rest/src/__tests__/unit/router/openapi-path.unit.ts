@@ -7,7 +7,8 @@ import {expect} from '@loopback/testlab';
 import {validateApiPath} from '../../..';
 
 describe('validateApiPath', () => {
-  const INVALID_PARAM = /Invalid path template: '.+'. Please use \{\w+\} instead of '\:\w+'/;
+  const INVALID_PARAM =
+    /Invalid path template: '.+'. Please use \{\w+\} instead of '\:\w+'/;
   const NO_PARAM_MODIFIER = /Parameter modifier '.+' is not allowed in path/;
   const INVALID_PARAM_NAME = /Invalid parameter name '.+' found in path/;
   const UNNAMED_PARAM = /Unnamed parameter is not allowed in path/;

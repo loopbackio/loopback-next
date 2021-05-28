@@ -46,7 +46,7 @@ export interface ExecutableRepository<T extends Model> extends Repository<T> {
 export type TransactionalEntityRepository<
   T extends Entity,
   ID,
-  Relations extends object = {}
+  Relations extends object = {},
 > = TransactionalRepository<T> & EntityCrudRepository<T, ID>;
 /**
  * Repository Interface for Repositories that support Transactions
@@ -69,7 +69,7 @@ export interface TransactionalRepository<T extends Entity>
  */
 export interface CrudRepository<
   T extends ValueObject | Entity,
-  Relations extends object = {}
+  Relations extends object = {},
 > extends Repository<T> {
   /**
    * Create a new record
@@ -137,7 +137,7 @@ export interface EntityRepository<T extends Entity, ID>
 export interface EntityCrudRepository<
   T extends Entity,
   ID,
-  Relations extends object = {}
+  Relations extends object = {},
 > extends EntityRepository<T, ID>,
     CrudRepository<T, Relations> {
   // entityClass should have type "typeof T", but that's not supported by TSC
@@ -254,7 +254,8 @@ export interface EntityCrudRepository<
  * ```
  */
 export class CrudRepositoryImpl<T extends Entity, ID>
-  implements EntityCrudRepository<T, ID> {
+  implements EntityCrudRepository<T, ID>
+{
   private connector: CrudConnector;
   public readonly inclusionResolvers: Map<
     string,

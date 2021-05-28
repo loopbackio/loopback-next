@@ -95,10 +95,11 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
     constructor,
   );
 
-  const classVisibility = MetadataInspector.getClassMetadata<OperationVisibility>(
-    OAI3Keys.VISIBILITY_CLASS_KEY,
-    constructor,
-  );
+  const classVisibility =
+    MetadataInspector.getClassMetadata<OperationVisibility>(
+      OAI3Keys.VISIBILITY_CLASS_KEY,
+      constructor,
+    );
 
   if (classVisibility) {
     debug(`  using class-level @oas.visibility(): '${classVisibility}'`);
@@ -158,11 +159,12 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
       debug('  using method-level deprecation via @deprecated()');
     }
 
-    const methodVisibility = MetadataInspector.getMethodMetadata<OperationVisibility>(
-      OAI3Keys.VISIBILITY_METHOD_KEY,
-      constructor.prototype,
-      op,
-    );
+    const methodVisibility =
+      MetadataInspector.getMethodMetadata<OperationVisibility>(
+        OAI3Keys.VISIBILITY_METHOD_KEY,
+        constructor.prototype,
+        op,
+      );
 
     if (methodVisibility) {
       debug(
@@ -170,11 +172,12 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
       );
     }
 
-    const methodTags = MetadataInspector.getMethodMetadata<TagsDecoratorMetadata>(
-      OAI3Keys.TAGS_METHOD_KEY,
-      constructor.prototype,
-      op,
-    );
+    const methodTags =
+      MetadataInspector.getMethodMetadata<TagsDecoratorMetadata>(
+        OAI3Keys.TAGS_METHOD_KEY,
+        constructor.prototype,
+        op,
+      );
 
     if (methodTags) {
       debug('  using method-level tags via @oas.tags()');
@@ -196,11 +199,12 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
 
     let operationSpec = endpoint.spec;
 
-    const decoratedResponses = MetadataInspector.getMethodMetadata<ResponseDecoratorMetadata>(
-      OAI3Keys.RESPONSE_METHOD_KEY,
-      constructor.prototype,
-      op,
-    );
+    const decoratedResponses =
+      MetadataInspector.getMethodMetadata<ResponseDecoratorMetadata>(
+        OAI3Keys.RESPONSE_METHOD_KEY,
+        constructor.prototype,
+        op,
+      );
 
     if (!operationSpec) {
       if (decoratedResponses) {
@@ -304,11 +308,12 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
     }
 
     debug('  processing requestBody for method %s', op);
-    let requestBodies = MetadataInspector.getAllParameterMetadata<RequestBodyObject>(
-      OAI3Keys.REQUEST_BODY_KEY,
-      constructor.prototype,
-      op,
-    );
+    let requestBodies =
+      MetadataInspector.getAllParameterMetadata<RequestBodyObject>(
+        OAI3Keys.REQUEST_BODY_KEY,
+        constructor.prototype,
+        op,
+      );
 
     const bodyIndexes: number[] = [];
     if (requestBodies != null)

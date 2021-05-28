@@ -506,9 +506,8 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
         'name',
         this.artifactInfo.repositoryBaseClass,
       ]);
-      this.artifactInfo.repositoryBaseFile = this.artifactInfo.baseRepositoryList[
-        baseIndex
-      ].file;
+      this.artifactInfo.repositoryBaseFile =
+        this.artifactInfo.baseRepositoryList[baseIndex].file;
     }
 
     if (this.options.name) {
