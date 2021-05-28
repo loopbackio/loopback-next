@@ -80,7 +80,7 @@
     "lint-staged": "^10.5.4",
     "markdown-table": "^3.0.0",
     "open-cli": "^6.0.1",
-    "prettier": "^2.2.1",
+    "prettier": "^2.3.0",
     "typescript": "~4.3.2"
   },
   "config": {
