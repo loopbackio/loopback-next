@@ -122,7 +122,9 @@ export class Patient extends Entity {
     id: true,
   })
   pid: number;
+
   // other properties
+}
 ```
 
 The definition of the `hasManyThrough` relation is inferred by using the
@@ -330,6 +332,9 @@ export class DoctorRepository extends DefaultCrudRepository<
   ([API Docs](https://loopback.io/doc/en/lb4/apidocs.repository.defaulthasmanythroughrepository.link.html))
 - `unlink` for unlinking a target model instance from source model instance
   ([API Docs](https://loopback.io/doc/en/lb4/apidocs.repository.defaulthasmanythroughrepository.unlink.html))
+- `unlinkAll` for unlinking all target model instances from source model
+  instance
+  ([API Docs](https://loopback.io/doc/en/lb4/apidocs.repository.defaulthasmanythroughrepository.unlinkAll.html))
 
 Here are examples of applying CRUD APIs with constrained target repository
 factory `patients` for instances of `doctorRepository`:
