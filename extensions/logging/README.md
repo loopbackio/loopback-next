@@ -43,13 +43,13 @@ facilities:
 
 ```ts
 import {inject} from '@loopback/core';
-import {Logger, logInvocation} from '@loopback/logging';
+import {WinstonLogger, logInvocation} from '@loopback/logging';
 import {get, param} from '@loopback/rest';
 
 class MyController {
   // Inject a winston logger
   @inject(LoggingBindings.WINSTON_LOGGER)
-  private logger: Logger;
+  private logger: WinstonLogger;
 
   // http access is logged by a global interceptor
   @get('/greet/{name}')
