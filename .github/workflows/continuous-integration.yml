@@ -2,10 +2,10 @@ name: Continuous Integration
 
 on:
   push:
-    branches: [master]
+    branches: [ master ]
   pull_request:
     # The branches below must be a subset of the branches above
-    branches: [master]
+    branches: [ master ]
   schedule:
     - cron: '0 2 * * 1' # At 02:00 on Monday
 
@@ -18,8 +18,13 @@ jobs:
     timeout-minutes: 15
     strategy:
       matrix:
-        os: [ubuntu-latest]
-        node-version: [10, 12, 14, 16]
+        os: [ ubuntu-latest ]
+        node-version: [
+            10,
+            12,
+            14,
+            # 16 -- Temporarily disabled
+        ]
         include:
           - os: macos-latest
             node-version: 14 # LTS
