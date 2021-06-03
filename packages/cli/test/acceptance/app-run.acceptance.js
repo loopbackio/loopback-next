@@ -69,44 +69,47 @@ skipIf(process.env.CI == null, describe, 'app-generator (SLOW)', () => {
     this.timeout(5 * 60 * 1000);
 
     // FixMe: NPM v7 does not run lifecycle scripts for some reason. To solve this problem, run `pretest`,`test` and `posttest` separately
-    return Promise.all([
-      new Promise(resolve => {
-        build
-          .runShell('npm', ['run', 'pretest'], {
-            // Disable stdout
-            stdio: [process.stdin, 'ignore', process.stderr],
-            cwd: appProps.outdir,
-          })
-          .on('close', code => {
-            assert.equal(code, 0);
-            resolve();
-          });
-      }),
-      new Promise(resolve => {
-        build
-          .runShell('npm', ['test', '--ignore-scripts'], {
-            // Disable stdout
-            stdio: [process.stdin, 'ignore', process.stderr],
-            cwd: appProps.outdir,
-          })
-          .on('close', code => {
-            assert.equal(code, 0);
-            resolve();
-          });
-      }),
-      new Promise(resolve => {
-        build
-          .runShell('npm', ['run', 'posttest'], {
-            // Disable stdout
-            stdio: [process.stdin, 'ignore', process.stderr],
-            cwd: appProps.outdir,
-          })
-          .on('close', code => {
-            assert.equal(code, 0);
-            resolve();
-          });
-      }),
-    ]);
+    // and should be run synchronous
+    return new Promise(resolve => {
+      build
+        .runShell('npm', ['run', 'pretest'], {
+          // Disable stdout
+          stdio: [process.stdin, 'ignore', process.stderr],
+          cwd: appProps.outdir,
+        })
+        .on('close', code => {
+          assert.equal(code, 0);
+          resolve();
+        });
+    })
+      .then(() => {
+        return new Promise(resolve => {
+          build
+            .runShell('npm', ['test', '--ignore-scripts'], {
+              // Disable stdout
+              stdio: [process.stdin, 'ignore', process.stderr],
+              cwd: appProps.outdir,
+            })
+            .on('close', code => {
+              assert.equal(code, 0);
+              resolve();
+            });
+        });
+      })
+      .then(() => {
+        return new Promise(resolve => {
+          build
+            .runShell('npm', ['run', 'posttest'], {
+              // Disable stdout
+              stdio: [process.stdin, 'ignore', process.stderr],
+              cwd: appProps.outdir,
+            })
+            .on('close', code => {
+              assert.equal(code, 0);
+              resolve();
+            });
+        });
+      });
   });
 
   after(
