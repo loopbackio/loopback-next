@@ -38,7 +38,9 @@ jobs:
           npm ci --ignore-scripts
           npm run postinstall
       - name: Build project
-        run: npm run build
+        run: |
+          npm run clean
+          npm run build
       - uses: Yuri6037/Action-FakeTTY@v1.1
       - name: Run tests
         run: faketty npm test --ignore-scripts
