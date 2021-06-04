@@ -56,7 +56,7 @@
     "@loopback/openapi-spec-builder": "^3.2.0",
     "@loopback/rest": "^9.3.0",
     "@loopback/testlab": "^3.4.0",
-    "@types/node": "^10.17.59",
+    "@types/node": "^10.17.60",
     "jsonwebtoken": "^8.5.1"
   }
 }

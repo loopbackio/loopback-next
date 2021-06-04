@@ -37,7 +37,7 @@
   "devDependencies": {
     "@loopback/build": "^6.4.0",
     "@loopback/testlab": "^3.4.0",
-    "@types/node": "^10.17.59",
+    "@types/node": "^10.17.60",
     "typescript": "~4.3.2"
   }
 }
