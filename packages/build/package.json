@@ -41,7 +41,7 @@
     "lodash": "^4.17.21",
     "mocha": "^8.4.0",
     "nyc": "^15.1.0",
-    "prettier": "^2.3.0",
+    "prettier": "^2.3.1",
     "rimraf": "^3.0.2",
     "source-map-support": "^0.5.19",
     "typescript": "~4.3.2"
