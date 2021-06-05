@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "tslib": "^2.2.0",
-    "typeorm": "^0.2.32"
+    "typeorm": "^0.2.34"
   },
   "devDependencies": {
     "@loopback/boot": "^3.4.0",
