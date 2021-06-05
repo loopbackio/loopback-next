@@ -69,7 +69,7 @@ describe('Interception proxy', () => {
     expect(proxy.greet('Jane')).to.be.instanceOf(Promise);
   });
 
-  it('creates async methods for the proxy', () => {
+  it('creates async methods for the proxy', async () => {
     class MyController {
       name: string;
 
@@ -89,6 +89,8 @@ describe('Interception proxy', () => {
     }
 
     const proxy = createProxyWithInterceptors(new MyController(), ctx);
+    const greeting = await proxy.greet('John');
+    expect(greeting).to.eql('Hello, John');
 
     // Enforce compile time check to ensure the AsyncProxy typing works for TS
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
