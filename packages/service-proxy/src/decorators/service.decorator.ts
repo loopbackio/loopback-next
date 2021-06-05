@@ -17,8 +17,10 @@ import {getService, juggler} from '..';
  */
 export type ServiceProxyDecorator = PropertyDecorator | ParameterDecorator;
 
-export const SERVICE_PROXY_KEY =
-  MetadataAccessor.create<string, ServiceProxyDecorator>('service.proxy');
+export const SERVICE_PROXY_KEY = MetadataAccessor.create<
+  string,
+  ServiceProxyDecorator
+>('service.proxy');
 
 /**
  * Metadata for a service proxy

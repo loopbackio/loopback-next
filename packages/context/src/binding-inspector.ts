@@ -39,8 +39,10 @@ export type BindingMetadata<T = unknown> = {
 /**
  * Metadata key for binding metadata
  */
-export const BINDING_METADATA_KEY =
-  MetadataAccessor.create<BindingMetadata, ClassDecorator>('binding.metadata');
+export const BINDING_METADATA_KEY = MetadataAccessor.create<
+  BindingMetadata,
+  ClassDecorator
+>('binding.metadata');
 
 /**
  * An object to configure binding scope and tags

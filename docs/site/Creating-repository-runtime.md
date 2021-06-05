@@ -12,10 +12,11 @@ helper function from the `@loopback/rest-crud` package. It creates
 `DefaultCrudRepository`-based repository classes by default.
 
 ```ts
-const BookRepository =
-  defineCrudRepositoryClass<Book, typeof Book.prototype.id, BookRelations>(
-    BookModel,
-  );
+const BookRepository = defineCrudRepositoryClass<
+  Book,
+  typeof Book.prototype.id,
+  BookRelations
+>(BookModel);
 ```
 
 In case you want to use a non-`DefaultCrudRepository` repository class or you

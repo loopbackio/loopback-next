@@ -29,15 +29,20 @@ import {JSONObject} from './json-types';
 import {ResolutionOptions, ResolutionSession} from './resolution-session';
 import {BoundValue, Constructor, ValueOrPromise} from './value-promise';
 
-const INJECT_PARAMETERS_KEY =
-  MetadataAccessor.create<Injection, ParameterDecorator>('inject:parameters');
+const INJECT_PARAMETERS_KEY = MetadataAccessor.create<
+  Injection,
+  ParameterDecorator
+>('inject:parameters');
 
-const INJECT_PROPERTIES_KEY =
-  MetadataAccessor.create<Injection, PropertyDecorator>('inject:properties');
+const INJECT_PROPERTIES_KEY = MetadataAccessor.create<
+  Injection,
+  PropertyDecorator
+>('inject:properties');
 
 // A key to cache described argument injections
-const INJECT_METHODS_KEY =
-  MetadataAccessor.create<Injection, MethodDecorator>('inject:methods');
+const INJECT_METHODS_KEY = MetadataAccessor.create<Injection, MethodDecorator>(
+  'inject:methods',
+);
 
 // TODO(rfeng): We may want to align it with `ValueFactory` interface that takes
 // an argument of `ResolutionContext`.
