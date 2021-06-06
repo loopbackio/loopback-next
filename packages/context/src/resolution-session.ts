@@ -93,20 +93,6 @@ export class ResolutionSession {
   }
 
   /**
-   * Start to resolve a binding within the session
-   * @param binding - The current binding
-   * @param session - The current resolution session
-   */
-  private static enterBinding(
-    binding: Readonly<Binding>,
-    session?: ResolutionSession,
-  ): ResolutionSession {
-    session = session ?? new ResolutionSession();
-    session.pushBinding(binding);
-    return session;
-  }
-
-  /**
    * Run the given action with the given binding and session
    * @param action - A function to do some work with the resolution session
    * @param binding - The current binding
@@ -115,27 +101,14 @@ export class ResolutionSession {
   static runWithBinding(
     action: ResolutionAction,
     binding: Readonly<Binding>,
-    session?: ResolutionSession,
+    session = new ResolutionSession(),
   ) {
-    const resolutionSession = ResolutionSession.enterBinding(binding, session);
+    // Start to resolve a binding within the session
+    session.pushBinding(binding);
     return tryWithFinally(
-      () => action(resolutionSession),
-      () => resolutionSession.popBinding(),
+      () => action(session),
+      () => session.popBinding(),
     );
-  }
-
-  /**
-   * Push an injection into the session
-   * @param injection - The current injection
-   * @param session - The current resolution session
-   */
-  private static enterInjection(
-    injection: Readonly<Injection>,
-    session?: ResolutionSession,
-  ): ResolutionSession {
-    session = session ?? new ResolutionSession();
-    session.pushInjection(injection);
-    return session;
   }
 
   /**
@@ -147,15 +120,12 @@ export class ResolutionSession {
   static runWithInjection(
     action: ResolutionAction,
     injection: Readonly<Injection>,
-    session?: ResolutionSession,
+    session = new ResolutionSession(),
   ) {
-    const resolutionSession = ResolutionSession.enterInjection(
-      injection,
-      session,
-    );
+    session.pushInjection(injection);
     return tryWithFinally(
-      () => action(resolutionSession),
-      () => resolutionSession.popInjection(),
+      () => action(session),
+      () => session.popInjection(),
     );
   }
 
@@ -299,7 +269,7 @@ export class ResolutionSession {
    * Get the binding path as `bindingA --> bindingB --> bindingC`.
    */
   getBindingPath() {
-    return this.bindingStack.map(b => b.key).join(' --> ');
+    return this.stack.filter(isBinding).map(describe).join(' --> ');
   }
 
   /**
@@ -311,26 +281,26 @@ export class ResolutionSession {
       .join(' --> ');
   }
 
-  private static describe(e: ResolutionElement) {
-    switch (e.type) {
-      case 'injection':
-        return '@' + ResolutionSession.describeInjection(e.value).targetName;
-      case 'binding':
-        return e.value.key;
-    }
-  }
-
   /**
    * Get the resolution path including bindings and injections, for example:
    * `bindingA --> @ClassA[0] --> bindingB --> @ClassB.prototype.prop1
    * --> bindingC`.
    */
   getResolutionPath() {
-    return this.stack.map(i => ResolutionSession.describe(i)).join(' --> ');
+    return this.stack.map(describe).join(' --> ');
   }
 
   toString() {
     return this.getResolutionPath();
+  }
+}
+
+function describe(e: ResolutionElement) {
+  switch (e.type) {
+    case 'injection':
+      return '@' + ResolutionSession.describeInjection(e.value).targetName;
+    case 'binding':
+      return e.value.key;
   }
 }
 
