@@ -219,18 +219,30 @@ export class ResolutionSession {
     if (debugSession.enabled) {
       debugSession('Enter binding:', binding.toJSON());
     }
+    this.checkForCircularDependency(binding);
+    this.stack.push({type: 'binding', value: binding});
+    /* istanbul ignore if */
+    if (debugSession.enabled) {
+      debugSession('Resolution path:', this.getResolutionPath());
+    }
+  }
 
-    if (this.stack.find(i => isBinding(i) && i.value === binding)) {
+  /**
+   * @WIP
+   *
+   * @TODO get rid of an argument by checking
+   *       set.size === array.length instead
+   *       after binding is pushed
+   */
+  checkForCircularDependency(binding: Readonly<Binding>) {
+    const bindinbSet = new Set(this.bindingStack);
+
+    if (bindinbSet.has(binding)) {
       const msg =
         `Circular dependency detected: ` +
         `${this.getResolutionPath()} --> ${binding.key}`;
       debugSession(msg);
       throw new Error(msg);
-    }
-    this.stack.push({type: 'binding', value: binding});
-    /* istanbul ignore if */
-    if (debugSession.enabled) {
-      debugSession('Resolution path:', this.getResolutionPath());
     }
   }
 
