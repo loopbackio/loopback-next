@@ -26,7 +26,11 @@ import {BindingComparator} from './binding-sorter';
 import {BindingCreationPolicy, Context} from './context';
 import {ContextView, createViewGetter} from './context-view';
 import {JSONObject} from './json-types';
-import {ResolutionOptions, ResolutionSession} from './resolution-session';
+import {
+  describeInjection,
+  ResolutionOptions,
+  ResolutionSession,
+} from './resolution-session';
 import {BoundValue, Constructor, ValueOrPromise} from './value-promise';
 
 const INJECT_PARAMETERS_KEY = MetadataAccessor.create<
@@ -410,7 +414,7 @@ export function assertTargetType(
   expectedType: Function,
   expectedTypeName?: string,
 ) {
-  const targetName = ResolutionSession.describeInjection(injection).targetName;
+  const targetName = describeInjection(injection).targetName;
   const targetType = inspectTargetType(injection);
   if (targetType && targetType !== expectedType) {
     expectedTypeName = expectedTypeName ?? expectedType.name;
@@ -744,7 +748,7 @@ export function inspectInjections(binding: Readonly<Binding<unknown>>) {
  * @param injection - Injection information
  */
 function inspectInjection(injection: Readonly<Injection<unknown>>) {
-  const injectionInfo = ResolutionSession.describeInjection(injection);
+  const injectionInfo = describeInjection(injection);
   const descriptor: JSONObject = {};
   if (injectionInfo.targetName) {
     descriptor.targetName = injectionInfo.targetName;
