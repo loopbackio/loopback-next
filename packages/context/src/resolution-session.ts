@@ -134,13 +134,11 @@ export class ResolutionSession {
    * @param injection - Injection The current injection
    */
   pushInjection(injection: Readonly<Injection>) {
+    this.stack.push({type: 'injection', value: injection});
+
     /* istanbul ignore if */
     if (debugSession.enabled) {
       debugSession('Enter injection:', describeInjection(injection));
-    }
-    this.stack.push({type: 'injection', value: injection});
-    /* istanbul ignore if */
-    if (debugSession.enabled) {
       debugSession('Resolution path:', this.getResolutionPath());
     }
   }
@@ -190,14 +188,12 @@ export class ResolutionSession {
    * @param binding - Binding
    */
   pushBinding(binding: Readonly<Binding>) {
+    this.checkForCircularDependency(binding);
+    this.stack.push({type: 'binding', value: binding});
+
     /* istanbul ignore if */
     if (debugSession.enabled) {
       debugSession('Enter binding:', binding.toJSON());
-    }
-    this.checkForCircularDependency(binding);
-    this.stack.push({type: 'binding', value: binding});
-    /* istanbul ignore if */
-    if (debugSession.enabled) {
       debugSession('Resolution path:', this.getResolutionPath());
     }
   }
