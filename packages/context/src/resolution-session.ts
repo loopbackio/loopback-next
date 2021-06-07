@@ -396,21 +396,13 @@ export class ResolutionError extends Error {
     reason: string,
     resolutionCtx: Partial<ResolutionContext>,
   ) {
-    const info = this.describeResolutionContext(resolutionCtx);
-    const message = `${reason} (${info})`;
-    return message;
-  }
-
-  private static describeResolutionContext(
-    resolutionCtx: Partial<ResolutionContext>,
-  ) {
     const details = ResolutionError.buildDetails(resolutionCtx);
-    const items: string[] = [];
-    for (const [name, val] of Object.entries(details)) {
-      if (val !== '') {
-        items.push(`${name}: ${val}`);
-      }
-    }
-    return items.join(', ');
+
+    const info = Object.entries(details)
+      .filter(([name, val]) => val !== '')
+      .map(([name, val]) => `${name}: ${val}`)
+      .join(', ');
+
+    return `${reason} (${info})`;
   }
 }
