@@ -130,35 +130,13 @@ export class ResolutionSession {
   }
 
   /**
-   * Describe the injection for debugging purpose
-   * @param injection - Injection object
-   */
-  static describeInjection(
-    injection: Readonly<Injection>,
-  ): InjectionDescriptor {
-    const name = getTargetName(
-      injection.target,
-      injection.member,
-      injection.methodDescriptorOrParameterIndex,
-    );
-    return {
-      targetName: name,
-      bindingSelector: injection.bindingSelector,
-      metadata: injection.metadata,
-    };
-  }
-
-  /**
    * Push the injection onto the session
    * @param injection - Injection The current injection
    */
   pushInjection(injection: Readonly<Injection>) {
     /* istanbul ignore if */
     if (debugSession.enabled) {
-      debugSession(
-        'Enter injection:',
-        ResolutionSession.describeInjection(injection),
-      );
+      debugSession('Enter injection:', describeInjection(injection));
     }
     this.stack.push({type: 'injection', value: injection});
     /* istanbul ignore if */
@@ -179,10 +157,7 @@ export class ResolutionSession {
     const injection = top.value;
     /* istanbul ignore if */
     if (debugSession.enabled) {
-      debugSession(
-        'Exit injection:',
-        ResolutionSession.describeInjection(injection),
-      );
+      debugSession('Exit injection:', describeInjection(injection));
       debugSession('Resolution path:', this.getResolutionPath() || '<empty>');
     }
     return injection;
@@ -289,7 +264,7 @@ export class ResolutionSession {
    */
   getInjectionPath() {
     return this.injectionStack
-      .map(i => ResolutionSession.describeInjection(i).targetName)
+      .map(i => describeInjection(i).targetName)
       .join(' --> ');
   }
 
@@ -307,10 +282,29 @@ export class ResolutionSession {
   }
 }
 
+/**
+ * Describe the injection for debugging purpose
+ * @param injection - Injection object
+ */
+export function describeInjection(
+  injection: Readonly<Injection>,
+): InjectionDescriptor {
+  const name = getTargetName(
+    injection.target,
+    injection.member,
+    injection.methodDescriptorOrParameterIndex,
+  );
+  return {
+    targetName: name,
+    bindingSelector: injection.bindingSelector,
+    metadata: injection.metadata,
+  };
+}
+
 function describe(e: ResolutionElement) {
   switch (e.type) {
     case 'injection':
-      return '@' + ResolutionSession.describeInjection(e.value).targetName;
+      return '@' + describeInjection(e.value).targetName;
     case 'binding':
       return e.value.key;
   }

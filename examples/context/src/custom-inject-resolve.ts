@@ -6,6 +6,7 @@
 import {
   BindingKey,
   Context,
+  describeInjection,
   inject,
   Injection,
   ResolutionSession,
@@ -24,7 +25,7 @@ const resolve: ResolverFunction = (
   session: ResolutionSession,
 ) => {
   console.log('Context: %s Binding: %s', ctx.name, session.currentBinding!.key);
-  const targetName = ResolutionSession.describeInjection(injection).targetName;
+  const targetName = describeInjection(injection).targetName;
   console.log('Injection: %s', targetName);
   return injection.member === 'prefix' ? new Date().toISOString() : 'John';
 };
