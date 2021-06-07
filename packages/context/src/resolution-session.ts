@@ -4,14 +4,14 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {DecoratorFactory} from '@loopback/metadata';
-import debugModule from 'debug';
+import debugFactory from 'debug';
 import {Binding} from './binding';
 import {BindingSelector} from './binding-filter';
 import {Context} from './context';
 import {Injection, InjectionMetadata} from './inject';
 import {BoundValue, tryWithFinally, ValueOrPromise} from './value-promise';
 
-const debugSession = debugModule('loopback:context:resolver:session');
+const debug = debugFactory('loopback:context:resolver:session');
 const getTargetName = DecoratorFactory.getTargetName;
 
 /**
@@ -137,9 +137,9 @@ export class ResolutionSession {
     this.stack.push({type: 'injection', value: injection});
 
     /* istanbul ignore if */
-    if (debugSession.enabled) {
-      debugSession('Enter injection:', describeInjection(injection));
-      debugSession('Resolution path:', this.getResolutionPath());
+    if (debug.enabled) {
+      debug('Enter injection:', describeInjection(injection));
+      debug('Resolution path:', this.getResolutionPath());
     }
   }
 
@@ -154,9 +154,9 @@ export class ResolutionSession {
 
     const injection = top.value;
     /* istanbul ignore if */
-    if (debugSession.enabled) {
-      debugSession('Exit injection:', describeInjection(injection));
-      debugSession('Resolution path:', this.getResolutionPath() || '<empty>');
+    if (debug.enabled) {
+      debug('Exit injection:', describeInjection(injection));
+      debug('Resolution path:', this.getResolutionPath() || '<empty>');
     }
     return injection;
   }
@@ -192,9 +192,9 @@ export class ResolutionSession {
     this.stack.push({type: 'binding', value: binding});
 
     /* istanbul ignore if */
-    if (debugSession.enabled) {
-      debugSession('Enter binding:', binding.toJSON());
-      debugSession('Resolution path:', this.getResolutionPath());
+    if (debug.enabled) {
+      debug('Enter binding:', binding.toJSON());
+      debug('Resolution path:', this.getResolutionPath());
     }
   }
 
@@ -212,7 +212,7 @@ export class ResolutionSession {
       const msg =
         `Circular dependency detected: ` +
         `${this.getResolutionPath()} --> ${binding.key}`;
-      debugSession(msg);
+      debug(msg);
       throw new Error(msg);
     }
   }
@@ -227,9 +227,9 @@ export class ResolutionSession {
     }
     const binding = top.value;
     /* istanbul ignore if */
-    if (debugSession.enabled) {
-      debugSession('Exit binding:', binding?.toJSON());
-      debugSession('Resolution path:', this.getResolutionPath() || '<empty>');
+    if (debug.enabled) {
+      debug('Exit binding:', binding?.toJSON());
+      debug('Resolution path:', this.getResolutionPath() || '<empty>');
     }
     return binding;
   }
