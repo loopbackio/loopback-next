@@ -383,24 +383,21 @@ export interface ResolutionContext<T = unknown> {
  * Error for context binding resolutions and dependency injections
  */
 export class ResolutionError extends Error {
-  constructor(
-    reason: string,
-    readonly resolutionCtx: Partial<ResolutionContext>,
-  ) {
-    super(`${reason} (${ResolutionError.buildMessage(resolutionCtx)})`);
+  constructor(reason: string, readonly ctx: Partial<ResolutionContext>) {
+    super(`${reason} (${ResolutionError.buildMessage(ctx)})`);
     this.name = ResolutionError.name;
   }
 
   /**
    * Build the error message for the resolution to include more contextual data
    * @param reason - Cause of the error
-   * @param resolutionCtx - Resolution context
+   * @param ctx - Resolution context
    */
-  private static buildMessage(resolutionCtx: Partial<ResolutionContext>) {
+  private static buildMessage(ctx: Partial<ResolutionContext>) {
     const details = {
-      context: resolutionCtx.context?.name ?? '',
-      binding: resolutionCtx.binding?.key ?? '',
-      resolutionPath: resolutionCtx.options?.session?.getResolutionPath() ?? '',
+      context: ctx.context?.name ?? '',
+      binding: ctx.binding?.key ?? '',
+      resolutionPath: ctx.options?.session?.getResolutionPath() ?? '',
     };
 
     return Object.entries(details)
