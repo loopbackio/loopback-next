@@ -372,19 +372,11 @@ export interface ResolutionContext<T = unknown> {
  */
 export class ResolutionError extends Error {
   constructor(
-    message: string,
+    reason: string,
     readonly resolutionCtx: Partial<ResolutionContext>,
   ) {
-    super(ResolutionError.buildMessage(message, resolutionCtx));
+    super(`${reason} (${ResolutionError.buildMessage(resolutionCtx)})`);
     this.name = ResolutionError.name;
-  }
-
-  private static buildDetails(resolutionCtx: Partial<ResolutionContext>) {
-    return {
-      context: resolutionCtx.context?.name ?? '',
-      binding: resolutionCtx.binding?.key ?? '',
-      resolutionPath: resolutionCtx.options?.session?.getResolutionPath() ?? '',
-    };
   }
 
   /**
@@ -392,17 +384,16 @@ export class ResolutionError extends Error {
    * @param reason - Cause of the error
    * @param resolutionCtx - Resolution context
    */
-  private static buildMessage(
-    reason: string,
-    resolutionCtx: Partial<ResolutionContext>,
-  ) {
-    const details = ResolutionError.buildDetails(resolutionCtx);
+  private static buildMessage(resolutionCtx: Partial<ResolutionContext>) {
+    const details = {
+      context: resolutionCtx.context?.name ?? '',
+      binding: resolutionCtx.binding?.key ?? '',
+      resolutionPath: resolutionCtx.options?.session?.getResolutionPath() ?? '',
+    };
 
-    const info = Object.entries(details)
+    return Object.entries(details)
       .filter(([name, val]) => val !== '')
       .map(([name, val]) => `${name}: ${val}`)
       .join(', ');
-
-    return `${reason} (${info})`;
   }
 }
