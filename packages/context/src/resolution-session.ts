@@ -276,6 +276,18 @@ export class ResolutionSession {
   toString() {
     return this.getResolutionPath();
   }
+
+  /**
+   * Describe the injection for debugging purpose
+   *
+   * @TODO remove in next major version
+   *
+   * @param injection - Injection object
+   * @returns {InjectionDescriptor}
+   */
+  static describeInjection(injection: Readonly<Injection>) {
+    return describeInjection(injection);
+  }
 }
 
 /**
