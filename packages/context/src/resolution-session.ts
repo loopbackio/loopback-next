@@ -205,7 +205,7 @@ export class ResolutionSession {
    *       set.size === array.length instead
    *       after binding is pushed
    */
-  checkForCircularDependency(binding: Readonly<Binding>) {
+  private checkForCircularDependency(binding: Readonly<Binding>) {
     const bindinbSet = new Set(this.bindingStack);
 
     if (bindinbSet.has(binding)) {
