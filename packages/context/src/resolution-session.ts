@@ -278,9 +278,8 @@ export class ResolutionSession {
   }
 
   /**
+   * @deprecated
    * Describe the injection for debugging purpose
-   *
-   * @TODO remove in next major version
    *
    * @param injection - Injection object
    * @returns {InjectionDescriptor}
