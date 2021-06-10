@@ -1,7 +1,7 @@
 {
   "name": "@loopback/authentication-jwt",
   "description": "Extension for the prototype of JWT authentication",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "keywords": [
     "LoopBack",
     "Authentication",
@@ -37,27 +37,27 @@
     "!*/__tests__"
   ],
   "peerDependencies": {
-    "@loopback/authentication": "^7.3.0",
-    "@loopback/core": "^2.16.0",
-    "@loopback/rest": "^9.3.0"
+    "@loopback/authentication": "^7.3.1",
+    "@loopback/core": "^2.16.1",
+    "@loopback/rest": "^9.3.1"
   },
   "dependencies": {
-    "@loopback/security": "^0.5.0",
+    "@loopback/security": "^0.5.1",
     "@types/bcryptjs": "2.4.2",
     "bcryptjs": "^2.4.3",
     "jsonwebtoken": "^8.5.1"
   },
   "devDependencies": {
-    "@loopback/authentication": "^7.3.0",
-    "@loopback/boot": "^3.4.0",
-    "@loopback/build": "^6.4.0",
-    "@loopback/core": "^2.16.0",
-    "@loopback/eslint-config": "^10.2.0",
-    "@loopback/repository": "^3.6.0",
-    "@loopback/rest": "^9.3.0",
-    "@loopback/rest-explorer": "^3.3.0",
-    "@loopback/service-proxy": "^3.2.0",
-    "@loopback/testlab": "^3.4.0",
+    "@loopback/authentication": "^7.3.1",
+    "@loopback/boot": "^3.4.1",
+    "@loopback/build": "^6.4.1",
+    "@loopback/core": "^2.16.1",
+    "@loopback/eslint-config": "^10.2.1",
+    "@loopback/repository": "^3.7.0",
+    "@loopback/rest": "^9.3.1",
+    "@loopback/rest-explorer": "^3.3.1",
+    "@loopback/service-proxy": "^3.2.1",
+    "@loopback/testlab": "^3.4.1",
     "@types/lodash": "^4.14.170",
     "@types/node": "^10.17.60",
     "lodash": "^4.17.21",

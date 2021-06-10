@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.21.1](https://github.com/strongloop/loopback-next/compare/@loopback/cli@2.21.0...@loopback/cli@2.21.1) (2021-06-10)
+
+
+### Bug Fixes
+
+* **cli:** do not create migration script if repositories not selected ([3cfd556](https://github.com/strongloop/loopback-next/commit/3cfd5569830bfcddf68a95cb95f9267c238746a5))
+
+
+
+
+
 # [2.21.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@2.20.2...@loopback/cli@2.21.0) (2021-05-03)
 
 

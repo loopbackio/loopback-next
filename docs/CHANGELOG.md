@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.26.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.25.0...@loopback/docs@3.26.0) (2021-06-10)
+
+
+### Features
+
+* **repository:** change the relation has-many-through support unlinkAll target instance from source ([6968988](https://github.com/strongloop/loopback-next/commit/6968988516e76024e220185bc1fb41c9f032207e))
+* adds support for allowMigration false on repository mixin ([65719e9](https://github.com/strongloop/loopback-next/commit/65719e96f9289d956bf69001d4f1b6ca3cd27cb3))
+
+
+
+
+
 # [3.25.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@3.24.1...@loopback/docs@3.25.0) (2021-05-03)
 
 

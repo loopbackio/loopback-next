@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.2.1](https://github.com/strongloop/loopback-next/compare/@loopback/authentication-passport@3.2.0...@loopback/authentication-passport@3.2.1) (2021-06-10)
+
+**Note:** Version bump only for package @loopback/authentication-passport
+
+
+
+
+
 # [3.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/authentication-passport@3.1.1...@loopback/authentication-passport@3.2.0) (2021-05-03)
 
 

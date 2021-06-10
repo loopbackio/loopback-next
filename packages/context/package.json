@@ -1,7 +1,7 @@
 {
   "name": "@loopback/context",
   "description": "Facilities to manage artifacts and their dependencies in your Node.js applications. The module exposes TypeScript/JavaScript APIs and decorators to register artifacts, declare dependencies, and resolve artifacts by keys. It also serves as an IoC container to support dependency injection",
-  "version": "3.16.0",
+  "version": "3.17.0",
   "keywords": [
     "LoopBack",
     "IoC",
@@ -43,7 +43,7 @@
     "!*/__tests__"
   ],
   "dependencies": {
-    "@loopback/metadata": "^3.3.0",
+    "@loopback/metadata": "^3.3.1",
     "@types/debug": "^4.1.5",
     "debug": "^4.3.1",
     "hyperid": "^2.1.0",
@@ -52,9 +52,9 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@loopback/build": "^6.4.0",
-    "@loopback/eslint-config": "^10.2.0",
-    "@loopback/testlab": "^3.4.0",
+    "@loopback/build": "^6.4.1",
+    "@loopback/eslint-config": "^10.2.1",
+    "@loopback/testlab": "^3.4.1",
     "@types/bluebird": "^3.5.35",
     "@types/node": "^10.17.60",
     "@types/uuid": "^8.3.0",

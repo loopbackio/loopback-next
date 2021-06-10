@@ -1,7 +1,7 @@
 {
   "name": "@loopback/express",
   "description": "Integrate with Express and expose middleware infrastructure for sequence and interceptors",
-  "version": "3.3.0",
+  "version": "3.3.1",
   "keywords": [
     "loopback-extension",
     "loopback"
@@ -37,10 +37,10 @@
     "!*/__tests__"
   ],
   "peerDependencies": {
-    "@loopback/core": "^2.16.0"
+    "@loopback/core": "^2.16.1"
   },
   "dependencies": {
-    "@loopback/http-server": "^2.5.0",
+    "@loopback/http-server": "^2.5.1",
     "@types/body-parser": "^1.19.0",
     "@types/express": "^4.17.12",
     "@types/express-serve-static-core": "^4.17.21",
@@ -54,9 +54,9 @@
     "tslib": "^2.2.0"
   },
   "devDependencies": {
-    "@loopback/build": "^6.4.0",
-    "@loopback/core": "^2.16.0",
-    "@loopback/testlab": "^3.4.0",
+    "@loopback/build": "^6.4.1",
+    "@loopback/core": "^2.16.1",
+    "@loopback/testlab": "^3.4.1",
     "@types/debug": "^4.1.5",
     "@types/node": "^10.17.60",
     "@types/on-finished": "^2.3.1",

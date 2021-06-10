@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.17.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@3.16.0...@loopback/context@3.17.0) (2021-06-10)
+
+
+### Features
+
+* **context:** simplify resolutionsession by inlining enterInjection and enterBinding internals ([e2a0c4f](https://github.com/strongloop/loopback-next/commit/e2a0c4fecc6417eab260d6d9b725e87ed90b50b0))
+* improve TypeScript typing for AsyncProxy ([cc2d85e](https://github.com/strongloop/loopback-next/commit/cc2d85e9d063ae4abfdc7e7b009c1aab33c1ef7e))
+
+
+
+
+
 # [3.16.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@3.15.1...@loopback/context@3.16.0) (2021-05-03)
 
 
