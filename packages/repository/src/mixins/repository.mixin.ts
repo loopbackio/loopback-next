@@ -23,6 +23,11 @@ import {juggler, Repository} from '../repositories';
 
 const debug = debugFactory('loopback:repository:mixin');
 
+// FIXME(rfeng): Workaround for https://github.com/microsoft/rushstack/pull/1867
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import * as loopbackContext from '@loopback/core';
+import * as loopbackCore from '@loopback/core';
+
 /* eslint-enable @typescript-eslint/no-unused-vars */
 
 /**
