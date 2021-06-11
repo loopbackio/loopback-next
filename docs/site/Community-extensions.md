@@ -67,6 +67,10 @@ list.
       <td><a href="https://www.npmjs.com/package/@sourceloop/audit-log">@sourceloop/audit-log</a></td>
       <td>Implement audit logs in loopback applications for all DB transactions</td>
     </tr>
+    <tr>
+      <td><a href="https://www.npmjs.com/package/loopback-rabbitmq">loopback-rabbitmq</a></td>
+      <td>An Rabbitmq extension that implements Queue consumers and producers.</td>
+    </tr>
   </tbody>
 </table>
 
