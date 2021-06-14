@@ -69,7 +69,7 @@ list.
     </tr>
     <tr>
       <td><a href="https://www.npmjs.com/package/loopback-rabbitmq">loopback-rabbitmq</a></td>
-      <td>An Rabbitmq extension that implements Queue consumers and producers.</td>
+      <td>An Rabbitmq extension that implements Queue consumers and producers</td>
     </tr>
   </tbody>
 </table>
