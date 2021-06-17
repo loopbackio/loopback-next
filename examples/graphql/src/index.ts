@@ -1,5 +1,10 @@
+// Copyright The LoopBack Authors 2019,2021. All Rights Reserved.
+// Node module: @loopback/example-graphql
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
 import {GraphQLServerOptions} from '@loopback/graphql';
-// Copyright IBM Corp. 2020. All Rights Reserved.
+// Copyright The LoopBack Authors 2020. All Rights Reserved.
 // Node module: @loopback/example-graphql
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT

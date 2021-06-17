@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2020. All Rights Reserved.
+// Copyright The LoopBack Authors 2020,2021. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -244,7 +244,7 @@ SOFTWARE.
         }),
       )
       .withOptions({
-        owner: 'IBM Corp.',
+        owner: 'The LoopBack Authors',
         license: 'MIT',
         gitOnly: false,
         updateLicense: true,
@@ -256,7 +256,7 @@ SOFTWARE.
     );
     assert.fileContent(
       path.join(sandbox.path, 'package.json'),
-      '"copyright.owner": "IBM Corp."',
+      '"copyright.owner": "The LoopBack Authors"',
     );
 
     const licenseText = fs.readFileSync(
@@ -265,7 +265,7 @@ SOFTWARE.
     );
     expect(licenseText).to.equal(
       `
-Copyright (c) IBM Corp. ${year}.
+Copyright (c) The LoopBack Authors ${year}.
 Node module: myapp
 This project is licensed under the MIT License, full text below.
 
@@ -273,7 +273,7 @@ This project is licensed under the MIT License, full text below.
 
 MIT License
 
-Copyright (c) IBM Corp. 2021
+Copyright (c) The LoopBack Authors 2021
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in

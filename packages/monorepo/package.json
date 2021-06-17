@@ -12,8 +12,8 @@
     "lb-update-ts-project-refs": "./lib/update-ts-project-refs.js"
   },
   "main": "index.js",
-  "author": "IBM Corp.",
-  "copyright.owner": "IBM Corp.",
+  "author": "The LoopBack Authors",
+  "copyright.owner": "The LoopBack Authors",
   "repository": {
     "type": "git",
     "url": "https://github.com/strongloop/loopback-next.git",

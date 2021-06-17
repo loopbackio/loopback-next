@@ -1,5 +1,5 @@
-// Copyright IBM Corp. 2019,2020. All Rights Reserved.
-// Node module: @loopback/tsdocs
+// Copyright Owner 2020,2021. All Rights Reserved.
+// Node module: pkg1
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 

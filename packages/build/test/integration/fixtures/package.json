@@ -8,6 +8,6 @@
   "dependencies": {
     "typescript": "*"
   },
-  "author": "IBM Corp.",
+  "author": "The LoopBack Authors",
   "license": "MIT"
 }

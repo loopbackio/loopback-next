@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Copyright IBM Corp. 2020. All Rights Reserved.
+// Copyright The LoopBack Authors 2020,2021. All Rights Reserved.
 // Node module: loopback-next
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -167,8 +167,8 @@ async function fixupProject({repoRoot, projectDir}) {
   pkg = {
     ...pkg,
     version: '0.0.1',
-    author: 'IBM Corp.',
-    'copyright.owner': 'IBM Corp.',
+    author: 'The LoopBack Authors',
+    'copyright.owner': 'The LoopBack Authors',
     license: 'MIT',
     publishConfig: {
       access: 'public',
@@ -209,7 +209,7 @@ async function updateCopyrightAndLicense({repoRoot, projectDir}, options = {}) {
   const copyrightArgs = [
     'copyright',
     '--owner',
-    'IBM Corp.',
+    'The LoopBack Authors',
     '--license',
     'MIT',
     '--no-gitOnly',

@@ -7,8 +7,8 @@
     "docs"
   ],
   "license": "MIT",
-  "author": "IBM Corp.",
-  "copyright.owner": "IBM Corp.",
+  "author": "The LoopBack Authors",
+  "copyright.owner": "The LoopBack Authors",
   "homepage": "https://github.com/strongloop/loopback-next/tree/master/docs",
   "repository": {
     "type": "git",

@@ -12,8 +12,8 @@
     "lb4": "bin/cli-main.js"
   },
   "main": "generators/app/index.js",
-  "author": "IBM Corp.",
-  "copyright.owner": "IBM Corp.",
+  "author": "The LoopBack Authors",
+  "copyright.owner": "The LoopBack Authors",
   "homepage": "https://github.com/strongloop/loopback-next/tree/master/packages/cli",
   "repository": {
     "type": "git",

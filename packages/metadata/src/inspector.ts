@@ -1,7 +1,8 @@
-// Copyright IBM Corp. 2017,2019. All Rights Reserved.
+// Copyright The LoopBack Authors 2017,2021. All Rights Reserved.
 // Node module: @loopback/metadata
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
+
 import debugModule from 'debug';
 import {DecoratorFactory} from './decorator-factory';
 import {NamespacedReflect, Reflector} from './reflect';
