@@ -33,7 +33,7 @@
   ],
   "dependencies": {
     "fs-extra": "^10.0.0",
-    "tslib": "^2.2.0"
+    "tslib": "^2.3.0"
   },
   "devDependencies": {
     "@loopback/build": "^6.4.1"
