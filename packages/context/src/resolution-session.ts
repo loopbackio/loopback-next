@@ -199,11 +199,12 @@ export class ResolutionSession {
   }
 
   /**
-   * @WIP
+   * @internalRemarks
+   * #TODO: get rid of an argument by checking
+   *        set.size === array.length instead
+   *        after binding is pushed
    *
-   * @TODO get rid of an argument by checking
-   *       set.size === array.length instead
-   *       after binding is pushed
+   * @experimental
    */
   private checkForCircularDependency(binding: Readonly<Binding>) {
     const bindinbSet = new Set(this.bindingStack);
@@ -278,11 +279,8 @@ export class ResolutionSession {
   }
 
   /**
-   * @deprecated
-   * Describe the injection for debugging purpose
-   *
-   * @param injection - Injection object
-   * @returns {InjectionDescriptor}
+   * {@inheritDoc describeInjection}
+   * @deprecated Use {@link describeInjection} instead.
    */
   static describeInjection(injection: Readonly<Injection>) {
     return describeInjection(injection);
