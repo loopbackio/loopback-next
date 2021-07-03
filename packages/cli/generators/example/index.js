@@ -59,6 +59,7 @@ const EXAMPLES = {
   'todo-jwt': g.f('A modified Todo application with JWT authentication.'),
   webpack: g.f('An example to bundle @loopback/core using webpack.'),
   graphql: g.f('An example to demonstrate GraphQL integration.'),
+  socketio: g.f('A basic implementation of socketio with loopback 4.'),
 };
 Object.freeze(EXAMPLES);
 
