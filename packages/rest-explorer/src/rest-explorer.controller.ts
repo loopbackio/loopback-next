@@ -31,6 +31,7 @@ export class ExplorerController {
   private useSelfHostedSpec: boolean;
   private swaggerThemeFile: string;
   private indexTemplatePath: string;
+  private indexTemplateTitle: string;
 
   constructor(
     @inject(RestBindings.CONFIG, {optional: true})
@@ -48,6 +49,8 @@ export class ExplorerController {
     this.indexTemplatePath =
       explorerConfig.indexTemplatePath ??
       path.resolve(__dirname, '../templates/index.html.ejs');
+    this.indexTemplateTitle =
+      explorerConfig?.indexTitle ?? 'LoopBack API Explorer';
   }
 
   indexRedirect() {
@@ -65,6 +68,7 @@ export class ExplorerController {
   index() {
     const swaggerThemeFile = this.swaggerThemeFile;
     let openApiSpecUrl = this.openApiSpecUrl;
+    const indexTemplateTitle = this.indexTemplateTitle;
 
     // if using self-hosted openapi spec, then the path to use is always the
     // exact relative path, and no base path logic needs to be applied
@@ -87,6 +91,7 @@ export class ExplorerController {
     const data = {
       openApiSpecUrl,
       swaggerThemeFile,
+      indexTemplateTitle,
     };
 
     if (prevIndexTemplatePath !== this.indexTemplatePath) {

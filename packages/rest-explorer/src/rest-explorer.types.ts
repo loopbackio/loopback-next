@@ -37,4 +37,7 @@ export type RestExplorerConfig = {
   templates/index.html.ejs
   */
   indexTemplatePath?: string;
+
+  // Index page title
+  indexTitle?: string;
 };

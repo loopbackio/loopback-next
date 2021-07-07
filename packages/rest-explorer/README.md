@@ -44,6 +44,23 @@ this.bind(RestExplorerBindings.CONFIG).to({
 });
 ```
 
+Similarly, the index page title for the explorer can be customized via
+RestExplorer configuration as follows:
+
+```ts
+this.configure(RestExplorerBindings.COMPONENT).to({
+  indexTitle: 'My LoopBack API Explorer',
+});
+```
+
+Or:
+
+```ts
+this.bind(RestExplorerBindings.CONFIG).to({
+  indexTitle: 'My LoopBack API Explorer',
+});
+```
+
 ### Advanced Configuration and Reverse Proxies
 
 By default, the component will add an additional OpenAPI spec endpoint, in the

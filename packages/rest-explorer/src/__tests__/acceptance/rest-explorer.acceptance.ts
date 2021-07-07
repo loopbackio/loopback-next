@@ -184,6 +184,16 @@ describe('API Explorer (acceptance)', () => {
         .expect('content-type', /html/)
         .expect(/TEST LoopBack/);
     });
+
+    it('honors custom explorer title', async () => {
+      await givenAppWithCustomExplorerConfig(undefined, {
+        indexTitle: 'Custom LoopBack API Explorer',
+      });
+
+      await request
+        .get('/explorer/')
+        .expect(200, /<title>Custom LoopBack API Explorer/);
+    });
   });
 
   context('with custom basePath', () => {
