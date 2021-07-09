@@ -102,6 +102,7 @@ export class MySequence implements SequenceHandler {
 import {AuthenticationComponent} from '@loopback/authentication';
 import {
   JWTAuthenticationComponent,
+  RefreshTokenServiceBindings,
   SECURITY_SCHEME_SPEC,
 } from '@loopback/authentication-jwt';
 
@@ -351,10 +352,10 @@ provide your own `User` model and repository.
        this.bind(UserServiceBindings.USER_SERVICE).toClass(CustomUserService),
        // Bind user and credentials repository
        this.bind(UserServiceBindings.USER_REPOSITORY).toClass(
-         UserRepository,
+         MyUserRepository,
        ),
        this.bind(UserServiceBindings.USER_CREDENTIALS_REPOSITORY).toClass(
-         UserCredentialsRepository,
+         MyUserCredentialsRepository,
        ),
      }
    }
