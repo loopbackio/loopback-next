@@ -10,6 +10,7 @@ See also #23
 
 ## Checklist
 
+- [ ] DCO (Developer Certificate of Origin) [signed in all commits](https://loopback.io/doc/en/contrib/code-contrib.html)
 - [ ] `npm test` passes on your machine
 - [ ] New tests added or existing tests modified to cover all changes
 - [ ] Code conforms with the [style guide](http://loopback.io/doc/en/contrib/style-guide.html)
@@ -17,3 +18,5 @@ See also #23
 - [ ] Documentation in [/docs/site](../tree/master/docs/site) was updated
 - [ ] Affected artifact templates in `packages/cli` were updated
 - [ ] Affected example projects in `examples/*` were updated
+
+👉 [Check out how to submit a PR](https://loopback.io/doc/en/lb4/submitting_a_pr.html) 👈

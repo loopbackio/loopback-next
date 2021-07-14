@@ -38,3 +38,4 @@ benchmark/dist
 # Docs preview
 docs/_loopback.io/
 docs/_preview/
+.github/ISSUE_TEMPLATE.md
