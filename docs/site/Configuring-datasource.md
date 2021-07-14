@@ -14,7 +14,7 @@ permalink: /doc/en/lb4/Configuring-datasource.html
 
 - how to configure the connector ( what properties the connector configuration
   might take
-- how type maps ⚠️ should finish task https://github.com/strongloop/loopback-next/issues/5063
+- how type maps ⚠️ should finish task https://github.com/loopbackio/loopback-next/issues/5063
   - to database (Database Migration), e.g String -> Varchar, Boolean -> Tinyint
   - from database (Discovery), e.g Bigint -> int, Text -> String
 - how to customize table/column names

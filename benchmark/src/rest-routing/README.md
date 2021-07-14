@@ -4,8 +4,8 @@ This directory contains a simple benchmarking to measure the performance of two
 router implementations for REST APIs. See
 https://loopback.io/doc/en/lb4/Routing-requests.html for more information.
 
-- [TrieRouter](https://github.com/strongloop/loopback-next/tree/master/packages/rest/src/router/trie-router.ts)
-- [RegExpRouter](https://github.com/strongloop/loopback-next/tree/master/packages/rest/src/router/regexp-router.ts)
+- [TrieRouter](https://github.com/loopbackio/loopback-next/tree/master/packages/rest/src/router/trie-router.ts)
+- [RegExpRouter](https://github.com/loopbackio/loopback-next/tree/master/packages/rest/src/router/regexp-router.ts)
 
 ## Basic use
 

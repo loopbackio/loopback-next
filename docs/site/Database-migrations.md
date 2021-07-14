@@ -69,7 +69,7 @@ schema migrations are silently skipped.
 
 In the future, we would like to provide finer-grained control of database schema
 updates, learn more in the GitHub issue
-[#487 Database Migration Management Framework](https://github.com/strongloop/loopback-next/issues/487)
+[#487 Database Migration Management Framework](https://github.com/loopbackio/loopback-next/issues/487)
 
 ### Auto-update database at start
 
@@ -100,7 +100,7 @@ It's usually better to have more control about the database migration and
 trigger the updates explicitly. To do so, projects scaffolded using `lb4 app`
 come with a custom CLI script `src/migrate.ts` to run schema migration. Check
 out e.g.
-[Todo example app](https://github.com/strongloop/loopback-next/blob/master/examples/todo/src/migrate.ts)
+[Todo example app](https://github.com/loopbackio/loopback-next/blob/master/examples/todo/src/migrate.ts)
 to see the full source code of the script.
 
 Besides the migration CLI, new projects come with a handy npm script to run the

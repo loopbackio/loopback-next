@@ -1,7 +1,7 @@
 # @loopback/example-access-control-migration
 
 This example is migrated from
-[loopback-example-access-control](https://github.com/strongloop/loopback-example-access-control),
+[loopback-example-access-control](https://github.com/loopbackio/loopback-example-access-control),
 and uses the authentication and authorization system in LoopBack 4 to implement
 the access control.
 
@@ -42,7 +42,7 @@ application, follow these steps:
 ```
 
 Then try different roles' permissions by following the
-[try it out section](https://github.com/strongloop/loopback-next/blob/auth-migration/docs/site/migration/auth/migration-auth-access-control-example.md#try-it-out)
+[try it out section](https://github.com/loopbackio/loopback-next/blob/auth-migration/docs/site/migration/auth/migration-auth-access-control-example.md#try-it-out)
 
 ### Need help?
 
@@ -52,13 +52,13 @@ and ask for help with this tutorial.
 
 ### Bugs/Feedback
 
-Open an issue in [loopback-next](https://github.com/strongloop/loopback-next)
+Open an issue in [loopback-next](https://github.com/loopbackio/loopback-next)
 and we'll take a look.
 
 ## Contributions
 
-- [Guidelines](https://github.com/strongloop/loopback-next/blob/master/docs/CONTRIBUTING.md)
-- [Join the team](https://github.com/strongloop/loopback-next/issues/110)
+- [Guidelines](https://github.com/loopbackio/loopback-next/blob/master/docs/CONTRIBUTING.md)
+- [Join the team](https://github.com/loopbackio/loopback-next/issues/110)
 
 ## Tests
 
@@ -67,7 +67,7 @@ Run `npm test` from the root folder.
 ## Contributors
 
 See
-[all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
+[all contributors](https://github.com/loopbackio/loopback-next/graphs/contributors).
 
 ## License
 

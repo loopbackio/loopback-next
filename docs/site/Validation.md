@@ -24,7 +24,7 @@ Let's take a closer look at how validation can be added in the following layers:
 - [ORM layer](Validation-ORM-layer.md)
 
 The
-[validation-app example application](https://github.com/strongloop/loopback-next/blob/master/examples/validation-app)
+[validation-app example application](https://github.com/loopbackio/loopback-next/blob/master/examples/validation-app)
 is used in the following documentation pages for demonstration. In the example,
 a `CoffeeShop` model is being used. It has the following properties.
 

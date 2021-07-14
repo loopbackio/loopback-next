@@ -45,7 +45,7 @@ manipulation of models and their properties, they will be the first to be
 defined.
 
 {% include note.html content="
-`Todo` model from [tutorial](https://github.com/strongloop/loopback-next/blob/master/docs/site/todo-tutorial-model.md#srcmodelstodomodelts)
+`Todo` model from [tutorial](https://github.com/loopbackio/loopback-next/blob/master/docs/site/todo-tutorial-model.md#srcmodelstodomodelts)
 is used for demonstration here.
 " %}
 
@@ -99,7 +99,7 @@ export class Todo {
 ### Define your routes
 
 {% include note.html content="
-`TodoController` from [tutorial](https://github.com/strongloop/loopback-next/blob/master/docs/site/todo-tutorial-controller.md#srccontrollerstodocontrollerts-2)
+`TodoController` from [tutorial](https://github.com/loopbackio/loopback-next/blob/master/docs/site/todo-tutorial-controller.md#srccontrollerstodocontrollerts-2)
 is used for demonstration here.
 " %}
 
@@ -172,7 +172,7 @@ the `getApiSpec()` function from your `RestServer` instance.
 
 For a complete walkthrough of developing an application with the bottom-up
 approach, see our
-[Todo application](https://github.com/strongloop/loopback-next/blob/master/examples/todo/README.md)
+[Todo application](https://github.com/loopbackio/loopback-next/blob/master/examples/todo/README.md)
 tutorial.
 
 {% include next.html content= "

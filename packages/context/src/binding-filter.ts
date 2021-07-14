@@ -72,7 +72,7 @@ export function isBindingAddress(
   return (
     typeof bindingSelector !== 'function' &&
     (typeof bindingSelector === 'string' ||
-      // See https://github.com/strongloop/loopback-next/issues/4570
+      // See https://github.com/loopbackio/loopback-next/issues/4570
       // `bindingSelector instanceof BindingKey` is not always reliable as the
       // `@loopback/context` module might be loaded from multiple locations if
       // `npm install` does not dedupe or there are mixed versions in the tree

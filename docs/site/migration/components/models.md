@@ -67,5 +67,5 @@ Such models can be converted to LoopBack 4 models as follows:
 
 LoopBack 4 does not yet provide recipes for extensions sharing models together
 with their persistence behavior and their REST APIs. Please join the discussion
-in [loopback-next#5476](https://github.com/strongloop/loopback-next/issues/5476)
+in [loopback-next#5476](https://github.com/loopbackio/loopback-next/issues/5476)
 to let us know about your use cases and to subscribe for updates.

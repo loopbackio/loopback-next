@@ -440,7 +440,7 @@ function `RepositoryMixin()` to mount those repositories to application level
 context.
 
 The following snippet is an abbreviated function
-[`RepositoryMixin`](https://github.com/strongloop/loopback-next/blob/master/packages/repository/src/mixins/repository.mixin.ts):
+[`RepositoryMixin`](https://github.com/loopbackio/loopback-next/blob/master/packages/repository/src/mixins/repository.mixin.ts):
 
 {% include code-caption.html content="src/mixins/repository.mixin.ts" %}
 

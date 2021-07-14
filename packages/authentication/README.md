@@ -6,7 +6,7 @@ documentation is in
 
 ## Overview
 
-![AuthenticationComponent](https://raw.githubusercontent.com/strongloop/loopback-next/master/packages/authentication/docs/imgs/authentication_overview_highlevel.png)
+![AuthenticationComponent](https://raw.githubusercontent.com/loopbackio/loopback-next/master/packages/authentication/docs/imgs/authentication_overview_highlevel.png)
 
 This component contains the core logic for the authentication layer in
 LoopBack 4.
@@ -67,8 +67,8 @@ to build the authentication system.
 
 ## Contributions
 
-- [Guidelines](https://github.com/strongloop/loopback-next/blob/master/docs/CONTRIBUTING.md)
-- [Join the team](https://github.com/strongloop/loopback-next/issues/110)
+- [Guidelines](https://github.com/loopbackio/loopback-next/blob/master/docs/CONTRIBUTING.md)
+- [Join the team](https://github.com/loopbackio/loopback-next/issues/110)
 
 ## Tests
 
@@ -77,7 +77,7 @@ run `npm test` from the root folder.
 ## Contributors
 
 See
-[all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
+[all contributors](https://github.com/loopbackio/loopback-next/graphs/contributors).
 
 ## License
 

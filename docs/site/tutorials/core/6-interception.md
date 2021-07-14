@@ -17,9 +17,9 @@ See more details in the
 ## Caching service
 
 In the
-[Greeter Application](https://github.com/strongloop/loopback-next/tree/master/examples/greeting-app),
+[Greeter Application](https://github.com/loopbackio/loopback-next/tree/master/examples/greeting-app),
 the
-[CachingService](https://github.com/strongloop/loopback-next/blob/master/examples/greeting-app/src/caching-service.ts)
+[CachingService](https://github.com/loopbackio/loopback-next/blob/master/examples/greeting-app/src/caching-service.ts)
 is being used for REST level caching, which is a common requirement for REST
 APIs. It uses the HTTP path URL as part of the caching key. If there are values
 matching the caching keys, the corresponding value in the cache will be used.
@@ -27,7 +27,7 @@ matching the caching keys, the corresponding value in the cache will be used.
 ## How is caching enforced
 
 All HTTP requests are being intercepted by the
-[`CachingInterceptor`](https://github.com/strongloop/loopback-next/blob/master/examples/greeting-app/src/interceptors/caching.interceptor.ts).
+[`CachingInterceptor`](https://github.com/loopbackio/loopback-next/blob/master/examples/greeting-app/src/interceptors/caching.interceptor.ts).
 As mentioned above, the CachingService is using the HTTP path URL, which we can
 obtain from the `InvocationContext`, as part of the caching key. If no matching
 caching key is found, it goes through the business logic for the HTTP endpoint.
@@ -63,7 +63,7 @@ return async (
 ```
 
 For complete code sample, see
-[caching.intercepter.ts](https://github.com/strongloop/loopback-next/blob/master/examples/greeting-app/src/interceptors/caching.interceptor.ts).
+[caching.intercepter.ts](https://github.com/loopbackio/loopback-next/blob/master/examples/greeting-app/src/interceptors/caching.interceptor.ts).
 
 ### Create a proxy to apply interceptors
 
@@ -71,7 +71,7 @@ By default, requests are proxied between REST server and controller methods but
 not between controllers and their repository/service dependencies. See
 [Create a proxy for interceptors documentation page](https://loopback.io/doc/en/lb4/Interceptors.html#create-a-proxy-to-apply-interceptors)
 and
-[standalone example](https://github.com/strongloop/loopback-next/blob/master/examples/context/src/interceptor-proxy.ts)
+[standalone example](https://github.com/loopbackio/loopback-next/blob/master/examples/context/src/interceptor-proxy.ts)
 for more details.
 
 ---

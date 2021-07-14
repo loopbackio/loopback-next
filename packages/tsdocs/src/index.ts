@@ -7,7 +7,7 @@
  * The `@loopback/tsdocs` package is an internal module to generate
  * {@link https://github.com/Microsoft/tsdoc | tsdoc} based API docs
  * for `@loopback/*` packages within
- * {@link https://github.com/strongloop/loopback-next | loopback-next} monorepo
+ * {@link https://github.com/loopbackio/loopback-next | loopback-next} monorepo
  * managed by {@link https://github.com/lerna/lerna | Lerna}.
  *
  * @remarks

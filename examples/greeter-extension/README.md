@@ -16,7 +16,7 @@ We'll use the following scenario to walk through important steps to organize the
 `greet` service that allows extensible languages - each of them being supported
 by a `Greeter` extension.
 
-![greeters](https://raw.githubusercontent.com/strongloop/loopback-next/master/examples/greeter-extension/greeters.png)
+![greeters](https://raw.githubusercontent.com/loopbackio/loopback-next/master/examples/greeter-extension/greeters.png)
 
 Various constructs from LoopBack 4, such as `Context`, `@inject.*`, and
 `Component` are used to build the service in an extensible fashion.
@@ -348,8 +348,8 @@ app.configure('greeters.ChineseGreeter').to({nameFirst: false});
 
 ## Contributions
 
-- [Guidelines](https://github.com/strongloop/loopback-next/blob/master/docs/CONTRIBUTING.md)
-- [Join the team](https://github.com/strongloop/loopback-next/issues/110)
+- [Guidelines](https://github.com/loopbackio/loopback-next/blob/master/docs/CONTRIBUTING.md)
+- [Join the team](https://github.com/loopbackio/loopback-next/issues/110)
 
 ## Try out
 
@@ -368,7 +368,7 @@ Run `npm test` from the root folder.
 ## Contributors
 
 See
-[all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
+[all contributors](https://github.com/loopbackio/loopback-next/graphs/contributors).
 
 ## License
 

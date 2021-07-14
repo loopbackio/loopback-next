@@ -14,7 +14,7 @@ motivation, see [Crafting LoopBack 4](Crafting-LoopBack-4.md).
 ## Building blocks for extensibility
 
 The
-[@loopback/context](https://github.com/strongloop/loopback-next/tree/master/packages/context)
+[@loopback/context](https://github.com/loopbackio/loopback-next/tree/master/packages/context)
 module implements an
 [Inversion of Control](https://en.wikipedia.org/wiki/Inversion_of_control) (IoC)
 container called [Context](Context.md) as a service registry that supports
@@ -156,7 +156,7 @@ For more information about components, see:
 - Mixins
 
 For a list of candidate extensions, see
-[loopback-next issue #512](https://github.com/strongloop/loopback-next/issues/512).
+[loopback-next issue #512](https://github.com/loopbackio/loopback-next/issues/512).
 
 ### System vs Application extensions
 

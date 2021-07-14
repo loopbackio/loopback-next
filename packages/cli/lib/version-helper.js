@@ -102,7 +102,7 @@ async function checkDependencies(generator) {
       const versionRange = pkgDeps[s][d];
       if (!versionRange) continue;
       const templateDep = templateDeps[d];
-      // https://github.com/strongloop/loopback-next/issues/2028
+      // https://github.com/loopbackio/loopback-next/issues/2028
       // https://github.com/npm/node-semver/pull/238
       // semver.intersects does not like `*`, `x`, or `X`
       if (versionRange.match(/^\*|x|X/)) continue;

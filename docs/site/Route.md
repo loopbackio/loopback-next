@@ -13,7 +13,7 @@ A `Route` is the mapping between your API specification and an Operation. It
 tells LoopBack which Operation to `invoke()` given an HTTP request.
 
 The `Route` object and its associated types are provided as a part of the
-[`@loopback/rest`](https://github.com/strongloop/loopback-next/blob/master/packages/rest)
+[`@loopback/rest`](https://github.com/loopbackio/loopback-next/blob/master/packages/rest)
 package.
 
 ## Operations

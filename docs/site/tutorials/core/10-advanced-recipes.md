@@ -16,7 +16,7 @@ You can create your own
 
 1. Create a new decorator from scratch by using `DecoratorFactory` from
    `@loopback/core`. See an example in
-   [custom-inject-decorator.ts](https://github.com/strongloop/loopback-next/blob/master/examples/context/src/custom-inject-decorator.ts)
+   [custom-inject-decorator.ts](https://github.com/loopbackio/loopback-next/blob/master/examples/context/src/custom-inject-decorator.ts)
 
 2. Create a sugar decorator for an existing decorator.
 
@@ -39,7 +39,7 @@ export function env(name: string) {
 ```
 
 For a complete example, see
-https://github.com/strongloop/loopback-next/blob/master/examples/context/src/custom-inject-decorator.ts.
+https://github.com/loopbackio/loopback-next/blob/master/examples/context/src/custom-inject-decorator.ts.
 
 ## Class factory to allow parameterized decorations
 
@@ -57,7 +57,7 @@ function createControllerClass(version: string, basePath: string) {
 ```
 
 For a complete example, see
-[parameterized-decoration.ts](https://github.com/strongloop/loopback-next/blob/master/examples/context/src/parameterized-decoration.ts).
+[parameterized-decoration.ts](https://github.com/loopbackio/loopback-next/blob/master/examples/context/src/parameterized-decoration.ts).
 
 ## Trigger dependency injection with an explicit context
 
@@ -139,7 +139,7 @@ synchronously.
 ## More examples
 
 For more examples, refer the
-[Context example](https://github.com/strongloop/loopback-next/tree/master/examples/context).
+[Context example](https://github.com/loopbackio/loopback-next/tree/master/examples/context).
 
 ---
 

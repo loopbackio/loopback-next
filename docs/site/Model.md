@@ -191,7 +191,7 @@ out the following [Model decorator](#model-decorator) and
 The model decorator can be used without any additional parameters, or can be
 passed in a ModelDefinitionSyntax:
 
-<!-- according to https://github.com/strongloop/loopback-datasource-juggler/blob/master/lib/model-builder.js#L283 and the legacy juggler file-->
+<!-- according to https://github.com/loopbackio/loopback-datasource-juggler/blob/master/lib/model-builder.js#L283 and the legacy juggler file-->
 
 ```ts
 @model({
@@ -256,7 +256,7 @@ now:
   <td>String</td>
   <td>None</td>
   <td>
-    Optional description of the model. We only support string type for now. (see <a href="https://github.com/strongloop/loopback-next/issues/3428">issue #3428</a> for more discussion.)
+    Optional description of the model. We only support string type for now. (see <a href="https://github.com/loopbackio/loopback-next/issues/3428">issue #3428</a> for more discussion.)
   </td></tr>
 
   <tr>
@@ -311,9 +311,9 @@ now:
   </table>
 
 To discover more about `Model Decorator` in LoopBack 4, please check
-[legacy-juggler-bridge file](https://github.com/strongloop/loopback-next/blob/2fa5df67181cdcd23a5dce90c9c640fe75943cb8/packages/repository/src/repositories/legacy-juggler-bridge.ts)
+[legacy-juggler-bridge file](https://github.com/loopbackio/loopback-next/blob/2fa5df67181cdcd23a5dce90c9c640fe75943cb8/packages/repository/src/repositories/legacy-juggler-bridge.ts)
 and
-[model-builder file](https://github.com/strongloop/loopback-datasource-juggler/blob/master/lib/model-builder.js).
+[model-builder file](https://github.com/loopbackio/loopback-datasource-juggler/blob/master/lib/model-builder.js).
 
 ### Unsupported Entries
 
@@ -352,7 +352,7 @@ If you're a LB3 user, the following entries that are no longer available in LB4:
   <tr>
     <td><code>options</code></td>
     <td>
-      (TBD) see <a href="https://github.com/strongloop/loopback-next/issues/2142">issue #2142</a> for further discussion.
+      (TBD) see <a href="https://github.com/loopbackio/loopback-next/issues/2142">issue #2142</a> for further discussion.
     </td>
   </tr>
   <tr>
@@ -536,7 +536,7 @@ Here are general attributes for property definitions:
         <pre>[
 "LoopBack 4 is a highly extensible Node.js and TypeScript framework",
 "for building APIs and microservices.",
-"Follow us on GitHub: https://github.com/strongloop/loopback-next."
+"Follow us on GitHub: https://github.com/loopbackio/loopback-next."
 ]</pre>
       </td>
     </tr>
@@ -595,7 +595,7 @@ Here are general attributes for property definitions:
 LoopBack 4 expects a model to have one _ID property_ that uniquely identifies
 the model instance.
 
-{% include important.html content="LB4 doesn't support composite keys for now, e.g joining two tables with more than one source key. Related GitHub issue: [Composite primary/foreign keys](https://github.com/strongloop/loopback-next/issues/1830)" %}
+{% include important.html content="LB4 doesn't support composite keys for now, e.g joining two tables with more than one source key. Related GitHub issue: [Composite primary/foreign keys](https://github.com/loopbackio/loopback-next/issues/1830)" %}
 
 To explicitly specify a property as ID, set the `id` property of the option
 to `true`. The `id` property value must be one of:
@@ -806,7 +806,7 @@ details.
 package in the repository. -->
 
 The property decorator leverages LoopBack's
-[metadata package](https://github.com/strongloop/loopback-next/tree/master/packages/metadata)
+[metadata package](https://github.com/loopbackio/loopback-next/tree/master/packages/metadata)
 to determine the type of a particular property.
 
 {% include note.html content=" Currently, property types must be specified
@@ -833,7 +833,7 @@ export class UserModel {
 }
 ```
 
-(see [Issue #3863](https://github.com/strongloop/loopback-next/issues/3863) for
+(see [Issue #3863](https://github.com/loopbackio/loopback-next/issues/3863) for
 more details)
 
 ```ts
@@ -847,7 +847,7 @@ class Product extends Entity {
 ### ENUM Property
 
 {% include note.html content="
-Currently, the `enum` type is not supported; this is tracked in [GitHub issue #3033](https://github.com/strongloop/loopback-next/issues/3033). Below, we present a workaround for to allow you to use this type.
+Currently, the `enum` type is not supported; this is tracked in [GitHub issue #3033](https://github.com/loopbackio/loopback-next/issues/3033). Below, we present a workaround for to allow you to use this type.
 " %}
 
 The `@property` decorator can take in `jsonSchema` to customize the JSON schema
@@ -1051,7 +1051,7 @@ the above example, the model property (`id`) maps to the database column named
 (`custom_id`) in the table named `my_model`.
 
 <div class="sl-hidden"><strong>Non-public Information</strong><br>
-  Removed until <a href="https://github.com/strongloop/loopback-datasource-juggler/issues/128" class="external-link" rel="nofollow">https://github.com/strongloop/loopback-datasource-juggler/issues/128</a> is resolved.
+  Removed until <a href="https://github.com/loopbackio/loopback-datasource-juggler/issues/128" class="external-link" rel="nofollow">https://github.com/loopbackio/loopback-datasource-juggler/issues/128</a> is resolved.
   <p>Conversion and formatting properties</p>
   <p>Format conversions are declared in properties, as described in the following table:</p>
       <table>

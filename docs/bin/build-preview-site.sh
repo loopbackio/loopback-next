@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # This scripts builds a small Jekyll site to preview LB4 documentation changes.
-# The idea is to get as close to `strongloop/loopback.io` configuration as
+# The idea is to get as close to `loopbackio/loopback.io` configuration as
 # possible, while removing as many non-LB4 pages as possible.
 
 # Set `-e` so that non-zero exit code from any step will be honored
@@ -16,8 +16,8 @@ pushd $DOCS_ROOT > /dev/null
 
 SOURCE_DIR=_loopback.io
 if [ ! -d $SOURCE_DIR ]; then
-  echo "Shadow cloning the strongloop/loopback.io github repo"
-  git clone --depth 1 https://github.com/strongloop/loopback.io.git $SOURCE_DIR
+  echo "Shadow cloning the loopbackio/loopback.io github repo"
+  git clone --depth 1 https://github.com/loopbackio/loopback.io.git $SOURCE_DIR
 else
   echo "Found existing loopback.io clone, pulling latest changes"
   (cd $SOURCE_DIR && git pull)

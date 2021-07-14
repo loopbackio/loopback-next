@@ -46,7 +46,7 @@ Datasource Db was created in src/datasources/
 ```
 
 To view the completed files, see the
-[`Todo` example](https://github.com/strongloop/loopback-next/tree/master/examples/todo/src/datasources).
+[`Todo` example](https://github.com/loopbackio/loopback-next/tree/master/examples/todo/src/datasources).
 
 Create a `data` folder in the applications root and add a new file called
 `db.json` containing an example database.

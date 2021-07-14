@@ -3,8 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {OperationRetval, Response} from './types';
 import {Readable} from 'stream';
+import {OperationRetval, Response} from './types';
 
 /**
  * Writes the result from Application controller method
@@ -48,7 +48,7 @@ export function writeResultToResponse(
         response.setHeader('Content-Type', 'application/octet-stream');
       } else {
         // TODO(ritch) remove this, should be configurable
-        // See https://github.com/strongloop/loopback-next/issues/436
+        // See https://github.com/loopbackio/loopback-next/issues/436
         response.setHeader('Content-Type', 'application/json');
         // TODO(bajtos) handle errors - JSON.stringify can throw
         result = JSON.stringify(result);

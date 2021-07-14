@@ -52,7 +52,7 @@ class LoginController{
   // provided in the request body, all the authenticate logic will happen in the
   // controller, the auth action isn't even involved.
   // See the login endpoint in shopping example
-  // https://github.com/strongloop/loopback4-example-shopping/blob/master/src/controllers/user.controller.ts#L137
+  // https://github.com/loopbackio/loopback4-example-shopping/blob/master/src/controllers/user.controller.ts#L137
 
   // Describe the response using OpenAPI spec
   @post('/loginOAI/basicAuth', RESPONSE_SPEC_FOR_JWT_LOGIN)

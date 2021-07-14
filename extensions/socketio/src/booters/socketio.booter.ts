@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-// This file is based on https://github.com/strongloop/loopback-next/blob/master/packages/boot/src/booters/repository.booter.ts
+// This file is based on https://github.com/loopbackio/loopback-next/blob/master/packages/boot/src/booters/repository.booter.ts
 
 import {
   ArtifactOptions,

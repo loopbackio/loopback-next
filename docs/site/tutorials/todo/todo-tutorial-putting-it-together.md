@@ -15,7 +15,7 @@ We've got all of our artifacts now, and they are all automatically bound to our
 together for us!
 
 LoopBack's
-[boot module](https://github.com/strongloop/loopback-next/tree/master/packages/boot)
+[boot module](https://github.com/loopbackio/loopback-next/tree/master/packages/boot)
 will automatically discover our controllers, repositories, datasources and other
 artifacts and inject them into our application for use.
 
@@ -84,7 +84,7 @@ In fact, this example can be simplified to only defining the model and
 datasource, while still behaving the same. Using
 [`CrudRestComponent`](https://loopback.io/doc/en/lb4/apidocs.rest-crud.crudrestcomponent.html),
 the repository and controller classes can be omitted, as seen in the
-[rest-crud example](https://github.com/strongloop/loopback-next/tree/master/examples/rest-crud).
+[rest-crud example](https://github.com/loopbackio/loopback-next/tree/master/examples/rest-crud).
 
 ### Navigation
 

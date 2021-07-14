@@ -119,7 +119,7 @@ describe('RestServer (integration)', () => {
       response.end();
     }
 
-    // See https://github.com/strongloop/loopback-next/issues/2088
+    // See https://github.com/loopbackio/loopback-next/issues/2088
     const server = await givenAServer();
     server.handler(requestWithQueryHandler);
     await server.start();
@@ -581,7 +581,7 @@ paths:
   // this doesn't work: once the generic routes have been added to express to
   // direct requests at controllers, adding OpenAPI spec routes after that
   // no longer works in the sense that express won't ever try those routes
-  // https://github.com/strongloop/loopback-next/issues/433 will make changes
+  // https://github.com/loopbackio/loopback-next/issues/433 will make changes
   // that make it possible to enable this test
   it.skip('can add openApiSpec endpoints after express initialization', async () => {
     const server = await givenAServer();
@@ -825,7 +825,7 @@ paths:
     await server.stop();
   });
 
-  // https://github.com/strongloop/loopback-next/issues/1623
+  // https://github.com/loopbackio/loopback-next/issues/1623
   skipOnTravis(it, 'handles IPv6 address for API Explorer UI', async () => {
     const keyPath = path.join(FIXTURES, 'key.pem');
     const certPath = path.join(FIXTURES, 'cert.pem');

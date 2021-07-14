@@ -179,7 +179,7 @@ The `invoke` sequence action simply takes the parsed request parameters from the
 `parseParams` action along with non-decorated arguments, calls the corresponding
 controller method or route handler method, and returns the value from it. The
 default implementation of
-[invoke](https://github.com/strongloop/loopback-next/blob/master/packages/rest/src/providers/invoke-method.provider.ts)
+[invoke](https://github.com/loopbackio/loopback-next/blob/master/packages/rest/src/providers/invoke-method.provider.ts)
 action calls the handler function for the route with the request specific
 context and the arguments for the function. It is important to note that
 controller methods use `invokeMethod` from `@loopback/core` and can be used with
@@ -205,7 +205,7 @@ provided at handler registration time (either via `.api()` for full schema or
 ## Writing the response
 
 The
-[send](https://github.com/strongloop/loopback-next/blob/master/packages/rest/src/providers/send.provider.ts)
+[send](https://github.com/loopbackio/loopback-next/blob/master/packages/rest/src/providers/send.provider.ts)
 sequence action is responsible for writing the result of the `invoke` action to
 the HTTP response object. The default sequence calls send with (transformed)
 data. Under the hood, send performs all steps required to send back the
@@ -217,11 +217,11 @@ Sequence to send that data back to the client. This design makes it easier to
 transform the response before it is sent.
 
 LoopBack 4 does not yet provide first-class support for streaming responses, see
-[Issue#2230](https://github.com/strongloop/loopback-next/issues/2230). As a
+[Issue#2230](https://github.com/loopbackio/loopback-next/issues/2230). As a
 short-term workaround, controller methods are allowed to send the response
 directly, effectively bypassing send action. The default implementation of send
 is prepared to handle this case
-[here](https://github.com/strongloop/loopback-next/blob/master/packages/rest/src/writer.ts#L22-L26).
+[here](https://github.com/loopbackio/loopback-next/blob/master/packages/rest/src/writer.ts#L22-L26).
 
 ## Handling errors
 
@@ -243,7 +243,7 @@ called `reject`.
 The default implementation of `reject` does the following steps:
 
 - Call
-  [strong-error-handler](https://github.com/strongloop/strong-error-handler) to
+  [strong-error-handler](https://github.com/loopbackio/strong-error-handler) to
   send back an HTTP response describing the error.
 - Log the error to `stderr` if the status code was 5xx (an internal server
   error, not a bad request).
@@ -286,7 +286,7 @@ During development and testing, it may be useful to see all error details in the
 HTTP response returned by the server. This behavior can be enabled by enabling
 the `debug` flag in error-handler configuration as shown in the code example
 below. See strong-error-handler
-[docs](https://github.com/strongloop/strong-error-handler#options) for a list of
+[docs](https://github.com/loopbackio/strong-error-handler#options) for a list of
 all available options.
 
 ```ts
@@ -313,7 +313,7 @@ An example error message when the debug mode is enabled:
 ## Keeping your Sequences
 
 For most use cases, the
-[default](https://github.com/strongloop/loopback-next/blob/master/packages/rest/src/sequence.ts)
+[default](https://github.com/loopbackio/loopback-next/blob/master/packages/rest/src/sequence.ts)
 sequence supplied with LoopBack 4 applications is good enough for
 request-response handling pipeline. Check out
 [Custom Sequences](#custom-sequences) on how to extend it and implement custom

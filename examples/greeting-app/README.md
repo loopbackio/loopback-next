@@ -1,7 +1,7 @@
 # @loopback/example-greeting-app
 
 This application is built on top of
-[`@loopback/example-greeter-extension`](https://github.com/strongloop/loopback-next/tree/master/examples/greeter-extension).
+[`@loopback/example-greeter-extension`](https://github.com/loopbackio/loopback-next/tree/master/examples/greeter-extension).
 
 ## Compose the application
 
@@ -20,8 +20,8 @@ This application is built on top of
 
 ## Contributions
 
-- [Guidelines](https://github.com/strongloop/loopback-next/blob/master/docs/CONTRIBUTING.md)
-- [Join the team](https://github.com/strongloop/loopback-next/issues/110)
+- [Guidelines](https://github.com/loopbackio/loopback-next/blob/master/docs/CONTRIBUTING.md)
+- [Join the team](https://github.com/loopbackio/loopback-next/issues/110)
 
 ## Try out
 
@@ -54,7 +54,7 @@ Run `npm test` from the root folder.
 ## Contributors
 
 See
-[all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
+[all contributors](https://github.com/loopbackio/loopback-next/graphs/contributors).
 
 ## License
 

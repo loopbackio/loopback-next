@@ -8,7 +8,7 @@ permalink: /doc/en/lb4/migration-models-mixins.html
 ---
 
 {% include tip.html content="
-Missing instructions for your LoopBack 3 use case? Please report a [Migration docs issue](https://github.com/strongloop/loopback-next/issues/new?labels=question,Migration,Docs&template=Migration_docs.md) on GitHub to let us know.
+Missing instructions for your LoopBack 3 use case? Please report a [Migration docs issue](https://github.com/loopbackio/loopback-next/issues/new?labels=question,Migration,Docs&template=Migration_docs.md) on GitHub to let us know.
 " %}
 
 ## Introduction
@@ -149,7 +149,7 @@ export class BaseEntity extends Entity {}
 ```
 
 This is necessary because the
-[Entity](https://github.com/strongloop/loopback-next/blob/master/packages/repository/src/model.ts#L276)
+[Entity](https://github.com/loopbackio/loopback-next/blob/master/packages/repository/src/model.ts#L276)
 class is abstract and doesn't have a constructor.
 
 #### Defining The Model Property Mixin Class Factory Function
@@ -638,7 +638,7 @@ export class NoteController {
 ```
 
 For a full example of a CLI-generated controller for a model `Todo`, see
-[TodoController ](https://github.com/strongloop/loopback-next/blob/master/examples/todo/src/controllers/todo.controller.ts).
+[TodoController ](https://github.com/loopbackio/loopback-next/blob/master/examples/todo/src/controllers/todo.controller.ts).
 
 #### Adjusting NoteController To Use FindByTitleControllerMixin
 

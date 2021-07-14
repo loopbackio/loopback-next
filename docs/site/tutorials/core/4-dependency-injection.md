@@ -7,11 +7,11 @@ permalink: /doc/en/lb4/core-tutorial-part4.html
 ---
 
 Artifacts usually work together to implement the business logic. For example,
-[`GreetingService`](https://github.com/strongloop/loopback-next/blob/master/examples/greeter-extension/src/greeting-service.ts)
+[`GreetingService`](https://github.com/loopbackio/loopback-next/blob/master/examples/greeter-extension/src/greeting-service.ts)
 depends on greeters for different languages, such as
-[`EnglishGreeter`](https://github.com/strongloop/loopback-next/blob/master/examples/greeter-extension/src/greeters/greeter-en.ts)
+[`EnglishGreeter`](https://github.com/loopbackio/loopback-next/blob/master/examples/greeter-extension/src/greeters/greeter-en.ts)
 and
-[`ChineseGreeter`](https://github.com/strongloop/loopback-next/blob/master/examples/greeter-extension/src/greeters/greeter-cn.ts).
+[`ChineseGreeter`](https://github.com/loopbackio/loopback-next/blob/master/examples/greeter-extension/src/greeters/greeter-cn.ts).
 
 Common techniques of composition include hard coding the dependencies or
 locating the dependent artifacts. For example:

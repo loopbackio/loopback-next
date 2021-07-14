@@ -44,7 +44,7 @@ this.configure(HealthBindings.COMPONENT).to({
 
 {% include note.html content="*this.configure()* must be called before
 *this.component()* to take effect. This is a
-[known limitation](https://github.com/strongloop/loopback-next/issues/4289#issuecomment-564617263)
+[known limitation](https://github.com/loopbackio/loopback-next/issues/4289#issuecomment-564617263)
 ." %}
 
 http://localhost:3000/health returns health in JSON format, such as:
@@ -118,8 +118,8 @@ app.bind('health.MyReadyCheck').to(myReadyCheck).tag(HealthTags.READY_CHECK);
 
 ## Contributions
 
-- [Guidelines](https://github.com/strongloop/loopback-next/blob/master/docs/CONTRIBUTING.md)
-- [Join the team](https://github.com/strongloop/loopback-next/issues/110)
+- [Guidelines](https://github.com/loopbackio/loopback-next/blob/master/docs/CONTRIBUTING.md)
+- [Join the team](https://github.com/loopbackio/loopback-next/issues/110)
 
 ## Tests
 
@@ -128,7 +128,7 @@ Run `npm test` from the root folder.
 ## Contributors
 
 See
-[all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
+[all contributors](https://github.com/loopbackio/loopback-next/graphs/contributors).
 
 ## License
 

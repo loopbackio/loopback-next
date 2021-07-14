@@ -95,7 +95,7 @@ function stopRecordingAndReportProblems() {
   log(
     '\n=== ATTENTION - INVALID USAGE OF CONSOLE LOGS DETECTED ===',
     '\nLearn more at',
-    'https://github.com/strongloop/loopback-next/blob/master/packages/build/README.md#a-note-on-console-logs-printed-by-tests\n',
+    'https://github.com/loopbackio/loopback-next/blob/master/packages/build/README.md#a-note-on-console-logs-printed-by-tests\n',
   );
 
   for (const p of problems) {

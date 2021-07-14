@@ -161,7 +161,7 @@ LoopBack 4's goals are:
     - Build a minimal core and enable everything else to be implemented via
       extensions.
     - Open the door for more
-      [extension points and extensions](https://github.com/strongloop/loopback-next/issues/512).
+      [extension points and extensions](https://github.com/loopbackio/loopback-next/issues/512).
 
 3.  Align with cloud native experience for microservices.
 
@@ -452,7 +452,7 @@ databases, services, etc., not middleware for CORS, static file serving, etc. We
 didn't want to reinvent the wheel by writing new middleware for LoopBack 4.
 
 The team explored leveraging
-[Express or Koa](https://github.com/strongloop/loopback-next/pull/1082) (but
+[Express or Koa](https://github.com/loopbackio/loopback-next/pull/1082) (but
 only for their middleware support). The final decision was to use Express in a
 way that bridges the gap by addressing the gaps identified above as follows:
 
@@ -491,8 +491,8 @@ API experience by "eating your own dog food" with the following artifacts:
 
 The features are provided by the following modules:
 
-- [@loopback/rest](https://github.com/strongloop/loopback-next/tree/master/packages/rest/)
-- [@loopback/repository](https://github.com/strongloop/loopback-next/tree/master/packages/repository/)
+- [@loopback/rest](https://github.com/loopbackio/loopback-next/tree/master/packages/rest/)
+- [@loopback/repository](https://github.com/loopbackio/loopback-next/tree/master/packages/repository/)
 
 ## Example for application developers
 
@@ -501,18 +501,18 @@ LoopBack 4.
 
 ### Basic Hello-World
 
-[@loopback/example-hello-world](https://github.com/strongloop/loopback-next/tree/master/examples/hello-world)
+[@loopback/example-hello-world](https://github.com/loopbackio/loopback-next/tree/master/examples/hello-world)
 
 ### Intermediate example
 
-[@loopback/example-todo](https://github.com/strongloop/loopback-next/tree/master/examples/todo)
+[@loopback/example-todo](https://github.com/loopbackio/loopback-next/tree/master/examples/todo)
 
 ## Example for extension developers
 
 ### Learn from existing ones
 
-- [@loopback/example-log-extension](https://github.com/strongloop/loopback-next/tree/master/examples/log-extension)
-- [@loopback/authentication](https://github.com/strongloop/loopback-next/tree/master/packages/authentication)
+- [@loopback/example-log-extension](https://github.com/loopbackio/loopback-next/tree/master/examples/log-extension)
+- [@loopback/authentication](https://github.com/loopbackio/loopback-next/tree/master/packages/authentication)
 
 ## References
 

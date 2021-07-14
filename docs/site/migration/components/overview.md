@@ -10,7 +10,7 @@ redirect_from: /doc/en/lb4/migration-extensions.html
 ---
 
 {% include tip.html content="
-Missing instructions for your LoopBack 3 use case? Please report a [Migration docs issue](https://github.com/strongloop/loopback-next/issues/new?labels=question,Migration,Docs&template=Migration_docs.md) on GitHub to let us know.
+Missing instructions for your LoopBack 3 use case? Please report a [Migration docs issue](https://github.com/loopbackio/loopback-next/issues/new?labels=question,Migration,Docs&template=Migration_docs.md) on GitHub to let us know.
 " %}
 
 In LoopBack 3, a component is essentially a function that extends and/or patches
@@ -82,10 +82,10 @@ There is no migration guide written for the following areas yet, please up-vote
 the referenced GitHub issues to let us know if you are looking for such content:
 
 - Migrating services (local and remote):
-  [loopback-next#5424](https://github.com/strongloop/loopback-next/issues/5424)
+  [loopback-next#5424](https://github.com/loopbackio/loopback-next/issues/5424)
 
 - API transports (websockets, pub/sub message consumers):
-  [loopback-next#5425](https://github.com/strongloop/loopback-next/issues/5425)
+  [loopback-next#5425](https://github.com/loopbackio/loopback-next/issues/5425)
 
 - Introspection of application artifacts:
-  [loopback-next#5426](https://github.com/strongloop/loopback-next/issues/5426)
+  [loopback-next#5426](https://github.com/loopbackio/loopback-next/issues/5426)

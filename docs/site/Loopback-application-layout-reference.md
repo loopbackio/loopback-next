@@ -19,7 +19,7 @@ application structure has these sub-directories:
 " %}
 
 The following table uses files in the
-[`Todo` example](https://github.com/strongloop/loopback-next/tree/master/examples/todo)
+[`Todo` example](https://github.com/loopbackio/loopback-next/tree/master/examples/todo)
 as code references.
 
 <table style="font-size: 90%;">
@@ -35,7 +35,7 @@ as code references.
       <th colspan="3" style="text-align: center; background-color: #bfbfbf;">Top-level application directory</th>
     </tr>
     <tr>
-      <td><a href="https://github.com/strongloop/loopback-next/blob/master/examples/todo/package.json"><code>package.json</code></a></td>
+      <td><a href="https://github.com/loopbackio/loopback-next/blob/master/examples/todo/package.json"><code>package.json</code></a></td>
       <td>
         Standard npm package specification. Use it to set up package dependencies, among other things. This file must be in the application root directory. See <a href="https://docs.npmjs.com/files/package.json"><code>npm-package.json</code> for information</a>.
       </td>
@@ -47,7 +47,7 @@ as code references.
       <td>N/A</td>
     </tr>
     <tr>
-      <td><a href="https://github.com/strongloop/loopback-next/blob/master/examples/todo/tsconfig.json"><code>tsconfig.json</code></a></td>
+      <td><a href="https://github.com/loopbackio/loopback-next/blob/master/examples/todo/tsconfig.json"><code>tsconfig.json</code></a></td>
       <td>
         A file specifies the root files and the compiler options required to compile the project. See <a href="https://www.typescriptlang.org/docs/handbook/tsconfig-json.html"><code>tsconfig.json</code> for information</a>.
       </td>
@@ -62,52 +62,52 @@ as code references.
       <th colspan="3" style="text-align: center; background-color: #bfbfbf;">/src directory - Node application files</th>
     </tr>
     <tr>
-      <td><a href="https://github.com/strongloop/loopback-next/tree/master/examples/todo/src/controllers"><code>controllers/</code></a></td>
+      <td><a href="https://github.com/loopbackio/loopback-next/tree/master/examples/todo/src/controllers"><code>controllers/</code></a></td>
       <td>A sub-directory for all controller files. See <a href="Controller.html">Controller</a>.</td>
       <td><a href="https://loopback.io/doc/en/lb4/Controller-generator.html"><code>lb4 controller</code></a></td>
     </tr>
     <tr>
-      <td><a href="https://github.com/strongloop/loopback-next/tree/master/examples/todo/src/datasources"><code>datasources/</code></a></td>
+      <td><a href="https://github.com/loopbackio/loopback-next/tree/master/examples/todo/src/datasources"><code>datasources/</code></a></td>
       <td>A sub-directory for all dataSource files. See <a href="DataSource.html">DataSource</a>.</td>
       <td><a href="https://loopback.io/doc/en/lb4/DataSource-generator.html"><code>lb4 datasource</code></a></td>
     </tr>
     <tr>
-      <td><a href="https://github.com/strongloop/loopback-next/tree/master/examples/todo/src/models"><code>models/</code></a></td>
+      <td><a href="https://github.com/loopbackio/loopback-next/tree/master/examples/todo/src/models"><code>models/</code></a></td>
       <td>A sub-directory for all model files. See <a href="Model.html">Model</a>.</td>
       <td><a href="https://loopback.io/doc/en/lb4/Model-generator.html"><code>lb4 model</code></a></td>
     </tr>
     <tr>
-      <td><a href="https://github.com/strongloop/loopback-next/tree/master/examples/todo/src/repositories"><code>repositories/</code></a></td>
+      <td><a href="https://github.com/loopbackio/loopback-next/tree/master/examples/todo/src/repositories"><code>repositories/</code></a></td>
       <td>A sub-directory for all repository files. See <a href="Repository.html">Repository</a>.</td>
       <td><a href="https://loopback.io/doc/en/lb4/Repository-generator.html"><code>lb4 repository</code></a></td>
     </tr>
      <tr>
-      <td><a href="https://github.com/strongloop/loopback-next/tree/master/examples/todo/src/__tests__"><code>__test__/</code></a></td>
+      <td><a href="https://github.com/loopbackio/loopback-next/tree/master/examples/todo/src/__tests__"><code>__test__/</code></a></td>
       <td>A directory for all tests.</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td><a href="https://github.com/strongloop/loopback-next/blob/master/examples/todo/src/application.ts"><code>application.ts</code></a></td>
+      <td><a href="https://github.com/loopbackio/loopback-next/blob/master/examples/todo/src/application.ts"><code>application.ts</code></a></td>
       <td>Main application program file. A central registry file for inversion of control and dependency injection. See <a href="Application.html">Application</a>.</td>
       <td>N/A</td>
     </tr>
     <tr>
-      <td><a href="https://github.com/strongloop/loopback-next/blob/master/examples/todo/src/index.ts"><code>index.ts</code></a></td>
+      <td><a href="https://github.com/loopbackio/loopback-next/blob/master/examples/todo/src/index.ts"><code>index.ts</code></a></td>
       <td>A script that initializes and runs the application.</td>
       <td>N/A</td>
     </tr>
     <tr>
-      <td><a href="https://github.com/strongloop/loopback-next/blob/master/examples/todo/src/migrate.ts"><code>migrate.ts</code></a></td>
+      <td><a href="https://github.com/loopbackio/loopback-next/blob/master/examples/todo/src/migrate.ts"><code>migrate.ts</code></a></td>
       <td>A script to run database migration. See <a href="Database-migrations.html">Database Migrations</a>.</td>
       <td><code>npm run build && npm run migrate</code></td>
     </tr>
     <tr>
-      <td><a href="https://github.com/strongloop/loopback-next/blob/master/examples/todo/src/openapi-spec.ts"><code>openapi-spec.ts</code></a></td>
+      <td><a href="https://github.com/loopbackio/loopback-next/blob/master/examples/todo/src/openapi-spec.ts"><code>openapi-spec.ts</code></a></td>
       <td>A script that exports the OpenAPI spec from the application.</td>
       <td><code>npm run build && npm run openapi-spec</code></td>
     </tr>
     <tr>
-      <td><a href="https://github.com/strongloop/loopback-next/blob/master/examples/todo/src/sequence.ts"><code>sequence.ts</code></a></td>
+      <td><a href="https://github.com/loopbackio/loopback-next/blob/master/examples/todo/src/sequence.ts"><code>sequence.ts</code></a></td>
       <td>A file where to define a series of steps to control how a specific type of `Server`
       responds to incoming requests. See <a href="Sequence.html">Sequence</a>.</td>
       <td>N/A</td>
@@ -116,7 +116,7 @@ as code references.
       <th colspan="3" style="text-align: center; background-color: #bfbfbf;">/public directory - Client application files</th>
     </tr>
     <tr>
-      <td><a href="https://github.com/strongloop/loopback-next/blob/master/examples/todo/public/index.html"><code>index.html</code></a></td>
+      <td><a href="https://github.com/loopbackio/loopback-next/blob/master/examples/todo/public/index.html"><code>index.html</code></a></td>
       <td>An example LoopBack front page.</td>
       <td>N/A</td>
     </tr>

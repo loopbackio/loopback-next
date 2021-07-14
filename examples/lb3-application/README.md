@@ -165,7 +165,7 @@ LoopBack 4 apps.
 
    Migrate the LB3 app's middleware from its `middleware.json` file to this
    Express app, except the one from the `routes` phase (there is a
-   [pending task](https://github.com/strongloop/loopback-next/issues/4181) to
+   [pending task](https://github.com/loopbackio/loopback-next/issues/4181) to
    complete the support for this middleware).
 
    Each root property in the `middleware.json` object represents a middleware
@@ -359,7 +359,7 @@ path to `test` entry in package.json:
 - `"test": "lb-mocha \"dist/**tests**/*_/_.js\" \"lb3app/test/*.js\""`
 
 In this case, the test folder is
-[`/lb3app/test`](https://github.com/strongloop/loopback-next/tree/spike/lb3test/examples/lb3-application/lb3app/test)
+[`/lb3app/test`](https://github.com/loopbackio/loopback-next/tree/spike/lb3test/examples/lb3-application/lb3app/test)
 from the root of the LoopBack 4 project.
 
 This will run LoopBack 4 tests first then LoopBack 3 tests.
@@ -466,11 +466,11 @@ In your test file:
   ```
 
 Example of this use can be seen in
-[`test/acceptance.js`](https://github.com/strongloop/loopback-next/tree/master/examples/lb3-application/lb3app/test/acceptance.js)
+[`test/acceptance.js`](https://github.com/loopbackio/loopback-next/tree/master/examples/lb3-application/lb3app/test/acceptance.js)
 which has the same tests as
-[`src/__tests__/acceptance/lb3app.acceptance.ts`](https://github.com/strongloop/loopback-next/blob/spike/lb3test/examples/lb3-application/src/__tests__/acceptance/lb3app.acceptance.ts),
+[`src/__tests__/acceptance/lb3app.acceptance.ts`](https://github.com/loopbackio/loopback-next/blob/spike/lb3test/examples/lb3-application/src/__tests__/acceptance/lb3app.acceptance.ts),
 but in LB3 style. And
-[`test/authentication.js`](https://github.com/strongloop/loopback-next/tree/master/examples/lb3-application/lb3app/test/authentication.js)
+[`test/authentication.js`](https://github.com/loopbackio/loopback-next/tree/master/examples/lb3-application/lb3app/test/authentication.js)
 
 Now when you run `npm test` your LoopBack 3 tests should be run along with any
 LoopBack 4 tests you have.
@@ -485,7 +485,7 @@ https://loopback.io/doc/en/lb4/Testing-your-application.html.
 For the integration tests, LoopBack 3 models were bound to the LoopBack 4
 application in order to allow JavaScript API to call application logic such as
 `Model.create()`. This can be seen in
-[`packages/booter-lb3app/src/lb3app.booter.ts`](https://github.com/strongloop/loopback-next/blob/spike/lb3test/packages/booter-lb3app/src/lb3app.booter.ts#L76-L85).
+[`packages/booter-lb3app/src/lb3app.booter.ts`](https://github.com/loopbackio/loopback-next/blob/spike/lb3test/packages/booter-lb3app/src/lb3app.booter.ts#L76-L85).
 
 In order to retrieve the model from the application's context, `get()` can be
 used as follows:
@@ -525,10 +525,10 @@ Additionally, LB3 datasources are also bound to the LB4 application's context
 and can be retrieved with a key in the syntax `lb3-datasources.{ds name}`.
 
 Example integration tests can be found in
-[`examples/lb3-application/lb3app/test/integration.js`](https://github.com/strongloop/loopback-next/tree/master/examples/lb3-application/lb3app/test/integration.js).
+[`examples/lb3-application/lb3app/test/integration.js`](https://github.com/loopbackio/loopback-next/tree/master/examples/lb3-application/lb3app/test/integration.js).
 
 Example authentication tests can be found in
-[`examples/lb3-application/lb3app/test/authentication.js`](https://github.com/strongloop/loopback-next/tree/master/examples/lb3-application/lb3app/test/authentication.js).
+[`examples/lb3-application/lb3app/test/authentication.js`](https://github.com/loopbackio/loopback-next/tree/master/examples/lb3-application/lb3app/test/authentication.js).
 
 ## Need help?
 
@@ -538,13 +538,13 @@ and ask for help with this tutorial.
 
 ## Bugs/Feedback
 
-Open an issue in [loopback-next](https://github.com/strongloop/loopback-next)
+Open an issue in [loopback-next](https://github.com/loopbackio/loopback-next)
 and we'll take a look.
 
 ## Contributions
 
-- [Guidelines](https://github.com/strongloop/loopback-next/blob/master/docs/CONTRIBUTING.md)
-- [Join the team](https://github.com/strongloop/loopback-next/issues/110)
+- [Guidelines](https://github.com/loopbackio/loopback-next/blob/master/docs/CONTRIBUTING.md)
+- [Join the team](https://github.com/loopbackio/loopback-next/issues/110)
 
 ## Tests
 
@@ -553,7 +553,7 @@ Run `npm test` from the root folder.
 ## Contributors
 
 See
-[all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
+[all contributors](https://github.com/loopbackio/loopback-next/graphs/contributors).
 
 ## License
 

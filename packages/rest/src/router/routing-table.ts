@@ -61,7 +61,7 @@ export class RoutingTable {
    */
   registerRoute(route: RouteEntry) {
     // TODO(bajtos) handle the case where opSpec.parameters contains $ref
-    // See https://github.com/strongloop/loopback-next/issues/435
+    // See https://github.com/loopbackio/loopback-next/issues/435
     /* istanbul ignore if */
     if (debug.enabled) {
       debug(

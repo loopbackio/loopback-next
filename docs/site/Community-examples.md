@@ -12,7 +12,7 @@ lists the examples created by the community.
 
 {% include warning.html content="The examples listed here are not supported by the LoopBack team; they are maintained by the LoopBack community and are listed here for convenience."%}
 
-{% include note.html content="If you want to share your examples in this page, feel free to submit a PR to update [this page](https://github.com/strongloop/loopback-next/blob/master/docs/site/Community-examples.md)."%}
+{% include note.html content="If you want to share your examples in this page, feel free to submit a PR to update [this page](https://github.com/loopbackio/loopback-next/blob/master/docs/site/Community-examples.md)."%}
 
 ## General
 

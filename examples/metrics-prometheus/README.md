@@ -1,7 +1,7 @@
 # @loopback/example-metrics-prometheus
 
 This project contains an example to illustrate metrics provided by
-[`@loopback/metrics`](https://github.com/strongloop/loopback-next/blob/master/extensions/metrics)
+[`@loopback/metrics`](https://github.com/loopbackio/loopback-next/blob/master/extensions/metrics)
 and [Prometheus](https://prometheus.io/).
 
 ## Use
@@ -28,8 +28,8 @@ Open http://localhost:9090 for the Prometheus Web UI.
 
 ## Contributions
 
-- [Guidelines](https://github.com/strongloop/loopback-next/blob/master/docs/CONTRIBUTING.md)
-- [Join the team](https://github.com/strongloop/loopback-next/issues/110)
+- [Guidelines](https://github.com/loopbackio/loopback-next/blob/master/docs/CONTRIBUTING.md)
+- [Join the team](https://github.com/loopbackio/loopback-next/issues/110)
 
 ## Tests
 
@@ -38,7 +38,7 @@ Run `npm test` from the root folder.
 ## Contributors
 
 See
-[all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
+[all contributors](https://github.com/loopbackio/loopback-next/graphs/contributors).
 
 ## License
 

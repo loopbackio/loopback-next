@@ -8,7 +8,7 @@ permalink: /doc/en/lb4/migration-datasources.html
 ---
 
 {% include tip.html content="
-Missing instructions for your LoopBack 3 use case? Please report a [Migration docs issue](https://github.com/strongloop/loopback-next/issues/new?labels=question,Migration,Docs&template=Migration_docs.md) on GitHub to let us know.
+Missing instructions for your LoopBack 3 use case? Please report a [Migration docs issue](https://github.com/loopbackio/loopback-next/issues/new?labels=question,Migration,Docs&template=Migration_docs.md) on GitHub to let us know.
 " %}
 
 ## Overview
@@ -83,7 +83,7 @@ steps:
 
 4. Repeat steps 1-3 for each datasource you want to migrate.
 
-{% include note.html content="We are working on a CLI command `lb4 import-lb3-datasources` that will migrate datasources from a mounted LoopBack 3 application to a LoopBack 4 project automatically. See [GitHub issue #4346](https://github.com/strongloop/loopback-next/issues/4346) for more details." %}
+{% include note.html content="We are working on a CLI command `lb4 import-lb3-datasources` that will migrate datasources from a mounted LoopBack 3 application to a LoopBack 4 project automatically. See [GitHub issue #4346](https://github.com/loopbackio/loopback-next/issues/4346) for more details." %}
 
 ## Compatibility
 
@@ -91,4 +91,4 @@ As mentioned before, LoopBack 3 datasources are compatible with LoopBack 4
 datasources. In both, a datasource is a connector instance that is used by
 `legacy-juggler-bridge`. For example, both a LoopBack 3 MySQL datasource and a
 LoopBack 4 MySQL datasource will use
-[`loopback-connector-mysql`](http://github.com/strongloop/loopback-connector-mysql).
+[`loopback-connector-mysql`](http://github.com/loopbackio/loopback-connector-mysql).

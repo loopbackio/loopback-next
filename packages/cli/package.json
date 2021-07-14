@@ -14,10 +14,10 @@
   "main": "generators/app/index.js",
   "author": "IBM Corp.",
   "copyright.owner": "IBM Corp.",
-  "homepage": "https://github.com/strongloop/loopback-next/tree/master/packages/cli",
+  "homepage": "https://github.com/loopbackio/loopback-next/tree/master/packages/cli",
   "repository": {
     "type": "git",
-    "url": "https://github.com/strongloop/loopback-next.git",
+    "url": "https://github.com/loopbackio/loopback-next.git",
     "directory": "packages/cli"
   },
   "engines": {

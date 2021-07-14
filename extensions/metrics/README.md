@@ -87,7 +87,7 @@ Prometheus supports two modes to collect metrics:
 ## Try it out
 
 ```sh
-git clone https://github.com/strongloop/loopback-next
+git clone https://github.com/loopbackio/loopback-next
 npm install
 npm run build
 cd examples/metrics-prometheus
@@ -216,8 +216,8 @@ loopback_invocation_duration_summary_count{targetName="MockController.prototype.
 
 ## Contributions
 
-- [Guidelines](https://github.com/strongloop/loopback-next/blob/master/docs/CONTRIBUTING.md)
-- [Join the team](https://github.com/strongloop/loopback-next/issues/110)
+- [Guidelines](https://github.com/loopbackio/loopback-next/blob/master/docs/CONTRIBUTING.md)
+- [Join the team](https://github.com/loopbackio/loopback-next/issues/110)
 
 ## Tests
 
@@ -226,7 +226,7 @@ Run `npm test` from the root folder.
 ## Contributors
 
 See
-[all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
+[all contributors](https://github.com/loopbackio/loopback-next/graphs/contributors).
 
 ## License
 

@@ -8,11 +8,11 @@ permalink: /doc/en/lb4/migration-models-operation-hooks.html
 ---
 
 {% include tip.html content="
-Missing instructions for your LoopBack 3 use case? Please report a [Migration docs issue](https://github.com/strongloop/loopback-next/issues/new?labels=question,Migration,Docs&template=Migration_docs.md) on GitHub to let us know.
+Missing instructions for your LoopBack 3 use case? Please report a [Migration docs issue](https://github.com/loopbackio/loopback-next/issues/new?labels=question,Migration,Docs&template=Migration_docs.md) on GitHub to let us know.
 " %}
 
 Operation hooks are not supported in LoopBack 4 yet. See the
-[Operation hooks for models/repositories spike](https://github.com/strongloop/loopback-next/issues/1919)
+[Operation hooks for models/repositories spike](https://github.com/loopbackio/loopback-next/issues/1919)
 to follow the progress made on this subject.
 
 In the meantime, we are providing a temporary API for enabling operation hooks
@@ -51,7 +51,7 @@ class ProductRepository extends DefaultCrudRepository<
 {% include warning.html content="Do not use `this` inside of the observer
 callback function. The `this` keyword will only reference the repository state
 of the first request and may result in unexpected behaviour. See GitHub issue
-[#6962](https://github.com/strongloop/loopback-next/issues/6962)." %}
+[#6962](https://github.com/loopbackio/loopback-next/issues/6962)." %}
 
 Although possible, we are not providing an API which directly exposes the
 `observe` method of the model class. The current API makes the registration of

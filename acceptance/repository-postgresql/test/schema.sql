@@ -1,5 +1,5 @@
 -- Seed database schema & data
--- See https://github.com/strongloop/loopback-connector-postgresql/blob/master/test/schema.sql
+-- See https://github.com/loopbackio/loopback-connector-postgresql/blob/master/test/schema.sql
 
 DROP DATABASE IF EXISTS repository_tests;
 CREATE DATABASE repository_tests;

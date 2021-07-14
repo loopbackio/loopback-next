@@ -195,7 +195,7 @@ You can find specific use cases in
 [Writing Controller methods](../Controller.md#writing-controller-methods)
 
 _The parameter location cookie is not supported yet, see_
-_(https://github.com/strongloop/loopback-next/issues/997)_
+_(https://github.com/loopbackio/loopback-next/issues/997)_
 
 ### Parameter Decorator to support json objects
 
@@ -398,7 +398,7 @@ class MyController {
 
 _We plan to support more `@requestBody` shortcuts in the future. You can track
 the feature in
-[story 1064](https://github.com/strongloop/loopback-next/issues/1064)._
+[story 1064](https://github.com/loopbackio/loopback-next/issues/1064)._
 
 ### x-ts-type extension
 

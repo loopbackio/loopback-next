@@ -100,7 +100,7 @@ bindings that are defined on the application will also be available to the
 server(s), unless you replace these bindings on the server instance(s) directly.
 
 For example,
-[`@loopback/rest`](https://github.com/strongloop/loopback-next/blob/master/packages/rest)
+[`@loopback/rest`](https://github.com/loopbackio/loopback-next/blob/master/packages/rest)
 has the `RestServer` class, which sets up a running HTTP/S server on a port, as
 well as defining routes on that server for a REST API. To set the port binding
 for the `RestServer`, you would bind the `RestBindings.PORT` key to a number.
@@ -124,7 +124,7 @@ async start() {
 ## Request-level context (request)
 
 Using
-[`@loopback/rest`](https://github.com/strongloop/loopback-next/blob/master/packages/rest)
+[`@loopback/rest`](https://github.com/loopbackio/loopback-next/blob/master/packages/rest)
 as an example, we can create custom sequences that:
 
 - are dynamically created for each incoming server request
@@ -230,7 +230,7 @@ Other interesting decorators can be used to help give LoopBack hints to
 additional metadata you may want to provide in order to automatically set things
 up. For example, let's take the previous example and make it available on the
 `GET /greet` route using decorators provided by
-[`@loopback/rest`](https://github.com/strongloop/loopback-next/blob/master/packages/rest):
+[`@loopback/rest`](https://github.com/loopbackio/loopback-next/blob/master/packages/rest):
 
 ```ts
 class HelloController {
@@ -304,7 +304,7 @@ export type ContextEventListener = (event: ContextEvent) => void;
 ```
 
 By default, `maxListeners` is set to `Infinity` for context objects to avoid
-[memory leak warnings](https://github.com/strongloop/loopback-next/issues/4363).
+[memory leak warnings](https://github.com/loopbackio/loopback-next/issues/4363).
 The value can be reset as follows:
 
 ```ts

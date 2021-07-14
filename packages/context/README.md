@@ -90,7 +90,7 @@ For additional information, please refer to the
 ## Examples
 
 To learn more about advanced features, check out standalone examples at
-[`@loopback/example-context`](https://github.com/strongloop/loopback-next/tree/master/examples/context).
+[`@loopback/example-context`](https://github.com/loopbackio/loopback-next/tree/master/examples/context).
 
 Use the following command to download the example project to try out:
 
@@ -100,8 +100,8 @@ lb4 example context
 
 ## Contributions
 
-- [Guidelines](https://github.com/strongloop/loopback-next/blob/master/docs/CONTRIBUTING.md)
-- [Join the team](https://github.com/strongloop/loopback-next/issues/110)
+- [Guidelines](https://github.com/loopbackio/loopback-next/blob/master/docs/CONTRIBUTING.md)
+- [Join the team](https://github.com/loopbackio/loopback-next/issues/110)
 
 ## Tests
 
@@ -110,7 +110,7 @@ Run `npm test` from the root folder.
 ## Contributors
 
 See
-[all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
+[all contributors](https://github.com/loopbackio/loopback-next/graphs/contributors).
 
 ## License
 

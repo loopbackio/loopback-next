@@ -98,7 +98,7 @@ Model Todo was created in src/models/
 ```
 
 To view the completed file, see the
-[`Todo` example](https://github.com/strongloop/loopback-next/blob/master/examples/todo/src/models/todo.model.ts).
+[`Todo` example](https://github.com/loopbackio/loopback-next/blob/master/examples/todo/src/models/todo.model.ts).
 
 Now that we have our model, it's time to add a
 [datasource](todo-tutorial-datasource.md) so we can perform real CRUD

@@ -1,9 +1,9 @@
-<img src="https://raw.githubusercontent.com/strongloop/loopback.io/gh-pages/images/branding/logo/blue/loopback-sm.png" alt="LoopBack4 logo" width="400"/>
+<img src="https://raw.githubusercontent.com/loopbackio/loopback.io/gh-pages/images/branding/logo/blue/loopback-sm.png" alt="LoopBack4 logo" width="400"/>
 
-[![Continuous Integration Status](https://github.com/strongloop/loopback-next/actions/workflows/continuous-integration.yml/badge.svg)](https://github.com/strongloop/loopback-next/actions/workflows/continuous-integration.yml)
-[![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/q8vp7wrdn2ak6801/branch/master?svg=true)](https://ci.appveyor.com/project/strongloop/loopback-next/branch/master)
-[![Coverage Status](https://coveralls.io/repos/github/strongloop/loopback-next/badge.svg?branch=master)](https://coveralls.io/github/strongloop/loopback-next?branch=master)
-[![CodeQL Status](https://github.com/strongloop/loopback-next/workflows/CodeQL/badge.svg)](https://github.com/strongloop/loopback-next/actions?query=workflow%3ACodeQL)
+[![Continuous Integration Status](https://github.com/loopbackio/loopback-next/actions/workflows/continuous-integration.yml/badge.svg)](https://github.com/loopbackio/loopback-next/actions/workflows/continuous-integration.yml)
+[![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/q8vp7wrdn2ak6801/branch/master?svg=true)](https://ci.appveyor.com/project/loopbackio/loopback-next/branch/master)
+[![Coverage Status](https://coveralls.io/repos/github/loopbackio/loopback-next/badge.svg?branch=master)](https://coveralls.io/github/loopbackio/loopback-next?branch=master)
+[![CodeQL Status](https://github.com/loopbackio/loopback-next/workflows/CodeQL/badge.svg)](https://github.com/loopbackio/loopback-next/actions?query=workflow%3ACodeQL)
 
 [![Twitter](https://img.shields.io/twitter/follow/strongloop.svg?style=social&label=Follow%20%40strongloop)](https://twitter.com/strongloop)
 [![Facebook](https://img.shields.io/badge/StrongLoop-white?logo=facebook&color=1877F2&logoColor=white)](https://www.facebook.com/strongloop)
@@ -36,7 +36,7 @@ for all the API usages in each package.
 ### Long Term Support
 
 We don't provide any LTS version for LoopBack 4 yet. Please join the discussion
-in [loopback-next#4398](https://github.com/strongloop/loopback-next/issues/4398)
+in [loopback-next#4398](https://github.com/loopbackio/loopback-next/issues/4398)
 if you are interested in a version that's less frequently changed.
 
 We are providing Maintenance support for
@@ -85,7 +85,7 @@ See the following resources to get you started:
 - [Developing LoopBack](./docs/site/DEVELOPING.md)
 
 You can join the team by posting a comment to
-[issue #110](https://github.com/strongloop/loopback-next/issues/110).
+[issue #110](https://github.com/loopbackio/loopback-next/issues/110).
 
 ### Security
 
@@ -118,7 +118,7 @@ See [SECURITY.md](SECURITY.md) for more details.
 | [![nabdelgadir]](https://github.com/nabdelgadir) |           [![madaky]](https://github.com/madaky)           |      [![nflaig]](https://github.com/nflaig)      |
 
 See
-[all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
+[all contributors](https://github.com/loopbackio/loopback-next/graphs/contributors).
 
 ### Alumni
 

@@ -2,7 +2,7 @@
 
 # This script builds/verifies that `docs` is able to be served by `loopback.io`
 # site. It runs the following steps:
-# 1. Clone `strongloop/loopback.io` github repository into `sandbox`
+# 1. Clone `loopbackio/loopback.io` github repository into `sandbox`
 # 2. Bootstrap `loopback.io` package using `lerna` to use `docs` folder for
 # `@loopback/docs` dependency
 # 3. Run `npm run build` for `loopback.io` module to make sure jekyll can
@@ -33,8 +33,8 @@ lerna run --scope @loopback/docs prepack
 # Clean up sandbox/loopback.io directory
 rm -rf sandbox/loopback.io/
 
-# Shadow clone the `strongloop/loopback.io` github repo
-git clone --depth 1 https://github.com/strongloop/loopback.io.git sandbox/loopback.io
+# Shadow clone the `loopbackio/loopback.io` github repo
+git clone --depth 1 https://github.com/loopbackio/loopback.io.git sandbox/loopback.io
 
 # Add loopback.io-workflow-scripts with @loopback/docs linked
 lerna bootstrap --no-ci --scope loopback.io-workflow-scripts --include-dependencies

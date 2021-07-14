@@ -34,7 +34,7 @@ function getPackageFields(pkg) {
   const packageJson = fs.readJsonSync(path.join(pkg.location, 'package.json'));
 
   const relativeUri = getPackageRelativeUri(pkg);
-  const pkgUrl = `https://github.com/strongloop/loopback-next/tree/master/${relativeUri}`;
+  const pkgUrl = `https://github.com/loopbackio/loopback-next/tree/master/${relativeUri}`;
 
   return [
     `[${relativeUri}](${pkgUrl})`,
@@ -60,7 +60,7 @@ async function updateMonorepoFile() {
     '',
     '# Monorepo overview',
     '',
-    'The [loopback-next](https://github.com/strongloop/loopback-next) repository uses',
+    'The [loopback-next](https://github.com/loopbackio/loopback-next) repository uses',
     '[lerna](https://lernajs.io/) to manage multiple packages for LoopBack 4.',
     '',
     'Please run the following command to update packages information after adding new',
@@ -69,7 +69,7 @@ async function updateMonorepoFile() {
     markdownTable,
     '',
     'We use npm scripts declared in',
-    '[package.json](https://github.com/strongloop/loopback-next/blob/master/package.json)',
+    '[package.json](https://github.com/loopbackio/loopback-next/blob/master/package.json)',
     'to work with the monorepo managed by lerna. See',
     '[Developing LoopBack](./DEVELOPING.md) for more details.',
   ].join('\n');

@@ -1,13 +1,13 @@
 # @loopback/example-todo-jwt
 
 This is a modified LoopBack 4
-[Todo application](https://github.com/strongloop/loopback-next/tree/master/examples/todo)
+[Todo application](https://github.com/loopbackio/loopback-next/tree/master/examples/todo)
 with JWT authentication, using the `@loopback/authentication-jwt` extension.
 
 ## Overview
 
 This tutorial demonstrates how to add JWT authentication to the
-[Todo application](https://github.com/strongloop/loopback-next/tree/master/examples/todo).
+[Todo application](https://github.com/loopbackio/loopback-next/tree/master/examples/todo).
 
 ## Usage
 
@@ -57,8 +57,8 @@ http://localhost:3000/explorer. You’ll see the 3 new endpoints under
 
 ## Contributions
 
-- [Guidelines](https://github.com/strongloop/loopback-next/blob/master/docs/CONTRIBUTING.md)
-- [Join the team](https://github.com/strongloop/loopback-next/issues/110)
+- [Guidelines](https://github.com/loopbackio/loopback-next/blob/master/docs/CONTRIBUTING.md)
+- [Join the team](https://github.com/loopbackio/loopback-next/issues/110)
 
 ## Tests
 
@@ -67,10 +67,10 @@ Run `npm test` from the root folder.
 ## Contributors
 
 See
-[all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
+[all contributors](https://github.com/loopbackio/loopback-next/graphs/contributors).
 
 ## License
 
 MIT
 
-[![LoopBack](<https://github.com/strongloop/loopback-next/raw/master/docs/site/imgs/branding/Powered-by-LoopBack-Badge-(blue)-@2x.png>)](http://loopback.io/)
+[![LoopBack](<https://github.com/loopbackio/loopback-next/raw/master/docs/site/imgs/branding/Powered-by-LoopBack-Badge-(blue)-@2x.png>)](http://loopback.io/)

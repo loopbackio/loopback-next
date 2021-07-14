@@ -941,13 +941,13 @@ application.
 A default LoopBack 4 application uses
 [BootMixin](Booting-an-Application.md#bootmixin) which loads the
 [BootComponent](Booting-an-Application.md#bootcomponent). It declares the main
-[booters](https://github.com/strongloop/loopback-next/blob/a81ce7e1193f7408d30d984d0c3ddcec74f7c316/packages/boot/src/boot.component.ts#L29)
+[booters](https://github.com/loopbackio/loopback-next/blob/a81ce7e1193f7408d30d984d0c3ddcec74f7c316/packages/boot/src/boot.component.ts#L29)
 for an application : application metadata, controllers, repositories, services,
 datasources, lifecycle observers, interceptors, and model api. The
-[ControllerBooter](https://github.com/strongloop/loopback-next/blob/a81ce7e1193f7408d30d984d0c3ddcec74f7c316/packages/boot/src/booters/controller.booter.ts#L23),
+[ControllerBooter](https://github.com/loopbackio/loopback-next/blob/a81ce7e1193f7408d30d984d0c3ddcec74f7c316/packages/boot/src/booters/controller.booter.ts#L23),
 for example, calls `this.app.controller(controllerClass)` for every controller
 class discovered in the `controllers` folder. This
-[method](https://github.com/strongloop/loopback-next/blob/da9a7e72b12ebb9250214b92dc20a268a8bb7e95/packages/core/src/application.ts#L124)
+[method](https://github.com/loopbackio/loopback-next/blob/da9a7e72b12ebb9250214b92dc20a268a8bb7e95/packages/core/src/application.ts#L124)
 does all the work for you; as shown below:
 
 {% include code-caption.html content="loopback-next/packages/core/src/application.ts" %}

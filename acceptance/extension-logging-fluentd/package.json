@@ -10,7 +10,7 @@
   "copyright.owner": "IBM Corp.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/strongloop/loopback-next.git",
+    "url": "https://github.com/loopbackio/loopback-next.git",
     "directory": "acceptance/extension-logging-fluentd"
   },
   "engines": {

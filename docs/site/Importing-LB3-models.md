@@ -46,7 +46,7 @@ first.
 ### Nested properties are not upgraded
 
 _The tracking GitHub issue:
-[loopback-next#3811](https://github.com/strongloop/loopback-next/issues/3811)_
+[loopback-next#3811](https://github.com/loopbackio/loopback-next/issues/3811)_
 
 When a property is defined with a complex object type, the nested property
 definitions are not converted from LB3 to LB4 format.
@@ -56,14 +56,14 @@ Workaround: Fix the generated definition manually.
 ### Model relations are not imported
 
 _The tracking GitHub issue:
-[loopback-next#3812](https://github.com/strongloop/loopback-next/issues/3812)_
+[loopback-next#3812](https://github.com/loopbackio/loopback-next/issues/3812)_
 
 Workaround: define relational metadata & navigational properties manually.
 
 ### MongoDB's `ObjectID` type
 
 The tracking GitHub issue:
-[loopback-next#3814](https://github.com/strongloop/loopback-next/issues/3814).
+[loopback-next#3814](https://github.com/loopbackio/loopback-next/issues/3814).
 
 For models attached to MongoDB datasource, the imported LB4 model contains
 incorrect definition of the primary key property of `ObjectID` type.

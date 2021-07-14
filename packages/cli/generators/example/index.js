@@ -147,7 +147,7 @@ module.exports = class extends BaseGenerator {
     }
 
     // Recent versions of examples are using project references inside monorepo,
-    // see https://github.com/strongloop/loopback-next/pull/5155
+    // see https://github.com/loopbackio/loopback-next/pull/5155
     // We must switch to standalone mode (no project references) when the code
     // was checked out outside of our monorepo.
     const tsconfigContent = await fs.readJson(tsconfig);

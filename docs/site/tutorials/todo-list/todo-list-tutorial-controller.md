@@ -40,7 +40,7 @@ Controller TodoList was created in src/controllers/
 ```
 
 To view the completed file, see the
-[`TodoList` example](https://github.com/strongloop/loopback-next/blob/master/examples/todo-list/src/controllers/todo-list.controller.ts).
+[`TodoList` example](https://github.com/loopbackio/loopback-next/blob/master/examples/todo-list/src/controllers/todo-list.controller.ts).
 
 And voilà! We now have a set of basic APIs for todo-lists, just like that!
 

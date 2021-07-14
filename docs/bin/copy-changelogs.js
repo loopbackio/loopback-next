@@ -95,7 +95,7 @@ title: 'CHANGELOG - ${name}'
 keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, Node.js, TypeScript, OpenAPI, CHANGELOG
 sidebar: lb4_sidebar
 toc_level: 0
-editurl: https://github.com/strongloop/loopback-next/blob/master/${location}/CHANGELOG.md
+editurl: https://github.com/loopbackio/loopback-next/blob/master/${location}/CHANGELOG.md
 permalink: /doc/en/lb4/changelog.${shortName}.html
 ---
 

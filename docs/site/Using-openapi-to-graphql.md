@@ -65,7 +65,7 @@ http://localhost:3001/graphql.
 {% include note.html content="
 We are looking into ways how to expose the GraphQL endpoint alongside the main REST API,
 on the same HTTP host and port. See
-[issue #1905](https://github.com/strongloop/loopback-next/issues/1905).
+[issue #1905](https://github.com/loopbackio/loopback-next/issues/1905).
 " %}
 
 ### Try Out the GraphQL APIs

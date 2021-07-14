@@ -299,7 +299,7 @@ the extension as if you were the consumer.
 
 Due to the complexity of an Acceptance test, there is no example given here.
 Have a look at
-[loopback4-example-log-extension](https://github.com/strongloop/loopback-next/tree/master/examples/log-extension)
+[loopback4-example-log-extension](https://github.com/loopbackio/loopback-next/tree/master/examples/log-extension)
 to understand the extension artifacts and their usage. An Acceptance test can be
 seen here:
-[src/**tests**/acceptance/log.extension.acceptance.ts](https://github.com/strongloop/loopback-next/blob/master/examples/log-extension/src/__tests__/acceptance/log.extension.acceptance.ts).
+[src/**tests**/acceptance/log.extension.acceptance.ts](https://github.com/loopbackio/loopback-next/blob/master/examples/log-extension/src/__tests__/acceptance/log.extension.acceptance.ts).

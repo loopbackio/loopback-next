@@ -90,7 +90,7 @@ export class Lb3AppBooter implements Booter {
     // - remoteMethodAdded
     // - remoteMethodDisabled
     // Note: LB4 does not support live spec updates yet. See
-    // https://github.com/strongloop/loopback-next/issues/2394 for details.
+    // https://github.com/loopbackio/loopback-next/issues/2394 for details.
   }
 
   private async loadAndBootTheApp() {
@@ -143,7 +143,7 @@ export class Lb3AppBooter implements Booter {
     this.app.mountExpressRouter(
       restApiRoot,
       // TODO(bajtos) reload the handler when a model/method was added/removed
-      // See https://github.com/strongloop/loopback-next/issues/2394 for details.
+      // See https://github.com/loopbackio/loopback-next/issues/2394 for details.
       lb3App.handler('rest'),
       spec,
     );

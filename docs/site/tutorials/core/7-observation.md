@@ -18,13 +18,13 @@ to create observers easily.
 ## How is cache maintained
 
 In the
-[CachingService](https://github.com/strongloop/loopback-next/blob/master/examples/greeting-app/src/caching-service.ts),
+[CachingService](https://github.com/loopbackio/loopback-next/blob/master/examples/greeting-app/src/caching-service.ts),
 there is a time-to-live (ttl) setting for each cache items. That means when the
 cache item is expired, it will be removed from the cache.
 
 The life cycle observer provides a way to look at the in-memory caching as part
 of the application life cycle and remove the ones that are expired. See the
-[cache.observer.ts](https://github.com/strongloop/loopback-next/blob/master/examples/greeting-app/src/observers/cache.observer.ts)
+[cache.observer.ts](https://github.com/loopbackio/loopback-next/blob/master/examples/greeting-app/src/observers/cache.observer.ts)
 as an example.
 
 During the start of the application, the observer calls `CachingService.start()`

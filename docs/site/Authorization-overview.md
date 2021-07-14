@@ -12,7 +12,7 @@ permalink: /doc/en/lb4/Authorization-overview.html
 > rights/privileges to resources
 
 LoopBack's highly extensible authorization package
-[@loopback/authorization](https://github.com/strongloop/loopback-next/tree/master/packages/authorization)
+[@loopback/authorization](https://github.com/loopbackio/loopback-next/tree/master/packages/authorization)
 provides various features and provisions to check access rights of a client on a
 API endpoint.
 

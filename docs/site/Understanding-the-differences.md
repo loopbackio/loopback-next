@@ -42,7 +42,7 @@ model definitions, migrating their application incrementally.
 
 ## Concept/feature mapping
 
-{% include note.html content="See the [GitHub issue](https://github.com/strongloop/loopback-next/issues/1920) for a full list of features that have not been migrated to LoopBack 4." %}
+{% include note.html content="See the [GitHub issue](https://github.com/loopbackio/loopback-next/issues/1920) for a full list of features that have not been migrated to LoopBack 4." %}
 
 In Loopback 3.x (and earlier), models were responsible for both accessing data
 in other systems (databases, SOAP services, etc.) and providing the
@@ -54,7 +54,7 @@ LoopBack 4 is moving to the well-known Model-(View-)Controller pattern, where
 the code responsible for data access and manipulation is separated from the code
 responsible for implementing the REST API.
 
-[loopback4-example-microservices](https://github.com/strongloop/loopback4-example-microservices)
+[loopback4-example-microservices](https://github.com/loopbackio/loopback4-example-microservices)
 demonstrates this loose coupling. Facade is the top-level service that serves
 the account summary API, and is dependent on the three services Account,
 Customer, and Transaction. But the facade only aggregates the calls to the three
@@ -98,7 +98,7 @@ separated from the code responsible for implementing client side APIs.
   <td>Models can be defined with JavaScript or JSON</td>
   <td>Models can be defined with TypeScript;
     <br>TBD: JavaScript - see
-    <a href="https://github.com/strongloop/loopback-next/issues/560">loopback-next#560</a>
+    <a href="https://github.com/loopbackio/loopback-next/issues/560">loopback-next#560</a>
   </td>
 </tr>
 
@@ -149,7 +149,7 @@ separated from the code responsible for implementing client side APIs.
   <td>JSON</td>
   <td>TypeScript and JSON;
     <br>TBD: JavaScript - see
-    <a href="https://github.com/strongloop/loopback-next/issues/560">loopback-next#560</a>
+    <a href="https://github.com/loopbackio/loopback-next/issues/560">loopback-next#560</a>
   </td>
 </tr>
 
@@ -158,7 +158,7 @@ separated from the code responsible for implementing client side APIs.
   <td>Plain JavaScript, ES5 with callbacks</td>
   <td>Plain JavaScript, ES5 with callbacks;
     <br>TBD: TypeScript with async/await - see
-    <a href="https://github.com/strongloop/loopback-next/issues/889">loopback-next#889</a>
+    <a href="https://github.com/loopbackio/loopback-next/issues/889">loopback-next#889</a>
   </td>
 </tr>
 
@@ -175,9 +175,9 @@ separated from the code responsible for implementing client side APIs.
   <td>Express middleware with phase-based registration and ordering</td>
   <td>Sequence consisting of actions;
     <br>TBD: support for Express middleware, see
-    <a href="https://github.com/strongloop/loopback-next/issues/1293">loopback-next#1293</a>
+    <a href="https://github.com/loopbackio/loopback-next/issues/1293">loopback-next#1293</a>
     and
-    <a href="https://github.com/strongloop/loopback-next/issues/2035">loopback-next#2035</a>.
+    <a href="https://github.com/loopbackio/loopback-next/issues/2035">loopback-next#2035</a>.
   </td>
 </tr>
 
@@ -256,7 +256,7 @@ separated from the code responsible for implementing client side APIs.
   <td>3rd-party logins via Passport</td>
   <td><a href="/doc/en/lb3/Third-party-login-using-Passport.html"><code>loopback-component-passport</code></a>
   </td>
-  <td><a href="https://github.com/strongloop/loopback-next/tree/master/extensions/authentication-passport"><code>@loopback/authentication-passport</code></a>
+  <td><a href="https://github.com/loopbackio/loopback-next/tree/master/extensions/authentication-passport"><code>@loopback/authentication-passport</code></a>
   </td>
 </tr>
 

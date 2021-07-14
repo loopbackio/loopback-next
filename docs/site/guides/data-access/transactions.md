@@ -194,7 +194,7 @@ Suppose you have a transaction called `tx`, you can call `tx.isActive()` to
 check whether it's still active.
 
 {% include note.html content="
-The postgresql connector doesn't fully support this function due to its special way of creating the transaction instance. After committing or rollbacking a transaction, the reference of its connection is not deleted when the datasource is postgresql. Details are explained in [issue #411](https://github.com/strongloop/loopback-connector-postgresql/issues/411).
+The postgresql connector doesn't fully support this function due to its special way of creating the transaction instance. After committing or rollbacking a transaction, the reference of its connection is not deleted when the datasource is postgresql. Details are explained in [issue #411](https://github.com/loopbackio/loopback-connector-postgresql/issues/411).
 " %}
 
 ## Set up timeout

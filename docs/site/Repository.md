@@ -34,8 +34,8 @@ interface CustomerRepository extends Repository<Customer> {
 
 See more examples at:
 
-- [Repository/CrudRepository/EntityRepository](https://github.com/strongloop/loopback-next/blob/master/packages/repository/src/repositories/repository.ts)
-- [KeyValueRepository](https://github.com/strongloop/loopback-next/blob/master/packages/repository/src/repositories/kv.repository.ts)
+- [Repository/CrudRepository/EntityRepository](https://github.com/loopbackio/loopback-next/blob/master/packages/repository/src/repositories/repository.ts)
+- [KeyValueRepository](https://github.com/loopbackio/loopback-next/blob/master/packages/repository/src/repositories/kv.repository.ts)
 
 ## Installation
 
@@ -308,7 +308,7 @@ application.
 ## Access KeyValue Stores
 
 We can now access key-value stores such as [Redis](https://redis.io/) using the
-[KeyValueRepository](https://github.com/strongloop/loopback-next/blob/master/packages/repository/src/repositories/kv.repository.ts).
+[KeyValueRepository](https://github.com/loopbackio/loopback-next/blob/master/packages/repository/src/repositories/kv.repository.ts).
 
 ### Define a KeyValue Datasource
 
@@ -372,7 +372,7 @@ export class ShoppingCartRepository extends DefaultKeyValueRepository<ShoppingCa
 
 The KeyValueRepository provides a set of key based operations, such as `set`,
 `get`, `delete`, `expire`, `ttl`, and `keys`. See
-[KeyValueRepository](https://github.com/strongloop/loopback-next/blob/master/packages/repository/src/repositories/kv.repository.ts)
+[KeyValueRepository](https://github.com/loopbackio/loopback-next/blob/master/packages/repository/src/repositories/kv.repository.ts)
 for a complete list.
 
 ```ts
@@ -409,12 +409,12 @@ then fine tune your CRUD methods to your liking.
 ### Example Application
 
 You can look at
-[the account-without-juggler application as an example.](https://github.com/strongloop/loopback-next-example/tree/master/services/account-without-juggler)
+[the account-without-juggler application as an example.](https://github.com/loopbackio/loopback-next-example/tree/master/services/account-without-juggler)
 
 <!--lint enable no-duplicate-headings -->
 
 1.  Implement the `CrudConnector` interface from `@loopback/repository` package.
-    [Here is one way to do it](https://github.com/strongloop/loopback-next-example/blob/master/services/account-without-juggler/repositories/account/datasources/mysqlconn.ts)
+    [Here is one way to do it](https://github.com/loopbackio/loopback-next-example/blob/master/services/account-without-juggler/repositories/account/datasources/mysqlconn.ts)
 
 2.  Implement the `DataSource` interface from `@loopback/repository`. To
     implement the `DataSource` interface, you must give it a name, supply your
@@ -516,4 +516,4 @@ public find(
 ## Example Application
 
 You can look at
-[the account application as an example.](https://github.com/strongloop/loopback4-example-microservices/tree/master/services/account)
+[the account application as an example.](https://github.com/loopbackio/loopback4-example-microservices/tree/master/services/account)

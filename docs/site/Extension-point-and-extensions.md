@@ -113,7 +113,7 @@ More usage of these helper decorators and functions are illustrated in the
 ## Tutorial
 
 The
-[greeter-extension example](https://github.com/strongloop/loopback-next/tree/master/examples/greeter-extension)
+[greeter-extension example](https://github.com/loopbackio/loopback-next/tree/master/examples/greeter-extension)
 provides a walk-through on how to implement the extension point/extension
 pattern using LoopBack 4's [Context](Context.md) and
 [Dependency injection](Dependency-injection.md) container.

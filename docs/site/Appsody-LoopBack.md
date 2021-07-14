@@ -40,7 +40,7 @@ which extends the
 and provides a powerful solution to build open APIs and Microservices in
 TypeScript with [LoopBack](https://loopback.io/), an open source Node.js API
 framework. It is based on
-[LoopBack 4](https://github.com/strongloop/loopback-next).
+[LoopBack 4](https://github.com/loopbackio/loopback-next).
 
 We're going to show you how to scaffold, run, stop, debug, and test a LoopBack 4
 application locally. Then, you'll learn how to build and deploy this application

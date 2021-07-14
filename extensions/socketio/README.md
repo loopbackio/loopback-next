@@ -45,7 +45,7 @@ The package will provide the following key constructs:
 
 ## Sample application
 
-[socket.io](https://github.com/strongloop/loopback-next/tree/master/examples/socketio)
+[socket.io](https://github.com/loopbackio/loopback-next/tree/master/examples/socketio)
 
 ## Installation
 
@@ -55,8 +55,8 @@ npm install --save @loopback/socketio
 
 ## Contributions
 
-- [Guidelines](https://github.com/strongloop/loopback-next/blob/master/docs/CONTRIBUTING.md)
-- [Join the team](https://github.com/strongloop/loopback-next/issues/110)
+- [Guidelines](https://github.com/loopbackio/loopback-next/blob/master/docs/CONTRIBUTING.md)
+- [Join the team](https://github.com/loopbackio/loopback-next/issues/110)
 
 ## Tests
 
@@ -65,7 +65,7 @@ Run `npm test` from the root folder.
 ## Contributors
 
 See
-[all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
+[all contributors](https://github.com/loopbackio/loopback-next/graphs/contributors).
 
 ## License
 

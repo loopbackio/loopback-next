@@ -68,7 +68,7 @@ export class MockConnector {
       },
 
       // loopback-datasource-juggler expects a prototype
-      // https://github.com/strongloop/loopback-datasource-juggler/blob/v3.18.1/lib/datasource.js#L168
+      // https://github.com/loopbackio/loopback-datasource-juggler/blob/v3.18.1/lib/datasource.js#L168
       prototype: {},
     };
   }

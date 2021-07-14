@@ -28,7 +28,7 @@ export class ModelMetadataHelper {
     const classDef = MetadataInspector.getClassMetadata(
       MODEL_WITH_PROPERTIES_KEY,
       target,
-      // https://github.com/strongloop/loopback-next/issues/4721
+      // https://github.com/loopbackio/loopback-next/issues/4721
       // The `target` can be a subclass for a base model
       {...options, ownMetadataOnly: true},
     );

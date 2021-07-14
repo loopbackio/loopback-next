@@ -8,7 +8,7 @@ permalink: /doc/en/lb4/migration-not-planned.html
 ---
 
 {% include tip.html content="
-Missing instructions for your LoopBack 3 use case? Please report a [Migration docs issue](https://github.com/strongloop/loopback-next/issues/new?labels=question,Migration,Docs&template=Migration_docs.md) on GitHub to let us know.
+Missing instructions for your LoopBack 3 use case? Please report a [Migration docs issue](https://github.com/loopbackio/loopback-next/issues/new?labels=question,Migration,Docs&template=Migration_docs.md) on GitHub to let us know.
 " %}
 
 In the early days of LoopBack, we were exploring different functional areas to
@@ -46,15 +46,15 @@ In LoopBack 4, you can implement a similar functionality as follows:
 1. Use `x-parser: stream` extension to receive request body as a stream, and
    [multer](https://www.npmjs.com/package/multer) package to deal with
    multi-part file uploads. Check out our
-   [File Upload/Download Example](https://github.com/strongloop/loopback-next/tree/master/examples/file-transfer)
+   [File Upload/Download Example](https://github.com/loopbackio/loopback-next/tree/master/examples/file-transfer)
    for a fully working application.
 
 2. LoopBack 4 does not provide first-class support for file downloads yet, see
-   [loopback-next#2230](https://github.com/strongloop/loopback-next/issues/2230).
+   [loopback-next#2230](https://github.com/loopbackio/loopback-next/issues/2230).
    As a workaround, you can inject the full Express response object and use
    Express API to stream the response body. Find more details in the discussion
    in the linked GitHub issue, check out our
-   [File Upload/Download Example](https://github.com/strongloop/loopback-next/tree/master/examples/file-transfer)
+   [File Upload/Download Example](https://github.com/loopbackio/loopback-next/tree/master/examples/file-transfer)
    for a fully working application.
 
 3. To connect to your cloud storage provider, you can use `pkgcloud` or directly

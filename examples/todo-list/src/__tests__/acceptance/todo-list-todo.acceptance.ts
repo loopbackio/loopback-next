@@ -86,7 +86,7 @@ describe('TodoListApplication', () => {
         .and.not.containEql(notMyTodo.toJSON());
     });
 
-    // https://github.com/strongloop/loopback-next/issues/2495
+    // https://github.com/loopbackio/loopback-next/issues/2495
     it('finds todos for a todoList more than once', async () => {
       await client
         .get(`/todo-lists/${persistedTodoList.id}/todos`)

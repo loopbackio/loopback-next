@@ -19,7 +19,7 @@ a stateless grouping of actions called a [Sequence](Sequence.md).
 
 The default sequence which injects and invokes actions `findRoute`,
 `parseParams`, `invoke`, `send`, `reject` could be found in the
-[Todo example's sequence file](https://github.com/strongloop/loopback-next/blob/master/examples/todo/src/sequence.ts).
+[Todo example's sequence file](https://github.com/loopbackio/loopback-next/blob/master/examples/todo/src/sequence.ts).
 
 To know more details of what each action does, click the code snippet below with
 more descriptions.

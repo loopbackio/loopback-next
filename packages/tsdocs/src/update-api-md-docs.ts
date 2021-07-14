@@ -98,8 +98,8 @@ async function addJekyllMetadata(
     }
     const pkgUrl =
       f === 'index.md'
-        ? 'https://github.com/strongloop/loopback-next'
-        : `https://github.com/strongloop/loopback-next/tree/master/${relativeUri}`;
+        ? 'https://github.com/loopbackio/loopback-next'
+        : `https://github.com/loopbackio/loopback-next/tree/master/${relativeUri}`;
 
     if (isPackage && options.generateDefaultPackageDoc) {
       const modelFile = path.join(

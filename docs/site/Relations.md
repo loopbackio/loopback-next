@@ -51,7 +51,7 @@ The `hasMany` relation may alternatively be implemented using the
 `referencesMany` and `embedsMany` relations. These relations are similar, but
 not the same. Since each database paradigm comes with different trade-offs and
 thus different databases require the applications to use different relation
-types, use the [relation best suited for your database](https://github.com/strongloop/loopback-next/issues/2341).
+types, use the [relation best suited for your database](https://github.com/loopbackio/loopback-next/issues/2341).
 " %}
 
 The articles on each type of relation above will show you how to leverage the
@@ -79,7 +79,7 @@ allow defining a
 the `@model` decorator. Please consult the respective connector documentation to
 check for compatibility.
 
-[Issue #2331](https://github.com/strongloop/loopback-next/issues/2331) tracks
+[Issue #2331](https://github.com/loopbackio/loopback-next/issues/2331) tracks
 native support for foreign key constraints in relation decorators (such as
 `@belongsTo`).
 
@@ -90,14 +90,14 @@ native support for foreign key constraints in relation decorators (such as
 [Where filters](https://loopback.io/doc/en/lb3/Where-filter.html) such as those
 used by model queries (`create()`, `find()`, `replaceById()`, and so on) cannot
 be used to filter a model by the value of its parent model. See its
-[GitHub issue](https://github.com/strongloop/loopback-next/issues/4299).
+[GitHub issue](https://github.com/loopbackio/loopback-next/issues/4299).
 
 ### Splitting numbers of queries
 
 It doesn’t split numbers of queries. Related GH issue:
-[Support inq splitting](https://github.com/strongloop/loopback-next/issues/3444).
+[Support inq splitting](https://github.com/loopbackio/loopback-next/issues/3444).
 
 ### Handling of MongoDB `ObjectID` type
 
 It might not work well with ObjectID of MongoDB. Related GH issue:
-[Spike: robust handling of ObjectID type for MongoDB](https://github.com/strongloop/loopback-next/issues/3456).
+[Spike: robust handling of ObjectID type for MongoDB](https://github.com/loopbackio/loopback-next/issues/3456).

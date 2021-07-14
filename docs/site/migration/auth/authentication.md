@@ -12,11 +12,11 @@ This is a guide to describe how to migrate LoopBack 3 built-in
 
 There is an application completely migrated from the LoopBack 3's access control
 example
-[`loopback-example-access-control`](https://github.com/strongloop/loopback-example-access-control).
+[`loopback-example-access-control`](https://github.com/loopbackio/loopback-example-access-control).
 Its authentication system and authorization system are based on packages
-[`@loopback/authentication`](https://github.com/strongloop/loopback-next/tree/master/packages/authentication)
+[`@loopback/authentication`](https://github.com/loopbackio/loopback-next/tree/master/packages/authentication)
 and
-[`@loopback/authorization`](https://github.com/strongloop/loopback-next/tree/master/packages/authorization)
+[`@loopback/authorization`](https://github.com/loopbackio/loopback-next/tree/master/packages/authorization)
 respectively. Our migration guide will use the application as the reference. A
 token based authentication module (prototype) is also exported as a component in
 the example for users to leverage.
@@ -221,7 +221,7 @@ of next requests.
 
 Let's add a new controller function `login` decorated with the REST decorators
 that describe the request and response (see
-[the complete user controller file](https://github.com/strongloop/loopback-next/tree/master/examples/access-control-migration/src/controllers/user.controller.ts)).
+[the complete user controller file](https://github.com/loopbackio/loopback-next/tree/master/examples/access-control-migration/src/controllers/user.controller.ts)).
 
 The core logic of `login` does three things:
 
@@ -241,15 +241,15 @@ We will create the token and user service in the next section.
 ### Mounting Authentication Component
 
 The authentication component is temporarily kept in the
-[example repository](https://github.com/strongloop/loopback-next/tree/master/examples/access-control-migration/src/components/jwt-authentication).
+[example repository](https://github.com/loopbackio/loopback-next/tree/master/examples/access-control-migration/src/components/jwt-authentication).
 It includes all the services that verify a user's identity and manage the tokens
 and users. We plan to extract this prototype component into a standalone package
-in [story#4903](https://github.com/strongloop/loopback-next/issues/4903). For
+in [story#4903](https://github.com/loopbackio/loopback-next/issues/4903). For
 now you can import it from the example as a workaround.
 
 As token based authentication, the component uses the JWT authentication
 strategy to verify a user's identity. The authentication setup is borrowed from
-[loopback4-example-shopping](https://github.com/strongloop/loopback4-example-shopping/tree/master/packages).
+[loopback4-example-shopping](https://github.com/loopbackio/loopback4-example-shopping/tree/master/packages).
 The authentication system aims to understand **who sends the request**. It
 retrieves the token from a request, decodes the user's information in it as
 `principal`, then passes the `principal` to other modules like authorization
@@ -261,20 +261,20 @@ details. You can find a very detailed steps of creating it in
 [this tutorial](https://loopback.io/doc/en/lb4/Authentication-tutorial.html).
 
 The component consists of the following files located within the
-[jwt-authentication component directory](https://github.com/strongloop/loopback-next/tree/master/examples/access-control-migration/src/components/jwt-authentication):
+[jwt-authentication component directory](https://github.com/loopbackio/loopback-next/tree/master/examples/access-control-migration/src/components/jwt-authentication):
 
 - creating the jwt authentication strategy to decode the user profile from
   token. See file
-  [jwt.auth.strategy.ts](https://github.com/strongloop/loopback-next/tree/master/examples/access-control-migration/src/components/jwt-authentication/services/jwt.auth.strategy.ts).
+  [jwt.auth.strategy.ts](https://github.com/loopbackio/loopback-next/tree/master/examples/access-control-migration/src/components/jwt-authentication/services/jwt.auth.strategy.ts).
 - creating the token service to organize utils for token operations. See file
-  [jwt.service.ts](https://github.com/strongloop/loopback-next/tree/master/examples/access-control-migration/src/components/jwt-authentication/services/jwt.service.ts).
+  [jwt.service.ts](https://github.com/loopbackio/loopback-next/tree/master/examples/access-control-migration/src/components/jwt-authentication/services/jwt.service.ts).
 - creating user service to organize utils for user operations. See file
-  [user.service.ts](https://github.com/strongloop/loopback-next/tree/master/examples/access-control-migration/src/components/jwt-authentication/services/user.service.ts).
+  [user.service.ts](https://github.com/loopbackio/loopback-next/tree/master/examples/access-control-migration/src/components/jwt-authentication/services/user.service.ts).
 - adding OpenAPI security specification to your app so that the explorer has an
   Authorize button to setup the token for secured endpoints. See file
-  [security.spec.ts](https://github.com/strongloop/loopback-next/tree/master/examples/access-control-migration/src/components/jwt-authentication/services/security.spec.ts).
+  [security.spec.ts](https://github.com/loopbackio/loopback-next/tree/master/examples/access-control-migration/src/components/jwt-authentication/services/security.spec.ts).
 - creating bindings for the above services. See file
-  [keys.ts](https://github.com/strongloop/loopback-next/blob/master/examples/access-control-migration/src/components/jwt-authentication/keys.ts).
+  [keys.ts](https://github.com/loopbackio/loopback-next/blob/master/examples/access-control-migration/src/components/jwt-authentication/keys.ts).
 
 You can enable the jwt authentication by mounting the authentication component
 in the application constructor:

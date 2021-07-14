@@ -37,7 +37,7 @@ async function checkoutPR() {
 
   console.log(`Checking out pull request #${prNum}...`);
 
-  const url = `https://api.github.com/repos/strongloop/loopback-next/pulls/${prNum}`;
+  const url = `https://api.github.com/repos/loopbackio/loopback-next/pulls/${prNum}`;
 
   const result = await getPRInfo(url);
   const headUrl = result.head.repo.ssh_url;

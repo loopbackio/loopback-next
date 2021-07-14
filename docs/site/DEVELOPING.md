@@ -114,13 +114,13 @@ local git repo and branch of `loopback-next`.
 
 The `/sandbox` directory in the monorepo can be used to utilize the source code
 as symbolically-linked dependencies. See the
-[README](https://github.com/strongloop/loopback-next/blob/master/sandbox/README.md)
+[README](https://github.com/loopbackio/loopback-next/blob/master/sandbox/README.md)
 for usage instructions.
 
 ### Using the CLI via the monorepo
 
 The
-[CLI](https://github.com/strongloop/loopback-next/blob/master/packages/cli/bin/cli-main.js)
+[CLI](https://github.com/loopbackio/loopback-next/blob/master/packages/cli/bin/cli-main.js)
 can be invoked from the local `loopback-next` git repository:
 
 ```bash
@@ -360,10 +360,10 @@ src/__tests__/unit/application.unit.ts
 The documentation available at [http://loopback.io/doc/en/lb4](loopback.io)
 website is powered by Jekyll and Markdown. The main site content and Jekyll
 configuration is hosted in
-[loopback.io](https://github.com/strongloop/loopback.io) repository on GitHub.
+[loopback.io](https://github.com/loopbackio/loopback.io) repository on GitHub.
 
 LoopBack 4 documentation is hosted inside this monorepo in the
-[/docs](https://github.com/strongloop/loopback-next/tree/master/docs) directory.
+[/docs](https://github.com/loopbackio/loopback-next/tree/master/docs) directory.
 This allows us to change both implementation and the documentation in a single
 pull request.
 
@@ -416,12 +416,12 @@ or in a dedicated section of [loopback.io](https://loopback.io).
 
 List of packages that are considered as building blocks:
 
-- [packages/context](https://github.com/strongloop/loopback-next/tree/master/packages/context)
-- [packages/express](https://github.com/strongloop/loopback-next/tree/master/packages/express)
-- [packages/http-server](https://github.com/strongloop/loopback-next/tree/master/packages/http-server)
-- [packages/metadata](https://github.com/strongloop/loopback-next/tree/master/packages/metadata)
-- [packages/openapi-v3](https://github.com/strongloop/loopback-next/tree/master/packages/openapi-v3)
-- [packages/repository-json-schema](https://github.com/strongloop/loopback-next/tree/master/packages/repository-json-schema)
+- [packages/context](https://github.com/loopbackio/loopback-next/tree/master/packages/context)
+- [packages/express](https://github.com/loopbackio/loopback-next/tree/master/packages/express)
+- [packages/http-server](https://github.com/loopbackio/loopback-next/tree/master/packages/http-server)
+- [packages/metadata](https://github.com/loopbackio/loopback-next/tree/master/packages/metadata)
+- [packages/openapi-v3](https://github.com/loopbackio/loopback-next/tree/master/packages/openapi-v3)
+- [packages/repository-json-schema](https://github.com/loopbackio/loopback-next/tree/master/packages/repository-json-schema)
 
 #### Framework-level packages
 
@@ -500,7 +500,7 @@ npm run verify:docs
 ## API Documentation
 
 We use
-[@loopback/tsdocs](https://github.com/strongloop/loopback-next/tree/master/packages/tsdocs)
+[@loopback/tsdocs](https://github.com/loopbackio/loopback-next/tree/master/packages/tsdocs)
 to generate API documentation for all our packages. This documentation is
 generated when publishing new releases to npmjs.org and it's picked up by
 https://loopback.io/doc/en/lb4/apidocs.index.html.
@@ -551,7 +551,7 @@ documentation.
 
 _Note: we have recently changed our commit message conventions. Most of other
 LoopBack repositories (e.g.
-[strongloop/loopback.io](https://github.com/strongloop/loopback.io)) use the
+[loopbackio/loopback.io](https://github.com/loopbackio/loopback.io)) use the
 older convention as described on
 [loopback.io](https://loopback.io/doc/en/contrib/git-commit-messages.html)._
 
@@ -600,14 +600,14 @@ The **type** must be one of the following:
 
 The **scope** must be a list of one or more packages contained in this monorepo.
 Each scope name must match a directory name in
-[packages/](https://github.com/strongloop/loopback-next/tree/master/packages),
+[packages/](https://github.com/loopbackio/loopback-next/tree/master/packages),
 e.g. `core` or `context`.
 
 _Note: If multiple packages are affected by a pull request, don't list the
 scopes as the commit linter currently only supports only one scope being listed
 at most. The `CHANGELOG` for each affected package will still show the commit.
 Commit linter will be updated to allow listing of multiple affected scopes, see
-[issue #581](https://github.com/strongloop/loopback-next/issues/581)_
+[issue #581](https://github.com/loopbackio/loopback-next/issues/581)_
 
 #### subject
 
@@ -806,7 +806,7 @@ and falls back to `extensions`.
    steps below:
 
 To add a new package by hand, create a folder in
-[`packages`](https://github.com/strongloop/loopback-next/tree/master/packages)
+[`packages`](https://github.com/loopbackio/loopback-next/tree/master/packages)
 as the root directory of your module. For example,
 
 ```sh
@@ -861,7 +861,7 @@ Please register the new package in the following files:
 - Update [Reserved-binding-keys.md](./reference/reserved-binding-keys.md) - add
   a link to the apidocs on Binding Keys if the new package has any.
 - Update
-  [CODEOWNERS](https://github.com/strongloop/loopback-next/blob/master/CODEOWNERS) -
+  [CODEOWNERS](https://github.com/loopbackio/loopback-next/blob/master/CODEOWNERS) -
   add a new entry listing the primary maintainers (owners) of the new package.
 
 ## Upgrading TypeScript/eslint
@@ -937,7 +937,7 @@ configuration, it's important to verify that all usage scenarios keep working.
 
 ### tsconfig files
 
-In the [`loopback-next`](https://github.com/strongloop/loopback-next) monorepo,
+In the [`loopback-next`](https://github.com/loopbackio/loopback-next) monorepo,
 `TypeScript` is set up in two places:
 
 1. When using VS Code, the `TypeScript` engine views `loopback-next` as a single
@@ -966,8 +966,8 @@ The bot is configured to maintain a special issue called
 `Update Dependencies (Renovate Bot)` where it lists all pull requests in
 progress and in queue:
 
-- [loopback-next#3042](https://github.com/strongloop/loopback-next/issues/3042)
-- [loopback4-example-shopping#94](https://github.com/strongloop/loopback4-example-shopping/issues/94)
+- [loopback-next#3042](https://github.com/loopbackio/loopback-next/issues/3042)
+- [loopback4-example-shopping#94](https://github.com/loopbackio/loopback4-example-shopping/issues/94)
 
 Pull requests opened by RenovateBot can be merged by pressing GitHub's big green
 button once all checks are green (all CI builds finished).

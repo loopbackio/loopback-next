@@ -398,7 +398,7 @@ export class RestServer
     if (this._httpHandler) return;
 
     // Watch for binding events
-    // See https://github.com/strongloop/loopback-next/issues/433
+    // See https://github.com/loopbackio/loopback-next/issues/433
     const routesObserver: ContextObserver = {
       filter: binding =>
         filterByKey(RestBindings.API_SPEC.key)(binding) ||
@@ -1147,7 +1147,7 @@ export interface ApiExplorerOptions {
    * URL for the API explorer served over `http` protocol to deal with mixed
    * content security imposed by browsers as the spec is exposed over `http` by
    * default.
-   * See https://github.com/strongloop/loopback-next/issues/1603
+   * See https://github.com/loopbackio/loopback-next/issues/1603
    */
   httpUrl?: string;
 

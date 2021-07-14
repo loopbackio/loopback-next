@@ -14,7 +14,7 @@ permalink: /doc/en/lb4/HasManyThrough-relation.html
 This relation best works with databases that support foreign key
 constraints (SQL).
 Using this relation with NoSQL databases will result in unexpected behavior,
-such as the ability to create a relation with a model that does not exist. We are [working on a solution](https://github.com/strongloop/loopback-next/issues/2341) to better handle this. It is fine to use this relation with NoSQL databases for purposes such as navigating related models, where the referential integrity is not critical.
+such as the ability to create a relation with a model that does not exist. We are [working on a solution](https://github.com/loopbackio/loopback-next/issues/2341) to better handle this. It is fine to use this relation with NoSQL databases for purposes such as navigating related models, where the referential integrity is not critical.
 " %}
 
 A `hasManyThrough` relation denotes a many-to-many connection with another
@@ -607,7 +607,7 @@ them.
 The type of `patientData` above will possibly change to `Partial<Patient>` to exclude
 certain properties from the JSON/OpenAPI spec schema built for the `requestBody`
 payload. See its [GitHub
-issue](https://github.com/strongloop/loopback-next/issues/1179) to follow the discussion.
+issue](https://github.com/loopbackio/loopback-next/issues/1179) to follow the discussion.
 " %}
 
 ## Features on the way

@@ -44,19 +44,19 @@ continue to encourage more participation and contributions from our users by
 sharing our plans on some of the areas._
 
 - Blogs to share our plans on:
-  - [modernizing the data access layer](https://github.com/strongloop/loopback-next/issues/5956)
+  - [modernizing the data access layer](https://github.com/loopbackio/loopback-next/issues/5956)
   - multi-tenancy
 - Potential joint blogs on:
   - [Mocha](https://mochajs.org/) on parallel testing work
   - [TypeGraphQL](https://typegraphql.com/) on GraphQL extension
 - Continuous improvement on documentation and developer experience, for example,
   - Move recipes to how-to guides (epic):
-    https://github.com/strongloop/loopback-next/issues/5783
+    https://github.com/loopbackio/loopback-next/issues/5783
 - Enhancement on Express TypeScript definitions
-  - [spike](https://github.com/strongloop/loopback-next/issues/6115)
+  - [spike](https://github.com/loopbackio/loopback-next/issues/6115)
 - Web socket support
 - Pub/sub messaging support
-- [Test/Enable Node.js 14](https://github.com/strongloop/loopback-next/issues/6019)
+- [Test/Enable Node.js 14](https://github.com/loopbackio/loopback-next/issues/6019)
 - [Participate in Hacktoberfest](https://hacktoberfest.digitalocean.com/details/#maintainers)
 
 ---
@@ -68,12 +68,12 @@ sharing our plans on some of the areas._
 #### Documentation improvement
 
 _Details to be discussed in
-https://github.com/strongloop/loopback-next/issues/5113_
+https://github.com/loopbackio/loopback-next/issues/5113_
 
 - identify gaps and add documentation
 - reorganize documentation to make it easier to navigate
 - Fix docs issues:
-  https://github.com/strongloop/loopback-next/issues?q=is%3Aissue+is%3Aopen+label%3Adocs
+  https://github.com/loopbackio/loopback-next/issues?q=is%3Aissue+is%3Aopen+label%3Adocs
 
 #### Feature parity
 
@@ -81,18 +81,18 @@ https://github.com/strongloop/loopback-next/issues/5113_
 - Model relation ease of use improvements
 - LB4 equivalent of `lb soap` #5282
 - Execute raw NoSQL queries (e.g. MongoDB)
-  https://github.com/strongloop/loopback-next/issues/3342
-- https://github.com/strongloop/loopback-next/issues?q=is%3Aissue+is%3Aopen+label%3A%22feature+parity%22+sort%3Areactions-%2B1-desc
+  https://github.com/loopbackio/loopback-next/issues/3342
+- https://github.com/loopbackio/loopback-next/issues?q=is%3Aissue+is%3Aopen+label%3A%22feature+parity%22+sort%3Areactions-%2B1-desc
 
 #### Integration with other technologies/libraries
 
-- TypeORM integration, https://github.com/strongloop/loopback-next/issues/4853
-- Kafka integration, https://github.com/strongloop/loopback-next/issues/1925
+- TypeORM integration, https://github.com/loopbackio/loopback-next/issues/4853
+- Kafka integration, https://github.com/loopbackio/loopback-next/issues/1925
 
 #### Bugs, developer experience, internal tooling
 
 _Details to be discussed in
-https://github.com/strongloop/loopback-next/issues/5669 and linked issues._
+https://github.com/loopbackio/loopback-next/issues/5669 and linked issues._
 
 - mocha parallel testing
 - identify and investigate tests taking a longer time
@@ -119,15 +119,15 @@ https://github.com/strongloop/loopback-next/issues/5669 and linked issues._
 #### Migration guide
 
 - Complete
-  [Migration guide between LB3 and LB4 MVP](https://github.com/strongloop/loopback-next/issues/453)
+  [Migration guide between LB3 and LB4 MVP](https://github.com/loopbackio/loopback-next/issues/453)
 - Migrate LB3 SDK client: Spike on migrating Angular client. Will ask for user
   feedback if there is a need for Android/iOS/other SDK client.
 
 #### Features / Feature Parity with high user votes
 
-- [File upload with multipart/form-data](https://github.com/strongloop/loopback-next/issues/1873)
-- [Custom visual style of REST API Explorer](https://github.com/strongloop/loopback-next/issues/2023)
-- [ENUM type](https://github.com/strongloop/loopback-next/issues/3033): good
+- [File upload with multipart/form-data](https://github.com/loopbackio/loopback-next/issues/1873)
+- [Custom visual style of REST API Explorer](https://github.com/loopbackio/loopback-next/issues/2023)
+- [ENUM type](https://github.com/loopbackio/loopback-next/issues/3033): good
   candidate to ask for community contribution
 - From model definition to REST API with no custom repository/controller classes
   #2036
@@ -148,9 +148,9 @@ https://github.com/strongloop/loopback-next/issues/5669 and linked issues._
 #### Tech debt / infrastructure
 
 - Replace "request" with something else
-  https://github.com/strongloop/loopback-next/issues/2672
+  https://github.com/loopbackio/loopback-next/issues/2672
 - Investigate the possibility to reduce build time, e.g.
-  [Use TypeScript project reference with 3.8](https://github.com/strongloop/loopback-next/issues/2609),
+  [Use TypeScript project reference with 3.8](https://github.com/loopbackio/loopback-next/issues/2609),
   using yarn/pnpm instead of npm.
 - Investigate the possibility to reduce test time, e.g. run mocha tests in
   parallel.
@@ -199,7 +199,7 @@ Includes migrating Useful LB3 Documentation to LB4.
 
 #### Migration
 
-- Migration guide https://github.com/strongloop/loopback-next/issues/453
+- Migration guide https://github.com/loopbackio/loopback-next/issues/453
   - continue the work in Q4 2019 for migrating:
     - boot scripts
     - model mixins
@@ -216,7 +216,7 @@ Includes migrating Useful LB3 Documentation to LB4.
 #### API Connect / LoopBack 4 Integration
 
 - Spike on getting APIs created from LB4 imported into APIC,
-  https://github.com/strongloop/loopback-next/issues/4115
+  https://github.com/loopbackio/loopback-next/issues/4115
 
 #### Create models & REST APIs dynamically at runtime
 
@@ -232,15 +232,15 @@ Includes migrating Useful LB3 Documentation to LB4.
 
 ### Stretch Goals
 
-#### From model definition to REST API with no custom repository/controller classes https://github.com/strongloop/loopback-next/issues/2036
+#### From model definition to REST API with no custom repository/controller classes https://github.com/loopbackio/loopback-next/issues/2036
 
 - Add CrudRestApiBuilder to @loopback/rest-crud #3737
 - Example app showing CrudRestApiBuilder #3738
 
-#### Robust handling of ObjectID type for MongoDB https://github.com/strongloop/loopback-next/issues/3720
+#### Robust handling of ObjectID type for MongoDB https://github.com/loopbackio/loopback-next/issues/3720
 
 - Spike: robust handling of ObjectID type for MongoDB,
-  https://github.com/strongloop/loopback-next/issues/3456
+  https://github.com/loopbackio/loopback-next/issues/3456
 
 #### Shopping example app
 
@@ -265,82 +265,82 @@ In Q4 2019, here are the stories we would like to focus on:
 #### Authentication
 
 - Token based authentication in API Explorer (Spike done in Q3)
-- Refactoring, https://github.com/strongloop/loopback-next/issues/1996
+- Refactoring, https://github.com/loopbackio/loopback-next/issues/1996
 
 #### Authorization
 
 - Update authorization tutorial
-  https://github.com/strongloop/loopback-next/issues/3694
+  https://github.com/loopbackio/loopback-next/issues/3694
 - Add authorization to shopping example,
-  https://github.com/strongloop/loopback-next/issues/3695
+  https://github.com/loopbackio/loopback-next/issues/3695
 
 #### Inclusion of related models
 
 Finish the MVP scope as tracked by Epic
-https://github.com/strongloop/loopback-next/issues/1352
+https://github.com/loopbackio/loopback-next/issues/1352
 
 - Reject create/update requests when data contains navigational properties
-  https://github.com/strongloop/loopback-next/issues/3439
+  https://github.com/loopbackio/loopback-next/issues/3439
 - Add inclusion resolvers to lb4 relation CLI
-  https://github.com/strongloop/loopback-next/issues/3451
+  https://github.com/loopbackio/loopback-next/issues/3451
 - Verify relation type in resolve{Relation}Metadata
-  https://github.com/strongloop/loopback-next/issues/3440
+  https://github.com/loopbackio/loopback-next/issues/3440
 - Run repository tests for PostgreSQL
-  https://github.com/strongloop/loopback-next/issues/3436
+  https://github.com/loopbackio/loopback-next/issues/3436
 - Run repository tests for Cloudant
-  https://github.com/strongloop/loopback-next/issues/3437
+  https://github.com/loopbackio/loopback-next/issues/3437
 - Blog post: announce Inclusion of related models
-  https://github.com/strongloop/loopback-next/issues/3452
+  https://github.com/loopbackio/loopback-next/issues/3452
 
 See the post-MVP Epic for the list of stories out of scope of the initial
-release: https://github.com/strongloop/loopback-next/issues/3585
+release: https://github.com/loopbackio/loopback-next/issues/3585
 
 #### From model definition to REST API with no custom repository/controller classes
 
-The Epic: https://github.com/strongloop/loopback-next/issues/2036
+The Epic: https://github.com/loopbackio/loopback-next/issues/2036
 
 - Improve `defineCrudRestController` to create a named controller class
-  https://github.com/strongloop/loopback-next/issues/3732
+  https://github.com/loopbackio/loopback-next/issues/3732
 - Add `defineCrudRepositoryClass` - a helper to create a named repository class
-  https://github.com/strongloop/loopback-next/issues/3733
+  https://github.com/loopbackio/loopback-next/issues/3733
 - Model API booter & builder
-  https://github.com/strongloop/loopback-next/issues/3736
+  https://github.com/loopbackio/loopback-next/issues/3736
 - Add CrudRestApiBuilder to `@loopback/rest-crud`
-  https://github.com/strongloop/loopback-next/issues/3737
+  https://github.com/loopbackio/loopback-next/issues/3737
 - Example app showing CrudRestApiBuilder
-  https://github.com/strongloop/loopback-next/issues/3738
+  https://github.com/loopbackio/loopback-next/issues/3738
 
 Stretch goals:
 
 - From relation definition to REST API with auto-generated repository/controller
-  classes https://github.com/strongloop/loopback-next/issues/2483
+  classes https://github.com/loopbackio/loopback-next/issues/2483
 - From datasource config to Service REST API with no proxy/controller classes
-  https://github.com/strongloop/loopback-next/issues/3717
+  https://github.com/loopbackio/loopback-next/issues/3717
 
 #### Migration guide
 
-The Epic: https://github.com/strongloop/loopback-next/issues/453
+The Epic: https://github.com/loopbackio/loopback-next/issues/453
 
 - Spike 1: General runtime - see
-  https://github.com/strongloop/loopback-next/issues/3718
+  https://github.com/loopbackio/loopback-next/issues/3718
 - Spike 2: Authentication & authorization - see
-  https://github.com/strongloop/loopback-next/issues/3719
+  https://github.com/loopbackio/loopback-next/issues/3719
 - Prioritize & plan follow-up issues identified in the spikes
 
 #### ObjectID Coercion
 
-The Epic: https://github.com/strongloop/loopback-next/issues/3720
+The Epic: https://github.com/loopbackio/loopback-next/issues/3720
 
 - `Model.toObject()` should preserve prototypes (e.g. `Date` and `ObjectID`
-  values) https://github.com/strongloop/loopback-next/issues/3607
-- Spike https://github.com/strongloop/loopback-next/issues/3456
+  values) https://github.com/loopbackio/loopback-next/issues/3607
+- Spike https://github.com/loopbackio/loopback-next/issues/3456
 
-#### Production deployment/logging/monitoring, https://github.com/strongloop/loopback-next/issues/1054
+#### Production deployment/logging/monitoring, https://github.com/loopbackio/loopback-next/issues/1054
 
 - Blog post showing the microservice version of shopping example and mention
-  what's the gaps, https://github.com/strongloop/loopback-next/issues/3715
+  what's the gaps, https://github.com/loopbackio/loopback-next/issues/3715
 
-#### Test/Enable Node.js 12 support for connectors - https://github.com/strongloop/loopback-next/issues/3072
+#### Test/Enable Node.js 12 support for connectors - https://github.com/loopbackio/loopback-next/issues/3072
 
 - loopback-connector-kv-redis
 - loopback-connector-grpc
@@ -354,13 +354,13 @@ The Epic: https://github.com/strongloop/loopback-next/issues/3720
 
 #### Infrastructure
 
-- Fix CI for loopback@3.x. https://github.com/strongloop/loopback/issues/4252
+- Fix CI for loopback@3.x. https://github.com/loopbackio/loopback/issues/4252
 
 ### Stretch Goals
 
 - Review extensions that are upvoted by lots of people.  
-  https://github.com/strongloop/loopback-next/issues/512
-- Support ENUM type, https://github.com/strongloop/loopback-next/issues/3033
+  https://github.com/loopbackio/loopback-next/issues/512
+- Support ENUM type, https://github.com/loopbackio/loopback-next/issues/3033
 
 ---
 
@@ -387,67 +387,67 @@ In Q3, there are a few groups of tasks we'd like to work on:
 #### Authentication
 
 - [ ] Token based authentication in API Explorer.
-      [Spike](https://github.com/strongloop/loopback-next/issues/2027)
+      [Spike](https://github.com/loopbackio/loopback-next/issues/2027)
 - [ ] Stretch goal: enable class level `@authenticate` decorator:
-      https://github.com/strongloop/loopback-next/issues/2460
+      https://github.com/loopbackio/loopback-next/issues/2460
 
 #### Authorization
 
 - [ ] Complete the `Add authorization component` PR:
-      https://github.com/strongloop/loopback.io/pull/857
+      https://github.com/loopbackio/loopback.io/pull/857
 - [ ] Common layer for authentication & authorization
-      https://github.com/strongloop/loopback-next/issues/2900
+      https://github.com/loopbackio/loopback-next/issues/2900
 - [ ] Add authorization to example-shopping repo
 
-#### Inclusion of Related Models https://github.com/strongloop/loopback-next/issues/1352
+#### Inclusion of Related Models https://github.com/loopbackio/loopback-next/issues/1352
 
 - awaiting to @bajtos' spike to create the tasks
 
-#### From model definition to REST API with no custom repository/controller classes (Declarative Support) https://github.com/strongloop/loopback-next/issues/2036
+#### From model definition to REST API with no custom repository/controller classes (Declarative Support) https://github.com/loopbackio/loopback-next/issues/2036
 
-- [ ] [CRUDRESTController](https://github.com/strongloop/loopback-next/issues/2736)
-- [ ] [Spike: Booter for creating REST APIs from model files](https://github.com/strongloop/loopback-next/issues/2738)
+- [ ] [CRUDRESTController](https://github.com/loopbackio/loopback-next/issues/2736)
+- [ ] [Spike: Booter for creating REST APIs from model files](https://github.com/loopbackio/loopback-next/issues/2738)
 
 #### CI cleanup https://github.com/strongloop-internal/scrum-apex/issues/422
 
 - [ ] Fix CI for
-      [dashdb](https://github.com/strongloop/loopback-connector-dashdb/issues/76)
+      [dashdb](https://github.com/loopbackio/loopback-connector-dashdb/issues/76)
 - [ ] Fix CI for
-      [db2](https://github.com/strongloop/loopback-connector-db2/issues/130)
+      [db2](https://github.com/loopbackio/loopback-connector-db2/issues/130)
       connector
 - [ ] Fix CI for
-      [loopback-connector-postgresql](https://github.com/strongloop/loopback-connector-postgresql/issues/384)
+      [loopback-connector-postgresql](https://github.com/loopbackio/loopback-connector-postgresql/issues/384)
       for Node.js 10
 - [ ] Stretch goal: Test juggler 3.x and 4.x on connectors
 
-#### Support of Node.js 12 https://github.com/strongloop/loopback-next/issues/3072
+#### Support of Node.js 12 https://github.com/loopbackio/loopback-next/issues/3072
 
-- [ ] [SQL connectors](https://github.com/strongloop/loopback-next/issues/3110)
-- [ ] [noSQL connectors](https://github.com/strongloop/loopback-next/issues/3111)
-- [ ] [service connectors](https://github.com/strongloop/loopback-next/issues/3112)
+- [ ] [SQL connectors](https://github.com/loopbackio/loopback-next/issues/3110)
+- [ ] [noSQL connectors](https://github.com/loopbackio/loopback-next/issues/3111)
+- [ ] [service connectors](https://github.com/loopbackio/loopback-next/issues/3112)
 
 #### Internal tooling - to address build time
 
 - Spike: Investigate setting up Windows CI workflow for connectors using Azure
-  Pipelines, https://github.com/strongloop/loopback-next/issues/3161
+  Pipelines, https://github.com/loopbackio/loopback-next/issues/3161
 
 #### Documentation improvement
 
 - Tasks created according to this proposal:
-  https://github.com/strongloop/loopback-next/pull/2925
+  https://github.com/loopbackio/loopback-next/pull/2925
 
 #### Miscellaneous
 
 - Review of
-  [DB2 connector on IBM i](https://github.com/strongloop/loopback-connector-ibmi)
+  [DB2 connector on IBM i](https://github.com/loopbackio/loopback-connector-ibmi)
 
 #### Bug fixes / Developer Experience Improvements
 
 - Bugs:
-  https://github.com/strongloop/loopback-next/issues?q=is%3Aopen+is%3Aissue+label%3Abug+-label%3A%22good+first+issue%22+-label%3A%22help+wanted%22
+  https://github.com/loopbackio/loopback-next/issues?q=is%3Aopen+is%3Aissue+label%3Abug+-label%3A%22good+first+issue%22+-label%3A%22help+wanted%22
 
 - Developer Experience (Pick a few):
-  https://github.com/strongloop/loopback-next/issues?utf8=✓&q=is%3Aopen+is%3Aissue+-label%3A%22good+first+issue%22+-label%3A%22help+wanted%22+label%3Adeveloper-experience+
+  https://github.com/loopbackio/loopback-next/issues?utf8=✓&q=is%3Aopen+is%3Aissue+-label%3A%22good+first+issue%22+-label%3A%22help+wanted%22+label%3Adeveloper-experience+
 
 #### Juggler next
 
@@ -472,14 +472,14 @@ In Q3, there are a few groups of tasks we'd like to work on:
 #### Feature parity
 
 - Operation hooks.
-  [Spike](https://github.com/strongloop/loopback-next/issues/1919)
-- REST layer improvement https://github.com/strongloop/loopback-next/issues/1452
+  [Spike](https://github.com/loopbackio/loopback-next/issues/1919)
+- REST layer improvement https://github.com/loopbackio/loopback-next/issues/1452
   - controller cannot control the header and content type. use case: file
     download.
 - Validation
   - Advanced validation - e.g. email validation - not supported in json schema. 
     AJV allows to support certain keywords.
-    [Spike](https://github.com/strongloop/loopback-next/issues/1463).
+    [Spike](https://github.com/loopbackio/loopback-next/issues/1463).
   - AJV only validating in request body but not validating parameters, queries
   - validation in juggler
 
