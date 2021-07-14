@@ -42,7 +42,6 @@ export * from './router';
 export * from './sequence';
 <<<<<<< HEAD
 export * from './rest-http-error';
-export * from './explorer.component';
 
 // export all errors from external http-errors package
 import * as HttpErrors from 'http-errors';

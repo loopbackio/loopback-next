@@ -3,14 +3,13 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {StaticComponent} from './types';
-import * as path from 'path';
+import {Component} from '@loopback/core';
 
-export class ExplorerComponent implements StaticComponent {
+export class ExplorerComponent implements Component {
   staticAssets = [
     {
       path: '/explorer1',
-      rootDir: './public', //path.resolve(__dirname, '../../../explorer'),
+      rootDir: './public',
       options: {},
     },
   ];
