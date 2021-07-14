@@ -1,0 +1,40 @@
+{
+  "name":"CoffeeShop",
+  "base":"PersistedModel",
+  "idInjection":true,
+  "options":{
+     "validateUpsert":true
+  },
+  "properties":{
+     "name":{
+        "type":"string",
+        "required":true
+     },
+     "city":{
+        "type":"string",
+        "required":true
+     }
+  },
+  "validations":[],
+  "relations": {
+     "coffee": {
+        "type": "embedsMany",
+        "model": "Coffee",
+        "property": "coffees",
+        "options": {
+           "validate": true,
+           "forceId": false
+         }
+      }
+  },
+  "acls":[
+   {
+      "accessType":"EXECUTE",
+      "principalType":"ROLE",
+      "principalId":"$unauthenticated",
+      "permission":"DENY",
+      "property":"greet"
+   }
+  ],
+  "methods":{}
+}

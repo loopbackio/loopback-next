@@ -1,10 +1,10 @@
-// Copyright IBM Corp. 2017. All Rights Reserved.
+// Copyright IBM Corp. 2018,2020. All Rights Reserved.
 // Node module: @loopback/repository
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Context, inject, Injection} from '@loopback/context';
-import * as assert from 'assert';
+import {Context, inject, Injection} from '@loopback/core';
+import assert from 'assert';
 import {Class} from '../common-types';
 import {DataSource} from '../datasource';
 import {Entity, Model} from '../model';
@@ -17,7 +17,7 @@ import {juggler} from '../repositories/legacy-juggler-bridge';
 export type RepositoryDecorator = (
   target: Object,
   key?: string,
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   descriptorOrIndex?: TypedPropertyDescriptor<any> | number,
 ) => void;
 
@@ -49,10 +49,10 @@ export class RepositoryMetadata {
   /**
    * Constructor for RepositoryMetadata
    *
-   * @param modelOrRepo Name or class of the model. If the value is a string and
+   * @param modelOrRepo - Name or class of the model. If the value is a string and
    * `dataSource` is not present, it will treated as the name of a predefined
    * repository
-   * @param dataSource Name or instance of the data source
+   * @param dataSource - Name or instance of the data source
    *
    * For example:
    *
@@ -85,6 +85,7 @@ export class RepositoryMetadata {
 /**
  * Decorator for repository injections on properties or method arguments
  *
+ * @example
  * ```ts
  * class CustomerController {
  *   @repository(CustomerRepository) public custRepo: CustomerRepository;
@@ -96,7 +97,7 @@ export class RepositoryMetadata {
  * }
  * ```
  *
- * @param repositoryName Name of the repo
+ * @param repositoryName - Name of the repo
  */
 export function repository(
   repositoryName: string | Class<Repository<Model>>,
@@ -106,6 +107,7 @@ export function repository(
  * Decorator for DefaultCrudRepository generation and injection on properties
  * or method arguments based on the given model and dataSource (or their names)
  *
+ * @example
  * ```ts
  * class CustomerController {
  *   @repository('Customer', 'mySqlDataSource')
@@ -125,8 +127,8 @@ export function repository(
  * }
  * ```
  *
- * @param model Name/class of the model
- * @param dataSource Name/instance of the dataSource
+ * @param model - Name/class of the model
+ * @param dataSource - Name/instance of the dataSource
  */
 export function repository(
   model: string | typeof Entity,
@@ -144,10 +146,10 @@ export function repository(
       ? modelOrRepo.name
       : (modelOrRepo as typeof Entity);
   const meta = new RepositoryMetadata(stringOrModel, dataSource);
-  return function(
+  return function (
     target: Object,
     key?: string,
-    // tslint:disable-next-line:no-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     descriptorOrIndex?: TypedPropertyDescriptor<any> | number,
   ) {
     if (key || typeof descriptorOrIndex === 'number') {
@@ -177,7 +179,7 @@ export namespace repository {
    * Decorator used to inject a Getter for a repository
    * Mainly intended for usage with repository injections on relation repository
    * factory
-   * @param nameOrClass The repository class (ProductRepository) or a string name ('ProductRepository').
+   * @param nameOrClass - The repository class (ProductRepository) or a string name ('ProductRepository').
    */
   export function getter(nameOrClass: string | Class<Repository<Model>>) {
     const name =
@@ -188,8 +190,8 @@ export namespace repository {
 
 /**
  * Resolve the @repository injection
- * @param ctx Context
- * @param injection Injection metadata
+ * @param ctx - Context
+ * @param injection - Injection metadata
  */
 async function resolve(ctx: Context, injection: Injection) {
   const meta = injection.metadata as RepositoryMetadata;

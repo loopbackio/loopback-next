@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2020. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -6,72 +6,54 @@
 'use strict';
 
 const path = require('path');
-const assert = require('yeoman-assert');
+const {TestSandbox} = require('@loopback/testlab');
+const {assertFilesToMatchSnapshot} = require('../../snapshots');
+
 const generator = path.join(__dirname, '../../../generators/openapi');
 const specPath = path.join(
   __dirname,
   '../../fixtures/openapi/3.0/petstore-expanded.yaml',
 );
 
-const testlab = require('@loopback/testlab');
-const TestSandbox = testlab.TestSandbox;
-
 // Test Sandbox
-const SANDBOX_PATH = path.resolve(__dirname, '../.sandbox');
-const sandbox = new TestSandbox(SANDBOX_PATH);
+const sandbox = new TestSandbox(path.resolve(__dirname, '../.sandbox'));
 const testUtils = require('../../test-utils');
 
 const props = {
   url: specPath,
 };
 
-describe('openapi-generator specific files', () => {
-  const index = path.resolve(SANDBOX_PATH, 'src/controllers/index.ts');
-  const controller = path.resolve(
-    SANDBOX_PATH,
-    'src/controllers/open-api.controller.ts',
-  );
+describe('openapi-generator petstore', /** @this {Mocha.Suite} */ function () {
+  // These tests take longer to execute, they used to time out on Travis CI
+  this.timeout(10000);
 
-  const petModel = path.resolve(SANDBOX_PATH, 'src/models/pet.model.ts');
-  const newPetModel = path.resolve(SANDBOX_PATH, 'src/models/new-pet.model.ts');
-  const errorModel = path.resolve(SANDBOX_PATH, 'src/models/error.model.ts');
-
-  after('reset sandbox', async () => {
-    await sandbox.reset();
-  });
+  before('reset sandbox', () => sandbox.reset());
+  afterEach('reset sandbox', () => sandbox.reset());
 
   it('generates all the proper files', async () => {
     await testUtils
       .executeGenerator(generator)
-      .inDir(SANDBOX_PATH, () => testUtils.givenLBProject(SANDBOX_PATH))
+      .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path))
       .withPrompts(props);
-    assert.file(controller);
 
-    assert.fileContent(controller, 'export class OpenApiController {');
-    assert.fileContent(controller, `@operation('get', '/pets')`);
-    assert.fileContent(
-      controller,
-      `async findPets(@param({name: 'tags', in: 'query'}) tags: string[], ` +
-        `@param({name: 'limit', in: 'query'}) limit: number): Promise<Pet[]>`,
+    const options = {};
+    assertFiles(
+      options,
+      'src/controllers/index.ts',
+      'src/controllers/open-api.controller.ts',
     );
 
-    assert.fileContent(index, `export * from './open-api.controller';`);
-
-    assert.file(petModel);
-    assert.fileContent(petModel, `import {NewPet} from './new-pet.model';`);
-    assert.fileContent(
-      petModel,
-      `export type Pet = NewPet & {
-  id: number;
-};`,
+    assertFiles(
+      options,
+      'src/models/index.ts',
+      'src/models/pet.model.ts',
+      'src/models/new-pet.model.ts',
+      'src/models/error.model.ts',
     );
-    assert.file(newPetModel);
-    assert.fileContent(newPetModel, `export class NewPet {`);
-    assert.fileContent(newPetModel, `@model({name: 'NewPet'})`);
-    assert.fileContent(newPetModel, `@property({name: 'name'})`);
-    assert.fileContent(newPetModel, `name: string;`);
-    assert.fileContent(newPetModel, `@property({name: 'tag'})`);
-    assert.fileContent(newPetModel, `tag?: string`);
-    assert.file(errorModel);
   });
 });
+
+function assertFiles(options, ...files) {
+  options = {rootPath: sandbox.path, ...options};
+  assertFilesToMatchSnapshot(options, ...files);
+}

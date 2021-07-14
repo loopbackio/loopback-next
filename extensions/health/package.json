@@ -1,0 +1,56 @@
+{
+  "name": "@loopback/health",
+  "description": "An extension exposes health check related endpoints with LoopBack 4",
+  "version": "0.8.1",
+  "keywords": [
+    "LoopBack",
+    "Cloud Native",
+    "Health"
+  ],
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "extensions/health"
+  },
+  "engines": {
+    "node": "^10.16 || 12 || 14 || 16"
+  },
+  "scripts": {
+    "build": "lb-tsc",
+    "clean": "lb-clean loopback-extension-health*.tgz dist *.tsbuildinfo package",
+    "pretest": "npm run build",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
+    "verify": "npm pack && tar xf loopback-extension-health*.tgz && tree package && npm run clean",
+    "demo": "./src/__examples__/demo.sh"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "README.md",
+    "dist",
+    "src",
+    "!*/__tests__"
+  ],
+  "peerDependencies": {
+    "@loopback/core": "^2.16.1",
+    "@loopback/rest": "^9.3.1"
+  },
+  "dependencies": {
+    "@cloudnative/health": "^2.1.2",
+    "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "@loopback/build": "^6.4.1",
+    "@loopback/core": "^2.16.1",
+    "@loopback/eslint-config": "^10.2.1",
+    "@loopback/rest": "^9.3.1",
+    "@loopback/testlab": "^3.4.1",
+    "@types/node": "^10.17.60"
+  }
+}

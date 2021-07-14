@@ -1,57 +1,65 @@
 {
   "name": "@loopback/openapi-v3",
-  "version": "1.0.2",
-  "description": "Processes openapi v3 related metadata",
-  "engines": {
-    "node": ">=8.9"
-  },
-  "devDependencies": {
-    "@loopback/build": "^1.0.0",
-    "@loopback/openapi-spec-builder": "^1.0.0",
-    "@loopback/repository": "^1.0.2",
-    "@loopback/testlab": "^1.0.0",
-    "@types/debug": "0.0.30",
-    "@types/lodash": "^4.14.106",
-    "@types/node": "^10.11.2"
-  },
-  "scripts": {
-    "build:apidocs": "lb-apidocs",
-    "build": "lb-tsc es2017 --outDir dist",
-    "clean": "lb-clean loopback-openapi-v3*.tgz dist package",
-    "integration": "lb-mocha \"dist/test/integration/**/*.js\"",
-    "pretest": "npm run build",
-    "test": "lb-mocha \"dist/test/unit/**/*.js\" \"dist/test/integration/**/*.js\"",
-    "unit": "lb-mocha \"dist/test/unit/**/*.js\"",
-    "verify": "npm pack && tar xf loopback-openapi-v3*.tgz && tree package && npm run clean"
-  },
-  "author": "IBM",
-  "copyright.owner": "IBM Corp.",
-  "license": "MIT",
+  "description": "Decorators that annotate LoopBack artifacts with OpenAPI v3 metadata and utilities that transform LoopBack metadata to OpenAPI v3 specifications",
+  "version": "5.3.1",
   "keywords": [
     "Swagger",
     "OpenAPI Spec",
     "TypeScript"
   ],
-  "files": [
-    "README.md",
-    "index.js",
-    "index.d.ts",
-    "dist/src",
-    "dist/index*",
-    "src"
-  ],
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "packages/openapi-v3"
+  },
+  "engines": {
+    "node": "^10.16 || 12 || 14 || 16"
+  },
+  "scripts": {
+    "build": "lb-tsc",
+    "clean": "lb-clean loopback-openapi-v3*.tgz dist *.tsbuildinfo package",
+    "integration": "lb-mocha \"dist/__tests__/integration/**/*.js\"",
+    "pretest": "npm run build",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
+    "unit": "lb-mocha \"dist/__tests__/unit/**/*.js\"",
+    "verify": "npm pack && tar xf loopback-openapi-v3*.tgz && tree package && npm run clean"
+  },
   "publishConfig": {
     "access": "public"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/strongloop/loopback-next.git"
+  "files": [
+    "README.md",
+    "dist",
+    "src",
+    "!*/__tests__"
+  ],
+  "peerDependencies": {
+    "@loopback/core": "^2.16.1"
   },
   "dependencies": {
-    "@loopback/context": "^1.0.0",
-    "@loopback/openapi-v3-types": "^1.0.0",
-    "@loopback/repository-json-schema": "^1.1.0",
-    "debug": "^4.0.1",
-    "lodash": "^4.17.5"
+    "@loopback/repository-json-schema": "^3.4.1",
+    "debug": "^4.3.1",
+    "http-status": "^1.5.0",
+    "json-merge-patch": "^1.0.1",
+    "lodash": "^4.17.21",
+    "openapi3-ts": "^2.0.1",
+    "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "@loopback/build": "^6.4.1",
+    "@loopback/core": "^2.16.1",
+    "@loopback/eslint-config": "^10.2.1",
+    "@loopback/openapi-spec-builder": "^3.2.1",
+    "@loopback/repository": "^3.7.0",
+    "@loopback/testlab": "^3.4.1",
+    "@types/debug": "^4.1.5",
+    "@types/json-merge-patch": "0.0.5",
+    "@types/lodash": "^4.14.170",
+    "@types/node": "^10.17.60"
   }
 }

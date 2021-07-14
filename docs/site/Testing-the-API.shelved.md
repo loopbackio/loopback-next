@@ -1,7 +1,7 @@
 ---
 lang: en
 title: 'Testing the API'
-keywords: LoopBack 4.0, LoopBack 4
+keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Testing-the-API.html
 ---
@@ -81,7 +81,7 @@ export const controllerSpec = {
           },
         ],
         responses: {
-          '200': {
+          200: {
             description: 'Returns a hello world with your (optional) name.',
             examples: {
               'text/plain': 'Hello world Ted.',

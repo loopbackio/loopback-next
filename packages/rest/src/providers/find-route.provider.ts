@@ -1,27 +1,67 @@
-// Copyright IBM Corp. 2017. All Rights Reserved.
+// Copyright IBM Corp. 2018,2020. All Rights Reserved.
 // Node module: @loopback/rest
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Context, inject, Provider} from '@loopback/context';
-import {FindRoute, Request} from '../types';
+import {
+  BindingScope,
+  Context,
+  inject,
+  injectable,
+  Provider,
+} from '@loopback/core';
+import {asMiddleware, Middleware} from '@loopback/express';
+import debugFactory from 'debug';
 import {HttpHandler} from '../http-handler';
-import {RestBindings} from '../keys';
-import {ResolvedRoute} from '../router/routing-table';
+import {RestBindings, RestTags} from '../keys';
+import {RestMiddlewareGroups} from '../sequence';
+import {FindRoute} from '../types';
 
-export class FindRouteProvider implements Provider<FindRoute> {
-  constructor(
-    @inject(RestBindings.Http.CONTEXT) protected context: Context,
-    @inject(RestBindings.HANDLER) protected handler: HttpHandler,
-  ) {}
+const debug = debugFactory('loopback:rest:find-route');
 
-  value(): FindRoute {
-    return request => this.action(request);
+export class FindRouteProvider {
+  static value(
+    @inject(RestBindings.Http.CONTEXT) context: Context,
+    @inject(RestBindings.HANDLER) handler: HttpHandler,
+  ): FindRoute {
+    const findRoute: FindRoute = request => {
+      const found = handler.findRoute(request);
+      debug(
+        'Route found for %s %s',
+        request.method,
+        request.originalUrl,
+        found,
+      );
+      found.updateBindings(context);
+      return found;
+    };
+    return findRoute;
   }
+}
 
-  action(request: Request): ResolvedRoute {
-    const found = this.handler.findRoute(request);
-    found.updateBindings(this.context);
-    return found;
+@injectable(
+  asMiddleware({
+    group: RestMiddlewareGroups.FIND_ROUTE,
+    chain: RestTags.REST_MIDDLEWARE_CHAIN,
+  }),
+  {scope: BindingScope.SINGLETON},
+)
+export class FindRouteMiddlewareProvider implements Provider<Middleware> {
+  value(): Middleware {
+    return async (ctx, next) => {
+      const request = ctx.request;
+      debug('Finding route for %s %s', request.method, request.originalUrl);
+      const handler = await ctx.get(RestBindings.HANDLER);
+      const route = handler.findRoute(request);
+      debug(
+        'Route found for %s %s',
+        request.method,
+        request.originalUrl,
+        route,
+      );
+      route.updateBindings(ctx);
+      ctx.bind(RestBindings.Operation.ROUTE).to(route);
+      return next();
+    };
   }
 }

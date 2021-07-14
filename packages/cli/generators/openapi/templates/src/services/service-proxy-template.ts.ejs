@@ -1,0 +1,55 @@
+import {inject, Provider} from '@loopback/core';
+import {getService} from '@loopback/service-proxy';
+import {<%- dataSourceClassName %>} from '../datasources';
+
+<%_
+imports.forEach(i => {
+-%>
+<%- i %>
+<%_
+});
+-%>
+
+/**
+ * The service interface is generated from OpenAPI spec with operations tagged
+ * by <%- tag || '<no-tag>' %>.
+<%_ const _comment = escapeComment(description);
+  if (_comment) {
+-%>
+ * <%- _comment %>
+<%_ } -%>
+ */
+export interface <%- serviceClassName %> {
+  <%_ for (const m of methods) { -%>
+  /**
+  <%_ for (const c of m.comments) {
+    const _comment = escapeComment(c);
+    if (_comment) {
+  -%>
+   * <%- _comment %>
+  <%_ }
+   } -%>
+   */
+  <%_ if (usePositionalParams !== false) { -%>
+  <%- m.signatureForInterface %>;
+  <%_ } else { -%>
+  <%- m.signatureForNamedParams %>;
+  <%_ } -%>
+
+  <%_ } -%>
+}
+
+export class <%- serviceClassName %>Provider implements Provider<<%- serviceClassName %>> {
+  constructor(
+    // <%- dataSourceName %> must match the name property in the datasource json file
+    @inject('datasources.<%- dataSourceName %>')
+    protected dataSource: <%- dataSourceClassName %> = new <%- dataSourceClassName %>(),
+  ) {}
+
+  async value(): Promise<<%- serviceClassName %>> {
+    const service = await getService<{apis: {'<%- tag || 'default' %>': <%- serviceClassName %>}}>(
+      this.dataSource,
+    );
+    return service.apis['<%- tag || 'default' %>'];
+  }
+}

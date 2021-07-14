@@ -1,13 +1,13 @@
-// Copyright IBM Corp. 2017. All Rights Reserved.
+// Copyright IBM Corp. 2017,2019. All Rights Reserved.
 // Node module: @loopback/repository
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import * as util from 'util';
-import {Type} from './type';
+import util from 'util';
 import {Options} from '../common-types';
+import {Type} from './type';
 
-// tslint:disable:no-any
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 /**
  * Buffer (binary) type
@@ -35,7 +35,7 @@ export class BufferType implements Type<Buffer> {
     if (value == null) return value;
     if (Buffer.isBuffer(value)) return value as Buffer;
     if (typeof value === 'string') {
-      options = options || {};
+      options = options ?? {};
       const encoding = options.encoding || 'utf-8';
       return Buffer.from(value, encoding);
     } else if (Array.isArray(value)) {
@@ -47,7 +47,7 @@ export class BufferType implements Type<Buffer> {
 
   serialize(value: Buffer | null | undefined, options?: Options) {
     if (value == null) return value;
-    const encoding = (options && options.encoding) || 'base64';
+    const encoding = options?.encoding || 'base64';
     return value.toString(encoding);
   }
 }

@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2019. All Rights Reserved.
 // Node module: @loopback/repository
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -18,7 +18,7 @@ export class InvalidRelationError<Props extends object = {}> extends Error {
     extraProperties?: Props,
   ) {
     const {name, type, source} = relationMeta;
-    const model = (source && source.modelName) || '<Unknown Model>';
+    const model = source?.modelName || '<Unknown Model>';
     const message = `Invalid ${type} definition for ${model}#${name}: ${reason}`;
     super(message);
 
@@ -33,7 +33,7 @@ export class InvalidRelationError<Props extends object = {}> extends Error {
   }
 }
 
-// tslint:disable-next-line:no-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function isInvalidRelationError(e: any): e is InvalidRelationError<any> {
   return e instanceof InvalidRelationError;
 }

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Copyright IBM Corp. 2017,2020. All Rights Reserved.
 // Node module: @loopback/build
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -17,7 +17,6 @@ Usage:
 
 function run(argv, options) {
   const utils = require('./utils');
-  const path = require('path');
 
   const nycOpts = argv.slice(2);
   const args = [...nycOpts];

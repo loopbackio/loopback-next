@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2020. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -18,9 +18,10 @@ const tests = require('../lib/artifact-generator')(generator);
 const baseTests = require('../lib/base-generator')(generator);
 const testUtils = require('../../test-utils');
 
+const {expectFileToMatchSnapshot} = require('../../snapshots');
+
 // Test Sandbox
-const SANDBOX_PATH = path.resolve(__dirname, '..', '.sandbox');
-const sandbox = new TestSandbox(SANDBOX_PATH);
+const sandbox = new TestSandbox(path.resolve(__dirname, '../.sandbox'));
 
 // CLI Inputs
 const basicCLIInput = {
@@ -29,12 +30,13 @@ const basicCLIInput = {
 const restCLIInput = {
   name: 'productReview',
   controllerType: ControllerGenerator.REST,
-  id: 'number',
+  id: 'productId',
+  idType: 'number',
 };
 
 // Expected File Name
-const expectedFile = path.join(
-  SANDBOX_PATH,
+const filePath = path.join(
+  sandbox.path,
   '/src/controllers/product-review.controller.ts',
 );
 
@@ -49,42 +51,41 @@ describe('lb4 controller', () => {
     return expect(
       testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {excludePackageJSON: true}),
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {excludePackageJSON: true}),
         )
         .withPrompts(basicCLIInput),
     ).to.be.rejectedWith(/No package.json found in/);
   });
 
-  it('does not run without the loopback keyword', () => {
+  it('does not run without "@loopback/core" as a dependency', () => {
     return expect(
       testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {excludeKeyword: true}),
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {excludeLoopbackCore: true}),
         )
         .withPrompts(basicCLIInput),
-    ).to.be.rejectedWith(/No `loopback` keyword found in/);
+    ).to.be.rejectedWith(/No `@loopback\/core` package found/);
   });
 
   describe('basic controller', () => {
     it('scaffolds correct file with input', async () => {
       await testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () => testUtils.givenLBProject(SANDBOX_PATH))
+        .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path))
         .withPrompts(basicCLIInput);
 
-      assert.file(expectedFile);
       checkBasicContents();
     });
 
     it('scaffolds correct file with args', async () => {
       await testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () => testUtils.givenLBProject(SANDBOX_PATH))
+        .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path))
         .withArguments('productReview');
 
-      assert.file(expectedFile);
+      assert.file(filePath);
       checkBasicContents();
     });
   });
@@ -99,26 +100,42 @@ describe('lb4 controller', () => {
       restCLIInput,
     );
 
-    it('creates REST CRUD template with valid input', async () => {
+    it('creates REST CRUD template with valid input - id omitted', async () => {
       await testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {
             includeDummyModel: true,
             includeDummyRepository: true,
           }),
         )
         .withPrompts(restCLIInputComplete);
 
-      checkRestCrudContents();
+      checkRestCrudContents({idOmitted: true});
+    });
+
+    it('creates REST CRUD template with valid input', async () => {
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {
+            includeDummyModel: true,
+            includeDummyRepository: true,
+          }),
+        )
+        .withPrompts(
+          Object.assign({}, restCLIInputComplete, {idOmitted: false}),
+        );
+
+      checkRestCrudContents({idOmitted: false});
     });
 
     describe('HTTP REST path', () => {
       it('defaults correctly', async () => {
         await testUtils
           .executeGenerator(generator)
-          .inDir(SANDBOX_PATH, () =>
-            testUtils.givenLBProject(SANDBOX_PATH, {
+          .inDir(sandbox.path, () =>
+            testUtils.givenLBProject(sandbox.path, {
               includeDummyModel: true,
               includeDummyRepository: true,
             }),
@@ -135,8 +152,8 @@ describe('lb4 controller', () => {
 
         await testUtils
           .executeGenerator(generator)
-          .inDir(SANDBOX_PATH, () =>
-            testUtils.givenLBProject(SANDBOX_PATH, {
+          .inDir(sandbox.path, () =>
+            testUtils.givenLBProject(sandbox.path, {
               includeDummyModel: true,
               includeDummyRepository: true,
             }),
@@ -158,8 +175,8 @@ describe('lb4 controller', () => {
       return expect(
         testUtils
           .executeGenerator(generator)
-          .inDir(SANDBOX_PATH, () =>
-            testUtils.givenLBProject(SANDBOX_PATH, {
+          .inDir(sandbox.path, () =>
+            testUtils.givenLBProject(sandbox.path, {
               includeDummyRepository: true,
             }),
           )
@@ -178,8 +195,8 @@ describe('lb4 controller', () => {
       return expect(
         testUtils
           .executeGenerator(generator)
-          .inDir(SANDBOX_PATH, () =>
-            testUtils.givenLBProject(SANDBOX_PATH, {includeDummyModel: true}),
+          .inDir(sandbox.path, () =>
+            testUtils.givenLBProject(sandbox.path, {includeDummyModel: true}),
           )
           .withPrompts(noRepositoryInput),
       ).to.be.rejectedWith(/No repositories found in /);
@@ -189,32 +206,28 @@ describe('lb4 controller', () => {
       return expect(
         testUtils
           .executeGenerator(generator)
-          .inDir(SANDBOX_PATH, () =>
-            testUtils.givenLBProject(SANDBOX_PATH, {
+          .inDir(sandbox.path, () =>
+            testUtils.givenLBProject(sandbox.path, {
               excludeModelsDir: true,
               includeDummyRepository: true,
             }),
           )
           .withPrompts(restCLIInputComplete),
-      ).to.be.rejectedWith(
-        /ENOENT: no such file or directory, scandir(.*?)models\b/,
-      );
+      ).to.be.rejectedWith(/No models found in .*[\/\\]models\b/);
     });
 
     it('fails when no repository directory present', () => {
       return expect(
         testUtils
           .executeGenerator(generator)
-          .inDir(SANDBOX_PATH, () =>
-            testUtils.givenLBProject(SANDBOX_PATH, {
+          .inDir(sandbox.path, () =>
+            testUtils.givenLBProject(sandbox.path, {
               excludeRepositoriesDir: true,
               includeDummyModel: true,
             }),
           )
           .withPrompts(restCLIInputComplete),
-      ).to.be.rejectedWith(
-        /ENOENT: no such file or directory, scandir(.*?)repositories\b/,
-      );
+      ).to.be.rejectedWith(/No repositories found in .*[\/\\]repositories\b/);
     });
   });
 });
@@ -223,8 +236,7 @@ describe('lb4 controller', () => {
  * Helper function to check the contents of a basic controller
  */
 function checkBasicContents() {
-  assert.fileContent(expectedFile, /class ProductReviewController/);
-  assert.fileContent(expectedFile, /constructor\(\) {}/);
+  expectFileToMatchSnapshot(filePath);
 }
 
 /**
@@ -233,102 +245,8 @@ function checkBasicContents() {
  * that decorators are grouped correctly (for their corresponding
  * target functions)
  */
-function checkRestCrudContents() {
-  assert.fileContent(expectedFile, /class ProductReviewController/);
-
-  // Repository and injection
-  assert.fileContent(expectedFile, /\@repository\(BarRepository\)/);
-  assert.fileContent(expectedFile, /barRepository \: BarRepository/);
-
-  // Assert that the decorators are present in the correct groupings!
-  // @post - create
-  const postCreateRegEx = [
-    /\@post\('\/product-reviews', {/,
-    /responses: {/,
-    /'200': {/,
-    /description: 'ProductReview model instance'/,
-    /content: {'application\/json': {schema: {'x-ts-type': ProductReview}}},\s{1,}},\s{1,}},\s{1,}}\)/,
-    /async create\(\@requestBody\(\) productReview: ProductReview\)/,
-  ];
-  postCreateRegEx.forEach(regex => {
-    assert.fileContent(expectedFile, regex);
-  });
-
-  // @get - count
-  const getCountRegEx = [
-    /\@get\('\/product-reviews\/count', {/,
-    /responses: {/,
-    /'200': {/,
-    /description: 'ProductReview model count'/,
-    /content: {'application\/json': {schema: CountSchema}},\s{1,}},\s{1,}},\s{1,}}\)/,
-    /async count\(\s+\@param\.query\.object\('where', getWhereSchemaFor\(ProductReview\)\) where\?: Where(|,\s+)\)/,
-  ];
-  getCountRegEx.forEach(regex => {
-    assert.fileContent(expectedFile, regex);
-  });
-
-  // @get - find
-  const getFindRegEx = [
-    /\@get\('\/product-reviews', {/,
-    /responses: {/,
-    /'200': {/,
-    /description: 'Array of ProductReview model instances'/,
-    /content: {'application\/json': {schema: {'x-ts-type': ProductReview}}},\s{1,}},\s{1,}},\s{1,}}\)/,
-    /async find\(\s*\@param\.query\.object\('filter', getFilterSchemaFor\(ProductReview\)\) filter\?: Filter(|,\s+)\)/,
-  ];
-  getFindRegEx.forEach(regex => {
-    assert.fileContent(expectedFile, regex);
-  });
-
-  // @patch - updateAll
-  const patchUpdateAllRegEx = [
-    /\@patch\('\/product-reviews', {/,
-    /responses: {/,
-    /'200': {/,
-    /description: 'ProductReview PATCH success count'/,
-    /content: {'application\/json': {schema: CountSchema}},\s{1,}},\s{1,}},\s{1,}}\)/,
-    /async updateAll\(\s{1,}\@requestBody\(\) productReview: ProductReview,\s{1,} @param\.query\.object\('where', getWhereSchemaFor\(ProductReview\)\) where\?: Where(|,\s+)\)/,
-  ];
-  patchUpdateAllRegEx.forEach(regex => {
-    assert.fileContent(expectedFile, regex);
-  });
-
-  // @get - findById
-  const getFindByIdRegEx = [
-    /\@get\('\/product-reviews\/{id}', {/,
-    /responses: {/,
-    /'200': {/,
-    /description: 'ProductReview model instance'/,
-    /content: {'application\/json': {schema: {'x-ts-type': ProductReview}}},\s{1,}},\s{1,}},\s{1,}}\)/,
-    /async findById\(\@param.path.number\('id'\)/,
-  ];
-  getFindByIdRegEx.forEach(regex => {
-    assert.fileContent(expectedFile, regex);
-  });
-
-  // @patch - updateById
-  const patchUpdateByIdRegEx = [
-    /\@patch\('\/product-reviews\/{id}'/,
-    /responses: {/,
-    /'204': {/,
-    /description: 'ProductReview PATCH success'/,
-    /async updateById\(\s{1,}\@param.path.number\('id'\) id: number,\s{1,}\@requestBody\(\) productReview: ProductReview,\s+\)/,
-  ];
-  patchUpdateByIdRegEx.forEach(regex => {
-    assert.fileContent(expectedFile, regex);
-  });
-
-  // @del - deleteById
-  const deleteByIdRegEx = [
-    /\@del\('\/product-reviews\/{id}', {/,
-    /responses: {/,
-    /'204': {/,
-    /description: 'ProductReview DELETE success'/,
-    /async deleteById\(\@param.path.number\('id'\) id: number\)/,
-  ];
-  deleteByIdRegEx.forEach(regex => {
-    assert.fileContent(expectedFile, regex);
-  });
+function checkRestCrudContents(options) {
+  expectFileToMatchSnapshot(filePath);
 }
 
 /**
@@ -336,32 +254,11 @@ function checkRestCrudContents() {
  * @param {string} restUrl The base URL that should've been generated
  */
 function checkRestPaths(restUrl) {
-  assert.fileContent(
-    expectedFile,
-    new RegExp(/@post\('/.source + restUrl + /', {/.source),
-  );
-  assert.fileContent(
-    expectedFile,
-    new RegExp(/@get\('/.source + restUrl + /\/count', {/.source),
-  );
-  assert.fileContent(
-    expectedFile,
-    new RegExp(/@get\('/.source + restUrl + /', {/.source),
-  );
-  assert.fileContent(
-    expectedFile,
-    new RegExp(/@patch\('/.source + restUrl + /', {/.source),
-  );
-  assert.fileContent(
-    expectedFile,
-    new RegExp(/@get\('/.source + restUrl + /\/{id}', {/.source),
-  );
-  assert.fileContent(
-    expectedFile,
-    new RegExp(/@patch\('/.source + restUrl + /\/{id}', {/.source),
-  );
-  assert.fileContent(
-    expectedFile,
-    new RegExp(/@del\('/.source + restUrl + /\/{id}', {/.source),
-  );
+  assert.fileContent(filePath, `@post('${restUrl}')`);
+  assert.fileContent(filePath, `@get('${restUrl}/count')`);
+  assert.fileContent(filePath, `@get('${restUrl}')`);
+  assert.fileContent(filePath, `@patch('${restUrl}')`);
+  assert.fileContent(filePath, `@get('${restUrl}/{id}')`);
+  assert.fileContent(filePath, `@patch('${restUrl}/{id}')`);
+  assert.fileContent(filePath, `@del('${restUrl}/{id}')`);
 }

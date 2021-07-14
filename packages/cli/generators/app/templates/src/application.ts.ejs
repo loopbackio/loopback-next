@@ -1,5 +1,9 @@
 import {BootMixin} from '@loopback/boot';
 import {ApplicationConfig} from '@loopback/core';
+import {
+  RestExplorerBindings,
+  RestExplorerComponent,
+} from '@loopback/rest-explorer';
 <% if (project.repositories) { -%>
 import {RepositoryMixin} from '@loopback/repository';
 <% } -%>
@@ -7,7 +11,17 @@ import {RestApplication} from '@loopback/rest';
 <% if (project.services) { -%>
 import {ServiceMixin} from '@loopback/service-proxy';
 <% } -%>
+<% if (project.apiconnect) { -%>
+import {
+  ApiConnectBindings,
+  ApiConnectComponent,
+  ApiConnectSpecOptions,
+} from '@loopback/apiconnect';
+<% } -%>
+import path from 'path';
 import {MySequence} from './sequence';
+
+export {ApplicationConfig};
 
 <% if (project.appClassWithMixins) { -%>
 export class <%= project.applicationName %> extends BootMixin(
@@ -23,6 +37,24 @@ export class <%= project.applicationName %> extends BootMixin(RestApplication) {
 
     // Set up the custom sequence
     this.sequence(MySequence);
+
+    // Set up default home page
+    this.static('/', path.join(__dirname, '../public'));
+
+    // Customize @loopback/rest-explorer configuration here
+    this.configure(RestExplorerBindings.COMPONENT).to({
+      path: '/explorer',
+    });
+    this.component(RestExplorerComponent);
+<%_ if (project.apiconnect) { -%>
+    this.component(ApiConnectComponent);
+    const apiConnectOptions: ApiConnectSpecOptions = {
+      targetUrl: 'http://localhost:3000/',
+    };
+    this.configure(ApiConnectBindings.API_CONNECT_SPEC_ENHANCER).to(
+      apiConnectOptions,
+    );
+<%_ } -%>
 
     this.projectRoot = __dirname;
     // Customize @loopback/boot Booter Conventions here

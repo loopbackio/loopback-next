@@ -1,9 +1,22 @@
-import {Component, ProviderMap} from '@loopback/core';
+import {
+  Application,
+  injectable,
+  Component,
+  config,
+  ContextTags,
+  CoreBindings,
+  inject,
+} from '@loopback/core';
+import {<%= project.bindingsNamespace %>} from './keys'
+import {<%= project.defaultOptions %>, <%= project.optionsInterface %>} from './types';
 
+// Configure the binding for <%= project.componentName %>
+@injectable({tags: {[ContextTags.KEY]: <%= project.bindingsNamespace %>.COMPONENT}})
 export class <%= project.componentName %> implements Component {
-  constructor() {}
-
-  providers?: ProviderMap = {
-  };
-
+  constructor(
+    @inject(CoreBindings.APPLICATION_INSTANCE)
+    private application: Application,
+    @config()
+    private options: <%= project.optionsInterface %> = <%= project.defaultOptions %>,
+  ) {}
 }

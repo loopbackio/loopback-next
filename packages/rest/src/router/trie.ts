@@ -1,9 +1,11 @@
-// Copyright IBM Corp. 2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2019. All Rights Reserved.
 // Node module: @loopback/rest
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {Key, pathToRegexp} from 'path-to-regexp';
 import {PathParameterValues} from '../types';
+import {toExpressPath} from './openapi-path';
 
 /**
  * A Node in the trie
@@ -36,7 +38,6 @@ export type NodeWithValue<T> = Node<T> & {value: T};
 
 export interface ResolvedNode<T> {
   node: Node<T>;
-  // tslint:disable-next-line:no-any
   params?: PathParameterValues;
 }
 
@@ -49,8 +50,8 @@ export class Trie<T> {
 
   /**
    * Create a node for a given path template
-   * @param pathTemplate The path template,
-   * @param value Value of the route
+   * @param pathTemplate - The path template,
+   * @param value - Value of the route
    */
   create(routeTemplate: string, value: T) {
     const keys = routeTemplate.split('/').filter(Boolean);
@@ -59,7 +60,7 @@ export class Trie<T> {
 
   /**
    * Match a route path against the trie
-   * @param path The route path, such as `/customers/c01`
+   * @param path - The route path, such as `/customers/c01`
    */
   match(
     path: string,
@@ -92,8 +93,8 @@ function isNodeWithValue<T>(node: Node<T>): node is NodeWithValue<T> {
 
 /**
  * Use depth-first preorder traversal to list all nodes with values
- * @param root Root node
- * @param visitor A function to process nodes with values
+ * @param root - Root node
+ * @param visitor - A function to process nodes with values
  */
 function traverse<T>(root: Node<T>, visitor: (node: NodeWithValue<T>) => void) {
   if (isNodeWithValue(root)) visitor(root);
@@ -103,20 +104,19 @@ function traverse<T>(root: Node<T>, visitor: (node: NodeWithValue<T>) => void) {
 }
 
 /**
- * Match the given key to a child of the parent node
- * @param key Key
- * @param parent Parent node
+ * Match the given key to one or more children of the parent node
+ * @param key - Key
+ * @param parent - Parent node
  */
-function matchChild<T>(
-  key: string,
-  parent: Node<T>,
-): ResolvedNode<T> | undefined {
+function matchChildren<T>(key: string, parent: Node<T>): ResolvedNode<T>[] {
+  const resolvedNodes: ResolvedNode<T>[] = [];
   // Match key literal first
   let child = parent.children[key];
   if (child) {
-    return {
+    resolvedNodes.push({
       node: child,
-    };
+    });
+    return resolvedNodes;
   }
 
   // Match templates
@@ -131,22 +131,23 @@ function matchChild<T>(
         const val = match[++i];
         resolved.params![n] = decodeURIComponent(val);
       }
-      return resolved;
+      resolvedNodes.push(resolved);
     }
   }
+  return resolvedNodes;
 }
 
 /**
  * Search a sub list of keys against the parent node
- * @param keys An array of keys
- * @param index Starting index of the key list
- * @param params An object to receive resolved parameter values
- * @param parent Parent node
+ * @param keys - An array of keys
+ * @param index - Starting index of the key list
+ * @param params - An object to receive resolved parameter values
+ * @param parent - Parent node
  */
 function search<T>(
   keys: string[],
   index: number,
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   params: {[name: string]: any},
   parent: Node<T>,
 ): ResolvedNode<T> | undefined {
@@ -154,10 +155,15 @@ function search<T>(
   const resolved: ResolvedNode<T> = {node: parent, params};
   if (key === undefined) return resolved;
 
-  const child = matchChild(key, parent);
-  if (child) {
-    Object.assign(params, child.params);
-    return search(keys, index + 1, params, child.node);
+  const children = matchChildren(key, parent);
+  if (children.length === 0) return undefined;
+  // There might be multiple matches, such as `/users/{id}` and `/users/{userId}`
+  for (const child of children) {
+    const result = search(keys, index + 1, params, child.node);
+    if (result && isNodeWithValue(result.node)) {
+      Object.assign(params, child.params);
+      return result;
+    }
   }
   // no matches found
   return undefined;
@@ -165,10 +171,10 @@ function search<T>(
 
 /**
  * Create a node for a sub list of keys against the parent node
- * @param keys An array of keys
- * @param index Starting index of the key list
- * @param value Value of the node
- * @param parent Parent node
+ * @param keys - An array of keys
+ * @param index - Starting index of the key list
+ * @param value - Value of the node
+ * @param parent - Parent node
  */
 function createNode<T>(
   keys: string[],
@@ -210,17 +216,13 @@ function createNode<T>(
   }
 
   // Check if the key has variables such as `{var}`
-  const pattern = /\{([^\{]*)\}/g;
-  const names: string[] = [];
-  let match;
-  while ((match = pattern.exec(key))) {
-    names.push(match[1]);
-  }
+  const path = toExpressPath(key);
+  const params: Key[] = [];
+  const re = pathToRegexp(path, params);
 
-  if (names.length) {
-    child.names = names;
-    const re = '^' + key.replace(/\{([^\}]+)\}/g, '(.+)') + '$';
-    child.regexp = new RegExp(re);
+  if (params.length) {
+    child.names = params.map(p => `${p.name}`);
+    child.regexp = re;
   }
 
   // Add the node to the parent

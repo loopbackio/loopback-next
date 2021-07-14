@@ -1,35 +1,42 @@
-// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Copyright IBM Corp. 2017,2020. All Rights Reserved.
 // Node module: @loopback/rest
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Context} from '@loopback/context';
-import {PathObject, SchemasObject} from '@loopback/openapi-v3-types';
-import {ControllerSpec} from '@loopback/openapi-v3';
-
-import {SequenceHandler} from './sequence';
+import {Context} from '@loopback/core';
 import {
-  RoutingTable,
-  ResolvedRoute,
-  RouteEntry,
-  ControllerClass,
-  ControllerFactory,
-} from './router/routing-table';
-import {Request, Response} from './types';
-
+  ComponentsObject,
+  ControllerSpec,
+  PathObject,
+  ReferenceObject,
+  SchemaObject,
+  SchemasObject,
+} from '@loopback/openapi-v3';
 import {RestBindings} from './keys';
 import {RequestContext} from './request-context';
-import {PathParams} from 'express-serve-static-core';
-import {ServeStaticOptions} from 'serve-static';
+import {RestServerResolvedConfig} from './rest.server';
+import {
+  ControllerClass,
+  ControllerFactory,
+  ResolvedRoute,
+  RouteEntry,
+  RoutingTable,
+} from './router';
+import {SequenceHandler} from './sequence';
+import {Request, Response} from './types';
 
 export class HttpHandler {
-  protected _apiDefinitions: SchemasObject;
+  /**
+   * Shared OpenAPI spec objects as `components`
+   */
+  protected _openApiComponents: ComponentsObject;
 
   public handleRequest: (request: Request, response: Response) => Promise<void>;
 
   constructor(
-    protected _rootContext: Context,
-    protected _routes = new RoutingTable(),
+    protected readonly _rootContext: Context,
+    protected readonly _serverConfig: RestServerResolvedConfig,
+    protected readonly _routes = new RoutingTable(),
   ) {
     this.handleRequest = (req, res) => this._handleRequest(req, res);
   }
@@ -46,20 +53,39 @@ export class HttpHandler {
     this._routes.registerRoute(route);
   }
 
+  /**
+   * @deprecated Use `registerApiComponents`
+   * @param defs Schemas
+   */
   registerApiDefinitions(defs: SchemasObject) {
-    this._apiDefinitions = Object.assign({}, this._apiDefinitions, defs);
+    this.registerApiComponents({schemas: defs});
   }
 
-  registerStaticAssets(
-    path: PathParams,
-    rootDir: string,
-    options?: ServeStaticOptions,
-  ) {
-    this._routes.registerStaticAssets(path, rootDir, options);
+  /**
+   * Merge components into the OpenApi spec
+   * @param defs - Components
+   */
+  registerApiComponents(defs: ComponentsObject) {
+    this._openApiComponents = this._openApiComponents ?? {};
+    for (const p in defs) {
+      // Merge each child, such as `schemas`, `parameters`, and `headers`
+      this._openApiComponents[p] = {...this._openApiComponents[p], ...defs[p]};
+    }
   }
 
-  getApiDefinitions() {
-    return this._apiDefinitions;
+  getApiComponents() {
+    return this._openApiComponents;
+  }
+
+  /**
+   * @deprecated Use `getApiComponents`
+   */
+  getApiDefinitions():
+    | {
+        [schema: string]: SchemaObject | ReferenceObject;
+      }
+    | undefined {
+    return this._openApiComponents?.schemas;
   }
 
   describeApiPaths(): PathObject {
@@ -80,6 +106,7 @@ export class HttpHandler {
       request,
       response,
       this._rootContext,
+      this._serverConfig,
     );
 
     const sequence = await requestContext.get<SequenceHandler>(

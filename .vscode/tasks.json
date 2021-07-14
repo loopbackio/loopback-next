@@ -34,7 +34,7 @@
       "args": [
         "test"
       ],
-      "problemMatcher": ["$tsc", "$tslint5"]
+      "problemMatcher": ["$tsc", "$eslint-stylish", "$eslint-compact"]
     },
     {
       "label": "Lint all packages",
@@ -47,38 +47,11 @@
         "lint"
       ],
       "problemMatcher": [
-        {
-          // linting errors - relative paths
-          "owner": "tslint",
-          "fileLocation": [
-            "relative",
-            "${workspaceRoot}"
-          ],
-          "severity": "warning",
-          "pattern": {
-            "regexp": "^([^/]\\S.*)\\[(\\d+), (\\d+)\\]:\\s+(.*)$",
-            "file": 1,
-            "line": 2,
-            "column": 3,
-            "message": 4
-          }
-        },
-        {
-          // linting errors - absolute paths
-          "owner": "tslint",
-          "fileLocation": "absolute",
-          "severity": "warning",
-          "pattern": {
-            "regexp": "^(/\\S.*)\\[(\\d+), (\\d+)\\]:\\s+(.*)$",
-            "file": 1,
-            "line": 2,
-            "column": 3,
-            "message": 4
-          }
-        },
+        "$eslint-stylish",
+        "$eslint-compact",
         {
           // compilation errors - relative paths
-          "owner": "tslint",
+          "owner": "eslint",
           "fileLocation": [
             "relative",
             "${workspaceRoot}"
@@ -94,7 +67,7 @@
         },
         {
           // compilation errors - absolute paths
-          "owner": "tslint",
+          "owner": "eslint",
           "fileLocation": "absolute",
           "severity": "error",
           "pattern": {
@@ -115,9 +88,30 @@
       "args": [
         "run",
         "-s",
-        "build"
+        "build",
+        "--",
+        "--pretty",
+        "false"
       ],
       "problemMatcher": "$tsc"
+    },
+    {
+      "label": "Build and watch for changes",
+      "group": "build",
+      "type": "shell",
+      "command": "npm",
+      "args": [
+        "run",
+        "-s",
+        "build",
+        "--",
+        "--watch",
+        "--pretty",
+        "false"
+      ],
+      "problemMatcher": [
+        "$tsc-watch",
+      ]
     },
     {
       "label": "Clean project",
@@ -130,6 +124,13 @@
         "clean"
       ],
       "problemMatcher": []
+    },
+    {
+      "type": "npm",
+      "script": "lint:fix",
+      "problemMatcher": [
+        "$eslint-stylish"
+      ]
     }
   ]
 }

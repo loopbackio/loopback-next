@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Copyright IBM Corp. 2017,2020. All Rights Reserved.
 // Node module: @loopback/build
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -17,12 +17,20 @@ Where <target> is one of es2015, es2017 or es2018.
 
 'use strict';
 
+const debug = require('debug')('loopback:build');
+const utils = require('./utils');
+const path = require('path');
+const fs = require('fs');
+const glob = require('glob');
+const fse = require('fs-extra');
+const buildOptions = require('typescript').buildOpts;
+
 function run(argv, options) {
-  const utils = require('./utils');
-  const path = require('path');
-  const fs = require('fs');
-  const glob = require('glob');
-  const fse = require('fs-extra');
+  if (options === true) {
+    options = {dryRun: true};
+  } else {
+    options = options || {};
+  }
 
   const packageDir = utils.getPackageDir();
 
@@ -36,57 +44,35 @@ function run(argv, options) {
     '--copy-resources',
   );
 
-  var target;
-
   // --copy-resources is not a TS Compiler option so we remove it from the
   // list of compiler options to avoid compiler errors.
   if (isCopyResourcesSet) {
     compilerOpts.splice(compilerOpts.indexOf('--copy-resources'), 1);
   }
 
-  if (!isTargetSet) {
-    // Find the last non-option argument as the `target`
-    // For example `-p tsconfig.json es2017` or `es2017 -p tsconfig.json`
-    for (var i = compilerOpts.length - 1; i >= 0; i--) {
-      target = compilerOpts[i];
-      // It's an option
-      if (target.indexOf('-') === 0) {
-        target = undefined;
-        continue;
-      }
-      // It's the value of an option
-      if (i >= 1 && compilerOpts[i - 1].indexOf('-') === 0) {
-        target = undefined;
-        continue;
-      }
-      // Remove the non-option
-      compilerOpts.splice(i, 1);
-      break;
-    }
-
-    if (!target) {
-      target = utils.getCompilationTarget();
-    }
+  let target;
+  if (isTargetSet) {
+    const targetIx = compilerOpts.indexOf('--target');
+    target = compilerOpts[targetIx + 1];
+    compilerOpts.splice(targetIx, 2);
   }
 
-  var outDir;
-
+  let outDir;
   if (isOutDirSet) {
     const outDirIx = compilerOpts.indexOf('--outDir');
     outDir = path.resolve(process.cwd(), compilerOpts[outDirIx + 1]);
     compilerOpts.splice(outDirIx, 2);
-  } else {
-    outDir = path.join(packageDir, utils.getDistribution(target));
   }
 
-  var tsConfigFile;
+  let tsConfigFile;
 
+  let rootDir;
   if (!isProjectSet) {
-    var rootDir = utils.getRootDir();
+    rootDir = utils.getRootDir();
     tsConfigFile = utils.getConfigFile('tsconfig.build.json', 'tsconfig.json');
     if (tsConfigFile === path.join(rootDir, 'config/tsconfig.build.json')) {
       // No local tsconfig.build.json or tsconfig.json found
-      var baseConfigFile = path.join(rootDir, 'config/tsconfig.common.json');
+      let baseConfigFile = path.join(rootDir, 'config/tsconfig.common.json');
       baseConfigFile = path.relative(packageDir, baseConfigFile);
       if (baseConfigFile.indexOf('..' + path.sep) !== 0) {
         // tsconfig only supports relative or rooted path
@@ -101,13 +87,11 @@ function run(argv, options) {
         JSON.stringify(
           {
             extends: baseConfigFile,
-            include: ['src', 'test'],
-            exclude: [
-              'node_modules/**',
-              'packages/*/node_modules/**',
-              'examples/*/node_modules/**',
-              '**/*.d.ts',
-            ],
+            compilerOptions: {
+              outDir: 'dist',
+              rootDir: 'src',
+            },
+            include: ['src'],
           },
           null,
           '  ',
@@ -118,30 +102,32 @@ function run(argv, options) {
 
   const args = [];
 
-  const cwd = process.env.LERNA_ROOT_PATH || process.cwd();
-  if (tsConfigFile) {
-    // Make the config file relative the current directory
-    args.push('-p', path.relative(cwd, tsConfigFile));
+  let cwd = process.env.LERNA_ROOT_PATH || process.cwd();
+  if (tsConfigFile && fs.existsSync(tsConfigFile)) {
+    const tsconfig = require(tsConfigFile);
+    if (tsconfig.references) {
+      args.unshift('-b');
+      // Reset the cwd for a composite project
+      cwd = process.cwd();
+    } else {
+      // Make the config file relative the current directory
+      args.push('-p', path.relative(cwd, tsConfigFile));
+    }
   }
 
   if (outDir) {
     args.push('--outDir', path.relative(cwd, outDir));
+  }
 
+  if (target) {
+    args.push('--target', target);
+  }
+
+  if (isCopyResourcesSet) {
     // Since outDir is set, ts files are compiled into that directory.
     // If copy-resources flag is passed, copy resources (non-ts files)
     // to the same outDir as well.
-    if (rootDir && tsConfigFile && isCopyResourcesSet) {
-      const tsConfig = require(tsConfigFile);
-      const dirs = tsConfig.include
-        ? tsConfig.include.join('|')
-        : ['src', 'test'].join('|');
-
-      const pattern = `@(${dirs})/**/!(*.ts)`;
-      const files = glob.sync(pattern, {root: packageDir, nodir: true});
-      for (const file of files) {
-        fse.copySync(path.join(packageDir, file), path.join(outDir, file));
-      }
-    }
+    copyResources(rootDir, packageDir, tsConfigFile, outDir, options);
   }
 
   if (target) {
@@ -150,13 +136,123 @@ function run(argv, options) {
 
   args.push(...compilerOpts);
 
-  if (options === true) {
-    options = {dryRun: true};
-  } else {
-    options = options || {};
+  const validArgs = validArgsForBuild(args);
+
+  return utils.runCLI('typescript/lib/tsc', validArgs, {cwd, ...options});
+}
+
+/**
+ * `tsc -b` only accepts valid arguments. `npm run build -- --<other-arg>` may
+ * pass in extra arguments. We need to remove such arguments.
+ * @param {string[]} args An array of arguments
+ */
+function validArgsForBuild(args) {
+  const validBooleanOptions = [];
+  const validValueOptions = [];
+
+  // See https://github.com/microsoft/TypeScript/blob/v3.8.3/src/compiler/commandLineParser.ts#L122
+  buildOptions.forEach(opt => {
+    /**
+     * name: "help",
+     * shortName: "h",
+     * type: "boolean",
+     */
+    const options =
+      opt.type === 'boolean' ? validBooleanOptions : validValueOptions;
+    options.push(`--${opt.name}`);
+    if (opt.shortName) {
+      validBooleanOptions.push(`-${opt.shortName}`);
+    }
+  });
+  let validArgs = args;
+  if (args.includes('-b') || args.includes('--build')) {
+    validArgs = filterArgs(args, (arg, next) => {
+      if (validBooleanOptions.includes(arg)) {
+        return next === 'false' || next === 'true' ? 2 : 1;
+      }
+      if (validValueOptions.includes(arg)) return 2;
+      return 0;
+    });
+    // `-b` has to be the first argument
+    validArgs.unshift('-b');
   }
-  return utils.runCLI('typescript/lib/tsc', args, {cwd, ...options});
+  debug('Valid args for tsc -b', validArgs);
+  return validArgs;
+}
+
+/**
+ * Filter arguments by name from the args
+ * @param {string[]} args - Array of args
+ * @param {function} filter - (arg: string) => 0, 1, 2
+ */
+function filterArgs(args, filter) {
+  const validArgs = [];
+  let i = 0;
+  while (i < args.length) {
+    const length = filter(args[i], args[i + 1]);
+    if (length === 0) {
+      i++;
+    } else if (length === 1) {
+      validArgs.push(args[i]);
+      i++;
+    } else if (length === 2) {
+      validArgs.push(args[i], args[i + 1]);
+      i += 2;
+    }
+  }
+  return validArgs;
 }
 
 module.exports = run;
 if (require.main === module) run(process.argv);
+
+function copyResources(rootDir, packageDir, tsConfigFile, outDir, options) {
+  if (!rootDir) {
+    console.warn('Ignoring --copy-resources option - rootDir was not set.');
+    return;
+  }
+  if (!tsConfigFile) {
+    console.warn(
+      'Ignoring --copy-resources option - no tsconfig file was found.',
+    );
+    return;
+  }
+
+  const tsConfig = require(tsConfigFile);
+
+  if (!outDir) {
+    outDir = tsConfig.compilerOptions && tsConfig.compilerOptions.outDir;
+    if (!outDir) {
+      console.warn(
+        'Ignoring --copy-resources option - outDir was not configured.',
+      );
+      return;
+    }
+  }
+
+  const dirs = tsConfig.include
+    ? tsConfig.include.join('|')
+    : ['src', 'test'].join('|');
+
+  const compilerRootDir =
+    (tsConfig.compilerOptions && tsConfig.compilerOptions.rootDir) || '';
+
+  const pattern = `@(${dirs})/**/!(*.ts)`;
+  const files = glob.sync(pattern, {root: packageDir, nodir: true});
+  for (const file of files) {
+    /**
+     * Trim path that matches tsConfig.compilerOptions.rootDir
+     */
+    let targetFile = file;
+    if (compilerRootDir && file.startsWith(compilerRootDir + '/')) {
+      targetFile = file.substring(compilerRootDir.length + 1);
+    }
+
+    const copyFrom = path.join(packageDir, file);
+    const copyTo = path.join(outDir, targetFile);
+    debug('  copy %j to %j', copyFrom, copyTo);
+    if (!options.dryRun) {
+      fse.copySync(copyFrom, copyTo);
+    }
+  }
+}

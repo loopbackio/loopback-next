@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2020. All Rights Reserved.
 // Node module: @loopback/example-log-extension
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -8,7 +8,7 @@ import {
   Constructor,
   MethodDecoratorFactory,
   MetadataInspector,
-} from '@loopback/context';
+} from '@loopback/core';
 import {LevelMetadata} from '../types';
 
 /**
@@ -16,7 +16,7 @@ import {LevelMetadata} from '../types';
  * if it is set at or greater than Application LogLevel.
  * LOG_LEVEL.DEBUG < LOG_LEVEL.INFO < LOG_LEVEL.WARN < LOG_LEVEL.ERROR < LOG_LEVEL.OFF
  *
- * @param level The Log Level at or above it should log
+ * @param level - The Log Level at or above it should log
  */
 export function log(level?: number) {
   if (level === undefined) level = LOG_LEVEL.WARN;
@@ -31,8 +31,8 @@ export function log(level?: number) {
 /**
  * Fetch log level stored by `@log` decorator.
  *
- * @param controllerClass Target controller
- * @param methodName Target method
+ * @param controllerClass - Target controller
+ * @param methodName - Target method
  */
 export function getLogMetadata(
   controllerClass: Constructor<{}>,
@@ -43,6 +43,6 @@ export function getLogMetadata(
       EXAMPLE_LOG_METADATA_KEY,
       controllerClass.prototype,
       methodName,
-    ) || {level: LOG_LEVEL.OFF}
+    ) ?? {level: LOG_LEVEL.OFF}
   );
 }

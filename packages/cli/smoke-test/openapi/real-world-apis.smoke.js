@@ -1,18 +1,15 @@
-// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2020. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
 'use strict';
 
-const {supertest, TestSandbox} = require('@loopback/testlab');
-const path = require('path');
-const assert = require('yeoman-assert');
+const {supertest} = require('@loopback/testlab');
 
 const {
   createAppProject,
   generateOpenApiArtifacts,
-  cleanSandbox,
   runLintFix,
   runNpmTest,
 } = require('./code-gen-utils');
@@ -33,7 +30,9 @@ let realWorldAPIs = [
 ];
 
 describe('Real-world APIs', () => {
-  before(async function() {
+  before(prepareRealWorldApis);
+  /** @this {Mocha.Context} */
+  async function prepareRealWorldApis() {
     // Set env var `APIS` to `*` to test against apis.guru directory
     if (process.env.APIS !== 'all') return;
 
@@ -60,7 +59,7 @@ describe('Real-world APIs', () => {
     }
 
     // Remove certain APIs that are known to cause problems
-    var apis = res.body;
+    const apis = res.body;
 
     // GitHub's CORS policy blocks this request
     delete apis['googleapis.com:adsense'];
@@ -80,9 +79,9 @@ describe('Real-world APIs', () => {
         realWorldAPIs.push(api);
       }
     }
-  });
+  }
 
-  it('generates all the proper files', async function() {
+  it('generates all the proper files', /** @this {Mocha.Context} */ async function () {
     this.timeout(0);
     let count = 0;
     for (const api of realWorldAPIs) {

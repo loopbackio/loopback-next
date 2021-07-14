@@ -1,21 +1,26 @@
-// Copyright IBM Corp. 2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2019. All Rights Reserved.
 // Node module: @loopback/example-log-extension
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {inject, Provider, Constructor, Getter} from '@loopback/context';
-import {CoreBindings} from '@loopback/core';
+import {
+  Constructor,
+  Getter,
+  inject,
+  Provider,
+  CoreBindings,
+} from '@loopback/core';
 import {OperationArgs, Request} from '@loopback/rest';
+import chalk from 'chalk';
 import {getLogMetadata} from '../decorators';
 import {EXAMPLE_LOG_BINDINGS, LOG_LEVEL} from '../keys';
 import {
-  LogFn,
-  TimerFn,
   HighResTime,
   LevelMetadata,
+  LogFn,
   LogWriterFn,
+  TimerFn,
 } from '../types';
-import chalk from 'chalk';
 
 export class LogActionProvider implements Provider<LogFn> {
   // LogWriteFn is an optional dependency and it falls back to `logToConsole`
@@ -37,7 +42,7 @@ export class LogActionProvider implements Provider<LogFn> {
     const fn = <LogFn>((
       req: Request,
       args: OperationArgs,
-      // tslint:disable-next-line:no-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       result: any,
       start?: HighResTime,
     ) => {
@@ -54,7 +59,7 @@ export class LogActionProvider implements Provider<LogFn> {
   private async action(
     req: Request,
     args: OperationArgs,
-    // tslint:disable-next-line:no-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     result: any,
     start?: HighResTime,
   ): Promise<void> {

@@ -1,24 +1,26 @@
 {
-  "lerna": "3.3.0",
   "packages": [
+    "acceptance/*",
+    "fixtures/*",
     "benchmark",
     "docs",
     "examples/*",
     "packages/*",
+    "extensions/*",
+    "bodyparsers/*",
     "sandbox/*"
   ],
   "command": {
     "bootstrap": {
-      "concurrency": 8,
-      "ci": false
+      "concurrency": 4,
+      "forceLocal": true
     },
     "version": {
       "forcePublish": "@loopback/cli,@loopback/docs",
       "conventionalCommits": true,
       "message": "chore: publish release"
     },
-    "publish": {
-    },
+    "publish": {},
     "run": {
       "prefix": false,
       "loglevel": "silent",

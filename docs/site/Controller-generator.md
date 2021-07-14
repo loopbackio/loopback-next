@@ -1,7 +1,7 @@
 ---
 lang: en
 title: 'Controller generator'
-keywords: LoopBack 4.0, LoopBack 4
+keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, CLI
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Controller-generator.html
 ---
@@ -51,7 +51,7 @@ based on the given name:
 ```ts
 // Uncomment these imports to begin using these cool features!
 
-// import {inject} from '@loopback/context';
+// import {inject} from '@loopback/core';
 
 export class FooController {
   constructor() {}
@@ -96,13 +96,19 @@ Here's an example of what the template will produce given a `Todo` model and a
 `TodoRepository`:
 
 ```ts
-import {Filter, repository, Where} from '@loopback/repository';
+import {
+  Count,
+  CountSchema,
+  Filter,
+  FilterExcludingWhere,
+  repository,
+  Where
+} from '@loopback/repository';
 import {
   post,
   param,
   get,
-  getFilterSchemaFor,
-  getWhereSchemaFor,
+  getModelSchemaRef,
   patch,
   del,
   requestBody,
@@ -119,26 +125,35 @@ export class TodoController {
     responses: {
       '200': {
         description: 'Todo model instance',
-        content: {'application/json': {schema: {'x-ts-type': Todo}}},
+        content: {'application/json': {schema: getModelSchemaRef(Todo)}},
       },
     },
   })
-  async create(@requestBody() data: Todo): Promise<Todo> {
-    return await this.todoRepository.create(data);
+  async create(
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(Todo, {title: 'NewTodo', exclude: ['id']}),
+        },
+      },
+    })
+    todo: Omit<Todo, 'id'>,
+  ): Promise<Todo> {
+    return this.todoRepository.create(todo);
   }
 
   @get('/todos/count', {
     responses: {
       '200': {
         description: 'Todo model count',
-        content: {'application/json': {schema: {'x-ts-type': Number}}},
+        content: {'application/json': {schema: CountSchema}},
       },
     },
   })
   async count(
-    @param.query.object('where', getWhereSchemaFor(Todo)) where?: Where,
-  ): Promise<number> {
-    return await this.todoRepository.count(where);
+    @param.where(Todo) where?: Where<Todo>,
+  ): Promise<Count> {
+    return this.todoRepository.count(where);
   }
 
   @get('/todos', {
@@ -147,43 +162,58 @@ export class TodoController {
         description: 'Array of Todo model instances',
         content: {
           'application/json': {
-            schema: {type: 'array', items: {'x-ts-type': Todo}},
+            schema: {type: 'array', items: getModelSchemaRef(Todo)},
           },
         },
       },
     },
   })
   async find(
-    @param.query.object('filter', getFilterSchemaFor(Todo)) filter?: Filter,
+    @param.filter(Todo)
+    filter?: Filter<Todo>,
   ): Promise<Todo[]> {
-    return await this.todoRepository.find(filter);
+    return this.todoRepository.find(filter);
   }
 
   @patch('/todos', {
     responses: {
       '200': {
         description: 'Todo PATCH success count',
-        content: {'application/json': {schema: {'x-ts-type': Number}}},
+        content: {'application/json': {schema: CountSchema}},
       },
     },
   })
   async updateAll(
-    @requestBody() data: Todo,
-    @param.query.object('where', getWhereSchemaFor(Todo)) where?: Where,
-  ): Promise<number> {
-    return await this.todoRepository.updateAll(data, where);
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(Todo, {partial: true}),
+        },
+      },
+    })
+    todo: Partial<Todo>
+    @param.where(Todo) where?: Where<Todo>,
+  ): Promise<Count> {
+    return this.todoRepository.updateAll(todo, where);
   }
 
   @get('/todos/{id}', {
     responses: {
       '200': {
         description: 'Todo model instance',
-        content: {'application/json': {schema: {'x-ts-type': Todo}}},
+        content: {
+          'application/json': {
+            schema: getModelSchemaRef(Todo, {includeRelations: true}),
+          },
+        },
       },
     },
   })
-  async findById(@param.path.number('id') id: number): Promise<Todo> {
-    return await this.todoRepository.findById(id);
+  async findById(
+    @param.path.number('id') id: number,
+    @param.filter(Todo, {exclude: 'where'}) filter?: FilterExcludingWhere<Todo>
+  ): Promise<Todo> {
+    return this.todoRepository.findById(id, filter);
   }
 
   @patch('/todos/{id}', {
@@ -195,9 +225,16 @@ export class TodoController {
   })
   async updateById(
     @param.path.number('id') id: number,
-    @requestBody() data: Todo,
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(Todo, {partial: true}),
+        },
+      },
+    })
+    todo: Partial<Todo>,
   ): Promise<void> {
-    await this.todoRepository.updateById(id, data);
+    await this.todoRepository.updateById(id, todo);
   }
 
   @del('/todos/{id}', {

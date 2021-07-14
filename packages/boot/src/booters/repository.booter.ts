@@ -1,14 +1,13 @@
-// Copyright IBM Corp. 2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2019. All Rights Reserved.
 // Node module: @loopback/boot
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {CoreBindings} from '@loopback/core';
-import {inject} from '@loopback/context';
+import {config, inject, CoreBindings} from '@loopback/core';
 import {ApplicationWithRepositories} from '@loopback/repository';
-import {BaseArtifactBooter} from './base-artifact.booter';
 import {BootBindings} from '../keys';
-import {ArtifactOptions} from '../interfaces';
+import {ArtifactOptions, booter} from '../types';
+import {BaseArtifactBooter} from './base-artifact.booter';
 
 /**
  * A class that extends BaseArtifactBooter to boot the 'Repository' artifact type.
@@ -17,16 +16,17 @@ import {ArtifactOptions} from '../interfaces';
  *
  * Supported phases: configure, discover, load
  *
- * @param app Application instance
- * @param projectRoot Root of User Project relative to which all paths are resolved
- * @param [bootConfig] Repository Artifact Options Object
+ * @param app - Application instance
+ * @param projectRoot - Root of User Project relative to which all paths are resolved
+ * @param bootConfig - Repository Artifact Options Object
  */
+@booter('repositories')
 export class RepositoryBooter extends BaseArtifactBooter {
   constructor(
     @inject(CoreBindings.APPLICATION_INSTANCE)
     public app: ApplicationWithRepositories,
     @inject(BootBindings.PROJECT_ROOT) projectRoot: string,
-    @inject(`${BootBindings.BOOT_OPTIONS}#repositories`)
+    @config()
     public repositoryOptions: ArtifactOptions = {},
   ) {
     super(
@@ -55,7 +55,6 @@ export class RepositoryBooter extends BaseArtifactBooter {
         );
       } else {
         this.classes.forEach(cls => {
-          // tslint:disable-next-line:no-any
           this.app.repository(cls);
         });
       }

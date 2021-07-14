@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Copyright IBM Corp. 2017,2020. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -11,7 +11,33 @@ const {StatusConflicter, readTextFromStdin} = require('./utils');
 const path = require('path');
 const fs = require('fs');
 const debug = require('./debug')('base-generator');
-const semver = require('semver');
+const updateIndex = require('./update-index');
+const {checkLoopBackProject} = require('./version-helper');
+const g = require('./globalize');
+
+const supportedPackageManagers = ['npm', 'yarn'];
+
+debug('Is stdin interactive (isTTY)?', process.stdin.isTTY);
+
+const DEFAULT_COPY_OPTIONS = {
+  // See https://github.com/SBoudrias/mem-fs-editor/pull/147
+  // Don't remove .ejs from the file name to keep backward-compatibility
+  processDestinationPath: destPath => destPath,
+  // See https://github.com/mrmlnc/fast-glob#options-1
+  globOptions: {
+    // Allow patterns to match filenames starting with a period (files &
+    // directories), even if the pattern does not explicitly have a period
+    // in that spot.
+    dot: true,
+    // Disable expansion of brace patterns ({a,b}, {1..3}).
+    nobrace: true,
+    // Disable extglob support (patterns like +(a|b)), so that extglobs
+    // are regarded as literal characters. This flag allows us to support
+    // Windows paths such as
+    // `D:\Users\BKU\oliverkarst\AppData(Roaming)\npm\node_modules\@loopback\cli`
+    noext: true,
+  },
+};
 
 /**
  * Base Generator for LoopBack 4
@@ -20,6 +46,7 @@ module.exports = class BaseGenerator extends Generator {
   // Note: arguments and options should be defined in the constructor.
   constructor(args, opts) {
     super(args, opts);
+    debug('Initializing generator', this.constructor.name);
     this.conflicter = new StatusConflicter(
       this.env.adapter,
       this.options.force,
@@ -31,22 +58,68 @@ module.exports = class BaseGenerator extends Generator {
    * Subclasses can extend _setupGenerator() to set up the generator
    */
   _setupGenerator() {
+    debug('Setting up generator', this.constructor.name);
+    // For the options coming from Yeoman,
+    // overwrite the whole option object so that they can get translated.
+    this._options['help'] = {
+      name: 'help',
+      type: Boolean,
+      alias: 'h',
+      description: g.f("Print the generator's options and usage"),
+    };
+    this._options['skip-cache'] = {
+      name: 'skip-cache',
+      type: Boolean,
+      description: g.f('Do not remember prompt answers'),
+      default: false,
+    };
+    this._options['skip-install'] = {
+      name: 'skip-install',
+      type: Boolean,
+      description: g.f('Do not automatically install dependencies'),
+      default: false,
+    };
+    this._options['force-install'] = {
+      name: 'force-install',
+      type: Boolean,
+      description: g.f('Fail on install dependencies error'),
+      default: false,
+    };
+    this._options['ask-answered'] = {
+      type: Boolean,
+      description: g.f('Show prompts for already configured options'),
+      default: false,
+      name: 'ask-answered',
+      hide: false,
+    };
+    debug(
+      'Try overwrite yeoman messages globally',
+      this._options['help'].description,
+    );
+
     this.option('config', {
       type: String,
       alias: 'c',
-      description: 'JSON file name or value to configure options',
+      description: g.f('JSON file name or value to configure options'),
     });
 
     this.option('yes', {
       type: Boolean,
       alias: 'y',
-      description:
+      description: g.f(
         'Skip all confirmation prompts with default or provided value',
+      ),
     });
 
     this.option('format', {
       type: Boolean,
-      description: 'Format generated code using npm run lint:fix',
+      description: g.f('Format generated code using npm run lint:fix'),
+    });
+
+    this.option('packageManager', {
+      type: String,
+      description: g.f('Change the default package manager'),
+      alias: 'pm',
     });
 
     this.artifactInfo = this.artifactInfo || {
@@ -58,6 +131,7 @@ module.exports = class BaseGenerator extends Generator {
    * Read a json document from stdin
    */
   async _readJSONFromStdin() {
+    debug('Reading JSON from stdin');
     if (process.stdin.isTTY) {
       this.log(
         chalk.green(
@@ -67,8 +141,13 @@ module.exports = class BaseGenerator extends Generator {
       );
     }
 
+    let jsonStr;
     try {
-      const jsonStr = await readTextFromStdin();
+      jsonStr = await readTextFromStdin();
+      debug(
+        'Result:',
+        jsonStr === undefined ? '(undefined)' : JSON.stringify(jsonStr),
+      );
       return JSON.parse(jsonStr);
     } catch (e) {
       if (!process.stdin.isTTY) {
@@ -81,15 +160,27 @@ module.exports = class BaseGenerator extends Generator {
   async setOptions() {
     let opts = {};
     const jsonFileOrValue = this.options.config;
+    debug(
+      'Loading generator options from CLI args and/or stdin.',
+      ...(this.option.config === undefined
+        ? ['(No config was provided.)']
+        : ['Config:', this.options.config]),
+    );
     try {
-      if (jsonFileOrValue === 'stdin' || !process.stdin.isTTY) {
+      if (
+        jsonFileOrValue === 'stdin' ||
+        (!jsonFileOrValue && !process.stdin.isTTY)
+      ) {
+        debug('  enabling --yes and reading config from stdin');
         this.options['yes'] = true;
         opts = await this._readJSONFromStdin();
       } else if (typeof jsonFileOrValue === 'string') {
         const jsonFile = path.resolve(process.cwd(), jsonFileOrValue);
         if (fs.existsSync(jsonFile)) {
+          debug('  reading config from file', jsonFile);
           opts = this.fs.readJSON(jsonFile);
         } else {
+          debug('  parsing config from string', jsonFileOrValue);
           // Try parse the config as stringified json
           opts = JSON.parse(jsonFileOrValue);
         }
@@ -106,6 +197,15 @@ module.exports = class BaseGenerator extends Generator {
       if (this.options[o] == null) {
         this.options[o] = opts[o];
       }
+    }
+
+    const packageManager =
+      this.options.packageManager || this.config.get('packageManager') || 'npm';
+    if (!supportedPackageManagers.includes(packageManager)) {
+      const supported = supportedPackageManagers.join(' or ');
+      this.exit(
+        `Package manager '${packageManager}' is not supported. Use ${supported}.`,
+      );
     }
   }
 
@@ -190,7 +290,7 @@ module.exports = class BaseGenerator extends Generator {
 
   /**
    * Override the base prompt to skip prompts with default answers
-   * @param questions One or more questions
+   * @param questions - One or more questions
    */
   async prompt(questions) {
     // Normalize the questions to be an array
@@ -199,13 +299,19 @@ module.exports = class BaseGenerator extends Generator {
     }
     if (!this.options['yes']) {
       if (!process.stdin.isTTY) {
-        const msg = 'The stdin is not a terminal. No prompt is allowed.';
+        const msg =
+          'The stdin is not a terminal. No prompt is allowed. ' +
+          'Use --config to provide answers to required prompts and ' +
+          '--yes to skip optional prompts with default answers';
         this.log(chalk.red(msg));
         this.exit(new Error(msg));
         return;
       }
       // Non-express mode, continue to prompt
-      return await super.prompt(questions);
+      debug('Questions', questions);
+      const answers = await super.prompt(questions);
+      debug('Answers', answers);
+      return answers;
     }
 
     const answers = Object.assign({}, this.options);
@@ -222,7 +328,9 @@ module.exports = class BaseGenerator extends Generator {
         answers[q.name] = answer;
       } else {
         if (!process.stdin.isTTY) {
-          const msg = 'The stdin is not a terminal. No prompt is allowed.';
+          const msg =
+            'The stdin is not a terminal. No prompt is allowed. ' +
+            `(While resolving a required prompt ${JSON.stringify(q.name)}.)`;
           this.log(chalk.red(msg));
           this.exit(new Error(msg));
           return;
@@ -256,87 +364,63 @@ module.exports = class BaseGenerator extends Generator {
   }
 
   /**
-   * Run `npm install` in the project
+   * Select pkgManager and install packages
+   * @param {String|Array} pkgs
+   * @param {Object} options
+   * @param {Object} spawnOpts
+   */
+  pkgManagerInstall(pkgs, options = {}, spawnOpts) {
+    const pm = this.config.get('packageManager') || this.options.packageManager;
+    if (pm === 'yarn') {
+      return this.yarnInstall(pkgs, options.yarn, spawnOpts);
+    }
+    this.npmInstall(pkgs, options.npm, spawnOpts);
+  }
+
+  /**
+   * Run `[pkgManager] install` in the project
    */
   install() {
     if (this.shouldExit()) return false;
-    const opts = this.options.npmInstall || {};
+    const opts = {
+      npm: this.options.npmInstall,
+      yarn: this.options.yarnInstall,
+    };
     const spawnOpts = Object.assign({}, this.options.spawn, {
       cwd: this.destinationRoot(),
     });
-    this.npmInstall(null, opts, spawnOpts);
+    this.pkgManagerInstall(null, opts, spawnOpts);
+  }
+
+  /**
+   * Wrapper for mem-fs-editor.copyTpl() to ensure consistent options
+   *
+   * See https://github.com/SBoudrias/mem-fs-editor/blob/master/lib/actions/copy-tpl.js
+   *
+   * @param {string} from
+   * @param {string} to
+   * @param {object} context
+   * @param {object} templateOptions
+   * @param {object} copyOptions
+   */
+  copyTemplatedFiles(
+    from,
+    to,
+    context,
+    templateOptions = {},
+    copyOptions = DEFAULT_COPY_OPTIONS,
+  ) {
+    return this.fs.copyTpl(from, to, context, templateOptions, copyOptions);
   }
 
   /**
    * Checks if current directory is a LoopBack project by checking for
-   * keyword 'loopback' under 'keywords' attribute in package.json.
-   * 'keywords' is an array
+   * "@loopback/core" package in the dependencies section of the
+   * package.json.
    */
-  async checkLoopBackProject() {
+  checkLoopBackProject() {
     debug('Checking for loopback project');
-    if (this.shouldExit()) return false;
-    const pkg = this.fs.readJSON(this.destinationPath('package.json'));
-    const key = 'loopback';
-    if (!pkg) {
-      const err = new Error(
-        'No package.json found in ' +
-          this.destinationRoot() +
-          '. ' +
-          'The command must be run in a LoopBack project.',
-      );
-      this.exit(err);
-      return;
-    }
-    if (!pkg.keywords || !pkg.keywords.includes(key)) {
-      const err = new Error(
-        'No `loopback` keyword found in ' +
-          this.destinationPath('package.json') +
-          '. ' +
-          'The command must be run in a LoopBack project.',
-      );
-      this.exit(err);
-      return;
-    }
-    this.packageJson = pkg;
-
-    const projectDeps = pkg.dependencies || {};
-    const projectDevDeps = pkg.devDependencies || {};
-
-    const cliPkg = require('../package.json');
-    const templateDeps = cliPkg.config.templateDependencies;
-    const incompatibleDeps = {};
-    for (const d in templateDeps) {
-      const versionRange = projectDeps[d] || projectDevDeps[d];
-      if (!versionRange || semver.intersects(versionRange, templateDeps[d]))
-        continue;
-      incompatibleDeps[d] = [versionRange, templateDeps[d]];
-    }
-
-    if (Object.keys(incompatibleDeps).length === 0) {
-      // No incompatible dependencies
-      return;
-    }
-    this.log(
-      chalk.red(
-        'The project has dependencies with incompatible versions required by the CLI:',
-      ),
-    );
-    for (const d in incompatibleDeps) {
-      this.log(chalk.yellow('- %s: %s (cli %s)'), d, ...incompatibleDeps[d]);
-    }
-    const prompts = [
-      {
-        name: 'ignoreIncompatibleDependencies',
-        message: `Continue to run the command?`,
-        type: 'confirm',
-        default: false,
-      },
-    ];
-    const answers = await this.prompt(prompts);
-    if (answers && answers.ignoreIncompatibleDependencies) {
-      return;
-    }
-    this.exit(new Error('Incompatible dependencies'));
+    return checkLoopBackProject(this);
   }
 
   _runNpmScript(projectDir, args) {
@@ -363,7 +447,7 @@ module.exports = class BaseGenerator extends Generator {
     if (this.options.format) {
       const pkg = this.packageJson || {};
       if (pkg.scripts && pkg.scripts['lint:fix']) {
-        this.log("Running 'npm run lint:fix' to format the code...");
+        this.log(g.f("Running 'npm run lint:fix' to format the code..."));
         await this._runNpmScript(this.destinationRoot(), [
           'run',
           '-s',
@@ -371,7 +455,7 @@ module.exports = class BaseGenerator extends Generator {
         ]);
       } else {
         this.log(
-          chalk.red("No 'lint:fix' script is configured in package.json."),
+          chalk.red(g.f("No 'lint:fix' script is configured in package.json.")),
         );
       }
     }
@@ -383,11 +467,43 @@ module.exports = class BaseGenerator extends Generator {
   async end() {
     if (this.shouldExit()) {
       debug(this.exitGeneration);
-      this.log(chalk.red('Generation is aborted:', this.exitGeneration));
+      this.log(
+        chalk.red(g.f('Generation is aborted: %s', this.exitGeneration)),
+      );
       // Fail the process
       process.exitCode = 1;
       return;
     }
     await this._runLintFix();
+  }
+
+  // Check all files being generated to ensure they succeeded
+  _isGenerationSuccessful() {
+    const generationStatus = !!Object.entries(
+      this.conflicter.generationStatus,
+    ).find(([key, val]) => {
+      // If a file was modified, update the indexes and say stuff about it
+      return val !== 'skip' && val !== 'identical';
+    });
+    debug(`Generation status: ${generationStatus}`);
+    return generationStatus;
+  }
+
+  async _updateIndexFile(dir, file) {
+    await updateIndex(dir, file, this.fs);
+
+    // Output for users
+    const updateDirRelPath = path.relative(
+      this.artifactInfo.relPath,
+      this.artifactInfo.outDir,
+    );
+
+    const outPath = path.join(
+      this.artifactInfo.relPath,
+      updateDirRelPath,
+      'index.ts',
+    );
+
+    this.log(chalk.green('   update'), `${outPath}`);
   }
 };

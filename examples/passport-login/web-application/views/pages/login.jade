@@ -1,0 +1,36 @@
+extends ../layouts/layout
+
+block content
+  .row
+    .col-md-6.col-md-offset-3
+      if user
+        h1 User Logged in!
+        h3 Hello #{user.name}
+        ul
+          li
+            a(href='/') Home
+          li
+            a(href='/auth/logout') Log Out
+      else
+        form(role='form', action='/login_submit', method='post')
+          .form-group
+            label(for='email') User Name
+            input.form-control(type='text', name='email', placeholder='Enter user name')
+          .form-group
+            label(for='password') Password
+            input.form-control(type='password', name='password', placeholder='Password')
+          button.btn.btn-default(type='submit') Submit
+        br
+        .row
+    .col-md-12
+      h1 Other Login Options
+      ul.list-inline.list-unstyled
+        li
+          a.btn.btn-primary(href="/api/auth/thirdparty/facebook") Login with Facebook
+        li
+          a.btn.btn-primary(href="/api/auth/thirdparty/google") Login with Google
+        li
+          a.btn.btn-primary(href="/api/auth/thirdparty/twitter") Login with Twitter
+      if messages
+        p
+          span(style="color:red")= messages

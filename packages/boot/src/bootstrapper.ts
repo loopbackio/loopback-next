@@ -1,21 +1,26 @@
-// Copyright IBM Corp. 2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2019. All Rights Reserved.
 // Node module: @loopback/boot
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {resolve} from 'path';
-import {Context, inject, resolveList} from '@loopback/context';
-import {CoreBindings, Application} from '@loopback/core';
 import {
-  BootOptions,
-  BootExecutionOptions,
-  BOOTER_PHASES,
+  Application,
+  Context,
+  CoreBindings,
+  inject,
+  resolveList,
+} from '@loopback/core';
+import debugModule from 'debug';
+import {resolve} from 'path';
+import {BootBindings, BootTags} from './keys';
+import {bindBooter} from './mixins';
+import {
   Bootable,
-} from './interfaces';
-import {BootBindings} from './keys';
-import {_bindBooter} from './mixins';
+  BOOTER_PHASES,
+  BootExecutionOptions,
+  BootOptions,
+} from './types';
 
-import * as debugModule from 'debug';
 const debug = debugModule('loopback:boot:bootstrapper');
 
 /**
@@ -25,9 +30,9 @@ const debug = debugModule('loopback:boot:bootstrapper');
  * NOTE: Bootstrapper should be bound as a SINGLETON so it can be cached as
  * it does not maintain any state of it's own.
  *
- * @param app Application instance
- * @param projectRoot The root directory of the project, relative to which all other paths are resolved
- * @param [bootOptions] The BootOptions describing the conventions to be used by various Booters
+ * @param app - Application instance
+ * @param projectRoot - The root directory of the project, relative to which all other paths are resolved
+ * @param bootOptions - The BootOptions describing the conventions to be used by various Booters
  */
 export class Bootstrapper {
   constructor(
@@ -51,9 +56,9 @@ export class Bootstrapper {
    * are bound to the Application instance. Each phase of an instance must
    * complete before the next phase is started.
    *
-   * @param {BootExecutionOptions} execOptions Execution options for boot. These
+   * @param execOptions - Execution options for boot. These
    * determine the phases and booters that are run.
-   * @param {Context} [ctx] Optional Context to use to resolve bindings. This is
+   * @param ctx - Optional Context to use to resolve bindings. This is
    * primarily useful when running app.boot() again but with different settings
    * (in particular phases) such as 'start' / 'stop'. Using a returned Context from
    * a previous boot call allows DI to retrieve the same instances of Booters previously
@@ -64,48 +69,41 @@ export class Bootstrapper {
     execOptions?: BootExecutionOptions,
     ctx?: Context,
   ): Promise<Context> {
-    const bootCtx = ctx || new Context(this.app);
+    const bootCtx = ctx ?? new Context(this.app);
 
     // Bind booters passed in as a part of BootOptions
     // We use _bindBooter so this Class can be used without the Mixin
-    if (execOptions && execOptions.booters) {
-      execOptions.booters.forEach(booter =>
-        // tslint:disable-next-line:no-any
-        _bindBooter(this.app, booter),
-      );
+    if (execOptions?.booters) {
+      execOptions.booters.forEach(booter => bindBooter(this.app, booter));
     }
 
     // Determine the phases to be run. If a user set a phases filter, those
     // are selected otherwise we run the default phases (BOOTER_PHASES).
-    const phases = execOptions
-      ? execOptions.filter && execOptions.filter.phases
-        ? execOptions.filter.phases
-        : BOOTER_PHASES
-      : BOOTER_PHASES;
+    const phases = execOptions?.filter?.phases ?? BOOTER_PHASES;
 
     // Find booters registered to the BOOTERS_TAG by getting the bindings
-    const bindings = bootCtx.findByTag(BootBindings.BOOTER_TAG);
+    const bindings = bootCtx.findByTag(BootTags.BOOTER);
 
     // Prefix length. +1 because of `.` => 'booters.'
-    const prefix_length = BootBindings.BOOTER_PREFIX.length + 1;
+    const prefixLength = BootBindings.BOOTERS.length + 1;
 
     // Names of all registered booters.
     const defaultBooterNames = bindings.map(binding =>
-      binding.key.slice(prefix_length),
+      binding.key.slice(prefixLength),
     );
 
-    // Determing the booters to be run. If a user set a booters filter (class
+    // Determining the booters to be run. If a user set a booters filter (class
     // names of booters that should be run), that is the value, otherwise it
     // is all the registered booters by default.
     const names = execOptions
-      ? execOptions.filter && execOptions.filter.booters
+      ? execOptions.filter?.booters
         ? execOptions.filter.booters
         : defaultBooterNames
       : defaultBooterNames;
 
     // Filter bindings by names
     const filteredBindings = bindings.filter(binding =>
-      names.includes(binding.key.slice(prefix_length)),
+      names.includes(binding.key.slice(prefixLength)),
     );
 
     // Resolve Booter Instances

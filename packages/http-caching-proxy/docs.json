@@ -1,7 +1,0 @@
-{
-  "content": [
-    "index.ts",
-    "src/caching-proxy.ts"
-  ],
-  "codeSectionDepth": 4
-}

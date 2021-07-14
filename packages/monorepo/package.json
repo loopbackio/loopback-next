@@ -1,0 +1,39 @@
+{
+  "name": "@loopback/monorepo",
+  "description": "A set of scripts to maintain a lerna monorepo",
+  "version": "0.3.1",
+  "license": "MIT",
+  "bin": {
+    "lb-run-lerna": "./lib/run-lerna.js",
+    "lb-check-package-locks": "./lib/check-package-locks.js",
+    "lb-rebuild-package-locks": "./lib/rebuild-package-locks.js",
+    "lb-update-package-deps": "./lib/update-package-deps.js",
+    "lb-update-package-json": "./lib/update-package-json.js",
+    "lb-update-ts-project-refs": "./lib/update-ts-project-refs.js"
+  },
+  "main": "index.js",
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "packages/monorepo"
+  },
+  "engines": {
+    "node": "^10.16 || 12 || 14 || 16"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "lerna": "^4.0.0"
+  },
+  "dependencies": {
+    "@lerna/filter-packages": "^4.0.0",
+    "@lerna/package-graph": "^4.0.0",
+    "@lerna/project": "^4.0.0",
+    "cross-spawn": "^7.0.3",
+    "debug": "^4.3.1",
+    "fs-extra": "^10.0.0"
+  }
+}

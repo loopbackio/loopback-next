@@ -1,31 +1,431 @@
+# The list in this file serves two purposes:
+# 1. It keeps track of Functional Area Owners, allowing all participants
+#    to find which people to ping depending on the functional area involved.
+# 2. It tells GitHub which maintainers to automatically assign for code reviews
+#    of incoming pull requests.
+#
 # Lines starting with '#' are comments.
 # Each line is a file pattern followed by one or more owners,
 # the last matching pattern has the most precedence.
 #
 # See https://help.github.com/articles/about-codeowners/
+#
+# IMPORTANT:
+# Because the last matching pattern takes the most precedence, we need to list
+# the functional areas from most generic (e.g. Models & Repositories) to most
+# narrow (e.g. MongoDB).
+###############################################################################
 
-* @bajtos @raymondfeng
+# Functional areas covered by external repositories only:
+#
+# loopback4-example-shopping
+# - Primary owner(s): @hacksparrow
+# - Standby owner(s): @jannyHou @mrmodise @dougal83
+#
+# Connector core
+# - Primary owner(s): n/a
+# - Standby owner(s): @jannyHou
+# - Repositories
+#   - loopback-connector
+#   - memory & kv-memory connectors in juggler
+#
+# OpenAPI connector
+# - Primary owner(s): @raymondfeng
+# - Standby owner(s): n/a
+# - Repositories:
+#   - loopback-connector-openapi
+#
+# JSON-RPC connector:
+# - Primary owner(s): n/a
+# - Standby owner(s): n/a
+# - Repositories:
+#   - loopback-connector-jsonrpc
+#
+# SOAP connector
+# - Primary owner(s): @jannyHou
+# - Standby owner(s): @raymondfeng
+# - Repositories:
+#   - loopback-connector-soap
+#   - strong-soap
+#
+# Cassandra
+# - Primary owner(s): @jannyHou
+# - Standby owners(s): n/a
+# - Repositories:
+#   - loopback-connector-cassandra
+#
+# IBM Databases
+# - Primary owner(s): @emonddr
+# - Secondary owner(s): @jannyHou
+# - Repositories:
+#   - loopback-connector-db2
+#   - loopback-connector-dashdb
+#   - loopback-connector-db2iseries
+#   - loopback-connector-informix
+#   - loopback-connector-mqlight
+#   - loopback-connector-ibmi
+#   - loopback-connector-db2z
+#   - loopback-connector-zosconnectee
+#
+# Microsoft SQL
+# - Issue label: db:MSSQL
+# - Primary owner(s): @jannyHou
+# - Standby owner(s): @agnes512
+# - Repositories:
+#   - loopback-connector-mssql
+#
+# Oracle
+# - Issue label: db:Oracle
+# - Primary owner(s): @emonddr
+# - Standby owner(s): n/a
+# - Repositories:
+#   - loopback-connector-oracle
 
-packages/authentication/* @bajtos @raymondfeng
-packages/boot/* @raymondfeng @hacksparrow
-packages/build/* @bajtos @raymondfeng
-packages/http-caching-proxy/* @bajtos
-packages/http-server/* @hacksparrow @bajtos
-packages/cli/* @raymondfeng @bajtos
-packages/context/* @bajtos @raymondfeng
-packages/core/* @bajtos @raymondfeng
-packages/metadata/* @raymondfeng
-packages/openapi-spec-builder/* @bajtos @raymondfeng
-packages/openapi-v3/* @bajtos @jannyHou
-packages/openapi-v3-types/* @bajtos @jannyHou
-packages/repository/* @raymondfeng
-packages/repository-json-schema/* @bajtos
-packages/rest/* @bajtos @raymondfeng
-packages/service-proxy/* @raymondfeng
-packages/testlab/* @bajtos
-examples/todo/* @bajtos @hacksparrow
-examples/hello-world/* @b-admike
-examples/log-extension/* @hacksparrow
-examples/rpc-server/* @hacksparrow
-examples/soap-calculator/* @marioestradarosa
-docs/* @bajtos @raymondfeng @hacksparrow @b-admike @jannyHou
+# Fall-back entry for files not assigned to any Functional Areas
+* @raymondfeng
+
+# To keep things simple, we don't assign any owners for the documentation.
+# When some doc pages are changed as part of a pull request changing the
+# implementation, then GitHub will assign the reviewers based on who is
+# owning the code being modified.
+# There will be no code owners assigned for pull requests changing
+# the documentation only. We can improve this situation in the future,
+# e.g. by re-organizing doc pages to align the file structure with functional
+# areas.
+/docs
+
+#
+# CLI (`lb4` infrastructure, commands not covered by functional areas below)
+#
+# - Issue label: CLI
+# - Primary owner(s): @agnes512
+# - Standby owner(s): @emonddr
+/packages/cli @agnes512 @emonddr
+
+#
+# Dependency Injection, Inversion of Control and related areas
+#
+# - Issue label: IoC/Context
+# - Primary owner(s): @raymondfeng
+# - Standby owner(s): @emonddr @jannyHou
+/packages/metadata @raymondfeng @emonddr @jannyHou
+/packages/context @raymondfeng @emonddr @jannyHou
+/examples/context @raymondfeng @emonddr @jannyHou
+/packages/cli/generators/interceptor @raymondfeng @emonddr @jannyHou
+/extensions/context-explorer @raymondfeng @emonddr
+
+#
+# Framework core
+#
+# - Issue label: Core
+# - Primary owner(s): @raymondfeng
+# - Standby owner(s): n/a
+/packages/core @raymondfeng
+/examples/rpc-server @raymondfeng
+/examples/webpack @raymondfeng
+/packages/cli/generators/observer @raymondfeng
+
+#
+# Infrastructure for extensions
+#
+# - Issue label: Extensions
+# - Primary owner(s): @raymondfeng @jannyHou
+# - Standby owner(s): @emonddr
+/packages/core/src/component.ts @emonddr @jannyHou @raymondfeng
+/extensions/cron @raymondfeng
+/extensions/pooling @raymondfeng
+/examples/greeting-app @emonddr @jannyHou @raymondfeng
+/examples/log-extension @emonddr @jannyHou @raymondfeng
+/examples/greeter-extension @emonddr @jannyHou @raymondfeng
+/examples/multi-tenancy @raymondfeng
+/docs/site/tutorials/core @emonddr @jannyHou @raymondfeng
+
+#
+# REST API (server-side)
+#
+# - Issue label: REST
+# - Primary owner(s): @hacksparrow
+# - Standby owner(s): @emonddr
+/packages/rest @emonddr @hacksparrow
+/packages/http-server @emonddr @hacksparrow
+/packages/express @raymondfeng
+/packages/cli/generators/controller @emonddr @hacksparrow
+/examples/hello-world @emonddr @hacksparrow
+/examples/express-composition @emonddr @hacksparrow
+/examples/file-transfer @emonddr @hacksparrow @raymondfeng
+/examples/binding-resolution @raymondfeng
+
+#
+# OpenAPI (server-side)
+#
+# - Issue label: OpenAPI
+# - Primary owner(s): @jannyHou
+# - Standby owner(s): @emonddr @mschnee
+/packages/openapi-spec-builder @emonddr @jannyHou
+/packages/openapi-v3 @emonddr @jannyHou @mschnee
+/packages/rest/src/router/openapi-path.ts @emonddr @jannyHou
+/packages/rest/src/__tests__/unit/router/rebase-openapi-spec.unit.ts @emonddr @jannyHou
+/packages/rest/src/__tests__/unit/rest.server/rest.server.open-api-spec.unit.ts @emonddr @jannyHou
+
+# REST API Explorer
+#
+# - Issue label: API Explorer
+# - Primary owner(s): @hacksparrow
+# - Standby owner(s): n/a
+/packages/rest-explorer @hacksparrow
+
+#
+# Models & Repository
+#
+# - Issue label: Repository
+# - Primary owner(s): @agnes512
+# - Standby owner(s): @hacksparrow @dougal83
+# Includes the following repos: loopback-datasource-juggler
+/packages/filter @agnes512 @hacksparrow
+/packages/repository @agnes512 @hacksparrow @dougal83
+/packages/repository-json-schema @agnes512 @hacksparrow @dougal83
+/packages/repository-tests @agnes512 @hacksparrow
+/packages/cli/generators/repository @agnes512 @hacksparrow
+/packages/cli/generators/datasource @agnes512 @hacksparrow
+/packages/cli/generators/discover @agnes512 @hacksparrow
+/packages/cli/generators/model @agnes512 @hacksparrow
+
+#
+# Model relations & repositories
+#
+# - Issue label: Relations
+# - Primary owner(s): @agnes512
+# - Standby owner(s): @hacksparrow @nabdelgadir
+/packages/repository/src/relations @agnes512 @hacksparrow @nabdelgadir
+/packages/repository-tests/src/crud/relations @agnes512 @hacksparrow @nabdelgadir
+/packages/repository/src/__tests__/acceptance/has-many-without-di.relation.acceptance.ts @agnes512 @hacksparrow @nabdelgadir
+/packages/repository/src/__tests__/integration/repositories/relation.factory.integration.ts @agnes512 @hacksparrow @nabdelgadir
+/packages/cli/generators/relation @agnes512 @hacksparrow @nabdelgadir
+/examples/todo-list @agnes512 @hacksparrow @nabdelgadir
+/docs/site/tutorials/todo-list/ @agnes512 @hacksparrow @nabdelgadir
+
+#
+# Services (infrastructure for SOAP/REST clients)
+#
+# - Issue label: Service Proxy
+# - Primary owner(s): @raymondfeng
+# - Standby owner(s): n/a
+# Includes the following repos: loopback-connector-rest
+/packages/service-proxy @raymondfeng
+/packages/cli/generators/service @raymondfeng
+# The SOAP Calculator examples is a bit special, we want to preserve
+# Mario as the code owner of this specific subarea only
+/examples/soap-calculator @raymondfeng @marioestradarosa
+/docs/site/tutorials/soap-calculator @raymondfeng @marioestradarosa
+
+#
+# `lb4 openapi` (scaffold an LB4 app from the given OpenAPI spec)
+#
+# - Issue label: n/a
+# - Primary owner(s): @raymondfeng
+# - Standby owner(s): @jannyHou
+/packages/cli/generators/openapi @jannyHou @raymondfeng
+
+#
+# LB4 project conventions
+#
+# - Issue label: n/a
+# - Primary owner(s): @agnes512
+# - Standby owner(s): n/a
+/packages/cli/generators/project @agnes512
+/packages/cli/generators/app @agnes512
+/packages/cli/generators/extension @agnes512
+/examples/todo @agnes512 @nabdelgadir
+/examples/validation-app @dhmlau
+/docs/site/tutorials/todo @agnes512 @nabdelgadir
+
+#
+# Bootstrapper (core)
+#
+# - Issue label: Boot
+# - Primary owner(s): @jannyHou
+# - Standby owner(s): n/a
+/packages/boot @jannyHou
+
+#
+# Migration from LB3
+#
+# - Issue label: Migration
+# - Primary owner(s): @hacksparrow
+# - Standby owner(s): @nabdelgadir
+/packages/booter-lb3app @hacksparrow @nabdelgadir
+/packages/cli/generators/import-lb3-models @hacksparrow @nabdelgadir
+/examples/lb3-application @hacksparrow @nabdelgadir
+/docs/site/migration @hacksparrow @nabdelgadir
+
+#
+# REST CRUD conventional API
+#
+# - Issue label: n/a
+# - Primary owner(s): n/a
+# - Standby owner(s): @hacksparrow @nabdelgadir
+/packages/model-api-builder @hacksparrow
+/packages/rest-crud @nabdelgadir
+/examples/rest-crud @nabdelgadir
+
+#
+# Cloud Native tooling
+#
+# - Issue label: CloudNative
+# - Primary owner(s): @jannyHou @raymondfeng
+# - Standby owner(s): @emonddr @nflaig
+/extensions/metrics @emonddr @jannyHou @raymondfeng @nflaig
+/extensions/health @emonddr @jannyHou @raymondfeng @nflaig
+/extensions/logging @emonddr @jannyHou @raymondfeng
+/examples/metrics-prometheus @emonddr @jannyHou @raymondfeng
+/acceptance/extension-logging-fluentd @emonddr @jannyHou @raymondfeng
+
+#
+# Authentication
+#
+# - Issue label: Authentication
+# - Primary owner(s): @hacksparrow
+# - Standby owner(s): @emonddr @jannyHou @Madaky @nflaig
+/packages/authentication @emonddr @hacksparrow @jannyHou @nflaig
+/packages/security @emonddr @hacksparrow @jannyHou
+/extensions/authentication-passport @emonddr @hacksparrow @jannyHou
+/extensions/authentication-jwt @emonddr @hacksparrow @jannyHou @Madaky
+/docs/site/tutorials/authentication @emonddr @hacksparrow @jannyHou
+/examples/passport-login @emonddr
+/examples/todo-jwt @dhmlau @jannyHou
+
+#
+# Authorization
+#
+# - Issue label: Authorization
+# - Primary owner(s): @hacksparrow
+# - Standby owner(s): @jannyHou
+/packages/authorization @hacksparrow @jannyHou
+/examples/access-control-migration @hacksparrow @jannyHou
+
+#
+# APIConnect
+#
+# - Issue label: APIConnect
+# - Primary owner(s): @raymondfeng
+# - Standby owner(s): @dhmlau
+/extensions/apiconnect @raymondfeng @dhmlau
+
+#
+# TypeORM
+#
+# - Issue label: TypeORM
+# - Primary owner(s): @hacksparrow
+# - Standby owner(s): n/a
+/extensions/typeorm @hacksparrow
+
+# GraphQL
+#
+# - Issue label: GraphQL
+# - Primary owner(s): @raymondfeng
+/extensions/graphql @raymondfeng
+/examples/graphql @raymondfeng
+
+#
+# MessagePack body parser
+#
+# - Issue label: n/a
+# - Primary owner(s): @achrinza
+# - Standby owner(s): n/a
+/bodyparsers/rest-msgpack @achrinza
+
+# WebSocket/SockIO
+#
+# - Issue label: WebSocket
+# - Primary owner(s): @raymondfeng
+# - Standby owner(s): n/a
+/extensions/socketio @raymondfeng
+/examples/socketio @raymondfeng
+
+#
+# Build & internal tooling
+#
+# - Issue label: Internal Tooling
+# - Primary owner(s): @raymondfeng
+# - Standby owner(s): @emonddr
+/bin @emonddr @raymondfeng
+/packages/build @emonddr @raymondfeng @achrinza
+/packages/monorepo @raymondfeng
+/packages/eslint-config @emonddr @raymondfeng
+/packages/tsdocs @emonddr @raymondfeng
+/fixtures/tsdocs-monorepo @emonddr @raymondfeng
+/packages/cli/generators/update @emonddr @raymondfeng
+/packages/cli/generators/copyright @emonddr @raymondfeng
+
+#
+# Test helpers
+#
+# - Issue label: Testlab
+# - Primary owner(s): n/a
+# - Standby owner(s): @agnes512
+/packages/testlab @agnes512
+/packages/http-caching-proxy @agnes512
+
+#
+# Benchmarks
+#
+# - Issue label: n/a
+# - Primary owner(s): n/a
+# - Standby owner(s): n/a
+# /benchmark
+
+#
+# PostgreSQL
+#
+# - Issue label: db:PostgreSQL
+# - Primary owner(s): @jannyHou
+# - Standby owner(s): @agnes512
+# Includes the following repos: loopback-connector-postgresql
+/acceptance/repository-postgresql @agnes512 @jannyHou
+
+#
+# MySQL
+#
+# - Issue label: db:MySQL
+# - Primary owner(s): @jannyHou
+# - Standby owner(s): @agnes512
+# Includes the following repos: loopback-connector-mysql
+/acceptance/repository-mysql @agnes512 @jannyHou
+
+#
+# MongoDB
+#
+# - Issue label: db:MongoDB
+# - Primary owner(s): n/a
+# - Standby owner(s): @agnes512 @hacksparrow
+# Includes the following repos: loopback-connector-mongodb
+/acceptance/repository-mongodb @agnes512 @hacksparrow
+
+#
+# Cloudant & CouchDB2
+#
+# - Issue label: db:Cloudant
+# - Primary owner(s): @jannyHou
+# - Standby owner(s): @agnes512
+# Includes the following repos
+# - loopback-connector-cloudant
+# - loopback-connector-couchdb2
+# - (and other related/base connectors)
+/acceptance/repository-cloudant @agnes512 @jannyHou
+
+# Redis (KeyValue)
+#
+# - Issue label: n/a
+# - Primary owner(s): n/a
+# - Standby owner(s): n/a
+# Includes the following repos
+# - loopback-connector-kv-redis
+# (there is no acceptance/repository-kv-redis yet)
+
+#
+# Fixtures (test apps)
+#
+# - Issue label: fixtures
+# - Primary owner(s): @jannyHou @emonddr
+# - Standby owner(s): n/a
+fixtures/mock-oauth2-provider @jannyHou @emonddr

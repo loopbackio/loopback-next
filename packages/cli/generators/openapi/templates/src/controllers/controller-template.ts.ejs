@@ -1,5 +1,4 @@
-/* tslint:disable:no-any */
-import {operation, param, requestBody} from '@loopback/rest';
+import {api, operation, param, requestBody} from '@loopback/rest';
 <%_
 imports.forEach(i => {
 -%>
@@ -10,17 +9,29 @@ imports.forEach(i => {
 
 /**
  * The controller class is generated from OpenAPI spec with operations tagged
- * by <%- tag %>
- * <%- description %>
+ * by <%- tag || '<no-tag>' %>.
+ *
+<%_ const _comment = escapeComment(description);
+    if (_comment) {
+-%>
+ * <%- _comment %>
+<%_ } -%>
  */
+<%- decoration %>
 export class <%- className %> {
   constructor() {}
 
   <%_ for (const m of methods) { -%>
   /**
-  <%_ for (const c of m.comments) { -%>
-   * <%- c %>
-  <%_ } -%>
+  <%_ for (const c of m.comments) {
+        const _comment = escapeComment(c);
+        if (_comment) {
+  -%>
+   * <%- _comment %>
+  <%_   } else { -%>
+   *
+  <%_   }
+    } -%>
    */
   <%- m.decoration %>
   <%- m.signature %> {

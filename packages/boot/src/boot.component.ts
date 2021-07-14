@@ -1,18 +1,27 @@
-// Copyright IBM Corp. 2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2020. All Rights Reserved.
 // Node module: @loopback/boot
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Bootstrapper} from './bootstrapper';
-import {Component, Application, CoreBindings} from '@loopback/core';
-import {inject, BindingScope} from '@loopback/context';
 import {
-  ControllerBooter,
-  RepositoryBooter,
-  DataSourceBooter,
-  ServiceBooter,
+  Application,
+  BindingScope,
+  Component,
+  CoreBindings,
+  inject,
+} from '@loopback/core';
+import {
   ApplicationMetadataBooter,
+  ControllerBooter,
+  DataSourceBooter,
+  InterceptorProviderBooter,
+  LifeCycleObserverBooter,
+  ModelApiBooter,
+  ModelBooter,
+  RepositoryBooter,
+  ServiceBooter,
 } from './booters';
+import {Bootstrapper} from './bootstrapper';
 import {BootBindings} from './keys';
 
 /**
@@ -29,11 +38,15 @@ export class BootComponent implements Component {
     RepositoryBooter,
     ServiceBooter,
     DataSourceBooter,
+    LifeCycleObserverBooter,
+    InterceptorProviderBooter,
+    ModelApiBooter,
+    ModelBooter,
   ];
 
   /**
    *
-   * @param app Application instance
+   * @param app - Application instance
    */
   constructor(@inject(CoreBindings.APPLICATION_INSTANCE) app: Application) {
     // Bound as a SINGLETON so it can be cached as it has no state

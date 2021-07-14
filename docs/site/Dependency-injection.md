@@ -1,7 +1,7 @@
 ---
 lang: en
 title: 'Dependency injection'
-keywords: LoopBack 4.0, LoopBack 4
+keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Dependency-injection.html
 ---
@@ -13,34 +13,80 @@ technique where the construction of dependencies of a class or function is
 separated from its behavior, in order to keep the code
 [loosely coupled](https://en.wikipedia.org/wiki/Loose_coupling).
 
-For example, the Sequence Action `authenticate` supports different
-authentication strategies (e.g. HTTP Basic Auth, OAuth2, etc.). Instead of
-hard-coding some sort of a lookup table to find the right strategy instance,
-`authenticate` uses dependency injection to let the caller specify which
-strategy to use.
+For example, the Sequence Action `authenticate` in `@loopback/authentication`
+supports different authentication strategies (e.g. HTTP Basic Auth, OAuth2,
+etc.). Instead of hard-coding some sort of a lookup table to find the right
+strategy instance, the `authenticate` action uses dependency injection to let
+the caller specify which strategy to use.
 
-The example below shows a simplified implementation of `authenticate` action,
-please refer to the source code of `@loopback/authenticate` for the full working
-version.
+The implementation of the `authenticate` action is shown below.
 
 ```ts
-class AuthenticateActionProvider {
-  constructor(@inject(AuthenticationBindings.STRATEGY) strategy) {
-    this.strategy = strategy;
-  }
+import {inject, Provider} from '@loopback/core';
 
+export class AuthenticateActionProvider implements Provider<AuthenticateFn> {
+  constructor(
+    // The provider is instantiated for Sequence constructor,
+    // at which time we don't have information about the current
+    // route yet. This information is needed to determine
+    // what auth strategy should be used.
+    // To solve this, we are injecting a getter function that will
+    // defer resolution of the strategy until authenticate() action
+    // is executed.
+    @inject.getter(AuthenticationBindings.STRATEGY)
+    readonly getStrategy: Getter<AuthenticationStrategy>,
+    @inject.setter(SecurityBindings.USER)
+    readonly setCurrentUser: Setter<UserProfile>,
+  ) {}
+
+  /**
+   * @returns AuthenticateFn
+   */
   value(): AuthenticateFn {
     return request => this.action(request);
   }
 
-  // this is the function invoked by "authenticate()" sequence action
-  action(request: Request) {
-    const adapter = new StrategyAdapter(this.strategy);
-    const user = await adapter.authenticate(request);
-    return user;
+  /**
+   * The implementation of authenticate() sequence action.
+   * @param request - The incoming request provided by the REST layer
+   */
+  async action(request: Request): Promise<UserProfile | undefined> {
+    const strategy = await this.getStrategy();
+    if (!strategy) {
+      // The invoked operation does not require authentication.
+      return undefined;
+    }
+
+    const userProfile = await strategy.authenticate(request);
+    if (!userProfile) {
+      // important to throw a non-protocol-specific error here
+      let error = new Error(
+        `User profile not returned from strategy's authenticate function`,
+      );
+      Object.assign(error, {
+        code: USER_PROFILE_NOT_FOUND,
+      });
+      throw error;
+    }
+
+    this.setCurrentUser(userProfile);
+    return userProfile;
   }
 }
 ```
+
+{% include note.html content="The `@loopback/core` package re-exports all public
+APIs of `@loopback/context`. For consistency, we recommend the usage of
+`@loopback/core` for imports in LoopBack modules and applications unless they
+depend on `@loopback/context` explicitly. The two statements below are
+equivalent:
+
+```ts
+import {inject} from '@loopback/context';
+import {inject} from '@loopback/core';
+```
+
+" %}
 
 Dependency Injection makes the code easier to extend and customize, because the
 dependencies can be easily rewired by the application developer. It makes the
@@ -50,7 +96,7 @@ important when testing code interacting with external services like a database
 or an OAuth2 provider. Instead of making expensive network requests, the test
 can provide a lightweight implementation returning pre-defined responses.
 
-## Configuring what to inject
+## Configure what to inject
 
 Now that we write a class that gets the dependencies injected, you are probably
 wondering where are these values going to be injected from and how to configure
@@ -62,24 +108,27 @@ In LoopBack, we use [Context](Context.md) to keep track of all injectable
 dependencies.
 
 There are several different ways for configuring the values to inject, the
-simplest options is to call `app.bind(key).to(value)`. Building on top of the
-example above, one can configure the app to use a Basic HTTP authentication
-strategy as follows:
+simplest options is to call `app.bind(key).to(value)`.
 
 ```ts
-// TypeScript example
-
-import {BasicStrategy} from 'passport-http';
-import {RestApplication, RestServer} from '@loopback/rest';
-// basic scaffolding stuff happens in between...
-
-// The REST server has its own context!
-const server = await app.getServer(RestServer);
-server.bind(AuthenticationBindings.STRATEGY).to(new BasicStrategy(loginUser));
-
-function loginUser(username, password, cb) {
-  // check that username + password are valid
+export namespace JWTAuthenticationStrategyBindings {
+  export const TOKEN_SECRET = BindingKey.create<string>(
+    'authentication.strategy.jwt.secret',
+  );
+  export const TOKEN_EXPIRES_IN = BindingKey.create<string>(
+    'authentication.strategy.jwt.expires.in.seconds',
+  );
 }
+
+...
+
+server
+  .bind(JWTAuthenticationStrategyBindings.TOKEN_SECRET)
+  .to('myjwts3cr3t');
+
+server
+  .bind(JWTAuthenticationStrategyBindings.TOKEN_EXPIRES_IN)
+  .to('600');
 ```
 
 However, when you want to create a binding that will instantiate a class and
@@ -87,14 +136,10 @@ automatically inject required dependencies, then you need to use `.toClass()`
 method:
 
 ```ts
-server
-  .bind(AuthenticationBindings.AUTH_ACTION)
-  .toClass(AuthenticateActionProvider);
+server.bind(TokenServiceBindings.TOKEN_SERVICE).toClass(TokenService);
 
-const provider = await server.get(AuthenticationBindings.AUTH_ACTION);
-// provider is an AuthenticateActionProvider instance
-// provider.strategy was set to the value returned
-// by server.get('authentication.strategy')
+const tokenService = await server.get(TokenServiceBindings.TOKEN_SERVICE);
+// tokenService is a TokenService instance
 ```
 
 When a binding is created via `.toClass()`, [Context](Context.md) will create a
@@ -106,9 +151,9 @@ case [Context](Context.md) will recursively instantiate these classes first,
 resolving their dependencies as needed.
 
 In this particular example, the class is a
-[Provider](Writing-Components#providers). Providers allow you to customize the
-way how a value is created by the Context, possibly depending on other Context
-values. A provider is typically bound using `.toProvider()` API:
+[Provider](Creating-components.md#providers). Providers allow you to customize
+the way how a value is created by the Context, possibly depending on other
+Context values. A provider is typically bound using `.toProvider()` API:
 
 ```js
 app
@@ -145,7 +190,7 @@ class ProductController {
   }
 
   async list() {
-    return await this.repo.find({where: {available: true}});
+    return this.repo.find({where: {available: true}});
   }
 }
 ```
@@ -176,8 +221,8 @@ dependencies as method arguments.
 
 ```ts
 class InfoController {
-  greet(@inject(AuthenticationBindings.CURRENT_USER) user: UserProfile) {
-    return `Hello, ${userProfile.name}`;
+  greet(@inject(SecurityBindings.USER) user: UserProfile) {
+    return `Hello, ${user.name}`;
   }
 }
 ```
@@ -239,6 +284,25 @@ export class MyController {
 }
 ```
 
+## Additional `inject.*` or sugar decorators
+
+There are a few special decorators from the `inject` namespace.
+
+- [`@inject.getter`](decorators/Decorators_inject.md#@inject.getter)
+- [`@inject.setter`](decorators/Decorators_inject.md#@inject.setter)
+- [`@inject.binding`](decorators/Decorators_inject.md#@inject.binding)
+- [`@inject.context`](decorators/Decorators_inject.md#@inject.context)
+- [`@inject.tag`](decorators/Decorators_inject.md#@inject.tag)
+- [`@inject.view`](decorators/Decorators_inject.md#@inject.view)
+
+There are also other sugar decorators for injection.
+
+- [`@config` and `@config.*`](Context.md#configuration-by-convention)
+- [@service](decorators/Decorators_service.md)
+- [@repository](decorators/Decorators_repository.md)
+
+See [Inject decorators](decorators/Decorators_inject.md) for more details.
+
 ## Circular dependencies
 
 LoopBack can detect circular dependencies and report the path which leads to the
@@ -247,7 +311,7 @@ problem.
 Consider the following example:
 
 ```ts
-import {Context, inject} from '@loopback/context';
+import {Context, inject} from '@loopback/core';
 
 interface Developer {
   // Each developer belongs to a team
@@ -300,6 +364,111 @@ Error: Circular dependency detected:
   project --> @ProjectImpl.constructor[0] -->
   lead
 ```
+
+## Dependency injection for bindings with different scopes
+
+Contexts can form a chain and bindings can be registered at different levels.
+The binding scope controls not only how bound values are cached, but also how
+its dependencies are resolved.
+
+Let's take a look at the following example:
+
+![binding-scopes](./imgs/binding-scopes.png)
+
+The corresponding code is:
+
+```ts
+import {inject, Context, BindingScope} from '@loopback/core';
+import {RestBindings} from '@loopback/rest';
+
+interface Logger() {
+  log(message: string);
+}
+
+class PingController {
+  constructor(@inject('logger') private logger: Logger) {}
+}
+
+class MyService {
+  constructor(@inject('logger') private logger: Logger) {}
+}
+
+class ServerLogger implements Logger {
+  log(message: string) {
+    console.log('server: %s', message);
+  }
+}
+
+class RequestLogger implements Logger {
+  // Inject the http request
+  constructor(@inject(RestBindings.Http.REQUEST) private req: Request) {}
+  log(message: string) {
+    console.log('%s: %s', this.req.url, message);
+  }
+}
+
+const appCtx = new Context('application');
+appCtx
+  .bind('controllers.PingController')
+  .toClass(PingController)
+  .inScope(BindingScope.TRANSIENT);
+
+const serverCtx = new Context(appCtx, 'server');
+serverCtx
+  .bind('my-service')
+  .toClass(MyService)
+  .inScope(BindingScope.SINGLETON);
+
+serverCtx.bind('logger').toClass(ServerLogger);
+```
+
+Please note that `my-service` is a `SINGLETON` for the `server` context subtree
+and it expects a `logger` to be injected.
+
+Now we create a new context per request:
+
+```ts
+const requestCtx = new Context(serverCtx, 'request');
+requestCtx.bind('logger').toClass(RequestLogger);
+
+const myService = await requestCtx.get<MyService>('my-service');
+// myService.logger should be an instance of `ServerLogger` instead of `RequestLogger`
+
+requestCtx.close();
+// myService survives as it's a singleton
+```
+
+Dependency injection for bindings in `SINGLETON` scope is resolved using the
+owner context instead of the current one. This is needed to ensure that resolved
+singleton bindings won't have dependencies from descendant contexts, which can
+be closed before the owner context. The singleton cannot have dangling
+references to values from the child context.
+
+The story is different for `PingController` as its binding scope is `TRANSIENT`.
+
+```ts
+const requestCtx = new Context(serverCtx, 'request');
+requestCtx.bind('logger').toClass(RequestLogger);
+
+const pingController = await requestCtx.get<PingController>(
+  'controllers.PingController',
+);
+// pingController.logger should be an instance of `RequestLogger` instead of `ServerLogger`
+```
+
+A new instance of `PingController` is created for each invocation of
+`await requestCtx.get<PingController>('controllers.PingController')` and its
+`logger` is injected to an instance of `RequestLogger` so that it can log
+information (such as `url` or `request-id`) for the `request`.
+
+The following table illustrates how bindings and their dependencies are
+resolved.
+
+| Code                                             | Binding Scope | Resolution Context | Owner Context | Cache Context | Dependency              |
+| ------------------------------------------------ | ------------- | ------------------ | ------------- | ------------- | ----------------------- |
+| requestCtx.get<br>('my-service')                 | SINGLETON     | requestCtx         | serverCtx     | serverCtx     | logger -> ServerLogger  |
+| serverCtx.get<br>('my-service')                  | SINGLETON     | serverCtx          | serverCtx     | serverCtx     | logger -> ServerLogger  |
+| requestCtx.get<br>('controllers.PingController') | TRANSIENT     | requestCtx         | appCtx        | N/A           | logger -> RequestLogger |
 
 ## Additional resources
 

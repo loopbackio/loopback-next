@@ -17,6 +17,9 @@ defer to the owners of each individual module; the powers of the individual
 owner are kept in check by the ability of the community to fork and replace
 dependencies on the individual module and maintainer.
 
+The LoopBack project adopts the
+[Contributor Covenant version 2](CODE_OF_CONDUCT.md).
+
 ## [Reporting issues](http://loopback.io/doc/en/contrib/Reporting-issues.html)
 
 Issues in
@@ -33,21 +36,25 @@ and tools contained in LoopBack repositories.
 
 - [Monorepo overview](./site/MONOREPO.md)
 - [Setting up development environment](./site/DEVELOPING.md#setting-up-development-environment)
-  - [Developing with VisualStudio Code](./site/VSCODE.md)
+  - [Developing with VisualStudio Code (recommended)](./site/VSCODE.md)
+  - [Developing with WebStorm](./site/WEBSTORM.md)
 - [How to contribute the code](http://loopback.io/doc/en/contrib/code-contrib.html#how-to-contribute-to-the-code)
 - [Building the project](./site/DEVELOPING.md#building-the-project)
 - [Running tests](./site/DEVELOPING.md#running-tests)
 - [Coding rules](./site/DEVELOPING.md#coding-rules)
 - [API documentation](./site/DEVELOPING.md#api-documentation)
 - [Git commit messages](./site/DEVELOPING.md#commit-message-guidelines)
+- [Making breaking changes](./site/DEVELOPING.md#making-breaking-changes)
 - [Reviewing pull requests](http://loopback.io/doc/en/contrib/triaging-pull-requests.html)
-- [Contributor License Agreement (CLA)](http://loopback.io/doc/en/contrib/code-contrib.html#agreeing-to-the-cla)
+- [Developer Certificate of Origin (DCO)](https://loopback.io/doc/en/contrib/code-contrib.html#developer-certificate-of-origin-dco)
 
 ## [Documentation](http://loopback.io/doc/en/contrib/doc-contrib.html)
 
-LoopBack documentation is sourced in the
-[strongloop/loopback.io](https://github.com/strongloop/loopback.io) GitHub
-repository.
+LoopBack documentation is sourced in both the
+[strongloop/loopback.io](https://github.com/strongloop/loopback.io) and
+[strongloop/loopback-next](https://github.com/strongloop/loopback-next/tree/master/docs/site)
+GitHub repositories. The `loopback-next` repository holds the documentation for
+LoopBack 4.
 
 - [How LoopBack documentation works](http://loopback.io/doc/en/contrib/doc-contrib.html#how-loopback-documentation-works)
 - [Using Jekyll](http://loopback.io/doc/en/contrib/jekyll_getting_started.html)

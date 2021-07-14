@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Copyright IBM Corp. 2017,2019. All Rights Reserved.
 // Node module: @loopback/testlab
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -23,6 +23,9 @@ interface Object {
   should: ShouldAssertion;
 }
 */
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/unified-signatures */
 
 interface ShouldAssertion {
   // basic grammar
@@ -211,7 +214,6 @@ interface Internal extends ShouldInternal {
 }
 
 declare var should: Internal;
-declare var Should: Internal;
 interface Window {
   Should: Internal;
 }

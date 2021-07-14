@@ -1,0 +1,35 @@
+//- Load Scripts
+script(src='//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js')
+script(src='//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js')
+
+hr(style="margin-top: 50px;")
+.footer(style="text-align: center;")
+  p
+    | Copyright ©&nbsp;
+    script.
+      var d = new Date();
+      document.write(d.getFullYear());
+    | &nbsp;StrongLoop, Inc., All Rights Reserved.&nbsp;
+    div(id="currentUser")
+    if user
+      button(type="button" class="btn btn-success") Current User.
+      script.
+          $(".btn").click(function(e){
+            $.ajax({
+              url: "/api/whoAmI",
+              success: function(data){
+                var htmlText = `<div class="div-container">`;
+                htmlText = htmlText + `<p class="p-uname"> UserName: ${data.user.username}</p> `;
+                if (data.user.profiles && data.user.profiles.length) {
+                  htmlText = htmlText + data.user.profiles.map(function(p){
+                    return `
+                        <p class="p-name"> Provider: ${p.provider}</p>
+                        <p class="p-scheme"> AuthScheme: ${p.authScheme}</p>
+                        <p class="p-id"> External Id: ${p.id}</p>`;
+                  });
+                }
+                htmlText = htmlText + ` </div>`;
+                $("#currentUser").html(htmlText) ;
+              }
+            });
+          });

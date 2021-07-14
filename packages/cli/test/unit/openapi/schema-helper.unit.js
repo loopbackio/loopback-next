@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2020. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -41,11 +41,11 @@ describe('primitive types', () => {
   });
 
   it('maps date', () => {
-    expectMapping({type: 'string', format: 'date'}, 'Date');
+    expectMapping({type: 'string', format: 'date'}, 'string');
   });
 
   it('maps date-time', () => {
-    expectMapping({type: 'string', format: 'date'}, 'Date');
+    expectMapping({type: 'string', format: 'date-time'}, 'Date');
   });
 
   it('maps password', () => {
@@ -88,6 +88,19 @@ describe('primitive types with enum', () => {
 
   it('maps string', () => {
     expectMapping({type: 'string', enum: ['A', 'B', 'C']}, "'A' | 'B' | 'C'");
+  });
+
+  it('maps string array', () => {
+    expectMapping(
+      {
+        type: 'array',
+        items: {
+          type: 'string',
+          enum: ['A', 'B', 'C'],
+        },
+      },
+      "('A' | 'B' | 'C')[]",
+    );
   });
 });
 
@@ -169,6 +182,18 @@ describe('composite types', () => {
     );
   });
 
+  it('maps array oneOf', () => {
+    expectMapping(
+      {
+        type: 'array',
+        items: {
+          oneOf: [{type: 'string'}, {type: 'number'}],
+        },
+      },
+      '(string | number)[]',
+    );
+  });
+
   it('maps anyOf', () => {
     expectMapping(
       {anyOf: [{type: 'string'}, {type: 'number'}]},
@@ -180,6 +205,18 @@ describe('composite types', () => {
     expectMapping(
       {allOf: [{type: 'string'}, {type: 'number'}]},
       'string & number',
+    );
+  });
+
+  it('maps array allOf', () => {
+    expectMapping(
+      {
+        type: 'array',
+        items: {
+          allOf: [{type: 'string'}, {type: 'number'}],
+        },
+      },
+      '(string & number)[]',
     );
   });
 });

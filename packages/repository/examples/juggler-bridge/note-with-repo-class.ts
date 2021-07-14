@@ -1,9 +1,9 @@
-// Copyright IBM Corp. 2017. All Rights Reserved.
+// Copyright IBM Corp. 2017,2019. All Rights Reserved.
 // Node module: @loopback/repository
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Context, inject} from '@loopback/context';
+import {Context, inject} from '@loopback/core';
 
 import {
   repository,
@@ -40,7 +40,7 @@ class MyNoteRepository extends DefaultCrudRepository<Note, string> {
     // FIXME For some reason ts-node fails by complaining that
     // juggler is undefined if the following is used:
     // @inject('dataSources.memory') dataSource: juggler.DataSource
-    // tslint:disable-next-line:no-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     @inject('dataSources.memory') dataSource: any,
   ) {
     super(myModel, dataSource);

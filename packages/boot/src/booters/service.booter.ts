@@ -1,40 +1,48 @@
-// Copyright IBM Corp. 2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2020. All Rights Reserved.
 // Node module: @loopback/boot
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {CoreBindings} from '@loopback/core';
+import {
+  BINDING_METADATA_KEY,
+  config,
+  Constructor,
+  CoreBindings,
+  hasInjections,
+  inject,
+  isDynamicValueProviderClass,
+  MetadataInspector,
+} from '@loopback/core';
 import {ApplicationWithServices} from '@loopback/service-proxy';
-import {inject, Provider, Constructor} from '@loopback/context';
-import {ArtifactOptions} from '../interfaces';
-import {BaseArtifactBooter} from './base-artifact.booter';
+import debugFactory from 'debug';
 import {BootBindings} from '../keys';
+import {ArtifactOptions, booter} from '../types';
+import {BaseArtifactBooter} from './base-artifact.booter';
 
-type ServiceProviderClass = Constructor<Provider<object>>;
+const debug = debugFactory('loopback:boot:service-booter');
 
 /**
- * A class that extends BaseArtifactBooter to boot the 'DataSource' artifact type.
- * Discovered DataSources are bound using `app.controller()`.
+ * A class that extends BaseArtifactBooter to boot the 'Service' artifact type.
+ * Discovered services are bound using `app.service()`.
  *
  * Supported phases: configure, discover, load
  *
- * @param app Application instance
- * @param projectRoot Root of User Project relative to which all paths are resolved
- * @param [bootConfig] DataSource Artifact Options Object
+ * @param app - Application instance
+ * @param projectRoot - Root of User Project relative to which all paths are resolved
+ * @param bootConfig - Service Artifact Options Object
  */
+@booter('services')
 export class ServiceBooter extends BaseArtifactBooter {
-  serviceProviders: ServiceProviderClass[];
-
   constructor(
     @inject(CoreBindings.APPLICATION_INSTANCE)
     public app: ApplicationWithServices,
     @inject(BootBindings.PROJECT_ROOT) projectRoot: string,
-    @inject(`${BootBindings.BOOT_OPTIONS}#services`)
+    @config()
     public serviceConfig: ArtifactOptions = {},
   ) {
     super(
       projectRoot,
-      // Set DataSource Booter Options if passed in via bootConfig
+      // Set Service Booter Options if passed in via bootConfig
       Object.assign({}, ServiceDefaults, serviceConfig),
     );
   }
@@ -46,24 +54,12 @@ export class ServiceBooter extends BaseArtifactBooter {
   async load() {
     await super.load();
 
-    this.serviceProviders = this.classes.filter(isServiceProvider);
+    for (const cls of this.classes) {
+      if (!isBindableClass(cls)) continue;
 
-    /**
-     * If Service providers were discovered, we need to make sure ServiceMixin
-     * was used (so we have `app.serviceProvider()`) to perform the binding of a
-     * Service provider class.
-     */
-    if (this.serviceProviders.length > 0) {
-      if (!this.app.serviceProvider) {
-        console.warn(
-          'app.serviceProvider() function is needed for ServiceBooter. You can add ' +
-            'it to your Application using ServiceMixin from @loopback/service-proxy.',
-        );
-      } else {
-        this.serviceProviders.forEach(cls => {
-          this.app.serviceProvider(cls as Constructor<Provider<object>>);
-        });
-      }
+      debug('Bind class: %s', cls.name);
+      const binding = this.app.service(cls);
+      debug('Binding created for class: %j', binding);
     }
   }
 }
@@ -77,8 +73,27 @@ export const ServiceDefaults: ArtifactOptions = {
   nested: true,
 };
 
-function isServiceProvider(cls: Constructor<{}>): cls is ServiceProviderClass {
+function isServiceProvider(cls: Constructor<unknown>) {
   const hasSupportedName = cls.name.endsWith('Provider');
-  const hasValueMethod = 'value' in cls.prototype;
+  const hasValueMethod = typeof cls.prototype.value === 'function';
   return hasSupportedName && hasValueMethod;
+}
+
+function isBindableClass(cls: Constructor<unknown>) {
+  if (MetadataInspector.getClassMetadata(BINDING_METADATA_KEY, cls)) {
+    return true;
+  }
+  if (hasInjections(cls)) {
+    return true;
+  }
+  if (isServiceProvider(cls)) {
+    debug('Provider class found: %s', cls.name);
+    return true;
+  }
+  if (isDynamicValueProviderClass(cls)) {
+    debug('Dynamic value provider class found: %s', cls.name);
+    return true;
+  }
+  debug('Skip class not decorated with @injectable: %s', cls.name);
+  return false;
 }

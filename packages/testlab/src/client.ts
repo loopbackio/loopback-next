@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Copyright IBM Corp. 2017,2020. All Rights Reserved.
 // Node module: @loopback/testlab
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -7,7 +7,7 @@
  * HTTP client utilities
  */
 
-import * as http from 'http';
+import http from 'http';
 import supertest = require('supertest');
 
 export {supertest};
@@ -30,10 +30,10 @@ export function createClientForHandler(
  * Create a SuperTest client for a running RestApplication instance.
  * It is the responsibility of the caller to ensure that the app
  * is running and to stop the application after all tests are done.
- * @param app A running (listening) instance of a RestApplication.
+ * @param app - A running (listening) instance of a RestApplication.
  */
 export function createRestAppClient(app: RestApplicationLike) {
-  const url = app.restServer.url;
+  const url = app.restServer.rootUrl ?? app.restServer.url;
   if (!url) {
     throw new Error(
       `Cannot create client for ${app.constructor.name}, it is not listening.`,
@@ -53,4 +53,5 @@ export interface RestApplicationLike {
 
 export interface RestServerLike {
   url?: string;
+  rootUrl?: string;
 }

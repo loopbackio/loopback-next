@@ -1,7 +1,7 @@
 ---
 lang: en
 title: 'Booting an Application'
-keywords: LoopBack 4.0, LoopBack 4
+keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, Booting
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Booting-an-Application.html
 ---
@@ -46,10 +46,12 @@ package (with custom booters).
 ## BootMixin
 
 Boot functionality can be added to a LoopBack 4 Application by mixing it with
-the `BootMixin`. The Mixin adds the `BootComponent` to your Application as well
-as convenience methods such as `app.boot()` and `app.booters()`. The Mixin also
-allows Components to set the property `booters` as an Array of `Booters`. They
-will be bound to the Application and called by the `Bootstrapper`.
+the `BootMixin`
+[mixin](http://justinfagnani.com/2015/12/21/real-mixins-with-javascript-classes/).
+This mixin adds the `BootComponent` to your Application as well as convenience
+methods such as `app.boot()` and `app.booters()`. The Mixin also allows
+Components to set the property `booters` as an Array of `Booters`. They will be
+bound to the Application and called by the `Bootstrapper`.
 
 Since this is a convention-based Bootstrapper, it is important to set a
 `projectRoot`, as all other artifact paths will be resolved relative to this
@@ -187,7 +189,7 @@ are a part of the `@loopback/boot` package and loaded automatically via
 
 ### Controller Booter
 
-This Booter's purpose is to discover [Controller](Controllers.md) type Artifacts
+This Booter's purpose is to discover [Controller](Controller.md) type Artifacts
 and to bind them to the Application's Context.
 
 You can configure the conventions used in your project for a Controller by
@@ -201,12 +203,30 @@ The `controllers` object supports the following options:
 | `nested`     | `boolean`            | `true`               | Look in nested directories in `dirs` for Controller artifacts                                                 |
 | `glob`       | `string`             |                      | A `glob` pattern string. This takes precendence over above 3 options (which are used to make a glob pattern). |
 
+### Model Booter
+
+This Booter's purpose is to discover [Model](Model.md) type Artifacts and to
+bind them to the Application's Context. The use of this Booter requires
+`RepositoryMixin` from `@loopback/repository` to be mixed into your Application
+class.
+
+You can configure the conventions used in your project for a Repository by
+passing a `models` object on `BootOptions` property of your Application. The
+`models` object supports the following options:
+
+| Options      | Type                 | Default         | Description                                                                                                   |
+| ------------ | -------------------- | --------------- | ------------------------------------------------------------------------------------------------------------- |
+| `dirs`       | `string \| string[]` | `['models']`    | Paths relative to projectRoot to look in for Model artifacts                                                  |
+| `extensions` | `string \| string[]` | `['.model.js']` | File extensions to match for Model artifacts                                                                  |
+| `nested`     | `boolean`            | `true`          | Look in nested directories in `dirs` for Model artifacts                                                      |
+| `glob`       | `string`             |                 | A `glob` pattern string. This takes precendence over above 3 options (which are used to make a glob pattern). |
+
 ### Repository Booter
 
-This Booter's purpose is to discover [Repository](Repositories.md) type
-Artifacts and to bind them to the Application's Context. The use of this Booter
-requires `RepositoryMixin` from `@loopback/repository` to be mixed into your
-Application class.
+This Booter's purpose is to discover [Repository](Repository.md) type Artifacts
+and to bind them to the Application's Context. The use of this Booter requires
+`RepositoryMixin` from `@loopback/repository` to be mixed into your Application
+class.
 
 You can configure the conventions used in your project for a Repository by
 passing a `repositories` object on `BootOptions` property of your Application.
@@ -241,12 +261,68 @@ The `datasources` object support the following options:
 
 #### Description
 
-Discovers and binds Service providers using `app.serviceProvider()` (Application
-must use `ServiceMixin` from `@loopback/service-proxy`).
+Discovers and binds remote service proxies or local service classes or providers
+using `app.service()`.
 
+{% include note.html content="
 **IMPORTANT:** For a class to be recognized by `ServiceBooter` as a service
-provider, its name must end with `Provider` suffix and its prototype must have a
+provider, it either has to be decorated with `@injectable`/`@inject` or the
+class name must end with `Provider` suffix and must have a static or prototype
 `value()` method.
+" %}
+
+The following are some examples for service classes:
+
+```ts
+import {injectable, BindingScope, inject, Provider} from '@loopback/core';
+
+// With `@injectable`
+@injectable({
+  tags: {serviceType: 'local'},
+  scope: BindingScope.SINGLETON,
+})
+export class BindableGreetingService {
+  greet(whom = 'world') {
+    return Promise.resolve(`Hello ${whom}`);
+  }
+}
+
+@injectable({tags: {serviceType: 'local', name: 'CurrentDate'}})
+export class DateProvider implements Provider<Date> {
+  value(): Promise<Date> {
+    return Promise.resolve(new Date());
+  }
+}
+
+// Provider class
+export class BindableDateProvider implements Provider<Date> {
+  value(): Promise<Date> {
+    return Promise.resolve(new Date());
+  }
+}
+
+// Dynamic factory provider class
+export class DynamicDateProvider {
+  static value() {
+    return new Date();
+  }
+}
+
+// With `@inject`
+export class ServiceWithConstructorInject {
+  constructor(@inject('currentUser') private user: string) {}
+}
+
+export class ServiceWithPropertyInject {
+  @inject('currentUser') private user: string;
+}
+
+export class ServiceWithMethodInject {
+  greet(@inject('currentUser') user: string) {
+    return `Hello, ${user}`;
+  }
+}
+```
 
 #### Options
 
@@ -263,6 +339,29 @@ Available options on the `services` object on `BootOptions` are as follows:
 | `extensions` | `string \| string[]` | `['.service.js']` | File extensions to match for Service artifacts                                                               |
 | `nested`     | `boolean`            | `true`            | Look in nested directories in `dirs` for Service artifacts                                                   |
 | `glob`       | `string`             |                   | A `glob` pattern string. This takes precedence over above 3 options (which are used to make a glob pattern). |
+
+### Interceptor Booter
+
+#### Description
+
+Discovers and binds global or local interceptor provider classes using
+`app.interceptor()`.
+
+#### Options
+
+The options for this can be passed via `BootOptions` when calling
+`app.boot(options: BootOptions)`.
+
+The options for this are passed in a `interceptors` object on `BootOptions`.
+
+Available options on the `interceptors` object on `BootOptions` are as follows:
+
+| Options      | Type                 | Default               | Description                                                                                                  |
+| ------------ | -------------------- | --------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `dirs`       | `string \| string[]` | `['interceptors']`    | Paths relative to projectRoot to look in for Interceptor artifacts                                           |
+| `extensions` | `string \| string[]` | `['.interceptor.js']` | File extensions to match for Interceptor artifacts                                                           |
+| `nested`     | `boolean`            | `true`                | Look in nested directories in `dirs` for Interceptor artifacts                                               |
+| `glob`       | `string`             |                       | A `glob` pattern string. This takes precedence over above 3 options (which are used to make a glob pattern). |
 
 ### Custom Booters
 
@@ -285,3 +384,44 @@ Used to discover the artifacts supported by the `Booter` based on convention.
 **load**
 
 Used to bind the discovered artifacts to the Application.
+
+### Boot an application using component
+
+For a complex project, we may break it down into multiple LoopBack applications,
+each of which has controllers, datasources, services, repositories, and other
+artifacts. How do we compose these sub applications into the main application?
+The component application booter can be created to support this use case.
+
+1. Create a component for the sub-application:
+
+```ts
+import {createComponentApplicationBooterBinding} from '@loopback/boot';
+import {Component} from '@loopback/core';
+
+export class SubAppComponent implements Component {
+  bindings = [
+    createComponentApplicationBooterBinding(
+      new SubApp(), /* an optional binding filter */,
+    ),
+  ];
+}
+```
+
+2. Mount the sub-application as a component to the main application:
+
+```ts
+const mainApp = new MainApp();
+
+// This can be done in the constructor of `MainApp` too. Make sure the component
+// is registered before calling `app.boot()`.
+mainApp.component(SubAppComponent);
+
+// Boot the main application. It will invoke the component application booter
+// to add artifacts from the `SubApp`.
+await mainApp.boot();
+```
+
+A binding filter function can be provided to select what bindings from the
+component application should be added to the main application. The booter skips
+bindings that exist in the component application before `boot`. It does not
+override locked bindings in the main application.

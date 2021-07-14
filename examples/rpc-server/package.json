@@ -1,53 +1,58 @@
 {
   "name": "@loopback/example-rpc-server",
-  "version": "1.0.1",
-  "description": "A basic RPC server using a made-up protocol.",
+  "description": "An example RPC server and application to demonstrate the creation of your own custom server",
+  "version": "2.3.1",
   "keywords": [
     "loopback-application",
     "loopback"
   ],
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "examples/rpc-server"
+  },
   "engines": {
-    "node": ">=8.9"
+    "node": "^10.16 || 12 || 14 || 16"
   },
   "scripts": {
-    "build:apidocs": "lb-apidocs",
-    "build": "lb-tsc es2017 --outDir dist",
-    "build:watch": "lb-tsc es2017 --outDir dist --watch",
-    "clean": "lb-clean dist",
-    "lint": "npm run prettier:check && npm run tslint",
-    "lint:fix": "npm run tslint:fix && npm run prettier:fix",
+    "build": "lb-tsc",
+    "build:watch": "lb-tsc --watch",
+    "clean": "lb-clean *example-rpc-server-*.tgz dist *.tsbuildinfo package",
+    "lint": "npm run prettier:check && npm run eslint",
+    "lint:fix": "npm run eslint:fix && npm run prettier:fix",
     "prettier:cli": "lb-prettier \"**/*.ts\"",
     "prettier:check": "npm run prettier:cli -- -l",
     "prettier:fix": "npm run prettier:cli -- --write",
-    "tslint": "lb-tslint",
-    "tslint:fix": "npm run tslint -- --fix",
-    "pretest": "npm run clean && npm run build",
-    "test": "lb-mocha dist/test",
+    "eslint": "lb-eslint --report-unused-disable-directives .",
+    "eslint:fix": "npm run eslint -- --fix",
+    "pretest": "npm run rebuild",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
     "posttest": "npm run lint",
-    "test:dev": "lb-mocha --allow-console-logs dist/test/**/*.js && npm run posttest",
-    "prestart": "npm run build",
+    "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js && npm run posttest",
+    "rebuild": "npm run clean && npm run build",
+    "prestart": "npm run rebuild",
     "start": "node ."
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/strongloop/loopback-next.git"
   },
   "publishConfig": {
     "access": "public"
   },
-  "author": "",
-  "license": "MIT",
   "dependencies": {
-    "@loopback/context": "^1.0.0",
-    "@loopback/core": "^1.0.0",
-    "express": "^4.16.3",
-    "p-event": "^2.1.0"
+    "@loopback/core": "^2.16.1",
+    "express": "^4.17.1",
+    "tslib": "^2.3.0"
   },
   "devDependencies": {
-    "@loopback/build": "^1.0.0",
-    "@loopback/testlab": "^1.0.0",
-    "@types/express": "^4.11.1",
-    "@types/node": "^10.11.2",
-    "@types/p-event": "^1.3.0"
+    "@loopback/build": "^6.4.1",
+    "@loopback/eslint-config": "^10.2.1",
+    "@loopback/testlab": "^3.4.1",
+    "@types/express": "^4.17.12",
+    "@types/node": "^10.17.60",
+    "eslint": "^7.29.0",
+    "typescript": "~4.3.4"
   }
 }

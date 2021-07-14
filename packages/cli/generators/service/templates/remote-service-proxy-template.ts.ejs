@@ -1,0 +1,21 @@
+import {inject, Provider} from '@loopback/core';
+import {getService} from '@loopback/service-proxy';
+import {<%= dataSourceClassName %>} from '../datasources';
+
+export interface <%= className %> {
+  // this is where you define the Node.js methods that will be
+  // mapped to REST/SOAP/gRPC operations as stated in the datasource
+  // json file.
+}
+
+export class <%= className %>Provider implements Provider<<%= className %>> {
+  constructor(
+    // <%= dataSourceName %> must match the name property in the datasource json file
+    @inject('datasources.<%= dataSourceName %>')
+    protected dataSource: <%= dataSourceClassName %> = new <%= dataSourceClassName %>(),
+  ) {}
+
+  value(): Promise<<%= className %>> {
+    return getService(this.dataSource);
+  }
+}

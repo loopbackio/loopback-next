@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Provider} from '@loopback/context';
+import {Provider} from '@loopback/core';
 import {TimerFn, HighResTime} from '../types';
 
 export class TimerProvider implements Provider<TimerFn> {

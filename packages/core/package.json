@@ -1,42 +1,49 @@
 {
   "name": "@loopback/core",
-  "version": "1.0.0",
-  "description": "",
+  "description": "Define and implement core constructs such as Application and Component",
+  "version": "2.16.1",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "packages/core"
+  },
   "engines": {
-    "node": ">=8.9"
+    "node": "^10.16 || 12 || 14 || 16"
   },
   "scripts": {
-    "acceptance": "lb-mocha \"dist/test/acceptance/**/*.js\"",
-    "build:apidocs": "lb-apidocs",
-    "build": "lb-tsc es2017 --outDir dist",
-    "clean": "lb-clean loopback-core*.tgz dist package api-docs",
+    "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
+    "build": "lb-tsc",
+    "clean": "lb-clean loopback-core*.tgz dist *.tsbuildinfo package",
     "pretest": "npm run build",
-    "integration": "lb-mocha \"dist/test/integration/**/*.js\"",
-    "test": "lb-mocha \"dist/test/unit/**/*.js\" \"dist/test/integration/**/*.js\" \"dist/test/acceptance/**/*.js\"",
-    "unit": "lb-mocha \"dist/test/unit/**/*.js\"",
+    "integration": "lb-mocha \"dist/__tests__/integration/**/*.js\"",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
+    "unit": "lb-mocha \"dist/__tests__/unit/**/*.js\"",
     "verify": "npm pack && tar xf loopback-core*.tgz && tree package && npm run clean"
   },
-  "author": "IBM",
-  "copyright.owner": "IBM Corp.",
-  "license": "MIT",
-  "dependencies": {
-    "@loopback/context": "^1.0.0"
-  },
-  "devDependencies": {
-    "@loopback/build": "^1.0.0",
-    "@loopback/testlab": "^1.0.0",
-    "@types/node": "^10.11.2"
+  "publishConfig": {
+    "access": "public"
   },
   "files": [
     "README.md",
-    "index.js",
-    "index.d.ts",
-    "dist/src",
-    "dist/index*",
-    "src"
+    "dist",
+    "src",
+    "!*/__tests__"
   ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/strongloop/loopback-next.git"
+  "dependencies": {
+    "@loopback/context": "^3.17.0",
+    "debug": "^4.3.1",
+    "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "@loopback/build": "^6.4.1",
+    "@loopback/eslint-config": "^10.2.1",
+    "@loopback/testlab": "^3.4.1",
+    "@types/debug": "^4.1.5",
+    "@types/node": "^10.17.60"
   }
 }

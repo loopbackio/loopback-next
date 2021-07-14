@@ -1,0 +1,64 @@
+{
+  "name": "@loopback/example-metrics-prometheus",
+  "description": "An example to illustrate metrics provided by @loopback/metrics and Prometheus",
+  "version": "0.6.1",
+  "keywords": [
+    "loopback",
+    "LoopBack",
+    "example",
+    "tutorial"
+  ],
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "examples/metrics-prometheus"
+  },
+  "engines": {
+    "node": "^10.16 || 12 || 14 || 16"
+  },
+  "scripts": {
+    "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
+    "build": "lb-tsc",
+    "build:watch": "lb-tsc --watch",
+    "clean": "lb-clean *example-metrics-prometheus*.tgz dist *.tsbuildinfo package",
+    "verify": "npm pack && tar xf *example-metrics-prometheus*.tgz && tree package && npm run clean",
+    "lint": "npm run prettier:check && npm run eslint",
+    "lint:fix": "npm run eslint:fix && npm run prettier:fix",
+    "prettier:cli": "lb-prettier \"**/*.ts\" \"**/*.js\"",
+    "prettier:check": "npm run prettier:cli -- -l",
+    "prettier:fix": "npm run prettier:cli -- --write",
+    "eslint": "lb-eslint --report-unused-disable-directives .",
+    "eslint:fix": "npm run eslint -- --fix",
+    "pretest": "npm run rebuild",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
+    "posttest": "npm run lint",
+    "test:dev": "lb-mocha dist/__tests__/**/*.js && npm run posttest",
+    "rebuild": "npm run clean && npm run build",
+    "prestart": "npm run rebuild",
+    "start": "node .",
+    "demo": "./bin/demo.sh"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@loopback/boot": "^3.4.1",
+    "@loopback/core": "^2.16.1",
+    "@loopback/metrics": "^0.8.1",
+    "@loopback/rest": "^9.3.1",
+    "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "@loopback/build": "^6.4.1",
+    "@loopback/eslint-config": "^10.2.1",
+    "@loopback/testlab": "^3.4.1",
+    "@types/node": "^10.17.60",
+    "eslint": "^7.29.0",
+    "typescript": "~4.3.4"
+  }
+}

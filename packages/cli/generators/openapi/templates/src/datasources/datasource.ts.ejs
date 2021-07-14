@@ -1,0 +1,42 @@
+import {
+  inject,
+  lifeCycleObserver,
+  LifeCycleObserver,
+} from '@loopback/core';
+import {juggler} from '@loopback/repository';
+import {HttpErrors} from '@loopback/rest';
+
+const config = <%- dsConfigString %>;
+
+@lifeCycleObserver('datasource')
+export class <%- className %>DataSource extends juggler.DataSource
+  implements LifeCycleObserver {
+  static dataSourceName = '<%- name %>';
+  static readonly defaultConfig = config;
+
+  constructor(
+    @inject('datasources.config.<%- name %>', {optional: true})
+    dsConfig: object = config,
+  ) {
+    super({transformResponse, ...dsConfig});
+  }
+}
+
+/**
+ * Transform the http response into the return value
+ */
+function transformResponse(response: {
+  url: string,
+  method: string,
+  status: number,
+  statusText: string,
+  headers: object,
+  text: string,
+  body: unknown,
+}) {
+  if (response.status < 400) {
+    return response.body ?? response.text;
+  }
+  const err = HttpErrors(response.status, response.statusText, response);
+  throw err;
+}

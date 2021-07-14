@@ -3,15 +3,22 @@
   "compilerOptions": {
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
     "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": true,
 
-    "lib": ["es2018", "dom", "esnext.asynciterable"],
+    // FIXME(bajtos) LB4 is not compatible with this setting yet
+    "strictPropertyInitialization": false,
+
+    "incremental": true,
+
+    "lib": ["es2020"],
     "module": "commonjs",
+    "esModuleInterop": true,
     "moduleResolution": "node",
-    "target": "es2017",
+    "target": "es2018",
     "sourceMap": true,
-    "declaration": true
+    "declaration": true,
+    "importHelpers": true
   }
 }

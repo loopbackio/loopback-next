@@ -1,0 +1,11 @@
+extends ../layouts/layout
+
+block content
+  h2 Third Party Profile(s)
+  p.small
+    if user.profiles && user.profiles.length !== 0
+      each val in user.profiles
+        h4= val.provider + ':'
+        p.small= JSON.stringify(val)
+    else
+      | NONE

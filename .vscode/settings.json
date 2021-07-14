@@ -1,5 +1,7 @@
 {
-  "editor.rulers": [80],
+  "editor.rulers": [
+    80
+  ],
   "editor.tabCompletion": "on",
   "editor.tabSize": 2,
   "editor.trimAutoWhitespace": true,
@@ -7,6 +9,17 @@
   "[html]": {
     "editor.formatOnSave": false
   },
+  "[javascript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true,
+    "source.fixAll.eslint": true
+  },
+  "files.eol": "\n",
   "files.exclude": {
     "**/.DS_Store": true,
     "**/.git": true,
@@ -17,13 +30,20 @@
     "coverage": true,
     "benchmark/dist": true,
     "packages/*/dist": true,
-    "packages/*/api-docs": true,
+    "extensions/*/dist": true,
     "examples/*/dist": true,
     "**/.sandbox": true
   },
   "files.insertFinalNewline": true,
   "files.trimTrailingWhitespace": true,
-  "tslint.ignoreDefinitionFiles": true,
-  "tslint.nodePath": "./packages/build/node_modules",
-  "typescript.tsdk": "./packages/build/node_modules/typescript/lib"
+  "typescript.tsdk": "./packages/build/node_modules/typescript/lib",
+  "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": false,
+  "typescript.preferences.quoteStyle": "single",
+  "eslint.run": "onSave",
+  "eslint.nodePath": "./packages/build/node_modules",
+  "eslint.validate": [
+    "javascript",
+    "typescript"
+  ],
+  "eslint.format.enable": true
 }

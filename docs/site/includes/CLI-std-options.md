@@ -20,7 +20,7 @@
 For example,
 ```sh
 lb4 app --config config.json
-lb4 app --config {"name":"my-app"}
+lb4 app --config '{"name":"my-app"}'
 cat config.json | lb4 app --config stdin
 lb4 app --config stdin < config.json
 lb4 app --config stdin << EOF

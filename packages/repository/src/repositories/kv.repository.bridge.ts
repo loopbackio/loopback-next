@@ -1,32 +1,20 @@
-// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2020. All Rights Reserved.
 // Node module: @loopback/repository
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import * as legacy from 'loopback-datasource-juggler';
-
-import {Options, DataObject} from '../common-types';
-import {Entity} from '../model';
-
-import {KeyValueRepository, KeyValueFilter} from './kv.repository';
-
-import {juggler, ensurePromise} from './legacy-juggler-bridge';
-
-/**
- * Polyfill for Symbol.asyncIterator
- * See https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-3.html
- */
-// tslint:disable-next-line:no-any
-if (!(Symbol as any).asyncIterator) {
-  // tslint:disable-next-line:no-any
-  (Symbol as any).asyncIterator = Symbol.for('Symbol.asyncIterator');
-}
+import legacy from 'loopback-datasource-juggler';
+import {DataObject, Options} from '../common-types';
+import {Model} from '../model';
+import {KeyValueFilter, KeyValueRepository} from './kv.repository';
+import {ensurePromise, juggler} from './legacy-juggler-bridge';
 
 /**
  * An implementation of KeyValueRepository based on loopback-datasource-juggler
  */
-export class DefaultKeyValueRepository<T extends Entity>
-  implements KeyValueRepository<T> {
+export class DefaultKeyValueRepository<T extends Model>
+  implements KeyValueRepository<T>
+{
   /**
    * A legacy KeyValueModel class
    */
@@ -34,17 +22,16 @@ export class DefaultKeyValueRepository<T extends Entity>
 
   /**
    * Construct a KeyValueRepository with a legacy DataSource
-   * @param ds Legacy DataSource
+   * @param ds - Legacy DataSource
    */
   constructor(
-    private entityClass: typeof Entity & {prototype: T},
+    private entityClass: typeof Model & {prototype: T},
     ds: juggler.DataSource,
   ) {
     // KVModel class is placeholder to receive methods from KeyValueAccessObject
     // through mixin
-    this.kvModelClass = ds.createModel<typeof juggler.KeyValueModel>(
-      '_kvModel',
-    );
+    this.kvModelClass =
+      ds.createModel<typeof juggler.KeyValueModel>('_kvModel');
   }
 
   delete(key: string, options?: Options): Promise<void> {
@@ -59,16 +46,17 @@ export class DefaultKeyValueRepository<T extends Entity>
     if (modelData == null) return modelData;
     let data = modelData;
     if (typeof modelData.toObject === 'function') {
-      // tslint:disable-next-line:no-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       data = (modelData as any).toObject();
     }
     return new this.entityClass(data) as T;
   }
 
   async get(key: string, options?: Options): Promise<T> {
-    const val = this.kvModelClass.get(key, options) as legacy.PromiseOrVoid<
-      legacy.ModelData
-    >;
+    const val = this.kvModelClass.get(
+      key,
+      options,
+    ) as legacy.PromiseOrVoid<legacy.ModelData>;
     const result = await ensurePromise(val);
     return this.toEntity(result);
   }
@@ -103,7 +91,7 @@ class AsyncKeyIteratorImpl implements AsyncIterator<string> {
   next() {
     const key = ensurePromise<string | undefined>(this.keys.next());
     return key.then(k => {
-      return {done: k === undefined, value: k || ''};
+      return {done: k === undefined, value: k ?? ''};
     });
   }
 }

@@ -1,0 +1,50 @@
+{
+  "name": "@loopback/test-repository-cloudant",
+  "description": "Acceptance tests for `@loopback/repository` + `loopback-connector-cloudant`",
+  "version": "2.4.1",
+  "private": true,
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "acceptance/repository-cloudant"
+  },
+  "engines": {
+    "node": "^10.16 || 12 || 14 || 16"
+  },
+  "scripts": {
+    "build": "lb-tsc",
+    "clean": "lb-clean loopback-test-repository-cloudant*.tgz dist *.tsbuildinfo package",
+    "pretest": "npm run build",
+    "test": "npm run mocha",
+    "mocha": "lb-mocha \"dist/__tests__/**/*.js\"",
+    "verify": "npm pack && tar xf loopback-test-repository-cloudant*.tgz && tree package && npm run clean",
+    "docker:setup": "node ./docker.setup.js"
+  },
+  "files": [
+    "README.md",
+    "dist",
+    "src",
+    "!*/__tests__"
+  ],
+  "devDependencies": {
+    "@loopback/build": "^6.4.1",
+    "@loopback/eslint-config": "^10.2.1",
+    "@loopback/repository": "^3.7.0",
+    "@loopback/repository-tests": "^0.18.1",
+    "@types/node": "^10.17.60",
+    "async": "^3.2.0",
+    "chalk": "^4.1.1",
+    "debug": "^4.3.1",
+    "dockerode": "^3.3.0",
+    "lodash": "^4.17.21",
+    "loopback-connector-cloudant": "2.5.0",
+    "ms": "2.1.3",
+    "tslib": "^2.3.0",
+    "typescript": "~4.3.4"
+  }
+}

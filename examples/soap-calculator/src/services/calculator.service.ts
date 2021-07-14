@@ -1,37 +1,43 @@
+// Copyright IBM Corp. 2018,2019. All Rights Reserved.
+// Node module: @loopback/example-soap-calculator
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
 import {getService, juggler} from '@loopback/service-proxy';
 import {inject, Provider} from '@loopback/core';
 import {CalculatorDataSource} from '../datasources/calculator.datasource';
 
-export interface MultiplyResult {
+export interface MultiplyResponse {
   result: {
-    MultiplyResult: number;
+    value: number;
   };
 }
-export interface AddResult {
+export interface AddResponse {
   result: {
-    AddResult: number;
+    value: number;
   };
 }
-export interface SubtractResult {
+export interface SubtractResponse {
   result: {
-    SubtractResult: number;
+    value: number;
   };
 }
-export interface DivideResult {
+export interface DivideResponse {
   result: {
-    DivideResult: number;
+    value: number;
   };
 }
+
 export interface CalculatorParameters {
   intA: number;
   intB: number;
 }
 
 export interface CalculatorService {
-  Multiply(args: CalculatorParameters): Promise<MultiplyResult>;
-  Add(args: CalculatorParameters): Promise<AddResult>;
-  Divide(args: CalculatorParameters): Promise<DivideResult>;
-  Subtract(args: CalculatorParameters): Promise<SubtractResult>;
+  multiply(args: CalculatorParameters): Promise<MultiplyResponse>;
+  add(args: CalculatorParameters): Promise<AddResponse>;
+  divide(args: CalculatorParameters): Promise<DivideResponse>;
+  subtract(args: CalculatorParameters): Promise<SubtractResponse>;
 }
 
 export class CalculatorServiceProvider implements Provider<CalculatorService> {

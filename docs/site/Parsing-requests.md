@@ -1,7 +1,7 @@
 ---
 lang: en
 title: 'Parsing requests'
-keywords: LoopBack 4.0, LoopBack 4
+keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Parsing-requests.html
 ---
@@ -33,7 +33,7 @@ class TodoController {
     @param.path.number('id') id: number,
     @requestBody() todo: Todo,
   ): Promise<boolean> {
-    return await this.todoRepo.replaceById(id, todo);
+    return this.todoRepo.replaceById(id, todo);
   }
 }
 ```
@@ -44,7 +44,7 @@ example above, the first parameter is from source `path`, so its value will be
 parsed from a request's path.
 
 {% include note.html title="Controller documentation" content="
-See [controller](Controller.md) for more details of defining an endpoint.
+See [controllers](Controller.md) for more details of defining an endpoint.
 " %}
 
 {% include note.html title="OpenAPI operation object" content="
@@ -74,11 +74,16 @@ async replaceTodo(
   // NO need to do the "string to number" convertion now,
   // coercion automatically handles it for you.
   id = +id;
-  return await this.todoRepo.replaceById(id, todo);
+  return this.todoRepo.replaceById(id, todo);
 }
 ```
 
 #### Object values
+
+{% include note.html content="
+LoopBack has switched the definition of json query params from the `exploded`,
+`deep-object` style to the `url-encoded` style definition in Open API spec.
+" %}
 
 OpenAPI specification describes several ways how to encode object values into a
 string, see
@@ -86,26 +91,26 @@ string, see
 and
 [Style Examples](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#style-examples).
 
-At the moment, LoopBack supports object values for parameters in query strings
-with `style: "deepObject"` only. Please note that this style does not preserve
-encoding of primitive types, numbers and booleans are always parsed as strings.
+At the moment, LoopBack supports both url-encoded and exploded values for json
+query parameters. Please note that this style does not preserve the encoding of
+primitive types like numbers and booleans. They are always parsed as strings.
+
+To filter results from the GET `/todo-list` endpoint in the todo-list example
+with a relation, { "include": [ { "relation": "todo" } ] }, the following
+url-encoded query parameter can be used,
+
+```
+   http://localhost:3000/todos?filter=%7B%22include%22%3A%5B%7B%22relation%22%3A%22todoList%22%7D%5D%7D
+```
+
+As an extension to the url-encoded style, LoopBack also supports queries with
+exploded values for json query parameters.
 
 For example:
 
 ```
 GET /todos?filter[where][completed]=false
 // filter={where: {completed: 'false'}}
-```
-
-As an extension to the deep-object encoding described by OpenAPI, when the
-parameter is specified with `style: "deepObject"`, we allow clients to provide
-the object value as a JSON-encoded string too.
-
-For example:
-
-```
-GET /todos?filter={"where":{"completed":false}}
-// filter={where: {completed: false}}
 ```
 
 ### Validation
@@ -121,10 +126,9 @@ decimal like "1.23" would be rejected.
 
 You can specify a parameter's type by calling shortcut decorators of `@param`
 like `@param.query.integer()`. A list of available shortcuts can be found in the
-[API Docs](https://apidocs.strongloop.com/@loopback%2fdocs/openapi-v3.html#param).
-Check out the section on
-[parameter decorators](Decorators.md#parameter-decorator) for instructions on
-how to decorate the controller parameter.
+[API Docs](https://loopback.io/doc/en/lb4/apidocs.openapi-v3.param.html). Check
+out the section on [parameter decorators](Decorators.md#parameter-decorator) for
+instructions on how to decorate the controller parameter.
 
 Here are our default validation rules for each type:
 
@@ -158,7 +162,7 @@ import {Todo} from './models';
     @param.path.number('id') id: number,
     @requestBody() todo: Todo,
   ): Promise<boolean> {
-    return await this.todoRepo.replaceById(id, todo);
+    return this.todoRepo.replaceById(id, todo);
   }
 ...
 ```
@@ -179,131 +183,29 @@ in/by the `@requestBody` decorator. Please refer to the documentation on
 [@requestBody decorator](Decorators.md#requestbody-decorator) to get a
 comprehensive idea of defining custom validation rules for your models.
 
-We support `json` and `urlencoded` content types. The client should set
-`Content-Type` http header to `application/json` or
-`application/x-www-form-urlencoded`. Its value is matched against the list of
-media types defined in the `requestBody.content` object of the OpenAPI operation
-spec. If no matching media types is found or the type is not supported yet, an
-UnsupportedMediaTypeError (http statusCode 415) will be reported.
-
-Please note that `urlencoded` media type does not support data typing. For
-example, `key=3` is parsed as `{key: '3'}`. The raw result is then coerced by
-AJV based on the matching content schema. The coercion rules are described in
-[AJV type coercion rules](https://github.com/epoberezkin/ajv/blob/master/COERCION.md).
-
-The [qs](https://github.com/ljharb/qs) is used to parse complex strings. For
-example, given the following request body definition:
+You can also specify the JSON schema validation rules in the model property
+decorator. The rules are added in a field called `jsonSchema`, like:
 
 ```ts
-const requestBodyObject = {
-  description: 'data',
-  content: {
-    'application/x-www-form-urlencoded': {
-      schema: {
-        type: 'object',
-        properties: {
-          name: {type: 'string'},
-          location: {
-            type: 'object',
-            properties: {
-              lat: {type: 'number'},
-              lng: {type: 'number'},
-            },
-          },
-          tags: {
-            type: 'array',
-            items: {type: 'string'},
-          },
-        },
-      },
+@model()
+class Product extends Entity {
+  @property({
+    name: 'name',
+    description: "The product's common name.",
+    type: 'string',
+    // Specify the JSON validation rules here
+    jsonSchema: {
+      maxLength: 30,
+      minLength: 10,
     },
-  },
-};
-```
-
-The encoded value
-`'name=IBM%20HQ&location[lat]=0.741895&location[lng]=-73.989308&tags[0]=IT&tags[1]=NY'`
-is parsed and coerced as:
-
-```ts
-{
-  name: 'IBM HQ',
-  location: {lat: 0.741895, lng: -73.989308},
-  tags: ['IT', 'NY'],
+  })
+  public name: string;
 }
 ```
 
-The request body parser options (such as `limit`) can now be configured by
-binding the value to `RestBindings.REQUEST_BODY_PARSER_OPTIONS`
-('rest.requestBodyParserOptions'). For example,
+A full list of validation keywords could be found in the
+[documentation of AJV validation keywords](https://github.com/epoberezkin/ajv#validation-keywords).
 
-```ts
-server
-  .bind(RestBindings.REQUEST_BODY_PARSER_OPTIONS)
-  .to({limit: 4 * 1024 * 1024}); // Set limit to 4MB
-```
+## Common tasks
 
-The list of options can be found in the [body](https://github.com/Raynos/body)
-module.
-
-By default, the `limit` is `1024 * 1024` (1MB). Any request with a body length
-exceeding the limit will be rejected with http status code 413 (request entity
-too large).
-
-A few tips worth mentioning:
-
-- If a model property's type refers to another model, make sure it is also
-  decorated with `@model` decorator.
-
-- If you're using API first development approach, you can also provide the
-  request body specification in decorators like `route()` and
-  [`api()`](Decorators.md#api-decorator), this requires you to provide a
-  completed request body specification.
-
-#### Localizing Errors
-
-A body data may break multiple validation rules, like missing required fields,
-data in a wrong type, data that exceeds the maximum length, etc...The validation
-errors are returned in batch mode, and user can find all of them in
-`error.details`, which describes errors in a machine-readable way.
-
-Each element in the `error.details` array reports one error. It contains 4
-attributes:
-
-- `path`: The path to the invalid field.
-- `code`: A single word code represents the error's type.
-- `message`: A human readable description of the error.
-- `info`: Some additional details that the 3 attributes above don't cover.
-
-In most cases `path` shows which field in the body data is invalid. For example,
-if an object schema's `id` field should be a string, while the data in body has
-it as a number: `{id: 1, name: 'Foo'}`. Then the error entry is:
-
-```ts
-{
-  path: '.id',
-  code: 'type',
-  message: 'should be string',
-  info: {type: 'string'},
-}
-```
-
-And in this case the error code is `type`. A reference of all the possible code
-could be found in
-[ajv validation error keywords(codes)](https://github.com/epoberezkin/ajv/blob/master/KEYWORDS.md).
-
-In some exception scenarios, like a required field is missing, the `path` is
-empty, but the field location is easy to find in `message` and `info`. For
-example, `id` is a required field while it's missing in a request body:
-`{name: 'Foo'}`, the error entry will be:
-
-```ts
-{
-  // `path` is empty
-  path: '',
-  code: 'required',
-  message: "should have required property 'id'",
-  // you can parse the missing field from `info.missingProperty`
-  info: {missingProperty: 'id'},
-},
-```
+- [Guide to parsing requests](Parsing-requests-guide.md)

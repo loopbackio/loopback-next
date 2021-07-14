@@ -1,0 +1,7 @@
+p, bob, order, create
+p, alice, order, create
+p, customer_service, order, read
+p, customer_service, order, create
+p, customer_service, order, delete
+p, customer_service, order, update
+g, alice, customer_service

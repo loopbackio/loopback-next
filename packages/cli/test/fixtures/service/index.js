@@ -1,6 +1,11 @@
+// Copyright IBM Corp. 2018. All Rights Reserved.
+// Node module: @loopback/cli
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
 const DATASOURCE_APP_PATH = 'src/datasources';
 const CONFIG_PATH = '.';
-const DUMMY_CONTENT = '--DUMMY VALUE--';
+const {getSourceForDataSourceClassWithConfig} = require('../../test-utils');
 
 exports.SANDBOX_FILES = [
   {
@@ -21,49 +26,41 @@ exports.SANDBOX_FILES = [
   },
   {
     path: DATASOURCE_APP_PATH,
-    file: 'myds.datasource.json',
-    content: JSON.stringify({
+    file: 'myds.datasource.ts',
+    content: getSourceForDataSourceClassWithConfig('MydsDataSource', {
       name: 'myds',
       connector: 'soap',
     }),
   },
   {
     path: DATASOURCE_APP_PATH,
-    file: 'map-ds.datasource.json',
-    content: JSON.stringify({
+    file: 'map-ds.datasource.ts',
+    content: getSourceForDataSourceClassWithConfig('MapdsDataSource', {
       name: 'MapDS',
       connector: 'soap',
     }),
   },
   {
     path: DATASOURCE_APP_PATH,
-    file: 'myds.datasource.ts',
-    content: DUMMY_CONTENT,
-  },
-  {
-    path: DATASOURCE_APP_PATH,
-    file: 'dbmem.datasource.json',
-    content: JSON.stringify({
+    file: 'dbmem.datasource.ts',
+    content: getSourceForDataSourceClassWithConfig('DbmemDataSource', {
       name: 'dbmem',
       connector: 'memory',
     }),
   },
   {
     path: DATASOURCE_APP_PATH,
-    file: 'dbmem.datasource.ts',
-    content: DUMMY_CONTENT,
-  },
-  {
-    path: DATASOURCE_APP_PATH,
-    file: 'restdb.datasource.json',
-    content: JSON.stringify({
+    file: 'restdb.datasource.ts',
+    content: getSourceForDataSourceClassWithConfig('RestdbDataSource', {
       name: 'restdb',
       connector: 'rest',
     }),
   },
   {
     path: DATASOURCE_APP_PATH,
-    file: 'restdb.datasource.ts',
-    content: DUMMY_CONTENT,
+    file: 'no-name.datasource.ts',
+    content: getSourceForDataSourceClassWithConfig('NoNameDataSource', {
+      connector: 'rest',
+    }),
   },
 ];

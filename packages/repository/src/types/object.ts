@@ -1,13 +1,13 @@
-// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Copyright IBM Corp. 2017,2019. All Rights Reserved.
 // Node module: @loopback/repository
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import * as util from 'util';
-import {Class, AnyObject} from '../common-types';
+import util from 'util';
+import {AnyObject, Class} from '../common-types';
 import {Type} from './type';
 
-// tslint:disable:no-any
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 /**
  * Object type

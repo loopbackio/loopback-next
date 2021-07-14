@@ -1,48 +1,51 @@
 {
   "name": "@loopback/service-proxy",
-  "version": "1.0.0",
-  "description": "Service integration for LoopBack 4",
-  "engines": {
-    "node": ">=8.9"
+  "description": "A common set of interfaces for interacting with service oriented backends such as REST APIs, SOAP Web Services, and gRPC microservices",
+  "version": "3.2.1",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "packages/service-proxy"
   },
-  "main": "index",
+  "engines": {
+    "node": "^10.16 || 12 || 14 || 16"
+  },
   "scripts": {
-    "acceptance": "lb-mocha \"dist/test/acceptance/**/*.js\"",
-    "build:apidocs": "lb-apidocs",
-    "build": "lb-tsc es2017 --outDir dist",
-    "clean": "lb-clean loopback-service-proxy*.tgz dist package api-docs",
-    "integration": "lb-mocha \"dist/test/integration/**/*.js\"",
+    "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
+    "build": "lb-tsc",
+    "clean": "lb-clean loopback-service-proxy*.tgz dist *.tsbuildinfo package",
+    "integration": "lb-mocha \"dist/__tests__/integration/**/*.js\"",
     "pretest": "npm run build",
-    "test": "lb-mocha \"dist/test/unit/**/*.js\" \"dist/test/acceptance/**/*.js\" \"dist/test/integration/**/*.js\"",
-    "unit": "lb-mocha \"dist/test/unit/**/*.js\"",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
+    "unit": "lb-mocha \"dist/__tests__/unit/**/*.js\"",
     "verify": "npm pack && tar xf loopback-service-proxy*.tgz && tree package && npm run clean"
   },
   "publishConfig": {
     "access": "public"
   },
-  "author": "IBM",
-  "copyright.owner": "IBM Corp.",
-  "license": "MIT",
-  "devDependencies": {
-    "@loopback/build": "^1.0.0",
-    "@loopback/testlab": "^1.0.0",
-    "@types/node": "^10.11.2"
-  },
-  "dependencies": {
-    "@loopback/context": "^1.0.0",
-    "@loopback/core": "^1.0.0",
-    "loopback-datasource-juggler": "^4.0.0"
-  },
   "files": [
     "README.md",
-    "index.js",
-    "index.d.ts",
-    "dist/src",
-    "dist/index*",
-    "src"
+    "dist",
+    "src",
+    "!*/__tests__"
   ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/strongloop/loopback-next.git"
+  "peerDependencies": {
+    "@loopback/core": "^2.16.1"
+  },
+  "dependencies": {
+    "loopback-datasource-juggler": "^4.26.0",
+    "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "@loopback/build": "^6.4.1",
+    "@loopback/core": "^2.16.1",
+    "@loopback/eslint-config": "^10.2.1",
+    "@loopback/testlab": "^3.4.1",
+    "@types/node": "^10.17.60"
   }
 }

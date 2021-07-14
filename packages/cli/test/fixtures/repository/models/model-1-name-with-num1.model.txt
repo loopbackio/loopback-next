@@ -1,0 +1,26 @@
+import {Entity, model, property} from '@loopback/repository';
+
+    @model()
+    export class Model1NameWithNum1 extends Entity {
+      @property({
+    	type: 'number',
+    	id: true,
+    	default: 0,
+      })
+      id?: number;
+
+      @property({
+    	type: 'string',
+      })
+      desc?: string;
+
+      @property({
+        type: 'number',
+    	default: 0,
+      })
+      balance?: number;
+
+      constructor(data?: Partial<Model1NameWithNum1>) {
+        super(data);
+      }
+    }

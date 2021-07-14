@@ -1,0 +1,92 @@
+<!--
+// Copyright IBM Corp. 2020. All Rights Reserved.
+// Node module: @loopback/context-explorer
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+-->
+<!DOCTYPE html>
+<html>
+  <meta charset="utf-8" />
+  <title>LoopBack Context Explorer</title>
+  <body>
+    <a href="/graph-d3.html">Reload</a>
+    <script src="//d3js.org/d3.v4.min.js"></script>
+
+    <script
+      src="https://unpkg.com/viz.js@1.8.2/viz.js"
+      type="javascript/worker"
+    ></script>
+    <script src="https://unpkg.com/d3-graphviz@2.6.1/build/d3-graphviz.min.js"></script>
+
+    <script src="https://unpkg.com/graphlib-dot@0.6.4/dist/graphlib-dot.min.js"></script>
+    <script src="js/graph-util.js"></script>
+
+    <div id="graph" style="text-align: center;"></div>
+
+    <script>
+      var dots = [];
+      var dotIndex = 0;
+
+      function transitionFactory() {
+        return d3
+          .transition('main')
+          .ease(d3.easeLinear)
+          .delay(50)
+          .duration(500 * dotIndex);
+      }
+
+      async function fetchDots() {
+        const res = await fetch('./dots');
+        dots = JSON.parse(await res.text());
+      }
+
+      const graphviz = d3
+        .select('#graph')
+        .graphviz({
+          engine: 'fdp',
+          fit: true,
+          width: window.screen.availWidth,
+          height: window.screen.availHeight,
+        })
+        .logEvents(true)
+        .transition(transitionFactory)
+        .tweenShapes(false)
+        .on('initEnd', render);
+
+      async function render() {
+        if (dots.length === 0) await fetchDots();
+        const dot = dots[dotIndex];
+        graphviz.renderDot(dot).on('end', function() {
+          dotIndex++;
+          if (dotIndex < dots.length) {
+            render();
+          } else {
+            const nodes = d3.selectAll('.node');
+            nodes.on('click', renderNode);
+          }
+        });
+      }
+
+      /**
+       * Render the current node and its dependencies for the `click` event
+       */
+      function renderNode() {
+        const current = d3.select(this);
+        const nodeId = current
+          .selectAll('title')
+          .text()
+          .trim();
+        var label = current.selectAll('text').text();
+        const yes = confirm(`Render "${label}" and its dependencies?`);
+        if (yes) {
+          const dotStr = dots[dotIndex - 1];
+          const newDotStr = selectNodes(dotStr, new Set([nodeId]));
+          if (dotStr !== newDotStr) {
+            dots.push(newDotStr);
+            render();
+          }
+        }
+      }
+    </script>
+  </body>
+</html>

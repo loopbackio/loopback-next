@@ -1,6 +1,10 @@
 <%_
 const _properties = locals.properties || [];
-if (_properties.length) {
+if (importProperty && baseModel) {
+-%>
+import {model, property, <%- baseModel %>} from '@loopback/repository';
+<%_
+} else if (importProperty) {
 -%>
 import {model, property} from '@loopback/repository';
 <%_
@@ -19,9 +23,16 @@ imports.forEach(i => {
 
 /**
  * The model class is generated from OpenAPI schema - <%- name %>
- * <%- description %>
+ * <%- escapeComment(description) %>
  */
 @model({name: '<%- name %>'})
+<%_ if (baseModel) { -%>
+export class <%- className %> extends <%- baseModel %> {
+  constructor(data?: Partial<<%- className %>>) {
+    super(data);
+  }
+
+<%_ } else { -%>
 export class <%- className %> {
   constructor(data?: Partial<<%- className %>>) {
     if (data != null && typeof data === 'object') {
@@ -29,13 +40,32 @@ export class <%- className %> {
     }
   }
 
+<%_ } -%>
   <%_ for (const p of _properties) { -%>
   /**
-   * <%- p.description || '' %>
+  <%_ const _comment = escapeComment(p.description);
+    if (_comment) {
+  -%>
+   * <%- _comment %>
+  <%_ } else { -%>
+   *
+  <%_ } -%>
    */
+<%_ if (p.comment) { -%>
+  // <%- p.comment %>
+<%_ } -%>
+<%_ if (p.decoration) { -%>
   <%- p.decoration %>
+<%_ } -%>
   <%- p.signature %>
 
   <%_ } -%>
 }
+
+export interface <%- className %>Relations {
+  // describe navigational properties here
+}
+
+export type <%- className %>WithRelations = <%- className %> & <%- className %>Relations;
+
 

@@ -1,15 +1,17 @@
-// Copyright IBM Corp. 2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2020. All Rights Reserved.
 // Node module: @loopback/openapi-v3
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {SchemaObject} from '@loopback/openapi-v3-types';
 import {
+  FilterSchemaOptions,
   getFilterJsonSchemaFor,
   getWhereJsonSchemaFor,
   Model,
 } from '@loopback/repository-json-schema';
+import {isSchemaObject} from 'openapi3-ts';
 import {jsonToSchemaObject} from './json-to-schema';
+import {SchemaObject} from './types';
 
 /**
  * Build an OpenAPI schema describing the format of the "filter" object
@@ -18,11 +20,20 @@ import {jsonToSchemaObject} from './json-to-schema';
  * Note we don't take the model properties into account yet and return
  * a generic json schema allowing any "where" condition.
  *
- * @param modelCtor The model constructor to build the filter schema for.
+ * @param modelCtor - The model constructor to build the filter schema for.
+ * @param options - Options to build the filter schema.
  */
-export function getFilterSchemaFor(modelCtor: typeof Model): SchemaObject {
-  const jsonSchema = getFilterJsonSchemaFor(modelCtor);
+export function getFilterSchemaFor(
+  modelCtor: typeof Model,
+  options?: FilterSchemaOptions,
+): SchemaObject {
+  const jsonSchema = getFilterJsonSchemaFor(modelCtor, options);
   const schema = jsonToSchemaObject(jsonSchema);
+  if (isSchemaObject(schema)) {
+    schema[
+      'x-typescript-type'
+    ] = `@loopback/repository#Filter<${modelCtor.name}>`;
+  }
   return schema;
 }
 
@@ -33,10 +44,15 @@ export function getFilterSchemaFor(modelCtor: typeof Model): SchemaObject {
  * Note we don't take the model properties into account yet and return
  * a generic json schema allowing any "where" condition.
  *
- * @param modelCtor The model constructor to build the filter schema for.
+ * @param modelCtor - The model constructor to build the filter schema for.
  */
 export function getWhereSchemaFor(modelCtor: typeof Model): SchemaObject {
   const jsonSchema = getWhereJsonSchemaFor(modelCtor);
   const schema = jsonToSchemaObject(jsonSchema);
+  if (isSchemaObject(schema)) {
+    schema[
+      'x-typescript-type'
+    ] = `@loopback/repository#Where<${modelCtor.name}>`;
+  }
   return schema;
 }

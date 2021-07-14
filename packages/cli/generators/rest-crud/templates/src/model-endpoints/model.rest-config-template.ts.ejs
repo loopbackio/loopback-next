@@ -1,0 +1,10 @@
+import {ModelCrudRestApiConfig} from '@loopback/rest-crud';
+import {<%= modelName %>} from '../models';
+
+const config: ModelCrudRestApiConfig = {
+  model: <%= modelName %>,
+  pattern: 'CrudRest',
+  dataSource: '<%= dataSourceName %>',
+  basePath: '<%= basePath %>',
+};
+module.exports = config;

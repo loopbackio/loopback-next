@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2020. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -17,10 +17,10 @@ const generator = path.join(__dirname, '../../../generators/datasource');
 const tests = require('../lib/artifact-generator')(generator);
 const baseTests = require('../lib/base-generator')(generator);
 const testUtils = require('../../test-utils');
+const {expectFileToMatchSnapshot} = require('../../snapshots');
 
 // Test Sandbox
-const SANDBOX_PATH = path.resolve(__dirname, '..', '.sandbox');
-const sandbox = new TestSandbox(SANDBOX_PATH);
+const sandbox = new TestSandbox(path.resolve(__dirname, '../.sandbox'));
 
 // CLI Inputs
 const basicCLIInput = {
@@ -48,25 +48,13 @@ const complexCLIInput = {
   operations: '["get", "post"]',
 };
 
-const expectedComplexJSONOutput = {
-  name: 'ds',
-  connector: 'rest',
-  options: {test: 'value'},
-  operations: ['get', 'post'],
-};
-
 // Expected File Name
 const expectedTSFile = path.join(
-  SANDBOX_PATH,
+  sandbox.path,
   'src/datasources/ds.datasource.ts',
 );
 
-const expectedJSONFile = path.join(
-  SANDBOX_PATH,
-  'src/datasources/ds.datasource.json',
-);
-
-const expectedIndexFile = path.join(SANDBOX_PATH, 'src/datasources/index.ts');
+const expectedIndexFile = path.join(sandbox.path, 'src/datasources/index.ts');
 
 // Base Tests
 describe('datasource-generator extending BaseGenerator', baseTests);
@@ -79,106 +67,78 @@ describe('lb4 datasource integration', () => {
     return expect(
       testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {excludePackageJSON: true}),
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {excludePackageJSON: true}),
         )
         .withPrompts(basicCLIInput),
     ).to.be.rejectedWith(/No package.json found in/);
   });
 
-  it('does not run without the loopback keyword', () => {
+  it('does not run without the "@loopback/core" dependency', () => {
     return expect(
       testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {excludeKeyword: true}),
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {excludeLoopbackCore: true}),
         )
         .withPrompts(basicCLIInput),
-    ).to.be.rejectedWith(/No `loopback` keyword found in/);
+    ).to.be.rejectedWith(/No `@loopback\/core` package found/);
   });
 
   describe('basic datasource', () => {
     it('scaffolds correct file with input', async () => {
       await testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () => testUtils.givenLBProject(SANDBOX_PATH))
+        .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path))
         .withPrompts(basicCLIInput);
 
-      checkBasicDataSourceFiles();
-      assert.jsonFileContent(expectedJSONFile, basicCLIInput);
+      checkDataSourceFilesAgainstSnapshot();
     });
 
     it('scaffolds correct file with args', async () => {
       await testUtils
         .executeGenerator(generator)
-        .inDir(SANDBOX_PATH, () => testUtils.givenLBProject(SANDBOX_PATH))
+        .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path))
         .withArguments('ds');
 
-      checkBasicDataSourceFiles();
-      assert.jsonFileContent(expectedJSONFile, basicCLIInput);
+      checkDataSourceFilesAgainstSnapshot();
     });
   });
 
   it('scaffolds correct file with cloudant input', async () => {
     await testUtils
       .executeGenerator(generator)
-      .inDir(SANDBOX_PATH, () => testUtils.givenLBProject(SANDBOX_PATH))
+      .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path))
       .withPrompts(cloudantCLIInput);
 
-    checkBasicDataSourceFiles();
-    assert.jsonFileContent(expectedJSONFile, cloudantCLIInput);
+    checkDataSourceFilesAgainstSnapshot();
   });
 
   it('correctly coerces setting input of type number', async () => {
     await testUtils
       .executeGenerator(generator)
-      .inDir(SANDBOX_PATH, () => testUtils.givenLBProject(SANDBOX_PATH))
+      .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path))
       .withPrompts(numberCLIInput);
 
-    checkBasicDataSourceFiles();
-    assert.jsonFileContent(
-      expectedJSONFile,
-      Object.assign({}, numberCLIInput, {port: 100}),
-    );
+    checkDataSourceFilesAgainstSnapshot();
   });
 
   it('correctly coerces setting input of type object and array', async () => {
     await testUtils
       .executeGenerator(generator)
-      .inDir(SANDBOX_PATH, () => testUtils.givenLBProject(SANDBOX_PATH))
+      .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path))
       .withPrompts(complexCLIInput);
 
-    checkBasicDataSourceFiles();
-    assert.jsonFileContent(expectedJSONFile, expectedComplexJSONOutput);
+    checkDataSourceFilesAgainstSnapshot();
   });
 });
 
-function checkBasicDataSourceFiles() {
+function checkDataSourceFilesAgainstSnapshot() {
   assert.file(expectedTSFile);
-  assert.file(expectedJSONFile);
   assert.file(expectedIndexFile);
+  assert.noFile(path.join(sandbox.path, 'node_modules/memory'));
 
-  assert.fileContent(expectedTSFile, /import {inject} from '@loopback\/core';/);
-  assert.fileContent(
-    expectedTSFile,
-    /import {juggler} from '@loopback\/repository';/,
-  );
-  assert.fileContent(
-    expectedTSFile,
-    /import \* as config from '.\/ds.datasource.json';/,
-  );
-  assert.fileContent(
-    expectedTSFile,
-    /export class DsDataSource extends juggler.DataSource {/,
-  );
-  assert.fileContent(expectedTSFile, /static dataSourceName = 'ds';/);
-  assert.fileContent(expectedTSFile, /constructor\(/);
-  assert.fileContent(
-    expectedTSFile,
-    /\@inject\('datasources.config.ds', \{optional: true\}\)/,
-  );
-  assert.fileContent(expectedTSFile, /\) \{/);
-  assert.fileContent(expectedTSFile, /super\(dsConfig\);/);
+  expectFileToMatchSnapshot(expectedTSFile);
 
   assert.fileContent(expectedIndexFile, /export \* from '.\/ds.datasource';/);
 }

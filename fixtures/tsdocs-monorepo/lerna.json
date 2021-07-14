@@ -1,0 +1,16 @@
+{
+  "packages": [
+    "packages/*",
+    "docs"
+  ],
+  "version": "independent",
+  "command": {
+    "run": {
+      "prefix": false,
+      "loglevel": "silent",
+      "stream": true,
+      "concurrency": 8,
+      "sort": true
+    }
+  }
+}

@@ -1,7 +1,7 @@
 ---
 lang: en
 title: 'Glossary'
-keywords: LoopBack 4.0, LoopBack 4
+keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI
 toc_level: 1
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Glossary.html
@@ -17,9 +17,9 @@ paths, headers, and so on) a client needs to make a valid request to the API.
 
 **Application**: A container of components.
 
-**Component**: A reusable bundle of Bindings, [Controllers](Controllers.md),
-Services, [Repositories](Repositories.md), and models. For more information, see
-[Using components](Using-components.md) and
+**Component**: A reusable bundle of Bindings, [Controllers](Controller.md),
+Services, [Repositories](Repository.md), and models. For more information, see
+[Using components](Component.md#using-components) and
 [Creating components](Creating-components.md).
 
 **Connector**: An interface that abstracts underlying backend systems (for
@@ -48,4 +48,4 @@ responds to requests.
 **Service**: Operations implemented in an external system.
 
 **Repository**: A type of Service that represents a collection of data within a
-DataSource. For more information, see [Repositories](Repositories.md).
+DataSource. For more information, see [Repositories](Repository.md).

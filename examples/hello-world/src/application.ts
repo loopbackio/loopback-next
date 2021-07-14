@@ -1,10 +1,11 @@
-// Copyright IBM Corp. 2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2020. All Rights Reserved.
 // Node module: @loopback/example-hello-world
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
 import {ApplicationConfig} from '@loopback/core';
 import {RestApplication, RestServer} from '@loopback/rest';
+export {ApplicationConfig};
 
 export class HelloWorldApplication extends RestApplication {
   constructor(options: ApplicationConfig = {}) {
@@ -22,7 +23,7 @@ export class HelloWorldApplication extends RestApplication {
   async start() {
     await super.start();
 
-    if (!(this.options && this.options.disableConsoleLog)) {
+    if (!this.options?.disableConsoleLog) {
       const rest = await this.getServer(RestServer);
       console.log(
         `REST server running on port: ${await rest.get('rest.port')}`,

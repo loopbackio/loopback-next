@@ -1,0 +1,29 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Watch and Compile Project",
+      "type": "shell",
+      "command": "npm",
+      "args": ["--silent", "run", "build:watch"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": "$tsc-watch"
+    },
+    {
+      "label": "Build, Test and Lint",
+      "type": "shell",
+      "command": "npm",
+      "args": ["--silent", "run", "test:dev"],
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "problemMatcher": ["$tsc", "$tslint5"]
+    }
+  ]
+}

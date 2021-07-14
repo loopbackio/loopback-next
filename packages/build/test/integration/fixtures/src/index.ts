@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2020. All Rights Reserved.
 // Node module: @loopback/build
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -7,7 +7,7 @@
  * log decorator
  */
 export function log() {
-  return function(target: object | Function) {};
+  return function (target: object | Function) {};
 }
 
 /**
@@ -19,7 +19,7 @@ export class Hello {
 
   /**
    * Return a greeting
-   * @param msg Message
+   * @param msg - Message
    */
   greet(msg: string) {
     return `Hello, ${this.name}: ${msg}`;

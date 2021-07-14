@@ -1,26 +1,24 @@
-// Copyright IBM Corp. 2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2020. All Rights Reserved.
 // Node module: @loopback/context
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Binding} from './binding';
-import {Injection} from './inject';
-import {ValueOrPromise, BoundValue, tryWithFinally} from './value-promise';
-import * as debugModule from 'debug';
 import {DecoratorFactory} from '@loopback/metadata';
+import debugModule from 'debug';
+import {Binding} from './binding';
+import {BindingSelector} from './binding-filter';
+import {Context} from './context';
+import {Injection, InjectionMetadata} from './inject';
+import {BoundValue, tryWithFinally, ValueOrPromise} from './value-promise';
 
 const debugSession = debugModule('loopback:context:resolver:session');
 const getTargetName = DecoratorFactory.getTargetName;
-
-// NOTE(bajtos) The following import is required to satisfy TypeScript compiler
-// tslint:disable-next-line:no-unused-variable
-import {BindingKey} from './binding-key';
 
 /**
  * A function to be executed with the resolution session
  */
 export type ResolutionAction = (
-  session?: ResolutionSession,
+  session: ResolutionSession,
 ) => ValueOrPromise<BoundValue>;
 
 /**
@@ -39,6 +37,12 @@ export interface InjectionElement {
   value: Readonly<Injection>;
 }
 
+export interface InjectionDescriptor {
+  targetName: string;
+  bindingSelector: BindingSelector;
+  metadata: InjectionMetadata;
+}
+
 /**
  * Binding or injection elements tracked by resolution sessions
  */
@@ -46,7 +50,7 @@ export type ResolutionElement = BindingElement | InjectionElement;
 
 /**
  * Type guard for binding elements
- * @param element A resolution element
+ * @param element - A resolution element
  */
 function isBinding(
   element: ResolutionElement | undefined,
@@ -56,7 +60,7 @@ function isBinding(
 
 /**
  * Type guard for injection elements
- * @param element A resolution element
+ * @param element - A resolution element
  */
 function isInjection(
   element: ResolutionElement | undefined,
@@ -79,7 +83,7 @@ export class ResolutionSession {
    * Fork the current session so that a new one with the same stack can be used
    * in parallel or future resolutions, such as multiple method arguments,
    * multiple properties, or a getter function
-   * @param session The current session
+   * @param session - The current session
    */
   static fork(session?: ResolutionSession): ResolutionSession | undefined {
     if (session === undefined) return undefined;
@@ -89,79 +93,49 @@ export class ResolutionSession {
   }
 
   /**
-   * Start to resolve a binding within the session
-   * @param binding The current binding
-   * @param session The current resolution session
-   */
-  private static enterBinding(
-    binding: Readonly<Binding>,
-    session?: ResolutionSession,
-  ): ResolutionSession {
-    session = session || new ResolutionSession();
-    session.pushBinding(binding);
-    return session;
-  }
-
-  /**
    * Run the given action with the given binding and session
-   * @param action A function to do some work with the resolution session
-   * @param binding The current binding
-   * @param session The current resolution session
+   * @param action - A function to do some work with the resolution session
+   * @param binding - The current binding
+   * @param session - The current resolution session
    */
   static runWithBinding(
     action: ResolutionAction,
     binding: Readonly<Binding>,
-    session?: ResolutionSession,
+    session = new ResolutionSession(),
   ) {
-    const resolutionSession = ResolutionSession.enterBinding(binding, session);
+    // Start to resolve a binding within the session
+    session.pushBinding(binding);
     return tryWithFinally(
-      () => action(resolutionSession),
-      () => resolutionSession.popBinding(),
+      () => action(session),
+      () => session.popBinding(),
     );
-  }
-
-  /**
-   * Push an injection into the session
-   * @param injection The current injection
-   * @param session The current resolution session
-   */
-  private static enterInjection(
-    injection: Readonly<Injection>,
-    session?: ResolutionSession,
-  ): ResolutionSession {
-    session = session || new ResolutionSession();
-    session.pushInjection(injection);
-    return session;
   }
 
   /**
    * Run the given action with the given injection and session
-   * @param action A function to do some work with the resolution session
-   * @param binding The current injection
-   * @param session The current resolution session
+   * @param action - A function to do some work with the resolution session
+   * @param binding - The current injection
+   * @param session - The current resolution session
    */
   static runWithInjection(
     action: ResolutionAction,
     injection: Readonly<Injection>,
-    session?: ResolutionSession,
+    session = new ResolutionSession(),
   ) {
-    const resolutionSession = ResolutionSession.enterInjection(
-      injection,
-      session,
-    );
+    session.pushInjection(injection);
     return tryWithFinally(
-      () => action(resolutionSession),
-      () => resolutionSession.popInjection(),
+      () => action(session),
+      () => session.popInjection(),
     );
   }
 
   /**
    * Describe the injection for debugging purpose
-   * @param injection Injection object
+   * @param injection - Injection object
    */
-  static describeInjection(injection?: Readonly<Injection>) {
-    /* istanbul ignore if */
-    if (injection == null) return undefined;
+  static describeInjection(
+    injection: Readonly<Injection>,
+  ): InjectionDescriptor {
     const name = getTargetName(
       injection.target,
       injection.member,
@@ -169,15 +143,14 @@ export class ResolutionSession {
     );
     return {
       targetName: name,
-      bindingKey: injection.bindingKey,
-      // Cast to Object so that we don't have to expose InjectionMetadata
-      metadata: injection.metadata as Object,
+      bindingSelector: injection.bindingSelector,
+      metadata: injection.metadata,
     };
   }
 
   /**
    * Push the injection onto the session
-   * @param injection Injection The current injection
+   * @param injection - Injection The current injection
    */
   pushInjection(injection: Readonly<Injection>) {
     /* istanbul ignore if */
@@ -239,7 +212,7 @@ export class ResolutionSession {
 
   /**
    * Enter the resolution of the given binding. If
-   * @param binding Binding
+   * @param binding - Binding
    */
   pushBinding(binding: Readonly<Binding>) {
     /* istanbul ignore if */
@@ -272,7 +245,7 @@ export class ResolutionSession {
     const binding = top.value;
     /* istanbul ignore if */
     if (debugSession.enabled) {
-      debugSession('Exit binding:', binding && binding.toJSON());
+      debugSession('Exit binding:', binding?.toJSON());
       debugSession('Resolution path:', this.getResolutionPath() || '<empty>');
     }
     return binding;
@@ -296,7 +269,7 @@ export class ResolutionSession {
    * Get the binding path as `bindingA --> bindingB --> bindingC`.
    */
   getBindingPath() {
-    return this.bindingStack.map(b => b.key).join(' --> ');
+    return this.stack.filter(isBinding).map(describe).join(' --> ');
   }
 
   /**
@@ -304,17 +277,8 @@ export class ResolutionSession {
    */
   getInjectionPath() {
     return this.injectionStack
-      .map(i => ResolutionSession.describeInjection(i)!.targetName)
+      .map(i => ResolutionSession.describeInjection(i).targetName)
       .join(' --> ');
-  }
-
-  private static describe(e: ResolutionElement) {
-    switch (e.type) {
-      case 'injection':
-        return '@' + ResolutionSession.describeInjection(e.value)!.targetName;
-      case 'binding':
-        return e.value.key;
-    }
   }
 
   /**
@@ -323,7 +287,20 @@ export class ResolutionSession {
    * --> bindingC`.
    */
   getResolutionPath() {
-    return this.stack.map(i => ResolutionSession.describe(i)).join(' --> ');
+    return this.stack.map(describe).join(' --> ');
+  }
+
+  toString() {
+    return this.getResolutionPath();
+  }
+}
+
+function describe(e: ResolutionElement) {
+  switch (e.type) {
+    case 'injection':
+      return '@' + ResolutionSession.describeInjection(e.value).targetName;
+    case 'binding':
+      return e.value.key;
   }
 }
 
@@ -342,4 +319,96 @@ export interface ResolutionOptions {
    * will return `undefined` instead of throwing an error.
    */
   optional?: boolean;
+
+  /**
+   * A boolean flag to control if a proxy should be created to apply
+   * interceptors for the resolved value. It's only honored for bindings backed
+   * by a class.
+   */
+  asProxyWithInterceptors?: boolean;
+}
+
+/**
+ * Resolution options or session
+ */
+export type ResolutionOptionsOrSession = ResolutionOptions | ResolutionSession;
+
+/**
+ * Normalize ResolutionOptionsOrSession to ResolutionOptions
+ * @param optionsOrSession - resolution options or session
+ */
+export function asResolutionOptions(
+  optionsOrSession?: ResolutionOptionsOrSession,
+): ResolutionOptions {
+  // backwards compatibility
+  if (optionsOrSession instanceof ResolutionSession) {
+    return {session: optionsOrSession};
+  }
+  return optionsOrSession ?? {};
+}
+
+/**
+ * Contextual metadata for resolution
+ */
+export interface ResolutionContext<T = unknown> {
+  /**
+   * The context for resolution
+   */
+  readonly context: Context;
+  /**
+   * The binding to be resolved
+   */
+  readonly binding: Readonly<Binding<T>>;
+  /**
+   * The options used for resolution
+   */
+  readonly options: ResolutionOptions;
+}
+
+/**
+ * Error for context binding resolutions and dependency injections
+ */
+export class ResolutionError extends Error {
+  constructor(
+    message: string,
+    readonly resolutionCtx: Partial<ResolutionContext>,
+  ) {
+    super(ResolutionError.buildMessage(message, resolutionCtx));
+    this.name = ResolutionError.name;
+  }
+
+  private static buildDetails(resolutionCtx: Partial<ResolutionContext>) {
+    return {
+      context: resolutionCtx.context?.name ?? '',
+      binding: resolutionCtx.binding?.key ?? '',
+      resolutionPath: resolutionCtx.options?.session?.getResolutionPath() ?? '',
+    };
+  }
+
+  /**
+   * Build the error message for the resolution to include more contextual data
+   * @param reason - Cause of the error
+   * @param resolutionCtx - Resolution context
+   */
+  private static buildMessage(
+    reason: string,
+    resolutionCtx: Partial<ResolutionContext>,
+  ) {
+    const info = this.describeResolutionContext(resolutionCtx);
+    const message = `${reason} (${info})`;
+    return message;
+  }
+
+  private static describeResolutionContext(
+    resolutionCtx: Partial<ResolutionContext>,
+  ) {
+    const details = ResolutionError.buildDetails(resolutionCtx);
+    const items: string[] = [];
+    for (const [name, val] of Object.entries(details)) {
+      if (val !== '') {
+        items.push(`${name}: ${val}`);
+      }
+    }
+    return items.join(', ');
+  }
 }

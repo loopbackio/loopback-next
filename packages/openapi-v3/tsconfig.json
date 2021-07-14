@@ -1,0 +1,29 @@
+{
+  "$schema": "http://json.schemastore.org/tsconfig",
+  "extends": "@loopback/build/config/tsconfig.common.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "src",
+    "composite": true
+  },
+  "include": [
+    "src"
+  ],
+  "references": [
+    {
+      "path": "../core/tsconfig.json"
+    },
+    {
+      "path": "../openapi-spec-builder/tsconfig.json"
+    },
+    {
+      "path": "../repository-json-schema/tsconfig.json"
+    },
+    {
+      "path": "../repository/tsconfig.json"
+    },
+    {
+      "path": "../testlab/tsconfig.json"
+    }
+  ]
+}

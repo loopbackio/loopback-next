@@ -1,8 +1,9 @@
-// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2020. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+// no translate: Repository
 'use strict';
 const _ = require('lodash');
 const ArtifactGenerator = require('../../lib/artifact-generator');
@@ -12,25 +13,50 @@ const inspect = require('util').inspect;
 const path = require('path');
 const chalk = require('chalk');
 const utils = require('../../lib/utils');
-const connectors = require('../datasource/connectors.json');
 const tsquery = require('../../lib/ast-helper');
+const g = require('../../lib/globalize');
 
 const VALID_CONNECTORS_FOR_REPOSITORY = ['KeyValueModel', 'PersistedModel'];
 const KEY_VALUE_CONNECTOR = ['KeyValueModel'];
 
 const DEFAULT_CRUD_REPOSITORY = 'DefaultCrudRepository';
 const KEY_VALUE_REPOSITORY = 'DefaultKeyValueRepository';
+const BASE_REPOSITORIES = [DEFAULT_CRUD_REPOSITORY, KEY_VALUE_REPOSITORY];
+const CLI_BASE_CRUD_REPOSITORIES = [
+  {
+    name: `${DEFAULT_CRUD_REPOSITORY} ${chalk.gray('(Juggler bridge)')}`,
+    value: DEFAULT_CRUD_REPOSITORY,
+  },
+];
+const CLI_BASE_KEY_VALUE_REPOSITORIES = [
+  {
+    name: `${KEY_VALUE_REPOSITORY} ${chalk.gray(
+      '(For access to a key-value store)',
+    )}`,
+    value: KEY_VALUE_REPOSITORY,
+  },
+];
+const CLI_BASE_SEPARATOR = [
+  {
+    type: 'separator',
+    line: g.f('----- Custom Repositories -----'),
+  },
+];
 
 const REPOSITORY_KV_TEMPLATE = 'repository-kv-template.ts.ejs';
 const REPOSITORY_CRUD_TEMPLATE = 'repository-crud-default-template.ts.ejs';
 
-const PROMPT_MESSAGE_MODEL =
-  'Select the model(s) you want to generate a repository';
-const PROMPT_MESSAGE_DATA_SOURCE = 'Please select the datasource';
-const ERROR_READING_FILE = 'Error reading file';
-const ERROR_NO_DATA_SOURCES_FOUND = 'No datasources found at';
-const ERROR_NO_MODELS_FOUND = 'No models found at';
-const ERROR_NO_MODEL_SELECTED = 'You did not select a valid model';
+const PROMPT_MESSAGE_MODEL = g.f(
+  'Select the model(s) you want to generate a repository for',
+);
+const PROMPT_MESSAGE_DATA_SOURCE = g.f('Please select the datasource');
+const PROMPT_BASE_REPOSITORY_CLASS = g.f(
+  'Please select the repository base class',
+);
+const ERROR_READING_FILE = g.f('Error reading file');
+const ERROR_NO_DATA_SOURCES_FOUND = g.f('No datasources found at');
+const ERROR_NO_MODELS_FOUND = g.f('No models found at');
+const ERROR_NO_MODEL_SELECTED = g.f('You did not select a valid model');
 
 module.exports = class RepositoryGenerator extends ArtifactGenerator {
   // Note: arguments and options should be defined in the constructor.
@@ -39,12 +65,41 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
   }
 
   /**
+   * Find all the base artifacts in the given path whose type matches the
+   * provided artifactType.
+   * For example, a artifactType of "repository" will search the target path for
+   * matches to "*.repository.base.ts"
+   * @param {string} dir The target directory from which to load artifacts.
+   * @param {string} artifactType The artifact type (ex. "model", "repository")
+   */
+  async _findBaseClasses(dir, artifactType) {
+    const paths = await utils.findArtifactPaths(dir, artifactType + '.base');
+    debug(`repository artifact paths: ${paths}`);
+
+    // get base class and path
+    const baseRepositoryList = [];
+    for (const p of paths) {
+      //get name removing anything from .artifactType.base
+      const artifactFile = path.parse(_.last(_.split(p, path.sep))).name;
+      const firstWord = _.first(_.split(artifactFile, '.'));
+      const artifactName =
+        utils.toClassName(firstWord) + utils.toClassName(artifactType);
+
+      const baseRepository = {name: artifactName, file: artifactFile};
+      baseRepositoryList.push(baseRepository);
+    }
+
+    debug(`repository base classes: ${inspect(baseRepositoryList)}`);
+    return baseRepositoryList;
+  }
+
+  /**
    * get the property name for the id field
    * @param {string} modelName
    */
   async _getModelIdProperty(modelName) {
     let fileContent = '';
-    let modelFile = path.join(
+    const modelFile = path.join(
       this.artifactInfo.modelDir,
       utils.getModelFileName(modelName),
     );
@@ -65,7 +120,7 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
     if (!this.artifactInfo.dataSourceClass) {
       return;
     }
-    let result = utils.isConnectorOfType(
+    const result = utils.isConnectorOfType(
       KEY_VALUE_CONNECTOR,
       this.artifactInfo.datasourcesDir,
       this.artifactInfo.dataSourceClass,
@@ -116,19 +171,26 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
     this.option('model', {
       type: String,
       required: false,
-      description: 'A valid model name',
+      description: g.f('A valid model name'),
     });
 
     this.option('id', {
       type: String,
       required: false,
-      description: 'A valid ID property name for the specified model',
+      description: g.f('A valid ID property name for the specified model'),
     });
 
     this.option('datasource', {
       type: String,
       required: false,
-      description: 'A valid datasource name',
+      description: g.f('A valid datasource name'),
+    });
+
+    this.option('repositoryBaseClass', {
+      type: String,
+      required: false,
+      description: g.f('A valid repository base class'),
+      default: 'DefaultCrudRepository',
     });
 
     return super._setupGenerator();
@@ -174,15 +236,14 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
     if (this.shouldExit()) return false;
 
     debug('Prompting for a datasource ');
-    let cmdDatasourceName;
     let datasourcesList;
 
     // grab the datasourcename from the command line
-    cmdDatasourceName = this.options.datasource
+    const cmdDatasourceName = this.options.datasource
       ? utils.toClassName(this.options.datasource) + 'Datasource'
       : '';
 
-    debug(`command line datasource is  ${cmdDatasourceName}`);
+    debug('command line datasource is %j', cmdDatasourceName);
 
     try {
       datasourcesList = await utils.getArtifactList(
@@ -191,20 +252,26 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
         true,
       );
       debug(
-        `datasourcesList from ${utils.sourceRootDir}/${
-          utils.datasourcesDir
-        } : ${datasourcesList}`,
+        'datasourcesList from %s/%s:',
+        utils.sourceRootDir,
+        utils.datasourcesDir,
+        datasourcesList,
       );
     } catch (err) {
       return this.exit(err);
     }
 
     const availableDatasources = datasourcesList.filter(item => {
-      debug(`data source inspecting item: ${item}`);
       const result = utils.isConnectorOfType(
         VALID_CONNECTORS_FOR_REPOSITORY,
         this.artifactInfo.datasourcesDir,
         item,
+      );
+      debug(
+        'has %s connector of type %o? %s',
+        item,
+        VALID_CONNECTORS_FOR_REPOSITORY,
+        result,
       );
       return result !== false;
     });
@@ -300,6 +367,10 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
         message: PROMPT_MESSAGE_MODEL,
         choices: modelList,
         when: this.artifactInfo.modelNameList === undefined,
+        // Require at least one model to be selected
+        // This prevents users from accidentally pressing ENTER instead of SPACE
+        // to select a model from the list
+        validate: result => !!result.length,
       },
     ])
       .then(props => {
@@ -309,6 +380,65 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
       })
       .catch(err => {
         debug(`Error during model list prompt: ${err}`);
+        return this.exit(err);
+      });
+  }
+
+  async promptBaseClass() {
+    debug('Prompting for repository base');
+    if (this.shouldExit()) return;
+
+    const availableRepositoryList = [];
+
+    debug(`repositoryTypeClass ${this.artifactInfo.repositoryTypeClass}`);
+    // Add base repositories based on datasource type
+    if (this.artifactInfo.repositoryTypeClass === KEY_VALUE_REPOSITORY)
+      availableRepositoryList.push(...CLI_BASE_KEY_VALUE_REPOSITORIES);
+    else availableRepositoryList.push(...CLI_BASE_CRUD_REPOSITORIES);
+    availableRepositoryList.push(...CLI_BASE_SEPARATOR);
+
+    try {
+      this.artifactInfo.baseRepositoryList = await this._findBaseClasses(
+        this.artifactInfo.outDir,
+        'repository',
+      );
+      if (
+        this.artifactInfo.baseRepositoryList &&
+        this.artifactInfo.baseRepositoryList.length > 0
+      ) {
+        availableRepositoryList.push(...this.artifactInfo.baseRepositoryList);
+        debug(`availableRepositoryList ${availableRepositoryList}`);
+      }
+    } catch (err) {
+      return this.exit(err);
+    }
+
+    if (this.options.repositoryBaseClass) {
+      debug(
+        `Base repository received from command line: ${this.options.repositoryBaseClass}`,
+      );
+      this.artifactInfo.repositoryBaseClass = this.options.repositoryBaseClass;
+    }
+
+    return this.prompt([
+      {
+        type: 'list',
+        name: 'repositoryBaseClass',
+        message: PROMPT_BASE_REPOSITORY_CLASS,
+        choices: availableRepositoryList,
+        default:
+          this.artifactInfo.repositoryBaseClass === undefined
+            ? availableRepositoryList[0]
+            : this.options.repositoryBaseClass,
+      },
+    ])
+      .then(props => {
+        debug(`props after custom repository prompt: ${inspect(props)}`);
+        Object.assign(this.artifactInfo, props);
+        return props;
+      })
+      .catch(err => {
+        debug(`Error during repository base class prompt: ${err.stack}`);
         return this.exit(err);
       });
   }
@@ -324,14 +454,17 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
       return this.exit(new Error(`${ERROR_NO_MODEL_SELECTED}`));
     } else {
       // iterate thru each selected model, infer or ask for the ID type
-      for (let item of this.artifactInfo.modelNameList) {
+      for (const item of this.artifactInfo.modelNameList) {
         this.artifactInfo.modelName = item;
 
         const prompts = [
           {
             type: 'input',
             name: 'propertyName',
-            message: `Please enter the name of the ID property for ${item}:`,
+            message: g.f(
+              'Please enter the name of the ID property for %s:',
+              `${item}`,
+            ),
             default: 'id',
           },
         ];
@@ -361,6 +494,21 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
 
   async _scaffold() {
     if (this.shouldExit()) return false;
+
+    this.artifactInfo.isRepositoryBaseBuiltin = BASE_REPOSITORIES.includes(
+      this.artifactInfo.repositoryBaseClass,
+    );
+    debug(
+      `isRepositoryBaseBuiltin : ${this.artifactInfo.isRepositoryBaseBuiltin}`,
+    );
+    if (!this.artifactInfo.isRepositoryBaseBuiltin) {
+      const baseIndex = _.findIndex(this.artifactInfo.baseRepositoryList, [
+        'name',
+        this.artifactInfo.repositoryBaseClass,
+      ]);
+      this.artifactInfo.repositoryBaseFile =
+        this.artifactInfo.baseRepositoryList[baseIndex].file;
+    }
 
     if (this.options.name) {
       this.artifactInfo.className = utils.toClassName(this.options.name);
@@ -401,13 +549,8 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
       debug(`artifactInfo: ${inspect(this.artifactInfo)}`);
       debug(`Copying artifact to: ${dest}`);
     }
-    this.fs.copyTpl(
-      source,
-      dest,
-      this.artifactInfo,
-      {},
-      {globOptions: {dot: true}},
-    );
+
+    this.copyTemplatedFiles(source, dest, this.artifactInfo);
     return;
   }
 
@@ -418,8 +561,15 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
         ? 'Repositories'
         : 'Repository';
 
+    this.artifactInfo.modelNameList = _.map(
+      this.artifactInfo.modelNameList,
+      repositoryName => {
+        return repositoryName + 'Repository';
+      },
+    );
+
     this.artifactInfo.name = this.artifactInfo.modelNameList
-      ? this.artifactInfo.modelNameList.join()
+      ? this.artifactInfo.modelNameList.join(this.classNameSeparator)
       : this.artifactInfo.modelName;
 
     await super.end();

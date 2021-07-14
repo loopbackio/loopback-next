@@ -1,8 +1,9 @@
-// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Copyright IBM Corp. 2017,2020. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+// no translation: Controller
 'use strict';
 const _ = require('lodash');
 const ArtifactGenerator = require('../../lib/artifact-generator');
@@ -11,6 +12,7 @@ const inspect = require('util').inspect;
 const path = require('path');
 const chalk = require('chalk');
 const utils = require('../../lib/utils');
+const g = require('../../lib/globalize');
 
 // Exportable constants
 module.exports = class ControllerGenerator extends ArtifactGenerator {
@@ -20,15 +22,14 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
   }
 
   static get BASIC() {
-    return 'Empty Controller';
+    return g.f('Empty Controller');
   }
 
   static get REST() {
-    return 'REST Controller with CRUD functions';
+    return g.f('REST Controller with CRUD functions');
   }
 
   _setupGenerator() {
-    super._setupGenerator();
     this.artifactInfo = {
       type: 'controller',
       rootDir: 'src',
@@ -53,8 +54,10 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
     this.option('controllerType', {
       type: String,
       required: false,
-      description: 'Type for the ' + this.artifactInfo.type,
+      description: g.f('Type for the %s', this.artifactInfo.type),
     });
+
+    return super._setupGenerator();
   }
 
   setOptions() {
@@ -74,11 +77,20 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
   promptArtifactType() {
     debug('Prompting for controller type');
     if (this.shouldExit()) return;
+
+    super.promptWarningMsgForName();
+    // inform user what controller/file names will be created
+    super.promptClassFileName(
+      'controller',
+      'controllers',
+      utils.toClassName(this.artifactInfo.name),
+    );
+
     return this.prompt([
       {
         type: 'list',
         name: 'controllerType',
-        message: 'What kind of controller would you like to generate?',
+        message: g.f('What kind of controller would you like to generate?'),
         when: this.artifactInfo.controllerType === undefined,
         choices: [ControllerGenerator.BASIC, ControllerGenerator.REST],
         default: ControllerGenerator.BASIC,
@@ -121,27 +133,29 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
     }
 
     if (_.isEmpty(modelList)) {
-      return this.exit(
-        `No models found in ${this.artifactInfo.modelDir}.
-        ${chalk.yellow(
-          'Please visit http://loopback.io/doc/en/lb4/Controller-generator.html for information on how models are discovered',
-        )}`,
+      const file = g.f('No models found in %s. ', this.artifactInfo.modelDir);
+      const site = g.f(
+        'Please visit http://loopback.io/doc/en/lb4/Controller-generator.html for information on how models are discovered.',
       );
+      return this.exit(file + chalk.yellow(site));
     }
     if (_.isEmpty(repositoryList)) {
-      return this.exit(
-        `No repositories found in ${this.artifactInfo.repositoryDir}.
-        ${chalk.yellow(
-          'Please visit http://loopback.io/doc/en/lb4/Controller-generator.html for information on how repositories are discovered',
-        )}`,
+      const file = g.f(
+        'No repositories found in %s. ',
+        this.artifactInfo.repositoryDir,
       );
+      const site = g.f(
+        'Please visit http://loopback.io/doc/en/lb4/Controller-generator.html for information on how repositories are discovered.',
+      );
+      return this.exit(file + chalk.yellow(site));
     }
     return this.prompt([
       {
         type: 'list',
         name: 'modelName',
-        message:
+        message: g.f(
           'What is the name of the model to use with this CRUD repository?',
+        ),
         choices: modelList,
         when: this.artifactInfo.modelName === undefined,
         default: modelList[0],
@@ -150,24 +164,37 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
       {
         type: 'list',
         name: 'repositoryName',
-        message: 'What is the name of your CRUD repository?',
+        message: g.f('What is the name of your CRUD repository?'),
         choices: repositoryList,
         when: this.artifactInfo.repositoryName === undefined,
         default: repositoryList[0],
         validate: utils.validateClassName,
       },
       {
+        type: 'input',
+        name: 'id',
+        message: g.f('What is the name of ID property?'),
+        when: this.artifactInfo.id === undefined,
+        default: 'id',
+      },
+      {
         type: 'list',
         name: 'idType',
-        message: 'What is the type of your ID?',
+        message: g.f('What is the type of your ID?'),
         choices: ['number', 'string', 'object'],
         when: this.artifactInfo.idType === undefined,
         default: 'number',
       },
       {
+        type: 'confirm',
+        name: 'idOmitted',
+        message: g.f('Is the id omitted when creating a new instance?'),
+        default: true,
+      },
+      {
         type: 'input',
         name: 'httpPathName',
-        message: 'What is the base HTTP path name of the CRUD operations?',
+        message: g.f('What is the base HTTP path name of the CRUD operations?'),
         when: this.artifactInfo.httpPathName === undefined,
         default: answers =>
           utils.prependBackslash(
@@ -206,13 +233,12 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
     if (this.shouldExit()) return false;
     this.artifactInfo.className = utils.toClassName(this.artifactInfo.name);
     this.artifactInfo.outFile =
-      utils.kebabCase(this.artifactInfo.name) + '.controller.ts';
+      utils.toFileName(this.artifactInfo.name) + '.controller.ts';
     if (debug.enabled) {
       debug(`Artifact output filename set to: ${this.artifactInfo.outFile}`);
     }
-
-    this.artifactInfo.modelVariableName = utils.camelCase(
-      this.artifactInfo.modelName,
+    this.artifactInfo.modelVariableName = utils.toVarName(
+      this.artifactInfo.modelName || '',
     );
 
     // renames the file
@@ -236,13 +262,7 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
       debug(`artifactInfo: ${inspect(this.artifactInfo)}`);
       debug(`Copying artifact to: ${dest}`);
     }
-    this.fs.copyTpl(
-      source,
-      dest,
-      this.artifactInfo,
-      {},
-      {globOptions: {dot: true}},
-    );
+    this.copyTemplatedFiles(source, dest, this.artifactInfo);
     return;
   }
 

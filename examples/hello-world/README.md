@@ -5,14 +5,16 @@ A simple hello-world application using LoopBack 4!
 ## Summary
 
 This project shows how to write the simplest LoopBack 4 application possible.
-Check out [src/application.ts](src/application.ts) to learn how we configured
-our application to always respond with "Hello World!".
+Check out
+[src/application.ts](https://github.com/strongloop/loopback-next/blob/master/examples/hello-world/src/application.ts)
+to learn how we configured our application to always respond with "Hello
+World!".
 
 ## Prerequisites
 
 Before we can begin, you'll need to make sure you have some things installed:
 
-- [Node.js](https://nodejs.org/en/) at v8.9 or greater
+- [Node.js](https://nodejs.org/en/) at v10 or greater
 
 Additionally, this tutorial assumes that you are comfortable with certain
 technologies, languages and concepts.

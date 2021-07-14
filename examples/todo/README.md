@@ -14,7 +14,7 @@ LoopBack 4. You will experience how you can create REST APIs with just
 
 First, you'll need to install a supported version of Node:
 
-- [Node.js](https://nodejs.org/en/) at v8.9 or greater
+- [Node.js](https://nodejs.org/en/) at v10 or greater
 
 Additionally, this tutorial assumes that you are comfortable with certain
 technologies, languages and concepts.
@@ -53,13 +53,7 @@ application, follow these steps:
 1.  Run the `lb4 example` command to select and clone the todo repository:
 
     ```sh
-    $ lb4 example
-    ? What example would you like to clone? (Use arrow keys)
-    > todo: Tutorial example on how to build an application with LoopBack 4.
-    todo-list: Continuation of the todo example using relations in LoopBack 4.
-    hello-world: A simple hello-world Application using LoopBack 4.
-    log-extension: An example extension project for LoopBack 4.
-    rpc-server: A basic RPC server using a made-up protocol.
+    lb4 example todo
     ```
 
 2.  Switch to the directory.
@@ -73,7 +67,7 @@ application, follow these steps:
     ```sh
     $ npm start
 
-    Server is running on port 3000
+    Server is running at http://127.0.0.1:3000
     ```
 
 Feel free to look around in the application's code to get a feel for how it
@@ -82,8 +76,9 @@ continue with this tutorial!
 
 ### Need help?
 
-Check out our [Gitter channel](https://gitter.im/strongloop/loopback) and ask
-for help with this tutorial.
+Check out our
+[Slack](https://join.slack.com/t/loopbackio/shared_invite/zt-8lbow73r-SKAKz61Vdao~_rGf91pcsw)
+and ask for help with this tutorial.
 
 ### Bugs/Feedback
 

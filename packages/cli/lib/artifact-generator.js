@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Copyright IBM Corp. 2017,2020. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -7,23 +7,24 @@
 const BaseGenerator = require('./base-generator');
 const debug = require('./debug')('artifact-generator');
 const utils = require('./utils');
-const updateIndex = require('./update-index');
 const path = require('path');
 const chalk = require('chalk');
+const g = require('./globalize');
 
 module.exports = class ArtifactGenerator extends BaseGenerator {
   // Note: arguments and options should be defined in the constructor.
   constructor(args, opts) {
     super(args, opts);
+    // how classes are separated when the output contains more than one
+    this.classNameSeparator = ', ';
   }
 
   _setupGenerator() {
-    debug('Setting up generator');
     super._setupGenerator();
     this.argument('name', {
       type: String,
       required: false,
-      description: 'Name for the ' + this.artifactInfo.type,
+      description: g.f('Name for the %s', this.artifactInfo.type),
     });
   }
 
@@ -50,9 +51,12 @@ module.exports = class ArtifactGenerator extends BaseGenerator {
         type: 'input',
         name: 'name',
         // capitalization
-        message: utils.toClassName(this.artifactInfo.type) + ' class name:',
+        message: g.f(
+          '%s class name:',
+          utils.toClassName(this.artifactInfo.type),
+        ),
         when: this.artifactInfo.name === undefined,
-        default: this.artifactInfo.name,
+        default: this.artifactInfo.defaultName,
         validate: utils.validateClassName,
       },
     ];
@@ -63,6 +67,33 @@ module.exports = class ArtifactGenerator extends BaseGenerator {
     });
   }
 
+  /**
+   * remind user the input might get changed if it contains _ or accented char
+   **/
+  promptWarningMsgForName() {
+    utils.logNamingIssues(this.artifactInfo.name, this.log.bind(this));
+  }
+
+  /**
+   * Inform user what model/file names will be created
+   *
+   * e.g: promptClassFileName('model', 'models', 'MyModel');
+   * >> Model MyModel will be created in src/models/my-model.model.ts
+   **/
+  promptClassFileName(type, typePlural, name) {
+    this.log(
+      g.f(
+        '%s %s will be created in src/%s/%s.%s.ts',
+        utils.toClassName(type),
+        chalk.yellow(name),
+        typePlural,
+        chalk.yellow(utils.toFileName(name)),
+        type,
+      ),
+    );
+    this.log();
+  }
+
   scaffold() {
     debug('Scaffolding artifact(s)');
     if (this.shouldExit()) return false;
@@ -71,12 +102,10 @@ module.exports = class ArtifactGenerator extends BaseGenerator {
 
     // Copy template files from ./templates
     // Renaming of the files should be done in the generator inheriting from this one
-    this.fs.copyTpl(
+    this.copyTemplatedFiles(
       this.templatePath('**/*'),
       this.destinationPath(),
       this.artifactInfo,
-      {},
-      {globOptions: {dot: true}},
     );
   }
 
@@ -86,23 +115,25 @@ module.exports = class ArtifactGenerator extends BaseGenerator {
       return;
     }
 
-    let generationStatus = true;
-    // Check all files being generated to ensure they succeeded
-    Object.entries(this.conflicter.generationStatus).forEach(([key, val]) => {
-      if (val === 'skip' || val === 'identical') generationStatus = false;
-    });
-
-    if (generationStatus) {
+    if (this._isGenerationSuccessful()) {
       await this._updateIndexFiles();
+
+      const classes = this.artifactInfo.name
+        .split(this.classNameSeparator)
+        .map(utils.toClassName);
+      const classesOutput = classes.join(this.classNameSeparator);
 
       // User Output
       this.log();
       this.log(
-        utils.toClassName(this.artifactInfo.type),
-        chalk.yellow(this.artifactInfo.name),
-        'was created in',
-        `${this.artifactInfo.relPath}/`,
+        g.f(
+          '%s %s was/were created in %s',
+          utils.toClassName(this.artifactInfo.type),
+          chalk.yellow(classesOutput),
+          this.artifactInfo.relPath,
+        ),
       );
+
       this.log();
     }
 
@@ -126,6 +157,7 @@ module.exports = class ArtifactGenerator extends BaseGenerator {
    * }, {dir: '...', file: '...'}]
    */
   async _updateIndexFiles() {
+    debug(`Indexes to be updated ${this.artifactInfo.indexesToBeUpdated}`);
     // Index Update Disabled
     if (this.artifactInfo.disableIndexUpdate) return;
 
@@ -145,20 +177,7 @@ module.exports = class ArtifactGenerator extends BaseGenerator {
     }
 
     for (const idx of this.artifactInfo.indexesToBeUpdated) {
-      await updateIndex(idx.dir, idx.file);
-      // Output for users
-      const updateDirRelPath = path.relative(
-        this.artifactInfo.relPath,
-        idx.dir,
-      );
-
-      const outPath = path.join(
-        this.artifactInfo.relPath,
-        updateDirRelPath,
-        'index.ts',
-      );
-
-      this.log(chalk.green('   update'), `${outPath}`);
+      await this._updateIndexFile(idx.dir, idx.file);
     }
   }
 };

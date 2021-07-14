@@ -1,7 +1,7 @@
 ---
 lang: en
 title: 'Defining the API using code-first approach'
-keywords: LoopBack 4.0, LoopBack 4
+keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Defining-the-API-using-code-first-approach.html
 ---
@@ -33,7 +33,7 @@ provide a description of your API. These concepts and their decorators include:
 - [Model](Model.md)
   - `@model()`
   - `@property()`
-- [Routes](Routes.md)
+- [Routes](Route.md)
   - `@operation()`
   - `@param()`
 
@@ -134,7 +134,7 @@ of your routes and `@param` or `@requestBody` to its parameters:
 
 ```ts
 import {Todo} from '../models/todo.model';
-import {post, get, param, requestBody} from '@loopback/openapi-v3';
+import {post, get, param, requestBody} from '@loopback/rest';
 
 export class TodoController {
   constructor() {}

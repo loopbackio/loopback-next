@@ -1,0 +1,4 @@
+p, admin, project*, view-all
+p, admin, project1, donate
+p, admin, project2, donate
+g, u3, admin

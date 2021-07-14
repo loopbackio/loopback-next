@@ -1,7 +1,7 @@
 ---
 lang: en
 title: 'Testing your extension'
-keywords: LoopBack 4.0, LoopBack 4
+keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Testing-your-extension.html
 ---
@@ -73,7 +73,7 @@ and test a function, providing a test double for constructor arguments as
 needed. Following are examples that illustrate how to perform a unit test on a
 controller class:
 
-**`src/controllers/ping.controller.ts`**
+{% include code-caption.html content="src/controllers/ping.controller.ts" %}
 
 ```ts
 export class PingController {
@@ -84,7 +84,7 @@ export class PingController {
 }
 ```
 
-**`test/unit/controllers/ping.controller.unit.ts`**
+{% include code-caption.html content="src/__tests__/unit/controllers/ping.controller.unit.ts" %}
 
 ```ts
 import {PingController} from '../../..';
@@ -119,11 +119,11 @@ validating whether the metadata was stored or not._
 
 Following is an example for testing a decorator:
 
-**`src/decorators/test.decorator.ts`**
+{% include code-caption.html content="src/decorators/test.decorator.ts" %}
 
 ```ts
 export function test(file: string) {
-  return function(target: Object, methodName: string): void {
+  return function (target: Object, methodName: string): void {
     Reflector.defineMetadata(
       'example.msg.decorator.metadata.key',
       {file},
@@ -145,7 +145,7 @@ export function getTestMetadata(
 }
 ```
 
-**`test/unit/decorators/test.decorator.unit.ts`**
+{% include code-caption.html content="src/__tests__/unit/decorators/test.decorator.unit.ts" %}
 
 ```ts
 import {test, getTestMetadata} from '../../..';
@@ -180,10 +180,10 @@ requires the Class to have a `value()` function. A unit test for a provider
 should test the `value()` function by instantiating a new `Provider` class,
 using a test double for any constructor arguments.
 
-**`src/providers/random-number.provider.ts`**
+{% include code-caption.html content="src/providers/random-number.provider.ts" %}
 
 ```ts
-import {Provider} from '@loopback/context';
+import {Provider} from '@loopback/core';
 
 export class RandomNumberProvider implements Provider<number> {
   value() {
@@ -194,7 +194,7 @@ export class RandomNumberProvider implements Provider<number> {
 }
 ```
 
-**`test/unit/providers/random-number.provider.unit.ts`**
+{% include code-caption.html content="src/__tests__/unit/providers/random-number.provider.unit.ts" %}
 
 ```ts
 import {RandomNumberProvider} from '../../..';
@@ -230,11 +230,11 @@ Classes to work together, an integration test is needed. A Mixin test checks
 that new or overridden methods exist and work as expected in the new Mixed
 class. Following is an example for an integration test for a Mixin:
 
-**`src/mixins/time.mixin.ts`**
+{% include code-caption.html content="src/mixins/time.mixin.ts" %}
 
 ```ts
-import {Constructor} from '@loopback/context';
-export function TimeMixin<T extends Constructor<any>>(superClass: T) {
+import {Constructor} from '@loopback/core';
+export function TimeMixin<T extends MixinTarget<object>>(superClass: T) {
   return class extends superClass {
     constructor(...args: any[]) {
       super(...args);
@@ -255,7 +255,7 @@ export function TimeMixin<T extends Constructor<any>>(superClass: T) {
 }
 ```
 
-**`test/integration/mixins/time.mixin.integration.ts`**
+{% include code-caption.html content="src/__tests__/integration/mixins/time.mixin.integration.ts" %}
 
 ```ts
 import {expect} from '@loopback/testlab';
@@ -302,4 +302,4 @@ Have a look at
 [loopback4-example-log-extension](https://github.com/strongloop/loopback-next/tree/master/examples/log-extension)
 to understand the extension artifacts and their usage. An Acceptance test can be
 seen here:
-[test/acceptance/log.extension.acceptance.ts](https://github.com/strongloop/loopback-next/blob/master/examples/log-extension/test/acceptance/log.extension.acceptance.ts).
+[src/**tests**/acceptance/log.extension.acceptance.ts](https://github.com/strongloop/loopback-next/blob/master/examples/log-extension/src/__tests__/acceptance/log.extension.acceptance.ts).

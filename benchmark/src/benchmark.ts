@@ -1,11 +1,11 @@
-// Copyright IBM Corp. 2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2020. All Rights Reserved.
 // Node module: @loopback/benchmark
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import * as byline from 'byline';
-import {ChildProcess, spawn} from 'child_process';
-import * as pEvent from 'p-event';
+import byline from 'byline';
+import {ChildProcess, fork} from 'child_process';
+import {once} from 'events';
 import {Autocannon, EndpointStats} from './autocannon';
 import {Client} from './client';
 import {scenarios} from './scenarios';
@@ -47,7 +47,7 @@ export class Benchmark {
       },
       options,
     );
-    this.logger = function() {};
+    this.logger = function () {};
     this.cannonFactory = url => new Autocannon(url, this.options.duration);
   }
 
@@ -90,26 +90,37 @@ export class Benchmark {
 
 function startWorker() {
   return new Promise<{worker: ChildProcess; url: string}>((resolve, reject) => {
-    const child = spawn(
-      process.execPath,
-      ['--expose-gc', require.resolve('./worker')],
-      {
-        stdio: ['pipe', 'pipe', process.stderr],
-      },
-    );
+    const lines: string[] = [];
+    const child = fork(require.resolve('./worker'), [], {
+      execArgv: ['--expose-gc'],
+      stdio: ['pipe', 'pipe', process.stderr, 'ipc'],
+    });
 
     child.once('error', reject);
-    child.once('exit', (code, signal) =>
-      reject(new Error(`Child exited with code ${code} signal ${signal}`)),
-    );
+
+    child.on('message', msg => {
+      debug('Worker setup done, url is', msg.url);
+      resolve({worker: child, url: msg.url});
+    });
+
+    child.once('exit', (code, signal) => {
+      const msg = [
+        `Child exited with code ${code} signal ${signal}.`,
+        ...lines,
+      ].join('\n');
+      reject(new Error(msg));
+    });
 
     const reader = byline.createStream(child.stdout);
-    reader.once('data', line => resolve({worker: child, url: line.toString()}));
-    reader.on('data', line => debug('[worker] %s', line.toString()));
+    reader.on('data', line => {
+      const str = line.toString();
+      debug('[worker] %s', str);
+      lines.push(str);
+    });
   });
 }
 
 async function closeWorker(worker: ChildProcess) {
   worker.kill();
-  await pEvent(worker, 'close');
+  await once(worker, 'close');
 }

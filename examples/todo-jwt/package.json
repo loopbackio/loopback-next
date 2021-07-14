@@ -1,0 +1,81 @@
+{
+  "name": "@loopback/example-todo-jwt",
+  "description": "A modified Todo tutorial how to build an application with JWT authentication and LoopBack 4",
+  "version": "1.6.1",
+  "keywords": [
+    "loopback",
+    "LoopBack",
+    "example",
+    "tutorial",
+    "CRUD",
+    "models",
+    "todo",
+    "jwt",
+    "authentication"
+  ],
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "examples/todo-jwt"
+  },
+  "engines": {
+    "node": "^10.16 || 12 || 14 || 16"
+  },
+  "scripts": {
+    "build": "lb-tsc",
+    "build:watch": "lb-tsc --watch",
+    "clean": "lb-clean *example-todo-jwt*.tgz dist *.tsbuildinfo package",
+    "lint": "npm run prettier:check && npm run eslint",
+    "lint:fix": "npm run eslint:fix && npm run prettier:fix",
+    "prettier:cli": "lb-prettier \"**/*.ts\"",
+    "prettier:check": "npm run prettier:cli -- -l",
+    "prettier:fix": "npm run prettier:cli -- --write",
+    "eslint": "lb-eslint --report-unused-disable-directives .",
+    "eslint:fix": "npm run eslint -- --fix",
+    "pretest": "npm run rebuild",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
+    "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js && npm run posttest",
+    "verify": "npm pack && tar xf loopback-todo*.tgz && tree package && npm run clean",
+    "premigrate": "npm run build ",
+    "migrate": "node ./dist/migrate",
+    "preopenapi-spec": "npm run build",
+    "openapi-spec": "node ./dist/openapi-spec",
+    "rebuild": "npm run clean && npm run build",
+    "prestart": "npm run rebuild",
+    "start": "node ."
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@loopback/authentication": "^7.3.1",
+    "@loopback/authentication-jwt": "^0.9.1",
+    "@loopback/boot": "^3.4.1",
+    "@loopback/core": "^2.16.1",
+    "@loopback/repository": "^3.7.0",
+    "@loopback/rest": "^9.3.1",
+    "@loopback/rest-explorer": "^3.3.1",
+    "@loopback/security": "^0.5.1",
+    "@loopback/service-proxy": "^3.2.1",
+    "@types/bcryptjs": "^2.4.2",
+    "bcryptjs": "^2.4.3",
+    "loopback-connector-rest": "^4.0.1",
+    "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "@loopback/build": "^6.4.1",
+    "@loopback/eslint-config": "^10.2.1",
+    "@loopback/http-caching-proxy": "^2.3.1",
+    "@loopback/testlab": "^3.4.1",
+    "@types/lodash": "^4.14.170",
+    "@types/node": "^10.17.60",
+    "eslint": "^7.29.0",
+    "lodash": "^4.17.21",
+    "typescript": "~4.3.4"
+  }
+}

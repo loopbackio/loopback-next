@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2017. All Rights Reserved.
+// Copyright IBM Corp. 2018,2020. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -6,12 +6,11 @@
 'use strict';
 const assert = require('yeoman-assert');
 const sinon = require('sinon');
-const chalk = require('chalk');
 const testUtils = require('../../test-utils');
-var fs = require('mem-fs-editor').create(require('mem-fs').create());
+const suiteCheckLoopBackProject = require('./check-loopback-project.suite');
 
-module.exports = function(artiGenerator) {
-  return function() {
+module.exports = function (artiGenerator) {
+  return function () {
     describe('_setupGenerator', () => {
       describe('args validation', () => {
         it('errors out if validation fails', () => {
@@ -41,8 +40,8 @@ module.exports = function(artiGenerator) {
       });
 
       it('has name argument set up', () => {
-        let gen = testUtils.testSetUpGen(artiGenerator);
-        let helpText = gen.help();
+        const gen = testUtils.testSetUpGen(artiGenerator);
+        const helpText = gen.help();
         assert(helpText.match(/\[<name>\]/));
         assert(helpText.match(/# Name for the /));
         assert(helpText.match(/Type: String/));
@@ -50,76 +49,14 @@ module.exports = function(artiGenerator) {
       });
 
       it('sets up artifactInfo', async () => {
-        let gen = testUtils.testSetUpGen(artiGenerator, {args: ['test']});
+        const gen = testUtils.testSetUpGen(artiGenerator, {args: ['test']});
         await gen.setOptions();
         assert(gen.artifactInfo);
         assert.equal(gen.artifactInfo.name, 'test');
       });
     });
 
-    describe('checkLoopBackProject', () => {
-      let gen;
-
-      beforeEach(() => {
-        gen = testUtils.testSetUpGen(artiGenerator);
-        gen.fs.readJSON = sinon.stub(fs, 'readJSON');
-      });
-
-      afterEach(() => {
-        if (gen) gen.fs.readJSON.restore();
-      });
-
-      testCheckLoopBack(
-        'throws an error if no package.json is present',
-        undefined,
-        /No package.json found/,
-      );
-      testCheckLoopBack(
-        'throws an error if "keywords" key does not exist',
-        {foobar: 'test'},
-        /No `loopback` keyword found/,
-      );
-      testCheckLoopBack(
-        'throws an error if "keywords" key does not map to an array with "loopback" as a member',
-        {keywords: ['foobar', 'test']},
-        /No `loopback` keyword found/,
-      );
-
-      testCheckLoopBack(
-        'throws an error if dependencies have incompatible versions',
-        {
-          keywords: ['loopback'],
-          dependencies: {'@loopback/context': '^0.0.0'},
-        },
-        /Incompatible dependencies/,
-      );
-
-      it('passes if "keywords" maps to "loopback"', async () => {
-        gen.fs.readJSON.returns({keywords: ['test', 'loopback']});
-        await gen.checkLoopBackProject();
-      });
-
-      function testCheckLoopBack(testName, obj, expected) {
-        it(testName, async () => {
-          let logs = [];
-          gen.log = function(...args) {
-            logs = logs.concat(args);
-          };
-          gen.prompt = async () => ({
-            ignoreIncompatibleDependencies: false,
-          });
-          gen.fs.readJSON.returns(obj);
-          await gen.checkLoopBackProject();
-          assert(gen.exitGeneration instanceof Error);
-          assert(gen.exitGeneration.message.match(expected));
-          gen.end();
-          assert.equal(
-            logs[logs.length - 1],
-            chalk.red('Generation is aborted:', gen.exitGeneration),
-          );
-        });
-      }
-    });
+    suiteCheckLoopBackProject(artiGenerator);
 
     describe('promptArtifactName', () => {
       let gen;

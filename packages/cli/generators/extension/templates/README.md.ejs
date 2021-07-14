@@ -1,0 +1,32 @@
+# <%= project.name %>
+
+[![LoopBack](https://github.com/strongloop/loopback-next/raw/master/docs/site/imgs/branding/Powered-by-LoopBack-Badge-(blue)-@2x.png)](http://loopback.io/)
+
+## Installation
+
+Install <%= project.componentName %> using `npm`;
+
+```sh
+$ [npm install | yarn add] <%= project.name %>
+```
+
+## Basic Use
+
+Configure and load <%= project.componentName %> in the application constructor
+as shown below.
+
+```ts
+import {<%= project.componentName %>, <%= project.optionsInterface %>, <%= project.defaultOptions %>} from '<%= project.name %>';
+// ...
+export class MyApplication extends BootMixin(ServiceMixin(RepositoryMixin(RestApplication))) {
+  constructor(options: ApplicationConfig = {}) {
+    const opts: <%= project.optionsInterface %> = <%= project.defaultOptions %>;
+    this.configure(<%= project.bindingsNamespace %>.COMPONENT).to(opts);
+      // Put the configuration options here
+    });
+    this.component(<%= project.componentName %>);
+    // ...
+  }
+  // ...
+}
+```

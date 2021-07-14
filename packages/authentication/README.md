@@ -1,14 +1,24 @@
 # @loopback/authentication
 
-A LoopBack 4 component for authentication support.
-
-**This is a reference implementation showing how to implement an authentication
-component, it is not production ready.**
+A LoopBack 4 component for authentication support. Its corresponding
+documentation is in
+[LoopBack component authentication](https://loopback.io/doc/en/lb4/Loopback-component-authentication.html)
 
 ## Overview
 
-The component demonstrates how to leverage Passport module and extension points
-provided by LoopBack 4 to implement an authentication layer.
+![AuthenticationComponent](https://raw.githubusercontent.com/strongloop/loopback-next/master/packages/authentication/docs/imgs/authentication_overview_highlevel.png)
+
+This component contains the core logic for the authentication layer in
+LoopBack 4.
+
+It contains:
+
+- A decorator to express an authentication requirement on controller methods
+- A provider to access method-level authentication metadata
+- An action in the REST sequence to enforce authentication (**No longer needed
+  for middleware based sequence**)
+- An extension point to discover all authentication strategies and handle the
+  delegation
 
 ## Installation
 
@@ -16,196 +26,44 @@ provided by LoopBack 4 to implement an authentication layer.
 npm install --save @loopback/authentication
 ```
 
-## Basic use
+## Basic Use
 
-Start by decorating your controller methods with `@authenticate` to require the
-request to be authenticated.
+[Load the AuthenticationComponent](https://loopback.io/doc/en/lb4/Loopback-component-authentication.html#mounting-authentication-component)
+into your application.
 
-In this example, we make the user profile available via dependency injection
-using a key available from `@loopback/authentication` package.
+**Extension developers** need to:
 
-```ts
-// src/controllers/who-am-i.controller.ts
-import {inject} from '@loopback/context';
-import {
-  AuthenticationBindings,
-  UserProfile,
-  authenticate,
-} from '@loopback/authentication';
-import {get} from '@loopback/rest';
+- [create custom authentication strategies](https://loopback.io/doc/en/lb4/Implement-your-own-strategy.html)
 
-export class WhoAmIController {
-  constructor(
-    @inject(AuthenticationBindings.CURRENT_USER) private user: UserProfile,
-  ) {}
+**Application Developers** need to:
 
-  @authenticate('BasicStrategy')
-  @get('/whoami')
-  whoAmI(): string {
-    return this.user.id;
-  }
-}
-```
+- [decorate controller functions with the authentication decorator](https://loopback.io/doc/en/lb4/Authentication-component-decorator.html)
+- [add the authentication action to a custom sequence](https://loopback.io/doc/en/lb4/Authentication-component-action.html#adding-an-authentication-action-to-a-custom-sequence)
+  and
+  [bind the custom sequence to the application](https://loopback.io/doc/en/lb4/Authentication-component-action.html#binding-the-authenticating-sequence-to-the-application)
+  (**No longer needed for middleware based sequence**)
+- [register the authentication strategies](https://loopback.io/doc/en/lb4/Authentication-component-strategy.html)
 
-Next, implement a Strategy provider to map strategy names specified in
-`@authenticate` decorators into Passport Strategy instances. Remember to install
-`passport`, `passport-http`, `@types/passport`, and `@types/passport-http`
-modules beforehand.
-
-```shell
-npm install --save passport passport-http
-npm install --save-dev @types/passport @types/passport-http
-```
-
-```ts
-// src/providers/auth-strategy.provider.ts
-import {Provider, inject, ValueOrPromise} from '@loopback/context';
-import {Strategy} from 'passport';
-import {
-  AuthenticationBindings,
-  AuthenticationMetadata,
-  UserProfile,
-} from '@loopback/authentication';
-import {BasicStrategy} from 'passport-http';
-
-export class MyAuthStrategyProvider implements Provider<Strategy | undefined> {
-  constructor(
-    @inject(AuthenticationBindings.METADATA)
-    private metadata: AuthenticationMetadata,
-  ) {}
-
-  value(): ValueOrPromise<Strategy | undefined> {
-    // The function was not decorated, so we shouldn't attempt authentication
-    if (!this.metadata) {
-      return undefined;
-    }
-
-    const name = this.metadata.strategy;
-    if (name === 'BasicStrategy') {
-      return new BasicStrategy(this.verify);
-    } else {
-      return Promise.reject(`The strategy ${name} is not available.`);
-    }
-  }
-
-  verify(
-    username: string,
-    password: string,
-    cb: (err: Error | null, user?: UserProfile | false) => void,
-  ) {
-    // find user by name & password
-    // call cb(null, false) when user not found
-    // call cb(null, user) when user is authenticated
-  }
-}
-```
-
-In order to perform authentication, we need to implement a custom Sequence
-invoking the authentication at the right time during the request handling.
-
-```ts
-// src/sequence.ts
-import {
-  RestBindings,
-  SequenceHandler,
-  FindRoute,
-  ParseParams,
-  InvokeMethod,
-  Send,
-  Reject,
-  RequestContext,
-} from '@loopback/rest';
-import {inject} from '@loopback/context';
-import {AuthenticationBindings, AuthenticateFn} from '@loopback/authentication';
-
-const SequenceActions = RestBindings.SequenceActions;
-
-export class MySequence implements SequenceHandler {
-  constructor(
-    @inject(SequenceActions.FIND_ROUTE) protected findRoute: FindRoute,
-    @inject(SequenceActions.PARSE_PARAMS) protected parseParams: ParseParams,
-    @inject(SequenceActions.INVOKE_METHOD) protected invoke: InvokeMethod,
-    @inject(SequenceActions.SEND) protected send: Send,
-    @inject(SequenceActions.REJECT) protected reject: Reject,
-    @inject(AuthenticationBindings.AUTH_ACTION)
-    protected authenticateRequest: AuthenticateFn,
-  ) {}
-
-  async handle(context: RequestContext) {
-    try {
-      const {request, response} = context;
-      const route = this.findRoute(request);
-
-      // This is the important line added to the default sequence implementation
-      await this.authenticateRequest(request);
-
-      const args = await this.parseParams(request, route);
-      const result = await this.invoke(route, args);
-      this.send(response, result);
-    } catch (error) {
-      this.reject(context, error);
-    }
-  }
-}
-```
-
-Finally, put it all together in your application class:
-
-```ts
-// src/application.ts
-import {BootMixin, Binding, Booter} from '@loopback/boot';
-import {RestApplication, RestServer, RestBindings} from '@loopback/rest';
-import {
-  AuthenticationComponent,
-  AuthenticationBindings,
-} from '@loopback/authentication';
-import {MyAuthStrategyProvider} from './providers/auth-strategy.provider';
-import {MySequence} from './sequence';
-import {ApplicationConfig} from '@loopback/core';
-
-export class MyApp extends BootMixin(RestApplication) {
-  constructor(options?: ApplicationConfig) {
-    super(options);
-
-    this.projectRoot = __dirname;
-
-    this.component(AuthenticationComponent);
-    this.bind(AuthenticationBindings.STRATEGY).toProvider(
-      MyAuthStrategyProvider,
-    );
-
-    this.sequence(MySequence);
-  }
-
-  async start() {
-    await super.start();
-
-    const server = await this.getServer(RestServer);
-    const port = await server.get(RestBindings.PORT);
-    console.log(`REST server running on port: ${port}`);
-  }
-}
-```
-
-You can try your authentication component by using your favourite REST client
-and by setting the `authorization` header. Here is an example of what your
-request might look like using curl:
-
-```shell
-curl -u username:password http://localhost:3000/whoami
-```
-
-or if you'd like to manually set the headers:
-
-```shell
-curl -X GET \
-  http:/localhost:3000/whoami \
-  -H 'Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ='
-```
+[Create and register a passport based strategy](https://loopback.io/doc/en/lb4/Authentication-passport.html)
 
 ## Related resources
 
-For more info about passport, see [passport.js](http://passportjs.org/).
+For detailed documentation, see
+[AuthenticationComponent](https://loopback.io/doc/en/lb4/Loopback-component-authentication.html).
+
+For a tutorial on how to add **JWT** authentication to an application, see
+[How to secure your LoopBack 4 application with JWT authentication](https://loopback.io/doc/en/lb4/Authentication-tutorial.html).
+
+For some background on our design decisions, please read
+[Multiple Authentication strategies](./docs/authentication-system.md).
+
+## Note
+
+Starting from version `@loobpack/authentication@3.0.0`, `UserProfile` needs to
+be imported from @loopback/security and it's not backward compatible with the
+one exported from `@loobpack/authentication@2.x`. Make sure you follow the
+[new tutorial](https://loopback.io/doc/en/lb4/Loopback-component-authentication.html)
+to build the authentication system.
 
 ## Contributions
 

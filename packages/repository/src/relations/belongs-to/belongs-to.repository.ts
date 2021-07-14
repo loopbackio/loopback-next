@@ -1,14 +1,13 @@
-// Copyright IBM Corp. 2017,2018. All Rights Reserved.
-// Node module: @loopback/example-todo
+// Copyright IBM Corp. 2018,2020. All Rights Reserved.
+// Node module: @loopback/repository
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Getter} from '@loopback/context';
+import {Getter} from '@loopback/core';
 import {DataObject, Options} from '../../common-types';
 import {EntityNotFoundError} from '../../errors';
 import {Entity} from '../../model';
-import {constrainFilter} from '../../repositories/constraint-utils';
-import {EntityCrudRepository} from '../../repositories/repository';
+import {constrainFilter, EntityCrudRepository} from '../../repositories';
 
 /**
  * CRUD operations for a target repository of a BelongsTo relation
@@ -17,6 +16,8 @@ export interface BelongsToRepository<Target extends Entity> {
   /**
    * Gets the target model instance
    * @param options
+   * @returns A promise resolved with the target object or rejected
+   * with an EntityNotFoundError when target model instance was not found.
    */
   get(options?: Options): Promise<Target>;
 }
@@ -24,12 +25,13 @@ export interface BelongsToRepository<Target extends Entity> {
 export class DefaultBelongsToRepository<
   TargetEntity extends Entity,
   TargetId,
-  TargetRepository extends EntityCrudRepository<TargetEntity, TargetId>
-> implements BelongsToRepository<TargetEntity> {
+  TargetRepository extends EntityCrudRepository<TargetEntity, TargetId>,
+> implements BelongsToRepository<TargetEntity>
+{
   /**
    * Constructor of DefaultBelongsToEntityCrudRepository
-   * @param getTargetRepository the getter of the related target model repository instance
-   * @param constraint the key value pair representing foreign key name to constrain
+   * @param getTargetRepository - the getter of the related target model repository instance
+   * @param constraint - the key value pair representing foreign key name to constrain
    * the target repository instance
    */
   constructor(

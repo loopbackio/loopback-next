@@ -1,0 +1,65 @@
+<head>
+  {% include analytics.html %}
+</head>
+
+<table width="750">
+  <thead>
+    <tr>
+      <th width="120">Input</th>
+      <th>Case</th>
+      <th width="90">Class Name</th>
+      <th width="180">Model File Names</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>MyModel</code></td>
+      <td>Input remains the same</td>
+      <td><code>MyModel</code></td>
+      <td><code>my-model.model.ts</code></td>
+    </tr>
+
+    <tr>
+      <td><code>my_model</code></td>
+      <td>Underscores get removed</td>
+      <td><code>MyModel</code></td>
+      <td><code>my-model.model.ts</code></td>
+    </tr>
+
+    <tr>
+      <td><code>mymódel</code></td>
+      <td>Accented characters get replaced</td>
+      <td><code>Mymodel</code></td>
+      <td><code>mymodel.model.ts</code></td>
+    </tr>
+
+    <tr>
+      <td><code>Car4share</code></td>
+      <td>Input contains digits</td>
+      <td><code>Car4Share</code></td>
+      <td><code>car-4-share.model.ts</code></td>
+    </tr>
+
+    <tr>
+      <td><code>MyModel2</code></td>
+      <td>Input ends with digits</td>
+      <td><code>MyModel2</code></td>
+      <td><code>my-model2.model.ts</code></td>
+    </tr>
+
+    <tr>
+      <td><code>My-Model</code></td>
+      <td>Class name cannot contain some symbols</td>
+      <td>Invalid</td>
+      <td>Invalid</td>
+    </tr>
+
+    <tr>
+      <td><code>4user</code></td>
+      <td>Class name cannot start with a number</td>
+      <td>Invalid</td>
+      <td>Invalid</td>
+    </tr>
+
+  </tbody>
+</table>

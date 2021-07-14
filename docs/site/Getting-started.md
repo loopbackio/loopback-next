@@ -1,7 +1,7 @@
 ---
 lang: en
 title: 'Getting started'
-keywords: LoopBack 4.0, LoopBack 4
+keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Getting-started.html
 summary: Write and run a LoopBack 4 "Hello World" project in TypeScript.
@@ -9,7 +9,7 @@ summary: Write and run a LoopBack 4 "Hello World" project in TypeScript.
 
 ## Prerequisites
 
-Install [Node.js](https://nodejs.org/en/download/) (version 8.9 or higher) if it
+Install [Node.js](https://nodejs.org/en/download/) (version 10 or higher) if it
 is not already installed on your machine.
 
 ## Install LoopBack 4 CLI
@@ -42,13 +42,14 @@ Answer the prompts as follows:
 ? Project root directory: (getting-started)
 ? Application class name: StarterApplication
 ? Select features to enable in the project:
-❯◉ Enable tslint
- ◉ Enable prettier
- ◉ Enable mocha
- ◉ Enable loopbackBuild
- ◉ Enable vscode
- ◉ Enable repositories
- ◉ Enable services
+❯◉ Enable eslint: add a linter with pre-configured lint rules
+ ◉ Enable prettier: install prettier to format code conforming to rules
+ ◉ Enable mocha: install mocha to run tests
+ ◉ Enable loopbackBuild: use @loopback/build helpers (e.g. lb-eslint)
+ ◉ Enable vscode: add VSCode config files
+ ◉ Enable docker: include Dockerfile and .dockerignore
+ ◉ Enable repositories: include repository imports and RepositoryMixin
+ ◉ Enable services: include service-proxy imports and ServiceMixin
 ```
 
 ### Starting the project
@@ -66,12 +67,15 @@ In a browser, visit <http://127.0.0.1:3000/ping>.
 ## Adding your own controller
 
 Now that we have a basic project created, it's time to add our own
-[controller](Controllers.md). Let's add a simple "Hello World" controller as
+[controller](Controller.md). Let's add a simple "Hello World" controller as
 follows:
 
 ```sh
 lb4 controller
 ```
+
+- _Note: If your application is still running, press **CTRL+C** to stop it
+  before calling the command_
 
 - Answer the prompts as follows:
 
@@ -81,7 +85,7 @@ lb4 controller
     create src/controllers/hello.controller.ts
     update src/controllers/index.ts
 
-  Controller Hello was now created in src/controllers/
+  Controller hello was now created in src/controllers/
   ```
 
 - Paste the following contents into the file
@@ -99,9 +103,6 @@ lb4 controller
   ```
 
 - Start the application using `npm start`.
-
-  - _Note: If your application is still running, press **CTRL+C** to stop it
-    before restarting it_
 
 - Visit <http://127.0.0.1:3000/hello> to see `Hello world!`
 

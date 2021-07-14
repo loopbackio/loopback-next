@@ -1,0 +1,5 @@
+{
+  "@loopback/cli": {
+    "version": "2.3.0"
+  }
+}

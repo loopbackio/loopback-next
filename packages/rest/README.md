@@ -14,6 +14,10 @@ with:
   `@loopback/openapi-v3`
 - a default sequence implementation to manage the request and response lifecycle
 
+**NOTE: Starting from 6.0.0, we have introduced a middleware-based sequence,
+which is is used as the default one for newly generated LoopBack applications
+using `lb4` command from `@loopback/cli`.**
+
 ## Installation
 
 To use this package, you'll need to install `@loopback/rest`.
@@ -37,7 +41,7 @@ app.handler(({request, response}, sequence) => {
 (async function start() {
   await app.start();
 
-  const rest = await app.getServer(RestServer);
+  const server = await app.getServer(RestServer);
   const port = await server.get('rest.port');
   console.log(`Server is running at http://127.0.0.1:${port}`);
 })();

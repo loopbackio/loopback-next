@@ -1,0 +1,9 @@
+{
+  "*.{ts,js}": [
+    "node packages/build/bin/run-prettier --write",
+    "node packages/build/bin/run-eslint --fix --report-unused-disable-directives --cache"
+  ],
+  "*.{md}": [
+    "node packages/build/bin/run-prettier --write"
+  ]
+}

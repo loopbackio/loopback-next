@@ -1,0 +1,66 @@
+{
+  "name": "@loopback/tsdocs",
+  "description": "A package to generate api docs using Microsoft api-extractor and api-documenter",
+  "version": "2.6.1",
+  "keywords": [
+    "LoopBack",
+    "Apidocs",
+    "Reflect"
+  ],
+  "license": "MIT",
+  "bin": {
+    "lb-extract-apidocs": "./bin/extract-apis.js",
+    "lb-document-apidocs": "./bin/document-apis.js",
+    "lb-update-apidocs": "./bin/update-apidocs.js"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "packages/tsdocs"
+  },
+  "engines": {
+    "node": "^10.16 || 12 || 14 || 16"
+  },
+  "scripts": {
+    "build:tsdocs": "npm run build && npm run -s extract-apidocs && npm run -s document-apidocs && npm run -s update-apidocs",
+    "extract-apidocs": "node bin/extract-apis",
+    "document-apidocs": "node bin/document-apis markdown -i ../../docs/apidocs/models -o ../../docs/site/apidocs",
+    "update-apidocs": "node bin/update-apidocs",
+    "build": "lb-tsc",
+    "build:fixtures": "npm run build --prefix fixtures/monorepo",
+    "clean": "lb-clean loopback-tsdocs*.tgz dist *.tsbuildinfo package",
+    "pretest": "npm run build",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
+    "verify": "npm pack && tar xf loopback-tsdocs*.tgz && tree package && npm run clean"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "README.md",
+    "dist",
+    "src",
+    "!*/__tests__",
+    "!/fixtures"
+  ],
+  "dependencies": {
+    "@microsoft/api-documenter": "^7.13.32",
+    "@microsoft/api-extractor": "^7.18.3",
+    "debug": "^4.3.1",
+    "fs-extra": "^10.0.0",
+    "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "@loopback/build": "^6.4.1",
+    "@loopback/eslint-config": "^10.2.1",
+    "@loopback/testlab": "^3.4.1",
+    "@loopback/tsdocs-monorepo": "^0.1.1",
+    "@types/debug": "^4.1.5",
+    "@types/fs-extra": "^9.0.11",
+    "@types/node": "^10.17.60"
+  }
+}

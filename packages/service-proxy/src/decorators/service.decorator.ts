@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2020. All Rights Reserved.
 // Node module: @loopback/service-proxy
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -9,7 +9,7 @@ import {
   Context,
   Injection,
   InjectionMetadata,
-} from '@loopback/context';
+} from '@loopback/core';
 import {getService, juggler} from '..';
 
 /**
@@ -40,7 +40,7 @@ export class ServiceProxyMetadata implements InjectionMetadata {
 }
 
 export function serviceProxy(dataSource: string | juggler.DataSource) {
-  return function(target: Object, key: string, parameterIndex?: number) {
+  return function (target: object, key: string, parameterIndex?: number) {
     if (key || typeof parameterIndex === 'number') {
       const meta = new ServiceProxyMetadata(dataSource);
       inject('', meta, resolve)(target, key, parameterIndex);
@@ -54,8 +54,8 @@ export function serviceProxy(dataSource: string | juggler.DataSource) {
 
 /**
  * Resolve the @repository injection
- * @param ctx Context
- * @param injection Injection metadata
+ * @param ctx - Context
+ * @param injection - Injection metadata
  */
 async function resolve(ctx: Context, injection: Injection) {
   const meta = injection.metadata as ServiceProxyMetadata;

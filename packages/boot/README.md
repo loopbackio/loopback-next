@@ -180,12 +180,12 @@ The options for this are passed in a `services` object on `BootOptions`.
 
 Available options on the `services` object on `BootOptions` are as follows:
 
-| Options      | Type                 | Default              | Description                                                                                                  |
-| ------------ | -------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------ |
-| `dirs`       | `string \| string[]` | `['repositories']`   | Paths relative to projectRoot to look in for Service artifacts                                               |
-| `extensions` | `string \| string[]` | `['.repository.js']` | File extensions to match for Service artifacts                                                               |
-| `nested`     | `boolean`            | `true`               | Look in nested directories in `dirs` for Service artifacts                                                   |
-| `glob`       | `string`             |                      | A `glob` pattern string. This takes precedence over above 3 options (which are used to make a glob pattern). |
+| Options      | Type                 | Default           | Description                                                                                                  |
+| ------------ | -------------------- | ----------------- | ------------------------------------------------------------------------------------------------------------ |
+| `dirs`       | `string \| string[]` | `['services']`    | Paths relative to projectRoot to look in for Service artifacts                                               |
+| `extensions` | `string \| string[]` | `['.service.js']` | File extensions to match for Service artifacts                                                               |
+| `nested`     | `boolean`            | `true`            | Look in nested directories in `dirs` for Service artifacts                                                   |
+| `glob`       | `string`             |                   | A `glob` pattern string. This takes precedence over above 3 options (which are used to make a glob pattern). |
 
 ## Contributions
 

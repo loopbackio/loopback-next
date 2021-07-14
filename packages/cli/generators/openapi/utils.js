@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2020. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -8,9 +8,15 @@ const fs = require('fs');
 const util = require('util');
 const _ = require('lodash');
 const json5 = require('json5');
+const url = require('url');
 
 const utils = require('../../lib/utils');
 const debug = require('../../lib/debug')('openapi-generator');
+
+/**
+ * Convert OpenAPI schema to JSON schema draft 4
+ */
+const oasToJsonSchema4 = require('@openapi-contrib/openapi-schema-to-json-schema');
 
 /**
  * Convert a string to title case
@@ -35,7 +41,7 @@ function isExtension(key) {
  */
 function debugJson(msg, obj) {
   if (debug.enabled) {
-    debug('%s: %s', msg, JSON.stringify(obj, null, 2));
+    debug('%s: %s', msg, util.inspect(obj, {depth: 10}));
   }
 }
 
@@ -47,11 +53,11 @@ function validateUrlOrFile(specUrlStr) {
   if (!specUrlStr) {
     return 'API spec url or file path is required.';
   }
-  var specUrl = url.parse(specUrlStr);
+  const specUrl = url.parse(specUrlStr);
   if (specUrl.protocol === 'http:' || specUrl.protocol === 'https:') {
     return true;
   } else {
-    var stat = fs.existsSync(specUrlStr) && fs.statSync(specUrlStr);
+    const stat = fs.existsSync(specUrlStr) && fs.statSync(specUrlStr);
     if (stat && stat.isFile()) {
       return true;
     } else {
@@ -128,6 +134,11 @@ const JS_KEYWORDS = [
   'false',
 ];
 
+/**
+ * Avoid tslint error - Shadowed name: 'requestBody'
+ */
+const DECORATOR_NAMES = ['operation', 'param', 'requestBody'];
+
 const SAFE_IDENTIFER = /^[a-zA-Z_$][0-9a-zA-Z_$]*$/;
 
 /**
@@ -146,31 +157,151 @@ function escapeIdentifier(name) {
     return '_' + name;
   }
   if (!name.match(SAFE_IDENTIFER)) {
-    return _.camelCase(name);
+    name = _.camelCase(name);
+  }
+  if (DECORATOR_NAMES.includes(name)) {
+    return '_' + name;
   }
   return name;
 }
 
 /**
- * Escape a property/method name by quoting it if it's not a safe JavaScript
- * identifier
- *
- * For example,
- * - `default` -> `'default'`
- * - `my-name` -> `'my-name'`
- *
+ * Escape the property if it's not a valid JavaScript identifer
  * @param {string} name
  */
-function escapePropertyOrMethodName(name) {
+function escapePropertyName(name) {
   if (JS_KEYWORDS.includes(name) || !name.match(SAFE_IDENTIFER)) {
-    // Encode the name with ', for example: 'my-name'
-    return `'${name}'`;
+    return printSpecObject(name);
   }
   return name;
 }
 
-function toJsonStr(val) {
-  return json5.stringify(val, null, 2);
+/**
+ * Escape a string to be used as a block comment
+ *
+ * @param {string} comment
+ */
+function escapeComment(comment) {
+  comment = comment || '';
+  comment = comment.replace(/\/\*/g, '\\/*').replace(/\*\//g, '*\\/');
+  return utils.wrapText(comment, 76);
+}
+
+/**
+ * Clone an OpenAPI spec. When a `$ref` is encountered, we store it as `x-$ref`
+ * and keep the stringified original value as `x-$original-value`. These
+ * metadata allows us to access the original object after `$ref` is resolved
+ * and dereferenced by the parser.
+ *
+ * @param {*} spec An OpenAPI spec object
+ */
+function cloneSpecObject(spec) {
+  return _.cloneDeepWith(spec, item => {
+    /**
+     * A yaml object below produces `null` for `servers.url`
+     * ```yaml
+     * servers:
+     * - url:
+     *   description: null url for testing
+     * ```
+     */
+    if (item != null && item.$ref) {
+      const copy = _.cloneDeep(item);
+      return {
+        ...copy,
+        // Store the original item in `x-$original`
+        'x-$original-value': json5.stringify(item, null, 2),
+        // Keep `$ref` as `x-$ref` as `$ref` will be removed during dereferencing
+        'x-$ref': item.$ref,
+      };
+    }
+  });
+}
+
+/**
+ * Print an OpenAPI spec object as JavaScript object literal. The original value
+ * is used if `$ref` is resolved.
+ * @param {*} specObject - An OpenAPI spec object such as `Parameter` or `Operation`.
+ */
+function printSpecObject(specObject) {
+  return json5.stringify(
+    specObject,
+    (key, value) => {
+      // Restore the original value from `x-$original-value`
+      if (value != null && value['x-$ref']) {
+        return json5.parse(value['x-$original-value']);
+      }
+      return value;
+    },
+    2,
+  );
+}
+
+/**
+ * Restore the OpenAPI spec object to its original value
+ * @param {object} specObject - OpenAPI spec object
+ */
+function restoreSpecObject(specObject) {
+  return _.cloneDeepWith(specObject, value => {
+    // Restore the original value from `x-$original-value`
+    if (value != null && value['x-$ref']) {
+      return json5.parse(value['x-$original-value']);
+    }
+    // Return `undefined` so that child items are cloned too
+    return undefined;
+  });
+}
+
+/**
+ * Convert OpenAPI schema to JSON Schema Draft 7
+ * @param {object} oasSchema - OpenAPI schema
+ */
+function toJsonSchema(oasSchema) {
+  oasSchema = restoreSpecObject(oasSchema);
+  let jsonSchema = oasToJsonSchema4(oasSchema);
+  delete jsonSchema['$schema'];
+  // See https://json-schema.org/draft-06/json-schema-release-notes.html
+  if (jsonSchema.id) {
+    // id => $id
+    jsonSchema.$id = jsonSchema.id;
+    delete jsonSchema.id;
+  }
+  jsonSchema = _.cloneDeepWith(jsonSchema, value => {
+    if (value == null) return value;
+    let changed = false;
+    if (typeof value.exclusiveMinimum === 'boolean') {
+      // exclusiveMinimum + minimum (boolean + number) => exclusiveMinimum (number)
+      if (value.exclusiveMinimum) {
+        value.exclusiveMinimum = value.minimum;
+        delete value.minimum;
+      } else {
+        delete value.exclusiveMinimum;
+      }
+      changed = true;
+    }
+    if (typeof value.exclusiveMaximum === 'boolean') {
+      // exclusiveMaximum + maximum (boolean + number) => exclusiveMaximum (number)
+      if (value.exclusiveMaximum) {
+        value.exclusiveMaximum = value.maximum;
+        delete value.maximum;
+      } else {
+        delete value.exclusiveMaximum;
+      }
+      changed = true;
+    }
+    return changed ? value : undefined;
+  });
+  return jsonSchema;
+}
+
+/**
+ * Convert OpenAPI schema to JSON schema draft 7 and print it as a JavaScript
+ * object literal
+ * @param {object} oasSchema - OpenAPI schema
+ */
+function printJsonSchema(oasSchema) {
+  const jsonSchema = toJsonSchema(oasSchema);
+  return printSpecObject(jsonSchema);
 }
 
 module.exports = {
@@ -178,9 +309,14 @@ module.exports = {
   titleCase,
   debug,
   debugJson,
-  kebabCase: utils.kebabCase,
-  camelCase: _.camelCase,
+  toFileName: utils.toFileName,
+  camelCase: utils.camelCase,
   escapeIdentifier,
-  escapePropertyOrMethodName,
-  toJsonStr,
+  escapePropertyName,
+  escapeComment,
+  printSpecObject,
+  cloneSpecObject,
+  toJsonSchema,
+  printJsonSchema,
+  validateUrlOrFile,
 };

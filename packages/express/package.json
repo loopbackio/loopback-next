@@ -1,0 +1,68 @@
+{
+  "name": "@loopback/express",
+  "description": "Integrate with Express and expose middleware infrastructure for sequence and interceptors",
+  "version": "3.3.1",
+  "keywords": [
+    "loopback-extension",
+    "loopback"
+  ],
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "packages/express"
+  },
+  "engines": {
+    "node": "^10.16 || 12 || 14 || 16"
+  },
+  "scripts": {
+    "build": "lb-tsc",
+    "build:watch": "lb-tsc --watch",
+    "pretest": "npm run clean && npm run build",
+    "test": "lb-mocha --allow-console-logs \"dist/__tests__\"",
+    "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js",
+    "clean": "lb-clean dist *.tsbuildinfo .eslintcache"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "README.md",
+    "dist",
+    "src",
+    "!*/__tests__"
+  ],
+  "peerDependencies": {
+    "@loopback/core": "^2.16.1"
+  },
+  "dependencies": {
+    "@loopback/http-server": "^2.5.1",
+    "@types/body-parser": "^1.19.0",
+    "@types/express": "^4.17.12",
+    "@types/express-serve-static-core": "^4.17.21",
+    "@types/http-errors": "^1.8.0",
+    "body-parser": "^1.19.0",
+    "debug": "^4.3.1",
+    "express": "^4.17.1",
+    "http-errors": "^1.8.0",
+    "on-finished": "^2.3.0",
+    "toposort": "^2.0.2",
+    "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "@loopback/build": "^6.4.1",
+    "@loopback/core": "^2.16.1",
+    "@loopback/testlab": "^3.4.1",
+    "@types/debug": "^4.1.5",
+    "@types/node": "^10.17.60",
+    "@types/on-finished": "^2.3.1",
+    "@types/toposort": "^2.0.3",
+    "http-errors": "^1.8.0",
+    "source-map-support": "^0.5.19",
+    "typescript": "~4.3.4"
+  }
+}

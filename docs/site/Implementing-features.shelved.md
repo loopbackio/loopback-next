@@ -1,7 +1,7 @@
 ---
 lang: en
 title: 'Implementing features'
-keywords: LoopBack 4.0, LoopBack 4
+keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Implementing-features.html
 ---
@@ -35,7 +35,8 @@ search for a given product name, and verify that expected products were
 returned. This verifies that all parts of your application are correctly wired
 together.
 
-Create `test/acceptance/product.acceptance.ts` with the following contents:
+Create `src/__tests__/acceptance/product.acceptance.ts` with the following
+contents:
 
 ```ts
 import {HelloWorldApp} from '../..';
@@ -163,7 +164,7 @@ Run `npm test` and watch the test fail with a helpful error message:
 
 ```text
 TSError: ⨯ Unable to compile TypeScript
-test/unit/product-controller.test.ts (13,40): Property 'getDetails' does not exist on type 'ProductController'. (2339)
+src/__tests__/unit/product-controller.test.ts (13,40): Property 'getDetails' does not exist on type 'ProductController'. (2339)
 ```
 
 Now it's time to write the first implementation of the `getDetails` method.
@@ -331,7 +332,7 @@ Welcome to `@loopback/repository`, a TypeScript facade for the
     }
     ```
 
-See [Repositories](Repositories.md) for more details on this topic.
+See [Repositories](Repository.md) for more details on this topic.
 
 ### Update test helpers and the controller use real model and repository
 
@@ -343,7 +344,7 @@ async function givenEmptyDatabase() {
 }
 
 async function givenProduct(data: Partial<Product>) {
-  return await new ProductRepository().create(
+  return new ProductRepository().create(
     Object.assign(
       {
         name: 'a-product-name',
@@ -412,8 +413,8 @@ Examine the acceptance test first. A quick review of the source code should tell
 us what's the problem - the test is relying on `givenEmptyDatabase` and
 `givenProduct` helpers, but these helpers are not fully implemented yet. Fix
 that by reusing the helpers from the integration test: Move the helpers to
-`test/helpers/database.helpers.ts` and update both the acceptance and the
-integration tests to import the helpers from there.
+`src/__tests__/helpers/database.helpers.ts` and update both the acceptance and
+the integration tests to import the helpers from there.
 
 To find out why the API smoke test is failing, you can start the application via
 `node .` and request the tested endpoint for example using `curl`. You will see
@@ -561,7 +562,7 @@ export class ProductController {
 ```
 
 More information on `HttpErrors` can be found in
-[Controllers](./Controllers.md#handling-errors-in-controllers)
+[Controllers](./Controller.md#handling-errors-in-controllers)
 
 ### Implement a custom Sequence
 

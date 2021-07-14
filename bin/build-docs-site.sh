@@ -11,6 +11,11 @@
 # Set `-e` so that non-zero exit code from any step will be honored
 set -e
 
+if ! [ -x "$(command -v bundle)" ]; then
+  echo 'Error: You must have Bundler installed (http://bundler.io)' >&2
+  exit 1
+fi
+
 # Set `-v` (verbose) for travis build
 if [ -n "$TRAVIS" ]; then
   set -v
@@ -21,14 +26,18 @@ DIR=`dirname $0`
 REPO_ROOT=$DIR/..
 pushd $REPO_ROOT >/dev/null
 
+# Update apidocs
+lerna bootstrap
+lerna run --scope @loopback/docs prepack
+
 # Clean up sandbox/loopback.io directory
 rm -rf sandbox/loopback.io/
 
 # Shadow clone the `strongloop/loopback.io` github repo
 git clone --depth 1 https://github.com/strongloop/loopback.io.git sandbox/loopback.io
 
-# Bootstrap the `loopback.io` package
-lerna bootstrap --scope loopback.io-workflow-scripts
+# Add loopback.io-workflow-scripts with @loopback/docs linked
+lerna bootstrap --no-ci --scope loopback.io-workflow-scripts --include-dependencies
 
 pushd $REPO_ROOT/sandbox/loopback.io/ >/dev/null
 
@@ -36,7 +45,7 @@ pushd $REPO_ROOT/sandbox/loopback.io/ >/dev/null
 bundle install
 
 # Run npm build script to fetch readme files and generate jekyll site
-npm run build
+# npm run build
 
 popd >/dev/null
 if [ "$1" == "--verify" ]; then

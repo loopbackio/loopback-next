@@ -205,6 +205,9 @@
           "type": "string"
         }
       }
+    },
+    "additionalProperties": {
+      "type": "string"
     }
   }
 }

@@ -1,7 +1,7 @@
 ---
 lang: en
 title: 'Routing requests'
-keywords: LoopBack 4.0, LoopBack 4
+keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Routing-requests.html
 ---
@@ -68,13 +68,13 @@ below:
 export interface RestRouter {
   /**
    * Add a route to the router
-   * @param route A route entry
+   * @param route - A route entry
    */
   add(route: RouteEntry): boolean;
 
   /**
    * Find a matching route for the given http request
-   * @param request Http request
+   * @param request - Http request
    * @returns The resolved route, if not found, `undefined` is returned
    */
   find(request: Request): ResolvedRoute | undefined;

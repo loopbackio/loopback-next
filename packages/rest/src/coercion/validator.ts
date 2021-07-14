@@ -1,9 +1,9 @@
-// Copyright IBM Corp. 2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2020. All Rights Reserved.
 // Node module: @loopback/rest
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {ParameterObject, SchemaObject} from '@loopback/openapi-v3-types';
+import {ParameterObject, SchemaObject} from '@loopback/openapi-v3';
 import {RestHttpErrors} from '../';
 
 /**
@@ -31,9 +31,9 @@ export class Validator {
    * The validation executed before type coercion. Like
    * checking absence.
    *
-   * @param type A parameter's type.
-   * @param value A parameter's raw value from http request.
-   * @param opts options
+   * @param type - A parameter's type.
+   * @param value - A parameter's raw value from http request.
+   * @param opts - options
    */
   validateParamBeforeCoercion(
     value: string | object | undefined,
@@ -52,7 +52,7 @@ export class Validator {
    */
   isRequired(opts?: ValidationOptions) {
     if (this.ctx.parameterSpec.required) return true;
-    if (opts && opts.required) return true;
+    if (opts?.required) return true;
     return false;
   }
 
@@ -61,13 +61,38 @@ export class Validator {
    *
    * @param value
    */
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   isAbsent(value: any) {
     if (value === '' || value === undefined) return true;
 
-    const schema: SchemaObject = this.ctx.parameterSpec.schema || {};
-    if (schema.type === 'object' && value === 'null') return true;
+    const spec: ParameterObject = this.ctx.parameterSpec;
+    const schema: SchemaObject = this.ctx.parameterSpec.schema ?? {};
+    const valueIsNull = value === 'null' || value === null;
 
+    if (this.isUrlEncodedJsonParam()) {
+      // is this an url encoded Json object query parameter?
+      // check for NULL values
+      if (valueIsNull) return true;
+    } else if (spec.schema) {
+      // if parameter spec contains schema object, check if supplied value is NULL
+      if (schema.type === 'object' && valueIsNull) return true;
+    }
+
+    return false;
+  }
+
+  /**
+   * Return `true` if defined specification is for a url encoded Json object query parameter
+   *
+   * for url encoded Json object query parameters,
+   * schema is defined under content['application/json']
+   */
+  isUrlEncodedJsonParam() {
+    const spec: ParameterObject = this.ctx.parameterSpec;
+
+    if (spec.in === 'query' && spec.content?.['application/json']?.schema) {
+      return true;
+    }
     return false;
   }
 }

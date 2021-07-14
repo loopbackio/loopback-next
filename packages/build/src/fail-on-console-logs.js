@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2020. All Rights Reserved.
 // Node module: @loopback/build
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -7,17 +7,40 @@
 
 const util = require('util');
 
-const originalConsole = {
-  log: console.log,
-  error: console.error,
-  warn: console.warn,
+const mochaHooks = {
+  beforeAll: startRecording,
+  beforeEach: saveCurrentTest,
+  afterEach: checkTestFailure,
+  afterAll: stopRecordingAndReportProblems,
 };
 
-console.log = recordForbiddenCall('log');
-console.warn = recordForbiddenCall('warn');
-console.error = recordForbiddenCall('error');
+module.exports = {
+  mochaHooks,
+};
 
-const problems = [];
+const INTERCEPTED_METHODS = ['log', 'error', 'warn'];
+const originalConsole = {};
+for (const m of INTERCEPTED_METHODS) {
+  originalConsole[m] = console[m];
+}
+
+let problems = [];
+let warnings = [];
+let currentTest;
+let someTestsFailed = false;
+
+function startRecording() {
+  problems = [];
+  warnings = [];
+
+  for (const m of INTERCEPTED_METHODS) {
+    console[m] = recordForbiddenCall(m);
+  }
+
+  process.on('warning', warning => {
+    warnings.push(warning);
+  });
+}
 
 function recordForbiddenCall(methodName) {
   return function recordForbiddenConsoleUsage(...args) {
@@ -40,11 +63,40 @@ function recordForbiddenCall(methodName) {
   };
 }
 
-process.on('exit', code => {
+/** @this {Mocha.Context} */
+function saveCurrentTest() {
+  currentTest = this.currentTest;
+}
+
+function checkTestFailure() {
+  if (currentTest.state === 'failed') someTestsFailed = true;
+}
+
+function stopRecordingAndReportProblems() {
+  // First of all, restore original console methods
+  for (const m of INTERCEPTED_METHODS) {
+    console[m] = originalConsole[m];
+  }
+
+  // Don't complain about console logs when some of the tests have failed.
+  // It's a common practice to add temporary console logs while troubleshooting.
+  // NOTE: When running tests in parallel, console logs from non-failing tests
+  // executed in a different worker process are going to be still reported.
+  if (someTestsFailed) return;
+
+  if (!warnings.length) {
+    for (const w of warnings) {
+      originalConsole.warn(w);
+    }
+  }
   if (!problems.length) return;
   const log = originalConsole.log;
 
-  log('\n=== ATTENTION - INVALID USAGE OF CONSOLE LOGS DETECTED ===\n');
+  log(
+    '\n=== ATTENTION - INVALID USAGE OF CONSOLE LOGS DETECTED ===',
+    '\nLearn more at',
+    'https://github.com/strongloop/loopback-next/blob/master/packages/build/README.md#a-note-on-console-logs-printed-by-tests\n',
+  );
 
   for (const p of problems) {
     // print the first line of the console log
@@ -55,6 +107,7 @@ process.on('exit', code => {
     log('\n');
   }
 
-  // ensure the process returns non-zero exit code to indicate test failure
-  process.exitCode = code || 10;
-});
+  throw new Error(
+    'Invalid usage of console logs detected. See the text above for more details.',
+  );
+}

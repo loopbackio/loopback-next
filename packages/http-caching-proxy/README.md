@@ -24,7 +24,7 @@ caching and snapshots:
 
 - The first request is forwarded to the actual backend and the response is
   stored as a snapshot.
-- Subsequent requests are served by the proxy using the cached snaphost.
+- Subsequent requests are served by the proxy using the cached snapshot.
 - Snapshot older than a configured time are discarded and the first next request
   will fetch the real response from the backend.
 
@@ -58,13 +58,22 @@ await proxy.start();
 ```
 
 In your tests, configure the client library to use the caching proxy. Below is
-an example configuration for [request](https://www.npmjs.com/package/request):
+an example configuration for [axios](https://github.com/axios/axios):
 
 ```ts
-request = request.defaults({
-  proxy: proxy.url,
-  // Disable tunneling of HTTPS requests - this is required for HTTPS!
-  tunnel: false,
+const parsed = new URL(proxy.url);
+const proxyConfig = {
+  host: parsed.hostname,
+  port: parseInt(parsed.port),
+  protocol: parsed.protocol,
+  auth: {
+    username: parsed.username,
+    password: parsed.password,
+  },
+};
+const request = axios.create({
+  // Axios does not support proxy url directly
+  proxy: proxyConfig,
 });
 ```
 
@@ -78,7 +87,21 @@ await proxy.stop();
 ## API Documentation
 
 See the auto-generated documentation at
-[loopback.io](http://apidocs.loopback.io/@loopback%2fdocs/http-caching-proxy.html)
+[loopback.io](https://loopback.io/doc/en/lb4/apidocs.http-caching-proxy.html)
+
+## Alternative solutions for HTTP-based integration testing
+
+A caching proxy is great if you want your tests to talk to the real backend
+service. There are many cases where such behavior is not desirable and the tests
+must run fully isolated. If that's your situation, then please consider using a
+tool that can record and replay HTTP interactions, for example:
+
+- [nock](https://www.npmjs.com/package/nock)
+- [Polly.JS](https://netflix.github.io/pollyjs/#/)
+
+Just make sure you have a process in place to verify that your recorded
+interactions are staying up to date with the actual behavior of the backend
+service!
 
 ## Contributions
 

@@ -3,6 +3,7 @@
   "singleQuote": true,
   "printWidth": 80,
   "trailingComma": "all",
+  "arrowParens": "avoid",
   "overrides": [
     {
       "files": "**/*.md",

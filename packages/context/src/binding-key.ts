@@ -1,18 +1,20 @@
-// Copyright IBM Corp. 2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2020. All Rights Reserved.
 // Node module: @loopback/context
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-export type BindingAddress<T> = string | BindingKey<T>;
+import {generateUniqueId} from './unique-id';
 
-// tslint:disable-next-line:no-unused-variable
+export type BindingAddress<T = unknown> = string | BindingKey<T>;
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export class BindingKey<ValueType> {
   static readonly PROPERTY_SEPARATOR = '#';
 
   /**
    * Create a new key for a binding bound to a value of type `ValueType`.
    *
-   * **Example**
+   * @example
    *
    * ```ts
    * BindingKey.create<string>('application.name');
@@ -20,20 +22,17 @@ export class BindingKey<ValueType> {
    * BindingKey.create<number>('config#rest.port');
    * ```
    *
-   * @param key The binding key. When propertyPath is not provided, the key
+   * @param key - The binding key. When propertyPath is not provided, the key
    *   is allowed to contain propertyPath as encoded via `BindingKey#toString()`
-   * @param propertyPath Optional path to a deep property of the bound value.
+   * @param propertyPath - Optional path to a deep property of the bound value.
    */
-  public static create<ValueType>(
-    key: string,
-    propertyPath?: string,
-  ): BindingKey<ValueType> {
+  public static create<V>(key: string, propertyPath?: string): BindingKey<V> {
     // TODO(bajtos) allow chaining of propertyPaths, e.g.
     //   BindingKey.create('config#rest', 'port')
     // should create {key: 'config', path: 'rest.port'}
     if (propertyPath) {
       BindingKey.validate(key);
-      return new BindingKey<ValueType>(key, propertyPath);
+      return new BindingKey<V>(key, propertyPath);
     }
 
     return BindingKey.parseKeyWithPath(key);
@@ -54,7 +53,7 @@ export class BindingKey<ValueType> {
    * Get a binding address for retrieving a deep property of the object
    * bound to the current binding key.
    *
-   * @param propertyPath A dot-separated path to a (deep) property, e.g. "server.port".
+   * @param propertyPath - A dot-separated path to a (deep) property, e.g. "server.port".
    */
   deepProperty<PropertyValueType>(propertyPath: string) {
     // TODO(bajtos) allow chaining of propertyPaths, e.g.
@@ -67,7 +66,7 @@ export class BindingKey<ValueType> {
    * Validate the binding key format. Please note that `#` is reserved.
    * Returns a string representation of the binding key.
    *
-   * @param key Binding key, such as `a`, `a.b`, `a:b`, or `a/b`
+   * @param key - Binding key, such as `a`, `a.b`, `a:b`, or `a/b`
    */
   static validate<T>(key: BindingAddress<T>): string {
     if (!key) throw new Error('Binding key must be provided.');
@@ -85,7 +84,7 @@ export class BindingKey<ValueType> {
    * Parse a string containing both the binding key and the path to the deeply
    * nested property to retrieve.
    *
-   * @param keyWithPath The key with an optional path,
+   * @param keyWithPath - The key with an optional path,
    *  e.g. "application.instance" or "config#rest.port".
    */
   static parseKeyWithPath<T>(keyWithPath: BindingAddress<T>): BindingKey<T> {
@@ -102,5 +101,36 @@ export class BindingKey<ValueType> {
       keyWithPath.substr(0, index).trim(),
       keyWithPath.substr(index + 1),
     );
+  }
+
+  /**
+   * Name space for configuration binding keys
+   */
+  static CONFIG_NAMESPACE = '$config';
+
+  /**
+   * Build a binding key for the configuration of the given binding.
+   * The format is `<key>:$config`
+   *
+   * @param key - Key of the target binding to be configured
+   */
+  static buildKeyForConfig<T>(key: BindingAddress = ''): BindingAddress<T> {
+    const suffix = BindingKey.CONFIG_NAMESPACE;
+    const bindingKey = key ? `${key}:${suffix}` : suffix;
+    return bindingKey;
+  }
+
+  /**
+   * Generate a universally unique binding key.
+   *
+   * Please note the format of they generated key is not specified, you must
+   * not rely on any specific formatting (e.g. UUID style).
+   *
+   * @param namespace - Namespace for the binding
+   */
+  static generate<T>(namespace = ''): BindingKey<T> {
+    const prefix = namespace ? `${namespace}.` : '';
+    const name = generateUniqueId();
+    return BindingKey.create(`${prefix}${name}`);
   }
 }

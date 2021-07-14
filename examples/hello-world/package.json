@@ -1,53 +1,61 @@
 {
   "name": "@loopback/example-hello-world",
-  "version": "1.0.2",
   "description": "A simple hello-world Application using LoopBack 4",
-  "main": "index.js",
-  "engines": {
-    "node": ">=8.9"
-  },
-  "scripts": {
-    "acceptance": "lb-mocha \"dist/test/acceptance/**/*.js\"",
-    "build:apidocs": "lb-apidocs",
-    "build": "lb-tsc es2017 --outDir dist",
-    "build:watch": "lb-tsc es2017 --outDir dist --watch",
-    "clean": "lb-clean *example-hello-world*.tgz dist package api-docs",
-    "verify": "npm pack && tar xf *example-hello-world*.tgz && tree package && npm run clean",
-    "lint": "npm run prettier:check && npm run tslint",
-    "lint:fix": "npm run tslint:fix && npm run prettier:fix",
-    "prettier:cli": "lb-prettier \"**/*.ts\" \"**/*.js\"",
-    "prettier:check": "npm run prettier:cli -- -l",
-    "prettier:fix": "npm run prettier:cli -- --write",
-    "tslint": "lb-tslint",
-    "tslint:fix": "npm run tslint -- --fix",
-    "pretest": "npm run clean && npm run build",
-    "test": "lb-mocha --allow-console-logs \"dist/test\"",
-    "posttest": "npm run lint",
-    "test:dev": "lb-mocha --allow-console-logs dist/test/**/*.js && npm run posttest",
-    "prestart": "npm run build",
-    "start": "node ."
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/strongloop/loopback-next.git"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
-  "license": "MIT",
-  "dependencies": {
-    "@loopback/core": "^1.0.0",
-    "@loopback/rest": "^1.1.0"
-  },
-  "devDependencies": {
-    "@loopback/build": "^1.0.0",
-    "@loopback/testlab": "^1.0.0",
-    "@types/node": "^10.11.2"
-  },
+  "version": "2.3.1",
   "keywords": [
     "loopback",
     "LoopBack",
     "example",
     "tutorial"
-  ]
+  ],
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "examples/hello-world"
+  },
+  "engines": {
+    "node": "^10.16 || 12 || 14 || 16"
+  },
+  "scripts": {
+    "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
+    "build": "lb-tsc",
+    "build:watch": "lb-tsc --watch",
+    "clean": "lb-clean *example-hello-world*.tgz dist *.tsbuildinfo package",
+    "verify": "npm pack && tar xf *example-hello-world*.tgz && tree package && npm run clean",
+    "lint": "npm run prettier:check && npm run eslint",
+    "lint:fix": "npm run eslint:fix && npm run prettier:fix",
+    "prettier:cli": "lb-prettier \"**/*.ts\" \"**/*.js\"",
+    "prettier:check": "npm run prettier:cli -- -l",
+    "prettier:fix": "npm run prettier:cli -- --write",
+    "eslint": "lb-eslint --report-unused-disable-directives .",
+    "eslint:fix": "npm run eslint -- --fix",
+    "pretest": "npm run rebuild",
+    "test": "lb-mocha --allow-console-logs \"dist/__tests__/**/*.js\"",
+    "posttest": "npm run lint",
+    "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js && npm run posttest",
+    "rebuild": "npm run clean && npm run build",
+    "prestart": "npm run rebuild",
+    "start": "node ."
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@loopback/core": "^2.16.1",
+    "@loopback/rest": "^9.3.1",
+    "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "@loopback/build": "^6.4.1",
+    "@loopback/eslint-config": "^10.2.1",
+    "@loopback/testlab": "^3.4.1",
+    "@types/node": "^10.17.60",
+    "eslint": "^7.29.0",
+    "typescript": "~4.3.4"
+  }
 }

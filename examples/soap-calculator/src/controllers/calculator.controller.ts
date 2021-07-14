@@ -1,13 +1,17 @@
-import {inject} from '@loopback/core';
-import {get, param, HttpErrors} from '@loopback/rest';
+// Copyright IBM Corp. 2018,2019. All Rights Reserved.
+// Node module: @loopback/example-soap-calculator
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
 
+import {inject} from '@loopback/core';
+import {get, HttpErrors, param} from '@loopback/rest';
 import {
-  CalculatorService,
+  AddResponse,
   CalculatorParameters,
-  AddResult,
-  MultiplyResult,
-  DivideResult,
-  SubtractResult,
+  CalculatorService,
+  DivideResponse,
+  MultiplyResponse,
+  SubtractResponse,
 } from '../services/calculator.service';
 
 export class CalculatorController {
@@ -16,48 +20,48 @@ export class CalculatorController {
     protected calculatorService: CalculatorService,
   ) {}
 
-  @get('/multiply/{arg1}/{arg2}')
+  @get('/multiply/{intA}/{intB}')
   async multiply(
-    @param.path.integer('arg1') intA: number,
-    @param.path.integer('arg2') intB: number,
-  ): Promise<MultiplyResult> {
-    return await this.calculatorService.Multiply(<CalculatorParameters>{
+    @param.path.integer('intA') intA: number,
+    @param.path.integer('intB') intB: number,
+  ): Promise<MultiplyResponse> {
+    return this.calculatorService.multiply(<CalculatorParameters>{
       intA,
       intB,
     });
   }
-  @get('/add/{arg1}/{arg2}')
+  @get('/add/{intA}/{intB}')
   async add(
-    @param.path.integer('arg1') intA: number,
-    @param.path.integer('arg2') intB: number,
-  ): Promise<AddResult> {
-    return await this.calculatorService.Add(<CalculatorParameters>{
+    @param.path.integer('intA') intA: number,
+    @param.path.integer('intB') intB: number,
+  ): Promise<AddResponse> {
+    return this.calculatorService.add(<CalculatorParameters>{
       intA,
       intB,
     });
   }
 
-  @get('/subtract/{arg1}/{arg2}')
+  @get('/subtract/{intA}/{intB}')
   async subtract(
-    @param.path.integer('arg1') intA: number,
-    @param.path.integer('arg2') intB: number,
-  ): Promise<SubtractResult> {
-    return await this.calculatorService.Subtract(<CalculatorParameters>{
+    @param.path.integer('intA') intA: number,
+    @param.path.integer('intB') intB: number,
+  ): Promise<SubtractResponse> {
+    return this.calculatorService.subtract(<CalculatorParameters>{
       intA,
       intB,
     });
   }
 
-  @get('/divide/{arg1}/{arg2}')
+  @get('/divide/{intA}/{intB}')
   async divide(
-    @param.path.integer('arg1') intA: number,
-    @param.path.integer('arg2') intB: number,
-  ): Promise<DivideResult> {
+    @param.path.integer('intA') intA: number,
+    @param.path.integer('intB') intB: number,
+  ): Promise<DivideResponse> {
     //Preconditions
     if (intB === 0) {
       throw new HttpErrors.PreconditionFailed('Cannot divide by zero');
     }
-    return await this.calculatorService.Divide(<CalculatorParameters>{
+    return this.calculatorService.divide(<CalculatorParameters>{
       intA,
       intB,
     });

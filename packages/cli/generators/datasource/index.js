@@ -1,8 +1,9 @@
-// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2020. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+// no translation: Datasource
 'use strict';
 
 const ArtifactGenerator = require('../../lib/artifact-generator');
@@ -10,7 +11,8 @@ const debug = require('../../lib/debug')('datasource-generator');
 const chalk = require('chalk');
 const path = require('path');
 const utils = require('../../lib/utils');
-const connectors = require('./connectors.json');
+const connectors = require('../../lib/connectors.json');
+const g = require('../../lib/globalize');
 
 /**
  * DataSource Generator -- CLI
@@ -83,7 +85,7 @@ module.exports = class DataSourceGenerator extends ArtifactGenerator {
         type: 'input',
         name: 'name',
         // capitalization
-        message: utils.toClassName(this.artifactInfo.type) + ' name:',
+        message: g.f('%s name:', utils.toClassName(this.artifactInfo.type)),
         when: this.artifactInfo.name === undefined,
         validate: utils.validateClassName,
       },
@@ -104,9 +106,10 @@ module.exports = class DataSourceGenerator extends ArtifactGenerator {
     const prompts = [
       {
         name: 'connector',
-        message: `Select the connector for ${chalk.yellow(
-          this.artifactInfo.name,
-        )}:`,
+        message: g.f(
+          'Select the connector for %s: ',
+          chalk.yellow(this.artifactInfo.name),
+        ),
         type: 'list',
         default: 'memory',
         choices: this.connectorChoices,
@@ -134,7 +137,7 @@ module.exports = class DataSourceGenerator extends ArtifactGenerator {
       const prompts = [
         {
           name: 'customConnector',
-          message: "Enter the connector's package name:",
+          message: g.f("Enter the connector's package name:"),
           validate: utils.validate,
         },
       ];
@@ -190,8 +193,11 @@ module.exports = class DataSourceGenerator extends ArtifactGenerator {
           break;
         default:
           console.warn(
-            `Using default input of type input for setting ${key} as ${setting.type ||
-              undefined} is not supported`,
+            g.f(
+              'Using default input of type input for setting %s as %s is not supported',
+              key,
+              setting.type || undefined,
+            ),
           );
           // Default to input type
           question.type = 'input';
@@ -238,17 +244,11 @@ module.exports = class DataSourceGenerator extends ArtifactGenerator {
 
     // Setting up data for templates
     this.artifactInfo.className = utils.toClassName(this.artifactInfo.name);
-    this.artifactInfo.fileName = utils.kebabCase(this.artifactInfo.name);
-    // prettier-ignore
-    this.artifactInfo.jsonFileName = `${this.artifactInfo.fileName}.datasource.json`;
+    this.artifactInfo.fileName = utils.toFileName(this.artifactInfo.name);
     // prettier-ignore
     this.artifactInfo.outFile = `${this.artifactInfo.fileName}.datasource.ts`;
 
     // Resolved Output Paths.
-    const jsonPath = this.destinationPath(
-      this.artifactInfo.outDir,
-      this.artifactInfo.jsonFileName,
-    );
     const tsPath = this.destinationPath(
       this.artifactInfo.outDir,
       this.artifactInfo.outFile,
@@ -261,32 +261,32 @@ module.exports = class DataSourceGenerator extends ArtifactGenerator {
     debug(`this.artifactInfo.name => ${this.artifactInfo.name}`);
     debug(`this.artifactInfo.className => ${this.artifactInfo.className}`);
     debug(`this.artifactInfo.fileName => ${this.artifactInfo.fileName}`);
-    // prettier-ignore
-    debug(`this.artifactInfo.jsonFileName => ${this.artifactInfo.jsonFileName}`);
     debug(`this.artifactInfo.outFile => ${this.artifactInfo.outFile}`);
-    debug(`jsonPath => ${jsonPath}`);
     debug(`tsPath => ${tsPath}`);
 
     // Data to save to DataSource JSON file
-    const ds = Object.assign(
+    const dsConfig = Object.assign(
       {name: this.artifactInfo.name, connector: this.artifactInfo.connector},
       this.artifactInfo.settings,
     );
 
     // From LB3
-    if (ds.connector === 'ibm-object-storage') {
-      ds.connector = 'loopback-component-storage';
-      ds.provider = 'openstack';
-      ds.useServiceCatalog = true;
-      ds.useInternal = false;
-      ds.keystoneAuthVersion = 'v3';
+    if (dsConfig.connector === 'ibm-object-storage') {
+      dsConfig.connector = 'loopback-component-storage';
+      dsConfig.provider = 'openstack';
+      dsConfig.useServiceCatalog = true;
+      dsConfig.useInternal = false;
+      dsConfig.keystoneAuthVersion = 'v3';
     }
 
-    debug(`datasource information going to file: ${JSON.stringify(ds)}`);
+    this.artifactInfo.dsConfigString = utils.stringifyObject(dsConfig, {
+      // Prevent inlining the config into a single line, e.g.
+      // const config = {name: 'db', connector: 'memory'};
+      inlineCharacterLimit: 0,
+    });
+    debug(`datasource configuration code: ${this.artifactInfo.dsConfigString}`);
 
-    // Copy Templates
-    this.fs.writeJSON(jsonPath, ds);
-    this.fs.copyTpl(classTemplatePath, tsPath, this.artifactInfo);
+    this.copyTemplatedFiles(classTemplatePath, tsPath, this.artifactInfo);
   }
 
   install() {
@@ -311,15 +311,23 @@ module.exports = class DataSourceGenerator extends ArtifactGenerator {
       debug(`npmModule - ${pkgs[0]}`);
     } else {
       const connectorName = this.artifactInfo.connector;
-      // Other connectors
-      if (!deps[connectorName]) pkgs.push(connectorName);
+      // Other connectors that are not listed in `connectors.json`.
+      // No install is needed for those in connectors.json but without a
+      // package name as they are built-in connectors
+      if (!deps[connectorName] && !connector) pkgs.push(connectorName);
     }
 
     if (!deps['@loopback/repository']) {
       pkgs.push('@loopback/repository');
     }
 
-    if (pkgs.length) this.npmInstall(pkgs, {save: true});
+    if (pkgs.length === 0) return;
+
+    this.pkgManagerInstall(pkgs, {
+      npm: {
+        save: true,
+      },
+    });
   }
 
   async end() {

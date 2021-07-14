@@ -1,7 +1,9 @@
-// Copyright IBM Corp. 2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2019. All Rights Reserved.
 // Node module: @loopback/testlab
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
+
+/* eslint-disable @typescript-eslint/unified-signatures */
 
 // Important! Date.prototype.toJSON() returns a string.
 export function toJSON(value: Date): string;
@@ -26,13 +28,26 @@ export function toJSON(value: object): object;
 // In practice, they should not be necessary, as they simply return the input
 // value without any modifications.
 
-// tslint:disable-next-line:unified-signatures
 export function toJSON(value: undefined): undefined;
 export function toJSON(value: null): null;
 export function toJSON(value: number): number;
 export function toJSON(value: boolean): boolean;
-// tslint:disable-next-line:unified-signatures
 export function toJSON(value: string): string;
+
+// The following overloads are required to allow TypesScript handle
+// commonly used union types.
+
+export function toJSON(value: unknown[] | null): unknown[] | null;
+export function toJSON(value: unknown[] | undefined): unknown[] | undefined;
+export function toJSON(
+  value: unknown[] | null | undefined,
+): unknown[] | null | undefined;
+
+export function toJSON(value: object | null): object | null;
+export function toJSON(value: object | undefined): object | undefined;
+export function toJSON(
+  value: object | null | undefined,
+): object | null | undefined;
 
 export function toJSON<T>(value: T) {
   return JSON.parse(JSON.stringify({value})).value;

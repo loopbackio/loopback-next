@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2017. All Rights Reserved.
+// Copyright IBM Corp. 2018,2020. All Rights Reserved.
 // Node module: @loopback/repository
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -14,10 +14,10 @@ import {Class} from './common-types';
  * the actual reference to the class itself until later, when both sides
  * of the relation are created as JavaScript classes.
  *
- * @template Type The type we are resolving, for example `Entity` or `Product`.
+ * @typeParam Type - The type we are resolving, for example `Entity` or `Product`.
  * This parameter is required.
  *
- * @template StaticMembers The static properties available on the
+ * @typeParam StaticMembers - The static properties available on the
  * type class. For example, all models have static `modelName` property.
  * When `StaticMembers` are not provided, we default to static properties of
  * a `Function` - `name`, `length`, `apply`, `call`, etc.
@@ -26,15 +26,15 @@ import {Class} from './common-types';
  */
 export type TypeResolver<
   Type extends Object,
-  StaticMembers = Function
+  StaticMembers = Function,
 > = () => Class<Type> & StaticMembers;
 
 /**
  * A function that checks whether a function is a TypeResolver or not.
- * @param fn The value to check.
+ * @param fn - The value to check.
  */
-export function isTypeResolver<T extends Object>(
-  // tslint:disable-next-line:no-any
+export function isTypeResolver<T extends object>(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   fn: any,
 ): fn is TypeResolver<T> {
   // 1. A type provider must be a function
@@ -49,6 +49,14 @@ export function isTypeResolver<T extends Object>(
   // TODO(bajtos): support model classes defined via ES5 constructor function
 
   return true;
+}
+
+/**
+ * A boxed type for `null`
+ */
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export function Null() {
+  return null;
 }
 
 /**
@@ -67,6 +75,7 @@ export function isBuiltinType(fn: Function): boolean {
     fn === Date ||
     fn === RegExp ||
     fn === Buffer ||
+    fn === Null ||
     // function as a type
     fn === Function
   );
@@ -74,7 +83,7 @@ export function isBuiltinType(fn: Function): boolean {
 
 /**
  * Resolve a type value that may have been provided via TypeResolver.
- * @param fn A type class or a type provider.
+ * @param fn - A type class or a type provider.
  * @returns The resolved type.
  */
 export function resolveType<T extends Object>(

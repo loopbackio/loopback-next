@@ -1,37 +1,7 @@
 {
   "name": "@loopback/context",
-  "version": "1.0.0",
-  "description": "LoopBack's container for Inversion of Control",
-  "engines": {
-    "node": ">=8.9"
-  },
-  "scripts": {
-    "acceptance": "lb-mocha \"dist/test/acceptance/**/*.js\"",
-    "build:apidocs": "lb-apidocs",
-    "build": "lb-tsc es2017 --outDir dist",
-    "clean": "lb-clean loopback-context*.tgz dist package api-docs",
-    "pretest": "npm run build",
-    "test": "lb-mocha \"dist/test/unit/**/*.js\" \"dist/test/acceptance/**/*.js\"",
-    "unit": "lb-mocha \"dist/test/unit/**/*.js\"",
-    "verify": "npm pack && tar xf loopback-context*.tgz && tree package && npm run clean"
-  },
-  "author": "IBM",
-  "copyright.owner": "IBM Corp.",
-  "license": "MIT",
-  "dependencies": {
-    "@loopback/metadata": "^1.0.0",
-    "debug": "^4.0.1",
-    "uuid": "^3.2.1"
-  },
-  "devDependencies": {
-    "@loopback/build": "^1.0.0",
-    "@loopback/testlab": "^1.0.0",
-    "@types/bluebird": "^3.5.20",
-    "@types/debug": "^0.0.30",
-    "@types/node": "^10.11.2",
-    "@types/uuid": "^3.4.3",
-    "bluebird": "^3.5.1"
-  },
+  "description": "Facilities to manage artifacts and their dependencies in your Node.js applications. The module exposes TypeScript/JavaScript APIs and decorators to register artifacts, declare dependencies, and resolve artifacts by keys. It also serves as an IoC container to support dependency injection",
+  "version": "3.17.0",
   "keywords": [
     "LoopBack",
     "IoC",
@@ -41,16 +11,53 @@
     "Decorators",
     "Context"
   ],
-  "files": [
-    "README.md",
-    "index.js",
-    "index.d.ts",
-    "dist/src",
-    "dist/index*",
-    "src"
-  ],
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/strongloop/loopback-next.git"
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "packages/context"
+  },
+  "engines": {
+    "node": "^10.16 || 12 || 14 || 16"
+  },
+  "scripts": {
+    "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
+    "build": "lb-tsc",
+    "clean": "lb-clean loopback-context*.tgz dist *.tsbuildinfo package",
+    "pretest": "npm run build",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
+    "unit": "lb-mocha \"dist/__tests__/unit/**/*.js\"",
+    "verify": "npm pack && tar xf loopback-context*.tgz && tree package && npm run clean"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "README.md",
+    "dist",
+    "src",
+    "!*/__tests__"
+  ],
+  "dependencies": {
+    "@loopback/metadata": "^3.3.1",
+    "@types/debug": "^4.1.5",
+    "debug": "^4.3.1",
+    "hyperid": "^2.1.0",
+    "p-event": "^4.2.0",
+    "tslib": "^2.3.0",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@loopback/build": "^6.4.1",
+    "@loopback/eslint-config": "^10.2.1",
+    "@loopback/testlab": "^3.4.1",
+    "@types/bluebird": "^3.5.35",
+    "@types/node": "^10.17.60",
+    "@types/uuid": "^8.3.0",
+    "bluebird": "^3.7.2"
   }
 }

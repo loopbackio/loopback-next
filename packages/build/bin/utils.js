@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Copyright IBM Corp. 2017,2020. All Rights Reserved.
 // Node module: @loopback/build
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -10,46 +10,6 @@ const fs = require('fs');
 const path = require('path');
 const spawn = require('cross-spawn');
 const debug = require('debug')('loopback:build');
-
-/**
- * Get the Node.js compilation target - es2015, es2017 or es2018
- */
-function getCompilationTarget() {
-  const nodeMajorVersion = +process.versions.node.split('.')[0];
-  return nodeMajorVersion >= 10
-    ? 'es2018'
-    : nodeMajorVersion >= 7
-      ? 'es2017'
-      : 'es2015';
-}
-
-/**
- * Get the distribution name
- * @param {*} target
- */
-function getDistribution(target) {
-  if (!target) {
-    target = getCompilationTarget();
-  }
-  var dist;
-  switch (target) {
-    case 'es2018':
-      dist = 'dist10';
-      break;
-    case 'es2017':
-      dist = 'dist8';
-      break;
-    case 'es2015':
-      dist = 'dist6';
-      break;
-    default:
-      console.error(
-        'Unknown build target %s. Supported values: es2015, es2017, es2018',
-      );
-      process.exit(1);
-  }
-  return dist;
-}
 
 /**
  * Get the root directory of this module
@@ -71,8 +31,8 @@ function getPackageDir() {
  * @param {string} defaultName Default file
  */
 function getConfigFile(name, defaultName) {
-  var dir = getPackageDir();
-  var configFile = path.join(dir, name);
+  const dir = getPackageDir();
+  let configFile = path.join(dir, name);
   if (!fs.existsSync(configFile)) {
     debug('%s does not exist', configFile);
     if (defaultName) {
@@ -96,14 +56,62 @@ function getConfigFile(name, defaultName) {
 
 /**
  * Resolve the path of the cli command
- * @param {string} cli
+ * @param {string} cli CLI module path
+ * @param {object} options Options for module resolution
+ * - `resolveFromProjectFirst`: Try to resolve the CLI path from the package
+ *   dependencies of the current project first instead of `@loopback/build`
  */
-function resolveCLI(cli) {
-  const path = './node_modules/' + cli;
-  try {
-    return require.resolve(path.join(getPackageDir(), path));
-  } catch (e) {
+function resolveCLI(cli, options = {resolveFromProjectFirst: true}) {
+  const {resolveFromProjectFirst = true} = options;
+  if (resolveFromProjectFirst === false) {
     return require.resolve(cli);
+  }
+  try {
+    const pkgDir = getPackageDir();
+    const resolved = resolveCLIFromProject(cli, pkgDir);
+    if (resolved != null) return resolved;
+  } catch (e) {
+    // Ignore errors
+  }
+  return require.resolve(cli);
+}
+
+/**
+ * Parse the package name from the cli module path
+ * @param {string} cli CLI module path, such as `typescript/lib/tsc`
+ */
+function getPackageName(cli) {
+  const paths = cli.split('/');
+  if (paths[0].startsWith('@')) {
+    // The package name is `@<org>/<pkg>`
+    return `${paths[0]}/${paths[1]}`;
+  } else {
+    // The package name is `<pkg>`
+    return paths[0];
+  }
+}
+
+/**
+ * Resolve the cli from the current project
+ * @param {string} cli CLI module path, such as `typescript/lib/tsc`
+ * @param {string} projectRootDir The root directory for the project
+ */
+function resolveCLIFromProject(cli, projectRootDir = getPackageDir()) {
+  const cliPkg = getPackageName(cli);
+  debug(`Trying to resolve CLI module '%s' from %s`, cliPkg, projectRootDir);
+  // Try to load `package.json` for the current project
+  const pkg = require(path.join(projectRootDir, 'package.json'));
+  if (
+    (pkg.devDependencies && pkg.devDependencies[cliPkg]) ||
+    (pkg.dependencies && pkg.dependencies[cliPkg])
+  ) {
+    // The cli package is found in the project dependencies
+    const modulePath = './node_modules/' + cli;
+    const cliModule = require.resolve(path.join(projectRootDir, modulePath));
+    debug(`Resolved CLI module '%s': %s`, cliPkg, cliModule);
+    return cliModule;
+  } else {
+    debug(`CLI module '%s' is not found in dependencies`, cliPkg);
   }
 }
 
@@ -112,11 +120,12 @@ function resolveCLI(cli) {
  * @param {string} cli Path of the cli command
  * @param {string[]} args The arguments
  * @param {object} options Options to control dryRun and spawn
+ * - nodeArgs An array of args for `node`
  * - dryRun Controls if the cli will be executed or not. If set
  * to true, the command itself will be returned without running it
  */
 function runCLI(cli, args, options) {
-  cli = resolveCLI(cli);
+  cli = resolveCLI(cli, options && options.resolveFromProjectFirst);
   args = [cli].concat(args);
   debug('%s', args.join(' '));
   // Keep it backward compatible as dryRun
@@ -125,7 +134,13 @@ function runCLI(cli, args, options) {
   if (options.dryRun) {
     return util.format('%s %s', process.execPath, args.join(' '));
   }
-  var child = spawn(
+  if (options.nodeArgs) {
+    debug('node args: %s', options.nodeArgs.join(' '));
+    // For example, [--no-warnings]
+    args = options.nodeArgs.concat(args);
+  }
+  debug('Spawn %s %s', process.execPath, args.join(' '));
+  const child = spawn(
     process.execPath, // Typically '/usr/local/bin/node'
     args,
     Object.assign(
@@ -160,7 +175,7 @@ function runShell(command, args, options) {
   if (options.dryRun) {
     return util.format('%s %s', command, args.join(' '));
   }
-  var child = spawn(
+  const child = spawn(
     command,
     args,
     Object.assign(
@@ -207,13 +222,19 @@ function isOptionSet(opts, ...optionNames) {
   );
 }
 
-function mochaOptsFileProjectExists() {
-  const configFile = path.join(getPackageDir(), 'test/mocha.opts');
-  return fs.existsSync(configFile);
+function mochaConfiguredForProject() {
+  const configFiles = [
+    '.mocharc.js',
+    '.mocharc.json',
+    '.mocharc.yaml',
+    '.mocharc.yml',
+  ];
+  return configFiles.some(f => {
+    const configFile = path.join(getPackageDir(), f);
+    return fs.existsSync(configFile);
+  });
 }
 
-exports.getCompilationTarget = getCompilationTarget;
-exports.getDistribution = getDistribution;
 exports.getRootDir = getRootDir;
 exports.getPackageDir = getPackageDir;
 exports.getConfigFile = getConfigFile;
@@ -221,4 +242,6 @@ exports.resolveCLI = resolveCLI;
 exports.runCLI = runCLI;
 exports.runShell = runShell;
 exports.isOptionSet = isOptionSet;
-exports.mochaOptsFileProjectExists = mochaOptsFileProjectExists;
+exports.mochaConfiguredForProject = mochaConfiguredForProject;
+exports.resolveCLIFromProject = resolveCLIFromProject;
+exports.getPackageName = getPackageName;

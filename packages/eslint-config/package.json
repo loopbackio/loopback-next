@@ -1,0 +1,30 @@
+{
+  "name": "@loopback/eslint-config",
+  "description": "ESLint configuration for LoopBack projects",
+  "version": "10.2.1",
+  "license": "MIT",
+  "main": "eslintrc.js",
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "packages/eslint-config"
+  },
+  "engines": {
+    "node": "^10.16 || 12 || 14 || 16"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "eslint": "^7.29.0"
+  },
+  "dependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.27.0",
+    "@typescript-eslint/parser": "^4.27.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-eslint-plugin": "^3.1.0",
+    "eslint-plugin-mocha": "^9.0.0"
+  }
+}

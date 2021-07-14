@@ -18,7 +18,7 @@ straight to our first step:
 If not, you'll need to make sure you have a couple of things installed before we
 get started:
 
-- [Node.js](https://nodejs.org/en/) at v8.9 or greater
+- [Node.js](https://nodejs.org/en/) at v10 or greater
 
 Next, you'll need to install the LoopBack 4 CLI toolkit:
 
@@ -33,7 +33,7 @@ again, you can use the LoopBack 4 CLI tool to catch up to where this tutorial
 will continue from:
 
 ```sh
-lb4 example todo-list
+lb4 example todo
 ```
 
 It should be noted that this tutorial does not assume the
@@ -60,13 +60,7 @@ application, follow these steps:
 1.  Run the `lb4 example` command to select and clone the todo repository:
 
     ```sh
-    $ lb4 example
-    ? What example would you like to clone? (Use arrow keys)
-      todo: Tutorial example on how to build an application with LoopBack 4.
-    ❯ todo-list: Continuation of the todo example using relations in LoopBack 4.
-      hello-world: A simple hello-world Application using LoopBack 4.
-      log-extension: An example extension project for LoopBack 4.
-      rpc-server: A basic RPC server using a made-up protocol.
+    lb4 example todo-list
     ```
 
 2.  Switch to the directory.
@@ -80,7 +74,7 @@ application, follow these steps:
     ```sh
     $ npm start
 
-    Server is running on port 3000
+    Server is running at http://127.0.0.1:3000
     ```
 
 Feel free to look around in the application's code to get a feel for how it

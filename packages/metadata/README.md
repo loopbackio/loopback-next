@@ -28,6 +28,7 @@ function myClassDecorator(spec: MyClassMetadata): ClassDecorator {
   return ClassDecoratorFactory.createDecorator<MyClassMetadata>(
     'metadata-key-for-my-class-decorator',
     spec,
+    {decoratorName: '@myClassDecorator'},
   );
 }
 ```
@@ -84,6 +85,114 @@ class MyController {
   @myMethodDecorator({name: 'my-static-method'})
   static myStaticMethod() {}
 }
+```
+
+### To create a decorator that can be used multiple times on a single method
+
+Instead of a single immutable object to be merged, the
+`MethodMultiDecoratorFactory` reduced parameters into a flat array of items.
+When fetching the metadata later, you will receive it as an array.
+
+```ts
+import {MethodMultiDecoratorFactory} from '@loopback/metadata';
+
+function myMultiMethodDecorator(spec: object): MethodDecorator {
+  return MethodMultiDecoratorFactory.createDecorator<object>(
+    'metadata-key-for-my-method-multi-decorator',
+    spec,
+  );
+}
+```
+
+Now, you can use it multiple times on a method:
+
+```ts
+class MyController {
+  @myMultiMethodDecorator({x: 1})
+  @myMultiMethodDecorator({y: 2})
+  @myMultiMethodDecorator({z: 3})
+  public point() {}
+}
+
+class MyOtherController {
+  @myMultiMethodDecorator([{x: 1}, {y: 2}, {z: 3}])
+  public point() {}
+}
+```
+
+And when you access this data:
+
+```ts
+const arrayOfSpecs = MetadataInspector.getMethodMetadata<object>(
+  'metadata-key-for-my-method-multi-decorator',
+  constructor.prototype,
+  op,
+);
+
+// [{z: 3}, {y: 2}, {x: 1}]
+```
+
+Typescript
+[applies decorators in reverse order](https://www.typescriptlang.org/docs/handbook/decorators.html)
+per class, from the parent down. The metadata array resurned by `getOwnMetadata`
+will be in this order:
+
+```ts
+class Parent {
+  @myMultiMethodDecorator('A') // second
+  @myMultiMethodDecorator('B') // first
+  public greet() {}
+}
+
+class Child extends Parent {
+  @myMultiMethodDecorator(['C', 'D']) // [third, fourth]
+  public greet() {}
+}
+
+class Grandchild extends Child {
+  @myMultiMethodDecorator('E') // sixth
+  @myMultiMethodDecorator('F') // fifth
+  public greet() {}
+}
+// getMethodMetadata = ['B', 'A', 'C', 'D', 'F', 'E']
+```
+
+You can also create a decorator that takes an object that can contain an array:
+
+```ts
+interface Point {
+  x?: number;
+  y?: number;
+  z?: number;
+}
+interface GeometryMetadata {
+  points: Point[];
+}
+function geometry(...points: Point[]): MethodDecorator {
+  return MethodMultiDecoratorFactory.createDecorator<GeometryMetadata>(
+    'metadata-key-for-my-method-multi-decorator',
+    points,
+  );
+}
+
+class MyGeoController {
+  @geometry({x: 1})
+  @geometry({x: 2}, {y: 3})
+  @geometry({z: 5})
+  public abstract() {}
+}
+
+const arrayOfSpecs = MetadataInspector.getMethodMetadata<GeometryMetadata>(
+  'metadata-key-for-my-method-multi-decorator',
+  constructor.prototype,
+  op,
+);
+
+// [
+//    { points: [{x: 1}]},
+//    { points: [{x:2}, {y:3}]},
+//    { points: [{z: 5}]},
+// ]
 ```
 
 ### To create a property decorator
@@ -209,6 +318,8 @@ functions. There are two flags for the options:
   Sometimes we use shared spec for the decoration, but the decorator function
   might need to mutate the object. Cloning the input spec makes it safe to use
   the same spec (`template`) to decorate different members. Default to `true`.
+- decoratorName: Name for the decorator such as `@inject` for error and
+  debugging messages.
 
 ### Customize inheritance of metadata
 
@@ -384,26 +495,27 @@ const myProp = MetadataInspector.getMethodMetaData<MyMethodMetadata>(
 ```ts
 import {MetadataInspector} from '@loopback/metadata';
 
-const allParamsForMyMethod = MetadataInspector.getAllParameterMetaData<
-  MyParameterMetadata
->(
-  'my-parameter-decorator-key',
-  MyController.prototype, // Use MyController for static methods,
-  'myMethod',
-);
+const allParamsForMyMethod =
+  MetadataInspector.getAllParameterMetaData<MyParameterMetadata>(
+    'my-parameter-decorator-key',
+    MyController.prototype, // Use MyController for static methods,
+    'myMethod',
+  );
 
-const firstParamForMyMethod = MetadataInspector.getMyParameterMetaData<
-  MyParameterMetadata
->(
-  'my-parameter-decorator-key',
-  MyController.prototype, // Use MyController for static methods
-  'myMethod',
-  0, // parameter index
-);
+const firstParamForMyMethod =
+  MetadataInspector.getMyParameterMetaData<MyParameterMetadata>(
+    'my-parameter-decorator-key',
+    MyController.prototype, // Use MyController for static methods
+    'myMethod',
+    0, // parameter index
+  );
 
-const allParamsForConstructor = MetadataInspector.getAllParameterMetaData<
-  MyParameterMetadata
->('my-parameter-decorator-key', MyController, '');
+const allParamsForConstructor =
+  MetadataInspector.getAllParameterMetaData<MyParameterMetadata>(
+    'my-parameter-decorator-key',
+    MyController,
+    '',
+  );
 ```
 
 ### Use strong-typed metadata access key

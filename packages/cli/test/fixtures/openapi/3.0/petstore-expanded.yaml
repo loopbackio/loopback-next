@@ -1,4 +1,4 @@
-openapi: "3.0.0"
+openapi: '3.0.0'
 info:
   version: 1.0.0
   title: Swagger Petstore
@@ -39,6 +39,14 @@ paths:
           schema:
             type: integer
             format: int32
+        - name: where
+          in: query
+          content:
+            'application/json':
+              schema:
+                type: object
+                title": TodoList.WhereFilter
+                additionalProperties: true
       responses:
         '200':
           description: pet response
@@ -128,7 +136,7 @@ components:
       allOf:
         - $ref: '#/components/schemas/NewPet'
         - required:
-          - id
+            - id
           properties:
             id:
               type: integer
@@ -153,4 +161,3 @@ components:
           format: int32
         message:
           type: string
-

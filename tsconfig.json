@@ -1,15 +1,213 @@
 {
   "extends": "./packages/build/config/tsconfig.common.json",
-  "include": [
-    "benchmark",
-    "examples",
-    "packages"
+  "compilerOptions": {
+    "composite": true
+  },
+  "references": [
+    {
+      "path": "acceptance/extension-logging-fluentd/tsconfig.json"
+    },
+    {
+      "path": "acceptance/repository-cloudant/tsconfig.json"
+    },
+    {
+      "path": "acceptance/repository-mongodb/tsconfig.json"
+    },
+    {
+      "path": "acceptance/repository-mysql/tsconfig.json"
+    },
+    {
+      "path": "acceptance/repository-postgresql/tsconfig.json"
+    },
+    {
+      "path": "benchmark/tsconfig.json"
+    },
+    {
+      "path": "bodyparsers/rest-msgpack/tsconfig.json"
+    },
+    {
+      "path": "examples/access-control-migration/tsconfig.json"
+    },
+    {
+      "path": "examples/binding-resolution/tsconfig.json"
+    },
+    {
+      "path": "examples/context/tsconfig.json"
+    },
+    {
+      "path": "examples/express-composition/tsconfig.json"
+    },
+    {
+      "path": "examples/file-transfer/tsconfig.json"
+    },
+    {
+      "path": "examples/graphql/tsconfig.json"
+    },
+    {
+      "path": "examples/greeter-extension/tsconfig.json"
+    },
+    {
+      "path": "examples/greeting-app/tsconfig.json"
+    },
+    {
+      "path": "examples/hello-world/tsconfig.json"
+    },
+    {
+      "path": "examples/lb3-application/tsconfig.json"
+    },
+    {
+      "path": "examples/log-extension/tsconfig.json"
+    },
+    {
+      "path": "examples/metrics-prometheus/tsconfig.json"
+    },
+    {
+      "path": "examples/multi-tenancy/tsconfig.json"
+    },
+    {
+      "path": "examples/passport-login/tsconfig.json"
+    },
+    {
+      "path": "examples/rest-crud/tsconfig.json"
+    },
+    {
+      "path": "examples/rpc-server/tsconfig.json"
+    },
+    {
+      "path": "examples/soap-calculator/tsconfig.json"
+    },
+    {
+      "path": "examples/socketio/tsconfig.json"
+    },
+    {
+      "path": "examples/todo-jwt/tsconfig.json"
+    },
+    {
+      "path": "examples/todo-list/tsconfig.json"
+    },
+    {
+      "path": "examples/todo/tsconfig.json"
+    },
+    {
+      "path": "examples/validation-app/tsconfig.json"
+    },
+    {
+      "path": "examples/webpack/tsconfig.json"
+    },
+    {
+      "path": "extensions/apiconnect/tsconfig.json"
+    },
+    {
+      "path": "extensions/authentication-jwt/tsconfig.json"
+    },
+    {
+      "path": "extensions/authentication-passport/tsconfig.json"
+    },
+    {
+      "path": "extensions/context-explorer/tsconfig.json"
+    },
+    {
+      "path": "extensions/cron/tsconfig.json"
+    },
+    {
+      "path": "extensions/graphql/tsconfig.json"
+    },
+    {
+      "path": "extensions/health/tsconfig.json"
+    },
+    {
+      "path": "extensions/logging/tsconfig.json"
+    },
+    {
+      "path": "extensions/metrics/tsconfig.json"
+    },
+    {
+      "path": "extensions/pooling/tsconfig.json"
+    },
+    {
+      "path": "extensions/socketio/tsconfig.json"
+    },
+    {
+      "path": "extensions/typeorm/tsconfig.json"
+    },
+    {
+      "path": "fixtures/mock-oauth2-provider/tsconfig.json"
+    },
+    {
+      "path": "fixtures/tsdocs-monorepo/tsconfig.json"
+    },
+    {
+      "path": "packages/authentication/tsconfig.json"
+    },
+    {
+      "path": "packages/authorization/tsconfig.json"
+    },
+    {
+      "path": "packages/boot/tsconfig.json"
+    },
+    {
+      "path": "packages/booter-lb3app/tsconfig.json"
+    },
+    {
+      "path": "packages/context/tsconfig.json"
+    },
+    {
+      "path": "packages/core/tsconfig.json"
+    },
+    {
+      "path": "packages/express/tsconfig.json"
+    },
+    {
+      "path": "packages/filter/tsconfig.json"
+    },
+    {
+      "path": "packages/http-caching-proxy/tsconfig.json"
+    },
+    {
+      "path": "packages/http-server/tsconfig.json"
+    },
+    {
+      "path": "packages/metadata/tsconfig.json"
+    },
+    {
+      "path": "packages/model-api-builder/tsconfig.json"
+    },
+    {
+      "path": "packages/openapi-spec-builder/tsconfig.json"
+    },
+    {
+      "path": "packages/openapi-v3/tsconfig.json"
+    },
+    {
+      "path": "packages/repository-json-schema/tsconfig.json"
+    },
+    {
+      "path": "packages/repository-tests/tsconfig.json"
+    },
+    {
+      "path": "packages/repository/tsconfig.json"
+    },
+    {
+      "path": "packages/rest-crud/tsconfig.json"
+    },
+    {
+      "path": "packages/rest-explorer/tsconfig.json"
+    },
+    {
+      "path": "packages/rest/tsconfig.json"
+    },
+    {
+      "path": "packages/security/tsconfig.json"
+    },
+    {
+      "path": "packages/service-proxy/tsconfig.json"
+    },
+    {
+      "path": "packages/testlab/tsconfig.json"
+    },
+    {
+      "path": "packages/tsdocs/tsconfig.json"
+    }
   ],
-  "exclude": [
-    "node_modules/**",
-    "benchmark/node_modules/**",
-    "examples/*/node_modules/**",
-    "packages/*/node_modules/**",
-    "**/*.d.ts"
-  ]
+  "files": []
 }

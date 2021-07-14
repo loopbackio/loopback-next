@@ -1,19 +1,7 @@
 {
   "name": "@loopback/openapi-spec-builder",
-  "version": "1.0.0",
   "description": "Make it easy to create OpenAPI (Swagger) specification documents in your tests using the builder pattern.",
-  "engines": {
-    "node": ">=8.9"
-  },
-  "scripts": {
-    "build:apidocs": "lb-apidocs",
-    "build": "lb-tsc es2017 --outDir dist",
-    "clean": "lb-clean loopback-openapi-spec-builder*.tgz dist package api-docs",
-    "verify": "npm pack && tar xf loopback-openapi-spec-builder*.tgz && tree package && npm run clean"
-  },
-  "author": "IBM",
-  "copyright.owner": "IBM Corp.",
-  "license": "MIT",
+  "version": "3.2.1",
   "keywords": [
     "Swagger",
     "OpenAPI Spec",
@@ -21,23 +9,43 @@
     "Builder",
     "Testing"
   ],
-  "dependencies": {
-    "@loopback/openapi-v3-types": "^1.0.0"
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "packages/openapi-spec-builder"
   },
-  "devDependencies": {
-    "@loopback/build": "^1.0.0",
-    "@types/node": "^10.11.2"
+  "engines": {
+    "node": "^10.16 || 12 || 14 || 16"
+  },
+  "scripts": {
+    "build": "lb-tsc",
+    "clean": "lb-clean loopback-openapi-spec-builder*.tgz dist *.tsbuildinfo package",
+    "pretest": "npm run build",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
+    "verify": "npm pack && tar xf loopback-openapi-spec-builder*.tgz && tree package && npm run clean"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "files": [
     "README.md",
-    "index.js",
-    "index.d.ts",
-    "dist/src",
-    "dist/index*",
-    "src"
+    "dist",
+    "src",
+    "!*/__tests__"
   ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/strongloop/loopback-next.git"
+  "dependencies": {
+    "openapi3-ts": "^2.0.1",
+    "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "@loopback/build": "^6.4.1",
+    "@loopback/eslint-config": "^10.2.1",
+    "@loopback/testlab": "^3.4.1",
+    "@types/node": "^10.17.60"
   }
 }

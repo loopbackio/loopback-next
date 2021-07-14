@@ -1,0 +1,55 @@
+{
+  "$schema": "http://json.schemastore.org/tsconfig",
+  "extends": "@loopback/build/config/tsconfig.common.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "experimentalDecorators": true,
+    "rootDir": "src",
+    "composite": true
+  },
+  "include": [
+    "src/**/*",
+    "src/**/*.json"
+  ],
+  "references": [
+    {
+      "path": "../../extensions/authentication-passport/tsconfig.json"
+    },
+    {
+      "path": "../../fixtures/mock-oauth2-provider/tsconfig.json"
+    },
+    {
+      "path": "../../packages/authentication/tsconfig.json"
+    },
+    {
+      "path": "../../packages/boot/tsconfig.json"
+    },
+    {
+      "path": "../../packages/core/tsconfig.json"
+    },
+    {
+      "path": "../../packages/http-caching-proxy/tsconfig.json"
+    },
+    {
+      "path": "../../packages/repository/tsconfig.json"
+    },
+    {
+      "path": "../../packages/rest-crud/tsconfig.json"
+    },
+    {
+      "path": "../../packages/rest-explorer/tsconfig.json"
+    },
+    {
+      "path": "../../packages/rest/tsconfig.json"
+    },
+    {
+      "path": "../../packages/security/tsconfig.json"
+    },
+    {
+      "path": "../../packages/service-proxy/tsconfig.json"
+    },
+    {
+      "path": "../../packages/testlab/tsconfig.json"
+    }
+  ]
+}

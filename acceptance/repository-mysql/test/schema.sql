@@ -1,0 +1,4 @@
+-- Seed database schema & data
+-- See https://github.com/strongloop/loopback-connector-mysql/blob/master/test/schema.sql
+-- The repository test suite does not require any seed data to exist,
+-- we can keep this SQL file empty.

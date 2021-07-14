@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2020. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -7,10 +7,9 @@
 const chalk = require('chalk');
 const SwaggerParser = require('swagger-parser');
 const swagger2openapi = require('swagger2openapi');
-const {debugJson} = require('./utils');
-const _ = require('lodash');
+const {debugJson, cloneSpecObject} = require('./utils');
 const {generateControllerSpecs} = require('./spec-helper');
-const {generateModelSpecs} = require('./schema-helper');
+const {generateModelSpecs, registerNamedSchemas} = require('./schema-helper');
 
 /**
  * Load swagger specs from the given url or file path; handle yml or json
@@ -30,11 +29,7 @@ async function loadSpec(specUrlStr, {log, validate} = {}) {
     debugJson('OpenAPI spec loaded: ', spec);
   }
 
-  spec = _.cloneDeepWith(spec, o => {
-    if (o.$ref) {
-      o['x-$ref'] = o.$ref;
-    }
-  });
+  spec = cloneSpecObject(spec);
 
   // Validate and deference the spec
   if (validate) {
@@ -53,11 +48,20 @@ async function loadSpec(specUrlStr, {log, validate} = {}) {
   return spec;
 }
 
-async function loadAndBuildSpec(url, {log, validate} = {}) {
+async function loadAndBuildSpec(
+  url,
+  {log, validate, promoteAnonymousSchemas} = {},
+) {
   const apiSpec = await loadSpec(url, {log, validate});
-  const options = {objectTypeMapping: new Map(), schemaMapping: {}};
-  const modelSpecs = generateModelSpecs(apiSpec, options);
-  const controllerSpecs = generateControllerSpecs(apiSpec, options);
+  // First populate the type registry for named schemas
+  const typeRegistry = {
+    objectTypeMapping: new Map(),
+    schemaMapping: {},
+    promoteAnonymousSchemas,
+  };
+  registerNamedSchemas(apiSpec, typeRegistry);
+  const controllerSpecs = generateControllerSpecs(apiSpec, typeRegistry);
+  const modelSpecs = generateModelSpecs(apiSpec, typeRegistry);
   return {
     apiSpec,
     modelSpecs,

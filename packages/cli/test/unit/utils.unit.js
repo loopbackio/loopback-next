@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2019. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -88,8 +88,8 @@ describe('Utils', () => {
         'fooβbar',
       );
       testCorrectName(
-        'if the first character has an accented character',
-        'Óoobar',
+        'if the class name contains accented characters',
+        'Óoobãr',
       );
 
       function testCorrectName(testName, input) {
@@ -108,15 +108,42 @@ describe('Utils', () => {
 
     describe('should have no effect', () => {
       testExpectNoChange('if first letter is capitalized', 'FooBar');
-      testExpectNoChange('if first letter is not convertible', '$fooBar');
     });
 
     describe('should capitalize first letter', () => {
-      testExpectUpperCase('if first letter is lower case', 'fooBar', 'FooBar');
-      testExpectUpperCase(
+      testExpect('if first letter is not convertible', '$fooBar', 'FooBar');
+      testExpect('if first letter is lower case', 'fooBar', 'FooBar');
+      testExpect(
         'if first letter is lower case in different language',
-        'óooBar',
-        'ÓooBar',
+        'óooBãr',
+        'OooBar',
+      );
+    });
+
+    describe('should remove underscores', () => {
+      testExpect('if first letter is underscore', '_fooBar', 'FooBar');
+      testExpect(
+        'if the class name contains a underscore in the middle',
+        'foo_Bar',
+        'FooBar',
+      );
+      testExpect(
+        'if the class name contains more than one underscores',
+        'foo__b_ar',
+        'FooBAr',
+      );
+      testExpect(
+        'if the class name contains underscores and digits',
+        'foo_1b_ar',
+        'Foo1BAr',
+      );
+    });
+
+    describe('should use pascal case ', () => {
+      testExpect(
+        'if second letter starts with multiple upper case chars',
+        'myDSDataSource',
+        'MyDsDataSource',
       );
     });
 
@@ -132,9 +159,70 @@ describe('Utils', () => {
       });
     }
 
-    function testExpectUpperCase(testName, input, expected) {
+    function testExpect(testName, input, expected) {
       it(testName, () => {
         expect(utils.toClassName(input)).to.equal(expected);
+      });
+    }
+  });
+  describe('toFileName', () => {
+    describe('should error', () => {
+      testExpectError('if input is empty', '', /no input/);
+      testExpectError('if input is null', null, /bad input/);
+      testExpectError('if input is not a string', 42, /bad input/);
+    });
+
+    describe('should replace underscores with dash', () => {
+      testExpect('if first letter is underscore', '_foobar', 'foobar');
+      testExpect(
+        'if the class name contains a underscore in the middle',
+        'foo_Bar',
+        'foo-bar',
+      );
+      testExpect(
+        'if the class name contains more than one underscores',
+        'foo__b_ar',
+        'foo-b-ar',
+      );
+    });
+
+    describe('should use dash to seperate words', () => {
+      testExpect('first letter is upper case', 'Foobar', 'foobar');
+      testExpect(
+        'if the name contains upper case letters',
+        'FooBar',
+        'foo-bar',
+      );
+      testExpect(
+        'if the name contains upper case letters',
+        'FOoBAR',
+        'f-oo-bar',
+      );
+    });
+
+    describe('should use dash to seperate digits and words', () => {
+      testExpect(
+        'if the class name contains a digit in the middle',
+        'Car4Share',
+        'car-4-share',
+      );
+      testExpect('if the class name ends with a digit', 'FooBar1', 'foo-bar1');
+      testExpect(
+        'if the class name ends with digits',
+        'Car4share12',
+        'car-4-share12',
+      );
+    });
+
+    function testExpectError(testName, input, expected) {
+      it(testName, () => {
+        expect(utils.toClassName(input)).to.match(expected);
+      });
+    }
+
+    function testExpect(testName, input, expected) {
+      it(testName, () => {
+        expect(utils.toFileName(input)).to.equal(expected);
       });
     }
   });
@@ -178,6 +266,34 @@ describe('Utils', () => {
       );
       expect(utils.validateUrlSlug('foo-bar/')).to.match(
         /Suggested slug: foo-bar/,
+      );
+    });
+  });
+
+  describe('validateKeyToKeyFrom', () => {
+    it('does not validate an invalid input', () => {
+      expect(
+        utils.validateKeyToKeyFrom('relationName', 'relationName'),
+      ).to.match(
+        /Through model cannot have two identical foreign keys: relationName/,
+      );
+      expect(utils.validateKeyToKeyFrom('', 'relationName')).to.match(
+        /Key name cannot be empty/,
+      );
+      expect(utils.validateKeyToKeyFrom('2keyName', 'relationName')).to.match(
+        /Key name cannot start with a number: 2keyName/,
+      );
+      expect(utils.validateKeyToKeyFrom('key.name', 'relationName')).to.match(
+        /Key name cannot contain .: key.name/,
+      );
+      expect(utils.validateKeyToKeyFrom('key name', 'relationName')).to.match(
+        /Key name cannot contain spaces: key name/,
+      );
+      expect(utils.validateKeyToKeyFrom('key-name', 'relationName')).to.match(
+        /Key name cannot contain hyphens: key-name/,
+      );
+      expect(utils.validateKeyToKeyFrom('key@name', 'relationName')).to.match(
+        'Key name cannot contain special characters (/@+%: ): key@name',
       );
     });
   });
@@ -300,12 +416,7 @@ describe('Utils', () => {
         return files;
       };
       const artifactPath = path.join('tmp', 'app', folder);
-      return await utils.getArtifactList(
-        artifactPath,
-        artifactType,
-        suffix,
-        reader,
-      );
+      return utils.getArtifactList(artifactPath, artifactType, suffix, reader);
     }
   });
 
@@ -356,7 +467,7 @@ describe('Utils', () => {
       );
     });
 
-    it('returns string for an array check with a number', () => {
+    it('returns string for an array check with an object', () => {
       expect(utils.validateStringObject('array')({})).to.be.eql(
         'The value must be a stringified array',
       );
@@ -366,7 +477,7 @@ describe('Utils', () => {
       expect(utils.validateStringObject('object')('{}')).to.be.True();
     });
 
-    it('returns string for an array check with an object', () => {
+    it('returns string for an array check with an object-like string', () => {
       expect(utils.validateStringObject('array')('{}')).to.be.eql(
         'The value must be a stringified array',
       );
@@ -412,7 +523,7 @@ describe('Utils', () => {
   describe('dataSourceToJSONFileName', () => {
     it('returns the datasource json file name', () => {
       expect(utils.dataSourceToJSONFileName('MapDS')).to.equal(
-        'map-ds.datasource.json',
+        'map-ds.datasource.config.json',
       );
     });
   });

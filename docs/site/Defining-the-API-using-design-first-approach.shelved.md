@@ -1,7 +1,7 @@
 ---
 lang: en
 title: 'Defining the API using design-first approach'
-keywords: LoopBack 4.0, LoopBack 4
+keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Defining-the-API-using-design-first-approach.html
 ---
@@ -235,7 +235,7 @@ npm install --save lodash
 {% include code-caption.html content="/apidefs/product.api.ts" %}
 
 ```ts
-import * as _ from 'lodash';
+import _ from 'lodash';
 
 // Assuming you have created the "base" schema elsewhere.
 // If there are no common properties between all of the endpoint objects,
@@ -336,18 +336,20 @@ put them all together to produce the final OpenAPI spec.
 
 ```ts
 import {ProductAPI, DealAPI, CategoryAPI} from '../apidefs';
-import * as OpenApiSpec from '@loopback/openapi-spec';
-import * as _ from 'lodash';
+import OpenApiSpec from '@loopback/openapi-spec';
+import _ from 'lodash';
 
 // Import API fragments here
 
-export let spec = OpenApiSpec.createEmptyApiSpec();
-spec.info = {
-  title: 'Your API',
-  version: '1.0',
+export const spec: OpenApiSpec = {
+  openapi: '3.0.0',
+  info: {
+    title: 'Your API',
+    version: '1.0',
+  },
+  paths: {},
+  servers: [{url: '/'}],
 };
-spec.swagger = '2.0';
-spec.basePath = '/';
 
 _.merge(spec, ProductAPI);
 _.merge(spec, DealAPI);
@@ -408,9 +410,9 @@ module provides a helper function for checking whether a specification conforms
 to OpenAPI Spec. Just add a new Mocha test that calls this helper function to
 the test suite:
 
-```ts
-// test/acceptance/api-spec.acceptance.ts
+{% include code-caption.html content="src/__tests__/acceptance/api-spec.acceptance.ts" %}
 
+```ts
 import {validateApiSpec} from '@loopback/testlab';
 import {MyApp} from '../..';
 import {RestServer} from '@loopback/rest';

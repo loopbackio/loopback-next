@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Copyright IBM Corp. 2017,2019. All Rights Reserved.
 // Node module: @loopback/testlab
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -8,23 +8,26 @@
  * https://github.com/hapijs/shot
  */
 
-// tslint:disable:no-any
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
+import express from 'express';
 import {IncomingMessage, ServerResponse} from 'http';
-import * as util from 'util';
-
 import {
+  Listener as ShotListener,
   RequestOptions as ShotRequestOptions,
   ResponseObject,
-  inject,
-} from 'shot';
+} from 'shot'; // <-- workaround for missing type-defs for @hapi/shot
+import util from 'util';
 
-import * as express from 'express';
+const inject: (
+  dispatchFunc: ShotListener,
+  options: ShotRequestOptions,
+) => Promise<ResponseObject> = require('@hapi/shot');
+// ^^ workaround for missing type-defs for @hapi/shot
 
 export {inject, ShotRequestOptions};
 
-// tslint:disable-next-line:variable-name
-const ShotRequest: ShotRequestCtor = require('shot/lib/request');
+const ShotRequest: ShotRequestCtor = require('@hapi/shot/lib/request');
 type ShotRequestCtor = new (options: ShotRequestOptions) => IncomingMessage;
 
 export function stubServerRequest(
@@ -39,8 +42,7 @@ export function stubServerRequest(
   return stub;
 }
 
-// tslint:disable-next-line:variable-name
-const ShotResponse: ShotResponseCtor = require('shot/lib/response');
+const ShotResponse: ShotResponseCtor = require('@hapi/shot/lib/response');
 export type ShotCallback = (response: ResponseObject) => void;
 
 export type ShotResponseCtor = new (
@@ -74,7 +76,7 @@ export function stubHandlerContext(
 ): HandlerContextStub {
   const request = stubServerRequest(requestOptions);
   let response: ServerResponse | undefined;
-  let result = new Promise<ObservedResponse>(resolve => {
+  const result = new Promise<ObservedResponse>(resolve => {
     response = new ShotResponse(request, resolve);
   });
 
@@ -107,9 +109,10 @@ export function stubExpressContext(
   }
   request.app = app;
   request.originalUrl = request.url;
+  parseQuery(request);
 
   let response: express.Response | undefined;
-  let result = new Promise<ObservedResponse>(resolve => {
+  const result = new Promise<ObservedResponse>(resolve => {
     response = new ShotResponse(request, resolve) as express.Response;
     // mix in Express Response API
     Object.assign(response, (express as any).response);
@@ -129,6 +132,17 @@ export function stubExpressContext(
   const context = {app, request, response: response!, result};
   defineCustomContextInspect(context, requestOptions);
   return context;
+}
+
+/**
+ * Use `express.query` to parse the query string into `request.query` object
+ * @param request - Express http request object
+ */
+function parseQuery(request: express.Request) {
+  // Use `express.query` to parse the query string
+  // See https://github.com/expressjs/express/blob/master/lib/express.js#L79
+  // See https://github.com/expressjs/express/blob/master/lib/middleware/query.js
+  (express as any).query()(request, {}, () => {});
 }
 
 function defineCustomContextInspect(
@@ -163,9 +177,15 @@ function defineCustomContextInspect(
   });
 }
 
+// @types/node@v10.17.29 seems to miss the type definition of `util.inspect.custom`
+// error TS2339: Property 'custom' does not exist on type 'typeof inspect'.
+// Use a workaround for now to access the `custom` symbol for now.
+// https://nodejs.org/api/util.html#util_util_inspect_custom
+const custom = Symbol.for('nodejs.util.inspect.custom');
+
 function defineCustomInspect(
   obj: any,
   inspectFn: (depth: number, opts: any) => {},
 ) {
-  obj[util.inspect.custom] = inspectFn;
+  obj[custom] = inspectFn;
 }

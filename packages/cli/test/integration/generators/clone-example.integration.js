@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2020. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -17,16 +17,15 @@ const path = require('path');
 const readFile = promisify(fs.readFile);
 
 const VALID_EXAMPLE = 'todo';
-const SANDBOX_PATH = path.resolve(__dirname, '..', '.sandbox');
-const sandbox = new TestSandbox(SANDBOX_PATH);
+const sandbox = new TestSandbox(path.resolve(__dirname, '../.sandbox'));
 
-describe('cloneExampleFromGitHub (SLOW)', function() {
+describe('cloneExampleFromGitHub (SLOW)', /** @this {Mocha.Suite} */ function () {
   this.timeout(20000);
 
   beforeEach('reset sandbox', () => sandbox.reset());
 
   it('extracts project files', async () => {
-    const outDir = await downloadAndExtractExample(VALID_EXAMPLE, SANDBOX_PATH);
+    const outDir = await downloadAndExtractExample(VALID_EXAMPLE, sandbox.path);
     const actualFiles = await glob('**', {
       cwd: outDir,
       ignore: 'node_modules/**',

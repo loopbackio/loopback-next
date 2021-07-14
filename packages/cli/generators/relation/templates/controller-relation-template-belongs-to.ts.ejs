@@ -1,0 +1,38 @@
+import {
+  repository,
+} from '@loopback/repository';
+import {
+  param,
+  get,
+  getModelSchemaRef,
+} from '@loopback/rest';
+import {
+  <%= sourceModelClassName %>,
+  <%= targetModelClassName %>,
+} from '../models';
+import {<%= sourceRepositoryClassName %>} from '../repositories';
+
+export class <%= controllerClassName %> {
+  constructor(
+    @repository(<%= sourceRepositoryClassName %>)
+    public <%= paramSourceRepository %>: <%= sourceRepositoryClassName %>,
+  ) { }
+
+  @get('/<%= sourceModelPath %>/{id}/<%= targetModelName %>', {
+    responses: {
+      '200': {
+        description: '<%= targetModelClassName %> belonging to <%= sourceModelClassName %>',
+        content: {
+          'application/json': {
+            schema: {type: 'array', items: getModelSchemaRef(<%= targetModelClassName %>)},
+          },
+        },
+      },
+    },
+  })
+  async get<%= targetModelClassName %>(
+    @param.path.<%= sourceModelPrimaryKeyType %>('id') id: typeof <%= sourceModelClassName %>.prototype.<%= sourceModelPrimaryKey %>,
+  ): Promise<<%= targetModelClassName %>> {
+    return this.<%= paramSourceRepository %>.<%= relationPropertyName %>(id);
+  }
+}

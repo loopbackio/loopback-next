@@ -1,35 +1,35 @@
-// Copyright IBM Corp. 2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2020. All Rights Reserved.
 // Node module: @loopback/boot
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {CoreBindings} from '@loopback/core';
+import {config, inject, CoreBindings} from '@loopback/core';
 import {
   ApplicationWithRepositories,
-  juggler,
   Class,
+  juggler,
 } from '@loopback/repository';
-import {inject} from '@loopback/context';
-import {ArtifactOptions} from '../interfaces';
-import {BaseArtifactBooter} from './base-artifact.booter';
 import {BootBindings} from '../keys';
+import {ArtifactOptions, booter} from '../types';
+import {BaseArtifactBooter} from './base-artifact.booter';
 
 /**
  * A class that extends BaseArtifactBooter to boot the 'DataSource' artifact type.
- * Discovered DataSources are bound using `app.controller()`.
+ * Discovered DataSources are bound using `app.dataSource()`.
  *
  * Supported phases: configure, discover, load
  *
- * @param app Application instance
- * @param projectRoot Root of User Project relative to which all paths are resolved
- * @param [bootConfig] DataSource Artifact Options Object
+ * @param app - Application instance
+ * @param projectRoot - Root of User Project relative to which all paths are resolved
+ * @param bootConfig - DataSource Artifact Options Object
  */
+@booter('datasources')
 export class DataSourceBooter extends BaseArtifactBooter {
   constructor(
     @inject(CoreBindings.APPLICATION_INSTANCE)
     public app: ApplicationWithRepositories,
     @inject(BootBindings.PROJECT_ROOT) projectRoot: string,
-    @inject(`${BootBindings.BOOT_OPTIONS}#datasources`)
+    @config()
     public datasourceConfig: ArtifactOptions = {},
   ) {
     super(
@@ -59,7 +59,6 @@ export class DataSourceBooter extends BaseArtifactBooter {
         );
       } else {
         this.classes.forEach(cls => {
-          // tslint:disable-next-line:no-any
           this.app.dataSource(cls as Class<juggler.DataSource>);
         });
       }

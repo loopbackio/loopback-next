@@ -1,17 +1,17 @@
-// Copyright IBM Corp. 2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2020. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
 'use strict';
-const util = require('util');
 
 const {
   isExtension,
   titleCase,
-  kebabCase,
-  escapePropertyOrMethodName,
-  toJsonStr,
+  escapePropertyName,
+  printSpecObject,
+  toFileName,
+  printJsonSchema,
 } = require('./utils');
 
 function setImport(typeSpec) {
@@ -38,7 +38,7 @@ function getTypeSpec(schema, options) {
 function getDefault(schema, options) {
   let defaultVal = '';
   if (options && options.includeDefault && schema.default !== undefined) {
-    defaultVal = ' = ' + toJsonStr(schema.default);
+    defaultVal = ' = ' + printSpecObject(schema.default);
   }
   return defaultVal;
 }
@@ -121,10 +121,14 @@ function mapArrayType(schema, options) {
     const typeSpec = getTypeSpec(schema, options);
     const itemTypeSpec = mapSchemaType(schema.items, opts);
     const defaultVal = getDefault(schema, options);
-    typeSpec.name = itemTypeSpec.signature + '[]';
-    typeSpec.declaration = itemTypeSpec.signature + '[]';
-    typeSpec.signature =
-      (typeSpec.className || itemTypeSpec.signature + '[]') + defaultVal;
+    let arrayType = `${itemTypeSpec.signature}[]`;
+    if (itemTypeSpec.signature.match(/[\|\&]/)) {
+      // The type is a union or intersection
+      arrayType = `(${itemTypeSpec.signature})[]`;
+    }
+    typeSpec.name = arrayType;
+    typeSpec.declaration = arrayType;
+    typeSpec.signature = (typeSpec.className || arrayType) + defaultVal;
     typeSpec.itemType = itemTypeSpec;
     collectImports(typeSpec, itemTypeSpec);
     return typeSpec;
@@ -152,6 +156,7 @@ function mapObjectType(schema, options) {
     const properties = [];
     const required = schema.required || [];
     for (const p in schema.properties) {
+      const propSchema = {...schema.properties[p]};
       const suffix = required.includes(p) ? '' : '?';
       const propertyType = mapSchemaType(
         schema.properties[p],
@@ -160,13 +165,32 @@ function mapObjectType(schema, options) {
         }),
       );
       // The property name might have chars such as `-`
-      const propName = escapePropertyOrMethodName(p);
-      let propDecoration = `@property({name: '${p}'})`;
-      if (propertyType.itemType && propertyType.itemType.kind === 'class') {
-        // Use `@property.array` for array types
-        propDecoration = `@property.array(${
-          propertyType.itemType.className
-        }, {name: '${p}'})`;
+      const propName = escapePropertyName(p);
+
+      const propSchemaJson = printJsonSchema(propSchema);
+
+      let propDecoration = `@property({jsonSchema: ${propSchemaJson}})`;
+
+      if (required.includes(p)) {
+        propDecoration = `@property({required: true, jsonSchema: ${propSchemaJson}})`;
+      }
+
+      if (propertyType.itemType) {
+        const itemType =
+          propertyType.itemType.kind === 'class'
+            ? propertyType.itemType.className
+            : // The item type can be an alias such as `export type ID = string`
+              getJSType(propertyType.itemType.declaration) ||
+              // The item type can be `string`
+              getJSType(propertyType.itemType.name);
+        if (itemType) {
+          // Use `@property.array` for array types
+          propDecoration = `@property.array(${itemType}, {jsonSchema: ${propSchemaJson}})`;
+          if (propertyType.itemType.className) {
+            // The referenced item type is either a class or type
+            collectImports(typeSpec, propertyType.itemType);
+          }
+        }
       }
       const propSpec = {
         name: p,
@@ -180,7 +204,37 @@ function mapObjectType(schema, options) {
       properties.push(propSpec);
     }
     typeSpec.properties = properties;
-    const propertySignatures = properties.map(p => p.signature);
+    typeSpec.importProperty = properties.length > 0;
+
+    // Handle `additionalProperties`
+    if (schema.additionalProperties === true) {
+      const signature = '[additionalProperty: string]: any;';
+      typeSpec.properties.push({
+        name: '',
+        description: 'additionalProperties',
+        comment: 'eslint-disable-next-line @typescript-eslint/no-explicit-any',
+        signature,
+      });
+    } else if (schema.additionalProperties) {
+      // TypeScript does not like `[additionalProperty: string]: string;`
+      /*
+      const signature =
+        '[additionalProperty: string]: ' +
+        mapSchemaType(schema.additionalProperties).signature +
+        ';';
+      */
+      const signature = '[additionalProperty: string]: any;';
+      typeSpec.properties.push({
+        name: '',
+        description: 'additionalProperties',
+        comment: 'eslint-disable-next-line @typescript-eslint/no-explicit-any',
+        signature,
+      });
+    }
+    const propertySignatures = properties.map(p => {
+      if (p.comment) return `  // ${p.comment}\n  ${p.signature}`;
+      return p.signature;
+    });
     typeSpec.declaration = `{
   ${propertySignatures.join('\n  ')}
 }`;
@@ -217,6 +271,8 @@ function mapPrimitiveType(schema, options) {
     case 'string':
       switch (schema.format) {
         case 'date':
+          jsType = 'string';
+          break;
         case 'date-time':
           jsType = 'Date';
           break;
@@ -232,7 +288,7 @@ function mapPrimitiveType(schema, options) {
   }
   // Handle enums
   if (Array.isArray(schema.enum)) {
-    jsType = schema.enum.map(v => toJsonStr(v)).join(' | ');
+    jsType = schema.enum.map(v => printSpecObject(v)).join(' | ');
   }
   const typeSpec = getTypeSpec(schema, options);
   const defaultVal = getDefault(schema, options);
@@ -240,6 +296,23 @@ function mapPrimitiveType(schema, options) {
   typeSpec.signature = typeSpec.className || typeSpec.declaration + defaultVal;
   typeSpec.name = typeSpec.name || jsType;
   return typeSpec;
+}
+
+const JSTypeMapping = {
+  number: Number,
+  boolean: Boolean,
+  string: String,
+  Date: Date,
+  Buffer: Buffer,
+};
+
+/**
+ * Mapping simple type names to JS Type constructors
+ * @param {string} type Simple type name
+ */
+function getJSType(type) {
+  const ctor = JSTypeMapping[type];
+  return ctor && ctor.name;
 }
 
 /**
@@ -281,13 +354,12 @@ function mapSchemaType(schema, options) {
  * @param {object} schema
  */
 function resolveSchema(schemaMapping, schema) {
-  if (schema['x-$ref']) {
-    const resolved = schemaMapping[schema['x-$ref']];
-    if (resolved) {
-      return resolved;
-    }
+  if (!schema['x-$ref']) return schema;
+  let resolved = schema;
+  while (resolved && resolved['x-$ref']) {
+    resolved = schemaMapping[resolved['x-$ref']];
   }
-  return schema;
+  return resolved || schema;
 }
 
 /**
@@ -301,37 +373,61 @@ function generateModelSpecs(apiSpec, options) {
 
   const schemaMapping = (options.schemaMapping = options.schemaMapping || {});
 
+  registerNamedSchemas(apiSpec, options);
+
+  const models = [];
+  // Generate models from schema objects
+  for (const s in options.schemaMapping) {
+    if (isExtension(s)) continue;
+    const schema = options.schemaMapping[s];
+    const model = mapSchemaType(schema, {objectTypeMapping, schemaMapping});
+    // `model` is `undefined` for primitive types
+    if (model == null) continue;
+    if (model.className) {
+      // The model might be a $ref
+      if (!models.includes(model)) {
+        models.push(model);
+      }
+    }
+  }
+  return models;
+}
+
+/**
+ * Register the named schema
+ * @param {string} schemaName Schema name
+ * @param {object} schema Schema object
+ * @param {object} typeRegistry Options for objectTypeMapping & schemaMapping
+ */
+function registerSchema(schemaName, schema, typeRegistry) {
+  if (typeRegistry.objectTypeMapping.get(schema)) return;
+  typeRegistry.schemaMapping[`#/components/schemas/${schemaName}`] = schema;
+  const className = titleCase(schemaName);
+  typeRegistry.objectTypeMapping.set(schema, {
+    description: schema.description || schemaName,
+    name: schemaName,
+    className,
+    fileName: getModelFileName(schemaName),
+    properties: [],
+    imports: [],
+  });
+}
+
+/**
+ * Register spec.components.schemas
+ * @param {*} apiSpec OpenAPI spec
+ * @param {*} typeRegistry options for objectTypeMapping & schemaMapping
+ */
+function registerNamedSchemas(apiSpec, typeRegistry) {
   const schemas =
     (apiSpec && apiSpec.components && apiSpec.components.schemas) || {};
 
   // First map schema objects to names
   for (const s in schemas) {
     if (isExtension(s)) continue;
-    schemaMapping[`#/components/schemas/${s}`] = schemas[s];
-    const className = titleCase(s);
-    objectTypeMapping.set(schemas[s], {
-      description: schemas[s].description || s,
-      name: s,
-      className,
-      fileName: getModelFileName(s),
-      properties: [],
-      imports: [],
-    });
-  }
-
-  const models = [];
-  // Generate models from schema objects
-  for (const s in schemas) {
-    if (isExtension(s)) continue;
     const schema = schemas[s];
-    const model = mapSchemaType(schema, {objectTypeMapping, schemaMapping});
-    // `model` is `undefined` for primitive types
-    if (model == null) continue;
-    if (model.className) {
-      models.push(model);
-    }
+    registerSchema(s, schema, typeRegistry);
   }
-  return models;
 }
 
 function getModelFileName(modelName) {
@@ -339,11 +435,13 @@ function getModelFileName(modelName) {
   if (modelName.endsWith('Model')) {
     name = modelName.substring(0, modelName.length - 'Model'.length);
   }
-  return kebabCase(name) + '.model.ts';
+  return toFileName(name) + '.model.ts';
 }
 
 module.exports = {
   mapSchemaType,
+  registerSchema,
+  registerNamedSchemas,
   generateModelSpecs,
   getModelFileName,
 };

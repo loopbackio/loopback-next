@@ -4,11 +4,6 @@ This module provides a common set of interfaces for interacting with databases.
 
 ## Overview
 
-**NOTE**: This module is experimental and evolving. It is likely going to be
-refactored and decomposed into multiple modules as we refine the story based on
-the legacy `loopback-datasource-juggler` and connector modules from LoopBack
-3.x.
-
 This module provides data access facilities to various databases and services as
 well as the constructs for modeling and accessing those data.
 
@@ -52,6 +47,12 @@ export class Note extends Entity {
   @property()
   content: string;
 }
+
+export interface NoteRelations {
+  // describe navigational properties here
+}
+
+export type NoteWithRelations = Note & NoteRelations;
 ```
 
 **NOTE**: There is no declarative support for data source and model yet in
@@ -66,12 +67,13 @@ dependency injection to resolve the datasource.
 ```ts
 // src/repositories/note.repository.ts
 import {DefaultCrudRepository, DataSourceType} from '@loopback/repository';
-import {Note} from '../models';
+import {Note, NoteRelations} from '../models';
 import {inject} from '@loopback/core';
 
 export class NoteRepository extends DefaultCrudRepository<
   Note,
-  typeof Note.prototype.id
+  typeof Note.prototype.id,
+  NoteRelations
 > {
   constructor(@inject('datasources.db') protected dataSource: DataSourceType) {
     super(Note, dataSource);
@@ -90,7 +92,7 @@ or properties.
 import {repository} from '@loopback/repository';
 import {NoteRepository} from '../repositories';
 import {Note} from '../models';
-import {post, requestBody, get, param} from '@loopback/openapi-v3';
+import {post, requestBody, get, param} from '@loopback/rest';
 
 export class NoteController {
   constructor(

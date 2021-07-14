@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2020. All Rights Reserved.
 // Node module: @loopback/repository
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -9,7 +9,7 @@ import {
   MetadataInspector,
   MetadataMap,
   PropertyDecoratorFactory,
-} from '@loopback/context';
+} from '@loopback/core';
 import {
   ModelDefinition,
   ModelDefinitionSyntax,
@@ -32,24 +32,23 @@ export const MODEL_WITH_PROPERTIES_KEY = MetadataAccessor.create<
   ClassDecorator
 >('loopback:model-and-properties');
 
-export type PropertyMap = MetadataMap<PropertyDefinition>;
-
-// tslint:disable:no-any
+export type PropertyMap = MetadataMap<Partial<PropertyDefinition>>;
 
 /**
  * Decorator for model definitions
  * @param definition
- * @returns {(target:any)}
+ * @returns A class decorator for `model`
  */
 export function model(definition?: Partial<ModelDefinitionSyntax>) {
-  return function(target: Function & {definition?: ModelDefinition}) {
-    definition = definition || {};
+  return function (target: Function & {definition?: ModelDefinition}) {
+    definition = definition ?? {};
     const def: ModelDefinitionSyntax = Object.assign(definition, {
-      name: definition.name || target.name,
+      name: definition.name ?? target.name,
     });
     const decorator = ClassDecoratorFactory.createDecorator(
       MODEL_KEY,
       definition,
+      {decoratorName: '@model'},
     );
 
     decorator(target);
@@ -61,33 +60,54 @@ export function model(definition?: Partial<ModelDefinitionSyntax>) {
 
 /**
  * Build model definition from decorations
- * @param target Target model class
- * @param def Model definition spec
+ * @param target - Target model class
+ * @param def - Model definition spec
  */
 export function buildModelDefinition(
   target: Function & {definition?: ModelDefinition | undefined},
   def?: ModelDefinitionSyntax,
 ) {
-  // Check if the definition for this class has been built
-  if (!def && target.definition && target.definition.name === target.name) {
+  // Check if the definition for this class has been built (not from the super
+  // class)
+  const baseClass = Object.getPrototypeOf(target);
+  if (
+    !def &&
+    target.definition &&
+    baseClass &&
+    target.definition !== baseClass.definition
+  ) {
     return target.definition;
   }
-  const modelDef = new ModelDefinition(def || {name: target.name});
+  const modelDef = new ModelDefinition(def ?? {name: target.name});
   const prototype = target.prototype;
   const propertyMap: PropertyMap =
-    MetadataInspector.getAllPropertyMetadata(MODEL_PROPERTIES_KEY, prototype) ||
+    MetadataInspector.getAllPropertyMetadata(MODEL_PROPERTIES_KEY, prototype) ??
     {};
-  for (const p in propertyMap) {
-    const propertyDef = propertyMap[p];
-    const designType = MetadataInspector.getDesignTypeForProperty(prototype, p);
-    if (!propertyDef.type) {
-      propertyDef.type = designType;
+  for (const [propName, propDef] of Object.entries(propertyMap)) {
+    const designType =
+      propDef.type ??
+      MetadataInspector.getDesignTypeForProperty(prototype, propName);
+    if (!designType) {
+      const err: Error & {code?: string} = new Error(
+        `The definition of model property ${modelDef.name}.${propName} is missing ` +
+          '`type` field and TypeScript did not provide any design-time type. ' +
+          'Learn more at https://loopback.io/doc/en/lb4/Error-codes.html#cannot_infer_property_type',
+      );
+      err.code = 'CANNOT_INFER_PROPERTY_TYPE';
+      throw err;
     }
-    modelDef.addProperty(p, propertyDef);
+
+    if (propDef.hidden) {
+      modelDef.settings.hiddenProperties =
+        modelDef.settings.hiddenProperties ?? [];
+      modelDef.settings.hiddenProperties.push(propName);
+    }
+    propDef.type = designType;
+    modelDef.addProperty(propName, propDef);
   }
   target.definition = modelDef;
   const relationMeta: RelationDefinitionMap =
-    MetadataInspector.getAllPropertyMetadata(RELATIONS_KEY, prototype) || {};
+    MetadataInspector.getAllPropertyMetadata(RELATIONS_KEY, prototype) ?? {};
   const relations: RelationDefinitionMap = {};
   // Build an object keyed by relation names
   Object.values(relationMeta).forEach(r => {
@@ -100,12 +120,13 @@ export function buildModelDefinition(
 /**
  * Decorator for model properties
  * @param definition
- * @returns {(target:any, key:string)}
+ * @returns A property decorator
  */
 export function property(definition?: Partial<PropertyDefinition>) {
   return PropertyDecoratorFactory.createDecorator(
     MODEL_PROPERTIES_KEY,
     Object.assign({}, definition),
+    {decoratorName: '@property'},
   );
 }
 
@@ -116,16 +137,16 @@ export namespace property {
 
   /**
    *
-   * @param itemType The type of array items.
+   * @param itemType - The type of array items.
    * Examples: `number`, `Product`, `() => Order`.
-   * @param definition Optional PropertyDefinition object for additional
+   * @param definition - Optional PropertyDefinition object for additional
    * metadata
    */
   export function array(
     itemType: PropertyType,
     definition?: Partial<PropertyDefinition>,
   ) {
-    return function(target: Object, propertyName: string) {
+    return function (target: object, propertyName: string) {
       const propType = MetadataInspector.getDesignTypeForProperty(
         target,
         propertyName,

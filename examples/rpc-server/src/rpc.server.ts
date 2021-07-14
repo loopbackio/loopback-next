@@ -1,17 +1,22 @@
-// Copyright IBM Corp. 2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2020. All Rights Reserved.
 // Node module: @loopback/example-rpc-server
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {inject, Context} from '@loopback/context';
-import {Server, Application, CoreBindings} from '@loopback/core';
-import * as express from 'express';
-import * as http from 'http';
-import * as pEvent from 'p-event';
+import {
+  Application,
+  Context,
+  CoreBindings,
+  inject,
+  Server,
+} from '@loopback/core';
+import {once} from 'events';
+import express from 'express';
+import http from 'http';
 import {rpcRouter} from './rpc.router';
 
 export class RPCServer extends Context implements Server {
-  private _listening: boolean = false;
+  private _listening = false;
   _server: http.Server;
   expressServer: express.Application;
 
@@ -20,7 +25,7 @@ export class RPCServer extends Context implements Server {
     @inject('rpcServer.config') public config?: RPCServerConfig,
   ) {
     super(app);
-    this.config = config || {};
+    this.config = config ?? {};
     this.expressServer = express();
     rpcRouter(this);
   }
@@ -30,21 +35,19 @@ export class RPCServer extends Context implements Server {
   }
 
   async start(): Promise<void> {
-    this._server = this.expressServer.listen(
-      (this.config && this.config.port) || 3000,
-    );
+    this._server = this.expressServer.listen(this.config?.port ?? 3000);
     this._listening = true;
-    return await pEvent(this._server, 'listening');
+    await once(this._server, 'listening');
   }
   async stop(): Promise<void> {
     this._server.close();
     this._listening = false;
-    return await pEvent(this._server, 'close');
+    await once(this._server, 'close');
   }
 }
 
 export type RPCServerConfig = {
   port?: number;
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
 };

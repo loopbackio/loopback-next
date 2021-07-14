@@ -4,12 +4,11 @@ An example repo showing how to write a complex log extension for LoopBack 4
 
 ## Overview
 
-This repository shows you how to use
-[@loopback/cli](https://github.com/strongloop/loopback-next/tree/master/packages/cli)
-to write a complex logging extension that requires a
-[Component](http://loopback.io/doc/en/lb4/Using-components.html),
+This repository shows you how to write a complex logging extension that requires
+a [Components](http://loopback.io/doc/en/lb4/Components.html),
 [Decorator](http://loopback.io/doc/en/lb4/Decorators.html), and a
-[Mixin](http://loopback.io/doc/en/lb4/Mixin.html).
+[Mixin](http://loopback.io/doc/en/lb4/Mixin.html) using
+[@loopback/cli](https://github.com/strongloop/loopback-next/tree/master/packages/cli).
 
 To use this extension you can add the `LogMixin` to your Application which will
 provide you a function to set the Application wide log level as well as
@@ -76,7 +75,7 @@ Initialize your new extension project as follows: `lb4 extension`
 - Project description: `An example extension project for LoopBack 4`
 - Project root directory: `(loopback4-example-log-extension)`
 - Component class name: `LogComponent`
-- Select features to enable in the project': `tslint`, `prettier`, `mocha`,
+- Select features to enable in the project': `eslint`, `prettier`, `mocha`,
   `loopbackBuild`
 
 Now you can write the extension as follows:
@@ -91,9 +90,8 @@ user (for this extension that'll be the logLevel `enum`).
  * Binding keys used by this component.
  */
 export namespace EXAMPLE_LOG_BINDINGS {
-  export const APP_LOG_LEVEL = BindingKey.create<LOG_LEVEL>(
-    'example.log.level',
-  );
+  export const APP_LOG_LEVEL =
+    BindingKey.create<LOG_LEVEL>('example.log.level');
   export const TIMER = BindingKey.create<TimerFn>('example.log.timer');
   export const LOGGER = BindingKey.create<LogWriterFn>('example.log.logger');
   export const LOG_ACTION = BindingKey.create<LogFn>('example.log.action');
@@ -132,7 +130,7 @@ export interface LogFn {
   (
     req: Request,
     args: OperationArgs,
-    // tslint:disable-next-line:no-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     result: any,
     startTime?: HighResTime,
   ): Promise<void>;
@@ -169,7 +167,7 @@ extension to add extra processing accordingly.
 
 For this extension, the decorator marks which controller methods should be
 logged (and optionally at which level they should be logged). We leverage
-`@loopback/metadata` module to implement the decorator and inspection function.
+`@loopback/core` module to implement the decorator and inspection function.
 
 ```ts
 import {LOG_LEVEL, EXAMPLE_LOG_BINDINGS} from '../keys';
@@ -177,7 +175,7 @@ import {
   Constructor,
   MethodDecoratorFactory,
   MetadataInspector,
-} from '@loopback/context';
+} from '@loopback/core';
 import {LevelMetadata} from '../types';
 
 /**
@@ -185,7 +183,7 @@ import {LevelMetadata} from '../types';
  * if it is set at or greater than Application LogLevel.
  * LOG_LEVEL.DEBUG < LOG_LEVEL.INFO < LOG_LEVEL.WARN < LOG_LEVEL.ERROR < LOG_LEVEL.OFF
  *
- * @param level The Log Level at or above it should log
+ * @param level - The Log Level at or above it should log
  */
 export function log(level?: number) {
   if (level === undefined) level = LOG_LEVEL.WARN;
@@ -200,8 +198,8 @@ export function log(level?: number) {
 /**
  * Fetch log level stored by `@log` decorator.
  *
- * @param controllerClass Target controller
- * @param methodName Target method
+ * @param controllerClass - Target controller
+ * @param methodName - Target method
  */
 export function getLogMetadata(
   controllerClass: Constructor<{}>,
@@ -228,14 +226,13 @@ providing it via `ApplicationOptions` or using a helper method
 `app.logLevel(level: number)`.
 
 ```ts
-import {Constructor} from '@loopback/context';
+import {MixinTarget, Application} from '@loopback/core';
 import {EXAMPLE_LOG_BINDINGS} from '../keys';
 import {LogComponent} from '../component';
 
-// tslint:disable-next-line:no-any
-export function LogMixin<T extends Constructor<any>>(superClass: T) {
+export function LogMixin<T extends MixinTarget<Application>>(superClass: T) {
   return class extends superClass {
-    // tslint:disable-next-line:no-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     constructor(...args: any[]) {
       super(...args);
       if (this.options && this.options.logLevel) {
@@ -319,7 +316,7 @@ export class LogActionProvider implements Provider<LogFn> {
     const fn = <LogFn>((
       req: Request,
       args: OperationArgs,
-      // tslint:disable-next-line:no-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       result: any,
       start?: HighResTime,
     ) => {
@@ -336,7 +333,7 @@ export class LogActionProvider implements Provider<LogFn> {
   private async action(
     req: Request,
     args: OperationArgs,
-    // tslint:disable-next-line:no-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     result: any,
     start?: HighResTime,
   ): Promise<void> {

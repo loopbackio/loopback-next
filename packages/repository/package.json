@@ -1,47 +1,57 @@
 {
   "name": "@loopback/repository",
-  "version": "1.0.2",
-  "description": "Repository based persistence for LoopBack 4",
-  "engines": {
-    "node": ">=8.9"
+  "description": "Define and implement a common set of interfaces for interacting with databases",
+  "version": "3.7.0",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "packages/repository"
   },
-  "main": "index",
+  "engines": {
+    "node": "^10.16 || 12 || 14 || 16"
+  },
   "scripts": {
-    "acceptance": "lb-mocha \"dist/test/acceptance/**/*.js\"",
-    "build:apidocs": "lb-apidocs",
-    "build": "lb-tsc es2017 --outDir dist",
-    "clean": "lb-clean loopback-repository*.tgz dist package api-docs",
+    "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
+    "build": "lb-tsc",
+    "clean": "lb-clean loopback-repository*.tgz dist *.tsbuildinfo package",
     "pretest": "npm run build",
-    "test": "lb-mocha \"dist/test/**/*.js\"",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
     "verify": "npm pack && tar xf loopback-repository*.tgz && tree package && npm run clean"
   },
-  "author": "IBM",
-  "copyright.owner": "IBM Corp.",
-  "license": "MIT",
-  "devDependencies": {
-    "@loopback/build": "^1.0.0",
-    "@loopback/testlab": "^1.0.0",
-    "@types/lodash": "^4.14.108",
-    "@types/node": "^10.11.2"
-  },
-  "dependencies": {
-    "@loopback/context": "^1.0.0",
-    "@loopback/core": "^1.0.0",
-    "@types/debug": "0.0.30",
-    "debug": "^4.0.1",
-    "lodash": "^4.17.10",
-    "loopback-datasource-juggler": "^4.0.0"
+  "publishConfig": {
+    "access": "public"
   },
   "files": [
     "README.md",
-    "index.js",
-    "index.d.ts",
-    "dist/src",
-    "dist/index*",
-    "src"
+    "dist",
+    "src",
+    "!*/__tests__"
   ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/strongloop/loopback-next.git"
+  "peerDependencies": {
+    "@loopback/core": "^2.16.1"
+  },
+  "dependencies": {
+    "@loopback/filter": "^1.5.1",
+    "@types/debug": "^4.1.5",
+    "debug": "^4.3.1",
+    "lodash": "^4.17.21",
+    "loopback-datasource-juggler": "^4.26.0",
+    "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "@loopback/build": "^6.4.1",
+    "@loopback/core": "^2.16.1",
+    "@loopback/eslint-config": "^10.2.1",
+    "@loopback/testlab": "^3.4.1",
+    "@types/bson": "^4.0.3",
+    "@types/json-schema": "^7.0.7",
+    "@types/lodash": "^4.14.170",
+    "@types/node": "^10.17.60",
+    "bson": "4.4.0"
   }
 }

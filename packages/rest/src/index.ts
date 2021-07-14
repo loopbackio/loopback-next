@@ -1,28 +1,58 @@
-// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Copyright IBM Corp. 2017,2020. All Rights Reserved.
 // Node module: @loopback/rest
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-export * from './router';
+/**
+ * The REST API package for loopback-next.
+ *
+ * @remarks
+ * A REST server for LoopBack 4 application instances, complete with:
+ *
+ * - new custom routing engine (special thanks to @bajtos)!
+ * - tools for defining your application routes
+ * - OpenAPI 3.0 spec (openapi.json/openapi.yaml) generation using
+ *   @loopback/openapi-v3
+ * - a default sequence implementation to manage the request and response
+ *   lifecycle
+ *
+ *
+ * @packageDocumentation
+ */
 
-export * from './providers';
-
-export * from './parser';
-export * from './writer';
+export * from '@loopback/openapi-v3';
+export {
+  ErrorHandlerOptions,
+  ErrorWriterOptions,
+  StrongErrorHandler,
+  writeErrorToResponse,
+} from 'strong-error-handler';
+export * from './body-parsers';
 export * from './http-handler';
-export * from './request-context';
-export * from './types';
 export * from './keys';
+export * from './parse-json';
+export * from './parser';
+export * from './providers';
+export * from './request-context';
+export * from './rest-http-error';
 export * from './rest.application';
 export * from './rest.component';
 export * from './rest.server';
+export * from './router';
 export * from './sequence';
+<<<<<<< HEAD
 export * from './rest-http-error';
 export * from './explorer.component';
 
 // export all errors from external http-errors package
 import * as HttpErrors from 'http-errors';
+=======
+export * from './spec-enhancers/info.spec-enhancer';
+export * from './types';
+export * from './validation/request-body.validator';
+export * from './writer';
+>>>>>>> master
 export {HttpErrors};
 
-export * from '@loopback/openapi-v3';
-export * from '@loopback/openapi-v3-types';
+// export all errors from external http-errors package
+import HttpErrors from 'http-errors';

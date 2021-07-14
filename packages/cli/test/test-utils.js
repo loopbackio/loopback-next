@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Copyright IBM Corp. 2017,2020. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -8,9 +8,10 @@
 const yeoman = require('yeoman-environment');
 const path = require('path');
 const helpers = require('yeoman-test');
-const fs = require('fs');
+const fs = require('fs-extra');
+const {stringifyObject} = require('../lib/utils');
 
-exports.testSetUpGen = function(genName, arg) {
+exports.testSetUpGen = function (genName, arg) {
   arg = arg || {};
   const env = yeoman.createEnv();
   const name = genName.substring(genName.lastIndexOf(path.sep) + 1);
@@ -25,12 +26,13 @@ exports.testSetUpGen = function(genName, arg) {
  * @param {string} GeneratorOrNamespace
  * @param {object} [settings]
  */
-exports.executeGenerator = function(GeneratorOrNamespace, settings) {
+// eslint-disable-next-line @typescript-eslint/naming-convention
+exports.executeGenerator = function (GeneratorOrNamespace, settings) {
   const runner = helpers.run(GeneratorOrNamespace, settings);
 
   // Override .then() and .catch() methods to detect our custom
   // "exit with error" handling
-  runner.toPromise = function() {
+  runner.toPromise = function () {
     return new Promise((resolve, reject) => {
       this.on('end', () => {
         if (this.generator.exitGeneration instanceof Error) {
@@ -54,7 +56,7 @@ exports.executeGenerator = function(GeneratorOrNamespace, settings) {
  *
  * @param {string} rootDir Root directory in which to create the project
  * @param {Object} options
- * @property {boolean} excludeKeyword Excludes the 'loopback' keyword in package.json
+ * @property {boolean} excludeLoopbackCore Excludes the '@loopback/core' dependency in package.json
  * @property {boolean} excludePackageJSON Excludes package.json
  * @property {boolean} excludeYoRcJSON Excludes .yo-rc.json
  * @property {boolean} excludeControllersDir Excludes the controllers directory
@@ -66,13 +68,20 @@ exports.executeGenerator = function(GeneratorOrNamespace, settings) {
  * @property {boolean} includeSandboxFilesFixtures creates files specified in SANDBOX_FILES array
  * @param {array} additionalFiles specify files, directories and their content to be included as fixtures
  */
-exports.givenLBProject = function(rootDir, options) {
+exports.givenLBProject = function (rootDir, options) {
   options = options || {};
   const sandBoxFiles = options.additionalFiles || [];
 
-  const content = {};
-  if (!options.excludeKeyword) {
-    content.keywords = ['loopback'];
+  const content = {
+    dependencies: {
+      '@loopback/core': '*',
+    },
+  };
+
+  // We infer if a project is loopback by checking whether its dependencies includes @loopback/core or not.
+  // This flag is created for testing invalid loopback projects.
+  if (options.excludeLoopbackCore) {
+    delete content.dependencies['@loopback/core'];
   }
 
   if (!options.excludePackageJSON) {
@@ -115,11 +124,42 @@ exports.givenLBProject = function(rootDir, options) {
   }
 
   if (sandBoxFiles.length > 0) {
-    for (let theFile of sandBoxFiles) {
+    for (const theFile of sandBoxFiles) {
       const fullPath = path.join(rootDir, theFile.path, theFile.file);
       if (!fs.existsSync(fullPath)) {
+        fs.ensureDirSync(path.dirname(fullPath));
         fs.writeFileSync(fullPath, theFile.content);
       }
     }
   }
+};
+
+/**
+ * Create a TypeScript source code for a file defining a new datasource,
+ * e.g. `src/datasources/db.datasource.ts`.
+ *
+ * @param {string} className The name of the DataSource class to use, e.g.
+ * `DbDataSource`.
+ * @param {object} config DataSource configuration, e.g. `{connector: 'memory'}`.
+ * @returns {string}
+ */
+exports.getSourceForDataSourceClassWithConfig = function (className, config) {
+  return `
+import {inject} from '@loopback/core';
+import {juggler} from '@loopback/repository';
+
+const config = ${stringifyObject(config, {inlineCharacterLimit: 0})};
+
+export class ${className} extends juggler.DataSource {
+  static dataSourceName = config.name;
+  static readonly defaultConfig = config;
+
+  constructor(
+    @inject(\`datasources.config.${config.name}\`, {optional: true})
+    dsConfig: object = config,
+  ) {
+    super(dsConfig);
+  }
+}
+`;
 };
