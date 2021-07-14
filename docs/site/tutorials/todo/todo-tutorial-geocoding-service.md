@@ -58,7 +58,7 @@ Edit the newly created datasource configuration to configure Geocoder API
 endpoints. Configuration options provided by REST Connector are described in our
 docs here: [REST connector](/doc/en/lb4/REST-connector.html).
 
-{% include code-caption.html content="[/src/datasources/geocoder.datasource.ts](https://github.com/strongloop/loopback-next/blob/master/examples/todo/src/datasources/geocoder.datasource.ts)" %}
+{% include code-caption.html content="[/src/datasources/geocoder.datasource.ts](https://github.com/loopbackio/loopback-next/blob/master/examples/todo/src/datasources/geocoder.datasource.ts)" %}
 
 ```ts
 // (imports skipped for brevity)
@@ -113,7 +113,7 @@ Service Geocoder was created in src/services/
 In the `src/services/geocoder.service.ts`, we'll add a `GeoPoint` interface and
 a `geocode` function to the `Geocoder` interface as follows:
 
-{% include code-caption.html content="[src/services/geocoder.service.ts](https://github.com/strongloop/loopback-next/blob/master/examples/todo/src/services/geocoder.service.ts)" %}
+{% include code-caption.html content="[src/services/geocoder.service.ts](https://github.com/loopbackio/loopback-next/blob/master/examples/todo/src/services/geocoder.service.ts)" %}
 
 ```ts
 import {inject, Provider} from '@loopback/core';
@@ -155,7 +155,7 @@ export class GeocoderProvider implements Provider<Geocoder> {
 
 Add two new properties to our Todo model: `remindAtAddress` and `remindAtGeo`.
 
-{% include code-caption.html content="[src/models/todo.model.ts](https://github.com/strongloop/loopback-next/blob/master/examples/todo/src/models/todo.model.ts)" %}
+{% include code-caption.html content="[src/models/todo.model.ts](https://github.com/loopbackio/loopback-next/blob/master/examples/todo/src/models/todo.model.ts)" %}
 
 ```ts
 @model()
@@ -182,7 +182,7 @@ coordinates when a new Todo item is created.
 Import `Geocoder` interface into the `TodoController` and then modify the
 Controller constructor to receive `Geocoder` as a new dependency.
 
-{% include code-caption.html content="[src/controllers/todo.controller.ts](https://github.com/strongloop/loopback-next/blob/master/examples/todo/src/controllers/todo.controller.ts)" %}
+{% include code-caption.html content="[src/controllers/todo.controller.ts](https://github.com/loopbackio/loopback-next/blob/master/examples/todo/src/controllers/todo.controller.ts)" %}
 
 ```ts
 import {inject} from '@loopback/core';
@@ -216,7 +216,7 @@ export class TodoController {
 Modify the `create` method to look up the address provided in `remindAtAddress`
 property and convert it to GPS coordinates stored in `remindAtGeo`.
 
-{% include code-caption.html content="[src/controllers/todo.controller.ts](https://github.com/strongloop/loopback-next/blob/master/examples/todo/src/controllers/todo.controller.ts)" %}
+{% include code-caption.html content="[src/controllers/todo.controller.ts](https://github.com/loopbackio/loopback-next/blob/master/examples/todo/src/controllers/todo.controller.ts)" %}
 
 ```ts
 export class TodoController {

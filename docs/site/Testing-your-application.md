@@ -483,7 +483,7 @@ sinon.assert.calledWithMatch(geocode, '1 New Orchard Road, Armonk, 10504');
 ```
 
 Check out
-[TodoController unit tests](https://github.com/strongloop/loopback-next/blob/bd0c45033503f631a533ad6176620354d9cf6768/examples/todo/src/__tests__/unit/controllers/todo.controller.unit.ts#L53-L71)
+[TodoController unit tests](https://github.com/loopbackio/loopback-next/blob/bd0c45033503f631a533ad6176620354d9cf6768/examples/todo/src/__tests__/unit/controllers/todo.controller.unit.ts#L53-L71)
 illustrating the above points in action for more information.
 
 ### Unit test your Controllers
@@ -588,7 +588,7 @@ describe('Person (unit)', () => {
 
 Writing a unit test for custom repository methods is not as straightforward
 because `CrudRepository` is based on
-[loopback-datasource-juggler](https://github.com/strongloop/loopback-datasource-juggler)
+[loopback-datasource-juggler](https://github.com/loopbackio/loopback-datasource-juggler)
 which was not designed with dependency injection in mind. Instead, use
 integration tests to verify the implementation of custom repository methods. For
 more information, refer to
@@ -827,7 +827,7 @@ describe('API specification', () => {
 {% include important.html content=" The top-down approach for building LoopBack
 applications is not yet fully supported. Therefore, the code outlined in this
 section is outdated and may not work out of the box. Check out
-https://github.com/strongloop/loopback-next/issues/1882 for the epic tracking
+https://github.com/loopbackio/loopback-next/issues/1882 for the epic tracking
 the feature and [OpenAPI generator](OpenAPI-generator.md) page for artifact
 generation from OpenAPI specs.
 " %}
@@ -906,7 +906,7 @@ describe('API (acceptance)', () => {
 ```
 
 The user experience needs improvement and we are looking into better solutions.
-See [GitHub issue #644](https://github.com/strongloop/loopback-next/issues/644).
+See [GitHub issue #644](https://github.com/loopbackio/loopback-next/issues/644).
 Let us know if you have any recommendations!
 
 ### Test your individual REST API endpoints

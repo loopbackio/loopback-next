@@ -74,7 +74,7 @@ export class JsonBodyParser implements BodyParser {
 ```
 
 See the complete code at
-https://github.com/strongloop/loopback-next/blob/master/packages/rest/src/body-parsers/body-parser.json.ts.
+https://github.com/loopbackio/loopback-next/blob/master/packages/rest/src/body-parsers/body-parser.json.ts.
 
 2. Bind the body parser class to your REST server/application:
 

@@ -12,7 +12,7 @@ permalink: /doc/en/lb4/Connecting-to-Oracle.html
 
 The following tutorial introduces how to set up Oracle as the data source of
 LoopBack 4 applications with
-[LoopBack Oracle connector](https://github.com/strongloop/loopback-connector-oracle).
+[LoopBack Oracle connector](https://github.com/loopbackio/loopback-connector-oracle).
 
 ## Prerequisites
 

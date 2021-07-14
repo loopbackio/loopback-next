@@ -78,7 +78,7 @@ export function transactionSuite(
           // therefore `commit` or `rollback` won't delete the connection's
           // reference of a `tx`.
           // Detailed explanation see:
-          // https://github.com/strongloop/loopback-next/pull/4474
+          // https://github.com/loopbackio/loopback-next/pull/4474
           if (ds.connector?.name === 'postgresql') {
             tx = undefined;
           }
@@ -170,7 +170,7 @@ export function transactionSuite(
           // expect(
           //   await anotherRepo.create({name: 'Pencil'}, {transaction: tx}),
           // ).to.throw(/some error/);
-          // see https://github.com/strongloop/loopback-next/issues/3483
+          // see https://github.com/loopbackio/loopback-next/issues/3483
           const created = await anotherRepo.create(
             {name: 'Pencil'},
             {transaction: tx},

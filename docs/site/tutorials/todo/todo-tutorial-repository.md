@@ -51,7 +51,7 @@ using
 [Dependency Injection](https://loopback.io/doc/en/lb4/Dependency-injection.html).
 
 To view the completed file, see the
-[`Todo` example](https://github.com/strongloop/loopback-next/blob/master/examples/todo/src/repositories/todo.repository.ts).
+[`Todo` example](https://github.com/loopbackio/loopback-next/blob/master/examples/todo/src/repositories/todo.repository.ts).
 
 Now we can expose the `Todo` API through the
 [controller](todo-tutorial-controller.md).

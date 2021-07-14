@@ -14,7 +14,7 @@ permalink: /doc/en/lb4/HasOne-relation.html
 This relation best works with databases that support foreign key and unique
 constraints (SQL).
 Using this relation with NoSQL databases will result in unexpected behavior,
-such as the ability to create a relation with a model that does not exist. We are [working on a solution](https://github.com/strongloop/loopback-next/issues/2341) to better handle this. It is fine to use this relation with NoSQL databases for purposes such as navigating related models, where the referential integrity is not critical.
+such as the ability to create a relation with a model that does not exist. We are [working on a solution](https://github.com/loopbackio/loopback-next/issues/2341) to better handle this. It is fine to use this relation with NoSQL databases for purposes such as navigating related models, where the referential integrity is not critical.
 " %}
 
 A `hasOne` relation denotes a one-to-one connection of a model to another model
@@ -320,7 +320,7 @@ export class Review extends Entity {
 }
 ```
 
-{% include important.html content="It is user's responsibility to make sure the non-id source key doesn't have duplicate value. Besides, LB4 doesn't support composite keys for now. e.g joining two tables with more than one source key. Related GitHub issue: [Composite primary/foreign keys](https://github.com/strongloop/loopback-next/issues/1830)" %}
+{% include important.html content="It is user's responsibility to make sure the non-id source key doesn't have duplicate value. Besides, LB4 doesn't support composite keys for now. e.g joining two tables with more than one source key. Related GitHub issue: [Composite primary/foreign keys](https://github.com/loopbackio/loopback-next/issues/1830)" %}
 
 If you need to use _different names for models and database columns_, to use
 `my_account` as db column name other than `account` for example, the following
@@ -489,7 +489,7 @@ new `SupplierAccountController` class for them.
 The type of `accountData` above will possibly change to `Partial<Account>` to exclude
 certain properties from the JSON/OpenAPI spec schema built for the `requestBody`
 payload. See its [GitHub
-issue](https://github.com/strongloop/loopback-next/issues/1179) to follow the discussion.
+issue](https://github.com/loopbackio/loopback-next/issues/1179) to follow the discussion.
 " %}
 
 ## Querying related models

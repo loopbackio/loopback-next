@@ -65,7 +65,7 @@ describe('CrudRestController for a simple Product model', () => {
         .post('/products')
         .send({name: 'A pen'})
         // FIXME: POST should return 201
-        // See https://github.com/strongloop/loopback-next/issues/788
+        // See https://github.com/loopbackio/loopback-next/issues/788
         .expect(200);
 
       const created = response.body;

@@ -72,7 +72,7 @@ Model TodoList was created in src/models/
 ```
 
 To view the completed file, see the
-[`TodoList` example](https://github.com/strongloop/loopback-next/blob/master/examples/todo-list/src/models/todo-list.model.ts).
+[`TodoList` example](https://github.com/loopbackio/loopback-next/blob/master/examples/todo-list/src/models/todo-list.model.ts).
 
 Once the models have been completely configured, it's time to move on to adding
 a [repository](todo-list-tutorial-repository.md) for `TodoList`.

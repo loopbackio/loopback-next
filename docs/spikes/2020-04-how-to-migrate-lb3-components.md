@@ -1,6 +1,6 @@
 # How to migrate LB3 components
 
-_GitHub issue: https://github.com/strongloop/loopback-next/issues/4099_
+_GitHub issue: https://github.com/loopbackio/loopback-next/issues/4099_
 
 ## Out of scope
 
@@ -235,7 +235,7 @@ See
 > Operation Hooks)
 
 See
-[loopback-next#5476](https://github.com/strongloop/loopback-next/issues/5476)
+[loopback-next#5476](https://github.com/loopbackio/loopback-next/issues/5476)
 
 > Add a custom Operation Hook to given models, with a config option to
 > enable/disable this feature. The list of models can be provided explicitly in
@@ -243,14 +243,14 @@ See
 > all models having a "belongsTo" relation with the Group model)
 
 See
-[loopback-next#5476](https://github.com/strongloop/loopback-next/issues/5476)
+[loopback-next#5476](https://github.com/loopbackio/loopback-next/issues/5476)
 
 > Add new relations, e.g. between an app-provided entity `User` and a
 > component-provided entity `File`. In this variant, the relation is added on
 > small fixed number of models.
 
 See
-[loopback-next#5476](https://github.com/strongloop/loopback-next/issues/5476)
+[loopback-next#5476](https://github.com/loopbackio/loopback-next/issues/5476)
 
 > A model mixing adding new relations (`hasMany ModelEvents`), installing
 > Operation Hooks (to generate model events/audit log entries), adding new
@@ -261,13 +261,13 @@ See
 > apply changes to models added after the component was mounted.)_
 
 See
-[loopback-next#5476](https://github.com/strongloop/loopback-next/issues/5476)
+[loopback-next#5476](https://github.com/loopbackio/loopback-next/issues/5476)
 
 > For all models with a flag enabled in model settings, setup a custom
 > `afterRemote` hook to modify the HTTP response (e.g. add additional headers).
 
 See
-[loopback-next#5476](https://github.com/strongloop/loopback-next/issues/5476)
+[loopback-next#5476](https://github.com/loopbackio/loopback-next/issues/5476)
 
 ### Migrate REST API
 
@@ -306,13 +306,13 @@ downloads, I feel it's not necessary to provide migration guide for this case.
 ### Migrate Services (local and remote)
 
 Created a follow-up epic
-[loopback-next#5424](https://github.com/strongloop/loopback-next/issues/5424) to
+[loopback-next#5424](https://github.com/loopbackio/loopback-next/issues/5424) to
 look into this area later, when there is user demand.
 
 ### Migrate API transports
 
 Created a follow-up epic
-[loopback-next#5425](https://github.com/strongloop/loopback-next/issues/5425) to
+[loopback-next#5425](https://github.com/loopbackio/loopback-next/issues/5425) to
 look into this area later, when there is user demand.
 
 ### Migrate Authentication & authorization
@@ -345,7 +345,7 @@ techniques that used to be useful in the past.
 ### Migrate Introspection
 
 Created a follow-up epic
-[loopback-next#5426](https://github.com/strongloop/loopback-next/issues/5426) to
+[loopback-next#5426](https://github.com/loopbackio/loopback-next/issues/5426) to
 look into this area later, when there is user demand.
 
 ## Overview of existing LB3 components
@@ -353,7 +353,7 @@ look into this area later, when there is user demand.
 ### Push notifications
 
 - LB3 docs: https://loopback.io/doc/en/lb3/Push-notifications.html
-- GitHub repo: https://github.com/strongloop/loopback-component-push
+- GitHub repo: https://github.com/loopbackio/loopback-component-push
 
 This is not a typical LoopBack component because it's not configured via
 `component-config.json`. Instead, the component provides a connector to be
@@ -398,7 +398,7 @@ Models:
 ### Storage component
 
 - LB3 docs: https://loopback.io/doc/en/lb3/Storage-component.html
-- GitHub repo: https://github.com/strongloop/loopback-component-storage
+- GitHub repo: https://github.com/loopbackio/loopback-component-storage
 
 Again, this is not a typical LB3 component.
 

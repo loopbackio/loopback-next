@@ -120,7 +120,7 @@ complex linting solutions (for example, a linting config that works across many
 projects).
 
 For more details, see the lengthy discussion in
-[#6](https://github.com/strongloop/loopback-next/issues/6).
+[#6](https://github.com/loopbackio/loopback-next/issues/6).
 
 ## About the documentation
 
@@ -131,16 +131,16 @@ See [Examples](Examples.md) and [Tutorials](Tutorials.md).
 ### What features are planned?
 
 Our roadmap is captured in
-[here](https://github.com/strongloop/loopback-next/labels/roadmap). You can also
+[here](https://github.com/loopbackio/loopback-next/labels/roadmap). You can also
 check out our
-[monthly milestone plans](https://github.com/strongloop/loopback-next/labels/Monthly%20Milestone).
+[monthly milestone plans](https://github.com/loopbackio/loopback-next/labels/Monthly%20Milestone).
 
 For LoopBack 3 users, here is the list of LB3 feature parity we wish to be
 implemented in the future:
-https://github.com/strongloop/loopback-next/issues/1920.
+https://github.com/loopbackio/loopback-next/issues/1920.
 
 Do you have some other features in mind? Add your feature requests at
-[loopback-next/issues/new](https://github.com/strongloop/loopback-next/issues/new).
+[loopback-next/issues/new](https://github.com/loopbackio/loopback-next/issues/new).
 
 ## Technical usage
 
@@ -148,8 +148,8 @@ Do you have some other features in mind? Add your feature requests at
 
 **No.** While some packages _may_ work with JavaScript, there is no guarantee
 that all features will be compatible. Please see GitHub issues
-[#560](https://github.com/strongloop/loopback-next/issues/560) and
-[#1978](https://github.com/strongloop/loopback-next/issues/1978) for prior
+[#560](https://github.com/loopbackio/loopback-next/issues/560) and
+[#1978](https://github.com/loopbackio/loopback-next/issues/1978) for prior
 discussion and the issues of supporting a pure-JavaScript experience.
 
 ### How do I disable the API Explorer?

@@ -21,7 +21,7 @@ export class TodoListImage extends Entity {
   })
   // Ideally we would use Buffer type here, but
   // that is not supported yet.
-  // see https://github.com/strongloop/loopback-next/issues/1742
+  // see https://github.com/loopbackio/loopback-next/issues/1742
   value: string;
 
   @belongsTo(() => TodoList)

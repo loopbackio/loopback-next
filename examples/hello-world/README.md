@@ -6,7 +6,7 @@ A simple hello-world application using LoopBack 4!
 
 This project shows how to write the simplest LoopBack 4 application possible.
 Check out
-[src/application.ts](https://github.com/strongloop/loopback-next/blob/master/examples/hello-world/src/application.ts)
+[src/application.ts](https://github.com/loopbackio/loopback-next/blob/master/examples/hello-world/src/application.ts)
 to learn how we configured our application to always respond with "Hello
 World!".
 
@@ -57,8 +57,8 @@ client to access any path with a GET request, and watch it return
 
 ## Contributions
 
-- [Guidelines](https://github.com/strongloop/loopback-next/blob/master/docs/CONTRIBUTING.md)
-- [Join the team](https://github.com/strongloop/loopback-next/issues/110)
+- [Guidelines](https://github.com/loopbackio/loopback-next/blob/master/docs/CONTRIBUTING.md)
+- [Join the team](https://github.com/loopbackio/loopback-next/issues/110)
 
 ## Tests
 
@@ -67,7 +67,7 @@ Run `npm test` from the root folder.
 ## Contributors
 
 See
-[all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
+[all contributors](https://github.com/loopbackio/loopback-next/graphs/contributors).
 
 ## License
 

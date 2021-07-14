@@ -77,7 +77,7 @@ Some additional things to note about this example:
   `@param.path.number('id')`.
 
 To view the completed file, see the
-[`Todo` example](https://github.com/strongloop/loopback-next/blob/master/examples/todo/src/controllers/todo.controller.ts).
+[`Todo` example](https://github.com/loopbackio/loopback-next/blob/master/examples/todo/src/controllers/todo.controller.ts).
 
 Now that we've wired up the controller, our last step is to tie it all into the
 [Application](todo-tutorial-putting-it-together.md)!

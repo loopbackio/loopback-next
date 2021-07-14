@@ -57,7 +57,7 @@ export function deprecated(isDeprecated = true) {
     target: any,
     method?: string,
     // Use `any` to for `TypedPropertyDescriptor`
-    // See https://github.com/strongloop/loopback-next/pull/2704
+    // See https://github.com/loopbackio/loopback-next/pull/2704
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     methodDescriptor?: TypedPropertyDescriptor<any>,
   ) {

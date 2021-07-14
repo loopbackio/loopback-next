@@ -17,13 +17,13 @@ LoopBack 4 comes with the following tutorials:
 - **[soap-calculator](soap-calculator-tutorial.md)**: Tutorial on integrating
   SOAP web services.
 
-- **[log-extension](https://github.com/strongloop/loopback-next/tree/master/examples/log-extension)**:
+- **[log-extension](https://github.com/loopbackio/loopback-next/tree/master/examples/log-extension)**:
   Tutorial on building a log extension.
 
 - **[express-composition](express-with-lb4-rest-tutorial.md)**: Tutorial on
   mounting LoopBack 4 REST API on an Express application.
 
-- **[lb3-application](https://github.com/strongloop/loopback-next/tree/master/examples/lb3-application)**:
+- **[lb3-application](https://github.com/loopbackio/loopback-next/tree/master/examples/lb3-application)**:
   Tutorial on mounting an existing LoopBack 3 application in a new LoopBack 4
   project.
 

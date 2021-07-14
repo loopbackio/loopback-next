@@ -9,7 +9,7 @@ permalink: /doc/en/lb4/Using-strong-error-handler.html
 # strong-error-handler
 
 As a dependency of
-[`@loopback/rest`](https://github.com/strongloop/loopback-next/tree/master/packages/rest),
+[`@loopback/rest`](https://github.com/loopbackio/loopback-next/tree/master/packages/rest),
 package `strong-error-handler` is an error handler for use in both development
 (debug) and production environments.
 

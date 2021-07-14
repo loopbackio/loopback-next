@@ -9,7 +9,7 @@ permalink: /doc/en/lb4/migration-extensions-project-layout.html
 ---
 
 {% include tip.html content="
-Missing instructions for your LoopBack 3 use case? Please report a [Migration docs issue](https://github.com/strongloop/loopback-next/issues/new?labels=question,Migration,Docs&template=Migration_docs.md) on GitHub to let us know.
+Missing instructions for your LoopBack 3 use case? Please report a [Migration docs issue](https://github.com/loopbackio/loopback-next/issues/new?labels=question,Migration,Docs&template=Migration_docs.md) on GitHub to let us know.
 " %}
 
 The first step on the component migration journey is to reorganize the project
@@ -55,7 +55,7 @@ component is an npm package exporting a Component class.
 
 The component class is usually implemented inside
 `src/{component-name}.component.ts` file, for example
-[src/metrics.component.ts](https://github.com/strongloop/loopback-next/blob/38f10b240551227d2d030c2fe8ee206880c9e029/extensions/metrics/src/metrics.component.ts):
+[src/metrics.component.ts](https://github.com/loopbackio/loopback-next/blob/38f10b240551227d2d030c2fe8ee206880c9e029/extensions/metrics/src/metrics.component.ts):
 
 ```ts
 import {Application, Component, CoreBindings} from '@loopback/core';
@@ -114,5 +114,5 @@ repository. We recommend to create a new project using
 incrementally migrate artifacts from the original LoopBack 3 component to the
 new project.
 
-{% include note.html content="The extension project template used by `lb4 extension` is a bit outdated now, please refer to [loopback-next#5336](https://github.com/strongloop/loopback-next/issues/5336) for more details.
+{% include note.html content="The extension project template used by `lb4 extension` is a bit outdated now, please refer to [loopback-next#5336](https://github.com/loopbackio/loopback-next/issues/5336) for more details.
 " %}

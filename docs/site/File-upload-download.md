@@ -15,7 +15,7 @@ downloading files using LoopBack 4. It also illustrates how to build a simple
 Web UI to interact with such APIs.
 
 A fully-functional example is available at
-[@loopback/example-file-transfer](https://github.com/strongloop/loopback-next/tree/master/examples/file-transfer).
+[@loopback/example-file-transfer](https://github.com/loopbackio/loopback-next/tree/master/examples/file-transfer).
 We use code snippets from the example to walk through the key artifacts.
 
 ### File upload
@@ -23,7 +23,7 @@ We use code snippets from the example to walk through the key artifacts.
 A few steps are involved to create an endpoint for file upload.
 
 1. Create a controller class such as
-   [`FileUploadController`](https://github.com/strongloop/loopback-next/blob/master/examples/file-transfer/src/controllers/file-upload.controller.ts)
+   [`FileUploadController`](https://github.com/loopbackio/loopback-next/blob/master/examples/file-transfer/src/controllers/file-upload.controller.ts)
 
 ```ts
 import {inject} from '@loopback/core';
@@ -53,7 +53,7 @@ export class FileUploadController {
 In the example, we inject an instance of `FileUploadService` backed by
 [multer](https://github.com/expressjs/multer) to process the incoming http
 request. The
-[`FileUploadService`](https://github.com/strongloop/loopback-next/blob/master/examples/file-transfer/src/services/file-upload.service.ts)
+[`FileUploadService`](https://github.com/loopbackio/loopback-next/blob/master/examples/file-transfer/src/services/file-upload.service.ts)
 is configurable to support various storage engines.
 
 2. Add a method for file upload
@@ -108,7 +108,7 @@ See more details about `@requestBody.file` in
 To download files from the backend, please follow the following steps.
 
 1. Create a controller class such as
-   [`FileDownloadController`](https://github.com/strongloop/loopback-next/blob/master/examples/file-transfer/src/controllers/file-download.controller.ts)
+   [`FileDownloadController`](https://github.com/loopbackio/loopback-next/blob/master/examples/file-transfer/src/controllers/file-download.controller.ts)
 
 ```ts
 import {inject} from '@loopback/core';
@@ -217,7 +217,7 @@ the file is outside the sandbox.
 ### Build a simple UI
 
 The example application comes with a
-[simple HTML page](https://github.com/strongloop/loopback-next/blob/master/examples/file-transfer/public/index.html).
+[simple HTML page](https://github.com/loopbackio/loopback-next/blob/master/examples/file-transfer/public/index.html).
 
 The page contains the following JavaScript functions:
 

@@ -83,7 +83,7 @@ export interface ModelSettings {
 }
 
 /**
- * See https://github.com/strongloop/loopback-datasource-juggler/issues/432
+ * See https://github.com/loopbackio/loopback-datasource-juggler/issues/432
  */
 export interface PropertyForm {
   in?: boolean; // Can the property be used for input

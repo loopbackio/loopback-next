@@ -99,7 +99,7 @@ Artifacts can be services, repositories, configuration, etc.
    This is a convenient way to allow a binding pointing to another one.
 
 The
-[binding-types.ts](https://github.com/strongloop/loopback-next/blob/master/examples/context/src/binding-types.ts)
+[binding-types.ts](https://github.com/loopbackio/loopback-next/blob/master/examples/context/src/binding-types.ts)
 in `example-context` example shows various ways to provide values for a binding.
 
 For details, see the
@@ -108,7 +108,7 @@ For details, see the
 ## Resolving artifacts by key
 
 The
-[find-bindings.ts](https://github.com/strongloop/loopback-next/blob/master/examples/context/src/find-bindings.ts)
+[find-bindings.ts](https://github.com/loopbackio/loopback-next/blob/master/examples/context/src/find-bindings.ts)
 in the `example-context` example shows different flavors of finding bindings in
 a context
 
@@ -136,12 +136,12 @@ For details, see [Configure the scope](../../Binding.md#configure-the-scope).
 
 The context view gives us control when a binding is being added or moreved. This
 also allows the support of dynamic extension points. For the
-[greeting-app example](https://github.com/strongloop/loopback-next/tree/master/examples/greeting-app),
+[greeting-app example](https://github.com/loopbackio/loopback-next/tree/master/examples/greeting-app),
 after the application has started, more greeters can be added, and there is no
 need to add all the greeters up front.
 
 See the [Context documentation page](../../Context.md#context-observers) and
-[example](https://github.com/strongloop/loopback-next/blob/master/examples/context/src/context-observation.ts)
+[example](https://github.com/loopbackio/loopback-next/blob/master/examples/context/src/context-observation.ts)
 for more details.
 
 ## Contributing multiple artifacts via components
@@ -152,7 +152,7 @@ authentication stategy and an authentication action can be added to the
 component.
 
 See the
-[GreetingComponent](https://github.com/strongloop/loopback-next/blob/master/examples/greeter-extension/src/component.ts)
+[GreetingComponent](https://github.com/loopbackio/loopback-next/blob/master/examples/greeter-extension/src/component.ts)
 as an example.
 
 ```ts

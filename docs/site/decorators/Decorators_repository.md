@@ -61,7 +61,7 @@ repository instance:
 ```ts
 // Missing example here
 // Will be provided in Model.md
-// refer to [example code](https://github.com/strongloop/loopback-next-example/blob/master/services/account-without-juggler/repositories/account/models/Account.ts)
+// refer to [example code](https://github.com/loopbackio/loopback-next-example/blob/master/services/account-without-juggler/repositories/account/models/Account.ts)
 ```
 
 #### Property Decorator
@@ -259,7 +259,7 @@ export class Todo extends Entity {
 
 The following decorators are not implemented yet. To see their progress, please
 go to the
-[Relations epic](https://github.com/strongloop/loopback-next/issues/1450).
+[Relations epic](https://github.com/loopbackio/loopback-next/issues/1450).
 
 - `@embedsOne`
 - `@embedsMany`

@@ -8,11 +8,11 @@ permalink: /doc/en/lb4/migration-auth-access-control-example.html
 ---
 
 {% include tip.html content="
-Missing instructions for your LoopBack 3 use case? Please report a [Migration docs issue](https://github.com/strongloop/loopback-next/issues/new?labels=question,Migration,Docs&template=Migration_docs.md) on GitHub to let us know.
+Missing instructions for your LoopBack 3 use case? Please report a [Migration docs issue](https://github.com/loopbackio/loopback-next/issues/new?labels=question,Migration,Docs&template=Migration_docs.md) on GitHub to let us know.
 " %}
 
 This example is migrated from
-[loopback-example-access-control](https://github.com/strongloop/loopback-example-access-control),
+[loopback-example-access-control](https://github.com/loopbackio/loopback-example-access-control),
 and uses the authentication and authorization system in LoopBack 4 to implement
 the access control.
 
@@ -86,7 +86,7 @@ Here is an overview of the steps:
 ### Creating models
 
 There are four models involved in this example. Three of them are migrated from
-[the original models](https://github.com/strongloop/loopback-example-access-control/tree/master/common/models)
+[the original models](https://github.com/loopbackio/loopback-example-access-control/tree/master/common/models)
 (`Project`, `Team`, `User`). And we add one more model `UserCredentials` to
 separate the sensitive information from the `User` model.
 
@@ -118,7 +118,7 @@ To create the login endpoint, we first run `lb4 controller` to create a
 `UserController` (see [user controller creation](#user-controller-creation)).
 Then add a new controller function `login` decorated with the REST decorators
 that describe the request and response (see
-[the complete user controller file](https://github.com/strongloop/loopback-next/tree/master/examples/access-control-migration/src/controllers/user.controller.ts)).
+[the complete user controller file](https://github.com/loopbackio/loopback-next/tree/master/examples/access-control-migration/src/controllers/user.controller.ts)).
 The core logic of `login` does 3 things:
 
 - call `userService.verifyCredentials()` to verify the credentials and find the
@@ -146,16 +146,16 @@ add the following endpoints:
 - `/projects/{id}/withdraw`: withdraw from a project
 
 The complete code can be found in
-[src/controller/project.controller.ts](https://github.com/strongloop/loopback-next/tree/master/examples/access-control-migration/src/controllers/project.controller.ts)
+[src/controller/project.controller.ts](https://github.com/loopbackio/loopback-next/tree/master/examples/access-control-migration/src/controllers/project.controller.ts)
 
 ### Setting up authentication
 
-{% include note.html content=" This section will be simplified by the following GitHub issue: [loopback-next#4753](https://github.com/strongloop/loopback-next/issues/4753)
+{% include note.html content=" This section will be simplified by the following GitHub issue: [loopback-next#4753](https://github.com/loopbackio/loopback-next/issues/4753)
 " %}
 
 This demo uses token based authentication, and it uses the jwt authentication
 strategy to verify a user's identity. The authentication setup is borrowed from
-[loopback4-example-shopping](https://github.com/strongloop/loopback4-example-shopping/tree/master/packages).
+[loopback4-example-shopping](https://github.com/loopbackio/loopback4-example-shopping/tree/master/packages).
 The authentication system aims to understand **who sends the request**. It
 retrieves the token from a request, decodes the user's information in it as
 `principal`, then passes the `principal` to the authorization system which will
@@ -167,16 +167,16 @@ consists of the following files:
 
 - creating the jwt authentication strategy to decode the user profile from
   token. See file
-  [jwt.auth.strategy.ts](https://github.com/strongloop/loopback-next/tree/master/examples/access-control-migration/src/components/jwt-authentication/services/jwt.auth.strategy.ts).
+  [jwt.auth.strategy.ts](https://github.com/loopbackio/loopback-next/tree/master/examples/access-control-migration/src/components/jwt-authentication/services/jwt.auth.strategy.ts).
 - creating the token service to organize utils for token operations. See file
-  [jwt.service.ts](https://github.com/strongloop/loopback-next/tree/master/examples/access-control-migration/src/components/jwt-authentication/services/jwt.service.ts).
+  [jwt.service.ts](https://github.com/loopbackio/loopback-next/tree/master/examples/access-control-migration/src/components/jwt-authentication/services/jwt.service.ts).
 - creating user service to organize utils for user operations. see file
-  [user.service.ts](https://github.com/strongloop/loopback-next/tree/master/examples/access-control-migration/src/components/jwt-authentication/services/user.service.ts).
+  [user.service.ts](https://github.com/loopbackio/loopback-next/tree/master/examples/access-control-migration/src/components/jwt-authentication/services/user.service.ts).
 - adding OpenAPI security specification to your app so that the explorer has an
   Authorize button to setup the token for secured endpoints. See file
-  [security.spec.ts](https://github.com/strongloop/loopback-next/tree/master/examples/access-control-migration/src/components/jwt-authentication/services/security.spec.ts).
+  [security.spec.ts](https://github.com/loopbackio/loopback-next/tree/master/examples/access-control-migration/src/components/jwt-authentication/services/security.spec.ts).
 - creating bindings for the above services. See file
-  [keys.ts](https://github.com/strongloop/loopback-next/blob/master/examples/access-control-migration/src/components/jwt-authentication/keys.ts).
+  [keys.ts](https://github.com/loopbackio/loopback-next/blob/master/examples/access-control-migration/src/components/jwt-authentication/keys.ts).
 
 You can enable the jwt authentication by mounting the authentication component
 in the application constructor:
@@ -201,7 +201,7 @@ export class AccessControlApplication extends BootMixin(
 
 Finally decorate the 4 project endpoints (excluding the public `listProjects`)
 with `@authenticate('jwt')`. See example for endpoint
-[viewAll](https://github.com/strongloop/loopback-next/tree/master/examples/access-control-migration/src/controllers/project.controller.ts#L90)
+[viewAll](https://github.com/loopbackio/loopback-next/tree/master/examples/access-control-migration/src/controllers/project.controller.ts#L90)
 
 ### Setting up authorization
 
@@ -212,7 +212,7 @@ authentication system, whether it has access to a resource.
 
 In LoopBack 3, the access control rules for APIs are described by a model
 configuration property called 'acls'. In our case they were defined in
-[models/project.json](https://github.com/strongloop/loopback-example-access-control/blob/master/common/models/project.json#L21-L61).
+[models/project.json](https://github.com/loopbackio/loopback-example-access-control/blob/master/common/models/project.json#L21-L61).
 
 For example, the acl for endpoint `/projects/{id}/findById` is:
 
@@ -236,9 +236,9 @@ as role resolving.
 Role resolving is the core of an RBAC system. In the original application, you
 create and register role resolvers to resolve a role at run time. Role `admin`
 is defined in
-[sample-models.js](https://github.com/strongloop/loopback-example-access-control/blob/master/server/boot/sample-models.js#L62)
+[sample-models.js](https://github.com/loopbackio/loopback-example-access-control/blob/master/server/boot/sample-models.js#L62)
 and `teamMember` is defined and registered in
-[role-resolver](https://github.com/strongloop/loopback-example-access-control/blob/master/server/boot/role-resolver.js).
+[role-resolver](https://github.com/loopbackio/loopback-example-access-control/blob/master/server/boot/role-resolver.js).
 
 In the migrated application, we use a 3rd-party library
 [casbin](https://github.com/casbin/casbin) to resolve the role.
@@ -296,7 +296,7 @@ endpoint:
 
 To make the tutorial concise, the code details is omitted here. You can find the
 ACLs and how the endpoints are decorated in file
-[src/controller/project.controller.ts](https://github.com/strongloop/loopback-next/tree/master/examples/access-control-migration/src/controllers/project.controller.ts)
+[src/controller/project.controller.ts](https://github.com/loopbackio/loopback-next/tree/master/examples/access-control-migration/src/controllers/project.controller.ts)
 
 Next, we write the authorizer that calls casbin enforcers to make the decision.
 
@@ -308,7 +308,7 @@ Next, we write the authorizer that calls casbin enforcers to make the decision.
    [Programming Access Policies](../../Loopback-component-authorization#programming-access-policies)_
 
    The complete authorizer file can be found in
-   [components/casbin-authorization/services/casbin.authorizer.ts](https://github.com/strongloop/loopback-next/blob/master/examples/access-control-migration/src/components/casbin-authorization/services/casbin.authorizer.ts).
+   [components/casbin-authorization/services/casbin.authorizer.ts](https://github.com/loopbackio/loopback-next/blob/master/examples/access-control-migration/src/components/casbin-authorization/services/casbin.authorizer.ts).
    It retrieves the three required fields from the authorization context:
    subject from `principal`, `resource` as object, and action, to invoke casbin
    enforcers and make decision.
@@ -325,7 +325,7 @@ Next, we write the authorizer that calls casbin enforcers to make the decision.
    it to the authorizer.
 
    The complete voter file can be found in file
-   [components/casbin-authorization/services/assign-project-instance-id.voter.ts](https://github.com/strongloop/loopback-next/blob/master/examples/access-control-migration/src/components/casbin-authorization/services/assign-project-instance-id.voter.ts)
+   [components/casbin-authorization/services/assign-project-instance-id.voter.ts](https://github.com/loopbackio/loopback-next/blob/master/examples/access-control-migration/src/components/casbin-authorization/services/assign-project-instance-id.voter.ts)
 
 3. Create casbin enforcers
 
@@ -336,20 +336,20 @@ Next, we write the authorizer that calls casbin enforcers to make the decision.
    for allowed role(s).
 
    The complete enforcer file can be found in file
-   [components/casbin-authorization/services/casbin.enforcers.ts](https://github.com/strongloop/loopback-next/blob/master/examples/access-control-migration/src/components/casbin-authorization/services/casbin.enforcers.ts)
+   [components/casbin-authorization/services/casbin.enforcers.ts](https://github.com/loopbackio/loopback-next/blob/master/examples/access-control-migration/src/components/casbin-authorization/services/casbin.enforcers.ts)
 
 4. Write casbin model and policies
 
    Since the model and policy are already covered in section
    [Using Casbin](#using-casbin), we will not repeat it here. The corresponding
    files are defined in folder
-   [fixtures/casbin](https://github.com/strongloop/loopback-next/blob/master/examples/access-control-migration/fixtures/casbin).
+   [fixtures/casbin](https://github.com/loopbackio/loopback-next/blob/master/examples/access-control-migration/fixtures/casbin).
 
 5. Mount the casbin authorization system as a component
 
    The casbin authorizer, voter and enforcers above are packed under component
    'src/components/casbin-authorization'. You can export their bindings in a
-   [component file](https://github.com/strongloop/loopback-next/blob/master/examples/access-control-migration/src/components/casbin-authorization/casbin-authorization-component.ts)
+   [component file](https://github.com/loopbackio/loopback-next/blob/master/examples/access-control-migration/src/components/casbin-authorization/casbin-authorization-component.ts)
    and mount the component in the application constructor:
 
    {% include code-caption.html content="src/application.ts" %}

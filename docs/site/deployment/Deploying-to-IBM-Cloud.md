@@ -29,8 +29,8 @@ Make sure you have:
 ## Preparing your application
 
 We will be using the
-["todo" example](https://github.com/strongloop/loopback-next/tree/master/examples/todo)
-from the [loopback-next repository](https://github.com/strongloop/loopback-next)
+["todo" example](https://github.com/loopbackio/loopback-next/tree/master/examples/todo)
+from the [loopback-next repository](https://github.com/loopbackio/loopback-next)
 as a basis for the instruction.
 
 You can quickly clone the "todo" example app by running the command:

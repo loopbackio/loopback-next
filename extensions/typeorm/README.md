@@ -131,23 +131,23 @@ export class BookController {
 
 Please note, the current implementation does not support the following:
 
-1. [Complete TypeORM to OpenAPI data type conversion](https://github.com/strongloop/loopback-next/issues/5893)
+1. [Complete TypeORM to OpenAPI data type conversion](https://github.com/loopbackio/loopback-next/issues/5893)
    (currently only `number`, `string`, and `boolean` are supported)
-2. [Full JSON/OpenAPI schema for entities](https://github.com/strongloop/loopback-next/issues/5894),
+2. [Full JSON/OpenAPI schema for entities](https://github.com/loopbackio/loopback-next/issues/5894),
    including variants like with/without id, with/without relations, partial,
    etc.
-3. [Support for LoopBack-style filters](https://github.com/strongloop/loopback-next/issues/5895)
-4. [JSON/OpenAPI schema to describe the supported filter format](https://github.com/strongloop/loopback-next/issues/5896)
-5. [Custom repository classes](https://github.com/strongloop/loopback-next/issues/5897)
+3. [Support for LoopBack-style filters](https://github.com/loopbackio/loopback-next/issues/5895)
+4. [JSON/OpenAPI schema to describe the supported filter format](https://github.com/loopbackio/loopback-next/issues/5896)
+5. [Custom repository classes](https://github.com/loopbackio/loopback-next/issues/5897)
    (e.g. to implement bookRepo.findByTitle(title)).
-6. [Database migration](https://github.com/strongloop/loopback-next/issues/5898)
+6. [Database migration](https://github.com/loopbackio/loopback-next/issues/5898)
 
 Community contribution is welcome.
 
 ## Contributions
 
-- [Guidelines](https://github.com/strongloop/loopback-next/blob/master/docs/CONTRIBUTING.md)
-- [Join the team](https://github.com/strongloop/loopback-next/issues/110)
+- [Guidelines](https://github.com/loopbackio/loopback-next/blob/master/docs/CONTRIBUTING.md)
+- [Join the team](https://github.com/loopbackio/loopback-next/issues/110)
 
 ## Tests
 
@@ -156,7 +156,7 @@ Run `npm test` from the root folder.
 ## Contributors
 
 See
-[all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
+[all contributors](https://github.com/loopbackio/loopback-next/graphs/contributors).
 
 ## License
 

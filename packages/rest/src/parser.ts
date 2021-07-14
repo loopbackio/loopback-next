@@ -79,7 +79,7 @@ async function buildOperationArguments(
   for (const paramSpec of operationSpec.parameters ?? []) {
     if (isReferenceObject(paramSpec)) {
       // TODO(bajtos) implement $ref parameters
-      // See https://github.com/strongloop/loopback-next/issues/435
+      // See https://github.com/loopbackio/loopback-next/issues/435
       throw new Error('$ref parameters are not supported yet.');
     }
     const spec = paramSpec as ParameterObject;
@@ -116,7 +116,7 @@ function getParamFromRequest(
       // @jannyhou TBD: check edge cases
       return request.headers[spec.name.toLowerCase()];
     // TODO(jannyhou) to support `cookie`,
-    // see issue https://github.com/strongloop/loopback-next/issues/997
+    // see issue https://github.com/loopbackio/loopback-next/issues/997
     default:
       throw RestHttpErrors.invalidParamLocation(spec.in);
   }

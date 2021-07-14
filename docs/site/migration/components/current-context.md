@@ -9,7 +9,7 @@ permalink: /doc/en/lb4/migration-extensions-current-context.html
 ---
 
 {% include tip.html content="
-Missing instructions for your LoopBack 3 use case? Please report a [Migration docs issue](https://github.com/strongloop/loopback-next/issues/new?labels=question,Migration,Docs&template=Migration_docs.md) on GitHub to let us know.
+Missing instructions for your LoopBack 3 use case? Please report a [Migration docs issue](https://github.com/loopbackio/loopback-next/issues/new?labels=question,Migration,Docs&template=Migration_docs.md) on GitHub to let us know.
 " %}
 
 It's often desirable to share contextual data between different parts of an
@@ -29,7 +29,7 @@ LoopBack 3 offers three approaches:
    HTTP request object.
 
 3. An experimental component
-   [`loopback-context`](https://github.com/strongloop/loopback-context) uses
+   [`loopback-context`](https://github.com/loopbackio/loopback-context) uses
    continuation-local-storage to provide static per-request storage that can be
    accessed from anywhere inside a LoopBack application (an Express middleware,
    a model method, a connector, etc.).

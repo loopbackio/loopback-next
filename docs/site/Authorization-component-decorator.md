@@ -8,7 +8,7 @@ permalink: /doc/en/lb4/Authorization-component-decorator.html
 
 Users can annotate the controller methods with access specifications using an
 `authorize` decorator. The access specifications are defined as per type
-[AuthorizationMetadata](https://github.com/strongloop/loopback-next/blob/master/packages/authorization/src/types.ts)
+[AuthorizationMetadata](https://github.com/loopbackio/loopback-next/blob/master/packages/authorization/src/types.ts)
 which consists of the following:
 
 - type of the protected resource (such as customer or order)

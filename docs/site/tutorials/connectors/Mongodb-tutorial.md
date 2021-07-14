@@ -12,7 +12,7 @@ permalink: /doc/en/lb4/Connecting-to-MongoDB.html
 
 The following tutorial introduces how to set up MongoDB as the data source of
 LoopBack 4 applications with
-[LoopBack MongoDB connector](https://github.com/strongloop/loopback-connector-mongodb).
+[LoopBack MongoDB connector](https://github.com/loopbackio/loopback-connector-mongodb).
 
 ## Prerequisites
 

@@ -8,7 +8,7 @@ permalink: /doc/en/lb4/migration-mounting-lb3app.html
 ---
 
 {% include tip.html content="
-Missing instructions for your LoopBack 3 use case? Please report a [Migration docs issue](https://github.com/strongloop/loopback-next/issues/new?labels=question,Migration,Docs&template=Migration_docs.md) on GitHub to let us know.
+Missing instructions for your LoopBack 3 use case? Please report a [Migration docs issue](https://github.com/loopbackio/loopback-next/issues/new?labels=question,Migration,Docs&template=Migration_docs.md) on GitHub to let us know.
 " %}
 
 Migrating from LoopBack version 3 to version 4 is a big task because so many
@@ -29,13 +29,13 @@ If you are not familiar with LoopBack 4, visit
 " %}
 
 Follow
-[this tutorial](https://github.com/strongloop/loopback-next/tree/master/examples/lb3-application#tutorial)
+[this tutorial](https://github.com/loopbackio/loopback-next/tree/master/examples/lb3-application#tutorial)
 that goes through the full steps to mount your application.
 
 To see an example of a mounted application, see
-[lb3-application](https://github.com/strongloop/loopback-next/tree/master/examples/lb3-application)
+[lb3-application](https://github.com/loopbackio/loopback-next/tree/master/examples/lb3-application)
 which mounts the
-[CoffeeShop example](https://github.com/strongloop/loopback-getting-started),
+[CoffeeShop example](https://github.com/loopbackio/loopback-getting-started),
 built from LoopBack 3, in a LoopBack 4 project.
 
 {% include warning.html content="

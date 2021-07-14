@@ -8,7 +8,7 @@ permalink: /doc/en/lb4/migration-models-relations.html
 ---
 
 {% include tip.html content="
-Missing instructions for your LoopBack 3 use case? Please report a [Migration docs issue](https://github.com/strongloop/loopback-next/issues/new?labels=question,Migration,Docs&template=Migration_docs.md) on GitHub to let us know.
+Missing instructions for your LoopBack 3 use case? Please report a [Migration docs issue](https://github.com/loopbackio/loopback-next/issues/new?labels=question,Migration,Docs&template=Migration_docs.md) on GitHub to let us know.
 " %}
 
 When you define a relation in a LoopBack 3 model JSON file, the framework will
@@ -42,7 +42,7 @@ In the future, we would like to provide a declarative approach for building
 model relations: the developer defines relation metadata, and the framework
 builds all required artifacts at runtime, similar to how LoopBack 3 works. You
 can join the discussion in the GitHub issue
-[loopback-next#2483](https://github.com/strongloop/loopback-next/issues/2483).
+[loopback-next#2483](https://github.com/loopbackio/loopback-next/issues/2483).
 
 ## Migration path
 
@@ -72,13 +72,13 @@ LoopBack 3:
 
 Other relations types are not supported yet, you can subscribe to our progress
 in the high-level tracking issue
-[loopback-next#1450](https://github.com/strongloop/loopback-next/issues/1450).
+[loopback-next#1450](https://github.com/loopbackio/loopback-next/issues/1450).
 See also issues for individual relation types as mentioned in the tracking
 issue, for example:
 
 - HasAndBelongsToMany -
-  [loopback-next#2308](https://github.com/strongloop/loopback-next/issues/2308)
+  [loopback-next#2308](https://github.com/loopbackio/loopback-next/issues/2308)
 - Polymorphic relations -
-  [loopback-next#2487](https://github.com/strongloop/loopback-next/issues/2487)
+  [loopback-next#2487](https://github.com/loopbackio/loopback-next/issues/2487)
 - ReferencesMany -
-  [loopback-next#2488](https://github.com/strongloop/loopback-next/issues/1450)
+  [loopback-next#2488](https://github.com/loopbackio/loopback-next/issues/1450)

@@ -224,7 +224,7 @@ function createValidator(
   // Clone global schemas to set `$async: true` flag
   const schemas: SchemasObject = {};
   for (const name in globalSchemas) {
-    // See https://github.com/strongloop/loopback-next/issues/4939
+    // See https://github.com/loopbackio/loopback-next/issues/4939
     schemas[name] = {...globalSchemas[name], $async: true};
   }
   const schemaWithRef: AsyncSchema = {components: {schemas}, ...jsonSchema};

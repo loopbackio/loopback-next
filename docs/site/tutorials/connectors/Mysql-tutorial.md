@@ -12,7 +12,7 @@ permalink: /doc/en/lb4/Connecting-to-MySQL.html
 
 The following tutorial introduces how to set up MySQL as the data source of
 LoopBack 4 applications with
-[LoopBack MySQL connector](https://github.com/strongloop/loopback-connector-mysql).
+[LoopBack MySQL connector](https://github.com/loopbackio/loopback-connector-mysql).
 
 ## Prerequisites
 

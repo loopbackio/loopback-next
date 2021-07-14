@@ -73,7 +73,7 @@ objects, as most Express middleware and routes do. Here are some examples:
 Eventually, we would like to implement first-class
 support for controllers to set response status code and headers without having
 to access the Express response object. The feature request is tracked by
-[github issue #436](https://github.com/strongloop/loopback-next/issues/436)
+[github issue #436](https://github.com/loopbackio/loopback-next/issues/436)
 " %}
 
 In `@loopback/rest`, we wrap Express HTTP request/response into a

@@ -8,7 +8,7 @@ The `@loopback/graphql` module provides first-class GraphQL support in
 LoopBack 4. For the general OpenAPI REST API wrapper, see
 [Using OpenAPI-to-GraphQL](https://loopback.io/doc/en/lb4/Using-openapi-to-graphql.html)" %}
 
-![type-graphql](https://raw.githubusercontent.com/strongloop/loopback-next/master/extensions/graphql/type-graphql.png)
+![type-graphql](https://raw.githubusercontent.com/loopbackio/loopback-next/master/extensions/graphql/type-graphql.png)
 
 ## Stability: ⚠️Experimental⚠️
 
@@ -26,7 +26,7 @@ npm install --save @loopback/graphql
 ## Basic Use
 
 Let's assume we build an application to expose GraphQL endpoints similar as
-[@loopback/example-graphql](https://github.com/strongloop/loopback-next/tree/master/examples/graphql).
+[@loopback/example-graphql](https://github.com/loopbackio/loopback-next/tree/master/examples/graphql).
 
 ```ts
 export class MyApplication extends BootMixin(RestApplication) {
@@ -396,12 +396,12 @@ export class GraphqlDemoApplication extends BootMixin(
 ## Try it out
 
 Check out
-[@loopback/example-graphql](https://github.com/strongloop/loopback-next/tree/master/examples/graphql).
+[@loopback/example-graphql](https://github.com/loopbackio/loopback-next/tree/master/examples/graphql).
 
 ## Contributions
 
-- [Guidelines](https://github.com/strongloop/loopback-next/blob/master/docs/CONTRIBUTING.md)
-- [Join the team](https://github.com/strongloop/loopback-next/issues/110)
+- [Guidelines](https://github.com/loopbackio/loopback-next/blob/master/docs/CONTRIBUTING.md)
+- [Join the team](https://github.com/loopbackio/loopback-next/issues/110)
 
 ## Tests
 
@@ -410,7 +410,7 @@ Run `npm test` from the root folder.
 ## Contributors
 
 See
-[all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
+[all contributors](https://github.com/loopbackio/loopback-next/graphs/contributors).
 
 ## License
 

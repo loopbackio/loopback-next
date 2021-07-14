@@ -188,7 +188,7 @@ export function getWhereJsonSchemaFor(
     }),
     type: 'object',
     // TODO(bajtos) enumerate "model" properties and operators like "and"
-    // See https://github.com/strongloop/loopback-next/issues/1748
+    // See https://github.com/loopbackio/loopback-next/issues/1748
     additionalProperties: true,
   };
 

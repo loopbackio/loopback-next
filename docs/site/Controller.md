@@ -257,7 +257,7 @@ function createControllerClass(version: string, basePath: string) {
 ```
 
 For a complete example, see
-[parameterized-decoration.ts](https://github.com/strongloop/loopback-next/blob/master/examples/context/src/parameterized-decoration.ts)
+[parameterized-decoration.ts](https://github.com/loopbackio/loopback-next/blob/master/examples/context/src/parameterized-decoration.ts)
 .
 
 ## Handling Errors in Controllers
@@ -359,7 +359,7 @@ The new CRUD REST endpoints for the model will be available on the app now.
 
 If you want a customized controller, you can create a copy of
 `defineCrudRestController`'s
-[implementation](https://github.com/strongloop/loopback-next/blob/00917f5a06ea8a51e1f452f228a6b0b7314809be/packages/rest-crud/src/crud-rest.controller.ts#L129-L269)
+[implementation](https://github.com/loopbackio/loopback-next/blob/00917f5a06ea8a51e1f452f228a6b0b7314809be/packages/rest-crud/src/crud-rest.controller.ts#L129-L269)
 and modify it according to your requirements.
 
 For details about `defineCrudRestController` and `CrudRestControllerOptions`,

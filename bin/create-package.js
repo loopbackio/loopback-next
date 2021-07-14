@@ -175,7 +175,7 @@ async function fixupProject({repoRoot, projectDir}) {
     },
     repository: {
       type: 'git',
-      url: 'https://github.com/strongloop/loopback-next.git',
+      url: 'https://github.com/loopbackio/loopback-next.git',
       directory: projectDir,
     },
   };

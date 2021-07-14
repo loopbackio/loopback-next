@@ -26,7 +26,7 @@ ports and working with different protocols.
 ## Usage
 
 LoopBack 4 offers the
-[`@loopback/rest`](https://github.com/strongloop/loopback-next/tree/master/packages/rest)
+[`@loopback/rest`](https://github.com/loopbackio/loopback-next/tree/master/packages/rest)
 package out of the box, which provides an HTTP/HTTPS-based server called
 `RestServer` for handling REST requests.
 

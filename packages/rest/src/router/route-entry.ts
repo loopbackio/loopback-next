@@ -53,7 +53,7 @@ export interface ResolvedRoute extends RouteEntry {
    * Server/application wide schemas shared by multiple routes,
    * e.g. model schemas. This is a temporary workaround for
    * missing support for $ref references, see
-   * https://github.com/strongloop/loopback-next/issues/435
+   * https://github.com/loopbackio/loopback-next/issues/435
    */
   readonly schemas: SchemasObject;
 }

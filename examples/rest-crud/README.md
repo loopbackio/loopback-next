@@ -6,7 +6,7 @@ repository and controller with a single model class and datasource.
 ## Overview
 
 The
-[Todo example](https://github.com/strongloop/loopback-next/tree/master/examples/todo)
+[Todo example](https://github.com/loopbackio/loopback-next/tree/master/examples/todo)
 can be simplified to use the default repository and controller classes provided
 by `@loopback/rest-crud`. With this package, there's no longer a need to define
 a repository or controller class for a model.
@@ -57,8 +57,8 @@ Server is running at http://127.0.0.1:3000
 
 ## Contributions
 
-- [Guidelines](https://github.com/strongloop/loopback-next/blob/master/docs/CONTRIBUTING.md)
-- [Join the team](https://github.com/strongloop/loopback-next/issues/110)
+- [Guidelines](https://github.com/loopbackio/loopback-next/blob/master/docs/CONTRIBUTING.md)
+- [Join the team](https://github.com/loopbackio/loopback-next/issues/110)
 
 ## Tests
 
@@ -67,7 +67,7 @@ Run `npm test` from the root folder.
 ## Contributors
 
 See
-[all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
+[all contributors](https://github.com/loopbackio/loopback-next/graphs/contributors).
 
 ## License
 

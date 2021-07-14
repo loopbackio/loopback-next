@@ -45,7 +45,7 @@ Once the API requirements are assessed,
     > LoopBack's extensive model discovery features and connectors.
 
 The example application
-[loopback4-example-shopping](https://github.com/strongloop/loopback4-example-shopping)
+[loopback4-example-shopping](https://github.com/loopbackio/loopback4-example-shopping)
 is a nice place for developers to begin their LoopBack 4 journey.
 
 In the following sections we will see how LoopBack can be used for the online
@@ -88,7 +88,7 @@ Similar to this we can breakdown further use cases into API requirements.
 
 In the example,
 
-- [A product recommendations application](https://github.com/strongloop/loopback4-example-shopping/tree/master/packages/recommender)
+- [A product recommendations application](https://github.com/loopbackio/loopback4-example-shopping/tree/master/packages/recommender)
   is defined to mock shopping recommendation APIs. This also gives an
   appropriate use case to demonstrate invoking external APIs.
 
@@ -138,10 +138,10 @@ endpoints with API `decorators`.
 For example,
 
 - `login()` method in the
-  [UserManagementController](https://github.com/strongloop/loopback4-example-shopping/blob/master/packages/shopping/src/controllers/user-management.controller.ts)
+  [UserManagementController](https://github.com/loopbackio/loopback4-example-shopping/blob/master/packages/shopping/src/controllers/user-management.controller.ts)
   class is defined as `/users/login` API endpoint.
 - argument of method `findById` in the
-  [UserManagementController](https://github.com/strongloop/loopback4-example-shopping/blob/master/packages/shopping/src/controllers/user-management.controller.ts)
+  [UserManagementController](https://github.com/loopbackio/loopback4-example-shopping/blob/master/packages/shopping/src/controllers/user-management.controller.ts)
   is decorated with `@param.path.string('userId')` which means that the `userId`
   parameter in the URL path is passed into the method at runtime.
 
@@ -159,7 +159,7 @@ rapid testing.
 
 For example, a `TokenService` interface is injected into the `UserController` to
 `verify` and `generate` tokens. A
-[JWT Service](https://github.com/strongloop/loopback4-example-shopping/blob/master/packages/shopping/src/services/jwt.service.ts)
+[JWT Service](https://github.com/loopbackio/loopback4-example-shopping/blob/master/packages/shopping/src/services/jwt.service.ts)
 provides a local implementation of this interface specifically for JWTs.
 
 Dependency injection is used to wire services and repositories with controllers
@@ -179,10 +179,10 @@ into repository classes.
 For example,
 
 - A
-  [JWT Authentication Strategy](https://github.com/strongloop/loopback-next/blob/master/extensions/authentication-jwt/src/services/jwt.auth.strategy.ts)
+  [JWT Authentication Strategy](https://github.com/loopbackio/loopback-next/blob/master/extensions/authentication-jwt/src/services/jwt.auth.strategy.ts)
   is implemented with a name property `jwt`.
 - `whoAmI` remote method in
-  [UserController](https://github.com/strongloop/loopback-next/blob/526e70e9a603d56ef96c5b42347b1d22ec0beac9/examples/todo-jwt/src/controllers/user.controller.ts#L97-L113)
+  [UserController](https://github.com/loopbackio/loopback-next/blob/526e70e9a603d56ef96c5b42347b1d22ec0beac9/examples/todo-jwt/src/controllers/user.controller.ts#L97-L113)
   is decorated with `authenticate('jwt')` to indicate the API endpoint is
   authenticated with json web tokens.
 
@@ -202,9 +202,9 @@ cardinalities like one-to-many or one-to-one.
 > Models can also be generated from [existing tables](Discovering-models.md) in
 > relational databases.
 
-[User](https://github.com/strongloop/loopback4-example-shopping/blob/master/packages/shopping/src/models/user.model.ts)
+[User](https://github.com/loopbackio/loopback4-example-shopping/blob/master/packages/shopping/src/models/user.model.ts)
 and
-[Order](https://github.com/strongloop/loopback4-example-shopping/blob/master/packages/shopping/src/models/order.model.ts)
+[Order](https://github.com/loopbackio/loopback4-example-shopping/blob/master/packages/shopping/src/models/order.model.ts)
 are domain objects in the shopping cart use case:
 
 - They have the same structure and relations when posted by users from the front
@@ -238,9 +238,9 @@ operations.
 From the example,
 
 - To query and persist `User` model data, the example uses a
-  [UserRepository](https://github.com/strongloop/loopback4-example-shopping/blob/master/packages/shopping/src/repositories/user.repository.ts).
+  [UserRepository](https://github.com/loopbackio/loopback4-example-shopping/blob/master/packages/shopping/src/repositories/user.repository.ts).
 - For the `Order` model,
-  [OrderRepository](https://github.com/strongloop/loopback4-example-shopping/blob/master/packages/shopping/src/repositories/order.repository.ts)
+  [OrderRepository](https://github.com/loopbackio/loopback4-example-shopping/blob/master/packages/shopping/src/repositories/order.repository.ts)
   is defined.
 - The `UserRepository` uses the entity composition defined in the `User` model
   to create a has-many relation with the `OrderRepository`
@@ -254,9 +254,9 @@ We need appropriate drivers to connect with the backend datasources.
 > to provide easy to use CRUD operations and connection configurations.
 
 In the example,
-[Redis datasource definition](https://github.com/strongloop/loopback4-example-shopping/blob/master/packages/shopping/src/datasources/redis.datasource.config.json)
+[Redis datasource definition](https://github.com/loopbackio/loopback4-example-shopping/blob/master/packages/shopping/src/datasources/redis.datasource.config.json)
 uses the LoopBack `kv-redis` connector and
-[MongoDB datasource definition](https://github.com/strongloop/loopback4-example-shopping/blob/master/packages/shopping/src/datasources/mongo.datasource.config.json)
+[MongoDB datasource definition](https://github.com/loopbackio/loopback4-example-shopping/blob/master/packages/shopping/src/datasources/mongo.datasource.config.json)
 uses the LoopBack `mongodb` connector.
 
 ## Application startup
@@ -267,7 +267,7 @@ accessible on a specific port, have a base url, etc. Also we may want to setup
 before the APIs are available online.
 
 The
-[ShoppingApplication class](https://github.com/strongloop/loopback4-example-shopping/blob/master/packages/shopping/src/application.ts)
+[ShoppingApplication class](https://github.com/loopbackio/loopback4-example-shopping/blob/master/packages/shopping/src/application.ts)
 is a palette to hold all common configurations and startup activities of the
 `Shopping` microservice.
 
@@ -276,7 +276,7 @@ The `ShoppingApplication` class extends the `RestApplication` class from the
 [LoopBack Server](Server.md) to `boot`, `start` and `stop`. The application can
 now be booted and started by calling the `app.boot` and `app.start` methods
 respectively. In the example, this call is made from the
-[index.ts](https://github.com/strongloop/loopback4-example-shopping/blob/master/packages/shopping/src/index.ts)
+[index.ts](https://github.com/loopbackio/loopback4-example-shopping/blob/master/packages/shopping/src/index.ts)
 file.
 
 ## Summary

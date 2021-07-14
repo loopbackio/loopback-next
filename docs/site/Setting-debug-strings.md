@@ -85,7 +85,7 @@ For example:
 `loopback:cli:model-generator`
 
 The debug string `model-generator` is specified in the source file
-[`generators/model/index.js`](https://github.com/strongloop/loopback-next/blob/master/packages/cli/generators/model/index.js)
+[`generators/model/index.js`](https://github.com/loopbackio/loopback-next/blob/master/packages/cli/generators/model/index.js)
 of the `@loopback/cli` module.
 
 ## Debug strings reference

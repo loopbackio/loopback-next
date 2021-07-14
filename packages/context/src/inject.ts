@@ -510,7 +510,7 @@ function shouldSkipBaseConstructorInjection(targetClass: Object) {
   const classDef = targetClass.toString();
   return (
     /*
-     * See https://github.com/strongloop/loopback-next/issues/2946
+     * See https://github.com/loopbackio/loopback-next/issues/2946
      * A class decorator can return a new constructor that mixes in
      * additional properties/methods.
      *
@@ -539,7 +539,7 @@ function shouldSkipBaseConstructorInjection(targetClass: Object) {
       /\s+constructor\s*\(\s*\)\s*\{\s*super\(\.\.\.arguments\)/,
     ) &&
     /*
-     * See https://github.com/strongloop/loopback-next/issues/1565
+     * See https://github.com/loopbackio/loopback-next/issues/1565
      *
      * @example
      * ```ts

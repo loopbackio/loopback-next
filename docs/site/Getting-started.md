@@ -109,4 +109,4 @@ lb4 controller
 ## Code sample
 
 You can view the generated code for this example at:
-[hello-world](https://github.com/strongloop/loopback-next/tree/master/examples/hello-world)
+[hello-world](https://github.com/loopbackio/loopback-next/tree/master/examples/hello-world)

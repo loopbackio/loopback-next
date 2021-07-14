@@ -84,13 +84,13 @@ we've broken down the documentations into several parts:
 Here is a list of authentication related examples created by LoopBack team or
 contributed by community members:
 
-- **[passport-login](https://github.com/strongloop/loopback-next/tree/master/examples/passport-login)**:
+- **[passport-login](https://github.com/loopbackio/loopback-next/tree/master/examples/passport-login)**:
   An example implementing authentication in a LoopBack application using
   [Passport](https://github.com/jaredhanson/passport) modules.
 
-- **[todo-jwt](https://github.com/strongloop/loopback-next/tree/master/examples/todo-jwt)**:
+- **[todo-jwt](https://github.com/loopbackio/loopback-next/tree/master/examples/todo-jwt)**:
   A modified
-  [Todo example](https://github.com/strongloop/loopback-next/tree/master/examples/todo)
+  [Todo example](https://github.com/loopbackio/loopback-next/tree/master/examples/todo)
   with JWT authentication.
 
 - **[(community) build jwt authentication from scratch](https://github.com/HrithikMittal/Loopback4-auth)**:

@@ -11,9 +11,9 @@ and provides out-of-the-box matching rules, strategies and authorization
 patterns. These libraries also help with mundane tasks like mapping user
 profiles to scopes and roles, modifying configurations dynamically, etc. Please
 look at the
-[loopback shopping example](https://github.com/strongloop/loopback4-example-shopping)
+[loopback shopping example](https://github.com/loopbackio/loopback4-example-shopping)
 to see how [CasBin library](https://github.com/casbin/casbin) is
-[injected as an enforcer](https://github.com/strongloop/loopback4-example-shopping/pull/231)
+[injected as an enforcer](https://github.com/loopbackio/loopback4-example-shopping/pull/231)
 into the authorization provider.
 
 ```ts

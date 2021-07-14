@@ -10,7 +10,7 @@ directories with `package.json` will be picked up by `lerna` as a package of the
 To add a new package for sandbox testing:
 
 ```sh
-git clone git@github.com:strongloop/loopback-next.git
+git clone git@github.com:loopbackio/loopback-next.git
 cd loopback-next/sandbox
 ```
 

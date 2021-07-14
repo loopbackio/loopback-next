@@ -8,7 +8,7 @@ permalink: /doc/en/lb4/migration-models-core.html
 ---
 
 {% include tip.html content="
-Missing instructions for your LoopBack 3 use case? Please report a [Migration docs issue](https://github.com/strongloop/loopback-next/issues/new?labels=question,Migration,Docs&template=Migration_docs.md) on GitHub to let us know.
+Missing instructions for your LoopBack 3 use case? Please report a [Migration docs issue](https://github.com/loopbackio/loopback-next/issues/new?labels=question,Migration,Docs&template=Migration_docs.md) on GitHub to let us know.
 " %}
 
 In LoopBack 3, a single model class has three responsibilities: it describes
@@ -96,7 +96,7 @@ We don't have a template for KeyValue controllers yet. Pull requests are welcome
 We are working on declarative support that will allow you to avoid custom
 repository and controller classes. It will be possible to configure both the
 persistence behavior and public API via a JSON-like file. Follow the progress in
-[loopback-next#2036](https://github.com/strongloop/loopback-next/issues/2036).
+[loopback-next#2036](https://github.com/loopbackio/loopback-next/issues/2036).
 
 ## Migrating models backed by web service connectors
 
@@ -124,6 +124,6 @@ to create a service and a controller manually.
 
 We would like to eventually support declarative approach similar to what
 LoopBack 3 offers. You can follow the progress in
-[loopback-next#3717](https://github.com/strongloop/loopback-next/issues/3717).
+[loopback-next#3717](https://github.com/loopbackio/loopback-next/issues/3717).
 If you are interested in this feature, then please upvote the GitHub issue to
 let us know!

@@ -9,7 +9,7 @@ permalink: /doc/en/lb4/Loopback-component-authorization.html
 ## Registering the Authorization Component
 
 The `@loopback/authorization` package exports an
-[Authorization Component](https://github.com/strongloop/loopback-next/blob/master/packages/authorization/src/authorization-component.ts)
+[Authorization Component](https://github.com/loopbackio/loopback-next/blob/master/packages/authorization/src/authorization-component.ts)
 class.
 
 - Developers will have to register this component to use access control features
@@ -44,7 +44,7 @@ class.
   ```
 
 The component also declares various
-[types](https://github.com/strongloop/loopback-next/blob/master/packages/authorization/src/types.ts)
+[types](https://github.com/loopbackio/loopback-next/blob/master/packages/authorization/src/types.ts)
 to use in defining necessary classes and inputs by developers.
 
 - `Authorizer`: A class implementing access policies. Accepts

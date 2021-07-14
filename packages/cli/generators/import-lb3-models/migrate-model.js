@@ -187,7 +187,7 @@ function migrateModelSettings(settings = {}, inherited = {}, log) {
     // The value 'auto' is used when a parent model wants to let the child
     // model make the decision automatically, depending on whether the child
     // model has a database-generated PK.
-    // See https://github.com/strongloop/loopback-datasource-juggler/blob/15251880a1d07ccc2ca6d2dccdd065d00a7375eb/lib/model-builder.js#L347-L355
+    // See https://github.com/loopbackio/loopback-datasource-juggler/blob/15251880a1d07ccc2ca6d2dccdd065d00a7375eb/lib/model-builder.js#L347-L355
     //
     // Let's delete the flag from the generated model settings and
     // leave it up to the runtime to decide.

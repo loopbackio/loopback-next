@@ -11,7 +11,7 @@ permalink: /doc/en/lb4/Preparing-the-API-for-consumption.html
 ### Interacting with your API
 
 We'll use the repo
-[loopback4-example-todo](https://github.com/strongloop/loopback-next/blob/master/examples/todo)
+[loopback4-example-todo](https://github.com/loopbackio/loopback-next/blob/master/examples/todo)
 to demonstrate how Swagger UI can be used to test your endpoints.
 
 First, git clone the repository, install its dependencies, and run the
@@ -67,35 +67,35 @@ coming weeks and months.
 Here is a sneak peek of what's coming:
 
 - More extensions and extension points an:
-  [loopback-next issue #512](https://github.com/strongloop/loopback-next/issues/512)
+  [loopback-next issue #512](https://github.com/loopbackio/loopback-next/issues/512)
 
 - Authorization component:
-  [loopback-next issue #538](https://github.com/strongloop/loopback-next/issues/538)
+  [loopback-next issue #538](https://github.com/loopbackio/loopback-next/issues/538)
 
 - Fully-fledged API explorer:
-  [loopback-next issue #559](https://github.com/strongloop/loopback-next/issues/559)
+  [loopback-next issue #559](https://github.com/loopbackio/loopback-next/issues/559)
 
 - Complete repository/service story for backend interactions
 
-  - [loopback-next issue #419](https://github.com/strongloop/loopback-next/issues/419)
-  - [loopback-next issue #537](https://github.com/strongloop/loopback-next/issues/537)
-  - [loopback-next issue #522](https://github.com/strongloop/loopback-next/issues/522)
+  - [loopback-next issue #419](https://github.com/loopbackio/loopback-next/issues/419)
+  - [loopback-next issue #537](https://github.com/loopbackio/loopback-next/issues/537)
+  - [loopback-next issue #522](https://github.com/loopbackio/loopback-next/issues/522)
 
 - Declarative support for various constructs
 
-  - [loopback-next issue #441](https://github.com/strongloop/loopback-next/issues/441)
-  - [loopback-next issue #461](https://github.com/strongloop/loopback-next/issues/461)
+  - [loopback-next issue #441](https://github.com/loopbackio/loopback-next/issues/441)
+  - [loopback-next issue #461](https://github.com/loopbackio/loopback-next/issues/461)
 
 - Alignment of microservices and cloud native experience
 
-  - [loopback-next issue #442](https://github.com/strongloop/loopback-next/issues/442)
-  - [loopback-next issue #25](https://github.com/strongloop/loopback-next/issues/25)
+  - [loopback-next issue #442](https://github.com/loopbackio/loopback-next/issues/442)
+  - [loopback-next issue #25](https://github.com/loopbackio/loopback-next/issues/25)
 
 - Tooling:
-  [loopback-next issue #361](https://github.com/strongloop/loopback-next/issues/361)
+  [loopback-next issue #361](https://github.com/loopbackio/loopback-next/issues/361)
 
 - Plain JavaScript:
-  [loopback-next issue #560](https://github.com/strongloop/loopback-next/issues/560)
+  [loopback-next issue #560](https://github.com/loopbackio/loopback-next/issues/560)
 
 The train is moving and welcome on board! Your participation and contribution
 will make LoopBack 4 an even more powerful framework and greater

@@ -8,7 +8,7 @@ permalink: /doc/en/lb4/migration-auth-passport.html
 ---
 
 {% include tip.html content="
-Missing instructions for your LoopBack 3 use case? Please report a [Migration docs issue](https://github.com/strongloop/loopback-next/issues/new?labels=question,Migration,Docs&template=Migration_docs.md) on GitHub to let us know.
+Missing instructions for your LoopBack 3 use case? Please report a [Migration docs issue](https://github.com/loopbackio/loopback-next/issues/new?labels=question,Migration,Docs&template=Migration_docs.md) on GitHub to let us know.
 " %}
 
 # Migrating Passport Strategies
@@ -23,7 +23,7 @@ package.
 
 In LoopBack 3, routes can be configured explicitly as authentication providers
 using Express style passport strategies middleware. Also the
-[LB3 passport component](https://github.com/strongloop/loopback-component-passport)
+[LB3 passport component](https://github.com/loopbackio/loopback-component-passport)
 helped with implicit authentication configuration using json files. It had
 built-in model classes to search users and persist user identities.
 
@@ -38,22 +38,22 @@ authentication design of LB4.
 
 To demonstrate how to implement passport strategies in LoopBack 4 and migrate
 LB3 apps using
-[loopback-component-passport](https://github.com/strongloop/loopback-component-passport),
+[loopback-component-passport](https://github.com/loopbackio/loopback-component-passport),
 a
-[passport-login](https://github.com/strongloop/loopback-next/tree/master/examples/passport-login)
+[passport-login](https://github.com/loopbackio/loopback-next/tree/master/examples/passport-login)
 example app is now available.
 
 This example is migrated from
-[loopback-example-passport](https://github.com/strongloop/loopback-example-passport),
+[loopback-example-passport](https://github.com/loopbackio/loopback-example-passport),
 it demonstrates how to use the LoopBack 4 features (like `@authenticate`
 decorator, strategy providers, etc) with passport strategies. It includes OAuth2
 strategies to interact with external OAuth providers like Facebook, Google, etc
 as well as local and basic strategies.
 
 Take a look at the test cases of the
-[example app](https://github.com/strongloop/loopback-next/tree/master/examples/passport-login)
+[example app](https://github.com/loopbackio/loopback-next/tree/master/examples/passport-login)
 and the
-[mock social app for testing](https://github.com/strongloop/loopback-next/tree/master/extensions/authentication-passport/src/__tests__/acceptance)
+[mock social app for testing](https://github.com/loopbackio/loopback-next/tree/master/extensions/authentication-passport/src/__tests__/acceptance)
 
 You can use this example to see how to:
 

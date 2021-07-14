@@ -67,7 +67,7 @@ const config = {
 ```
 
 For details, you can refer to the
-[SOAP connector's operations property](https://github.com/strongloop/loopback-connector-soap#operations-property)
+[SOAP connector's operations property](https://github.com/loopbackio/loopback-connector-soap#operations-property)
 
 ## Add a service
 

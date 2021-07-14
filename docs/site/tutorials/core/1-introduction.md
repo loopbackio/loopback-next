@@ -49,7 +49,7 @@ Instead of creating a monolithic application, we would like to have good
 separation of concerns by dividing responsibilities into a few artifacts. The
 key building blocks are illustrated below based on features offered by
 LoopBack 4. The code is being developed in the
-[Greeter Extension Example](https://github.com/strongloop/loopback-next/tree/core-tutorial/examples/greeter-extension).
+[Greeter Extension Example](https://github.com/loopbackio/loopback-next/tree/core-tutorial/examples/greeter-extension).
 
 ![Greeting Scenario](../../imgs/tutorials/core/greeting-app.png)
 
@@ -57,12 +57,12 @@ LoopBack 4. The code is being developed in the
 
 We are going to decompose the application into two packages:
 
-1. [example-greeter-extension](https://github.com/strongloop/loopback-next/tree/core-tutorial/examples/greeter-extension)
+1. [example-greeter-extension](https://github.com/loopbackio/loopback-next/tree/core-tutorial/examples/greeter-extension)
 
    - GreetingService to greet by language and name
    - English and Chinese greeters to greet in English and Chinese respectively
 
-2. [example-greeting-app](https://github.com/strongloop/loopback-next/tree/core-tutorial/examples/greeting-app)
+2. [example-greeting-app](https://github.com/loopbackio/loopback-next/tree/core-tutorial/examples/greeting-app)
 
    - CachingService to provide caching facilities
    - GreetingController to expose REST APIs

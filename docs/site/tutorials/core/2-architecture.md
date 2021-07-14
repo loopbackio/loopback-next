@@ -89,7 +89,7 @@ There are conflict of interests between the two:
 ## Scenario
 
 We are going to use the
-[Greeter Extension](https://github.com/strongloop/loopback-next/tree/master/examples/greeter-extension)
+[Greeter Extension](https://github.com/loopbackio/loopback-next/tree/master/examples/greeter-extension)
 to illustrate how LoopBack can help you to build large scale Node.js
 applications.
 

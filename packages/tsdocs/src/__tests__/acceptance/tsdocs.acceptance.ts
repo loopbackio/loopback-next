@@ -144,7 +144,7 @@ lang: en
 title: 'API docs: index'
 keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI
 sidebar: lb4_sidebar
-editurl: https://github.com/strongloop/loopback-next
+editurl: https://github.com/loopbackio/loopback-next
 permalink: /doc/en/lb4/apidocs.index.html
 ---`);
 

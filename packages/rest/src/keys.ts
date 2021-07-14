@@ -92,7 +92,7 @@ export namespace RestBindings {
    * Binding key for setting and injecting Reject action's error handling
    * options.
    *
-   * See https://github.com/strongloop/strong-error-handler#options for
+   * See https://github.com/loopbackio/strong-error-handler#options for
    * the list of available options. Please note that the flag `log` is not used
    * by `@loopback/rest`.
    */

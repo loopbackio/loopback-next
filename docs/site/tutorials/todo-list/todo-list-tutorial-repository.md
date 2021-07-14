@@ -58,7 +58,7 @@ export class TodoListRepository extends DefaultCrudRepository<
 ```
 
 To view the completed file, see the
-[`TodoList` example](https://github.com/strongloop/loopback-next/blob/master/examples/todo-list/src/repositories/todo-list.repository.ts).
+[`TodoList` example](https://github.com/loopbackio/loopback-next/blob/master/examples/todo-list/src/repositories/todo-list.repository.ts).
 
 ### Navigation
 

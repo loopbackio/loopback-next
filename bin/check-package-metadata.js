@@ -143,7 +143,7 @@ async function checkPkgsPackageJson(packages, rootPkg) {
       pkg.repository &&
       pkg.repository.url &&
       pkg.repository.url.includes(
-        'https://github.com/strongloop/loopback-next.git',
+        'https://github.com/loopbackio/loopback-next.git',
       );
 
     if (!isCorrectRepositoryUrl) {

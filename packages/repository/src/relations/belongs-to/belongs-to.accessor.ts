@@ -53,7 +53,7 @@ export function createBelongsToAccessor<
       const foreignKeyValue = sourceModel[foreignKey as keyof Source];
       // workaround to check referential integrity.
       // should be removed once the memory connector ref integrity is done
-      // GH issue: https://github.com/strongloop/loopback-next/issues/2333
+      // GH issue: https://github.com/loopbackio/loopback-next/issues/2333
       if (!foreignKeyValue) {
         return undefined as unknown as Target;
       }

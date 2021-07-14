@@ -12,7 +12,7 @@ adapter module is created for plugging in
 authentication system in `@loopback/authentication@3.x`.
 
 If you would like to try with an example,
-[`@loopback/example-passport-login`](https://github.com/strongloop/loopback-next/tree/master/examples/passport-login)
+[`@loopback/example-passport-login`](https://github.com/loopbackio/loopback-next/tree/master/examples/passport-login)
 uses this module to authenticate APIs with several OAuth 2.0 passport strategies
 like Facebook, Google.
 

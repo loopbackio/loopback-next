@@ -178,7 +178,7 @@ The tool will prompt you for:
 It might also prompt for names and types of the source/destination models if
 they cannot be detected from model files.
 
-{% include warning.html content="Based on your input, the default foreign key name might be the same as the default relation name, especially for belongsTo relation. Please name them differently to avoid a known issue [Navigational Property Error](https://github.com/strongloop/loopback-next/issues/4392)
+{% include warning.html content="Based on your input, the default foreign key name might be the same as the default relation name, especially for belongsTo relation. Please name them differently to avoid a known issue [Navigational Property Error](https://github.com/loopbackio/loopback-next/issues/4392)
 " lang=page.lang %}
 
 The generator has some limitations. It only asks the most basic factors for

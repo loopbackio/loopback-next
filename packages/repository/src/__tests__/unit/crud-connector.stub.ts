@@ -89,7 +89,7 @@ export class CrudConnectorStub implements CrudConnector {
   }
 
   // Promises are not allowed yet
-  // See https://github.com/strongloop/loopback-datasource-juggler/issues/1659
+  // See https://github.com/loopbackio/loopback-datasource-juggler/issues/1659
   // for tracking support
   beginTransaction(options: Options, cb: Callback) {
     return cb(null, {});

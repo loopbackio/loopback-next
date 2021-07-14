@@ -58,7 +58,7 @@ describe('validateRequestBody', () => {
     );
   });
 
-  // Test for https://github.com/strongloop/loopback-next/issues/3234
+  // Test for https://github.com/loopbackio/loopback-next/issues/3234
   it('honors options for AJV validator caching', async () => {
     // 1. Trigger a validation with `{coerceTypes: false}`
     await validateRequestBody(

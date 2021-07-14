@@ -45,6 +45,6 @@ The architecture diagram is:
 ## Tutorial
 
 The example is created in repository
-[access-control-migration](https://github.com/strongloop/loopback-next/tree/master/examples/access-control-migration),
+[access-control-migration](https://github.com/loopbackio/loopback-next/tree/master/examples/access-control-migration),
 and a tutorial of building it from scratch can be found in
 [access control example migration](./migration/auth/migration-auth-access-control-example.md).

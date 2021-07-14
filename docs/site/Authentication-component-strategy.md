@@ -28,23 +28,23 @@ strategy for the authentication action to proceed.
 It's usually **extension developer**'s responsibility to provide an
 authentication strategy as provider. To simplify the tutorial, we leverage an
 existing strategy from file
-[basic authentication strategy](https://github.com/strongloop/loopback-next/blob/master/packages/authentication/src/__tests__/fixtures/strategies/basic-strategy.ts)
+[basic authentication strategy](https://github.com/loopbackio/loopback-next/blob/master/packages/authentication/src/__tests__/fixtures/strategies/basic-strategy.ts)
 to show users how to register (bind) an strategy to the application.
 
 Before registering the `basic` strategy, please make sure the following files
 are copied to your application:
 
 - Copy
-  [basic authentication strategy](https://github.com/strongloop/loopback-next/blob/master/packages/authentication/src/__tests__/fixtures/strategies/basic-strategy.ts)
+  [basic authentication strategy](https://github.com/loopbackio/loopback-next/blob/master/packages/authentication/src/__tests__/fixtures/strategies/basic-strategy.ts)
   to `src/strategies/basic-strategy.ts`
 - Copy
-  [user service](https://github.com/strongloop/loopback-next/blob/master/packages/authentication/src/__tests__/fixtures/services/basic-auth-user-service.ts)
+  [user service](https://github.com/loopbackio/loopback-next/blob/master/packages/authentication/src/__tests__/fixtures/services/basic-auth-user-service.ts)
   to `src/services/basic-auth-user-service.ts`
   - Copy
-    [user model](https://github.com/strongloop/loopback-next/blob/master/packages/authentication/src/__tests__/fixtures/users/user.ts)
+    [user model](https://github.com/loopbackio/loopback-next/blob/master/packages/authentication/src/__tests__/fixtures/users/user.ts)
     to `src/models/user.ts`
   - Copy
-    [user repository](https://github.com/strongloop/loopback-next/blob/master/packages/authentication/src/__tests__/fixtures/users/user.repository.ts)
+    [user repository](https://github.com/loopbackio/loopback-next/blob/master/packages/authentication/src/__tests__/fixtures/users/user.repository.ts)
     to `src/repositories/user.repository.ts`
 
 **Registering** `BasicAuthenticationStrategy` in an application `application.ts`

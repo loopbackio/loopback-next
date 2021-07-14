@@ -90,7 +90,7 @@ The default owner is `IBM Corp.` and license is `MIT` with the following
 ### Output
 
 The following output is captured when `lb4 copyright` is run against
-[`loopback4-example-shopping`](https://github.com/strongloop/loopback4-example-shopping).
+[`loopback4-example-shopping`](https://github.com/loopbackio/loopback4-example-shopping).
 
 ```
 ? Copyright owner: IBM Corp.

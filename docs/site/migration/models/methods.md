@@ -8,7 +8,7 @@ permalink: /doc/en/lb4/migration-models-methods.html
 ---
 
 {% include tip.html content="
-Missing instructions for your LoopBack 3 use case? Please report a [Migration docs issue](https://github.com/strongloop/loopback-next/issues/new?labels=question,Migration,Docs&template=Migration_docs.md) on GitHub to let us know.
+Missing instructions for your LoopBack 3 use case? Please report a [Migration docs issue](https://github.com/loopbackio/loopback-next/issues/new?labels=question,Migration,Docs&template=Migration_docs.md) on GitHub to let us know.
 " %}
 
 ## Introduction
@@ -35,9 +35,9 @@ application developers. LoopBack ships a few predefined repository interfaces
 for typical CRUD and KV operations. These repository implementations leverage
 model definition and dataSource configuration to fulfill the logic for data
 access. See more examples at
-[Repository/CrudRepository/EntityRepository](https://github.com/strongloop/loopback-next/blob/master/packages/repository/src/repositories/repository.ts)
+[Repository/CrudRepository/EntityRepository](https://github.com/loopbackio/loopback-next/blob/master/packages/repository/src/repositories/repository.ts)
 and
-[KeyValueRepository](https://github.com/strongloop/loopback-next/blob/master/packages/repository/src/repositories/kv.repository.ts).
+[KeyValueRepository](https://github.com/loopbackio/loopback-next/blob/master/packages/repository/src/repositories/kv.repository.ts).
 
 A `Controller` is a class that implements operations defined by an application’s
 API. It implements an application’s business logic and acts as a bridge between
@@ -106,7 +106,7 @@ export class NoteRepository extends DefaultCrudRepository<
 ```
 
 It extends
-[DefaultCrudRepository](https://github.com/strongloop/loopback-next/blob/master/packages/repository/src/repositories/legacy-juggler-bridge.ts)
+[DefaultCrudRepository](https://github.com/loopbackio/loopback-next/blob/master/packages/repository/src/repositories/legacy-juggler-bridge.ts)
 . It handles all persistence operations against the datasource.
 
 A CLI-generated **controller** for the model `Note` would look like this: (To
@@ -152,7 +152,7 @@ export class NoteController {
 ```
 
 For a full example of a CLI-generated controller for a model `Todo`, see
-[TodoController ](https://github.com/strongloop/loopback-next/blob/master/examples/todo/src/controllers/todo.controller.ts).
+[TodoController ](https://github.com/loopbackio/loopback-next/blob/master/examples/todo/src/controllers/todo.controller.ts).
 
 One of the first things you will notice in the controller is that it injects the
 repository `NoteRepository` to handle all persistence operations.

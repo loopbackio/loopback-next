@@ -9,7 +9,7 @@ permalink: /doc/en/lb4/migration-extensions-rest-api.html
 ---
 
 {% include tip.html content="
-Missing instructions for your LoopBack 3 use case? Please report a [Migration docs issue](https://github.com/strongloop/loopback-next/issues/new?labels=question,Migration,Docs&template=Migration_docs.md) on GitHub to let us know.
+Missing instructions for your LoopBack 3 use case? Please report a [Migration docs issue](https://github.com/loopbackio/loopback-next/issues/new?labels=question,Migration,Docs&template=Migration_docs.md) on GitHub to let us know.
 " %}
 
 Please get yourself familiar with
@@ -80,7 +80,7 @@ additional steps:
 
 2. In the LoopBack 4 controller method, use Express API like `res.contentType()`
    and `res.send()` to send back the result. (This is a workaround until
-   [loopback-next#436](https://github.com/strongloop/loopback-next/issues/436)
+   [loopback-next#436](https://github.com/loopbackio/loopback-next/issues/436)
    is implemented).
 
 ## Migrating file upload & download

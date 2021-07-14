@@ -221,7 +221,7 @@ The new CRUD REST endpoints for the model will be available on the app now.
 
 If you want a customized controller, you can create a copy of
 `defineCrudRestController`'s
-[implementation](https://github.com/strongloop/loopback-next/blob/00917f5a06ea8a51e1f452f228a6b0b7314809be/packages/rest-crud/src/crud-rest.controller.ts#L129-L269)
+[implementation](https://github.com/loopbackio/loopback-next/blob/00917f5a06ea8a51e1f452f228a6b0b7314809be/packages/rest-crud/src/crud-rest.controller.ts#L129-L269)
 and modify it according to your requirements.
 
 For details about `defineCrudRestController` and `CrudRestControllerOptions`,
@@ -257,5 +257,5 @@ const schema = await ds.discoverSchema(table, {owner: 'STRONGLOOP'});
 ```
 
 For more details, refer to the "
-[LoopBack DataSource and Connector Guide](https://github.com/strongloop/loopback-datasource-juggler/blob/master/docs/datasource-connector.md)
+[LoopBack DataSource and Connector Guide](https://github.com/loopbackio/loopback-datasource-juggler/blob/master/docs/datasource-connector.md)
 ".

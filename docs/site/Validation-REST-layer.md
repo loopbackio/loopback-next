@@ -69,7 +69,7 @@ Besides AJV, other third-party validation libraries, such as
 
 Below are a few examples of using AJV for validation. The source code of the
 snippets can be found in the
-[coffee-shop.model.ts in the example app](https://github.com/strongloop/loopback-next/blob/master/examples/validation-app/src/models/coffee-shop.model.ts).
+[coffee-shop.model.ts in the example app](https://github.com/loopbackio/loopback-next/blob/master/examples/validation-app/src/models/coffee-shop.model.ts).
 
 {% include note.html content="The `jsonSchema` property expects [JSON Schema Draft-07](http://json-schema.org/draft/2019-09/json-schema-validation.html), which is then transformed into the [OAS 3](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md) variant." %}
 

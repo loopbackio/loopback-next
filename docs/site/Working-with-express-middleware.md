@@ -47,8 +47,8 @@ concepts:
 
 At the moment, LoopBack does not provide API for mounting arbitrary middleware,
 we are discussing this feature in issues
-[#1293](https://github.com/strongloop/loopback-next/issues/1293) and
-[#2035](https://github.com/strongloop/loopback-next/issues/2035). Please up-vote
+[#1293](https://github.com/loopbackio/loopback-next/issues/1293) and
+[#2035](https://github.com/loopbackio/loopback-next/issues/2035). Please up-vote
 them if you are interested in using Express middleware in LoopBack applications.
 
 All applications come with [cors](https://www.npmjs.com/package/cors) enabled,

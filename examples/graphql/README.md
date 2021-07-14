@@ -1,7 +1,7 @@
 # @loopback/example-graphql
 
 An example application to demonstrate GraphQL integration for LoopBack 4 using
-[@loopback/graphql](https://github.com/strongloop/loopback-next/tree/graphql/extensions/graphql).
+[@loopback/graphql](https://github.com/loopbackio/loopback-next/tree/graphql/extensions/graphql).
 
 ## Try it out
 
@@ -58,8 +58,8 @@ query GetRecipe1 {
 
 ## Contributions
 
-- [Guidelines](https://github.com/strongloop/loopback-next/blob/master/docs/CONTRIBUTING.md)
-- [Join the team](https://github.com/strongloop/loopback-next/issues/110)
+- [Guidelines](https://github.com/loopbackio/loopback-next/blob/master/docs/CONTRIBUTING.md)
+- [Join the team](https://github.com/loopbackio/loopback-next/issues/110)
 
 ## Tests
 
@@ -68,7 +68,7 @@ Run `npm test` from the root folder.
 ## Contributors
 
 See
-[all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
+[all contributors](https://github.com/loopbackio/loopback-next/graphs/contributors).
 
 ## License
 

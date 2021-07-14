@@ -284,7 +284,7 @@ function getIdSchema<T extends Entity>(
 }
 
 // Temporary implementation of a short-hand version of `@requestBody`
-// See https://github.com/strongloop/loopback-next/issues/3493
+// See https://github.com/loopbackio/loopback-next/issues/3493
 function body<T extends Entity>(
   modelCtor: Function & {prototype: T},
   options?: JsonSchemaOptions<T>,
@@ -299,7 +299,7 @@ function body<T extends Entity>(
 }
 
 // Temporary workaround for a missing `@response` decorator
-// See https://github.com/strongloop/loopback-next/issues/1672
+// See https://github.com/loopbackio/loopback-next/issues/1672
 // Please note this is just a workaround, the real helper should be implemented
 // as a decorator that contributes OpenAPI metadata in a way that allows
 // `@post` to merge the responses with the metadata provided at operation level

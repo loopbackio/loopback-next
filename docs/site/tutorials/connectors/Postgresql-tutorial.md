@@ -12,7 +12,7 @@ permalink: /doc/en/lb4/Connecting-to-PostgreSQL.html
 
 The following tutorial introduces how to set up PostgreSQL as the data source of
 LoopBack 4 applications with
-[LoopBack PostgreSQL connector](https://github.com/strongloop/loopback-connector-postgresql).
+[LoopBack PostgreSQL connector](https://github.com/loopbackio/loopback-connector-postgresql).
 
 ## Prerequisites
 

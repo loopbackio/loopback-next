@@ -17,7 +17,7 @@ strategies and an `@authenticate` decorator.
 
 This tutorial shows you how to add JWT authentication to your LoopBack
 application using the extension
-[`@loopback/authentication-jwt`](https://github.com/strongloop/loopback-next/tree/master/extensions/authentication-jwt).
+[`@loopback/authentication-jwt`](https://github.com/loopbackio/loopback-next/tree/master/extensions/authentication-jwt).
 
 For demonstration purpose, we will be using the
 [Todo application](https://loopback.io/doc/en/lb4/todo-tutorial.html) as the
@@ -226,7 +226,7 @@ constructor(
 ```
 
 For the implementation of all the 3 endpoints, you can take a look at this
-[user.controller.ts](https://github.com/strongloop/loopback-next/blob/master/examples/todo-jwt/src/controllers/user.controller.ts)
+[user.controller.ts](https://github.com/loopbackio/loopback-next/blob/master/examples/todo-jwt/src/controllers/user.controller.ts)
 in the [`todo-jwt` example].
 
 ## Step 4: Protect the Todo APIs
@@ -315,6 +315,6 @@ LoopBack application! We did the following:
 - protect the APIs by adding the `@authenticate` decorator
 
 See the
-[todo-jwt example](https://github.com/strongloop/loopback-next/blob/master/examples/todo-jwt)
+[todo-jwt example](https://github.com/loopbackio/loopback-next/blob/master/examples/todo-jwt)
 for the working application. You can also run `lb4 example todo-jwt` to download
 the example.

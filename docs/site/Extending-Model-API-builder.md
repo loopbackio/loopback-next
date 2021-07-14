@@ -7,7 +7,7 @@ permalink: /doc/en/lb4/Extending-Model-API-builder.html
 ---
 
 The
-[`@loopback/model-api-builder`](https://github.com/strongloop/loopback-next/tree/master/packages/model-api-builder)
+[`@loopback/model-api-builder`](https://github.com/loopbackio/loopback-next/tree/master/packages/model-api-builder)
 package provides types and helpers for packages contributing Model API builders.
 From a model class, this module can be used to define a contract to create a
 corresponding repository and controller. An example Model API builder is the
@@ -17,7 +17,7 @@ details in [Creating CRUD REST APIs](Creating-CRUD-REST-apis.md).
 
 `@loopback/model-api-builder` helps create a configuration for the repository
 and controllers and
-[`@loopback/boot`](https://github.com/strongloop/loopback-next/tree/master/packages/boot)
+[`@loopback/boot`](https://github.com/loopbackio/loopback-next/tree/master/packages/boot)
 processes this configuration and registers appropriate repositories and
 controllers with the app.
 

@@ -9,7 +9,7 @@ permalink: /doc/en/lb4/Download-examples.html
 ### Synopsis
 
 Downloads a LoopBack example project from our
-[GitHub monorepo](https://github.com/strongloop/loopback-next).
+[GitHub monorepo](https://github.com/loopbackio/loopback-next).
 
 ```text
 lb4 example [options] [<example-name>]

@@ -49,7 +49,7 @@ requests matching to a fixed path can be resolved quickly.
 By default, `@loopback/rest` uses `TrieRouter` as it performs better than
 `RegExpRouter`. There is a simple benchmarking for `RegExpRouter` and
 `TrieRouter` at
-https://githhub.com/strongloop/loopback-next/benchmark/src/rest-routing/routing-table.ts.
+https://githhub.com/loopbackio/loopback-next/benchmark/src/rest-routing/routing-table.ts.
 
 To change the router for REST routing, we can bind the router class as follows:
 
@@ -88,5 +88,5 @@ export interface RestRouter {
 
 See examples at:
 
-- [TrieRouter](https://github.com/strongloop/loopback-next/tree/master/packages/rest/src/router/trie-router.ts)
-- [RegExpRouter](https://github.com/strongloop/loopback-next/tree/master/packages/rest/src/router/regexp-router.ts)
+- [TrieRouter](https://github.com/loopbackio/loopback-next/tree/master/packages/rest/src/router/trie-router.ts)
+- [RegExpRouter](https://github.com/loopbackio/loopback-next/tree/master/packages/rest/src/router/regexp-router.ts)

@@ -40,9 +40,9 @@ Express application, which would allow you to still use the familiar routing
 methods.
 
 {% include tip.html content="Follow our GitHub issues
-[#1293](https://github.com/strongloop/loopback-next/issues/1293)
+[#1293](https://github.com/loopbackio/loopback-next/issues/1293)
 and
-[#2035](https://github.com/strongloop/loopback-next/issues/2035)
+[#2035](https://github.com/loopbackio/loopback-next/issues/2035)
 to track the progress on supporting Express middlweware in LoopBack 4." %}
 
 If you want to mount an Express router in a LoopBack 4 application, you can use
@@ -373,13 +373,13 @@ thus have access to the request and response objects.
 LoopBack 4, refer to the
 [validation doc](./Validation.md)." %}
 
-[strong-remoting](https://github.com/strongloop/strong-remoting) is the core of
+[strong-remoting](https://github.com/loopbackio/strong-remoting) is the core of
 data coercion and validation in LoopBack 3. Validation rules are defined using
 the `accepts` metadata and data-access level validation are defined by model
 validation methods like `validatesPresenceOf()`.
 
 `strong-remoting`'s supported data types can be found in its
-[type definitions](https://github.com/strongloop/strong-remoting/tree/master/lib/types),
+[type definitions](https://github.com/loopbackio/strong-remoting/tree/master/lib/types),
 each type comes with a validation and coercion methods. While the validations
 are minimal (e.g. object properties are not validated), the coercions are very
 comprehensive and applies different rules for values coming from JSON
@@ -396,17 +396,17 @@ are built from the metadata provided by LoopBack Models. Non-model parameters
 inline schema.
 
 When a request arrives, a light weight
-[coercion](https://github.com/strongloop/loopback-next/blob/master/packages/rest/src/coercion/coerce-parameter.ts)
+[coercion](https://github.com/loopbackio/loopback-next/blob/master/packages/rest/src/coercion/coerce-parameter.ts)
 and
-[validation](https://github.com/strongloop/loopback-next/blob/master/packages/rest/src/coercion/validator.ts)
+[validation](https://github.com/loopbackio/loopback-next/blob/master/packages/rest/src/coercion/validator.ts)
 is performed on the request body at OpenAPI parameters level. Then, the OpenAPI
 schema is converted to JSON schema on which
-[AJV validation](https://github.com/strongloop/loopback-next/tree/master/packages/rest/src/validation)
+[AJV validation](https://github.com/loopbackio/loopback-next/tree/master/packages/rest/src/validation)
 is run against the schema.
 
 Currently, LoopBack 4 does not validate non-body parameters against schema. It
 will be supported in future, follow
-[loopback-next#1573](https://github.com/strongloop/loopback-next/issues/1573) to
+[loopback-next#1573](https://github.com/loopbackio/loopback-next/issues/1573) to
 keep track of the progress.
 
 In LoopBack 4, it is possible to apply additional validation of model data at
@@ -440,7 +440,7 @@ characters a 422 error will be thrown by the server.
 
 LoopBack 4 does not yet offer advanced validation rules at data-access layer
 like LoopBack 3 does,
-[we are working on it](https://github.com/strongloop/loopback-next/issues/1872).
+[we are working on it](https://github.com/loopbackio/loopback-next/issues/1872).
 
 #### Access to data before writing to the databases
 

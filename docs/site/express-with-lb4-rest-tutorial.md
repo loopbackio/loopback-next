@@ -209,7 +209,7 @@ export class ExpressServer {
 ```
 
 And add the
-[public/express.html](https://github.com/strongloop/loopback-next/blob/master/examples/express-composition/public/express.html)
+[public/express.html](https://github.com/loopbackio/loopback-next/blob/master/examples/express-composition/public/express.html)
 file to your project.
 
 Finally, we can add functions to boot the `Note` application and start the
@@ -329,7 +329,7 @@ export class ExpressServer {
 
 Now, you can load any static files in the **public/** folder. For example, add
 the following
-[public/notes.html](https://github.com/strongloop/loopback-next/blob/master/examples/express-composition/public/notes.html)
+[public/notes.html](https://github.com/loopbackio/loopback-next/blob/master/examples/express-composition/public/notes.html)
 file to your project, run `npm start` again, and visit
 <http://127.0.0.1:3000/notes.html>. You can now see a static file that will
 display your Notes in a table format. For more information, please visit

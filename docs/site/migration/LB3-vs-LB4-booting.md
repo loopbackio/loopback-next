@@ -16,7 +16,7 @@ in LoopBack 3 and LoopBack 4.
 ### In LoopBack 3
 
 The booting process in LoopBack 3 is handled by
-[loopback-boot](https://github.com/strongloop/loopback-boot), which performs the
+[loopback-boot](https://github.com/loopbackio/loopback-boot), which performs the
 following tasks:
 
 #### 1. Configuration of application settings
@@ -83,7 +83,7 @@ LoopBack 4, datasources are defined as TypeScript classes. They all reside in
 the `src/datasources` directory.
 
 {% include note.html content="Before
-[loopback-next#5000](https://github.com/strongloop/loopback-next/pull/5000)
+[loopback-next#5000](https://github.com/loopbackio/loopback-next/pull/5000)
 landed, datasource classes required a configuration JSON file, it is not
 required anymore." %}
 
@@ -117,9 +117,9 @@ Express application, which would allow you to use the familiar Express routing
 methods.
 
 {% include tip.html content="Follow our GitHub issues
-[#1293](https://github.com/strongloop/loopback-next/issues/1293)
+[#1293](https://github.com/loopbackio/loopback-next/issues/1293)
 and
-[#2035](https://github.com/strongloop/loopback-next/issues/2035)
+[#2035](https://github.com/loopbackio/loopback-next/issues/2035)
 to track the progress on supporting Express middlweware in LoopBack 4." %}
 
 If you want to mount an Express router in a LoopBack 4 application, you can use

@@ -23,7 +23,7 @@ The LoopBack project adopts the
 ## [Reporting issues](http://loopback.io/doc/en/contrib/Reporting-issues.html)
 
 Issues in
-[strongloop/loopback-next](https://github.com/strongloop/loopback-next/issues)
+[loopbackio/loopback-next](https://github.com/loopbackio/loopback-next/issues)
 are the primary means by which bug reports and general discussions are made.
 
 - [How to report an issue](http://loopback.io/doc/en/contrib/Reporting-issues.html#how-to-report-an-issue)
@@ -51,8 +51,8 @@ and tools contained in LoopBack repositories.
 ## [Documentation](http://loopback.io/doc/en/contrib/doc-contrib.html)
 
 LoopBack documentation is sourced in both the
-[strongloop/loopback.io](https://github.com/strongloop/loopback.io) and
-[strongloop/loopback-next](https://github.com/strongloop/loopback-next/tree/master/docs/site)
+[loopbackio/loopback.io](https://github.com/loopbackio/loopback.io) and
+[loopbackio/loopback-next](https://github.com/loopbackio/loopback-next/tree/master/docs/site)
 GitHub repositories. The `loopback-next` repository holds the documentation for
 LoopBack 4.
 

@@ -11,14 +11,14 @@
   "types": "dist/index.d.ts",
   "author": "IBM Corp.",
   "copyright.owner": "IBM Corp.",
-  "homepage": "https://github.com/strongloop/loopback-next/tree/master/examples/greeter-extension",
+  "homepage": "https://github.com/loopbackio/loopback-next/tree/master/examples/greeter-extension",
   "repository": {
     "type": "git",
-    "url": "https://github.com/strongloop/loopback-next.git",
+    "url": "https://github.com/loopbackio/loopback-next.git",
     "directory": "examples/greeting-app"
   },
   "bugs": {
-    "url": "https://github.com/strongloop/loopback-next/issues"
+    "url": "https://github.com/loopbackio/loopback-next/issues"
   },
   "engines": {
     "node": "^10.16 || 12 || 14 || 16"

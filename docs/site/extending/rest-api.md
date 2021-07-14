@@ -46,7 +46,7 @@ In order to access component configuration when defining Controller OpenAPI
 metadata, the component has to change the way how Controller classes are
 defined. Instead of defining controllers as static classes, a factory function
 should be introduced. This approach is already used by
-[`@loopback/rest-crud`](https://github.com/strongloop/loopback-next/tree/master/packages/rest-crud)
+[`@loopback/rest-crud`](https://github.com/loopbackio/loopback-next/tree/master/packages/rest-crud)
 to create dynamic CRUD REST endpoints for a given model.
 
 Example showing a component exporting a `/ping` endpoint at a configurable base
