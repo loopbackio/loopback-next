@@ -1,7 +1,7 @@
 {
   "name": "@loopback/rest-explorer",
   "description": "LoopBack's API Explorer",
-  "version": "3.3.1",
+  "version": "3.3.2",
   "keywords": [
     "LoopBack",
     "Explorer",
@@ -38,8 +38,8 @@
     "templates"
   ],
   "peerDependencies": {
-    "@loopback/core": "^2.16.1",
-    "@loopback/rest": "^9.3.1"
+    "@loopback/core": "^2.16.2",
+    "@loopback/rest": "^10.0.0"
   },
   "dependencies": {
     "ejs": "^3.1.6",
@@ -47,11 +47,11 @@
     "tslib": "^2.3.0"
   },
   "devDependencies": {
-    "@loopback/build": "^6.4.1",
-    "@loopback/core": "^2.16.1",
-    "@loopback/eslint-config": "^10.2.1",
-    "@loopback/rest": "^9.3.1",
-    "@loopback/testlab": "^3.4.1",
+    "@loopback/build": "^7.0.0",
+    "@loopback/core": "^2.16.2",
+    "@loopback/eslint-config": "^11.0.0",
+    "@loopback/rest": "^10.0.0",
+    "@loopback/testlab": "^3.4.2",
     "@types/ejs": "^3.0.6",
     "@types/express": "^4.17.12",
     "@types/node": "^10.17.60",

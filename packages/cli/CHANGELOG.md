@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.21.2](https://github.com/loopbackio/loopback-next/compare/@loopback/cli@2.21.1...@loopback/cli@2.21.2) (2021-07-15)
+
+**Note:** Version bump only for package @loopback/cli
+
+
+
+
+
 ## [2.21.1](https://github.com/loopbackio/loopback-next/compare/@loopback/cli@2.21.0...@loopback/cli@2.21.1) (2021-06-10)
 
 

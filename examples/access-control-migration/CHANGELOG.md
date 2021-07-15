@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/loopbackio/loopback-next/compare/@loopback/example-access-control-migration@2.5.1...@loopback/example-access-control-migration@3.0.0) (2021-07-15)
+
+
+### Features
+
+* **rest:** upgrade to ajv@8.x ([d3b20ed](https://github.com/loopbackio/loopback-next/commit/d3b20edc142d5c014c17ffbfa69f74403793330f))
+
+
+### BREAKING CHANGES
+
+* **rest:** We upgrade to ajv@8.x, which contains breaking changes
+for validations. See https://github.com/ajv-validator/ajv/blob/master/docs/v6-to-v8-migration.md.
+
+Signed-off-by: Raymond Feng <enjoyjava@gmail.com>
+
+
+
+
+
 ## [2.5.1](https://github.com/loopbackio/loopback-next/compare/@loopback/example-access-control-migration@2.5.0...@loopback/example-access-control-migration@2.5.1) (2021-06-10)
 
 **Note:** Version bump only for package @loopback/example-access-control-migration

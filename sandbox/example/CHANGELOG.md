@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.1](https://github.com/loopbackio/loopback-next/compare/@loopback/sandbox-example@2.1.0...@loopback/sandbox-example@2.1.1) (2021-07-15)
+
+**Note:** Version bump only for package @loopback/sandbox-example
+
+
+
+
+
 # [2.1.0](https://github.com/loopbackio/loopback-next/compare/@loopback/sandbox-example@2.0.6...@loopback/sandbox-example@2.1.0) (2021-05-03)
 
 

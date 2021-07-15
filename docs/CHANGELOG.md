@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.26.1](https://github.com/loopbackio/loopback-next/compare/@loopback/docs@3.26.0...@loopback/docs@3.26.1) (2021-07-15)
+
+**Note:** Version bump only for package @loopback/docs
+
+
+
+
+
 # [3.26.0](https://github.com/loopbackio/loopback-next/compare/@loopback/docs@3.25.0...@loopback/docs@3.26.0) (2021-06-10)
 
 
