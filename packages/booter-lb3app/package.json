@@ -43,7 +43,7 @@
     "@loopback/rest": "^10.0.0"
   },
   "dependencies": {
-    "@types/express": "^4.17.12",
+    "@types/express": "^4.17.13",
     "debug": "^4.3.1",
     "loopback": "^3.28.0",
     "loopback-swagger": "^5.9.0",
