@@ -60,7 +60,7 @@
     "@loopback/testlab": "^3.4.2",
     "@loopback/tsdocs-monorepo": "^0.1.2",
     "@types/debug": "^4.1.5",
-    "@types/fs-extra": "^9.0.11",
+    "@types/fs-extra": "^9.0.12",
     "@types/node": "^10.17.60"
   }
 }
