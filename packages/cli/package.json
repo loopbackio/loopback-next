@@ -40,7 +40,7 @@
   ],
   "dependencies": {
     "@lerna/project": "^4.0.0",
-    "@openapi-contrib/openapi-schema-to-json-schema": "^3.1.0",
+    "@openapi-contrib/openapi-schema-to-json-schema": "^3.1.1",
     "@phenomnomnominal/tsquery": "^4.1.1",
     "camelcase-keys": "^6.2.2",
     "chalk": "^4.1.1",
