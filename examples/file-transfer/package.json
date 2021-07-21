@@ -57,7 +57,7 @@
     "@loopback/build": "^7.0.0",
     "@loopback/eslint-config": "^11.0.0",
     "@loopback/testlab": "^3.4.2",
-    "@types/express-serve-static-core": "^4.17.21",
+    "@types/express-serve-static-core": "^4.17.24",
     "@types/multer": "^1.4.5",
     "@types/node": "^10.17.60",
     "eslint": "^7.29.0",
