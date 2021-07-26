@@ -71,6 +71,10 @@ list.
       <td><a href="https://www.npmjs.com/package/loopback-rabbitmq">loopback-rabbitmq</a></td>
       <td>An Rabbitmq extension that implements Queue consumers and producers</td>
     </tr>
+    <tr>
+      <td><a href="https://www.npmjs.com/package/loopback4-dynamic-datasource">loopback4-dynamic-datasource</a></td>
+      <td>Connect data sources dynamically during runtime</td>
+    </tr>
   </tbody>
 </table>
 
