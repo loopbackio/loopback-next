@@ -41,9 +41,9 @@
     "@loopback/model-api-builder": "^2.3.2",
     "@loopback/repository": "^3.7.1",
     "@loopback/service-proxy": "^3.2.2",
-    "@types/debug": "^4.1.5",
+    "@types/debug": "^4.1.7",
     "@types/glob": "^7.1.4",
-    "debug": "^4.3.1",
+    "debug": "^4.3.2",
     "glob": "^7.1.7",
     "tslib": "^2.3.0"
   },

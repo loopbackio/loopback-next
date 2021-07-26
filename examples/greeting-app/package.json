@@ -53,14 +53,14 @@
     "@loopback/example-greeter-extension": "^3.0.0",
     "@loopback/rest": "^10.0.0",
     "chalk": "^4.1.1",
-    "debug": "^4.3.1",
+    "debug": "^4.3.2",
     "tslib": "^2.3.0"
   },
   "devDependencies": {
     "@loopback/build": "^7.0.0",
     "@loopback/eslint-config": "^11.0.0",
     "@loopback/testlab": "^3.4.2",
-    "@types/debug": "4.1.5",
+    "@types/debug": "4.1.7",
     "@types/node": "^10.17.60",
     "eslint": "^7.31.0",
     "typescript": "~4.3.4"
