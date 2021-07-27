@@ -47,6 +47,10 @@ LoopBack 4 comes with the following example projects.
   An example that demonstrates GraphQL integration using
   [@loopback/graphql](https://github.com/strongloop/loopback-next/tree/graphql/extensions/graphql).
 
+- **[socketio](https://github.com/strongloop/loopback-next/tree/master/examples/socketio)**:
+  A basic implementation of Socket.IO using
+  [@loopback/socketio](https://github.com/strongloop/loopback-next/tree/socketio/extensions/socketio).
+
 ### Examples with migration
 
 - **[lb3-application](https://github.com/strongloop/loopback-next/tree/master/examples/lb3-application)**:
