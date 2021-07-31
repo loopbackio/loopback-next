@@ -149,7 +149,7 @@ The following are examples of how you can define array type properties:
     type: 'array',
     itemType: 'number',
   })
-  numAry?: number[]; // e.g ['42', '998', '1']
+  numAry?: number[]; // e.g [42, 998, 1]
 
   @property({
     type: 'array',
