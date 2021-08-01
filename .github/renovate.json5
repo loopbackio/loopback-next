@@ -33,7 +33,6 @@
     enabled: true,
     automerge: true,
     extends: [
-      ':prConcurrentLimitNone',
       'schedule:earlyMondays'
     ]
   },
@@ -84,7 +83,7 @@
       ]
     }
   ],
-  prConcurrentLimit: 5,
+  prConcurrentLimit: 10,
   prHourlyLimit: 2,
   rangeStrategy: 'bump',
   supportPolicy: [
