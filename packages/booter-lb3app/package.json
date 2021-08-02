@@ -47,7 +47,7 @@
     "debug": "^4.3.2",
     "loopback": "^3.28.0",
     "loopback-swagger": "^5.9.0",
-    "swagger2openapi": "^7.0.6",
+    "swagger2openapi": "^7.0.8",
     "tslib": "^2.3.0"
   },
   "devDependencies": {
