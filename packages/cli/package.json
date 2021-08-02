@@ -94,7 +94,7 @@
     "mem-fs-editor": "^9.0.1",
     "mock-stdin": "^1.0.0",
     "rimraf": "^3.0.2",
-    "sinon": "^11.1.1",
+    "sinon": "^11.1.2",
     "strong-globalize-cli": "7.1.0",
     "yeoman-assert": "^3.1.1",
     "yeoman-test": "~2.7.0"
