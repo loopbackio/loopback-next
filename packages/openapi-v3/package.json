@@ -45,7 +45,7 @@
     "@loopback/repository-json-schema": "^4.0.0",
     "debug": "^4.3.2",
     "http-status": "^1.5.0",
-    "json-merge-patch": "^1.0.1",
+    "json-merge-patch": "^1.0.2",
     "lodash": "^4.17.21",
     "openapi3-ts": "^2.0.1",
     "tslib": "^2.3.0"
