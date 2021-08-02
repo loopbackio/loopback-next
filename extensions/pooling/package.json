@@ -39,8 +39,8 @@
     "@loopback/core": "^2.16.2"
   },
   "dependencies": {
-    "@types/generic-pool": "^3.1.9",
-    "generic-pool": "^3.7.8",
+    "@types/generic-pool": "^3.1.10",
+    "generic-pool": "^3.8.2",
     "tslib": "^2.3.0"
   },
   "devDependencies": {
