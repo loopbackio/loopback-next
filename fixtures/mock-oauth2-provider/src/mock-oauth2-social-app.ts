@@ -150,13 +150,13 @@ async function createJwt(
  *
  * check with given client id and token if token is valid
  *
- * @param req - request
  * @param token - token
  */
 async function verifyToken(token: string) {
   const unwrappedJwt = jwt.decode(token, {json: true, complete: true});
   if (unwrappedJwt == null) throw new Error('invalid token');
-  const tokenId: string = unwrappedJwt?.payload.jti;
+  const tokenId = unwrappedJwt?.payload.jti;
+  if (!tokenId) throw new Error('invalid token');
   const registeredApp: App = registeredApps[unwrappedJwt?.payload.client_id];
   if (registeredApp) {
     const result = jwt.verify(token, registeredApp[tokenId].signingKey);
