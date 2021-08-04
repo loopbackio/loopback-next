@@ -199,7 +199,7 @@ describe('Validation at REST level', () => {
                     schemaPath:
                       '#/components/schemas/Product/properties/price/range',
                     params: {},
-                    message: 'should pass "range" keyword validation',
+                    message: 'must pass "range" keyword validation',
                     emUsed: true,
                   },
                 ],
@@ -263,7 +263,7 @@ describe('Validation at REST level', () => {
                     schemaPath:
                       '#/components/schemas/Product/properties/price/range',
                     params: {},
-                    message: 'should pass "range" keyword validation',
+                    message: 'must pass "range" keyword validation',
                     emUsed: true,
                   },
                 ],
@@ -381,7 +381,7 @@ describe('Validation at REST level', () => {
                     schemaPath:
                       '#/components/schemas/Product/properties/price/range',
                     params: {},
-                    message: 'should pass "range" keyword validation',
+                    message: 'must pass "range" keyword validation',
                     emUsed: true,
                   },
                 ],
@@ -450,7 +450,7 @@ describe('Validation at REST level', () => {
                       schemaPath:
                         '#/components/schemas/Product/properties/price/range',
                       params: {},
-                      message: 'should pass "range" keyword validation',
+                      message: 'must pass "range" keyword validation',
                       emUsed: true,
                     },
                   ],
@@ -526,7 +526,7 @@ describe('Validation at REST level', () => {
             {
               path: '/name',
               code: 'validProductName',
-              message: 'should pass "validProductName" keyword validation',
+              message: 'must pass "validProductName" keyword validation',
               info: {},
             },
           ],
@@ -571,7 +571,7 @@ describe('Validation at REST level', () => {
             {
               path: '/name',
               code: 'validProductName',
-              message: 'should pass "validProductName" keyword validation',
+              message: 'must pass "validProductName" keyword validation',
               info: {},
             },
           ],
