@@ -43,7 +43,7 @@
     "@loopback/rest": "^10.0.0"
   },
   "dependencies": {
-    "prom-client": "^13.1.0",
+    "prom-client": "^13.2.0",
     "tslib": "^2.3.0"
   },
   "devDependencies": {
