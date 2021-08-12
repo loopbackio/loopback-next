@@ -75,6 +75,6 @@
     "passport-http": "^0.3.0",
     "passport-oauth2": "^1.6.0",
     "qs": "^6.10.1",
-    "supertest": "^6.1.4"
+    "supertest": "^6.1.5"
   }
 }
