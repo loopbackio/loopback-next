@@ -60,7 +60,7 @@
     "helmet": "^4.6.0",
     "loopback": "^3.28.0",
     "loopback-boot": "^3.3.1",
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.1"
   },
   "devDependencies": {
     "@loopback/build": "^7.0.0",

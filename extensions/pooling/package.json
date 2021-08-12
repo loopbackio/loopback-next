@@ -41,7 +41,7 @@
   "dependencies": {
     "@types/generic-pool": "^3.1.10",
     "generic-pool": "^3.8.2",
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.1"
   },
   "devDependencies": {
     "@loopback/build": "^7.0.0",
