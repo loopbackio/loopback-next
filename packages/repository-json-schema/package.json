@@ -53,6 +53,6 @@
     "@loopback/testlab": "^3.4.2",
     "@types/debug": "^4.1.7",
     "@types/node": "^10.17.60",
-    "ajv-formats": "^2.1.0"
+    "ajv-formats": "^2.1.1"
   }
 }
