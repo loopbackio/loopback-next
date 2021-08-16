@@ -75,7 +75,7 @@ npm ci
 ```
 
 As part of `npm ci` or `npm i`, TypeScript project references are automatically
-updated for each package with in the monorepo.
+updated for each package within the monorepo.
 
 The next step is to compile all packages from TypeScript to JavaScript:
 
@@ -213,7 +213,7 @@ We use two tools to keep our codebase healthy:
 - [ESLint](https://typescript-eslint.io/) to statically analyse our source code
   and detect common problems.
 - [Prettier](https://prettier.io/) to keep our code always formatted the same
-  way, avoid style discussions in code reviews, and save everybody's time an
+  way, avoid style discussions in code reviews, and save everybody's time and
   energy.
 
 You can run both linters via the following npm script, just keep in mind that
