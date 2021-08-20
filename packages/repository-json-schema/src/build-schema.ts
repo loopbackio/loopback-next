@@ -512,6 +512,10 @@ export function modelToJsonSchema<T extends object>(
       // Do not cascade `partial` to nested properties
       delete propOptions.partial;
     }
+    if (propOptions.includeRelations === true) {
+      // Do not cascade `includeRelations` to nested properties
+      delete propOptions.includeRelations;
+    }
     // `title` is the unique identity of a schema,
     // it should be removed from the `options`
     // when generating the relation or property schemas
