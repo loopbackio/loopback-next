@@ -333,6 +333,49 @@ describe('build-schema', () => {
       });
     });
 
+    it('includeRelations is not propagated to properties decorated with @property()', () => {
+      @model()
+      class FooModel extends Entity {
+        @property({
+          type: 'string',
+        })
+        xyz?: string;
+      }
+
+      @model()
+      class BarModel extends Entity {
+        @property({
+          type: 'string',
+        })
+        name?: string;
+
+        @property()
+        foo?: FooModel;
+
+        @hasMany(() => FooModel)
+        relatedFoo?: FooModel;
+      }
+
+      // include relations
+      const schema = modelToJsonSchema(BarModel, {
+        includeRelations: true,
+      });
+      expect(schema.properties).to.containEql({
+        name: {
+          type: 'string',
+        },
+        // Decorated with @property() Model should NOT be 'WithRelations'
+        foo: {
+          $ref: '#/definitions/FooModel',
+        },
+        // Decorated with @hasMany() Model should be 'WithRelations'
+        relatedFoo: {
+          type: 'array',
+          items: {$ref: '#/definitions/FooModelWithRelations'},
+        },
+      });
+    });
+
     it('property definition does not inherit title from model', () => {
       @model()
       class Child extends Entity {
