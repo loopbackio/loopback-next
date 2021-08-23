@@ -363,7 +363,7 @@ provide your own `User` model and repository.
 
 ### Extra configurations
 
-1. To change the token secret in your application.ts
+1. To change the token secret in your application.ts, after the binding of the service binding.
 
 ```
   // for jwt access token
