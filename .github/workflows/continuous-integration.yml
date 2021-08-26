@@ -33,6 +33,8 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
+      - name: Update NPM
+        run: npm install -g npm
       - name: Bootstrap project
         run: |
           npm ci --ignore-scripts
@@ -44,6 +46,25 @@ jobs:
       - uses: Yuri6037/Action-FakeTTY@v1.1
       - name: Run tests
         run: faketty npm test --ignore-scripts
+      - name: Generate coverage report
+        run: npm run coverage:ci --ignore-scripts
+      - name: Publish coverage report to Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          flag-name: run-${{ matrix.os }}-node@${{ matrix.node-version }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          parallel: true
+
+  posttest:
+    name: Post-Test
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+    - name: Coveralls finished
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.github_token }}
+        parallel-finished: true
 
   test-benchmark:
     name: Test Benchmark
