@@ -46,7 +46,7 @@
     "@loopback/metadata": "^3.3.2",
     "@types/debug": "^4.1.7",
     "debug": "^4.3.2",
-    "hyperid": "^2.1.0",
+    "hyperid": "^2.3.1",
     "p-event": "^4.2.0",
     "tslib": "^2.3.1",
     "uuid": "^8.3.2"
