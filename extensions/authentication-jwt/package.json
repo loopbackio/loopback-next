@@ -45,6 +45,7 @@
     "@loopback/security": "^0.5.2",
     "@types/bcryptjs": "2.4.2",
     "bcryptjs": "^2.4.3",
+    "debug": "^4.3.2",
     "jsonwebtoken": "^8.5.1"
   },
   "devDependencies": {
@@ -58,6 +59,7 @@
     "@loopback/rest-explorer": "^3.3.2",
     "@loopback/service-proxy": "^3.2.2",
     "@loopback/testlab": "^3.4.2",
+    "@types/debug": "^4.1.7",
     "@types/lodash": "^4.14.172",
     "@types/node": "^10.17.60",
     "lodash": "^4.17.21",

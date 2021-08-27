@@ -38,6 +38,7 @@
     "@loopback/rest": "^10.0.0"
   },
   "dependencies": {
+    "debug": "^4.3.2",
     "tslib": "^2.3.1",
     "typeorm": "^0.2.37"
   },
@@ -49,6 +50,7 @@
     "@loopback/repository": "^3.7.1",
     "@loopback/rest": "^10.0.0",
     "@loopback/testlab": "^3.4.2",
+    "@types/debug": "^4.1.7",
     "@types/json-schema": "^7.0.9",
     "@types/node": "^10.17.60",
     "sqlite3": "^5.0.2"
