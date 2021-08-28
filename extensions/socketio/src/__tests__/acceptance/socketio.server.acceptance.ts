@@ -22,7 +22,7 @@ describe('SocketIoServer', () => {
     const socket = io(url);
     socket.emit('chat message', 'Hello');
     const msg = await pEvent(socket, 'chat message');
-    expect(msg).to.match(/\[\/chats\/group1#.+\] Hello/);
+    expect(msg).to.equal(`[${socket.id}] Hello`);
     socket.disconnect();
   });
 

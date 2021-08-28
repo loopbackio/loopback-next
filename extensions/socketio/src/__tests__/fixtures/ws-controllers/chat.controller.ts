@@ -26,7 +26,7 @@ export class ChatController {
   @socketio.connect()
   connect(socket: Socket) {
     debug('Client connected: %s', this.socket.id);
-    socket.join('room 1');
+    return socket.join('room 1');
   }
 
   /**

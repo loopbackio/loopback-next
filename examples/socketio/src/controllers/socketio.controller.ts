@@ -32,7 +32,7 @@ export class SocketIoController {
   @socketio.connect()
   connect(socket: Socket) {
     debug('Client connected: %s', this.socket.id);
-    socket.join('room 1');
+    return socket.join('room 1');
   }
 
   /**
@@ -42,12 +42,10 @@ export class SocketIoController {
    */
   @socketio.subscribe('subscribe-to-channel')
   // @socketio.emit('namespace' | 'requestor' | 'broadcast')
-  registerChannel(msg: string[]) {
+  async registerChannel(msg: string[]) {
     debug('Subscribe to channel: %s', msg);
     if (Array.isArray(msg) && msg.length > 0) {
-      msg.forEach(item => {
-        this.socket.join(item);
-      });
+      for (const item of msg) await this.socket.join(item);
     } else {
       throw new Error('Channels data not appropriate');
     }

@@ -22,7 +22,7 @@ import {HttpServer, HttpServerOptions} from '@loopback/http-server';
 import cors from 'cors';
 import debugFactory from 'debug';
 import {cloneDeep} from 'lodash';
-import SocketIO, {Server, ServerOptions, Socket} from 'socket.io';
+import {Server, ServerOptions, Socket} from 'socket.io';
 import {
   getSocketIoMetadata,
   SocketIoMetadata,
@@ -107,9 +107,9 @@ export class SocketIoServer extends Context {
   ) {
     super(app);
     if (!options.socketIoOptions) {
-      this.io = SocketIO();
+      this.io = new Server();
     } else {
-      this.io = SocketIO(options.socketIoOptions);
+      this.io = new Server(options.socketIoOptions);
     }
     app.bind(SocketIoBindings.IO).to(this.io);
 
