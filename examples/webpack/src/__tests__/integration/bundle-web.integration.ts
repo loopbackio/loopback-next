@@ -7,10 +7,9 @@ import {expect, skipIf} from '@loopback/testlab';
 import fs from 'fs';
 import {Suite} from 'mocha';
 import path from 'path';
+import puppeteer, {Browser} from 'puppeteer';
 import url from 'url';
 import {generateBundle} from './test-helper';
-
-const Browser = require('zombie');
 
 //
 /*
@@ -28,8 +27,6 @@ skipIf<[(this: Suite) => void], void>(
   describe,
   'bundle-web.js',
   () => {
-    const browser = new Browser();
-
     before('generate bundle-web.js', async function (this: Mocha.Context) {
       // It may take some time to generate the bundle using webpack
       this.timeout(30000);
@@ -39,17 +36,30 @@ skipIf<[(this: Suite) => void], void>(
       ).to.be.true();
     });
 
-    before(() => {
-      return browser.visit(
+    let browser: Browser;
+    let html: string;
+    before(async function (this: Mocha.Context) {
+      this.timeout(15000);
+      browser = await puppeteer.launch();
+      const page = await browser.newPage();
+      await page.goto(
         url
           .pathToFileURL(path.join(__dirname, '../../../index.html'))
           .toString(),
+        {waitUntil: 'networkidle2'},
       );
+      html = await page.content();
+      /*
+      const bodyHandle = await page.$('body');
+      html = await page.evaluate(body => body.innerHTML, bodyHandle);
+      await bodyHandle!.dispose();
+      */
+
+      await browser.close();
     });
 
     it('should see the page with greetings', () => {
-      browser.assert.success();
-      let body = browser.body.innerHTML;
+      let body = html;
       body = body.replace(/\[[^\[\]]+\] /g, '');
       expect(body).to.match(/<li>\(en\) Hello, Jane!<\/li>/);
       expect(body).to.match(/<li>Hello, John!<\/li>/);
