@@ -54,6 +54,7 @@
     "util": "^0.12.4",
     "webpack": "^5.51.1",
     "webpack-cli": "^4.8.0",
-    "zombie": "^6.1.4"
+    "puppeteer": "^10.2.0",
+    "@types/puppeteer": "^5.4.4"
   }
 }
