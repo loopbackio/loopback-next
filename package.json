@@ -80,7 +80,7 @@
     "markdown-table": "^3.0.1",
     "open-cli": "^6.0.1",
     "prettier": "^2.3.2",
-    "renovate": "^26.10.0",
+    "renovate": "^26.11.0",
     "typescript": "~4.3.5"
   },
   "config": {
