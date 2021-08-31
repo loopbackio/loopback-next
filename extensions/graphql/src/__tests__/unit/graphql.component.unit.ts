@@ -19,11 +19,13 @@ describe('GraphQL component', () => {
     const app = new Application({
       graphql: {
         asMiddlewareOnly: true,
+        enablePlayground: true,
       },
     });
     app.component(GraphQLComponent);
     expect(app.getConfigSync(GraphQLBindings.GRAPHQL_SERVER)).to.eql({
       asMiddlewareOnly: true,
+      enablePlayground: true,
     });
   });
 

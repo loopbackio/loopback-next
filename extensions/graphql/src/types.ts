@@ -44,4 +44,8 @@ export interface GraphQLServerOptions extends HttpOptions {
    * Use as a middleware for RestServer instead of a standalone server
    */
   asMiddlewareOnly?: boolean;
+  /**
+   * Enable or disable graphql playground
+   */
+  enablePlayground?: boolean;
 }

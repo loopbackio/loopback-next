@@ -101,6 +101,7 @@ config, such as:
 const app = new Application({
   graphql: {
     asMiddlewareOnly: true,
+    enablePlayground: false, // to disable playground
   },
 });
 ```

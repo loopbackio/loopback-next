@@ -149,8 +149,8 @@ export class GraphQLServer extends Context implements Server {
 
     // Create ApolloServerExpress GraphQL server
     const serverConfig: ApolloServerExpressConfig = {
-      // enable GraphQL Playground
-      playground: true,
+      // enable GraphQL Playground unless configured otherwise
+      playground: this.options?.enablePlayground ?? true,
       context: graphqlContextResolver,
       subscriptions: false,
       ...this.options.apollo,
