@@ -68,10 +68,6 @@
       "path": "examples/passport-login/tsconfig.json"
     },
     {
-
-      "path": "examples/prisma/tsconfig.json"
-    },
-    {
       "path": "examples/references-many/tsconfig.json"
     },
     {

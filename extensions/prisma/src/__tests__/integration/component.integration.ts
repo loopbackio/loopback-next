@@ -4,7 +4,7 @@ import {
   BindingKey,
   BindingScope,
   BindingType,
-  Provider,
+  Provider
 } from '@loopback/core';
 import {expect, sinon} from '@loopback/testlab';
 import {Prisma, PrismaClient} from '@prisma/client';

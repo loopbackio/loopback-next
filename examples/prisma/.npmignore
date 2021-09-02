@@ -1,2 +1,0 @@
-# Exclude *.tsbuildinfo - cache for tsc incremental builds
-*.tsbuildinfo
