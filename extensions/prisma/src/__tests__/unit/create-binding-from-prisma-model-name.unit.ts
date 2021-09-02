@@ -5,15 +5,19 @@ import {PrismaBindings} from '../../keys';
 
 describe('createBindingFromPrismaModelName', () => {
   it('creates new Binding from model instance and name', () => {
-    const binding = createBindingFromPrismaModelName({}, 'MyModelName');
+    const binding = createBindingFromPrismaModelName('MyModelName', {});
 
     expectBindingDefaults(binding);
   });
 
   it('honors custom namespace', () => {
-    const binding = createBindingFromPrismaModelName({}, 'MyModelName', {
-      namespace: 'myCustomNamespace',
-    });
+    const binding = createBindingFromPrismaModelName(
+      'MyModelName',
+      {},
+      {
+        namespace: 'myCustomNamespace',
+      },
+    );
 
     expectBindingDefaults(binding, {
       skip: {key: true},
@@ -22,9 +26,13 @@ describe('createBindingFromPrismaModelName', () => {
   });
 
   it('honors custom tag array', () => {
-    const binding = createBindingFromPrismaModelName({}, 'MyModelName', {
-      tags: ['customTag1', 'customTag2'],
-    });
+    const binding = createBindingFromPrismaModelName(
+      'MyModelName',
+      {},
+      {
+        tags: ['customTag1', 'customTag2'],
+      },
+    );
 
     expectBindingDefaults(binding, {
       skip: {tagMap: true},
@@ -36,12 +44,16 @@ describe('createBindingFromPrismaModelName', () => {
   });
 
   it('honors custom TagMap', () => {
-    const binding = createBindingFromPrismaModelName({}, 'MyModelName', {
-      tags: {
-        customTag1: 'customTag1',
-        customTag2: 'customTag2',
+    const binding = createBindingFromPrismaModelName(
+      'MyModelName',
+      {},
+      {
+        tags: {
+          customTag1: 'customTag1',
+          customTag2: 'customTag2',
+        },
       },
-    });
+    );
 
     expectBindingDefaults(binding, {
       skip: {tagMap: true},
@@ -58,6 +70,7 @@ describe('createBindingFromPrismaModelName', () => {
       skip?: {
         tagMap?: boolean;
         key?: boolean;
+        type?: boolean;
       };
     },
   ) {

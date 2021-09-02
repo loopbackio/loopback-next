@@ -4,6 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {TagMap} from '@loopback/core';
+import {AnyObject, KeyOf} from '@loopback/repository';
 import {Prisma} from '@prisma/client';
 import {PrismaBindings} from './keys';
 
@@ -79,53 +80,51 @@ export const DEFAULT_PRISMA_OPTIONS: PrismaOptions = {
   models: DEFAULT_PRISMA_BINDING_CREATION_OPTIONS,
 };
 
-// export namespace PrismaGenericTypes {
-//   export type Filter<MT extends object = AnyObject> =
-//     | {
-//         select?: SelectFilter<MT>;
-//         orderBy?: OrderByFilter;
-//         skip?: SkipFilter;
-//         take?: TakeFilter;
-//         where?: WhereFilter<MT>;
-//       }
-//     | {
-//         include?: IncludeFilter<MT>;
-//         orderBy?: OrderByFilter;
-//         skip?: SkipFilter;
-//         take?: TakeFilter;
-//         where?: WhereFilter;
-//       };
+export type Filter<MT extends object = AnyObject> =
+  | {
+      select?: SelectFilter<MT>;
+      orderBy?: OrderByFilter;
+      skip?: SkipFilter;
+      take?: TakeFilter;
+      where?: WhereFilter<MT>;
+    }
+  | {
+      include?: IncludeFilter<MT>;
+      orderBy?: OrderByFilter;
+      skip?: SkipFilter;
+      take?: TakeFilter;
+      where?: WhereFilter;
+    };
 
-//   export type WhereFilter<MT extends object = AnyObject> = AndClause<MT> &
-//     OrClause<MT> &
-//     Condition<MT>;
+export type WhereFilter<MT extends object = AnyObject> = AndClause<MT> &
+  OrClause<MT> &
+  Condition<MT>;
 
-//   export type Condition<MT extends object = AnyObject> = Omit<
-//     {
-//       [prop in KeyOf<MT>]: {
-//         equals?: string;
-//       };
-//     },
-//     'AND' | 'OR'
-//   >;
+export type Condition<MT extends object = AnyObject> = Omit<
+  {
+    [prop in KeyOf<MT>]: {
+      equals?: string;
+    };
+  },
+  'AND' | 'OR'
+>;
 
-//   export type AndClause<MT extends object = AnyObject> = {
-//     AND?: WhereFilter<MT>[];
-//   };
+export type AndClause<MT extends object = AnyObject> = {
+  AND?: WhereFilter<MT>[];
+};
 
-//   export type OrClause<MT extends object = AnyObject> = {
-//     OR?: WhereFilter<MT>[];
-//   };
+export type OrClause<MT extends object = AnyObject> = {
+  OR?: WhereFilter<MT>[];
+};
 
-//   export type SelectFilter<MT extends object = AnyObject> = Record<
-//     KeyOf<MT>,
-//     boolean
-//   >;
-//   export type IncludeFilter<MT extends object = AnyObject> = Record<
-//     KeyOf<MT>,
-//     Filter | boolean
-//   >;
-//   export type OrderByFilter = Record<string, 'asc' | 'desc'>;
-//   export type SkipFilter = number;
-//   export type TakeFilter = number;
-// }
+export type SelectFilter<MT extends object = AnyObject> = Record<
+  KeyOf<MT>,
+  boolean
+>;
+export type IncludeFilter<MT extends object = AnyObject> = Record<
+  KeyOf<MT>,
+  Filter | boolean
+>;
+export type OrderByFilter = Record<string, 'asc' | 'desc'>;
+export type SkipFilter = number;
+export type TakeFilter = number;

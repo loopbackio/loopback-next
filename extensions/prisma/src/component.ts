@@ -464,10 +464,10 @@ export class PrismaComponent implements Component, LifeCycleObserver {
     for (const modelName in Prisma.ModelName) {
       this._app.add(
         createBindingFromPrismaModelName(
+          modelName,
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          this._prismaClient[modelName],
-          modelName,
+          this._prismaClient[modelName.toLowerCase()],
         ).lock(),
       );
     }

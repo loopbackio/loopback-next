@@ -4,7 +4,7 @@ import {
   BindingKey,
   BindingScope,
   BindingType,
-  Provider
+  Provider,
 } from '@loopback/core';
 import {expect, sinon} from '@loopback/testlab';
 import {Prisma, PrismaClient} from '@prisma/client';
@@ -267,7 +267,7 @@ describe('Prisma Component', () => {
     describe('Prisma Client Model', () => {
       beforeEach(givenApp);
 
-      it('binds and locks Prisma Client Model', async () => {
+      it('binds and locks Prisma Client Models', async () => {
         const prismaClient = new PrismaClient();
         app
           .bind(PrismaBindings.PRISMA_CLIENT_INSTANCE)
@@ -284,7 +284,7 @@ describe('Prisma Component', () => {
           const modelName = binding.key.split('.').pop();
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          expect(model).to.equal(prismaClient[modelName]);
+          expect(model).to.equal(prismaClient[modelName?.toLowerCase()]);
           expect(binding.isLocked).to.be.true();
         }
       });

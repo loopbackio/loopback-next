@@ -18,21 +18,23 @@ import {
  * The Prisma models are not classes; Hence, we are not able to infer their
  * names and require manual input from the function user.
  *
- * @param modelObj TargetPrisma model.
  * @param modelName Prisma model name. This should be taken from
  * {@link @prisma/client#Prisma.ModelName}.
+ * @param modelObj Target Prisma model.
  * @returns A new, unbound, configured {@link @loopback/core#Binding} instance.
  */
 export function createBindingFromPrismaModelName<MT = object>(
-  modelObj: MT,
   modelName: string,
+  modelObj?: MT,
   options: BindingFromPrismaModelNameOptions = DEFAULT_PRISMA_BINDING_CREATION_OPTIONS,
 ): Binding<MT> {
   const binding = new Binding(
     `${
       options.namespace ?? PrismaBindings.PRISMA_MODEL_NAMESPACE
     }.${modelName}`,
-  ).to(modelObj);
+  );
+
+  if (modelObj) binding.to(modelObj);
 
   // Apply tags
   if (Array.isArray(options.tags)) binding.tag(...options.tags);
