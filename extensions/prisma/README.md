@@ -141,7 +141,7 @@ and its binding will be automatically locked immediately when and after
 
 #### Registering Prisma Middleware after init
 
-When registerin Prisma Middleware After `.init()` is called, it is necessary to
+When registering Prisma Middleware After `.init()` is called, it is necessary to
 call `process.nextTick()` to guarantee that the middleware registation is
 complete. Otherwise, there is a risk of a race condition.
 

@@ -127,49 +127,83 @@ describe('lb4ToPrismaFilter()', () => {
 });
 
 describe('lb4toPrismaWhereFilter()', () => {
-  it('parses `equals`', () => {
-    const lb4Filter: Where = {
-      and: [
-        {
-          propA: {
-            eq: 'valueA',
-          },
-        },
-        {
-          propB: {
-            eq: 'valueB',
-          },
-        },
-        {
-          propC: {
-            eq: 'valueC',
-          },
-        },
-      ],
-    };
+  describe('`equals` parsing', () => {
+    const dateInst = new Date();
 
-    const prismaFilter: PrismaWhereFilter = {
-      AND: [
-        {
-          propA: {
-            equals: 'valueA',
-          },
-        },
-        {
-          propB: {
-            equals: 'valueB',
-          },
-        },
-        {
-          propC: {
-            equals: 'valueC',
-          },
-        },
-      ],
-    };
+    const values = ['valueA', 23, false, dateInst];
 
-    const testResult = lb4ToPrismaWhereFilter(lb4Filter);
+    for (const value of values) {
+      it(`parses \`equals\` with value '${value}'`, () => {
+        const lb4Filter: Where = {
+          prop: {
+            eq: value,
+          },
+        };
 
-    expect(testResult).to.deepEqual(prismaFilter);
+        const prismaFilter: PrismaWhereFilter = {
+          prop: {
+            equals: value,
+          },
+        };
+
+        const testResult = lb4ToPrismaWhereFilter(lb4Filter);
+        expect(testResult).to.deepEqual(prismaFilter);
+      });
+    }
+
+    it('parses `equals` for all value types', () => {
+      const lb4Filter: Where = {
+        and: values.map((v, i) => {
+          return {[`prop${i}`]: {eq: v}};
+        }),
+      };
+
+      const prismaFilter: PrismaWhereFilter = {
+        AND: values.map((v, i) => {
+          return {[`prop${i}`]: {equals: v}};
+        }),
+      };
+
+      const testResult = lb4ToPrismaWhereFilter(lb4Filter);
+      expect(testResult).to.deepEqual(prismaFilter);
+    });
+  });
+
+  describe('shorthand `equals` parsing', () => {
+    const dateInst = new Date();
+
+    const values = ['valueA', 23, false, dateInst];
+
+    for (const value of values) {
+      it(`parses shorthand \`equals\` with value '${value}'`, () => {
+        const lb4Filter: Where = {
+          prop: value,
+        };
+
+        const prismaFilter: PrismaWhereFilter = {
+          prop: value,
+        };
+
+        const testResult = lb4ToPrismaWhereFilter(lb4Filter);
+        expect(testResult).to.deepEqual(prismaFilter);
+      });
+    }
+
+    it('parses shorthand `equals` for all value types', () => {
+      const lb4Filter: Where = {
+        and: values.map((v, i) => {
+          return {[`prop${i}`]: v};
+        }),
+      };
+
+      const prismaFilter: PrismaWhereFilter = {
+        AND: values.map((v, i) => {
+          return {[`prop${i}`]: v};
+        }),
+      };
+
+      const testResult = lb4ToPrismaWhereFilter(lb4Filter);
+      expect(testResult).to.deepEqual(prismaFilter);
+    });
   });
 });

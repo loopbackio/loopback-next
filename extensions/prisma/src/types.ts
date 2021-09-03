@@ -97,8 +97,7 @@ export type Filter<MT extends object = AnyObject> =
     };
 
 export type WhereFilter<MT extends object = AnyObject> =
-  | AndClause<MT>
-  | OrClause<MT>
+  | (AndClause<MT> & OrClause<MT> & NotClause<MT>)
   | Condition<MT>;
 
 export type Condition<MT extends object = AnyObject> = Omit<
@@ -110,10 +109,10 @@ export type Condition<MT extends object = AnyObject> = Omit<
           not?: MT[prop];
           in?: Array<MT[prop]>;
           notIn?: Array<MT[prop]>;
-          lt?: number;
-          lte?: number;
-          gt?: number;
-          gte?: number;
+          lt?: MT[prop] extends number | Date ? MT[prop] : never;
+          lte?: MT[prop] extends number | Date ? MT[prop] : never;
+          gt?: MT[prop] extends number | Date ? MT[prop] : never;
+          gte?: MT[prop] extends number | Date ? MT[prop] : never;
           contains?: MT[prop];
           search?: string;
           mode?: string;
@@ -130,6 +129,10 @@ export type AndClause<MT extends object = AnyObject> = {
 
 export type OrClause<MT extends object = AnyObject> = {
   OR?: WhereFilter<MT>[];
+};
+
+export type NotClause<MT extends object = AnyObject> = {
+  NOT?: Condition<MT>;
 };
 
 export type SelectFilter<MT extends object = AnyObject> = Record<

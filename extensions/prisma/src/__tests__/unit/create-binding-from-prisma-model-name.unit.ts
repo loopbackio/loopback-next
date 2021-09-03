@@ -10,6 +10,14 @@ describe('createBindingFromPrismaModelName', () => {
     expectBindingDefaults(binding);
   });
 
+  it('creates new binding without model instance', () => {
+    const binding = createBindingFromPrismaModelName('MyModelName');
+
+    expectBindingDefaults(binding, {
+      skip: {type: true},
+    });
+  });
+
   it('honors custom namespace', () => {
     const binding = createBindingFromPrismaModelName(
       'MyModelName',
@@ -75,7 +83,9 @@ describe('createBindingFromPrismaModelName', () => {
     },
   ) {
     expect(binding.isLocked).to.be.false();
-    expect(binding.type).to.equal(BindingType.CONSTANT);
+
+    if (!options?.skip?.type)
+      expect(binding.type).to.equal(BindingType.CONSTANT);
 
     if (!options?.skip?.key)
       expect(binding.key).to.be.equal(

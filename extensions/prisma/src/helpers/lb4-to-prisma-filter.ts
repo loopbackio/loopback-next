@@ -5,7 +5,7 @@ import {
   Filter as PrismaFilter,
   WhereFilter as PrismaWhereFilter,
 } from '../';
-import {AndClause, OrClause} from '../types';
+import {AndClause, NotClause, OrClause} from '../types';
 
 /**
  * Converts a LoopBack 4 {@link @loopback/repository#Filter} to its Prisma
@@ -141,6 +141,12 @@ export function lb4ToPrismaFilter<MT extends object = AnyObject>(
  * | regexp              | N/A          |                         |
  * | match               | search       | Non-standard LB4 filter |
  *
+ * ## Notes
+ *
+ * Only `and`, `or` or the model properties can appear as a direct object key of
+ * {@link @loopback/repository#Where | Where}. All 3 types cannot appear at the
+ * same time.
+ *
  * @internalRemarks
  * There's a lot of hacky type casting going on due to incompatible types.
  * While there is test coverage, we'll need to look into fixing this.
@@ -154,11 +160,20 @@ export function lb4ToPrismaFilter<MT extends object = AnyObject>(
 export function lb4ToPrismaWhereFilter<MT extends object = AnyObject>(
   lb4Filter: Where<MT>,
   options: {
-    skipDeepClone: boolean;
-  } = {skipDeepClone: false},
+    skipDeepClone?: boolean;
+    allowCustomFilters?: boolean;
+  } = {skipDeepClone: false, allowCustomFilters: false},
 ): PrismaWhereFilter<MT> {
   if (!options.skipDeepClone) lb4Filter = cloneDeep(lb4Filter);
   const prismaFilter: PrismaWhereFilter = {};
+
+  if (
+    ('and' in lb4Filter || 'or' in lb4Filter) &&
+    Object.keys(lb4Filter).length > 1
+  )
+    throw new Error(
+      '`and`, `or`, and model properties cannot be simultaneously the object keys of the LoopBack 4 Filter.',
+    );
 
   if ('and' in lb4Filter)
     (prismaFilter as AndClause).AND = lb4Filter.and.map(filter =>
@@ -169,81 +184,40 @@ export function lb4ToPrismaWhereFilter<MT extends object = AnyObject>(
       lb4ToPrismaWhereFilter(filter, {...options, skipDeepClone: true}),
     );
   else {
-    const prop = Object.keys(lb4Filter)[0] as unknown as keyof typeof lb4Filter;
-    const query = lb4Filter[prop];
+    const props = Object.keys(lb4Filter) as Array<keyof typeof lb4Filter>;
+    for (const prop of props) {
+      const query = lb4Filter[prop];
 
-    if (typeof query === 'string') (prismaFilter as Condition)[prop] = query;
-    else if ('eq' in query)
-      (prismaFilter as Condition)[prop] = {equals: query.eq};
-    else if ('neq' in query)
-      (prismaFilter as Condition)[prop] = {not: query.neq};
-    else if ('gt' in query)
-      (prismaFilter as Condition)[prop] = {gt: query.gt as number | undefined};
-    else if ('gte' in query)
-      (prismaFilter as Condition)[prop] = {
-        gte: query.gte as number | undefined,
-      };
-    else if ('lt' in query)
-      (prismaFilter as Condition)[prop] = {lt: query.lt as number | undefined};
-    else if ('lte' in query)
-      (prismaFilter as Condition)[prop] = {
-        lte: query.lte as number | undefined,
-      };
-    else if ('between' in query) throw Error('Not implemented');
-    else if ('inq' in query)
-      (prismaFilter as Condition)[prop] = {in: query.inq};
-    else if ('nin' in query) throw Error('Not implemented');
-    else if ('match' in query) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      prismaFilter[prop] = {match: query.match};
-    } else throw new Error(`Unspported LoopBack 4 filter ('${query})`);
+      if (
+        ['string', 'number', 'boolean'].includes(typeof query) ||
+        query instanceof Date
+      )
+        (prismaFilter as Condition)[prop] = query;
+      else if ('eq' in query)
+        (prismaFilter as Condition)[prop] = {equals: query.eq};
+      else if ('neq' in query)
+        (prismaFilter as Condition)[prop] = {not: query.neq};
+      else if ('gt' in query)
+        (prismaFilter as Condition)[prop] = {gt: query.gt};
+      else if ('gte' in query)
+        (prismaFilter as Condition)[prop] = {gte: query.gte};
+      else if ('lt' in query)
+        (prismaFilter as Condition)[prop] = {lt: query.lt};
+      else if ('lte' in query)
+        (prismaFilter as Condition)[prop] = {lte: query.lte};
+      else if ('between' in query && query.between)
+        (prismaFilter as AndClause).AND = [{[prop]: {lt: query['between'][0]}}];
+      else if ('inq' in query)
+        (prismaFilter as Condition)[prop] = {in: query.inq};
+      else if ('nin' in query)
+        (prismaFilter as NotClause).NOT = {[prop]: {in: query.nin}};
+      else if (options.allowCustomFilters)
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        prismaFilter[prop] = {[prop]: query};
+      else throw new Error(`Unspported LoopBack 4 filter ('${query})`);
+    }
   }
-  // // see: https://stackoverflow.com/q/52856496
-  // for (const prop of (Object.keys(lb4Filter) as Array<keyof Condition<MT>>)) {
-  //   prismaFilter[prop] = {};
-  //   const query = lb4Filter[prop];
-
-  //   if (typeof query === 'object') {
-  //     const queryValue = Object.values(query)[0];
-  //     switch(Object.keys(query)[0]) {
-  //       case 'eq':
-  //         prismaFilter[prop] = queryValue;
-  //         break;
-  //       case 'neq':
-  //         prismaFilter[prop] = { not: Object.values(queryValue)[0] }
-  //     }
-  //   }
-  // }
-
-  // for (const [filterKey, filterValue] of Object.entries(lb4Filter)) {
-  //   if (filterKey === 'and') {
-  //     lb4Filter = lb4Filter as AndClause<MT>;
-  //     prismaFilter.AND = [];
-  //     for (const andItem in lb4Filter.and)
-  //       prismaFilter.AND.push(
-  //         lb4ToPrismaWhereFilter(lb4Filter.and[andItem]),
-  //       );
-  //   } else if (filterKey === 'or') {
-  //     prismaFilter.OR = [];
-  //     for (const orItem of Object.values(lb4Filter[filterKey]))
-  //       prismaFilter.OR.push(
-  //         lb4ToPrismaWhereFilter(orItem)
-  //       )
-  //   } else {
-  //     // @ts-ignore
-  //     switch(lb4Filter[filterKey]) {
-  //       case 'literal':
-  //         prismaFilter[filterKey] = filterValue;
-  //         break;
-  //       case 'eq':
-  //         prismaFilter[filterKey] = filterValue[0];
-  //         break;
-  //       case 'neq':
-  //         prismaFilter.not.
-  //     }
-  //   }
-  // }
 
   return prismaFilter as PrismaWhereFilter<MT>;
 }
