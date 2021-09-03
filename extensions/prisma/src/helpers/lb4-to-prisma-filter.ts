@@ -1,5 +1,4 @@
 import {AnyObject, Fields, Filter, Where} from '@loopback/repository';
-import {cloneDeep} from 'lodash';
 import {
   Condition,
   Filter as PrismaFilter,
@@ -35,10 +34,9 @@ import {AndClause, NotClause, OrClause} from '../types';
 export function lb4ToPrismaFilter<MT extends object = AnyObject>(
   lb4Filter: Filter<MT>,
   options: {
-    skipDeepClone: boolean;
-  } = {skipDeepClone: false},
+    allowCustomFilters?: boolean;
+  } = {allowCustomFilters: false},
 ): PrismaFilter<MT> {
-  if (!options?.skipDeepClone) lb4Filter = cloneDeep(lb4Filter);
   let prismaFilter: PrismaFilter = {};
 
   if (lb4Filter.fields && lb4Filter.include)
@@ -79,10 +77,7 @@ export function lb4ToPrismaFilter<MT extends object = AnyObject>(
       if (typeof inclusion === 'string') prismaFilter.include[inclusion] = true;
       else
         prismaFilter.include[inclusion.relation] = inclusion.scope
-          ? lb4ToPrismaFilter(inclusion.scope, {
-              ...options,
-              skipDeepClone: true,
-            })
+          ? lb4ToPrismaFilter(inclusion.scope, options)
           : true;
     }
   }
@@ -108,10 +103,7 @@ export function lb4ToPrismaFilter<MT extends object = AnyObject>(
   }
 
   if (lb4Filter.where) {
-    prismaFilter.where = lb4ToPrismaWhereFilter(lb4Filter.where, {
-      ...options,
-      skipDeepClone: true,
-    });
+    prismaFilter.where = lb4ToPrismaWhereFilter(lb4Filter.where, options);
   }
 
   return prismaFilter as PrismaFilter<MT>;
@@ -160,11 +152,9 @@ export function lb4ToPrismaFilter<MT extends object = AnyObject>(
 export function lb4ToPrismaWhereFilter<MT extends object = AnyObject>(
   lb4Filter: Where<MT>,
   options: {
-    skipDeepClone?: boolean;
     allowCustomFilters?: boolean;
-  } = {skipDeepClone: false, allowCustomFilters: false},
+  } = {allowCustomFilters: false},
 ): PrismaWhereFilter<MT> {
-  if (!options.skipDeepClone) lb4Filter = cloneDeep(lb4Filter);
   const prismaFilter: PrismaWhereFilter = {};
 
   if (
@@ -177,11 +167,11 @@ export function lb4ToPrismaWhereFilter<MT extends object = AnyObject>(
 
   if ('and' in lb4Filter)
     (prismaFilter as AndClause).AND = lb4Filter.and.map(filter =>
-      lb4ToPrismaWhereFilter(filter, {...options, skipDeepClone: true}),
+      lb4ToPrismaWhereFilter(filter, options),
     );
   else if ('or' in lb4Filter)
     (prismaFilter as OrClause).OR = lb4Filter.or.map(filter =>
-      lb4ToPrismaWhereFilter(filter, {...options, skipDeepClone: true}),
+      lb4ToPrismaWhereFilter(filter, options),
     );
   else {
     const props = Object.keys(lb4Filter) as Array<keyof typeof lb4Filter>;

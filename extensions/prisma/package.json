@@ -40,7 +40,7 @@
     "@loopback/core": "^2.15.1",
     "@loopback/logging": "^0.6.0",
     "@loopback/testlab": "^3.3.1",
-    "@prisma/client": "^2.20.1"
+    "@prisma/client": "^2.30.3"
   },
   "peerDependenciesMeta": {
     "@loopback/logging": {
@@ -56,11 +56,10 @@
     "@loopback/logging": "^0.6.0",
     "@loopback/repository": "^3.5.1",
     "@loopback/testlab": "^3.3.1",
-    "@prisma/client": "^2.20.1",
-    "@types/lodash": "^4.14.168",
+    "@prisma/client": "2.30.3",
     "@types/node": "^10.17.56",
     "mocha-steps": "^1.3.0",
-    "prisma": "^2.22.1",
+    "prisma": "^2.30.3",
     "typescript": "~4.2.3"
   },
   "copyright.owner": "IBM Corp.",
