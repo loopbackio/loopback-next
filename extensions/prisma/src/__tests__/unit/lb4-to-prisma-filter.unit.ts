@@ -1,6 +1,11 @@
-import {Filter} from '@loopback/repository';
+import {Filter, Where} from '@loopback/repository';
 import {expect} from '@loopback/testlab';
-import {Filter as PrismaFilter, lb4ToPrismaFilter} from '.././../';
+import {
+  Filter as PrismaFilter,
+  lb4ToPrismaFilter,
+  lb4ToPrismaWhereFilter,
+  WhereFilter as PrismaWhereFilter,
+} from '.././../';
 
 describe('lb4ToPrismaFilter()', () => {
   it('throw with `fields` and `include` are present', () => {
@@ -118,5 +123,53 @@ describe('lb4ToPrismaFilter()', () => {
       const testResult = lb4ToPrismaFilter(lb4Filter);
       expect(testResult).to.deepEqual(prismaFilter);
     });
+  });
+});
+
+describe('lb4toPrismaWhereFilter()', () => {
+  it('parses `equals`', () => {
+    const lb4Filter: Where = {
+      and: [
+        {
+          propA: {
+            eq: 'valueA',
+          },
+        },
+        {
+          propB: {
+            eq: 'valueB',
+          },
+        },
+        {
+          propC: {
+            eq: 'valueC',
+          },
+        },
+      ],
+    };
+
+    const prismaFilter: PrismaWhereFilter = {
+      AND: [
+        {
+          propA: {
+            equals: 'valueA',
+          },
+        },
+        {
+          propB: {
+            equals: 'valueB',
+          },
+        },
+        {
+          propC: {
+            equals: 'valueC',
+          },
+        },
+      ],
+    };
+
+    const testResult = lb4ToPrismaWhereFilter(lb4Filter);
+
+    expect(testResult).to.deepEqual(prismaFilter);
   });
 });

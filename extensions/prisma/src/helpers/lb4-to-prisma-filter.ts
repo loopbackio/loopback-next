@@ -1,6 +1,11 @@
 import {AnyObject, Fields, Filter, Where} from '@loopback/repository';
 import {cloneDeep} from 'lodash';
-import {Filter as PrismaFilter, WhereFilter as PrismaWhereFilter} from '../';
+import {
+  Condition,
+  Filter as PrismaFilter,
+  WhereFilter as PrismaWhereFilter,
+} from '../';
+import {AndClause, OrClause} from '../types';
 
 /**
  * Converts a LoopBack 4 {@link @loopback/repository#Filter} to its Prisma
@@ -136,6 +141,10 @@ export function lb4ToPrismaFilter<MT extends object = AnyObject>(
  * | regexp              | N/A          |                         |
  * | match               | search       | Non-standard LB4 filter |
  *
+ * @internalRemarks
+ * There's a lot of hacky type casting going on due to incompatible types.
+ * While there is test coverage, we'll need to look into fixing this.
+ *
  * @typeParam MT key-value map of properties that will be converted, typically
  * a subclass of {@link @loopback/repository#Model}.
  * @param lb4Filter Target LoopBack 4 where filter to convert.
@@ -152,22 +161,60 @@ export function lb4ToPrismaWhereFilter<MT extends object = AnyObject>(
   const prismaFilter: PrismaWhereFilter = {};
 
   if ('and' in lb4Filter)
-    prismaFilter.AND = lb4Filter.and.map(filter =>
+    (prismaFilter as AndClause).AND = lb4Filter.and.map(filter =>
       lb4ToPrismaWhereFilter(filter, {...options, skipDeepClone: true}),
     );
   else if ('or' in lb4Filter)
-    prismaFilter.OR = lb4Filter.or.map(filter =>
+    (prismaFilter as OrClause).OR = lb4Filter.or.map(filter =>
       lb4ToPrismaWhereFilter(filter, {...options, skipDeepClone: true}),
     );
-  // else
-  //   // see: https://stackoverflow.com/q/52856496
-  //   for (const prop of (Object.keys(lb4Filter) as Array<keyof Condition<MT>>)) {
-  //     prismaFilter[prop] = {};
-  //     const query = lb4Filter[prop];
+  else {
+    const prop = Object.keys(lb4Filter)[0] as unknown as keyof typeof lb4Filter;
+    const query = lb4Filter[prop];
 
-  //     if ('eq' in Object.keys(query))
-  //       prismaFilter[prop] =
+    if (typeof query === 'string') (prismaFilter as Condition)[prop] = query;
+    else if ('eq' in query)
+      (prismaFilter as Condition)[prop] = {equals: query.eq};
+    else if ('neq' in query)
+      (prismaFilter as Condition)[prop] = {not: query.neq};
+    else if ('gt' in query)
+      (prismaFilter as Condition)[prop] = {gt: query.gt as number | undefined};
+    else if ('gte' in query)
+      (prismaFilter as Condition)[prop] = {
+        gte: query.gte as number | undefined,
+      };
+    else if ('lt' in query)
+      (prismaFilter as Condition)[prop] = {lt: query.lt as number | undefined};
+    else if ('lte' in query)
+      (prismaFilter as Condition)[prop] = {
+        lte: query.lte as number | undefined,
+      };
+    else if ('between' in query) throw Error('Not implemented');
+    else if ('inq' in query)
+      (prismaFilter as Condition)[prop] = {in: query.inq};
+    else if ('nin' in query) throw Error('Not implemented');
+    else if ('match' in query) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      prismaFilter[prop] = {match: query.match};
+    } else throw new Error(`Unspported LoopBack 4 filter ('${query})`);
+  }
+  // // see: https://stackoverflow.com/q/52856496
+  // for (const prop of (Object.keys(lb4Filter) as Array<keyof Condition<MT>>)) {
+  //   prismaFilter[prop] = {};
+  //   const query = lb4Filter[prop];
+
+  //   if (typeof query === 'object') {
+  //     const queryValue = Object.values(query)[0];
+  //     switch(Object.keys(query)[0]) {
+  //       case 'eq':
+  //         prismaFilter[prop] = queryValue;
+  //         break;
+  //       case 'neq':
+  //         prismaFilter[prop] = { not: Object.values(queryValue)[0] }
+  //     }
   //   }
+  // }
 
   // for (const [filterKey, filterValue] of Object.entries(lb4Filter)) {
   //   if (filterKey === 'and') {

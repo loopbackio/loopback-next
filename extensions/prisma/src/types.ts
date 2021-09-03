@@ -96,15 +96,30 @@ export type Filter<MT extends object = AnyObject> =
       where?: WhereFilter;
     };
 
-export type WhereFilter<MT extends object = AnyObject> = AndClause<MT> &
-  OrClause<MT> &
-  Condition<MT>;
+export type WhereFilter<MT extends object = AnyObject> =
+  | AndClause<MT>
+  | OrClause<MT>
+  | Condition<MT>;
 
 export type Condition<MT extends object = AnyObject> = Omit<
   {
-    [prop in KeyOf<MT>]: {
-      equals?: string;
-    };
+    [prop in KeyOf<MT>]:
+      | MT[prop]
+      | {
+          equals?: MT[prop];
+          not?: MT[prop];
+          in?: Array<MT[prop]>;
+          notIn?: Array<MT[prop]>;
+          lt?: number;
+          lte?: number;
+          gt?: number;
+          gte?: number;
+          contains?: MT[prop];
+          search?: string;
+          mode?: string;
+          startsWith?: string;
+          endsWith?: string;
+        };
   },
   'AND' | 'OR'
 >;
