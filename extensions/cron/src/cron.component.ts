@@ -10,6 +10,7 @@ import {
   extensionPoint,
   extensions,
   Getter,
+  lifeCycleObserver,
   LifeCycleObserver,
 } from '@loopback/core';
 import debugFactory from 'debug';
@@ -26,6 +27,7 @@ const debug = debugFactory('loopback:cron');
   tags: {[ContextTags.KEY]: CronBindings.COMPONENT},
   scope: BindingScope.SINGLETON,
 })
+@lifeCycleObserver('cronJob')
 export class CronComponent implements Component, LifeCycleObserver {
   constructor(@extensions() public readonly getJobs: Getter<CronJob[]>) {}
 
