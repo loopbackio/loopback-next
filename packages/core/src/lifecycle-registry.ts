@@ -39,6 +39,12 @@ export type LifeCycleObserverOptions = {
    */
   orderedGroups: string[];
   /**
+   * Override and disable lifecycle observer groups. This setting applies to
+   * both ordered groups (i.e. those defined in `orderedGroups`) and unordered
+   * groups.
+   */
+  disabledGroups?: string[];
+  /**
    * Notify observers of the same group in parallel, default to `true`
    */
   parallel?: boolean;
@@ -211,6 +217,10 @@ export class LifeCycleObserverRegistry implements LifeCycleObserver {
       groups = [...groups].reverse();
     }
     for (const group of groups) {
+      if (this.options.disabledGroups?.includes(group.group)) {
+        debug('Notification skipped (Group is disabled): %s', group.group);
+        continue;
+      }
       const observersForGroup: LifeCycleObserver[] = [];
       const bindingsInGroup = reverse
         ? group.bindings.reverse()
