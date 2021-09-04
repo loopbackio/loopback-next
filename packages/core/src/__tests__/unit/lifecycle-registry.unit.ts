@@ -38,6 +38,14 @@ describe('LifeCycleRegistry', () => {
     expect(events).to.eql(['1-start', '2-start']);
   });
 
+  it('skips notification of disabled groups', async () => {
+    givenObserver('1', 'a');
+    givenObserver('2', 'b');
+    registry.setDisabledGroups(['a']);
+    await registry.start();
+    expect(events).to.eql(['2-start']);
+  });
+
   it('starts/stops all registered observers with param injections', async () => {
     givenObserverWithParamInjection('1');
     givenObserverWithParamInjection('2');
@@ -169,6 +177,10 @@ describe('LifeCycleRegistry', () => {
 
     setParallel(parallel?: boolean) {
       this.options.parallel = parallel;
+    }
+
+    setDisabledGroups(groups?: string[]) {
+      this.options.disabledGroups = groups;
     }
   }
 
