@@ -48,7 +48,7 @@
     "!/fixtures"
   ],
   "dependencies": {
-    "@microsoft/api-documenter": "^7.13.44",
+    "@microsoft/api-documenter": "^7.13.45",
     "@microsoft/api-extractor": "^7.18.7",
     "debug": "^4.3.2",
     "fs-extra": "^10.0.0",
