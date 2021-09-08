@@ -8,6 +8,7 @@ const defaultConfig = require('./packages/build/config/.mocharc.json');
 
 const MONOREPO_CONFIG = {
   parallel: true,
+  timeout: 10000,
 };
 
 module.exports = mergeMochaConfigs(
