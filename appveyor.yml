@@ -1,7 +1,10 @@
+branches:
+  only: [master]
+
 environment:
   matrix:
     - nodejs_version: "14"
-  NODE_OPTIONS: "--max-old-space-size=2048"
+  NODE_OPTIONS: "--max-old-space-size=4096"
 
 install:
   - ps: Install-Product node $env:nodejs_version
@@ -17,4 +20,3 @@ cache:
   - "%LOCALAPPDATA%\\Yarn"
 
 build: off
-skip_branch_with_pr: true
