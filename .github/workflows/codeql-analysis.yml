@@ -14,10 +14,16 @@ on:
   schedule:
     - cron: '0 13 * * 6'
 
+permissions: {}
+
 jobs:
   analyze:
     name: Analyze
     runs-on: ubuntu-latest
+
+    permissions:
+      # See: https://github.com/github/codeql-action/blob/008b2cc71c4cf3401f45919d8eede44a65b4a322/README.md#usage
+      security-events: write
 
     steps:
     - name: Checkout repository
