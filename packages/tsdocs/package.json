@@ -48,8 +48,8 @@
     "!/fixtures"
   ],
   "dependencies": {
-    "@microsoft/api-documenter": "^7.13.47",
-    "@microsoft/api-extractor": "^7.18.7",
+    "@microsoft/api-documenter": "^7.13.48",
+    "@microsoft/api-extractor": "^7.18.8",
     "debug": "^4.3.2",
     "fs-extra": "^10.0.0",
     "tslib": "^2.3.1"
