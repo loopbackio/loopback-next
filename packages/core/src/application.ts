@@ -634,7 +634,6 @@ export class Application extends Context implements LifeCycleObserver {
           );
         }
       }
-      // eslint-disable-next-line @typescript-eslint/no-misused-promises
       process.on(sig, this._signalListener);
     });
   }
@@ -648,10 +647,7 @@ export class Application extends Context implements LifeCycleObserver {
       process.pid,
       signals,
     );
-    signals.forEach(sig =>
-      // eslint-disable-next-line @typescript-eslint/no-misused-promises
-      process.removeListener(sig, this._signalListener),
-    );
+    signals.forEach(sig => process.removeListener(sig, this._signalListener));
   }
 }
 

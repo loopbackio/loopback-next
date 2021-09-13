@@ -107,7 +107,6 @@ export class SocketIoControllerFactory {
     // Register event handlers with regexp
     if (regexMethodsHandlers.size) {
       // Use a socket middleware to match event names with regexp
-      // eslint-disable-next-line @typescript-eslint/no-misused-promises
       this.connCtx.socket.use(async (packet, next) => {
         const [eventName, ...args] = packet;
         for (const iterator of regexMethodsHandlers.entries()) {
