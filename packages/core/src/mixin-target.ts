@@ -61,11 +61,9 @@ import {Constructor} from '@loopback/context';
  * }
  * ```
  */
-export type MixinTarget<T extends object> = Constructor<
-  {
-    // Enumerate only public members to avoid the following compiler error:
-    //   Property '(name)' of exported class expression
-    //   may not be private or protected.ts(4094)
-    [P in keyof T]: T[P];
-  }
->;
+export type MixinTarget<T extends object> = Constructor<{
+  // Enumerate only public members to avoid the following compiler error:
+  //   Property '(name)' of exported class expression
+  //   may not be private or protected.ts(4094)
+  [P in keyof T]: T[P];
+}>;
