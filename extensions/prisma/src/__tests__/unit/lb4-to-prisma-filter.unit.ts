@@ -1,13 +1,15 @@
 import {Filter, Where} from '@loopback/repository';
-import {expect} from '@loopback/testlab';
+import {expect, sinon} from '@loopback/testlab';
 import {
   Filter as PrismaFilter,
   lb4ToPrismaFilter,
   lb4ToPrismaWhereFilter,
-  WhereFilter as PrismaWhereFilter,
+  WhereFilter as PrismaWhereFilter
 } from '.././../';
 
 describe('lb4ToPrismaFilter()', () => {
+  afterEach(sinon.reset);
+
   it('throw with `fields` and `include` are present', () => {
     const lb4Filter: Filter = {
       fields: ['fieldA', 'fieldB', 'fieldC'],
@@ -79,15 +81,18 @@ describe('lb4ToPrismaFilter()', () => {
       const lb4Filter: Filter = {
         include: [
           {
+            // Simple relation inclusion
             relation: 'relationA',
           },
           {
+            // Relation inclusion with array `fields` scope
             relation: 'relationB',
             scope: {
               fields: ['fieldA', 'fieldB', 'fieldC'],
             },
           },
           {
+            // Relation inclusion with key-value `fields` scope
             relation: 'relationC',
             scope: {
               fields: {
@@ -124,16 +129,37 @@ describe('lb4ToPrismaFilter()', () => {
       expect(testResult).to.deepEqual(prismaFilter);
     });
   });
+
+  describe('`where` filtering', () => {
+    it('calls `lb4ToPrismaWhereFilter` with the expected arguments', async () => {
+      const selfModule = await import('../..');
+      const lb4Filter: Filter = {
+        where: {
+          propA: 'a',
+          propB: {
+            eq: 'b',
+          },
+          propC: {
+            gt: 52,
+          },
+        },
+      };
+
+      lb4ToPrismaFilter(lb4Filter);
+
+      expect(sinon.stub(selfModule, 'lb4ToPrismaWhereFilter').calledOnceWithExactly(lb4Filter.where!)).to.be.true;
+    });
+  });
 });
 
 describe('lb4toPrismaWhereFilter()', () => {
-  describe('`equals` parsing', () => {
+  describe('`eq` parsing', () => {
     const dateInst = new Date();
 
     const values = ['valueA', 23, false, dateInst];
 
     for (const value of values) {
-      it(`parses \`equals\` with value '${value}'`, () => {
+      it(`parses \`eq\` with value '${value}'`, () => {
         const lb4Filter: Where = {
           prop: {
             eq: value,
@@ -151,7 +177,7 @@ describe('lb4toPrismaWhereFilter()', () => {
       });
     }
 
-    it('parses `equals` for all value types', () => {
+    it('parses `eq` for all value types', () => {
       const lb4Filter: Where = {
         and: values.map((v, i) => {
           return {[`prop${i}`]: {eq: v}};
@@ -169,13 +195,13 @@ describe('lb4toPrismaWhereFilter()', () => {
     });
   });
 
-  describe('shorthand `equals` parsing', () => {
+  describe('shorthand `eq` parsing', () => {
     const dateInst = new Date();
 
     const values = ['valueA', 23, false, dateInst];
 
     for (const value of values) {
-      it(`parses shorthand \`equals\` with value '${value}'`, () => {
+      it(`parses shorthand \`eq\` with value '${value}'`, () => {
         const lb4Filter: Where = {
           prop: value,
         };
@@ -189,7 +215,7 @@ describe('lb4toPrismaWhereFilter()', () => {
       });
     }
 
-    it('parses shorthand `equals` for all value types', () => {
+    it('parses shorthand `eq` for all value types', () => {
       const lb4Filter: Where = {
         and: values.map((v, i) => {
           return {[`prop${i}`]: v};
@@ -200,6 +226,182 @@ describe('lb4toPrismaWhereFilter()', () => {
         AND: values.map((v, i) => {
           return {[`prop${i}`]: v};
         }),
+      };
+
+      const testResult = lb4ToPrismaWhereFilter(lb4Filter);
+      expect(testResult).to.deepEqual(prismaFilter);
+    });
+  });
+
+  describe('`neq` parsing', () => {
+    const dateInst = new Date();
+
+    const values = ['valueA', 23, false, dateInst];
+
+    for (const value of values) {
+      it(`parses \`neq\` with value '${value}'`, () => {
+        const lb4Filter: Where = {
+          prop: {
+            neq: value,
+          },
+        };
+
+        const prismaFilter: PrismaWhereFilter = {
+          prop: {
+            not: value,
+          },
+        };
+
+        const testResult = lb4ToPrismaWhereFilter(lb4Filter);
+        expect(testResult).to.deepEqual(prismaFilter);
+      });
+    }
+
+    it('parses `neq` for all value types', () => {
+      const lb4Filter: Where = {
+        and: values.map((v, i) => {
+          return {[`prop${i}`]: {neq: v}};
+        }),
+      };
+
+      const prismaFilter: PrismaWhereFilter = {
+        AND: values.map((v, i) => {
+          return {[`prop${i}`]: {not: v}};
+        }),
+      };
+
+      const testResult = lb4ToPrismaWhereFilter(lb4Filter);
+      expect(testResult).to.deepEqual(prismaFilter);
+    });
+  });
+
+  const numOperators = ['lt', 'lte', 'gt', 'gte']
+
+  for (const op of numOperators) {
+    describe(`\`${op}\` parsing`, () => {
+      const values = [23, -60, 50.34567, -12.54325];
+
+      for (const value of values) {
+        it(`parses \`${op}\` with value '${value}'`, () => {
+          const lb4Filter: Where = {
+            prop: {
+              [op]: value,
+            },
+          };
+
+          const prismaFilter: PrismaWhereFilter = {
+            prop: {
+              [op]: value,
+            },
+          };
+
+          const testResult = lb4ToPrismaWhereFilter(lb4Filter);
+          expect(testResult).to.deepEqual(prismaFilter);
+        });
+      }
+
+      it(`parses \`${op}\` for all value types`, () => {
+        const lb4Filter: Where = {
+          and: values.map((v, i) => {
+            return {[`prop${i}`]: {neq: v}};
+          }),
+        };
+
+        const prismaFilter: PrismaWhereFilter = {
+          AND: values.map((v, i) => {
+            return {[`prop${i}`]: {not: v}};
+          }),
+        };
+
+        const testResult = lb4ToPrismaWhereFilter(lb4Filter);
+        expect(testResult).to.deepEqual(prismaFilter);
+      });
+    });
+  }
+
+  describe('`between` parsing', () => {
+    const dateInst = new Date();
+
+    const values = [23, -60, 50.34567, -12.54325];
+
+    for (const value of values) {
+      it(`parses \`between\` with value '${value}'`, () => {
+        const lb4Filter: Where = {
+          prop: {
+            neq: value,
+          },
+        };
+
+        const prismaFilter: PrismaWhereFilter = {
+          prop: {
+            not: value,
+          },
+        };
+
+        const testResult = lb4ToPrismaWhereFilter(lb4Filter);
+        expect(testResult).to.deepEqual(prismaFilter);
+      });
+    }
+
+    it('parses `between` for all value types', () => {
+      const lb4Filter: Where = {
+        and: values.map((v, i) => {
+          return {[`prop${i}`]: {neq: v}};
+        }),
+      };
+
+      const prismaFilter: PrismaWhereFilter = {
+        AND: values.map((v, i) => {
+          return {[`prop${i}`]: {not: v}};
+        }),
+      };
+
+      const testResult = lb4ToPrismaWhereFilter(lb4Filter);
+      expect(testResult).to.deepEqual(prismaFilter);
+    });
+  });
+
+  describe('`inq` parsing', () => {
+    const dateInst = new Date();
+
+    const value = ['valueA', 23, false, dateInst];
+
+    it('parses `inq`', () => {
+      const lb4Filter: Where = {
+        prop: {
+          inq: value
+        },
+      };
+
+      const prismaFilter: PrismaWhereFilter = {
+        prop: {
+          in: value,
+        },
+      };
+
+      const testResult = lb4ToPrismaWhereFilter(lb4Filter);
+      expect(testResult).to.deepEqual(prismaFilter);
+    });
+  });
+
+  describe('`nin` parsing', () => {
+    const dateInst = new Date();
+
+    const value = ['valueA', 23, false, dateInst];
+
+    it('parses `nin`', () => {
+      const lb4Filter: Where = {
+        prop: {
+          nin: value
+        },
+      };
+
+      const prismaFilter: PrismaWhereFilter = {
+        NOT: {
+          prop: {
+            in: value,
+          },
+        },
       };
 
       const testResult = lb4ToPrismaWhereFilter(lb4Filter);

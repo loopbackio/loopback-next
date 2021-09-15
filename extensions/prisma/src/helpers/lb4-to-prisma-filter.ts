@@ -2,7 +2,7 @@ import {AnyObject, Fields, Filter, Where} from '@loopback/repository';
 import {
   Condition,
   Filter as PrismaFilter,
-  WhereFilter as PrismaWhereFilter,
+  WhereFilter as PrismaWhereFilter
 } from '../';
 import {AndClause, NotClause, OrClause} from '../types';
 
@@ -34,8 +34,8 @@ import {AndClause, NotClause, OrClause} from '../types';
 export function lb4ToPrismaFilter<MT extends object = AnyObject>(
   lb4Filter: Filter<MT>,
   options: {
-    allowCustomFilters?: boolean;
-  } = {allowCustomFilters: false},
+    allowExtendedOperators?: boolean;
+  } = {allowExtendedOperators: false},
 ): PrismaFilter<MT> {
   let prismaFilter: PrismaFilter = {};
 
@@ -152,8 +152,8 @@ export function lb4ToPrismaFilter<MT extends object = AnyObject>(
 export function lb4ToPrismaWhereFilter<MT extends object = AnyObject>(
   lb4Filter: Where<MT>,
   options: {
-    allowCustomFilters?: boolean;
-  } = {allowCustomFilters: false},
+    allowExtendedOperators?: boolean;
+  } = {allowExtendedOperators: false},
 ): PrismaWhereFilter<MT> {
   const prismaFilter: PrismaWhereFilter = {};
 
@@ -201,7 +201,7 @@ export function lb4ToPrismaWhereFilter<MT extends object = AnyObject>(
         (prismaFilter as Condition)[prop] = {in: query.inq};
       else if ('nin' in query)
         (prismaFilter as NotClause).NOT = {[prop]: {in: query.nin}};
-      else if (options.allowCustomFilters)
+      else if (options.allowExtendedOperators)
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         prismaFilter[prop] = {[prop]: query};
