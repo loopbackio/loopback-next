@@ -34,6 +34,11 @@ function run(argv, options) {
 
   const packageDir = utils.getPackageDir();
 
+  const runnerName = argv[1];
+  const TSC_CLI = runnerName.includes('lb-ttsc')
+    ? 'ttypescript/lib/tsc'
+    : 'typescript/lib/tsc';
+  debug(`Using ${TSC_CLI} to compile package`);
   const compilerOpts = argv.slice(2);
 
   const isTargetSet = utils.isOptionSet(compilerOpts, '--target');
@@ -138,7 +143,7 @@ function run(argv, options) {
 
   const validArgs = validArgsForBuild(args);
 
-  return utils.runCLI('typescript/lib/tsc', validArgs, {cwd, ...options});
+  return utils.runCLI(TSC_CLI, validArgs, {cwd, ...options});
 }
 
 /**
