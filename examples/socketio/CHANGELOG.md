@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.3](https://github.com/loopbackio/loopback-next/compare/@loopback/example-socketio@0.3.2...@loopback/example-socketio@0.3.3) (2021-09-16)
+
+
+### Bug Fixes
+
+* missing debug deps ([87cfbea](https://github.com/loopbackio/loopback-next/commit/87cfbea1d9457f72cdb621330a1afe8c05a4bcc4))
+* support socket.io v4 ([e5f2597](https://github.com/loopbackio/loopback-next/commit/e5f25974d49117aaac493d18a145f140fbbe0c76))
+
+
+
+
+
 ## [0.3.2](https://github.com/loopbackio/loopback-next/compare/@loopback/example-socketio@0.3.1...@loopback/example-socketio@0.3.2) (2021-07-15)
 
 **Note:** Version bump only for package @loopback/example-socketio

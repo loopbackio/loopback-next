@@ -1,7 +1,7 @@
 {
   "name": "@loopback/apiconnect",
   "description": "An extension for IBM API Connect",
-  "version": "0.7.2",
+  "version": "0.7.3",
   "keywords": [
     "LoopBack",
     "IBM API Connect"
@@ -39,18 +39,18 @@
     "!*/__tests__"
   ],
   "peerDependencies": {
-    "@loopback/core": "^2.16.2",
-    "@loopback/rest": "^10.0.0"
+    "@loopback/core": "^2.17.0",
+    "@loopback/rest": "^10.0.1"
   },
   "dependencies": {
     "tslib": "^2.3.1"
   },
   "devDependencies": {
-    "@loopback/build": "^7.0.0",
-    "@loopback/core": "^2.16.2",
-    "@loopback/eslint-config": "^11.0.0",
-    "@loopback/rest": "^10.0.0",
-    "@loopback/testlab": "^3.4.2",
+    "@loopback/build": "^7.0.1",
+    "@loopback/core": "^2.17.0",
+    "@loopback/eslint-config": "^11.0.1",
+    "@loopback/rest": "^10.0.1",
+    "@loopback/testlab": "^3.4.3",
     "@types/node": "^10.17.60"
   }
 }

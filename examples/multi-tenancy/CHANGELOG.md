@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.10.1](https://github.com/loopbackio/loopback-next/compare/@loopback/example-multi-tenancy@0.10.0...@loopback/example-multi-tenancy@0.10.1) (2021-09-16)
+
+
+### Bug Fixes
+
+* missing debug deps ([87cfbea](https://github.com/loopbackio/loopback-next/commit/87cfbea1d9457f72cdb621330a1afe8c05a4bcc4))
+
+
+
+
+
 # [0.10.0](https://github.com/loopbackio/loopback-next/compare/@loopback/example-multi-tenancy@0.9.1...@loopback/example-multi-tenancy@0.10.0) (2021-07-15)
 
 

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.9.3](https://github.com/loopbackio/loopback-next/compare/@loopback/authentication-jwt@0.9.2...@loopback/authentication-jwt@0.9.3) (2021-09-16)
+
+
+### Bug Fixes
+
+* **docs:** update code in authentication/jwwt README ([6b8c6ab](https://github.com/loopbackio/loopback-next/commit/6b8c6abc9e83f5c42aaaf3013f7ea60a723a5500))
+* missing debug deps ([87cfbea](https://github.com/loopbackio/loopback-next/commit/87cfbea1d9457f72cdb621330a1afe8c05a4bcc4))
+
+
+
+
+
 ## [0.9.2](https://github.com/loopbackio/loopback-next/compare/@loopback/authentication-jwt@0.9.1...@loopback/authentication-jwt@0.9.2) (2021-07-15)
 
 **Note:** Version bump only for package @loopback/authentication-jwt

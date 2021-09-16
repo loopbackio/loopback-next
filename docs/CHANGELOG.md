@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.27.0](https://github.com/loopbackio/loopback-next/compare/@loopback/docs@3.26.1...@loopback/docs@3.27.0) (2021-09-16)
+
+
+### Bug Fixes
+
+* **docs:** fix example for array of number ([3cef26f](https://github.com/loopbackio/loopback-next/commit/3cef26f5e9b0c607373e4b30fae57ea1eba91864))
+
+
+### Features
+
+* **cli:** update docs and apply suggested changes ([df01aa2](https://github.com/loopbackio/loopback-next/commit/df01aa2a4733cf6c2d4bafc6fba0c1a29e5b7967))
+* **docs:** add loopback4-dynamic-datasource community extension ([813b30a](https://github.com/loopbackio/loopback-next/commit/813b30a6005dd5f7818fd2de611bfe4128d03754))
+
+
+
+
+
 ## [3.26.1](https://github.com/loopbackio/loopback-next/compare/@loopback/docs@3.26.0...@loopback/docs@3.26.1) (2021-07-15)
 
 **Note:** Version bump only for package @loopback/docs

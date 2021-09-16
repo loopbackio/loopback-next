@@ -1,7 +1,7 @@
 {
   "name": "@loopback/tsdocs",
   "description": "A package to generate api docs using Microsoft api-extractor and api-documenter",
-  "version": "2.6.2",
+  "version": "2.6.3",
   "keywords": [
     "LoopBack",
     "Apidocs",
@@ -55,10 +55,10 @@
     "tslib": "^2.3.1"
   },
   "devDependencies": {
-    "@loopback/build": "^7.0.0",
-    "@loopback/eslint-config": "^11.0.0",
-    "@loopback/testlab": "^3.4.2",
-    "@loopback/tsdocs-monorepo": "^0.1.2",
+    "@loopback/build": "^7.0.1",
+    "@loopback/eslint-config": "^11.0.1",
+    "@loopback/testlab": "^3.4.3",
+    "@loopback/tsdocs-monorepo": "^0.1.3",
     "@types/debug": "^4.1.7",
     "@types/fs-extra": "^9.0.12",
     "@types/node": "^10.17.60"

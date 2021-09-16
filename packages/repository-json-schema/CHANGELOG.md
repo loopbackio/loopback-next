@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.1](https://github.com/loopbackio/loopback-next/compare/@loopback/repository-json-schema@4.0.0...@loopback/repository-json-schema@4.0.1) (2021-09-16)
+
+
+### Bug Fixes
+
+* relations in json schema ([365ad9c](https://github.com/loopbackio/loopback-next/commit/365ad9cd37a6219c6522e4590953d22f8c465821))
+
+
+
+
+
 # [4.0.0](https://github.com/loopbackio/loopback-next/compare/@loopback/repository-json-schema@3.4.1...@loopback/repository-json-schema@4.0.0) (2021-07-15)
 
 

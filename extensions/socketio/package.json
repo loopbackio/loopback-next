@@ -1,7 +1,7 @@
 {
   "name": "@loopback/socketio",
   "description": "LoopBack's WebSocket server based on socket.io",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "keywords": [
     "LoopBack",
     "Socket.IO",
@@ -42,11 +42,11 @@
     "!*/__tests__"
   ],
   "peerDependencies": {
-    "@loopback/boot": "^3.4.2",
-    "@loopback/core": "^2.16.2"
+    "@loopback/boot": "^3.4.3",
+    "@loopback/core": "^2.17.0"
   },
   "dependencies": {
-    "@loopback/http-server": "^2.5.2",
+    "@loopback/http-server": "^2.5.3",
     "@types/cors": "^2.8.12",
     "@types/lodash": "^4.14.173",
     "cors": "^2.8.5",
@@ -55,11 +55,11 @@
     "socket.io": "^4.2.0"
   },
   "devDependencies": {
-    "@loopback/boot": "^3.4.2",
-    "@loopback/build": "^7.0.0",
-    "@loopback/core": "^2.16.2",
-    "@loopback/eslint-config": "^11.0.0",
-    "@loopback/testlab": "^3.4.2",
+    "@loopback/boot": "^3.4.3",
+    "@loopback/build": "^7.0.1",
+    "@loopback/core": "^2.17.0",
+    "@loopback/eslint-config": "^11.0.1",
+    "@loopback/testlab": "^3.4.3",
     "@types/debug": "^4.1.7",
     "p-event": "^4.2.0",
     "socket.io-client": "^4.2.0"

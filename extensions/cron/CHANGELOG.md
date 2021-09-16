@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.6.0](https://github.com/loopbackio/loopback-next/compare/@loopback/cron@0.5.2...@loopback/cron@0.6.0) (2021-09-16)
+
+
+### Features
+
+* assign lifecycle observer group ([da92836](https://github.com/loopbackio/loopback-next/commit/da928362e52595e80af30ccbf03b8ec76c9aae45))
+
+
+
+
+
 ## [0.5.2](https://github.com/loopbackio/loopback-next/compare/@loopback/cron@0.5.1...@loopback/cron@0.5.2) (2021-07-15)
 
 **Note:** Version bump only for package @loopback/cron

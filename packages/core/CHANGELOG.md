@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.17.0](https://github.com/loopbackio/loopback-next/compare/@loopback/core@2.16.2...@loopback/core@2.17.0) (2021-09-16)
+
+
+### Features
+
+* add disabled lifecycle groups ([cb29cbe](https://github.com/loopbackio/loopback-next/commit/cb29cbeb52223d78bdd4e67416f8535aed3699e8))
+
+
+
+
+
 ## [2.16.2](https://github.com/loopbackio/loopback-next/compare/@loopback/core@2.16.1...@loopback/core@2.16.2) (2021-07-15)
 
 **Note:** Version bump only for package @loopback/core
