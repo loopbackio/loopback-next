@@ -120,7 +120,9 @@ export function getJsonSchema<T extends object>(
 ): JsonSchema {
   // In the near future the metadata will be an object with
   // different titles as keys
-  const cached = MetadataInspector.getClassMetadata(JSON_SCHEMA_KEY, ctor);
+  const cached = MetadataInspector.getClassMetadata(JSON_SCHEMA_KEY, ctor, {
+    ownMetadataOnly: true,
+  });
   const key = buildModelCacheKey(options);
   let schema = cached?.[key];
 
