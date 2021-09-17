@@ -52,12 +52,29 @@ describe('@oas.response decorator', () => {
       bar: string;
     }
 
+    @model()
+    class Base {
+      @property()
+      name: string;
+    }
+
     const successSchema: ResponseObject = {
       description: httpStatus['200'],
       content: {
         'application/json': {
           schema: {
             $ref: '#/components/schemas/SuccessModel',
+          },
+        },
+      },
+    };
+
+    const baseSchema: ResponseObject = {
+      description: httpStatus['200'],
+      content: {
+        'application/json': {
+          schema: {
+            $ref: '#/components/schemas/Base',
           },
         },
       },
@@ -93,6 +110,20 @@ describe('@oas.response decorator', () => {
       expect(
         actualSpec.components?.schemas?.SuccessModel,
       ).to.not.be.undefined();
+    });
+
+    it('supports @oas.response for a model class not extending Model', () => {
+      class MyController {
+        @get('/greet')
+        @oas.response(200, Base)
+        greet() {
+          return new Base();
+        }
+      }
+
+      const actualSpec = getControllerSpec(MyController);
+      expect(actualSpec.paths['/greet'].get.responses[200]).to.eql(baseSchema);
+      expect(actualSpec.components?.schemas?.Base).to.not.be.undefined();
     });
 
     it('supports multiple @oas.response decorators on a method', () => {

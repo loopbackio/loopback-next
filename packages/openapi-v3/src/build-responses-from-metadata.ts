@@ -3,8 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {DecoratorFactory} from '@loopback/core';
-import {Model} from '@loopback/repository';
+import {DecoratorFactory, MetadataInspector} from '@loopback/core';
+import {Model, MODEL_KEY} from '@loopback/repository';
 import {
   ContentObject,
   OperationObject,
@@ -21,7 +21,11 @@ declare type ResponseMap = Map<
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function isModel<T extends Model>(c: any): c is T {
-  return c?.prototype instanceof Model;
+  return (
+    c?.prototype instanceof Model ||
+    // Allowing classes decorated with `@model` but not extending from `Model`
+    MetadataInspector.getClassMetadata(MODEL_KEY, c) != null
+  );
 }
 
 /**
