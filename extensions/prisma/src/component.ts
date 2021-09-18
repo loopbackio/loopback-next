@@ -26,7 +26,15 @@ import type {
   Prisma as PrismaType,
   PrismaClient as PrismaClientType,
 } from '@prisma/client';
-import {PrismaClientNotSingletonError} from './errors/';
+import {
+  PrismaClientConfigConflictError,
+  PrismaClientInstanceUnsupportedBindingScopeError,
+  PrismaClientInstanceUnsupportedBindingTypeError,
+} from '.';
+import {
+  PrismaMiddlewareUnsupportedBindingScopeError,
+  PrismaMiddlewareUnsupportedBindingTypeError,
+} from './errors';
 import {createBindingFromPrismaModelName} from './helpers/';
 import {PrismaBindings} from './keys';
 import {DEFAULT_PRISMA_OPTIONS, PrismaOptions} from './types';
@@ -158,14 +166,14 @@ export class PrismaComponent implements Component, LifeCycleObserver {
     function ensureValidPrismaMiddlewareBinding(
       binding: Readonly<Binding>,
     ): void {
-      if (
-        binding.type !== BindingType.CONSTANT ||
-        binding.scope !== BindingScope.SINGLETON
-      ) {
-        throw new Error(
-          'Prisma middleware is not bound as singleton and/or constant.',
+      if (binding.scope !== BindingScope.SINGLETON)
+        throw new PrismaMiddlewareUnsupportedBindingScopeError(
+          BindingScope.SINGLETON,
         );
-      }
+      else if (binding.type !== BindingType.CONSTANT)
+        throw new PrismaMiddlewareUnsupportedBindingTypeError(
+          BindingType.CONSTANT,
+        );
     }
 
     for (const binding of this._prismaMiddleware.bindings) {
@@ -222,9 +230,7 @@ export class PrismaComponent implements Component, LifeCycleObserver {
       this._prismaClient &&
       (this._options.enableLoggingIntegration || this._options.prismaClient)
     ) {
-      throw new Error(
-        'Prisma Client configuration nor logging integration is not permitted with existing Prisma Client instance.',
-      );
+      throw new PrismaClientConfigConflictError();
     }
 
     if (this._options.enableLoggingIntegration) require('@loopback/logging');
@@ -285,9 +291,13 @@ export class PrismaComponent implements Component, LifeCycleObserver {
         .to(prismaClient)
         .inScope(BindingScope.SINGLETON);
     else if (prismaClientBinding.scope !== BindingScope.SINGLETON)
-      throw new PrismaClientNotSingletonError();
+      throw new PrismaClientInstanceUnsupportedBindingScopeError(
+        BindingScope.SINGLETON,
+      );
     else if (prismaClientBinding.type !== BindingType.CONSTANT) {
-      throw new Error('Prisma Client instance binding type not constant.');
+      throw new PrismaClientInstanceUnsupportedBindingTypeError(
+        BindingType.CONSTANT,
+      );
     }
   }
 
@@ -370,7 +380,7 @@ export class PrismaComponent implements Component, LifeCycleObserver {
         ) => {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          this._prismaClient.$on('error', (e: Prisma.LogEvent) => {
+          this._prismaClient!.$on('error', (e: Prisma.LogEvent) => {
             logger.error(
               `[${e.timestamp}] @loopback/prisma (Prisma): Target: ${e.target}; Message: ${e.message}`,
             );
@@ -378,7 +388,7 @@ export class PrismaComponent implements Component, LifeCycleObserver {
 
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          this._prismaClient.$on('info', (e: Prisma.LogEvent) => {
+          this._prismaClient!.$on('info', (e: Prisma.LogEvent) => {
             logger.warn(
               `[${e.timestamp}] @loopback/prisma (Prisma): Target: ${e.target}; Message: ${e.message}`,
             );
@@ -386,7 +396,7 @@ export class PrismaComponent implements Component, LifeCycleObserver {
 
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          this._prismaClient.$on('query', (e: Prisma.QueryEvent) => {
+          this._prismaClient!.$on('query', (e: Prisma.QueryEvent) => {
             logger.debug(
               `[${e.timestamp}] @loopback/prisma (Prisma): Query to ${e.target} (${e.duration} ms); Query: ${e.query} -- Params: ${e.params}`,
             );
@@ -394,7 +404,7 @@ export class PrismaComponent implements Component, LifeCycleObserver {
 
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          this._prismaClient.$on('warn', (e: Prisma.LogEvent) => {
+          this._prismaClient!.$on('warn', (e: Prisma.LogEvent) => {
             logger.warn(
               `[${e.timestamp}] @loopback/prisma (Prisma): Target: ${e.target}; Message: ${e.message}`,
             );
@@ -421,7 +431,7 @@ export class PrismaComponent implements Component, LifeCycleObserver {
                   LoggingBindings.WINSTON_LOGGER,
                 );
                 registerPrismaLoggingIntegration(
-                  this._prismaClient!, // PrismaClient has been registered above.
+                  this._prismaClient!,
                   loggerInstance,
                 );
               }
@@ -454,10 +464,7 @@ export class PrismaComponent implements Component, LifeCycleObserver {
       this._prismaClient!.$use(middleware);
 
     this._prismaMiddleware.on('bind', ({binding, context}) => {
-      const prismaClient = context.getSync(
-        PrismaBindings.PRISMA_CLIENT_INSTANCE,
-      );
-      prismaClient.$use(context.getSync(binding.key));
+      this._prismaClient!.$use(context.getSync(binding.key));
     });
 
     // Bind models
@@ -465,9 +472,7 @@ export class PrismaComponent implements Component, LifeCycleObserver {
       this._app.add(
         createBindingFromPrismaModelName(
           modelName,
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          this._prismaClient[modelName.toLowerCase()],
+          this._prismaClient[modelName.toLowerCase() as keyof PrismaClientType],
         ).lock(),
       );
     }

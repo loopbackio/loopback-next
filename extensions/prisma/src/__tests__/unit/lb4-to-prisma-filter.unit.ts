@@ -1,22 +1,88 @@
 import {Filter, Where} from '@loopback/repository';
 import {expect, sinon} from '@loopback/testlab';
+import * as selfModule from '../..';
+import {
+  PrismaFilterConflictError,
+  PrismaFilterInvalidLB4DirectionError,
+  PrismaFilterUnsupportedLB4FilterOperatorError,
+} from '../../errors';
 import {
   Filter as PrismaFilter,
   lb4ToPrismaFilter,
   lb4ToPrismaWhereFilter,
-  WhereFilter as PrismaWhereFilter
+  WhereFilter as PrismaWhereFilter,
 } from '.././../';
 
 describe('lb4ToPrismaFilter()', () => {
-  afterEach(sinon.reset);
+  afterEach(() => {
+    sinon.reset();
+    sinon.restore();
+  });
 
-  it('throw with `fields` and `include` are present', () => {
+  // describe('`lb4ToPrismaWhereFilter` error surfacing', () => {
+  //   const lb4ToPrismaWhereFilterErrors = [PrismaFilterConflictError, PrismaFilterUnsupportedLB4FilterOperatorError];
+
+  //   for (const error of lb4ToPrismaWhereFilterErrors) {
+  //     it(`surfaces \`${error.name}\` from \`lb4ToPrismaWhereFilter\``, () => {
+  //       const lb4Filter: Filter = {
+  //         where: {}
+  //       }
+
+  //       const stub = sinon.stub(selfModule, 'lb4ToPrismaWhereFilter').throws(new error('lb4'));
+  //       expect(() => selfModule.lb4ToPrismaFilter(lb4Filter)).to.throw(error);
+  //     });
+  //   }
+  // });
+
+  it('throws when `fields` and `include` are present', () => {
     const lb4Filter: Filter = {
       fields: ['fieldA', 'fieldB', 'fieldC'],
       include: ['relationA', 'relationB', 'relationC'],
     };
 
-    expect(() => lb4ToPrismaFilter(lb4Filter)).to.throw();
+    expect(() => lb4ToPrismaFilter(lb4Filter)).to.throw(
+      PrismaFilterConflictError,
+    );
+  });
+
+  describe('`order` parsing', () => {
+    it('throws when invalid order direction is provided', () => {
+      const lb4Filter: Filter = {
+        order: ['propA invalidDirection'],
+      };
+
+      expect(() => lb4ToPrismaFilter(lb4Filter)).to.throw(
+        PrismaFilterInvalidLB4DirectionError,
+      );
+    });
+
+    it('parses `order`', () => {
+      const lb4Filter: Filter = {
+        order: ['propA', 'propB DESC', 'propC ASC'],
+      };
+
+      const prismaFilter: PrismaFilter = {
+        orderBy: [{propA: 'asc'}, {propB: 'desc'}, {propC: 'asc'}],
+      };
+
+      const testResult = lb4ToPrismaFilter(lb4Filter);
+      expect(testResult).to.deepEqual(prismaFilter);
+    });
+
+    it('parses single `order` with simpler syntax', () => {
+      const lb4Filter: Filter = {
+        order: ['propA ASC'],
+      };
+
+      const prismaFilter: PrismaFilter = {
+        orderBy: {
+          propA: 'asc',
+        },
+      };
+
+      const testResult = lb4ToPrismaFilter(lb4Filter);
+      expect(testResult).to.deepEqual(prismaFilter);
+    });
   });
 
   describe('`fields` parsing', () => {
@@ -132,7 +198,6 @@ describe('lb4ToPrismaFilter()', () => {
 
   describe('`where` filtering', () => {
     it('calls `lb4ToPrismaWhereFilter` with the expected arguments', async () => {
-      const selfModule = await import('../..');
       const lb4Filter: Filter = {
         where: {
           propA: 'a',
@@ -145,14 +210,39 @@ describe('lb4ToPrismaFilter()', () => {
         },
       };
 
-      lb4ToPrismaFilter(lb4Filter);
+      const stub = sinon.stub(selfModule, 'lb4ToPrismaWhereFilter');
+      selfModule.lb4ToPrismaFilter(lb4Filter);
 
-      expect(sinon.stub(selfModule, 'lb4ToPrismaWhereFilter').calledOnceWithExactly(lb4Filter.where!)).to.be.true;
+      expect(stub.calledOnceWithExactly(lb4Filter.where!)).to.be.true();
     });
   });
 });
 
 describe('lb4toPrismaWhereFilter()', () => {
+  it('throws when `and`, `or` and model properties are present at the root filter level', () => {
+    const lb4Filter: Where = {
+      and: [],
+      or: [],
+      propA: '',
+    };
+
+    expect(() => lb4ToPrismaWhereFilter(lb4Filter)).to.throw(
+      PrismaFilterConflictError,
+    );
+  });
+
+  it('throws when an unknown operator is present by default', () => {
+    const lb4Filter: Where = {
+      propA: {
+        customOperator: '',
+      },
+    };
+
+    expect(() => lb4ToPrismaWhereFilter(lb4Filter)).to.throw(
+      PrismaFilterUnsupportedLB4FilterOperatorError,
+    );
+  });
+
   describe('`eq` parsing', () => {
     const dateInst = new Date();
 
@@ -275,11 +365,13 @@ describe('lb4toPrismaWhereFilter()', () => {
     });
   });
 
-  const numOperators = ['lt', 'lte', 'gt', 'gte']
+  const numOperators = ['lt', 'lte', 'gt', 'gte'];
 
   for (const op of numOperators) {
     describe(`\`${op}\` parsing`, () => {
-      const values = [23, -60, 50.34567, -12.54325];
+      const dateInst = new Date();
+
+      const values = [23, -60, 50.34567, -12.54325, dateInst];
 
       for (const value of values) {
         it(`parses \`${op}\` with value '${value}'`, () => {
@@ -322,7 +414,7 @@ describe('lb4toPrismaWhereFilter()', () => {
   describe('`between` parsing', () => {
     const dateInst = new Date();
 
-    const values = [23, -60, 50.34567, -12.54325];
+    const values = [23, -60, 50.34567, -12.54325, dateInst];
 
     for (const value of values) {
       it(`parses \`between\` with value '${value}'`, () => {
@@ -369,7 +461,7 @@ describe('lb4toPrismaWhereFilter()', () => {
     it('parses `inq`', () => {
       const lb4Filter: Where = {
         prop: {
-          inq: value
+          inq: value,
         },
       };
 
@@ -392,7 +484,7 @@ describe('lb4toPrismaWhereFilter()', () => {
     it('parses `nin`', () => {
       const lb4Filter: Where = {
         prop: {
-          nin: value
+          nin: value,
         },
       };
 

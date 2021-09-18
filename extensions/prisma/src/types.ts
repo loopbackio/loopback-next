@@ -143,6 +143,8 @@ export type IncludeFilter<MT extends object = AnyObject> = Record<
   KeyOf<MT>,
   Filter | boolean
 >;
-export type OrderByFilter = Record<string, 'asc' | 'desc'>;
+export type OrderByFilter =
+  | Record<string, 'asc' | 'desc'>
+  | Record<string, 'asc' | 'desc'>[];
 export type SkipFilter = number;
 export type TakeFilter = number;

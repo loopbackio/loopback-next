@@ -2,8 +2,13 @@ import {AnyObject, Fields, Filter, Where} from '@loopback/repository';
 import {
   Condition,
   Filter as PrismaFilter,
-  WhereFilter as PrismaWhereFilter
+  WhereFilter as PrismaWhereFilter,
 } from '../';
+import {
+  PrismaFilterConflictError,
+  PrismaFilterInvalidLB4DirectionError,
+  PrismaFilterUnsupportedLB4FilterOperatorError,
+} from '../errors';
 import {AndClause, NotClause, OrClause} from '../types';
 
 /**
@@ -23,13 +28,16 @@ import {AndClause, NotClause, OrClause} from '../types';
  * | where        | where   |                                           |
  *
  * @see {@link lb4ToPrismaWhereFilter} for a more-detailed documentation on the
- * {@link @loopback/repository#Where} filter conversion.
+ * {@link Where} filter conversion.
  *
  * @typeParam MT key-value map of properties that will be converted, typically
  * a subclass of {@link @loopback/repository#Model}.
  * @param lb4Filter Target LoopBack 4 filter to convert.
  * @params options Filter processing configuration options.
  * @returns Type-compatible Prisma filter
+ * @throws {@link PrismaFilterConflictError}
+ * @throws {@link PrismaFilterInvalidLB4DirectionError}
+ * @throws {@link PrismaFilterUnsupportedLB4FilterOperatorError}
  */
 export function lb4ToPrismaFilter<MT extends object = AnyObject>(
   lb4Filter: Filter<MT>,
@@ -40,7 +48,7 @@ export function lb4ToPrismaFilter<MT extends object = AnyObject>(
   let prismaFilter: PrismaFilter = {};
 
   if (lb4Filter.fields && lb4Filter.include)
-    throw new Error(
+    throw new PrismaFilterConflictError(
       '`fields` and `include` cannot be used simultaneously in Prisma filters.',
     );
 
@@ -89,17 +97,21 @@ export function lb4ToPrismaFilter<MT extends object = AnyObject>(
 
   // Order filter mapping
   if (lb4Filter.order) {
-    prismaFilter.orderBy = {};
-    for (const order in lb4Filter.order) {
+    prismaFilter.orderBy = [];
+    for (const order of lb4Filter.order) {
       const [prop, rawDirection] = order.split(' ');
 
-      const direction = rawDirection.toLowerCase() ?? 'asc';
+      const direction = rawDirection?.toLowerCase() ?? 'asc';
 
       if (!['asc', 'desc'].includes(direction))
-        throw new Error('Invalid direciton');
+        throw new PrismaFilterInvalidLB4DirectionError(direction);
 
-      prismaFilter.orderBy[prop] = direction as 'asc' | 'desc';
+      prismaFilter.orderBy.push({[prop]: direction as 'asc' | 'desc'});
     }
+
+    // Collapse to the simpler syntax if possible.
+    if (prismaFilter.orderBy.length === 1)
+      prismaFilter.orderBy = prismaFilter.orderBy[0];
   }
 
   if (lb4Filter.where) {
@@ -148,6 +160,8 @@ export function lb4ToPrismaFilter<MT extends object = AnyObject>(
  * @param lb4Filter Target LoopBack 4 where filter to convert.
  * @params options Filter processing configuration options.
  * @returns Type-compatible Prisma where filter.
+ * @throws {@link PrismaFilterConflictError}
+ * @throws {@link PrismaFilterUnsupportedLB4FilterOperatorError}
  */
 export function lb4ToPrismaWhereFilter<MT extends object = AnyObject>(
   lb4Filter: Where<MT>,
@@ -161,7 +175,7 @@ export function lb4ToPrismaWhereFilter<MT extends object = AnyObject>(
     ('and' in lb4Filter || 'or' in lb4Filter) &&
     Object.keys(lb4Filter).length > 1
   )
-    throw new Error(
+    throw new PrismaFilterConflictError(
       '`and`, `or`, and model properties cannot be simultaneously the object keys of the LoopBack 4 Filter.',
     );
 
@@ -205,7 +219,7 @@ export function lb4ToPrismaWhereFilter<MT extends object = AnyObject>(
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         prismaFilter[prop] = {[prop]: query};
-      else throw new Error(`Unspported LoopBack 4 filter ('${query})`);
+      else throw new PrismaFilterUnsupportedLB4FilterOperatorError(prop);
     }
   }
 
