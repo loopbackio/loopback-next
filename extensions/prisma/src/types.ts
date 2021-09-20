@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2021. All Rights Reserved.
+// Copyright The LoopBack Authors 2021. All Rights Reserved.
 // Node module: @loopback/prisma
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -80,6 +80,29 @@ export const DEFAULT_PRISMA_OPTIONS: PrismaOptions = {
   models: DEFAULT_PRISMA_BINDING_CREATION_OPTIONS,
 };
 
+export type AggregateFilter<MT extends object = AnyObject> = Omit<
+  Filter,
+  'select'
+> & {
+  _avg?: {
+    [prop in KeyOf<MT>]?: MT[prop] extends number ? boolean : never;
+  };
+  _sum?: {
+    [prop in KeyOf<MT>]?: MT[prop] extends number ? boolean : never;
+  };
+  _min?: {
+    [prop in KeyOf<MT>]?: MT[prop] extends number ? boolean : never;
+  };
+  _max?: {
+    [prop in KeyOf<MT>]?: MT[prop] extends number ? boolean : never;
+  };
+};
+
+export type GroupByFilter<MT extends object = AnyObject> = AggregateFilter & {
+  orderBy: (keyof MT)[];
+  by: (keyof MT)[];
+};
+
 export type Filter<MT extends object = AnyObject> =
   | {
       select?: SelectFilter<MT>;
@@ -118,6 +141,10 @@ export type Condition<MT extends object = AnyObject> = Omit<
           mode?: string;
           startsWith?: string;
           endsWith?: string;
+
+          every?: MT[prop] | null;
+          some?: MT[prop] | null;
+          none?: MT[prop] | null;
         };
   },
   'AND' | 'OR'
@@ -138,7 +165,10 @@ export type NotClause<MT extends object = AnyObject> = {
 export type SelectFilter<MT extends object = AnyObject> = Record<
   KeyOf<MT>,
   boolean
->;
+> & {
+  _count?: boolean;
+};
+
 export type IncludeFilter<MT extends object = AnyObject> = Record<
   KeyOf<MT>,
   Filter | boolean

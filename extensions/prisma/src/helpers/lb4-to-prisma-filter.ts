@@ -1,3 +1,8 @@
+// Copyright The LoopBack Authors 2021. All Rights Reserved.
+// Node module: @loopback/prisma
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
 import {AnyObject, Fields, Filter, Where} from '@loopback/repository';
 import {
   Condition,
@@ -143,7 +148,7 @@ export function lb4ToPrismaFilter<MT extends object = AnyObject>(
  * | like                | N/A          |                         |
  * | ilike               | N/A          |                         |
  * | regexp              | N/A          |                         |
- * | match               | search       | Non-standard LB4 filter |
+ * | match               | search       |                         |
  *
  * ## Notes
  *
@@ -170,6 +175,7 @@ export function lb4ToPrismaWhereFilter<MT extends object = AnyObject>(
   } = {allowExtendedOperators: false},
 ): PrismaWhereFilter<MT> {
   const prismaFilter: PrismaWhereFilter = {};
+  let prismaFilterPointer = prismaFilter;
 
   if (
     ('and' in lb4Filter || 'or' in lb4Filter) &&
@@ -191,34 +197,53 @@ export function lb4ToPrismaWhereFilter<MT extends object = AnyObject>(
     const props = Object.keys(lb4Filter) as Array<keyof typeof lb4Filter>;
     for (const prop of props) {
       const query = lb4Filter[prop];
+      let propPointer = prop as keyof typeof prismaFilterPointer;
+
+      const nestedProps = prop.split('.');
+
+      if (nestedProps.length > 1)
+        nestedProps.forEach((x, i) => {
+          if (x === '') throw new Error();
+          propPointer = x as keyof typeof prismaFilterPointer;
+          if (i < nestedProps.length - 1) {
+            prismaFilterPointer[propPointer] ??= {};
+            prismaFilterPointer = prismaFilterPointer[propPointer];
+          }
+        });
 
       if (
         ['string', 'number', 'boolean'].includes(typeof query) ||
         query instanceof Date
       )
-        (prismaFilter as Condition)[prop] = query;
+        (prismaFilterPointer as Condition)[propPointer] = query;
       else if ('eq' in query)
-        (prismaFilter as Condition)[prop] = {equals: query.eq};
+        (prismaFilterPointer as Condition)[propPointer] = {equals: query.eq};
       else if ('neq' in query)
-        (prismaFilter as Condition)[prop] = {not: query.neq};
+        (prismaFilterPointer as Condition)[propPointer] = {not: query.neq};
       else if ('gt' in query)
-        (prismaFilter as Condition)[prop] = {gt: query.gt};
+        (prismaFilterPointer as Condition)[propPointer] = {gt: query.gt};
       else if ('gte' in query)
-        (prismaFilter as Condition)[prop] = {gte: query.gte};
+        (prismaFilterPointer as Condition)[propPointer] = {gte: query.gte};
       else if ('lt' in query)
-        (prismaFilter as Condition)[prop] = {lt: query.lt};
+        (prismaFilterPointer as Condition)[propPointer] = {lt: query.lt};
       else if ('lte' in query)
-        (prismaFilter as Condition)[prop] = {lte: query.lte};
+        (prismaFilterPointer as Condition)[propPointer] = {lte: query.lte};
       else if ('between' in query && query.between)
-        (prismaFilter as AndClause).AND = [{[prop]: {lt: query['between'][0]}}];
+        (prismaFilterPointer as AndClause).AND = [
+          {[propPointer]: {lt: query['between'][0]}},
+        ];
       else if ('inq' in query)
-        (prismaFilter as Condition)[prop] = {in: query.inq};
+        (prismaFilterPointer as Condition)[propPointer] = {in: query.inq};
       else if ('nin' in query)
-        (prismaFilter as NotClause).NOT = {[prop]: {in: query.nin}};
+        (prismaFilterPointer as NotClause).NOT = {
+          [propPointer]: {in: query.nin},
+        };
+      else if ('match' in query)
+        (prismaFilterPointer as Condition)[propPointer] = {search: query.match};
       else if (options.allowExtendedOperators)
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        prismaFilter[prop] = {[prop]: query};
+        prismaFilterPointer[propPointer] = {[propPointer]: query};
       else throw new PrismaFilterUnsupportedLB4FilterOperatorError(prop);
     }
   }
