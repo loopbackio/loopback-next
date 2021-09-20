@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {BindingScope, BindingType} from '@loopback/context';
+import {BindingScope, BindingType} from '@loopback/core';
 
 export class PrismaClientInstanceUnsupportedBindingError extends Error {}
 
@@ -80,6 +80,14 @@ export class PrismaFilterInvalidLB4DirectionError extends Error {
 export class PrismaFilterConflictError extends Error {
   constructor(message: string) {
     super(message);
+  }
+}
+
+export class PrismaFilterMalformedLB4NestedProp extends Error {
+  constructor(invalidPropKey: string) {
+    super(
+      `Malformed nested property key found in LB4 filter during conversion: ${invalidPropKey}`,
+    );
   }
 }
 

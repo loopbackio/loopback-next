@@ -12,6 +12,7 @@ import {
 import {
   PrismaFilterConflictError,
   PrismaFilterInvalidLB4DirectionError,
+  PrismaFilterMalformedLB4NestedProp,
   PrismaFilterUnsupportedLB4FilterOperatorError,
 } from '../errors';
 import {AndClause, NotClause, OrClause} from '../types';
@@ -203,7 +204,7 @@ export function lb4ToPrismaWhereFilter<MT extends object = AnyObject>(
 
       if (nestedProps.length > 1)
         nestedProps.forEach((x, i) => {
-          if (x === '') throw new Error();
+          if (x === '') throw new PrismaFilterMalformedLB4NestedProp(prop);
           propPointer = x as keyof typeof prismaFilterPointer;
           if (i < nestedProps.length - 1) {
             prismaFilterPointer[propPointer] ??= {};
