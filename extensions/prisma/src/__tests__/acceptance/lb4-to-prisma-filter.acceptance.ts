@@ -1,3 +1,8 @@
+// Copyright The LoopBack Authors 2021.
+// Node module: @loopback/prisma
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
 import {Where} from '@loopback/repository';
 import {expect} from '@loopback/testlab';
 import {lb4ToPrismaWhereFilter, WhereFilter} from '../..';

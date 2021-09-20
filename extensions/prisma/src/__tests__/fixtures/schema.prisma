@@ -1,5 +1,7 @@
-// Taken from:
-// https://github.com/prisma/docs/blob/c2421f1ab01245a67f65b5ff975497787805ee1a/content/200-concepts/100-components/01-prisma-schema/index.mdx#example
+// Copyright The LoopBack Authors 2021.
+// Node module: @loopback/prisma
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
 
 datasource db {
   provider = "sqlite"
