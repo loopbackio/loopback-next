@@ -10,11 +10,5 @@ const validateAsync = promisify(validator.validate);
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function validateApiSpec(spec: any): Promise<void> {
-  const opts = {};
-
-  try {
-    await validateAsync(spec, opts);
-  } catch (err) {
-    throw new Error(err);
-  }
+  await validateAsync(spec, {});
 }
