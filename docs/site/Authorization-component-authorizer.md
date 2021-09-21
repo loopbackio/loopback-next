@@ -62,6 +62,16 @@ export class MyApplication extends BootMixin(
   constructor(options: ApplicationConfig = {}) {
     super(options);
 
+    const authoptions: AuthorizationOptions = {
+      precedence: AuthorizationDecision.DENY,
+      defaultDecision: AuthorizationDecision.DENY,
+    };
+
+    // mount authorization component
+    const binding = this.component(AuthorizationComponent);
+    // configure authorization component
+    this.configure(binding.key).to(authoptions);
+    
     // bind the authorizer provider
     this.bind('authorizationProviders.my-authorizer-provider')
       .toProvider(MyAuthorizationProvider)
