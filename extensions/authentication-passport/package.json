@@ -73,7 +73,7 @@
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
     "passport-http": "^0.3.0",
-    "passport-oauth2": "^1.6.0",
+    "passport-oauth2": "^1.6.1",
     "qs": "^6.10.1",
     "supertest": "^6.1.6"
   }
