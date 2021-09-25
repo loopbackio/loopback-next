@@ -3,6 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {printSchemaWithDirectives} from '@graphql-tools/utils';
 import {
   Binding,
   BindingFromClassOptions,
@@ -28,9 +29,12 @@ import {
 } from 'apollo-server-express';
 import {ExpressContext} from 'apollo-server-express/dist/ApolloServer';
 import express from 'express';
+import fs from 'fs';
+import {lexicographicSortSchema} from 'graphql';
 import {
   AuthChecker,
   buildSchema,
+  BuildSchemaOptions as TypeGrahpQLBuildSchemaOptions,
   NonEmptyArray,
   ResolverInterface,
 } from 'type-graphql';
@@ -113,7 +117,7 @@ export class GraphQLServer extends Context implements Server {
     return registerResolver(this, resolverClass, nameOrOptions);
   }
 
-  async start() {
+  private async _setupSchema() {
     const resolverClasses =
       this.getResolverClasses() as unknown as NonEmptyArray<Function>;
 
@@ -129,7 +133,7 @@ export class GraphQLServer extends Context implements Server {
       })) ?? new PubSub();
 
     // build TypeGraphQL executable schema
-    const schema = await buildSchema({
+    const buildSchemaOptions: TypeGrahpQLBuildSchemaOptions = {
       // See https://github.com/MichalLytek/type-graphql/issues/150#issuecomment-420181526
       validate: false,
       resolvers: resolverClasses,
@@ -139,7 +143,12 @@ export class GraphQLServer extends Context implements Server {
       authChecker,
       pubSub,
       globalMiddlewares: await this.getMiddlewareList(),
-    });
+    };
+    return buildSchema(buildSchemaOptions);
+  }
+
+  async start() {
+    const schema = await this._setupSchema();
 
     // Allow a graphql context resolver to be bound to GRAPHQL_CONTEXT_RESOLVER
     const graphqlContextResolver: ContextFunction<ExpressContext> =
@@ -169,6 +178,18 @@ export class GraphQLServer extends Context implements Server {
 
     // Start the http server if created
     await this.httpServer?.start();
+  }
+
+  async exportGraphQLSchema(outFile = '', log = console.log) {
+    const schema = await this._setupSchema();
+    const schemaFileContent = printSchemaWithDirectives(
+      lexicographicSortSchema(schema),
+    );
+    if (outFile === '-' || outFile === '') {
+      log('%s', schemaFileContent);
+    } else {
+      fs.writeFileSync(outFile, schemaFileContent, 'utf-8');
+    }
   }
 
   async stop() {
