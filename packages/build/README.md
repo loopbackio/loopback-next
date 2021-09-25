@@ -94,6 +94,15 @@ Now you run the scripts, such as:
     | ------------------ | ------------------------------------------------------------------------------------------------- |
     | `--copy-resources` | Copy all non-typescript files from `src` and `test` to `outDir`, preserving their relative paths. |
 
+  - Using [`ttypescript`](https://github.com/cevek/ttypescript)
+
+    ### Stability: ⚠️Experimental⚠️
+
+    If you would like to use `ttypescript` and its availalbe plugins, you can
+    substitute `lb-tsc` with `lb-ttsc`, or pass the option
+    `lb-tsc --use-ttypescript`. If `ttypescript` is not installed, the default
+    TypeScript compiler `tsc` will be used instead.
+
 4.  Run builds
 
 ```sh
