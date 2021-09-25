@@ -65,10 +65,15 @@ function run(argv, options) {
   }
   debug(`Using ${TSC_CLI} to compile package`);
 
-  // --copy-resources is not a TS Compiler option so we remove it from the
-  // list of compiler options to avoid compiler errors.
+  // --copy-resources and --use-ttypescript are not a TS Compiler options,
+  // so we remove them from the list of compiler options to avoid compiler
+  // errors.
   if (isCopyResourcesSet) {
     compilerOpts.splice(compilerOpts.indexOf('--copy-resources'), 1);
+  }
+
+  if (isUseTtscSet) {
+    compilerOpts.splice(compilerOpts.indexOf('--use-ttypescript'), 1);
   }
 
   let target;

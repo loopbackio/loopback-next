@@ -56,6 +56,33 @@ describe('build', /** @this {Mocha.Suite} */ function () {
     });
   });
 
+  describe('with --use-ttypescript', () => {
+    it('compiles ts files without ttypescript installed', done => {
+      const run = require('../../bin/compile-package');
+      const childProcess = run([
+        'node',
+        'bin/compile-package',
+        '--use-ttypescript',
+      ]);
+      childProcess.on('close', code => {
+        assert.equal(code, 0);
+        assert(
+          fs.existsSync(path.join(projectDir, 'dist')),
+          'dist should have been created',
+        );
+        assert(
+          fs.existsSync(path.join(projectDir, 'tsconfig.json')),
+          'tsconfig.json should have been created',
+        );
+        const tsConfig = fs.readJSONSync(
+          path.join(projectDir, 'tsconfig.json'),
+        );
+        assert.equal(tsConfig.extends, '../../../config/tsconfig.common.json');
+        done();
+      });
+    });
+  });
+
   it('honors tsconfig.build.json over tsconfig.json', () => {
     fs.writeJSONSync('tsconfig.build.json', {
       extends: '../../../config/tsconfig.common.json',
