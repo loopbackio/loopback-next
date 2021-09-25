@@ -35,12 +35,11 @@ function run(argv, options) {
   const packageDir = utils.getPackageDir();
 
   const runnerName = argv[1];
-  const TSC_CLI = runnerName.includes('lb-ttsc')
-    ? 'ttypescript/lib/tsc'
-    : 'typescript/lib/tsc';
-  debug(`Using ${TSC_CLI} to compile package`);
-  const compilerOpts = argv.slice(2);
 
+  const compilerOpts = argv.slice(2);
+  const runnerIsLbttsc = runnerName.includes('lb-ttsc');
+  const isUseTtscSet = utils.isOptionSet(compilerOpts, '--use-ttypescript');
+  const useTtsc = runnerIsLbttsc || isUseTtscSet;
   const isTargetSet = utils.isOptionSet(compilerOpts, '--target');
   const isOutDirSet = utils.isOptionSet(compilerOpts, '--outDir');
   const isProjectSet = utils.isOptionSet(compilerOpts, '-p', '--project');
@@ -48,6 +47,23 @@ function run(argv, options) {
     compilerOpts,
     '--copy-resources',
   );
+
+  let TSC_CLI = 'typescript/lib/tsc';
+  if (useTtsc) {
+    try {
+      require.resolve('ttypescript');
+      TSC_CLI = 'ttypescript/lib/tsc';
+    } catch (e) {
+      if (isUseTtscSet) {
+        console.warn(
+          'Ignoring --use-ttypescript option - ttypescript is not installed',
+        );
+      } else {
+        console.warn('Defaulting to lb-tsc - ttypescript is not installed');
+      }
+    }
+  }
+  debug(`Using ${TSC_CLI} to compile package`);
 
   // --copy-resources is not a TS Compiler option so we remove it from the
   // list of compiler options to avoid compiler errors.
