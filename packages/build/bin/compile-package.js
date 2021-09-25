@@ -55,12 +55,13 @@ function run(argv, options) {
       TSC_CLI = 'ttypescript/lib/tsc';
     } catch (e) {
       if (isUseTtscSet) {
-        console.warn(
-          'Ignoring --use-ttypescript option - ttypescript is not installed',
+        console.error(
+          'Error using the --use-ttypescript option - ttypescript is not installed',
         );
       } else {
-        console.warn('Defaulting to lb-tsc - ttypescript is not installed');
+        console.error('Error using lb-ttsc - ttypescript is not installed');
       }
+      process.exit(1);
     }
   }
   debug(`Using ${TSC_CLI} to compile package`);
