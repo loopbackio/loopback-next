@@ -45,7 +45,7 @@
   "dependencies": {
     "@loopback/security": "^0.5.3",
     "@types/express": "^4.17.13",
-    "@types/lodash": "^4.14.173",
+    "@types/lodash": "^4.14.174",
     "lodash": "^4.17.21",
     "tslib": "^2.3.1"
   },

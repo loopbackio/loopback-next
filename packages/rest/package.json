@@ -80,7 +80,7 @@
     "@types/debug": "^4.1.7",
     "@types/js-yaml": "^4.0.3",
     "@types/json-schema-compare": "^0.2.1",
-    "@types/lodash": "^4.14.173",
+    "@types/lodash": "^4.14.174",
     "@types/multer": "^1.4.7",
     "@types/node": "^10.17.60",
     "@types/on-finished": "^2.3.1",
