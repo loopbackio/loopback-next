@@ -3,6 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+export * from 'socket.io';
 export * from './booters';
 export * from './decorators';
 export * from './keys';
@@ -13,4 +14,3 @@ export * from './socketio.component';
 export * from './socketio.sequence';
 export * from './socketio.server';
 export * from './types';
-export {Socket} from 'socket.io';
