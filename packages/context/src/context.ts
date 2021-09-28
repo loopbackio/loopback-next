@@ -441,12 +441,14 @@ export class Context extends EventEmitter {
    * Create a view of the context chain with the given binding filter
    * @param filter - A function to match bindings
    * @param comparator - A function to sort matched bindings
+   * @param options - Resolution options
    */
   createView<T = unknown>(
     filter: BindingFilter,
     comparator?: BindingComparator,
+    options?: Omit<ResolutionOptions, 'session'>,
   ) {
-    const view = new ContextView<T>(this, filter, comparator);
+    const view = new ContextView<T>(this, filter, comparator, options);
     view.open();
     return view;
   }

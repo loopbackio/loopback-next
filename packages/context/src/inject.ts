@@ -67,7 +67,7 @@ export interface ResolverFunction {
 /**
  * An object to provide metadata for `@inject`
  */
-export interface InjectionMetadata extends ResolutionOptions {
+export interface InjectionMetadata extends Omit<ResolutionOptions, 'session'> {
   /**
    * Name of the decorator function, such as `@inject` or `@inject.setter`.
    * It's usually set by the decorator implementation.

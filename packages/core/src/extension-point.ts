@@ -4,6 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
+  asResolutionOptions,
   assertTargetType,
   Binding,
   BindingFilter,
@@ -21,6 +22,7 @@ import {
   inject,
   injectable,
   Injection,
+  InjectionMetadata,
   ResolutionSession,
 } from '@loopback/context';
 import {CoreTags} from './keys';
@@ -69,22 +71,30 @@ export function extensionPoint(name: string, ...specs: BindingSpec[]) {
  * extension point class. If a class needs to inject extensions from multiple
  * extension points, use different `extensionPointName` for different types of
  * extensions.
+ * @param metadata - Optional injection metadata
  */
-export function extensions(extensionPointName?: string) {
-  return inject('', {decorator: '@extensions'}, (ctx, injection, session) => {
-    assertTargetType(injection, Function, 'Getter function');
-    const bindingFilter = filterByExtensionPoint(
-      injection,
-      session,
-      extensionPointName,
-    );
-    return createViewGetter(
-      ctx,
-      bindingFilter,
-      injection.metadata.bindingComparator,
-      session,
-    );
-  });
+export function extensions(
+  extensionPointName?: string,
+  metadata?: InjectionMetadata,
+) {
+  return inject(
+    '',
+    {...metadata, decorator: '@extensions'},
+    (ctx, injection, session) => {
+      assertTargetType(injection, Function, 'Getter function');
+      const bindingFilter = filterByExtensionPoint(
+        injection,
+        session,
+        extensionPointName,
+      );
+      return createViewGetter(
+        ctx,
+        bindingFilter,
+        injection.metadata.bindingComparator,
+        {...metadata, ...asResolutionOptions(session)},
+      );
+    },
+  );
 }
 
 export namespace extensions {
@@ -112,11 +122,15 @@ export namespace extensions {
    * extension point class. If a class needs to inject extensions from multiple
    * extension points, use different `extensionPointName` for different types of
    * extensions.
+   * @param metadata - Optional injection metadata
    */
-  export function view(extensionPointName?: string) {
+  export function view(
+    extensionPointName?: string,
+    metadata?: InjectionMetadata,
+  ) {
     return inject(
       '',
-      {decorator: '@extensions.view'},
+      {...metadata, decorator: '@extensions.view'},
       (ctx, injection, session) => {
         assertTargetType(injection, ContextView);
         const bindingFilter = filterByExtensionPoint(
@@ -127,6 +141,7 @@ export namespace extensions {
         return ctx.createView(
           bindingFilter,
           injection.metadata.bindingComparator,
+          metadata,
         );
       },
     );
@@ -156,11 +171,15 @@ export namespace extensions {
    * extension point class. If a class needs to inject extensions from multiple
    * extension points, use different `extensionPointName` for different types of
    * extensions.
+   * @param metadata - Optional injection metadata
    */
-  export function list(extensionPointName?: string) {
+  export function list(
+    extensionPointName?: string,
+    metadata?: InjectionMetadata,
+  ) {
     return inject(
       '',
-      {decorator: '@extensions.instances'},
+      {...metadata, decorator: '@extensions.instances'},
       (ctx, injection, session) => {
         assertTargetType(injection, Array);
         const bindingFilter = filterByExtensionPoint(
@@ -173,7 +192,10 @@ export namespace extensions {
           bindingFilter,
           injection.metadata.bindingComparator,
         );
-        return viewForExtensions.resolve(session);
+        return viewForExtensions.resolve({
+          ...metadata,
+          ...asResolutionOptions(session),
+        });
       },
     );
   }
