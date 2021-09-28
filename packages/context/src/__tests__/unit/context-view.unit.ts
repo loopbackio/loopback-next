@@ -5,6 +5,7 @@
 
 import {expect} from '@loopback/testlab';
 import pEvent from 'p-event';
+import {types} from 'util';
 import {
   Binding,
   BindingScope,
@@ -12,8 +13,10 @@ import {
   compareBindingsByTag,
   Context,
   ContextView,
+  createBindingFromClass,
   createViewGetter,
   filterByTag,
+  injectable,
 } from '../..';
 
 describe('ContextView', () => {
@@ -41,6 +44,21 @@ describe('ContextView', () => {
       compareBindingsByTag('phase', ['b', 'a']),
     );
     expect(view.bindings).to.eql([bindings[1], bindings[0]]);
+  });
+
+  it('allows proxy', async () => {
+    @injectable({tags: {service: true}})
+    class MyService {
+      hello() {
+        return 'Hello';
+      }
+    }
+    server.add(createBindingFromClass(MyService));
+    const view = new ContextView(server, filterByTag('service'), undefined, {
+      asProxyWithInterceptors: true,
+    });
+    const values = await view.values();
+    values.forEach(v => expect(types.isProxy(v)));
   });
 
   it('resolves bindings', async () => {
@@ -231,6 +249,26 @@ describe('ContextView', () => {
       server.bind('abc').to('ABC').tag('abc');
       server.bind('xyz').to('XYZ').tag('foo');
       expect(await getter()).to.eql(['BAR', 'FOO', 'XYZ']);
+    });
+
+    it('creates a getter function for proxy', async () => {
+      @injectable({tags: {service: true}})
+      class MyService {
+        hello() {
+          return 'Hello';
+        }
+      }
+      server.add(createBindingFromClass(MyService));
+      const getter = createViewGetter(
+        server,
+        filterByTag('service'),
+        undefined,
+        {
+          asProxyWithInterceptors: true,
+        },
+      );
+      const result = await getter();
+      result.forEach(v => expect(types.isProxy(v)).to.be.true());
     });
   });
 

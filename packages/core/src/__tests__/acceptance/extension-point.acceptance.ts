@@ -16,6 +16,7 @@ import {
   MetadataInspector,
 } from '@loopback/context';
 import {expect} from '@loopback/testlab';
+import {types} from 'util';
 import {
   addExtension,
   CoreTags,
@@ -187,6 +188,18 @@ describe('extension point', () => {
       const greeterService = await ctx.get<GreetingService>('greeter-service');
       const greeters = await greeterService.greeters();
       assertGreeterExtensions(greeters);
+    });
+
+    it('injects extensions with metadata', async () => {
+      class GreetingService {
+        @extensions('greeters', {asProxyWithInterceptors: true})
+        public greeters: Getter<Greeter[]>;
+      }
+      ctx.bind('greeter-service').toClass(GreetingService);
+      registerGreeters('greeters');
+      const greeterService = await ctx.get<GreetingService>('greeter-service');
+      const greeters = await greeterService.greeters();
+      greeters.forEach(g => expect(types.isProxy(g)).to.be.true());
     });
 
     it('injects multiple types of extensions', async () => {

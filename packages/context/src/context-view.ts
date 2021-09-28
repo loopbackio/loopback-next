@@ -14,7 +14,12 @@ import {ContextEvent} from './context-event';
 import {ContextEventType, ContextObserver} from './context-observer';
 import {Subscription} from './context-subscription';
 import {Getter} from './inject';
-import {ResolutionSession} from './resolution-session';
+import {
+  asResolutionOptions,
+  ResolutionOptions,
+  ResolutionOptionsOrSession,
+  ResolutionSession,
+} from './resolution-session';
 import {isPromiseLike, resolveList, ValueOrPromise} from './value-promise';
 const debug = debugFactory('loopback:context:view');
 const nextTick = promisify(process.nextTick);
@@ -69,6 +74,7 @@ export class ContextView<T = unknown>
     public readonly context: Context,
     public readonly filter: BindingFilter,
     public readonly comparator?: BindingComparator,
+    private resolutionOptions?: Omit<ResolutionOptions, 'session'>,
   ) {
     super();
   }
@@ -188,34 +194,41 @@ export class ContextView<T = unknown>
    * Resolve values for the matching bindings
    * @param session - Resolution session
    */
-  resolve(session?: ResolutionSession): ValueOrPromise<T[]> {
+  resolve(session?: ResolutionOptionsOrSession): ValueOrPromise<T[]> {
     debug('Resolving values');
     if (this._cachedValues != null) {
       return this.getCachedValues();
     }
     const bindings = this.bindings;
     let result = resolveList(bindings, b => {
-      return b.getValue(this.context, ResolutionSession.fork(session));
+      const options = {
+        ...this.resolutionOptions,
+        ...asResolutionOptions(session),
+      };
+      options.session = ResolutionSession.fork(options.session);
+      return b.getValue(this.context, options);
     });
     if (isPromiseLike(result)) {
       result = result.then(values => {
-        this.updateCachedValues(values);
-        this.emit('resolve', values);
-        return values;
+        const list = values.filter(v => v != null) as T[];
+        this.updateCachedValues(list);
+        this.emit('resolve', list);
+        return list;
       });
     } else {
       // Clone the array so that the cached values won't be mutated
-      this.updateCachedValues(result);
-      this.emit('resolve', result);
+      const list = (result = result.filter(v => v != null) as T[]);
+      this.updateCachedValues(list);
+      this.emit('resolve', list);
     }
-    return result;
+    return result as ValueOrPromise<T[]>;
   }
 
   /**
    * Get the list of resolved values. If they are not cached, it tries to find
    * and resolve them.
    */
-  async values(session?: ResolutionSession): Promise<T[]> {
+  async values(session?: ResolutionOptionsOrSession): Promise<T[]> {
     debug('Reading values');
     // Wait for the next tick so that context event notification can be emitted
     await nextTick();
@@ -228,14 +241,16 @@ export class ContextView<T = unknown>
   /**
    * As a `Getter` function
    */
-  asGetter(session?: ResolutionSession): Getter<T[]> {
+  asGetter(session?: ResolutionOptionsOrSession): Getter<T[]> {
     return () => this.values(session);
   }
 
   /**
    * Get the single value
    */
-  async singleValue(session?: ResolutionSession): Promise<T | undefined> {
+  async singleValue(
+    session?: ResolutionOptionsOrSession,
+  ): Promise<T | undefined> {
     const values = await this.values(session);
     if (values.length === 0) return undefined;
     if (values.length === 1) return values[0];
@@ -389,7 +404,7 @@ export function createViewGetter<T = unknown>(
   ctx: Context,
   bindingFilter: BindingFilter,
   bindingComparator?: BindingComparator,
-  session?: ResolutionSession,
+  session?: ResolutionOptionsOrSession,
 ): Getter<T[]>;
 
 /**
@@ -404,7 +419,7 @@ export function createViewGetter<T = unknown>(
   ctx: Context,
   bindingFilter: BindingFilter,
   bindingComparatorOrSession?: BindingComparator | ResolutionSession,
-  session?: ResolutionSession,
+  session?: ResolutionOptionsOrSession,
 ): Getter<T[]> {
   let bindingComparator: BindingComparator | undefined = undefined;
   if (typeof bindingComparatorOrSession === 'function') {
@@ -413,7 +428,13 @@ export function createViewGetter<T = unknown>(
     session = bindingComparatorOrSession;
   }
 
-  const view = new ContextView<T>(ctx, bindingFilter, bindingComparator);
+  const options = asResolutionOptions(session);
+  const view = new ContextView<T>(
+    ctx,
+    bindingFilter,
+    bindingComparator,
+    options,
+  );
   view.open();
-  return view.asGetter(session);
+  return view.asGetter(options);
 }

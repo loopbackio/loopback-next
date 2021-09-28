@@ -96,7 +96,7 @@ describe('RestServer', () => {
 
     it('honors gracePeriodForClose', async () => {
       const app = new Application({
-        rest: {gracePeriodForClose: 1000},
+        rest: {port: 0, gracePeriodForClose: 1000},
       });
       app.component(RestComponent);
       const server = await app.getServer(RestServer);
