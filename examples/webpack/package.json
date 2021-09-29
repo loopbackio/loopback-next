@@ -54,7 +54,7 @@
     "puppeteer": "^10.4.0",
     "typescript": "~4.4.3",
     "util": "^0.12.4",
-    "webpack": "^5.55.0",
+    "webpack": "^5.55.1",
     "webpack-cli": "^4.8.0"
   }
 }
