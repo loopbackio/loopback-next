@@ -63,6 +63,7 @@ section of documentation for detailed instructions.
        {
          name: 'MyAPI',
          script: 'dist/index.js',
+         node_args : '-r dotenv/config',
          instances: 1,
          autorestart: true,
          watch: false,
