@@ -20,7 +20,14 @@ export class GraphqlDemoApplication extends BootMixin(
     super(options);
 
     this.component(GraphQLComponent);
+
     const server = this.getSync(GraphQLBindings.GRAPHQL_SERVER);
+    // To register one or more middlewares as per https://typegraphql.com/docs/middlewares.html
+    server.middleware((resolverData, next) => {
+      // It's invoked for each field resolver, query and mutation operations
+      return next();
+    });
+
     this.expressMiddleware('middleware.express.GraphQL', server.expressApp);
 
     // It's possible to register a graphql context resolver
