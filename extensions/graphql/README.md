@@ -384,8 +384,11 @@ export class GraphqlDemoApplication extends BootMixin(
   constructor(options: ApplicationConfig = {}) {
     super(options);
 
+    const server = this.getSync(GraphQLBindings.GRAPHQL_SERVER);
+    this.expressMiddleware('middleware.express.GraphQL', server.expressApp);
+
     // Register a GraphQL middleware
-    this.middleware((resolverData, next) => {
+    server.middleware((resolverData, next) => {
       // It's invoked for each field resolver, query and mutation operations
       return next();
     });
