@@ -284,6 +284,11 @@ await postRepository.findById('123', {
 });
 ```
 
+{% include important.html content="The `limit` filter will be applied on a per parent record basis. So each parent record will include a max of `limit` number of records.
+Previously, we had a bug where `limit` will be applied globally, so not all parent's records will include related objects depending on the `limit` value.
+To keep backward compatability with this, in the weird case it is needed, you can use `totalLimit` instead. For more details [see here](https://github.com/loopbackio/loopback-next/issues/6832)
+" %}
+
 #### Access included objects
 
 In the Node.js API, you can simply access the returned model instance with

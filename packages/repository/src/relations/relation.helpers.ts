@@ -35,29 +35,60 @@ export async function findByForeignKeys<
   targetRepository: EntityCrudRepository<Target, unknown, TargetRelations>,
   fkName: ForeignKey,
   fkValues: Target[ForeignKey][] | Target[ForeignKey],
-  scope?: Filter<Target>,
+  scope?: Filter<Target> & {totalLimit?: number},
   options?: Options,
 ): Promise<(Target & TargetRelations)[]> {
   let value;
   scope = cloneDeep(scope);
-
   if (Array.isArray(fkValues)) {
     if (fkValues.length === 0) return [];
     value = fkValues.length === 1 ? fkValues[0] : {inq: fkValues};
   } else {
     value = fkValues;
   }
-
-  const where = {[fkName]: value} as unknown as Where<Target>;
-
-  if (scope && !_.isEmpty(scope)) {
-    // combine where clause to scope filter
-    scope = new FilterBuilder(scope).impose({where}).filter;
-  } else {
-    scope = {where} as Filter<Target>;
+  let useScopeFilterGlobally = false;
+  if (options) {
+    useScopeFilterGlobally = options.isThroughModelInclude;
+    //if its an include from a through model, fkValues will be an array
+    //however, in this case we DO want to use the scope in the entire query
+    //no in a per fk basis
+  }
+  //This code is to keep backward compatability. See https://github.com/loopbackio/loopback-next/issues/6832
+  //for more info
+  if (scope?.totalLimit) {
+    scope.limit = scope.totalLimit;
+    useScopeFilterGlobally = true;
+    delete scope.totalLimit;
   }
 
-  return targetRepository.find(scope, options);
+  const isScopeSet = scope && !_.isEmpty(scope);
+  if (isScopeSet && Array.isArray(fkValues) && !useScopeFilterGlobally) {
+    // since there is a scope, there could be a where filter, a limit, an order
+    // and we should run the scope in multiple queries so we can respect the
+    // scope filter params
+    const findPromises = fkValues.map(fk => {
+      const where = {[fkName]: fk} as unknown as Where<Target>;
+      let localScope = cloneDeep(scope);
+      // combine where clause to scope filter
+      localScope = new FilterBuilder(localScope).impose({where}).filter;
+      return targetRepository.find(localScope, options);
+    });
+    return Promise.all(findPromises).then(findResults => {
+      //findResults is an array of arrays for each scope result, so we need to flatten it before returning it
+      return _.flatten(findResults);
+    });
+  } else {
+    const where = {[fkName]: value} as unknown as Where<Target>;
+
+    if (isScopeSet) {
+      // combine where clause to scope filter
+      scope = new FilterBuilder(scope).impose({where}).filter;
+    } else {
+      scope = {where} as Filter<Target>;
+    }
+
+    return targetRepository.find(scope, options);
+  }
 }
 
 export type StringKeyOf<T> = Extract<keyof T, string>;

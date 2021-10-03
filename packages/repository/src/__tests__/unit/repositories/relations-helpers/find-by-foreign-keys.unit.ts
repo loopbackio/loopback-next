@@ -171,4 +171,61 @@ describe('findByForeignKeys', () => {
     expect(fkValues).to.deepEqual(fkValuesOriginal);
     expect(scope).to.deepEqual(scopeOriginal);
   });
+
+  it('runs a find for each fkValue to properly respect scope filters', async () => {
+    const find = productRepo.stubs.find;
+    const scope = {
+      limit: 4,
+      order: ['name ASC'],
+      where: {name: {like: 'product%'}},
+    };
+    const newproducts = [
+      createProduct({id: 1, name: 'productA', categoryId: 1}),
+      createProduct({id: 2, name: 'productB', categoryId: 2}),
+    ];
+    await productRepo.create(newproducts[0]);
+    await productRepo.create(newproducts[1]);
+    find.resolves([]);
+    await findByForeignKeys(productRepo, 'categoryId', [1, 2], scope);
+    sinon.assert.calledWithMatch(find, {
+      limit: 4,
+      order: ['name ASC'],
+      where: {
+        categoryId: 1,
+        name: {like: 'product%'},
+      },
+    });
+    sinon.assert.calledWithMatch(find, {
+      limit: 4,
+      order: ['name ASC'],
+      where: {
+        categoryId: 2,
+        name: {like: 'product%'},
+      },
+    });
+  });
+  it('runs find globally because totalLimit is set in scope', async () => {
+    const find = productRepo.stubs.find;
+    const scope = {
+      totalLimit: 4,
+      order: ['name ASC'],
+      where: {name: {like: 'product%'}},
+    };
+    const newproducts = [
+      createProduct({id: 1, name: 'productA', categoryId: 1}),
+      createProduct({id: 2, name: 'productB', categoryId: 2}),
+    ];
+    await productRepo.create(newproducts[0]);
+    await productRepo.create(newproducts[1]);
+    find.resolves([]);
+    await findByForeignKeys(productRepo, 'categoryId', [1, 2], scope);
+    sinon.assert.calledWithMatch(find, {
+      limit: 4,
+      order: ['name ASC'],
+      where: {
+        categoryId: {inq: [1, 2]},
+        name: {like: 'product%'},
+      },
+    });
+  });
 });
