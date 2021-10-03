@@ -118,7 +118,10 @@ export function createHasManyThroughInclusionResolver<
           Target,
           TargetRelations,
           StringKeyOf<Target>
-        >(targetRepo, targetKey, targetIds as unknown as [], scope, options);
+        >(targetRepo, targetKey, targetIds as unknown as [], scope, {
+          ...options,
+          isThroughModelInclude: true,
+        });
         result.push(targetEntityList);
       } else {
         // no entities found, add undefined to results

@@ -475,6 +475,100 @@ describe('DefaultCrudRepository', () => {
         ]);
       });
 
+      it('implements Repository.find() with included models and scope limit', async () => {
+        const createdFolders = await folderRepo.createAll([
+          {name: 'f1', id: 1},
+          {name: 'f2', id: 2},
+          {name: 'f3', id: 3},
+          {name: 'f4', id: 4},
+        ]);
+        const files = await fileRepo.createAll([
+          {id: 1, title: 'file1', folderId: 1},
+          {id: 2, title: 'file3.A', folderId: 3},
+          {id: 3, title: 'file3.D', folderId: 3},
+          {id: 4, title: 'file3.C', folderId: 3},
+          {id: 5, title: 'file3.B', folderId: 3},
+          {id: 6, title: 'file2.D', folderId: 2},
+          {id: 7, title: 'file2.A', folderId: 2},
+          {id: 8, title: 'file2.C', folderId: 2},
+          {id: 9, title: 'file2.B', folderId: 2},
+        ]);
+
+        folderRepo.registerInclusionResolver(
+          'files',
+          folderFiles.inclusionResolver,
+        );
+
+        const folders = await folderRepo.find({
+          include: [
+            {relation: 'files', scope: {limit: 3, order: ['title ASC']}},
+          ],
+        });
+
+        expect(toJSON(folders)).to.deepEqual([
+          {...createdFolders[0].toJSON(), files: [toJSON(files[0])]},
+          {
+            ...createdFolders[1].toJSON(),
+            files: [toJSON(files[6]), toJSON(files[8]), toJSON(files[7])],
+          },
+          {
+            ...createdFolders[2].toJSON(),
+            files: [toJSON(files[1]), toJSON(files[4]), toJSON(files[3])],
+          },
+          {
+            ...createdFolders[3].toJSON(),
+            // files: [], //? I would prefer to have files as an empty array but I think that would be a change to flattenTargetsOfOneToManyRelation?
+          },
+        ]);
+      });
+
+      it('implements Repository.find() with included models and scope totalLimit', async () => {
+        const createdFolders = await folderRepo.createAll([
+          {name: 'f1', id: 1},
+          {name: 'f2', id: 2},
+          {name: 'f3', id: 3},
+          {name: 'f4', id: 4},
+        ]);
+        const files = await fileRepo.createAll([
+          {id: 1, title: 'file1', folderId: 1},
+          {id: 2, title: 'file3.A', folderId: 3},
+          {id: 3, title: 'file3.D', folderId: 3},
+          {id: 4, title: 'file3.C', folderId: 3},
+          {id: 5, title: 'file3.B', folderId: 3},
+          {id: 6, title: 'file2.D', folderId: 2},
+          {id: 7, title: 'file2.A', folderId: 2},
+          {id: 8, title: 'file2.C', folderId: 2},
+          {id: 9, title: 'file2.B', folderId: 2},
+        ]);
+
+        folderRepo.registerInclusionResolver(
+          'files',
+          folderFiles.inclusionResolver,
+        );
+
+        const folders = await folderRepo.find({
+          include: [
+            {relation: 'files', scope: {totalLimit: 3, order: ['title ASC']}},
+          ],
+        });
+
+        expect(toJSON(folders)).to.deepEqual([
+          {...createdFolders[0].toJSON(), files: [toJSON(files[0])]},
+          {
+            ...createdFolders[1].toJSON(),
+            files: [toJSON(files[6]), toJSON(files[8])],
+          },
+          {
+            ...createdFolders[2].toJSON(),
+            // files: [],
+          },
+          {
+            ...createdFolders[3].toJSON(),
+            // files: [], //? I would prefer to have files as an empty array but I think that would be a change to flattenTargetsOfOneToManyRelation?
+          },
+        ]);
+      });
+
       it('implements Repository.findById() with included models', async () => {
         const folders = await folderRepo.createAll([
           {name: 'f1', id: 1},

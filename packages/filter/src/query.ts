@@ -181,7 +181,14 @@ export interface Inclusion {
   // but that won't handle second-level (and deeper) inclusions.
   // To keep things simple, we allow any filter here, effectively turning off
   // compiler checks.
-  scope?: Filter<AnyObject>;
+  scope?: Filter<AnyObject> & {
+    /**
+     * Global maximum number of inclusions. This is just to remain backward
+     * compatability. This totalLimit props takes precedence over limit
+     * https://github.com/loopbackio/loopback-next/issues/6832
+     */
+    totalLimit?: number;
+  };
 }
 
 /**
