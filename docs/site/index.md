@@ -47,7 +47,7 @@ personas who are interested in various capabilities provided by LoopBack.
 
 ## How is our documentation organized
 
-We use the the [Diátaxis documentation authoring framework](https://diataxis.fr)
+We use the [Diátaxis documentation authoring framework](https://diataxis.fr)
 which organizes technical documentation into a system based on four quadrants:
 
 - Learning-oriented `Tutorials` provide hands-on lessons where users can learn
