@@ -62,6 +62,9 @@ export class MyApplication extends BootMixin(
   constructor(options: ApplicationConfig = {}) {
     super(options);
 
+    // mount authorization component
+    this.component(AuthorizationComponent);
+
     // bind the authorizer provider
     this.bind('authorizationProviders.my-authorizer-provider')
       .toProvider(MyAuthorizationProvider)
