@@ -48,7 +48,7 @@
     "!/fixtures"
   ],
   "dependencies": {
-    "@microsoft/api-documenter": "^7.13.61",
+    "@microsoft/api-documenter": "^7.13.62",
     "@microsoft/api-extractor": "^7.18.15",
     "@lerna/project": "^4.0.0",
     "debug": "^4.3.2",
