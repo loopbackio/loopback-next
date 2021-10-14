@@ -7,6 +7,7 @@
 
 const assert = require('assert');
 const path = require('path');
+const spawn = require('cross-spawn');
 const fs = require('fs-extra');
 const utils = require('../../bin/utils');
 
@@ -53,6 +54,30 @@ describe('build', /** @this {Mocha.Suite} */ function () {
       const tsConfig = fs.readJSONSync(path.join(projectDir, 'tsconfig.json'));
       assert.equal(tsConfig.extends, '../../../config/tsconfig.common.json');
       done();
+    });
+  });
+
+  describe('with --use-ttypescript', () => {
+    it('Returns an error if ttypescript is not installed', done => {
+      const childProcess = spawn(
+        process.execPath, // Typically '/usr/local/bin/node'
+        ['../../../bin/compile-package', '--use-ttypescript'],
+        {
+          env: Object.create(process.env),
+        },
+      );
+      let processOutput;
+      childProcess.stderr.on('data', m => {
+        processOutput = m.toString('ascii');
+      });
+      childProcess.on('close', code => {
+        assert.equal(code, 1);
+        assert.equal(
+          processOutput,
+          'Error using the --use-ttypescript option - ttypescript is not installed\n',
+        );
+        done();
+      });
     });
   });
 
