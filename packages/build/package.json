@@ -5,6 +5,7 @@
   "license": "MIT",
   "bin": {
     "lb-tsc": "./bin/compile-package.js",
+    "lb-ttsc": "./bin/compile-package.js",
     "lb-eslint": "./bin/run-eslint.js",
     "lb-prettier": "./bin/run-prettier.js",
     "lb-mocha": "./bin/run-mocha.js",
