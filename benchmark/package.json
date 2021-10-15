@@ -60,7 +60,7 @@
     "@types/benchmark": "^2.1.1",
     "@types/mocha": "^9.0.0",
     "@types/node": "^10.17.60",
-    "mocha": "^9.1.2",
+    "mocha": "^9.1.3",
     "source-map-support": "^0.5.20"
   }
 }
