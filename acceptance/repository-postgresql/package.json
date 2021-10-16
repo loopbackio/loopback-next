@@ -14,7 +14,7 @@
     "directory": "acceptance/repository-postgresql"
   },
   "engines": {
-    "node": "^10.16 || 12 || 14 || 16"
+    "node": "12 || 14 || 16"
   },
   "scripts": {
     "build": "lb-tsc",
