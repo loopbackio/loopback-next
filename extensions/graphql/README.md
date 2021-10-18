@@ -398,7 +398,7 @@ export class GraphqlDemoApplication extends BootMixin(
 
 ## Export GraphQL Schema as a file
 
-Exporting the generated GraphQL schema file can be done vie calling
+Exporting the generated GraphQL schema file can be done by calling
 `exportGraphQLSchema` on the `GraphQLServer`:
 
 ```ts
