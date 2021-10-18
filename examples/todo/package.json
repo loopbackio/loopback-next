@@ -1,7 +1,7 @@
 {
   "name": "@loopback/example-todo",
   "description": "Tutorial example on how to build an application with LoopBack 4",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "keywords": [
     "loopback",
     "LoopBack",
@@ -51,21 +51,21 @@
     "access": "public"
   },
   "dependencies": {
-    "@loopback/boot": "^3.4.3",
-    "@loopback/core": "^2.17.0",
-    "@loopback/repository": "^3.7.2",
-    "@loopback/rest": "^10.0.1",
-    "@loopback/rest-explorer": "^3.3.3",
-    "@loopback/service-proxy": "^3.2.3",
+    "@loopback/boot": "^3.4.4",
+    "@loopback/core": "^2.18.0",
+    "@loopback/repository": "^3.7.3",
+    "@loopback/rest": "^10.1.0",
+    "@loopback/rest-explorer": "^3.3.4",
+    "@loopback/service-proxy": "^3.2.4",
     "loopback-connector-rest": "^4.0.1",
     "morgan": "^1.10.0",
     "tslib": "^2.3.1"
   },
   "devDependencies": {
-    "@loopback/build": "^7.0.1",
-    "@loopback/eslint-config": "^11.0.1",
-    "@loopback/http-caching-proxy": "^2.3.3",
-    "@loopback/testlab": "^3.4.3",
+    "@loopback/build": "^7.0.2",
+    "@loopback/eslint-config": "^11.0.2",
+    "@loopback/http-caching-proxy": "^2.3.4",
+    "@loopback/testlab": "^3.4.4",
     "@types/lodash": "^4.14.175",
     "@types/morgan": "^1.9.3",
     "@types/node": "^10.17.60",

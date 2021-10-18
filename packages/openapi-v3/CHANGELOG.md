@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.2](https://github.com/loopbackio/loopback-next/compare/@loopback/openapi-v3@6.0.1...@loopback/openapi-v3@6.0.2) (2021-10-18)
+
+
+### Bug Fixes
+
+* **openapi-v3:** allow classes decorated with `[@model](https://github.com/model)` as response model ([2de6528](https://github.com/loopbackio/loopback-next/commit/2de6528f1ea8d06939c68d513cd3f3ae4d58d806))
+
+
+
+
+
 ## [6.0.1](https://github.com/loopbackio/loopback-next/compare/@loopback/openapi-v3@6.0.0...@loopback/openapi-v3@6.0.1) (2021-09-16)
 
 **Note:** Version bump only for package @loopback/openapi-v3

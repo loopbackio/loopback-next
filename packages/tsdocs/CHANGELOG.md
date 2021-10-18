@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.6.4](https://github.com/loopbackio/loopback-next/compare/@loopback/tsdocs@2.6.3...@loopback/tsdocs@2.6.4) (2021-10-18)
+
+
+### Bug Fixes
+
+* add missing dependency for tsdocs ([5c74926](https://github.com/loopbackio/loopback-next/commit/5c74926f7aa85835853d4db383c6170c237ed3ce))
+
+
+
+
+
 ## [2.6.3](https://github.com/loopbackio/loopback-next/compare/@loopback/tsdocs@2.6.2...@loopback/tsdocs@2.6.3) (2021-09-16)
 
 **Note:** Version bump only for package @loopback/tsdocs

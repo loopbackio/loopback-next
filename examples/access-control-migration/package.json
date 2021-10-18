@@ -1,7 +1,7 @@
 {
   "name": "@loopback/example-access-control-migration",
   "description": "Tutorial example on how to migrate the access control example with LoopBack 4.",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "keywords": [
     "loopback",
     "LoopBack",
@@ -51,15 +51,15 @@
     "access": "public"
   },
   "dependencies": {
-    "@loopback/authentication": "^7.3.3",
-    "@loopback/authorization": "^0.9.3",
-    "@loopback/boot": "^3.4.3",
-    "@loopback/core": "^2.17.0",
-    "@loopback/repository": "^3.7.2",
-    "@loopback/rest": "^10.0.1",
-    "@loopback/rest-explorer": "^3.3.3",
-    "@loopback/security": "^0.5.3",
-    "@loopback/service-proxy": "^3.2.3",
+    "@loopback/authentication": "^7.3.4",
+    "@loopback/authorization": "^0.9.4",
+    "@loopback/boot": "^3.4.4",
+    "@loopback/core": "^2.18.0",
+    "@loopback/repository": "^3.7.3",
+    "@loopback/rest": "^10.1.0",
+    "@loopback/rest-explorer": "^3.3.4",
+    "@loopback/security": "^0.5.4",
+    "@loopback/service-proxy": "^3.2.4",
     "@types/bcryptjs": "2.4.2",
     "bcryptjs": "^2.4.3",
     "casbin": "^5.11.5",
@@ -67,10 +67,10 @@
     "loopback-connector-rest": "^4.0.1"
   },
   "devDependencies": {
-    "@loopback/build": "^7.0.1",
-    "@loopback/eslint-config": "^11.0.1",
-    "@loopback/http-caching-proxy": "^2.3.3",
-    "@loopback/testlab": "^3.4.3",
+    "@loopback/build": "^7.0.2",
+    "@loopback/eslint-config": "^11.0.2",
+    "@loopback/http-caching-proxy": "^2.3.4",
+    "@loopback/testlab": "^3.4.4",
     "@types/lodash": "^4.14.175",
     "@types/node": "^10.17.60",
     "eslint": "^7.32.0",

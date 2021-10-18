@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.2](https://github.com/loopbackio/loopback-next/compare/@loopback/repository-json-schema@4.0.1...@loopback/repository-json-schema@4.0.2) (2021-10-18)
+
+
+### Bug Fixes
+
+* make sure json schema ref is built correctly for the subclass ([bb327dd](https://github.com/loopbackio/loopback-next/commit/bb327dd3d3b19592d11b672ef007058f1a2cf04e))
+
+
+
+
+
 ## [4.0.1](https://github.com/loopbackio/loopback-next/compare/@loopback/repository-json-schema@4.0.0...@loopback/repository-json-schema@4.0.1) (2021-09-16)
 
 

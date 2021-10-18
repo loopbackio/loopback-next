@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.9.4](https://github.com/loopbackio/loopback-next/compare/@loopback/authorization@0.9.3...@loopback/authorization@0.9.4) (2021-10-18)
+
+**Note:** Version bump only for package @loopback/authorization
+
+
+
+
+
 ## [0.9.3](https://github.com/loopbackio/loopback-next/compare/@loopback/authorization@0.9.2...@loopback/authorization@0.9.3) (2021-09-16)
 
 **Note:** Version bump only for package @loopback/authorization

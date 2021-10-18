@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.4](https://github.com/loopbackio/loopback-next/compare/@loopback/http-caching-proxy@2.3.3...@loopback/http-caching-proxy@2.3.4) (2021-10-18)
+
+**Note:** Version bump only for package @loopback/http-caching-proxy
+
+
+
+
+
 ## [2.3.3](https://github.com/loopbackio/loopback-next/compare/@loopback/http-caching-proxy@2.3.2...@loopback/http-caching-proxy@2.3.3) (2021-09-16)
 
 **Note:** Version bump only for package @loopback/http-caching-proxy

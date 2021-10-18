@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.4](https://github.com/loopbackio/loopback-next/compare/@loopback/filter@1.5.3...@loopback/filter@1.5.4) (2021-10-18)
+
+
+### Bug Fixes
+
+* make sure scope filters are used for each fk on includes ([5d1a8c7](https://github.com/loopbackio/loopback-next/commit/5d1a8c71d6b79d43bd9b6530f7149fcb1756a71f)), closes [#6832](https://github.com/loopbackio/loopback-next/issues/6832)
+
+
+
+
+
 ## [1.5.3](https://github.com/loopbackio/loopback-next/compare/@loopback/filter@1.5.2...@loopback/filter@1.5.3) (2021-09-16)
 
 **Note:** Version bump only for package @loopback/filter

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.22.1](https://github.com/loopbackio/loopback-next/compare/@loopback/cli@2.22.0...@loopback/cli@2.22.1) (2021-10-18)
+
+
+### Bug Fixes
+
+* **cli:** use relative path in homepage ([312c58e](https://github.com/loopbackio/loopback-next/commit/312c58e1b5c67dddb85deb9711263ab8f893716e)), closes [#6826](https://github.com/loopbackio/loopback-next/issues/6826)
+
+
+
+
+
 # [2.22.0](https://github.com/loopbackio/loopback-next/compare/@loopback/cli@2.21.2...@loopback/cli@2.22.0) (2021-09-16)
 
 

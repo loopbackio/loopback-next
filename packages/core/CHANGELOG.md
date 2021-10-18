@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.18.0](https://github.com/loopbackio/loopback-next/compare/@loopback/core@2.17.0...@loopback/core@2.18.0) (2021-10-18)
+
+
+### Features
+
+* allow context view to return proxies ([8269c21](https://github.com/loopbackio/loopback-next/commit/8269c21e64503408f36baefcc23d2393bbad0bfe))
+
+
+
+
+
 # [2.17.0](https://github.com/loopbackio/loopback-next/compare/@loopback/core@2.16.2...@loopback/core@2.17.0) (2021-09-16)
 
 

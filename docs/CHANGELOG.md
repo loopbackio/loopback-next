@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.27.1](https://github.com/loopbackio/loopback-next/compare/@loopback/docs@3.27.0...@loopback/docs@3.27.1) (2021-10-18)
+
+
+### Bug Fixes
+
+* add missing component binding ([33df5b7](https://github.com/loopbackio/loopback-next/commit/33df5b7126630a929c41908d9a38c5d67113e139))
+* **docs:** remove double word ([e40b91b](https://github.com/loopbackio/loopback-next/commit/e40b91b75d3f4a59fd494dd03ab7ebdc71f1a356))
+* make sure scope filters are used for each fk on includes ([5d1a8c7](https://github.com/loopbackio/loopback-next/commit/5d1a8c71d6b79d43bd9b6530f7149fcb1756a71f)), closes [#6832](https://github.com/loopbackio/loopback-next/issues/6832)
+
+
+
+
+
 # [3.27.0](https://github.com/loopbackio/loopback-next/compare/@loopback/docs@3.26.1...@loopback/docs@3.27.0) (2021-09-16)
 
 

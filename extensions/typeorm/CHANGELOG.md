@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.4.4](https://github.com/loopbackio/loopback-next/compare/@loopback/typeorm@0.4.3...@loopback/typeorm@0.4.4) (2021-10-18)
+
+**Note:** Version bump only for package @loopback/typeorm
+
+
+
+
+
 ## [0.4.3](https://github.com/loopbackio/loopback-next/compare/@loopback/typeorm@0.4.2...@loopback/typeorm@0.4.3) (2021-09-16)
 
 

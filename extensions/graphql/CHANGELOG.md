@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.5.0](https://github.com/loopbackio/loopback-next/compare/@loopback/graphql@0.4.3...@loopback/graphql@0.5.0) (2021-10-18)
+
+
+### Features
+
+* adds method to export graphql spec to stdout or file ([9db0b0c](https://github.com/loopbackio/loopback-next/commit/9db0b0c37c9a3eac6ea632fd9afbb35b042ab965))
+
+
+
+
+
 ## [0.4.3](https://github.com/loopbackio/loopback-next/compare/@loopback/graphql@0.4.2...@loopback/graphql@0.4.3) (2021-09-16)
 
 **Note:** Version bump only for package @loopback/graphql
