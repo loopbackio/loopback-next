@@ -22,6 +22,12 @@ export interface GraphQLComponentOptions {
   // To be added
 }
 
+export interface SchemaFileConfig {
+  path: string; // e.g. __dirname + "/schema.gql",
+  commentDescriptions?: boolean;
+  sortedSchema?: boolean;
+}
+
 /**
  * Options for GraphQL server
  */
@@ -44,4 +50,8 @@ export interface GraphQLServerOptions extends HttpOptions {
    * Use as a middleware for RestServer instead of a standalone server
    */
   asMiddlewareOnly?: boolean;
+  /**
+   * Schema file config options
+   */
+  schemaFileConfig?: SchemaFileConfig;
 }

@@ -143,6 +143,10 @@ export class GraphQLServer extends Context implements Server {
       authChecker,
       pubSub,
       globalMiddlewares: await this.getMiddlewareList(),
+      // creates `*.gql` file with schema definition in a specified folder with
+      // sorting and comments options.
+      // See https://github.com/MichalLytek/type-graphql/blob/master/docs/emit-schema.md
+      emitSchemaFile: this.options.schemaFileConfig,
     };
     return buildSchema(buildSchemaOptions);
   }
