@@ -40,8 +40,15 @@ export interface GraphQLServerOptions extends HttpOptions {
    * Express settings
    */
   expressSettings?: Record<string, unknown>;
+
   /**
    * Use as a middleware for RestServer instead of a standalone server
    */
   asMiddlewareOnly?: boolean;
+
+  /**
+   * This parameter, when passed to TypeGraphQL's buildSchema() function, will
+   * create a graphql schema file upon application startup.
+   */
+  emitSchemaFile?: string | boolean | {path?: string};
 }

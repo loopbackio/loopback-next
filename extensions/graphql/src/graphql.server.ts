@@ -137,8 +137,7 @@ export class GraphQLServer extends Context implements Server {
       // See https://github.com/MichalLytek/type-graphql/issues/150#issuecomment-420181526
       validate: false,
       resolvers: resolverClasses,
-      // automatically create `schema.gql` file with schema definition in current folder
-      // emitSchemaFile: path.resolve(__dirname, 'schema.gql'),
+      emitSchemaFile: this.options.emitSchemaFile,
       container: new LoopBackContainer(this),
       authChecker,
       pubSub,
