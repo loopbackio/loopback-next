@@ -20,7 +20,7 @@
     "directory": "packages/http-caching-proxy"
   },
   "engines": {
-    "node": "12 || 14 || 16"
+    "node": "12 || 14 || 16 || 17"
   },
   "scripts": {
     "build": "lb-tsc",
