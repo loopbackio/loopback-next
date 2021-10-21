@@ -11,7 +11,7 @@
     "url": "https://github.com/loopbackio/loopback-next.git"
   },
   "engines": {
-    "node": "12 || 14 || 16",
+    "node": "12 || 14 || 16 || 17",
     "npm": ">=7"
   },
   "scripts": {
