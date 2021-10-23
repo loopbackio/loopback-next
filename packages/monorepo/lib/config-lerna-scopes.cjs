@@ -9,8 +9,10 @@
  */
 'use strict';
 
-const debug = require('debug')('loopback:monorepo');
-const {getPackages, runMain} = require('./script-util');
+const debugFactory = require('debug');
+const { getPackages, runMain } = require('./script-util.cjs');
+
+const debug = debugFactory('loopback:monorepo');
 
 module.exports = {
   rules: {
@@ -40,4 +42,4 @@ function getShortName(pkg) {
   return name.startsWith('@') ? name.split('/')[1] : name;
 }
 
-runMain(module, getPackageNames);
+runMain(module.filename, getPackageNames);

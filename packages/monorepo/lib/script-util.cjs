@@ -5,14 +5,15 @@
 
 'use strict';
 
-const {Project} = require('@lerna/project');
-const path = require('path');
-const assert = require('assert');
-const util = require('util');
-const fs = require('fs-extra');
+const { Project } = require('@lerna/project');
 const spawn = require('cross-spawn');
+const debugFactory = require('debug');
+const fs = require('fs-extra');
+const assert = require('assert');
+const path = require('path');
+const util = require('util');
 
-const debug = require('debug')('loopback:monorepo');
+const debug = debugFactory('loopback:monorepo');
 
 /**
  * Get a list of lerna packages with the optional filter function
@@ -176,8 +177,8 @@ function runShell(command, args, options) {
 /**
  * Run a function if the module is the main entry for `node` process.
  *
- * @param currentModule - Current module. It's used to determine if the module
- * is the main entry script for `node`
+ * @param importMetaUrl - Current `import.meta.url` It's used to determine if
+ * the module is the main entry script for `node`
  * @param {*} fn - An function. It can be sync or async. The return or resolved
  * value is handled as follows:
  * 1. `undefined` or `null`: exit the process with 0
@@ -187,14 +188,14 @@ function runShell(command, args, options) {
  * 5. Print out the value and exit the process with 0.
  * @param {*} args - Arguments for the function
  */
-function runMain(currentModule, fn, ...args) {
+function runMain(importMetaUrl, fn, ...args) {
   assert(
-    typeof currentModule === 'object' && currentModule.filename,
-    'The first argument must be a module object',
+    typeof importMetaUrl === 'string',
+    'The first argument must be an `string`',
   );
   assert(typeof fn === 'function', 'The second argument must be a function');
   // Only run the function if the module is the main entry script for `node`
-  if (require.main !== currentModule) return;
+  if (process.argv[1] !== importMetaUrl) return;
 
   // Error handler
   const handleError = err => {
@@ -232,16 +233,18 @@ function runMain(currentModule, fn, ...args) {
   }
 }
 
-exports.loadLernaRepo = loadLernaRepo;
-exports.isDryRun = isDryRun;
-exports.getPackages = getPackages;
-exports.isJsonEqual = isJsonEqual;
-exports.cloneJson = cloneJson;
-exports.printJson = printJson;
-exports.isTypeScriptPackage = isTypeScriptPackage;
-exports.isMonorepoPackage = isMonorepoPackage;
-exports.writeJsonSync = writeJsonSync;
-exports.stringifyJson = stringifyJson;
-exports.traverseLernaRepo = traverseLernaRepo;
-exports.runMain = runMain;
-exports.runShell = runShell;
+module.exports = {
+  loadLernaRepo,
+  isDryRun,
+  getPackages,
+  isJsonEqual,
+  cloneJson,
+  printJson,
+  isTypeScriptPackage,
+  isMonorepoPackage,
+  writeJsonSync,
+  stringifyJson,
+  traverseLernaRepo,
+  runMain,
+  runShell,
+};

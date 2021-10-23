@@ -10,13 +10,14 @@
  */
 'use strict';
 
-const {filterPackages} = require('@lerna/filter-packages');
-const {Project} = require('@lerna/project');
-const path = require('path');
-const fs = require('fs-extra');
-const {runMain, runShell} = require('./script-util');
+import { filterPackages } from '@lerna/filter-packages';
+import { Project } from '@lerna/project';
+import debugFactory from 'debug';
+import fs from 'fs-extra';
+import path from 'node:path';
+import { runMain, runShell } from './script-util.cjs';
 
-const debug = require('debug')('loopback:monorepo');
+const debug = debugFactory('loopback:monorepo');
 
 /**
  * Remove all package-lock.json and node_modules for all packages
@@ -85,4 +86,4 @@ async function rebuildPackageLocks(...scopes) {
   }
 }
 
-runMain(module, rebuildPackageLocks, ...process.argv.slice(2));
+runMain(import.meta.url, rebuildPackageLocks, ...process.argv.slice(2));

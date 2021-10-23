@@ -10,14 +10,10 @@
  */
 'use strict';
 
-const path = require('path');
-const {
-  isDryRun,
-  printJson,
-  writeJsonSync,
-  loadLernaRepo,
-  runMain,
-} = require('../packages/monorepo');
+import path from 'node:path';
+import {
+  isDryRun, loadLernaRepo, printJson, runMain, writeJsonSync
+} from '../packages/monorepo';
 
 /**
  * Update `templateDependencies` in `packages/cli/package.json`
@@ -89,4 +85,4 @@ async function updateTemplateDeps(options) {
 
 module.exports = updateTemplateDeps;
 
-runMain(module, updateTemplateDeps);
+runMain(import.meta.url, updateTemplateDeps);

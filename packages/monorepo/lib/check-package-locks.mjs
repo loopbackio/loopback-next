@@ -10,10 +10,13 @@
  */
 'use strict';
 
-const path = require('path');
-const fs = require('fs-extra');
-const {loadLernaRepo, runMain} = require('./script-util');
-const debug = require('debug')('loopback:monorepo');
+import debugFactory from 'debug';
+import fs from 'fs-extra';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
+import { loadLernaRepo, runMain } from './script-util.cjs';
+
+const debug = debugFactory('loopback:monorepo');
 
 async function checkPackageLocks() {
   const {project, packages} = await loadLernaRepo();
@@ -48,7 +51,7 @@ async function checkPackageLocks() {
     if (!found) return [];
     let data = {};
     try {
-      data = require(file);
+      data = JSON.parse(readFileSync(new URL(file, import.meta.url)));
     } catch (err) {
       return [err.message];
     }
@@ -59,6 +62,6 @@ async function checkPackageLocks() {
   }
 }
 
-module.exports = checkPackageLocks;
+export { checkPackageLocks };
 
-runMain(module, checkPackageLocks);
+runMain(import.meta.url, checkPackageLocks);

@@ -11,15 +11,12 @@
  */
 'use strict';
 
-const {
-  getPackages,
-  writeJsonSync,
-  isDryRun,
-  stringifyJson,
-  runMain,
-} = require('./script-util');
+import debugFactory from 'debug';
+import {
+  getPackages, isDryRun, runMain, stringifyJson, writeJsonSync
+} from './script-util.cjs';
 
-const debug = require('debug')('loopback:monorepo');
+const debug = debugFactory('loopback:monorepo');
 
 /**
  * Update local package dependencies for `@loopback/*` modules
@@ -92,6 +89,6 @@ async function updatePackageDeps(options) {
   }
 }
 
-module.exports = updatePackageDeps;
+export { updatePackageDeps };
 
-runMain(module, updatePackageDeps);
+runMain(import.meta.url, updatePackageDeps);

@@ -121,7 +121,12 @@ jobs:
           npm ci --ignore-scripts
           npx lerna bootstrap --scope "@loopback/monorepo" --include-dependencies
       - name: Verify commit linting
-        run: npx commitlint --from origin/master --to HEAD --verbose
+        run: |
+          npx commitlint \
+            --from origin/master \
+            --to HEAD \
+            --config=commitlint.config.cjs \
+            --verbose
 
   ci-lint:
     name: CI Lint

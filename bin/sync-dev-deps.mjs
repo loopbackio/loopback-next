@@ -10,16 +10,13 @@
  */
 'use strict';
 
-const path = require('path');
-const fs = require('fs-extra');
+import fs from 'fs-extra';
+import path from 'node:path';
+import {
+  isDryRun, loadLernaRepo, printJson,
+  runMain, writeJsonSync
+} from '../packages/monorepo';
 
-const {
-  loadLernaRepo,
-  writeJsonSync,
-  isDryRun,
-  printJson,
-  runMain,
-} = require('../packages/monorepo');
 
 async function syncDevDeps(options) {
   const {project, packages} = await loadLernaRepo();
@@ -143,4 +140,4 @@ function sortObjectByKeys(data) {
 
 module.exports = syncDevDeps;
 
-runMain(module, syncDevDeps);
+runMain(import.meta.url, syncDevDeps);

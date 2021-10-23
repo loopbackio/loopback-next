@@ -11,7 +11,9 @@
     "lb-update-package-json": "./lib/update-package-json.js",
     "lb-update-ts-project-refs": "./lib/update-ts-project-refs.js"
   },
-  "main": "index.js",
+  "main": "index.mjs",
+  "exports": "index.mjs",
+  "type": "module",
   "author": "IBM Corp.",
   "copyright.owner": "IBM Corp.",
   "repository": {

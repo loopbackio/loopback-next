@@ -10,20 +10,18 @@
  */
 'use strict';
 
-const path = require('path');
-
-const syncDevDeps = require('./sync-dev-deps');
-const updateMonorepo = require('./update-monorepo-file');
-
-const {
+import path from 'node:path';
+import {
   isJsonEqual,
   loadLernaRepo,
   runMain,
   updatePackageDeps,
   updatePackageJson,
   updateTsProjectRefs,
-  writeJsonSync,
-} = require('../packages/monorepo');
+  writeJsonSync
+} from '../packages/monorepo';
+import syncDevDeps from './sync-dev-deps';
+import updateMonorepo from './update-monorepo-file';
 
 async function fixMonorepo() {
   // Ensure all packages use the local version of `@loopback/*`
@@ -40,7 +38,7 @@ async function fixMonorepo() {
   await updateOrderOfPackageJsonFields();
 }
 
-runMain(module, fixMonorepo);
+runMain(import.meta.url, fixMonorepo);
 
 async function updateOrderOfPackageJsonFields() {
   const {packages} = await loadLernaRepo();

@@ -41,11 +41,12 @@
  */
 'use strict';
 
-const build = require('../packages/build');
-const path = require('path');
+import fs from 'fs-extra';
+import path from 'node:path';
+import build from '../packages/build';
+import { runMain, updateTsProjectRefs } from '../packages/monorepo';
+
 const cwd = process.cwd();
-const fs = require('fs-extra');
-const {runMain, updateTsProjectRefs} = require('../packages/monorepo');
 
 /**
  * Return a promise to be resolved by the child process exit event
@@ -237,4 +238,4 @@ function promptActions({projectDir}) {
   console.log('  - CODEOWNERS');
 }
 
-runMain(module, createPackage, process.argv[2]);
+runMain(import.meta.url, createPackage, process.argv[2]);
