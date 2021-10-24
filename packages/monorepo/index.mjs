@@ -8,7 +8,7 @@
 export * from './lib/check-package-locks.mjs';
 export { commitlintConfig as configLernaScopes } from './lib/config-lerna-scopes.cjs';
 export * from './lib/run-lerna.mjs';
-export * from './lib/script-utils.mjs';
+export * from './lib/script-util.cjs';
 export * from './lib/update-package-deps.mjs';
 export * from './lib/update-package-json.mjs';
 export * from './lib/update-ts-project-refs.mjs';
