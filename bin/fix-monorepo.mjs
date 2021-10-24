@@ -19,7 +19,7 @@ import {
   updatePackageJson,
   updateTsProjectRefs,
   writeJsonSync
-} from '../packages/monorepo';
+} from '../packages/monorepo/index.mjs';
 import syncDevDeps from './sync-dev-deps';
 import updateMonorepo from './update-monorepo-file';
 

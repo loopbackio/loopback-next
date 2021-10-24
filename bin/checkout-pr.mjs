@@ -22,7 +22,7 @@ import https from 'node:https';
 import path from 'node:path';
 import url from 'node:url';
 import build from '../packages/build';
-import { runMain } from '../packages/monorepo';
+import { runMain } from '../packages/monorepo/index.mjs';
 
 
 const rootDir = path.join(__dirname, '..');

@@ -13,7 +13,7 @@
 import path from 'node:path';
 import {
   isDryRun, loadLernaRepo, printJson, runMain, writeJsonSync
-} from '../packages/monorepo';
+} from '../packages/monorepo/index.mjs';
 
 /**
  * Update `templateDependencies` in `packages/cli/package.json`

@@ -13,7 +13,7 @@
 import fs from 'fs-extra';
 import createMarkdownTable from 'markdown-table';
 import path from 'node:path';
-import { getPackages, runMain } from '../packages/monorepo';
+import { getPackages, runMain } from '../packages/monorepo/index.mjs';
 
 const MONOREPO_FILE_DIST = 'docs/site';
 const MONOREPO_FILE_NAME = 'MONOREPO.md';

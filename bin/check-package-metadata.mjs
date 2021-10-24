@@ -17,7 +17,7 @@ import {
   isTypeScriptPackage,
   loadLernaRepo,
   runMain
-} from '../packages/monorepo';
+} from '../packages/monorepo/index.mjs';
 
 /**
  * Check existence of LICENSE file in the monorepo packages

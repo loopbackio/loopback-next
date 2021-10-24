@@ -44,7 +44,7 @@
 import fs from 'fs-extra';
 import path from 'node:path';
 import build from '../packages/build';
-import { runMain, updateTsProjectRefs } from '../packages/monorepo';
+import { runMain, updateTsProjectRefs } from '../packages/monorepo/index.mjs';
 
 const cwd = process.cwd();
 
