@@ -97,25 +97,31 @@ See [SECURITY.md](SECURITY.md) for more details.
 
 ## Team
 
-### Project Architects
+### Project Architect
 
 |                  Raymond Feng                   |
 | :---------------------------------------------: |
 | [![raymondfeng]](http://github.com/raymondfeng) |
 
-### Project Maintainers
+### Technical Steering Committee
 
-|                    Diana Lau                     |                         Janny Hou                          |                    Hage Yaapa                    |
+|                  Raymond Feng                   |               Diana Lau               |                       Mario Estrada                        |               Rifa Achrinza                |              Francisco Buceta              |
+| :---------------------------------------------: | :-----------------------------------: | :--------------------------------------------------------: | :----------------------------------------: | :----------------------------------------: |
+| [![raymondfeng]](http://github.com/raymondfeng) | [![dhmlau]](http://github.com/dhmlau) | [![marioestradarosa]](https://github.com/marioestradarosa) | [![achrinza]](https://github.com/achrinza) | [![frbuceta]](https://github.com/frbuceta) |
+
+### Other Project Maintainers
+
+|                    Diana Lau                     |                       Mario Estrada                        |                    Hage Yaapa                    |
 | :----------------------------------------------: | :--------------------------------------------------------: | :----------------------------------------------: |
-|      [![dhmlau]](http://github.com/dhmlau)       |         [![jannyhou]](http://github.com/jannyHou)          | [![hacksparrow]](https://github.com/hacksparrow) |
-|                    Agnes Lin                     |                       Mario Estrada                        |                   Hugo Da Roit                   |
-|    [![agnes512]](https://github.com/agnes512)    | [![marioestradarosa]](https://github.com/marioestradarosa) |        [![yaty]](https://github.com/yaty)        |
-|                 Dominique Emond                  |                       Denny Bartelt                        |               Douglas McConnachie                |
-|     [![emonddr]](https://github.com/emonddr)     |          [![derdeka]](https://github.com/derdeka)          |    [![dougal83]](https://github.com/dougal83)    |
-|                  Rifa Achrinza                   |                      Francisco Buceta                      |                  Matthew Schnee                  |
-|    [![achrinza]](https://github.com/achrinza)    |         [![frbuceta]](https://github.com/frbuceta)         |     [![mschnee]](https://github.com/mschnee)     |
-|                 Nora Abdelgadir                  |                           Madaky                           |                    Nico Flaig                    |
-| [![nabdelgadir]](https://github.com/nabdelgadir) |           [![madaky]](https://github.com/madaky)           |      [![nflaig]](https://github.com/nflaig)      |
+|      [![dhmlau]](http://github.com/dhmlau)       | [![marioestradarosa]](https://github.com/marioestradarosa) | [![hacksparrow]](https://github.com/hacksparrow) |
+|                    Agnes Lin                     |                       Rifa Achrinza                        |                   Hugo Da Roit                   |
+|    [![agnes512]](https://github.com/agnes512)    |         [![achrinza]](https://github.com/achrinza)         |        [![yaty]](https://github.com/yaty)        |
+|                    Nico Flaig                    |                       Denny Bartelt                        |               Douglas McConnachie                |
+|      [![nflaig]](https://github.com/nflaig)      |          [![derdeka]](https://github.com/derdeka)          |    [![dougal83]](https://github.com/dougal83)    |
+|                      Madaky                      |                      Francisco Buceta                      |                  Matthew Schnee                  |
+|      [![madaky]](https://github.com/madaky)      |         [![frbuceta]](https://github.com/frbuceta)         |     [![mschnee]](https://github.com/mschnee)     |
+|                 Nora Abdelgadir                  |                                                            |                                                  |
+| [![nabdelgadir]](https://github.com/nabdelgadir) |                                                            |                                                  |
 
 See
 [all contributors](https://github.com/loopbackio/loopback-next/graphs/contributors).
@@ -131,6 +137,8 @@ See
 - [@b-admike](https://github.com/b-admike)
 - [@deepakrkris](https://github.com/deepakrkris)
 - [@bajtos](http://github.com/bajtos)
+- [@jannyhou](http://github.com/jannyHou)
+- [@emonddr](https://github.com/emonddr)
 
 ## License
 
