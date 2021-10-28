@@ -111,17 +111,13 @@ See [SECURITY.md](SECURITY.md) for more details.
 
 ### Other Project Maintainers
 
-|                    Diana Lau                     |                       Mario Estrada                        |                    Hage Yaapa                    |
-| :----------------------------------------------: | :--------------------------------------------------------: | :----------------------------------------------: |
-|      [![dhmlau]](http://github.com/dhmlau)       | [![marioestradarosa]](https://github.com/marioestradarosa) | [![hacksparrow]](https://github.com/hacksparrow) |
-|                    Agnes Lin                     |                       Rifa Achrinza                        |                   Hugo Da Roit                   |
-|    [![agnes512]](https://github.com/agnes512)    |         [![achrinza]](https://github.com/achrinza)         |        [![yaty]](https://github.com/yaty)        |
-|                    Nico Flaig                    |                       Denny Bartelt                        |               Douglas McConnachie                |
-|      [![nflaig]](https://github.com/nflaig)      |          [![derdeka]](https://github.com/derdeka)          |    [![dougal83]](https://github.com/dougal83)    |
-|                      Madaky                      |                      Francisco Buceta                      |                  Matthew Schnee                  |
-|      [![madaky]](https://github.com/madaky)      |         [![frbuceta]](https://github.com/frbuceta)         |     [![mschnee]](https://github.com/mschnee)     |
-|                 Nora Abdelgadir                  |                                                            |                                                  |
-| [![nabdelgadir]](https://github.com/nabdelgadir) |                                                            |                                                  |
+|                 Nora Abdelgadir                  |              Matthew Schnee              |                    Hage Yaapa                    |
+| :----------------------------------------------: | :--------------------------------------: | :----------------------------------------------: |
+| [![nabdelgadir]](https://github.com/nabdelgadir) | [![mschnee]](https://github.com/mschnee) | [![hacksparrow]](https://github.com/hacksparrow) |
+|                    Agnes Lin                     |                  Madaky                  |                   Hugo Da Roit                   |
+|    [![agnes512]](https://github.com/agnes512)    |  [![madaky]](https://github.com/madaky)  |        [![yaty]](https://github.com/yaty)        |
+|                    Nico Flaig                    |              Denny Bartelt               |               Douglas McConnachie                |
+|      [![nflaig]](https://github.com/nflaig)      | [![derdeka]](https://github.com/derdeka) |    [![dougal83]](https://github.com/dougal83)    |
 
 See
 [all contributors](https://github.com/loopbackio/loopback-next/graphs/contributors).
