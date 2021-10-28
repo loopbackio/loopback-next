@@ -48,7 +48,7 @@
     "apollo-server-express": "^2.25.2",
     "debug": "^4.3.2",
     "express": "^4.17.1",
-    "graphql": "^15.6.1",
+    "graphql": "^15.7.2",
     "type-graphql": "^1.1.1"
   },
   "devDependencies": {
