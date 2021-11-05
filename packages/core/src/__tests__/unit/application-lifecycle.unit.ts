@@ -140,6 +140,14 @@ describe('Application life cycle', () => {
       expect(app.state).to.equal('created');
     });
 
+    it('allows application.stop when it is initialized', async () => {
+      const app = new Application();
+      await app.init();
+      expect(app.state).to.equal('initialized');
+      await app.stop();
+      expect(app.state).to.equal('stopped');
+    });
+
     it('await application.stop when it is stopping', async () => {
       const app = new Application();
       await app.start();
