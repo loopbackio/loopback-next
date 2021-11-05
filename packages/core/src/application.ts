@@ -88,8 +88,8 @@ export class Application extends Context implements LifeCycleObserver {
    *   - !started -> starting -> started
    *   - started -> started (no-op)
    * 2. stop
-   *   - started -> stopping -> stopped
-   *   - !started -> stopped (no-op)
+   *   - (started | initialized) -> stopping -> stopped
+   *   - ! (started || initialized) -> stopped (no-op)
    *
    * Two types of states are expected:
    * - stable, such as `started` and `stopped`
@@ -399,7 +399,7 @@ export class Application extends Context implements LifeCycleObserver {
     if (this._state === 'stopping') return this.awaitState('stopped');
     this.assertNotInProcess('stop');
     // No-op if it's created or stopped
-    if (this._state !== 'started') return;
+    if (this._state !== 'started' && this._state !== 'initialized') return;
     this.setState('stopping');
     if (!this._isShuttingDown) {
       // Explicit stop is called, let's remove signal listeners to avoid
