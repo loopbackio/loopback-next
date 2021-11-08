@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import axios, {AxiosInstance, Method} from 'axios';
+import axios, {AxiosInstance, AxiosRequestHeaders, Method} from 'axios';
 import debugFactory from 'debug';
 import {once} from 'events';
 import {
@@ -200,7 +200,7 @@ export class HttpCachingProxy {
     const backendResponse = await this._axios({
       method: clientRequest.method as Method,
       url: clientRequest.url!,
-      headers: clientRequest.headers,
+      headers: clientRequest.headers as AxiosRequestHeaders,
       data: clientRequest,
       // Set the response type to `arraybuffer` to force the `data` to be a
       // Buffer to allow ease of caching
