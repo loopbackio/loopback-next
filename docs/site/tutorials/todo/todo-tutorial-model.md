@@ -68,7 +68,6 @@ Enter an empty property name when done
 ? Enter the property name: title
 ? Property type: string
 ? Is it required?: Yes
-? Default value [leave blank for none]:
 
 Let's add another property to Todo
 Enter an empty property name when done
