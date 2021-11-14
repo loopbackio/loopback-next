@@ -11,7 +11,7 @@ summary: LoopBack is a platform for building APIs and microservices in Node.js
 ## Overview
 
 LoopBack is an
-[award-winning](https://strongloop.com/strongblog/loopback-2019-api-award-api-middleware/),
+[award-winning](https://developer.ibm.com/blogs/loopback-best-api-middleware-award/),
 highly extensible, open-source Node.js and TypeScript framework based on
 Express. It enables you to quickly create APIs and microservices composed from
 backend systems such as databases and SOAP or REST services.
