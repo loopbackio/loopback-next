@@ -63,6 +63,6 @@
     "@types/toposort": "^2.0.3",
     "http-errors": "^1.8.0",
     "source-map-support": "^0.5.20",
-    "typescript": "~4.4.4"
+    "typescript": "~4.5.2"
   }
 }
