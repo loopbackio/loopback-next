@@ -24,15 +24,16 @@ export class MetricsPushObserver implements LifeCycleObserver {
     const gwConfig = this.options.pushGateway;
     if (!gwConfig) return;
     this.gateway = new Pushgateway(gwConfig.url);
-    this.interval = setInterval(() => {
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
+    this.interval = setInterval(async () => {
       const params = {
         jobName: gwConfig.jobName ?? 'loopback',
         groupings: gwConfig.groupingKey,
       };
       if (gwConfig.replaceAll) {
-        this.gateway.push(params, () => {});
+        await this.gateway.push(params);
       } else {
-        this.gateway.pushAdd(params, () => {});
+        await this.gateway.pushAdd(params);
       }
     }, gwConfig.interval ?? 5000);
   }
