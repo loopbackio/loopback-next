@@ -10,20 +10,15 @@
  */
 'use strict';
 
-const path = require('path');
-const fs = require('fs-extra');
-const debug = require('debug')('loopback:monorepo');
-const {
-  isDryRun,
-  isTypeScriptPackage,
-  isMonorepoPackage,
-  loadLernaRepo,
-  cloneJson,
-  isJsonEqual,
-  writeJsonSync,
-  printJson,
-  runMain,
-} = require('./script-util');
+import debugFactory from 'debug';
+import fs from 'fs-extra';
+import path from 'node:path';
+import {
+  cloneJson, isDryRun, isJsonEqual, isMonorepoPackage, isTypeScriptPackage, loadLernaRepo, printJson,
+  runMain, writeJsonSync
+} from './script-util.cjs';
+
+const debug = debugFactory('loopback:monorepo');
 
 const orderedPkgProperties = [
   'name',
@@ -146,6 +141,6 @@ function getCopyrightOwner(pkg) {
   return pkg['copyright.owner'] || (pkg.copyright && pkg.copyright.owner);
 }
 
-module.exports = updatePackageJsonFiles;
+export { updatePackageJsonFiles };
 
-runMain(module, updatePackageJsonFiles);
+runMain(import.meta.url, updatePackageJsonFiles);

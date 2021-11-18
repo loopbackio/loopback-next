@@ -12,20 +12,17 @@
  */
 'use strict';
 
-const {PackageGraph} = require('@lerna/package-graph');
-const path = require('path');
-const fs = require('fs-extra');
-const {
-  isDryRun,
-  loadLernaRepo,
-  printJson,
-  writeJsonSync,
-  cloneJson,
-  isJsonEqual,
-  runMain,
-} = require('./script-util');
+import { PackageGraph } from '@lerna/package-graph';
+import debugFactory from 'debug';
+import fs from 'fs-extra';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
+import {
+  cloneJson, isDryRun, isJsonEqual, loadLernaRepo,
+  printJson, runMain, writeJsonSync
+} from './script-util.cjs';
 
-const debug = require('debug')('loopback:monorepo');
+const debug = debugFactory('loopback:monorepo');
 
 const TSCONFIG = 'tsconfig.json';
 const TSCONFIG_BUILD = 'tsconfig.build.json';
@@ -47,7 +44,7 @@ function loadTsConfig(pkgLocation, dryRun = true) {
   }
   return {
     file,
-    tsconfig: require(file),
+    tsconfig: JSON.parse(readFileSync(new URL(file, import.meta.url))),
   };
 }
 
@@ -70,7 +67,7 @@ async function updateTsReferences(options) {
       p.pkg.version,
     );
     const pkgLocation = p.pkg.location;
-    return loadTsConfig(pkgLocation, dryRun) != null;
+    return (loadTsConfig(pkgLocation, dryRun) != null);
   });
 
   let changed = false;
@@ -123,7 +120,7 @@ async function updateTsReferences(options) {
   }
 
   const rootTsconfigFile = path.join(project.rootPath, 'tsconfig.json');
-  const rootTsconfig = require(rootTsconfigFile);
+  const rootTsconfig = JSON.parse(readFileSync(new URL(rootTsconfigFile, import.meta.url)));
   const originalRootTsconfigJson = cloneJson(rootTsconfig);
 
   rootTsconfig.compilerOptions = rootTsconfig.compilerOptions || {};
@@ -153,6 +150,6 @@ async function updateTsReferences(options) {
   }
 }
 
-module.exports = updateTsReferences;
+export { updateTsReferences };
 
-runMain(module, updateTsReferences);
+runMain(import.meta.url, updateTsReferences);

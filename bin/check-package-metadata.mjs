@@ -11,13 +11,13 @@
  */
 'use strict';
 
-const path = require('path');
-const fs = require('fs-extra');
-const {
+import fs from 'fs-extra';
+import path from 'node:path';
+import {
   isTypeScriptPackage,
   loadLernaRepo,
-  runMain,
-} = require('../packages/monorepo');
+  runMain
+} from '../packages/monorepo/index.mjs';
 
 /**
  * Check existence of LICENSE file in the monorepo packages
@@ -230,4 +230,4 @@ function checkDepsOrder(lernaPkg, pkgJson, errors) {
 
 module.exports = checkPackagesMetadata;
 
-runMain(module, checkPackagesMetadata);
+runMain(import.meta.url, checkPackagesMetadata);

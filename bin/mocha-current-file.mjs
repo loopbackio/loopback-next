@@ -46,8 +46,8 @@ Ex:
 */
 
 'use strict';
-const path = require('path');
-const fs = require('fs');
+import fs from 'node:fs';
+import path from 'node:path';
 
 function findDistFile(filename) {
   const absolutePath = path.resolve(filename);

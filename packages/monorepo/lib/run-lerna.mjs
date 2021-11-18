@@ -10,13 +10,13 @@
  */
 'use strict';
 
-const {Project} = require('@lerna/project');
-const lernaCli = require('lerna');
-const {runMain} = require('./script-util');
+import { Project } from '@lerna/project';
+import lernaCli from 'lerna';
+import { runMain } from './script-util.cjs';
 
 /**
  * Run the `lerna` cli
- * @param {string[]} argv - Arguments
+ * @param {string[]} argv - Arguments./script-util
  * @param {string} cwd - Current directory
  */
 async function runLernaCommand(
@@ -31,6 +31,6 @@ async function runLernaCommand(
   lernaCli(argv);
 }
 
-module.exports = runLernaCommand;
+export { runLernaCommand as runLerna };
 
-runMain(module, runLernaCommand);
+runMain(import.meta.url, runLernaCommand);

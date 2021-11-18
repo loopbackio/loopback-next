@@ -18,8 +18,13 @@
  * 5. Check out <pr-branch> to track <pr-repo>/<pr-branch>
  * 6. Rebase the PR branch to the origin/<base-branch>
  */
-const build = require('../packages/build');
-const path = require('path');
+import https from 'node:https';
+import path from 'node:path';
+import url from 'node:url';
+import build from '../packages/build';
+import { runMain } from '../packages/monorepo/index.mjs';
+
+
 const rootDir = path.join(__dirname, '..');
 
 async function checkoutPR() {
@@ -53,10 +58,6 @@ async function checkoutPR() {
 
   console.log(`PR ${prNum} is now checked out.`);
 }
-
-const https = require('https');
-const url = require('url');
-const {runMain} = require('../packages/monorepo');
 
 /**
  * Fetch PR information
@@ -147,4 +148,4 @@ console.log('| Check out GitHub CLI - https://cli.github.com |');
 console.log('+-----------------------------------------------+');
 console.log();
 
-runMain(module, checkoutPR);
+runMain(import.meta.url, checkoutPR);
