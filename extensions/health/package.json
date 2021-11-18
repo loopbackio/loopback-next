@@ -1,7 +1,7 @@
 {
   "name": "@loopback/health",
   "description": "An extension exposes health check related endpoints with LoopBack 4",
-  "version": "0.8.4",
+  "version": "0.9.0",
   "keywords": [
     "LoopBack",
     "Cloud Native",
@@ -38,19 +38,19 @@
     "!*/__tests__"
   ],
   "peerDependencies": {
-    "@loopback/core": "^2.18.0",
-    "@loopback/rest": "^10.1.0"
+    "@loopback/core": "^3.0.0",
+    "@loopback/rest": "^11.0.0"
   },
   "dependencies": {
     "@cloudnative/health": "^2.1.2",
     "tslib": "^2.3.1"
   },
   "devDependencies": {
-    "@loopback/build": "^7.0.2",
-    "@loopback/core": "^2.18.0",
-    "@loopback/eslint-config": "^11.0.2",
-    "@loopback/rest": "^10.1.0",
-    "@loopback/testlab": "^3.4.4",
+    "@loopback/build": "^8.0.0",
+    "@loopback/core": "^3.0.0",
+    "@loopback/eslint-config": "^12.0.0",
+    "@loopback/rest": "^11.0.0",
+    "@loopback/testlab": "^4.0.0",
     "@types/node": "^10.17.60"
   }
 }

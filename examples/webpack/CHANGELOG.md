@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.6.0](https://github.com/loopbackio/loopback-next/compare/@loopback/example-webpack@0.5.2...@loopback/example-webpack@0.6.0) (2021-11-18)
+
+
+### Features
+
+* drop support for Node.js v10 ([9bcbbb3](https://github.com/loopbackio/loopback-next/commit/9bcbbb358ec3eabc3033d4e7e1c22b524a7069b3))
+* support Node.js v17 ([8d86c03](https://github.com/loopbackio/loopback-next/commit/8d86c03cb7047e2b1f18d05870628ef5783e71b2))
+* upgrade to TypeScript 4.5.2 ([72ece91](https://github.com/loopbackio/loopback-next/commit/72ece91289ecfdfd8747bb9888ad75db73e8ff4b))
+
+
+### BREAKING CHANGES
+
+* drop support for Node.js v10
+
+Co-authored-by: Francisco Buceta <frbuceta@gmail.com>
+Signed-off-by: Rifa Achrinza <25147899+achrinza@users.noreply.github.com>
+
+
+
+
+
 ## [0.5.2](https://github.com/loopbackio/loopback-next/compare/@loopback/example-webpack@0.5.1...@loopback/example-webpack@0.5.2) (2021-10-18)
 
 **Note:** Version bump only for package @loopback/example-webpack

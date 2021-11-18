@@ -1,7 +1,7 @@
 {
   "name": "@loopback/sandbox-example",
   "description": "Sample project for sandbox",
-  "version": "2.1.1",
+  "version": "3.0.0",
   "private": true,
   "license": "MIT",
   "main": "index.js",

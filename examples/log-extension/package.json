@@ -1,7 +1,7 @@
 {
   "name": "@loopback/example-log-extension",
   "description": "An example showing how to write a complex log extension for LoopBack 4",
-  "version": "3.0.2",
+  "version": "4.0.0",
   "keywords": [
     "loopback",
     "loopback-extension"
@@ -45,16 +45,16 @@
     "access": "public"
   },
   "dependencies": {
-    "@loopback/core": "^2.18.0",
-    "@loopback/rest": "^10.1.0",
+    "@loopback/core": "^3.0.0",
+    "@loopback/rest": "^11.0.0",
     "chalk": "^4.1.2",
     "debug": "^4.3.2",
     "tslib": "^2.3.1"
   },
   "devDependencies": {
-    "@loopback/build": "^7.0.2",
-    "@loopback/eslint-config": "^11.0.2",
-    "@loopback/testlab": "^3.4.4",
+    "@loopback/build": "^8.0.0",
+    "@loopback/eslint-config": "^12.0.0",
+    "@loopback/testlab": "^4.0.0",
     "@types/debug": "^4.1.7",
     "@types/node": "^10.17.60",
     "eslint": "^7.32.0",
