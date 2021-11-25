@@ -12,7 +12,7 @@ describe('bundle-node.js', () => {
 
   before('generate bundle-node.js', async function (this: Mocha.Context) {
     // It may take some time to generate the bundle using webpack
-    this.timeout(30000);
+    this.timeout(50000);
     await generateBundle('node');
     bundle = require('../../bundle-node');
   });
