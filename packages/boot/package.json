@@ -43,7 +43,7 @@
     "@loopback/service-proxy": "^4.0.0",
     "@types/debug": "^4.1.7",
     "@types/glob": "^7.2.0",
-    "debug": "^4.3.2",
+    "debug": "^4.3.3",
     "glob": "^7.2.0",
     "tslib": "^2.3.1"
   },

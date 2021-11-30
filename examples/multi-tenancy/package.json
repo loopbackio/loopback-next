@@ -60,7 +60,7 @@
     "@loopback/rest": "^11.0.0",
     "@loopback/rest-explorer": "^4.0.0",
     "@loopback/service-proxy": "^4.0.0",
-    "debug": "^4.3.2",
+    "debug": "^4.3.3",
     "jsonwebtoken": "^8.5.1",
     "tslib": "^2.3.1"
   },
