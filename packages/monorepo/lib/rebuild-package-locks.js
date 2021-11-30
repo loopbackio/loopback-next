@@ -45,7 +45,10 @@ async function removePackageLocks(project, ...scopes) {
   console.log('Cleaning package-lock.json and node_modules...');
   await Promise.all(
     pkgRoots.map(async root => {
-      const loc = path.relative(rootPath, root);
+      const loc =
+        path.resolve(rootPath) !== path.resolve(root)
+          ? path.relative(rootPath, root)
+          : '(ROOT)';
       debug('Cleaning %s', loc);
       console.log('  - %s', loc);
       await fs.remove(path.join(root, 'package-lock.json'));
