@@ -56,7 +56,7 @@
     "ajv-keywords": "^5.0.0",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
-    "debug": "^4.3.2",
+    "debug": "^4.3.3",
     "express": "^4.17.1",
     "http-errors": "^1.8.0",
     "js-yaml": "^4.1.0",

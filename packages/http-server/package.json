@@ -32,7 +32,7 @@
     "!*/__tests__"
   ],
   "dependencies": {
-    "debug": "^4.3.2",
+    "debug": "^4.3.3",
     "stoppable": "^1.1.0",
     "tslib": "^2.3.1"
   },
