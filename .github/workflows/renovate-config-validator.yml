@@ -1,0 +1,27 @@
+name: Renovate Config Validator
+
+on:
+  pull_request:
+    paths:
+      - '.github/renovate.json5'
+
+permissions: {}
+
+env:
+  NODE_OPTIONS: --max-old-space-size=4096
+
+jobs:
+  main:
+    name: Main
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 16 # LTS
+      - name: Install monorepo tools
+        run: npm ci --ignore-scripts
+      - name: Validate Renovate config
+        run: npx -p renovate --yes renovate-config-validator

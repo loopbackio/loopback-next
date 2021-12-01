@@ -1,60 +1,82 @@
 {
   $schema: 'https://docs.renovatebot.com/renovate-schema.json',
   extends: [
-    ':combinePatchMinorReleases',
-    ':separateMajorReleases',
-    ':semanticCommits',
-    ':semanticPrefixChore',
-    ':semanticCommitScopeDisabled',
-    ':updateNotScheduled',
-    ':automergeRequireAllStatusChecks',
-    ':ignoreUnstable',
-    ':gitSignOff',
     'group:monorepos',
     'helpers:disableTypesNodeMajor'
   ],
+
+  labels: ['dependencies'],
+  rangeStrategy: 'bump',
+  prHourlyLimit: 2,
+  prConcurrentLimit: 20,
+  updateNotScheduled: true,
+  commitBody: 'Signed-off-by: {{{gitAuthor}}}',
   ignorePaths: [
     '**/node_modules/**',
     '**/__tests__/**',
     '**/test/**'
   ],
-  force: {
-    constraints: {
-      npm: '>=7'
-    },
-  },
-  labels: [
-    'dependencies'
-  ],
+
+  // Semantic Commits
+  semanticCommits: 'enabled',
+  semanticCommitType: 'chore',
+  semanticCommitScope: null, // Null is valid!
+
+  // Dependency Dashboard
   dependencyDashboard: true,
-  dependencyDashboardApproval: false,
   dependencyDashboardAutoclose: true,
+
+  // Lock File Maintenance
   lockFileMaintenance: {
     enabled: true,
     automerge: true,
-    extends: [
-      'schedule:earlyMondays'
-    ]
+    extends: ['schedule:earlyMondays']
   },
+
+  // Vulnerability Alerts
+  vulnerabilityAlerts: {
+    enabled: true,
+    addLabels: ['SECURITY'],
+    reviewers: ['team:loopback-maintainers']
+  },
+
+  // Package Rules
   packageRules: [
     {
       automerge: true,
       matchUpdateTypes: [
-        'minor',
-        'patch'
-      ],
+        'patch',
+        'minor'
+      ]
+    },
+    {
+      draftPR: true,
+      matchUpdateTypes: "major"
     },
     {
       automerge: true,
-      matchDepTypes: [
-        'devDependencies'
-      ]
+      matchDepTypes: ['devDependencies']
     },
     {
       enabled: false,
-      matchDepTypes: [
-        'engines'
-      ]
+      matchDepTypes: ['engines']
+    },
+    {
+      groupName: 'Lint packages',
+      matchPackageNames: ['prettier'],
+      matchPackagePatterns: ['^eslint', '^@typescript-eslint']
+    },
+    {
+      groupName: 'Ajv packages',
+      matchPackagePatterns: ['^ajv']
+    },
+    {
+      groupName: 'Socket.io packages',
+      matchPackageNames: ['socket.io', 'socket.io-client']
+    },
+    {
+      groupName: 'Yeoman packages',
+      matchPackagePatterns: ['^yeoman']
     },
     {
       groupName: 'api-extractor packages',
@@ -62,32 +84,6 @@
         '@microsoft/api-extractor',
         '@microsoft/api-documenter'
       ]
-    },
-    {
-      groupName: 'ajv-validator packages',
-      matchPackagePatterns: [
-        '^ajv'
-      ]
-    },
-    {
-      groupName: 'yeoman packages',
-      matchSourceUrlPrefixes: [
-        'https://github.com/yeoman'
-      ]
-    },
-    {
-      groupName: 'socket.io packages',
-      matchPackageNames: [
-        'socket.io',
-        'socket.io-client'
-      ]
     }
-  ],
-  prConcurrentLimit: 10,
-  prHourlyLimit: 2,
-  rangeStrategy: 'bump',
-  supportPolicy: [
-    'lts',
-    'current'
   ]
 }
