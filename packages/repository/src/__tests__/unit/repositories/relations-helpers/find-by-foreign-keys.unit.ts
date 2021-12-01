@@ -3,6 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {Filter} from '@loopback/filter';
 import {
   createStubInstance,
   expect,
@@ -12,6 +13,7 @@ import {
 import {cloneDeep} from 'lodash';
 import {findByForeignKeys} from '../../../..';
 import {
+  Category,
   createProduct,
   Product,
   ProductRepository,
@@ -31,7 +33,11 @@ describe('findByForeignKeys', () => {
 
     const fkIds: number[] = [];
     await productRepo.create({id: 1, name: 'product', categoryId: 1});
-    const products = await findByForeignKeys(productRepo, 'categoryId', fkIds);
+    const products = await findByForeignKeys<Product, Category, 'categoryId'>(
+      productRepo,
+      'categoryId',
+      fkIds,
+    );
     expect(products).to.be.empty();
 
     sinon.assert.notCalled(productRepo.stubs.find);
@@ -41,7 +47,11 @@ describe('findByForeignKeys', () => {
     const find = productRepo.stubs.find;
     find.resolves([]);
     await productRepo.create({id: 1, name: 'product', categoryId: 1});
-    const products = await findByForeignKeys(productRepo, 'categoryId', 2);
+    const products = await findByForeignKeys<Product, Category, 'categoryId'>(
+      productRepo,
+      'categoryId',
+      2,
+    );
     expect(products).to.be.empty();
     sinon.assert.calledWithMatch(find, {});
   });
@@ -50,7 +60,11 @@ describe('findByForeignKeys', () => {
     const find = productRepo.stubs.find;
     find.resolves([]);
     await productRepo.create({id: 1, name: 'product', categoryId: 1});
-    const products = await findByForeignKeys(productRepo, 'categoryId', [2, 3]);
+    const products = await findByForeignKeys<Product, Category, 'categoryId'>(
+      productRepo,
+      'categoryId',
+      [2, 3],
+    );
     expect(products).to.be.empty();
     sinon.assert.calledWithMatch(find, {});
   });
@@ -61,7 +75,11 @@ describe('findByForeignKeys', () => {
     const pencil = createProduct({name: 'pencil', categoryId: 1});
     find.resolves([pen, pencil]);
 
-    const products = await findByForeignKeys(productRepo, 'categoryId', 1);
+    const products = await findByForeignKeys<Product, Category, 'categoryId'>(
+      productRepo,
+      'categoryId',
+      1,
+    );
     expect(products).to.deepEqual([pen, pencil]);
 
     sinon.assert.calledWithMatch(find, {
@@ -76,7 +94,11 @@ describe('findByForeignKeys', () => {
     const pen = await productRepo.create({name: 'pen', categoryId: 1});
     const pencil = await productRepo.create({name: 'pencil', categoryId: 2});
     find.resolves([pen]);
-    const products = await findByForeignKeys(productRepo, 'categoryId', 1);
+    const products = await findByForeignKeys<Product, Category, 'categoryId'>(
+      productRepo,
+      'categoryId',
+      1,
+    );
     expect(products).to.deepEqual([pen]);
     expect(products).to.not.containDeep(pencil);
     sinon.assert.calledWithMatch(find, {
@@ -91,7 +113,11 @@ describe('findByForeignKeys', () => {
     const pen = await productRepo.create({name: 'pen', categoryId: 1});
     const pencil = await productRepo.create({name: 'pencil', categoryId: 2});
     find.resolves([pencil]);
-    const products = await findByForeignKeys(productRepo, 'categoryId', [2]);
+    const products = await findByForeignKeys<Product, Category, 'categoryId'>(
+      productRepo,
+      'categoryId',
+      [2],
+    );
     expect(products).to.deepEqual([pencil]);
     expect(products).to.not.containDeep(pen);
     sinon.assert.calledWithMatch(find, {
@@ -107,7 +133,11 @@ describe('findByForeignKeys', () => {
     const paper = createProduct({name: 'paper', categoryId: 3});
     const find = productRepo.stubs.find;
     find.resolves([pen, paper]);
-    const products = await findByForeignKeys(productRepo, 'categoryId', [1, 3]);
+    const products = await findByForeignKeys<Product, Category, 'categoryId'>(
+      productRepo,
+      'categoryId',
+      [1, 3],
+    );
     expect(products).to.deepEqual([pen, paper]);
     expect(products).to.not.containDeep(pencil);
     sinon.assert.calledWithMatch(find, {
@@ -122,7 +152,7 @@ describe('findByForeignKeys', () => {
   it('does not throw an error if scope is passed in and is undefined or empty', async () => {
     const find = productRepo.stubs.find;
     find.resolves([]);
-    let products = await findByForeignKeys(
+    let products = await findByForeignKeys<Product, Category, 'categoryId'>(
       productRepo,
       'categoryId',
       [1],
@@ -131,7 +161,13 @@ describe('findByForeignKeys', () => {
     );
     expect(products).to.be.empty();
     sinon.assert.calledWithMatch(find, {});
-    products = await findByForeignKeys(productRepo, 'categoryId', 1, {}, {});
+    products = await findByForeignKeys<Product, Category, 'categoryId'>(
+      productRepo,
+      'categoryId',
+      1,
+      {},
+      {},
+    );
     expect(products).to.be.empty();
     sinon.assert.calledWithMatch(find, {});
   });
@@ -141,10 +177,15 @@ describe('findByForeignKeys', () => {
     find.resolves([]);
     await productRepo.create({id: 1, name: 'product', categoryId: 1});
     await productRepo.create({id: 2, name: 'product', categoryId: 1});
-    await findByForeignKeys(productRepo, 'categoryId', 1, {
-      where: {id: 2},
-      include: ['nested inclusion'],
-    });
+    await findByForeignKeys<Product, Category, 'categoryId'>(
+      productRepo,
+      'categoryId',
+      1,
+      {
+        where: {id: 2},
+        include: ['nested inclusion'],
+      },
+    );
 
     sinon.assert.calledWithMatch(find, {
       where: {
@@ -166,7 +207,12 @@ describe('findByForeignKeys', () => {
     productRepo.stubs.find.resolves([]);
     await productRepo.create({id: 1, name: 'product', categoryId: 1});
     await productRepo.create({id: 2, name: 'product', categoryId: 1});
-    await findByForeignKeys(productRepo, 'categoryId', fkValues, scope);
+    await findByForeignKeys<Product, Category, 'categoryId'>(
+      productRepo,
+      'categoryId',
+      fkValues,
+      scope,
+    );
 
     expect(fkValues).to.deepEqual(fkValuesOriginal);
     expect(scope).to.deepEqual(scopeOriginal);
@@ -179,14 +225,19 @@ describe('findByForeignKeys', () => {
       order: ['name ASC'],
       where: {name: {like: 'product%'}},
     };
-    const newproducts = [
+    const newProducts = [
       createProduct({id: 1, name: 'productA', categoryId: 1}),
       createProduct({id: 2, name: 'productB', categoryId: 2}),
     ];
-    await productRepo.create(newproducts[0]);
-    await productRepo.create(newproducts[1]);
+    await productRepo.create(newProducts[0]);
+    await productRepo.create(newProducts[1]);
     find.resolves([]);
-    await findByForeignKeys(productRepo, 'categoryId', [1, 2], scope);
+    await findByForeignKeys<Product, Category, 'categoryId'>(
+      productRepo,
+      'categoryId',
+      [1, 2],
+      scope,
+    );
     sinon.assert.calledWithMatch(find, {
       limit: 4,
       order: ['name ASC'],
@@ -211,14 +262,19 @@ describe('findByForeignKeys', () => {
       order: ['name ASC'],
       where: {name: {like: 'product%'}},
     };
-    const newproducts = [
+    const newProducts = [
       createProduct({id: 1, name: 'productA', categoryId: 1}),
       createProduct({id: 2, name: 'productB', categoryId: 2}),
     ];
-    await productRepo.create(newproducts[0]);
-    await productRepo.create(newproducts[1]);
+    await productRepo.create(newProducts[0]);
+    await productRepo.create(newProducts[1]);
     find.resolves([]);
-    await findByForeignKeys(productRepo, 'categoryId', [1, 2], scope);
+    await findByForeignKeys<Product, Category, 'categoryId'>(
+      productRepo,
+      'categoryId',
+      [1, 2],
+      scope,
+    );
     sinon.assert.calledWithMatch(find, {
       limit: 4,
       order: ['name ASC'],
@@ -226,6 +282,35 @@ describe('findByForeignKeys', () => {
         categoryId: {inq: [1, 2]},
         name: {like: 'product%'},
       },
+    });
+  });
+  it('runs find globally when `limit` is not set', async () => {
+    const find = productRepo.stubs.find;
+    const scope: Filter<Product> = {
+      fields: ['id', 'categoryId'],
+      offset: 4,
+      order: ['name ASC'],
+      where: {name: {like: 'product%'}},
+    };
+
+    const newProducts = [
+      createProduct({id: 1, name: 'productA', categoryId: 1}),
+      createProduct({id: 2, name: 'productB', categoryId: 2}),
+    ];
+    await productRepo.create(newProducts[0]);
+    await productRepo.create(newProducts[1]);
+    find.resolves([]);
+    await findByForeignKeys<Product, Category, 'categoryId'>(
+      productRepo,
+      'categoryId',
+      [1, 2],
+      scope,
+    );
+    sinon.assert.calledWithMatch(find, {
+      fields: ['id', 'categoryId'],
+      offset: 4,
+      order: ['name ASC'],
+      where: {name: {like: 'product%'}},
     });
   });
 });
