@@ -1,0 +1,37 @@
+name: "\U0001F41E Bug report"
+description: Create a report to help us improve
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please carefully read the contribution docs before creating a bug report
+        👉 https://loopback.io/doc/en/contrib/Reporting-issues.html#loopback-4x-bugs
+
+        Please use the code sandbox template below to create a minimal reproduction
+        👉 https://githubbox.com/loopbackio/starter/tree/codesandbox
+
+  - type: textarea
+    attributes:
+      label: Describe the bug
+      description: A clear and concise description of what the bug is.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Logs
+      render: shell
+
+  - type: textarea
+    attributes:
+      label: Additional information
+      description: Add any other information about the problem here.
+
+  - type: input
+    attributes:
+      label: Reproduction
+      description: Please provide a link to a Git repository or [Code Sandbox](https://githubbox.com/loopbackio/starter/tree/codesandbox) that can reproduce the problem you ran into. A **minimal reproduction** is required unless you are absolutely sure that the issue is obvious and the provided information is enough to understand the problem. If a report is vague (e.g. just a generic error message) and has no reproduction, it will receive a "need reproduction" label. If no reproduction is provided, the issue may be closed.
+    validations:
+      required: true
