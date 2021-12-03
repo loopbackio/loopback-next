@@ -130,12 +130,19 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
+      - id: precheck
+        name: Pre-check
+        continue-on-error: true
+        run: git diff --name-only origin/master @ | grep '.github/renovate.json5'
       - uses: actions/setup-node@v2
+        if: steps.precheck.outcome == 'success'
         with:
           node-version: 16
       - name: Install monorepo tools
+        if: steps.precheck.outcome == 'success'
         run: npm ci --ignore-scripts
       - name: Validate Renovate config
+        if: steps.precheck.outcome == 'success'
         run: npx --no-install renovate-config-validator
 
   verify-docs:
