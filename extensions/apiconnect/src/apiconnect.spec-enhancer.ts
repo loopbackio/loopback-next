@@ -11,6 +11,7 @@ import {
   injectable,
 } from '@loopback/core';
 import {asSpecEnhancer, OASEnhancer, OpenAPIObject} from '@loopback/rest';
+import {APIConnectOASObjects} from './types';
 
 /**
  * Configuration for IBM API Connect extensions to the OpenAPI spec
@@ -37,11 +38,13 @@ export class ApiConnectSpecEnhancer implements OASEnhancer {
     },
   ) {}
 
-  modifySpec(spec: OpenAPIObject): OpenAPIObject {
+  modifySpec(spec: OpenAPIObject): APIConnectOASObjects.OpenAPIObject {
+    const modifiedSpec = spec as APIConnectOASObjects.OpenAPIObject;
+
     // Add `x-ibm-name`
-    spec.info = {'x-ibm-name': this.appMetadata.name, ...spec.info};
+    modifiedSpec.info = {'x-ibm-name': this.appMetadata.name, ...spec.info};
     // Add `x-ibm-configuration`
-    spec['x-ibm-configuration'] = {
+    modifiedSpec['x-ibm-configuration'] = {
       assembly: {
         execute: [
           {
@@ -61,6 +64,7 @@ export class ApiConnectSpecEnhancer implements OASEnhancer {
       testable: true,
       gateway: 'datapower-api-gateway',
     };
-    return spec;
+
+    return modifiedSpec;
   }
 }
