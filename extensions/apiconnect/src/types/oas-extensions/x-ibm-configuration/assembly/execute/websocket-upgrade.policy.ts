@@ -26,7 +26,7 @@ export interface V200<ET extends V200Min = ExecuteV200> {
   /**
    * @defaultValue `false`
    */
-  'inject-proxy-headeres'?: boolean;
+  'inject-proxy-headers'?: boolean;
   /**
    * @defaultValue `false`
    */
