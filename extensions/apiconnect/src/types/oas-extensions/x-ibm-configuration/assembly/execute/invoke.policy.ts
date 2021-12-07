@@ -100,18 +100,26 @@ export interface V200 extends Omit<V100, 'version'> {
   'follow-redirect'?: boolean;
 }
 
-export interface V210 extends Omit<V200, 'version'> {
+export type V210 = Omit<V200, 'version'> & {
   version: '2.1.0';
-  'http-version': 'HTTP/1.0' | 'HTTP/1.1' | 'HTTP/2';
-  'http2-required'?: boolean;
+  /**
+   * @deprecated Use {@link WebSocketUpgrade} instead.
+   */
   'websocket-upgrade'?: boolean;
-}
+} & (
+    | {
+        'http-version': 'HTTP/1.0' | 'HTTP/1.1';
+      }
+    | {
+        'http-version': 'HTTP/2';
+        'http2-required'?: boolean;
+      }
+  );
 
 export type V220 =
   | (Omit<V210, 'version'> & {version: '2.2.0'})
   | (Omit<V210, 'version' | 'verb' | 'backend-type'> & {
       version: '2.2.0';
-    } & {
       'graphql-send-type': 'detect' | 'graphql' | 'json';
       'backend-type': 'graphql' | 'detect';
       verb: 'Keep' | 'POST';
