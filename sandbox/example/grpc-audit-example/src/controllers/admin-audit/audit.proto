@@ -1,0 +1,30 @@
+syntax = "proto3";
+package auditpackage;
+import "timestamp.proto";
+
+service Audit{
+    rpc Create (auditLog) returns (Empty) {}
+}
+
+message Empty{}
+
+message auditLog{
+  string id = 1;
+  enum Action{
+    INSERT_ONE = 0;
+    INSERT_MANY = 1;
+    UPDATE_ONE = 2;
+    UPDATE_MANY = 3;
+    DELETE_ONE = 4;
+    DELETE_MANY = 5;
+  }
+  Action action = 2; 
+  google.protobuf.Timestamp actedAt = 3;
+  string actedOn = 4;
+  string actionKey = 5;
+  string entityId = 6;
+  string actor = 7;
+  string before = 8;
+  string after = 9;
+  string actionGroup = 10;
+}
