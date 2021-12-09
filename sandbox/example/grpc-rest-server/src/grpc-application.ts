@@ -3,7 +3,6 @@ import {Application, ApplicationConfig} from '@loopback/core';
 import {GrpcComponent} from '@loopback/grpc';
 import {RepositoryMixin} from '@loopback/repository';
 import {ServiceMixin} from '@loopback/service-proxy';
-// import { AuditDbSourceName } from '@sourceloop/audit-log';
 
 export {ApplicationConfig};
 

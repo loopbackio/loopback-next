@@ -7,18 +7,18 @@ import {
     OPERATION_SECURITY_SPEC,
     STATUS_CODE,
   } from '@sourceloop/core';
-  
-  import {AuditLog} from '../models';
-  import {AuditLogRepository} from '../repositories';
-  
+
+  import {AuditLog} from '../../models';
+  import {AuditLogRepository} from '../../repositories';
+
   const basePath = '/audit-logs';
-  
+
   export class AuditController {
     constructor(
       @repository(AuditLogRepository)
       public auditLogRepository: AuditLogRepository,
     ) {}
-  
+
     @post(basePath, {
       security: OPERATION_SECURITY_SPEC,
       responses: {

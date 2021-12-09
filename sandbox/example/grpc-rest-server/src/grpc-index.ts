@@ -1,6 +1,6 @@
-import {ApplicationConfig, GrpcTestApplication} from './application';
+import {ApplicationConfig, GrpcTestApplication} from './grpc-application';
 
-export * from './application';
+export * from './grpc-application';
 
 export async function main(options: ApplicationConfig = {}) {
   const app = new GrpcTestApplication(options);
@@ -11,4 +11,5 @@ export async function main(options: ApplicationConfig = {}) {
 
   return app;
 }
+
 

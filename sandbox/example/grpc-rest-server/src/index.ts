@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-inferrable-types */
-import {main as grpcMain} from './grpc-audit-example/src/index';
-import {main as restMain} from './rest-audit-example/src/index';
+import {main as grpcMain} from './grpc-index';
+import {main as restMain} from './rest-index';
 
 const readline = require('readline').createInterface({
   input: process.stdin,

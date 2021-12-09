@@ -1,6 +1,6 @@
-import {ApplicationConfig, RestAuditExampleApplication} from './application';
+import {ApplicationConfig, RestAuditExampleApplication} from './rest-application';
 
-export * from './application';
+export * from './rest-application';
 
 export async function main(options: ApplicationConfig = {}) {
   const app = new RestAuditExampleApplication(options);
@@ -13,4 +13,3 @@ export async function main(options: ApplicationConfig = {}) {
 
   return app;
 }
-
