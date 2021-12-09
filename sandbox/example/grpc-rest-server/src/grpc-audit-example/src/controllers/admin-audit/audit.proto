@@ -10,15 +10,7 @@ message Empty{}
 
 message auditLog{
   string id = 1;
-  enum Action{
-    INSERT_ONE = 0;
-    INSERT_MANY = 1;
-    UPDATE_ONE = 2;
-    UPDATE_MANY = 3;
-    DELETE_ONE = 4;
-    DELETE_MANY = 5;
-  }
-  Action action = 2; 
+  string action = 2;
   google.protobuf.Timestamp actedAt = 3;
   string actedOn = 4;
   string actionKey = 5;

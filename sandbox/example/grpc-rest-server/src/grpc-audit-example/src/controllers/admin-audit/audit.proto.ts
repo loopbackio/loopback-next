@@ -51,7 +51,7 @@ export interface Empty {
  */
 export interface auditLog {
   id: string;
-  action: number;
+  action: string;
   hasActedat(): boolean;
   clearActedat(): void;
   actedat?: timestamp_pb.Timestamp;
@@ -62,19 +62,4 @@ export interface auditLog {
   before: string;
   after: string;
   actiongroup: string;
-}
-/**
- * @enum Action
- * @author Jonathan Casarrubias <t: johncasarrubias>
- * @license MIT
- * @description Action enum declaration that
- * provides values from the given gRPC Action Enum.
- */
-export enum Action {
-  INSERT_ONE = 0,
-  INSERT_MANY = 1,
-  UPDATE_ONE = 2,
-  UPDATE_MANY = 3,
-  DELETE_ONE = 4,
-  DELETE_MANY = 5,
 }

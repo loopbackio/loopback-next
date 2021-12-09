@@ -1,5 +1,4 @@
 import {Entity, model, property} from '@loopback/repository';
-import {Action} from '@sourceloop/audit-log';
 
 @model({
   name: 'audit_logs',
@@ -19,7 +18,7 @@ export class AuditLog extends Entity {
     type: 'string',
     required: true,
   })
-  action: Action;
+  action: string;
 
   @property({
     name: 'acted_at',
