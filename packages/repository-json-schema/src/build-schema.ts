@@ -522,6 +522,8 @@ export function modelToJsonSchema<T extends object>(
     // it should be removed from the `options`
     // when generating the relation or property schemas
     delete propOptions.title;
+    // Do not cascade `exclude` to nested properties.
+    delete propOptions.exclude;
 
     const propSchema = getJsonSchema(referenceType, propOptions);
 
