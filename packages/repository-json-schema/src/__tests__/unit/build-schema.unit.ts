@@ -552,6 +552,43 @@ describe('build-schema', () => {
         additionalProperties: false,
       });
     });
+
+    it('property definition does not inherit exclude list from model', () => {
+      @model()
+      class B {
+        @property()
+        id: string;
+      }
+
+      @model()
+      class A {
+        @property()
+        id: string;
+
+        @property()
+        b: B;
+      }
+
+      const aSchema = modelToJsonSchema(A, {
+        exclude: ['id'],
+      });
+      expect(aSchema).to.eql({
+        title: 'AExcluding_id_',
+        type: 'object',
+        description:
+          "(tsType: Omit<A, 'id'>, schemaOptions: { exclude: [ 'id' ] })",
+        properties: {b: {$ref: '#/definitions/B'}},
+        definitions: {
+          B: {
+            title: 'B',
+            type: 'object',
+            properties: {id: {type: 'string'}},
+            additionalProperties: false,
+          },
+        },
+        additionalProperties: false,
+      });
+    });
   });
 
   describe('getNavigationalPropertyForRelation', () => {
