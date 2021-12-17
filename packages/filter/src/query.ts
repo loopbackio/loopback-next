@@ -3,7 +3,6 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import assert from 'assert';
 import {AnyObject} from './types';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -547,7 +546,9 @@ export class FilterBuilder<MT extends object = AnyObject> {
    * @param limit - Maximum number of records to be returned
    */
   limit(limit: number): this {
-    assert(limit >= 1, `Limit ${limit} must a positive number`);
+    if (limit >= 1) {
+      throw new Error(`Limit ${limit} must a positive number`);
+    }
     this.filter.limit = limit;
     return this;
   }
@@ -597,7 +598,9 @@ export class FilterBuilder<MT extends object = AnyObject> {
   }
 
   private validateOrder(order: string) {
-    assert(order.match(/^[^\s]+( (ASC|DESC))?$/), 'Invalid order: ' + order);
+    if (order.match(/^[^\s]+( (ASC|DESC))?$/)) {
+      throw new Error('Invalid order: ' + order);
+    }
   }
 
   /**
