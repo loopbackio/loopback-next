@@ -546,7 +546,7 @@ export class FilterBuilder<MT extends object = AnyObject> {
    * @param limit - Maximum number of records to be returned
    */
   limit(limit: number): this {
-    if (limit >= 1) {
+    if (!(limit >= 1)) {
       throw new Error(`Limit ${limit} must a positive number`);
     }
     this.filter.limit = limit;
@@ -598,7 +598,7 @@ export class FilterBuilder<MT extends object = AnyObject> {
   }
 
   private validateOrder(order: string) {
-    if (order.match(/^[^\s]+( (ASC|DESC))?$/)) {
+    if (!order.match(/^[^\s]+( (ASC|DESC))?$/)) {
       throw new Error('Invalid order: ' + order);
     }
   }
