@@ -120,22 +120,6 @@ jobs:
       - name: Verify commit linting
         run: npx commitlint --from origin/master --to HEAD --verbose
 
-  renovate-config-validator:
-    name: Renovate Config Validator
-    runs-on: ubuntu-latest
-    if: ${{ github.event.pull_request }}
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - uses: actions/setup-node@v2
-        with:
-          node-version: 16 # LTS
-      - name: Install monorepo tools
-        run: npm ci --ignore-scripts
-      - name: Validate Renovate config
-        run: npx -p renovate --yes renovate-config-validator
-
   verify-docs:
     name: Verify Docs
     runs-on: ubuntu-latest
