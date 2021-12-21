@@ -44,7 +44,7 @@
     "nyc": "^15.1.0",
     "prettier": "^2.5.1",
     "rimraf": "^3.0.2",
-    "source-map-support": "^0.5.20",
+    "source-map-support": "^0.5.21",
     "typescript": "~4.5.4"
   }
 }
