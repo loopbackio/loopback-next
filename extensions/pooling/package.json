@@ -50,6 +50,6 @@
     "@loopback/testlab": "^4.0.0",
     "@types/debug": "^4.1.7",
     "@types/node": "^10.17.60",
-    "typescript": "~4.5.2"
+    "typescript": "~4.5.4"
   }
 }
