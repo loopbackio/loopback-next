@@ -78,7 +78,7 @@
     "@loopback/repository": "^4.0.0",
     "@loopback/testlab": "^4.0.0",
     "@types/debug": "^4.1.7",
-    "@types/js-yaml": "^4.0.4",
+    "@types/js-yaml": "^4.0.5",
     "@types/json-schema-compare": "^0.2.1",
     "@types/lodash": "^4.14.176",
     "@types/multer": "^1.4.7",
