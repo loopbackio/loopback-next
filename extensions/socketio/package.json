@@ -48,7 +48,7 @@
   "dependencies": {
     "@loopback/http-server": "^3.0.0",
     "@types/cors": "^2.8.12",
-    "@types/lodash": "^4.14.176",
+    "@types/lodash": "^4.14.178",
     "cors": "^2.8.5",
     "debug": "^4.3.3",
     "lodash": "^4.17.21",
