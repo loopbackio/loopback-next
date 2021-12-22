@@ -47,7 +47,7 @@
     "@types/http-errors": "^1.8.1",
     "body-parser": "^1.19.0",
     "debug": "^4.3.3",
-    "express": "^4.17.1",
+    "express": "^4.17.2",
     "http-errors": "^1.8.0",
     "on-finished": "^2.3.0",
     "toposort": "^2.0.2",
