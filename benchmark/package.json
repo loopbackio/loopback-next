@@ -45,7 +45,7 @@
     "@types/byline": "^4.2.33",
     "@types/debug": "^4.1.7",
     "@types/request-promise-native": "^1.0.18",
-    "autocannon": "^7.5.0",
+    "autocannon": "^7.5.1",
     "axios": "^0.24.0",
     "benchmark": "^2.1.4",
     "byline": "^5.0.0",
