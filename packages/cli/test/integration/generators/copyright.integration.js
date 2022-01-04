@@ -273,7 +273,7 @@ This project is licensed under the MIT License, full text below.
 
 MIT License
 
-Copyright (c) IBM Corp. 2021
+Copyright (c) IBM Corp. 2022
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
