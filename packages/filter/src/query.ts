@@ -547,7 +547,7 @@ export class FilterBuilder<MT extends object = AnyObject> {
    */
   limit(limit: number): this {
     if (!(limit >= 1)) {
-      throw new Error(`Limit ${limit} must a positive number`);
+      throw new AssertionError(`Limit ${limit} must a positive number`);
     }
     this.filter.limit = limit;
     return this;
@@ -599,7 +599,7 @@ export class FilterBuilder<MT extends object = AnyObject> {
 
   private validateOrder(order: string) {
     if (!order.match(/^[^\s]+( (ASC|DESC))?$/)) {
-      throw new Error('Invalid order: ' + order);
+      throw new AssertionError('Invalid order: ' + order);
     }
   }
 
@@ -748,4 +748,18 @@ export function filterTemplate(strings: TemplateStringsArray, ...keys: any[]) {
       throw new Error('Invalid JSON: ' + result);
     }
   };
+}
+
+export class AssertionError implements Error {
+  name: string;
+  message: string;
+  actual: any;
+  expected: any;
+  operator: string;
+  generatedMessage: boolean;
+  code: 'ERR_ASSERTION';
+
+  constructor(message?: string) {
+    this.message = message ? message : 'an error has occured';
+  }
 }
