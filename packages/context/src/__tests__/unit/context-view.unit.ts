@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import pEvent from 'p-event';
+import {pEvent} from 'p-event';
 import {types} from 'util';
 import {
   Binding,

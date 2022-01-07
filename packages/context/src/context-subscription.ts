@@ -5,7 +5,7 @@
 
 import debugFactory from 'debug';
 import {EventEmitter} from 'events';
-import {iterator, multiple} from 'p-event';
+import {pEventIterator, pEventMultiple} from 'p-event';
 import {Context} from './context';
 import {ContextEvent, ContextEventListener} from './context-event';
 import {
@@ -208,7 +208,7 @@ export class ContextSubscriptionManager extends EventEmitter {
     this.setupNotification('bind', 'unbind');
 
     // Create an async iterator for the `notification` event as a queue
-    this.notificationQueue = iterator(this, 'notification', {
+    this.notificationQueue = pEventIterator(this, 'notification', {
       // Do not end the iterator if an error event is emitted on the
       // subscription manager
       rejectionEvents: [],
@@ -313,7 +313,7 @@ export class ContextSubscriptionManager extends EventEmitter {
     const count = this.pendingNotifications;
     debug('Number of pending notifications: %d', count);
     if (count === 0) return;
-    await multiple(this, 'observersNotified', {count, timeout});
+    await pEventMultiple(this, 'observersNotified', {count, timeout});
   }
 
   /**

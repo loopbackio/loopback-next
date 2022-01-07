@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Constructor} from '@loopback/core';
-import pEvent from 'p-event';
+import {pEvent} from 'p-event';
 import {Socket} from 'socket.io';
 import io from 'socket.io-client';
 import {SocketIoBindings} from '../../keys';
