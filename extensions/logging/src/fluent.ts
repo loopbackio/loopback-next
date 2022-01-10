@@ -6,8 +6,8 @@
 import {Binding, config, Getter, inject, Provider} from '@loopback/core';
 import {createFluentSender, FluentSender, Options} from 'fluent-logger';
 import {LoggingBindings} from './keys';
-const fluent = require('fluent-logger');
-import TransportStream = require('winston-transport');
+import fluent from 'fluent-logger';
+import TransportStream from 'winston-transport';
 
 export {FluentSender} from 'fluent-logger';
 

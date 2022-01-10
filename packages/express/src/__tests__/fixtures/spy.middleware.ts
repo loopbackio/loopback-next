@@ -42,4 +42,4 @@ const spyMiddlewareFactory: ExpressMiddlewareFactory<SpyConfig> = config => {
   };
 };
 
-export = spyMiddlewareFactory;
+export default spyMiddlewareFactory;
