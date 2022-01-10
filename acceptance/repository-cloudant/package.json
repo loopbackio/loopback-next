@@ -37,7 +37,7 @@
     "@loopback/repository": "^4.0.0",
     "@loopback/repository-tests": "^0.19.0",
     "@types/node": "^10.17.60",
-    "async": "^3.2.2",
+    "async": "^3.2.3",
     "chalk": "^4.1.2",
     "debug": "^4.3.3",
     "dockerode": "^3.3.1",
