@@ -8,7 +8,7 @@
  */
 
 import http from 'http';
-import supertest = require('supertest');
+import supertest from 'supertest';
 
 export {supertest};
 

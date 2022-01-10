@@ -7,7 +7,7 @@ import {inject, Application, CoreBindings} from '@loopback/core';
 import debugModule from 'debug';
 import {BootBindings} from '../keys';
 import {Booter} from '../types';
-import path = require('path');
+import path from 'path';
 
 const debug = debugModule('loopback:boot:booter:application-metadata');
 

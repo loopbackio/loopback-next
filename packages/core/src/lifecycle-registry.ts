@@ -13,7 +13,7 @@ import {
 } from '@loopback/context';
 import {CoreBindings, CoreTags} from './keys';
 import {LifeCycleObserver, lifeCycleObserverFilter} from './lifecycle';
-import debugFactory = require('debug');
+import debugFactory from 'debug';
 const debug = debugFactory('loopback:core:lifecycle');
 
 /**

@@ -32,7 +32,7 @@ import {
   ResponsesObject,
   SchemaObject,
 } from '@loopback/rest';
-import assert = require('assert');
+import assert from 'assert';
 
 // Ideally, this file should simply `export class CrudRestController<...>{}`
 // Unfortunately, that's not possible for several reasons.

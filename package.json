@@ -12,8 +12,8 @@
     "npm": ">=7"
   },
   "scripts": {
-    "bootstrap": "lerna bootstrap",
-    "postinstall": "husky install && npm run -s bootstrap && npm run -s update-ts-project-refs",
+    "prepare": "husky install",
+    "postinstall": "lerna bootstrap && npm run -s update-ts-project-refs",
     "update-ts-project-refs": "node packages/monorepo/lib/update-ts-project-refs.js",
     "update-packages": "npm run -s update-package-locks",
     "check-package-metadata": "node bin/check-package-metadata.js",
