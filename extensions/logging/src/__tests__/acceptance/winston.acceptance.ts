@@ -73,7 +73,13 @@ describe('Winston Logger', () => {
       .apply(extensionFor(WINSTON_FORMAT));
     const logger = await ctx.get(LoggingBindings.WINSTON_LOGGER);
     logger.log('info', 'Hello, LoopBack!');
-    expect(logs).to.eql([{level: 'info', message: 'Hello, LoopBack!'}]);
+    expect(logs).to.eql([
+      {
+        level: 'info',
+        message: 'Hello, LoopBack!',
+        framework: 'LoopBack',
+      },
+    ]);
   });
 
   function givenContext() {
