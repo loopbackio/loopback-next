@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.1](https://github.com/loopbackio/loopback-next/compare/@loopback/authentication-passport@4.0.0...@loopback/authentication-passport@4.0.1) (2022-01-11)
+
+**Note:** Version bump only for package @loopback/authentication-passport
+
+
+
+
+
 # [4.0.0](https://github.com/loopbackio/loopback-next/compare/@loopback/authentication-passport@3.2.4...@loopback/authentication-passport@4.0.0) (2021-11-18)
 
 

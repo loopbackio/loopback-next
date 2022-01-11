@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.1](https://github.com/loopbackio/loopback-next/compare/@loopback/repository@4.0.0...@loopback/repository@4.0.1) (2022-01-11)
+
+
+### Bug Fixes
+
+* relation query count regression ([f5384a0](https://github.com/loopbackio/loopback-next/commit/f5384a0dbd448b09d811e3447a1c42bcdcb98199))
+
+
+
+
+
 # [4.0.0](https://github.com/loopbackio/loopback-next/compare/@loopback/repository@3.7.3...@loopback/repository@4.0.0) (2021-11-18)
 
 

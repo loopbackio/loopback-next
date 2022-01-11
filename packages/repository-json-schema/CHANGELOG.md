@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.1](https://github.com/loopbackio/loopback-next/compare/@loopback/repository-json-schema@5.0.0...@loopback/repository-json-schema@5.0.1) (2022-01-11)
+
+
+### Bug Fixes
+
+* do not cascade exclude list when building json schema ([20ebaea](https://github.com/loopbackio/loopback-next/commit/20ebaeaba32d7d587d36281b811bf7296699e6bb))
+
+
+
+
+
 # [5.0.0](https://github.com/loopbackio/loopback-next/compare/@loopback/repository-json-schema@4.0.2...@loopback/repository-json-schema@5.0.0) (2021-11-18)
 
 
