@@ -91,14 +91,14 @@ export class BaseArtifactBooter implements Booter {
         : [this.options.extensions]
       : [];
 
-    const joinedDirs = this.dirs.join('|');
-    const joinedExts = this.extensions.join('|');
+    let joinedDirs = this.dirs.join(',');
+    if (this.dirs.length > 1) joinedDirs = `{${joinedDirs}}`;
+
+    const joinedExts = `@(${this.extensions.join('|')})`;
 
     this.glob = this.options.glob
       ? this.options.glob
-      : `/@(${joinedDirs})/${
-          this.options.nested ? '**/*' : '*'
-        }@(${joinedExts})`;
+      : `/${joinedDirs}/${this.options.nested ? '**/*' : '*'}${joinedExts}`;
   }
 
   /**

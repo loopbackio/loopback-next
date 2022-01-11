@@ -28,7 +28,7 @@ describe('base-artifact booter unit tests', () => {
 
     it(`creates and sets 'glob' pattern`, async () => {
       const booterInst = givenBaseBooter();
-      const expected = '/@(test|test2)/*@(.test.js|test2.js)';
+      const expected = '/{test,test2}/*@(.test.js|test2.js)';
       await booterInst.configure();
       expect(booterInst.glob).to.equal(expected);
     });
@@ -37,7 +37,7 @@ describe('base-artifact booter unit tests', () => {
       const booterInst = givenBaseBooter(
         Object.assign({}, TEST_OPTIONS, {nested: true}),
       );
-      const expected = '/@(test|test2)/**/*@(.test.js|test2.js)';
+      const expected = '/{test,test2}/**/*@(.test.js|test2.js)';
       await booterInst.configure();
       expect(booterInst.glob).to.equal(expected);
     });
