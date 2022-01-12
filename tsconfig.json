@@ -53,9 +53,6 @@
       "path": "examples/hello-world/tsconfig.json"
     },
     {
-      "path": "examples/lb3-application/tsconfig.json"
-    },
-    {
       "path": "examples/log-extension/tsconfig.json"
     },
     {
@@ -144,9 +141,6 @@
     },
     {
       "path": "packages/boot/tsconfig.json"
-    },
-    {
-      "path": "packages/booter-lb3app/tsconfig.json"
     },
     {
       "path": "packages/context/tsconfig.json"
