@@ -106,7 +106,6 @@
   "919886be4ae469dbab529c61acd85781": "Immettere il nome package del connettore:",
   "91cd2d832c4b723add34ca2db743b689": "Nome chiave esterna da definire nel modello di destinazione",
   "93a678d3a0375c0d3b52c7d8e938e019": "Generazione interrotta: {0}",
-  "93d2bb2103d07f905ef0e83ea0e63e0b": "Percorso dell'applicazione LoopBack 3.x. Può essere una directory di progetto (ad esempio \"my-lb3-app\") o il file del server (ad esempio \"my-lb3-app/server/server.js\").",
   "958ae3d061270d7e85cfe6b9c191feaf": "Provider del servizio locale collegato al contesto dell'applicazione",
   "982e471119e413bad610f51015bf80e0": "Abilita eslint",
   "9885cdb6ead91df9a95786bad4e66702": "Nessuna conversione (EXAMPLE_COLUMN)",

@@ -106,7 +106,6 @@
   "919886be4ae469dbab529c61acd85781": "Wprowadź nazwę pakietu konektora:",
   "91cd2d832c4b723add34ca2db743b689": "Nazwa klucza obcego, który ma zostać zdefiniowany w modelu docelowym",
   "93a678d3a0375c0d3b52c7d8e938e019": "Generowanie zostało przerwane: {0}",
-  "93d2bb2103d07f905ef0e83ea0e63e0b": "Ścieżka do aplikacji LoopBack 3.x. Może to być katalog projektu (np. \"my-lb3-app\") lub plik serwera (np. \"my-lb3-app/server/server.js\").",
   "958ae3d061270d7e85cfe6b9c191feaf": "Dostawca usług lokalnych powiązany z kontekstem aplikacji",
   "982e471119e413bad610f51015bf80e0": "Włącz eslint",
   "9885cdb6ead91df9a95786bad4e66702": "Brak przekształcenia (PRZYKŁADOWA_KOLUMNA)",

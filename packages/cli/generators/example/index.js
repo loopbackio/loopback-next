@@ -32,9 +32,6 @@ const EXAMPLES = {
     'An example showing how to compose an application from component and ' +
       'controllers, interceptors, and observers.',
   ),
-  'lb3-application': g.f(
-    'An example LoopBack 3 application mounted in a LoopBack 4 project.',
-  ),
   'rest-crud': g.f(
     'A simplified version of the Todo example that only requires a model and ' +
       'a datasource.',

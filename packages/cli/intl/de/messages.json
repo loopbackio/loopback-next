@@ -106,7 +106,6 @@
   "919886be4ae469dbab529c61acd85781": "Geben Sie den Namen des Connectorpakets ein:",
   "91cd2d832c4b723add34ca2db743b689": "Name des Fremdschlüssels, der auf dem Zielmodell definiert werden soll",
   "93a678d3a0375c0d3b52c7d8e938e019": "Generation wird abgebrochen: {0}",
-  "93d2bb2103d07f905ef0e83ea0e63e0b": "Pfad zu Ihrer LoopBack 3.x-Anwendung. Hierbei kann es sich um ein Projektverzeichnis (z. B. \"my-lb3-app\") oder um die Serverdatei (z. B. \"my-lb3-app/server/server.js\") handeln.",
   "958ae3d061270d7e85cfe6b9c191feaf": "Lokaler Service-Provider, der an den Anwendungskontext gebunden ist",
   "982e471119e413bad610f51015bf80e0": "eslint aktivieren",
   "9885cdb6ead91df9a95786bad4e66702": "Keine Konvertierung (EXAMPLE_COLUMN)",

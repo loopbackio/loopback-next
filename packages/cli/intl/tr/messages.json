@@ -106,7 +106,6 @@
   "919886be4ae469dbab529c61acd85781": "Bağlayıcının paket adını girin:",
   "91cd2d832c4b723add34ca2db743b689": "Hedef modelde tanımlanacak dış anahtar adı",
   "93a678d3a0375c0d3b52c7d8e938e019": "Oluşturma durduruldu: {0}",
-  "93d2bb2103d07f905ef0e83ea0e63e0b": "LoopBack 3.x uygulamanızın yolu. Bu bir proje dizini (örn. \"my-lb3-app\") veya sunucu dosyası (örn. \"my-lb3-app/server/server.js\") olabilir.",
   "958ae3d061270d7e85cfe6b9c191feaf": "Uygulama bağlamına bağlı yerel hizmet sağlayıcısı",
   "982e471119e413bad610f51015bf80e0": "eslint'i etkinleştir",
   "9885cdb6ead91df9a95786bad4e66702": "Dönüştürme yok (ÖRNEK_SÜTUN)",

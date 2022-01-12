@@ -106,7 +106,6 @@
   "919886be4ae469dbab529c61acd85781": "输入连接器的包名称：",
   "91cd2d832c4b723add34ca2db743b689": "要在目标模型上定义的外键名称",
   "93a678d3a0375c0d3b52c7d8e938e019": "生成已异常中止：{0}",
-  "93d2bb2103d07f905ef0e83ea0e63e0b": "LoopBack 3.x 应用程序的路径。可以是项目目录（如“my-lb3-app”）或服务器文件（如“my-lb3-app/server/server.js”）。",
   "958ae3d061270d7e85cfe6b9c191feaf": "本地服务提供程序绑定到应用程序上下文",
   "982e471119e413bad610f51015bf80e0": "启用 eslint",
   "9885cdb6ead91df9a95786bad4e66702": "无转换 (EXAMPLE_COLUMN)",

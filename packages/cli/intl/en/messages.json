@@ -106,7 +106,6 @@
   "919886be4ae469dbab529c61acd85781": "Enter the connector's package name:",
   "91cd2d832c4b723add34ca2db743b689": "Foreign key name to define on the target model",
   "93a678d3a0375c0d3b52c7d8e938e019": "Generation is aborted: {0}",
-  "93d2bb2103d07f905ef0e83ea0e63e0b": "Path to your LoopBack 3.x application. This can be a project directory (e.g. \"my-lb3-app\") or the server file (e.g. \"my-lb3-app/server/server.js\").",
   "958ae3d061270d7e85cfe6b9c191feaf": "Local service provider bound to application context",
   "982e471119e413bad610f51015bf80e0": "Enable eslint",
   "9885cdb6ead91df9a95786bad4e66702": "No conversion (EXAMPLE_COLUMN)",

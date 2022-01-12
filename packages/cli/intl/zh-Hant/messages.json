@@ -106,7 +106,6 @@
   "919886be4ae469dbab529c61acd85781": "請輸入連接器的套件名稱：",
   "91cd2d832c4b723add34ca2db743b689": "要定義在目標模型上的外部索引鍵名稱",
   "93a678d3a0375c0d3b52c7d8e938e019": "已中斷產生：{0}",
-  "93d2bb2103d07f905ef0e83ea0e63e0b": "您 LoopBack 3.x 應用程式的路徑。這可以是專案目錄（例如：\"my-lb3-app\"）或伺服器檔案（例如：\"my-lb3-app/server/server.js\"）。",
   "958ae3d061270d7e85cfe6b9c191feaf": "連結至應用程式環境定義的本端服務提供者",
   "982e471119e413bad610f51015bf80e0": "啟用 eslint",
   "9885cdb6ead91df9a95786bad4e66702": "不轉換 (EXAMPLE_COLUMN)",

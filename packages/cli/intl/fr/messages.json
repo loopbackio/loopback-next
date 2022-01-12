@@ -106,7 +106,6 @@
   "919886be4ae469dbab529c61acd85781": "Entrer le nom de package du connecteur :",
   "91cd2d832c4b723add34ca2db743b689": "Nom de clé externe à définir sur le modèle cible",
   "93a678d3a0375c0d3b52c7d8e938e019": "La génération a été abandonnée : {0}",
-  "93d2bb2103d07f905ef0e83ea0e63e0b": "Chemin d'accès à votre application LoopBack 3.x. Il peut s'agir d'un répertoire de projet (par exemple, \"my-lb3-app\") ou du fichier serveur (par exemple, \"my-lb3-app/server/server.js\").",
   "958ae3d061270d7e85cfe6b9c191feaf": "Fournisseur de services local lié à un contexte d'application",
   "982e471119e413bad610f51015bf80e0": "Activer eslint",
   "9885cdb6ead91df9a95786bad4e66702": "Aucune conversion (EXAMPLE_COLUMN)",
