@@ -56,6 +56,7 @@ export async function validateRequestBody(
     );
     throw err;
   }
+  if (!required && !body.value) return;
 
   const schema = body.schema;
   /* istanbul ignore if */
