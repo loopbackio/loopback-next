@@ -105,6 +105,37 @@ describe('Validation at REST level', () => {
     });
   });
 
+  context('with optional body', () => {
+    before(() => {
+      const schema: SchemaObject = jsonToSchemaObject(
+        getJsonSchema(Product, {exclude: ['id']}),
+      );
+
+      class ProductController {
+        @post('/products')
+        async create(
+          @requestBody(aBodySpec(schema))
+          data: object = {id: 1, name: 'a-product-name', price: 100},
+        ): Promise<Product> {
+          return new Product(data);
+        }
+      }
+
+      return givenAnAppAndAClient(ProductController);
+    });
+    after(() => app.stop());
+
+    it('accepts undefined', async () => {
+      const {body} = await client
+        .post('/products')
+        .type('json')
+        .send(undefined)
+        .expect(200);
+
+      expect(body).to.containEql({id: 1, name: 'a-product-name', price: 100});
+    });
+  });
+
   // This is the standard use case that most LB4 applications should use.
   // The request body specification is inferred from a decorated model class.
   context('for request body specified via model definition', () => {
