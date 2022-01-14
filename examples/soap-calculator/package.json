@@ -61,7 +61,7 @@
     "@types/mocha": "^9.0.0",
     "@types/node": "^10.17.60",
     "eslint": "^8.6.0",
-    "mocha": "^9.1.3",
+    "mocha": "^9.1.4",
     "source-map-support": "^0.5.21",
     "typescript": "~4.5.4"
   }
