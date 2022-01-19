@@ -7,11 +7,20 @@ import {
   BelongsToAccessor,
   BelongsToDefinition,
   createBelongsToAccessor,
+  createHasManyThroughRepositoryFactory,
   Getter,
+  HasManyDefinition,
+  HasManyThroughRepositoryFactory,
   juggler,
 } from '@loopback/repository';
 import {CrudRepositoryCtor} from '../../../..';
-import {CartItem, CartItemRelations, Order} from '../models';
+import {
+  CartItem,
+  CartItemRelations,
+  Customer,
+  CustomerCartItemLink,
+  Order,
+} from '../models';
 
 // create the CartItemRepo by calling this func so that it can be extended from CrudRepositoryCtor
 export function createCartItemRepo(repoClass: CrudRepositoryCtor) {
@@ -24,9 +33,19 @@ export function createCartItemRepo(repoClass: CrudRepositoryCtor) {
       Order,
       typeof CartItem.prototype.id
     >;
+
+    public readonly customers: HasManyThroughRepositoryFactory<
+      Customer,
+      typeof Customer.prototype.id,
+      CustomerCartItemLink,
+      typeof CustomerCartItemLink.prototype.id
+    >;
+
     constructor(
       db: juggler.DataSource,
       orderRepositoryGetter: Getter<typeof repoClass.prototype>,
+      customerRepositoryGetter: Getter<typeof repoClass.prototype>,
+      customerCartItemLinkRepositoryGetter: Getter<typeof repoClass.prototype>,
     ) {
       super(CartItem, db);
       const ordersMeta = this.entityClass.definition.relations['order'];
@@ -34,6 +53,13 @@ export function createCartItemRepo(repoClass: CrudRepositoryCtor) {
         ordersMeta as BelongsToDefinition,
         orderRepositoryGetter,
         this,
+      );
+
+      const customersMeta = this.entityClass.definition.relations['customers'];
+      this.customers = createHasManyThroughRepositoryFactory(
+        customersMeta as HasManyDefinition,
+        customerRepositoryGetter,
+        customerCartItemLinkRepositoryGetter,
       );
     }
   };

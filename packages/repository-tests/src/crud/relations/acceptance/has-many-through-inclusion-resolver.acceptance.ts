@@ -158,6 +158,56 @@ export function hasManyThroughInclusionResolverAcceptance(
         expect(toJSON(result)).to.deepEqual(toJSON(expected));
       });
 
+      it('includes relations through a bi-directional hasManyThrough relation', async () => {
+        const link = await customerRepo.create({name: 'Link'});
+        const zelda = await customerRepo.create({name: 'Zelda'});
+        const voldemort = await customerRepo.create({name: 'Voldemort'});
+
+        const cart = await customerRepo
+          .cartItems(zelda.id)
+          .create({description: 'crown'});
+        await customerRepo.cartItems(link.id).create({description: 'shield'});
+        await customerRepo
+          .cartItems(link.id)
+          .create({description: 'green hat'});
+
+        // Cart is now shared by Link, Zelda and Voldemort
+        await customerRepo.cartItems(link.id).link(cart.id);
+        await customerRepo.cartItems(voldemort.id).link(cart.id);
+
+        // We're testing the limit and order in the inclusion of customers
+        // within the inclusion of cartItems. The order clause in combination
+        // with the limit clause should return Zelda and Voldemort in that
+        // order, excluding Link due to the limit of 2 and sort by name.
+        const result = await customerRepo.find({
+          limit: 1,
+          order: ['name DESC'],
+          include: [
+            {
+              relation: 'cartItems',
+              scope: {
+                include: [
+                  {
+                    relation: 'customers',
+                    scope: {limit: 2, order: ['name DESC']},
+                  },
+                ],
+              },
+            },
+          ],
+        });
+        const expected = [
+          {
+            ...zelda,
+            parentId: features.emptyValue,
+            cartItems: [{...cart, customers: [zelda, voldemort]}],
+          },
+        ];
+
+        expect(result.length).to.eql(1);
+        expect(toJSON(result)).to.deepEqual(toJSON(expected));
+      });
+
       it('honours field scope when returning a model', async () => {
         const link = await customerRepo.create({name: 'Link'});
         const sword = await customerRepo
@@ -185,19 +235,27 @@ export function hasManyThroughInclusionResolverAcceptance(
         expect(toJSON(result)).to.deepEqual(toJSON(expected));
       });
 
-      it('honours limit scope when returning a model', async () => {
+      it('honours limit and order scope when returning a model', async () => {
         const link = await customerRepo.create({name: 'Link'});
         await customerRepo
           .cartItems(link.id)
           .create({description: 'master sword'});
-        await customerRepo.cartItems(link.id).create({description: 'shield'});
+        const shield = await customerRepo
+          .cartItems(link.id)
+          .create({description: 'shield'});
 
         const result = await customerRepo.find({
-          include: [{relation: 'cartItems', scope: {limit: 1}}],
+          include: [
+            {
+              relation: 'cartItems',
+              scope: {limit: 1, order: ['description DESC']},
+            },
+          ],
         });
 
         expect(result.length).to.eql(1);
         expect(result[0].cartItems.length).to.eql(1);
+        expect(result[0].cartItems[0]?.id).to.eql(shield?.id);
       });
 
       it('finds models with nested inclusion', async () => {

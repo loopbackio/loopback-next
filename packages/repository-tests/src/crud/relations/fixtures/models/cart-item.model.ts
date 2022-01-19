@@ -8,10 +8,12 @@ import {
   BelongsToAccessor,
   Entity,
   EntityCrudRepository,
+  hasMany,
+  HasManyThroughRepositoryFactory,
   model,
   property,
 } from '@loopback/repository';
-import {Order, OrderWithRelations} from '.';
+import {Customer, CustomerCartItemLink, Order, OrderWithRelations} from '.';
 import {MixedIdType} from '../../../../helpers.repository-tests';
 
 @model()
@@ -30,10 +32,14 @@ export class CartItem extends Entity {
 
   @belongsTo(() => Order)
   orderId: MixedIdType;
+
+  @hasMany(() => Customer, {through: {model: () => CustomerCartItemLink}})
+  customers: Customer[];
 }
 
 export interface CartItemRelations {
   order?: OrderWithRelations[];
+  customers?: Customer[];
 }
 
 export type CartItemWithRelations = CartItem & CartItemRelations;
@@ -41,4 +47,10 @@ export type CartItemWithRelations = CartItem & CartItemRelations;
 export interface CartItemRepository
   extends EntityCrudRepository<CartItem, typeof CartItem.prototype.id> {
   order: BelongsToAccessor<Order, MixedIdType>;
+  customers: HasManyThroughRepositoryFactory<
+    Customer,
+    MixedIdType,
+    CustomerCartItemLink,
+    MixedIdType
+  >;
 }

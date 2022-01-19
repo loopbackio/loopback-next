@@ -201,11 +201,18 @@ export function givenBoundCrudRepositories(
   const cartItemRepo: CartItemRepository = new cartItemRepoClass(
     db,
     async () => orderRepo,
+    async () => customerRepo,
+    async () => customerCartItemLinkRepo,
   );
 
   cartItemRepo.inclusionResolvers.set(
     'order',
     cartItemRepo.order.inclusionResolver,
+  );
+
+  cartItemRepo.inclusionResolvers.set(
+    'customers',
+    cartItemRepo.customers.inclusionResolver,
   );
 
   const customerCartItemLinkRepoClass =
