@@ -3,16 +3,17 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Filter, InclusionFilter} from '@loopback/filter';
+import {Filter, FilterBuilder, InclusionFilter} from '@loopback/filter';
 import debugFactory from 'debug';
+import _ from 'lodash';
 import {InvalidPolymorphismError} from '../..';
 import {AnyObject, Options} from '../../common-types';
 import {Entity} from '../../model';
 import {EntityCrudRepository} from '../../repositories';
 import {
+  StringKeyOf,
   findByForeignKeys,
   flattenTargetsOfOneToManyRelation,
-  StringKeyOf,
 } from '../relation.helpers';
 import {Getter, HasManyDefinition, InclusionResolver} from '../relation.types';
 import {resolveHasManyThroughMetadata} from './has-many-through.helpers';
@@ -111,7 +112,9 @@ export function createHasManyThroughInclusionResolver<
     );
 
     const scope =
-      typeof inclusion === 'string' ? {} : (inclusion.scope as Filter<Target>);
+      typeof inclusion === 'string'
+        ? {}
+        : (inclusion.scope as Filter<Target> | undefined);
 
     // whether the polymorphism is configured
     const targetDiscriminator: keyof (Through & ThroughRelations) | undefined =
@@ -197,22 +200,81 @@ export function createHasManyThroughInclusionResolver<
       const targetRepo = await getTargetRepoDict[relationMeta.target().name]();
       const result = [];
 
+      // Normalize field filter to an object like {[field]: boolean}
+      const filterBuilder = new FilterBuilder<Target>();
+      const fieldFilter = filterBuilder.fields(scope?.fields ?? {}).filter
+        .fields as {[P in keyof Target]?: boolean};
+
+      // We need targetKey to create a map, as such it always needs to be included.
+      // Keep track of whether targetKey should be removed from the final result,
+      // whether by explicit omission (targetKey: false) or by implicit omission
+      // (anyOtherKey: true but no targetKey: true).
+      const omitTargetKeyFromFields =
+        (Object.values(fieldFilter).includes(true) &&
+          fieldFilter[targetKey] !== true) ||
+        fieldFilter[targetKey] === false;
+
+      if (omitTargetKeyFromFields) {
+        if (fieldFilter[targetKey] === false) {
+          // Undo explicit omission
+          delete fieldFilter[targetKey];
+        } else {
+          // Undo implicit omission
+          fieldFilter[targetKey] = true;
+        }
+      }
+
+      // get target ids from the through entities by foreign key
+      const allIds = _.uniq(
+        throughResult
+          .filter(throughEntitySet => throughEntitySet !== undefined)
+          .map(
+            throughEntitySet =>
+              throughEntitySet?.map(entity => entity[throughKeyTo]),
+          )
+          .flat(),
+      );
+
+      // Omit limit from scope as those need to be applied per fK
+      const targetEntityList = await findByForeignKeys<
+        Target,
+        TargetRelations,
+        StringKeyOf<Target>
+      >(
+        targetRepo,
+        targetKey,
+        allIds as unknown as [],
+        {..._.omit(scope ?? {}, ['limit', 'fields']), fields: fieldFilter},
+        {
+          ...options,
+          isThroughModelInclude: true,
+        },
+      );
+
+      const targetEntityIds = targetEntityList.map(
+        targetEntity => targetEntity[targetKey],
+      );
+
+      const targetEntityMap = Object.fromEntries(
+        targetEntityList.map(x => [
+          x[targetKey],
+          omitTargetKeyFromFields ? _.omit(x, [targetKey]) : x,
+        ]),
+      );
+
       // convert from through entities to the target entities
       for (const entityList of throughResult) {
         if (entityList) {
-          // get target ids from the through entities by foreign key
-          const targetIds = entityList.map(entity => entity[throughKeyTo]);
+          const relatedIds = entityList.map(x => x[throughKeyTo]);
 
-          // the explicit types and casts are needed
-          const targetEntityList = await findByForeignKeys<
-            Target,
-            TargetRelations,
-            StringKeyOf<Target>
-          >(targetRepo, targetKey, targetIds as unknown as [], scope, {
-            ...options,
-            isThroughModelInclude: true,
-          });
-          result.push(targetEntityList);
+          // Use the order of the original result set & apply limit
+          const sortedIds = _.intersection(
+            targetEntityIds as unknown as string[],
+            relatedIds as unknown as string[],
+          ).slice(0, scope?.limit ?? entityList.length);
+
+          // Make each result its own instance to avoid shenanigans by reference
+          result.push(_.cloneDeep(sortedIds.map(x => targetEntityMap[x])));
         } else {
           // no entities found, add undefined to results
           result.push(entityList);
