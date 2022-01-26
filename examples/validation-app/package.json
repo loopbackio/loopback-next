@@ -64,8 +64,8 @@
     "@loopback/eslint-config": "^12.0.1",
     "@loopback/testlab": "^4.0.1",
     "@types/node": "^10.17.60",
-    "eslint": "^8.6.0",
+    "eslint": "^8.7.0",
     "source-map-support": "^0.5.21",
-    "typescript": "~4.5.4"
+    "typescript": "~4.5.5"
   }
 }
