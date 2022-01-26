@@ -58,11 +58,11 @@
     "@loopback/build": "^8.0.1",
     "@loopback/eslint-config": "^12.0.1",
     "@loopback/testlab": "^4.0.1",
-    "@types/mocha": "^9.0.0",
+    "@types/mocha": "^9.1.0",
     "@types/node": "^10.17.60",
-    "eslint": "^8.6.0",
-    "mocha": "^9.1.4",
+    "eslint": "^8.7.0",
+    "mocha": "^9.2.0",
     "source-map-support": "^0.5.21",
-    "typescript": "~4.5.4"
+    "typescript": "~4.5.5"
   }
 }

@@ -155,9 +155,10 @@ async function createJwt(
 async function verifyToken(token: string) {
   const unwrappedJwt = jwt.decode(token, {json: true, complete: true});
   if (unwrappedJwt == null) throw new Error('invalid token');
-  const tokenId = unwrappedJwt?.payload.jti;
+  const tokenId = (unwrappedJwt.payload as jwt.JwtPayload).jti;
   if (!tokenId) throw new Error('invalid token');
-  const registeredApp: App = registeredApps[unwrappedJwt?.payload.client_id];
+  const registeredApp: App =
+    registeredApps[(unwrappedJwt.payload as jwt.JwtPayload).client_id];
   if (registeredApp) {
     const result = jwt.verify(token, registeredApp[tokenId].signingKey);
     if (result) {
