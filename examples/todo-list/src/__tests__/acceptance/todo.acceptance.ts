@@ -168,17 +168,16 @@ describe('TodoListApplication', () => {
       .expect(200, {count: 1});
   });
 
-  it('includes TodoList in query result', async () => {
+  it('demo include with fields bug', async () => {
     const list = await givenTodoListInstance(todoListRepo);
-    const todo = await givenTodoInstance(todoRepo, {todoListId: list.id});
-    const filter = JSON.stringify({include: ['todoList']});
+    await givenTodoInstance(todoRepo, {todoListId: list.id});
+    const filter = JSON.stringify({
+      include: [{relation: 'todoList', scope: {fields: ['title']}}],
+    });
 
     const response = await client.get('/todos').query({filter: filter});
 
     expect(response.body).to.have.length(1);
-    expect(response.body[0]).to.deepEqual({
-      ...toJSON(todo),
-      todoList: toJSON(list),
-    });
+    expect(response.body[0].todoList).to.be.undefined();
   });
 });
