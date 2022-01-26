@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {GeocoderDataSource} from '../../../datasources/geocoder.datasource';
+import {GeocoderDataSource} from '../../../datasources';
 import {Geocoder, GeocoderProvider} from '../../../services';
 import {
   aLocation,

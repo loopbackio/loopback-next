@@ -6,9 +6,9 @@
 import {HttpCachingProxy} from '@loopback/http-caching-proxy';
 import {merge} from 'lodash';
 import path from 'path';
-import {GeocoderDataSource} from '../datasources/geocoder.datasource';
-import {Todo} from '../models/index';
-import {Geocoder, GeoPoint} from '../services/geocoder.service';
+import {GeocoderDataSource} from '../datasources';
+import {Todo} from '../models';
+import {Geocoder, GeoPoint} from '../services';
 
 /*
  ==============================================================================
@@ -48,7 +48,7 @@ export function givenTodo(todo?: Partial<Todo>) {
 
 export const aLocation = {
   address: '1 New Orchard Road, Armonk, 10504',
-  geopoint: <GeoPoint>{y: 41.109653, x: -73.72467},
+  geopoint: <GeoPoint>{y: 41.109657, x: -73.72466},
   get geostring() {
     return `${this.geopoint.y},${this.geopoint.x}`;
   },
