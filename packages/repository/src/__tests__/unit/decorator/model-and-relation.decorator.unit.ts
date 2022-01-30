@@ -58,8 +58,13 @@ describe('model decorator', () => {
 
   @model()
   class Account extends Entity {
+    @property()
     id: string;
+
+    @property()
     type: string;
+
+    @property()
     balance: number;
   }
 
@@ -116,8 +121,8 @@ describe('model decorator', () => {
     @embedsMany()
     phones: Phone[];
 
-    @referencesMany()
-    accounts: Account[];
+    @referencesMany(() => Account)
+    accountIds: string[];
 
     @referencesOne()
     profile: Profile;
@@ -277,13 +282,19 @@ describe('model decorator', () => {
 
   it('adds referencesMany metadata', () => {
     const meta =
-      MetadataInspector.getAllPropertyMetadata(
+      MetadataInspector.getAllPropertyMetadata<RelationMetadata>(
         RELATIONS_KEY,
         Customer.prototype,
       ) ?? /* istanbul ignore next */ {};
-    expect(meta.accounts).to.eql({
+    const relationDef = meta.accountIds;
+    expect(relationDef).to.containEql({
       type: RelationType.referencesMany,
+      name: 'accounts',
+      target: () => Account,
+      keyFrom: 'accountIds',
     });
+    expect(relationDef.source).to.be.exactly(Customer);
+    expect(relationDef.target()).to.be.exactly(Account);
   });
 
   it('adds referencesOne metadata', () => {

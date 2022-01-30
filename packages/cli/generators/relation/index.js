@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-// no translation: HasMany, BelongsTo, HasOne
+// no translation: HasMany, BelongsTo, HasOne, ReferencesMany
 'use strict';
 
 const ArtifactGenerator = require('../../lib/artifact-generator');
@@ -18,6 +18,7 @@ const BelongsToRelationGenerator = require('./belongs-to-relation.generator');
 const HasManyRelationGenerator = require('./has-many-relation.generator');
 const HasManyThroughRelationGenerator = require('./has-many-through-relation.generator');
 const HasOneRelationGenerator = require('./has-one-relation.generator');
+const ReferencesManyRelationGenerator = require('./references-many-relation.generator');
 
 const g = require('../../lib/globalize');
 
@@ -39,7 +40,10 @@ const PROMPT_MESSAGE_RELATION_NAME = g.f('Relation name');
 const PROMPT_MESSAGE_FOREIGN_KEY_NAME = g.f(
   'Foreign key name to define on the target model',
 );
-const PROMPT_MESSAGE_FOREIGN_KEY_NAME_BELONGSTO = g.f(
+const PROMPT_MESSAGE_FOREIGN_KEY_NAME_BELONGS_TO = g.f(
+  'Foreign key name to define on the source model',
+);
+const PROMPT_MESSAGE_FOREIGN_KEY_NAME_REFERENCES_MANY = g.f(
   'Foreign key name to define on the source model',
 );
 
@@ -198,6 +202,13 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
       case relationUtils.relationType.hasOne:
         defaultRelationName = utils.camelCase(
           this.artifactInfo.destinationModel,
+        );
+        break;
+      case relationUtils.relationType.referencesMany:
+        // this is how the referencesManyAccessor generates the default relation name
+        defaultRelationName = this.artifactInfo.foreignKeyName.replace(
+          /Ids$/,
+          's',
         );
         break;
     }
@@ -380,7 +391,7 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
    *  4. Check is foreign key exist in destination model. If not - prompt.
    *  Error - if type is not the same.
    *
-   * For belongsTo this is getting source key not fk.
+   * For belongsTo and referencesMany this is getting source key not fk.
    */
   async promptForeignKey() {
     if (this.shouldExit()) return false;
@@ -525,17 +536,37 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
       this.artifactInfo.foreignKeyName = this.options.foreignKeyName;
     }
 
-    this.artifactInfo.defaultForeignKeyName =
-      this.artifactInfo.relationType === 'belongsTo'
-        ? utils.camelCase(this.artifactInfo.destinationModel) + 'Id'
-        : utils.camelCase(this.artifactInfo.sourceModel) + 'Id';
+    switch (this.artifactInfo.relationType) {
+      case 'belongsTo':
+        this.artifactInfo.defaultForeignKeyName =
+          utils.camelCase(this.artifactInfo.destinationModel) + 'Id';
+        break;
+      case 'referencesMany':
+        this.artifactInfo.defaultForeignKeyName =
+          utils.camelCase(this.artifactInfo.destinationModel) + 'Ids';
+        break;
+      default:
+        this.artifactInfo.defaultForeignKeyName =
+          utils.camelCase(this.artifactInfo.sourceModel) + 'Id';
+        break;
+    }
 
-    const msg =
-      this.artifactInfo.relationType === 'belongsTo'
-        ? PROMPT_MESSAGE_FOREIGN_KEY_NAME_BELONGSTO
-        : PROMPT_MESSAGE_FOREIGN_KEY_NAME;
+    let msg;
+    switch (this.artifactInfo.relationType) {
+      case 'belongsTo':
+        msg = PROMPT_MESSAGE_FOREIGN_KEY_NAME_BELONGS_TO;
+        break;
+      case 'referencesMany':
+        msg = PROMPT_MESSAGE_FOREIGN_KEY_NAME_REFERENCES_MANY;
+        break;
+      default:
+        msg = PROMPT_MESSAGE_FOREIGN_KEY_NAME;
+        break;
+    }
+
     const foreignKeyModel =
-      this.artifactInfo.relationType === 'belongsTo'
+      this.artifactInfo.relationType === 'belongsTo' ||
+      this.artifactInfo.relationType === 'referencesMany'
         ? this.artifactInfo.sourceModel
         : this.artifactInfo.destinationModel;
 
@@ -563,10 +594,11 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
         cl,
         this.artifactInfo.foreignKeyName,
       );
-      // checks if its the case that the fk already exists in source model and decorated by @belongsTo, which should be aborted
+      // checks if it's the case that the fk already exists in source model and decorated by @belongsTo or @referencesMany, which should be aborted
       if (
         this.artifactInfo.doesForeignKeyExist &&
-        this.artifactInfo.relationType === 'belongsTo'
+        (this.artifactInfo.relationType === 'belongsTo' ||
+          this.artifactInfo.relationType === 'referencesMany')
       ) {
         try {
           relationUtils.doesRelationExist(cl, this.artifactInfo.foreignKeyName);
@@ -637,7 +669,8 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
     this.artifactInfo.defaultRelationName = this._getDefaultRelationName();
     // for hasMany && hasOne, the source key is the same as the relation name
     const msg =
-      this.artifactInfo.relationType === 'belongsTo'
+      this.artifactInfo.relationType === 'belongsTo' ||
+      this.artifactInfo.relationType === 'referencesMany'
         ? PROMPT_MESSAGE_RELATION_NAME
         : PROMPT_MESSAGE_PROPERTY_NAME;
 
@@ -739,6 +772,12 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
         break;
       case relationUtils.relationType.hasOne:
         relationGenerator = new HasOneRelationGenerator(this.args, this.opts);
+        break;
+      case relationUtils.relationType.referencesMany:
+        relationGenerator = new ReferencesManyRelationGenerator(
+          this.args,
+          this.opts,
+        );
         break;
     }
 

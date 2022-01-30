@@ -143,6 +143,21 @@ export interface HasOneDefinition extends RelationDefinitionBase {
   keyFrom?: string;
 }
 
+export interface ReferencesManyDefinition extends RelationDefinitionBase {
+  type: RelationType.referencesMany;
+  targetsMany: true;
+
+  /**
+   * keyTo: The foreign key used by the target model for this relation.
+   * keyFrom: The source key used by the source model for this relation.
+   *
+   * TODO(bajtos) Add relation description.
+   *
+   */
+  keyTo?: string;
+  keyFrom?: string;
+}
+
 /**
  * A union type describing all possible Relation metadata objects.
  */
@@ -150,6 +165,7 @@ export type RelationMetadata =
   | HasManyDefinition
   | BelongsToDefinition
   | HasOneDefinition
+  | ReferencesManyDefinition
   // TODO(bajtos) add other relation types and remove RelationDefinitionBase once
   // all relation types are covered.
   | RelationDefinitionBase;

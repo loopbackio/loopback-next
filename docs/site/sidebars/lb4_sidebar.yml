@@ -757,6 +757,10 @@ children:
         url: HasManyThrough-relation.html
         output: 'web, pdf'
 
+      - title: 'ReferencesMany Relation'
+        url: ReferencesMany-relation.html
+        output: 'web, pdf'
+
     - title: 'Repository'
       url: Repository.html
       output: 'web, pdf'

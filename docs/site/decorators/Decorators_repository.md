@@ -255,6 +255,31 @@ export class Todo extends Entity {
 }
 ```
 
+#### ReferencesMany Decorator
+
+Syntax:
+`@referencesMany(targetResolver: EntityResolver<T>, definition?: Partial<ReferencesManyDefinition>)`
+
+A ReferencesMany relation embeds an array of foreign keys to reference other
+objects. E.g. a `Customer` model references many `Account` objects. See
+[ReferencesMany relation](../ReferencesMany-relation.md) for more details.
+
+{% include code-caption.html content="customer.model.ts" %}
+
+```ts
+import {referencesMany} from '@loopback/repository';
+import {Account} from './account.model';
+
+export class Customer extends Entity {
+  // properties
+
+  @referencesMany(() => Account)
+  accountIds: number[];
+
+  // etc
+}
+```
+
 #### Other Decorators
 
 The following decorators are not implemented yet. To see their progress, please

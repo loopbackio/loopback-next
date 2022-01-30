@@ -138,6 +138,7 @@ The tool will prompt you for:
   - [HasManyThrough](HasManyThrough-relation.md)
   - [HasOne](HasOne-relation.md)
   - [BelongsTo](BelongsTo-relation.md)
+  - [ReferencesMany](ReferencesMany-relation.md)
 
 - Name of the source model (`sourceModel`). Prompts a list of available models
   to choose from as the source model of the relation.

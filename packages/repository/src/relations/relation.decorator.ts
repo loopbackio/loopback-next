@@ -76,15 +76,3 @@ export function referencesOne(definition?: Object) {
     decoratorName: '@referencesOne',
   });
 }
-
-/**
- * Decorator for referencesMany
- * @param definition
- * @returns A property decorator
- */
-export function referencesMany(definition?: Object) {
-  const rel = Object.assign({type: RelationType.referencesMany}, definition);
-  return PropertyDecoratorFactory.createDecorator(RELATIONS_KEY, rel, {
-    decoratorName: '@referencesMany',
-  });
-}
