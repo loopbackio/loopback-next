@@ -12,6 +12,17 @@ const fs = require('fs');
 const {getSourceForDataSourceClassWithConfig} = require('../../test-utils');
 
 const SourceEntries = {
+  AccountModel: {
+    path: MODEL_APP_PATH,
+    file: 'account.model.ts',
+    content: readSourceFile('./models/account.model.ts'),
+  },
+  AccountRepository: {
+    path: REPOSITORY_APP_PATH,
+    file: 'account.repository.ts',
+    content: readSourceFile('./repositories/account.repository.ts'),
+  },
+
   CustomerModel: {
     path: MODEL_APP_PATH,
     file: 'customer.model.ts',
@@ -26,6 +37,11 @@ const SourceEntries = {
     path: MODEL_APP_PATH,
     file: 'customer.model.ts',
     content: readSourceFile('./models/customer6.model.ts'),
+  },
+  CustomerModelWithAccountIdsProperty: {
+    path: MODEL_APP_PATH,
+    file: 'customer.model.ts',
+    content: readSourceFile('./models/customer7.model.ts'),
   },
   CustomerRepository: {
     path: REPOSITORY_APP_PATH,
@@ -175,6 +191,7 @@ exports.SANDBOX_FILES = [
       connector: 'loopback-connector-sqlite3',
     }),
   },
+  SourceEntries.AccountRepository,
   SourceEntries.CustomerRepository,
   SourceEntries.OrderRepository,
   SourceEntries.AddressRepository,
@@ -182,6 +199,7 @@ exports.SANDBOX_FILES = [
   SourceEntries.PatientRepository,
   SourceEntries.AppointmentRepository,
 
+  SourceEntries.AccountModel,
   SourceEntries.CustomerModel,
   SourceEntries.OrderModel,
   SourceEntries.AddressModel,

@@ -69,6 +69,7 @@ LoopBack 3:
 - [HasOne](../../HasOne-relation.md)
 - [BelongsTo](../../BelongsTo-relation.md)
 - [HasManyThrough](../../HasManyThrough-relation.md)
+- [ReferencesMany](../../ReferencesMany-relation.md)
 
 Other relations types are not supported yet, you can subscribe to our progress
 in the high-level tracking issue
@@ -80,5 +81,3 @@ issue, for example:
   [loopback-next#2308](https://github.com/loopbackio/loopback-next/issues/2308)
 - Polymorphic relations -
   [loopback-next#2487](https://github.com/loopbackio/loopback-next/issues/2487)
-- ReferencesMany -
-  [loopback-next#2488](https://github.com/loopbackio/loopback-next/issues/1450)

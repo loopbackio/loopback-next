@@ -15,6 +15,7 @@ exports.relationType = {
   hasMany: 'hasMany',
   hasManyThrough: 'hasManyThrough',
   hasOne: 'hasOne',
+  referencesMany: 'referencesMany',
 };
 
 class AstLoopBackProject extends ast.Project {

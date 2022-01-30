@@ -36,6 +36,7 @@ import {
   createHasManyRepositoryFactory,
   createHasManyThroughRepositoryFactory,
   createHasOneRepositoryFactory,
+  createReferencesManyAccessor,
   HasManyDefinition,
   HasManyRepositoryFactory,
   HasManyThroughRepositoryFactory,
@@ -43,6 +44,8 @@ import {
   HasOneRepositoryFactory,
   includeRelatedModels,
   InclusionResolver,
+  ReferencesManyAccessor,
+  ReferencesManyDefinition,
 } from '../relations';
 import {IsolationLevel, Transaction} from '../transaction';
 import {isTypeResolver, resolveType} from '../type-resolver';
@@ -420,6 +423,40 @@ export class DefaultCrudRepository<
     return createHasOneRepositoryFactory<Target, TargetID, ForeignKeyType>(
       meta as HasOneDefinition,
       targetRepoGetter,
+    );
+  }
+
+  /**
+   * @deprecated
+   * Function to create a references many accessor
+   *
+   * Use `this.createReferencesManyAccessorFor()` instead
+   *
+   * @param relationName - Name of the relation defined on the source model
+   * @param targetRepo - Target repository instance
+   */
+  protected _createReferencesManyAccessorFor<Target extends Entity, TargetId>(
+    relationName: string,
+    targetRepoGetter: Getter<EntityCrudRepository<Target, TargetId>>,
+  ): ReferencesManyAccessor<Target, ID> {
+    return this.createReferencesManyAccessorFor(relationName, targetRepoGetter);
+  }
+
+  /**
+   * Function to create a references many accessor
+   *
+   * @param relationName - Name of the relation defined on the source model
+   * @param targetRepo - Target repository instance
+   */
+  protected createReferencesManyAccessorFor<Target extends Entity, TargetId>(
+    relationName: string,
+    targetRepoGetter: Getter<EntityCrudRepository<Target, TargetId>>,
+  ): ReferencesManyAccessor<Target, ID> {
+    const meta = this.entityClass.definition.relations[relationName];
+    return createReferencesManyAccessor<Target, TargetId, T, ID>(
+      meta as ReferencesManyDefinition,
+      targetRepoGetter,
+      this,
     );
   }
 

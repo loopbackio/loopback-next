@@ -8,6 +8,7 @@ import {
   BelongsToDefinition,
   HasManyDefinition,
   HasOneDefinition,
+  ReferencesManyDefinition,
   JsonSchema,
   RelationMetadata,
   RelationType,
@@ -235,6 +236,24 @@ export class ModelDefinition {
       ...definition,
       name,
       type: RelationType.hasMany,
+      targetsMany: true,
+    };
+    return this.addRelation(meta);
+  }
+
+  /**
+   * Define a new referencesMany relation.
+   * @param name - The name of the referencesMany relation.
+   * @param definition - The definition of the referencesMany relation.
+   */
+  referencesMany(
+    name: string,
+    definition: Omit<ReferencesManyDefinition, 'name' | 'type' | 'targetsMany'>,
+  ): this {
+    const meta: ReferencesManyDefinition = {
+      ...definition,
+      name,
+      type: RelationType.referencesMany,
       targetsMany: true,
     };
     return this.addRelation(meta);

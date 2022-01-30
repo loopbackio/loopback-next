@@ -45,6 +45,7 @@ Here are the currently supported relations:
 - [BelongsTo](BelongsTo-relation.md)
 - [HasOne](HasOne-relation.md)
 - [HasManyThrough](HasManyThrough-relation.md)
+- [ReferencesMany](ReferencesMany-relation.md)
 
 {% include note.html content="
 The `hasMany` relation may alternatively be implemented using the

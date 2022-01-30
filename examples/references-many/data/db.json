@@ -1,0 +1,18 @@
+{
+  "ids": {
+    "Customer": 5,
+    "Account": 3
+  },
+  "models": {
+    "Customer": {
+      "1": "{\"firstName\":\"John\",\"lastName\":\"Doe\",\"accountIds\":[\"1\",\"2\"],\"id\":1}",
+      "2": "{\"firstName\":\"Tommy\",\"lastName\":\"Lee\",\"accountIds\":[\"1\"],\"id\":2}",
+      "3": "{\"firstName\":\"Julian\",\"lastName\":\"Lennon\",\"accountIds\":[],\"id\":3}",
+      "4": "{\"firstName\":\"Monica\",\"lastName\":\"Raymund\",\"accountIds\":[],\"id\":4}"
+    },
+    "Account": {
+      "1": "{\"balance\":0,\"id\":1}",
+      "2": "{\"balance\":20,\"id\":2}"
+    }
+  }
+}
