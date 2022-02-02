@@ -748,7 +748,9 @@ describe('Routing', () => {
 
     it('provides httpHandler compatible with HTTP server API', async () => {
       const app = new RestApplication();
-      app.handler(({response}, sequence) => response.end('hello'));
+      app.handler(({response}, sequence) => {
+        response.end('hello');
+      });
 
       await createClientForHandler(app.requestHandler)
         .get('/')

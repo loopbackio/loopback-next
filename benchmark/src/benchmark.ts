@@ -6,6 +6,7 @@
 import byline from 'byline';
 import {ChildProcess, fork} from 'child_process';
 import {once} from 'events';
+import {Readable} from 'stream';
 import {Autocannon, EndpointStats} from './autocannon';
 import {Client} from './client';
 import {scenarios} from './scenarios';
@@ -111,7 +112,7 @@ function startWorker() {
       reject(new Error(msg));
     });
 
-    const reader = byline.createStream(child.stdout);
+    const reader = byline.createStream(child.stdout as Readable);
     reader.on('data', line => {
       const str = line.toString();
       debug('[worker] %s', str);
