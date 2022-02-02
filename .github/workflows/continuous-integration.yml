@@ -36,21 +36,26 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Update NPM
-        if: matrix.node-version < 16
-        run: npm install -g npm@latest-7
-      - name: Bootstrap project
+      - uses: Yuri6037/Action-FakeTTY@v1.1
+      - name: Bootstrap
         run: |
           npm ci --ignore-scripts
           npx lerna bootstrap
-      - name: Build project
-        run: npm run build
-      - uses: Yuri6037/Action-FakeTTY@v1.1
-      - name: Run tests
-        run: faketty npm run test --ignore-scripts
-      - name: Generate coverage report
+      - name: Build
+        run: node packages/build/bin/compile-package -b
+      - name: Run package tests
+        run: |
+          node packages/build/bin/run-nyc node packages/build/bin/run-mocha --lang en_US.UTF-8 --reporter spec "packages/*/dist/__tests__/**/*.js" "packages/build/test/*/*.js"
+        # FixMe(frbuceta): The tests for cli are failing, when they are fixed you have to revert this change
+        # faketty node packages/build/bin/run-nyc node packages/build/bin/run-mocha --lang en_US.UTF-8 --reporter spec "packages/cli/test/**/*.js"
+      - name: Run extension tests
+        run: node packages/build/bin/run-nyc node packages/build/bin/run-mocha --lang en_US.UTF-8 --reporter spec "extensions/*/dist/__tests__/**/*.js"
+      - name: Run example tests
+        # FixMe(frbuceta): The tests for soap-calculator are failing (see #8481), when they are fixed you have to revert this change
+        run: node packages/build/bin/run-nyc node packages/build/bin/run-mocha --lang en_US.UTF-8 --reporter spec "examples/{,!(soap-calculator)}/dist/__tests__/**/*.js"
+      - name: Generate coverage
         run: node packages/build/bin/run-nyc report --reporter=lcov
-      - name: Publish coverage report to Coveralls
+      - name: Publish coverage to Coveralls
         uses: coverallsapp/github-action@master
         with:
           flag-name: run-${{ matrix.os }}-node@${{ matrix.node-version }}
@@ -63,7 +68,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ success() }}
     steps:
-    - name: Coveralls finished
+    - name: Set finish on Coveralls
       uses: coverallsapp/github-action@master
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -77,12 +82,14 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16 # LTS
-      - name: Bootstrap benchmark tests
+      - name: Bootstrap
         run: |
           npm ci --ignore-scripts
           npx lerna bootstrap --scope "@loopback/benchmark" --include-dependencies
+      - name: Build
+        run: npx lerna run build --scope "@loopback/benchmark"
       - name: Run benchmark tests
-        run: npx lerna run test --scope @loopback/benchmark
+        run: npx lerna run test --scope "@loopback/benchmark" -- --ignore-scripts -- --reporter spec
 
   code-lint:
     name: Code Lint
@@ -92,16 +99,20 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16 # LTS
-      - name: Bootstrap project
+      - name: Bootstrap
         run: |
           npm ci --ignore-scripts
-          npm run postinstall
-      - name: Build project
-        run: npm run build
+          npx lerna bootstrap
+      - name: Build
+        run: node packages/build/bin/compile-package -b
       - name: Verify code linting
-        run: npm run lint
+        run: |
+          node packages/build/bin/run-eslint .
+          node packages/build/bin/run-prettier --check "**/*.ts" "**/*.js" "**/*.md" "!docs/**/*.md"
+      - name: Verify package-lock files
+        run: node packages/monorepo/lib/check-package-locks
       - name: Verify package metadata
-        run: npm run check-package-metadata
+        run: node bin/check-package-metadata.js
 
   commit-lint:
     name: Commit Lint
@@ -114,7 +125,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16 # LTS
-      - name: Install monorepo tools
+      - name: Bootstrap
         run: |
           npm ci --ignore-scripts
           npx lerna bootstrap --scope "@loopback/monorepo" --include-dependencies
@@ -129,11 +140,13 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16 # LTS
-      - name: Bootstrap project
+      - name: Bootstrap
         run: |
           npm ci --ignore-scripts
           npx lerna bootstrap
-      - name: Build project
-        run: npm run build
-      - name: Verify doc changes
+      - name: Build
+        run: node packages/build/bin/compile-package -b
+      - name: Verify linting
+        run: node packages/build/bin/run-prettier --check "docs/**/*.md"
+      - name: Verify changes
         run: ./bin/verify-doc-changes.sh

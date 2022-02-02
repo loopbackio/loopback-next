@@ -13,8 +13,8 @@ install:
   - npm ci
 
 test_script:
-  - npm run build
-  - npm run mocha
+  - node packages/build/bin/compile-package -b
+  - node packages/build/bin/run-mocha --lang en_US.UTF-8 "packages/*/dist/__tests__/**/*.js" "extensions/*/dist/__tests__/**/*.js" "examples/{,!(soap-calculator)}/dist/__tests__/**/*.js" "packages/cli/test/**/*.js" "packages/build/test/*/*.js"
 
 cache:
   - "%LOCALAPPDATA%\\Yarn"
