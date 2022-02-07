@@ -50,7 +50,7 @@
     "@types/on-finished": "^2.3.1",
     "@types/serve-static": "1.13.10",
     "@types/type-is": "^1.6.3",
-    "ajv": "^8.9.0",
+    "ajv": "^8.10.0",
     "ajv-errors": "^3.0.0",
     "ajv-formats": "^2.1.1",
     "ajv-keywords": "^5.1.0",
