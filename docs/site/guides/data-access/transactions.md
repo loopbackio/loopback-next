@@ -53,7 +53,7 @@ method of `DataSource` class.
 ## Handling Transactions
 
 See
-the [API reference](https://apidocs.strongloop.com/loopback-datasource-juggler/#datasource-prototype-begintransaction) for
+the [API reference](https://apidocs.loopback.io/loopback-datasource-juggler/#datasource) for
 full transaction lower-level API documentation.
 
 Performing operations in a transaction typically involves the following steps:
