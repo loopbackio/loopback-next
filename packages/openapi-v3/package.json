@@ -1,7 +1,7 @@
 {
   "name": "@loopback/openapi-v3",
   "description": "Decorators that annotate LoopBack artifacts with OpenAPI v3 metadata and utilities that transform LoopBack metadata to OpenAPI v3 specifications",
-  "version": "7.0.1",
+  "version": "7.1.0",
   "keywords": [
     "Swagger",
     "OpenAPI Spec",
@@ -39,10 +39,10 @@
     "!*/__tests__"
   ],
   "peerDependencies": {
-    "@loopback/core": "^3.0.1"
+    "@loopback/core": "^3.1.0"
   },
   "dependencies": {
-    "@loopback/repository-json-schema": "^5.0.1",
+    "@loopback/repository-json-schema": "^5.1.0",
     "debug": "^4.3.3",
     "http-status": "^1.5.0",
     "json-merge-patch": "^1.0.2",
@@ -51,12 +51,12 @@
     "tslib": "^2.3.1"
   },
   "devDependencies": {
-    "@loopback/build": "^8.0.1",
-    "@loopback/core": "^3.0.1",
-    "@loopback/eslint-config": "^12.0.1",
-    "@loopback/openapi-spec-builder": "^4.0.1",
-    "@loopback/repository": "^4.0.1",
-    "@loopback/testlab": "^4.0.1",
+    "@loopback/build": "^8.1.0",
+    "@loopback/core": "^3.1.0",
+    "@loopback/eslint-config": "^12.0.2",
+    "@loopback/openapi-spec-builder": "^4.1.0",
+    "@loopback/repository": "^4.1.0",
+    "@loopback/testlab": "^4.1.0",
     "@types/debug": "^4.1.7",
     "@types/json-merge-patch": "0.0.8",
     "@types/lodash": "^4.14.178",

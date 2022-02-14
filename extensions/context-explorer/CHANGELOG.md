@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.7.0](https://github.com/loopbackio/loopback-next/compare/@loopback/context-explorer@0.6.1...@loopback/context-explorer@0.7.0) (2022-02-14)
+
+
+### Features
+
+* update @types/node to v12 ([65a09a4](https://github.com/loopbackio/loopback-next/commit/65a09a406e4865f774f97b58af9e616733b8b255))
+
+
+
+
+
 ## [0.6.1](https://github.com/loopbackio/loopback-next/compare/@loopback/context-explorer@0.6.0...@loopback/context-explorer@0.6.1) (2022-01-11)
 
 **Note:** Version bump only for package @loopback/context-explorer

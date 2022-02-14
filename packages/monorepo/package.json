@@ -1,7 +1,7 @@
 {
   "name": "@loopback/monorepo",
   "description": "A set of scripts to maintain a lerna monorepo",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "license": "MIT",
   "bin": {
     "lb-run-lerna": "./lib/run-lerna.js",

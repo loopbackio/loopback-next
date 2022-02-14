@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.1.0](https://github.com/loopbackio/loopback-next/compare/@loopback/boot@4.0.1...@loopback/boot@4.1.0) (2022-02-14)
+
+
+### Bug Fixes
+
+* invalid glob for nested dirs ([4e9ee8d](https://github.com/loopbackio/loopback-next/commit/4e9ee8d61ee5295598238704fc7234fdda686718))
+
+
+### Features
+
+* update @types/node to v12 ([65a09a4](https://github.com/loopbackio/loopback-next/commit/65a09a406e4865f774f97b58af9e616733b8b255))
+
+
+
+
+
 ## [4.0.1](https://github.com/loopbackio/loopback-next/compare/@loopback/boot@4.0.0...@loopback/boot@4.0.1) (2022-01-11)
 
 **Note:** Version bump only for package @loopback/boot

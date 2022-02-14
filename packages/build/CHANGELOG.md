@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [8.1.0](https://github.com/loopbackio/loopback-next/compare/@loopback/build@8.0.1...@loopback/build@8.1.0) (2022-02-14)
+
+
+### Features
+
+* update @types/node to v12 ([65a09a4](https://github.com/loopbackio/loopback-next/commit/65a09a406e4865f774f97b58af9e616733b8b255))
+
+
+
+
+
 ## [8.0.1](https://github.com/loopbackio/loopback-next/compare/@loopback/build@8.0.0...@loopback/build@8.0.1) (2022-01-11)
 
 **Note:** Version bump only for package @loopback/build

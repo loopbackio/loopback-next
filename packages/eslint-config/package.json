@@ -1,7 +1,7 @@
 {
   "name": "@loopback/eslint-config",
   "description": "ESLint configuration for LoopBack projects",
-  "version": "12.0.1",
+  "version": "12.0.2",
   "license": "MIT",
   "main": "eslintrc.js",
   "author": "IBM Corp.",
