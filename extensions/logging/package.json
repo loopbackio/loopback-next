@@ -57,6 +57,6 @@
     "@loopback/rest": "^11.1.0",
     "@loopback/testlab": "^4.1.0",
     "@types/morgan": "^1.9.3",
-    "@types/node": "^12.20.43"
+    "@types/node": "^12.20.46"
   }
 }
