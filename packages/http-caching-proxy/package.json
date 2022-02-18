@@ -39,7 +39,7 @@
     "!*/__tests__"
   ],
   "dependencies": {
-    "axios": "^0.25.0",
+    "axios": "^0.26.0",
     "cacache": "^15.3.0",
     "debug": "^4.3.3",
     "rimraf": "^3.0.2",
