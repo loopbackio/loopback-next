@@ -48,7 +48,7 @@
     "debug": "^4.3.3",
     "fs-extra": "^10.0.1",
     "glob": "^7.2.0",
-    "inquirer-autocomplete-prompt": "^1.4.0",
+    "inquirer-autocomplete-prompt": "^2.0.0",
     "json5": "^2.2.0",
     "latest-version": "^5.1.0",
     "lodash": "^4.17.21",
