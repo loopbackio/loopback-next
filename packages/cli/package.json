@@ -77,8 +77,8 @@
     "url-slug": "^3.0.3",
     "validate-npm-package-name": "^3.0.0",
     "write-file-atomic": "^4.0.1",
-    "yeoman-environment": "^2.10.3",
-    "yeoman-generator": "^4.13.0"
+    "yeoman-environment": "^3.9.1",
+    "yeoman-generator": "^5.6.1"
   },
   "devDependencies": {
     "@loopback/build": "^8.1.0",
@@ -97,7 +97,7 @@
     "sinon": "^11.1.2",
     "strong-globalize-cli": "7.1.0",
     "yeoman-assert": "^3.1.1",
-    "yeoman-test": "~2.7.0"
+    "yeoman-test": "~6.3.0"
   },
   "config": {
     "templateDependencies": {
