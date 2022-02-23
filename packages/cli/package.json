@@ -89,7 +89,7 @@
     "@types/minimatch": "^3.0.5",
     "@types/node": "^12.20.46",
     "loopback": "^3.28.0",
-    "loopback-datasource-juggler": "^4.27.0",
+    "loopback-datasource-juggler": "^4.27.1",
     "mem-fs": "^2.2.1",
     "mem-fs-editor": "^9.4.0",
     "mock-stdin": "^1.0.0",
