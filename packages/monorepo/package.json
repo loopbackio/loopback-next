@@ -34,6 +34,6 @@
     "@lerna/project": "^4.0.0",
     "cross-spawn": "^7.0.3",
     "debug": "^4.3.3",
-    "fs-extra": "^10.0.0"
+    "fs-extra": "^10.0.1"
   }
 }
