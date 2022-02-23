@@ -41,7 +41,7 @@
     "@types/sinon": "^10.0.11",
     "@types/supertest": "^2.0.11",
     "express": "^4.17.3",
-    "fs-extra": "^10.0.0",
+    "fs-extra": "^10.0.1",
     "oas-validator": "^5.0.8",
     "should": "^13.2.3",
     "sinon": "^11.1.2",
