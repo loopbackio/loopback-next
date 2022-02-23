@@ -84,7 +84,7 @@ For example:
 
 `loopback:cli:model-generator`
 
-The debug string `model-generator` is specified in the source file
+The debug string `model-generator` is specified in the source file 
 [`generators/model/index.js`](https://github.com/loopbackio/loopback-next/blob/master/packages/cli/generators/model/index.js)
 of the `@loopback/cli` module.
 
@@ -363,3 +363,34 @@ of the `@loopback/cli` module.
     </tr>
   </tbody>
 </table>
+
+## Adding debugs
+
+As seen before, LoopBack has built-in debug strings to help with debugging.
+
+LoopBack uses the `debug` package internally. Even if there's no mandate for
+LoopBack users to use the same library, you can use this package in your
+application to help with debugging.
+
+To do so, you can define your own debug strings like demonstrated in this
+example:
+
+```ts
+// Import from debug
+import debugFactory from 'debug';
+
+// Define your custom debug string
+const debug = debugFactory('example:debug:factory');
+
+// Use it in your code
+debug('Oops there was an error!');
+```
+
+To debug parts of your app with this custom debug string, you can run:
+
+```sh
+DEBUG=example:debug:factory npm start
+```
+
+> Refer to the [debug](https://www.npmjs.com/package/debug) documentation for
+> more information.
