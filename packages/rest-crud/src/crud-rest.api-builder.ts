@@ -31,6 +31,10 @@ const debug = debugFactory('loopback:boot:crud-rest');
 export interface ModelCrudRestApiConfig extends ModelApiConfig {
   // E.g. '/products'
   basePath: string;
+  /**
+   * If true, the generated controller only has find and count APIs
+   */
+  readonly?: boolean;
 }
 
 @injectable(asModelApiBuilder)

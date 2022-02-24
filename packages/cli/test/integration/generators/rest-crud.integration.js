@@ -193,6 +193,38 @@ describe('lb4 rest-crud', /** @this {Mocha.Suite} */ function () {
       assert.fileContent(expectedFile, /basePath: '\/decorator-defineds'/);
       assertApplicationTsFileUpdated();
     });
+
+    it('generates a single readonly rest-crud model endpoint with base path', async () => {
+      const singleModelPrompt = {
+        basePath: '/multiWords',
+        dataSourceName: 'dbmem',
+        modelNameList: ['MultiWord'],
+        readonly: true,
+      };
+
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {
+            additionalFiles: SANDBOX_FILES,
+          }),
+        )
+        .withPrompts(singleModelPrompt);
+
+      const expectedFile = path.join(
+        sandbox.path,
+        MODEL_ENDPOINT_PATH,
+        'multi-word.rest-config.ts',
+      );
+
+      assert.file(expectedFile);
+      assert.fileContent(
+        expectedFile,
+        /import \{MultiWord\} from '\.\.\/models'/,
+      );
+      assert.fileContent(expectedFile, /readonly: true/);
+      assertApplicationTsFileUpdated();
+    });
   });
 
   describe('all invalid parameters and usage', () => {
