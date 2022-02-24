@@ -43,7 +43,7 @@ export class TryApplication extends BootMixin(
 
 Create a new file for the configuration, e.g.
 `src/model-endpoints/product.rest-config.ts` that defines the `model`,
-`pattern`, `dataSource`, and `basePath` properties:
+`pattern`, `dataSource`, `basePath`, and `readonly` properties:
 
 ```ts
 import {ModelCrudRestApiConfig} from '@loopback/rest-crud';
@@ -54,6 +54,7 @@ module.exports = <ModelCrudRestApiConfig>{
   pattern: 'CrudRest', // make sure to use this pattern
   dataSource: 'db',
   basePath: '/products',
+  readonly: false,
 };
 ```
 

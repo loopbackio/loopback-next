@@ -27,6 +27,8 @@ src/datasources
 
 `--basePath` : _(Optional)_ base path of the model endpoint
 
+`--readonly` : _(Optional)_ create readonly APIs e.g find and count
+
 ### Configuration file
 
 This generator supports a config file with the following format, see the
@@ -37,7 +39,8 @@ file.
 {
   "datasource": "validDataSourceName",
   "model": "validModelName",
-  "basePath": "/<base-path>"
+  "basePath": "/<base-path>",
+  "readonly": "<boolean>"
 }
 ```
 
@@ -73,6 +76,9 @@ The tool will prompt you for:
 - **Please specify the base path.**. _(basePath)_ If the base path had been
   supplied from the command line with `--basePath` option or more than one
   models are selected, the prompt is skipped.
+
+- **Create readonly APIs.** _(readonly)_ If readonly had been supplied from the
+  command line with `--readonly` option, the prompt is skipped.
 
 ### Output
 

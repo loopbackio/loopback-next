@@ -63,8 +63,8 @@ import assert from 'assert';
 export interface CrudRestController<
   T extends Entity,
   IdType,
-  IdName extends keyof T,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  IdName extends keyof T,
   Relations extends object = {},
 > {
   /**
@@ -73,10 +73,10 @@ export interface CrudRestController<
   readonly repository: EntityCrudRepository<T, IdType>;
 
   /**
-   * Implementation of the endpoint `POST /`.
-   * @param data Model data
+   * Implementation of the endpoint `GET /`.
+   * @param filter Filter
    */
-  create(data: Omit<T, IdName>): Promise<T>;
+  find(filter?: Filter<T>): Promise<(T & Relations)[]>;
 }
 
 /**
@@ -101,6 +101,10 @@ export interface CrudRestControllerOptions {
    * The base path where to "mount" the controller.
    */
   basePath: string;
+  /**
+   * Whether to generate readonly APIs
+   */
+  readonly?: boolean;
 }
 
 /**
@@ -144,29 +148,12 @@ export function defineCrudRestController<
   };
 
   @api({basePath: options.basePath, paths: {}})
-  class CrudRestControllerImpl
+  class ReadonlyRestControllerImpl
     implements CrudRestController<T, IdType, IdName>
   {
     constructor(
       public readonly repository: EntityCrudRepository<T, IdType, Relations>,
     ) {}
-
-    @post('/', {
-      ...response.model(200, `${modelName} instance created`, modelCtor),
-    })
-    async create(
-      @body(modelCtor, {
-        title: `New${modelName}`,
-        exclude: modelCtor.getIdProperties() as (keyof T)[],
-      })
-      data: Omit<T, IdName>,
-    ): Promise<T> {
-      return this.repository.create(
-        // FIXME(bajtos) Improve repository API to support this use case
-        // with no explicit type-casts required
-        data as DataObject<T>,
-      );
-    }
 
     @get('/', {
       ...response.array(200, `Array of ${modelName} instances`, modelCtor, {
@@ -204,6 +191,32 @@ export function defineCrudRestController<
       where?: Where<T>,
     ): Promise<Count> {
       return this.repository.count(where);
+    }
+  }
+
+  @api({basePath: options.basePath, paths: {}})
+  class CrudRestControllerImpl extends ReadonlyRestControllerImpl {
+    constructor(
+      public readonly repository: EntityCrudRepository<T, IdType, Relations>,
+    ) {
+      super(repository);
+    }
+
+    @post('/', {
+      ...response.model(200, `${modelName} instance created`, modelCtor),
+    })
+    async create(
+      @body(modelCtor, {
+        title: `New${modelName}`,
+        exclude: modelCtor.getIdProperties() as (keyof T)[],
+      })
+      data: Omit<T, IdName>,
+    ): Promise<T> {
+      return this.repository.create(
+        // FIXME(bajtos) Improve repository API to support this use case
+        // with no explicit type-casts required
+        data as DataObject<T>,
+      );
     }
 
     @patch('/', {
@@ -268,7 +281,9 @@ export function defineCrudRestController<
     'controllerClass',
     `return class ${controllerName} extends controllerClass {}`,
   );
-  const controller = defineNamedController(CrudRestControllerImpl);
+  const controller = defineNamedController(
+    options.readonly ? ReadonlyRestControllerImpl : CrudRestControllerImpl,
+  );
   assert.equal(controller.name, controllerName);
   return controller;
 }

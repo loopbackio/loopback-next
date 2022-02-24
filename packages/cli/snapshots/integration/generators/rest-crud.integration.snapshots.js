@@ -16,6 +16,7 @@ const config: ModelCrudRestApiConfig = {
   pattern: 'CrudRest',
   dataSource: 'dbmem',
   basePath: '/default-models',
+  readonly: false,
 };
 module.exports = config;
 

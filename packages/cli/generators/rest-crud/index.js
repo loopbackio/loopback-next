@@ -26,6 +26,7 @@ const PROMPT_MESSAGE_MODEL = g.f(
 );
 const PROMPT_MESSAGE_DATA_SOURCE = g.f('Please select the datasource');
 const PROMPT_MESSAGE_BASE_PATH = g.f('Please specify the base path');
+const PROMPT_MESSAGE_READONLY = g.f('Do you want to create readonly APIs?');
 
 const ERROR_NO_DATA_SOURCES_FOUND = g.f('No datasources found at');
 const ERROR_NO_MODELS_FOUND = g.f('No models found at');
@@ -91,6 +92,13 @@ module.exports = class RestCrudGenerator extends ArtifactGenerator {
       type: String,
       required: false,
       description: g.f('A valid base path'),
+    });
+
+    this.option('readonly', {
+      type: Boolean,
+      required: false,
+      description: g.f('Create readonly APIs'),
+      default: false,
     });
 
     return super._setupGenerator();
@@ -305,6 +313,20 @@ module.exports = class RestCrudGenerator extends ArtifactGenerator {
       if (props) {
         this.artifactInfo.basePath = props.basePath;
       }
+    }
+  }
+
+  async promptReadonly() {
+    const props = await this.prompt([
+      {
+        type: 'confirm',
+        name: 'readonly',
+        message: PROMPT_MESSAGE_READONLY,
+        default: false,
+      },
+    ]);
+    if (props) {
+      this.artifactInfo.readonly = props.readonly;
     }
   }
 

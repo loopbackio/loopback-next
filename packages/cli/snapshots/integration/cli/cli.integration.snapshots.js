@@ -1635,6 +1635,14 @@ exports[`cli saves command metadata to .yo-rc.json 1`] = `
           "name": "basePath",
           "hide": false
         },
+        "readonly": {
+          "type": "Boolean",
+          "required": false,
+          "description": "Create readonly APIs",
+          "default": false,
+          "name": "readonly",
+          "hide": false
+        },
         "config": {
           "type": "String",
           "alias": "c",
