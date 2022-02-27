@@ -5,6 +5,7 @@
 
 import {Binding, Context} from '@loopback/context';
 import {expect} from '@loopback/testlab';
+import {types} from 'util';
 import {CoreTags, service} from '../..';
 import {asService} from '../../service';
 
@@ -71,6 +72,20 @@ describe('@service', () => {
 
     const controller = await ctx.get<MyController>('controllers.MyController');
     expect(controller.myService).to.be.undefined();
+  });
+
+  it('allows asProxyWithInterceptors flag', async () => {
+    class MyController {
+      constructor(
+        @service(MyService, {asProxyWithInterceptors: true})
+        public myService?: MyService,
+      ) {}
+    }
+
+    ctx.bind('controllers.MyController').toClass(MyController);
+
+    const controller = await ctx.get<MyController>('controllers.MyController');
+    expect(types.isProxy(controller.myService)).to.be.true();
   });
 
   it('allows serviceInterface as a string', async () => {
