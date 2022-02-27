@@ -109,7 +109,11 @@ export function service(
         );
       }
       const view = new ContextView(ctx, filterByServiceInterface(serviceType));
-      const result = view.resolve(session);
+      const result = view.resolve({
+        optional: metadata?.optional,
+        asProxyWithInterceptors: metadata?.asProxyWithInterceptors,
+        session,
+      });
 
       const serviceTypeName =
         typeof serviceType === 'string'
