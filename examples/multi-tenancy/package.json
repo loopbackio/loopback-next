@@ -1,7 +1,7 @@
 {
   "name": "@loopback/example-multi-tenancy",
   "description": "An example to illustrate how to enable multi-tenancy with LoopBack's IoC and DI container",
-  "version": "0.12.0",
+  "version": "0.12.1",
   "keywords": [
     "loopback-application",
     "loopback",
@@ -54,20 +54,20 @@
     "!*/__tests__"
   ],
   "dependencies": {
-    "@loopback/boot": "^4.1.0",
-    "@loopback/core": "^3.1.0",
-    "@loopback/repository": "^4.1.0",
-    "@loopback/rest": "^11.1.0",
-    "@loopback/rest-explorer": "^4.1.0",
-    "@loopback/service-proxy": "^4.1.0",
+    "@loopback/boot": "^4.1.1",
+    "@loopback/core": "^3.1.1",
+    "@loopback/repository": "^4.1.1",
+    "@loopback/rest": "^11.1.1",
+    "@loopback/rest-explorer": "^4.1.1",
+    "@loopback/service-proxy": "^4.1.1",
     "debug": "^4.3.3",
     "jsonwebtoken": "^8.5.1",
     "tslib": "^2.3.1"
   },
   "devDependencies": {
-    "@loopback/build": "^8.1.0",
-    "@loopback/eslint-config": "^12.0.2",
-    "@loopback/testlab": "^4.1.0",
+    "@loopback/build": "^8.1.1",
+    "@loopback/eslint-config": "^12.0.3",
+    "@loopback/testlab": "^4.1.1",
     "@types/debug": "^4.1.7",
     "@types/jsonwebtoken": "^8.5.8",
     "@types/node": "^12.20.46",

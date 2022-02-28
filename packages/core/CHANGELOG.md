@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.1](https://github.com/loopbackio/loopback-next/compare/@loopback/core@3.1.0...@loopback/core@3.1.1) (2022-02-28)
+
+
+### Bug Fixes
+
+* honor service injection options ([65ec864](https://github.com/loopbackio/loopback-next/commit/65ec8643682b4aa444657ffa32b6c692e48e82f2))
+
+
+
+
+
 # [3.1.0](https://github.com/loopbackio/loopback-next/compare/@loopback/core@3.0.1...@loopback/core@3.1.0) (2022-02-14)
 
 
