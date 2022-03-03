@@ -97,6 +97,6 @@
     "axios": "^0.26.0",
     "eslint": "^8.10.0",
     "lodash": "^4.17.21",
-    "typescript": "~4.5.5"
+    "typescript": "~4.6.2"
   }
 }
