@@ -84,6 +84,10 @@ module.exports = class extends BaseGenerator {
     return super._setupGenerator();
   }
 
+  setOptions() {
+    return super.setOptions();
+  }
+
   help() {
     const examplesHelp = Object.keys(EXAMPLES)
       .map(name => `  ${name}: ${EXAMPLES[name]}`)

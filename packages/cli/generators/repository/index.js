@@ -426,6 +426,7 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
         name: 'repositoryBaseClass',
         message: PROMPT_BASE_REPOSITORY_CLASS,
         choices: availableRepositoryList,
+        when: this.artifactInfo.repositoryBaseClass === undefined,
         default:
           this.artifactInfo.repositoryBaseClass === undefined
             ? availableRepositoryList[0]

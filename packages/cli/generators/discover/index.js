@@ -109,6 +109,20 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
         path.resolve(dsDir, `${utils.toFileName(s)}.datasource.js`),
       ),
     );
+
+    if (this.options.dataSource) {
+      if (
+        this.dataSourceChoices
+          .map(d => d.name)
+          .includes(this.options.dataSource)
+      ) {
+        Object.assign(this.artifactInfo, {
+          dataSource: this.dataSourceChoices.find(
+            d => d.name === this.options.dataSource,
+          ),
+        });
+      }
+    }
     debug(`Done importing datasources`);
   }
 
