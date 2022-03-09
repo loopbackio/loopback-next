@@ -90,6 +90,10 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
     return super._setupGenerator();
   }
 
+  setOptions() {
+    return super.setOptions();
+  }
+
   checkLoopBackProject() {
     return super.checkLoopBackProject();
   }

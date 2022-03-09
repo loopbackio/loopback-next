@@ -43,6 +43,13 @@ module.exports = class ExtensionGenerator extends ProjectGenerator {
 
   promptComponent() {
     if (this.shouldExit()) return;
+
+    if (this.options.componentName) {
+      Object.assign(this.projectInfo, {
+        componentName: this.options.componentName,
+      });
+    }
+
     const prompts = [
       {
         type: 'input',

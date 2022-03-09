@@ -86,6 +86,13 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
       utils.toClassName(this.artifactInfo.name),
     );
 
+    if (this.options.controllerType) {
+      Object.assign(this.artifactInfo, {
+        controllerType: this.options.controllerType,
+      });
+      return;
+    }
+
     return this.prompt([
       {
         type: 'list',
