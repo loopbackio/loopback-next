@@ -91,7 +91,8 @@ You can join the team by posting a comment to
 
 If you think you have discovered a new security issue with any StrongLoop
 package, **please do not report it on GitHub**. Instead, send an email to
-reachsl@us.ibm.com with a full description and steps to reproduce.
+[security@loopback.io](mailto:security@loopback.io) with a full description and
+steps to reproduce.
 
 See [SECURITY.md](SECURITY.md) for more details.
 

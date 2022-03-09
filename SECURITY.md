@@ -63,7 +63,7 @@ Security advisories can be found on the
 
 If you think you have discovered a new security issue with any StrongLoop
 package, **please do not report it on GitHub**. Instead, send an email to
-reachsl@us.ibm.com with the following details:
+[security@loopback.io](mailto:security@loopback.io) with the following details:
 
 - Full description of the vulnerability.
 - Steps to reproduce the issue.
