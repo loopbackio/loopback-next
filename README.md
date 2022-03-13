@@ -44,7 +44,7 @@ We are providing Maintenance support for
 
 | Version    | Status      | Published | EOL                  |
 | ---------- | ----------- | --------- | -------------------- |
-| LoopBack 4 | Current     | Oct 2018  | Apr 2023 _(minimum)_ |
+| LoopBack 4 | Current     | Oct 2018  | Apr 2024 _(minimum)_ |
 | LoopBack 3 | End-of-Life | Dec 2016  | Dec 2020             |
 | LoopBack 2 | End-of-Life | Jul 2014  | Apr 2019             |
 
