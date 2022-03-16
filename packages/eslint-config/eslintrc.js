@@ -184,14 +184,14 @@ module.exports = {
         leadingUnderscore: 'allow',
       },
 
-      // For members such as `Content-Type` or `application/json`
+      // For members such as `Content-Type` or `application/json` or `200`
       {
         selector: 'memberLike',
         format: null,
         filter: {
           // you can expand this regex as you find more cases that require
           // quoting that you want to allow
-          regex: '[-/ ]',
+          regex: '[0-9-/ ]',
           match: true,
         },
       },
