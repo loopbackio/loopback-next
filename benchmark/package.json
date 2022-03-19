@@ -45,7 +45,7 @@
     "@types/byline": "^4.2.33",
     "@types/debug": "^4.1.7",
     "@types/request-promise-native": "^1.0.18",
-    "autocannon": "^7.7.0",
+    "autocannon": "^7.7.2",
     "axios": "^0.26.1",
     "benchmark": "^2.1.4",
     "byline": "^5.0.0",
@@ -56,7 +56,7 @@
   "devDependencies": {
     "@loopback/build": "^8.1.1",
     "@loopback/testlab": "^4.1.1",
-    "@types/autocannon": "^4.1.1",
+    "@types/autocannon": "^7.6.1",
     "@types/benchmark": "^2.1.1",
     "@types/mocha": "^9.1.0",
     "@types/node": "^12.20.47",
