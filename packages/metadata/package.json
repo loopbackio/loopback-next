@@ -39,7 +39,7 @@
     "!*/__tests__"
   ],
   "dependencies": {
-    "debug": "^4.3.3",
+    "debug": "^4.3.4",
     "lodash": "^4.17.21",
     "reflect-metadata": "^0.1.13",
     "tslib": "^2.3.1"

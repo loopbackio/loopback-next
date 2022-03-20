@@ -56,7 +56,7 @@
     "@loopback/rest": "^11.1.1",
     "@loopback/rest-explorer": "^4.1.1",
     "@loopback/socketio": "^0.5.1",
-    "debug": "^4.3.3",
+    "debug": "^4.3.4",
     "p-event": "^4.2.0",
     "tslib": "^2.3.1"
   },

@@ -45,7 +45,7 @@
   "dependencies": {
     "@loopback/metadata": "^4.1.1",
     "@types/debug": "^4.1.7",
-    "debug": "^4.3.3",
+    "debug": "^4.3.4",
     "hyperid": "^3.0.1",
     "p-event": "^4.2.0",
     "tslib": "^2.3.1",
