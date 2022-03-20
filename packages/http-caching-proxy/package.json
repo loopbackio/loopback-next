@@ -41,7 +41,7 @@
   "dependencies": {
     "axios": "^0.26.1",
     "cacache": "^15.3.0",
-    "debug": "^4.3.3",
+    "debug": "^4.3.4",
     "rimraf": "^3.0.2",
     "tslib": "^2.3.1"
   },
