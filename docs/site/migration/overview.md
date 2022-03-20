@@ -39,7 +39,7 @@ We are recommending the following incremental approach:
 
 4. Before you can define new models (or import existing ones), you need
    datasources to attach them to. Follow the steps in
-   [Migrating datasources](DataSource.md) to bring them over to LoopBack 4.
+   [Migrating datasources](datasources.md) to bring them over to LoopBack 4.
 
 5. With this setup in place, it's time to migrate models. In theory, you can
    migrate models one-by-one, but in practice you will need to migrate related
