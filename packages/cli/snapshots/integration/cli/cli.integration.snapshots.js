@@ -1328,6 +1328,12 @@ exports[`cli saves command metadata to .yo-rc.json 1`] = `
           "description": "Specify the directory into which the \`model.model.ts\` files will be placed",
           "name": "outDir",
           "hide": false
+        },
+        "models": {
+          "type": "String",
+          "description": "Discover specific models without prompting users to select ex:--models=tale1,table2",
+          "name": "models",
+          "hide": false
         }
       },
       "arguments": [
