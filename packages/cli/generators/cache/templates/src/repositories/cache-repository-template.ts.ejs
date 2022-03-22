@@ -1,0 +1,10 @@
+import {inject} from '@loopback/core';
+import {DefaultKeyValueRepository} from '@loopback/repository';
+import {<%= className %>} from '../datasources';
+import {Cache} from '../models';
+
+export class CacheRepository extends DefaultKeyValueRepository<Cache> {
+  constructor(@inject('datasources.<%= name %>') dataSource: <%= className %>) {
+    super(Cache, dataSource);
+  }
+}
