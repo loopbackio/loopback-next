@@ -178,11 +178,11 @@ module.exports = class CacheGenerator extends BaseGenerator {
   async scaffold() {
     if (this.shouldExit()) return false;
     this._generateModel();
-    await this._updateIndex(MODEL);
+    await this._updateIndex(cacheModel, MODEL);
     this._generateRepository();
-    await this._updateIndex(REPOSITORY);
+    await this._updateIndex(cacheRepository, REPOSITORY);
     this._generateProvider();
-    await this._updateIndex(PROVIDER);
+    await this._updateIndex(cacheProvider, PROVIDER);
 
     await updateApplicationTs(this.destinationPath());
 
