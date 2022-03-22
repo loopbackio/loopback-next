@@ -98,8 +98,8 @@ export class BindingKey<ValueType> {
     }
 
     return BindingKey.create<T>(
-      keyWithPath.substr(0, index).trim(),
-      keyWithPath.substr(index + 1),
+      keyWithPath.slice(0, index).trim(),
+      keyWithPath.slice(index + 1),
     );
   }
 

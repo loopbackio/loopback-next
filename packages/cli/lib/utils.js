@@ -282,7 +282,7 @@ exports.prependBackslash = httpPath => httpPath.replace(/^\/?/, '/');
 exports.validateUrlSlug = function (name) {
   const backslashIfNeeded = name.charAt(0) === '/' ? '/' : '';
   if (backslashIfNeeded === '/') {
-    name = name.substr(1);
+    name = name.slice(1);
   }
   const separators = ['-', '.', '_', '~', ''];
   const possibleSlugs = separators.map(separator =>
