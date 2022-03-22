@@ -60,7 +60,7 @@ export class ExplorerController {
     // as a _relative_ URL
     const lastSlash = url.lastIndexOf('/');
     if (lastSlash >= 0) {
-      url = './' + url.substr(lastSlash + 1) + '/';
+      url = './' + url.slice(lastSlash + 1) + '/';
     }
     response.redirect(301, url);
   }

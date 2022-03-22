@@ -120,7 +120,7 @@ export class NamespacedReflect {
       for (const key of keys) {
         if (key.indexOf(prefix) === 0) {
           // Only add keys with the namespace prefix
-          metaKeys.push(key.substr(prefix.length));
+          metaKeys.push(key.slice(prefix.length));
         }
       }
     }
@@ -141,7 +141,7 @@ export class NamespacedReflect {
       for (const key of keys) {
         if (key.indexOf(prefix) === 0) {
           // Only add keys with the namespace prefix
-          metaKeys.push(key.substr(prefix.length));
+          metaKeys.push(key.slice(prefix.length));
         }
       }
     }
