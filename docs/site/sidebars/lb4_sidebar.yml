@@ -879,6 +879,10 @@ children:
       url: Copyright-generator.html
       output: 'web, pdf'
 
+    - title: 'Cache generator'
+      url: Cache-generator.html
+      output: 'web, pdf'
+
   - title: 'Connectors reference'
     url: Connectors-reference.html
     output: 'web'
