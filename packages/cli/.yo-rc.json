@@ -1692,6 +1692,77 @@
       },
       "arguments": [],
       "name": "copyright"
+    },
+    "cache": {
+      "options": {
+        "help": {
+          "name": "help",
+          "type": "Boolean",
+          "alias": "h",
+          "description": "Print the generator's options and usage"
+        },
+        "skip-cache": {
+          "name": "skip-cache",
+          "type": "Boolean",
+          "description": "Do not remember prompt answers",
+          "default": false
+        },
+        "skip-install": {
+          "name": "skip-install",
+          "type": "Boolean",
+          "description": "Do not automatically install dependencies",
+          "default": false
+        },
+        "force-install": {
+          "name": "force-install",
+          "type": "Boolean",
+          "description": "Fail on install dependencies error",
+          "default": false
+        },
+        "ask-answered": {
+          "type": "Boolean",
+          "description": "Show prompts for already configured options",
+          "default": false,
+          "name": "ask-answered",
+          "hide": false
+        },
+        "datasource": {
+          "type": "String",
+          "required": false,
+          "description": "A valid redis datasource",
+          "name": "datasource",
+          "hide": false
+        },
+        "config": {
+          "type": "String",
+          "alias": "c",
+          "description": "JSON file name or value to configure options",
+          "name": "config",
+          "hide": false
+        },
+        "yes": {
+          "type": "Boolean",
+          "alias": "y",
+          "description": "Skip all confirmation prompts with default or provided value",
+          "name": "yes",
+          "hide": false
+        },
+        "format": {
+          "type": "Boolean",
+          "description": "Format generated code using npm run lint:fix",
+          "name": "format",
+          "hide": false
+        },
+        "packageManager": {
+          "type": "String",
+          "description": "Change the default package manager",
+          "alias": "pm",
+          "name": "packageManager",
+          "hide": false
+        }
+      },
+      "arguments": [],
+      "name": "cache"
     }
   }
 }
