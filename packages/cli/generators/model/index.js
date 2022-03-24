@@ -350,6 +350,12 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
   async promptPropertyName() {
     if (this.shouldExit()) return false;
 
+    // If properties are provided from config file
+    if (this.options.properties) {
+      Object.assign(this.artifactInfo.properties, this.options.properties);
+      return;
+    }
+
     this.log(g.f('Enter an empty property name when done'));
     this.log();
 
