@@ -309,4 +309,24 @@ describe('model generator using --config option', () => {
       );
     });
   });
+
+  describe('model generator using --config option with properties', () => {
+    it('creates a model with properties', async () => {
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path))
+        .withArguments([
+          '--config',
+          '{"name":"test", "base":"Entity", \
+          "properties": { \
+            "id": {"type": "string", "id": true, "generated": true, "required": true}, \
+            "name": {"type": "string", "required": true, "default": "xyz"}}}',
+          '--yes',
+        ]);
+
+      basicModelFileChecks(expectedModelFile, expectedIndexFile);
+
+      assert.fileContent(expectedModelFile, /id: string;/);
+    });
+  });
 });
