@@ -1,0 +1,5 @@
+{
+  "extends": [
+    "github>loopbackio/cicd//shared-configs/renovate/base"
+  ]
+}
