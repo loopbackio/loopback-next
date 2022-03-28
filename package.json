@@ -34,7 +34,7 @@
     "coverage:ci": "node packages/build/bin/run-nyc report --reporter=lcov",
     "precoverage": "npm test",
     "coverage": "open-cli coverage/index.html",
-    "lint": "npm run prettier:docs:check && npm run eslint && npm run monorepo:check",
+    "lint": "npm run eslint && npm run prettier:docs:check && npm run monorepo:check",
     "lint:fix": "npm run eslint:fix && npm run prettier:docs:fix",
     "eslint": "node packages/build/bin/run-eslint --report-unused-disable-directives --cache .",
     "eslint:fix": "npm run eslint -- --fix",
