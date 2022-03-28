@@ -61,8 +61,8 @@ Security advisories can be found on the
 
 ## Reporting a vulnerability
 
-If you think you have discovered a new security issue with any StrongLoop
-package, **please do not report it on GitHub**. Instead, send an email to
+If you think you have discovered a new security issue with any LoopBack package,
+**please do not report it on GitHub**. Instead, send an email to
 [security@loopback.io](mailto:security@loopback.io) with the following details:
 
 - Full description of the vulnerability.

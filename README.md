@@ -89,8 +89,8 @@ You can join the team by posting a comment to
 
 ### Security
 
-If you think you have discovered a new security issue with any StrongLoop
-package, **please do not report it on GitHub**. Instead, send an email to
+If you think you have discovered a new security issue with any LoopBack package,
+**please do not report it on GitHub**. Instead, send an email to
 [security@loopback.io](mailto:security@loopback.io) with a full description and
 steps to reproduce.
 
