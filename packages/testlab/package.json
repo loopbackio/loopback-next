@@ -39,7 +39,7 @@
     "@types/fs-extra": "^9.0.13",
     "@types/shot": "^4.0.1",
     "@types/sinon": "^10.0.11",
-    "@types/supertest": "^2.0.11",
+    "@types/supertest": "^2.0.12",
     "express": "^4.17.3",
     "fs-extra": "^10.0.1",
     "oas-validator": "^5.0.8",
