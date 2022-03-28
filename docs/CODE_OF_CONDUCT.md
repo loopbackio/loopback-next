@@ -17,8 +17,8 @@ specific emails that can be used to report and escalate issues.
 ### Project Spaces
 
 For reporting issues in spaces related to LoopBack, please use the email
-`tsc@loopback.io`. The LoopBack Technical Steering Committee (TSC) handles CoC issues related to the spaces that it
-maintains. The project TSC commits to:
+`tsc@loopback.io`. The LoopBack Technical Steering Committee (TSC) handles CoC
+issues related to the spaces that it maintains. The project TSC commits to:
 
 - maintain the confidentiality with regard to the reporter of an incident
 - to participate in the path for escalation as outlined in the section on
