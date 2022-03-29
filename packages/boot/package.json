@@ -1,7 +1,7 @@
 {
   "name": "@loopback/boot",
   "description": "A collection of Booters for LoopBack 4 Applications",
-  "version": "4.1.1",
+  "version": "4.1.2",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -35,12 +35,12 @@
     "!*/__tests__"
   ],
   "peerDependencies": {
-    "@loopback/core": "^3.1.1"
+    "@loopback/core": "^3.1.2"
   },
   "dependencies": {
-    "@loopback/model-api-builder": "^3.1.1",
-    "@loopback/repository": "^4.1.1",
-    "@loopback/service-proxy": "^4.1.1",
+    "@loopback/model-api-builder": "^3.1.2",
+    "@loopback/repository": "^4.1.2",
+    "@loopback/service-proxy": "^4.1.2",
     "@types/debug": "^4.1.7",
     "@types/glob": "^7.2.0",
     "debug": "^4.3.4",
@@ -48,12 +48,12 @@
     "tslib": "^2.3.1"
   },
   "devDependencies": {
-    "@loopback/build": "^8.1.1",
-    "@loopback/core": "^3.1.1",
-    "@loopback/eslint-config": "^12.0.3",
-    "@loopback/rest": "^11.1.1",
-    "@loopback/rest-crud": "^0.13.1",
-    "@loopback/testlab": "^4.1.1",
+    "@loopback/build": "^8.1.2",
+    "@loopback/core": "^3.1.2",
+    "@loopback/eslint-config": "^12.0.4",
+    "@loopback/rest": "^11.1.2",
+    "@loopback/rest-crud": "^0.13.2",
+    "@loopback/testlab": "^4.1.2",
     "@types/node": "^12.20.47"
   }
 }

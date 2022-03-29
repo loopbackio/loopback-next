@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.2.0](https://github.com/loopbackio/loopback-next/compare/@loopback/cli@3.1.1...@loopback/cli@3.2.0) (2022-03-29)
+
+
+### Features
+
+* **cli:** model generator can now pick properties from config file ([06b804b](https://github.com/loopbackio/loopback-next/commit/06b804bd61bd05036bc23177dc21e1b5d90ed0e2))
+
+
+
+
+
 ## [3.1.1](https://github.com/loopbackio/loopback-next/compare/@loopback/cli@3.1.0...@loopback/cli@3.1.1) (2022-02-28)
 
 **Note:** Version bump only for package @loopback/cli

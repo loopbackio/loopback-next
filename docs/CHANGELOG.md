@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.4](https://github.com/loopbackio/loopback-next/compare/@loopback/docs@4.0.3...@loopback/docs@4.0.4) (2022-03-29)
+
+
+### Bug Fixes
+
+* **docs:** update 'Migrating datasources' dead link ([1a314c9](https://github.com/loopbackio/loopback-next/commit/1a314c92ee82a9698739549007f24995047749f9))
+
+
+
+
+
 ## [4.0.3](https://github.com/loopbackio/loopback-next/compare/@loopback/docs@4.0.2...@loopback/docs@4.0.3) (2022-02-28)
 
 **Note:** Version bump only for package @loopback/docs

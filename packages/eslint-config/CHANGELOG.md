@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [12.0.4](https://github.com/loopbackio/loopback-next/compare/@loopback/eslint-config@12.0.3...@loopback/eslint-config@12.0.4) (2022-03-29)
+
+
+### Bug Fixes
+
+* ignore HTTP code-like object members ([493e275](https://github.com/loopbackio/loopback-next/commit/493e2759ef7749b4d2ff7499318b7a6232e74d0d))
+* ignore MIME type-like object members ([f282dca](https://github.com/loopbackio/loopback-next/commit/f282dcab18addf63a2fad45fb7b1f0da97c27390))
+
+
+
+
+
 ## [12.0.3](https://github.com/loopbackio/loopback-next/compare/@loopback/eslint-config@12.0.2...@loopback/eslint-config@12.0.3) (2022-02-28)
 
 **Note:** Version bump only for package @loopback/eslint-config
