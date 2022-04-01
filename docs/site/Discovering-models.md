@@ -39,6 +39,8 @@ Models can be discovered from a supported datasource by running the
 
 `--views`: Choose whether to discover views. Default is true
 
+`--relations`: Choose whether to create relations. Default is false
+
 `--all`: Skips the model prompt and discovers all of them
 
 `--outDir`: Specify the directory into which the `model.model.ts` files will be
