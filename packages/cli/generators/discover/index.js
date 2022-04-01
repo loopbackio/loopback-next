@@ -31,6 +31,12 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
       default: true,
     });
 
+    this.option('relations', {
+      type: Boolean,
+      description: g.f('Discover and create relations'),
+      default: false,
+    });
+
     this.option('schema', {
       type: String,
       description: g.f('Schema to discover'),
@@ -289,6 +295,7 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
         {
           schema: modelInfo.owner,
           disableCamelCase: this.artifactInfo.disableCamelCase,
+          associations: this.options.relations,
         },
       );
       if (this.options.optionalId) {
@@ -335,6 +342,46 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
         utils.getModelFileName(modelDefinition.name),
       );
       debug(`Writing: ${fullPath}`);
+
+      if (this.options.relations) {
+        const relationImports = [];
+        const relationDestinationImports = [];
+        const foreignKeys = {};
+        for (const relationName in templateData.settings.relations) {
+          const relation = templateData.settings.relations[relationName];
+          const targetModel = this.artifactInfo.modelDefinitions.find(
+            model => model.name === relation.model,
+          );
+          // If targetModel is not in discovered models, skip creating relation
+          if (targetModel) {
+            Object.assign(templateData.properties[relation.foreignKey], {
+              relation,
+            });
+            relationImports.push(relation.type);
+            relationDestinationImports.push(relation.model);
+
+            foreignKeys[relationName] = {};
+            Object.assign(foreignKeys[relationName], {
+              name: relationName,
+              entity: relation.model,
+              entityKey: Object.entries(targetModel.properties).find(
+                x => x?.[1].id === 1,
+              )?.[0],
+              foreignKey: relation.foreignKey,
+            });
+          }
+        }
+        templateData.relationImports = relationImports;
+        templateData.relationDestinationImports = relationDestinationImports;
+        // Delete relation from modelSettings
+        delete templateData.settings.relations;
+        if (Object.keys(foreignKeys)?.length > 0) {
+          Object.assign(templateData.settings, {foreignKeys});
+        }
+        templateData.modelSettings = utils.stringifyModelSettings(
+          templateData.settings,
+        );
+      }
 
       this.copyTemplatedFiles(
         modelDiscoverer.MODEL_TEMPLATE_PATH,

@@ -1309,6 +1309,13 @@ exports[`cli saves command metadata to .yo-rc.json 1`] = `
           "name": "views",
           "hide": false
         },
+        "relations": {
+          "type": "Boolean",
+          "description": "Discover and create relations",
+          "default": false,
+          "name": "relations",
+          "hide": false
+        },
         "schema": {
           "type": "String",
           "description": "Schema to discover",

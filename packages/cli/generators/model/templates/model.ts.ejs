@@ -1,9 +1,12 @@
 <% if (isModelBaseBuiltin) { -%>
-import {<%= modelBaseClass %>, model, property} from '@loopback/repository';
+import {<%= modelBaseClass %>, model, property<%if (locals.relationImports) {%><% relationImports.forEach((relation) => {-%>, <%= relation %> <%_})-%><%}%>} from '@loopback/repository';
 <% } else { -%>
-import {model, property} from '@loopback/repository';
+import {model, property<%if (locals.relationImports) {%><% relationImports.forEach((relation) => {-%> , <%= relation %> <%_})-%><%}%>} from '@loopback/repository';
 import {<%= modelBaseClass %>} from '.';
 <% } -%>
+<%_ if (locals.relationDestinationImports && locals.relationDestinationImports.length > 0) { -%>
+import {<% relationDestinationImports.forEach((model, index) => {-%><%= model %><%if (index!==relationDestinationImports.length-1) {%>,<% } %> <%_}) -%>} from '.';
+<%_ } -%>
 
 <% if (modelSettings) { -%>
 @model(<%- modelSettings %>)
@@ -12,13 +15,17 @@ import {<%= modelBaseClass %>} from '.';
 <% } -%>
 export class <%= className %> extends <%= modelBaseClass %> {
 <% Object.entries(properties).forEach(([key, val]) => { -%>
+<% if (val.relation) { -%>
+  @<%= val.relation.type %>(() => <%= val.relation.model %>)
+<% } else { -%>
   @property({
   <%_ Object.entries(val).forEach(([propKey, propVal]) => { -%>
-    <%_ if (!['tsType'].includes(propKey)) { -%>
+  <%_ if (!['tsType', 'relation'].includes(propKey)) { -%>
     <%= propKey %>: <%- propVal %>,
-    <%_ } -%>
+  <%_ } -%>
   <%_ }) -%>
   })
+<% } -%>
   <%= key %><%if (!val.required) {%>?<% } %>: <%= val.tsType %>;
 
 <% }) -%>
