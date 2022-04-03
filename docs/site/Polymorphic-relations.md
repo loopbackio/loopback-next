@@ -1,9 +1,9 @@
 ---
 lang: en
-title: 'hasManyThrough Relation'
+title: 'Polymorphic Relations'
 keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, Model Relation
 sidebar: lb4_sidebar
-permalink: /doc/en/lb4/HasManyThrough-relation.html
+permalink: /doc/en/lb4/Polymorphic-relation.html
 ---
 
 ## Overview
