@@ -18,6 +18,7 @@ const debug = debugFactory('loopback:repository:relations:has-one:helpers');
 export type HasOneResolvedDefinition = HasOneDefinition & {
   keyFrom: string;
   keyTo: string;
+  polymorphic: false | {discriminator: string};
 };
 
 /**
@@ -60,25 +61,51 @@ export function resolveHasOneMetadata(
     keyFrom = sourceModel.getIdProperties()[0];
   }
 
+  let keyTo;
   // Make sure that if it already keys to the foreign key property,
   // the key exists in the target model
   if (relationMeta.keyTo && targetModelProperties[relationMeta.keyTo]) {
     // The explicit cast is needed because of a limitation of type inference
-    return Object.assign(relationMeta, {keyFrom}) as HasOneResolvedDefinition;
+    keyTo = relationMeta.keyTo;
+  } else {
+    debug(
+      'Resolved model %s from given metadata: %o',
+      targetModel.modelName,
+      targetModel,
+    );
+    keyTo = camelCase(sourceModel.modelName + '_id');
+    const hasDefaultFkProperty = targetModelProperties[keyTo];
+
+    if (!hasDefaultFkProperty) {
+      const reason = `target model ${targetModel.name} is missing definition of foreign key ${keyTo}`;
+      throw new InvalidRelationError(reason, relationMeta);
+    }
   }
 
-  debug(
-    'Resolved model %s from given metadata: %o',
-    targetModel.modelName,
-    targetModel,
-  );
-  const defaultFkName = camelCase(sourceModel.modelName + '_id');
-  const hasDefaultFkProperty = targetModelProperties[defaultFkName];
-
-  if (!hasDefaultFkProperty) {
-    const reason = `target model ${targetModel.name} is missing definition of foreign key ${defaultFkName}`;
-    throw new InvalidRelationError(reason, relationMeta);
+  let polymorphic: false | {discriminator: string};
+  if (
+    relationMeta.polymorphic === undefined ||
+    relationMeta.polymorphic === false ||
+    !relationMeta.polymorphic
+  ) {
+    const polymorphicFalse = false as const;
+    polymorphic = polymorphicFalse;
+  } else {
+    if (relationMeta.polymorphic === true) {
+      const polymorphicObject: {discriminator: string} = {
+        discriminator: camelCase(relationMeta.target().name + '_type'),
+      };
+      polymorphic = polymorphicObject;
+    } else {
+      const polymorphicObject: {discriminator: string} =
+        relationMeta.polymorphic as {discriminator: string};
+      polymorphic = polymorphicObject;
+    }
   }
 
-  return Object.assign(relationMeta, {keyFrom, keyTo: defaultFkName});
+  return Object.assign(relationMeta, {
+    keyFrom: keyFrom,
+    keyTo: keyTo,
+    polymorphic: polymorphic,
+  });
 }

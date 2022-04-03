@@ -18,6 +18,7 @@ const debug = debugFactory('loopback:repository:relations:belongs-to:helpers');
 export type BelongsToResolvedDefinition = BelongsToDefinition & {
   keyFrom: string;
   keyTo: string;
+  polymorphic: false | {discriminator: string};
 };
 
 /**
@@ -27,7 +28,9 @@ export type BelongsToResolvedDefinition = BelongsToDefinition & {
  * @param relationMeta - belongsTo metadata to resolve
  * @internal
  */
-export function resolveBelongsToMetadata(relationMeta: BelongsToDefinition) {
+export function resolveBelongsToMetadata(
+  relationMeta: BelongsToDefinition,
+): BelongsToResolvedDefinition {
   if ((relationMeta.type as RelationType) !== RelationType.belongsTo) {
     const reason = 'relation type must be BelongsTo';
     throw new InvalidRelationError(reason, relationMeta);
@@ -61,18 +64,42 @@ export function resolveBelongsToMetadata(relationMeta: BelongsToDefinition) {
   const targetProperties = targetModel.definition.properties;
   debug('relation metadata from %o: %o', targetName, targetProperties);
 
+  let keyTo;
   if (relationMeta.keyTo && targetProperties[relationMeta.keyTo]) {
     // The explicit cast is needed because of a limitation of type inference
-    return Object.assign(relationMeta, {
-      keyFrom,
-    }) as BelongsToResolvedDefinition;
+    keyTo = relationMeta.keyTo;
+  } else {
+    keyTo = targetModel.definition.idProperties()[0];
+    if (!keyTo) {
+      const reason = `${targetName} does not have any primary key (id property)`;
+      throw new InvalidRelationError(reason, relationMeta);
+    }
   }
 
-  const targetPrimaryKey = targetModel.definition.idProperties()[0];
-  if (!targetPrimaryKey) {
-    const reason = `${targetName} does not have any primary key (id property)`;
-    throw new InvalidRelationError(reason, relationMeta);
+  let polymorphic: false | {discriminator: string};
+  if (
+    relationMeta.polymorphic === undefined ||
+    relationMeta.polymorphic === false ||
+    !relationMeta.polymorphic
+  ) {
+    const polymorphicFalse = false as const;
+    polymorphic = polymorphicFalse;
+  } else {
+    if (relationMeta.polymorphic === true) {
+      const polymorphicObject: {discriminator: string} = {
+        discriminator: camelCase(relationMeta.target().name + '_type'),
+      };
+      polymorphic = polymorphicObject;
+    } else {
+      const polymorphicObject: {discriminator: string} =
+        relationMeta.polymorphic as {discriminator: string};
+      polymorphic = polymorphicObject;
+    }
   }
 
-  return Object.assign(relationMeta, {keyFrom, keyTo: targetPrimaryKey});
+  return Object.assign(relationMeta, {
+    keyFrom,
+    keyTo: keyTo,
+    polymorphic: polymorphic,
+  });
 }

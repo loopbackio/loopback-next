@@ -75,6 +75,12 @@ export interface HasManyDefinition extends RelationDefinitionBase {
   keyFrom?: string;
 
   /**
+   * With current architecture design, polymorphic type cannot be supported without through
+   * Consider using Source-hasMany->Through->hasOne->Target(polymorphic) for one-to-many relations
+   */
+  // polymorphic?: boolean | {discriminator: string};
+
+  /**
    * Description of the through model of the hasManyThrough relation.
    *
    * A `hasManyThrough` relation defines a many-to-many connection with another model.
@@ -107,6 +113,19 @@ export interface HasManyDefinition extends RelationDefinitionBase {
      * The foreign key of the target model defined in the through model, e.g. CategoryProductLink#productId
      */
     keyTo?: string;
+
+    /**
+     * The polymorphism of the target model. The discriminator is a key of *through* model.
+     * If the target model is not polymorphic, then the value should be left undefined or false;
+     * If the key on through model indicating the concrete class of the through instance is default
+     * i.e. camelCase(classNameOf(targetModelInstance)) + "Id"
+     * then the discriminator field can be undefined
+     *
+     * With current architecture design, polymorphic type cannot be supported without through
+     * Consider using Source hasMany Through hasOne Target(polymorphic)
+     * or Source hasMany Through belongsTo Target(polymorphic) for one-to-many relations
+     */
+    polymorphic?: boolean | {discriminator: string};
   };
 }
 
@@ -123,6 +142,14 @@ export interface BelongsToDefinition extends RelationDefinitionBase {
    * The primary key of the target model, e.g Customer#id.
    */
   keyTo?: string;
+  /**
+   * The polymorphism of the target model. The discriminator is a key of source model.
+   * If the target model is not polymorphic, then the value should be left undefined or false;
+   * If the key on source model indicating the concrete class of the target instance is default
+   * i.e. camelCase(classNameOf(throughModelInstance)) + "Id"
+   * Then the discriminator field can be undefined
+   */
+  polymorphic?: boolean | {discriminator: string};
 }
 
 export interface HasOneDefinition extends RelationDefinitionBase {
@@ -141,6 +168,14 @@ export interface HasOneDefinition extends RelationDefinitionBase {
    */
   keyTo?: string;
   keyFrom?: string;
+  /**
+   * The polymorphism of the target model. The discriminator is a key of source model.
+   * If the target model is not polymorphic, then the value should be left undefined or false;
+   * If the key on source model indicating the concrete class of the target instance is default
+   * i.e. camelCase(classNameOf(throughModelInstance)) + "Id"
+   * Then the discriminator field can be undefined
+   */
+  polymorphic?: boolean | {discriminator: string};
 }
 
 export interface ReferencesManyDefinition extends RelationDefinitionBase {

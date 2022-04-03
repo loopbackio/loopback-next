@@ -22,7 +22,7 @@ export interface BelongsToAccessor<Target extends Entity, SourceId> {
   /**
    * Invoke the function to obtain HasManyRepository.
    */
-  (sourceId: SourceId): Promise<Target>;
+  (sourceId: SourceId, polymorphicTypes?: string | string[]): Promise<Target>;
 
   /**
    * Use `resolver` property to obtain an InclusionResolver for this relation.
@@ -32,6 +32,8 @@ export interface BelongsToAccessor<Target extends Entity, SourceId> {
 
 /**
  * Enforces a BelongsTo constraint on a repository
+ * If the target model is polymorphic, i.e. stored within different repositories,
+ * supply the targetRepositoryGetter with a dictionary in the form of {[typeName: string]: repositoryGetter}
  */
 export function createBelongsToAccessor<
   Target extends Entity,
@@ -40,13 +42,35 @@ export function createBelongsToAccessor<
   SourceId,
 >(
   belongsToMetadata: BelongsToDefinition,
-  targetRepoGetter: Getter<EntityCrudRepository<Target, TargetId>>,
+  targetRepositoryGetter:
+    | Getter<EntityCrudRepository<Target, TargetId>>
+    | {
+        [repoType: string]: Getter<EntityCrudRepository<Target, TargetId>>;
+      },
   sourceRepository: EntityCrudRepository<Source, SourceId>,
 ): BelongsToAccessor<Target, SourceId> {
   const meta = resolveBelongsToMetadata(belongsToMetadata);
+  // resolve the repositoryGetter into a dictionary
+  if (typeof targetRepositoryGetter === 'function') {
+    targetRepositoryGetter = {
+      [meta.target().name]: targetRepositoryGetter as Getter<
+        EntityCrudRepository<Target, TargetId>
+      >,
+    };
+  }
   debug('Resolved BelongsTo relation metadata: %o', meta);
   const result: BelongsToAccessor<Target, SourceId> =
-    async function getTargetInstanceOfBelongsTo(sourceId: SourceId) {
+    async function getTargetInstanceOfBelongsTo(
+      sourceId: SourceId,
+      polymorphicTypes?: string | string[],
+    ) {
+      if (meta.polymorphic !== false) {
+        if (!polymorphicTypes || polymorphicTypes.length === 0) {
+          console.warn(
+            'It is highly recommended to specify the polymorphicTypes param when using polymorphic types.',
+          );
+        }
+      }
       const foreignKey = meta.keyFrom;
       const primaryKey = meta.keyTo;
       const sourceModel = await sourceRepository.findById(sourceId);
@@ -60,15 +84,20 @@ export function createBelongsToAccessor<
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const constraint: any = {[primaryKey]: foreignKeyValue};
       const constrainedRepo = new DefaultBelongsToRepository(
-        targetRepoGetter,
+        targetRepositoryGetter as {
+          [repoType: string]: Getter<EntityCrudRepository<Target, TargetId>>;
+        },
         constraint as DataObject<Target>,
+        belongsToMetadata.target,
       );
-      return constrainedRepo.get();
+      return constrainedRepo.get({polymorphicType: polymorphicTypes});
     };
 
   result.inclusionResolver = createBelongsToInclusionResolver(
     meta,
-    targetRepoGetter,
+    targetRepositoryGetter as {
+      [repoType: string]: Getter<EntityCrudRepository<Target, TargetId>>;
+    },
   );
   return result;
 }

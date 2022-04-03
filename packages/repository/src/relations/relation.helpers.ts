@@ -122,7 +122,22 @@ export async function includeRelatedModels<
   options?: Options,
 ): Promise<(T & Relations)[]> {
   entities = cloneDeep(entities);
-  include = cloneDeep(include);
+  if (options?.polymorphicType) {
+    include = include?.filter(inclusionFilter => {
+      if (typeof inclusionFilter === 'string') {
+        return true;
+      } else {
+        if (
+          inclusionFilter.targetType === undefined ||
+          inclusionFilter.targetType === options?.polymorphicType
+        ) {
+          return true;
+        }
+      }
+    });
+  } else {
+    include = cloneDeep(include);
+  }
   const result = entities as (T & Relations)[];
   if (!include) return result;
 

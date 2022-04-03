@@ -5,9 +5,15 @@
 
 export * from './address.model';
 export * from './cart-item.model';
+export * from './contact.model';
 export * from './customer-cart-item-link.model';
+export * from './customer-promotion-link.model';
 export * from './customer.model';
 export * from './order.model';
+export * from './payment-method.model';
+export * from './promotion.model';
 export * from './shipment.model';
+export * from './stakeholder.model';
+export * from './supplier.model';
 export * from './user-link.model';
 export * from './user.model';

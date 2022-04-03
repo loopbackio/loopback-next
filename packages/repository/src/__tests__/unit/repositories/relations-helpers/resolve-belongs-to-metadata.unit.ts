@@ -79,6 +79,41 @@ describe('resolveBelongsToMetadata', () => {
         keyFrom: 'categoryId',
         target: () => Category,
         keyTo: 'id',
+        polymorphic: false,
+      });
+    });
+
+    it('resolves metadata using polymorphic', () => {
+      Category.definition.addProperty('productType', {
+        type: 'string',
+        required: true,
+      });
+
+      const metadata = {
+        name: 'category',
+        type: RelationType.belongsTo,
+        targetsMany: false,
+
+        source: Product,
+        keyFrom: 'categoryId',
+
+        target: () => Category,
+        keyTo: 'id',
+
+        polymorphic: {discriminator: 'productType'},
+      };
+
+      const meta = resolveBelongsToMetadata(metadata as BelongsToDefinition);
+
+      expect(meta).to.eql({
+        name: 'category',
+        type: RelationType.belongsTo,
+        targetsMany: false,
+        source: Product,
+        keyFrom: 'categoryId',
+        target: () => Category,
+        keyTo: 'id',
+        polymorphic: {discriminator: 'productType'},
       });
     });
 
@@ -105,6 +140,7 @@ describe('resolveBelongsToMetadata', () => {
         keyFrom: 'categoryId',
         target: () => Category,
         keyTo: 'id',
+        polymorphic: false,
       });
     });
 
@@ -131,6 +167,7 @@ describe('resolveBelongsToMetadata', () => {
         keyFrom: 'categoryId',
         target: () => Category,
         keyTo: 'id',
+        polymorphic: false,
       });
     });
 
@@ -157,6 +194,37 @@ describe('resolveBelongsToMetadata', () => {
         keyFrom: 'categoryId',
         target: () => Category,
         keyTo: 'id',
+        polymorphic: false,
+      });
+    });
+
+    it('infers polymorphic discriminator not provided', async () => {
+      const metadata = {
+        name: 'category',
+        type: RelationType.belongsTo,
+        targetsMany: false,
+
+        source: Product,
+        // no keyFrom
+
+        target: () => Category,
+        // no keyTo
+
+        polymorphic: true,
+        // no discriminator
+      };
+
+      const meta = resolveBelongsToMetadata(metadata as BelongsToDefinition);
+
+      expect(meta).to.eql({
+        name: 'category',
+        type: RelationType.belongsTo,
+        targetsMany: false,
+        source: Product,
+        keyFrom: 'categoryId',
+        target: () => Category,
+        keyTo: 'id',
+        polymorphic: {discriminator: 'categoryType'},
       });
     });
   });
