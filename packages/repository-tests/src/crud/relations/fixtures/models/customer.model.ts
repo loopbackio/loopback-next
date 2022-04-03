@@ -5,7 +5,6 @@
 
 import {
   belongsTo,
-  Entity,
   EntityCrudRepository,
   hasMany,
   HasManyRepositoryFactory,
@@ -19,18 +18,19 @@ import {BelongsToAccessor} from '@loopback/repository/src';
 import {MixedIdType} from '../../../../helpers.repository-tests';
 import {Address, AddressWithRelations} from './address.model';
 import {CartItem, CartItemWithRelations} from './cart-item.model';
+import {Contact, ContactWithRelations} from './contact.model';
 import {CustomerCartItemLink} from './customer-cart-item-link.model';
+import {CustomerPromotionLink} from './customer-promotion-link.model';
 import {Order, OrderWithRelations} from './order.model';
+import {
+  PaymentMethod,
+  PaymentMethodWithRelations,
+} from './payment-method.model';
+import {Promotion, PromotionWithRelations} from './promotion.model';
+import {Stakeholder} from './stakeholder.model';
 
 @model()
-export class Customer extends Entity {
-  @property({
-    id: true,
-    generated: true,
-    useDefaultIdType: true,
-  })
-  id: MixedIdType;
-
+export class Customer extends Stakeholder {
   @property({
     type: 'string',
   })
@@ -50,6 +50,25 @@ export class Customer extends Entity {
 
   @hasMany(() => CartItem, {through: {model: () => CustomerCartItemLink}})
   cartItems: CartItem[];
+
+  @hasMany(() => Promotion, {
+    through: {
+      model: () => CustomerPromotionLink,
+      keyTo: 'promotion_id',
+      polymorphic: {discriminator: 'promotiontype'},
+    },
+  })
+  promotions: Promotion[];
+
+  @hasOne(() => PaymentMethod, {polymorphic: true})
+  paymentMethod: PaymentMethod;
+
+  @property({
+    type: 'string',
+    required: true,
+    default: 'CreditCard',
+  })
+  paymentMethodType: string;
 }
 
 export interface CustomerRelations {
@@ -58,6 +77,9 @@ export interface CustomerRelations {
   customers?: CustomerWithRelations[];
   parentCustomer?: CustomerWithRelations;
   cartItems?: CartItemWithRelations[];
+  paymentMethod: PaymentMethodWithRelations;
+  promotions?: PromotionWithRelations[];
+  contact?: ContactWithRelations;
 }
 
 export type CustomerWithRelations = Customer & CustomerRelations;
@@ -75,4 +97,12 @@ export interface CustomerRepository
     CustomerCartItemLink,
     MixedIdType
   >;
+  promotions: HasManyThroughRepositoryFactory<
+    Promotion,
+    MixedIdType,
+    CustomerPromotionLink,
+    MixedIdType
+  >;
+  paymentMethod: HasOneRepositoryFactory<PaymentMethod, MixedIdType>;
+  contact: HasOneRepositoryFactory<Contact, MixedIdType>;
 }

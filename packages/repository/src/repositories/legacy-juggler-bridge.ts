@@ -240,11 +240,11 @@ export class DefaultCrudRepository<
     ForeignKeyType,
   >(
     relationName: string,
-    targetRepoGetter: Getter<EntityCrudRepository<Target, TargetID>>,
+    targetRepositoryGetter: Getter<EntityCrudRepository<Target, TargetID>>,
   ): HasManyRepositoryFactory<Target, ForeignKeyType> {
     return this.createHasManyRepositoryFactoryFor(
       relationName,
-      targetRepoGetter,
+      targetRepositoryGetter,
     );
   }
 
@@ -282,12 +282,12 @@ export class DefaultCrudRepository<
     ForeignKeyType,
   >(
     relationName: string,
-    targetRepoGetter: Getter<EntityCrudRepository<Target, TargetID>>,
+    targetRepositoryGetter: Getter<EntityCrudRepository<Target, TargetID>>,
   ): HasManyRepositoryFactory<Target, ForeignKeyType> {
     const meta = this.entityClass.definition.relations[relationName];
     return createHasManyRepositoryFactory<Target, TargetID, ForeignKeyType>(
       meta as HasManyDefinition,
-      targetRepoGetter,
+      targetRepositoryGetter,
     );
   }
 
@@ -329,8 +329,12 @@ export class DefaultCrudRepository<
     ForeignKeyType,
   >(
     relationName: string,
-    targetRepoGetter: Getter<EntityCrudRepository<Target, TargetID>>,
-    throughRepoGetter: Getter<EntityCrudRepository<Through, ThroughID>>,
+    targetRepositoryGetter:
+      | Getter<EntityCrudRepository<Target, TargetID>>
+      | {
+          [repoType: string]: Getter<EntityCrudRepository<Target, TargetID>>;
+        },
+    throughRepositoryGetter: Getter<EntityCrudRepository<Through, ThroughID>>,
   ): HasManyThroughRepositoryFactory<
     Target,
     TargetID,
@@ -344,7 +348,11 @@ export class DefaultCrudRepository<
       Through,
       ThroughID,
       ForeignKeyType
-    >(meta as HasManyDefinition, targetRepoGetter, throughRepoGetter);
+    >(
+      meta as HasManyDefinition,
+      targetRepositoryGetter,
+      throughRepositoryGetter,
+    );
   }
 
   /**
@@ -358,9 +366,16 @@ export class DefaultCrudRepository<
    */
   protected _createBelongsToAccessorFor<Target extends Entity, TargetId>(
     relationName: string,
-    targetRepoGetter: Getter<EntityCrudRepository<Target, TargetId>>,
+    targetRepositoryGetter:
+      | Getter<EntityCrudRepository<Target, TargetId>>
+      | {
+          [repoType: string]: Getter<EntityCrudRepository<Target, TargetId>>;
+        },
   ): BelongsToAccessor<Target, ID> {
-    return this.createBelongsToAccessorFor(relationName, targetRepoGetter);
+    return this.createBelongsToAccessorFor(
+      relationName,
+      targetRepositoryGetter,
+    );
   }
 
   /**
@@ -371,12 +386,16 @@ export class DefaultCrudRepository<
    */
   protected createBelongsToAccessorFor<Target extends Entity, TargetId>(
     relationName: string,
-    targetRepoGetter: Getter<EntityCrudRepository<Target, TargetId>>,
+    targetRepositoryGetter:
+      | Getter<EntityCrudRepository<Target, TargetId>>
+      | {
+          [repoType: string]: Getter<EntityCrudRepository<Target, TargetId>>;
+        },
   ): BelongsToAccessor<Target, ID> {
     const meta = this.entityClass.definition.relations[relationName];
     return createBelongsToAccessor<Target, TargetId, T, ID>(
       meta as BelongsToDefinition,
-      targetRepoGetter,
+      targetRepositoryGetter,
       this,
     );
   }
@@ -394,11 +413,15 @@ export class DefaultCrudRepository<
     ForeignKeyType,
   >(
     relationName: string,
-    targetRepoGetter: Getter<EntityCrudRepository<Target, TargetID>>,
+    targetRepositoryGetter:
+      | Getter<EntityCrudRepository<Target, TargetID>>
+      | {
+          [repoType: string]: Getter<EntityCrudRepository<Target, TargetID>>;
+        },
   ): HasOneRepositoryFactory<Target, ForeignKeyType> {
     return this.createHasOneRepositoryFactoryFor(
       relationName,
-      targetRepoGetter,
+      targetRepositoryGetter,
     );
   }
 
@@ -414,12 +437,16 @@ export class DefaultCrudRepository<
     ForeignKeyType,
   >(
     relationName: string,
-    targetRepoGetter: Getter<EntityCrudRepository<Target, TargetID>>,
+    targetRepositoryGetter:
+      | Getter<EntityCrudRepository<Target, TargetID>>
+      | {
+          [repoType: string]: Getter<EntityCrudRepository<Target, TargetID>>;
+        },
   ): HasOneRepositoryFactory<Target, ForeignKeyType> {
     const meta = this.entityClass.definition.relations[relationName];
     return createHasOneRepositoryFactory<Target, TargetID, ForeignKeyType>(
       meta as HasOneDefinition,
-      targetRepoGetter,
+      targetRepositoryGetter,
     );
   }
 

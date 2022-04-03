@@ -174,6 +174,8 @@ export type Fields<MT = AnyObject> =
 export interface Inclusion {
   relation: string;
 
+  targetType?: string;
+
   // Technically, we should restrict the filter to target model.
   // That is unfortunately rather difficult to achieve, because
   // an Entity does not provide type information about related models.

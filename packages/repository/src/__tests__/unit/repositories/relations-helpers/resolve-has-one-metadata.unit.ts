@@ -52,6 +52,35 @@ describe('resolveHasOneMetadata', () => {
         keyFrom: 'id',
         target: () => Category,
         keyTo: 'productId',
+        polymorphic: false,
+      });
+    });
+
+    it('resolves metadata using polymorphic', () => {
+      const metadata = {
+        name: 'category',
+        type: RelationType.hasOne,
+        targetsMany: false,
+
+        source: Product,
+        keyFrom: 'id',
+
+        target: () => Category,
+        keyTo: 'productId',
+
+        polymorphic: {discriminator: 'productType'},
+      };
+      const meta = resolveHasOneMetadata(metadata as HasOneDefinition);
+
+      expect(meta).to.eql({
+        name: 'category',
+        type: 'hasOne',
+        targetsMany: false,
+        source: Product,
+        keyFrom: 'id',
+        target: () => Category,
+        keyTo: 'productId',
+        polymorphic: {discriminator: 'productType'},
       });
     });
 
@@ -77,6 +106,7 @@ describe('resolveHasOneMetadata', () => {
         keyFrom: 'id',
         target: () => Category,
         keyTo: 'productId',
+        polymorphic: false,
       });
     });
 
@@ -103,6 +133,7 @@ describe('resolveHasOneMetadata', () => {
         keyFrom: 'id',
         target: () => Category,
         keyTo: 'productId',
+        polymorphic: false,
       });
     });
 
@@ -151,6 +182,39 @@ describe('resolveHasOneMetadata', () => {
         keyFrom: 'id',
         target: () => Category,
         keyTo: 'categoryId',
+        polymorphic: false,
+      });
+    });
+
+    it('infers polymorphic discriminator not provided', async () => {
+      Category.definition.addProperty('categoryId', {type: 'number'});
+
+      const metadata = {
+        name: 'category',
+        type: RelationType.hasOne,
+        targetsMany: false,
+
+        source: Category,
+        // no keyFrom
+
+        target: () => Category,
+        // no keyTo
+
+        polymorphic: true,
+        // no discriminator
+      };
+
+      const meta = resolveHasOneMetadata(metadata as HasOneDefinition);
+
+      expect(meta).to.eql({
+        name: 'category',
+        type: 'hasOne',
+        targetsMany: false,
+        source: Category,
+        keyFrom: 'id',
+        target: () => Category,
+        keyTo: 'categoryId',
+        polymorphic: {discriminator: 'categoryType'},
       });
     });
   });

@@ -193,7 +193,7 @@ describe('HasManyThroughHelpers', () => {
       );
     });
 
-    describe('resolves through.keyTo/keyFrom', () => {
+    describe('resolves through.keyTo/keyFrom/polymorphic', () => {
       it('resolves metadata with complete hasManyThrough definition', () => {
         const metadata = {
           name: 'products',
@@ -208,13 +208,14 @@ describe('HasManyThroughHelpers', () => {
             model: () => CategoryProductLink,
             keyFrom: 'categoryId',
             keyTo: 'productId',
+            polymorphic: {discriminator: 'productType'},
           },
         };
         const meta = resolveHasManyThroughMetadata(
           metadata as HasManyDefinition,
         );
 
-        expect(meta).to.eql(relationMetaData);
+        expect(meta).to.eql(relationMetaDataWithPolymorphicDiscriminator);
       });
 
       it('infers through.keyFrom if it is not provided', () => {
@@ -262,6 +263,31 @@ describe('HasManyThroughHelpers', () => {
         );
 
         expect(meta).to.eql(relationMetaData);
+      });
+
+      it('infers through.polymorphic.discriminator if polymorphic equals to true', () => {
+        const metadata = {
+          name: 'products',
+          type: RelationType.hasMany,
+          targetsMany: true,
+          source: Category,
+          keyFrom: 'id',
+          target: () => Product,
+          keyTo: 'id',
+
+          through: {
+            model: () => CategoryProductLink,
+            keyFrom: 'categoryId',
+            keyTo: 'productId',
+            polymorphic: true,
+          },
+        };
+
+        const meta = resolveHasManyThroughMetadata(
+          metadata as HasManyDefinition,
+        );
+
+        expect(meta).to.eql(relationMetaDataWithPolymorphicDiscriminator);
       });
 
       it('throws if through.keyFrom is not provided in through', async () => {
@@ -392,6 +418,23 @@ describe('HasManyThroughHelpers', () => {
       model: () => CategoryProductLink,
       keyFrom: 'categoryId',
       keyTo: 'productId',
+      polymorphic: false,
+    },
+  } as HasManyThroughResolvedDefinition;
+
+  const relationMetaDataWithPolymorphicDiscriminator = {
+    name: 'products',
+    type: 'hasMany',
+    targetsMany: true,
+    source: Category,
+    keyFrom: 'id',
+    target: () => Product,
+    keyTo: 'id',
+    through: {
+      model: () => CategoryProductLink,
+      keyFrom: 'categoryId',
+      keyTo: 'productId',
+      polymorphic: {discriminator: 'productType'},
     },
   } as HasManyThroughResolvedDefinition;
 

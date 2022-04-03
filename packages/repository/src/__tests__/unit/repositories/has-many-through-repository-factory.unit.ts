@@ -12,8 +12,8 @@ import {
   model,
   property,
 } from '../../..';
-import {createHasManyThroughRepositoryFactory} from '../../../relations/has-many/has-many-through.repository-factory';
 import {HasManyThroughResolvedDefinition} from '../../../relations/has-many/has-many-through.helpers';
+import {createHasManyThroughRepositoryFactory} from '../../../relations/has-many/has-many-through.repository-factory';
 
 describe('createHasManyThroughRepositoryFactory', () => {
   let categoryProductLinkRepo: CategoryProductLinkRepository;
@@ -100,6 +100,7 @@ describe('createHasManyThroughRepositoryFactory', () => {
       model: () => CategoryProductLink,
       keyFrom: 'categoryId',
       keyTo: 'productId',
+      polymorphic: false,
     },
   };
 

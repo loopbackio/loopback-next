@@ -22,10 +22,14 @@ import {CrudRepositoryCtor} from '../../../../types.repository-tests';
 import {
   Address,
   CartItem,
+  Contact,
   Customer,
   CustomerCartItemLink,
+  CustomerPromotionLink,
   CustomerRelations,
   Order,
+  PaymentMethod,
+  Promotion,
 } from '../models';
 
 // create the CustomerRepo by calling this func so that it can be extended from CrudRepositoryCtor
@@ -58,12 +62,37 @@ export function createCustomerRepo(repoClass: CrudRepositoryCtor) {
       typeof CustomerCartItemLink.prototype.id
     >;
 
+    public readonly promotions: HasManyThroughRepositoryFactory<
+      Promotion,
+      typeof Promotion.prototype.id,
+      CustomerPromotionLink,
+      typeof CustomerPromotionLink.prototype.id
+    >;
+
+    public readonly paymentMethod: HasOneRepositoryFactory<
+      PaymentMethod,
+      typeof Customer.prototype.id
+    >;
+
+    public readonly contact: HasOneRepositoryFactory<
+      Contact,
+      typeof Customer.prototype.id
+    >;
+
     constructor(
       db: juggler.DataSource,
       orderRepositoryGetter: Getter<typeof repoClass.prototype>,
       addressRepositoryGetter: Getter<typeof repoClass.prototype>,
       cartItemRepositoryGetter: Getter<typeof repoClass.prototype>,
       customerCartItemLinkRepositoryGetter: Getter<typeof repoClass.prototype>,
+      promotionRepositoryGetter: {
+        [repoType: string]: Getter<typeof repoClass.prototype>;
+      },
+      customerPromotionLinkRepositoryGetter: Getter<typeof repoClass.prototype>,
+      paymentMethodRepositoryGetter: {
+        [repoType: string]: Getter<typeof repoClass.prototype>;
+      },
+      contactRepositoryGetter: Getter<typeof repoClass.prototype>,
     ) {
       super(Customer, db);
       const ordersMeta = this.entityClass.definition.relations['orders'];
@@ -94,6 +123,24 @@ export function createCustomerRepo(repoClass: CrudRepositoryCtor) {
         cartItemsMeta as HasManyDefinition,
         cartItemRepositoryGetter,
         customerCartItemLinkRepositoryGetter,
+      );
+      const promotionsMeta =
+        this.entityClass.definition.relations['promotions'];
+      this.promotions = createHasManyThroughRepositoryFactory(
+        promotionsMeta as HasManyDefinition,
+        promotionRepositoryGetter,
+        customerPromotionLinkRepositoryGetter,
+      );
+      const paymentMethodMeta =
+        this.entityClass.definition.relations['paymentMethod'];
+      this.paymentMethod = createHasOneRepositoryFactory(
+        paymentMethodMeta as HasOneDefinition,
+        paymentMethodRepositoryGetter,
+      );
+      const contactMeta = this.entityClass.definition.relations['contact'];
+      this.contact = createHasOneRepositoryFactory(
+        contactMeta as HasOneDefinition,
+        contactRepositoryGetter,
       );
     }
   };

@@ -5,9 +5,14 @@
 
 export * from './address.repository';
 export * from './cart-item.repository';
+export * from './contact.repository';
 export * from './customer-cart-item-link.repository';
+export * from './customer-promotion-link.repository';
 export * from './customer.repository';
 export * from './order.repository';
+export * from './payment-method.repository';
+export * from './promotion.repository';
 export * from './shipment.repository';
-export * from './user.repository';
+export * from './supplier.repository';
 export * from './user-link.repository';
+export * from './user.repository';

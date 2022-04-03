@@ -25,6 +25,7 @@ export type HasManyThroughResolvedDefinition = HasManyDefinition & {
   through: {
     keyTo: string;
     keyFrom: string;
+    polymorphic: false | {discriminator: string};
   };
 };
 
@@ -308,7 +309,10 @@ export function resolveHasManyThroughMetadata(
     relationMeta.through.keyFrom &&
     throughModelProperties[relationMeta.through.keyFrom] &&
     relationMeta.keyTo &&
-    targetModelProperties[relationMeta.keyTo]
+    targetModelProperties[relationMeta.keyTo] &&
+    (relationMeta.through.polymorphic === false ||
+      (typeof relationMeta.through.polymorphic === 'object' &&
+        relationMeta.through.polymorphic.discriminator.length > 0))
   ) {
     // The explicit cast is needed because of a limitation of type inference
     return relationMeta as HasManyThroughResolvedDefinition;
@@ -349,6 +353,27 @@ export function resolveHasManyThroughMetadata(
     throw new InvalidRelationError(reason, relationMeta);
   }
 
+  let throughPolymorphic: false | {discriminator: string};
+  if (
+    relationMeta.through.polymorphic === undefined ||
+    relationMeta.through.polymorphic === false ||
+    !relationMeta.through.polymorphic
+  ) {
+    const polymorphicFalse = false as const;
+    throughPolymorphic = polymorphicFalse;
+  } else {
+    if (relationMeta.through.polymorphic === true) {
+      const polymorphicObject: {discriminator: string} = {
+        discriminator: camelCase(relationMeta.target().name + '_type'),
+      };
+      throughPolymorphic = polymorphicObject;
+    } else {
+      const polymorphicObject: {discriminator: string} = relationMeta.through
+        .polymorphic as {discriminator: string};
+      throughPolymorphic = polymorphicObject;
+    }
+  }
+
   return Object.assign(relationMeta, {
     keyTo: targetPrimaryKey,
     keyFrom: relationMeta.keyFrom!,
@@ -356,6 +381,7 @@ export function resolveHasManyThroughMetadata(
       ...relationMeta.through,
       keyTo: targetFkName,
       keyFrom: sourceFkName,
+      polymorphic: throughPolymorphic,
     },
   });
 }
