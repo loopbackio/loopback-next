@@ -66,7 +66,7 @@ export type PrismaOptions =
       enableLoggingIntegration: true;
       lazyConnect?: boolean;
       models?: BindingFromPrismaModelNameOptions;
-      prismaClient?: Omit<Prisma.PrismaClientOptions, 'log'> & {log: undefined};
+      prismaClient?: Prisma.PrismaClientOptions;
     };
 
 /**

@@ -335,6 +335,8 @@ export class PrismaComponent implements Component, LifeCycleObserver {
         this._options;
 
       if (enableLoggingIntegration && prismaOptions) {
+        if (prismaOptions.log) throw new PrismaClientConfigConflictError();
+
         prismaOptions.log = [
           {
             emit: 'event',
