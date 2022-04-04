@@ -14,10 +14,10 @@
       "path": "../../packages/core/tsconfig.json"
     },
     {
-      "path": "../../packages/repository/tsconfig.json"
+      "path": "../../packages/testlab/tsconfig.json"
     },
     {
-      "path": "../../packages/testlab/tsconfig.json"
+      "path": "../../packages/repository/tsconfig.json"
     },
     {
       "path": "../logging/tsconfig.json"

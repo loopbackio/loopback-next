@@ -331,10 +331,11 @@ export class PrismaComponent implements Component, LifeCycleObserver {
       // Late refresh of Prisma options cache.
       this._options = await this._app.get(componentConfigBindingKey);
 
-      const {enableLoggingIntegration, prismaClient: prismaOptions} =
-        this._options;
+      const {enableLoggingIntegration} = this._options;
+      let {prismaClient: prismaOptions} = this._options;
+      prismaOptions ??= {};
 
-      if (enableLoggingIntegration && prismaOptions) {
+      if (enableLoggingIntegration) {
         if (prismaOptions.log) throw new PrismaClientConfigConflictError();
 
         prismaOptions.log = [
