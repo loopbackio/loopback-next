@@ -8,7 +8,9 @@ export type V200 = {
   description?: string;
   'factor-id'?: string;
 } & (
-  | ({'ei-stop-on-error'?: boolean} & (
+  | ({
+      'ei-stop-on-error'?: boolean;
+    } & ( // Value of `extract-identity-method` dictates the other parameters.
       | {
           'extract-identity-method': 'basic';
         }
@@ -40,8 +42,10 @@ export type V200 = {
       'extract-identity-method': 'disabled';
     }
 ) &
-  (
-    | ({'au-stop-on-error'?: boolean} & (
+  // `az-stop-on-error` can only be used with `user-az-method`.
+  (| ({
+        'au-stop-on-error'?: boolean;
+      } & ( // Value of `user-auth-method` dictates the other parameters.
         | {
             'user-auth-method': 'auth-url';
             'auth-url': string;
