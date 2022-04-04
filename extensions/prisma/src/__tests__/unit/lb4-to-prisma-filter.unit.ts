@@ -1,20 +1,19 @@
-// Copyright The LoopBack Authors 2021.
+// SPDX-FileCopyrightNotice: LoopBack Contributors
+// SPDX-License-Identifier: MIT
 // Node module: @loopback/prisma
-// This file is licensed under the MIT License.
-// License text available at https://opensource.org/licenses/MIT
 
 import {Filter, Where} from '@loopback/repository';
 import {expect, sinon} from '@loopback/testlab';
 import {
   PrismaFilterConflictError,
   PrismaFilterInvalidLB4DirectionError,
-  PrismaFilterUnsupportedLB4FilterOperatorError,
+  PrismaFilterUnsupportedLB4FilterOperatorError
 } from '../../errors';
 import {
   Filter as PrismaFilter,
   lb4ToPrismaFilter,
   lb4ToPrismaWhereFilter,
-  WhereFilter as PrismaWhereFilter,
+  WhereFilter as PrismaWhereFilter
 } from '.././../';
 
 describe('lb4ToPrismaFilter()', () => {

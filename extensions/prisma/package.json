@@ -28,7 +28,7 @@
     "url": "https://github.com/strongloop/loopback-next.git",
     "directory": "extensions/prisma"
   },
-  "author": "The LoopBack Authors",
+  "author": "LoopBack Contributors",
   "license": "MIT",
   "files": [
     "README.md",
