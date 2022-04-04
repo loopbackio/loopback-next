@@ -22,18 +22,27 @@ export interface V100 {
 
 export interface V200 extends Omit<V100, 'version' | 'actions'> {
   version: '2.0.0';
-  actions:
-    | {
-        set: string;
-        value: string;
-        type: 'any' | 'string' | 'number' | 'boolean'; // Documentation unclear if this is needed for `clear`.
-      }
-    | {
-        add: string;
-        value: string;
-        type: 'any' | 'string' | 'number' | 'boolean';
-      }
+  actions: (
+    | ((
+        | {
+            set: string;
+          }
+        | {
+            add: string;
+          }
+      ) &
+        (
+          | {
+              value: string;
+              type: 'any' | 'string' | 'number';
+            }
+          | {
+              value: boolean;
+              type: 'boolean';
+            }
+        ))
     | {
         clear: string;
-      };
+      }
+  )[];
 }
