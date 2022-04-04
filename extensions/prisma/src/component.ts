@@ -370,7 +370,7 @@ export class PrismaComponent implements Component, LifeCycleObserver {
 
         /**
          * Registers hooks to {@link @prisma/client#PrismaClient} to route logs
-         * to the {@link @loopback/logging#WisntontLogger} instance.
+         * to the {@link @loopback/logging#WinstonLogger} instance.
          *
          * @param prismaClient A {@link @prisma/client#PrismaClient} instance.
          * @param logger A {@link @loopback/logging#WinstonLogger} instance.
