@@ -217,10 +217,10 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
       }
       endpoint.spec = operationSpec;
     } else if (decoratedResponses) {
-      operationSpec = buildResponsesFromMetadata(
+      operationSpec.responses = buildResponsesFromMetadata(
         decoratedResponses,
         operationSpec,
-      );
+      ).responses;
     }
 
     if (classTags && !operationSpec.tags) {
