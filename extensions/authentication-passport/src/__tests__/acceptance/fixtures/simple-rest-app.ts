@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2020. All Rights Reserved.
 // Node module: @loopback/authentication-passport
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -8,7 +8,8 @@ import {
   AuthenticationBindings,
   AuthenticationComponent,
 } from '@loopback/authentication';
-import {inject} from '@loopback/core';
+import {extensionFor, inject} from '@loopback/core';
+import {MyUser} from '@loopback/mock-oauth2-provider';
 import {
   FindRoute,
   InvokeMethod,
@@ -21,9 +22,7 @@ import {
   Send,
   SequenceHandler,
 } from '@loopback/rest';
-import {MyUser} from '@loopback/mock-oauth2-provider';
 import {StrategyAdapter} from '../../../strategy-adapter';
-import {extensionFor} from '@loopback/core';
 
 const SequenceActions = RestBindings.SequenceActions;
 

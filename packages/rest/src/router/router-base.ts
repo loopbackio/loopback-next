@@ -1,13 +1,13 @@
-// Copyright IBM Corp. 2018,2019. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2018,2019. All Rights Reserved.
 // Node module: @loopback/rest
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
 import {Request} from '../types';
 import {getPathVariables} from './openapi-path';
+import {RestRouter, RestRouterOptions} from './rest-router';
 import {createResolvedRoute, ResolvedRoute, RouteEntry} from './route-entry';
 import {compareRoute} from './route-sort';
-import {RestRouter, RestRouterOptions} from './rest-router';
 
 /**
  * Base router implementation that only handles path without variables

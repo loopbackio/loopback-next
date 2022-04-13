@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2020. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -43,7 +43,7 @@ This project is licensed under the ${license.name}, full text below.
 ${text}
 `;
   /*
-Copyright (c) IBM Corp. 2018,2019. All Rights Reserved.
+Copyright (c) IBM Corp. and LoopBack contributors 2018,2019. All Rights Reserved.
 Node module: @loopback/boot
 This project is licensed under the MIT License, full text below.
 

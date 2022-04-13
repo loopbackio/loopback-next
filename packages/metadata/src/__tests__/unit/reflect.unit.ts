@@ -1,11 +1,11 @@
-// Copyright IBM Corp. 2019. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019. All Rights Reserved.
 // Node module: @loopback/metadata
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {NamespacedReflect, Reflector} from '../../reflect';
 import 'reflect-metadata';
+import {NamespacedReflect, Reflector} from '../../reflect';
 
 function givenReflectContextWithNameSpace(): NamespacedReflect {
   const namespace = 'sample-app-context';

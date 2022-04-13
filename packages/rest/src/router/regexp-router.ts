@@ -1,9 +1,10 @@
-// Copyright IBM Corp. 2018,2019. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2018,2019. All Rights Reserved.
 // Node module: @loopback/rest
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
 import {inject} from '@loopback/core';
+import {Key, pathToRegexp} from 'path-to-regexp';
 import {inspect} from 'util';
 import {RestBindings} from '../keys';
 import {PathParameterValues} from '../types';
@@ -12,7 +13,6 @@ import {RestRouterOptions} from './rest-router';
 import {createResolvedRoute, ResolvedRoute, RouteEntry} from './route-entry';
 import {compareRoute} from './route-sort';
 import {BaseRouter} from './router-base';
-import {pathToRegexp, Key} from 'path-to-regexp';
 
 const debug = require('debug')('loopback:rest:router:regexp');
 

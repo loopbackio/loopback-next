@@ -1,14 +1,14 @@
-// Copyright IBM Corp. 2018,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2018,2020. All Rights Reserved.
 // Node module: @loopback/service-proxy
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
 import {
-  MetadataAccessor,
-  inject,
   Context,
+  inject,
   Injection,
   InjectionMetadata,
+  MetadataAccessor,
 } from '@loopback/core';
 import {getService, juggler} from '..';
 

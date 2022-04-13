@@ -1,9 +1,9 @@
-// Copyright IBM Corp. 2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2020. All Rights Reserved.
 // Node module: @loopback/example-access-control-migration
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {SecuritySchemeObject, ReferenceObject} from '@loopback/rest';
+import {ReferenceObject, SecuritySchemeObject} from '@loopback/rest';
 
 export const OPERATION_SECURITY_SPEC = [{jwt: []}];
 export type SecuritySchemeObjects = {

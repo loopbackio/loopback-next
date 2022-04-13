@@ -1,17 +1,16 @@
-// Copyright IBM Corp. 2017,2019. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2017,2019. All Rights Reserved.
 // Node module: @loopback/repository
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
 import {Context, inject} from '@loopback/core';
-
 import {
-  repository,
-  Entity,
-  juggler,
-  EntityCrudRepository,
   DefaultCrudRepository,
+  Entity,
+  EntityCrudRepository,
+  juggler,
   ModelDefinition,
+  repository,
 } from '../../';
 
 const ds: juggler.DataSource = new juggler.DataSource({

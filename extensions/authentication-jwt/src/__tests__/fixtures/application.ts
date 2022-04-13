@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2020. All Rights Reserved.
 // Node module: @loopback/authentication-jwt
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -13,8 +13,8 @@ import {ServiceMixin} from '@loopback/service-proxy';
 import path from 'path';
 import {
   JWTAuthenticationComponent,
-  UserServiceBindings,
   RefreshTokenServiceBindings,
+  UserServiceBindings,
 } from '../../';
 import {DbDataSource} from './datasources/db.datasource';
 import {MySequence} from './sequence';

@@ -1,9 +1,9 @@
-// Copyright IBM Corp. 2019,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019,2020. All Rights Reserved.
 // Node module: @loopback/example-greeter-extension
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Binding, createBindingFromClass, Component} from '@loopback/core';
+import {Binding, Component, createBindingFromClass} from '@loopback/core';
 import {ChineseGreeter} from './greeters/greeter-cn';
 import {EnglishGreeter} from './greeters/greeter-en';
 import {GreetingService} from './greeting-service';

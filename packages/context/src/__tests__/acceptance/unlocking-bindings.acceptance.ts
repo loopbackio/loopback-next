@@ -1,10 +1,10 @@
-// Copyright IBM Corp. 2019. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019. All Rights Reserved.
 // Node module: @loopback/context
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {Context, Binding} from '../..';
+import {Binding, Context} from '../..';
 
 describe(`Context bindings - Unlocking bindings`, () => {
   describe('Unlocking a locked binding', () => {

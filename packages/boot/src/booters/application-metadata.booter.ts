@@ -1,13 +1,13 @@
-// Copyright IBM Corp. 2018,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2018,2020. All Rights Reserved.
 // Node module: @loopback/boot
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {inject, Application, CoreBindings} from '@loopback/core';
+import {Application, CoreBindings, inject} from '@loopback/core';
 import debugModule from 'debug';
+import path from 'path';
 import {BootBindings} from '../keys';
 import {Booter} from '../types';
-import path from 'path';
 
 const debug = debugModule('loopback:boot:booter:application-metadata');
 

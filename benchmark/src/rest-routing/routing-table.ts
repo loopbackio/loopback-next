@@ -1,15 +1,15 @@
-// Copyright IBM Corp. 2018,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2018,2020. All Rights Reserved.
 // Node module: @loopback/benchmark
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
 import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
 import {
+  OpenApiSpec,
+  RegExpRouter,
+  RestRouter,
   RoutingTable,
   TrieRouter,
-  RestRouter,
-  RegExpRouter,
-  OpenApiSpec,
 } from '@loopback/rest';
 
 function runBenchmark(count = 1000) {

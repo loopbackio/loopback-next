@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2019,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019,2020. All Rights Reserved.
 // Node module: @loopback/authentication-passport
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -9,7 +9,7 @@ import {
 } from '@loopback/authentication';
 import {HttpErrors, RedirectRoute, Request} from '@loopback/rest';
 import {UserProfile} from '@loopback/security';
-import {Strategy, AuthenticateOptions} from 'passport';
+import {AuthenticateOptions, Strategy} from 'passport';
 
 const passportRequestMixin = require('passport/lib/http/request');
 

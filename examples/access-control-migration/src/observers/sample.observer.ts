@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2020. All Rights Reserved.
 // Node module: @loopback/example-access-control-migration
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -7,14 +7,14 @@ import {
   Application,
   CoreBindings,
   inject,
-  lifeCycleObserver, // The decorator
+  lifeCycleObserver,
   LifeCycleObserver,
 } from '@loopback/core';
+import {genSalt, hash} from 'bcryptjs';
 import * as _ from 'lodash';
 import {ProjectRepository} from '../repositories/project.repository';
 import {TeamRepository} from '../repositories/team.repository';
 import {UserRepository} from '../repositories/user.repository';
-import {genSalt, hash} from 'bcryptjs';
 
 /**
  * This class will be bound to the application as a `LifeCycleObserver` during

@@ -1,9 +1,9 @@
-// Copyright IBM Corp. 2019,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019,2020. All Rights Reserved.
 // Node module: @loopback/authentication
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {inject, Application} from '@loopback/core';
+import {Application, inject} from '@loopback/core';
 import {get, post, Request, RestServer} from '@loopback/rest';
 import {SecurityBindings, securityId, UserProfile} from '@loopback/security';
 import {Client, createClientForHandler, expect} from '@loopback/testlab';

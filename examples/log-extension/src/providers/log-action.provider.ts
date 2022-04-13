@@ -1,14 +1,14 @@
-// Copyright IBM Corp. 2018,2019. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2018,2019. All Rights Reserved.
 // Node module: @loopback/example-log-extension
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
 import {
   Constructor,
+  CoreBindings,
   Getter,
   inject,
   Provider,
-  CoreBindings,
 } from '@loopback/core';
 import {OperationArgs, Request} from '@loopback/rest';
 import chalk from 'chalk';

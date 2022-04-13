@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2018,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2018,2020. All Rights Reserved.
 // Node module: @loopback/core
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -11,9 +11,9 @@ import {
   invokeMethod,
   sortBindingsByPhase,
 } from '@loopback/context';
+import debugFactory from 'debug';
 import {CoreBindings, CoreTags} from './keys';
 import {LifeCycleObserver, lifeCycleObserverFilter} from './lifecycle';
-import debugFactory from 'debug';
 const debug = debugFactory('loopback:core:lifecycle');
 
 /**

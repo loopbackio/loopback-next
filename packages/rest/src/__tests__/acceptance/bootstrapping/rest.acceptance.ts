@@ -1,18 +1,18 @@
-// Copyright IBM Corp. 2019. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019. All Rights Reserved.
 // Node module: @loopback/rest
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {Application} from '@loopback/core';
 import {expect, supertest} from '@loopback/testlab';
 import {
   DefaultSequence,
-  RestBindings,
-  RestServer,
-  RestComponent,
-  RestApplication,
   RequestContext,
+  RestApplication,
+  RestBindings,
+  RestComponent,
+  RestServer,
 } from '../../..';
-import {Application} from '@loopback/core';
 
 describe('Bootstrapping with RestComponent', () => {
   context('with a user-defined sequence', () => {

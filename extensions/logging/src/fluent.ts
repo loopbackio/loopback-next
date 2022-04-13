@@ -1,13 +1,12 @@
-// Copyright IBM Corp. 2019. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019. All Rights Reserved.
 // Node module: @loopback/logging
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
 import {Binding, config, Getter, inject, Provider} from '@loopback/core';
-import {createFluentSender, FluentSender, Options} from 'fluent-logger';
-import {LoggingBindings} from './keys';
-import fluent from 'fluent-logger';
+import fluent, {createFluentSender, FluentSender, Options} from 'fluent-logger';
 import TransportStream from 'winston-transport';
+import {LoggingBindings} from './keys';
 
 export {FluentSender} from 'fluent-logger';
 

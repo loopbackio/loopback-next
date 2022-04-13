@@ -22,7 +22,7 @@ lb4 copyright [options]
 The following is an example of such headers.
 
 ```js
-// Copyright IBM Corp. 2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2020. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -35,7 +35,8 @@ Please note the command expects `git` is installed.
 
 ### Options
 
-`--owner` : _(Optional)_ The owner of the copyright, such as `IBM Corp.`.
+`--owner` : _(Optional)_ The owner of the copyright, such as
+`IBM Corp. and LoopBack contributors`.
 
 `--license` : _(Optional)_ The name of the license, such as `MIT`.
 
@@ -74,15 +75,15 @@ The command prompts you for:
    directory of your package, its content will be read as the license header
    template without prompting.
 
-The default owner is `IBM Corp.` and license is `MIT` with the following
-`package.json`.
+The default owner is `IBM Corp. and LoopBack contributors` and license is `MIT`
+with the following `package.json`.
 
 ```json
 {
   "name": "@loopback/boot",
   "version": "2.0.2",
-  "author": "IBM Corp.",
-  "copyright.owner": "IBM Corp.",
+  "author": "IBM Corp. and LoopBack contributors",
+  "copyright.owner": "IBM Corp. and LoopBack contributors",
   "license": "MIT"
 }
 ```
@@ -93,7 +94,7 @@ The following output is captured when `lb4 copyright` is run against
 [`loopback4-example-shopping`](https://github.com/loopbackio/loopback4-example-shopping).
 
 ```
-? Copyright owner: IBM Corp.
+? Copyright owner: IBM Corp. and LoopBack contributors
 ? License name: (Use arrow keys or type to search)
 ❯ MIT (MIT License)
   ISC (ISC License)

@@ -1,10 +1,10 @@
-// Copyright IBM Corp. 2019. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019. All Rights Reserved.
 // Node module: @loopback/example-rpc-server
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {GreetController} from '../../../controllers';
 import {expect} from '@loopback/testlab';
+import {GreetController} from '../../../controllers';
 
 describe('greet.controller', () => {
   const controller = new GreetController();

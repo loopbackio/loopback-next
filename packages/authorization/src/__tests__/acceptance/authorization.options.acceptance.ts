@@ -1,9 +1,9 @@
-// Copyright IBM Corp. 2019. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019. All Rights Reserved.
 // Node module: @loopback/authorization
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Context, invokeMethod, Provider, Application} from '@loopback/core';
+import {Application, Context, invokeMethod, Provider} from '@loopback/core';
 import {SecurityBindings, securityId} from '@loopback/security';
 import {expect} from '@loopback/testlab';
 import {AuthorizationComponent} from '../../authorization-component';

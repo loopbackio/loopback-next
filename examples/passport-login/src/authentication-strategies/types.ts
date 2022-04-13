@@ -1,13 +1,13 @@
-// Copyright IBM Corp. 2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2020. All Rights Reserved.
 // Node module: @loopback/example-passport-login
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {UserIdentityService} from '@loopback/authentication';
+import {securityId, UserProfile} from '@loopback/security';
 import axios from 'axios';
 import {Profile} from 'passport';
-import {UserIdentityService} from '@loopback/authentication';
 import {User} from '../models';
-import {UserProfile, securityId} from '@loopback/security';
 
 export type ProfileFunction = (
   accessToken: string,
