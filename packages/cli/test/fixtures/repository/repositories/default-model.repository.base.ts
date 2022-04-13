@@ -1,12 +1,12 @@
-// Copyright IBM Corp. 2019. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {DefaultCrudRepository} from '@loopback/repository';
-import {DefaultModel} from '../models';
-import {DbmemDataSource} from '../datasources';
 import {inject} from '@loopback/core';
+import {DefaultCrudRepository} from '@loopback/repository';
+import {DbmemDataSource} from '../datasources';
+import {DefaultModel} from '../models';
 
 export class DefaultModelRepository extends DefaultCrudRepository<
   DefaultModel,

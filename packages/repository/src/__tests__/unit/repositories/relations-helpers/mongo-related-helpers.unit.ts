@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2019,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019,2020. All Rights Reserved.
 // Node module: @loopback/repository
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -6,14 +6,14 @@
 import {expect} from '@loopback/testlab';
 import {ObjectID} from 'bson';
 import {belongsTo, Entity, hasMany, model, property} from '../../../..';
-import {flattenMapByKeys} from '../../../../relations/relation.helpers';
 import {
-  isBsonType,
-  deduplicate,
-  normalizeKey,
   buildLookupMap,
+  deduplicate,
+  isBsonType,
+  normalizeKey,
   reduceAsArray,
 } from '../../../../relations';
+import {flattenMapByKeys} from '../../../../relations/relation.helpers';
 
 describe('unit tests, simulates mongodb env for helpers of inclusion resolver ', () => {
   describe('helpers for formating instances', () => {

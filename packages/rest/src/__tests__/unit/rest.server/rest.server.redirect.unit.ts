@@ -1,11 +1,11 @@
-// Copyright IBM Corp. 2019. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019. All Rights Reserved.
 // Node module: @loopback/rest
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {expect} from '@loopback/testlab';
 import {Application} from '@loopback/core';
-import {RestServer, RestComponent} from '../../..';
+import {expect} from '@loopback/testlab';
+import {RestComponent, RestServer} from '../../..';
 
 describe('RestServer.redirect()', () => {
   it('binds the redirect route', async () => {

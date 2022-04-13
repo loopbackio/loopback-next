@@ -1,11 +1,11 @@
-// Copyright IBM Corp. 2018. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2018. All Rights Reserved.
 // Node module: @loopback/rest
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
 import {Request} from '../types';
-import {BodyParser, RequestBody} from './types';
 import {builtinParsers} from './body-parser.helpers';
+import {BodyParser, RequestBody} from './types';
 
 /**
  * A special body parser to retain request stream as is.

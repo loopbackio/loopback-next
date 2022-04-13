@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2018,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2018,2020. All Rights Reserved.
 // Node module: @loopback/repository
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -22,11 +22,6 @@ import {Model} from '../model';
 import {juggler, Repository} from '../repositories';
 
 const debug = debugFactory('loopback:repository:mixin');
-
-// FIXME(rfeng): Workaround for https://github.com/microsoft/rushstack/pull/1867
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import * as loopbackContext from '@loopback/core';
-import * as loopbackCore from '@loopback/core';
 
 /* eslint-enable @typescript-eslint/no-unused-vars */
 

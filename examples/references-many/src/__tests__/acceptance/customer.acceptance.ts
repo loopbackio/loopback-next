@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2019,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019,2020. All Rights Reserved.
 // Node module: @loopback/example-references-many
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -9,11 +9,11 @@ import {ReferencesManyApplication} from '../../application';
 import {Customer} from '../../models/';
 import {AccountRepository, CustomerRepository} from '../../repositories/';
 import {
-  givenRunningApplicationWithCustomConfiguration,
+  givenAccountInstance,
   givenCustomer,
   givenCustomerInstance,
   givenCustomerRepositories,
-  givenAccountInstance,
+  givenRunningApplicationWithCustomConfiguration,
 } from '../helpers';
 
 describe('ReferencesManyApplication', () => {

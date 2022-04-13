@@ -1,11 +1,11 @@
-// Copyright IBM Corp. 2019. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019. All Rights Reserved.
 // Node module: @loopback/example-log-extension
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {expect} from '@loopback/testlab';
 import {Application} from '@loopback/core';
-import {LogMixin, LOG_LEVEL, EXAMPLE_LOG_BINDINGS} from '../../..';
+import {expect} from '@loopback/testlab';
+import {EXAMPLE_LOG_BINDINGS, LogMixin, LOG_LEVEL} from '../../..';
 
 describe('LogMixin (unit)', () => {
   let myApp: AppWithLogMixin;

@@ -1,12 +1,12 @@
-// Copyright IBM Corp. 2018,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2018,2020. All Rights Reserved.
 // Node module: @loopback/repository
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
 import {DecoratorFactory, MetadataInspector} from '@loopback/core';
 import {property} from '../../decorators';
-import {relation} from '../relation.decorator';
 import {Entity, EntityResolver, PropertyDefinition} from '../../model';
+import {relation} from '../relation.decorator';
 import {BelongsToDefinition, RelationType} from '../relation.types';
 
 /**

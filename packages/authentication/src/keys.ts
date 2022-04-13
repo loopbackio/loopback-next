@@ -1,11 +1,11 @@
-// Copyright IBM Corp. 2017,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2017,2020. All Rights Reserved.
 // Node module: @loopback/authentication
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
 import {BindingKey, MetadataAccessor} from '@loopback/core';
-import {SecurityBindings, UserProfile} from '@loopback/security';
 import {Middleware} from '@loopback/rest';
+import {SecurityBindings, UserProfile} from '@loopback/security';
 import {AuthenticationComponent} from './authentication.component';
 import {
   AuthenticateFn,

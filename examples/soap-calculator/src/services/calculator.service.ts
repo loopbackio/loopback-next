@@ -1,10 +1,10 @@
-// Copyright IBM Corp. 2018,2019. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2018,2019. All Rights Reserved.
 // Node module: @loopback/example-soap-calculator
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {getService, juggler} from '@loopback/service-proxy';
 import {inject, Provider} from '@loopback/core';
+import {getService, juggler} from '@loopback/service-proxy';
 import {CalculatorDataSource} from '../datasources/calculator.datasource';
 
 export interface MultiplyResponse {

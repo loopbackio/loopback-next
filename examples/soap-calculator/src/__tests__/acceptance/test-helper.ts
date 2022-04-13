@@ -1,14 +1,14 @@
-// Copyright IBM Corp. 2019. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019. All Rights Reserved.
 // Node module: @loopback/example-soap-calculator
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {SoapCalculatorApplication} from '../..';
 import {
+  Client,
   createRestAppClient,
   givenHttpServerConfig,
-  Client,
 } from '@loopback/testlab';
+import {SoapCalculatorApplication} from '../..';
 
 export async function setupApplication(): Promise<AppWithClient> {
   const app = new SoapCalculatorApplication({

@@ -1,9 +1,9 @@
-// Copyright IBM Corp. 2019,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019,2020. All Rights Reserved.
 // Node module: @loopback/rest
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {inject, Application} from '@loopback/core';
+import {Application, inject} from '@loopback/core';
 import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
 import {api} from '@loopback/openapi-v3';
 import {Client, createClientForHandler} from '@loopback/testlab';

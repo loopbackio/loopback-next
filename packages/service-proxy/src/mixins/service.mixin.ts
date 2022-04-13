@@ -1,26 +1,20 @@
-// Copyright IBM Corp. 2018,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2018,2020. All Rights Reserved.
 // Node module: @loopback/service-proxy
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
 import {
+  Application,
   Binding,
   BindingAddress,
   BindingFromClassOptions,
-  Provider,
-  Constructor,
-} from '@loopback/core';
-import {
-  Application,
-  MixinTarget,
-  ServiceOptions,
   Component,
+  Constructor,
+  MixinTarget,
+  Provider,
+  ServiceOptions,
 } from '@loopback/core';
 
-// FIXME(rfeng): Workaround for https://github.com/microsoft/rushstack/pull/1867
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import * as loopbackContext from '@loopback/core';
-import * as loopbackCore from '@loopback/core';
 /* eslint-enable @typescript-eslint/no-unused-vars */
 
 /**

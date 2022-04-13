@@ -1,10 +1,10 @@
-// Copyright IBM Corp. 2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2020. All Rights Reserved.
 // Node module: @loopback/example-passport-login
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Provider, Interceptor, InvocationContext, Next} from '@loopback/core';
-import {RestBindings, RequestContext} from '@loopback/rest';
+import {Interceptor, InvocationContext, Next, Provider} from '@loopback/core';
+import {RequestContext, RestBindings} from '@loopback/rest';
 import {SecurityBindings} from '@loopback/security';
 import {mapProfile} from '../authentication-strategies/types';
 import {User} from '../models';

@@ -1,11 +1,11 @@
-// Copyright IBM Corp. 2019. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019. All Rights Reserved.
 // Node module: @loopback/rest
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Response, writeResultToResponse} from '../..';
-import {Duplex} from 'stream';
 import {expect, ObservedResponse, stubExpressContext} from '@loopback/testlab';
+import {Duplex} from 'stream';
+import {Response, writeResultToResponse} from '../..';
 
 describe('writer', () => {
   let response: Response;

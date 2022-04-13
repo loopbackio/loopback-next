@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2018,2019. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2018,2019. All Rights Reserved.
 // Node module: @loopback/repository
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -8,9 +8,9 @@ import {DataObject} from '../../common-types';
 import {Entity} from '../../model';
 import {EntityCrudRepository} from '../../repositories/repository';
 import {
-  ReferencesManyDefinition,
   Getter,
   InclusionResolver,
+  ReferencesManyDefinition,
 } from '../relation.types';
 import {resolveReferencesManyMetadata} from './references-many.helpers';
 import {createReferencesManyInclusionResolver} from './references-many.inclusion-resolver';

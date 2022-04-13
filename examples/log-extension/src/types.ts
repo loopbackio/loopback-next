@@ -1,11 +1,11 @@
-// Copyright IBM Corp. 2018,2019. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2018,2019. All Rights Reserved.
 // Node module: @loopback/example-log-extension
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
 // Types and interfaces exposed by the extension go here
 
-import {Request, OperationArgs} from '@loopback/rest';
+import {OperationArgs, Request} from '@loopback/rest';
 
 /**
  * A function to perform REST req/res logging action

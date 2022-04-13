@@ -1,19 +1,19 @@
-// Copyright IBM Corp. 2018,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2018,2020. All Rights Reserved.
 // Node module: @loopback/boot
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
 import {
+  Application,
   Binding,
   BindingFilter,
   BindingFromClassOptions,
   BindingScope,
+  Component,
   Constructor,
   Context,
-  createBindingFromClass,
-  Application,
-  Component,
   CoreBindings,
+  createBindingFromClass,
   MixinTarget,
 } from '@loopback/core';
 import {BootComponent} from '../boot.component';
@@ -22,10 +22,6 @@ import {Bootstrapper} from '../bootstrapper';
 import {BootBindings, BootTags} from '../keys';
 import {Bootable, Booter, BootOptions, InstanceWithBooters} from '../types';
 
-// FIXME(rfeng): Workaround for https://github.com/microsoft/rushstack/pull/1867
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import * as loopbackContext from '@loopback/core';
-import * as loopbackCore from '@loopback/core';
 /* eslint-enable @typescript-eslint/no-unused-vars */
 
 // Binding is re-exported as Binding / Booter types are needed when consuming
