@@ -3,7 +3,7 @@ name: Renovate Config Validator
 on:
   pull_request:
     paths:
-      - '.github/renovate.json5'
+      - './renovate.json'
 
 permissions: {}
 
