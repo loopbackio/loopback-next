@@ -18,7 +18,7 @@ import * as RedactPolicy from './redact.policy';
 import * as SetVariablePolicy from './set-variable.policy';
 import * as SwitchPolicy from './switch.policy';
 import * as ThrowPolicy from './throw.policy';
-import {UserDefinedPolicy} from './user-defined.policy';
+import * as UserDefinedPolicy from './user-defined.policy';
 import * as ValidateUsernameTokenPolicy from './validate-username-token.policy';
 import * as ValidatePolicy from './validate.policy';
 import * as XMLToJSONPolicy from './xml-to-json.policy';
@@ -74,14 +74,13 @@ export interface V100 {
   'set-variable'?: SetVariablePolicy.V100;
   switch?: SwitchPolicy.V100[];
   throw?: ThrowPolicy.V100;
-  'user-defined-policy'?: UserDefinedPolicy;
   validate?: ValidatePolicy.V100;
   'validate-usernametoken'?: ValidateUsernameTokenPolicy.V100;
   'xml-to-json'?: XMLToJSONPolicy.V100;
   xslt?: XSLTPolicy.V100;
 }
 
-export interface V200 extends Pick<V100, 'user-defined-policy'> {
+export interface V200 {
   'activity-log'?: {
     /**
      * @defaultValue `'activity'`
