@@ -1,5 +1,11 @@
 import * as Assembly from './assembly';
 
+/**
+ * @remarks
+ * Unlike the built-in policies it contians, X-IBM-Configuration isn't
+ * versioned. This means there are no version-based types such as `V100`, but
+ * only gateway-based types.
+ */
 export type XIBMConfiguration = DataPowerGateway | DataPowerAPIGateway;
 
 export interface DataPowerGateway {

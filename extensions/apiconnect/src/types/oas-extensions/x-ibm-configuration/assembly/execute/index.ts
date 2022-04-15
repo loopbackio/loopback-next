@@ -7,6 +7,7 @@ import * as JSONToXMLPolicy from './json-to-xml.policy';
 import * as JWTGeneratePolicy from './jwt-generate.policy';
 import * as JWTValidatePolicy from './jwt-validate.policy';
 import * as LogPolicy from './log.policy';
+import * as LTPAGeneratePolicy from './ltpa-generate.policy';
 import * as MapPolicy from './map.policy';
 import * as OAuthPolicy from './oauth.policy';
 import * as OperationSwitchPolicy from './operation-switch.policy';
@@ -69,6 +70,7 @@ export interface V100 {
   'operation-switch'?: OperationSwitchPolicy.V100;
   proxy?: ProxyPolicy.V100;
   redact?: RedactPolicy.V100;
+  'ltpa-generate'?: LTPAGeneratePolicy.LTPAGeneratePolicy;
   'set-variable'?: SetVariablePolicy.V100;
   switch?: SwitchPolicy.V100[];
   throw?: ThrowPolicy.V100;
