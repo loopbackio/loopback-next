@@ -76,7 +76,7 @@ export interface V100 {
   throw?: ThrowPolicy.V100;
   'user-defined-policy'?: UserDefinedPolicy;
   validate?: ValidatePolicy.V100;
-  'validate-username-token'?: ValidateUsernameTokenPolicy.V100;
+  'validate-usernametoken'?: ValidateUsernameTokenPolicy.V100;
   'xml-to-json'?: XMLToJSONPolicy.V100;
   xslt?: XSLTPolicy.V100;
 }
