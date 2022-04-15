@@ -1,6 +1,5 @@
 import {Catch} from '../catch';
 import * as Execute from './execute';
-import {WebSocketUpgradePolicy} from './execute/websocket-upgrade.policy';
 
 export {Catch, Execute};
 
@@ -14,5 +13,4 @@ export interface DataPowerGateway {
 export interface DataPowerAPIGateway {
   execute?: Execute.DataPowerAPIGateway[];
   catch?: Catch<Execute.DataPowerAPIGateway>[];
-  'websocket-upgrade'?: WebSocketUpgradePolicy[];
 }

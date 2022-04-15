@@ -21,6 +21,7 @@ import * as ThrowPolicy from './throw.policy';
 import * as UserDefinedPolicy from './user-defined.policy';
 import * as ValidateUsernameTokenPolicy from './validate-username-token.policy';
 import * as ValidatePolicy from './validate.policy';
+import * as WebSocketUpgradePolicy from './websocket-upgrade.policy';
 import * as XMLToJSONPolicy from './xml-to-json.policy';
 import * as XSLTPolicy from './xslt.policy';
 
@@ -48,6 +49,7 @@ export {
   LogPolicy,
   OAuthPolicy,
   RateLimitPolicy,
+  WebSocketUpgradePolicy,
 };
 
 export type Execute = DataPowerGateway | DataPowerAPIGateway;
@@ -110,6 +112,7 @@ export interface V200 {
   switch?: SwitchPolicy.V200[];
   throw?: ThrowPolicy.V200;
   validate?: ValidatePolicy.V200;
+  'websocket-upgrade'?: WebSocketUpgradePolicy.V200[];
   'xml-to-json'?: XMLToJSONPolicy.V200;
   xslt?: XSLTPolicy.V200;
 }
