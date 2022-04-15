@@ -1,3 +1,4 @@
+import * as XIBMAPIConnectWSDL from '../x-ibm-apiconnect-wsdl';
 import * as Assembly from './assembly';
 
 /**
@@ -17,9 +18,20 @@ export interface DataPowerGateway {
   };
   assembly?: Assembly.DataPowerGateway;
   gateway?: 'datapower-gateway';
-  type?: 'rest' | 'wsdl';
+  type?: 'rest' | 'wsdl' | 'oauth2';
+  'x-ibm-apiconnect-wsdl'?: XIBMAPIConnectWSDL.XIBMAPIConnectWSDL;
+  'wsdl-definition'?: {
+    wsdl: string;
+    service?: string;
+    port?: string;
+    'soap-version': string;
+    'parser-version'?: string;
+  };
+  oauth2?: OAuth2;
   properties?: Properties;
   catalogs?: Catalogs;
+  attachments?: Attachment[];
+  externalDocs?: ExternalDoc[];
   /**
    * @remarks
    * {@see https://www.ibm.com/docs/en/api-connect/10.0.x?topic=cli-referring-extension-in-api-definition}
@@ -34,6 +46,7 @@ export interface DataPowerGateway {
    * ```
    */
   extensions?: {[extensionName: string]: string};
+  categories?: string[];
 }
 
 export interface DataPowerAPIGateway
@@ -44,8 +57,15 @@ export interface DataPowerAPIGateway
     | 'enforced'
     | 'cors'
     | 'type'
+    | 'x-ibm-apiconnect-wsdl'
+    | 'wsdl-definition'
+    | 'oauth2'
     | 'properties'
     | 'catalogs'
+    | 'attachments'
+    | 'externalDocs'
+    | 'extensions'
+    | 'categories'
   > {
   assembly?: Assembly.DataPowerAPIGateway;
   gateway?: 'datapower-api-gateway';
@@ -98,4 +118,99 @@ export interface Catalogs {
   [catalogName: string]: {
     properties: Record<string, unknown>;
   };
+}
+
+export interface URLWithTLSProfile {
+  url: string;
+  'tls-profile'?: string;
+}
+
+export interface OAuth2 {
+  'client-type'?: 'public' | 'confidential';
+  scopes?: Record<string, string>;
+  'scope-validators'?: {
+    application?: URLWithTLSProfile;
+    owner?: URLWithTLSProfile;
+  };
+  grants?: ('applicaiton' | 'password' | 'accessCode' | 'implicit')[];
+  'identity-extraction'?: {
+    /**
+     * @defaultValue `'default-form'`
+     */
+    type: 'default-form' | 'basic' | 'custom-form' | 'redirect';
+    'redirect-url'?: string;
+    'custom-form'?: URLWithTLSProfile;
+  };
+  authentication?: {
+    'x-ibm-authentication-registry'?: string;
+    'x-ibm-authentication-url'?: URLWithTLSProfile;
+  };
+  authorization?: {
+    /**
+     * @defaultValue `'authenticated'`
+     */
+    type: 'default-form' | 'custom-form' | 'authenticated';
+    'custom-form'?: URLWithTLSProfile;
+  };
+  'access-token'?: {
+    /**
+     * @remarks
+     * Range: 1-63244800
+     *
+     * @defaultValue `3600`
+     */
+    ttl?: number;
+  };
+  'refresh-token'?: {
+    /**
+     * @remarks
+     * Range: 0-4096
+     *
+     * @defaultValue `0`
+     */
+    count: number;
+    /**
+     * @remarks
+     * Range: 2-252979200
+     *
+     * @defaultValue `2682000`
+     */
+    ttl?: number;
+  };
+  'maximum-consent'?: {
+    /**
+     * @remarks
+     * Range: 0-2529792000
+     *
+     * @defaultValue `0`
+     */
+    ttl?: number;
+  };
+  revocation?:
+    | {
+        /**
+         * @defaultValue `'url'`
+         */
+        type?: 'url';
+        url: string;
+        'tls-profile'?: string;
+      }
+    | {
+        type: 'gateway';
+      };
+  metadata?: {
+    'metadata-url'?: URLWithTLSProfile;
+  };
+}
+
+export interface Attachment {
+  id: string;
+  title?: string;
+  description?: string;
+}
+
+export interface ExternalDoc {
+  title?: string;
+  description?: string;
+  url: string;
 }
