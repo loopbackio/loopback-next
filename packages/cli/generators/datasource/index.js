@@ -173,7 +173,7 @@ module.exports = class DataSourceGenerator extends ArtifactGenerator {
       // Set defaults and merge with `setting` to override properties
       const question = Object.assign(
         {},
-        {name: key, message: key, suffix: ':'},
+        {name: key, message: key, suffix: ':', default: null},
         setting,
       );
 

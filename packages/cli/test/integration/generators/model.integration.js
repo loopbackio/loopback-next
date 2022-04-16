@@ -75,7 +75,8 @@ describe('lb4 model integration', () => {
     await testUtils
       .executeGenerator(generator)
       .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path))
-      .withArguments('test --base Model');
+      .withArguments('test --base Model')
+      .withPrompts({propName: null}); // FixMe: It is not possible to pass the properties
 
     assert.file(expectedModelFile);
   });
@@ -90,7 +91,8 @@ describe('lb4 model integration', () => {
           additionalFiles: DISCOVER_SANDBOX_FILES,
         }),
       )
-      .withArguments('--dataSource mem --table Test');
+      .withArguments('--dataSource mem --table Test')
+      .withPrompts({propName: null}); // FixMe: It is not possible to pass the properties
     expectFileToMatchSnapshot(expectedModelFile);
   });
 
@@ -268,7 +270,8 @@ describe('model generator using --config option', () => {
     await testUtils
       .executeGenerator(generator)
       .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path))
-      .withArguments(['--config', '{"name":"test", "base":"Entity"}', '--yes']);
+      .withArguments(['--config', '{"name":"test", "base":"Entity"}', '--yes'])
+      .withPrompts({propName: null}); // FixMe: It is not possible to pass the properties
 
     basicModelFileChecks(expectedModelFile, expectedIndexFile);
   });
@@ -299,7 +302,8 @@ describe('model generator using --config option', () => {
           "foreignKeys": {"fk_destination": {"name": "fk_destination"}}},\
           "allowAdditionalProperties":true}',
           '--yes',
-        ]);
+        ])
+        .withPrompts({propName: null}); // FixMe: It is not possible to pass the properties
 
       basicModelFileChecks(expectedModelFile, expectedIndexFile);
 

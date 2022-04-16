@@ -216,6 +216,7 @@ describe('lb4 rest-crud', /** @this {Mocha.Suite} */ function () {
     it("does not run when user doesn't select a model", async () => {
       const basicPrompt = {
         dataSourceName: 'db',
+        modelNameList: null,
       };
       return expect(
         testUtils

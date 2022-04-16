@@ -49,10 +49,8 @@ const REPOSITORY_CRUD_TEMPLATE = 'repository-crud-default-template.ts.ejs';
 const PROMPT_MESSAGE_MODEL = g.f(
   'Select the model(s) you want to generate a repository for',
 );
-const PROMPT_MESSAGE_DATA_SOURCE = g.f('Please select the datasource');
-const PROMPT_BASE_REPOSITORY_CLASS = g.f(
-  'Please select the repository base class',
-);
+const PROMPT_MESSAGE_DATA_SOURCE = g.f('Select the datasource');
+const PROMPT_BASE_REPOSITORY_CLASS = g.f('Select the repository base class');
 const ERROR_READING_FILE = g.f('Error reading file');
 const ERROR_NO_DATA_SOURCES_FOUND = g.f('No datasources found at');
 const ERROR_NO_MODELS_FOUND = g.f('No models found at');

@@ -378,7 +378,7 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
     ];
 
     const answers = await this.prompt(prompts);
-    debug(`propName => ${JSON.stringify(answers)}`);
+    // debug(`propName => ${JSON.stringify(answers)}`);
     if (answers.propName) {
       this.artifactInfo.properties[answers.propName] = {};
       this.propName = answers.propName;
@@ -389,102 +389,100 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
   // Internal Method. Called when a new property is entered.
   // Prompts the user for more information about the property to be added.
   async _promptPropertyInfo() {
-    if (!this.propName) {
-      return true;
-    } else {
-      const prompts = [
-        {
-          name: 'type',
-          message: g.f('Property type:'),
-          type: 'list',
-          choices: this.typeChoices,
-        },
-        {
-          name: 'itemType',
-          message: g.f('Type of array items:'),
-          type: 'list',
-          choices: this.typeChoices.filter(choice => {
-            return choice !== 'array';
-          }),
-          when: answers => {
-            return answers.type === 'array';
-          },
-        },
-        {
-          name: 'id',
-          message: g.f(
-            'Is %s the ID property?',
-            `${chalk.yellow(this.propName)}`,
-          ),
-          type: 'confirm',
-          default: false,
-          when: answers => {
-            return (
-              !this.idFieldSet &&
-              !['array', 'object', 'buffer'].includes(answers.type)
-            );
-          },
-        },
-        {
-          name: 'generated',
-          message: g.f(
-            'Is %s generated automatically?',
-            `${chalk.yellow(this.propName)}`,
-          ),
-          type: 'confirm',
-          default: true,
-          when: answers => answers.id,
-        },
-        {
-          name: 'required',
-          message: g.f('Is it required?:'),
-          type: 'confirm',
-          default: false,
-          when: answers => !answers.generated,
-        },
-        {
-          name: 'default',
-          message: g.f(
-            'Default value %s:',
-            `${chalk.yellow(g.f('[leave blank for none]'))}`,
-          ),
-          when: answers => {
-            return (
-              ![null, 'buffer', 'any'].includes(answers.type) &&
-              !answers.generated &&
-              answers.required !== true
-            );
-          },
-        },
-      ];
+    if (!this.propName) return true;
 
-      const answers = await this.prompt(prompts);
-      debug(`propertyInfo => ${JSON.stringify(answers)}`);
-
-      // Yeoman sets the default to `''` so we remove it unless the user entered
-      // a different value
-      if (answers.default === '') {
-        delete answers.default;
-      }
-
-      Object.assign(this.artifactInfo.properties[this.propName], answers);
-
-      // We prompt for `id` only once per model using idFieldSet flag.
-      // and 'generated' flag makes sure id is defined, especially for database like MySQL
-      // Skipped the test for `generated` for now.
-      if (answers.id) {
-        this.idFieldSet = true;
-      }
-
-      this.log();
-      this.log(
-        g.f(
-          "Let's add another property to %s",
-          `${chalk.yellow(this.artifactInfo.className)}`,
+    const prompts = [
+      {
+        name: 'type',
+        message: g.f('Property type:'),
+        type: 'list',
+        choices: this.typeChoices,
+      },
+      {
+        name: 'itemType',
+        message: g.f('Type of array items:'),
+        type: 'list',
+        choices: this.typeChoices.filter(choice => {
+          return choice !== 'array';
+        }),
+        when: answers => {
+          return answers.type === 'array';
+        },
+      },
+      {
+        name: 'id',
+        message: g.f(
+          'Is %s the ID property?',
+          `${chalk.yellow(this.propName)}`,
         ),
-      );
-      return this.promptPropertyName();
+        type: 'confirm',
+        default: false,
+        when: answers => {
+          return (
+            !this.idFieldSet &&
+            !['array', 'object', 'buffer'].includes(answers.type)
+          );
+        },
+      },
+      {
+        name: 'generated',
+        message: g.f(
+          'Is %s generated automatically?',
+          `${chalk.yellow(this.propName)}`,
+        ),
+        type: 'confirm',
+        default: true,
+        when: answers => answers.id,
+      },
+      {
+        name: 'required',
+        message: g.f('Is it required?:'),
+        type: 'confirm',
+        default: false,
+        when: answers => !answers.generated,
+      },
+      {
+        name: 'default',
+        message: g.f(
+          'Default value %s:',
+          `${chalk.yellow(g.f('[leave blank for none]'))}`,
+        ),
+        when: answers => {
+          return (
+            ![null, 'buffer', 'any'].includes(answers.type) &&
+            !answers.generated &&
+            answers.required !== true
+          );
+        },
+      },
+    ];
+
+    const answers = await this.prompt(prompts);
+    debug(`propertyInfo => ${JSON.stringify(answers)}`);
+
+    // Yeoman sets the default to `''` so we remove it unless the user entered
+    // a different value
+    if (answers.default === '') {
+      delete answers.default;
     }
+
+    Object.assign(this.artifactInfo.properties[this.propName], answers);
+
+    // We prompt for `id` only once per model using idFieldSet flag.
+    // and 'generated' flag makes sure id is defined, especially for database like MySQL
+    // Skipped the test for `generated` for now.
+    if (answers.id) {
+      this.idFieldSet = true;
+    }
+
+    this.log();
+    this.log(
+      g.f(
+        "Let's add another property to %s",
+        `${chalk.yellow(this.artifactInfo.className)}`,
+      ),
+    );
+    return this.promptPropertyName();
   }
 
   scaffold() {

@@ -83,7 +83,7 @@ import {
  * This class will be bound to the application as an \`Interceptor\` during
  * \`boot\`
  */
-@globalInterceptor('', {tags: {name: 'myInterceptor'}})
+@globalInterceptor('myGroup', {tags: {name: 'myInterceptor'}})
 export class MyInterceptorInterceptor implements Provider<Interceptor> {
   /*
   constructor() {}
@@ -144,7 +144,7 @@ import {
  * This class will be bound to the application as an \`Interceptor\` during
  * \`boot\`
  */
-@globalInterceptor('', {tags: {name: 'myInterceptor'}})
+@globalInterceptor('myGroup', {tags: {name: 'myInterceptor'}})
 export class MyInterceptorInterceptor implements Provider<Interceptor> {
   /*
   constructor() {}
