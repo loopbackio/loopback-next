@@ -8,21 +8,17 @@
 const path = require('path');
 const {TestSandbox} = require('@loopback/testlab');
 const {assertFilesToMatchSnapshot} = require('../../snapshots');
-
-const generator = path.join(__dirname, '../../../generators/openapi');
-const specPath = path.resolve(
-  __dirname,
-  '../../fixtures/openapi/3.0/petstore-expanded.yaml',
-);
-
-const SANDBOX_FILES = require('../../fixtures/openapi/3.0').SANDBOX_FILES;
-
-// Test Sandbox
-const sandbox = new TestSandbox(path.resolve(__dirname, '../.sandbox'));
+const {SANDBOX_FILES} = require('../../fixtures/openapi/3.0');
 const testUtils = require('../../test-utils');
 
+const sandbox = new TestSandbox(path.resolve(__dirname, '../.sandbox'));
+const generator = path.join(__dirname, '../../../generators/openapi');
+
 const props = {
-  url: specPath,
+  url: path.resolve(
+    __dirname,
+    '../../fixtures/openapi/3.0/petstore-expanded.yaml',
+  ),
   dataSourceName: 'petStore',
 };
 

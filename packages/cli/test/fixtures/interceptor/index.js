@@ -6,6 +6,7 @@ exports.SANDBOX_FILES = [
     file: 'myinterceptorconfig.json',
     content: JSON.stringify({
       name: 'myInterceptor',
+      group: 'myGroup',
     }),
   },
 ];
