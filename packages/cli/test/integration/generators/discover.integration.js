@@ -50,6 +50,10 @@ const disableCamelCaseOptions = {
 const missingDataSourceOptions = {
   dataSource: 'foo',
 };
+const optionalIdOptions = {
+  ...baseOptions,
+  optionalId: true,
+};
 
 // Expected File Name
 const defaultExpectedTestModel = path.join(
@@ -154,6 +158,20 @@ describe('lb4 discover integration', () => {
           )
           .withOptions(missingDataSourceOptions),
       ).to.be.rejectedWith(/Cannot find datasource/);
+    });
+
+    it('does not mark id property as required based on optionalId option', async () => {
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {
+            additionalFiles: SANDBOX_FILES,
+          }),
+        )
+        .withOptions(optionalIdOptions);
+
+      assert.file(defaultExpectedTestModel);
+      expectFileToMatchSnapshot(defaultExpectedTestModel);
     });
   });
 });

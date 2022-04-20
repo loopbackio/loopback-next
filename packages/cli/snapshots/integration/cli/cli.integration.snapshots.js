@@ -1328,6 +1328,13 @@ exports[`cli saves command metadata to .yo-rc.json 1`] = `
           "description": "Specify the directory into which the \`model.model.ts\` files will be placed",
           "name": "outDir",
           "hide": false
+        },
+        "optionalId": {
+          "type": "Boolean",
+          "description": "Boolean to mark id property as optional field",
+          "default": false,
+          "name": "optionalId",
+          "hide": false
         }
       },
       "arguments": [

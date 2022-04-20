@@ -50,6 +50,12 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
       ),
       default: undefined,
     });
+
+    this.option('optionalId', {
+      type: Boolean,
+      description: g.f('Boolean to mark id property as optional field'),
+      default: false,
+    });
   }
 
   _setupGenerator() {
@@ -288,6 +294,18 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
         ),
       );
       debug(`Discovered: ${modelInfo.name}`);
+    }
+
+    if (this.options.optionalId) {
+      // Find id property
+      const idProperty = Object.entries(
+        this.artifactInfo.modelDefinitions[0].properties,
+      ).find(x => x[1].id === 1)[0];
+
+      // Mark as not required
+      this.artifactInfo.modelDefinitions[0].properties[
+        idProperty
+      ].required = false;
     }
   }
 

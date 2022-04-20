@@ -47,6 +47,9 @@ placed. Default is `src/models`
 `--schema`: Specify the schema which the datasource will find the models to
 discover
 
+`--optionalId`: Specify if the Id property of generated models will be marked as
+not required
+
 ### Interactive Prompts
 
 Based on the option, the tool may prompt you for:
