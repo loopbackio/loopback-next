@@ -39,7 +39,7 @@
     "@types/express": "^4.17.13",
     "@types/jsonwebtoken": "^8.5.8",
     "@types/lodash": "^4.14.182",
-    "@types/node": "^12.20.47",
+    "@types/node": "^12.20.48",
     "axios": "^0.26.1",
     "body-parser": "^1.20.0",
     "express": "^4.17.3",
