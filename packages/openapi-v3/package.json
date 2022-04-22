@@ -48,7 +48,7 @@
     "json-merge-patch": "^1.0.2",
     "lodash": "^4.17.21",
     "openapi3-ts": "^2.0.2",
-    "tslib": "^2.3.1"
+    "tslib": "^2.4.0"
   },
   "devDependencies": {
     "@loopback/build": "^8.1.2",

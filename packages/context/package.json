@@ -48,7 +48,7 @@
     "debug": "^4.3.4",
     "hyperid": "^3.0.1",
     "p-event": "^4.2.0",
-    "tslib": "^2.3.1",
+    "tslib": "^2.4.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
