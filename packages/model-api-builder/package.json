@@ -36,7 +36,7 @@
     "@loopback/repository": "^4.1.2"
   },
   "dependencies": {
-    "tslib": "^2.3.1"
+    "tslib": "^2.4.0"
   },
   "devDependencies": {
     "@loopback/build": "^8.1.2",
