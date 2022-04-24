@@ -51,7 +51,7 @@
     "@types/bson": "^4.0.5",
     "@types/json-schema": "^7.0.11",
     "@types/lodash": "^4.14.182",
-    "@types/node": "^12.20.48",
+    "@types/node": "^12.20.49",
     "bson": "4.6.3"
   }
 }
