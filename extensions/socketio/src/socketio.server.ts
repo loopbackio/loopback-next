@@ -152,9 +152,9 @@ export class SocketIoServer extends Context {
       this.app.bind(getNamespaceKeyForName(meta.name)).to(nsp);
     }
 
-    nsp.on('connection', socket =>
-      this.createSocketHandler(controllerClass)(socket),
-    );
+    nsp.on('connection', async socket => {
+      await this.createSocketHandler(controllerClass)(socket);
+    });
     return nsp;
   }
 
@@ -164,7 +164,7 @@ export class SocketIoServer extends Context {
    */
   private createSocketHandler(
     controllerClass: Constructor<object>,
-  ): (socket: Socket) => void {
+  ): (socket: Socket) => Promise<void> {
     return async socket => {
       debug(
         'SocketIo connected: id=%s namespace=%s',

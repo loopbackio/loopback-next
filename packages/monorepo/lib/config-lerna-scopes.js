@@ -14,7 +14,7 @@ const {getPackages, runMain} = require('./script-util');
 
 module.exports = {
   rules: {
-    // https://github.com/marionebl/commitlint/blob/master/docs/reference-rules.md
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     'scope-enum': async ctx => [2, 'always', await getPackageNames(ctx)],
   },
 };

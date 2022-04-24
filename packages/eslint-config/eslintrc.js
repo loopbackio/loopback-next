@@ -162,38 +162,20 @@ module.exports = {
       {
         selector: 'variable',
         format: null,
-        filter: {
-          regex: '^_$',
-          match: true,
-        },
+        filter: '^_$',
       },
 
       // For mixin functions
       {
         selector: 'function',
         format: ['PascalCase'],
-        filter: {
-          regex: 'Mixin$',
-          match: true,
-        },
+        filter: 'Mixin$',
       },
 
       {
         selector: 'parameter',
         format: ['camelCase'],
         leadingUnderscore: 'allow',
-      },
-
-      // For members such as `Content-Type` or `application/json` or `200`
-      {
-        selector: 'memberLike',
-        format: null,
-        filter: {
-          // you can expand this regex as you find more cases that require
-          // quoting that you want to allow
-          regex: '[0-9-/ ]',
-          match: true,
-        },
       },
 
       // For enum members
@@ -242,6 +224,13 @@ module.exports = {
       {
         selector: 'typeLike',
         format: ['PascalCase'],
+      },
+
+      {
+        selector: 'objectLiteralProperty',
+        format: null,
+        // filter: '^([2-5]{1}[0-9]{2})$|[-/ ]',
+        modifiers: ['requiresQuotes'],
       },
     ],
   },

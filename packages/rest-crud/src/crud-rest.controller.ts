@@ -280,7 +280,7 @@ function getIdSchema<T extends Entity>(
   const modelSchema = jsonToSchemaObject(
     getJsonSchema(modelCtor),
   ) as SchemaObject;
-  return (modelSchema.properties ?? {})[idProp] as SchemaObject;
+  return modelSchema.properties?.[idProp] as SchemaObject;
 }
 
 // Temporary implementation of a short-hand version of `@requestBody`
