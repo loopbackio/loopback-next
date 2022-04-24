@@ -631,6 +631,7 @@ describe('method injection', () => {
     let savedInstance;
     class TestClass {
       test(@inject('foo') foo: string) {
+        // eslint-disable-next-line @typescript-eslint/no-this-alias
         savedInstance = this;
         return `hello ${foo}`;
       }
@@ -647,6 +648,7 @@ describe('method injection', () => {
       bar: string;
 
       test(@inject('foo') foo: string) {
+        // eslint-disable-next-line @typescript-eslint/no-this-alias
         savedInstance = this;
         this.bar = foo;
         return `hello ${foo}`;
@@ -724,6 +726,7 @@ describe('async method injection', () => {
       bar: string;
 
       test(@inject('foo') foo: string) {
+        // eslint-disable-next-line @typescript-eslint/no-this-alias
         savedInstance = this;
         this.bar = foo;
         return Promise.resolve(`hello ${foo}`);
