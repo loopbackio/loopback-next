@@ -12,6 +12,7 @@ exemptLabels:
   - p1
   - major
   - good first issue
+  - feature
 
 # Label to use when marking an issue or a PR as stale
 staleLabel: stale
