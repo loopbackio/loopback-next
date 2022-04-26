@@ -60,6 +60,6 @@
     "@types/debug": "^4.1.7",
     "@types/json-merge-patch": "0.0.8",
     "@types/lodash": "^4.14.182",
-    "@types/node": "^12.20.49"
+    "@types/node": "^12.20.50"
   }
 }
