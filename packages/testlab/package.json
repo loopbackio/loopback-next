@@ -45,7 +45,7 @@
     "oas-validator": "^5.0.8",
     "should": "^13.2.3",
     "sinon": "^11.1.2",
-    "supertest": "^6.2.2",
+    "supertest": "^6.2.3",
     "tslib": "^2.4.0"
   },
   "devDependencies": {
