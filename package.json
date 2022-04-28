@@ -7,8 +7,9 @@
   "author": "IBM Corp.",
   "copyright.owner": "IBM Corp.",
   "repository": "github:loopbackio/loopback-next",
+  "engineStrict": true,
   "engines": {
-    "node": "12 || 14 || 16 || 17",
+    "node": "12 || 14 || 16 || 17 || 18",
     "npm": ">=7"
   },
   "scripts": {
@@ -31,7 +32,6 @@
     "version": "npm run update-template-deps && npm run update-package-deps && npm run save-cli-metadata",
     "outdated": "npm outdated --depth 0 && lerna exec --no-bail \"npm outdated --depth 0\"",
     "tsdocs": "lerna run --scope @loopback/tsdocs build:tsdocs",
-    "coverage:ci": "node packages/build/bin/run-nyc report --reporter=lcov",
     "precoverage": "npm test",
     "coverage": "open-cli coverage/index.html",
     "lint": "npm run eslint && npm run prettier:docs:check && npm run monorepo:check",

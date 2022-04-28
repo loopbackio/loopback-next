@@ -44,7 +44,7 @@ We are providing Maintenance support for
 
 | Version    | Status      | Published | EOL                  |
 | ---------- | ----------- | --------- | -------------------- |
-| LoopBack 4 | Current     | Oct 2018  | Apr 2024 _(minimum)_ |
+| LoopBack 4 | Current     | Oct 2018  | Apr 2025 _(minimum)_ |
 | LoopBack 3 | End-of-Life | Dec 2016  | Dec 2020             |
 | LoopBack 2 | End-of-Life | Jul 2014  | Apr 2019             |
 
@@ -56,7 +56,9 @@ for more details.
 
 Make sure you have the following installed:
 
-- [Node.js](https://nodejs.org/en/download/) >= 12
+| Package                                    | Version/-s                                                                             | Link                                  | Note                                                                                                  |
+| ------------------------------------------ | -------------------------------------------------------------------------------------- | ------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| [Node.js](https://nodejs.org/en/download/) | Maintenance LTS (_v12_ & _v14_) <br/> Active LTS (_v16_) <br/> Current (_v17_ & _v18_) | https://nodejs.org/en/about/releases/ | <span style="color: yellow;">The use of the current version for production is not recommended</span>. |
 
 Install LoopBack 4 CLI to help create new projects as follows:
 
@@ -115,9 +117,9 @@ See [SECURITY.md](SECURITY.md) for more details.
 |                 Nora Abdelgadir                  |              Matthew Schnee              |                    Hage Yaapa                    |
 | :----------------------------------------------: | :--------------------------------------: | :----------------------------------------------: |
 | [![nabdelgadir]](https://github.com/nabdelgadir) | [![mschnee]](https://github.com/mschnee) | [![hacksparrow]](https://github.com/hacksparrow) |
-|                    Agnes Lin                     |                  Madaky                  |                   Hugo Da Roit                   |
+|                  **Agnes Lin**                   |                **Madaky**                |                 **Hugo Da Roit**                 |
 |    [![agnes512]](https://github.com/agnes512)    |  [![madaky]](https://github.com/madaky)  |        [![yaty]](https://github.com/yaty)        |
-|                    Nico Flaig                    |              Denny Bartelt               |               Douglas McConnachie                |
+|                  **Nico Flaig**                  |            **Denny Bartelt**             |             **Douglas McConnachie**              |
 |      [![nflaig]](https://github.com/nflaig)      | [![derdeka]](https://github.com/derdeka) |    [![dougal83]](https://github.com/dougal83)    |
 
 See
