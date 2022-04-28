@@ -2,9 +2,11 @@ name: Continuous Integration
 
 on:
   push:
-    branches: [master]
+    branches:
+      - master
   pull_request:
-    branches: [master]
+    branches:
+      - master
   schedule:
     - cron: '0 2 * * 1' # At 02:00 on Monday
 
@@ -20,7 +22,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node-version: [12, 14, 16, 17]
+        node-version: [12, 14, 16, 17, 18]
         include:
           - os: macos-latest
             node-version: 16 # LTS
@@ -35,20 +37,19 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Update NPM
-        run: npm install -g npm
+        if: matrix.node-version < 16
+        run: npm install -g npm@latest-7
       - name: Bootstrap project
         run: |
           npm ci --ignore-scripts
-          npm run postinstall
+          npx lerna bootstrap
       - name: Build project
-        run: |
-          npm run clean
-          npm run build
+        run: npm run build
       - uses: Yuri6037/Action-FakeTTY@v1.1
       - name: Run tests
-        run: faketty npm test --ignore-scripts
+        run: faketty npm run test --ignore-scripts
       - name: Generate coverage report
-        run: npm run coverage:ci --ignore-scripts
+        run: node packages/build/bin/run-nyc report --reporter=lcov
       - name: Publish coverage report to Coveralls
         uses: coverallsapp/github-action@master
         with:
@@ -81,7 +82,7 @@ jobs:
           npm ci --ignore-scripts
           npx lerna bootstrap --scope "@loopback/benchmark" --include-dependencies
       - name: Run benchmark tests
-        run: npm test --prefix benchmark
+        run: npx lerna run test --scope @loopback/benchmark
 
   code-lint:
     name: Code Lint
@@ -131,7 +132,7 @@ jobs:
       - name: Bootstrap project
         run: |
           npm ci --ignore-scripts
-          npm run postinstall
+          npx lerna bootstrap
       - name: Build project
         run: npm run build
       - name: Verify doc changes
