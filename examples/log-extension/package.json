@@ -21,7 +21,7 @@
     "url": "https://github.com/loopbackio/loopback-next/issues"
   },
   "engines": {
-    "node": "12 || 14 || 16 || 17 || 18"
+    "node": "14 || 16 || 17 || 18"
   },
   "scripts": {
     "build": "lb-tsc",
