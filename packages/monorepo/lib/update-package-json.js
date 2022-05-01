@@ -12,7 +12,8 @@
 
 const path = require('path');
 const fs = require('fs-extra');
-const debug = require('debug')('loopback:monorepo');
+const hostedGitInfo = require('hosted-git-info');
+const debugFactory = require('debug');
 const {
   isDryRun,
   isTypeScriptPackage,
@@ -24,6 +25,8 @@ const {
   printJson,
   runMain,
 } = require('./script-util');
+
+const debug = debugFactory('loopback:monorepo');
 
 const orderedPkgProperties = [
   'name',
@@ -84,8 +87,11 @@ async function updatePackageJsonFiles(options) {
     pkg.license = rootPkg.license;
 
     pkg.repository = {
-      type: rootPkg.repository.type,
-      url: rootPkg.repository.url,
+      type: rootPkg.repository.type ?? 'git',
+      url:
+        typeof rootPkg.repository === 'string'
+          ? hostedGitInfo.fromUrl(rootPkg.repository).https({noGitPlus: true})
+          : rootPkg.repository.url,
       directory: path.relative(p.rootPath, p.location).replace(/\\/g, '/'),
     };
 

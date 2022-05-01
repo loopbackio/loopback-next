@@ -21,7 +21,7 @@
     "directory": "packages/build"
   },
   "engines": {
-    "node": "12 || 14 || 16 || 17 || 18"
+    "node": "14 || 16 || 17 || 18"
   },
   "scripts": {
     "test": "npm run mocha",

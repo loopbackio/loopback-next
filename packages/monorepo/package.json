@@ -20,7 +20,7 @@
     "directory": "packages/monorepo"
   },
   "engines": {
-    "node": "12 || 14 || 16 || 17 || 18"
+    "node": "14 || 16 || 17 || 18"
   },
   "publishConfig": {
     "access": "public"
