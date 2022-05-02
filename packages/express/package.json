@@ -49,7 +49,7 @@
     "debug": "^4.3.4",
     "express": "^4.18.1",
     "http-errors": "^2.0.0",
-    "on-finished": "^2.3.0",
+    "on-finished": "^2.4.1",
     "toposort": "^2.0.2",
     "tslib": "^2.4.0"
   },
