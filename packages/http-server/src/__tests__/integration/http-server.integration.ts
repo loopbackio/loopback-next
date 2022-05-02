@@ -29,7 +29,7 @@ describe('HttpServer (integration)', () => {
       host: '::1',
     } as HttpOptions);
     await server.start();
-    expect(getAddressFamily(server)).to.equal('IPv6');
+    expect(getAddressFamily(server)).to.equalOneOf(6, 'IPv6');
     const response = await httpGetAsync(server.url);
     expect(response.statusCode).to.equal(200);
   });
@@ -225,7 +225,7 @@ describe('HttpServer (integration)', () => {
   it('supports HTTP over IPv4', async () => {
     server = new HttpServer(dummyRequestHandler, {host: '127.0.0.1'});
     await server.start();
-    expect(getAddressFamily(server)).to.equal('IPv4');
+    expect(getAddressFamily(server)).to.equalOneOf(4, 'IPv4');
     const response = await httpGetAsync(server.url);
     expect(response.statusCode).to.equal(200);
   });
@@ -233,7 +233,7 @@ describe('HttpServer (integration)', () => {
   skipOnTravis(it, 'supports HTTP over IPv6', async () => {
     server = new HttpServer(dummyRequestHandler, {host: '::1'});
     await server.start();
-    expect(getAddressFamily(server)).to.equal('IPv6');
+    expect(getAddressFamily(server)).to.equalOneOf(6, 'IPv6');
     const response = await httpGetAsync(server.url);
     expect(response.statusCode).to.equal(200);
   });
@@ -258,7 +258,7 @@ describe('HttpServer (integration)', () => {
       host: '::1',
     });
     await httpsServer.start();
-    expect(getAddressFamily(httpsServer)).to.equal('IPv6');
+    expect(getAddressFamily(httpsServer)).to.equalOneOf(6, 'IPv6');
     const response = await httpsGetAsync(httpsServer.url);
     expect(response.statusCode).to.equal(200);
   });

@@ -231,7 +231,7 @@ export class HttpServer {
       return `${this.protocol}+unix://${basePath}`;
     }
     let host = this.host;
-    if (this._address.family === 'IPv6') {
+    if ([6, 'IPv6'].includes(this._address.family)) {
       if (host === '::') host = '::1';
       host = `[${host}]`;
     } else if (host === '0.0.0.0') {
