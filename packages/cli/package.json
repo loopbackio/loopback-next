@@ -56,7 +56,7 @@
     "minimist": "^1.2.6",
     "mkdirp": "^1.0.4",
     "natural-compare": "^1.4.0",
-    "pacote": "^13.2.0",
+    "pacote": "^13.3.0",
     "pluralize": "^8.0.0",
     "regenerate": "^1.4.2",
     "semver": "^7.3.7",
