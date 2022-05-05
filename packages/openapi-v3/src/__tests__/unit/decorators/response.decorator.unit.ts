@@ -147,6 +147,7 @@ describe('@oas.response decorator', () => {
         actualSpec.components?.schemas?.SuccessModel,
       ).to.not.be.undefined();
     });
+
     it('supports multiple @oas.response decorators with an array of models', () => {
       class MyController {
         @get('/greet')
