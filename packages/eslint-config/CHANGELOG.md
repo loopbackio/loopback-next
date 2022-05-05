@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [13.0.0](https://github.com/loopbackio/loopback-next/compare/@loopback/eslint-config@12.0.4...@loopback/eslint-config@13.0.0) (2022-05-05)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove node v12 support
+
+### Features
+
+* add support for node v18 ([ccb4c61](https://github.com/loopbackio/loopback-next/commit/ccb4c61307d94ab7bb07a19c547dfc4fa7d388a8))
+* remove node v12 support ([5f66e5b](https://github.com/loopbackio/loopback-next/commit/5f66e5bd288ba806b3aa6550fc29c5009de8b60d))
+
+
+### Reverts
+
+* update dependency eslint-plugin-mocha to ^10.0.4 ([c7f9263](https://github.com/loopbackio/loopback-next/commit/c7f9263095579fdcff65ab77a00f92c1cbab9718))
+
+
+
 ## [12.0.4](https://github.com/loopbackio/loopback-next/compare/@loopback/eslint-config@12.0.3...@loopback/eslint-config@12.0.4) (2022-03-29)
 
 

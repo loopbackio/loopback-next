@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.0](https://github.com/loopbackio/loopback-next/compare/@loopback/http-server@3.1.2...@loopback/http-server@4.0.0) (2022-05-05)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove node v12 support
+
+### Features
+
+* add support for node v18 ([ccb4c61](https://github.com/loopbackio/loopback-next/commit/ccb4c61307d94ab7bb07a19c547dfc4fa7d388a8))
+* remove node v12 support ([5f66e5b](https://github.com/loopbackio/loopback-next/commit/5f66e5bd288ba806b3aa6550fc29c5009de8b60d))
+
+
+### Bug Fixes
+
+* address.family is number in Node v18 ([9758ba8](https://github.com/loopbackio/loopback-next/commit/9758ba8fcac21a7a90457823db40873c7f468015)), closes [nodejs/node#41431](https://github.com/nodejs/node/issues/41431)
+
+
+
 ## [3.1.2](https://github.com/loopbackio/loopback-next/compare/@loopback/http-server@3.1.1...@loopback/http-server@3.1.2) (2022-03-29)
 
 **Note:** Version bump only for package @loopback/http-server

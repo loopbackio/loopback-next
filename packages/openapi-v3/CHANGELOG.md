@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.0.0](https://github.com/loopbackio/loopback-next/compare/@loopback/openapi-v3@7.1.2...@loopback/openapi-v3@8.0.0) (2022-05-05)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove node v12 support
+
+### Features
+
+* add support for node v18 ([ccb4c61](https://github.com/loopbackio/loopback-next/commit/ccb4c61307d94ab7bb07a19c547dfc4fa7d388a8))
+* remove node v12 support ([5f66e5b](https://github.com/loopbackio/loopback-next/commit/5f66e5bd288ba806b3aa6550fc29c5009de8b60d))
+
+
+### Bug Fixes
+
+* controller spec response building from metadata ([e5c295c](https://github.com/loopbackio/loopback-next/commit/e5c295cab1d75f64007adf6340b61668c747450b))
+* security spec is removed when using [@response](https://github.com/response) decorator ([8ebe584](https://github.com/loopbackio/loopback-next/commit/8ebe584d3441c8ba5612e6f0cde4b4de988f4885))
+
+
+
 ## [7.1.2](https://github.com/loopbackio/loopback-next/compare/@loopback/openapi-v3@7.1.1...@loopback/openapi-v3@7.1.2) (2022-03-29)
 
 **Note:** Version bump only for package @loopback/openapi-v3

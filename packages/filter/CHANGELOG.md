@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.0](https://github.com/loopbackio/loopback-next/compare/@loopback/filter@2.1.2...@loopback/filter@3.0.0) (2022-05-05)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove node v12 support
+
+### Features
+
+* add polymorphic relations ([f4b8158](https://github.com/loopbackio/loopback-next/commit/f4b8158387222ec64fe7ef6971da8151f2016dda)), closes [#2487](https://github.com/loopbackio/loopback-next/issues/2487)
+* add support for node v18 ([ccb4c61](https://github.com/loopbackio/loopback-next/commit/ccb4c61307d94ab7bb07a19c547dfc4fa7d388a8))
+* remove node v12 support ([5f66e5b](https://github.com/loopbackio/loopback-next/commit/5f66e5bd288ba806b3aa6550fc29c5009de8b60d))
+
+
+
 ## [2.1.2](https://github.com/loopbackio/loopback-next/compare/@loopback/filter@2.1.1...@loopback/filter@2.1.2) (2022-03-29)
 
 **Note:** Version bump only for package @loopback/filter

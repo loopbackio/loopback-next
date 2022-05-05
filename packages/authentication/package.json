@@ -1,7 +1,7 @@
 {
   "name": "@loopback/authentication",
   "description": "A LoopBack component for authentication support.",
-  "version": "8.1.2",
+  "version": "9.0.0",
   "keywords": [
     "LoopBack",
     "Authentication"
@@ -39,23 +39,23 @@
     "!*/__tests__"
   ],
   "peerDependencies": {
-    "@loopback/core": "^3.1.2",
-    "@loopback/rest": "^11.1.2"
+    "@loopback/core": "^4.0.0",
+    "@loopback/rest": "^12.0.0"
   },
   "dependencies": {
-    "@loopback/security": "^0.7.2",
+    "@loopback/security": "^0.8.0",
     "@types/express": "^4.17.13",
     "@types/lodash": "^4.14.182",
     "lodash": "^4.17.21",
     "tslib": "^2.4.0"
   },
   "devDependencies": {
-    "@loopback/build": "^8.1.2",
-    "@loopback/core": "^3.1.2",
-    "@loopback/eslint-config": "^12.0.4",
-    "@loopback/openapi-spec-builder": "^4.1.2",
-    "@loopback/rest": "^11.1.2",
-    "@loopback/testlab": "^4.1.2",
+    "@loopback/build": "^9.0.0",
+    "@loopback/core": "^4.0.0",
+    "@loopback/eslint-config": "^13.0.0",
+    "@loopback/openapi-spec-builder": "^5.0.0",
+    "@loopback/rest": "^12.0.0",
+    "@loopback/testlab": "^5.0.0",
     "@types/node": "^12.20.50",
     "jsonwebtoken": "^8.5.1"
   }
