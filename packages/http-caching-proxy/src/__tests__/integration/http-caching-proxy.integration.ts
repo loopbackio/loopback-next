@@ -80,7 +80,7 @@ describe('HttpCachingProxy', () => {
       makeRequest({
         url: 'http://www.mocky.io/v2/5dade5e72d0000a542e4bd9c?mocky-delay=1000ms',
       }),
-    ).to.be.rejectedWith(/502 - "Error: timeout of 1ms exceeded/);
+    ).to.be.rejectedWith(/502 - "AxiosError: timeout of 1ms exceeded/);
   });
 
   it('proxies HTTPs requests (no tunneling)', async function (this: Mocha.Context) {
