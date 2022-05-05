@@ -51,9 +51,7 @@ export class BookController {
       },
     },
   })
-  async findById(
-    @param.path.string('id') id: string,
-  ): Promise<Book | undefined> {
-    return this.bookRepo.findOne(id);
+  async findById(@param.path.number('id') id: number): Promise<Book | null> {
+    return this.bookRepo.findOne({where: {id}});
   }
 }
