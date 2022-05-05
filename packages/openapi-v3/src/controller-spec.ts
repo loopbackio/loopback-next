@@ -377,7 +377,7 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
     }
 
     debug(`  adding ${endpointName}`, operationSpec);
-    spec.paths[path][verb] = operationSpec;
+    spec.paths[path][verb] = {...endpoint.spec, ...operationSpec};
 
     debug(`  inferring schema object for method %s`, op);
     const opMetadata = MetadataInspector.getDesignTypeForMethod(
