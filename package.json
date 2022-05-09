@@ -71,7 +71,7 @@
     "eslint-plugin-mocha": "10.0.4",
     "eslint-plugin-prettier": "^4.0.0",
     "fs-extra": "^10.1.0",
-    "husky": "^7.0.4",
+    "husky": "^8.0.1",
     "lerna": "^4.0.0",
     "lint-staged": "^12.4.1",
     "markdown-table": "^3.0.2",
