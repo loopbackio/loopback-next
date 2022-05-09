@@ -1,4 +1,6 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
 
-npx --no-install commitlint --edit "$1"
+[ -n "$CI" ] && exit 0
+
+npx --no -- commitlint --edit "$1"
