@@ -761,6 +761,10 @@ children:
         url: ReferencesMany-relation.html
         output: 'web, pdf'
 
+      - title: 'Polymorphic Relation'
+        url: Polymorphic-relation.html
+        output: 'web, pdf'
+
     - title: 'Repository'
       url: Repository.html
       output: 'web, pdf'
