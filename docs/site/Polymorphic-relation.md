@@ -1,6 +1,6 @@
 ---
 lang: en
-title: 'Polymorphic Relations'
+title: 'Polymorphic Relation'
 keywords: LoopBack 4.0, LoopBack 4, Node.js, TypeScript, OpenAPI, Model Relation
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Polymorphic-relation.html
