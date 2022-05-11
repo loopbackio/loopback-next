@@ -100,8 +100,10 @@ function startWorker() {
     child.once('error', reject);
 
     child.on('message', msg => {
-      debug('Worker setup done, url is', msg.url);
-      resolve({worker: child, url: msg.url});
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const url = (msg as any).url;
+      debug('Worker setup done, url is', url);
+      resolve({worker: child, url});
     });
 
     child.once('exit', (code, signal) => {
