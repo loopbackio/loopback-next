@@ -46,7 +46,7 @@
   },
   "dependencies": {
     "@loopback/security": "^0.8.0",
-    "passport": "^0.5.2",
+    "passport": "^0.5.3",
     "tslib": "^2.4.0",
     "util-promisifyall": "^1.0.6"
   },
