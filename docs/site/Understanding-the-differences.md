@@ -233,7 +233,7 @@ separated from the code responsible for implementing client side APIs.
 
 <tr>
   <td>Storage component</td>
-  <td><a href="/doc/en/lb3/Storage-component.html"><code>loopback-compontent-storage</code></a>
+  <td><a href="/doc/en/lb3/Storage-component.html"><code>loopback-component-storage</code></a>
   </td>
   <td>not available</td>
 </tr>
