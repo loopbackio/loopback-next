@@ -50,6 +50,12 @@ const disableCamelCaseOptions = {
 const missingDataSourceOptions = {
   dataSource: 'foo',
 };
+const specificmodelsOptions = {
+  models: 'Test',
+  dataSource: 'mem',
+  views: false,
+  disableCamelCase: true,
+};
 const optionalIdOptions = {
   ...baseOptions,
   optionalId: true,
@@ -173,5 +179,19 @@ describe('lb4 discover integration', () => {
       assert.file(defaultExpectedTestModel);
       expectFileToMatchSnapshot(defaultExpectedTestModel);
     });
+  });
+
+  it('generates specific models without prompts using --models', async () => {
+    await testUtils
+      .executeGenerator(generator)
+      .inDir(sandbox.path, () =>
+        testUtils.givenLBProject(sandbox.path, {
+          additionalFiles: SANDBOX_FILES,
+        }),
+      )
+      .withOptions(specificmodelsOptions);
+
+    basicModelFileChecks(defaultExpectedTestModel, defaultExpectedIndexFile);
+    assert.file(defaultExpectedTestModel);
   });
 });
