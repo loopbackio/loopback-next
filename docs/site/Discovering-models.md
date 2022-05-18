@@ -47,6 +47,8 @@ placed. Default is `src/models`
 `--schema`: Specify the schema which the datasource will find the models to
 discover
 
+`--models`: generate the specific model
+
 ### Interactive Prompts
 
 Based on the option, the tool may prompt you for:

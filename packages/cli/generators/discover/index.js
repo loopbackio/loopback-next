@@ -50,6 +50,13 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
       ),
       default: undefined,
     });
+    this.option('models', {
+      type: String,
+      description: g.f(
+        'Discover specific models without prompting users to select ex:--models=tale1,table2',
+      ),
+      default: undefined,
+    });
   }
 
   _setupGenerator() {
@@ -184,6 +191,16 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
     /* istanbul ignore next */
     if (this.options.all) {
       this.discoveringModels = this.modelChoices;
+    }
+
+    if (this.options.models) {
+      const answers = {discoveringModels: this.options.models.split(',')};
+      debug(`Models chosen: ${JSON.stringify(answers)}`);
+      this.discoveringModels = [];
+      answers.discoveringModels.forEach(m => {
+        this.discoveringModels.push(this.modelChoices.find(c => c.name === m));
+      });
+      return;
     }
 
     const prompts = [

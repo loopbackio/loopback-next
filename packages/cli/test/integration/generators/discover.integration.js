@@ -50,6 +50,12 @@ const disableCamelCaseOptions = {
 const missingDataSourceOptions = {
   dataSource: 'foo',
 };
+const specificmodelsOptions = {
+  models: 'Test',
+  dataSource: 'mem',
+  views: false,
+  disableCamelCase: true,
+};
 
 // Expected File Name
 const defaultExpectedTestModel = path.join(
@@ -154,6 +160,20 @@ describe('lb4 discover integration', () => {
           )
           .withOptions(missingDataSourceOptions),
       ).to.be.rejectedWith(/Cannot find datasource/);
+    });
+
+    it('generates specific models without prompts using --models', async () => {
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {
+            additionalFiles: SANDBOX_FILES,
+          }),
+        )
+        .withOptions(specificmodelsOptions);
+
+      basicModelFileChecks(defaultExpectedTestModel, defaultExpectedIndexFile);
+      assert.file(defaultExpectedTestModel);
     });
   });
 });
