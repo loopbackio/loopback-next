@@ -283,29 +283,26 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
     for (let i = 0; i < this.discoveringModels.length; i++) {
       const modelInfo = this.discoveringModels[i];
       debug(`Discovering: ${modelInfo.name}...`);
-      this.artifactInfo.modelDefinitions.push(
-        await modelMaker.discoverSingleModel(
-          this.artifactInfo.dataSource,
-          modelInfo.name,
-          {
-            schema: modelInfo.owner,
-            disableCamelCase: this.artifactInfo.disableCamelCase,
-          },
-        ),
+      const modelDefinition = await modelMaker.discoverSingleModel(
+        this.artifactInfo.dataSource,
+        modelInfo.name,
+        {
+          schema: modelInfo.owner,
+          disableCamelCase: this.artifactInfo.disableCamelCase,
+        },
       );
+      if (this.options.optionalId) {
+        // Find id properties (can be multiple ids if using composite key)
+        const idProperties = Object.values(modelDefinition.properties).filter(
+          property => property.id,
+        );
+        // Mark as not required
+        idProperties.forEach(property => {
+          property.required = false;
+        });
+      }
+      this.artifactInfo.modelDefinitions.push(modelDefinition);
       debug(`Discovered: ${modelInfo.name}`);
-    }
-
-    if (this.options.optionalId) {
-      // Find id property
-      const idProperty = Object.entries(
-        this.artifactInfo.modelDefinitions[0].properties,
-      ).find(x => x[1].id === 1)[0];
-
-      // Mark as not required
-      this.artifactInfo.modelDefinitions[0].properties[
-        idProperty
-      ].required = false;
     }
   }
 
