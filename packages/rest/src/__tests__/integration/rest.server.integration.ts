@@ -17,6 +17,7 @@ import {
   expect,
   givenHttpServerConfig,
   httpsGetAsync,
+  skipIf,
   skipOnTravis,
   supertest,
 } from '@loopback/testlab';
@@ -788,22 +789,27 @@ paths:
     expect(res.statusCode).to.equal(200);
   });
 
-  it('supports HTTPS protocol with a pfx file', async () => {
-    const pfxPath = path.join(FIXTURES, 'pfx.pfx');
-    const serverOptions = givenHttpServerConfig({
-      port: 0,
-      protocol: 'https' as const,
-      pfx: fs.readFileSync(pfxPath),
-      passphrase: 'loopback4',
-    });
-    const server = await givenAServer({rest: serverOptions});
-    server.handler(dummyRequestHandler);
-    await server.start();
-    const serverUrl = server.getSync(RestBindings.URL);
-    const res = await httpsGetAsync(serverUrl);
-    expect(res.statusCode).to.equal(200);
-    await server.stop();
-  });
+  skipIf(
+    parseInt(process.versions.node.split('.')[0]) > 16,
+    it,
+    'supports HTTPS protocol with a pfx file',
+    async () => {
+      const pfxPath = path.join(FIXTURES, 'pfx.pfx');
+      const serverOptions = givenHttpServerConfig({
+        port: 0,
+        protocol: 'https' as const,
+        pfx: fs.readFileSync(pfxPath),
+        passphrase: 'loopback4',
+      });
+      const server = await givenAServer({rest: serverOptions});
+      server.handler(dummyRequestHandler);
+      await server.start();
+      const serverUrl = server.getSync(RestBindings.URL);
+      const res = await httpsGetAsync(serverUrl);
+      expect(res.statusCode).to.equal(200);
+      await server.stop();
+    },
+  );
 
   skipOnTravis(it, 'handles IPv6 loopback address in HTTPS', async () => {
     const keyPath = path.join(FIXTURES, 'key.pem');
