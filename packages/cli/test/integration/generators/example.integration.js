@@ -51,11 +51,16 @@ describe('lb4 example', /** @this {Mocha.Suite} */ function () {
       .then(() => {
         const targetPkgFile = 'package.json';
         const originalPkgMeta = require(`../../../../../examples/${VALID_EXAMPLE}/package.json`);
-        assert.file(targetPkgFile);
-        assert.jsonFileContent(targetPkgFile, {
-          name: originalPkgMeta.name,
-          version: originalPkgMeta.version,
-        });
+        assert.file(
+          path.join(`loopback4-example-${VALID_EXAMPLE}`, targetPkgFile),
+        );
+        assert.jsonFileContent(
+          path.join(`loopback4-example-${VALID_EXAMPLE}`, targetPkgFile),
+          {
+            name: originalPkgMeta.name,
+            version: originalPkgMeta.version,
+          },
+        );
       });
   });
 
@@ -66,11 +71,16 @@ describe('lb4 example', /** @this {Mocha.Suite} */ function () {
       .then(() => {
         const targetPkgFile = 'package.json';
         const originalPkgMeta = require(`../../../../../examples/${VALID_EXAMPLE}/package.json`);
-        assert.file(targetPkgFile);
-        assert.jsonFileContent(targetPkgFile, {
-          name: originalPkgMeta.name,
-          version: originalPkgMeta.version,
-        });
+        assert.file(
+          path.join(`loopback4-example-${VALID_EXAMPLE}`, targetPkgFile),
+        );
+        assert.jsonFileContent(
+          path.join(`loopback4-example-${VALID_EXAMPLE}`, targetPkgFile),
+          {
+            name: originalPkgMeta.name,
+            version: originalPkgMeta.version,
+          },
+        );
       });
   });
 
@@ -102,12 +112,16 @@ describe('lb4 example', /** @this {Mocha.Suite} */ function () {
         delete expectedConfig.references;
         expectedConfig.compilerOptions.composite = false;
 
-        assert.file(tsconfigFile);
+        assert.file(
+          path.join(`loopback4-example-${VALID_EXAMPLE}`, tsconfigFile),
+        );
 
         // IMPORTANT! We cannot use `assert.jsonFileContent` here
         // because the helper only checks if the file contains all expected
         // properties, it does not verify there is no additional data.
-        const actualConfig = readJsonSync(tsconfigFile);
+        const actualConfig = readJsonSync(
+          path.join(`loopback4-example-${VALID_EXAMPLE}`, tsconfigFile),
+        );
         expect(actualConfig).to.deepEqual(expectedConfig);
       });
   });

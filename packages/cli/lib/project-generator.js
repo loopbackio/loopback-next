@@ -96,7 +96,7 @@ module.exports = class ProjectGenerator extends BaseGenerator {
    * from files that have it during project generation.
    */
   _setupRenameTransformer() {
-    this.registerTransformStream(utils.renameEJS());
+    this.queueTransformStream(utils.renameEJS());
   }
 
   async setOptions() {

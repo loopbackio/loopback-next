@@ -46,8 +46,7 @@ jobs:
       - name: Run package tests
         run: |
           node packages/build/bin/run-nyc node packages/build/bin/run-mocha --lang en_US.UTF-8 --reporter spec "packages/*/dist/__tests__/**/*.js" "packages/build/test/*/*.js"
-        # FixMe(frbuceta): The tests for cli are failing, when they are fixed you have to revert this change
-        # faketty node packages/build/bin/run-nyc node packages/build/bin/run-mocha --lang en_US.UTF-8 --reporter spec "packages/cli/test/**/*.js"
+          faketty node packages/build/bin/run-nyc node packages/build/bin/run-mocha --lang en_US.UTF-8 --reporter spec "packages/cli/test/**/*.js"
       - name: Run extension tests
         run: node packages/build/bin/run-nyc node packages/build/bin/run-mocha --lang en_US.UTF-8 --reporter spec "extensions/*/dist/__tests__/**/*.js"
       - name: Run example tests

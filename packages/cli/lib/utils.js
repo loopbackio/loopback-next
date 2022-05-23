@@ -23,7 +23,7 @@ const toVarName = require('change-case').camelCase;
 const pluralize = require('pluralize');
 const urlSlug = require('url-slug');
 const validate = require('validate-npm-package-name');
-const Conflicter = require('yeoman-generator/lib/util/conflicter');
+const Conflicter = require('yeoman-environment/conflicter');
 const connectors = require('./connectors.json');
 const tsquery = require('./ast-helper');
 const stringifyObject = require('stringify-object');
@@ -300,8 +300,8 @@ exports.validateUrlSlug = function (name) {
  * Extends conflicter so that it keeps track of conflict status
  */
 exports.StatusConflicter = class StatusConflicter extends Conflicter {
-  constructor(adapter, force) {
-    super(adapter, force);
+  constructor(adapter, opts) {
+    super(adapter, opts);
     this.generationStatus = {}; // keeps track of file conflict history
   }
 

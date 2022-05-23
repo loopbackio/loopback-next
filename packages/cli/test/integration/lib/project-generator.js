@@ -4,15 +4,16 @@
 // License text available at https://opensource.org/licenses/MIT
 
 'use strict';
-const assert = require('yeoman-assert');
-const helpers = require('yeoman-test');
-const yeoman = require('yeoman-environment');
-const testUtils = require('../../test-utils');
-const sinon = require('sinon');
 const path = require('path');
+const {expect, skipIf} = require('@loopback/testlab');
+const yeoman = require('yeoman-environment');
+const helpers = require('yeoman-test');
+const assert = require('yeoman-assert');
+const sinon = require('sinon');
 const utils = require('../../../lib/utils');
+const testUtils = require('../../test-utils');
+
 const deps = utils.getDependencies();
-const expect = require('@loopback/testlab').expect;
 
 module.exports = function (projGenerator, props, projectType) {
   return /** @this {Mocha.Context} */ function () {
@@ -244,44 +245,50 @@ module.exports = function (projGenerator, props, projectType) {
 
       it('creates files', () => {
         assert.file([
-          'package.json',
-          '.yo-rc.json',
-          '.prettierrc',
-          '.gitignore',
-          '.npmrc',
-          '.eslintrc.js',
-          'src/index.ts',
-          '.vscode/settings.json',
-          '.vscode/tasks.json',
+          path.join(props.name, 'package.json'),
+          path.join(props.name, '.yo-rc.json'),
+          path.join(props.name, '.prettierrc'),
+          path.join(props.name, '.gitignore'),
+          path.join(props.name, '.npmrc'),
+          path.join(props.name, '.eslintrc.js'),
+          path.join(props.name, 'src/index.ts'),
+          path.join(props.name, '.vscode/settings.json'),
+          path.join(props.name, '.vscode/tasks.json'),
         ]);
-        assert.jsonFileContent('package.json', props);
+        assert.jsonFileContent(path.join(props.name, 'package.json'), props);
         assert.fileContent([
-          ['package.json', '@loopback/build'],
-          ['package.json', '"typescript"'],
-          ['package.json', '"eslint"'],
-          ['package.json', '@loopback/eslint-config'],
-          ['package.json', 'source-map-support'],
-          ['.eslintrc.js', '@loopback/eslint-config'],
-          ['tsconfig.json', '@loopback/build'],
+          [path.join(props.name, 'package.json'), '@loopback/build'],
+          [path.join(props.name, 'package.json'), '"typescript"'],
+          [path.join(props.name, 'package.json'), '"eslint"'],
+          [path.join(props.name, 'package.json'), '@loopback/eslint-config'],
+          [path.join(props.name, 'package.json'), 'source-map-support'],
+          [path.join(props.name, '.eslintrc.js'), '@loopback/eslint-config'],
+          [path.join(props.name, 'tsconfig.json'), '@loopback/build'],
         ]);
         assert.noFileContent([
-          ['.eslintrc.js', '"rules"'],
-          ['package.json', 'eslint-config-prettier'],
-          ['package.json', 'eslint-plugin-eslint-plugin'],
-          ['package.json', 'eslint-plugin-mocha'],
-          ['package.json', '@typescript-eslint/eslint-plugin'],
+          [path.join(props.name, '.eslintrc.js'), '"rules"'],
+          [path.join(props.name, 'package.json'), 'eslint-config-prettier'],
+          [
+            path.join(props.name, 'package.json'),
+            'eslint-plugin-eslint-plugin',
+          ],
+          [path.join(props.name, 'package.json'), 'eslint-plugin-mocha'],
+          [
+            path.join(props.name, 'package.json'),
+            '@typescript-eslint/eslint-plugin',
+          ],
         ]);
 
         if (projectType === 'application') {
           assert.fileContent(
-            'package.json',
+            path.join(props.name, 'package.json'),
             `"@loopback/core": "${deps['@loopback/core']}"`,
           );
           assert.fileContent(
-            'package.json',
+            path.join(props.name, 'package.json'),
             `"@loopback/rest": "${deps['@loopback/rest']}"`,
           );
-          assert.jsonFileContent('package.json', {
+          assert.jsonFileContent(path.join(props.name, 'package.json'), {
             scripts: {
               rebuild: 'npm run clean && npm run build',
               prestart: 'npm run rebuild',
@@ -291,12 +298,18 @@ module.exports = function (projGenerator, props, projectType) {
         }
         if (projectType === 'extension') {
           assert.fileContent(
-            'package.json',
+            path.join(props.name, 'package.json'),
             `"@loopback/core": "${deps['@loopback/core']}"`,
           );
-          assert.noFileContent('package.json', '"@loopback/rest"');
-          assert.noFileContent('package.json', '"@loopback/openapi-v3"');
-          assert.noJsonFileContent('package.json', {
+          assert.noFileContent(
+            path.join(props.name, 'package.json'),
+            '"@loopback/rest"',
+          );
+          assert.noFileContent(
+            path.join(props.name, 'package.json'),
+            '"@loopback/openapi-v3"',
+          );
+          assert.noJsonFileContent(path.join(props.name, 'package.json'), {
             rebuild: 'npm run clean && npm run build',
             prestart: 'npm run rebuild',
             start: 'node .',
@@ -342,31 +355,46 @@ module.exports = function (projGenerator, props, projectType) {
       });
 
       it('creates files', () => {
-        assert.jsonFileContent('package.json', props);
+        assert.jsonFileContent(path.join(props.name, 'package.json'), props);
         assert.fileContent(
-          'package.json',
+          path.join(props.name, 'package.json'),
           `"@loopback/core": "${deps['@loopback/core']}"`,
         );
-        assert.fileContent('package.json', `"rimraf": "${deps['rimraf']}"`);
+        assert.fileContent(
+          path.join(props.name, 'package.json'),
+          `"rimraf": "${deps['rimraf']}"`,
+        );
         assert.noFileContent([
-          ['package.json', '@loopback/build'],
-          ['package.json', '@loopback/dist-util'],
-          ['tsconfig.json', '@loopback/build'],
-          ['package.json', 'eslint-config-prettier'],
-          ['package.json', 'eslint-plugin-eslint-plugin'],
-          ['package.json', 'eslint-plugin-mocha'],
-          ['package.json', '@typescript-eslint/eslint-plugin'],
+          [path.join(props.name, 'package.json'), '@loopback/build'],
+          [path.join(props.name, 'package.json'), '@loopback/dist-util'],
+          [path.join(props.name, 'tsconfig.json'), '@loopback/build'],
+          [path.join(props.name, 'package.json'), 'eslint-config-prettier'],
+          [
+            path.join(props.name, 'package.json'),
+            'eslint-plugin-eslint-plugin',
+          ],
+          [path.join(props.name, 'package.json'), 'eslint-plugin-mocha'],
+          [
+            path.join(props.name, 'package.json'),
+            '@typescript-eslint/eslint-plugin',
+          ],
         ]);
         assert.fileContent([
-          ['package.json', '"clean": "rimraf dist *.tsbuildinfo .eslintcache"'],
-          ['package.json', /^ {4}"typescript"/m],
-          ['package.json', /^ {4}"tslib"/m],
-          ['package.json', '"eslint"'],
-          ['package.json', '@loopback/eslint-config'],
-          ['package.json', '"prettier"'],
-          ['.eslintrc.js', "extends: '@loopback/eslint-config'"],
-          ['tsconfig.json', '"compilerOptions"'],
-          ['tsconfig.json', '"resolveJsonModule": true'],
+          [
+            path.join(props.name, 'package.json'),
+            '"clean": "rimraf dist *.tsbuildinfo .eslintcache"',
+          ],
+          [path.join(props.name, 'package.json'), /^ {4}"typescript"/m],
+          [path.join(props.name, 'package.json'), /^ {4}"tslib"/m],
+          [path.join(props.name, 'package.json'), '"eslint"'],
+          [path.join(props.name, 'package.json'), '@loopback/eslint-config'],
+          [path.join(props.name, 'package.json'), '"prettier"'],
+          [
+            path.join(props.name, '.eslintrc.js'),
+            "extends: '@loopback/eslint-config'",
+          ],
+          [path.join(props.name, 'tsconfig.json'), '"compilerOptions"'],
+          [path.join(props.name, 'tsconfig.json'), '"resolveJsonModule": true'],
         ]);
       });
     });
@@ -390,8 +418,11 @@ module.exports = function (projGenerator, props, projectType) {
       });
 
       it('creates files', () => {
-        assert.noFile(['.prettierrc', '.prettierrcignore']);
-        assert.jsonFileContent('package.json', props);
+        assert.noFile([
+          path.join(props.name, '.prettierrc'),
+          path.join(props.name, '.prettierrcignore'),
+        ]);
+        assert.jsonFileContent(path.join(props.name, 'package.json'), props);
       });
     });
 
@@ -415,15 +446,21 @@ module.exports = function (projGenerator, props, projectType) {
 
       it('creates files', () => {
         assert.noFile(
-          ['.eslintrc.js', 'eslint.build.json'],
-          ['package.json', '"eslint"'],
-          ['package.json', 'eslint-config-prettier'],
-          ['package.json', 'eslint-plugin-eslint-plugin'],
-          ['package.json', 'eslint-plugin-mocha'],
-          ['package.json', '@typescript-eslint/eslint-plugin'],
-          ['package.json', '@loopback/eslint-config'],
+          [path.join(props.name, '.eslintrc.js'), 'eslint.build.json'],
+          [path.join(props.name, 'package.json'), '"eslint"'],
+          [path.join(props.name, 'package.json'), 'eslint-config-prettier'],
+          [
+            path.join(props.name, 'package.json'),
+            'eslint-plugin-eslint-plugin',
+          ],
+          [path.join(props.name, 'package.json'), 'eslint-plugin-mocha'],
+          [
+            path.join(props.name, 'package.json'),
+            '@typescript-eslint/eslint-plugin',
+          ],
+          [path.join(props.name, 'package.json'), '@loopback/eslint-config'],
         );
-        assert.jsonFileContent('package.json', props);
+        assert.jsonFileContent(path.join(props.name, 'package.json'), props);
       });
     });
 
@@ -448,24 +485,35 @@ module.exports = function (projGenerator, props, projectType) {
       });
 
       it('creates files', () => {
-        assert.jsonFileContent('package.json', props);
-        assert.noFile(['.eslintrc.js', 'eslint.build.json']);
+        assert.jsonFileContent(path.join(props.name, 'package.json'), props);
+        assert.noFile([
+          path.join(props.name, '.eslintrc.js'),
+          'eslint.build.json',
+        ]);
         assert.noFileContent([
-          ['package.json', '@loopback/build'],
-          ['package.json', '"eslint"'],
-          ['package.json', 'eslint-config-prettier'],
-          ['package.json', 'eslint-plugin-eslint-plugin'],
-          ['package.json', 'eslint-plugin-mocha'],
-          ['package.json', '@typescript-eslint/eslint-plugin'],
-          ['package.json', '@loopback/eslint-config'],
-          ['tsconfig.json', '@loopback/build'],
+          [path.join(props.name, 'package.json'), '@loopback/build'],
+          [path.join(props.name, 'package.json'), '"eslint"'],
+          [path.join(props.name, 'package.json'), 'eslint-config-prettier'],
+          [
+            path.join(props.name, 'package.json'),
+            'eslint-plugin-eslint-plugin',
+          ],
+          [path.join(props.name, 'package.json'), 'eslint-plugin-mocha'],
+          [
+            path.join(props.name, 'package.json'),
+            '@typescript-eslint/eslint-plugin',
+          ],
+          [path.join(props.name, 'package.json'), '@loopback/eslint-config'],
+          [path.join(props.name, 'tsconfig.json'), '@loopback/build'],
         ]);
         assert.fileContent([
-          ['package.json', '"typescript"'],
-          ['package.json', '"prettier"'],
-          ['tsconfig.json', '"compilerOptions"'],
+          [path.join(props.name, 'package.json'), '"typescript"'],
+          [path.join(props.name, 'package.json'), '"prettier"'],
+          [path.join(props.name, 'tsconfig.json'), '"compilerOptions"'],
         ]);
-        assert.noFileContent([['package.json', '"eslint"']]);
+        assert.noFileContent([
+          [path.join(props.name, 'package.json'), '"eslint"'],
+        ]);
       });
     });
 
@@ -501,7 +549,7 @@ module.exports = function (projGenerator, props, projectType) {
       });
 
       it('creates files', () => {
-        assert.jsonFileContent('package.json', {
+        assert.jsonFileContent(path.join(props.name, 'package.json'), {
           name: props.name,
           description: props.name,
         });
@@ -511,12 +559,13 @@ module.exports = function (projGenerator, props, projectType) {
     describe('set npm packageManager', () => {
       before(() => {
         return helpers.run(projGenerator).withOptions({
+          name: props.name,
           packageManager: 'npm',
         });
       });
-      it('check .yo-rc.json', () => {
-        assert.file('.yo-rc.json');
-        assert.jsonFileContent('.yo-rc.json', {
+      it('check .yo-rc.json', async () => {
+        assert.file(path.join(props.name, '.yo-rc.json'));
+        assert.jsonFileContent(path.join(props.name, '.yo-rc.json'), {
           '@loopback/cli': {
             packageManager: 'npm',
           },
@@ -524,45 +573,27 @@ module.exports = function (projGenerator, props, projectType) {
       });
     });
 
-    const isYarnAvailable = utils.isYarnAvailable();
-    const yarnTest = isYarnAvailable ? describe : describe.skip;
-    yarnTest('set yarn packageManager', () => {
-      before(() => {
-        return helpers.run(projGenerator).withOptions({
-          packageManager: 'yarn',
-        });
-      });
-      it('check .yo-rc.json', () => {
-        assert.file('.yo-rc.json');
-        assert.jsonFileContent('.yo-rc.json', {
-          '@loopback/cli': {
+    skipIf(
+      !utils.isYarnAvailable(),
+      describe,
+      'set yarn packageManager',
+      () => {
+        before(() => {
+          return helpers.run(projGenerator).withOptions({
+            name: props.name,
             packageManager: 'yarn',
-          },
+          });
         });
-      });
-    });
-
-    yarnTest('test yarn prompt', () => {
-      before(() => {
-        return helpers.run(projGenerator).withPrompts(
-          Object.assign(
-            {
-              yarn: true,
+        it('check .yo-rc.json', () => {
+          assert.file(path.join(props.name, '.yo-rc.json'));
+          assert.jsonFileContent(path.join(props.name, '.yo-rc.json'), {
+            '@loopback/cli': {
+              packageManager: 'yarn',
             },
-            props,
-          ),
-        );
-      });
-
-      it('check .yo-rc.json for yarn', () => {
-        assert.file('.yo-rc.json');
-        assert.jsonFileContent('.yo-rc.json', {
-          '@loopback/cli': {
-            packageManager: 'yarn',
-          },
+          });
         });
-      });
-    });
+      },
+    );
 
     describe('set invalid packageManager', () => {
       it('get invalid error', () => {

@@ -77,8 +77,8 @@
     "url-slug": "^3.0.4",
     "validate-npm-package-name": "^4.0.0",
     "write-file-atomic": "^4.0.1",
-    "yeoman-environment": "^2.10.3",
-    "yeoman-generator": "^4.13.0"
+    "yeoman-environment": "^3.10.0",
+    "yeoman-generator": "^5.7.0"
   },
   "devDependencies": {
     "@loopback/build": "^9.0.2",
@@ -88,6 +88,8 @@
     "@types/fs-extra": "^9.0.13",
     "@types/minimatch": "^3.0.5",
     "@types/node": "^14.18.23",
+    "@types/yeoman-environment": "^2.10.7",
+    "@types/yeoman-generator": "^5.2.10",
     "loopback": "^3.28.0",
     "loopback-datasource-juggler": "^4.27.1",
     "mem-fs": "^2.2.1",
@@ -97,7 +99,7 @@
     "sinon": "^11.1.2",
     "strong-globalize-cli": "7.1.0",
     "yeoman-assert": "^3.1.1",
-    "yeoman-test": "^4.0.2"
+    "yeoman-test": "^6.3.0"
   },
   "config": {
     "templateDependencies": {
