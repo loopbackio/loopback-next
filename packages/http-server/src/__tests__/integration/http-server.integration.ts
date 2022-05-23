@@ -8,6 +8,7 @@ import {
   givenHttpServerConfig,
   httpGetAsync,
   httpsGetAsync,
+  skipIf,
   skipOnTravis,
   supertest,
 } from '@loopback/testlab';
@@ -246,12 +247,17 @@ describe('HttpServer (integration)', () => {
     expect(response.statusCode).to.equal(200);
   });
 
-  it('supports HTTPS protocol with a pfx file', async () => {
-    const httpsServer: HttpServer = givenHttpsServer({usePfx: true});
-    await httpsServer.start();
-    const response = await httpsGetAsync(httpsServer.url);
-    expect(response.statusCode).to.equal(200);
-  });
+  skipIf(
+    parseInt(process.versions.node.split('.')[0]) > 16,
+    it,
+    'supports HTTPS protocol with a pfx file',
+    async () => {
+      const httpsServer: HttpServer = givenHttpsServer({usePfx: true});
+      await httpsServer.start();
+      const response = await httpsGetAsync(httpsServer.url);
+      expect(response.statusCode).to.equal(200);
+    },
+  );
 
   skipOnTravis(it, 'handles IPv6 loopback address in HTTPS', async () => {
     const httpsServer: HttpServer = givenHttpsServer({
