@@ -86,13 +86,12 @@ async function updateLicense(projectRoot, pkg, options) {
   if (typeof licenseId === 'object') {
     licenseId = licenseId.id;
   }
-  pkg.license = licenseId;
-  pkg['copyright.owner'] = options.copyrightOwner;
-  await fs.writeJSON(path.join(projectRoot, 'package.json'), pkg);
+  pkg.set('license', licenseId);
+  pkg.set('copyright.owner', options.copyrightOwner);
   await fs.write(
     path.join(projectRoot, 'LICENSE'),
     renderLicense({
-      name: pkg.name,
+      name: pkg.get('name'),
       owner: options.copyrightOwner,
       license: options.license,
       years: await getYears(projectRoot),
