@@ -359,7 +359,7 @@ describe('model', () => {
     const aDate = new Date();
     const customer = createCustomerWithContactAndDate(aDate);
     Object.assign(customer, {unknown: 'abc'});
-    Object.assign(customer.address, {unknown: 'xyz'});
+    Object.assign(customer.address!, {unknown: 'xyz'});
     expect(customer.toObject()).to.eql({
       id: '123',
       email: 'xyz@example.com',
