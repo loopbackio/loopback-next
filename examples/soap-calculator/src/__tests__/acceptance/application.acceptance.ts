@@ -6,7 +6,8 @@
 import {Client, createRestAppClient, expect} from '@loopback/testlab';
 import {SoapCalculatorApplication} from '../../application';
 
-describe('Application', function (this: Mocha.Suite) {
+// FIXME: https://calculator-webservice.mybluemix.net/calculator?wsdl is down
+describe.skip('Application', function (this: Mocha.Suite) {
   let app: SoapCalculatorApplication;
   let client: Client;
 
