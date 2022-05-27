@@ -397,11 +397,11 @@ function getDescriptionSuffix<T extends object>(
     tsType = `Partial<${tsType}>`;
   }
   if (options.exclude) {
-    const excludedProps = options.exclude.map(p => `'${p}'`);
+    const excludedProps = options.exclude.map(p => `'${String(p)}'`);
     tsType = `Omit<${tsType}, ${excludedProps.join(' | ')}>`;
   }
   if (options.optional) {
-    const optionalProps = options.optional.map(p => `'${p}'`);
+    const optionalProps = options.optional.map(p => `'${String(p)}'`);
     tsType = `@loopback/repository-json-schema#Optional<${tsType}, ${optionalProps.join(
       ' | ',
     )}>`;
