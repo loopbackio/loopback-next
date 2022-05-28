@@ -51,8 +51,7 @@ jobs:
       - name: Run extension tests
         run: node packages/build/bin/run-nyc node packages/build/bin/run-mocha --lang en_US.UTF-8 --reporter spec "extensions/*/dist/__tests__/**/*.js"
       - name: Run example tests
-        # FixMe(frbuceta): The tests for soap-calculator are failing (see #8481), when they are fixed you have to revert this change
-        run: node packages/build/bin/run-nyc node packages/build/bin/run-mocha --lang en_US.UTF-8 --reporter spec "examples/{,!(soap-calculator)}/dist/__tests__/**/*.js"
+        run: node packages/build/bin/run-nyc node packages/build/bin/run-mocha --lang en_US.UTF-8 --reporter spec "examples/*/dist/__tests__/**/*.js"
       - name: Generate coverage
         run: node packages/build/bin/run-nyc report --reporter=lcov
       - name: Publish coverage to Coveralls
