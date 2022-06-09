@@ -3,8 +3,6 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-// FIXME(rfeng): Workaround for https://github.com/microsoft/rushstack/pull/1867
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   Application,
   Binding,
