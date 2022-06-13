@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.1](https://github.com/loopbackio/loopback-next/compare/@loopback/repository@5.0.0...@loopback/repository@5.0.1) (2022-06-13)
+
+
+### Bug Fixes
+
+* fix build errors for TypeScript 4.7.x ([cf8eafd](https://github.com/loopbackio/loopback-next/commit/cf8eafd2fce8b833400be5303f0b15bfbb27f14b))
+
+
+
+
+
 ## [5.0.0](https://github.com/loopbackio/loopback-next/compare/@loopback/repository@4.1.2...@loopback/repository@5.0.0) (2022-05-05)
 
 

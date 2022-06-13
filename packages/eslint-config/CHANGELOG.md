@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [13.0.1](https://github.com/loopbackio/loopback-next/compare/@loopback/eslint-config@13.0.0...@loopback/eslint-config@13.0.1) (2022-06-13)
+
+
+### Bug Fixes
+
+* revert update and pin version of eslint-plugin-mocha to v10.0.3 ([19b3ac3](https://github.com/loopbackio/loopback-next/commit/19b3ac31e5486d1b6196b8b96a12e483c19a4e53))
+
+
+
+
+
 ## [13.0.0](https://github.com/loopbackio/loopback-next/compare/@loopback/eslint-config@12.0.4...@loopback/eslint-config@13.0.0) (2022-05-05)
 
 

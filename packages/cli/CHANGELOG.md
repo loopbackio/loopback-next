@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.1.0](https://github.com/loopbackio/loopback-next/compare/@loopback/cli@4.0.0...@loopback/cli@4.1.0) (2022-06-13)
+
+
+### Bug Fixes
+
+* **cli:** look for all id properties including composite keys ([1a51f32](https://github.com/loopbackio/loopback-next/commit/1a51f322cc618a553dda346c1fe4e3905e794746))
+
+
+### Features
+
+* **cli:** add option to create relations in cli discover command ([37a5f73](https://github.com/loopbackio/loopback-next/commit/37a5f73ada12b64035ef32b01411c28d72058887))
+* **cli:** add option to mark id field as not required in discover command ([497b21d](https://github.com/loopbackio/loopback-next/commit/497b21d84d970a8dcc714d059108cabdf99d46e0))
+* **rest-crud:** add option to create readonly rest-crud apis ([6ae1423](https://github.com/loopbackio/loopback-next/commit/6ae142302ca61363a357559ba42243bdaf4f7256))
+
+
+
+
+
 ## [4.0.0](https://github.com/loopbackio/loopback-next/compare/@loopback/cli@3.2.0...@loopback/cli@4.0.0) (2022-05-05)
 
 
