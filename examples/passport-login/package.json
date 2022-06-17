@@ -60,7 +60,7 @@
     "@loopback/service-proxy": "^5.0.1",
     "@types/jsonwebtoken": "8.5.8",
     "@types/lodash": "^4.14.182",
-    "@types/passport": "^1.0.8",
+    "@types/passport": "^1.0.9",
     "@types/passport-facebook": "^2.1.11",
     "@types/passport-google-oauth": "^1.0.42",
     "@types/passport-google-oauth2": "^0.1.5",
