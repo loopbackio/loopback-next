@@ -59,6 +59,6 @@
     "@types/debug": "4.1.7",
     "@types/node": "^14.18.21",
     "eslint": "^8.17.0",
-    "typescript": "~4.7.3"
+    "typescript": "~4.7.4"
   }
 }
