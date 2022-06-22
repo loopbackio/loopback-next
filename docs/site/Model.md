@@ -146,7 +146,7 @@ export class Customer {
 ## Common Tasks
 
 - [Define models at runtime](Creating-model-runtime.md)
-- [Discover models from databases](DIscovering-models.md)
+- [Discover models from databases](Discovering-models.md)
 
 ## Model Metadata
 
