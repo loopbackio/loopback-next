@@ -51,7 +51,7 @@ export class CalculatorController {
 
 #### Adding the imports into the Controller
 
-Add the following two lines at the begining of the
+Add the following two lines at the beginning of the
 src/controllers/calculator.controller.ts file.
 
 The **get** and **param** are classes imported from the **LB4** REST server and
