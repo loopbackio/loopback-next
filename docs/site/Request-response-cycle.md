@@ -234,8 +234,8 @@ use them.
 between controllers and the data. They use an underlying datasource and a
 connector to interact with the data.
 
-Controller methods can call corresponding methods in the respository to read
-from or write to the database.
+Controller methods can call corresponding methods in the repository to read from
+or write to the database.
 
 Repositories can be injected in the controller constructor so controller methods
 may use them.

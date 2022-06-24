@@ -75,7 +75,7 @@ For the examples in the following sections, we are also assuming a model named
 ### Creating a CRUD Controller
 
 Here is how you would use `defineCrudRestController` for exposing the CRUD
-endpoints of an existing model with a respository.
+endpoints of an existing model with a repository.
 
 1. Create a REST CRUD controller class for your model.
 

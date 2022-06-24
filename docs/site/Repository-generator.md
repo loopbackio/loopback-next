@@ -62,7 +62,7 @@ model already created in their respective directories.
 
 ### Arguments
 
-`<name>` - Optional argument specifying the respository name to be generated. In
+`<name>` - Optional argument specifying the repository name to be generated. In
 case you select multiple models, the first model will take this argument for its
 repository file name.
 
