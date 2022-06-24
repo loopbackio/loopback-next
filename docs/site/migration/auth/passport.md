@@ -244,7 +244,7 @@ export class UserApplication extends BootMixin(
 
 You can configure the authentication endpoints with the following steps:
 
-- For OAuth2 authorizaton flow, we need authentication endpoints that
+- For OAuth2 authorization flow, we need authentication endpoints that
   participate to get the user validated with an external system.
 - This essentially means the `@authenticate` decorator is used with different
   semantics compared to the non-OAuth2 section above.
