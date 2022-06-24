@@ -319,7 +319,7 @@ In LoopBack 3, the REST APIs for relations were exposed using static methods
 with the name following the pattern `__{methodName}__{relationName}__` (e.g.
 `Order.__get__customer`). While we recommend to create a new controller for each
 hasMany relation in LoopBack 4, we also think it's best to use the main CRUD
-controller as the place where to explose `belongsTo` API.
+controller as the place where to expose `belongsTo` API.
 
 ## Handling recursive relations
 
