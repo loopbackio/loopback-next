@@ -131,7 +131,7 @@ stored. However, the framework itself does not store actual data.
 
 _Important_: LoopBack 4 is in developer preview. How its application
 configuration data reside and is being used may be subjected to change. More
-information will be provided once the code has stablized.
+information will be provided once the code has stabilized.
 
 ##### Personal data used for online contact with IBM
 
