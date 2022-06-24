@@ -7,7 +7,7 @@ permalink: /doc/en/lb4/Implementing-features.html
 ---
 
 {% include previous.html content=" This article continues from \[Defining your
-testing stategy(./Defining-your-testing-strategy.md).
+testing strategy(./Defining-your-testing-strategy.md).
 " %}
 
 ## Incrementally implement features

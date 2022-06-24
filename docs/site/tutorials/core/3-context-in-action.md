@@ -148,7 +148,7 @@ for more details.
 
 [Components](../../Component.md) can be considered as a collection of binding
 added to the context. For example, for an authentication component, an
-authentication stategy and an authentication action can be added to the
+authentication strategy and an authentication action can be added to the
 component.
 
 See the
