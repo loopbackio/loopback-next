@@ -186,7 +186,7 @@ export interface Inclusion {
   scope?: Filter<AnyObject> & {
     /**
      * Global maximum number of inclusions. This is just to remain backward
-     * compatability. This totalLimit props takes precedence over limit
+     * compatibility. This totalLimit props takes precedence over limit
      * https://github.com/loopbackio/loopback-next/issues/6832
      */
     totalLimit?: number;
