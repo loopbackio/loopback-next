@@ -30,7 +30,7 @@ controller method.
 {% include tip.html content="Apart from controller files in the `controllers` directory,
 controllers may be added to the app by [components](https://loopback.io/doc/en/lb4/Components.html)." %}
 
-In the request/response cycle section we will see how implemenation details
+In the request/response cycle section we will see how implementation details
 determine the course of a request to these endpoints - they may or may not
 actually interact with a model.
 
