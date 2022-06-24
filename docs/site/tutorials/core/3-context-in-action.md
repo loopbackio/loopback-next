@@ -92,7 +92,7 @@ Artifacts can be services, repositories, configuration, etc.
 
    Since plain functions do not accept injections, you can create a wrapper
    class that has the ability to accept injection. For example, you can create a
-   provider class that recevies injection of a HTTP request.
+   provider class that receives injection of a HTTP request.
 
 5. As an alias to another binding
 
