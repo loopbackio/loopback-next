@@ -134,7 +134,7 @@ For details, see [Configure the scope](../../Binding.md#configure-the-scope).
 
 ## Watching artifacts
 
-The context view gives us control when a binding is being added or moreved. This
+The context view gives us control when a binding is being added or removed. This
 also allows the support of dynamic extension points. For the
 [greeting-app example](https://github.com/loopbackio/loopback-next/tree/master/examples/greeting-app),
 after the application has started, more greeters can be added, and there is no
