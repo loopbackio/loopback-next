@@ -62,7 +62,7 @@ deliverable_type: string;
 
 The only difference on the repository class is that instead of having a single
 repository getter, a dictionary of subclass repository getters is passed into
-the repository factory creater.
+the repository factory creator.
 
 ```javascript
 export class DeliveryRepository extends DefaultCrudRepository {
