@@ -13,7 +13,7 @@ the APIs that create the endpoints on the server. We will then follow the path
 taken by a request, to see how it makes its way through the various parts of the
 framework to return a result.
 
-### Setting up the request/response infrastruture
+### Setting up the request/response infrastructure
 
 The endpoints on a LoopBack app can be categorized into controller endpoints and
 non-controller endpoints. Controller endpoints are those that are created by
