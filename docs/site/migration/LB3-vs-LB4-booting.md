@@ -120,7 +120,7 @@ methods.
 [#1293](https://github.com/loopbackio/loopback-next/issues/1293)
 and
 [#2035](https://github.com/loopbackio/loopback-next/issues/2035)
-to track the progress on supporting Express middlweware in LoopBack 4." %}
+to track the progress on supporting Express middleware in LoopBack 4." %}
 
 If you want to mount an Express router in a LoopBack 4 application, you can use
 the
