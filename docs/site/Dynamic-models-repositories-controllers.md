@@ -75,8 +75,8 @@ const bookDef = new ModelDefinition({
 
 A LoopBack model class is created by passing a `ModelDefinition` object to
 `@loopback/repository`'s helper function `defineModelClass()`. It expects a base
-model to extend (typically `Model` or `Entity`), folowed by the model definition
-object. In this case it will be `Entity`.
+model to extend (typically `Model` or `Entity`), followed by the model
+definition object. In this case it will be `Entity`.
 
 ```ts
 const BookModel = defineModelClass<typeof Entity, {id: number; title?: string}>(
