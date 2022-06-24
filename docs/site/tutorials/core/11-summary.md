@@ -18,7 +18,7 @@ can be useful for our developers to build a scalable Node.js application.
 - [Observers](7-observation.md) and [interceptors](6-interception.md) allows you
   to add logic as part of the application life cycle events.
 - [Configuration](8-configuration.md) can be added to extension points,
-  extentions and services which enables greater flexibility in your application.
+  extensions and services which enables greater flexibility in your application.
 - [Boot by convention](9-boot-by-convention.md) allows artifacts automatically
   discovered and loaded.
 

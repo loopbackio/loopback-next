@@ -513,7 +513,7 @@ export class SomeController {
 
 #### anyOf, allOf, oneOf, not
 
-The `x-ts-type` extention is also valid as a value in `allOf`, `anyOf`, `oneOf`,
+The `x-ts-type` extension is also valid as a value in `allOf`, `anyOf`, `oneOf`,
 and `not` schema keys.
 
 ```ts
@@ -676,7 +676,7 @@ This decorator lets you easily add response specifications using `Models` from
 `@loopback/repository`. The convenience decorator sets the `content-type` to
 `application/json`, and the response description to the string value in the
 `http-status` module. The models become references through the `x-ts-type`
-schema extention.
+schema extension.
 
 ```ts
 @model()
