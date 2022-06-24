@@ -970,7 +970,7 @@ describe('Product (acceptance)', () => {
     await app.boot();
 
     // change to use the test datasource after the app has been booted so that
-    // it is not overriden
+    // it is not overridden
     app.dataSource(testdb);
     await app.start();
 

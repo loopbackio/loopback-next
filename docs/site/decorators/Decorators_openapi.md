@@ -56,7 +56,7 @@ For example:
   },
 })
 class MyController {
-  // The operation endpoint defined here will be overriden!
+  // The operation endpoint defined here will be overridden!
   @get('/greet')
   greet(@param.query.number('limit') name: string) {}
 }
