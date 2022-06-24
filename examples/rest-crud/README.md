@@ -38,7 +38,7 @@ Add the following import to `src/application.ts`:
 import {CrudRestComponent} from '@loopback/rest-crud';
 ```
 
-And the folowing component to the application constructor:
+And the following component to the application constructor:
 
 ```ts
 this.component(CrudRestComponent);
