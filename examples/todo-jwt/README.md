@@ -15,7 +15,7 @@ Start the application by running npm start and go to
 http://localhost:3000/explorer. You’ll see the 3 new endpoints under
 `UserController` together with the other endpoints under `TodoController`.
 
-![API Explorer screeshot](https://loopback.io/pages/en/lb4/imgs/auth-tutorial-apiexplorer.png)
+![API Explorer screenshot](https://loopback.io/pages/en/lb4/imgs/auth-tutorial-apiexplorer.png)
 
 1. Sign up using the/signup API
 
