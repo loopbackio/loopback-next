@@ -111,7 +111,7 @@ export enum LOG_LEVEL {
 
 ### `src/types.ts`
 
-Before we continue, we will need to install a new dependecy as follows:
+Before we continue, we will need to install a new dependency as follows:
 
 ```shell
 npm i @loopback/rest
