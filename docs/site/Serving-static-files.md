@@ -43,7 +43,7 @@ export class TodoListApplication extends BootMixin(
 ```
 
 You can call `app.static()` multiple times to configure the app to serve static
-assets from different drectories.
+assets from different directories.
 
 ```ts
 app.static('/files', path.join(__dirname, 'files'));
