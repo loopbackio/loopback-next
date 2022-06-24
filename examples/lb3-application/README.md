@@ -104,7 +104,7 @@ Open the URL printed to console to view your front-end served from `public`
 directory or go to `http://127.0.0.1:3000/explorer` to explore the REST API.
 
 The LB3 application is now successfully mounted on a LB4 application, but we can
-further optimize the setup so that only the bare neccessary artifacts from the
+further optimize the setup so that only the bare necessary artifacts from the
 LoopBack 3 application remain. This includes moving almost all of the middleware
 to a common location so that they are shared by both the LoopBack 3 and the
 LoopBack 4 apps.
