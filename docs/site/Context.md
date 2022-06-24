@@ -298,7 +298,7 @@ A context event listener should conform to the following signature:
 
 ```ts
 /**
- * Synchronous event listener for the `Context` as en event emitter
+ * Synchronous event listener for the `Context` as an event emitter
  */
 export type ContextEventListener = (event: ContextEvent) => void;
 ```
