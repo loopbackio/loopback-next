@@ -62,7 +62,7 @@ export async function findByForeignKeys<
     useScopeFilterGlobally = true;
   }
 
-  // This code is to keep backward compatability.
+  // This code is to keep backward compatibility.
   // See https://github.com/loopbackio/loopback-next/issues/6832 for more info.
   if (scope?.totalLimit) {
     scope.limit = scope.totalLimit;
