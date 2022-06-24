@@ -351,7 +351,7 @@ export class ExampleController {
 ```
 
 Similarly, the request and response objects can be injected into services and
-respositories along with other objects from the [context](./Context.md).
+repositories along with other objects from the [context](./Context.md).
 
 It may be tempting to use an Express router (because of familiarity) instead of
 a controller to add custom endpoints to the application, but bear it in mind
@@ -485,6 +485,6 @@ may also be used to access the user submitted data in some cases." %}
 ## Summary
 
 The phase-based middleware chain of LoopBack 3 is replaced by the sequence class
-in LoopBack 4. Controllers, services, and respositories are part of the
+in LoopBack 4. Controllers, services, and repositories are part of the
 request/response cycle in LoopBack 4; they provide interfaces and points of
 access to the request object, the response object, and the model data.
