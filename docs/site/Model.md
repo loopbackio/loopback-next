@@ -814,7 +814,7 @@ explicitly either on the property itself or via the `type` option of the
 property decorator. Aliased types or types that extracted from a class or
 interface (e.g. `public name: OtherClass['otherProperty']`) will not work
 properly and will result in the property type being resolved as an empty object
-rather than the intended type in the generated OpenAPI specifcation. This is due
+rather than the intended type in the generated OpenAPI specification. This is due
 to a limitation and flaw in the way TypeScript currently generates the metadata
 that is used to generate the OpenAPI specification for the application." %}
 
