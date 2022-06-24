@@ -475,7 +475,7 @@ async create(book: Book, options?: Options): Promise<Book> {
 }
 ```
 
-Similarly, various other repository methods in LoopBack 4 can be overriden to
+Similarly, various other repository methods in LoopBack 4 can be overridden to
 access the model data in the context of their operation.
 
 {% include tip.html content="
