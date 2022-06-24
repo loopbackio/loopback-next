@@ -359,5 +359,5 @@ Signed-off-by: Raymond Feng <enjoyjava@gmail.com>
 ### Features
 
 * **example-multi-tenancy:** add multi-tenancy action and strategies ([fdfde2d](https://github.com/loopbackio/loopback-next/commit/fdfde2d41863b424051f11a92f12636c74549217))
-* **example-multi-tenancy:** scaffold an example to demostrate multi-tenancy ([5129c31](https://github.com/loopbackio/loopback-next/commit/5129c3100d662858bddff60222c7c83ad56b0e46))
+* **example-multi-tenancy:** scaffold an example to demonstrate multi-tenancy ([5129c31](https://github.com/loopbackio/loopback-next/commit/5129c3100d662858bddff60222c7c83ad56b0e46))
 * **example-multi-tenancy:** use context configuration APIs for the action ([0f93dc1](https://github.com/loopbackio/loopback-next/commit/0f93dc13c53e83dedc2caedadc36807953792dd6))
