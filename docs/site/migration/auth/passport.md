@@ -247,7 +247,7 @@ You can configure the authentication endpoints with the following steps:
 - For OAuth2 authorizaton flow, we need authentication endpoints that
   participate to get the user validated with an external system.
 - This essentially means the `@authenticate` decorator is used with different
-  sematics compared to the non-OAuth2 section above.
+  semantics compared to the non-OAuth2 section above.
 - Here the controller methods become small parts of the larger OAuth2 dialog.
 - We ideally create a controller with two endpoints decorated with
   `@authenticate(`{passport-strategy-name}`)`
