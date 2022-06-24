@@ -434,8 +434,8 @@ its vast ecosystem.
 Some of the gaps between what Express offers and LoopBack's needs are:
 
 - Lack of extensibility
-  > Express is only extensibile via middleware. It neither exposes a registry
-  > nor provides APIs to manage artifacts such as middleware or routers.
+  > Express is only extensible via middleware. It neither exposes a registry nor
+  > provides APIs to manage artifacts such as middleware or routers.
 - Lack of composability
   > Express is not composable. For example, `app.use()` is the only way to
   > register a middleware. The order of middleware is determined by the order of
