@@ -679,12 +679,12 @@ to preserve backward compatibility.
 However, we do recognize that often a breaking change is the most sensible thing
 to do. When that time comes:
 
-- Describe incompatibilites for release notes
+- Describe incompatibilities for release notes
 - Look for more breaking changes to include in the release: search for comments
   containing `TODO(semver-major)` and `@deprecated`.
 - Update list of supported versions
 
-### Describe incompatibilites for release notes
+### Describe incompatibilities for release notes
 
 In the pull request introducing the breaking change, provide a descriptive
 [footer](#footer-optional) explaining the breaking change to our users. This
