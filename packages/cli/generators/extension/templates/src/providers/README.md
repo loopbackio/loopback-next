@@ -58,7 +58,7 @@ import {ExtensionStarterBindings} from 'HelloExtensions';
 const key = ExtensionStarterBindings.LOG_ACTION;
 ```
 
-LogProvider gives us a seuqence action and a `startTimer` function. In order to
+LogProvider gives us a sequence action and a `startTimer` function. In order to
 use the sequence action, you must define your own sequence as shown below.
 
 **Example: Sequence**
