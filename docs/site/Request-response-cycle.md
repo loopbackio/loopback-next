@@ -116,7 +116,7 @@ route for invocation.
 ##### 2. ParseParams
 
 [ParseParams](https://loopback.io/doc/en/lb4/apidocs.rest.parseparamsprovider.html)
-parses LoopBack-relevant request paremeters from the request body, URL segment,
+parses LoopBack-relevant request parameters from the request body, URL segment,
 and query parameters.
 
 It is also responsible for validating the property types of the request body, as
@@ -127,7 +127,7 @@ HTTP 422 error.
 
 [InvokeMethod](https://loopback.io/doc/en/lb4/apidocs.rest.invokemethodprovider.html)
 is responsible for calling the endpoint handler, passing in the route found by
-`FindRoute` and the paremeters found by `ParseParams`.
+`FindRoute` and the parameters found by `ParseParams`.
 
 For non-controller endpoints, control is passed on to the respective handlers at
 this stage, which may then handle the response sending process themselves. For
