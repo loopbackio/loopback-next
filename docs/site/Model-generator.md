@@ -47,7 +47,7 @@ The tool will prompt you for:
   - For more information, see
     [here](https://loopback.io/doc/en/lb4/Model.html#overview).
 
-- **Allow additonal properties.** _(allowAdditionalProperties)_ Defaults to
+- **Allow additional properties.** _(allowAdditionalProperties)_ Defaults to
   **false**. To allow arbitrary properties in addition to well-defined
   properties, disable strict mode.
 
