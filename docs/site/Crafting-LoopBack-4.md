@@ -50,7 +50,7 @@ LoopBack fits into a typical end-to-end API processing flow.
 ![loopback-overview](./imgs/loopback-overview.png)
 
 LoopBack has grown significantly in features and users with many years of
-development and multiple releases. LoopBack has been well-recieved by the
+development and multiple releases. LoopBack has been well-received by the
 developer community. As an indication, the community has developed
 [many extensions](https://github.com/pasindud/awesome-loopback). The core team
 has also learned a lot from what we have done as well as great feedback from the
