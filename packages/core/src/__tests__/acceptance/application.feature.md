@@ -2,7 +2,7 @@
 
 - In order to initialize my application
 - As an app developer
-- I want to register components when initalizing the application
+- I want to register components when initializing the application
 - So that I can use them throughout the application lifecycle
 
 ## Scenario: Basic usage (config provided)
