@@ -62,7 +62,7 @@ export class TodoListApplication extends BootMixin(
 }
 ```
 
-The middlware-based sequence itself is basically a named middleware chain. Each
+The middleware-based sequence itself is basically a named middleware chain. Each
 middleware serves as an action within the sequence. The `handle` function
 executes registered middleware in cascading fashion.
 
