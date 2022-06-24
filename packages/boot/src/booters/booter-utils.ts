@@ -6,6 +6,7 @@
 import {Constructor} from '@loopback/core';
 import debugFactory from 'debug';
 import path from 'path';
+import {pathToFileURL} from 'url';
 import {promisify} from 'util';
 const glob = promisify(require('glob'));
 
@@ -39,22 +40,25 @@ export function isClass(target: any): target is Constructor<any> {
 }
 
 /**
- * Returns an Array of Classes from given files. Works by requiring the file,
- * identifying the exports from the file by getting the keys of the file
- * and then testing each exported member to see if it's a class or not.
+ * Returns a promise of an Array of Classes from given files. Works by requiring
+ * the file, identifying the exports from the file by getting the keys of the
+ * file and then testing each exported member to see if it's a class or not.
  *
  * @param files - An array of string of absolute file paths
  * @param projectRootDir - The project root directory
  * @returns An array of Class constructors from a file
  */
-export function loadClassesFromFiles(
+export async function loadClassesFromFiles(
   files: string[],
   projectRootDir: string,
-): Constructor<{}>[] {
+): Promise<Constructor<{}>[]> {
   const classes: Constructor<{}>[] = [];
   for (const file of files) {
     debug('Loading artifact file %j', path.relative(projectRootDir, file));
-    const moduleObj = require(file);
+    // This is to avoid that compilation transform the import into a require...
+    const moduleObj = await Function(
+      `return import("${pathToFileURL(file).toString()}");`
+      )();
     for (const k in moduleObj) {
       const exported = moduleObj[k];
       if (isClass(exported)) {
