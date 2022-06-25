@@ -46,7 +46,7 @@ export function isClass(target: any): target is Constructor<any> {
  *
  * @param files - An array of string of absolute file paths
  * @param projectRootDir - The project root directory
- * @returns An array of Class constructors from a file
+ * @returns A promise of an array of Class constructors from a file
  */
 export async function loadClassesFromFiles(
   files: string[],
@@ -57,8 +57,8 @@ export async function loadClassesFromFiles(
     debug('Loading artifact file %j', path.relative(projectRootDir, file));
     // This is to avoid that compilation transform the import into a require...
     const moduleObj = await Function(
-      `return import("${pathToFileURL(file).toString()}");`
-      )();
+      `return import("${pathToFileURL(file).toString()}");`,
+    )();
     for (const k in moduleObj) {
       const exported = moduleObj[k];
       if (isClass(exported)) {

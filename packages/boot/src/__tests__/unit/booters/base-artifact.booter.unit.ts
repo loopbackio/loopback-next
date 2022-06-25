@@ -15,7 +15,8 @@ describe('base-artifact booter unit tests', () => {
   };
 
   describe('configure()', () => {
-    it(`sets 'dirs' / 'extensions' properties as an array if a string`, async () => {
+    it(`sets 'dirs' / 'extensions' properties as an array if a string`,
+    async () => {
       const booterInst = givenBaseBooter({
         dirs: 'test',
         extensions: '.test.js',

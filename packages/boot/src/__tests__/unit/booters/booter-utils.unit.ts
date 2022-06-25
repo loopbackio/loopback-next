@@ -57,7 +57,7 @@ describe('booter-utils unit tests', () => {
     });
   });
 
-  describe('loadClassesFromFiles()', async () => {
+  describe('loadClassesFromFiles()', () => {
     it('returns an array of classes from a file', async () => {
       // Copying a test file to sandbox that contains a function and 2 classes
       await sandbox.copyFile(
@@ -85,9 +85,9 @@ describe('booter-utils unit tests', () => {
 
     it('throws an error given a non-existent file', async () => {
       const files = [resolve(sandbox.path, 'fake.artifact.js')];
-      await expect(loadClassesFromFiles(files, sandbox.path)).to.be.rejectedWith(
-        /Cannot find module/,
-      );
+      await expect(
+        loadClassesFromFiles(files, sandbox.path),
+      ).to.be.rejectedWith(/Cannot find module/);
     });
   });
 });
