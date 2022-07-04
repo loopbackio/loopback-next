@@ -55,10 +55,11 @@ export async function loadClassesFromFiles(
   const classes: Constructor<{}>[] = [];
   for (const file of files) {
     debug('Loading artifact file %j', path.relative(projectRootDir, file));
-    // This is to avoid that compilation transform the import into a require...
+    // To avoid that compilation transform the import into a require...
     const moduleObj = await Function(
-      `return import("${pathToFileURL(file).toString()}");`,
-    )();
+      'file',
+      `return import(file);`,
+    )(pathToFileURL(file).toString());
     for (const k in moduleObj) {
       const exported = moduleObj[k];
       if (isClass(exported)) {
