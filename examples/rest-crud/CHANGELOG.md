@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.2](https://github.com/loopbackio/loopback-next/compare/@loopback/example-rest-crud@4.0.1...@loopback/example-rest-crud@4.0.2) (2022-07-14)
+
+
+### Bug Fixes
+
+* **docs:** documentation update for rest crud document ([f8270cc](https://github.com/loopbackio/loopback-next/commit/f8270cc265f8cd4091e7e80c40b3d906a1a93073))
+
+
+
+
+
 ## [4.0.1](https://github.com/loopbackio/loopback-next/compare/@loopback/example-rest-crud@4.0.0...@loopback/example-rest-crud@4.0.1) (2022-06-13)
 
 **Note:** Version bump only for package @loopback/example-rest-crud

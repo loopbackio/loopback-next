@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [9.0.2](https://github.com/loopbackio/loopback-next/compare/@loopback/build@9.0.1...@loopback/build@9.0.2) (2022-07-14)
+
+
+### Bug Fixes
+
+* **docs:** documentation update from availalbe to available ([f3550ac](https://github.com/loopbackio/loopback-next/commit/f3550ac800e25a84f5b38ca125d51cb34980b7ec))
+* **docs:** update build documentation for spelling mistake ([0f1cc69](https://github.com/loopbackio/loopback-next/commit/0f1cc69fde24b10ff2d54a86454ee022cf74ff82))
+
+
+
+
+
 ## [9.0.1](https://github.com/loopbackio/loopback-next/compare/@loopback/build@9.0.0...@loopback/build@9.0.1) (2022-06-13)
 
 **Note:** Version bump only for package @loopback/build

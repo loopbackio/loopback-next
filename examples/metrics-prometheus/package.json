@@ -1,7 +1,7 @@
 {
   "name": "@loopback/example-metrics-prometheus",
   "description": "An example to illustrate metrics provided by @loopback/metrics and Prometheus",
-  "version": "0.10.1",
+  "version": "0.10.2",
   "keywords": [
     "loopback",
     "LoopBack",
@@ -47,16 +47,16 @@
     "access": "public"
   },
   "dependencies": {
-    "@loopback/boot": "^5.0.1",
-    "@loopback/core": "^4.0.1",
-    "@loopback/metrics": "^0.11.1",
-    "@loopback/rest": "^12.0.1",
+    "@loopback/boot": "^5.0.2",
+    "@loopback/core": "^4.0.2",
+    "@loopback/metrics": "^0.11.2",
+    "@loopback/rest": "^12.0.2",
     "tslib": "^2.4.0"
   },
   "devDependencies": {
-    "@loopback/build": "^9.0.1",
-    "@loopback/eslint-config": "^13.0.1",
-    "@loopback/testlab": "^5.0.1",
+    "@loopback/build": "^9.0.2",
+    "@loopback/eslint-config": "^13.0.2",
+    "@loopback/testlab": "^5.0.2",
     "@types/node": "^14.18.21",
     "eslint": "^8.19.0",
     "typescript": "~4.7.4"

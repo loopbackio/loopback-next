@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.2](https://github.com/loopbackio/loopback-next/compare/@loopback/repository@5.0.1...@loopback/repository@5.0.2) (2022-07-14)
+
+
+### Bug Fixes
+
+* **docs:** documentation fix of for overridden text ([2f45572](https://github.com/loopbackio/loopback-next/commit/2f4557228d4cce50ddff742abe10cc306ffbb1e7))
+* **docs:** documentation typo fix in filters query and relation ([2521d95](https://github.com/loopbackio/loopback-next/commit/2521d950bba75c197fd1ac5aab437ed8127a5a09))
+
+
+
+
+
 ## [5.0.1](https://github.com/loopbackio/loopback-next/compare/@loopback/repository@5.0.0...@loopback/repository@5.0.1) (2022-06-13)
 
 

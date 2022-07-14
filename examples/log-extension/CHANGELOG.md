@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.2](https://github.com/loopbackio/loopback-next/compare/@loopback/example-log-extension@5.0.1...@loopback/example-log-extension@5.0.2) (2022-07-14)
+
+
+### Bug Fixes
+
+* **docs:** documentation update from dependecy to dependency ([5548f15](https://github.com/loopbackio/loopback-next/commit/5548f1510c7955e74bac31942f962d82053b46ef))
+
+
+
+
+
 ## [5.0.1](https://github.com/loopbackio/loopback-next/compare/@loopback/example-log-extension@5.0.0...@loopback/example-log-extension@5.0.1) (2022-06-13)
 
 **Note:** Version bump only for package @loopback/example-log-extension

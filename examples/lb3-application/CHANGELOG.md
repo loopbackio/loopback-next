@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.2](https://github.com/loopbackio/loopback-next/compare/@loopback/example-lb3-application@5.0.1...@loopback/example-lb3-application@5.0.2) (2022-07-14)
+
+
+### Bug Fixes
+
+* **docs:** documentation update for typo ([48f3e3a](https://github.com/loopbackio/loopback-next/commit/48f3e3a6c0d864cd568a5a439e096575bb735292))
+
+
+
+
+
 ## [5.0.1](https://github.com/loopbackio/loopback-next/compare/@loopback/example-lb3-application@5.0.0...@loopback/example-lb3-application@5.0.1) (2022-06-13)
 
 **Note:** Version bump only for package @loopback/example-lb3-application

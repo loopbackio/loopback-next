@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.2](https://github.com/loopbackio/loopback-next/compare/@loopback/example-todo-jwt@4.0.1...@loopback/example-todo-jwt@4.0.2) (2022-07-14)
+
+
+### Bug Fixes
+
+* **docs:** todo jwt documentation update for fix ([aecba9b](https://github.com/loopbackio/loopback-next/commit/aecba9b3661bdaf6f09b637161c018dba896abe2))
+
+
+
+
+
 ## [4.0.1](https://github.com/loopbackio/loopback-next/compare/@loopback/example-todo-jwt@4.0.0...@loopback/example-todo-jwt@4.0.1) (2022-06-13)
 
 **Note:** Version bump only for package @loopback/example-todo-jwt

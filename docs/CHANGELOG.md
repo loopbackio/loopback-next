@@ -3,6 +3,48 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.1.1](https://github.com/loopbackio/loopback-next/compare/@loopback/docs@5.1.0...@loopback/docs@5.1.1) (2022-07-14)
+
+
+### Bug Fixes
+
+* **docs:** docs link for discovering models ([1e48456](https://github.com/loopbackio/loopback-next/commit/1e48456fde20e691d85b506f5c8e296c3c64b1fe))
+* **docs:** documentation fix for creater text in polymorphic relation ([3252073](https://github.com/loopbackio/loopback-next/commit/3252073231bfb7af9ed45f12f9ebd68286e313ed))
+* **docs:** documentation fix in deployment docs ([9e9cea2](https://github.com/loopbackio/loopback-next/commit/9e9cea28e6e960c8d5e10e4be246101d8d3ba6df))
+* **docs:** documentation fix in repository ([59de2af](https://github.com/loopbackio/loopback-next/commit/59de2af817b9674a42f243c1de8be6a0b0afdadc))
+* **docs:** documentation fix in req response cycle ([5c1447a](https://github.com/loopbackio/loopback-next/commit/5c1447a6ef46ab381539d4a1d23252f310a5721e))
+* **docs:** documentation fix in req response cycle ([9f5487e](https://github.com/loopbackio/loopback-next/commit/9f5487e7e89d5a1775c6e4b01a64831c56405dd3))
+* **docs:** documentation fix in service static files ([103fe91](https://github.com/loopbackio/loopback-next/commit/103fe91e271967d80ed8cbc0a8211c3d9366f0c4))
+* **docs:** documentation fix of for infered text ([0150199](https://github.com/loopbackio/loopback-next/commit/01501990531acaf5beba786180bb6c63b56de69e))
+* **docs:** documentation fix of for overridden text ([2f45572](https://github.com/loopbackio/loopback-next/commit/2f4557228d4cce50ddff742abe10cc306ffbb1e7))
+* **docs:** documentation fix of for repository generator ([0c5efab](https://github.com/loopbackio/loopback-next/commit/0c5efab81c7a0f79da066574f23ec00448b36195))
+* **docs:** documentation fix typo from sematics ([57e325a](https://github.com/loopbackio/loopback-next/commit/57e325a8b2be674478c0a2c1ba394703c323609e))
+* **docs:** documentation typo fix from extention to extension ([7d16db0](https://github.com/loopbackio/loopback-next/commit/7d16db08f539b477d779428ce0fa1fc920d223db))
+* **docs:** documentation typo fix in context in action ([b02f55b](https://github.com/loopbackio/loopback-next/commit/b02f55bfff45cb856f38c60974c5434015b29785))
+* **docs:** documentation typo fix in filters query and relation ([2521d95](https://github.com/loopbackio/loopback-next/commit/2521d950bba75c197fd1ac5aab437ed8127a5a09))
+* **docs:** documentation typo fix in request response cycle ([19d2bf3](https://github.com/loopbackio/loopback-next/commit/19d2bf364ba8a20eb3a3229fa9677c340878a3ce))
+* **docs:** documentation typo update for recevies ([41ccae8](https://github.com/loopbackio/loopback-next/commit/41ccae8505e9b68e20739c7023b84de98ffe0e8e))
+* **docs:** documentation update for context ([390fa12](https://github.com/loopbackio/loopback-next/commit/390fa124142a489b92f1dbae677ec66ebd915f9d))
+* **docs:** documentation update for non global interceptor ([e6eacff](https://github.com/loopbackio/loopback-next/commit/e6eacffa3b36c1769861ad5a4db71c615c17b1f3))
+* **docs:** documentation updates for datasoure to datasource ([c05a7e6](https://github.com/loopbackio/loopback-next/commit/c05a7e6f8b50c2db51a157f94c2b77fbcc8b7406))
+* **docs:** fix document typo from moreved to removed ([468a014](https://github.com/loopbackio/loopback-next/commit/468a01451d5e802ba87b82c3d9d12ac0703d6920))
+* **docs:** fix in docs for typos in bootind and other docs ([2912fa9](https://github.com/loopbackio/loopback-next/commit/2912fa9216af3f107790672f6fa1331065b2ec9d))
+* **docs:** fix in docs of crafting loopback for extensible typo ([ff023d2](https://github.com/loopbackio/loopback-next/commit/ff023d231c8db16910aa830e783f54b94af843dd))
+* **docs:** fix in docs of crafting loopback for typo ([0329dd0](https://github.com/loopbackio/loopback-next/commit/0329dd0479314225d4634bd0e8fa1c9c765a084b))
+* **docs:** fix in docs of crafting loopback for typo ([610f10a](https://github.com/loopbackio/loopback-next/commit/610f10a105f2f9dab23d4344112e7ad52e5ea31a))
+* **docs:** fix in docs of dynamic models for typo ([71a8ab6](https://github.com/loopbackio/loopback-next/commit/71a8ab6ef9e8ff566298221551373b7672404643))
+* **docs:** fix in docs of dynamic models for typo respositories ([e3f295d](https://github.com/loopbackio/loopback-next/commit/e3f295dabe09ca6510ba067721316989b4e7f60d))
+* **docs:** fix in documentation of belongs to relation ([850c5b8](https://github.com/loopbackio/loopback-next/commit/850c5b83ae78e70f12cd32d37958f803a1694ad7))
+* **docs:** fix typo in documentation from begining to beginning ([ca1bd55](https://github.com/loopbackio/loopback-next/commit/ca1bd55c9781b2e9a3527c4d27ef14282afb9bb2))
+* **docs:** middleware sequence document update ([f0875e2](https://github.com/loopbackio/loopback-next/commit/f0875e27b9499f706bf8cf95fe36a02ce2d3a28b))
+* **docs:** model documentation fix for typo ([e7448c7](https://github.com/loopbackio/loopback-next/commit/e7448c7e6818c0a214a90c03b51d2b7907dce032))
+* **docs:** model generator documentation typo fix ([428b357](https://github.com/loopbackio/loopback-next/commit/428b3573488c8e911e8c73f1355d3b54d51456c9))
+* **docs:** passport documentation fix for typo ([8852b0a](https://github.com/loopbackio/loopback-next/commit/8852b0aeeefc6080628ce95ccd17f1bb6a719c8e))
+
+
+
+
+
 # [5.1.0](https://github.com/loopbackio/loopback-next/compare/@loopback/docs@5.0.0...@loopback/docs@5.1.0) (2022-06-13)
 
 

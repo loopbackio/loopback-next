@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.13.2](https://github.com/loopbackio/loopback-next/compare/@loopback/example-multi-tenancy@0.13.1...@loopback/example-multi-tenancy@0.13.2) (2022-07-14)
+
+
+### Bug Fixes
+
+* **docs:** documentation update from demostrate to demonstrate ([09ab9bf](https://github.com/loopbackio/loopback-next/commit/09ab9bfc500d9ca224e29c02244297f3abe28246))
+
+
+
+
+
 ## [0.13.1](https://github.com/loopbackio/loopback-next/compare/@loopback/example-multi-tenancy@0.13.0...@loopback/example-multi-tenancy@0.13.1) (2022-06-13)
 
 **Note:** Version bump only for package @loopback/example-multi-tenancy

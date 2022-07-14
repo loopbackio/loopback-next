@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.15.1](https://github.com/loopbackio/loopback-next/compare/@loopback/rest-crud@0.15.0...@loopback/rest-crud@0.15.1) (2022-07-14)
+
+
+### Bug Fixes
+
+* **docs:** fix in docs of dynamic models for typo respositories ([e3f295d](https://github.com/loopbackio/loopback-next/commit/e3f295dabe09ca6510ba067721316989b4e7f60d))
+
+
+
+
+
 # [0.15.0](https://github.com/loopbackio/loopback-next/compare/@loopback/rest-crud@0.14.0...@loopback/rest-crud@0.15.0) (2022-06-13)
 
 
