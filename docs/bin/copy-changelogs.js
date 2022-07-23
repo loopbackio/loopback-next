@@ -13,7 +13,7 @@
  */
 
 const {getPackages} = require('@lerna/project');
-const fs = require('fs-extra');
+const fse = require('fs-extra');
 const path = require('path');
 
 const REPO_ROOT = path.resolve(__dirname, '../..');
@@ -29,7 +29,7 @@ if (require.main === module) {
 
 async function copyChangelogs() {
   // Remove the original folder so we remove files from deleted packages
-  await fs.remove(DEST_ROOT);
+  await fse.remove(DEST_ROOT);
 
   const allPackages = await getPackages(REPO_ROOT);
   const packages = allPackages
@@ -41,14 +41,13 @@ async function copyChangelogs() {
       }
 
       const location = path.relative(REPO_ROOT, pkg.location);
-      const meta = {
+      return {
         name: pkg.name,
         shortName,
         private: pkg.private,
         location,
         dir: path.dirname(location),
       };
-      return meta;
     })
     .sort((a, b) => b.location.localeCompare(a.location));
 
@@ -85,10 +84,10 @@ permalink: /doc/en/lb4/changelog.index.html
     }
     for (const {location, name, shortName} of arr) {
       const src = path.join(REPO_ROOT, location, 'CHANGELOG.md');
-      const exists = await fs.exists(src);
+      const exists = await fse.pathExists(src);
       if (!exists) continue;
 
-      const content = await fs.readFile(src, 'utf-8');
+      const content = await fse.readFile(src, 'utf-8');
       const md = `---
 lang: en
 title: 'CHANGELOG - ${name}'
@@ -102,7 +101,7 @@ permalink: /doc/en/lb4/changelog.${shortName}.html
 ${content}
 `;
       const dest = path.join(DEST_ROOT, location, 'CHANGELOG.md');
-      await fs.outputFile(dest, md, 'utf-8');
+      await fse.outputFile(dest, md, 'utf-8');
 
       // Add an entry to the index
       changelogIndexPage.push(
@@ -112,7 +111,7 @@ ${content}
   }
 
   // Write `site/CHANGELOG.md`
-  await fs.outputFile(
+  await fse.outputFile(
     path.join(SITE_ROOT, 'CHANGELOG.md'),
     changelogIndexPage.join('\n'),
     'utf-8',

@@ -4,8 +4,8 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import path from 'path';
-import {ConnectionOptions} from '../../../';
 import {Book} from '../typeorm-entities/book.entity';
+import {ConnectionOptions} from '../../../';
 
 export const SqliteConnection: ConnectionOptions = {
   name: 'my-db',

@@ -1,38 +1,28 @@
 {
-  "packages": [
-    "acceptance/*",
-    "fixtures/*",
-    "benchmark",
-    "docs",
-    "examples/*",
-    "packages/*",
-    "extensions/*",
-    "bodyparsers/*",
-    "sandbox/*"
-  ],
+  "$schema": "node_modules/lerna/schemas/lerna-schema.json",
   "command": {
     "bootstrap": {
       "concurrency": 4,
       "forceLocal": true
     },
     "version": {
-      "forcePublish": "@loopback/cli,@loopback/docs",
-      "conventionalCommits": true,
-      "message": "chore: publish release"
+      "forcePublish": ["@loopback/cli", "@loopback/docs"],
+      "message": "chore: publish release",
+      "conventionalCommits": true
     },
-    "publish": {},
     "run": {
-      "prefix": false,
-      "loglevel": "silent",
-      "stream": true,
+      "loglevel": "warn",
       "concurrency": 8,
+      "prefix": false,
+      "stream": true,
       "sort": false
     },
     "clean": {
-      "loglevel": "silent",
+      "loglevel": "warn",
       "concurrency": 8,
       "yes": true
     }
   },
+  "useWorkspaces": true,
   "version": "independent"
 }

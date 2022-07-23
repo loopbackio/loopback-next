@@ -48,7 +48,6 @@
     "@loopback/core": "^4.0.2",
     "@loopback/eslint-config": "^13.0.2",
     "@loopback/testlab": "^5.0.2",
-    "@types/bson": "^4.0.5",
     "@types/json-schema": "^7.0.11",
     "@types/lodash": "^4.14.182",
     "@types/node": "^14.18.24",
