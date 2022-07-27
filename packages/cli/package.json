@@ -62,7 +62,7 @@
     "semver": "^7.3.7",
     "slash": "^3.0.0",
     "spdx-license-list": "^6.6.0",
-    "stringify-object": "^3.3.0",
+    "stringify-object": "^4.0.1",
     "strong-globalize": "^6.0.5",
     "swagger-parser": "^10.0.3",
     "swagger2openapi": "^7.0.8",
