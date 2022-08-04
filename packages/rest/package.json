@@ -48,7 +48,7 @@
     "@types/express-serve-static-core": "^4.17.30",
     "@types/http-errors": "^1.8.2",
     "@types/on-finished": "^2.3.1",
-    "@types/serve-static": "1.13.10",
+    "@types/serve-static": "1.15.0",
     "@types/type-is": "^1.6.3",
     "ajv": "^8.11.0",
     "ajv-errors": "^3.0.0",
