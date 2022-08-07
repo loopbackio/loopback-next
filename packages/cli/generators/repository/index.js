@@ -566,11 +566,7 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
         return repositoryName + 'Repository';
       },
     );
-
-    this.artifactInfo.name = this.artifactInfo.modelNameList
-      ? this.artifactInfo.modelNameList.join(this.classNameSeparator)
-      : this.artifactInfo.modelName;
-
+    this.artifactInfo.name = `${this.artifactInfo.className}Repository`;
     await super.end();
   }
 };
