@@ -35,6 +35,6 @@
     "cross-spawn": "^7.0.3",
     "debug": "^4.3.4",
     "fs-extra": "^10.1.0",
-    "hosted-git-info": "^5.0.0"
+    "hosted-git-info": "^5.1.0"
   }
 }
