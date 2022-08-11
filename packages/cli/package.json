@@ -1,7 +1,7 @@
 {
   "name": "@loopback/cli",
   "description": "Yeoman generator for LoopBack 4",
-  "version": "4.1.1",
+  "version": "4.1.2",
   "keywords": [
     "LoopBack",
     "CLI",
