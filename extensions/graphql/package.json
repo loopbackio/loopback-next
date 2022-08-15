@@ -60,7 +60,7 @@
     "@loopback/rest": "^12.0.2",
     "@loopback/testlab": "^5.0.2",
     "@types/debug": "^4.1.7",
-    "@types/node": "^14.18.23",
+    "@types/node": "^14.18.24",
     "class-transformer": "^0.5.1"
   }
 }
