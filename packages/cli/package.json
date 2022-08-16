@@ -76,7 +76,7 @@
     "update-notifier": "^5.1.0",
     "url-slug": "^3.0.4",
     "validate-npm-package-name": "^4.0.0",
-    "write-file-atomic": "^4.0.1",
+    "write-file-atomic": "^4.0.2",
     "yeoman-environment": "^3.10.0",
     "yeoman-generator": "^5.7.0"
   },
