@@ -53,6 +53,6 @@
     "@loopback/testlab": "^5.0.2",
     "@types/debug": "^4.1.7",
     "@types/node": "^14.18.24",
-    "casbin": "^5.16.0"
+    "casbin": "^5.17.0"
   }
 }
