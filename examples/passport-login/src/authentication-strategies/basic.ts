@@ -87,7 +87,7 @@ export class BasicStrategy implements AuthenticationStrategy {
         include: ['profiles', 'credentials'],
       })
       .then((users: User[]) => {
-        if (!users || !users.length) {
+        if (!users?.length) {
           return done(null, false);
         }
         const user = users[0];

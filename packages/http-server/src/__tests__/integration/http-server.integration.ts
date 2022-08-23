@@ -320,7 +320,7 @@ describe('HttpServer (integration)', () => {
   });
 
   function getAddressFamily(httpServer: HttpServer) {
-    if (!httpServer || !httpServer.address) return undefined;
+    if (!httpServer?.address) return undefined;
     if (typeof httpServer.address === 'string') {
       return 'ipc';
     }

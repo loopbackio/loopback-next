@@ -97,8 +97,7 @@ describe('MessagePack body parser', () => {
 
     const route = givenResolvedRoute(spec);
 
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    expect(
+    return expect(
       parseOperationArgs(req, route, requestBodyParser),
     ).to.be.rejectedWith(HttpErrors.UnprocessableEntity);
   });

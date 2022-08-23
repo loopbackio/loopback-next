@@ -21,10 +21,10 @@
     "eslint": "^8.22.0"
   },
   "dependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.33.1",
-    "@typescript-eslint/parser": "^5.33.1",
+    "@typescript-eslint/eslint-plugin": "^5.34.0",
+    "@typescript-eslint/parser": "^5.34.0",
     "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-eslint-plugin": "^5.0.5",
+    "eslint-plugin-eslint-plugin": "^5.0.6",
     "eslint-plugin-mocha": "^10.1.0"
   }
 }
