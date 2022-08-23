@@ -34,7 +34,8 @@ export class ValidationErrorMiddlewareProvider implements Provider<Middleware> {
   async value() {
     const middleware: Middleware = async (ctx, next) => {
       try {
-        return await next();
+        const result = await next();
+        return result;
       } catch (err) {
         return this.handleError(ctx, err);
       }

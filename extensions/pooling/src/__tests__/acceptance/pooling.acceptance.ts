@@ -214,8 +214,9 @@ describe('Resource pool', () => {
     const reqCtx = new Context(ctx, 'req');
     const res = await poolService.acquire();
     reqCtx.once('close', () => {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      poolService.release(res);
+      poolService.release(res).catch(err => {
+        throw err;
+      });
     });
     const requestClosed = once(reqCtx, 'close');
     reqCtx.close();
