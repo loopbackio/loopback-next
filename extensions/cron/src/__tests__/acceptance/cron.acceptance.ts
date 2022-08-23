@@ -54,7 +54,7 @@ describe('Cron (acceptance)', () => {
     const jobs = await component.getJobs();
     expect(jobs).to.eql([job]);
     expect(count).to.be.greaterThan(0);
-  });
+  }).timeout(15000);
 
   it('allows cron jobs to be bound as class', async () => {
     let count = 0;
