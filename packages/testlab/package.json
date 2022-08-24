@@ -44,13 +44,13 @@
     "fs-extra": "^10.1.0",
     "oas-validator": "^5.0.8",
     "should": "^13.2.3",
-    "sinon": "^11.1.2",
+    "sinon": "^14.0.0",
     "supertest": "^6.2.4",
     "tslib": "^2.4.0"
   },
   "devDependencies": {
     "@loopback/build": "^9.0.2",
     "@loopback/eslint-config": "^13.0.2",
-    "@types/node": "^14.18.23"
+    "@types/node": "^14.18.26"
   }
 }

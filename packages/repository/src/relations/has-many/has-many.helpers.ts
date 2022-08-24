@@ -83,7 +83,7 @@ export function resolveHasManyMetaHelper(
   }
 
   const sourceModel = relationMeta.source;
-  if (!sourceModel || !sourceModel.modelName) {
+  if (!sourceModel?.modelName) {
     const reason = 'source model must be defined';
     throw new InvalidRelationError(reason, relationMeta);
   }

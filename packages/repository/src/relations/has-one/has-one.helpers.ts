@@ -45,7 +45,7 @@ export function resolveHasOneMetadata(
   const targetModelProperties = targetModel.definition?.properties;
 
   const sourceModel = relationMeta.source;
-  if (!sourceModel || !sourceModel.modelName) {
+  if (!sourceModel?.modelName) {
     const reason = 'source model must be defined';
     throw new InvalidRelationError(reason, relationMeta);
   }

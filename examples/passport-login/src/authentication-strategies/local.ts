@@ -83,7 +83,7 @@ export class LocalAuthStrategy implements AuthenticationStrategy {
          * Passport-local strategy fails authentication with the third argument,
          * the first argument assumes an error in the authenticating process.
          */
-        if (!users || !users.length) {
+        if (!users?.length) {
           return done(null, null, {message: AUTH_FAILED_MESSAGE});
         }
         const user = users[0];

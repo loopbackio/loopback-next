@@ -28,7 +28,7 @@ export class SessionStrategy implements AuthenticationStrategy {
   async authenticate(
     request: RequestWithSession,
   ): Promise<UserProfile | RedirectRoute | undefined> {
-    if (!request.session || !request.session.user) {
+    if (!request?.session?.user) {
       throw new HttpErrors.Unauthorized(`Invalid Session`);
     }
     const user: User = request.session.user as User;
@@ -40,7 +40,7 @@ export class SessionStrategy implements AuthenticationStrategy {
         email: user.email,
       },
     });
-    if (!users || !users.length) {
+    if (!users?.length) {
       throw new HttpErrors.Unauthorized(`User not registered`);
     }
     return mapProfile(request.session.user as User);

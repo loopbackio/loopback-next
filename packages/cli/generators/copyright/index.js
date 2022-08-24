@@ -8,7 +8,6 @@ const BaseGenerator = require('../../lib/base-generator');
 const {updateFileHeaders} = require('./header');
 const {spdxLicenseList, updateLicense} = require('./license');
 const g = require('../../lib/globalize');
-const _ = require('lodash');
 const chalk = require('chalk');
 const autocomplete = require('inquirer-autocomplete-prompt');
 
@@ -77,19 +76,19 @@ module.exports = class CopyrightGenerator extends BaseGenerator {
 
   async promptOwnerAndLicense() {
     const pkgFile = this.destinationPath('package.json');
-    const pkg = this.fs.readJSON(this.destinationPath('package.json'));
-    if (pkg == null) {
+    if (!this.existsDestination('package.json')) {
       this.exit(`${pkgFile} does not exist.`);
       return;
     }
-    this.packageJson = pkg;
-    let author = _.get(pkg, 'author');
+    let author = this.packageJson.get('author');
     if (typeof author === 'object') {
       author = author.name;
     }
     const owner =
-      this.options.copyrightOwner || _.get(pkg, 'copyright.owner', author);
-    let license = this.options.license || _.get(pkg, 'license');
+      this.options.copyrightOwner ||
+      this.packageJson.get('copyright.owner') ||
+      author;
+    let license = this.options.license || this.packageJson.get('license');
     const licenses = [...this.licenseList];
     if (license != null) {
       // find the matching license by id and move it to the front of the list

@@ -26,15 +26,15 @@
     "access": "public"
   },
   "peerDependencies": {
-    "lerna": "^5.3.0"
+    "lerna": "^5.4.3"
   },
   "dependencies": {
-    "@lerna/filter-packages": "^5.3.0",
-    "@lerna/package-graph": "^5.3.0",
-    "@lerna/project": "^5.3.0",
+    "@lerna/filter-packages": "^5.4.3",
+    "@lerna/package-graph": "^5.4.3",
+    "@lerna/project": "^5.4.3",
     "cross-spawn": "^7.0.3",
     "debug": "^4.3.4",
     "fs-extra": "^10.1.0",
-    "hosted-git-info": "^5.0.0"
+    "hosted-git-info": "^5.1.0"
   }
 }

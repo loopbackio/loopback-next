@@ -31,7 +31,7 @@ export class PassportUserIdentityService
    * @param token
    */
   async findOrCreateUser(profile: PassportProfile): Promise<User> {
-    if (!profile.emails || !profile.emails.length) {
+    if (!profile?.emails?.length) {
       throw new Error('email-id is required in returned profile to login');
     }
 
@@ -43,7 +43,7 @@ export class PassportUserIdentityService
       },
     });
     let user: User;
-    if (!users || !users.length) {
+    if (!users?.length) {
       const name = profile.name?.givenName
         ? profile.name.givenName + ' ' + profile.name.familyName
         : profile.displayName;
