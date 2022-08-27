@@ -38,8 +38,8 @@ export function env(name: string) {
 }
 ```
 
-For a complete example, see
-https://github.com/loopbackio/loopback-next/blob/master/examples/context/src/custom-inject-decorator.ts.
+For a complete example, see 
+[custom-inject-decorator.ts](https://github.com/loopbackio/loopback-next/blob/master/examples/context/src/custom-inject-decorator.ts)
 
 ## Class factory to allow parameterized decorations
 
