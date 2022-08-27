@@ -58,8 +58,8 @@
     "posttest": "npm run lint"
   },
   "devDependencies": {
-    "@commitlint/cli": "^17.0.3",
-    "@commitlint/config-conventional": "^17.0.3",
+    "@commitlint/cli": "^17.1.1",
+    "@commitlint/config-conventional": "^17.1.0",
     "@types/mocha": "^9.1.1",
     "@typescript-eslint/eslint-plugin": "^5.35.1",
     "@typescript-eslint/parser": "^5.35.1",
