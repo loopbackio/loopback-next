@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import * as ClientSecurityPolicy from './client-security.policy';
 import * as GatewayScriptPolicy from './gateway-script.policy';
 import * as GraphQLIntrospectPolicy from './graphql-introspect.policy';

@@ -39,30 +39,32 @@ export class ApiConnectSpecEnhancer implements OASEnhancer {
   ) {}
 
   modifySpec(spec: OpenAPIObject): APIConnectOASObjects.OpenAPIObject {
-    const modifiedSpec = spec as APIConnectOASObjects.OpenAPIObject;
-
-    // Add `x-ibm-name`
-    modifiedSpec.info = {'x-ibm-name': this.appMetadata.name, ...spec.info};
-    // Add `x-ibm-configuration`
-    modifiedSpec['x-ibm-configuration'] = {
-      assembly: {
-        execute: [
-          {
-            invoke: {
-              title: 'invoke',
-              version: '2.0.0',
-              'target-url': this.options.targetUrl,
+    const modifiedSpec: APIConnectOASObjects.OpenAPIObject = {
+      ...spec,
+      info: {
+        ...spec.info,
+        'x-ibm-name': this.appMetadata.name,
+      },
+      'x-ibm-configuration': {
+        assembly: {
+          execute: [
+            {
+              invoke: {
+                title: 'invoke',
+                version: '2.0.0',
+                'target-url': this.options.targetUrl,
+              },
             },
-          },
-        ],
+          ],
+        },
+        cors: {
+          enabled: true,
+        },
+        enforced: true,
+        phase: 'realized',
+        testable: true,
+        gateway: 'datapower-api-gateway',
       },
-      cors: {
-        enabled: true,
-      },
-      enforced: true,
-      phase: 'realized',
-      testable: true,
-      gateway: 'datapower-api-gateway',
     };
 
     return modifiedSpec;

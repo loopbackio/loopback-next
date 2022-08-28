@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 export type ValidateUsernameTokenPolicy = DataPowerGateway;
 
 export type DataPowerGateway = V100 | V110;

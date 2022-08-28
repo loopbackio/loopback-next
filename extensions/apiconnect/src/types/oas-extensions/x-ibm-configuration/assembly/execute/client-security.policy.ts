@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 export type ClientSecurityPolicy = DataPowerAPIGateway;
 
 export type DataPowerAPIGateway = V200;

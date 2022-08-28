@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import {
   InfoObject as OAS30InfoObject,
   OpenAPIObject as OAS30OpenAPIOboject,
@@ -14,7 +15,7 @@ import {
 export interface OpenAPIObject extends OAS30OpenAPIOboject {
   info: InfoObject;
   'x-ibm-configuration': XIBMConfiguration;
-  'x-embedded-doc': XEmbeddedDoc[];
+  'x-embedded-doc'?: XEmbeddedDoc[];
 }
 export interface InfoObject extends OAS30InfoObject {
   'x-ibm-name': string;

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import {
   DataPowerAPIGateway as ExecuteDataPowerAPIGateway,
   V200 as ExecuteV200,

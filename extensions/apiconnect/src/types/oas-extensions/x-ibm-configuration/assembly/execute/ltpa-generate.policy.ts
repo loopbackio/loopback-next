@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 /**
  * @internalRemarks
  * Unlike other built-in policies, `ltpa-generate` is not versioned. Hence, the

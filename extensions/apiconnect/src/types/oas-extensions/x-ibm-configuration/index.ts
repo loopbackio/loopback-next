@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import * as XIBMAPIConnectWSDL from '../x-ibm-apiconnect-wsdl';
 import * as Assembly from './assembly';
 
@@ -132,7 +133,7 @@ export interface OAuth2 {
     application?: URLWithTLSProfile;
     owner?: URLWithTLSProfile;
   };
-  grants?: ('applicaiton' | 'password' | 'accessCode' | 'implicit')[];
+  grants?: ('application' | 'password' | 'accessCode' | 'implicit')[];
   'identity-extraction'?: {
     /**
      * @defaultValue `'default-form'`

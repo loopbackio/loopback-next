@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 export type ProxyPolicy = DataPowerGateway;
 
 export type DataPowerGateway = V100;

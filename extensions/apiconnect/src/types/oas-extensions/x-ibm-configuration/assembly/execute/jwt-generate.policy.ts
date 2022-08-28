@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 export type JWTGenerate = DataPowerGateway | DataPowerAPIGateway;
 
 export type DataPowerGateway = V100;

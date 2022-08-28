@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 export type XSLTPolicy = DataPowerGateway | DataPowerAPIGateway;
 
 export type DataPowerGateway = V100;
