@@ -44,7 +44,7 @@ export type ControllerClass<T extends ControllerInstance> = Constructor<T>;
 /**
  * A route backed by a controller
  */
-export class ControllerRoute<T> extends BaseRoute {
+export class ControllerRoute<T extends object> extends BaseRoute {
   protected readonly _controllerCtor: ControllerClass<T>;
   protected readonly _controllerName: string;
   protected readonly _methodName: string;
@@ -152,7 +152,7 @@ export class ControllerRoute<T> extends BaseRoute {
  * Create a controller factory function for a given binding key
  * @param key - Binding key
  */
-export function createControllerFactoryForBinding<T>(
+export function createControllerFactoryForBinding<T extends object>(
   key: string,
 ): ControllerFactory<T> {
   return ctx => ctx.get<T>(key);
@@ -162,7 +162,7 @@ export function createControllerFactoryForBinding<T>(
  * Create a controller factory function for a given class
  * @param controllerCtor - Controller class
  */
-export function createControllerFactoryForClass<T>(
+export function createControllerFactoryForClass<T extends object>(
   controllerCtor: ControllerClass<T>,
 ): ControllerFactory<T> {
   return async ctx => {
@@ -182,7 +182,7 @@ export function createControllerFactoryForClass<T>(
  * Create a controller factory function for a given instance
  * @param controllerCtor - Controller instance
  */
-export function createControllerFactoryForInstance<T>(
+export function createControllerFactoryForInstance<T extends object>(
   controllerInst: T,
 ): ControllerFactory<T> {
   return ctx => controllerInst;
@@ -194,7 +194,7 @@ export function createControllerFactoryForInstance<T>(
  * @param controllerCtor - Controller class
  * @param controllerFactory - Controller factory
  */
-export function createRoutesForController<T>(
+export function createRoutesForController<T extends object>(
   spec: ControllerSpec,
   controllerCtor: ControllerClass<T>,
   controllerFactory?: ControllerFactory<T>,

@@ -870,7 +870,7 @@ export class Binding<T = BoundValue> extends EventEmitter {
    *   arguments must be annotated with `@inject` so that
    *   we can resolve them from the context.
    */
-  toClass(ctor: Constructor<T>): this {
+  toClass<C extends T & object>(ctor: Constructor<C>): this {
     /* istanbul ignore if */
     if (debug.enabled) {
       debug('Bind %s to class %s', this.key, ctor.name);

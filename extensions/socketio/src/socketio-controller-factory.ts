@@ -45,7 +45,7 @@ export class SocketIoControllerFactory {
 
   constructor(
     parentCtx: Context,
-    private controllerClass: Constructor<unknown>,
+    private controllerClass: Constructor<object>,
     socket: Socket,
   ) {
     this.connCtx = new SocketIoConnectionContext(socket, parentCtx);

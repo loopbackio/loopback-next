@@ -40,7 +40,7 @@ export class RoutingTable {
    * @param controllerCtor
    * @param controllerFactory
    */
-  registerController<T>(
+  registerController<T extends object>(
     spec: ControllerSpec,
     controllerCtor: ControllerClass<T>,
     controllerFactory?: ControllerFactory<T>,

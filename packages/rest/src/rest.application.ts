@@ -236,7 +236,7 @@ export class RestApplication extends Application implements HttpServerLike {
    * @param controllerFactory - A factory function to create controller instance
    * @param methodName - The name of the controller method
    */
-  route<T>(
+  route<T extends object>(
     verb: string,
     path: string,
     spec: OperationObject,
@@ -303,7 +303,7 @@ export class RestApplication extends Application implements HttpServerLike {
     handler: Function,
   ): Binding;
 
-  route<T>(
+  route<T extends object>(
     routeOrVerb: RouteEntry | string,
     path?: string,
     spec?: OperationObject,
