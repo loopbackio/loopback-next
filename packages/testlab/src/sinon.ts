@@ -30,7 +30,7 @@ export type StubbedInstanceWithSinonAccessor<T> = T & {
  * @returns A stubbed version of the constructor, with an extra property `stubs`
  * providing access to stub API for individual methods.
  */
-export function createStubInstance<TType>(
+export function createStubInstance<TType extends object>(
   constructor: sinon.StubbableType<TType>,
 ): StubbedInstanceWithSinonAccessor<TType> {
   const stub = sinon.createStubInstance(constructor);

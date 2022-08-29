@@ -41,7 +41,7 @@ export class HttpHandler {
     this.handleRequest = (req, res) => this._handleRequest(req, res);
   }
 
-  registerController<T>(
+  registerController<T extends object>(
     spec: ControllerSpec,
     controllerCtor: ControllerClass<T>,
     controllerFactory?: ControllerFactory<T>,

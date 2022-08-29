@@ -108,7 +108,7 @@ export function asClassOrProvider<T>(
         [ContextTags.TYPE]: ContextTags.DYNAMIC_VALUE_PROVIDER,
       });
     } else {
-      binding.toClass(target as Constructor<T>);
+      binding.toClass(target as Constructor<T & object>);
     }
   };
 }

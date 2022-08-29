@@ -95,7 +95,7 @@ export async function testCoercion<T>(config: TestArgs<T>) {
     if (config.expectError) {
       await expect(
         parseOperationArgs(req, route, requestBodyParser),
-      ).to.be.rejectedWith(config.expectedResult);
+      ).to.be.rejectedWith(config.expectedResult as string | RegExp);
     } else {
       const args = await parseOperationArgs(req, route, requestBodyParser);
       expect(args).to.eql([config.expectedResult]);

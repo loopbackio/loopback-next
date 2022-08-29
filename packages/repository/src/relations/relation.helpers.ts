@@ -286,7 +286,7 @@ export function flattenMapByKeys<T>(
  * @param keyName - key name of the source
  * @param reducer - a strategy to reduce inputs to single item or array
  */
-export function buildLookupMap<Key, InType, OutType = InType>(
+export function buildLookupMap<Key, InType extends object, OutType = InType>(
   list: InType[],
   keyName: StringKeyOf<InType>,
   reducer: (accumulator: OutType | undefined, current: InType) => OutType,

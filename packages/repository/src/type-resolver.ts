@@ -86,13 +86,13 @@ export function isBuiltinType(fn: Function): boolean {
  * @param fn - A type class or a type provider.
  * @returns The resolved type.
  */
-export function resolveType<T extends Object>(
+export function resolveType<T extends object>(
   fn: TypeResolver<T> | Class<T>,
 ): Class<T>;
 
 // An overload to handle the case when `fn` is not a class nor a resolver.
 export function resolveType<T>(fn: T): T;
 
-export function resolveType<T>(fn: TypeResolver<T> | Class<T>) {
+export function resolveType<T extends object>(fn: TypeResolver<T> | Class<T>) {
   return isTypeResolver(fn) ? fn() : fn;
 }

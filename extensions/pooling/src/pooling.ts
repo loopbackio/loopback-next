@@ -195,7 +195,7 @@ export class PoolingService<T> implements LifeCycleObserver {
         await this.factory.acquire(resource, requestCtx);
       } else {
         // Fall back to resource-level acquire hook
-        await invokePoolableMethod(resource, 'acquire', requestCtx);
+        await invokePoolableMethod(resource as Poolable, 'acquire', requestCtx);
       }
     } catch (err) {
       await this.pool.destroy(resource);
@@ -224,7 +224,7 @@ export class PoolingService<T> implements LifeCycleObserver {
       if (this.factory.release) {
         await this.factory.release(resource);
       } else {
-        await invokePoolableMethod(resource, 'release');
+        await invokePoolableMethod(resource as Poolable, 'release');
       }
       await this.pool.release(resource);
     } catch (err) {

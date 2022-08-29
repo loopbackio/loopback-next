@@ -58,7 +58,7 @@ export function givenHttpServerConfig<T extends HttpOptions | HttpsOptions>(
     const config: T = {...customConfig};
     if (config.host == null) config.host = defaults.host;
     if (config.port == null) config.port = defaults.port;
-    setupTlsConfig(config);
+    setupTlsConfig(config as HttpsOptions);
     assertHostPort(config);
     return config;
   }

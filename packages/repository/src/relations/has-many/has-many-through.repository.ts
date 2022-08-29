@@ -397,7 +397,10 @@ export class DefaultHasManyThroughRepository<
             this.getThroughConstraintFromTarget(targetIds);
           const constraints = {...targetConstraint, ...sourceConstraint};
           await throughRepository.deleteAll(
-            constrainDataObject({}, constraints as DataObject<ThroughEntity>),
+            constrainDataObject(
+              {},
+              constraints as DataObject<ThroughEntity>,
+            ) as Where<ThroughEntity>,
             options?.throughOptions,
           );
         }
@@ -410,7 +413,10 @@ export class DefaultHasManyThroughRepository<
         const throughFkConstraint =
           this.getThroughConstraintFromTarget(targetFkValues);
         await throughRepository.deleteAll(
-          constrainWhereOr({}, [sourceConstraint, throughFkConstraint]),
+          constrainWhereOr({}, [
+            sourceConstraint as Where<ThroughEntity>,
+            throughFkConstraint as Where<ThroughEntity>,
+          ]),
         );
       }
       // delete target(s)
@@ -557,7 +563,10 @@ export class DefaultHasManyThroughRepository<
     const targetConstraint = this.getThroughConstraintFromTarget([targetId]);
     const constraints = {...targetConstraint, ...sourceConstraint};
     await throughRepository.deleteAll(
-      constrainDataObject({}, constraints as DataObject<ThroughEntity>),
+      constrainDataObject(
+        {},
+        constraints as DataObject<ThroughEntity>,
+      ) as Where<ThroughEntity>,
       options?.throughOptions,
     );
   }
@@ -578,7 +587,10 @@ export class DefaultHasManyThroughRepository<
       this.getThroughConstraintFromTarget(targetFkValues);
     const constraints = {...targetConstraint, ...sourceConstraint};
     await throughRepository.deleteAll(
-      constrainDataObject({}, constraints as DataObject<ThroughEntity>),
+      constrainDataObject(
+        {},
+        constraints as DataObject<ThroughEntity>,
+      ) as Where<ThroughEntity>,
       options?.throughOptions,
     );
   }

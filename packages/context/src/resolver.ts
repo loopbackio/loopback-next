@@ -44,7 +44,7 @@ const getTargetName = DecoratorFactory.getTargetName;
  * @param session - Optional session for binding and dependency resolution
  * @param nonInjectedArgs - Optional array of args for non-injected parameters
  */
-export function instantiateClass<T>(
+export function instantiateClass<T extends object>(
   ctor: Constructor<T>,
   ctx: Context,
   session?: ResolutionSession,
@@ -81,7 +81,9 @@ export function instantiateClass<T>(
     if (debug.enabled) {
       debug('Injected properties for %s:', ctor.name, props);
     }
-    return transformValueOrPromise(inst, obj => Object.assign(obj, props));
+    return transformValueOrPromise<T, T>(inst, obj =>
+      Object.assign(obj, props),
+    );
   });
 }
 

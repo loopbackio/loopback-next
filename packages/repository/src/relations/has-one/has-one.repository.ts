@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Getter} from '@loopback/core';
-import {Filter} from '@loopback/filter';
+import {Filter, Where} from '@loopback/filter';
 import {cloneDeep} from 'lodash';
 import {TypeResolver} from '../../';
 import {Count, DataObject, Options} from '../../common-types';
@@ -223,7 +223,7 @@ export class DefaultHasOneRepository<
       total +=
         (
           await targetRepository.deleteAll(
-            constrainWhere({}, this.constraint),
+            constrainWhere({}, this.constraint as Where<TargetEntity>),
             options,
           )
         )?.count ?? 0;
@@ -270,7 +270,7 @@ export class DefaultHasOneRepository<
                 : (dataObject as DataObject<TargetEntity>),
               this.constraint,
             ),
-            constrainWhere({}, this.constraint),
+            constrainWhere({}, this.constraint as Where<TargetEntity>),
             options,
           )
         )?.count ?? 0;
