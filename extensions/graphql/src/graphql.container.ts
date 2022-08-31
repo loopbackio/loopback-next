@@ -12,9 +12,9 @@ import {
   filterByKey,
   filterByServiceInterface,
 } from '@loopback/core';
-import {ExpressContext} from 'apollo-server-express/dist/ApolloServer';
-import debugFactory from 'debug';
+import {ExpressContext} from 'apollo-server-express';
 import {ContainerType, ResolverData} from 'type-graphql';
+import debugFactory from 'debug';
 import {GraphQLBindings, GraphQLTags} from './keys';
 
 const debug = debugFactory('loopback:graphql:container');

@@ -10,8 +10,7 @@ import {
 } from 'apollo-server-express';
 
 export {ContextFunction} from 'apollo-server-core';
-export {ApolloServerExpressConfig} from 'apollo-server-express';
-export {ExpressContext} from 'apollo-server-express/dist/ApolloServer';
+export {ApolloServerExpressConfig, ExpressContext} from 'apollo-server-express';
 export {Float, ID, Int, ResolverInterface} from 'type-graphql';
 export {Middleware as GraphQLMiddleware} from 'type-graphql/dist/interfaces/Middleware';
 

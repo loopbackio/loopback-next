@@ -21,9 +21,6 @@ export async function main(options: ApplicationConfig = {}) {
 
 if (require.main === module) {
   const graphqlCfg: GraphQLServerOptions = {
-    apollo: {
-      subscriptions: '/subscriptions',
-    },
     asMiddlewareOnly: true,
   };
   // Run the application
