@@ -4,21 +4,21 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
-  ArtifactOptions,
-  BaseArtifactBooter,
-  BootBindings,
-  booter,
-} from '@loopback/boot';
-import {
   Application,
   config,
   Constructor,
   CoreBindings,
   inject,
 } from '@loopback/core';
-import debugFactory from 'debug';
+import {
+  ArtifactOptions,
+  BaseArtifactBooter,
+  BootBindings,
+  booter,
+} from '@loopback/boot';
+import {getMetadataStorage} from 'type-graphql';
 import {ResolverClassMetadata} from 'type-graphql/dist/metadata/definitions';
-import {getMetadataStorage} from 'type-graphql/dist/metadata/getMetadataStorage';
+import debugFactory from 'debug';
 import {registerResolver} from '../graphql.server';
 
 const debug = debugFactory('loopback:graphql:resolver-booter');

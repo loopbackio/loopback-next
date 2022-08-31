@@ -20,17 +20,16 @@ import {
   Server,
 } from '@loopback/core';
 import {HttpServer} from '@loopback/http-server';
+import fs from 'fs';
 import {ContextFunction} from 'apollo-server-core';
 import {
   ApolloServer,
   ApolloServerExpressConfig,
-  PubSub,
-  PubSubEngine,
+  ExpressContext,
 } from 'apollo-server-express';
-import {ExpressContext} from 'apollo-server-express/dist/ApolloServer';
-import express from 'express';
-import fs from 'fs';
+import {PubSub, PubSubEngine} from 'graphql-subscriptions';
 import {lexicographicSortSchema} from 'graphql';
+import express from 'express';
 import {
   AuthChecker,
   buildSchema,
@@ -158,23 +157,16 @@ export class GraphQLServer extends Context implements Server {
 
     // Create ApolloServerExpress GraphQL server
     const serverConfig: ApolloServerExpressConfig = {
-      // enable GraphQL Playground
-      playground: true,
       context: graphqlContextResolver,
-      subscriptions: false,
       ...this.options.apollo,
       schema,
     };
     const graphQLServer = new ApolloServer(serverConfig);
+    await graphQLServer.start();
     graphQLServer.applyMiddleware({
       app: this.expressApp,
       ...this.options.middlewareOptions,
     });
-
-    // Set up subscription handlers
-    if (this.httpServer && serverConfig.subscriptions) {
-      graphQLServer.installSubscriptionHandlers(this.httpServer?.server);
-    }
 
     // Start the http server if created
     await this.httpServer?.start();
