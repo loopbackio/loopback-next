@@ -11,16 +11,17 @@
     "url": "https://github.com/loopbackio/loopback-next.git",
     "directory": "fixtures/tsdocs-monorepo"
   },
+  "workspaces": [
+    "packages/*"
+  ],
   "engines": {
     "node": "14 || 16 || 17 || 18",
     "npm": ">=7"
   },
   "scripts": {
-    "bootstrap:fixtures": "node ../../packages/monorepo/lib/run-lerna.js bootstrap",
-    "build:fixtures": "node ../../packages/monorepo/lib/run-lerna.js run build",
-    "clean:fixtures": "node ../../packages/monorepo/lib/run-lerna.js run clean",
-    "build": "npm -s run bootstrap:fixtures && npm -s run clean:fixtures && npm run -s build:fixtures",
-    "postinstall": "npm run build"
+    "build:fixtures": "npx --no lerna run build",
+    "clean:fixtures": "npx --no lerna run clean",
+    "build": "npm -s run clean:fixtures && npm run -s build:fixtures"
   },
   "devDependencies": {
     "@loopback/build": "^9.0.3"
