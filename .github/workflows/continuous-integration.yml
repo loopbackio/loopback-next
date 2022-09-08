@@ -29,14 +29,14 @@ jobs:
       fail-fast: false
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # tag=v3.0.2
         with:
           fetch-depth: 0
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@2fddd8803e2f5c9604345a0b591c3020ee971a93 # tag=v3.4.1
         with:
           node-version: ${{ matrix.node-version }}
-      - uses: Yuri6037/Action-FakeTTY@v1.1
+      - uses: Yuri6037/Action-FakeTTY@1abc69c7d530815855caedcd73842bae5687c1a6 # tag=v1.1
       - name: Bootstrap
         run: |
           npm ci --ignore-scripts
@@ -51,10 +51,10 @@ jobs:
         run: node packages/build/bin/run-nyc node packages/build/bin/run-mocha --lang en_US.UTF-8 --reporter spec "extensions/*/dist/__tests__/**/*.js"
       - name: Run example tests
         run: node packages/build/bin/run-nyc node packages/build/bin/run-mocha --lang en_US.UTF-8 --reporter spec "examples/*/dist/__tests__/**/*.js"
-      - name: Generate coverage
+      - name: Generate coverage report
         run: node packages/build/bin/run-nyc report --reporter=lcov
-      - name: Publish coverage to Coveralls
-        uses: coverallsapp/github-action@master
+      - name: Publish coverage report to Coveralls
+        uses: coverallsapp/github-action@9ba913c152ae4be1327bfb9085dc806cedb44057 # tag=v1.1.3
         with:
           flag-name: run-${{ matrix.os }}-node@${{ matrix.node-version }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -66,8 +66,8 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ success() }}
     steps:
-    - name: Set finish on Coveralls
-      uses: coverallsapp/github-action@master
+    - name: Coveralls finished
+      uses: coverallsapp/github-action@9ba913c152ae4be1327bfb9085dc806cedb44057 # tag=v1.1.3
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         parallel-finished: true
@@ -76,8 +76,8 @@ jobs:
     name: Test Benchmark
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # tag=v3.0.2
+      - uses: actions/setup-node@2fddd8803e2f5c9604345a0b591c3020ee971a93 # tag=v3.4.1
         with:
           node-version: 16 # LTS
       - name: Bootstrap
@@ -93,8 +93,8 @@ jobs:
     name: Code Lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # tag=v3.0.2
+      - uses: actions/setup-node@2fddd8803e2f5c9604345a0b591c3020ee971a93 # tag=v3.4.1
         with:
           node-version: 16 # LTS
       - name: Bootstrap
@@ -117,10 +117,10 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.pull_request }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # tag=v3.0.2
         with:
           fetch-depth: 0
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@2fddd8803e2f5c9604345a0b591c3020ee971a93 # tag=v3.4.1
         with:
           node-version: 16 # LTS
       - name: Bootstrap
@@ -134,8 +134,8 @@ jobs:
     name: Verify Docs
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # tag=v3.0.2
+      - uses: actions/setup-node@2fddd8803e2f5c9604345a0b591c3020ee971a93 # tag=v3.4.1
         with:
           node-version: 16 # LTS
       - name: Bootstrap
