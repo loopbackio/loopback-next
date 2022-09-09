@@ -81,7 +81,7 @@ exports.addExportController = async function (
     for (const declarations of exportedDeclarations.values()) {
       for (const declaration of declarations) {
         if (
-          ast.TypeGuards.isClassDeclaration(declaration) &&
+          ast.Node.isClassDeclaration(declaration) &&
           controllerClassName === declaration.getName()
         ) {
           return;
