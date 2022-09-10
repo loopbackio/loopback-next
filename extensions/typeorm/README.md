@@ -66,6 +66,20 @@ using SQlite, you'll need to install `sqlite3`.
 npm install sqlite3
 ```
 
+Then, register `SqliteConnection` connection in `application.ts` file as shown
+below:
+
+```ts
+import {BootMixin} from '@loopback/boot';
+import {RestApplication} from '@loopback/rest';
+import {TypeOrmMixin} from '@loopback/typeorm';
+export class MyApplication extends BootMixin(TypeOrmMixin(RestApplication)) {
+    super(options);
+    this.connection(SqliteConnection);
+    ...
+}
+```
+
 Refer to the
 [TypeORM documentation](https://github.com/typeorm/typeorm#installation) for the
 supported databases and the underlying drivers.
