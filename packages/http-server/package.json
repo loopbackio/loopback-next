@@ -42,7 +42,7 @@
     "@loopback/eslint-config": "^13.0.3",
     "@loopback/testlab": "^5.0.3",
     "@types/debug": "^4.1.7",
-    "@types/node": "^14.18.28",
+    "@types/node": "^14.18.29",
     "@types/stoppable": "^1.1.1"
   }
 }
