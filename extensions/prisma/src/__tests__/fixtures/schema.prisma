@@ -1,0 +1,29 @@
+// SPDX-FileCopyrightNotice: LoopBack Contributors
+// SPDX-License-Identifier: MIT
+// Node module: @loopback/prisma
+
+datasource db {
+  provider = "sqlite"
+  url      = "file://prisma-sqlite.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  email     String   @unique
+  name      String?
+  Post      Post[]
+}
+
+model Post {
+  id        Int      @id @default(autoincrement())
+  authorId  Int
+  author    User     @relation(fields: [authorId], references: [id])
+  createdAt DateTime @default(now())
+  title     String
+  body      String
+}

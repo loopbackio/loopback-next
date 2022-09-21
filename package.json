@@ -46,7 +46,7 @@
     "prettier:docs:fix": "npm run prettier:docs -- --write",
     "clean": "lerna run clean && node packages/build/bin/run-clean \"packages/*/dist\" \"extensions/*/dist\" \"examples/*/dist\" \"benchmark/dist\"",
     "clean:lerna": "lerna clean",
-    "build": "node packages/build/bin/compile-package -b",
+    "build": "lerna run --scope=@loopback/*prisma build:prisma && node packages/build/bin/compile-package -b",
     "build:full": "npm ci --ignore-scripts && lerna bootstrap --ci && npm run clean && npm run build",
     "pretest": "npm run clean && npm run build",
     "test": "node packages/build/bin/run-nyc npm run mocha",
