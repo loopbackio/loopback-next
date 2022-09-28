@@ -49,7 +49,7 @@
   ],
   "dependencies": {
     "@lerna/project": "^5.5.2",
-    "@microsoft/api-documenter": "^7.19.14",
+    "@microsoft/api-documenter": "^7.19.15",
     "@microsoft/api-extractor": "^7.31.2",
     "debug": "^4.3.4",
     "fs-extra": "^10.1.0",
