@@ -196,7 +196,7 @@ module.exports = class BaseGenerator extends Generator {
       return;
     }
     for (const o in opts) {
-      if (this.options[o] == null) {
+      if (!this.options[o]) {
         this.options[o] = opts[o];
       }
     }
@@ -208,6 +208,14 @@ module.exports = class BaseGenerator extends Generator {
       this.exit(
         `Package manager '${packageManager}' is not supported. Use ${supported}.`,
       );
+    }
+    //In case lb4 is run with discover/datasource model, removing unwanted .env
+    if (
+      (this.options.namespace === 'loopback4:discover' ||
+        this.options.namespace === 'loopback4:datasource') &&
+      this.options.config
+    ) {
+      delete this.options?.env;
     }
   }
 
