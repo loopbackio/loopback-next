@@ -59,7 +59,7 @@
     "pacote": "^13.6.2",
     "pluralize": "^8.0.0",
     "regenerate": "^1.4.2",
-    "semver": "^7.3.7",
+    "semver": "^7.3.8",
     "slash": "^3.0.0",
     "spdx-license-list": "^6.6.0",
     "stringify-object": "^3.3.0",
