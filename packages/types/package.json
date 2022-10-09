@@ -1,0 +1,53 @@
+{
+  "name": "@loopback/types",
+  "version": "4.0.0-alpha.8",
+  "description": "LoopBack's types utilities for reflection and decoration",
+  "engines": {
+    "node": ">=6"
+  },
+  "scripts": {
+    "acceptance": "lb-mocha \"DIST/test/acceptance/**/*.js\"",
+    "build": "npm run build:dist && npm run build:dist6",
+    "build:current": "lb-tsc",
+    "build:dist": "lb-tsc es2017",
+    "build:dist6": "lb-tsc es2015",
+    "build:apidocs": "lb-apidocs",
+    "clean": "lb-clean loopback-types*.tgz dist dist6 package api-docs",
+    "prepublishOnly": "npm run build && npm run build:apidocs",
+    "pretest": "npm run build:current",
+    "test": "lb-mocha \"DIST/test/unit/**/*.js\" \"DIST/test/acceptance/**/*.js\"",
+    "unit": "lb-mocha \"DIST/test/unit/**/*.js\"",
+    "verify": "npm pack && tar xf loopback-types*.tgz && tree package && npm run clean"
+  },
+  "author": "IBM",
+  "copyright.owner": "IBM Corp.",
+  "license": "MIT",
+  "dependencies": {
+    "debug": "^3.1.0"
+  },
+  "devDependencies": {
+    "@loopback/build": "^4.0.0-alpha.12",
+    "@loopback/testlab": "^4.0.0-alpha.22",
+    "@types/debug": "^0.0.30"
+  },
+  "keywords": [
+    "LoopBack",
+    "Types"
+  ],
+  "files": [
+    "README.md",
+    "index.js",
+    "index.d.ts",
+    "dist/src",
+    "dist6/src",
+    "api-docs",
+    "src"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git"
+  }
+}
