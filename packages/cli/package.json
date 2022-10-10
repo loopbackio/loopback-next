@@ -39,7 +39,7 @@
     ".yo-rc.json"
   ],
   "dependencies": {
-    "@lerna/project": "^5.6.1",
+    "@lerna/project": "^5.6.2",
     "@openapi-contrib/openapi-schema-to-json-schema": "^3.2.0",
     "@phenomnomnominal/tsquery": "^5.0.0",
     "camelcase-keys": "^7.0.2",
