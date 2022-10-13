@@ -49,8 +49,8 @@
   ],
   "dependencies": {
     "@lerna/project": "^6.0.0",
-    "@microsoft/api-documenter": "^7.19.16",
-    "@microsoft/api-extractor": "^7.32.0",
+    "@microsoft/api-documenter": "^7.19.19",
+    "@microsoft/api-extractor": "^7.33.1",
     "debug": "^4.3.4",
     "fs-extra": "^10.1.0",
     "tslib": "^2.4.0"
