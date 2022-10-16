@@ -112,6 +112,27 @@ describe('importDiscoveredModel', () => {
     });
   });
 
+  it('imports Blob properties', () => {
+    const discoveredModel = {
+      name: 'TestModel',
+      properties: {
+        image: {
+          type: 'Binary',
+          required: false,
+          length: null,
+          precision: null,
+          scale: null,
+        },
+      },
+    };
+
+    const modelData = importDiscoveredModel(discoveredModel);
+    expect(modelData.properties).to.have.property('image').deepEqual({
+      type: `'Binary'`,
+      tsType: 'Buffer',
+    });
+  });
+
   it('imports numeric primary key', () => {
     const discoveredModel = {
       name: 'TestModel',

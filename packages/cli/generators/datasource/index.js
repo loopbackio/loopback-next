@@ -63,6 +63,10 @@ module.exports = class DataSourceGenerator extends ArtifactGenerator {
   }
 
   setOptions() {
+    // remove not needed .env property
+    if (this.options.config) {
+      delete this.options?.env;
+    }
     return super.setOptions();
   }
 
