@@ -86,7 +86,10 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
         this.options.dataSource,
       );
     }
-
+    // remove not needed .env property
+    if (this.options.config) {
+      delete this.options?.env;
+    }
     return super.setOptions();
   }
 
@@ -289,6 +292,27 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
     for (let i = 0; i < this.discoveringModels.length; i++) {
       const modelInfo = this.discoveringModels[i];
       debug(`Discovering: ${modelInfo.name}...`);
+      let treatCHAR1AsString = false;
+      let treatBIT1AsBit = true;
+      let treatTINYINT1AsTinyInt = true;
+      // when options are passed to discover command as --config, the treatTINYINT1AsTinyInt comes as a string
+      if (typeof this.options.treatCHAR1AsString === 'string') {
+        treatCHAR1AsString = this.options.treatCHAR1AsString === 'true';
+      } else if (typeof this.options.treatCHAR1AsString === 'boolean') {
+        treatCHAR1AsString = this.options.treatCHAR1AsString;
+      }
+      // when options are passed to discover command as --config, the treatBIT1AsBit comes as a string
+      if (typeof this.options.treatBIT1AsBit === 'string') {
+        treatBIT1AsBit = this.options.treatBIT1AsBit === 'true';
+      } else if (typeof this.options.treatBIT1AsBit === 'boolean') {
+        treatBIT1AsBit = this.options.treatBIT1AsBit;
+      }
+      // when options are passed to discover command as --config, the treatTINYINT1AsTinyInt comes as a string
+      if (typeof this.options.treatTINYINT1AsTinyInt === 'string') {
+        treatTINYINT1AsTinyInt = this.options.treatTINYINT1AsTinyInt === 'true';
+      } else if (typeof this.options.treatTINYINT1AsTinyInt === 'boolean') {
+        treatTINYINT1AsTinyInt = this.options.treatTINYINT1AsTinyInt;
+      }
       const modelDefinition = await modelMaker.discoverSingleModel(
         this.artifactInfo.dataSource,
         modelInfo.name,
@@ -296,6 +320,9 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
           schema: modelInfo.owner,
           disableCamelCase: this.artifactInfo.disableCamelCase,
           associations: this.options.relations,
+          treatCHAR1AsString,
+          treatBIT1AsBit,
+          treatTINYINT1AsTinyInt,
         },
       );
       if (this.options.optionalId) {

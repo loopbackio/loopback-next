@@ -196,7 +196,7 @@ module.exports = class BaseGenerator extends Generator {
       return;
     }
     for (const o in opts) {
-      if (this.options[o] == null) {
+      if (!this.options[o]) {
         this.options[o] = opts[o];
       }
     }

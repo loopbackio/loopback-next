@@ -68,11 +68,17 @@ const fullDefinitions = [
       },
       'id': {
         'type': 'Number',
-        'required': true,
         'length': null,
         'precision': null,
         'scale': 0,
         'id': 1,
+      },
+      'isActive': {
+        'type': 'boolean',
+        'required': false,
+        'length': null,
+        'precision': null,
+        'scale': null,
       },
     },
   },
