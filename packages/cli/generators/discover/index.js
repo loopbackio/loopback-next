@@ -86,7 +86,10 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
         this.options.dataSource,
       );
     }
-
+    // remove not needed .env property
+    if (this.options.config) {
+      delete this.options?.env;
+    }
     return super.setOptions();
   }
 
