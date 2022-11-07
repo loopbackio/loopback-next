@@ -18,7 +18,7 @@
     "access": "public"
   },
   "peerDependencies": {
-    "eslint": "^8.26.0"
+    "eslint": "^8.27.0"
   },
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "^5.42.0",
