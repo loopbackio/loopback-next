@@ -121,6 +121,8 @@ See [SECURITY.md](SECURITY.md) for more details.
 |    [![agnes512]](https://github.com/agnes512)    |  [![madaky]](https://github.com/madaky)  |        [![yaty]](https://github.com/yaty)        |
 |                  **Nico Flaig**                  |            **Denny Bartelt**             |             **Douglas McConnachie**              |
 |      [![nflaig]](https://github.com/nflaig)      | [![derdeka]](https://github.com/derdeka) |    [![dougal83]](https://github.com/dougal83)    |
+|            **Samarpan Bhattacharya**             |                                          |                                                  |
+|   [![samarpanB]](https://github.com/samarpanB)   |                                          |                                                  |
 
 See
 [all contributors](https://github.com/loopbackio/loopback-next/graphs/contributors).
@@ -161,3 +163,4 @@ See
 [mschnee]: https://avatars0.githubusercontent.com/u/1375316?v=4&s=60
 [madaky]: https://avatars3.githubusercontent.com/u/17172989?v=4&s=60
 [nflaig]: https://avatars3.githubusercontent.com/u/38436224?v=4&s=60
+[samarpanb]: https://avatars.githubusercontent.com/u/13620435?v=4&s=60
