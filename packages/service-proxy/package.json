@@ -38,7 +38,7 @@
     "@loopback/core": "^4.0.4"
   },
   "dependencies": {
-    "loopback-datasource-juggler": "^4.27.1",
+    "loopback-datasource-juggler": "^4.28.0",
     "tslib": "^2.4.1"
   },
   "devDependencies": {

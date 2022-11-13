@@ -91,7 +91,7 @@
     "@types/yeoman-environment": "^2.10.8",
     "@types/yeoman-generator": "^5.2.11",
     "loopback": "^3.28.0",
-    "loopback-datasource-juggler": "^4.27.1",
+    "loopback-datasource-juggler": "^4.28.0",
     "mem-fs": "^2.2.1",
     "mem-fs-editor": "^9.5.0",
     "mock-stdin": "^1.0.0",
