@@ -49,7 +49,10 @@ placed. Default is `src/models`
 `--schema`: Specify the schema which the datasource will find the models to
 discover
 
+**`--models`**: Specify the models to be generated e.g:--models=table1,table2
+
 `--optionalId`: Specify if the Id property of generated models will be marked as
+
 not required
 
 ### Interactive Prompts
