@@ -25,7 +25,7 @@ jobs:
         node-version: [14, 16, 17, 18]
         include:
           - os: macos-latest
-            node-version: 16 # LTS
+            node-version: 18 # LTS
       fail-fast: false
     runs-on: ${{ matrix.os }}
     steps:
@@ -79,7 +79,7 @@ jobs:
       - uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # tag=v3.1.0
       - uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # tag=v3.5.1
         with:
-          node-version: 16 # LTS
+          node-version: 18 # LTS
       - name: Bootstrap
         run: |
           npm ci --ignore-scripts
@@ -96,7 +96,7 @@ jobs:
       - uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # tag=v3.1.0
       - uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # tag=v3.5.1
         with:
-          node-version: 16 # LTS
+          node-version: 18 # LTS
       - name: Bootstrap
         run: |
           npm ci --ignore-scripts
@@ -122,7 +122,7 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # tag=v3.5.1
         with:
-          node-version: 16 # LTS
+          node-version: 18 # LTS
       - name: Bootstrap
         run: |
           npm ci --ignore-scripts
@@ -137,7 +137,7 @@ jobs:
       - uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # tag=v3.1.0
       - uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # tag=v3.5.1
         with:
-          node-version: 16 # LTS
+          node-version: 18 # LTS
       - name: Bootstrap
         run: |
           npm ci --ignore-scripts
