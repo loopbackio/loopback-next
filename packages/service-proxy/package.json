@@ -1,7 +1,7 @@
 {
   "name": "@loopback/service-proxy",
   "description": "A common set of interfaces for interacting with service oriented backends such as REST APIs, SOAP Web Services, and gRPC microservices",
-  "version": "5.0.4",
+  "version": "5.0.5",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -35,17 +35,17 @@
     "!*/__tests__"
   ],
   "peerDependencies": {
-    "@loopback/core": "^4.0.4"
+    "@loopback/core": "^4.0.5"
   },
   "dependencies": {
     "loopback-datasource-juggler": "^4.28.0",
     "tslib": "^2.4.1"
   },
   "devDependencies": {
-    "@loopback/build": "^9.0.4",
-    "@loopback/core": "^4.0.4",
-    "@loopback/eslint-config": "^13.0.4",
-    "@loopback/testlab": "^5.0.4",
+    "@loopback/build": "^9.0.5",
+    "@loopback/core": "^4.0.5",
+    "@loopback/eslint-config": "^13.0.5",
+    "@loopback/testlab": "^5.0.5",
     "@types/node": "^14.18.33"
   }
 }

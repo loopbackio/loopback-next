@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.1.0](https://github.com/loopbackio/loopback-next/compare/@loopback/repository@5.0.4...@loopback/repository@5.1.0) (2022-11-24)
+
+### Bug Fixes
+
+- **repository:** remove async from entityToData method in legacy-juggler-bridge
+  ([c1ae1bc](https://github.com/loopbackio/loopback-next/commit/c1ae1bcc13fdba33b5d0c48cdeb0858176ff1208)),
+  closes [#9071](https://github.com/loopbackio/loopback-next/issues/9071)
+
+### Features
+
+- **repository:** add capability for insert multiple rows in single query
+  ([5eab718](https://github.com/loopbackio/loopback-next/commit/5eab718fc7e49525bbc341e06e5b56619e329f29)),
+  closes [#3357](https://github.com/loopbackio/loopback-next/issues/3357)
+
+# Change Log
+
+All notable changes to this project will be documented in this file. See
+[Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
 ## [5.0.4](https://github.com/loopbackio/loopback-next/compare/@loopback/repository@5.0.3...@loopback/repository@5.0.4) (2022-10-13)
 
 ### Bug Fixes

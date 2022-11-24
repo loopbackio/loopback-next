@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.1.5](https://github.com/loopbackio/loopback-next/compare/@loopback/cli@4.1.4...@loopback/cli@4.1.5) (2022-11-24)
+
+### Bug Fixes
+
+- **cli:** fix lb4 discover --config missing provided options
+  ([b8704a6](https://github.com/loopbackio/loopback-next/commit/b8704a6dcc036c6db42eb58024456bcbb721ef9b)),
+  closes [#8963](https://github.com/loopbackio/loopback-next/issues/8963)
+  [#8966](https://github.com/loopbackio/loopback-next/issues/8966)
+
+# Change Log
+
+All notable changes to this project will be documented in this file. See
+[Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
 ## [4.1.4](https://github.com/loopbackio/loopback-next/compare/@loopback/cli@4.1.3...@loopback/cli@4.1.4) (2022-10-13)
 
 ### Bug Fixes

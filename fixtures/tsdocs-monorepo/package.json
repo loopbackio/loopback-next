@@ -1,7 +1,7 @@
 {
   "name": "@loopback/tsdocs-monorepo",
   "description": "A monorepo for tsdocs testing",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "private": true,
   "license": "MIT",
   "author": "IBM Corp. and LoopBack contributors",
@@ -24,6 +24,6 @@
     "build": "npm -s run clean:fixtures && npm run -s build:fixtures"
   },
   "devDependencies": {
-    "@loopback/build": "^9.0.4"
+    "@loopback/build": "^9.0.5"
   }
 }

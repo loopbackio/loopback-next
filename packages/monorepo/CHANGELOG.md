@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.5](https://github.com/loopbackio/loopback-next/compare/@loopback/monorepo@0.5.4...@loopback/monorepo@0.5.5) (2022-11-24)
+
+**Note:** Version bump only for package @loopback/monorepo
+
+# Change Log
+
+All notable changes to this project will be documented in this file. See
+[Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
 ## [0.5.4](https://github.com/loopbackio/loopback-next/compare/@loopback/monorepo@0.5.3...@loopback/monorepo@0.5.4) (2022-10-13)
 
 **Note:** Version bump only for package @loopback/monorepo

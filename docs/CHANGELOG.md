@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.1.4](https://github.com/loopbackio/loopback-next/compare/@loopback/docs@5.1.3...@loopback/docs@5.1.4) (2022-11-24)
+
+### Bug Fixes
+
+- **docs:** replace pEvent with once
+  ([63abf51](https://github.com/loopbackio/loopback-next/commit/63abf5104fb5a89f9a05698a4fcdea4b5d659c3c))
+
+# Change Log
+
+All notable changes to this project will be documented in this file. See
+[Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
 ## [5.1.3](https://github.com/loopbackio/loopback-next/compare/@loopback/docs@5.1.2...@loopback/docs@5.1.3) (2022-10-13)
 
 **Note:** Version bump only for package @loopback/docs
