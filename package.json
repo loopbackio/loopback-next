@@ -72,7 +72,7 @@
     "fs-extra": "^10.1.0",
     "husky": "^8.0.2",
     "lerna": "^6.0.3",
-    "lint-staged": "^13.0.3",
+    "lint-staged": "^13.0.4",
     "markdown-table": "^3.0.2",
     "open-cli": "^7.1.0",
     "prettier": "^2.8.0",
