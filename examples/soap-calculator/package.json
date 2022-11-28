@@ -58,7 +58,7 @@
     "@loopback/build": "^9.0.5",
     "@loopback/eslint-config": "^13.0.5",
     "@loopback/testlab": "^5.0.5",
-    "@types/mocha": "^10.0.0",
+    "@types/mocha": "^10.0.1",
     "@types/node": "^14.18.33",
     "eslint": "^8.28.0",
     "mocha": "^10.1.0",
