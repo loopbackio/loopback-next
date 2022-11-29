@@ -1,15 +1,41 @@
 import {ApplicationConfig, <%= project.applicationName %>} from './application';
+<% if (project.isHttp2) { -%>
+import * as fs from 'fs';
+import path from 'path';
+import spdy from 'spdy';
+<% } -%>
 
 export * from './application';
 
 export async function main(options: ApplicationConfig = {}) {
+<% if (project.isHttp2) { -%>
+  const spdyOptions = options.spdy;
+  delete options.spdy;
+  options.rest.listenOnStart = false;
+<% } -%>
   const app = new <%= project.applicationName %>(options);
   await app.boot();
   await app.start();
 
+<% if (project.isHttp2) { -%>
+  // create spdy h2 server
+  const server = spdy.createServer(spdyOptions, app.requestHandler);
+
+  //ignore the warnings
+  server.on('warning', warn => {
+    console.log(warn.stack);
+  });
+
+  server.listen(options.rest.port, () => {
+    console.log(
+    `Listening on https://${app.options.rest.host}:${app.options.rest.port}/`,
+    );
+  });
+<% }else { -%>
   const url = app.restServer.url;
   console.log(`Server is running at ${url}`);
   console.log(`Try ${url}/ping`);
+<% } -%>
 
   return app;
 }
@@ -31,6 +57,12 @@ if (require.main === module) {
         setServersFromRequest: true,
       },
     },
+<% if (project.isHttp2) { -%>
+    spdy: {
+      key: fs.readFileSync(path.join(__dirname, process.env.KEY ?? '')),
+      cert: fs.readFileSync(path.join(__dirname, process.env.CERT ?? '')),
+    }
+<% } -%>
   };
   main(config).catch(err => {
     console.error('Cannot start the application.', err);

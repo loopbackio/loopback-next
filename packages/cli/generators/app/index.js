@@ -115,6 +115,23 @@ module.exports = class AppGenerator extends ProjectGenerator {
     return super.promptYarnInstall();
   }
 
+  //prompt if you would like to create a http2 server
+  promptHttp2Server() {
+    if (this.shouldExit()) return;
+    const prompts = [
+      {
+        type: 'confirm',
+        name: 'isHttp2',
+        message: g.f('Do you want to create a http2 server'),
+        default: false,
+      },
+    ];
+
+    return this.prompt(prompts).then(props => {
+      this.projectInfo.isHttp2 = props.isHttp2;
+    });
+  }
+
   buildAppClassMixins() {
     if (this.shouldExit()) return;
     const {repositories, services} = this.projectInfo || {};
