@@ -10,6 +10,7 @@ import {
   Context,
   Getter,
   inject,
+  injectable,
   Injection,
   instantiateClass,
   invokeMethod,
@@ -201,6 +202,65 @@ describe('constructor injection', () => {
     expect(y).to.eql('y');
   });
 
+  // https://github.com/loopbackio/loopback-next/issues/9041
+  it('uses a new session for getter resolution', async () => {
+    const context = new Context();
+    interface XInterface {
+      value: string;
+      xy(): Promise<string>;
+    }
+    interface YInterface {
+      value: string;
+    }
+
+    @injectable({scope: BindingScope.SINGLETON})
+    class XClass implements XInterface {
+      value = 'x';
+      @inject.getter('y')
+      public y: Getter<YInterface>;
+
+      @inject.getter('x')
+      public x: Getter<XInterface>;
+
+      async xy() {
+        const y = await this.y();
+        const x = await this.x();
+        return x.value + y.value;
+      }
+    }
+
+    @injectable({scope: BindingScope.SINGLETON})
+    class YClass implements YInterface {
+      value = 'y';
+      @inject.getter('x')
+      public x: Getter<XInterface>;
+    }
+
+    class ZClass {
+      constructor(
+        // Now binding x will be in the session of ZClass resolution
+        @inject('x') private x: XInterface,
+        @inject('y') private y: YInterface,
+        @inject.getter('y') private getY: Getter<YInterface>,
+      ) {}
+
+      async test() {
+        const y = await this.getY();
+        expect(y.value).eql('y');
+        expect(this.y.value).eql('y');
+        expect(this.x.value).eql('x');
+        expect(await this.x.xy()).to.eql('xy');
+      }
+    }
+
+    context.bind('x').toClass(XClass);
+    context.bind('y').toClass(YClass);
+    context.bind('z').toClass(ZClass);
+
+    const z = context.getSync<ZClass>('z');
+    await z.test();
+  });
+
   it('reports circular dependencies of three bindings', () => {
     const context = new Context();
 
@@ -326,12 +386,9 @@ describe('constructor injection', () => {
     context.bind('z').toClass(ZClass);
     const x: XClass = context.getSync('x');
     await x.y.z();
-    expect(bindingPath).to.eql('x --> y --> z');
-    expect(resolutionPath).to.eql(
-      'x --> @XClass.constructor[0] --> y --> @YClass.constructor[0]' +
-        ' --> z --> @ZClass.prototype.myProp',
-    );
-    expect(decorators).to.eql(['@inject', '@inject.getter', '@inject']);
+    expect(bindingPath).to.eql('z');
+    expect(resolutionPath).to.eql('z --> @ZClass.prototype.myProp');
+    expect(decorators).to.eql(['@inject']);
   });
 
   it('tracks path of injections', () => {
