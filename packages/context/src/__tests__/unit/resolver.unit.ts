@@ -166,6 +166,41 @@ describe('constructor injection', () => {
     );
   });
 
+  it('allows circular dependencies of two lazy bindings', async () => {
+    const context = new Context();
+    interface XInterface {
+      value: string;
+      yVal(): Promise<string>;
+    }
+    interface YInterface {
+      value: string;
+    }
+
+    class XClass implements XInterface {
+      value = 'x';
+      @inject.getter('y')
+      public y: Getter<YInterface>;
+
+      async yVal() {
+        const y = await this.y();
+        return y.value;
+      }
+    }
+
+    class YClass implements YInterface {
+      value = 'y';
+      @inject.getter('x')
+      public x: Getter<XInterface>;
+    }
+
+    context.bind('x').toClass(XClass);
+    context.bind('y').toClass(YClass);
+
+    const x = context.getSync<XInterface>('x');
+    const y = await x.yVal();
+    expect(y).to.eql('y');
+  });
+
   it('reports circular dependencies of three bindings', () => {
     const context = new Context();
 
