@@ -34,11 +34,15 @@ export class Test extends Entity {
 
   @property({
     type: 'number',
-    required: true,
     scale: 0,
     id: 1,
   })
-  id: number;
+  id?: number;
+
+  @property({
+    type: 'boolean',
+  })
+  isActive?: boolean;
 
 
   constructor(data?: Partial<Test>) {

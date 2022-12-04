@@ -39,6 +39,67 @@ export class Test extends Entity {
   })
   id?: number;
 
+  @property({
+    type: 'boolean',
+  })
+  isActive?: boolean;
+
+  // Define well-known properties here
+
+  // Indexer property to allow additional data
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [prop: string]: any;
+
+  constructor(data?: Partial<Test>) {
+    super(data);
+  }
+}
+
+export interface TestRelations {
+  // describe navigational properties here
+}
+
+export type TestWithRelations = Test & TestRelations;
+
+`;
+
+exports[`lb4 discover integration model discovery treatTINYINT1AsTinyInt set to false to treat tinyint(1) as boolean 1`] = `
+import {Entity, model, property} from '@loopback/repository';
+
+@model()
+export class Test extends Entity {
+  @property({
+    type: 'date',
+  })
+  dateTest?: string;
+
+  @property({
+    type: 'number',
+  })
+  numberTest?: number;
+
+  @property({
+    type: 'string',
+  })
+  stringTest?: string;
+
+  @property({
+    type: 'boolean',
+  })
+  booleanText?: boolean;
+
+  @property({
+    type: 'number',
+    scale: 0,
+    id: 1,
+  })
+  id?: number;
+
+  @property({
+    type: 'boolean',
+  })
+  isActive?: boolean;
+
   // Define well-known properties here
 
   // Indexer property to allow additional data
@@ -183,11 +244,15 @@ export class Test extends Entity {
 
   @property({
     type: 'number',
-    required: true,
     scale: 0,
     id: 1,
   })
-  id: number;
+  id?: number;
+
+  @property({
+    type: 'boolean',
+  })
+  isActive?: boolean;
 
   // Define well-known properties here
 

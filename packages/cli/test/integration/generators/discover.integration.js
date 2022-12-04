@@ -60,6 +60,10 @@ const optionalIdOptions = {
   ...baseOptions,
   optionalId: true,
 };
+const treatTINYINT1AsTinyIntOptions = {
+  ...baseOptions,
+  treatTINYINT1AsTinyInt: false,
+};
 
 // Expected File Name
 const defaultExpectedTestModel = path.join(
@@ -175,6 +179,20 @@ describe('lb4 discover integration', () => {
           }),
         )
         .withOptions(optionalIdOptions);
+
+      assert.file(defaultExpectedTestModel);
+      expectFileToMatchSnapshot(defaultExpectedTestModel);
+    });
+
+    it('treatTINYINT1AsTinyInt set to false to treat tinyint(1) as boolean', async () => {
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {
+            additionalFiles: SANDBOX_FILES,
+          }),
+        )
+        .withOptions(treatTINYINT1AsTinyIntOptions);
 
       assert.file(defaultExpectedTestModel);
       expectFileToMatchSnapshot(defaultExpectedTestModel);

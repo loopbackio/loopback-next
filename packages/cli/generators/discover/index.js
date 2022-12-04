@@ -132,7 +132,6 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
         path.resolve(dsDir, `${utils.toFileName(s)}.datasource.js`),
       ),
     );
-
     if (this.options.dataSource) {
       if (
         this.dataSourceChoices
@@ -309,6 +308,11 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
     // eslint-disable-next-line @typescript-eslint/prefer-for-of
     for (let i = 0; i < this.discoveringModels.length; i++) {
       const modelInfo = this.discoveringModels[i];
+      // passing connector specific options from the cli through connectorDiscoveryOptions
+      let discoveryOptions = {};
+      if (this.options.connectorDiscoveryOptions) {
+        discoveryOptions = JSON.parse(this.options.connectorDiscoveryOptions);
+      }
       debug(`Discovering: ${modelInfo.name}...`);
       const modelDefinition = await modelMaker.discoverSingleModel(
         this.artifactInfo.dataSource,
@@ -317,6 +321,7 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
           schema: modelInfo.owner,
           disableCamelCase: this.artifactInfo.disableCamelCase,
           associations: this.options.relations,
+          ...discoveryOptions,
         },
       );
       if (this.options.optionalId) {
