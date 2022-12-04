@@ -502,7 +502,9 @@ export function modelToJsonSchema<T extends object>(
     const referenceType = isArrayType(resolvedType)
       ? // shimks: ugly type casting; this should be replaced by logic to throw
         // error if itemType/type is not a string or a function
-        resolveType(metaProperty.itemType as string | Function)
+        typeof metaProperty.itemType === 'string'
+        ? resolveType(metaProperty.itemType)
+        : resolveType(metaProperty.itemType)
       : resolvedType;
 
     if (typeof referenceType !== 'function' || isBuiltinType(referenceType)) {
