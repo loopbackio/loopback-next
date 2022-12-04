@@ -52,6 +52,11 @@ discover
 `--optionalId`: Specify if the Id property of generated models will be marked as
 not required
 
+`--connectorDiscoveryOptions`: Pass the options to the connectors. For example:
+Passing `--connectorDiscoveryOptions = '{"treatTINYINT1AsTinyInt":false}'` to
+`loopback-mysql-connector` would make the connector treat `tinyint `as a
+`boolean`.
+
 ### Interactive Prompts
 
 Based on the option, the tool may prompt you for:
