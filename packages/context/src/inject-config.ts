@@ -175,14 +175,15 @@ function resolveAsGetterFromConfig(
 ) {
   assertTargetType(injection, Function, 'Getter function');
   const bindingKey = getTargetBindingKey(injection, session);
-  // We need to clone the session for the getter as it will be resolved later
-  const forkedSession = ResolutionSession.fork(session);
   const meta = injection.metadata;
   return async function getter() {
     // Return `undefined` if no current binding is present
     if (!bindingKey) return undefined;
     return ctx.getConfigAsValueOrPromise(bindingKey, meta.propertyPath, {
-      session: forkedSession,
+      // https://github.com/loopbackio/loopback-next/issues/9041
+      // We should start with a new session for `getter` resolution to avoid
+      // possible circular dependencies
+      session: undefined,
       optional: meta.optional,
     });
   };

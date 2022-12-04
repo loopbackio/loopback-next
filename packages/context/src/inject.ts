@@ -434,10 +434,11 @@ function resolveAsGetter(
 ) {
   assertTargetType(injection, Function, 'Getter function');
   const bindingSelector = injection.bindingSelector as BindingAddress;
-  // We need to clone the session for the getter as it will be resolved later
-  const forkedSession = ResolutionSession.fork(session);
   const options: ResolutionOptions = {
-    session: forkedSession,
+    // https://github.com/loopbackio/loopback-next/issues/9041
+    // We should start with a new session for `getter` resolution to avoid
+    // possible circular dependencies
+    session: undefined,
     ...injection.metadata,
   };
   return function getter() {

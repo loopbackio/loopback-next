@@ -205,7 +205,10 @@ export class ContextView<T = unknown>
         ...this.resolutionOptions,
         ...asResolutionOptions(session),
       };
-      options.session = ResolutionSession.fork(options.session);
+      // https://github.com/loopbackio/loopback-next/issues/9041
+      // We should start with a new session for `view` resolution to avoid
+      // possible circular dependencies
+      options.session = undefined;
       return b.getValue(this.context, options);
     });
     if (isPromiseLike(result)) {

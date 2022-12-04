@@ -709,8 +709,7 @@ describe('Context bindings - Injecting dependencies of classes', () => {
     const store = await ctx.get<Store>(STORE_KEY);
     expect(store.locations).to.eql(['San Francisco', 'San Jose']);
     expect(resolutionPath).to.eql(
-      'store --> @Store.constructor[0] --> store.locations.sj --> ' +
-        '@LocationProvider.prototype.location',
+      'store.locations.sj --> @LocationProvider.prototype.location',
     );
   });
 
