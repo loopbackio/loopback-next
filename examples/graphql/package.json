@@ -62,7 +62,7 @@
     "@loopback/eslint-config": "^13.0.5",
     "@loopback/testlab": "^5.0.5",
     "@types/multer": "^1.4.7",
-    "@types/node": "^14.18.33",
+    "@types/node": "^14.18.34",
     "eslint": "^8.28.0",
     "rimraf": "^3.0.2",
     "source-map-support": "^0.5.21",
