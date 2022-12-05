@@ -260,6 +260,19 @@ describe('getFilterJsonSchemaFor', () => {
       .to.equal('Customer.IncludeFilter');
   });
 
+  it('enumerates relations under relation object', () => {
+    expect(customerFilterSchema.properties)
+      .to.have.propertyByPath(
+        'include',
+        'items',
+        'anyOf',
+        '0',
+        'properties',
+        'relation',
+        'enum',
+      )
+      .containDeep(['orders']);
+  });
   it('returns "include.items.title" when no options were provided', () => {
     expect(customerFilterSchema.properties)
       .to.have.propertyByPath('include', 'items', 'anyOf', '0', 'title')
