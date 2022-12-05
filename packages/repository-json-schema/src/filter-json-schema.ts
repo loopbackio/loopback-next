@@ -153,7 +153,7 @@ export function getFilterJsonSchemaFor(
             type: 'object',
             properties: {
               // TODO(bajtos) restrict values to relations defined by "model"
-              relation: {type: 'string'},
+              relation: {type: 'string', enum: Object.keys(modelRelations)},
               // TODO(bajtos) describe the filter for the relation target model
               scope: getScopeFilterJsonSchemaFor(modelCtor, options),
             },
