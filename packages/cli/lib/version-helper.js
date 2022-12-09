@@ -198,9 +198,9 @@ function updateDependencies(generator) {
       pkg.peerDependencies[d] !== templateDeps[d]
     ) {
       depUpdates.push(
-        `- PeerDependency ${d}: ${pkg.devDependencies[d]} => ${templateDeps[d]}`,
+        `- PeerDependency ${d}: ${pkg.peerDependencies[d]} => ${templateDeps[d]}`,
       );
-      pkg.devDependencies[d] = templateDeps[d];
+      pkg.peerDependencies[d] = templateDeps[d];
     }
   }
   if (depUpdates.length) {
