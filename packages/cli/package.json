@@ -193,7 +193,9 @@
       "@loopback/socketio": "^0.6.5",
       "@loopback/monorepo": "^0.5.5",
       "@loopback/tsdocs": "^4.0.5",
-      "@loopback/example-references-many": "^6.0.5"
+      "@loopback/example-references-many": "^6.0.5",
+      "spdy": "^4.0.2",
+      "@types/spdy": "^3.4.5"
     }
   }
 }

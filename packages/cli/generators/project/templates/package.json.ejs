@@ -155,6 +155,9 @@
 <% } else { -%>
     "@loopback/rest-explorer": "<%= project.dependencies['@loopback/rest-explorer'] -%>",
 <% } -%>
+<% if (project.isHttp2) { -%>
+    "spdy": "<%= project.dependencies['spdy'] -%>",
+<% } -%>
 <% } -%>
     "tslib": "<%= project.dependencies['tslib'] -%>"
   },
@@ -169,6 +172,9 @@
 <% if (project.eslint) { -%>
     "@loopback/eslint-config": "<%= project.dependencies['@loopback/eslint-config'] -%>",
     "eslint": "<%= project.dependencies['eslint'] -%>",
+<% } -%>
+<% if (project.isHttp2) { -%>
+    "@types/spdy": "<%= project.dependencies['@types/spdy'] -%>",
 <% } -%>
     "typescript": "<%= project.dependencies['typescript'] -%>"
   }
