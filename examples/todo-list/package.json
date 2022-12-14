@@ -1,7 +1,7 @@
 {
   "name": "@loopback/example-todo-list",
   "description": "Continuation of the todo example using relations in LoopBack 4.",
-  "version": "6.0.5",
+  "version": "6.0.6",
   "keywords": [
     "loopback",
     "LoopBack",
@@ -53,21 +53,21 @@
     "access": "public"
   },
   "dependencies": {
-    "@loopback/boot": "^5.0.5",
-    "@loopback/core": "^4.0.5",
-    "@loopback/repository": "^5.1.0",
-    "@loopback/rest": "^12.0.5",
-    "@loopback/rest-explorer": "^5.0.5",
-    "@loopback/service-proxy": "^5.0.5",
+    "@loopback/boot": "^5.0.6",
+    "@loopback/core": "^4.0.6",
+    "@loopback/repository": "^5.1.1",
+    "@loopback/rest": "^12.0.6",
+    "@loopback/rest-explorer": "^5.0.6",
+    "@loopback/service-proxy": "^5.0.6",
     "loopback-connector-rest": "^4.0.2",
     "tslib": "^2.4.1"
   },
   "devDependencies": {
-    "@loopback/build": "^9.0.5",
-    "@loopback/eslint-config": "^13.0.5",
-    "@loopback/http-caching-proxy": "^4.0.5",
-    "@loopback/repository": "^5.1.0",
-    "@loopback/testlab": "^5.0.5",
+    "@loopback/build": "^9.0.6",
+    "@loopback/eslint-config": "^13.0.6",
+    "@loopback/http-caching-proxy": "^4.0.6",
+    "@loopback/repository": "^5.1.1",
+    "@loopback/testlab": "^5.0.6",
     "@types/lodash": "^4.14.191",
     "@types/node": "^14.18.34",
     "eslint": "^8.28.0",

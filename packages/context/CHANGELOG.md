@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.6](https://github.com/loopbackio/loopback-next/compare/@loopback/context@5.0.5...@loopback/context@5.0.6) (2022-12-14)
+
+### Bug Fixes
+
+- use new sessions for lazy resolution with getter/view
+  ([13e3e10](https://github.com/loopbackio/loopback-next/commit/13e3e10b832abf5a6838e437a7bfcb3d48cd64f3))
+
+# Change Log
+
+All notable changes to this project will be documented in this file. See
+[Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
 ## [5.0.5](https://github.com/loopbackio/loopback-next/compare/@loopback/context@5.0.4...@loopback/context@5.0.5) (2022-11-24)
 
 **Note:** Version bump only for package @loopback/context

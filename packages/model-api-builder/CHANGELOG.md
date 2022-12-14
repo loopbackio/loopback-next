@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.6](https://github.com/loopbackio/loopback-next/compare/@loopback/model-api-builder@4.0.5...@loopback/model-api-builder@4.0.6) (2022-12-14)
+
+**Note:** Version bump only for package @loopback/model-api-builder
+
+# Change Log
+
+All notable changes to this project will be documented in this file. See
+[Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
 ## [4.0.5](https://github.com/loopbackio/loopback-next/compare/@loopback/model-api-builder@4.0.4...@loopback/model-api-builder@4.0.5) (2022-11-24)
 
 **Note:** Version bump only for package @loopback/model-api-builder

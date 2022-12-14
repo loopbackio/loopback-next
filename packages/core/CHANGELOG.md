@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.6](https://github.com/loopbackio/loopback-next/compare/@loopback/core@4.0.5...@loopback/core@4.0.6) (2022-12-14)
+
+**Note:** Version bump only for package @loopback/core
+
+# Change Log
+
+All notable changes to this project will be documented in this file. See
+[Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
 ## [4.0.5](https://github.com/loopbackio/loopback-next/compare/@loopback/core@4.0.4...@loopback/core@4.0.5) (2022-11-24)
 
 **Note:** Version bump only for package @loopback/core

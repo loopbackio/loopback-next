@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.1.0](https://github.com/loopbackio/loopback-next/compare/@loopback/repository-json-schema@6.0.5...@loopback/repository-json-schema@6.1.0) (2022-12-14)
+
+### Bug Fixes
+
+- fix build errors for TS 4.9.x
+  ([9ab73bf](https://github.com/loopbackio/loopback-next/commit/9ab73bfd74e478b0640e26b218a493086cd31d23))
+
+### Features
+
+- **cli:** enum relations in openapispec relation object
+  ([46fb08e](https://github.com/loopbackio/loopback-next/commit/46fb08eababa66a53ae0fd797445514873dcb422))
+
+# Change Log
+
+All notable changes to this project will be documented in this file. See
+[Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
 ## [6.0.5](https://github.com/loopbackio/loopback-next/compare/@loopback/repository-json-schema@6.0.4...@loopback/repository-json-schema@6.0.5) (2022-11-24)
 
 **Note:** Version bump only for package @loopback/repository-json-schema

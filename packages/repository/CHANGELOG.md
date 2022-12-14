@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.1.1](https://github.com/loopbackio/loopback-next/compare/@loopback/repository@5.1.0...@loopback/repository@5.1.1) (2022-12-14)
+
+### Bug Fixes
+
+- fix build errors for TS 4.9.x
+  ([9ab73bf](https://github.com/loopbackio/loopback-next/commit/9ab73bfd74e478b0640e26b218a493086cd31d23))
+
+# Change Log
+
+All notable changes to this project will be documented in this file. See
+[Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
 # [5.1.0](https://github.com/loopbackio/loopback-next/compare/@loopback/repository@5.0.4...@loopback/repository@5.1.0) (2022-11-24)
 
 ### Bug Fixes
