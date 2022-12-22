@@ -46,7 +46,7 @@
     "@types/bcryptjs": "2.4.2",
     "bcryptjs": "^2.4.3",
     "debug": "^4.3.4",
-    "jsonwebtoken": "^8.5.1"
+    "jsonwebtoken": "^9.0.0"
   },
   "devDependencies": {
     "@loopback/authentication": "^9.0.6",
