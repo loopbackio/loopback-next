@@ -11,11 +11,8 @@
     "url": "https://github.com/loopbackio/loopback-next.git",
     "directory": "fixtures/tsdocs-monorepo"
   },
-  "workspaces": [
-    "packages/*"
-  ],
   "engines": {
-    "node": "14 || 16 || 17 || 18",
+    "node": "14 || 16 || 18 || 19",
     "npm": ">=7"
   },
   "scripts": {
@@ -23,6 +20,9 @@
     "clean:fixtures": "npx --no lerna run clean",
     "build": "npm -s run clean:fixtures && npm run -s build:fixtures"
   },
+  "workspaces": [
+    "packages/*"
+  ],
   "devDependencies": {
     "@loopback/build": "^9.0.6"
   }
