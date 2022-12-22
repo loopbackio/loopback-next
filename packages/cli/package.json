@@ -99,7 +99,7 @@
     "sinon": "^15.0.1",
     "strong-globalize-cli": "7.1.0",
     "yeoman-assert": "^3.1.1",
-    "yeoman-test": "^6.3.0"
+    "yeoman-test": "^7.1.0"
   },
   "config": {
     "templateDependencies": {
