@@ -20,7 +20,7 @@
     "directory": "examples/express-composition"
   },
   "engines": {
-    "node": "14 || 16 || 17 || 18"
+    "node": "14 || 16 || 18 || 19"
   },
   "scripts": {
     "build": "lb-tsc",

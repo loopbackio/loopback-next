@@ -273,6 +273,7 @@ describe('HttpHandler', () => {
     });
 
     it('returns 400 for malformed JSON body', () => {
+      const NODE_MAJOR_VERSION = parseInt(process.versions.node.split('.')[0]);
       logErrorsExcept(400);
       return client
         .post('/show-body')
@@ -280,7 +281,10 @@ describe('HttpHandler', () => {
         .send('malformed-json')
         .expect(400, {
           error: {
-            message: 'Unexpected token m in JSON at position 0',
+            message:
+              NODE_MAJOR_VERSION >= 19
+                ? 'Unexpected token \'m\', "malformed-json" is not valid JSON'
+                : 'Unexpected token m in JSON at position 0',
             name: 'SyntaxError',
             statusCode: 400,
           },

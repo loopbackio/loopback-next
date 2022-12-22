@@ -328,6 +328,7 @@ describe('operationArgsParser', () => {
     });
 
     it('rejects malformed JSON string', async () => {
+      const NODE_MAJOR_VERSION = parseInt(process.versions.node.split('.')[0]);
       const req = givenRequest({
         url: '/?value={"malformed-JSON"}',
       });
@@ -340,7 +341,10 @@ describe('operationArgsParser', () => {
       ).to.be.rejectedWith(
         RestHttpErrors.invalidData('{"malformed-JSON"}', 'value', {
           details: {
-            syntaxError: 'Unexpected token } in JSON at position 17',
+            syntaxError:
+              NODE_MAJOR_VERSION >= 19
+                ? "Expected ':' after property name in JSON at position 17"
+                : 'Unexpected token } in JSON at position 17',
           },
         }),
       );

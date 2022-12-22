@@ -129,9 +129,13 @@ describe('coerce object param - optional', function () {
   });
 
   context('invalid values should trigger ERROR_BAD_REQUEST', () => {
+    const NODE_MAJOR_VERSION = parseInt(process.versions.node.split('.')[0]);
     testInvalidDataError('text', {
       details: {
-        syntaxError: 'Unexpected token e in JSON at position 1',
+        syntaxError:
+          NODE_MAJOR_VERSION >= 19
+            ? 'Unexpected token \'e\', "text" is not valid JSON'
+            : 'Unexpected token e in JSON at position 1',
       },
     });
 
