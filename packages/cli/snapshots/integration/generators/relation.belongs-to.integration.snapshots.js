@@ -89,7 +89,7 @@ export class OrderCustomerController {
         description: 'Customer belonging to Order',
         content: {
           'application/json': {
-            schema: {type: 'array', items: getModelSchemaRef(Customer)},
+            schema: getModelSchemaRef(Customer),
           },
         },
       },
@@ -138,7 +138,7 @@ export class OrderCustomerController {
         description: 'Customer belonging to Order',
         content: {
           'application/json': {
-            schema: {type: 'array', items: getModelSchemaRef(Customer)},
+            schema: getModelSchemaRef(Customer),
           },
         },
       },
