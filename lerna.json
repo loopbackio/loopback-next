@@ -1,38 +1,28 @@
 {
-  "packages": [
-    "acceptance/*",
-    "fixtures/*",
-    "benchmark",
-    "docs",
-    "examples/*",
-    "packages/*",
-    "extensions/*",
-    "bodyparsers/*",
-    "sandbox/*"
-  ],
   "command": {
     "bootstrap": {
       "concurrency": 4,
       "forceLocal": true
     },
-    "version": {
-      "forcePublish": "@loopback/cli,@loopback/docs",
-      "conventionalCommits": true,
-      "message": "chore: publish release"
-    },
-    "publish": {},
     "run": {
-      "prefix": false,
       "loglevel": "silent",
-      "stream": true,
       "concurrency": 8,
+      "prefix": false,
+      "stream": true,
       "sort": false
     },
     "clean": {
       "loglevel": "silent",
       "concurrency": 8,
       "yes": true
-    }
+    },
+    "version": {
+      "forcePublish": ["@loopback/cli", "@loopback/docs"],
+      "message": "chore: publish release",
+      "conventionalCommits": true
+    },
+    "publish": {}
   },
+  "useWorkspaces": true,
   "version": "independent"
 }

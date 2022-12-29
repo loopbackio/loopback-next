@@ -37,10 +37,8 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - uses: Yuri6037/Action-FakeTTY@1abc69c7d530815855caedcd73842bae5687c1a6 # tag=v1.1
-      - name: Bootstrap
-        run: |
-          npm ci --ignore-scripts
-          npx lerna bootstrap
+      - name: Install
+        run: npm ci --ignore-scripts
       - name: Build
         run: node packages/build/bin/compile-package -b
       - name: Run package tests
@@ -80,14 +78,12 @@ jobs:
       - uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # tag=v3.5.1
         with:
           node-version: 18 # LTS
-      - name: Bootstrap
-        run: |
-          npm ci --ignore-scripts
-          npx lerna bootstrap --scope "@loopback/benchmark" --include-dependencies
+      - name: Install
+        run: npm ci --ignore-scripts
       - name: Build
-        run: npx lerna run build --scope "@loopback/benchmark"
+        run: npm run build -w @loopback/benchmark
       - name: Run benchmark tests
-        run: npx lerna run test --scope "@loopback/benchmark" -- --ignore-scripts -- --reporter spec
+        run: npm run test -w @loopback/benchmark --ignore-scripts -- --reporter spec
 
   code-lint:
     name: Code Lint
@@ -97,10 +93,8 @@ jobs:
       - uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # tag=v3.5.1
         with:
           node-version: 18 # LTS
-      - name: Bootstrap
-        run: |
-          npm ci --ignore-scripts
-          npx lerna bootstrap
+      - name: Install
+        run: npm ci --ignore-scripts
       - name: Build
         run: node packages/build/bin/compile-package -b
       - name: Verify code linting
@@ -123,10 +117,8 @@ jobs:
       - uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # tag=v3.5.1
         with:
           node-version: 18 # LTS
-      - name: Bootstrap
-        run: |
-          npm ci --ignore-scripts
-          npx lerna bootstrap --scope "@loopback/monorepo" --include-dependencies
+      - name: Install
+        run: npm ci --ignore-scripts
       - name: Verify commit linting
         run: npx commitlint --from origin/master --to HEAD --verbose
 
@@ -138,10 +130,8 @@ jobs:
       - uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # tag=v3.5.1
         with:
           node-version: 18 # LTS
-      - name: Bootstrap
-        run: |
-          npm ci --ignore-scripts
-          npx lerna bootstrap
+      - name: Install
+        run: npm ci --ignore-scripts
       - name: Build
         run: node packages/build/bin/compile-package -b
       - name: Verify linting

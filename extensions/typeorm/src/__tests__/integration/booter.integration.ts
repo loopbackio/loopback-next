@@ -7,6 +7,7 @@ import {expect, TestSandbox} from '@loopback/testlab';
 import {resolve} from 'path';
 import {TypeOrmBindings} from '../../';
 import {TypeOrmApp} from '../fixtures/application';
+import 'sqlite3';
 
 describe('TypeORM connection booter integration tests', () => {
   const sandbox = new TestSandbox(resolve(__dirname, '../../.sandbox'));
