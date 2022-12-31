@@ -1,4 +1,8 @@
-import {api, operation, param, requestBody} from '@loopback/rest';
+import {api, operation, param, requestBody} from '@loopback/rest';<%if (withImplementation) { %>
+import {inject} from '@loopback/core';
+
+import {<%- serviceClassName %>} from '../services';
+  <% } %>
 <%_
 imports.forEach(i => {
 -%>
@@ -18,9 +22,11 @@ imports.forEach(i => {
 <%_ } -%>
  */
 <%- decoration %>
-export class <%- className %> {
-  constructor() {}
-
+export class <%- className %> {<% if(withImplementation){ %>
+    constructor(@inject('services.<%- serviceClassName %>')
+    protected <%- serviceClassNameCamelCase %>: <%- serviceClassName %>) {}
+  <% } else { %>
+    constructor() {} <% } %>
   <%_ for (const m of methods) { -%>
   /**
   <%_ for (const c of m.comments) {
@@ -35,9 +41,8 @@ export class <%- className %> {
    */
   <%- m.decoration %>
   <%- m.signature %> {
-    <%- m.implementation || "throw new Error('Not implemented');" %>
+    <% if(withImplementation){ %> <%- m.implementation %> <% } else{ %> throw new Error('Not implemented'); <% } %>
   }
-
   <%_ } -%>
 }
 

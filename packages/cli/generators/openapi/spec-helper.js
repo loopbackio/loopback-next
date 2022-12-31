@@ -349,6 +349,24 @@ function buildMethodSpec(controllerSpec, op, options) {
   if (op.spec['x-implementation']) {
     methodSpec.implementation = op.spec['x-implementation'];
   }
+  if (!methodSpec.implementation) {
+    const methodParameters = {};
+    methodParameters[methodName] = [];
+    if (parameters) {
+      parameters.forEach(param => {
+        methodParameters[methodName].push(param.name);
+      });
+    }
+    if (op.spec.requestBody) {
+      methodParameters[methodName].push('_requestBody');
+    }
+    controllerSpec.serviceClassNameCamelCase = camelCase(
+      controllerSpec.serviceClassName,
+    );
+    methodSpec.implementation = `return this.${
+      controllerSpec.serviceClassNameCamelCase
+    }.${methodName}(${methodParameters[methodName].join(', ')});`;
+  }
   return methodSpec;
 
   /**

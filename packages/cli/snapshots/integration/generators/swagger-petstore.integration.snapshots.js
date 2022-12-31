@@ -77,8 +77,7 @@ import {NewPet} from '../models/new-pet.model';
   paths: {},
 })
 export class OpenApiController {
-  constructor() {}
-
+    constructor() {} 
   /**
    * Returns all pets from the system that the user has access to
 Nam sed condimentum est. Maecenas tempor sagittis sapien, nec rhoncus sem
@@ -187,9 +186,8 @@ pulvinar elit eu, euismod sapien.
     format: 'int32',
   },
 }) limit: number | undefined): Promise<Pet[]> {
-    throw new Error('Not implemented');
+     throw new Error('Not implemented'); 
   }
-
   /**
    * Creates a new pet in the store. Duplicates are allowed
    *
@@ -244,9 +242,8 @@ pulvinar elit eu, euismod sapien.
   description: 'Pet to add to the store',
   required: true,
 }) _requestBody: NewPet): Promise<Pet> {
-    throw new Error('Not implemented');
+     throw new Error('Not implemented'); 
   }
-
   /**
    * Returns a user based on a single ID, if the user does not have access to the
 pet
@@ -302,9 +299,8 @@ pet
     format: 'int64',
   },
 }) id: number): Promise<Pet> {
-    throw new Error('Not implemented');
+     throw new Error('Not implemented'); 
   }
-
   /**
    * deletes a single pet based on the ID supplied
    *
@@ -351,9 +347,8 @@ pet
     format: 'int64',
   },
 }) id: number): Promise<unknown> {
-    throw new Error('Not implemented');
+     throw new Error('Not implemented'); 
   }
-
 }
 
 
