@@ -292,12 +292,13 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
     });
   }
 
-  _generateControllers() {
+  _generateControllers(withImplementation) {
     const source = this.templatePath(
       'src/controllers/controller-template.ts.ejs',
     );
     for (const c of this.selectedControllers) {
       const controllerFile = c.fileName;
+      c.withImplementation = withImplementation;
       if (debug.enabled) {
         debug(`Artifact output filename set to: ${controllerFile}`);
       }
@@ -478,7 +479,7 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
     this._generateModels();
     await this._updateIndex(MODEL);
     if (this.options.server !== false) {
-      this._generateControllers();
+      this._generateControllers(this.options.client);
       await this._updateIndex(CONTROLLER);
     }
     if (this.options.client === true) {

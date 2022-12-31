@@ -67,8 +67,7 @@ import {PerformSearchResponseBody} from '../models/perform-search-response-body.
   paths: {},
 })
 export class SearchController {
-  constructor() {}
-
+    constructor() {} 
   /**
    * This API is based on Solr/Lucense Search. The data is indexed using SOLR.
 This GET API returns the list of all the searchable field names that are in
@@ -212,9 +211,8 @@ oa_citations
     },
   },
 }) _requestBody: PerformSearchRequestBody): Promise<PerformSearchResponseBody> {
-    throw new Error('Not implemented');
+     throw new Error('Not implemented'); 
   }
-
 }
 
 
@@ -273,8 +271,7 @@ import {DataSetList} from '../models/data-set-list.model';
   paths: {},
 })
 export class MetadataController {
-  constructor() {}
-
+    constructor() {} 
   /**
    *
    *
@@ -317,9 +314,8 @@ export class MetadataController {
   },
 })
   async listDataSets(): Promise<DataSetList> {
-    throw new Error('Not implemented');
+     throw new Error('Not implemented'); 
   }
-
   /**
    * This GET API returns the list of all the searchable field names that are in
 the oa_citations. Please see the 'fields' attribute which returns an array
@@ -403,9 +399,8 @@ to consume.
     default: 'v1',
   },
 }) version: string): Promise<string> {
-    throw new Error('Not implemented');
+     throw new Error('Not implemented'); 
   }
-
 }
 
 
