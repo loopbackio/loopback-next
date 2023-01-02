@@ -273,7 +273,7 @@ This project is licensed under the MIT License, full text below.
 
 MIT License
 
-Copyright (c) IBM Corp. and LoopBack contributors 2022
+Copyright (c) IBM Corp. and LoopBack contributors ${year}
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
