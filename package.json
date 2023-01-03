@@ -36,7 +36,7 @@
     "coverage": "open-cli coverage/index.html",
     "lint": "npm run eslint && npm run prettier:docs:check && npm run monorepo:check",
     "lint:fix": "npm run eslint:fix && npm run prettier:docs:fix",
-    "eslint": "node packages/build/bin/run-eslint --report-unused-disable-directives --cache .",
+    "eslint": "node packages/build/bin/run-eslint --report-unused-disable-directives .",
     "eslint:fix": "npm run eslint -- --fix",
     "prettier:cli": "node packages/build/bin/run-prettier \"**/*.ts\" \"**/*.js\" \"**/*.md\"",
     "prettier:check": "npm run prettier:cli -- --check",
