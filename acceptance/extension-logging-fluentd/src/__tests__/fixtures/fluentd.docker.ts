@@ -15,8 +15,16 @@ async function startFluentd() {
   const container = await new GenericContainer('fluent/fluentd')
     .withName('fluentd_lb4')
     .withExposedPorts(24224, 9880)
-    .withEnv('FLUENTD_CONF', 'fluentd.conf')
-    .withBindMount(ETC_DIR, '/fluentd/etc', 'ro')
+    .withEnvironment({
+      FLUENTD_CONF: 'fluentd.conf',
+    })
+    .withBindMounts([
+      {
+        source: ETC_DIR,
+        target: '/fluentd/etc',
+        mode: 'ro',
+      },
+    ])
     .start();
   process.env.FLUENTD_SERVICE_HOST = container.getHost();
   process.env.FLUENTD_SERVICE_PORT_TCP = container
