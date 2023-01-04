@@ -39,7 +39,7 @@
     "!*/__tests__"
   ],
   "dependencies": {
-    "openapi3-ts": "^2.0.2",
+    "openapi3-ts": "^3.1.2",
     "tslib": "^2.4.1"
   },
   "devDependencies": {
