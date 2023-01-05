@@ -4,6 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {SchemaObject} from './types';
+import {SchemaRef} from './json-to-schema';
 
 /**
  * Generate the `type` and `format` property in a Schema Object according to a
@@ -17,8 +18,8 @@ import {SchemaObject} from './types';
 export function resolveSchema(
   fn?: Function,
   schema: SchemaObject = {},
-): SchemaObject {
-  let resolvedSchema: SchemaObject = {};
+): SchemaObject | SchemaRef {
+  let resolvedSchema: SchemaObject | SchemaRef = {};
 
   if (typeof fn === 'function') {
     if (fn === String) {

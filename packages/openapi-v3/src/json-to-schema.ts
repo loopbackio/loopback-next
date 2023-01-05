@@ -58,9 +58,7 @@ export function jsonToSchemaObject(
   visited.set(json, result);
   const propsToIgnore = ['additionalItems', 'defaultProperties', 'typeof'];
   for (const property in json) {
-    if (propsToIgnore.includes(property)) {
-      continue;
-    }
+    if (propsToIgnore.includes(property)) continue;
     switch (property) {
       case 'type': {
         if (json.type === 'array' && !json.items) {

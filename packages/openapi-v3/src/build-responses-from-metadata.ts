@@ -10,8 +10,8 @@ import {
   OperationObject,
   ResponseDecoratorMetadata,
   ResponseModelOrSpec,
-  ResponseObject,
 } from './types';
+import {ReferenceObject, ResponsesObject, SchemaObject} from 'openapi3-ts';
 
 declare type ContentMap = Map<string, ResponseModelOrSpec[]>;
 declare type ResponseMap = Map<
@@ -41,9 +41,8 @@ function reduceSpecContent(
         anyOf: modelOrSpecs.map(m => {
           if (isModel(m)) {
             return {'x-ts-type': m};
-          } else {
-            return m;
           }
+          return m as SchemaObject | ReferenceObject;
         }),
       },
     };
@@ -57,7 +56,7 @@ function reduceSpecContent(
       };
     } else {
       specContents[contentType] = {
-        schema: modelOrSpec,
+        schema: modelOrSpec as SchemaObject | ReferenceObject,
       };
     }
   }
@@ -68,16 +67,16 @@ function reduceSpecContent(
  * Reducer which builds the content sections of the operation responses
  */
 function reduceSpecResponses(
-  specResponses: ResponseObject,
+  specResponses: ResponsesObject,
   [responseCode, c]: [number, {description: string; content: ContentMap}],
-): ResponseObject {
+): ResponsesObject {
   const responseContent = c.content;
   // check if there is an existing block, from something like an inhered @op spec
   if (Object.prototype.hasOwnProperty.call(specResponses, responseCode)) {
     // we might need to merge
     const content = Array.from(responseContent).reduce(
       reduceSpecContent,
-      specResponses[responseCode].content as ContentObject,
+      specResponses[responseCode].content,
     );
 
     specResponses[responseCode] = {
@@ -85,10 +84,7 @@ function reduceSpecResponses(
       content,
     };
   } else {
-    const content = Array.from(responseContent).reduce(
-      reduceSpecContent,
-      {} as ContentObject,
-    );
+    const content = Array.from(responseContent).reduce(reduceSpecContent, {});
 
     specResponses[responseCode] = {
       description: c.description,
@@ -146,9 +142,9 @@ export function buildResponsesFromMetadata(
     ? DecoratorFactory.cloneDeep(existingOperation.responses)
     : {};
   // Now, mega-reduce.
-  const responses: ResponseObject = Array.from(builder).reduce(
+  const responses: ResponsesObject = Array.from(builder).reduce(
     reduceSpecResponses,
-    base as ResponseObject,
+    base,
   );
 
   return {

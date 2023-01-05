@@ -53,7 +53,7 @@ describe('@oas.response decorator', () => {
     }
 
     @model()
-    class Base {
+    class Base extends Model {
       @property()
       name: string;
     }
