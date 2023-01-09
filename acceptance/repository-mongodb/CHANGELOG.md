@@ -1,5 +1,18 @@
 # Change Log
 
+All notable changes to this project will be documented in this file.
+See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+## [0.12.7](https://github.com/loopbackio/loopback-next/compare/@loopback/test-repository-mongodb@0.12.6...@loopback/test-repository-mongodb@0.12.7) (2023-01-09)
+
+**Note:** Version bump only for package @loopback/test-repository-mongodb
+
+
+
+
+
+# Change Log
+
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 

@@ -1,5 +1,18 @@
 # Change Log
 
+All notable changes to this project will be documented in this file.
+See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+## [0.12.7](https://github.com/loopbackio/loopback-next/compare/@loopback/authorization@0.12.6...@loopback/authorization@0.12.7) (2023-01-09)
+
+**Note:** Version bump only for package @loopback/authorization
+
+
+
+
+
+# Change Log
+
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 

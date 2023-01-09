@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.7](https://github.com/loopbackio/loopback-next/compare/@loopback/example-todo@6.0.6...@loopback/example-todo@6.0.7) (2023-01-09)
+
+**Note:** Version bump only for package @loopback/example-todo
+
+
+
+
+
 ## [6.0.6](https://github.com/loopbackio/loopback-next/compare/@loopback/example-todo@6.0.5...@loopback/example-todo@6.0.6) (2022-12-14)
 
 **Note:** Version bump only for package @loopback/example-todo
