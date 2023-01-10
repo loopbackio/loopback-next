@@ -12,15 +12,17 @@ const fs = require('fs');
  */
 module.exports = {
   root: true,
-  // Use the typescript-eslint parser
-  parser: '@typescript-eslint/parser',
-  // Enable eslint and typescript-eslint
-  plugins: ['eslint-plugin', '@typescript-eslint', 'mocha'],
   env: {
     es6: true,
     node: true,
     mocha: true,
   },
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    'prettier',
+  ],
+  parser: '@typescript-eslint/parser',
   parserOptions: {
     sourceType: 'module',
     /*
@@ -35,15 +37,7 @@ module.exports = {
     },
     noWatch: true,
   },
-  extends: [
-    'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
-    /**
-     * Use `prettier` to override default formatting related rules
-     * See https://github.com/prettier/eslint-config-prettier
-     */
-    'prettier',
-  ],
+  plugins: ['eslint-plugin', '@typescript-eslint', 'mocha'],
   rules: {
     'prefer-const': 'error',
     'no-mixed-operators': 'off',
@@ -137,7 +131,10 @@ module.exports = {
     '@typescript-eslint/no-misused-promises': 'error',
 
     '@typescript-eslint/prefer-optional-chain': 'error',
-    '@typescript-eslint/prefer-nullish-coalescing': 'error',
+    '@typescript-eslint/prefer-nullish-coalescing': [
+      'error',
+      {allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: true}, // See https://github.com/typescript-eslint/typescript-eslint/pull/6174
+    ],
     '@typescript-eslint/no-extra-non-null-assertion': 'error',
 
     // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/return-await.md#how-to-use
@@ -234,7 +231,6 @@ module.exports = {
       },
     ],
   },
-
   overrides: [
     {
       files: ['**/*.js'],
