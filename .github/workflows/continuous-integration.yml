@@ -36,6 +36,9 @@ jobs:
         uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c # v3.6.0
         with:
           node-version: ${{ matrix.node-version }}
+      - name: Upgrade NPM
+        if: matrix.node-version == 14
+        run: npm i -g npm@latest-7
       - uses: Yuri6037/Action-FakeTTY@1abc69c7d530815855caedcd73842bae5687c1a6 # tag=v1.1
       - name: Bootstrap
         run: |
