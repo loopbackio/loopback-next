@@ -26,12 +26,12 @@
     "access": "public"
   },
   "peerDependencies": {
-    "lerna": "^6.4.0"
+    "lerna": "^6.4.1"
   },
   "dependencies": {
-    "@lerna/filter-packages": "^6.4.0",
-    "@lerna/package-graph": "^6.4.0",
-    "@lerna/project": "^6.4.0",
+    "@lerna/filter-packages": "^6.4.1",
+    "@lerna/package-graph": "^6.4.1",
+    "@lerna/project": "^6.4.1",
     "cross-spawn": "^7.0.3",
     "debug": "^4.3.4",
     "fs-extra": "^10.1.0",
