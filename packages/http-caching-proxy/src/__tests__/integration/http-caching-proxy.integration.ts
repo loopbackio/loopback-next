@@ -54,7 +54,7 @@ describe('HttpCachingProxy', () => {
     });
 
     expect(result.statusCode).to.equal(200);
-    expect(result.body).to.containEql('example');
+    expect(result.body).to.containEql('Example Domain');
   });
 
   it('reports error for HTTP requests', async function (this: Mocha.Context) {
@@ -93,7 +93,7 @@ describe('HttpCachingProxy', () => {
     });
 
     expect(result.statusCode).to.equal(200);
-    expect(result.body).to.containEql('example');
+    expect(result.body).to.containEql('Example Domain');
   });
 
   it('rejects CONNECT requests (HTTPS tunneling)', async () => {
@@ -232,10 +232,13 @@ describe('HttpCachingProxy', () => {
       host: parsed.hostname,
       port: parseInt(parsed.port),
       protocol: parsed.protocol,
-      auth: {
-        username: parsed.username,
-        password: parsed.password,
-      },
+      ...(parsed.username &&
+        parsed.password && {
+          auth: {
+            username: parsed.username,
+            password: parsed.password,
+          },
+        }),
     };
   }
 
