@@ -93,7 +93,7 @@ name or the relation name, you'll need to specify some fields through the
 relation decorator.
 
 The standard naming convention for the foreign key property in the source model
-is `relation name` + `Id` (for example, Order.customerId).
+is `target name` + `Id` (for example, Order.customerId).
 
 {% include code-caption.html content="/src/models/order.model.ts" %}
 
