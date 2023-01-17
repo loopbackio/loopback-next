@@ -285,7 +285,7 @@ function loadSnapshotData(snapshotFile) {
 function writeSnapshotData(snapshotFile, snapshots) {
   const writeFileAtomic = require('write-file-atomic');
   const naturalCompare = require('natural-compare');
-  const mkdirp = require('mkdirp');
+  const {mkdirp} = require('mkdirp');
 
   const header = `// IMPORTANT
 // This snapshot file is auto-generated, but designed for humans.
