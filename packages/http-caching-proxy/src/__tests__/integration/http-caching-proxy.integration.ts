@@ -10,16 +10,19 @@ import axios, {
   AxiosResponse,
 } from 'axios';
 import delay from 'delay';
-import {once} from 'node:events';
-import http from 'node:http';
-import {AddressInfo} from 'node:net';
-import path from 'node:path';
-import {rimraf} from 'rimraf';
+import {once} from 'events';
+import http from 'http';
+import {AddressInfo} from 'net';
+import path from 'path';
+import rimrafCb from 'rimraf';
 import tunnel, {ProxyOptions as TunnelProxyOptions} from 'tunnel';
-import {URL} from 'node:url';
+import {URL} from 'url';
+import util from 'util';
 import {HttpCachingProxy, ProxyOptions} from '../../http-caching-proxy';
 
 const CACHE_DIR = path.join(__dirname, '.cache');
+
+const rimraf = util.promisify(rimrafCb);
 
 describe('HttpCachingProxy', () => {
   let stubServerUrl: string;
