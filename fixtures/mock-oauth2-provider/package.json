@@ -46,7 +46,7 @@
     "form-data": "^4.0.0",
     "jsonwebtoken": "^9.0.0",
     "lodash": "^4.17.21",
-    "tslib": "^2.4.1"
+    "tslib": "^2.5.0"
   },
   "devDependencies": {
     "@loopback/build": "^9.0.7",

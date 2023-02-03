@@ -62,7 +62,7 @@
     "@loopback/service-proxy": "^5.0.7",
     "debug": "^4.3.4",
     "jsonwebtoken": "^9.0.0",
-    "tslib": "^2.4.1"
+    "tslib": "^2.5.0"
   },
   "devDependencies": {
     "@loopback/build": "^9.0.7",
