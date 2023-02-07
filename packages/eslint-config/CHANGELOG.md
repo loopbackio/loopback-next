@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [13.0.8](https://github.com/loopbackio/loopback-next/compare/@loopback/eslint-config@13.0.7...@loopback/eslint-config@13.0.8) (2023-02-07)
+
+
+### Bug Fixes
+
+* disable strictNullChecks check for prefer-nullish-coalescing rule ([abd6469](https://github.com/loopbackio/loopback-next/commit/abd64696f048b73dad018123ecae21ea47c8d97a))
+
+
+
+
+
 ## [13.0.7](https://github.com/loopbackio/loopback-next/compare/@loopback/eslint-config@13.0.6...@loopback/eslint-config@13.0.7) (2023-01-09)
 
 **Note:** Version bump only for package @loopback/eslint-config

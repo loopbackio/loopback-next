@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.7.8](https://github.com/loopbackio/loopback-next/compare/@loopback/example-graphql@0.7.7...@loopback/example-graphql@0.7.8) (2023-02-07)
+
+
+### Reverts
+
+* "chore: update dependency rimraf to v4" ([c516d5e](https://github.com/loopbackio/loopback-next/commit/c516d5e33e2d2ce950c6811305e7da3fe40ca9c6))
+
+
+
+
+
 ## [0.7.7](https://github.com/loopbackio/loopback-next/compare/@loopback/example-graphql@0.7.6...@loopback/example-graphql@0.7.7) (2023-01-09)
 
 **Note:** Version bump only for package @loopback/example-graphql

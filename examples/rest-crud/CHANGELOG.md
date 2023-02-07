@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.8](https://github.com/loopbackio/loopback-next/compare/@loopback/example-rest-crud@4.0.7...@loopback/example-rest-crud@4.0.8) (2023-02-07)
+
+**Note:** Version bump only for package @loopback/example-rest-crud
+
+
+
+
+
 ## [4.0.7](https://github.com/loopbackio/loopback-next/compare/@loopback/example-rest-crud@4.0.6...@loopback/example-rest-crud@4.0.7) (2023-01-09)
 
 **Note:** Version bump only for package @loopback/example-rest-crud

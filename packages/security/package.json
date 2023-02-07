@@ -1,7 +1,7 @@
 {
   "name": "@loopback/security",
   "description": "A LoopBack component for security support.",
-  "version": "0.8.7",
+  "version": "0.8.8",
   "keywords": [
     "LoopBack",
     "Security"
@@ -39,16 +39,16 @@
     "!*/__tests__"
   ],
   "peerDependencies": {
-    "@loopback/core": "^4.0.7"
+    "@loopback/core": "^4.0.8"
   },
   "dependencies": {
     "debug": "^4.3.4",
     "tslib": "^2.5.0"
   },
   "devDependencies": {
-    "@loopback/build": "^9.0.7",
-    "@loopback/core": "^4.0.7",
-    "@loopback/testlab": "^5.0.7",
+    "@loopback/build": "^9.0.8",
+    "@loopback/core": "^4.0.8",
+    "@loopback/testlab": "^5.0.8",
     "@types/debug": "^4.1.7",
     "@types/node": "^14.18.36"
   }

@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.10.8](https://github.com/loopbackio/loopback-next/compare/@loopback/example-metrics-prometheus@0.10.7...@loopback/example-metrics-prometheus@0.10.8) (2023-02-07)
+
+**Note:** Version bump only for package @loopback/example-metrics-prometheus
+
+
+
+
+
 ## [0.10.7](https://github.com/loopbackio/loopback-next/compare/@loopback/example-metrics-prometheus@0.10.6...@loopback/example-metrics-prometheus@0.10.7) (2023-01-09)
 
 **Note:** Version bump only for package @loopback/example-metrics-prometheus

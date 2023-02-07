@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.1.3](https://github.com/loopbackio/loopback-next/compare/@loopback/repository@5.1.2...@loopback/repository@5.1.3) (2023-02-07)
+
+
+### Reverts
+
+* "chore: update dependency rimraf to v4" ([c516d5e](https://github.com/loopbackio/loopback-next/commit/c516d5e33e2d2ce950c6811305e7da3fe40ca9c6))
+
+
+
+
+
 ## [5.1.2](https://github.com/loopbackio/loopback-next/compare/@loopback/repository@5.1.1...@loopback/repository@5.1.2) (2023-01-09)
 
 **Note:** Version bump only for package @loopback/repository

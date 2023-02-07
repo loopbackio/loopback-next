@@ -1,7 +1,7 @@
 {
   "name": "@loopback/example-greeter-extension",
   "description": "An example showing how to implement the extension point/extension pattern using LoopBack 4",
-  "version": "5.0.7",
+  "version": "5.0.8",
   "keywords": [
     "loopback",
     "loopback-extension"
@@ -47,15 +47,15 @@
     "access": "public"
   },
   "dependencies": {
-    "@loopback/core": "^4.0.7",
+    "@loopback/core": "^4.0.8",
     "chalk": "^4.1.2",
     "debug": "^4.3.4",
     "tslib": "^2.5.0"
   },
   "devDependencies": {
-    "@loopback/build": "^9.0.7",
-    "@loopback/eslint-config": "^13.0.7",
-    "@loopback/testlab": "^5.0.7",
+    "@loopback/build": "^9.0.8",
+    "@loopback/eslint-config": "^13.0.8",
+    "@loopback/testlab": "^5.0.8",
     "@types/debug": "4.1.7",
     "@types/node": "^14.18.36",
     "eslint": "^8.33.0",
