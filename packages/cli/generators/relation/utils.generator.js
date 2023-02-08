@@ -209,17 +209,20 @@ exports.addRequiredImports = function (sourceFile, imports) {
   }
 };
 
-exports.getRequiredImports = function (targetModel, relationType) {
-  return [
-    {
-      name: targetModel,
-      module: './' + utils.toFileName(targetModel) + '.model',
-    },
+exports.getRequiredImports = function (targetModel, relationType, sourceModel) {
+  const requiredImports = [
     {
       name: relationType,
       module: '@loopback/repository',
     },
   ];
+  if (sourceModel !== targetModel) {
+    requiredImports.push({
+      name: targetModel,
+      module: './' + utils.toFileName(targetModel) + '.model',
+    });
+  }
+  return requiredImports;
 };
 
 exports.addCurrentImport = function (sourceFile, currentImport) {

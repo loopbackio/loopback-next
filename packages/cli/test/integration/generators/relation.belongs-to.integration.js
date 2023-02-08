@@ -22,7 +22,9 @@ const sandbox = new TestSandbox(path.resolve(__dirname, '../.sandbox'));
 
 const sourceFileName = 'order.model.ts';
 const controllerFileName = 'order-customer.controller.ts';
+const controllerFileNameForSameTableRelation = 'employee.controller.ts';
 const repositoryFileName = 'order.repository.ts';
+const repositoryFileNameForSameTableRelation = 'employee.repository.ts';
 // speed up tests by avoiding reading docs
 const options = {
   sourceModelPrimaryKey: 'id',
@@ -179,6 +181,149 @@ describe('lb4 relation', /** @this {Mocha.Suite} */ function () {
       });
     }
   });
+
+  context(
+    'generates model relation with same table with default foreignKeyName',
+    () => {
+      const promptList = [
+        {
+          relationType: 'belongsTo',
+          sourceModel: 'Employee',
+          destinationModel: 'Employee',
+          relationName: 'reportsToEemployee',
+        },
+      ];
+
+      it('verifies that a preexisting property will be overwritten', async () => {
+        await sandbox.reset();
+
+        await testUtils
+          .executeGenerator(generator)
+          .inDir(sandbox.path, () =>
+            testUtils.givenLBProject(sandbox.path, {
+              additionalFiles: SANDBOX_FILES,
+            }),
+          )
+          .withOptions(options)
+          .withPrompts(promptList[0]);
+
+        const sourceFilePath = path.join(
+          sandbox.path,
+          MODEL_APP_PATH,
+          'employee.model.ts',
+        );
+
+        assert.file(sourceFilePath);
+        expectFileToMatchSnapshot(sourceFilePath);
+      });
+    },
+  );
+
+  context(
+    'checks if the controller file created for same table relation',
+    () => {
+      const promptArray = [
+        {
+          relationType: 'belongsTo',
+          sourceModel: 'Employee',
+          destinationModel: 'Employee',
+        },
+      ];
+
+      promptArray.forEach(function (multiItemPrompt) {
+        describe('answers ' + JSON.stringify(multiItemPrompt), () => {
+          suite(multiItemPrompt);
+        });
+      });
+
+      function suite(multiItemPrompt) {
+        before(async function runGeneratorWithAnswers() {
+          await sandbox.reset();
+          await testUtils
+            .executeGenerator(generator)
+            .inDir(sandbox.path, () =>
+              testUtils.givenLBProject(sandbox.path, {
+                additionalFiles: SANDBOX_FILES,
+              }),
+            )
+            .withOptions(options)
+            .withPrompts(multiItemPrompt);
+        });
+
+        it('checks controller content with belongsTo relation with same table', async () => {
+          const filePath = path.join(
+            sandbox.path,
+            CONTROLLER_PATH,
+            controllerFileNameForSameTableRelation,
+          );
+          assert.file(filePath);
+          expectFileToMatchSnapshot(filePath);
+        });
+
+        it('the new controller file added to index.ts file', async () => {
+          const indexFilePath = path.join(
+            sandbox.path,
+            CONTROLLER_PATH,
+            'index.ts',
+          );
+
+          expectFileToMatchSnapshot(indexFilePath);
+        });
+      }
+    },
+  );
+
+  context(
+    'checks generated source class repository for same table relation',
+    () => {
+      const promptArray = [
+        {
+          relationType: 'belongsTo',
+          sourceModel: 'Employee',
+          destinationModel: 'Employee',
+        },
+      ];
+
+      const sourceClassnames = ['Employee'];
+
+      promptArray.forEach(function (multiItemPrompt, i) {
+        describe('answers ' + JSON.stringify(multiItemPrompt), () => {
+          suite(multiItemPrompt, i);
+        });
+      });
+
+      function suite(multiItemPrompt, i) {
+        before(async function runGeneratorWithAnswers() {
+          await sandbox.reset();
+          await testUtils
+            .executeGenerator(generator)
+            .inDir(sandbox.path, () =>
+              testUtils.givenLBProject(sandbox.path, {
+                additionalFiles: SANDBOX_FILES,
+              }),
+            )
+            .withOptions(options)
+            .withPrompts(multiItemPrompt);
+        });
+
+        it(
+          'generates ' +
+            sourceClassnames[i] +
+            ' repository file with different inputs',
+          async () => {
+            const sourceFilePath = path.join(
+              sandbox.path,
+              REPOSITORY_APP_PATH,
+              repositoryFileNameForSameTableRelation,
+            );
+
+            assert.file(sourceFilePath);
+            expectFileToMatchSnapshot(sourceFilePath);
+          },
+        );
+      }
+    },
+  );
 
   context('checks if the controller file created ', () => {
     const promptArray = [

@@ -62,6 +62,29 @@ export class OrderRepository extends DefaultCrudRepository<
 `;
 
 
+exports[`lb4 relation checks generated source class repository for same table relation answers {"relationType":"belongsTo","sourceModel":"Employee","destinationModel":"Employee"} generates Employee repository file with different inputs 1`] = `
+import {inject, Getter} from '@loopback/core';
+import {DefaultCrudRepository, repository, BelongsToAccessor} from '@loopback/repository';
+import {DbDataSource} from '../datasources';
+import {Employee} from '../models';
+
+export class EmployeeRepository extends DefaultCrudRepository<
+  Employee,
+  typeof Employee.prototype.id
+> {
+
+  public readonly employee: BelongsToAccessor<Employee, typeof Employee.prototype.id>;
+
+  constructor(@inject('datasources.db') dataSource: DbDataSource, @repository.getter('EmployeeRepository') protected employeeRepositoryGetter: Getter<EmployeeRepository>,) {
+    super(Employee, dataSource);
+    this.employee = this.createBelongsToAccessorFor('employee', employeeRepositoryGetter,);
+    this.registerInclusionResolver('employee', this.employee.inclusionResolver);
+  }
+}
+
+`;
+
+
 exports[`lb4 relation checks if the controller file created  answers {"relationType":"belongsTo","sourceModel":"Order","destinationModel":"Customer","relationName":"my_customer"} checks controller content with belongsTo relation 1`] = `
 import {
   repository,
@@ -160,6 +183,18 @@ export * from './order-customer.controller';
 `;
 
 
+exports[`lb4 relation checks if the controller file created for same table relation answers {"relationType":"belongsTo","sourceModel":"Employee","destinationModel":"Employee"} checks controller content with belongsTo relation with same table 1`] = `
+export class EmployeeController {}
+
+`;
+
+
+exports[`lb4 relation checks if the controller file created for same table relation answers {"relationType":"belongsTo","sourceModel":"Employee","destinationModel":"Employee"} the new controller file added to index.ts file 1`] = `
+export * from './employee-employee.controller';
+
+`;
+
+
 exports[`lb4 relation generates model relation for existing property name verifies that a preexisting property will be overwritten 1`] = `
 import {Entity, model, property, belongsTo} from '@loopback/repository';
 import {Customer} from './customer.model';
@@ -240,6 +275,44 @@ export class Order extends Entity {
   customerId: number;
 
   constructor(data?: Partial<Order>) {
+    super(data);
+  }
+}
+
+`;
+
+
+exports[`lb4 relation generates model relation with same table with default foreignKeyName verifies that a preexisting property will be overwritten 1`] = `
+import {Entity, model, property, belongsTo} from '@loopback/repository';
+
+@model()
+export class Employee extends Entity {
+  @property({
+    type: 'number',
+    id: true,
+    default: 0,
+  })
+  id?: number;
+
+  @property({
+    type: 'string',
+  })
+  firstName?: string;
+
+  @property({
+    type: 'string',
+  })
+  lastName?: string;
+
+  @property({
+    type: 'number',
+  })
+  reportsTo?: string;
+
+  @belongsTo(() => Employee, {name: 'reportsToEemployee'})
+  employeeId: number;
+
+  constructor(data?: Partial<Employee>) {
     super(data);
   }
 }

@@ -6,8 +6,8 @@ import {
   get,
   getModelSchemaRef,
 } from '@loopback/rest';
-import {
-  <%= sourceModelClassName %>,
+import {<%if (sourceModelClassName != targetModelClassName) { %>
+  <%= sourceModelClassName %>,<% } %>
   <%= targetModelClassName %>,
 } from '../models';
 import {<%= sourceRepositoryClassName %>} from '../repositories';
