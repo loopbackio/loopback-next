@@ -106,7 +106,11 @@ module.exports = class BelongsToRelationGenerator extends (
     );
 
     relationUtils.addProperty(sourceClass, modelProperty);
-    const imports = relationUtils.getRequiredImports(targetModel, relationType);
+    const imports = relationUtils.getRequiredImports(
+      targetModel,
+      relationType,
+      sourceModel,
+    );
     relationUtils.addRequiredImports(sourceFile, imports);
 
     sourceClass.formatText();
@@ -147,6 +151,7 @@ module.exports = class BelongsToRelationGenerator extends (
     const importsArray = super._getRepositoryRequiredImports(
       dstModelClassName,
       dstRepositoryClassName,
+      this.artifactInfo.srcModelClass,
     );
     importsArray.push({
       name: 'BelongsToAccessor',

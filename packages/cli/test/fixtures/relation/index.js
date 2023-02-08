@@ -147,6 +147,21 @@ const SourceEntries = {
     file: 'doctor-patient.controller.ts',
     content: readSourceFile('./controllers/doctor-patient.controller.ts'),
   },
+  EmployeeModel: {
+    path: MODEL_APP_PATH,
+    file: 'employee.model.ts',
+    content: readSourceFile('./models/employee.model.ts'),
+  },
+  EmployeeRepository: {
+    path: REPOSITORY_APP_PATH,
+    file: 'employee.repository.ts',
+    content: readSourceFile('./repositories/employee.repository.ts'),
+  },
+  EmployeeController: {
+    path: CONTROLLER_PATH,
+    file: 'employee.controller.ts',
+    content: readSourceFile('./controllers/employee.controller.ts'),
+  },
 };
 exports.SourceEntries = SourceEntries;
 
@@ -198,6 +213,7 @@ exports.SANDBOX_FILES = [
   SourceEntries.DoctorRepository,
   SourceEntries.PatientRepository,
   SourceEntries.AppointmentRepository,
+  SourceEntries.EmployeeRepository,
 
   SourceEntries.AccountModel,
   SourceEntries.CustomerModel,
@@ -208,6 +224,8 @@ exports.SANDBOX_FILES = [
   SourceEntries.PatientModel,
   SourceEntries.AppointmentModel,
   SourceEntries.DoctorPatientController,
+  SourceEntries.EmployeeModel,
+  SourceEntries.EmployeeController,
 ];
 
 exports.SANDBOX_FILES2 = [
@@ -219,6 +237,7 @@ exports.SANDBOX_FILES2 = [
   SourceEntries.DoctorRepository,
   SourceEntries.PatientRepository,
   SourceEntries.AppointmentRepository,
+  SourceEntries.EmployeeRepository,
 
   SourceEntries.CustomerModel,
   SourceEntries.CustomerModelWithInheritance,

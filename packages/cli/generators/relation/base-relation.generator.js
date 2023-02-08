@@ -77,6 +77,7 @@ module.exports = class BaseRelationGenerator extends ArtifactGenerator {
     const imports = this._getRepositoryRequiredImports(
       options.destinationModel,
       this.artifactInfo.dstRepositoryClassName,
+      options.sourceModel,
     );
 
     relationUtils.addRequiredImports(
@@ -187,8 +188,12 @@ module.exports = class BaseRelationGenerator extends ArtifactGenerator {
     this.artifactInfo.relationName = options.relationName;
   }
 
-  _getRepositoryRequiredImports(dstModelClassName, dstRepositoryClassName) {
-    return [
+  _getRepositoryRequiredImports(
+    dstModelClassName,
+    dstRepositoryClassName,
+    srcModelClass,
+  ) {
+    const imports = [
       {
         name: dstModelClassName,
         module: '../models',
@@ -201,11 +206,14 @@ module.exports = class BaseRelationGenerator extends ArtifactGenerator {
         name: 'Getter',
         module: '@loopback/core',
       },
-      {
+    ];
+    if (dstModelClassName !== srcModelClass) {
+      imports.push({
         name: dstRepositoryClassName,
         module: `./${utils.toFileName(dstModelClassName)}.repository`,
-      },
-    ];
+      });
+    }
+    return imports;
   }
 
   _getRepositoryRelationPropertyName() {
