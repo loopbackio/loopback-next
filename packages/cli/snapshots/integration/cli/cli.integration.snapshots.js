@@ -749,7 +749,6 @@ exports[`cli saves command metadata to .yo-rc.json 1`] = `
           "type": "String",
           "required": false,
           "description": "A valid repository base class",
-          "default": "DefaultCrudRepository",
           "name": "repositoryBaseClass",
           "hide": false
         },

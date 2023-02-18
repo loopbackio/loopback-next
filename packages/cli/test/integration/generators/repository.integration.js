@@ -27,6 +27,7 @@ describe('lb4 repository', /** @this {Mocha.Suite} */ function () {
       const multiItemPrompt = {
         dataSourceClass: 'DbmemDatasource',
         modelNameList: ['MultiWord', 'DefaultModel'],
+        repositoryBaseClass: 'DefaultCrudRepository',
       };
 
       await testUtils
@@ -85,6 +86,7 @@ describe('lb4 repository', /** @this {Mocha.Suite} */ function () {
       const multiItemPrompt = {
         dataSourceClass: 'DbmemDatasource',
         modelNameList: ['MultiWord'],
+        repositoryBaseClass: 'DefaultCrudRepository',
       };
 
       await testUtils
@@ -123,7 +125,9 @@ describe('lb4 repository', /** @this {Mocha.Suite} */ function () {
             additionalFiles: SANDBOX_FILES,
           }),
         )
-        .withArguments('myrepo --datasource dbmem --model MultiWord');
+        .withArguments(
+          'myrepo --datasource dbmem --model MultiWord --repositoryBaseClass DefaultCrudRepository ',
+        );
       const expectedFile = path.join(
         sandbox.path,
         REPOSITORY_APP_PATH,
@@ -148,7 +152,9 @@ describe('lb4 repository', /** @this {Mocha.Suite} */ function () {
             additionalFiles: SANDBOX_FILES,
           }),
         )
-        .withArguments('--config myconfig.json');
+        .withArguments(
+          '--config myconfig.json --repositoryBaseClass DefaultCrudRepository',
+        );
       const expectedFile = path.join(
         sandbox.path,
         REPOSITORY_APP_PATH,
@@ -175,6 +181,7 @@ describe('lb4 repository', /** @this {Mocha.Suite} */ function () {
         dataSourceClass: 'DbmemDatasource',
         modelNameList: ['InvalidId'],
         propertyName: 'myid',
+        repositoryBaseClass: 'DefaultCrudRepository',
       };
 
       await testUtils
@@ -210,6 +217,7 @@ describe('lb4 repository', /** @this {Mocha.Suite} */ function () {
     it('does not run with an invalid model name', async () => {
       const basicPrompt = {
         dataSourceClass: 'DbmemDatasource',
+        repositoryBaseClass: 'DefaultCrudRepository',
       };
       return expect(
         testUtils
@@ -228,6 +236,7 @@ describe('lb4 repository', /** @this {Mocha.Suite} */ function () {
       const basicPrompt = {
         dataSourceClass: 'DbmemDatasource',
         modelNameList: null,
+        repositoryBaseClass: 'DefaultCrudRepository',
       };
       return expect(
         testUtils
@@ -254,6 +263,7 @@ describe('lb4 repository', /** @this {Mocha.Suite} */ function () {
     it('generates a crud repository from default model', async () => {
       const basicPrompt = {
         dataSourceClass: 'DbmemDatasource',
+        repositoryBaseClass: 'DefaultCrudRepository',
       };
       await testUtils
         .executeGenerator(generator)
@@ -286,6 +296,7 @@ describe('lb4 repository', /** @this {Mocha.Suite} */ function () {
     it('generates a crud repository from numbered model file name', async () => {
       const basicPrompt = {
         dataSourceClass: 'DbmemDatasource',
+        repositoryBaseClass: 'DefaultCrudRepository',
       };
       await testUtils
         .executeGenerator(generator)
@@ -326,6 +337,7 @@ describe('lb4 repository', /** @this {Mocha.Suite} */ function () {
       );
       const basicPrompt = {
         dataSourceClass: 'Sqlite3Datasource',
+        repositoryBaseClass: 'DefaultCrudRepository',
       };
       await testUtils
         .executeGenerator(generator)
@@ -348,6 +360,7 @@ describe('lb4 repository', /** @this {Mocha.Suite} */ function () {
     it('generates a crud repository from hyphened model file name', async () => {
       const basicPrompt = {
         dataSourceClass: 'MyDsDatasource',
+        repositoryBaseClass: 'DefaultCrudRepository',
       };
       await testUtils
         .executeGenerator(generator)
@@ -392,7 +405,9 @@ describe('lb4 repository', /** @this {Mocha.Suite} */ function () {
             additionalFiles: SANDBOX_FILES,
           }),
         )
-        .withArguments('--datasource dbmem --model DecoratorDefined');
+        .withArguments(
+          '--datasource dbmem --model DecoratorDefined --repositoryBaseClass DefaultCrudRepository',
+        );
       const expectedFile = path.join(
         sandbox.path,
         REPOSITORY_APP_PATH,
@@ -482,6 +497,7 @@ describe('lb4 repository', /** @this {Mocha.Suite} */ function () {
     it('generates a kv repository from decorator defined model', async () => {
       const basicPrompt = {
         dataSourceClass: 'DbkvDatasource',
+        repositoryBaseClass: 'DefaultKeyValueRepository',
       };
       await testUtils
         .executeGenerator(generator)
@@ -491,9 +507,7 @@ describe('lb4 repository', /** @this {Mocha.Suite} */ function () {
           }),
         )
         .withPrompts(basicPrompt)
-        .withArguments(
-          '--model DecoratorDefined --repositoryBaseClass DefaultKeyValueRepository',
-        );
+        .withArguments('--model DecoratorDefined');
       const expectedFile = path.join(
         sandbox.path,
         REPOSITORY_APP_PATH,
@@ -540,6 +554,7 @@ describe('lb4 repository', /** @this {Mocha.Suite} */ function () {
         .withPrompts({
           dataSourceClass: 'LegacyDatasource',
           modelNameList: ['DefaultModel'],
+          repositoryBaseClass: 'DefaultCrudRepository',
         });
 
       const expectedFile = path.join(
@@ -565,6 +580,31 @@ describe('lb4 repository', /** @this {Mocha.Suite} */ function () {
       assert.fileContent(
         INDEX_FILE,
         /export \* from '.\/default-model.repository';/,
+      );
+    });
+    it('generates repositry with custom repositoryBaseClass passed in --config', async () => {
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {
+            additionalFiles: SANDBOX_FILES,
+          }),
+        )
+        .withPrompts({
+          dataSourceClass: 'dbmem',
+          modelNameList: ['DecoratorDefined'],
+          repositoryBaseClass: 'DefaultModelRepository',
+        })
+        .withArguments(`-c {"repositoryBaseClass":"DefaultModelRepository"}`);
+      const expectedFile = path.join(
+        sandbox.path,
+        REPOSITORY_APP_PATH,
+        'decorator-defined.repository.ts',
+      );
+      assert.file(expectedFile);
+      assert.fileContent(
+        expectedFile,
+        /export class DecoratorDefinedRepository extends DefaultModelRepository\</,
       );
     });
   });
