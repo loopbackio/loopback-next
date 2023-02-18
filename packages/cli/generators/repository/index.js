@@ -188,7 +188,6 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
       type: String,
       required: false,
       description: g.f('A valid repository base class'),
-      default: 'DefaultCrudRepository',
     });
 
     return super._setupGenerator();
@@ -411,6 +410,8 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
       return this.exit(err);
     }
 
+    this.artifactInfo.repositoryBaseClass =
+      this.artifactInfo.repositoryTypeClass;
     if (this.options.repositoryBaseClass) {
       debug(
         `Base repository received from command line: ${this.options.repositoryBaseClass}`,
