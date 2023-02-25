@@ -328,6 +328,14 @@
 /examples/graphql @raymondfeng
 
 #
+# Sequelize
+#
+# - Issue label: Sequelize
+# - Primary owner(s): @shubhamp-sf
+# - Standby owner(s): @samarpanB
+/extensions/sequelize @shubhamp-sf @samarpanB
+
+#
 # MessagePack body parser
 #
 # - Issue label: n/a
