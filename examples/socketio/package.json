@@ -67,7 +67,7 @@
     "@types/debug": "^4.1.7",
     "@types/node": "^14.18.36",
     "eslint": "^8.33.0",
-    "socket.io-client": "^4.5.4",
+    "socket.io-client": "^4.6.1",
     "source-map-support": "^0.5.21",
     "typescript": "~4.9.4"
   }

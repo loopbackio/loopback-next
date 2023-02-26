@@ -52,7 +52,7 @@
     "cors": "^2.8.5",
     "debug": "^4.3.4",
     "lodash": "^4.17.21",
-    "socket.io": "^4.5.4"
+    "socket.io": "^4.6.1"
   },
   "devDependencies": {
     "@loopback/boot": "^5.0.8",
@@ -62,6 +62,6 @@
     "@loopback/testlab": "^5.0.8",
     "@types/debug": "^4.1.7",
     "p-event": "^4.2.0",
-    "socket.io-client": "^4.5.4"
+    "socket.io-client": "^4.6.1"
   }
 }
