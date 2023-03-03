@@ -2,7 +2,10 @@ import {AnyObject} from '@loopback/repository';
 import {SyncOptions} from 'sequelize';
 
 export abstract class TestControllerBase {
-  constructor(public repository: AnyObject) {}
+  repositories: AnyObject[];
+  constructor(...repositories: AnyObject[]) {
+    this.repositories = repositories;
+  }
 
   /**
    * `beforeEach` is only for testing purposes in the controller,
@@ -11,12 +14,14 @@ export abstract class TestControllerBase {
    * to run migrations instead, to sync model definitions to the target database.
    */
   async beforeEach(options: {syncAll?: boolean} = {}) {
-    const syncOptions: SyncOptions = {force: false};
+    const syncOptions: SyncOptions = {force: true};
 
-    if (options.syncAll) {
-      await this.repository.syncLoadedSequelizeModels(syncOptions);
-      return;
+    for (const repository of this.repositories as AnyObject[]) {
+      if (options.syncAll) {
+        await repository.syncLoadedSequelizeModels(syncOptions);
+        continue;
+      }
+      await repository.syncSequelizeModel(syncOptions);
     }
-    await this.repository.syncSequelizeModel(syncOptions);
   }
 }

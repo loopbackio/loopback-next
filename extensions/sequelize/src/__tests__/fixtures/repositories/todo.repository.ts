@@ -1,7 +1,7 @@
 import {Getter, inject} from '@loopback/core';
 import {BelongsToAccessor, repository} from '@loopback/repository';
 import {SequelizeCrudRepository} from '../../../sequelize';
-import {DbDataSource} from '../datasources/db.datasource';
+import {PrimaryDataSource} from '../datasources/primary.datasource';
 import {Todo, TodoList, TodoRelations} from '../models/index';
 import {TodoListRepository} from './todo-list.repository';
 
@@ -16,7 +16,7 @@ export class TodoRepository extends SequelizeCrudRepository<
   >;
 
   constructor(
-    @inject('datasources.db') dataSource: DbDataSource,
+    @inject('datasources.primary') dataSource: PrimaryDataSource,
     @repository.getter('TodoListRepository')
     protected todoListRepositoryGetter: Getter<TodoListRepository>,
   ) {

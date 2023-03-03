@@ -4,7 +4,7 @@ import {
   repository,
 } from '@loopback/repository';
 import {SequelizeCrudRepository} from '../../../sequelize';
-import {DbDataSource} from '../datasources/db.datasource';
+import {PrimaryDataSource} from '../datasources/primary.datasource';
 import {Appointment, Doctor, DoctorRelations, Patient} from '../models/index';
 import {AppointmentRepository} from './appointment.repository';
 import {PatientRepository} from './patient.repository';
@@ -22,7 +22,7 @@ export class DoctorRepository extends SequelizeCrudRepository<
   >;
 
   constructor(
-    @inject('datasources.db') dataSource: DbDataSource,
+    @inject('datasources.primary') dataSource: PrimaryDataSource,
     @repository.getter('AppointmentRepository')
     protected appointmentRepositoryGetter: Getter<AppointmentRepository>,
     @repository.getter('PatientRepository')
