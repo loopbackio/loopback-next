@@ -1,7 +1,7 @@
 import {Getter, inject} from '@loopback/core';
 import {BelongsToAccessor, repository} from '@loopback/repository';
 import {SequelizeCrudRepository} from '../../../sequelize';
-import {DbDataSource} from '../datasources/db.datasource';
+import {PrimaryDataSource} from '../datasources/primary.datasource';
 import {Book, BookRelations, Category} from '../models/index';
 import {CategoryRepository} from './category.repository';
 
@@ -16,7 +16,7 @@ export class BookRepository extends SequelizeCrudRepository<
   >;
 
   constructor(
-    @inject('datasources.db') dataSource: DbDataSource,
+    @inject('datasources.primary') dataSource: PrimaryDataSource,
     @repository.getter('CategoryRepository')
     protected categoryRepositoryGetter: Getter<CategoryRepository>,
   ) {

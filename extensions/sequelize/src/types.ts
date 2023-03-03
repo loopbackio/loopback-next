@@ -17,3 +17,8 @@ export const DEFAULT_LOOPBACK_SEQUELIZE_OPTIONS: LoopbackSequelizeComponentOptio
   {
     // Specify the values here
   };
+
+/**
+ * Sequelize Transaction type
+ */
+export {Transaction} from 'sequelize';

@@ -1,6 +1,6 @@
 import {inject} from '@loopback/core';
 import {SequelizeCrudRepository} from '../../../sequelize';
-import {DbDataSource} from '../datasources/db.datasource';
+import {PrimaryDataSource} from '../datasources/primary.datasource';
 import {Category, CategoryRelations} from '../models/index';
 
 export class CategoryRepository extends SequelizeCrudRepository<
@@ -8,7 +8,7 @@ export class CategoryRepository extends SequelizeCrudRepository<
   typeof Category.prototype.id,
   CategoryRelations
 > {
-  constructor(@inject('datasources.db') dataSource: DbDataSource) {
+  constructor(@inject('datasources.primary') dataSource: PrimaryDataSource) {
     super(Category, dataSource);
   }
 }

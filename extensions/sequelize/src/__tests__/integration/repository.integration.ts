@@ -9,6 +9,19 @@ import {
 } from '@loopback/testlab';
 import {resolve} from 'path';
 import {SequelizeSandboxApplication} from '../fixtures/application';
+import {config as primaryDataSourceConfig} from '../fixtures/datasources/primary.datasource';
+
+import {config as secondaryDataSourceConfig} from '../fixtures/datasources/secondary.datasource';
+import {TableInSecondaryDB} from '../fixtures/models';
+
+type Entities =
+  | 'users'
+  | 'todo-lists'
+  | 'todos'
+  | 'doctors'
+  | 'developers'
+  | 'books'
+  | 'products';
 
 describe('Sequelize CRUD Repository (integration)', () => {
   const sandbox = new TestSandbox(resolve(__dirname, '../../.sandbox'));
@@ -116,11 +129,7 @@ describe('Sequelize CRUD Repository (integration)', () => {
   });
 
   describe('With Relations', () => {
-    async function migrateSchema(
-      entities: Array<
-        'users' | 'todo-lists' | 'todos' | 'doctors' | 'developers' | 'books'
-      >,
-    ) {
+    async function migrateSchema(entities: Array<Entities>) {
       for (const route of entities) {
         await client.get(`/${route}/sync-sequelize-model`).send();
       }
@@ -250,12 +259,14 @@ describe('Sequelize CRUD Repository (integration)', () => {
         )
         .send();
 
-      /**
-       * sqlite3 doesn't support array data type using it will convert values
-       * to comma saperated string
-       */
-      createDeveloperResponse.body.programmingLanguageIds =
-        createDeveloperResponse.body.programmingLanguageIds.join(',');
+      if (primaryDataSourceConfig.connector === 'sqlite3') {
+        /**
+         * sqlite3 doesn't support array data type using it will convert values
+         * to comma saperated string
+         */
+        createDeveloperResponse.body.programmingLanguageIds =
+          createDeveloperResponse.body.programmingLanguageIds.join(',');
+      }
 
       expect(relationRes.body).to.be.deepEqual({
         ...createDeveloperResponse.body,
@@ -322,9 +333,116 @@ describe('Sequelize CRUD Repository (integration)', () => {
     });
   });
 
+  describe('Connections', () => {
+    async function migrateSchema(entities: Array<Entities>) {
+      for (const route of entities) {
+        await client.get(`/${route}/sync-sequelize-model`).send();
+      }
+    }
+    it('can work with two datasources together', async () => {
+      await migrateSchema(['todo-lists', 'products']);
+
+      // products model uses primary datasource
+      const todoList = getDummyTodoList();
+      const todoListCreateRes = await client.post('/todo-lists').send(todoList);
+
+      // products model uses secondary datasource
+      const product = getDummyProduct();
+      const productCreateRes = await client.post('/products').send(product);
+
+      expect(todoListCreateRes.body).to.have.properties('id', 'title');
+      expect(productCreateRes.body).to.have.properties('id', 'name', 'price');
+      expect(todoListCreateRes.body.title).to.be.equal(todoList.title);
+      expect(productCreateRes.body.name).to.be.equal(product.name);
+    });
+  });
+
+  describe('Transactions', () => {
+    const DB_ERROR_MESSAGES = {
+      invalidTransaction: [
+        `SequelizeDatabaseError: relation "${TableInSecondaryDB}" does not exist`,
+        `SequelizeDatabaseError: SQLITE_ERROR: no such table: ${TableInSecondaryDB}`,
+      ],
+    };
+    async function migrateSchema(entities: Array<Entities>) {
+      for (const route of entities) {
+        await client.get(`/${route}/sync-sequelize-model`).send();
+      }
+    }
+
+    it('retrieves model instance once transaction is committed', async () => {
+      await migrateSchema(['todo-lists']);
+
+      const todoList = getDummyTodoList();
+      const todoListCreateRes = await client
+        .post('/transactions/todo-lists/commit')
+        .send(todoList);
+
+      const todoListReadRes = await client.get(
+        `/todo-lists/${todoListCreateRes.body.id}`,
+      );
+
+      expect(todoListReadRes.body).to.have.properties('id', 'title');
+      expect(todoListReadRes.body.title).to.be.equal(todoList.title);
+    });
+
+    it('can rollback transaction', async function () {
+      await migrateSchema(['todo-lists']);
+
+      const todoList = getDummyTodoList();
+      const todoListCreateRes = await client
+        .post('/transactions/todo-lists/rollback')
+        .send(todoList);
+
+      const todoListReadRes = await client.get(
+        `/todo-lists/${todoListCreateRes.body.id}`,
+      );
+
+      expect(todoListReadRes.body).to.have.properties('error');
+      expect(todoListReadRes.body.error.code).to.be.equal('ENTITY_NOT_FOUND');
+    });
+
+    it('ensures transactions are isolated', async function () {
+      if (primaryDataSourceConfig.connector === 'sqlite3') {
+        // Skip "READ_COMMITED" test for sqlite3 as it doesn't support it through isolationLevel options.
+        // eslint-disable-next-line @typescript-eslint/no-invalid-this
+        this.skip();
+      } else {
+        await migrateSchema(['todo-lists']);
+
+        const todoList = getDummyTodoList();
+        const todoListCreateRes = await client
+          .post('/transactions/todo-lists/isolation/read_commited')
+          .send(todoList);
+
+        expect(todoListCreateRes.body).to.have.properties('error');
+        expect(todoListCreateRes.body.error.code).to.be.equal(
+          'ENTITY_NOT_FOUND',
+        );
+      }
+    });
+
+    it('ensures local transactions (should not use transaction with another repository of different datasource)', async function () {
+      if (secondaryDataSourceConfig.connector === 'sqlite3') {
+        // Skip local transactions test for sqlite3 as it doesn't support it through isolationLevel options.
+        // eslint-disable-next-line @typescript-eslint/no-invalid-this
+        this.skip();
+      } else {
+        await migrateSchema(['todo-lists', 'products']);
+
+        const response = await client.get('/transactions/ensure-local').send();
+
+        expect(response.body).to.have.properties('error');
+        expect(response.body.error.message).to.be.oneOf(
+          DB_ERROR_MESSAGES.invalidTransaction,
+        );
+      }
+    });
+  });
+
   async function getAppAndClient() {
     const artifacts: AnyObject = {
-      datasources: ['db.datasource'],
+      datasources: ['config', 'primary.datasource', 'secondary.datasource'],
       models: [
         'index',
         'todo.model',
@@ -337,6 +455,7 @@ describe('Sequelize CRUD Repository (integration)', () => {
         'developer.model',
         'book.model',
         'category.model',
+        'product.model',
       ],
       repositories: [
         'index',
@@ -350,6 +469,7 @@ describe('Sequelize CRUD Repository (integration)', () => {
         'programming-language.repository',
         'book.repository',
         'category.repository',
+        'product.repository',
       ],
       controllers: [
         'index',
@@ -367,6 +487,8 @@ describe('Sequelize CRUD Repository (integration)', () => {
         'todo.controller',
         'user-todo-list.controller',
         'user.controller',
+        'transaction.controller',
+        'product.controller',
         'test.controller.base',
       ],
     };
@@ -425,6 +547,15 @@ describe('Sequelize CRUD Repository (integration)', () => {
     };
     return todoList;
   }
+  function getDummyProduct(overwrite = {}) {
+    const todoList = {
+      name: 'Phone',
+      price: 5000,
+      ...overwrite,
+    };
+    return todoList;
+  }
+
   function getDummyTodo(overwrite = {}) {
     const todo = {
       title: 'Fix Bugs',

@@ -128,6 +128,84 @@ contains "Art" in their title, which belongs to category "Programming":
 }
 ```
 
+## SQL Transactions
+
+A Sequelize repository can perform operations in a transaction using the
+`beginTransaction()` method.
+
+### Isolation levels
+
+When you call `beginTransaction()`, you can optionally specify a transaction
+isolation level. It support the following isolation levels:
+
+- `Transaction.ISOLATION_LEVELS.READ_UNCOMMITTED` (default)
+- `Transaction.ISOLATION_LEVELS.READ_COMMITTED`
+- `Transaction.ISOLATION_LEVELS.REPEATABLE_READ`
+- `Transaction.ISOLATION_LEVELS.SERIALIZABLE`
+
+### Options
+
+Following are the supported options:
+
+```ts
+{
+  autocommit?: boolean;
+  isolationLevel?: Transaction.ISOLATION_LEVELS;
+  type?: Transaction.TYPES;
+  deferrable?: string | Deferrable;
+  /**
+   * Parent transaction.
+   */
+  transaction?: Transaction | null;
+}
+```
+
+### Example
+
+```ts
+// Get repository instances. In a typical application, instances are injected
+// via dependency injection using `@repository` decorator.
+const userRepo = await app.getRepository(UserRepository);
+
+// Begin a new transaction.
+// It's also possible to call `userRepo.dataSource.beginTransaction` instead.
+const tx = await userRepo.beginTransaction({
+  isolationLevel: Transaction.ISOLATION_LEVELS.SERIALIZABLE,
+});
+
+try {
+  // Then, we do some calls passing this transaction as an option:
+  const user = await userRepo.create(
+    {
+      firstName: 'Jon',
+      lastName: 'Doe',
+    },
+    {transaction: tx},
+  );
+
+  await userRepo.updateById(
+    user.id,
+    {
+      firstName: 'John',
+    },
+    {transaction: tx},
+  );
+
+  // If the execution reaches this line, no errors were thrown.
+  // We commit the transaction.
+  await tx.commit();
+} catch (error) {
+  // If the execution reaches this line, an error was thrown.
+  // We rollback the transaction.
+  await tx.rollback();
+}
+```
+
+Switching from loopback defaults to sequelize transaction is as simple as
+[this commit](https://github.com/shubhamp-sf/loopback4-sequelize-transaction-example/commit/321791c93ffd10c3af13e8b891396ae99b632a23)
+in
+[loopback4-sequelize-transaction-example](https://github.com/shubhamp-sf/loopback4-sequelize-transaction-example).
+
 <!-- tutorial-end -->
 
 ## Debug strings reference
@@ -167,11 +245,10 @@ debugging. To learn more about how to use them, see
 
 Please note, the current implementation does not support the following:
 
-1. SQL Transactions.
-2. Loopback Migrations (via default `migrate.ts`). Though you're good if using
+1. Loopback Migrations (via default `migrate.ts`). Though you're good if using
    external packages like
    [`db-migrate`](https://www.npmjs.com/package/db-migrate).
-3. Connection Pooling is not implemented yet.
+2. Connection Pooling is not implemented yet.
 
 Community contribution is welcome.
 

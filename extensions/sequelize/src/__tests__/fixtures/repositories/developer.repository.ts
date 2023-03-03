@@ -1,7 +1,7 @@
 import {Getter, inject} from '@loopback/core';
 import {ReferencesManyAccessor, repository} from '@loopback/repository';
 import {SequelizeCrudRepository} from '../../../sequelize';
-import {DbDataSource} from '../datasources/db.datasource';
+import {PrimaryDataSource} from '../datasources/primary.datasource';
 import {
   Developer,
   DeveloperRelations,
@@ -20,7 +20,7 @@ export class DeveloperRepository extends SequelizeCrudRepository<
   >;
 
   constructor(
-    @inject('datasources.db') dataSource: DbDataSource,
+    @inject('datasources.primary') dataSource: PrimaryDataSource,
     @repository.getter('ProgrammingLanguageRepository')
     protected programmingLanguageRepositoryGetter: Getter<ProgrammingLanguageRepository>,
   ) {

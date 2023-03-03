@@ -1,6 +1,6 @@
 import {inject} from '@loopback/core';
 import {SequelizeCrudRepository} from '../../../sequelize';
-import {DbDataSource} from '../datasources/db.datasource';
+import {PrimaryDataSource} from '../datasources/primary.datasource';
 import {
   ProgrammingLanguage,
   ProgrammingLanguageRelations,
@@ -11,7 +11,7 @@ export class ProgrammingLanguageRepository extends SequelizeCrudRepository<
   typeof ProgrammingLanguage.prototype.id,
   ProgrammingLanguageRelations
 > {
-  constructor(@inject('datasources.db') dataSource: DbDataSource) {
+  constructor(@inject('datasources.primary') dataSource: PrimaryDataSource) {
     super(ProgrammingLanguage, dataSource);
   }
 }

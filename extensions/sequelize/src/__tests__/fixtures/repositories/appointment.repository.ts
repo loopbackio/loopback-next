@@ -1,6 +1,6 @@
 import {inject} from '@loopback/core';
 import {SequelizeCrudRepository} from '../../../sequelize';
-import {DbDataSource} from '../datasources/db.datasource';
+import {PrimaryDataSource} from '../datasources/primary.datasource';
 import {Appointment, AppointmentRelations} from '../models/index';
 
 export class AppointmentRepository extends SequelizeCrudRepository<
@@ -8,7 +8,7 @@ export class AppointmentRepository extends SequelizeCrudRepository<
   typeof Appointment.prototype.id,
   AppointmentRelations
 > {
-  constructor(@inject('datasources.db') dataSource: DbDataSource) {
+  constructor(@inject('datasources.primary') dataSource: PrimaryDataSource) {
     super(Appointment, dataSource);
   }
 }
