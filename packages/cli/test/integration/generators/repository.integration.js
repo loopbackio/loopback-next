@@ -491,9 +491,7 @@ describe('lb4 repository', /** @this {Mocha.Suite} */ function () {
           }),
         )
         .withPrompts(basicPrompt)
-        .withArguments(
-          '--model DecoratorDefined --repositoryBaseClass DefaultKeyValueRepository',
-        );
+        .withArguments('--model DecoratorDefined');
       const expectedFile = path.join(
         sandbox.path,
         REPOSITORY_APP_PATH,
