@@ -8,8 +8,9 @@ import {<%= modelName %>} from '../models';
 import {<%=repositoryBaseClass %>} from './<%=repositoryBaseFile %>';
 <% } -%>
 
-export class <%= className %>Repository extends <%= repositoryBaseClass %><
-  <%= modelName %>
+<% if (isRepositoryBaseBuiltin) { %>export class <%= className %>Repository extends <%= repositoryTypeClass %><
+  <%} else { %>export class <%= className %>Repository extends <%= repositoryBaseClass %><
+  <% } %><%= modelName %>
 > {
   constructor(
     @inject('datasources.<%= dataSourceName %>') dataSource: <%= dataSourceClassName %>,
