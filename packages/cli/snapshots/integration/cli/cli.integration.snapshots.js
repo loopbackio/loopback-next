@@ -1473,7 +1473,7 @@ exports[`cli saves command metadata to .yo-rc.json 1`] = `
         "foreignKeyName": {
           "type": "String",
           "required": false,
-          "description": "Destination model foreign key name",
+          "description": "Destination model foreign key name (optional, provide only when there is a custom foreign key)",
           "name": "foreignKeyName",
           "hide": false
         },
