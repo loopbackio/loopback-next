@@ -128,7 +128,9 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
     this.option('foreignKeyName', {
       type: String,
       required: false,
-      description: g.f('Destination model foreign key name'),
+      description: g.f(
+        'Destination model foreign key name (optional, provide only when there is a custom foreign key)',
+      ),
     });
 
     this.option('relationName', {

@@ -151,7 +151,7 @@
   "bfd42878b3c50994368322098aed9e42": "include Dockerfile and .dockerignore",
   "c1f96ff7ee37bcc6aa150ae5d0dbc3bb": "What is the type of your ID?",
   "c3eece87ffd6970cb83a75715824dce7": "include service-proxy imports and ServiceMixin",
-  "c87a36fbb5183525d0006021aec56a91": "Destination model foreign key name",
+  "c87a36fbb5183525d0006021aec56a91": "Destination model foreign key name (optional, provide only when there is a custom foreign key)",
   "c8d3e70199f75ca1f1d0bd9af1d62d38": "model does not exist.",
   "c92e838c1513ce96008d7bfee201e1e9": "A valid datasource name",
   "ca660806a44ff651cd28cf4a3dddc686": "Do not remember prompt answers",
