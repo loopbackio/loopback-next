@@ -1,7 +1,7 @@
 {
   "name": "@loopback/core",
   "description": "Define and implement core constructs such as Application and Component",
-  "version": "4.0.8",
+  "version": "4.0.9",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -35,14 +35,14 @@
     "!*/__tests__"
   ],
   "dependencies": {
-    "@loopback/context": "^5.0.8",
+    "@loopback/context": "^5.0.9",
     "debug": "^4.3.4",
     "tslib": "^2.5.0"
   },
   "devDependencies": {
-    "@loopback/build": "^9.0.8",
-    "@loopback/eslint-config": "^13.0.8",
-    "@loopback/testlab": "^5.0.8",
+    "@loopback/build": "^9.0.9",
+    "@loopback/eslint-config": "^13.0.9",
+    "@loopback/testlab": "^5.0.9",
     "@types/debug": "^4.1.7",
     "@types/node": "^14.18.36"
   }

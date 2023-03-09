@@ -1,7 +1,7 @@
 {
   "name": "@loopback/example-file-transfer",
   "description": "Example application for file upload/download with LoopBack 4",
-  "version": "4.0.8",
+  "version": "4.0.9",
   "keywords": [
     "loopback",
     "LoopBack",
@@ -46,17 +46,17 @@
     "access": "public"
   },
   "dependencies": {
-    "@loopback/boot": "^5.0.8",
-    "@loopback/core": "^4.0.8",
-    "@loopback/rest": "^12.0.8",
-    "@loopback/rest-explorer": "^5.0.8",
+    "@loopback/boot": "^5.0.9",
+    "@loopback/core": "^4.0.9",
+    "@loopback/rest": "^12.0.9",
+    "@loopback/rest-explorer": "^5.0.9",
     "multer": "^1.4.4",
     "tslib": "^2.5.0"
   },
   "devDependencies": {
-    "@loopback/build": "^9.0.8",
-    "@loopback/eslint-config": "^13.0.8",
-    "@loopback/testlab": "^5.0.8",
+    "@loopback/build": "^9.0.9",
+    "@loopback/eslint-config": "^13.0.9",
+    "@loopback/testlab": "^5.0.9",
     "@types/express-serve-static-core": "^4.17.33",
     "@types/multer": "^1.4.7",
     "@types/node": "^14.18.36",

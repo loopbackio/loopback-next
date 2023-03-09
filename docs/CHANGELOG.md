@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.2.0](https://github.com/loopbackio/loopback-next/compare/@loopback/docs@5.1.7...@loopback/docs@5.2.0) (2023-03-09)
+
+
+### Bug Fixes
+
+* add @lerna/project to docs module ([edeab88](https://github.com/loopbackio/loopback-next/commit/edeab88d3562f367643504b8fbd4ba175c08ff33))
+
+
+### Features
+
+* **cli:** specify models with --models in lb4 discover ([4f5f9cc](https://github.com/loopbackio/loopback-next/commit/4f5f9cc17ac0acfab17abfceaaaf3b9171d8066f))
+* **sequelize:** add an extension for sequelize orm ([6256ed9](https://github.com/loopbackio/loopback-next/commit/6256ed903eb04af2fd78995d58eb623d878df845))
+
+
+
+
+
 ## [5.1.7](https://github.com/loopbackio/loopback-next/compare/@loopback/docs@5.1.6...@loopback/docs@5.1.7) (2023-02-07)
 
 **Note:** Version bump only for package @loopback/docs

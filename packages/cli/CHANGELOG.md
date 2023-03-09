@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.2.0](https://github.com/loopbackio/loopback-next/compare/@loopback/cli@4.1.8...@loopback/cli@4.2.0) (2023-03-09)
+
+
+### Bug Fixes
+
+* **cli:** add lerna bootstrap as dep ([c37658c](https://github.com/loopbackio/loopback-next/commit/c37658c45968171a8f02b4d9e706b4c60607a20e))
+* **cli:** fixed cli not detecting custom base repositories ([1e70be0](https://github.com/loopbackio/loopback-next/commit/1e70be0a7e4997b71f0bb529bfff5579b89033f1)), closes [#8637](https://github.com/loopbackio/loopback-next/issues/8637)
+* **cli:** response type from array to object in belongsTo ([d9a0f69](https://github.com/loopbackio/loopback-next/commit/d9a0f695be3cf22481b33de102dfb3656209fa22))
+
+
+### Features
+
+* **cli:** add support for Binary to handle blob ([f8dde03](https://github.com/loopbackio/loopback-next/commit/f8dde034a5d4eaf7c32c0150ca40dcdd3e5d90a9))
+* **cli:** specify models with --models in lb4 discover ([4f5f9cc](https://github.com/loopbackio/loopback-next/commit/4f5f9cc17ac0acfab17abfceaaaf3b9171d8066f))
+
+
+
+
+
 ## [4.1.8](https://github.com/loopbackio/loopback-next/compare/@loopback/cli@4.1.7...@loopback/cli@4.1.8) (2023-02-07)
 
 

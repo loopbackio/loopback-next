@@ -1,7 +1,7 @@
 {
   "name": "@loopback/logging",
   "description": "An extension exposes logging for Winston and Fluentd with LoopBack 4",
-  "version": "0.9.8",
+  "version": "0.9.9",
   "keywords": [
     "LoopBack",
     "Cloud Native",
@@ -40,8 +40,8 @@
     "templates"
   ],
   "peerDependencies": {
-    "@loopback/core": "^4.0.8",
-    "@loopback/rest": "^12.0.8"
+    "@loopback/core": "^4.0.9",
+    "@loopback/rest": "^12.0.9"
   },
   "dependencies": {
     "fluent-logger": "^3.4.1",
@@ -51,11 +51,11 @@
     "winston-transport": "^4.5.0"
   },
   "devDependencies": {
-    "@loopback/build": "^9.0.8",
-    "@loopback/core": "^4.0.8",
-    "@loopback/eslint-config": "^13.0.8",
-    "@loopback/rest": "^12.0.8",
-    "@loopback/testlab": "^5.0.8",
+    "@loopback/build": "^9.0.9",
+    "@loopback/core": "^4.0.9",
+    "@loopback/eslint-config": "^13.0.9",
+    "@loopback/rest": "^12.0.9",
+    "@loopback/testlab": "^5.0.9",
     "@types/morgan": "^1.9.4",
     "@types/node": "^14.18.36"
   }
