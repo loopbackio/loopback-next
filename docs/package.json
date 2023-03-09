@@ -36,6 +36,7 @@
     "tslib": "^2.5.0"
   },
   "devDependencies": {
-    "@loopback/build": "^9.0.8"
+    "@loopback/build": "^9.0.8",
+    "@lerna/project": "^6.4.1"
   }
 }
