@@ -207,6 +207,12 @@ export class Order extends Entity {
   })
   name?: string;
 
+  @property({
+    type: 'string',
+    readOnly: true
+  })
+  token?: string;
+
   @belongsTo(() => Customer, {name: 'my_customer'})
   customerId: number;
 
@@ -235,6 +241,12 @@ export class Order extends Entity {
     type: 'string',
   })
   name?: string;
+
+  @property({
+    type: 'string',
+    readOnly: true
+  })
+  token?: string;
 
   @belongsTo(() => Customer)
   customerId: number;
