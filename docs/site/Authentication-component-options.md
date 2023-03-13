@@ -31,7 +31,7 @@ simply configure the authentication component with `defaultMetadata` as follows:
 ```ts
 app
   .configure(AuthenticationBindings.COMPONENT)
-  .to({defaultMetadata: {strategy: 'xyz'}});
+  .to({defaultMetadata: [{strategy: 'xyz'}]});
 ```
 
 If multiple strategies are used for a given method, we can configure the
