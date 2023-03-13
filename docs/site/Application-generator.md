@@ -20,7 +20,7 @@ lb4 [app] [options] [<name>]
 
 `--description` : Description of the application.
 
-`--outDir` : Project root directory for the application.
+`--outdir` : Project root directory for the application.
 
 `--eslint` : Add ESLint to LoopBack4 application project.
 
