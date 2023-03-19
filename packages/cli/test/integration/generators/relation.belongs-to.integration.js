@@ -437,4 +437,64 @@ describe('lb4 relation', /** @this {Mocha.Suite} */ function () {
       );
     }
   });
+
+  context(
+    'checks generated repository with registerInclusionResolver set to false in --config',
+    () => {
+      before(async function runGeneratorWithAnswers() {
+        await sandbox.reset();
+        await testUtils
+          .executeGenerator(generator)
+          .inDir(sandbox.path, () =>
+            testUtils.givenLBProject(sandbox.path, {
+              additionalFiles: SANDBOX_FILES,
+            }),
+          )
+          .withArguments([
+            '--config',
+            `{"relationType":"belongsTo","sourceModel":"Order","destinationModel":"Customer","relationName":"custom_name","registerInclusionResolver":false}`,
+          ]);
+      });
+
+      it('generated repository file should not have inclusion resolver registered', async () => {
+        const sourceFilePath = path.join(
+          sandbox.path,
+          REPOSITORY_APP_PATH,
+          repositoryFileName,
+        );
+        assert.file(sourceFilePath);
+        expectFileToMatchSnapshot(sourceFilePath);
+      });
+    },
+  );
+
+  context(
+    'checks generated repository with registerInclusionResolver set to true in --config',
+    () => {
+      before(async function runGeneratorWithAnswers() {
+        await sandbox.reset();
+        await testUtils
+          .executeGenerator(generator)
+          .inDir(sandbox.path, () =>
+            testUtils.givenLBProject(sandbox.path, {
+              additionalFiles: SANDBOX_FILES,
+            }),
+          )
+          .withArguments([
+            '--config',
+            `{"relationType":"belongsTo","sourceModel":"Order","destinationModel":"Customer","relationName":"custom_name","registerInclusionResolver":true}`,
+          ]);
+      });
+
+      it('generated repository file should have inclusion resolver registered', async () => {
+        const sourceFilePath = path.join(
+          sandbox.path,
+          REPOSITORY_APP_PATH,
+          repositoryFileName,
+        );
+        assert.file(sourceFilePath);
+        expectFileToMatchSnapshot(sourceFilePath);
+      });
+    },
+  );
 });
