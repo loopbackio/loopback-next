@@ -736,6 +736,8 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
 
   async promptRegisterInclusionResolver() {
     if (this.shouldExit()) return false;
+    this.artifactInfo.registerInclusionResolver =
+      this.options.registerInclusionResolver;
     const props = await this.prompt([
       {
         type: 'confirm',
@@ -745,6 +747,7 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
           chalk.yellow(this.artifactInfo.sourceModel),
           chalk.yellow(this.artifactInfo.destinationModel),
         ),
+        when: this.artifactInfo.registerInclusionResolver === undefined,
         default: true,
       },
     ]);
