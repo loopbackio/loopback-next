@@ -248,7 +248,6 @@ Please note, the current implementation does not support the following:
 1. Loopback Migrations (via default `migrate.ts`). Though you're good if using
    external packages like
    [`db-migrate`](https://www.npmjs.com/package/db-migrate).
-2. Connection Pooling is not implemented yet.
 
 Community contribution is welcome.
 
