@@ -2,14 +2,20 @@ import {LifeCycleObserver} from '@loopback/core';
 import {AnyObject} from '@loopback/repository';
 import debugFactory from 'debug';
 import {
-  Options as SequelizeOptions,
+  PoolOptions,
   Sequelize,
+  Options as SequelizeOptions,
   Transaction,
   TransactionOptions,
 } from 'sequelize';
 import {
-  SupportedConnectorMapping as supportedConnectorMapping,
+  ConnectionPoolOptions,
+  LoopbackPoolConfigKey,
+  PoolingEnabledConnector,
   SupportedLoopbackConnectors,
+  poolConfigKeys,
+  poolingEnabledConnectors,
+  SupportedConnectorMapping as supportedConnectorMapping,
 } from './connector-mapping';
 
 const debug = debugFactory('loopback:sequelize:datasource');
@@ -60,6 +66,7 @@ export class SequelizeDataSource implements LifeCycleObserver {
       username: user ?? username,
       password,
       logging: queryLogging,
+      pool: this.getPoolOptions(),
     };
 
     this.sequelize = new Sequelize(this.sequelizeConfig);
@@ -113,6 +120,41 @@ export class SequelizeDataSource implements LifeCycleObserver {
     }
 
     return this.sequelize!.transaction(options);
+  }
+  getPoolOptions(): PoolOptions | undefined {
+    const config: SequelizeDataSourceConfig = this.config;
+    const specifiedPoolOptions = Object.keys(config).some(key =>
+      poolConfigKeys.includes(key as LoopbackPoolConfigKey),
+    );
+    const supportsPooling =
+      config.connector &&
+      (poolingEnabledConnectors as string[]).includes(config.connector);
+
+    if (!(supportsPooling && specifiedPoolOptions)) {
+      return;
+    }
+    const optionMapping =
+      ConnectionPoolOptions[config.connector as PoolingEnabledConnector];
+
+    if (!optionMapping) {
+      return;
+    }
+
+    const {min, max, acquire, idle} = optionMapping;
+    const options: PoolOptions = {};
+    if (max && config[max]) {
+      options.max = config[max];
+    }
+    if (min && config[min]) {
+      options.min = config[min];
+    }
+    if (acquire && config[acquire]) {
+      options.acquire = config[acquire];
+    }
+    if (idle && config[idle]) {
+      options.idle = config[idle];
+    }
+    return options;
   }
 }
 
