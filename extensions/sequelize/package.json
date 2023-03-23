@@ -54,7 +54,7 @@
     "pg": "^8.10.0",
     "pg-hstore": "^2.3.4",
     "sqlite3": "^5.1.4",
-    "typescript": "~4.8.4"
+    "typescript": "~4.9.5"
   },
   "copyright.owner": "IBM Corp. and LoopBack contributors",
   "publishConfig": {
