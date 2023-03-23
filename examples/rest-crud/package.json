@@ -56,7 +56,7 @@
     "@loopback/rest": "^12.0.9",
     "@loopback/rest-crud": "^0.15.8",
     "@loopback/rest-explorer": "^5.0.9",
-    "loopback-connector-rest": "^4.0.2",
+    "loopback-connector-rest": "^4.0.3",
     "tslib": "^2.5.0"
   },
   "devDependencies": {
