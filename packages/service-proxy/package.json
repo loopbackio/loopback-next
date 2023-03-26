@@ -46,6 +46,6 @@
     "@loopback/core": "^4.0.9",
     "@loopback/eslint-config": "^13.0.9",
     "@loopback/testlab": "^5.0.9",
-    "@types/node": "^14.18.40"
+    "@types/node": "^14.18.41"
   }
 }
