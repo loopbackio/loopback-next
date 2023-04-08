@@ -78,7 +78,8 @@ export function createTargetConstraintFromThrough<
     relationMeta,
     throughInstances,
   );
-  const targetPrimaryKey = relationMeta.keyTo;
+  const targetPrimaryKey =
+    relationMeta.customReferenceKeyTo || relationMeta.keyTo;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const constraint: any = {
@@ -216,7 +217,7 @@ export function getTargetIdsFromTargetModels<Target extends Entity, TargetID>(
   relationMeta: HasManyThroughResolvedDefinition,
   targetInstances: Target[],
 ): TargetID[] {
-  const targetId = relationMeta.keyTo;
+  const targetId = relationMeta.customReferenceKeyTo || relationMeta.keyTo;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let ids = [] as any;
   ids = targetInstances.map(
@@ -301,13 +302,14 @@ export function resolveHasManyThroughMetadata(
 
   const targetModel = relationMeta.target();
   const targetModelProperties = targetModel.definition?.properties;
-
   // check if metadata is already complete
   if (
     relationMeta.through.keyTo &&
     throughModelProperties[relationMeta.through.keyTo] &&
     relationMeta.through.keyFrom &&
     throughModelProperties[relationMeta.through.keyFrom] &&
+    relationMeta.customReferenceKeyTo &&
+    targetModelProperties[relationMeta.customReferenceKeyTo] &&
     relationMeta.keyTo &&
     targetModelProperties[relationMeta.keyTo] &&
     (relationMeta.through.polymorphic === false ||
@@ -346,8 +348,11 @@ export function resolveHasManyThroughMetadata(
     throw new InvalidRelationError(reason, relationMeta);
   }
 
-  const targetPrimaryKey =
+  let targetPrimaryKey =
     relationMeta.keyTo ?? targetModel.definition.idProperties()[0];
+  if (relationMeta.customReferenceKeyTo) {
+    targetPrimaryKey = relationMeta.customReferenceKeyTo;
+  }
   if (!targetPrimaryKey || !targetModelProperties[targetPrimaryKey]) {
     const reason = `target model ${targetModel.modelName} does not have any primary key (id property)`;
     throw new InvalidRelationError(reason, relationMeta);
@@ -376,7 +381,7 @@ export function resolveHasManyThroughMetadata(
 
   return Object.assign(relationMeta, {
     keyTo: targetPrimaryKey,
-    keyFrom: relationMeta.keyFrom!,
+    keyFrom: relationMeta.customReferenceKeyFrom || relationMeta.keyFrom!,
     through: {
       ...relationMeta.through,
       keyTo: targetFkName,
