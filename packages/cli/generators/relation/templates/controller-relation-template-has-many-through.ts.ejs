@@ -15,8 +15,8 @@ import {
   post,
   requestBody,
 } from '@loopback/rest';
-import {
-<%= sourceModelClassName %>,
+import {<%if (sourceModelClassName != targetModelClassName) { %>
+<%= sourceModelClassName %>,<% } %>
 <%= throughModelClassName %>,
 <%= targetModelClassName %>,
 } from '../models';
