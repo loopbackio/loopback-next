@@ -23,8 +23,14 @@ const sandbox = new TestSandbox(path.resolve(__dirname, '../.sandbox'));
 
 const sourceFileName = 'doctor.model.ts';
 const throughFileName = 'appointment.model.ts';
-const controllerFileName = 'doctor-patient.controller.ts';
 const repositoryFileName = 'doctor.repository.ts';
+const controllerFileName = 'doctor-patient.controller.ts';
+
+const throughFileNameForSameTable = 'friend.model.ts';
+const sourceFileNameForSameTable = 'user.model.ts';
+const repositoryFileNameForSameTable = 'user.repository.ts';
+const controllerFileNameForSameTable = 'user-user.controller.ts';
+
 // speed up tests by avoiding reading docs
 const options = {
   sourceModelPrimaryKey: 'id',
@@ -354,6 +360,76 @@ describe('lb4 relation HasManyThrough', /** @this {Mocha.Suite} */ function () {
           expectFileToMatchSnapshot(sourceFilePath);
         },
       );
+    }
+  });
+
+  context('generates model relation with same table', () => {
+    const promptArray = [
+      {
+        relationType: 'hasManyThrough',
+        sourceModel: 'User',
+        destinationModel: 'User',
+        throughModel: 'Friend',
+      },
+    ];
+
+    promptArray.forEach(function (multiItemPrompt, i) {
+      describe('answers ' + JSON.stringify(multiItemPrompt), () => {
+        suite(multiItemPrompt, i);
+      });
+    });
+
+    function suite(multiItemPrompt, i) {
+      before(async function runGeneratorWithAnswers() {
+        await sandbox.reset();
+        await testUtils
+          .executeGenerator(generator)
+          .inDir(sandbox.path, () =>
+            testUtils.givenLBProject(sandbox.path, {
+              additionalFiles: SANDBOX_FILES,
+            }),
+          )
+          .withPrompts(multiItemPrompt);
+      });
+
+      it('has correct imports and relation name users', async () => {
+        const sourceFilePath = path.join(
+          sandbox.path,
+          MODEL_APP_PATH,
+          sourceFileNameForSameTable,
+        );
+        const sourceRepoFilePath = path.join(
+          sandbox.path,
+          REPOSITORY_APP_PATH,
+          repositoryFileNameForSameTable,
+        );
+
+        assert.file(sourceFilePath);
+        assert.file(sourceRepoFilePath);
+        expectFileToMatchSnapshot(sourceFilePath);
+        expectFileToMatchSnapshot(sourceRepoFilePath);
+      });
+
+      it('has correct default foreign keys', async () => {
+        const throughFilePath = path.join(
+          sandbox.path,
+          MODEL_APP_PATH,
+          throughFileNameForSameTable,
+        );
+
+        assert.file(throughFilePath);
+        expectFileToMatchSnapshot(throughFilePath);
+      });
+
+      it('controller file has been created with hasManyThrough relation with same table', async () => {
+        const filePath = path.join(
+          sandbox.path,
+          CONTROLLER_PATH,
+          controllerFileNameForSameTable,
+        );
+        assert.file(filePath);
+        expectFileToMatchSnapshot(filePath);
+      });
     }
   });
 });
