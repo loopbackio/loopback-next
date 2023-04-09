@@ -8,7 +8,7 @@ export function getStatusCodeGroup(statusCode: number): string {
 }
 
 export function isValidStatusCode(statusCode: number): boolean {
-  return statusCode >= 10 && statusCode <= 69;
+  return Number.isInteger(statusCode) && statusCode >= 10 && statusCode <= 69;
 }
 
 export interface IsValidUrlConfig {
@@ -22,13 +22,14 @@ export const IS_VALID_URL_DEFAULT_CONFIG: Required<IsValidUrlConfig> = {
 export function isValidUrl(
   urlStr: string,
   options: IsValidUrlConfig = IS_VALID_URL_DEFAULT_CONFIG,
-) {
-  if (urlStr.length > 1024) throw new Error();
+): boolean {
+  if (urlStr.length > 1024) return false;
   const url = new URL(urlStr);
-  if (url.protocol !== 'gemini') throw new Error();
+  if (url.protocol !== 'gemini') return false;
   if (options.enforcePort) {
     const expectedPort =
       typeof options.enforcePort === 'number' ? options.enforcePort : 1965;
-    if (url.port !== expectedPort.toString()) throw new Error();
+    if (url.port !== expectedPort.toString()) return false;
   }
+  return true;
 }

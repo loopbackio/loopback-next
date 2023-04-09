@@ -15,7 +15,7 @@ component to register it.
 ## Installation
 
 ```sh
-npm i @loopback/rest-msgpack --save
+npm i @loopback/gemini --save
 ```
 
 ## Usage

@@ -1,5 +1,10 @@
 import {Server} from '@loopback/core';
-import {createServer, Server as TLSServer, TLSSocket} from 'tls';
+import {
+  createSecureContext,
+  createServer,
+  Server as TLSServer,
+  TLSSocket,
+} from 'tls';
 
 export class GeminiServer implements Server {
   private _server?: TLSServer;
@@ -8,7 +13,10 @@ export class GeminiServer implements Server {
 
   async start() {
     this._server = createServer({
-      SNICallback: serverName => {},
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      SNICallback: (serverName, callback) => {
+        callbac(null, createSecureContext({}));
+      },
       minVersion: 'TLSv1.2', // Override CLI options (if any)
     });
 
@@ -29,14 +37,8 @@ export class GeminiServer implements Server {
 
   private _connectionHandler(socket: TLSSocket) {
     let urlBuffer = Buffer.from('');
-    let isInitialData = true;
 
     const socketDataHandler = (data: Buffer) => {
-      if (isInitialData) {
-        if (data.subarray(0, 1).toString() === '\uFEFF') throw new Error();
-        isInitialData = false;
-      }
-
       if (data.subarray(data.length - 2, 2).toString() === '\000D\000A') {
         if (urlBuffer.length + data.length - 2 > 1024) socket.end();
 
@@ -56,11 +58,11 @@ export class GeminiServer implements Server {
       }
     };
 
-    function socketInitialDataHandler(data: Buffer) {
-      socketDataHandler(data);
+    const socketInitialDataHandler = (data: Buffer) => {
+      if (data.subarray(0, 1).toString() === '\uFEFF') throw new Error();
       socket.removeListener('data', socketInitialDataHandler);
       socket.on('data', socketDataHandler);
-    }
+    };
 
     socket.on('data', socketInitialDataHandler);
   }
