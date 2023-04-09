@@ -487,6 +487,71 @@ export class Appointment extends Entity {
 `;
 
 
+exports[`lb4 relation HasManyThrough generates model relation with custom keyFrom and/or keyTo with --config add custom keyTo and/or keyFrom to the through model 1`] = `
+import {Entity, model, property, hasMany} from '@loopback/repository';
+import {Patient} from './patient.model';
+import {Appointment} from './appointment.model';
+
+@model()
+export class Doctor extends Entity {
+  @property({
+    type: 'number',
+    id: true,
+    default: 0,
+  })
+  id?: number;
+
+  @property({
+    type: 'string',
+  })
+  name?: string;
+
+  @hasMany(() => Patient, {through: {model: () => Appointment, keyFrom: 'customKeyFrom', keyTo: 'customKeyTo'}})
+  patients: Patient[];
+
+  constructor(data?: Partial<Doctor>) {
+    super(data);
+  }
+}
+
+`;
+
+
+exports[`lb4 relation HasManyThrough generates model relation with custom keyFrom and/or keyTo with --config add custom keyTo and/or keyFrom to the through model 2`] = `
+import {Entity, model, property} from '@loopback/repository';
+
+@model()
+export class Appointment extends Entity {
+  @property({
+    type: 'number',
+    id: true,
+    default: 0,
+  })
+  id?: number;
+
+  @property({
+    type: 'string',
+  })
+  des?: string;
+
+  @property({
+    type: 'number',
+  })
+  customKeyFrom?: number;
+
+  @property({
+    type: 'number',
+  })
+  customKeyTo?: number;
+
+  constructor(data?: Partial<Appointment>) {
+    super(data);
+  }
+}
+
+`;
+
+
 exports[`lb4 relation HasManyThrough generates model relation with custom relation name answers {"relationType":"hasManyThrough","sourceModel":"Doctor","destinationModel":"Patient","throughModel":"Appointment","relationName":"myPatients"} relation name should be myPatients 1`] = `
 import {Entity, model, property, hasMany} from '@loopback/repository';
 import {Patient} from './patient.model';
