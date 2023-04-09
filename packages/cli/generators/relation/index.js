@@ -614,6 +614,9 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
   }
 
   async _promptKeyFromOnThroughModel() {
+    if (this.options.sourceKeyOnThrough) {
+      this.artifactInfo.sourceKeyOnThrough = this.options.sourceKeyOnThrough;
+    }
     if (this.shouldExit()) return false;
     return this.prompt([
       {
@@ -625,7 +628,7 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
           )} to define on the through model`,
         ),
         default: this.artifactInfo.defaultSourceKeyOnThrough,
-        when: !this.options.sourceKeyOnThrough,
+        when: !this.artifactInfo.sourceKeyOnThrough,
         validate: utils.validateKeyName,
       },
     ]).then(props => {
@@ -637,6 +640,9 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
 
   async _promptKeyToOnThroughModel() {
     if (this.shouldExit()) return false;
+    if (this.options.targetKeyOnThrough) {
+      this.artifactInfo.targetKeyOnThrough = this.options.targetKeyOnThrough;
+    }
     return this.prompt([
       {
         type: 'string',
@@ -647,7 +653,7 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
           )} to define on the through model`,
         ),
         default: this.artifactInfo.defaultTargetKeyOnThrough,
-        when: !this.options.targetKeyOnThrough,
+        when: !this.artifactInfo.targetKeyOnThrough,
         validate: input =>
           utils.validateKeyToKeyFrom(
             input,

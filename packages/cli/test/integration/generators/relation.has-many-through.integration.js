@@ -213,6 +213,44 @@ describe('lb4 relation HasManyThrough', /** @this {Mocha.Suite} */ function () {
     }
   });
 
+  context(
+    'generates model relation with custom keyFrom and/or keyTo with --config',
+    () => {
+      before(async function runGeneratorWithAnswers() {
+        await sandbox.reset();
+        await testUtils
+          .executeGenerator(generator)
+          .inDir(sandbox.path, () =>
+            testUtils.givenLBProject(sandbox.path, {
+              additionalFiles: SANDBOX_FILES,
+            }),
+          )
+          .withArguments([
+            '--config',
+            '{"sourceModel": "Doctor", "destinationModel": "Patient", "throughModel": "Appointment", "relationType": "hasManyThrough", "sourceKeyOnThrough": "customKeyFrom", "targetKeyOnThrough": "customKeyTo"}',
+          ]);
+      });
+
+      it('add custom keyTo and/or keyFrom to the through model', async () => {
+        const sourceFilePath = path.join(
+          sandbox.path,
+          MODEL_APP_PATH,
+          sourceFileName,
+        );
+
+        const throughFilePath = path.join(
+          sandbox.path,
+          MODEL_APP_PATH,
+          throughFileName,
+        );
+        assert.file(sourceFilePath);
+        assert.file(throughFilePath);
+        expectFileToMatchSnapshot(sourceFilePath);
+        expectFileToMatchSnapshot(throughFilePath);
+      });
+    },
+  );
+
   context('checks if the controller file is created ', () => {
     const promptArray = [
       {
