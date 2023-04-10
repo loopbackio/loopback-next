@@ -64,7 +64,7 @@
     "@typescript-eslint/parser": "^5.57.1",
     "cross-env": "^7.0.3",
     "cz-conventional-changelog": "^3.3.0",
-    "eslint": "^8.37.0",
+    "eslint": "^8.38.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-eslint-plugin": "^5.0.8",
     "eslint-plugin-mocha": "^10.1.0",
