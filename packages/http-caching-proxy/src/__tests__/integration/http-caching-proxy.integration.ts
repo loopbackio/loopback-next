@@ -14,15 +14,12 @@ import {once} from 'events';
 import http from 'http';
 import {AddressInfo} from 'net';
 import path from 'path';
-import rimrafCb from 'rimraf';
+import {rimraf} from 'rimraf';
 import tunnel, {ProxyOptions as TunnelProxyOptions} from 'tunnel';
 import {URL} from 'url';
-import util from 'util';
 import {HttpCachingProxy, ProxyOptions} from '../../http-caching-proxy';
 
 const CACHE_DIR = path.join(__dirname, '.cache');
-
-const rimraf = util.promisify(rimrafCb);
 
 describe('HttpCachingProxy', () => {
   let stubServerUrl: string;

@@ -22,10 +22,10 @@ Example usage:
 */
 
 'use strict';
+const {rimrafSync} = require('rimraf');
+const path = require('path');
 
 function run(argv, options) {
-  const rimraf = require('rimraf');
-  const path = require('path');
   const globPatterns = argv.slice(2);
   const removed = [];
   if (!globPatterns.length) {
@@ -46,7 +46,7 @@ function run(argv, options) {
         );
       }
     } else {
-      if (!options.dryRun) rimraf.sync(pattern);
+      if (!options.dryRun) rimrafSync(pattern);
       removed.push(pattern);
     }
   });
