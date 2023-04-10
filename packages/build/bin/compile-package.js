@@ -21,9 +21,9 @@ const debug = require('debug')('loopback:build');
 const utils = require('./utils');
 const path = require('path');
 const fs = require('fs');
-const glob = require('glob');
+const {globSync} = require('glob');
 const fse = require('fs-extra');
-const buildOptions = require('typescript').buildOpts;
+const {buildOpts: buildOptions} = require('typescript');
 
 function run(argv, options) {
   if (options === true) {
@@ -265,7 +265,7 @@ function copyResources(rootDir, packageDir, tsConfigFile, outDir, options) {
     (tsConfig.compilerOptions && tsConfig.compilerOptions.rootDir) || '';
 
   const pattern = `@(${dirs})/**/!(*.ts)`;
-  const files = glob.sync(pattern, {root: packageDir, nodir: true});
+  const files = globSync(pattern, {root: packageDir, nodir: true});
   for (const file of files) {
     /**
      * Trim path that matches tsConfig.compilerOptions.rootDir
