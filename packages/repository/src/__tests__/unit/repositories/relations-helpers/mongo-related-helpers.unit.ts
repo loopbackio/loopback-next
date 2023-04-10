@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {ObjectID} from 'bson';
+import {ObjectId} from 'bson';
 import {belongsTo, Entity, hasMany, model, property} from '../../../..';
 import {
   buildLookupMap,
@@ -18,7 +18,7 @@ import {flattenMapByKeys} from '../../../../relations/relation.helpers';
 describe('unit tests, simulates mongodb env for helpers of inclusion resolver ', () => {
   describe('helpers for formating instances', () => {
     it('checks isBsonType', () => {
-      const objId = new ObjectID();
+      const objId = new ObjectId();
       const numId = 1;
       expect(isBsonType(objId)).to.be.true();
       expect(isBsonType(numId)).to.be.false();
@@ -26,17 +26,17 @@ describe('unit tests, simulates mongodb env for helpers of inclusion resolver ',
 
     context('deduplicate + isBsonType', () => {
       it('passes in a  simple unique array', () => {
-        const id1 = new ObjectID();
-        const id2 = new ObjectID();
+        const id1 = new ObjectId();
+        const id2 = new ObjectId();
 
         const result = deduplicate([id1, id2]);
         expect(result).to.deepEqual([id1, id2]);
       });
 
       it('passes in a multiple items array', () => {
-        const id1 = new ObjectID();
-        const id2 = new ObjectID();
-        const id3 = new ObjectID();
+        const id1 = new ObjectId();
+        const id2 = new ObjectId();
+        const id3 = new ObjectId();
 
         const result = deduplicate([id3, id1, id1, id3, id2]);
         expect(result).to.deepEqual([id3, id1, id2]);
@@ -48,12 +48,12 @@ describe('unit tests, simulates mongodb env for helpers of inclusion resolver ',
     // the tests below simulate mongodb environment.
     context('normalizeKey + buildLookupMap', () => {
       it('checks if id has been normalized', async () => {
-        const id = new ObjectID();
+        const id = new ObjectId();
         expect(normalizeKey(id)).to.eql(id.toString());
       });
 
       it('creates a lookup map with a single key', () => {
-        const categoryId = new ObjectID();
+        const categoryId = new ObjectId();
         const pen = createProduct({name: 'pen', categoryId: categoryId});
         const pencil = createProduct({name: 'pencil', categoryId: categoryId});
 
@@ -70,8 +70,8 @@ describe('unit tests, simulates mongodb env for helpers of inclusion resolver ',
       });
 
       it('creates a lookup map with more than one keys', () => {
-        const categoryId = new ObjectID();
-        const anotherCategoryId = new ObjectID();
+        const categoryId = new ObjectId();
+        const anotherCategoryId = new ObjectId();
         const pen = createProduct({name: 'pen', categoryId: categoryId});
         const pencil = createProduct({name: 'pencil', categoryId: categoryId});
         const eraser = createProduct({
@@ -95,8 +95,8 @@ describe('unit tests, simulates mongodb env for helpers of inclusion resolver ',
     });
     context('normalizeKey + flattenMapByKeys', () => {
       it('checks if id has been normalized', async () => {
-        const categoryId = new ObjectID();
-        const anotherCategoryId = new ObjectID();
+        const categoryId = new ObjectId();
+        const anotherCategoryId = new ObjectId();
         const pen = createProduct({name: 'pen', categoryId: categoryId});
         const pencil = createProduct({name: 'pencil', categoryId: categoryId});
         const eraser = createProduct({
