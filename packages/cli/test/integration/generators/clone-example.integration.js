@@ -5,16 +5,12 @@
 
 'use strict';
 
-const promisify = require('util').promisify;
-
-const downloadAndExtractExample = require('../../../generators/example/downloader');
-const expect = require('@loopback/testlab').expect;
-const fs = require('fs');
-const TestSandbox = require('@loopback/testlab').TestSandbox;
-const glob = promisify(require('glob'));
+const {expect} = require('@loopback/testlab');
+const fs = require('fs/promises');
+const {TestSandbox} = require('@loopback/testlab');
+const {glob} = require('glob');
 const path = require('path');
-
-const readFile = promisify(fs.readFile);
+const downloadAndExtractExample = require('../../../generators/example/downloader');
 
 const VALID_EXAMPLE = 'todo';
 const sandbox = new TestSandbox(path.resolve(__dirname, '../.sandbox'));
@@ -49,7 +45,7 @@ describe('cloneExampleFromGitHub (SLOW)', /** @this {Mocha.Suite} */ function ()
       'src/index.ts',
     ]);
 
-    const packageJson = JSON.parse(await readFile(`${outDir}/package.json`));
+    const packageJson = JSON.parse(await fs.readFile(`${outDir}/package.json`));
     expect(packageJson).to.have.properties({
       name: `@loopback/example-${VALID_EXAMPLE}`,
     });

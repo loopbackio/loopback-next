@@ -6,8 +6,7 @@
 import {Constructor} from '@loopback/core';
 import debugFactory from 'debug';
 import path from 'path';
-import {promisify} from 'util';
-const glob = promisify(require('glob'));
+import {glob} from 'glob';
 
 const debug = debugFactory('loopback:boot:booter-utils');
 

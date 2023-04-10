@@ -7,8 +7,7 @@
 
 const fse = require('fs-extra');
 const _ = require('lodash');
-const {promisify} = require('util');
-const glob = promisify(require('glob'));
+const {glob} = require('glob');
 
 const defaultFS = {
   write: fse.writeFile,
