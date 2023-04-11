@@ -18,7 +18,7 @@ env:
 jobs:
   test:
     name: Test
-    timeout-minutes: 15
+    timeout-minutes: 20
     strategy:
       matrix:
         os: [ubuntu-latest]
