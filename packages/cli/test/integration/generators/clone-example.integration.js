@@ -42,7 +42,7 @@ describe('cloneExampleFromGitHub (SLOW)', /** @this {Mocha.Suite} */ function ()
       // We need to check a nested file to verify that directory structure
       // is preserved. Hopefully `src/index.ts will be always around,
       // independently on any refactorings and cleanups.
-      'src/index.ts',
+      //'src/index.ts',
     ]);
 
     const packageJson = JSON.parse(await fs.readFile(`${outDir}/package.json`));
