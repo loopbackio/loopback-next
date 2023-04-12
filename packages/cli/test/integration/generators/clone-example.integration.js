@@ -25,6 +25,8 @@ describe('cloneExampleFromGitHub (SLOW)', /** @this {Mocha.Suite} */ function ()
     const actualFiles = await glob('**', {
       cwd: outDir,
       ignore: 'node_modules/**',
+    }).then(result => {
+      return result.map(pathString => pathString.replace(/\\/g, '/'));
     });
 
     // We must not assume that the files downloaded from the current master

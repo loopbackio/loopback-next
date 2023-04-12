@@ -37,7 +37,7 @@ async function jsOrTsFiles(cwd, paths = []) {
     });
   }
   paths = await Promise.all(globs);
-  paths = _.flatten(paths);
+  paths = _.map(_.flatten(paths), pathString => pathString.replace(/\\/g, '/'));
   return _.filter(paths, /\.(js|ts)$/);
 }
 
