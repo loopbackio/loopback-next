@@ -46,7 +46,7 @@ function run(argv, options) {
         );
       }
     } else {
-      if (!options.dryRun) rimrafSync(pattern);
+      if (!options.dryRun) rimrafSync(pattern, {glob: true});
       removed.push(pattern);
     }
   });
