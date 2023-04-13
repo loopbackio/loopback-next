@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.1.5](https://github.com/loopbackio/loopback-next/compare/@loopback/repository@5.1.4...@loopback/repository@5.1.5) (2023-04-13)
+
+
+### Bug Fixes
+
+* refresh package lock files ([9979eb1](https://github.com/loopbackio/loopback-next/commit/9979eb183b6c6cd5775da7478cdede8a92ce0d5e)), closes [#9351](https://github.com/loopbackio/loopback-next/issues/9351)
+* remove capital D ObjectID import ([dcc52d5](https://github.com/loopbackio/loopback-next/commit/dcc52d5ab2aebf07800a8678d7833ba5f6b32297))
+
+
+### Performance Improvements
+
+* **repository:** handle cloneDeep of data ([1c8bd2d](https://github.com/loopbackio/loopback-next/commit/1c8bd2d972be6ddfbef5f73cea8d14dbf64ada05))
+
+
+
+
+
 ## [5.1.4](https://github.com/loopbackio/loopback-next/compare/@loopback/repository@5.1.3...@loopback/repository@5.1.4) (2023-03-09)
 
 **Note:** Version bump only for package @loopback/repository

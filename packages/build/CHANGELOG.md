@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [9.0.10](https://github.com/loopbackio/loopback-next/compare/@loopback/build@9.0.9...@loopback/build@9.0.10) (2023-04-13)
+
+
+### Bug Fixes
+
+* refresh package lock files ([9979eb1](https://github.com/loopbackio/loopback-next/commit/9979eb183b6c6cd5775da7478cdede8a92ce0d5e)), closes [#9351](https://github.com/loopbackio/loopback-next/issues/9351)
+* rimraf must be configured to accept patterns ([8ba04ab](https://github.com/loopbackio/loopback-next/commit/8ba04ab253de976a8703badc4e99520f15335cba))
+* use glob named import ([7daf6fb](https://github.com/loopbackio/loopback-next/commit/7daf6fb6b82e2ce01e3693869c695fe77146238d))
+* use rimraf named import ([1417f7b](https://github.com/loopbackio/loopback-next/commit/1417f7b504ec85b5c13fb65851430f3c364761e2))
+
+
+
+
+
 ## [9.0.9](https://github.com/loopbackio/loopback-next/compare/@loopback/build@9.0.8...@loopback/build@9.0.9) (2023-03-09)
 
 **Note:** Version bump only for package @loopback/build

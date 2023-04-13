@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.2.1](https://github.com/loopbackio/loopback-next/compare/@loopback/docs@5.2.0...@loopback/docs@5.2.1) (2023-04-13)
+
+
+### Bug Fixes
+
+* **cli:** pass flags to mysql-connector while lb4 discover ([357d0c3](https://github.com/loopbackio/loopback-next/commit/357d0c3c1b0dae27b1b2fafa4a04c9e170d4cff2))
+* refresh package lock files ([9979eb1](https://github.com/loopbackio/loopback-next/commit/9979eb183b6c6cd5775da7478cdede8a92ce0d5e)), closes [#9351](https://github.com/loopbackio/loopback-next/issues/9351)
+
+
+
+
+
 # [5.2.0](https://github.com/loopbackio/loopback-next/compare/@loopback/docs@5.1.7...@loopback/docs@5.2.0) (2023-03-09)
 
 

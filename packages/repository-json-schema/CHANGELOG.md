@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.1.4](https://github.com/loopbackio/loopback-next/compare/@loopback/repository-json-schema@6.1.3...@loopback/repository-json-schema@6.1.4) (2023-04-13)
+
+
+### Bug Fixes
+
+* refresh package lock files ([9979eb1](https://github.com/loopbackio/loopback-next/commit/9979eb183b6c6cd5775da7478cdede8a92ce0d5e)), closes [#9351](https://github.com/loopbackio/loopback-next/issues/9351)
+
+
+
+
+
 ## [6.1.3](https://github.com/loopbackio/loopback-next/compare/@loopback/repository-json-schema@6.1.2...@loopback/repository-json-schema@6.1.3) (2023-03-09)
 
 **Note:** Version bump only for package @loopback/repository-json-schema
