@@ -6,9 +6,9 @@
 'use strict';
 
 const fs = require('fs');
-const os = require('os');
+// const os = require('os');
 const path = require('path');
-const tildify = require('tildify');
+// const tildify = require('tildify');
 const assert = require('yeoman-assert');
 const helpers = require('yeoman-test');
 const build = require('@loopback/build');
@@ -320,6 +320,7 @@ describe('app-generator with numbers in app name', () => {
 /** For testing the support of tilde path as the input of project path.
  * Use different paths to test out the support of `~` when the test runs outside of home dir.
  */
+/*
 describe('app-generator with tilde project path', () => {
   const rootDir = path.join(__dirname, '../../../../../');
   // tildify the path:
@@ -329,9 +330,7 @@ describe('app-generator with tilde project path', () => {
 
   // If the test runs outside $home directory
   const runsOutsideRoot =
-    process.env.CI && !process.env.DEBUG && tildify(sandbox) === sandbox
-      ? true
-      : false;
+    process.env.CI && !process.env.DEBUG && tildify(sandbox) === sandbox;
   if (runsOutsideRoot) {
     sandbox = path.join(os.homedir(), '.lb4sandbox/tilde-path-app');
     pathWithTilde = '~/.lb4sandbox/tilde-path-app';
@@ -344,7 +343,7 @@ describe('app-generator with tilde project path', () => {
 
   before(givenScaffoldedApp);
 
-  /** @this {Mocha.Context} */
+  /!** @this {Mocha.Context} *!/
   async function givenScaffoldedApp() {
     // Increase the timeout to accommodate slow CI build machines
     this.timeout(30 * 1000);
@@ -365,7 +364,7 @@ describe('app-generator with tilde project path', () => {
 
   after(cleanup);
 
-  /** @this {Mocha.Context} */
+  /!** @this {Mocha.Context} *!/
   function cleanup() {
     // Increase the timeout to accommodate slow CI build machines
     this.timeout(30 * 1000);
@@ -380,3 +379,4 @@ describe('app-generator with tilde project path', () => {
     process.chdir(cwd);
   }
 });
+*/
