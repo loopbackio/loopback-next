@@ -13,7 +13,7 @@
     "directory": "packages/filter"
   },
   "engines": {
-    "node": "14 || 16 || 18 || 19"
+    "node": "16 || 18 || 19"
   },
   "scripts": {
     "build": "lb-tsc",

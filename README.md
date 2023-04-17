@@ -56,9 +56,9 @@ for more details.
 
 Make sure you have the following installed:
 
-| Package                                    | Version/-s                                                                     | Link                                  | Note                                                                                                  |
-| ------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| [Node.js](https://nodejs.org/en/download/) | Maintenance LTS (_v14_) <br/> Active LTS (_v16_) <br/> Current (_v17_ & _v18_) | https://nodejs.org/en/about/releases/ | <span style="color: yellow;">The use of the current version for production is not recommended</span>. |
+| Package                                    | Version/-s                                                             | Link                                  | Note                                                                                                  |
+| ------------------------------------------ | ---------------------------------------------------------------------- | ------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| [Node.js](https://nodejs.org/en/download/) | Maintenance LTS (_v16_) <br/> Active LTS (_v18_) <br/> Current (_v19_) | https://nodejs.org/en/about/releases/ | <span style="color: yellow;">The use of the current version for production is not recommended</span>. |
 
 Install LoopBack 4 CLI to help create new projects as follows:
 

@@ -1,17 +1,25 @@
 {
   "name": "@loopback/sequelize",
-  "version": "0.2.0",
   "description": "Loopback 4 Extension That Provides Sequelize Crud Repository Compatible With Default Loopback Models.",
+  "version": "0.2.0",
   "keywords": [
     "loopback-extension",
     "loopback",
     "sequelize-connector",
     "sequelize"
   ],
+  "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "author": "IBM Corp. and LoopBack contributors",
+  "copyright.owner": "IBM Corp. and LoopBack contributors",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/loopbackio/loopback-next.git",
+    "directory": "extensions/sequelize"
+  },
   "engines": {
-    "node": "14 || 16 || 17 || 18"
+    "node": "16 || 18 || 19"
   },
   "scripts": {
     "build": "lb-tsc",
@@ -21,13 +29,9 @@
     "clean": "lb-clean dist *.tsbuildinfo .eslintcache",
     "rebuild": "npm run clean && npm run build"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/loopbackio/loopback-next.git",
-    "directory": "extensions/sequelize"
+  "publishConfig": {
+    "access": "public"
   },
-  "author": "IBM Corp. and LoopBack contributors",
-  "license": "MIT",
   "files": [
     "README.md",
     "dist",
@@ -55,9 +59,5 @@
     "pg-hstore": "^2.3.4",
     "sqlite3": "^5.1.4",
     "typescript": "~4.9.5"
-  },
-  "copyright.owner": "IBM Corp. and LoopBack contributors",
-  "publishConfig": {
-    "access": "public"
   }
 }
