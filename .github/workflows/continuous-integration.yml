@@ -22,7 +22,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node-version: [14, 16, 18, 19]
+        node-version: [16, 18, 19]
         include:
           - os: macos-latest
             node-version: 18 # LTS
@@ -36,9 +36,6 @@ jobs:
         uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c # v3.6.0
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Upgrade NPM
-        if: matrix.node-version == 14
-        run: npm i -g npm@latest-7
       - uses: Yuri6037/Action-FakeTTY@1abc69c7d530815855caedcd73842bae5687c1a6 # tag=v1.1
       - name: Bootstrap
         run: |
@@ -63,7 +60,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           parallel: true
 
-  posttest:
+  post-test:
     name: Post-Test
     needs: test
     runs-on: ubuntu-latest

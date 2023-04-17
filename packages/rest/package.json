@@ -13,7 +13,7 @@
     "directory": "packages/rest"
   },
   "engines": {
-    "node": "14 || 16 || 18 || 19"
+    "node": "16 || 18 || 19"
   },
   "scripts": {
     "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
