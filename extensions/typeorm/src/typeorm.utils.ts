@@ -4,10 +4,11 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {JsonSchemaOptions, ReferenceObject, SchemaObject} from '@loopback/rest';
-import debugFactory from 'debug';
 import {getMetadataArgsStorage} from 'typeorm';
 import {ColumnType} from 'typeorm/driver/types/ColumnTypes';
 import {ColumnMetadataArgs} from 'typeorm/metadata-args/ColumnMetadataArgs';
+import debugFactory from 'debug';
+
 const debug = debugFactory('loopback:typeorm:mixin');
 
 const modelSchemaCache = new WeakMap();
@@ -53,7 +54,7 @@ export function getModelSchema<T extends object>(
   return schema;
 }
 
-export type PropertyType = {
+type PropertyType = {
   [propertyName: string]: SchemaObject | ReferenceObject;
 };
 
