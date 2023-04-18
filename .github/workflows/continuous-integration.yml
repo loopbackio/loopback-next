@@ -54,7 +54,7 @@ jobs:
       - name: Generate coverage report
         run: node packages/build/bin/run-nyc report --reporter=lcov
       - name: Publish coverage report to Coveralls
-        uses: coverallsapp/github-action@045a25193560dc194e405657f552faeb6b9433aa # v2.1.0
+        uses: coverallsapp/github-action@ca2a9dd5a20b12fa9aa428e0a6418a60a38bab22 # v2.1.1
         with:
           flag-name: run-${{ matrix.os }}-node@${{ matrix.node-version }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -67,7 +67,7 @@ jobs:
     if: ${{ success() }}
     steps:
     - name: Coveralls finished
-      uses: coverallsapp/github-action@045a25193560dc194e405657f552faeb6b9433aa # v2.1.0
+      uses: coverallsapp/github-action@ca2a9dd5a20b12fa9aa428e0a6418a60a38bab22 # v2.1.1
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         parallel-finished: true
