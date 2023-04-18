@@ -19,7 +19,7 @@
     "directory": "extensions/context-explorer"
   },
   "engines": {
-    "node": "16 || 18 || 19"
+    "node": "16 || 18"
   },
   "scripts": {
     "build": "lb-tsc",

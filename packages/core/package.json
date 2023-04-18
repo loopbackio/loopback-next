@@ -13,7 +13,7 @@
     "directory": "packages/core"
   },
   "engines": {
-    "node": "16 || 18 || 19"
+    "node": "16 || 18"
   },
   "scripts": {
     "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",

@@ -9,7 +9,7 @@
   "repository": "github:loopbackio/loopback-next",
   "engineStrict": true,
   "engines": {
-    "node": "16 || 18 || 19",
+    "node": "16 || 18",
     "npm": ">=7"
   },
   "scripts": {
