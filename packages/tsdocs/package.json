@@ -23,7 +23,7 @@
     "directory": "packages/tsdocs"
   },
   "engines": {
-    "node": "16 || 18"
+    "node": "16 || 18 || 20"
   },
   "scripts": {
     "build:tsdocs": "npm run build && npm run -s extract-apidocs && npm run -s document-apidocs && npm run -s update-apidocs",

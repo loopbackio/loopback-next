@@ -13,7 +13,7 @@
     "directory": "sandbox/example"
   },
   "engines": {
-    "node": "16 || 18"
+    "node": "16 || 18 || 20"
   },
   "scripts": {
     "test": "echo \"This is an example for sandbox\""

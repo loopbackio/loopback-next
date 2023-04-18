@@ -22,7 +22,7 @@
     "directory": "packages/context"
   },
   "engines": {
-    "node": "16 || 18"
+    "node": "16 || 18 || 20"
   },
   "scripts": {
     "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
