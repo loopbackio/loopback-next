@@ -21,7 +21,7 @@
     "directory": "examples/passport-login"
   },
   "engines": {
-    "node": "16 || 18"
+    "node": "16 || 18 || 20"
   },
   "scripts": {
     "build": "lb-tsc",
