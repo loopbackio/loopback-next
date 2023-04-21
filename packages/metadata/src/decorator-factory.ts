@@ -635,7 +635,7 @@ export class ParameterDecoratorFactory<T> extends DecoratorFactory<
   create(): ParameterDecorator {
     return (
       target: Object,
-      methodName: string | symbol,
+      methodName: string | symbol | undefined,
       parameterIndex: number,
     ) => this.decorate(target, methodName, parameterIndex);
   }
