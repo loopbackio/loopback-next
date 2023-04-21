@@ -40,7 +40,11 @@ export class ServiceProxyMetadata implements InjectionMetadata {
 }
 
 export function serviceProxy(dataSource: string | juggler.DataSource) {
-  return function (target: object, key: string, parameterIndex?: number) {
+  return function (
+    target: object,
+    key: string | undefined,
+    parameterIndex?: number,
+  ) {
     if (key || typeof parameterIndex === 'number') {
       const meta = new ServiceProxyMetadata(dataSource);
       inject('', meta, resolve)(target, key, parameterIndex);
