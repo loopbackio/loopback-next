@@ -54,7 +54,7 @@
     "lodash": "^4.17.21",
     "minimatch": "^9.0.0",
     "minimist": "^1.2.8",
-    "mkdirp": "^3.0.0",
+    "mkdirp": "^3.0.1",
     "natural-compare": "^1.4.0",
     "pacote": "^15.1.2",
     "pluralize": "^8.0.0",
