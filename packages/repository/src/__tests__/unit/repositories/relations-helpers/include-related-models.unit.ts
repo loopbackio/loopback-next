@@ -3,6 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {AnyObject} from '@loopback/filter/src/types';
 import {expect, toJSON} from '@loopback/testlab';
 import {cloneDeep} from 'lodash';
 import {includeRelatedModels, InclusionResolver} from '../../../..';
@@ -122,11 +123,12 @@ describe('includeRelatedModels', () => {
       [product],
       ['category'],
     );
-
-    expect(productWithCategories[0].toJSON()).to.deepEqual({
+    const equalsTo: AnyObject = {
       ...product.toJSON(),
       category: category.toJSON(),
-    });
+    };
+    delete equalsTo.categoryId;
+    expect(productWithCategories[0].toJSON()).to.deepEqual(equalsTo);
   });
 
   it('includes related model for more than one instance - belongsTo', async () => {
@@ -154,12 +156,15 @@ describe('includeRelatedModels', () => {
       [productOne, productTwo, productThree],
       ['category'],
     );
-
-    expect(toJSON(productWithCategories)).to.deepEqual([
+    const equalsTo = [
       {...productOne.toJSON(), category: categoryOne.toJSON()},
       {...productTwo.toJSON(), category: categoryTwo.toJSON()},
       {...productThree.toJSON(), category: categoryTwo.toJSON()},
-    ]);
+    ];
+    equalsTo.forEach((product: AnyObject) => {
+      delete product.categoryId;
+    });
+    expect(toJSON(productWithCategories)).to.deepEqual(equalsTo);
   });
 
   it('includes related models for one instance - hasMany', async () => {

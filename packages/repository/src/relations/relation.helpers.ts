@@ -121,6 +121,7 @@ export async function includeRelatedModels<
   include?: InclusionFilter[],
   options?: Options,
 ): Promise<(T & Relations)[]> {
+  const relations = targetRepository?.entityClass?.definition?.relations;
   if (options?.polymorphicType) {
     include = include?.filter(inclusionFilter => {
       if (typeof inclusionFilter === 'string') {
@@ -170,6 +171,14 @@ export async function includeRelatedModels<
 
     result.forEach((entity, ix) => {
       const src = entity as AnyObject;
+      if (
+        relations &&
+        (relations[relationName].type === 'belongsTo' ||
+          relations[relationName].type === 'referencesMany')
+      ) {
+        const {keyFrom} = relations[relationName] as AnyObject;
+        delete src[keyFrom];
+      }
       src[relationName] = targets[ix];
     });
   });

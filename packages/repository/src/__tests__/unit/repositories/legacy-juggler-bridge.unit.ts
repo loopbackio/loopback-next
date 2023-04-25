@@ -3,6 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {AnyObject} from '@loopback/filter/src/types';
 import {expect, toJSON} from '@loopback/testlab';
 import {cloneDeep} from 'lodash';
 import {
@@ -585,11 +586,12 @@ describe('DefaultCrudRepository', () => {
         const file = await fileRepo.findById(1, {
           include: ['folder'],
         });
-
-        expect(file.toJSON()).to.deepEqual({
+        const equalsTo = {
           ...createdFile.toJSON(),
           folder: folders[0].toJSON(),
-        });
+        };
+        delete (equalsTo as AnyObject).folderId;
+        expect(file.toJSON()).to.deepEqual(equalsTo);
       });
 
       it('implements Repository.findOne() with included models', async () => {
@@ -608,7 +610,6 @@ describe('DefaultCrudRepository', () => {
         const folder = await folderRepo.findOne({
           include: ['author'],
         });
-
         expect(folder!.toJSON()).to.deepEqual({
           ...folders[0].toJSON(),
           author: createdAuthor.toJSON(),
