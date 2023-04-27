@@ -58,7 +58,7 @@
     "@loopback/rest-explorer": "^5.0.10",
     "@loopback/security": "^0.8.10",
     "@loopback/service-proxy": "^5.0.10",
-    "@types/jsonwebtoken": "9.0.1",
+    "@types/jsonwebtoken": "9.0.2",
     "@types/lodash": "^4.14.194",
     "@types/passport": "^1.0.12",
     "@types/passport-facebook": "^2.1.11",
