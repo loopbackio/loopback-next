@@ -52,7 +52,7 @@
     "@loopback/testlab": "^5.0.10",
     "@types/debug": "^4.1.7",
     "@types/json-schema": "^7.0.11",
-    "@types/node": "^14.18.42",
+    "@types/node": "^14.18.43",
     "sqlite3": "^5.1.4"
   }
 }
