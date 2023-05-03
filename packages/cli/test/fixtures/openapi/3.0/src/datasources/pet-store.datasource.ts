@@ -12,6 +12,7 @@ const config = {
   spec: 'petstore-expanded.yaml',
   validate: false,
   positional: false,
+  prefix: 'openapi',
 };
 
 // Observe application's life cycle to disconnect the datasource when

@@ -87,6 +87,12 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
       type: Boolean,
     });
 
+    this.option('prefix', {
+      description: g.f('Provide prefix to avoid duplication'),
+      required: false,
+      type: String,
+    });
+
     return super._setupGenerator();
   }
 
@@ -211,6 +217,28 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
     }
   }
 
+  async askForPrefix() {
+    if (this.shouldExit()) return;
+    const prompts = [
+      {
+        name: 'prefix',
+        message: g.f('Provide prefix to avoid duplication'),
+        when: !this.options.prefix,
+        default: 'openapi',
+      },
+    ];
+    const answers = await this.prompt(prompts);
+    if (answers.prefix) {
+      this.options.prefix = answers.prefix;
+    }
+
+    //Change prefix to PascalCase
+    this.options.prefix = this.options.prefix.replace(
+      /\w+/g,
+      w => w[0].toUpperCase() + w.slice(1).toLowerCase(),
+    );
+  }
+
   async askForSpecUrlOrPath() {
     if (this.shouldExit()) return;
     if (this.dataSourceInfo && this.dataSourceInfo.specPath) {
@@ -241,6 +269,7 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
         log: this.log,
         validate: this.options.validate,
         promoteAnonymousSchemas: this.options['promote-anonymous-schemas'],
+        prefix: this.options.prefix,
       });
       debugJson('OpenAPI spec', result.apiSpec);
       Object.assign(this, result);
@@ -251,6 +280,18 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
 
   async selectControllers() {
     if (this.shouldExit()) return;
+    //remove prefix from tag
+    this.controllerSpecs = this.controllerSpecs.map(c => {
+      if (c.tag.includes(this.options.prefix)) {
+        const splited = c.tag.split(this.options.prefix);
+        if (splited.length === 2) {
+          c.tag = splited[1];
+        } else {
+          c.tag = splited[1] + splited[2];
+        }
+      }
+      return c;
+    });
     const choices = this.controllerSpecs.map(c => {
       const names = [];
       if (this.options.server !== false) {
@@ -288,6 +329,8 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
     this.selectedServices = this.selectedControllers;
     this.selectedControllers.forEach(c => {
       c.fileName = getControllerFileName(c.tag || c.className);
+      // avoiding duplication by adding a prefix
+      c.fileName = `${this.options.prefix.toLowerCase()}.` + c.fileName;
       c.serviceFileName = getServiceFileName(c.tag || c.serviceClassName);
     });
   }

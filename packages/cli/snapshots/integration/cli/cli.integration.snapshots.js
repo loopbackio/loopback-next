@@ -1033,6 +1033,13 @@ exports[`cli saves command metadata to .yo-rc.json 1`] = `
           "name": "promote-anonymous-schemas",
           "hide": false
         },
+        "prefix": {
+          "description": "Provide prefix to avoid duplication",
+          "required": false,
+          "type": "String",
+          "name": "prefix",
+          "hide": false
+        },
         "config": {
           "type": "String",
           "alias": "c",
