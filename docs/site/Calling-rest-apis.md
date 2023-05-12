@@ -154,6 +154,17 @@ Service interface.
   }
 ```
 
+```ts
+@post('/people')
+  async getPeople(
+    @param.query.string('name') name: string,
+  ): Promise<object> {
+    //Preconditions
+
+    return this.peopleService.getPeople(name);
+  }
+```
+
 For calling Services with OpenAPI DataSource,
 
 - the parameters need to be wrapped in a JSON object
