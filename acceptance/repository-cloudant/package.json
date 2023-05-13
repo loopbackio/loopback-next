@@ -36,7 +36,7 @@
     "@loopback/eslint-config": "^13.0.10",
     "@loopback/repository": "^5.1.5",
     "@loopback/repository-tests": "^0.21.10",
-    "@types/node": "^14.18.44",
+    "@types/node": "^14.18.46",
     "async": "^3.2.4",
     "chalk": "^4.1.2",
     "debug": "^4.3.4",

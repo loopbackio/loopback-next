@@ -53,7 +53,7 @@
     "@loopback/rest": "^12.0.10",
     "@loopback/testlab": "^5.0.10",
     "@types/express": "^4.17.17",
-    "@types/node": "^14.18.44",
+    "@types/node": "^14.18.46",
     "express": "^4.18.2"
   }
 }
