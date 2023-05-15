@@ -3,6 +3,36 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.0.0](https://github.com/loopbackio/loopback-next/compare/@loopback/cli@4.2.1...@loopback/cli@5.0.0) (2023-05-15)
+
+
+### Bug Fixes
+
+* add missing keys from config passed to lb4 relation ([d1ddfc2](https://github.com/loopbackio/loopback-next/commit/d1ddfc2018208099ddb972512c4e66c4ad9d1e6d))
+* **cli:** fix for lb4 repository generator to recognize repositoryBaseClass in --config ([dac6631](https://github.com/loopbackio/loopback-next/commit/dac6631fd7742efa28a8b4eeb20452c2a8fd5fb3))
+* **cli:** openapi generator implementation for controllers ([611a533](https://github.com/loopbackio/loopback-next/commit/611a533a4f773fc4dc6d42b78ae05e78f03c2e22))
+* **cli:** recognize registerInclusionResolver provided in -c or --config ([f12963a](https://github.com/loopbackio/loopback-next/commit/f12963adee2db35f1178b797535516a58a6bab87))
+* **cli:** update --help for relation ([132e986](https://github.com/loopbackio/loopback-next/commit/132e986edaf6345a0d9935371c35628488726c5a))
+* remove repeated code from controller in case of same table hasManyThrough relation ([30a8bfc](https://github.com/loopbackio/loopback-next/commit/30a8bfc36bcfd3738a703eb63278f2a63b3f3c53))
+
+
+### Features
+
+* add support for node v20 ([e23cefa](https://github.com/loopbackio/loopback-next/commit/e23cefaf5cce3fb990cb09f4c94239d1979615b1))
+* remove support for node v14 ([5425762](https://github.com/loopbackio/loopback-next/commit/5425762f1353869994acf081bcda4816e6a9c3b0))
+* remove support for node v19 ([e26a2ac](https://github.com/loopbackio/loopback-next/commit/e26a2ac2e43245d09dfc9721ccfa41d830daccb8))
+
+
+### BREAKING CHANGES
+
+* End of life of Node v14
+
+Signed-off-by: Francisco Buceta <frbuceta@gmail.com>
+
+
+
+
+
 ## [4.2.1](https://github.com/loopbackio/loopback-next/compare/@loopback/cli@4.2.0...@loopback/cli@4.2.1) (2023-04-13)
 
 

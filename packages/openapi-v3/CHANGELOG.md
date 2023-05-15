@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [9.0.0](https://github.com/loopbackio/loopback-next/compare/@loopback/openapi-v3@8.0.10...@loopback/openapi-v3@9.0.0) (2023-05-15)
+
+
+### Features
+
+* add support for node v20 ([e23cefa](https://github.com/loopbackio/loopback-next/commit/e23cefaf5cce3fb990cb09f4c94239d1979615b1))
+* remove support for node v14 ([5425762](https://github.com/loopbackio/loopback-next/commit/5425762f1353869994acf081bcda4816e6a9c3b0))
+* remove support for node v19 ([e26a2ac](https://github.com/loopbackio/loopback-next/commit/e26a2ac2e43245d09dfc9721ccfa41d830daccb8))
+
+
+### BREAKING CHANGES
+
+* End of life of Node v14
+
+Signed-off-by: Francisco Buceta <frbuceta@gmail.com>
+
+
+
+
+
 ## [8.0.10](https://github.com/loopbackio/loopback-next/compare/@loopback/openapi-v3@8.0.9...@loopback/openapi-v3@8.0.10) (2023-04-13)
 
 

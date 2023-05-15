@@ -1,7 +1,7 @@
 {
   "name": "@loopback/repository-tests",
   "description": "A shared test suite to verify `@loopback/repository` functionality with a given compatible connector",
-  "version": "0.21.10",
+  "version": "0.22.0",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -32,19 +32,19 @@
     "!*/__tests__"
   ],
   "peerDependencies": {
-    "@loopback/core": "^4.0.10",
-    "@loopback/repository": "^5.1.5"
+    "@loopback/core": "^5.0.0",
+    "@loopback/repository": "^6.0.0"
   },
   "dependencies": {
-    "@loopback/testlab": "^5.0.10",
+    "@loopback/testlab": "^6.0.0",
     "@types/debug": "^4.1.7",
     "debug": "^4.3.4",
     "tslib": "^2.5.0"
   },
   "devDependencies": {
-    "@loopback/build": "^9.0.10",
-    "@loopback/core": "^4.0.10",
-    "@loopback/repository": "^5.1.5",
+    "@loopback/build": "^10.0.0",
+    "@loopback/core": "^5.0.0",
+    "@loopback/repository": "^6.0.0",
     "@types/debug": "^4.1.7",
     "@types/lodash": "^4.14.194",
     "@types/node": "^14.18.47",

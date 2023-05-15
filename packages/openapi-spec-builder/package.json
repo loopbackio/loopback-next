@@ -1,7 +1,7 @@
 {
   "name": "@loopback/openapi-spec-builder",
   "description": "Make it easy to create OpenAPI (Swagger) specification documents in your tests using the builder pattern.",
-  "version": "5.0.10",
+  "version": "6.0.0",
   "keywords": [
     "Swagger",
     "OpenAPI Spec",
@@ -43,9 +43,9 @@
     "tslib": "^2.5.0"
   },
   "devDependencies": {
-    "@loopback/build": "^9.0.10",
-    "@loopback/eslint-config": "^13.0.10",
-    "@loopback/testlab": "^5.0.10",
+    "@loopback/build": "^10.0.0",
+    "@loopback/eslint-config": "^14.0.0",
+    "@loopback/testlab": "^6.0.0",
     "@types/node": "^14.18.47"
   }
 }
