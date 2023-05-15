@@ -74,7 +74,7 @@
     "lodash": "^4.17.21",
     "passport-http": "^0.3.0",
     "passport-oauth2": "^1.7.0",
-    "qs": "^6.11.1",
+    "qs": "^6.11.2",
     "supertest": "^6.3.3"
   }
 }
