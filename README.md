@@ -114,15 +114,15 @@ See [SECURITY.md](SECURITY.md) for more details.
 
 ### Other Project Maintainers
 
-|                 Nora Abdelgadir                  |              Matthew Schnee              |                    Hage Yaapa                    |
-| :----------------------------------------------: | :--------------------------------------: | :----------------------------------------------: |
-| [![nabdelgadir]](https://github.com/nabdelgadir) | [![mschnee]](https://github.com/mschnee) | [![hacksparrow]](https://github.com/hacksparrow) |
-|                  **Agnes Lin**                   |                **Madaky**                |                 **Hugo Da Roit**                 |
-|    [![agnes512]](https://github.com/agnes512)    |  [![madaky]](https://github.com/madaky)  |        [![yaty]](https://github.com/yaty)        |
-|                  **Nico Flaig**                  |            **Denny Bartelt**             |             **Douglas McConnachie**              |
-|      [![nflaig]](https://github.com/nflaig)      | [![derdeka]](https://github.com/derdeka) |    [![dougal83]](https://github.com/dougal83)    |
-|            **Samarpan Bhattacharya**             |                                          |                                                  |
-|   [![samarpanB]](https://github.com/samarpanB)   |                                          |                                                  |
+|                 Nora Abdelgadir                  |               Matthew Schnee               |                    Hage Yaapa                    |
+| :----------------------------------------------: | :----------------------------------------: | :----------------------------------------------: |
+| [![nabdelgadir]](https://github.com/nabdelgadir) |  [![mschnee]](https://github.com/mschnee)  | [![hacksparrow]](https://github.com/hacksparrow) |
+|                  **Agnes Lin**                   |                 **Madaky**                 |                 **Hugo Da Roit**                 |
+|    [![agnes512]](https://github.com/agnes512)    |   [![madaky]](https://github.com/madaky)   |        [![yaty]](https://github.com/yaty)        |
+|                  **Nico Flaig**                  |             **Denny Bartelt**              |             **Douglas McConnachie**              |
+|      [![nflaig]](https://github.com/nflaig)      |  [![derdeka]](https://github.com/derdeka)  |    [![dougal83]](https://github.com/dougal83)    |
+|            **Samarpan Bhattacharya**             |             **Muhammad Aaqil**             |                                                  |
+|   [![samarpanB]](https://github.com/samarpanB)   | [![aaqilniz]](https://github.com/aaqilniz) |                                                  |
 
 See
 [all contributors](https://github.com/loopbackio/loopback-next/graphs/contributors).
@@ -164,3 +164,4 @@ See
 [madaky]: https://avatars3.githubusercontent.com/u/17172989?v=4&s=60
 [nflaig]: https://avatars3.githubusercontent.com/u/38436224?v=4&s=60
 [samarpanb]: https://avatars.githubusercontent.com/u/13620435?v=4&s=60
+[aaqilniz]: https://avatars.githubusercontent.com/u/25802906?v=4&s=60
