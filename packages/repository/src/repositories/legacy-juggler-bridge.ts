@@ -32,20 +32,20 @@ import {
 import {
   BelongsToAccessor,
   BelongsToDefinition,
-  createBelongsToAccessor,
-  createHasManyRepositoryFactory,
-  createHasManyThroughRepositoryFactory,
-  createHasOneRepositoryFactory,
-  createReferencesManyAccessor,
   HasManyDefinition,
   HasManyRepositoryFactory,
   HasManyThroughRepositoryFactory,
   HasOneDefinition,
   HasOneRepositoryFactory,
-  includeRelatedModels,
   InclusionResolver,
   ReferencesManyAccessor,
   ReferencesManyDefinition,
+  createBelongsToAccessor,
+  createHasManyRepositoryFactory,
+  createHasManyThroughRepositoryFactory,
+  createHasOneRepositoryFactory,
+  createReferencesManyAccessor,
+  includeRelatedModels,
 } from '../relations';
 import {IsolationLevel, Transaction} from '../transaction';
 import {isTypeResolver, resolveType} from '../type-resolver';
@@ -489,14 +489,16 @@ export class DefaultCrudRepository<
 
   async create(entity: DataObject<T>, options?: Options): Promise<T> {
     // perform persist hook
-    const data = this.entityToData(entity, options);
+    const data = await this.entityToData(entity, options);
     const model = await ensurePromise(this.modelClass.create(data, options));
     return this.toEntity(model);
   }
 
   async createAll(entities: DataObject<T>[], options?: Options): Promise<T[]> {
     // perform persist hook
-    const data = entities.map(e => this.entityToData(e, options));
+    const data = await Promise.all(
+      entities.map(e => this.entityToData(e, options)),
+    );
     const models = await ensurePromise(
       this.modelClass.createAll(data, options),
     );
@@ -570,7 +572,7 @@ export class DefaultCrudRepository<
 
   async delete(entity: T, options?: Options): Promise<void> {
     // perform persist hook
-    this.entityToData(entity, options);
+    await this.entityToData(entity, options);
     return this.deleteById(entity.getId(), options);
   }
 
@@ -580,7 +582,7 @@ export class DefaultCrudRepository<
     options?: Options,
   ): Promise<Count> {
     where = where ?? {};
-    const persistedData = this.entityToData(data, options);
+    const persistedData = await this.entityToData(data, options);
     const result = await ensurePromise(
       this.modelClass.updateAll(where, persistedData, options),
     );
@@ -610,7 +612,7 @@ export class DefaultCrudRepository<
     options?: Options,
   ): Promise<void> {
     try {
-      const payload = this.entityToData(data, options);
+      const payload = await this.entityToData(data, options);
       await ensurePromise(this.modelClass.replaceById(id, payload, options));
     } catch (err) {
       if (err.statusCode === 404) {
@@ -782,10 +784,10 @@ export class DefaultCrudRepository<
    * @param entity The entity passed from CRUD operations' caller.
    * @param options
    */
-  protected entityToData<R extends T>(
+  protected async entityToData<R extends T>(
     entity: R | DataObject<R>,
     options = {},
-  ): legacy.ModelData<legacy.PersistedModel> {
+  ): Promise<legacy.ModelData<legacy.PersistedModel>> {
     return this.ensurePersistable(entity, options);
   }
 
