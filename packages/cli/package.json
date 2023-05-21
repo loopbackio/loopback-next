@@ -77,8 +77,8 @@
     "url-slug": "^3.0.4",
     "validate-npm-package-name": "^5.0.0",
     "write-file-atomic": "^5.0.1",
-    "yeoman-environment": "^3.16.2",
-    "yeoman-generator": "^5.8.0"
+    "yeoman-environment": "^3.18.3",
+    "yeoman-generator": "^5.9.0"
   },
   "devDependencies": {
     "@lerna/bootstrap": "6.5.1",
