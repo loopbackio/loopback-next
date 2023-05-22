@@ -44,7 +44,7 @@
   },
   "dependencies": {
     "prom-client": "^14.2.0",
-    "tslib": "^2.5.0"
+    "tslib": "^2.5.2"
   },
   "devDependencies": {
     "@loopback/build": "^10.0.0",
