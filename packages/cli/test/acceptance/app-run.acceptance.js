@@ -8,13 +8,14 @@
 const path = require('path');
 const assert = require('yeoman-assert');
 const helpers = require('yeoman-test');
-const bootstrapCommandFactory = require('@lerna/bootstrap');
+const bootstrapCommandFactory = require('lerna/commands/bootstrap');
 const build = require('@loopback/build');
+const {skipIf} = require('@loopback/testlab');
 const utils = require('../../lib/utils');
+
 const appGenerator = path.join(__dirname, '../../generators/app');
 const rootDir = path.join(__dirname, '../../../..');
 const sandboxDir = path.join(rootDir, 'sandbox');
-const {skipIf} = require('@loopback/testlab');
 
 /**
  * This test is fairly heavy and slow as it does the following steps:
