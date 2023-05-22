@@ -26,7 +26,7 @@
     "access": "public"
   },
   "peerDependencies": {
-    "lerna": "^6.6.1"
+    "lerna": "^6.6.2"
   },
   "dependencies": {
     "@lerna/filter-packages": "^6.4.1",

@@ -81,7 +81,7 @@
     "yeoman-generator": "^5.9.0"
   },
   "devDependencies": {
-    "@lerna/bootstrap": "6.5.1",
+    "@lerna/bootstrap": "6.6.2",
     "@loopback/build": "^10.0.0",
     "@loopback/eslint-config": "^14.0.0",
     "@loopback/testlab": "^6.0.0",
