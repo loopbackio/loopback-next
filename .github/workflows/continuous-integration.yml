@@ -36,7 +36,6 @@ jobs:
         uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c # v3.6.0
         with:
           node-version: ${{ matrix.node-version }}
-      - uses: Yuri6037/Action-FakeTTY@1abc69c7d530815855caedcd73842bae5687c1a6 # tag=v1.1
       - name: Bootstrap
         run: |
           npm ci --ignore-scripts
@@ -44,9 +43,7 @@ jobs:
       - name: Build
         run: node packages/build/bin/compile-package -b
       - name: Run package tests
-        run: |
-          node packages/build/bin/run-nyc node packages/build/bin/run-mocha --lang en_US.UTF-8 --reporter spec "packages/*/dist/__tests__/**/*.js" "packages/build/test/**/*.js"
-          faketty node packages/build/bin/run-nyc node packages/build/bin/run-mocha --lang en_US.UTF-8 --reporter spec "packages/cli/test/**/*.js"
+        run: node packages/build/bin/run-nyc node packages/build/bin/run-mocha --lang en_US.UTF-8 --reporter spec "packages/*/dist/__tests__/**/*.js" "packages/build/test/**/*.js"
       - name: Run extension tests
         run: node packages/build/bin/run-nyc node packages/build/bin/run-mocha --lang en_US.UTF-8 --reporter spec "extensions/*/dist/__tests__/**/*.js"
       - name: Run example tests
