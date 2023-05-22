@@ -83,8 +83,8 @@ export class RequestContext
     if (!host) {
       // No host detected from http headers
       // Use the configured values or the local network address
-      host = config.host ?? request.socket.localAddress;
-      port = (config.port || request.socket.localPort).toString();
+      host = config.host ?? request.socket.localAddress ?? '';
+      port = ((config.port || request.socket.localPort) ?? '').toString();
     }
 
     // clear default ports
