@@ -2,11 +2,9 @@ name: Continuous Integration
 
 on:
   push:
-    branches:
-      - master
+    branches: [master]
   pull_request:
-    branches:
-      - master
+    branches: [master]
   schedule:
     - cron: '0 2 * * 1' # At 02:00 on Monday
 
@@ -24,6 +22,8 @@ jobs:
         os: [ubuntu-latest]
         node-version: [16, 18, 20]
         include:
+          - os: windows-latest
+            node-version: 18 # LTS
           - os: macos-latest
             node-version: 18 # LTS
       fail-fast: false
