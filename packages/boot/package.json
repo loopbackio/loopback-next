@@ -41,7 +41,7 @@
     "@loopback/model-api-builder": "^5.0.0",
     "@loopback/repository": "^6.0.0",
     "@loopback/service-proxy": "^6.0.0",
-    "@types/debug": "^4.1.7",
+    "@types/debug": "^4.1.8",
     "@types/glob": "^8.1.0",
     "debug": "^4.3.4",
     "glob": "^10.2.6",

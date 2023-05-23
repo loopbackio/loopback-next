@@ -60,7 +60,7 @@
     "@loopback/eslint-config": "^14.0.0",
     "@loopback/testlab": "^6.0.0",
     "@loopback/tsdocs-monorepo": "^0.4.0",
-    "@types/debug": "^4.1.7",
+    "@types/debug": "^4.1.8",
     "@types/fs-extra": "^11.0.1",
     "@types/node": "^16.18.32"
   }

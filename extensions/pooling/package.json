@@ -48,7 +48,7 @@
     "@loopback/build": "^10.0.0",
     "@loopback/core": "^5.0.0",
     "@loopback/testlab": "^6.0.0",
-    "@types/debug": "^4.1.7",
+    "@types/debug": "^4.1.8",
     "@types/node": "^16.18.32",
     "typescript": "~4.9.5"
   }

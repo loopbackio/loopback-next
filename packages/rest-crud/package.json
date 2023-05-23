@@ -47,7 +47,7 @@
     "@loopback/repository": "^6.0.0",
     "@loopback/rest": "^13.0.0",
     "@loopback/testlab": "^6.0.0",
-    "@types/debug": "^4.1.7",
+    "@types/debug": "^4.1.8",
     "@types/node": "^16.18.32"
   }
 }
