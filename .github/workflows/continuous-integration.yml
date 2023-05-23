@@ -55,6 +55,7 @@ jobs:
         with:
           flag-name: run-${{ matrix.os }}-node@${{ matrix.node-version }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          file: coverage/lcov.info
           parallel: true
 
   post-test:
