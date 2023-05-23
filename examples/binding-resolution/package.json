@@ -54,7 +54,7 @@
   "devDependencies": {
     "@loopback/build": "^10.0.0",
     "@loopback/testlab": "^6.0.0",
-    "@types/debug": "^4.1.7",
+    "@types/debug": "^4.1.8",
     "@types/node": "^16.18.32",
     "eslint": "^8.41.0",
     "source-map-support": "^0.5.21",

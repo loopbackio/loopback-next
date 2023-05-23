@@ -51,7 +51,7 @@
     "@loopback/eslint-config": "^14.0.0",
     "@loopback/repository": "^6.0.0",
     "@loopback/testlab": "^6.0.0",
-    "@types/debug": "^4.1.7",
+    "@types/debug": "^4.1.8",
     "@types/node": "^16.18.32",
     "ajv-formats": "^2.1.1"
   }
