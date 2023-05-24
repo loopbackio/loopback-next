@@ -8,7 +8,7 @@ type AvailableConfig = Record<
 >;
 
 export const datasourceTestConfig: Record<
-  'primary' | 'secondary',
+  'primary' | 'secondary' | 'url' | 'wrongPassword',
   AvailableConfig
 > = {
   primary: {
@@ -45,6 +45,28 @@ export const datasourceTestConfig: Record<
       connector: 'sqlite3',
       database: 'transaction-secondary',
       file: ':memory:',
+    },
+  },
+  url: {
+    postgresql: {
+      name: 'using-url',
+      connector: 'postgresql',
+      url: 'postgres://postgres:super-secret@localhost:5002/postgres',
+    },
+    sqlite3: {
+      name: 'using-url',
+      url: 'sqlite::memory:',
+    },
+  },
+  wrongPassword: {
+    postgresql: {
+      name: 'wrongPassword',
+      connector: 'postgresql',
+      url: 'postgres://postgres:super-secret-wrong@localhost:5002/postgres',
+    },
+    sqlite3: {
+      name: 'wrongPassword',
+      url: 'sqlite::memory:',
     },
   },
 };
