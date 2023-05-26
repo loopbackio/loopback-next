@@ -49,7 +49,7 @@
     "@loopback/eslint-config": "^14.0.0",
     "@loopback/testlab": "^6.0.0",
     "@types/debug": "^4.1.8",
-    "@types/lodash": "^4.14.194",
+    "@types/lodash": "^4.14.195",
     "@types/node": "^16.18.33"
   }
 }
