@@ -1,8 +1,15 @@
 import {LifeCycleObserver} from '@loopback/core';
-import {AnyObject} from '@loopback/repository';
+import {
+  AnyObject,
+  Command,
+  NamedParameters,
+  Options,
+  PositionalParameters,
+} from '@loopback/repository';
 import debugFactory from 'debug';
 import {
   PoolOptions,
+  QueryOptions,
   Sequelize,
   Options as SequelizeOptions,
   Transaction,
@@ -129,6 +136,85 @@ export class SequelizeDataSource implements LifeCycleObserver {
     }
 
     return this.sequelize!.transaction(options);
+  }
+
+  /**
+   * Execute a SQL command.
+   *
+   * **WARNING:** In general, it is always better to perform database actions
+   * through repository methods. Directly executing SQL may lead to unexpected
+   * results, corrupted data, security vulnerabilities and other issues.
+   *
+   * @example
+   *
+   * ```ts
+   * // MySQL
+   * const result = await db.execute(
+   *   'SELECT * FROM Products WHERE size > ?',
+   *   [42]
+   * );
+   *
+   * // PostgreSQL
+   * const result = await db.execute(
+   *   'SELECT * FROM Products WHERE size > $1',
+   *   [42]
+   * );
+   * ```
+   *
+   * @param command A parameterized SQL command or query.
+   * @param parameters List of parameter values to use.
+   * @param options Additional options, for example `transaction`.
+   * @returns A promise which resolves to the command output. The output type (data structure) is database specific and
+   * often depends on the command executed.
+   */
+  async execute(
+    command: Command,
+    parameters?: NamedParameters | PositionalParameters,
+    options?: Options,
+  ): Promise<AnyObject> {
+    if (!this.sequelize) {
+      throw Error(
+        `The datasource "${this.name}" doesn't have sequelize instance bound to it.`,
+      );
+    }
+
+    if (typeof command !== 'string') {
+      command = JSON.stringify(command);
+    }
+
+    options = options ?? {};
+
+    const queryOptions: QueryOptions = {};
+    if (options?.transaction) {
+      queryOptions.transaction = options.transaction;
+    }
+
+    let targetReplacementKey: 'replacements' | 'bind';
+
+    // By default, we'll use 'bind'
+    targetReplacementKey = 'bind';
+
+    if (command.includes('?')) {
+      // If command has '?', use 'replacements'
+      targetReplacementKey = 'replacements';
+    } else if (/\$\w/g.test(command)) {
+      // If command has parameters starting with a dollar sign ($param or $1, $2), use 'bind'
+      targetReplacementKey = 'bind';
+    }
+
+    if (parameters) {
+      queryOptions[targetReplacementKey] = parameters;
+    }
+    const result = await this.sequelize.query(command, queryOptions);
+
+    // Sequelize returns the select query result in an array at index 0 and at index 1 is the actual Result instance
+    // Whereas in juggler it is returned directly as plain array.
+    // Below condition maps that 0th index to final result to match juggler's behaviour
+    if (command.match(/^select/i) && result.length >= 1) {
+      return result[0];
+    }
+
+    return result;
   }
 
   getPoolOptions(): PoolOptions | undefined {

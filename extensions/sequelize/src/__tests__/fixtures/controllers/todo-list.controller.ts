@@ -153,6 +153,6 @@ export class TodoListController extends TestControllerBase {
   @get('/todo-lists/sync-sequelize-model')
   @response(200)
   async syncSequelizeModel(): Promise<void> {
-    await this.beforeEach();
+    await this.beforeEach({syncAll: true});
   }
 }
