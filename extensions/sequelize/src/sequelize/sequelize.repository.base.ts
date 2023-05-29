@@ -637,7 +637,7 @@ export class SequelizeCrudRepository<
       this.getSequelizeModelAttributes(entityClass.definition.properties),
       {
         timestamps: false,
-        tableName: entityClass.modelName.toLowerCase(),
+        tableName: this.getTableName(entityClass),
         freezeTableName: true,
       },
     );
@@ -715,6 +715,32 @@ export class SequelizeCrudRepository<
     );
 
     return sourceModel;
+  }
+
+  /**
+   * This function retrieves the table name associated with a given entity class.
+   * Different loopback connectors have different conventions for picking up table names,
+   * unless the name is specified in the @model decorator.
+   *
+   * The function follows the following cases to determine the table name:
+   * - It checks if the name property is specified in the @model decorator and uses it. (this takes precedence over all other cases)
+   * - If the dialect of the dataSource is PostgreSQL, it uses the lowercased version of the model class name.
+   * - If the dialect is MySQL or any other dialect, it uses the default model class name.
+   * @param {Entity} entityClass - The entity class for which the table name is being retrieved.
+   * @returns {string} - The table name associated with the entity class. Which is used when performing the query.
+   */
+  getTableName(entityClass = this.entityClass) {
+    let tableName = entityClass.name; // model class name
+
+    if (entityClass.definition.name !== tableName) {
+      // name is specified in decorator
+      tableName = entityClass.definition.name;
+    } else if (this.dataSource.sequelizeConfig.dialect === 'postgres') {
+      // postgres is being used and name is not specified in @model decorator
+      tableName = entityClass.modelName.toLowerCase();
+    }
+
+    return tableName;
   }
 
   /**

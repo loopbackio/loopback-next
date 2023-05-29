@@ -3,15 +3,19 @@ import {RestApplication} from '@loopback/rest';
 import {
   Client,
   createRestAppClient,
+  createStubInstance,
   expect,
   givenHttpServerConfig,
+  StubbedInstanceWithSinonAccessor,
   TestSandbox,
 } from '@loopback/testlab';
 import {resolve} from 'path';
+import {SequelizeCrudRepository, SequelizeDataSource} from '../../sequelize';
 import {SequelizeSandboxApplication} from '../fixtures/application';
 import {config as primaryDataSourceConfig} from '../fixtures/datasources/primary.datasource';
 import {config as secondaryDataSourceConfig} from '../fixtures/datasources/secondary.datasource';
 import {TableInSecondaryDB} from '../fixtures/models';
+import {Box, Event, eventTableName} from '../fixtures/models/test.model';
 import {UserRepository} from '../fixtures/repositories';
 
 type Entities =
@@ -29,6 +33,7 @@ describe('Sequelize CRUD Repository (integration)', () => {
   let app: SequelizeSandboxApplication;
   let userRepo: UserRepository;
   let client: Client;
+  let datasource: StubbedInstanceWithSinonAccessor<SequelizeDataSource>;
 
   beforeEach('reset sandbox', () => sandbox.reset());
   beforeEach(getAppAndClient);
@@ -256,6 +261,23 @@ describe('Sequelize CRUD Repository (integration)', () => {
         `/users?filter=${encodeURIComponent(JSON.stringify(filter))}`,
       );
       expect(getResponse.body.length).to.be.equal(filter.limit);
+    });
+
+    it('uses table name if explicitly specified in model', async () => {
+      const repo = new SequelizeCrudRepository(Event, datasource);
+      expect(repo.getTableName()).to.be.eql(eventTableName);
+    });
+
+    it('uses exact model class name as table name for mysql', async () => {
+      datasource.stubs.sequelizeConfig = {dialect: 'mysql'};
+      const repo = new SequelizeCrudRepository(Box, datasource);
+      expect(repo.getTableName()).to.be.eql(Box.name);
+    });
+
+    it('uses lowercased model class name as table name for postgres', async () => {
+      datasource.stubs.sequelizeConfig = {dialect: 'postgres'};
+      const repo = new SequelizeCrudRepository(Box, datasource);
+      expect(repo.getTableName()).to.be.eql(Box.name.toLowerCase());
     });
   });
 
@@ -655,6 +677,7 @@ describe('Sequelize CRUD Repository (integration)', () => {
     await app.start();
 
     userRepo = await app.getRepository(UserRepository);
+    datasource = createStubInstance(SequelizeDataSource);
     client = createRestAppClient(app as RestApplication);
   }
 
