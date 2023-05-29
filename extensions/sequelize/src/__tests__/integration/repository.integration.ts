@@ -10,9 +10,9 @@ import {
 import {resolve} from 'path';
 import {SequelizeSandboxApplication} from '../fixtures/application';
 import {config as primaryDataSourceConfig} from '../fixtures/datasources/primary.datasource';
-
 import {config as secondaryDataSourceConfig} from '../fixtures/datasources/secondary.datasource';
 import {TableInSecondaryDB} from '../fixtures/models';
+import {UserRepository} from '../fixtures/repositories';
 
 type Entities =
   | 'users'
@@ -27,6 +27,7 @@ describe('Sequelize CRUD Repository (integration)', () => {
   const sandbox = new TestSandbox(resolve(__dirname, '../../.sandbox'));
 
   let app: SequelizeSandboxApplication;
+  let userRepo: UserRepository;
   let client: Client;
 
   beforeEach('reset sandbox', () => sandbox.reset());
@@ -84,6 +85,136 @@ describe('Sequelize CRUD Repository (integration)', () => {
           name: 'Bar',
         });
       expect(patchResponse.body).to.have.property('count', 1);
+    });
+
+    it('can execute raw sql command without parameters', async function () {
+      await client.post('/users').send(getDummyUser({name: 'Foo'}));
+
+      const queryResult = await userRepo.execute('SELECT * from "user"');
+
+      expect(queryResult).to.have.length(1);
+      expect(queryResult[0]).property('name').to.be.eql('Foo');
+    });
+
+    it('can execute raw sql command (select) using named parameters', async function () {
+      await client.post('/users').send(getDummyUser({name: 'Foo'}));
+      const bar = getDummyUser({name: 'Bar'});
+      await client.post('/users').send(bar);
+
+      const queryResult = await userRepo.execute(
+        'SELECT * from "user" where name = $name',
+        {
+          name: 'Bar',
+        },
+      );
+
+      expect(queryResult).to.have.length(1);
+      expect(queryResult[0]).property('name').to.be.eql(bar.name);
+      expect(queryResult[0]).property('email').to.be.eql(bar.email);
+    });
+
+    it('can execute raw sql command (select) using positional parameters', async () => {
+      await client.post('/users').send(getDummyUser({name: 'Foo'}));
+      const bar = getDummyUser({name: 'Bar'});
+      await client.post('/users').send(bar);
+
+      const queryResult = await userRepo.execute(
+        'SELECT * from "user" where name = $1',
+        ['Bar'],
+      );
+
+      expect(queryResult).to.have.length(1);
+      expect(queryResult[0]).property('name').to.be.eql(bar.name);
+      expect(queryResult[0]).property('email').to.be.eql(bar.email);
+    });
+
+    it('can execute raw sql command (insert) using positional parameters', async () => {
+      const user = getDummyUser({name: 'Foo', active: true});
+      if (primaryDataSourceConfig.connector === 'sqlite3') {
+        // sqlite handles object and dates differently
+        // it requires format like 2007-01-01 10:00:00 (https://stackoverflow.com/a/1933735/14200863)
+        // and sequelize's sqlite dialect parses object returned from db so below reassignments are required here
+        user.dob = '2023-05-23T04:12:22.234Z';
+        user.address = JSON.stringify(user.address);
+      }
+
+      // since the model mapping is not performed when executing raw queries
+      // any column renaming need to be changed manually
+      user.is_active = user.active;
+      delete user.active;
+
+      await userRepo.execute(
+        'INSERT INTO "user" (name, email, is_active, address, dob) VALUES ($1, $2, $3, $4, $5)',
+        [user.name, user.email, user.is_active, user.address, user.dob],
+      );
+
+      const users = await userRepo.execute('SELECT * from "user"');
+
+      expect(users).to.have.length(1);
+      expect(users[0]).property('name').to.be.eql(user.name);
+      expect(users[0]).property('email').to.be.eql(user.email);
+      expect(users[0]).property('address').to.be.eql(user.address);
+      expect(new Date(users[0].dob)).to.be.eql(new Date(user.dob!));
+      expect(users[0]).property('is_active').to.be.ok();
+    });
+
+    it('can execute raw sql command (insert) using named parameters', async () => {
+      const user = getDummyUser({name: 'Foo', active: true});
+      if (primaryDataSourceConfig.connector === 'sqlite3') {
+        user.dob = '2023-05-23T04:12:22.234Z';
+        user.address = JSON.stringify(user.address);
+      }
+
+      // since the model mapping is not performed when executing raw queries
+      // any column renaming need to be changed manually
+      user.is_active = user.active;
+      delete user.active;
+
+      await userRepo.execute(
+        'INSERT INTO "user" (name, email, is_active, address, dob) VALUES ($name, $email, $is_active, $address, $dob)',
+        user,
+      );
+
+      const users = await userRepo.execute('SELECT * from "user"');
+
+      expect(users).to.have.length(1);
+      expect(users[0]).property('name').to.be.eql(user.name);
+      expect(users[0]).property('email').to.be.eql(user.email);
+      expect(users[0]).property('address').to.be.eql(user.address);
+      expect(new Date(users[0].dob)).to.be.eql(new Date(user.dob!));
+      expect(users[0]).property('is_active').to.be.ok();
+    });
+
+    it('can execute raw sql command (insert) using question mark replacement', async () => {
+      const user = getDummyUser({name: 'Foo', active: true});
+      if (primaryDataSourceConfig.connector === 'sqlite3') {
+        user.dob = '2023-05-23T04:12:22.234Z';
+      }
+
+      // when using replacements (using "?" mark)
+      // sequelize when escaping those values needs them as string (See: https://github.com/sequelize/sequelize/blob/v6/src/sql-string.js#L65-L77)
+      user.address = JSON.stringify(user.address);
+
+      // since the model mapping is not performed when executing raw queries
+      // any column renaming need to be changed manually
+      user.is_active = user.active;
+      delete user.active;
+
+      await userRepo.execute(
+        'INSERT INTO "user" (name, email, is_active, address, dob) VALUES (?, ?, ?, ?, ?)',
+        [user.name, user.email, user.is_active, user.address, user.dob],
+      );
+
+      const users = await userRepo.execute('SELECT * from "user"');
+
+      expect(users).to.have.length(1);
+      expect(users[0]).property('name').to.be.eql(user.name);
+      expect(users[0]).property('email').to.be.eql(user.email);
+      expect(users[0])
+        .property('address')
+        .to.be.oneOf(JSON.parse(user.address as string), user.address);
+      expect(new Date(users[0].dob)).to.be.eql(new Date(user.dob!));
+      expect(users[0]).property('is_active').to.be.ok();
     });
 
     it('supports `fields` filter', async () => {
@@ -342,7 +473,7 @@ describe('Sequelize CRUD Repository (integration)', () => {
     it('can work with two datasources together', async () => {
       await migrateSchema(['todo-lists', 'products']);
 
-      // products model uses primary datasource
+      // todo-lists model uses primary datasource
       const todoList = getDummyTodoList();
       const todoListCreateRes = await client.post('/todo-lists').send(todoList);
 
@@ -523,6 +654,7 @@ describe('Sequelize CRUD Repository (integration)', () => {
     await app.boot();
     await app.start();
 
+    userRepo = await app.getRepository(UserRepository);
     client = createRestAppClient(app as RestApplication);
   }
 
@@ -530,7 +662,15 @@ describe('Sequelize CRUD Repository (integration)', () => {
     const date = new Date();
     const timestamp = date.toISOString();
 
-    const user = {
+    type DummyUser = {
+      name: string;
+      email: string;
+      active?: boolean;
+      address: AnyObject | string;
+      dob: Date | string;
+    } & AnyObject;
+
+    const user: DummyUser = {
       name: 'Foo',
       email: 'email@example.com',
       active: true,
