@@ -197,11 +197,13 @@ These components add additional capabilities to LoopBack.
   Resource pooling service for LoopBack 4
 - [@loopback/typeorm](https://github.com/loopbackio/loopback-next/tree/master/extensions/typeorm) -
   Adds support for TypeORM in LoopBack
+- [@loopback/sequelize](https://github.com/loopbackio/loopback-next/tree/master/extensions/sequelize) -
+  Adds support for Sequelize in LoopBack
 
 ### Community extensions
 
 For a list of components created by community members, refer to
-[Community extensions](./Community-extensions.html).
+[Community extensions](./Community-extensions.md).
 
 ## Creating components
 
