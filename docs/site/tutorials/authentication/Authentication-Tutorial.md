@@ -131,10 +131,19 @@ import {
   AUTHENTICATION_STRATEGY_NOT_FOUND,
   USER_PROFILE_NOT_FOUND,
 } from '@loopback/authentication';
+import {FindRoute, InvokeMethod, ParseParams, Reject, Send, SequenceActions, SequenceHandler} from '@loopback/rest';
+import { RequestContext } from '@loopback/rest/dist/request-context';
+import {inject} from '@loopback/core';
+
 // ------------------------------------
 export class MySequence implements SequenceHandler {
   constructor(
     // ---- ADD THIS LINE ------
+    @inject(SequenceActions.FIND_ROUTE) protected findRoute: FindRoute,
+    @inject(SequenceActions.PARSE_PARAMS) protected parseParams: ParseParams,
+    @inject(SequenceActions.INVOKE_METHOD) protected invoke: InvokeMethod,
+    @inject(SequenceActions.SEND) protected send: Send,
+    @inject(SequenceActions.REJECT) protected reject: Reject,
     @inject(AuthenticationBindings.AUTH_ACTION)
     protected authenticateRequest: AuthenticateFn,
   ) {}
