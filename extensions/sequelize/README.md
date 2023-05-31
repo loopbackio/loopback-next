@@ -49,7 +49,7 @@ simply changing the parent classes in the target Data Source and Repositories.
 Change the parent class from `juggler.DataSource` to `SequelizeDataSource` like
 below.
 
-```ts title="pg.datasource.ts"
+```ts
 // ...
 import {SequelizeDataSource} from '@loopback/sequelize';
 
@@ -92,7 +92,7 @@ let config = {
 Change the parent class from `DefaultCrudRepository` to
 `SequelizeCrudRepository` like below.
 
-```ts title="your.repository.ts"
+```ts
 // ...
 import {SequelizeCrudRepository} from '@loopback/sequelize';
 

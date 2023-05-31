@@ -351,6 +351,13 @@ children:
         url: Executing-database-commands.html
         output: 'web, pdf'
 
+      - title: 'Using Sequelize'
+        output: 'web, pdf'
+        children:
+        - title: 'How to use Sequelize with LoopBack'
+          url: Using-sequelize-with-loopback.html
+          output: 'web, pdf'
+
       - title: 'Using TypeORM'
         output: 'web, pdf'
         children:
