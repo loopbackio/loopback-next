@@ -36,10 +36,8 @@ jobs:
         uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c # v3.6.0
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Bootstrap
-        run: |
-          npm ci --ignore-scripts
-          npx lerna bootstrap
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
       - name: Build
         run: node packages/build/bin/compile-package -b
       - name: Run package tests
@@ -78,10 +76,8 @@ jobs:
       - uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c # v3.6.0
         with:
           node-version: 18 # LTS
-      - name: Bootstrap
-        run: |
-          npm ci --ignore-scripts
-          npx lerna bootstrap --scope "@loopback/benchmark" --include-dependencies
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
       - name: Build
         run: npx lerna run build --scope "@loopback/benchmark"
       - name: Run benchmark tests
@@ -95,10 +91,8 @@ jobs:
       - uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c # v3.6.0
         with:
           node-version: 18 # LTS
-      - name: Bootstrap
-        run: |
-          npm ci --ignore-scripts
-          npx lerna bootstrap
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
       - name: Build
         run: node packages/build/bin/compile-package -b
       - name: Verify code linting
@@ -121,10 +115,8 @@ jobs:
       - uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c # v3.6.0
         with:
           node-version: 18 # LTS
-      - name: Bootstrap
-        run: |
-          npm ci --ignore-scripts
-          npx lerna bootstrap --scope "@loopback/monorepo" --include-dependencies
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
       - name: Verify commit linting
         run: npx commitlint --from origin/master --to HEAD --verbose
 
@@ -136,10 +128,8 @@ jobs:
       - uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c # v3.6.0
         with:
           node-version: 18 # LTS
-      - name: Bootstrap
-        run: |
-          npm ci --ignore-scripts
-          npx lerna bootstrap
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
       - name: Build
         run: node packages/build/bin/compile-package -b
       - name: Verify linting
