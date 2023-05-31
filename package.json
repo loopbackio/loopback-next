@@ -1,20 +1,13 @@
 {
-  "name": "loopback-next",
+  "name": "loopback-monorepo",
   "description": "Monorepo for LoopBack 4 - A highly extensible Node.js and TypeScript framework for building APIs and microservices",
-  "version": "0.1.0",
-  "private": true,
   "license": "MIT",
   "author": "IBM Corp. and LoopBack contributors",
   "copyright.owner": "IBM Corp. and LoopBack contributors",
   "repository": "github:loopbackio/loopback-next",
-  "engineStrict": true,
-  "engines": {
-    "node": "16 || 18 || 20",
-    "npm": ">=7"
-  },
   "scripts": {
     "prepare": "husky install",
-    "postinstall": "lerna bootstrap && npm run -s update-ts-project-refs",
+    "postinstall": "npm run -s update-ts-project-refs",
     "update-ts-project-refs": "node packages/monorepo/lib/update-ts-project-refs.js",
     "update-packages": "npm run -s update-package-locks",
     "check-package-metadata": "node bin/check-package-metadata.js",
@@ -46,7 +39,7 @@
     "prettier:docs:fix": "npm run prettier:docs -- --write",
     "clean": "lerna run clean && node packages/build/bin/run-clean \"{packages,extensions,examples}/*/dist\" \"benchmark/dist\"",
     "build": "node packages/build/bin/compile-package -b",
-    "build:full": "npm ci --ignore-scripts && lerna bootstrap --ci && npm run clean && npm run build",
+    "build:full": "npm ci --ignore-scripts && npm run clean && npm run build",
     "pretest": "npm run clean && npm run build",
     "test": "node packages/build/bin/run-nyc npm run mocha",
     "verify:docs": "npm run build:site -- --verify",
@@ -55,6 +48,11 @@
     "docs:start": "cd docs/_preview && bundle exec jekyll serve --no-w --i",
     "mocha": "node packages/build/bin/run-mocha --lang en_US.UTF-8 \"{packages,extensions,examples}/*/dist/__tests__/**/*.js\" \"packages/{build,cli}/test/**/*.js\"",
     "posttest": "npm run lint"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   },
   "devDependencies": {
     "@commitlint/cli": "^17.6.5",
@@ -78,9 +76,21 @@
     "prettier": "^2.8.8",
     "typescript": "~4.9.5"
   },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
-  }
+  "engineStrict": true,
+  "engines": {
+    "node": "16 || 18 || 20",
+    "npm": ">=7"
+  },
+  "private": true,
+  "workspaces": [
+    "acceptance/*",
+    "benchmark",
+    "bodyparsers/*",
+    "docs",
+    "examples/*",
+    "extensions/*",
+    "fixtures/*",
+    "packages/*",
+    "sandbox/*"
+  ]
 }
