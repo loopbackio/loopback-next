@@ -53,6 +53,6 @@
     "@types/debug": "^4.1.8",
     "@types/json-schema": "^7.0.12",
     "@types/node": "^16.18.34",
-    "sqlite3": "^5.1.4"
+    "sqlite3": "^5.1.6"
   }
 }
