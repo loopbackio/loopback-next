@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "debug": "^4.3.4",
-    "tslib": "^2.5.2",
+    "tslib": "^2.5.3",
     "typeorm": "^0.3.16"
   },
   "devDependencies": {

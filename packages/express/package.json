@@ -51,7 +51,7 @@
     "http-errors": "^2.0.0",
     "on-finished": "^2.4.1",
     "toposort": "^2.0.2",
-    "tslib": "^2.5.2"
+    "tslib": "^2.5.3"
   },
   "devDependencies": {
     "@loopback/build": "^10.0.0",
