@@ -18,7 +18,7 @@ const MONOREPO_ROOT = path.dirname(
 const APIDOCS_ROOT = path.join(MONOREPO_ROOT, 'docs/apidocs');
 const SITE_APIDOCS_ROOT = path.join(MONOREPO_ROOT, 'docs/site/apidocs');
 
-describe('tsdocs', function (this: Mocha.Suite) {
+describe('tsdocs', /** @this {Mocha.Context} */ function () {
   this.timeout(10000);
 
   const API_MD_FILES = [
@@ -62,7 +62,8 @@ describe('tsdocs', function (this: Mocha.Suite) {
     console.log = originalConsoleLog;
   });
 
-  it('runs api-extractor', async () => {
+  it('runs api-extractor', /** @this {Mocha.Context} */ async () => {
+    this.timeout(15000);
     await runExtractorForMonorepo({
       rootDir: MONOREPO_ROOT,
       silent: true,
