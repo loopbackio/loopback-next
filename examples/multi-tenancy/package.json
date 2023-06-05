@@ -71,7 +71,7 @@
     "@types/debug": "^4.1.8",
     "@types/jsonwebtoken": "^9.0.2",
     "@types/node": "^16.18.34",
-    "eslint": "^8.41.0",
+    "eslint": "^8.42.0",
     "source-map-support": "^0.5.21",
     "typescript": "~4.9.5"
   }
