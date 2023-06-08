@@ -187,6 +187,25 @@ describe('CrudRestController for a simple Product model', () => {
         {...toJSON(pencil) /* pencil was not patched */},
       ]);
     });
+
+    it('rejects update request with `id` value', async () => {
+      const {body} = await client
+        .patch('/products')
+        .query({'where[name]': pen.name})
+        .send({id: 100, ...PATCH_DATA})
+        .expect(422);
+      expect(body.error).to.containDeep({
+        code: 'VALIDATION_FAILED',
+        details: [
+          {
+            path: '',
+            code: 'additionalProperties',
+            message: 'must NOT have additional properties',
+            info: {additionalProperty: 'id'},
+          },
+        ],
+      });
+    });
   });
 
   describe('updateById', () => {
@@ -218,19 +237,44 @@ describe('CrudRestController for a simple Product model', () => {
         ],
       });
     });
+
+    it('rejects update request with `id` value', async () => {
+      const {body} = await client
+        .patch(`/products/${pen.id}`)
+        .send({id: 100, ...PATCH_DATA})
+        .expect(422);
+      expect(body.error).to.containDeep({
+        code: 'VALIDATION_FAILED',
+        details: [
+          {
+            path: '',
+            code: 'additionalProperties',
+            message: 'must NOT have additional properties',
+            info: {additionalProperty: 'id'},
+          },
+        ],
+      });
+    });
   });
 
   describe('replaceById', () => {
     beforeEach(seedData);
 
     it('replaces model with the given id', async () => {
-      const newData = Object.assign({}, pen.toJSON(), PATCH_DATA);
-      await client.put(`/products/${pen.id}`).send(newData).expect(204);
-
-      const stored = await repo.find();
+      const jsonPen = pen.toJSON();
+      const updatedPen: Record<string, unknown> = {};
+      Object.keys(jsonPen).forEach(key => {
+        if (key !== 'id') {
+          updatedPen[key] = jsonPen[key as keyof typeof jsonPen];
+        }
+      });
+      const newData = Object.assign({}, updatedPen, PATCH_DATA);
+      await client.put(`/products/${pen.id}`).send({...newData});
+      const stored = await repo.find({fields: {id: false}});
+      const pencilJSON: {name?: string} = toJSON(pencil);
       expect(toJSON(stored)).to.deepEqual([
         {...newData},
-        {...toJSON(pencil) /* pencil was not modified */},
+        {name: pencilJSON.name /* pencil was not modified */},
       ]);
     });
 
