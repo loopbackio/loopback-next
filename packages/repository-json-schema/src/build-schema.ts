@@ -226,6 +226,7 @@ export function stringTypeToWrapper(type: string | Function): Function {
       wrapper = Date;
       break;
     }
+    case 'binary':
     case 'buffer': {
       wrapper = Buffer;
       break;
