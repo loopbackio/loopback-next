@@ -5,20 +5,20 @@
 
 import {MetadataInspector, Reflector} from '@loopback/core';
 import {
-  belongsTo,
   Entity,
+  MODEL_KEY,
+  ModelDefinitionSyntax,
+  PropertyType,
+  belongsTo,
   hasMany,
   model,
-  ModelDefinitionSyntax,
-  MODEL_KEY,
   property,
-  PropertyType,
 } from '@loopback/repository';
 import {expect} from '@loopback/testlab';
 import {
-  getJsonSchema,
-  JsonSchema,
   JSON_SCHEMA_KEY,
+  JsonSchema,
+  getJsonSchema,
   modelToJsonSchema,
 } from '../..';
 import {expectValidJsonSchema} from '../helpers/expect-valid-json-schema';
@@ -62,6 +62,24 @@ describe('build-schema', () => {
         expect(() => modelToJsonSchema(TestModel)).to.throw(
           /Property TestModel.undef does not have "type" in its definition/,
         );
+      });
+
+      it('allows property of Binary type', () => {
+        @model()
+        class TestModel {
+          @property({type: 'Binary'})
+          image: Buffer;
+        }
+
+        const jsonSchema = modelToJsonSchema(TestModel);
+        expect(jsonSchema).to.eql({
+          title: 'TestModel',
+          type: 'object',
+          properties: {
+            image: {type: 'buffer'},
+          },
+          additionalProperties: false,
+        });
       });
 
       it('allows property of null type', () => {
