@@ -484,6 +484,20 @@ describe('Sequelize CRUD Repository (integration)', () => {
       // Confirming the fact that it used inner join behind the scenes
       expect(relationRes.body.length).to.be.equal(1);
     });
+
+    it('throws error if the repository does not have registered resolvers', async () => {
+      try {
+        await userRepo.find({
+          include: ['nonExistingRelation'],
+        });
+      } catch (err) {
+        expect(err.message).to.be.eql(
+          `Invalid "filter.include" entries: "nonExistingRelation"`,
+        );
+        expect(err.statusCode).to.be.eql(400);
+        expect(err.code).to.be.eql('INVALID_INCLUSION_FILTER');
+      }
+    });
   });
 
   describe('Connections', () => {
