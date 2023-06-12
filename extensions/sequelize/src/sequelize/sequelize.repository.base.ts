@@ -477,6 +477,22 @@ export class SequelizeCrudRepository<
   }
 
   /**
+   * Checks if the resolver of the inclusion relation is registered
+   * in the inclusionResolver of the current repository
+   *
+   * @param include - LoopBack Inclusion filter
+   */
+  protected isInclusionAllowed(include: InclusionFilter): boolean {
+    const relationName =
+      typeof include === 'string' ? include : include.relation;
+    if (!relationName) {
+      return false;
+    }
+    const allowed = this.inclusionResolvers.has(relationName);
+    return allowed;
+  }
+
+  /**
    * Build Sequelize compatible `include` filter
    * @param inclusionFilters - loopback style `where` condition
    * @param sourceModel - sequelize model instance
@@ -492,6 +508,25 @@ export class SequelizeCrudRepository<
 
     if (!sourceModel) {
       sourceModel = this.sequelizeModel;
+    }
+
+    if (sourceModel === this.sequelizeModel) {
+      const invalidInclusions = inclusionFilters.filter(
+        inclusionFilter => !this.isInclusionAllowed(inclusionFilter),
+      );
+      if (invalidInclusions.length) {
+        const msg =
+          'Invalid "filter.include" entries: ' +
+          invalidInclusions
+            .map(inclusionFilter => JSON.stringify(inclusionFilter))
+            .join('; ');
+        const err = new Error(msg);
+        Object.assign(err, {
+          code: 'INVALID_INCLUSION_FILTER',
+          statusCode: 400,
+        });
+        throw err;
+      }
     }
 
     const includable: Includeable[] = [];
