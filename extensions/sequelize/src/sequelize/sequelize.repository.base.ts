@@ -124,16 +124,10 @@ export class SequelizeCrudRepository<
   public sequelizeModel: ModelStatic<Model<T>>;
 
   async create(entity: DataObject<T>, options?: AnyObject): Promise<T> {
-    let err = null;
-    const data = await this.sequelizeModel
-      .create(entity as MakeNullishOptional<T>, options)
-      .catch(error => {
-        err = error;
-      });
-
-    if (!data) {
-      throw new Error(err ?? 'Something went wrong');
-    }
+    const data = await this.sequelizeModel.create(
+      entity as MakeNullishOptional<T>,
+      options,
+    );
     return new this.entityClass(this.excludeHiddenProps(data.toJSON())) as T;
   }
 
@@ -216,20 +210,15 @@ export class SequelizeCrudRepository<
     filter?: Filter<T>,
     options?: AnyObject,
   ): Promise<(T & Relations)[]> {
-    const data = await this.sequelizeModel
-      .findAll({
-        include: this.buildSequelizeIncludeFilter(filter?.include),
-        where: this.buildSequelizeWhere(filter?.where),
-        attributes: this.buildSequelizeAttributeFilter(filter?.fields),
-        order: this.buildSequelizeOrder(filter?.order),
-        limit: filter?.limit,
-        offset: filter?.offset ?? filter?.skip,
-        ...options,
-      })
-      .catch(err => {
-        debug('findAll() error:', err);
-        throw new Error(err);
-      });
+    const data = await this.sequelizeModel.findAll({
+      include: this.buildSequelizeIncludeFilter(filter?.include),
+      where: this.buildSequelizeWhere(filter?.where),
+      attributes: this.buildSequelizeAttributeFilter(filter?.fields),
+      order: this.buildSequelizeOrder(filter?.order),
+      limit: filter?.limit,
+      offset: filter?.offset ?? filter?.skip,
+      ...options,
+    });
 
     return this.includeReferencesIfRequested(
       data,
@@ -242,19 +231,14 @@ export class SequelizeCrudRepository<
     filter?: Filter<T>,
     options?: AnyObject,
   ): Promise<(T & Relations) | null> {
-    const data = await this.sequelizeModel
-      .findOne({
-        include: this.buildSequelizeIncludeFilter(filter?.include),
-        where: this.buildSequelizeWhere(filter?.where),
-        attributes: this.buildSequelizeAttributeFilter(filter?.fields),
-        order: this.buildSequelizeOrder(filter?.order),
-        offset: filter?.offset ?? filter?.skip,
-        ...options,
-      })
-      .catch(err => {
-        debug('findOne() error:', err);
-        throw new Error(err);
-      });
+    const data = await this.sequelizeModel.findOne({
+      include: this.buildSequelizeIncludeFilter(filter?.include),
+      where: this.buildSequelizeWhere(filter?.where),
+      attributes: this.buildSequelizeAttributeFilter(filter?.fields),
+      order: this.buildSequelizeOrder(filter?.order),
+      offset: filter?.offset ?? filter?.skip,
+      ...options,
+    });
 
     if (data === null) {
       return Promise.resolve(null);
