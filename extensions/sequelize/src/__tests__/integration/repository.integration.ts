@@ -10,6 +10,7 @@ import {
   TestSandbox,
 } from '@loopback/testlab';
 import {resolve} from 'path';
+import {UniqueConstraintError} from 'sequelize';
 import {SequelizeCrudRepository, SequelizeDataSource} from '../../sequelize';
 import {SequelizeSandboxApplication} from '../fixtures/application';
 import {config as primaryDataSourceConfig} from '../fixtures/datasources/primary.datasource';
@@ -40,6 +41,27 @@ describe('Sequelize CRUD Repository (integration)', () => {
   afterEach(async () => {
     if (app) await app.stop();
     (app as unknown) = undefined;
+  });
+
+  describe('General', () => {
+    beforeEach(async () => {
+      await client.get('/users/sync-sequelize-model').send();
+    });
+
+    it('throws original error context from sequelize', async () => {
+      const userWithId = {
+        id: 1,
+        name: 'Joe',
+        active: true,
+      };
+      const firstUser = await userRepo.create(userWithId);
+      expect(firstUser).to.have.property('id', userWithId.id);
+      try {
+        throw await userRepo.create(userWithId);
+      } catch (err) {
+        expect(err).to.be.instanceOf(UniqueConstraintError);
+      }
+    });
   });
 
   describe('Without Relations', () => {
@@ -527,8 +549,8 @@ describe('Sequelize CRUD Repository (integration)', () => {
   describe('Transactions', () => {
     const DB_ERROR_MESSAGES = {
       invalidTransaction: [
-        `SequelizeDatabaseError: relation "${TableInSecondaryDB}" does not exist`,
-        `SequelizeDatabaseError: SQLITE_ERROR: no such table: ${TableInSecondaryDB}`,
+        `relation "${TableInSecondaryDB}" does not exist`,
+        `SQLITE_ERROR: no such table: ${TableInSecondaryDB}`,
       ],
     };
     async function migrateSchema(entities: Array<Entities>) {
