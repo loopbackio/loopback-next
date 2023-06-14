@@ -9,15 +9,20 @@ import {
   StubbedInstanceWithSinonAccessor,
   TestSandbox,
 } from '@loopback/testlab';
+import _ from 'lodash';
 import {resolve} from 'path';
 import {UniqueConstraintError} from 'sequelize';
 import {SequelizeCrudRepository, SequelizeDataSource} from '../../sequelize';
 import {SequelizeSandboxApplication} from '../fixtures/application';
 import {config as primaryDataSourceConfig} from '../fixtures/datasources/primary.datasource';
 import {config as secondaryDataSourceConfig} from '../fixtures/datasources/secondary.datasource';
-import {TableInSecondaryDB} from '../fixtures/models';
+import {ProgrammingLanguage, TableInSecondaryDB} from '../fixtures/models';
 import {Box, Event, eventTableName} from '../fixtures/models/test.model';
-import {UserRepository} from '../fixtures/repositories';
+import {
+  DeveloperRepository,
+  ProgrammingLanguageRepository,
+  UserRepository,
+} from '../fixtures/repositories';
 
 type Entities =
   | 'users'
@@ -33,6 +38,8 @@ describe('Sequelize CRUD Repository (integration)', () => {
 
   let app: SequelizeSandboxApplication;
   let userRepo: UserRepository;
+  let developerRepo: DeveloperRepository;
+  let languagesRepo: ProgrammingLanguageRepository;
   let client: Client;
   let datasource: StubbedInstanceWithSinonAccessor<SequelizeDataSource>;
 
@@ -72,7 +79,83 @@ describe('Sequelize CRUD Repository (integration)', () => {
     it('creates an entity', async () => {
       const user = getDummyUser();
       const createResponse = await client.post('/users').send(user);
-      expect(createResponse.body).deepEqual({id: 1, ...user});
+      expect(createResponse.body).deepEqual({
+        id: 1,
+        ..._.omit(user, ['password']),
+      });
+    });
+
+    it('returns model data without hidden props in response of create', async () => {
+      const user = getDummyUser();
+      const createResponse = await client.post('/users').send(user);
+      expect(createResponse.body).not.to.have.property('password');
+    });
+
+    it('[create] allows accessing hidden props before serializing', async () => {
+      const user = getDummyUser();
+      const userData = await userRepo.create({
+        name: user.name,
+        address: user.address as AnyObject,
+        email: user.email,
+        password: user.password,
+        dob: user.dob,
+        active: user.active,
+      });
+
+      expect(userData).to.have.property('password');
+      expect(userData.password).to.be.eql(user.password);
+      const afterResponse = userData.toJSON();
+      expect(afterResponse).to.not.have.property('password');
+    });
+
+    it('[find] allows accessing hidden props before serializing', async () => {
+      const user = getDummyUser();
+      await userRepo.create({
+        name: user.name,
+        address: user.address as AnyObject,
+        email: user.email,
+        password: user.password,
+        dob: user.dob,
+        active: user.active,
+      });
+
+      const userData = await userRepo.find();
+
+      expect(userData[0]).to.have.property('password');
+      expect(userData[0].password).to.be.eql(user.password);
+      const afterResponse = userData[0].toJSON();
+      expect(afterResponse).to.not.have.property('password');
+    });
+
+    it('[findById] allows accessing hidden props before serializing', async () => {
+      const user = getDummyUser();
+      const createdUser = await userRepo.create({
+        name: user.name,
+        address: user.address as AnyObject,
+        email: user.email,
+        password: user.password,
+        dob: user.dob,
+        active: user.active,
+      });
+
+      const userData = await userRepo.findById(createdUser.id);
+
+      expect(userData).to.have.property('password');
+      expect(userData.password).to.be.eql(user.password);
+      const afterResponse = userData.toJSON();
+      expect(afterResponse).to.not.have.property('password');
+    });
+
+    it('creates an entity and finds it', async () => {
+      const user = getDummyUser();
+      await client.post('/users').send(user);
+      const userResponse = await client.get('/users').send();
+      expect(userResponse.body).deepEqual([
+        {
+          id: 1,
+          ..._.omit(user, ['password']),
+        },
+      ]);
     });
 
     it('counts created entities', async () => {
@@ -171,8 +254,15 @@ describe('Sequelize CRUD Repository (integration)', () => {
       delete user.active;
 
       await userRepo.execute(
-        'INSERT INTO "user" (name, email, is_active, address, dob) VALUES ($1, $2, $3, $4, $5)',
-        [user.name, user.email, user.is_active, user.address, user.dob],
+        'INSERT INTO "user" (name, email, password, is_active, address, dob) VALUES ($1, $2, $3, $4, $5, $6)',
+        [
+          user.name,
+          user.email,
+          user.password,
+          user.is_active,
+          user.address,
+          user.dob,
+        ],
       );
 
       const users = await userRepo.execute('SELECT * from "user"');
@@ -180,6 +270,7 @@ describe('Sequelize CRUD Repository (integration)', () => {
       expect(users).to.have.length(1);
       expect(users[0]).property('name').to.be.eql(user.name);
       expect(users[0]).property('email').to.be.eql(user.email);
+      expect(users[0]).property('password').to.be.eql(user.password);
       expect(users[0]).property('address').to.be.eql(user.address);
       expect(new Date(users[0].dob)).to.be.eql(new Date(user.dob!));
       expect(users[0]).property('is_active').to.be.ok();
@@ -198,7 +289,7 @@ describe('Sequelize CRUD Repository (integration)', () => {
       delete user.active;
 
       await userRepo.execute(
-        'INSERT INTO "user" (name, email, is_active, address, dob) VALUES ($name, $email, $is_active, $address, $dob)',
+        'INSERT INTO "user" (name, email, password, is_active, address, dob) VALUES ($name, $email, $password, $is_active, $address, $dob)',
         user,
       );
 
@@ -207,6 +298,7 @@ describe('Sequelize CRUD Repository (integration)', () => {
       expect(users).to.have.length(1);
       expect(users[0]).property('name').to.be.eql(user.name);
       expect(users[0]).property('email').to.be.eql(user.email);
+      expect(users[0]).property('password').to.be.eql(user.password);
       expect(users[0]).property('address').to.be.eql(user.address);
       expect(new Date(users[0].dob)).to.be.eql(new Date(user.dob!));
       expect(users[0]).property('is_active').to.be.ok();
@@ -409,9 +501,9 @@ describe('Sequelize CRUD Repository (integration)', () => {
       await migrateSchema(['developers']);
 
       const programmingLanguages = [
-        getDummyProgrammingLanguage({name: 'JS'}),
-        getDummyProgrammingLanguage({name: 'Java'}),
-        getDummyProgrammingLanguage({name: 'Dot Net'}),
+        getDummyProgrammingLanguage({name: 'JS', secret: 'Practice'}),
+        getDummyProgrammingLanguage({name: 'Java', secret: 'Practice'}),
+        getDummyProgrammingLanguage({name: 'Dot Net', secret: 'Practice'}),
       ];
       const createAllResponse = await client
         .post('/programming-languages-bulk')
@@ -419,6 +511,7 @@ describe('Sequelize CRUD Repository (integration)', () => {
 
       const createDeveloperResponse = await client.post('/developers').send(
         getDummyDeveloper({
+          apiSecret: 'xyz-123-abcd',
           programmingLanguageIds: createAllResponse.body.map(
             (language: {id: number}) => language.id,
           ),
@@ -446,6 +539,51 @@ describe('Sequelize CRUD Repository (integration)', () => {
       expect(relationRes.body).to.be.deepEqual({
         ...createDeveloperResponse.body,
         programmingLanguages: createAllResponse.body,
+      });
+    });
+
+    it('hides hidden props for nested entities included with referencesMany relation', async () => {
+      await developerRepo.syncLoadedSequelizeModels({force: true});
+
+      const programmingLanguages = [
+        getDummyProgrammingLanguage({name: 'JS', secret: 'woo'}),
+        getDummyProgrammingLanguage({name: 'Java', secret: 'woo'}),
+        getDummyProgrammingLanguage({name: 'Dot Net', secret: 'woo'}),
+      ];
+
+      const createAllResponse = await languagesRepo.createAll(
+        programmingLanguages,
+      );
+      expect(createAllResponse[0]).to.have.property('secret');
+
+      const createDeveloperResponse = await developerRepo.create(
+        getDummyDeveloper({
+          apiSecret: 'xyz-123-abcd',
+          programmingLanguageIds: createAllResponse.map(
+            (language: ProgrammingLanguage) => language.id,
+          ),
+        }),
+      );
+
+      const filter = {include: ['programmingLanguages']};
+      const relationRes = await developerRepo.findById(
+        createDeveloperResponse.id,
+        filter,
+      );
+
+      if (primaryDataSourceConfig.connector === 'sqlite3') {
+        /**
+         * sqlite3 doesn't support array data type using it will convert values
+         * to comma saperated string
+         */
+        createDeveloperResponse.programmingLanguageIds =
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          createDeveloperResponse.programmingLanguageIds.join(',') as any;
+      }
+
+      expect(relationRes.toJSON()).to.be.deepEqual({
+        ...createDeveloperResponse.toJSON(),
+        programmingLanguages: createAllResponse.map(e => e.toJSON()),
       });
     });
 
@@ -714,6 +852,8 @@ describe('Sequelize CRUD Repository (integration)', () => {
 
     userRepo = await app.getRepository(UserRepository);
     datasource = createStubInstance(SequelizeDataSource);
+    developerRepo = await app.getRepository(DeveloperRepository);
+    languagesRepo = await app.getRepository(ProgrammingLanguageRepository);
     client = createRestAppClient(app as RestApplication);
   }
 
@@ -726,6 +866,7 @@ describe('Sequelize CRUD Repository (integration)', () => {
       email: string;
       active?: boolean;
       address: AnyObject | string;
+      password?: string;
       dob: Date | string;
     } & AnyObject;
 
@@ -734,6 +875,7 @@ describe('Sequelize CRUD Repository (integration)', () => {
       email: 'email@example.com',
       active: true,
       address: {city: 'Indore', zipCode: 452001},
+      password: 'secret',
       dob: timestamp,
       ...overwrite,
     };

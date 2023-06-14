@@ -51,6 +51,12 @@ export class User extends Entity {
   address: Address;
 
   @property({
+    type: 'string',
+    hidden: true,
+  })
+  password?: string;
+
+  @property({
     type: 'date',
   })
   dob?: Date;

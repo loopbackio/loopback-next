@@ -15,6 +15,12 @@ export class ProgrammingLanguage extends Entity {
   })
   name: string;
 
+  @property({
+    type: 'string',
+    hidden: true,
+  })
+  secret: string;
+
   constructor(data?: Partial<ProgrammingLanguage>) {
     super(data);
   }

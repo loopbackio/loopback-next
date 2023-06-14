@@ -26,6 +26,12 @@ export class Developer extends Entity {
   )
   programmingLanguageIds: number[];
 
+  @property({
+    type: 'string',
+    hidden: true,
+  })
+  apiSecret: string;
+
   constructor(data?: Partial<Developer>) {
     super(data);
   }
