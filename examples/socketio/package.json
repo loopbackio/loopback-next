@@ -57,7 +57,7 @@
     "@loopback/rest-explorer": "^6.0.0",
     "@loopback/socketio": "^0.7.0",
     "debug": "^4.3.4",
-    "p-event": "^4.2.0",
+    "p-event": "^6.0.0",
     "tslib": "^2.5.3"
   },
   "devDependencies": {
