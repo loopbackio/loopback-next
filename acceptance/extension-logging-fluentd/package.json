@@ -37,7 +37,7 @@
     "@loopback/logging": "^0.10.0",
     "@loopback/testlab": "^6.0.0",
     "@types/node": "^16.18.36",
-    "testcontainers": "^9.9.0",
+    "testcontainers": "^9.9.1",
     "tslib": "^2.5.3"
   }
 }
