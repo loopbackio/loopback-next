@@ -383,7 +383,9 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
             Object.assign(templateData.properties[relation.foreignKey], {
               relation,
             });
-            relationImports.push(relation.type);
+            if (!relationImports.includes(relation.type)) {
+              relationImports.push(relation.type);
+            }
             relationDestinationImports.push(relation.model);
 
             foreignKeys[relationName] = {};

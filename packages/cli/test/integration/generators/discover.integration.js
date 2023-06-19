@@ -65,6 +65,11 @@ const treatTINYINT1AsTinyIntOptions = {
   treatTINYINT1AsTinyInt: false,
 };
 
+const relationsSetTrue = {
+  ...baseOptions,
+  relations: true,
+};
+
 // Expected File Name
 const defaultExpectedTestModel = path.join(
   sandbox.path,
@@ -81,6 +86,10 @@ const defaultExpectedViewModel = path.join(
 const defaultExpectedNamingModel = path.join(
   sandbox.path,
   'src/models/naming.model.ts',
+);
+const AppointmentModel = path.join(
+  sandbox.path,
+  'src/models/appointment.model.ts',
 );
 
 const defaultExpectedIndexFile = path.join(sandbox.path, 'src/models/index.ts');
@@ -196,6 +205,18 @@ describe('lb4 discover integration', () => {
 
       assert.file(defaultExpectedTestModel);
       expectFileToMatchSnapshot(defaultExpectedTestModel);
+    });
+    it('generate relations with --relations', async () => {
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {
+            additionalFiles: SANDBOX_FILES,
+          }),
+        )
+        .withOptions(relationsSetTrue);
+      assert.file(AppointmentModel);
+      expectFileToMatchSnapshot(AppointmentModel);
     });
   });
   it('generates specific models without prompts using --models', async () => {
