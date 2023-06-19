@@ -272,3 +272,56 @@ export interface TestRelations {
 export type TestWithRelations = Test & TestRelations;
 
 `;
+
+exports[`lb4 discover integration model discovery generate relations with --relations 1`] = `
+import {Entity, model, property, belongsTo} from '@loopback/repository';
+import {Doctor,Patient} from '.';
+
+@model({
+  settings: {
+    foreignKeys: {
+      doctorIdRel: {name: 'doctorIdRel', entity: 'Doctor', entityKey: 'id', foreignKey: 'doctorId'},
+      patientIdRel: {
+        name: 'patientIdRel',
+        entity: 'Patient',
+        entityKey: 'pid',
+        foreignKey: 'patientId'
+      }
+    }
+  }
+})
+export class Appointment extends Entity {
+  @property({
+    type: 'number',
+    precision: 10,
+    scale: 0,
+    generated: 1,
+    id: 1,
+    mysql: {columnName: 'id', dataType: 'int', dataLength: null, dataPrecision: 10, dataScale: 0, nullable: 'N', generated: 1},
+  })
+  id?: number;
+
+  @belongsTo(() => Patient)
+  patientId?: number;
+
+  @belongsTo(() => Doctor)
+  doctorId?: number;
+
+  // Define well-known properties here
+
+  // Indexer property to allow additional data
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [prop: string]: any;
+
+  constructor(data?: Partial<Appointment>) {
+    super(data);
+  }
+}
+
+export interface AppointmentRelations {
+  // describe navigational properties here
+}
+
+export type AppointmentWithRelations = Appointment & AppointmentRelations;
+
+`;

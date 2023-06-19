@@ -20,6 +20,21 @@ const modelList = [
     name:'Naming',
     view: true,
     schema: 'Naming'
+  },
+    {
+    name:'Doctor',
+    view: false,
+    schema: 'Doctor'
+  },
+    {
+    name:'Patient',
+    view: false,
+    schema: 'Patient'
+  },
+    {
+    name:'Appointment',
+    view: false,
+    schema: 'Appointment'
   }
 ];
 // In real model definitions, the schema is contained in options->connectorName->schema
@@ -116,6 +131,95 @@ const fullDefinitions = [
         'scale': null,
       },
     },
+  },
+    {
+    'name': 'Doctor',
+    'properties': {
+      'id': {
+        'type': 'Number',
+        'length': null,
+        'precision': null,
+        'required': false,
+        'scale': 0,
+      'id': 1,
+      },
+      'name': {
+        'type': 'String',
+        'required': false,
+        'length': 45,
+        'precision': null,
+        'scale': null,
+      },
+    },
+  },
+  {
+    'name': 'Patient',
+    'properties': {
+      'pid': {
+        'type': 'Number',
+        'length': null,
+        'precision': null,
+        'required': false,
+        'scale': 0,
+        'id': 1,
+      },
+      'name': {
+        'type': 'String',
+        'required': false,
+        'length': 45,
+        'precision': null,
+        'scale': null,
+      },
+    },
+  },
+  {
+    name: 'Appointment',
+    className: 'Appointment',
+    modelBaseClass: 'Entity',
+    isModelBaseBuiltin: true,
+    options: {
+      relations: {
+        doctorIdRel: { model: 'Doctor', type: 'belongsTo', foreignKey: 'doctorId' },
+        patientIdRel: { model: 'Patient', type: 'belongsTo', foreignKey: 'patientId' }
+      }
+    },
+    properties: {
+      id: {
+        type: "number",
+        precision: 10,
+        scale: 0,
+        generated: 1,
+        id: 1,
+        mysql: "{columnName: 'id', dataType: 'int', dataLength: null, dataPrecision: 10, dataScale: 0, nullable: 'N', generated: 1}",
+        tsType: 'number'
+      },
+      patientId: {
+        type: "number",
+        precision: 10,
+        scale: 0,
+        generated: 0,
+        mysql: "{columnName: 'patientId', dataType: 'int', dataLength: null, dataPrecision: 10, dataScale: 0, nullable: 'Y', generated: 0}",
+        tsType: 'number'
+      },
+      doctorId: {
+        type: "number",
+        precision: 10,
+        scale: 0,
+        generated: 0,
+        mysql: "{columnName: 'doctorId', dataType: 'int', dataLength: null, dataPrecision: 10, dataScale: 0, nullable: 'Y', generated: 0}",
+        tsType: 'number'
+      }
+    },
+    allowAdditionalProperties: true,
+    modelSettings: {
+      settings: {
+        idInjection: false,
+        relations: {
+          doctorIdRel: {model: 'Doctor', type: 'belongsTo', foreignKey: 'doctorId'},
+          patientIdRel: {model: 'Patient', type: 'belongsTo', foreignKey: 'patientId'}
+        }
+      }
+    }
   },
 ];
 
