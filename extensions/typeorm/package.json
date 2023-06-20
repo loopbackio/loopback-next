@@ -40,7 +40,7 @@
   "dependencies": {
     "debug": "^4.3.4",
     "tslib": "^2.5.3",
-    "typeorm": "^0.3.16"
+    "typeorm": "^0.3.17"
   },
   "devDependencies": {
     "@loopback/boot": "^6.0.0",
