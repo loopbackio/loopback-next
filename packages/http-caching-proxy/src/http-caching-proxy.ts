@@ -3,17 +3,17 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import axios, {AxiosInstance, AxiosRequestHeaders, Method} from 'axios';
+import axios, {AxiosInstance} from 'axios';
 import debugFactory from 'debug';
-import {once} from 'events';
+import {once} from 'node:events';
 import {
   createServer,
   IncomingMessage,
   OutgoingHttpHeaders,
   Server as HttpServer,
   ServerResponse,
-} from 'http';
-import {AddressInfo} from 'net';
+} from 'node:http';
+import {AddressInfo} from 'node:net';
 
 const cacache = require('cacache');
 
@@ -198,9 +198,9 @@ export class HttpCachingProxy {
     debug('Forward request to %s %s', clientRequest.method, clientRequest.url);
 
     const backendResponse = await this._axios({
-      method: clientRequest.method as Method,
+      method: clientRequest.method,
       url: clientRequest.url!,
-      headers: clientRequest.headers as AxiosRequestHeaders,
+      headers: clientRequest.headers,
       data: clientRequest,
       // Set the response type to `arraybuffer` to force the `data` to be a
       // Buffer to allow ease of caching
@@ -209,6 +209,9 @@ export class HttpCachingProxy {
       responseType: 'arraybuffer',
       timeout: this._options.timeout || undefined,
     });
+
+    // If not removed, returns an "Expected http/" error.
+    delete backendResponse.headers['content-length'];
 
     debug(
       'Got response for %s %s -> %s',
@@ -221,7 +224,7 @@ export class HttpCachingProxy {
 
     const metadata: CachedMetadata = {
       statusCode: backendResponse.status,
-      headers: backendResponse.headers,
+      headers: backendResponse.headers as OutgoingHttpHeaders,
       createdAt: Date.now(),
     };
 
@@ -245,7 +248,10 @@ export class HttpCachingProxy {
       {metadata},
     );
 
-    clientResponse.writeHead(backendResponse.status, backendResponse.headers);
+    clientResponse.writeHead(
+      backendResponse.status,
+      backendResponse.headers as OutgoingHttpHeaders,
+    );
     clientResponse.end(data);
   }
 

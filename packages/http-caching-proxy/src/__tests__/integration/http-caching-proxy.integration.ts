@@ -10,13 +10,13 @@ import axios, {
   AxiosResponse,
 } from 'axios';
 import delay from 'delay';
-import {once} from 'events';
-import http from 'http';
-import {AddressInfo} from 'net';
-import path from 'path';
+import {once} from 'node:events';
+import http from 'node:http';
+import {AddressInfo} from 'node:net';
+import path from 'node:path';
 import {rimraf} from 'rimraf';
 import tunnel, {ProxyOptions as TunnelProxyOptions} from 'tunnel';
-import {URL} from 'url';
+import {URL} from 'node:url';
 import {HttpCachingProxy, ProxyOptions} from '../../http-caching-proxy';
 
 const CACHE_DIR = path.join(__dirname, '.cache');
@@ -191,11 +191,11 @@ describe('HttpCachingProxy', () => {
     });
   });
 
-  async function givenRunningProxy(options?: Partial<ProxyOptions>) {
+  function givenRunningProxy(options?: Partial<ProxyOptions>) {
     proxy = new HttpCachingProxy(
       Object.assign({cachePath: CACHE_DIR}, options),
     );
-    await proxy.start();
+    return proxy.start();
   }
 
   async function stopProxy() {
@@ -204,7 +204,7 @@ describe('HttpCachingProxy', () => {
   }
 
   /**
-   * Parse a url to `tunnel` proxy options
+   * Parse an url to `tunnel` proxy options
    * @param url - proxy url string
    */
   function getTunnelProxyConfig(url: string): TunnelProxyOptions {
@@ -220,19 +220,21 @@ describe('HttpCachingProxy', () => {
   }
 
   /**
-   * Parse a url to Axios proxy configuration object
+   * Parse an url to Axios proxy configuration object
    * @param url - proxy url string
    */
   function getProxyConfig(url: string): AxiosProxyConfig {
     const parsed = new URL(url);
     return {
+      protocol: parsed.protocol,
       host: parsed.hostname,
       port: parseInt(parsed.port),
-      protocol: parsed.protocol,
-      auth: {
-        username: parsed.username,
-        password: parsed.password,
-      },
+      ...(parsed.username && {
+        auth: {
+          username: parsed.username,
+          password: parsed.password,
+        },
+      }),
     };
   }
 
@@ -244,7 +246,7 @@ describe('HttpCachingProxy', () => {
   });
 
   /**
-   * Helper method to make an http request via the proxy
+   * Helper method to make a http request via the proxy
    * @param config - Axios request
    */
   async function makeRequest(config: AxiosRequestConfig) {
