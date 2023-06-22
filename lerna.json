@@ -1,4 +1,5 @@
 {
+  "$schema": "node_modules/lerna/schemas/lerna-schema.json",
   "command": {
     "bootstrap": {
       "concurrency": 4,
@@ -10,18 +11,17 @@
       "conventionalCommits": true
     },
     "run": {
-      "loglevel": "silent",
+      "loglevel": "warn",
       "concurrency": 8,
       "prefix": false,
       "stream": true,
       "sort": false
     },
     "clean": {
-      "loglevel": "silent",
+      "loglevel": "warn",
       "concurrency": 8,
       "yes": true
     }
   },
-  "useWorkspaces": true,
   "version": "independent"
 }

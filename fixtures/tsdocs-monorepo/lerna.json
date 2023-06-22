@@ -1,13 +1,13 @@
 {
+  "$schema": "../../node_modules/lerna/schemas/lerna-schema.json",
   "command": {
     "run": {
-      "prefix": false,
-      "loglevel": "silent",
-      "stream": true,
+      "loglevel": "warn",
       "concurrency": 8,
+      "prefix": false,
+      "stream": true,
       "sort": true
     }
   },
-  "useWorkspaces": true,
   "version": "independent"
 }
