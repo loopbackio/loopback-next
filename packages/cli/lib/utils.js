@@ -324,6 +324,26 @@ exports.StatusConflicter = class StatusConflicter extends Conflicter {
   }
 };
 
+async function recursivelyGetFilePaths(dir, reader) {
+  const readdir = reader || readdirAsync;
+  let dirents = await readdir(dir, { withFileTypes: true });
+  let files = [];
+
+  for (const dirent of dirents) {
+    if (dirent.isDirectory()) {
+      const nestedDir = path.join(dir, dirent.name);
+      const nestedFiles = await recursivelyGetFilePaths(nestedDir);
+      for (const nestedFile of nestedFiles)
+        files.push(path.join(nestedDir, nestedFile));
+    }
+    else {
+      files.push(dirent.name);
+    }
+  }
+
+  return files;
+}
+
 /**
  * Find all artifacts in the given path whose type matches the provided
  * filetype.
@@ -337,12 +357,11 @@ exports.StatusConflicter = class StatusConflicter extends Conflicter {
  * @returns {Promise<string[]>} The filtered list of paths.
  */
 exports.findArtifactPaths = async function (dir, artifactType, reader) {
-  const readdir = reader || readdirAsync;
   debug('Finding %j artifact paths at %s', artifactType, dir);
 
   try {
     // Wrapping readdir in case it's not a promise.
-    const files = await readdir(dir);
+    let files = await recursivelyGetFilePaths(dir, reader);
     return files.filter(
       f =>
         _.endsWith(f, `${artifactType}.js`) ||
