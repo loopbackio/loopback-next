@@ -87,9 +87,14 @@ export function belongsToInclusionResolverPolymorphicAcceptance(
       const result = await contactRepo.find({
         include: ['stakeholder'],
       });
-
+      const newContact: Record<string, unknown> = {};
+      Object.keys(contact).forEach(key => {
+        if (key !== 'stakeholderId') {
+          newContact[key] = contact[key as keyof typeof contact];
+        }
+      });
       const expected = {
-        ...contact,
+        ...newContact,
         isShipped: features.emptyValue,
         shipmentInfo: features.emptyValue,
         stakeholder: {
@@ -109,18 +114,28 @@ export function belongsToInclusionResolverPolymorphicAcceptance(
       const thorContact = await contactRepo.create({
         stakeholderId: thor.id,
       });
+      const newThorContact: Record<string, unknown> = {};
+      Object.keys(thorContact).forEach(key => {
+        if (key !== 'stakeholderId') {
+          newThorContact[key] = thorContact[key as keyof typeof thorContact];
+        }
+      });
       const odinContact = await contactRepo.create({
         stakeholderId: odin.id,
         stakeholderType: 'Supplier',
       });
-
+      const newOdinContact: Record<string, unknown> = {};
+      Object.keys(odinContact).forEach(key => {
+        if (key !== 'stakeholderId') {
+          newOdinContact[key] = odinContact[key as keyof typeof odinContact];
+        }
+      });
       const result = await contactRepo.find({
         include: ['stakeholder'],
       });
-
       const expected = [
         {
-          ...thorContact,
+          ...newThorContact,
           isShipped: features.emptyValue,
           shipmentInfo: features.emptyValue,
           stakeholder: {
@@ -129,7 +144,7 @@ export function belongsToInclusionResolverPolymorphicAcceptance(
           },
         },
         {
-          ...odinContact,
+          ...newOdinContact,
           isShipped: features.emptyValue,
           shipmentInfo: features.emptyValue,
           stakeholder: {
@@ -156,12 +171,17 @@ export function belongsToInclusionResolverPolymorphicAcceptance(
         stakeholderId: odin.id,
         stakeholderType: 'Supplier',
       });
-
+      const newOdinContact: Record<string, unknown> = {};
+      Object.keys(odinContact).forEach(key => {
+        if (key !== 'stakeholderId') {
+          newOdinContact[key] = odinContact[key as keyof typeof odinContact];
+        }
+      });
       const result = await contactRepo.findById(odinContact.id, {
         include: ['stakeholder'],
       });
       const expected = {
-        ...odinContact,
+        ...newOdinContact,
         isShipped: features.emptyValue,
         shipmentInfo: features.emptyValue,
         stakeholder: {
@@ -180,12 +200,16 @@ export function belongsToInclusionResolverPolymorphicAcceptance(
       const contact1 = await contactRepo.create({
         stakeholderId: customer.id,
       });
-
+      const newContact1: Record<string, unknown> = {};
+      Object.keys(contact1).forEach(key => {
+        if (key !== 'stakeholderId') {
+          newContact1[key] = contact1[key as keyof typeof contact1];
+        }
+      });
       const contact2 = await contactRepo.create({});
-
       const expected = [
         {
-          ...contact1,
+          ...newContact1,
           isShipped: features.emptyValue,
           shipmentInfo: features.emptyValue,
           stakeholder: {

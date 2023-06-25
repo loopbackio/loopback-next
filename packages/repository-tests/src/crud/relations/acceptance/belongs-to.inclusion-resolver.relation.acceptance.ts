@@ -79,9 +79,14 @@ export function belongsToInclusionResolverAcceptance(
       const result = await orderRepo.find({
         include: ['customer'],
       });
-
+      const newOrder: Record<string, unknown> = {};
+      Object.keys(order).forEach(key => {
+        if (key !== 'customerId') {
+          newOrder[key] = order[key as keyof typeof order];
+        }
+      });
       const expected = {
-        ...order,
+        ...newOrder,
         isShipped: features.emptyValue,
         shipmentInfo: features.emptyValue,
         customer: {
@@ -99,9 +104,21 @@ export function belongsToInclusionResolverAcceptance(
         description: "Thor's Mjolnir",
         customerId: thor.id,
       });
+      const newThorOrder: Record<string, unknown> = {};
+      Object.keys(thorOrder).forEach(key => {
+        if (key !== 'customerId') {
+          newThorOrder[key] = thorOrder[key as keyof typeof thorOrder];
+        }
+      });
       const odinOrder = await orderRepo.create({
         description: "Odin's Coffee Maker",
         customerId: odin.id,
+      });
+      const newOdinOrder: Record<string, unknown> = {};
+      Object.keys(odinOrder).forEach(key => {
+        if (key !== 'customerId') {
+          newOdinOrder[key] = odinOrder[key as keyof typeof odinOrder];
+        }
       });
 
       const result = await orderRepo.find({
@@ -110,7 +127,7 @@ export function belongsToInclusionResolverAcceptance(
 
       const expected = [
         {
-          ...thorOrder,
+          ...newThorOrder,
           isShipped: features.emptyValue,
           shipmentInfo: features.emptyValue,
           customer: {
@@ -119,7 +136,7 @@ export function belongsToInclusionResolverAcceptance(
           },
         },
         {
-          ...odinOrder,
+          ...newOdinOrder,
           isShipped: features.emptyValue,
           shipmentInfo: features.emptyValue,
           customer: {
@@ -142,12 +159,17 @@ export function belongsToInclusionResolverAcceptance(
         description: "Odin's Coffee Maker",
         customerId: odin.id,
       });
-
+      const newOdinOrder: Record<string, unknown> = {};
+      Object.keys(odinOrder).forEach(key => {
+        if (key !== 'customerId') {
+          newOdinOrder[key] = odinOrder[key as keyof typeof odinOrder];
+        }
+      });
       const result = await orderRepo.findById(odinOrder.id, {
         include: ['customer'],
       });
       const expected = {
-        ...odinOrder,
+        ...newOdinOrder,
         isShipped: features.emptyValue,
         shipmentInfo: features.emptyValue,
         customer: {
@@ -168,7 +190,12 @@ export function belongsToInclusionResolverAcceptance(
         customerId: customer.id,
         description: 'Take Out',
       });
-
+      const newOrder1: Record<string, unknown> = {};
+      Object.keys(order1).forEach(key => {
+        if (key !== 'customerId') {
+          newOrder1[key] = order1[key as keyof typeof order1];
+        }
+      });
       // order without customer relation
       const order2 = await orderRepo.create({
         description: 'Dine in',
@@ -176,7 +203,7 @@ export function belongsToInclusionResolverAcceptance(
 
       const expected = [
         {
-          ...order1,
+          ...newOrder1,
           isShipped: features.emptyValue,
           shipmentInfo: features.emptyValue,
           customer: {

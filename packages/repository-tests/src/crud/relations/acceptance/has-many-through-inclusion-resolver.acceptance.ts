@@ -209,15 +209,31 @@ export function hasManyThroughInclusionResolverAcceptance(
         const sword = await customerRepo
           .cartItems(link.id)
           .create({description: 'master sword', orderId: o2.id});
+        const newSword: Record<string, unknown> = {};
+        Object.keys(sword).forEach(key => {
+          if (key !== 'orderId') {
+            newSword[key] = sword[key as keyof typeof sword];
+          }
+        });
         const shield = await customerRepo
           .cartItems(link.id)
           .create({description: 'shield', orderId: o1.id});
-
+        const newShield: Record<string, unknown> = {};
+        Object.keys(shield).forEach(key => {
+          if (key !== 'orderId') {
+            newShield[key] = shield[key as keyof typeof shield];
+          }
+        });
         const zelda = await customerRepo.create({name: 'Zelda'});
         const force = await customerRepo
           .cartItems(zelda.id)
           .create({description: 'Triforce', orderId: o3.id});
-
+        const newForce: Record<string, unknown> = {};
+        Object.keys(force).forEach(key => {
+          if (key !== 'orderId') {
+            newForce[key] = force[key as keyof typeof force];
+          }
+        });
         const result = await customerRepo.find({
           include: [{relation: 'cartItems', scope: {include: ['order']}}],
         });
@@ -226,21 +242,20 @@ export function hasManyThroughInclusionResolverAcceptance(
           isShipped: features.emptyValue,
           shipmentInfo: features.emptyValue,
         };
-
         const expected = [
           {
             ...link,
             parentId: features.emptyValue,
             cartItems: [
               {
-                ...sword,
+                ...newSword,
                 order: {
                   ...o2,
                   ...empty,
                 },
               },
               {
-                ...shield,
+                ...newShield,
                 order: {
                   ...o1,
                   ...empty,
@@ -253,7 +268,7 @@ export function hasManyThroughInclusionResolverAcceptance(
             parentId: features.emptyValue,
             cartItems: [
               {
-                ...force,
+                ...newForce,
                 order: {
                   ...o3,
                   ...empty,
