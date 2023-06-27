@@ -12,9 +12,10 @@
  * from the docs.
  */
 
-const {getPackages} = require('@lerna/project');
-const fs = require('fs-extra');
-const path = require('path');
+const path = require('node:path');
+const fse = require('fs-extra');
+const pkgJson = require('@npmcli/package-json');
+const mapWorkspaces = require('@npmcli/map-workspaces');
 
 const REPO_ROOT = path.resolve(__dirname, '../..');
 const DEST_ROOT = path.resolve(__dirname, '../site/readmes/loopback-next');
@@ -26,16 +27,21 @@ copyReadmes().catch(err => {
 
 async function copyReadmes() {
   // Remove the original folder so we remove files from deleted packages
-  fs.removeSync(DEST_ROOT);
+  fse.removeSync(DEST_ROOT);
 
-  const allPackages = await getPackages(REPO_ROOT);
+  const {content: rootPkg} = await pkgJson.load(REPO_ROOT);
+  const workspaces = await mapWorkspaces({cwd: REPO_ROOT, pkg: rootPkg});
+  const allPackages = Array.from(workspaces, ([name, location]) => ({
+    name,
+    location,
+  }));
   const packages = allPackages.filter(isDocumented).map(pkg => ({
     name: pkg.name,
     location: path.relative(REPO_ROOT, pkg.location),
   }));
 
   for (const {location} of packages) {
-    let files = await fs.readdir(path.join(REPO_ROOT, location));
+    let files = await fse.readdir(path.join(REPO_ROOT, location));
     files = files.filter(
       // Copy README.md and image files
       f =>
@@ -43,7 +49,7 @@ async function copyReadmes() {
         ['.png', '.jpg', 'jpeg'].includes(path.extname(f).toLowerCase()),
     );
     for (const f of files) {
-      await fs.copy(
+      await fse.copy(
         path.join(REPO_ROOT, location, f),
         path.join(DEST_ROOT, location, f),
         {overwrite: true},

@@ -10,14 +10,14 @@
  */
 'use strict';
 
-const path = require('path');
+const path = require('node:path');
 const {
   isDryRun,
   printJson,
   writeJsonSync,
   loadLernaRepo,
   runMain,
-} = require('../packages/monorepo');
+} = require('./script-util');
 
 /**
  * Update `templateDependencies` in `packages/cli/package.json`

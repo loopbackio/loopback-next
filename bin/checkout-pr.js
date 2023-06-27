@@ -18,9 +18,13 @@
  * 5. Check out <pr-branch> to track <pr-repo>/<pr-branch>
  * 6. Rebase the PR branch to the origin/<base-branch>
  */
+const path = require('node:path');
+const https = require('node:https');
+const {parse: parseURL} = require('node:url');
 const build = require('../packages/build');
-const path = require('path');
-const rootDir = path.join(__dirname, '..');
+const {runMain} = require('./script-util');
+
+const ROOT_DIR = path.join(__dirname, '..');
 
 async function checkoutPR() {
   const prUrlOrNum = process.argv[2];
@@ -54,17 +58,13 @@ async function checkoutPR() {
   console.log(`PR ${prNum} is now checked out.`);
 }
 
-const https = require('https');
-const url = require('url');
-const {runMain} = require('../packages/monorepo');
-
 /**
  * Fetch PR information
  * @param {string} prUrl - PR url
  */
 function getPRInfo(prUrl) {
   const options = {
-    ...url.parse(prUrl),
+    ...parseURL(prUrl),
     headers: {
       'User-Agent': 'Node.js https client',
     },
@@ -118,7 +118,7 @@ function getPRInfo(prUrl) {
 async function git(...args) {
   console.log('> git', ...args);
   const shell = build.runShell('git', args, {
-    cwd: rootDir,
+    cwd: ROOT_DIR,
   });
   await waitForProcessExit(shell);
 }

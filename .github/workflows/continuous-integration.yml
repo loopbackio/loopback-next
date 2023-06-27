@@ -99,8 +99,6 @@ jobs:
         run: |
           node packages/build/bin/run-eslint .
           node packages/build/bin/run-prettier --check "**/*.ts" "**/*.js" "**/*.md" "!docs/**/*.md"
-      - name: Verify package-lock files
-        run: node packages/monorepo/lib/check-package-locks
       - name: Verify package metadata
         run: node bin/check-package-metadata.js
 

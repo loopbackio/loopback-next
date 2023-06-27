@@ -10,16 +10,15 @@
  */
 'use strict';
 
-const path = require('path');
-const fs = require('fs-extra');
-
+const path = require('node:path');
+const fse = require('fs-extra');
 const {
   loadLernaRepo,
   writeJsonSync,
   isDryRun,
   printJson,
   runMain,
-} = require('../packages/monorepo');
+} = require('./script-util');
 
 async function syncDevDeps(options) {
   const {project, packages} = await loadLernaRepo();
@@ -111,7 +110,7 @@ function updatePackageJson(pkgFile, masterDeps, options) {
 }
 
 function readPackageJson(filePath) {
-  return fs.readJsonSync(filePath, 'utf-8');
+  return fse.readJsonSync(filePath, 'utf-8');
 }
 
 function writePackageJson(filePath, data, options) {

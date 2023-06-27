@@ -10,10 +10,10 @@
  */
 'use strict';
 
-const path = require('path');
-const fs = require('fs-extra');
+const path = require('node:path');
+const fse = require('fs-extra');
 const createMarkdownTable = require('markdown-table');
-const {getPackages, runMain} = require('../packages/monorepo');
+const {getPackages, runMain} = require('./script-util');
 
 const MONOREPO_FILE_DIST = 'docs/site';
 const MONOREPO_FILE_NAME = 'MONOREPO.md';
@@ -31,7 +31,7 @@ async function getSortedPackages() {
 }
 
 function getPackageFields(pkg) {
-  const packageJson = fs.readJsonSync(path.join(pkg.location, 'package.json'));
+  const packageJson = fse.readJsonSync(path.join(pkg.location, 'package.json'));
 
   const relativeUri = getPackageRelativeUri(pkg);
   const pkgUrl = `https://github.com/loopbackio/loopback-next/tree/master/${relativeUri}`;
@@ -74,7 +74,7 @@ async function updateMonorepoFile() {
     '[Developing LoopBack](./DEVELOPING.md) for more details.',
   ].join('\n');
 
-  fs.writeFileSync(monorepoFilePath, content + '\n', {encoding: 'utf-8'});
+  fse.writeFileSync(monorepoFilePath, content + '\n', {encoding: 'utf-8'});
 }
 
 module.exports = updateMonorepoFile;

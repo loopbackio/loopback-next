@@ -50,6 +50,8 @@
   "dependencies": {
     "@microsoft/api-documenter": "^7.22.21",
     "@microsoft/api-extractor": "^7.36.0",
+    "@npmcli/map-workspaces": "^3.0.4",
+    "@npmcli/package-json": "^3.1.1",
     "debug": "^4.3.4",
     "fs-extra": "^11.1.1",
     "tslib": "^2.6.0"
@@ -61,6 +63,8 @@
     "@loopback/tsdocs-monorepo": "^0.4.0",
     "@types/debug": "^4.1.8",
     "@types/fs-extra": "^11.0.1",
-    "@types/node": "^16.18.37"
+    "@types/node": "^16.18.37",
+    "@types/npmcli__map-workspaces": "^3.0.1",
+    "@types/npmcli__package-json": "^2.0.0"
   }
 }

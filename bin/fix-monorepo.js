@@ -10,11 +10,9 @@
  */
 'use strict';
 
-const path = require('path');
-
+const path = require('node:path');
 const syncDevDeps = require('./sync-dev-deps');
 const updateMonorepo = require('./update-monorepo-file');
-
 const {
   isJsonEqual,
   loadLernaRepo,
@@ -23,7 +21,7 @@ const {
   updatePackageJson,
   updateTsProjectRefs,
   writeJsonSync,
-} = require('../packages/monorepo');
+} = require('./script-util');
 
 async function fixMonorepo() {
   // Ensure all packages use the local version of `@loopback/*`
