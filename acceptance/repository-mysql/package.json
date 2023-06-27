@@ -36,7 +36,7 @@
     "@loopback/repository": "^6.0.0",
     "@loopback/repository-tests": "^0.22.0",
     "@loopback/testlab": "^6.0.0",
-    "@types/node": "^16.18.36",
+    "@types/node": "^16.18.37",
     "loopback-connector-mysql": "^6.2.0",
     "tslib": "^2.6.0"
   }
