@@ -42,7 +42,7 @@
     "debug": "^4.3.4",
     "lodash": "^4.17.21",
     "reflect-metadata": "^0.1.13",
-    "tslib": "^2.5.3"
+    "tslib": "^2.6.0"
   },
   "devDependencies": {
     "@loopback/build": "^10.0.0",

@@ -43,7 +43,7 @@
   },
   "dependencies": {
     "debug": "^4.3.4",
-    "tslib": "^2.5.3"
+    "tslib": "^2.6.0"
   },
   "devDependencies": {
     "@loopback/build": "^10.0.0",
