@@ -41,11 +41,12 @@
  */
 'use strict';
 
+const path = require('node:path');
+const fse = require('fs-extra');
 const build = require('../packages/build');
-const path = require('path');
+const {runMain, updateTsProjectRefs} = require('./script-util');
+
 const cwd = process.cwd();
-const fs = require('fs-extra');
-const {runMain, updateTsProjectRefs} = require('../packages/monorepo');
 
 /**
  * Return a promise to be resolved by the child process exit event
@@ -163,7 +164,7 @@ async function bootstrapProject({repoRoot, name}) {
 async function fixupProject({repoRoot, projectDir}) {
   process.chdir(path.join(repoRoot, projectDir));
   // Update package.json
-  let pkg = fs.readJsonSync('package.json');
+  let pkg = fse.readJsonSync('package.json');
   pkg = {
     ...pkg,
     version: '0.0.1',
@@ -184,7 +185,7 @@ async function fixupProject({repoRoot, projectDir}) {
   delete pkg.dependencies['@loopback/boot'];
   delete pkg.devDependencies['source-map-support'];
 
-  fs.writeJsonSync('package.json', pkg, {spaces: 2});
+  fse.writeJsonSync('package.json', pkg, {spaces: 2});
 
   // Remove unused files
   build.clean([

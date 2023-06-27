@@ -12,44 +12,48 @@
  * from the docs. It also generates Jekyll friendly pages for CHANGELOG files.
  */
 
-const {getPackages} = require('@lerna/project');
-const fs = require('fs-extra');
-const path = require('path');
+const path = require('node:path');
+const fse = require('fs-extra');
+const pkgJson = require('@npmcli/package-json');
+const mapWorkspaces = require('@npmcli/map-workspaces');
 
 const REPO_ROOT = path.resolve(__dirname, '../..');
 const DEST_ROOT = path.resolve(__dirname, '../site/changelogs');
 const SITE_ROOT = path.resolve(__dirname, '../site');
 
-if (require.main === module) {
-  copyChangelogs().catch(err => {
-    console.error('Unhandled error.', err);
-    process.exit(1);
-  });
-}
-
 async function copyChangelogs() {
   // Remove the original folder so we remove files from deleted packages
-  await fs.remove(DEST_ROOT);
+  await fse.remove(DEST_ROOT);
 
-  const allPackages = await getPackages(REPO_ROOT);
+  const {content: rootPkg} = await pkgJson.load(REPO_ROOT);
+  const workspaces = await mapWorkspaces({cwd: REPO_ROOT, pkg: rootPkg});
+  const allPackages = await Promise.all(
+    Array.from(workspaces, async ([name, location]) => {
+      const {content: pkg} = await pkgJson.load(location);
+      return {
+        name,
+        location,
+        private: pkg.private ?? false,
+        version: pkg.version,
+      };
+    }),
+  );
   const packages = allPackages
     .filter(shouldCopyChangelog)
-    .map(pkg => {
-      let shortName = pkg.name;
-      if (pkg.name.startsWith('@loopback/')) {
-        shortName = pkg.name.substring('@loopback/'.length);
-      }
-
-      const location = path.relative(REPO_ROOT, pkg.location);
-      const meta = {
-        name: pkg.name,
-        shortName,
-        private: pkg.private,
-        location,
-        dir: path.dirname(location),
-      };
-      return meta;
-    })
+    .map(pkg => ({
+      name: pkg.name,
+      get shortName() {
+        if (this.name.startsWith('@loopback/')) {
+          return this.name.substring('@loopback/'.length);
+        }
+        return this.name;
+      },
+      private: pkg.private,
+      location: path.relative(REPO_ROOT, pkg.location),
+      get dir() {
+        return path.dirname(this.location);
+      },
+    }))
     .sort((a, b) => b.location.localeCompare(a.location));
 
   const packagesByDir = {};
@@ -85,10 +89,10 @@ permalink: /doc/en/lb4/changelog.index.html
     }
     for (const {location, name, shortName} of arr) {
       const src = path.join(REPO_ROOT, location, 'CHANGELOG.md');
-      const exists = await fs.exists(src);
+      const exists = await fse.exists(src);
       if (!exists) continue;
 
-      const content = await fs.readFile(src, 'utf-8');
+      const content = await fse.readFile(src, 'utf-8');
       const md = `---
 lang: en
 title: 'CHANGELOG - ${name}'
@@ -102,7 +106,7 @@ permalink: /doc/en/lb4/changelog.${shortName}.html
 ${content}
 `;
       const dest = path.join(DEST_ROOT, location, 'CHANGELOG.md');
-      await fs.outputFile(dest, md, 'utf-8');
+      await fse.outputFile(dest, md, 'utf-8');
 
       // Add an entry to the index
       changelogIndexPage.push(
@@ -112,7 +116,7 @@ ${content}
   }
 
   // Write `site/CHANGELOG.md`
-  await fs.outputFile(
+  await fse.outputFile(
     path.join(SITE_ROOT, 'CHANGELOG.md'),
     changelogIndexPage.join('\n'),
     'utf-8',
@@ -138,4 +142,11 @@ function shouldCopyChangelog(pkg) {
  */
 function shouldPublishChangelog(pkg) {
   return !pkg.private;
+}
+
+if (require.main === module) {
+  copyChangelogs().catch(err => {
+    console.error('Unhandled error.', err);
+    process.exit(1);
+  });
 }

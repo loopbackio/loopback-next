@@ -11,23 +11,25 @@
  */
 'use strict';
 
-const path = require('path');
-const fs = require('fs-extra');
-const {
-  isTypeScriptPackage,
-  loadLernaRepo,
-  runMain,
-} = require('../packages/monorepo');
+const path = require('node:path');
+const fse = require('fs-extra');
+const pkgJson = require('@npmcli/package-json');
+const mapWorkspaces = require('@npmcli/map-workspaces');
+const {runMain} = require('./script-util');
+
+function isTypeScriptPackage(location) {
+  return fse.existsSync(path.join(location, 'tsconfig.json'));
+}
 
 /**
  * Check existence of LICENSE file in the monorepo packages
- * @param {Package[]} packages A list of @lerna/project packages
+ * @param {Array} packages A list of @lerna/project packages
  */
 async function checkLicenseFiles(packages) {
   const errors = [];
 
   for (const p of packages) {
-    const exists = await fs.pathExists(path.join(p.location, 'LICENSE'));
+    const exists = await fse.pathExists(path.join(p.location, 'LICENSE'));
 
     if (!exists) {
       errors.push(`${p.name} directory doesn't contain LICENSE file`);
@@ -39,12 +41,12 @@ async function checkLicenseFiles(packages) {
 
 /**
  * Check mention of packages in MONOREPO.md file
- * @param {Package[]} packages A list of @lerna/project packages
+ * @param {Array} packages A list of @lerna/project packages
  * @param {string} rootPath A project.rootPath
  */
 async function checkMonorepoFile(packages, rootPath) {
   const errors = [];
-  const monorepoFile = await fs.readFile('docs/site/MONOREPO.md', 'utf8');
+  const monorepoFile = await fse.readFile('docs/site/MONOREPO.md', 'utf8');
 
   for (const p of packages) {
     const packagePath = path.relative(rootPath, p.location).replace(/\\/g, '/');
@@ -62,14 +64,14 @@ async function checkMonorepoFile(packages, rootPath) {
 
 /**
  * Check mention of packages in CODEOWNERS.md file
- * @param {Package[]} packages A list of @lerna/project packages
+ * @param {Array} packages A list of @lerna/project packages
  * @param {string} rootPath A project.rootPath
  */
 async function checkCodeOwnersFile(packages, rootPath) {
   const errors = [];
   const excludes = ['@loopback/sandbox-example'];
 
-  const codeOwnersFile = await fs.readFile('CODEOWNERS', 'utf8');
+  const codeOwnersFile = await fse.readFile('CODEOWNERS', 'utf8');
 
   for (const p of packages) {
     if (excludes.includes(p.name)) {
@@ -88,7 +90,7 @@ async function checkCodeOwnersFile(packages, rootPath) {
 
 /**
  * Check all required fields of package.json for each package on the matching with root package.json
- * @param {Package[]} packages A list of @lerna/project packages
+ * @param {Array} packages A list of @lerna/project packages
  * @param {Object} rootPkg A root package.json
  */
 async function checkPkgsPackageJson(packages, rootPkg) {
@@ -104,17 +106,17 @@ async function checkPkgsPackageJson(packages, rootPkg) {
   }
 
   for (const p of pkgs) {
-    const pkg = p.toJSON();
+    const pkg = p.content;
 
     const isCorrectMain = pkg.main && pkg.main === 'dist/index.js';
 
-    if (isTypeScriptPackage(p) && !isCorrectMain) {
+    if (isTypeScriptPackage(p.location) && !isCorrectMain) {
       errors.push(getErrorText(p.name, 'main'));
     }
 
     const isCorrectTypes = pkg.types && pkg.types === 'dist/index.d.ts';
 
-    if (isTypeScriptPackage(p) && !isCorrectTypes) {
+    if (isTypeScriptPackage(p.location) && !isCorrectTypes) {
       errors.push(getErrorText(p.name, 'types'));
     }
 
@@ -152,7 +154,7 @@ async function checkPkgsPackageJson(packages, rootPkg) {
 
     const isCorrectRepositoryDirectory =
       pkg.repository && pkg.repository.directory;
-    const isRepositoryDirectoryExist = fs.existsSync(p.location);
+    const isRepositoryDirectoryExist = fse.existsSync(p.location);
 
     if (!isCorrectRepositoryDirectory) {
       errors.push(getErrorText(p.name, 'repository.directory'));
@@ -186,9 +188,21 @@ function formatErrorsText(errors) {
 }
 
 async function checkPackagesMetadata() {
-  const {project, packages} = await loadLernaRepo();
-  const rootPath = project.rootPath;
-  const rootPkg = fs.readJsonSync('package.json');
+  const rootPath = process.cwd();
+  const {content: pkg} = await pkgJson.load(rootPath);
+  const workspaces = await mapWorkspaces({cwd: rootPath, pkg});
+  const packages = await Promise.all(
+    Array.from(workspaces, async ([name, location]) => {
+      const {content} = await pkgJson.load(location);
+      return {
+        name,
+        location,
+        private: content.private ?? false,
+        content,
+      };
+    }),
+  );
+  const rootPkg = fse.readJsonSync('package.json');
 
   const errors = (
     await Promise.all([
@@ -204,8 +218,8 @@ async function checkPackagesMetadata() {
   }
 }
 
-function checkDepsOrder(lernaPkg, pkgJson, errors) {
-  const actualOrder = Object.keys(pkgJson).filter(k =>
+function checkDepsOrder(pkg, json, errors) {
+  const actualOrder = Object.keys(json).filter(k =>
     ['dependencies', 'devDependencies', 'peerDependencies'].includes(k),
   );
 
@@ -219,7 +233,7 @@ function checkDepsOrder(lernaPkg, pkgJson, errors) {
   const expectedStr = expectedOrder.join(' ');
 
   if (actualStr !== expectedStr) {
-    const pkgPath = path.relative(lernaPkg.rootPath, lernaPkg.location);
+    const pkgPath = path.relative(pkg.rootPath, pkg.location);
     errors.push(
       `${pkgPath}/package.json has incorrect order of keys.\n` +
         `  Actual:   ${actualStr}\n` +

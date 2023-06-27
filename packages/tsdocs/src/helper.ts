@@ -4,13 +4,13 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {IConfigFile} from '@microsoft/api-extractor';
-import fs from 'fs-extra';
-import path from 'path';
-
-const {getPackages: getLernaPackages} = require('@lerna/project');
+import path from 'node:path';
+import fse from 'fs-extra';
+import pkgJson from '@npmcli/package-json';
+import mapWorkspaces from '@npmcli/map-workspaces';
 
 /**
- * TypeScript definition for
+ * Typescript definition for
  * {@link https://github.com/lerna/lerna/blob/master/core/package/index.js | Lerna Package}
  */
 export interface LernaPackage {
@@ -53,14 +53,27 @@ export function getUnscopedPackageName(name: string) {
 }
 
 /**
- * Get lerna packages and sorted them by location
+ * Get workspace packages and sorted them by location
  *
- * @param rootDir - Root directory to find lerna.json
+ * @param rootDir - Root directory
  */
 export async function getPackages(
   rootDir = process.cwd(),
 ): Promise<LernaPackage[]> {
-  const packages: LernaPackage[] = await getLernaPackages(rootDir);
+  const {content: rootPkg} = await pkgJson.load(rootDir);
+  const workspaces = await mapWorkspaces({cwd: rootDir, pkg: rootPkg});
+  const packages: LernaPackage[] = await Promise.all(
+    Array.from(workspaces, async ([name, location]) => {
+      const {content: pkg} = await pkgJson.load(location);
+      return {
+        name,
+        location,
+        rootPath: rootDir,
+        manifestLocation: path.join(location, 'package.json'),
+        private: pkg.private ?? false,
+      };
+    }),
+  );
   packages.sort((p1, p2) => p1.location.localeCompare(p2.location));
   return packages;
 }
@@ -80,16 +93,14 @@ export function shouldGenerateTsDocs(pkg: LernaPackage) {
   if (pkg.name.startsWith('@loopback/example-')) return false;
 
   if (
-    !fs.existsSync(path.join(pkg.location, 'tsconfig.build.json')) &&
-    !fs.existsSync(path.join(pkg.location, 'tsconfig.json'))
+    !fse.existsSync(path.join(pkg.location, 'tsconfig.build.json')) &&
+    !fse.existsSync(path.join(pkg.location, 'tsconfig.json'))
   ) {
     return false;
   }
 
   /* istanbul ignore if  */
-  if (!fs.existsSync(path.join(pkg.location, 'dist/index.d.ts'))) return false;
-
-  return true;
+  return fse.existsSync(path.join(pkg.location, 'dist/index.d.ts'));
 }
 
 /**

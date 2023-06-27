@@ -3,11 +3,12 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-const {Project} = require('@lerna/project');
+const path = require('node:path');
 const {Minimatch} = require('minimatch');
 const _ = require('lodash');
-const path = require('path');
 const chalk = require('chalk');
+const pkgJson = require('@npmcli/package-json');
+const mapWorkspaces = require('@npmcli/map-workspaces');
 const {git, getYears} = require('./git');
 const {FSE, jsOrTsFiles} = require('./fs');
 const {spdxLicenseList} = require('./license');
@@ -31,8 +32,7 @@ function getCustomTemplate(customLicenseLines = []) {
   if (typeof customLicenseLines === 'string') {
     customLicenseLines = [customLicenseLines];
   }
-  const UNLICENSED = _.template(COPYRIGHT.join('\n'));
-  let CUSTOM = UNLICENSED;
+  let CUSTOM = _.template(COPYRIGHT.join('\n'));
   if (customLicenseLines.length) {
     let copyrightLines = COPYRIGHT;
     if (customLicenseLines.some(line => line.includes('Copyright'))) {
@@ -59,10 +59,9 @@ function getHeaderRegEx(customLicenseLines) {
     customLicenseLines != null && customLicenseLines.length
       ? customLicenseLines
       : COPYRIGHT.concat(LICENSE, customLicenseLines);
-  const regExp = lines.map(
+  return lines.map(
     l => new RegExp(escapeRegExp(l).replace(/<%[^>]+%>/g, '.*')),
   );
-  return regExp;
 }
 
 /**
@@ -108,7 +107,8 @@ function getCopyrightOwner(pkg, options) {
 
 /**
  * Build the license template params
- * @param {string|object} spdxLicense - SPDX license id or object
+ * @param {String|Object} spdxLicense - SPDX license id or object
+ * @param {Array} customLicenseLines
  */
 function expandLicense(spdxLicense, customLicenseLines = []) {
   if (typeof spdxLicense === 'string') {
@@ -202,13 +202,13 @@ async function updateFileHeaders(projectRoot, options = {}) {
     ...options,
   };
 
-  const fs = options.fs || FSE;
-  const isMonorepo = await fs.exists(path.join(projectRoot, 'lerna.json'));
-  if (isMonorepo) {
-    // List all packages for the monorepo
-    const project = new Project(projectRoot);
-    debug('Lerna monorepo', project);
-    const packages = await project.getPackages();
+  const {content: rootPkg} = await pkgJson.load(projectRoot);
+  if ('workspaces' in rootPkg) {
+    const workspaces = await mapWorkspaces({cwd: projectRoot, pkg: rootPkg});
+    const packages = Array.from(workspaces, ([name, location]) => ({
+      name,
+      location,
+    }));
 
     // Update file headers for each package
     const visited = [];

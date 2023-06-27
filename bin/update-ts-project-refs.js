@@ -12,12 +12,13 @@
  */
 'use strict';
 
-const {PackageGraph} = require('@lerna/package-graph');
-const path = require('path');
-const fs = require('fs-extra');
+const path = require('node:path');
+const fse = require('fs-extra');
+const debugFactory = require('debug');
+const pkgJson = require('@npmcli/package-json');
+const mapWorkspaces = require('@npmcli/map-workspaces');
 const {
   isDryRun,
-  loadLernaRepo,
   printJson,
   writeJsonSync,
   cloneJson,
@@ -25,19 +26,19 @@ const {
   runMain,
 } = require('./script-util');
 
-const debug = require('debug')('loopback:monorepo');
+const debug = debugFactory('loopback:monorepo');
 
 const TSCONFIG = 'tsconfig.json';
 const TSCONFIG_BUILD = 'tsconfig.build.json';
 
-function loadTsConfig(pkgLocation, dryRun = true) {
-  const tsconfigFile = path.join(pkgLocation, TSCONFIG);
+function loadTsConfig(location, dryRun = true) {
+  const tsconfigFile = path.join(location, TSCONFIG);
   let file = tsconfigFile;
-  if (!fs.existsSync(tsconfigFile)) {
-    const tsconfigBuildFile = path.join(pkgLocation, TSCONFIG_BUILD);
-    if (fs.existsSync(tsconfigBuildFile)) {
+  if (!fse.existsSync(tsconfigFile)) {
+    const tsconfigBuildFile = path.join(location, TSCONFIG_BUILD);
+    if (fse.existsSync(tsconfigBuildFile)) {
       if (!dryRun) {
-        fs.moveSync(tsconfigBuildFile, tsconfigFile);
+        fse.moveSync(tsconfigBuildFile, tsconfigFile);
       } else {
         file = tsconfigBuildFile;
       }
@@ -57,43 +58,51 @@ function loadTsConfig(pkgLocation, dryRun = true) {
  * - dryRun: a flag to control if a dry run is intended
  */
 async function updateTsReferences(options) {
-  const dryRun = isDryRun(options);
-  const {project, packages} = await loadLernaRepo();
-
   const rootRefs = [];
-  const graph = new PackageGraph(packages);
+  const dryRun = isDryRun(options);
 
-  const tsPackages = Array.from(graph.values()).filter(p => {
-    debug(
-      'Checking TypeScript project references for %s@%s',
-      p.pkg.name,
-      p.pkg.version,
-    );
-    const pkgLocation = p.pkg.location;
-    return loadTsConfig(pkgLocation, dryRun) != null;
+  const {content: rootPkg} = await pkgJson.normalize(process.cwd());
+  const workspaces = await mapWorkspaces({cwd: process.cwd(), pkg: rootPkg});
+
+  const tsPackages = Array.from(workspaces).filter(([name, location]) => {
+    debug('Checking TypeScript project references for %s', name);
+    return loadTsConfig(location, dryRun) != null;
   });
 
   let changed = false;
-  for (const p of tsPackages) {
-    const pkgLocation = p.pkg.location;
-    const tsconfigMeta = loadTsConfig(pkgLocation, dryRun);
-    const tsconfigFile = tsconfigMeta.file;
-    rootRefs.push({
-      path: path
-        .join(path.relative(project.rootPath, pkgLocation), TSCONFIG)
-        .replace(/\\/g, '/'),
-    });
-    const tsconfig = tsconfigMeta.tsconfig;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  for (const [name, location] of tsPackages) {
+    const {content: pkg} = await pkgJson.load(location);
+    const {file: tsconfigFile, tsconfig} = loadTsConfig(location, dryRun);
     const originalTsconfigJson = cloneJson(tsconfig);
 
+    rootRefs.push({
+      path: path
+        .join(path.relative(process.cwd(), location), TSCONFIG)
+        .replace(/\\/g, '/'),
+    });
+
+    const graphDependencies = Object.assign(
+      {},
+      pkg.devDependencies,
+      pkg.optionalDependencies,
+      pkg.peerDependencies,
+      pkg.dependencies,
+    );
+
+    const localDependencies = new Map(
+      [...workspaces].filter(value => {
+        return Object.keys(graphDependencies).includes(value[0]);
+      }),
+    );
+
     const refs = [];
-    for (const d of p.localDependencies.keys()) {
-      const depPkg = graph.get(d);
-      // Skip non-typescript packages
-      if (loadTsConfig(depPkg.location, dryRun) == null) continue;
-      const relativePath = path.relative(pkgLocation, depPkg.pkg.location);
+    for (const d of localDependencies) {
+      if (loadTsConfig(d[1], dryRun) == null) continue;
+      const relativePath = path.relative(location, d[1]);
       refs.push({path: path.join(relativePath, TSCONFIG).replace(/\\/g, '/')});
     }
+
     tsconfig.compilerOptions = {
       // outDir has to be set in tsconfig instead of CLI for tsc -b
       outDir: 'dist',
@@ -102,7 +111,7 @@ async function updateTsReferences(options) {
       composite: true,
     };
 
-    if (!tsconfig.include || p.name.startsWith('@loopback/example-')) {
+    if (!tsconfig.include || pkg.name.startsWith('@loopback/example-')) {
       // To include ts/json files
       tsconfig.include = ['src/**/*', 'src/**/*.json'];
     }
@@ -117,12 +126,12 @@ async function updateTsReferences(options) {
       }
     } else {
       // Otherwise write to console
-      console.log('- %s', p.pkg.name);
+      console.log('- %s', pkg.name);
       printJson(tsconfig);
     }
   }
 
-  const rootTsconfigFile = path.join(project.rootPath, 'tsconfig.json');
+  const rootTsconfigFile = path.join(process.cwd(), 'tsconfig.json');
   const rootTsconfig = require(rootTsconfigFile);
   const originalRootTsconfigJson = cloneJson(rootTsconfig);
 
@@ -148,7 +157,7 @@ async function updateTsReferences(options) {
       console.log('TypeScript project references are up to date.');
     }
   } else {
-    console.log('\n%s', path.relative(project.rootPath, rootTsconfigFile));
+    console.log('\n%s', path.relative(process.cwd(), rootTsconfigFile));
     printJson(rootTsconfig);
   }
 }

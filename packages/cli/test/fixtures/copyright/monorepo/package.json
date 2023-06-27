@@ -1,5 +1,6 @@
 {
   "name": "mymonorepo",
   "copyright.owner": "ACME Inc.",
-  "license": "MIT"
+  "license": "MIT",
+  "workspaces": ["packages/*"]
 }

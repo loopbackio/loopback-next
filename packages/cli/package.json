@@ -39,6 +39,8 @@
     ".yo-rc.json"
   ],
   "dependencies": {
+    "@npmcli/map-workspaces": "^3.0.4",
+    "@npmcli/package-json": "^3.1.1",
     "@openapi-contrib/openapi-schema-to-json-schema": "^3.3.2",
     "@phenomnomnominal/tsquery": "^5.0.1",
     "camelcase-keys": "^7.0.2",

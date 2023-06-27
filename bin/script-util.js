@@ -5,52 +5,12 @@
 
 'use strict';
 
-const {Project} = require('@lerna/project');
-const path = require('path');
-const assert = require('assert');
-const util = require('util');
-const fs = require('fs-extra');
+const assert = require('node:assert');
+const util = require('node:util');
+const fse = require('fs-extra');
 const spawn = require('cross-spawn');
 
 const debug = require('debug')('loopback:monorepo');
-
-/**
- * Get a list of lerna packages with the optional filter function
- * @param {function} filter - Filter function
- * @param {string} cwd - Current directory to search for `lerna.json`
- */
-async function getPackages(filter = () => true, cwd = process.cwd()) {
-  // List all packages within the monorepo
-  const project = new Project(cwd);
-  const packages = await project.getPackages();
-  return packages.filter(filter);
-}
-
-/**
- * Load a lerna monorepo from the current directory
- * @param {string} cwd - Current directory to search for `lerna.json`
- */
-async function loadLernaRepo(cwd = process.cwd()) {
-  // List all packages within the monorepo
-  const project = new Project(cwd);
-  const packages = await project.getPackages();
-  return {project, packages};
-}
-
-/**
- * Traverse all packages in the Lerna monorepo
- * @param {function} processPackage - A function to process the package. It will
- * receive the package and project as two arguments.
- * @param {function} filter - An optional function to filter packages
- * @param {string} cwd - Current directory to search for `lerna.json`
- */
-async function traverseLernaRepo(processPackage, filter, cwd = process.cwd()) {
-  const {project, packages} = await loadLernaRepo(cwd);
-  const filteredPackages = filter == null ? packages : packages.filter(filter);
-  for (const pkg of filteredPackages) {
-    await processPackage(pkg, project);
-  }
-}
 
 /**
  * Write a json object into the file
@@ -58,7 +18,7 @@ async function traverseLernaRepo(processPackage, filter, cwd = process.cwd()) {
  * @param {*} json - JSON object
  */
 function writeJsonSync(file, json) {
-  return fs.writeJsonSync(file, json, {encoding: 'utf-8', spaces: 2});
+  return fse.writeJsonSync(file, json, {encoding: 'utf-8', spaces: 2});
 }
 
 /**
@@ -67,8 +27,7 @@ function writeJsonSync(file, json) {
  */
 function isDryRun(options) {
   if (options != null) return !!options.dryRun;
-  const dryRun = process.argv.slice(2).includes('--dry-run');
-  return dryRun;
+  return process.argv.slice(2).includes('--dry-run');
 }
 
 /**
@@ -102,26 +61,6 @@ function printJson(obj) {
  */
 function stringifyJson(obj) {
   return JSON.stringify(obj, null, 2);
-}
-
-/**
- * Check if a package is TypeScript project
- * @param {object} pkg - Lerna package
- */
-function isTypeScriptPackage(pkg) {
-  return fs.existsSync(path.join(pkg.location, 'tsconfig.json'));
-}
-
-/**
- * Check if a package is Monorepo
- * @param {object} pkg - Lerna package
- */
-function isMonorepoPackage(pkg) {
-  const json = pkg.toJSON();
-  return (
-    Array.isArray(json.workspaces) ||
-    fs.existsSync(path.join(pkg.location, 'lerna.json'))
-  );
 }
 
 /**
@@ -232,16 +171,11 @@ function runMain(currentModule, fn, ...args) {
   }
 }
 
-exports.loadLernaRepo = loadLernaRepo;
 exports.isDryRun = isDryRun;
-exports.getPackages = getPackages;
 exports.isJsonEqual = isJsonEqual;
 exports.cloneJson = cloneJson;
 exports.printJson = printJson;
-exports.isTypeScriptPackage = isTypeScriptPackage;
-exports.isMonorepoPackage = isMonorepoPackage;
 exports.writeJsonSync = writeJsonSync;
 exports.stringifyJson = stringifyJson;
-exports.traverseLernaRepo = traverseLernaRepo;
 exports.runMain = runMain;
 exports.runShell = runShell;

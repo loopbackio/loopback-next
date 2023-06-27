@@ -83,13 +83,13 @@
       "path": "examples/socketio/tsconfig.json"
     },
     {
+      "path": "examples/todo/tsconfig.json"
+    },
+    {
       "path": "examples/todo-jwt/tsconfig.json"
     },
     {
       "path": "examples/todo-list/tsconfig.json"
-    },
-    {
-      "path": "examples/todo/tsconfig.json"
     },
     {
       "path": "examples/validation-app/tsconfig.json"
@@ -185,22 +185,22 @@
       "path": "packages/openapi-v3/tsconfig.json"
     },
     {
+      "path": "packages/repository/tsconfig.json"
+    },
+    {
       "path": "packages/repository-json-schema/tsconfig.json"
     },
     {
       "path": "packages/repository-tests/tsconfig.json"
     },
     {
-      "path": "packages/repository/tsconfig.json"
+      "path": "packages/rest/tsconfig.json"
     },
     {
       "path": "packages/rest-crud/tsconfig.json"
     },
     {
       "path": "packages/rest-explorer/tsconfig.json"
-    },
-    {
-      "path": "packages/rest/tsconfig.json"
     },
     {
       "path": "packages/security/tsconfig.json"
