@@ -5,10 +5,10 @@
 
 'use strict';
 
+const path = require('node:path');
 const yeoman = require('yeoman-environment');
-const path = require('path');
 const helpers = require('yeoman-test');
-const fs = require('fs-extra');
+const fse = require('fs-extra');
 const {stringifyObject} = require('../lib/utils');
 
 exports.testSetUpGen = function (genName, arg) {
@@ -68,8 +68,7 @@ exports.executeGenerator = function (GeneratorOrNamespace, settings) {
  * @param {boolean} [options.includeDummyRepository] Creates a dummy repository file in /src/repositories/bar.repository.ts
  * @param {boolean} [options.includeSandboxFilesFixtures] creates files specified in SANDBOX_FILES array
  */
-exports.givenLBProject = function (rootDir, options) {
-  options = options || {};
+exports.givenLBProject = function (rootDir, options = {}) {
   const sandBoxFiles = options.additionalFiles || [];
 
   const content = {
@@ -85,50 +84,50 @@ exports.givenLBProject = function (rootDir, options) {
   }
 
   if (!options.excludePackageJSON) {
-    fs.writeFileSync(
+    fse.writeFileSync(
       path.join(rootDir, 'package.json'),
       JSON.stringify(content),
     );
   }
 
   if (!options.excludeYoRcJSON) {
-    fs.writeFileSync(path.join(rootDir, '.yo-rc.json'), JSON.stringify({}));
+    fse.writeFileSync(path.join(rootDir, '.yo-rc.json'), JSON.stringify({}));
   }
 
-  fs.mkdirSync(path.join(rootDir, 'src'));
+  fse.mkdirSync(path.join(rootDir, 'src'));
 
   if (!options.excludeControllersDir) {
-    fs.mkdirSync(path.join(rootDir, 'src', 'controllers'));
+    fse.mkdirSync(path.join(rootDir, 'src', 'controllers'));
   }
 
   if (!options.excludeModelsDir) {
-    fs.mkdirSync(path.join(rootDir, 'src', 'models'));
+    fse.mkdirSync(path.join(rootDir, 'src', 'models'));
   }
 
   if (!options.excludeRepositoriesDir) {
-    fs.mkdirSync(path.join(rootDir, 'src', 'repositories'));
+    fse.mkdirSync(path.join(rootDir, 'src', 'repositories'));
   }
 
   if (!options.excludeDataSourcesDir) {
-    fs.mkdirSync(path.join(rootDir, 'src', 'datasources'));
+    fse.mkdirSync(path.join(rootDir, 'src', 'datasources'));
   }
 
   if (options.includeDummyModel) {
     const modelPath = path.join(rootDir, '/src/models/product-review.model.ts');
-    fs.writeFileSync(modelPath, '--DUMMY VALUE--');
+    fse.writeFileSync(modelPath, '--DUMMY VALUE--');
   }
 
   if (options.includeDummyRepository) {
     const repoPath = path.join(rootDir, '/src/repositories/bar.repository.ts');
-    fs.writeFileSync(repoPath, '--DUMMY VALUE--');
+    fse.writeFileSync(repoPath, '--DUMMY VALUE--');
   }
 
   if (sandBoxFiles.length > 0) {
     for (const theFile of sandBoxFiles) {
       const fullPath = path.join(rootDir, theFile.path, theFile.file);
-      if (!fs.existsSync(fullPath)) {
-        fs.ensureDirSync(path.dirname(fullPath));
-        fs.writeFileSync(fullPath, theFile.content);
+      if (!fse.existsSync(fullPath)) {
+        fse.ensureDirSync(path.dirname(fullPath));
+        fse.writeFileSync(fullPath, theFile.content);
       }
     }
   }
