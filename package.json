@@ -34,7 +34,7 @@
     "docs:start": "cd docs/_preview && bundle exec jekyll serve --no-w --i",
     "pretest": "npm run clean && npm run build",
     "test": "node packages/build/bin/run-nyc npm run mocha",
-    "mocha": "node packages/build/bin/run-mocha --lang en_US.UTF-8 \"{packages,extensions,examples}/*/dist/__tests__/**/*.js\" \"packages/{build}/test/**/*.js\" --exclude \"examples/webpack/**\"",
+    "mocha": "node packages/build/bin/run-mocha --lang en_US.UTF-8 \"{packages,extensions,examples}/*/dist/__tests__/**/*.js\" \"packages/{build,cli}/test/**/*.js\" --exclude \"examples/webpack/**\"",
     "posttest": "npm run lint"
   },
   "config": {
