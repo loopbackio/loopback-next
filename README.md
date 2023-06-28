@@ -44,7 +44,7 @@ We are providing Maintenance support for
 
 | Version    | Status      | Published | EOL                  |
 | ---------- | ----------- | --------- | -------------------- |
-| LoopBack 4 | Current     | Oct 2018  | Apr 2025 _(minimum)_ |
+| LoopBack 4 | Current     | Oct 2018  | Apr 2026 _(minimum)_ |
 | LoopBack 3 | End-of-Life | Dec 2016  | Dec 2020             |
 | LoopBack 2 | End-of-Life | Jul 2014  | Apr 2019             |
 
@@ -58,7 +58,7 @@ Make sure you have the following installed:
 
 | Package                                    | Version/-s                                                             | Link                                  | Note                                                                                                  |
 | ------------------------------------------ | ---------------------------------------------------------------------- | ------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| [Node.js](https://nodejs.org/en/download/) | Maintenance LTS (_v16_) <br/> Active LTS (_v18_) <br/> Current (_v19_) | https://nodejs.org/en/about/releases/ | <span style="color: yellow;">The use of the current version for production is not recommended</span>. |
+| [Node.js](https://nodejs.org/en/download/) | Maintenance LTS (_v16_) <br/> Active LTS (_v18_) <br/> Current (_v20_) | https://nodejs.org/en/about/releases/ | <span style="color: yellow;">The use of the current version for production is not recommended</span>. |
 
 Install LoopBack 4 CLI to help create new projects as follows:
 
