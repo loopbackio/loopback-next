@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.4.1](https://github.com/loopbackio/loopback-next/compare/@loopback/tsdocs-monorepo@0.4.0...@loopback/tsdocs-monorepo@0.4.1) (2023-06-28)
+
+
+### Bug Fixes
+
+* run lerna repair command ([fe72763](https://github.com/loopbackio/loopback-next/commit/fe727639605b839dbfb5afd953a47238aa5c01cc))
+
+
+
+
+
 # [0.4.0](https://github.com/loopbackio/loopback-next/compare/@loopback/tsdocs-monorepo@0.3.10...@loopback/tsdocs-monorepo@0.4.0) (2023-05-15)
 
 

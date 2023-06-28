@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.1.0](https://github.com/loopbackio/loopback-next/compare/@loopback/repository-json-schema@7.0.0...@loopback/repository-json-schema@7.1.0) (2023-06-28)
+
+
+### Bug Fixes
+
+* support blob type ([daec519](https://github.com/loopbackio/loopback-next/commit/daec519723798fb443e3b8ed79a44d09a3a10707))
+
+
+### Features
+
+* update dependency @types/node to ^16 ([2af42b7](https://github.com/loopbackio/loopback-next/commit/2af42b721c6dfc2df49bfcac1cbea478aba417ab))
+
+
+
+
+
 # [7.0.0](https://github.com/loopbackio/loopback-next/compare/@loopback/repository-json-schema@6.1.4...@loopback/repository-json-schema@7.0.0) (2023-05-15)
 
 

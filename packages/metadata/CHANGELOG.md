@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.1.0](https://github.com/loopbackio/loopback-next/compare/@loopback/metadata@6.0.0...@loopback/metadata@6.1.0) (2023-06-28)
+
+
+### Bug Fixes
+
+* fix compilation errors for TS 5.x ([e04fb14](https://github.com/loopbackio/loopback-next/commit/e04fb1410decc882664e13ed8de1d0e323f98528))
+
+
+### Features
+
+* update dependency @types/node to ^16 ([2af42b7](https://github.com/loopbackio/loopback-next/commit/2af42b721c6dfc2df49bfcac1cbea478aba417ab))
+
+
+
+
+
 # [6.0.0](https://github.com/loopbackio/loopback-next/compare/@loopback/metadata@5.0.10...@loopback/metadata@6.0.0) (2023-05-15)
 
 

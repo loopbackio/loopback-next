@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.1](https://github.com/loopbackio/loopback-next/compare/@loopback/docs@6.0.0...@loopback/docs@6.0.1) (2023-06-28)
+
+
+### Bug Fixes
+
+* migrate Lerna to NPM Workspaces ([d5c4994](https://github.com/loopbackio/loopback-next/commit/d5c4994d28f1741427b427d99ca4df03936547e6))
+
+
+
+
+
 # [6.0.0](https://github.com/loopbackio/loopback-next/compare/@loopback/docs@5.2.1...@loopback/docs@6.0.0) (2023-05-15)
 
 

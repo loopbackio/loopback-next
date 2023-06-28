@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.23.0](https://github.com/loopbackio/loopback-next/compare/@loopback/repository-tests@0.22.0...@loopback/repository-tests@0.23.0) (2023-06-28)
+
+
+### Features
+
+* update dependency @types/node to ^16 ([2af42b7](https://github.com/loopbackio/loopback-next/commit/2af42b721c6dfc2df49bfcac1cbea478aba417ab))
+
+
+
+
+
 # [0.22.0](https://github.com/loopbackio/loopback-next/compare/@loopback/repository-tests@0.21.10...@loopback/repository-tests@0.22.0) (2023-05-15)
 
 

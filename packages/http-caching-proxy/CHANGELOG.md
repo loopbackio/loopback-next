@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.1.0](https://github.com/loopbackio/loopback-next/compare/@loopback/http-caching-proxy@5.0.0...@loopback/http-caching-proxy@5.1.0) (2023-06-28)
+
+
+### Bug Fixes
+
+* make changes to adapt Axios v1.x ([51c4bbf](https://github.com/loopbackio/loopback-next/commit/51c4bbfb5c2d47e401b2f9a7d1db406f9db3b2a1))
+
+
+### Features
+
+* update dependency @types/node to ^16 ([2af42b7](https://github.com/loopbackio/loopback-next/commit/2af42b721c6dfc2df49bfcac1cbea478aba417ab))
+
+
+
+
+
 # [5.0.0](https://github.com/loopbackio/loopback-next/compare/@loopback/http-caching-proxy@4.0.10...@loopback/http-caching-proxy@5.0.0) (2023-05-15)
 
 

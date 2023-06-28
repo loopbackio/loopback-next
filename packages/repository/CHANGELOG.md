@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.1.0](https://github.com/loopbackio/loopback-next/compare/@loopback/repository@6.0.0...@loopback/repository@6.1.0) (2023-06-28)
+
+
+### Bug Fixes
+
+* **repository:** restore async for entityToData method in legacy-juggler-bridge ([7a0c6de](https://github.com/loopbackio/loopback-next/commit/7a0c6dea07e1b784a3afaacf75508c8227c8227e))
+
+
+### Features
+
+* update dependency @types/node to ^16 ([2af42b7](https://github.com/loopbackio/loopback-next/commit/2af42b721c6dfc2df49bfcac1cbea478aba417ab))
+
+
+
+
+
 # [6.0.0](https://github.com/loopbackio/loopback-next/compare/@loopback/repository@5.1.5...@loopback/repository@6.0.0) (2023-05-15)
 
 

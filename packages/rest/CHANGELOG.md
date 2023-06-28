@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [13.1.0](https://github.com/loopbackio/loopback-next/compare/@loopback/rest@13.0.0...@loopback/rest@13.1.0) (2023-06-28)
+
+
+### Features
+
+* update dependency @types/node to ^16 ([2af42b7](https://github.com/loopbackio/loopback-next/commit/2af42b721c6dfc2df49bfcac1cbea478aba417ab))
+
+
+
+
+
 # [13.0.0](https://github.com/loopbackio/loopback-next/compare/@loopback/rest@12.0.10...@loopback/rest@13.0.0) (2023-05-15)
 
 

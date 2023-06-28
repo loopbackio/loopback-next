@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.4.0](https://github.com/loopbackio/loopback-next/compare/@loopback/sequelize@0.3.0...@loopback/sequelize@0.4.0) (2023-06-28)
+
+
+### Bug Fixes
+
+* **sequelize:** defer to `toJSON` for hidden property exclusion ([89b12b9](https://github.com/loopbackio/loopback-next/commit/89b12b992a5b176f5c4e022703d227702adda468))
+* **sequelize:** get table name dynamically ([2a7ca80](https://github.com/loopbackio/loopback-next/commit/2a7ca805da0d717afc1f98f529f18ba527d5bcc2))
+* **sequelize:** handle invalid inclusion filter ([dae9d49](https://github.com/loopbackio/loopback-next/commit/dae9d4957460c94142da2a52c84e11ece961a0d1)), closes [#9635](https://github.com/loopbackio/loopback-next/issues/9635)
+* **sequelize:** preserve error context ([b7ca762](https://github.com/loopbackio/loopback-next/commit/b7ca762d8d55d05d86d3122cdfb2c873c87c8cde)), closes [#9626](https://github.com/loopbackio/loopback-next/issues/9626)
+* **sequelize:** statically use 5.1.4 version of sqlite3 ([135a500](https://github.com/loopbackio/loopback-next/commit/135a50023b71f4a2817eebe933e90e29768741ec))
+
+
+### Features
+
+* **sequelize:** allow direct option forwarding to sequelize instance ([f751040](https://github.com/loopbackio/loopback-next/commit/f7510408e3ebdc35446a73f6e85d419bf3c160a6))
+* **sequelize:** custom query support ([a30ecc8](https://github.com/loopbackio/loopback-next/commit/a30ecc826b47c246ed33ebb172d250ea72bb4e61))
+* update dependency @types/node to ^16 ([2af42b7](https://github.com/loopbackio/loopback-next/commit/2af42b721c6dfc2df49bfcac1cbea478aba417ab))
+
+
+
+
+
 # [0.3.0](https://github.com/loopbackio/loopback-next/compare/@loopback/sequelize@0.2.0...@loopback/sequelize@0.3.0) (2023-05-15)
 
 
