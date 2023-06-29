@@ -70,7 +70,7 @@
     "tabtab": "^3.0.2",
     "terminal-link": "^2.1.1",
     "tildify": "^2.0.0",
-    "ts-morph": "^17.0.1",
+    "ts-morph": "^19.0.0",
     "typescript": "~5.1.6",
     "unicode-10.0.0": "^0.7.5",
     "untildify": "^4.0.0",
