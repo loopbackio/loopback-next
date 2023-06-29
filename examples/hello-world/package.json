@@ -56,6 +56,6 @@
     "@loopback/testlab": "^6.1.0",
     "@types/node": "^16.18.37",
     "eslint": "^8.43.0",
-    "typescript": "~5.1.5"
+    "typescript": "~5.1.6"
   }
 }
