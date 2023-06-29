@@ -11,20 +11,31 @@
 'use strict';
 
 const path = require('node:path');
-const {
-  isDryRun,
-  printJson,
-  writeJsonSync,
-  loadLernaRepo,
-  runMain,
-} = require('./script-util');
+const pkgJson = require('@npmcli/package-json');
+const mapWorkspaces = require('@npmcli/map-workspaces');
+const {isDryRun, printJson, runMain} = require('./script-util');
 
 /**
  * Update `templateDependencies` in `packages/cli/package.json`
  * @param {*} options - Options
  */
 async function updateTemplateDeps(options) {
-  const {project, packages} = await loadLernaRepo();
+  const rootPath = process.cwd();
+
+  const {content: rootPkg} = await pkgJson.load(rootPath);
+  const workspaces = await mapWorkspaces({cwd: rootPath, pkg: rootPkg});
+
+  const packages = await Promise.all(
+    Array.from(workspaces, async ([name, location]) => {
+      const {content: pkg} = await pkgJson.load(location);
+      return {
+        name,
+        location,
+        private: pkg.private ?? false,
+        version: pkg.version,
+      };
+    }),
+  );
 
   const pkgs = packages
     .filter(pkg => !pkg.private)
@@ -38,52 +49,43 @@ async function updateTemplateDeps(options) {
     lbModules[p.name] = '^' + p.version;
   }
 
-  const rootPath = project.rootPath;
-
   // Load eslint related dependencies from `packages/eslint-config/package.json`
-  const eslintDeps = require(path.join(
-    rootPath,
-    'packages/eslint-config/package.json',
-  )).dependencies;
+  const {content: eslintPkg} = await pkgJson.load(
+    path.join(rootPath, 'packages/eslint-config'),
+  );
 
   // Load dependencies from `packages/build/package.json`
-  const buildDeps = require(path.join(
-    rootPath,
-    'packages/build/package.json',
-  )).dependencies;
+  const {content: buildPkg} = await pkgJson.load(
+    path.join(rootPath, 'packages/build'),
+  );
 
   // Load dependencies from `packages/core/package.json` for `tslib`
-  const coreDeps = require(path.join(
-    rootPath,
-    'packages/core/package.json',
-  )).dependencies;
+  const {content: corePkg} = await pkgJson.load(
+    path.join(rootPath, 'packages/core'),
+  );
 
-  // Load dependencies from `packages/cli/package.json`
-  const cliPackageJson = path.join(rootPath, 'packages/cli/package.json');
+  const cliPath = path.join(rootPath, 'packages/cli');
 
-  // Loading existing dependencies from `packages/cli/package.json`
-  const cliPkg = require(cliPackageJson);
-  cliPkg.config = cliPkg.config || {};
-  const currentDeps = cliPkg.config.templateDependencies || {};
+  const cliPkg = await pkgJson.load(cliPath);
 
-  // Merge all entries
-  const deps = {
-    tslib: coreDeps.tslib,
-    ...currentDeps,
-    ...buildDeps,
-    ...eslintDeps,
-    ...lbModules,
+  const config = {
+    ...cliPkg.content.config,
+    templateDependencies: {
+      tslib: corePkg.dependencies.tslib,
+      ...cliPkg.content.config.templateDependencies,
+      ...buildPkg.dependencies,
+      ...eslintPkg.dependencies,
+      ...lbModules,
+    },
   };
-
-  cliPkg.config.templateDependencies = deps;
 
   if (isDryRun(options)) {
     // Dry run
-    printJson(cliPkg);
+    printJson(config);
   } else {
-    //Overwrite packages/cli/lib/dependencies.json
-    writeJsonSync(cliPackageJson, cliPkg);
-    console.log('%s has been updated.', cliPackageJson);
+    cliPkg.update({config});
+    const fullPath = path.join(cliPath, 'package.json');
+    console.log('%s has been updated.', path.relative(process.cwd(), fullPath));
   }
 }
 
