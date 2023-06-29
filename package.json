@@ -69,7 +69,7 @@
     "markdown-table": "^3.0.3",
     "open-cli": "^7.2.0",
     "prettier": "^2.8.8",
-    "typescript": "~5.1.5"
+    "typescript": "~5.1.6"
   },
   "engineStrict": true,
   "engines": {
