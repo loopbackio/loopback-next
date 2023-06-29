@@ -9,6 +9,7 @@
   ],
   "license": "MIT",
   "bin": {
+    "lb": "bin/cli-main.js",
     "lb4": "bin/cli-main.js"
   },
   "main": "generators/app/index.js",
