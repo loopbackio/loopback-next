@@ -60,10 +60,11 @@ Make sure you have the following installed:
 | ------------------------------------------ | ---------------------------------------------------------------------- | ------------------------------------- | ----------------------------------------------------------------------------------------------------- |
 | [Node.js](https://nodejs.org/en/download/) | Maintenance LTS (_v16_) <br/> Active LTS (_v18_) <br/> Current (_v20_) | https://nodejs.org/en/about/releases/ | <span style="color: yellow;">The use of the current version for production is not recommended</span>. |
 
-Install LoopBack 4 CLI to help create new projects as follows:
+You can generate a project with our generator or with the CLI as follows:
 
 ```shell
-npm i -g @loopback/cli
+npm create loopback
+npx -p @loopback/cli lb app
 ```
 
 To create your first LoopBack 4 application, see
