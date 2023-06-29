@@ -76,7 +76,7 @@
     "unicode-10.0.0": "^0.7.5",
     "untildify": "^4.0.0",
     "update-notifier": "^5.1.0",
-    "url-slug": "^3.0.6",
+    "url-slug": "^4.0.1",
     "validate-npm-package-name": "^5.0.0",
     "write-file-atomic": "^5.0.1",
     "yeoman-environment": "^3.19.3",
