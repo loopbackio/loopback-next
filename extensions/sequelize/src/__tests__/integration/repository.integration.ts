@@ -2,16 +2,18 @@ import {AnyObject} from '@loopback/repository';
 import {RestApplication} from '@loopback/rest';
 import {
   Client,
+  StubbedInstanceWithSinonAccessor,
+  TestSandbox,
   createRestAppClient,
   createStubInstance,
   expect,
   givenHttpServerConfig,
-  StubbedInstanceWithSinonAccessor,
-  TestSandbox,
 } from '@loopback/testlab';
 import _ from 'lodash';
 import {resolve} from 'path';
 import {UniqueConstraintError} from 'sequelize';
+import {fail} from 'should';
+import {validate as uuidValidate, version as uuidVersion} from 'uuid';
 import {SequelizeCrudRepository, SequelizeDataSource} from '../../sequelize';
 import {SequelizeSandboxApplication} from '../fixtures/application';
 import {config as primaryDataSourceConfig} from '../fixtures/datasources/primary.datasource';
@@ -21,6 +23,7 @@ import {Box, Event, eventTableName} from '../fixtures/models/test.model';
 import {
   DeveloperRepository,
   ProgrammingLanguageRepository,
+  TaskRepository,
   UserRepository,
 } from '../fixtures/repositories';
 
@@ -38,6 +41,7 @@ describe('Sequelize CRUD Repository (integration)', () => {
 
   let app: SequelizeSandboxApplication;
   let userRepo: UserRepository;
+  let taskRepo: TaskRepository;
   let developerRepo: DeveloperRepository;
   let languagesRepo: ProgrammingLanguageRepository;
   let client: Client;
@@ -68,6 +72,54 @@ describe('Sequelize CRUD Repository (integration)', () => {
       } catch (err) {
         expect(err).to.be.instanceOf(UniqueConstraintError);
       }
+    });
+
+    describe('defaultFn Support', () => {
+      beforeEach(async () => {
+        await client.get('/tasks/sync-sequelize-model').send();
+      });
+      it('supports defaultFn: "uuid" in property decorator', async () => {
+        const task = await taskRepo.create({title: 'Task 1'});
+
+        expect(uuidValidate(task.uuidv1)).to.be.true();
+        expect(uuidVersion(task.uuidv1)).to.be.eql(1);
+      });
+
+      it('supports defaultFn: "uuidv4" in property decorator', async () => {
+        const task = await taskRepo.create({title: 'Task title'});
+
+        expect(uuidValidate(task.uuidv4)).to.be.true();
+        expect(uuidVersion(task.uuidv4)).to.be.eql(4);
+      });
+
+      it('supports defaultFn: "nanoid" in property decorator', async () => {
+        const task = await taskRepo.create({title: 'Task title'});
+
+        expect(task.nanoId).to.be.String();
+        expect(task.nanoId.length).to.be.eql(taskRepo.NANO_ID_LENGTH);
+      });
+
+      it('supports defaultFn: "now" in property decorator', async () => {
+        const task = await taskRepo.create({title: 'Task title'});
+        if (task.createdAt) {
+          const isValidDate = _.isDate(task.createdAt);
+          expect(isValidDate).to.be.true();
+        } else {
+          fail(
+            task.createdAt,
+            '',
+            'task.createdAt is falsy, date is expected.',
+            'to be in date format',
+          );
+        }
+      });
+
+      it('supports defining custom aliases for defaultFn in property decorator', async () => {
+        const task = await taskRepo.create({title: 'Task title'});
+        expect(task.customAlias).to.be.Number();
+        expect(task.customAlias).to.be.belowOrEqual(1);
+        expect(task.customAlias).to.be.above(0);
+      });
     });
   });
 
@@ -783,6 +835,7 @@ describe('Sequelize CRUD Repository (integration)', () => {
         'book.model',
         'category.model',
         'product.model',
+        'task.model',
       ],
       repositories: [
         'index',
@@ -797,6 +850,7 @@ describe('Sequelize CRUD Repository (integration)', () => {
         'book.repository',
         'category.repository',
         'product.repository',
+        'task.repository',
       ],
       controllers: [
         'index',
@@ -817,6 +871,7 @@ describe('Sequelize CRUD Repository (integration)', () => {
         'transaction.controller',
         'product.controller',
         'test.controller.base',
+        'task.controller',
       ],
     };
 
@@ -854,6 +909,7 @@ describe('Sequelize CRUD Repository (integration)', () => {
     datasource = createStubInstance(SequelizeDataSource);
     developerRepo = await app.getRepository(DeveloperRepository);
     languagesRepo = await app.getRepository(ProgrammingLanguageRepository);
+    taskRepo = await app.getRepository(TaskRepository);
     client = createRestAppClient(app as RestApplication);
   }
 

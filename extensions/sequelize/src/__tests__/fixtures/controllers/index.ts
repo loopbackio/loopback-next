@@ -7,6 +7,7 @@ export * from './doctor.controller';
 export * from './patient.controller';
 export * from './product.controller';
 export * from './programming-languange.controller';
+export * from './task.controller';
 export * from './test.controller.base';
 export * from './todo-list-todo.controller';
 export * from './todo-list.controller';

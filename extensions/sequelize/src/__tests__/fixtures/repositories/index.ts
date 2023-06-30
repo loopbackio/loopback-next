@@ -6,6 +6,7 @@ export * from './doctor.repository';
 export * from './patient.repository';
 export * from './product.repository';
 export * from './programming-language.repository';
+export * from './task.repository';
 export * from './todo-list.repository';
 export * from './todo.repository';
 export * from './user.repository';
