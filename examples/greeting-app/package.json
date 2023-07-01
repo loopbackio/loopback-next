@@ -62,7 +62,7 @@
     "@loopback/testlab": "^6.1.0",
     "@types/debug": "4.1.8",
     "@types/node": "^16.18.38",
-    "eslint": "^8.43.0",
+    "eslint": "^8.44.0",
     "typescript": "~5.1.6"
   }
 }
