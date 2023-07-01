@@ -68,7 +68,7 @@
     "@loopback/testlab": "^6.1.0",
     "@types/lodash": "^4.14.195",
     "@types/morgan": "^1.9.4",
-    "@types/node": "^16.18.37",
+    "@types/node": "^16.18.38",
     "eslint": "^8.43.0",
     "lodash": "^4.17.21",
     "typescript": "~5.1.6"
