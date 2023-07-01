@@ -50,7 +50,7 @@
     "@loopback/eslint-config": "^14.0.1",
     "@loopback/testlab": "^6.1.0",
     "@types/debug": "^4.1.8",
-    "@types/node": "^16.18.37",
+    "@types/node": "^16.18.38",
     "@types/rimraf": "^3.0.2",
     "@types/tunnel": "0.0.3",
     "delay": "^5.0.0",

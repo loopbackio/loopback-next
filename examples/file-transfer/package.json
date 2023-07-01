@@ -59,7 +59,7 @@
     "@loopback/testlab": "^6.1.0",
     "@types/express-serve-static-core": "^4.17.35",
     "@types/multer": "^1.4.7",
-    "@types/node": "^16.18.37",
+    "@types/node": "^16.18.38",
     "eslint": "^8.43.0",
     "typescript": "~5.1.6"
   }
