@@ -15,7 +15,7 @@ It begins with the architecture of `@loopback/authentication` from high level.
 Then comes with the sub-sections for each artifact provided by the component.
 Each section shows:
 
-- **How to use it in the application.** (Code that users need to add when use
+- **How to use it in the application.** (Code that users need to add when using
   the module.)
 - **The mechanism of that artifact.** (Code that explains the mechanism.)
 
