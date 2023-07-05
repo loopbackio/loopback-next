@@ -10,10 +10,10 @@ import {
   SchemaObject,
   SchemasObject,
 } from '@loopback/openapi-v3';
-import Ajv, {AsyncValidateFunction, ErrorObject} from 'ajv';
-import {AnyValidateFunction, AsyncSchema} from 'ajv/dist/core';
-import debugModule from 'debug';
-import util from 'util';
+import util from 'node:util';
+import debugFactory from 'debug';
+import Ajv, {AsyncSchema, AsyncValidateFunction, ErrorObject} from 'ajv';
+import {AnyValidateFunction} from 'ajv/dist/types';
 import {HttpErrors, RequestBody, RestHttpErrors} from '..';
 import {
   SchemaValidatorCache,
@@ -25,8 +25,11 @@ import {
   DEFAULT_AJV_VALIDATION_OPTIONS,
 } from './ajv-factory.provider';
 
-const toJsonSchema = require('@openapi-contrib/openapi-schema-to-json-schema');
-const debug = debugModule('loopback:rest:validation');
+const {
+  openapiSchemaToJsonSchema: toJsonSchema,
+} = require('@openapi-contrib/openapi-schema-to-json-schema');
+
+const debug = debugFactory('loopback:rest:validation');
 
 /**
  * Check whether the request body is valid according to the provided OpenAPI schema.
@@ -47,14 +50,10 @@ export async function validateRequestBody(
   const required = requestBodySpec?.required;
 
   if (required && body.value == null) {
-    const err = Object.assign(
-      new HttpErrors.BadRequest('Request body is required'),
-      {
-        code: 'MISSING_REQUIRED_PARAMETER',
-        parameterName: 'request body',
-      },
-    );
-    throw err;
+    throw Object.assign(new HttpErrors.BadRequest('Request body is required'), {
+      code: 'MISSING_REQUIRED_PARAMETER',
+      parameterName: 'request body',
+    });
   }
   if (!required && !body.value) return;
 
@@ -181,17 +180,15 @@ export async function validateValueAgainstSchema(
 
   // Throw invalid request body error
   if (options.source === 'body') {
-    const error = RestHttpErrors.invalidRequestBody(
+    throw RestHttpErrors.invalidRequestBody(
       buildErrorDetails(validationErrors),
     );
-    throw error;
   }
 
   // Throw invalid value error
-  const error = RestHttpErrors.invalidData(value, options.name ?? '(unknown)', {
+  throw RestHttpErrors.invalidData(value, options.name ?? '(unknown)', {
     details: buildErrorDetails(validationErrors),
   });
-  throw error;
 }
 
 function buildErrorDetails(
