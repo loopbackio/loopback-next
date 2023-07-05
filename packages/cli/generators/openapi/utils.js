@@ -4,20 +4,18 @@
 // License text available at https://opensource.org/licenses/MIT
 
 'use strict';
-const fs = require('fs');
-const util = require('util');
+const {
+  openapiSchemaToJsonSchema,
+} = require('@openapi-contrib/openapi-schema-to-json-schema');
+const fs = require('node:fs');
+const util = require('node:util');
+const url = require('node:url');
 const _ = require('lodash');
 const json5 = require('json5');
-const url = require('url');
-
+const debugFactory = require('../../lib/debug');
 const utils = require('../../lib/utils');
-const debug = require('../../lib/debug')('openapi-generator');
 
-/**
- * Convert OpenAPI schema to JSON schema draft 4
- */
-const oasToJsonSchema4 = require('@openapi-contrib/openapi-schema-to-json-schema');
-
+const debug = debugFactory('openapi-generator');
 /**
  * Convert a string to title case
  * @param {string} str
@@ -258,7 +256,7 @@ function restoreSpecObject(specObject) {
  */
 function toJsonSchema(oasSchema) {
   oasSchema = restoreSpecObject(oasSchema);
-  let jsonSchema = oasToJsonSchema4(oasSchema);
+  let jsonSchema = openapiSchemaToJsonSchema(oasSchema);
   delete jsonSchema['$schema'];
   // See https://json-schema.org/draft-06/json-schema-release-notes.html
   if (jsonSchema.id) {
