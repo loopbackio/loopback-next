@@ -63,7 +63,7 @@
     "@types/bcryptjs": "2.4.2",
     "bcryptjs": "^2.4.3",
     "casbin": "^5.26.1",
-    "jsonwebtoken": "^9.0.0",
+    "jsonwebtoken": "^9.0.1",
     "loopback-connector-rest": "^4.0.3"
   },
   "devDependencies": {
