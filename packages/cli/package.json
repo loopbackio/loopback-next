@@ -43,7 +43,7 @@
     "@npmcli/map-workspaces": "^3.0.4",
     "@npmcli/package-json": "^3.1.1",
     "@openapi-contrib/openapi-schema-to-json-schema": "^4.0.5",
-    "@phenomnomnominal/tsquery": "^5.0.1",
+    "@phenomnomnominal/tsquery": "^6.1.1",
     "camelcase-keys": "^7.0.2",
     "chalk": "^4.1.2",
     "change-case": "^4.1.2",
