@@ -84,6 +84,7 @@ async function updateTemplateDeps(options) {
     printJson(config);
   } else {
     cliPkg.update({config});
+    await cliPkg.save();
     const fullPath = path.join(cliPath, 'package.json');
     console.log('%s has been updated.', path.relative(process.cwd(), fullPath));
   }
