@@ -184,10 +184,7 @@ describe('build', /** @this {Mocha.Suite} */ function () {
       command.indexOf('--locale en_US.UTF-8') !== -1,
       '--locale en_US.UTF-8 should be honored',
     );
-    assert(
-      command.indexOf('tsc.js -b') !== -1,
-      '-b should be the first argument',
-    );
+    assert(command.indexOf('tsc -b') !== -1, '-b should be the first argument');
   });
 
   it('runs prettier against ts files', done => {

@@ -14,10 +14,9 @@ Usage:
 */
 
 'use strict';
+const utils = require('./utils');
 
 function run(argv, options) {
-  const utils = require('./utils');
-
   const prettierOpts = argv.slice(2);
 
   const isConfigSet = utils.isOptionSet(
@@ -34,7 +33,7 @@ function run(argv, options) {
   }
   args.push(...prettierOpts);
 
-  return utils.runCLI('prettier/bin/prettier.cjs', args, options);
+  return utils.runCLI('.bin/prettier', args, options);
 }
 
 module.exports = run;

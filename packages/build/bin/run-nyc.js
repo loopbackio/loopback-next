@@ -14,14 +14,13 @@ Usage:
 */
 
 'use strict';
+const utils = require('./utils');
 
 function run(argv, options) {
-  const utils = require('./utils');
-
   const nycOpts = argv.slice(2);
   const args = [...nycOpts];
 
-  return utils.runCLI('nyc/bin/nyc', args, options);
+  return utils.runCLI('.bin/nyc', args, options);
 }
 
 module.exports = run;

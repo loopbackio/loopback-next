@@ -14,10 +14,9 @@ Usage:
 */
 
 'use strict';
+const utils = require('./utils');
 
 function run(argv, options) {
-  const utils = require('./utils');
-
   const mochaOpts = argv.slice(2);
 
   const setMochaOpts =
@@ -60,7 +59,7 @@ function run(argv, options) {
 
   const args = [...mochaOpts];
 
-  return utils.runCLI('mocha/bin/mocha', args, options);
+  return utils.runCLI('.bin/mocha', args, options);
 }
 
 module.exports = run;

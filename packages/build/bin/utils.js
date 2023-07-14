@@ -4,12 +4,13 @@
 // License text available at https://opensource.org/licenses/MIT
 
 'use strict';
-
 const util = require('util');
 const fs = require('fs');
 const path = require('path');
 const spawn = require('cross-spawn');
-const debug = require('debug')('loopback:build');
+const debugFactory = require('debug');
+
+const debug = debugFactory('loopback:build');
 
 /**
  * Get the root directory of this module

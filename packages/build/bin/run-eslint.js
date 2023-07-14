@@ -14,10 +14,9 @@ Usage:
 */
 
 'use strict';
+const utils = require('./utils');
 
 function run(argv, options) {
-  const utils = require('./utils');
-
   const eslintOpts = argv.slice(2);
 
   const isConfigSet = utils.isOptionSet(eslintOpts, '-c', '--config');
@@ -42,7 +41,7 @@ function run(argv, options) {
   }
   args.push(...eslintOpts);
 
-  return utils.runCLI('eslint/bin/eslint', args, options);
+  return utils.runCLI('.bin/eslint', args, options);
 }
 
 module.exports = run;

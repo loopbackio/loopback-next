@@ -17,13 +17,15 @@ Where <target> is one of es2015, es2017 or es2018.
 
 'use strict';
 
-const debug = require('debug')('loopback:build');
-const utils = require('./utils');
 const path = require('path');
 const fs = require('fs');
 const {globSync} = require('glob');
 const fse = require('fs-extra');
 const {buildOpts: buildOptions} = require('typescript');
+const debugFactory = require('debug');
+const utils = require('./utils');
+
+const debug = debugFactory('loopback:build');
 
 function run(argv, options) {
   if (options === true) {
