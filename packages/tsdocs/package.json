@@ -48,7 +48,7 @@
     "!/fixtures"
   ],
   "dependencies": {
-    "@microsoft/api-documenter": "^7.22.27",
+    "@microsoft/api-documenter": "^7.22.28",
     "@microsoft/api-extractor": "^7.36.2",
     "@npmcli/map-workspaces": "^3.0.4",
     "@npmcli/package-json": "^3.1.1",
