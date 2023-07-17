@@ -1,7 +1,7 @@
 {
   "name": "@loopback/repository",
   "description": "Define and implement a common set of interfaces for interacting with databases",
-  "version": "6.1.0",
+  "version": "6.1.1",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -36,7 +36,7 @@
     "@loopback/core": "^5.0.0"
   },
   "dependencies": {
-    "@loopback/filter": "^4.1.0",
+    "@loopback/filter": "^4.1.1",
     "@types/debug": "^4.1.8",
     "debug": "^4.3.4",
     "lodash": "^4.17.21",
@@ -44,10 +44,10 @@
     "tslib": "^2.6.0"
   },
   "devDependencies": {
-    "@loopback/build": "^10.1.0",
-    "@loopback/core": "^5.1.0",
-    "@loopback/eslint-config": "^14.0.1",
-    "@loopback/testlab": "^6.1.0",
+    "@loopback/build": "^10.1.1",
+    "@loopback/core": "^5.1.1",
+    "@loopback/eslint-config": "^14.0.2",
+    "@loopback/testlab": "^6.1.1",
     "@types/json-schema": "^7.0.12",
     "@types/lodash": "^4.14.195",
     "@types/node": "^16.18.38",

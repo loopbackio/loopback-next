@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.1.1](https://github.com/loopbackio/loopback-next/compare/@loopback/build@10.1.0...@loopback/build@10.1.1) (2023-07-17)
+
+**Note:** Version bump only for package @loopback/build
+
+
+
+
+
 # [10.1.0](https://github.com/loopbackio/loopback-next/compare/@loopback/build@10.0.0...@loopback/build@10.1.0) (2023-06-28)
 
 

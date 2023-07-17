@@ -1,7 +1,7 @@
 {
   "name": "@loopback/benchmark",
   "description": "Benchmarks measuring performance of our framework.",
-  "version": "5.1.0",
+  "version": "5.1.1",
   "keywords": [
     "loopback",
     "performance",
@@ -38,10 +38,10 @@
     "!*/__tests__"
   ],
   "dependencies": {
-    "@loopback/core": "^5.1.0",
-    "@loopback/example-todo": "^7.1.0",
-    "@loopback/openapi-spec-builder": "^6.1.0",
-    "@loopback/rest": "^13.1.0",
+    "@loopback/core": "^5.1.1",
+    "@loopback/example-todo": "^7.1.1",
+    "@loopback/openapi-spec-builder": "^6.1.1",
+    "@loopback/rest": "^13.1.1",
     "@types/byline": "^4.2.33",
     "@types/debug": "^4.1.8",
     "@types/request-promise-native": "^1.0.18",
@@ -54,8 +54,8 @@
     "tslib": "^2.6.0"
   },
   "devDependencies": {
-    "@loopback/build": "^10.1.0",
-    "@loopback/testlab": "^6.1.0",
+    "@loopback/build": "^10.1.1",
+    "@loopback/testlab": "^6.1.1",
     "@types/autocannon": "^7.9.1",
     "@types/benchmark": "^2.1.2",
     "@types/mocha": "^10.0.1",

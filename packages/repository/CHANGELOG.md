@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.1.1](https://github.com/loopbackio/loopback-next/compare/@loopback/repository@6.1.0...@loopback/repository@6.1.1) (2023-07-17)
+
+
+### Bug Fixes
+
+* remove unnecessary types ([cb44c08](https://github.com/loopbackio/loopback-next/commit/cb44c081e34db3807414c14e3f4b6c6fa370f207))
+
+
+
+
+
 # [6.1.0](https://github.com/loopbackio/loopback-next/compare/@loopback/repository@6.0.0...@loopback/repository@6.1.0) (2023-06-28)
 
 

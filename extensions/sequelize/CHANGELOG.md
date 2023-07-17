@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.5.0](https://github.com/loopbackio/loopback-next/compare/@loopback/sequelize@0.4.0...@loopback/sequelize@0.5.0) (2023-07-17)
+
+
+### Features
+
+* **sequelize:** add `defaultFn` support ([960c3eb](https://github.com/loopbackio/loopback-next/commit/960c3eb7a0f965c9965f01c27a4765c2ede67256)), closes [#9597](https://github.com/loopbackio/loopback-next/issues/9597)
+
+
+
+
+
 # [0.4.0](https://github.com/loopbackio/loopback-next/compare/@loopback/sequelize@0.3.0...@loopback/sequelize@0.4.0) (2023-06-28)
 
 

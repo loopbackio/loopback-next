@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.10.1](https://github.com/loopbackio/loopback-next/compare/@loopback/pooling@0.10.0...@loopback/pooling@0.10.1) (2023-07-17)
+
+
+### Bug Fixes
+
+* remove unnecessary types ([cb44c08](https://github.com/loopbackio/loopback-next/commit/cb44c081e34db3807414c14e3f4b6c6fa370f207))
+
+
+
+
+
 # [0.10.0](https://github.com/loopbackio/loopback-next/compare/@loopback/pooling@0.9.0...@loopback/pooling@0.10.0) (2023-06-28)
 
 
