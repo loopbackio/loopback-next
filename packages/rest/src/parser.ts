@@ -71,7 +71,7 @@ async function buildOperationArguments(
       throw new Error('$ref requestBody is not supported yet.');
     }
     const i = operationSpec.requestBody[REQUEST_BODY_INDEX];
-    requestBodyIndex = i != null ? i : 0;
+    requestBodyIndex = i ?? 0;
   }
 
   const paramArgs: OperationArgs = [];

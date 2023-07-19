@@ -292,8 +292,9 @@ describe('transformValueOrPromise', () => {
   });
 
   it('transforms a promise', async () => {
-    const result = await transformValueOrPromise(Promise.resolve('a'), v =>
-      v?.toUpperCase(),
+    const result = await transformValueOrPromise(
+      Promise.resolve('a'),
+      v => v?.toUpperCase(),
     );
     expect(result).to.eql('A');
   });

@@ -7,7 +7,10 @@ import {Binding, Context, inject, Provider} from '@loopback/core';
 import {logContexts} from '../util';
 
 export class Counter {
-  constructor(public readonly scope: string, public value: number) {}
+  constructor(
+    public readonly scope: string,
+    public value: number,
+  ) {}
 
   inc() {
     this.value++;

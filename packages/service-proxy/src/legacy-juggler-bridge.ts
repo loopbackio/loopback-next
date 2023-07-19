@@ -6,7 +6,6 @@
 import legacy from 'loopback-datasource-juggler';
 
 export namespace juggler {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   export import DataSource = legacy.DataSource;
 }
 

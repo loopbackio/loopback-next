@@ -12,7 +12,10 @@ export class Pet {
    * @param name - Name of the pet
    * @param kind - Kind of the pet
    */
-  constructor(public readonly name: string, public readonly kind: string) {}
+  constructor(
+    public readonly name: string,
+    public readonly kind: string,
+  ) {}
 
   /**
    * Greet the pet

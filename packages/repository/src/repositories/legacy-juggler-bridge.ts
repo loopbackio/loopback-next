@@ -55,7 +55,6 @@ import {
 } from './repository';
 
 export namespace juggler {
-  /* eslint-disable @typescript-eslint/no-unused-vars */
   export import DataSource = legacy.DataSource;
   export import ModelBase = legacy.ModelBase;
   export import ModelBaseClass = legacy.ModelBaseClass;

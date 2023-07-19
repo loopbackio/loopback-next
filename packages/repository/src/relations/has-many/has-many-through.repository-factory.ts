@@ -39,11 +39,9 @@ export type HasManyThroughRepositoryFactory<
   ThroughEntity extends Entity,
   SourceID,
 > = {
-  (fkValue: SourceID): HasManyThroughRepository<
-    TargetEntity,
-    TargetID,
-    ThroughEntity
-  >;
+  (
+    fkValue: SourceID,
+  ): HasManyThroughRepository<TargetEntity, TargetID, ThroughEntity>;
 
   /**
    * Use `resolver` property to obtain an InclusionResolver for this relation.

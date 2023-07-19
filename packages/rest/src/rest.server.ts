@@ -280,7 +280,8 @@ export class RestServer
 
     // Mount our router & request handler
     this._expressApp.use(this._basePath, (req, res, next) => {
-      this._handleHttpRequest(req, res).catch(next);
+      // eslint-disable-next-line no-void
+      void this._handleHttpRequest(req, res).catch(next);
     });
 
     // Mount our error handler
