@@ -304,8 +304,8 @@ module.exports = class HasManyThroughRelationGenerator extends (
     )}.prototype.${this.artifactInfo.dstModelPrimaryKey},
       ${utils.toClassName(this.artifactInfo.throughModelClass)},
       typeof ${utils.toClassName(this.artifactInfo.srcModelClass)}.prototype.${
-      this.artifactInfo.srcModelPrimaryKey
-    }
+        this.artifactInfo.srcModelPrimaryKey
+      }
     >`;
   }
 

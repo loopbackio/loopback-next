@@ -102,7 +102,10 @@ describe('toJSON', () => {
     class Customer {
       private _data: object;
 
-      constructor(public id: string, public email: string) {
+      constructor(
+        public id: string,
+        public email: string,
+      ) {
         this._data = {id, email};
       }
 
@@ -118,7 +121,10 @@ describe('toJSON', () => {
 
   it('handles nested class instance with custom toJSON', () => {
     class Address {
-      constructor(public street: string, public city: string) {}
+      constructor(
+        public street: string,
+        public city: string,
+      ) {}
 
       toJSON() {
         return {
@@ -130,7 +136,10 @@ describe('toJSON', () => {
     }
 
     class Customer {
-      constructor(public email: string, public address: Address) {}
+      constructor(
+        public email: string,
+        public address: Address,
+      ) {}
 
       toJSON() {
         return {

@@ -31,7 +31,10 @@ type SocketIoEventMatcherInfo = {
  * Request context for a socket.io request
  */
 export class SocketIoConnectionContext extends Context {
-  constructor(public readonly socket: Socket, parent: Context) {
+  constructor(
+    public readonly socket: Socket,
+    parent: Context,
+  ) {
     super(parent);
   }
 }

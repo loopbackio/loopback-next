@@ -12,7 +12,10 @@ export interface EndpointStats {
 }
 
 export class Autocannon {
-  constructor(protected url: string, protected duration: number) {}
+  constructor(
+    protected url: string,
+    protected duration: number,
+  ) {}
 
   async execute(
     title: string,

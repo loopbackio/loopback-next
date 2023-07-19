@@ -24,7 +24,7 @@ npx webpack --config-name web
 Now `dist/bundle-web.js` can be used for HTML pages, for example:
 
 ```html
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <title>LoopBack 4 Core Modules WebPack Demo</title>

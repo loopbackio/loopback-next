@@ -406,7 +406,10 @@ export class Binding<T = BoundValue> extends EventEmitter {
       : undefined;
   }
 
-  constructor(key: BindingAddress<T>, public isLocked: boolean = false) {
+  constructor(
+    key: BindingAddress<T>,
+    public isLocked: boolean = false,
+  ) {
     super();
     BindingKey.validate(key);
     this.key = key.toString();
