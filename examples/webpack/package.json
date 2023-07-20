@@ -51,7 +51,7 @@
     "eslint": "^8.45.0",
     "events": "^3.3.0",
     "process": "^0.11.10",
-    "puppeteer": "^20.8.3",
+    "puppeteer": "^20.9.0",
     "typescript": "~5.1.6",
     "util": "^0.12.5",
     "webpack": "^5.88.2",
