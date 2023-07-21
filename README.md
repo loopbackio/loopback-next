@@ -39,9 +39,6 @@ We don't provide any LTS version for LoopBack 4 yet. Please join the discussion
 in [loopback-next#4398](https://github.com/loopbackio/loopback-next/issues/4398)
 if you are interested in a version that's less frequently changed.
 
-We are providing Maintenance support for
-[LoopBack 3](https://loopback.io/doc/en/lb3/) until December 2020.
-
 | Version    | Status      | Published | EOL                  |
 | ---------- | ----------- | --------- | -------------------- |
 | LoopBack 4 | Current     | Oct 2018  | Apr 2026 _(minimum)_ |
