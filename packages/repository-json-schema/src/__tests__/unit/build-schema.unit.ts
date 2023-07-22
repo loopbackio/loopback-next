@@ -78,6 +78,20 @@ describe('build-schema', () => {
       });
     });
 
+    it('converts Binary', () => {
+      expect(metaToJsonProperty({type: 'Binary'})).to.eql({
+        type: 'string',
+        format: 'binary',
+      });
+    });
+
+    it('converts buffer', () => {
+      expect(metaToJsonProperty({type: 'buffer'})).to.eql({
+        type: 'string',
+        format: 'buffer',
+      });
+    });
+
     it('converts String', () => {
       expect(metaToJsonProperty({type: String})).to.eql({
         type: 'string',
