@@ -280,6 +280,16 @@ export function metaToJsonProperty(meta: PropertyDefinition): JsonSchema {
       type: 'string',
       format: 'date-time',
     });
+  } else if (propertyType === 'buffer') {
+    Object.assign(propDef, {
+      type: 'string',
+      format: 'buffer',
+    });
+  } else if (propertyType === 'Binary') {
+    Object.assign(propDef, {
+      type: 'string',
+      format: 'binary',
+    });
   } else if (propertyType === 'any') {
     // no-op, the json schema for any type is {}
   } else if (isBuiltinType(resolvedType)) {

@@ -76,7 +76,25 @@ describe('build-schema', () => {
           title: 'TestModel',
           type: 'object',
           properties: {
-            image: {type: 'buffer'},
+            image: {type: 'string', format: 'binary'},
+          },
+          additionalProperties: false,
+        });
+      });
+
+      it('allows property of buffer type', () => {
+        @model()
+        class TestModel {
+          @property({type: 'buffer'})
+          image: Buffer;
+        }
+
+        const jsonSchema = modelToJsonSchema(TestModel);
+        expect(jsonSchema).to.eql({
+          title: 'TestModel',
+          type: 'object',
+          properties: {
+            image: {type: 'string', format: 'buffer'},
           },
           additionalProperties: false,
         });
