@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "msgpack5": "^6.0.2",
-    "tslib": "^2.6.0",
+    "tslib": "^2.6.1",
     "type-is": "^1.6.18"
   },
   "devDependencies": {
