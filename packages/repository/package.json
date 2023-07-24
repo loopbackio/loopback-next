@@ -41,7 +41,7 @@
     "debug": "^4.3.4",
     "lodash": "^4.17.21",
     "loopback-datasource-juggler": "^4.28.8",
-    "tslib": "^2.6.0"
+    "tslib": "^2.6.1"
   },
   "devDependencies": {
     "@loopback/build": "^10.1.1",

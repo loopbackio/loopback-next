@@ -38,7 +38,7 @@
   },
   "dependencies": {
     "@loopback/core": "^5.1.1",
-    "tslib": "^2.6.0"
+    "tslib": "^2.6.1"
   },
   "devDependencies": {
     "@loopback/build": "^10.1.1",
