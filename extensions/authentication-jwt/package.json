@@ -61,7 +61,7 @@
     "@loopback/testlab": "^6.1.1",
     "@types/debug": "^4.1.8",
     "@types/lodash": "^4.14.195",
-    "@types/node": "^16.18.38",
+    "@types/node": "^16.18.39",
     "lodash": "^4.17.21",
     "typescript": "~5.1.6"
   }
