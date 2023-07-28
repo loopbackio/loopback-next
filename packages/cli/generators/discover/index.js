@@ -192,6 +192,10 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
         schema: this.options.schema,
       },
     );
+    
+    // Sort alphabetically
+    this.modelChoices.sort((a, b) => a.name.localeCompare(b.name));
+    
     debug(
       `Got ${this.modelChoices.length} models from ${this.artifactInfo.dataSource.name}`,
     );
