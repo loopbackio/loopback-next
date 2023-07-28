@@ -24,10 +24,10 @@ jobs:
       uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3.5.3
 
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@6ca1aa8c195c3ca3e77c174fe0356db1bce3b319 # v2.21.1
+      uses: github/codeql-action/init@0ba4244466797eb048eb91a6cd43d5c03ca8bd05 # v2.21.2
       with:
         languages: 'javascript'
         config-file: ./.github/codeql/codeql-config.yml
 
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@6ca1aa8c195c3ca3e77c174fe0356db1bce3b319 # v2.21.1
+      uses: github/codeql-action/analyze@0ba4244466797eb048eb91a6cd43d5c03ca8bd05 # v2.21.2
