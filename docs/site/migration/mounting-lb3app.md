@@ -25,7 +25,7 @@ Explorer.
 
 {% include note.html content="
 If you are not familiar with LoopBack 4, visit
-[Getting started](Getting-started.md) for an introduction.
+[Getting started](../Getting-started.md) for an introduction.
 " %}
 
 Follow
