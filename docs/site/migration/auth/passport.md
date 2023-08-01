@@ -65,8 +65,8 @@ You can use this example to see how to:
 
 This guide is further divided into two sections:
 
-- [How to migrate Non-OAuth2 strategies like basic, local, etc.](#Non-OAuth2-Strategies)
-- [How to migrate OAuth2 strategies like Facebook, Google, etc.](#OAuth2-Strategies)
+- [How to migrate Non-OAuth2 strategies like basic, local, etc.](#non-oauth2-strategies)
+- [How to migrate OAuth2 strategies like Facebook, Google, etc.](#oauth2-strategies)
 
 In each of these sections the following are explained:
 
