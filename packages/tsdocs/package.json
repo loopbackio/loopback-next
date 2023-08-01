@@ -49,7 +49,7 @@
   ],
   "dependencies": {
     "@lerna/project": "^6.4.1",
-    "@microsoft/api-documenter": "^7.22.30",
+    "@microsoft/api-documenter": "^7.22.32",
     "@microsoft/api-extractor": "^7.36.3",
     "@npmcli/map-workspaces": "^3.0.4",
     "@npmcli/package-json": "^4.0.1",
