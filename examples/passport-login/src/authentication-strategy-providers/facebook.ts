@@ -6,8 +6,8 @@
 import {UserIdentityService} from '@loopback/authentication';
 import {BindingScope, inject, injectable, Provider} from '@loopback/core';
 import {Profile} from 'passport';
-import {Strategy as FacebookStrategy, StrategyOption} from 'passport-facebook';
-import {verifyFunctionFactory} from '../authentication-strategies/types';
+import {Strategy as FacebookStrategy, StrategyOptions} from 'passport-facebook';
+import {verifyFunctionFactory} from '../authentication-strategies';
 import {User} from '../models';
 import {UserServiceBindings} from '../services';
 
@@ -17,7 +17,7 @@ export class FacebookOauth implements Provider<FacebookStrategy> {
 
   constructor(
     @inject('facebookOAuth2Options')
-    public facebookOptions: StrategyOption,
+    public facebookOptions: StrategyOptions,
     @inject(UserServiceBindings.PASSPORT_USER_IDENTITY_SERVICE)
     public userService: UserIdentityService<Profile, User>,
   ) {
