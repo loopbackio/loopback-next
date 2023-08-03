@@ -58,7 +58,7 @@
     "cross-env": "^7.0.3",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^8.46.0",
-    "eslint-config-prettier": "^8.9.0",
+    "eslint-config-prettier": "^8.10.0",
     "eslint-plugin-eslint-plugin": "^5.1.1",
     "eslint-plugin-mocha": "^10.1.0",
     "eslint-plugin-prettier": "^5.0.0",
@@ -68,7 +68,7 @@
     "lint-staged": "^13.2.3",
     "markdown-table": "^3.0.3",
     "open-cli": "^7.2.0",
-    "prettier": "^3.0.0",
+    "prettier": "^3.0.1",
     "typescript": "~5.1.6"
   },
   "engineStrict": true,
