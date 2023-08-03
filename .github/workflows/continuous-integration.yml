@@ -45,7 +45,7 @@ jobs:
       - name: Run extension tests
         run: node packages/build/bin/run-nyc node packages/build/bin/run-mocha --lang en_US.UTF-8 --reporter spec "extensions/*/dist/__tests__/**/*.js"
       - name: Run example tests
-        run: node packages/build/bin/run-nyc node packages/build/bin/run-mocha --lang en_US.UTF-8 --reporter spec "examples/*/dist/__tests__/**/*.js" --exclude "examples/webpack/**"
+        run: node packages/build/bin/run-nyc node packages/build/bin/run-mocha --lang en_US.UTF-8 --reporter spec "examples/*/dist/__tests__/**/*.js"
       - name: Generate coverage report
         run: node packages/build/bin/run-nyc report --reporter=lcov
       - name: Publish coverage report to Coveralls
