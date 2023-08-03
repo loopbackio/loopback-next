@@ -37,7 +37,9 @@ const nodeConfig = {
   output: {
     filename: 'bundle-node.js',
     path: path.resolve(__dirname, 'dist'),
-    libraryTarget: 'umd', // We can use `commonjs2` for Node.js
+    library: {
+      type: 'umd', // We can use `commonjs2` for Node.js
+    },
   },
 };
 
@@ -46,14 +48,15 @@ const nodeConfig = {
  */
 const webConfig = {
   ...baseConfig,
-
   name: 'web',
   target: 'web', // For browsers
   output: {
     filename: 'bundle-web.js',
     path: path.resolve(__dirname, 'dist'),
-    library: 'LoopBack',
-    libraryTarget: 'umd',
+    library: {
+      name: 'LoopBack',
+      type: 'umd',
+    },
   },
   plugins: [
     new webpack.ProvidePlugin({
@@ -63,6 +66,6 @@ const webConfig = {
   ],
 };
 
-// Expose two configurations for `webpack`. Use `--config-name <web|node>` to
+// Expose two configurations for `webpack`. Use `--config-name <node|web>` to
 // select a named entry.
 module.exports = [nodeConfig, webConfig];
