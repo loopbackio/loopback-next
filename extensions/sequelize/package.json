@@ -54,7 +54,7 @@
     "@loopback/repository": "^6.1.1",
     "@loopback/rest": "^13.1.1",
     "@loopback/testlab": "^6.1.1",
-    "@types/node": "^16.18.39",
+    "@types/node": "^16.18.40",
     "pg": "^8.11.2",
     "pg-hstore": "^2.3.4",
     "sqlite3": "5.1.4",
