@@ -534,7 +534,7 @@ expressions. The regular expression format depends on the backend data source.
 Example of like operator:
 
 ```ts
-await postRepository.find({where: {title: {like: 'M.-st'}}};
+await postRepository.find({where: {title: {like: 'M.-st'}}});
 ```
 
 Example of nlike operator:
