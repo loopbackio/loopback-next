@@ -46,7 +46,7 @@
     "@loopback/rest": "^13.1.1",
     "@loopback/testlab": "^6.1.1",
     "@types/msgpack5": "^3.4.3",
-    "@types/node": "^16.18.39",
+    "@types/node": "^16.18.40",
     "@types/type-is": "^1.6.3",
     "typescript": "~5.1.6"
   }
