@@ -42,7 +42,7 @@ Answer the prompts as follows:
 ```sh
 ? Project name: getting-started
 ? Project description: Getting started tutorial
-? Project root directory: (getting-started)
+? Project root directory: getting-started
 ? Application class name: StarterApplication
 ? Select features to enable in the project:
 ❯◉ Enable eslint: add a linter with pre-configured lint rules
