@@ -115,7 +115,7 @@ Here are the first two lines of the
 
 ```
 # Check out https://hub.docker.com/_/node to select a new base image
-FROM node:10-slim
+FROM docker.io/library/node:18-slim
 ```
 
 As the comment suggests, the Docker image name is only a default, and you are
