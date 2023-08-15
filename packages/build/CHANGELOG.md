@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.1.2](https://github.com/loopbackio/loopback-next/compare/@loopback/build@10.1.1...@loopback/build@10.1.2) (2023-08-15)
+
+
+### Bug Fixes
+
+* changes to adapt to prettier's major version ([8093f29](https://github.com/loopbackio/loopback-next/commit/8093f29a868c76068b5d372a9ee77acf5f0543d2))
+
+
+
+
+
 ## [10.1.1](https://github.com/loopbackio/loopback-next/compare/@loopback/build@10.1.0...@loopback/build@10.1.1) (2023-07-17)
 
 **Note:** Version bump only for package @loopback/build

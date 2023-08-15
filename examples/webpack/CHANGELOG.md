@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.10.2](https://github.com/loopbackio/loopback-next/compare/@loopback/example-webpack@0.10.1...@loopback/example-webpack@0.10.2) (2023-08-15)
+
+
+### Bug Fixes
+
+* webpack is not compiling util.promisify ([d7481e4](https://github.com/loopbackio/loopback-next/commit/d7481e46cc9ca0896b822195e1ffac507348fe00))
+
+
+
+
+
 ## [0.10.1](https://github.com/loopbackio/loopback-next/compare/@loopback/example-webpack@0.10.0...@loopback/example-webpack@0.10.1) (2023-07-17)
 
 **Note:** Version bump only for package @loopback/example-webpack

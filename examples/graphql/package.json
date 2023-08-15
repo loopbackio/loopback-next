@@ -1,7 +1,7 @@
 {
   "name": "@loopback/example-graphql",
   "description": "GraphQL Example Application",
-  "version": "0.9.1",
+  "version": "0.9.2",
   "keywords": [
     "loopback-application",
     "loopback"
@@ -49,18 +49,18 @@
     "!*/__tests__"
   ],
   "dependencies": {
-    "@loopback/boot": "^6.1.1",
-    "@loopback/core": "^5.1.1",
-    "@loopback/graphql": "^0.10.1",
-    "@loopback/repository": "^6.1.1",
-    "@loopback/rest": "^13.1.1",
+    "@loopback/boot": "^6.1.2",
+    "@loopback/core": "^5.1.2",
+    "@loopback/graphql": "^0.10.2",
+    "@loopback/repository": "^6.1.2",
+    "@loopback/rest": "^13.1.2",
     "class-transformer": "^0.5.1",
     "tslib": "^2.6.1"
   },
   "devDependencies": {
-    "@loopback/build": "^10.1.1",
-    "@loopback/eslint-config": "^14.0.2",
-    "@loopback/testlab": "^6.1.1",
+    "@loopback/build": "^10.1.2",
+    "@loopback/eslint-config": "^14.0.3",
+    "@loopback/testlab": "^6.1.2",
     "@types/multer": "^1.4.7",
     "@types/node": "^16.18.40",
     "eslint": "^8.47.0",

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.1.2](https://github.com/loopbackio/loopback-next/compare/@loopback/core@5.1.1...@loopback/core@5.1.2) (2023-08-15)
+
+
+### Bug Fixes
+
+* fix binding templates for base classes ([a1cf32b](https://github.com/loopbackio/loopback-next/commit/a1cf32b81c815ee11aad38767dd245279f4131b7))
+
+
+
+
+
 ## [5.1.1](https://github.com/loopbackio/loopback-next/compare/@loopback/core@5.1.0...@loopback/core@5.1.1) (2023-07-17)
 
 **Note:** Version bump only for package @loopback/core

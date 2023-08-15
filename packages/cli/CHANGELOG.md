@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.2.1](https://github.com/loopbackio/loopback-next/compare/@loopback/cli@5.2.0...@loopback/cli@5.2.1) (2023-08-15)
+
+
+### Bug Fixes
+
+* **cli:** display model choices alphabetically for "lb4 discover" CLI command ([d4d4347](https://github.com/loopbackio/loopback-next/commit/d4d4347905ced431b496194be9220754f7929c58))
+* **cli:** fix linter errors ([7e91bde](https://github.com/loopbackio/loopback-next/commit/7e91bde3e1181b5a5ff6d56c26c83fddf3a305e3))
+
+
+
+
+
 # [5.2.0](https://github.com/loopbackio/loopback-next/compare/@loopback/cli@5.1.0...@loopback/cli@5.2.0) (2023-07-17)
 
 

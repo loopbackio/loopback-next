@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.3](https://github.com/loopbackio/loopback-next/compare/@loopback/docs@6.0.2...@loopback/docs@6.0.3) (2023-08-15)
+
+
+### Bug Fixes
+
+* **docs:** fix migration link to Getting-started page ([b63970c](https://github.com/loopbackio/loopback-next/commit/b63970c583d152ed36a2a6d6b10179e79e3bf8f1))
+* **docs:** fix migration/auth/passport section links ([75b40d1](https://github.com/loopbackio/loopback-next/commit/75b40d11d993cfd60c5ea59b12da4c844463c996))
+* **docs:** fix typo in nlike filter query ([e0a81a6](https://github.com/loopbackio/loopback-next/commit/e0a81a60e903517c231aeff62550c1e28df46e6b))
+
+
+
+
+
 ## [6.0.2](https://github.com/loopbackio/loopback-next/compare/@loopback/docs@6.0.1...@loopback/docs@6.0.2) (2023-07-17)
 
 **Note:** Version bump only for package @loopback/docs
