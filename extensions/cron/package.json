@@ -42,7 +42,7 @@
   "dependencies": {
     "@types/cron": "^2.0.1",
     "@types/debug": "^4.1.8",
-    "cron": "^2.4.0",
+    "cron": "^2.4.1",
     "debug": "^4.3.4",
     "tslib": "^2.6.1"
   },
