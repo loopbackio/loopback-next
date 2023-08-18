@@ -38,6 +38,6 @@
     "@loopback/testlab": "^6.1.2",
     "@types/node": "^16.18.41",
     "loopback-connector-postgresql": "^6.0.7",
-    "tslib": "^2.6.1"
+    "tslib": "^2.6.2"
   }
 }

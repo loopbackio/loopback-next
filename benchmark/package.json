@@ -51,7 +51,7 @@
     "byline": "^5.0.0",
     "debug": "^4.3.4",
     "path-to-regexp": "^6.2.1",
-    "tslib": "^2.6.1"
+    "tslib": "^2.6.2"
   },
   "devDependencies": {
     "@loopback/build": "^10.1.2",
