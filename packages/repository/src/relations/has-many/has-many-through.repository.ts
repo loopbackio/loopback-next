@@ -218,9 +218,8 @@ export class DefaultHasManyThroughRepository<
       }
     }
 
-    const targetRepository = await this.getTargetRepositoryDict[
-      targetPolymorphicTypeName
-    ]();
+    const targetRepository =
+      await this.getTargetRepositoryDict[targetPolymorphicTypeName]();
     const targetInstance = await targetRepository.create(
       targetModelData,
       options,

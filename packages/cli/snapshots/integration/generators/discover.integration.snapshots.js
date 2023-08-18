@@ -63,42 +63,40 @@ export type TestWithRelations = Test & TestRelations;
 
 `;
 
-exports[`lb4 discover integration model discovery treatTINYINT1AsTinyInt set to false to treat tinyint(1) as boolean 1`] = `
-import {Entity, model, property} from '@loopback/repository';
 
-@model()
-export class Test extends Entity {
-  @property({
-    type: 'date',
-  })
-  dateTest?: string;
+exports[`lb4 discover integration model discovery generate relations with --relations 1`] = `
+import {Entity, model, property, belongsTo} from '@loopback/repository';
+import {Doctor,Patient} from '.';
 
-  @property({
-    type: 'number',
-  })
-  numberTest?: number;
-
-  @property({
-    type: 'string',
-  })
-  stringTest?: string;
-
-  @property({
-    type: 'boolean',
-  })
-  booleanText?: boolean;
-
+@model({
+  settings: {
+    foreignKeys: {
+      doctorIdRel: {name: 'doctorIdRel', entity: 'Doctor', entityKey: 'id', foreignKey: 'doctorId'},
+      patientIdRel: {
+        name: 'patientIdRel',
+        entity: 'Patient',
+        entityKey: 'pid',
+        foreignKey: 'patientId'
+      }
+    }
+  }
+})
+export class Appointment extends Entity {
   @property({
     type: 'number',
+    precision: 10,
     scale: 0,
+    generated: 1,
     id: 1,
+    mysql: {columnName: 'id', dataType: 'int', dataLength: null, dataPrecision: 10, dataScale: 0, nullable: 'N', generated: 1},
   })
   id?: number;
 
-  @property({
-    type: 'boolean',
-  })
-  isActive?: boolean;
+  @belongsTo(() => Patient)
+  patientId?: number;
+
+  @belongsTo(() => Doctor)
+  doctorId?: number;
 
   // Define well-known properties here
 
@@ -106,16 +104,16 @@ export class Test extends Entity {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [prop: string]: any;
 
-  constructor(data?: Partial<Test>) {
+  constructor(data?: Partial<Appointment>) {
     super(data);
   }
 }
 
-export interface TestRelations {
+export interface AppointmentRelations {
   // describe navigational properties here
 }
 
-export type TestWithRelations = Test & TestRelations;
+export type AppointmentWithRelations = Appointment & AppointmentRelations;
 
 `;
 
@@ -217,7 +215,7 @@ export type NamingWithRelations = Naming & NamingRelations;
 `;
 
 
-exports[`lb4 discover integration model discovery uses a different --outDir if provided 1`] = `
+exports[`lb4 discover integration model discovery treatTINYINT1AsTinyInt set to false to treat tinyint(1) as boolean 1`] = `
 import {Entity, model, property} from '@loopback/repository';
 
 @model()
@@ -273,39 +271,43 @@ export type TestWithRelations = Test & TestRelations;
 
 `;
 
-exports[`lb4 discover integration model discovery generate relations with --relations 1`] = `
-import {Entity, model, property, belongsTo} from '@loopback/repository';
-import {Doctor,Patient} from '.';
 
-@model({
-  settings: {
-    foreignKeys: {
-      doctorIdRel: {name: 'doctorIdRel', entity: 'Doctor', entityKey: 'id', foreignKey: 'doctorId'},
-      patientIdRel: {
-        name: 'patientIdRel',
-        entity: 'Patient',
-        entityKey: 'pid',
-        foreignKey: 'patientId'
-      }
-    }
-  }
-})
-export class Appointment extends Entity {
+exports[`lb4 discover integration model discovery uses a different --outDir if provided 1`] = `
+import {Entity, model, property} from '@loopback/repository';
+
+@model()
+export class Test extends Entity {
+  @property({
+    type: 'date',
+  })
+  dateTest?: string;
+
   @property({
     type: 'number',
-    precision: 10,
+  })
+  numberTest?: number;
+
+  @property({
+    type: 'string',
+  })
+  stringTest?: string;
+
+  @property({
+    type: 'boolean',
+  })
+  booleanText?: boolean;
+
+  @property({
+    type: 'number',
     scale: 0,
-    generated: 1,
     id: 1,
-    mysql: {columnName: 'id', dataType: 'int', dataLength: null, dataPrecision: 10, dataScale: 0, nullable: 'N', generated: 1},
   })
   id?: number;
 
-  @belongsTo(() => Patient)
-  patientId?: number;
-
-  @belongsTo(() => Doctor)
-  doctorId?: number;
+  @property({
+    type: 'boolean',
+  })
+  isActive?: boolean;
 
   // Define well-known properties here
 
@@ -313,15 +315,15 @@ export class Appointment extends Entity {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [prop: string]: any;
 
-  constructor(data?: Partial<Appointment>) {
+  constructor(data?: Partial<Test>) {
     super(data);
   }
 }
 
-export interface AppointmentRelations {
+export interface TestRelations {
   // describe navigational properties here
 }
 
-export type AppointmentWithRelations = Appointment & AppointmentRelations;
+export type TestWithRelations = Test & TestRelations;
 
 `;

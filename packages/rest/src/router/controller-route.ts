@@ -133,9 +133,8 @@ export class ControllerRoute<T extends object> extends BaseRoute {
     requestContext: Context,
     args: OperationArgs,
   ): Promise<OperationRetval> {
-    const controller = await requestContext.get<ControllerInstance>(
-      'controller.current',
-    );
+    const controller =
+      await requestContext.get<ControllerInstance>('controller.current');
     if (typeof controller[this._methodName] !== 'function') {
       throw new HttpErrors.NotFound(
         `Controller method not found: ${this.describe()}`,

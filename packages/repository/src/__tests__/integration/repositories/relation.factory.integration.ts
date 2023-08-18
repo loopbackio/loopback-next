@@ -102,9 +102,8 @@ describe('HasMany relation', () => {
       approvedId: existingCustomerId,
     });
 
-    const reviewsApprovedByCustomerOne = await customerApprovedReviewFactoryFn(
-      existingCustomerId,
-    ).find();
+    const reviewsApprovedByCustomerOne =
+      await customerApprovedReviewFactoryFn(existingCustomerId).find();
     const reviewsApprovedByCustomerTwo = await customerApprovedReviewFactoryFn(
       existingCustomerId + 1,
     ).find();

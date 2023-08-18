@@ -143,9 +143,8 @@ export class DefaultHasOneRepository<
         throw new InvalidPolymorphismError(polymorphicTypeName);
       }
     }
-    const targetRepository = await this.getTargetRepositoryDict[
-      polymorphicTypeName
-    ]();
+    const targetRepository =
+      await this.getTargetRepositoryDict[polymorphicTypeName]();
     return targetRepository.create(
       constrainDataObject(targetModelData, this.constraint),
       options,
