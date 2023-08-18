@@ -55,7 +55,7 @@
     "@loopback/rest": "^13.1.2",
     "@loopback/testlab": "^6.1.2",
     "@types/node": "^16.18.40",
-    "pg": "^8.11.2",
+    "pg": "^8.11.3",
     "pg-hstore": "^2.3.4",
     "sqlite3": "5.1.4",
     "typescript": "~5.1.6"
