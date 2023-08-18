@@ -55,7 +55,7 @@
     "@npmcli/package-json": "^4.0.1",
     "debug": "^4.3.4",
     "fs-extra": "^11.1.1",
-    "tslib": "^2.6.1"
+    "tslib": "^2.6.2"
   },
   "devDependencies": {
     "@loopback/build": "^10.1.2",

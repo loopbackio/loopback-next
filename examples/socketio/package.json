@@ -58,7 +58,7 @@
     "@loopback/socketio": "^0.7.3",
     "debug": "^4.3.4",
     "p-event": "^4.2.0",
-    "tslib": "^2.6.1"
+    "tslib": "^2.6.2"
   },
   "devDependencies": {
     "@loopback/build": "^10.1.2",

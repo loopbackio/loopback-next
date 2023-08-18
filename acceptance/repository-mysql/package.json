@@ -38,6 +38,6 @@
     "@loopback/testlab": "^6.1.2",
     "@types/node": "^16.18.40",
     "loopback-connector-mysql": "^7.0.0",
-    "tslib": "^2.6.1"
+    "tslib": "^2.6.2"
   }
 }

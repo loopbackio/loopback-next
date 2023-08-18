@@ -59,7 +59,7 @@
     "@loopback/service-proxy": "^6.1.2",
     "loopback-connector-rest": "^4.0.3",
     "morgan": "^1.10.0",
-    "tslib": "^2.6.1"
+    "tslib": "^2.6.2"
   },
   "devDependencies": {
     "@loopback/build": "^10.1.2",
