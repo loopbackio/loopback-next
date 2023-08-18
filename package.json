@@ -68,7 +68,7 @@
     "lint-staged": "^14.0.0",
     "markdown-table": "^3.0.3",
     "open-cli": "^7.2.0",
-    "prettier": "^3.0.1",
+    "prettier": "^3.0.2",
     "typescript": "~5.1.6"
   },
   "engineStrict": true,
