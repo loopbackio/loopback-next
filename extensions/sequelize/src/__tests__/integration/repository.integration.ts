@@ -603,9 +603,8 @@ describe('Sequelize CRUD Repository (integration)', () => {
         getDummyProgrammingLanguage({name: 'Dot Net', secret: 'woo'}),
       ];
 
-      const createAllResponse = await languagesRepo.createAll(
-        programmingLanguages,
-      );
+      const createAllResponse =
+        await languagesRepo.createAll(programmingLanguages);
       expect(createAllResponse[0]).to.have.property('secret');
 
       const createDeveloperResponse = await developerRepo.create(

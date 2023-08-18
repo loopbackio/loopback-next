@@ -7,6 +7,61 @@
 
 'use strict';
 
+exports[`lb4 relation checks generated repository with registerInclusionResolver set to false in --config generated repository file should not have inclusion resolver registered 1`] = `
+import {DefaultCrudRepository, BelongsToAccessor, repository} from '@loopback/repository';
+import {Order, Customer} from '../models';
+import {DbDataSource} from '../datasources';
+import {inject, Getter} from '@loopback/core';
+import {CustomerRepository} from './customer.repository';
+
+export class OrderRepository extends DefaultCrudRepository<
+  Order,
+  typeof Order.prototype.id
+> {
+  public readonly myCustomer: BelongsToAccessor<
+    Customer,
+    typeof Order.prototype.id
+  >;
+
+  public readonly custom_name: BelongsToAccessor<Customer, typeof Order.prototype.id>;
+
+  constructor(@inject('datasources.db') dataSource: DbDataSource, @repository.getter('CustomerRepository') protected customerRepositoryGetter: Getter<CustomerRepository>,) {
+    super(Order, dataSource);
+    this.custom_name = this.createBelongsToAccessorFor('custom_name', customerRepositoryGetter,);
+  }
+}
+
+`;
+
+
+exports[`lb4 relation checks generated repository with registerInclusionResolver set to true in --config generated repository file should have inclusion resolver registered 1`] = `
+import {DefaultCrudRepository, BelongsToAccessor, repository} from '@loopback/repository';
+import {Order, Customer} from '../models';
+import {DbDataSource} from '../datasources';
+import {inject, Getter} from '@loopback/core';
+import {CustomerRepository} from './customer.repository';
+
+export class OrderRepository extends DefaultCrudRepository<
+  Order,
+  typeof Order.prototype.id
+> {
+  public readonly myCustomer: BelongsToAccessor<
+    Customer,
+    typeof Order.prototype.id
+  >;
+
+  public readonly custom_name: BelongsToAccessor<Customer, typeof Order.prototype.id>;
+
+  constructor(@inject('datasources.db') dataSource: DbDataSource, @repository.getter('CustomerRepository') protected customerRepositoryGetter: Getter<CustomerRepository>,) {
+    super(Order, dataSource);
+    this.custom_name = this.createBelongsToAccessorFor('custom_name', customerRepositoryGetter,);
+    this.registerInclusionResolver('custom_name', this.custom_name.inclusionResolver);
+  }
+}
+
+`;
+
+
 exports[`lb4 relation checks generated source class repository answers {"relationType":"belongsTo","sourceModel":"Order","destinationModel":"Customer","relationName":"custom_name","registerInclusionResolver":false} generates Order repository file with different inputs 1`] = `
 import {DefaultCrudRepository, BelongsToAccessor, repository} from '@loopback/repository';
 import {Order, Customer} from '../models';
@@ -79,61 +134,6 @@ export class EmployeeRepository extends DefaultCrudRepository<
     super(Employee, dataSource);
     this.employee = this.createBelongsToAccessorFor('employee', employeeRepositoryGetter,);
     this.registerInclusionResolver('employee', this.employee.inclusionResolver);
-  }
-}
-
-`;
-
-
-exports[`lb4 relation checks generated repository with registerInclusionResolver set to true in --config generated repository file should have inclusion resolver registered 1`] = `
-import {DefaultCrudRepository, BelongsToAccessor, repository} from '@loopback/repository';
-import {Order, Customer} from '../models';
-import {DbDataSource} from '../datasources';
-import {inject, Getter} from '@loopback/core';
-import {CustomerRepository} from './customer.repository';
-
-export class OrderRepository extends DefaultCrudRepository<
-  Order,
-  typeof Order.prototype.id
-> {
-  public readonly myCustomer: BelongsToAccessor<
-    Customer,
-    typeof Order.prototype.id
-  >;
-
-  public readonly custom_name: BelongsToAccessor<Customer, typeof Order.prototype.id>;
-
-  constructor(@inject('datasources.db') dataSource: DbDataSource, @repository.getter('CustomerRepository') protected customerRepositoryGetter: Getter<CustomerRepository>,) {
-    super(Order, dataSource);
-    this.custom_name = this.createBelongsToAccessorFor('custom_name', customerRepositoryGetter,);
-    this.registerInclusionResolver('custom_name', this.custom_name.inclusionResolver);
-  }
-}
-
-`;
-
-
-exports[`lb4 relation checks generated repository with registerInclusionResolver set to false in --config generated repository file should not have inclusion resolver registered 1`] = `
-import {DefaultCrudRepository, BelongsToAccessor, repository} from '@loopback/repository';
-import {Order, Customer} from '../models';
-import {DbDataSource} from '../datasources';
-import {inject, Getter} from '@loopback/core';
-import {CustomerRepository} from './customer.repository';
-
-export class OrderRepository extends DefaultCrudRepository<
-  Order,
-  typeof Order.prototype.id
-> {
-  public readonly myCustomer: BelongsToAccessor<
-    Customer,
-    typeof Order.prototype.id
-  >;
-
-  public readonly custom_name: BelongsToAccessor<Customer, typeof Order.prototype.id>;
-
-  constructor(@inject('datasources.db') dataSource: DbDataSource, @repository.getter('CustomerRepository') protected customerRepositoryGetter: Getter<CustomerRepository>,) {
-    super(Order, dataSource);
-    this.custom_name = this.createBelongsToAccessorFor('custom_name', customerRepositoryGetter,);
   }
 }
 
