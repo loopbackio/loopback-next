@@ -51,6 +51,6 @@
   "devDependencies": {
     "@loopback/build": "^10.1.2",
     "@loopback/eslint-config": "^14.0.3",
-    "@types/node": "^16.18.41"
+    "@types/node": "^20.5.2"
   }
 }
