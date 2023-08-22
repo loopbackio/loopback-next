@@ -59,7 +59,7 @@
     "@loopback/eslint-config": "^14.0.3",
     "@loopback/testlab": "^6.1.2",
     "@types/mocha": "^10.0.1",
-    "@types/node": "^16.18.41",
+    "@types/node": "^16.18.42",
     "eslint": "^8.47.0",
     "mocha": "^10.2.0",
     "source-map-support": "^0.5.21",
