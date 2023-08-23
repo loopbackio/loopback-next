@@ -50,6 +50,6 @@
     "@loopback/core": "^5.1.2",
     "@loopback/testlab": "^6.1.2",
     "@types/debug": "^4.1.8",
-    "@types/node": "^16.18.42"
+    "@types/node": "^16.18.44"
   }
 }

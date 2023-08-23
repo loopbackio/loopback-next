@@ -47,7 +47,7 @@
     "@loopback/repository": "^6.1.2",
     "@types/debug": "^4.1.8",
     "@types/lodash": "^4.14.197",
-    "@types/node": "^16.18.42",
+    "@types/node": "^16.18.44",
     "lodash": "^4.17.21"
   }
 }
