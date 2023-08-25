@@ -50,7 +50,7 @@
     "@loopback/testlab": "^6.1.2",
     "@types/json-schema": "^7.0.12",
     "@types/lodash": "^4.14.197",
-    "@types/node": "^16.18.44",
+    "@types/node": "^16.18.46",
     "bson": "5.4.0"
   }
 }
