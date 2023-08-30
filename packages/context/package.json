@@ -57,7 +57,7 @@
     "@loopback/testlab": "^6.1.2",
     "@types/bluebird": "^3.5.38",
     "@types/node": "^16.18.46",
-    "@types/uuid": "^9.0.2",
+    "@types/uuid": "^9.0.3",
     "bluebird": "^3.7.2"
   }
 }
