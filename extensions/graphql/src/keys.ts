@@ -7,7 +7,9 @@ import {BindingKey, Constructor, CoreBindings} from '@loopback/core';
 import {AuthChecker, PubSubEngine, ResolverData} from 'type-graphql';
 import {GraphQLComponent} from './graphql.component';
 import {GraphQLServer} from './graphql.server';
-import {ContextFunction, ExpressContext, GraphQLServerOptions} from './types';
+import {GraphQLServerOptions} from './types';
+import { BaseContext } from '@apollo/server';
+import { ExpressMiddlewareOptions } from '@apollo/server/dist/esm/express4';
 
 /**
  * Namespace for GraphQL related bindings
@@ -37,7 +39,7 @@ export namespace GraphQLBindings {
    * Binding key for the GraphQL context resolver
    */
   export const GRAPHQL_CONTEXT_RESOLVER = BindingKey.create<
-    ContextFunction<ExpressContext>
+    ExpressMiddlewareOptions<BaseContext>["context"]
   >('graphql.contextResolver');
 
   /**

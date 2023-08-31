@@ -3,6 +3,10 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {ApolloServer, ApolloServerOptionsWithSchema, BaseContext} from '@apollo/server';
+import {ExpressMiddlewareOptions} from '@apollo/server/dist/esm/express4';
+import {expressMiddleware} from '@apollo/server/express4';
+import {addMocksToSchema} from '@graphql-tools/mock';
 import {printSchemaWithDirectives} from '@graphql-tools/utils';
 import {
   Binding,
@@ -20,27 +24,27 @@ import {
   Server,
 } from '@loopback/core';
 import {HttpServer} from '@loopback/http-server';
-import fs from 'fs';
-import {ContextFunction} from 'apollo-server-core';
-import {
-  ApolloServer,
-  ApolloServerExpressConfig,
-  ExpressContext,
-} from 'apollo-server-express';
-import {PubSub, PubSubEngine} from 'graphql-subscriptions';
-import {lexicographicSortSchema} from 'graphql';
+import pkg from 'body-parser';
+import cors from 'cors';
 import express from 'express';
+import fs from 'fs';
+import {GraphQLSchema, lexicographicSortSchema} from 'graphql';
+import {PubSub, PubSubEngine} from 'graphql-subscriptions';
+import {useServer} from 'graphql-ws/lib/use/ws';
 import {
   AuthChecker,
   buildSchema,
-  BuildSchemaOptions as TypeGrahpQLBuildSchemaOptions,
   NonEmptyArray,
   ResolverInterface,
+  BuildSchemaOptions as TypeGrahpQLBuildSchemaOptions,
 } from 'type-graphql';
 import {Middleware} from 'type-graphql/dist/interfaces/Middleware';
+import {WebSocketServer} from 'ws';
 import {LoopBackContainer} from './graphql.container';
 import {GraphQLBindings, GraphQLTags} from './keys';
 import {GraphQLServerOptions} from './types';
+const { json } = pkg;
+
 
 /**
  * GraphQL Server
@@ -52,6 +56,8 @@ import {GraphQLServerOptions} from './types';
 export class GraphQLServer extends Context implements Server {
   readonly httpServer?: HttpServer;
   readonly expressApp: express.Application;
+  private schema?: GraphQLSchema;
+  private wsServer?: WebSocketServer;
 
   constructor(
     @config() private options: GraphQLServerOptions = {},
@@ -133,8 +139,7 @@ export class GraphQLServer extends Context implements Server {
 
     // build TypeGraphQL executable schema
     const buildSchemaOptions: TypeGrahpQLBuildSchemaOptions = {
-      // See https://github.com/MichalLytek/type-graphql/issues/150#issuecomment-420181526
-      validate: false,
+      validate: !!this.options.validate,
       resolvers: resolverClasses,
       // automatically create `schema.gql` file with schema definition in current folder
       // emitSchemaFile: path.resolve(__dirname, 'schema.gql'),
@@ -148,28 +153,43 @@ export class GraphQLServer extends Context implements Server {
 
   async start() {
     const schema = await this._setupSchema();
-
+    this.schema = schema;
     // Allow a graphql context resolver to be bound to GRAPHQL_CONTEXT_RESOLVER
-    const graphqlContextResolver: ContextFunction<ExpressContext> =
+    const graphqlContextResolver: ExpressMiddlewareOptions<BaseContext>["context"] =
       (await this.get(GraphQLBindings.GRAPHQL_CONTEXT_RESOLVER, {
         optional: true,
-      })) ?? (context => context);
+      })) ?? (async context  => context);
 
     // Create ApolloServerExpress GraphQL server
-    const serverConfig: ApolloServerExpressConfig = {
-      context: graphqlContextResolver,
+    const serverConfig = {
       ...this.options.apollo,
-      schema,
-    };
+      schema: this.options.useMockups ? addMocksToSchema({schema, mocks: this.options.mocks}) : schema,
+      // plugins: [ApolloServerPluginDrainHttpServer({ httpServer: this.httpServer })],
+    }  as ApolloServerOptionsWithSchema<BaseContext>;
     const graphQLServer = new ApolloServer(serverConfig);
     await graphQLServer.start();
-    graphQLServer.applyMiddleware({
-      app: this.expressApp,
-      ...this.options.middlewareOptions,
-    });
-
+    this.expressApp.use(
+      '/graphql',
+      cors<cors.CorsRequest>(),
+      json(),
+      expressMiddleware(graphQLServer, {
+        context: graphqlContextResolver,
+      }),
+    )
     // Start the http server if created
     await this.httpServer?.start();
+
+    const wsOptions = this.options.wsOptions;
+    if (typeof wsOptions === 'object') {
+      const wsServer = new WebSocketServer({
+        host: wsOptions.host,
+        port: wsOptions.port,
+        path: wsOptions.path,
+      });
+      this.wsServer = wsServer;
+
+      useServer({ schema }, wsServer);
+    }
   }
 
   async exportGraphQLSchema(outFile = '', log = console.log) {
@@ -187,6 +207,8 @@ export class GraphQLServer extends Context implements Server {
   async stop() {
     // Stop the http server if created
     await this.httpServer?.stop();
+    // Stop the websocket server if created
+    this.wsServer?.close();
   }
 
   /**
@@ -194,6 +216,10 @@ export class GraphQLServer extends Context implements Server {
    */
   get listening() {
     return !!this.httpServer?.listening;
+  }
+
+  getSchema(): GraphQLSchema {
+    return this.schema!;
   }
 }
 
