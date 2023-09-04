@@ -700,11 +700,13 @@ export class SequelizeCrudRepository<
         entityClass.definition.relations[key].type ===
         LoopbackRelationType.belongsTo
       ) {
-        const foreignKey = (
-          entityClass.definition.relations[key] as BelongsToDefinition
-        ).keyTo;
+        const relation = entityClass.definition.relations[key] as BelongsToDefinition;
+        const foreignKey = relation.keyFrom;
+        const targetKey = relation.keyTo;
+
         sourceModel.belongsTo(targetModel, {
           foreignKey: {name: foreignKey},
+          targetKey,
 
           // Which client will pass on in loopback style include filter, eg. `include: ["thisName"]`
           as: entityClass.definition.relations[key].name,
