@@ -61,7 +61,7 @@
     "@loopback/rest-explorer": "^6.1.2",
     "@loopback/service-proxy": "^6.1.2",
     "debug": "^4.3.4",
-    "jsonwebtoken": "^9.0.1",
+    "jsonwebtoken": "^9.0.2",
     "tslib": "^2.6.2"
   },
   "devDependencies": {
