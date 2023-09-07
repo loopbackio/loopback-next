@@ -46,7 +46,7 @@
     "@loopback/testlab": "^6.1.2",
     "@types/node": "^16.18.48",
     "@types/puppeteer": "^5.4.7",
-    "assert": "^2.0.0",
+    "assert": "^2.1.0",
     "buffer": "^6.0.3",
     "eslint": "^8.48.0",
     "events": "^3.3.0",
