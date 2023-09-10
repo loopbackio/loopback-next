@@ -5,12 +5,10 @@
 
 import {HttpOptions} from '@loopback/http-server';
 import {
-  ApolloServerExpressConfig,
-  GetMiddlewareOptions,
-} from 'apollo-server-express';
+  ApolloServerOptions, ApolloServerOptionsWithStaticSchema, BaseContext,
+} from '@apollo/server';
+import { ExpressMiddlewareOptions } from '@apollo/server/dist/esm/express4';
 
-export {ContextFunction} from 'apollo-server-core';
-export {ApolloServerExpressConfig, ExpressContext} from 'apollo-server-express';
 export {Float, ID, Int, ResolverInterface} from 'type-graphql';
 export {Middleware as GraphQLMiddleware} from 'type-graphql/dist/interfaces/Middleware';
 
@@ -24,16 +22,16 @@ export interface GraphQLComponentOptions {
 /**
  * Options for GraphQL server
  */
-export interface GraphQLServerOptions extends HttpOptions {
+export interface GraphQLServerOptions<TContext extends BaseContext = BaseContext> extends HttpOptions {
   /**
    * ApolloServerExpress related configuration
    */
-  apollo?: ApolloServerExpressConfig;
+  apollo?: Partial<ApolloServerOptionsWithStaticSchema<TContext>>;
 
   /**
    * Middleware options for GraphQL
    */
-  middlewareOptions?: GetMiddlewareOptions;
+  middlewareOptions?: ExpressMiddlewareOptions<TContext>; // GetMiddlewareOptions;
 
   /**
    * Express settings
@@ -43,4 +41,15 @@ export interface GraphQLServerOptions extends HttpOptions {
    * Use as a middleware for RestServer instead of a standalone server
    */
   asMiddlewareOnly?: boolean;
+  
+  wsOptions?: {
+    host?: string;
+    port: number;
+    path: string;
+  }
+  
+  useMockups?: boolean;
+  mocks?: any;
+  
+  validate?: boolean;
 }
