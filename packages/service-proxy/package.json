@@ -1,7 +1,7 @@
 {
   "name": "@loopback/service-proxy",
   "description": "A common set of interfaces for interacting with service oriented backends such as REST APIs, SOAP Web Services, and gRPC microservices",
-  "version": "6.1.2",
+  "version": "6.1.3",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -42,10 +42,10 @@
     "tslib": "^2.6.2"
   },
   "devDependencies": {
-    "@loopback/build": "^10.1.2",
-    "@loopback/core": "^5.1.2",
-    "@loopback/eslint-config": "^14.0.3",
-    "@loopback/testlab": "^6.1.2",
+    "@loopback/build": "^10.1.3",
+    "@loopback/core": "^5.1.3",
+    "@loopback/eslint-config": "^14.0.4",
+    "@loopback/testlab": "^6.1.3",
     "@types/node": "^16.18.50"
   }
 }

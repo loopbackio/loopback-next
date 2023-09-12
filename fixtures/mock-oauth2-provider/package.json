@@ -1,7 +1,7 @@
 {
   "name": "@loopback/mock-oauth2-provider",
   "description": "An internal application to mock the OAuth2 authorization flow login with a social app like facebook, google etc",
-  "version": "0.8.2",
+  "version": "0.8.3",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -49,8 +49,8 @@
     "tslib": "^2.6.2"
   },
   "devDependencies": {
-    "@loopback/build": "^10.1.2",
-    "@loopback/eslint-config": "^14.0.3",
-    "@loopback/testlab": "^6.1.2"
+    "@loopback/build": "^10.1.3",
+    "@loopback/eslint-config": "^14.0.4",
+    "@loopback/testlab": "^6.1.3"
   }
 }

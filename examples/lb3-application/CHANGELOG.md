@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.1.3](https://github.com/loopbackio/loopback-next/compare/@loopback/example-lb3-application@6.1.2...@loopback/example-lb3-application@6.1.3) (2023-09-12)
+
+**Note:** Version bump only for package @loopback/example-lb3-application
+
+
+
+
+
 ## [6.1.2](https://github.com/loopbackio/loopback-next/compare/@loopback/example-lb3-application@6.1.1...@loopback/example-lb3-application@6.1.2) (2023-08-15)
 
 **Note:** Version bump only for package @loopback/example-lb3-application
