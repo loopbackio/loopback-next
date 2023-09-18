@@ -52,7 +52,7 @@
     "@types/debug": "^4.1.8",
     "@types/node": "^16.18.50",
     "@types/rimraf": "^3.0.2",
-    "@types/tunnel": "0.0.3",
+    "@types/tunnel": "0.0.4",
     "delay": "^5.0.0",
     "tunnel": "0.0.6"
   }
