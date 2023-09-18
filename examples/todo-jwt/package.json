@@ -62,7 +62,7 @@
     "@loopback/rest-explorer": "^6.1.3",
     "@loopback/security": "^0.10.3",
     "@loopback/service-proxy": "^6.1.3",
-    "@types/bcryptjs": "^2.4.3",
+    "@types/bcryptjs": "^2.4.4",
     "bcryptjs": "^2.4.3",
     "loopback-connector-rest": "^4.0.3",
     "tslib": "^2.6.2"
