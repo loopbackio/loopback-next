@@ -50,7 +50,9 @@ describe('lb4 example', /** @this {Mocha.Suite} */ function () {
       .withPrompts({name: VALID_EXAMPLE})
       .then(() => {
         const targetPkgFile = 'package.json';
-        const originalPkgMeta = require(`../../../../../examples/${VALID_EXAMPLE}/package.json`);
+        const originalPkgMeta = require(
+          `../../../../../examples/${VALID_EXAMPLE}/package.json`,
+        );
         assert.file(
           path.join(`loopback4-example-${VALID_EXAMPLE}`, targetPkgFile),
         );
@@ -70,7 +72,9 @@ describe('lb4 example', /** @this {Mocha.Suite} */ function () {
       .withArguments([VALID_EXAMPLE])
       .then(() => {
         const targetPkgFile = 'package.json';
-        const originalPkgMeta = require(`../../../../../examples/${VALID_EXAMPLE}/package.json`);
+        const originalPkgMeta = require(
+          `../../../../../examples/${VALID_EXAMPLE}/package.json`,
+        );
         assert.file(
           path.join(`loopback4-example-${VALID_EXAMPLE}`, targetPkgFile),
         );

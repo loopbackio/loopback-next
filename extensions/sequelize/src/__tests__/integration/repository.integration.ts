@@ -893,10 +893,9 @@ describe('Sequelize CRUD Repository (integration)', () => {
       ...copyFilePromises,
     ]);
 
-    const MyApp = require(resolve(
-      sandbox.path,
-      'application.js',
-    )).SequelizeSandboxApplication;
+    const MyApp = require(
+      resolve(sandbox.path, 'application.js'),
+    ).SequelizeSandboxApplication;
     app = new MyApp({
       rest: givenHttpServerConfig(),
     });
