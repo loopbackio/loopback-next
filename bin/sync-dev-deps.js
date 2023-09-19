@@ -26,15 +26,13 @@ async function syncDevDeps(options) {
   const rootPath = project.rootPath;
 
   // Load dependencies from `packages/eslint-config/package.json`
-  const eslintDeps = require(path.join(
-    rootPath,
-    'packages/eslint-config/package.json',
-  )).dependencies;
+  const eslintDeps = require(
+    path.join(rootPath, 'packages/eslint-config/package.json'),
+  ).dependencies;
 
-  const buildDeps = require(path.join(
-    rootPath,
-    'packages/build/package.json',
-  )).dependencies;
+  const buildDeps = require(
+    path.join(rootPath, 'packages/build/package.json'),
+  ).dependencies;
 
   const deps = [
     '@typescript-eslint/eslint-plugin',

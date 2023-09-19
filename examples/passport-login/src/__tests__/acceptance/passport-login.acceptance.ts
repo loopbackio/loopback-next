@@ -11,10 +11,10 @@ import * as url from 'url';
 import {startApplication} from '../../';
 import {User, UserIdentity} from '../../models';
 import {ExpressServer} from '../../server';
-const oauth2Providers = require(path.resolve(
-  __dirname,
-  '../../../data/oauth2-test-provider',
-));
+
+const oauth2Providers = require(
+  path.resolve(__dirname, '../../../data/oauth2-test-provider'),
+);
 
 /**
  * Scenarios to test:
