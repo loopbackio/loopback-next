@@ -33,7 +33,7 @@
   "dependencies": {
     "@loopback/eslint-config": "^14.0.4",
     "@types/mocha": "^10.0.1",
-    "@types/node": "^16.18.50",
+    "@types/node": "^16.18.53",
     "cross-spawn": "^7.0.3",
     "debug": "^4.3.4",
     "eslint": "^8.49.0",
