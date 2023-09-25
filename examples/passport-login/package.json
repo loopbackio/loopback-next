@@ -61,7 +61,7 @@
     "@types/jsonwebtoken": "9.0.3",
     "@types/lodash": "^4.14.199",
     "@types/passport": "^1.0.13",
-    "@types/passport-facebook": "^3.0.0",
+    "@types/passport-facebook": "^3.0.1",
     "@types/passport-google-oauth": "^1.0.43",
     "@types/passport-google-oauth2": "^0.1.5",
     "@types/passport-http": "^0.3.9",
