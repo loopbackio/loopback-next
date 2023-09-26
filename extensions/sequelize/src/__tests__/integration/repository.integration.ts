@@ -499,18 +499,103 @@ describe('Sequelize CRUD Repository (integration)', () => {
     });
 
     it('supports @belongsTo', async () => {
+      await migrateSchema(['books']);
+
+      const categories = [
+        {name: 'Programming'},
+        {name: 'Cooking'},
+        {name: 'Self Help'},
+      ];
+
+      const categoryResponse = await client
+        .post('/categories-bulk')
+        .send(categories);
+
+      type Category = {name: string; id: number};
+
+      const books = [
+        {
+          title: 'The Art of Cooking',
+          categoryId: categoryResponse.body.find(
+            (cat: Category) => cat.name === 'Cooking',
+          ).id,
+        },
+        {
+          title: 'JavaScript the Art of Web',
+          categoryId: categoryResponse.body.find(
+            (cat: Category) => cat.name === 'Programming',
+          ).id,
+        },
+        {
+          title: '7 Rules of life',
+          categoryId: categoryResponse.body.find(
+            (cat: Category) => cat.name === 'Self Help',
+          ).id,
+        },
+      ];
+
+      await client.post('/books-bulk').send(books);
+
+      const filter = {
+        where: {title: {like: '%Art%'}},
+        include: [
+          {
+            relation: 'category',
+            scope: {where: {name: 'Programming'}},
+            required: true,
+          },
+        ],
+      };
+
+      const relationRes = await client
+        .get(`/books?filter=${encodeURIComponent(JSON.stringify(filter))}`)
+        .send();
+
+      // If only 1 entry is returned it ensures that the cooking entry is not envolved.
+      // Confirming the fact that it used inner join behind the scenes
+      expect(relationRes.body.length).to.be.equal(1);
+      expect(relationRes.body[0].category).to.be.deepEqual(
+        categoryResponse.body.find(
+          (cat: Category) => cat.name === 'Programming',
+        ),
+      );
+    });
+
+    it('supports @belongsTo using keyfrom and keyto', async () => {
       await migrateSchema(['users', 'todos', 'todo-lists']);
 
       const userRes = await client.post('/users').send(getDummyUser());
 
-      const todoListRes = await client
-        .post('/todo-lists')
-        .send(getDummyTodoList({user: userRes.body.id}));
+      const todoOne = await client.post('/todo-lists').send(
+        getDummyTodoList({
+          title: 'Todo list one',
+          user: userRes.body.id,
+        }),
+      );
+      const todoListRes = await client.post('/todo-lists').send(
+        getDummyTodoList({
+          title: 'Another todo list',
+          user: userRes.body.id,
+        }),
+      );
 
-      const todo = getDummyTodo({todoListId: todoListRes.body.id});
+      let todo = getDummyTodo({
+        title: 'Todo one',
+        todoListId: todoListRes.body.id,
+      });
       const todoRes = await client.post('/todos').send(todo);
+      todo = getDummyTodo({
+        title: 'Another todo',
+        todoListId: todoOne.body.id,
+      });
+      await client.post('/todos').send(todo);
 
-      const filter = {include: ['todoList']};
+      const filter = {
+        where: {
+          title: {like: '%one%'},
+        },
+        include: ['todoList'],
+      };
       const relationRes = await client.get(
         `/todos?filter=${encodeURIComponent(JSON.stringify(filter))}`,
       );
