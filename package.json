@@ -48,7 +48,7 @@
     }
   },
   "devDependencies": {
-    "@commitlint/cli": "^17.7.1",
+    "@commitlint/cli": "^17.7.2",
     "@commitlint/config-conventional": "^17.7.0",
     "@npmcli/map-workspaces": "^3.0.4",
     "@npmcli/package-json": "^5.0.0",
