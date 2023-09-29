@@ -567,6 +567,11 @@ export function modelToJsonSchema<T extends object>(
 
       result.properties[relMeta.name] =
         result.properties[relMeta.name] || propDef;
+      if ((relMeta as {keyFrom: string}).keyFrom) {
+        result.properties.foreignKey = (relMeta as {keyFrom: string})
+          .keyFrom as JsonSchema;
+      }
+
       includeReferencedSchema(targetSchema.title!, targetSchema);
     }
   }

@@ -1112,7 +1112,10 @@ describe('build-schema', () => {
             properties: {
               id: {type: 'number'},
               categoryId: {type: 'number'},
-              category: {$ref: '#/definitions/CategoryWithRelations'},
+              category: {
+                $ref: '#/definitions/CategoryWithRelations',
+              },
+              foreignKey: 'categoryId' as JsonSchema,
             },
             additionalProperties: false,
           },
@@ -1121,7 +1124,9 @@ describe('build-schema', () => {
           id: {type: 'number'},
           products: {
             type: 'array',
-            items: {$ref: '#/definitions/ProductWithRelations'},
+            items: {
+              $ref: '#/definitions/ProductWithRelations',
+            },
           },
         },
         additionalProperties: false,
@@ -1164,6 +1169,7 @@ describe('build-schema', () => {
               category: {
                 $ref: '#/definitions/CategoryWithoutPropWithRelations',
               },
+              foreignKey: 'categoryId' as JsonSchema,
             },
             additionalProperties: false,
           },
