@@ -48,7 +48,7 @@ Datasource Db was created in src/datasources/
 To view the completed files, see the
 [`Todo` example](https://github.com/loopbackio/loopback-next/tree/master/examples/todo/src/datasources).
 
-Create a `data` folder in the applications root and add a new file called
+Create a `data` folder in the application's root and add a new file called
 `db.json` containing an example database.
 
 {% include code-caption.html content="data/db.json" %}
