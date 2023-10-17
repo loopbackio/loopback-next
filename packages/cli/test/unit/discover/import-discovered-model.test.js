@@ -157,6 +157,29 @@ describe('importDiscoveredModel', () => {
     });
   });
 
+  it('imports enum properties', () => {
+    const discoveredModel = {
+      name: 'TestModel',
+      properties: {
+        patient: {
+          type: 'String',
+          jsonSchema: {enum: ['INPATIENT', 'OUTPATIENT']},
+          required: false,
+          length: null,
+          precision: null,
+          scale: null,
+        },
+      },
+    };
+
+    const modelData = importDiscoveredModel(discoveredModel);
+    expect(modelData.properties).to.have.property('patient').deepEqual({
+      jsonSchema: "{enum: ['INPATIENT', 'OUTPATIENT']}",
+      type: `'string'`,
+      tsType: 'string',
+    });
+  });
+
   it('converts connector metadata to TypeScript object', () => {
     const discoveredModel = {
       name: 'TestModel',
