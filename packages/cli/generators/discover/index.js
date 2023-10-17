@@ -414,7 +414,25 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
           templateData.settings,
         );
       }
-
+      Object.keys(templateData.properties).forEach(key => {
+        const property = templateData.properties[key];
+        // if the type is enum
+        if (property.type.startsWith(`'enum`)) {
+          property.type = property.type.slice(1, -1);
+          const enumRemoved = property.type.split(`enum`)[1];
+          const enumValues = enumRemoved.slice(1, -1).replaceAll(`'`, '');
+          const enumValuesArray = enumValues.split(',');
+          let enumItems = '';
+          enumValuesArray.forEach(item => {
+            enumItems += `'${item}',`;
+          });
+          templateData.properties[key]['type'] = 'String';
+          templateData.properties[key]['tsType'] = 'string';
+          templateData.properties[key][
+            'jsonSchema'
+          ] = `{enum: [${enumItems.toString()}]}`;
+        }
+      });
       this.copyTemplatedFiles(
         modelDiscoverer.MODEL_TEMPLATE_PATH,
         fullPath,
