@@ -57,7 +57,7 @@
     "@loopback/build": "^10.1.3",
     "@loopback/testlab": "^6.1.3",
     "@types/autocannon": "^7.12.1",
-    "@types/benchmark": "^2.1.3",
+    "@types/benchmark": "^2.1.4",
     "@types/mocha": "^10.0.2",
     "@types/node": "^16.18.58",
     "mocha": "^10.2.0",
