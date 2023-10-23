@@ -62,7 +62,7 @@
     "@loopback/eslint-config": "^14.0.4",
     "@loopback/testlab": "^6.1.3",
     "@loopback/tsdocs-monorepo": "^0.4.4",
-    "@types/debug": "^4.1.9",
+    "@types/debug": "^4.1.10",
     "@types/fs-extra": "^11.0.2",
     "@types/node": "^16.18.58",
     "@types/npmcli__map-workspaces": "^3.0.2",
