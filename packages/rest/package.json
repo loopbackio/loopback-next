@@ -81,7 +81,7 @@
     "@types/js-yaml": "^4.0.8",
     "@types/json-schema-compare": "^0.2.3",
     "@types/lodash": "^4.14.199",
-    "@types/multer": "^1.4.8",
+    "@types/multer": "^1.4.9",
     "@types/node": "^16.18.58",
     "@types/on-finished": "^2.3.2",
     "@types/qs": "^6.9.8",
