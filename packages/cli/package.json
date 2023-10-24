@@ -80,7 +80,7 @@
     "validate-npm-package-name": "^5.0.0",
     "write-file-atomic": "^5.0.1",
     "yeoman-environment": "^3.19.3",
-    "yeoman-generator": "^5.9.0"
+    "yeoman-generator": "^5.10.0"
   },
   "devDependencies": {
     "@loopback/build": "^10.1.3",
