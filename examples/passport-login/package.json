@@ -75,7 +75,7 @@
     "express-session": "^1.17.3",
     "jade": "^1.11.0",
     "lodash": "^4.17.21",
-    "passport": "^0.5.3",
+    "passport": "^0.6.0",
     "passport-facebook": "^3.0.0",
     "passport-google": "^0.3.0",
     "passport-google-oauth2": "^0.2.0",
