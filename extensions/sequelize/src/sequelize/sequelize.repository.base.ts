@@ -621,6 +621,11 @@ export class SequelizeCrudRepository<
         where[columnName as keyof typeof where]
       );
 
+      // Ignoring undefined values for backwards compatibility with Loopback Juggler ORM API
+      if (typeof conditionValue === 'undefined') {
+        continue;
+      }
+
       if (isTruelyObject(conditionValue)) {
         sequelizeWhere[columnName] = {};
 

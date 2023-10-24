@@ -179,6 +179,27 @@ describe('Sequelize CRUD Repository (integration)', () => {
       expect(afterResponse).to.not.have.property('password');
     });
 
+    it('[find] excludes undefined props from where filter', async () => {
+      const user = getDummyUser();
+      await userRepo.create({
+        name: user.name,
+        address: user.address as AnyObject,
+        email: user.email,
+        password: user.password,
+        dob: user.dob,
+        active: user.active,
+      });
+
+      const userData = await userRepo.find({
+        where: {name: user.name, email: user.email, password: undefined},
+      });
+
+      expect(userData.length).to.be.eql(1);
+      expect(userData[0]).to.have.property('name', user.name);
+      expect(userData[0]).to.have.property('email', user.email);
+      expect(userData[0]).to.have.property('password', user.password);
+    });
+
     it('[findById] allows accessing hidden props before serializing', async () => {
       const user = getDummyUser();
       const createdUser = await userRepo.create({
