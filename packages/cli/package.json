@@ -90,7 +90,7 @@
     "@types/fs-extra": "^11.0.3",
     "@types/minimatch": "^5.1.2",
     "@types/node": "^16.18.58",
-    "@types/yeoman-environment": "^2.10.9",
+    "@types/yeoman-environment": "^2.10.10",
     "@types/yeoman-generator": "^5.2.13",
     "loopback": "^3.28.0",
     "loopback-datasource-juggler": "^5.0.2",
