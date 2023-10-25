@@ -48,8 +48,8 @@
     }
   },
   "devDependencies": {
-    "@commitlint/cli": "^18.0.0",
-    "@commitlint/config-conventional": "^18.0.0",
+    "@commitlint/cli": "^18.1.0",
+    "@commitlint/config-conventional": "^18.1.0",
     "@npmcli/map-workspaces": "^3.0.4",
     "@npmcli/package-json": "^5.0.0",
     "@types/mocha": "^10.0.3",
