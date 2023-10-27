@@ -22,7 +22,7 @@ import {
   Options,
   PositionalParameters,
 } from '../common-types';
-import {EntityNotFoundError} from '../errors';
+import {EntityNotFoundError, InvalidBodyError} from '../errors';
 import {
   Entity,
   Model,
@@ -593,6 +593,9 @@ export class DefaultCrudRepository<
     data: DataObject<T>,
     options?: Options,
   ): Promise<void> {
+    if (!Object.keys(data).length) {
+      throw new InvalidBodyError(this.entityClass, id);
+    }
     if (id === undefined) {
       throw new Error('Invalid Argument: id cannot be undefined');
     }
