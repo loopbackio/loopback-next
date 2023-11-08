@@ -26,6 +26,7 @@ import {
   TaskRepository,
   UserRepository,
 } from '../fixtures/repositories';
+import {ScopedTaskRepository} from '../fixtures/repositories/scoped-task.repository';
 
 type Entities =
   | 'users'
@@ -42,6 +43,7 @@ describe('Sequelize CRUD Repository (integration)', () => {
   let app: SequelizeSandboxApplication;
   let userRepo: UserRepository;
   let taskRepo: TaskRepository;
+  let scopedTaskRepo: ScopedTaskRepository;
   let developerRepo: DeveloperRepository;
   let languagesRepo: ProgrammingLanguageRepository;
   let client: Client;
@@ -72,6 +74,29 @@ describe('Sequelize CRUD Repository (integration)', () => {
       } catch (err) {
         expect(err).to.be.instanceOf(UniqueConstraintError);
       }
+    });
+
+    describe('Model settings Support', () => {
+      beforeEach(async () => {
+        await client.get('/scoped-tasks/sync-sequelize-model').send();
+      });
+      it('supports setting a default "scope" in the Model settings', async () => {
+        await Promise.all([
+          scopedTaskRepo.create({title: 'Task 1'}),
+          scopedTaskRepo.create({title: 'Task 2'}),
+          scopedTaskRepo.create({title: 'Task 3'}),
+        ]);
+
+        const tasksDefaultLimit = await scopedTaskRepo.find();
+
+        expect(tasksDefaultLimit.length).to.be.eql(1);
+
+        const tasksCustomLimit = await scopedTaskRepo.find({
+          limit: 3,
+        });
+
+        expect(tasksCustomLimit.length).to.be.eql(3);
+      });
     });
 
     describe('defaultFn Support', () => {
@@ -919,6 +944,7 @@ describe('Sequelize CRUD Repository (integration)', () => {
         'book.model',
         'category.model',
         'product.model',
+        'scoped-task.model',
         'task.model',
       ],
       repositories: [
@@ -934,6 +960,7 @@ describe('Sequelize CRUD Repository (integration)', () => {
         'book.repository',
         'category.repository',
         'product.repository',
+        'scoped-task.repository',
         'task.repository',
       ],
       controllers: [
@@ -956,6 +983,7 @@ describe('Sequelize CRUD Repository (integration)', () => {
         'product.controller',
         'test.controller.base',
         'task.controller',
+        'scoped-task.controller',
       ],
     };
 
@@ -993,6 +1021,7 @@ describe('Sequelize CRUD Repository (integration)', () => {
     developerRepo = await app.getRepository(DeveloperRepository);
     languagesRepo = await app.getRepository(ProgrammingLanguageRepository);
     taskRepo = await app.getRepository(TaskRepository);
+    scopedTaskRepo = await app.getRepository(ScopedTaskRepository);
     client = createRestAppClient(app as RestApplication);
   }
 

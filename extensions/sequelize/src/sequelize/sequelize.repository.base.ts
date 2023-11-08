@@ -682,6 +682,8 @@ export class SequelizeCrudRepository<
         timestamps: false,
         tableName: this.getTableName(entityClass),
         freezeTableName: true,
+        // Set up optional default scope: https://sequelize.org/docs/v6/other-topics/scopes/#definition
+        defaultScope: entityClass.definition.settings.scope,
       },
     );
 
