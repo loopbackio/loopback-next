@@ -36,7 +36,8 @@
     "README.md",
     "dist",
     "src",
-    "!*/__tests__"
+    "!*/__tests__",
+    "!dist/.sandbox"
   ],
   "peerDependencies": {
     "@loopback/core": "^5.0.0",
