@@ -7,6 +7,9 @@ import {Entity, model, property} from '@loopback/repository';
   settings: {
     scope: {
       limit: 1,
+      where: {
+        completed: false,
+      },
     },
   },
 })
@@ -23,6 +26,12 @@ export class ScopedTask extends Entity {
     required: true,
   })
   title: string;
+
+  @property({
+    type: 'boolean',
+    default: false,
+  })
+  completed: boolean;
 
   constructor(data?: Partial<ScopedTask>) {
     super(data);

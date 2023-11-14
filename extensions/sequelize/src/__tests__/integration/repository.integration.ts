@@ -97,6 +97,30 @@ describe('Sequelize CRUD Repository (integration)', () => {
 
         expect(tasksCustomLimit.length).to.be.eql(3);
       });
+
+      it('supports setting a default "where" filter in the Model settings', async () => {
+        await Promise.all([
+          scopedTaskRepo.create({title: 'Task 1', completed: true}),
+          scopedTaskRepo.create({title: 'Task 2', completed: false}),
+        ]);
+
+        const tasksDefaultWhereFilter = await scopedTaskRepo.find({
+          limit: 2,
+        });
+
+        expect(tasksDefaultWhereFilter).to.have.lengthOf(1);
+        expect(tasksDefaultWhereFilter[0].title).to.eql('Task 2');
+
+        const tasksCustomWhereFilter = await scopedTaskRepo.find({
+          where: {
+            completed: true,
+          },
+          limit: 2,
+        });
+
+        expect(tasksCustomWhereFilter).to.have.lengthOf(1);
+        expect(tasksCustomWhereFilter[0].title).to.eql('Task 1');
+      });
     });
 
     describe('defaultFn Support', () => {
