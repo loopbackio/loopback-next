@@ -65,7 +65,7 @@
     "@types/debug": "^4.1.12",
     "@types/fs-extra": "^11.0.3",
     "@types/node": "^16.18.59",
-    "@types/npmcli__map-workspaces": "^3.0.3",
+    "@types/npmcli__map-workspaces": "^3.0.4",
     "@types/npmcli__package-json": "^4.0.2"
   }
 }
