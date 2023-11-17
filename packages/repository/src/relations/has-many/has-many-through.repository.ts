@@ -3,7 +3,6 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {cloneDeep} from 'lodash';
 import {
   constrainDataObject,
   constrainFilter,
@@ -304,10 +303,10 @@ export class DefaultHasManyThroughRepository<
         throughCategorized[key],
       );
       allTargets = allTargets.concat(
-        await targetRepository.find(
-          constrainFilter(filter, targetConstraint),
-          Object.assign(cloneDeep(options ?? {}), {polymorphicType: key}),
-        ),
+        await targetRepository.find(constrainFilter(filter, targetConstraint), {
+          ...options,
+          polymorphicType: key,
+        }),
       );
     }
 

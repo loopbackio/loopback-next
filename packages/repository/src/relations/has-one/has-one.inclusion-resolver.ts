@@ -4,7 +4,6 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Filter, InclusionFilter} from '@loopback/filter';
-import {cloneDeep} from 'lodash';
 import {includeFieldIfNot, InvalidPolymorphismError} from '../../';
 import {AnyObject, Options} from '../../common-types';
 import {Entity} from '../../model';
@@ -113,7 +112,7 @@ export function createHasOneInclusionResolver<
         targetKey,
         sourceIdsCategorized[k],
         scope,
-        Object.assign(cloneDeep(options ?? {}), {polymorphicType: k}),
+        {...options, polymorphicType: k},
       );
       targetCategorized[k] = flattenTargetsOfOneToOneRelation(
         sourceIdsCategorized[k],
