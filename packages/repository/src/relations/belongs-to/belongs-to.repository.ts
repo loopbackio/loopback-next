@@ -4,7 +4,6 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Getter} from '@loopback/core';
-import {cloneDeep} from 'lodash';
 import {EntityNotFoundError, TypeResolver} from '../../';
 import {DataObject, Options} from '../../common-types';
 import {Entity} from '../../model';
@@ -101,7 +100,7 @@ export class DefaultBelongsToRepository<
       result = result.concat(
         await targetRepository.find(
           constrainFilter(undefined, this.constraint),
-          Object.assign(cloneDeep(options ?? {}), {polymorphicType: key}),
+          {...options, polymorphicType: key},
         ),
       );
       if (result.length >= 1) {

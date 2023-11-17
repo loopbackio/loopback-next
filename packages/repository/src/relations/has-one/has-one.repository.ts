@@ -5,7 +5,6 @@
 
 import {Getter} from '@loopback/core';
 import {Filter, Where} from '@loopback/filter';
-import {cloneDeep} from 'lodash';
 import {TypeResolver} from '../../';
 import {Count, DataObject, Options} from '../../common-types';
 import {EntityNotFoundError, InvalidPolymorphismError} from '../../errors';
@@ -182,7 +181,7 @@ export class DefaultHasOneRepository<
       const targetRepository = await this.getTargetRepositoryDict[key]();
       const found = await targetRepository.find(
         Object.assign({limit: 1}, constrainFilter(filter, this.constraint)),
-        Object.assign(cloneDeep(options ?? {}), {polymorphicType: key}),
+        {...options, polymorphicType: key},
       );
       if (found.length >= 1) {
         return found[0];
