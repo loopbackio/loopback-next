@@ -68,6 +68,27 @@ import {isTruelyObject} from './utils';
 const debug = debugFactory('loopback:sequelize:repository');
 const debugModelBuilder = debugFactory('loopback:sequelize:modelbuilder');
 
+interface InclusionWithRequired extends Inclusion {
+  /**
+   * Setting this option to true will result in an inner join query that
+   * explicitly requires the specified condition for the child model.
+   *
+   * @see https://loopback.io/pages/en/lb4/readmes/loopback-next/extensions/sequelize/#inner-join
+   */
+  required?: boolean;
+}
+
+type InclusionFilterWithRequired = string | InclusionWithRequired;
+
+interface FilterWithRequired<T extends object> extends Filter<T> {
+  include?: InclusionFilterWithRequired[];
+}
+
+type FilterWithRequiredExcludingWhere<T extends object> = Omit<
+  FilterExcludingWhere<T>,
+  'where'
+>;
+
 /**
  * Sequelize implementation of CRUD repository to be used with default loopback entities
  * and SequelizeDataSource for SQL Databases
@@ -231,7 +252,7 @@ export class SequelizeCrudRepository<
   }
 
   async find(
-    filter?: Filter<T>,
+    filter?: FilterWithRequired<T>,
     options?: AnyObject,
   ): Promise<(T & Relations)[]> {
     const data = await this.sequelizeModel.findAll({
@@ -252,7 +273,7 @@ export class SequelizeCrudRepository<
   }
 
   async findOne(
-    filter?: Filter<T>,
+    filter?: FilterWithRequired<T>,
     options?: AnyObject,
   ): Promise<(T & Relations) | null> {
     const data = await this.sequelizeModel.findOne({
@@ -279,7 +300,7 @@ export class SequelizeCrudRepository<
 
   async findById(
     id: ID,
-    filter?: FilterExcludingWhere<T>,
+    filter?: FilterWithRequiredExcludingWhere<T>,
     options?: AnyObject,
   ): Promise<T & Relations> {
     const data = await this.sequelizeModel.findByPk(
