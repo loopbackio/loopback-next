@@ -15,7 +15,6 @@ import {
   EntityNotFoundError,
   Fields,
   Filter,
-  FilterExcludingWhere,
   Getter,
   HasManyDefinition,
   HasManyRepositoryFactory,
@@ -85,7 +84,7 @@ interface FilterWithRequired<T extends object> extends Filter<T> {
 }
 
 type FilterWithRequiredExcludingWhere<T extends object> = Omit<
-  FilterExcludingWhere<T>,
+  FilterWithRequired<T>,
   'where'
 >;
 
