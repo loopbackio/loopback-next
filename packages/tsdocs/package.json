@@ -66,6 +66,6 @@
     "@types/fs-extra": "^11.0.4",
     "@types/node": "^16.18.66",
     "@types/npmcli__map-workspaces": "^3.0.4",
-    "@types/npmcli__package-json": "^4.0.2"
+    "@types/npmcli__package-json": "^4.0.3"
   }
 }
