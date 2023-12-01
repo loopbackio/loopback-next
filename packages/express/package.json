@@ -59,7 +59,7 @@
     "@loopback/testlab": "^6.1.3",
     "@types/debug": "^4.1.12",
     "@types/node": "^16.18.59",
-    "@types/on-finished": "^2.3.3",
+    "@types/on-finished": "^2.3.4",
     "@types/toposort": "^2.0.5",
     "source-map-support": "^0.5.21",
     "typescript": "~5.2.2"
