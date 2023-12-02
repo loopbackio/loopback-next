@@ -44,7 +44,7 @@
     "@loopback/rest": "^13.1.3",
     "@types/byline": "^4.2.36",
     "@types/debug": "^4.1.12",
-    "@types/request-promise-native": "^1.0.20",
+    "@types/request-promise-native": "^1.0.21",
     "autocannon": "^7.12.0",
     "axios": "^1.6.0",
     "benchmark": "^2.1.4",
