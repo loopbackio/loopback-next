@@ -88,8 +88,9 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
     });
 
     this.option('prefix', {
-      description: g.f('Provide prefix to avoid duplication'),
+      description: g.f('Provide a prefix to OpenAPIs'),
       required: false,
+      default: '',
       type: String,
     });
 
@@ -222,9 +223,9 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
     const prompts = [
       {
         name: 'prefix',
-        message: g.f('Provide prefix to avoid duplication'),
+        message: g.f('Provide a prefix to OpenAPIs'),
         when: !this.options.prefix,
-        default: 'openapi',
+        default: '',
       },
     ];
     const answers = await this.prompt(prompts);
@@ -329,7 +330,7 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
     this.selectedServices = this.selectedControllers;
     this.selectedControllers.forEach(c => {
       c.fileName = getControllerFileName(c.tag || c.className);
-      // avoiding duplication by adding a prefix
+      // adding the prefix to openapis
       c.fileName = `${this.options.prefix.toLowerCase()}.` + c.fileName;
       c.serviceFileName = getServiceFileName(c.tag || c.serviceClassName);
     });
