@@ -125,9 +125,9 @@ function assertModels(options) {
   assertFiles(
     options,
     'src/models/index.ts',
-    'src/models/openapi-pet.model.ts',
-    'src/models/new-openapi-pet.model.ts',
-    'src/models/openapi-error.model.ts',
+    'src/models/pet.model.ts',
+    'src/models/new-pet.model.ts',
+    'src/models/error.model.ts',
   );
 }
 
@@ -135,7 +135,7 @@ function assertControllers(options) {
   assertFiles(
     options,
     'src/controllers/index.ts',
-    'src/controllers/openapi.open-api.controller.ts',
+    'src/controllers/open-api.controller.ts',
   );
 }
 

@@ -77,54 +77,57 @@ async function loadAndBuildSpec(
   const {components, paths} = apiSpec;
   let stringifiedApiSpecs = JSON.stringify(apiSpec, getCircularReplacer());
 
-  // rewrite WithRelations and append prefix to avoid duplications
-  stringifiedApiSpecs = stringifiedApiSpecs.replaceAll(
-    'WithRelations',
-    `${prefix}WithRelations`,
-  );
-  // avoid duplication of paths by appending prefix
-  if (paths) {
-    Object.keys(paths).forEach(eachPath => {
-      if (!eachPath.includes('{id}') && !eachPath.includes('count')) {
-        const updatedPath =
-          eachPath.slice(0, 0) +
-          `/${prefix.toLowerCase()}/` +
-          eachPath.slice(1);
-        stringifiedApiSpecs = stringifiedApiSpecs.replaceAll(
-          eachPath,
-          updatedPath,
-        );
-      }
-    });
-  }
-  // rewrite every item and append prefix in the start
-  if (components) {
-    const {schemas} = components;
-    if (schemas) {
-      Object.keys(schemas).forEach(item => {
-        if (
-          !item.startsWith('loopback') &&
-          !item.startsWith('New') &&
-          !item.endsWith('Relations') &&
-          !item.endsWith('Partial') &&
-          !item.includes('Through') &&
-          !item.includes('.') &&
-          !item.includes('Ping')
-        ) {
+  if (prefix) {
+    // rewrite WithRelations and append prefix
+    stringifiedApiSpecs = stringifiedApiSpecs.replaceAll(
+      'WithRelations',
+      `${prefix}WithRelations`,
+    );
+    // adding prefix to paths
+    if (paths) {
+      Object.keys(paths).forEach(eachPath => {
+        if (!eachPath.includes('{id}') && !eachPath.includes('count')) {
+          const updatedPath =
+            eachPath.slice(0, 0) +
+            `/${prefix.toLowerCase()}/` +
+            eachPath.slice(1);
           stringifiedApiSpecs = stringifiedApiSpecs.replaceAll(
-            item,
-            prefix + item,
-          );
-        }
-        if (item.includes('Ping')) {
-          stringifiedApiSpecs = stringifiedApiSpecs.replaceAll(
-            'Ping',
-            prefix + 'Ping',
+            eachPath,
+            updatedPath,
           );
         }
       });
     }
+    // rewrite every item and append prefix in the start
+    if (components) {
+      const {schemas} = components;
+      if (schemas) {
+        Object.keys(schemas).forEach(item => {
+          if (
+            !item.startsWith('loopback') &&
+            !item.startsWith('New') &&
+            !item.endsWith('Relations') &&
+            !item.endsWith('Partial') &&
+            !item.includes('Through') &&
+            !item.includes('.') &&
+            !item.includes('Ping')
+          ) {
+            stringifiedApiSpecs = stringifiedApiSpecs.replaceAll(
+              item,
+              prefix + item,
+            );
+          }
+          if (item.includes('Ping')) {
+            stringifiedApiSpecs = stringifiedApiSpecs.replaceAll(
+              'Ping',
+              prefix + 'Ping',
+            );
+          }
+        });
+      }
+    }
   }
+
   apiSpec = JSON.parse(stringifiedApiSpecs);
 
   // First populate the type registry for named schemas

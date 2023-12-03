@@ -1034,8 +1034,9 @@ exports[`cli saves command metadata to .yo-rc.json 1`] = `
           "hide": false
         },
         "prefix": {
-          "description": "Provide prefix to avoid duplication",
+          "description": "Provide a prefix to OpenAPIs",
           "required": false,
+          "default": "",
           "type": "String",
           "name": "prefix",
           "hide": false

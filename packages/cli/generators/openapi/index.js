@@ -230,14 +230,12 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
     ];
     const answers = await this.prompt(prompts);
     if (answers.prefix) {
-      this.options.prefix = answers.prefix;
+      //assign prefix to options in PascalCase
+      this.options.prefix = answers.prefix.replace(
+        /\w+/g,
+        w => w[0].toUpperCase() + w.slice(1).toLowerCase(),
+      );
     }
-
-    //Change prefix to PascalCase
-    this.options.prefix = this.options.prefix.replace(
-      /\w+/g,
-      w => w[0].toUpperCase() + w.slice(1).toLowerCase(),
-    );
   }
 
   async askForSpecUrlOrPath() {
@@ -281,18 +279,20 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
 
   async selectControllers() {
     if (this.shouldExit()) return;
-    //remove prefix from tag
-    this.controllerSpecs = this.controllerSpecs.map(c => {
-      if (c.tag.includes(this.options.prefix)) {
-        const splited = c.tag.split(this.options.prefix);
-        if (splited.length === 2) {
-          c.tag = splited[1];
-        } else {
-          c.tag = splited[1] + splited[2];
+    if (this.options.prefix) {
+      //remove prefix from tag
+      this.controllerSpecs = this.controllerSpecs.map(c => {
+        if (c.tag.includes(this.options.prefix)) {
+          const splited = c.tag.split(this.options.prefix);
+          if (splited.length === 2) {
+            c.tag = splited[1];
+          } else {
+            c.tag = splited[1] + splited[2];
+          }
         }
-      }
-      return c;
-    });
+        return c;
+      });
+    }
     const choices = this.controllerSpecs.map(c => {
       const names = [];
       if (this.options.server !== false) {
@@ -330,8 +330,10 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
     this.selectedServices = this.selectedControllers;
     this.selectedControllers.forEach(c => {
       c.fileName = getControllerFileName(c.tag || c.className);
-      // adding the prefix to openapis
-      c.fileName = `${this.options.prefix.toLowerCase()}.` + c.fileName;
+      if (this.options.prefix) {
+        // adding the prefix to openapis
+        c.fileName = `${this.options.prefix.toLowerCase()}.` + c.fileName;
+      }
       c.serviceFileName = getServiceFileName(c.tag || c.serviceClassName);
     });
   }

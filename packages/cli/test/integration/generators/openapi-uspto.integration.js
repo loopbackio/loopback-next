@@ -33,11 +33,11 @@ describe('openapi-generator uspto', () => {
     assertFiles(
       {},
       'src/controllers/index.ts',
-      'src/controllers/open-api-search.controller.ts',
-      'src/controllers/open-api-metadata.controller.ts',
+      'src/controllers/search.controller.ts',
+      'src/controllers/metadata.controller.ts',
     );
 
-    assertFiles({}, 'src/open-api-models/index.ts');
+    assertFiles({}, 'src/models/index.ts');
   });
 
   it('skips controllers not selected', async () => {
@@ -52,13 +52,10 @@ describe('openapi-generator uspto', () => {
     assertFiles(
       {},
       'src/controllers/index.ts',
-      'src/controllers/open-api-metadata.controller.ts',
+      'src/controllers/metadata.controller.ts',
     );
 
-    assertFiles(
-      {exists: false},
-      'src/controllers/open-api-search.controller.ts',
-    );
+    assertFiles({exists: false}, 'src/controllers/search.controller.ts');
 
     assertFiles({}, 'src/models/index.ts');
   });

@@ -18,8 +18,8 @@ import {inject, Provider} from '@loopback/core';
 import {getService} from '@loopback/service-proxy';
 import {PetStoreDataSource} from '../datasources';
 
-import {OpenapiPet} from '../models/openapi-pet.model';
-import {NewOpenapiPet} from '../models/new-openapi-pet.model';
+import {Pet} from '../models/pet.model';
+import {NewPet} from '../models/new-pet.model';
 
 /**
  * The service interface is generated from OpenAPI spec with operations tagged
@@ -56,17 +56,17 @@ pulvinar elit eu, euismod sapien.
    * @param where 
    * @returns pet response
    */
-  findOpenapiPets(params: { tags: string[]; limit: number; where: {
+  findPets(params: { tags: string[]; limit: number; where: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [additionalProperty: string]: any;
-} }): Promise<OpenapiPet[]>;
+} }): Promise<Pet[]>;
 
   /**
    * Creates a new pet in the store. Duplicates are allowed
-   * @param _requestBody OpenapiPet to add to the store
+   * @param _requestBody Pet to add to the store
    * @returns pet response
    */
-  addOpenapiPet(params: { requestBody: NewOpenapiPet }): Promise<OpenapiPet>;
+  addPet(params: { requestBody: NewPet }): Promise<Pet>;
 
   /**
    * Returns a user based on a single ID, if the user does not have access to the
@@ -74,13 +74,13 @@ pet
    * @param id ID of pet to fetch
    * @returns pet response
    */
-  findPetById(params: { id: number }): Promise<OpenapiPet>;
+  findPetById(params: { id: number }): Promise<Pet>;
 
   /**
    * deletes a single pet based on the ID supplied
    * @param id ID of pet to delete
    */
-  deleteOpenapiPet(params: { id: number }): Promise<unknown>;
+  deletePet(params: { id: number }): Promise<unknown>;
 
 }
 
@@ -103,20 +103,20 @@ export class OpenApiServiceProvider implements Provider<OpenApiService> {
 
 
 exports[`generates files with --client and --datasource for an existing datasource 3`] = `
-export * from './openapi-pet.model';
-export * from './new-openapi-pet.model';
-export * from './openapi-error.model';
+export * from './pet.model';
+export * from './new-pet.model';
+export * from './error.model';
 
 `;
 
 
 exports[`generates files with --client and --datasource for an existing datasource 4`] = `
-import {NewOpenapiPet} from './new-openapi-pet.model';
+import {NewPet} from './new-pet.model';
 /**
- * The model type is generated from OpenAPI schema - OpenapiPet
- * OpenapiPet
+ * The model type is generated from OpenAPI schema - Pet
+ * Pet
  */
-export type OpenapiPet = NewOpenapiPet & {
+export type Pet = NewPet & {
   id: number;
 };
 
@@ -128,12 +128,12 @@ exports[`generates files with --client and --datasource for an existing datasour
 import {model, property} from '@loopback/repository';
 
 /**
- * The model class is generated from OpenAPI schema - NewOpenapiPet
- * NewOpenapiPet
+ * The model class is generated from OpenAPI schema - NewPet
+ * NewPet
  */
-@model({name: 'NewOpenapiPet'})
-export class NewOpenapiPet {
-  constructor(data?: Partial<NewOpenapiPet>) {
+@model({name: 'NewPet'})
+export class NewPet {
+  constructor(data?: Partial<NewPet>) {
     if (data != null && typeof data === 'object') {
       Object.assign(this, data);
     }
@@ -157,11 +157,11 @@ export class NewOpenapiPet {
 
 }
 
-export interface NewOpenapiPetRelations {
+export interface NewPetRelations {
   // describe navigational properties here
 }
 
-export type NewOpenapiPetWithRelations = NewOpenapiPet & NewOpenapiPetRelations;
+export type NewPetWithRelations = NewPet & NewPetRelations;
 
 
 
@@ -170,10 +170,10 @@ export type NewOpenapiPetWithRelations = NewOpenapiPet & NewOpenapiPetRelations;
 
 exports[`generates files with --client and --datasource for an existing datasource 6`] = `
 /**
- * The model type is generated from OpenAPI schema - OpenapiError
- * OpenapiError
+ * The model type is generated from OpenAPI schema - Error
+ * Error
  */
-export type OpenapiError = string;
+export type Error = string;
 
 
 `;
@@ -190,8 +190,8 @@ import {inject, Provider} from '@loopback/core';
 import {getService} from '@loopback/service-proxy';
 import {PetStoreDataSource} from '../datasources';
 
-import {OpenapiPet} from '../models/openapi-pet.model';
-import {NewOpenapiPet} from '../models/new-openapi-pet.model';
+import {Pet} from '../models/pet.model';
+import {NewPet} from '../models/new-pet.model';
 
 /**
  * The service interface is generated from OpenAPI spec with operations tagged
@@ -228,17 +228,17 @@ pulvinar elit eu, euismod sapien.
    * @param where 
    * @returns pet response
    */
-  findOpenapiPets(params: { tags: string[]; limit: number; where: {
+  findPets(params: { tags: string[]; limit: number; where: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [additionalProperty: string]: any;
-} }): Promise<OpenapiPet[]>;
+} }): Promise<Pet[]>;
 
   /**
    * Creates a new pet in the store. Duplicates are allowed
-   * @param _requestBody OpenapiPet to add to the store
+   * @param _requestBody Pet to add to the store
    * @returns pet response
    */
-  addOpenapiPet(params: { requestBody: NewOpenapiPet }): Promise<OpenapiPet>;
+  addPet(params: { requestBody: NewPet }): Promise<Pet>;
 
   /**
    * Returns a user based on a single ID, if the user does not have access to the
@@ -246,13 +246,13 @@ pet
    * @param id ID of pet to fetch
    * @returns pet response
    */
-  findPetById(params: { id: number }): Promise<OpenapiPet>;
+  findPetById(params: { id: number }): Promise<Pet>;
 
   /**
    * deletes a single pet based on the ID supplied
    * @param id ID of pet to delete
    */
-  deleteOpenapiPet(params: { id: number }): Promise<unknown>;
+  deletePet(params: { id: number }): Promise<unknown>;
 
 }
 
@@ -275,20 +275,20 @@ export class OpenApiServiceProvider implements Provider<OpenApiService> {
 
 
 exports[`generates files with --client for an existing datasource 3`] = `
-export * from './openapi-pet.model';
-export * from './new-openapi-pet.model';
-export * from './openapi-error.model';
+export * from './pet.model';
+export * from './new-pet.model';
+export * from './error.model';
 
 `;
 
 
 exports[`generates files with --client for an existing datasource 4`] = `
-import {NewOpenapiPet} from './new-openapi-pet.model';
+import {NewPet} from './new-pet.model';
 /**
- * The model type is generated from OpenAPI schema - OpenapiPet
- * OpenapiPet
+ * The model type is generated from OpenAPI schema - Pet
+ * Pet
  */
-export type OpenapiPet = NewOpenapiPet & {
+export type Pet = NewPet & {
   id: number;
 };
 
@@ -300,12 +300,12 @@ exports[`generates files with --client for an existing datasource 5`] = `
 import {model, property} from '@loopback/repository';
 
 /**
- * The model class is generated from OpenAPI schema - NewOpenapiPet
- * NewOpenapiPet
+ * The model class is generated from OpenAPI schema - NewPet
+ * NewPet
  */
-@model({name: 'NewOpenapiPet'})
-export class NewOpenapiPet {
-  constructor(data?: Partial<NewOpenapiPet>) {
+@model({name: 'NewPet'})
+export class NewPet {
+  constructor(data?: Partial<NewPet>) {
     if (data != null && typeof data === 'object') {
       Object.assign(this, data);
     }
@@ -329,11 +329,11 @@ export class NewOpenapiPet {
 
 }
 
-export interface NewOpenapiPetRelations {
+export interface NewPetRelations {
   // describe navigational properties here
 }
 
-export type NewOpenapiPetWithRelations = NewOpenapiPet & NewOpenapiPetRelations;
+export type NewPetWithRelations = NewPet & NewPetRelations;
 
 
 
@@ -342,17 +342,17 @@ export type NewOpenapiPetWithRelations = NewOpenapiPet & NewOpenapiPetRelations;
 
 exports[`generates files with --client for an existing datasource 6`] = `
 /**
- * The model type is generated from OpenAPI schema - OpenapiError
- * OpenapiError
+ * The model type is generated from OpenAPI schema - Error
+ * Error
  */
-export type OpenapiError = string;
+export type Error = string;
 
 
 `;
 
 
 exports[`openapi-generator with --client allows baseModel option 1`] = `
-export * from './openapi.open-api.controller';
+export * from './open-api.controller';
 
 `;
 
@@ -363,8 +363,8 @@ import {inject} from '@loopback/core';
 
 import {OpenApiService} from '../services';
   
-import {OpenapiPet} from '../models/openapi-pet.model';
-import {NewOpenapiPet} from '../models/new-openapi-pet.model';
+import {Pet} from '../models/pet.model';
+import {NewPet} from '../models/new-pet.model';
 
 /**
  * The controller class is generated from OpenAPI spec with operations tagged
@@ -374,9 +374,9 @@ import {NewOpenapiPet} from '../models/new-openapi-pet.model';
 @api({
   components: {
     schemas: {
-      OpenapiPet: {},
-      NewOpenapiPet: {},
-      OpenapiError: {},
+      Pet: {},
+      NewPet: {},
+      Error: {},
     },
   },
   paths: {},
@@ -416,9 +416,9 @@ pulvinar elit eu, euismod sapien.
    * @param where 
    * @returns pet response
    */
-  @operation('get', '/openapi/pets', {
+  @operation('get', '/pets', {
   description: 'Returns all pets from the system that the user has access to\\nNam sed condimentum est. Maecenas tempor sagittis sapien, nec rhoncus sem sagittis sit amet. Aenean at gravida augue, ac iaculis sem. Curabitur odio lorem, ornare eget elementum nec, cursus id lectus. Duis mi turpis, pulvinar ac eros ac, tincidunt varius justo. In hac habitasse platea dictumst. Integer at adipiscing ante, a sagittis ligula. Aenean pharetra tempor ante molestie imperdiet. Vivamus id aliquam diam. Cras quis velit non tortor eleifend sagittis. Praesent at enim pharetra urna volutpat venenatis eget eget mauris. In eleifend fermentum facilisis. Praesent enim enim, gravida ac sodales sed, placerat id erat. Suspendisse lacus dolor, consectetur non augue vel, vehicula interdum libero. Morbi euismod sagittis libero sed lacinia.\\n\\nSed tempus felis lobortis leo pulvinar rutrum. Nam mattis velit nisl, eu condimentum ligula luctus nec. Phasellus semper velit eget aliquet faucibus. In a mattis elit. Phasellus vel urna viverra, condimentum lorem id, rhoncus nibh. Ut pellentesque posuere elementum. Sed a varius odio. Morbi rhoncus ligula libero, vel eleifend nunc tristique vitae. Fusce et sem dui. Aenean nec scelerisque tortor. Fusce malesuada accumsan magna vel tempus. Quisque mollis felis eu dolor tristique, sit amet auctor felis gravida. Sed libero lorem, molestie sed nisl in, accumsan tempor nisi. Fusce sollicitudin massa ut lacinia mattis. Sed vel eleifend lorem. Pellentesque vitae felis pretium, pulvinar elit eu, euismod sapien.\\n',
-  operationId: 'findOpenapiPets',
+  operationId: 'findPets',
   parameters: [
     {
       name: 'tags',
@@ -465,7 +465,7 @@ pulvinar elit eu, euismod sapien.
           schema: {
             type: 'array',
             items: {
-              $ref: '#/components/schemas/OpenapiPet',
+              $ref: '#/components/schemas/Pet',
             },
           },
         },
@@ -476,14 +476,14 @@ pulvinar elit eu, euismod sapien.
       content: {
         'application/json': {
           schema: {
-            $ref: '#/components/schemas/OpenapiError',
+            $ref: '#/components/schemas/Error',
           },
         },
       },
     },
   },
 })
-  async findOpenapiPets(@param({
+  async findPets(@param({
   name: 'tags',
   in: 'query',
   description: 'tags to filter by',
@@ -519,25 +519,25 @@ pulvinar elit eu, euismod sapien.
 }) where: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [additionalProperty: string]: any;
-} | undefined): Promise<OpenapiPet[]> {
-     return this.openApiService.findOpenapiPets(tags, limit, where); 
+} | undefined): Promise<Pet[]> {
+     return this.openApiService.findPets(tags, limit, where); 
   }
   /**
    * Creates a new pet in the store. Duplicates are allowed
    *
-   * @param _requestBody OpenapiPet to add to the store
+   * @param _requestBody Pet to add to the store
    * @returns pet response
    */
-  @operation('post', '/openapi/pets', {
+  @operation('post', '/pets', {
   description: 'Creates a new pet in the store.  Duplicates are allowed',
-  operationId: 'addOpenapiPet',
+  operationId: 'addPet',
   requestBody: {
-    description: 'OpenapiPet to add to the store',
+    description: 'Pet to add to the store',
     required: true,
     content: {
       'application/json': {
         schema: {
-          $ref: '#/components/schemas/NewOpenapiPet',
+          $ref: '#/components/schemas/NewPet',
         },
       },
     },
@@ -548,7 +548,7 @@ pulvinar elit eu, euismod sapien.
       content: {
         'application/json': {
           schema: {
-            $ref: '#/components/schemas/OpenapiPet',
+            $ref: '#/components/schemas/Pet',
           },
         },
       },
@@ -558,25 +558,25 @@ pulvinar elit eu, euismod sapien.
       content: {
         'application/json': {
           schema: {
-            $ref: '#/components/schemas/OpenapiError',
+            $ref: '#/components/schemas/Error',
           },
         },
       },
     },
   },
 })
-  async addOpenapiPet(@requestBody({
-  description: 'OpenapiPet to add to the store',
+  async addPet(@requestBody({
+  description: 'Pet to add to the store',
   required: true,
   content: {
     'application/json': {
       schema: {
-        $ref: '#/components/schemas/NewOpenapiPet',
+        $ref: '#/components/schemas/NewPet',
       },
     },
   },
-}) _requestBody: NewOpenapiPet): Promise<OpenapiPet> {
-     return this.openApiService.addOpenapiPet(_requestBody); 
+}) _requestBody: NewPet): Promise<Pet> {
+     return this.openApiService.addPet(_requestBody); 
   }
   /**
    * Returns a user based on a single ID, if the user does not have access to the
@@ -585,7 +585,7 @@ pet
    * @param id ID of pet to fetch
    * @returns pet response
    */
-  @operation('get', '/openapi/pets/{id}', {
+  @operation('get', '/pets/{id}', {
   description: 'Returns a user based on a single ID, if the user does not have access to the pet',
   operationId: 'find pet by id',
   parameters: [
@@ -606,7 +606,7 @@ pet
       content: {
         'application/json': {
           schema: {
-            $ref: '#/components/schemas/OpenapiPet',
+            $ref: '#/components/schemas/Pet',
           },
         },
       },
@@ -616,7 +616,7 @@ pet
       content: {
         'application/json': {
           schema: {
-            $ref: '#/components/schemas/OpenapiError',
+            $ref: '#/components/schemas/Error',
           },
         },
       },
@@ -632,7 +632,7 @@ pet
     type: 'integer',
     format: 'int64',
   },
-}) id: number): Promise<OpenapiPet> {
+}) id: number): Promise<Pet> {
      return this.openApiService.findPetById(id); 
   }
   /**
@@ -640,9 +640,9 @@ pet
    *
    * @param id ID of pet to delete
    */
-  @operation('delete', '/openapi/pets/{id}', {
+  @operation('delete', '/pets/{id}', {
   description: 'deletes a single pet based on the ID supplied',
-  operationId: 'deleteOpenapiPet',
+  operationId: 'deletePet',
   parameters: [
     {
       name: 'id',
@@ -664,14 +664,14 @@ pet
       content: {
         'application/json': {
           schema: {
-            $ref: '#/components/schemas/OpenapiError',
+            $ref: '#/components/schemas/Error',
           },
         },
       },
     },
   },
 })
-  async deleteOpenapiPet(@param({
+  async deletePet(@param({
   name: 'id',
   in: 'path',
   description: 'ID of pet to delete',
@@ -681,7 +681,7 @@ pet
     format: 'int64',
   },
 }) id: number): Promise<unknown> {
-     return this.openApiService.deleteOpenapiPet(id); 
+     return this.openApiService.deletePet(id); 
   }
 }
 
@@ -759,8 +759,8 @@ import {inject, Provider} from '@loopback/core';
 import {getService} from '@loopback/service-proxy';
 import {PetStoreDataSource} from '../datasources';
 
-import {OpenapiPet} from '../models/openapi-pet.model';
-import {NewOpenapiPet} from '../models/new-openapi-pet.model';
+import {Pet} from '../models/pet.model';
+import {NewPet} from '../models/new-pet.model';
 
 /**
  * The service interface is generated from OpenAPI spec with operations tagged
@@ -797,17 +797,17 @@ pulvinar elit eu, euismod sapien.
    * @param where 
    * @returns pet response
    */
-  findOpenapiPets(tags: string[] | undefined, limit: number | undefined, where: {
+  findPets(tags: string[] | undefined, limit: number | undefined, where: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [additionalProperty: string]: any;
-} | undefined): Promise<OpenapiPet[]>;
+} | undefined): Promise<Pet[]>;
 
   /**
    * Creates a new pet in the store. Duplicates are allowed
-   * @param _requestBody OpenapiPet to add to the store
+   * @param _requestBody Pet to add to the store
    * @returns pet response
    */
-  addOpenapiPet(_requestBody: NewOpenapiPet): Promise<OpenapiPet>;
+  addPet(_requestBody: NewPet): Promise<Pet>;
 
   /**
    * Returns a user based on a single ID, if the user does not have access to the
@@ -815,13 +815,13 @@ pet
    * @param id ID of pet to fetch
    * @returns pet response
    */
-  findPetById(id: number): Promise<OpenapiPet>;
+  findPetById(id: number): Promise<Pet>;
 
   /**
    * deletes a single pet based on the ID supplied
    * @param id ID of pet to delete
    */
-  deleteOpenapiPet(id: number): Promise<unknown>;
+  deletePet(id: number): Promise<unknown>;
 
 }
 
@@ -844,20 +844,20 @@ export class OpenApiServiceProvider implements Provider<OpenApiService> {
 
 
 exports[`openapi-generator with --client allows baseModel option 7`] = `
-export * from './openapi-pet.model';
-export * from './new-openapi-pet.model';
-export * from './openapi-error.model';
+export * from './pet.model';
+export * from './new-pet.model';
+export * from './error.model';
 
 `;
 
 
 exports[`openapi-generator with --client allows baseModel option 8`] = `
-import {NewOpenapiPet} from './new-openapi-pet.model';
+import {NewPet} from './new-pet.model';
 /**
- * The model type is generated from OpenAPI schema - OpenapiPet
- * OpenapiPet
+ * The model type is generated from OpenAPI schema - Pet
+ * Pet
  */
-export type OpenapiPet = NewOpenapiPet & {
+export type Pet = NewPet & {
   id: number;
 };
 
@@ -869,12 +869,12 @@ exports[`openapi-generator with --client allows baseModel option 9`] = `
 import {model, property, Model} from '@loopback/repository';
 
 /**
- * The model class is generated from OpenAPI schema - NewOpenapiPet
- * NewOpenapiPet
+ * The model class is generated from OpenAPI schema - NewPet
+ * NewPet
  */
-@model({name: 'NewOpenapiPet'})
-export class NewOpenapiPet extends Model {
-  constructor(data?: Partial<NewOpenapiPet>) {
+@model({name: 'NewPet'})
+export class NewPet extends Model {
+  constructor(data?: Partial<NewPet>) {
     super(data);
   }
 
@@ -896,11 +896,11 @@ export class NewOpenapiPet extends Model {
 
 }
 
-export interface NewOpenapiPetRelations {
+export interface NewPetRelations {
   // describe navigational properties here
 }
 
-export type NewOpenapiPetWithRelations = NewOpenapiPet & NewOpenapiPetRelations;
+export type NewPetWithRelations = NewPet & NewPetRelations;
 
 
 
@@ -909,25 +909,25 @@ export type NewOpenapiPetWithRelations = NewOpenapiPet & NewOpenapiPetRelations;
 
 exports[`openapi-generator with --client allows baseModel option 10`] = `
 /**
- * The model type is generated from OpenAPI schema - OpenapiError
- * OpenapiError
+ * The model type is generated from OpenAPI schema - Error
+ * Error
  */
-export type OpenapiError = string;
+export type Error = string;
 
 
 `;
 
 
 exports[`openapi-generator with --client does not generates files for client with --no-client 1`] = `
-export * from './openapi.open-api.controller';
+export * from './open-api.controller';
 
 `;
 
 
 exports[`openapi-generator with --client does not generates files for client with --no-client 2`] = `
 import {api, operation, param, requestBody} from '@loopback/rest';
-import {OpenapiPet} from '../models/openapi-pet.model';
-import {NewOpenapiPet} from '../models/new-openapi-pet.model';
+import {Pet} from '../models/pet.model';
+import {NewPet} from '../models/new-pet.model';
 
 /**
  * The controller class is generated from OpenAPI spec with operations tagged
@@ -937,9 +937,9 @@ import {NewOpenapiPet} from '../models/new-openapi-pet.model';
 @api({
   components: {
     schemas: {
-      OpenapiPet: {},
-      NewOpenapiPet: {},
-      OpenapiError: {},
+      Pet: {},
+      NewPet: {},
+      Error: {},
     },
   },
   paths: {},
@@ -977,9 +977,9 @@ pulvinar elit eu, euismod sapien.
    * @param where 
    * @returns pet response
    */
-  @operation('get', '/openapi/pets', {
+  @operation('get', '/pets', {
   description: 'Returns all pets from the system that the user has access to\\nNam sed condimentum est. Maecenas tempor sagittis sapien, nec rhoncus sem sagittis sit amet. Aenean at gravida augue, ac iaculis sem. Curabitur odio lorem, ornare eget elementum nec, cursus id lectus. Duis mi turpis, pulvinar ac eros ac, tincidunt varius justo. In hac habitasse platea dictumst. Integer at adipiscing ante, a sagittis ligula. Aenean pharetra tempor ante molestie imperdiet. Vivamus id aliquam diam. Cras quis velit non tortor eleifend sagittis. Praesent at enim pharetra urna volutpat venenatis eget eget mauris. In eleifend fermentum facilisis. Praesent enim enim, gravida ac sodales sed, placerat id erat. Suspendisse lacus dolor, consectetur non augue vel, vehicula interdum libero. Morbi euismod sagittis libero sed lacinia.\\n\\nSed tempus felis lobortis leo pulvinar rutrum. Nam mattis velit nisl, eu condimentum ligula luctus nec. Phasellus semper velit eget aliquet faucibus. In a mattis elit. Phasellus vel urna viverra, condimentum lorem id, rhoncus nibh. Ut pellentesque posuere elementum. Sed a varius odio. Morbi rhoncus ligula libero, vel eleifend nunc tristique vitae. Fusce et sem dui. Aenean nec scelerisque tortor. Fusce malesuada accumsan magna vel tempus. Quisque mollis felis eu dolor tristique, sit amet auctor felis gravida. Sed libero lorem, molestie sed nisl in, accumsan tempor nisi. Fusce sollicitudin massa ut lacinia mattis. Sed vel eleifend lorem. Pellentesque vitae felis pretium, pulvinar elit eu, euismod sapien.\\n',
-  operationId: 'findOpenapiPets',
+  operationId: 'findPets',
   parameters: [
     {
       name: 'tags',
@@ -1026,7 +1026,7 @@ pulvinar elit eu, euismod sapien.
           schema: {
             type: 'array',
             items: {
-              $ref: '#/components/schemas/OpenapiPet',
+              $ref: '#/components/schemas/Pet',
             },
           },
         },
@@ -1037,14 +1037,14 @@ pulvinar elit eu, euismod sapien.
       content: {
         'application/json': {
           schema: {
-            $ref: '#/components/schemas/OpenapiError',
+            $ref: '#/components/schemas/Error',
           },
         },
       },
     },
   },
 })
-  async findOpenapiPets(@param({
+  async findPets(@param({
   name: 'tags',
   in: 'query',
   description: 'tags to filter by',
@@ -1080,25 +1080,25 @@ pulvinar elit eu, euismod sapien.
 }) where: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [additionalProperty: string]: any;
-} | undefined): Promise<OpenapiPet[]> {
+} | undefined): Promise<Pet[]> {
      throw new Error('Not implemented'); 
   }
   /**
    * Creates a new pet in the store. Duplicates are allowed
    *
-   * @param _requestBody OpenapiPet to add to the store
+   * @param _requestBody Pet to add to the store
    * @returns pet response
    */
-  @operation('post', '/openapi/pets', {
+  @operation('post', '/pets', {
   description: 'Creates a new pet in the store.  Duplicates are allowed',
-  operationId: 'addOpenapiPet',
+  operationId: 'addPet',
   requestBody: {
-    description: 'OpenapiPet to add to the store',
+    description: 'Pet to add to the store',
     required: true,
     content: {
       'application/json': {
         schema: {
-          $ref: '#/components/schemas/NewOpenapiPet',
+          $ref: '#/components/schemas/NewPet',
         },
       },
     },
@@ -1109,7 +1109,7 @@ pulvinar elit eu, euismod sapien.
       content: {
         'application/json': {
           schema: {
-            $ref: '#/components/schemas/OpenapiPet',
+            $ref: '#/components/schemas/Pet',
           },
         },
       },
@@ -1119,24 +1119,24 @@ pulvinar elit eu, euismod sapien.
       content: {
         'application/json': {
           schema: {
-            $ref: '#/components/schemas/OpenapiError',
+            $ref: '#/components/schemas/Error',
           },
         },
       },
     },
   },
 })
-  async addOpenapiPet(@requestBody({
-  description: 'OpenapiPet to add to the store',
+  async addPet(@requestBody({
+  description: 'Pet to add to the store',
   required: true,
   content: {
     'application/json': {
       schema: {
-        $ref: '#/components/schemas/NewOpenapiPet',
+        $ref: '#/components/schemas/NewPet',
       },
     },
   },
-}) _requestBody: NewOpenapiPet): Promise<OpenapiPet> {
+}) _requestBody: NewPet): Promise<Pet> {
      throw new Error('Not implemented'); 
   }
   /**
@@ -1146,7 +1146,7 @@ pet
    * @param id ID of pet to fetch
    * @returns pet response
    */
-  @operation('get', '/openapi/pets/{id}', {
+  @operation('get', '/pets/{id}', {
   description: 'Returns a user based on a single ID, if the user does not have access to the pet',
   operationId: 'find pet by id',
   parameters: [
@@ -1167,7 +1167,7 @@ pet
       content: {
         'application/json': {
           schema: {
-            $ref: '#/components/schemas/OpenapiPet',
+            $ref: '#/components/schemas/Pet',
           },
         },
       },
@@ -1177,7 +1177,7 @@ pet
       content: {
         'application/json': {
           schema: {
-            $ref: '#/components/schemas/OpenapiError',
+            $ref: '#/components/schemas/Error',
           },
         },
       },
@@ -1193,7 +1193,7 @@ pet
     type: 'integer',
     format: 'int64',
   },
-}) id: number): Promise<OpenapiPet> {
+}) id: number): Promise<Pet> {
      throw new Error('Not implemented'); 
   }
   /**
@@ -1201,9 +1201,9 @@ pet
    *
    * @param id ID of pet to delete
    */
-  @operation('delete', '/openapi/pets/{id}', {
+  @operation('delete', '/pets/{id}', {
   description: 'deletes a single pet based on the ID supplied',
-  operationId: 'deleteOpenapiPet',
+  operationId: 'deletePet',
   parameters: [
     {
       name: 'id',
@@ -1225,14 +1225,14 @@ pet
       content: {
         'application/json': {
           schema: {
-            $ref: '#/components/schemas/OpenapiError',
+            $ref: '#/components/schemas/Error',
           },
         },
       },
     },
   },
 })
-  async deleteOpenapiPet(@param({
+  async deletePet(@param({
   name: 'id',
   in: 'path',
   description: 'ID of pet to delete',
@@ -1251,20 +1251,20 @@ pet
 
 
 exports[`openapi-generator with --client does not generates files for client with --no-client 3`] = `
-export * from './openapi-pet.model';
-export * from './new-openapi-pet.model';
-export * from './openapi-error.model';
+export * from './pet.model';
+export * from './new-pet.model';
+export * from './error.model';
 
 `;
 
 
 exports[`openapi-generator with --client does not generates files for client with --no-client 4`] = `
-import {NewOpenapiPet} from './new-openapi-pet.model';
+import {NewPet} from './new-pet.model';
 /**
- * The model type is generated from OpenAPI schema - OpenapiPet
- * OpenapiPet
+ * The model type is generated from OpenAPI schema - Pet
+ * Pet
  */
-export type OpenapiPet = NewOpenapiPet & {
+export type Pet = NewPet & {
   id: number;
 };
 
@@ -1276,12 +1276,12 @@ exports[`openapi-generator with --client does not generates files for client wit
 import {model, property} from '@loopback/repository';
 
 /**
- * The model class is generated from OpenAPI schema - NewOpenapiPet
- * NewOpenapiPet
+ * The model class is generated from OpenAPI schema - NewPet
+ * NewPet
  */
-@model({name: 'NewOpenapiPet'})
-export class NewOpenapiPet {
-  constructor(data?: Partial<NewOpenapiPet>) {
+@model({name: 'NewPet'})
+export class NewPet {
+  constructor(data?: Partial<NewPet>) {
     if (data != null && typeof data === 'object') {
       Object.assign(this, data);
     }
@@ -1305,11 +1305,11 @@ export class NewOpenapiPet {
 
 }
 
-export interface NewOpenapiPetRelations {
+export interface NewPetRelations {
   // describe navigational properties here
 }
 
-export type NewOpenapiPetWithRelations = NewOpenapiPet & NewOpenapiPetRelations;
+export type NewPetWithRelations = NewPet & NewPetRelations;
 
 
 
@@ -1318,10 +1318,10 @@ export type NewOpenapiPetWithRelations = NewOpenapiPet & NewOpenapiPetRelations;
 
 exports[`openapi-generator with --client does not generates files for client with --no-client 6`] = `
 /**
- * The model type is generated from OpenAPI schema - OpenapiError
- * OpenapiError
+ * The model type is generated from OpenAPI schema - Error
+ * Error
  */
-export type OpenapiError = string;
+export type Error = string;
 
 
 `;
@@ -1397,8 +1397,8 @@ import {inject, Provider} from '@loopback/core';
 import {getService} from '@loopback/service-proxy';
 import {PetStoreDataSource} from '../datasources';
 
-import {OpenapiPet} from '../models/openapi-pet.model';
-import {NewOpenapiPet} from '../models/new-openapi-pet.model';
+import {Pet} from '../models/pet.model';
+import {NewPet} from '../models/new-pet.model';
 
 /**
  * The service interface is generated from OpenAPI spec with operations tagged
@@ -1435,17 +1435,17 @@ pulvinar elit eu, euismod sapien.
    * @param where 
    * @returns pet response
    */
-  findOpenapiPets(tags: string[] | undefined, limit: number | undefined, where: {
+  findPets(tags: string[] | undefined, limit: number | undefined, where: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [additionalProperty: string]: any;
-} | undefined): Promise<OpenapiPet[]>;
+} | undefined): Promise<Pet[]>;
 
   /**
    * Creates a new pet in the store. Duplicates are allowed
-   * @param _requestBody OpenapiPet to add to the store
+   * @param _requestBody Pet to add to the store
    * @returns pet response
    */
-  addOpenapiPet(_requestBody: NewOpenapiPet): Promise<OpenapiPet>;
+  addPet(_requestBody: NewPet): Promise<Pet>;
 
   /**
    * Returns a user based on a single ID, if the user does not have access to the
@@ -1453,13 +1453,13 @@ pet
    * @param id ID of pet to fetch
    * @returns pet response
    */
-  findPetById(id: number): Promise<OpenapiPet>;
+  findPetById(id: number): Promise<Pet>;
 
   /**
    * deletes a single pet based on the ID supplied
    * @param id ID of pet to delete
    */
-  deleteOpenapiPet(id: number): Promise<unknown>;
+  deletePet(id: number): Promise<unknown>;
 
 }
 
@@ -1482,20 +1482,20 @@ export class OpenApiServiceProvider implements Provider<OpenApiService> {
 
 
 exports[`openapi-generator with --client does not generates files for server with --no-server 5`] = `
-export * from './openapi-pet.model';
-export * from './new-openapi-pet.model';
-export * from './openapi-error.model';
+export * from './pet.model';
+export * from './new-pet.model';
+export * from './error.model';
 
 `;
 
 
 exports[`openapi-generator with --client does not generates files for server with --no-server 6`] = `
-import {NewOpenapiPet} from './new-openapi-pet.model';
+import {NewPet} from './new-pet.model';
 /**
- * The model type is generated from OpenAPI schema - OpenapiPet
- * OpenapiPet
+ * The model type is generated from OpenAPI schema - Pet
+ * Pet
  */
-export type OpenapiPet = NewOpenapiPet & {
+export type Pet = NewPet & {
   id: number;
 };
 
@@ -1507,12 +1507,12 @@ exports[`openapi-generator with --client does not generates files for server wit
 import {model, property} from '@loopback/repository';
 
 /**
- * The model class is generated from OpenAPI schema - NewOpenapiPet
- * NewOpenapiPet
+ * The model class is generated from OpenAPI schema - NewPet
+ * NewPet
  */
-@model({name: 'NewOpenapiPet'})
-export class NewOpenapiPet {
-  constructor(data?: Partial<NewOpenapiPet>) {
+@model({name: 'NewPet'})
+export class NewPet {
+  constructor(data?: Partial<NewPet>) {
     if (data != null && typeof data === 'object') {
       Object.assign(this, data);
     }
@@ -1536,11 +1536,11 @@ export class NewOpenapiPet {
 
 }
 
-export interface NewOpenapiPetRelations {
+export interface NewPetRelations {
   // describe navigational properties here
 }
 
-export type NewOpenapiPetWithRelations = NewOpenapiPet & NewOpenapiPetRelations;
+export type NewPetWithRelations = NewPet & NewPetRelations;
 
 
 
@@ -1549,17 +1549,17 @@ export type NewOpenapiPetWithRelations = NewOpenapiPet & NewOpenapiPetRelations;
 
 exports[`openapi-generator with --client does not generates files for server with --no-server 8`] = `
 /**
- * The model type is generated from OpenAPI schema - OpenapiError
- * OpenapiError
+ * The model type is generated from OpenAPI schema - Error
+ * Error
  */
-export type OpenapiError = string;
+export type Error = string;
 
 
 `;
 
 
 exports[`openapi-generator with --client generates all files for both server and client 1`] = `
-export * from './openapi.open-api.controller';
+export * from './open-api.controller';
 
 `;
 
@@ -1570,8 +1570,8 @@ import {inject} from '@loopback/core';
 
 import {OpenApiService} from '../services';
   
-import {OpenapiPet} from '../models/openapi-pet.model';
-import {NewOpenapiPet} from '../models/new-openapi-pet.model';
+import {Pet} from '../models/pet.model';
+import {NewPet} from '../models/new-pet.model';
 
 /**
  * The controller class is generated from OpenAPI spec with operations tagged
@@ -1581,9 +1581,9 @@ import {NewOpenapiPet} from '../models/new-openapi-pet.model';
 @api({
   components: {
     schemas: {
-      OpenapiPet: {},
-      NewOpenapiPet: {},
-      OpenapiError: {},
+      Pet: {},
+      NewPet: {},
+      Error: {},
     },
   },
   paths: {},
@@ -1623,9 +1623,9 @@ pulvinar elit eu, euismod sapien.
    * @param where 
    * @returns pet response
    */
-  @operation('get', '/openapi/pets', {
+  @operation('get', '/pets', {
   description: 'Returns all pets from the system that the user has access to\\nNam sed condimentum est. Maecenas tempor sagittis sapien, nec rhoncus sem sagittis sit amet. Aenean at gravida augue, ac iaculis sem. Curabitur odio lorem, ornare eget elementum nec, cursus id lectus. Duis mi turpis, pulvinar ac eros ac, tincidunt varius justo. In hac habitasse platea dictumst. Integer at adipiscing ante, a sagittis ligula. Aenean pharetra tempor ante molestie imperdiet. Vivamus id aliquam diam. Cras quis velit non tortor eleifend sagittis. Praesent at enim pharetra urna volutpat venenatis eget eget mauris. In eleifend fermentum facilisis. Praesent enim enim, gravida ac sodales sed, placerat id erat. Suspendisse lacus dolor, consectetur non augue vel, vehicula interdum libero. Morbi euismod sagittis libero sed lacinia.\\n\\nSed tempus felis lobortis leo pulvinar rutrum. Nam mattis velit nisl, eu condimentum ligula luctus nec. Phasellus semper velit eget aliquet faucibus. In a mattis elit. Phasellus vel urna viverra, condimentum lorem id, rhoncus nibh. Ut pellentesque posuere elementum. Sed a varius odio. Morbi rhoncus ligula libero, vel eleifend nunc tristique vitae. Fusce et sem dui. Aenean nec scelerisque tortor. Fusce malesuada accumsan magna vel tempus. Quisque mollis felis eu dolor tristique, sit amet auctor felis gravida. Sed libero lorem, molestie sed nisl in, accumsan tempor nisi. Fusce sollicitudin massa ut lacinia mattis. Sed vel eleifend lorem. Pellentesque vitae felis pretium, pulvinar elit eu, euismod sapien.\\n',
-  operationId: 'findOpenapiPets',
+  operationId: 'findPets',
   parameters: [
     {
       name: 'tags',
@@ -1672,7 +1672,7 @@ pulvinar elit eu, euismod sapien.
           schema: {
             type: 'array',
             items: {
-              $ref: '#/components/schemas/OpenapiPet',
+              $ref: '#/components/schemas/Pet',
             },
           },
         },
@@ -1683,14 +1683,14 @@ pulvinar elit eu, euismod sapien.
       content: {
         'application/json': {
           schema: {
-            $ref: '#/components/schemas/OpenapiError',
+            $ref: '#/components/schemas/Error',
           },
         },
       },
     },
   },
 })
-  async findOpenapiPets(@param({
+  async findPets(@param({
   name: 'tags',
   in: 'query',
   description: 'tags to filter by',
@@ -1726,25 +1726,25 @@ pulvinar elit eu, euismod sapien.
 }) where: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [additionalProperty: string]: any;
-} | undefined): Promise<OpenapiPet[]> {
-     return this.openApiService.findOpenapiPets(tags, limit, where); 
+} | undefined): Promise<Pet[]> {
+     return this.openApiService.findPets(tags, limit, where); 
   }
   /**
    * Creates a new pet in the store. Duplicates are allowed
    *
-   * @param _requestBody OpenapiPet to add to the store
+   * @param _requestBody Pet to add to the store
    * @returns pet response
    */
-  @operation('post', '/openapi/pets', {
+  @operation('post', '/pets', {
   description: 'Creates a new pet in the store.  Duplicates are allowed',
-  operationId: 'addOpenapiPet',
+  operationId: 'addPet',
   requestBody: {
-    description: 'OpenapiPet to add to the store',
+    description: 'Pet to add to the store',
     required: true,
     content: {
       'application/json': {
         schema: {
-          $ref: '#/components/schemas/NewOpenapiPet',
+          $ref: '#/components/schemas/NewPet',
         },
       },
     },
@@ -1755,7 +1755,7 @@ pulvinar elit eu, euismod sapien.
       content: {
         'application/json': {
           schema: {
-            $ref: '#/components/schemas/OpenapiPet',
+            $ref: '#/components/schemas/Pet',
           },
         },
       },
@@ -1765,25 +1765,25 @@ pulvinar elit eu, euismod sapien.
       content: {
         'application/json': {
           schema: {
-            $ref: '#/components/schemas/OpenapiError',
+            $ref: '#/components/schemas/Error',
           },
         },
       },
     },
   },
 })
-  async addOpenapiPet(@requestBody({
-  description: 'OpenapiPet to add to the store',
+  async addPet(@requestBody({
+  description: 'Pet to add to the store',
   required: true,
   content: {
     'application/json': {
       schema: {
-        $ref: '#/components/schemas/NewOpenapiPet',
+        $ref: '#/components/schemas/NewPet',
       },
     },
   },
-}) _requestBody: NewOpenapiPet): Promise<OpenapiPet> {
-     return this.openApiService.addOpenapiPet(_requestBody); 
+}) _requestBody: NewPet): Promise<Pet> {
+     return this.openApiService.addPet(_requestBody); 
   }
   /**
    * Returns a user based on a single ID, if the user does not have access to the
@@ -1792,7 +1792,7 @@ pet
    * @param id ID of pet to fetch
    * @returns pet response
    */
-  @operation('get', '/openapi/pets/{id}', {
+  @operation('get', '/pets/{id}', {
   description: 'Returns a user based on a single ID, if the user does not have access to the pet',
   operationId: 'find pet by id',
   parameters: [
@@ -1813,7 +1813,7 @@ pet
       content: {
         'application/json': {
           schema: {
-            $ref: '#/components/schemas/OpenapiPet',
+            $ref: '#/components/schemas/Pet',
           },
         },
       },
@@ -1823,7 +1823,7 @@ pet
       content: {
         'application/json': {
           schema: {
-            $ref: '#/components/schemas/OpenapiError',
+            $ref: '#/components/schemas/Error',
           },
         },
       },
@@ -1839,7 +1839,7 @@ pet
     type: 'integer',
     format: 'int64',
   },
-}) id: number): Promise<OpenapiPet> {
+}) id: number): Promise<Pet> {
      return this.openApiService.findPetById(id); 
   }
   /**
@@ -1847,9 +1847,9 @@ pet
    *
    * @param id ID of pet to delete
    */
-  @operation('delete', '/openapi/pets/{id}', {
+  @operation('delete', '/pets/{id}', {
   description: 'deletes a single pet based on the ID supplied',
-  operationId: 'deleteOpenapiPet',
+  operationId: 'deletePet',
   parameters: [
     {
       name: 'id',
@@ -1871,14 +1871,14 @@ pet
       content: {
         'application/json': {
           schema: {
-            $ref: '#/components/schemas/OpenapiError',
+            $ref: '#/components/schemas/Error',
           },
         },
       },
     },
   },
 })
-  async deleteOpenapiPet(@param({
+  async deletePet(@param({
   name: 'id',
   in: 'path',
   description: 'ID of pet to delete',
@@ -1888,7 +1888,7 @@ pet
     format: 'int64',
   },
 }) id: number): Promise<unknown> {
-     return this.openApiService.deleteOpenapiPet(id); 
+     return this.openApiService.deletePet(id); 
   }
 }
 
@@ -1966,8 +1966,8 @@ import {inject, Provider} from '@loopback/core';
 import {getService} from '@loopback/service-proxy';
 import {PetStoreDataSource} from '../datasources';
 
-import {OpenapiPet} from '../models/openapi-pet.model';
-import {NewOpenapiPet} from '../models/new-openapi-pet.model';
+import {Pet} from '../models/pet.model';
+import {NewPet} from '../models/new-pet.model';
 
 /**
  * The service interface is generated from OpenAPI spec with operations tagged
@@ -2004,17 +2004,17 @@ pulvinar elit eu, euismod sapien.
    * @param where 
    * @returns pet response
    */
-  findOpenapiPets(tags: string[] | undefined, limit: number | undefined, where: {
+  findPets(tags: string[] | undefined, limit: number | undefined, where: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [additionalProperty: string]: any;
-} | undefined): Promise<OpenapiPet[]>;
+} | undefined): Promise<Pet[]>;
 
   /**
    * Creates a new pet in the store. Duplicates are allowed
-   * @param _requestBody OpenapiPet to add to the store
+   * @param _requestBody Pet to add to the store
    * @returns pet response
    */
-  addOpenapiPet(_requestBody: NewOpenapiPet): Promise<OpenapiPet>;
+  addPet(_requestBody: NewPet): Promise<Pet>;
 
   /**
    * Returns a user based on a single ID, if the user does not have access to the
@@ -2022,13 +2022,13 @@ pet
    * @param id ID of pet to fetch
    * @returns pet response
    */
-  findPetById(id: number): Promise<OpenapiPet>;
+  findPetById(id: number): Promise<Pet>;
 
   /**
    * deletes a single pet based on the ID supplied
    * @param id ID of pet to delete
    */
-  deleteOpenapiPet(id: number): Promise<unknown>;
+  deletePet(id: number): Promise<unknown>;
 
 }
 
@@ -2051,20 +2051,20 @@ export class OpenApiServiceProvider implements Provider<OpenApiService> {
 
 
 exports[`openapi-generator with --client generates all files for both server and client 7`] = `
-export * from './openapi-pet.model';
-export * from './new-openapi-pet.model';
-export * from './openapi-error.model';
+export * from './pet.model';
+export * from './new-pet.model';
+export * from './error.model';
 
 `;
 
 
 exports[`openapi-generator with --client generates all files for both server and client 8`] = `
-import {NewOpenapiPet} from './new-openapi-pet.model';
+import {NewPet} from './new-pet.model';
 /**
- * The model type is generated from OpenAPI schema - OpenapiPet
- * OpenapiPet
+ * The model type is generated from OpenAPI schema - Pet
+ * Pet
  */
-export type OpenapiPet = NewOpenapiPet & {
+export type Pet = NewPet & {
   id: number;
 };
 
@@ -2076,12 +2076,12 @@ exports[`openapi-generator with --client generates all files for both server and
 import {model, property} from '@loopback/repository';
 
 /**
- * The model class is generated from OpenAPI schema - NewOpenapiPet
- * NewOpenapiPet
+ * The model class is generated from OpenAPI schema - NewPet
+ * NewPet
  */
-@model({name: 'NewOpenapiPet'})
-export class NewOpenapiPet {
-  constructor(data?: Partial<NewOpenapiPet>) {
+@model({name: 'NewPet'})
+export class NewPet {
+  constructor(data?: Partial<NewPet>) {
     if (data != null && typeof data === 'object') {
       Object.assign(this, data);
     }
@@ -2105,11 +2105,11 @@ export class NewOpenapiPet {
 
 }
 
-export interface NewOpenapiPetRelations {
+export interface NewPetRelations {
   // describe navigational properties here
 }
 
-export type NewOpenapiPetWithRelations = NewOpenapiPet & NewOpenapiPetRelations;
+export type NewPetWithRelations = NewPet & NewPetRelations;
 
 
 
@@ -2118,10 +2118,10 @@ export type NewOpenapiPetWithRelations = NewOpenapiPet & NewOpenapiPetRelations;
 
 exports[`openapi-generator with --client generates all files for both server and client 10`] = `
 /**
- * The model type is generated from OpenAPI schema - OpenapiError
- * OpenapiError
+ * The model type is generated from OpenAPI schema - Error
+ * Error
  */
-export type OpenapiError = string;
+export type Error = string;
 
 
 `;
