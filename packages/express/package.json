@@ -60,7 +60,7 @@
     "@types/debug": "^4.1.12",
     "@types/node": "^16.18.66",
     "@types/on-finished": "^2.3.4",
-    "@types/toposort": "^2.0.5",
+    "@types/toposort": "^2.0.7",
     "source-map-support": "^0.5.21",
     "typescript": "~5.2.2"
   }
