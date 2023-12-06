@@ -91,7 +91,7 @@
     "@types/minimatch": "^5.1.2",
     "@types/node": "^16.18.66",
     "@types/yeoman-environment": "^2.10.10",
-    "@types/yeoman-generator": "^5.2.13",
+    "@types/yeoman-generator": "^5.2.14",
     "loopback": "^3.28.0",
     "loopback-datasource-juggler": "^5.0.3",
     "mem-fs": "^2.3.0",
