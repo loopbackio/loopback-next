@@ -20,8 +20,8 @@ import path from 'path';
 import {
   DEFAULT_APIDOCS_EXTRACTION_PATH,
   ExtractorOptions,
-  getPackagesWithTsDocs,
   LernaPackage,
+  getPackagesWithTsDocs,
   typeScriptPath,
 } from './helper';
 const debug = debugFactory('loopback:tsdocs');
@@ -67,6 +67,17 @@ export async function runExtractorForMonorepo(options: ExtractorOptions = {}) {
   const errors: Record<string, unknown> = {};
 
   for (const pkg of packages) {
+    // TODO: api-extractor failed to generate apidocs for the repos below.
+    // Excluding them for now
+    // https://github.com/loopbackio/loopback-next/issues/10205
+    if (
+      pkg.name === '@loopback/typeorm' ||
+      pkg.name === '@loopback/boot' ||
+      pkg.name === '@loopback/express' ||
+      pkg.name === '@loopback/repository' ||
+      pkg.name === '@loopback/service-proxy'
+    )
+      continue;
     /* istanbul ignore if  */
     const err = invokeExtractorForPackage(pkg, options);
     if (err != null) {
