@@ -66,7 +66,7 @@
     "@types/passport-google-oauth2": "^0.1.8",
     "@types/passport-http": "^0.3.11",
     "@types/passport-local": "^1.0.38",
-    "@types/passport-oauth2": "^1.4.14",
+    "@types/passport-oauth2": "^1.4.15",
     "@types/passport-twitter": "1.0.40",
     "body-parser": "^1.20.2",
     "client-sessions": "^0.8.0",
