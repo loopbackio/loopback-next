@@ -50,12 +50,17 @@ if (tabCompletionCommands.includes(originalCommand)) {
 }
 
 const main = require('../lib/cli');
-const updateNotifier = require('update-notifier');
+
 // Force version check with `lb4 --version`
 const interval = opts.version ? 0 : undefined;
-updateNotifier({
-  pkg: pkg,
-  updateCheckInterval: interval,
-}).notify({isGlobal: true});
+
+import('update-notifier')
+  .then(({default: updateNotifier}) => {
+    updateNotifier({
+      pkg: pkg,
+      updateCheckInterval: interval,
+    }).notify({isGlobal: true});
+  })
+  .catch(() => {});
 
 main(opts);
