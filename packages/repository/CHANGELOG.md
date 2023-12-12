@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.1.4](https://github.com/loopbackio/loopback-next/compare/@loopback/repository@6.1.3...@loopback/repository@6.1.4) (2023-12-12)
+
+
+### Bug Fixes
+
+* **repository:** improve HasManyThrough inclusion performance ([34f8201](https://github.com/loopbackio/loopback-next/commit/34f8201efecfd3973fac354c6ef7765630f72db3))
+* **repository:** use a shallow clone for applying polymorphism to options ([f4ef754](https://github.com/loopbackio/loopback-next/commit/f4ef75417227b037a7828c5f9dbfd7f6a6d4a513)), closes [#10194](https://github.com/loopbackio/loopback-next/issues/10194) [#8026](https://github.com/loopbackio/loopback-next/issues/8026)
+
+
+
+
+
 ## [6.1.3](https://github.com/loopbackio/loopback-next/compare/@loopback/repository@6.1.2...@loopback/repository@6.1.3) (2023-09-12)
 
 **Note:** Version bump only for package @loopback/repository

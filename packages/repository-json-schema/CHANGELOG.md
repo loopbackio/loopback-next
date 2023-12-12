@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.2.0](https://github.com/loopbackio/loopback-next/compare/@loopback/repository-json-schema@7.1.3...@loopback/repository-json-schema@7.2.0) (2023-12-12)
+
+
+### Bug Fixes
+
+* map type buffer & binary to string in open api specs ([297b7cb](https://github.com/loopbackio/loopback-next/commit/297b7cb1e86317acea53ae0d1e6dcd12be1e2495))
+
+
+### Features
+
+* show foreign key in openapi specs ([bdee472](https://github.com/loopbackio/loopback-next/commit/bdee472be5b9f9a2edd9066d511a42c1a1381796))
+
+
+
+
+
 ## [7.1.3](https://github.com/loopbackio/loopback-next/compare/@loopback/repository-json-schema@7.1.2...@loopback/repository-json-schema@7.1.3) (2023-09-12)
 
 **Note:** Version bump only for package @loopback/repository-json-schema

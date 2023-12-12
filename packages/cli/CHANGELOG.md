@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.2.3](https://github.com/loopbackio/loopback-next/compare/@loopback/cli@5.2.2...@loopback/cli@5.2.3) (2023-12-12)
+
+
+### Bug Fixes
+
+* add process.exit for generators ([e5e1621](https://github.com/loopbackio/loopback-next/commit/e5e162179b28847428ddb873480723d38579e917))
+* fix import update-notifier ([565fc1f](https://github.com/loopbackio/loopback-next/commit/565fc1fd43876fbee1de1ca39244ddf42f0c6a80))
+* handle enum ([f664a76](https://github.com/loopbackio/loopback-next/commit/f664a76d554f1c33cfcbcbcd542e9d1dd1374923))
+* revert change-case to 4.x ([271dfe3](https://github.com/loopbackio/loopback-next/commit/271dfe354eda41e777efb5006c650e2eb5092a59))
+
+
+
+
+
 ## [5.2.2](https://github.com/loopbackio/loopback-next/compare/@loopback/cli@5.2.1...@loopback/cli@5.2.2) (2023-09-12)
 
 **Note:** Version bump only for package @loopback/cli

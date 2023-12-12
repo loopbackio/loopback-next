@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.7.5](https://github.com/loopbackio/loopback-next/compare/@loopback/socketio@0.7.4...@loopback/socketio@0.7.5) (2023-12-12)
+
+**Note:** Version bump only for package @loopback/socketio
+
+
+
+
+
 ## [0.7.4](https://github.com/loopbackio/loopback-next/compare/@loopback/socketio@0.7.3...@loopback/socketio@0.7.4) (2023-09-12)
 
 **Note:** Version bump only for package @loopback/socketio

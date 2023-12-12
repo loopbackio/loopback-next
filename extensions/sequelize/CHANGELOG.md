@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.3](https://github.com/loopbackio/loopback-next/compare/@loopback/sequelize@0.5.2...@loopback/sequelize@0.5.3) (2023-12-12)
+
+
+### Bug Fixes
+
+* **sequelize:** exclude test environment from NPM publish ([4933a81](https://github.com/loopbackio/loopback-next/commit/4933a81818e7abe55329105275034152f9e883be))
+* **sequelize:** exclude undefined values from where filter ([8292615](https://github.com/loopbackio/loopback-next/commit/829261574bea19de75875300088917cf88c85627))
+* **sequelize:** extend Inclusion interface with "required" property ([5b7e6cb](https://github.com/loopbackio/loopback-next/commit/5b7e6cb8f17b45cdd9bcf8c7d81324cad38af2c7))
+* **sequelize:** support "defaultScope" via Model settings ([2cd4d83](https://github.com/loopbackio/loopback-next/commit/2cd4d83ba7d8c4d8fb298b0ffb502fb83a9012f4))
+* **sequelize:** use keyFrom as foreign key for belongsto relation definition ([08c06ca](https://github.com/loopbackio/loopback-next/commit/08c06ca1e7eb3b7429d25298f736efbfdab4f041))
+
+
+
+
+
 ## [0.5.2](https://github.com/loopbackio/loopback-next/compare/@loopback/sequelize@0.5.1...@loopback/sequelize@0.5.2) (2023-09-12)
 
 **Note:** Version bump only for package @loopback/sequelize

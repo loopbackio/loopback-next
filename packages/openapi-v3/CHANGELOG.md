@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [9.1.4](https://github.com/loopbackio/loopback-next/compare/@loopback/openapi-v3@9.1.3...@loopback/openapi-v3@9.1.4) (2023-12-12)
+
+**Note:** Version bump only for package @loopback/openapi-v3
+
+
+
+
+
 ## [9.1.3](https://github.com/loopbackio/loopback-next/compare/@loopback/openapi-v3@9.1.2...@loopback/openapi-v3@9.1.3) (2023-09-12)
 
 **Note:** Version bump only for package @loopback/openapi-v3
