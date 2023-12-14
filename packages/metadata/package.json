@@ -41,7 +41,7 @@
   "dependencies": {
     "debug": "^4.3.4",
     "lodash": "^4.17.21",
-    "reflect-metadata": "^0.1.14",
+    "reflect-metadata": "^0.2.1",
     "tslib": "^2.6.2"
   },
   "devDependencies": {
