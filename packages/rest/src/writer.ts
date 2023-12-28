@@ -50,8 +50,19 @@ export function writeResultToResponse(
         // TODO(ritch) remove this, should be configurable
         // See https://github.com/loopbackio/loopback-next/issues/436
         response.setHeader('Content-Type', 'application/json');
+        let customResult = result;
+        if (result.length) {
+          customResult = [];
+          result.forEach((item: {[key: string]: Object[]}) => {
+            const org: {[key: string]: Object[]} = {};
+            Object.keys(item).forEach(key => {
+              org[key] = item[key];
+            });
+            customResult.push(org);
+          });
+        }
         // TODO(bajtos) handle errors - JSON.stringify can throw
-        result = JSON.stringify(result);
+        result = JSON.stringify(customResult);
       }
       break;
     default:
