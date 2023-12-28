@@ -34,6 +34,14 @@ describe('sugar decorators for filter and where', () => {
               title: 'MyModel.Filter',
               'x-typescript-type': '@loopback/repository#Filter<MyModel>',
               properties: {
+                avg: {
+                  example: 'column1',
+                  type: 'string',
+                },
+                count: {
+                  example: 'column1',
+                  type: 'string',
+                },
                 fields: {
                   oneOf: [
                     {
@@ -55,11 +63,29 @@ describe('sugar decorators for filter and where', () => {
                       },
                     },
                   ],
-                  title: 'MyModel.Fields',
+                  title: 'MyModel.GroupBy',
                 },
                 offset: {type: 'integer', minimum: 0},
+                groupBy: {
+                  items: {
+                    type: 'string',
+                  },
+                  type: 'array',
+                },
                 limit: {type: 'integer', minimum: 1, example: 100},
+                max: {
+                  example: 'column1',
+                  type: 'string',
+                },
+                min: {
+                  example: 'column1',
+                  type: 'string',
+                },
                 skip: {type: 'integer', minimum: 0},
+                sum: {
+                  example: 'column1',
+                  type: 'string',
+                },
                 order: {
                   oneOf: [
                     {type: 'string'},
@@ -92,6 +118,14 @@ describe('sugar decorators for filter and where', () => {
               title: 'MyModel.Filter',
               'x-typescript-type': '@loopback/repository#Filter<MyModel>',
               properties: {
+                avg: {
+                  example: 'column1',
+                  type: 'string',
+                },
+                count: {
+                  example: 'column1',
+                  type: 'string',
+                },
                 fields: {
                   oneOf: [
                     {
@@ -113,11 +147,29 @@ describe('sugar decorators for filter and where', () => {
                       },
                     },
                   ],
-                  title: 'MyModel.Fields',
+                  title: 'MyModel.GroupBy',
                 },
                 offset: {type: 'integer', minimum: 0},
                 limit: {type: 'integer', minimum: 1, example: 100},
+                groupBy: {
+                  items: {
+                    type: 'string',
+                  },
+                  type: 'array',
+                },
                 skip: {type: 'integer', minimum: 0},
+                max: {
+                  example: 'column1',
+                  type: 'string',
+                },
+                min: {
+                  example: 'column1',
+                  type: 'string',
+                },
+                sum: {
+                  example: 'column1',
+                  type: 'string',
+                },
                 order: {
                   oneOf: [
                     {type: 'string'},
@@ -157,6 +209,14 @@ describe('sugar decorators for filter and where', () => {
               title: 'MyModel.Filter',
               'x-typescript-type': '@loopback/repository#Filter<MyModel>',
               properties: {
+                avg: {
+                  example: 'column1',
+                  type: 'string',
+                },
+                count: {
+                  example: 'column1',
+                  type: 'string',
+                },
                 fields: {
                   oneOf: [
                     {
@@ -178,11 +238,29 @@ describe('sugar decorators for filter and where', () => {
                       },
                     },
                   ],
-                  title: 'MyModel.Fields',
+                  title: 'MyModel.GroupBy',
                 },
                 offset: {type: 'integer', minimum: 0},
                 limit: {type: 'integer', minimum: 1, example: 100},
+                groupBy: {
+                  items: {
+                    type: 'string',
+                  },
+                  type: 'array',
+                },
                 skip: {type: 'integer', minimum: 0},
+                max: {
+                  example: 'column1',
+                  type: 'string',
+                },
+                min: {
+                  example: 'column1',
+                  type: 'string',
+                },
+                sum: {
+                  example: 'column1',
+                  type: 'string',
+                },
                 order: {
                   oneOf: [
                     {type: 'string'},

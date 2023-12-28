@@ -72,6 +72,12 @@ describe('getFilterJsonSchemaFor', () => {
       limit: 10,
       order: ['id DESC'],
       skip: 0,
+      sum: 'salary',
+      min: 'salary',
+      max: 'salary',
+      avg: 'salary',
+      count: 'salary',
+      groupBy: ['salary'],
     };
 
     expectSchemaToAllowFilter(customerFilterSchema, filter);
@@ -559,6 +565,9 @@ class Customer extends Entity {
 
   @property()
   name: string;
+
+  @property()
+  salary: number;
 
   @hasMany(() => Order)
   orders?: Order[];
