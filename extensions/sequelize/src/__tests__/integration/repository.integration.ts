@@ -487,6 +487,23 @@ describe('Sequelize CRUD Repository (integration)', () => {
       expect(getResponse.body).to.be.deepEqual(reversedArray);
     });
 
+    it('ignores an empty `order` filter', async () => {
+      const users = [
+        getDummyUser({name: 'ABoy'}),
+        getDummyUser({name: 'BBoy'}),
+        getDummyUser({name: 'CBoy'}),
+      ];
+      const createAllResponse = await client.post('/users-bulk').send(users);
+      const filter = {
+        order: '',
+      };
+      const getResponse = await client.get(`/users`).query({
+        filter,
+      });
+
+      expect(getResponse.body).to.be.deepEqual(createAllResponse.body);
+    });
+
     it('supports `limit` filter', async () => {
       const users = [getDummyUser(), getDummyUser(), getDummyUser()];
       await client.post('/users-bulk').send(users);

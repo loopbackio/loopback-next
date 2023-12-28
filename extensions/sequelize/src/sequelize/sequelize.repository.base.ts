@@ -489,7 +489,7 @@ export class SequelizeCrudRepository<
    * @returns Sequelize compatible order filter value
    */
   protected buildSequelizeOrder(order?: string[] | string): Order | undefined {
-    if (order === undefined) {
+    if (order === undefined || order === '') {
       return undefined;
     }
 
