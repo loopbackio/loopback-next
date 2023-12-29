@@ -43,7 +43,7 @@
     "@loopback/core": "^5.0.0"
   },
   "dependencies": {
-    "@graphql-tools/utils": "^10.0.11",
+    "@graphql-tools/utils": "^10.0.12",
     "@loopback/http-server": "^5.1.4",
     "apollo-server-express": "^3.12.1",
     "debug": "^4.3.4",
