@@ -22,6 +22,11 @@ const props = {
   dataSourceName: 'petStore',
 };
 
+const restountriesProps = {
+  url: path.resolve(__dirname, '../../fixtures/openapi/3.0/restcountries.yaml'),
+  dataSourceName: 'restcountries',
+};
+
 describe('openapi-generator with --client', /** @this {Mocha.Suite} */ function () {
   // These tests take longer to execute, they used to time out on Travis CI
   this.timeout(10000);
@@ -36,6 +41,42 @@ describe('openapi-generator with --client', /** @this {Mocha.Suite} */ function 
       .withPrompts(props)
       .withOptions({client: true});
 
+    assertControllers();
+    assertDataSources();
+    assertServices();
+    assertModels();
+  });
+
+  it('generate readonly apis when passed readonly: true', async () => {
+    await testUtils
+      .executeGenerator(generator)
+      .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path))
+      .withPrompts(restountriesProps)
+      .withOptions({readonly: true});
+    assertControllers();
+    assertDataSources();
+    assertServices();
+    assertModels();
+  });
+
+  it('generate apis only passed in include [include apis matching the pattern "v3.1/alpha/*"]', async () => {
+    await testUtils
+      .executeGenerator(generator)
+      .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path))
+      .withPrompts(restountriesProps)
+      .withOptions({include: 'v3.1/alpha/*'});
+    assertControllers();
+    assertDataSources();
+    assertServices();
+    assertModels();
+  });
+
+  it('generate all apis except passed in exclude [exclude apis matching the pattern "v3.1/alpha/*"]', async () => {
+    await testUtils
+      .executeGenerator(generator)
+      .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path))
+      .withPrompts(restountriesProps)
+      .withOptions({exclude: 'v3.1/alpha/*'});
     assertControllers();
     assertDataSources();
     assertServices();

@@ -1822,6 +1822,1503 @@ export type ErrorWithRelations = Error & ErrorRelations;
 `;
 
 
+exports[`openapi-generator with --client generate all apis except passed in exclude [exclude apis matching the pattern "v3.1/alpha/*"] 1`] = `
+export * from './open-api.controller';
+
+`;
+
+
+exports[`openapi-generator with --client generate all apis except passed in exclude [exclude apis matching the pattern "v3.1/alpha/*"] 2`] = `
+import {api, operation, param, requestBody} from '@loopback/rest';
+import {RestCountries} from '../models/rest-countries.model';
+
+/**
+ * The controller class is generated from OpenAPI spec with operations tagged
+ * by <no-tag>.
+ *
+ */
+@api({
+  components: {
+    schemas: {
+      RestCountries: {
+        type: 'object',
+      },
+    },
+  },
+  paths: {},
+})
+export class OpenApiController {
+    constructor() {} 
+  /**
+   *
+   *
+   * @param fields 
+   */
+  @operation('get', '/v3.1/all', {
+  operationId: 'getAllCountries',
+  parameters: [
+    {
+      name: 'fields',
+      in: 'query',
+      required: true,
+      schema: {
+        type: 'string',
+      },
+    },
+  ],
+  responses: {
+    default: {
+      description: 'getAllCountries default response',
+      content: {
+        'application/json': {
+          schema: {
+            $ref: '#/components/schemas/RestCountries',
+          },
+        },
+      },
+    },
+  },
+})
+  async getAllCountries(@param({
+  name: 'fields',
+  in: 'query',
+  required: true,
+  schema: {
+    type: 'string',
+  },
+}) fields: string): Promise<unknown> {
+     throw new Error('Not implemented'); 
+  }
+  /**
+   * Creates a country record
+   *
+   * @param _requestBody country to added
+   * @returns country response
+   */
+  @operation('post', '/v3.1/all', {
+  description: 'Creates a country record',
+  operationId: 'createCountry',
+  requestBody: {
+    description: 'country to added',
+    required: true,
+    content: {
+      'application/json': {
+        schema: {
+          $ref: '#/components/schemas/RestCountries',
+        },
+      },
+    },
+  },
+  responses: {
+    '200': {
+      description: 'country response',
+      content: {
+        'application/json': {
+          schema: {
+            $ref: '#/components/schemas/RestCountries',
+          },
+        },
+      },
+    },
+    default: {
+      description: 'unexpected error',
+      content: {
+        'application/json': {
+          schema: {
+            $ref: '#/components/schemas/Error',
+          },
+        },
+      },
+    },
+  },
+})
+  async createCountry(@requestBody({
+  description: 'country to added',
+  required: true,
+  content: {
+    'application/json': {
+      schema: {
+        $ref: '#/components/schemas/RestCountries',
+      },
+    },
+  },
+}) _requestBody: RestCountries): Promise<RestCountries> {
+     throw new Error('Not implemented'); 
+  }
+  /**
+   *
+   *
+   * @param currency 
+   * @param fields 
+   */
+  @operation('get', '/v3.1/currency/{currency}', {
+  operationId: 'getByCurrency',
+  parameters: [
+    {
+      name: 'currency',
+      in: 'path',
+      required: true,
+      schema: {
+        type: 'string',
+      },
+    },
+    {
+      name: 'fields',
+      in: 'query',
+      required: true,
+      schema: {
+        type: 'string',
+      },
+    },
+  ],
+  responses: {
+    default: {
+      description: 'getByCurrency default response',
+      content: {
+        'application/json': {
+          schema: {
+            $ref: '#/components/schemas/RestCountries',
+          },
+        },
+      },
+    },
+  },
+})
+  async getByCurrency(@param({
+  name: 'currency',
+  in: 'path',
+  required: true,
+  schema: {
+    type: 'string',
+  },
+}) currency: string, @param({
+  name: 'fields',
+  in: 'query',
+  required: true,
+  schema: {
+    type: 'string',
+  },
+}) fields: string): Promise<unknown> {
+     throw new Error('Not implemented'); 
+  }
+  /**
+   *
+   *
+   * @param name 
+   * @param fullText 
+   * @param fields 
+   */
+  @operation('get', '/v3.1/name/{name}', {
+  operationId: 'getByName',
+  parameters: [
+    {
+      name: 'name',
+      in: 'path',
+      required: true,
+      schema: {
+        type: 'string',
+      },
+    },
+    {
+      name: 'fullText',
+      in: 'query',
+      required: true,
+      schema: {
+        type: 'boolean',
+      },
+    },
+    {
+      name: 'fields',
+      in: 'query',
+      required: true,
+      schema: {
+        type: 'string',
+      },
+    },
+  ],
+  responses: {
+    default: {
+      description: 'getByName default response',
+      content: {
+        'application/json': {
+          schema: {
+            $ref: '#/components/schemas/RestCountries',
+          },
+        },
+      },
+    },
+  },
+})
+  async getByName(@param({
+  name: 'name',
+  in: 'path',
+  required: true,
+  schema: {
+    type: 'string',
+  },
+}) name: string, @param({
+  name: 'fullText',
+  in: 'query',
+  required: true,
+  schema: {
+    type: 'boolean',
+  },
+}) fullText: boolean, @param({
+  name: 'fields',
+  in: 'query',
+  required: true,
+  schema: {
+    type: 'string',
+  },
+}) fields: string): Promise<unknown> {
+     throw new Error('Not implemented'); 
+  }
+  /**
+   *
+   *
+   * @param capital 
+   * @param fields 
+   */
+  @operation('get', '/v3.1/capital/{capital}', {
+  operationId: 'getByCapital',
+  parameters: [
+    {
+      name: 'capital',
+      in: 'path',
+      required: true,
+      schema: {
+        type: 'string',
+      },
+    },
+    {
+      name: 'fields',
+      in: 'query',
+      required: true,
+      schema: {
+        type: 'string',
+      },
+    },
+  ],
+  responses: {
+    default: {
+      description: 'getByCapital default response',
+      content: {
+        'application/json': {
+          schema: {
+            $ref: '#/components/schemas/RestCountries',
+          },
+        },
+      },
+    },
+  },
+})
+  async getByCapital(@param({
+  name: 'capital',
+  in: 'path',
+  required: true,
+  schema: {
+    type: 'string',
+  },
+}) capital: string, @param({
+  name: 'fields',
+  in: 'query',
+  required: true,
+  schema: {
+    type: 'string',
+  },
+}) fields: string): Promise<unknown> {
+     throw new Error('Not implemented'); 
+  }
+  /**
+   *
+   *
+   * @param region 
+   * @param fields 
+   */
+  @operation('get', '/v3.1/region/{region}', {
+  operationId: 'getByContinent',
+  parameters: [
+    {
+      name: 'region',
+      in: 'path',
+      required: true,
+      schema: {
+        type: 'string',
+      },
+    },
+    {
+      name: 'fields',
+      in: 'query',
+      required: true,
+      schema: {
+        type: 'string',
+      },
+    },
+  ],
+  responses: {
+    default: {
+      description: 'getByContinent default response',
+      content: {
+        'application/json': {
+          schema: {
+            $ref: '#/components/schemas/RestCountries',
+          },
+        },
+      },
+    },
+  },
+})
+  async getByContinent(@param({
+  name: 'region',
+  in: 'path',
+  required: true,
+  schema: {
+    type: 'string',
+  },
+}) region: string, @param({
+  name: 'fields',
+  in: 'query',
+  required: true,
+  schema: {
+    type: 'string',
+  },
+}) fields: string): Promise<unknown> {
+     throw new Error('Not implemented'); 
+  }
+  /**
+   *
+   *
+   * @param subregion 
+   * @param fields 
+   */
+  @operation('get', '/v3.1/subregion/{subregion}', {
+  operationId: 'getBySubRegion',
+  parameters: [
+    {
+      name: 'subregion',
+      in: 'path',
+      required: true,
+      schema: {
+        type: 'string',
+      },
+    },
+    {
+      name: 'fields',
+      in: 'query',
+      required: true,
+      schema: {
+        type: 'string',
+      },
+    },
+  ],
+  responses: {
+    default: {
+      description: 'getBySubRegion default response',
+      content: {
+        'application/json': {
+          schema: {
+            $ref: '#/components/schemas/RestCountries',
+          },
+        },
+      },
+    },
+  },
+})
+  async getBySubRegion(@param({
+  name: 'subregion',
+  in: 'path',
+  required: true,
+  schema: {
+    type: 'string',
+  },
+}) subregion: string, @param({
+  name: 'fields',
+  in: 'query',
+  required: true,
+  schema: {
+    type: 'string',
+  },
+}) fields: string): Promise<unknown> {
+     throw new Error('Not implemented'); 
+  }
+  /**
+   *
+   *
+   * @param lang 
+   * @param fields 
+   */
+  @operation('get', '/v3.1/lang/{lang}', {
+  operationId: 'getByLanguage',
+  parameters: [
+    {
+      name: 'lang',
+      in: 'path',
+      required: true,
+      schema: {
+        type: 'string',
+      },
+    },
+    {
+      name: 'fields',
+      in: 'query',
+      required: true,
+      schema: {
+        type: 'string',
+      },
+    },
+  ],
+  responses: {
+    default: {
+      description: 'getByLanguage default response',
+      content: {
+        'application/json': {
+          schema: {
+            $ref: '#/components/schemas/RestCountries',
+          },
+        },
+      },
+    },
+  },
+})
+  async getByLanguage(@param({
+  name: 'lang',
+  in: 'path',
+  required: true,
+  schema: {
+    type: 'string',
+  },
+}) lang: string, @param({
+  name: 'fields',
+  in: 'query',
+  required: true,
+  schema: {
+    type: 'string',
+  },
+}) fields: string): Promise<unknown> {
+     throw new Error('Not implemented'); 
+  }
+  /**
+   *
+   *
+   * @param demonym 
+   * @param fields 
+   */
+  @operation('get', '/v3.1/demonym/{demonym}', {
+  operationId: 'getByDemonym',
+  parameters: [
+    {
+      name: 'demonym',
+      in: 'path',
+      required: true,
+      schema: {
+        type: 'string',
+      },
+    },
+    {
+      name: 'fields',
+      in: 'query',
+      required: true,
+      schema: {
+        type: 'string',
+      },
+    },
+  ],
+  responses: {
+    default: {
+      description: 'getByDemonym default response',
+      content: {
+        'application/json': {
+          schema: {
+            $ref: '#/components/schemas/RestCountries',
+          },
+        },
+      },
+    },
+  },
+})
+  async getByDemonym(@param({
+  name: 'demonym',
+  in: 'path',
+  required: true,
+  schema: {
+    type: 'string',
+  },
+}) demonym: string, @param({
+  name: 'fields',
+  in: 'query',
+  required: true,
+  schema: {
+    type: 'string',
+  },
+}) fields: string): Promise<unknown> {
+     throw new Error('Not implemented'); 
+  }
+  /**
+   *
+   *
+   * @param translation 
+   * @param fields 
+   */
+  @operation('get', '/v3.1/translation/{translation}', {
+  operationId: 'getByTranslation',
+  parameters: [
+    {
+      name: 'translation',
+      in: 'path',
+      required: true,
+      schema: {
+        type: 'string',
+      },
+    },
+    {
+      name: 'fields',
+      in: 'query',
+      required: true,
+      schema: {
+        type: 'string',
+      },
+    },
+  ],
+  responses: {
+    default: {
+      description: 'getByTranslation default response',
+      content: {
+        'application/json': {
+          schema: {
+            $ref: '#/components/schemas/RestCountries',
+          },
+        },
+      },
+    },
+  },
+})
+  async getByTranslation(@param({
+  name: 'translation',
+  in: 'path',
+  required: true,
+  schema: {
+    type: 'string',
+  },
+}) translation: string, @param({
+  name: 'fields',
+  in: 'query',
+  required: true,
+  schema: {
+    type: 'string',
+  },
+}) fields: string): Promise<unknown> {
+     throw new Error('Not implemented'); 
+  }
+  /**
+   *
+   *
+   * @param status 
+   * @param fields 
+   */
+  @operation('get', '/v3.1/independent', {
+  operationId: 'getIndependentCountries',
+  parameters: [
+    {
+      name: 'status',
+      in: 'query',
+      required: true,
+      schema: {
+        type: 'boolean',
+      },
+    },
+    {
+      name: 'fields',
+      in: 'query',
+      required: true,
+      schema: {
+        type: 'string',
+      },
+    },
+  ],
+  responses: {
+    default: {
+      description: 'getIndependentCountries default response',
+      content: {
+        'application/json': {
+          schema: {
+            $ref: '#/components/schemas/RestCountries',
+          },
+        },
+      },
+    },
+  },
+})
+  async getIndependentCountries(@param({
+  name: 'status',
+  in: 'query',
+  required: true,
+  schema: {
+    type: 'boolean',
+  },
+}) status: boolean, @param({
+  name: 'fields',
+  in: 'query',
+  required: true,
+  schema: {
+    type: 'string',
+  },
+}) fields: string): Promise<unknown> {
+     throw new Error('Not implemented'); 
+  }
+}
+
+
+`;
+
+
+exports[`openapi-generator with --client generate apis only passed in include [include apis matching the pattern "v3.1/alpha/*"] 1`] = `
+export * from './open-api.controller';
+
+`;
+
+
+exports[`openapi-generator with --client generate apis only passed in include [include apis matching the pattern "v3.1/alpha/*"] 2`] = `
+import {api, operation, param, requestBody} from '@loopback/rest';
+
+/**
+ * The controller class is generated from OpenAPI spec with operations tagged
+ * by <no-tag>.
+ *
+ */
+@api({
+  components: {
+    schemas: {
+      RestCountries: {
+        type: 'object',
+      },
+    },
+  },
+  paths: {},
+})
+export class OpenApiController {
+    constructor() {} 
+  /**
+   *
+   *
+   * @param alphacode 
+   * @param fields 
+   */
+  @operation('get', '/v3.1/alpha/{alphacode}', {
+  operationId: 'getByAlpha',
+  parameters: [
+    {
+      name: 'alphacode',
+      in: 'path',
+      required: true,
+      schema: {
+        type: 'string',
+      },
+    },
+    {
+      name: 'fields',
+      in: 'query',
+      required: true,
+      schema: {
+        type: 'string',
+      },
+    },
+  ],
+  responses: {
+    default: {
+      description: 'getByAlpha default response',
+      content: {
+        'application/json': {
+          schema: {
+            $ref: '#/components/schemas/RestCountries',
+          },
+        },
+      },
+    },
+  },
+})
+  async getByAlpha(@param({
+  name: 'alphacode',
+  in: 'path',
+  required: true,
+  schema: {
+    type: 'string',
+  },
+}) alphacode: string, @param({
+  name: 'fields',
+  in: 'query',
+  required: true,
+  schema: {
+    type: 'string',
+  },
+}) fields: string): Promise<unknown> {
+     throw new Error('Not implemented'); 
+  }
+  /**
+   *
+   *
+   * @param codes 
+   * @param fields 
+   */
+  @operation('get', '/v3.1/alpha/', {
+  operationId: 'getByAlphaList',
+  parameters: [
+    {
+      name: 'codes',
+      in: 'query',
+      required: true,
+      schema: {
+        type: 'string',
+      },
+    },
+    {
+      name: 'fields',
+      in: 'query',
+      required: true,
+      schema: {
+        type: 'string',
+      },
+    },
+  ],
+  responses: {
+    default: {
+      description: 'getByAlphaList default response',
+      content: {
+        'application/json': {
+          schema: {
+            $ref: '#/components/schemas/RestCountries',
+          },
+        },
+      },
+    },
+  },
+})
+  async getByAlphaList(@param({
+  name: 'codes',
+  in: 'query',
+  required: true,
+  schema: {
+    type: 'string',
+  },
+}) codes: string, @param({
+  name: 'fields',
+  in: 'query',
+  required: true,
+  schema: {
+    type: 'string',
+  },
+}) fields: string): Promise<unknown> {
+     throw new Error('Not implemented'); 
+  }
+}
+
+
+`;
+
+
+exports[`openapi-generator with --client generate readonly apis when passed readonly: true 1`] = `
+export * from './open-api.controller';
+
+`;
+
+
+exports[`openapi-generator with --client generate readonly apis when passed readonly: true 2`] = `
+import {api, operation, param, requestBody} from '@loopback/rest';
+
+/**
+ * The controller class is generated from OpenAPI spec with operations tagged
+ * by <no-tag>.
+ *
+ */
+@api({
+  components: {
+    schemas: {
+      RestCountries: {
+        type: 'object',
+      },
+    },
+  },
+  paths: {},
+})
+export class OpenApiController {
+    constructor() {} 
+  /**
+   *
+   *
+   * @param fields 
+   */
+  @operation('get', '/v3.1/all', {
+  operationId: 'getAllCountries',
+  parameters: [
+    {
+      name: 'fields',
+      in: 'query',
+      required: true,
+      schema: {
+        type: 'string',
+      },
+    },
+  ],
+  responses: {
+    default: {
+      description: 'getAllCountries default response',
+      content: {
+        'application/json': {
+          schema: {
+            $ref: '#/components/schemas/RestCountries',
+          },
+        },
+      },
+    },
+  },
+})
+  async getAllCountries(@param({
+  name: 'fields',
+  in: 'query',
+  required: true,
+  schema: {
+    type: 'string',
+  },
+}) fields: string): Promise<unknown> {
+     throw new Error('Not implemented'); 
+  }
+  /**
+   *
+   *
+   * @param alphacode 
+   * @param fields 
+   */
+  @operation('get', '/v3.1/alpha/{alphacode}', {
+  operationId: 'getByAlpha',
+  parameters: [
+    {
+      name: 'alphacode',
+      in: 'path',
+      required: true,
+      schema: {
+        type: 'string',
+      },
+    },
+    {
+      name: 'fields',
+      in: 'query',
+      required: true,
+      schema: {
+        type: 'string',
+      },
+    },
+  ],
+  responses: {
+    default: {
+      description: 'getByAlpha default response',
+      content: {
+        'application/json': {
+          schema: {
+            $ref: '#/components/schemas/RestCountries',
+          },
+        },
+      },
+    },
+  },
+})
+  async getByAlpha(@param({
+  name: 'alphacode',
+  in: 'path',
+  required: true,
+  schema: {
+    type: 'string',
+  },
+}) alphacode: string, @param({
+  name: 'fields',
+  in: 'query',
+  required: true,
+  schema: {
+    type: 'string',
+  },
+}) fields: string): Promise<unknown> {
+     throw new Error('Not implemented'); 
+  }
+  /**
+   *
+   *
+   * @param codes 
+   * @param fields 
+   */
+  @operation('get', '/v3.1/alpha/', {
+  operationId: 'getByAlphaList',
+  parameters: [
+    {
+      name: 'codes',
+      in: 'query',
+      required: true,
+      schema: {
+        type: 'string',
+      },
+    },
+    {
+      name: 'fields',
+      in: 'query',
+      required: true,
+      schema: {
+        type: 'string',
+      },
+    },
+  ],
+  responses: {
+    default: {
+      description: 'getByAlphaList default response',
+      content: {
+        'application/json': {
+          schema: {
+            $ref: '#/components/schemas/RestCountries',
+          },
+        },
+      },
+    },
+  },
+})
+  async getByAlphaList(@param({
+  name: 'codes',
+  in: 'query',
+  required: true,
+  schema: {
+    type: 'string',
+  },
+}) codes: string, @param({
+  name: 'fields',
+  in: 'query',
+  required: true,
+  schema: {
+    type: 'string',
+  },
+}) fields: string): Promise<unknown> {
+     throw new Error('Not implemented'); 
+  }
+  /**
+   *
+   *
+   * @param currency 
+   * @param fields 
+   */
+  @operation('get', '/v3.1/currency/{currency}', {
+  operationId: 'getByCurrency',
+  parameters: [
+    {
+      name: 'currency',
+      in: 'path',
+      required: true,
+      schema: {
+        type: 'string',
+      },
+    },
+    {
+      name: 'fields',
+      in: 'query',
+      required: true,
+      schema: {
+        type: 'string',
+      },
+    },
+  ],
+  responses: {
+    default: {
+      description: 'getByCurrency default response',
+      content: {
+        'application/json': {
+          schema: {
+            $ref: '#/components/schemas/RestCountries',
+          },
+        },
+      },
+    },
+  },
+})
+  async getByCurrency(@param({
+  name: 'currency',
+  in: 'path',
+  required: true,
+  schema: {
+    type: 'string',
+  },
+}) currency: string, @param({
+  name: 'fields',
+  in: 'query',
+  required: true,
+  schema: {
+    type: 'string',
+  },
+}) fields: string): Promise<unknown> {
+     throw new Error('Not implemented'); 
+  }
+  /**
+   *
+   *
+   * @param name 
+   * @param fullText 
+   * @param fields 
+   */
+  @operation('get', '/v3.1/name/{name}', {
+  operationId: 'getByName',
+  parameters: [
+    {
+      name: 'name',
+      in: 'path',
+      required: true,
+      schema: {
+        type: 'string',
+      },
+    },
+    {
+      name: 'fullText',
+      in: 'query',
+      required: true,
+      schema: {
+        type: 'boolean',
+      },
+    },
+    {
+      name: 'fields',
+      in: 'query',
+      required: true,
+      schema: {
+        type: 'string',
+      },
+    },
+  ],
+  responses: {
+    default: {
+      description: 'getByName default response',
+      content: {
+        'application/json': {
+          schema: {
+            $ref: '#/components/schemas/RestCountries',
+          },
+        },
+      },
+    },
+  },
+})
+  async getByName(@param({
+  name: 'name',
+  in: 'path',
+  required: true,
+  schema: {
+    type: 'string',
+  },
+}) name: string, @param({
+  name: 'fullText',
+  in: 'query',
+  required: true,
+  schema: {
+    type: 'boolean',
+  },
+}) fullText: boolean, @param({
+  name: 'fields',
+  in: 'query',
+  required: true,
+  schema: {
+    type: 'string',
+  },
+}) fields: string): Promise<unknown> {
+     throw new Error('Not implemented'); 
+  }
+  /**
+   *
+   *
+   * @param capital 
+   * @param fields 
+   */
+  @operation('get', '/v3.1/capital/{capital}', {
+  operationId: 'getByCapital',
+  parameters: [
+    {
+      name: 'capital',
+      in: 'path',
+      required: true,
+      schema: {
+        type: 'string',
+      },
+    },
+    {
+      name: 'fields',
+      in: 'query',
+      required: true,
+      schema: {
+        type: 'string',
+      },
+    },
+  ],
+  responses: {
+    default: {
+      description: 'getByCapital default response',
+      content: {
+        'application/json': {
+          schema: {
+            $ref: '#/components/schemas/RestCountries',
+          },
+        },
+      },
+    },
+  },
+})
+  async getByCapital(@param({
+  name: 'capital',
+  in: 'path',
+  required: true,
+  schema: {
+    type: 'string',
+  },
+}) capital: string, @param({
+  name: 'fields',
+  in: 'query',
+  required: true,
+  schema: {
+    type: 'string',
+  },
+}) fields: string): Promise<unknown> {
+     throw new Error('Not implemented'); 
+  }
+  /**
+   *
+   *
+   * @param region 
+   * @param fields 
+   */
+  @operation('get', '/v3.1/region/{region}', {
+  operationId: 'getByContinent',
+  parameters: [
+    {
+      name: 'region',
+      in: 'path',
+      required: true,
+      schema: {
+        type: 'string',
+      },
+    },
+    {
+      name: 'fields',
+      in: 'query',
+      required: true,
+      schema: {
+        type: 'string',
+      },
+    },
+  ],
+  responses: {
+    default: {
+      description: 'getByContinent default response',
+      content: {
+        'application/json': {
+          schema: {
+            $ref: '#/components/schemas/RestCountries',
+          },
+        },
+      },
+    },
+  },
+})
+  async getByContinent(@param({
+  name: 'region',
+  in: 'path',
+  required: true,
+  schema: {
+    type: 'string',
+  },
+}) region: string, @param({
+  name: 'fields',
+  in: 'query',
+  required: true,
+  schema: {
+    type: 'string',
+  },
+}) fields: string): Promise<unknown> {
+     throw new Error('Not implemented'); 
+  }
+  /**
+   *
+   *
+   * @param subregion 
+   * @param fields 
+   */
+  @operation('get', '/v3.1/subregion/{subregion}', {
+  operationId: 'getBySubRegion',
+  parameters: [
+    {
+      name: 'subregion',
+      in: 'path',
+      required: true,
+      schema: {
+        type: 'string',
+      },
+    },
+    {
+      name: 'fields',
+      in: 'query',
+      required: true,
+      schema: {
+        type: 'string',
+      },
+    },
+  ],
+  responses: {
+    default: {
+      description: 'getBySubRegion default response',
+      content: {
+        'application/json': {
+          schema: {
+            $ref: '#/components/schemas/RestCountries',
+          },
+        },
+      },
+    },
+  },
+})
+  async getBySubRegion(@param({
+  name: 'subregion',
+  in: 'path',
+  required: true,
+  schema: {
+    type: 'string',
+  },
+}) subregion: string, @param({
+  name: 'fields',
+  in: 'query',
+  required: true,
+  schema: {
+    type: 'string',
+  },
+}) fields: string): Promise<unknown> {
+     throw new Error('Not implemented'); 
+  }
+  /**
+   *
+   *
+   * @param lang 
+   * @param fields 
+   */
+  @operation('get', '/v3.1/lang/{lang}', {
+  operationId: 'getByLanguage',
+  parameters: [
+    {
+      name: 'lang',
+      in: 'path',
+      required: true,
+      schema: {
+        type: 'string',
+      },
+    },
+    {
+      name: 'fields',
+      in: 'query',
+      required: true,
+      schema: {
+        type: 'string',
+      },
+    },
+  ],
+  responses: {
+    default: {
+      description: 'getByLanguage default response',
+      content: {
+        'application/json': {
+          schema: {
+            $ref: '#/components/schemas/RestCountries',
+          },
+        },
+      },
+    },
+  },
+})
+  async getByLanguage(@param({
+  name: 'lang',
+  in: 'path',
+  required: true,
+  schema: {
+    type: 'string',
+  },
+}) lang: string, @param({
+  name: 'fields',
+  in: 'query',
+  required: true,
+  schema: {
+    type: 'string',
+  },
+}) fields: string): Promise<unknown> {
+     throw new Error('Not implemented'); 
+  }
+  /**
+   *
+   *
+   * @param demonym 
+   * @param fields 
+   */
+  @operation('get', '/v3.1/demonym/{demonym}', {
+  operationId: 'getByDemonym',
+  parameters: [
+    {
+      name: 'demonym',
+      in: 'path',
+      required: true,
+      schema: {
+        type: 'string',
+      },
+    },
+    {
+      name: 'fields',
+      in: 'query',
+      required: true,
+      schema: {
+        type: 'string',
+      },
+    },
+  ],
+  responses: {
+    default: {
+      description: 'getByDemonym default response',
+      content: {
+        'application/json': {
+          schema: {
+            $ref: '#/components/schemas/RestCountries',
+          },
+        },
+      },
+    },
+  },
+})
+  async getByDemonym(@param({
+  name: 'demonym',
+  in: 'path',
+  required: true,
+  schema: {
+    type: 'string',
+  },
+}) demonym: string, @param({
+  name: 'fields',
+  in: 'query',
+  required: true,
+  schema: {
+    type: 'string',
+  },
+}) fields: string): Promise<unknown> {
+     throw new Error('Not implemented'); 
+  }
+  /**
+   *
+   *
+   * @param translation 
+   * @param fields 
+   */
+  @operation('get', '/v3.1/translation/{translation}', {
+  operationId: 'getByTranslation',
+  parameters: [
+    {
+      name: 'translation',
+      in: 'path',
+      required: true,
+      schema: {
+        type: 'string',
+      },
+    },
+    {
+      name: 'fields',
+      in: 'query',
+      required: true,
+      schema: {
+        type: 'string',
+      },
+    },
+  ],
+  responses: {
+    default: {
+      description: 'getByTranslation default response',
+      content: {
+        'application/json': {
+          schema: {
+            $ref: '#/components/schemas/RestCountries',
+          },
+        },
+      },
+    },
+  },
+})
+  async getByTranslation(@param({
+  name: 'translation',
+  in: 'path',
+  required: true,
+  schema: {
+    type: 'string',
+  },
+}) translation: string, @param({
+  name: 'fields',
+  in: 'query',
+  required: true,
+  schema: {
+    type: 'string',
+  },
+}) fields: string): Promise<unknown> {
+     throw new Error('Not implemented'); 
+  }
+  /**
+   *
+   *
+   * @param status 
+   * @param fields 
+   */
+  @operation('get', '/v3.1/independent', {
+  operationId: 'getIndependentCountries',
+  parameters: [
+    {
+      name: 'status',
+      in: 'query',
+      required: true,
+      schema: {
+        type: 'boolean',
+      },
+    },
+    {
+      name: 'fields',
+      in: 'query',
+      required: true,
+      schema: {
+        type: 'string',
+      },
+    },
+  ],
+  responses: {
+    default: {
+      description: 'getIndependentCountries default response',
+      content: {
+        'application/json': {
+          schema: {
+            $ref: '#/components/schemas/RestCountries',
+          },
+        },
+      },
+    },
+  },
+})
+  async getIndependentCountries(@param({
+  name: 'status',
+  in: 'query',
+  required: true,
+  schema: {
+    type: 'boolean',
+  },
+}) status: boolean, @param({
+  name: 'fields',
+  in: 'query',
+  required: true,
+  schema: {
+    type: 'string',
+  },
+}) fields: string): Promise<unknown> {
+     throw new Error('Not implemented'); 
+  }
+}
+
+
+`;
+
+
 exports[`openapi-generator with --client generates all files for both server and client 1`] = `
 export * from './open-api.controller';
 
