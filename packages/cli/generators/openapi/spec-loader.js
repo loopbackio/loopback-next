@@ -11,6 +11,7 @@ const {debugJson, cloneSpecObject} = require('./utils');
 const {generateControllerSpecs} = require('./spec-helper');
 const {generateModelSpecs, registerNamedSchemas} = require('./schema-helper');
 const {ResolverError} = require('@apidevtools/json-schema-ref-parser');
+const openapiFilter = require('openapi-filter');
 
 /**
  * Load swagger specs from the given url or file path; handle yml or json
@@ -58,9 +59,12 @@ async function loadSpec(specUrlStr, {log, validate} = {}) {
 
 async function loadAndBuildSpec(
   url,
-  {log, validate, promoteAnonymousSchemas} = {},
+  {log, validate, promoteAnonymousSchemas, readonly, exclude, include} = {},
 ) {
-  const apiSpec = await loadSpec(url, {log, validate});
+  let apiSpec = await loadSpec(url, {log, validate});
+
+  apiSpec = filterSpec(apiSpec, readonly, exclude, include);
+
   // First populate the type registry for named schemas
   const typeRegistry = {
     objectTypeMapping: new Map(),
@@ -75,6 +79,113 @@ async function loadAndBuildSpec(
     modelSpecs,
     controllerSpecs,
   };
+}
+
+function getIndiciesOf(searchStr, str, caseSensitive) {
+  const searchStrLen = searchStr.length;
+  if (searchStrLen === 0) {
+    return [];
+  }
+  let startIndex = 0,
+    index;
+  const indices = [];
+  if (!caseSensitive) {
+    str = str.toLowerCase();
+    searchStr = searchStr.toLowerCase();
+  }
+  while ((index = str.indexOf(searchStr, startIndex)) > -1) {
+    indices.push(index);
+    startIndex = index + searchStrLen;
+  }
+  return indices;
+}
+
+function insertAtIndex(str, substring, index) {
+  return str.slice(0, index) + substring + str.slice(index);
+}
+
+function applyFilters(stringifiedSpecs, options) {
+  let specs = JSON.parse(stringifiedSpecs);
+  const openapiComponent = specs.components;
+  specs = openapiFilter.filter(specs, options);
+  specs.components = openapiComponent;
+  return specs;
+}
+
+function findIndexes(stringSpecs, regex) {
+  let result;
+  const indices = [];
+  while ((result = regex.exec(stringSpecs))) {
+    indices.push(result.index);
+  }
+  return indices;
+}
+
+function excludeOrIncludeSpec(specs, filter, options) {
+  let stringifiedSpecs = JSON.stringify(specs);
+  const regex = new RegExp(filter, 'g');
+
+  const indexes = findIndexes(stringifiedSpecs, regex);
+  let indiciesCount = 0;
+  while (indiciesCount < indexes.length) {
+    const ind = indexes[indiciesCount];
+    for (let i = ind; i < stringifiedSpecs.length; i++) {
+      const toMatch =
+        stringifiedSpecs[i] + stringifiedSpecs[i + 1] + stringifiedSpecs[i + 2];
+      if (toMatch === '":{') {
+        stringifiedSpecs = insertAtIndex(
+          stringifiedSpecs,
+          '"x-filter": true,',
+          i + 3,
+        );
+        indiciesCount++;
+        break;
+      }
+    }
+  }
+  return applyFilters(stringifiedSpecs, options);
+}
+
+function readonlySpec(specs, options) {
+  let stringifiedSpecs = JSON.stringify(specs);
+  const excludeOps = ['"post":', '"patch":', '"put":', '"delete":'];
+  excludeOps.forEach(operator => {
+    let indices = getIndiciesOf(operator, stringifiedSpecs);
+    let indiciesCount = 0;
+    while (indiciesCount < indices.length) {
+      indices = getIndiciesOf(operator, stringifiedSpecs);
+      const index = indices[indiciesCount];
+      stringifiedSpecs = insertAtIndex(
+        stringifiedSpecs,
+        '"x-filter": true,',
+        index + operator.length + 1,
+      );
+      indiciesCount++;
+    }
+  });
+  return applyFilters(stringifiedSpecs, options);
+}
+
+function filterSpec(specs, readonly, exclude, include) {
+  const options = {
+    valid: true,
+    info: true,
+    strip: true,
+    flags: ['x-filter'],
+    servers: true,
+  };
+  if (readonly) {
+    specs = readonlySpec(specs, options);
+  }
+  if (exclude) {
+    // exclude only specified - include everything else
+    specs = excludeOrIncludeSpec(specs, exclude, options);
+  }
+  if (include) {
+    // include only specified - exclude everything else
+    specs = excludeOrIncludeSpec(specs, include, {...options, inverse: true});
+  }
+  return specs;
 }
 
 module.exports = {

@@ -87,6 +87,24 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
       type: Boolean,
     });
 
+    this.option('readonly', {
+      description: g.f('Generate only GET endpoints.'),
+      required: false,
+      type: Boolean,
+    });
+
+    this.option('exclude', {
+      description: g.f('Exclude endpoints with provided regex.'),
+      required: false,
+      type: String,
+    });
+
+    this.option('include', {
+      description: g.f('Only include endpoints with provided regex.'),
+      required: false,
+      type: String,
+    });
+
     return super._setupGenerator();
   }
 
@@ -211,6 +229,57 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
     }
   }
 
+  async askForReadonly() {
+    if (this.shouldExit()) return;
+    const prompts = [
+      {
+        name: 'readonly',
+        message: g.f('Generate only GET endpoints.'),
+        when: false,
+        // when: !this.options.readonly,
+        default: false,
+      },
+    ];
+    const answers = await this.prompt(prompts);
+    if (answers.readonly) {
+      this.options.readonly = answers.readonly;
+    }
+  }
+
+  async askForExclude() {
+    if (this.shouldExit()) return;
+    const prompts = [
+      {
+        name: 'exclude',
+        message: g.f('Exclude endpoints with provided regex.'),
+        // when: !this.options.exclude,
+        when: false,
+        default: false,
+      },
+    ];
+    const answers = await this.prompt(prompts);
+    if (answers.exclude) {
+      this.options.exclude = answers.exclude;
+    }
+  }
+
+  async askForInclude() {
+    if (this.shouldExit()) return;
+    const prompts = [
+      {
+        name: 'include',
+        message: g.f('Only include endpoints with provided regex.'),
+        when: false,
+        // when: !this.options.include,
+        default: false,
+      },
+    ];
+    const answers = await this.prompt(prompts);
+    if (answers.include) {
+      this.options.include = answers.include;
+    }
+  }
+
   async askForSpecUrlOrPath() {
     if (this.shouldExit()) return;
     if (this.dataSourceInfo && this.dataSourceInfo.specPath) {
@@ -236,11 +305,19 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
 
   async loadAndBuildApiSpec() {
     if (this.shouldExit()) return;
+    if (this.options.exclude && this.options.include) {
+      this.exit(
+        new Error('We cannot have include and exclude at the same time.'),
+      );
+    }
     try {
       const result = await loadAndBuildSpec(this.url, {
         log: this.log,
         validate: this.options.validate,
         promoteAnonymousSchemas: this.options['promote-anonymous-schemas'],
+        readonly: this.options.readonly,
+        exclude: this.options.exclude,
+        include: this.options.include,
       });
       debugJson('OpenAPI spec', result.apiSpec);
       Object.assign(this, result);
