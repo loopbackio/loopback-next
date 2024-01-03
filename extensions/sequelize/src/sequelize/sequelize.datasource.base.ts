@@ -45,12 +45,7 @@ export class SequelizeDataSource implements LifeCycleObserver {
         } is not supported.`,
       );
     }
-  }
 
-  sequelize?: Sequelize;
-  sequelizeConfig: SequelizeOptions;
-  async init(): Promise<void> {
-    const {config} = this;
     const {
       connector,
       file,
@@ -86,7 +81,11 @@ export class SequelizeDataSource implements LifeCycleObserver {
     } else {
       this.sequelize = new Sequelize(this.sequelizeConfig);
     }
+  }
 
+  sequelize: Sequelize;
+  sequelizeConfig: SequelizeOptions;
+  async init(): Promise<void> {
     await this.sequelize.authenticate();
     debug('Connection has been established successfully.');
   }

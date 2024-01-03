@@ -1047,6 +1047,7 @@ describe('Sequelize CRUD Repository (integration)', () => {
         'task.controller',
         'scoped-task.controller',
       ],
+      observers: ['index', 'test.observer'],
     };
 
     const copyFilePromises: Array<Promise<unknown>> = [];
