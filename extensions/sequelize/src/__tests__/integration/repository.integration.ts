@@ -280,6 +280,73 @@ describe('Sequelize CRUD Repository (integration)', () => {
       ]);
     });
 
+    it('creates an entity and finds it using Where filter boolean conditions', async () => {
+      const user = getDummyUser();
+
+      await client.post('/users').send(user);
+
+      const expectedUser = {
+        id: 1,
+        ..._.omit(user, ['password']),
+      };
+
+      const userResponse1 = await client
+        .get('/users')
+        .query({
+          filter: {
+            where: {
+              active: true,
+            },
+          },
+        })
+        .send();
+
+      expect(userResponse1.body).deepEqual([expectedUser]);
+
+      const userResponse2 = await client
+        .get('/users')
+        .query({
+          filter: {
+            where: {
+              active: false,
+            },
+          },
+        })
+        .send();
+
+      expect(userResponse2.body).deepEqual([]);
+
+      const userResponse3 = await client
+        .get('/users')
+        .query({
+          filter: {
+            where: {
+              active: {
+                eq: true,
+              },
+            },
+          },
+        })
+        .send();
+
+      expect(userResponse3.body).deepEqual([expectedUser]);
+
+      const userResponse4 = await client
+        .get('/users')
+        .query({
+          filter: {
+            where: {
+              active: {
+                eq: false,
+              },
+            },
+          },
+        })
+        .send();
+
+      expect(userResponse4.body).deepEqual([]);
+    });
+
     it('counts created entities', async () => {
       await client.post('/users').send(getDummyUser());
       const getResponse = await client.get('/users/count').send();

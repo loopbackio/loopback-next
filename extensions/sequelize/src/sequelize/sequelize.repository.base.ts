@@ -62,7 +62,7 @@ import {MakeNullishOptional} from 'sequelize/types/utils';
 import {operatorTranslations} from './operator-translation';
 import {SequelizeDataSource} from './sequelize.datasource.base';
 import {SequelizeModel} from './sequelize.model';
-import {isTruelyObject} from './utils';
+import {castToBoolean, isTruelyObject} from './utils';
 
 const debug = debugFactory('loopback:sequelize:repository');
 const debugModelBuilder = debugFactory('loopback:sequelize:modelbuilder');
@@ -646,6 +646,10 @@ export class SequelizeCrudRepository<
         continue;
       }
 
+      const entityClassCol = this.entityClass.definition.properties[columnName];
+      const isBooleanColumn =
+        entityClassCol && entityClassCol.type === 'boolean';
+
       if (isTruelyObject(conditionValue)) {
         sequelizeWhere[columnName] = {};
 
@@ -653,8 +657,16 @@ export class SequelizeCrudRepository<
           const sequelizeOperator = this.getSequelizeOperator(
             lb4Operator as keyof typeof operatorTranslations,
           );
-          sequelizeWhere[columnName][sequelizeOperator] =
-            conditionValue![lb4Operator as keyof typeof conditionValue];
+
+          if (isBooleanColumn) {
+            // Handles boolean column conditions like `{ neq: true }` or `{ eq: false }`
+            sequelizeWhere[columnName][sequelizeOperator] = castToBoolean(
+              conditionValue![lb4Operator as keyof typeof conditionValue],
+            );
+          } else {
+            sequelizeWhere[columnName][sequelizeOperator] =
+              conditionValue![lb4Operator as keyof typeof conditionValue];
+          }
         }
       } else if (
         ['and', 'or'].includes(columnName) &&
@@ -673,9 +685,12 @@ export class SequelizeCrudRepository<
           [sequelizeOperator]: conditions,
         });
       } else {
-        // Equals
+        // Equals operation. Casting boolean columns to avoid passing strings as boolean values
+        // to the Sequelize query builders.
         sequelizeWhere[columnName] = {
-          [Op.eq]: conditionValue,
+          [Op.eq]: isBooleanColumn
+            ? castToBoolean(conditionValue)
+            : conditionValue,
         };
       }
     }
