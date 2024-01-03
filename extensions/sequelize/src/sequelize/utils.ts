@@ -11,3 +11,21 @@
 export const isTruelyObject = (value?: unknown) => {
   return typeof value === 'object' && !Array.isArray(value) && value !== null;
 };
+
+/**
+ * Coerces a value to a boolean. This is used for Where Filter type coercion
+ * to avoid passing "true" or "false" as strings to the internal Sequelize queries.
+ *
+ * @param value - The value to be serialized.
+ * @returns The coerced boolean value: true / false.
+ */
+export const castToBoolean = (value: unknown): boolean => {
+  if (typeof value === 'boolean') {
+    return value;
+  } else if (typeof value === 'string') {
+    return value.toLowerCase() === 'true';
+  } else {
+    // e.g. null, undefined, 0, 1, etc.
+    return Boolean(value);
+  }
+};
