@@ -29,4 +29,6 @@ export const operatorTranslations: {
   regexp: Op.regexp,
   and: Op.and,
   or: Op.or,
+  match: Op.match,
+  contains: Op.contains,
 };
