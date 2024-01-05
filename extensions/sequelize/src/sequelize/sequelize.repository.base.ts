@@ -914,7 +914,14 @@ export class SequelizeCrudRepository<
         ['Array', 'array'].includes(definition[propName].type.toString())
       ) {
         // Postgres only
-        dataType = DataTypes.ARRAY(DataTypes.INTEGER);
+        const stringTypeArray =
+          definition[propName].itemType === String ||
+          ['String', 'string'].includes(
+            definition[propName].itemType?.toString() || '',
+          );
+        dataType = stringTypeArray
+          ? DataTypes.ARRAY(DataTypes.STRING)
+          : DataTypes.ARRAY(DataTypes.INTEGER);
       }
 
       if (
