@@ -35,6 +35,11 @@ export class User extends Entity {
   })
   email: string;
 
+  @property.array('string', {
+    name: 'phone_numbers',
+  })
+  phoneNumbers: string[];
+
   @property({
     type: 'boolean',
     default: false,
