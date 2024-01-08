@@ -6,6 +6,7 @@ export * from './doctor.model';
 export * from './patient.model';
 export * from './product.model';
 export * from './programming-language.model';
+export * from './roles.model';
 export * from './scoped-task.model';
 export * from './task.model';
 export * from './todo-list.model';
