@@ -24,7 +24,11 @@ import {SequelizeCrudRepository, SequelizeDataSource} from '../../sequelize';
 import {SequelizeSandboxApplication} from '../fixtures/application';
 import {config as primaryDataSourceConfig} from '../fixtures/datasources/primary.datasource';
 import {config as secondaryDataSourceConfig} from '../fixtures/datasources/secondary.datasource';
-import {ProgrammingLanguage, TableInSecondaryDB} from '../fixtures/models';
+import {
+  ProgrammingLanguage,
+  TableInSecondaryDB,
+  User,
+} from '../fixtures/models';
 import {Box, Event, eventTableName} from '../fixtures/models/test.model';
 import {User} from '../fixtures/models/user.model';
 import {
@@ -737,6 +741,35 @@ describe('Sequelize CRUD Repository (integration)', () => {
       datasource.stubs.sequelizeConfig = {dialect: 'mysql'};
       const repo = new SequelizeCrudRepository(Box, datasource);
       expect(repo.getTableName()).to.be.eql(Box.name);
+    });
+
+    it('parses JSON columns returned as strings for the mysql dialect using a custom Sequelize getter', async () => {
+      const mySQLDataSource = new SequelizeDataSource({
+        name: 'db',
+        connector: 'mysql',
+      });
+
+      const repo = new SequelizeCrudRepository(User, mySQLDataSource);
+
+      expect(
+        repo.sequelizeModel.getAttributes().address.get,
+      ).to.be.a.Function();
+      expect(
+        repo.sequelizeModel.getAttributes().phoneNumbers.get,
+      ).to.be.a.Function();
+
+      const Model = repo.getSequelizeModel(User);
+      const model = new Model();
+      const address = {street: '123', city: 'NYC'};
+
+      model.set('address', JSON.stringify(address));
+      expect(model.get('address')).to.be.eql(address);
+
+      model.set('address', '{ malformed JSON string');
+      expect(model.get('address')).to.be.eql(null);
+
+      model.set('address', address);
+      expect(model.get('address')).to.be.eql(address);
     });
 
     it('uses lowercased model class name as table name for postgres', async () => {
