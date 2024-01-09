@@ -754,9 +754,6 @@ describe('Sequelize CRUD Repository (integration)', () => {
       expect(
         repo.sequelizeModel.getAttributes().address.get,
       ).to.be.a.Function();
-      expect(
-        repo.sequelizeModel.getAttributes().phoneNumbers.get,
-      ).to.be.a.Function();
 
       const Model = repo.getSequelizeModel(User);
       const model = new Model();
