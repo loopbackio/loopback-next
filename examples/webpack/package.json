@@ -44,7 +44,7 @@
     "@loopback/build": "^10.1.4",
     "@loopback/eslint-config": "^14.0.5",
     "@loopback/testlab": "^6.1.4",
-    "@types/node": "^16.18.68",
+    "@types/node": "^16.18.70",
     "@types/puppeteer": "^5.4.7",
     "assert": "^2.1.0",
     "buffer": "^6.0.3",

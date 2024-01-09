@@ -36,7 +36,7 @@
     "@loopback/repository": "^6.1.4",
     "@loopback/repository-tests": "^0.23.4",
     "@loopback/testlab": "^6.1.4",
-    "@types/node": "^16.18.68",
+    "@types/node": "^16.18.70",
     "loopback-connector-mongodb": "^6.2.0",
     "tslib": "^2.6.2"
   }
