@@ -1,7 +1,7 @@
 {
   "name": "@loopback/build",
   "description": "A set of common scripts and default configurations to build LoopBack 4 or other TypeScript modules",
-  "version": "10.1.4",
+  "version": "10.1.5",
   "license": "MIT",
   "bin": {
     "lb-tsc": "./bin/compile-package.js",

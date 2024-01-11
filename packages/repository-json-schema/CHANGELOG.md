@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.2.1](https://github.com/loopbackio/loopback-next/compare/@loopback/repository-json-schema@7.2.0...@loopback/repository-json-schema@7.2.1) (2024-01-11)
+
+**Note:** Version bump only for package @loopback/repository-json-schema
+
+
+
+
+
 # [7.2.0](https://github.com/loopbackio/loopback-next/compare/@loopback/repository-json-schema@7.1.3...@loopback/repository-json-schema@7.2.0) (2023-12-12)
 
 

@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.4](https://github.com/loopbackio/loopback-next/compare/@loopback/sequelize@0.5.3...@loopback/sequelize@0.5.4) (2024-01-11)
+
+
+### Bug Fixes
+
+* **sequelize:** add type coercion for booleans in the Where filter ([fde4744](https://github.com/loopbackio/loopback-next/commit/fde4744ae83fd1bae2597c8762a52af766cae101))
+* **sequelize:** init Sequelize instance in constructor ([1103f26](https://github.com/loopbackio/loopback-next/commit/1103f266182baacfed7c6f92fe97da9946de1f9b))
+* **sequelize:** resolves SQL error when order filter is an empty string ([56201c5](https://github.com/loopbackio/loopback-next/commit/56201c5505a4e5b5b67022c02c98356a4b864862))
+
+
+
+
+
 ## [0.5.3](https://github.com/loopbackio/loopback-next/compare/@loopback/sequelize@0.5.2...@loopback/sequelize@0.5.3) (2023-12-12)
 
 

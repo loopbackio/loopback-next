@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.12.5](https://github.com/loopbackio/loopback-next/compare/@loopback/apiconnect@0.12.4...@loopback/apiconnect@0.12.5) (2024-01-11)
+
+**Note:** Version bump only for package @loopback/apiconnect
+
+
+
+
+
 ## [0.12.4](https://github.com/loopbackio/loopback-next/compare/@loopback/apiconnect@0.12.3...@loopback/apiconnect@0.12.4) (2023-12-12)
 
 **Note:** Version bump only for package @loopback/apiconnect
