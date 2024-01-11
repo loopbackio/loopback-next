@@ -24,7 +24,7 @@
     "directory": "examples/references-many"
   },
   "engines": {
-    "node": "16 || 18 || 20"
+    "node": "18 || 20"
   },
   "scripts": {
     "build": "lb-tsc",
