@@ -73,7 +73,7 @@
   },
   "engineStrict": true,
   "engines": {
-    "node": "16 || 18 || 20",
+    "node": "18 || 20",
     "npm": ">=7"
   },
   "private": true,
