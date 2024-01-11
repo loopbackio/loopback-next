@@ -1083,7 +1083,14 @@ describe('Sequelize CRUD Repository (integration)', () => {
           description: 'Others',
         };
         await client.post('/role').send(role2);
-        const roleByDesc = await client.get('/roles-desc');
+        const filter = {
+          where: {
+            description: {match: 'Others'},
+          } as AnyObject,
+        };
+        const roleByDesc = await client.get(
+          `/roles-desc?filter=${encodeURIComponent(JSON.stringify(filter))}`,
+        );
 
         expect(roleByDesc.body).to.have.properties(
           'permissions',
@@ -1111,7 +1118,14 @@ describe('Sequelize CRUD Repository (integration)', () => {
           description: 'Others',
         };
         await client.post('/role').send(role2);
-        const roleByDesc = await client.get('/roles-perm');
+        const filter = {
+          where: {
+            permissions: {contains: ['ViewTodo']},
+          },
+        } as AnyObject;
+        const roleByDesc = await client.get(
+          `/roles-perm?filter=${encodeURIComponent(JSON.stringify(filter))}`,
+        );
 
         expect(roleByDesc.body).to.have.properties(
           'permissions',

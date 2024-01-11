@@ -1,7 +1,8 @@
-import {AnyObject, repository} from '@loopback/repository';
+import {Filter, repository} from '@loopback/repository';
 import {
   get,
   getModelSchemaRef,
+  param,
   post,
   requestBody,
   response,
@@ -48,12 +49,10 @@ export class RolesController extends TestControllerBase {
       },
     },
   })
-  async getRolesByDesc(): Promise<Roles[]> {
-    return this.roleRepository.find({
-      where: {
-        description: {match: 'Others'},
-      } as AnyObject,
-    });
+  async getRolesByDesc(
+    @param.filter(Roles) filter?: Filter<Roles>,
+  ): Promise<Roles[]> {
+    return this.roleRepository.find(filter);
   }
 
   @get('/roles-perm')
@@ -65,12 +64,10 @@ export class RolesController extends TestControllerBase {
       },
     },
   })
-  async getRolesByPermission(): Promise<Roles[]> {
-    return this.roleRepository.find({
-      where: {
-        permissions: {contains: ['View']},
-      },
-    } as AnyObject);
+  async getRolesByPermission(
+    @param.filter(Roles) filter?: Filter<Roles>,
+  ): Promise<Roles[]> {
+    return this.roleRepository.find(filter);
   }
 
   @get('/roles/sync-sequelize-model')
