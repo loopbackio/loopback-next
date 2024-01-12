@@ -40,7 +40,7 @@ export class RolesController extends TestControllerBase {
     return this.roleRepository.create(role);
   }
 
-  @get('/roles-desc')
+  @get('/roles')
   @response(200, {
     description: 'Role model instance',
     content: {
@@ -49,22 +49,7 @@ export class RolesController extends TestControllerBase {
       },
     },
   })
-  async getRolesByDesc(
-    @param.filter(Roles) filter?: Filter<Roles>,
-  ): Promise<Roles[]> {
-    return this.roleRepository.find(filter);
-  }
-
-  @get('/roles-perm')
-  @response(200, {
-    description: 'Role model instance',
-    content: {
-      'application/json': {
-        schema: getModelSchemaRef(Roles, {includeRelations: true}),
-      },
-    },
-  })
-  async getRolesByPermission(
+  async getRoles(
     @param.filter(Roles) filter?: Filter<Roles>,
   ): Promise<Roles[]> {
     return this.roleRepository.find(filter);

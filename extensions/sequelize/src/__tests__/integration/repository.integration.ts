@@ -1089,7 +1089,7 @@ describe('Sequelize CRUD Repository (integration)', () => {
           } as AnyObject,
         };
         const roleByDesc = await client.get(
-          `/roles-desc?filter=${encodeURIComponent(JSON.stringify(filter))}`,
+          `/roles?filter=${encodeURIComponent(JSON.stringify(filter))}`,
         );
 
         expect(roleByDesc.body).to.have.properties(
@@ -1124,7 +1124,7 @@ describe('Sequelize CRUD Repository (integration)', () => {
           },
         } as AnyObject;
         const roleByDesc = await client.get(
-          `/roles-perm?filter=${encodeURIComponent(JSON.stringify(filter))}`,
+          `/roles?filter=${encodeURIComponent(JSON.stringify(filter))}`,
         );
 
         expect(roleByDesc.body).to.have.properties(
