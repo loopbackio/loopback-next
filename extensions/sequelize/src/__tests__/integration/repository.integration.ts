@@ -39,7 +39,8 @@ type Entities =
   | 'doctors'
   | 'developers'
   | 'books'
-  | 'products';
+  | 'products'
+  | 'roles';
 
 describe('Sequelize CRUD Repository (integration)', () => {
   const sandbox = new TestSandbox(resolve(__dirname, '../../.sandbox'));
@@ -1088,6 +1089,84 @@ describe('Sequelize CRUD Repository (integration)', () => {
     });
   });
 
+  describe('Extended Operators for postgres', () => {
+    async function migrateSchema(entities: Array<Entities>) {
+      for (const route of entities) {
+        await client.get(`/${route}/sync-sequelize-model`).send();
+      }
+    }
+
+    it('the match operator works for postgres connector', async function () {
+      if (primaryDataSourceConfig.connector === 'sqlite3') {
+        // extended operators are only supported in postgres
+        //this test case should be skipped for sqlite3
+        // eslint-disable-next-line @typescript-eslint/no-invalid-this
+        this.skip();
+      } else {
+        await migrateSchema(['roles']);
+        const role1 = {
+          permissions: ['Update', 'Create', 'Delete'],
+          description: 'Admin',
+        };
+        await client.post('/role').send(role1);
+        const role2 = {
+          permissions: ['View'],
+          description: 'Others',
+        };
+        await client.post('/role').send(role2);
+        const filter = {
+          where: {
+            description: {match: 'Others'},
+          } as AnyObject,
+        };
+        const roleByDesc = await client.get(
+          `/roles?filter=${encodeURIComponent(JSON.stringify(filter))}`,
+        );
+
+        expect(roleByDesc.body).to.have.properties(
+          'permissions',
+          'description',
+        );
+        expect(roleByDesc.body.description).to.be.equal(role2.description);
+      }
+    });
+
+    it('the contains operator works for postgres connector', async function () {
+      if (primaryDataSourceConfig.connector === 'sqlite3') {
+        // extended operators are only supported in postgres
+        //this test case should be skipped for sqlite3
+        // eslint-disable-next-line @typescript-eslint/no-invalid-this
+        this.skip();
+      } else {
+        await migrateSchema(['roles']);
+        const role1 = {
+          permissions: ['Update', 'Create', 'Delete'],
+          description: 'Admin',
+        };
+        await client.post('/role').send(role1);
+        const role2 = {
+          permissions: ['View'],
+          description: 'Others',
+        };
+        await client.post('/role').send(role2);
+        const filter = {
+          where: {
+            permissions: {contains: ['ViewTodo']},
+          },
+        } as AnyObject;
+        const roleByDesc = await client.get(
+          `/roles?filter=${encodeURIComponent(JSON.stringify(filter))}`,
+        );
+
+        expect(roleByDesc.body).to.have.properties(
+          'permissions',
+          'description',
+        );
+        expect(roleByDesc.body.description).to.be.equal(role2.description);
+      }
+    });
+  });
+
   async function getAppAndClient() {
     const artifacts: AnyObject = {
       datasources: ['config', 'primary.datasource', 'secondary.datasource'],
@@ -1106,6 +1185,7 @@ describe('Sequelize CRUD Repository (integration)', () => {
         'product.model',
         'scoped-task.model',
         'task.model',
+        'roles.model',
       ],
       repositories: [
         'index',
@@ -1122,6 +1202,7 @@ describe('Sequelize CRUD Repository (integration)', () => {
         'product.repository',
         'scoped-task.repository',
         'task.repository',
+        'roles.repository',
       ],
       controllers: [
         'index',
@@ -1144,6 +1225,7 @@ describe('Sequelize CRUD Repository (integration)', () => {
         'test.controller.base',
         'task.controller',
         'scoped-task.controller',
+        'roles.controller',
       ],
       observers: ['index', 'test.observer'],
     };

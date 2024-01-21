@@ -39,7 +39,9 @@ export type Operators =
   | 'nlike' // NOT LIKE
   | 'ilike' // ILIKE'
   | 'nilike' // NOT ILIKE
-  | 'regexp'; // REGEXP'
+  | 'regexp' // REGEXP'
+  | 'match' // match
+  | 'contains'; // for array
 
 /**
  * Matching predicate comparison

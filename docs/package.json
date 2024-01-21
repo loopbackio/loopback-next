@@ -1,7 +1,7 @@
 {
   "name": "@loopback/docs",
   "description": "Documentation files rendered at [https://loopback.io](https://loopback.io)",
-  "version": "6.0.5",
+  "version": "6.0.6",
   "keywords": [
     "LoopBack",
     "docs"
@@ -16,7 +16,7 @@
     "directory": "docs"
   },
   "engines": {
-    "node": "16 || 18 || 20"
+    "node": "18 || 20"
   },
   "scripts": {
     "version": "node ./bin/copy-readmes.js && node ./bin/copy-changelogs.js && cd .. && npm run tsdocs",
@@ -36,6 +36,6 @@
     "tslib": "^2.6.2"
   },
   "devDependencies": {
-    "@loopback/build": "^10.1.4"
+    "@loopback/build": "^10.1.5"
   }
 }

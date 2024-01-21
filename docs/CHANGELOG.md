@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.6](https://github.com/loopbackio/loopback-next/compare/@loopback/docs@6.0.5...@loopback/docs@6.0.6) (2024-01-11)
+
+
+### Bug Fixes
+
+* **docs:** fix grammar in Loopback-component-authentication.md ([fc4da57](https://github.com/loopbackio/loopback-next/commit/fc4da5768f3f9a4ae936b76788938815bc3b6288))
+
+
+
+
+
 ## [6.0.5](https://github.com/loopbackio/loopback-next/compare/@loopback/docs@6.0.4...@loopback/docs@6.0.5) (2023-12-12)
 
 **Note:** Version bump only for package @loopback/docs

@@ -915,7 +915,14 @@ export class SequelizeCrudRepository<
       ) {
         // Postgres only
         if (this.dataSource.sequelizeConfig.dialect === 'postgres') {
-          dataType = DataTypes.ARRAY(DataTypes.INTEGER);
+          const stringTypeArray =
+            definition[propName].itemType === String ||
+            ['String', 'string'].includes(
+              definition[propName].itemType?.toString() || '',
+            );
+          dataType = stringTypeArray
+            ? DataTypes.ARRAY(DataTypes.STRING)
+            : DataTypes.ARRAY(DataTypes.INTEGER);
         } else {
           dataType = DataTypes.JSON;
         }

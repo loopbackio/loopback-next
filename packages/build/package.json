@@ -1,7 +1,7 @@
 {
   "name": "@loopback/build",
   "description": "A set of common scripts and default configurations to build LoopBack 4 or other TypeScript modules",
-  "version": "10.1.4",
+  "version": "10.1.5",
   "license": "MIT",
   "bin": {
     "lb-tsc": "./bin/compile-package.js",
@@ -21,7 +21,7 @@
     "directory": "packages/build"
   },
   "engines": {
-    "node": "16 || 18 || 20"
+    "node": "18 || 20"
   },
   "scripts": {
     "test": "npm run mocha",
@@ -33,7 +33,7 @@
   "dependencies": {
     "@loopback/eslint-config": "^14.0.5",
     "@types/mocha": "^10.0.6",
-    "@types/node": "^16.18.70",
+    "@types/node": "^16.18.71",
     "cross-spawn": "^7.0.3",
     "debug": "^4.3.4",
     "eslint": "^8.51.0",
