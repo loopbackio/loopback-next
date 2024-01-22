@@ -209,7 +209,7 @@ export class SequelizeDataSource implements LifeCycleObserver {
     // Sequelize returns the select query result in an array at index 0 and at index 1 is the actual Result instance
     // Whereas in juggler it is returned directly as plain array.
     // Below condition maps that 0th index to final result to match juggler's behaviour
-    if (command.match(/^select/i) && result.length >= 1) {
+    if (command.match(/^(select|\(select)/i) && result.length >= 1) {
       return result[0];
     }
 
