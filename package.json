@@ -67,7 +67,7 @@
     "lerna": "^7.4.2",
     "lint-staged": "^15.2.0",
     "markdown-table": "^3.0.3",
-    "open-cli": "^7.2.0",
+    "open-cli": "^8.0.0",
     "prettier": "^3.0.3",
     "typescript": "~5.2.2"
   },
