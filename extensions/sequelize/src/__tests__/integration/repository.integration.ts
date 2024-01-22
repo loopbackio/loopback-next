@@ -427,7 +427,61 @@ describe('Sequelize CRUD Repository (integration)', () => {
       expect(queryResult[0]).property('name').to.be.eql(bar.name);
       expect(queryResult[0]).property('email').to.be.eql(bar.email);
     });
+    it('can execute command (select query with parenthesis) without parameters', async function () {
+      await client.post('/users').send(getDummyUser({name: 'Foo'}));
+      if (primaryDataSourceConfig.connector === 'sqlite3') {
+        // Skip executing select query with bracket if datasource is sqlite
+        // since it doesn't support it
+        // eslint-disable-next-line @typescript-eslint/no-invalid-this
+        this.skip();
+      }
+      const queryResult = await userRepo.execute('(SELECT * from "user")');
 
+      expect(queryResult).to.have.length(1);
+      expect(queryResult[0]).property('name').to.be.eql('Foo');
+    });
+
+    it('can execute command (select query with parenthesis) using named parameters', async function () {
+      await client.post('/users').send(getDummyUser({name: 'Foo'}));
+      const bar = getDummyUser({name: 'Bar'});
+      await client.post('/users').send(bar);
+      if (primaryDataSourceConfig.connector === 'sqlite3') {
+        // Skip executing select query with bracket if datasource is sqlite
+        // since it doesn't support it
+        // eslint-disable-next-line @typescript-eslint/no-invalid-this
+        this.skip();
+      }
+      const queryResult = await userRepo.execute(
+        '(SELECT * from "user" where name = $name)',
+        {
+          name: 'Bar',
+        },
+      );
+
+      expect(queryResult).to.have.length(1);
+      expect(queryResult[0]).property('name').to.be.eql(bar.name);
+      expect(queryResult[0]).property('email').to.be.eql(bar.email);
+    });
+    it('can execute raw sql command (select query with parenthesis) using positional parameters', async function () {
+      if (primaryDataSourceConfig.connector === 'sqlite3') {
+        // Skip executing select query with bracket if datasource is sqlite
+        // since it doesn't support it
+        // eslint-disable-next-line @typescript-eslint/no-invalid-this
+        this.skip();
+      }
+      await client.post('/users').send(getDummyUser({name: 'Foo'}));
+      const bar = getDummyUser({name: 'Bar'});
+      await client.post('/users').send(bar);
+
+      const queryResult = await userRepo.execute(
+        '(SELECT * from "user" where name = $1)',
+        ['Bar'],
+      );
+
+      expect(queryResult).to.have.length(1);
+      expect(queryResult[0]).property('name').to.be.eql(bar.name);
+      expect(queryResult[0]).property('email').to.be.eql(bar.email);
+    });
     it('can execute raw sql command (insert) using positional parameters', async () => {
       const user = getDummyUser({name: 'Foo', active: true});
       if (primaryDataSourceConfig.connector === 'sqlite3') {
