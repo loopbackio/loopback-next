@@ -39,3 +39,6 @@ benchmark/dist
 # Docs preview
 docs/_loopback.io/
 docs/_preview/
+
+#Vscode local history
+.history
