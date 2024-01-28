@@ -228,9 +228,8 @@ export class SequelizeCrudRepository<
     const result = await this.updateAll(data, where, options);
     if (result.count === 0) {
       // as MySQL didn't provide affected rows when the values are same as what database have
-      if (this.dataSource.config.connector === 'mysql') {
-        const entity = await this.findById(id);
-        if (!entity) throw new EntityNotFoundError(this.entityClass, id);
+      if (this.dataSource.sequelizeConfig.dialect === 'mysql') {
+        await this.findById(id);
       } else {
         throw new EntityNotFoundError(this.entityClass, id);
       }
