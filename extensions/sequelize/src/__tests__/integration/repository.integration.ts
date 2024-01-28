@@ -1,4 +1,4 @@
-import {AnyObject} from '@loopback/repository';
+import {AnyObject, EntityNotFoundError} from '@loopback/repository';
 import {RestApplication} from '@loopback/rest';
 import {
   Client,
@@ -8,10 +8,16 @@ import {
   createStubInstance,
   expect,
   givenHttpServerConfig,
+  sinon,
 } from '@loopback/testlab';
 import _ from 'lodash';
 import {resolve} from 'path';
-import {UniqueConstraintError} from 'sequelize';
+import {
+  ModelStatic,
+  Sequelize,
+  Model as SequelizeModel,
+  UniqueConstraintError,
+} from 'sequelize';
 import {fail} from 'should';
 import {validate as uuidValidate, version as uuidVersion} from 'uuid';
 import {SequelizeCrudRepository, SequelizeDataSource} from '../../sequelize';
@@ -20,6 +26,7 @@ import {config as primaryDataSourceConfig} from '../fixtures/datasources/primary
 import {config as secondaryDataSourceConfig} from '../fixtures/datasources/secondary.datasource';
 import {ProgrammingLanguage, TableInSecondaryDB} from '../fixtures/models';
 import {Box, Event, eventTableName} from '../fixtures/models/test.model';
+import {User} from '../fixtures/models/user.model';
 import {
   DeveloperRepository,
   ProgrammingLanguageRepository,
@@ -385,6 +392,69 @@ describe('Sequelize CRUD Repository (integration)', () => {
           name: 'Bar',
         });
       expect(patchResponse.body).to.have.property('count', 1);
+    });
+
+    describe('updates created entity with MySQL dialect', () => {
+      let seqQueryStub: sinon.SinonStub;
+      let repo: SequelizeCrudRepository<User, unknown, {}>;
+      let userModel: ModelStatic<SequelizeModel>;
+
+      beforeEach(() => {
+        seqQueryStub = sinon.stub(Sequelize.prototype, 'query');
+        datasource.sequelize = new Sequelize({
+          dialect: 'mysql',
+        });
+        datasource.sequelizeConfig = {
+          host: '0.0.0.0',
+          dialect: 'mysql',
+          database: 'transaction-primary',
+        };
+        repo = new SequelizeCrudRepository(User, datasource);
+        userModel = datasource.sequelize.model(repo.entityClass.modelName);
+      });
+      afterEach(() => {
+        seqQueryStub.restore();
+      });
+
+      it('should check for the entity when affectedRow return 0', async () => {
+        seqQueryStub
+          .onFirstCall()
+          .resolves(0 as never)
+          .onSecondCall()
+          .resolves(
+            userModel
+              .bulkBuild(
+                [
+                  {
+                    id: 1,
+                    username: 'string',
+                    password: 'password:varchar',
+                    email: 'email:varchar',
+                    registerDate: '2024-01-24T11:02:16.000Z',
+                  },
+                ],
+                {raw: true},
+              )
+              .pop() as never,
+          );
+
+        await repo.updateById(1, {name: 'UpdatedName'});
+        expect(seqQueryStub.callCount).to.be.equal(2);
+      });
+
+      it('should check for the entity and throw "EntityNotFoundError" when entity missing', async () => {
+        try {
+          seqQueryStub
+            .onFirstCall()
+            .resolves(0 as never)
+            .onSecondCall()
+            .resolves(null as never);
+          await repo.updateById(1, {name: 'UpdatedName'});
+        } catch (err) {
+          expect(err).to.instanceOf(EntityNotFoundError);
+        }
+        expect(seqQueryStub.callCount).to.be.equal(2);
+      });
     });
 
     it('can execute raw sql command without parameters', async function () {
