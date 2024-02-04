@@ -45,7 +45,7 @@
   },
   "dependencies": {
     "debug": "^4.3.4",
-    "sequelize": "^6.35.2",
+    "sequelize": "^6.36.0",
     "tslib": "^2.6.2"
   },
   "devDependencies": {
