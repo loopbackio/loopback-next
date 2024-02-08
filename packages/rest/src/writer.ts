@@ -51,15 +51,29 @@ export function writeResultToResponse(
         // See https://github.com/loopbackio/loopback-next/issues/436
         response.setHeader('Content-Type', 'application/json');
         let customResult = result;
-        if (result.length) {
-          customResult = [];
-          result.forEach((item: {[key: string]: Object[]}) => {
-            const org: {[key: string]: Object[]} = {};
-            Object.keys(item).forEach(key => {
-              org[key] = item[key];
+        let org: {[key: string]: Object[]} = {};
+
+        if (result && typeof result === 'object') {
+          if (Array.isArray(result)) {
+            customResult = [];
+            result.forEach((item: {[key: string]: Object[]}) => {
+              org = {};
+              if (typeof item === 'object') {
+                Object.keys(item).forEach(key => {
+                  org[key] = item[key];
+                });
+                customResult.push(org);
+              } else {
+                customResult.push(item);
+              }
             });
-            customResult.push(org);
-          });
+          } else {
+            org = {};
+            Object.keys(result).forEach(key => {
+              org[key] = result[key];
+            });
+            customResult = org;
+          }
         }
         // TODO(bajtos) handle errors - JSON.stringify can throw
         result = JSON.stringify(customResult);
