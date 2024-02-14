@@ -139,3 +139,9 @@ export class Customer extends Entity {
 }
 
 `;
+
+
+exports[`lb4 relation rejects relation when models does not exist 1`] = `
+export * from './order-customer.controller';
+
+`;
