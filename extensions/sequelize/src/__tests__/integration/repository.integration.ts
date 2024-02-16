@@ -777,6 +777,80 @@ describe('Sequelize CRUD Repository (integration)', () => {
       ]);
     });
 
+    it('supports `order` filter by associations', async () => {
+      await migrateSchema(['todos', 'todo-lists']);
+
+      const todoList = getDummyTodoList({title: 'a'});
+      const todoList2 = getDummyTodoList({title: 'b'});
+
+      const todoListRes1 = await client.post('/todo-lists').send(todoList);
+      const todoListRes2 = await client.post('/todo-lists').send(todoList2);
+
+      const todo1 = getDummyTodo({
+        todoListId: todoListRes1.body.id,
+        title: 'b',
+      });
+      const todo2 = getDummyTodo({
+        todoListId: todoListRes2.body.id,
+        title: 'a',
+      });
+
+      const todoRes1 = await client.post('/todos').send(todo1);
+      const todoRes2 = await client.post('/todos').send(todo2);
+
+      const includeFilter = {include: ['todos']};
+      const relationResNoOrder = await client.get(`/todo-lists`).query({
+        filter: JSON.stringify({...includeFilter}),
+      });
+
+      expect(relationResNoOrder.body).to.be.deepEqual([
+        {
+          ...todoListRes1.body,
+          todos: [todoRes1.body],
+          user: null,
+        },
+        {
+          ...todoListRes2.body,
+          todos: [todoRes2.body],
+          user: null,
+        },
+      ]);
+
+      const relationResOrderByTodoList = await client.get(`/todo-lists`).query({
+        filter: JSON.stringify({...includeFilter, order: 'title DESC'}),
+      });
+
+      expect(relationResOrderByTodoList.body).to.be.deepEqual([
+        {
+          ...todoListRes2.body,
+          todos: [todoRes2.body],
+          user: null,
+        },
+        {
+          ...todoListRes1.body,
+          todos: [todoRes1.body],
+          user: null,
+        },
+      ]);
+
+      const relationResOrderByTodo = await client.get(`/todo-lists`).query({
+        filter: JSON.stringify({...includeFilter, order: 'todos title DESC'}),
+      });
+
+      expect(relationResOrderByTodo.body).to.be.deepEqual([
+        {
+          ...todoListRes1.body,
+          todos: [todoRes1.body],
+          user: null,
+        },
+        {
+          ...todoListRes2.body,
+          todos: [todoRes2.body],
+          user: null,
+        },
+      ]);
+    });
+
     it('supports @belongsTo', async () => {
       await migrateSchema(['books']);
 
