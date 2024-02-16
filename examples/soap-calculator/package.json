@@ -51,7 +51,7 @@
     "@loopback/rest": "^13.1.5",
     "@loopback/rest-explorer": "^6.1.5",
     "@loopback/service-proxy": "^6.1.5",
-    "loopback-connector-soap": "^8.0.2",
+    "loopback-connector-soap": "^8.0.3",
     "tslib": "^2.6.2"
   },
   "devDependencies": {
@@ -59,9 +59,9 @@
     "@loopback/eslint-config": "^14.0.5",
     "@loopback/testlab": "^6.1.5",
     "@types/mocha": "^10.0.6",
-    "@types/node": "^16.18.71",
+    "@types/node": "^16.18.80",
     "eslint": "^8.51.0",
-    "mocha": "^10.2.0",
+    "mocha": "^10.3.0",
     "source-map-support": "^0.5.21",
     "typescript": "~5.2.2"
   }

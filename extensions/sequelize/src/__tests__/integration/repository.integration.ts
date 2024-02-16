@@ -1,4 +1,4 @@
-import {AnyObject} from '@loopback/repository';
+import {AnyObject, EntityNotFoundError} from '@loopback/repository';
 import {RestApplication} from '@loopback/rest';
 import {
   Client,
@@ -8,10 +8,16 @@ import {
   createStubInstance,
   expect,
   givenHttpServerConfig,
+  sinon,
 } from '@loopback/testlab';
 import _ from 'lodash';
 import {resolve} from 'path';
-import {UniqueConstraintError} from 'sequelize';
+import {
+  ModelStatic,
+  Sequelize,
+  Model as SequelizeModel,
+  UniqueConstraintError,
+} from 'sequelize';
 import {fail} from 'should';
 import {validate as uuidValidate, version as uuidVersion} from 'uuid';
 import {SequelizeCrudRepository, SequelizeDataSource} from '../../sequelize';
@@ -28,6 +34,7 @@ import {
   User,
 } from '../fixtures/models';
 import {Box, Event, eventTableName} from '../fixtures/models/test.model';
+import {User} from '../fixtures/models/user.model';
 import {
   DeveloperRepository,
   ProgrammingLanguageRepository,
@@ -395,6 +402,69 @@ describe('Sequelize CRUD Repository (integration)', () => {
       expect(patchResponse.body).to.have.property('count', 1);
     });
 
+    describe('updates created entity with MySQL dialect', () => {
+      let seqQueryStub: sinon.SinonStub;
+      let repo: SequelizeCrudRepository<User, unknown, {}>;
+      let userModel: ModelStatic<SequelizeModel>;
+
+      beforeEach(() => {
+        seqQueryStub = sinon.stub(Sequelize.prototype, 'query');
+        datasource.sequelize = new Sequelize({
+          dialect: 'mysql',
+        });
+        datasource.sequelizeConfig = {
+          host: '0.0.0.0',
+          dialect: 'mysql',
+          database: 'transaction-primary',
+        };
+        repo = new SequelizeCrudRepository(User, datasource);
+        userModel = datasource.sequelize.model(repo.entityClass.modelName);
+      });
+      afterEach(() => {
+        seqQueryStub.restore();
+      });
+
+      it('should check for the entity when affectedRow return 0', async () => {
+        seqQueryStub
+          .onFirstCall()
+          .resolves(0 as never)
+          .onSecondCall()
+          .resolves(
+            userModel
+              .bulkBuild(
+                [
+                  {
+                    id: 1,
+                    username: 'string',
+                    password: 'password:varchar',
+                    email: 'email:varchar',
+                    registerDate: '2024-01-24T11:02:16.000Z',
+                  },
+                ],
+                {raw: true},
+              )
+              .pop() as never,
+          );
+
+        await repo.updateById(1, {name: 'UpdatedName'});
+        expect(seqQueryStub.callCount).to.be.equal(2);
+      });
+
+      it('should check for the entity and throw "EntityNotFoundError" when entity missing', async () => {
+        try {
+          seqQueryStub
+            .onFirstCall()
+            .resolves(0 as never)
+            .onSecondCall()
+            .resolves(null as never);
+          await repo.updateById(1, {name: 'UpdatedName'});
+        } catch (err) {
+          expect(err).to.instanceOf(EntityNotFoundError);
+        }
+        expect(seqQueryStub.callCount).to.be.equal(2);
+      });
+    });
+
     it('can execute raw sql command without parameters', async function () {
       await client.post('/users').send(getDummyUser({name: 'Foo'}));
 
@@ -435,7 +505,61 @@ describe('Sequelize CRUD Repository (integration)', () => {
       expect(queryResult[0]).property('name').to.be.eql(bar.name);
       expect(queryResult[0]).property('email').to.be.eql(bar.email);
     });
+    it('can execute command (select query with parenthesis) without parameters', async function () {
+      await client.post('/users').send(getDummyUser({name: 'Foo'}));
+      if (primaryDataSourceConfig.connector === 'sqlite3') {
+        // Skip executing select query with bracket if datasource is sqlite
+        // since it doesn't support it
+        // eslint-disable-next-line @typescript-eslint/no-invalid-this
+        this.skip();
+      }
+      const queryResult = await userRepo.execute('(SELECT * from "user")');
 
+      expect(queryResult).to.have.length(1);
+      expect(queryResult[0]).property('name').to.be.eql('Foo');
+    });
+
+    it('can execute command (select query with parenthesis) using named parameters', async function () {
+      await client.post('/users').send(getDummyUser({name: 'Foo'}));
+      const bar = getDummyUser({name: 'Bar'});
+      await client.post('/users').send(bar);
+      if (primaryDataSourceConfig.connector === 'sqlite3') {
+        // Skip executing select query with bracket if datasource is sqlite
+        // since it doesn't support it
+        // eslint-disable-next-line @typescript-eslint/no-invalid-this
+        this.skip();
+      }
+      const queryResult = await userRepo.execute(
+        '(SELECT * from "user" where name = $name)',
+        {
+          name: 'Bar',
+        },
+      );
+
+      expect(queryResult).to.have.length(1);
+      expect(queryResult[0]).property('name').to.be.eql(bar.name);
+      expect(queryResult[0]).property('email').to.be.eql(bar.email);
+    });
+    it('can execute raw sql command (select query with parenthesis) using positional parameters', async function () {
+      if (primaryDataSourceConfig.connector === 'sqlite3') {
+        // Skip executing select query with bracket if datasource is sqlite
+        // since it doesn't support it
+        // eslint-disable-next-line @typescript-eslint/no-invalid-this
+        this.skip();
+      }
+      await client.post('/users').send(getDummyUser({name: 'Foo'}));
+      const bar = getDummyUser({name: 'Bar'});
+      await client.post('/users').send(bar);
+
+      const queryResult = await userRepo.execute(
+        '(SELECT * from "user" where name = $1)',
+        ['Bar'],
+      );
+
+      expect(queryResult).to.have.length(1);
+      expect(queryResult[0]).property('name').to.be.eql(bar.name);
+      expect(queryResult[0]).property('email').to.be.eql(bar.email);
+    });
     it('can execute raw sql command (insert) using positional parameters', async () => {
       const user = getDummyUser({name: 'Foo', active: true});
       if (primaryDataSourceConfig.connector === 'sqlite3') {

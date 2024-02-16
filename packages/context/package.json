@@ -46,7 +46,7 @@
     "@loopback/metadata": "^6.1.5",
     "@types/debug": "^4.1.12",
     "debug": "^4.3.4",
-    "hyperid": "^3.1.1",
+    "hyperid": "^3.2.0",
     "p-event": "^4.2.0",
     "tslib": "^2.6.2",
     "uuid": "^9.0.1"
@@ -56,8 +56,8 @@
     "@loopback/eslint-config": "^14.0.5",
     "@loopback/testlab": "^6.1.5",
     "@types/bluebird": "^3.5.42",
-    "@types/node": "^16.18.71",
-    "@types/uuid": "^9.0.7",
+    "@types/node": "^16.18.80",
+    "@types/uuid": "^9.0.8",
     "bluebird": "^3.7.2"
   }
 }

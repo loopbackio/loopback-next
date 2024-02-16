@@ -43,7 +43,7 @@
     "@loopback/core": "^5.0.0"
   },
   "dependencies": {
-    "@graphql-tools/utils": "^10.0.12",
+    "@graphql-tools/utils": "^10.0.13",
     "@loopback/http-server": "^5.1.5",
     "apollo-server-express": "^3.12.1",
     "debug": "^4.3.4",
@@ -61,7 +61,7 @@
     "@loopback/rest": "^13.1.5",
     "@loopback/testlab": "^6.1.5",
     "@types/debug": "^4.1.12",
-    "@types/node": "^16.18.71",
+    "@types/node": "^16.18.80",
     "class-transformer": "^0.5.1"
   }
 }

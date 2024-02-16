@@ -38,7 +38,7 @@
     "@loopback/core": "^5.0.0"
   },
   "dependencies": {
-    "loopback-datasource-juggler": "^5.0.5",
+    "loopback-datasource-juggler": "^5.0.6",
     "tslib": "^2.6.2"
   },
   "devDependencies": {
@@ -46,6 +46,6 @@
     "@loopback/core": "^5.1.5",
     "@loopback/eslint-config": "^14.0.5",
     "@loopback/testlab": "^6.1.5",
-    "@types/node": "^16.18.71"
+    "@types/node": "^16.18.80"
   }
 }

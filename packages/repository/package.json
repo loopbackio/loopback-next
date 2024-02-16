@@ -40,7 +40,7 @@
     "@types/debug": "^4.1.12",
     "debug": "^4.3.4",
     "lodash": "^4.17.21",
-    "loopback-datasource-juggler": "^5.0.5",
+    "loopback-datasource-juggler": "^5.0.6",
     "tslib": "^2.6.2"
   },
   "devDependencies": {
@@ -50,7 +50,7 @@
     "@loopback/testlab": "^6.1.5",
     "@types/json-schema": "^7.0.15",
     "@types/lodash": "^4.14.202",
-    "@types/node": "^16.18.71",
+    "@types/node": "^16.18.80",
     "bson": "5.5.1"
   }
 }

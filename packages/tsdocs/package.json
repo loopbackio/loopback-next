@@ -49,8 +49,8 @@
   ],
   "dependencies": {
     "@lerna/project": "^6.4.1",
-    "@microsoft/api-documenter": "^7.23.17",
-    "@microsoft/api-extractor": "^7.39.1",
+    "@microsoft/api-documenter": "^7.23.23",
+    "@microsoft/api-extractor": "^7.40.1",
     "@npmcli/map-workspaces": "^3.0.4",
     "@npmcli/package-json": "^5.0.0",
     "debug": "^4.3.4",
@@ -64,8 +64,8 @@
     "@loopback/tsdocs-monorepo": "^0.4.6",
     "@types/debug": "^4.1.12",
     "@types/fs-extra": "^11.0.4",
-    "@types/node": "^16.18.71",
+    "@types/node": "^16.18.80",
     "@types/npmcli__map-workspaces": "^3.0.4",
-    "@types/npmcli__package-json": "^4.0.3"
+    "@types/npmcli__package-json": "^4.0.4"
   }
 }

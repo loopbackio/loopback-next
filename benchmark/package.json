@@ -45,8 +45,8 @@
     "@types/byline": "^4.2.36",
     "@types/debug": "^4.1.12",
     "@types/request-promise-native": "^1.0.21",
-    "autocannon": "^7.14.0",
-    "axios": "^1.6.5",
+    "autocannon": "^7.15.0",
+    "axios": "^1.6.7",
     "benchmark": "^2.1.4",
     "byline": "^5.0.0",
     "debug": "^4.3.4",
@@ -59,8 +59,8 @@
     "@types/autocannon": "^7.12.5",
     "@types/benchmark": "^2.1.5",
     "@types/mocha": "^10.0.6",
-    "@types/node": "^16.18.71",
-    "mocha": "^10.2.0",
+    "@types/node": "^16.18.80",
+    "mocha": "^10.3.0",
     "source-map-support": "^0.5.21"
   }
 }
