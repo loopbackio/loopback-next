@@ -30,7 +30,6 @@ import {
   User,
 } from '../fixtures/models';
 import {Box, Event, eventTableName} from '../fixtures/models/test.model';
-import {User} from '../fixtures/models/user.model';
 import {
   DeveloperRepository,
   ProgrammingLanguageRepository,
@@ -743,11 +742,13 @@ describe('Sequelize CRUD Repository (integration)', () => {
       expect(repo.getTableName()).to.be.eql(Box.name);
     });
 
-    it('parses JSON columns returned as strings for the mysql dialect using a custom Sequelize getter', async () => {
+    it('parses JSON columns returned as strings for the mysql dialect by default using a custom Sequelize getter', async () => {
       const mySQLDataSource = new SequelizeDataSource({
         name: 'db',
         connector: 'mysql',
       });
+
+      expect(mySQLDataSource.parseJsonColumns).to.be.eql(true);
 
       const repo = new SequelizeCrudRepository(User, mySQLDataSource);
 
@@ -764,6 +765,46 @@ describe('Sequelize CRUD Repository (integration)', () => {
 
       model.set('address', '{ malformed JSON string');
       expect(model.get('address')).to.be.eql(null);
+
+      model.set('address', address);
+      expect(model.get('address')).to.be.eql(address);
+    });
+
+    it('defaults to false for the "parseJsonColumns" option for non-mysql dialects', async () => {
+      const loopbackConnectors = ['sqlite3', 'postgresql', 'oracle'] as const;
+
+      for (const connector of loopbackConnectors) {
+        const mySQLDataSource = new SequelizeDataSource({
+          name: 'db',
+          connector,
+        });
+
+        expect(mySQLDataSource.parseJsonColumns).to.be.eql(false);
+      }
+    });
+
+    it('overrides default json column parsing settings via the "parseJsonColumns" option', async () => {
+      const mySQLDataSource = new SequelizeDataSource({
+        name: 'db',
+        connector: 'mysql',
+        parseJsonColumns: false,
+      });
+
+      expect(mySQLDataSource.parseJsonColumns).to.be.eql(false);
+
+      const repo = new SequelizeCrudRepository(User, mySQLDataSource);
+
+      expect(
+        repo.sequelizeModel.getAttributes().address.get,
+      ).not.to.be.a.Function();
+
+      const Model = repo.getSequelizeModel(User);
+      const model = new Model();
+      const address = {street: '123', city: 'NYC'};
+      const stringifiedAddress = JSON.stringify(address);
+
+      model.set('address', JSON.stringify(address));
+      expect(model.get('address')).to.be.eql(stringifiedAddress);
 
       model.set('address', address);
       expect(model.get('address')).to.be.eql(address);

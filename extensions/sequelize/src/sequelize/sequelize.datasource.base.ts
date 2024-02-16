@@ -34,6 +34,7 @@ const queryLogging = debugFactory('loopback:sequelize:queries');
 export class SequelizeDataSource implements LifeCycleObserver {
   name: string;
   settings = {};
+
   constructor(public config: SequelizeDataSourceConfig) {
     if (
       this.config.connector &&
@@ -85,6 +86,22 @@ export class SequelizeDataSource implements LifeCycleObserver {
 
   sequelize: Sequelize;
   sequelizeConfig: SequelizeOptions;
+
+  /**
+   * Gets the flag indicating whether to parse JSON columns.
+   * If the `parseJsonColumns` property is set in the configuration, its value will be returned.
+   * Otherwise, it returns `true` if the dialect is MySQL, `false` otherwise.
+   *
+   * @returns {boolean} The flag indicating whether to parse JSON columns.
+   */
+  get parseJsonColumns(): boolean {
+    if (typeof this.config?.parseJsonColumns === 'boolean') {
+      return this.config.parseJsonColumns;
+    }
+
+    return this.sequelizeConfig.dialect === 'mysql';
+  }
+
   async init(): Promise<void> {
     await this.sequelize.authenticate();
     debug('Connection has been established successfully.');
@@ -258,6 +275,21 @@ export type SequelizeDataSourceConfig = {
   user?: string;
   connector?: SupportedLoopbackConnectors;
   url?: string;
+  /**
+   * Whether or not to parse the JSON data stored in database columns.
+   *
+   * For dialects that do not support a native JSON type, we need to parse
+   * string column values to JSON objects to preserve backwards compatibility with the Juggler ORM.
+   * Example: https://github.com/loopbackio/loopback-connector-mysql/blob/edf176b09234b82796f925203ff006843e045498/lib/mysql.js#L476
+   *
+   * With Sequelize v6, some of the dialects like MariaDB and SQLite already parse JSON strings to JSON objects by default:
+   * - https://github.com/sequelize/sequelize/blob/cb8ea88c9aa37b14c908fd34dff1afc603de2ea7/src/dialects/mariadb/query.js#L191
+   * - https://github.com/sequelize/sequelize/blob/cb8ea88c9aa37b14c908fd34dff1afc603de2ea7/src/dialects/sqlite/query.js#L365
+   *
+   * Defaults to true for MySQL and false for other dialects.
+   */
+  parseJsonColumns?: boolean;
+
   /**
    * Additional sequelize options that are passed directly to
    * Sequelize when initializing the connection.
