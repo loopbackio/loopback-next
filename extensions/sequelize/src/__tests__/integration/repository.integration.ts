@@ -21,10 +21,7 @@ import {
 import {fail} from 'should';
 import {validate as uuidValidate, version as uuidVersion} from 'uuid';
 import {SequelizeCrudRepository, SequelizeDataSource} from '../../sequelize';
-import {
-  SupportedConnectorMapping,
-  type SupportedLoopbackConnectors,
-} from '../../sequelize/connector-mapping';
+import {type SupportedLoopbackConnectors} from '../../sequelize/connector-mapping';
 import {SequelizeSandboxApplication} from '../fixtures/application';
 import {config as primaryDataSourceConfig} from '../fixtures/datasources/primary.datasource';
 import {config as secondaryDataSourceConfig} from '../fixtures/datasources/secondary.datasource';
@@ -775,12 +772,15 @@ describe('Sequelize CRUD Repository (integration)', () => {
     });
 
     it('defaults to false for the "parseJsonColumns" option for non-mysql dialects', async () => {
-      for (const connector of Object.keys(SupportedConnectorMapping)) {
-        if (connector === 'mysql') continue;
-
+      for (const connector of [
+        'sqlite',
+        'postgres',
+        'mssql',
+        'oracle',
+      ] as SupportedLoopbackConnectors[]) {
         const mySQLDataSource = new SequelizeDataSource({
           name: 'db',
-          connector: connector as SupportedLoopbackConnectors,
+          connector,
         });
 
         expect(mySQLDataSource.parseJsonColumns).to.be.eql(false);
