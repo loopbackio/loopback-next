@@ -95,7 +95,7 @@ export class SequelizeDataSource implements LifeCycleObserver {
    * @returns {boolean} The flag indicating whether to parse JSON columns.
    */
   get parseJsonColumns(): boolean {
-    if (typeof this.config.parseJsonColumns === 'boolean') {
+    if (typeof this.config?.parseJsonColumns === 'boolean') {
       return this.config.parseJsonColumns;
     }
 

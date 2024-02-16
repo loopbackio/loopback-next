@@ -34,7 +34,6 @@ import {
   User,
 } from '../fixtures/models';
 import {Box, Event, eventTableName} from '../fixtures/models/test.model';
-import {User} from '../fixtures/models/user.model';
 import {
   DeveloperRepository,
   ProgrammingLanguageRepository,
