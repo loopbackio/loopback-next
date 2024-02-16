@@ -21,7 +21,6 @@ import {
 import {fail} from 'should';
 import {validate as uuidValidate, version as uuidVersion} from 'uuid';
 import {SequelizeCrudRepository, SequelizeDataSource} from '../../sequelize';
-import {type SupportedLoopbackConnectors} from '../../sequelize/connector-mapping';
 import {SequelizeSandboxApplication} from '../fixtures/application';
 import {config as primaryDataSourceConfig} from '../fixtures/datasources/primary.datasource';
 import {config as secondaryDataSourceConfig} from '../fixtures/datasources/secondary.datasource';
@@ -772,12 +771,9 @@ describe('Sequelize CRUD Repository (integration)', () => {
     });
 
     it('defaults to false for the "parseJsonColumns" option for non-mysql dialects', async () => {
-      for (const connector of [
-        'sqlite',
-        'postgres',
-        'mssql',
-        'oracle',
-      ] as SupportedLoopbackConnectors[]) {
+      const loopbackConnectors = ['sqlite3', 'postgresql', 'oracle'] as const;
+
+      for (const connector of loopbackConnectors) {
         const mySQLDataSource = new SequelizeDataSource({
           name: 'db',
           connector,
