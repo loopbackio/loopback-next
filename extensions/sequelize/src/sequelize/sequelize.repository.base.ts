@@ -53,6 +53,7 @@ import {
   ModelStatic,
   Op,
   Order,
+  OrderItem,
   SyncOptions,
   Transaction,
   TransactionOptions,
@@ -489,7 +490,12 @@ export class SequelizeCrudRepository<
   }
 
   /**
-   * Get Sequelize Order filter value from loopback style order value
+   * Get Sequelize Order filter value from loopback style order value.
+   *
+   * It also supports passing associations in the order array to sort by nested models. Example: `["user email ASC"]`.
+   *
+   * @see https://sequelize.org/docs/v6/advanced-association-concepts/eager-loading/#ordering-eager-loaded-associations
+   *
    * @param order Sorting order in loopback style filter. eg. `title ASC`, `["id DESC", "age ASC"]`
    * @returns Sequelize compatible order filter value
    */
@@ -498,15 +504,21 @@ export class SequelizeCrudRepository<
       return undefined;
     }
 
+    const parseOrderItem = (orderStr: string): OrderItem => {
+      const [columnName, ...rest] = orderStr.trim().split(' ');
+
+      if (rest.length === 0) {
+        return [columnName, this.DEFAULT_ORDER_STYLE];
+      }
+
+      return [columnName, ...rest] as OrderItem;
+    };
+
     if (typeof order === 'string') {
-      const [columnName, orderType] = order.trim().split(' ');
-      return [[columnName, orderType ?? this.DEFAULT_ORDER_STYLE]];
+      return [parseOrderItem(order)];
     }
 
-    return order.map(orderStr => {
-      const [columnName, orderType] = orderStr.trim().split(' ');
-      return [columnName, orderType ?? this.DEFAULT_ORDER_STYLE];
-    });
+    return order.map(parseOrderItem);
   }
 
   /**
