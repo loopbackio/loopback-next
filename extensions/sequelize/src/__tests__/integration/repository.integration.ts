@@ -23,7 +23,7 @@ import {validate as uuidValidate, version as uuidVersion} from 'uuid';
 import {SequelizeCrudRepository, SequelizeDataSource} from '../../sequelize';
 import {
   SupportedConnectorMapping,
-  SupportedLoopbackConnectors,
+  type SupportedLoopbackConnectors,
 } from '../../sequelize/connector-mapping';
 import {SequelizeSandboxApplication} from '../fixtures/application';
 import {config as primaryDataSourceConfig} from '../fixtures/datasources/primary.datasource';
