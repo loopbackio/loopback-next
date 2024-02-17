@@ -65,7 +65,7 @@
     "@loopback/eslint-config": "^14.0.5",
     "@loopback/testlab": "^6.1.5",
     "@types/debug": "^4.1.12",
-    "@types/node": "^16.18.80",
+    "@types/node": "^16.18.82",
     "eslint": "^8.51.0",
     "socket.io-client": "^4.7.4",
     "source-map-support": "^0.5.21",
