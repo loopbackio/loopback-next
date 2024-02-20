@@ -229,6 +229,20 @@ module.exports = {
         // filter: '^([2-5]{1}[0-9]{2})$|[-/ ]',
         modifiers: ['requiresQuotes'],
       },
+
+      // For module imports
+      // see: https://github.com/loopbackio/loopback-next/issues/10288
+      {
+        selector: 'import',
+        format: ['camelCase', 'PascalCase'],
+      },
+
+      // For Lodash module imports
+      {
+        selector: 'import',
+        format: null,
+        filter: '^_$',
+      },
     ],
   },
   overrides: [
