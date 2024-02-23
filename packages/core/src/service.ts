@@ -119,8 +119,8 @@ export function service(
         typeof serviceType === 'string'
           ? serviceType
           : typeof serviceType === 'symbol'
-          ? serviceType.toString()
-          : serviceType.name;
+            ? serviceType.toString()
+            : serviceType.name;
       return transformValueOrPromise(result, values => {
         if (values.length === 1) return values[0];
         if (values.length >= 1) {

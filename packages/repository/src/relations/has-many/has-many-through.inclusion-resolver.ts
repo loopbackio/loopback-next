@@ -228,9 +228,8 @@ export function createHasManyThroughInclusionResolver<
       const allIds = _.uniq(
         throughResult
           .filter(throughEntitySet => throughEntitySet !== undefined)
-          .map(
-            throughEntitySet =>
-              throughEntitySet?.map(entity => entity[throughKeyTo]),
+          .map(throughEntitySet =>
+            throughEntitySet?.map(entity => entity[throughKeyTo]),
           )
           .flat(),
       );

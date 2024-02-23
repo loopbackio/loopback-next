@@ -428,9 +428,8 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
           });
           templateData.properties[key]['type'] = 'String';
           templateData.properties[key]['tsType'] = 'string';
-          templateData.properties[key][
-            'jsonSchema'
-          ] = `{enum: [${enumItems.toString()}]}`;
+          templateData.properties[key]['jsonSchema'] =
+            `{enum: [${enumItems.toString()}]}`;
         }
       });
       this.copyTemplatedFiles(

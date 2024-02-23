@@ -15,8 +15,6 @@ import {
   ServiceOptions,
 } from '@loopback/core';
 
-/* eslint-enable @typescript-eslint/no-unused-vars */
-
 /**
  * Interface for classes with `new` operator.
  */

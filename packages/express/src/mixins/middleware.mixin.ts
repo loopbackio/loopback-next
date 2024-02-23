@@ -25,8 +25,6 @@ import {
   MiddlewareBindingOptions,
 } from '../types';
 
-/* eslint-enable @typescript-eslint/no-unused-vars */
-
 function extendsFrom(
   subClass: Constructor<unknown>,
   baseClass: Constructor<unknown>,

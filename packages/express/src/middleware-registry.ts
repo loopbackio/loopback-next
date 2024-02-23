@@ -18,8 +18,6 @@ import {
   MiddlewareBindingOptions,
 } from './types';
 
-/* eslint-enable @typescript-eslint/no-unused-vars */
-
 /**
  * A context that allows middleware registration
  */
