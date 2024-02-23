@@ -30,9 +30,8 @@ export function getFilterSchemaFor(
   const jsonSchema = getFilterJsonSchemaFor(modelCtor, options);
   const schema = jsonToSchemaObject(jsonSchema);
   if (isSchemaObject(schema)) {
-    schema[
-      'x-typescript-type'
-    ] = `@loopback/repository#Filter<${modelCtor.name}>`;
+    schema['x-typescript-type'] =
+      `@loopback/repository#Filter<${modelCtor.name}>`;
   }
   return schema;
 }
@@ -50,9 +49,8 @@ export function getWhereSchemaFor(modelCtor: typeof Model): SchemaObject {
   const jsonSchema = getWhereJsonSchemaFor(modelCtor);
   const schema = jsonToSchemaObject(jsonSchema);
   if (isSchemaObject(schema)) {
-    schema[
-      'x-typescript-type'
-    ] = `@loopback/repository#Where<${modelCtor.name}>`;
+    schema['x-typescript-type'] =
+      `@loopback/repository#Where<${modelCtor.name}>`;
   }
   return schema;
 }

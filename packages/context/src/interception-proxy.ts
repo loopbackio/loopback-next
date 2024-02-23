@@ -13,9 +13,8 @@ import {ValueOrPromise} from './value-promise';
  * Create the Promise type for `T`. If `T` extends `Promise`, the type is `T`,
  * otherwise the type is `ValueOrPromise<T>`.
  */
-export type AsValueOrPromise<T> = T extends Promise<unknown>
-  ? T
-  : ValueOrPromise<T>;
+export type AsValueOrPromise<T> =
+  T extends Promise<unknown> ? T : ValueOrPromise<T>;
 
 /**
  * The intercepted variant of a function to return `ValueOrPromise<T>`.

@@ -23,8 +23,6 @@ import {juggler, Repository} from '../repositories';
 
 const debug = debugFactory('loopback:repository:mixin');
 
-/* eslint-enable @typescript-eslint/no-unused-vars */
-
 /**
  * A mixin class for Application that creates a .repository()
  * function to register a repository automatically. Also overrides

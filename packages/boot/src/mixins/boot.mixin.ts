@@ -22,8 +22,6 @@ import {Bootstrapper} from '../bootstrapper';
 import {BootBindings, BootTags} from '../keys';
 import {Bootable, Booter, BootOptions, InstanceWithBooters} from '../types';
 
-/* eslint-enable @typescript-eslint/no-unused-vars */
-
 // Binding is re-exported as Binding / Booter types are needed when consuming
 // BootMixin and this allows a user to import them from the same package (UX!)
 export {Binding};
