@@ -65,7 +65,7 @@
     "@types/passport": "^1.0.16",
     "@types/passport-http": "^0.3.11",
     "@types/passport-oauth2": "^1.4.15",
-    "@types/qs": "^6.9.11",
+    "@types/qs": "^6.9.12",
     "axios": "^1.6.7",
     "body-parser": "^1.20.2",
     "express": "^4.18.2",
