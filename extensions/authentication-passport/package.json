@@ -40,9 +40,9 @@
     "!*/__tests__"
   ],
   "peerDependencies": {
-    "@loopback/authentication": "^10.0.0",
-    "@loopback/core": "^5.0.0",
-    "@loopback/rest": "^13.0.0"
+    "@loopback/authentication": "^11.0.0",
+    "@loopback/core": "^6.0.0",
+    "@loopback/rest": "^14.0.0"
   },
   "dependencies": {
     "@loopback/security": "^0.10.5",

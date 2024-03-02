@@ -37,7 +37,7 @@
     "!*/__tests__"
   ],
   "peerDependencies": {
-    "@loopback/core": "^5.0.0"
+    "@loopback/core": "^6.0.0"
   },
   "dependencies": {
     "@types/cron": "^2.0.1",

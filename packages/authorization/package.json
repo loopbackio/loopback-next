@@ -40,7 +40,7 @@
     "!/fixtures"
   ],
   "peerDependencies": {
-    "@loopback/core": "^5.0.0"
+    "@loopback/core": "^6.0.0"
   },
   "dependencies": {
     "@loopback/security": "^0.10.5",

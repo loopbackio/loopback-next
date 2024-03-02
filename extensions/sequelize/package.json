@@ -40,8 +40,8 @@
     "!dist/.sandbox"
   ],
   "peerDependencies": {
-    "@loopback/core": "^5.0.0",
-    "@loopback/repository": "^6.0.0"
+    "@loopback/core": "^6.0.0",
+    "@loopback/repository": "^7.0.0"
   },
   "dependencies": {
     "debug": "^4.3.4",
