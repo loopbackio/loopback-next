@@ -65,7 +65,6 @@
   "devDependencies": {
     "@loopback/build": "^10.1.5",
     "@loopback/eslint-config": "^14.0.5",
-    "@loopback/rest": "^13.0.0",
     "@loopback/testlab": "^6.1.5",
     "@types/lodash": "^4.14.202",
     "@types/node": "^16.18.86",

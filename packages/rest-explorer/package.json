@@ -38,8 +38,8 @@
     "templates"
   ],
   "peerDependencies": {
-    "@loopback/core": "^5.0.0",
-    "@loopback/rest": "^13.0.0"
+    "@loopback/core": "^6.0.0",
+    "@loopback/rest": "^14.0.0"
   },
   "dependencies": {
     "ejs": "^3.1.9",

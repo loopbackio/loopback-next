@@ -38,9 +38,9 @@
     "!*/__tests__"
   ],
   "peerDependencies": {
-    "@loopback/boot": "^6.0.0",
-    "@loopback/core": "^5.0.0",
-    "@loopback/rest": "^13.0.0"
+    "@loopback/boot": "^7.0.0",
+    "@loopback/core": "^6.0.0",
+    "@loopback/rest": "^14.0.0"
   },
   "dependencies": {
     "@types/express": "^4.17.21",
