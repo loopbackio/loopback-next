@@ -59,11 +59,18 @@ async function loadSpec(specUrlStr, {log, validate} = {}) {
 
 async function loadAndBuildSpec(
   url,
-  {log, validate, promoteAnonymousSchemas, readonly, exclude, include} = {},
+  {
+    log,
+    validate,
+    promoteAnonymousSchemas,
+    readonly,
+    excludings,
+    includings,
+  } = {},
 ) {
   let apiSpec = await loadSpec(url, {log, validate});
 
-  apiSpec = filterSpec(apiSpec, readonly, exclude, include);
+  apiSpec = filterSpec(apiSpec, readonly, excludings, includings);
 
   // First populate the type registry for named schemas
   const typeRegistry = {
@@ -104,8 +111,7 @@ function insertAtIndex(str, substring, index) {
   return str.slice(0, index) + substring + str.slice(index);
 }
 
-function applyFilters(stringifiedSpecs, options) {
-  let specs = JSON.parse(stringifiedSpecs);
+function applyFilters(specs, options) {
   const openapiComponent = specs.components;
   specs = openapiFilter.filter(specs, options);
   specs.components = openapiComponent;
@@ -121,7 +127,7 @@ function findIndexes(stringSpecs, regex) {
   return indices;
 }
 
-function excludeOrIncludeSpec(specs, filter, options) {
+function excludeOrIncludeSpec(specs, filter) {
   let stringifiedSpecs = JSON.stringify(specs);
   const regex = new RegExp(filter, 'g');
 
@@ -143,10 +149,10 @@ function excludeOrIncludeSpec(specs, filter, options) {
       }
     }
   }
-  return applyFilters(stringifiedSpecs, options);
+  return JSON.parse(stringifiedSpecs);
 }
 
-function readonlySpec(specs, options) {
+function readonlySpec(specs) {
   let stringifiedSpecs = JSON.stringify(specs);
   const excludeOps = ['"post":', '"patch":', '"put":', '"delete":'];
   excludeOps.forEach(operator => {
@@ -163,27 +169,34 @@ function readonlySpec(specs, options) {
       indiciesCount++;
     }
   });
-  return applyFilters(stringifiedSpecs, options);
+  return JSON.parse(stringifiedSpecs);
 }
 
-function filterSpec(specs, readonly, exclude, include) {
+function filterSpec(specs, readonly, excludings, includings) {
   const options = {
     valid: true,
     info: true,
     strip: true,
     flags: ['x-filter'],
     servers: true,
+    inverse: false,
   };
+  if (excludings && excludings.length) {
+    excludings.forEach(exclude => {
+      specs = excludeOrIncludeSpec(specs, exclude);
+    });
+    specs = applyFilters(specs, options);
+  }
+  if (includings) {
+    includings.forEach(include => {
+      specs = excludeOrIncludeSpec(specs, include);
+    });
+    options.inverse = true;
+    specs = applyFilters(specs, options);
+  }
   if (readonly) {
-    specs = readonlySpec(specs, options);
-  }
-  if (exclude) {
-    // exclude only specified - include everything else
-    specs = excludeOrIncludeSpec(specs, exclude, options);
-  }
-  if (include) {
-    // include only specified - exclude everything else
-    specs = excludeOrIncludeSpec(specs, include, {...options, inverse: true});
+    options.inverse = false;
+    specs = applyFilters(readonlySpec(specs), options);
   }
   return specs;
 }
