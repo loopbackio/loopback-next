@@ -106,9 +106,9 @@ See [SECURITY.md](SECURITY.md) for more details.
 
 ### Technical Steering Committee
 
-|                  Raymond Feng                   |               Diana Lau               |                       Mario Estrada                        |               Rifa Achrinza                |              Francisco Buceta              |
-| :---------------------------------------------: | :-----------------------------------: | :--------------------------------------------------------: | :----------------------------------------: | :----------------------------------------: |
-| [![raymondfeng]](http://github.com/raymondfeng) | [![dhmlau]](http://github.com/dhmlau) | [![marioestradarosa]](https://github.com/marioestradarosa) | [![achrinza]](https://github.com/achrinza) | [![frbuceta]](https://github.com/frbuceta) |
+|                  Raymond Feng                   |               Diana Lau               |                       Mario Estrada                        |               Rifa Achrinza                |              Francisco Buceta              |            Samarpan Bhattacharya             |
+| :---------------------------------------------: | :-----------------------------------: | :--------------------------------------------------------: | :----------------------------------------: | :----------------------------------------: | :------------------------------------------: |
+| [![raymondfeng]](http://github.com/raymondfeng) | [![dhmlau]](http://github.com/dhmlau) | [![marioestradarosa]](https://github.com/marioestradarosa) | [![achrinza]](https://github.com/achrinza) | [![frbuceta]](https://github.com/frbuceta) | [![samarpanB]](https://github.com/samarpanB) |
 
 ### Other Project Maintainers
 
