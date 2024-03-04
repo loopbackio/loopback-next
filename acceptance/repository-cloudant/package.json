@@ -1,7 +1,7 @@
 {
   "name": "@loopback/test-repository-cloudant",
   "description": "Acceptance tests for `@loopback/repository` + `loopback-connector-cloudant`",
-  "version": "5.1.5",
+  "version": "6.0.0",
   "private": true,
   "license": "MIT",
   "main": "dist/index.js",
@@ -32,10 +32,10 @@
     "!*/__tests__"
   ],
   "devDependencies": {
-    "@loopback/build": "^10.1.5",
-    "@loopback/eslint-config": "^14.0.5",
-    "@loopback/repository": "^6.1.5",
-    "@loopback/repository-tests": "^0.23.5",
+    "@loopback/build": "^11.0.0",
+    "@loopback/eslint-config": "^15.0.0",
+    "@loopback/repository": "^7.0.0",
+    "@loopback/repository-tests": "^0.24.0",
     "@types/node": "^16.18.86",
     "async": "^3.2.5",
     "chalk": "^4.1.2",

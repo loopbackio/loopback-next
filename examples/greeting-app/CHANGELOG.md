@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.0.0](https://github.com/loopbackio/loopback-next/compare/@loopback/example-greeting-app@6.1.5...@loopback/example-greeting-app@7.0.0) (2024-03-04)
+
+
+### chore
+
+* drop Node.js 16 support ([b9efcb4](https://github.com/loopbackio/loopback-next/commit/b9efcb477d50507ba3c778ba23ea7acba7692593))
+
+
+### BREAKING CHANGES
+
+* Drop Node.js 16 support in all LB4 modules and extensions
+
+Signed-off-by: dhmlau <dhmlau@ca.ibm.com>
+
+
+
+
+
 ## [6.1.5](https://github.com/loopbackio/loopback-next/compare/@loopback/example-greeting-app@6.1.4...@loopback/example-greeting-app@6.1.5) (2024-01-11)
 
 **Note:** Version bump only for package @loopback/example-greeting-app

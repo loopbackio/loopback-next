@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.0.0](https://github.com/loopbackio/loopback-next/compare/@loopback/sandbox-example@5.0.0...@loopback/sandbox-example@6.0.0) (2024-03-04)
+
+
+### chore
+
+* drop Node.js 16 support ([b9efcb4](https://github.com/loopbackio/loopback-next/commit/b9efcb477d50507ba3c778ba23ea7acba7692593))
+
+
+### BREAKING CHANGES
+
+* Drop Node.js 16 support in all LB4 modules and extensions
+
+Signed-off-by: dhmlau <dhmlau@ca.ibm.com>
+
+
+
+
+
 # [5.0.0](https://github.com/loopbackio/loopback-next/compare/@loopback/sandbox-example@4.0.2...@loopback/sandbox-example@5.0.0) (2023-05-15)
 
 

@@ -3,6 +3,36 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.6.0](https://github.com/loopbackio/loopback-next/compare/@loopback/sequelize@0.5.4...@loopback/sequelize@0.6.0) (2024-03-04)
+
+
+### Bug Fixes
+
+* **sequelize:** "'Entity Not Found' error on updateById with MySQL" ([a3bcda0](https://github.com/loopbackio/loopback-next/commit/a3bcda0ca3e8f4fe22aea9bf53cdb7cdf9c5a926))
+* **sequelize:** add support for extended operators ([521c732](https://github.com/loopbackio/loopback-next/commit/521c7324eaa1208c63c08710ba25ee3dd1a62f3b)), closes [#10272](https://github.com/loopbackio/loopback-next/issues/10272)
+* **sequelize:** add support for extended operators ([fbf35c4](https://github.com/loopbackio/loopback-next/commit/fbf35c46d503fd41f3caa7fbebfab9ca887d0163)), closes [#10272](https://github.com/loopbackio/loopback-next/issues/10272)
+* **sequelize:** add support for extended operators in sequelize ([dada287](https://github.com/loopbackio/loopback-next/commit/dada287fb48fef3bd931cc929f59ef1491c23ca8)), closes [#10272](https://github.com/loopbackio/loopback-next/issues/10272)
+* **sequelize:** add support for extended operators in sequelize ([6fe784c](https://github.com/loopbackio/loopback-next/commit/6fe784c88867ce0e495046123ef34aff60a667b5)), closes [#10272](https://github.com/loopbackio/loopback-next/issues/10272)
+* **sequelize:** modified regex to match select query with parenthesis ([a7f4f24](https://github.com/loopbackio/loopback-next/commit/a7f4f24fd8167a598c7eb4d9109850ac7c2ec6fc)), closes [#10312](https://github.com/loopbackio/loopback-next/issues/10312)
+* **sequelize:** removed unnecessary condition ([53fedd7](https://github.com/loopbackio/loopback-next/commit/53fedd76e4726052184fc0727c09bf3b1ee1b73f))
+* **sequelize:** support ordering by associations ([23ff21e](https://github.com/loopbackio/loopback-next/commit/23ff21ee29f5ace04c4833a2aa452d827fd2752f))
+
+
+### chore
+
+* drop Node.js 16 support ([b9efcb4](https://github.com/loopbackio/loopback-next/commit/b9efcb477d50507ba3c778ba23ea7acba7692593))
+
+
+### BREAKING CHANGES
+
+* Drop Node.js 16 support in all LB4 modules and extensions
+
+Signed-off-by: dhmlau <dhmlau@ca.ibm.com>
+
+
+
+
+
 ## [0.5.4](https://github.com/loopbackio/loopback-next/compare/@loopback/sequelize@0.5.3...@loopback/sequelize@0.5.4) (2024-01-11)
 
 

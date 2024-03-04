@@ -1,7 +1,7 @@
 {
   "name": "@loopback/sequelize",
   "description": "Loopback 4 Extension That Provides Sequelize Crud Repository Compatible With Default Loopback Models.",
-  "version": "0.5.4",
+  "version": "0.6.0",
   "keywords": [
     "loopback-extension",
     "loopback",
@@ -49,12 +49,12 @@
     "tslib": "^2.6.2"
   },
   "devDependencies": {
-    "@loopback/boot": "^6.1.5",
-    "@loopback/build": "^10.1.5",
-    "@loopback/core": "^5.1.5",
-    "@loopback/repository": "^6.1.5",
-    "@loopback/rest": "^13.1.5",
-    "@loopback/testlab": "^6.1.5",
+    "@loopback/boot": "^7.0.0",
+    "@loopback/build": "^11.0.0",
+    "@loopback/core": "^6.0.0",
+    "@loopback/repository": "^7.0.0",
+    "@loopback/rest": "^14.0.0",
+    "@loopback/testlab": "^7.0.0",
     "@types/node": "^16.18.86",
     "oracledb": "^6.3.0",
     "pg": "^8.11.3",

@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.0.0](https://github.com/loopbackio/loopback-next/compare/@loopback/cli@5.2.4...@loopback/cli@6.0.0) (2024-03-04)
+
+
+### Bug Fixes
+
+* update connector versions to latest ([b402065](https://github.com/loopbackio/loopback-next/commit/b4020656d36d9ef18e018cc56825de420bbf20ba))
+* update loopback-connector-mysql to 7.0.5 (latest) ([e031d91](https://github.com/loopbackio/loopback-next/commit/e031d91859594591b211dc38eac12fe019103346))
+
+
+### chore
+
+* drop Node.js 16 support ([b9efcb4](https://github.com/loopbackio/loopback-next/commit/b9efcb477d50507ba3c778ba23ea7acba7692593))
+
+
+### BREAKING CHANGES
+
+* Drop Node.js 16 support in all LB4 modules and extensions
+
+Signed-off-by: dhmlau <dhmlau@ca.ibm.com>
+
+
+
+
+
 ## [5.2.4](https://github.com/loopbackio/loopback-next/compare/@loopback/cli@5.2.3...@loopback/cli@5.2.4) (2024-01-11)
 
 **Note:** Version bump only for package @loopback/cli

@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.0.0](https://github.com/loopbackio/loopback-next/compare/@loopback/filter@4.1.5...@loopback/filter@5.0.0) (2024-03-04)
+
+
+### Bug Fixes
+
+* **sequelize:** add support for extended operators in sequelize ([6fe784c](https://github.com/loopbackio/loopback-next/commit/6fe784c88867ce0e495046123ef34aff60a667b5)), closes [#10272](https://github.com/loopbackio/loopback-next/issues/10272)
+
+
+### chore
+
+* drop Node.js 16 support ([b9efcb4](https://github.com/loopbackio/loopback-next/commit/b9efcb477d50507ba3c778ba23ea7acba7692593))
+
+
+### BREAKING CHANGES
+
+* Drop Node.js 16 support in all LB4 modules and extensions
+
+Signed-off-by: dhmlau <dhmlau@ca.ibm.com>
+
+
+
+
+
 ## [4.1.5](https://github.com/loopbackio/loopback-next/compare/@loopback/filter@4.1.4...@loopback/filter@4.1.5) (2024-01-11)
 
 **Note:** Version bump only for package @loopback/filter

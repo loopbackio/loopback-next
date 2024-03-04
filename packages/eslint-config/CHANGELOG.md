@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [15.0.0](https://github.com/loopbackio/loopback-next/compare/@loopback/eslint-config@14.0.5...@loopback/eslint-config@15.0.0) (2024-03-04)
+
+
+### Bug Fixes
+
+* import naming convention lint ([acd3c0c](https://github.com/loopbackio/loopback-next/commit/acd3c0c7e7b1c0d339bc42188c552451ccd8848f)), closes [/github.com/typescript-eslint/typescript-eslint/pull/7269#issuecomment-1777628591](https://github.com//github.com/typescript-eslint/typescript-eslint/pull/7269/issues/issuecomment-1777628591)
+
+
+### chore
+
+* drop Node.js 16 support ([b9efcb4](https://github.com/loopbackio/loopback-next/commit/b9efcb477d50507ba3c778ba23ea7acba7692593))
+
+
+### BREAKING CHANGES
+
+* Drop Node.js 16 support in all LB4 modules and extensions
+
+Signed-off-by: dhmlau <dhmlau@ca.ibm.com>
+
+
+
+
+
 ## [14.0.5](https://github.com/loopbackio/loopback-next/compare/@loopback/eslint-config@14.0.4...@loopback/eslint-config@14.0.5) (2023-12-12)
 
 **Note:** Version bump only for package @loopback/eslint-config

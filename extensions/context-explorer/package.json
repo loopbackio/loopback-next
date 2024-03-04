@@ -1,7 +1,7 @@
 {
   "name": "@loopback/context-explorer",
   "description": "Visualize context hierarchy, bindings, configurations, and dependencies",
-  "version": "0.10.5",
+  "version": "0.11.0",
   "keywords": [
     "LoopBack",
     "Explorer",
@@ -47,11 +47,11 @@
     "viz.js": "^2.1.2"
   },
   "devDependencies": {
-    "@loopback/build": "^10.1.5",
-    "@loopback/core": "^5.1.5",
-    "@loopback/eslint-config": "^14.0.5",
-    "@loopback/rest": "^13.1.5",
-    "@loopback/testlab": "^6.1.5",
+    "@loopback/build": "^11.0.0",
+    "@loopback/core": "^6.0.0",
+    "@loopback/eslint-config": "^15.0.0",
+    "@loopback/rest": "^14.0.0",
+    "@loopback/testlab": "^7.0.0",
     "@types/node": "^16.18.86"
   }
 }
