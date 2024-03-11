@@ -54,6 +54,6 @@
     "@loopback/rest": "^14.0.0",
     "@loopback/rest-crud": "^0.18.0",
     "@loopback/testlab": "^7.0.0",
-    "@types/node": "^16.18.86"
+    "@types/node": "^16.18.87"
   }
 }

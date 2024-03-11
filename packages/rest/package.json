@@ -82,7 +82,7 @@
     "@types/json-schema-compare": "^0.2.4",
     "@types/lodash": "^4.14.202",
     "@types/multer": "^1.4.11",
-    "@types/node": "^16.18.86",
+    "@types/node": "^16.18.87",
     "@types/on-finished": "^2.3.4",
     "@types/qs": "^6.9.12",
     "multer": "^1.4.4"
