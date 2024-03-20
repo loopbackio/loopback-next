@@ -316,12 +316,42 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
       );
     }
     try {
+      let includings = [];
+      let excludings = [];
       if (this.options.exclude) {
-        this.excludings = this.options.exclude.split(',');
+        excludings = this.options.exclude.split(',');
       }
       if (this.options.include) {
-        this.includings = this.options.include.split(',');
+        includings = this.options.include.split(',');
       }
+      if (!this.includings) this.includings = [];
+      includings.forEach(including => {
+        if (including.includes(':')) {
+          const splitedInclude = including.split(':');
+          const temp = {};
+          if (splitedInclude[0] === '*') {
+            temp[splitedInclude[1]] = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
+            this.includings.push(temp);
+          } else {
+            temp[splitedInclude[1]] = [splitedInclude[0]];
+            this.includings.push(temp);
+          }
+        }
+      });
+      if (!this.excludings) this.excludings = [];
+      excludings.forEach(excluding => {
+        if (excluding.includes(':')) {
+          const splitedExclude = excluding.split(':');
+          const temp = {};
+          if (splitedExclude[0] === '*') {
+            temp[splitedExclude[1]] = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
+            this.excludings.push(temp);
+          } else {
+            temp[splitedExclude[1]] = [splitedExclude[0]];
+            this.excludings.push(temp);
+          }
+        }
+      });
       const result = await loadAndBuildSpec(this.url, {
         log: this.log,
         validate: this.options.validate,

@@ -128,28 +128,25 @@ function findIndexes(stringSpecs, regex) {
 }
 
 function excludeOrIncludeSpec(specs, filter) {
-  let stringifiedSpecs = JSON.stringify(specs);
-  const regex = new RegExp(filter, 'g');
-
-  const indexes = findIndexes(stringifiedSpecs, regex);
-  let indiciesCount = 0;
-  while (indiciesCount < indexes.length) {
-    const ind = indexes[indiciesCount];
-    for (let i = ind; i < stringifiedSpecs.length; i++) {
-      const toMatch =
-        stringifiedSpecs[i] + stringifiedSpecs[i + 1] + stringifiedSpecs[i + 2];
-      if (toMatch === '":{') {
-        stringifiedSpecs = insertAtIndex(
-          stringifiedSpecs,
-          '"x-filter": true,',
-          i + 3,
-        );
-        indiciesCount++;
-        break;
+  Object.keys(filter).forEach(filterKey => {
+    const regex = new RegExp(filterKey, 'g');
+    const actions = filter[filterKey];
+    for (const key in specs.paths) {
+      if (Object.hasOwnProperty.call(specs.paths, key)) {
+        if (findIndexes(key, regex).length) {
+          if (specs.paths[key]) {
+            actions.forEach(action => {
+              action = action.toLowerCase();
+              if (specs.paths[key][action]) {
+                specs.paths[key][action]['x-filter'] = true;
+              }
+            });
+          }
+        }
       }
     }
-  }
-  return JSON.parse(stringifiedSpecs);
+  });
+  return specs;
 }
 
 function readonlySpec(specs) {
@@ -187,7 +184,7 @@ function filterSpec(specs, readonly, excludings, includings) {
     });
     specs = applyFilters(specs, options);
   }
-  if (includings) {
+  if (includings && includings.length) {
     includings.forEach(include => {
       specs = excludeOrIncludeSpec(specs, include);
     });
