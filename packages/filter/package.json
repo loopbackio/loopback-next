@@ -38,6 +38,6 @@
     "@loopback/build": "^11.0.0",
     "@loopback/testlab": "^7.0.0",
     "@types/node": "^16.18.91",
-    "typescript": "~5.2.2"
+    "typescript": "~5.4.3"
   }
 }
