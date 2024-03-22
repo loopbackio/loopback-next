@@ -84,7 +84,7 @@
     "@types/multer": "^1.4.11",
     "@types/node": "^16.18.91",
     "@types/on-finished": "^2.3.4",
-    "@types/qs": "^6.9.12",
+    "@types/qs": "^6.9.14",
     "multer": "^1.4.4"
   }
 }
