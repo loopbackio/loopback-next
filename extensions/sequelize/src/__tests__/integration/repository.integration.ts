@@ -24,9 +24,12 @@ import {SequelizeCrudRepository, SequelizeDataSource} from '../../sequelize';
 import {SequelizeSandboxApplication} from '../fixtures/application';
 import {config as primaryDataSourceConfig} from '../fixtures/datasources/primary.datasource';
 import {config as secondaryDataSourceConfig} from '../fixtures/datasources/secondary.datasource';
-import {ProgrammingLanguage, TableInSecondaryDB} from '../fixtures/models';
+import {
+  ProgrammingLanguage,
+  TableInSecondaryDB,
+  User,
+} from '../fixtures/models';
 import {Box, Event, eventTableName} from '../fixtures/models/test.model';
-import {User} from '../fixtures/models/user.model';
 import {
   DeveloperRepository,
   ProgrammingLanguageRepository,
@@ -560,6 +563,7 @@ describe('Sequelize CRUD Repository (integration)', () => {
         // and sequelize's sqlite dialect parses object returned from db so below reassignments are required here
         user.dob = '2023-05-23T04:12:22.234Z';
         user.address = JSON.stringify(user.address);
+        user.phoneNumbers = JSON.stringify(user.phoneNumbers);
       }
 
       // since the model mapping is not performed when executing raw queries
@@ -568,7 +572,7 @@ describe('Sequelize CRUD Repository (integration)', () => {
       delete user.active;
 
       await userRepo.execute(
-        'INSERT INTO "user" (name, email, password, is_active, address, dob) VALUES ($1, $2, $3, $4, $5, $6)',
+        'INSERT INTO "user" (name, email, password, is_active, address, dob, phone_numbers) VALUES ($1, $2, $3, $4, $5, $6, $7)',
         [
           user.name,
           user.email,
@@ -576,6 +580,7 @@ describe('Sequelize CRUD Repository (integration)', () => {
           user.is_active,
           user.address,
           user.dob,
+          user.phoneNumbers,
         ],
       );
 
@@ -586,6 +591,7 @@ describe('Sequelize CRUD Repository (integration)', () => {
       expect(users[0]).property('email').to.be.eql(user.email);
       expect(users[0]).property('password').to.be.eql(user.password);
       expect(users[0]).property('address').to.be.eql(user.address);
+      expect(users[0]).property('phone_numbers').to.be.eql(user.phoneNumbers);
       expect(new Date(users[0].dob)).to.be.eql(new Date(user.dob!));
       expect(users[0]).property('is_active').to.be.ok();
     });
@@ -595,15 +601,20 @@ describe('Sequelize CRUD Repository (integration)', () => {
       if (primaryDataSourceConfig.connector === 'sqlite3') {
         user.dob = '2023-05-23T04:12:22.234Z';
         user.address = JSON.stringify(user.address);
+        user.phoneNumbers = JSON.stringify(user.phoneNumbers);
       }
+
+      const expectedPhoneNumbers = user.phoneNumbers;
 
       // since the model mapping is not performed when executing raw queries
       // any column renaming need to be changed manually
       user.is_active = user.active;
       delete user.active;
+      user.phone_numbers = user.phoneNumbers;
+      delete user.phoneNumbers;
 
       await userRepo.execute(
-        'INSERT INTO "user" (name, email, password, is_active, address, dob) VALUES ($name, $email, $password, $is_active, $address, $dob)',
+        'INSERT INTO "user" (name, email, password, is_active, phone_numbers, address, dob) VALUES ($name, $email, $password, $is_active, $phone_numbers, $address, $dob)',
         user,
       );
 
@@ -614,6 +625,9 @@ describe('Sequelize CRUD Repository (integration)', () => {
       expect(users[0]).property('email').to.be.eql(user.email);
       expect(users[0]).property('password').to.be.eql(user.password);
       expect(users[0]).property('address').to.be.eql(user.address);
+      expect(users[0])
+        .property('phone_numbers')
+        .to.be.eql(expectedPhoneNumbers);
       expect(new Date(users[0].dob)).to.be.eql(new Date(user.dob!));
       expect(users[0]).property('is_active').to.be.ok();
     });
@@ -627,15 +641,18 @@ describe('Sequelize CRUD Repository (integration)', () => {
       // when using replacements (using "?" mark)
       // sequelize when escaping those values needs them as string (See: https://github.com/sequelize/sequelize/blob/v6/src/sql-string.js#L65-L77)
       user.address = JSON.stringify(user.address);
-
-      // since the model mapping is not performed when executing raw queries
-      // any column renaming need to be changed manually
-      user.is_active = user.active;
-      delete user.active;
+      user.phoneNumbers = JSON.stringify(user.phoneNumbers);
 
       await userRepo.execute(
-        'INSERT INTO "user" (name, email, is_active, address, dob) VALUES (?, ?, ?, ?, ?)',
-        [user.name, user.email, user.is_active, user.address, user.dob],
+        'INSERT INTO "user" (name, email, is_active, address, dob, phone_numbers) VALUES (?, ?, ?, ?, ?, ?)',
+        [
+          user.name,
+          user.email,
+          user.active,
+          user.address,
+          user.dob,
+          user.phoneNumbers,
+        ],
       );
 
       const users = await userRepo.execute('SELECT * from "user"');
@@ -646,6 +663,12 @@ describe('Sequelize CRUD Repository (integration)', () => {
       expect(users[0])
         .property('address')
         .to.be.oneOf(JSON.parse(user.address as string), user.address);
+      expect(users[0])
+        .property('phone_numbers')
+        .to.be.oneOf(
+          JSON.parse(user.phoneNumbers as string),
+          user.phoneNumbers,
+        );
       expect(new Date(users[0].dob)).to.be.eql(new Date(user.dob!));
       expect(users[0]).property('is_active').to.be.ok();
     });
@@ -717,6 +740,74 @@ describe('Sequelize CRUD Repository (integration)', () => {
       datasource.stubs.sequelizeConfig = {dialect: 'mysql'};
       const repo = new SequelizeCrudRepository(Box, datasource);
       expect(repo.getTableName()).to.be.eql(Box.name);
+    });
+
+    it('parses JSON columns returned as strings for the mysql dialect by default using a custom Sequelize getter', async () => {
+      const mySQLDataSource = new SequelizeDataSource({
+        name: 'db',
+        connector: 'mysql',
+      });
+
+      expect(mySQLDataSource.parseJsonColumns).to.be.eql(true);
+
+      const repo = new SequelizeCrudRepository(User, mySQLDataSource);
+
+      expect(
+        repo.sequelizeModel.getAttributes().address.get,
+      ).to.be.a.Function();
+
+      const Model = repo.getSequelizeModel(User);
+      const model = new Model();
+      const address = {street: '123', city: 'NYC'};
+
+      model.set('address', JSON.stringify(address));
+      expect(model.get('address')).to.be.eql(address);
+
+      model.set('address', '{ malformed JSON string');
+      expect(model.get('address')).to.be.eql(null);
+
+      model.set('address', address);
+      expect(model.get('address')).to.be.eql(address);
+    });
+
+    it('defaults to false for the "parseJsonColumns" option for non-mysql dialects', async () => {
+      const loopbackConnectors = ['sqlite3', 'postgresql', 'oracle'] as const;
+
+      for (const connector of loopbackConnectors) {
+        const mySQLDataSource = new SequelizeDataSource({
+          name: 'db',
+          connector,
+        });
+
+        expect(mySQLDataSource.parseJsonColumns).to.be.eql(false);
+      }
+    });
+
+    it('overrides default json column parsing settings via the "parseJsonColumns" option', async () => {
+      const mySQLDataSource = new SequelizeDataSource({
+        name: 'db',
+        connector: 'mysql',
+        parseJsonColumns: false,
+      });
+
+      expect(mySQLDataSource.parseJsonColumns).to.be.eql(false);
+
+      const repo = new SequelizeCrudRepository(User, mySQLDataSource);
+
+      expect(
+        repo.sequelizeModel.getAttributes().address.get,
+      ).not.to.be.a.Function();
+
+      const Model = repo.getSequelizeModel(User);
+      const model = new Model();
+      const address = {street: '123', city: 'NYC'};
+      const stringifiedAddress = JSON.stringify(address);
+
+      model.set('address', JSON.stringify(address));
+      expect(model.get('address')).to.be.eql(stringifiedAddress);
+
+      model.set('address', address);
+      expect(model.get('address')).to.be.eql(address);
     });
 
     it('uses lowercased model class name as table name for postgres', async () => {
@@ -1017,15 +1108,6 @@ describe('Sequelize CRUD Repository (integration)', () => {
         )
         .send();
 
-      if (primaryDataSourceConfig.connector === 'sqlite3') {
-        /**
-         * sqlite3 doesn't support array data type using it will convert values
-         * to comma saperated string
-         */
-        createDeveloperResponse.body.programmingLanguageIds =
-          createDeveloperResponse.body.programmingLanguageIds.join(',');
-      }
-
       expect(relationRes.body).to.be.deepEqual({
         ...createDeveloperResponse.body,
         programmingLanguages: createAllResponse.body,
@@ -1059,16 +1141,6 @@ describe('Sequelize CRUD Repository (integration)', () => {
         createDeveloperResponse.id,
         filter,
       );
-
-      if (primaryDataSourceConfig.connector === 'sqlite3') {
-        /**
-         * sqlite3 doesn't support array data type using it will convert values
-         * to comma saperated string
-         */
-        createDeveloperResponse.programmingLanguageIds =
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          createDeveloperResponse.programmingLanguageIds.join(',') as any;
-      }
 
       expect(relationRes.toJSON()).to.be.deepEqual({
         ...createDeveloperResponse.toJSON(),
@@ -1446,6 +1518,7 @@ describe('Sequelize CRUD Repository (integration)', () => {
       address: AnyObject | string;
       password?: string;
       dob: Date | string;
+      phoneNumbers?: string[] | string;
     } & AnyObject;
 
     const user: DummyUser = {
@@ -1455,6 +1528,7 @@ describe('Sequelize CRUD Repository (integration)', () => {
       address: {city: 'Indore', zipCode: 452001},
       password: 'secret',
       dob: timestamp,
+      phoneNumbers: ['+91 9876543210', '+91 1234567890'],
       ...overwrite,
     };
     return user;

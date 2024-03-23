@@ -931,14 +931,18 @@ export class SequelizeCrudRepository<
         ['Array', 'array'].includes(definition[propName].type.toString())
       ) {
         // Postgres only
-        const stringTypeArray =
-          definition[propName].itemType === String ||
-          ['String', 'string'].includes(
-            definition[propName].itemType?.toString() || '',
-          );
-        dataType = stringTypeArray
-          ? DataTypes.ARRAY(DataTypes.STRING)
-          : DataTypes.ARRAY(DataTypes.INTEGER);
+        if (this.dataSource.sequelizeConfig.dialect === 'postgres') {
+          const stringTypeArray =
+            definition[propName].itemType === String ||
+            ['String', 'string'].includes(
+              definition[propName].itemType?.toString() || '',
+            );
+          dataType = stringTypeArray
+            ? DataTypes.ARRAY(DataTypes.STRING)
+            : DataTypes.ARRAY(DataTypes.INTEGER);
+        } else {
+          dataType = DataTypes.JSON;
+        }
       }
 
       if (
@@ -990,6 +994,28 @@ export class SequelizeCrudRepository<
            */
           autoIncrement: !!definition[propName].generated,
         } as typeof columnOptions);
+      }
+
+      // For dialects that do not support a native JSON type, we need to parse
+      // string responses to JSON objects to preserve backwards compatibility with the Juggler ORM.
+      if (
+        this.dataSource.parseJsonColumns === true &&
+        dataType === DataTypes.JSON
+      ) {
+        // See: https://sequelize.org/docs/v6/core-concepts/getters-setters-virtuals/
+        columnOptions.get = function getValue() {
+          const value = this.getDataValue(propName);
+
+          if (typeof value === 'string') {
+            try {
+              return JSON.parse(value);
+            } catch (_error) {
+              return null;
+            }
+          }
+
+          return value;
+        };
       }
 
       // TODO: Get the column name casing using actual methods / conventions used in different sql connectors for loopback
