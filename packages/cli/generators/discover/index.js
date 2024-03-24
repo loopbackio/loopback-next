@@ -25,6 +25,11 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
       description: g.f('The name of the datasource to discover'),
     });
 
+    this.option('datasource', {
+      type: String,
+      description: g.f('The name of the datasource to discover'),
+    });
+
     this.option('views', {
       type: Boolean,
       description: g.f('Boolean to discover views'),
@@ -88,10 +93,12 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
    */
   setOptions() {
     /* istanbul ignore next */
-    if (this.options.dataSource) {
-      debug(`Data source specified: ${this.options.dataSource}`);
+    if (this.options.dataSource || this.options.datasource) {
+      debug(
+        `Data source specified: ${this.options.dataSource || this.options.datasource}`,
+      );
       this.artifactInfo.dataSource = modelMaker.loadDataSourceByName(
-        this.options.dataSource,
+        this.options.dataSource || this.options.datasource,
       );
     }
     // remove not needed .env property
@@ -132,15 +139,15 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
         path.resolve(dsDir, `${utils.toFileName(s)}.datasource.js`),
       ),
     );
-    if (this.options.dataSource) {
+    if (this.options.dataSource || this.options.datasource) {
       if (
         this.dataSourceChoices
           .map(d => d.name)
-          .includes(this.options.dataSource)
+          .includes(this.options.dataSource || this.options.datasource)
       ) {
         Object.assign(this.artifactInfo, {
           dataSource: this.dataSourceChoices.find(
-            d => d.name === this.options.dataSource,
+            d => d.name === this.options.dataSource || this.options.datasource,
           ),
         });
       }
