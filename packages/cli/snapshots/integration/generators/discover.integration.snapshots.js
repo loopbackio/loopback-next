@@ -118,7 +118,7 @@ export type AppointmentWithRelations = Appointment & AppointmentRelations;
 `;
 
 
-exports[`lb4 discover integration model discovery generates all models without prompts using --all --dataSource 1`] = `
+exports[`lb4 discover integration model discovery generates all models without prompts using --all --datasource 1`] = `
 import {Entity, model, property} from '@loopback/repository';
 
 @model()
@@ -143,7 +143,7 @@ export type SchemaWithRelations = Schema & SchemaRelations;
 `;
 
 
-exports[`lb4 discover integration model discovery generates all models without prompts using --all --dataSource 2`] = `
+exports[`lb4 discover integration model discovery generates all models without prompts using --all --datasource 2`] = `
 import {Entity, model, property} from '@loopback/repository';
 
 @model()

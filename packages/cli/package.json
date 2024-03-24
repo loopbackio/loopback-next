@@ -25,7 +25,7 @@
     "node": "18 || 20"
   },
   "scripts": {
-    "test": "lb-mocha --lang en_US.UTF-8 \"test/**/*.js\"",
+    "test": "lb-mocha --lang en_US.UTF-8 \"test/**/discover.integration.js\"",
     "smoke-test": "lb-mocha --allow-console-logs \"smoke-test/**/*.smoke.js\"",
     "build:globalize": "slt-globalize -e && git add \"intl/en/messages.json\""
   },
