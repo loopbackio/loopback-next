@@ -1301,6 +1301,12 @@ exports[`cli saves command metadata to .yo-rc.json 1`] = `
           "name": "dataSource",
           "hide": false
         },
+        "datasource": {
+          "type": "String",
+          "description": "The name of the datasource to discover",
+          "name": "datasource",
+          "hide": false
+        },
         "views": {
           "type": "Boolean",
           "description": "Boolean to discover views",

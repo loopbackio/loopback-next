@@ -69,6 +69,12 @@ const specificModelsOptions = {
   views: false,
   disableCamelCase: true,
 };
+
+const baseOptionsWithSmallS = {
+  all: true,
+  datasource: 'mem',
+};
+
 // Expected File Name
 const defaultExpectedTestModel = path.join(
   sandbox.path,
@@ -230,5 +236,21 @@ describe('lb4 discover integration', () => {
 
     basicModelFileChecks(defaultExpectedTestModel, defaultExpectedIndexFile);
     assert.file(defaultExpectedTestModel);
+  });
+
+  it('generates all models without prompts using --all --datasource', /** @this {Mocha.Context} */ async function () {
+    this.timeout(10000);
+    await testUtils
+      .executeGenerator(generator)
+      .inDir(sandbox.path, () =>
+        testUtils.givenLBProject(sandbox.path, {
+          additionalFiles: SANDBOX_FILES,
+        }),
+      )
+      .withOptions(baseOptionsWithSmallS);
+
+    basicModelFileChecks(defaultExpectedTestModel, defaultExpectedIndexFile);
+    expectFileToMatchSnapshot(defaultExpectedSchemaModel);
+    expectFileToMatchSnapshot(defaultExpectedViewModel);
   });
 });
