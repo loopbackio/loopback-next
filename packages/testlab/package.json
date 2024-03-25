@@ -40,7 +40,7 @@
     "@types/shot": "^4.0.5",
     "@types/sinon": "^17.0.3",
     "@types/supertest": "^2.0.16",
-    "express": "^4.19.1",
+    "express": "^4.19.2",
     "fs-extra": "^11.2.0",
     "oas-validator": "^5.0.8",
     "should": "^13.2.3",
