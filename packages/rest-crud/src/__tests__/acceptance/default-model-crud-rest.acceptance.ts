@@ -30,7 +30,7 @@ import {defineCrudRestController} from '../..';
 describe('CrudRestController for a simple Product model', () => {
   @model()
   class Product extends Entity {
-    @property({id: true})
+    @property({id: true, generated: 1})
     id: number;
 
     @property({required: true})
@@ -44,8 +44,28 @@ describe('CrudRestController for a simple Product model', () => {
     }
   }
 
+  @model()
+  class Customer extends Entity {
+    @property({id: true, generated: 0})
+    id: number;
+
+    @property({required: true})
+    name: string;
+
+    @property()
+    email?: string;
+
+    constructor(data: Partial<Customer>) {
+      super(data);
+    }
+  }
+
   let app: RestApplication;
   let repo: EntityCrudRepository<Product, typeof Product.prototype.id>;
+  let customerRepo: EntityCrudRepository<
+    Customer,
+    typeof Customer.prototype.id
+  >;
   let client: Client;
 
   // sample data - call `seedData` to populate these items
@@ -76,7 +96,7 @@ describe('CrudRestController for a simple Product model', () => {
       expect(toJSON(found)).to.deepEqual(created);
     });
 
-    it('rejects request with `id` value', async () => {
+    it('rejects request with `id` value when generated is set to 1', async () => {
       const {body} = await client
         .post('/products')
         .send({id: 1, name: 'a name'})
@@ -93,6 +113,18 @@ describe('CrudRestController for a simple Product model', () => {
           },
         ],
       });
+    });
+
+    it('accepts request with `id` value when generated is set to 0', async () => {
+      const customer = {id: 1, name: 'a name'};
+      const {body: customerCreated} = await client
+        .post('/customers')
+        .send(customer)
+        .expect(200);
+      expect(customerCreated).to.containEql(customer);
+      expect(customerCreated).to.have.property('id').of.type('number');
+      const customerFound = (await customerRepo.find())[0];
+      expect(toJSON(customerFound)).to.deepEqual(customerCreated);
     });
   });
 
@@ -289,8 +321,10 @@ describe('CrudRestController for a simple Product model', () => {
     const db = new juggler.DataSource({connector: 'memory'});
 
     const ProductRepository = defineCrudRepositoryClass(Product);
+    const CustomerRepository = defineCrudRepositoryClass(Customer);
 
     repo = new ProductRepository(db);
+    customerRepo = new CustomerRepository(db);
 
     const CrudRestController = defineCrudRestController<
       Product,
@@ -298,14 +332,27 @@ describe('CrudRestController for a simple Product model', () => {
       'id'
     >(Product, {basePath: '/products'});
 
+    const CrudRestControllerForCustomer = defineCrudRestController<
+      Customer,
+      typeof Customer.prototype.id,
+      'id'
+    >(Customer, {basePath: '/customers'});
+
     class ProductController extends CrudRestController {
       constructor() {
         super(repo);
       }
     }
 
+    class CustomerController extends CrudRestControllerForCustomer {
+      constructor() {
+        super(customerRepo);
+      }
+    }
+
     app = new RestApplication({rest: givenHttpServerConfig()});
     app.controller(ProductController);
+    app.controller(CustomerController);
 
     await app.start();
     client = createRestAppClient(app);
