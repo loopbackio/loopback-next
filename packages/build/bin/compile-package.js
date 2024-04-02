@@ -271,7 +271,7 @@ function copyResources(rootDir, packageDir, tsConfigFile, outDir, options) {
      * Trim path that matches tsConfig.compilerOptions.rootDir
      */
     let targetFile = file;
-    if (compilerRootDir && file.startsWith(compilerRootDir + '/')) {
+    if (compilerRootDir && file.startsWith(path.join(compilerRootDir + '/'))) {
       targetFile = file.substring(compilerRootDir.length + 1);
     }
 
