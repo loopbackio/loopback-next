@@ -44,7 +44,7 @@
     "@types/debug": "^4.1.12",
     "@types/glob": "^8.1.0",
     "debug": "^4.3.4",
-    "glob": "^10.3.10",
+    "glob": "^10.3.12",
     "tslib": "^2.6.2"
   },
   "devDependencies": {
