@@ -54,6 +54,6 @@
     "@loopback/testlab": "^7.0.0",
     "@types/express": "^4.17.21",
     "@types/node": "^16.18.91",
-    "express": "^4.19.1"
+    "express": "^4.19.2"
   }
 }
