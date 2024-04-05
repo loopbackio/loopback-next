@@ -22,6 +22,7 @@ import {
   modelToJsonSchema,
 } from '../..';
 import {expectValidJsonSchema} from '../helpers/expect-valid-json-schema';
+import {SpecificationExtension} from '../../types';
 
 describe('build-schema', () => {
   describe('modelToJsonSchema', () => {
@@ -1140,7 +1141,7 @@ describe('build-schema', () => {
         products?: Product[];
       }
 
-      const expectedSchema: JsonSchema = {
+      const expectedSchema: JsonSchema & SpecificationExtension = {
         definitions: {
           Product: {
             title: 'Product',
@@ -1163,6 +1164,15 @@ describe('build-schema', () => {
         },
         additionalProperties: false,
         title: 'CategoryWithRelations',
+        'x-relationships': {
+          products: {
+            description: 'Category have many Product.',
+            type: 'array',
+            items: {$ref: '#/definitions/Product'},
+            'x-foreign-keys': {categoryId: 'Category'},
+            'x-relation-type': 'hasMany',
+          },
+        },
         type: 'object',
         description:
           `(tsType: CategoryWithRelations, ` +
@@ -1187,7 +1197,7 @@ describe('build-schema', () => {
         @hasMany(() => Product)
         products?: Product[];
       }
-      const expectedSchema: JsonSchema = {
+      const expectedSchema: JsonSchema & SpecificationExtension = {
         definitions: {
           Product: {
             title: 'Product',
@@ -1211,6 +1221,19 @@ describe('build-schema', () => {
         description:
           `(tsType: CategoryWithoutPropWithRelations, ` +
           `schemaOptions: { includeRelations: true })`,
+        'x-relationships': {
+          products: {
+            description: 'CategoryWithoutProp have many Product.',
+            'x-foreign-keys': {
+              categorywithoutpropId: 'CategoryWithoutProp',
+            },
+            items: {
+              $ref: '#/definitions/Product',
+            },
+            'x-relation-type': 'hasMany',
+            type: 'array',
+          },
+        },
       };
 
       // To check for case when there are no other properties than relational
