@@ -5,6 +5,8 @@
 
 import {JsonSchema} from '@loopback/repository-json-schema';
 import {expect} from '@loopback/testlab';
+import {PropertyDefinition} from '@loopback/repository';
+
 import {jsonOrBooleanToJSON, jsonToSchemaObject, SchemaObject} from '../..';
 
 describe('jsonToSchemaObject', () => {
@@ -306,6 +308,29 @@ describe('jsonToSchemaObject', () => {
       example: 100,
     };
     propertyConversionTest(itemsDef, expectedItems);
+  });
+
+  it('add extra properties as extension properties', () => {
+    const properties: PropertyDefinition = {
+      type: 'string',
+      defaultFn: 'guid',
+      index: false,
+      precision: 10,
+      scale: 10,
+      generated: true,
+      hidden: false,
+    };
+
+    const expectedItems: SchemaObject = {
+      type: 'string',
+      'x-defaultFn': 'guid',
+      'x-generated': true,
+      'x-hidden': false,
+      'x-index': false,
+      'x-precision': 10,
+      'x-scale': 10,
+    };
+    propertyConversionTest(properties, expectedItems);
   });
 
   // Helper function to check conversion of JSON Schema properties
