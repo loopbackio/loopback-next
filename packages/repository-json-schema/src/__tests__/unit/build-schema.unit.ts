@@ -203,17 +203,28 @@ describe('build-schema', () => {
       });
     });
 
-    it('show generated', () => {
+    it('keeps extensions on property', () => {
       expect(
         metaToJsonProperty({
           type: String,
-          description: 'test',
+          defaultFn: 'guid',
+          index: false,
+          length: 50,
+          precision: 10,
+          scale: 0,
           generated: true,
+          hidden: true,
         }),
       ).to.eql({
         type: 'string',
-        description: 'test',
+        defaultFn: 'guid',
+        index: false,
+        length: 50,
+        precision: 10,
+        scale: 0,
+        generated: true,
         readOnly: true,
+        hidden: true,
       });
     });
 
