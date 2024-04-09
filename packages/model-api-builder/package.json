@@ -42,6 +42,6 @@
     "@loopback/build": "^11.0.1",
     "@loopback/core": "^6.0.1",
     "@loopback/repository": "^7.0.1",
-    "@types/node": "^16.18.95"
+    "@types/node": "^16.18.96"
   }
 }
