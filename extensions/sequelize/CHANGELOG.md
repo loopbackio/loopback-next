@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.6.1](https://github.com/loopbackio/loopback-next/compare/@loopback/sequelize@0.6.0...@loopback/sequelize@0.6.1) (2024-04-09)
+
+
+### Bug Fixes
+
+* **sequelize:** parse JSON columns to objects for non-Postgres dialects ([7b8e193](https://github.com/loopbackio/loopback-next/commit/7b8e193b35197918e3cc309218792389392983d8))
+
+
+
+
+
 # [0.6.0](https://github.com/loopbackio/loopback-next/compare/@loopback/sequelize@0.5.4...@loopback/sequelize@0.6.0) (2024-03-04)
 
 

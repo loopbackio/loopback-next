@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.1](https://github.com/loopbackio/loopback-next/compare/@loopback/cli@6.0.0...@loopback/cli@6.0.1) (2024-04-09)
+
+
+### Bug Fixes
+
+* enable lb4 relation generate relation with same table ([7dd40b0](https://github.com/loopbackio/loopback-next/commit/7dd40b09cf5e890a31b2075135c31d572140e938))
+
+
+
+
+
 # [6.0.0](https://github.com/loopbackio/loopback-next/compare/@loopback/cli@5.2.4...@loopback/cli@6.0.0) (2024-03-04)
 
 

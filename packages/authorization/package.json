@@ -1,7 +1,7 @@
 {
   "name": "@loopback/authorization",
   "description": "A LoopBack component for authorization support.",
-  "version": "0.15.0",
+  "version": "0.15.1",
   "keywords": [
     "LoopBack",
     "Authorization"
@@ -43,14 +43,14 @@
     "@loopback/core": "^6.0.0"
   },
   "dependencies": {
-    "@loopback/security": "^0.11.0",
+    "@loopback/security": "^0.11.1",
     "debug": "^4.3.4",
     "tslib": "^2.6.2"
   },
   "devDependencies": {
-    "@loopback/build": "^11.0.0",
-    "@loopback/core": "^6.0.0",
-    "@loopback/testlab": "^7.0.0",
+    "@loopback/build": "^11.0.1",
+    "@loopback/core": "^6.0.1",
+    "@loopback/testlab": "^7.0.1",
     "@types/debug": "^4.1.12",
     "@types/node": "^16.18.95",
     "casbin": "^5.28.0"
