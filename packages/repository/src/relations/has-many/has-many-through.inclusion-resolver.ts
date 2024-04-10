@@ -251,7 +251,8 @@ export function createHasManyThroughInclusionResolver<
       );
 
       const targetEntityIds = targetEntityList.map(
-        targetEntity => targetEntity[targetKey],
+        targetEntity =>
+          targetEntity[targetKey]?.toString() ?? targetEntity[targetKey],
       );
 
       const targetEntityMap = Object.fromEntries(
@@ -264,7 +265,9 @@ export function createHasManyThroughInclusionResolver<
       // convert from through entities to the target entities
       for (const entityList of throughResult) {
         if (entityList) {
-          const relatedIds = entityList.map(x => x[throughKeyTo]);
+          const relatedIds = entityList.map(
+            x => x[throughKeyTo]?.toString() ?? x[throughKeyTo],
+          );
 
           // Use the order of the original result set & apply limit
           const sortedIds = _.intersection(

@@ -23,6 +23,11 @@ import {
 } from '../../../../relations/has-many/has-many-through.helpers';
 
 describe('HasManyThroughHelpers', () => {
+  const objectId = {id: ''};
+  objectId.toString = function () {
+    return this.id;
+  };
+
   context('createThroughConstraintFromSource', () => {
     it('creates constraint for searching through models', () => {
       const result = createThroughConstraintFromSource(relationMetaData, 1);
@@ -57,6 +62,44 @@ describe('HasManyThroughHelpers', () => {
         through2,
       ]);
       expect(result).to.containDeep([9, 8]);
+    });
+    it('returns the string representation of the target fk value when provided with object id', () => {
+      const inventoryItemId = Object.create(objectId, {id: {value: 'item-1'}});
+      const departmentId = Object.create(objectId, {
+        id: {value: 'department-1'},
+      });
+
+      const through1 = createDepartmentInventory({
+        departmentId,
+        inventoryItemId,
+      });
+      const result: Object[] = getTargetKeysFromThroughModels(
+        relationMetaDataWithObjectId,
+        [through1],
+      );
+      expect(result[0].toString()).to.deepEqual('item-1');
+    });
+    it('returns the string representation of the target fk values when provided with object id', () => {
+      const inventoryItemId1 = Object.create(objectId, {id: {value: 'item-1'}});
+      const inventoryItemId2 = Object.create(objectId, {id: {value: 'item-2'}});
+      const departmentId = Object.create(objectId, {
+        id: {value: 'department-1'},
+      });
+
+      const through1 = createDepartmentInventory({
+        departmentId,
+        inventoryItemId: inventoryItemId1,
+      });
+      const through2 = createDepartmentInventory({
+        departmentId,
+        inventoryItemId: inventoryItemId2,
+      });
+      const result: Object[] = getTargetKeysFromThroughModels(
+        relationMetaDataWithObjectId,
+        [through1, through2],
+      );
+      expect(result[0].toString()).to.containDeep('item-1');
+      expect(result[1].toString()).to.containDeep('item-2');
     });
   });
   context('createTargetConstraintFromThrough', () => {
@@ -122,6 +165,33 @@ describe('HasManyThroughHelpers', () => {
         createProduct({id: 2}),
       ]);
       expect(result).to.containDeep([1, 2]);
+    });
+    it('creates constraint with a given object id fk', () => {
+      const departmentId = Object.create(objectId, {
+        id: {value: 'department-1'},
+      });
+      const result: Object[] = getTargetIdsFromTargetModels(
+        relationMetaDataWithObjectId,
+        [createDepartment({id: departmentId})],
+      );
+      expect(result[0].toString()).to.containDeep('department-1');
+    });
+    it('creates constraint with given object id fks', () => {
+      const departmentId1 = Object.create(objectId, {
+        id: {value: 'department-1'},
+      });
+      const departmentId2 = Object.create(objectId, {
+        id: {value: 'department-2'},
+      });
+      const result: Object[] = getTargetIdsFromTargetModels(
+        relationMetaDataWithObjectId,
+        [
+          createDepartment({id: departmentId1}),
+          createDepartment({id: departmentId2}),
+        ],
+      );
+      expect(result[0].toString()).to.containDeep('department-1');
+      expect(result[1].toString()).to.containDeep('department-2');
     });
   });
 
@@ -406,6 +476,55 @@ describe('HasManyThroughHelpers', () => {
     }
   }
 
+  @model()
+  class Department extends Entity {
+    @property({
+      type: 'string',
+      id: true,
+      generated: true,
+      mongodb: {dataType: 'ObjectId'},
+    })
+    id?: string;
+
+    constructor(data: Partial<Department>) {
+      super(data);
+    }
+  }
+
+  @model()
+  class InventoryItem extends Entity {
+    @property({
+      type: 'string',
+      id: true,
+      generated: true,
+      mongodb: {dataType: 'ObjectId'},
+    })
+    id?: string;
+
+    constructor(data: Partial<InventoryItem>) {
+      super(data);
+    }
+  }
+
+  @model()
+  class DepartmentInventory extends Entity {
+    @property({
+      type: 'string',
+      id: true,
+      generated: true,
+      mongodb: {dataType: 'ObjectId'},
+    })
+    id?: string;
+    @property()
+    departmentId: string;
+    @property()
+    inventoryItemId: string;
+
+    constructor(data: Partial<DepartmentInventory>) {
+      super(data);
+    }
+  }
+
   const relationMetaData = {
     name: 'products',
     type: 'hasMany',
@@ -418,6 +537,22 @@ describe('HasManyThroughHelpers', () => {
       model: () => CategoryProductLink,
       keyFrom: 'categoryId',
       keyTo: 'productId',
+      polymorphic: false,
+    },
+  } as HasManyThroughResolvedDefinition;
+
+  const relationMetaDataWithObjectId = {
+    name: 'departments',
+    type: 'hasMany',
+    targetsMany: true,
+    source: Department,
+    keyFrom: 'id',
+    target: () => InventoryItem,
+    keyTo: 'id',
+    through: {
+      model: () => DepartmentInventory,
+      keyFrom: 'departmentId',
+      keyTo: 'inventoryItemId',
       polymorphic: false,
     },
   } as HasManyThroughResolvedDefinition;
@@ -463,5 +598,11 @@ describe('HasManyThroughHelpers', () => {
   }
   function createProduct(properties: Partial<Product>) {
     return new Product(properties);
+  }
+  function createDepartmentInventory(properties: Partial<DepartmentInventory>) {
+    return new DepartmentInventory(properties);
+  }
+  function createDepartment(properties: Partial<Department>) {
+    return new Department(properties);
   }
 });
