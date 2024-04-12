@@ -558,8 +558,8 @@ Here are general attributes for property definitions:
     <tr>
       <td><code>index</code></td>
       <td>No</td>
-      <td>Boolean</td>
-      <td>Whether the property represents a column (field) that is a database index.</td>
+      <td>Boolean | Object</td>
+      <td>If boolean it shows whether the property represents a column (field) that is a database index. It can be an object, for example, `index: {unique: true}` to make a property unique. Note: This depends on connector whether it supports or not.</td>
     </tr>
     <tr>
       <td><code>required</code></td>
