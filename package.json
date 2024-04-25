@@ -51,7 +51,7 @@
     "@commitlint/cli": "^19.3.0",
     "@commitlint/config-conventional": "^19.2.2",
     "@npmcli/map-workspaces": "^3.0.6",
-    "@npmcli/package-json": "^5.0.3",
+    "@npmcli/package-json": "^5.1.0",
     "@types/mocha": "^10.0.6",
     "@typescript-eslint/eslint-plugin": "^7.6.0",
     "@typescript-eslint/parser": "^7.6.0",
