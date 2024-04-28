@@ -43,7 +43,7 @@
     "@loopback/rest": "^14.0.0"
   },
   "dependencies": {
-    "ts-graphviz": "^0.16.0",
+    "ts-graphviz": "^2.1.2",
     "viz.js": "^2.1.2"
   },
   "devDependencies": {
