@@ -14,7 +14,7 @@
     "directory": "acceptance/repository-mongodb"
   },
   "engines": {
-    "node": "18 || 20"
+    "node": "18 || 20 || 22"
   },
   "scripts": {
     "build": "lb-tsc",

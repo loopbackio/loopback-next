@@ -20,6 +20,6 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
         with:
-          node-version: 18 # LTS
+          node-version: 20 # LTS
       - name: Validate Renovate config
         run: npx -p renovate --yes renovate-config-validator

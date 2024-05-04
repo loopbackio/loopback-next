@@ -12,7 +12,7 @@
     "directory": "fixtures/tsdocs-monorepo"
   },
   "engines": {
-    "node": "18 || 20",
+    "node": "18 || 20 || 22",
     "npm": ">=7"
   },
   "scripts": {
