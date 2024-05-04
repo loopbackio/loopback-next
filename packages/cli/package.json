@@ -22,7 +22,7 @@
     "directory": "packages/cli"
   },
   "engines": {
-    "node": "18 || 20"
+    "node": "18 || 20 || 22"
   },
   "scripts": {
     "test": "lb-mocha --lang en_US.UTF-8 \"test/**/*.js\"",

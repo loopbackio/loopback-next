@@ -11,14 +11,12 @@ import {
   SchemaObject,
 } from '@loopback/openapi-v3';
 import {
-  expect,
   ShotRequestOptions,
+  expect,
   stubExpressContext,
 } from '@loopback/testlab';
 import {
-  createResolvedRoute,
   JsonBodyParser,
-  parseOperationArgs,
   PathParameterValues,
   RawBodyParser,
   Request,
@@ -29,6 +27,8 @@ import {
   StreamBodyParser,
   TextBodyParser,
   UrlEncodedBodyParser,
+  createResolvedRoute,
+  parseOperationArgs,
 } from '../..';
 
 describe('operationArgsParser', () => {
@@ -343,7 +343,9 @@ describe('operationArgsParser', () => {
           details: {
             syntaxError:
               NODE_MAJOR_VERSION >= 19
-                ? "Expected ':' after property name in JSON at position 17"
+                ? NODE_MAJOR_VERSION >= 22
+                  ? "Expected ':' after property name in JSON at position 17 (line 1 column 18)"
+                  : "Expected ':' after property name in JSON at position 17"
                 : 'Unexpected token } in JSON at position 17',
           },
         }),
