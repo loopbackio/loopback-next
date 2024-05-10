@@ -40,7 +40,7 @@
   ],
   "dependencies": {
     "axios": "^1.6.8",
-    "cacache": "^18.0.2",
+    "cacache": "^18.0.3",
     "debug": "^4.3.4",
     "rimraf": "^5.0.5",
     "tslib": "^2.6.2"
