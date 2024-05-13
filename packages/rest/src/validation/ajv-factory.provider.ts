@@ -63,6 +63,28 @@ export class AjvFactoryProvider implements Provider<AjvFactory> {
       const ajvInst = new AjvCtor(ajvOptions);
       ajvInst.addKeyword('components');
       ajvInst.addKeyword('x-typescript-type');
+      ajvInst.addKeyword({
+        keyword: 'x-default',
+        schemaType: [
+          'string',
+          'number',
+          'integer',
+          'boolean',
+          'null',
+          'object',
+          'array',
+        ],
+      });
+      ajvInst.addKeyword({keyword: 'x-defaultFn', schemaType: ['string']});
+      ajvInst.addKeyword({
+        keyword: 'x-index',
+        schemaType: ['boolean', 'object'],
+      });
+      ajvInst.addKeyword({keyword: 'x-length', schemaType: ['number']});
+      ajvInst.addKeyword({keyword: 'x-precision', schemaType: ['number']});
+      ajvInst.addKeyword({keyword: 'x-scale', schemaType: ['number']});
+      ajvInst.addKeyword({keyword: 'x-generated', schemaType: 'boolean'});
+      ajvInst.addKeyword({keyword: 'x-hidden', schemaType: ['boolean']});
 
       ajvKeywords(ajvInst, validationOptions.ajvKeywords);
 
