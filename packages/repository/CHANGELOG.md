@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.0.2](https://github.com/loopbackio/loopback-next/compare/@loopback/repository@7.0.1...@loopback/repository@7.0.2) (2024-05-17)
+
+
+### Bug Fixes
+
+* correct MongoDB ID conversion in hasManyThrough relations ([d61a21f](https://github.com/loopbackio/loopback-next/commit/d61a21ff1c47309776f19d4b7dbbe484e9113e33))
+
+
+
+
+
 ## [7.0.1](https://github.com/loopbackio/loopback-next/compare/@loopback/repository@7.0.0...@loopback/repository@7.0.1) (2024-04-09)
 
 **Note:** Version bump only for package @loopback/repository

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [11.0.2](https://github.com/loopbackio/loopback-next/compare/@loopback/build@11.0.1...@loopback/build@11.0.2) (2024-05-17)
+
+
+### Bug Fixes
+
+* **build:** correctly join file paths on windows when copying resources ([71d5657](https://github.com/loopbackio/loopback-next/commit/71d5657b811ba799e2c6e70b384aecae35d3385f))
+
+
+
+
+
 ## [11.0.1](https://github.com/loopbackio/loopback-next/compare/@loopback/build@11.0.0...@loopback/build@11.0.1) (2024-04-09)
 
 **Note:** Version bump only for package @loopback/build
