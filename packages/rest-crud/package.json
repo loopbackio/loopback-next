@@ -48,6 +48,6 @@
     "@loopback/rest": "^14.0.2",
     "@loopback/testlab": "^7.0.2",
     "@types/debug": "^4.1.12",
-    "@types/node": "^16.18.96"
+    "@types/node": "^16.18.97"
   }
 }
