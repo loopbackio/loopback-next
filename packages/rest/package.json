@@ -68,7 +68,7 @@
     "strong-error-handler": "^5.0.10",
     "tslib": "^2.6.2",
     "type-is": "^1.6.18",
-    "validator": "^13.11.0"
+    "validator": "^13.12.0"
   },
   "devDependencies": {
     "@loopback/build": "^11.0.2",
