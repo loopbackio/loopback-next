@@ -44,7 +44,7 @@
     "fs-extra": "^11.2.0",
     "oas-validator": "^5.0.8",
     "should": "^13.2.3",
-    "sinon": "^17.0.1",
+    "sinon": "^18.0.0",
     "supertest": "^6.3.3",
     "tslib": "^2.6.2"
   },
