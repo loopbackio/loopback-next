@@ -56,7 +56,7 @@
     "@loopback/rest": "^14.0.2",
     "@loopback/testlab": "^7.0.2",
     "@types/node": "^16.18.97",
-    "oracledb": "^6.4.0",
+    "oracledb": "^6.5.1",
     "pg": "^8.11.5",
     "pg-hstore": "^2.3.4",
     "sqlite3": "5.1.4",
