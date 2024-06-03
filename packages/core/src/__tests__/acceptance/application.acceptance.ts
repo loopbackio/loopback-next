@@ -5,7 +5,7 @@
 
 import {Constructor, inject, Provider} from '@loopback/context';
 import {expect} from '@loopback/testlab';
-import {Application, ControllerClass} from '../..';
+import {Application, Component, ControllerClass} from '../..';
 
 describe('Bootstrapping the application', () => {
   context('with user-defined components', () => {
@@ -18,6 +18,29 @@ describe('Bootstrapping the application', () => {
 
       const componentInstance = app.getSync('components.AuditComponent');
       expect(componentInstance).to.be.instanceOf(AuditComponent);
+    });
+
+    it('register all child components from a component', () => {
+      let componentACreated = 0;
+      class ComponentA implements Component {
+        constructor() {
+          componentACreated++;
+        }
+      }
+      class ComponentB implements Component {}
+      class ParentComponent implements Component {
+        components = [ComponentA, ComponentB];
+      }
+      const app = new Application();
+      app.component(ParentComponent);
+      const componentKeys = app.find('components.*').map(b => b.key);
+      expect(componentKeys).to.containEql('components.ComponentA');
+      expect(componentKeys).to.containEql('components.ComponentB');
+      expect(componentKeys).to.containEql('components.ParentComponent');
+
+      // Re-registration of ComponentA does not have side effects
+      app.component(ComponentA);
+      expect(componentACreated).to.eql(1);
     });
 
     it('registers all providers from components', () => {
