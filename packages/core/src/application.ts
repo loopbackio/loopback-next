@@ -470,6 +470,11 @@ export class Application extends Context implements LifeCycleObserver {
       defaultScope: BindingScope.SINGLETON,
       ...toOptions(nameOrOptions),
     });
+    // Check if the component is already bound
+    const found = this.registry.get(binding.key);
+    if (found?.valueConstructor === binding.valueConstructor) {
+      return binding;
+    }
     if (isLifeCycleObserverClass(componentCtor)) {
       binding.apply(asLifeCycleObserver);
     }
