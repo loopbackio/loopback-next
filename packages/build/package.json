@@ -35,7 +35,7 @@
     "@types/mocha": "^10.0.6",
     "@types/node": "^16.18.97",
     "cross-spawn": "^7.0.3",
-    "debug": "^4.3.4",
+    "debug": "^4.3.5",
     "eslint": "^8.57.0",
     "fs-extra": "^11.2.0",
     "glob": "^10.3.16",
