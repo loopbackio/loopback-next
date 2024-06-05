@@ -38,7 +38,7 @@
   },
   "dependencies": {
     "@loopback/model-api-builder": "^6.0.2",
-    "debug": "^4.3.4",
+    "debug": "^4.3.5",
     "tslib": "^2.6.2"
   },
   "devDependencies": {

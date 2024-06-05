@@ -38,7 +38,7 @@
   "dependencies": {
     "@loopback/filter": "^5.0.2",
     "@types/debug": "^4.1.12",
-    "debug": "^4.3.4",
+    "debug": "^4.3.5",
     "lodash": "^4.17.21",
     "loopback-datasource-juggler": "^5.0.9",
     "tslib": "^2.6.2"
