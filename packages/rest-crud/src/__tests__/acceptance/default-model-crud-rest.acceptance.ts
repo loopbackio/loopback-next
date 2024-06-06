@@ -20,6 +20,7 @@ import {
   toJSON,
 } from '@loopback/testlab';
 import {defineCrudRestController} from '../..';
+import {authenticate} from '@loopback/authentication';
 
 // In this test scenario, we create a product with a required & an optional
 // property and use the default model settings (strict mode, forceId).
@@ -296,7 +297,19 @@ describe('CrudRestController for a simple Product model', () => {
       Product,
       typeof Product.prototype.id,
       'id'
-    >(Product, {basePath: '/products'});
+    >(Product, {
+      basePath: '/products',
+      authenticate,
+      auth: {
+        post: true,
+        patch: true,
+        deleteById: true,
+        putById: true,
+        count: true,
+        get: true,
+        getById: true,
+      },
+    });
 
     class ProductController extends CrudRestController {
       constructor() {

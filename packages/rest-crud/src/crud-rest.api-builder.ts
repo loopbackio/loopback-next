@@ -35,6 +35,13 @@ export interface ModelCrudRestApiConfig extends ModelApiConfig {
    * If true, the generated controller only has find and count APIs
    */
   readonly?: boolean;
+  // strategy for auth
+  strategy?: string;
+  /**
+   * passing authenticate method to enable auth for rest-crud based APIs
+   */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  authenticate?: ((strategy: string) => any) | undefined;
 }
 
 @injectable(asModelApiBuilder)

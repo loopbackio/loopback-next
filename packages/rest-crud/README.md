@@ -43,11 +43,13 @@ export class TryApplication extends BootMixin(
 
 Create a new file for the configuration, e.g.
 `src/model-endpoints/product.rest-config.ts` that defines the `model`,
-`pattern`, `dataSource`, `basePath`, and `readonly` properties:
+`pattern`, `dataSource`, `basePath`, `readonly` and optionaly `auth` with
+authenticate method from @loopback/authentication and strategy properties:
 
 ```ts
 import {ModelCrudRestApiConfig} from '@loopback/rest-crud';
 import {Product} from '../models';
+import {authenticate} from '@loopback/authentication';
 
 module.exports = <ModelCrudRestApiConfig>{
   model: Product,
@@ -55,6 +57,18 @@ module.exports = <ModelCrudRestApiConfig>{
   dataSource: 'db',
   basePath: '/products',
   readonly: false,
+  authenticate,
+  strategy: 'jwt', // if no strategy provided, the default would be jwt
+  auth: {
+    count: true,
+    get: true,
+    getById: true,
+    post: true,
+    patch: true,
+    patchById: true,
+    putById: true,
+    deleteById: true,
+  },
 };
 ```
 
