@@ -46,7 +46,7 @@
     "@phenomnomnominal/tsquery": "~5.0.1",
     "camelcase-keys": "^7.0.2",
     "chalk": "^4.1.2",
-    "change-case": "^4.1.2",
+    "change-case": "^5.4.4",
     "debug": "^4.3.5",
     "fs-extra": "^11.2.0",
     "glob": "^10.3.16",
