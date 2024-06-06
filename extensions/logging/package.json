@@ -46,7 +46,7 @@
   "dependencies": {
     "fluent-logger": "^3.4.1",
     "morgan": "^1.10.0",
-    "tslib": "^2.6.2",
+    "tslib": "^2.6.3",
     "winston": "^3.13.0",
     "winston-transport": "^4.7.0"
   },

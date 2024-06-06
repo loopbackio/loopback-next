@@ -39,7 +39,7 @@
     "@loopback/testlab": "^7.0.2",
     "@types/debug": "^4.1.12",
     "debug": "^4.3.5",
-    "tslib": "^2.6.2"
+    "tslib": "^2.6.3"
   },
   "devDependencies": {
     "@loopback/build": "^11.0.2",

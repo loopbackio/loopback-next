@@ -45,7 +45,7 @@
     "@types/glob": "^8.1.0",
     "debug": "^4.3.5",
     "glob": "^10.4.1",
-    "tslib": "^2.6.2"
+    "tslib": "^2.6.3"
   },
   "devDependencies": {
     "@loopback/build": "^11.0.2",

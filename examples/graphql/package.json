@@ -55,7 +55,7 @@
     "@loopback/repository": "^7.0.2",
     "@loopback/rest": "^14.0.2",
     "class-transformer": "^0.5.1",
-    "tslib": "^2.6.2"
+    "tslib": "^2.6.3"
   },
   "devDependencies": {
     "@loopback/build": "^11.0.2",
