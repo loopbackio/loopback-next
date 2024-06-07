@@ -37,6 +37,11 @@ describe('jwt authentication', () => {
     token = res.body.token;
   });
 
+  it(`user login successfully with username and password`, async () => {
+    const credentials = {username: 'Jane', password: 'opensesame'};
+    await client.post('/users/login').send(credentials).expect(200);
+  });
+
   it('whoAmI returns the login user id', async () => {
     const res = await client
       .get('/whoAmI')
