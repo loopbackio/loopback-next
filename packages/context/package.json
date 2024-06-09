@@ -49,7 +49,7 @@
     "hyperid": "^3.2.0",
     "p-event": "^4.2.0",
     "tslib": "^2.6.3",
-    "uuid": "^9.0.1"
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
     "@loopback/build": "^11.0.3",
