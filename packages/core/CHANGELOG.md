@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.1.0](https://github.com/loopbackio/loopback-next/compare/@loopback/core@6.0.2...@loopback/core@6.1.0) (2024-06-10)
+
+
+### Features
+
+* **core:** allow a component to register nesting components ([28faa22](https://github.com/loopbackio/loopback-next/commit/28faa221c8b8e8f54731bd5756016d9e9fcef884))
+
+
+
+
+
 ## [6.0.2](https://github.com/loopbackio/loopback-next/compare/@loopback/core@6.0.1...@loopback/core@6.0.2) (2024-05-17)
 
 **Note:** Version bump only for package @loopback/core

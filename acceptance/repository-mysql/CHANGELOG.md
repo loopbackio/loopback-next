@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.15.3](https://github.com/loopbackio/loopback-next/compare/@loopback/test-repository-mysql@0.15.2...@loopback/test-repository-mysql@0.15.3) (2024-06-10)
+
+**Note:** Version bump only for package @loopback/test-repository-mysql
+
+
+
+
+
 ## [0.15.2](https://github.com/loopbackio/loopback-next/compare/@loopback/test-repository-mysql@0.15.1...@loopback/test-repository-mysql@0.15.2) (2024-05-17)
 
 **Note:** Version bump only for package @loopback/test-repository-mysql

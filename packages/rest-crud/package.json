@@ -1,7 +1,7 @@
 {
   "name": "@loopback/rest-crud",
   "description": "REST API controller implementing default CRUD semantics",
-  "version": "0.18.2",
+  "version": "0.18.3",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -37,16 +37,16 @@
     "@loopback/rest": "^14.0.0"
   },
   "dependencies": {
-    "@loopback/model-api-builder": "^6.0.2",
+    "@loopback/model-api-builder": "^6.0.3",
     "debug": "^4.3.5",
     "tslib": "^2.6.3"
   },
   "devDependencies": {
-    "@loopback/build": "^11.0.2",
-    "@loopback/core": "^6.0.2",
-    "@loopback/repository": "^7.0.2",
-    "@loopback/rest": "^14.0.2",
-    "@loopback/testlab": "^7.0.2",
+    "@loopback/build": "^11.0.3",
+    "@loopback/core": "^6.1.0",
+    "@loopback/repository": "^7.0.3",
+    "@loopback/rest": "^14.0.3",
+    "@loopback/testlab": "^7.0.3",
     "@types/debug": "^4.1.12",
     "@types/node": "^16.18.98"
   }
