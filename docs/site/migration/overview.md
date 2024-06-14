@@ -7,6 +7,13 @@ sidebar: lb4_sidebar
 permalink: /doc/en/lb4/migration-overview.html
 ---
 
+[!IMPORTANT] LoopBack 3 has reached end of life. We are no longer accepting pull
+requests or providing support for community users. The only exception is fixes
+for critical bugs and security vulnerabilities provided as part of support for
+IBM API Connect customers. We urge all LoopBack 3 users to migrate their
+applications to LoopBack 4 as soon as possible. Learn more about
+[LoopBack's long term support policy.](https://loopback.io/doc/en/contrib/Long-term-support.html)
+
 {% include tip.html content="
 Missing instructions for your LoopBack 3 use case? Please report a [Migration docs issue](https://github.com/loopbackio/loopback-next/issues/new?labels=question,Migration,Docs&template=Migration_docs.md) on GitHub to let us know.
 " %}
