@@ -14,23 +14,23 @@ import {
   Where,
 } from '@loopback/repository';
 import {
+  JsonSchemaOptions,
+  MediaTypeObject,
+  ParameterObject,
+  ResponsesObject,
+  SchemaObject,
   api,
   del,
   get,
   getFilterSchemaFor,
   getJsonSchema,
   getModelSchemaRef,
-  JsonSchemaOptions,
   jsonToSchemaObject,
-  MediaTypeObject,
   param,
-  ParameterObject,
   patch,
   post,
   put,
   requestBody,
-  ResponsesObject,
-  SchemaObject,
 } from '@loopback/rest';
 import assert from 'assert';
 
@@ -208,7 +208,7 @@ export function defineCrudRestController<
     async create(
       @body(modelCtor, {
         title: `New${modelName}`,
-        exclude: modelCtor.getIdProperties() as (keyof T)[],
+        exclude: modelCtor.getExcludeProperties() as (keyof T)[],
       })
       data: Omit<T, IdName>,
     ): Promise<T> {
