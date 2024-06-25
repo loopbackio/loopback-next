@@ -235,7 +235,9 @@ module.exports = class DataSourceGenerator extends ArtifactGenerator {
             if (props[key] == null || props[key] === '') {
               delete props[key];
             } else {
-              props[key] = JSON.parse(props[key]);
+              if (typeof props[key] === 'string') {
+                props[key] = JSON.parse(props[key]);
+              }
             }
             break;
         }
