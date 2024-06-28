@@ -58,9 +58,9 @@
     "@loopback/testlab": "^7.0.3",
     "@types/autocannon": "^7.12.5",
     "@types/benchmark": "^2.1.5",
-    "@types/mocha": "^10.0.6",
+    "@types/mocha": "^10.0.7",
     "@types/node": "^16.18.101",
-    "mocha": "^10.4.0",
+    "mocha": "^10.5.2",
     "source-map-support": "^0.5.21"
   }
 }
