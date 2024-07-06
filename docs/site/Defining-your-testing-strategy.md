@@ -48,8 +48,6 @@ References:
 
 - [Test Pyramid](https://martinfowler.com/bliki/TestPyramid.html) by Martin
   Fowler
-- [The testing pyramid](http://www.agilenutshell.com/episodes/41-testing-pyramid)
-  by Jonathan Rasmusson
 - [Just say no to more end-to-end tests](https://testing.googleblog.com/2015/04/just-say-no-to-more-end-to-end-tests.html)
 - [100,000 e2e selenium tests? Sounds like a nightmare!](https://watirmelon.blog/2014/05/14/100000-e2e-selenium-tests-sounds-like-a-nightmare/)
 - [Growing Object-Oriented Software Guided by Tests](http://www.growing-object-oriented-software.com/)
