@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.4](https://github.com/loopbackio/loopback-next/compare/@loopback/cli@6.0.3...@loopback/cli@6.0.4) (2024-07-09)
+
+
+### Bug Fixes
+
+* **cli:** add check on process.env.HOST ([d33ebf4](https://github.com/loopbackio/loopback-next/commit/d33ebf453a727c00f8445d60161feb0d942b32c7))
+
+
+
+
+
 ## [6.0.3](https://github.com/loopbackio/loopback-next/compare/@loopback/cli@6.0.2...@loopback/cli@6.0.3) (2024-06-10)
 
 **Note:** Version bump only for package @loopback/cli

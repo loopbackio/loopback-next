@@ -1,7 +1,7 @@
 {
   "name": "@loopback/model-api-builder",
   "description": "Types and helpers for packages contributing Model API builders.",
-  "version": "6.0.3",
+  "version": "6.0.4",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -39,9 +39,9 @@
     "tslib": "^2.6.3"
   },
   "devDependencies": {
-    "@loopback/build": "^11.0.3",
-    "@loopback/core": "^6.1.0",
-    "@loopback/repository": "^7.0.3",
+    "@loopback/build": "^11.0.4",
+    "@loopback/core": "^6.1.1",
+    "@loopback/repository": "^7.0.4",
     "@types/node": "^16.18.101"
   }
 }
