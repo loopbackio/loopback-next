@@ -426,10 +426,16 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
           enumValuesArray.forEach(item => {
             enumItems += `'${item}',`;
           });
+          const enumItemString = enumItems.toString().replace(/,\s*$/, '');
           templateData.properties[key]['type'] = 'String';
           templateData.properties[key]['tsType'] = 'string';
           templateData.properties[key]['jsonSchema'] =
-            `{enum: [${enumItems.toString()}]}`;
+            `{enum: [${enumItemString}]}`;
+          const mysqlString = templateData.properties[key]['mysql'];
+          templateData.properties[key]['mysql'] = mysqlString.replace(
+            "'enum',",
+            `'enum', value: "${enumItemString}",`,
+          );
         }
       });
       this.copyTemplatedFiles(
