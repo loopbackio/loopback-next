@@ -93,7 +93,7 @@ The tool will prompt you for:
   skipped, otherwise it will present you a list of repositories. The default
   repository is inferred from the datasource type.
 
-  Any repository in the `src/repository` folder with the file format
+  Any repository in the `src/repositor` folder with the file format
   `*.repository.base.ts` will be added to the list too.
 
 - **Please enter the name of the ID property for _modelName_.** _(id)_ If the
