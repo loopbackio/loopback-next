@@ -1236,9 +1236,15 @@
           "name": "packageManager",
           "hide": false
         },
-        "datasource": {
+        "dataSource": {
           "type": "String",
           "alias": "ds",
+          "description": "The name of the datasource to discover",
+          "name": "dataSource",
+          "hide": false
+        },
+        "datasource": {
+          "type": "String",
           "description": "The name of the datasource to discover",
           "name": "datasource",
           "hide": false

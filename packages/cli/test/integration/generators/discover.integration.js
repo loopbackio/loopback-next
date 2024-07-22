@@ -31,7 +31,7 @@ const sandbox = new TestSandbox(path.resolve(__dirname, '../.sandbox'));
 // CLI Inputs
 const baseOptions = {
   all: true,
-  datasource: 'mem',
+  dataSource: 'mem',
 };
 const outDirOptions = {
   ...baseOptions,
@@ -48,11 +48,11 @@ const disableCamelCaseOptions = {
   disableCamelCase: true,
 };
 const missingDataSourceOptions = {
-  datasource: 'foo',
+  dataSource: 'foo',
 };
 const specificmodelsOptions = {
   models: 'Test',
-  datasource: 'mem',
+  dataSource: 'mem',
   views: false,
   disableCamelCase: true,
 };
@@ -68,6 +68,14 @@ const treatTINYINT1AsTinyIntOptions = {
 const relationsSetTrue = {
   ...baseOptions,
   relations: true,
+};
+
+const baseOptionsWithSmallS = {
+  all: true,
+  datasource: 'mem',
+};
+const missingDataSourceOptionsWithSmallS = {
+  datasource: 'foo',
 };
 
 // Expected File Name
@@ -107,7 +115,7 @@ describe('lb4 discover integration', () => {
       await sandbox.mkdir('dist/datasources');
     });
 
-    it('generates all models without prompts using --all --datasource', /** @this {Mocha.Context} */ async function () {
+    it('generates all models without prompts using --all --dataSource', /** @this {Mocha.Context} */ async function () {
       this.timeout(10000);
       await testUtils
         .executeGenerator(generator)
@@ -166,7 +174,7 @@ describe('lb4 discover integration', () => {
       expectFileToMatchSnapshot(defaultExpectedNamingModel);
     });
 
-    it('will fail gracefully if you specify a --datasource which does not exist', async () => {
+    it('will fail gracefully if you specify a --dataSource which does not exist', async () => {
       return expect(
         testUtils
           .executeGenerator(generator)
@@ -231,5 +239,34 @@ describe('lb4 discover integration', () => {
 
     basicModelFileChecks(defaultExpectedTestModel, defaultExpectedIndexFile);
     assert.file(defaultExpectedTestModel);
+  });
+
+  it('generates all models without prompts using --all --datasource', /** @this {Mocha.Context} */ async function () {
+    this.timeout(10000);
+    await testUtils
+      .executeGenerator(generator)
+      .inDir(sandbox.path, () =>
+        testUtils.givenLBProject(sandbox.path, {
+          additionalFiles: SANDBOX_FILES,
+        }),
+      )
+      .withOptions(baseOptionsWithSmallS);
+
+    basicModelFileChecks(defaultExpectedTestModel, defaultExpectedIndexFile);
+    expectFileToMatchSnapshot(defaultExpectedSchemaModel);
+    expectFileToMatchSnapshot(defaultExpectedViewModel);
+  });
+
+  it('will fail gracefully if you specify a --datasource which does not exist', async () => {
+    return expect(
+      testUtils
+        .executeGenerator(generator)
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {
+            additionalFiles: SANDBOX_FILES,
+          }),
+        )
+        .withOptions(missingDataSourceOptionsWithSmallS),
+    ).to.be.rejectedWith(/Cannot find datasource/);
   });
 });
