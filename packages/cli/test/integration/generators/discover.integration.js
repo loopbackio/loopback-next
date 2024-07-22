@@ -50,12 +50,6 @@ const disableCamelCaseOptions = {
 const missingDataSourceOptions = {
   dataSource: 'foo',
 };
-const specificmodelsOptions = {
-  models: 'Test',
-  dataSource: 'mem',
-  views: false,
-  disableCamelCase: true,
-};
 const optionalIdOptions = {
   ...baseOptions,
   optionalId: true,
@@ -69,7 +63,12 @@ const relationsSetTrue = {
   ...baseOptions,
   relations: true,
 };
-
+const specificModelsOptions = {
+  models: 'Test',
+  dataSource: 'mem',
+  views: false,
+  disableCamelCase: true,
+};
 // Expected File Name
 const defaultExpectedTestModel = path.join(
   sandbox.path,
@@ -87,7 +86,7 @@ const defaultExpectedNamingModel = path.join(
   sandbox.path,
   'src/models/naming.model.ts',
 );
-const AppointmentModel = path.join(
+const appointmentModel = path.join(
   sandbox.path,
   'src/models/appointment.model.ts',
 );
@@ -215,8 +214,8 @@ describe('lb4 discover integration', () => {
           }),
         )
         .withOptions(relationsSetTrue);
-      assert.file(AppointmentModel);
-      expectFileToMatchSnapshot(AppointmentModel);
+      assert.file(appointmentModel);
+      expectFileToMatchSnapshot(appointmentModel);
     });
   });
   it('generates specific models without prompts using --models', async () => {
@@ -227,7 +226,7 @@ describe('lb4 discover integration', () => {
           additionalFiles: SANDBOX_FILES,
         }),
       )
-      .withOptions(specificmodelsOptions);
+      .withOptions(specificModelsOptions);
 
     basicModelFileChecks(defaultExpectedTestModel, defaultExpectedIndexFile);
     assert.file(defaultExpectedTestModel);
