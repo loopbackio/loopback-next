@@ -31,7 +31,7 @@ const sandbox = new TestSandbox(path.resolve(__dirname, '../.sandbox'));
 // CLI Inputs
 const baseOptions = {
   all: true,
-  dataSource: 'mem',
+  datasource: 'mem',
 };
 const outDirOptions = {
   ...baseOptions,
@@ -48,11 +48,11 @@ const disableCamelCaseOptions = {
   disableCamelCase: true,
 };
 const missingDataSourceOptions = {
-  dataSource: 'foo',
+  datasource: 'foo',
 };
 const specificmodelsOptions = {
   models: 'Test',
-  dataSource: 'mem',
+  datasource: 'mem',
   views: false,
   disableCamelCase: true,
 };
@@ -107,7 +107,7 @@ describe('lb4 discover integration', () => {
       await sandbox.mkdir('dist/datasources');
     });
 
-    it('generates all models without prompts using --all --dataSource', /** @this {Mocha.Context} */ async function () {
+    it('generates all models without prompts using --all --datasource', /** @this {Mocha.Context} */ async function () {
       this.timeout(10000);
       await testUtils
         .executeGenerator(generator)
@@ -166,7 +166,7 @@ describe('lb4 discover integration', () => {
       expectFileToMatchSnapshot(defaultExpectedNamingModel);
     });
 
-    it('will fail gracefully if you specify a --dataSource which does not exist', async () => {
+    it('will fail gracefully if you specify a --datasource which does not exist', async () => {
       return expect(
         testUtils
           .executeGenerator(generator)

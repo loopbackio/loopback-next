@@ -19,7 +19,7 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
   constructor(args, opts) {
     super(args, opts);
 
-    this.option('dataSource', {
+    this.option('datasource', {
       type: String,
       alias: 'ds',
       description: g.f('The name of the datasource to discover'),
@@ -83,15 +83,15 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
   }
 
   /**
-   * If we have a dataSource, attempt to load it
+   * If we have a datasource, attempt to load it
    * @returns {*}
    */
   setOptions() {
     /* istanbul ignore next */
-    if (this.options.dataSource) {
-      debug(`Data source specified: ${this.options.dataSource}`);
-      this.artifactInfo.dataSource = modelMaker.loadDataSourceByName(
-        this.options.dataSource,
+    if (this.options.datasource) {
+      debug(`Data source specified: ${this.options.datasource}`);
+      this.artifactInfo.datasource = modelMaker.loadDataSourceByName(
+        this.options.datasource,
       );
     }
     // remove not needed .env property
@@ -111,12 +111,12 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
   }
 
   /**
-   * Loads all datasources to choose if the dataSource option isn't set
+   * Loads all datasources to choose if the datasource option isn't set
    */
   async loadAllDatasources() {
     // If we have a dataSourcePath then it is already loaded for us, we don't need load any
     /* istanbul ignore next */
-    if (this.artifactInfo.dataSource) {
+    if (this.artifactInfo.datasource) {
       return;
     }
     const dsDir = modelMaker.DEFAULT_DATASOURCE_DIRECTORY;
@@ -132,15 +132,15 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
         path.resolve(dsDir, `${utils.toFileName(s)}.datasource.js`),
       ),
     );
-    if (this.options.dataSource) {
+    if (this.options.datasource) {
       if (
         this.dataSourceChoices
           .map(d => d.name)
-          .includes(this.options.dataSource)
+          .includes(this.options.datasource)
       ) {
         Object.assign(this.artifactInfo, {
-          dataSource: this.dataSourceChoices.find(
-            d => d.name === this.options.dataSource,
+          datasource: this.dataSourceChoices.find(
+            d => d.name === this.options.datasource,
           ),
         });
       }
@@ -156,23 +156,23 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
     if (this.shouldExit()) return;
     const prompts = [
       {
-        name: 'dataSource',
+        name: 'datasource',
         message: g.f('Select the connector to discover'),
         type: 'list',
         choices: this.dataSourceChoices,
         when:
-          this.artifactInfo.dataSource === undefined &&
+          this.artifactInfo.datasource === undefined &&
           !this.artifactInfo.modelDefinitions,
       },
     ];
 
     return this.prompt(prompts).then(answer => {
       /* istanbul ignore next */
-      if (!answer.dataSource) return;
+      if (!answer.datasource) return;
       debug(`Datasource answer: ${JSON.stringify(answer)}`);
 
-      this.artifactInfo.dataSource = this.dataSourceChoices.find(
-        d => d.name === answer.dataSource,
+      this.artifactInfo.datasource = this.dataSourceChoices.find(
+        d => d.name === answer.datasource,
       );
     });
   }
@@ -183,10 +183,10 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
   async discoverModelInfos() {
     /* istanbul ignore if */
     if (this.artifactInfo.modelDefinitions) return;
-    debug(`Getting all models from ${this.artifactInfo.dataSource.name}`);
+    debug(`Getting all models from ${this.artifactInfo.datasource.name}`);
 
     this.modelChoices = await modelMaker.discoverModelNames(
-      this.artifactInfo.dataSource,
+      this.artifactInfo.datasource,
       {
         views: this.options.views,
         schema: this.options.schema,
@@ -197,7 +197,7 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
     this.modelChoices.sort((a, b) => a.name.localeCompare(b.name));
 
     debug(
-      `Got ${this.modelChoices.length} models from ${this.artifactInfo.dataSource.name}`,
+      `Got ${this.modelChoices.length} models from ${this.artifactInfo.datasource.name}`,
     );
   }
 
@@ -295,7 +295,7 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
   }
 
   /**
-   * Using artifactInfo.dataSource,
+   * Using artifactInfo.datasource,
    * artifactInfo.modelNameOptions
    *
    * this will discover every model
@@ -305,7 +305,7 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
   async getAllModelDefs() {
     /* istanbul ignore next */
     if (this.shouldExit()) {
-      await this.artifactInfo.dataSource.disconnect();
+      await this.artifactInfo.datasource.disconnect();
       return false;
     }
     this.artifactInfo.modelDefinitions = [];
@@ -319,7 +319,7 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
       }
       debug(`Discovering: ${modelInfo.name}...`);
       const modelDefinition = await modelMaker.discoverSingleModel(
-        this.artifactInfo.dataSource,
+        this.artifactInfo.datasource,
         modelInfo.name,
         {
           schema: modelInfo.owner,
@@ -350,7 +350,7 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
     // Exit if needed
     /* istanbul ignore next */
     if (this.shouldExit()) {
-      await this.artifactInfo.dataSource.disconnect();
+      await this.artifactInfo.datasource.disconnect();
       return;
     }
     this.artifactInfo.indexesToBeUpdated =
@@ -443,7 +443,7 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
         file: utils.getModelFileName(modelDefinition.name),
       });
 
-      await this.artifactInfo.dataSource.disconnect();
+      await this.artifactInfo.datasource.disconnect();
     }
 
     // This part at the end is just for the ArtifactGenerator

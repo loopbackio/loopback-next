@@ -1236,11 +1236,11 @@
           "name": "packageManager",
           "hide": false
         },
-        "dataSource": {
+        "datasource": {
           "type": "String",
           "alias": "ds",
           "description": "The name of the datasource to discover",
-          "name": "dataSource",
+          "name": "datasource",
           "hide": false
         },
         "views": {
