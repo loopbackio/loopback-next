@@ -51,7 +51,7 @@
     "@loopback/testlab": "^7.0.4",
     "@types/debug": "^4.1.12",
     "@types/node": "^16.18.101",
-    "@types/rimraf": "^3.0.2",
+    "@types/rimraf": "^4.0.5",
     "@types/tunnel": "0.0.7",
     "delay": "^5.0.0",
     "tunnel": "0.0.6"
