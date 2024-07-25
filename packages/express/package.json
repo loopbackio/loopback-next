@@ -58,7 +58,7 @@
     "@loopback/core": "^6.1.1",
     "@loopback/testlab": "^7.0.4",
     "@types/debug": "^4.1.12",
-    "@types/node": "^16.18.101",
+    "@types/node": "^20.14.12",
     "@types/on-finished": "^2.3.4",
     "@types/toposort": "^2.0.7",
     "source-map-support": "^0.5.21",

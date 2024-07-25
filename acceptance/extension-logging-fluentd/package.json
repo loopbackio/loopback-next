@@ -36,7 +36,7 @@
     "@loopback/eslint-config": "^15.0.3",
     "@loopback/logging": "^0.12.4",
     "@loopback/testlab": "^7.0.4",
-    "@types/node": "^16.18.101",
+    "@types/node": "^20.14.12",
     "testcontainers": "^10.10.1",
     "tslib": "^2.6.3"
   }
