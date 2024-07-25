@@ -71,6 +71,6 @@
     "eslint": "^8.57.0",
     "lodash": "^4.17.21",
     "should": "^13.2.3",
-    "typescript": "~5.2.2"
+    "typescript": "~5.5.4"
   }
 }
