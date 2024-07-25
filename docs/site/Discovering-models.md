@@ -35,7 +35,8 @@ Models can be discovered from a supported datasource by running the
 
 ### Options
 
-`--dataSource`: Put a valid datasource name here to skip the datasource prompt
+`--dataSource or --datasource`: Put a valid datasource name here to skip the
+datasource prompt
 
 `--views`: Choose whether to discover views. Default is true
 

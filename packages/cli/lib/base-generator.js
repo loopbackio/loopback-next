@@ -461,7 +461,7 @@ module.exports = class BaseGenerator extends Generator {
         );
       }
     }
-    process.exit(0);
+    // process.exit(0);
   }
 
   /**

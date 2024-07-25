@@ -70,6 +70,14 @@ const relationsSetTrue = {
   relations: true,
 };
 
+const baseOptionsWithSmallS = {
+  all: true,
+  datasource: 'mem',
+};
+const missingDataSourceOptionsWithSmallS = {
+  datasource: 'foo',
+};
+
 // Expected File Name
 const defaultExpectedTestModel = path.join(
   sandbox.path,
@@ -231,5 +239,34 @@ describe('lb4 discover integration', () => {
 
     basicModelFileChecks(defaultExpectedTestModel, defaultExpectedIndexFile);
     assert.file(defaultExpectedTestModel);
+  });
+
+  it('generates all models without prompts using --all --datasource', /** @this {Mocha.Context} */ async function () {
+    this.timeout(10000);
+    await testUtils
+      .executeGenerator(generator)
+      .inDir(sandbox.path, () =>
+        testUtils.givenLBProject(sandbox.path, {
+          additionalFiles: SANDBOX_FILES,
+        }),
+      )
+      .withOptions(baseOptionsWithSmallS);
+
+    basicModelFileChecks(defaultExpectedTestModel, defaultExpectedIndexFile);
+    expectFileToMatchSnapshot(defaultExpectedSchemaModel);
+    expectFileToMatchSnapshot(defaultExpectedViewModel);
+  });
+
+  it('will fail gracefully if you specify a --datasource which does not exist', async () => {
+    return expect(
+      testUtils
+        .executeGenerator(generator)
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {
+            additionalFiles: SANDBOX_FILES,
+          }),
+        )
+        .withOptions(missingDataSourceOptionsWithSmallS),
+    ).to.be.rejectedWith(/Cannot find datasource/);
   });
 });
