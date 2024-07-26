@@ -224,8 +224,8 @@ supports receiving `url-encoded` payload for a json query parameter as per Open
 API specification.
 
 To filter results from the GET '/todo-list' endpoint in the todo-list example
-with a specific relation, { "include": [ { "relation": "todo" } ] }, the
-following `url-encoded` query parameter can be used,
+with a specific relation, { "include": [ { "relation": "todo" } ] }, the following
+`url-encoded` query parameter can be used,
 
 ```
    http://localhost:3000/todos?filter=%7B%22include%22%3A%5B%7B%22relation%22%3A%22todoList%22%7D%5D%7D
