@@ -90,8 +90,8 @@ Next let's take a look of the migration steps to get prepared:
 - provides persistency for `User`, see
   [section 2](#user-persistency-and-crud-apis).
 - creates a login controller, see [section 3](#creating-login-function).
-- mounts the JWT authentication component, see [section 4](#mounting-
-  authentication-component). It mainly includes:
+- mounts the JWT authentication component, see [section 4](#mounting- authentication-component).
+  It mainly includes:
   - a token service to generate and validate access tokens
   - an authentication strategy to validate the user identity
 
