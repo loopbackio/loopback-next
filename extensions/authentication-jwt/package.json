@@ -60,7 +60,7 @@
     "@loopback/service-proxy": "^7.0.4",
     "@loopback/testlab": "^7.0.4",
     "@types/debug": "^4.1.12",
-    "@types/lodash": "^4.17.6",
+    "@types/lodash": "^4.17.7",
     "@types/node": "^16.18.101",
     "lodash": "^4.17.21",
     "typescript": "~5.2.2"
