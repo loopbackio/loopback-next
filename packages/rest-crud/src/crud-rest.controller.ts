@@ -33,6 +33,7 @@ import {
   SchemaObject,
 } from '@loopback/rest';
 import assert from 'assert';
+import {authenticate} from '@loopback/authentication';
 
 // Ideally, this file should simply `export class CrudRestController<...>{}`
 // Unfortunately, that's not possible for several reasons.
@@ -105,6 +106,19 @@ export interface CrudRestControllerOptions {
    * Whether to generate readonly APIs
    */
   readonly?: boolean;
+  /**
+   * Whether to add authentication decorator or not
+   */
+  auth?: {
+    count?: boolean;
+    get?: boolean;
+    getById?: boolean;
+    post?: boolean;
+    patch?: boolean;
+    patchById?: boolean;
+    putById?: boolean;
+    deleteById?: boolean;
+  };
 }
 
 /**
@@ -154,7 +168,7 @@ export function defineCrudRestController<
     constructor(
       public readonly repository: EntityCrudRepository<T, IdType, Relations>,
     ) {}
-
+    @authenticatedMethod(options.auth?.get)
     @get('/', {
       ...response.array(200, `Array of ${modelName} instances`, modelCtor, {
         includeRelations: true,
@@ -172,6 +186,7 @@ export function defineCrudRestController<
         includeRelations: true,
       }),
     })
+    @authenticatedMethod(options.auth?.getById)
     async findById(
       @param(idPathParam) id: IdType,
       @param.query.object(
@@ -186,6 +201,7 @@ export function defineCrudRestController<
     @get('/count', {
       ...response(200, `${modelName} count`, {schema: CountSchema}),
     })
+    @authenticatedMethod(options.auth?.count)
     async count(
       @param.where(modelCtor)
       where?: Where<T>,
@@ -205,6 +221,7 @@ export function defineCrudRestController<
     @post('/', {
       ...response.model(200, `${modelName} instance created`, modelCtor),
     })
+    @authenticatedMethod(options?.auth?.post)
     async create(
       @body(modelCtor, {
         title: `New${modelName}`,
@@ -224,6 +241,7 @@ export function defineCrudRestController<
         schema: CountSchema,
       }),
     })
+    @authenticatedMethod(options?.auth?.patch)
     async updateAll(
       @body(modelCtor, {partial: true}) data: Partial<T>,
       @param.where(modelCtor)
@@ -242,6 +260,7 @@ export function defineCrudRestController<
         '204': {description: `${modelName} was updated`},
       },
     })
+    @authenticatedMethod(options?.auth?.patchById)
     async updateById(
       @param(idPathParam) id: IdType,
       @body(modelCtor, {partial: true}) data: Partial<T>,
@@ -259,6 +278,7 @@ export function defineCrudRestController<
         '204': {description: `${modelName} was updated`},
       },
     })
+    @authenticatedMethod(options.auth?.putById)
     async replaceById(
       @param(idPathParam) id: IdType,
       @body(modelCtor) data: T,
@@ -271,6 +291,7 @@ export function defineCrudRestController<
         '204': {description: `${modelName} was deleted`},
       },
     })
+    @authenticatedMethod(options.auth?.deleteById)
     async deleteById(@param(idPathParam) id: IdType): Promise<void> {
       await this.repository.deleteById(id);
     }
@@ -360,4 +381,11 @@ namespace response {
       },
     });
   }
+}
+
+// Helper function to conditionally add @authenticate decorator
+function authenticatedMethod(applyAuth: boolean | undefined) {
+  return applyAuth
+    ? authenticate('jwt')
+    : (target: Object, key: string, descriptor: PropertyDescriptor) => {};
 }
