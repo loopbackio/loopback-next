@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.0.5](https://github.com/loopbackio/loopback-next/compare/@loopback/docs@7.0.4...@loopback/docs@7.0.5) (2024-08-14)
+
+
+### Bug Fixes
+
+* **docs:** fix docs linting issue ([47fad8d](https://github.com/loopbackio/loopback-next/commit/47fad8d4378be86f20f797d365115b9bc76a4446))
+
+
+
+
+
 ## [7.0.4](https://github.com/loopbackio/loopback-next/compare/@loopback/docs@7.0.3...@loopback/docs@7.0.4) (2024-07-09)
 
 **Note:** Version bump only for package @loopback/docs

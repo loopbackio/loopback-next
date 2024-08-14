@@ -1,7 +1,7 @@
 {
   "name": "@loopback/http-server",
   "description": "A wrapper for creating HTTP/HTTPS servers",
-  "version": "6.0.4",
+  "version": "6.0.5",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -37,10 +37,10 @@
     "tslib": "^2.6.3"
   },
   "devDependencies": {
-    "@loopback/build": "^11.0.4",
-    "@loopback/core": "^6.1.1",
-    "@loopback/eslint-config": "^15.0.3",
-    "@loopback/testlab": "^7.0.4",
+    "@loopback/build": "^11.0.5",
+    "@loopback/core": "^6.1.2",
+    "@loopback/eslint-config": "^15.0.4",
+    "@loopback/testlab": "^7.0.5",
     "@types/debug": "^4.1.12",
     "@types/node": "^16.18.101",
     "@types/stoppable": "^1.1.3"

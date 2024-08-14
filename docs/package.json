@@ -1,7 +1,7 @@
 {
   "name": "@loopback/docs",
   "description": "Documentation files rendered at [https://loopback.io](https://loopback.io)",
-  "version": "7.0.4",
+  "version": "7.0.5",
   "keywords": [
     "LoopBack",
     "docs"
@@ -36,6 +36,6 @@
     "tslib": "^2.6.3"
   },
   "devDependencies": {
-    "@loopback/build": "^11.0.4"
+    "@loopback/build": "^11.0.5"
   }
 }
