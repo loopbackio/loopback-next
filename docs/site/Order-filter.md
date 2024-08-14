@@ -67,7 +67,7 @@ Return the three most expensive items, sorted by the `price` property:
 
 ```ts
 await itemRepository.find({
-  order: 'price DESC',
+  order: ['price DESC'],
   limit: 3,
 });
 ```
