@@ -1,5 +1,6 @@
 <img src="https://raw.githubusercontent.com/loopbackio/loopback.io/gh-pages/images/branding/logo/blue/loopback-sm.png" alt="LoopBack4 logo" width="400"/>
 
+Test
 [![Continuous Integration Status](https://github.com/loopbackio/loopback-next/actions/workflows/continuous-integration.yml/badge.svg)](https://github.com/loopbackio/loopback-next/actions/workflows/continuous-integration.yml)
 [![Coverage Status](https://coveralls.io/repos/github/loopbackio/loopback-next/badge.svg?branch=master)](https://coveralls.io/github/loopbackio/loopback-next?branch=master)
 [![CodeQL Status](https://github.com/loopbackio/loopback-next/workflows/CodeQL/badge.svg)](https://github.com/loopbackio/loopback-next/actions?query=workflow%3ACodeQL)

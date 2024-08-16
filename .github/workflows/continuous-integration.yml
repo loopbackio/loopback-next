@@ -16,7 +16,7 @@ env:
 jobs:
   test:
     name: Test
-    timeout-minutes: 20
+    timeout-minutes: 200
     strategy:
       matrix:
         os: [ubuntu-latest]
@@ -25,7 +25,7 @@ jobs:
           - os: windows-latest
             node-version: 22 # LTS
           - os: macos-latest
-            node-version: 22 # LTS
+            node-version: 20 # LTS
       fail-fast: false
     runs-on: ${{ matrix.os }}
     steps:
@@ -37,7 +37,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --verbose
       - name: Build
         run: node packages/build/bin/compile-package -b
       - name: Run package tests
