@@ -143,6 +143,25 @@ export function jsonToSchemaObject(
   if (matched) {
     result['x-typescript-type'] = matched[1];
   }
+  if (result.description) {
+    const relationMatched = result.description.match(
+      /\{\"relationships\".*\$/s,
+    );
+    if (relationMatched) {
+      const stringifiedRelation = relationMatched[0].replaceAll(
+        'foreignKey',
+        'x-foreign-key',
+      );
+      if (stringifiedRelation) {
+        result['x-relationships'] =
+          JSON.parse(stringifiedRelation)['relationships'];
+        result.description = result.description.replace(
+          /\{\"relationships\".*\$/s,
+          '',
+        );
+      }
+    }
+  }
   return result;
 }
 
