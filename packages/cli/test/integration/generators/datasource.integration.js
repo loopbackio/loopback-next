@@ -131,6 +131,19 @@ describe('lb4 datasource integration', () => {
 
     checkDataSourceFilesAgainstSnapshot();
   });
+
+  it('correctly coerces setting input of type object and array with config', async () => {
+    await testUtils
+      .executeGenerator(generator)
+      .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path))
+      .withArguments([
+        '--config',
+        `${JSON.stringify(complexCLIInput)}`,
+        '--yes',
+      ]);
+
+    checkDataSourceFilesAgainstSnapshot();
+  });
 });
 
 function checkDataSourceFilesAgainstSnapshot() {
