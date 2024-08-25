@@ -22,52 +22,12 @@ import {NewPet} from '../models/new-pet.model';
     schemas: {
       Pet: {
         type: 'object',
-        allOf: [
-          {
-            $ref: '#/components/schemas/NewPet',
-          },
-          {
-            required: [
-              'id',
-            ],
-            properties: {
-              id: {
-                type: 'integer',
-                format: 'int64',
-              },
-            },
-          },
-        ],
       },
       NewPet: {
         type: 'object',
-        required: [
-          'name',
-        ],
-        properties: {
-          name: {
-            type: 'string',
-          },
-          tag: {
-            type: 'string',
-          },
-        },
       },
       Error: {
         type: 'object',
-        required: [
-          'code',
-          'message',
-        ],
-        properties: {
-          code: {
-            type: 'integer',
-            format: 'int32',
-          },
-          message: {
-            type: 'string',
-          },
-        },
       },
       additionalProperties: {
         type: 'string',
@@ -420,7 +380,7 @@ export type NewPetWithRelations = NewPet & NewPetRelations;
 
 
 exports[`openapi-generator specific files generates all the proper files 5`] = `
-import {model, property} from '@loopback/repository';
+import {model} from '@loopback/repository';
 
 /**
  * The model class is generated from OpenAPI schema - Error
@@ -433,25 +393,6 @@ export class Error {
       Object.assign(this, data);
     }
   }
-
-  /**
-   *
-   */
-  @property({required: true, jsonSchema: {
-  type: 'integer',
-  format: 'int32',
-  minimum: -2147483648,
-  maximum: 2147483647,
-}})
-  code: number;
-
-  /**
-   *
-   */
-  @property({required: true, jsonSchema: {
-  type: 'string',
-}})
-  message: string;
 
 }
 
