@@ -203,6 +203,20 @@ describe('build-schema', () => {
       });
     });
 
+    it('show generated', () => {
+      expect(
+        metaToJsonProperty({
+          type: String,
+          description: 'test',
+          generated: true,
+        }),
+      ).to.eql({
+        type: 'string',
+        description: 'test',
+        readOnly: true,
+      });
+    });
+
     it('keeps AJV keywords', () => {
       const schema = metaToJsonProperty({
         type: String,
