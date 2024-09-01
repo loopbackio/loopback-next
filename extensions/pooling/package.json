@@ -39,7 +39,7 @@
     "@loopback/core": "^6.0.0"
   },
   "dependencies": {
-    "debug": "^4.3.5",
+    "debug": "^4.3.6",
     "generic-pool": "^3.9.0",
     "tslib": "^2.6.3"
   },

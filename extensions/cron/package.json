@@ -43,7 +43,7 @@
     "@types/cron": "^2.4.0",
     "@types/debug": "^4.1.12",
     "cron": "^2.4.4",
-    "debug": "^4.3.5",
+    "debug": "^4.3.6",
     "tslib": "^2.6.3"
   },
   "devDependencies": {

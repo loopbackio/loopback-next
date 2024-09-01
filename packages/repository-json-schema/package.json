@@ -42,7 +42,7 @@
   },
   "dependencies": {
     "@types/json-schema": "^7.0.15",
-    "debug": "^4.3.5",
+    "debug": "^4.3.6",
     "tslib": "^2.6.3"
   },
   "devDependencies": {

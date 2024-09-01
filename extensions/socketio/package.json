@@ -50,7 +50,7 @@
     "@types/cors": "^2.8.17",
     "@types/lodash": "^4.17.6",
     "cors": "^2.8.5",
-    "debug": "^4.3.5",
+    "debug": "^4.3.6",
     "lodash": "^4.17.21",
     "socket.io": "^4.7.5"
   },
