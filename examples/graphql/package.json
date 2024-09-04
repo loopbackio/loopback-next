@@ -61,7 +61,7 @@
     "@loopback/build": "^11.0.5",
     "@loopback/eslint-config": "^15.0.4",
     "@loopback/testlab": "^7.0.5",
-    "@types/multer": "^1.4.11",
+    "@types/multer": "^1.4.12",
     "@types/node": "^16.18.101",
     "eslint": "^8.57.0",
     "rimraf": "^5.0.7",
