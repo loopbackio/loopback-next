@@ -396,8 +396,8 @@ function buildMethodSpec(controllerSpec, op, options) {
       const json = content && content['application/json'];
       propSchema = json && json.schema;
       if (propSchema == null && content) {
-        for (const m of content) {
-          propSchema = content[m].schema;
+        for (const eachContent in content) {
+          propSchema = eachContent.schema;
           if (propSchema) break;
         }
       }
