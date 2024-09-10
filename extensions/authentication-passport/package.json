@@ -67,7 +67,7 @@
     "@types/passport-oauth2": "^1.4.17",
     "@types/qs": "^6.9.15",
     "axios": "^1.7.2",
-    "body-parser": "^1.20.2",
+    "body-parser": "^1.20.3",
     "express": "^4.19.2",
     "form-data": "^4.0.0",
     "jsonwebtoken": "^9.0.2",
