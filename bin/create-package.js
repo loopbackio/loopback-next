@@ -32,10 +32,11 @@
  * 4. Run `lb4 copyright` to update `LICENSE` and copyright headers for `*.ts`
  * and `*.js`.
  *
- * 5. Run `lerna bootstrap --scope <full-package-name>` to link its local
+ * 5. Run `npm install --scope <full-package-name>` to link its local
  * dependencies.
  *
  * 6. Run `update-ts-project-refs` to update TypeScript project references
+ * (via NPM `postinstall` hook)
  *
  * 7. Remind to update `CODEOWNERS` and `docs/site/MONOREPO.md`
  */
@@ -44,7 +45,7 @@
 const path = require('node:path');
 const fse = require('fs-extra');
 const build = require('../packages/build');
-const {runMain, updateTsProjectRefs} = require('./script-util');
+const {runMain} = require('./script-util');
 
 const cwd = process.cwd();
 
@@ -115,7 +116,6 @@ async function createPackage(name) {
   await fixupProject(project);
   await updateCopyrightAndLicense(project, options);
   await bootstrapProject(project);
-  await updateTsProjectRefs({dryRun: false});
 
   promptActions(project);
 }
@@ -152,8 +152,8 @@ async function bootstrapProject({repoRoot, name}) {
   process.chdir(repoRoot);
   // Run `npx lerna bootstrap --scope @loopback/<name>`
   const shell = build.runShell(
-    'npx',
-    ['lerna', 'bootstrap', '--scope', `@loopback/${name}`],
+    'npm',
+    ['install', '--workspace', `@loopback/${name}`],
     {
       cwd: repoRoot,
     },
