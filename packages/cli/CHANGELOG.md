@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.1.0](https://github.com/loopbackio/loopback-next/compare/@loopback/cli@6.0.5...@loopback/cli@6.1.0) (2024-09-12)
+
+
+### Bug Fixes
+
+* change dataSource to datasource for consistency ([0c69224](https://github.com/loopbackio/loopback-next/commit/0c692247b0594813bc0d0ef4f50cc69e5efe20b2))
+* remove duplicate targetModelClassName import in has-one relation template ([57bae5b](https://github.com/loopbackio/loopback-next/commit/57bae5b315bf081cc601c7fbe90faf88fd60c992))
+* update variable names to standard ([ec7c6a0](https://github.com/loopbackio/loopback-next/commit/ec7c6a02ad901a94648f59ee415f90f239a378bc))
+
+
+### Features
+
+* add a condition on process.env.HOST ([7c7f55f](https://github.com/loopbackio/loopback-next/commit/7c7f55fac3809fe7e44f00c9028cd96bbc412bec))
+
+
+
+
+
 ## [6.0.5](https://github.com/loopbackio/loopback-next/compare/@loopback/cli@6.0.4...@loopback/cli@6.0.5) (2024-08-14)
 
 **Note:** Version bump only for package @loopback/cli

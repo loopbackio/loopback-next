@@ -1,7 +1,7 @@
 {
   "name": "@loopback/security",
   "description": "A LoopBack component for security support.",
-  "version": "0.11.5",
+  "version": "0.11.6",
   "keywords": [
     "LoopBack",
     "Security"
@@ -46,9 +46,9 @@
     "tslib": "^2.6.3"
   },
   "devDependencies": {
-    "@loopback/build": "^11.0.5",
-    "@loopback/core": "^6.1.2",
-    "@loopback/testlab": "^7.0.5",
+    "@loopback/build": "^11.0.6",
+    "@loopback/core": "^6.1.3",
+    "@loopback/testlab": "^7.0.6",
     "@types/debug": "^4.1.12",
     "@types/node": "^16.18.101"
   }

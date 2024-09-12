@@ -1,7 +1,7 @@
 {
   "name": "@loopback/http-caching-proxy",
   "description": "A caching HTTP proxy for integration tests. NOT SUITABLE FOR PRODUCTION USE!",
-  "version": "6.0.5",
+  "version": "6.0.6",
   "keywords": [
     "LoopBack",
     "HTTP",
@@ -46,9 +46,9 @@
     "tslib": "^2.6.3"
   },
   "devDependencies": {
-    "@loopback/build": "^11.0.5",
+    "@loopback/build": "^11.0.6",
     "@loopback/eslint-config": "^15.0.4",
-    "@loopback/testlab": "^7.0.5",
+    "@loopback/testlab": "^7.0.6",
     "@types/debug": "^4.1.12",
     "@types/node": "^16.18.101",
     "@types/rimraf": "^3.0.2",

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.0.6](https://github.com/loopbackio/loopback-next/compare/@loopback/docs@7.0.5...@loopback/docs@7.0.6) (2024-09-12)
+
+
+### Bug Fixes
+
+* change dataSource to datasource for consistency ([0c69224](https://github.com/loopbackio/loopback-next/commit/0c692247b0594813bc0d0ef4f50cc69e5efe20b2))
+* **docs:** clarify defaultFn ([f285ad3](https://github.com/loopbackio/loopback-next/commit/f285ad3ba828c4b863332b1b458cb95a4331d437))
+
+
+
+
+
 ## [7.0.5](https://github.com/loopbackio/loopback-next/compare/@loopback/docs@7.0.4...@loopback/docs@7.0.5) (2024-08-14)
 
 
