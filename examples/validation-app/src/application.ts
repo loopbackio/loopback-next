@@ -6,7 +6,7 @@
 import {BootMixin} from '@loopback/boot';
 import {ApplicationConfig, createBindingFromClass} from '@loopback/core';
 import {RepositoryMixin} from '@loopback/repository';
-import {RestApplication} from '@loopback/rest';
+import {RestApplication, RestBindings} from '@loopback/rest';
 import {
   RestExplorerBindings,
   RestExplorerComponent,
@@ -31,6 +31,12 @@ export class ValidationApplication extends BootMixin(
 
     // Set up default home page
     this.static('/', path.join(__dirname, '../public'));
+
+    this.bind(RestBindings.REQUEST_BODY_PARSER_OPTIONS).to({
+      validation: {
+        discriminator: true,
+      },
+    });
 
     // Customize @loopback/rest-explorer configuration here
     this.configure(RestExplorerBindings.COMPONENT).to({

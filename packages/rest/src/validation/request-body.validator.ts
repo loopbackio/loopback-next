@@ -84,7 +84,11 @@ export async function validateRequestBody(
  * @param openapiSchema - The OpenAPI schema to convert.
  */
 function convertToJsonSchema(openapiSchema: SchemaObject) {
-  const jsonSchema = toJsonSchema(openapiSchema);
+  // const jsonSchema = toJsonSchema(openapiSchema);
+  const jsonSchema = toJsonSchema(openapiSchema, {
+    keepNotSupported: ['discriminator'],
+  });
+
   delete jsonSchema['$schema'];
   /* istanbul ignore if */
   if (debug.enabled) {
