@@ -9,24 +9,12 @@ import {Cat, Dog, Pet} from '../models';
 export class PetController {
   constructor() {}
 
-  @post('/pets', {
-    responses: {
-      '200': {
-        description: 'Pet model instance',
-        content: {
-          'application/json': {
-            schema: {'x-ts-type': Pet},
-          },
-        },
-      },
-    },
-  })
+  @post('/pets')
   async create(
     @requestBody({
       content: {
         'application/json': {
           schema: {
-            required: ['kind'],
             discriminator: {
               propertyName: 'kind',
             },

@@ -84,10 +84,18 @@ export async function validateRequestBody(
  * @param openapiSchema - The OpenAPI schema to convert.
  */
 function convertToJsonSchema(openapiSchema: SchemaObject) {
-  // const jsonSchema = toJsonSchema(openapiSchema);
-  const jsonSchema = toJsonSchema(openapiSchema, {
-    keepNotSupported: ['discriminator'],
-  });
+  /*
+    loopback does not pass the options arg to function toJsonSchema(schema, options?),
+    which is part of the openapi-schema-to-json-schema library;
+    by default toJsonSchema() removes discriminators, which is why they do not work
+    in loopback
+  */
+  // TODO: fix below bug; toJsonSchema requires the options object to enable discriminators
+  const jsonSchema = toJsonSchema(openapiSchema);
+  // NOTE: replacing above line with below fixes discriminators not working in loopback and all tests pass
+  // const jsonSchema = toJsonSchema(openapiSchema, {
+  //   keepNotSupported: ['discriminator'],
+  // });
 
   delete jsonSchema['$schema'];
   /* istanbul ignore if */

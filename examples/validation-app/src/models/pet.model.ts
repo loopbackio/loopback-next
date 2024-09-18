@@ -10,9 +10,9 @@ export class CatProperties extends Model {
 
   @property({
     type: Number,
-    required: false,
+    required: true,
   })
-  whiskerLength?: number;
+  whiskerLength: number;
 }
 
 @model()
@@ -25,9 +25,9 @@ export class DogProperties extends Model {
 
   @property({
     type: Number,
-    required: false,
+    required: true,
   })
-  barkVolume?: number;
+  barkVolume: number;
 }
 
 @model()
