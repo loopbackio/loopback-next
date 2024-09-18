@@ -27,7 +27,7 @@ const validDog = {
   },
 };
 
-describe('validate properties', () => {
+describe('validate properties based on discriminated schemas', () => {
   let client: Client;
   let app: ValidationApplication;
 
@@ -49,16 +49,11 @@ describe('validate properties', () => {
     await client.post('/pets').send(validDog).expect(200);
   });
 
-  it('should fail with error indicating the invalid barkVolume', async () => {
+  it('should fail with error indicating invalid barkVolume type', async () => {
     const invalidDog = {...validDog};
     invalidDog.animalProperties.barkVolume = 'loud' as unknown as number;
     const response = await client.post('/pets').send(invalidDog).expect(422);
 
-    /*
-      below expect statements pass after fixing the bug in function convertToJsonSchema()
-      loopback-next/packages/rest/src/validation/request-body.validator.ts#lines-87:99
-      a possible solution is indicated under //NOTE
-    */
     expect(response.body.error.details.length).to.equal(1);
     expect(response.body.error.details[0].message).to.equal('must be number');
     expect(response.body.error.details).to.deepEqual([
@@ -69,6 +64,25 @@ describe('validate properties', () => {
         },
         message: 'must be number',
         path: '/animalProperties/barkVolume',
+      },
+    ]);
+  });
+
+  it('should fail with error indicating invalid whiskerLength type', async () => {
+    const invalidCat = {...validCat};
+    invalidCat.animalProperties.whiskerLength = 'long' as unknown as number;
+    const response = await client.post('/pets').send(invalidCat).expect(422);
+
+    expect(response.body.error.details.length).to.equal(1);
+    expect(response.body.error.details[0].message).to.equal('must be number');
+    expect(response.body.error.details).to.deepEqual([
+      {
+        code: 'type',
+        info: {
+          type: 'number',
+        },
+        message: 'must be number',
+        path: '/animalProperties/whiskerLength',
       },
     ]);
   });
