@@ -41,7 +41,7 @@
   ],
   "dependencies": {
     "@npmcli/map-workspaces": "^3.0.6",
-    "@npmcli/package-json": "^5.2.0",
+    "@npmcli/package-json": "^5.2.1",
     "@openapi-contrib/openapi-schema-to-json-schema": "^5.1.0",
     "@phenomnomnominal/tsquery": "~5.0.1",
     "camelcase-keys": "^7.0.2",
@@ -61,7 +61,7 @@
     "pacote": "^18.0.6",
     "pluralize": "^8.0.0",
     "regenerate": "^1.4.2",
-    "semver": "^7.6.2",
+    "semver": "^7.6.3",
     "slash": "^3.0.0",
     "spdx-license-list": "^6.9.0",
     "stringify-object": "^3.3.0",

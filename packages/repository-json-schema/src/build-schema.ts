@@ -271,6 +271,9 @@ export function metaToJsonProperty(meta: PropertyDefinition): JsonSchema {
   } else {
     result = propDef;
   }
+  if (meta.generated) {
+    result.readOnly = true;
+  }
 
   const wrappedType = stringTypeToWrapper(propertyType);
   const resolvedType = resolveType(wrappedType);
