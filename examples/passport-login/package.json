@@ -72,7 +72,7 @@
     "client-sessions": "^0.8.0",
     "debug": "^4.3.7",
     "express": "^4.19.2",
-    "express-session": "^1.18.0",
+    "express-session": "^1.18.1",
     "jade": "^1.11.0",
     "lodash": "^4.17.21",
     "passport": "^0.5.3",
