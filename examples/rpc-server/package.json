@@ -1,7 +1,7 @@
 {
   "name": "@loopback/example-rpc-server",
   "description": "An example RPC server and application to demonstrate the creation of your own custom server",
-  "version": "7.0.6",
+  "version": "7.0.7",
   "keywords": [
     "loopback-application",
     "loopback"
@@ -42,7 +42,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@loopback/core": "^6.1.3",
+    "@loopback/core": "^6.1.4",
     "express": "^4.19.2",
     "tslib": "^2.6.3"
   },

@@ -1,7 +1,7 @@
 {
   "name": "@loopback/metadata",
   "description": "Utilities to help developers implement TypeScript decorators, define/merge metadata, and inspect metadata",
-  "version": "7.0.6",
+  "version": "7.0.7",
   "keywords": [
     "LoopBack",
     "Decorators",

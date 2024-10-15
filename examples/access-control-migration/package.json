@@ -1,7 +1,7 @@
 {
   "name": "@loopback/example-access-control-migration",
   "description": "Tutorial example on how to migrate the access control example with LoopBack 4.",
-  "version": "7.0.6",
+  "version": "7.0.7",
   "keywords": [
     "loopback",
     "LoopBack",
@@ -51,15 +51,15 @@
     "access": "public"
   },
   "dependencies": {
-    "@loopback/authentication": "^11.0.6",
-    "@loopback/authorization": "^0.15.6",
-    "@loopback/boot": "^7.0.6",
-    "@loopback/core": "^6.1.3",
-    "@loopback/repository": "^7.0.6",
-    "@loopback/rest": "^14.0.6",
-    "@loopback/rest-explorer": "^7.0.6",
-    "@loopback/security": "^0.11.6",
-    "@loopback/service-proxy": "^7.0.6",
+    "@loopback/authentication": "^11.0.7",
+    "@loopback/authorization": "^0.15.7",
+    "@loopback/boot": "^7.0.7",
+    "@loopback/core": "^6.1.4",
+    "@loopback/repository": "^7.0.7",
+    "@loopback/rest": "^14.0.7",
+    "@loopback/rest-explorer": "^7.0.7",
+    "@loopback/security": "^0.11.7",
+    "@loopback/service-proxy": "^7.0.7",
     "@types/bcryptjs": "2.4.6",
     "bcryptjs": "^2.4.3",
     "casbin": "^5.30.0",
@@ -69,7 +69,7 @@
   "devDependencies": {
     "@loopback/build": "^11.0.6",
     "@loopback/eslint-config": "^15.0.4",
-    "@loopback/http-caching-proxy": "^6.0.6",
+    "@loopback/http-caching-proxy": "^6.0.7",
     "@loopback/testlab": "^7.0.6",
     "@types/lodash": "^4.17.10",
     "@types/node": "^16.18.101",

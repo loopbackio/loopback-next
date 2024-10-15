@@ -1,7 +1,7 @@
 {
   "name": "@loopback/tsdocs",
   "description": "A package to generate api docs using Microsoft api-extractor and api-documenter",
-  "version": "6.0.6",
+  "version": "6.0.7",
   "keywords": [
     "LoopBack",
     "Apidocs",

@@ -1,7 +1,7 @@
 {
   "name": "@loopback/example-context",
   "description": "Standalone examples to illustrate features provided by @loopback/context",
-  "version": "7.0.6",
+  "version": "7.0.7",
   "keywords": [
     "loopback",
     "LoopBack",
@@ -46,7 +46,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@loopback/context": "^7.0.6",
+    "@loopback/context": "^7.0.7",
     "tslib": "^2.6.3"
   },
   "devDependencies": {

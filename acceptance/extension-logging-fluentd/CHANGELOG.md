@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.12.7](https://github.com/loopbackio/loopback-next/compare/@loopback/test-extension-logging-fluentd@0.12.6...@loopback/test-extension-logging-fluentd@0.12.7) (2024-10-15)
+
+**Note:** Version bump only for package @loopback/test-extension-logging-fluentd
+
+
+
+
+
 ## [0.12.6](https://github.com/loopbackio/loopback-next/compare/@loopback/test-extension-logging-fluentd@0.12.5...@loopback/test-extension-logging-fluentd@0.12.6) (2024-09-12)
 
 **Note:** Version bump only for package @loopback/test-extension-logging-fluentd
