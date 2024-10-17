@@ -105,6 +105,23 @@ export interface CrudRestControllerOptions {
    * Whether to generate readonly APIs
    */
   readonly?: boolean;
+  /**
+   * Whether to add authentication decorator or not
+   */
+  auth?: {
+    count?: boolean;
+    get?: boolean;
+    getById?: boolean;
+    post?: boolean;
+    patch?: boolean;
+    patchById?: boolean;
+    putById?: boolean;
+    deleteById?: boolean;
+  };
+  // autheticate method from @loopback/authentication extension
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  authenticate?: ((strategy: string) => any) | undefined;
+  strategy?: string;
 }
 
 /**
@@ -155,6 +172,11 @@ export function defineCrudRestController<
       public readonly repository: EntityCrudRepository<T, IdType, Relations>,
     ) {}
 
+    @authenticatedMethod(
+      options.auth?.get,
+      options.authenticate,
+      options.strategy,
+    )
     @get('/', {
       ...response.array(200, `Array of ${modelName} instances`, modelCtor, {
         includeRelations: true,
@@ -172,6 +194,11 @@ export function defineCrudRestController<
         includeRelations: true,
       }),
     })
+    @authenticatedMethod(
+      options.auth?.getById,
+      options.authenticate,
+      options.strategy,
+    )
     async findById(
       @param(idPathParam) id: IdType,
       @param.query.object(
@@ -186,6 +213,11 @@ export function defineCrudRestController<
     @get('/count', {
       ...response(200, `${modelName} count`, {schema: CountSchema}),
     })
+    @authenticatedMethod(
+      options.auth?.count,
+      options.authenticate,
+      options.strategy,
+    )
     async count(
       @param.where(modelCtor)
       where?: Where<T>,
@@ -205,6 +237,11 @@ export function defineCrudRestController<
     @post('/', {
       ...response.model(200, `${modelName} instance created`, modelCtor),
     })
+    @authenticatedMethod(
+      options?.auth?.post,
+      options.authenticate,
+      options.strategy,
+    )
     async create(
       @body(modelCtor, {
         title: `New${modelName}`,
@@ -224,6 +261,11 @@ export function defineCrudRestController<
         schema: CountSchema,
       }),
     })
+    @authenticatedMethod(
+      options?.auth?.patch,
+      options.authenticate,
+      options.strategy,
+    )
     async updateAll(
       @body(modelCtor, {partial: true}) data: Partial<T>,
       @param.where(modelCtor)
@@ -242,6 +284,11 @@ export function defineCrudRestController<
         '204': {description: `${modelName} was updated`},
       },
     })
+    @authenticatedMethod(
+      options?.auth?.patchById,
+      options.authenticate,
+      options.strategy,
+    )
     async updateById(
       @param(idPathParam) id: IdType,
       @body(modelCtor, {partial: true}) data: Partial<T>,
@@ -259,6 +306,11 @@ export function defineCrudRestController<
         '204': {description: `${modelName} was updated`},
       },
     })
+    @authenticatedMethod(
+      options.auth?.putById,
+      options.authenticate,
+      options.strategy,
+    )
     async replaceById(
       @param(idPathParam) id: IdType,
       @body(modelCtor) data: T,
@@ -271,6 +323,11 @@ export function defineCrudRestController<
         '204': {description: `${modelName} was deleted`},
       },
     })
+    @authenticatedMethod(
+      options.auth?.deleteById,
+      options.authenticate,
+      options.strategy,
+    )
     async deleteById(@param(idPathParam) id: IdType): Promise<void> {
       await this.repository.deleteById(id);
     }
@@ -359,5 +416,19 @@ namespace response {
         items: getModelSchemaRef(modelCtor, options),
       },
     });
+  }
+}
+
+// Helper function to conditionally add @authenticate decorator
+function authenticatedMethod(
+  applyAuth: boolean | undefined,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  authenticate: ((strategy: string) => any) | undefined,
+  strategy: string = 'jwt',
+) {
+  if (authenticate && strategy && applyAuth) {
+    return authenticate(strategy);
+  } else {
+    return (target: Object, key: string, descriptor: PropertyDescriptor) => {};
   }
 }
