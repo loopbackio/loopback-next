@@ -444,7 +444,15 @@ export class Entity extends Model implements Persistable {
   static getIdProperties(): string[] {
     return this.definition.idProperties();
   }
-
+  static getExcludeProperties(): string[] {
+    const {properties} = this.definition;
+    const idProps = Object.keys(properties).filter(prop => {
+      if (properties[prop].id && properties[prop].generated) {
+        return properties[prop].id;
+      }
+    });
+    return idProps;
+  }
   /**
    * Get the identity value for a given entity instance or entity data object.
    *
