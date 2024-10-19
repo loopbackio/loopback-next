@@ -485,6 +485,26 @@ describe('build-schema', () => {
           },
         });
       });
+      it('adds index info in description', () => {
+        @model()
+        class TestModel {
+          @property({
+            type: 'string',
+            required: true,
+            index: {unique: true},
+            jsonSchema: {
+              format: 'email',
+              maxLength: 50,
+              minLength: 5,
+            },
+          })
+          email: string;
+        }
+        const jsonSchema = modelToJsonSchema(TestModel);
+        expect(jsonSchema.description).to.eql(
+          '{"indexInfo":{"email":{"unique":true}}}',
+        );
+      });
 
       context('with custom type properties', () => {
         it('properly converts undecorated custom type properties', () => {
@@ -728,6 +748,7 @@ describe('build-schema', () => {
             @property({
               type: 'string',
               required: true,
+              index: {unique: true},
               jsonSchema: {
                 format: 'email',
                 maxLength: 50,

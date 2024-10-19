@@ -63,6 +63,7 @@ export class AjvFactoryProvider implements Provider<AjvFactory> {
       const ajvInst = new AjvCtor(ajvOptions);
       ajvInst.addKeyword('components');
       ajvInst.addKeyword('x-typescript-type');
+      ajvInst.addKeyword('x-index-info');
 
       ajvKeywords(ajvInst, validationOptions.ajvKeywords);
 
