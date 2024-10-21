@@ -54,7 +54,10 @@ export class ValidationErrorMiddlewareProvider implements Provider<Middleware> {
     err: HttpErrors.HttpError,
   ): Response | undefined {
     // 2. customize error for particular endpoint
-    if (context.request.url === '/coffee-shops') {
+    if (
+      context.request.url === '/coffee-shops' ||
+      context.request.url === '/pets'
+    ) {
       // if this is a validation error from the PATCH method, customize it
       // for other validation errors, the default AJV error object will be sent
       if (err.statusCode === 422 && context.request.method === 'PATCH') {
