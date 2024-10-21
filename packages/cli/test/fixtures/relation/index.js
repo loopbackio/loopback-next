@@ -234,6 +234,7 @@ exports.SANDBOX_FILES = [
   SourceEntries.PatientRepository,
   SourceEntries.AppointmentRepository,
   SourceEntries.EmployeeRepository,
+  SourceEntries.TaskRepository,
 
   SourceEntries.AccountModel,
   SourceEntries.CustomerModel,
