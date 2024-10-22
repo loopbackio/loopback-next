@@ -75,6 +75,10 @@ list.
       <td><a href="https://www.npmjs.com/package/loopback4-dynamic-datasource">loopback4-dynamic-datasource</a></td>
       <td>Connect data sources dynamically during runtime</td>
     </tr>
+    <tr>
+      <td><a href="https://npmjs.com/package/loopback4-kafka-client">loopback4-kafka-client</a></td>
+      <td>Kafka Client built on top of KafkaJs</td>
+    </tr>
   </tbody>
 </table>
 
