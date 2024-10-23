@@ -42,7 +42,7 @@
     "axios": "^1.7.7",
     "cacache": "^18.0.4",
     "debug": "^4.3.7",
-    "rimraf": "^5.0.7",
+    "rimraf": "^5.0.10",
     "tslib": "^2.6.3"
   },
   "devDependencies": {
