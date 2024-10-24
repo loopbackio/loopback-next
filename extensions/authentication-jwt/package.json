@@ -63,6 +63,6 @@
     "@types/lodash": "^4.17.12",
     "@types/node": "^16.18.115",
     "lodash": "^4.17.21",
-    "typescript": "~5.2.2"
+    "typescript": "~5.6.3"
   }
 }
