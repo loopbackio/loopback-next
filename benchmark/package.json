@@ -50,7 +50,7 @@
     "benchmark": "^2.1.4",
     "byline": "^5.0.0",
     "debug": "^4.3.7",
-    "path-to-regexp": "^6.2.2",
+    "path-to-regexp": "^6.3.0",
     "tslib": "^2.6.3"
   },
   "devDependencies": {
