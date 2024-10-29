@@ -62,7 +62,7 @@
     "@loopback/service-proxy": "^7.0.7",
     "@types/bcryptjs": "2.4.6",
     "bcryptjs": "^2.4.3",
-    "casbin": "^5.30.0",
+    "casbin": "^5.32.0",
     "jsonwebtoken": "^9.0.2",
     "loopback-connector-rest": "^5.0.2"
   },
