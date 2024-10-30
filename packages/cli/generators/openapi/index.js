@@ -496,7 +496,7 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
     if (this.shouldExit()) return false;
     debug('install npm dependencies');
     const pkgJson = this.packageJson || {};
-    const deps = pkgJson.dependencies || {};
+    const deps = pkgJson.get('dependencies') || {};
     const pkgs = [];
     const connectorVersionRange = deps['loopback-connector-openapi'];
     if (!connectorVersionRange) {
