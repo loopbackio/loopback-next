@@ -303,7 +303,7 @@ module.exports = class DataSourceGenerator extends ArtifactGenerator {
     if (this.shouldExit()) return false;
     debug('install npm dependencies');
     const pkgJson = this.packageJson || {};
-    const deps = pkgJson.dependencies || {};
+    const deps = pkgJson.get('dependencies') || {};
     const pkgs = [];
 
     // Connector package.

@@ -329,7 +329,7 @@ module.exports = class ServiceGenerator extends ArtifactGenerator {
       utils.toClassName(this.artifactInfo.dataSourceName) + 'DataSource';
     debug('install npm dependencies');
     const pkgJson = this.packageJson || {};
-    const deps = pkgJson.dependencies || {};
+    const deps = pkgJson.get('dependencies') || {};
     const pkgs = [];
 
     if (!deps['@loopback/service-proxy']) {

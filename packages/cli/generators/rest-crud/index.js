@@ -382,7 +382,7 @@ module.exports = class RestCrudGenerator extends ArtifactGenerator {
     if (this.shouldExit()) return false;
     debug('install npm dependencies');
     const pkgJson = this.packageJson || {};
-    const deps = pkgJson.dependencies || {};
+    const deps = pkgJson.get('dependencies') || {};
     const pkgs = [];
 
     const version = cliPkg.config.templateDependencies['@loopback/rest-crud'];
