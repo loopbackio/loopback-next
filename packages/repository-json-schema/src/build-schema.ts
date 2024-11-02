@@ -486,6 +486,19 @@ export function modelToJsonSchema<T extends object>(
       continue;
     }
 
+    if (meta?.settings?.hiddenProperties?.includes(p)) {
+      debug(
+        'Property % is hidden by model hiddenProperties settings %s',
+        meta?.settings?.hiddenProperties?.includes(p),
+      );
+      continue;
+    }
+
+    if (meta.properties[p].hidden) {
+      debug('Property % is hidden by model property hidden setting', p);
+      continue;
+    }
+
     if (meta.properties[p].type == null) {
       // Circular import of model classes can lead to this situation
       throw new Error(
