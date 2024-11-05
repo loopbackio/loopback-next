@@ -68,7 +68,7 @@
     "@types/qs": "^6.9.16",
     "axios": "^1.7.7",
     "body-parser": "^1.20.3",
-    "express": "^4.19.2",
+    "express": "^4.21.1",
     "form-data": "^4.0.1",
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
