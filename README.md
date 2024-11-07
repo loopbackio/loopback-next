@@ -3,12 +3,12 @@
 [![Continuous Integration Status](https://github.com/loopbackio/loopback-next/actions/workflows/continuous-integration.yml/badge.svg)](https://github.com/loopbackio/loopback-next/actions/workflows/continuous-integration.yml)
 [![Coverage Status](https://coveralls.io/repos/github/loopbackio/loopback-next/badge.svg?branch=master)](https://coveralls.io/github/loopbackio/loopback-next?branch=master)
 [![CodeQL Status](https://github.com/loopbackio/loopback-next/workflows/CodeQL/badge.svg)](https://github.com/loopbackio/loopback-next/actions?query=workflow%3ACodeQL)
-[![Gurubase](https://img.shields.io/badge/Gurubase-Ask%20LoopBack%20Guru-006BFF)](https://gurubase.io/g/loopback)
 
 [![Twitter](https://img.shields.io/twitter/follow/strongloop.svg?style=social&label=Follow%20%40strongloop)](https://twitter.com/strongloop)
 [![Facebook](https://img.shields.io/badge/StrongLoop-white?logo=facebook&color=1877F2&logoColor=white)](https://www.facebook.com/strongloop)
 [![LinkedIn](https://img.shields.io/badge/Follow%20us-white?logo=linkedIn&color=0077B5&logoColor=white)](https://www.linkedin.com/groups/5046525/)
 [![Slack](https://img.shields.io/badge/slack-Join%20workspace-%234A154B?logo=slack)](https://join.slack.com/t/loopbackio/shared_invite/zt-8lbow73r-SKAKz61Vdao~_rGf91pcsw)
+[![Gurubase](https://img.shields.io/badge/Gurubase-Ask%20LoopBack%20Guru-006BFF)](https://gurubase.io/g/loopback)
 
 LoopBack makes it easy to build modern applications that require complex
 integrations.
