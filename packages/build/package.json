@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "@loopback/eslint-config": "^15.0.4",
-    "@types/mocha": "^10.0.7",
+    "@types/mocha": "^10.0.9",
     "@types/node": "^16.18.115",
     "cross-spawn": "^7.0.3",
     "debug": "^4.3.7",
@@ -40,7 +40,7 @@
     "fs-extra": "^11.2.0",
     "glob": "^10.4.5",
     "lodash": "^4.17.21",
-    "mocha": "^10.6.0",
+    "mocha": "^10.8.2",
     "nyc": "^17.0.0",
     "prettier": "^3.3.2",
     "rimraf": "^5.0.10",
