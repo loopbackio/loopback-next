@@ -53,7 +53,7 @@
     "@loopback/build": "^11.0.6",
     "@loopback/eslint-config": "^15.0.4",
     "@loopback/testlab": "^7.0.6",
-    "@types/node": "^16.18.115",
+    "@types/node": "^16.18.119",
     "eslint": "^8.57.0",
     "typescript": "~5.2.2"
   }

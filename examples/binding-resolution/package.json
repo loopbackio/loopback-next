@@ -55,7 +55,7 @@
     "@loopback/build": "^11.0.6",
     "@loopback/testlab": "^7.0.6",
     "@types/debug": "^4.1.12",
-    "@types/node": "^16.18.115",
+    "@types/node": "^16.18.119",
     "eslint": "^8.57.0",
     "source-map-support": "^0.5.21",
     "typescript": "~5.2.2"
