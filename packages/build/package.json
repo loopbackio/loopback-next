@@ -34,7 +34,7 @@
     "@loopback/eslint-config": "^15.0.4",
     "@types/mocha": "^10.0.9",
     "@types/node": "^16.18.115",
-    "cross-spawn": "^7.0.3",
+    "cross-spawn": "^7.0.5",
     "debug": "^4.3.7",
     "eslint": "^8.57.0",
     "fs-extra": "^11.2.0",
