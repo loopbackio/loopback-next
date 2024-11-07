@@ -52,7 +52,7 @@
     "@loopback/core": "^6.1.4",
     "@loopback/testlab": "^7.0.6",
     "@types/debug": "^4.1.12",
-    "@types/node": "^16.18.115",
+    "@types/node": "^16.18.119",
     "casbin": "^5.34.0"
   }
 }
