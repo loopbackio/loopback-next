@@ -43,25 +43,34 @@
     "@loopback/core": "^6.0.0"
   },
   "dependencies": {
-    "@graphql-tools/utils": "^10.5.5",
+    "@apollo/cache-control-types": "^1.0.3",
+    "@apollo/server": "^4.9.3",
+    "@apollo/utils.keyvaluecache": "^3.0.0",
+    "@graphql-tools/mock": "^9.0.0",
+    "@graphql-tools/utils": "^10.0.1",
     "@loopback/http-server": "^6.0.7",
-    "apollo-server-express": "^3.13.0",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
     "debug": "^4.3.7",
     "express": "^4.21.1",
-    "graphql": "^15.9.0",
+    "graphql": "^16.8.0",
     "graphql-subscriptions": "^2.0.0",
-    "type-graphql": "^1.1.1"
+    "graphql-ws": "^5.13.1",
+    "type-graphql": "^2.0.0-beta.2",
+    "ws": "^8.13.0"
   },
   "devDependencies": {
     "@loopback/boot": "^7.0.7",
     "@loopback/build": "^11.0.6",
     "@loopback/core": "^6.1.4",
+    "@types/cors": "^2.8.13",
     "@loopback/eslint-config": "^15.0.4",
     "@loopback/repository": "^7.0.7",
     "@loopback/rest": "^14.0.7",
     "@loopback/testlab": "^7.0.6",
     "@types/debug": "^4.1.12",
     "@types/node": "^16.18.119",
+    "@types/ws": "^8.5.5",
     "class-transformer": "^0.5.1"
   }
 }

@@ -3,14 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {
-  arg,
-  fieldResolver,
-  Publisher,
-  pubSub,
-  query,
-  resolver,
-} from '../../../../';
+import {PubSubEngine} from 'graphql-subscriptions';
+import {arg, fieldResolver, pubSub, query, resolver} from '../../../../';
 import {mutation, root} from '../../../../decorators';
 import {RecipeInput} from './recipe.input';
 import {Recipe} from './recipe.model';
@@ -32,11 +26,11 @@ export class RecipeResolver {
   @mutation(returns => Recipe)
   async addRecipe(
     @arg('recipe') recipe: RecipeInput,
-    @pubSub('recipeCreated') publish: Publisher<Recipe>,
+    @pubSub('recipeCreated') publish: PubSubEngine,
   ): Promise<Recipe> {
     const result = new Recipe();
     result.title = recipe.title;
-    await publish(result);
+    // await publish.publish(result);
     return result;
   }
 }

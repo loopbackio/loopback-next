@@ -12,14 +12,15 @@ import {
   Authorized,
   Field,
   FieldResolver,
+  getMetadataStorage,
   InputType,
   Mutation,
   ObjectType,
-  PubSub,
   Query,
   Resolver,
   Root,
   Subscription,
+  SymbolKeysNotSupportedError,
 } from 'type-graphql';
 
 /**
@@ -41,4 +42,19 @@ export const inputType = InputType;
 export const objectType = ObjectType;
 export const authorized = Authorized;
 export const subscription = Subscription;
-export const pubSub = PubSub;
+
+export function pubSub(triggerKey?: string): ParameterDecorator {
+  return (prototype, propertyKey, parameterIndex) => {
+    if (typeof propertyKey === 'symbol') {
+      throw new SymbolKeysNotSupportedError();
+    }
+
+    getMetadataStorage().collectHandlerParamMetadata({
+      kind: 'pubSub',
+      target: prototype.constructor,
+      methodName: propertyKey!,
+      index: parameterIndex,
+      triggerKey,
+    });
+  };
+}

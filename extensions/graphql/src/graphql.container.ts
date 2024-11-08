@@ -3,6 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {ExpressContextFunctionArgument} from '@apollo/server/dist/esm/express4';
 import {
   Binding,
   BindingScope,
@@ -12,9 +13,8 @@ import {
   filterByKey,
   filterByServiceInterface,
 } from '@loopback/core';
-import {ExpressContext} from 'apollo-server-express';
-import {ContainerType, ResolverData} from 'type-graphql';
 import debugFactory from 'debug';
+import {ContainerType, ResolverData} from 'type-graphql';
 import {GraphQLBindings, GraphQLTags} from './keys';
 
 const debug = debugFactory('loopback:graphql:container');
@@ -27,7 +27,7 @@ export class GraphQLResolutionContext extends Context {
   constructor(
     parent: Context,
     readonly resolverClass: Constructor<unknown>,
-    readonly resolverData: ResolverData<unknown>,
+    readonly resolverData: ResolverData<object>,
   ) {
     super(parent);
     this.bind(GraphQLBindings.RESOLVER_DATA).to(resolverData);
@@ -41,14 +41,11 @@ export class GraphQLResolutionContext extends Context {
  */
 export class LoopBackContainer implements ContainerType {
   constructor(readonly ctx: Context) {}
-  get(
-    resolverClass: Constructor<unknown>,
-    resolverData: ResolverData<unknown>,
-  ) {
+  get(resolverClass: Constructor<unknown>, resolverData: ResolverData<object>) {
     debug('Resolving a resolver %s', resolverClass.name, resolverData);
 
     // Check if the resolverData has the LoopBack RequestContext
-    const graphQLCtx = resolverData.context as ExpressContext;
+    const graphQLCtx = resolverData.context as ExpressContextFunctionArgument;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const reqCtx = (graphQLCtx?.req as any)?.[MIDDLEWARE_CONTEXT];
     const parent = reqCtx ?? this.ctx;

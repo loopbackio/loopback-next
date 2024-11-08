@@ -4,21 +4,21 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
+  ArtifactOptions,
+  BaseArtifactBooter,
+  BootBindings,
+  booter,
+} from '@loopback/boot';
+import {
   Application,
   config,
   Constructor,
   CoreBindings,
   inject,
 } from '@loopback/core';
-import {
-  ArtifactOptions,
-  BaseArtifactBooter,
-  BootBindings,
-  booter,
-} from '@loopback/boot';
-import {getMetadataStorage} from 'type-graphql';
-import {ResolverClassMetadata} from 'type-graphql/dist/metadata/definitions';
 import debugFactory from 'debug';
+import {getMetadataStorage} from 'type-graphql';
+import {ResolverClassMetadata} from 'type-graphql/build/typings/metadata/definitions/resolver-metadata';
 import {registerResolver} from '../graphql.server';
 
 const debug = debugFactory('loopback:graphql:resolver-booter');
@@ -63,7 +63,7 @@ export class GraphQLResolverBooter extends BaseArtifactBooter {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (getMetadataStorage() as any).resolverClasses;
     this.resolvers = this.classes.filter(cls => {
-      return resolverClasses.some(r => !r.isAbstract && r.target === cls);
+      return resolverClasses.some(r => /*!r.isAbstract && */ r.target === cls);
     });
     for (const resolver of this.resolvers) {
       debug('Bind interceptor: %s', resolver.name);
