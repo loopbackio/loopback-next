@@ -40,17 +40,27 @@
   ],
   "peerDependencies": {
     "@loopback/boot": "^7.0.0",
-    "@loopback/core": "^6.0.0"
+    "@loopback/core": "^6.0.0",
+    "@loopback/rest": "^14.0.0"
   },
   "dependencies": {
+    "@apollo/server": "^4.9.3",
     "@graphql-tools/utils": "^10.8.6",
     "@loopback/http-server": "^6.0.14",
-    "apollo-server-express": "^3.13.0",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
     "debug": "^4.4.1",
     "express": "^4.21.2",
-    "graphql": "^15.10.1",
+    "graphql": "^16.8.0",
+    "@graphql-tools/utils": "^10.8.6",
+    "@loopback/http-server": "^6.0.14",
+    "debug": "^4.4.1",
+    "express": "^4.21.2",
+    "graphql": "^16.8.0",
     "graphql-subscriptions": "^2.0.0",
-    "type-graphql": "^1.1.1"
+    "graphql-ws": "^5.14.3",
+    "type-graphql": "^2.0.0-beta.2",
+    "ws": "^8.13.0"
   },
   "devDependencies": {
     "@loopback/boot": "^7.0.14",
@@ -60,8 +70,10 @@
     "@loopback/repository": "^7.0.14",
     "@loopback/rest": "^14.0.14",
     "@loopback/testlab": "^7.0.13",
+    "@types/cors": "^2.8.13",
     "@types/debug": "^4.1.12",
     "@types/node": "^16.18.126",
+    "@types/ws": "^8.5.5",
     "class-transformer": "^0.5.1"
   }
 }

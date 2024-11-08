@@ -3,9 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {ExpressContextFunctionArgument} from '@apollo/server/dist/esm/express4';
 import {expect} from '@loopback/testlab';
 import {
-  ExpressContext,
   field,
   GraphQLBindings,
   GraphQLMiddleware,
@@ -32,7 +32,7 @@ describe('GraphQL server', () => {
   });
 
   it('registers middleware', async () => {
-    const middleware: GraphQLMiddleware<ExpressContext> = (
+    const middleware: GraphQLMiddleware<ExpressContextFunctionArgument> = (
       resolverData,
       next,
     ) => {

@@ -31,9 +31,16 @@ export class GraphqlDemoApplication extends BootMixin(
     this.expressMiddleware('middleware.express.GraphQL', server.expressApp);
 
     // It's possible to register a graphql context resolver
-    this.bind(GraphQLBindings.GRAPHQL_CONTEXT_RESOLVER).to(context => {
+    this.bind(GraphQLBindings.GRAPHQL_CONTEXT_RESOLVER).to(async context => {
       return {...context};
     });
+
+    // It's possible to register a graphql Web Socket context resolver
+    this.bind(GraphQLBindings.GRAPHQL_WS_CONTEXT_RESOLVER).to(
+      async (context, msg, args) => {
+        return {...context};
+      },
+    );
 
     this.bind('recipes').to([...sampleRecipes]);
 
