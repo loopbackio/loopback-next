@@ -44,7 +44,7 @@ import {
   ResolverInterface,
   BuildSchemaOptions as TypeGrahpQLBuildSchemaOptions,
 } from 'type-graphql';
-import {Middleware} from 'type-graphql/build/typings/typings/middleware';
+import {Middleware} from 'type-graphql/dist/interfaces/Middleware';
 import {WebSocketServer} from 'ws';
 import {LoopBackContainer} from './graphql.container';
 import {GraphQLBindings, GraphQLTags} from './keys';

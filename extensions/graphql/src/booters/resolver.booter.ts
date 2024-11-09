@@ -18,7 +18,7 @@ import {
 } from '@loopback/core';
 import debugFactory from 'debug';
 import {getMetadataStorage} from 'type-graphql';
-import {ResolverClassMetadata} from 'type-graphql/build/typings/metadata/definitions/resolver-metadata';
+import {ResolverClassMetadata} from 'type-graphql/dist/metadata/definitions';
 import {registerResolver} from '../graphql.server';
 
 const debug = debugFactory('loopback:graphql:resolver-booter');

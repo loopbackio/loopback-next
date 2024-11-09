@@ -9,7 +9,7 @@ import {ExecutionArgs} from 'graphql';
 import {GraphQLExecutionContextValue, SubscribeMessage} from 'graphql-ws';
 
 export {Float, ID, Int, ResolverInterface} from 'type-graphql';
-export {Middleware as GraphQLMiddleware} from 'type-graphql/build/typings/typings/middleware';
+export {Middleware as GraphQLMiddleware} from 'type-graphql/dist/interfaces/Middleware';
 
 /**
  * Options for GraphQL component
