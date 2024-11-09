@@ -43,10 +43,7 @@
     "@loopback/core": "^6.0.0"
   },
   "dependencies": {
-    "@apollo/cache-control-types": "^1.0.3",
     "@apollo/server": "^4.9.3",
-    "@apollo/utils.keyvaluecache": "^3.0.0",
-    "@graphql-tools/mock": "^9.0.0",
     "@graphql-tools/utils": "^10.0.1",
     "@loopback/http-server": "^6.0.7",
     "body-parser": "^1.20.2",
@@ -63,11 +60,11 @@
     "@loopback/boot": "^7.0.7",
     "@loopback/build": "^11.0.6",
     "@loopback/core": "^6.1.4",
-    "@types/cors": "^2.8.13",
     "@loopback/eslint-config": "^15.0.4",
     "@loopback/repository": "^7.0.7",
     "@loopback/rest": "^14.0.7",
     "@loopback/testlab": "^7.0.6",
+    "@types/cors": "^2.8.13",
     "@types/debug": "^4.1.12",
     "@types/node": "^16.18.119",
     "@types/ws": "^8.5.5",
