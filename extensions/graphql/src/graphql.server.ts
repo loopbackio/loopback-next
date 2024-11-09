@@ -186,11 +186,12 @@ export class GraphQLServer extends Context implements Server {
     const graphQLServer = new ApolloServer(serverConfig);
     await graphQLServer.start();
     this.expressApp.use(
-      this.options.graphQLPath ?? '/graphql',
+      this.options.graphQLPath ?? '/',
       cors<cors.CorsRequest>(),
       json(),
       expressMiddleware(graphQLServer, {
         context: graphqlContextResolver,
+        ...this.options.middlewareOptions,
       }),
     );
     // Start the http server if created
