@@ -203,12 +203,12 @@ describe('build-schema', () => {
       });
     });
 
-    it('show generated', () => {
+    it('show readOnly if readOnly: true', () => {
       expect(
         metaToJsonProperty({
           type: String,
           description: 'test',
-          generated: true,
+          readOnly: true,
         }),
       ).to.eql({
         type: 'string',

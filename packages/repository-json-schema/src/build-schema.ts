@@ -271,7 +271,7 @@ export function metaToJsonProperty(meta: PropertyDefinition): JsonSchema {
   } else {
     result = propDef;
   }
-  if (meta.generated) {
+  if (meta.readOnly) {
     result.readOnly = true;
   }
 
