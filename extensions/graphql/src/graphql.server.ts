@@ -153,8 +153,7 @@ export class GraphQLServer extends Context implements Server {
       // emitSchemaFile: path.resolve(__dirname, 'schema.gql'),
       container: new LoopBackContainer(this),
       authChecker,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      pubSub: pubSub as any,
+      pubSub,
       globalMiddlewares: await this.getMiddlewareList(),
     };
     return buildSchema(buildSchemaOptions);
