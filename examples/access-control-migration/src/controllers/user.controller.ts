@@ -12,7 +12,7 @@ import {
   Credentials,
   TokenServiceBindings,
   UserServiceBindings,
-} from '../components/jwt-authentication';
+} from '@loopback/authentication-jwt';
 import {User} from '../models';
 
 const CredentialsSchema: SchemaObject = {
