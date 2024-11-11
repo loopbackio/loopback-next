@@ -52,7 +52,7 @@
     "express": "^4.21.1",
     "graphql": "^16.8.0",
     "graphql-subscriptions": "^2.0.0",
-    "graphql-ws": "^5.13.1",
+    "graphql-ws": "^5.14.3",
     "type-graphql": "^2.0.0-beta.2",
     "ws": "^8.13.0"
   },
