@@ -48,7 +48,7 @@
     "morgan": "^1.10.0",
     "tslib": "^2.6.3",
     "winston": "^3.17.0",
-    "winston-transport": "^4.7.0"
+    "winston-transport": "^4.9.0"
   },
   "devDependencies": {
     "@loopback/build": "^11.0.6",
