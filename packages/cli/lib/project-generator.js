@@ -36,7 +36,14 @@ module.exports = class ProjectGenerator extends BaseGenerator {
         name: 'loopbackBuild',
         description: g.f('use @loopback/build helpers (e.g. lb-eslint)'),
       },
-      {name: 'vscode', description: g.f('add VSCode config files')},
+      {
+        name: 'editorconfig',
+        description: g.f('add EditorConfig files'),
+      },
+      {
+        name: 'vscode',
+        description: g.f('add VSCode config files'),
+      },
     ];
   }
 
@@ -75,6 +82,11 @@ module.exports = class ProjectGenerator extends BaseGenerator {
     this.option('loopbackBuild', {
       type: Boolean,
       description: g.f('Use @loopback/build'),
+    });
+
+    this.option('editorconfig', {
+      type: Boolean,
+      description: g.f('Use preconfigured EditorConfig settings'),
     });
 
     this.option('vscode', {
@@ -299,6 +311,10 @@ module.exports = class ProjectGenerator extends BaseGenerator {
 
     if (!this.projectInfo.mocha) {
       this.fs.delete(this.destinationPath('.mocharc.json'));
+    }
+
+    if (!this.projectInfo.editorconfig) {
+      this.fs.delete(this.destinationPath('.editorconfig'));
     }
 
     if (!this.projectInfo.vscode) {
