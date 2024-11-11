@@ -27,6 +27,7 @@ $ lb4 app
  ◉ Enable prettier: install prettier to format code conforming to rules
  ◉ Enable mocha: install mocha to run tests
  ◉ Enable loopbackBuild: use @loopback/build helpers (e.g. lb-eslint)
+ ◉ Enable editorconfig: add EditorConfig files
  ◉ Enable vscode: add VSCode config files
  ◉ Enable docker: include Dockerfile and .dockerignore
  ◉ Enable repositories: include repository imports and RepositoryMixin
