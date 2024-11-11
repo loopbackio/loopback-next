@@ -1,7 +1,7 @@
 {
   "name": "@loopback/graphql",
   "description": "LoopBack's graphql integration",
-  "version": "0.11.7",
+  "version": "0.11.8",
   "keywords": [
     "LoopBack",
     "GraphQL"
