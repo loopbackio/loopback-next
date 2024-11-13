@@ -3,11 +3,17 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {createBindingFromClass} from '@loopback/core';
+import {Application, createBindingFromClass} from '@loopback/core';
 import {GraphQLServer} from '@loopback/graphql';
-import {expect, supertest} from '@loopback/testlab';
+import {
+  createRestAppClient,
+  expect,
+  givenHttpServerConfig,
+  supertest,
+} from '@loopback/testlab';
 import {createClient, Client as WsClient} from 'graphql-ws';
 import WebSocket from 'ws';
+import {GraphqlDemoApplication} from '../../application';
 import {RecipesDataSource} from '../../datasources';
 import {RecipeResolver} from '../../graphql-resolvers/recipe-resolver';
 import {RecipeRepository} from '../../repositories';
@@ -94,5 +100,157 @@ describe('GraphQL server subscription', () => {
     if (!server) return;
     await server.stop();
     repo.stop();
+  }
+});
+
+describe('GraphQL application subscription', () => {
+  let server: GraphQLServer;
+  let app: Application;
+  let client: supertest.SuperTest<supertest.Test>;
+  let wsClient: WsClient;
+  let notificationIter: AsyncIterableIterator<unknown>;
+
+  before('setup app and subscribe', async function () {
+    await setupAppAndSubscribe();
+    await addRecipe();
+  });
+
+  after('unsubscribe and stop server', async function () {
+    await notificationIter.return?.();
+    await wsClient.dispose();
+    await stopApp();
+  });
+
+  it('should receive notification', async function () {
+    const {value: notification} = await notificationIter.next();
+    expect(notification.data.recipeCreated).to.containEql({
+      id: '4',
+      numberInCollection: 4,
+    });
+  });
+
+  async function setupAppAndSubscribe() {
+    app = new Application();
+    const serverBinding = app.server(GraphQLServer);
+    app.configure(serverBinding.key).to({host: '127.0.0.1', port: 0});
+    server = await app.getServer(GraphQLServer);
+    server.resolver(RecipeResolver);
+
+    app.bind('recipes').to([...sampleRecipes]);
+    const repoBinding = createBindingFromClass(RecipeRepository);
+    app.add(repoBinding);
+    app.add(createBindingFromClass(RecipesDataSource));
+    app.add(createBindingFromClass(RecipeService));
+    await app.start();
+
+    client = supertest(server.httpServer?.url);
+
+    wsClient = await createWsClient(server.httpServer!.url);
+    notificationIter = wsClient.iterate({
+      operationName: 'AllNotifications',
+      query: exampleQuery,
+    });
+  }
+
+  async function addRecipe() {
+    await client
+      .post('/graphql')
+      .set('content-type', 'application/json')
+      .accept('application/json')
+      .send({operationName: 'AddRecipe', variables: {}, query: exampleQuery})
+      .expect(200);
+  }
+
+  async function createWsClient(serverUrl: string): Promise<WsClient> {
+    const url = serverUrl.replace(/^http/, 'ws');
+    return new Promise((resolve, reject) => {
+      const webSocketsClient = createClient({
+        webSocketImpl: WebSocket,
+        url,
+        lazy: false,
+      });
+      webSocketsClient.on('connected', () => resolve(webSocketsClient));
+      webSocketsClient.on('error', err =>
+        reject(new Error(`failed to create WS client: ${err}`)),
+      );
+    });
+  }
+
+  async function stopApp() {
+    if (!app) return;
+    await app.stop();
+  }
+});
+
+describe('GraphQL as middleware subscription', () => {
+  let app: GraphqlDemoApplication;
+  let client: supertest.SuperTest<supertest.Test>;
+  let wsClient: WsClient;
+  let notificationIter: AsyncIterableIterator<unknown>;
+
+  before('setup app and subscribe', async function () {
+    await setupAppWithMiddlewareAndSubscribe();
+    await addRecipe();
+  });
+
+  after('unsubscribe and stop server', async function () {
+    await notificationIter.return?.();
+    await wsClient.dispose();
+    await stopApp();
+  });
+
+  it('should receive notification', async function () {
+    const {value: notification} = await notificationIter.next();
+    expect(notification.data.recipeCreated).to.containEql({
+      id: '4',
+      numberInCollection: 4,
+    });
+  });
+
+  async function setupAppWithMiddlewareAndSubscribe() {
+    app = new GraphqlDemoApplication({
+      rest: givenHttpServerConfig(),
+      graphql: {asMiddlewareOnly: true},
+    });
+    await app.boot();
+    await app.start();
+    client = createRestAppClient(app);
+
+    wsClient = await createWsClient(
+      `${app.restServer.rootUrl ?? app.restServer.url!}`,
+    );
+    notificationIter = wsClient.iterate({
+      operationName: 'AllNotifications',
+      query: exampleQuery,
+    });
+  }
+
+  async function addRecipe() {
+    await client
+      .post('/graphql')
+      .set('content-type', 'application/json')
+      .accept('application/json')
+      .send({operationName: 'AddRecipe', variables: {}, query: exampleQuery})
+      .expect(200);
+  }
+
+  async function createWsClient(serverUrl: string): Promise<WsClient> {
+    const url = serverUrl.replace(/^http/, 'ws');
+    return new Promise((resolve, reject) => {
+      const webSocketsClient = createClient({
+        webSocketImpl: WebSocket,
+        url,
+        lazy: false,
+      });
+      webSocketsClient.on('connected', () => resolve(webSocketsClient));
+      webSocketsClient.on('error', err => {
+        process.stderr.write(String(err));
+        reject(new Error(`failed to create WS client: ${JSON.stringify(err)}`));
+      });
+    });
+  }
+
+  async function stopApp() {
+    await app?.stop();
   }
 });
