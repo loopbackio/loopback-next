@@ -24,7 +24,7 @@ jobs:
         include:
           - os: windows-latest
             node-version: 20 # LTS
-          - os: macos-latest
+          - os: macos-13
             node-version: 20 # LTS
       fail-fast: false
     runs-on: ${{ matrix.os }}
