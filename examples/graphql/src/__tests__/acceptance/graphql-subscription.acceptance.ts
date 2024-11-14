@@ -30,22 +30,16 @@ describe('GraphQL server subscription', () => {
 
   before('setup server and add recipe', async function () {
     await setupServerAndSubscribe();
-    await addRecipe();
+    await addRecipe(client);
   });
 
   after('unsubscribe and stop server', async function () {
-    await notificationIter.return?.();
-    await wsClient.dispose();
+    await unsubscribe(wsClient, notificationIter);
     await stopServer();
   });
 
-  it('should receive notification', async function () {
-    const {value: notification} = await notificationIter.next();
-    expect(notification.data.recipeCreated).to.containEql({
-      id: '4',
-      numberInCollection: 4,
-    });
-  });
+  it('should receive notification', async () =>
+    receiveNotification(notificationIter));
 
   async function setupServerAndSubscribe() {
     server = new GraphQLServer({
@@ -64,36 +58,8 @@ describe('GraphQL server subscription', () => {
     await repo.start();
 
     client = supertest(server.httpServer?.url);
-
     wsClient = await createWsClient(server.httpServer!.url);
-    notificationIter = wsClient.iterate({
-      operationName: 'AllNotifications',
-      query: exampleQuery,
-    });
-  }
-
-  async function addRecipe() {
-    await client
-      .post('/graphql')
-      .set('content-type', 'application/json')
-      .accept('application/json')
-      .send({operationName: 'AddRecipe', variables: {}, query: exampleQuery})
-      .expect(200);
-  }
-
-  async function createWsClient(serverUrl: string): Promise<WsClient> {
-    const url = serverUrl.replace(/^http/, 'ws');
-    return new Promise((resolve, reject) => {
-      const webSocketsClient = createClient({
-        webSocketImpl: WebSocket,
-        url,
-        lazy: false,
-      });
-      webSocketsClient.on('connected', () => resolve(webSocketsClient));
-      webSocketsClient.on('error', err =>
-        reject(new Error(`failed to create WS client: ${err}`)),
-      );
-    });
+    notificationIter = subscribe(wsClient);
   }
 
   async function stopServer() {
@@ -112,22 +78,16 @@ describe('GraphQL application subscription', () => {
 
   before('setup app and subscribe', async function () {
     await setupAppAndSubscribe();
-    await addRecipe();
+    await addRecipe(client);
   });
 
   after('unsubscribe and stop server', async function () {
-    await notificationIter.return?.();
-    await wsClient.dispose();
+    await unsubscribe(wsClient, notificationIter);
     await stopApp();
   });
 
-  it('should receive notification', async function () {
-    const {value: notification} = await notificationIter.next();
-    expect(notification.data.recipeCreated).to.containEql({
-      id: '4',
-      numberInCollection: 4,
-    });
-  });
+  it('should receive notification', async () =>
+    receiveNotification(notificationIter));
 
   async function setupAppAndSubscribe() {
     app = new Application();
@@ -144,36 +104,8 @@ describe('GraphQL application subscription', () => {
     await app.start();
 
     client = supertest(server.httpServer?.url);
-
     wsClient = await createWsClient(server.httpServer!.url);
-    notificationIter = wsClient.iterate({
-      operationName: 'AllNotifications',
-      query: exampleQuery,
-    });
-  }
-
-  async function addRecipe() {
-    await client
-      .post('/graphql')
-      .set('content-type', 'application/json')
-      .accept('application/json')
-      .send({operationName: 'AddRecipe', variables: {}, query: exampleQuery})
-      .expect(200);
-  }
-
-  async function createWsClient(serverUrl: string): Promise<WsClient> {
-    const url = serverUrl.replace(/^http/, 'ws');
-    return new Promise((resolve, reject) => {
-      const webSocketsClient = createClient({
-        webSocketImpl: WebSocket,
-        url,
-        lazy: false,
-      });
-      webSocketsClient.on('connected', () => resolve(webSocketsClient));
-      webSocketsClient.on('error', err =>
-        reject(new Error(`failed to create WS client: ${err}`)),
-      );
-    });
+    notificationIter = subscribe(wsClient);
   }
 
   async function stopApp() {
@@ -190,22 +122,16 @@ describe('GraphQL as middleware subscription', () => {
 
   before('setup app and subscribe', async function () {
     await setupAppWithMiddlewareAndSubscribe();
-    await addRecipe();
+    await addRecipe(client);
   });
 
   after('unsubscribe and stop server', async function () {
-    await notificationIter.return?.();
-    await wsClient.dispose();
+    await unsubscribe(wsClient, notificationIter);
     await stopApp();
   });
 
-  it('should receive notification', async function () {
-    const {value: notification} = await notificationIter.next();
-    expect(notification.data.recipeCreated).to.containEql({
-      id: '4',
-      numberInCollection: 4,
-    });
-  });
+  it('should receive notification', async () =>
+    receiveNotification(notificationIter));
 
   async function setupAppWithMiddlewareAndSubscribe() {
     app = new GraphqlDemoApplication({
@@ -214,43 +140,65 @@ describe('GraphQL as middleware subscription', () => {
     });
     await app.boot();
     await app.start();
-    client = createRestAppClient(app);
 
+    client = createRestAppClient(app);
     wsClient = await createWsClient(
       `${app.restServer.rootUrl ?? app.restServer.url!}`,
     );
-    notificationIter = wsClient.iterate({
-      operationName: 'AllNotifications',
-      query: exampleQuery,
-    });
-  }
-
-  async function addRecipe() {
-    await client
-      .post('/graphql')
-      .set('content-type', 'application/json')
-      .accept('application/json')
-      .send({operationName: 'AddRecipe', variables: {}, query: exampleQuery})
-      .expect(200);
-  }
-
-  async function createWsClient(serverUrl: string): Promise<WsClient> {
-    const url = serverUrl.replace(/^http/, 'ws');
-    return new Promise((resolve, reject) => {
-      const webSocketsClient = createClient({
-        webSocketImpl: WebSocket,
-        url,
-        lazy: false,
-      });
-      webSocketsClient.on('connected', () => resolve(webSocketsClient));
-      webSocketsClient.on('error', err => {
-        process.stderr.write(String(err));
-        reject(new Error(`failed to create WS client: ${JSON.stringify(err)}`));
-      });
-    });
+    notificationIter = subscribe(wsClient);
   }
 
   async function stopApp() {
     await app?.stop();
   }
 });
+
+async function addRecipe(client: supertest.SuperTest<supertest.Test>) {
+  await client
+    .post('/graphql')
+    .set('content-type', 'application/json')
+    .accept('application/json')
+    .send({operationName: 'AddRecipe', variables: {}, query: exampleQuery})
+    .expect(200);
+}
+
+async function createWsClient(serverUrl: string): Promise<WsClient> {
+  const url = serverUrl.replace(/^http/, 'ws');
+  return new Promise((resolve, reject) => {
+    const webSocketsClient = createClient({
+      webSocketImpl: WebSocket,
+      url,
+      lazy: false,
+    });
+    webSocketsClient.on('connected', () => resolve(webSocketsClient));
+    webSocketsClient.on('error', err => {
+      process.stderr.write(String(err));
+      reject(new Error(`failed to create WS client: ${JSON.stringify(err)}`));
+    });
+  });
+}
+
+function subscribe(wsClient: WsClient) {
+  return wsClient.iterate({
+    operationName: 'AllNotifications',
+    query: exampleQuery,
+  });
+}
+
+async function unsubscribe(
+  wsClient: WsClient,
+  notificationIter: AsyncIterableIterator<unknown>,
+): Promise<void> {
+  await notificationIter.return?.();
+  await wsClient.dispose();
+}
+
+async function receiveNotification(
+  notificationIter: AsyncIterableIterator<unknown>,
+) {
+  const {value: notification} = await notificationIter.next();
+  expect(notification.data.recipeCreated).to.containEql({
+    id: '4',
+    numberInCollection: 4,
+  });
+}
