@@ -27,7 +27,7 @@ import {
   Server,
 } from '@loopback/core';
 import {HttpServer} from '@loopback/http-server';
-import {RestServer} from '@loopback/rest';
+import {RestBindings, RestServer} from '@loopback/rest';
 import pkg from 'body-parser';
 import cors from 'cors';
 import express from 'express';
@@ -199,7 +199,7 @@ export class GraphQLServer extends Context implements Server {
 
     let server;
     if (this.options.asMiddlewareOnly) {
-      const rest: RestServer = await this.get('servers.RestServer');
+      const rest: RestServer = await this.get(RestBindings.SERVER);
       server = rest.httpServer?.server;
     } else {
       server = this.httpServer?.server;
