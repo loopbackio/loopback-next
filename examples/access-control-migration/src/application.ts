@@ -16,7 +16,7 @@ import {CasbinAuthorizationComponent} from './components/casbin-authorization';
 import {
   JWTAuthenticationComponent,
   SECURITY_SCHEME_SPEC,
-} from './components/jwt-authentication';
+} from '@loopback/authentication-jwt';
 import {MySequence} from './sequence';
 
 export {ApplicationConfig};

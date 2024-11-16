@@ -12,6 +12,9 @@
   ],
   "references": [
     {
+      "path": "../../extensions/authentication-jwt/tsconfig.json"
+    },
+    {
       "path": "../../packages/authentication/tsconfig.json"
     },
     {
