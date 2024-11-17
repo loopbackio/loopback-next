@@ -46,14 +46,14 @@ export function isClass(target: any): target is Constructor<any> {
  * @param projectRootDir - The project root directory
  * @returns An array of Class constructors from a file
  */
-export function loadClassesFromFiles(
+export async function loadClassesFromFiles(
   files: string[],
   projectRootDir: string,
-): Constructor<{}>[] {
+): Promise<Constructor<{}>[]> {
   const classes: Constructor<{}>[] = [];
   for (const file of files) {
     debug('Loading artifact file %j', path.relative(projectRootDir, file));
-    const moduleObj = require(file);
+    const moduleObj = await import(file);
     for (const k in moduleObj) {
       const exported = moduleObj[k];
       if (isClass(exported)) {
