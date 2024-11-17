@@ -49,7 +49,7 @@ export interface GraphQLServerOptions<
 }
 
 export type GraphQLWsContextResolver = (
-  ctx: unknown,
+  ctx: {[key: string]: unknown},
   message: SubscribeMessage,
   args: ExecutionArgs,
 ) => Promise<GraphQLExecutionContextValue> | GraphQLExecutionContextValue;

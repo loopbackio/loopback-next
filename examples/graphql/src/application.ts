@@ -35,6 +35,13 @@ export class GraphqlDemoApplication extends BootMixin(
       return {...context};
     });
 
+    // It's possible to register a graphql Web Socket context resolver
+    this.bind(GraphQLBindings.GRAPHQL_WS_CONTEXT_RESOLVER).to(
+      async (context, msg, args) => {
+        return {...context};
+      },
+    );
+
     this.bind('recipes').to([...sampleRecipes]);
 
     // Set up default home page
