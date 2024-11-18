@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.0.8](https://github.com/loopbackio/loopback-next/compare/@loopback/repository-json-schema@8.0.7...@loopback/repository-json-schema@8.0.8) (2024-11-18)
+
+
+### Reverts
+
+* Revert "fix: show readonly in openapi spec of model property if it is generated" ([219b894](https://github.com/loopbackio/loopback-next/commit/219b89472d2e5895b0da043a4991f42bcc0e154e))
+
+
+
+
+
 ## [8.0.7](https://github.com/loopbackio/loopback-next/compare/@loopback/repository-json-schema@8.0.6...@loopback/repository-json-schema@8.0.7) (2024-10-15)
 
 

@@ -1,7 +1,7 @@
 {
   "name": "@loopback/test-extension-logging-fluentd",
   "description": "Acceptance test for `@loopback/logging` with fluentd",
-  "version": "0.12.7",
+  "version": "0.12.8",
   "private": true,
   "license": "MIT",
   "main": "dist/index.js",
@@ -31,11 +31,11 @@
     "!*/__tests__"
   ],
   "devDependencies": {
-    "@loopback/build": "^11.0.6",
-    "@loopback/core": "^6.1.4",
+    "@loopback/build": "^11.0.7",
+    "@loopback/core": "^6.1.5",
     "@loopback/eslint-config": "^15.0.4",
-    "@loopback/logging": "^0.12.7",
-    "@loopback/testlab": "^7.0.6",
+    "@loopback/logging": "^0.12.8",
+    "@loopback/testlab": "^7.0.7",
     "@types/node": "^16.18.119",
     "testcontainers": "^10.14.0",
     "tslib": "^2.6.3"
