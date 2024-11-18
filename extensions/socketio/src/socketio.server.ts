@@ -25,10 +25,10 @@ import {cloneDeep} from 'lodash';
 import {Server, ServerOptions, Socket} from 'socket.io';
 import {
   getSocketIoMetadata,
-  SocketIoMetadata,
   SOCKET_IO_CONNECT_METADATA,
   SOCKET_IO_METADATA,
   SOCKET_IO_SUBSCRIBE_METADATA,
+  SocketIoMetadata,
 } from './decorators';
 import {SocketIoBindings, SocketIoTags} from './keys';
 import {SocketIoControllerFactory} from './socketio-controller-factory';
@@ -236,9 +236,11 @@ export class SocketIoServer extends Context {
    */
   async stop() {
     const closePromise = new Promise<void>((resolve, _reject) => {
-      this.io.close(() => {
-        resolve();
-      });
+      this.io
+        .close(() => {
+          resolve();
+        })
+        .catch(err => {});
     });
     await closePromise;
     if (this.httpServer) await this.httpServer.stop();
