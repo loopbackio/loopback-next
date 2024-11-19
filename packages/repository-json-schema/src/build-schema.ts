@@ -483,6 +483,43 @@ export function modelToJsonSchema<T extends object>(
       continue;
     }
 
+    const index = meta.properties[p].index;
+    let indexInfo: {} = {};
+    if (index && Object.keys(index).length) {
+      indexInfo = {[p]: index};
+    }
+    if (indexInfo && Object.keys(indexInfo).length) {
+      if (result.description === undefined) result.description = '';
+      if (result.description.includes('indexInfo')) {
+        const indexInfoMatched = result.description.match(/\{"indexInfo".*$/s);
+        if (indexInfoMatched) {
+          const {indexInfo: existingIndexInfo} = JSON.parse(
+            indexInfoMatched[0],
+          );
+          existingIndexInfo[Object.keys(indexInfo)[0]] = {
+            ...indexInfo,
+          };
+          result.description = result.description.replace(
+            /\{"indexInfo".*$/s,
+            '',
+          );
+          if (result.description) {
+            result.description =
+              result.description +
+              `, ${JSON.stringify({indexInfo: existingIndexInfo})}`;
+          } else {
+            result.description = `${JSON.stringify({indexInfo: existingIndexInfo})}`;
+          }
+        }
+      } else {
+        if (result.description) {
+          result.description =
+            result.description + `, ${JSON.stringify({indexInfo})}`;
+        } else {
+          result.description = `${JSON.stringify({indexInfo})}`;
+        }
+      }
+    }
     if (meta.properties[p].type == null) {
       // Circular import of model classes can lead to this situation
       throw new Error(
