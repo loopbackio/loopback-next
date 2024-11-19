@@ -1,7 +1,7 @@
 {
   "name": "@loopback/graphql",
   "description": "LoopBack's graphql integration",
-  "version": "0.11.7",
+  "version": "0.11.8",
   "keywords": [
     "LoopBack",
     "GraphQL"
@@ -46,7 +46,7 @@
   "dependencies": {
     "@apollo/server": "^4.9.3",
     "@graphql-tools/utils": "^10.5.6",
-    "@loopback/http-server": "^6.0.7",
+    "@loopback/http-server": "^6.0.8",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "debug": "^4.3.7",
@@ -58,13 +58,13 @@
     "ws": "^8.13.0"
   },
   "devDependencies": {
-    "@loopback/boot": "^7.0.7",
-    "@loopback/build": "^11.0.6",
-    "@loopback/core": "^6.1.4",
+    "@loopback/boot": "^7.0.8",
+    "@loopback/build": "^11.0.7",
+    "@loopback/core": "^6.1.5",
     "@loopback/eslint-config": "^15.0.4",
-    "@loopback/repository": "^7.0.7",
-    "@loopback/rest": "^14.0.7",
-    "@loopback/testlab": "^7.0.6",
+    "@loopback/repository": "^7.0.8",
+    "@loopback/rest": "^14.0.8",
+    "@loopback/testlab": "^7.0.7",
     "@types/cors": "^2.8.13",
     "@types/debug": "^4.1.12",
     "@types/node": "^16.18.119",

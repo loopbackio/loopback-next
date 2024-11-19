@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.8.8](https://github.com/loopbackio/loopback-next/compare/@loopback/socketio@0.8.7...@loopback/socketio@0.8.8) (2024-11-18)
+
+
+### Bug Fixes
+
+* fix lint error ([2c9c0ca](https://github.com/loopbackio/loopback-next/commit/2c9c0cae8b343df012d38adcc7c16f6fdd5b7a7a))
+
+
+
+
+
 ## [0.8.7](https://github.com/loopbackio/loopback-next/compare/@loopback/socketio@0.8.6...@loopback/socketio@0.8.7) (2024-10-15)
 
 **Note:** Version bump only for package @loopback/socketio

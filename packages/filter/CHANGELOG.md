@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.7](https://github.com/loopbackio/loopback-next/compare/@loopback/filter@5.0.6...@loopback/filter@5.0.7) (2024-11-18)
+
+**Note:** Version bump only for package @loopback/filter
+
+
+
+
+
 ## [5.0.6](https://github.com/loopbackio/loopback-next/compare/@loopback/filter@5.0.5...@loopback/filter@5.0.6) (2024-09-12)
 
 **Note:** Version bump only for package @loopback/filter

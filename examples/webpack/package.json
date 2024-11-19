@@ -1,7 +1,7 @@
 {
   "name": "@loopback/example-webpack",
   "description": "An example to bundle @loopback/core using webpack",
-  "version": "0.11.7",
+  "version": "0.11.8",
   "keywords": [
     "loopback",
     "LoopBack",
@@ -37,13 +37,13 @@
     "access": "public"
   },
   "dependencies": {
-    "@loopback/core": "^6.1.4",
+    "@loopback/core": "^6.1.5",
     "tslib": "^2.6.3"
   },
   "devDependencies": {
-    "@loopback/build": "^11.0.6",
+    "@loopback/build": "^11.0.7",
     "@loopback/eslint-config": "^15.0.4",
-    "@loopback/testlab": "^7.0.6",
+    "@loopback/testlab": "^7.0.7",
     "@types/node": "^16.18.119",
     "@types/puppeteer": "^7.0.4",
     "assert": "^2.1.0",

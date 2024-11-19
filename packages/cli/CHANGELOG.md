@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.1.2](https://github.com/loopbackio/loopback-next/compare/@loopback/cli@6.1.1...@loopback/cli@6.1.2) (2024-11-18)
+
+
+### Bug Fixes
+
+* add condition to check type of property before parsing from json object ([37d6780](https://github.com/loopbackio/loopback-next/commit/37d6780c5047283f4f5b5a5ce52887c99e649d13))
+* fix accessing dependencies from yeoman's packageJson ([ca166f4](https://github.com/loopbackio/loopback-next/commit/ca166f4f93ad5e7b16e36cc1fa3f4dbc79a1616a))
+* fix hasOne relation with the same table ([4427f25](https://github.com/loopbackio/loopback-next/commit/4427f25fa31f8b30c7978ab1e41a07b8fd402ced))
+
+
+
+
+
 ## [6.1.1](https://github.com/loopbackio/loopback-next/compare/@loopback/cli@6.1.0...@loopback/cli@6.1.1) (2024-10-15)
 
 **Note:** Version bump only for package @loopback/cli
