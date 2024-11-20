@@ -34,7 +34,7 @@ describe('GraphQL context', () => {
     server.resolver(RecipeResolver);
 
     // Customize the GraphQL context with additional information for test verification
-    server.bind(GraphQLBindings.GRAPHQL_CONTEXT_RESOLVER).to(ctx => {
+    server.bind(GraphQLBindings.GRAPHQL_CONTEXT_RESOLVER).to(async ctx => {
       return {...ctx, meta: 'loopback'};
     });
 

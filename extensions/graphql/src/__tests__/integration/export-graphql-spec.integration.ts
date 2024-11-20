@@ -39,8 +39,7 @@ input RecipeInput {
   description: String
   ingredients: [String!]!
   title: String!
-}
-`;
+}`;
 
 describe('exportGraphQLSchema', () => {
   describe('standalone GraphQLServer', () => {
