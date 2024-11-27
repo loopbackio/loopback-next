@@ -5,20 +5,20 @@
 
 import {MetadataInspector, Reflector} from '@loopback/core';
 import {
-  Entity,
-  MODEL_KEY,
-  ModelDefinitionSyntax,
-  PropertyType,
   belongsTo,
+  Entity,
   hasMany,
   model,
+  MODEL_KEY,
+  ModelDefinitionSyntax,
   property,
+  PropertyType,
 } from '@loopback/repository';
 import {expect} from '@loopback/testlab';
 import {
+  getJsonSchema,
   JSON_SCHEMA_KEY,
   JsonSchema,
-  getJsonSchema,
   modelToJsonSchema,
 } from '../..';
 import {expectValidJsonSchema} from '../helpers/expect-valid-json-schema';
@@ -32,6 +32,7 @@ describe('build-schema', () => {
         // it's possible to reproduce the problematic edge case by
         // creating the model definition object directly.
         class TestModel {}
+
         const definition: ModelDefinitionSyntax = {
           name: 'TestModel',
           properties: {
@@ -51,6 +52,7 @@ describe('build-schema', () => {
         // it's possible to reproduce the problematic edge case by
         // creating the model definition object directly.
         class TestModel {}
+
         const definition: ModelDefinitionSyntax = {
           name: 'TestModel',
           properties: {
@@ -1173,6 +1175,7 @@ describe('build-schema', () => {
         @hasMany(() => Product)
         products?: Product[];
       }
+
       const expectedSchema: JsonSchema = {
         definitions: {
           ProductWithRelations: {
@@ -1428,6 +1431,179 @@ describe('build-schema', () => {
         expect(excludeNothingSchema.title).to.equal('Product');
       });
     });
+
+    context(
+      'hides properties when model setting "hiddenProperties" is set',
+      () => {
+        @model({
+          settings: {
+            hiddenProperties: [],
+          },
+        })
+        class FullProduct extends Entity {
+          @property({id: true, required: true})
+          id: number;
+
+          @property()
+          name: string;
+
+          @property()
+          description: string;
+        }
+
+        @model({
+          settings: {
+            hiddenProperties: ['name'],
+          },
+        })
+        class SingleHiddenPropertyModelProduct extends Entity {
+          @property({id: true, required: true})
+          id: number;
+
+          @property()
+          name: string;
+
+          @property()
+          description: string;
+        }
+
+        @model({
+          settings: {
+            hiddenProperties: ['name', 'description'],
+          },
+        })
+        class MultipleHiddenPropertyModelProduct extends Entity {
+          @property({id: true, required: true})
+          id: number;
+
+          @property()
+          name: string;
+
+          @property()
+          description: string;
+        }
+
+        @model()
+        class SingleHiddenPropertyProduct extends Entity {
+          @property({id: true, required: true})
+          id: number;
+
+          @property({
+            hidden: true,
+          })
+          name: string;
+
+          @property()
+          description: string;
+        }
+
+        @model()
+        class MultipleHiddenPropertyProduct extends Entity {
+          @property({id: true, required: true})
+          id: number;
+
+          @property({
+            hidden: true,
+          })
+          name: string;
+
+          @property({
+            hidden: true,
+          })
+          description: string;
+        }
+
+        it('excludes one property when the model settings "hiddenProperties" is set to hide a single property', () => {
+          const originalSchema = getJsonSchema(FullProduct);
+          expect(originalSchema.properties).to.deepEqual({
+            id: {type: 'number'},
+            name: {type: 'string'},
+            description: {type: 'string'},
+          });
+          expect(originalSchema.title).to.equal('FullProduct');
+
+          const hideNameSchema = getJsonSchema(
+            SingleHiddenPropertyModelProduct,
+          );
+          expect(hideNameSchema).to.deepEqual({
+            title: 'SingleHiddenPropertyModelProduct',
+            type: 'object',
+            properties: {
+              id: {type: 'number'},
+              description: {type: 'string'},
+            },
+            required: ['id'],
+            additionalProperties: false,
+          });
+        });
+
+        it('excludes multiple properties when the model settings "hiddenProperties" is set to hide multiple properties', () => {
+          const originalSchema = getJsonSchema(FullProduct);
+          expect(originalSchema.properties).to.deepEqual({
+            id: {type: 'number'},
+            name: {type: 'string'},
+            description: {type: 'string'},
+          });
+          expect(originalSchema.title).to.equal('FullProduct');
+
+          const hideNameSchema = getJsonSchema(
+            MultipleHiddenPropertyModelProduct,
+          );
+          expect(hideNameSchema).to.deepEqual({
+            title: 'MultipleHiddenPropertyModelProduct',
+            type: 'object',
+            properties: {
+              id: {type: 'number'},
+            },
+            required: ['id'],
+            additionalProperties: false,
+          });
+        });
+
+        it('excludes one property when the property setting is set to hidden', () => {
+          const originalSchema = getJsonSchema(FullProduct);
+          expect(originalSchema.properties).to.deepEqual({
+            id: {type: 'number'},
+            name: {type: 'string'},
+            description: {type: 'string'},
+          });
+          expect(originalSchema.title).to.equal('FullProduct');
+
+          const hideNameSchema = getJsonSchema(SingleHiddenPropertyProduct);
+          expect(hideNameSchema).to.deepEqual({
+            title: 'SingleHiddenPropertyProduct',
+            type: 'object',
+            properties: {
+              id: {type: 'number'},
+              description: {type: 'string'},
+            },
+            required: ['id'],
+            additionalProperties: false,
+          });
+        });
+
+        it('excludes multiple properties when the property settings are set to hide multiple properties', () => {
+          const originalSchema = getJsonSchema(FullProduct);
+          expect(originalSchema.properties).to.deepEqual({
+            id: {type: 'number'},
+            name: {type: 'string'},
+            description: {type: 'string'},
+          });
+          expect(originalSchema.title).to.equal('FullProduct');
+
+          const hideNameSchema = getJsonSchema(MultipleHiddenPropertyProduct);
+          expect(hideNameSchema).to.deepEqual({
+            title: 'MultipleHiddenPropertyProduct',
+            type: 'object',
+            properties: {
+              id: {type: 'number'},
+            },
+            required: ['id'],
+            additionalProperties: false,
+          });
+        });
+      },
+    );
 
     context('optional properties when option "optional" is set', () => {
       @model()
