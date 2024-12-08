@@ -152,11 +152,36 @@ permalink: /doc/en/lb4/apidocs.index.html
     expect(index).to.containEql('## Packages');
 
     expect(index).to.containEql(`
-|  Package | Description |
-|  --- | --- |
-|  [pkg1](./pkg1.md) |  |
-|  [pkg2](./pkg2.md) |  |
-`);
+<table><thead><tr><th>
+
+Package
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[pkg1](./pkg1.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[pkg2](./pkg2.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>`);
 
     const constructorDoc = await fs.readFile(
       path.join(SITE_APIDOCS_ROOT, 'pkg1.pet._constructor_.md'),
