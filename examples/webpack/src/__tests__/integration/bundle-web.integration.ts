@@ -40,7 +40,10 @@ skipIf<[(this: Suite) => void], void>(
     let html: string;
     before(async function (this: Mocha.Context) {
       this.timeout(15000);
-      browser = await puppeteer.launch({headless: 'new'});
+      browser = await puppeteer.launch({
+        headless: 'new',
+        args: ['--no-sandbox'],
+      });
       const page = await browser.newPage();
       await page.goto(
         url
