@@ -43,7 +43,7 @@
   },
   "dependencies": {
     "@loopback/core": "^6.1.5",
-    "express": "^4.21.1",
+    "express": "^4.21.2",
     "tslib": "^2.6.3"
   },
   "devDependencies": {
