@@ -132,6 +132,12 @@
           "name": "loopbackBuild",
           "hide": false
         },
+        "editorconfig": {
+          "type": "Boolean",
+          "description": "Use preconfigured EditorConfig settings",
+          "name": "editorconfig",
+          "hide": false
+        },
         "vscode": {
           "type": "Boolean",
           "description": "Use preconfigured VSCode settings",
@@ -255,6 +261,12 @@
           "type": "Boolean",
           "description": "Use @loopback/build",
           "name": "loopbackBuild",
+          "hide": false
+        },
+        "editorconfig": {
+          "type": "Boolean",
+          "description": "Use preconfigured EditorConfig settings",
+          "name": "editorconfig",
           "hide": false
         },
         "vscode": {
