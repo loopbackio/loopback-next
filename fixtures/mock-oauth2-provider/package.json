@@ -42,7 +42,7 @@
     "@types/node": "^16.18.119",
     "axios": "^1.7.9",
     "body-parser": "^1.20.3",
-    "express": "^4.21.1",
+    "express": "^4.21.2",
     "form-data": "^4.0.1",
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
