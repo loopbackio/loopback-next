@@ -59,7 +59,7 @@
     "oracledb": "^6.6.0",
     "pg": "^8.13.1",
     "pg-hstore": "^2.3.4",
-    "sqlite3": "5.1.4",
+    "sqlite3": "5.1.5",
     "typescript": "~5.2.2"
   }
 }
