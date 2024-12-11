@@ -48,7 +48,7 @@
     "@loopback/core": "^6.1.5",
     "@loopback/rest": "^14.0.8",
     "chalk": "^4.1.2",
-    "debug": "^4.3.7",
+    "debug": "^4.4.0",
     "tslib": "^2.6.3"
   },
   "devDependencies": {

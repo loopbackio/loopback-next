@@ -44,7 +44,7 @@
   },
   "dependencies": {
     "@loopback/security": "^0.11.8",
-    "debug": "^4.3.7",
+    "debug": "^4.4.0",
     "tslib": "^2.6.3"
   },
   "devDependencies": {
