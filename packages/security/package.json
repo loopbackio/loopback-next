@@ -42,7 +42,7 @@
     "@loopback/core": "^6.0.0"
   },
   "dependencies": {
-    "debug": "^4.3.7",
+    "debug": "^4.4.0",
     "tslib": "^2.6.3"
   },
   "devDependencies": {

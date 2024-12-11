@@ -46,7 +46,7 @@
     "@graphql-tools/utils": "^10.6.2",
     "@loopback/http-server": "^6.0.8",
     "apollo-server-express": "^3.13.0",
-    "debug": "^4.3.7",
+    "debug": "^4.4.0",
     "express": "^4.21.2",
     "graphql": "^15.9.0",
     "graphql-subscriptions": "^2.0.0",
