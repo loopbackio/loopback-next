@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.10.0](https://github.com/loopbackio/loopback-next/compare/@loopback/example-socketio@0.9.8...@loopback/example-socketio@0.10.0) (2024-12-12)
+
+
+### Features
+
+* **cli:** add EditorConfig files to project template ([b6d82f9](https://github.com/loopbackio/loopback-next/commit/b6d82f950cb441061de895d4cdf3a0b92c859bec))
+
+
+
+
+
 ## [0.9.8](https://github.com/loopbackio/loopback-next/compare/@loopback/example-socketio@0.9.7...@loopback/example-socketio@0.9.8) (2024-11-18)
 
 **Note:** Version bump only for package @loopback/example-socketio

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [8.1.0](https://github.com/loopbackio/loopback-next/compare/@loopback/example-todo@8.0.8...@loopback/example-todo@8.1.0) (2024-12-12)
+
+
+### Bug Fixes
+
+* update geopoint data in tests ([c2441cb](https://github.com/loopbackio/loopback-next/commit/c2441cbd77f8db55db6757f20576a5bde11b5c78))
+
+
+### Features
+
+* **cli:** add EditorConfig files to project template ([b6d82f9](https://github.com/loopbackio/loopback-next/commit/b6d82f950cb441061de895d4cdf3a0b92c859bec))
+
+
+
+
+
 ## [8.0.8](https://github.com/loopbackio/loopback-next/compare/@loopback/example-todo@8.0.7...@loopback/example-todo@8.0.8) (2024-11-18)
 
 **Note:** Version bump only for package @loopback/example-todo

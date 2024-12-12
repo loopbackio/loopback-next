@@ -1,7 +1,7 @@
 {
   "name": "@loopback/example-binding-resolution",
   "description": "An example application to demonstrate binding resolution and dependency injection within a context hierarchy",
-  "version": "0.10.8",
+  "version": "0.11.0",
   "keywords": [
     "loopback-application",
     "loopback",
@@ -44,16 +44,16 @@
     "!*/__tests__"
   ],
   "dependencies": {
-    "@loopback/boot": "^7.0.8",
-    "@loopback/core": "^6.1.5",
-    "@loopback/rest": "^14.0.8",
-    "@loopback/rest-explorer": "^7.0.8",
+    "@loopback/boot": "^7.0.9",
+    "@loopback/core": "^6.1.6",
+    "@loopback/rest": "^14.0.9",
+    "@loopback/rest-explorer": "^7.0.9",
     "debug": "^4.4.0",
     "tslib": "^2.6.3"
   },
   "devDependencies": {
-    "@loopback/build": "^11.0.7",
-    "@loopback/testlab": "^7.0.7",
+    "@loopback/build": "^11.0.8",
+    "@loopback/testlab": "^7.0.8",
     "@types/debug": "^4.1.12",
     "@types/node": "^16.18.119",
     "eslint": "^8.57.0",

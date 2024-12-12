@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.2.0](https://github.com/loopbackio/loopback-next/compare/@loopback/cli@6.1.2...@loopback/cli@6.2.0) (2024-12-12)
+
+
+### Bug Fixes
+
+* update geopoint data in tests ([c2441cb](https://github.com/loopbackio/loopback-next/commit/c2441cbd77f8db55db6757f20576a5bde11b5c78))
+
+
+### Features
+
+* **cli:** add EditorConfig files to project template ([b6d82f9](https://github.com/loopbackio/loopback-next/commit/b6d82f950cb441061de895d4cdf3a0b92c859bec))
+
+
+
+
+
 ## [6.1.2](https://github.com/loopbackio/loopback-next/compare/@loopback/cli@6.1.1...@loopback/cli@6.1.2) (2024-11-18)
 
 
