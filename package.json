@@ -50,7 +50,7 @@
   "devDependencies": {
     "@commitlint/cli": "^19.6.0",
     "@commitlint/config-conventional": "^19.6.0",
-    "@npmcli/map-workspaces": "^3.0.6",
+    "@npmcli/map-workspaces": "^4.0.2",
     "@npmcli/package-json": "^5.2.1",
     "@types/mocha": "^10.0.10",
     "@typescript-eslint/eslint-plugin": "^7.16.0",

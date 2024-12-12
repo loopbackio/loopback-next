@@ -40,7 +40,7 @@
     ".yo-rc.json"
   ],
   "dependencies": {
-    "@npmcli/map-workspaces": "^3.0.6",
+    "@npmcli/map-workspaces": "^4.0.2",
     "@npmcli/package-json": "^5.2.1",
     "@openapi-contrib/openapi-schema-to-json-schema": "^5.1.0",
     "@phenomnomnominal/tsquery": "~5.0.1",
