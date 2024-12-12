@@ -53,6 +53,14 @@ module.exports = class HasManyRelationGenerator extends BaseRelationGenerator {
       options.destinationModelPrimaryKey;
     this.artifactInfo.foreignKeyName = options.foreignKeyName;
 
+    this.artifactInfo.exclude = [this.artifactInfo.targetModelPrimaryKey];
+
+    const readOnlyProperties = relationUtils.getReadOnlyProperties(
+      this.artifactInfo.modelDir,
+      options.destinationModel,
+    );
+    this.artifactInfo.exclude.push(...readOnlyProperties);
+
     const source = this.templatePath(CONTROLLER_TEMPLATE_PATH_HAS_MANY);
 
     this.artifactInfo.name =
