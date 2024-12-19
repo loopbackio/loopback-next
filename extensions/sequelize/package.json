@@ -46,7 +46,7 @@
   "dependencies": {
     "debug": "^4.4.0",
     "sequelize": "^6.37.5",
-    "tslib": "^2.6.3"
+    "tslib": "^2.8.1"
   },
   "devDependencies": {
     "@loopback/boot": "^7.0.9",
