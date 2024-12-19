@@ -44,7 +44,7 @@
     "@types/debug": "^4.1.12",
     "cron": "^2.4.4",
     "debug": "^4.4.0",
-    "tslib": "^2.6.3"
+    "tslib": "^2.8.1"
   },
   "devDependencies": {
     "@loopback/build": "^11.0.8",
