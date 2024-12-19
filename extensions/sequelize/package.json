@@ -60,6 +60,6 @@
     "pg": "^8.13.1",
     "pg-hstore": "^2.3.4",
     "sqlite3": "5.1.4",
-    "typescript": "~5.2.2"
+    "typescript": "~5.7.2"
   }
 }
