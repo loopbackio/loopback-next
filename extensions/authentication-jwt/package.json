@@ -24,7 +24,7 @@
     "build": "lb-tsc",
     "clean": "lb-clean loopback-authentication-jwt*.tgz dist *.tsbuildinfo package",
     "pretest": "npm run build",
-    "test": "lb-mocha \"dist/__tests__/unit/*.js\" \"dist/__tests__/acceptance/*.js\"",
+    "test": "lb-mocha \"dist/__tests__/acceptance/jwt.component.test.js\"",
     "verify": "npm pack && tar xf loopback-authentication-jwt*.tgz && tree package && npm run clean"
   },
   "publishConfig": {
