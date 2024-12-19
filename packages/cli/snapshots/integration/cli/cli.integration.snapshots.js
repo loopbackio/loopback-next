@@ -1033,6 +1033,27 @@ exports[`cli saves command metadata to .yo-rc.json 1`] = `
           "name": "promote-anonymous-schemas",
           "hide": false
         },
+        "readonly": {
+          "description": "Generate only GET endpoints.",
+          "required": false,
+          "type": "Boolean",
+          "name": "readonly",
+          "hide": false
+        },
+        "exclude": {
+          "description": "Exclude endpoints with provided regex.",
+          "required": false,
+          "type": "String",
+          "name": "exclude",
+          "hide": false
+        },
+        "include": {
+          "description": "Only include endpoints with provided regex.",
+          "required": false,
+          "type": "String",
+          "name": "include",
+          "hide": false
+        },
         "config": {
           "type": "String",
           "alias": "c",

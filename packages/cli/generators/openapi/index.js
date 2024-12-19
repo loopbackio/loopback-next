@@ -87,6 +87,24 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
       type: Boolean,
     });
 
+    this.option('readonly', {
+      description: g.f('Generate only GET endpoints.'),
+      required: false,
+      type: Boolean,
+    });
+
+    this.option('exclude', {
+      description: g.f('Exclude endpoints with provided regex.'),
+      required: false,
+      type: String,
+    });
+
+    this.option('include', {
+      description: g.f('Only include endpoints with provided regex.'),
+      required: false,
+      type: String,
+    });
+
     return super._setupGenerator();
   }
 
@@ -211,6 +229,62 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
     }
   }
 
+  async askForReadonly() {
+    if (this.shouldExit()) return;
+    const prompts = [
+      {
+        name: 'readonly',
+        message: g.f('Generate only GET endpoints.'),
+        when: false,
+        default: false,
+      },
+    ];
+    const answers = await this.prompt(prompts);
+    if (answers.readonly) {
+      this.options.readonly = answers.readonly;
+    }
+  }
+
+  async askForExclude() {
+    if (this.shouldExit()) return;
+    const prompts = [
+      {
+        name: 'exclude',
+        message: g.f('Exclude endpoints with provided regex.'),
+        when: false,
+        default: false,
+      },
+    ];
+    const answers = await this.prompt(prompts);
+    if (answers.exclude) {
+      const excludes = answers.exclude.split(',');
+      this.excludings = [];
+      excludes.forEach(exclude => {
+        this.excludings.push(exclude);
+      });
+    }
+  }
+
+  async askForInclude() {
+    if (this.shouldExit()) return;
+    const prompts = [
+      {
+        name: 'include',
+        message: g.f('Only include endpoints with provided regex.'),
+        when: false,
+        default: false,
+      },
+    ];
+    const answers = await this.prompt(prompts);
+    if (answers.include) {
+      const includes = answers.include.split(',');
+      this.includings = [];
+      includes.forEach(include => {
+        this.includings.push(include);
+      });
+    }
+  }
+
   async askForSpecUrlOrPath() {
     if (this.shouldExit()) return;
     if (this.dataSourceInfo && this.dataSourceInfo.specPath) {
@@ -236,11 +310,55 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
 
   async loadAndBuildApiSpec() {
     if (this.shouldExit()) return;
+    if (this.options.exclude && this.options.include) {
+      this.exit(
+        new Error('We cannot have include and exclude at the same time.'),
+      );
+    }
     try {
+      let includings = [];
+      let excludings = [];
+      if (this.options.exclude) {
+        excludings = this.options.exclude.split(',');
+      }
+      if (this.options.include) {
+        includings = this.options.include.split(',');
+      }
+      if (!this.includings) this.includings = [];
+      includings.forEach(including => {
+        if (including.includes(':')) {
+          const splitedInclude = including.split(':');
+          const temp = {};
+          if (splitedInclude[0] === '*') {
+            temp[splitedInclude[1]] = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
+            this.includings.push(temp);
+          } else {
+            temp[splitedInclude[1]] = [splitedInclude[0]];
+            this.includings.push(temp);
+          }
+        }
+      });
+      if (!this.excludings) this.excludings = [];
+      excludings.forEach(excluding => {
+        if (excluding.includes(':')) {
+          const splitedExclude = excluding.split(':');
+          const temp = {};
+          if (splitedExclude[0] === '*') {
+            temp[splitedExclude[1]] = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
+            this.excludings.push(temp);
+          } else {
+            temp[splitedExclude[1]] = [splitedExclude[0]];
+            this.excludings.push(temp);
+          }
+        }
+      });
       const result = await loadAndBuildSpec(this.url, {
         log: this.log,
         validate: this.options.validate,
         promoteAnonymousSchemas: this.options['promote-anonymous-schemas'],
+        readonly: this.options.readonly,
+        excludings: this.excludings,
+        includings: this.includings,
       });
       debugJson('OpenAPI spec', result.apiSpec);
       Object.assign(this, result);
