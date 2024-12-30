@@ -1092,6 +1092,57 @@ export class SequelizeCrudRepository<
       }
     }
 
+    function transformRelatedEntitiesToLoopbackModels(
+      entities: T[],
+      entityClass: typeof Entity,
+    ) {
+      entities.forEach(entity => {
+        for (const key in entityClass.definition.relations) {
+          const relation = entityClass.definition.relations[key];
+
+          if (relation && relation.name in entity) {
+            try {
+              const TargetLoopbackModel = relation.target();
+              const relatedEntityOrEntities = entity[relation.name as keyof T];
+
+              if (Array.isArray(relatedEntityOrEntities)) {
+                Object.assign(entity, {
+                  [relation.name]: relatedEntityOrEntities.map(
+                    relatedEntity => {
+                      const safeCopy = {...relatedEntity};
+                      return new TargetLoopbackModel(safeCopy);
+                    },
+                  ),
+                });
+              } else {
+                const safeCopy = {...relatedEntityOrEntities};
+
+                // Handles belongsTo relation which does not include a list of entities
+                Object.assign(entity, {
+                  [relation.name]: new TargetLoopbackModel(
+                    safeCopy as DataObject<Model>,
+                  ),
+                });
+              }
+            } catch (error) {
+              debug(
+                `Error while transforming relation to Loopback model for relation: ${relation.name}`,
+                error,
+              );
+            }
+          }
+        }
+      });
+    }
+
+    // Ensure models queried through relations are transformed into Loopback models so that the
+    // hidden properties are removed from the response during the "toJSON" transformation.
+    // See: https://loopback.io/doc/en/lb4/Model.html#hidden-properties
+    transformRelatedEntitiesToLoopbackModels(
+      parentEntityInstances,
+      parentEntityClass,
+    );
+
     // Validate data type of items in any column having references
     // For eg. convert ["1", "2"] into [1, 2] if `itemType` specified is `number[]`
     parentEntityInstances = parentEntityInstances.map(entity => {
