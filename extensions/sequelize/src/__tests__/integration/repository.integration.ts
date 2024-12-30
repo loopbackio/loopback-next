@@ -868,27 +868,6 @@ describe('Sequelize CRUD Repository (integration)', () => {
       ]);
     });
 
-    it('hides hidden properties in related entities', async () => {
-      await migrateSchema(['todos', 'todo-lists', 'users']);
-
-      const userRes = await client.post('/users').send(getDummyUser());
-
-      await client.post('/todo-lists').send(
-        getDummyTodoList({
-          title: 'Todo list one',
-          userId: userRes.body.id,
-        }),
-      );
-
-      const filter = {include: ['user']};
-      const relationRes = await client.get(`/todo-lists`).query({
-        filter: JSON.stringify(filter),
-      });
-
-      expect(relationRes.body.length).to.be.equal(1);
-      expect(relationRes.body.at(0).user).not.to.have.property('password');
-    });
-
     it('supports `order` filter by associations', async () => {
       await migrateSchema(['todos', 'todo-lists']);
 
@@ -1026,6 +1005,27 @@ describe('Sequelize CRUD Repository (integration)', () => {
       );
     });
 
+    it('hides hidden properties in related entities included with @belongsTo relation', async () => {
+      await migrateSchema(['todos', 'todo-lists', 'users']);
+
+      const userRes = await client.post('/users').send(getDummyUser());
+
+      await client.post('/todo-lists').send(
+        getDummyTodoList({
+          title: 'Todo list one',
+          userId: userRes.body.id,
+        }),
+      );
+
+      const filter = {include: ['user']};
+      const relationRes = await client.get(`/todo-lists`).query({
+        filter: JSON.stringify(filter),
+      });
+
+      expect(relationRes.body.length).to.be.equal(1);
+      expect(relationRes.body.at(0).user).not.to.have.property('password');
+    });
+
     it('supports @belongsTo using keyfrom and keyto', async () => {
       await migrateSchema(['users', 'todos', 'todo-lists']);
 
@@ -1078,13 +1078,13 @@ describe('Sequelize CRUD Repository (integration)', () => {
 
       const doctorRes = await client.post('/doctors').send(getDummyDoctor());
       const patientRes = await client
-        .post(`/doctors/${1}/patients`)
+        .post(`/doctors/${doctorRes.body.id}/patients`)
         .send(getDummyPatient());
 
       const filter = {include: ['patients']};
-      const relationRes = await client.get(
-        `/doctors?filter=${encodeURIComponent(JSON.stringify(filter))}`,
-      );
+      const relationRes = await client
+        .get(`/doctors`)
+        .query({filter: JSON.stringify(filter)});
 
       /**
        * Manually Remove through table data as sqlite3 doesn't support `attributes: []` using sequelize
@@ -1097,6 +1097,29 @@ describe('Sequelize CRUD Repository (integration)', () => {
           patients: [patientRes.body],
         },
       ]);
+    });
+
+    it('hides hidden props for nested entities included with @hasMany relation', async () => {
+      await migrateSchema(['doctors']);
+
+      const doctorRes = await client.post('/doctors').send(getDummyDoctor());
+
+      await client.post(`/doctors/${doctorRes.body.id}/patients`).send(
+        getDummyPatient({
+          password: 'secret',
+        }),
+      );
+
+      const filter = {include: ['patients']};
+      const relationRes = await client
+        .get(`/doctors`)
+        .query({filter: JSON.stringify(filter)});
+
+      expect(relationRes.body.length).to.be.equal(1);
+      expect(relationRes.body.at(0)).to.have.property('patients');
+      expect(relationRes.body.at(0).patients.at(0)).to.not.have.property(
+        'password',
+      );
     });
 
     it('supports @referencesMany', async () => {
