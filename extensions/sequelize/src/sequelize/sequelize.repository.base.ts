@@ -1092,6 +1092,11 @@ export class SequelizeCrudRepository<
       }
     }
 
+    /**
+     * Transform related entities queried through relations into their corresponding Loopback models.
+     * This ensures hidden properties defined in the nested Loopback models are excluded from the response.
+     * @see https://loopback.io/doc/en/lb4/Model.html#hidden-properties
+     */
     function transformRelatedEntitiesToLoopbackModels(
       entities: T[],
       entityClass: typeof Entity,
@@ -1135,9 +1140,6 @@ export class SequelizeCrudRepository<
       });
     }
 
-    // Ensure models queried through relations are transformed into Loopback models so that the
-    // hidden properties are removed from the response during the "toJSON" transformation.
-    // See: https://loopback.io/doc/en/lb4/Model.html#hidden-properties
     transformRelatedEntitiesToLoopbackModels(
       parentEntityInstances,
       parentEntityClass,
