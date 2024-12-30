@@ -829,7 +829,7 @@ describe('Sequelize CRUD Repository (integration)', () => {
 
       const user = getDummyUser();
       const userRes = await client.post('/users').send(user);
-      const todoList = getDummyTodoList({user: userRes.body.id});
+      const todoList = getDummyTodoList({userId: userRes.body.id});
       const todoListRes = await client.post('/todo-lists').send(todoList);
 
       const filter = {include: ['todoList']};
@@ -863,9 +863,30 @@ describe('Sequelize CRUD Repository (integration)', () => {
         {
           ...todoListRes.body,
           todos: [todoRes.body],
-          user: null,
+          userId: null,
         },
       ]);
+    });
+
+    it('hides hidden properties in related entities', async () => {
+      await migrateSchema(['todos', 'todo-lists', 'users']);
+
+      const userRes = await client.post('/users').send(getDummyUser());
+
+      await client.post('/todo-lists').send(
+        getDummyTodoList({
+          title: 'Todo list one',
+          userId: userRes.body.id,
+        }),
+      );
+
+      const filter = {include: ['user']};
+      const relationRes = await client.get(`/todo-lists`).query({
+        filter: JSON.stringify(filter),
+      });
+
+      expect(relationRes.body.length).to.be.equal(1);
+      expect(relationRes.body.at(0).user).not.to.have.property('password');
     });
 
     it('supports `order` filter by associations', async () => {
@@ -898,12 +919,12 @@ describe('Sequelize CRUD Repository (integration)', () => {
         {
           ...todoListRes1.body,
           todos: [todoRes1.body],
-          user: null,
+          userId: null,
         },
         {
           ...todoListRes2.body,
           todos: [todoRes2.body],
-          user: null,
+          userId: null,
         },
       ]);
 
@@ -915,12 +936,12 @@ describe('Sequelize CRUD Repository (integration)', () => {
         {
           ...todoListRes2.body,
           todos: [todoRes2.body],
-          user: null,
+          userId: null,
         },
         {
           ...todoListRes1.body,
           todos: [todoRes1.body],
-          user: null,
+          userId: null,
         },
       ]);
 
@@ -932,12 +953,12 @@ describe('Sequelize CRUD Repository (integration)', () => {
         {
           ...todoListRes1.body,
           todos: [todoRes1.body],
-          user: null,
+          userId: null,
         },
         {
           ...todoListRes2.body,
           todos: [todoRes2.body],
-          user: null,
+          userId: null,
         },
       ]);
     });
@@ -1013,13 +1034,13 @@ describe('Sequelize CRUD Repository (integration)', () => {
       const todoOne = await client.post('/todo-lists').send(
         getDummyTodoList({
           title: 'Todo list one',
-          user: userRes.body.id,
+          userId: userRes.body.id,
         }),
       );
       const todoListRes = await client.post('/todo-lists').send(
         getDummyTodoList({
           title: 'Another todo list',
-          user: userRes.body.id,
+          userId: userRes.body.id,
         }),
       );
 
