@@ -84,7 +84,7 @@
     "passport-oauth2": "^1.8.0",
     "passport-twitter": "1.0.4",
     "path": "^0.12.7",
-    "tslib": "^2.6.3"
+    "tslib": "^2.8.1"
   },
   "devDependencies": {
     "@loopback/build": "^11.0.8",

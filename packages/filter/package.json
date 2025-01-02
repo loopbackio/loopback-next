@@ -32,7 +32,7 @@
     "!*/__tests__"
   ],
   "dependencies": {
-    "tslib": "^2.6.3"
+    "tslib": "^2.8.1"
   },
   "devDependencies": {
     "@loopback/build": "^11.0.8",
