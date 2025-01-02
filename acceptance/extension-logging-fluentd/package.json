@@ -38,6 +38,6 @@
     "@loopback/testlab": "^7.0.8",
     "@types/node": "^16.18.119",
     "testcontainers": "^10.16.0",
-    "tslib": "^2.6.3"
+    "tslib": "^2.8.1"
   }
 }
