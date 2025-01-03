@@ -58,7 +58,7 @@ export class UserTodoListController {
           schema: getModelSchemaRef(TodoList, {
             title: 'NewTodoListInUser',
             exclude: ['id'],
-            optional: ['user'],
+            optional: ['userId'],
           }),
         },
       },
