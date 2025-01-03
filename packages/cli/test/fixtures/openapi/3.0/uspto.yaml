@@ -90,6 +90,12 @@ paths:
           schema:
             type: string
             default: v1
+        - name: page
+          in: query
+          description: Page you would like to fetch.
+          content:
+            '*/*':
+              type: string
       responses:
         '200':
           description: >-
