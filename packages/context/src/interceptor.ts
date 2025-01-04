@@ -391,7 +391,7 @@ export function registerInterceptor(
   }
 
   const namespace =
-    options.namespace ?? options.defaultNamespace ?? global
+    (options.namespace ?? options.defaultNamespace ?? global)
       ? GLOBAL_INTERCEPTOR_NAMESPACE
       : LOCAL_INTERCEPTOR_NAMESPACE;
 

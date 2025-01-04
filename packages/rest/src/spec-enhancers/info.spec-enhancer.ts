@@ -51,14 +51,16 @@ export class InfoSpecEnhancer implements OASEnhancer {
       spec.info.version === DEFAULT_OPENAPI_SPEC_INFO.version;
     const patchSpec = {
       info: {
-        title: overrideInfo ? this.pkg.name : spec.info.title ?? this.pkg.name,
+        title: overrideInfo
+          ? this.pkg.name
+          : (spec.info.title ?? this.pkg.name),
         description: overrideInfo
           ? this.pkg.description
-          : spec.info.description ?? this.pkg.description,
+          : (spec.info.description ?? this.pkg.description),
         version: overrideInfo
           ? this.pkg.version
-          : spec.info.version ?? this.pkg.version,
-        contact: overrideInfo ? contact : spec.info.contact ?? contact,
+          : (spec.info.version ?? this.pkg.version),
+        contact: overrideInfo ? contact : (spec.info.contact ?? contact),
       },
     };
     debug('Enhancing OpenAPI spec with %j', patchSpec);
