@@ -121,7 +121,7 @@ export class Application extends Context implements LifeCycleObserver {
     this.scope = BindingScope.APPLICATION;
 
     this.options =
-      configOrParent instanceof Context ? {} : configOrParent ?? {};
+      configOrParent instanceof Context ? {} : (configOrParent ?? {});
 
     // Configure debug
     this._debug = debug;

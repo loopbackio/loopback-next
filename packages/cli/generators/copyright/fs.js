@@ -25,10 +25,8 @@ async function jsOrTsFiles(cwd, paths = []) {
   paths = [].concat(paths);
   let globs;
   if (paths.length === 0) {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     globs = [glob('**/*.{js,ts}', {nodir: true, follow: false, cwd})];
   } else {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     globs = paths.map(p => {
       if (/\/$/.test(p)) {
         p += '**/*.{js,ts}';
