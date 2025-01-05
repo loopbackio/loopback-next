@@ -14,6 +14,7 @@ const PREFIX = 'loopback4:';
 const {printVersions} = require('./version-helper');
 
 const {tabCompletionCommands} = require('./tab-completion');
+const extendedGenerators = ['fuzzy'];
 
 /**
  * Parse arguments and run corresponding command
@@ -22,6 +23,13 @@ const {tabCompletionCommands} = require('./tab-completion');
  * @param log - Log function
  */
 function runCommand(env, opts, log) {
+  // register any extended generator
+  extendedGenerators.forEach(extendedGenerator => {
+    env.register(
+      require.resolve(`./${extendedGenerator}`),
+      `${PREFIX}:${extendedGenerator}`,
+    );
+  });
   const dryRun = opts.dryRun || opts['dry-run'];
   const args = opts._;
   const originalCommand = args.shift();
