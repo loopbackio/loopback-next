@@ -66,7 +66,7 @@ export class User extends Entity {
   })
   dob?: Date;
 
-  @hasOne(() => TodoList, {keyTo: 'user'})
+  @hasOne(() => TodoList, {keyTo: 'userId'})
   todoList: TodoList;
 
   constructor(data?: Partial<User>) {
