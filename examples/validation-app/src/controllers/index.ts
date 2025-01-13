@@ -4,3 +4,4 @@
 // License text available at https://opensource.org/licenses/MIT
 
 export * from './coffee-shop.controller';
+export * from './pet.controller';
