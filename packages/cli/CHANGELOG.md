@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.2.1](https://github.com/loopbackio/loopback-next/compare/@loopback/cli@6.2.0...@loopback/cli@6.2.1) (2025-01-15)
+
+
+### Bug Fixes
+
+* fix lint error ([ea02d61](https://github.com/loopbackio/loopback-next/commit/ea02d61ec521fdd15b764a7513fcdfd3794ead4a))
+
+
+
+
+
 # [6.2.0](https://github.com/loopbackio/loopback-next/compare/@loopback/cli@6.1.2...@loopback/cli@6.2.0) (2024-12-12)
 
 

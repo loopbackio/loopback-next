@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.10](https://github.com/loopbackio/loopback-next/compare/@loopback/http-server@6.0.9...@loopback/http-server@6.0.10) (2025-01-15)
+
+
+### Bug Fixes
+
+* fix lint error ([ea02d61](https://github.com/loopbackio/loopback-next/commit/ea02d61ec521fdd15b764a7513fcdfd3794ead4a))
+
+
+
+
+
 ## [6.0.9](https://github.com/loopbackio/loopback-next/compare/@loopback/http-server@6.0.8...@loopback/http-server@6.0.9) (2024-12-12)
 
 **Note:** Version bump only for package @loopback/http-server

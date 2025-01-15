@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [15.0.5](https://github.com/loopbackio/loopback-next/compare/@loopback/eslint-config@15.0.4...@loopback/eslint-config@15.0.5) (2025-01-15)
+
+**Note:** Version bump only for package @loopback/eslint-config
+
+
+
+
+
 ## [15.0.4](https://github.com/loopbackio/loopback-next/compare/@loopback/eslint-config@15.0.3...@loopback/eslint-config@15.0.4) (2024-08-14)
 
 **Note:** Version bump only for package @loopback/eslint-config
