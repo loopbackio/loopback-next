@@ -15,6 +15,12 @@ export class Patient extends Entity {
   })
   name: string;
 
+  @property({
+    type: 'string',
+    hidden: true,
+  })
+  password?: string;
+
   constructor(data?: Partial<Patient>) {
     super(data);
   }
