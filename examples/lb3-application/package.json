@@ -67,7 +67,7 @@
     "@loopback/eslint-config": "^15.0.5",
     "@loopback/testlab": "^7.0.9",
     "@types/lodash": "^4.17.15",
-    "@types/node": "^16.18.123",
+    "@types/node": "^16.18.125",
     "eslint": "^8.57.1",
     "lodash": "^4.17.21",
     "should": "^13.2.3",
