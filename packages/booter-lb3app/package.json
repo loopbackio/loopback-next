@@ -60,7 +60,7 @@
     "@loopback/testlab": "^7.0.9",
     "@types/debug": "^4.1.12",
     "@types/lodash": "^4.17.15",
-    "@types/node": "^16.18.123",
+    "@types/node": "^16.18.125",
     "compression": "^1.7.5",
     "cors": "^2.8.5",
     "helmet": "^4.6.0",
