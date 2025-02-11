@@ -53,7 +53,7 @@
     "@loopback/repository": "^7.0.10",
     "@loopback/rest": "^14.0.10",
     "@loopback/rest-explorer": "^7.0.10",
-    "compression": "^1.7.5",
+    "compression": "^1.8.0",
     "cors": "^2.8.5",
     "debug": "^4.4.0",
     "express": "^4.21.2",
