@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.6.11](https://github.com/loopbackio/loopback-next/compare/@loopback/sequelize@0.6.10...@loopback/sequelize@0.6.11) (2025-02-13)
+
+
+### Bug Fixes
+
+* **sequelize:** ensure nested relations use hidden property config ([54d1df2](https://github.com/loopbackio/loopback-next/commit/54d1df2436c78435e285918d9c171ef611510b45))
+
+
+
+
+
 ## [0.6.10](https://github.com/loopbackio/loopback-next/compare/@loopback/sequelize@0.6.9...@loopback/sequelize@0.6.10) (2025-01-15)
 
 **Note:** Version bump only for package @loopback/sequelize
