@@ -96,6 +96,7 @@ const appointmentModel = path.join(
   sandbox.path,
   'src/models/appointment.model.ts',
 );
+const doctorModel = path.join(sandbox.path, 'src/models/doctor.model.ts');
 
 const defaultExpectedIndexFile = path.join(sandbox.path, 'src/models/index.ts');
 const movedExpectedTestModel = path.join(sandbox.path, 'src/test.model.ts');
@@ -222,6 +223,18 @@ describe('lb4 discover integration', () => {
         .withOptions(relationsSetTrue);
       assert.file(appointmentModel);
       expectFileToMatchSnapshot(appointmentModel);
+    });
+    it('discovers models with --relations', async () => {
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {
+            additionalFiles: SANDBOX_FILES,
+          }),
+        )
+        .withOptions(relationsSetTrue);
+      assert.file(doctorModel);
+      expectFileToMatchSnapshot(doctorModel);
     });
   });
   it('generates specific models without prompts using --models', async () => {
