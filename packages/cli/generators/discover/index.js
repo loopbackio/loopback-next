@@ -382,7 +382,7 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
 
       if (this.options.relations) {
         const relationImports = [];
-        const relationDestinationImports = [];
+        let relationDestinationImports = [];
         const foreignKeys = {};
         for (const relationName in templateData.settings.relations) {
           const relation = templateData.settings.relations[relationName];
@@ -409,6 +409,12 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
               foreignKey: relation.foreignKey,
             });
           }
+        }
+        // remove model import if the model relation is with itself
+        if (relationDestinationImports.includes(templateData['name'])) {
+          relationDestinationImports = relationDestinationImports.filter(
+            e => e !== templateData['name'],
+          );
         }
         templateData.relationImports = relationImports;
         templateData.relationDestinationImports = relationDestinationImports;

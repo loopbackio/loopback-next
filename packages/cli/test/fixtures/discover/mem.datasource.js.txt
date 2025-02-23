@@ -134,6 +134,14 @@ const fullDefinitions = [
   },
     {
     'name': 'Doctor',
+    className: 'Doctor',
+    modelBaseClass: 'Entity',
+    isModelBaseBuiltin: true,
+    options: {
+      relations: {
+        doctorRel: { model: 'Doctor', type: 'belongsTo', foreignKey: 'reportsTo' },
+      }
+    },
     'properties': {
       'id': {
         'type': 'Number',
@@ -150,7 +158,24 @@ const fullDefinitions = [
         'precision': null,
         'scale': null,
       },
+      reportsTo: {
+        type: "number",
+        precision: 10,
+        scale: 0,
+        generated: 0,
+        mysql: "{columnName: 'reportsTo', dataType: 'int', dataLength: null, dataPrecision: 10, dataScale: 0, nullable: 'Y', generated: 0}",
+        tsType: 'number'
+      }
     },
+    allowAdditionalProperties: true,
+    modelSettings: {
+      settings: {
+        idInjection: false,
+        relations: {
+          doctorRel: {model: 'Doctor', type: 'belongsTo', foreignKey: 'reportsTo'},
+        }
+      }
+    }
   },
   {
     'name': 'Patient',

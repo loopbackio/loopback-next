@@ -57,6 +57,53 @@ export type ViewWithRelations = View & ViewRelations;
 `;
 
 
+exports[`lb4 discover integration model discovery discovers models with --relations 1`] = `
+import {Entity, model, property, belongsTo} from '@loopback/repository';
+
+@model({
+  settings: {
+    foreignKeys: {
+      doctorRel: {name: 'doctorRel', entity: 'Doctor', entityKey: 'id', foreignKey: 'reportsTo'}
+    }
+  }
+})
+export class Doctor extends Entity {
+  @property({
+    type: 'number',
+    scale: 0,
+    id: 1,
+  })
+  id?: number;
+
+  @property({
+    type: 'string',
+    length: 45,
+  })
+  name?: string;
+
+  @belongsTo(() => Doctor)
+  reportsTo?: number;
+
+  // Define well-known properties here
+
+  // Indexer property to allow additional data
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [prop: string]: any;
+
+  constructor(data?: Partial<Doctor>) {
+    super(data);
+  }
+}
+
+export interface DoctorRelations {
+  // describe navigational properties here
+}
+
+export type DoctorWithRelations = Doctor & DoctorRelations;
+
+`;
+
+
 exports[`lb4 discover integration model discovery does not mark id property as required based on optionalId option 1`] = `
 import {Entity, model, property} from '@loopback/repository';
 
