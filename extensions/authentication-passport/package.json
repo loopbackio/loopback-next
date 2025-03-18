@@ -59,7 +59,7 @@
     "@loopback/openapi-spec-builder": "^7.0.10",
     "@loopback/rest": "^14.0.11",
     "@loopback/testlab": "^7.0.10",
-    "@types/jsonwebtoken": "^9.0.8",
+    "@types/jsonwebtoken": "^9.0.9",
     "@types/lodash": "^4.17.15",
     "@types/node": "^16.18.126",
     "@types/passport": "^1.0.17",
