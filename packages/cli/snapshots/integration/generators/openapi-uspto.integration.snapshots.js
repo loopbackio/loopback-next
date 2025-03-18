@@ -330,6 +330,7 @@ the syntax options shown below.
    * @param dataset Name of the dataset. In this case, the default value is
 oa_citations
    * @param version Version of the dataset.
+   * @param page Page you would like to fetch.
    * @returns The dataset api for the given version is found and it is accessible
 to consume.
    */
@@ -359,6 +360,16 @@ to consume.
       schema: {
         type: 'string',
         default: 'v1',
+      },
+    },
+    {
+      name: 'page',
+      in: 'query',
+      description: 'Page you would like to fetch.',
+      content: {
+        '*/*': {
+          type: 'string',
+        },
       },
     },
   ],
@@ -403,7 +414,16 @@ to consume.
     type: 'string',
     default: 'v1',
   },
-}) version: string): Promise<string> {
+}) version: string, @param({
+  name: 'page',
+  in: 'query',
+  description: 'Page you would like to fetch.',
+  content: {
+    '*/*': {
+      type: 'string',
+    },
+  },
+}) page: string | undefined): Promise<string> {
      throw new Error('Not implemented'); 
   }
 }
@@ -530,6 +550,7 @@ the syntax options shown below.
    * @param dataset Name of the dataset. In this case, the default value is
 oa_citations
    * @param version Version of the dataset.
+   * @param page Page you would like to fetch.
    * @returns The dataset api for the given version is found and it is accessible
 to consume.
    */
@@ -559,6 +580,16 @@ to consume.
       schema: {
         type: 'string',
         default: 'v1',
+      },
+    },
+    {
+      name: 'page',
+      in: 'query',
+      description: 'Page you would like to fetch.',
+      content: {
+        '*/*': {
+          type: 'string',
+        },
       },
     },
   ],
@@ -603,7 +634,16 @@ to consume.
     type: 'string',
     default: 'v1',
   },
-}) version: string): Promise<string> {
+}) version: string, @param({
+  name: 'page',
+  in: 'query',
+  description: 'Page you would like to fetch.',
+  content: {
+    '*/*': {
+      type: 'string',
+    },
+  },
+}) page: string | undefined): Promise<string> {
      throw new Error('Not implemented'); 
   }
 }
