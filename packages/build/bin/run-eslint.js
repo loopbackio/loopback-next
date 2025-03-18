@@ -34,7 +34,7 @@ function run(argv, options) {
     args.push('-c', eslintConfigFile);
   }
   if (eslintIgnoreFile) {
-    args.push('--ignore-path', eslintIgnoreFile);
+    args.push('--ignore-pattern', eslintIgnoreFile);
   }
 
   if (!isExtSet) {
