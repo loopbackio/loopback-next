@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.1.3](https://github.com/loopbackio/loopback-next/compare/@loopback/docs@7.1.2...@loopback/docs@7.1.3) (2025-03-19)
+
+**Note:** Version bump only for package @loopback/docs
+
+
+
+
+
 ## [7.1.2](https://github.com/loopbackio/loopback-next/compare/@loopback/docs@7.1.1...@loopback/docs@7.1.2) (2025-02-13)
 
 **Note:** Version bump only for package @loopback/docs

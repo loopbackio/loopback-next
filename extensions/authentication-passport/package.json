@@ -1,7 +1,7 @@
 {
   "name": "@loopback/authentication-passport",
   "description": "A package creating adapters between the passport module and @loopback/authentication",
-  "version": "7.0.11",
+  "version": "7.0.12",
   "keywords": [
     "Passport",
     "Authentication",
@@ -45,20 +45,20 @@
     "@loopback/rest": "^14.0.0"
   },
   "dependencies": {
-    "@loopback/security": "^0.11.11",
+    "@loopback/security": "^0.11.12",
     "passport": "^0.6.0",
     "tslib": "^2.8.1",
     "util-promisifyall": "^1.0.6"
   },
   "devDependencies": {
-    "@loopback/authentication": "^11.0.11",
+    "@loopback/authentication": "^11.0.12",
     "@loopback/build": "^11.0.10",
-    "@loopback/core": "^6.1.8",
+    "@loopback/core": "^6.1.9",
     "@loopback/eslint-config": "^15.0.5",
-    "@loopback/mock-oauth2-provider": "^0.9.11",
-    "@loopback/openapi-spec-builder": "^7.0.10",
-    "@loopback/rest": "^14.0.11",
-    "@loopback/testlab": "^7.0.10",
+    "@loopback/mock-oauth2-provider": "^0.9.12",
+    "@loopback/openapi-spec-builder": "^7.0.11",
+    "@loopback/rest": "^14.0.12",
+    "@loopback/testlab": "^7.0.11",
     "@types/jsonwebtoken": "^9.0.9",
     "@types/lodash": "^4.17.16",
     "@types/node": "^16.18.126",

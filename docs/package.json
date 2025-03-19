@@ -1,7 +1,7 @@
 {
   "name": "@loopback/docs",
   "description": "Documentation files rendered at [https://loopback.io](https://loopback.io)",
-  "version": "7.1.2",
+  "version": "7.1.3",
   "keywords": [
     "LoopBack",
     "docs"

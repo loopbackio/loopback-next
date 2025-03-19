@@ -1,7 +1,7 @@
 {
   "name": "@loopback/boot",
   "description": "A collection of Booters for LoopBack 4 Applications",
-  "version": "7.0.11",
+  "version": "7.0.12",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -38,9 +38,9 @@
     "@loopback/core": "^6.0.0"
   },
   "dependencies": {
-    "@loopback/model-api-builder": "^6.0.11",
-    "@loopback/repository": "^7.0.11",
-    "@loopback/service-proxy": "^7.0.11",
+    "@loopback/model-api-builder": "^6.0.12",
+    "@loopback/repository": "^7.0.12",
+    "@loopback/service-proxy": "^7.0.12",
     "@types/debug": "^4.1.12",
     "@types/glob": "^8.1.0",
     "debug": "^4.4.0",
@@ -49,11 +49,11 @@
   },
   "devDependencies": {
     "@loopback/build": "^11.0.10",
-    "@loopback/core": "^6.1.8",
+    "@loopback/core": "^6.1.9",
     "@loopback/eslint-config": "^15.0.5",
-    "@loopback/rest": "^14.0.11",
-    "@loopback/rest-crud": "^0.18.11",
-    "@loopback/testlab": "^7.0.10",
+    "@loopback/rest": "^14.0.12",
+    "@loopback/rest-crud": "^0.18.12",
+    "@loopback/testlab": "^7.0.11",
     "@types/node": "^16.18.126"
   }
 }

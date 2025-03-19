@@ -1,7 +1,7 @@
 {
   "name": "@loopback/logging",
   "description": "An extension exposes logging for Winston and Fluentd with LoopBack 4",
-  "version": "0.12.11",
+  "version": "0.12.12",
   "keywords": [
     "LoopBack",
     "Cloud Native",
@@ -52,10 +52,10 @@
   },
   "devDependencies": {
     "@loopback/build": "^11.0.10",
-    "@loopback/core": "^6.1.8",
+    "@loopback/core": "^6.1.9",
     "@loopback/eslint-config": "^15.0.5",
-    "@loopback/rest": "^14.0.11",
-    "@loopback/testlab": "^7.0.10",
+    "@loopback/rest": "^14.0.12",
+    "@loopback/testlab": "^7.0.11",
     "@types/morgan": "^1.9.9",
     "@types/node": "^16.18.126"
   }

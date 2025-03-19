@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.2.3](https://github.com/loopbackio/loopback-next/compare/@loopback/cli@6.2.2...@loopback/cli@6.2.3) (2025-03-19)
+
+
+### Bug Fixes
+
+* remove import for model for same model relation ([875dc19](https://github.com/loopbackio/loopback-next/commit/875dc197261ac65a52ed2e47c4183b4e27a5cdaf))
+* revert latest-version to use v5 ([1f991b1](https://github.com/loopbackio/loopback-next/commit/1f991b101993af7fdc419c471cb01d1197ee0221))
+
+
+
+
+
 ## [6.2.2](https://github.com/loopbackio/loopback-next/compare/@loopback/cli@6.2.1...@loopback/cli@6.2.2) (2025-02-13)
 
 **Note:** Version bump only for package @loopback/cli
