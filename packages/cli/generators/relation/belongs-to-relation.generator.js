@@ -91,12 +91,10 @@ module.exports = class BelongsToRelationGenerator extends (
             );
           }
           returnStatement = `${returnStatement},\n\t this.${this.artifactInfo.paramSourceRepository}.${this.artifactInfo.relationPropertyName}(${this.artifactInfo.sourceModelPrimaryKey})`;
-          structure.methods[index].statements[
-            lastStatementIndex
-          ] = `return [${returnStatement}];`;
-          structure.methods[
-            index
-          ].returnType = `Promise<Promise<${this.artifactInfo.targetModelClassName}>[]>`;
+          structure.methods[index].statements[lastStatementIndex] =
+            `return [${returnStatement}];`;
+          structure.methods[index].returnType =
+            `Promise<Promise<${this.artifactInfo.targetModelClassName}>[]>`;
           parameters.forEach(({decorators}, paramIndex) => {
             decorators.forEach((decorator, decorIndex) => {
               structure.methods[index].parameters[paramIndex].decorators[
