@@ -182,6 +182,16 @@ const SourceEntries = {
     file: 'friend.repository.ts',
     content: readSourceFile('./repositories/friend.repository.ts'),
   },
+  Friend1Model: {
+    path: MODEL_APP_PATH,
+    file: 'friend1.model.ts',
+    content: readSourceFile('./models/friend1.model.ts'),
+  },
+  Friend1Repository: {
+    path: REPOSITORY_APP_PATH,
+    file: 'friend1.repository.ts',
+    content: readSourceFile('./repositories/friend1.repository.ts'),
+  },
 };
 exports.SourceEntries = SourceEntries;
 
@@ -250,6 +260,8 @@ exports.SANDBOX_FILES = [
   SourceEntries.FriendModel,
   SourceEntries.UserRepository,
   SourceEntries.FriendRepository,
+  SourceEntries.Friend1Model,
+  SourceEntries.Friend1Repository,
 ];
 
 exports.SANDBOX_FILES2 = [
