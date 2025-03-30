@@ -10,6 +10,7 @@ import {
   Entity,
   EntityCrudRepository,
   Filter,
+  FilterExcludingsForCount,
   FilterExcludingWhere,
   Where,
 } from '@loopback/repository';
@@ -189,8 +190,15 @@ export function defineCrudRestController<
     async count(
       @param.where(modelCtor)
       where?: Where<T>,
+      @param.query.object(
+        'filter',
+        getFilterSchemaFor(modelCtor, {
+          exclude: ['fields', 'order', 'limit', 'skip', 'offset', 'include'],
+        }),
+      )
+      filter?: FilterExcludingsForCount<T>,
     ): Promise<Count> {
-      return this.repository.count(where);
+      return this.repository.count(where || filter?.where);
     }
   }
 
