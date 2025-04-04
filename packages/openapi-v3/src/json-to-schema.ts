@@ -143,6 +143,10 @@ export function jsonToSchemaObject(
   if (matched) {
     result['x-typescript-type'] = matched[1];
   }
+  const indexInfoMatched = result.description?.match(/\{"indexInfo".*$/s);
+  if (indexInfoMatched) {
+    result['x-index-info'] = indexInfoMatched[1];
+  }
   return result;
 }
 
