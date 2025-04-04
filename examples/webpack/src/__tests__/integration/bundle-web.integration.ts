@@ -41,7 +41,7 @@ skipIf<[(this: Suite) => void], void>(
     before(async function (this: Mocha.Context) {
       this.timeout(15000);
       browser = await puppeteer.launch({
-        headless: 'new',
+        headless: true,
         args: ['--no-sandbox'],
       });
       const page = await browser.newPage();
