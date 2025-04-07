@@ -31,6 +31,8 @@ const debug = debugFactory('utils');
 const camelCase = _.camelCase;
 const kebabCase = _.kebabCase;
 
+exports.kebabCase = kebabCase;
+
 const toFileName = name => {
   return kebabCase(name).replace(/-(\d+)$/g, '$1');
 };
