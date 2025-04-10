@@ -43,8 +43,8 @@
   },
   "dependencies": {
     "@loopback/security": "^0.11.12",
-    "@types/bcryptjs": "2.4.6",
-    "bcryptjs": "^2.4.3",
+    "@types/bcryptjs": "3.0.0",
+    "bcryptjs": "^3.0.2",
     "debug": "^4.4.0",
     "jsonwebtoken": "^9.0.2"
   },
