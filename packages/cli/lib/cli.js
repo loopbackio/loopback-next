@@ -202,8 +202,10 @@ function main(opts, log) {
         commandOptions[n] = {...opt, type: opt.type.name};
       }
       const commandArgs = [];
-      for (const arg of gen._arguments) {
-        commandArgs.push({...arg, type: arg.type.name});
+      if (!gen) {
+        for (const arg of gen._arguments) {
+          commandArgs.push({...arg, type: arg.type.name});
+        }
       }
       optionsAndArgs[name] = {
         options: commandOptions,
