@@ -61,7 +61,6 @@
     "@loopback/rest-explorer": "^7.0.12",
     "@loopback/security": "^0.11.12",
     "@loopback/service-proxy": "^7.0.12",
-    "@types/bcryptjs": "3.0.0",
     "bcryptjs": "^3.0.2",
     "casbin": "^5.38.0",
     "jsonwebtoken": "^9.0.2",
