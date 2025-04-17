@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.12.13](https://github.com/loopbackio/loopback-next/compare/@loopback/cron@0.12.12...@loopback/cron@0.12.13) (2025-04-17)
+
+**Note:** Version bump only for package @loopback/cron
+
+
+
+
+
 ## [0.12.12](https://github.com/loopbackio/loopback-next/compare/@loopback/cron@0.12.11...@loopback/cron@0.12.12) (2025-03-19)
 
 **Note:** Version bump only for package @loopback/cron

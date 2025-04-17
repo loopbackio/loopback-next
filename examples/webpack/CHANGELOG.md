@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.12.4](https://github.com/loopbackio/loopback-next/compare/@loopback/example-webpack@0.12.3...@loopback/example-webpack@0.12.4) (2025-04-17)
+
+
+### Bug Fixes
+
+* fix test in webpack example ([41f974c](https://github.com/loopbackio/loopback-next/commit/41f974c2b982bc1d8d2b93e8a656e1029d36aa3a))
+
+
+
+
+
 ## [0.12.3](https://github.com/loopbackio/loopback-next/compare/@loopback/example-webpack@0.12.2...@loopback/example-webpack@0.12.3) (2025-03-19)
 
 **Note:** Version bump only for package @loopback/example-webpack

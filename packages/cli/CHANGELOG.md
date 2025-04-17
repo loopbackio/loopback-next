@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.2.4](https://github.com/loopbackio/loopback-next/compare/@loopback/cli@6.2.3...@loopback/cli@6.2.4) (2025-04-17)
+
+
+### Bug Fixes
+
+* fix release issue in cli.js ([84775d8](https://github.com/loopbackio/loopback-next/commit/84775d867006bb2c100d7dfd7c46eb8076e659ce))
+* revert terminal-link version ([5cf0a6f](https://github.com/loopbackio/loopback-next/commit/5cf0a6fd9270d4c59fe6816028c897b92ff8d37d))
+
+
+
+
+
 ## [6.2.3](https://github.com/loopbackio/loopback-next/compare/@loopback/cli@6.2.2...@loopback/cli@6.2.3) (2025-03-19)
 
 

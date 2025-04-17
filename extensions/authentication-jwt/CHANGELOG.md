@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.15.13](https://github.com/loopbackio/loopback-next/compare/@loopback/authentication-jwt@0.15.12...@loopback/authentication-jwt@0.15.13) (2025-04-17)
+
+
+### Bug Fixes
+
+* remove @types/bcryptjs ([2cb41eb](https://github.com/loopbackio/loopback-next/commit/2cb41eb382c6fab5d70792901f40e9846d1ee53e))
+
+
+
+
+
 ## [0.15.12](https://github.com/loopbackio/loopback-next/compare/@loopback/authentication-jwt@0.15.11...@loopback/authentication-jwt@0.15.12) (2025-03-19)
 
 **Note:** Version bump only for package @loopback/authentication-jwt

@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.17.4](https://github.com/loopbackio/loopback-next/compare/@loopback/example-multi-tenancy@0.17.3...@loopback/example-multi-tenancy@0.17.4) (2025-04-17)
+
+**Note:** Version bump only for package @loopback/example-multi-tenancy
+
+
+
+
+
 ## [0.17.3](https://github.com/loopbackio/loopback-next/compare/@loopback/example-multi-tenancy@0.17.2...@loopback/example-multi-tenancy@0.17.3) (2025-03-19)
 
 **Note:** Version bump only for package @loopback/example-multi-tenancy
