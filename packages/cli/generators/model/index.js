@@ -302,9 +302,19 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
     ])
       .then(setting => {
         Object.assign(this.artifactInfo, setting);
-
         if (this.artifactInfo.allowAdditionalProperties) {
           Object.assign(this.artifactInfo.modelSettings, {strict: false});
+        }
+
+        const dsType = this.artifactInfo.dataSourceType;
+        if (!this.artifactInfo.modelSettings)
+          this.artifactInfo.modelSettings = {};
+        if (dsType === 'relational') {
+          this.artifactInfo.allowAdditionalProperties = false;
+          this.artifactInfo.modelSettings.strict = true;
+        } else {
+          this.artifactInfo.allowAdditionalProperties = true;
+          this.artifactInfo.modelSettings.strict = false;
         }
         // inform user what model/file names will be created
         super.promptClassFileName(
