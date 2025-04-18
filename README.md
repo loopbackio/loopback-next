@@ -40,7 +40,7 @@ if you are interested in a version that's less frequently changed.
 
 | Version    | Status      | Published | EOL                  |
 | ---------- | ----------- | --------- | -------------------- |
-| LoopBack 4 | Current     | Oct 2018  | Apr 2026 _(minimum)_ |
+| LoopBack 4 | Current     | Oct 2018  | Apr 2028 _(minimum)_ |
 | LoopBack 3 | End-of-Life | Dec 2016  | Dec 2020             |
 | LoopBack 2 | End-of-Life | Jul 2014  | Apr 2019             |
 
