@@ -63,7 +63,7 @@
     "@types/node": "^16.18.126",
     "compression": "^1.8.0",
     "cors": "^2.8.5",
-    "helmet": "^4.6.0",
+    "helmet": "^8.1.0",
     "loopback-boot": "^3.3.1"
   }
 }
