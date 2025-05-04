@@ -164,10 +164,16 @@ describe('importDiscoveredModel', () => {
         patient: {
           type: 'String',
           jsonSchema: {enum: ['INPATIENT', 'OUTPATIENT']},
-          required: false,
-          length: null,
-          precision: null,
-          scale: null,
+          mysql: {
+            columnName: 'type',
+            dataType: 'enum',
+            value: "'INPATIENT','OUTPATIENT'",
+            dataLength: 10,
+            dataPrecision: null,
+            dataScale: null,
+            nullable: 'Y',
+            generated: false,
+          },
         },
       },
     };
@@ -175,6 +181,8 @@ describe('importDiscoveredModel', () => {
     const modelData = importDiscoveredModel(discoveredModel);
     expect(modelData.properties).to.have.property('patient').deepEqual({
       jsonSchema: "{enum: ['INPATIENT', 'OUTPATIENT']}",
+      mysql:
+        "{columnName: 'type', dataType: 'enum', value: '\\'INPATIENT\\',\\'OUTPATIENT\\'', dataLength: 10, dataPrecision: null, dataScale: null, nullable: 'Y', generated: false}",
       type: `'string'`,
       tsType: 'string',
     });
