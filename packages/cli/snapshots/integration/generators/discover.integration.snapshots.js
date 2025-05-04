@@ -265,6 +265,80 @@ export type ViewWithRelations = View & ViewRelations;
 `;
 
 
+exports[`lb4 discover integration model discovery generates models with --config 1`] = `
+import {Entity, model, property} from '@loopback/repository';
+
+@model()
+export class Schema extends Entity {
+  // Define well-known properties here
+
+  // Indexer property to allow additional data
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [prop: string]: any;
+
+  constructor(data?: Partial<Schema>) {
+    super(data);
+  }
+}
+
+export interface SchemaRelations {
+  // describe navigational properties here
+}
+
+export type SchemaWithRelations = Schema & SchemaRelations;
+
+`;
+
+exports[`lb4 discover integration model discovery generates models with --config 2`] = `
+import {Entity, model, property} from '@loopback/repository';
+
+@model()
+export class View extends Entity {
+  // Define well-known properties here
+
+  // Indexer property to allow additional data
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [prop: string]: any;
+
+  constructor(data?: Partial<View>) {
+    super(data);
+  }
+}
+
+export interface ViewRelations {
+  // describe navigational properties here
+}
+
+export type ViewWithRelations = View & ViewRelations;
+
+`;
+
+
+exports[`lb4 discover integration model discovery generates models with --config having views set to false 1`] = `
+import {Entity, model, property} from '@loopback/repository';
+
+@model()
+export class Schema extends Entity {
+  // Define well-known properties here
+
+  // Indexer property to allow additional data
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [prop: string]: any;
+
+  constructor(data?: Partial<Schema>) {
+    super(data);
+  }
+}
+
+export interface SchemaRelations {
+  // describe navigational properties here
+}
+
+export type SchemaWithRelations = Schema & SchemaRelations;
+
+`;
+
+
 exports[`lb4 discover integration model discovery keeps model property names the same as the db column names 1`] = `
 import {Entity, model, property} from '@loopback/repository';
 
