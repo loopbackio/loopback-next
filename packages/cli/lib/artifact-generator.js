@@ -128,7 +128,53 @@ module.exports = class ArtifactGenerator extends BaseGenerator {
         .split(this.classNameSeparator)
         .map(utils.toClassName);
       const classesOutput = classes.join(this.classNameSeparator);
-
+      if (
+        this.artifactInfo.repositoryConfigs &&
+        this.artifactInfo.repositoryConfigs.repositories.size
+      ) {
+        const {repositories, datasource, repositoryBaseClass} =
+          this.artifactInfo.repositoryConfigs;
+        for (const model of repositories) {
+          const config = {repositoryBaseClass, datasource, model, name: model};
+          try {
+            const {execSync} = require('child_process');
+            const cmd =
+              "lb4 repository --config='" + JSON.stringify(config) + "' --yes";
+            execSync(cmd, {
+              cwd: process.cwd(),
+              stdio: ['ignore', 'pipe', 'pipe'],
+              encoding: 'utf8',
+            });
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      } else {
+        debug(
+          'No repository configurations found, skipping repository generation',
+        );
+      }
+      if (
+        this.artifactInfo.relationConfigs &&
+        this.artifactInfo.relationConfigs.length
+      ) {
+        for (const configs of this.artifactInfo.relationConfigs) {
+          try {
+            const {execSync} = require('child_process');
+            const cmd =
+              "lb4 relation --config='" + JSON.stringify(configs) + "' --yes";
+            execSync(cmd, {
+              cwd: process.cwd(),
+              stdio: ['ignore', 'pipe', 'pipe'],
+              encoding: 'utf8',
+            });
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      } else {
+        debug('No relation configurations found, skipping relation generation');
+      }
       // User Output
       this.log();
       this.log(
