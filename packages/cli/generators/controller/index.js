@@ -88,7 +88,8 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
 
     if (this.options.controllerType) {
       Object.assign(this.artifactInfo, {
-        controllerType: this.options.controllerType,
+        controllerType:
+          ControllerGenerator[this.options.controllerType.toUpperCase()],
       });
       return;
     }
