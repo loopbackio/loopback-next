@@ -63,6 +63,7 @@ running the project.
 
 ```sh
 cd getting-started
+npm i
 npm start
 ```
 
