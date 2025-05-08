@@ -55,7 +55,7 @@
     "@loopback/repository": "^7.0.13",
     "@loopback/rest": "^14.0.13",
     "@loopback/testlab": "^7.0.12",
-    "@types/node": "^16.18.126",
+    "@types/node": "^22.15.17",
     "oracledb": "^6.8.0",
     "pg": "^8.15.6",
     "pg-hstore": "^2.3.4",
