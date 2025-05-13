@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.24.14](https://github.com/loopbackio/loopback-next/compare/@loopback/repository-tests@0.24.13...@loopback/repository-tests@0.24.14) (2025-05-13)
+
+**Note:** Version bump only for package @loopback/repository-tests
+
+
+
+
+
 ## [0.24.13](https://github.com/loopbackio/loopback-next/compare/@loopback/repository-tests@0.24.12...@loopback/repository-tests@0.24.13) (2025-04-17)
 
 **Note:** Version bump only for package @loopback/repository-tests

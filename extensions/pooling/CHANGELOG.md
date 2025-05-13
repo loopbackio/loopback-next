@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.11.14](https://github.com/loopbackio/loopback-next/compare/@loopback/pooling@0.11.13...@loopback/pooling@0.11.14) (2025-05-13)
+
+**Note:** Version bump only for package @loopback/pooling
+
+
+
+
+
 ## [0.11.13](https://github.com/loopbackio/loopback-next/compare/@loopback/pooling@0.11.12...@loopback/pooling@0.11.13) (2025-04-17)
 
 **Note:** Version bump only for package @loopback/pooling

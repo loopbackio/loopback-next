@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.0.14](https://github.com/loopbackio/loopback-next/compare/@loopback/rest-explorer@7.0.13...@loopback/rest-explorer@7.0.14) (2025-05-13)
+
+**Note:** Version bump only for package @loopback/rest-explorer
+
+
+
+
+
 ## [7.0.13](https://github.com/loopbackio/loopback-next/compare/@loopback/rest-explorer@7.0.12...@loopback/rest-explorer@7.0.13) (2025-04-17)
 
 **Note:** Version bump only for package @loopback/rest-explorer

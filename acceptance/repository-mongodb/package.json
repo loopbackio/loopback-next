@@ -1,7 +1,7 @@
 {
   "name": "@loopback/test-repository-mongodb",
   "description": "Acceptance tests for `@loopback/repository` + `loopback-connector-mongodb`",
-  "version": "0.15.13",
+  "version": "0.15.14",
   "private": true,
   "license": "MIT",
   "main": "dist/index.js",
@@ -31,11 +31,11 @@
     "!*/__tests__"
   ],
   "devDependencies": {
-    "@loopback/build": "^11.0.11",
+    "@loopback/build": "^11.0.12",
     "@loopback/eslint-config": "^15.0.5",
-    "@loopback/repository": "^7.0.13",
-    "@loopback/repository-tests": "^0.24.13",
-    "@loopback/testlab": "^7.0.12",
+    "@loopback/repository": "^7.0.14",
+    "@loopback/repository-tests": "^0.24.14",
+    "@loopback/testlab": "^7.0.13",
     "@types/node": "^16.18.126",
     "loopback-connector-mongodb": "^6.3.1",
     "tslib": "^2.8.1"

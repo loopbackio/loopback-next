@@ -1,7 +1,7 @@
 {
   "name": "@loopback/example-socketio",
   "description": "This is an example for spinning up socket server.",
-  "version": "0.10.4",
+  "version": "0.10.5",
   "keywords": [
     "loopback-application",
     "loopback"
@@ -51,19 +51,19 @@
     "!*/__tests__"
   ],
   "dependencies": {
-    "@loopback/boot": "^7.0.13",
-    "@loopback/core": "^6.1.10",
-    "@loopback/rest": "^14.0.13",
-    "@loopback/rest-explorer": "^7.0.13",
-    "@loopback/socketio": "^0.8.13",
+    "@loopback/boot": "^7.0.14",
+    "@loopback/core": "^6.1.11",
+    "@loopback/rest": "^14.0.14",
+    "@loopback/rest-explorer": "^7.0.14",
+    "@loopback/socketio": "^0.8.14",
     "debug": "^4.4.0",
     "p-event": "^4.2.0",
     "tslib": "^2.8.1"
   },
   "devDependencies": {
-    "@loopback/build": "^11.0.11",
+    "@loopback/build": "^11.0.12",
     "@loopback/eslint-config": "^15.0.5",
-    "@loopback/testlab": "^7.0.12",
+    "@loopback/testlab": "^7.0.13",
     "@types/debug": "^4.1.12",
     "@types/node": "^16.18.126",
     "eslint": "^8.57.1",
