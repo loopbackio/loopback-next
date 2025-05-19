@@ -19,7 +19,7 @@
     "directory": "extensions/sequelize"
   },
   "engines": {
-    "node": "18 || 20 || 22"
+    "node": ">=20"
   },
   "scripts": {
     "build": "lb-tsc",
