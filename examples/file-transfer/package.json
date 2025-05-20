@@ -50,7 +50,7 @@
     "@loopback/core": "^6.1.11",
     "@loopback/rest": "^14.0.14",
     "@loopback/rest-explorer": "^7.0.14",
-    "multer": "^1.4.4",
+    "multer": "^2.0.0",
     "tslib": "^2.8.1"
   },
   "devDependencies": {
