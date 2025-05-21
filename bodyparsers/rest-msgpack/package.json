@@ -13,7 +13,7 @@
     "directory": "bodyparsers/rest-msgpack"
   },
   "engines": {
-    "node": "18 || 20 || 22"
+    "node": "20 || 22 || 24"
   },
   "scripts": {
     "build": "lb-tsc",
