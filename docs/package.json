@@ -16,7 +16,7 @@
     "directory": "docs"
   },
   "engines": {
-    "node": "18 || 20 || 22"
+    "node": "20 || 22 || 24"
   },
   "scripts": {
     "version": "node ./bin/copy-readmes.js && node ./bin/copy-changelogs.js && cd .. && npm run tsdocs",
