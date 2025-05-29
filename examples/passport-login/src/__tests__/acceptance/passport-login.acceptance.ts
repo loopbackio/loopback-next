@@ -104,7 +104,7 @@ describe('example-passport-login acceptance test', () => {
             password: 'password',
           })
           .expect(302);
-        const setCookie: string[] = response.get('Set-Cookie');
+        const setCookie: string[] = response.get('Set-Cookie') ?? [];
         if (setCookie?.length) {
           Cookie = setCookie[0].split(';')[0];
         }
@@ -127,7 +127,7 @@ describe('example-passport-login acceptance test', () => {
         /**
          * replace existing cookie with cookie from logout response
          */
-        const setCookie: string[] = response.get('Set-Cookie');
+        const setCookie: string[] = response.get('Set-Cookie') ?? [];
         if (setCookie?.length) {
           Cookie = setCookie[0].split(';')[0];
         }
@@ -180,15 +180,15 @@ describe('example-passport-login acceptance test', () => {
         const response = await client
           .get('/api/auth/thirdparty/oauth2')
           .expect(303);
-        oauthProviderUrl = response.get('Location');
+        oauthProviderUrl = response.get('Location') ?? '';
         expect(url.parse(oauthProviderUrl).pathname).to.equal('/oauth/dialog');
       });
 
       it('call to authorization url is redirected to oauth providers login page', async () => {
         const response = await supertest('').get(oauthProviderUrl).expect(302);
-        providerLoginUrl = response.get('Location');
+        providerLoginUrl = response.get('Location') ?? '';
         loginPageParams = url.parse(providerLoginUrl).query ?? '';
-        expect(url.parse(response.get('Location')).pathname).to.equal('/login');
+        expect(url.parse(providerLoginUrl).pathname).to.equal('/login');
       });
 
       /**
@@ -215,7 +215,7 @@ describe('example-passport-login acceptance test', () => {
           .post('/login_submit')
           .send(qs.stringify(params))
           .expect(302);
-        callbackToLbApp = response.get('Location');
+        callbackToLbApp = response.get('Location') ?? '';
         expect(url.parse(callbackToLbApp).pathname).to.equal(
           '/api/auth/thirdparty/oauth2/callback',
         );
@@ -230,7 +230,7 @@ describe('example-passport-login acceptance test', () => {
           .get(url.parse(callbackToLbApp).path ?? '')
           .expect(302);
         expect(response.get('Location')).to.equal('/auth/account');
-        const setCookie: string[] = response.get('Set-Cookie');
+        const setCookie: string[] = response.get('Set-Cookie') ?? [];
         if (setCookie?.length) {
           Cookie = setCookie[0].split(';')[0];
         }
@@ -253,7 +253,7 @@ describe('example-passport-login acceptance test', () => {
         /**
          * replace existing cookie with cookie from logout response
          */
-        const setCookie: string[] = response.get('Set-Cookie');
+        const setCookie: string[] = response.get('Set-Cookie') ?? [];
         if (setCookie?.length) {
           Cookie = setCookie[0].split(';')[0];
         }
@@ -298,7 +298,7 @@ describe('example-passport-login acceptance test', () => {
           const response = await client
             .get('/api/auth/thirdparty/facebook')
             .expect(303);
-          oauthProviderUrl = response.get('Location');
+          oauthProviderUrl = response.get('Location') ?? '';
           expect(url.parse(oauthProviderUrl).pathname).to.equal(
             '/oauth/dialog',
           );
@@ -308,11 +308,9 @@ describe('example-passport-login acceptance test', () => {
           const response = await supertest('')
             .get(oauthProviderUrl)
             .expect(302);
-          providerLoginUrl = response.get('Location');
+          providerLoginUrl = response.get('Location') ?? '';
           loginPageParams = url.parse(providerLoginUrl).query ?? '';
-          expect(url.parse(response.get('Location')).pathname).to.equal(
-            '/login',
-          );
+          expect(url.parse(providerLoginUrl).pathname).to.equal('/login');
         });
 
         /**
@@ -339,7 +337,7 @@ describe('example-passport-login acceptance test', () => {
             .post('/login_submit')
             .send(qs.stringify(params))
             .expect(302);
-          callbackToLbApp = response.get('Location');
+          callbackToLbApp = response.get('Location') ?? '';
           expect(url.parse(callbackToLbApp).pathname).to.equal(
             '/api/auth/thirdparty/facebook/callback',
           );
@@ -354,7 +352,7 @@ describe('example-passport-login acceptance test', () => {
             .get(url.parse(callbackToLbApp).path ?? '')
             .expect(302);
           expect(response.get('Location')).to.equal('/auth/account');
-          const setCookie: string[] = response.get('Set-Cookie');
+          const setCookie: string[] = response.get('Set-Cookie') ?? [];
           if (setCookie?.length) {
             Cookie = setCookie[0].split(';')[0];
           }
@@ -377,7 +375,7 @@ describe('example-passport-login acceptance test', () => {
           /**
            * replace existing cookie with cookie from logout response
            */
-          const setCookie: string[] = response.get('Set-Cookie');
+          const setCookie: string[] = response.get('Set-Cookie') ?? [];
           if (setCookie?.length) {
             Cookie = setCookie[0].split(';')[0];
           }

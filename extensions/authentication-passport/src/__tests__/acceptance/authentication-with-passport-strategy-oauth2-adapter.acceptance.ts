@@ -185,8 +185,8 @@ describe('Oauth2 authorization flow', () => {
         // HTTP status code 303 means see other,
         // on seeing which the browser would redirect to the other location
         const response = await client.get('/auth/thirdparty').expect(303);
-        oauthProviderUrl = response.get('Location');
-        expect(url.parse(response.get('Location')).pathname).to.equal(
+        oauthProviderUrl = response.get('Location') ?? '';
+        expect(url.parse(oauthProviderUrl).pathname).to.equal(
           url.parse(oauth2Options.authorizationURL).pathname,
         );
       });
@@ -195,9 +195,9 @@ describe('Oauth2 authorization flow', () => {
         // HTTP status code 302 means redirect to new uri,
         // on seeing which the browser would redirect to the new uri
         const response = await supertest('').get(oauthProviderUrl).expect(302);
-        providerLoginUrl = response.get('Location');
+        providerLoginUrl = response.get('Location') ?? '';
         loginPageParams = url.parse(providerLoginUrl).query ?? '';
-        expect(url.parse(response.get('Location')).pathname).to.equal('/login');
+        expect(url.parse(providerLoginUrl).pathname).to.equal('/login');
       });
 
       it('login page redirects to authorization app callback endpoint', async () => {
@@ -217,7 +217,7 @@ describe('Oauth2 authorization flow', () => {
           .post('/login_submit')
           .send(qs.stringify(params))
           .expect(302);
-        callbackToLbApp = response.get('Location');
+        callbackToLbApp = response.get('Location') ?? '';
         expect(url.parse(callbackToLbApp).pathname).to.equal(
           '/auth/thirdparty/callback',
         );
