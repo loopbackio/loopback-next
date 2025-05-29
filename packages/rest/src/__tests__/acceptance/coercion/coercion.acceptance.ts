@@ -162,7 +162,7 @@ describe('Coercion', () => {
 
   it('coerces parameter in header from string to number', async () => {
     spy = sinon.spy(MyController.prototype, 'createNumberFromHeader');
-    await client.get('/create-number-from-header').set({num: 100});
+    await client.get('/create-number-from-header').set({num: '100'});
     sinon.assert.calledWithExactly(spy, 100);
   });
 
