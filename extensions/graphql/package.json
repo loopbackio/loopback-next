@@ -60,7 +60,7 @@
     "graphql-subscriptions": "^2.0.0",
     "graphql-ws": "^5.14.3",
     "type-graphql": "^2.0.0-beta.2",
-    "ws": "^8.13.0"
+    "ws": "^8.18.2"
   },
   "devDependencies": {
     "@loopback/boot": "^7.0.14",
@@ -73,7 +73,7 @@
     "@types/cors": "^2.8.18",
     "@types/debug": "^4.1.12",
     "@types/node": "^16.18.126",
-    "@types/ws": "^8.5.5",
+    "@types/ws": "^8.18.1",
     "class-transformer": "^0.5.1"
   }
 }
