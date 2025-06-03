@@ -44,7 +44,7 @@
     "@loopback/rest": "^14.0.0"
   },
   "dependencies": {
-    "@apollo/server": "^4.12.1",
+    "@apollo/server": "^4.12.2",
     "@graphql-tools/utils": "^10.8.6",
     "@loopback/http-server": "^6.0.14",
     "body-parser": "^2.2.0",
