@@ -14,21 +14,21 @@ const session = require('client-sessions');
 const path = require('path');
 const bodyParser = require('body-parser');
 const app = (module.exports = express());
-const userLoginTemplate = require.resolve('./views/pages/login.jade');
+const userLoginTemplate = require.resolve('./views/pages/login.pug');
 
 /**
  * save a copy of the jade login template,
  * to use in 'Post /users/signup' and 'POST /login_submit' routes.
  * Reasons explained in the route handler.
  */
-const loginTemplate = require('jade').compileFile(userLoginTemplate);
+const loginTemplate = require('pug').compileFile(userLoginTemplate);
 
 /**
- * use jade as view engine
- * Note: jade templates copied from loopback-example-passport
+ * use pug as view engine
+ * Note: jade/pug templates copied from loopback-example-passport
  */
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'pug');
 
 // to support json payload in body
 app.use(bodyParser.json());
