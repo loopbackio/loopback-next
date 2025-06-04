@@ -36,7 +36,13 @@ jobs:
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: ${{ matrix.node-version }}
+      - name: Set up Python 3.11 (for node-gyp)
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
       - name: Install dependencies
+        env:
+          PYTHON: ${{env.pythonLocation}}/bin/python3
         run: npm ci
       - name: Build
         run: node packages/build/bin/compile-package -b
