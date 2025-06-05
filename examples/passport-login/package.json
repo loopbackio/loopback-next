@@ -73,7 +73,7 @@
     "debug": "^4.4.1",
     "express": "^4.21.2",
     "express-session": "^1.18.1",
-    "jade": "^1.11.0",
+    "pug": "^3.0.3",
     "lodash": "^4.17.21",
     "passport": "^0.5.3",
     "passport-facebook": "^3.0.0",

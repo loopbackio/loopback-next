@@ -49,7 +49,7 @@ exports.promisify = util.promisify;
  */
 function generateValidRegex() {
   const get = function (what) {
-    return require('unicode-10.0.0/' + what + '/code-points.js');
+    return require('@unicode/unicode-10.0.0/' + what + '/code-points.js');
   };
   const idStart = get('Binary_Property/ID_Start');
   const idContinue = get('Binary_Property/ID_Continue');
