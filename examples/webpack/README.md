@@ -1,8 +1,8 @@
 # @loopback/example-webpack
 
 This example illustrates how to bundle `@loopback/core` using
-[webpack](https://webpack.js.org/) to allow LoopBack's Dependency Injection can
-be run inside a browser.
+[webpack](https://webpack.js.org/) to allow LoopBack's Dependency Injection to
+run inside a browser.
 
 ## Webpack configurations
 

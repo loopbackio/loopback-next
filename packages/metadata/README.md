@@ -134,7 +134,7 @@ const arrayOfSpecs = MetadataInspector.getMethodMetadata<object>(
 
 Typescript
 [applies decorators in reverse order](https://www.typescriptlang.org/docs/handbook/decorators.html)
-per class, from the parent down. The metadata array resurned by `getOwnMetadata`
+per class, from the parent down. The metadata array returned by `getOwnMetadata`
 will be in this order:
 
 ```ts

@@ -107,12 +107,12 @@ The options for this are passed in a `controllers` object on `BootOptions`.
 
 Available options on the `controllers` object on `BootOptions` are as follows:
 
-| Options      | Type                 | Default              | Description                                                                                                   |
-| ------------ | -------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------- |
-| `dirs`       | `string \| string[]` | `['controllers']`    | Paths relative to projectRoot to look in for Controller artifacts                                             |
-| `extensions` | `string \| string[]` | `['.controller.js']` | File extensions to match for Controller artifacts                                                             |
-| `nested`     | `boolean`            | `true`               | Look in nested directories in `dirs` for Controller artifacts                                                 |
-| `glob`       | `string`             |                      | A `glob` pattern string. This takes precendence over above 3 options (which are used to make a glob pattern). |
+| Options      | Type                 | Default              | Description                                                                                                  |
+| ------------ | -------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `dirs`       | `string \| string[]` | `['controllers']`    | Paths relative to projectRoot to look in for Controller artifacts                                            |
+| `extensions` | `string \| string[]` | `['.controller.js']` | File extensions to match for Controller artifacts                                                            |
+| `nested`     | `boolean`            | `true`               | Look in nested directories in `dirs` for Controller artifacts                                                |
+| `glob`       | `string`             |                      | A `glob` pattern string. This takes precedence over above 3 options (which are used to make a glob pattern). |
 
 ### RepositoryBooter
 

@@ -1,6 +1,6 @@
 # @loopback/logging
 
-This module contains a component provides logging facilities based on
+This module contains a component that provides logging facilities based on
 [Winston](https://github.com/winstonjs/winston) and
 [Fluentd](https://github.com/fluent/fluent-logger-node).
 
