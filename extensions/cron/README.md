@@ -45,7 +45,7 @@ it can be managed by the `CronComponent` life cycles including `start` and
 ```ts
 import {CronJob, asCronJob} from '@loopback/cron';
 
-// Create an cron job
+// Create a cron job
 const job = new CronJob({
   cronTime: '*/1 * * * * *', // Every one second
   onTick: () => {

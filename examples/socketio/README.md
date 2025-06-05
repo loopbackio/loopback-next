@@ -1,6 +1,6 @@
 # @loopback/example-socketio
 
-This examples gives a basic implementation of socketio with loopback 4.
+This example gives a basic implementation of socketio with loopback 4.
 
 This shows how to get base setup done.
 
