@@ -69,7 +69,7 @@
     "axios": "^1.9.0",
     "body-parser": "^2.2.0",
     "express": "^4.21.2",
-    "form-data": "^4.0.2",
+    "form-data": "^4.0.3",
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
     "passport-http": "^0.3.0",
