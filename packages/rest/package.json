@@ -46,7 +46,7 @@
     "@types/cors": "^2.8.19",
     "@types/express": "^4.17.23",
     "@types/express-serve-static-core": "^4.17.37",
-    "@types/http-errors": "^2.0.4",
+    "@types/http-errors": "^2.0.5",
     "@types/on-finished": "^2.3.4",
     "@types/serve-static": "1.15.7",
     "@types/type-is": "^1.6.7",
