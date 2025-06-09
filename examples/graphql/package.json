@@ -61,7 +61,7 @@
     "@loopback/build": "^11.0.12",
     "@loopback/eslint-config": "^15.0.5",
     "@loopback/testlab": "^7.0.13",
-    "@types/multer": "^1.4.12",
+    "@types/multer": "^1.4.13",
     "@types/node": "^16.18.126",
     "eslint": "^8.57.1",
     "graphql-ws": "^5.16.2",
