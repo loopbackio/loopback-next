@@ -59,7 +59,7 @@
     "@types/autocannon": "^7.12.7",
     "@types/benchmark": "^2.1.5",
     "@types/mocha": "^10.0.10",
-    "@types/node": "^16.18.126",
+    "@types/node": "^22.15.30",
     "mocha": "^11.5.0",
     "source-map-support": "^0.5.21"
   }
