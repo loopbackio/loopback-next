@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.25.0](https://github.com/loopbackio/loopback-next/compare/@loopback/repository-tests@0.24.14...@loopback/repository-tests@0.25.0) (2025-06-10)
+
+
+### chore
+
+* drop Node.js 18 support ([88a3fe9](https://github.com/loopbackio/loopback-next/commit/88a3fe98f8ca217271eb028697278355ec7c9478))
+
+
+### BREAKING CHANGES
+
+* drop Node.js 18 support
+
+Signed-off-by: dhmlau <dhmlau@ca.ibm.com>
+
+
+
+
+
 ## [0.24.14](https://github.com/loopbackio/loopback-next/compare/@loopback/repository-tests@0.24.13...@loopback/repository-tests@0.24.14) (2025-05-13)
 
 **Note:** Version bump only for package @loopback/repository-tests

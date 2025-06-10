@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.6.0](https://github.com/loopbackio/loopback-next/compare/@loopback/tsdocs-monorepo@0.5.12...@loopback/tsdocs-monorepo@0.6.0) (2025-06-10)
+
+
+### chore
+
+* drop Node.js 18 support ([88a3fe9](https://github.com/loopbackio/loopback-next/commit/88a3fe98f8ca217271eb028697278355ec7c9478))
+
+
+### BREAKING CHANGES
+
+* drop Node.js 18 support
+
+Signed-off-by: dhmlau <dhmlau@ca.ibm.com>
+
+
+
+
+
 ## [0.5.12](https://github.com/loopbackio/loopback-next/compare/@loopback/tsdocs-monorepo@0.5.11...@loopback/tsdocs-monorepo@0.5.12) (2025-05-13)
 
 **Note:** Version bump only for package @loopback/tsdocs-monorepo

@@ -3,6 +3,34 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [15.0.0](https://github.com/loopbackio/loopback-next/compare/@loopback/rest@14.0.14...@loopback/rest@15.0.0) (2025-06-10)
+
+
+### Bug Fixes
+
+* **docs:** fix typos in documentation ([13ea0d0](https://github.com/loopbackio/loopback-next/commit/13ea0d001836c81cfb4ba6776c45b10a89cda3da))
+
+
+### chore
+
+* drop Node.js 18 support ([88a3fe9](https://github.com/loopbackio/loopback-next/commit/88a3fe98f8ca217271eb028697278355ec7c9478))
+
+
+### Features
+
+* show index information in openapi specs ([a5caa61](https://github.com/loopbackio/loopback-next/commit/a5caa61c060df2f3860074c4e533a5c6e90eabc7))
+
+
+### BREAKING CHANGES
+
+* drop Node.js 18 support
+
+Signed-off-by: dhmlau <dhmlau@ca.ibm.com>
+
+
+
+
+
 ## [14.0.14](https://github.com/loopbackio/loopback-next/compare/@loopback/rest@14.0.13...@loopback/rest@14.0.14) (2025-05-13)
 
 **Note:** Version bump only for package @loopback/rest

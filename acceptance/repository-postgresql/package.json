@@ -1,7 +1,7 @@
 {
   "name": "@loopback/test-repository-postgresql",
   "description": "Acceptance tests for `@loopback/repository` + `loopback-connector-postgresql`",
-  "version": "6.0.14",
+  "version": "7.0.0",
   "private": true,
   "license": "MIT",
   "main": "dist/index.js",
@@ -31,11 +31,11 @@
     "!*/__tests__"
   ],
   "devDependencies": {
-    "@loopback/build": "^11.0.12",
-    "@loopback/eslint-config": "^15.0.5",
-    "@loopback/repository": "^7.0.14",
-    "@loopback/repository-tests": "^0.24.14",
-    "@loopback/testlab": "^7.0.13",
+    "@loopback/build": "^12.0.0",
+    "@loopback/eslint-config": "^16.0.0",
+    "@loopback/repository": "^8.0.0",
+    "@loopback/repository-tests": "^0.25.0",
+    "@loopback/testlab": "^8.0.0",
     "@types/node": "^16.18.126",
     "loopback-connector-postgresql": "^7.2.2",
     "tslib": "^2.8.1"

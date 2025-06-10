@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.0.0](https://github.com/loopbackio/loopback-next/compare/@loopback/cli@6.2.5...@loopback/cli@7.0.0) (2025-06-10)
+
+
+### Bug Fixes
+
+* iterate through content object properties ([0e8336c](https://github.com/loopbackio/loopback-next/commit/0e8336c64a2fc705c1fe7645e1a32c19a3ac79fb))
+
+
+### chore
+
+* drop Node.js 18 support ([88a3fe9](https://github.com/loopbackio/loopback-next/commit/88a3fe98f8ca217271eb028697278355ec7c9478))
+
+
+### BREAKING CHANGES
+
+* drop Node.js 18 support
+
+Signed-off-by: dhmlau <dhmlau@ca.ibm.com>
+
+
+
+
+
 ## [6.2.5](https://github.com/loopbackio/loopback-next/compare/@loopback/cli@6.2.4...@loopback/cli@6.2.5) (2025-05-13)
 
 **Note:** Version bump only for package @loopback/cli

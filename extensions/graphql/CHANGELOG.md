@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.12.0](https://github.com/loopbackio/loopback-next/compare/@loopback/graphql@0.11.14...@loopback/graphql@0.12.0) (2025-06-10)
+
+
+### chore
+
+* drop Node.js 18 support ([88a3fe9](https://github.com/loopbackio/loopback-next/commit/88a3fe98f8ca217271eb028697278355ec7c9478))
+
+
+### Features
+
+* **graphql:** migrate to apollo server 4 ([d1a92a0](https://github.com/loopbackio/loopback-next/commit/d1a92a07323f38eebad3bac0087f735abd2c3c4c))
+
+
+### BREAKING CHANGES
+
+* drop Node.js 18 support
+
+Signed-off-by: dhmlau <dhmlau@ca.ibm.com>
+
+
+
+
+
 ## [0.11.14](https://github.com/loopbackio/loopback-next/compare/@loopback/graphql@0.11.13...@loopback/graphql@0.11.14) (2025-05-13)
 
 **Note:** Version bump only for package @loopback/graphql
