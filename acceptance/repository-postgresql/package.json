@@ -37,7 +37,7 @@
     "@loopback/repository-tests": "^0.24.14",
     "@loopback/testlab": "^7.0.13",
     "@types/node": "^16.18.126",
-    "loopback-connector-postgresql": "^7.2.1",
+    "loopback-connector-postgresql": "^7.2.2",
     "tslib": "^2.8.1"
   }
 }
