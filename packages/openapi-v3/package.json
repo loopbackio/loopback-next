@@ -39,7 +39,7 @@
     "!*/__tests__"
   ],
   "peerDependencies": {
-    "@loopback/core": "^6.0.0"
+    "@loopback/core": "^7.0.0"
   },
   "dependencies": {
     "@loopback/repository-json-schema": "^9.0.0",
