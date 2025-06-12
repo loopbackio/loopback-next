@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.0.1](https://github.com/loopbackio/loopback-next/compare/@loopback/openapi-spec-builder@8.0.0...@loopback/openapi-spec-builder@8.0.1) (2025-06-12)
+
+**Note:** Version bump only for package @loopback/openapi-spec-builder
+
+
+
+
+
 # [8.0.0](https://github.com/loopbackio/loopback-next/compare/@loopback/openapi-spec-builder@7.0.13...@loopback/openapi-spec-builder@8.0.0) (2025-06-10)
 
 

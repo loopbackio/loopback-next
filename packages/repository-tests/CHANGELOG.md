@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.25.1](https://github.com/loopbackio/loopback-next/compare/@loopback/repository-tests@0.25.0...@loopback/repository-tests@0.25.1) (2025-06-12)
+
+
+### Bug Fixes
+
+* update @loopback/core to latest major version ([e2d2288](https://github.com/loopbackio/loopback-next/commit/e2d22886dbbb4be91ee6407ff4c6257c48698e89))
+
+
+
+
+
 # [0.25.0](https://github.com/loopbackio/loopback-next/compare/@loopback/repository-tests@0.24.14...@loopback/repository-tests@0.25.0) (2025-06-10)
 
 
