@@ -33,8 +33,8 @@
   ],
   "peerDependencies": {
     "@loopback/core": "^7.0.0",
-    "@loopback/repository": "^7.0.0",
-    "@loopback/rest": "^14.0.0"
+    "@loopback/repository": "^8.0.1",
+    "@loopback/rest": "^15.0.1"
   },
   "dependencies": {
     "@loopback/model-api-builder": "^7.0.1",

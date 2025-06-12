@@ -40,7 +40,7 @@
   ],
   "peerDependencies": {
     "@loopback/core": "^7.0.0",
-    "@loopback/rest": "^14.0.0"
+    "@loopback/rest": "^15.0.1"
   },
   "dependencies": {
     "ts-graphviz": "^0.16.0",
