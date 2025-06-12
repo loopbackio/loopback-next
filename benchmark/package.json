@@ -1,7 +1,7 @@
 {
   "name": "@loopback/benchmark",
   "description": "Benchmarks measuring performance of our framework.",
-  "version": "7.0.1",
+  "version": "7.0.2",
   "keywords": [
     "loopback",
     "performance",
@@ -39,9 +39,9 @@
   ],
   "dependencies": {
     "@loopback/core": "^7.0.1",
-    "@loopback/example-todo": "^9.0.1",
+    "@loopback/example-todo": "^9.0.2",
     "@loopback/openapi-spec-builder": "^8.0.1",
-    "@loopback/rest": "^15.0.1",
+    "@loopback/rest": "^15.0.2",
     "@types/byline": "^4.2.36",
     "@types/debug": "^4.1.12",
     "@types/request-promise-native": "^1.0.21",

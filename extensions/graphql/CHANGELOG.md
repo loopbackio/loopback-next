@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.12.2](https://github.com/loopbackio/loopback-next/compare/@loopback/graphql@0.12.1...@loopback/graphql@0.12.2) (2025-06-12)
+
+
+### Bug Fixes
+
+* update peerDependencies versions ([c72cbad](https://github.com/loopbackio/loopback-next/commit/c72cbaded5b71585d45ab834dbcb839fd4ff1087))
+
+
+
+
+
 ## [0.12.1](https://github.com/loopbackio/loopback-next/compare/@loopback/graphql@0.12.0...@loopback/graphql@0.12.1) (2025-06-12)
 
 

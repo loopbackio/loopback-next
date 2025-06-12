@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [15.0.2](https://github.com/loopbackio/loopback-next/compare/@loopback/rest@15.0.1...@loopback/rest@15.0.2) (2025-06-12)
+
+**Note:** Version bump only for package @loopback/rest
+
+
+
+
+
 ## [15.0.1](https://github.com/loopbackio/loopback-next/compare/@loopback/rest@15.0.0...@loopback/rest@15.0.1) (2025-06-12)
 
 

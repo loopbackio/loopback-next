@@ -1,7 +1,7 @@
 {
   "name": "@loopback/model-api-builder",
   "description": "Types and helpers for packages contributing Model API builders.",
-  "version": "7.0.1",
+  "version": "7.0.2",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

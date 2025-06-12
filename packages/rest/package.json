@@ -1,7 +1,7 @@
 {
   "name": "@loopback/rest",
   "description": "Expose controllers as REST endpoints and route REST API requests to controller methods",
-  "version": "15.0.1",
+  "version": "15.0.2",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -40,7 +40,7 @@
   "dependencies": {
     "@loopback/express": "^8.0.1",
     "@loopback/http-server": "^7.0.1",
-    "@loopback/openapi-v3": "^11.0.1",
+    "@loopback/openapi-v3": "^11.0.2",
     "@openapi-contrib/openapi-schema-to-json-schema": "^5.1.0",
     "@types/body-parser": "^1.19.6",
     "@types/cors": "^2.8.19",

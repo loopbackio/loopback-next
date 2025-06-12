@@ -1,7 +1,7 @@
 {
   "name": "@loopback/repository-json-schema",
   "description": "Converts TS classes into JSON Schemas using TypeScript's reflection API",
-  "version": "9.0.1",
+  "version": "9.0.2",
   "keywords": [
     "LoopBack",
     "TypeScript",

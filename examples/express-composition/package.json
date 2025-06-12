@@ -1,7 +1,7 @@
 {
   "name": "@loopback/example-express-composition",
   "description": "LoopBack 4 REST API on Express",
-  "version": "8.0.1",
+  "version": "8.0.2",
   "keywords": [
     "loopback-application",
     "loopback",
@@ -47,11 +47,11 @@
     "access": "public"
   },
   "dependencies": {
-    "@loopback/boot": "^8.0.1",
+    "@loopback/boot": "^8.0.2",
     "@loopback/core": "^7.0.1",
     "@loopback/repository": "^8.0.1",
-    "@loopback/rest": "^15.0.1",
-    "@loopback/rest-explorer": "^8.0.1",
+    "@loopback/rest": "^15.0.2",
+    "@loopback/rest-explorer": "^8.0.2",
     "@loopback/service-proxy": "^8.0.1",
     "express": "^4.21.2",
     "tslib": "^2.8.1"

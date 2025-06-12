@@ -1,7 +1,7 @@
 {
   "name": "@loopback/repository-tests",
   "description": "A shared test suite to verify `@loopback/repository` functionality with a given compatible connector",
-  "version": "0.25.1",
+  "version": "0.25.2",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
