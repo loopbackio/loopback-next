@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.12.2](https://github.com/loopbackio/loopback-next/compare/@loopback/security@0.12.1...@loopback/security@0.12.2) (2025-06-13)
+
+
+### Bug Fixes
+
+* fix the last peerDependencies ([6e20b2d](https://github.com/loopbackio/loopback-next/commit/6e20b2da46833934baa642a8cd05d1660598792e))
+
+
+
+
+
 ## [0.12.1](https://github.com/loopbackio/loopback-next/compare/@loopback/security@0.12.0...@loopback/security@0.12.1) (2025-06-12)
 
 **Note:** Version bump only for package @loopback/security

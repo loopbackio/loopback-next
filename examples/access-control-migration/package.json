@@ -1,7 +1,7 @@
 {
   "name": "@loopback/example-access-control-migration",
   "description": "Tutorial example on how to migrate the access control example with LoopBack 4.",
-  "version": "8.0.2",
+  "version": "8.0.3",
   "keywords": [
     "loopback",
     "LoopBack",
@@ -51,15 +51,15 @@
     "access": "public"
   },
   "dependencies": {
-    "@loopback/authentication": "^12.0.2",
-    "@loopback/authentication-jwt": "^0.16.2",
-    "@loopback/authorization": "^0.16.1",
+    "@loopback/authentication": "^12.0.3",
+    "@loopback/authentication-jwt": "^0.16.3",
+    "@loopback/authorization": "^0.16.2",
     "@loopback/boot": "^8.0.2",
     "@loopback/core": "^7.0.1",
     "@loopback/repository": "^8.0.1",
     "@loopback/rest": "^15.0.2",
     "@loopback/rest-explorer": "^8.0.2",
-    "@loopback/security": "^0.12.1",
+    "@loopback/security": "^0.12.2",
     "@loopback/service-proxy": "^8.0.1",
     "bcryptjs": "^3.0.2",
     "casbin": "^5.38.0",
