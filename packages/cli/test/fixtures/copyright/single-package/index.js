@@ -1,7 +1,7 @@
-// Copyright ACME Inc. 2020,2024. All Rights Reserved.
-// Node module: myapp
-// This file is licensed under the ISC License.
-// License text available at https://www.isc.org/licenses/
+// Copyright IBM Corp. and LoopBack contributors 2020. All Rights Reserved.
+// Node module: @loopback/cli
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
 
 // Use the same set of files (except index.js) in this folder
 const files = require('../index')(__dirname);

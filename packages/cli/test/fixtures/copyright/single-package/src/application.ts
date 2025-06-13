@@ -1,6 +1,6 @@
-// Copyright ACME Inc. 2020,2024. All Rights Reserved.
+// Copyright IBM Corp. 2020. All Rights Reserved.
 // Node module: myapp
-// This file is licensed under the ISC License.
-// License text available at https://www.isc.org/licenses/
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
 
 export class MyApplication {}
