@@ -40,7 +40,7 @@
     "@types/jsonwebtoken": "^9.0.9",
     "@types/lodash": "^4.17.17",
     "@types/node": "^16.18.126",
-    "axios": "^1.9.0",
+    "axios": "^1.10.0",
     "body-parser": "^2.2.0",
     "express": "^4.21.2",
     "form-data": "^4.0.3",
