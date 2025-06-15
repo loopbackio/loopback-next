@@ -24,8 +24,12 @@ const {expectFileToMatchSnapshot} = require('../../snapshots');
 const sandbox = new TestSandbox(path.resolve(__dirname, '../.sandbox'));
 
 // CLI Inputs
+const defaultCLIInput = {
+  name: 'productReview',
+};
 const basicCLIInput = {
   name: 'productReview',
+  controllerType: 'ControllerGenerator.BASIC',
 };
 const restCLIInput = {
   name: 'productReview',
@@ -54,7 +58,7 @@ describe('lb4 controller', () => {
         .inDir(sandbox.path, () =>
           testUtils.givenLBProject(sandbox.path, {excludePackageJSON: true}),
         )
-        .withPrompts(basicCLIInput),
+        .withPrompts(defaultCLIInput),
     ).to.be.rejectedWith(/No package.json found in/);
   });
 
@@ -65,12 +69,21 @@ describe('lb4 controller', () => {
         .inDir(sandbox.path, () =>
           testUtils.givenLBProject(sandbox.path, {excludeLoopbackCore: true}),
         )
-        .withPrompts(basicCLIInput),
+        .withPrompts(defaultCLIInput),
     ).to.be.rejectedWith(/No `@loopback\/core` package found/);
   });
 
   describe('basic controller', () => {
     it('scaffolds correct file with input', async () => {
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path))
+        .withPrompts(defaultCLIInput);
+
+      checkBasicContents();
+    });
+
+    it('scaffolds correct file with controllerType BASIC specified explicitly', async () => {
       await testUtils
         .executeGenerator(generator)
         .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path))
