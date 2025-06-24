@@ -42,7 +42,6 @@ Injection, as well as Extension Point and Extensions.
   add security protection middleware to our Sequence.
 
 - Embrace and adapt existing Express middleware modules with minimal effort
-
   - Run an explicit list of Express middleware handler functions
   - Support the factory and configuration pattern used by most Express
     middleware

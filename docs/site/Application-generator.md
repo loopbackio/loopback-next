@@ -68,7 +68,6 @@ The tool will prompt you for:
 - Optional modules to add to the application. These modules are helpful tools to
   help format, test, and build a LoopBack4 application. Defaults to `true` for
   all of the modules. The prompted modules are:
-
   - [`eslint`](https://www.npmjs.com/package/eslint)
   - [`prettier`](https://www.npmjs.com/package/prettier)
   - [`mocha`](https://www.npmjs.com/package/mocha)

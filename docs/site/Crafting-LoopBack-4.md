@@ -70,7 +70,6 @@ as:
 
 2.  Technical debt is accumulating, for example inconsistent designs across
     modules and feature flags for different behaviors. Here are a few examples:
-
     - Various modules use different registries to manage different types of
       artifacts, such as remoting metadata, models, datasources, and middleware.
     - Different flavors are used to allow custom logic to intercept
@@ -81,7 +80,6 @@ as:
 
 3.  It is becoming more difficult to add new features or fix bugs as some areas
     start to reach the limit of the current design.
-
     - The `loopback-datasource-juggler` module is a kitchen sink for many
       things, such as typing, data modeling, validation, aggregation,
       persistence, and service integration.
@@ -94,7 +92,6 @@ as:
     make code changes in LoopBack modules. The current version of LoopBack has
     ad-hoc extensibility at various layers. Extension points are not
     consistently defined. For example,
-
     - Use Express to register middleware.
     - Use remoting hooks to intercept remote method invocations.
     - Use CRUD hooks to add logic around CRUD operations.
@@ -149,7 +146,6 @@ generation of API creation platform. For more information, read the blog post
 LoopBack 4's goals are:
 
 1.  Catch up with latest and greatest technology advances.
-
     - Adopt [ES2016/2017](http://exploringjs.com/es2016-es2017/index.html) and
       [TypeScript](https://www.typescriptlang.org/) for ease of maintenance and
       productivity.
@@ -157,20 +153,17 @@ LoopBack 4's goals are:
       and [GraphQL](http://graphql.org/).
 
 2.  Promote extensibility to grow the ecosystem.
-
     - Build a minimal core and enable everything else to be implemented via
       extensions.
     - Open the door for more
       [extension points and extensions](https://github.com/loopbackio/loopback-next/issues/512).
 
 3.  Align with cloud native experience for microservices.
-
     - Adopt cloud native microservices by adopting initiatives such as
       [Cloud Native Computing Foundation](https://www.cncf.io/).
     - Make LoopBack a first-class citizen of the microservices ecosystem.
 
 4.  Remove the complexity and inconsistency across modules.
-
     - Use a consistent registry and APIs to manage artifacts and their
       dependencies.
     - Pay down technical debts by refactoring complex modules.
@@ -227,20 +220,16 @@ Here are the stages we are marching through toward the final version of LoopBack
 4 as illustrated below.
 
 1.  **Rebase and rewrite the core**
-
     - Leverage TypeScript for better code quality and productivity.
-
       - Provide optional type system for JavaScript.
       - Provide planned features from future JavaScript editions to current
         JavaScript engines.
 
     - Unify the asynchronous programming model/style.
-
       - 100% promise-based APIs.
       - Async/Await as first-class async programming style.
 
     - Implement an IoC Container for better visibility and extensibility
-
       - Universal registry across different modules
       - Dependency injection as a pattern to manage dependencies
 
@@ -249,11 +238,9 @@ Here are the stages we are marching through toward the final version of LoopBack
       - Component encapsulates a list of extensions as a whole
 
 2.  **Validate the core design by implementing an REST/HTTP invocation chain**
-
     - Add top-down REST API creation which starts with OpenAPI specs.
 
     - Build sequence of actions for inbound http processing
-
       - Introduce sequence as the composition of actions
       - Implement the most critical actions to fulfill the REST API routing and
         invocation
@@ -262,7 +249,6 @@ Here are the stages we are marching through toward the final version of LoopBack
 
       Models are the centerpieces of the current LoopBack applications. . They
       take multiple responsibilities:
-
       - Data modeling
       - Anchor for API related business logic
       - Persistence or service invocation
@@ -272,13 +258,11 @@ Here are the stages we are marching through toward the final version of LoopBack
 
       Implement the core functionality of authentication as a component, which
       includes:
-
       - Decorators to denote authentication requirement
       - `authenticate` action to handle authentication
       - Extension points for various authentication strategies
 
 3.  **Rebuild our integration and composition capabilities**
-
     - Introduce repositories to represent data access patterns such as CRUD or
       Key/Value stores
     - Provide a reference implementation of CRUD and KV flavors of repository
@@ -302,7 +286,6 @@ Here are the stages we are marching through toward the final version of LoopBack
     approach to describe these artifacts by code (apis and decorators), we would
     like to add declarative support so that they can be declared in JSON/YAML
     files.
-
     - Define a new domain-specific language (DSL) in JSON/YAML format and
       corresponding templates.
     - Define the project layout to organize project artifacts.
@@ -314,14 +297,12 @@ Here are the stages we are marching through toward the final version of LoopBack
       boot process can be tailored for both tooling and runtime.
 
 5.  **Tooling (CLI & UI)**
-
     - Add CLI and UI tools to:
       - Scaffold LoopBack 4 applications
       - Manage artifacts such as sequences, actions, controllers, repositories,
         services, datasources and models
 
 6.  **Enable cloud native experience**
-
     - Allow controllers to be exposed as gRPC services
     - Allow interaction with other gRPC services
     - Integration with microservices deployment infrastructure such as Docker
@@ -400,7 +381,6 @@ independent of the nature of such artifacts.
 
 - A consistent registry to provide visibility and addressability for all
   artifacts.
-
   - Visibility: Each artifact has a unique address and can be accessed via a URI
     or key. Artifacts can also be visible at different scopes.
 
@@ -410,13 +390,11 @@ independent of the nature of such artifacts.
     points/extensions decouples providers and consumers.
 
 - Ability to compose with dependency resolution.
-
   - Composability: It's common that one artifact to have dependencies on other
     artifacts. With dependency injection or service locator patterns, the core
     will greatly simplify how multiple artifacts work together.
 
 - A packaging model for extensions.
-
   - Pluggability: Extensions can be organized and contributed as a whole. We
     need to have a packaging model so that extension developers can create their
     own modules as bundles and plug into a LoopBack application.

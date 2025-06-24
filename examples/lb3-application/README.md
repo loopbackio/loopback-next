@@ -55,7 +55,6 @@ applications can use them.
    dependencies.
 
 4. Disable error handling in your LB3 app, leave it for the new LB4 app.
-
    - Remove `lb3app/server/middleware.development.json`
    - Edit `lb3app/server/middleware.json` and remove the following two entries:
      - `final` >> `loopback#urlNotFound`
@@ -67,7 +66,6 @@ applications can use them.
 5. Move your front-end files from `lb3app/client` to `public/` directory and
    disable static assets in your LB3 app by removing the following entry in
    `lb3app/server/middleware.json`:
-
    - `files` >> `loopback#static`
 
    Also remove `lb3app/server/boot/root.js`, since the main page will be served
@@ -78,7 +76,6 @@ applications can use them.
 
 7. Install and configure `@loopback/booter-lb3app` to boot and mount the LB3
    application:
-
    1. `npm install --save @loopback/booter-lb3app`
 
    2. Import the component at the top of your `src/application.ts` file.

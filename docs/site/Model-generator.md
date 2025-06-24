@@ -41,7 +41,6 @@ The tool will prompt you for:
   been supplied with a valid model class name, the prompt is skipped. It will
   present you with a list of available models from `src/models` including the
   **Entity** and **Model** at the top of the list.
-
   - An **Entity** is a persisted model with an identity (ID).
   - A **Model** is a business domain object.
   - For more information, see

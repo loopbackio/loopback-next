@@ -26,7 +26,6 @@ The package will provide the following key constructs:
 
 - SocketIo controller: A controller class that is decorated with SocketIo
   related metadata, including:
-
   - Map to a namespace
   - Connect/disconnect events
   - Subscribe/consume messages

@@ -49,7 +49,6 @@ The following endpoints are added by the component.
 1. `/context-explorer/inspect`: Fetch a JSON document for the context hierarchy.
 
    The following query parameters are supported:
-
    - includeParent: include parent contexts (default: `true`)
    - includeInjections: include injections (default: `true`)
    - includeGraph: include a graph in [graphviz](https://www.graphviz.org/) dot
@@ -58,7 +57,6 @@ The following endpoints are added by the component.
 2. `/context-explorer/graph`: Render the LoopBack application as a SVG diagram.
 
    The following query parameters are supported:
-
    - includeParent: include parent contexts (default: `true`)
    - includeInjections: include injections (default: `true`)
    - format: `dot` or `svg` (default: `svg`)

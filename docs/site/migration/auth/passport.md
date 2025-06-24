@@ -253,12 +253,9 @@ You can configure the authentication endpoints with the following steps:
   `@authenticate(`{passport-strategy-name}`)`
 - One of the endpoints is for redirecting to the external provider app and the
   other is for getting called back by the external app.
-
   - Create a controller with authentication endpoints as in below example:
-
     - A method to redirect to the third party app (method `loginToThirdParty` in
       the below example)
-
       - an endpoint for api clients to login via a third party app
       - the passport strategy identifies this call as a redirection to third
         party

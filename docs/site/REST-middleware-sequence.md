@@ -138,7 +138,6 @@ responses. It typically includes the following logic.
 
 1.  Process the request from the server or upstream middleware with one of the
     following outcomes:
-
     - Reject the request by throwing an error if the request is invalid
 
       ```ts
@@ -174,7 +173,6 @@ responses. It typically includes the following logic.
 
 2.  Process the response from downstream middleware or the target operation with
     one the following outcomes:
-
     - Reject the response by throwing an error
 
       ```ts
@@ -262,7 +260,6 @@ The middleware for the sequence are executed in the order of groups in a
 cascading style. The order of groups is determined by two factors:
 
 1.  The relative order specified for a middleware binding.
-
     - upstreamGroups: An array of group names that should be upstream to this
       middleware
 

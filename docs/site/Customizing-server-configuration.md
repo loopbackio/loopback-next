@@ -160,12 +160,10 @@ with the base path.
 The router can be configured to enforce `strict` mode as follows:
 
 1. `strict` is true:
-
    - request `/orders` matches route `/orders` but not `/orders/`
    - request `/orders/` matches route `/orders/` but not `/orders`
 
 2. `strict` is false (default)
-
    - request `/orders` matches route `/orders` first and falls back to
      `/orders/`
    - request `/orders/` matches route `/orders/` first and falls back to
