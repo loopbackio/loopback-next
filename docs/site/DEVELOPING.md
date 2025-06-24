@@ -387,7 +387,6 @@ two groups:
    blocks.
 
    Examples:
-
    - `@loopback/core` is re-exporting all public API provided by
      `@loopback/context`.
 
@@ -778,7 +777,6 @@ The script does the following steps:
 1. Determine the parentDir and package name.
 
    The first argument can be one of the following:
-
    - package-name
    - @loopback/package-name
    - extensions/package-name
@@ -792,7 +790,6 @@ and falls back to `extensions`.
    are skipped.
 
 3. Fix up the project
-
    - Remove unused files
    - Improve `package.json`
 
@@ -935,7 +932,6 @@ configuration, it's important to verify that all usage scenarios keep working.
     ```
 
 5.  Test integration with supported IDEs:
-
     - [Visual Studio Code](./Developing-with-vscode.md#how-to-verify-eslint-setup)
     - [WebStorm](./Developing-with-webstorm.md#how-to-verify-eslint-setup)
 

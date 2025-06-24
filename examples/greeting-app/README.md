@@ -6,11 +6,9 @@ This application is built on top of
 ## Compose the application
 
 1. Add REST API
-
    - GreetingController - providing endpoints over `GreetingService`
 
 2. Add caching
-
    - CachingService - implementing cache operations, such as set,get, delete,
      and sweep
    - CachingInterceptor - intercepting http requests to apply caching

@@ -38,7 +38,6 @@ The artifacts below are bound to the context chain with certain scopes.
    `RestServer` instance is the server context.
 3. `app.boot()` discovers and loads the following bindings into the application
    context:
-
    - PingController
    - SpyInterceptor
    - LoggerService

@@ -28,7 +28,6 @@ Once the API requirements are assessed,
 
 - LoopBack's features can be used to satisfy the requirements from different
   developers:
-
   - Front end designers:
 
     > Can create an `Online Shopping prototype` to try the UI experience by
@@ -74,7 +73,6 @@ mobile application is the same.
 Similar to this we can breakdown further use cases into API requirements.
 
 - `Shopping use cases`
-
   - User starts adding and removing items to the shopping cart.
   - If the user logs out the shopping cart is saved and re-loaded when the user
     logs in next time.

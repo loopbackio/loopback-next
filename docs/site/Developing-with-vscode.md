@@ -81,7 +81,6 @@ can e.g. rename `inject` to test.)
 
 2.  Verify that ESLint extension is not reporting any warnings in the output
     window:
-
     - pres _Cmd+shift+P_ or _Ctrl+shift+P_ to open task selector
     - find and run the task `ESLint: Show Output`
     - check the logs

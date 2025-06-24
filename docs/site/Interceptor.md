@@ -585,17 +585,14 @@ The `source` describes the caller that invokes a method with interceptors.
 Interceptors can be invoked in the following cases:
 
 1. A route to a controller method
-
    - The source describes the REST Route
 
 2. A controller to a repository/service with injected proxy
-
    - The source describes a ResolutionSession that tracks a stack of bindings
      and injections
 
 3. A controller/repository/service method invoked explicitly with
    `invokeMethodWithInterceptors()` or `invokeMethod`
-
    - The source can be set by the caller of `invokeMethodWithInterceptors()` or
      `invokeMethod`
 

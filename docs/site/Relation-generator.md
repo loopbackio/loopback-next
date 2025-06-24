@@ -133,7 +133,6 @@ The tool will prompt you for:
 - Relation type between models (`relationBaseClass`). Prompts a list of
   available relations to choose from as the type of the relation between the
   source model and the target model. Supported relation types:
-
   - [HasMany](HasMany-relation.md)
   - [HasManyThrough](HasManyThrough-relation.md)
   - [HasOne](HasOne-relation.md)
@@ -168,7 +167,6 @@ The tool will prompt you for:
 
 - Name of the relation (`relationName`). Prompts for the Source property name.
   Note: Leave blank to use the default. Default values:
-
   - plural form of `<targetModel>` for `hasMany` and `hasManyThrough` relations,
     e.g. `products`
   - singular form of `<targetModel>` for `hasOne` relations, e.g. `address`

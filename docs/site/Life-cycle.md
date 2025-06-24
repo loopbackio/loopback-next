@@ -36,22 +36,18 @@ The state can transition as follows by operations including `boot`, `start`, and
 `stop`:
 
 1.  boot()
-
     - !booted -> booting -> booted
     - booting | booted -> booted (no-op)
 
 2.  init()
-
     - !initialized -> initializing -> initialized
     - initializing | initialized -> initialized (no-op)
 
 3.  start()
-
     - !started -> starting -> started
     - starting | started -> started (no-op)
 
 4.  stop()
-
     - started -> stopping -> stopped
     - stopping | !started -> stopped (no-op)
 
@@ -133,17 +129,14 @@ cycles and perform related processing upon `start` and `stop`. Good examples of
 such artifacts are:
 
 - Servers
-
   - start: Starts the HTTP server listening for connections.
   - stop: Stops the server from accepting new connections.
 
 - Components
-
   - A component itself can be a life cycle observer and it can also contribute
     life cycle observers
 
 - DataSources
-
   - connect: Connect to the underlying database or service
   - disconnect: Disconnect from the underlying database or service
 
@@ -277,7 +270,6 @@ First of all, we allow each of the life cycle observers to be tagged with a
 group. For example:
 
 - datasource (connect/disconnect)
-
   - mongodb
   - mysql
 

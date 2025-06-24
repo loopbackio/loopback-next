@@ -213,7 +213,6 @@ in
    ```
 
    The Provider should have two functions:
-
    - A function that takes in the verify callback function and returns a
      configured basic strategy. To know more about the configuration, please
      check

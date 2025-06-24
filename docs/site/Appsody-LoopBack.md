@@ -904,7 +904,6 @@ terminal window opened in your project directory. In our case, this is the
     ![lb4appsody_template_webpage_cloud_1.png](./imgs/lb4appsody_template_webpage_cloud_1.png)
 
     As mentioned earlier, all these endpoints are available:
-
     - Application endpoint: /
     - API explorer: /explorer
     - Open API Spec: /openapi.json

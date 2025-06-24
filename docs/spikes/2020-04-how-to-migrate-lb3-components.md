@@ -498,7 +498,6 @@ This component is rather complex.
    resolve user roles.
 
 5. It also provides some middleware:
-
    - `userContextMiddleware` to set the current user & their groups in the
      CLS-based context
    - `accessLoggerMiddleware` to log HTTP requests with additional information.

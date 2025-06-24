@@ -532,7 +532,6 @@ reqCtx.scope = BindingScope.REQUEST;
     ```
 
     The owner context for the code snippet above will be:
-
     - 'foo.app': appCtx
     - 'foo.server': serverCtx
 
@@ -560,7 +559,6 @@ reqCtx.scope = BindingScope.REQUEST;
     ancestors recursively
 
     b. Use the scope of binding found to locate the resolution context:
-
     - Use the `current context` for `CONTEXT` and `TRANSIENT` scopes
     - Use the `owner context` for `SINGLETON` scope
     - Use the first context that matches the binding scope in the chain starting

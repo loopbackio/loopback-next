@@ -378,7 +378,6 @@ Next, we write the authorizer that calls casbin enforcers to make the decision.
    in
    [casbin policy persistence](https://github.com/casbin/casbin#policy-persistence)).
    Here is an overview of the hooks:
-
    - when create a new project
      - create a set of p, project\${id}\_owner, action policies
      - create a set of p, project\${id}\_team, action policies
@@ -507,14 +506,12 @@ Considering the difference between the original application and the migrated
 one, you need to adjust the properties a bit for the three migrated models.
 
 - For `Project`, open file `src/models/project.model.ts`
-
   - decorate `ownerId` with `@belongsTo(() => User)` and remove the generated
     `@property` decorator.
   - `balance` should be a required property: change it from `balance?` to
     `balance`
 
 - For `Team`, open file `src/models/team.model.ts`
-
   - replace `memberId` with `memberIds` as an array:
     ```ts
       @property({
@@ -526,7 +523,6 @@ one, you need to adjust the properties a bit for the three migrated models.
     ```
 
 - For `User`, open file `src/models/user.model.ts`
-
   - remove `password` because we have a `UserCredential` model created to
     separate it from `User`
 

@@ -174,7 +174,6 @@ Includes migrating Useful LB3 Documentation to LB4.
 #### LB4 adoption
 
 - Articles/materials that can help more users adopting LoopBack 4
-
   - write an article about what LB can offer on top of Express #4852
   - Write an article/docs on "from API to UI: LoopBack + Angular" - using client
     generator #4849

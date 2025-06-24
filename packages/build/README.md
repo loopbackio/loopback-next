@@ -63,7 +63,6 @@ Now you run the scripts, such as:
   `@loopback/build/config/tsconfig.common.json`.
 
   To customize the configuration:
-
   - Create `tsconfig.build.json` or `tsconfig.json` in your project's root
     directory
 
@@ -116,7 +115,6 @@ npm run build
   `lb-nyc` is a simple wrapper for [`nyc`](https://github.com/istanbuljs/nyc).
 
   To customize the configuration:
-
   - Create `.nycrc` in your project's root directory
 
     ```json

@@ -76,18 +76,15 @@ Here is a sneak peek of what's coming:
   [loopback-next issue #559](https://github.com/loopbackio/loopback-next/issues/559)
 
 - Complete repository/service story for backend interactions
-
   - [loopback-next issue #419](https://github.com/loopbackio/loopback-next/issues/419)
   - [loopback-next issue #537](https://github.com/loopbackio/loopback-next/issues/537)
   - [loopback-next issue #522](https://github.com/loopbackio/loopback-next/issues/522)
 
 - Declarative support for various constructs
-
   - [loopback-next issue #441](https://github.com/loopbackio/loopback-next/issues/441)
   - [loopback-next issue #461](https://github.com/loopbackio/loopback-next/issues/461)
 
 - Alignment of microservices and cloud native experience
-
   - [loopback-next issue #442](https://github.com/loopbackio/loopback-next/issues/442)
   - [loopback-next issue #25](https://github.com/loopbackio/loopback-next/issues/25)
 

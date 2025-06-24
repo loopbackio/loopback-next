@@ -69,7 +69,6 @@ along with the responsibilities divided among different parts:
   strategy's `authenticate` method.
 
 - Authentication strategy:
-
   - (login flow) verify user credentials and return a user profile(it's up to
     the programmer to create the JWT access token inside the controller
     function).
@@ -110,7 +109,6 @@ And the abstractions for:
 ### Token based authentication
 
 - Login flow
-
   - authentication action:
     - resolve metadata to get the strategy
     - invoke strategy.authenticate()
@@ -140,7 +138,6 @@ And the abstractions for:
 ### Session based authentication
 
 - Login flow
-
   - authentication action:
     - resolve metadata to get the strategy
     - invoke strategy.authenticate()

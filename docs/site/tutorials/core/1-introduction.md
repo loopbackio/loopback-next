@@ -27,7 +27,6 @@ requirements:
 
 1. The service is capable of speaking different languages to greet people. For
    example:
-
    - English: Hello, Raymond!
    - Chinese: Raymond，你好！
 
@@ -58,12 +57,10 @@ LoopBack 4. The code is being developed in the
 We are going to decompose the application into two packages:
 
 1. [example-greeter-extension](https://github.com/loopbackio/loopback-next/tree/core-tutorial/examples/greeter-extension)
-
    - GreetingService to greet by language and name
    - English and Chinese greeters to greet in English and Chinese respectively
 
 2. [example-greeting-app](https://github.com/loopbackio/loopback-next/tree/core-tutorial/examples/greeting-app)
-
    - CachingService to provide caching facilities
    - GreetingController to expose REST APIs
    - CachingInterceptor to apply caching
