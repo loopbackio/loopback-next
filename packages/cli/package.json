@@ -88,7 +88,7 @@
     "@loopback/testlab": "^8.0.1",
     "@types/ejs": "^3.1.5",
     "@types/fs-extra": "^11.0.4",
-    "@types/minimatch": "^5.1.2",
+    "@types/minimatch": "^6.0.0",
     "@types/node": "^16.18.126",
     "@types/yeoman-environment": "^2.10.11",
     "@types/yeoman-generator": "^5.2.14",
