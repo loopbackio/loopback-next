@@ -772,6 +772,9 @@ describe('build-schema', () => {
             email: {
               type: 'string',
               format: 'email',
+              index: {
+                unique: true,
+              },
               maxLength: 50,
               minLength: 5,
             },
