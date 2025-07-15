@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.0.4](https://github.com/loopbackio/loopback-next/compare/@loopback/cli@7.0.3...@loopback/cli@7.0.4) (2025-07-15)
+
+
+### Bug Fixes
+
+* [#10494](https://github.com/loopbackio/loopback-next/issues/10494) - lb4 controller fails with controllerType as BASIC ([ff4dd06](https://github.com/loopbackio/loopback-next/commit/ff4dd06b519e8970a690f8a3134f1df0369c1eaa))
+* copyright updates ([98340ed](https://github.com/loopbackio/loopback-next/commit/98340edeeb69b14a31c9793d718eae1c73eb7a6a))
+* undo copyright updates ([fe2acbf](https://github.com/loopbackio/loopback-next/commit/fe2acbff93c9b8408bec814d4050a12d7aa2d972))
+
+
+
+
+
 ## [7.0.3](https://github.com/loopbackio/loopback-next/compare/@loopback/cli@7.0.2...@loopback/cli@7.0.3) (2025-06-13)
 
 **Note:** Version bump only for package @loopback/cli

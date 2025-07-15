@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.0.3](https://github.com/loopbackio/loopback-next/compare/@loopback/example-validation-app@7.0.2...@loopback/example-validation-app@7.0.3) (2025-07-15)
+
+
+### Bug Fixes
+
+* adding tests and comments illustrating the discriminator bug issue ([82a33cc](https://github.com/loopbackio/loopback-next/commit/82a33cc840266c1707f73a1b3e71a0224e456f26))
+* illustrate the discriminator bug and fix in loopback rest request-body-validator ([9fa3593](https://github.com/loopbackio/loopback-next/commit/9fa35934b067ae804e3cd19c06b9d290571da798))
+* removal of comments and implementation of bug fix ([f0da7dd](https://github.com/loopbackio/loopback-next/commit/f0da7dd6fdf119a4ce0e083997c4d5bdad3a0b9c))
+
+
+
+
+
 ## [7.0.2](https://github.com/loopbackio/loopback-next/compare/@loopback/example-validation-app@7.0.1...@loopback/example-validation-app@7.0.2) (2025-06-12)
 
 **Note:** Version bump only for package @loopback/example-validation-app
