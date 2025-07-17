@@ -85,6 +85,6 @@
     "@types/node": "^16.18.126",
     "@types/on-finished": "^2.3.5",
     "@types/qs": "^6.14.0",
-    "multer": "^2.0.1"
+    "multer": "^2.0.2"
   }
 }
