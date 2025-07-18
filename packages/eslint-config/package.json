@@ -23,7 +23,7 @@
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@typescript-eslint/parser": "^7.18.0",
-    "eslint-config-prettier": "^9.1.0",
+    "eslint-config-prettier": "^9.1.1",
     "eslint-plugin-eslint-plugin": "^5.5.1",
     "eslint-plugin-mocha": "^10.5.0"
   }
