@@ -10,6 +10,7 @@ export class Note extends Entity {
   @property({
     type: 'number',
     id: true,
+    generated: true,
   })
   id?: number;
 
