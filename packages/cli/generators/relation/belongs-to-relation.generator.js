@@ -65,13 +65,57 @@ module.exports = class BelongsToRelationGenerator extends (
       path.join(this.artifactInfo.outDir, this.artifactInfo.outFile),
     );
 
-    this.copyTemplatedFiles(source, dest, this.artifactInfo);
-    await relationUtils.addExportController(
-      this,
-      path.resolve(this.artifactInfo.outDir, 'index.ts'),
-      this.artifactInfo.controllerClassName,
-      utils.toFileName(this.artifactInfo.name) + '.controller',
-    );
+    if (this.fs.exists(dest)) {
+      const project = new relationUtils.AstLoopBackProject();
+      const sourceFile = project.addSourceFileAtPath(dest);
+      const sourceClass = relationUtils.getClassObj(
+        sourceFile,
+        this.artifactInfo.controllerClassName,
+      );
+      const structure = sourceClass.getStructure();
+      structure.methods.forEach((method, index) => {
+        if (method.name.startsWith('get')) {
+          const {statements, parameters} = method;
+          const lastStatementIndex = statements.length - 1;
+          let returnStatement = statements[lastStatementIndex];
+          returnStatement = returnStatement.substring(
+            returnStatement.indexOf('return') + 6,
+            returnStatement.lastIndexOf(';'),
+          );
+          returnStatement = returnStatement.trim();
+
+          if (returnStatement.startsWith('[')) {
+            returnStatement = returnStatement.substring(
+              returnStatement.indexOf('[') + 1,
+              returnStatement.lastIndexOf(']'),
+            );
+          }
+          returnStatement = `${returnStatement},\n\t this.${this.artifactInfo.paramSourceRepository}.${this.artifactInfo.relationPropertyName}(${this.artifactInfo.sourceModelPrimaryKey})`;
+          structure.methods[index].statements[lastStatementIndex] =
+            `return [${returnStatement}];`;
+          structure.methods[index].returnType =
+            `Promise<Promise<${this.artifactInfo.targetModelClassName}>[]>`;
+          parameters.forEach(({decorators}, paramIndex) => {
+            decorators.forEach((decorator, decorIndex) => {
+              structure.methods[index].parameters[paramIndex].decorators[
+                decorIndex
+              ].name = `param.path.${decorator.name}`;
+            });
+          });
+        }
+      });
+      sourceClass.set(structure);
+      sourceClass.formatText();
+      await sourceFile.save();
+    } else {
+      this.copyTemplatedFiles(source, dest, this.artifactInfo);
+      await relationUtils.addExportController(
+        this,
+        path.resolve(this.artifactInfo.outDir, 'index.ts'),
+        this.artifactInfo.controllerClassName,
+        utils.toFileName(this.artifactInfo.name) + '.controller',
+      );
+    }
   }
 
   async generateModels(options) {
