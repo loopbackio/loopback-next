@@ -40,7 +40,6 @@
     "@loopback/core": "^7.0.0"
   },
   "dependencies": {
-    "@types/cron": "^2.4.3",
     "@types/debug": "^4.1.12",
     "cron": "^2.4.4",
     "debug": "^4.4.1",
