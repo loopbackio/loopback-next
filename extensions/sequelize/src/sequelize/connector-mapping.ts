@@ -10,7 +10,8 @@ export type SupportedLoopbackConnectors =
   | 'postgresql'
   | 'oracle'
   | 'sqlite3'
-  | 'db2';
+  | 'db2'
+  | 'mssql';
 /**
  * @key Loopback connectors name supported by this extension
  * @value Equivalent Dialect in Sequelize
@@ -23,6 +24,7 @@ export const SupportedConnectorMapping: {
   oracle: 'oracle',
   sqlite3: 'sqlite',
   db2: 'db2',
+  mssql: 'mssql',
 };
 
 /**
