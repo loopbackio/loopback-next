@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.8.0](https://github.com/loopbackio/loopback-next/compare/@loopback/sequelize@0.7.3...@loopback/sequelize@0.8.0) (2025-08-11)
+
+
+### Features
+
+* **sequelize:** mssql dialect support ([482f956](https://github.com/loopbackio/loopback-next/commit/482f9567ba815dfa54fc7b86e498b61bcf935a1f))
+
+
+
+
+
 ## [0.7.3](https://github.com/loopbackio/loopback-next/compare/@loopback/sequelize@0.7.2...@loopback/sequelize@0.7.3) (2025-07-15)
 
 **Note:** Version bump only for package @loopback/sequelize

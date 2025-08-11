@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.16.4](https://github.com/loopbackio/loopback-next/compare/@loopback/test-repository-mongodb@0.16.3...@loopback/test-repository-mongodb@0.16.4) (2025-08-11)
+
+**Note:** Version bump only for package @loopback/test-repository-mongodb
+
+
+
+
+
 ## [0.16.3](https://github.com/loopbackio/loopback-next/compare/@loopback/test-repository-mongodb@0.16.2...@loopback/test-repository-mongodb@0.16.3) (2025-07-15)
 
 **Note:** Version bump only for package @loopback/test-repository-mongodb
