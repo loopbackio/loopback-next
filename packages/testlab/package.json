@@ -34,7 +34,7 @@
     "!*/__tests__"
   ],
   "dependencies": {
-    "@hapi/shot": "^6.0.1",
+    "@hapi/shot": "^6.0.2",
     "@types/express": "^4.17.23",
     "@types/fs-extra": "^11.0.4",
     "@types/shot": "^4.0.5",
