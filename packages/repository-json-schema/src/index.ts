@@ -45,3 +45,5 @@ export type Optional<T extends object, K extends keyof T = keyof T> = Omit<
   K
 > &
   Partial<Pick<T, K>>;
+
+export type ExtensionProperties = {[x: string]: number | boolean | string};
