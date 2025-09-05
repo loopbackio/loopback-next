@@ -1147,14 +1147,14 @@ describe('build-schema', () => {
             type: 'object',
             description:
               `(tsType: ProductWithRelations, ` +
-              `schemaOptions: { includeRelations: true })`,
+              `schemaOptions: { includeRelations: true }), ` +
+              `{\"relationships\":{\"category\":{\"description\":\"Product belongs to Category.\",\"type\":\"object\",\"$ref\":\"#/definitions/CategoryWithRelations\",\"foreignKeys\":{\"categoryId\":\"Category\"},\"relationType\":\"belongsTo\"}}}`,
             properties: {
               id: {type: 'number'},
               categoryId: {type: 'number'},
               category: {
                 $ref: '#/definitions/CategoryWithRelations',
               },
-              foreignKey: 'categoryId' as JsonSchema,
             },
             additionalProperties: false,
           },
@@ -1173,7 +1173,8 @@ describe('build-schema', () => {
         type: 'object',
         description:
           `(tsType: CategoryWithRelations, ` +
-          `schemaOptions: { includeRelations: true })`,
+          `schemaOptions: { includeRelations: true }), ` +
+          `{\"relationships\":{\"products\":{\"description\":\"Category have many Product.\",\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/ProductWithRelations\"},\"foreignKeys\":{\"categoryId\":\"Category\"},\"relationType\":\"hasMany\"}}}`,
       };
       const jsonSchema = getJsonSchema(Category, {includeRelations: true});
       expect(jsonSchema).to.deepEqual(expectedSchema);
@@ -1201,14 +1202,14 @@ describe('build-schema', () => {
             type: 'object',
             description:
               `(tsType: ProductWithRelations, ` +
-              `schemaOptions: { includeRelations: true })`,
+              `schemaOptions: { includeRelations: true }), ` +
+              `{\"relationships\":{\"category\":{\"description\":\"Product belongs to CategoryWithoutProp.\",\"type\":\"object\",\"$ref\":\"#/definitions/CategoryWithoutPropWithRelations\",\"foreignKeys\":{\"categoryId\":\"CategoryWithoutProp\"},\"relationType\":\"belongsTo\"}}}`,
             properties: {
               id: {type: 'number'},
               categoryId: {type: 'number'},
               category: {
                 $ref: '#/definitions/CategoryWithoutPropWithRelations',
               },
-              foreignKey: 'categoryId' as JsonSchema,
             },
             additionalProperties: false,
           },
@@ -1224,7 +1225,8 @@ describe('build-schema', () => {
         type: 'object',
         description:
           `(tsType: CategoryWithoutPropWithRelations, ` +
-          `schemaOptions: { includeRelations: true })`,
+          `schemaOptions: { includeRelations: true }), ` +
+          `{\"relationships\":{\"products\":{\"description\":\"CategoryWithoutProp have many Product.\",\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/ProductWithRelations\"},\"foreignKeys\":{\"categorywithoutpropId\":\"CategoryWithoutProp\"},\"relationType\":\"\hasMany"}}}`,
       };
 
       // To check for case when there are no other properties than relational
