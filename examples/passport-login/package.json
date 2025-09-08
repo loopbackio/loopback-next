@@ -70,7 +70,7 @@
     "@types/passport-twitter": "1.0.40",
     "body-parser": "^2.2.0",
     "client-sessions": "^0.8.0",
-    "debug": "^4.4.1",
+    "debug": "^4.4.2",
     "express": "^4.21.2",
     "express-session": "^1.18.2",
     "lodash": "^4.17.21",

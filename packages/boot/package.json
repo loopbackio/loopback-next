@@ -42,7 +42,7 @@
     "@loopback/repository": "^8.0.3",
     "@loopback/service-proxy": "^8.0.3",
     "@types/debug": "^4.1.12",
-    "debug": "^4.4.1",
+    "debug": "^4.4.2",
     "glob": "^11.0.3",
     "tslib": "^2.8.1"
   },

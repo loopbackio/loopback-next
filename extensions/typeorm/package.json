@@ -38,7 +38,7 @@
     "@loopback/rest": "^15.0.1"
   },
   "dependencies": {
-    "debug": "^4.4.1",
+    "debug": "^4.4.2",
     "tslib": "^2.8.1",
     "typeorm": "^0.3.26"
   },

@@ -44,7 +44,7 @@
   "dependencies": {
     "@loopback/security": "^0.12.4",
     "bcryptjs": "^3.0.2",
-    "debug": "^4.4.1",
+    "debug": "^4.4.2",
     "jsonwebtoken": "^9.0.2"
   },
   "devDependencies": {

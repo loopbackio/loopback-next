@@ -55,7 +55,7 @@
     "@loopback/rest-explorer": "^8.0.4",
     "compression": "^1.8.1",
     "cors": "^2.8.5",
-    "debug": "^4.4.1",
+    "debug": "^4.4.2",
     "express": "^4.21.2",
     "helmet": "^4.6.0",
     "loopback": "^3.28.0",
