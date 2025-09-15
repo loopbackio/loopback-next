@@ -71,3 +71,12 @@ If you think you have discovered a new security issue with any LoopBack package,
 
 If you are sending us any logs as part of the report, then make sure to redact
 any sensitive data from them.
+
+## Escalation
+
+If you do not receive an acknowledgement of your report within 6 business days,
+or if you cannot find a private security contact for the project, you may
+escalate to the OpenJS Foundation CNA at `security@lists.openjsf.org`.
+
+If the project acknowledges your report but does not provide any further
+response or engagement within 14 days, escalation is also appropriate.
