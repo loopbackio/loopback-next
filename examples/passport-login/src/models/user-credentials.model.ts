@@ -11,6 +11,7 @@ export class UserCredentials extends Entity {
   @property({
     type: 'string',
     id: true,
+    generated: false,
   })
   id: string;
 
