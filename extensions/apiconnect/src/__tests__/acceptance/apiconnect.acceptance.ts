@@ -11,6 +11,7 @@ import {
   ApiConnectComponent,
   ApiConnectSpecOptions,
 } from '../..';
+import {APIConnectOASObjects} from '../../types';
 
 describe('Extension for IBM API Connect - OASEnhancer', () => {
   let app: Application;
@@ -18,7 +19,10 @@ describe('Extension for IBM API Connect - OASEnhancer', () => {
   beforeEach(givenAServer);
 
   it('adds x-ibm-configuration to apiSpec', async () => {
-    const EXPECTED_SPEC = {
+    const EXPECTED_SPEC: Pick<
+      APIConnectOASObjects.OpenAPIObject,
+      'x-ibm-configuration'
+    > = {
       'x-ibm-configuration': {
         assembly: {
           execute: [
@@ -44,7 +48,9 @@ describe('Extension for IBM API Connect - OASEnhancer', () => {
 
   it('adds x-ibm-name to apiSpec info', async () => {
     app.setMetadata({name: 'lb4-app', version: '1.0.0', description: ''});
-    const EXPECTED_SPEC = {
+    const EXPECTED_SPEC: {
+      info: Pick<APIConnectOASObjects.InfoObject, 'x-ibm-name'>;
+    } = {
       info: {
         'x-ibm-name': 'lb4-app',
       },
