@@ -53,7 +53,7 @@
     "@loopback/example-greeter-extension": "^8.0.4",
     "@loopback/rest": "^15.0.5",
     "chalk": "^4.1.2",
-    "debug": "^4.4.1",
+    "debug": "^4.4.3",
     "tslib": "^2.8.1"
   },
   "devDependencies": {

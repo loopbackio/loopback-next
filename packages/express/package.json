@@ -46,7 +46,7 @@
     "@types/express-serve-static-core": "^4.17.37",
     "@types/http-errors": "^2.0.5",
     "body-parser": "^2.2.0",
-    "debug": "^4.4.1",
+    "debug": "^4.4.3",
     "express": "^4.21.2",
     "http-errors": "^2.0.0",
     "on-finished": "^2.4.1",
