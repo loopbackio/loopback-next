@@ -44,8 +44,8 @@ jobs:
         if: runner.os == 'Windows'
         shell: pwsh
         run: |
-          Invoke-WebRequest -Uri https://aka.ms/vs/17/release/vs_buildtools.exe -OutFile vs_buildtools.exe
-          ./vs_buildtools.exe --quiet --wait --norestart --add Microsoft.VisualStudio.Workload.VCTools --includeRecommended
+          Invoke-WebRequest -Uri https://aka.ms/vs/18/insiders/vs_Community.exe -OutFile vs_Community.exe
+          ./vs_Community.exe --quiet --wait --norestart --add Microsoft.VisualStudio.Workload.VCTools --includeRecommended
       - name: Install dependencies
         env:
           PYTHON: ${{env.pythonLocation}}/bin/python3
