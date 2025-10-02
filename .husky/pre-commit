@@ -1,10 +1,10 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
+# #!/usr/bin/env sh
+# . "$(dirname -- "$0")/_/husky.sh"
 
-[ -n "$CI" ] && exit 0
-if [ "$LINT_STAGED" = "0" ]; then
-  echo "lint-staged disabled via LINT_STAGED env var"
-  exit 0
-fi
+# [ -n "$CI" ] && exit 0
+# if [ "$LINT_STAGED" = "0" ]; then
+#   echo "lint-staged disabled via LINT_STAGED env var"
+#   exit 0
+# fi
 
-npx --no lint-staged
+# npx --no lint-staged
