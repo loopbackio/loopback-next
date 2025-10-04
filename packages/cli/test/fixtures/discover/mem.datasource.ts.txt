@@ -1,0 +1,22 @@
+import {lifeCycleObserver, LifeCycleObserver} from '@loopback/core';
+import {juggler} from '@loopback/repository';
+
+const config = {
+  name: 'mem',
+  connector: 'memory',
+};
+
+@lifeCycleObserver('datasource')
+export class MemDataSource extends juggler.DataSource
+  implements LifeCycleObserver {
+  static dataSourceName = 'mem';
+  static readonly defaultConfig = config;
+
+  constructor(
+    dsConfig: object = config,
+  ) {
+    super(dsConfig);
+  }
+}
+
+export default MemDataSource;
