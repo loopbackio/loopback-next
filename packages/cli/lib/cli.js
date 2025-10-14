@@ -14,6 +14,7 @@ const PREFIX = 'loopback4:';
 const {printVersions} = require('./version-helper');
 
 const {tabCompletionCommands} = require('./tab-completion');
+const extendedGenerators = ['fuzzy'];
 
 /**
  * Parse arguments and run corresponding command
@@ -22,6 +23,13 @@ const {tabCompletionCommands} = require('./tab-completion');
  * @param log - Log function
  */
 function runCommand(env, opts, log) {
+  // register any extended generator
+  extendedGenerators.forEach(extendedGenerator => {
+    env.register(
+      require.resolve(`./${extendedGenerator}`),
+      `${PREFIX}:${extendedGenerator}`,
+    );
+  });
   const dryRun = opts.dryRun || opts['dry-run'];
   const args = opts._;
   const originalCommand = args.shift();
@@ -116,7 +124,55 @@ function setupGenerators() {
     path.join(__dirname, '../generators/copyright'),
     PREFIX + 'copyright',
   );
+  // Look for installed generators in the global node_modules
+  const globalNodeModules = require('child_process')
+    .execSync('npm root -g')
+    .toString()
+    .trim();
+  discoverGeneratorsFrom(globalNodeModules, env);
   return env;
+}
+
+/**
+ * discover generators from the given node_modules path
+ * @param {string} nodeModulesPath path to node_modules
+ * @param {*} env Yeoman env
+ */
+function discoverGeneratorsFrom(nodeModulesPath, env) {
+  if (!fs.existsSync(nodeModulesPath)) return;
+  const packages = fs.readdirSync(nodeModulesPath);
+  for (const pkg of packages) {
+    // handle both scoped and unscoped packages
+    if (pkg.startsWith('@')) {
+      const scopedPath = path.join(nodeModulesPath, pkg);
+      const scopedPkgs = fs.readdirSync(scopedPath);
+      for (const spkg of scopedPkgs) {
+        registerIfLb4Generator(path.join(scopedPath, spkg), env);
+      }
+    } else {
+      registerIfLb4Generator(path.join(nodeModulesPath, pkg), env);
+    }
+  }
+}
+
+/**
+ * Register package if it's lb4-extension-*
+ * @param {string} pkgPath path to the package
+ * @param {*} env Yeoman env
+ */
+function registerIfLb4Generator(pkgPath, env) {
+  const pkgJson = path.join(pkgPath, 'package.json');
+  if (!fs.existsSync(pkgJson)) return;
+  try {
+    const pkg = require(pkgJson);
+    if (pkg.name && pkg.name.startsWith('lb4-extension-')) {
+      const genName = pkg.name.replace(/^lb4-extension-/, '');
+      env.register(pkgPath, PREFIX + genName);
+    }
+  } catch (e) {
+    console.error('failed registering package %s: %s', pkgPath, e.message);
+    // ignore broken packages
+  }
 }
 
 /**
