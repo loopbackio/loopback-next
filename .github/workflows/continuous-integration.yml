@@ -22,7 +22,7 @@ jobs:
         os: [ubuntu-latest]
         node-version: [20, 22, 24]
         include:
-          - os: windows-latest
+          - os: windows-2022
             node-version: 22 # LTS
           - os: macos-latest
             node-version: 22 # LTS
