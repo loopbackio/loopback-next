@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.0.7](https://github.com/loopbackio/loopback-next/compare/@loopback/cli@7.0.6...@loopback/cli@7.0.7) (2025-10-15)
+
+
+### Bug Fixes
+
+* revert stringify-object version ([bcc517d](https://github.com/loopbackio/loopback-next/commit/bcc517d6bc7257ee1725dee3a47ca1e34bee4aca))
+
+
+
+
+
 ## [7.0.6](https://github.com/loopbackio/loopback-next/compare/@loopback/cli@7.0.5...@loopback/cli@7.0.6) (2025-09-10)
 
 **Note:** Version bump only for package @loopback/cli
