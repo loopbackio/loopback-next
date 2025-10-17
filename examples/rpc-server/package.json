@@ -52,7 +52,7 @@
     "@loopback/testlab": "^8.0.5",
     "@types/express": "^4.17.23",
     "@types/node": "^16.18.126",
-    "eslint": "^8.57.1",
+    "eslint": "^9.38.0",
     "typescript": "~5.2.2"
   }
 }
