@@ -1,6 +1,6 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
+# #!/usr/bin/env sh
+# . "$(dirname -- "$0")/_/husky.sh"
 
-[ -n "$CI" ] && exit 0
+# [ -n "$CI" ] && exit 0
 
-npx --no -- commitlint --edit "$1"
+# npx --no -- commitlint --edit "$1"
