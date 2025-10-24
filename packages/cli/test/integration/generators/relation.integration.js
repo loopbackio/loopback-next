@@ -15,6 +15,7 @@ const generator = path.join(__dirname, '../../../generators/relation');
 const SANDBOX_FILES = require('../../fixtures/relation').SANDBOX_FILES2;
 const SANDBOX_FILES4 = require('../../fixtures/relation').SANDBOX_FILES4;
 const testUtils = require('../../test-utils');
+const fs = require('fs');
 
 // Test Sandbox
 const CONTROLLER_PATH = 'src/controllers';
@@ -303,6 +304,497 @@ describe('lb4 relation', /** @this {Mocha.Suite} */ function () {
 
       assert.file(expectedControllerIndexFile);
       expectFileToMatchSnapshot(expectedControllerIndexFile);
+    });
+  });
+});
+
+describe('lb4 relation overwrite by passing --force flag', /** @this {Mocha.Suite} */ function () {
+  this.timeout(30000);
+
+  context('Execute relation when relation already exists', () => {
+    it('rejects when relation already exists and no --force flag is provided in belongsTo relation', async () => {
+      await sandbox.reset();
+      const projectPath = sandbox.path;
+      const doctorModel = path.join(
+        projectPath,
+        'src',
+        'models',
+        'doctor.model.ts',
+      );
+
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(projectPath, dir =>
+          testUtils.givenLBProject(dir, {
+            additionalFiles: SANDBOX_FILES,
+          }),
+        )
+        .withArguments([
+          '--relationType',
+          'belongsTo',
+          '--sourceModel',
+          'Doctor',
+          '--destinationModel',
+          'Patient',
+          '--foreignKeyName',
+          'patientId',
+          '--relationName',
+          'patients',
+        ])
+        .toPromise();
+
+      const modelWithRelation = fs.readFileSync(doctorModel, 'utf8');
+
+      return expect(
+        testUtils
+          .executeGenerator(generator)
+          .inDir(projectPath, dir => {
+            testUtils.givenLBProject(dir, {
+              additionalFiles: SANDBOX_FILES,
+            });
+            fs.writeFileSync(doctorModel, modelWithRelation);
+            console.log(
+              '=== RESTORED MODEL CONTENT ===\n',
+              fs.readFileSync(doctorModel, 'utf8'),
+            );
+          })
+          .withArguments([
+            '--relationType',
+            'belongsTo',
+            '--sourceModel',
+            'Doctor',
+            '--destinationModel',
+            'Patient',
+            '--foreignKeyName',
+            'patientId',
+            '--relationName',
+            'patients',
+          ])
+          .toPromise(),
+      ).to.be.rejectedWith(
+        /relational property .* already exist in the model .* Use --force to overwrite it/i,
+      );
+    });
+
+    it('allows overwriting when --force flag is provided in belongsTo relation', async () => {
+      await sandbox.reset();
+      const projectPath = sandbox.path;
+
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(projectPath, dir =>
+          testUtils.givenLBProject(dir, {
+            additionalFiles: SANDBOX_FILES,
+          }),
+        )
+        .withArguments([
+          '--relationType',
+          'belongsTo',
+          '--sourceModel',
+          'Doctor',
+          '--destinationModel',
+          'Patient',
+          '--relationName',
+          'patients',
+        ])
+        .toPromise();
+
+      const doctorModel = path.join(
+        projectPath,
+        'src',
+        'models',
+        'doctor.model.ts',
+      );
+
+      if (fs.existsSync(doctorModel)) {
+        console.log('Doctor model:\n', fs.readFileSync(doctorModel, 'utf8'));
+      }
+
+      return expect(
+        testUtils
+          .executeGenerator(generator)
+          .inDir(projectPath, dir =>
+            testUtils.givenLBProject(dir, {
+              additionalFiles: SANDBOX_FILES,
+            }),
+          )
+          .withArguments([
+            '--relationType',
+            'belongsTo',
+            '--sourceModel',
+            'Doctor',
+            '--destinationModel',
+            'Patient',
+            '--relationName',
+            'patients',
+            '--force',
+          ])
+          .toPromise(),
+      ).to.not.be.rejected;
+    });
+
+    it('rejects when relation already exists and no --force flag is provided in hasMany relation', async () => {
+      await sandbox.reset();
+      const projectPath = sandbox.path;
+
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(projectPath, dir =>
+          testUtils.givenLBProject(dir, {
+            additionalFiles: SANDBOX_FILES,
+          }),
+        )
+        .withArguments([
+          '--relationType',
+          'hasMany',
+          '--sourceModel',
+          'Doctor',
+          '--destinationModel',
+          'Patient',
+          '--relationName',
+          'patients',
+        ]);
+
+      const doctorModelPath = path.join(
+        projectPath,
+        'src',
+        'models',
+        'doctor.model.ts',
+      );
+
+      console.log('Doctor model exists:', fs.existsSync(doctorModelPath));
+
+      if (fs.existsSync(doctorModelPath)) {
+        console.log(
+          'Doctor model content:\n',
+          fs.readFileSync(doctorModelPath, 'utf8'),
+        );
+      }
+
+      return expect(
+        testUtils
+          .executeGenerator(generator)
+          .inDir(sandbox.path, dir =>
+            testUtils.givenLBProject(dir, {
+              additionalFiles: SANDBOX_FILES,
+            }),
+          )
+          .withArguments([
+            '--relationType',
+            'hasMany',
+            '--sourceModel',
+            'Doctor',
+            '--destinationModel',
+            'Patient',
+            '--relationName',
+            'patients',
+          ]),
+      ).to.be.rejectedWith(
+        /relational property .* already exist in the model .* Use --force to overwrite it/i,
+      );
+    });
+
+    it('allows overwriting when --force flag is provided in hasMany relation', async () => {
+      await sandbox.reset();
+      const projectPath = sandbox.path;
+
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(projectPath, dir =>
+          testUtils.givenLBProject(dir, {
+            additionalFiles: SANDBOX_FILES,
+          }),
+        )
+        .withArguments([
+          '--relationType',
+          'hasMany',
+          '--sourceModel',
+          'Doctor',
+          '--destinationModel',
+          'Patient',
+          '--relationName',
+          'patients',
+        ]);
+
+      return expect(
+        testUtils
+          .executeGenerator(generator)
+          .inDir(projectPath, dir =>
+            testUtils.givenLBProject(dir, {
+              additionalFiles: SANDBOX_FILES,
+            }),
+          )
+          .withArguments([
+            '--relationType',
+            'hasMany',
+            '--sourceModel',
+            'Doctor',
+            '--destinationModel',
+            'Patient',
+            '--relationName',
+            'patients',
+            '--force',
+          ]),
+      ).to.not.be.rejected;
+    });
+
+    it('rejects when relation already exists and no --force flag is provided in hasManyThrough relation', async () => {
+      await sandbox.reset();
+      const projectPath = sandbox.path;
+
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(projectPath, dir =>
+          testUtils.givenLBProject(dir, {
+            additionalFiles: SANDBOX_FILES,
+          }),
+        )
+        .withArguments([
+          '--relationType',
+          'hasManyThrough',
+          '--sourceModel',
+          'Customer',
+          '--destinationModel',
+          'Order',
+          '--throughModel',
+          'Address',
+          '--relationName',
+          'orders',
+        ]);
+
+      return expect(
+        testUtils
+          .executeGenerator(generator)
+          .inDir(projectPath)
+          .withArguments([
+            '--relationType',
+            'hasManyThrough',
+            '--sourceModel',
+            'Customer',
+            '--destinationModel',
+            'Order',
+            '--throughModel',
+            'Address',
+            '--relationName',
+            'orders',
+          ]),
+      ).to.be.rejectedWith(
+        /relational property .* already exist in the model .* Use --force to overwrite it/i,
+      );
+    });
+
+    it('allows overwriting when --force flag is provided in hasManyThrough relation', async () => {
+      await sandbox.reset();
+      const projectPath = sandbox.path;
+
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(projectPath, dir =>
+          testUtils.givenLBProject(dir, {
+            additionalFiles: SANDBOX_FILES,
+          }),
+        )
+        .withArguments([
+          '--relationType',
+          'hasManyThrough',
+          '--sourceModel',
+          'Customer',
+          '--destinationModel',
+          'Order',
+          '--throughModel',
+          'Address',
+          '--relationName',
+          'orders',
+        ]);
+
+      return expect(
+        testUtils
+          .executeGenerator(generator)
+          .inDir(projectPath, dir =>
+            testUtils.givenLBProject(dir, {
+              additionalFiles: SANDBOX_FILES,
+            }),
+          )
+          .withArguments([
+            '--relationType',
+            'hasManyThrough',
+            '--sourceModel',
+            'Customer',
+            '--destinationModel',
+            'Order',
+            '--throughModel',
+            'Address',
+            '--relationName',
+            'orders',
+            '--force',
+          ]),
+      ).to.not.be.rejected;
+    });
+
+    it('rejects when relation already exists and no --force flag is provided in hasOne relation', async () => {
+      await sandbox.reset();
+      const projectPath = sandbox.path;
+
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(projectPath, dir =>
+          testUtils.givenLBProject(dir, {
+            additionalFiles: SANDBOX_FILES,
+          }),
+        )
+        .withArguments([
+          '--relationType',
+          'hasOne',
+          '--sourceModel',
+          'Doctor',
+          '--destinationModel',
+          'Patient',
+          '--relationName',
+          'patient',
+        ]);
+
+      return expect(
+        testUtils
+          .executeGenerator(generator)
+          .inDir(projectPath)
+          .withArguments([
+            '--relationType',
+            'hasOne',
+            '--sourceModel',
+            'Doctor',
+            '--destinationModel',
+            'Patient',
+            '--relationName',
+            'patient',
+          ]),
+      ).to.be.rejectedWith(
+        /relational property .* already exist in the model .* Use --force to overwrite it/i,
+      );
+    });
+
+    it('allows overwriting when --force flag is provided in hasOne relation', async () => {
+      await sandbox.reset();
+      const projectPath = sandbox.path;
+
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(projectPath, dir =>
+          testUtils.givenLBProject(dir, {
+            additionalFiles: SANDBOX_FILES,
+          }),
+        )
+        .withArguments([
+          '--relationType',
+          'hasOne',
+          '--sourceModel',
+          'Doctor',
+          '--destinationModel',
+          'Patient',
+          '--relationName',
+          'patient',
+        ]);
+
+      return expect(
+        testUtils
+          .executeGenerator(generator)
+          .inDir(projectPath)
+          .withArguments([
+            '--relationType',
+            'hasOne',
+            '--sourceModel',
+            'Doctor',
+            '--destinationModel',
+            'Patient',
+            '--relationName',
+            'patient',
+            '--force',
+          ]),
+      ).to.not.be.rejected;
+    });
+
+    it('rejects when relation already exists and no --force flag is provided in referencesMany relation', async () => {
+      await sandbox.reset();
+      const projectPath = sandbox.path;
+
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(projectPath, dir =>
+          testUtils.givenLBProject(dir, {
+            additionalFiles: SANDBOX_FILES,
+          }),
+        )
+        .withArguments([
+          '--relationType',
+          'referencesMany',
+          '--sourceModel',
+          'Doctor',
+          '--destinationModel',
+          'Patient',
+          '--relationName',
+          'patientIds',
+        ]);
+
+      return expect(
+        testUtils
+          .executeGenerator(generator)
+          .inDir(projectPath)
+          .withArguments([
+            '--relationType',
+            'referencesMany',
+            '--sourceModel',
+            'Doctor',
+            '--destinationModel',
+            'Patient',
+            '--relationName',
+            'patientIds',
+          ]),
+      ).to.be.rejectedWith(
+        /relational property .* already exist in the model .* Use --force to overwrite it/i,
+      );
+    });
+
+    it('allows overwriting when --force flag is provided in referencesMany relation', async () => {
+      await sandbox.reset();
+      const projectPath = sandbox.path;
+
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(projectPath, dir =>
+          testUtils.givenLBProject(dir, {
+            additionalFiles: SANDBOX_FILES,
+          }),
+        )
+        .withArguments([
+          '--relationType',
+          'referencesMany',
+          '--sourceModel',
+          'Doctor',
+          '--destinationModel',
+          'Patient',
+          '--relationName',
+          'patientIds',
+        ]);
+
+      return expect(
+        testUtils
+          .executeGenerator(generator)
+          .inDir(projectPath, dir =>
+            testUtils.givenLBProject(dir, {
+              additionalFiles: SANDBOX_FILES,
+            }),
+          )
+          .withArguments([
+            '--relationType',
+            'referencesMany',
+            '--sourceModel',
+            'Doctor',
+            '--destinationModel',
+            'Patient',
+            '--relationName',
+            'patientIds',
+            '--force',
+          ]),
+      ).to.not.be.rejected;
     });
   });
 });
