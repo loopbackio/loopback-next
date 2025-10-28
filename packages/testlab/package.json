@@ -35,7 +35,7 @@
   ],
   "dependencies": {
     "@hapi/shot": "^6.0.2",
-    "@types/express": "^4.17.24",
+    "@types/express": "^4.17.25",
     "@types/fs-extra": "^11.0.4",
     "@types/shot": "^4.0.5",
     "@types/sinon": "^17.0.4",
