@@ -47,7 +47,7 @@
     "@types/node": "^16.18.126",
     "assert": "^2.1.0",
     "buffer": "^6.0.3",
-    "eslint": "^8.57.1",
+    "eslint": "^9.39.0",
     "events": "^3.3.0",
     "process": "^0.11.10",
     "puppeteer": "^24.26.1",
