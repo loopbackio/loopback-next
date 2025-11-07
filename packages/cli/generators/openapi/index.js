@@ -28,7 +28,20 @@ const isWindows = process.platform === 'win32';
 module.exports = class OpenApiGenerator extends BaseGenerator {
   // Note: arguments and options should be defined in the constructor.
   constructor(args, opts) {
-    super(args, opts);
+    super(args, {
+      sharedData: opts.sharedData,
+      forwardErrorToEnvironment: opts.forwardErrorToEnvironment,
+      skipLocalCache: opts.skipLocalCache,
+      _: opts._,
+      config: opts.config,
+      initialGenerator: opts.initialGenerator,
+      env: opts.env,
+      resolved: opts.resolved,
+      namespace: opts.namespace,
+      url: opts.url,
+    });
+    this.opts = opts;
+    delete this.opts.env;
   }
 
   _setupGenerator() {
@@ -91,7 +104,7 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
   }
 
   setOptions() {
-    return super.setOptions();
+    return super.setOptions(this.opts);
   }
 
   checkLoopBackProject() {
