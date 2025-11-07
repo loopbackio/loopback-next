@@ -635,7 +635,7 @@ exports[`cli saves command metadata to .yo-rc.json 1`] = `
         "dataSource": {
           "type": "String",
           "required": false,
-          "description": "The name of the dataSource which contains this model and suppots model discovery",
+          "description": "The name of the dataSource which contains this model and supports model discovery",
           "name": "dataSource",
           "hide": false
         },

@@ -116,7 +116,7 @@
       },
       "connectionString": {
         "type": "string",
-        "message": "ODBC connection string for overriding other options (e.g.: DBQ=QGPL;NAM=1)"
+        "message": "ODBC connection string for overriding other options (e.g.: DBQ=QGPL;NAME=1)"
       },
       "user": {
         "type": "string",
