@@ -45,7 +45,7 @@
   },
   "dependencies": {
     "@apollo/server": "^4.12.2",
-    "@graphql-tools/utils": "^10.9.1",
+    "@graphql-tools/utils": "^10.10.1",
     "@loopback/http-server": "^7.0.5",
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",
