@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.0.6](https://github.com/loopbackio/loopback-next/compare/@loopback/example-rpc-server@8.0.5...@loopback/example-rpc-server@8.0.6) (2025-11-11)
+
+**Note:** Version bump only for package @loopback/example-rpc-server
+
+
+
+
+
 ## [8.0.5](https://github.com/loopbackio/loopback-next/compare/@loopback/example-rpc-server@8.0.4...@loopback/example-rpc-server@8.0.5) (2025-10-15)
 
 **Note:** Version bump only for package @loopback/example-rpc-server

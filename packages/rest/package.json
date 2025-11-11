@@ -1,7 +1,7 @@
 {
   "name": "@loopback/rest",
   "description": "Expose controllers as REST endpoints and route REST API requests to controller methods",
-  "version": "15.0.6",
+  "version": "15.0.7",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -38,9 +38,9 @@
     "@loopback/core": "^7.0.0"
   },
   "dependencies": {
-    "@loopback/express": "^8.0.5",
-    "@loopback/http-server": "^7.0.5",
-    "@loopback/openapi-v3": "^11.0.6",
+    "@loopback/express": "^8.0.6",
+    "@loopback/http-server": "^7.0.6",
+    "@loopback/openapi-v3": "^11.0.7",
     "@openapi-contrib/openapi-schema-to-json-schema": "^5.1.0",
     "@types/body-parser": "^1.19.6",
     "@types/cors": "^2.8.19",
@@ -71,12 +71,12 @@
     "validator": "^13.15.23"
   },
   "devDependencies": {
-    "@loopback/build": "^12.0.5",
-    "@loopback/core": "^7.0.5",
+    "@loopback/build": "^12.0.6",
+    "@loopback/core": "^7.0.6",
     "@loopback/eslint-config": "^16.0.1",
-    "@loopback/openapi-spec-builder": "^8.0.5",
-    "@loopback/repository": "^8.0.5",
-    "@loopback/testlab": "^8.0.5",
+    "@loopback/openapi-spec-builder": "^8.0.6",
+    "@loopback/repository": "^8.0.6",
+    "@loopback/testlab": "^8.0.6",
     "@types/debug": "^4.1.12",
     "@types/js-yaml": "^4.0.9",
     "@types/json-schema-compare": "^0.2.4",
