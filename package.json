@@ -64,7 +64,7 @@
     "eslint-plugin-prettier": "^5.5.4",
     "fs-extra": "^11.3.2",
     "husky": "^9.1.7",
-    "lerna": "^9.0.0",
+    "lerna": "^9.0.1",
     "lint-staged": "^16.2.6",
     "markdown-table": "^3.0.4",
     "open-cli": "^8.0.0",
