@@ -53,7 +53,7 @@ Make sure you have the following installed:
 
 | Package                                    | Version/-s                                                             | Link                                  | Note                                                                                                  |
 | ------------------------------------------ | ---------------------------------------------------------------------- | ------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| [Node.js](https://nodejs.org/en/download/) | Maintenance LTS (_v20_) <br/> Active LTS (_v22_) <br/> Current (_v24_) | https://nodejs.org/en/about/releases/ | <span style="color: yellow;">The use of the current version for production is not recommended</span>. |
+| [Node.js](https://nodejs.org/en/download/) | Maintenance LTS (_v20_) <br/> Maintenance LTS (_v22_) <br/> Active LTS (_v24_) | https://nodejs.org/en/about/releases/ | <span style="color: yellow;">The use of the current version for production is not recommended</span>. |
 
 You can generate a project with our generator or with the CLI as follows:
 
