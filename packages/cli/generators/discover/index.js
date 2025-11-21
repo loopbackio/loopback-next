@@ -363,6 +363,12 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
     this.artifactInfo.indexesToBeUpdated =
       this.artifactInfo.indexesToBeUpdated || [];
 
+    const relations = [];
+    const repositoryConfigs = {
+      datasource: '',
+      repositories: new Set(),
+      repositoryBaseClass: 'DefaultCrudRepository',
+    };
     // eslint-disable-next-line @typescript-eslint/prefer-for-of
     for (let i = 0; i < this.artifactInfo.modelDefinitions.length; i++) {
       const modelDefinition = this.artifactInfo.modelDefinitions[i];
@@ -391,23 +397,18 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
           );
           // If targetModel is not in discovered models, skip creating relation
           if (targetModel) {
-            Object.assign(templateData.properties[relation.foreignKey], {
-              relation,
-            });
-            if (!relationImports.includes(relation.type)) {
-              relationImports.push(relation.type);
-            }
-            relationDestinationImports.push(relation.model);
-
-            foreignKeys[relationName] = {};
-            Object.assign(foreignKeys[relationName], {
-              name: relationName,
-              entity: relation.model,
-              entityKey: Object.entries(targetModel.properties).find(
-                x => x?.[1].id === 1,
-              )?.[0],
-              foreignKey: relation.foreignKey,
-            });
+            const configs = {};
+            configs['sourceModel'] = templateData.name;
+            configs['destinationModel'] = targetModel.name;
+            configs['foreignKeyName'] = relation.foreignKey;
+            configs['relationType'] = relation.type;
+            configs['registerInclusionResolver'] = true;
+            configs['yes'] = true;
+            relations.push(configs);
+            repositoryConfigs['datasource'] =
+              this.options.datasource || this.options.dataSource;
+            repositoryConfigs.repositories.add(templateData.name);
+            repositoryConfigs.repositories.add(targetModel.name);
           }
         }
         // remove model import if the model relation is with itself
@@ -462,6 +463,9 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
     // This part at the end is just for the ArtifactGenerator
     // end message to output something nice, before it was "Discover undefined was created in src/models/"
     this.artifactInfo.type = 'Models';
+    this.artifactInfo.relationConfigs = relations;
+    repositoryConfigs['relations'] = JSON.stringify(relations);
+    this.artifactInfo.repositoryConfigs = repositoryConfigs;
     this.artifactInfo.name = this.artifactInfo.modelDefinitions
       .map(d => d.name)
       .join(',');
@@ -469,5 +473,47 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
 
   async end() {
     await super.end();
+    await this._generateRepositories();
+  }
+
+  async _generateRepositories() {
+    if (
+      !this.artifactInfo.repositoryConfigs ||
+      !this.artifactInfo.repositoryConfigs.repositories ||
+      this.artifactInfo.repositoryConfigs.repositories.size === 0
+    ) {
+      debug(
+        'No repository configurations found, skipping repository generation',
+      );
+      return;
+    }
+    const {repositories, datasource, repositoryBaseClass, relations} =
+      this.artifactInfo.repositoryConfigs;
+    // Convert Set to Array and iterate
+    const modelList = Array.from(repositories);
+    for (let index = 0; index < modelList.length; index++) {
+      const model = modelList[index];
+      const repoGenOptions = {
+        name: model,
+        model,
+        datasource,
+        repositoryBaseClass,
+        yes: true,
+        skipInstall: true,
+        skipCache: true,
+      };
+      if (index === modelList.length - 1) {
+        repoGenOptions.relations = relations;
+      }
+      // Use composeWith to invoke the repository generator
+      const repoGen = require('../repository');
+      this.composeWith(
+        {
+          Generator: repoGen,
+          path: require.resolve('../repository'),
+        },
+        repoGenOptions,
+      );
+    }
   }
 };
