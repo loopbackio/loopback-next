@@ -367,7 +367,19 @@ module.exports = class RestCrudGenerator extends ArtifactGenerator {
         debug(`artifactInfo: ${inspect(this.artifactInfo)}`);
         debug(`Copying artifact to: ${dest}`);
       }
-
+      this.artifactInfo.upsert = false;
+      if (this.options.upsert.includes('*')) {
+        this.artifactInfo.upsert = true;
+      } else {
+        this.options.upsert.forEach(modelName => {
+          if (
+            this.artifactInfo.modelName.toLowerCase() ===
+            modelName.toLowerCase()
+          ) {
+            this.artifactInfo.upsert = true;
+          }
+        });
+      }
       this.copyTemplatedFiles(source, dest, this.artifactInfo);
     }
 
