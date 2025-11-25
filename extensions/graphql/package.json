@@ -47,7 +47,7 @@
     "@apollo/server": "^4.12.2",
     "@graphql-tools/utils": "^10.10.3",
     "@loopback/http-server": "^7.0.6",
-    "body-parser": "^2.2.0",
+    "body-parser": "^2.2.1",
     "cors": "^2.8.5",
     "debug": "^4.4.3",
     "express": "^4.21.2",
