@@ -41,7 +41,7 @@
   ],
   "dependencies": {
     "@npmcli/map-workspaces": "^5.0.1",
-    "@npmcli/package-json": "^7.0.2",
+    "@npmcli/package-json": "^7.0.4",
     "@openapi-contrib/openapi-schema-to-json-schema": "^5.1.0",
     "@phenomnomnominal/tsquery": "~5.0.1",
     "@unicode/unicode-10.0.0": "^1.6.12",

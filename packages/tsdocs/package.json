@@ -52,7 +52,7 @@
     "@microsoft/api-documenter": "^7.28.1",
     "@microsoft/api-extractor": "^7.55.1",
     "@npmcli/map-workspaces": "^5.0.1",
-    "@npmcli/package-json": "^7.0.2",
+    "@npmcli/package-json": "^7.0.4",
     "debug": "^4.4.3",
     "fs-extra": "^11.3.2",
     "tslib": "^2.8.1"
