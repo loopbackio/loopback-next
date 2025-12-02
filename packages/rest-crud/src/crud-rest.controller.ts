@@ -105,6 +105,7 @@ export interface CrudRestControllerOptions {
    * Whether to generate readonly APIs
    */
   readonly?: boolean;
+  upsert?: boolean;
 }
 
 /**
@@ -276,14 +277,42 @@ export function defineCrudRestController<
     }
   }
 
+  @api({basePath: options.basePath, paths: {}})
+  class CrudRestControllerWithUpsertImpl extends CrudRestControllerImpl {
+    constructor(
+      public readonly repository: EntityCrudRepository<T, IdType, Relations>,
+    ) {
+      super(repository);
+    }
+    @post('/upsert', {
+      ...response.model(200, `${modelName} instance created`, modelCtor),
+    })
+    async upsert(
+      @body(modelCtor, {
+        title: `New${modelName}`,
+        exclude: modelCtor.getIdProperties() as (keyof T)[],
+      })
+      data: Omit<T, IdName>,
+    ): Promise<T> {
+      return this.repository.upsert(
+        // FIXME(bajtos) Improve repository API to support this use case
+        // with no explicit type-casts required
+        data as DataObject<T>,
+      );
+    }
+  }
+
   const controllerName = modelName + 'Controller';
   const defineNamedController = new Function(
     'controllerClass',
     `return class ${controllerName} extends controllerClass {}`,
   );
-  const controller = defineNamedController(
-    options.readonly ? ReadonlyRestControllerImpl : CrudRestControllerImpl,
-  );
+  let controllerImplementation = ReadonlyRestControllerImpl;
+  if (options.readonly) controllerImplementation = ReadonlyRestControllerImpl;
+  if (options.upsert)
+    controllerImplementation = CrudRestControllerWithUpsertImpl;
+
+  const controller = defineNamedController(controllerImplementation);
   assert.equal(controller.name, controllerName);
   return controller;
 }
