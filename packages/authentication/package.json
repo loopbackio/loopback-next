@@ -57,6 +57,6 @@
     "@loopback/rest": "^15.0.7",
     "@loopback/testlab": "^8.0.6",
     "@types/node": "^16.18.126",
-    "jsonwebtoken": "^9.0.2"
+    "jsonwebtoken": "^9.0.3"
   }
 }
