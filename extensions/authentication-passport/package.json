@@ -70,7 +70,7 @@
     "body-parser": "^2.2.1",
     "express": "^4.21.2",
     "form-data": "^4.0.5",
-    "jsonwebtoken": "^9.0.2",
+    "jsonwebtoken": "^9.0.3",
     "lodash": "^4.17.21",
     "passport-http": "^0.3.0",
     "passport-oauth2": "^1.8.0",
