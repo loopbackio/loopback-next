@@ -55,6 +55,6 @@
     "@types/ejs": "^3.1.5",
     "@types/express": "^4.17.25",
     "@types/node": "^16.18.126",
-    "express": "^4.21.2"
+    "express": "^4.22.1"
   }
 }

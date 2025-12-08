@@ -71,7 +71,7 @@
     "body-parser": "^2.2.1",
     "client-sessions": "^0.8.0",
     "debug": "^4.4.3",
-    "express": "^4.21.2",
+    "express": "^4.22.1",
     "express-session": "^1.18.2",
     "lodash": "^4.17.21",
     "passport": "^0.5.3",
