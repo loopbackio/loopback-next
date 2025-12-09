@@ -1,7 +1,7 @@
 {
   "name": "@loopback/typeorm",
   "description": "Adds support for TypeORM in LoopBack",
-  "version": "0.11.7",
+  "version": "0.11.8",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -43,13 +43,13 @@
     "typeorm": "^0.3.28"
   },
   "devDependencies": {
-    "@loopback/boot": "^8.0.7",
-    "@loopback/build": "^12.0.6",
-    "@loopback/core": "^7.0.6",
+    "@loopback/boot": "^8.0.8",
+    "@loopback/build": "^12.0.7",
+    "@loopback/core": "^7.0.7",
     "@loopback/eslint-config": "^16.0.1",
-    "@loopback/repository": "^8.0.6",
-    "@loopback/rest": "^15.0.7",
-    "@loopback/testlab": "^8.0.6",
+    "@loopback/repository": "^8.0.7",
+    "@loopback/rest": "^15.0.8",
+    "@loopback/testlab": "^8.0.7",
     "@types/debug": "^4.1.12",
     "@types/json-schema": "^7.0.15",
     "@types/node": "^16.18.126",

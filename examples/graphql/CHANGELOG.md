@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.12.8](https://github.com/loopbackio/loopback-next/compare/@loopback/example-graphql@0.12.7...@loopback/example-graphql@0.12.8) (2025-12-09)
+
+**Note:** Version bump only for package @loopback/example-graphql
+
+
+
+
+
 ## [0.12.7](https://github.com/loopbackio/loopback-next/compare/@loopback/example-graphql@0.12.6...@loopback/example-graphql@0.12.7) (2025-11-11)
 
 **Note:** Version bump only for package @loopback/example-graphql

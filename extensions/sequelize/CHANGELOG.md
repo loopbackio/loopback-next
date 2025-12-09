@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.8.4](https://github.com/loopbackio/loopback-next/compare/@loopback/sequelize@0.8.3...@loopback/sequelize@0.8.4) (2025-12-09)
+
+**Note:** Version bump only for package @loopback/sequelize
+
+
+
+
+
 ## [0.8.3](https://github.com/loopbackio/loopback-next/compare/@loopback/sequelize@0.8.2...@loopback/sequelize@0.8.3) (2025-11-11)
 
 **Note:** Version bump only for package @loopback/sequelize
