@@ -18,13 +18,13 @@
     "access": "public"
   },
   "peerDependencies": {
-    "eslint": "^8.57.1"
+    "eslint": "^9.39.2"
   },
   "dependencies": {
-    "@typescript-eslint/eslint-plugin": "^7.18.0",
-    "@typescript-eslint/parser": "^7.18.0",
-    "eslint-config-prettier": "^9.1.1",
-    "eslint-plugin-eslint-plugin": "^5.5.1",
-    "eslint-plugin-mocha": "^10.5.0"
+    "@typescript-eslint/eslint-plugin": "^8.49.0",
+    "@typescript-eslint/parser": "^8.49.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-eslint-plugin": "^7.2.0",
+    "eslint-plugin-mocha": "^11.2.0"
   }
 }
