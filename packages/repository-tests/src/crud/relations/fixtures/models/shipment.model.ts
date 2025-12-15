@@ -47,8 +47,10 @@ export interface ShipmentRelations {
 
 export type ShipmentWithRelations = Shipment & ShipmentRelations;
 
-export interface ShipmentRepository
-  extends EntityCrudRepository<Shipment, typeof Shipment.prototype.id> {
+export interface ShipmentRepository extends EntityCrudRepository<
+  Shipment,
+  typeof Shipment.prototype.id
+> {
   // define additional members like relation methods here
   shipmentOrders: HasManyRepositoryFactory<Order, MixedIdType>;
 }

@@ -271,8 +271,7 @@ cascading style. The order of groups is determined by two factors:
           upstreamGroups: ['cors', 'findRoute'],
         }),
       )
-      export class AuthenticationMiddlewareProvider
-        implements Provider<Middleware> {}
+      export class AuthenticationMiddlewareProvider implements Provider<Middleware> {}
       ```
 
     - downstreamGroups: An array of group names that should be downstream to
@@ -286,8 +285,7 @@ cascading style. The order of groups is determined by two factors:
           chain: RestTags.REST_MIDDLEWARE_CHAIN,
         }),
       )
-      export class SendResponseMiddlewareProvider
-        implements Provider<Middleware> {}
+      export class SendResponseMiddlewareProvider implements Provider<Middleware> {}
       ```
 
 2.  The overall order of groups for the sequence

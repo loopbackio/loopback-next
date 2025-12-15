@@ -26,8 +26,7 @@ export class DefaultReferencesManyRepository<
   TargetEntity extends Entity,
   TargetIds,
   TargetRepository extends EntityCrudRepository<TargetEntity, TargetIds>,
-> implements ReferencesManyRepository<TargetEntity>
-{
+> implements ReferencesManyRepository<TargetEntity> {
   /**
    * Constructor of DefaultReferencesManyEntityCrudRepository
    * @param getTargetRepository - the getter of the related target model repository instance

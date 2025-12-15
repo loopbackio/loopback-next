@@ -45,8 +45,7 @@ export interface CustomerPromotionLinkRelations {}
 export type CustomerPromotionLinkWithRelations = CustomerPromotionLink &
   CustomerPromotionLinkRelations;
 
-export interface CustomerPromotionLinkRepository
-  extends EntityCrudRepository<
-    CustomerPromotionLink,
-    typeof CustomerPromotionLink.prototype.id
-  > {}
+export interface CustomerPromotionLinkRepository extends EntityCrudRepository<
+  CustomerPromotionLink,
+  typeof CustomerPromotionLink.prototype.id
+> {}

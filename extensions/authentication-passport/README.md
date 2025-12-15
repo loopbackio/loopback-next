@@ -283,9 +283,7 @@ in
    import {BasicVerifyFunction} from 'passport-http';
    import {INVALID_USER_CREDENTIALS_MESSAGE} from '../keys';
 
-   export class VerifyFunctionProvider
-     implements Provider<BasicVerifyFunction>
-   {
+   export class VerifyFunctionProvider implements Provider<BasicVerifyFunction> {
      constructor(@repository('users') private userRepo: MyUserRepository) {}
 
      value(): BasicVerifyFunction {

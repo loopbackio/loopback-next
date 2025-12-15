@@ -148,9 +148,11 @@ export function defineCrudRestController<
   };
 
   @api({basePath: options.basePath, paths: {}})
-  class ReadonlyRestControllerImpl
-    implements CrudRestController<T, IdType, IdName>
-  {
+  class ReadonlyRestControllerImpl implements CrudRestController<
+    T,
+    IdType,
+    IdName
+  > {
     constructor(
       public readonly repository: EntityCrudRepository<T, IdType, Relations>,
     ) {}

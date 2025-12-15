@@ -308,8 +308,7 @@ export type ValueFactory<T = unknown> = (
  * ```
  */
 export interface DynamicValueProviderClass<T = unknown>
-  extends Constructor<unknown>,
-    Function {
+  extends Constructor<unknown>, Function {
   value: (...args: BoundValue[]) => ValueOrPromise<T>;
 }
 

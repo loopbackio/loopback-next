@@ -50,8 +50,10 @@ export interface OrderRelations {
 
 export type OrderWithRelations = Order & OrderRelations;
 
-export interface OrderRepository
-  extends EntityCrudRepository<Order, typeof Order.prototype.id> {
+export interface OrderRepository extends EntityCrudRepository<
+  Order,
+  typeof Order.prototype.id
+> {
   // define additional members like relation methods here
   customer: BelongsToAccessor<Customer, MixedIdType>;
   shipment: BelongsToAccessor<Shipment, MixedIdType>;

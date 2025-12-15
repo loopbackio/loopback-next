@@ -44,8 +44,10 @@ export interface UserRelations {
 
 export type UserWithRelations = User & UserRelations;
 
-export interface UserRepository
-  extends EntityCrudRepository<User, typeof User.prototype.id> {
+export interface UserRepository extends EntityCrudRepository<
+  User,
+  typeof User.prototype.id
+> {
   // define additional members like relation methods here
   users: HasManyThroughRepositoryFactory<
     User,

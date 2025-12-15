@@ -97,8 +97,7 @@ export class SequelizeCrudRepository<
   T extends Entity,
   ID,
   Relations extends object = {},
-> implements EntityCrudRepository<T, ID, Relations>
-{
+> implements EntityCrudRepository<T, ID, Relations> {
   constructor(
     public entityClass: typeof Entity & {
       prototype: T;

@@ -84,8 +84,10 @@ export interface CustomerRelations {
 
 export type CustomerWithRelations = Customer & CustomerRelations;
 
-export interface CustomerRepository
-  extends EntityCrudRepository<Customer, typeof Customer.prototype.id> {
+export interface CustomerRepository extends EntityCrudRepository<
+  Customer,
+  typeof Customer.prototype.id
+> {
   // define additional members like relation methods here
   address: HasOneRepositoryFactory<Address, MixedIdType>;
   orders: HasManyRepositoryFactory<Order, MixedIdType>;

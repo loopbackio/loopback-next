@@ -36,9 +36,9 @@ describe('relation repository', () => {
      */
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    class TestHasManyEntityCrudRepository<T extends Entity>
-      implements HasManyRepository<T>
-    {
+    class TestHasManyEntityCrudRepository<
+      T extends Entity,
+    > implements HasManyRepository<T> {
       create(
         targetModelData: DataObject<T>,
         options?: AnyObject | undefined,

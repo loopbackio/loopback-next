@@ -44,8 +44,10 @@ export interface CartItemRelations {
 
 export type CartItemWithRelations = CartItem & CartItemRelations;
 
-export interface CartItemRepository
-  extends EntityCrudRepository<CartItem, typeof CartItem.prototype.id> {
+export interface CartItemRepository extends EntityCrudRepository<
+  CartItem,
+  typeof CartItem.prototype.id
+> {
   order: BelongsToAccessor<Order, MixedIdType>;
   customers: HasManyThroughRepositoryFactory<
     Customer,

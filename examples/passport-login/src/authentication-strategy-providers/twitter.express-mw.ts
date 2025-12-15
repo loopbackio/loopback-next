@@ -9,9 +9,7 @@ import {ExpressRequestHandler} from '@loopback/rest';
 import {Strategy as TwitterStrategy} from 'passport-twitter';
 
 @injectable.provider({scope: BindingScope.SINGLETON})
-export class TwitterOauthExpressMiddleware
-  implements Provider<ExpressRequestHandler>
-{
+export class TwitterOauthExpressMiddleware implements Provider<ExpressRequestHandler> {
   constructor(
     @inject('twitterStrategy')
     public twitterStrategy: TwitterStrategy,

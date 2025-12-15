@@ -524,9 +524,7 @@ describe('Application', () => {
       }
     }
 
-    class LogInterceptorProviderWithoutDecoration
-      implements Provider<Interceptor>
-    {
+    class LogInterceptorProviderWithoutDecoration implements Provider<Interceptor> {
       value() {
         return logInterceptor;
       }

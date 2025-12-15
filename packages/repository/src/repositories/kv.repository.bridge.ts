@@ -12,9 +12,9 @@ import {ensurePromise, juggler} from './legacy-juggler-bridge';
 /**
  * An implementation of KeyValueRepository based on loopback-datasource-juggler
  */
-export class DefaultKeyValueRepository<T extends Model>
-  implements KeyValueRepository<T>
-{
+export class DefaultKeyValueRepository<
+  T extends Model,
+> implements KeyValueRepository<T> {
   /**
    * A legacy KeyValueModel class
    */

@@ -36,5 +36,7 @@ export interface UserLinkRelations {}
 
 export type UserLinkWithRelations = UserLink & UserLinkRelations;
 
-export interface UserLinkRepository
-  extends EntityCrudRepository<UserLink, typeof UserLink.prototype.id> {}
+export interface UserLinkRepository extends EntityCrudRepository<
+  UserLink,
+  typeof UserLink.prototype.id
+> {}

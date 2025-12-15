@@ -114,8 +114,7 @@ export class DefaultCrudRepository<
   T extends Entity,
   ID,
   Relations extends object = {},
-> implements EntityCrudRepository<T, ID, Relations>
-{
+> implements EntityCrudRepository<T, ID, Relations> {
   modelClass: juggler.PersistedModelClass;
 
   public readonly inclusionResolvers: Map<
@@ -837,10 +836,10 @@ export class DefaultCrudRepository<
  */
 
 export class DefaultTransactionalRepository<
-    T extends Entity,
-    ID,
-    Relations extends object = {},
-  >
+  T extends Entity,
+  ID,
+  Relations extends object = {},
+>
   extends DefaultCrudRepository<T, ID, Relations>
   implements TransactionalEntityRepository<T, ID, Relations>
 {
