@@ -156,8 +156,7 @@ export class DefaultHasManyThroughRepository<
   ThroughEntity extends Entity,
   ThroughID,
   ThroughRepository extends EntityCrudRepository<ThroughEntity, ThroughID>,
-> implements HasManyThroughRepository<TargetEntity, TargetID, ThroughEntity>
-{
+> implements HasManyThroughRepository<TargetEntity, TargetID, ThroughEntity> {
   constructor(
     public getTargetRepository:
       | Getter<TargetRepository>

@@ -9,9 +9,7 @@ import {ExpressRequestHandler} from '@loopback/rest';
 import {Strategy as GoogleStrategy} from 'passport-google-oauth2';
 
 @injectable.provider({scope: BindingScope.SINGLETON})
-export class GoogleOauth2ExpressMiddleware
-  implements Provider<ExpressRequestHandler>
-{
+export class GoogleOauth2ExpressMiddleware implements Provider<ExpressRequestHandler> {
   constructor(
     @inject('googleStrategy')
     public strategy: GoogleStrategy,

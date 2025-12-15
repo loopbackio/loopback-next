@@ -334,9 +334,9 @@ describe('Resource pool', () => {
   /**
    * Wrap the expensive resource as a LoopBack binding provider
    */
-  class ExpensiveResourceProvider
-    implements Provider<PooledValue<ExpensiveResource>>
-  {
+  class ExpensiveResourceProvider implements Provider<
+    PooledValue<ExpensiveResource>
+  > {
     constructor(
       @inject(POOLING_SERVICE)
       private poolingService: PoolingService<ExpensiveResource>,

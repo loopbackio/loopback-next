@@ -31,8 +31,7 @@ export class DefaultBelongsToRepository<
   TargetEntity extends Entity,
   TargetId,
   TargetRepository extends EntityCrudRepository<TargetEntity, TargetId>,
-> implements BelongsToRepository<TargetEntity>
-{
+> implements BelongsToRepository<TargetEntity> {
   /**
    * Constructor of DefaultBelongsToEntityCrudRepository
    * @param getTargetRepository - either a dictionary of target model type - target repository instance

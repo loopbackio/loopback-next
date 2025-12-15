@@ -14,9 +14,10 @@ import {BasicAuthenticationStrategyCredentials} from '../strategies/basic-strate
 import {User} from '../users/user';
 import {UserRepository} from '../users/user.repository';
 
-export class BasicAuthenticationUserService
-  implements UserService<User, BasicAuthenticationStrategyCredentials>
-{
+export class BasicAuthenticationUserService implements UserService<
+  User,
+  BasicAuthenticationStrategyCredentials
+> {
   constructor(
     @inject(USER_REPO)
     private userRepository: UserRepository,

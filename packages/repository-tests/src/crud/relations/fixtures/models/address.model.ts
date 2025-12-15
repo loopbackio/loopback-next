@@ -49,8 +49,10 @@ export interface AddressRelations {
 
 export type AddressWithRelations = Address & AddressRelations;
 
-export interface AddressRepository
-  extends EntityCrudRepository<Address, typeof Address.prototype.id> {
+export interface AddressRepository extends EntityCrudRepository<
+  Address,
+  typeof Address.prototype.id
+> {
   // define additional members like relation methods here
   customer?: BelongsToAccessor<Customer, MixedIdType>;
 }

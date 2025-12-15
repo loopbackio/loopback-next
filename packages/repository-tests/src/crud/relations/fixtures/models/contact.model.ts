@@ -49,8 +49,10 @@ export interface ContactRelations {
 
 export type ContactWithRelations = Contact & ContactRelations;
 
-export interface ContactRepository
-  extends EntityCrudRepository<Contact, typeof Contact.prototype.id> {
+export interface ContactRepository extends EntityCrudRepository<
+  Contact,
+  typeof Contact.prototype.id
+> {
   // define additional members like relation methods here
   stakeholder: BelongsToAccessor<Stakeholder, MixedIdType>;
 }

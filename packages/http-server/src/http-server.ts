@@ -39,8 +39,7 @@ export type HttpServerProperties = Pick<
  * Base options that are common to http and https servers
  */
 export interface BaseHttpOptions
-  extends ListenOptions,
-    Partial<HttpServerProperties> {
+  extends ListenOptions, Partial<HttpServerProperties> {
   /**
    * The `gracePeriodForClose` property controls how to stop the server
    * gracefully. Its value is the number of milliseconds to wait before

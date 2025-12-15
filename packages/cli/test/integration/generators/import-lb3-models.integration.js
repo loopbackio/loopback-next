@@ -24,13 +24,11 @@ const {
   loadLb3App,
 } = require('../../../generators/import-lb3-models/lb3app-loader');
 
-const COFFEE_SHOP_EXAMPLE = require.resolve(
-  '../../../../../examples/lb3-application/lb3app/server/server',
-);
+const COFFEE_SHOP_EXAMPLE =
+  require.resolve('../../../../../examples/lb3-application/lb3app/server/server');
 
-const APP_USING_MODEL_INHERITANCE = require.resolve(
-  '../../fixtures/import-lb3-models/app-using-model-inheritance',
-);
+const APP_USING_MODEL_INHERITANCE =
+  require.resolve('../../fixtures/import-lb3-models/app-using-model-inheritance');
 
 describe('lb4 import-lb3-models', function () {
   require('../lib/base-generator')(generator, {args: ['path-to-lb3-app']})();

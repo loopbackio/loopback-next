@@ -30,8 +30,10 @@ export interface PromotionRelations {}
 
 export type PromotionWithRelations = Promotion & PromotionRelations;
 
-export interface PromotionRepository
-  extends EntityCrudRepository<Promotion, typeof Promotion.prototype.id> {}
+export interface PromotionRepository extends EntityCrudRepository<
+  Promotion,
+  typeof Promotion.prototype.id
+> {}
 
 @model()
 export class FreeDelivery extends Promotion {
@@ -45,11 +47,10 @@ export interface FreeDeliveryRelations {}
 
 export type FreeDeliveryWithRelations = FreeDelivery & FreeDeliveryRelations;
 
-export interface FreeDeliveryRepository
-  extends EntityCrudRepository<
-    FreeDelivery,
-    typeof FreeDelivery.prototype.id
-  > {}
+export interface FreeDeliveryRepository extends EntityCrudRepository<
+  FreeDelivery,
+  typeof FreeDelivery.prototype.id
+> {}
 
 @model()
 export class HalfPrice extends Promotion {
@@ -63,5 +64,7 @@ export interface HalfPriceRelations {}
 
 export type HalfPriceWithRelations = HalfPrice & HalfPriceRelations;
 
-export interface HalfPriceRepository
-  extends EntityCrudRepository<HalfPrice, typeof HalfPrice.prototype.id> {}
+export interface HalfPriceRepository extends EntityCrudRepository<
+  HalfPrice,
+  typeof HalfPrice.prototype.id
+> {}

@@ -28,8 +28,10 @@ export interface SupplierRelations {
 
 export type SupplierWithRelations = Supplier & SupplierRelations;
 
-export interface SupplierRepository
-  extends EntityCrudRepository<Supplier, typeof Supplier.prototype.id> {
+export interface SupplierRepository extends EntityCrudRepository<
+  Supplier,
+  typeof Supplier.prototype.id
+> {
   // define additional members like relation methods here
   contact: HasOneRepositoryFactory<Contact, MixedIdType>;
 }

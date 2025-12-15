@@ -98,21 +98,27 @@ export interface CashRelations {
 
 export type CashWithRelations = Cash & CashRelations;
 
-export interface CreditCardRepository
-  extends EntityCrudRepository<CreditCard, typeof CreditCard.prototype.id> {
+export interface CreditCardRepository extends EntityCrudRepository<
+  CreditCard,
+  typeof CreditCard.prototype.id
+> {
   // define additional members like relation methods here
   customer: BelongsToAccessor<Customer, MixedIdType>;
   cardInfo: HasOneRepositoryFactory<CardInfo, MixedIdType>;
 }
 
-export interface CashRepository
-  extends EntityCrudRepository<Cash, typeof Cash.prototype.id> {
+export interface CashRepository extends EntityCrudRepository<
+  Cash,
+  typeof Cash.prototype.id
+> {
   // define additional members like relation methods here
   customer: BelongsToAccessor<Customer, MixedIdType>;
 }
 
-export interface CardInfoRepository
-  extends EntityCrudRepository<CardInfo, typeof CardInfo.prototype.id> {
+export interface CardInfoRepository extends EntityCrudRepository<
+  CardInfo,
+  typeof CardInfo.prototype.id
+> {
   // define additional members like relation methods here
   creditCard: BelongsToAccessor<CreditCard, MixedIdType>;
 }

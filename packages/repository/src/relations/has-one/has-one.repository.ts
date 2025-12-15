@@ -82,8 +82,7 @@ export class DefaultHasOneRepository<
   TargetEntity extends Entity,
   TargetID,
   TargetRepository extends EntityCrudRepository<TargetEntity, TargetID>,
-> implements HasOneRepository<TargetEntity>
-{
+> implements HasOneRepository<TargetEntity> {
   /**
    * Constructor of DefaultHasOneEntityCrudRepository
    * @param getTargetRepository  - either a dictionary of target model type - target repository instance

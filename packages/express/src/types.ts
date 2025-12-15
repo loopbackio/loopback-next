@@ -263,8 +263,9 @@ export interface MiddlewareCreationOptions {
  * Options to create a middleware binding for the sequence action or interceptor.
  * @typeParam CTX - Context class
  */
-export interface BaseMiddlewareBindingOptions<CTX extends Context>
-  extends MiddlewareCreationOptions {
+export interface BaseMiddlewareBindingOptions<
+  CTX extends Context,
+> extends MiddlewareCreationOptions {
   /**
    * Binding key for the middleware.
    */
@@ -278,8 +279,7 @@ export interface BaseMiddlewareBindingOptions<CTX extends Context>
 /**
  * Options to bind a middleware as an interceptor to the context
  */
-export interface MiddlewareInterceptorBindingOptions
-  extends BaseMiddlewareBindingOptions<InvocationContext> {
+export interface MiddlewareInterceptorBindingOptions extends BaseMiddlewareBindingOptions<InvocationContext> {
   /**
    * A flag to control if the interceptor should be global. Default to `true`.
    */
@@ -290,8 +290,7 @@ export interface MiddlewareInterceptorBindingOptions
  * Options to bind middleware as a request context based interceptor within an
  * `InvokeMiddleware` action of the sequence.
  */
-export interface MiddlewareBindingOptions
-  extends BaseMiddlewareBindingOptions<MiddlewareContext> {
+export interface MiddlewareBindingOptions extends BaseMiddlewareBindingOptions<MiddlewareContext> {
   /**
    * Name of the middleware extension point. Default to `DEFAULT_MIDDLEWARE_CHAIN`.
    */

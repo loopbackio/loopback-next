@@ -18,9 +18,9 @@ class MyController {
   constructor(@repository('noteRepo') public noteRepo: Repository<Entity>) {}
 }
 
-class MyRepositoryProvider
-  implements Provider<DefaultCrudRepository<Entity, string>>
-{
+class MyRepositoryProvider implements Provider<
+  DefaultCrudRepository<Entity, string>
+> {
   constructor(
     @inject('models.Note') private myModel: typeof Entity,
     @inject('dataSources.memory') private dataSource: juggler.DataSource,

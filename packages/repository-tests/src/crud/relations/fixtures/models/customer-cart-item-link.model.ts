@@ -37,8 +37,7 @@ export interface CustomerCartItemLinkRelations {}
 export type CustomerCartItemLinkWithRelations = CustomerCartItemLink &
   CustomerCartItemLinkRelations;
 
-export interface CustomerCartItemLinkRepository
-  extends EntityCrudRepository<
-    CustomerCartItemLink,
-    typeof CustomerCartItemLink.prototype.id
-  > {}
+export interface CustomerCartItemLinkRepository extends EntityCrudRepository<
+  CustomerCartItemLink,
+  typeof CustomerCartItemLink.prototype.id
+> {}

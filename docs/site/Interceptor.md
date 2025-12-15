@@ -777,8 +777,7 @@ and chains. For example,
 import {GenericInvocationChain, GenericInterceptor} from '@loopback/core';
 import {RequestContext} from '@loopback/rest';
 
-export interface RequestInterceptor
-  extends GenericInterceptor<RequestContext> {}
+export interface RequestInterceptor extends GenericInterceptor<RequestContext> {}
 
 export class RequestInterceptorChain extends GenericInterceptorChain<RequestContext> {}
 ```

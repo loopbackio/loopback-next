@@ -225,9 +225,9 @@ instances.
 ```ts
 import {PooledValue, PoolingService} from '@loopback/pooling';
 
-class ExpensiveResourceProvider
-  implements Provider<PooledValue<ExpensiveResource>>
-{
+class ExpensiveResourceProvider implements Provider<
+  PooledValue<ExpensiveResource>
+> {
   constructor(
     @inject(POOL_SERVICE)
     private poolingService: PoolingService<ExpensiveResource>,

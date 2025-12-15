@@ -191,8 +191,7 @@ export function createInterceptor<CFG, CTX extends Context = InvocationContext>(
 export abstract class ExpressMiddlewareInterceptorProvider<
   CFG,
   CTX extends Context = InvocationContext,
-> implements Provider<GenericInterceptor<CTX>>
-{
+> implements Provider<GenericInterceptor<CTX>> {
   protected middlewareConfigView?: ContextView<CFG>;
   protected middlewareConfig?: CFG;
 
