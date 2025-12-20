@@ -1,4 +1,4 @@
-// Copyright IBM Corp. and LoopBack contributors 2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2020-2025. All Rights Reserved.
 // Node module: @loopback/express
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -12,6 +12,10 @@ import {
   MixinTarget,
   Provider,
 } from '@loopback/core';
+// `EventEmitter` required to allow tsdoc generation.
+// see: https://github.com/loopbackio/loopback-next/issues/10205
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import type {EventEmitter} from 'events';
 import {
   registerExpressMiddleware,
   registerMiddleware,
