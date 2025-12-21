@@ -85,6 +85,7 @@ async function addJekyllMetadata(
 
     const docFile = path.join(apiDocsRoot, f);
     let doc = await fs.readFile(docFile, 'utf-8');
+    doc = doc.replace(/<td>/g, '<td markdown="1">');
 
     const pkgName = name.split('.')[0];
     // Calculate the relative uri for the package
