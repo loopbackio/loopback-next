@@ -63,6 +63,6 @@
     "eslint": "^8.57.1",
     "mocha": "^11.7.5",
     "source-map-support": "^0.5.21",
-    "typescript": "~5.2.2"
+    "typescript": "~5.9.3"
   }
 }
