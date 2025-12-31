@@ -60,7 +60,7 @@
     "@types/express-serve-static-core": "^4.19.7",
     "@types/multer": "^2.0.0",
     "@types/node": "^16.18.126",
-    "eslint": "^8.57.1",
+    "eslint": "^9.39.2",
     "typescript": "~5.2.2"
   }
 }
