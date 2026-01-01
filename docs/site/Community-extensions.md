@@ -81,7 +81,7 @@ list.
     </tr>
     <tr>
       <td><a href="https://www.npmjs.com/package/loopback4-mcp">loopback4-mcp</a></td>
-      <td>An extension that helps MCPTools to discover APIs and services</td>
+      <td>An extension that helps MCPTool to discover APIs and services</td>
     </tr>
     <tr>
       <td><a href="https://www.npmjs.com/package/lb4-llm-chat-component">lb4-llm-chat-component</a></td>
