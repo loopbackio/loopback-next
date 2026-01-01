@@ -79,6 +79,18 @@ list.
       <td><a href="https://npmjs.com/package/loopback4-kafka-client">loopback4-kafka-client</a></td>
       <td>Kafka Client built on top of KafkaJs</td>
     </tr>
+    <tr>
+      <td><a href="https://www.npmjs.com/package/loopback4-mcp">loopback4-mcp</a></td>
+      <td>An extension that helps MCPTool to discover APIs and services</td>
+    </tr>
+    <tr>
+      <td><a href="https://www.npmjs.com/package/lb4-llm-chat-component">lb4-llm-chat-component</a></td>
+      <td>Helps integrate Langgraph.js based endpoint in your application</td>
+    </tr>
+    <tr>
+      <td><a href="https://www.npmjs.com/package/loopback4-message-bus-connector"></a></td>
+      <td>Extension to add message queue and event based communication to your application</td>
+    </tr>
   </tbody>
 </table>
 
