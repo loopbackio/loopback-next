@@ -52,7 +52,7 @@
     "@types/debug": "^4.1.12",
     "@types/node": "^16.18.126",
     "@types/tunnel": "0.0.7",
-    "delay": "^5.0.0",
+    "delay": "^7.0.0",
     "tunnel": "0.0.6"
   }
 }
