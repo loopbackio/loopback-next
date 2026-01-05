@@ -55,7 +55,7 @@
     "graphql-subscriptions": "^2.0.0",
     "graphql-ws": "^5.16.2",
     "type-graphql": "^2.0.0-beta.2",
-    "ws": "^8.18.3"
+    "ws": "^8.19.0"
   },
   "devDependencies": {
     "@loopback/boot": "^8.0.8",
