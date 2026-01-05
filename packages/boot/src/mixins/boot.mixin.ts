@@ -16,6 +16,10 @@ import {
   createBindingFromClass,
   MixinTarget,
 } from '@loopback/core';
+// `EventEmitter` required to allow tsdoc generation.
+// see: https://github.com/loopbackio/loopback-next/issues/10205
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import type {EventEmitter} from 'events';
 import {BootComponent} from '../boot.component';
 import {createComponentApplicationBooterBinding} from '../booters/component-application.booter';
 import {Bootstrapper} from '../bootstrapper';

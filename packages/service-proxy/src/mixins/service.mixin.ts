@@ -14,6 +14,10 @@ import {
   Provider,
   ServiceOptions,
 } from '@loopback/core';
+// `EventEmitter` required to allow tsdoc generation.
+// see: https://github.com/loopbackio/loopback-next/issues/10205
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import type {EventEmitter} from 'events';
 
 /**
  * Interface for classes with `new` operator.
