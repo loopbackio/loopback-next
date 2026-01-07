@@ -68,7 +68,7 @@
     "@types/passport-local": "^1.0.38",
     "@types/passport-oauth2": "^1.8.0",
     "@types/passport-twitter": "1.0.40",
-    "body-parser": "^2.2.1",
+    "body-parser": "^2.2.2",
     "client-sessions": "^0.8.0",
     "debug": "^4.4.3",
     "express": "^4.22.1",
