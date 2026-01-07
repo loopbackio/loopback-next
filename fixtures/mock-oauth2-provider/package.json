@@ -41,7 +41,7 @@
     "@types/lodash": "^4.17.21",
     "@types/node": "^16.18.126",
     "axios": "^1.13.2",
-    "body-parser": "^2.2.1",
+    "body-parser": "^2.2.2",
     "express": "^4.22.1",
     "form-data": "^4.0.5",
     "jsonwebtoken": "^9.0.3",

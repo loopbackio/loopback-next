@@ -54,7 +54,7 @@
     "ajv-errors": "^3.0.0",
     "ajv-formats": "^3.0.1",
     "ajv-keywords": "^5.1.0",
-    "body-parser": "^2.2.1",
+    "body-parser": "^2.2.2",
     "cors": "^2.8.5",
     "debug": "^4.4.3",
     "express": "^4.22.1",
