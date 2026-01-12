@@ -43,14 +43,14 @@
   },
   "dependencies": {
     "@loopback/core": "^7.0.8",
-    "express": "^4.22.1",
+    "express": "^5.2.1",
     "tslib": "^2.8.1"
   },
   "devDependencies": {
     "@loopback/build": "^12.0.8",
     "@loopback/eslint-config": "^16.0.1",
     "@loopback/testlab": "^8.0.8",
-    "@types/express": "^4.17.25",
+    "@types/express": "^5.0.6",
     "@types/node": "^16.18.126",
     "eslint": "^8.57.1",
     "typescript": "~5.2.2"
