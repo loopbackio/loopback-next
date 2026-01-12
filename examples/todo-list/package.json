@@ -1,7 +1,7 @@
 {
   "name": "@loopback/example-todo-list",
   "description": "Continuation of the todo example using relations in LoopBack 4.",
-  "version": "9.0.8",
+  "version": "9.0.9",
   "keywords": [
     "loopback",
     "LoopBack",
@@ -53,20 +53,20 @@
     "access": "public"
   },
   "dependencies": {
-    "@loopback/boot": "^8.0.8",
-    "@loopback/core": "^7.0.7",
-    "@loopback/repository": "^8.0.7",
-    "@loopback/rest": "^15.0.8",
-    "@loopback/rest-explorer": "^8.0.8",
-    "@loopback/service-proxy": "^8.0.7",
+    "@loopback/boot": "^8.0.9",
+    "@loopback/core": "^7.0.8",
+    "@loopback/repository": "^8.0.8",
+    "@loopback/rest": "^15.0.9",
+    "@loopback/rest-explorer": "^8.0.9",
+    "@loopback/service-proxy": "^8.0.8",
     "loopback-connector-rest": "^6.0.2",
     "tslib": "^2.8.1"
   },
   "devDependencies": {
-    "@loopback/build": "^12.0.7",
+    "@loopback/build": "^12.0.8",
     "@loopback/eslint-config": "^16.0.1",
-    "@loopback/http-caching-proxy": "^7.0.7",
-    "@loopback/testlab": "^8.0.7",
+    "@loopback/http-caching-proxy": "^7.0.8",
+    "@loopback/testlab": "^8.0.8",
     "@types/lodash": "^4.17.23",
     "@types/node": "^16.18.126",
     "eslint": "^8.57.1",

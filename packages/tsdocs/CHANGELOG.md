@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.0.8](https://github.com/loopbackio/loopback-next/compare/@loopback/tsdocs@7.0.7...@loopback/tsdocs@7.0.8) (2026-01-12)
+
+
+### Bug Fixes
+
+* **tsdocs:** markdown links inside HTML table ([b297dd1](https://github.com/loopbackio/loopback-next/commit/b297dd1694a98b7cc17dfbca2107eec08e74116a))
+
+
+
+
+
 ## [7.0.7](https://github.com/loopbackio/loopback-next/compare/@loopback/tsdocs@7.0.6...@loopback/tsdocs@7.0.7) (2025-12-09)
 
 **Note:** Version bump only for package @loopback/tsdocs

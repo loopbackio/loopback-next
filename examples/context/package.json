@@ -1,7 +1,7 @@
 {
   "name": "@loopback/example-context",
   "description": "Standalone examples to illustrate features provided by @loopback/context",
-  "version": "8.0.7",
+  "version": "8.0.8",
   "keywords": [
     "loopback",
     "LoopBack",
@@ -46,13 +46,13 @@
     "access": "public"
   },
   "dependencies": {
-    "@loopback/context": "^8.0.7",
+    "@loopback/context": "^8.0.8",
     "tslib": "^2.8.1"
   },
   "devDependencies": {
-    "@loopback/build": "^12.0.7",
+    "@loopback/build": "^12.0.8",
     "@loopback/eslint-config": "^16.0.1",
-    "@loopback/testlab": "^8.0.7",
+    "@loopback/testlab": "^8.0.8",
     "@types/node": "^16.18.126",
     "eslint": "^8.57.1",
     "typescript": "~5.2.2"
