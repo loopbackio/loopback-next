@@ -63,7 +63,7 @@
     "@loopback/security": "^0.12.9",
     "@loopback/service-proxy": "^8.0.8",
     "bcryptjs": "^3.0.3",
-    "loopback-connector-rest": "^6.0.2",
+    "loopback-connector-rest": "^6.0.3",
     "tslib": "^2.8.1"
   },
   "devDependencies": {
