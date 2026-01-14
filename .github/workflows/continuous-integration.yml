@@ -81,7 +81,7 @@ jobs:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
       - uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6.1.0
         with:
-          node-version: 22.21.1 # LTS
+          node-version: 22.22.0 # LTS
       - name: Install dependencies
         run: npm ci
       - name: Build
@@ -96,7 +96,7 @@ jobs:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
       - uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6.1.0
         with:
-          node-version: 22.21.1 # LTS
+          node-version: 22.22.0 # LTS
       - name: Install dependencies
         run: npm ci
       - name: Build
@@ -118,7 +118,7 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6.1.0
         with:
-          node-version: 22.21.1 # LTS
+          node-version: 22.22.0 # LTS
       - name: Install dependencies
         run: npm ci
       - name: Verify commit linting
@@ -131,7 +131,7 @@ jobs:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
       - uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6.1.0
         with:
-          node-version: 22.21.1 # LTS
+          node-version: 22.22.0 # LTS
       - name: Install dependencies
         run: npm ci
       - name: Build
