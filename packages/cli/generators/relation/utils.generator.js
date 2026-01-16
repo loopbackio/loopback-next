@@ -261,3 +261,28 @@ exports.getNamedImportsFromModule = function (sourceFile, moduleName) {
   const allImports = sourceFile.getImportDeclarations();
   return allImports.filter(imp => imp.getModuleSpecifierValue() === moduleName);
 };
+
+exports.getReadOnlyProperties = function (modelDir, model) {
+  const readOnlyProperties = [];
+  const project = new this.AstLoopBackProject();
+  const sourceFile = this.addFileToProject(project, modelDir, model);
+  const sourceClass = this.getClassObj(sourceFile, model);
+  for (const classProperty of sourceClass.getInstanceProperties()) {
+    for (const decorator of classProperty.getDecorators()) {
+      for (const decoratorArg of decorator.getArguments()) {
+        if (decoratorArg.getProperty) {
+          const readOnlyProperty = decoratorArg.getProperty('readOnly');
+          if (readOnlyProperty) {
+            const readOnlyValue = readOnlyProperty
+              .getInitializerOrThrow()
+              .getText();
+            if (readOnlyValue === '1' || readOnlyValue === 'true') {
+              readOnlyProperties.push(classProperty.getName());
+            }
+          }
+        }
+      }
+    }
+  }
+  return readOnlyProperties;
+};

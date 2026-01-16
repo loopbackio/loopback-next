@@ -140,7 +140,10 @@ export class CustomerAddressController {
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(Address, {partial: true}),
+          schema: getModelSchemaRef(Address, {
+            partial: true,
+            exclude: ['id', ],
+          }),
         },
       },
     })
@@ -255,7 +258,10 @@ export class CustomerAddressController {
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(Address, {partial: true}),
+          schema: getModelSchemaRef(Address, {
+            partial: true,
+            exclude: ['id', ],
+          }),
         },
       },
     })
