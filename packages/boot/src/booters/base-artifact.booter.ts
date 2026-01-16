@@ -137,6 +137,9 @@ export class BaseArtifactBooter implements Booter {
    * and then process the artifact classes as appropriate.
    */
   async load() {
-    this.classes = loadClassesFromFiles(this.discovered, this.projectRoot);
+    this.classes = await loadClassesFromFiles(
+      this.discovered,
+      this.projectRoot,
+    );
   }
 }
