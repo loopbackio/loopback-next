@@ -17,7 +17,22 @@ const rootDir = 'src';
 
 module.exports = class DiscoveryGenerator extends ArtifactGenerator {
   constructor(args, opts) {
-    super(args, opts);
+    super(args, {
+      shared: opts.shared,
+      env: opts.env,
+      forwardErrorToEnvironment: opts.forwardErrorToEnvironment,
+      skipLocalCache: opts.skipLocalCache,
+      _: opts._,
+      y: opts.y,
+      c: opts.c,
+      config: opts.config,
+      namespace: opts.namespace,
+      initialGenerator: opts.initialGenerator,
+      resolved: opts.resolved,
+      dataSource: opts.dataSource,
+    });
+    this.opts = opts;
+    delete this.opts.env;
 
     this.option('dataSource', {
       type: String,
@@ -105,7 +120,7 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
     if (this.options.config) {
       delete this.options?.env;
     }
-    return super.setOptions();
+    return super.setOptions(this.opts);
   }
 
   /**
