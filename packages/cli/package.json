@@ -89,7 +89,7 @@
     "@types/ejs": "^3.1.5",
     "@types/fs-extra": "^11.0.4",
     "@types/node": "^16.18.126",
-    "@types/yeoman-environment": "^2.10.11",
+    "@types/yeoman-environment": "^4.0.0",
     "@types/yeoman-generator": "^5.2.14",
     "loopback": "^3.28.0",
     "loopback-datasource-juggler": "^6.0.2",
