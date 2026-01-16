@@ -52,11 +52,14 @@ const RefreshGrantRequestBody = {
 // Describe the schema of user credentials
 const CredentialsSchema: SchemaObject = {
   type: 'object',
-  required: ['email', 'password'],
+  required: ['password'],
   properties: {
     email: {
       type: 'string',
       format: 'email',
+    },
+    username: {
+      type: 'string',
     },
     password: {
       type: 'string',
