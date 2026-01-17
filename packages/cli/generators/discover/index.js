@@ -75,6 +75,20 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
       description: g.f('Boolean to mark id property as optional field'),
       default: false,
     });
+
+    this.option('disableCamelCase', {
+      type: Boolean,
+      description: g.f(
+        'Boolean to disable camel case naming convention for columns',
+      ),
+      default: false
+    });
+
+    this.option('singularize', {
+      type: Boolean,
+      description: g.f('Boolean to enable singularizing model names'),
+      default: false
+    });
   }
 
   _setupGenerator() {
@@ -279,6 +293,7 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
         type: 'list',
         choices: this.namingConvention,
         default: false,
+        when: !this.options.disableCamelCase,
       },
     ]).then(props => {
       /* istanbul ignore next */
@@ -330,7 +345,8 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
         modelInfo.name,
         {
           schema: modelInfo.owner,
-          disableCamelCase: this.artifactInfo.disableCamelCase,
+          disableCamelCase:
+            this.options.disableCamelCase || this.artifactInfo.disableCamelCase,
           associations: this.options.relations,
           ...discoveryOptions,
         },
@@ -362,6 +378,18 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
     }
     this.artifactInfo.indexesToBeUpdated =
       this.artifactInfo.indexesToBeUpdated || [];
+
+    if (this.options.singularize) {
+      for (const modelDefinition of this.artifactInfo.modelDefinitions) {
+        modelDefinition.name = utils.pluralize.singular(modelDefinition.name);
+        if (this.options.relations) {
+          for (const relationName in modelDefinition.settings.relations) {
+            const relation = modelDefinition.settings.relations[relationName];
+            relation.model = utils.pluralize.singular(relation.model);
+          }
+        }
+      }
+    }
 
     // eslint-disable-next-line @typescript-eslint/prefer-for-of
     for (let i = 0; i < this.artifactInfo.modelDefinitions.length; i++) {
