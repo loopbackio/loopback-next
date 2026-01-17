@@ -32,6 +32,7 @@ import {
   InclusionResolver,
 } from '../../../relations';
 import {CrudConnectorStub} from '../crud-connector.stub';
+import {AnyObject} from '@loopback/filter/src/types';
 const TransactionClass = require('loopback-datasource-juggler').Transaction;
 
 describe('legacy loopback-datasource-juggler', () => {
@@ -285,6 +286,20 @@ describe('DefaultCrudRepository', () => {
       ]);
       await repo.find(filter);
       expect(filter).to.deepEqual(originalFilter);
+    });
+    it('invalid key in where clause throws error', async () => {
+      const repo = new DefaultCrudRepository(Note, ds);
+      const filter = {where: {noTtile: 't1'}};
+      await repo.createAll([
+        {title: 't1', content: 'c1'},
+        {title: 't2', content: 'c2'},
+      ]);
+      // let response = await (repo as AnyObject).find(filter);
+      await expect((repo as AnyObject).find(filter)).to.be.rejectedWith({
+        code: 'INVALID_WHERE_FILTER',
+        statusCode: 400,
+        message: 'Invalid "filter.include" entries: "noTtile"',
+      });
     });
   });
 

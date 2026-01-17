@@ -16,6 +16,7 @@ import {
   Options,
   Where,
 } from '..';
+import {ModelProperties} from 'loopback-datasource-juggler';
 const debug = debugFactory('loopback:repository:relation-helpers');
 
 /**
@@ -177,6 +178,67 @@ export async function includeRelatedModels<
   await Promise.all(resolveTasks);
 
   return result;
+}
+
+/**
+ * Validate if where clause as properties that exists in the table
+ *
+ * @param targetRepository - The target repository where the related model instances are found
+ * @param where - Where clause from url
+ */
+export async function validateWhere<
+  Target extends Entity,
+  TargetRelations extends object,
+>(
+  targetRepository: EntityCrudRepository<Target, unknown, TargetRelations>,
+  where: Where,
+): Promise<Error | undefined> {
+  const definition = targetRepository.entityClass.definition;
+  const invalidWhereFieldsSet = validateWhereClause(where, definition);
+  const invalidWhereFields = Array.from(invalidWhereFieldsSet);
+  if (invalidWhereFields.length) {
+    const msg =
+      'Invalid "filter.include" entries: ' +
+      invalidWhereFields
+        .map(invalidWhereField => JSON.stringify(invalidWhereField))
+        .join('; ');
+    const err = new Error(msg);
+    Object.assign(err, {
+      code: 'INVALID_WHERE_FILTER',
+      statusCode: 400,
+    });
+    return err;
+  }
+}
+/**
+ * A wrapper function to validate where clause
+ *
+ * @param where - Where clause from url
+ * @param definition - Model Definition
+ * @param invalidWhereFields - set of invalid fields from where clause
+ */
+function validateWhereClause(
+  where: Where,
+  definition: ModelProperties,
+  invalidWhereFields = new Set<string>(),
+): Set<string> {
+  const {properties} = definition;
+  for (const key in where) {
+    if (key === 'and' || key === 'or') {
+      const clauses = (where as AnyObject)[key];
+      if (Array.isArray(clauses)) {
+        for (let i = 0, n = clauses.length; i < n; i++) {
+          validateWhereClause(clauses[i], properties, invalidWhereFields);
+        }
+      }
+    } else {
+      const p = properties[key];
+      if (p == null) {
+        invalidWhereFields.add(key);
+      }
+    }
+  }
+  return invalidWhereFields;
 }
 /**
  * Checks if the resolver of the inclusion relation is registered
