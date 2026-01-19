@@ -60,6 +60,9 @@ const EXAMPLES = {
   webpack: g.f('An example to bundle @loopback/core using webpack.'),
   graphql: g.f('An example to demonstrate GraphQL integration.'),
   socketio: g.f('A basic implementation of Socket.IO'),
+  'redis-cache': g.f(
+    'An example demonstrating how to add cache in a LoopBack application',
+  ),
 };
 Object.freeze(EXAMPLES);
 

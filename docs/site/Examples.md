@@ -103,6 +103,9 @@ LoopBack 4 comes with the following example projects.
 - **[webpack](https://github.com/loopbackio/loopback-next/tree/master/examples/webpack)**:
   An example to bundle @loopback/core using webpack
 
+- **[redis-cache](https://github.com/loopbackio/loopback-next/tree/master/examples/redis-cache)**:
+  An example demonstrating how to add cache in a LoopBack application
+
 ## How to download examples
 
 You can download the example projects using our CLI tool `lb4`:
