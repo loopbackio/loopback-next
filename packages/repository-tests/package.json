@@ -48,6 +48,6 @@
     "@types/debug": "^4.1.12",
     "@types/lodash": "^4.17.23",
     "@types/node": "^16.18.126",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.23"
   }
 }

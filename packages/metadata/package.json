@@ -40,7 +40,7 @@
   ],
   "dependencies": {
     "debug": "^4.4.3",
-    "lodash": "^4.17.21",
+    "lodash": "^4.17.23",
     "reflect-metadata": "^0.2.1",
     "tslib": "^2.8.1"
   },
