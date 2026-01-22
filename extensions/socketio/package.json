@@ -49,7 +49,7 @@
     "@loopback/http-server": "^7.0.8",
     "@types/cors": "^2.8.19",
     "@types/lodash": "^4.17.23",
-    "cors": "^2.8.5",
+    "cors": "^2.8.6",
     "debug": "^4.4.3",
     "lodash": "^4.17.21",
     "socket.io": "^4.8.3"
