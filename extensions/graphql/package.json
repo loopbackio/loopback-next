@@ -48,7 +48,7 @@
     "@graphql-tools/utils": "^11.0.0",
     "@loopback/http-server": "^7.0.8",
     "body-parser": "^2.2.2",
-    "cors": "^2.8.5",
+    "cors": "^2.8.6",
     "debug": "^4.4.3",
     "express": "^4.22.1",
     "graphql": "^16.12.0",

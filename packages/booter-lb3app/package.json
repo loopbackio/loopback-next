@@ -62,7 +62,7 @@
     "@types/lodash": "^4.17.23",
     "@types/node": "^16.18.126",
     "compression": "^1.8.1",
-    "cors": "^2.8.5",
+    "cors": "^2.8.6",
     "helmet": "^4.6.0",
     "loopback-boot": "^3.3.1"
   }
