@@ -26,52 +26,9 @@ import {NewPet} from '../models/new-pet.model';
 @api({
   components: {
     schemas: {
-      Pet: {
-        allOf: [
-          {
-            $ref: '#/components/schemas/NewPet',
-          },
-          {
-            required: [
-              'id',
-            ],
-            properties: {
-              id: {
-                type: 'integer',
-                format: 'int64',
-              },
-            },
-          },
-        ],
-      },
-      NewPet: {
-        required: [
-          'name',
-        ],
-        properties: {
-          name: {
-            type: 'string',
-          },
-          tag: {
-            type: 'string',
-          },
-        },
-      },
-      Error: {
-        required: [
-          'code',
-          'message',
-        ],
-        properties: {
-          code: {
-            type: 'integer',
-            format: 'int32',
-          },
-          message: {
-            type: 'string',
-          },
-        },
-      },
+      Pet: {},
+      NewPet: {},
+      Error: {},
     },
   },
   paths: {},
@@ -449,47 +406,11 @@ export type NewPetWithRelations = NewPet & NewPetRelations;
 
 
 exports[`openapi-generator petstore generates all the proper files 6`] = `
-import {model, property} from '@loopback/repository';
-
 /**
- * The model class is generated from OpenAPI schema - Error
+ * The model type is generated from OpenAPI schema - Error
  * Error
  */
-@model({name: 'Error'})
-export class Error {
-  constructor(data?: Partial<Error>) {
-    if (data != null && typeof data === 'object') {
-      Object.assign(this, data);
-    }
-  }
-
-  /**
-   *
-   */
-  @property({required: true, jsonSchema: {
-  type: 'integer',
-  format: 'int32',
-  minimum: -2147483648,
-  maximum: 2147483647,
-}})
-  code: number;
-
-  /**
-   *
-   */
-  @property({required: true, jsonSchema: {
-  type: 'string',
-}})
-  message: string;
-
-}
-
-export interface ErrorRelations {
-  // describe navigational properties here
-}
-
-export type ErrorWithRelations = Error & ErrorRelations;
-
+export type Error = string;
 
 
 `;
