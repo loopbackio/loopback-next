@@ -65,6 +65,11 @@ paths:
     post:
       description: Creates a new pet in the store.  Duplicates are allowed
       operationId: addPet
+      parameters:
+        - name: 'content-type'
+          in: header
+          schema:
+            type: string
       requestBody:
         description: Pet to add to the store
         required: true
