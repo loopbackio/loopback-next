@@ -54,7 +54,7 @@
     "inquirer-autocomplete-prompt": "^2.0.1",
     "json5": "^2.2.3",
     "latest-version": "^5.1.0",
-    "lodash": "^4.17.21",
+    "lodash": "^4.17.23",
     "minimatch": "^10.1.1",
     "minimist": "^1.2.8",
     "mkdirp": "^3.0.1",

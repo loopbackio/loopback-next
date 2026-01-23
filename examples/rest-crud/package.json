@@ -67,7 +67,7 @@
     "@types/lodash": "^4.17.23",
     "@types/node": "^16.18.126",
     "eslint": "^8.57.1",
-    "lodash": "^4.17.21",
+    "lodash": "^4.17.23",
     "typescript": "~5.2.2"
   }
 }
