@@ -73,7 +73,7 @@
     "debug": "^4.4.3",
     "express": "^4.22.1",
     "express-session": "^1.18.2",
-    "lodash": "^4.17.21",
+    "lodash": "^4.17.23",
     "passport": "^0.5.3",
     "passport-facebook": "^3.0.0",
     "passport-google": "^0.3.0",
@@ -96,7 +96,7 @@
     "@types/node": "^16.18.126",
     "axios": "^1.13.2",
     "eslint": "^8.57.1",
-    "lodash": "^4.17.21",
+    "lodash": "^4.17.23",
     "typescript": "~5.2.2"
   }
 }

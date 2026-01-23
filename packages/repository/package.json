@@ -39,7 +39,7 @@
     "@loopback/filter": "^6.0.8",
     "@types/debug": "^4.1.12",
     "debug": "^4.4.3",
-    "lodash": "^4.17.21",
+    "lodash": "^4.17.23",
     "loopback-datasource-juggler": "^6.0.2",
     "tslib": "^2.8.1"
   },
