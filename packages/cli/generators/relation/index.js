@@ -603,7 +603,11 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
           this.artifactInfo.relationType === 'referencesMany')
       ) {
         try {
-          relationUtils.doesRelationExist(cl, this.artifactInfo.foreignKeyName);
+          relationUtils.doesRelationExist(
+            cl,
+            this.artifactInfo.foreignKeyName,
+            {force: this.options.force},
+          );
         } catch (err) {
           /* istanbul ignore next */
           this.exit(err);
@@ -681,6 +685,19 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
       this.artifactInfo.relationType === 'referencesMany'
         ? PROMPT_MESSAGE_RELATION_NAME
         : PROMPT_MESSAGE_PROPERTY_NAME;
+
+    if (!this.options.relationName)
+      this.artifactInfo.relationName = this.artifactInfo.defaultRelationName;
+    if (
+      (this.artifactInfo.relationType === 'hasMany' ||
+        this.artifactInfo.relationType === 'hasManyThrough') &&
+      this.options.relationName &&
+      !this.options.relationName.endsWith('s')
+    ) {
+      this.artifactInfo.relationName = utils.pluralize(
+        this.artifactInfo.relationName,
+      );
+    }
 
     return this.prompt([
       {
