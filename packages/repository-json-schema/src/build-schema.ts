@@ -614,11 +614,136 @@ export function modelToJsonSchema<T extends object>(
 
       result.properties[relMeta.name] =
         result.properties[relMeta.name] || propDef;
-      if ((relMeta as {keyFrom: string}).keyFrom) {
-        result.properties.foreignKey = (relMeta as {keyFrom: string})
-          .keyFrom as JsonSchema;
+      type Relationship = {
+        description?: string;
+        type?: string;
+        $ref?: string;
+        items?: {$ref: string};
+        foreignKeys?: {[x: string]: string};
+        relationType?: string;
+      };
+
+      const foreignKey: {[x: string]: string} = {};
+      let relationships: {[x: string]: Relationship} = {};
+
+      relationships = {};
+      if (!relationships[relMeta.name]) {
+        relationships[relMeta.name] = {};
       }
 
+      if (relMeta.type === 'belongsTo') {
+        let keyFrom = (relMeta as {keyFrom: string}).keyFrom;
+        if (!keyFrom) {
+          keyFrom = targetType.name.toLowerCase() + 'Id';
+        }
+        foreignKey[keyFrom] = targetType.name;
+        relationships[relMeta.name].description =
+          `${relMeta.source.name} belongs to ${targetType.name}.`;
+        relationships[relMeta.name].type = 'object';
+        relationships[relMeta.name].$ref =
+          `#/definitions/${targetSchema.title}`;
+      }
+      if (relMeta.type === 'hasMany') {
+        if ((relMeta as {through: object}).through) {
+          relationships = {};
+          if (!relationships[relMeta.name]) {
+            relationships[relMeta.name] = {};
+          }
+          let keyTo = (
+            (relMeta as {through: object}).through as {keyTo: string}
+          ).keyTo;
+          let keyFrom = (
+            (relMeta as {through: object}).through as {keyFrom: string}
+          ).keyFrom;
+
+          if (!keyTo) {
+            keyTo = targetType.name.toLowerCase() + 'Id';
+          }
+          if (!keyFrom) {
+            keyFrom = relMeta.source.name.toLowerCase() + 'Id';
+          }
+
+          foreignKey[keyTo] = targetType.name;
+          foreignKey[keyFrom] = relMeta.source.name;
+
+          relationships[relMeta.name].description =
+            `${relMeta.source.name} have many ${targetType.name}.`;
+          relationships[relMeta.name].type = 'object';
+          relationships[relMeta.name].$ref =
+            `#/definitions/${targetSchema.title}`;
+        } else {
+          let keyFrom = (relMeta as {keyFrom: string}).keyFrom;
+          if (!keyFrom) {
+            keyFrom = relMeta.source.name.toLowerCase() + 'Id';
+          }
+          foreignKey[keyFrom] = relMeta.source.name;
+          relationships[relMeta.name].description =
+            `${relMeta.source.name} have many ${targetType.name}.`;
+          relationships[relMeta.name].type = 'array';
+          relationships[relMeta.name].items = {
+            $ref: `#/definitions/${targetSchema.title}`,
+          };
+        }
+      }
+
+      if (relMeta.type === 'hasOne') {
+        relationships = {};
+        if (!relationships[relMeta.name]) {
+          relationships[relMeta.name] = {};
+        }
+
+        let keyTo = (relMeta as {keyTo: string}).keyTo;
+
+        if (!keyTo) {
+          keyTo = relMeta.source.name.toLowerCase() + 'Id';
+        }
+        foreignKey[keyTo] = relMeta.source.name;
+        relationships[relMeta.name].description =
+          `${relMeta.source.name} have one ${targetType.name}.`;
+        relationships[relMeta.name].type = 'object';
+        relationships[relMeta.name].$ref =
+          `#/definitions/${targetSchema.title}`;
+      }
+
+      if (relMeta.type === 'referencesMany') {
+        let keyFrom = (relMeta as {keyFrom: string}).keyFrom;
+        if (!keyFrom) {
+          keyFrom = targetType.name.toLowerCase() + 'Ids';
+        }
+        foreignKey[keyFrom] = targetType.name;
+        relationships[relMeta.name].description =
+          `${relMeta.source.name} references many ${targetType.name}.`;
+        relationships[relMeta.name].type = 'array';
+        relationships[relMeta.name].items = {
+          $ref: `#/definitions/${targetSchema.title}`,
+        };
+      }
+      relationships[relMeta.name].foreignKeys = foreignKey;
+      relationships[relMeta.name].relationType = relMeta.type;
+      if (result.description) {
+        if (result.description.includes('relationships')) {
+          const relationMatched =
+            result.description.match(/\{"relationships".*$/s);
+          if (relationMatched) {
+            const {relationships: existingRelation} = JSON.parse(
+              relationMatched[0],
+            );
+            existingRelation[Object.keys(relationships)[0]] = {
+              ...relationships,
+            };
+            result.description = result.description.replace(
+              /\{"relationships".*$/s,
+              '',
+            );
+            result.description =
+              result.description +
+              `, ${JSON.stringify({relationships: existingRelation})}`;
+          }
+        } else {
+          result.description =
+            result.description + `, ${JSON.stringify({relationships})}`;
+        }
+      }
       includeReferencedSchema(targetSchema.title!, targetSchema);
     }
   }

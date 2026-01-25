@@ -39,6 +39,50 @@ describe('jsonToSchemaObject', () => {
     propertyConversionTest(allOfDef, expectedAllOf);
   });
 
+  it('convert description with relation to x-relationships', () => {
+    const descriptionWithRelation: JsonSchema = {
+      description:
+        '(tsType: ProductWithRelations, ' +
+        'schemaOptions: { includeRelations: true }), ' +
+        '{"relationships":{"products":{"description":"Category have many Product.","type":"array","items":{"$ref":"#/definitions/ProductWithRelations"},"relationType":"hasMany","foreignKeys":{"categoryId":"Category"}}}}',
+    };
+    type Relationship = {
+      description?: string;
+      type?: string;
+      $ref?: string;
+      items?: {$ref: string};
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      'x-foreign-keys'?: {[x: string]: string};
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      'x-relation-type'?: string;
+    };
+    const expectedDescriptionWithRelation: SchemaObject & {
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      'x-relationships': {[x: string]: Relationship};
+    } = {
+      description:
+        '(tsType: ProductWithRelations, schemaOptions: { includeRelations: true }), ',
+      'x-relationships': {
+        products: {
+          description: 'Category have many Product.',
+          items: {
+            $ref: '#/definitions/ProductWithRelations',
+          },
+          type: 'array',
+          'x-foreign-keys': {
+            categoryId: 'Category',
+          },
+          'x-relation-type': 'hasMany',
+        },
+      },
+      'x-typescript-type': 'ProductWithRelations',
+    };
+    propertyConversionTest(
+      descriptionWithRelation,
+      expectedDescriptionWithRelation,
+    );
+  });
+
   it('converts anyOf', () => {
     const anyOfDef: JsonSchema = {
       anyOf: [typeDef, typeDef],
