@@ -232,6 +232,30 @@ export interface Filter<MT extends object = AnyObject> {
    * To include related objects
    */
   include?: InclusionFilter[];
+  /**
+   * return groupBy of
+   */
+  groupBy?: string[];
+  /**
+   * return sum of
+   */
+  sum?: string;
+  /**
+   * return min of
+   */
+  min?: string;
+  /**
+   * return max of
+   */
+  max?: string;
+  /**
+   * return avg of
+   */
+  avg?: string;
+  /**
+   * return count of
+   */
+  count?: string;
 }
 
 /**

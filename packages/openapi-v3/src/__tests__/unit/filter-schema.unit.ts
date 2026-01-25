@@ -25,6 +25,14 @@ describe('filterSchema', () => {
       type: 'object',
       'x-typescript-type': '@loopback/repository#Filter<MyUserModel>',
       properties: {
+        avg: {
+          example: 'column1',
+          type: 'string',
+        },
+        count: {
+          example: 'column1',
+          type: 'string',
+        },
         where: {
           type: 'object',
           title: 'my-user-model.WhereFilter',
@@ -54,11 +62,29 @@ describe('filterSchema', () => {
               },
             },
           ],
-          title: 'my-user-model.Fields',
+          title: 'my-user-model.GroupBy',
         },
         offset: {type: 'integer', minimum: 0},
         limit: {type: 'integer', minimum: 1, example: 100},
+        max: {
+          example: 'column1',
+          type: 'string',
+        },
+        min: {
+          example: 'column1',
+          type: 'string',
+        },
+        groupBy: {
+          items: {
+            type: 'string',
+          },
+          type: 'array',
+        },
         skip: {type: 'integer', minimum: 0},
+        sum: {
+          example: 'column1',
+          type: 'string',
+        },
         order: {
           oneOf: [{type: 'string'}, {type: 'array', items: {type: 'string'}}],
         },
@@ -75,6 +101,14 @@ describe('filterSchema', () => {
       type: 'object',
       'x-typescript-type': '@loopback/repository#Filter<MyUserModel>',
       properties: {
+        avg: {
+          example: 'column1',
+          type: 'string',
+        },
+        count: {
+          example: 'column1',
+          type: 'string',
+        },
         fields: {
           oneOf: [
             {
@@ -99,11 +133,29 @@ describe('filterSchema', () => {
               },
             },
           ],
-          title: 'my-user-model.Fields',
+          title: 'my-user-model.GroupBy',
         },
         offset: {type: 'integer', minimum: 0},
+        groupBy: {
+          items: {
+            type: 'string',
+          },
+          type: 'array',
+        },
         limit: {type: 'integer', minimum: 1, example: 100},
+        max: {
+          example: 'column1',
+          type: 'string',
+        },
+        min: {
+          example: 'column1',
+          type: 'string',
+        },
         skip: {type: 'integer', minimum: 0},
+        sum: {
+          example: 'column1',
+          type: 'string',
+        },
         order: {
           oneOf: [{type: 'string'}, {type: 'array', items: {type: 'string'}}],
         },
@@ -129,6 +181,14 @@ describe('filterSchema', () => {
       type: 'object',
       'x-typescript-type': '@loopback/repository#Filter<CustomUserModel>',
       properties: {
+        avg: {
+          example: 'column1',
+          type: 'string',
+        },
+        count: {
+          example: 'column1',
+          type: 'string',
+        },
         where: {
           type: 'object',
           title: 'CustomUserModel.WhereFilter',
@@ -158,11 +218,29 @@ describe('filterSchema', () => {
               },
             },
           ],
-          title: 'CustomUserModel.Fields',
+          title: 'CustomUserModel.GroupBy',
         },
         offset: {type: 'integer', minimum: 0},
+        groupBy: {
+          items: {
+            type: 'string',
+          },
+          type: 'array',
+        },
         limit: {type: 'integer', minimum: 1, example: 100},
+        max: {
+          example: 'column1',
+          type: 'string',
+        },
+        min: {
+          example: 'column1',
+          type: 'string',
+        },
         skip: {type: 'integer', minimum: 0},
+        sum: {
+          example: 'column1',
+          type: 'string',
+        },
         order: {
           oneOf: [{type: 'string'}, {type: 'array', items: {type: 'string'}}],
         },
