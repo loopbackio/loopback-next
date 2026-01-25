@@ -50,7 +50,7 @@
     "body-parser": "^2.2.2",
     "cors": "^2.8.6",
     "debug": "^4.4.3",
-    "express": "^4.22.1",
+    "express": "^5.2.1",
     "graphql": "^16.12.0",
     "graphql-subscriptions": "^2.0.0",
     "graphql-ws": "^5.16.2",
