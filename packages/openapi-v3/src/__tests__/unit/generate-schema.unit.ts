@@ -46,4 +46,114 @@ describe('generate-schema unit tests', () => {
     const schema = {foo: 'bar'};
     expect(resolveSchema(String, schema)).to.eql({type: 'string', foo: 'bar'});
   });
+
+  it('does not override existing format in schema', () => {
+    const schema = {type: 'string' as const, format: 'email'};
+    expect(resolveSchema(String, schema)).to.eql({
+      type: 'string',
+      format: 'email',
+    });
+  });
+
+  it('merges resolved schema with existing properties', () => {
+    const schema = {description: 'A test string', minLength: 5};
+    expect(resolveSchema(String, schema)).to.eql({
+      type: 'string',
+      description: 'A test string',
+      minLength: 5,
+    });
+  });
+
+  it('handles custom class with specific name', () => {
+    class UserModel {}
+    expect(resolveSchema(UserModel)).to.eql({
+      $ref: '#/components/schemas/UserModel',
+    });
+  });
+
+  it('handles arrow function', () => {
+    const fn = () => {};
+    expect(resolveSchema(fn)).to.eql({
+      $ref: '#/components/schemas/fn',
+    });
+  });
+
+  it('preserves $ref when schema has existing properties', () => {
+    class Product {}
+    const schema = {description: 'A product'};
+    expect(resolveSchema(Product, schema)).to.eql({
+      $ref: '#/components/schemas/Product',
+      description: 'A product',
+    });
+  });
+
+  it('handles undefined function with existing schema', () => {
+    const schema = {type: 'string' as const, description: 'Test'};
+    expect(resolveSchema(undefined, schema)).to.eql({
+      type: 'string',
+      description: 'Test',
+    });
+  });
+
+  it('handles null function with existing schema', () => {
+    const schema = {type: 'number' as const};
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    expect(resolveSchema(null as any, schema)).to.eql({type: 'number'});
+  });
+
+  it('returns empty object for non-function types', () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    expect(resolveSchema('string' as any)).to.eql({});
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    expect(resolveSchema(123 as any)).to.eql({});
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    expect(resolveSchema(true as any)).to.eql({});
+  });
+
+  it('handles schema with multiple properties for Date', () => {
+    const schema = {description: 'Creation date', example: '2023-01-01'};
+    expect(resolveSchema(Date, schema)).to.eql({
+      type: 'string',
+      format: 'date-time',
+      description: 'Creation date',
+      example: '2023-01-01',
+    });
+  });
+
+  it('handles schema with multiple properties for Array', () => {
+    const schema = {description: 'List of items', minItems: 1};
+    expect(resolveSchema(Array, schema)).to.eql({
+      type: 'array',
+      description: 'List of items',
+      minItems: 1,
+    });
+  });
+
+  it('handles schema with multiple properties for Object', () => {
+    const schema = {
+      description: 'Configuration object',
+      additionalProperties: false,
+    };
+    expect(resolveSchema(Object, schema)).to.eql({
+      type: 'object',
+      description: 'Configuration object',
+      additionalProperties: false,
+    });
+  });
+
+  it('handles schema with nullable property', () => {
+    const schema = {nullable: true};
+    expect(resolveSchema(String, schema)).to.eql({
+      type: 'string',
+      nullable: true,
+    });
+  });
+
+  it('handles schema with enum values', () => {
+    const schema = {enum: ['active', 'inactive']};
+    expect(resolveSchema(String, schema)).to.eql({
+      type: 'string',
+      enum: ['active', 'inactive'],
+    });
+  });
 });
