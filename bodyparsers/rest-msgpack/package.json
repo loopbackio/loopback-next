@@ -48,6 +48,6 @@
     "@types/msgpack5": "^3.4.6",
     "@types/node": "^16.18.126",
     "@types/type-is": "^1.6.7",
-    "typescript": "~5.2.2"
+    "typescript": "~5.9.3"
   }
 }
