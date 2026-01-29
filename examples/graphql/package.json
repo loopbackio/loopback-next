@@ -67,6 +67,6 @@
     "graphql-ws": "^5.16.2",
     "rimraf": "^5.0.10",
     "source-map-support": "^0.5.21",
-    "typescript": "~5.2.2"
+    "typescript": "~5.9.3"
   }
 }
