@@ -45,7 +45,7 @@
     "@openapi-contrib/openapi-schema-to-json-schema": "^5.1.0",
     "@phenomnomnominal/tsquery": "~5.0.1",
     "@unicode/unicode-10.0.0": "^1.6.16",
-    "camelcase-keys": "^10.0.1",
+    "camelcase-keys": "^7.0.2",
     "chalk": "^4.1.2",
     "change-case": "^4.1.2",
     "debug": "^4.4.3",
