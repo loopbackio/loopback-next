@@ -5,8 +5,7 @@
 
 import {ExpressMiddlewareOptions} from '@apollo/server/dist/esm/express4';
 import {BindingKey, Constructor, CoreBindings} from '@loopback/core';
-import {PubSubEngine} from 'graphql-subscriptions';
-import {AuthChecker, ResolverData} from 'type-graphql';
+import {AuthChecker, PubSub, ResolverData} from 'type-graphql';
 import {GraphQLComponent} from './graphql.component';
 import {GraphQLServer} from './graphql.server';
 import {GraphQLServerOptions, GraphQLWsContextResolver} from './types';
@@ -55,9 +54,7 @@ export namespace GraphQLBindings {
   /**
    * Binding key for the GraphQL pub/sub engine
    */
-  export const PUB_SUB_ENGINE = BindingKey.create<PubSubEngine>(
-    'graphql.pubSubEngine',
-  );
+  export const PUB_SUB = BindingKey.create<PubSub>('graphql.pubSub');
 
   /**
    * Binding key for the GraphQL resolver data - which is bound per request

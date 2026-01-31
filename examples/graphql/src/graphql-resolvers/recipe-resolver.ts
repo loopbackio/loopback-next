@@ -11,8 +11,7 @@ import {
   GraphQLBindings,
   Int,
   mutation,
-  Publisher,
-  pubSub,
+  PubSub,
   query,
   resolver,
   ResolverData,
@@ -33,6 +32,8 @@ export class RecipeResolver implements ResolverInterface<Recipe> {
     @repository('RecipeRepository')
     private readonly recipeRepo: RecipeRepository,
     @service(RecipeService) private readonly recipeService: RecipeService,
+    // inject pubSub for publishing a notification
+    @inject(GraphQLBindings.PUB_SUB) private pubSub: PubSub,
     // It's possible to inject the resolver data
     @inject(GraphQLBindings.RESOLVER_DATA) private resolverData: ResolverData,
   ) {}
@@ -49,12 +50,9 @@ export class RecipeResolver implements ResolverInterface<Recipe> {
   }
 
   @mutation(returns => Recipe)
-  async addRecipe(
-    @arg('recipe') recipe: RecipeInput,
-    @pubSub('recipeCreated') publish: Publisher<Recipe>,
-  ): Promise<Recipe> {
+  async addRecipe(@arg('recipe') recipe: RecipeInput): Promise<Recipe> {
     const result = await this.recipeRepo.add(recipe);
-    await publish(result);
+    this.pubSub.publish('recipeCreated', result);
     return result;
   }
 

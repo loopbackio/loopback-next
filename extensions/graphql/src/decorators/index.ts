@@ -15,7 +15,6 @@ import {
   InputType,
   Mutation,
   ObjectType,
-  PubSub,
   Query,
   Resolver,
   Root,
@@ -41,4 +40,3 @@ export const inputType = InputType;
 export const objectType = ObjectType;
 export const authorized = Authorized;
 export const subscription = Subscription;
-export const pubSub = PubSub;

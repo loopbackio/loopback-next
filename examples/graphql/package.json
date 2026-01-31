@@ -49,6 +49,7 @@
     "!*/__tests__"
   ],
   "dependencies": {
+    "@graphql-yoga/subscription": "^5.0.5",
     "@loopback/boot": "^8.0.9",
     "@loopback/core": "^7.0.8",
     "@loopback/graphql": "^0.12.9",
