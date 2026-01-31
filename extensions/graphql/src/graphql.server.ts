@@ -33,7 +33,6 @@ import cors from 'cors';
 import express from 'express';
 import fs from 'fs';
 import {GraphQLSchema, lexicographicSortSchema} from 'graphql';
-import {PubSub, PubSubEngine} from 'graphql-subscriptions';
 import {useServer} from 'graphql-ws/lib/use/ws';
 import * as http from 'http';
 import * as https from 'https';
@@ -44,7 +43,7 @@ import {
   ResolverInterface,
   BuildSchemaOptions as TypeGrahpQLBuildSchemaOptions,
 } from 'type-graphql';
-import {Middleware} from 'type-graphql/dist/interfaces/Middleware';
+import {Middleware} from 'type-graphql/build/typings/typings/middleware';
 import {WebSocketServer} from 'ws';
 import {LoopBackContainer} from './graphql.container';
 import {GraphQLBindings, GraphQLTags} from './keys';
@@ -99,8 +98,8 @@ export class GraphQLServer extends Context implements Server {
   /**
    * Get a list of middleware
    */
-  async getMiddlewareList(): Promise<Middleware<object>[]> {
-    const view = this.createView<Middleware<object>>(
+  async getMiddlewareList<T extends {}>(): Promise<Middleware<T>[]> {
+    const view = this.createView<Middleware<T>>(
       filterByTag(GraphQLTags.MIDDLEWARE),
     );
     return view.values();
@@ -110,9 +109,7 @@ export class GraphQLServer extends Context implements Server {
    * Register a GraphQL middleware
    * @param middleware - GraphQL middleware
    */
-  middleware<T extends object = object>(
-    middleware: Middleware<T>,
-  ): Binding<Middleware<T>> {
+  middleware<T extends {}>(middleware: Middleware<T>): Binding<Middleware<T>> {
     return this.bind<Middleware<T>>(BindingKey.generate(`graphql.middleware`))
       .to(middleware)
       .tag(GraphQLTags.MIDDLEWARE);
@@ -140,10 +137,7 @@ export class GraphQLServer extends Context implements Server {
         optional: true,
       })) ?? ((resolverData, roles) => true);
 
-    const pubSub: PubSubEngine | undefined =
-      (await this.get(GraphQLBindings.PUB_SUB_ENGINE, {
-        optional: true,
-      })) ?? new PubSub();
+    const pubSub = await this.get(GraphQLBindings.PUB_SUB, {optional: true});
 
     // build TypeGraphQL executable schema
     const buildSchemaOptions: TypeGrahpQLBuildSchemaOptions = {

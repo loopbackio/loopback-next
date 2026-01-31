@@ -3,6 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {createPubSub} from '@graphql-yoga/subscription';
 import {BootMixin} from '@loopback/boot';
 import {ApplicationConfig} from '@loopback/core';
 import {GraphQLBindings, GraphQLComponent} from '@loopback/graphql';
@@ -29,6 +30,8 @@ export class GraphqlDemoApplication extends BootMixin(
     });
 
     this.expressMiddleware('middleware.express.GraphQL', server.expressApp);
+
+    this.bind(GraphQLBindings.PUB_SUB).to(createPubSub());
 
     // It's possible to register a graphql context resolver
     this.bind(GraphQLBindings.GRAPHQL_CONTEXT_RESOLVER).to(async context => {
