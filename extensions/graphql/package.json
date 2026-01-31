@@ -52,12 +52,12 @@
     "debug": "^4.4.3",
     "express": "^4.22.1",
     "graphql": "^16.12.0",
-    "graphql-subscriptions": "^2.0.0",
     "graphql-ws": "^5.16.2",
-    "type-graphql": "^2.0.0-beta.2",
+    "type-graphql": "^2.0.0-rc.2",
     "ws": "^8.19.0"
   },
   "devDependencies": {
+    "@graphql-yoga/subscription": "^5.0.5",
     "@loopback/boot": "^8.0.9",
     "@loopback/build": "^12.0.8",
     "@loopback/core": "^7.0.8",

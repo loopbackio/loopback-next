@@ -4,7 +4,6 @@
 // License text available at https://opensource.org/licenses/MIT
 
 export * from 'type-graphql';
-export * from 'type-graphql/dist/interfaces';
 export * from './decorators';
 export * from './graphql.component';
 export * from './graphql.container';

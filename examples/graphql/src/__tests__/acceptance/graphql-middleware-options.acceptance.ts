@@ -3,8 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {createPubSub} from '@graphql-yoga/subscription';
 import {createBindingFromClass} from '@loopback/core';
-import {GraphQLServer} from '@loopback/graphql';
+import {GraphQLBindings, GraphQLServer} from '@loopback/graphql';
 import {supertest} from '@loopback/testlab';
 import {RecipesDataSource} from '../../datasources';
 import {RecipeResolver} from '../../graphql-resolvers/recipe-resolver';
@@ -38,6 +39,7 @@ describe('GraphQL middleware', () => {
     });
     server.resolver(RecipeResolver);
     server.bind('recipes').to([...sampleRecipes]);
+    server.bind(GraphQLBindings.PUB_SUB).to(createPubSub());
     const repoBinding = createBindingFromClass(RecipeRepository);
     server.add(repoBinding);
     server.add(createBindingFromClass(RecipesDataSource));
