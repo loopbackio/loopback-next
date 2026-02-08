@@ -75,6 +75,13 @@ export interface HasManyDefinition extends RelationDefinitionBase {
   keyFrom?: string;
 
   /**
+   * customReferenceKeyTo: The custom reference key of target model
+   * customReferenceKeyFrom: The custom reference key of source model
+   */
+  customReferenceKeyTo?: string;
+  customReferenceKeyFrom?: string;
+
+  /**
    * With current architecture design, polymorphic type cannot be supported without through
    * Consider using Source-hasMany->Through->hasOne->Target(polymorphic) for one-to-many relations
    */
