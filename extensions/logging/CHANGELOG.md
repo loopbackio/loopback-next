@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.13.10](https://github.com/loopbackio/loopback-next/compare/@loopback/logging@0.13.9...@loopback/logging@0.13.10) (2026-02-10)
+
+**Note:** Version bump only for package @loopback/logging
+
+
+
+
+
 ## [0.13.9](https://github.com/loopbackio/loopback-next/compare/@loopback/logging@0.13.8...@loopback/logging@0.13.9) (2026-01-12)
 
 **Note:** Version bump only for package @loopback/logging

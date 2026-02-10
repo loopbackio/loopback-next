@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.12.10](https://github.com/loopbackio/loopback-next/compare/@loopback/context-explorer@0.12.9...@loopback/context-explorer@0.12.10) (2026-02-10)
+
+**Note:** Version bump only for package @loopback/context-explorer
+
+
+
+
+
 ## [0.12.9](https://github.com/loopbackio/loopback-next/compare/@loopback/context-explorer@0.12.8...@loopback/context-explorer@0.12.9) (2026-01-12)
 
 **Note:** Version bump only for package @loopback/context-explorer

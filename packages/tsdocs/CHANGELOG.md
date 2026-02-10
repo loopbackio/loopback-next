@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.0.9](https://github.com/loopbackio/loopback-next/compare/@loopback/tsdocs@7.0.8...@loopback/tsdocs@7.0.9) (2026-02-10)
+
+**Note:** Version bump only for package @loopback/tsdocs
+
+
+
+
+
 ## [7.0.8](https://github.com/loopbackio/loopback-next/compare/@loopback/tsdocs@7.0.7...@loopback/tsdocs@7.0.8) (2026-01-12)
 
 
