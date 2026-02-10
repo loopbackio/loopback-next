@@ -17,7 +17,9 @@
     ".ts"
   ],
   "reporter": [
-    "html"
+    "html",
+    "lcov",
+    "text-summary"
   ],
   "exclude-after-remap": false
 }
