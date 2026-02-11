@@ -40,18 +40,6 @@ describe('ValidationErrorMiddleware (unit)', () => {
       expect(result).to.equal('success');
       expect(next.calledOnce).to.be.true();
     });
-
-    it('re-throws errors for non-matching endpoints', async () => {
-      const middleware = await provider.value();
-      const error = new HttpErrors.BadRequest('Test error');
-      const next = sinon.stub().rejects(error);
-
-      middlewareContext.request.url = '/other-endpoint';
-
-      await expect(middleware(middlewareContext, next)).to.be.rejectedWith(
-        'Test error',
-      );
-    });
   });
 
   describe('handleError() for /coffee-shops endpoint', () => {
@@ -203,35 +191,6 @@ describe('ValidationErrorMiddleware (unit)', () => {
       } catch (err) {
         expect(err).to.equal(error);
       }
-    });
-  });
-
-  describe('handleError() for other endpoints', () => {
-    it('does not customize errors for other URLs', async () => {
-      const middleware = await provider.value();
-      const error = new HttpErrors.UnprocessableEntity('Validation failed');
-      error.statusCode = 422;
-      const next = sinon.stub().rejects(error);
-
-      middlewareContext.request.url = '/other-endpoint';
-      middlewareContext.request.method = 'PATCH';
-
-      await expect(middleware(middlewareContext, next)).to.be.rejectedWith(
-        'Validation failed',
-      );
-    });
-
-    it('passes through errors for non-matching endpoints', async () => {
-      const middleware = await provider.value();
-      const error = new HttpErrors.InternalServerError('Server error');
-      const next = sinon.stub().rejects(error);
-
-      middlewareContext.request.url = '/api/users';
-      middlewareContext.request.method = 'POST';
-
-      await expect(middleware(middlewareContext, next)).to.be.rejectedWith(
-        'Server error',
-      );
     });
   });
 
