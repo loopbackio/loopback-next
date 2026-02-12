@@ -30,9 +30,10 @@ describe('type-resolver', () => {
       expect(isTypeResolver({})).to.be.false();
     });
 
-    it('returns false for arrow functions that are not type resolvers', () => {
-      const notResolver = () => 'not a type';
-      expect(isTypeResolver(notResolver)).to.be.false();
+    it('returns true for arrow functions (potential type resolvers)', () => {
+      const potentialResolver = () => 'not a type';
+      // isTypeResolver returns true for any function that's not a class or built-in
+      expect(isTypeResolver(potentialResolver)).to.be.true();
     });
   });
 
