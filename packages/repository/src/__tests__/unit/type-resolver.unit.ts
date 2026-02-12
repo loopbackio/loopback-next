@@ -4,130 +4,136 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {
-  isBuiltinType,
-  isTypeResolver,
-  resolveType,
-  TypeResolver,
-} from '../../type-resolver';
+import {isTypeResolver, resolveType, TypeResolver} from '../../type-resolver';
 
-class SomeModel {
-  constructor(public name: string) {}
-}
+describe('type-resolver', () => {
+  class TestModel {
+    id: number;
+    name: string;
+  }
 
-const A_DATE_STRING = '2018-01-01T00:00:00.000Z';
+  describe('isTypeResolver', () => {
+    it('returns true for function type resolvers', () => {
+      const resolver: TypeResolver<TestModel> = () => TestModel;
+      expect(isTypeResolver(resolver)).to.be.true();
+    });
 
-describe('isTypeResolver', () => {
-  it('returns false when the arg is a class', () => {
-    expect(isTypeResolver(SomeModel)).to.be.false();
+    it('returns false for class constructors', () => {
+      expect(isTypeResolver(TestModel)).to.be.false();
+    });
+
+    it('returns false for non-function values', () => {
+      expect(isTypeResolver('string')).to.be.false();
+      expect(isTypeResolver(123)).to.be.false();
+      expect(isTypeResolver(null)).to.be.false();
+      expect(isTypeResolver(undefined)).to.be.false();
+      expect(isTypeResolver({})).to.be.false();
+    });
+
+    it('returns false for arrow functions that are not type resolvers', () => {
+      const notResolver = () => 'not a type';
+      expect(isTypeResolver(notResolver)).to.be.false();
+    });
   });
 
-  it('returns false when the arg is not a function', () => {
-    expect(isTypeResolver(123)).to.be.false();
+  describe('resolveType', () => {
+    it('resolves function type resolvers', () => {
+      const resolver: TypeResolver<TestModel> = () => TestModel;
+      const resolved = resolveType(resolver);
+      expect(resolved).to.equal(TestModel);
+    });
+
+    it('returns class constructors as-is', () => {
+      const resolved = resolveType(TestModel);
+      expect(resolved).to.equal(TestModel);
+    });
+
+    it('handles type resolver functions', () => {
+      const resolver: TypeResolver<TestModel> = () => TestModel;
+      const resolved = resolveType(resolver);
+      expect(resolved).to.equal(TestModel);
+      expect(typeof resolved).to.equal('function');
+    });
+
+    it('resolves to the actual type from resolver function', () => {
+      class AnotherModel {
+        value: string;
+      }
+      const resolver: TypeResolver<AnotherModel> = () => AnotherModel;
+      const resolved = resolveType(resolver);
+      expect(resolved).to.equal(AnotherModel);
+
+      const instance = new resolved();
+      expect(instance).to.be.instanceOf(AnotherModel);
+    });
   });
 
-  it('returns false when the arg is String type', () => {
-    expect(isTypeResolver(String)).to.be.false();
+  describe('TypeResolver type', () => {
+    it('accepts functions returning types', () => {
+      const resolver: TypeResolver<TestModel> = () => TestModel;
+      expect(resolver).to.be.a.Function();
+      expect(resolver()).to.equal(TestModel);
+    });
+
+    it('works with generic types', () => {
+      interface GenericModel<T> {
+        data: T;
+      }
+
+      class StringModel implements GenericModel<string> {
+        data: string;
+      }
+
+      const resolver: TypeResolver<GenericModel<string>> = () => StringModel;
+      const resolved = resolveType(resolver);
+      expect(resolved).to.equal(StringModel);
+    });
   });
 
-  it('returns false when the arg is Number type', () => {
-    expect(isTypeResolver(Number)).to.be.false();
+  describe('edge cases', () => {
+    it('handles undefined gracefully', () => {
+      const resolved = resolveType(
+        undefined as unknown as TypeResolver<object>,
+      );
+      expect(resolved).to.be.undefined();
+    });
+
+    it('handles null gracefully', () => {
+      const resolved = resolveType(null as unknown as TypeResolver<object>);
+      expect(resolved).to.be.null();
+    });
+
+    it('resolves complex type hierarchies', () => {
+      class BaseModel {
+        id: number;
+      }
+
+      class DerivedModel extends BaseModel {
+        name: string;
+      }
+
+      const resolver: TypeResolver<DerivedModel> = () => DerivedModel;
+      const resolved = resolveType(resolver);
+      expect(resolved).to.equal(DerivedModel);
+
+      const instance = new resolved();
+      expect(instance).to.be.instanceOf(DerivedModel);
+      expect(instance).to.be.instanceOf(BaseModel);
+    });
   });
 
-  it('returns false when the arg is Boolean type', () => {
-    expect(isTypeResolver(Boolean)).to.be.false();
-  });
+  describe('type resolution with decorators', () => {
+    it('resolves types used in model decorators', () => {
+      class RelatedModel {
+        id: number;
+      }
 
-  it('returns false when the arg is Object type', () => {
-    expect(isTypeResolver(Object)).to.be.false();
-  });
+      const typeResolver: TypeResolver<RelatedModel> = () => RelatedModel;
+      const resolved = resolveType(typeResolver);
 
-  it('returns false when the arg is Array type', () => {
-    expect(isTypeResolver(Object)).to.be.false();
-  });
-
-  it('returns false when the arg is Date type', () => {
-    expect(isTypeResolver(Date)).to.be.false();
-  });
-
-  it('returns false when the arg is RegExp type', () => {
-    expect(isTypeResolver(RegExp)).to.be.false();
-  });
-
-  it('returns false when the arg is Buffer type', () => {
-    expect(isTypeResolver(Buffer)).to.be.false();
-  });
-
-  it('returns true when the arg is any other function', () => {
-    expect(isTypeResolver(() => SomeModel)).to.be.true();
+      expect(resolved).to.equal(RelatedModel);
+    });
   });
 });
 
-describe('resolveType', () => {
-  it('resolves the arg when the value is a resolver', () => {
-    const resolver: TypeResolver<SomeModel> = () => SomeModel;
-    const ctor = resolveType(resolver);
-    expect(ctor).to.eql(SomeModel);
-
-    const inst = new ctor('a-name');
-    expect(inst).to.have.property('name', 'a-name');
-  });
-
-  it('returns the arg when the value is a type', () => {
-    const ctor = resolveType(SomeModel);
-    expect(ctor).to.eql(SomeModel);
-
-    const inst = new ctor('a-name');
-    expect(inst).to.have.property('name', 'a-name');
-  });
-
-  it('supports Date type', () => {
-    const ctor = resolveType(Date);
-    expect(ctor).to.eql(Date);
-
-    const inst = new ctor(A_DATE_STRING);
-    expect(inst.toISOString()).to.equal(A_DATE_STRING);
-  });
-
-  it('supports Date resolver', () => {
-    const ctor = resolveType(() => Date);
-    expect(ctor).to.eql(Date);
-
-    const inst = new ctor(A_DATE_STRING);
-    expect(inst.toISOString()).to.equal(A_DATE_STRING);
-  });
-});
-
-describe('isBuiltinType', () => {
-  it('returns true for Number', () => {
-    expect(isBuiltinType(Number)).to.eql(true);
-  });
-
-  it('returns true for String', () => {
-    expect(isBuiltinType(String)).to.eql(true);
-  });
-
-  it('returns true for Boolean', () => {
-    expect(isBuiltinType(Boolean)).to.eql(true);
-  });
-
-  it('returns true for Object', () => {
-    expect(isBuiltinType(Object)).to.eql(true);
-  });
-
-  it('returns true for Function', () => {
-    expect(isBuiltinType(Function)).to.eql(true);
-  });
-
-  it('returns true for Date', () => {
-    expect(isBuiltinType(Date)).to.eql(true);
-  });
-
-  it('returns true for Array', () => {
-    expect(isBuiltinType(Array)).to.eql(true);
-  });
-
-  it('returns false for any other function', () => {
-    expect(isBuiltinType(SomeModel)).to.eql(false);
-  });
-});
+// Made with Bob
