@@ -8,9 +8,9 @@ import debugFactory from 'debug';
 import {once} from 'node:events';
 import {
   createServer,
+  Server as HttpServer,
   IncomingMessage,
   OutgoingHttpHeaders,
-  Server as HttpServer,
   ServerResponse,
 } from 'node:http';
 import {AddressInfo} from 'node:net';
@@ -89,6 +89,11 @@ export class HttpCachingProxy {
       // http status code. Please note that Axios creates a new error in such
       // condition and the original low-level error is lost
       validateStatus: () => true,
+      // Disable SSL certificate validation for HTTPS requests
+      // This is acceptable for a testing/caching proxy
+      httpsAgent: new (require('node:https').Agent)({
+        rejectUnauthorized: false,
+      }),
     });
   }
 
