@@ -14,9 +14,9 @@ import {once} from 'node:events';
 import http from 'node:http';
 import {AddressInfo} from 'node:net';
 import path from 'node:path';
+import {URL} from 'node:url';
 import {rimraf} from 'rimraf';
 import tunnel, {ProxyOptions as TunnelProxyOptions} from 'tunnel';
-import {URL} from 'node:url';
 import {HttpCachingProxy, ProxyOptions} from '../../http-caching-proxy';
 
 const CACHE_DIR = path.join(__dirname, '.cache');
@@ -86,11 +86,11 @@ describe('HttpCachingProxy', () => {
 
     await givenRunningProxy();
     const result = await makeRequest({
-      url: 'https://example.com',
+      url: 'https://www.google.com',
     });
 
     expect(result.statusCode).to.equal(200);
-    expect(result.body).to.containEql('example');
+    expect(result.body).to.match(/google/i);
   });
 
   it('rejects CONNECT requests (HTTPS tunneling)', async () => {
