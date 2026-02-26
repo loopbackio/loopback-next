@@ -86,13 +86,13 @@ describe('HttpCachingProxy', () => {
 
     await givenRunningProxy();
     const result = await makeRequest({
-      // url: 'https://www.google.com',
-      url: 'https://example.com',
+      url: 'https://www.google.com',
+      // url: 'https://example.com',
     });
 
     expect(result.statusCode).to.equal(200);
-    // expect(result.body).to.match(/google/i);
     expect(result.body).to.match(/google/i);
+    // expect(result.body).to.containEql('example');
   });
 
   it('rejects CONNECT requests (HTTPS tunneling)', async () => {
