@@ -13,6 +13,7 @@ import {
   Server as HttpServer,
   ServerResponse,
 } from 'node:http';
+import {Agent as HttpsAgent} from 'node:https';
 import {AddressInfo} from 'node:net';
 
 const cacache = require('cacache');
@@ -89,6 +90,9 @@ export class HttpCachingProxy {
       // http status code. Please note that Axios creates a new error in such
       // condition and the original low-level error is lost
       validateStatus: () => true,
+      // Skip SSL certificate verification for outbound HTTPS requests.
+      // This proxy is a test utility — strict SSL adds no value here.
+      httpsAgent: new HttpsAgent({rejectUnauthorized: false}),
     });
   }
 
