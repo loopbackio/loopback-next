@@ -6,7 +6,7 @@
   "copyright.owner": "IBM Corp. and LoopBack contributors",
   "repository": "github:loopbackio/loopback-next",
   "scripts": {
-    "prepare": "husky install",
+    "prepare": "husky",
     "postinstall": "npm run update-ts-project-refs",
     "update-ts-project-refs": "node bin/update-ts-project-refs.js",
     "prerelease": "npm run build:full && cross-env CI=1 npm run mocha && npm run lint",
