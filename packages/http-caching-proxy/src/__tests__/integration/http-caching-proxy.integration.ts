@@ -14,9 +14,9 @@ import {once} from 'node:events';
 import http from 'node:http';
 import {AddressInfo} from 'node:net';
 import path from 'node:path';
+import {URL} from 'node:url';
 import {rimraf} from 'rimraf';
 import tunnel, {ProxyOptions as TunnelProxyOptions} from 'tunnel';
-import {URL} from 'node:url';
 import {HttpCachingProxy, ProxyOptions} from '../../http-caching-proxy';
 
 const CACHE_DIR = path.join(__dirname, '.cache');
@@ -84,7 +84,9 @@ describe('HttpCachingProxy', () => {
     // Increase the timeout to accommodate slow network connections
     this.timeout(30000);
 
-    await givenRunningProxy();
+    // Disable SSL validation for this test to avoid certificate issues
+    // with example.com in different Node.js versions and environments
+    await givenRunningProxy({rejectUnauthorized: false});
     const result = await makeRequest({
       url: 'https://example.com',
     });
