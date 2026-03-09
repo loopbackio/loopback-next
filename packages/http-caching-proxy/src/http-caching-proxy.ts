@@ -8,9 +8,9 @@ import debugFactory from 'debug';
 import {once} from 'node:events';
 import {
   createServer,
+  Server as HttpServer,
   IncomingMessage,
   OutgoingHttpHeaders,
-  Server as HttpServer,
   ServerResponse,
 } from 'node:http';
 import {AddressInfo} from 'node:net';
@@ -48,6 +48,14 @@ export interface ProxyOptions {
    * Timeout to connect to the target service
    */
   timeout?: number;
+
+  /**
+   * Whether to reject unauthorized SSL certificates.
+   * Set to false to allow self-signed certificates in test environments.
+   *
+   * Default: true (strict SSL validation)
+   */
+  rejectUnauthorized?: boolean;
 }
 
 const DEFAULT_OPTIONS = {
@@ -55,6 +63,7 @@ const DEFAULT_OPTIONS = {
   ttl: 24 * 60 * 60 * 1000,
   logError: true,
   timeout: 0,
+  rejectUnauthorized: true,
 };
 
 interface CachedMetadata {
@@ -89,6 +98,10 @@ export class HttpCachingProxy {
       // http status code. Please note that Axios creates a new error in such
       // condition and the original low-level error is lost
       validateStatus: () => true,
+      // Configure SSL certificate validation based on options
+      httpsAgent: new (require('node:https').Agent)({
+        rejectUnauthorized: this._options.rejectUnauthorized,
+      }),
     });
   }
 
