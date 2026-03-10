@@ -65,7 +65,7 @@
     "@types/passport": "^1.0.17",
     "@types/passport-http": "^0.3.11",
     "@types/passport-oauth2": "^1.8.0",
-    "@types/qs": "^6.14.0",
+    "@types/qs": "^6.15.0",
     "axios": "^1.13.5",
     "body-parser": "^2.2.2",
     "express": "^4.22.1",
@@ -74,7 +74,7 @@
     "lodash": "^4.17.23",
     "passport-http": "^0.3.0",
     "passport-oauth2": "^1.8.0",
-    "qs": "^6.14.2",
+    "qs": "^6.15.0",
     "supertest": "^7.2.2"
   }
 }
