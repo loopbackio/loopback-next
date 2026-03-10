@@ -62,7 +62,7 @@
     "eslint-plugin-eslint-plugin": "^5.5.1",
     "eslint-plugin-mocha": "^10.5.0",
     "eslint-plugin-prettier": "^5.5.5",
-    "fs-extra": "^11.3.3",
+    "fs-extra": "^11.3.4",
     "husky": "^9.1.7",
     "lerna": "^9.0.4",
     "lint-staged": "^16.2.7",
