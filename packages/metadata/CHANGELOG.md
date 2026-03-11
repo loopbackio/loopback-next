@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.0.10](https://github.com/loopbackio/loopback-next/compare/@loopback/metadata@8.0.9...@loopback/metadata@8.0.10) (2026-03-11)
+
+**Note:** Version bump only for package @loopback/metadata
+
+
+
+
+
 ## [8.0.9](https://github.com/loopbackio/loopback-next/compare/@loopback/metadata@8.0.8...@loopback/metadata@8.0.9) (2026-02-10)
 
 **Note:** Version bump only for package @loopback/metadata

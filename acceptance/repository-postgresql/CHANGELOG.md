@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.0.11](https://github.com/loopbackio/loopback-next/compare/@loopback/test-repository-postgresql@7.0.10...@loopback/test-repository-postgresql@7.0.11) (2026-03-11)
+
+**Note:** Version bump only for package @loopback/test-repository-postgresql
+
+
+
+
+
 ## [7.0.10](https://github.com/loopbackio/loopback-next/compare/@loopback/test-repository-postgresql@7.0.9...@loopback/test-repository-postgresql@7.0.10) (2026-02-10)
 
 **Note:** Version bump only for package @loopback/test-repository-postgresql
