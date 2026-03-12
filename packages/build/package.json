@@ -45,6 +45,6 @@
     "prettier": "^3.8.1",
     "rimraf": "^5.0.10",
     "source-map-support": "^0.5.21",
-    "typescript": "~5.2.2"
+    "typescript": "~5.9.3"
   }
 }
