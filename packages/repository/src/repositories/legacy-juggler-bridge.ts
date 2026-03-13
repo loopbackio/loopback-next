@@ -46,6 +46,7 @@ import {
   createHasOneRepositoryFactory,
   createReferencesManyAccessor,
   includeRelatedModels,
+  validateWhere,
 } from '../relations';
 import {IsolationLevel, Transaction} from '../transaction';
 import {isTypeResolver, resolveType} from '../type-resolver';
@@ -517,6 +518,11 @@ export class DefaultCrudRepository<
     filter?: Filter<T>,
     options?: Options,
   ): Promise<(T & Relations)[]> {
+    const where = filter?.where;
+    if (where) {
+      const validWhere = await this.validateWhere(where);
+      if (validWhere) throw validWhere;
+    }
     const include = filter?.include;
     const models = await ensurePromise(
       this.modelClass.find(this.normalizeFilter(filter), options),
@@ -774,6 +780,17 @@ export class DefaultCrudRepository<
     return includeRelatedModels<T, Relations>(this, entities, include, options);
   }
 
+  /**
+   * Returns model instances that include related models of this repository
+   * that have a registered resolver.
+   *
+   * @param entities - An array of entity instances or data
+   * @param include -Inclusion filter
+   * @param options - Options for the operations
+   */
+  protected async validateWhere(where: Where): Promise<Error | undefined> {
+    return validateWhere<T, Relations>(this, where);
+  }
   /**
    * This function works as a persist hook.
    * It converts an entity from the CRUD operations' caller
