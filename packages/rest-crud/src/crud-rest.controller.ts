@@ -14,23 +14,23 @@ import {
   Where,
 } from '@loopback/repository';
 import {
+  JsonSchemaOptions,
+  MediaTypeObject,
+  ParameterObject,
+  ResponsesObject,
+  SchemaObject,
   api,
   del,
   get,
   getFilterSchemaFor,
   getJsonSchema,
   getModelSchemaRef,
-  JsonSchemaOptions,
   jsonToSchemaObject,
-  MediaTypeObject,
   param,
-  ParameterObject,
   patch,
   post,
   put,
   requestBody,
-  ResponsesObject,
-  SchemaObject,
 } from '@loopback/rest';
 import assert from 'assert';
 
@@ -227,7 +227,11 @@ export function defineCrudRestController<
       }),
     })
     async updateAll(
-      @body(modelCtor, {partial: true}) data: Partial<T>,
+      @body(modelCtor, {
+        partial: true,
+        exclude: modelCtor.getExcludeProperties() as (keyof T)[],
+      })
+      data: Partial<T>,
       @param.where(modelCtor)
       where?: Where<T>,
     ): Promise<Count> {
@@ -246,7 +250,11 @@ export function defineCrudRestController<
     })
     async updateById(
       @param(idPathParam) id: IdType,
-      @body(modelCtor, {partial: true}) data: Partial<T>,
+      @body(modelCtor, {
+        partial: true,
+        exclude: modelCtor.getExcludeProperties() as (keyof T)[],
+      })
+      data: Partial<T>,
     ): Promise<void> {
       await this.repository.updateById(
         id,
@@ -263,7 +271,10 @@ export function defineCrudRestController<
     })
     async replaceById(
       @param(idPathParam) id: IdType,
-      @body(modelCtor) data: T,
+      @body(modelCtor, {
+        exclude: modelCtor.getExcludeProperties() as (keyof T)[],
+      })
+      data: T,
     ): Promise<void> {
       await this.repository.replaceById(id, data);
     }
