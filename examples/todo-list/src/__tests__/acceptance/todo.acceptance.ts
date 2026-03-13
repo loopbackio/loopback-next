@@ -150,6 +150,35 @@ describe('TodoListApplication', () => {
       .expect(200, [toJSON(todoInProgress)]);
   });
 
+  it('queries todos with a filter and group by', async () => {
+    const todoInProgress = await givenTodoInstance(todoRepo, {
+      title: 'go to sleep',
+      isComplete: false,
+    });
+    await client
+      .get('/todos')
+      .query({
+        filter: {
+          count: 'title',
+          sum: 'id',
+          avg: 'id',
+          min: 'id',
+          max: 'id',
+          groupBy: {title: true},
+        },
+      })
+      .expect(200, [
+        toJSON({
+          ...todoInProgress,
+          count: 1,
+          sum: 6,
+          avg: 6,
+          min: 6,
+          max: 6,
+        }),
+      ]);
+  });
+
   it('updates todos using a filter', async () => {
     await givenTodoInstance(todoRepo, {
       title: 'hello',
