@@ -140,6 +140,21 @@ export function jsonToSchemaObject(
   delete result[converted];
   // Check if the description contains information about TypeScript type
   const matched = result.description?.match(/^\(tsType: (.+), schemaOptions:/);
+  const extensionProperties = [
+    'defaultFn',
+    'index',
+    'length',
+    'precision',
+    'scale',
+    'generated',
+    'hidden',
+  ];
+  Object.keys(result).forEach(key => {
+    if (extensionProperties.includes(key)) {
+      result[`x-${key}`] = result[key];
+      delete result[key];
+    }
+  });
   if (matched) {
     result['x-typescript-type'] = matched[1];
   }
