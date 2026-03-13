@@ -53,7 +53,11 @@ describe('defineModelClass', () => {
 
   it('creates an Entity class', () => {
     const definition = new ModelDefinition('Product')
-      .addProperty('id', {type: 'number', id: true})
+      .addProperty('id', {
+        type: 'number',
+        id: true,
+        generated: true,
+      })
       .addProperty('name', {
         type: 'string',
       });
@@ -70,6 +74,7 @@ describe('defineModelClass', () => {
 
     // Verify that typedefs allows us to access static Entity properties
     expect(Product.getIdProperties()).to.deepEqual(['id']);
+    expect(Product.getExcludeProperties()).to.deepEqual(['id']);
 
     // Verify that typedefs allows us to create new model instances
     const instance = new Product({id: 1, name: 'a name'});
@@ -83,7 +88,11 @@ describe('defineModelClass', () => {
 
   it('creates a free-form Entity', () => {
     const definition = new ModelDefinition('FreeForm')
-      .addProperty('id', {type: 'number', id: true})
+      .addProperty('id', {
+        type: 'number',
+        id: true,
+        generated: true,
+      })
       .addSetting('strict', false);
 
     const FreeForm = defineModelClass<typeof Entity, AnyObject>(
@@ -98,6 +107,7 @@ describe('defineModelClass', () => {
 
     // Verify that typedefs allows us to access static Entity properties
     expect(FreeForm.getIdProperties()).to.deepEqual(['id']);
+    expect(FreeForm.getExcludeProperties()).to.deepEqual(['id']);
 
     // Verify that typedefs allows us to create new model instances
     const instance = new FreeForm({id: 1, name: 'a name'});
