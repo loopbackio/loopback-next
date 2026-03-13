@@ -527,4 +527,277 @@ describe('Utils', () => {
       );
     });
   });
+
+  describe('validateNotExisting', () => {
+    it('returns true if directory does not exist', () => {
+      expect(utils.validateNotExisting('/non/existent/path')).to.be.True();
+    });
+
+    it('returns error message if directory exists', () => {
+      expect(utils.validateNotExisting(__dirname)).to.match(
+        /Directory .* already exists/,
+      );
+    });
+  });
+
+  describe('checkPropertyName', () => {
+    it('validates valid property names', () => {
+      expect(utils.checkPropertyName('validName')).to.be.True();
+      expect(utils.checkPropertyName('name123')).to.be.True();
+      expect(utils.checkPropertyName('_privateName')).to.be.True();
+    });
+
+    it('rejects reserved keywords', () => {
+      expect(utils.checkPropertyName('constructor')).to.match(
+        /constructor is a reserved keyword/,
+      );
+    });
+
+    it('rejects empty names', () => {
+      expect(utils.checkPropertyName('')).to.match(/Name is required/);
+    });
+
+    it('rejects names with special characters', () => {
+      expect(utils.checkPropertyName('name@test')).to.match(
+        /Name cannot contain special characters/,
+      );
+    });
+  });
+
+  describe('validateRequiredName', () => {
+    it('validates valid names', () => {
+      expect(utils.validateRequiredName('validName')).to.be.True();
+      expect(utils.validateRequiredName('name-with-dash')).to.be.True();
+    });
+
+    it('rejects empty names', () => {
+      expect(utils.validateRequiredName('')).to.match(/Name is required/);
+      expect(utils.validateRequiredName(null)).to.match(/Name is required/);
+    });
+
+    it('rejects names with special characters', () => {
+      expect(utils.validateRequiredName('name@test')).to.match(
+        /Name cannot contain special characters/,
+      );
+      expect(utils.validateRequiredName('name/test')).to.match(
+        /Name cannot contain special characters/,
+      );
+      expect(utils.validateRequiredName('name test')).to.match(
+        /Name cannot contain special characters/,
+      );
+    });
+  });
+
+  describe('getModelFileName', () => {
+    it('returns correct model file name', () => {
+      expect(utils.getModelFileName('MyModel')).to.equal('my-model.model.ts');
+      expect(utils.getModelFileName('User')).to.equal('user.model.ts');
+      expect(utils.getModelFileName('ProductReview')).to.equal(
+        'product-review.model.ts',
+      );
+    });
+  });
+
+  describe('getRepositoryFileName', () => {
+    it('returns correct repository file name', () => {
+      expect(utils.getRepositoryFileName('MyRepository')).to.equal(
+        'my-repository.repository.ts',
+      );
+      expect(utils.getRepositoryFileName('UserRepository')).to.equal(
+        'user-repository.repository.ts',
+      );
+    });
+  });
+
+  describe('getRestConfigFileName', () => {
+    it('returns correct rest config file name', () => {
+      expect(utils.getRestConfigFileName('MyModel')).to.equal(
+        'my-model.rest-config.ts',
+      );
+      expect(utils.getRestConfigFileName('Product')).to.equal(
+        'product.rest-config.ts',
+      );
+    });
+  });
+
+  describe('getObserverFileName', () => {
+    it('returns correct observer file name', () => {
+      expect(utils.getObserverFileName('MyObserver')).to.equal(
+        'my-observer.observer.ts',
+      );
+      expect(utils.getObserverFileName('LogObserver')).to.equal(
+        'log-observer.observer.ts',
+      );
+    });
+  });
+
+  describe('getInterceptorFileName', () => {
+    it('returns correct interceptor file name', () => {
+      expect(utils.getInterceptorFileName('MyInterceptor')).to.equal(
+        'my-interceptor.interceptor.ts',
+      );
+      expect(utils.getInterceptorFileName('AuthInterceptor')).to.equal(
+        'auth-interceptor.interceptor.ts',
+      );
+    });
+  });
+
+  describe('validate npm package name', () => {
+    it('validates valid package names', () => {
+      expect(utils.validate('my-package')).to.be.True();
+      expect(utils.validate('my-package-name')).to.be.True();
+      expect(utils.validate('@scope/package')).to.be.True();
+    });
+
+    it('rejects invalid package names', () => {
+      expect(utils.validate('My Package')).to.match(/Invalid npm package name/);
+      expect(utils.validate('package_name')).to.match(
+        /Invalid npm package name/,
+      );
+    });
+  });
+
+  describe('wrapLine', () => {
+    it('wraps long lines at specified length', () => {
+      const line = 'This is a very long line that should be wrapped';
+      const wrapped = utils.wrapLine(line, 20);
+      const lines = wrapped.split('\n');
+      expect(lines.length).to.be.greaterThan(1);
+      lines.forEach(l => {
+        expect(l.length).to.be.lessThanOrEqual(20);
+      });
+    });
+
+    it('does not wrap short lines', () => {
+      const line = 'Short line';
+      const wrapped = utils.wrapLine(line, 80);
+      expect(wrapped).to.equal(line);
+    });
+
+    it('handles empty lines', () => {
+      expect(utils.wrapLine('', 80)).to.equal('');
+    });
+  });
+
+  describe('wrapText', () => {
+    it('wraps multiple lines', () => {
+      const text =
+        'Line one\nLine two that is very long and should be wrapped\nLine three';
+      const wrapped = utils.wrapText(text, 20);
+      expect(wrapped).to.be.a.String();
+      expect(wrapped.split('\n').length).to.be.greaterThan(3);
+    });
+
+    it('preserves line breaks', () => {
+      const text = 'Line one\n\nLine three';
+      const wrapped = utils.wrapText(text, 80);
+      expect(wrapped.split('\n').length).to.equal(3);
+    });
+  });
+
+  describe('isYarnAvailable', () => {
+    it('returns a boolean', () => {
+      const result = utils.isYarnAvailable();
+      expect(result).to.be.a.Boolean();
+    });
+
+    it('caches the result', () => {
+      const result1 = utils.isYarnAvailable();
+      const result2 = utils.isYarnAvailable();
+      expect(result1).to.equal(result2);
+    });
+  });
+
+  describe('stringifyObject', () => {
+    it('stringifies objects with default options', () => {
+      const obj = {name: 'test', value: 123};
+      const result = utils.stringifyObject(obj);
+      expect(result).to.be.a.String();
+      expect(result).to.match(/name: 'test'/);
+      expect(result).to.match(/value: 123/);
+    });
+
+    it('uses single quotes by default', () => {
+      const obj = {name: 'test'};
+      const result = utils.stringifyObject(obj);
+      expect(result).to.match(/'/);
+    });
+
+    it('accepts custom options', () => {
+      const obj = {name: 'test'};
+      const result = utils.stringifyObject(obj, {singleQuotes: false});
+      expect(result).to.match(/"/);
+    });
+  });
+
+  describe('stringifyModelSettings', () => {
+    it('returns empty string for empty settings', () => {
+      expect(utils.stringifyModelSettings({})).to.equal('');
+      expect(utils.stringifyModelSettings(null)).to.equal('');
+      expect(utils.stringifyModelSettings(undefined)).to.equal('');
+    });
+
+    it('stringifies model settings', () => {
+      const settings = {strict: true, idInjection: false};
+      const result = utils.stringifyModelSettings(settings);
+      expect(result).to.be.a.String();
+      expect(result).to.match(/settings:/);
+      expect(result).to.match(/strict: true/);
+    });
+  });
+
+  describe('pluralize', () => {
+    it('pluralizes words correctly', () => {
+      expect(utils.pluralize('model')).to.equal('models');
+      expect(utils.pluralize('repository')).to.equal('repositories');
+      expect(utils.pluralize('person')).to.equal('people');
+    });
+
+    it('handles already plural words', () => {
+      expect(utils.pluralize('models')).to.equal('models');
+    });
+  });
+
+  describe('camelCase', () => {
+    it('converts to camelCase', () => {
+      expect(utils.camelCase('my-name')).to.equal('myName');
+      expect(utils.camelCase('my_name')).to.equal('myName');
+      expect(utils.camelCase('MyName')).to.equal('myName');
+    });
+  });
+
+  describe('pascalCase', () => {
+    it('converts to PascalCase', () => {
+      expect(utils.pascalCase('my-name')).to.equal('MyName');
+      expect(utils.pascalCase('my_name')).to.equal('MyName');
+      expect(utils.pascalCase('myName')).to.equal('MyName');
+    });
+  });
+
+  describe('lowerCase', () => {
+    it('converts to lower case with spaces', () => {
+      expect(utils.lowerCase('MyName')).to.equal('my name');
+      expect(utils.lowerCase('my-name')).to.equal('my name');
+    });
+  });
+
+  describe('urlSlug', () => {
+    it('converts to URL slug', () => {
+      expect(utils.urlSlug('My Name')).to.equal('my-name');
+      expect(utils.urlSlug('Product Review')).to.equal('product-review');
+    });
+  });
+
+  describe('directory constants', () => {
+    it('exports correct directory names', () => {
+      expect(utils.repositoriesDir).to.equal('repositories');
+      expect(utils.datasourcesDir).to.equal('datasources');
+      expect(utils.servicesDir).to.equal('services');
+      expect(utils.modelsDir).to.equal('models');
+      expect(utils.observersDir).to.equal('observers');
+      expect(utils.interceptorsDir).to.equal('interceptors');
+      expect(utils.modelEndpointsDir).to.equal('model-endpoints');
+      expect(utils.sourceRootDir).to.equal('src');
+    });
+  });
 });
