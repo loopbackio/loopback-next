@@ -69,7 +69,7 @@
     "@types/lodash": "^4.17.24",
     "@types/morgan": "^1.9.10",
     "@types/node": "^16.18.126",
-    "eslint": "^8.57.1",
+    "eslint": "^10.0.3",
     "lodash": "^4.17.23",
     "typescript": "~5.2.2"
   }
