@@ -95,7 +95,7 @@
     "@types/lodash": "^4.17.24",
     "@types/node": "^16.18.126",
     "axios": "^1.13.6",
-    "eslint": "^8.57.1",
+    "eslint": "^10.0.3",
     "lodash": "^4.17.23",
     "typescript": "~5.2.2"
   }

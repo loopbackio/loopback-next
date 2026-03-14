@@ -64,7 +64,7 @@
     "@loopback/testlab": "^8.0.10",
     "@types/multer": "^2.1.0",
     "@types/node": "^16.18.126",
-    "eslint": "^8.57.1",
+    "eslint": "^10.0.3",
     "graphql-ws": "^5.16.2",
     "rimraf": "^5.0.10",
     "source-map-support": "^0.5.21",
