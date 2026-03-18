@@ -570,6 +570,7 @@ export function modelToJsonSchema<T extends object>(
       // when generating the relation or property schemas
       const targetOptions = {...options};
       delete targetOptions.title;
+      delete targetOptions.includeRelations;
 
       const targetSchema = getJsonSchema(targetType, targetOptions);
       const targetRef = {$ref: `#/definitions/${targetSchema.title}`};

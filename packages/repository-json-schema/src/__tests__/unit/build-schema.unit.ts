@@ -325,30 +325,27 @@ describe('build-schema', () => {
       expect(schema.properties).to.containEql({
         children: {
           type: 'array',
-          // The reference here should be `ChildWithRelations`,
-          // instead of `ParentWithItsChildren`
-          items: {$ref: '#/definitions/ChildWithRelations'},
+          // The reference here should be `Child` (not `ParentWithItsChildren`)
+          // because includeRelations is not cascaded to relation targets.
+          items: {$ref: '#/definitions/Child'},
         },
         benchmarkId: {type: 'string'},
         color: {type: 'string'},
       });
-      // The recursive calls should NOT inherit
-      // `title` from the previous call's `options`.
-      // So the `title` here is `ChildWithRelations`
-      // instead of `ParentWithItsChildren`.
+      // The recursive calls should NOT inherit `title` from the previous
+      // call's `options`, and `includeRelations` is not propagated to
+      // relation targets. So the definition is plain `Child`.
       expect(schema.definitions).to.containEql({
-        ChildWithRelations: {
-          title: 'ChildWithRelations',
+        Child: {
+          title: 'Child',
           type: 'object',
-          description:
-            '(tsType: ChildWithRelations, schemaOptions: { includeRelations: true })',
           properties: {name: {type: 'string'}},
           additionalProperties: false,
         },
       });
     });
 
-    it('includeRelations is not propagated to properties decorated with @property()', () => {
+    it('includeRelations is not propagated to nested properties or relation targets', () => {
       @model()
       class FooModel extends Entity {
         @property({
@@ -379,14 +376,14 @@ describe('build-schema', () => {
         name: {
           type: 'string',
         },
-        // Decorated with @property() Model should NOT be 'WithRelations'
+        // Decorated with @property() — no includeRelations propagation
         foo: {
           $ref: '#/definitions/FooModel',
         },
-        // Decorated with @hasMany() Model should be 'WithRelations'
+        // Decorated with @hasMany() — also no includeRelations propagation
         relatedFoo: {
           type: 'array',
-          items: {$ref: '#/definitions/FooModelWithRelations'},
+          items: {$ref: '#/definitions/FooModel'},
         },
       });
     });

@@ -1121,19 +1121,12 @@ describe('build-schema', () => {
 
       const expectedSchema: JsonSchema = {
         definitions: {
-          ProductWithRelations: {
-            title: 'ProductWithRelations',
+          Product: {
+            title: 'Product',
             type: 'object',
-            description:
-              `(tsType: ProductWithRelations, ` +
-              `schemaOptions: { includeRelations: true })`,
             properties: {
               id: {type: 'number'},
               categoryId: {type: 'number'},
-              category: {
-                $ref: '#/definitions/CategoryWithRelations',
-              },
-              foreignKey: 'categoryId' as JsonSchema,
             },
             additionalProperties: false,
           },
@@ -1143,7 +1136,7 @@ describe('build-schema', () => {
           products: {
             type: 'array',
             items: {
-              $ref: '#/definitions/ProductWithRelations',
+              $ref: '#/definitions/Product',
             },
           },
         },
@@ -1175,19 +1168,12 @@ describe('build-schema', () => {
       }
       const expectedSchema: JsonSchema = {
         definitions: {
-          ProductWithRelations: {
-            title: 'ProductWithRelations',
+          Product: {
+            title: 'Product',
             type: 'object',
-            description:
-              `(tsType: ProductWithRelations, ` +
-              `schemaOptions: { includeRelations: true })`,
             properties: {
               id: {type: 'number'},
               categoryId: {type: 'number'},
-              category: {
-                $ref: '#/definitions/CategoryWithoutPropWithRelations',
-              },
-              foreignKey: 'categoryId' as JsonSchema,
             },
             additionalProperties: false,
           },
@@ -1195,7 +1181,7 @@ describe('build-schema', () => {
         properties: {
           products: {
             type: 'array',
-            items: {$ref: '#/definitions/ProductWithRelations'},
+            items: {$ref: '#/definitions/Product'},
           },
         },
         additionalProperties: false,
@@ -1211,6 +1197,52 @@ describe('build-schema', () => {
         includeRelations: true,
       });
       expect(jsonSchemaWithoutProp).to.deepEqual(expectedSchema);
+    });
+
+    it('does not produce circular $ref chains for bidirectional relations', () => {
+      @model()
+      class Order extends Entity {
+        @property({id: true})
+        id: number;
+
+        @belongsTo(() => Customer)
+        customerId: number;
+      }
+
+      @model()
+      class Customer extends Entity {
+        @property({id: true})
+        id: number;
+
+        @hasMany(() => Order)
+        orders?: Order[];
+      }
+
+      const schema = getJsonSchema(Customer, {includeRelations: true});
+
+      // orders items should reference plain Order, not OrderWithRelations
+      expect(schema.properties).to.containDeep({
+        orders: {
+          type: 'array',
+          items: {$ref: '#/definitions/Order'},
+        },
+      });
+
+      // The Order definition should be plain — no nested definitions,
+      // no customer navigational property
+      const orderDef = schema.definitions?.Order as JsonSchema;
+      expect(orderDef).to.be.ok();
+      expect(orderDef.definitions).to.be.undefined();
+      expect(orderDef.properties).to.not.have.property('customer');
+
+      // No WithRelations keys should appear in definitions
+      const defKeys = Object.keys(schema.definitions ?? {});
+      for (const key of defKeys) {
+        expect(key).to.not.match(
+          /WithRelations/,
+          `definitions should not contain WithRelations keys, found: ${key}`,
+        );
+      }
     });
 
     it('gets cached JSON schema with relation links if one exists', () => {
