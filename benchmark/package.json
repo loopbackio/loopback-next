@@ -43,7 +43,7 @@
     "@loopback/openapi-spec-builder": "^8.0.10",
     "@loopback/rest": "^15.0.11",
     "@types/byline": "^4.2.36",
-    "@types/debug": "^4.1.12",
+    "@types/debug": "^4.1.13",
     "@types/request-promise-native": "^1.0.21",
     "autocannon": "^8.0.0",
     "axios": "^1.13.6",

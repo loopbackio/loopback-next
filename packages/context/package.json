@@ -44,7 +44,7 @@
   ],
   "dependencies": {
     "@loopback/metadata": "^8.0.10",
-    "@types/debug": "^4.1.12",
+    "@types/debug": "^4.1.13",
     "debug": "^4.4.3",
     "hyperid": "^3.3.0",
     "p-event": "^4.2.0",
