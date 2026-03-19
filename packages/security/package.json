@@ -49,7 +49,7 @@
     "@loopback/build": "^12.0.10",
     "@loopback/core": "^7.0.10",
     "@loopback/testlab": "^8.0.10",
-    "@types/debug": "^4.1.12",
+    "@types/debug": "^4.1.13",
     "@types/node": "^16.18.126"
   }
 }

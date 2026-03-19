@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "@loopback/filter": "^6.0.10",
-    "@types/debug": "^4.1.12",
+    "@types/debug": "^4.1.13",
     "debug": "^4.4.3",
     "lodash": "^4.17.23",
     "loopback-datasource-juggler": "^6.0.4",
