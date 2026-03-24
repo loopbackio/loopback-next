@@ -51,7 +51,7 @@
     "cors": "^2.8.6",
     "debug": "^4.4.3",
     "express": "^4.22.1",
-    "graphql": "^16.13.1",
+    "graphql": "^16.13.2",
     "graphql-ws": "^5.16.2",
     "type-graphql": "^2.0.0-rc.2",
     "ws": "^8.20.0"
