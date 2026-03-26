@@ -16,7 +16,8 @@ import {UserRepository} from '../repositories';
  * using the email and password. You can modify it if your app has different credential fields
  */
 export type Credentials = {
-  email: string;
+  email?: string;
+  username?: string;
   password: string;
 };
 
@@ -26,10 +27,21 @@ export class MyUserService implements UserService<User, Credentials> {
   ) {}
 
   async verifyCredentials(credentials: Credentials): Promise<User> {
-    const invalidCredentialsError = 'Invalid email or password.';
-
+    const invalidCredentialsError = 'Invalid username/email or password.';
+    if (!credentials.email && !credentials.username) {
+      throw new HttpErrors.Unauthorized(
+        'please provide either username or email.',
+      );
+    }
+    const whereFilter: {email?: string; username?: string} = {};
+    if (credentials.email) {
+      whereFilter.email = credentials.email;
+    }
+    if (credentials.username) {
+      whereFilter.username = credentials.username;
+    }
     const foundUser = await this.userRepository.findOne({
-      where: {email: credentials.email},
+      where: whereFilter,
     });
     if (!foundUser) {
       throw new HttpErrors.Unauthorized(invalidCredentialsError);
