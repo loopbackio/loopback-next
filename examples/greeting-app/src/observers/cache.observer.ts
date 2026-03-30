@@ -13,7 +13,7 @@ import {CACHING_SERVICE} from '../keys';
  */
 @lifeCycleObserver('caching')
 export class CacheObserver implements LifeCycleObserver {
-  private timer: NodeJS.Timer;
+  private timer: NodeJS.Timeout;
   constructor(
     @inject(CACHING_SERVICE) private cachingService: CachingService,
   ) {}

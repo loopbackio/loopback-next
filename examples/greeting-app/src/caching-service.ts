@@ -21,7 +21,7 @@ export interface CachingServiceOptions {
  */
 @injectable({scope: BindingScope.SINGLETON})
 export class CachingService {
-  private timer: NodeJS.Timer;
+  private timer: NodeJS.Timeout;
   private store: Map<string, Message> = new Map();
 
   constructor(

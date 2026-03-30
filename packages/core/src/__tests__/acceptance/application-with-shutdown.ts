@@ -12,7 +12,7 @@ function main() {
   const gracePeriod = Number.parseFloat(process.argv[2]);
 
   class MyTimer implements LifeCycleObserver {
-    timer: NodeJS.Timer;
+    timer: NodeJS.Timeout;
 
     start() {
       console.log('start');
