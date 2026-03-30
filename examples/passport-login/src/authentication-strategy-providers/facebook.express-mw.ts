@@ -18,6 +18,6 @@ export class FacebookOauth2ExpressMiddleware implements Provider<ExpressRequestH
   }
 
   value() {
-    return passport.authenticate('facebook');
+    return passport.authenticate('facebook', {session: false});
   }
 }

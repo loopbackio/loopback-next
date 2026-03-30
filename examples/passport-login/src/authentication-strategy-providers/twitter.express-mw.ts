@@ -18,6 +18,6 @@ export class TwitterOauthExpressMiddleware implements Provider<ExpressRequestHan
   }
 
   value() {
-    return passport.authenticate('twitter');
+    return passport.authenticate('twitter', {session: false});
   }
 }

@@ -18,6 +18,6 @@ export class GoogleOauth2ExpressMiddleware implements Provider<ExpressRequestHan
   }
 
   value() {
-    return passport.authenticate('google');
+    return passport.authenticate('google', {session: false});
   }
 }
