@@ -94,7 +94,7 @@
     "loopback": "^3.28.0",
     "loopback-datasource-juggler": "^6.0.4",
     "mem-fs": "^2.3.0",
-    "mem-fs-editor": "^9.7.0",
+    "mem-fs-editor": "^12.0.3",
     "mock-stdin": "^1.0.0",
     "rimraf": "^5.0.10",
     "sinon": "^21.0.3",
