@@ -18,6 +18,6 @@ export class CustomOauth2ExpressMiddleware implements Provider<ExpressRequestHan
   }
 
   value() {
-    return passport.authenticate('oauth2');
+    return passport.authenticate('oauth2', {session: false});
   }
 }
