@@ -64,7 +64,7 @@
     "@loopback/tsdocs-monorepo": "^0.6.10",
     "@types/debug": "^4.1.13",
     "@types/fs-extra": "^11.0.4",
-    "@types/node": "^20.0.0",
+    "@types/node": "^20.19.37",
     "@types/npmcli__map-workspaces": "^3.0.4",
     "@types/npmcli__package-json": "^4.0.4"
   }
