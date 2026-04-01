@@ -28,4 +28,8 @@ export namespace AuthorizationTags {
    * A tag for authorizers
    */
   export const AUTHORIZER = 'authorizer';
+  /**
+   * A tag for restricted fields
+   */
+  export const RESTRICTED_FIELDS = 'restricted.fields';
 }
