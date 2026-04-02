@@ -51,7 +51,7 @@
     "@types/lodash": "^4.17.24",
     "cors": "^2.8.6",
     "debug": "^4.4.3",
-    "lodash": "^4.17.23",
+    "lodash": "^4.18.1",
     "socket.io": "^4.8.3"
   },
   "devDependencies": {
