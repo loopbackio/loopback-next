@@ -76,7 +76,7 @@
     "typescript": "~5.2.2",
     "untildify": "^6.0.0",
     "update-notifier": "^7.3.1",
-    "url-slug": "^4.0.1",
+    "url-slug": "^5.0.0",
     "validate-npm-package-name": "^7.0.2",
     "write-file-atomic": "^7.0.1",
     "yeoman-environment": "^3.19.3",
