@@ -72,7 +72,7 @@
     "tabtab": "^3.0.2",
     "terminal-link": "^2.1.1",
     "tildify": "^2.0.0",
-    "ts-morph": "^27.0.2",
+    "ts-morph": "^28.0.0",
     "typescript": "~5.2.2",
     "untildify": "^6.0.0",
     "update-notifier": "^7.3.1",
