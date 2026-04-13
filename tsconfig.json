@@ -131,6 +131,9 @@
       "path": "extensions/sequelize/tsconfig.json"
     },
     {
+      "path": "extensions/mcp/tsconfig.json"
+    },
+    {
       "path": "extensions/socketio/tsconfig.json"
     },
     {

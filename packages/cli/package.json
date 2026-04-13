@@ -195,7 +195,8 @@
       "@loopback/monorepo": "^0.6.0",
       "@loopback/tsdocs": "^7.0.10",
       "@loopback/example-references-many": "^9.0.11",
-      "@loopback/sequelize": "^0.8.7"
+      "@loopback/sequelize": "^0.8.7",
+      "@loopback/mcp": "^0.0.1"
     }
   }
 }

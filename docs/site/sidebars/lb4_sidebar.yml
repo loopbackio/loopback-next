@@ -521,6 +521,10 @@ children:
           url: Pooling.html
           output: 'web, pdf'
 
+        - title: 'Model Context Protocol (MCP)'
+          url: MCP.html
+          output: 'web, pdf'
+
     - title: 'Troubleshooting'
       url: Troubleshooting.html
       output: 'web, pdf'

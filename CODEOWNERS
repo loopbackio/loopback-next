@@ -336,6 +336,14 @@
 /extensions/sequelize @shubhamp-sf @samarpanB
 
 #
+# MCP
+#
+# - Issue label: mcp
+# - Primary owner(s): @akshatdubeysf
+# - Standby owner(s): @samarpanB
+/extensions/mcp @akshatdubeysf @samarpanB
+
+#
 # MessagePack body parser
 #
 # - Issue label: n/a
