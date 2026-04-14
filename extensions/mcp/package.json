@@ -1,0 +1,146 @@
+{
+  "name": "@loopback/mcp",
+  "version": "0.0.1",
+  "private": false,
+  "description": "A loopback extension that exposes API to MCP Tools.",
+  "keywords": [
+    "loopback-extension",
+    "loopback",
+    "loopback4",
+    "mcp",
+    "mcp-tool"
+  ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "lb-tsc",
+    "build:watch": "lb-tsc --watch",
+    "lint": "npm run eslint && npm run prettier:check",
+    "lint:fix": "npm run eslint:fix && npm run prettier:fix",
+    "prettier:cli": "lb-prettier \"**/*.ts\" \"**/*.js\"",
+    "prettier:check": "npm run prettier:cli -- -l",
+    "prettier:fix": "npm run prettier:cli -- --write",
+    "eslint": "lb-eslint --report-unused-disable-directives .",
+    "eslint:fix": "npm run eslint -- --fix",
+    "pretest": "npm run rebuild",
+    "test": "lb-mocha --allow-console-logs \"dist/__tests__\"",
+    "posttest": "npm run lint",
+    "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js && npm run posttest",
+    "clean": "lb-clean dist *.tsbuildinfo .eslintcache",
+    "rebuild": "npm run clean && npm run build",
+    "prepublishOnly": "npm run test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sourcefuse/loopback4-mcp"
+  },
+  "author": "SourceFuse",
+  "license": "MIT",
+  "files": [
+    "README.md",
+    "dist",
+    "src",
+    "!*/__tests__"
+  ],
+  "peerDependencies": {
+    "@loopback/core": "^7.0.3"
+  },
+  "dependencies": {
+    "@loopback/rest": "^15.0.7",
+    "@modelcontextprotocol/sdk": "^1.24.0",
+    "@sourceloop/core": "^20.0.0",
+    "tslib": "^2.6.2",
+    "zod": "^4.2.1"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^17.7.1",
+    "@commitlint/config-conventional": "^17.7.0",
+    "@loopback/boot": "^8.0.11",
+    "@loopback/build": "^12.0.3",
+    "@loopback/core": "^7.0.3",
+    "@loopback/eslint-config": "^16.0.1",
+    "@loopback/repository": "^8.0.10",
+    "@loopback/rest-explorer": "^8.0.11",
+    "@loopback/service-proxy": "^8.0.10",
+    "@loopback/testlab": "^8.0.3",
+    "@semantic-release/changelog": "^6.0.1",
+    "@semantic-release/commit-analyzer": "^9.0.2",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/npm": "^13.1.3",
+    "@semantic-release/release-notes-generator": "^10.0.3",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^16.18.126",
+    "commitizen": "^4.2.4",
+    "cz-conventional-changelog": "^3.3.0",
+    "cz-customizable": "^6.3.0",
+    "cz-customizable-ghooks": "^2.0.0",
+    "eslint": "^8.57.1",
+    "husky": "^7.0.4",
+    "loopback4-authentication": "^13.0.4",
+    "loopback4-authorization": "^8.1.3",
+    "semantic-release": "^25.0.2",
+    "source-map-support": "^0.5.21",
+    "typescript": "~5.2.2"
+  },
+  "overrides": {
+    "jws": "3.2.3",
+    "node-forge": "1.3.2",
+    "qs": "6.14.1"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-customizable"
+    },
+    "cz-customizable": {
+      "config": "./.cz-config.js"
+    }
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
+  "release": {
+    "branches": [
+      "master"
+    ],
+    "plugins": [
+      [
+        "@semantic-release/commit-analyzer",
+        {
+          "preset": "angular",
+          "releaseRules": [
+            {
+              "type": "chore",
+              "scope": "deps",
+              "release": "patch"
+            }
+          ]
+        }
+      ],
+      "@semantic-release/release-notes-generator",
+      [
+        "@semantic-release/npm",
+        {
+          "npmPublish": true,
+          "pkgRoot": ".",
+          "tarballDir": "dist"
+        }
+      ],
+      [
+        "@semantic-release/git",
+        {
+          "assets": [
+            "package.json",
+            "CHANGELOG.md"
+          ],
+          "message": "chore(release): ${nextRelease.version} semantic"
+        }
+      ],
+      "@semantic-release/github"
+    ],
+    "repositoryUrl": "https://github.com/sourcefuse/loopback4-mcp.git"
+  }
+}

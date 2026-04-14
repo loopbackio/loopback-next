@@ -199,6 +199,8 @@ These components add additional capabilities to LoopBack.
   Adds support for TypeORM in LoopBack
 - [@loopback/sequelize](https://github.com/loopbackio/loopback-next/tree/master/extensions/sequelize) -
   Adds support for Sequelize in LoopBack
+- [@loopback/mcp](https://github.com/loopbackio/loopback-next/tree/master/extensions/mcp) -
+  Adds support to expose any controller as an MCP server
 
 ### Community extensions
 
