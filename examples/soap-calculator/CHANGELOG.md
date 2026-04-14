@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.0.12](https://github.com/loopbackio/loopback-next/compare/@loopback/example-soap-calculator@8.0.11...@loopback/example-soap-calculator@8.0.12) (2026-04-14)
+
+**Note:** Version bump only for package @loopback/example-soap-calculator
+
+
+
+
+
 ## [8.0.11](https://github.com/loopbackio/loopback-next/compare/@loopback/example-soap-calculator@8.0.10...@loopback/example-soap-calculator@8.0.11) (2026-03-11)
 
 **Note:** Version bump only for package @loopback/example-soap-calculator

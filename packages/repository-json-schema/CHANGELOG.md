@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [9.0.12](https://github.com/loopbackio/loopback-next/compare/@loopback/repository-json-schema@9.0.11...@loopback/repository-json-schema@9.0.12) (2026-04-14)
+
+
+### Bug Fixes
+
+* **repository-json-schema:** fix circular  chains when using 'includeRelations' ([3ecf708](https://github.com/loopbackio/loopback-next/commit/3ecf70865ebf20bbbd368af61876f1473cce286d))
+
+
+
+
+
 ## [9.0.11](https://github.com/loopbackio/loopback-next/compare/@loopback/repository-json-schema@9.0.10...@loopback/repository-json-schema@9.0.11) (2026-03-11)
 
 **Note:** Version bump only for package @loopback/repository-json-schema
