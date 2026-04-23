@@ -71,7 +71,7 @@
     "mem-fs-editor": "^9.7.0",
     "open-cli": "^8.0.0",
     "prettier": "^3.8.3",
-    "typescript": "~5.2.2"
+    "typescript": "~6.0.3"
   },
   "engineStrict": true,
   "engines": {
