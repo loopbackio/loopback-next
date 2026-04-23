@@ -56,6 +56,13 @@ module.exports = class HasOneRelationGenerator extends BaseRelationGenerator {
       options.sourceModel + '-' + options.destinationModel;
     this.artifactInfo.outFile =
       utils.toFileName(this.artifactInfo.name) + '.controller.ts';
+    this.artifactInfo.exclude = [this.artifactInfo.targetModelPrimaryKey];
+
+    const readOnlyProperties = relationUtils.getReadOnlyProperties(
+      this.artifactInfo.modelDir,
+      options.destinationModel,
+    );
+    this.artifactInfo.exclude.push(...readOnlyProperties);
 
     const dest = this.destinationPath(
       path.join(this.artifactInfo.outDir, this.artifactInfo.outFile),
