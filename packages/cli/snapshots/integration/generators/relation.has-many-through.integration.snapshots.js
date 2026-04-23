@@ -552,6 +552,178 @@ export class Appointment extends Entity {
 `;
 
 
+exports[`lb4 relation HasManyThrough generates model relation with custom reference keys answers {"relationType":"hasManyThrough","sourceModel":"User","destinationModel":"User","throughModel":"Friend1","customReferenceKeys":true,"customSourceModelKey":"email","customTargetModelKey":"email"} has correct default foreign keys 1`] = `
+import {Entity, model, property} from '@loopback/repository';
+
+@model()
+export class Friend1 extends Entity {
+  @property({
+    type: 'number',
+    id: true,
+    default: 0,
+  })
+  id?: number;
+
+  @property({
+    type: 'string',
+  })
+  userId?: string;
+
+  @property({
+    type: 'string',
+  })
+  friendId?: string;
+
+  constructor(data?: Partial<Friend1>) {
+    super(data);
+  }
+}
+
+`;
+
+
+exports[`lb4 relation HasManyThrough generates model relation with custom reference keys answers {"relationType":"hasManyThrough","sourceModel":"User","destinationModel":"User","throughModel":"Friend1","customReferenceKeys":true,"customSourceModelKey":"email","customTargetModelKey":"email"} has correct imports and relation name users 1`] = `
+import {Entity, model, property, hasMany} from '@loopback/repository';
+import {Friend1} from './friend1.model';
+
+@model()
+export class User extends Entity {
+  @property({
+    type: 'number',
+    id: true,
+    default: 0,
+  })
+  id?: number;
+
+  @property({
+    type: 'string',
+  })
+  email?: string;
+
+  @hasMany(() => User, {customReferenceKeyFrom: 'email', customReferenceKeyTo: 'email', through: {model: () => Friend1}})
+  users: User[];
+
+  constructor(data?: Partial<User>) {
+    super(data);
+  }
+}
+
+`;
+
+
+exports[`lb4 relation HasManyThrough generates model relation with custom reference keys answers {"relationType":"hasManyThrough","sourceModel":"User","destinationModel":"User","throughModel":"Friend1","customReferenceKeys":true,"customSourceModelKey":"email","customTargetModelKey":"email"} has correct imports and relation name users 2`] = `
+import {inject, Getter} from '@loopback/core';
+import {DefaultCrudRepository, repository, HasManyThroughRepositoryFactory} from '@loopback/repository';
+import {DbDataSource} from '../datasources';
+import {User, Friend1} from '../models';
+import {Friend1Repository} from './friend1.repository';
+
+export class UserRepository extends DefaultCrudRepository<
+  User,
+  typeof User.prototype.id
+> {
+
+  public readonly users: HasManyThroughRepositoryFactory<User, typeof User.prototype.id,
+          Friend1,
+          typeof User.prototype.id
+        >;
+
+  constructor(@inject('datasources.db') dataSource: DbDataSource, @repository.getter('Friend1Repository') protected friend1RepositoryGetter: Getter<Friend1Repository>, @repository.getter('UserRepository') protected userRepositoryGetter: Getter<UserRepository>,) {
+    super(User, dataSource);
+    this.users = this.createHasManyThroughRepositoryFactoryFor('users', userRepositoryGetter, friend1RepositoryGetter,);
+    this.registerInclusionResolver('users', this.users.inclusionResolver);
+  }
+}
+
+`;
+
+
+exports[`lb4 relation HasManyThrough generates model relation with custom reference keys with --config has correct default foreign keys 1`] = `
+import {Entity, model, property} from '@loopback/repository';
+
+@model()
+export class Friend1 extends Entity {
+  @property({
+    type: 'number',
+    id: true,
+    default: 0,
+  })
+  id?: number;
+
+  @property({
+    type: 'string',
+  })
+  userId?: string;
+
+  @property({
+    type: 'string',
+  })
+  friendId?: string;
+
+  constructor(data?: Partial<Friend1>) {
+    super(data);
+  }
+}
+
+`;
+
+
+exports[`lb4 relation HasManyThrough generates model relation with custom reference keys with --config has correct imports and relation name users 1`] = `
+import {Entity, model, property, hasMany} from '@loopback/repository';
+import {Friend1} from './friend1.model';
+
+@model()
+export class User extends Entity {
+  @property({
+    type: 'number',
+    id: true,
+    default: 0,
+  })
+  id?: number;
+
+  @property({
+    type: 'string',
+  })
+  email?: string;
+
+  @hasMany(() => User, {customReferenceKeyFrom: 'email', customReferenceKeyTo: 'email', through: {model: () => Friend1}})
+  users: User[];
+
+  constructor(data?: Partial<User>) {
+    super(data);
+  }
+}
+
+`;
+
+
+exports[`lb4 relation HasManyThrough generates model relation with custom reference keys with --config has correct imports and relation name users 2`] = `
+import {inject, Getter} from '@loopback/core';
+import {DefaultCrudRepository, repository, HasManyThroughRepositoryFactory} from '@loopback/repository';
+import {DbDataSource} from '../datasources';
+import {User, Friend1} from '../models';
+import {Friend1Repository} from './friend1.repository';
+
+export class UserRepository extends DefaultCrudRepository<
+  User,
+  typeof User.prototype.id
+> {
+
+  public readonly users: HasManyThroughRepositoryFactory<User, typeof User.prototype.id,
+          Friend1,
+          typeof User.prototype.id
+        >;
+
+  constructor(@inject('datasources.db') dataSource: DbDataSource, @repository.getter('Friend1Repository') protected friend1RepositoryGetter: Getter<Friend1Repository>, @repository.getter('UserRepository') protected userRepositoryGetter: Getter<UserRepository>,) {
+    super(User, dataSource);
+    this.users = this.createHasManyThroughRepositoryFactoryFor('users', userRepositoryGetter, friend1RepositoryGetter,);
+    this.registerInclusionResolver('users', this.users.inclusionResolver);
+  }
+}
+
+`;
+
+
 exports[`lb4 relation HasManyThrough generates model relation with custom relation name answers {"relationType":"hasManyThrough","sourceModel":"Doctor","destinationModel":"Patient","throughModel":"Appointment","relationName":"myPatients"} relation name should be myPatients 1`] = `
 import {Entity, model, property, hasMany} from '@loopback/repository';
 import {Patient} from './patient.model';
@@ -697,206 +869,6 @@ export class DoctorRepository extends DefaultCrudRepository<
     super(Doctor, dataSource);
     this.patients = this.createHasManyThroughRepositoryFactoryFor('patients', patientRepositoryGetter, appointmentRepositoryGetter,);
     this.registerInclusionResolver('patients', this.patients.inclusionResolver);
-  }
-}
-
-`;
-
-
-exports[`lb4 relation HasManyThrough generates model relation with same table answers {"relationType":"hasManyThrough","sourceModel":"User","destinationModel":"User","throughModel":"Friend"} controller file has been created with hasManyThrough relation with same table 1`] = `
-import {
-  Count,
-  CountSchema,
-  Filter,
-  repository,
-  Where,
-} from '@loopback/repository';
-  import {
-  del,
-  get,
-  getModelSchemaRef,
-  getWhereSchemaFor,
-  param,
-  patch,
-  post,
-  requestBody,
-} from '@loopback/rest';
-import {
-Friend,
-User,
-} from '../models';
-import {UserRepository} from '../repositories';
-
-export class UserUserController {
-  constructor(
-    @repository(UserRepository) protected userRepository: UserRepository,
-  ) { }
-
-  @get('/users/{id}/users', {
-    responses: {
-      '200': {
-        description: 'Array of User has many User through Friend',
-        content: {
-          'application/json': {
-            schema: {type: 'array', items: getModelSchemaRef(User)},
-          },
-        },
-      },
-    },
-  })
-  async find(
-    @param.path.number('id') id: number,
-    @param.query.object('filter') filter?: Filter<User>,
-  ): Promise<User[]> {
-    return this.userRepository.users(id).find(filter);
-  }
-
-  @post('/users/{id}/users', {
-    responses: {
-      '200': {
-        description: 'create a User model instance',
-        content: {'application/json': {schema: getModelSchemaRef(User)}},
-      },
-    },
-  })
-  async create(
-    @param.path.number('id') id: typeof User.prototype.id,
-    @requestBody({
-      content: {
-        'application/json': {
-          schema: getModelSchemaRef(User, {
-            title: 'NewUserInUser',
-            exclude: ['id'],
-          }),
-        },
-      },
-    }) user: Omit<User, 'id'>,
-  ): Promise<User> {
-    return this.userRepository.users(id).create(user);
-  }
-
-  @patch('/users/{id}/users', {
-    responses: {
-      '200': {
-        description: 'User.User PATCH success count',
-        content: {'application/json': {schema: CountSchema}},
-      },
-    },
-  })
-  async patch(
-    @param.path.number('id') id: number,
-    @requestBody({
-      content: {
-        'application/json': {
-          schema: getModelSchemaRef(User, {partial: true}),
-        },
-      },
-    })
-    user: Partial<User>,
-    @param.query.object('where', getWhereSchemaFor(User)) where?: Where<User>,
-  ): Promise<Count> {
-    return this.userRepository.users(id).patch(user, where);
-  }
-
-  @del('/users/{id}/users', {
-    responses: {
-      '200': {
-        description: 'User.User DELETE success count',
-        content: {'application/json': {schema: CountSchema}},
-      },
-    },
-  })
-  async delete(
-    @param.path.number('id') id: number,
-    @param.query.object('where', getWhereSchemaFor(User)) where?: Where<User>,
-  ): Promise<Count> {
-    return this.userRepository.users(id).delete(where);
-  }
-}
-
-`;
-
-
-exports[`lb4 relation HasManyThrough generates model relation with same table answers {"relationType":"hasManyThrough","sourceModel":"User","destinationModel":"User","throughModel":"Friend"} has correct default foreign keys 1`] = `
-import {Entity, model, property} from '@loopback/repository';
-
-@model()
-export class Friend extends Entity {
-  @property({
-    type: 'number',
-    id: true,
-    default: 0,
-  })
-  id?: number;
-
-  @property({
-    type: 'number',
-  })
-  userId?: number;
-
-  @property({
-    type: 'number',
-  })
-  friendId?: number;
-
-  constructor(data?: Partial<Friend>) {
-    super(data);
-  }
-}
-
-`;
-
-
-exports[`lb4 relation HasManyThrough generates model relation with same table answers {"relationType":"hasManyThrough","sourceModel":"User","destinationModel":"User","throughModel":"Friend"} has correct imports and relation name users 1`] = `
-import {Entity, model, property, hasMany} from '@loopback/repository';
-import {Friend} from './friend.model';
-
-@model()
-export class User extends Entity {
-  @property({
-    type: 'number',
-    id: true,
-    default: 0,
-  })
-  id?: number;
-
-  @property({
-    type: 'string',
-  })
-  email?: string;
-
-  @hasMany(() => User, {through: {model: () => Friend}})
-  users: User[];
-
-  constructor(data?: Partial<User>) {
-    super(data);
-  }
-}
-
-`;
-
-
-exports[`lb4 relation HasManyThrough generates model relation with same table answers {"relationType":"hasManyThrough","sourceModel":"User","destinationModel":"User","throughModel":"Friend"} has correct imports and relation name users 2`] = `
-import {inject, Getter} from '@loopback/core';
-import {DefaultCrudRepository, repository, HasManyThroughRepositoryFactory} from '@loopback/repository';
-import {DbDataSource} from '../datasources';
-import {User, Friend} from '../models';
-import {FriendRepository} from './friend.repository';
-
-export class UserRepository extends DefaultCrudRepository<
-  User,
-  typeof User.prototype.id
-> {
-
-  public readonly users: HasManyThroughRepositoryFactory<User, typeof User.prototype.id,
-          Friend,
-          typeof User.prototype.id
-        >;
-
-  constructor(@inject('datasources.db') dataSource: DbDataSource, @repository.getter('FriendRepository') protected friendRepositoryGetter: Getter<FriendRepository>, @repository.getter('UserRepository') protected userRepositoryGetter: Getter<UserRepository>,) {
-    super(User, dataSource);
-    this.users = this.createHasManyThroughRepositoryFactoryFor('users', userRepositoryGetter, friendRepositoryGetter,);
-    this.registerInclusionResolver('users', this.users.inclusionResolver);
   }
 }
 
