@@ -81,6 +81,19 @@ describe('openapi-generator with --client', /** @this {Mocha.Suite} */ function 
     assertServices();
     assertModels();
   });
+
+  it('does not generates files for server with --config', async () => {
+    await testUtils
+      .executeGenerator(generator)
+      .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path))
+      .withPrompts(props)
+      .withArguments(['--config', '{"server": false, "client": true}']);
+
+    assertControllers({exists: false});
+    assertDataSources();
+    assertServices();
+    assertModels();
+  });
 });
 
 it('generates files with --client for an existing datasource', /** @this {Mocha.Context} */ async function () {
