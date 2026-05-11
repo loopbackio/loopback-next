@@ -57,7 +57,7 @@
     "body-parser": "^2.2.2",
     "cors": "^2.8.6",
     "debug": "^4.4.3",
-    "express": "^4.22.1",
+    "express": "^4.22.2",
     "http-errors": "^2.0.1",
     "js-yaml": "^4.1.1",
     "json-schema-compare": "^0.2.2",
