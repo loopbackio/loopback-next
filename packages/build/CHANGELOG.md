@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [12.0.12](https://github.com/loopbackio/loopback-next/compare/@loopback/build@12.0.11...@loopback/build@12.0.12) (2026-05-12)
+
+**Note:** Version bump only for package @loopback/build
+
+
+
+
+
 ## [12.0.11](https://github.com/loopbackio/loopback-next/compare/@loopback/build@12.0.10...@loopback/build@12.0.11) (2026-04-14)
 
 **Note:** Version bump only for package @loopback/build
