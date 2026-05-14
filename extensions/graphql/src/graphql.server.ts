@@ -8,23 +8,25 @@ import {
   ApolloServerOptionsWithSchema,
   BaseContext,
 } from '@apollo/server';
-import {ExpressMiddlewareOptions} from '@apollo/server/dist/esm/express4';
-import {expressMiddleware} from '@apollo/server/express4';
+import {
+  ExpressMiddlewareOptions,
+  expressMiddleware,
+} from '@as-integrations/express4';
 import {printSchemaWithDirectives} from '@graphql-tools/utils';
 import {
   Binding,
   BindingFromClassOptions,
   BindingKey,
   BindingScope,
-  config,
   Constructor,
   Context,
   ContextTags,
+  Server,
+  config,
   createBindingFromClass,
   filterByTag,
   inject,
   lifeCycleObserver,
-  Server,
 } from '@loopback/core';
 import {HttpServer} from '@loopback/http-server';
 import {RestBindings, RestServer} from '@loopback/rest';
@@ -38,10 +40,10 @@ import * as http from 'http';
 import * as https from 'https';
 import {
   AuthChecker,
-  buildSchema,
   NonEmptyArray,
   ResolverInterface,
   BuildSchemaOptions as TypeGrahpQLBuildSchemaOptions,
+  buildSchema,
 } from 'type-graphql';
 import {Middleware} from 'type-graphql/build/typings/typings/middleware';
 import {WebSocketServer} from 'ws';
@@ -174,7 +176,6 @@ export class GraphQLServer extends Context implements Server {
     const serverConfig = {
       ...this.options.apollo,
       schema,
-      status400ForVariableCoercionErrors: true,
       // plugins: [ApolloServerPluginDrainHttpServer({ httpServer: this.httpServer })],
     } as ApolloServerOptionsWithSchema<BaseContext>;
     const graphQLServer = new ApolloServer(serverConfig);
