@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {ExpressMiddlewareOptions} from '@apollo/server/dist/esm/express4';
+import {ExpressMiddlewareOptions} from '@as-integrations/express4';
 import {BindingKey, Constructor, CoreBindings} from '@loopback/core';
 import {AuthChecker, PubSub, ResolverData} from 'type-graphql';
 import {GraphQLComponent} from './graphql.component';

@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {ExpressContextFunctionArgument} from '@apollo/server/dist/esm/express4';
+import {ExpressContextFunctionArgument} from '@as-integrations/express4';
 import {
   Binding,
   BindingScope,
