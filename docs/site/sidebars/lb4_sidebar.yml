@@ -16,8 +16,21 @@ children:
   output: 'web, pdf'
 
 - title: 'Getting started'
-  url: Getting-started.html
   output: 'web, pdf'
+  expand: 'true'
+
+  children:
+  - title: 'Installation'
+    url: Installation.html
+    output: 'web, pdf'
+
+  - title: 'Create your first app'
+    url: Create-your-first-app.html
+    output: 'web, pdf'
+
+  - title: 'Project structure'
+    url: Loopback-application-layout.html
+    output: 'web, pdf'
 
 - title: 'Inside a LoopBack Application'
   url: Inside-LoopBack-Application.html
@@ -800,10 +813,6 @@ children:
 - title: 'Reference guides'
   output: 'web, pdf'
   children:
-
-  - title: 'LoopBack 4 Application Layout'
-    url: Loopback-application-layout.html
-    output: 'web, pdf'
 
   - title: 'API docs'
     url: apidocs.index.html

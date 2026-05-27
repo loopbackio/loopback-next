@@ -63,7 +63,9 @@ mkdir $JEKYLL_DIR/pages
 (TARGET="$PWD/$JEKYLL_DIR/pages" && cd "$PWD/site" && pax -rwlpe . $TARGET)
 
 echo "Copying external README pages"
+mkdir -p $JEKYLL_DIR/_includes/readmes
 cp $SOURCE_DIR/pages/en/lb4/readmes/*.md $JEKYLL_DIR/pages/readmes/
+cp $SOURCE_DIR/pages/en/lb4/readmes/*.md $JEKYLL_DIR/_includes/readmes/
 
 echo "Setting up sidebar(s)"
 rm -rf $JEKYLL_DIR/_data/sidebars
