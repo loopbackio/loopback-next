@@ -19,7 +19,7 @@ describe('Query parameter array limit', () => {
     if (app) await app.stop();
   });
 
-  context('with default arrayLimit (20)', () => {
+  context('with default arrayLimit (100)', () => {
     beforeEach(async () => {
       app = givenApplication();
       await app.start();
@@ -34,16 +34,29 @@ describe('Query parameter array limit', () => {
       expect(response.body.ids).to.eql(ids);
     });
 
-    it('converts arrays with 21+ items to objects (qs default behavior)', async () => {
+    it('parses arrays with 21 items correctly', async () => {
       const ids = Array.from({length: 21}, (_, i) => (i + 1).toString());
       const query = ids.map(id => `ids=${id}`).join('&');
 
       const response = await client.get(`/test?${query}`).expect(200);
+      expect(response.body.ids).to.eql(ids);
+      expect(Array.isArray(response.body.ids)).to.be.true();
+    });
 
-      expect(response.body.ids).to.be.Object();
-      expect(Array.isArray(response.body.ids)).to.be.false();
-      expect(response.body.ids).to.have.property('0', '1');
-      expect(response.body.ids).to.have.property('20', '21');
+    it('parses arrays with 100 items correctly', async () => {
+      const ids = Array.from({length: 100}, (_, i) => (i + 1).toString());
+      const query = ids.map(id => `ids=${id}`).join('&');
+
+      const response = await client.get(`/test?${query}`).expect(200);
+      expect(response.body.ids).to.eql(ids);
+      expect(Array.isArray(response.body.ids)).to.be.true();
+    });
+
+    it('converts arrays with 101+ items to objects (exceeds default limit)', async () => {
+      const ids = Array.from({length: 101}, (_, i) => (i + 1).toString());
+      const query = ids.map(id => `ids=${id}`).join('&');
+
+      await client.get(`/test?${query}`).expect(400);
     });
   });
 
@@ -91,35 +104,7 @@ describe('Query parameter array limit', () => {
       const ids = Array.from({length: 101}, (_, i) => (i + 1).toString());
       const query = ids.map(id => `ids=${id}`).join('&');
 
-      const response = await client.get(`/test?${query}`).expect(200);
-
-      expect(response.body.ids).to.be.Object();
-      expect(Array.isArray(response.body.ids)).to.be.false();
-      expect(response.body.ids).to.have.property('0', '1');
-      expect(response.body.ids).to.have.property('100', '101');
-    });
-  });
-
-  context('with arrayLimit set to 1000', () => {
-    beforeEach(async () => {
-      app = givenApplication({
-        rest: {
-          queryParser: {
-            arrayLimit: 1000,
-          },
-        },
-      });
-      await app.start();
-      client = createRestAppClient(app);
-    });
-
-    it('parses arrays with 500 items correctly', async () => {
-      const ids = Array.from({length: 500}, (_, i) => (i + 1).toString());
-      const query = ids.map(id => `ids=${id}`).join('&');
-
-      const response = await client.get(`/test?${query}`).expect(200);
-      expect(response.body.ids).to.eql(ids);
-      expect(Array.isArray(response.body.ids)).to.be.true();
+      await client.get(`/test?${query}`).expect(400);
     });
   });
 

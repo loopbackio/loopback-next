@@ -330,7 +330,7 @@ export class RestServer
     }
 
     // Configure query parser with custom arrayLimit if provided
-    const arrayLimit = this.config.queryParser?.arrayLimit ?? 20;
+    const arrayLimit = this.config.queryParser?.arrayLimit ?? 100;
     this._expressApp.set('query parser', (str: string) => {
       return qs.parse(str, {
         arrayLimit,
@@ -1201,7 +1201,7 @@ export interface RestServerResolvedOptions {
      * The qs library defaults to 20 to prevent DoS attacks with large array indices.
      * Set this to a higher value if your API needs to handle more than 20 array items.
      *
-     * @default 20
+     * @default 100
      * @see https://github.com/ljharb/qs#parsing-arrays
      */
     arrayLimit?: number;
