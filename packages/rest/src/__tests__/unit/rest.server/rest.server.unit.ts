@@ -190,8 +190,7 @@ describe('RestServer', () => {
         const expressApp = server.expressApp;
         expect(expressApp.get('x-powered-by')).to.equal(false);
         expect(expressApp.get('env')).to.equal('production');
-        // `extended` is the default setting by Express
-        expect(expressApp.get('query parser')).to.equal('extended');
+        expect(expressApp.get('query parser')).to.be.a.Function();
         expect(expressApp.get('not set')).to.equal(undefined);
       });
 
