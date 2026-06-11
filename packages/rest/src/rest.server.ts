@@ -329,16 +329,17 @@ export class RestServer
       this._expressApp.set('strict routing', this.config.router.strict);
     }
 
-    // Configure query parser with custom arrayLimit if provided
-    const arrayLimit = this.config.queryParser?.arrayLimit ?? 30;
-    this._expressApp.set('query parser', (str: string) => {
-      return qs.parse(str, {
-        arrayLimit,
-        // Use extended mode (same as body-parser urlencoded)
-        allowPrototypes: false,
-        depth: 20,
+    if (this.config.queryParser?.arrayLimit !== undefined) {
+      const arrayLimit = this.config.queryParser.arrayLimit;
+
+      this._expressApp.set('query parser', (str: string) => {
+        return qs.parse(str, {
+          arrayLimit,
+          allowPrototypes: false,
+          depth: 20,
+        });
       });
-    });
+    }
   }
 
   /**
@@ -1198,10 +1199,10 @@ export interface RestServerResolvedOptions {
   queryParser?: {
     /**
      * Maximum number of array elements to parse in query parameters.
+     * When not configured, Express uses its default query parser.
      * The qs library defaults to 20 to prevent DoS attacks with large array indices.
      * Set this to a higher value if your API needs to handle more than 20 array items.
      *
-     * @default 30
      * @see https://github.com/ljharb/qs#parsing-arrays
      */
     arrayLimit?: number;

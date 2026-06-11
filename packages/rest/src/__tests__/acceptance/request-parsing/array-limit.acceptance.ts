@@ -19,9 +19,15 @@ describe('Query parameter array limit', () => {
     if (app) await app.stop();
   });
 
-  context('with default arrayLimit (30)', () => {
+  context('with custom arrayLimit (30)', () => {
     beforeEach(async () => {
-      app = givenApplication();
+      app = givenApplication({
+        rest: {
+          queryParser: {
+            arrayLimit: 30,
+          },
+        },
+      });
       await app.start();
       client = createRestAppClient(app);
     });
@@ -43,7 +49,7 @@ describe('Query parameter array limit', () => {
       expect(Array.isArray(response.body.ids)).to.be.true();
     });
 
-    it('converts arrays with 31+ items to objects (exceeds default limit)', async () => {
+    it('converts arrays with 31+ items to objects (exceeds limit)', async () => {
       const ids = Array.from({length: 31}, (_, i) => (i + 1).toString());
       const query = ids.map(id => `ids=${id}`).join('&');
 
