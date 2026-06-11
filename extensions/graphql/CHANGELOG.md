@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.14.0](https://github.com/loopbackio/loopback-next/compare/@loopback/graphql@0.13.3...@loopback/graphql@0.14.0) (2026-06-11)
+
+
+### Features
+
+* **graphql:** migrate to apollo server 5 ([92bfaf4](https://github.com/loopbackio/loopback-next/commit/92bfaf435b24b7d9beeb5ff887a337bfc4cdb623))
+
+
+
+
+
 ## [0.13.3](https://github.com/loopbackio/loopback-next/compare/@loopback/graphql@0.13.2...@loopback/graphql@0.13.3) (2026-05-12)
 
 **Note:** Version bump only for package @loopback/graphql

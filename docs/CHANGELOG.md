@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.0.15](https://github.com/loopbackio/loopback-next/compare/@loopback/docs@8.0.14...@loopback/docs@8.0.15) (2026-06-11)
+
+
+### Bug Fixes
+
+* **docs:** updates to docs sidebar ([a26fc0a](https://github.com/loopbackio/loopback-next/commit/a26fc0adf0bc0cab5a0bd4b39fc533194de775b8))
+
+
+
+
+
 ## [8.0.14](https://github.com/loopbackio/loopback-next/compare/@loopback/docs@8.0.13...@loopback/docs@8.0.14) (2026-05-12)
 
 **Note:** Version bump only for package @loopback/docs

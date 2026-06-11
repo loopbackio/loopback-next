@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.0.13](https://github.com/loopbackio/loopback-next/compare/@loopback/http-server@7.0.12...@loopback/http-server@7.0.13) (2026-06-11)
+
+**Note:** Version bump only for package @loopback/http-server
+
+
+
+
+
 ## [7.0.12](https://github.com/loopbackio/loopback-next/compare/@loopback/http-server@7.0.11...@loopback/http-server@7.0.12) (2026-05-12)
 
 **Note:** Version bump only for package @loopback/http-server

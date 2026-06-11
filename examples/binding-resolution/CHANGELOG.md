@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.12.14](https://github.com/loopbackio/loopback-next/compare/@loopback/example-binding-resolution@0.12.13...@loopback/example-binding-resolution@0.12.14) (2026-06-11)
+
+**Note:** Version bump only for package @loopback/example-binding-resolution
+
+
+
+
+
 ## [0.12.13](https://github.com/loopbackio/loopback-next/compare/@loopback/example-binding-resolution@0.12.12...@loopback/example-binding-resolution@0.12.13) (2026-05-12)
 
 **Note:** Version bump only for package @loopback/example-binding-resolution
