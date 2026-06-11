@@ -19,7 +19,7 @@ describe('Query parameter array limit', () => {
     if (app) await app.stop();
   });
 
-  context('with default arrayLimit (100)', () => {
+  context('with default arrayLimit (30)', () => {
     beforeEach(async () => {
       app = givenApplication();
       await app.start();
@@ -34,8 +34,8 @@ describe('Query parameter array limit', () => {
       expect(response.body.ids).to.eql(ids);
     });
 
-    it('parses arrays with 21 items correctly', async () => {
-      const ids = Array.from({length: 21}, (_, i) => (i + 1).toString());
+    it('parses arrays with 30 items correctly', async () => {
+      const ids = Array.from({length: 30}, (_, i) => (i + 1).toString());
       const query = ids.map(id => `ids=${id}`).join('&');
 
       const response = await client.get(`/test?${query}`).expect(200);
@@ -43,17 +43,8 @@ describe('Query parameter array limit', () => {
       expect(Array.isArray(response.body.ids)).to.be.true();
     });
 
-    it('parses arrays with 100 items correctly', async () => {
-      const ids = Array.from({length: 100}, (_, i) => (i + 1).toString());
-      const query = ids.map(id => `ids=${id}`).join('&');
-
-      const response = await client.get(`/test?${query}`).expect(200);
-      expect(response.body.ids).to.eql(ids);
-      expect(Array.isArray(response.body.ids)).to.be.true();
-    });
-
-    it('converts arrays with 101+ items to objects (exceeds default limit)', async () => {
-      const ids = Array.from({length: 101}, (_, i) => (i + 1).toString());
+    it('converts arrays with 31+ items to objects (exceeds default limit)', async () => {
+      const ids = Array.from({length: 31}, (_, i) => (i + 1).toString());
       const query = ids.map(id => `ids=${id}`).join('&');
 
       await client.get(`/test?${query}`).expect(400);
