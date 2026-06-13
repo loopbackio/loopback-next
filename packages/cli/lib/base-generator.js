@@ -494,20 +494,20 @@ module.exports = class BaseGenerator extends Generator {
   }
 
   async _updateIndexFile(dir, file) {
-    await updateIndex(dir, file, this.fs);
-
-    // Output for users
     const updateDirRelPath = path.relative(
       this.artifactInfo.relPath,
       this.artifactInfo.outDir,
     );
 
-    const outPath = path.join(
+    await updateIndex(
       this.artifactInfo.relPath,
+      file,
+      this.fs,
       updateDirRelPath,
-      'index.ts',
     );
 
+    // Output for users
+    const outPath = path.join(this.artifactInfo.relPath, 'index.ts');
     this.log(chalk.green('   update'), `${outPath}`);
   }
 };
