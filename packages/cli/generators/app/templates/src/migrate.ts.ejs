@@ -1,20 +1,55 @@
 import {<%= project.applicationName %>} from './application';
+import { ApplicationConfig } from '@loopback/core';
 
 export async function migrate(args: string[]) {
-  const existingSchema = args.includes('--rebuild') ? 'drop' : 'alter';
-  console.log('Migrating schemas (%s existing schema)', existingSchema);
+    const existingSchema = args.includes('--rebuild') ? 'drop' : 'alter';
+    const datasourceName = args.find(arg => arg.startsWith('datasource='))?.split('=')[1];
 
-  const app = new <%= project.applicationName %>();
-  await app.boot();
-  await app.migrateSchema({existingSchema});
+    console.log('Migrating schema (existing schema: %s)', existingSchema);
 
-  // Connectors usually keep a pool of opened connections,
-  // this keeps the process running even after all work is done.
-  // We need to exit explicitly.
-  process.exit(0);
+    const config: ApplicationConfig = {};
+    const app = new <%= project.applicationName %>(config);
+
+    await app.boot();
+    let options = {};
+
+    if (datasourceName) {
+        console.log('Migrating specific datasource: %s', datasourceName);
+        try {
+            // Find repositories related to the specified datasource
+            const repositoryBindings = app.find('repositories.*');
+            const models = [];
+            for (const binding of repositoryBindings) {
+                if (binding.key !== 'repositories.RefreshTokenRepository') {
+                    const repo: any = await app.get(binding.key);
+                    if (repo.dataSource && repo.dataSource.name === datasourceName) {
+                        models.push(repo.entityClass.modelName);
+                    }
+                }
+            }
+            if (models.length === 0) {
+                console.warn(`No models found for datasource ${datasourceName}`);
+            }
+            // Options to migrate only the specified datasource
+            options = { existingSchema, models };
+            console.log(`Migration of datasource ${datasourceName} completed successfully.`);
+        } catch (err) {
+            console.log(err);
+
+            console.error(`Error migrating datasource ${datasourceName}:`, err);
+            process.exit(1);
+        }
+    } else {
+        console.log('Migrating all datasources');
+        options = { existingSchema };
+    }
+    await app.migrateSchema(options);
+
+
+    process.exit(0);
 }
 
 migrate(process.argv).catch(err => {
-  console.error('Cannot migrate database schema', err);
-  process.exit(1);
+    console.error('Cannot migrate database schema', err);
+    process.exit(1);
 });
