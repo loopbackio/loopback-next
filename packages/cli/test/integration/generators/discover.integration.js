@@ -172,6 +172,38 @@ describe('lb4 discover integration', () => {
       expectFileToMatchSnapshot(defaultExpectedNamingModel);
     });
 
+    it('generates models with --config', async function () {
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {
+            additionalFiles: SANDBOX_FILES,
+          }),
+        )
+        .withArguments(['--config', '{"dataSource": "mem", "all": true}']);
+      basicModelFileChecks(defaultExpectedTestModel, defaultExpectedIndexFile);
+      expectFileToMatchSnapshot(defaultExpectedSchemaModel);
+      expectFileToMatchSnapshot(defaultExpectedViewModel);
+      assert.file(defaultExpectedViewModel);
+    });
+
+    it('generates models with --config having views set to false', async function () {
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {
+            additionalFiles: SANDBOX_FILES,
+          }),
+        )
+        .withArguments([
+          '--config',
+          '{"dataSource": "mem", "all": true, "views": false}',
+        ]);
+      basicModelFileChecks(defaultExpectedTestModel, defaultExpectedIndexFile);
+      expectFileToMatchSnapshot(defaultExpectedSchemaModel);
+      assert.noFile(defaultExpectedViewModel);
+    });
+
     it('will fail gracefully if you specify a --dataSource which does not exist', async () => {
       return expect(
         testUtils
