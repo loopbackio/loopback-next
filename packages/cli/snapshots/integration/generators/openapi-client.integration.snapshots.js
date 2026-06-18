@@ -63,10 +63,11 @@ pulvinar elit eu, euismod sapien.
 
   /**
    * Creates a new pet in the store. Duplicates are allowed
+   * @param contentType
    * @param _requestBody Pet to add to the store
    * @returns pet response
    */
-  addPet(params: { requestBody: NewPet }): Promise<Pet>;
+  addPet(params: { 'content-type': string; requestBody: NewPet }): Promise<Pet>;
 
   /**
    * Returns a user based on a single ID, if the user does not have access to the
@@ -271,10 +272,11 @@ pulvinar elit eu, euismod sapien.
 
   /**
    * Creates a new pet in the store. Duplicates are allowed
+   * @param contentType
    * @param _requestBody Pet to add to the store
    * @returns pet response
    */
-  addPet(params: { requestBody: NewPet }): Promise<Pet>;
+  addPet(params: { 'content-type': string; requestBody: NewPet }): Promise<Pet>;
 
   /**
    * Returns a user based on a single ID, if the user does not have access to the
@@ -640,12 +642,22 @@ pulvinar elit eu, euismod sapien.
   /**
    * Creates a new pet in the store. Duplicates are allowed
    *
+   * @param contentType
    * @param _requestBody Pet to add to the store
    * @returns pet response
    */
   @operation('post', '/pets', {
   description: 'Creates a new pet in the store.  Duplicates are allowed',
   operationId: 'addPet',
+  parameters: [
+    {
+      name: 'content-type',
+      in: 'header',
+      schema: {
+        type: 'string',
+      },
+    },
+  ],
   requestBody: {
     description: 'Pet to add to the store',
     required: true,
@@ -680,7 +692,13 @@ pulvinar elit eu, euismod sapien.
     },
   },
 })
-  async addPet(@requestBody({
+  async addPet(@param({
+  name: 'content-type',
+  in: 'header',
+  schema: {
+    type: 'string',
+  },
+}) contentType: string | undefined, @requestBody({
   description: 'Pet to add to the store',
   required: true,
   content: {
@@ -691,7 +709,7 @@ pulvinar elit eu, euismod sapien.
     },
   },
 }) _requestBody: NewPet): Promise<Pet> {
-     return this.openApiService.addPet(_requestBody); 
+     return this.openApiService.addPet(contentType, _requestBody);
   }
   /**
    * Returns a user based on a single ID, if the user does not have access to the
@@ -919,10 +937,11 @@ pulvinar elit eu, euismod sapien.
 
   /**
    * Creates a new pet in the store. Duplicates are allowed
+   * @param contentType
    * @param _requestBody Pet to add to the store
    * @returns pet response
    */
-  addPet(_requestBody: NewPet): Promise<Pet>;
+  addPet(contentType: string | undefined, _requestBody: NewPet): Promise<Pet>;
 
   /**
    * Returns a user based on a single ID, if the user does not have access to the
@@ -1278,12 +1297,22 @@ pulvinar elit eu, euismod sapien.
   /**
    * Creates a new pet in the store. Duplicates are allowed
    *
+   * @param contentType
    * @param _requestBody Pet to add to the store
    * @returns pet response
    */
   @operation('post', '/pets', {
   description: 'Creates a new pet in the store.  Duplicates are allowed',
   operationId: 'addPet',
+  parameters: [
+    {
+      name: 'content-type',
+      in: 'header',
+      schema: {
+        type: 'string',
+      },
+    },
+  ],
   requestBody: {
     description: 'Pet to add to the store',
     required: true,
@@ -1318,7 +1347,13 @@ pulvinar elit eu, euismod sapien.
     },
   },
 })
-  async addPet(@requestBody({
+  async addPet(@param({
+  name: 'content-type',
+  in: 'header',
+  schema: {
+    type: 'string',
+  },
+}) contentType: string | undefined, @requestBody({
   description: 'Pet to add to the store',
   required: true,
   content: {
@@ -1670,10 +1705,11 @@ pulvinar elit eu, euismod sapien.
 
   /**
    * Creates a new pet in the store. Duplicates are allowed
+   * @param contentType
    * @param _requestBody Pet to add to the store
    * @returns pet response
    */
-  addPet(_requestBody: NewPet): Promise<Pet>;
+  addPet(contentType: string | undefined, _requestBody: NewPet): Promise<Pet>;
 
   /**
    * Returns a user based on a single ID, if the user does not have access to the
@@ -2039,12 +2075,22 @@ pulvinar elit eu, euismod sapien.
   /**
    * Creates a new pet in the store. Duplicates are allowed
    *
+   * @param contentType
    * @param _requestBody Pet to add to the store
    * @returns pet response
    */
   @operation('post', '/pets', {
   description: 'Creates a new pet in the store.  Duplicates are allowed',
   operationId: 'addPet',
+  parameters: [
+    {
+      name: 'content-type',
+      in: 'header',
+      schema: {
+        type: 'string',
+      },
+    },
+  ],
   requestBody: {
     description: 'Pet to add to the store',
     required: true,
@@ -2079,7 +2125,13 @@ pulvinar elit eu, euismod sapien.
     },
   },
 })
-  async addPet(@requestBody({
+  async addPet(@param({
+  name: 'content-type',
+  in: 'header',
+  schema: {
+    type: 'string',
+  },
+}) contentType: string | undefined, @requestBody({
   description: 'Pet to add to the store',
   required: true,
   content: {
@@ -2090,7 +2142,7 @@ pulvinar elit eu, euismod sapien.
     },
   },
 }) _requestBody: NewPet): Promise<Pet> {
-     return this.openApiService.addPet(_requestBody); 
+     return this.openApiService.addPet(contentType, _requestBody);
   }
   /**
    * Returns a user based on a single ID, if the user does not have access to the
@@ -2318,10 +2370,11 @@ pulvinar elit eu, euismod sapien.
 
   /**
    * Creates a new pet in the store. Duplicates are allowed
+   * @param contentType
    * @param _requestBody Pet to add to the store
    * @returns pet response
    */
-  addPet(_requestBody: NewPet): Promise<Pet>;
+  addPet(contentType: string | undefined, _requestBody: NewPet): Promise<Pet>;
 
   /**
    * Returns a user based on a single ID, if the user does not have access to the

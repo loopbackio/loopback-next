@@ -354,7 +354,8 @@ function buildMethodSpec(controllerSpec, op, options) {
     methodParameters[methodName] = [];
     if (parameters) {
       parameters.forEach(param => {
-        methodParameters[methodName].push(param.name);
+        const {argName} = buildParameter(param, {});
+        methodParameters[methodName].push(argName);
       });
     }
     if (op.spec.requestBody) {
