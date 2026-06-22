@@ -44,28 +44,9 @@ jobs:
         env:
           PYTHON: ${{env.pythonLocation}}/bin/python3
         run: npm ci
-      - name: Install Chrome (Linux)
+      - name: Install Chrome for Puppeteer (Linux only)
         if: runner.os == 'Linux'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y google-chrome-stable
-      - name: Install Chrome (macOS)
-        if: runner.os == 'macOS'
-        run: |
-          brew install --cask google-chrome
-      - name: Install Chrome (Windows)
-        if: runner.os == 'Windows'
-        run: |
-          choco install googlechrome --ignore-checksums -y
-      - name: Set Chrome path (Linux)
-        if: runner.os == 'Linux'
-        run: echo "PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome" >> $GITHUB_ENV
-      - name: Set Chrome path (macOS)
-        if: runner.os == 'macOS'
-        run: echo "PUPPETEER_EXECUTABLE_PATH=/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" >> $GITHUB_ENV
-      - name: Set Chrome path (Windows)
-        if: runner.os == 'Windows'
-        run: echo "PUPPETEER_EXECUTABLE_PATH=C:/Program Files/Google/Chrome/Application/chrome.exe" >> $env:GITHUB_ENV
+        run: npx puppeteer browsers install chrome
       - name: Build
         run: node packages/build/bin/compile-package -b
       - name: Run package tests
