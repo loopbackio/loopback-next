@@ -46,7 +46,9 @@ jobs:
         run: npm ci
       - name: Install Chrome for Puppeteer (Linux only)
         if: runner.os == 'Linux'
-        run: npx puppeteer browsers install chrome
+        run: |
+          rm -rf ~/.cache/puppeteer
+          npx puppeteer browsers install chrome
       - name: Build
         run: node packages/build/bin/compile-package -b
       - name: Run package tests
