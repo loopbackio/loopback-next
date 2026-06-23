@@ -514,10 +514,6 @@ children:
           url: deploying-with-pm2-and-nginx.html
           output: 'web, pdf'
 
-        - title: 'Developing and Deploying LoopBack Applications with Appsody'
-          url: Appsody-LoopBack.html
-          output: 'web, pdf'
-
         - title: 'Running cron jobs'
           url: Running-cron-jobs.html
           output: 'web, pdf'
