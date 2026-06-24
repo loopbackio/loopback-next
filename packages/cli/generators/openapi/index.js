@@ -22,6 +22,8 @@ const DATASOURCE = 'datasources';
 const SERVICE = 'services';
 const g = require('../../lib/globalize');
 const json5 = require('json5');
+const fs = require('fs');
+const {Project, SyntaxKind} = require('ts-morph');
 
 const isWindows = process.platform === 'win32';
 
@@ -87,11 +89,30 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
       type: Boolean,
     });
 
+    this.option('outDir', {
+      description: g.f('Custom output directory for generated files.'),
+      required: false,
+      default: 'src',
+      type: String,
+    });
+
     return super._setupGenerator();
   }
 
   setOptions() {
-    return super.setOptions();
+    const result = super.setOptions();
+    if (this.options.config) {
+      const config =
+        typeof this.options.config === 'string'
+          ? JSON.parse(this.options.config)
+          : this.options.config;
+      if (config.outDir) this.options.outDir = config.outDir;
+      if (config.url) this.options.url = config.url;
+      if (config.prefix) this.options.prefix = config.prefix;
+      if (config.client !== undefined) this.options.client = config.client;
+      if (config.server !== undefined) this.options.server = config.server;
+    }
+    return result;
   }
 
   checkLoopBackProject() {
@@ -241,6 +262,11 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
         log: this.log,
         validate: this.options.validate,
         promoteAnonymousSchemas: this.options['promote-anonymous-schemas'],
+        prefix:
+          this.options.outDir && this.options.outDir !== 'src'
+            ? ''
+            : this.options.prefix,
+        previousPrefix: this.options.previousPrefix || '',
       });
       debugJson('OpenAPI spec', result.apiSpec);
       Object.assign(this, result);
@@ -251,6 +277,13 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
 
   async selectControllers() {
     if (this.shouldExit()) return;
+    this.controllerSpecs = this.controllerSpecs.map(c => {
+      if (this.options.prefix && c.tag && c.tag.includes(this.options.prefix)) {
+        const splited = c.tag.split(this.options.prefix);
+        c.tag = splited.join('');
+      }
+      return c;
+    });
     const choices = this.controllerSpecs.map(c => {
       const names = [];
       if (this.options.server !== false) {
@@ -287,8 +320,14 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
     );
     this.selectedServices = this.selectedControllers;
     this.selectedControllers.forEach(c => {
-      c.fileName = getControllerFileName(c.tag || c.className);
-      c.serviceFileName = getServiceFileName(c.tag || c.serviceClassName);
+      const originalClassName = c.className;
+      const originalServiceClassName = c.serviceClassName;
+
+      c.fileName = getControllerFileName(c.tag || originalClassName);
+      if (this.options.prefix) {
+        c.fileName = this.options.prefix.toLowerCase() + '.' + c.fileName;
+      }
+      c.serviceFileName = getServiceFileName(c.tag || originalServiceClassName);
     });
   }
 
@@ -302,7 +341,10 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
       if (debug.enabled) {
         debug(`Artifact output filename set to: ${controllerFile}`);
       }
-      const dest = this.destinationPath(`src/controllers/${controllerFile}`);
+      const outDir = this.options.outDir || 'src';
+      const dest = this.destinationPath(
+        `${outDir}/controllers/${controllerFile}`,
+      );
       if (debug.enabled) {
         debug('Copying artifact to: %s', dest);
       }
@@ -349,7 +391,10 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
     if (debug.enabled) {
       debug(`Artifact output filename set to: ${dataSourceFile}`);
     }
-    const dest = this.destinationPath(`src/datasources/${dataSourceFile}`);
+    const outDir = this.options.outDir || 'src';
+    const dest = this.destinationPath(
+      `${outDir}/datasources/${dataSourceFile}`,
+    );
     if (debug.enabled) {
       debug('Copying artifact to: %s', dest);
     }
@@ -372,7 +417,8 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
       if (debug.enabled) {
         debug(`Artifact output filename set to: ${file}`);
       }
-      const dest = this.destinationPath(`src/services/${file}`);
+      const outDir = this.options.outDir || 'src';
+      const dest = this.destinationPath(`${outDir}/services/${file}`);
       if (debug.enabled) {
         debug('Copying artifact to: %s', dest);
       }
@@ -396,7 +442,8 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
       if (debug.enabled) {
         debug(`Artifact output filename set to: ${modelFile}`);
       }
-      const dest = this.destinationPath(`src/models/${modelFile}`);
+      const outDir = this.options.outDir || 'src';
+      const dest = this.destinationPath(`${outDir}/models/${modelFile}`);
       if (debug.enabled) {
         debug('Copying artifact to: %s', dest);
       }
@@ -408,7 +455,8 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
   // update index file for models and controllers
   async _updateIndex(dir) {
     const update = async files => {
-      const targetDir = this.destinationPath(`src/${dir}`);
+      const outDir = this.options.outDir || 'src';
+      const targetDir = this.destinationPath(`${outDir}/${dir}`);
       for (const f of files) {
         // Check all files being generated to ensure they succeeded
         const status = this.conflicter.generationStatus[f];
@@ -490,6 +538,9 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
       this._generateServiceProxies();
       await this._updateIndex(SERVICE);
     }
+    if (this.options.outDir && this.options.outDir !== 'src') {
+      await this._updateBootOptions();
+    }
   }
 
   install() {
@@ -523,6 +574,83 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
         save: true,
       },
     });
+  }
+
+  async _updateBootOptions() {
+    const invokedFrom = this.destinationRoot();
+    const applicationPath = path.join(invokedFrom, 'src', 'application.ts');
+    if (!fs.existsSync(applicationPath)) return;
+
+    const relDir = (this.options.outDir || 'src').replace(/^src[\\\\/]/, '');
+    const artifactTypes = [
+      {
+        name: 'controllers',
+        dir: `${relDir}/controllers`,
+        extension: '.controller.js',
+      },
+      {
+        name: 'datasources',
+        dir: `${relDir}/datasources`,
+        extension: '.datasource.js',
+      },
+      {name: 'models', dir: `${relDir}/models`, extension: '.model.js'},
+      {name: 'services', dir: `${relDir}/services`, extension: '.service.js'},
+    ];
+
+    const project = new Project({});
+    project.addSourceFilesAtPaths(`${invokedFrom}/src/**/*.ts`);
+    const applicationFile = project.getSourceFileOrThrow(applicationPath);
+    const constructor = applicationFile.getClasses()[0].getConstructors()[0];
+    const bootOptionsObject = constructor
+      .getDescendantsOfKind(SyntaxKind.BinaryExpression)
+      .find(expr => expr.getLeft().getText() === 'this.bootOptions')
+      ?.getRight()
+      .asKindOrThrow(SyntaxKind.ObjectLiteralExpression);
+    this.log('bootOptions found: ' + !!bootOptionsObject);
+
+    if (bootOptionsObject) {
+      for (const artifact of artifactTypes) {
+        let artifactProperty = bootOptionsObject.getProperty(artifact.name);
+        if (!artifactProperty) {
+          bootOptionsObject.addPropertyAssignment({
+            name: artifact.name,
+            initializer: `{
+              dirs: ['${artifact.name}'],
+              extensions: ['${artifact.extension}'],
+              nested: true,
+            }`,
+          });
+          artifactProperty = bootOptionsObject.getProperty(artifact.name);
+        }
+        if (!artifactProperty) continue;
+
+        const artifactObject = artifactProperty.getInitializerIfKindOrThrow(
+          SyntaxKind.ObjectLiteralExpression,
+        );
+        let dirsProperty = artifactObject.getProperty('dirs');
+        if (!dirsProperty) {
+          artifactObject.addPropertyAssignment({
+            name: 'dirs',
+            initializer: `['${artifact.name}']`,
+          });
+          dirsProperty = artifactObject.getProperty('dirs');
+        }
+        if (!dirsProperty) continue;
+
+        const dirsArray = dirsProperty.getInitializerIfKindOrThrow(
+          SyntaxKind.ArrayLiteralExpression,
+        );
+        const exists = dirsArray.getElements().some(el => {
+          const literal = el.asKind(SyntaxKind.StringLiteral);
+          return literal?.getLiteralValue() === artifact.dir;
+        });
+        if (!exists) {
+          dirsArray.addElement(`'${artifact.dir}'`);
+        }
+      }
+      applicationFile.formatText();
+      applicationFile.saveSync();
+    }
   }
 
   async end() {
