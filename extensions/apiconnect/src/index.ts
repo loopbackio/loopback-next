@@ -6,3 +6,4 @@
 export * from './apiconnect.component';
 export * from './apiconnect.spec-enhancer';
 export * from './keys';
+export * from './types';
