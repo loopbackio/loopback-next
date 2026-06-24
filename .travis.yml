@@ -1,0 +1,33 @@
+branches:
+  only: master
+arch:
+  - arm64
+  - ppc64le
+  - s390x
+dist: bionic
+git:
+  depth: false
+env:
+ - NODE_OPTIONS: --max-old-space-size=4096
+language: node_js
+node_js:
+  - 10
+  - 12
+  - 14
+  - 16
+  - 17
+before_install: |
+  if [ "$TRAVIS_CPU_ARCH" = 'arm64' ]; then
+    sudo apt-get -y update
+    sudo apt-get -y install chromium-browser
+  fi
+install: |
+  npm ci --ignore-scripts
+  npm run bootstrap
+script: |
+  npm run --ignore-scripts build
+  if [ "$TRAVIS_CPU_ARCH" = 'arm64' ]; then
+    npm test --ignore-scripts
+  else
+    npm test --ignore-scripts -- --ignore=examples/webpack/__tests__/**
+  fi
