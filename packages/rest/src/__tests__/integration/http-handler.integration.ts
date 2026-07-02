@@ -618,6 +618,29 @@ describe('HttpHandler', () => {
         statusCode: 500,
       });
     });
+
+    it('maps database constraint errors to HTTP errors', async () => {
+      givenDatabaseErrorController('UNIQUE_CONSTRAINT_VIOLATION');
+      logErrorsExcept(409);
+      await client.get('/database-error').expect(409, {
+        error: {
+          name: 'ConflictError',
+          message: 'Database error',
+          statusCode: 409,
+        },
+      });
+    });
+
+    it('maps database connection failures to HTTP 503', async () => {
+      givenDatabaseErrorController('CONNECTION_FAILURE');
+      logErrorsExcept(503);
+      await client.get('/database-error').expect(503, {
+        error: {
+          message: 'Service Unavailable',
+          statusCode: 503,
+        },
+      });
+    });
   });
 
   let rootContext: Context;
@@ -700,5 +723,25 @@ describe('HttpHandler', () => {
       });
     });
     client = createClientForHandler(app);
+  }
+
+  function givenDatabaseErrorController(code: string) {
+    const spec = anOpenApiSpec()
+      .withOperation(
+        'get',
+        '/database-error',
+        anOperationSpec().withOperationName('databaseError'),
+      )
+      .build();
+
+    class TestController {
+      @get('/database-error')
+      databaseError() {
+        const err = new Error('Database error');
+        Object.assign(err, {code});
+        throw err;
+      }
+    }
+    givenControllerClass(TestController, spec);
   }
 });

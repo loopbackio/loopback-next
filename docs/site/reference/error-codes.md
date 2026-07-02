@@ -95,6 +95,45 @@ You have the following options how to fix the error
    }
    ```
 
+## Database Error Codes
+
+When repository operations fail due to database constraints, connection issues,
+or protocol errors, LoopBack maps low-level database driver errors to
+standardized, protocol-neutral error codes.
+
+These domain error codes are automatically mapped to corresponding REST HTTP
+statuses by `@loopback/rest`:
+
+| Error Code                    | HTTP Status              | Description                                                                                                                    |
+| :---------------------------- | :----------------------- | :----------------------------------------------------------------------------------------------------------------------------- |
+| `UNIQUE_CONSTRAINT_VIOLATION` | 409 Conflict             | A record with a duplicate key or non-unique value was inserted or updated.                                                     |
+| `LOCK_CONFLICT`               | 409 Conflict             | The operation failed due to a database deadlock or lock wait timeout.                                                          |
+| `FOREIGN_KEY_VIOLATION`       | 422 Unprocessable Entity | The operation violates a foreign key constraint (referencing a non-existent parent or deleting a referenced parent).           |
+| `NOT_NULL_VIOLATION`          | 400 Bad Request          | A required non-nullable database column was provided as `null` or omitted without a default value.                             |
+| `CHECK_CONSTRAINT_VIOLATION`  | 400 Bad Request          | The operation violates a custom SQL `CHECK` constraint.                                                                        |
+| `DATA_TYPE_MISMATCH`          | 400 Bad Request          | A value provided does not match the database column type (e.g., string length exceeded, invalid string format for field type). |
+| `GENERATED_COLUMN_VIOLATION`  | 400 Bad Request          | An explicit attempt was made to write or update a generated/computed database column.                                          |
+| `QUERY_TIMEOUT`               | 504 Gateway Timeout      | The database query execution exceeded the configured statement timeout threshold.                                              |
+| `CONNECTION_FAILURE`          | 503 Service Unavailable  | The database connection was lost, refused, or unable to be acquired from the pool.                                             |
+
+### Configuring or Disabling Database Error Mapping
+
+By default, `@loopback/rest` automatically translates database domain errors
+into HTTP error responses. You can disable this mapping across your application
+using `RestBindings.DATABASE_ERROR_MAPPING_OPTIONS`:
+
+```typescript
+import {RestBindings} from '@loopback/rest';
+
+// In your application constructor or sequence setup
+app.bind(RestBindings.DATABASE_ERROR_MAPPING_OPTIONS).to({
+  enabled: false,
+});
+```
+
+When set to `{ enabled: false }`, database errors pass through unmapped and fall
+back to the default error handler (returning an HTTP 500 status).
+
 ## Other error codes
 
 Besides LoopBack-specific error codes, your application can encounter low-level
