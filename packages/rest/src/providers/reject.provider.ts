@@ -8,6 +8,7 @@ import {HttpError} from 'http-errors';
 import {ErrorWriterOptions, writeErrorToResponse} from 'strong-error-handler';
 import {RestBindings} from '../keys';
 import {HandlerContext, LogError, Reject} from '../types';
+import {mapDatabaseErrorToHttpError} from '../error-writer/database-error-mapper';
 
 // TODO(bajtos) Make this mapping configurable at RestServer level,
 // allow apps and extensions to contribute additional mappings.
@@ -24,7 +25,9 @@ export class RejectProvider {
     errorWriterOptions?: ErrorWriterOptions,
   ): Reject {
     const reject: Reject = ({request, response}: HandlerContext, error) => {
-      const err = <HttpError>error;
+      // 1. Map domain database errors to HttpErrors
+      const mappedError = mapDatabaseErrorToHttpError(error);
+      const err = <HttpError>mappedError;
 
       if (!err.status && !err.statusCode && err.code) {
         const customStatus = codeToStatusCodeMap[err.code];
@@ -35,7 +38,7 @@ export class RejectProvider {
 
       const statusCode = err.statusCode || err.status || 500;
       writeErrorToResponse(err, request, response, errorWriterOptions);
-      logError(error, statusCode, request);
+      logError(err, statusCode, request);
     };
     return reject;
   }
