@@ -455,6 +455,13 @@ function buildControllerSpecs(operationsMapByController, options) {
     controllerSpec.methods = entry.operations.map(op =>
       buildMethodSpec(controllerSpec, op, options),
     );
+    // Track whether param and requestBody decorators are used
+    controllerSpec.usesParam = controllerSpec.methods.some(m =>
+      m.signature && m.signature.includes('@param('),
+    );
+    controllerSpec.usesRequestBody = controllerSpec.methods.some(m =>
+      m.signature && m.signature.includes('@requestBody('),
+    );
     controllerSpec.methodMappingObject = printSpecObject(
       controllerSpec.methodMapping,
     );

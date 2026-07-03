@@ -1,4 +1,4 @@
-import {api, operation, param, requestBody} from '@loopback/rest';<%if (withImplementation) { %>
+import {api, operation<% if (usesParam) { %>, param<% } %><% if (usesRequestBody) { %>, requestBody<% } %>} from '@loopback/rest';<%if (withImplementation) { %>
 import {inject} from '@loopback/core';
 
 import {<%- serviceClassName %>} from '../services';
