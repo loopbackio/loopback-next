@@ -571,5 +571,37 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
     );
     this.artifactInfo.name = `${this.artifactInfo.className}Repository`;
     await super.end();
+    await this._generateRelations();
+  }
+
+  async _generateRelations() {
+    if (!this.artifactInfo.relations) {
+      debug('No relation configurations found, skipping relation generation');
+      return;
+    }
+    this.artifactInfo.relations = JSON.parse(this.artifactInfo.relations);
+    if (!this.artifactInfo.relations.length) {
+      debug('No relation configurations found, skipping relation generation');
+      return;
+    }
+    this.artifactInfo.relations.forEach(relation => {
+      const repoGen = require('../relation');
+      this.composeWith(
+        {
+          Generator: repoGen,
+          path: require.resolve('../relation'),
+        },
+        {
+          sourceModel: relation.sourceModel,
+          destinationModel: relation.destinationModel,
+          foreignKeyName: relation.foreignKeyName,
+          relationType: relation.relationType,
+          registerInclusionResolver: relation.registerInclusionResolver,
+          yes: true,
+          skipInstall: true,
+          skipCache: true,
+        },
+      );
+    });
   }
 };
