@@ -79,7 +79,7 @@ jobs:
         run: node packages/build/bin/run-nyc report --reporter=lcov
       - name: Publish coverage report to Coveralls
         if: runner.os != 'macOS'
-        uses: coverallsapp/github-action@648a8eb78e6d50909eff900e4ec85cab4524a45b # v2.3.6
+        uses: achrinza/coveralls-github-action@5b7bed1e2779d4ff3223e5a9ee5d03f704099258 # v2.3.8
         with:
           flag-name: run-${{ matrix.os }}-node@${{ matrix.node-version }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
