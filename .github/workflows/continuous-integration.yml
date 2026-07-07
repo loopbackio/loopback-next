@@ -75,8 +75,10 @@ jobs:
       - name: Run example tests
         run: node packages/build/bin/run-nyc node packages/build/bin/run-mocha --lang en_US.UTF-8 --reporter spec "examples/*/dist/__tests__/**/*.js"
       - name: Generate coverage report
+        if: runner.os != 'macOS'
         run: node packages/build/bin/run-nyc report --reporter=lcov
       - name: Publish coverage report to Coveralls
+        if: runner.os != 'macOS'
         uses: coverallsapp/github-action@648a8eb78e6d50909eff900e4ec85cab4524a45b # v2.3.6
         with:
           flag-name: run-${{ matrix.os }}-node@${{ matrix.node-version }}
