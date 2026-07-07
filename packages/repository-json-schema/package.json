@@ -52,7 +52,7 @@
     "@loopback/repository": "^8.0.13",
     "@loopback/testlab": "^8.0.13",
     "@types/debug": "^4.1.13",
-    "@types/node": "^20.19.41",
+    "@types/node": "^20.19.43",
     "ajv-formats": "^3.0.1"
   }
 }
