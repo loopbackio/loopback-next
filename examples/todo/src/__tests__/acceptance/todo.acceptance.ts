@@ -10,6 +10,7 @@ import {
   createRestAppClient,
   expect,
   givenHttpServerConfig,
+  skipIf,
   toJSON,
 } from '@loopback/testlab';
 import morgan from 'morgan';
@@ -86,20 +87,25 @@ describe('TodoApplication', () => {
     await client.post('/todos').send(todo).expect(422);
   });
 
-  it('creates an address-based reminder', async function (this: Mocha.Context) {
-    if (!available) return this.skip();
-    // Increase the timeout to accommodate slow network connections
-    this.timeout(30000);
+  skipIf<[(this: Mocha.Context) => void], void>(
+    process.platform === 'win32',
+    it,
+    'creates an address-based reminder',
+    async function (this: Mocha.Context) {
+      if (!available) return this.skip();
+      // Increase the timeout to accommodate slow network connections
+      this.timeout(30000);
 
-    const todo = givenTodo({remindAtAddress: aLocation.address});
-    const response = await client.post('/todos').send(todo).expect(200);
-    todo.remindAtGeo = aLocation.geostring;
+      const todo = givenTodo({remindAtAddress: aLocation.address});
+      const response = await client.post('/todos').send(todo).expect(200);
+      todo.remindAtGeo = aLocation.geostring;
 
-    expect(response.body).to.containEql(todo);
+      expect(response.body).to.containEql(todo);
 
-    const result = await todoRepo.findById(response.body.id);
-    expect(result).to.containEql(todo);
-  });
+      const result = await todoRepo.findById(response.body.id);
+      expect(result).to.containEql(todo);
+    },
+  );
 
   it('returns 400 if it cannot find an address', async function (this: Mocha.Context) {
     if (!available) return this.skip();

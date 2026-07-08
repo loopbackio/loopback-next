@@ -40,6 +40,7 @@ import {IncomingMessage, ServerResponse} from 'http';
 import {ServerOptions} from 'https';
 import {dump} from 'js-yaml';
 import {cloneDeep} from 'lodash';
+import qs from 'qs';
 import {ServeStaticOptions} from 'serve-static';
 import {writeErrorToResponse} from 'strong-error-handler';
 import {BodyParser, REQUEST_BODY_PARSER_TAG} from './body-parsers';
@@ -326,6 +327,18 @@ export class RestServer
     }
     if (this.config.router && typeof this.config.router.strict === 'boolean') {
       this._expressApp.set('strict routing', this.config.router.strict);
+    }
+
+    if (this.config.queryParser?.arrayLimit !== undefined) {
+      const arrayLimit = this.config.queryParser.arrayLimit;
+
+      this._expressApp.set('query parser', (str: string) => {
+        return qs.parse(str, {
+          arrayLimit,
+          allowPrototypes: false,
+          depth: 20,
+        });
+      });
     }
   }
 
@@ -1180,6 +1193,20 @@ export interface RestServerResolvedOptions {
   openApiSpec: OpenApiSpecOptions;
   apiExplorer: ApiExplorerOptions;
   requestBodyParser?: RequestBodyParserOptions;
+  /**
+   * Query string parser options
+   */
+  queryParser?: {
+    /**
+     * Maximum number of array elements to parse in query parameters.
+     * When not configured, Express uses its default query parser.
+     * The qs library defaults to 20 to prevent DoS attacks with large array indices.
+     * Set this to a higher value if your API needs to handle more than 20 array items.
+     *
+     * @see https://github.com/ljharb/qs#parsing-arrays
+     */
+    arrayLimit?: number;
+  };
   sequence?: Constructor<SequenceHandler>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   expressSettings: {[name: string]: any};

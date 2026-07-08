@@ -23,7 +23,7 @@ import {generateBundle} from './test-helper';
  * See https://github.com/assaf/zombie/issues/915
  */
 skipIf<[(this: Suite) => void], void>(
-  process.platform === 'win32', // Skip on Windows
+  process.platform === 'win32' || process.platform === 'darwin', // Skip on Windows and macOS due to Puppeteer issues
   describe,
   'bundle-web.js',
   () => {
