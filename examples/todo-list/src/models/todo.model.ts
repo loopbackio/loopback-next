@@ -6,7 +6,7 @@
 import {belongsTo, Entity, model, property} from '@loopback/repository';
 import {TodoList, TodoListWithRelations} from './todo-list.model';
 
-@model()
+@model({settings: {strict: false}})
 export class Todo extends Entity {
   @property({
     type: 'number',
