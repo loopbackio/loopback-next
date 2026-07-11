@@ -230,6 +230,26 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
       /* istanbul ignore next */
       return this.exit(err);
     }
+    // Check if modelDir contains subdirectories
+    const subdirectories = await utils.getSubdirectories(
+      this.artifactInfo.modelDir,
+    );
+    // If subdirectories exist, retrieve models from them
+    if (subdirectories.length > 0) {
+      for (const subdirectory of subdirectories) {
+        try {
+          const subdirectoryModelList = await utils.getArtifactList(
+            subdirectory,
+            'model',
+          );
+          modelList = modelList.concat(subdirectoryModelList);
+        } catch (err) {
+          console.error(
+            `Error retrieving models from subdirectory ${subdirectory}: ${err}`,
+          );
+        }
+      }
+    }
     let repoList;
     try {
       debug(`repository list dir ${this.artifactInfo.repoDir}`);
