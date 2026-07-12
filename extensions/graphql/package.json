@@ -48,7 +48,7 @@
     "@as-integrations/express4": "^1.1.2",
     "@graphql-tools/utils": "^11.1.0",
     "@loopback/http-server": "^7.0.13",
-    "body-parser": "^2.2.2",
+    "body-parser": "^2.3.0",
     "cors": "^2.8.6",
     "debug": "^4.4.3",
     "express": "^4.22.2",
