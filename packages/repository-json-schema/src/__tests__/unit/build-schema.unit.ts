@@ -203,6 +203,30 @@ describe('build-schema', () => {
       });
     });
 
+    it('keeps extensions on property', () => {
+      expect(
+        metaToJsonProperty({
+          type: String,
+          defaultFn: 'guid',
+          index: false,
+          length: 50,
+          precision: 10,
+          scale: 0,
+          generated: true,
+          hidden: true,
+        }),
+      ).to.eql({
+        type: 'string',
+        defaultFn: 'guid',
+        index: false,
+        length: 50,
+        precision: 10,
+        scale: 0,
+        generated: true,
+        hidden: true,
+      });
+    });
+
     it('keeps AJV keywords', () => {
       const schema = metaToJsonProperty({
         type: String,
