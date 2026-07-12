@@ -23,6 +23,7 @@ const sandbox = new TestSandbox(path.resolve(__dirname, '../.sandbox'));
 const sourceFileName = 'order.model.ts';
 const controllerFileName = 'order-customer.controller.ts';
 const controllerFileNameForSameTableRelation = 'employee.controller.ts';
+const controllerFileNameForMultipleRelations = 'task-employee.controller.ts';
 const repositoryFileName = 'order.repository.ts';
 const repositoryFileNameForSameTableRelation = 'employee.repository.ts';
 // speed up tests by avoiding reading docs
@@ -495,6 +496,54 @@ describe('lb4 relation', /** @this {Mocha.Suite} */ function () {
         assert.file(sourceFilePath);
         expectFileToMatchSnapshot(sourceFilePath);
       });
+    },
+  );
+
+  context(
+    'checks if the controller file created for multiple relations',
+    () => {
+      const promptArray = [
+        {
+          relationType: 'belongsTo',
+          sourceModel: 'Task',
+          destinationModel: 'Employee',
+          relationName: 'createdBy',
+        },
+        {
+          relationType: 'belongsTo',
+          sourceModel: 'Task',
+          destinationModel: 'Employee',
+          relationName: 'assignedTo',
+        },
+      ];
+      promptArray.forEach(function (multiItemPrompt) {
+        describe('answers ' + JSON.stringify(multiItemPrompt), () => {
+          suite(multiItemPrompt);
+        });
+      });
+      function suite(multiItemPrompt) {
+        before(async function runGeneratorWithAnswers() {
+          await sandbox.reset();
+          await testUtils
+            .executeGenerator(generator)
+            .inDir(sandbox.path, () =>
+              testUtils.givenLBProject(sandbox.path, {
+                additionalFiles: SANDBOX_FILES,
+              }),
+            )
+            .withOptions(options)
+            .withPrompts(multiItemPrompt);
+        });
+        it('checks controller content with belongsTo relation for multiple relations', async () => {
+          const filePath = path.join(
+            sandbox.path,
+            CONTROLLER_PATH,
+            controllerFileNameForMultipleRelations,
+          );
+          assert.file(filePath);
+          expectFileToMatchSnapshot(filePath);
+        });
+      }
     },
   );
 });

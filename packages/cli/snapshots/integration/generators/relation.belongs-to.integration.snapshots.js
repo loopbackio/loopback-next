@@ -238,6 +238,92 @@ export * from './order-customer.controller';
 `;
 
 
+exports[`lb4 relation checks if the controller file created for multiple relations answers {"relationType":"belongsTo","sourceModel":"Task","destinationModel":"Employee","relationName":"assignedTo"} checks controller content with belongsTo relation for multiple relations 1`] = `
+import {
+  repository,
+} from '@loopback/repository';
+import {
+  param,
+  get,
+  getModelSchemaRef,
+} from '@loopback/rest';
+import {
+  Task,
+  Employee,
+} from '../models';
+import {TaskRepository} from '../repositories';
+
+export class TaskEmployeeController {
+  constructor(
+    @repository(TaskRepository)
+    public taskRepository: TaskRepository,
+  ) { }
+
+  @get('/tasks/{id}/employee', {
+    responses: {
+      '200': {
+        description: 'Employee belonging to Task',
+        content: {
+          'application/json': {
+            schema: getModelSchemaRef(Employee),
+          },
+        },
+      },
+    },
+  })
+  async getEmployee(
+    @param.path.number('id') id: typeof Task.prototype.id,
+  ): Promise<Employee> {
+    return this.taskRepository.assignedTo(id);
+  }
+}
+
+`;
+
+
+exports[`lb4 relation checks if the controller file created for multiple relations answers {"relationType":"belongsTo","sourceModel":"Task","destinationModel":"Employee","relationName":"createdBy"} checks controller content with belongsTo relation for multiple relations 1`] = `
+import {
+  repository,
+} from '@loopback/repository';
+import {
+  param,
+  get,
+  getModelSchemaRef,
+} from '@loopback/rest';
+import {
+  Task,
+  Employee,
+} from '../models';
+import {TaskRepository} from '../repositories';
+
+export class TaskEmployeeController {
+  constructor(
+    @repository(TaskRepository)
+    public taskRepository: TaskRepository,
+  ) { }
+
+  @get('/tasks/{id}/employee', {
+    responses: {
+      '200': {
+        description: 'Employee belonging to Task',
+        content: {
+          'application/json': {
+            schema: getModelSchemaRef(Employee),
+          },
+        },
+      },
+    },
+  })
+  async getEmployee(
+    @param.path.number('id') id: typeof Task.prototype.id,
+  ): Promise<Employee> {
+    return this.taskRepository.createdBy(id);
+  }
+}
+
+`;
+
+
 exports[`lb4 relation checks if the controller file created for same table relation answers {"relationType":"belongsTo","sourceModel":"Employee","destinationModel":"Employee"} checks controller content with belongsTo relation with same table 1`] = `
 export class EmployeeController {}
 
