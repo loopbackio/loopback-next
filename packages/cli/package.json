@@ -70,7 +70,7 @@
     "swagger-parser": "^10.0.3",
     "swagger2openapi": "^7.0.8",
     "tabtab": "^3.0.2",
-    "terminal-link": "^2.1.1",
+    "terminal-link": "^5.0.0",
     "tildify": "^2.0.0",
     "ts-morph": "^27.0.2",
     "typescript": "~5.2.2",
