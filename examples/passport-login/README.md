@@ -74,8 +74,10 @@ To use Google, Facebook or Twitter logins, you'll need:
 - Copy `oauth2-providers.template.json` from this example project's root to
   `oauth2-providers.json`.
 - Update Google/Facebook/Twitter configuration in the json file.
-- Set `OAUTH_PROVIDERS_LOCATION` environment variable to
+- create a .env file Set `OAUTH_PROVIDERS_LOCATION` environment variable to
   `../oauth2-providers.json`.
+  - install dotenv package `npm i dotenv`
+  - `require('dotenv').config()` import it on the top of `application.ts` file.
 
 ## Test the login scenarios
 
