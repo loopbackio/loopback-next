@@ -49,6 +49,7 @@ module.exports = class BelongsToRelationGenerator extends (
     );
 
     this.artifactInfo.relationPropertyName = options.relationName;
+    this.artifactInfo.keyTo = options.keyTo;
     this.artifactInfo.targetModelPrimaryKey =
       options.destinationModelPrimaryKey;
     this.artifactInfo.targetModelPrimaryKeyType =
@@ -85,7 +86,11 @@ module.exports = class BelongsToRelationGenerator extends (
     const relationName = options.relationName;
     const defaultRelationName = options.defaultRelationName;
     const foreignKeyName = options.foreignKeyName;
-    const fktype = options.destinationModelPrimaryKeyType;
+    const keyTo = options.keyTo;
+    const fktype = keyTo
+      ? relationUtils.getModelPropertyType(modelDir, targetModel, keyTo) ||
+        options.destinationModelPrimaryKeyType
+      : options.destinationModelPrimaryKeyType;
 
     const project = new relationUtils.AstLoopBackProject();
     const sourceFile = relationUtils.addFileToProject(
@@ -103,6 +108,7 @@ module.exports = class BelongsToRelationGenerator extends (
       defaultRelationName,
       foreignKeyName,
       fktype,
+      keyTo,
     );
 
     relationUtils.addProperty(sourceClass, modelProperty);
@@ -123,12 +129,19 @@ module.exports = class BelongsToRelationGenerator extends (
     defaultRelationName,
     foreignKeyName,
     fktype,
+    keyTo,
   ) {
+    const keyToOption = keyTo ? `, keyTo: '${keyTo}'` : '';
+
     // checks if relation name is customized
     let relationDecorator = [
       {
         name: 'belongsTo',
-        arguments: [`() =>  ${className}`],
+        arguments: [
+          keyTo
+            ? `() =>  ${className}, {keyTo: '${keyTo}'}`
+            : `() =>  ${className}`,
+        ],
       },
     ];
     // already checked if the relation name is the same as the source key before
@@ -136,7 +149,9 @@ module.exports = class BelongsToRelationGenerator extends (
       relationDecorator = [
         {
           name: 'belongsTo',
-          arguments: [`() =>  ${className}, {name: '${relationName}'}`],
+          arguments: [
+            `() =>  ${className}, {name: '${relationName}'${keyToOption}}`,
+          ],
         },
       ];
     }

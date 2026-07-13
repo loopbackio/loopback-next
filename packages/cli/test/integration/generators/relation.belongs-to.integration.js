@@ -497,4 +497,81 @@ describe('lb4 relation', /** @this {Mocha.Suite} */ function () {
       });
     },
   );
+
+  context('generates belongsTo relation with keyTo option', () => {
+    before(async function runGeneratorWithAnswers() {
+      await sandbox.reset();
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {
+            additionalFiles: SANDBOX_FILES,
+          }),
+        )
+        .withArguments([
+          '--config',
+          `{"relationType":"belongsTo","sourceModel":"Order","destinationModel":"Customer","foreignKeyName":"customerId","keyTo":"name"}`,
+        ]);
+    });
+
+    it('generated model includes keyTo in belongsTo decorator', async () => {
+      const sourceFilePath = path.join(
+        sandbox.path,
+        MODEL_APP_PATH,
+        sourceFileName,
+      );
+      assert.file(sourceFilePath);
+      expectFileToMatchSnapshot(sourceFilePath);
+    });
+
+    it('generated controller description includes resolved via reference', async () => {
+      const filePath = path.join(
+        sandbox.path,
+        CONTROLLER_PATH,
+        controllerFileName,
+      );
+      assert.file(filePath);
+      expectFileToMatchSnapshot(filePath);
+    });
+  });
+
+  context(
+    'generates belongsTo relation with keyTo and custom relation name',
+    () => {
+      before(async function runGeneratorWithAnswers() {
+        await sandbox.reset();
+        await testUtils
+          .executeGenerator(generator)
+          .inDir(sandbox.path, () =>
+            testUtils.givenLBProject(sandbox.path, {
+              additionalFiles: SANDBOX_FILES,
+            }),
+          )
+          .withArguments([
+            '--config',
+            `{"relationType":"belongsTo","sourceModel":"Order","destinationModel":"Customer","foreignKeyName":"customerId","relationName":"myCustomer","keyTo":"name"}`,
+          ]);
+      });
+
+      it('generated model includes both name and keyTo in belongsTo decorator', async () => {
+        const sourceFilePath = path.join(
+          sandbox.path,
+          MODEL_APP_PATH,
+          sourceFileName,
+        );
+        assert.file(sourceFilePath);
+        expectFileToMatchSnapshot(sourceFilePath);
+      });
+
+      it('generated controller description includes resolved via reference with custom relation name', async () => {
+        const filePath = path.join(
+          sandbox.path,
+          CONTROLLER_PATH,
+          controllerFileName,
+        );
+        assert.file(filePath);
+        expectFileToMatchSnapshot(filePath);
+      });
+    },
+  );
 });

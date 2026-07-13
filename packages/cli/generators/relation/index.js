@@ -761,6 +761,10 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
 
     debug('Invoke generator...');
 
+    if (this.options.keyTo) {
+      this.artifactInfo.keyTo = this.options.keyTo;
+    }
+
     let relationGenerator;
 
     this.artifactInfo.name = this.artifactInfo.relationType;

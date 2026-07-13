@@ -21,7 +21,7 @@ export class <%= controllerClassName %> {
   @get('/<%= sourceModelPath %>/{id}/<%= targetModelName %>', {
     responses: {
       '200': {
-        description: '<%= targetModelClassName %> belonging to <%= sourceModelClassName %>',
+        description: '<%= targetModelClassName %> belonging to <%= sourceModelClassName %><%= keyTo ? " (resolved via " + targetModelClassName + "." + keyTo + ")" : "" %>',
         content: {
           'application/json': {
             schema: getModelSchemaRef(<%= targetModelClassName %>),
