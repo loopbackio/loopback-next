@@ -289,6 +289,12 @@ export class ModelDefinition {
     );
     return idProps;
   }
+
+  readOnlyProperties(): string[] {
+    return Object.keys(this.properties).filter(
+      prop => this.properties[prop].readOnly,
+    );
+  }
 }
 
 function asJSON(value: any): any {
@@ -443,6 +449,12 @@ export class Entity extends Model implements Persistable {
    */
   static getIdProperties(): string[] {
     return this.definition.idProperties();
+  }
+  static getExcludeProperties(): string[] {
+    return [
+      ...this.definition.idProperties(),
+      ...this.definition.readOnlyProperties(),
+    ];
   }
 
   /**

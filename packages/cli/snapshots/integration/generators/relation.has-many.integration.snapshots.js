@@ -140,7 +140,10 @@ export class CustomerOrderController {
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(Order, {partial: true}),
+          schema: getModelSchemaRef(Order, {
+            partial: true,
+            exclude: ['id', 'token', ],
+          }),
         },
       },
     })
@@ -255,7 +258,10 @@ export class CustomerOrderController {
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(Order, {partial: true}),
+          schema: getModelSchemaRef(Order, {
+            partial: true,
+            exclude: ['id', 'token', ],
+          }),
         },
       },
     })
@@ -331,6 +337,12 @@ export class Order extends Entity {
   name?: string;
 
   @property({
+    type: 'string',
+    readOnly: true
+  })
+  token?: string;
+
+  @property({
     type: 'number',
   })
   mykey?: number;
@@ -388,6 +400,12 @@ export class Order extends Entity {
     type: 'string',
   })
   name?: string;
+
+  @property({
+    type: 'string',
+    readOnly: true
+  })
+  token?: string;
 
   @property({
     type: 'number',

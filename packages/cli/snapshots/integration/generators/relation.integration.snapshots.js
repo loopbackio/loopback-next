@@ -93,7 +93,10 @@ export class CustomerOrderController {
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(Order, {partial: true}),
+          schema: getModelSchemaRef(Order, {
+            partial: true,
+            exclude: ['id', 'token', ],
+          }),
         },
       },
     })
@@ -208,7 +211,10 @@ export class CustomerInheritanceOrderInheritanceController {
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(OrderInheritance, {partial: true}),
+          schema: getModelSchemaRef(OrderInheritance, {
+            partial: true,
+            exclude: ['tid', ],
+          }),
         },
       },
     })
@@ -323,7 +329,10 @@ export class CustomerInheritanceOrderInheritanceController {
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(OrderInheritance, {partial: true}),
+          schema: getModelSchemaRef(OrderInheritance, {
+            partial: true,
+            exclude: ['id', ],
+          }),
         },
       },
     })

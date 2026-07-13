@@ -39,6 +39,9 @@ describe('CrudRestController for a simple Product model', () => {
     @property()
     description?: string;
 
+    @property({readOnly: true})
+    token?: string;
+
     constructor(data: Partial<Product>) {
       super(data);
     }
@@ -93,6 +96,12 @@ describe('CrudRestController for a simple Product model', () => {
           },
         ],
       });
+    });
+
+    it('accepts request with value provided for readOnly property', async () => {
+      const product = {name: 'a name', token: 'aRandomString'};
+      const {body} = await client.post('/products').send(product).expect(200);
+      expect(body).to.deepEqual({id: 2, ...product});
     });
   });
 
@@ -173,6 +182,25 @@ describe('CrudRestController for a simple Product model', () => {
       ]);
     });
 
+    it('reject updates when readonly field is provided', async () => {
+      const {body} = await client
+        .patch('/products')
+        .send({token: 'newRandomString', ...PATCH_DATA})
+        .expect(422);
+
+      expect(body.error).to.containDeep({
+        code: 'VALIDATION_FAILED',
+        details: [
+          {
+            path: '',
+            code: 'additionalProperties',
+            message: 'must NOT have additional properties',
+            info: {additionalProperty: 'token'},
+          },
+        ],
+      });
+    });
+
     it('supports `where` query param', async () => {
       const {body} = await client
         .patch('/products')
@@ -187,6 +215,25 @@ describe('CrudRestController for a simple Product model', () => {
         {...toJSON(pencil) /* pencil was not patched */},
       ]);
     });
+
+    it('rejects update request with `id` value', async () => {
+      const {body} = await client
+        .patch('/products')
+        .query({'where[name]': pen.name})
+        .send({id: 100, ...PATCH_DATA})
+        .expect(422);
+      expect(body.error).to.containDeep({
+        code: 'VALIDATION_FAILED',
+        details: [
+          {
+            path: '',
+            code: 'additionalProperties',
+            message: 'must NOT have additional properties',
+            info: {additionalProperty: 'id'},
+          },
+        ],
+      });
+    });
   });
 
   describe('updateById', () => {
@@ -200,6 +247,25 @@ describe('CrudRestController for a simple Product model', () => {
         {...toJSON(pen), ...PATCH_DATA},
         {...toJSON(pencil) /* pencil was not patched */},
       ]);
+    });
+
+    it('reject updates when readonly field is provided', async () => {
+      const {body} = await client
+        .patch(`/products/${pen.id}`)
+        .send({token: 'newRandomString', ...PATCH_DATA})
+        .expect(422);
+
+      expect(body.error).to.containDeep({
+        code: 'VALIDATION_FAILED',
+        details: [
+          {
+            path: '',
+            code: 'additionalProperties',
+            message: 'must NOT have additional properties',
+            info: {additionalProperty: 'token'},
+          },
+        ],
+      });
     });
 
     // TODO(bajtos) to fully verify this functionality, we should create
@@ -224,13 +290,22 @@ describe('CrudRestController for a simple Product model', () => {
     beforeEach(seedData);
 
     it('replaces model with the given id', async () => {
-      const newData = Object.assign({}, pen.toJSON(), PATCH_DATA);
-      await client.put(`/products/${pen.id}`).send(newData).expect(204);
+      const jsonPen = pen.toJSON();
+      const updatedPen: Record<string, unknown> = {};
 
-      const stored = await repo.find();
+      Object.keys(jsonPen).forEach(key => {
+        if (key !== 'id') {
+          updatedPen[key] = jsonPen[key as keyof typeof jsonPen];
+        }
+      });
+      const newData = Object.assign({}, updatedPen, PATCH_DATA);
+      await client.put(`/products/${pen.id}`).send({...newData});
+      const stored = await repo.find({fields: {id: false}});
+      const pencilJSON: {name?: string} = toJSON(pencil);
+
       expect(toJSON(stored)).to.deepEqual([
         {...newData},
-        {...toJSON(pencil) /* pencil was not modified */},
+        {name: pencilJSON.name /* pencil was not modified */},
       ]);
     });
 
