@@ -373,3 +373,147 @@ export class Employee extends Entity {
 }
 
 `;
+
+
+exports[`lb4 relation generates belongsTo relation with keyTo option generated model includes keyTo in belongsTo decorator 1`] = `
+import {Entity, model, property, belongsTo} from '@loopback/repository';
+import {Customer} from './customer.model';
+
+@model()
+export class Order extends Entity {
+  @property({
+    type: 'number',
+    id: true,
+    default: 0,
+  })
+  id?: number;
+
+  @property({
+    type: 'string',
+  })
+  name?: string;
+
+  @belongsTo(() => Customer, {keyTo: 'name'})
+  customerId: string;
+
+  constructor(data?: Partial<Order>) {
+    super(data);
+  }
+}
+
+`;
+
+
+exports[`lb4 relation generates belongsTo relation with keyTo option generated controller description includes resolved via reference 1`] = `
+import {
+  repository,
+} from '@loopback/repository';
+import {
+  param,
+  get,
+  getModelSchemaRef,
+} from '@loopback/rest';
+import {
+  Order,
+  Customer,
+} from '../models';
+import {OrderRepository} from '../repositories';
+
+export class OrderCustomerController {
+  constructor(
+    @repository(OrderRepository)
+    public orderRepository: OrderRepository,
+  ) { }
+
+  @get('/orders/{id}/customer', {
+    responses: {
+      '200': {
+        description: 'Customer belonging to Order (resolved via Customer.name)',
+        content: {
+          'application/json': {
+            schema: getModelSchemaRef(Customer),
+          },
+        },
+      },
+    },
+  })
+  async getCustomer(
+    @param.path.number('id') id: typeof Order.prototype.id,
+  ): Promise<Customer> {
+    return this.orderRepository.customer(id);
+  }
+}
+
+`;
+
+
+exports[`lb4 relation generates belongsTo relation with keyTo and custom relation name generated model includes both name and keyTo in belongsTo decorator 1`] = `
+import {Entity, model, property, belongsTo} from '@loopback/repository';
+import {Customer} from './customer.model';
+
+@model()
+export class Order extends Entity {
+  @property({
+    type: 'number',
+    id: true,
+    default: 0,
+  })
+  id?: number;
+
+  @property({
+    type: 'string',
+  })
+  name?: string;
+
+  @belongsTo(() => Customer, {name: 'myCustomer', keyTo: 'name'})
+  customerId: string;
+
+  constructor(data?: Partial<Order>) {
+    super(data);
+  }
+}
+
+`;
+
+
+exports[`lb4 relation generates belongsTo relation with keyTo and custom relation name generated controller description includes resolved via reference with custom relation name 1`] = `
+import {
+  repository,
+} from '@loopback/repository';
+import {
+  param,
+  get,
+  getModelSchemaRef,
+} from '@loopback/rest';
+import {
+  Order,
+  Customer,
+} from '../models';
+import {OrderRepository} from '../repositories';
+
+export class OrderCustomerController {
+  constructor(
+    @repository(OrderRepository)
+    public orderRepository: OrderRepository,
+  ) { }
+
+  @get('/orders/{id}/customer', {
+    responses: {
+      '200': {
+        description: 'Customer belonging to Order (resolved via Customer.name)',
+        content: {
+          'application/json': {
+            schema: getModelSchemaRef(Customer),
+          },
+        },
+      },
+    },
+  })
+  async getCustomer(
+    @param.path.number('id') id: typeof Order.prototype.id,
+  ): Promise<Customer> {
+    return this.orderRepository.myCustomer(id);
+  }
+}
+
+`;
