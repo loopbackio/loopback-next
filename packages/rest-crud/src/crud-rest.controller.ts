@@ -158,9 +158,19 @@ export function defineCrudRestController<
     ) {}
 
     @get('/', {
-      ...response.array(200, `Array of ${modelName} instances`, modelCtor, {
-        includeRelations: true,
-      }),
+      responses: {
+        '200': {
+          description: `Array of ${modelName} instances`,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'array',
+                items: getModelSchemaRef(modelCtor, {includeRelations: true}),
+              },
+            },
+          },
+        },
+      },
     })
     async find(
       @param.filter(modelCtor)
