@@ -61,6 +61,12 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
   }
 
   setOptions() {
+    this.artifactInfo.modelName = this.options.modelName;
+    this.artifactInfo.repositoryName = this.options.repositoryName;
+    this.artifactInfo.id = this.options.id;
+    this.artifactInfo.idType = this.options.idType;
+    this.artifactInfo.idOmitted = this.options.idOmitted;
+    this.artifactInfo.httpPathName = this.options.httpPathName;
     return super.setOptions();
   }
 
@@ -197,6 +203,7 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
         type: 'confirm',
         name: 'idOmitted',
         message: g.f('Is the id omitted when creating a new instance?'),
+        when: this.artifactInfo.idOmitted === undefined,
         default: true,
       },
       {
