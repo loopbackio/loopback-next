@@ -101,12 +101,16 @@ module.exports = class HasManyThroughRelationGenerator extends (
     const relationType = 'hasMany';
     const relationName = options.relationName;
     const sourceKey = options.sourceKeyOnThrough;
+    const customSourceModelKey = options.customSourceModelKey;
+    const customTargetModelKey = options.customTargetModelKey;
     const targetKey = options.targetKeyOnThrough;
     const dftSourceKey = options.defaultSourceKeyOnThrough;
     const dftTargetKey = options.defaultTargetKeyOnThrough;
-    const sourceKeyType = options.sourceModelPrimaryKeyType;
-    const targetKeyType = options.destinationModelPrimaryKeyType;
-
+    const sourceKeyType =
+      options.customSourceModelKeyType || options.sourceModelPrimaryKeyType;
+    const targetKeyType =
+      options.customTargetModelKeyType ||
+      options.destinationModelPrimaryKeyType;
     // checks if both target and source key exist in through model
     const project = new relationUtils.AstLoopBackProject();
     const throughFile = relationUtils.addFileToProject(
@@ -145,6 +149,8 @@ module.exports = class HasManyThroughRelationGenerator extends (
       sourceKey,
       isDefaultTargetKey,
       targetKey,
+      customSourceModelKey,
+      customTargetModelKey,
     );
     relationUtils.addProperty(sourceClass, modelProperty);
     let imports;
@@ -200,21 +206,31 @@ module.exports = class HasManyThroughRelationGenerator extends (
     sourceKey,
     isDefaultTargetKey,
     targetKey,
+    customSourceModelKey,
+    customTargetModelKey,
   ) {
     let keyFrom = '';
     let keyTo = '';
+    let customReferenceKeyFrom = '';
+    let customReferenceKeyTo = '';
     if (!isDefaultSourceKey) {
       keyFrom = `, keyFrom: '${sourceKey}'`;
     }
     if (!isDefaultTargetKey) {
       keyTo = `, keyTo: '${targetKey}'`;
     }
+    if (customSourceModelKey) {
+      customReferenceKeyFrom = `customReferenceKeyFrom: '${customSourceModelKey}', `;
+    }
+    if (customTargetModelKey) {
+      customReferenceKeyTo = `customReferenceKeyTo: '${customTargetModelKey}', `;
+    }
 
     const relationDecorator = [
       {
         name: 'hasMany',
         arguments: [
-          `() => ${targetClass}, {through: {model: () => ${throughModel}${keyFrom}${keyTo}}}`,
+          `() => ${targetClass}, {${customReferenceKeyFrom}${customReferenceKeyTo}through: {model: () => ${throughModel}${keyFrom}${keyTo}}}`,
         ],
       },
     ];

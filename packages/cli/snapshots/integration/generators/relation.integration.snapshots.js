@@ -350,9 +350,3 @@ export class CustomerInheritanceOrderInheritanceController {
 }
 
 `;
-
-
-exports[`lb4 relation add controller to existing index file only once check if the controller exported to index file only once 1`] = `
-export * from './order-customer.controller';
-
-`;

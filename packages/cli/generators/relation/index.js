@@ -71,10 +71,28 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
       description: g.f('Source model'),
     });
 
-    this.option('destinationModel', {
+    this.option('customReferenceKeys', {
       type: String,
       required: false,
-      description: g.f('Destination model'),
+      description: g.f('Any Custom Reference Kyes'),
+    });
+
+    this.option('customSourceModelKey', {
+      type: String,
+      required: false,
+      description: g.f('Custom Source model key'),
+    });
+
+    this.option('customTargetModelKey', {
+      type: String,
+      required: false,
+      description: g.f('Custom Destination model'),
+    });
+
+    this.option('destinationModelKey', {
+      type: String,
+      required: false,
+      description: g.f('Destination model key'),
     });
 
     this.option('throughModel', {
@@ -381,6 +399,115 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
         'throughModel',
         [this.artifactInfo.destinationModel, this.artifactInfo.sourceModel],
       );
+    }
+  }
+
+  // Prompt a user for confirmation if they have custom reference keys
+  async promptCustomReferenceKeys() {
+    if (this.shouldExit()) return false;
+    if (this.options.customReferenceKeys) {
+      this.artifactInfo.customReferenceKeys = this.options.customReferenceKeys;
+      if (this.options.customSourceModelKey) {
+        this.artifactInfo.customSourceModelKey =
+          this.options.customSourceModelKey;
+      }
+      if (this.options.customTargetModelKey) {
+        this.artifactInfo.customTargetModelKey =
+          this.options.customTargetModelKey;
+      }
+    }
+
+    if (this.artifactInfo.relationType === 'hasManyThrough') {
+      const props = await this.prompt([
+        {
+          type: 'confirm',
+          name: 'customReferenceKeys',
+          message: g.f(
+            'Do you have custom reference keys for source and target models?',
+          ),
+          when: this.artifactInfo.customReferenceKeys === undefined,
+          default: false,
+        },
+      ]);
+      // debug(`props after inclusion resolver promps: ${inspect(props)}`);
+      Object.assign(this.artifactInfo, props);
+
+      if (this.artifactInfo.customReferenceKeys) {
+        const answerSource = await this.prompt([
+          {
+            type: 'input',
+            name: 'customSourceModelKey',
+            message: g.f('What is the name of reference key in source model?'),
+            when: this.artifactInfo.customSourceModelKey === undefined,
+          },
+        ]);
+        if (answerSource.customSourceModelKey) {
+          this.artifactInfo.customSourceModelKey =
+            answerSource.customSourceModelKey;
+        }
+
+        const answerTarget = await this.prompt([
+          {
+            type: 'input',
+            name: 'customTargetModelKey',
+            message: g.f('What is the name of reference key in target model?'),
+            when: this.artifactInfo.customTargetModelKey === undefined,
+          },
+        ]);
+        if (answerTarget.customTargetModelKey) {
+          this.artifactInfo.customTargetModelKey =
+            answerTarget.customTargetModelKey;
+        }
+        const customSourceModelKeyType = relationUtils.getModelPropertyType(
+          this.artifactInfo.modelDir,
+          this.artifactInfo.sourceModel,
+          this.artifactInfo.customSourceModelKey,
+        );
+
+        const customTargetModelKeyType = relationUtils.getModelPropertyType(
+          this.artifactInfo.modelDir,
+          this.artifactInfo.destinationModel,
+          this.artifactInfo.customTargetModelKey,
+        );
+
+        if (customSourceModelKeyType) {
+          this.artifactInfo.customSourceModelKeyType = customSourceModelKeyType;
+        } else {
+          const answer = await this.prompt([
+            {
+              type: 'list',
+              name: 'customSourceModelKeyType',
+              message: g.f(
+                'What is the type of the custom reference key of source model?',
+              ),
+              choices: ['number', 'string', 'object'],
+              when: this.artifactInfo.customSourceModelKeyType === undefined,
+              default: 'number',
+            },
+          ]);
+          this.artifactInfo.customSourceModelKeyType =
+            answer.customSourceModelKeyType;
+        }
+
+        if (customTargetModelKeyType) {
+          this.artifactInfo.customTargetModelKeyType = customTargetModelKeyType;
+        } else {
+          const answer = await this.prompt([
+            {
+              type: 'list',
+              name: 'customTargetModelKeyType',
+              message: g.f(
+                'What is the type of the custom reference key of source model?',
+              ),
+              choices: ['number', 'string', 'object'],
+              when: this.artifactInfo.customTargetModelKeyType === undefined,
+              default: 'number',
+            },
+          ]);
+          this.artifactInfo.customTargetModelKeyType =
+            answer.customTargetModelKeyType;
+        }
+      }
     }
   }
 
