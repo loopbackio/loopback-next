@@ -125,7 +125,18 @@ export class AuthorizationInterceptor implements Provider<Interceptor> {
       error.statusCode = this.options.defaultStatusCodeForDeny;
       throw error;
     }
-    return next();
+    const restrictedProperties: string[] = await invocationCtx.get(
+      AuthorizationTags.RESTRICTED_FIELDS,
+    );
+    const result = await next();
+    if (result && restrictedProperties) {
+      restrictedProperties.forEach(property => {
+        if (typeof result === 'object') {
+          delete (result as Record<string, unknown>)[property];
+        }
+      });
+    }
+    return result;
   }
 }
 
