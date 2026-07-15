@@ -30,6 +30,39 @@ Example use:
 const result = await repository.execute('SELECT * FROM Products');
 ```
 
+## Examples
+
+### MySQL
+
+Use parameterized queries to avoid SQL injection attacks.
+
+```ts
+const result = await repository.execute('SELECT * FROM Products WHERE id = ?', [
+  productId,
+]);
+```
+
+### PostgreSQL
+
+```ts
+const result = await repository.execute(
+  'SELECT * FROM Products WHERE id = $1',
+  [productId],
+);
+```
+
+### MongoDB
+
+```ts
+const result = await repository.execute('MyCollection', 'aggregate', [
+  {$unwind: '$data'},
+  {$out: 'tempData'},
+]);
+```
+
+Use parameterized queries whenever possible instead of constructing SQL strings
+manually.
+
 See API docs for parameter reference, additional information and examples:
 
 - [SQL variant](./apidocs/repository.defaultcrudrepository.execute.md)
