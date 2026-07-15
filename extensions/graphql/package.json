@@ -55,7 +55,7 @@
     "graphql": "^16.14.2",
     "graphql-ws": "^5.16.2",
     "type-graphql": "^2.0.0-rc.2",
-    "ws": "^8.20.1"
+    "ws": "^8.21.1"
   },
   "devDependencies": {
     "@graphql-yoga/subscription": "^5.0.5",
