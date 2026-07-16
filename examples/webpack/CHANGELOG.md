@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.13.15](https://github.com/loopbackio/loopback-next/compare/@loopback/example-webpack@0.13.14...@loopback/example-webpack@0.13.15) (2026-07-16)
+
+**Note:** Version bump only for package @loopback/example-webpack
+
+
+
+
+
 ## [0.13.14](https://github.com/loopbackio/loopback-next/compare/@loopback/example-webpack@0.13.13...@loopback/example-webpack@0.13.14) (2026-06-11)
 
 **Note:** Version bump only for package @loopback/example-webpack

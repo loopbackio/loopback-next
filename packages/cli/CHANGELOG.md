@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.0.16](https://github.com/loopbackio/loopback-next/compare/@loopback/cli@7.0.15...@loopback/cli@7.0.16) (2026-07-16)
+
+
+### Bug Fixes
+
+* **cli:** support keyTo option in belongsTo relation generator ([7bae364](https://github.com/loopbackio/loopback-next/commit/7bae364cc15b20cfdd78ff66b2811f19efddd4ef)), closes [#11594](https://github.com/loopbackio/loopback-next/issues/11594)
+
+
+
+
+
 ## [7.0.15](https://github.com/loopbackio/loopback-next/compare/@loopback/cli@7.0.14...@loopback/cli@7.0.15) (2026-06-11)
 
 **Note:** Version bump only for package @loopback/cli

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.0.16](https://github.com/loopbackio/loopback-next/compare/@loopback/docs@8.0.15...@loopback/docs@8.0.16) (2026-07-16)
+
+
+### Bug Fixes
+
+* delete appsody.md too ([d4c179f](https://github.com/loopbackio/loopback-next/commit/d4c179f5dfc773a0e566456abab704e63035122e))
+* **docs:** remove Appsody documentation and sidebar reference ([3dd5964](https://github.com/loopbackio/loopback-next/commit/3dd5964cebdf2167109eff49c509a8ca5918c026))
+
+
+
+
+
 ## [8.0.15](https://github.com/loopbackio/loopback-next/compare/@loopback/docs@8.0.14...@loopback/docs@8.0.15) (2026-06-11)
 
 
