@@ -210,7 +210,7 @@ export function defineCrudRestController<
     async create(
       @body(modelCtor, {
         title: `New${modelName}`,
-        exclude: modelCtor.getIdProperties() as (keyof T)[],
+        exclude: modelCtor.getExcludeProperties() as (keyof T)[],
       })
       data: Omit<T, IdName>,
     ): Promise<T> {
