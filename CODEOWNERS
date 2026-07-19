@@ -270,6 +270,14 @@
 /examples/rest-crud @nabdelgadir
 
 #
+# Cache
+#
+# - Issue label: n/a
+# - Primary owner(s): @sohaibahsan007 @awaissaeedforenax @raymondfeng
+# - Standby owner(s): @sohaibahsan007 @awaissaeedforenax
+/examples/redis-cache @sohaibahsan007 @awaissaeedforenax
+
+#
 # Cloud Native tooling
 #
 # - Issue label: CloudNative
