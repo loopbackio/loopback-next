@@ -324,7 +324,10 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
       const originalServiceClassName = c.serviceClassName;
 
       c.fileName = getControllerFileName(c.tag || originalClassName);
-      if (this.options.prefix) {
+      if (
+        this.options.prefix &&
+        (!this.options.outDir || this.options.outDir === 'src')
+      ) {
         c.fileName = this.options.prefix.toLowerCase() + '.' + c.fileName;
       }
       c.serviceFileName = getServiceFileName(c.tag || originalServiceClassName);
@@ -447,7 +450,28 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
       if (debug.enabled) {
         debug('Copying artifact to: %s', dest);
       }
-      const source = m.kind === 'class' ? modelSource : typeSource;
+      let source = m.kind === 'class' ? modelSource : typeSource;
+      if (
+        m.kind === 'class' &&
+        modelFile.includes('-with-relations.model.ts')
+      ) {
+        const modelSourceWithExportsOnly = this.templatePath(
+          'src/models/model-template-with-re-exports-only.ts.ejs',
+        );
+        source = modelSourceWithExportsOnly;
+        if (this.options.prefix) m.prefix = this.options.prefix.toLowerCase();
+        const exportModelFileName = modelFile.split(
+          '-with-relations.model.ts',
+        )[0];
+        let modelName = exportModelFileName;
+        if (m.prefix) {
+          const stripped = exportModelFileName.split(m.prefix + '-')[1];
+          modelName = stripped ?? exportModelFileName;
+        }
+        m.exportModelName = utils.toClassName(modelName);
+        m.exportModelFileName = exportModelFileName + '.model';
+        if (m.prefix) m.prefix = utils.toClassName(m.prefix);
+      }
       this.copyTemplatedFiles(source, dest, mixinEscapeComment(m));
     }
   }
