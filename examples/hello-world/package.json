@@ -19,7 +19,7 @@
     "directory": "examples/hello-world"
   },
   "engines": {
-    "node": "20 || 22 || 24"
+    "node": "22 || 24 || 26"
   },
   "scripts": {
     "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
