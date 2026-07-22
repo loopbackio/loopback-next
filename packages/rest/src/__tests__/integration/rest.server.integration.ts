@@ -1349,14 +1349,19 @@ paths:
     }
     const server = await givenAServer();
     server.controller(MyController);
-    const client = createClientForHandler(server.requestHandler);
-    const requests: Promise<unknown>[] = Array(10)
-      .fill([
-        client.get('/hello').expect(200, 'hello'),
-        client.get('/greet').expect(200, 'greet'),
-      ])
-      .flat();
-    await Promise.all(requests);
+    await server.start();
+    try {
+      const client = supertest(server.url);
+      const requests: Promise<unknown>[] = Array(10)
+        .fill([
+          client.get('/hello').expect(200, 'hello'),
+          client.get('/greet').expect(200, 'greet'),
+        ])
+        .flat();
+      await Promise.all(requests);
+    } finally {
+      await server.stop();
+    }
   });
 
   describe('basePath', () => {
