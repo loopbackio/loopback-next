@@ -61,7 +61,7 @@
     "eslint-config-prettier": "^9.1.1",
     "eslint-plugin-eslint-plugin": "^5.5.1",
     "eslint-plugin-mocha": "^10.5.0",
-    "eslint-plugin-prettier": "^5.5.5",
+    "eslint-plugin-prettier": "^5.5.6",
     "fs-extra": "^11.3.6",
     "husky": "^9.1.7",
     "lerna": "^9.0.7",
@@ -70,7 +70,7 @@
     "mem-fs": "^2.3.0",
     "mem-fs-editor": "^9.7.0",
     "open-cli": "^9.0.0",
-    "prettier": "^3.8.3",
+    "prettier": "^3.9.6",
     "typescript": "~5.2.2"
   },
   "engineStrict": true,
