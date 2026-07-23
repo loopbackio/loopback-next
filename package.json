@@ -67,7 +67,7 @@
     "lerna": "^9.0.7",
     "lint-staged": "^17.1.0",
     "markdown-table": "^3.0.4",
-    "mem-fs": "^2.3.0",
+    "mem-fs": "^4.1.5",
     "mem-fs-editor": "^9.7.0",
     "open-cli": "^9.0.0",
     "prettier": "^3.8.3",
