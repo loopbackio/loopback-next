@@ -65,7 +65,7 @@
     "fs-extra": "^11.3.6",
     "husky": "^9.1.7",
     "lerna": "^9.0.7",
-    "lint-staged": "^17.1.0",
+    "lint-staged": "^17.2.0",
     "markdown-table": "^3.0.4",
     "mem-fs": "^2.3.0",
     "mem-fs-editor": "^9.7.0",
