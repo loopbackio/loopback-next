@@ -34,6 +34,7 @@ lb4 openapi [<url>] [options]
 - `--client`: Generate client-side service proxies and controllers with
   implementation for the OpenAPI spec Default: `false`.
 - `--datasource`: A valid datasource name
+- `--prefix`: A prefix to artifacts Optional
 - `--positional`: A flag to control if service methods use positional parameters
   or an object with named properties. Default: `true`.
 
