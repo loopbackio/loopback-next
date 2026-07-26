@@ -2,8 +2,16 @@ import {inject} from '@loopback/core';
 <%if (isRepositoryBaseBuiltin) {  -%>
 import {<%= repositoryTypeClass %>} from '@loopback/repository';
 <% } -%>
-import {<%= dataSourceClassName %>} from '../datasources';
-import {<%= modelName %>, <%= modelName %>Relations} from '../models';
+<%if (modelSubDirs[modelName]) {  -%>
+  import {<%= dataSourceClassName %>} from '../../datasources';
+  import {<%= modelName %>, <%= modelName %>Relations} from '../../models';
+<% } -%>
+
+<%if (!modelSubDirs[modelName]) {  -%>
+  import {<%= dataSourceClassName %>} from '../datasources';
+  import {<%= modelName %>, <%= modelName %>Relations} from '../models';
+<% } -%>
+
 <%if ( !isRepositoryBaseBuiltin ) { -%>
 import {<%=repositoryBaseClass %>} from './<%=repositoryBaseFile %>';
 <% } -%>
