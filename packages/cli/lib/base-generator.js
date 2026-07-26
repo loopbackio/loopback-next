@@ -159,7 +159,7 @@ module.exports = class BaseGenerator extends Generator {
     }
   }
 
-  async setOptions() {
+  async setOptions(options = {}) {
     let opts = {};
     const jsonFileOrValue = this.options.config;
     debug(
@@ -195,9 +195,29 @@ module.exports = class BaseGenerator extends Generator {
       this.exit('Invalid config file or value: ' + jsonFileOrValue);
       return;
     }
-    for (const o in opts) {
-      if (!this.options[o]) {
-        this.options[o] = opts[o];
+
+    if (Object.keys(options).length) {
+      for (const o in opts) {
+        if (opts[o] !== undefined || opts[o] !== null) {
+          this.options[o] = opts[o];
+        }
+      }
+      for (const o in options) {
+        if (options[o] !== undefined || options[o] !== null) {
+          if (o === 'views' || o === 'global' || o === 'client') {
+            this.options[o] = options[o] === 'true';
+          } else {
+            this.options[o] = options[o];
+          }
+        }
+      }
+    } else {
+      for (const o in opts) {
+        if (!this.options[o]) {
+          if (opts[o] !== undefined || opts[o] !== null) {
+            this.options[o] = opts[o];
+          }
+        }
       }
     }
 
