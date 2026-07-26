@@ -187,7 +187,6 @@ export async function validateValueAgainstSchema(
       buildErrorDetails(validationErrors),
     );
   }
-
   // Throw invalid value error
   throw RestHttpErrors.invalidData(value, options.name ?? '(unknown)', {
     details: buildErrorDetails(validationErrors),
