@@ -697,6 +697,17 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
           ),
       },
     ]).then(props => {
+      if (
+        props.relationName === this.artifactInfo.foreignKeyName ||
+        this.artifactInfo.relationName === this.artifactInfo.foreignKeyName
+      ) {
+        /* istanbul ignore next */
+        return this.exit(
+          new Error(
+            `relation name ${props.relationName} cannot be the same as foreign key name ${this.artifactInfo.foreignKeyName}.`,
+          ),
+        );
+      }
       debug(`props after relation name prompt: ${inspect(props)}`);
       // checks if the relation name already exists
       this.artifactInfo.srcRepositoryFile = path.resolve(
