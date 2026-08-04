@@ -113,6 +113,9 @@
       "path": "extensions/cron/tsconfig.json"
     },
     {
+      "path": "extensions/graphql-envelop/tsconfig.json"
+    },
+    {
       "path": "extensions/graphql/tsconfig.json"
     },
     {
