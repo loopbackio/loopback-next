@@ -16,9 +16,9 @@
     "incremental": true,
 
     "lib": ["es2020"],
-    "module": "commonjs",
+    "module": "node16",
     "esModuleInterop": true,
-    "moduleResolution": "node",
+    "moduleResolution": "node16",
     "target": "es2018",
     "sourceMap": true,
     "declaration": true,
