@@ -15,6 +15,7 @@ const generator = path.join(__dirname, '../../../generators/relation');
 const SANDBOX_FILES = require('../../fixtures/relation').SANDBOX_FILES2;
 const SANDBOX_FILES4 = require('../../fixtures/relation').SANDBOX_FILES4;
 const testUtils = require('../../test-utils');
+const fs = require('fs');
 
 // Test Sandbox
 const CONTROLLER_PATH = 'src/controllers';
@@ -314,6 +315,70 @@ describe('lb4 relation overwrite by passing --force flag', /** @this {Mocha.Suit
     it('rejects when relation already exists and no --force flag is provided in belongsTo relation', async () => {
       await sandbox.reset();
       const projectPath = sandbox.path;
+      const doctorModel = path.join(
+        projectPath,
+        'src',
+        'models',
+        'doctor.model.ts',
+      );
+
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(projectPath, dir =>
+          testUtils.givenLBProject(dir, {
+            additionalFiles: SANDBOX_FILES,
+          }),
+        )
+        .withArguments([
+          '--relationType',
+          'belongsTo',
+          '--sourceModel',
+          'Doctor',
+          '--destinationModel',
+          'Patient',
+          '--foreignKeyName',
+          'patientId',
+          '--relationName',
+          'patients',
+        ])
+        .toPromise();
+
+      const modelWithRelation = fs.readFileSync(doctorModel, 'utf8');
+
+      return expect(
+        testUtils
+          .executeGenerator(generator)
+          .inDir(projectPath, dir => {
+            testUtils.givenLBProject(dir, {
+              additionalFiles: SANDBOX_FILES,
+            });
+            fs.writeFileSync(doctorModel, modelWithRelation);
+            console.log(
+              '=== RESTORED MODEL CONTENT ===\n',
+              fs.readFileSync(doctorModel, 'utf8'),
+            );
+          })
+          .withArguments([
+            '--relationType',
+            'belongsTo',
+            '--sourceModel',
+            'Doctor',
+            '--destinationModel',
+            'Patient',
+            '--foreignKeyName',
+            'patientId',
+            '--relationName',
+            'patients',
+          ])
+          .toPromise(),
+      ).to.be.rejectedWith(
+        /relational property .* already exist in the model .* Use --force to overwrite it/i,
+      );
+    });
+
+    it('allows overwriting when --force flag is provided in belongsTo relation', async () => {
+      await sandbox.reset();
+      const projectPath = sandbox.path;
 
       await testUtils
         .executeGenerator(generator)
@@ -331,52 +396,19 @@ describe('lb4 relation overwrite by passing --force flag', /** @this {Mocha.Suit
           'Patient',
           '--relationName',
           'patients',
-        ]);
-      process.chdir(projectPath);
+        ])
+        .toPromise();
 
-      return expect(
-        testUtils
-          .executeGenerator(generator)
-          .withArguments([
-            '--relationType',
-            'belongsTo',
-            '--sourceModel',
-            'Doctor',
-            '--destinationModel',
-            'Patient',
-            '--relationName',
-            'patients',
-          ]),
-      ).to.be.rejectedWith(
-        /relational property .* already exist in the model .* Use --force to overwrite it/i,
+      const doctorModel = path.join(
+        projectPath,
+        'src',
+        'models',
+        'doctor.model.ts',
       );
-    });
 
-    it('allows overwriting when --force flag is provided in belongsTo relation', async () => {
-      await sandbox.reset();
-      const projectPath = sandbox.path;
-      console.log('1. projectPath:', projectPath);
-
-      await testUtils
-        .executeGenerator(generator)
-        .inDir(projectPath, dir => {
-          console.log('2. dir inside callback:', dir);
-          testUtils.givenLBProject(dir, {
-            additionalFiles: SANDBOX_FILES,
-          });
-        })
-        .withArguments([
-          '--relationType',
-          'belongsTo',
-          '--sourceModel',
-          'Doctor',
-          '--destinationModel',
-          'Patient',
-          '--relationName',
-          'patients',
-        ]);
-      const fs = require('fs');
-      console.log('3. files after first run:', fs.readdirSync(projectPath));
+      if (fs.existsSync(doctorModel)) {
+        console.log('Doctor model:\n', fs.readFileSync(doctorModel, 'utf8'));
+      }
 
       return expect(
         testUtils
@@ -396,7 +428,8 @@ describe('lb4 relation overwrite by passing --force flag', /** @this {Mocha.Suit
             '--relationName',
             'patients',
             '--force',
-          ]),
+          ])
+          .toPromise(),
       ).to.not.be.rejected;
     });
 
@@ -421,6 +454,22 @@ describe('lb4 relation overwrite by passing --force flag', /** @this {Mocha.Suit
           '--relationName',
           'patients',
         ]);
+
+      const doctorModelPath = path.join(
+        projectPath,
+        'src',
+        'models',
+        'doctor.model.ts',
+      );
+
+      console.log('Doctor model exists:', fs.existsSync(doctorModelPath));
+
+      if (fs.existsSync(doctorModelPath)) {
+        console.log(
+          'Doctor model content:\n',
+          fs.readFileSync(doctorModelPath, 'utf8'),
+        );
+      }
 
       return expect(
         testUtils
