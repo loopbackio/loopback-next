@@ -26,6 +26,19 @@ export interface CrudConnector extends Connector {
   ): Promise<EntityData>;
 
   /**
+   * Update an existing entity or Create if it does not exist
+   * @param modelClass - The model class
+   * @param entity - The entity instance or data
+   * @param options - Options for the operation
+   * @returns A promise of the entity created
+   */
+  upsert(
+    modelClass: Class<Entity>,
+    entity: EntityData,
+    options?: Options,
+  ): Promise<EntityData>;
+
+  /**
    * Create multiple entities
    * @param modelClass - The model class
    * @param entities - An array of entity instances or data
