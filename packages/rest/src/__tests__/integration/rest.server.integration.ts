@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Application} from '@loopback/core';
+import {Application, CoreBindings} from '@loopback/core';
 import {invokeMiddleware} from '@loopback/express';
 import {
   aComponentsSpec,
@@ -886,7 +886,7 @@ paths:
     await server.stop();
   });
 
-  it('disables consolidator if openApiSpec.consolidate option is set to false', async () => {
+  it('disables consolidator if openApiSpec.consolidate option is set to false during server setup', async () => {
     const options = {openApiSpec: {consolidate: false}};
     const server = await givenAServer({rest: options});
 
@@ -915,6 +915,42 @@ paths:
     server.route('get', '/', EXPECTED_SPEC.paths['/'].get, () => {});
 
     await server.start();
+    const spec = await server.getApiSpec();
+    expect(spec).to.eql(EXPECTED_SPEC);
+    await server.stop();
+  });
+
+  it('dynamically disables consolidator if openApiSpec.consolidate option is set to false after server setup', async () => {
+    const options = {openApiSpec: {consolidate: false}};
+    const server = await givenAServer();
+    const app = await server.get(CoreBindings.APPLICATION_INSTANCE);
+
+    const EXPECTED_SPEC = anOpenApiSpec()
+      .withOperation(
+        'get',
+        '/',
+        anOperationSpec().withResponse(200, {
+          description: 'Example',
+          content: {
+            'application/json': {
+              schema: {
+                title: 'loopback.example',
+                properties: {
+                  test: {
+                    type: 'string',
+                  },
+                },
+              },
+            },
+          },
+        }),
+      )
+      .build();
+
+    server.route('get', '/', EXPECTED_SPEC.paths['/'].get, () => {});
+
+    await server.start();
+    app.bind(CoreBindings.APPLICATION_CONFIG).to({rest: options});
     const spec = await server.getApiSpec();
     expect(spec).to.eql(EXPECTED_SPEC);
     await server.stop();
