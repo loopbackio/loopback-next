@@ -6,12 +6,13 @@
 import {Getter} from '@loopback/core';
 import {Filter, Where} from '@loopback/filter';
 import {Count, DataObject, Options} from '../../common-types';
+import {ModelMetadataHelper} from '../../decorators';
 import {Entity} from '../../model';
 import {
   constrainDataObject,
   constrainFilter,
   constrainWhere,
-  EntityCrudRepository,
+  EntityCrudRepository
 } from '../../repositories';
 
 /**
@@ -54,6 +55,12 @@ export interface HasManyRepository<Target extends Entity> {
     where?: Where<Target>,
     options?: Options,
   ): Promise<Count>;
+  /**
+   * Count number of target model instances
+   * @param where - Instances within the where scope to be counted
+   * @param options - Arbitrary options passed to the Connector
+   */
+  count(where?: Where<Target>, options?: Options): Promise<Count>;
 }
 
 export class DefaultHasManyRepository<
@@ -113,5 +120,24 @@ export class DefaultHasManyRepository<
       constrainWhere(where, this.constraint as Where<TargetEntity>),
       options,
     );
+  }
+
+  async count(where?: Where<TargetEntity>, options?: Options): Promise<Count> {
+    const targetRepository = await this.getTargetRepository();
+    return targetRepository.count(
+      constrainWhere(where, this.constraint),
+      options,
+    );
+  }
+
+  async findById(id: TargetID, options?: Options): Promise<TargetEntity> {
+    const targetRepository = await this.getTargetRepository();
+    return targetRepository.findById(id, options);
+  }
+
+  async exists(id: TargetID, options?: Options): Promise<boolean> {
+    const targetRepository = await this.getTargetRepository();
+    ModelMetadataHelper.getModelMetadata(targetRepository.entityClass)
+    targetRepository.
   }
 }
