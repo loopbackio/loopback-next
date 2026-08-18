@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.15.16](https://github.com/loopbackio/loopback-next/compare/@loopback/health@0.15.15...@loopback/health@0.15.16) (2026-08-18)
+
+**Note:** Version bump only for package @loopback/health
+
+
+
+
+
 ## [0.15.15](https://github.com/loopbackio/loopback-next/compare/@loopback/health@0.15.14...@loopback/health@0.15.15) (2026-07-16)
 
 **Note:** Version bump only for package @loopback/health

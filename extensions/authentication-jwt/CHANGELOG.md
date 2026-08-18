@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.16.17](https://github.com/loopbackio/loopback-next/compare/@loopback/authentication-jwt@0.16.16...@loopback/authentication-jwt@0.16.17) (2026-08-18)
+
+**Note:** Version bump only for package @loopback/authentication-jwt
+
+
+
+
+
 ## [0.16.16](https://github.com/loopbackio/loopback-next/compare/@loopback/authentication-jwt@0.16.15...@loopback/authentication-jwt@0.16.16) (2026-07-16)
 
 **Note:** Version bump only for package @loopback/authentication-jwt
