@@ -1822,6 +1822,272 @@ export type ErrorWithRelations = Error & ErrorRelations;
 `;
 
 
+exports[`openapi-generator with --client does not generates files for server with --config 1`] = `
+export * from './pet-store.datasource';
+
+`;
+
+
+exports[`openapi-generator with --client does not generates files for server with --config 2`] = `
+import {
+  inject,
+  lifeCycleObserver,
+  LifeCycleObserver,
+} from '@loopback/core';
+import {juggler} from '@loopback/repository';
+import {HttpErrors} from '@loopback/rest';
+
+const config = {
+  name: 'petStore',
+  connector: 'openapi',
+  spec: '../../../fixtures/openapi/3.0/petstore-expanded.yaml',
+  validate: false,
+  positional: 'bodyLast',
+};
+
+@lifeCycleObserver('datasource')
+export class PetStoreDataSource extends juggler.DataSource
+  implements LifeCycleObserver {
+  static dataSourceName = 'petStore';
+  static readonly defaultConfig = config;
+
+  constructor(
+    @inject('datasources.config.petStore', {optional: true})
+    dsConfig: object = config,
+  ) {
+    super({transformResponse, ...dsConfig});
+  }
+}
+
+/**
+ * Transform the http response into the return value
+ */
+function transformResponse(response: {
+  url: string,
+  method: string,
+  status: number,
+  statusText: string,
+  headers: object,
+  text: string,
+  body: unknown,
+}) {
+  if (response.status < 400) {
+    return response.body ?? response.text;
+  }
+  const err = HttpErrors(response.status, response.statusText, response);
+  throw err;
+}
+
+`;
+
+
+exports[`openapi-generator with --client does not generates files for server with --config 3`] = `
+export * from './open-api.service';
+
+`;
+
+
+exports[`openapi-generator with --client does not generates files for server with --config 4`] = `
+import {inject, Provider} from '@loopback/core';
+import {getService} from '@loopback/service-proxy';
+import {PetStoreDataSource} from '../datasources';
+
+import {Pet} from '../models/pet.model';
+import {NewPet} from '../models/new-pet.model';
+
+/**
+ * The service interface is generated from OpenAPI spec with operations tagged
+ * by <no-tag>.
+ */
+export interface OpenApiService {
+  /**
+   * Returns all pets from the system that the user has access to
+Nam sed condimentum est. Maecenas tempor sagittis sapien, nec rhoncus sem
+sagittis sit amet. Aenean at gravida augue, ac iaculis sem. Curabitur odio
+lorem, ornare eget elementum nec, cursus id lectus. Duis mi turpis, pulvinar
+ac eros ac, tincidunt varius justo. In hac habitasse platea dictumst.
+Integer at adipiscing ante, a sagittis ligula. Aenean pharetra tempor ante
+molestie imperdiet. Vivamus id aliquam diam. Cras quis velit non tortor
+eleifend sagittis. Praesent at enim pharetra urna volutpat venenatis eget
+eget mauris. In eleifend fermentum facilisis. Praesent enim enim, gravida ac
+sodales sed, placerat id erat. Suspendisse lacus dolor, consectetur non
+augue vel, vehicula interdum libero. Morbi euismod sagittis libero sed
+lacinia.
+
+Sed tempus felis lobortis leo pulvinar rutrum. Nam mattis velit nisl, eu
+condimentum ligula luctus nec. Phasellus semper velit eget aliquet faucibus.
+In a mattis elit. Phasellus vel urna viverra, condimentum lorem id, rhoncus
+nibh. Ut pellentesque posuere elementum. Sed a varius odio. Morbi rhoncus
+ligula libero, vel eleifend nunc tristique vitae. Fusce et sem dui. Aenean
+nec scelerisque tortor. Fusce malesuada accumsan magna vel tempus. Quisque
+mollis felis eu dolor tristique, sit amet auctor felis gravida. Sed libero
+lorem, molestie sed nisl in, accumsan tempor nisi. Fusce sollicitudin massa
+ut lacinia mattis. Sed vel eleifend lorem. Pellentesque vitae felis pretium,
+pulvinar elit eu, euismod sapien.
+
+   * @param tags tags to filter by
+   * @param limit maximum number of results to return
+   * @param where 
+   * @returns pet response
+   */
+  findPets(tags: string[] | undefined, limit: number | undefined, where: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [additionalProperty: string]: any;
+} | undefined): Promise<Pet[]>;
+
+  /**
+   * Creates a new pet in the store. Duplicates are allowed
+   * @param _requestBody Pet to add to the store
+   * @returns pet response
+   */
+  addPet(_requestBody: NewPet): Promise<Pet>;
+
+  /**
+   * Returns a user based on a single ID, if the user does not have access to the
+pet
+   * @param id ID of pet to fetch
+   * @returns pet response
+   */
+  findPetById(id: number): Promise<Pet>;
+
+  /**
+   * deletes a single pet based on the ID supplied
+   * @param id ID of pet to delete
+   */
+  deletePet(id: number): Promise<unknown>;
+
+}
+
+export class OpenApiServiceProvider implements Provider<OpenApiService> {
+  constructor(
+    // petStore must match the name property in the datasource json file
+    @inject('datasources.petStore')
+    protected dataSource: PetStoreDataSource = new PetStoreDataSource(),
+  ) {}
+
+  async value(): Promise<OpenApiService> {
+    const service = await getService<{apis: {'default': OpenApiService}}>(
+      this.dataSource,
+    );
+    return service.apis['default'];
+  }
+}
+
+`;
+
+exports[`openapi-generator with --client does not generates files for server with --config 5`] = `
+export * from './pet.model';
+export * from './new-pet.model';
+export * from './error.model';
+
+`;
+
+
+exports[`openapi-generator with --client does not generates files for server with --config 6`] = `
+import {NewPet} from './new-pet.model';
+/**
+ * The model type is generated from OpenAPI schema - Pet
+ * Pet
+ */
+export type Pet = NewPet & {
+  id: number;
+};
+
+
+`;
+
+
+exports[`openapi-generator with --client does not generates files for server with --config 7`] = `
+import {model, property} from '@loopback/repository';
+
+/**
+ * The model class is generated from OpenAPI schema - NewPet
+ * NewPet
+ */
+@model({name: 'NewPet'})
+export class NewPet {
+  constructor(data?: Partial<NewPet>) {
+    if (data != null && typeof data === 'object') {
+      Object.assign(this, data);
+    }
+  }
+
+  /**
+   *
+   */
+  @property({required: true, jsonSchema: {
+  type: 'string',
+}})
+  name: string;
+
+  /**
+   *
+   */
+  @property({jsonSchema: {
+  type: 'string',
+}})
+  tag?: string;
+
+}
+
+export interface NewPetRelations {
+  // describe navigational properties here
+}
+
+export type NewPetWithRelations = NewPet & NewPetRelations;
+
+
+
+`;
+
+
+exports[`openapi-generator with --client does not generates files for server with --config 8`] = `
+import {model, property} from '@loopback/repository';
+
+/**
+ * The model class is generated from OpenAPI schema - Error
+ * Error
+ */
+@model({name: 'Error'})
+export class Error {
+  constructor(data?: Partial<Error>) {
+    if (data != null && typeof data === 'object') {
+      Object.assign(this, data);
+    }
+  }
+
+  /**
+   *
+   */
+  @property({required: true, jsonSchema: {
+  type: 'integer',
+  format: 'int32',
+  minimum: -2147483648,
+  maximum: 2147483647,
+}})
+  code: number;
+
+  /**
+   *
+   */
+  @property({required: true, jsonSchema: {
+  type: 'string',
+}})
+  message: string;
+
+}
+
+export interface ErrorRelations {
+  // describe navigational properties here
+}
+
+export type ErrorWithRelations = Error & ErrorRelations;
+
+
+
+`;
+
+
 exports[`openapi-generator with --client generates all files for both server and client 1`] = `
 export * from './open-api.controller';
 
