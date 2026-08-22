@@ -101,14 +101,48 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
       this.artifactInfo.modelDir,
       utils.getModelFileName(modelName),
     );
-    try {
-      fileContent = this.fs.read(modelFile, {});
-    } catch (err) {
-      debug(`${ERROR_READING_FILE} ${modelFile}: ${err.message}`);
-      return this.exit(err);
+
+    // Check if the model file exists directly in the modelDir
+    if (fs.existsSync(modelFile)) {
+      try {
+        fileContent = this.fs.read(modelFile, {});
+      } catch (err) {
+        debug(`${ERROR_READING_FILE} ${modelFile}: ${err.message}`);
+        return this.exit(err);
+      }
+
+      return tsquery.getIdFromModel(fileContent);
     }
 
-    return tsquery.getIdFromModel(fileContent);
+    // If the model file is not found directly, search in subdirectories
+    const subdirectories = await utils.getSubdirectories(
+      this.artifactInfo.modelDir,
+    );
+
+    for (const subdirectory of subdirectories) {
+      const subdirectoryModelFile = path.join(
+        subdirectory,
+        utils.getModelFileName(modelName),
+      );
+
+      if (fs.existsSync(subdirectoryModelFile)) {
+        try {
+          fileContent = this.fs.read(subdirectoryModelFile, {});
+        } catch (err) {
+          debug(
+            `${ERROR_READING_FILE} ${subdirectoryModelFile}: ${err.message}`,
+          );
+          return this.exit(err);
+        }
+
+        return tsquery.getIdFromModel(fileContent);
+      }
+    }
+
+    // If the model file is not found in any subdirectory, return an error
+    return this.exit(
+      new Error(`Model ${modelName} not found in any subdirectory.`),
+    );
   }
 
   /**
@@ -330,6 +364,34 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
       return this.exit(err);
     }
 
+    // Check if modelDir contains subdirectories
+    const subdirectories = await utils.getSubdirectories(
+      this.artifactInfo.modelDir,
+    );
+    // If subdirectories exist, retrieve models from them
+    if (subdirectories.length > 0) {
+      for (const subdirectory of subdirectories) {
+        try {
+          const subdirectoryModelList = await utils.getArtifactList(
+            subdirectory,
+            'model',
+          );
+          const subdir = subdirectory.split('models')[1];
+          if (!this.artifactInfo.modelSubDirs) {
+            this.artifactInfo.modelSubDirs = {};
+          }
+          subdirectoryModelList.forEach(model => {
+            this.artifactInfo.modelSubDirs[model] = subdir;
+          });
+          modelList = modelList.concat(subdirectoryModelList);
+        } catch (err) {
+          console.error(
+            `Error retrieving models from subdirectory ${subdirectory}: ${err}`,
+          );
+        }
+      }
+    }
+
     if (this.options.model) {
       debug(`Model name received from command line: ${this.options.model}`);
 
@@ -528,6 +590,15 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
       this.artifactInfo.outFile = utils.getRepositoryFileName(
         this.artifactInfo.modelName,
       );
+
+      const outFile = `${
+        this.artifactInfo.modelSubDirs[
+          this.artifactInfo.modelName || this.artifactInfo.name
+        ]
+      }/${this.artifactInfo.outFile}`;
+      if (!outFile.includes('undefined')) {
+        this.artifactInfo.outFile = outFile.slice(1, outFile.length);
+      }
 
       this.artifactInfo.indexesToBeUpdated.push({
         dir: this.artifactInfo.outDir,
