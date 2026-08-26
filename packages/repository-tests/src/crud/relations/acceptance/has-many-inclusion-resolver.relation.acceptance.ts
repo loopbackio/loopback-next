@@ -372,6 +372,44 @@ export function hasManyInclusionResolverAcceptance(
       );
     });
 
+    it('tolerates duplicate and missing source key values when resolving inclusion', async () => {
+      // Regression test: the hasMany inclusion resolver used to pass its
+      // raw, unfiltered source-id list by reference straight to
+      // findByForeignKeys(), which hands that same array on to the
+      // connector inside an `{inq: [...]}` where clause. A connector/query
+      // layer that sanitizes an `inq` array in place (stripping falsy
+      // values before running the query, as the in-memory connector does)
+      // then mutates that shared array out from under the caller, shrinking
+      // the very array the resolver still needed - unmodified - to zip
+      // results back onto each original entity. That silently truncated
+      // and misaligned the resolver's return value whenever any source
+      // entity's key was undefined (e.g. excluded by a fields filter) or
+      // duplicated another entity's. belongsTo/referencesMany already pass
+      // a fresh, deduplicated, filtered array (never the original
+      // reference) before querying; hasMany now does the same.
+      const thor = await customerRepo.create({name: 'Thor'});
+      const thorOrder = await orderRepo.create({
+        customerId: thor.id,
+        description: "Thor's Mjolnir",
+      });
+
+      const resolver = customerRepo.inclusionResolvers.get('orders')!;
+      const result = await resolver(
+        [
+          thor,
+          thor, // duplicate id
+          {name: 'no id'} as unknown as Customer, // id is undefined
+        ],
+        'orders',
+      );
+
+      expect(toJSON(result)).to.deepEqual([
+        [toJSON(thorOrder)],
+        [toJSON(thorOrder)],
+        undefined,
+      ]);
+    });
+
     it('throws error if the target repository does not have the registered resolver', async () => {
       const customer = await customerRepo.create({name: 'customer'});
       await orderRepo.create({
