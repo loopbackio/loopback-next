@@ -403,10 +403,13 @@ export function hasManyInclusionResolverAcceptance(
         'orders',
       );
 
+      // The entity with no source key has no related entities; after JSON
+      // serialization that slot is `null` (JSON has no `undefined`). The key
+      // point is that the result stays length-3 and aligned with the input.
       expect(toJSON(result)).to.deepEqual([
         [toJSON(thorOrder)],
         [toJSON(thorOrder)],
-        undefined,
+        null,
       ]);
     });
 
