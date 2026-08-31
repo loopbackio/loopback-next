@@ -160,6 +160,50 @@ export function hasOneInclusionResolverAcceptance(
       expect(toJSON(result)).to.deepEqual(toJSON(expected));
     });
 
+    it('tolerates duplicate and missing source key values when resolving inclusion', async () => {
+      // Regression test: the hasOne inclusion resolver used to pass its raw,
+      // unfiltered source-id list by reference straight to
+      // findByForeignKeys(), which hands that same array on to the
+      // connector inside an `{inq: [...]}` where clause. A connector/query
+      // layer that sanitizes an `inq` array in place (stripping falsy
+      // values before running the query, as the in-memory connector does)
+      // then mutates that shared array out from under the caller, shrinking
+      // the very array the resolver still needed - unmodified - to zip
+      // results back onto each original entity. That silently truncated
+      // and misaligned the resolver's return value whenever any source
+      // entity's key was undefined (e.g. excluded by a fields filter) or
+      // duplicated another entity's. belongsTo/referencesMany already pass
+      // a fresh, deduplicated, filtered array (never the original
+      // reference) before querying; hasOne now does the same.
+      const thor = await customerRepo.create({name: 'Thor'});
+      const thorAddress = await addressRepo.create({
+        street: 'home of Thor Rd.',
+        city: 'Thrudheim',
+        province: 'Asgard',
+        zipcode: '8200',
+        customerId: thor.id,
+      });
+
+      const resolver = customerRepo.inclusionResolvers.get('address')!;
+      const result = await resolver(
+        [
+          thor,
+          thor, // duplicate id
+          {name: 'no id'} as unknown as Customer, // id is undefined
+        ],
+        'address',
+      );
+
+      // The entity with no source key has no related entity; after JSON
+      // serialization that slot is `null` (JSON has no `undefined`). The key
+      // point is that the result stays length-3 and aligned with the input.
+      expect(toJSON(result)).to.deepEqual([
+        toJSON(thorAddress),
+        toJSON(thorAddress),
+        null,
+      ]);
+    });
+
     it('throws error if the target repository does not have the registered resolver', async () => {
       const customer = await customerRepo.create({name: 'customer'});
       await addressRepo.create({

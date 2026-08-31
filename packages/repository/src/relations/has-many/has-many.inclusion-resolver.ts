@@ -9,6 +9,7 @@ import {AnyObject, Options} from '../../common-types';
 import {Entity} from '../../model';
 import {EntityCrudRepository} from '../../repositories';
 import {
+  deduplicate,
   findByForeignKeys,
   flattenTargetsOfOneToManyRelation,
   StringKeyOf,
@@ -69,7 +70,24 @@ export function createHasManyInclusionResolver<
     const targetsFound = await findByForeignKeys(
       targetRepo,
       targetKey,
-      sourceIds,
+      // Source ids can contain duplicates (e.g. the same source entity
+      // fetched more than once) and undefined/null values (e.g. when the
+      // source key field was excluded via a fields filter). Passing the raw
+      // array straight through is unsafe: `findByForeignKeys` wraps it in an
+      // `{inq: [...]}` where clause and hands that array to the connector
+      // by reference, without cloning it first. A connector/query layer
+      // that sanitizes an `inq` array in place (e.g. stripping falsy
+      // values before running the query) then mutates *this exact array*
+      // out from under us - shrinking the very `sourceIds` array we still
+      // need below, unmodified, to correctly zip results back onto each
+      // original entity. That silently misaligns or truncates the returned
+      // array relative to the input entities. Passing a fresh
+      // (deduplicated, filtered) array here - never the original
+      // `sourceIds` reference - avoids that aliasing entirely, on top of
+      // avoiding the redundant/undefined values in the query itself.
+      // belongsTo/referencesMany inclusion resolvers already do this;
+      // hasMany didn't.
+      deduplicate(sourceIds).filter(e => e),
       scope,
       options,
     );
