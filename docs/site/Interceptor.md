@@ -530,7 +530,10 @@ bindings. It extends `Context` with additional properties as follows:
 - `target` (`object`): Target class (for static methods) or prototype/object
   (for instance methods)
 - `methodName` (`string`): Method name
-- `args` (`InvocationArgs`, i.e., `any[]`): An array of arguments
+- `args` (`InvocationArgs`, i.e., `any[]`): An array of arguments in the
+  same order as the target method parameters. For example, when intercepting
+  `greet(name, age)`, `args[0]` is the value of `name` and `args[1]` is the
+  value of `age`.
 - `source`: Source information about the invoker of the invocation
 
 ```ts
@@ -559,7 +562,9 @@ export class InvocationContext extends Context {
 ```
 
 It's possible for an interceptor to mutate items in the `args` array to pass in
-transformed input to downstream interceptors and the target method.
+transformed input to downstream interceptors and the target method. For example,
+an interceptor can update `args[0]` before calling `next()` so the target method
+receives the transformed first argument.
 
 ### Source for an invocation
 
@@ -701,10 +706,12 @@ Here are some example interceptor functions:
    };
    ```
 
-4. An provider class for an interceptor that performs parameter validation
+4. A provider class for an interceptor that performs parameter validation
 
    To leverage dependency injection, a provider class can be defined as the
-   interceptor:
+   interceptor. The example below validates the first argument of an intercepted
+   method, such as `greetWithNameValidation(name)`. The first method argument is
+   available as `invocationCtx.args[0]`.
 
    ```ts
    /**
@@ -722,13 +729,28 @@ Here are some example interceptor functions:
        invocationCtx: InvocationContext,
        next: () => ValueOrPromise<T>,
      ) {
-       const name = invocationCtx.args[0];
-       if (!this.validNames.includes(name)) {
-         throw new Error(
-           `Name '${name}' is not on the list of '${this.validNames}`,
-         );
-       }
+        const name = invocationCtx.args[0];
+        if (!this.validNames.includes(name)) {
+          throw new Error(
+            `Name '${name}' is not on the list of '${this.validNames}'`,
+          );
+        }
        return next();
+     }
+   }
+   ```
+
+   The provider can be bound and then referenced by binding key from
+   `@intercept`:
+
+   ```ts
+   ctx.bind('valid-names').to(['John', 'Mary']);
+   ctx.bind('name-validator').toProvider(NameValidator);
+
+   class MyController {
+     @intercept('name-validator')
+     async greetWithNameValidation(name: string) {
+       return `Hello, ${name}`;
      }
    }
    ```
