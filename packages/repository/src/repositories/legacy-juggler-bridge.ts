@@ -78,6 +78,156 @@ function isModelClass(
   );
 }
 
+import {DatabaseDriverError} from '../errors';
+
+function handleDatabaseDriverError(
+  this: DefaultCrudRepository<Entity, unknown, AnyObject>,
+  err: unknown,
+): never {
+  const error = err as AnyObject;
+  if (err === null || err === undefined) {
+    throw new Error('An unknown database execution error occurred.');
+  }
+
+  // Handling existing already mapped errors
+  if (error.statusCode && error.statusCode >= 400 && error.statusCode < 500) {
+    throw error;
+  }
+
+  const parsedCode = Number(error.code);
+  const rawCode = !isNaN(parsedCode) ? error.code : error.errno; // error.code for posgres while errno for mysql/mongodb
+
+  const codeStr = String(rawCode);
+
+  // Initialize with default values
+  let statusCode = 500;
+  let errorCode = 'DATABASE_ERROR';
+  let message = error.message || 'An unexpected database error occurred.';
+
+  // Evaluate database signatures and re-map properties dynamically
+  switch (codeStr) {
+    // 1. Unique Key / Duplicate Entries
+    case '23505': // Postgres
+    case '1062': // MySQL
+    case '11000': // MongoDB
+    case '11001':
+      statusCode = 409;
+      errorCode = 'DB_UNIQUE_CONSTRAINT_VIOLATION';
+      message =
+        'The operation conflicts with an existing record unique constraint.';
+      break;
+    // 2. Foreign Key Constraints (Missing Parents / Existing Children)
+    case '23503': // Postgres
+    case '1216': // MySQL
+    case '1217':
+    case '1451':
+    case '1452':
+      statusCode = 422;
+      errorCode = 'DB_FOREIGN_KEY_VIOLATION';
+      message =
+        'Relational integrity validation failed. Referenced parent record not found.';
+      break;
+    // 3. Null / Required Fields Omissions
+    case '23502': // Postgres
+    case '1048': // MySQL
+    case '1364':
+    case '121': // MongoDB Document Validation Failed
+      statusCode = 400;
+      errorCode = 'DB_NOT_NULL_VIOLATION';
+      message = 'Required database schema properties are missing or null.';
+      break;
+    // 4. Bad Casts / Truncation / Data Type Mismatch
+    case '22P02': // Postgres Invalid Text Representation (e.g. Bad UUID format)
+    case '22001': // Postgres String Data Right Truncation
+    case '1265': // MySQL Data Truncated
+    case '1366':
+      statusCode = 400;
+      errorCode = 'DB_DATA_TYPE_MISMATCH';
+      message =
+        'The query properties contain unexpected formatting types or overflows.';
+      break;
+    case '3105': // MySQL Server Generated column value ignored/disallowed
+    case '1906': // MariaDB Generated column value ignored/disallowed
+      statusCode = 400;
+      errorCode = 'DB_GENERATED_COLUMN_VIOLATION';
+      message =
+        'Cannot manually assign or update values on a database-generated computed column.';
+      break;
+    // 5. Missing Table / Schema Definition Errors
+    case '1146': // MySQL errno for missing table
+    case '42P01': // Postgres error code for undefined_table
+      statusCode = 400; // Setting as 400 because 500 is too generic and doesn't provide enough context for the client
+      errorCode = 'DB_SCHEMA_MISSING_TABLE';
+      message = 'The requested database table or relation does not exist.';
+      break;
+    // 6. Query Timeout Errors
+    case '57014': // Postgres query_canceled
+    case '1907': // MySQL query_timeout
+    case '3024': // MongoDB query_timeout
+      statusCode = 504;
+      errorCode = 'DB_QUERY_TIMEOUT';
+      message = 'The database operation took too long and was aborted.';
+      break;
+    // 7. Concurrency / Locking Conflicts
+    case '40001': // Postgres serialization_failure
+    case '40P01': // Postgres deadlock_detected
+    case '1213': // MySQL deadlock found when trying to get lock
+    case '1205': // MySQL lock wait timeout exceeded
+      statusCode = 409;
+      errorCode = 'DB_LOCK_CONFLICT';
+      message =
+        'A concurrency lock conflict occurred. Please retry the operation.';
+      break;
+    // 8.  Check Constraint / Business Logic Violations
+    case '23514': // Postgres check_violation
+    case '23P01': // Postgres exclusion_violation
+    case '3819': // MySQL check constraint violation
+      statusCode = 400;
+      errorCode = 'DB_CHECK_CONSTRAINT_VIOLATION';
+      message =
+        'The data violates database business logic or range constraints.';
+      break;
+    // 9. Connection / Availability Issues
+    case '08003': // Postgres connection_does_not_exist
+    case '08006': // Postgres connection_failure
+    case '53300': // Postgres too_many_connections
+    case '1040': //  MySQL too many connections
+    case '2002': // MySQL connection refused
+    case '2003': // MySQL can't connect to MySQL server
+    case '2006': // MySQL server has gone away
+    case '2013': // MySQL lost connection to MySQL server during query
+    case '8000': // MongoDB network error
+    case '8001': // MongoDB connection closed
+    case '8002': // MongoDB connection timeout
+      statusCode = 503;
+      errorCode = 'DB_CONNECTION_FAILURE';
+      message =
+        'The database is temporarily unavailable or overloaded. Please try again later.';
+      break;
+    // 10. Numeric Overflow / Out of Range Values
+    case '22003': // Postgres numeric_value_out_of_range
+    case '1264': // MySQL Out of range value for column
+      statusCode = 400;
+      errorCode = 'DB_NUMERIC_OUT_OF_RANGE';
+      message =
+        'A numeric or string value exceeds the maximum allowable size for the field.';
+      break;
+  }
+  if (error.stack) console.error(error.stack);
+
+  // If we matched a standard driver rule, throw our clean uniform class
+  if (statusCode !== 500) {
+    throw new DatabaseDriverError(this.entityClass, message, {
+      code: errorCode,
+      statusCode: statusCode,
+      nativeCode: rawCode,
+    });
+  }
+
+  // Otherwise, bubble up the original error safely to protect core connection strings/etc.
+  throw err;
+}
+
 /**
  * This is a bridge to the legacy DAO class. The function mixes DAO methods
  * into a model class and attach it to a given data source
@@ -488,7 +638,9 @@ export class DefaultCrudRepository<
   async create(entity: DataObject<T>, options?: Options): Promise<T> {
     // perform persist hook
     const data = await this.entityToData(entity, options);
-    const model = await ensurePromise(this.modelClass.create(data, options));
+    const model = await ensurePromise(
+      this.modelClass.create(data, options),
+    ).catch(handleDatabaseDriverError);
     return this.toEntity(model);
   }
 
@@ -499,7 +651,7 @@ export class DefaultCrudRepository<
     );
     const models = await ensurePromise(
       this.modelClass.createAll(data, options),
-    );
+    ).catch(handleDatabaseDriverError);
     return this.toEntities(models);
   }
 
@@ -520,7 +672,7 @@ export class DefaultCrudRepository<
     const include = filter?.include;
     const models = await ensurePromise(
       this.modelClass.find(this.normalizeFilter(filter), options),
-    );
+    ).catch(handleDatabaseDriverError);
     const entities = this.toEntities(models);
     return this.includeRelatedModels(entities, include, options);
   }
@@ -531,7 +683,7 @@ export class DefaultCrudRepository<
   ): Promise<(T & Relations) | null> {
     const model = await ensurePromise(
       this.modelClass.findOne(this.normalizeFilter(filter), options),
-    );
+    ).catch(handleDatabaseDriverError);
     if (!model) return null;
     const entity = this.toEntity(model);
     const include = filter?.include;
@@ -551,7 +703,7 @@ export class DefaultCrudRepository<
     const include = filter?.include;
     const model = await ensurePromise(
       this.modelClass.findById(id, this.normalizeFilter(filter), options),
-    );
+    ).catch(handleDatabaseDriverError);
     if (!model) {
       throw new EntityNotFoundError(this.entityClass, id);
     }
@@ -583,7 +735,7 @@ export class DefaultCrudRepository<
     const persistedData = await this.entityToData(data, options);
     const result = await ensurePromise(
       this.modelClass.updateAll(where, persistedData, options),
-    );
+    ).catch(handleDatabaseDriverError);
     return {count: result.count};
   }
 
@@ -614,7 +766,9 @@ export class DefaultCrudRepository<
   ): Promise<void> {
     try {
       const payload = await this.entityToData(data, options);
-      await ensurePromise(this.modelClass.replaceById(id, payload, options));
+      await ensurePromise(
+        this.modelClass.replaceById(id, payload, options),
+      ).catch(handleDatabaseDriverError);
     } catch (err) {
       if (err.statusCode === 404) {
         throw new EntityNotFoundError(this.entityClass, id);
@@ -626,24 +780,30 @@ export class DefaultCrudRepository<
   async deleteAll(where?: Where<T>, options?: Options): Promise<Count> {
     const result = await ensurePromise(
       this.modelClass.deleteAll(where, options),
-    );
+    ).catch(handleDatabaseDriverError);
     return {count: result.count};
   }
 
   async deleteById(id: ID, options?: Options): Promise<void> {
-    const result = await ensurePromise(this.modelClass.deleteById(id, options));
+    const result = await ensurePromise(
+      this.modelClass.deleteById(id, options),
+    ).catch(handleDatabaseDriverError);
     if (result.count === 0) {
       throw new EntityNotFoundError(this.entityClass, id);
     }
   }
 
   async count(where?: Where<T>, options?: Options): Promise<Count> {
-    const result = await ensurePromise(this.modelClass.count(where, options));
+    const result = await ensurePromise(
+      this.modelClass.count(where, options),
+    ).catch(handleDatabaseDriverError);
     return {count: result};
   }
 
   exists(id: ID, options?: Options): Promise<boolean> {
-    return ensurePromise(this.modelClass.exists(id, options));
+    return ensurePromise(this.modelClass.exists(id, options)).catch(
+      handleDatabaseDriverError,
+    );
   }
 
   /**
