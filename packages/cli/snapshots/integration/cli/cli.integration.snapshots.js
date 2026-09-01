@@ -1412,11 +1412,32 @@ exports[`cli saves command metadata to .yo-rc.json 1`] = `
           "name": "sourceModel",
           "hide": false
         },
-        "destinationModel": {
+        "customReferenceKeys": {
           "type": "String",
           "required": false,
-          "description": "Destination model",
-          "name": "destinationModel",
+          "description": "Any Custom Reference Kyes",
+          "name": "customReferenceKeys",
+          "hide": false
+        },
+        "customSourceModelKey": {
+          "type": "String",
+          "required": false,
+          "description": "Custom Source model key",
+          "name": "customSourceModelKey",
+          "hide": false
+        },
+        "customTargetModelKey": {
+          "type": "String",
+          "required": false,
+          "description": "Custom Destination model",
+          "name": "customTargetModelKey",
+          "hide": false
+        },
+        "destinationModelKey": {
+          "type": "String",
+          "required": false,
+          "description": "Destination model key",
+          "name": "destinationModelKey",
           "hide": false
         },
         "throughModel": {
