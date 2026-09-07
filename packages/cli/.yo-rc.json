@@ -987,6 +987,14 @@
           "name": "promote-anonymous-schemas",
           "hide": false
         },
+        "outDir": {
+          "description": "Custom output directory for generated files.",
+          "required": false,
+          "default": "src",
+          "type": "String",
+          "name": "outDir",
+          "hide": false
+        },
         "config": {
           "type": "String",
           "alias": "c",
