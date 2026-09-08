@@ -154,6 +154,14 @@ describe('CrudRestController for a simple Product model', () => {
         .expect(200);
       expect(body).to.deepEqual({count: 1 /* pencil was omitted */});
     });
+
+    it('supports `filter` query param', async () => {
+      const {body} = await client
+        .get('/products/count')
+        .query({'filter[where][name]': pen.name})
+        .expect(200);
+      expect(body).to.deepEqual({count: 1 /* pencil was omitted */});
+    });
   });
 
   describe('updateAll', () => {
