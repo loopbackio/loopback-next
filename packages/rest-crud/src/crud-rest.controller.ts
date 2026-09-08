@@ -166,7 +166,7 @@ export function defineCrudRestController<
       @param.filter(modelCtor)
       filter?: Filter<T>,
     ): Promise<(T & Relations)[]> {
-      return this.repository.find(filter);
+      return this.repository.find(filter, options);
     }
 
     @get('/{id}', {
@@ -192,7 +192,7 @@ export function defineCrudRestController<
       @param.where(modelCtor)
       where?: Where<T>,
     ): Promise<Count> {
-      return this.repository.count(where);
+      return this.repository.count(where, options);
     }
   }
 
@@ -236,6 +236,7 @@ export function defineCrudRestController<
         // with no explicit type-casts required
         data as DataObject<T>,
         where,
+        options,
       );
     }
 
