@@ -61,7 +61,7 @@
     "@types/debug": "^4.1.13",
     "@types/lodash": "^4.17.25",
     "@types/node": "^20.19.43",
-    "compression": "^1.8.1",
+    "compression": "^1.8.2",
     "cors": "^2.8.6",
     "helmet": "^4.6.0",
     "loopback-boot": "^3.3.1"
