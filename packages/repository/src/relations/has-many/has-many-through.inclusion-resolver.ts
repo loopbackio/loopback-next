@@ -12,6 +12,7 @@ import {Entity} from '../../model';
 import {EntityCrudRepository} from '../../repositories';
 import {
   StringKeyOf,
+  deduplicate,
   findByForeignKeys,
   flattenTargetsOfOneToManyRelation,
 } from '../relation.helpers';
@@ -100,7 +101,24 @@ export function createHasManyThroughInclusionResolver<
     const throughFound = await findByForeignKeys(
       throughRepo,
       throughKeyFrom,
-      sourceIds,
+      // Source ids can contain duplicates (e.g. the same source entity
+      // fetched more than once) and undefined/null values (e.g. when the
+      // source key field was excluded via a fields filter). Passing the raw
+      // array straight through is unsafe: `findByForeignKeys` wraps it in an
+      // `{inq: [...]}` where clause and hands that array to the connector
+      // by reference, without cloning it first. A connector/query layer
+      // that sanitizes an `inq` array in place (e.g. stripping falsy
+      // values before running the query, as the in-memory connector does)
+      // then mutates *this exact array* out from under us - shrinking the
+      // very `sourceIds` array still needed below, unmodified, to correctly
+      // zip through-results back onto each original entity via
+      // `flattenTargetsOfOneToManyRelation`. That silently misaligns or
+      // truncates the returned array relative to the input entities.
+      // Passing a fresh (deduplicated, filtered) array here - never the
+      // original `sourceIds` reference - avoids that aliasing entirely.
+      // hasMany/hasOne inclusion resolvers already do this; hasManyThrough
+      // didn't have any dedup/filter attempt at all.
+      deduplicate(sourceIds).filter(e => e),
       {}, // scope will be applied at the target level
       options,
     );
