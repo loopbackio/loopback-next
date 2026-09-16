@@ -267,6 +267,39 @@ several downsides:
 Use the test data builders described in the previous section to populate your
 database with the data specific to your test only.
 
+### Avoid interdependent tests
+
+A related anti-pattern is making tests rely on the **order** they run in, where
+one test fills the database with data that later tests consume:
+
+```ts
+it('creates a todo', async () => {
+  item = (await client.post('/todo').send(payload).expect(200)).body;
+});
+
+// ...
+
+it('successfully deletes todos', async () => {
+  await client.del(`/todo/${item.id}`).send();
+  await client.get(`/todo/${item.id}`).send().expect(404);
+});
+```
+
+The second test passes only because the first test ran before it and created
+`item`. This is bad for two reasons:
+
+- If the first test fails, every subsequent test fails too — not because of a
+  real defect in what they exercise, but because the data they expect was never
+  created. The resulting error messages point at the wrong code and are hard to
+  diagnose.
+- Individual tests can no longer run on their own, e.g. with `it.only()` or
+  `mocha -g "test name"`. A test that depends on earlier tests is impossible to
+  re-run in isolation, which makes debugging and CI bisecting much harder.
+
+Keep every test independent: set up exactly the data it needs in
+`beforeEach()` (or test-data builders) and tear it down after, so the suite
+passes regardless of order, filtering, or parallelism.
+
 <!-- NOTE: the code below deals with relations which have not been implemented
 in LoopBack4 yet and has been commented out. It needs to be revisited once it's
 been implemented. -->
