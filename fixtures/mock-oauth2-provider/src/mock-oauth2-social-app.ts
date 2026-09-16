@@ -18,12 +18,24 @@
 'use strict';
 
 import bodyParser from 'body-parser';
-import express from 'express';
+import express, {Request, RequestHandler, Response} from 'express';
 import {Server} from 'http';
 import jwt from 'jsonwebtoken';
 import {MyUser} from './user-repository';
 
 /* eslint-disable @typescript-eslint/naming-convention */
+
+/**
+ * Adapt an async handler so that rejections are passed to Express instead of
+ * becoming unhandled promise rejections.
+ */
+function asyncHandler(
+  handler: (req: Request, res: Response) => Promise<void>,
+): RequestHandler {
+  return (req, res, next) => {
+    handler(req, res).catch(next);
+  };
+}
 
 const app = express();
 let server: Server;
@@ -246,38 +258,42 @@ app.get('/login', function (req, response) {
  * 3. stores token
  * 4. redirects to callback url with access code
  */
-app.post('/login_submit', urlencodedParser, async function (req, res) {
-  if (!req.body.username) {
-    res.status(400).send({error: 'missing username'});
-    return;
-  }
-  const user: MyUser | undefined = findUser(
-    req.body.username,
-    req.body.password,
-  );
-  if (user) {
-    // get registered app
-    const registeredApp = registeredApps[req.body.client_id];
-    // generate access code
-    const authCode = Math.floor(Math.random() * Math.floor(1000));
-    // create a token for the access code
-    const result = await createJwt(
-      user,
-      req.body.scope,
-      user.signingKey,
-      req.body.client_id,
+app.post(
+  '/login_submit',
+  urlencodedParser,
+  asyncHandler(async function (req, res) {
+    if (!req.body.username) {
+      res.status(400).send({error: 'missing username'});
+      return;
+    }
+    const user: MyUser | undefined = findUser(
+      req.body.username,
+      req.body.password,
     );
-    // store generated token
-    registeredApp.tokens[authCode] = {token: result.token};
-    registeredApp[result.id] = {signingKey: user.signingKey, code: authCode};
-    // redirect to call back url with the access code
-    let params = '?client_id=' + req.body.client_id;
-    params = params + '&&code=' + authCode;
-    res.redirect(req.body.redirect_uri + params);
-  } else {
-    res.sendStatus(401);
-  }
-});
+    if (user) {
+      // get registered app
+      const registeredApp = registeredApps[req.body.client_id];
+      // generate access code
+      const authCode = Math.floor(Math.random() * Math.floor(1000));
+      // create a token for the access code
+      const result = await createJwt(
+        user,
+        req.body.scope,
+        user.signingKey,
+        req.body.client_id,
+      );
+      // store generated token
+      registeredApp.tokens[authCode] = {token: result.token};
+      registeredApp[result.id] = {signingKey: user.signingKey, code: authCode};
+      // redirect to call back url with the access code
+      let params = '?client_id=' + req.body.client_id;
+      params = params + '&&code=' + authCode;
+      res.redirect(req.body.redirect_uri + params);
+    } else {
+      res.sendStatus(401);
+    }
+  }),
+);
 
 /**
  * Endpoint: POST '/oauth/token'
@@ -337,23 +353,26 @@ app.get('/oauth/token', function (req, res) {
  *
  * Verifies token and returns user profile
  */
-app.get('/verify', async function (req, res) {
-  try {
-    const token = (req.query.access_token ??
-      req.header('Authorization')) as string;
-    if (!token) {
-      res.status(400).send({error: 'missing access_token'});
-      return;
+app.get(
+  '/verify',
+  asyncHandler(async function (req, res) {
+    try {
+      const token = (req.query.access_token ??
+        req.header('Authorization')) as string;
+      if (!token) {
+        res.status(400).send({error: 'missing access_token'});
+        return;
+      }
+      const result = await verifyToken(token);
+      const expirationTime = result.exp;
+      res.setHeader('Content-Type', 'application/json');
+      res.send({...result, expirationTime: expirationTime});
+    } catch (err) {
+      res.setHeader('Content-Type', 'application/json');
+      res.status(401).send({error: err.message});
     }
-    const result = await verifyToken(token);
-    const expirationTime = result.exp;
-    res.setHeader('Content-Type', 'application/json');
-    res.send({...result, expirationTime: expirationTime});
-  } catch (err) {
-    res.setHeader('Content-Type', 'application/json');
-    res.status(401).send({error: err.message});
-  }
-});
+  }),
+);
 
 export function startApp(port = 9000) {
   server = app.listen(port);

@@ -131,7 +131,7 @@ export class Lb3AppBooter implements Booter {
   }
 
   private mountFullApp(lb3App: Lb3Application, spec: OpenApiSpec) {
-    const restApiRoot = lb3App.get('restApiRoot') || '/';
+    const restApiRoot = lb3App.get('restApiRoot') ?? '/';
     debug('Mounting the entire LB3 app at %s', restApiRoot);
     const specInRoot = rebaseOpenApiSpec(spec, restApiRoot);
     this.app.mountExpressRouter('/', lb3App, specInRoot);

@@ -178,14 +178,7 @@
           "hide": false
         }
       },
-      "arguments": [
-        {
-          "type": "String",
-          "required": false,
-          "description": "Project name for the application",
-          "name": "name"
-        }
-      ],
+      "arguments": [],
       "name": "app"
     },
     "extension": {
@@ -309,14 +302,7 @@
           "hide": false
         }
       },
-      "arguments": [
-        {
-          "type": "String",
-          "required": false,
-          "description": "Project name for the extension",
-          "name": "name"
-        }
-      ],
+      "arguments": [],
       "name": "extension"
     },
     "controller": {
@@ -387,14 +373,7 @@
           "hide": false
         }
       },
-      "arguments": [
-        {
-          "type": "String",
-          "required": false,
-          "description": "Name for the controller",
-          "name": "name"
-        }
-      ],
+      "arguments": [],
       "name": "controller"
     },
     "datasource": {
@@ -458,14 +437,7 @@
           "hide": false
         }
       },
-      "arguments": [
-        {
-          "type": "String",
-          "required": false,
-          "description": "Name for the datasource",
-          "name": "name"
-        }
-      ],
+      "arguments": [],
       "name": "datasource"
     },
     "import-lb3-models": {
@@ -536,14 +508,7 @@
           "hide": false
         }
       },
-      "arguments": [
-        {
-          "type": "String",
-          "required": true,
-          "description": "Path to your LoopBack 3.x application. This can be a project directory (e.g. \"my-lb3-app\") or the server file (e.g. \"my-lb3-app/server/server.js\").",
-          "name": "lb3app"
-        }
-      ],
+      "arguments": [],
       "name": "import-lb3-models"
     },
     "model": {
@@ -635,14 +600,7 @@
           "hide": false
         }
       },
-      "arguments": [
-        {
-          "type": "String",
-          "required": false,
-          "description": "Name for the model",
-          "name": "name"
-        }
-      ],
+      "arguments": [],
       "name": "model"
     },
     "repository": {
@@ -734,14 +692,7 @@
           "hide": false
         }
       },
-      "arguments": [
-        {
-          "type": "String",
-          "required": false,
-          "description": "Name for the repository ",
-          "name": "name"
-        }
-      ],
+      "arguments": [],
       "name": "repository"
     },
     "service": {
@@ -819,14 +770,7 @@
           "hide": false
         }
       },
-      "arguments": [
-        {
-          "type": "String",
-          "required": false,
-          "description": "Name for the service",
-          "name": "name"
-        }
-      ],
+      "arguments": [],
       "name": "service"
     },
     "example": {
@@ -890,14 +834,7 @@
           "hide": false
         }
       },
-      "arguments": [
-        {
-          "type": "String",
-          "description": "Name of the example to clone",
-          "required": false,
-          "name": "example-name"
-        }
-      ],
+      "arguments": [],
       "name": "example"
     },
     "openapi": {
@@ -1015,14 +952,7 @@
           "hide": false
         }
       },
-      "arguments": [
-        {
-          "description": "URL or file path of the OpenAPI spec",
-          "required": false,
-          "type": "String",
-          "name": "url"
-        }
-      ],
+      "arguments": [],
       "name": "openapi"
     },
     "observer": {
@@ -1093,14 +1023,7 @@
           "hide": false
         }
       },
-      "arguments": [
-        {
-          "type": "String",
-          "required": false,
-          "description": "Name for the observer",
-          "name": "name"
-        }
-      ],
+      "arguments": [],
       "name": "observer"
     },
     "interceptor": {
@@ -1178,14 +1101,7 @@
           "hide": false
         }
       },
-      "arguments": [
-        {
-          "type": "String",
-          "required": false,
-          "description": "Name for the interceptor",
-          "name": "name"
-        }
-      ],
+      "arguments": [],
       "name": "interceptor"
     },
     "discover": {
@@ -1309,14 +1225,7 @@
           "hide": false
         }
       },
-      "arguments": [
-        {
-          "type": "String",
-          "required": false,
-          "description": "Name for the discover",
-          "name": "name"
-        }
-      ],
+      "arguments": [],
       "name": "discover"
     },
     "relation": {
@@ -1650,14 +1559,7 @@
           "hide": false
         }
       },
-      "arguments": [
-        {
-          "type": "String",
-          "required": false,
-          "description": "Name for the rest-config",
-          "name": "name"
-        }
-      ],
+      "arguments": [],
       "name": "rest-crud"
     },
     "copyright": {

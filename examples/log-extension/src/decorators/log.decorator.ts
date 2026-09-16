@@ -19,7 +19,7 @@ import {LevelMetadata} from '../types';
  * @param level - The Log Level at or above it should log
  */
 export function log(level?: number) {
-  if (level === undefined) level = LOG_LEVEL.WARN;
+  level ??= LOG_LEVEL.WARN;
   return MethodDecoratorFactory.createDecorator<LevelMetadata>(
     EXAMPLE_LOG_METADATA_KEY,
     {

@@ -93,6 +93,35 @@ Now you run the scripts, such as:
     | ------------------ | ------------------------------------------------------------------------------------------------- |
     | `--copy-resources` | Copy all non-typescript files from `src` and `test` to `outDir`, preserving their relative paths. |
 
+  - TypeScript compiler
+
+    `lb-tsc` compiles with the TypeScript 7 native compiler (installed as
+    `@typescript/native`), preferring the copy owned by the project being built.
+    If TypeScript 7 is not installed, it falls back to the `typescript` package.
+
+    TypeScript 7 no longer ships the JavaScript compiler API, so `typescript` is
+    aliased to `@typescript/typescript6`. That keeps `require('typescript')`
+    working for tools that consume the API, such as `@typescript-eslint` and
+    editor language services.
+
+    Note that TypeScript 7 removed `"moduleResolution": "node"` (node10). Remove
+    the option from your `tsconfig.json` - `"module": "commonjs"` resolves
+    modules the same way Node.js does without it.
+
+    TypeScript 6 also stopped including every installed `@types/*` package
+    automatically, so `tsconfig.common.json` lists `"types": ["node", "mocha"]`.
+    A project that relies on other packages of global type declarations has to
+    list them explicitly:
+
+    ```json
+    {
+      "extends": "@loopback/build/config/tsconfig.common.json",
+      "compilerOptions": {
+        "types": ["node", "mocha", "my-global-types"]
+      }
+    }
+    ```
+
   - Using [`ttypescript`](https://github.com/cevek/ttypescript)
 
     ### Stability: ⚠️Experimental⚠️

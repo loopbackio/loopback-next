@@ -96,9 +96,9 @@ export class BaseArtifactBooter implements Booter {
 
     const joinedExts = `@(${this.extensions.join('|')})`;
 
-    this.glob = this.options.glob
-      ? this.options.glob
-      : `/${joinedDirs}/${this.options.nested ? '**/*' : '*'}${joinedExts}`;
+    this.glob =
+      this.options.glob ??
+      `/${joinedDirs}/${this.options.nested ? '**/*' : '*'}${joinedExts}`;
   }
 
   /**

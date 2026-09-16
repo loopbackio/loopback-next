@@ -144,9 +144,7 @@ export class SocketIoServer extends Context {
     if (meta instanceof RegExp || typeof meta === 'string') {
       meta = {namespace: meta} as SocketIoMetadata;
     }
-    if (meta == null) {
-      meta = getSocketIoMetadata(controllerClass) as SocketIoMetadata;
-    }
+    meta ??= getSocketIoMetadata(controllerClass) as SocketIoMetadata;
     const nsp = meta?.namespace ? this.io.of(meta.namespace) : this.io;
     if (meta?.name) {
       this.app.bind(getNamespaceKeyForName(meta.name)).to(nsp);
@@ -280,14 +278,10 @@ function resolveHttpServerConfig(
   );
 
   // Can't check falsiness, 0 is a valid port.
-  if (result.port == null) {
-    result.port = 3000;
-  }
+  result.port ??= 3000;
 
-  if (result.host == null) {
-    // Set it to '' so that the http server will listen on all interfaces
-    result.host = undefined;
-  }
+  // Set it to '' so that the http server will listen on all interfaces
+  result.host ??= undefined;
 
   return result;
 }

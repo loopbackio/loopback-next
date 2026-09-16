@@ -114,7 +114,7 @@ export class OpenApiSpecBuilder extends BuilderBase<OpenAPIObject> {
     spec: OperationObject | OperationSpecBuilder,
   ): this {
     if (spec instanceof OperationSpecBuilder) spec = spec.build();
-    if (!this._spec.paths[path]) this._spec.paths[path] = {};
+    this._spec.paths[path] ??= {};
     this._spec.paths[path][verb] = spec;
     return this;
   }
@@ -145,7 +145,7 @@ export class OpenApiSpecBuilder extends BuilderBase<OpenAPIObject> {
    */
   withComponents(spec: ComponentsObject | ComponentsSpecBuilder): this {
     if (spec instanceof ComponentsSpecBuilder) spec = spec.build();
-    if (!this._spec.components) this._spec.components = spec;
+    this._spec.components ??= spec;
     return this;
   }
 }
@@ -190,7 +190,7 @@ export class OperationSpecBuilder extends BuilderBase<OperationObject> {
    * @param parameterSpecs
    */
   withParameter(...parameterSpecs: ParameterObject[]): this {
-    if (!this._spec.parameters) this._spec.parameters = [];
+    this._spec.parameters ??= [];
     this._spec.parameters.push(...parameterSpecs);
     return this;
   }
@@ -251,7 +251,7 @@ export class OperationSpecBuilder extends BuilderBase<OperationObject> {
    * @param tags
    */
   withTags(tags: string | string[]): this {
-    if (!this._spec.tags) this._spec.tags = [];
+    this._spec.tags ??= [];
     if (typeof tags === 'string') tags = [tags];
     this._spec.tags.push(...tags);
     return this;
@@ -274,7 +274,7 @@ export class ComponentsSpecBuilder extends BuilderBase<ComponentsObject> {
    *
    */
   withSchema(name: string, schema: SchemaObject | ReferenceObject): this {
-    if (!this._spec.schemas) this._spec.schemas = {};
+    this._spec.schemas ??= {};
     this._spec.schemas[name] = schema;
     return this;
   }
@@ -287,7 +287,7 @@ export class ComponentsSpecBuilder extends BuilderBase<ComponentsObject> {
    *
    */
   withResponse(name: string, response: ResponseObject | ReferenceObject): this {
-    if (!this._spec.responses) this._spec.responses = {};
+    this._spec.responses ??= {};
     this._spec.responses[name] = response;
     return this;
   }
@@ -303,7 +303,7 @@ export class ComponentsSpecBuilder extends BuilderBase<ComponentsObject> {
     name: string,
     parameter: ParameterObject | ReferenceObject,
   ): this {
-    if (!this._spec.parameters) this._spec.parameters = {};
+    this._spec.parameters ??= {};
     this._spec.parameters[name] = parameter;
     return this;
   }
@@ -316,7 +316,7 @@ export class ComponentsSpecBuilder extends BuilderBase<ComponentsObject> {
    *
    */
   withExample(name: string, example: ExampleObject | ReferenceObject): this {
-    if (!this._spec.examples) this._spec.examples = {};
+    this._spec.examples ??= {};
     this._spec.examples[name] = example;
     return this;
   }
@@ -332,7 +332,7 @@ export class ComponentsSpecBuilder extends BuilderBase<ComponentsObject> {
     name: string,
     requestBody: RequestBodyObject | ReferenceObject,
   ): this {
-    if (!this._spec.requestBodies) this._spec.requestBodies = {};
+    this._spec.requestBodies ??= {};
     this._spec.requestBodies[name] = requestBody;
     return this;
   }
@@ -345,7 +345,7 @@ export class ComponentsSpecBuilder extends BuilderBase<ComponentsObject> {
    *
    */
   withHeader(name: string, header: HeaderObject | ReferenceObject): this {
-    if (!this._spec.headers) this._spec.headers = {};
+    this._spec.headers ??= {};
     this._spec.headers[name] = header;
     return this;
   }
@@ -361,7 +361,7 @@ export class ComponentsSpecBuilder extends BuilderBase<ComponentsObject> {
     name: string,
     securityScheme: SecuritySchemeObject | ReferenceObject,
   ): this {
-    if (!this._spec.securitySchemes) this._spec.securitySchemes = {};
+    this._spec.securitySchemes ??= {};
     this._spec.securitySchemes[name] = securityScheme;
     return this;
   }
@@ -374,7 +374,7 @@ export class ComponentsSpecBuilder extends BuilderBase<ComponentsObject> {
    *
    */
   withLink(name: string, link: LinkObject | ReferenceObject): this {
-    if (!this._spec.links) this._spec.links = {};
+    this._spec.links ??= {};
     this._spec.links[name] = link;
     return this;
   }
@@ -387,7 +387,7 @@ export class ComponentsSpecBuilder extends BuilderBase<ComponentsObject> {
    *
    */
   withCallback(name: string, callback: CallbackObject | ReferenceObject): this {
-    if (!this._spec.callbacks) this._spec.callbacks = {};
+    this._spec.callbacks ??= {};
     this._spec.callbacks[name] = callback;
     return this;
   }

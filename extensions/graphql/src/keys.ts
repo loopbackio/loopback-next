@@ -37,7 +37,9 @@ export namespace GraphQLBindings {
   /**
    * Binding key for the GraphQL context resolver
    */
-  export const GRAPHQL_CONTEXT_RESOLVER = BindingKey.create<
+  export const GRAPHQL_CONTEXT_RESOLVER: BindingKey<
+    ExpressMiddlewareOptions<{[key: string]: unknown}>['context']
+  > = BindingKey.create<
     ExpressMiddlewareOptions<{[key: string]: unknown}>['context']
   >('graphql.contextResolver');
 

@@ -9,9 +9,9 @@ export type RouterSpec = Pick<OpenApiSpec, 'paths' | 'components' | 'tags'>;
 
 export function assignRouterSpec(target: RouterSpec, additions: RouterSpec) {
   if (additions.components) {
-    if (!target.components) target.components = {};
+    target.components ??= {};
     for (const key in additions.components) {
-      if (!target.components[key]) target.components[key] = {};
+      target.components[key] ??= {};
       Object.assign(target.components[key], additions.components[key]);
     }
   }
@@ -26,7 +26,7 @@ export function assignRouterSpec(target: RouterSpec, additions: RouterSpec) {
   }
 
   if (additions.tags && additions.tags.length > 0) {
-    if (!target.tags) target.tags = [];
+    target.tags ??= [];
     for (const tag of additions.tags) {
       // tags defined earlier take precedence
       if (target.tags.some(t => t.name === tag.name)) continue;

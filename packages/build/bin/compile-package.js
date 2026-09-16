@@ -23,7 +23,28 @@ const path = require('path');
 const fs = require('fs');
 const {globSync} = require('glob');
 const fse = require('fs-extra');
+// The `typescript` package is aliased to the TypeScript 6 JS compiler, which
+// still ships the compiler API. TypeScript 7 (the native compiler) does not.
 const {buildOpts: buildOptions} = require('typescript');
+
+/**
+ * Resolve the TypeScript 7 native compiler (`@typescript/native`), preferring
+ * the copy owned by the package being built. Its `exports` map does not expose
+ * `lib/tsc.js`, so the CLI is located relative to the package manifest.
+ *
+ * Returns `undefined` when TypeScript 7 is not installed, in which case the
+ * `typescript` package (TypeScript 6) is used to compile.
+ */
+function resolveNativeTsc() {
+  try {
+    const manifest = require.resolve('@typescript/native/package.json', {
+      paths: [utils.getPackageDir(), __dirname],
+    });
+    return path.join(path.dirname(manifest), 'bin', 'tsc');
+  } catch (e) {
+    debug('TypeScript 7 (@typescript/native) is not installed: %s', e.message);
+  }
+}
 
 function run(argv, options) {
   if (options === true) {
@@ -48,12 +69,12 @@ function run(argv, options) {
     '--copy-resources',
   );
 
-  let TSC_CLI = 'typescript/lib/tsc';
+  let TSC_CLI = resolveNativeTsc() ?? 'typescript/lib/tsc';
   if (useTtsc) {
     try {
       require.resolve('ttypescript');
       TSC_CLI = 'ttypescript/lib/tsc';
-    } catch (e) {
+    } catch {
       if (isUseTtscSet) {
         console.error(
           'Error using the --use-ttypescript option - ttypescript is not installed',
@@ -174,6 +195,11 @@ function run(argv, options) {
  * @param {string[]} args An array of arguments
  */
 function validArgsForBuild(args) {
+  if (!Array.isArray(buildOptions)) {
+    debug('Cannot validate args for tsc -b - the compiler API is unavailable');
+    return args;
+  }
+
   const validBooleanOptions = [];
   const validValueOptions = [];
 
@@ -194,6 +220,8 @@ function validArgsForBuild(args) {
   let validArgs = args;
   if (args.includes('-b') || args.includes('--build')) {
     validArgs = filterArgs(args, (arg, next) => {
+      // `-b` is re-added below as the first argument
+      if (arg === '-b' || arg === '--build') return 0;
       if (validBooleanOptions.includes(arg)) {
         return next === 'false' || next === 'true' ? 2 : 1;
       }

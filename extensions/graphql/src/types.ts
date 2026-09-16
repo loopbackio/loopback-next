@@ -7,9 +7,21 @@ import {ApolloServerOptionsWithStaticSchema, BaseContext} from '@apollo/server';
 import {HttpOptions} from '@loopback/http-server';
 import {ExecutionArgs} from 'graphql';
 import {GraphQLExecutionContextValue, SubscribeMessage} from 'graphql-ws';
+import {MiddlewareFn, MiddlewareInterface} from 'type-graphql';
 
 export {Float, ID, Int, ResolverInterface} from 'type-graphql';
-export {Middleware as GraphQLMiddleware} from 'type-graphql/build/typings/typings/middleware';
+
+/**
+ * A GraphQL middleware function or class.
+ *
+ * `type-graphql` declares this type as `Middleware` but does not export it from
+ * the package entry point, so it is declared here to match
+ * `type-graphql/build/typings/typings/middleware`.
+ */
+export type GraphQLMiddleware<TContext extends object = object> =
+  | MiddlewareFn<TContext>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  | (new (...args: any[]) => MiddlewareInterface<TContext>);
 
 /**
  * Options for GraphQL component

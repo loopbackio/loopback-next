@@ -91,7 +91,7 @@ export class BasicStrategy implements AuthenticationStrategy {
           return done(null, false);
         }
         const user = users[0];
-        if (!user.credentials || user.credentials.password !== password) {
+        if (user.credentials?.password !== password) {
           return done(null, false);
         }
         // Authentication passed, return user profile

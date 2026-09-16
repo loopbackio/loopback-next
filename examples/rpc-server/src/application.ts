@@ -16,7 +16,7 @@ export class MyApplication extends Application {
     super(options);
     this.controller(GreetController);
     this.server(RPCServer);
-    this.options.port = this.options.port || 3000;
+    this.options.port = this.options.port ?? 3000;
     this.bind('rpcServer.config').to(this.options);
   }
 }

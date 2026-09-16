@@ -99,7 +99,7 @@ function givenRouter(router: RestRouter, spec: OpenApiSpec, count: number) {
       try {
         table.find(request);
         found++;
-      } catch (e) {
+      } catch {
         missed++;
       }
     }

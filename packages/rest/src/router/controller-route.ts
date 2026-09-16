@@ -67,7 +67,7 @@ export class ControllerRoute<T extends object> extends BaseRoute {
     controllerFactory?: ControllerFactory<T>,
     methodName?: string,
   ) {
-    const controllerName = spec['x-controller-name'] || controllerCtor.name;
+    const controllerName = spec['x-controller-name'] ?? controllerCtor.name;
     methodName = methodName ?? spec['x-operation-name'];
 
     if (!methodName) {
@@ -96,7 +96,7 @@ export class ControllerRoute<T extends object> extends BaseRoute {
     this._controllerFactory =
       controllerFactory ?? createControllerFactoryForClass(controllerCtor);
     this._controllerCtor = controllerCtor;
-    this._controllerName = controllerName || controllerCtor.name;
+    this._controllerName = controllerName ?? controllerCtor.name;
     this._methodName = methodName;
   }
 
@@ -170,9 +170,7 @@ export function createControllerFactoryForClass<T extends object>(
     let inst = await ctx.get<T>(`controllers.${controllerCtor.name}`, {
       optional: true,
     });
-    if (inst === undefined) {
-      inst = await instantiateClass<T>(controllerCtor, ctx);
-    }
+    inst ??= await instantiateClass<T>(controllerCtor, ctx);
     return inst;
   };
 }

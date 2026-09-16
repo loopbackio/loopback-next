@@ -344,7 +344,7 @@ function buildSchemaTitle<T extends object>(
   options: JsonSchemaOptions<T>,
 ) {
   if (options.title) return options.title;
-  const title = meta.title || ctor.name;
+  const title = meta.title ?? ctor.name;
   return title + getTitleSuffix(options);
 }
 
@@ -489,7 +489,7 @@ export function modelToJsonSchema<T extends object>(
       indexInfo = {[p]: index};
     }
     if (indexInfo && Object.keys(indexInfo).length) {
-      if (result.description === undefined) result.description = '';
+      result.description ??= '';
       if (result.description.includes('indexInfo')) {
         const indexInfoMatched = result.description.match(/\{"indexInfo".*$/s);
         if (indexInfoMatched) {

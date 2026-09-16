@@ -163,7 +163,7 @@ describe('Authorization', () => {
     try {
       await invokeMethod(controller, 'cancelOrder', reqCtx, ['order-01']);
       finalDecision = Allow;
-    } catch (err) {
+    } catch {
       finalDecision = Deny;
     }
     return finalDecision;
@@ -174,7 +174,7 @@ describe('Authorization', () => {
     try {
       await invokeMethod(controller, 'placeOrder', reqCtx, ['prod-01', 10]);
       finalDecision = Allow;
-    } catch (err) {
+    } catch {
       finalDecision = Deny;
     }
     return finalDecision;

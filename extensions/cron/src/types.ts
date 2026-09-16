@@ -52,10 +52,13 @@ export class CronJob extends BaseCronJob {
     } else {
       this.name = `job-${++CronJob.count}`;
     }
-    // Override `fireOnTick` to catch errors
+    // Override `fireOnTick` to catch errors. `cron` declares `fireOnTick` as a
+    // class field but installs it on the prototype, so it cannot be reached
+    // via `super`.
+    const fireOnTick = BaseCronJob.prototype.fireOnTick;
     this.fireOnTick = () => {
       try {
-        return super.fireOnTick();
+        return fireOnTick.call(this);
       } catch (err) {
         this.emitter.emit('error', err);
       }

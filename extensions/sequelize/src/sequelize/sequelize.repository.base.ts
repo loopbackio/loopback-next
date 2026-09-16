@@ -550,9 +550,7 @@ export class SequelizeCrudRepository<
       return [];
     }
 
-    if (!sourceModel) {
-      sourceModel = this.sequelizeModel;
-    }
+    sourceModel ??= this.sequelizeModel;
 
     if (sourceModel === this.sequelizeModel) {
       const invalidInclusions = inclusionFilters.filter(
@@ -663,8 +661,7 @@ export class SequelizeCrudRepository<
       }
 
       const entityClassCol = this.entityClass.definition.properties[columnName];
-      const isBooleanColumn =
-        entityClassCol && entityClassCol.type === 'boolean';
+      const isBooleanColumn = entityClassCol?.type === 'boolean';
 
       if (isTruelyObject(conditionValue)) {
         sequelizeWhere[columnName] = {};
@@ -718,7 +715,7 @@ export class SequelizeCrudRepository<
    * Get Sequelize Model
    * @returns Sequelize Model Instance based on the definitions from `entityClass`
    */
-  public getSequelizeModel(entityClass = this.entityClass) {
+  public getSequelizeModel(entityClass: typeof Entity = this.entityClass) {
     if (!this.dataSource.sequelize) {
       throw Error(
         `The datasource "${this.dataSource.name}" doesn't have sequelize instance bound to it.`,
@@ -832,7 +829,7 @@ export class SequelizeCrudRepository<
    * @param {Entity} entityClass - The entity class for which the table name is being retrieved.
    * @returns {string} - The table name associated with the entity class. Which is used when performing the query.
    */
-  getTableName(entityClass = this.entityClass) {
+  getTableName(entityClass: typeof Entity = this.entityClass) {
     let tableName = entityClass.name; // model class name
 
     if (entityClass.definition.name !== tableName) {
@@ -934,7 +931,7 @@ export class SequelizeCrudRepository<
           const stringTypeArray =
             definition[propName].itemType === String ||
             ['String', 'string'].includes(
-              definition[propName].itemType?.toString() || '',
+              definition[propName].itemType?.toString() ?? '',
             );
           dataType = stringTypeArray
             ? DataTypes.ARRAY(DataTypes.STRING)
@@ -1008,7 +1005,7 @@ export class SequelizeCrudRepository<
           if (typeof value === 'string') {
             try {
               return JSON.parse(value);
-            } catch (_error) {
+            } catch {
               return null;
             }
           }

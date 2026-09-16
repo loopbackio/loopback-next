@@ -15,10 +15,13 @@
 
     "incremental": true,
 
+    // TypeScript 6 no longer includes every `@types/*` package automatically,
+    // ambient type packages have to be listed explicitly.
+    "types": ["node", "mocha"],
+
     "lib": ["es2020"],
     "module": "commonjs",
     "esModuleInterop": true,
-    "moduleResolution": "node",
     "target": "es2018",
     "sourceMap": true,
     "declaration": true,

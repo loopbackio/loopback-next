@@ -70,7 +70,7 @@ export async function cache<T>(
   const req = await invocationCtx.get(RestBindings.Http.REQUEST, {
     optional: true,
   });
-  if (!req || req.method.toLowerCase() !== 'get') {
+  if (req?.method.toLowerCase() !== 'get') {
     // The method is not invoked by an http request, no caching
     return next();
   }

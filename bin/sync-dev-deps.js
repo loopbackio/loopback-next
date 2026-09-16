@@ -12,18 +12,20 @@
 
 const path = require('node:path');
 const fse = require('fs-extra');
-const {
-  loadLernaRepo,
-  writeJsonSync,
-  isDryRun,
-  printJson,
-  runMain,
-} = require('./script-util');
+const pkgJson = require('@npmcli/package-json');
+const mapWorkspaces = require('@npmcli/map-workspaces');
+const {writeJsonSync, isDryRun, printJson, runMain} = require('./script-util');
 
 async function syncDevDeps(options) {
-  const {project, packages} = await loadLernaRepo();
+  const rootPath = process.cwd();
 
-  const rootPath = project.rootPath;
+  const {content: rootPkg} = await pkgJson.load(rootPath);
+  const workspaces = await mapWorkspaces({cwd: rootPath, pkg: rootPkg});
+
+  const packages = Array.from(workspaces, ([name, location]) => ({
+    name,
+    manifestLocation: path.join(location, 'package.json'),
+  }));
 
   // Load dependencies from `packages/eslint-config/package.json`
   const eslintDeps = require(

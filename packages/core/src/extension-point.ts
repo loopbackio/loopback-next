@@ -229,7 +229,7 @@ function inferExtensionPointName(
 ): string {
   if (currentBinding) {
     const name =
-      currentBinding.tagMap[CoreTags.EXTENSION_POINT] ||
+      currentBinding.tagMap[CoreTags.EXTENSION_POINT] ??
       currentBinding.tagMap[ContextTags.NAME];
 
     if (name) return name;

@@ -23,10 +23,8 @@ import {FileUploadHandler} from '../types';
 })
 export class FileUploadProvider implements Provider<FileUploadHandler> {
   constructor(@config() private options: multer.Options = {}) {
-    if (!this.options.storage) {
-      // Default to in-memory storage
-      this.options.storage = multer.memoryStorage();
-    }
+    // Default to in-memory storage
+    this.options.storage ??= multer.memoryStorage();
   }
 
   value(): FileUploadHandler {
