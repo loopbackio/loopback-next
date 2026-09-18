@@ -146,7 +146,7 @@ export class HttpCachingProxy {
     const onerror = (error: Error) => {
       this.logError(request, error);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      response.statusCode = (error as any).statusCode || 502;
+      response.statusCode = (error as any).statusCode ?? 502;
       response.end(`${error.name}: ${error.message}`);
     };
 

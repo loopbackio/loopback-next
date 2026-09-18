@@ -356,16 +356,14 @@ function buildBindingKey<T>(
     );
     // Derive the key from type + name
     let type = options.type ?? bindingTemplate.tagMap[ContextTags.TYPE];
-    if (!type) {
-      type =
-        bindingTemplate.tagNames.find(t => namespaces[t] != null) ??
-        ContextTags.CLASS;
-    }
+    type ??=
+      bindingTemplate.tagNames.find(t => namespaces[t] != null) ??
+      ContextTags.CLASS;
     namespace = getNamespace(type, namespaces);
   }
 
   const name =
-    options.name ?? (bindingTemplate.tagMap[ContextTags.NAME] || cls.name);
+    options.name ?? bindingTemplate.tagMap[ContextTags.NAME] ?? cls.name;
   key = `${namespace}.${name}`;
 
   return key;

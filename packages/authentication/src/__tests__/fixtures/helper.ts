@@ -96,7 +96,7 @@ export function createBearerAuthorizationHeaderValue(
   alternativePrefix?: string,
 ): string {
   // default type is 'Bearer ', unless another is specified
-  const prefix = alternativePrefix ? alternativePrefix : 'Bearer ';
+  const prefix = alternativePrefix ?? 'Bearer ';
   return prefix + token;
 }
 

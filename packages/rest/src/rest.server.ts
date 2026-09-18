@@ -343,9 +343,9 @@ export class RestServer
       this.addOpenApiSpecEndpoint(p, mapping[p], router);
     }
     const explorerPaths = ['/swagger-ui', '/explorer'];
-    router.get(explorerPaths, (req, res, next) =>
-      this._redirectToSwaggerUI(req, res, next),
-    );
+    router.get(explorerPaths, (req, res, next) => {
+      this._redirectToSwaggerUI(req, res, next).catch(next);
+    });
     this.expressMiddleware('middleware.apiSpec.defaults', router, {
       group: RestMiddlewareGroups.API_SPEC,
       upstreamGroups: RestMiddlewareGroups.CORS,
@@ -376,7 +376,9 @@ export class RestServer
         );
       }
       const newRouter = express.Router();
-      newRouter.get(path, (req, res) => this._serveOpenApiSpec(req, res, form));
+      newRouter.get(path, (req, res, next) => {
+        this._serveOpenApiSpec(req, res, form).catch(next);
+      });
       this.expressMiddleware(
         () => newRouter,
         {},
@@ -387,7 +389,9 @@ export class RestServer
         },
       );
     } else {
-      router.get(path, (req, res) => this._serveOpenApiSpec(req, res, form));
+      router.get(path, (req, res, next) => {
+        this._serveOpenApiSpec(req, res, form).catch(next);
+      });
     }
   }
 
@@ -1227,20 +1231,14 @@ function resolveRestServerConfig(
   );
 
   // Can't check falsiness, 0 is a valid port.
-  if (result.port == null) {
-    result.port = 3000;
-  }
+  result.port ??= 3000;
 
-  if (result.host == null) {
-    // Set it to '' so that the http server will listen on all interfaces
-    result.host = undefined;
-  }
+  // Set it to '' so that the http server will listen on all interfaces
+  result.host ??= undefined;
 
-  if (!result.openApiSpec.endpointMapping) {
-    // mapping may be mutated by addOpenApiSpecEndpoint, be sure that doesn't
-    // pollute the default mapping configuration
-    result.openApiSpec.endpointMapping = cloneDeep(OPENAPI_SPEC_MAPPING);
-  }
+  // mapping may be mutated by addOpenApiSpecEndpoint, be sure that doesn't
+  // pollute the default mapping configuration
+  result.openApiSpec.endpointMapping ??= cloneDeep(OPENAPI_SPEC_MAPPING);
 
   result.apiExplorer = normalizeApiExplorerConfig(config.apiExplorer);
 

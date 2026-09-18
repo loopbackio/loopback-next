@@ -84,9 +84,7 @@ export class LoopBackContainer implements ContainerType {
     } else {
       // Narrow down by key
       found = bindings.find(filterByKey(resolverBinding.key));
-      if (!found) {
-        found = bindings[0];
-      }
+      found ??= bindings[0];
     }
 
     debug(

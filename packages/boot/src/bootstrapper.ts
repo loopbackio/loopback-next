@@ -96,9 +96,7 @@ export class Bootstrapper {
     // names of booters that should be run), that is the value, otherwise it
     // is all the registered booters by default.
     const names = execOptions
-      ? execOptions.filter?.booters
-        ? execOptions.filter.booters
-        : defaultBooterNames
+      ? (execOptions.filter?.booters ?? defaultBooterNames)
       : defaultBooterNames;
 
     // Filter bindings by names

@@ -352,7 +352,7 @@ export class Model {
     };
 
     const json: AnyObject = {};
-    const hiddenProperties: string[] = def.settings.hiddenProperties || [];
+    const hiddenProperties: string[] = def.settings.hiddenProperties ?? [];
     for (const p in def.properties) {
       if (p in this && !hiddenProperties.includes(p)) {
         copyPropertyAsJson(p);
@@ -383,7 +383,7 @@ export class Model {
     const obj: AnyObject = {};
 
     if (options?.ignoreUnknownProperties === false) {
-      const hiddenProperties: string[] = def?.settings.hiddenProperties || [];
+      const hiddenProperties: string[] = def?.settings.hiddenProperties ?? [];
       for (const p in this) {
         if (!hiddenProperties.includes(p)) {
           const val = (this as AnyObject)[p];

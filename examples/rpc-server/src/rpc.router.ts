@@ -9,8 +9,8 @@ import {RPCServer} from './rpc.server';
 
 export function rpcRouter(server: RPCServer) {
   const jsonParser = parser.json();
-  server.expressServer.post('*', jsonParser, async (request, response) => {
-    await routeHandler(server, request, response);
+  server.expressServer.post('*', jsonParser, (request, response, next) => {
+    routeHandler(server, request, response).catch(next);
   });
 }
 

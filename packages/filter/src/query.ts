@@ -610,9 +610,7 @@ export class FilterBuilder<MT extends object = AnyObject> {
    * or an Order object for the field/direction pairs
    */
   order(...o: (string | string[] | Order<MT>)[]): this {
-    if (!this.filter.order) {
-      this.filter.order = [];
-    }
+    this.filter.order ??= [];
     o.forEach(order => {
       if (typeof order === 'string') {
         this.validateOrder(order);
@@ -646,9 +644,7 @@ export class FilterBuilder<MT extends object = AnyObject> {
    * object for the relation/scope definitions
    */
   include(...i: (string | string[] | Inclusion)[]): this {
-    if (this.filter.include == null) {
-      this.filter.include = [];
-    }
+    this.filter.include ??= [];
     for (const include of i) {
       if (typeof include === 'string') {
         this.filter.include.push({relation: include});
@@ -745,7 +741,7 @@ export function filterTemplate(strings: TemplateStringsArray, ...keys: any[]) {
     const result = tokens.join('');
     try {
       return JSON.parse(result);
-    } catch (e) {
+    } catch {
       throw new Error('Invalid JSON: ' + result);
     }
   };

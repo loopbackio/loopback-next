@@ -99,11 +99,9 @@ export class LifeCycleObserverRegistry implements LifeCycleObserver {
   ): string {
     // First check if there is an explicit group name in the tag
     let group = binding.tagMap[CoreTags.LIFE_CYCLE_OBSERVER_GROUP];
-    if (!group) {
-      // Fall back to a tag that matches one of the groups
-      group = this.options.orderedGroups.find(g => binding.tagMap[g] === g);
-    }
-    group = group || '';
+    // Fall back to a tag that matches one of the groups
+    group ??= this.options.orderedGroups.find(g => binding.tagMap[g] === g);
+    group = group ?? '';
     debug(
       'Binding %s is configured with observer group %s',
       binding.key,

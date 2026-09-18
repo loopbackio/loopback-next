@@ -46,21 +46,21 @@ const originalCommand = args[0];
 if (tabCompletionCommands.includes(originalCommand)) {
   const yoJsonFile = path.join(__dirname, '../.yo-rc.json');
   const config = fs.readJsonSync(yoJsonFile);
-  return runTabCompletionCommand(config.commands, originalCommand, console.log);
+  runTabCompletionCommand(config.commands, originalCommand, console.log);
+} else {
+  const main = require('../lib/cli');
+
+  // Force version check with `lb4 --version`
+  const interval = opts.version ? 0 : undefined;
+
+  import('update-notifier')
+    .then(({default: updateNotifier}) => {
+      updateNotifier({
+        pkg: pkg,
+        updateCheckInterval: interval,
+      }).notify({isGlobal: true});
+    })
+    .catch(() => {});
+
+  main(opts);
 }
-
-const main = require('../lib/cli');
-
-// Force version check with `lb4 --version`
-const interval = opts.version ? 0 : undefined;
-
-import('update-notifier')
-  .then(({default: updateNotifier}) => {
-    updateNotifier({
-      pkg: pkg,
-      updateCheckInterval: interval,
-    }).notify({isGlobal: true});
-  })
-  .catch(() => {});
-
-main(opts);

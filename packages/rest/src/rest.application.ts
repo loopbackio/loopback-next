@@ -285,24 +285,6 @@ export class RestApplication extends Application implements HttpServerLike {
    */
   route(route: RouteEntry): Binding;
 
-  /**
-   * Register a new route.
-   *
-   * @example
-   * ```ts
-   * function greet(name: string) {
-   *  return `hello ${name}`;
-   * }
-   * app.route('get', '/', operationSpec, greet);
-   * ```
-   */
-  route(
-    verb: string,
-    path: string,
-    spec: OperationObject,
-    handler: Function,
-  ): Binding;
-
   route<T extends object>(
     routeOrVerb: RouteEntry | string,
     path?: string,

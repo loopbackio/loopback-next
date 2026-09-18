@@ -87,7 +87,7 @@ export class LocalAuthStrategy implements AuthenticationStrategy {
           return done(null, null, {message: AUTH_FAILED_MESSAGE});
         }
         const user = users[0];
-        if (!user.credentials || user.credentials.password !== password) {
+        if (user.credentials?.password !== password) {
           return done(null, null, {message: AUTH_FAILED_MESSAGE});
         }
         // Authentication passed, return user profile

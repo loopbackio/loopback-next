@@ -18,12 +18,51 @@
 'use strict';
 
 import bodyParser from 'body-parser';
-import express from 'express';
+import express, {Request, RequestHandler, Response} from 'express';
 import {Server} from 'http';
 import jwt from 'jsonwebtoken';
 import {MyUser} from './user-repository';
 
 /* eslint-disable @typescript-eslint/naming-convention */
+
+/**
+ * Adapt an async handler so that rejections are passed to Express instead of
+ * becoming unhandled promise rejections.
+ */
+function asyncHandler(
+  handler: (req: Request, res: Response) => Promise<void>,
+): RequestHandler {
+  return (req, res, next) => {
+    handler(req, res).catch(next);
+  };
+}
+
+/**
+ * Hosts this mock provider is willing to redirect back to.
+ *
+ * A real authorization server matches `redirect_uri` against the callback urls
+ * registered for the client. This provider only ever serves test applications
+ * running on the same machine, so it accepts loopback hosts instead of
+ * redirecting wherever the request asks.
+ */
+const ALLOWED_REDIRECT_HOSTS = ['localhost', '127.0.0.1', '::1'];
+
+/**
+ * Parse `redirect_uri` and return it only when it points at a local test app.
+ * @param redirectUri - The `redirect_uri` taken from the request
+ */
+function parseRedirectUri(redirectUri: string) {
+  let url: URL;
+  try {
+    url = new URL(redirectUri);
+  } catch {
+    return undefined;
+  }
+  const isHttp = url.protocol === 'http:' || url.protocol === 'https:';
+  // `URL` keeps IPv6 hosts in brackets
+  const host = url.hostname.replace(/^\[|]$/g, '');
+  return isHttp && ALLOWED_REDIRECT_HOSTS.includes(host) ? url : undefined;
+}
 
 const app = express();
 let server: Server;
@@ -37,33 +76,37 @@ const urlencodedParser = bodyParser.urlencoded({extended: false});
 
 /**
  * data structure for an app registration, also holds issued tokens for an app
+ *
+ * The maps are keyed by values taken from the request, so they are `Map`s
+ * rather than plain objects - a `__proto__` key would otherwise reach
+ * `Object.prototype`.
  */
 interface App {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: any;
   client_secret: string;
-  tokens: {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    [key: string]: any;
-  };
+  /**
+   * access tokens issued for this app, keyed by the access code handed to the
+   * client
+   */
+  tokens: Map<string, {token: string}>;
+  /**
+   * signing key of each issued token, keyed by the token's `jti` claim
+   */
+  issuedTokens: Map<string, {signingKey: string; code: number}>;
 }
 
 /**
- * list of registered apps for this oauth2 provider identified by their client ids
+ * apps registered with this provider, keyed by their client ids
  */
-interface AppRegistry {
-  [clientId: string]: App;
-}
-
-/**
- * apps registered with this provider
- * format:
- *   { clientId: {client_secret, list_of_tokens} }
- */
-const registeredApps: AppRegistry = {
-  '1111': {client_secret: 'app1_secret', tokens: {}},
-  '2222': {client_secret: 'app2_secret', tokens: {}},
-};
+const registeredApps = new Map<string, App>([
+  [
+    '1111',
+    {client_secret: 'app1_secret', tokens: new Map(), issuedTokens: new Map()},
+  ],
+  [
+    '2222',
+    {client_secret: 'app2_secret', tokens: new Map(), issuedTokens: new Map()},
+  ],
+]);
 
 /**
  * user registry
@@ -157,10 +200,13 @@ async function verifyToken(token: string) {
   if (unwrappedJwt == null) throw new Error('invalid token');
   const tokenId = (unwrappedJwt.payload as jwt.JwtPayload).jti;
   if (!tokenId) throw new Error('invalid token');
-  const registeredApp: App =
-    registeredApps[(unwrappedJwt.payload as jwt.JwtPayload).client_id];
+  const registeredApp = registeredApps.get(
+    (unwrappedJwt.payload as jwt.JwtPayload).client_id,
+  );
   if (registeredApp) {
-    const result = jwt.verify(token, registeredApp[tokenId].signingKey);
+    const issuedToken = registeredApp.issuedTokens.get(String(tokenId));
+    if (!issuedToken) throw new Error('invalid token');
+    const result = jwt.verify(token, issuedToken.signingKey);
     if (result) {
       return result as Record<string, unknown>;
     } else {
@@ -191,7 +237,7 @@ app.get('/oauth/dialog', function (req, res) {
     res.status(400).send({error: 'missing client_id'});
     return;
   }
-  if (registeredApps[req.query.client_id as string]) {
+  if (registeredApps.has(req.query.client_id as string)) {
     let params =
       '?client_id=' +
       req.query.client_id +
@@ -246,38 +292,54 @@ app.get('/login', function (req, response) {
  * 3. stores token
  * 4. redirects to callback url with access code
  */
-app.post('/login_submit', urlencodedParser, async function (req, res) {
-  if (!req.body.username) {
-    res.status(400).send({error: 'missing username'});
-    return;
-  }
-  const user: MyUser | undefined = findUser(
-    req.body.username,
-    req.body.password,
-  );
-  if (user) {
-    // get registered app
-    const registeredApp = registeredApps[req.body.client_id];
-    // generate access code
-    const authCode = Math.floor(Math.random() * Math.floor(1000));
-    // create a token for the access code
-    const result = await createJwt(
-      user,
-      req.body.scope,
-      user.signingKey,
-      req.body.client_id,
+app.post(
+  '/login_submit',
+  urlencodedParser,
+  asyncHandler(async function (req, res) {
+    if (!req.body.username) {
+      res.status(400).send({error: 'missing username'});
+      return;
+    }
+    const user: MyUser | undefined = findUser(
+      req.body.username,
+      req.body.password,
     );
-    // store generated token
-    registeredApp.tokens[authCode] = {token: result.token};
-    registeredApp[result.id] = {signingKey: user.signingKey, code: authCode};
-    // redirect to call back url with the access code
-    let params = '?client_id=' + req.body.client_id;
-    params = params + '&&code=' + authCode;
-    res.redirect(req.body.redirect_uri + params);
-  } else {
-    res.sendStatus(401);
-  }
-});
+    if (user) {
+      // get registered app
+      const registeredApp = registeredApps.get(req.body.client_id);
+      if (!registeredApp) {
+        res.status(401).send({error: 'invalid client_id'});
+        return;
+      }
+      // generate access code
+      const authCode = Math.floor(Math.random() * Math.floor(1000));
+      // create a token for the access code
+      const result = await createJwt(
+        user,
+        req.body.scope,
+        user.signingKey,
+        req.body.client_id,
+      );
+      // store generated token
+      registeredApp.tokens.set(String(authCode), {token: result.token});
+      registeredApp.issuedTokens.set(String(result.id), {
+        signingKey: user.signingKey,
+        code: authCode,
+      });
+      // redirect to call back url with the access code
+      const callbackUrl = parseRedirectUri(req.body.redirect_uri);
+      if (!callbackUrl) {
+        res.status(400).send({error: 'invalid redirect_uri'});
+        return;
+      }
+      callbackUrl.searchParams.set('client_id', req.body.client_id);
+      callbackUrl.searchParams.set('code', String(authCode));
+      res.redirect(callbackUrl.href);
+    } else {
+      res.sendStatus(401);
+    }
+  }),
+);
 
 /**
  * Endpoint: POST '/oauth/token'
@@ -290,12 +352,13 @@ app.post('/oauth/token', urlencodedParser, function (req, res) {
     res.status(400).send({error: 'missing client_id'});
     return;
   }
-  if (registeredApps[req.body.client_id]) {
+  const registeredApp = registeredApps.get(req.body.client_id);
+  if (registeredApp) {
     //&& apps[req.query.client_id].client_secret === req.query.client_secret
-    const oauthStates = registeredApps[req.body.client_id].tokens;
-    if (oauthStates[req.body.code]) {
+    const oauthState = registeredApp.tokens.get(String(req.body.code));
+    if (oauthState) {
       res.setHeader('Content-Type', 'application/json');
-      res.send({access_token: oauthStates[req.body.code].token});
+      res.send({access_token: oauthState.token});
     } else {
       res.status(401).send({error: 'invalid code'});
     }
@@ -316,13 +379,13 @@ app.get('/oauth/token', function (req, res) {
     res.status(400).send({error: 'missing client_id'});
     return;
   }
-  if (registeredApps[clientId]) {
+  const registeredApp = registeredApps.get(clientId);
+  if (registeredApp) {
     //&& apps[req.query.client_id].client_secret === req.query.client_secret
-    const oauthStates = registeredApps[clientId].tokens;
-    const code = req.query.code as string;
-    if (oauthStates[code]) {
+    const oauthState = registeredApp.tokens.get(req.query.code as string);
+    if (oauthState) {
       res.setHeader('Content-Type', 'application/json');
-      res.send({access_token: oauthStates[code].token});
+      res.send({access_token: oauthState.token});
     } else {
       res.status(401).send({error: 'invalid code'});
     }
@@ -337,23 +400,26 @@ app.get('/oauth/token', function (req, res) {
  *
  * Verifies token and returns user profile
  */
-app.get('/verify', async function (req, res) {
-  try {
-    const token = (req.query.access_token ??
-      req.header('Authorization')) as string;
-    if (!token) {
-      res.status(400).send({error: 'missing access_token'});
-      return;
+app.get(
+  '/verify',
+  asyncHandler(async function (req, res) {
+    try {
+      const token = (req.query.access_token ??
+        req.header('Authorization')) as string;
+      if (!token) {
+        res.status(400).send({error: 'missing access_token'});
+        return;
+      }
+      const result = await verifyToken(token);
+      const expirationTime = result.exp;
+      res.setHeader('Content-Type', 'application/json');
+      res.send({...result, expirationTime: expirationTime});
+    } catch (err) {
+      res.setHeader('Content-Type', 'application/json');
+      res.status(401).send({error: err.message});
     }
-    const result = await verifyToken(token);
-    const expirationTime = result.exp;
-    res.setHeader('Content-Type', 'application/json');
-    res.send({...result, expirationTime: expirationTime});
-  } catch (err) {
-    res.setHeader('Content-Type', 'application/json');
-    res.status(401).send({error: err.message});
-  }
-});
+  }),
+);
 
 export function startApp(port = 9000) {
   server = app.listen(port);

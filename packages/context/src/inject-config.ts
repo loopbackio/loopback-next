@@ -138,7 +138,7 @@ function getCurrentBindingKey(session: ResolutionSession) {
  * @param session - Resolution session
  */
 function getTargetBindingKey(injection: Injection, session: ResolutionSession) {
-  return injection.metadata.fromBinding || getCurrentBindingKey(session);
+  return injection.metadata.fromBinding ?? getCurrentBindingKey(session);
 }
 
 /**

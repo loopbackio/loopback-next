@@ -55,7 +55,7 @@ export type ResolutionElement = BindingElement | InjectionElement;
 function isBinding(
   element: ResolutionElement | undefined,
 ): element is BindingElement {
-  return element != null && element.type === 'binding';
+  return element?.type === 'binding';
 }
 
 /**
@@ -65,7 +65,7 @@ function isBinding(
 function isInjection(
   element: ResolutionElement | undefined,
 ): element is InjectionElement {
-  return element != null && element.type === 'injection';
+  return element?.type === 'injection';
 }
 
 /**

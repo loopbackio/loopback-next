@@ -36,7 +36,7 @@ export class BufferType implements Type<Buffer> {
     if (Buffer.isBuffer(value)) return value as Buffer;
     if (typeof value === 'string') {
       options = options ?? {};
-      const encoding = options.encoding || 'utf-8';
+      const encoding = options.encoding ?? 'utf-8';
       return Buffer.from(value, encoding);
     } else if (Array.isArray(value)) {
       return Buffer.from(value);
@@ -47,7 +47,7 @@ export class BufferType implements Type<Buffer> {
 
   serialize(value: Buffer | null | undefined, options?: Options) {
     if (value == null) return value;
-    const encoding = options?.encoding || 'base64';
+    const encoding = options?.encoding ?? 'base64';
     return value.toString(encoding);
   }
 }
