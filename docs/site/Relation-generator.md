@@ -47,6 +47,12 @@ lb4 relation [options]
   through model. For HasManyThrough relation only.
 - `--targetKeyOnThrough`: Foreign key that references the target model on the
   through model. For HasManyThrough relation only.
+- `--customReferenceKeys`: Confrimation if there is any custom reference key to
+  source or target model. For HasManyThrough relation only.
+- `--customSourceModelKey`: Custom key referencing in the source model. For
+  HasManyThrough relation only.
+- `--customTargetModelKey`: Custom key referencing in the target model. For
+  HasManyThrough relation only.
 - `-c`, `--config`: JSON file name or value to configure options.
 - `-y`, `--yes`: Skip all confirmation prompts with default or provided value.
 - `--format`: Format generated code using `npm run lint:fix`.
@@ -114,6 +120,8 @@ lb4 relation --sourceModel=<sourceModel>
 [--destinationModelPrimaryKey=<destinationModelPrimaryKey>]
 [--destinationModelPrimaryKeyType=<destinationModelPrimaryKeyType>]
 [--sourceKeyOnThrough=<sourceKeyOnThrough>] [--targetKeyOnThrough<targetKeyOnThrough>]
+[--customReferenceKeys=<customReferenceKeys>]
+[--customSourceModelKey=<customSourceModelKey>] [--customTargetModelKey<customTargetModelKey>]
 [--format]
 ```
 
@@ -125,6 +133,15 @@ lb4 relation --sourceModel=<sourceModel>
 
 - `<targetKeyOnThrough>` - Property on the through model that references the
   primary key property of the target model.
+
+- `<customReferenceKeys>` - Confirm if there is any custom reference key to
+  source or target model.
+
+- `<customSourceModelKey>` - Property to that references the key in the source
+  model
+
+- `<customTargetModelKey>` - Property to that references the key in the target
+  model
 
 ### Interactive Prompts
 
@@ -164,6 +181,19 @@ The tool will prompt you for:
   references the target model to define on the through model. For HasManyThrough
   relation only. Default value: `<targetModel>` + `Id` in camelCase, e.g
   `patientId`.
+
+- Confirmation for any custom reference key(s) (`customReferenceKeys`). Prompts
+  to confirm if there is any custom reference keys to be defined referenceing
+  source or target model. For HasManyThrough relation only. The default value is
+  false
+
+- Name of custom reference key in source model (`customSourceModelKey`). Prompts
+  a property name that references non-primary key in source model. Only prompts
+  if `customReferenceKeys` is true.For HasManyThrough relation only.
+
+- Name of custom reference key in target model (`customTargetModelKey`). Prompts
+  a property name that references non-primary key in target model. Only prompts
+  if `customReferenceKeys` is true.For HasManyThrough relation only.
 
 - Name of the relation (`relationName`). Prompts for the Source property name.
   Note: Leave blank to use the default. Default values:
