@@ -52,7 +52,7 @@ module.exports = class HasManyThroughRelationGenerator extends (
       options.destinationModel,
     );
     this.artifactInfo.targetRepositoryClassName =
-      this.artifactInfo.targetModelName + 'Repository';
+      this.artifactInfo.targetModelClassName + 'Repository';
     this.artifactInfo.paramTargetRepository = utils.camelCase(
       this.artifactInfo.targetModelName + 'Repository',
     );
@@ -80,7 +80,22 @@ module.exports = class HasManyThroughRelationGenerator extends (
     const dest = this.destinationPath(
       path.join(this.artifactInfo.outDir, this.artifactInfo.outFile),
     );
-
+    this.artifactInfo.idPath = 'id';
+    this.artifactInfo.customSourceModelKey = options.customSourceModelKey;
+    if (options.customSourceModelKey) {
+      this.artifactInfo.idPath = utils.camelCase(options.customSourceModelKey);
+      const customSourceModelKeyType = relationUtils.getModelPropertyType(
+        this.artifactInfo.modelDir,
+        options.sourceModel,
+        options.customSourceModelKey,
+      );
+      if (customSourceModelKeyType) {
+        this.artifactInfo.sourceModelPrimaryKeyType = customSourceModelKeyType;
+      }
+    }
+    this.artifactInfo.customTargetModelKey = options.customTargetModelKey;
+    this.artifactInfo.sourceKeyOnThrough = options.sourceKeyOnThrough;
+    this.artifactInfo.targetKeyOnThrough = options.targetKeyOnThrough;
     this.copyTemplatedFiles(source, dest, this.artifactInfo);
     await relationUtils.addExportController(
       this,
@@ -104,8 +119,13 @@ module.exports = class HasManyThroughRelationGenerator extends (
     const targetKey = options.targetKeyOnThrough;
     const dftSourceKey = options.defaultSourceKeyOnThrough;
     const dftTargetKey = options.defaultTargetKeyOnThrough;
-    const sourceKeyType = options.sourceModelPrimaryKeyType;
-    const targetKeyType = options.destinationModelPrimaryKeyType;
+    const customSourceModelKey = options.customSourceModelKey;
+    const customTargetModelKey = options.customTargetModelKey;
+    const sourceKeyType =
+      options.customSourceModelKeyType || options.sourceModelPrimaryKeyType;
+    const targetKeyType =
+      options.customTargetModelKeyType ||
+      options.destinationModelPrimaryKeyType;
 
     // checks if both target and source key exist in through model
     const project = new relationUtils.AstLoopBackProject();
@@ -145,6 +165,8 @@ module.exports = class HasManyThroughRelationGenerator extends (
       sourceKey,
       isDefaultTargetKey,
       targetKey,
+      customSourceModelKey,
+      customTargetModelKey,
     );
     relationUtils.addProperty(sourceClass, modelProperty);
     let imports;
@@ -200,21 +222,31 @@ module.exports = class HasManyThroughRelationGenerator extends (
     sourceKey,
     isDefaultTargetKey,
     targetKey,
+    customSourceModelKey,
+    customTargetModelKey,
   ) {
     let keyFrom = '';
     let keyTo = '';
+    let customReferenceKeyFrom = '';
+    let customReferenceKeyTo = '';
     if (!isDefaultSourceKey) {
       keyFrom = `, keyFrom: '${sourceKey}'`;
     }
     if (!isDefaultTargetKey) {
       keyTo = `, keyTo: '${targetKey}'`;
     }
+    if (customSourceModelKey) {
+      customReferenceKeyFrom = `customReferenceKeyFrom: '${customSourceModelKey}', `;
+    }
+    if (customTargetModelKey) {
+      customReferenceKeyTo = `customReferenceKeyTo: '${customTargetModelKey}', `;
+    }
 
     const relationDecorator = [
       {
         name: 'hasMany',
         arguments: [
-          `() => ${targetClass}, {through: {model: () => ${throughModel}${keyFrom}${keyTo}}}`,
+          `() => ${targetClass}, {${customReferenceKeyFrom}${customReferenceKeyTo}through: {model: () => ${throughModel}${keyFrom}${keyTo}}}`,
         ],
       },
     ];
