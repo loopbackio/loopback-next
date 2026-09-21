@@ -172,6 +172,18 @@ model definition's relation metadata.
       <td><code>Patient.pid</code></td>
     </tr>
     <tr>
+      <td><code>customReferenceKeyFrom</code></td>
+      <td>the non-primary key of the source model</td>
+      <td>the non-primary property of the source model</td>
+      <td><code>User.email</code></td>
+    </tr>
+    <tr>
+      <td><code>customReferenceKeyTo</code></td>
+      <td>the non-primary key of the target model</td>
+      <td>the non-primary property of the target model</td>
+      <td><code>User.email</code></td>
+    </tr>
+    <tr>
       <td><code>through.model</code></td>
       <td>the name of the through model</td>
       <td>N/A. The through model name is needed for defining a hasManyThrough relation.</td>
@@ -192,11 +204,32 @@ model definition's relation metadata.
   </tbody>
 </table>
 
-The two foreign keys on through model can only reference the primary keys of
-source and target models. Customization of `keyFrom` and `keyTo` is not
-supported yet. However, custom foreign keys on through model is possible. A
-usage of the decorator with custom foreign keys name for the above example is as
+The two foreign keys on through model can reference the primary keys of source
+and target models. They can also reference non-primary keys with the help of
+`customReferenceKeyFrom` and `customReferenceKeyTo` keys.
+
+A usage of the decorator with custom reference keys for the above example is as
 follows:
+
+{% include code-caption.html content="/src/models/user.model.ts" %}
+
+```ts
+// import statements
+class User extends Entity {
+  // constructor, properties, etc.
+  @hasMany(() => User, {
+    customReferenceKeyFrom: 'email',
+    customReferenceKeyTo: 'email',
+    through: {
+      model: () => Friend1,
+    },
+  })
+  users: User[];
+}
+```
+
+Custom foreign keys on through model is possible. A usage of the decorator with
+custom foreign keys name for the above example is as follows:
 
 {% include code-caption.html content="/src/models/doctor.model.ts" %}
 
