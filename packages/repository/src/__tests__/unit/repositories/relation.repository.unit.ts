@@ -89,6 +89,16 @@ describe('relation repository', () => {
       });
     });
 
+    it('can count related model instance', async () => {
+      const constraint: Partial<Customer> = {name: 'Jane'};
+      const hasManyCrudInstance = givenDefaultHasManyInstance(constraint);
+      await hasManyCrudInstance.count({country: 'US'});
+      sinon.assert.calledWith(customerRepo.stubs.count, {
+        country: 'US',
+        name: 'Jane',
+      });
+    });
+
     context('patch', () => {
       it('can patch related model instance', async () => {
         const constraint: Partial<Customer> = {name: 'Jane'};
