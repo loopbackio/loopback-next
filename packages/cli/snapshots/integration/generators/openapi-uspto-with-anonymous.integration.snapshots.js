@@ -30,37 +30,6 @@ import {PerformSearchResponseBody} from '../models/perform-search-response-body.
     schemas: {
       dataSetList: {
         type: 'object',
-        properties: {
-          total: {
-            type: 'integer',
-          },
-          apis: {
-            type: 'array',
-            items: {
-              type: 'object',
-              properties: {
-                apiKey: {
-                  type: 'string',
-                  description: 'To be used as a dataset parameter value',
-                },
-                apiVersionNumber: {
-                  type: 'string',
-                  description: 'To be used as a version parameter value',
-                },
-                apiUrl: {
-                  type: 'string',
-                  format: 'uriref',
-                  description: "The URL describing the dataset's fields",
-                },
-                apiDocumentationUrl: {
-                  type: 'string',
-                  format: 'uriref',
-                  description: 'A URL to the API console for each API',
-                },
-              },
-            },
-          },
-        },
       },
     },
   },
@@ -234,37 +203,6 @@ import {DataSetList} from '../models/data-set-list.model';
     schemas: {
       dataSetList: {
         type: 'object',
-        properties: {
-          total: {
-            type: 'integer',
-          },
-          apis: {
-            type: 'array',
-            items: {
-              type: 'object',
-              properties: {
-                apiKey: {
-                  type: 'string',
-                  description: 'To be used as a dataset parameter value',
-                },
-                apiVersionNumber: {
-                  type: 'string',
-                  description: 'To be used as a version parameter value',
-                },
-                apiUrl: {
-                  type: 'string',
-                  format: 'uriref',
-                  description: "The URL describing the dataset's fields",
-                },
-                apiDocumentationUrl: {
-                  type: 'string',
-                  format: 'uriref',
-                  description: 'A URL to the API console for each API',
-                },
-              },
-            },
-          },
-        },
       },
     },
   },
