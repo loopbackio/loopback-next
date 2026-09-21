@@ -66,7 +66,37 @@ describe('booter-utils unit tests', () => {
       const files = [resolve(sandbox.path, 'multiple.artifact.js')];
       const NUM_CLASSES = 2; // Number of classes in above file
 
-      const classes = loadClassesFromFiles(files, sandbox.path);
+      const classes = await loadClassesFromFiles(files, sandbox.path);
+      expect(classes).to.have.lengthOf(NUM_CLASSES);
+      expect(classes[0]).to.be.a.Function();
+      expect(classes[1]).to.be.a.Function();
+    });
+
+    it('loads classes from CJS files', async () => {
+      const artifactFilename = 'multiple.artifact.cjs';
+      await sandbox.copyFile(
+        resolve(__dirname, '../../fixtures/multiple.artifact.cjs'),
+      );
+      const NUM_CLASSES = 2;
+      const classes = await loadClassesFromFiles(
+        [resolve(sandbox.path, artifactFilename)],
+        sandbox.path,
+      );
+      expect(classes).to.have.lengthOf(NUM_CLASSES);
+      expect(classes[0]).to.be.a.Function();
+      expect(classes[1]).to.be.a.Function();
+    });
+
+    it('loads classes from ESM files', async () => {
+      const artifactFilename = 'multiple.artifact.mjs';
+      await sandbox.copyFile(
+        resolve(__dirname, '../../fixtures/multiple.artifact.mjs'),
+      );
+      const NUM_CLASSES = 2;
+      const classes = await loadClassesFromFiles(
+        [resolve(sandbox.path, artifactFilename)],
+        sandbox.path,
+      );
       expect(classes).to.have.lengthOf(NUM_CLASSES);
       expect(classes[0]).to.be.a.Function();
       expect(classes[1]).to.be.a.Function();
@@ -78,16 +108,16 @@ describe('booter-utils unit tests', () => {
       );
       const files = [resolve(sandbox.path, 'empty.artifact.js')];
 
-      const classes = loadClassesFromFiles(files, sandbox.path);
+      const classes = await loadClassesFromFiles(files, sandbox.path);
       expect(classes).to.be.an.Array();
       expect(classes).to.be.empty();
     });
 
     it('throws an error given a non-existent file', async () => {
       const files = [resolve(sandbox.path, 'fake.artifact.js')];
-      expect(() => loadClassesFromFiles(files, sandbox.path)).to.throw(
-        /Cannot find module/,
-      );
+      await expect(
+        loadClassesFromFiles(files, sandbox.path),
+      ).to.be.rejectedWith(/Cannot find module/);
     });
   });
 });
