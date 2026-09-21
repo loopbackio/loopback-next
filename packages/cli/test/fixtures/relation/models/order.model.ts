@@ -14,6 +14,12 @@ export class Order extends Entity {
   })
   name?: string;
 
+  @property({
+    type: 'string',
+    readOnly: true,
+  })
+  token?: string;
+
   constructor(data?: Partial<Order>) {
     super(data);
   }
