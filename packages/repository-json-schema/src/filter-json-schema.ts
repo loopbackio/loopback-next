@@ -178,22 +178,51 @@ export function getFilterJsonSchemaFor(
  *
  * @param modelCtor - The model constructor to build the filter schema for.
  */
-export function getWhereJsonSchemaFor(
-  modelCtor: typeof Model,
-  options: FilterSchemaOptions = {},
-): JsonSchema {
-  const schema: JsonSchema = {
-    ...(options.setTitle !== false && {
-      title: `${modelCtor.modelName}.WhereFilter`,
-    }),
+function getWhereJsonSchemaFor(modelCtor, options = {}) {
+  const props = modelCtor.definition.properties;
+
+  const schema = {
+    $schema: 'http://json-schema.org/draft-07/schema#',
     type: 'object',
-    // TODO(bajtos) enumerate "model" properties and operators like "and"
-    // See https://github.com/loopbackio/loopback-next/issues/1748
-    additionalProperties: true,
+    properties: {},
+    additionalProperties: false,
+    $defs: {
+      operatorObject: {
+        type: 'object',
+        properties: {
+          eq: { type: 'any' },
+          neq: { type: 'any' },
+          gt: { type: 'any' },
+          gte: { type: 'any' },
+          lt: { type: 'any' },
+          lte: { type: 'any' },
+          inq: { type: 'array', items: { type: 'any' } },
+          nin: { type: 'array', items: { type: 'any' } },
+          between: { type: 'array', items: { type: 'any' }, minItems: 2, maxItems: 2 },
+          like: { type: 'string' },
+          nlike: { type: 'string' },
+          ilike: { type: 'string' },
+          nilike: { type: 'string' },
+          regexp: { type: 'string' },
+        },
+        additionalProperties: false,
+      },
+    },
   };
 
-  return schema;
-}
+  for (const propName in props) {
+    const propDef = props[propName];
+    const baseType = typeof propDef.type === 'function'
+      ? propDef.type.name.toLowerCase()
+      : 'string';
+
+    schema.properties[propName] = {
+      anyOf: [
+        { type: baseType },
+        { $ref: '#/$defs/operatorObject' },
+      ],
+    };
+  }
 
 /**
  * Build a JSON schema describing the format of the "fields" object
