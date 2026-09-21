@@ -94,6 +94,32 @@ export function getFilterJsonSchemaFor(
       examples: [100],
     },
 
+    sum: {
+      type: 'string',
+      examples: ['column1'],
+    },
+    min: {
+      type: 'string',
+      examples: ['column1'],
+    },
+    max: {
+      type: 'string',
+      examples: ['column1'],
+    },
+    avg: {
+      type: 'string',
+      examples: ['column1'],
+    },
+    count: {
+      type: 'string',
+      examples: ['column1'],
+    },
+    groupBy: {
+      type: 'array',
+      items: {
+        type: 'string',
+      },
+    },
     skip: {
       type: 'integer',
       minimum: 0,
@@ -119,6 +145,9 @@ export function getFilterJsonSchemaFor(
   }
   if (!excluded.includes('fields')) {
     properties.fields = getFieldsJsonSchemaFor(modelCtor, options);
+  }
+  if (!excluded.includes('groupBy')) {
+    properties.fields = getGroupByJsonSchemaFor(modelCtor, options);
   }
 
   // Remove excluded properties
@@ -209,6 +238,40 @@ export function getFieldsJsonSchemaFor(
   const schema: JsonSchema = {oneOf: []};
   if (options.setTitle !== false) {
     schema.title = `${modelCtor.modelName}.Fields`;
+  }
+
+  const properties = Object.keys(modelCtor.definition.properties);
+  const additionalProperties = modelCtor.definition.settings.strict === false;
+
+  schema.oneOf?.push({
+    type: 'object',
+    properties: properties.reduce(
+      (prev, crr) => ({...prev, [crr]: {type: 'boolean'}}),
+      {},
+    ),
+    additionalProperties,
+  });
+
+  schema.oneOf?.push({
+    type: 'array',
+    items: {
+      type: 'string',
+      enum: properties.length && !additionalProperties ? properties : undefined,
+      examples: properties,
+    },
+    uniqueItems: true,
+  });
+
+  return schema;
+}
+
+export function getGroupByJsonSchemaFor(
+  modelCtor: typeof Model,
+  options: FilterSchemaOptions = {},
+): JsonSchema {
+  const schema: JsonSchema = {oneOf: []};
+  if (options.setTitle !== false) {
+    schema.title = `${modelCtor.modelName}.GroupBy`;
   }
 
   const properties = Object.keys(modelCtor.definition.properties);
