@@ -108,6 +108,48 @@ export function hasManyThroughInclusionResolverAcceptance(
         ]);
       });
 
+      it('tolerates duplicate and missing source key values when resolving inclusion', async () => {
+        // Regression test: the hasManyThrough inclusion resolver used to
+        // pass its raw, unfiltered source-id list by reference straight to
+        // findByForeignKeys(), which hands that same array on to the
+        // connector inside an `{inq: [...]}` where clause. A connector/
+        // query layer that sanitizes an `inq` array in place (stripping
+        // falsy values before running the query, as the in-memory
+        // connector does) then mutates that shared array out from under
+        // the caller, shrinking the very array the resolver still needed -
+        // unmodified - to zip through-results back onto each original
+        // entity via flattenTargetsOfOneToManyRelation. That silently
+        // truncated and misaligned the resolver's return value whenever
+        // any source entity's key was undefined (e.g. excluded by a fields
+        // filter) or duplicated another entity's. hasMany/hasOne already
+        // pass a fresh, deduplicated, filtered array (never the original
+        // reference) before querying; hasManyThrough now does the same.
+        const zelda = await customerRepo.create({name: 'Zelda'});
+        const zeldaCart = await customerRepo
+          .cartItems(zelda.id)
+          .create({description: 'crown'});
+
+        const resolver = customerRepo.inclusionResolvers.get('cartItems')!;
+        const result = await resolver(
+          [
+            zelda,
+            zelda, // duplicate id
+            {name: 'no id'} as unknown as Customer, // id is undefined
+          ],
+          'cartItems',
+        );
+
+        // The entity with no source key has no related entities; the key
+        // point is that the result stays length-3 and aligned with the
+        // input, rather than truncated/misaligned by the in-place mutation
+        // this regression guards against.
+        expect(toJSON(result)).to.deepEqual([
+          [toJSON(zeldaCart)],
+          [toJSON(zeldaCart)],
+          null,
+        ]);
+      });
+
       it('returns multiple model instances including related instances', async () => {
         const link = await customerRepo.create({name: 'Link'});
         const sword = await customerRepo

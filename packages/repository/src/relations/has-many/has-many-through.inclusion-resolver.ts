@@ -12,6 +12,7 @@ import {Entity} from '../../model';
 import {EntityCrudRepository} from '../../repositories';
 import {
   StringKeyOf,
+  deduplicate,
   findByForeignKeys,
   flattenTargetsOfOneToManyRelation,
 } from '../relation.helpers';
@@ -100,7 +101,11 @@ export function createHasManyThroughInclusionResolver<
     const throughFound = await findByForeignKeys(
       throughRepo,
       throughKeyFrom,
-      sourceIds,
+      // Dedup/filter before querying: findByForeignKeys() passes this array
+      // by reference into an `inq` filter, and some connectors mutate it in
+      // place, corrupting the `sourceIds` this resolver still needs below.
+      // See the PR description for the full failure mode.
+      deduplicate(sourceIds).filter(e => e),
       {}, // scope will be applied at the target level
       options,
     );
