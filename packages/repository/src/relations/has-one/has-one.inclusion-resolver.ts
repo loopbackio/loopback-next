@@ -9,6 +9,7 @@ import {AnyObject, Options} from '../../common-types';
 import {Entity} from '../../model';
 import {EntityCrudRepository} from '../../repositories';
 import {
+  deduplicate,
   findByForeignKeys,
   flattenTargetsOfOneToOneRelation,
   StringKeyOf,
@@ -110,7 +111,11 @@ export function createHasOneInclusionResolver<
       const targetsFound = await findByForeignKeys(
         targetRepo,
         targetKey,
-        sourceIdsCategorized[k],
+        // Dedup/filter before querying: findByForeignKeys() passes this
+        // array by reference into an `inq` filter, and some connectors
+        // mutate it in place, corrupting the array this resolver still
+        // needs below. See the PR description for the full failure mode.
+        deduplicate(sourceIdsCategorized[k]).filter(e => e),
         scope,
         {...options, polymorphicType: k},
       );
