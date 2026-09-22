@@ -39,13 +39,13 @@
     "@types/fs-extra": "^11.0.4",
     "@types/shot": "^4.0.5",
     "@types/sinon": "^22.0.0",
-    "@types/supertest": "^2.0.16",
+    "@types/supertest": "^7.2.1",
     "express": "^4.22.3",
     "fs-extra": "^11.4.0",
     "oas-validator": "^5.0.8",
     "should": "^13.2.3",
     "sinon": "^22.1.0",
-    "supertest": "^7.2.2",
+    "supertest": "^7.3.0",
     "tslib": "^2.8.1"
   },
   "devDependencies": {
