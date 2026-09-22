@@ -11,7 +11,7 @@ const {TestSandbox} = require('@loopback/testlab');
 const {expectFileToMatchSnapshot} = require('../../snapshots');
 
 const generator = path.join(__dirname, '../../../generators/relation');
-const {SANDBOX_FILES} = require('../../fixtures/relation');
+const {SANDBOX_FILES, SANDBOX_FILES5} = require('../../fixtures/relation');
 const testUtils = require('../../test-utils');
 
 // Test Sandbox
@@ -30,6 +30,10 @@ const throughFileNameForSameTable = 'friend.model.ts';
 const sourceFileNameForSameTable = 'user.model.ts';
 const repositoryFileNameForSameTable = 'user.repository.ts';
 const controllerFileNameForSameTable = 'user-user.controller.ts';
+
+const customReferenceRelationSourceModel = 'customer8.model.ts';
+const customReferenceRelationThroughModel = 'order-custom-ref-key.model.ts';
+const customReferenceRelationController = 'customer-8-product.controller.ts';
 
 // speed up tests by avoiding reading docs
 const options = {
@@ -432,4 +436,53 @@ describe('lb4 relation HasManyThrough', /** @this {Mocha.Suite} */ function () {
       });
     }
   });
+
+  context(
+    'generates model relation with custom reference keys with --config',
+    () => {
+      before(async function runGeneratorWithAnswers() {
+        await sandbox.reset();
+        await testUtils
+          .executeGenerator(generator)
+          .inDir(sandbox.path, () =>
+            testUtils.givenLBProject(sandbox.path, {
+              additionalFiles: SANDBOX_FILES5,
+            }),
+          )
+          .withArguments([
+            '--config',
+            '{"relationName": "products", "customReferenceKeys": true, "sourceModel": "Customer8", "customSourceModelKey": "customerCode", "destinationModel": "Product", "customTargetModelKey": "sku", "throughModel": "OrderCustomRefKey", "relationType": "hasManyThrough", "sourceKeyOnThrough": "customerCode", "targetKeyOnThrough": "productSku", "registerInclusionResolver": true}',
+          ]);
+      });
+
+      it('has correct imports and relation name products', async () => {
+        const controllerFilePath = path.join(
+          sandbox.path,
+          CONTROLLER_PATH,
+          customReferenceRelationController,
+        );
+        const sourceFilePath = path.join(
+          sandbox.path,
+          MODEL_APP_PATH,
+          customReferenceRelationSourceModel,
+        );
+
+        assert.file(controllerFilePath);
+        assert.file(sourceFilePath);
+
+        expectFileToMatchSnapshot(controllerFilePath);
+        expectFileToMatchSnapshot(sourceFilePath);
+      });
+
+      it('has correct default foreign keys', async () => {
+        const throughFilePath = path.join(
+          sandbox.path,
+          MODEL_APP_PATH,
+          customReferenceRelationThroughModel,
+        );
+        assert.file(throughFilePath);
+        expectFileToMatchSnapshot(throughFilePath);
+      });
+    },
+  );
 });
