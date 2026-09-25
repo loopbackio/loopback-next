@@ -79,7 +79,7 @@
     "url-slug": "^5.1.0",
     "validate-npm-package-name": "^8.0.0",
     "write-file-atomic": "^8.0.0",
-    "yeoman-environment": "^3.19.3",
+    "yeoman-environment": "^6.0.1",
     "yeoman-generator": "^5.10.0"
   },
   "devDependencies": {
