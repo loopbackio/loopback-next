@@ -50,8 +50,8 @@
   "devDependencies": {
     "@commitlint/cli": "^20.4.3",
     "@commitlint/config-conventional": "^20.4.3",
-    "@npmcli/map-workspaces": "^5.0.3",
-    "@npmcli/package-json": "^7.0.5",
+    "@npmcli/map-workspaces": "^6.0.0",
+    "@npmcli/package-json": "^8.0.0",
     "@types/mocha": "^10.0.10",
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@typescript-eslint/parser": "^7.18.0",
@@ -65,7 +65,7 @@
     "fs-extra": "^11.4.0",
     "husky": "^9.1.7",
     "lerna": "^9.0.7",
-    "lint-staged": "^17.3.0",
+    "lint-staged": "^17.5.1",
     "markdown-table": "^3.0.4",
     "mem-fs": "^2.3.0",
     "mem-fs-editor": "^9.7.0",
@@ -75,7 +75,7 @@
   },
   "engineStrict": true,
   "engines": {
-    "node": "20 || 22 || 24",
+    "node": "22 || 24 || 26",
     "npm": ">=7"
   },
   "private": true,

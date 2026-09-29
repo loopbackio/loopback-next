@@ -17,7 +17,7 @@
     "directory": "extensions/graphql"
   },
   "engines": {
-    "node": "20 || 22 || 24"
+    "node": "22 || 24 || 26"
   },
   "scripts": {
     "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
@@ -46,12 +46,12 @@
   "dependencies": {
     "@apollo/server": "^5.5.1",
     "@as-integrations/express4": "^1.1.2",
-    "@graphql-tools/utils": "^11.2.2",
+    "@graphql-tools/utils": "^12.0.1",
     "@loopback/http-server": "^7.0.15",
     "body-parser": "^2.3.0",
     "cors": "^2.8.6",
     "debug": "^4.4.3",
-    "express": "^4.22.2",
+    "express": "^4.22.3",
     "graphql": "^16.14.2",
     "graphql-ws": "^5.16.2",
     "type-graphql": "^2.0.0-rc.2",

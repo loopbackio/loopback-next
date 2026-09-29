@@ -20,7 +20,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node-version: [20, 22, 24]
+        node-version: [22, 24, 26]
         include:
           - os: windows-2022
             node-version: 22 # LTS

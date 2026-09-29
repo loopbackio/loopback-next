@@ -19,7 +19,7 @@ describe('Sequelize DataSource', () => {
     }
   });
 
-  it('accepts url strings for connection', async () => {
+  it('accepts url strings for connection (postgresql) / structured config (sqlite3)', async () => {
     const dataSource = new SequelizeDataSource(
       datasourceTestConfig.url[
         primaryDataSourceConfig.connector === 'postgresql'

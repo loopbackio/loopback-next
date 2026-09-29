@@ -54,8 +54,12 @@ export const datasourceTestConfig: Record<
       url: 'postgres://postgres:super-secret@localhost:5002/postgres',
     },
     sqlite3: {
+      // 'sqlite::memory:' is not a valid URL per the WHATWG URL standard.
+      // Node.js 26 made url.parse() throw on it (DEP0170 became a hard error).
+      // Use structured config to avoid Sequelize v6's legacy url.parse() path.
       name: 'using-url',
-      url: 'sqlite::memory:',
+      connector: 'sqlite3',
+      file: ':memory:',
     },
   },
   wrongPassword: {
@@ -65,8 +69,10 @@ export const datasourceTestConfig: Record<
       url: 'postgres://postgres:super-secret-wrong@localhost:5002/postgres',
     },
     sqlite3: {
+      // Same reason as above — use structured config instead of sqlite URL.
       name: 'wrongPassword',
-      url: 'sqlite::memory:',
+      connector: 'sqlite3',
+      file: ':memory:',
     },
   },
 };

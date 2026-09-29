@@ -20,7 +20,7 @@
     "directory": "examples/express-composition"
   },
   "engines": {
-    "node": "20 || 22 || 24"
+    "node": "22 || 24 || 26"
   },
   "scripts": {
     "build": "lb-tsc",
@@ -53,7 +53,7 @@
     "@loopback/rest": "^15.0.16",
     "@loopback/rest-explorer": "^8.0.16",
     "@loopback/service-proxy": "^8.0.15",
-    "express": "^4.22.2",
+    "express": "^4.22.3",
     "tslib": "^2.8.1"
   },
   "devDependencies": {
