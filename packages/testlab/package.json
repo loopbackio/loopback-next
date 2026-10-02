@@ -29,7 +29,6 @@
     "README.md",
     "dist",
     "fixtures",
-    "should-as-function.d.ts",
     "src",
     "!*/__tests__"
   ],

@@ -343,9 +343,9 @@ export class RestServer
       this.addOpenApiSpecEndpoint(p, mapping[p], router);
     }
     const explorerPaths = ['/swagger-ui', '/explorer'];
-    router.get(explorerPaths, (req, res, next) =>
-      this._redirectToSwaggerUI(req, res, next),
-    );
+    router.get(explorerPaths, (req, res, next) => {
+      this._redirectToSwaggerUI(req, res, next).catch(next);
+    });
     this.expressMiddleware('middleware.apiSpec.defaults', router, {
       group: RestMiddlewareGroups.API_SPEC,
       upstreamGroups: RestMiddlewareGroups.CORS,
@@ -376,7 +376,9 @@ export class RestServer
         );
       }
       const newRouter = express.Router();
-      newRouter.get(path, (req, res) => this._serveOpenApiSpec(req, res, form));
+      newRouter.get(path, (req, res, next) => {
+        this._serveOpenApiSpec(req, res, form).catch(next);
+      });
       this.expressMiddleware(
         () => newRouter,
         {},
@@ -387,7 +389,9 @@ export class RestServer
         },
       );
     } else {
-      router.get(path, (req, res) => this._serveOpenApiSpec(req, res, form));
+      router.get(path, (req, res, next) => {
+        this._serveOpenApiSpec(req, res, form).catch(next);
+      });
     }
   }
 

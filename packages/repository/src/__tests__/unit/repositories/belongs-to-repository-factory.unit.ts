@@ -144,7 +144,7 @@ describe('createBelongsToAccessor', () => {
   }
 
   function givenStubbedCompanyRepo() {
-    customerRepo = createStubInstance(CompanyRepository);
+    companyRepo = createStubInstance(CompanyRepository);
   }
 
   function givenBelongsToDefinition(

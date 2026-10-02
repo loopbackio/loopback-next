@@ -110,7 +110,7 @@ export function resolveMap<T, V>(
   for (const key in map) {
     const valueOrPromise = resolver(map[key], key, map);
     if (isPromiseLike(valueOrPromise)) {
-      if (!asyncResolvers) asyncResolvers = [];
+      asyncResolvers ??= [];
       asyncResolvers.push(valueOrPromise.then(setter(key)));
     } else {
       if (valueOrPromise !== undefined) {
@@ -168,7 +168,7 @@ export function resolveList<T, V>(
   for (let ix = 0; ix < list.length; ix++) {
     const valueOrPromise = resolver(list[ix], ix, list);
     if (isPromiseLike(valueOrPromise)) {
-      if (!asyncResolvers) asyncResolvers = [];
+      asyncResolvers ??= [];
       asyncResolvers.push(valueOrPromise.then(setter(ix)));
     } else {
       result[ix] = valueOrPromise;

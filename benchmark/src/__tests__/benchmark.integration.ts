@@ -39,7 +39,7 @@ describe('Benchmark (SLOW)', function (this: Mocha.Suite) {
       urlPath: string,
       options?: Omit<Options, 'url'>,
     ): Promise<EndpointStats> {
-      if (!options) options = {};
+      options ??= {};
 
       const requestOptions: AxiosRequestConfig = {
         url: this.buildUrl(urlPath),
