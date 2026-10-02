@@ -48,7 +48,7 @@ export function givenTodo(todo?: Partial<Todo>) {
 
 export const aLocation = {
   address: '1 New Orchard Road, Armonk, 10504',
-  geopoint: <GeoPoint>{y: 41.109728357749, x: -73.72462031805},
+  geopoint: <GeoPoint>{y: 41.109725723771, x: -73.724620709372},
   get geostring() {
     return `${this.geopoint.y},${this.geopoint.x}`;
   },
