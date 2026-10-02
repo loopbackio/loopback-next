@@ -93,14 +93,46 @@ Now you run the scripts, such as:
     | ------------------ | ------------------------------------------------------------------------------------------------- |
     | `--copy-resources` | Copy all non-typescript files from `src` and `test` to `outDir`, preserving their relative paths. |
 
+  - TypeScript compiler
+
+    `lb-tsc` compiles with the TypeScript 7 native compiler (installed as
+    `@typescript/native`), preferring the copy owned by the project being built
+    over the one `@loopback/build` depends on.
+
+    TypeScript 7 no longer ships the JavaScript compiler API, so `typescript` is
+    aliased to `@typescript/typescript6`. That keeps `require('typescript')`
+    working for tools that consume the API, such as `@typescript-eslint` and
+    editor language services.
+
+    Note that TypeScript 7 removed `"moduleResolution": "node"` (node10).
+    `tsconfig.common.json` sets `"moduleResolution": "bundler"`, which honors
+    `exports` maps with the `require` and `types` conditions when combined with
+    `"module": "commonjs"`. Remove `"moduleResolution": "node"` from your
+    `tsconfig.json` to inherit it.
+
+    TypeScript 6 also stopped including every installed `@types/*` package
+    automatically, so `tsconfig.common.json` lists `"types": ["node", "mocha"]`.
+    A project that relies on other packages of global type declarations has to
+    list them explicitly:
+
+    ```json
+    {
+      "extends": "@loopback/build/config/tsconfig.common.json",
+      "compilerOptions": {
+        "types": ["node", "mocha", "my-global-types"]
+      }
+    }
+    ```
+
   - Using [`ttypescript`](https://github.com/cevek/ttypescript)
 
     ### Stability: ⚠️Experimental⚠️
 
     If you would like to use `ttypescript` and its available plugins, you can
     substitute `lb-tsc` with `lb-ttsc`, or pass the option
-    `lb-tsc --use-ttypescript`. If `ttypescript` is not installed, the default
-    TypeScript compiler `tsc` will be used instead.
+    `lb-tsc --use-ttypescript`. `ttypescript` patches the JavaScript compiler
+    API, so it compiles with the JavaScript compiler from the `typescript`
+    package rather than the TypeScript 7 native compiler.
 
 4.  Run builds
 

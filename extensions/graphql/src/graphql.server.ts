@@ -45,11 +45,10 @@ import {
   BuildSchemaOptions as TypeGrahpQLBuildSchemaOptions,
   buildSchema,
 } from 'type-graphql';
-import {Middleware} from 'type-graphql/build/typings/typings/middleware';
 import {WebSocketServer} from 'ws';
 import {LoopBackContainer} from './graphql.container';
 import {GraphQLBindings, GraphQLTags} from './keys';
-import {GraphQLServerOptions} from './types';
+import {GraphQLMiddleware, GraphQLServerOptions} from './types';
 const {json} = pkg;
 
 /**
@@ -100,8 +99,8 @@ export class GraphQLServer extends Context implements Server {
   /**
    * Get a list of middleware
    */
-  async getMiddlewareList<T extends {}>(): Promise<Middleware<T>[]> {
-    const view = this.createView<Middleware<T>>(
+  async getMiddlewareList<T extends {}>(): Promise<GraphQLMiddleware<T>[]> {
+    const view = this.createView<GraphQLMiddleware<T>>(
       filterByTag(GraphQLTags.MIDDLEWARE),
     );
     return view.values();
@@ -111,8 +110,12 @@ export class GraphQLServer extends Context implements Server {
    * Register a GraphQL middleware
    * @param middleware - GraphQL middleware
    */
-  middleware<T extends {}>(middleware: Middleware<T>): Binding<Middleware<T>> {
-    return this.bind<Middleware<T>>(BindingKey.generate(`graphql.middleware`))
+  middleware<T extends {}>(
+    middleware: GraphQLMiddleware<T>,
+  ): Binding<GraphQLMiddleware<T>> {
+    return this.bind<GraphQLMiddleware<T>>(
+      BindingKey.generate(`graphql.middleware`),
+    )
       .to(middleware)
       .tag(GraphQLTags.MIDDLEWARE);
   }
