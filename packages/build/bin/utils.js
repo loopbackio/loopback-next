@@ -70,7 +70,7 @@ function resolveCLI(cli, options = {resolveFromProjectFirst: true}) {
     const pkgDir = getPackageDir();
     const resolved = resolveCLIFromProject(cli, pkgDir);
     if (resolved != null) return resolved;
-  } catch (e) {
+  } catch {
     // Ignore errors
   }
   return require.resolve(cli);
