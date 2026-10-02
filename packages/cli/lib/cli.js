@@ -202,7 +202,7 @@ function main(opts, log) {
         commandOptions[n] = {...opt, type: opt.type.name};
       }
       const commandArgs = [];
-      if (!gen) {
+      if (gen._arguments) {
         for (const arg of gen._arguments) {
           commandArgs.push({...arg, type: arg.type.name});
         }
