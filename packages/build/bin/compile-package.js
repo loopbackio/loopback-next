@@ -53,7 +53,7 @@ function run(argv, options) {
     try {
       require.resolve('ttypescript');
       TSC_CLI = 'ttypescript/lib/tsc';
-    } catch (e) {
+    } catch {
       if (isUseTtscSet) {
         console.error(
           'Error using the --use-ttypescript option - ttypescript is not installed',

@@ -19,7 +19,6 @@ describe('tryWithFinally', () => {
     let finalActionInvoked = false;
     const action = () => 1;
     const finalAction = () => (finalActionInvoked = true);
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     tryWithFinally(action, finalAction);
     expect(finalActionInvoked).to.be.true();
   });
@@ -56,7 +55,6 @@ describe('tryCatchFinally', () => {
     let finalActionInvoked = false;
     const action = () => 1;
     const finalAction = () => (finalActionInvoked = true);
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     tryCatchFinally(action, undefined, finalAction);
     expect(finalActionInvoked).to.be.true();
   });
@@ -79,7 +77,6 @@ describe('tryCatchFinally', () => {
       errorActionInvoked = true;
       throw err;
     };
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     tryCatchFinally(action, errorAction);
     expect(errorActionInvoked).to.be.false();
   });

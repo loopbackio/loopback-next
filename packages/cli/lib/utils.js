@@ -454,7 +454,7 @@ exports.validateStringObject = function (type) {
       if (type === 'array' && !Array.isArray(result)) {
         return err;
       }
-    } catch (e) {
+    } catch {
       return err;
     }
 
