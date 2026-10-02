@@ -31,6 +31,7 @@ describe('TodoListImageRepository', () => {
       testdb,
       async () => todoListRepo,
     );
+    todoRepo = new TodoRepository(testdb, async () => todoListRepo);
   });
 
   beforeEach(givenEmptyDatabase);

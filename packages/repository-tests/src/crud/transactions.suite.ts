@@ -89,7 +89,7 @@ export function transactionSuite(
 
         afterEach(async () => {
           if (ds2) {
-            ds2.disconnect();
+            await ds2.disconnect();
             (ds2 as unknown) = undefined;
           }
         });

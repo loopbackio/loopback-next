@@ -715,7 +715,7 @@ export class SequelizeCrudRepository<
    * Get Sequelize Model
    * @returns Sequelize Model Instance based on the definitions from `entityClass`
    */
-  public getSequelizeModel(entityClass = this.entityClass) {
+  public getSequelizeModel(entityClass: typeof Entity = this.entityClass) {
     if (!this.dataSource.sequelize) {
       throw Error(
         `The datasource "${this.dataSource.name}" doesn't have sequelize instance bound to it.`,
@@ -829,7 +829,7 @@ export class SequelizeCrudRepository<
    * @param {Entity} entityClass - The entity class for which the table name is being retrieved.
    * @returns {string} - The table name associated with the entity class. Which is used when performing the query.
    */
-  getTableName(entityClass = this.entityClass) {
+  getTableName(entityClass: typeof Entity = this.entityClass) {
     let tableName = entityClass.name; // model class name
 
     if (entityClass.definition.name !== tableName) {
