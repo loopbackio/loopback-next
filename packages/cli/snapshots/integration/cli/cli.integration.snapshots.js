@@ -190,6 +190,12 @@ exports[`cli saves command metadata to .yo-rc.json 1`] = `
           "name": "loopbackBuild",
           "hide": false
         },
+        "editorconfig": {
+          "type": "Boolean",
+          "description": "Use preconfigured EditorConfig settings",
+          "name": "editorconfig",
+          "hide": false
+        },
         "vscode": {
           "type": "Boolean",
           "description": "Use preconfigured VSCode settings",
@@ -313,6 +319,12 @@ exports[`cli saves command metadata to .yo-rc.json 1`] = `
           "type": "Boolean",
           "description": "Use @loopback/build",
           "name": "loopbackBuild",
+          "hide": false
+        },
+        "editorconfig": {
+          "type": "Boolean",
+          "description": "Use preconfigured EditorConfig settings",
+          "name": "editorconfig",
           "hide": false
         },
         "vscode": {
