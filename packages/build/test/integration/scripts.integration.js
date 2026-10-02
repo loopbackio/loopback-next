@@ -185,7 +185,8 @@ describe('build', /** @this {Mocha.Suite} */ function () {
       '--locale en_US.UTF-8 should be honored',
     );
     assert(
-      command.indexOf('tsc.js -b') !== -1,
+      // `tsc` for the TypeScript 7 native compiler, `tsc.js` for TypeScript 6
+      /[\\/]tsc(\.js)? -b /.test(command),
       '-b should be the first argument',
     );
   });
