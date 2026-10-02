@@ -170,9 +170,7 @@ export function createControllerFactoryForClass<T extends object>(
     let inst = await ctx.get<T>(`controllers.${controllerCtor.name}`, {
       optional: true,
     });
-    if (inst === undefined) {
-      inst = await instantiateClass<T>(controllerCtor, ctx);
-    }
+    inst ??= await instantiateClass<T>(controllerCtor, ctx);
     return inst;
   };
 }
