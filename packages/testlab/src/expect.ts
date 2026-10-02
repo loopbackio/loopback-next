@@ -3,8 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-// eslint-disable-next-line @typescript-eslint/triple-slash-reference
-/// <reference path="../should-as-function.d.ts" />
+import {Internal} from './should-as-function';
 
 const shouldAsFunction: Internal = require('should/as-function');
 
