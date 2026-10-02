@@ -39,7 +39,8 @@ skipIf<[(this: Suite) => void], void>(
     let browser: Browser;
     let html: string;
     before(async function (this: Mocha.Context) {
-      this.timeout(15000);
+      // Launching the browser can be slow on CI
+      this.timeout(30000);
       browser = await puppeteer.launch({
         headless: true,
         args: ['--no-sandbox'],
