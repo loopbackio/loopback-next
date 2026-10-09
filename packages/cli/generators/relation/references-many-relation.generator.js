@@ -41,7 +41,9 @@ module.exports = class ReferencesManyRelationGenerator extends (
     );
     const sourceClass = relationUtils.getClassObj(sourceFile, sourceModel);
     // this checks if the foreign key already exists, so the 2nd param should be foreignKeyName
-    relationUtils.doesRelationExist(sourceClass, foreignKeyName);
+    relationUtils.doesRelationExist(sourceClass, foreignKeyName, {
+      force: this.options.force,
+    });
 
     const modelProperty = this.getReferencesMany(
       targetModel,

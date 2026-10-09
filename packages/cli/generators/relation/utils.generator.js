@@ -114,22 +114,26 @@ exports.doesPropertyExist = function (classObj, propertyName) {
     .includes(propertyName);
 };
 
-exports.doesRelationExist = function (classObj, propertyName) {
+exports.doesRelationExist = function (classObj, propertyName, options = {}) {
+  const force = options.force;
   if (this.doesPropertyExist(classObj, propertyName)) {
     // If the property is decorated by `@property()`,
     // turn it to be a relational property decorated by `@belongsTo()`
     const decorators = classObj.getProperty(propertyName).getDecorators();
     const hasPropertyDecorator =
       decorators.length > 0 && decorators[0].getName() === 'property';
-    // If it's already decorated by a relational decorator,
-    // throw error
-    if (!hasPropertyDecorator) {
-      throw new Error(
-        'relational property ' +
-          propertyName +
-          ' already exist in the model ' +
-          classObj.getName(),
-      );
+    if (!force) {
+      // If it's already decorated by a relational decorator,
+      // throw error
+      if (!hasPropertyDecorator) {
+        throw new Error(
+          'relational property ' +
+            propertyName +
+            ' already exist in the model ' +
+            classObj.getName() +
+            ' Use --force to overwrite it',
+        );
+      }
     }
 
     this.deleteProperty(classObj.getProperty(propertyName));
