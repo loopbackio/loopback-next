@@ -1227,20 +1227,15 @@ function resolveRestServerConfig(
   );
 
   // Can't check falsiness, 0 is a valid port.
-  if (result.port == null) {
-    result.port = 3000;
-  }
+  result.port ??= 3000;
 
-  if (result.host == null) {
-    // Set it to '' so that the http server will listen on all interfaces
-    result.host = undefined;
-  }
+  // Normalize a `null` host to `undefined` so that the http server listens on
+  // all interfaces
+  result.host ??= undefined;
 
-  if (!result.openApiSpec.endpointMapping) {
-    // mapping may be mutated by addOpenApiSpecEndpoint, be sure that doesn't
-    // pollute the default mapping configuration
-    result.openApiSpec.endpointMapping = cloneDeep(OPENAPI_SPEC_MAPPING);
-  }
+  // mapping may be mutated by addOpenApiSpecEndpoint, be sure that doesn't
+  // pollute the default mapping configuration
+  result.openApiSpec.endpointMapping ??= cloneDeep(OPENAPI_SPEC_MAPPING);
 
   result.apiExplorer = normalizeApiExplorerConfig(config.apiExplorer);
 

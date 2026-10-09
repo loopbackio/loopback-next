@@ -550,9 +550,7 @@ export class SequelizeCrudRepository<
       return [];
     }
 
-    if (!sourceModel) {
-      sourceModel = this.sequelizeModel;
-    }
+    sourceModel ??= this.sequelizeModel;
 
     if (sourceModel === this.sequelizeModel) {
       const invalidInclusions = inclusionFilters.filter(
@@ -663,8 +661,7 @@ export class SequelizeCrudRepository<
       }
 
       const entityClassCol = this.entityClass.definition.properties[columnName];
-      const isBooleanColumn =
-        entityClassCol && entityClassCol.type === 'boolean';
+      const isBooleanColumn = entityClassCol?.type === 'boolean';
 
       if (isTruelyObject(conditionValue)) {
         sequelizeWhere[columnName] = {};
@@ -934,7 +931,7 @@ export class SequelizeCrudRepository<
           const stringTypeArray =
             definition[propName].itemType === String ||
             ['String', 'string'].includes(
-              definition[propName].itemType?.toString() || '',
+              definition[propName].itemType?.toString() ?? '',
             );
           dataType = stringTypeArray
             ? DataTypes.ARRAY(DataTypes.STRING)
@@ -1008,7 +1005,7 @@ export class SequelizeCrudRepository<
           if (typeof value === 'string') {
             try {
               return JSON.parse(value);
-            } catch (_error) {
+            } catch {
               return null;
             }
           }

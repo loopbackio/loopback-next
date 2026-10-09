@@ -93,7 +93,7 @@ export function requestBody(requestBodySpec?: Partial<RequestBodyObject>) {
 
     // Get the design time method parameter metadata
     const methodSig = MetadataInspector.getDesignTypeForMethod(target, member);
-    const paramTypes = methodSig?.parameterTypes || [];
+    const paramTypes = methodSig?.parameterTypes ?? [];
 
     const paramType = paramTypes[index];
     const schema = resolveSchema(paramType);
@@ -101,9 +101,7 @@ export function requestBody(requestBodySpec?: Partial<RequestBodyObject>) {
     if (debug.enabled)
       debug('  inferred schema: %s', inspect(schema, {depth: null}));
     requestBodySpec.content = _.mapValues(requestBodySpec.content, c => {
-      if (!c.schema) {
-        c.schema = schema;
-      }
+      c.schema ??= schema;
       return c;
     });
 

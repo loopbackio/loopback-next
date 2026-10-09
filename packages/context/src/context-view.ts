@@ -127,9 +127,7 @@ export class ContextView<T = unknown>
    */
   get bindings(): Readonly<Binding<T>>[] {
     debug('Reading bindings');
-    if (this._cachedBindings == null) {
-      this._cachedBindings = this.findBindings();
-    }
+    this._cachedBindings ??= this.findBindings();
     return this._cachedBindings;
   }
 
