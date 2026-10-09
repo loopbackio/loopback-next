@@ -37,7 +37,11 @@ export namespace GraphQLBindings {
   /**
    * Binding key for the GraphQL context resolver
    */
-  export const GRAPHQL_CONTEXT_RESOLVER = BindingKey.create<
+  // The explicit type keeps declaration emit from naming `ContextFunction` by
+  // its path inside `@apollo/server` (TS2883)
+  export const GRAPHQL_CONTEXT_RESOLVER: BindingKey<
+    ExpressMiddlewareOptions<{[key: string]: unknown}>['context']
+  > = BindingKey.create<
     ExpressMiddlewareOptions<{[key: string]: unknown}>['context']
   >('graphql.contextResolver');
 

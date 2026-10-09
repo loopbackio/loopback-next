@@ -47,7 +47,7 @@ class EnvConfigResolver
     );
     try {
       return JSON.parse(val);
-    } catch (err) {
+    } catch {
       return val;
     }
   }

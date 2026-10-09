@@ -26,8 +26,10 @@ interface Object {
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/unified-signatures */
+/* These are should.js API names, they are not ours to rename. */
+/* eslint-disable @typescript-eslint/naming-convention */
 
-interface ShouldAssertion {
+export interface ShouldAssertion {
   // basic grammar
   a: ShouldAssertion;
   an: ShouldAssertion;
@@ -141,9 +143,9 @@ interface ShouldAssertion {
 
   //stubs
   alwaysCalledOn(thisTarget: any): ShouldAssertion;
-  alwaysCalledWith(...arguments: any[]): ShouldAssertion;
-  alwaysCalledWithExactly(...arguments: any[]): ShouldAssertion;
-  alwaysCalledWithMatch(...arguments: any[]): ShouldAssertion;
+  alwaysCalledWith(...args: any[]): ShouldAssertion;
+  alwaysCalledWithExactly(...args: any[]): ShouldAssertion;
+  alwaysCalledWithMatch(...args: any[]): ShouldAssertion;
   alwaysCalledWithNew(): ShouldAssertion;
   alwaysThrew(exception?: any): ShouldAssertion;
   callCount(count: number): ShouldAssertion;
@@ -152,12 +154,12 @@ interface ShouldAssertion {
   calledOnce(): ShouldAssertion;
   calledTwice(): ShouldAssertion;
   calledThrice(): ShouldAssertion;
-  calledWith(...arguments: any[]): ShouldAssertion;
-  calledWithExactly(...arguments: any[]): ShouldAssertion;
-  calledWithMatch(...arguments: any[]): ShouldAssertion;
+  calledWith(...args: any[]): ShouldAssertion;
+  calledWithExactly(...args: any[]): ShouldAssertion;
+  calledWithMatch(...args: any[]): ShouldAssertion;
   calledWithNew(): ShouldAssertion;
-  neverCalledWith(...arguments: any[]): ShouldAssertion;
-  neverCalledWithMatch(...arguments: any[]): ShouldAssertion;
+  neverCalledWith(...args: any[]): ShouldAssertion;
+  neverCalledWithMatch(...args: any[]): ShouldAssertion;
   threw(exception?: any): ShouldAssertion;
 
   // aliases
@@ -178,20 +180,20 @@ interface ShouldAssertion {
   undefined(): ShouldAssertion;
 }
 
-interface ShouldInternal {
+export interface ShouldInternal {
   // should.js's extras
   exist(actual: any, msg?: string): void;
   exists(actual: any, msg?: string): void;
   not: ShouldInternal;
 }
 
-interface Assertion {
+export interface Assertion {
   add(name: string, func: Function): void;
   addChain(name: string, onCall?: Function): void;
   alias(from: string, to: string): void;
 }
 
-interface Internal extends ShouldInternal {
+export interface Internal extends ShouldInternal {
   (obj: any): ShouldAssertion;
 
   // Simple utility function for a bit more easier should assertion extension
@@ -213,11 +215,6 @@ interface Internal extends ShouldInternal {
   inspect(value: any, obj: any): any;
 }
 
-declare var should: Internal;
-interface Window {
-  Should: Internal;
-}
-
-declare module 'should' {
-  export = should;
-}
+/* The global `should` variable and the `Window.Should` property are not
+declared here - this module wraps `should/as-function`, which deliberately
+leaves the global scope and `Object.prototype` untouched. */

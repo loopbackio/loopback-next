@@ -28,6 +28,10 @@ describe('TodoRepository', () => {
       async () => todoListImageRepo,
     );
     todoRepo = new TodoRepository(testdb, async () => todoListRepo);
+    todoListImageRepo = new TodoListImageRepository(
+      testdb,
+      async () => todoListRepo,
+    );
   });
 
   beforeEach(givenEmptyDatabase);

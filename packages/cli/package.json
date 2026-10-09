@@ -73,7 +73,7 @@
     "terminal-link": "^5.0.0",
     "tildify": "^2.0.0",
     "ts-morph": "^28.0.0",
-    "typescript": "~5.2.2",
+    "typescript": "npm:@typescript/typescript6@~6.0.2",
     "untildify": "^6.0.0",
     "update-notifier": "^7.3.1",
     "url-slug": "^5.1.0",
@@ -110,12 +110,12 @@
       "cross-spawn": "^7.0.6",
       "debug": "^4.4.3",
       "fs-extra": "^11.4.0",
-      "mocha": "^11.8.0",
+      "mocha": "^12.0.1",
       "nyc": "^18.0.0",
       "prettier": "^3.8.3",
       "rimraf": "^5.0.10",
       "source-map-support": "^0.5.21",
-      "typescript": "~5.2.2",
+      "typescript": "npm:@typescript/typescript6@~6.0.2",
       "@loopback/authentication": "^12.0.17",
       "@loopback/boot": "^8.0.16",
       "@loopback/build": "^12.0.15",
@@ -152,8 +152,8 @@
       "eslint-plugin-mocha": "^10.5.0",
       "@loopback/example-greeting-app": "^8.0.16",
       "@loopback/example-context": "^8.0.15",
-      "@typescript-eslint/eslint-plugin": "^7.18.0",
-      "@typescript-eslint/parser": "^7.18.0",
+      "@typescript-eslint/eslint-plugin": "^8.70.0",
+      "@typescript-eslint/parser": "^8.70.0",
       "eslint-plugin-eslint-plugin": "^5.5.1",
       "eslint-config-prettier": "^9.1.1",
       "@loopback/repository-tests": "^0.25.16",
@@ -195,7 +195,8 @@
       "@loopback/monorepo": "^0.6.0",
       "@loopback/tsdocs": "^7.0.15",
       "@loopback/example-references-many": "^9.0.16",
-      "@loopback/sequelize": "^0.8.12"
+      "@loopback/sequelize": "^0.8.12",
+      "@typescript/native": "npm:typescript@~7.0.2"
     }
   }
 }
