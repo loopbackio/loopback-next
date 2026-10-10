@@ -43,7 +43,7 @@
   },
   "dependencies": {
     "ejs": "^5.0.2",
-    "swagger-ui-dist": "5.33.0",
+    "swagger-ui-dist": "5.33.1",
     "tslib": "^2.8.1"
   },
   "devDependencies": {
