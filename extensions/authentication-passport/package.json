@@ -60,7 +60,7 @@
     "@loopback/rest": "^15.0.16",
     "@loopback/testlab": "^8.0.15",
     "@types/jsonwebtoken": "^9.0.10",
-    "@types/lodash": "^4.17.25",
+    "@types/lodash": "^4.17.26",
     "@types/node": "^20.19.43",
     "@types/passport": "^1.0.17",
     "@types/passport-http": "^0.3.11",
