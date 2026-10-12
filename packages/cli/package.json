@@ -61,7 +61,7 @@
     "natural-compare": "^1.4.0",
     "pacote": "^22.0.0",
     "pluralize": "^8.0.0",
-    "regenerate": "^1.4.2",
+    "regenerate": "^1.5.0",
     "semver": "^7.8.5",
     "slash": "^3.0.0",
     "spdx-license-list": "^6.12.0",
