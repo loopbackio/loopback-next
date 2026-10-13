@@ -579,7 +579,7 @@ export class ParameterDecoratorFactory<T> extends DecoratorFactory<
     target: Object,
     methodName?: string,
   ) {
-    const method = methodName ? methodName : '';
+    const method = methodName ?? '';
     let methodMeta = meta[method];
     if (methodMeta == null) {
       // Initialize the method metadata
@@ -700,7 +700,7 @@ export class MethodParameterDecoratorFactory<T> extends DecoratorFactory<
       methodName,
     );
     // Default to the last parameter
-    if (index == null) index = numOfParams - 1;
+    index ??= numOfParams - 1;
     if (index < 0) {
       // Excessive decorations than the number of parameters detected
       const method = DecoratorFactory.getTargetName(

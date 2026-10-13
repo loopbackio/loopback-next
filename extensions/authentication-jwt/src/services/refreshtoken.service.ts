@@ -95,7 +95,7 @@ export class RefreshtokenService {
       await this.refreshTokenRepository.delete(
         new RefreshToken({refreshToken: refreshToken}),
       );
-    } catch (e) {
+    } catch {
       // ignore
     }
   }

@@ -43,7 +43,7 @@ async function createDB() {
   // retry if socket hangs up too early
   try {
     dbRequest(opts);
-  } catch (error) {
+  } catch {
     dbRequest(opts);
   }
   return new Promise(() => {

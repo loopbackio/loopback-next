@@ -87,6 +87,9 @@ export class LocalAuthStrategy implements AuthenticationStrategy {
           return done(null, null, {message: AUTH_FAILED_MESSAGE});
         }
         const user = users[0];
+        // Keep the explicit guard, `credentials?.password !== password` would
+        // accept a user without credentials when `password` is `undefined`
+        // eslint-disable-next-line @typescript-eslint/prefer-optional-chain
         if (!user.credentials || user.credentials.password !== password) {
           return done(null, null, {message: AUTH_FAILED_MESSAGE});
         }

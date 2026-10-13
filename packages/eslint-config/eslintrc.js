@@ -69,6 +69,8 @@ module.exports = {
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-member-accessibility': 'off',
     '@typescript-eslint/no-var-requires': 'off',
+    // `no-require-imports` replaces `no-var-requires` in typescript-eslint v8
+    '@typescript-eslint/no-require-imports': 'off',
     '@typescript-eslint/no-use-before-define': 'off',
     '@typescript-eslint/no-object-literal-type-assertion': 'off',
     '@typescript-eslint/no-parameter-properties': 'off',
@@ -76,6 +78,10 @@ module.exports = {
     '@typescript-eslint/prefer-interface': 'off',
     '@typescript-eslint/no-namespace': 'off',
     '@typescript-eslint/ban-types': 'off',
+    // `ban-types` was split into the following rules in typescript-eslint v8
+    '@typescript-eslint/no-empty-object-type': 'off',
+    '@typescript-eslint/no-unsafe-function-type': 'off',
+    '@typescript-eslint/no-wrapper-object-types': 'off',
     '@typescript-eslint/no-triple-slash-reference': 'off',
     '@typescript-eslint/no-empty-interface': 'off',
     '@typescript-eslint/no-non-null-asserted-optional-chain': 'error',
@@ -133,7 +139,12 @@ module.exports = {
     '@typescript-eslint/prefer-optional-chain': 'error',
     '@typescript-eslint/prefer-nullish-coalescing': [
       'error',
-      {allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: true}, // See https://github.com/typescript-eslint/typescript-eslint/pull/6174
+      {
+        allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: true, // See https://github.com/typescript-eslint/typescript-eslint/pull/6174
+        // Without `strictNullChecks`, the rule cannot tell whether a primitive
+        // may be nullish, and `??` differs from `||` for `''`, `0` and `false`
+        ignorePrimitives: {string: true, number: true, boolean: true},
+      },
     ],
     '@typescript-eslint/no-extra-non-null-assertion': 'error',
 
