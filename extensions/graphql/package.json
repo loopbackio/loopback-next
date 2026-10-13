@@ -55,7 +55,7 @@
     "graphql": "^16.14.2",
     "graphql-ws": "^5.16.2",
     "type-graphql": "^2.0.0-rc.2",
-    "ws": "^8.21.3"
+    "ws": "^8.22.0"
   },
   "devDependencies": {
     "@graphql-yoga/subscription": "^5.1.1",
@@ -69,7 +69,7 @@
     "@types/cors": "^2.8.19",
     "@types/debug": "^4.1.13",
     "@types/node": "^20.19.43",
-    "@types/ws": "^8.18.1",
+    "@types/ws": "^8.18.2",
     "class-transformer": "^0.5.1"
   }
 }
