@@ -28,6 +28,7 @@ import {
   Response,
   Send,
 } from './types';
+import {DatabaseErrorMappingOptions} from './error-writer/database-error-mapper';
 
 /**
  * RestServer-specific bindings
@@ -99,6 +100,14 @@ export namespace RestBindings {
   export const ERROR_WRITER_OPTIONS = BindingKey.create<ErrorWriterOptions>(
     'rest.errorWriterOptions',
   );
+
+  /**
+   * Binding key for setting and injecting database error mapping options.
+   */
+  export const DATABASE_ERROR_MAPPING_OPTIONS =
+    BindingKey.create<DatabaseErrorMappingOptions>(
+      'rest.databaseErrorMappingOptions',
+    );
 
   /**
    * Binding key for request body parser options
