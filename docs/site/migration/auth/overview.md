@@ -21,8 +21,8 @@ authorization to secure the applications:
 
 - [loopback-component-passport](https://github.com/loopbackio/loopback-component-passport)
   provides integration between LoopBack 3 and
-  [Passport](http://www.passportjs.org) to support third-party login and account
-  linking for LoopBack applications. The migration path is described in
+  [Passport](https://www.passportjs.org) to support third-party login and
+  account linking for LoopBack applications. The migration path is described in
   [Migrating Passport-based authentication](./passport.md).
 
 - [loopback-component-oauth2](https://github.com/loopbackio/loopback-component-oauth2)

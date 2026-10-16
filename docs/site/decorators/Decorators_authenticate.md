@@ -114,7 +114,7 @@ export class WhoAmIController {
 ```
 
 The logic on how the strategies are executed is similar to how
-[passport.js](http://www.passportjs.org/) does it:
+[passport.js](https://www.passportjs.org/) does it:
 
 - The authentication strategies will be executed in the provided order.
 - If at least one authentication strategy succeeds, the request will be further

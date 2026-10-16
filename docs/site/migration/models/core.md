@@ -25,8 +25,8 @@ describes how to create these artifacts for models persisted in a database.
 There are even more changes when accessing web services, for example using
 `loopback-connector-soap` or `loopback-connector-rest`. In LoopBack 4, we don't
 use model classes to provide service clients. Instead, we use the concept of a
-[Service proxy](../../Calling-other-APIs-and-Web-Services.md). The migration
-path from LoopBack 3 models to LoopBack 4 services is described in the section
+[Service proxy](../../Accessing-services.md). The migration path from LoopBack 3
+models to LoopBack 4 services is described in the section
 [Migrating models backed by web service connectors](#migrating-models-backed-by-web-service-connectors).
 
 ## Migrating models persisted in a database
@@ -103,8 +103,8 @@ persistence behavior and public API via a JSON-like file. Follow the progress in
 The instructions above work great if your model is persisted in a database, but
 they are not suitable for importing models backed by a web service connector,
 for example SOAP or REST. As explained at the top, LoopBack 4 uses the concept
-of a [Service proxy](../../Calling-other-APIs-and-Web-Services.md) to provide a
-client for accessing external services.
+of a [Service proxy](../../Accessing-services.md) to provide a client for
+accessing external services.
 
 ### Manual steps
 
@@ -117,8 +117,8 @@ To migrate a LoopBack 3 model backed by a web service:
 
 Unfortunately, there is no automated migration tool yet, please follow the
 instructions in
-[Calling other APIs and web services](../../Calling-other-APIs-and-Web-Services.md)
-to create a service and a controller manually.
+[Calling other APIs and web services](../../Accessing-services.md) to create a
+service and a controller manually.
 
 ### Declarative approach
 
