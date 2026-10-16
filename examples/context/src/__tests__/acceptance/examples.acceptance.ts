@@ -18,15 +18,14 @@ describe('context examples', () => {
 
   before(disableConsoleOutput);
 
-  it('runs all examples', async function (this: Mocha.Context) {
-    // For some reason, travis CI on mac reports timeout for some builds
-    // Error: Timeout of 2000ms exceeded.
-    this.timeout(5000);
+  it('runs all examples', async () => {
     const expectedLogs = loadExpectedLogs();
     await main();
     expect(errors).to.eql([]);
     expect(replaceDates(logs)).to.eql(replaceDates(expectedLogs));
-  });
+    // For some reason, travis CI on mac reports timeout for some builds
+    // Error: Timeout of 2000ms exceeded.
+  }).timeout(5000);
 
   after(restoreConsoleOutput);
 
