@@ -19,8 +19,7 @@ LoopBack 4 applications with
 Before starting this tutorial, make sure you have the following installed:
 
 - Node.js version 10 or higher
-- LoopBack 4 CLI; see
-  [Getting Started with LoopBack 4](../../Getting-started.md)
+- LoopBack 4 CLI; see [Getting Started with LoopBack 4](../../Installation.md)
 
 ## Tutorial - Oracle
 
