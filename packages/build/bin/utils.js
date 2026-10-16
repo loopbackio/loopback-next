@@ -64,7 +64,7 @@ function getConfigFile(name, defaultName) {
 function resolveCLI(cli, options = {resolveFromProjectFirst: true}) {
   const {resolveFromProjectFirst = true} = options;
   if (resolveFromProjectFirst === false) {
-    return require.resolve(cli);
+    return resolveCLIFromPackage(cli);
   }
   try {
     const pkgDir = getPackageDir();
@@ -73,7 +73,26 @@ function resolveCLI(cli, options = {resolveFromProjectFirst: true}) {
   } catch {
     // Ignore errors
   }
-  return require.resolve(cli);
+  return resolveCLIFromPackage(cli);
+}
+
+/**
+ * Resolve the cli module path. Packages with an `exports` map (such as
+ * `eslint` 8.57+) do not expose `bin/*` subpaths to `require.resolve`, so
+ * resolve `package.json` first and then build an absolute path from it.
+ * @param {string} cli CLI module path, such as `eslint/bin/eslint`
+ */
+function resolveCLIFromPackage(cli) {
+  try {
+    return require.resolve(cli);
+  } catch (e) {
+    if (e.code !== 'ERR_PACKAGE_PATH_NOT_EXPORTED') throw e;
+    const pkgName = getPackageName(cli);
+    const pkgJson = require.resolve(`${pkgName}/package.json`);
+    return require.resolve(
+      path.join(path.dirname(pkgJson), cli.slice(pkgName.length + 1)),
+    );
+  }
 }
 
 /**
