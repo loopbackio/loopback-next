@@ -16,7 +16,7 @@ import {
 } from '@loopback/repository';
 import debugFactory from 'debug';
 import {inspect} from 'util';
-import {JsonSchema} from './index';
+import {JsonSchema, ExtensionProperties} from './index';
 import {JSON_SCHEMA_KEY} from './keys';
 const debug = debugFactory('loopback:repository-json-schema:build-schema');
 
@@ -255,9 +255,25 @@ export function isArrayType(type: string | Function | PropertyType) {
  * @param meta
  */
 export function metaToJsonProperty(meta: PropertyDefinition): JsonSchema {
-  const propDef: JsonSchema = {};
+  const propDef: JsonSchema & ExtensionProperties = {};
   let result: JsonSchema;
   let propertyType = meta.type as string | Function;
+  const propertiesToCopy = [
+    'default',
+    'defaultFn',
+    'index',
+    'length',
+    'precision',
+    'scale',
+    'generated',
+    'hidden',
+  ];
+
+  propertiesToCopy.forEach(prop => {
+    if (meta[prop] !== undefined) {
+      propDef[prop] = meta[prop];
+    }
+  });
 
   if (isArrayType(propertyType) && meta.itemType) {
     if (isArrayType(meta.itemType) && !meta.jsonSchema) {
