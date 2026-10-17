@@ -58,6 +58,34 @@ describe('lb4 relation', /** @this {Mocha.Suite} */ function () {
     ).to.be.rejectedWith(/No models found/);
   });
 
+  it('rejects relation when relation name is the same as foreign key name', async () => {
+    await sandbox.reset();
+    const prompt = {
+      relationType: 'belongsTo',
+      sourceModel: 'Order',
+      destinationModel: 'Customer',
+      foreignKeyName: 'customerId',
+      relationName: 'customerId', // intentionally same as foreignKeyName
+    };
+
+    return expect(
+      testUtils
+        .executeGenerator(generator)
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {
+            additionalFiles: SANDBOX_FILES,
+          }),
+        )
+        .withOptions(options)
+        .withPrompts(prompt),
+      // Now that the bug is fixed, both values interpolate and we can assert the full message
+    ).to.be.rejectedWith(
+      new RegExp(
+        `relation name ${prompt.relationName} cannot be the same as foreign key name ${prompt.foreignKeyName}`,
+      ),
+    );
+  });
+
   context('generates model relation with default values', () => {
     const promptArray = [
       {
