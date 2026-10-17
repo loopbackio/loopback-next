@@ -248,6 +248,14 @@ export type FilterExcludingWhere<MT extends object = AnyObject> = Omit<
 >;
 
 /**
+ * Filter without additional properties for count
+ */
+export type FilterExcludingsForCount<MT extends object = AnyObject> = Omit<
+  Filter<MT>,
+  'fields' | 'order' | 'limit' | 'skip' | 'offset' | 'include'
+>;
+
+/**
  * TypeGuard for Filter
  * @param candidate
  */
