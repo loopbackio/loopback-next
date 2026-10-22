@@ -130,6 +130,27 @@ describe('Authorization', () => {
     });
   });
 
+  it('invokes voter functions declared in the authorization metadata', async () => {
+    givenRequestContext();
+    setupAuthorization({});
+    const result = await invokeMethod(controller, 'approveOrder', reqCtx, [
+      'order-01',
+    ]);
+    expect(result).to.equal('order-01');
+  });
+
+  it('denies access when a voter function in the metadata denies', async () => {
+    givenRequestContext();
+    setupAuthorization({});
+    const result = invokeMethod(controller, 'rejectOrder', reqCtx, [
+      'order-01',
+    ]);
+    await expect(result).to.be.rejectedWith({
+      statusCode: 403,
+      message: 'Access denied',
+    });
+  });
+
   async function testCancelOrder(matrix: DecisionMatrix) {
     let index = 0;
     for (const row of matrix) {
@@ -190,6 +211,16 @@ describe('Authorization', () => {
     // authorizationOptions.defaultMetadata
     async placeOrder(productId: string, quantity: number) {
       return '001';
+    }
+
+    @authorize({voters: [async () => Allow]})
+    async approveOrder(orderId: string) {
+      return orderId;
+    }
+
+    @authorize({voters: [async () => Deny]})
+    async rejectOrder(orderId: string) {
+      return orderId;
     }
   }
 

@@ -19,7 +19,8 @@
     "build": "lb-tsc",
     "clean": "lb-clean loopback-model-api-builder*.tgz dist *.tsbuildinfo package",
     "pretest": "npm run build",
-    "test": "",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
+    "unit": "lb-mocha \"dist/__tests__/unit/**/*.js\"",
     "verify": "npm pack && tar xf loopback-model-api-builder*.tgz && tree package && npm run clean"
   },
   "publishConfig": {
@@ -40,8 +41,10 @@
   },
   "devDependencies": {
     "@loopback/build": "^12.0.15",
+    "@loopback/context": "^8.0.15",
     "@loopback/core": "^7.0.15",
     "@loopback/repository": "^8.0.15",
+    "@loopback/testlab": "^8.0.15",
     "@types/node": "^20.19.43"
   }
 }
