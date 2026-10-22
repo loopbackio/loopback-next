@@ -6,6 +6,7 @@
 'use strict';
 
 const fs = require('node:fs');
+const fsp = require('fs/promises');
 const path = require('node:path');
 const util = require('node:util');
 const stream = require('node:stream');
@@ -381,6 +382,21 @@ exports.getArtifactList = async function (
       ? exports.toClassName(result) + exports.toClassName(artifactType)
       : exports.toClassName(result);
   });
+};
+
+/**
+ * Retrieves a list of subdirectories within a given directory.
+ *
+ * @param {string} dir The directory path to search for subdirectories.
+ */
+exports.getSubdirectories = async function (dir) {
+  const entries = await fsp.readdir(dir, {withFileTypes: true});
+
+  const subdirectories = entries
+    .filter(entry => entry.isDirectory())
+    .map(entry => path.join(dir, entry.name));
+
+  return subdirectories;
 };
 
 /**
