@@ -123,6 +123,17 @@ describe('Authentication', () => {
         options: {option1: 'valueA', option2: 'value2'},
       });
     });
+    it('throws an error when used on a property', () => {
+      expect(() => {
+        class TestClass {
+          @authenticate('my-strategy')
+          prop: string;
+        }
+        return TestClass;
+      }).to.throw(
+        /@authenticate cannot be used on a property: TestClass\.prototype\.prop/,
+      );
+    });
   });
 
   it('can skip authentication', () => {
