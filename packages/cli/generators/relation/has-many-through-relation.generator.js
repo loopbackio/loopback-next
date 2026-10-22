@@ -133,7 +133,9 @@ module.exports = class HasManyThroughRelationGenerator extends (
       sourceModel,
     );
     const sourceClass = relationUtils.getClassObj(sourceFile, sourceModel);
-    relationUtils.doesRelationExist(sourceClass, relationName);
+    relationUtils.doesRelationExist(sourceClass, relationName, {
+      force: this.options.force,
+    });
     // add the relation to the source model
     const isDefaultSourceKey = sourceKey === dftSourceKey;
     const isDefaultTargetKey = targetKey === dftTargetKey;
