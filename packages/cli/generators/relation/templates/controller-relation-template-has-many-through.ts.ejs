@@ -83,7 +83,10 @@ export class <%= controllerClassName %> {
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(<%= targetModelClassName %>, {partial: true}),
+          schema: getModelSchemaRef(<%= targetModelClassName %>, {
+            partial: true,
+            exclude: [<% exclude.forEach(function(item,index){ %>'<%= item %>', <% }) %>],
+          }),
         },
       },
     })
