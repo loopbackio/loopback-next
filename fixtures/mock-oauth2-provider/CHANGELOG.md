@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.11.0](https://github.com/loopbackio/loopback-next/compare/@loopback/mock-oauth2-provider@0.10.15...@loopback/mock-oauth2-provider@0.11.0) (2026-10-23)
+
+
+### Bug Fixes
+
+* **mock-oauth2-provider:** resolve CodeQL prototype pollution and open redirect ([f798d83](https://github.com/loopbackio/loopback-next/commit/f798d83c160a1942a8c8f2f9c49cb73d97ac146f))
+
+
+### chore
+
+* drop node.js 20 support ([bd5b9ea](https://github.com/loopbackio/loopback-next/commit/bd5b9ea6f93d4a214802b3492576b90e1e9fc56b))
+
+
+### BREAKING CHANGES
+
+* drop Node.js 20 support
+
+Signed-off-by: dhmlau <dhmlau@ca.ibm.com>
+
+
+
+
+
 ## [0.10.15](https://github.com/loopbackio/loopback-next/compare/@loopback/mock-oauth2-provider@0.10.14...@loopback/mock-oauth2-provider@0.10.15) (2026-08-18)
 
 **Note:** Version bump only for package @loopback/mock-oauth2-provider

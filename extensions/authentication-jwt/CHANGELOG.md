@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.17.0](https://github.com/loopbackio/loopback-next/compare/@loopback/authentication-jwt@0.16.17...@loopback/authentication-jwt@0.17.0) (2026-10-23)
+
+
+### Bug Fixes
+
+* support compiling with TypeScript 6 and 7 ([a2d1e2d](https://github.com/loopbackio/loopback-next/commit/a2d1e2dea148fa8da090b392c9d6c89eff127218))
+
+
+### chore
+
+* drop node.js 20 support ([bd5b9ea](https://github.com/loopbackio/loopback-next/commit/bd5b9ea6f93d4a214802b3492576b90e1e9fc56b))
+
+
+### BREAKING CHANGES
+
+* drop Node.js 20 support
+
+Signed-off-by: dhmlau <dhmlau@ca.ibm.com>
+
+
+
+
+
 ## [0.16.17](https://github.com/loopbackio/loopback-next/compare/@loopback/authentication-jwt@0.16.16...@loopback/authentication-jwt@0.16.17) (2026-08-18)
 
 **Note:** Version bump only for package @loopback/authentication-jwt

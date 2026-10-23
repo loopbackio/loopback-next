@@ -3,6 +3,35 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [17.0.0](https://github.com/loopbackio/loopback-next/compare/@loopback/eslint-config@16.0.1...@loopback/eslint-config@17.0.0) (2026-10-23)
+
+
+### chore
+
+* drop node.js 20 support ([bd5b9ea](https://github.com/loopbackio/loopback-next/commit/bd5b9ea6f93d4a214802b3492576b90e1e9fc56b))
+
+
+* feat(eslint-config)!: upgrade typescript-eslint to v8 ([2d77d1e](https://github.com/loopbackio/loopback-next/commit/2d77d1e574fd348c64ca11f45947c846a78fda40))
+
+
+### BREAKING CHANGES
+
+* `@loopback/eslint-config` requires `@typescript-eslint/parser`
+and `@typescript-eslint/eslint-plugin` v8. Projects using it can get new
+findings, such as unused `catch` bindings (`no-unused-vars`),
+`prefer-optional-chain`, and `prefer-nullish-coalescing` for
+`if (x == null) x = y`.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Signed-off-by: Raymond Feng <enjoyjava@gmail.com>
+* drop Node.js 20 support
+
+Signed-off-by: dhmlau <dhmlau@ca.ibm.com>
+
+
+
+
+
 ## [16.0.1](https://github.com/loopbackio/loopback-next/compare/@loopback/eslint-config@16.0.0...@loopback/eslint-config@16.0.1) (2025-08-11)
 
 **Note:** Version bump only for package @loopback/eslint-config

@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.14.0](https://github.com/loopbackio/loopback-next/compare/@loopback/example-webpack@0.13.16...@loopback/example-webpack@0.14.0) (2026-10-23)
+
+
+### Bug Fixes
+
+* **example-webpack:** allow more time to launch the browser in tests ([9be081e](https://github.com/loopbackio/loopback-next/commit/9be081e864b3a45af20a4ad2ed2ebbfb0071ed2c))
+* support compiling with TypeScript 6 and 7 ([a2d1e2d](https://github.com/loopbackio/loopback-next/commit/a2d1e2dea148fa8da090b392c9d6c89eff127218))
+
+
+### chore
+
+* drop node.js 20 support ([bd5b9ea](https://github.com/loopbackio/loopback-next/commit/bd5b9ea6f93d4a214802b3492576b90e1e9fc56b))
+
+
+### BREAKING CHANGES
+
+* drop Node.js 20 support
+
+Signed-off-by: dhmlau <dhmlau@ca.ibm.com>
+
+
+
+
+
 ## [0.13.16](https://github.com/loopbackio/loopback-next/compare/@loopback/example-webpack@0.13.15...@loopback/example-webpack@0.13.16) (2026-08-18)
 
 **Note:** Version bump only for package @loopback/example-webpack

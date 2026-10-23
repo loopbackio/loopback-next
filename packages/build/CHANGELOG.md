@@ -3,6 +3,36 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [13.0.0](https://github.com/loopbackio/loopback-next/compare/@loopback/build@12.0.15...@loopback/build@13.0.0) (2026-10-23)
+
+
+### chore
+
+* drop node.js 20 support ([bd5b9ea](https://github.com/loopbackio/loopback-next/commit/bd5b9ea6f93d4a214802b3492576b90e1e9fc56b))
+
+
+* feat(build)!: compile with the TypeScript 7 native compiler ([3a68c46](https://github.com/loopbackio/loopback-next/commit/3a68c46ab6fd47ebc514b1240db81ac16318ff5f))
+
+
+### BREAKING CHANGES
+
+* `@loopback/build` depends on TypeScript 7
+(`@typescript/native`) and compiles with it, and its `typescript` dependency
+is TypeScript 6.
+Projects extending `@loopback/build/config/tsconfig.common.json` have to remove
+`moduleResolution: node`, and list ambient type packages other than `node` and
+`mocha` in `types`.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Signed-off-by: Raymond Feng <enjoyjava@gmail.com>
+* drop Node.js 20 support
+
+Signed-off-by: dhmlau <dhmlau@ca.ibm.com>
+
+
+
+
+
 ## [12.0.15](https://github.com/loopbackio/loopback-next/compare/@loopback/build@12.0.14...@loopback/build@12.0.15) (2026-08-18)
 
 **Note:** Version bump only for package @loopback/build

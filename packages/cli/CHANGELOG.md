@@ -3,6 +3,35 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [8.0.0](https://github.com/loopbackio/loopback-next/compare/@loopback/cli@7.0.17...@loopback/cli@8.0.0) (2026-10-23)
+
+
+### Bug Fixes
+
+* **cli:** save generator arguments in command metadata ([00d5f88](https://github.com/loopbackio/loopback-next/commit/00d5f88ef48bfbf6fcf0cf5ac338a6e96b5d7d7f))
+
+
+### chore
+
+* drop node.js 20 support ([bd5b9ea](https://github.com/loopbackio/loopback-next/commit/bd5b9ea6f93d4a214802b3492576b90e1e9fc56b))
+
+
+### Features
+
+* **cli:** generate projects for TypeScript 7 ([689d40e](https://github.com/loopbackio/loopback-next/commit/689d40e1d316a0e078c39e3b687ab206eba59f05))
+* **cli:** generate projects with typescript-eslint v8 ([56c3056](https://github.com/loopbackio/loopback-next/commit/56c30565b363019f7a0987306b85df0a711c33a6))
+
+
+### BREAKING CHANGES
+
+* drop Node.js 20 support
+
+Signed-off-by: dhmlau <dhmlau@ca.ibm.com>
+
+
+
+
+
 ## [7.0.17](https://github.com/loopbackio/loopback-next/compare/@loopback/cli@7.0.16...@loopback/cli@7.0.17) (2026-08-18)
 
 **Note:** Version bump only for package @loopback/cli

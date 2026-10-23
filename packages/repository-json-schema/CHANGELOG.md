@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [10.0.0](https://github.com/loopbackio/loopback-next/compare/@loopback/repository-json-schema@9.0.16...@loopback/repository-json-schema@10.0.0) (2026-10-23)
+
+
+### chore
+
+* drop node.js 20 support ([bd5b9ea](https://github.com/loopbackio/loopback-next/commit/bd5b9ea6f93d4a214802b3492576b90e1e9fc56b))
+
+
+### BREAKING CHANGES
+
+* drop Node.js 20 support
+
+Signed-off-by: dhmlau <dhmlau@ca.ibm.com>
+
+
+
+
+
 ## [9.0.16](https://github.com/loopbackio/loopback-next/compare/@loopback/repository-json-schema@9.0.15...@loopback/repository-json-schema@9.0.16) (2026-08-18)
 
 **Note:** Version bump only for package @loopback/repository-json-schema

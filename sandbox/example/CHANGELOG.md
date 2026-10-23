@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [8.0.0](https://github.com/loopbackio/loopback-next/compare/@loopback/sandbox-example@7.0.0...@loopback/sandbox-example@8.0.0) (2026-10-23)
+
+
+### chore
+
+* drop node.js 20 support ([bd5b9ea](https://github.com/loopbackio/loopback-next/commit/bd5b9ea6f93d4a214802b3492576b90e1e9fc56b))
+
+
+### BREAKING CHANGES
+
+* drop Node.js 20 support
+
+Signed-off-by: dhmlau <dhmlau@ca.ibm.com>
+
+
+
+
+
 # [7.0.0](https://github.com/loopbackio/loopback-next/compare/@loopback/sandbox-example@6.0.1...@loopback/sandbox-example@7.0.0) (2025-06-10)
 
 
