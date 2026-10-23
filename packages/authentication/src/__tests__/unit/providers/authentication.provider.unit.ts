@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Context, instantiateClass} from '@loopback/core';
-import {Request} from '@loopback/rest';
+import {RedirectRoute, Request} from '@loopback/rest';
 import {securityId, UserProfile} from '@loopback/security';
 import {expect} from '@loopback/testlab';
 import {AuthenticateFn, AuthenticationBindings} from '../../..';
@@ -119,6 +119,78 @@ describe('AuthenticateActionProvider', () => {
 
       // 1st one succeeds but 2nd one fails
       await expect(authenticate(request)).to.not.be.rejected();
+    });
+
+    describe('redirect handling', () => {
+      let redirectUrl: string | undefined;
+      let redirectStatus: number | undefined;
+
+      function givenProviderWithStrategies(
+        strategies: AuthenticationStrategy[],
+      ) {
+        redirectUrl = undefined;
+        redirectStatus = undefined;
+        currentUser = undefined;
+        provider = new AuthenticateActionProvider(
+          () => Promise.resolve(strategies),
+          u => (currentUser = u),
+          url => (redirectUrl = url),
+          status => (redirectStatus = status),
+        );
+      }
+
+      function givenRedirectStrategy(
+        targetLocation: string,
+        statusCode?: number,
+      ): AuthenticationStrategy {
+        return {
+          name: 'redirect-strategy',
+          authenticate: async () =>
+            new RedirectRoute('/auth/login', targetLocation, statusCode),
+        };
+      }
+
+      it('sets redirect url and status when a strategy returns a RedirectRoute', async () => {
+        givenProviderWithStrategies([
+          givenRedirectStrategy('/auth/provider', 302),
+        ]);
+        const authenticate = await Promise.resolve(provider.value());
+
+        const result = await authenticate(<Request>{});
+
+        expect(result).to.be.undefined();
+        expect(redirectUrl).to.equal('/auth/provider');
+        expect(redirectStatus).to.equal(302);
+        expect(currentUser).to.be.undefined();
+      });
+
+      it('uses the default 303 status when the RedirectRoute has none', async () => {
+        givenProviderWithStrategies([givenRedirectStrategy('/auth/provider')]);
+        const authenticate = await Promise.resolve(provider.value());
+
+        await authenticate(<Request>{});
+
+        expect(redirectStatus).to.equal(303);
+      });
+
+      it('does not try remaining strategies after a redirect', async () => {
+        const second = new MockStrategy2();
+        let secondCalled = false;
+        second.authenticate = async () => {
+          secondCalled = true;
+          return {[securityId]: 'mock-id'};
+        };
+        givenProviderWithStrategies([
+          givenRedirectStrategy('/auth/provider', 302),
+          second,
+        ]);
+        const authenticate = await Promise.resolve(provider.value());
+
+        await authenticate(<Request>{});
+
+        expect(secondCalled).to.be.false();
+        expect(redirectUrl).to.equal('/auth/provider');
+      });
     });
 
     describe('context.get(provider_key)', () => {
