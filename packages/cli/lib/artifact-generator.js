@@ -28,7 +28,7 @@ module.exports = class ArtifactGenerator extends BaseGenerator {
     });
   }
 
-  setOptions() {
+  setOptions(options = {}) {
     // argument validation
     const name = this.options.name;
     if (name) {
@@ -40,7 +40,7 @@ module.exports = class ArtifactGenerator extends BaseGenerator {
       this.destinationPath(),
       this.artifactInfo.outDir,
     );
-    return super.setOptions();
+    return super.setOptions(options);
   }
 
   promptArtifactName() {
@@ -139,7 +139,6 @@ module.exports = class ArtifactGenerator extends BaseGenerator {
           this.artifactInfo.relPath,
         ),
       );
-
       this.log();
     }
 
