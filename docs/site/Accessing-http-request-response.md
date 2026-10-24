@@ -85,7 +85,7 @@ dependency injection for controllers, services, and other artifacts.
 
 ### Inject HTTP request
 
-The [Express/Http request object](http://expressjs.com/en/4x/api.html#req) can
+The [Express/Http request object](https://expressjs.com/en/4x/api.html#req) can
 be injected via `RestBindings.Http.REQUEST`.
 
 ```ts
@@ -131,7 +131,7 @@ export class PingController {
 
 ### Inject HTTP response
 
-The [Express/Http response object](http://expressjs.com/en/4x/api.html#res) can
+The [Express/Http response object](https://expressjs.com/en/4x/api.html#res) can
 be injected via `RestBindings.Http.RESPONSE`.
 
 ```ts

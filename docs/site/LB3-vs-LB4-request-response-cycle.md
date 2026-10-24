@@ -47,7 +47,7 @@ to track the progress on supporting Express middleware in LoopBack 4." %}
 
 If you want to mount an Express router in a LoopBack 4 application, you can use
 the
-[RestApplication.mountExpressRouter()](./apidocs/apidocs.rest.restapplication.mountexpressrouter.md)
+[RestApplication.mountExpressRouter()](./apidocs.rest.restapplication.mountexpressrouter.html)
 API.
 
 Using [Controllers](./Controller.md) is the recommended way for creating custom
@@ -255,9 +255,8 @@ export class PersonController {
 The request/response architecture has undergone a drastic change in LoopBack 4.
 LoopBack 3's
 [phase-based middleware routing system](https://loopback.io/doc/en/lb3/Routing.html)
-is now replaced by a
-[sequence handler](./apidocs/apidocs.rest.defaultsequence.md) that sits infront
-of a [routing table](./apidocs/apidocs.rest.routingtable.md).
+is now replaced by a [sequence handler](./apidocs.rest.defaultsequence.html)
+that sits infront of a [routing table](./apidocs.rest.routingtable.html).
 
 In LoopBack 3, middleware are added using Express APIs and via phases in
 `middleware.json` or using
@@ -277,7 +276,7 @@ Request to the app passes through the middleware chain in the following order.
 - `parse`
 - `parse:after`
 - `routes:before`
-- [Express middleware](http://expressjs.com/guide/writing-middleware.html)
+- [Express middleware](https://expressjs.com/guide/writing-middleware.html)
 - [Components](https://loopback.io/doc/en/lb3/LoopBack-components.html)
 - [Boot scripts](https://loopback.io/doc/en/lb3/Defining-boot-scripts.html)
 - `routes`
@@ -322,7 +321,7 @@ objects can always be accessed in all the middleware functions.
 
 In LoopBack 4, the request and response objects can be accessed in routers
 loaded using the
-[app.mountExpressRouter() ](./apidocs/apidocs.rest.restapplication.mountexpressrouter.md)
+[app.mountExpressRouter() ](./apidocs.rest.restapplication.mountexpressrouter.html)
 method, using the familiar Express middleware signature.
 
 [Controllers](./Controller.md), [services](./Service.md), and
@@ -449,8 +448,8 @@ In LoopBack 3, the `before save`
 users to access the model data before it is written to the database. A similar
 functionality can be achieved in LoopBack 4 by overriding the `create()` method
 of the
-[default CRUD repository](./apidocs/apidocs.repository.defaultcrudrepository.md)
-in the repository of the model.
+[default CRUD repository](./apidocs.repository.defaultcrudrepository.html) in
+the repository of the model.
 
 Example of accessing model data before saving in LoopBack 3, using the
 `before save` operation hook:

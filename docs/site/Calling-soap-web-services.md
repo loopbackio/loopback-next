@@ -21,8 +21,8 @@ service endpoint and its corresponding WSDL file.
 $ lb4 datasource
 ? Datasource name: ds
 ? Select the connector for ds: SOAP webservices (supported by StrongLoop)
-? URL to the SOAP web service endpoint: http://calculator-webservice.mybluemix.net/calculator
-? HTTP URL or local file system path to the WSDL file: http://calculator-webservice.mybluemix.net/calculator?wsdl
+? URL to the SOAP web service endpoint: https://example.com/calculator
+? HTTP URL or local file system path to the WSDL file: https://example.com/calculator?wsdl
 ? Expose operations as REST APIs: Yes
 ? Maps WSDL binding operations to Node.js methods:
 ```
@@ -46,8 +46,8 @@ the mapping of the WSDL binding operations and Node.js methods.
 const config = {
   name: 'ds',
   connector: 'soap',
-  url: 'http://calculator-webservice.mybluemix.net/calculator',
-  wsdl: 'http://calculator-webservice.mybluemix.net/calculator?wsdl',
+  url: 'https://example.com/calculator',
+  wsdl: 'https://example.com/calculator?wsdl',
   remotingEnabled: true,
   // ADD THIS SNIPPET
   operations: {

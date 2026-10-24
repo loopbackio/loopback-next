@@ -42,7 +42,7 @@ LoopBack 4 components can contribute:
 - [Controllers](../../Controller.md)
 - [Life cycle observers](../../Extension-life-cycle.md)
 - [Repositories](../../Repository.md)
-- [Service proxies](../../Calling-other-APIs-and-Web-Services.md)
+- [Service proxies](../../Accessing-services.md)
 - [Servers](../../Creating-servers.md)
 - [HTTP request parsers](../../Extending-request-body-parsing.md)
 - Extensions for [Extension Points](../../Extension-point-and-extensions.md)

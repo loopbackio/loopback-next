@@ -13,7 +13,7 @@ In LoopBack 4, a Service class provides access to additional functionality.
   obtain a JWT authentication token for a given user.
 - Service proxies are used to access 3rd-party web services (e.g. REST or SOAP),
   as further explained in
-  [Calling other APIs and web services](../Calling-other-APIs-and-Web-Services.md)
+  [Calling other APIs and web services](../Accessing-services.md)
 
 In an application, a new service is typically created by running
 [`lb4 service`](../Service-generator.md).
