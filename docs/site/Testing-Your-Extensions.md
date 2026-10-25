@@ -113,7 +113,7 @@ You can find an advanced example on testing controllers in
 The recommended usage of a decorator is to store metadata about a class or a
 class method. The decorator implementation usually provides a function to
 retrieve the related metadata based on the class name and method name. For a
-unit test for a decorator, it is important to test that that it stores and
+unit test for a decorator, it is important to test that it stores and
 retrieves the correct metadata. _The retrieval gets tested as a result of
 validating whether the metadata was stored or not._
 

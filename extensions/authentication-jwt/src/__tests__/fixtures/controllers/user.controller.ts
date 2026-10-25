@@ -42,7 +42,7 @@ const RefreshGrantSchema: SchemaObject = {
 
 // Describes the request body of grant object
 const RefreshGrantRequestBody = {
-  description: 'Reissuing Acess Token',
+  description: 'Reissuing Access Token',
   required: true,
   content: {
     'application/json': {schema: RefreshGrantSchema},

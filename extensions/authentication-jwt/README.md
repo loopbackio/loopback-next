@@ -223,7 +223,7 @@ the endpoint.
 ```
 
 2. `To refresh the token`: to generate the access token by the refresh token
-   obtained from the the last login endpoint.
+   obtained from the last login endpoint.
 
 ```ts
   async refresh(

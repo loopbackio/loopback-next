@@ -16,7 +16,7 @@ const debug = require('debug')(
 );
 
 /**
- * Marks an api path with the specfied visibility.  When applied to a class,
+ * Marks an api path with the specified visibility.  When applied to a class,
  * this decorator marks all paths with the specified visibility.
  *
  * You can optionally mark all controllers in a class with
