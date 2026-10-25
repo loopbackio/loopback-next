@@ -168,7 +168,7 @@ export class DefaultCrudRepository<
 
   /**
    * Creates a legacy persisted model class, attaches it to the datasource and
-   * returns it. This method can be overridden in sub-classes to acess methods
+   * returns it. This method can be overridden in sub-classes to access methods
    * and properties in the generated model class.
    * @param entityClass - LB4 Entity constructor
    */

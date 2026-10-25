@@ -164,7 +164,7 @@ function escapeIdentifier(name) {
 }
 
 /**
- * Escape the property if it's not a valid JavaScript identifer
+ * Escape the property if it's not a valid JavaScript identifier
  * @param {string} name
  */
 function escapePropertyName(name) {

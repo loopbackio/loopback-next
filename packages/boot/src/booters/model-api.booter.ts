@@ -47,7 +47,7 @@ export class ModelApiBooter extends BaseArtifactBooter {
   }
 
   /**
-   * Load the the model config files
+   * Load the model config files
    */
   async load(): Promise<void> {
     // Important: don't call `super.load()` here, it would try to load

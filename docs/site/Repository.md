@@ -313,7 +313,7 @@ We can now access key-value stores such as [Redis](https://redis.io/) using the
 ### Define a KeyValue Datasource
 
 We first need to define a datasource to configure the key-value store. The
-easiest option is to to generate the datasource automatically using
+easiest option is to generate the datasource automatically using
 `lb4 datasource` command and selecting
 `Redis key-value connector (supported by StrongLoop)`.
 

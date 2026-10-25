@@ -43,7 +43,7 @@ export interface HasOneRepositoryFactory<
  * relationship and determine how to apply the constraint.
  * @param targetRepositoryGetter - The repository or a dictionary of classname - repository,
  * which represents the target model of a relation attached to a datasource.
- * For the dictionary, the key is the class name of the concrete class the the polymorphic model.
+ * For the dictionary, the key is the class name of the concrete class the polymorphic model.
  * @returns The factory function which accepts a foreign key value to constrain
  * the given target repository
  */

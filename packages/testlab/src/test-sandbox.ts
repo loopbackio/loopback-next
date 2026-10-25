@@ -94,7 +94,7 @@ export class TestSandbox {
    * Resets the TestSandbox. (Remove all files in it).
    */
   async reset(): Promise<void> {
-    // Decache files from require's cache so future tests aren't affected incase
+    // Decache files from require's cache so future tests aren't affected in case
     // a file is recreated in sandbox with the same file name but different
     // contents after resetting the sandbox.
     for (const key in require.cache) {

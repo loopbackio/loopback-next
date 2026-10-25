@@ -186,7 +186,7 @@ describe('Utils', () => {
       );
     });
 
-    describe('should use dash to seperate words', () => {
+    describe('should use dash to separate words', () => {
       testExpect('first letter is upper case', 'Foobar', 'foobar');
       testExpect(
         'if the name contains upper case letters',
@@ -200,7 +200,7 @@ describe('Utils', () => {
       );
     });
 
-    describe('should use dash to seperate digits and words', () => {
+    describe('should use dash to separate digits and words', () => {
       testExpect(
         'if the class name contains a digit in the middle',
         'Car4Share',

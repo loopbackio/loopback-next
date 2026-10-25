@@ -270,7 +270,7 @@ describe('Context bindings - Injecting dependencies of classes', () => {
         /The key 'hash' is not bound to any value in context .+/,
       );
 
-      // Now bind `hash` to `456` to to ctx
+      // Now bind `hash` to `456` to ctx
       ctx.bind(HASH_KEY).to('456');
       // The `hash` injection of `Store` can now be resolved
       expect(await store.getter()).to.equal('456');
@@ -289,7 +289,7 @@ describe('Context bindings - Injecting dependencies of classes', () => {
         /The key 'hash' is not bound to any value in context .+/,
       );
 
-      // Now bind `hash` to `456` to to ctx
+      // Now bind `hash` to `456` to ctx
       ctx.bind(HASH_KEY).to('456');
       // The `hash` injection of `Store` can now be resolved
       const store = await requestCtx.get<Store>(STORE_KEY);
@@ -318,7 +318,7 @@ describe('Context bindings - Injecting dependencies of classes', () => {
       value = await invokeMethod(store, 'getHashWithName', requestCtx);
       expect(value).to.equal('123: my-store');
 
-      // bind the value to to ctx
+      // bind the value to ctx
       ctx.bind(HASH_KEY).to('456');
 
       value = await invokeMethod(Store, 'getHash', ctx);
