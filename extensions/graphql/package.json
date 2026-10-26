@@ -58,7 +58,7 @@
     "ws": "^8.22.0"
   },
   "devDependencies": {
-    "@graphql-yoga/subscription": "^5.1.1",
+    "@graphql-yoga/subscription": "^6.0.0",
     "@loopback/boot": "^9.0.0",
     "@loopback/build": "^13.0.0",
     "@loopback/core": "^8.0.0",
