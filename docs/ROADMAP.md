@@ -162,7 +162,7 @@ Includes migrating Useful LB3 Documentation to LB4.
 - Docs: Add "Working with Data" section #2527
 - Tutorial on file upload: with example repo and how to customize for your own
   use case.
-- Running and debuggin apps
+- Running and debugging apps
   - debug string #4845
   - error handling - how to configure http response to configure error. how to
     report error from controller (see strong-error-handler) #4846
