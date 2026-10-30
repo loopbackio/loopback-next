@@ -64,6 +64,11 @@ export class AjvFactoryProvider implements Provider<AjvFactory> {
       ajvInst.addKeyword('components');
       ajvInst.addKeyword('x-typescript-type');
       ajvInst.addKeyword('x-index-info');
+      // OpenAPI `discriminator` is kept in the schema; ignore it unless the
+      // Ajv `discriminator` option is enabled (it defines the keyword itself)
+      if (!validationOptions.discriminator) {
+        ajvInst.addKeyword('discriminator');
+      }
 
       ajvKeywords(ajvInst, validationOptions.ajvKeywords);
 

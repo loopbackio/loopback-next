@@ -152,6 +152,31 @@ describe('Ajv factory', () => {
     expect(result).to.be.true();
   });
 
+  it('ignores discriminator keyword by default', async () => {
+    const ajvFactory = new AjvFactoryProvider().value();
+    const validator = ajvFactory().compile({
+      type: 'object',
+      discriminator: {propertyName: 'kind'},
+      properties: {kind: {type: 'string'}},
+    });
+    expect(validator({kind: 'dog'})).to.be.true();
+  });
+
+  it('honors discriminator option', async () => {
+    const ajvFactory = new AjvFactoryProvider({discriminator: true}).value();
+    const validator = ajvFactory().compile({
+      type: 'object',
+      discriminator: {propertyName: 'kind'},
+      required: ['kind'],
+      oneOf: [
+        {properties: {kind: {const: 'dog'}, bark: {type: 'boolean'}}},
+        {properties: {kind: {const: 'cat'}, meow: {type: 'boolean'}}},
+      ],
+    });
+    expect(validator({kind: 'dog', bark: true})).to.be.true();
+    expect(validator({kind: 'bird'})).to.be.false();
+  });
+
   // possible values for type any
   const TEST_VALUES = {
     string: 'abc',
