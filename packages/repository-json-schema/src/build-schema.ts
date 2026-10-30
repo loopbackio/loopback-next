@@ -603,9 +603,15 @@ export function modelToJsonSchema<T extends object>(
     $ref?: string;
     items?: {$ref: string};
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    'x-foreign-keys'?: {[x: string]: string};
+    'x-foreign-key'?: {[x: string]: string};
     // eslint-disable-next-line @typescript-eslint/naming-convention
     'x-relation-type'?: string;
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    'x-source-model'?: string;
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    'x-target-model'?: string;
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    'x-include-relations'?: string;
   };
   const relationships: {[x: string]: Relationship} = {};
 
@@ -710,8 +716,14 @@ export function modelToJsonSchema<T extends object>(
         };
       }
       // Attach OpenAPI vendor extension metadata for relationship type and foreign keys
-      relationships[relMeta.name]['x-foreign-keys'] = foreignKey;
+      relationships[relMeta.name]['x-foreign-key'] = foreignKey;
       relationships[relMeta.name]['x-relation-type'] = relMeta.type;
+      relationships[relMeta.name]['x-source-model'] = relMeta.source.name;
+      relationships[relMeta.name]['x-target-model'] = targetType.name;
+      if (targetOptions.includeRelations) {
+        relationships[relMeta.name]['x-include-relations'] =
+          targetOptions.includeRelations;
+      }
       // Safely merge newly generated relationships with any existing ones on the target schema,
       // casting through SpecificationExtension to satisfy TypeScript strict record constraints.
       const existingRelations = (result as JsonSchema & SpecificationExtension)[

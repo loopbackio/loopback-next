@@ -1169,8 +1169,10 @@ describe('build-schema', () => {
             description: 'Category have many Product.',
             type: 'array',
             items: {$ref: '#/definitions/Product'},
-            'x-foreign-keys': {categoryId: 'Category'},
+            'x-foreign-key': {categoryId: 'Category'},
             'x-relation-type': 'hasMany',
+            'x-source-model': 'Category',
+            'x-target-model': 'Product',
           },
         },
         type: 'object',
@@ -1224,13 +1226,15 @@ describe('build-schema', () => {
         'x-relationships': {
           products: {
             description: 'CategoryWithoutProp have many Product.',
-            'x-foreign-keys': {
+            'x-foreign-key': {
               categorywithoutpropId: 'CategoryWithoutProp',
             },
             items: {
               $ref: '#/definitions/Product',
             },
             'x-relation-type': 'hasMany',
+            'x-source-model': 'CategoryWithoutProp',
+            'x-target-model': 'Product',
             type: 'array',
           },
         },
