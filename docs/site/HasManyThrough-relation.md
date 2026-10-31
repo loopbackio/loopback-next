@@ -171,6 +171,18 @@ model definition's relation metadata.
       <td>the id property of the target model</td>
       <td><code>Patient.pid</code></td>
     </tr>
+        <tr>
+      <td><code>customReferenceKeyFrom</code></td>
+      <td>the non-primary key of the source model</td>
+      <td>the non-primary property of the source model</td>
+      <td><code>Product.sku</code></td>
+    </tr>
+    <tr>
+      <td><code>customReferenceKeyTo</code></td>
+      <td>the non-primary key of the target model</td>
+      <td>the non-primary property of the target model</td>
+      <td><code>Order.customerCode</code></td>
+    </tr>
     <tr>
       <td><code>through.model</code></td>
       <td>the name of the through model</td>
@@ -192,11 +204,32 @@ model definition's relation metadata.
   </tbody>
 </table>
 
-The two foreign keys on through model can only reference the primary keys of
-source and target models. Customization of `keyFrom` and `keyTo` is not
-supported yet. However, custom foreign keys on through model is possible. A
-usage of the decorator with custom foreign keys name for the above example is as
-follows:
+The two foreign keys on through model can reference the primary keys of source
+and target models. They can also reference non-primary keys with the help of
+`customReferenceKeyFrom` and `customReferenceKeyTo` keys.
+
+A usage of the decorator with custom reference keys for the above example is as
+follows: {% include code-caption.html content="/src/models/customer.model.ts" %}
+
+```ts
+// import statements
+class Customer extends Entity {
+  // constructor, properties, etc.
+  @hasMany(() => Customer, {
+    customReferenceKeyFrom: 'sku',
+    customReferenceKeyTo: 'customerCode',
+    through: {
+      model: () => Order,
+      keyFrom: 'productSku',
+      keyTo: 'customerCode',
+    },
+  })
+  customers: Customer[];
+}
+```
+
+Custom foreign keys on through model is possible. A usage of the decorator with
+custom foreign keys name for the above example is as follows:
 
 {% include code-caption.html content="/src/models/doctor.model.ts" %}
 
