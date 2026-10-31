@@ -81,8 +81,44 @@ describe('defineCrudRestController', () => {
     } as unknown as EntityCrudRepository<Product, typeof Product.prototype.id>;
 
     const controller = new CrudRestController(mockRepo);
-
     await controller.find();
+    expect(passedOptions).to.deepEqual(controllerOptions);
+  });
+
+  it('passes options parameter to findById repository method at correct offset', async () => {
+    @model()
+    class Product extends Entity {
+      @property({id: true})
+      id: number;
+    }
+
+    const controllerOptions = {
+      basePath: '/products',
+    };
+
+    const CrudRestController = defineCrudRestController<
+      Product,
+      typeof Product.prototype.id,
+      'id'
+    >(Product, controllerOptions);
+
+    let passedOptions: CrudRestControllerOptions | undefined;
+    const mockRepo = {
+      findById: async (
+        id: number,
+        filter?: Filter<Product>,
+        options?: CrudRestControllerOptions,
+      ) => {
+        passedOptions = options;
+        return {id};
+      },
+    } as unknown as EntityCrudRepository<Product, typeof Product.prototype.id>;
+
+    const controller = new CrudRestController(mockRepo) as unknown as {
+      findById(id: number, filter?: Filter<Product>): Promise<Product>;
+    };
+
+    await controller.findById(1);
     expect(passedOptions).to.deepEqual(controllerOptions);
   });
 });
