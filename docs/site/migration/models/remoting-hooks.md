@@ -13,7 +13,7 @@ Missing instructions for your LoopBack 3 use case? Please report a [Migration do
 
 ## Introduction
 
-In LoopBack 3, a [Remote hook](../../../lb3/Remote-hooks.md) enables you to
+In LoopBack 3, a [Remote hook](/doc/en/lb3/Remote-hooks.html) enables you to
 execute a function before or after a remote method is called by a client:
 
 - `beforeRemote()` runs before the remote method.
@@ -328,8 +328,8 @@ context and finally the invocation context.
 
 Invocation-specific properties can be accessed directly on the invocation
 context object, see
-[InvocationContext API docs](../../apidocs/context.invocationcontext.md) for the
-complete list. Other context properties (e.g. the current HTTP request) are
+[InvocationContext API docs](../../apidocs.context.invocationcontext.html) for
+the complete list. Other context properties (e.g. the current HTTP request) are
 usually accessed via
 [Dependency Injection](../../decorators/Decorators_inject.md).
 

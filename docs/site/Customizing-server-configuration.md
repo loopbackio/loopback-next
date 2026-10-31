@@ -128,8 +128,8 @@ const app = new RestApplication({
 });
 ```
 
-Checkout `express` [documentation](http://expressjs.com/fr/api.html#app.set) for
-more details about the build-in settings.
+Checkout `express` [documentation](https://expressjs.com/fr/api.html#app.set)
+for more details about the build-in settings.
 
 ### Configure the Base Path
 
@@ -169,7 +169,7 @@ The router can be configured to enforce `strict` mode as follows:
    - request `/orders/` matches route `/orders/` first and falls back to
      `/orders`
 
-See `strict routing` at http://expressjs.com/en/4x/api.html#app for more
+See `strict routing` at https://expressjs.com/en/4x/api.html#app for more
 information.
 
 ### Configure the request body parser options

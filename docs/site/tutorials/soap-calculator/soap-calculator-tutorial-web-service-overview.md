@@ -8,6 +8,8 @@ permalink: /doc/en/lb4/soap-calculator-tutorial-web-service-overview.html
 
 ### Overview
 
+{% include warning.html content="The hosted calculator service used by this tutorial (`calculator-webservice.mybluemix.net`) is no longer available. To follow the tutorial, host your own SOAP calculator service that exposes the same operations, and use its URL and WSDL wherever the tutorial refers to the hosted one." %}
+
 The calculator is a web service using the **SOAP** protocol and reside in this
 [server](https://calculator-webservice.mybluemix.net/calculator?wsdl),
 exclusively used by this **LB4** tutorial, it is exposing four end points that
