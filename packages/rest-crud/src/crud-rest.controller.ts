@@ -166,7 +166,7 @@ export function defineCrudRestController<
       @param.filter(modelCtor)
       filter?: Filter<T>,
     ): Promise<(T & Relations)[]> {
-      return this.repository.find(filter);
+      return this.repository.find(filter, options);
     }
 
     @get('/{id}', {
@@ -182,7 +182,7 @@ export function defineCrudRestController<
       )
       filter?: FilterExcludingWhere<T>,
     ): Promise<T & Relations> {
-      return this.repository.findById(id, filter);
+      return this.repository.findById(id, filter, options);
     }
 
     @get('/count', {
@@ -192,7 +192,7 @@ export function defineCrudRestController<
       @param.where(modelCtor)
       where?: Where<T>,
     ): Promise<Count> {
-      return this.repository.count(where);
+      return this.repository.count(where, options);
     }
   }
 
@@ -218,6 +218,7 @@ export function defineCrudRestController<
         // FIXME(bajtos) Improve repository API to support this use case
         // with no explicit type-casts required
         data as DataObject<T>,
+        options,
       );
     }
 
@@ -236,6 +237,7 @@ export function defineCrudRestController<
         // with no explicit type-casts required
         data as DataObject<T>,
         where,
+        options,
       );
     }
 
@@ -253,6 +255,7 @@ export function defineCrudRestController<
         // FIXME(bajtos) Improve repository API to support this use case
         // with no explicit type-casts required
         data as DataObject<T>,
+        options,
       );
     }
 
@@ -265,7 +268,7 @@ export function defineCrudRestController<
       @param(idPathParam) id: IdType,
       @body(modelCtor) data: T,
     ): Promise<void> {
-      await this.repository.replaceById(id, data);
+      await this.repository.replaceById(id, data, options);
     }
 
     @del('/{id}', {
@@ -274,7 +277,7 @@ export function defineCrudRestController<
       },
     })
     async deleteById(@param(idPathParam) id: IdType): Promise<void> {
-      await this.repository.deleteById(id);
+      await this.repository.deleteById(id, options);
     }
   }
 
