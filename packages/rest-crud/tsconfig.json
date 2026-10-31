@@ -11,6 +11,9 @@
   ],
   "references": [
     {
+      "path": "../authentication/tsconfig.json"
+    },
+    {
       "path": "../core/tsconfig.json"
     },
     {

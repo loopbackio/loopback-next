@@ -46,6 +46,7 @@ describe('CrudRestController for a simple Product model', () => {
 
   let app: RestApplication;
   let repo: EntityCrudRepository<Product, typeof Product.prototype.id>;
+
   let client: Client;
 
   // sample data - call `seedData` to populate these items
@@ -67,7 +68,6 @@ describe('CrudRestController for a simple Product model', () => {
         // FIXME: POST should return 201
         // See https://github.com/loopbackio/loopback-next/issues/788
         .expect(200);
-
       const created = response.body;
       expect(created).to.containEql({name: 'A pen'});
       expect(created).to.have.property('id').of.type('number');
