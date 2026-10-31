@@ -573,6 +573,15 @@ Here are general attributes for property definitions:
       <td>If boolean it shows whether the property represents a column (field) that is a database index. It can be an object, for example, `index: {unique: true}` to make a property unique. Note: This depends on connector whether it supports or not.</td>
     </tr>
     <tr>
+      <td><code>readOnly</code></td>
+      <td>No</td>
+      <td>Boolean</td>
+      <td>
+        Whether the property is readOnly in the request body for updating a model instance.<br/><br/>
+        Default is <code>false</code>.
+      </td>
+    </tr>
+    <tr>
       <td><code>required</code></td>
       <td>No</td>
       <td>Boolean</td>

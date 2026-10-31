@@ -148,7 +148,10 @@ export class DoctorPatientController {
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(Patient, {partial: true}),
+          schema: getModelSchemaRef(Patient, {
+            partial: true,
+            exclude: ['id', ],
+          }),
         },
       },
     })
@@ -263,7 +266,10 @@ export class DoctorPatientController {
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(Patient, {partial: true}),
+          schema: getModelSchemaRef(Patient, {
+            partial: true,
+            exclude: ['id', ],
+          }),
         },
       },
     })
