@@ -290,4 +290,56 @@ describe('Ajv factory', () => {
     ctx = new Context();
     ctx.bind(RestBindings.AJV_FACTORY).toProvider(AjvFactoryProvider);
   }
+
+  it('validate extension properties', async () => {
+    const ajvFactory = await ctx.get(RestBindings.AJV_FACTORY);
+    const validator = ajvFactory().compile({
+      type: 'object',
+      properties: {
+        validation: {
+          type: 'object',
+          properties: {
+            'x-default': {
+              type: 'string',
+            },
+            'x-defaultFn': {
+              type: 'string',
+              enum: ['guid', 'uuid', 'uuidv4', 'now'],
+            },
+            'x-index': {
+              type: 'boolean',
+            },
+            'x-length': {
+              type: 'number',
+            },
+            'x-precision': {
+              type: 'number',
+            },
+            'x-scale': {
+              type: 'number',
+            },
+            'x-generated': {
+              type: 'boolean',
+            },
+            'x-hidden': {
+              type: 'boolean',
+            },
+          },
+        },
+      },
+    });
+    const result = validator({
+      validation: {
+        'x-default': 'default value',
+        'x-defaultFn': 'guid',
+        'x-index': false,
+        'x-length': 54,
+        'x-precision': 10,
+        'x-scale': 0,
+        'x-generated': true,
+        'x-hidden': false,
+      },
+    });
+    expect(result).to.be.true();
+  });
 });
