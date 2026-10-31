@@ -61,7 +61,7 @@
     "@loopback/eslint-config": "^17.0.0",
     "@loopback/testlab": "^9.0.0",
     "@types/debug": "^4.1.13",
-    "p-event": "^4.2.0",
+    "p-event": "^8.0.1",
     "socket.io-client": "^4.8.4"
   }
 }
