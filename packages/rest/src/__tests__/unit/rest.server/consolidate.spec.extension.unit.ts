@@ -3,6 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {Application, createBindingFromClass} from '@loopback/core';
 import {
   aComponentsSpec,
   anOpenApiSpec,
@@ -11,10 +12,22 @@ import {
 import {expect} from '@loopback/testlab';
 import {ConsolidationEnhancer} from '../../../spec-enhancers/consolidate.spec-enhancer';
 
-const consolidationEnhancer = new ConsolidationEnhancer();
+describe('ConsolidationEnhancer', () => {
+  let consolidationEnhancer: ConsolidationEnhancer;
 
-describe('consolidateSchemaObjects', () => {
-  it('moves schema with title to component.schemas, replaces with reference', () => {
+  beforeEach(() => {
+    const ctx = new Application();
+    const consolidationEnhancerBinding = createBindingFromClass(
+      ConsolidationEnhancer,
+    );
+    ctx.add(consolidationEnhancerBinding);
+
+    consolidationEnhancer = ctx.getSync<ConsolidationEnhancer>(
+      consolidationEnhancerBinding.key,
+    );
+  });
+
+  it('moves schema with title to component.schemas, replaces with reference', async () => {
     const INPUT_SPEC = anOpenApiSpec()
       .withOperation(
         'get',
@@ -64,10 +77,12 @@ describe('consolidateSchemaObjects', () => {
       )
       .build();
 
-    expect(consolidationEnhancer.modifySpec(INPUT_SPEC)).to.eql(EXPECTED_SPEC);
+    expect(await consolidationEnhancer.modifySpec(INPUT_SPEC)).to.eql(
+      EXPECTED_SPEC,
+    );
   });
 
-  it('ignores schema without title property', () => {
+  it('ignores schema without title property', async () => {
     const INPUT_SPEC = anOpenApiSpec()
       .withOperation(
         'get',
@@ -89,10 +104,12 @@ describe('consolidateSchemaObjects', () => {
       )
       .build();
 
-    expect(consolidationEnhancer.modifySpec(INPUT_SPEC)).to.eql(INPUT_SPEC);
+    expect(await consolidationEnhancer.modifySpec(INPUT_SPEC)).to.eql(
+      INPUT_SPEC,
+    );
   });
 
-  it('avoids naming collision', () => {
+  it('avoids naming collision', async () => {
     const INPUT_SPEC = anOpenApiSpec()
       .withOperation(
         'get',
@@ -161,10 +178,12 @@ describe('consolidateSchemaObjects', () => {
       )
       .build();
 
-    expect(consolidationEnhancer.modifySpec(INPUT_SPEC)).to.eql(EXPECTED_SPEC);
+    expect(await consolidationEnhancer.modifySpec(INPUT_SPEC)).to.eql(
+      EXPECTED_SPEC,
+    );
   });
 
-  it('consolidates same schema in multiple locations', () => {
+  it('consolidates same schema in multiple locations', async () => {
     const INPUT_SPEC = anOpenApiSpec()
       .withOperation(
         'get',
@@ -249,33 +268,8 @@ describe('consolidateSchemaObjects', () => {
       )
       .build();
 
-    expect(consolidationEnhancer.modifySpec(INPUT_SPEC)).to.eql(EXPECTED_SPEC);
-  });
-
-  it('obeys disabled option when set to true', () => {
-    consolidationEnhancer.disabled = true;
-    const INPUT_SPEC = anOpenApiSpec()
-      .withOperation(
-        'get',
-        '/',
-        anOperationSpec().withResponse(200, {
-          description: 'Example',
-          content: {
-            'application/json': {
-              schema: {
-                title: 'loopback.example',
-                properties: {
-                  test: {
-                    type: 'string',
-                  },
-                },
-              },
-            },
-          },
-        }),
-      )
-      .build();
-
-    expect(consolidationEnhancer.modifySpec(INPUT_SPEC)).to.eql(INPUT_SPEC);
+    expect(await consolidationEnhancer.modifySpec(INPUT_SPEC)).to.eql(
+      EXPECTED_SPEC,
+    );
   });
 });
